@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814984" source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="action.add" resname="action.add" approved="yes">
+        <source>Add task</source>
+        <target state="final">タスクを追加</target>
+      </trans-unit>
+      <trans-unit id="action.edit" resname="action.edit" approved="yes">
+        <source>Edit task</source>
+        <target state="final">タスクを編集</target>
+      </trans-unit>
+      <trans-unit id="button.cancel" resname="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">キャンセル</target>
+      </trans-unit>
+      <trans-unit id="function.scheduler" resname="function.scheduler" approved="yes">
+        <source>Scheduled tasks</source>
+        <target state="final">スケジュール化したタスク</target>
+      </trans-unit>
+      <trans-unit id="function.check" resname="function.check" approved="yes">
+        <source>Setup check</source>
+        <target state="final">セットアップの確認</target>
+      </trans-unit>
+      <trans-unit id="function.info" resname="function.info" approved="yes">
+        <source>Information</source>
+        <target state="final">情報</target>
+      </trans-unit>
+      <trans-unit id="hdg.cliScript" resname="hdg.cliScript" approved="yes">
+        <source>CLI script</source>
+        <target state="final">CLI スクリプト</target>
+      </trans-unit>
+      <trans-unit id="hdg.composerMode" resname="hdg.composerMode" approved="yes">
+        <source>System is running in Composer Mode</source>
+        <target state="final">システムはComposer Modeで実行されています</target>
+      </trans-unit>
+      <trans-unit id="hdg.lastRun" resname="hdg.lastRun" approved="yes">
+        <source>Last run</source>
+        <target state="final">最後の実行</target>
+      </trans-unit>
+      <trans-unit id="label.automatically" resname="label.automatically" approved="yes">
+        <source>automatically</source>
+        <target state="final">自動処理</target>
+      </trans-unit>
+      <trans-unit id="label.cachingFrameworkGarbageCollection.selectBackends" resname="label.cachingFrameworkGarbageCollection.selectBackends" approved="yes">
+        <source>Backend types</source>
+        <target state="final">バックエンドの種類</target>
+      </trans-unit>
+      <trans-unit id="label.recyclerGarbageCollection.numberOfDays" resname="label.recyclerGarbageCollection.numberOfDays" approved="yes">
+        <source>Number of days until removing files</source>
+        <target state="final">ファイルを削除するまでの日数</target>
+      </trans-unit>
+      <trans-unit id="label.executeSelected" resname="label.executeSelected" approved="yes">
+        <source>Execute selected tasks</source>
+        <target state="final">選択したタスクを実行</target>
+      </trans-unit>
+      <trans-unit id="label.cronjobSelected" resname="label.cronjobSelected" approved="yes">
+        <source>Execute selected tasks on next cron job</source>
+        <target state="final">次の cron ジョブで選択したタスクを実行</target>
+      </trans-unit>
+      <trans-unit id="label.frequency" resname="label.frequency" approved="yes">
+        <source>Frequency</source>
+        <target state="final">頻度</target>
+      </trans-unit>
+      <trans-unit id="label.lastExecution" resname="label.lastExecution" approved="yes">
+        <source>Last Execution</source>
+        <target state="final">最後の実行</target>
+      </trans-unit>
+      <trans-unit id="label.name" resname="label.name" approved="yes">
+        <source>Name</source>
+        <target state="final">名前</target>
+      </trans-unit>
+      <trans-unit id="label.nextExecution" resname="label.nextExecution" approved="yes">
+        <source>Next Execution</source>
+        <target state="final">次の実行</target>
+      </trans-unit>
+      <trans-unit id="label.parallel" resname="label.parallel" approved="yes">
+        <source>Parallel Execution</source>
+        <target state="final">並列実行</target>
+      </trans-unit>
+      <trans-unit id="label.parallel.long" resname="label.parallel.long" approved="yes">
+        <source>Allow Parallel Execution</source>
+        <target state="final">並列実行を許可</target>
+      </trans-unit>
+      <trans-unit id="label.serverTime" resname="label.serverTime" approved="yes">
+        <source>Server time</source>
+        <target state="final">サーバー時間</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.allTables" resname="label.tableGarbageCollection.allTables" approved="yes">
+        <source>Clean all available tables</source>
+        <target state="final">利用可能なテーブルをすべて消去</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.table" resname="label.tableGarbageCollection.table" approved="yes">
+        <source>Table to clean up</source>
+        <target state="final">クリーンアップするテーブル</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.additionalInformationTable" resname="label.tableGarbageCollection.additionalInformationTable" approved="yes">
+        <source>Table: %s</source>
+        <target state="final">テーブル： %s</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.additionalInformationAllTables" resname="label.tableGarbageCollection.additionalInformationAllTables" approved="yes">
+        <source>All tables</source>
+        <target state="final">全テーブル</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.numberOfDays" resname="label.tableGarbageCollection.numberOfDays" approved="yes">
+        <source>Delete entries older than given number of days</source>
+        <target state="final">指定された日数より古いエントリを削除</target>
+      </trans-unit>
+      <trans-unit id="label.type" resname="label.type" approved="yes">
+        <source>Type</source>
+        <target state="final">種類</target>
+      </trans-unit>
+      <trans-unit id="label.type.recurring" resname="label.type.recurring" approved="yes">
+        <source>Recurring</source>
+        <target state="final">定期的</target>
+      </trans-unit>
+      <trans-unit id="msg.serverTime" resname="msg.serverTime" approved="yes">
+        <source>Current server time is %s.</source>
+        <target state="final">現在のサーバーの時刻は %s です。</target>
+      </trans-unit>
+      <trans-unit id="msg.serverTimeHelp" resname="msg.serverTimeHelp" approved="yes">
+        <source>All dates and times in the Scheduler are measured according to the server's time, as the Scheduler is run purely on the server-side.</source>
+        <target state="final">スケジューラのすべての日付と時刻は、サーバ側で実行されるため、サーバの時刻に従って測定されます。</target>
+      </trans-unit>
+      <trans-unit id="status" resname="status" approved="yes">
+        <source>Status</source>
+        <target state="final">ステータス</target>
+      </trans-unit>
+      <trans-unit id="status.disabled" resname="status.disabled" approved="yes">
+        <source>disabled</source>
+        <target state="final">無効化済み</target>
+      </trans-unit>
+      <trans-unit id="status.failure" resname="status.failure" approved="yes">
+        <source>failure</source>
+        <target state="final">失敗</target>
+      </trans-unit>
+      <trans-unit id="status.late" resname="status.late" approved="yes">
+        <source>late</source>
+        <target state="final">遅延</target>
+      </trans-unit>
+      <trans-unit id="status.running" resname="status.running" approved="yes">
+        <source>running</source>
+        <target state="final">実行中</target>
+      </trans-unit>
+      <trans-unit id="status.scheduled" resname="status.scheduled" approved="yes">
+        <source>scheduled</source>
+        <target state="final">スケジュール済</target>
+      </trans-unit>
+      <trans-unit id="task" resname="task" approved="yes">
+        <source>Task</source>
+        <target state="final">タスク</target>
+      </trans-unit>
+      <trans-unit id="testTask.name" resname="testTask.name" approved="yes">
+        <source>Scheduler test task</source>
+        <target state="final">スケジューラテストタスク</target>
+      </trans-unit>
+      <trans-unit id="sleepTask.name" resname="sleepTask.name" approved="yes">
+        <source>Scheduler sleep task</source>
+        <target state="final">スケジューラスリープタスク</target>
+      </trans-unit>
+      <trans-unit id="cachingFrameworkGarbageCollection.name" resname="cachingFrameworkGarbageCollection.name" approved="yes">
+        <source>Caching framework garbage collection</source>
+        <target state="final">キャッシュフレームワークのガベージコレクション</target>
+      </trans-unit>
+      <trans-unit id="cachingFrameworkGarbageCollection.description" resname="cachingFrameworkGarbageCollection.description" approved="yes">
+        <source>This task calls the garbage collection of configured caching framework caches which use one of the selected backends. This will free some space in cache backends which do not have an internal garbage collection. In case of the default database backend it is advisable to run this task once a day when the database is mostly idle.</source>
+        <target state="final">このタスクは、選択したバックエンドのいずれかを使用する構成済みキャッシュフレームワークキャッシュのガベージコレクションを呼び出します。 これにより、内部ガベージコレクションを持たないキャッシュバックエンドの空き容量が解放されます。 デフォルトのデータベースバックエンドの場合は、データベースがアイドル状態のときに1日1回このタスクを実行することをお勧めします。</target>
+      </trans-unit>
+      <trans-unit id="fileStorageIndexing.name" resname="fileStorageIndexing.name" approved="yes">
+        <source>File Abstraction Layer: Update storage index</source>
+        <target state="final">ファイル抽象化レイヤー： ストレージインデックスを更新</target>
+      </trans-unit>
+      <trans-unit id="fileStorageExtraction.name" resname="fileStorageExtraction.name" approved="yes">
+        <source>File Abstraction Layer: Extract metadata in storage</source>
+        <target state="final">ファイル抽象化レイヤー： ストレージ内のメタデータを抽出する</target>
+      </trans-unit>
+      <trans-unit id="tableGarbageCollection.name" resname="tableGarbageCollection.name" approved="yes">
+        <source>Table garbage collection</source>
+        <target state="final">Fileadminのガベージコレクション</target>
+      </trans-unit>
+      <trans-unit id="tableGarbageCollection.description" resname="tableGarbageCollection.description" approved="yes">
+        <source>Task to delete old entries from specific tables like sys_log. Use $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']['tables'] to configure tables. Refer to the manual for more details.</source>
+        <target state="final">Sys_log のような特定のテーブルから古いエントリを削除するタスク。テーブルを設定するには $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']['tables'] を使用してください。詳細についてはマニュアルを参照してください。</target>
+      </trans-unit>
+      <trans-unit id="recyclerGarbageCollection.name" resname="recyclerGarbageCollection.name" approved="yes">
+        <source>Fileadmin garbage collection</source>
+        <target state="final">Fileadminのガベージコレクション</target>
+      </trans-unit>
+      <trans-unit id="recyclerGarbageCollection.description" resname="recyclerGarbageCollection.description" approved="yes">
+        <source>This task empties all "_recycler_" folders below fileadmin. This helps free some space in the file system.</source>
+        <target state="final">このタスクは、fileadmin の下にあるすべての "_recycler_" フォルダーを空にします。これにより、ファイル システムの空き容量を増やすことができます。</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
