@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815001" source-language="en" datatype="plaintext" original="EXT:taskcenter/Resources/Private/Language/locallang_task.xlf" date="2011-10-17T20:22:37Z" product-name="taskcenter" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Tasks</source>
+        <target state="final">Opgaver</target>
+      </trans-unit>
+      <trans-unit id="task_overview" resname="task_overview" approved="yes">
+        <source>Overview</source>
+        <target state="final">Overblik</target>
+      </trans-unit>
+      <trans-unit id="error_header" resname="error_header" approved="yes">
+        <source>Error</source>
+        <target state="final">Fejl</target>
+      </trans-unit>
+      <trans-unit id="error-access" resname="error-access" approved="yes">
+        <source>No access to this module.</source>
+        <target state="final">Ingen adgang til dette modul.</target>
+      </trans-unit>
+      <trans-unit id="error_no-instance" resname="error_no-instance" approved="yes">
+        <source>The class "%s" does not implement the task interface "%s" which is necessary to be displayed here.</source>
+        <target state="final">Klassen "%s" implementerer ikke opgave-grænsefladen "%s", der er nødvendig for at blive vist her.</target>
+      </trans-unit>
+      <trans-unit id="no-tasks" resname="no-tasks" approved="yes">
+        <source>No tasks have been registered yet.</source>
+        <target state="final">Ingen opgaver er blevet registreret endnu.</target>
+      </trans-unit>
+      <trans-unit id="lReplyAddress" resname="lReplyAddress" approved="yes">
+        <source>Reply address is your email</source>
+        <target state="final">Retur-adressen er din email</target>
+      </trans-unit>
+      <trans-unit id="lSelf" resname="lSelf" approved="yes">
+        <source>Self</source>
+        <target state="final">Egen</target>
+      </trans-unit>
+      <trans-unit id="lSendNew" resname="lSendNew" approved="yes">
+        <source>Send message</source>
+        <target state="final">Send besked</target>
+      </trans-unit>
+      <trans-unit id="lSendReply" resname="lSendReply" approved="yes">
+        <source>Reply to message</source>
+        <target state="final">Svar på besked</target>
+      </trans-unit>
+      <trans-unit id="listSeparator_Groups" resname="listSeparator_Groups" approved="yes">
+        <source>__Groups:__</source>
+        <target state="final">__Grupper:__</target>
+      </trans-unit>
+      <trans-unit id="lHomedir" resname="lHomedir" approved="yes">
+        <source>Home dir</source>
+        <target state="final">Hjemme-mappe</target>
+      </trans-unit>
+      <trans-unit id="lNone" resname="lNone" approved="yes">
+        <source>[none]</source>
+        <target state="final">[ingen]</target>
+      </trans-unit>
+      <trans-unit id="lCreate" resname="lCreate" approved="yes">
+        <source>Create</source>
+        <target state="final">Opret</target>
+      </trans-unit>
+      <trans-unit id="lCancel" resname="lCancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annullér</target>
+      </trans-unit>
+      <trans-unit id="lDelete_warning_title" resname="lDelete_warning_title" approved="yes">
+        <source>Please confirm</source>
+        <target state="final">Bekræft venligst</target>
+      </trans-unit>
+      <trans-unit id="lDelete_warning" resname="lDelete_warning" approved="yes">
+        <source>Are you sure you want to delete this user?</source>
+        <target state="final">Er du sikker på, at du ønsker at slette denne bruger?</target>
+      </trans-unit>
+      <trans-unit id="lDelete" resname="lDelete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Slet</target>
+      </trans-unit>
+      <trans-unit id="lUpdate" resname="lUpdate" approved="yes">
+        <source>Update</source>
+        <target state="final">Opdatér</target>
+      </trans-unit>
+      <trans-unit id="taskcenter-about" resname="taskcenter-about" xml:space="preserve" approved="yes">
+				<source>
+&lt;p&gt;The menu on the left side shows all allowed tasks and let you allow to complete your tasks in an efficient way.&lt;/p&gt;
+&lt;ul class="withicons"&gt;
+&lt;li&gt;Clicking on the title of a task will open a detailed view of the task itself.&lt;/li&gt;
+&lt;li&gt;Click on the arrow on the right side will open/close the submenu of the task.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br /&gt;
+&lt;strong&gt;Note:&lt;/strong&gt; Set the taskcenter as the default module after your login to be even faster!
+
+</source>
+			<target state="final">
+&lt;p&gt;Menuen i venstre side viser alle tilladte opgaver og lader dig fuldføre dine opgaver på en effektiv måde.&lt;/p&gt;
+&lt;ul class="withicons"&gt;
+&lt;li&gt;Klik på opgavens titel vil åbne en detaljeret visning af selve opgaven.&lt;/li&gt;
+&lt;li&gt;Klik på pilen i højre side vil åbne/lukke undermenuen for opgaven.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br /&gt;
+&lt;strong&gt;Bemærk:&lt;/strong&gt; Sæt opgavecenteret som standardmodul efter at du er logget ind for at blive endnu hurtigere!
+
+</target></trans-unit>
+      <trans-unit id="taskcenter-adminheader" resname="taskcenter-adminheader" approved="yes">
+        <source>Create a task</source>
+        <target state="final">Opret en opgave</target>
+      </trans-unit>
+      <trans-unit id="taskcenter-admin" resname="taskcenter-admin" approved="yes">
+        <source>It is simple to extend the taskcenter by a custom task. For more information please look into the manual of the extension 'taskcenter'.</source>
+        <target state="final">Det er enkelt at udvide opgavecenteret med en brugerdefineret opgave. For mere information, så tag et kig i manualen for udvidelsen 'opgavecenter'.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
