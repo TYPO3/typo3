@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814992" source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_servicereport.xlf" date="2011-10-17T20:22:37Z" product-name="sv" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="report_title" resname="report_title" approved="yes">
+        <source>Installed Services</source>
+        <target state="final">स्थापित सेवाएँ</target>
+      </trans-unit>
+      <trans-unit id="report_description" resname="report_description" approved="yes">
+        <source>List of all installed services with information and status for each of them.</source>
+        <target state="final">सभी स्थापित सेवाओं की सूची, उनमें से प्रत्येक की जानकारी और स्थिति के साथ।</target>
+      </trans-unit>
+      <trans-unit id="report_explanation" resname="report_explanation" approved="yes">
+        <source>This report displays a list of installed services, with detailed information about each of them. The services are ordered by type, priority and quality. Unavailable services are highlighted with an error status.</source>
+        <target state="final">यह रिपोर्ट स्थापित सेवाओं की सूची प्रदर्शित करती है, जिसमें प्रत्येक के बारे में विस्तृत जानकारी शामिल है। सेवाओं को प्रकार, प्राथमिकता और गुणवत्ता के अनुसार क्रमबद्ध किया गया है। अनुपलब्ध सेवाओं को त्रुटि स्थिति के साथ हाइलाइट किया गया है।</target>
+      </trans-unit>
+      <trans-unit id="externals_explanation" resname="externals_explanation" approved="yes">
+        <source>The "Externals" column shows which external programs a given service relies on. If such program is missing or not executable, the service will be unavailable. Search paths for executables are listed at the bottom of this report.</source>
+        <target state="final">"बाहरी" कॉलम दिखाता है कि कोई दी गई सेवा किन बाह्य प्रोग्रामों पर निर्भर करती है। यदि ऐसा प्रोग्राम अनुपलब्ध है या निष्पादन योग्य नहीं है, तो सेवा अनुपलब्ध हो जाएगी। निष्पादन योग्य प्रोग्रामों के लिए खोज पथ इस रिपोर्ट के निचले भाग में सूचीबद्ध हैं।</target>
+      </trans-unit>
+      <trans-unit id="service_type" resname="service_type" approved="yes">
+        <source>Service type: %s</source>
+        <target state="final">सेवा प्रकार: %s</target>
+      </trans-unit>
+      <trans-unit id="service" resname="service" approved="yes">
+        <source>Service</source>
+        <target state="final">सेवा</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description" approved="yes">
+        <source>Description</source>
+        <target state="final">विवरण</target>
+      </trans-unit>
+      <trans-unit id="priority" resname="priority" approved="yes">
+        <source>Priority</source>
+        <target state="final">प्राथमिकता</target>
+      </trans-unit>
+      <trans-unit id="quality" resname="quality" approved="yes">
+        <source>Quality</source>
+        <target state="final">गुणवत्ता</target>
+      </trans-unit>
+      <trans-unit id="subtypes" resname="subtypes" approved="yes">
+        <source>Subtypes</source>
+        <target state="final">उप प्रकार</target>
+      </trans-unit>
+      <trans-unit id="os" resname="os" approved="yes">
+        <source>OS</source>
+        <target state="final">OS</target>
+      </trans-unit>
+      <trans-unit id="externals" resname="externals" approved="yes">
+        <source>Externals</source>
+        <target state="final">बाहरी</target>
+      </trans-unit>
+      <trans-unit id="available" resname="available" approved="yes">
+        <source>Available</source>
+        <target state="final">उपलब्ध</target>
+      </trans-unit>
+      <trans-unit id="any" resname="any" approved="yes">
+        <source>Any</source>
+        <target state="final">कोई</target>
+      </trans-unit>
+      <trans-unit id="search_paths" resname="search_paths" approved="yes">
+        <source>Configured search paths for external programs</source>
+        <target state="final">बाह्य प्रोग्रामों के लिए कॉन्फ़िगर किए गए खोज पथ</target>
+      </trans-unit>
+      <trans-unit id="path" resname="path" approved="yes">
+        <source>Path</source>
+        <target state="final">पथ</target>
+      </trans-unit>
+      <trans-unit id="valid" resname="valid" approved="yes">
+        <source>Valid</source>
+        <target state="final">मान्य</target>
+      </trans-unit>
+      <trans-unit id="no_search_paths" resname="no_search_paths" approved="yes">
+        <source>No search paths configured.</source>
+        <target state="final">कोई खोज पथ कॉन्फ़िगर नहीं किया गया</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
