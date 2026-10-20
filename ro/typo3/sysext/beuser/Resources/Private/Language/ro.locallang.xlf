@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang.xlf" date="2023-02-15T18:03:32Z" product-name="beuser" target-language="ro">
+    <header/>
+    <body>
+      <trans-unit id="userName" approved="yes">
+        <source>Username</source>
+        <target state="final">Nume utilizator</target>
+      </trans-unit>
+      <trans-unit id="email" approved="yes">
+        <source>Email</source>
+        <target state="final">Email</target>
+      </trans-unit>
+      <trans-unit id="admin" approved="yes">
+        <source>Admin</source>
+        <target state="final">Administrator</target>
+      </trans-unit>
+      <trans-unit id="users" approved="yes">
+        <source>Users</source>
+        <target state="final">Utilizatori</target>
+      </trans-unit>
+      <trans-unit id="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Da</target>
+      </trans-unit>
+      <trans-unit id="no" approved="yes">
+        <source>No</source>
+        <target state="final">Nu</target>
+      </trans-unit>
+      <trans-unit id="never" approved="yes">
+        <source>Never</source>
+        <target state="final">Niciodată</target>
+      </trans-unit>
+      <trans-unit id="startDateAndTime" approved="yes">
+        <source>Start</source>
+        <target state="final">Start</target>
+      </trans-unit>
+      <trans-unit id="endDateAndTime" approved="yes">
+        <source>Stop</source>
+        <target state="final">Stop</target>
+      </trans-unit>
+      <trans-unit id="lastLogin" approved="yes">
+        <source>Last login</source>
+        <target state="final">Ultima conectare</target>
+      </trans-unit>
+      <trans-unit id="allowedLanguages" approved="yes">
+        <source>Limit to languages</source>
+        <target state="final">Limitează la limbile</target>
+      </trans-unit>
+      <trans-unit id="fileMounts" approved="yes">
+        <source>File mountpoints</source>
+        <target state="final">Puncte acces fișiere</target>
+      </trans-unit>
+      <!-- Docheader menu / Shortcut button title -->
+      <trans-unit id="backendUsers" approved="yes">
+        <source>Backend users</source>
+        <target state="final">Utilizatori Backend</target>
+      </trans-unit>
+      <trans-unit id="compareBackendUsers" approved="yes">
+        <source>Compare backend users</source>
+        <target state="final">Compară utilizatori Backend</target>
+      </trans-unit>
+      <trans-unit id="onlineUsers" approved="yes">
+        <source>Online users</source>
+        <target state="final">Utilizatori conectați</target>
+      </trans-unit>
+      <!-- Button / Links -->
+      <!-- Filter -->
+      <trans-unit id="filter" approved="yes">
+        <source>Filter</source>
+        <target state="final">Filtru</target>
+      </trans-unit>
+      <!-- Pagination -->
+      <!-- Backend users: General (ViewHelper labels, etc.) -->
+      <!-- Backend users: List -->
+      <!-- Backend users: Show -->
+      <!-- Backend users: Compare -->
+      <!-- Backend users: Online -->
+      <!-- Backend user groups: List -->
+      <!-- Backend user groups: Show -->
+      <!-- Backend user groups: Compare -->
+      <!-- File mounts -->
+      <!-- Password reset -->
+    </body>
+  </file>
+</xliff>
