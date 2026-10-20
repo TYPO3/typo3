@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_webinfo.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="page_title" approved="yes">
+        <source>Pagetree overview</source>
+        <target state="final">Pogled drevesne strukture</target>
+      </trans-unit>
+      <trans-unit id="pages_0" approved="yes">
+        <source>Basic settings</source>
+        <target state="final">Osnovne nastavitve</target>
+      </trans-unit>
+      <trans-unit id="pages_2" approved="yes">
+        <source>Cache and Age</source>
+        <target state="final">Predpomnilnik in starost</target>
+      </trans-unit>
+      <trans-unit id="pages_1" approved="yes">
+        <source>Record overview</source>
+        <target state="final">Pogled zapisov</target>
+      </trans-unit>
+      <trans-unit id="pages_layouts" approved="yes">
+        <source>Layouts</source>
+        <target state="final">Postavitev</target>
+      </trans-unit>
+      <trans-unit id="lang_title" approved="yes">
+        <source>Localization overview</source>
+        <target state="final">Pogled prevodov</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_viewPage" approved="yes">
+        <source>View page</source>
+        <target state="final">Poglej stran</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_page" approved="yes">
+        <source>Page</source>
+        <target state="final">Stran</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_default" approved="yes">
+        <source>Default</source>
+        <target state="final">Privzeto</target>
+      </trans-unit>
+      <trans-unit id="moduleFunctions.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Globina</target>
+      </trans-unit>
+      <trans-unit id="moduleFunctions.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Vrsta</target>
+      </trans-unit>
+      <trans-unit id="moduleFunctions.lang" approved="yes">
+        <source>Language</source>
+        <target state="final">Jezik</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
