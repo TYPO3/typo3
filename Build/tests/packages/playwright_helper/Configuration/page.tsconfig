@@ -1,0 +1,12 @@
+# Record link handler, so the link browser offers a "Styleguide records" tab
+TCEMAIN.linkHandler.styleguide {
+  handler = TYPO3\CMS\Backend\LinkHandler\RecordLinkHandler
+  label = Styleguide records
+  configuration {
+    table = tx_styleguide_elements_basic
+  }
+  scanAfter = page
+}
+
+# Offer the "Additional link parameters" field in the link browser of one RTE field
+RTE.config.tx_styleguide_elements_rte.rte_2.buttons.link.queryParametersSelector.enabled = 1

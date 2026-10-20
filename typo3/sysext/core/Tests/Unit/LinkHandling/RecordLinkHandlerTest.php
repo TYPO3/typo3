@@ -41,6 +41,55 @@ final class RecordLinkHandlerTest extends UnitTestCase
         self::assertEquals($url, $subject->asString($parameters));
     }
 
+    public static function resolveParametersDataProvider(): array
+    {
+        return [
+            'record' => [
+                [
+                    'identifier' => 'tx_identifier',
+                    'uid' => '123',
+                ],
+                [
+                    'identifier' => 'tx_identifier',
+                    'uid' => '123',
+                ],
+                't3://record?identifier=tx_identifier&uid=123',
+            ],
+            'record with additional parameters' => [
+                [
+                    'identifier' => 'tx_identifier',
+                    'uid' => '123',
+                    'L' => '1',
+                    'tx_ext' => ['foo' => 'bar baz'],
+                ],
+                [
+                    'identifier' => 'tx_identifier',
+                    'uid' => '123',
+                    'L' => '1',
+                    'tx_ext' => ['foo' => 'bar baz'],
+                    'parameters' => 'L=1&tx_ext%5Bfoo%5D=bar%20baz',
+                ],
+                't3://record?identifier=tx_identifier&uid=123&L=1&tx_ext%5Bfoo%5D=bar%20baz',
+            ],
+        ];
+    }
+
+    #[DataProvider('resolveParametersDataProvider')]
+    #[Test]
+    public function resolveHandlerDataReturnsSplitParameters(array $input, array $expected, string $finalString): void
+    {
+        $subject = new RecordLinkHandler();
+        self::assertSame($expected, $subject->resolveHandlerData($input));
+    }
+
+    #[DataProvider('resolveParametersDataProvider')]
+    #[Test]
+    public function asStringReturnsUrlWithAdditionalParameters(array $input, array $parameters, string $expected): void
+    {
+        $subject = new RecordLinkHandler();
+        self::assertSame($expected, $subject->asString($parameters));
+    }
+
     public static function missingParameterDataProvider(): array
     {
         return [

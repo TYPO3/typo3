@@ -191,7 +191,9 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
             'data-linkbrowser-identifier' => 't3://record?identifier=' . $this->identifier . '&uid=',
         ];
         if (!empty($this->linkParts)) {
-            $attributes['data-linkbrowser-current-link'] = $this->linkService->asString($this->linkParts['url']);
+            $currentLink = $this->linkParts['url'];
+            unset($currentLink['parameters']);
+            $attributes['data-linkbrowser-current-link'] = $this->linkService->asString($currentLink);
         }
         return $attributes;
     }
