@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_reports.xlf" date="2011-10-17T20:22:35Z" product-name="reports" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="status_ok">
+        <source>OK</source>
+        <target>crwdns60808:0crwdne60808:0</target>
+      </trans-unit>
+      <trans-unit id="status_wrongValue">
+        <source>Wrong value detected</source>
+        <target>crwdns60810:0crwdne60810:0</target>
+      </trans-unit>
+      <trans-unit id="status_info">
+        <source>Information</source>
+        <target>crwdns60812:0crwdne60812:0</target>
+      </trans-unit>
+      <trans-unit id="status_insecure">
+        <source>Insecure</source>
+        <target>crwdns60814:0crwdne60814:0</target>
+      </trans-unit>
+      <trans-unit id="status_disabled">
+        <source>Disabled</source>
+        <target>crwdns60816:0crwdne60816:0</target>
+      </trans-unit>
+      <trans-unit id="status_enabled">
+        <source>Enabled</source>
+        <target>crwdns60818:0crwdne60818:0</target>
+      </trans-unit>
+      <trans-unit id="status_enabledPermanently">
+        <source>Enabled permanently</source>
+        <target>crwdns60820:0crwdne60820:0</target>
+      </trans-unit>
+      <trans-unit id="status_enabledTemporarily">
+        <source>Enabled temporarily</source>
+        <target>crwdns60822:0crwdne60822:0</target>
+      </trans-unit>
+      <trans-unit id="status_empty">
+        <source>Empty</source>
+        <target>crwdns60824:0crwdne60824:0</target>
+      </trans-unit>
+      <trans-unit id="status_none">
+        <source>None</source>
+        <target>crwdns60826:0crwdne60826:0</target>
+      </trans-unit>
+      <trans-unit id="status_connectionFailed">
+        <source>Connection Failed</source>
+        <target>crwdns60828:0crwdne60828:0</target>
+      </trans-unit>
+      <trans-unit id="status_checkFailed">
+        <source>Check Failed</source>
+        <target>crwdns60830:0crwdne60830:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateComplete">
+        <source>Update Complete</source>
+        <target>crwdns60832:0crwdne60832:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateIncomplete">
+        <source>Update Incomplete</source>
+        <target>crwdns60834:0crwdne60834:0</target>
+      </trans-unit>
+      <trans-unit id="status_problemNotification">
+        <source>One or more problems were detected with your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
+        <target>crwdns211328:0%scrwdnd211328:0%scrwdne211328:0</target>
+      </trans-unit>
+      <trans-unit id="status_allNotification">
+        <source>This report contains all System Status Notifications from your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
+        <target>crwdns211330:0%scrwdnd211330:0%scrwdne211330:0</target>
+      </trans-unit>
+      <trans-unit id="status_typo3">
+        <source>TYPO3 System</source>
+        <target>crwdns60840:0crwdne60840:0</target>
+      </trans-unit>
+      <trans-unit id="status_system">
+        <source>System</source>
+        <target>crwdns60842:0crwdne60842:0</target>
+      </trans-unit>
+      <trans-unit id="status_security">
+        <source>Security</source>
+        <target>crwdns60844:0crwdne60844:0</target>
+      </trans-unit>
+      <trans-unit id="status_configuration">
+        <source>Configuration</source>
+        <target>crwdns60846:0crwdne60846:0</target>
+      </trans-unit>
+      <trans-unit id="status_referenceIndex">
+        <source>Reference Index</source>
+        <target>crwdns60848:0crwdne60848:0</target>
+      </trans-unit>
+      <trans-unit id="status_fal">
+        <source>File Abstraction Layer</source>
+        <target>crwdns60850:0crwdne60850:0</target>
+      </trans-unit>
+      <trans-unit id="status_missingFiles">
+        <source>Files flagged as missing</source>
+        <target>crwdns60852:0crwdne60852:0</target>
+      </trans-unit>
+      <trans-unit id="status_missingFilesCount">
+        <source>%1$s files</source>
+        <target>crwdns60854:0%1$scrwdne60854:0</target>
+      </trans-unit>
+      <trans-unit id="status_missingFilesMessage">
+        <source>These files are flagged as missing. Restore the files and run the indexer to reset the missing flag.</source>
+        <target>crwdns60856:0crwdne60856:0</target>
+      </trans-unit>
+      <trans-unit id="status_memcachedConfiguration">
+        <source>Memcached Configuration</source>
+        <target>crwdns60858:0crwdne60858:0</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedFilePermissions">
+        <source>Permissions of created files</source>
+        <target>crwdns60864:0crwdne60864:0</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedFilePermissions.writable">
+        <source>Files created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to files by "others". A sane default is often '0660' for $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']. This can be set in the install tool.</source>
+        <target>crwdns60866:0$GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']crwdne60866:0</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedDirectoryPermissions">
+        <source>Permissions of created directories</source>
+        <target>crwdns60868:0crwdne60868:0</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedDirectoryPermissions.writable">
+        <source>Directories created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to directories by "others". A sane default is often '2770' for $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']. This can be set in the install tool.</source>
+        <target>crwdns60870:0$GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']crwdne60870:0</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet">
+        <source>MySQL Database Character Set</source>
+        <target>crwdns60872:0crwdne60872:0</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_CheckFailed">
+        <source>Checking database character set failed, got key "%1$s" instead of "character_set_database"</source>
+        <target>crwdns60874:0%1$scrwdne60874:0</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Unsupported">
+        <source>Your default database uses character set "%1$s", but only "utf8", "utf8mb3" or "utf8mb4" is supported with TYPO3.</source>
+        <target>crwdns297538:0%1$scrwdne297538:0</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Ok">
+        <source>Your default database uses utf-8. All good.</source>
+        <target>crwdns60878:0crwdne60878:0</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Info">
+        <source>Your default database uses a different charset, but all tables uses utf-8. All good. But consider fixing your database collation and check the table creation settings.</source>
+        <target>crwdns60880:0crwdne60880:0</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_MixedCollations">
+        <source>Your default database is set to create tables with character set "%1$s", but contains tables or columns with different collations. Please fix these tables to avoid "illegal mix of collations" errors.</source>
+        <target>crwdns60882:0%1$scrwdne60882:0</target>
+      </trans-unit>
+      <trans-unit id="status_encryptedConnectionStatus">
+        <source>Encrypted backend connection (HTTPS)</source>
+        <target>crwdns60884:0crwdne60884:0</target>
+      </trans-unit>
+      <trans-unit id="status_encryptedConnectionStatus_insecure">
+        <source>Your backend access is not secured using HTTPS but relies on HTTP which sends all your data (including login passwords) over an insecure connection. All modern web sites should rely on HTTPS and only sites secured differently, for instance some intranet installations may use HTTP only.</source>
+        <target>crwdns60886:0crwdne60886:0</target>
+      </trans-unit>
+      <trans-unit id="status_lockSslStatus">
+        <source>Backend only accessible through HTTPS</source>
+        <target>crwdns60888:0crwdne60888:0</target>
+      </trans-unit>
+      <trans-unit id="status_lockSslStatus_insecure">
+        <source><![CDATA[It is highly recommended to activate the option (<code>$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']</code>).]]></source>
+        <target><![CDATA[crwdns60890:0$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']crwdne60890:0]]></target>
+      </trans-unit>
+      <trans-unit id="status_trustedHostsPattern">
+        <source>Trusted Hosts Pattern</source>
+        <target>crwdns60892:0crwdne60892:0</target>
+      </trans-unit>
+      <trans-unit id="status_encryptionKey">
+        <source>Encryption Key</source>
+        <target>crwdns60896:0crwdne60896:0</target>
+      </trans-unit>
+      <trans-unit id="status_fileDenyPattern">
+        <source>File Deny Pattern</source>
+        <target>crwdns60898:0crwdne60898:0</target>
+      </trans-unit>
+      <trans-unit id="status_htaccessUploadProtection">
+        <source>.htaccess Upload Protection</source>
+        <target>crwdns60900:0crwdne60900:0</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler">
+        <source>Exception Handler / Error Reporting</source>
+        <target>crwdns85353:0crwdne85353:0</target>
+      </trans-unit>
+      <trans-unit id="status_exportedFiles">
+        <source>XML/T3D export files</source>
+        <target>crwdns211332:0crwdne211332:0</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler_warningMessage">
+        <source>Display Errors is set to 1 - errors will be displayed with the DebugExceptionHandler including stack traces.</source>
+        <target>crwdns85355:0crwdne85355:0</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler_errorMessage">
+        <source>Debug Exception Handler enabled in Production Context - will show full error messages including stack traces.</source>
+        <target>crwdns85357:0crwdne85357:0</target>
+      </trans-unit>
+      <trans-unit id="status_exportedFiles_warningMessage">
+        <source>The following exported files were found:</source>
+        <target>crwdns226066:0crwdne226066:0</target>
+      </trans-unit>
+      <trans-unit id="status_exportedFiles_warningRecommendation">
+        <source>It is recommended to delete exported files to avoid possible disclosure of exported data to backend users with lower/different access rights than user(s) who originally created the export(s).</source>
+        <target>crwdns211336:0crwdne211336:0</target>
+      </trans-unit>
+      <trans-unit id="status_installTool">
+        <source>Install Tool</source>
+        <target>crwdns60904:0crwdne60904:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpModules">
+        <source>PHP Modules</source>
+        <target>crwdns60944:0crwdne60944:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesMissing">
+        <source>One or more modules are missing.</source>
+        <target>crwdns60946:0crwdne60946:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesList">
+        <source>The following PHP module(s) is/are missing: %s.</source>
+        <target>crwdns60948:0%scrwdne60948:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesInfo">
+        <source>You need to install and enable these modules to let TYPO3 function correctly.</source>
+        <target>crwdns60950:0crwdne60950:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesGroup">
+        <source>one of: %s</source>
+        <target>crwdns60952:0%scrwdne60952:0</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesPresent">
+        <source>All required modules are installed.</source>
+        <target>crwdns60954:0crwdne60954:0</target>
+      </trans-unit>
+      <trans-unit id="status_installEnabledTemporarily">
+        <source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
+        <target>crwdns60956:0%scrwdnd60956:0%scrwdne60956:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskTitle">
+        <source>System Status Update</source>
+        <target>crwdns60962:0crwdne60962:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskDescription">
+        <source>Runs a system status check and sends notifications if problems have been found.</source>
+        <target>crwdns60964:0crwdne60964:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateAdditionalInformation">
+        <source>Send notification to: %s</source>
+        <target>crwdns377478:0%scrwdne377478:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmails">
+        <source>Notification Email Addresses (one per line)</source>
+        <target>crwdns60968:0crwdne60968:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmails_invalid">
+        <source>Empty or invalid notification email addresses.</source>
+        <target>crwdns60972:0crwdne60972:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationAll">
+        <source>Always send notification mail (not only on errors or warnings)</source>
+        <target>crwdns60974:0crwdne60974:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_subject">
+        <source>System Status Notification for site %s</source>
+        <target>crwdns60976:0%scrwdne60976:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_site">
+        <source>Site</source>
+        <target>crwdns60978:0crwdne60978:0</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_issues">
+        <source>Issues</source>
+        <target>crwdns60980:0crwdne60980:0</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsage">
+        <source>XCLASS used</source>
+        <target>crwdns60982:0crwdne60982:0</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound">
+        <source>Your system registers XCLASS</source>
+        <target>crwdns60984:0crwdne60984:0</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound_message">
+        <source>XCLASS can overwrite methods or classes of the core or other extensions. This is not necessarily a bad thing, but those XCLASS might break during extension or core upgrades. You should keep an eye on extension compatibility and make sure the intended functionality is still given after updates.</source>
+        <target>crwdns60986:0crwdne60986:0</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound_message_detail">
+        <source>%2$s registers an XCLASS of %1$s</source>
+        <target>crwdns60988:0%2$scrwdnd60988:0%1$scrwdne60988:0</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing">
+        <source>Image Processing</source>
+        <target>crwdns301480:0crwdne301480:0</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp">
+        <source>WebP support and availability</source>
+        <target>crwdns301482:0crwdne301482:0</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_disabled">
+        <source>Image processing via ImageMagick/GraphicsMagick is disabled</source>
+        <target>crwdns301484:0crwdne301484:0</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp_not_configured">
+        <source>WebP image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext]. No WebP image files will be generated.</source>
+        <target>crwdns380446:0$TYPO3_CONF_VARS[GFX][imagefile_ext]crwdne380446:0</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp_available">
+        <source>WebP image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is supported by ImageMagick/GraphicsMagick.</source>
+        <target>crwdns380448:0$TYPO3_CONF_VARS[GFX][imagefile_ext]crwdne380448:0</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp_not_available">
+        <source>WebP image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is NOT supported by ImageMagick/GraphicsMagick. Please update your system environment or disable webp support in TYPO3 Configuration.</source>
+        <target>crwdns380450:0$TYPO3_CONF_VARS[GFX][imagefile_ext]crwdne380450:0</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp_available_and_configured">
+        <source>WebP image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext] and supported by ImageMagick/GraphicsMagick — Everything is configured correctly.</source>
+        <target>crwdns380452:0$TYPO3_CONF_VARS[GFX][imagefile_ext]crwdne380452:0</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif">
+        <source>AVIF support and availability</source>
+        <target>crwdns367118:0crwdne367118:0</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif_not_configured">
+        <source>AVIF image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext]. No AVIF image files will be generated.</source>
+        <target>crwdns380454:0$TYPO3_CONF_VARS[GFX][imagefile_ext]crwdne380454:0</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif_available">
+        <source>AVIF image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is supported by ImageMagick/GraphicsMagick.</source>
+        <target>crwdns380456:0$TYPO3_CONF_VARS[GFX][imagefile_ext]crwdne380456:0</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif_not_available">
+        <source>AVIF image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is NOT supported by ImageMagick/GraphicsMagick. Please update your system environment or disable AVIF support in TYPO3 Configuration.</source>
+        <target>crwdns380458:0$TYPO3_CONF_VARS[GFX][imagefile_ext]crwdne380458:0</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif_available_and_configured">
+        <source>AVIF image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext] and supported by ImageMagick/GraphicsMagick — Everything is configured correctly.</source>
+        <target>crwdns380460:0$TYPO3_CONF_VARS[GFX][imagefile_ext]crwdne380460:0</target>
+      </trans-unit>
+      <trans-unit id="status_problem_notification_cli_disclaimer">
+        <source>This report was generated from the Command Line Interface (CLI) context. The PHP settings and modules might differ from the ones defined for the webserver process, for example when using a different php.ini file. In case of problems, always compare the report with the one generated via the backend report module.</source>
+        <target>crwdns393944:0crwdne393944:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
