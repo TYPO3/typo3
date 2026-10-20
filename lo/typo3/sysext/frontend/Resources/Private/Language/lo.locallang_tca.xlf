@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="pages.title_formlabel" approved="yes">
+        <source>Page Title</source>
+        <target state="final">ຫົວຂໍ້ໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="pages.starttime_formlabel" approved="yes">
+        <source>Publish Date</source>
+        <target state="final">ວັນທີເຜີຍແຜ່</target>
+      </trans-unit>
+      <trans-unit id="pages.endtime_formlabel" approved="yes">
+        <source>Expiration Date</source>
+        <target state="final">ວັນໝົດອາຍຸ</target>
+      </trans-unit>
+      <trans-unit id="pages.fe_group_formlabel" approved="yes">
+        <source>Usergroup Access Rights</source>
+        <target state="final">ສິດການເຂົ້າເຖິງຂອງກຸ່ມຜູ້ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden" approved="yes">
+        <source>Hide page</source>
+        <target state="final">ເຊື່ອງໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_formlabel" approved="yes">
+        <source>Page</source>
+        <target state="final">ໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_checkbox_1_formlabel" approved="yes">
+        <source>Disable</source>
+        <target state="final">ປິດໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="pages.layout.I.1" approved="yes">
+        <source>Layout 1</source>
+        <target state="final">ຮູບແບບ 1</target>
+      </trans-unit>
+      <trans-unit id="pages.layout.I.2" approved="yes">
+        <source>Layout 2</source>
+        <target state="final">ຮູບແບບ 2</target>
+      </trans-unit>
+      <trans-unit id="pages.layout.I.3" approved="yes">
+        <source>Layout 3</source>
+        <target state="final">ຮູບແບບ 3</target>
+      </trans-unit>
+      <trans-unit id="pages.extendToSubpages" approved="yes">
+        <source>Include Subpages</source>
+        <target state="final">ລວມໜ້າເວັບຍ່ອຍ</target>
+      </trans-unit>
+      <trans-unit id="pages.extendToSubpages_formlabel" approved="yes">
+        <source>Extend to Subpages</source>
+        <target state="final">ຂະຫຍາຍໄປຫາໜ້າເວັບຍ່ອຍ</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_title" approved="yes">
+        <source>Navigation Title</source>
+        <target state="final">ຫົວຂໍ້ເມນູ</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_title_formlabel" approved="yes">
+        <source>Alternative Navigation Title</source>
+        <target state="final">ຫົວຂໍ້ເມນູສຳຮອງ</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide" approved="yes">
+        <source>Hide in Menu</source>
+        <target state="final">ເຊື່ອງໃນເມນູ</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_formlabel" approved="yes">
+        <source>In Menus</source>
+        <target state="final">ໃນເມນູ</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_checkbox_1_formlabel" approved="yes">
+        <source>Hide</source>
+        <target state="final">ເຊື່ອງ</target>
+      </trans-unit>
+      <trans-unit id="pages.subtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">ຫົວຂໍ້ຍ່ອຍ</target>
+      </trans-unit>
+      <trans-unit id="pages.subtitle_formlabel" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">ຫົວຂໍ້ຍ່ອຍ</target>
+      </trans-unit>
+      <trans-unit id="pages.target" approved="yes">
+        <source>Target</source>
+        <target state="final">ປາຍທາງ (Target)</target>
+      </trans-unit>
+      <trans-unit id="pages.target_formlabel" approved="yes">
+        <source>Link Target</source>
+        <target state="final">ປາຍທາງລິ້ງ</target>
+      </trans-unit>
+      <trans-unit id="pages.url" approved="yes">
+        <source>URL</source>
+        <target state="final">URL</target>
+      </trans-unit>
+      <trans-unit id="pages.lastUpdated" approved="yes">
+        <source>Last Updated</source>
+        <target state="final">ອັບເດດຫຼ້າສຸດເມື່ອ</target>
+      </trans-unit>
+      <trans-unit id="pages.lastUpdated_formlabel" approved="yes">
+        <source>Last Update</source>
+        <target state="final">ອັບເດດຫຼ້າສຸດ</target>
+      </trans-unit>
+      <trans-unit id="pages.newUntil" approved="yes">
+        <source>'New' Until</source>
+        <target state="final">'ໃໝ່' ຈົນຮອດ</target>
+      </trans-unit>
+      <trans-unit id="pages.newUntil_formlabel" approved="yes">
+        <source>Mark as 'New' Until</source>
+        <target state="final">ໝາຍວ່າ 'ໃໝ່' ຈົນຮອດ</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout" approved="yes">
+        <source>Cache Expires</source>
+        <target state="final">ແຄຊ໌ໝົດອາຍຸ</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout_formlabel" approved="yes">
+        <source>Cache Lifetime</source>
+        <target state="final">ໄລຍະເວລາເກັບແຄຊ໌</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.1" approved="yes">
+        <source>1 min</source>
+        <target state="final">1 ນາທີ</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.2" approved="yes">
+        <source>5 min</source>
+        <target state="final">5 ນາທີ</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.3" approved="yes">
+        <source>15 min</source>
+        <target state="final">15 ນາທີ</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.4" approved="yes">
+        <source>30 min</source>
+        <target state="final">30 ນາທີ</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.5" approved="yes">
+        <source>1 hour</source>
+        <target state="final">1 ຊົ່ວໂມງ</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.6" approved="yes">
+        <source>4 hours</source>
+        <target state="final">4 ຊົ່ວໂມງ</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.7" approved="yes">
+        <source>1 day</source>
+        <target state="final">1 ວັນ</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.8" approved="yes">
+        <source>2 days</source>
+        <target state="final">2 ວັນ</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.9" approved="yes">
+        <source>7 days</source>
+        <target state="final">7 ວັນ</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.10" approved="yes">
+        <source>1 month</source>
+        <target state="final">1 ເດືອນ</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_tags" approved="yes">
+        <source>Cache Tags</source>
+        <target state="final">ແທັກແຄຊ໌</target>
+      </trans-unit>
+      <trans-unit id="pages.editlock_formlabel" approved="yes">
+        <source>Editable for Admins Only</source>
+        <target state="final">ແກ້ໄຂໄດ້ສະເພາະຜູ້ດູແລລະບົບເທົ່ານັ້ນ</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.metadata" approved="yes">
+        <source>Metadata</source>
+        <target state="final">ເມຕາດາຕາ</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.files" approved="yes">
+        <source>Resources</source>
+        <target state="final">ຊັບພະຍາກອນ</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.resources" approved="yes">
+        <source>Resources</source>
+        <target state="final">ຊັບພະຍາກອນ</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">ການເຂົ້າເຖິງ</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">ຕົວເລືອກ</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.mount" approved="yes">
+        <source>Mount</source>
+        <target state="final">ຈຸດເຊື່ອມຕໍ່</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.shortcut" approved="yes">
+        <source>Shortcut</source>
+        <target state="final">ທາງລັດ</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.url" approved="yes">
+        <source>URL</source>
+        <target state="final">URL</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">ເພີ່ມເຕີມ</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.appearance" approved="yes">
+        <source>Appearance</source>
+        <target state="final">ການສະແດງຜົນ</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.behaviour" approved="yes">
+        <source>Behavior</source>
+        <target state="final">ພຶດຕິກຳ</target>
+      </trans-unit>
+      <trans-unit id="pages.no_search" approved="yes">
+        <source>Include in Search</source>
+        <target state="final">ລວມເຂົ້າໃນການຄົ້ນຫາ</target>
+      </trans-unit>
+      <trans-unit id="pages.no_search_formlabel" approved="yes">
+        <source>Include in Search</source>
+        <target state="final">ລວມເຂົ້າໃນການຄົ້ນຫາ</target>
+      </trans-unit>
+      <trans-unit id="pages.no_search_checkbox_1_formlabel" approved="yes">
+        <source>Disable</source>
+        <target state="final">ປິດໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode" approved="yes">
+        <source>Shortcut Mode</source>
+        <target state="final">ໂໝດທາງລັດ</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode_formlabel" approved="yes">
+        <source>Shortcut Mode</source>
+        <target state="final">ໂໝດທາງລັດ</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode.I.0" approved="yes">
+        <source>Selected page</source>
+        <target state="final">ໜ້າທີ່ເລືອກ</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode.I.1" approved="yes">
+        <source>First subpage of selected/current page</source>
+        <target state="final">ໜ້າເວັບຍ່ອຍທຳອິດຂອງໜ້າທີ່ເລືອກ/ໜ້າປັດຈຸບັນ</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode.I.3" approved="yes">
+        <source>Parent page of selected/current page</source>
+        <target state="final">ໜ້າຫຼັກຂອງໜ້າທີ່ເລືອກ/ໜ້າປັດຈຸບັນ</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_formlabel" approved="yes">
+        <source>Shortcut Target</source>
+        <target state="final">ປາຍທາງທາງລັດ</target>
+      </trans-unit>
+      <trans-unit id="pages.content_from_pid" approved="yes">
+        <source>Show content from this page instead</source>
+        <target state="final">ສະແດງເນື້ອຫາຈາກໜ້ານີ້ແທນ</target>
+      </trans-unit>
+      <trans-unit id="pages.content_from_pid_formlabel" approved="yes">
+        <source>Show Content from Page</source>
+        <target state="final">ສະແດງເນື້ອຫາຈາກໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid" approved="yes">
+        <source>Mount Point of</source>
+        <target state="final">ຈຸດເຊື່ອມຕໍ່ຂອງ</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_formlabel" approved="yes">
+        <source>Mounted page</source>
+        <target state="final">ໜ້າທີ່ຖືກເຊື່ອມຕໍ່</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol" approved="yes">
+        <source>Mount Point redirects to mounted page</source>
+        <target state="final">ຈຸດເຊື່ອມຕໍ່ປ່ຽນເສັ້ນທາງໄປຫາໜ້າທີ່ຖືກເຊື່ອມຕໍ່</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol_formlabel" approved="yes">
+        <source>Mount Point Display Option</source>
+        <target state="final">ຕົວເລືອກການສະແດງຜົນຈຸດເຊື່ອມຕໍ່</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol.I.0" approved="yes">
+        <source>Show this page</source>
+        <target state="final">ສະແດງໜ້ານີ້</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol.I.1" approved="yes">
+        <source>Show the mounted page</source>
+        <target state="final">ສະແດງໜ້າທີ່ຖືກເຊື່ອມຕໍ່</target>
+      </trans-unit>
+      <trans-unit id="pages.abstract" approved="yes">
+        <source>Abstract</source>
+        <target state="final">ເນື້ອຫາໂດຍຫຍໍ້</target>
+      </trans-unit>
+      <trans-unit id="pages.abstract_formlabel" approved="yes">
+        <source>Abstract</source>
+        <target state="final">ເນື້ອຫາໂດຍຫຍໍ້</target>
+      </trans-unit>
+      <trans-unit id="pages.keywords_formlabel" approved="yes">
+        <source>Keywords</source>
+        <target state="final">ຄຳຄົ້ນຫາ</target>
+      </trans-unit>
+      <trans-unit id="pages.author_formlabel" approved="yes">
+        <source>Author Name</source>
+        <target state="final">ຊື່ຜູ້ຂຽນ</target>
+      </trans-unit>
+      <trans-unit id="pages.author_email_formlabel" approved="yes">
+        <source>Author Email</source>
+        <target state="final">ອີເມວຜູ້ຂຽນ</target>
+      </trans-unit>
+      <trans-unit id="pages.media" approved="yes">
+        <source>Files</source>
+        <target state="final">ໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="pages.media_formlabel" approved="yes">
+        <source>Media</source>
+        <target state="final">ສື່</target>
+      </trans-unit>
+      <trans-unit id="pages.php_tree_stop_formlabel" approved="yes">
+        <source>Hide child pages in page tree</source>
+        <target state="final">ເຊື່ອງໜ້າເວັບຍ່ອຍໃນແຜນພູມໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="pages.is_siteroot" approved="yes">
+        <source>Is Root of Website</source>
+        <target state="final">ເປັນຮາກຂອງເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="pages.is_siteroot_formlabel" approved="yes">
+        <source>Use as Root Page</source>
+        <target state="final">ໃຊ້ເປັນໜ້າຮາກ</target>
+      </trans-unit>
+      <trans-unit id="pages.module" approved="yes">
+        <source>Contains Plugin</source>
+        <target state="final">ມີປລັກອິນ</target>
+      </trans-unit>
+      <trans-unit id="pages.module_formlabel" approved="yes">
+        <source>Contains Plugin</source>
+        <target state="final">ມີປລັກອິນ</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.1" approved="yes">
+        <source>Shop</source>
+        <target state="final">ຮ້ານຄ້າ</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.2" approved="yes">
+        <source>Board</source>
+        <target state="final">ກະດານສົນທະນາ</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.3" approved="yes">
+        <source>News</source>
+        <target state="final">ຂ່າວ</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.4" approved="yes">
+        <source>Website Users</source>
+        <target state="final">ຜູ້ໃຊ້ເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.5" approved="yes">
+        <source>Direct Mail</source>
+        <target state="final">ຈົດໝາຍໂດຍຕົງ</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.6" approved="yes">
+        <source>Approvals</source>
+        <target state="final">ການອະນຸມັດ</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg" approved="yes">
+        <source>Localization Settings</source>
+        <target state="final">ການຕັ້ງຄ່າທ້ອງຖິ່ນ</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg_formlabel" approved="yes">
+        <source>Localization</source>
+        <target state="final">ການແປພາສາທ້ອງຖິ່ນ</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg.I.1" approved="yes">
+        <source>Hide default language of page</source>
+        <target state="final">ເຊື່ອງພາສາເລີ່ມຕົ້ນຂອງໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg.I.2" approved="yes">
+        <source>Hide page if no translation for current language exists</source>
+        <target state="final">ເຊື່ອງໜ້າເວັບຫາກບໍ່ມີການແປສຳລັບພາສາປັດຈຸບັນ</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg.I.2a" approved="yes">
+        <source>Show page even if no translation exists</source>
+        <target state="final">ສະແດງໜ້າເວັບເຖິງແມ່ນວ່າຈະບໍ່ມີການແປກໍຕາມ</target>
+      </trans-unit>
+      <trans-unit id="pages.storage_pid_formlabel" approved="yes">
+        <source>Page</source>
+        <target state="final">ໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="pages.TSconfig_formlabel" approved="yes">
+        <source>Page TSconfig</source>
+        <target state="final">TSconfig ຂອງໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout_formlabel" approved="yes">
+        <source>Backend Layout (this page only)</source>
+        <target state="final">ຮູບແບບສ່ວນຫຼັງ (ສະເພາະໜ້ານີ້)</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout_next_level_formlabel" approved="yes">
+        <source>Backend Layout (subpages of this page)</source>
+        <target state="final">ຮູບແບບສ່ວນຫຼັງ (ໜ້າເວັບຍ່ອຍຂອງໜ້ານີ້)</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout.none" approved="yes">
+        <source>None</source>
+        <target state="final">ບໍ່ມີ</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout.default" approved="yes">
+        <source>Default</source>
+        <target state="final">ເລີ່ມຕົ້ນ</target>
+      </trans-unit>
+      <trans-unit id="pages.tsconfig_includes" approved="yes">
+        <source>Include static Page TSconfig (from extensions)</source>
+        <target state="final">ລວມເອົາ Page TSconfig ແບບສະແຕຕິກ (ຈາກສ່ວນເສີມ)</target>
+      </trans-unit>
+      <trans-unit id="tt_content" approved="yes">
+        <source>Page Content</source>
+        <target state="final">ເນື້ອຫາໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="fe_users" approved="yes">
+        <source>Website User</source>
+        <target state="final">ຜູ້ໃຊ້ເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="fe_users.username" approved="yes">
+        <source>Username</source>
+        <target state="final">ຊື່ຜູ້ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="fe_users.password" approved="yes">
+        <source>Password</source>
+        <target state="final">ລະຫັດຜ່ານ</target>
+      </trans-unit>
+      <trans-unit id="fe_users.usergroup" approved="yes">
+        <source>Groups</source>
+        <target state="final">ກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">ການເຂົ້າເຖິງ</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">ເພີ່ມເຕີມ</target>
+      </trans-unit>
+      <trans-unit id="fe_groups" approved="yes">
+        <source>Website Usergroup</source>
+        <target state="final">ກຸ່ມຜູ້ໃຊ້ເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.title" approved="yes">
+        <source>Group Title</source>
+        <target state="final">ຊື່ກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.subgroup" approved="yes">
+        <source>Subgroups</source>
+        <target state="final">ກຸ່ມຍ່ອຍ</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">ເພີ່ມເຕີມ</target>
+      </trans-unit>
+      <trans-unit id="sys_template" approved="yes">
+        <source>TypoScript record</source>
+        <target state="final">ຂໍ້ມູນ TypoScript</target>
+      </trans-unit>
+      <trans-unit id="sys_template.title" approved="yes">
+        <source>Title</source>
+        <target state="final">ຫົວຂໍ້</target>
+      </trans-unit>
+      <trans-unit id="sys_template.root" approved="yes">
+        <source>Rootlevel</source>
+        <target state="final">ລະດັບຮາກ</target>
+      </trans-unit>
+      <trans-unit id="sys_template.rootDescription" approved="yes">
+        <source>When enabled, the page is marked as "Rootline Root". This is most often set only once for the uppermost TypoScript record.
+				This can be used in frontend to stop at this page when creating for example "breadcrumb" menus, even if there are further parent pages. The flag especially
+				affects these TypoScript "getText" properties: "level", "levelmedia", "leveltitle", "levelfield" and "leveluid".</source>
+        <target state="final">ເມື່ອເປີດໃຊ້ງານ, ໜ້າເວັບຈະຖືກໝາຍວ່າເປັນ "ຮາກຂອງສາຍຮາກ (Rootline Root)". ສ່ວນໃຫຍ່ຈະຕັ້ງຄ່າພຽງຄັ້ງດຽວສຳລັບຂໍ້ມູນ TypoScript ທີ່ຢູ່ລະດັບສູງສຸດ.
+			ການຕັ້ງຄ່ານີ້ໃຊ້ເພື່ອໃຫ້ການສະແດງຜົນສ່ວນໜ້າຢຸດຢູ່ທີ່ໜ້ານີ້ ເມື່ອສ້າງເມນູປະເພດ "breadcrumb", ເຖິງແມ່ນວ່າຈະມີໜ້າຫຼັກຢູ່ຂັ້ນເທິງກໍຕາມ. ຄ່ານີ້ຈະມີຜົນໂດຍຕົງຕໍ່ຄຸນສົມບັດ "getText" ຂອງ TypoScript ດັ່ງນີ້: "level", "levelmedia", "leveltitle", "levelfield" ແລະ "leveluid".</target>
+      </trans-unit>
+      <trans-unit id="sys_template.clear" approved="yes">
+        <source>Clear</source>
+        <target state="final">ລຶບລ້າງ</target>
+      </trans-unit>
+      <trans-unit id="sys_template.clearDescription" approved="yes">
+        <source>Remove TypoScript settings from TypoScript records up in rootline. This is most often set only once for the uppermost TypoScript record that is most often
+			 	located on the same page that has "Use as Root Page" flag set and the "Site" configuration attached in the site module.</source>
+        <target state="final">ລຶບການຕັ້ງຄ່າ TypoScript ຈາກຂໍ້ມູນ TypoScript ທີ່ຢູ່ຂັ້ນເທິງໃນສາຍຮາກ. ສ່ວນໃຫຍ່ຈະຕັ້ງຄ່າພຽງຄັ້ງດຽວສຳລັບຂໍ້ມູນ TypoScript ທີ່ຢູ່ສູງສຸດ ເຊິ່ງມັກຈະຢູ່ໃນໜ້າດຽວກັນກັບໜ້າທີ່ຖືກໝາຍວ່າ "ໃຊ້ເປັນໜ້າຮາກ" ແລະ ມີການເຊື່ອມຕໍ່ກັບການຕັ້ງຄ່າ "ເວັບໄຊ (Site)".</target>
+      </trans-unit>
+      <trans-unit id="sys_template.constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">ຄ່າຄົງທີ່</target>
+      </trans-unit>
+      <trans-unit id="sys_template.resources" approved="yes">
+        <source>Resources</source>
+        <target state="final">ຊັບພະຍາກອນ</target>
+      </trans-unit>
+      <trans-unit id="sys_template.include_static_file" approved="yes">
+        <source>Include TypoScript sets</source>
+        <target state="final">ລວມຊຸດ TypoScript</target>
+      </trans-unit>
+      <trans-unit id="sys_template.include_static_fileDescription" approved="yes">
+        <source>Extensions often deliver default TypoScript to set up basic frontend rendering. These can be loaded here.
+				To keep TypoScript structures clean and tidy, this is often set only for the main TypoScript record located on the same page that has "Use as Root Page" flag set,
+				has a "Site" configuration attached in the site module, and has the above "Clear" and "Rootlevel" flags set.</source>
+        <target state="final">ສ່ວນເສີມຕ່າງໆມັກຈະມີ TypoScript ເລີ່ມຕົ້ນມາໃຫ້ເພື່ອຕັ້ງຄ່າການສະແດງຜົນຂັ້ນພື້ນຖານ ເຊິ່ງສາມາດໂຫລດໄດ້ຢູ່ບ່ອນນີ້.
+			ເພື່ອຄວາມເປັນລະບຽບຮຽບຮ້ອຍຂອງໂຄງສ້າງ TypoScript, ສ່ວນໃຫຍ່ຈະຕັ້ງຄ່າສະເພາະ TypoScript ຫຼັກທີ່ຢູ່ໃນໜ້າທີ່ຖືກໝາຍວ່າ "ໃຊ້ເປັນໜ້າຮາກ", ມີການເຊື່ອມຕໍ່ການຕັ້ງຄ່າ "ເວັບໄຊ (Site)", ແລະ ມີການຕັ້ງຄ່າ "ລຶບລ້າງ" ແລະ "ລະດັບຮາກ" ໄວ້ແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="sys_template.basedOn" approved="yes">
+        <source>Include TypoScript records</source>
+        <target state="final">ລວມຂໍ້ມູນ TypoScript</target>
+      </trans-unit>
+      <trans-unit id="sys_template.basedOnDescription" approved="yes">
+        <source>Include additional TypoScript records located elsewhere in the page tree. This can be used to load the same TypoScript records at multiple places in a page tree.
+			 	This isn't used very often nowadays and it's often easier to understand and maintain the site by extracting TypoScript configuration to files
+				and to load the full set in a single main TypoScript record.
+            </source>
+        <target state="final">ລວມຂໍ້ມູນ TypoScript ເພີ່ມເຕີມທີ່ຢູ່ບ່ອນອື່ນໃນແຜນພູມໜ້າເວັບ. ໃຊ້ເພື່ອໂຫລດຂໍ້ມູນ TypoScript ດຽວກັນໃນຫຼາຍໆບ່ອນ.
+			ປັດຈຸບັນວິທີນີ້ບໍ່ຄ່ອຍເປັນທີ່ນິຍົມ ເພາະການແຍກການຕັ້ງຄ່າ TypoScript ເປັນໄຟລ໌ ແລະ ໂຫລດທັງໝົດໃນ TypoScript ຫຼັກອັນດຽວນັ້ນ ຈະເຮັດໃຫ້ການເບິ່ງແຍງຮັກສາເວັບໄຊງ່າຍກວ່າ.
+            </target>
+      </trans-unit>
+      <trans-unit id="sys_template.includeStaticAfterBasedOn" approved="yes">
+        <source>Load TypoScript sets after included TypoScript records</source>
+        <target state="final">ໂຫລດຊຸດ TypoScript ຫຼັງຈາກຂໍ້ມູນ TypoScript ທີ່ລວມເຂົ້າມາ</target>
+      </trans-unit>
+      <trans-unit id="sys_template.includeStaticAfterBasedOnDescription" approved="yes">
+        <source>When using both fields "Include TypoScript sets" and "Include TypoScript records" in a TypoScript record, this flag allows swapping their load order.</source>
+        <target state="final">ເມື່ອມີການໃຊ້ທັງຊ່ອງ "ລວມຊຸດ TypoScript" ແລະ "ລວມຂໍ້ມູນ TypoScript", ຄ່ານີ້ຈະອະນຸຍາດໃຫ້ສະຫຼັບລຳດັບການໂຫລດຂອງພວກມັນໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="sys_template.config" approved="yes">
+        <source>Setup</source>
+        <target state="final">ການຕັ້ງຄ່າ (Setup)</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode" approved="yes">
+        <source>Loading order of TypoScript sets</source>
+        <target state="final">ລຳດັບການໂຫລດຂອງຊຸດ TypoScript</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_modeDescription" approved="yes">
+        <source>This seldom used feature affects if and when TypoScript sets from extensions (ext_typoscript_setup.typoscript and ext_typoscript_constants.typoscript)
+				are loaded. There are very few cases where setting this to a different value than the default value "0" is useful.</source>
+        <target state="final">ຄຸນສົມບັດນີ້ບໍ່ຄ່ອຍໄດ້ໃຊ້, ມັນມີຜົນຕໍ່ກັບເວລາໃນການໂຫລດຊຸດ TypoScript ຈາກສ່ວນເສີມ. ມີໜ້ອຍກໍລະນີຫຼາຍທີ່ຈະປ່ຽນຄ່ານີ້ໃຫ້ເປັນຢ່າງອື່ນນອກຈາກຄ່າເລີ່ມຕົ້ນ "0".</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.0" approved="yes">
+        <source>Default (include before if root flag is set)</source>
+        <target state="final">ເລີ່ມຕົ້ນ (ລວມເຂົ້າກ່ອນຫາກມີການຕັ້ງຄ່າ Root flag)</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.1" approved="yes">
+        <source>Always include before this typoscript record</source>
+        <target state="final">ລວມກ່ອນຂໍ້ມູນ TypoScript ນີ້ສະເໝີ</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.2" approved="yes">
+        <source>Never include before this typoscript record</source>
+        <target state="final">ຫ້າມລວມກ່ອນຂໍ້ມູນ TypoScript ນີ້ເດັດຂາດ</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.3" approved="yes">
+        <source>Include before all static typoscript if root flag is set</source>
+        <target state="final">ລວມກ່ອນ TypoScript ແບບສະແຕຕິກທັງໝົດຫາກມີການຕັ້ງຄ່າ Root flag</target>
+      </trans-unit>
+      <trans-unit id="sys_template.basedOn_add" approved="yes">
+        <source>Add new TypoScript record</source>
+        <target state="final">ເພີ່ມຂໍ້ມູນ TypoScript ໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="sys_template.basedOn_edit" approved="yes">
+        <source>Edit template</source>
+        <target state="final">ແກ້ໄຂແມ່ແບບ</target>
+      </trans-unit>
+      <trans-unit id="sys_template.tabs.files" approved="yes">
+        <source>Resources</source>
+        <target state="final">ຊັບພະຍາກອນ</target>
+      </trans-unit>
+      <trans-unit id="sys_template.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">ການເຂົ້າເຖິງ</target>
+      </trans-unit>
+      <trans-unit id="backend_layout" approved="yes">
+        <source>Backend Layout</source>
+        <target state="final">ຮູບແບບສ່ວນຫຼັງ</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.title" approved="yes">
+        <source>Title</source>
+        <target state="final">ຫົວຂໍ້</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.config" approved="yes">
+        <source>Config</source>
+        <target state="final">ການຕັ້ງຄ່າ</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.wizard" approved="yes">
+        <source>Wizard</source>
+        <target state="final">ຕົວຊ່ວຍສ້າງ</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.icon" approved="yes">
+        <source>Icon</source>
+        <target state="final">ໄອຄອນ</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">ການເຂົ້າເຖິງ</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">ເພີ່ມເຕີມ</target>
+      </trans-unit>
+      <trans-unit id="no_mount_pid" approved="yes">
+        <source>No Mount Point is set</source>
+        <target state="final">ບໍ່ມີການຕັ້ງຄ່າຈຸດເຊື່ອມຕໍ່</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
