@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814885" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="fi">
+    <header/>
+    <body>
+      <trans-unit id="be_groups.file_permissions.files_replace" resname="be_groups.file_permissions.files_replace" approved="yes">
+        <source>Files: Replace</source>
+        <target state="final">Tiedostot: korvaa</target>
+      </trans-unit>
+      <trans-unit id="pages" resname="pages" approved="yes">
+        <source>Page</source>
+        <target state="final">Sivu</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.0" resname="doktype.I.0" approved="yes">
+        <source>Standard</source>
+        <target state="final">Normaali</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.1" resname="doktype.I.1" approved="yes">
+        <source>SysFolder</source>
+        <target state="final">SysFolder</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.folder" resname="doktype.I.folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">Kansio</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.2" resname="doktype.I.2" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Roskakori</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts" resname="sys_filemounts" approved="yes">
+        <source>Filemount</source>
+        <target state="final">Tiedostoliitos (mount)</target>
+      </trans-unit>
+      <trans-unit id="sys_collection.description" resname="sys_collection.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Kuvaus</target>
+      </trans-unit>
+      <trans-unit id="sys_collection.items" resname="sys_collection.items" approved="yes">
+        <source>Items</source>
+        <target state="final">Vaihtoehdot</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.description" resname="sys_file_storage.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Kuvaus</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.auto_extract_metadata" resname="sys_file_storage.auto_extract_metadata" approved="yes">
+        <source>Automatically extract metadata after upload</source>
+        <target state="final">Hae metatiedot automaattisesti</target>
+      </trans-unit>
+      <trans-unit id="sys_file.title" resname="sys_file.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Otsikko</target>
+      </trans-unit>
+      <trans-unit id="sys_file.description" resname="sys_file.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Kuvaus</target>
+      </trans-unit>
+      <trans-unit id="sys_file.alternative" resname="sys_file.alternative" approved="yes">
+        <source>Alternative Text</source>
+        <target state="final">Kuvan vaihtoehtoinen teksti (alt-teksti)</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata" resname="sys_file_metadata" approved="yes">
+        <source>File Metadata</source>
+        <target state="final">Tiedoston metatiedot</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.basicoverlayPalette" resname="sys_file_reference.basicoverlayPalette" approved="yes">
+        <source>File Metadata</source>
+        <target state="final">Tiedoston metatiedot</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.imageoverlayPalette" resname="sys_file_reference.imageoverlayPalette" approved="yes">
+        <source>Image Metadata</source>
+        <target state="final">Kuvan metatiedot</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.audioOverlayPalette" resname="sys_file_reference.audioOverlayPalette" approved="yes">
+        <source>Audio Metadata</source>
+        <target state="final">Äänitiedoston metatiedot</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.videoOverlayPalette" resname="sys_file_reference.videoOverlayPalette" approved="yes">
+        <source>Video Metadata</source>
+        <target state="final">Videon metatiedot</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.title" resname="sys_file_reference.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Otsikko</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.description" resname="sys_file_reference.description" approved="yes">
+        <source>Description (Caption)</source>
+        <target state="final">Kuvaus (kuvateksti)</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.downloadname" resname="sys_file_reference.downloadname" approved="yes">
+        <source>Download Name</source>
+        <target state="final">Latausnimi</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.alternative" resname="sys_file_reference.alternative" approved="yes">
+        <source>Alternative Text</source>
+        <target state="final">Kuvan vaihtoehtoinen teksti (alt-teksti)</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.link" resname="sys_file_reference.link" approved="yes">
+        <source>Link</source>
+        <target state="final">Linkki</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.crop" resname="sys_file_reference.crop" approved="yes">
+        <source>Image manipulation</source>
+        <target state="final">Kuvan muokkaus</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.autoplay" resname="sys_file_reference.autoplay" approved="yes">
+        <source>Autoplay</source>
+        <target state="final">Soita automaattisesti</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection" resname="sys_file_collection" approved="yes">
+        <source>File collection</source>
+        <target state="final">Tiedostokokoelma</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.title" resname="sys_file_collection.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Otsikko</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.type" resname="sys_file_collection.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Tyyppi</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.type.0" resname="sys_file_collection.type.0" approved="yes">
+        <source>Static selection of files</source>
+        <target state="final">Valitut tiedostot</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.type.1" resname="sys_file_collection.type.1" approved="yes">
+        <source>Folder from Storage</source>
+        <target state="final">Tiedostokansio</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.type.2" resname="sys_file_collection.type.2" approved="yes">
+        <source>Select by category</source>
+        <target state="final">Valitse kategorian perusteella</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.folder" resname="sys_file_collection.folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">Kansio</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.recursive" resname="sys_file_collection.recursive" approved="yes">
+        <source>Recursive</source>
+        <target state="final">Rekursiivinen</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.category" resname="sys_file_collection.category" approved="yes">
+        <source>Category</source>
+        <target state="final">Kategoria</target>
+      </trans-unit>
+      <trans-unit id="sys_language" resname="sys_language" approved="yes">
+        <source>Website Language</source>
+        <target state="final">WWW-sivuston kieli</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace" resname="sys_workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Työalue</target>
+      </trans-unit>
+      <trans-unit id="sys_category" resname="sys_category" approved="yes">
+        <source>Category</source>
+        <target state="final">Kategoria</target>
+      </trans-unit>
+      <trans-unit id="sys_category.title" resname="sys_category.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Otsikko</target>
+      </trans-unit>
+      <trans-unit id="sys_category.description" resname="sys_category.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Kuvaus</target>
+      </trans-unit>
+      <trans-unit id="sys_category.parent" resname="sys_category.parent" approved="yes">
+        <source>Parent</source>
+        <target state="final">Yläkategoria</target>
+      </trans-unit>
+      <trans-unit id="sys_category.items" resname="sys_category.items" approved="yes">
+        <source>Items</source>
+        <target state="final">Vaihtoehdot</target>
+      </trans-unit>
+      <trans-unit id="sys_category.categories" resname="sys_category.categories" approved="yes">
+        <source>Categories</source>
+        <target state="final">Kategoriat</target>
+      </trans-unit>
+      <trans-unit id="sys_category.tabs.category" resname="sys_category.tabs.category" approved="yes">
+        <source>Categories</source>
+        <target state="final">Kategoriat</target>
+      </trans-unit>
+      <trans-unit id="sys_category.tabs.items" resname="sys_category.tabs.items" approved="yes">
+        <source>Items</source>
+        <target state="final">Vaihtoehdot</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
