@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="bg">
+  <file id="f1">
+    <unit id="title">
+      <segment state="final">
+        <source>Status</source>
+        <target>Статус</target>
+      </segment>
+    </unit>
+    <unit id="short_description">
+      <segment state="final">
+        <source>Overview of site and page status information</source>
+        <target>Преглед на информацията за състоянието на сайта и страницата</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
