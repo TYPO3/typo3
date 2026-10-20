@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_mfa.xlf" date="2021-01-26T11:58:45Z" product-name="cms" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="overview.title" approved="yes">
+        <source>Multi-factor Authentication Overview</source>
+        <target state="final">Обзор многофакторной аутентификации</target>
+      </trans-unit>
+      <trans-unit id="overview.badge.active" approved="yes">
+        <source>Active</source>
+        <target state="final">Активно</target>
+      </trans-unit>
+      <trans-unit id="overview.badge.locked" approved="yes">
+        <source>Locked</source>
+        <target state="final">Заблокировано</target>
+      </trans-unit>
+      <trans-unit id="overview.defaultProvider" approved="yes">
+        <source>Default provider</source>
+        <target state="final">Поставщик по умолчанию</target>
+      </trans-unit>
+      <trans-unit id="overview.unlockLinkTitle" approved="yes">
+        <source>Unlock %s</source>
+        <target state="final">Разблокировать %s</target>
+      </trans-unit>
+      <trans-unit id="overview.unlockLinkLabel" approved="yes">
+        <source>Unlock</source>
+        <target state="final">Разблокировать</target>
+      </trans-unit>
+      <trans-unit id="overview.editLinkTitle" approved="yes">
+        <source>Edit %s</source>
+        <target state="final">Редактировать %s</target>
+      </trans-unit>
+      <trans-unit id="overview.editLinkLabel" approved="yes">
+        <source>Edit / Change</source>
+        <target state="final">Редактировать / Изменить</target>
+      </trans-unit>
+      <trans-unit id="overview.deactivateLinkTitle" approved="yes">
+        <source>Deactivate %s</source>
+        <target state="final">Отключить %s</target>
+      </trans-unit>
+      <trans-unit id="overview.deactivateLinkLabel" approved="yes">
+        <source>Deactivate</source>
+        <target state="final">Отключить</target>
+      </trans-unit>
+      <trans-unit id="overview.setupLinkTitle" approved="yes">
+        <source>Setup %s</source>
+        <target state="final">Установка %s</target>
+      </trans-unit>
+      <trans-unit id="overview.setupLinkLabel" approved="yes">
+        <source>Setup</source>
+        <target state="final">Настройка</target>
+      </trans-unit>
+      <trans-unit id="overview.setupRequired.title" approved="yes">
+        <source>Multi-factor authentication required</source>
+        <target state="final">Требуется многофакторная аутентификация</target>
+      </trans-unit>
+      <trans-unit id="overview.setupRequired.message" approved="yes">
+        <source>
+          Your installation requires MFA. Therefore please setup one of the following providers to be able to continue to use the backend.
+        </source>
+        <target state="final">
+          Для вашей установки требуется MFA. Для работы настройте один из следующих провайдеров, чтобы иметь возможность продолжить использования внутреннего интерфейса.
+        </target>
+      </trans-unit>
+      <trans-unit id="overview.noProviders.title" approved="yes">
+        <source>No multi-factor authentication providers</source>
+        <target state="final">Нет провайдеров многофакторной аутентификации</target>
+      </trans-unit>
+      <trans-unit id="overview.noProviders.message" approved="yes">
+        <source>There are currently no multi-factor authentication providers available.</source>
+        <target state="final">В настоящее время нет доступных поставщиков многофакторной аутентификации.</target>
+      </trans-unit>
+      <trans-unit id="noprovider_error_message" approved="yes">
+        <source>
+          Multi-factor authentification (MFA) setup is required, but no providers are currently available for you to activate. This might be a misconfiguration, so please contact your administrator for assistance.
+        </source>
+        <target state="final">
+          Требуется настройка многофакторной аутентификации (MFA), но в настоящее время ни один из провайдеров недоступен для активации. Возможно, это результат неправильной настроки,  обратитесь за помощью к своему администратору.
+        </target>
+      </trans-unit>
+      <trans-unit id="providerNotFound" approved="yes">
+        <source>Selected MFA provider was not found</source>
+        <target state="final">Выбранный провайдер MFA не найден</target>
+      </trans-unit>
+      <trans-unit id="providerNotActive" approved="yes">
+        <source>This action requires an active MFA provider.</source>
+        <target state="final">Это действие требует активного поставщика MFA.</target>
+      </trans-unit>
+      <trans-unit id="providerActive" approved="yes">
+        <source>This action requires an inactive MFA provider.</source>
+        <target state="final">Это действие требует неактивного поставщика MFA.</target>
+      </trans-unit>
+      <trans-unit id="providerIsLocked" approved="yes">
+        <source>This action requires an unlocked MFA provider.</source>
+        <target state="final">Это действие требует разблокированного поставщика MFA.</target>
+      </trans-unit>
+      <trans-unit id="setup.instructions" approved="yes">
+        <source>Setup instructions</source>
+        <target state="final">Инструкции по установке</target>
+      </trans-unit>
+      <trans-unit id="setup.instructions.close" approved="yes">
+        <source>Close setup instructions</source>
+        <target state="final">Закрыть инструкции по настройке</target>
+      </trans-unit>
+      <trans-unit id="setup.title" approved="yes">
+        <source>Set up %s</source>
+        <target state="final">Настроить %s</target>
+      </trans-unit>
+      <trans-unit id="edit.title" approved="yes">
+        <source>Edit %s</source>
+        <target state="final">Редактировать %s</target>
+      </trans-unit>
+      <trans-unit id="edit.defaultProvider" approved="yes">
+        <source>Default provider</source>
+        <target state="final">Поставщик по умолчанию</target>
+      </trans-unit>
+      <trans-unit id="edit.defaultProvider.description" approved="yes">
+        <source>Select this as your default provider for login into the TYPO3 backend.</source>
+        <target state="final">Выберите его в качестве поставщика по умолчанию для входа во внутренний интерфейс TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="edit.defaultProvider.inputLabel" approved="yes">
+        <source>Use as default provider</source>
+        <target state="final">Использовать как поставщика по умолчанию</target>
+      </trans-unit>
+      <trans-unit id="edit.deactivateProvider" approved="yes">
+        <source>Deactivate provider</source>
+        <target state="final">Отключить провайдера</target>
+      </trans-unit>
+      <trans-unit id="edit.deactivateProvider.description" approved="yes">
+        <source>If you don't want to use this provider anymore, you can deactivate it here.</source>
+        <target state="final">Если вы больше не хотите пользоваться услугами этого провайдера, можно отключить его здесь.</target>
+      </trans-unit>
+      <trans-unit id="edit.deactivateProvider.linkTitle" approved="yes">
+        <source>Deactivate %s</source>
+        <target state="final">Отключить %s</target>
+      </trans-unit>
+      <trans-unit id="edit.deactivateProvider.linkText" approved="yes">
+        <source>Deactivate this provider</source>
+        <target state="final">Отключить этого провайдера</target>
+      </trans-unit>
+      <trans-unit id="activate.failure" approved="yes">
+        <source>Could not activate MFA provider %s. Please try again.</source>
+        <target state="final">Не удалось активировать MFA провайдера %s. Пожалуйста, попробуйте еще раз.</target>
+      </trans-unit>
+      <trans-unit id="activate.success" approved="yes">
+        <source>Successfully activated MFA provider %s.</source>
+        <target state="final">Поставщик многофакторной аутентификации %s успешно активирован.</target>
+      </trans-unit>
+      <trans-unit id="deactivate.failure" approved="yes">
+        <source>Could not deactivate MFA provider %s. Please try again.</source>
+        <target state="final">Не удалось деактивировать поставщика многофакторной аутентификации %s. Пожалуйста, попробуйте еще раз.</target>
+      </trans-unit>
+      <trans-unit id="deactivate.success" approved="yes">
+        <source>Successfully deactivated MFA provider %s.</source>
+        <target state="final">Поставщик многофакторной аутентификации %s успешно деактивирован.</target>
+      </trans-unit>
+      <trans-unit id="unlock.failure" approved="yes">
+        <source>Could not unlock MFA provider %s. Please try again.</source>
+        <target state="final">Не удалось разблокировать поставщика многофакторной аутентификации %s. Пожалуйста, попробуйте еще раз.</target>
+      </trans-unit>
+      <trans-unit id="unlock.success" approved="yes">
+        <source>Successfully unlocked MFA provider %s.</source>
+        <target state="final">Поставщик многофакторной аутентификации %s успешно разблокирован.</target>
+      </trans-unit>
+      <trans-unit id="save.failure" approved="yes">
+        <source>Could not update MFA provider %s. Please try again.</source>
+        <target state="final">Не удалось обновить поставщика многофакторной аутентификации %s. Пожалуйста, попробуйте еще раз.</target>
+      </trans-unit>
+      <trans-unit id="save.success" approved="yes">
+        <source>Successfully updated MFA provider %s.</source>
+        <target state="final">Поставщик многофакторной аутентификации %s успешно обновлен.</target>
+      </trans-unit>
+      <trans-unit id="auth.authError" approved="yes">
+        <source>Authentication was not successful.</source>
+        <target state="final">Аутентификация не выполнена.</target>
+      </trans-unit>
+      <trans-unit id="auth.submit" approved="yes">
+        <source>Verify</source>
+        <target state="final">Verify</target>
+      </trans-unit>
+      <trans-unit id="auth.cancel" approved="yes">
+        <source>Go back</source>
+        <target state="final">Назад</target>
+      </trans-unit>
+      <trans-unit id="auth.locked" approved="yes">
+        <source>This provider is locked. Unlocking may require administrative intervention. Recovery codes can be used to circumvent the lock.</source>
+        <target state="final">Этот провайдер заблокирован. Для разблокировки может потребоваться вмешательство администратора. Для обхода блокировки можно использовать коды восстановления.</target>
+      </trans-unit>
+      <trans-unit id="auth.alternativeProviders" approved="yes">
+        <source>Alternative providers</source>
+        <target state="final">Альтернативные провайдеры</target>
+      </trans-unit>
+      <trans-unit id="auth.alternativeProviders.use" approved="yes">
+        <source>Use %s</source>
+        <target state="final">Использовано %s</target>
+      </trans-unit>
+      <trans-unit id="standalone.setupProvider" approved="yes">
+        <source>Set up %s</source>
+        <target state="final">Настроить %s</target>
+      </trans-unit>
+      <trans-unit id="standalone.selection.title" approved="yes">
+        <source>Set up MFA</source>
+        <target state="final">Set up MFA</target>
+      </trans-unit>
+      <trans-unit id="standalone.selection.message" approved="yes">
+        <source>
+          %s requires you setting up MFA to secure your account. Please select one of the available providers below.
+        </source>
+        <target state="final">
+         %s требует настроить MFA для защиты вашей учетной записи. Пожалуйста, выберите одного из доступных поставщиков услуг, указанных ниже.
+        </target>
+      </trans-unit>
+      <trans-unit id="standalone.selection.goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Назад</target>
+      </trans-unit>
+      <trans-unit id="standalone.setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">Настройка</target>
+      </trans-unit>
+      <trans-unit id="standalone.setup.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Отмена</target>
+      </trans-unit>
+      <trans-unit id="standalone.setup.success.title" approved="yes">
+        <source>MFA setup successful</source>
+        <target state="final">Настройка MFA прошла успешно</target>
+      </trans-unit>
+      <trans-unit id="standalone.setup.success.message" approved="yes">
+        <source>
+          You have successfully activated MFA provider %s. This provider was also automatically set as your default provider. You can change this at any time in your user settings.
+        </source>
+        <target state="final">
+          Вы успешно активировали провайдера MFA %s. Этот провайдер также был автоматически выбран в качестве поставщика услуг по умолчанию. Вы можете изменить это в любое время в своих пользовательских настройках.
+        </target>
+      </trans-unit>
+      <trans-unit id="ajax.success" approved="yes">
+        <source>Success</source>
+        <target state="final">Успешно</target>
+      </trans-unit>
+      <trans-unit id="ajax.error" approved="yes">
+        <source>An error occurred</source>
+        <target state="final">Произошла ошибка</target>
+      </trans-unit>
+      <trans-unit id="ajax.invalidRequest" approved="yes">
+        <source>Invalid request could not be processed</source>
+        <target state="final">Неверный запрос не может быть обработан</target>
+      </trans-unit>
+      <trans-unit id="ajax.insufficientPermissions" approved="yes">
+        <source>Your are not allowed to perform this action</source>
+        <target state="final">Вам не разрешено выполнять это действие</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providersNotDeactivated" approved="yes">
+        <source>No provider has been deactivated</source>
+        <target state="final">Ни один провайдер не был деактивирован</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providersDeactivated" approved="yes">
+        <source>Successfully deactivated all active providers for user %s</source>
+        <target state="final">Успешно деактивированы все активные провайдеры для пользователя %s</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providerNotFound" approved="yes">
+        <source>Provider %s could not be found</source>
+        <target state="final">Провайдер %s не найден</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providerNotDeactivated" approved="yes">
+        <source>Could not deactivate provider %s</source>
+        <target state="final">Не удалось деактивировать провайдера %s</target>
+      </trans-unit>
+      <trans-unit id="ajax.deactivate.providerDeactivated" approved="yes">
+        <source>Successfully deactivated provider %s for user %s</source>
+        <target state="final">Успешно деактивирован провайдер %s для пользователя %s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
