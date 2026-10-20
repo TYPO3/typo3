@@ -221,7 +221,7 @@ describe('@typo3/backend/notification:', () => {
   it('announces notifications to assistive technology', async () => {
     Notification.info('Info message', 'Some text', 1);
     await (document.querySelector('#alert-container typo3-notification-message:last-child') as LitElement).updateComplete;
-    expect(document.querySelector('#alert-container .alert-list').getAttribute('aria-live')).to.equal('polite');
+    expect(document.querySelector('#alert-container .alert-list').getAttribute('role')).to.equal('alert');
   });
 
   it('can render action buttons', async () => {
