@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="site.dependencies" approved="yes">
+        <source>Site sets ship parts of site configuration as composable pieces. Sets deliver Settings, TypoScript, and Page TSConfig for the scope of this site.</source>
+        <target state="final">サイトはサイト構成の一部を構成可能な部品として設定します。セットは、このサイトの範囲のために設定、TypoScript、ページTSConfigを提供します。</target>
+      </trans-unit>
+      <trans-unit id="site_language.hreflang" approved="yes">
+        <source>Optional, used for "hreflang" attributes - if empty, the information is retrieved from the locale</source>
+        <target state="final">省略可能で、「hrefrang」 属性に使用されます - 空の場合、情報はロケールから取得されます</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
