@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814795" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_fe_groups.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>This option disables the user group.</source>
+        <target state="final">Deze optie schakelt de gebruikersgroep uit.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" xml:space="preserve" approved="yes">
+				<source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.
+For instance if a page or content element was assigned access only by this group and you disable the group, no one would gain access to that page or content element.</source>
+			<target state="final">Wanneer een gebruikersgroep uitgeschakeld wordt, dan zullen alle gebruikers die lid van deze groep zijn, geen eigenschappen van deze gebruikersgroep erven. &lt;strong&gt;Voorbeeld:&lt;/strong&gt; Als een bladzijde of contentelement alleen toegankelijk was met deze specifieke groep en de groep is uitschakeld dan zal niemand van deze groep meer toegang tot de pagina of het contentelement hebben.</target></trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" approved="yes">
+        <source>fe_users:disable</source>
+        <target state="final">fe_users:disable</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Name of the group.</source>
+        <target state="final">Naam van de groep.</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>This title will appear as the group name in the 'Access'-list in other records.</source>
+        <target state="final">Deze titel verschijnt als de groepsnaam in de "Toegang"-lijst in andere records.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.description" resname="lockToDomain.description" approved="yes">
+        <source>Enter the host name from which the group will be available only. NOTICE: this is not a security feature and can be circumvented by faking HTTP_HOST.</source>
+        <target state="final">Voer de hostnaam in van waaruit de groep alleen beschikbaar is. LET OP: dit is geen beveiligingsoptie en kan omzeild worden met een valse HTTP_HOST.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.details" resname="lockToDomain.details" xml:space="preserve" approved="yes">
+				<source>This options may be important if you have multiple websites in the same TYPO3 database but still only one main storage page for all Website users. Thus the users may log in on any of the website URLs. This may be considered a feature (having a global login as a user) or a problem (in which case you should have multiple user storages anyway). However you may wish to limit the use of a Website usergroup to a specific website and thus you don't want the group to be enabled for the user when he logs in at another URL (still from the same database of course). By entering the host name of the website here, you restrict the group to be used only from within this domain.
+
+&lt;b&gt;Notice:&lt;/b&gt; The use for this option is not critical if you have multiple Website user storages, namely one for each site.</source>
+			<target state="final">Deze optie kan van belang zijn wanneer er meerdere websites in één zelfde TYPO3 database zijn ondergebracht met slechts één enkele opslag pagina voor alle website gebruikers. De gebruikers kunnen dan inloggen op elke website url. Dit kan beschouwd worden als een feature (een globale login voor een gebruiker) of een probleem (in welk geval je in ieder geval aparte opslag pagina's voor gebruikers zou moeten hebben). In elk geval kan het zijn dat het gebruik van een bepaalde website beperkt dient te worden tot een bepaalde gebruikersgroep. U wilt niet dat een groep ingeschakeld wordt voor een gebruiker die inlogd op een andere url (nog steeds binnen dezelfde database). Door de hostnaam van de website hier in te voeren wordt de groep beperkt tot gebruik binnen dit domein. &lt;strong&gt;N.B.&lt;/strong&gt; Het gebruik van deze optie is niet kritisch wanneer er meerdere opslagpagina's zijn voor gebruikers, namelijk één voor elke site.</target></trans-unit>
+      <trans-unit id="_lockToDomain.seeAlso" resname="_lockToDomain.seeAlso" approved="yes">
+        <source>fe_users:lockToDomain</source>
+        <target state="final">fe_users:lockToDomain</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="subgroup.description" resname="subgroup.description" approved="yes">
+        <source>Member of other groups.</source>
+        <target state="final">Lid van andere groepen.</target>
+      </trans-unit>
+      <trans-unit id="subgroup.details" resname="subgroup.details" approved="yes">
+        <source>List of other groups that this group is a member of.</source>
+        <target state="final">Lijst van andere groepen waar deze groep een lid van is.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a description of the group.</source>
+        <target state="final">Voer een beschrijving van de groep in.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" xml:space="preserve" approved="yes">
+				<source>This is for internal use and is just a way to put a note on what the group is for, why you created it and who should be members.
+Use it as you like.</source>
+			<target state="final">Dit is voor intern gebruik, en slechts om een notitie toe te voegen over het doel van de groep, waarom u de groep heeft aangemaakt en wie de leden zouden moeten zijn. Gebruik het naar eigen inzicht.</target></trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>TSconfig for the group (advanced).</source>
+        <target state="final">TSconfig voor de groep (geavanceerd)</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details" resname="TSconfig.details" xml:space="preserve" approved="yes">
+				<source>This is the user TSconfig for the group. The values are inherited by any Website user who is a member of this group.
+The configuration is subject to being overridden in other groups and by the TSconfig of the user himself.</source>
+			<target state="final">Dit is de gebruikers TSconfig voor de groep. De waarden worden geërfd door elke gebruiker die lid is van deze groep. De configuratie kan worden overschreven in andere groepen en door de TSconfig van de gebruiker zelf.</target></trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax, without conditions and constants.</source>
+        <target state="final">TypoScript syntax, zonder condities en constanten</target>
+      </trans-unit>
+      <trans-unit id="_TSconfig.seeAlso" resname="_TSconfig.seeAlso" approved="yes">
+        <source>fe_users:TSconfig</source>
+        <target state="final">fe_users:TSconfig</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Usergroups for Website users.</source>
+        <target state="final">Gebruikersgroepen voor website gebruikers</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>The access restriction in TYPO3 is assigned to these usergroups. When a page or other element is access restricted to a group, only Website users which are members of that group will be able to view the element on the website.</source>
+        <target state="final">De toegangsbeperkingen in TYPO3 worden aan deze groepen toegekend. Wanneer de toegang tot een pagina of inhoudselement is beperkt tot een groep, dan kunnen alleen de websitegebruikers die lid van deze groep zijn dit element op de website zien.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>fe_users,
+About access restricting pages | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/PasswordProtectedPages/</source>
+			<target state="final">fe_users,
+Over afgeschermde pagina's | http://typo3.org/documentation/document-library/doc_tut_quickstart/Create_restricted_pa/</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/fegroups_3.png,
+EXT:frontend/Resources/Public/Images/cshimages/fegroups_4.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/fegroups_3.png,
+EXT:frontend/Resources/Public/Images/cshimages/fegroups_4.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The form for editing frontend users groups.
+Pages, Content Elements and other records for frontend display often have a selector box where you can define access restriction by selecting access for a certain group only.</source>
+			<target state="final">Het formulier voor het aanpasssen van frontend gebruikersgroepen, pagina's, contentelementen en andere records voor frontend weergave bevat vaak een selectieveld waar U de toegangsrechten kunt bepalen door het selecteren van toegang voor enkel bepaalde groepen.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
