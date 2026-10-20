@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814885" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="sk">
+    <header/>
+    <body>
+      <trans-unit id="pages" resname="pages" approved="yes">
+        <source>Page</source>
+        <target state="final">Stránka</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.0" resname="doktype.I.0" approved="yes">
+        <source>Standard</source>
+        <target state="final">Štandardná</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.1" resname="doktype.I.1" approved="yes">
+        <source>SysFolder</source>
+        <target state="final">Systémová zložka</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.folder" resname="doktype.I.folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">Zložka</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.2" resname="doktype.I.2" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Kôš na recyklovanie</target>
+      </trans-unit>
+      <trans-unit id="be_users" resname="be_users" approved="yes">
+        <source>Backend user</source>
+        <target state="final">Užívateľ backendu</target>
+      </trans-unit>
+      <trans-unit id="be_groups" resname="be_groups" approved="yes">
+        <source>Backend usergroup</source>
+        <target state="final">Užívateľská skupina backendu</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts" resname="sys_filemounts" approved="yes">
+        <source>Filemount</source>
+        <target state="final">Filemount</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.folder" resname="sys_file_collection.folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">Zložka</target>
+      </trans-unit>
+      <trans-unit id="sys_language" resname="sys_language" approved="yes">
+        <source>Website Language</source>
+        <target state="final">Jazyk webu</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace" resname="sys_workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Pracovný priestor</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
