@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1522785604" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="site.routes" resname="site.routes" approved="yes">
+        <source>Routes</source>
+        <target state="final">Ruter</target>
+      </trans-unit>
+      <trans-unit id="site.tab.languages" resname="site.tab.languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">Språk</target>
+      </trans-unit>
+      <trans-unit id="site_language.language" resname="site_language.language" approved="yes">
+        <source>Language</source>
+        <target state="final">Språk</target>
+      </trans-unit>
+      <trans-unit id="site_language.languageId" resname="site_language.languageId" approved="yes">
+        <source>Language ID</source>
+        <target state="final">Språk-ID</target>
+      </trans-unit>
+      <trans-unit id="site_language.title" resname="site_language.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Tittel</target>
+      </trans-unit>
+      <trans-unit id="site_language.locale" resname="site_language.locale" approved="yes">
+        <source>Locale</source>
+        <target state="final">Lokal</target>
+      </trans-unit>
+      <trans-unit id="site_language.direction" resname="site_language.direction" approved="yes">
+        <source>Direction</source>
+        <target state="final">Retning</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition" resname="site_base_variant.condition" approved="yes">
+        <source>Condition</source>
+        <target state="final">Betingelse</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition.applicationContext" resname="site_base_variant.condition.applicationContext" approved="yes">
+        <source>Application Context</source>
+        <target state="final">Applikasjonssammenheng</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.404" resname="site_errorhandling.errorCode.404" approved="yes">
+        <source>404 (Page not found)</source>
+        <target state="final">404 (Siden ble ikke funnet)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.500" resname="site_errorhandling.errorCode.500" approved="yes">
+        <source>500 (Internal Server Error)</source>
+        <target state="final">500 (Intern tjenerfeil)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler.page" resname="site_errorhandling.errorHandler.page" approved="yes">
+        <source>Show Content from Page</source>
+        <target state="final">Vis innhold fra side</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorContentSource" resname="site_errorhandling.errorContentSource" approved="yes">
+        <source>Show Content from Page</source>
+        <target state="final">Vis innhold fra side</target>
+      </trans-unit>
+      <trans-unit id="site_route.ctrl.title" resname="site_route.ctrl.title" approved="yes">
+        <source>Routes</source>
+        <target state="final">Ruter</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
