@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1515791952" source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf" date="2017-12-29T20:23:34Z" product-name="redirects" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Redirects</source>
+        <target state="final">Valg for omdirigering</target>
+      </trans-unit>
+      <trans-unit id="filter.source_host.showAll" resname="filter.source_host.showAll" approved="yes">
+        <source>Show All</source>
+        <target state="final">Vi salle</target>
+      </trans-unit>
+      <trans-unit id="filter.sendButton" resname="filter.sendButton" approved="yes">
+        <source>Send</source>
+        <target state="final">Send</target>
+      </trans-unit>
+      <trans-unit id="destination" resname="destination" approved="yes">
+        <source>Destination</source>
+        <target state="final">Destinasjon</target>
+      </trans-unit>
+      <trans-unit id="pageID" resname="pageID" approved="yes">
+        <source>Page ID</source>
+        <target state="final">Side ID</target>
+      </trans-unit>
+      <trans-unit id="hit_last_never" resname="hit_last_never" approved="yes">
+        <source>Never</source>
+        <target state="final">Aldri</target>
+      </trans-unit>
+      <trans-unit id="visit_destination" resname="visit_destination" approved="yes">
+        <source>Go to</source>
+        <target state="final">Gå til</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
