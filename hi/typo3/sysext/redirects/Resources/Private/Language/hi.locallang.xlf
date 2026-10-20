@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang.xlf" date="2017-12-29T20:22:14Z" product-name="redirects" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="redirects" approved="yes">
+        <source>Redirect Settings</source>
+        <target state="final">पुनःनिर्देश सेटिंग्स</target>
+      </trans-unit>
+      <trans-unit id="redirects.autoUpdateSlugs" approved="yes">
+        <source>Update the slugs of all sub pages automatically</source>
+        <target state="final">सभी उप पृष्ठों के स्लग्स को स्वतः अद्यतन करें</target>
+      </trans-unit>
+      <trans-unit id="redirects.autoCreateRedirects" approved="yes">
+        <source>Create redirects for pages with a new slug automatically</source>
+        <target state="final">नए स्लग के साथ पृष्ठों के लिए पुनःनिर्देशन बनाएं</target>
+      </trans-unit>
+      <trans-unit id="redirects.redirectTTL" approved="yes">
+        <source>Time To Live of redirect records in days</source>
+        <target state="final">पुनःनिर्देश रिकॉर्ड का जीवनकाल दिनों में</target>
+      </trans-unit>
+      <trans-unit id="redirects.httpStatusCode" approved="yes">
+        <source>HTTP Status Code for the redirect, 301 is the default</source>
+        <target state="final">पुनःनिर्देश के लिए HTTP स्थिति कोड, 301 डिफ़ॉल्ट है</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.days" approved="yes">
+        <source>Cleanup redirects older than provided number of days</source>
+        <target state="final">प्रदान की गई संख्या के दिनों से अधिक पुराने पुनःनिर्देशन साफ़ करें</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.domain" approved="yes">
+        <source>Cleanup redirects matching provided domain(s)</source>
+        <target state="final">प्रदान किए गए डोमेन(s) से मेल खाने वाले पुनःनिर्देशन साफ़ करें</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.hitCount" approved="yes">
+        <source>Cleanup redirects matching hit counts lower than given number</source>
+        <target state="final">दिए गए संख्या से कम हिट काउंट मेल खाने वाले पुनःनिर्देश साफ़ करें</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.path" approved="yes">
+        <source>Cleanup redirects matching given path (as database like expression)</source>
+        <target state="final">दिए गए पथ (डेटाबेस की तरह अभिव्यक्ति) से मेल खाते पुनःनिर्देश साफ़ करें</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.creationType" approved="yes">
+        <source>Cleanup redirects matching provided creation type</source>
+        <target state="final">प्रदान किए गए निर्माण प्रकार से मेल खाते पुनःनिर्देशन साफ़ करें</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.statusCode" approved="yes">
+        <source>Cleanup redirects matching provided status code(s)</source>
+        <target state="final">प्रदान किए गए स्थिति कोड से मेल खाते रीडायरेक्ट साफ़ करें</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.integrityStatus" approved="yes">
+        <source>Cleanup redirects matching provided integrity status</source>
+        <target state="final">प्रदान की गई सत्यता स्थिति से मेल खाने वाले पुनःनिर्देशन साफ़ करें</target>
+      </trans-unit>
+      <trans-unit id="cleanupRedirectsCommand.label.redirectType" approved="yes">
+        <source>Cleanup redirects matching provided redirect type</source>
+        <target state="final">दिए गए रीडायरेक्ट प्रकार से मेल खाने वाले रीडायरेक्ट को साफ़ करें</target>
+      </trans-unit>
+      <trans-unit id="created_on" approved="yes">
+        <source>on</source>
+        <target state="final">पर</target>
+      </trans-unit>
+      <trans-unit id="not_tracked" approved="yes">
+        <source>[Not Tracked]</source>
+        <target state="final">[ट्रैक नहीं किया गया]</target>
+      </trans-unit>
+      <trans-unit id="no_qrcode" approved="yes">
+        <source>Not enough information for generating a QR Code.</source>
+        <target state="final">QR कोड जनरेट करने के लिए पर्याप्त जानकारी उपलब्ध नहीं है।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
