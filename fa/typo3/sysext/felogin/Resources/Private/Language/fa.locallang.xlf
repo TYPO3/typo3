@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814821" source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="ll_welcome_header" resname="ll_welcome_header" approved="yes">
+        <source>User login</source>
+        <target state="final">ورود کاربر</target>
+      </trans-unit>
+      <trans-unit id="ll_logout_header" resname="ll_logout_header" approved="yes">
+        <source>You have logged out.</source>
+        <target state="final">شما خارج شدید.</target>
+      </trans-unit>
+      <trans-unit id="ll_error_header" resname="ll_error_header" approved="yes">
+        <source>Login failure</source>
+        <target state="final">ورود ناموفق</target>
+      </trans-unit>
+      <trans-unit id="ll_success_header" resname="ll_success_header" approved="yes">
+        <source>Login successful</source>
+        <target state="final">ورود موفقیت آمیز</target>
+      </trans-unit>
+      <trans-unit id="ll_success_message" resname="ll_success_message" approved="yes">
+        <source>You are now logged in as '###USER###'</source>
+        <target state="final">شما با نام‌کاربری '###USER###' وارد شده‌اید.</target>
+      </trans-unit>
+      <trans-unit id="ll_status_header" resname="ll_status_header" approved="yes">
+        <source>Current status</source>
+        <target state="final">وضعیت فعلی</target>
+      </trans-unit>
+      <trans-unit id="cookie_warning" resname="cookie_warning" approved="yes">
+        <source>Warning: There is a possibility that cookies are not enabled in your web browser! If your login disappears on your next click that is the case and you should enable cookies (or accept cookies from this website) immediately!</source>
+        <target state="final">هشدار: ممکن است «کوکی‌ها» در مرورگر شما فعال نباشد، اگر پس از کلیک بعدی از سات خارج شدید لازم خواهد بود که کوکی‌ها را فورا فعال کرده یا مجوز کوکی‌ برای این سایت در نظر بگیرید.</target>
+      </trans-unit>
+      <trans-unit id="login" resname="login" approved="yes">
+        <source>Login</source>
+        <target state="final">ورود</target>
+      </trans-unit>
+      <trans-unit id="logout" resname="logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">خروج</target>
+      </trans-unit>
+      <trans-unit id="send_password" resname="send_password" approved="yes">
+        <source>Send password</source>
+        <target state="final">ارسال گذرواژه</target>
+      </trans-unit>
+      <trans-unit id="reset_password" resname="reset_password" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">بازسازی گذرواژه</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_header" resname="ll_change_password_header" approved="yes">
+        <source>Change your password</source>
+        <target state="final">تغییر گذرواژه</target>
+      </trans-unit>
+      <trans-unit id="change_password" resname="change_password" approved="yes">
+        <source>Change your password</source>
+        <target state="final">تغییر گذرواژه</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label1" resname="newpassword_label1" approved="yes">
+        <source>Enter new password</source>
+        <target state="final">گذرواژۀ جدید را وارد کنید</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label2" resname="newpassword_label2" approved="yes">
+        <source>Repeat new password</source>
+        <target state="final">گذرواژۀ جدید را تکرار کنید</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_header" resname="ll_forgot_header" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">گذرواژۀ خود را فراموش کرده‌اید؟</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_email_password" resname="ll_forgot_email_password" xml:space="preserve" approved="yes">
+				<source>Your password
+Hi %s
+
+Your username is "%s"
+Your password is "%s"</source>
+			<target state="final">گذرواژۀ شما
+سلام %s
+
+نام کاربری شما عبارت است از "%s"
+گذرواژۀ شما عبارت است از "%s"</target></trans-unit>
+      <trans-unit id="ll_forgot_message_emailSent" resname="ll_forgot_message_emailSent" approved="yes">
+        <source>Your password has now been sent to the email address %s</source>
+        <target state="final">گذرواژۀ شما به نشانی رایانامۀ %s ارسال شد.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_reset_message_error" resname="ll_forgot_reset_message_error" approved="yes">
+        <source>Your account or email address does not exist.</source>
+        <target state="final">حساب کاربری یا نشانی رایانامۀ وارد شده پیدا نشد.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_header_backToLogin" resname="ll_forgot_header_backToLogin" approved="yes">
+        <source>Return to login form</source>
+        <target state="final">بازگشت به صفحۀ ورود</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
