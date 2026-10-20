@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814862" source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_csh_web_info.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle">
+        <source>Web &gt; Info module</source>
+        <target>crwdns77286:0crwdne77286:0</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description">
+        <source>The idea of the Web&gt;Info module is to be a host module for backend applications that wish to present information / analysis of pages or branches of the page tree. This could be website statistics, caching status information etc.</source>
+        <target>crwdns77288:0crwdne77288:0</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details">
+        <source>The Web&gt;Info module shows information rather than offering functionality. It is up to extension programmers to decide in which of these two modules they want to insert functionality.</source>
+        <target>crwdns77290:0crwdne77290:0</target>
+      </trans-unit>
+      <trans-unit id="_.image" resname="_.image">
+        <source>EXT:info/Resources/Public/Images/cshimages/pagetree_overview_10.png</source>
+        <target>crwdns77292:0crwdne77292:0</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr">
+        <source>The Web&gt;Info module as provided by the core is an empty shell. It provides an API that extensions can use to attach function menu items to the Info module. Here you see the "Page TSconfig" overview from the extension "info_pagetsconfig".</source>
+        <target>crwdns77294:0crwdne77294:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
