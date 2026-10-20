@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814781" source-language="en" datatype="plaintext" original="EXT:belog/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="belog" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="adminLog" resname="adminLog" approved="yes">
+        <source>Administration log</source>
+        <target state="final">管理ログ</target>
+      </trans-unit>
+      <trans-unit id="self" resname="self" approved="yes">
+        <source>Self</source>
+        <target state="final">自身</target>
+      </trans-unit>
+      <trans-unit id="actionFile" resname="actionFile" approved="yes">
+        <source>File</source>
+        <target state="final">ファイル</target>
+      </trans-unit>
+      <trans-unit id="actionSettings" resname="actionSettings" approved="yes">
+        <source>Settings</source>
+        <target state="final">設定</target>
+      </trans-unit>
+      <trans-unit id="actionLogin" resname="actionLogin" approved="yes">
+        <source>Login</source>
+        <target state="final">ログイン</target>
+      </trans-unit>
+      <trans-unit id="user" resname="user" approved="yes">
+        <source>User</source>
+        <target state="final">ユーザ</target>
+      </trans-unit>
+      <trans-unit id="users" resname="users" approved="yes">
+        <source>Users</source>
+        <target state="final">ユーザ</target>
+      </trans-unit>
+      <trans-unit id="time" resname="time" approved="yes">
+        <source>Time</source>
+        <target state="final">時間</target>
+      </trans-unit>
+      <trans-unit id="max" resname="max" approved="yes">
+        <source>Max</source>
+        <target state="final">最大</target>
+      </trans-unit>
+      <trans-unit id="showHistory" resname="showHistory" approved="yes">
+        <source>Show History</source>
+        <target state="final">履歴を表示</target>
+      </trans-unit>
+      <trans-unit id="action" resname="action" approved="yes">
+        <source>Action</source>
+        <target state="final">操作</target>
+      </trans-unit>
+      <trans-unit id="action_1_1" resname="action_1_1" approved="yes">
+        <source>Insert</source>
+        <target state="final">挿入</target>
+      </trans-unit>
+      <trans-unit id="action_1_2" resname="action_1_2" approved="yes">
+        <source>Update</source>
+        <target state="final">更新</target>
+      </trans-unit>
+      <trans-unit id="action_1_3" resname="action_1_3" approved="yes">
+        <source>Delete</source>
+        <target state="final">削除</target>
+      </trans-unit>
+      <trans-unit id="type_2" resname="type_2" approved="yes">
+        <source>FILE</source>
+        <target state="final">ファイル</target>
+      </trans-unit>
+      <trans-unit id="action_2_1" resname="action_2_1" approved="yes">
+        <source>Upload</source>
+        <target state="final">アップロード</target>
+      </trans-unit>
+      <trans-unit id="action_2_4" resname="action_2_4" approved="yes">
+        <source>Delete</source>
+        <target state="final">削除</target>
+      </trans-unit>
+      <trans-unit id="action_2_5" resname="action_2_5" approved="yes">
+        <source>Rename</source>
+        <target state="final">名前の変更</target>
+      </trans-unit>
+      <trans-unit id="action_2_8" resname="action_2_8" approved="yes">
+        <source>New file</source>
+        <target state="final">新規ファイル</target>
+      </trans-unit>
+      <trans-unit id="type_255" resname="type_255" approved="yes">
+        <source>LOGIN</source>
+        <target state="final">ログイン</target>
+      </trans-unit>
+      <trans-unit id="action_255_1" resname="action_255_1" approved="yes">
+        <source>LOGIN</source>
+        <target state="final">ログイン</target>
+      </trans-unit>
+      <trans-unit id="action_255_2" resname="action_255_2" approved="yes">
+        <source>LOGOUT</source>
+        <target state="final">ログアウト</target>
+      </trans-unit>
+      <trans-unit id="chLog_users_0" resname="chLog_users_0" approved="yes">
+        <source>All users</source>
+        <target state="final">全ユーザー</target>
+      </trans-unit>
+      <trans-unit id="chLog_users_-1" resname="chLog_users_-1" approved="yes">
+        <source>Self</source>
+        <target state="final">自身</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_time" resname="chLog_l_time" approved="yes">
+        <source>Time</source>
+        <target state="final">時間</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_user" resname="chLog_l_user" approved="yes">
+        <source>User</source>
+        <target state="final">ユーザ</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_action" resname="chLog_l_action" approved="yes">
+        <source>Action</source>
+        <target state="final">操作</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_types" resname="chLog_l_types" approved="yes">
+        <source>Type</source>
+        <target state="final">種類</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_details" resname="chLog_l_details" approved="yes">
+        <source>Details</source>
+        <target state="final">詳細</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuUsers" resname="chLog_menuUsers" approved="yes">
+        <source>Users</source>
+        <target state="final">ユーザ</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuTime" resname="chLog_menuTime" approved="yes">
+        <source>Time</source>
+        <target state="final">時間</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.errorsInPeriod" resname="systemmessage.errorsInPeriod" approved="yes">
+        <source><![CDATA[We have found %1$d errors. Please check your <a href="%2$s">system log</a>.]]></source>
+        <target state="final"><![CDATA[%1$d件のエラーが見つかりました。 <a href="%2$s">システムログ</a> を確認してください。]]></target>
+      </trans-unit>
+      <trans-unit id="actions" resname="actions" approved="yes">
+        <source>Actions</source>
+        <target state="final">実行</target>
+      </trans-unit>
+      <trans-unit id="actions.delete.message" resname="actions.delete.message" approved="yes">
+        <source>Total entries deleted: %1$d</source>
+        <target state="final">削除されたエントリの合計：%1$d</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
