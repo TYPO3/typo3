@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814792" source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_webinfo.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="page_sysnote" resname="page_sysnote" approved="yes">
+        <source>Internal notes</source>
+        <target state="final">Interne notater</target>
+      </trans-unit>
+      <trans-unit id="pageInformation" resname="pageInformation" approved="yes">
+        <source>Page information</source>
+        <target state="final">Sideinformasjon</target>
+      </trans-unit>
+      <trans-unit id="pI_crUser" resname="pI_crUser" approved="yes">
+        <source>Created by</source>
+        <target state="final">Laget av</target>
+      </trans-unit>
+      <trans-unit id="pI_crDate" resname="pI_crDate" approved="yes">
+        <source>Created date</source>
+        <target state="final">Dato for opprettelse</target>
+      </trans-unit>
+      <trans-unit id="pI_lastChange" resname="pI_lastChange" approved="yes">
+        <source>Last change</source>
+        <target state="final">Sist endret</target>
+      </trans-unit>
+      <trans-unit id="pI_lastChangeContent" resname="pI_lastChangeContent" approved="yes">
+        <source>Last change, content</source>
+        <target state="final">Sist endret, innhold</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_viewPage" resname="lang_renderl10n_viewPage" approved="yes">
+        <source>View page</source>
+        <target state="final">Vis side</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editPage" resname="lang_renderl10n_editPage" approved="yes">
+        <source>Edit page</source>
+        <target state="final">Rediger side</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_page" resname="lang_renderl10n_page" approved="yes">
+        <source>Page</source>
+        <target state="final">Side</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_default" resname="lang_renderl10n_default" approved="yes">
+        <source>Default</source>
+        <target state="final">Forvalg</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
