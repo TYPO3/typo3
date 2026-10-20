@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="ru">
+  <file id="f1">
+    <unit id="abstract">
+      <segment state="final">
+        <source>Abstract</source>
+        <target>Аннотация</target>
+      </segment>
+    </unit>
+    <unit id="author">
+      <segment state="final">
+        <source>Author Name</source>
+        <target>Имя автора</target>
+      </segment>
+    </unit>
+    <unit id="author_email">
+      <segment state="final">
+        <source>Author Email</source>
+        <target>Email автора</target>
+      </segment>
+    </unit>
+    <unit id="backend_layout">
+      <segment state="final">
+        <source>Backend Layout (this page only)</source>
+        <target>Шаблон внутреннего интерфейса (только эта страница)</target>
+      </segment>
+    </unit>
+    <unit id="backend_layout_next_level">
+      <segment state="final">
+        <source>Backend Layout (subpages of this page)</source>
+        <target>Шаблон внутреннего интерфейса (подстраницы этой страницы)</target>
+      </segment>
+    </unit>
+    <unit id="cache_tags">
+      <segment state="final">
+        <source>Cache Tags</source>
+        <target>Теги кэша</target>
+      </segment>
+    </unit>
+    <unit id="cache_timeout">
+      <segment state="final">
+        <source>Cache Lifetime</source>
+        <target>Время жизни кэша</target>
+      </segment>
+    </unit>
+    <unit id="content_from_pid">
+      <segment state="final">
+        <source>Show Content from this page</source>
+        <target>Показать содержимое этой страницы</target>
+      </segment>
+    </unit>
+    <unit id="description">
+      <segment state="final">
+        <source>Description for search engines</source>
+        <target>Описание для поисковых систем</target>
+      </segment>
+    </unit>
+    <unit id="doktype">
+      <segment state="final">
+        <source>Type</source>
+        <target>Тип</target>
+      </segment>
+    </unit>
+    <unit id="doktype.be_user_section">
+      <segment state="final">
+        <source>Backend User Section</source>
+        <target>Раздел внутреннего пользователя</target>
+      </segment>
+    </unit>
+    <unit id="doktype.default">
+      <segment state="final">
+        <source>Standard Page</source>
+        <target>Стандартная страница</target>
+      </segment>
+    </unit>
+    <unit id="doktype.link">
+      <segment state="final">
+        <source>Link</source>
+        <target>Ссылка</target>
+      </segment>
+    </unit>
+    <unit id="doktype.mountpoint">
+      <segment state="final">
+        <source>Mount Point</source>
+        <target>Точка монтирования</target>
+      </segment>
+    </unit>
+    <unit id="doktype.shortcut">
+      <segment state="final">
+        <source>Shortcut</source>
+        <target>Ярлык</target>
+      </segment>
+    </unit>
+    <unit id="doktype.spacer">
+      <segment state="final">
+        <source>Menu Separator</source>
+        <target>Разделитель меню</target>
+      </segment>
+    </unit>
+    <unit id="doktype.sysfolder">
+      <segment state="final">
+        <source>Folder</source>
+        <target>Папка</target>
+      </segment>
+    </unit>
+    <unit id="doktype.group.link">
+      <segment state="final">
+        <source>Link</source>
+        <target>Ссылка</target>
+      </segment>
+    </unit>
+    <unit id="doktype.group.page">
+      <segment state="final">
+        <source>Page</source>
+        <target>Cтраница</target>
+      </segment>
+    </unit>
+    <unit id="doktype.group.special">
+      <segment state="final">
+        <source>Special</source>
+        <target>Особая</target>
+      </segment>
+    </unit>
+    <unit id="extend_to_subpages">
+      <segment state="final">
+        <source>Extend to Subpages</source>
+        <target>Включая подстраницы</target>
+      </segment>
+    </unit>
+    <unit id="hidden">
+      <segment state="final">
+        <source>Page visible</source>
+        <target>Видимость страницы</target>
+      </segment>
+    </unit>
+    <unit id="is_siteroot">
+      <segment state="final">
+        <source>Use as Root Page</source>
+        <target>Использовать как корневую страницу</target>
+      </segment>
+    </unit>
+    <unit id="keywords">
+      <segment state="final">
+        <source>Keywords</source>
+        <target>Ключевые слова</target>
+      </segment>
+    </unit>
+    <unit id="link">
+      <segment state="final">
+        <source>Link destination</source>
+        <target>Назначение ссылки</target>
+      </segment>
+    </unit>
+    <unit id="link.description">
+      <segment state="final">
+        <source>Defines the destination this page links to — for example a page, file, or external URL. </source>
+        <target>Определяет, что эта страница будет ссылкой,  например, на другую страницу, файл или внешний URL. </target>
+      </segment>
+    </unit>
+    <unit id="l18n_cfg">
+      <segment state="final">
+        <source>Localization</source>
+        <target>Локализация</target>
+      </segment>
+    </unit>
+    <unit id="last_updated">
+      <segment state="final">
+        <source>Last Update</source>
+        <target>Последнее обновление</target>
+      </segment>
+    </unit>
+    <unit id="layout">
+      <segment state="final">
+        <source>Frontend Layout</source>
+        <target>Макет страницы сайта</target>
+      </segment>
+    </unit>
+    <unit id="link.target">
+      <segment state="final">
+        <source>Link target</source>
+        <target>Цель ссылки</target>
+      </segment>
+    </unit>
+    <unit id="media">
+      <segment state="final">
+        <source>Media</source>
+        <target>Медиа</target>
+      </segment>
+    </unit>
+    <unit id="module">
+      <segment state="final">
+        <source>Contains Plugin</source>
+        <target>Содержит дополнение</target>
+      </segment>
+    </unit>
+    <unit id="mount_pid">
+      <segment state="final">
+        <source>Mounted page</source>
+        <target>Подключенная страница</target>
+      </segment>
+    </unit>
+    <unit id="mount_pid_ol">
+      <segment state="final">
+        <source>Mount Point Display Option</source>
+        <target>Параметры отображения точки монтирования</target>
+      </segment>
+    </unit>
+    <unit id="nav_hide">
+      <segment state="final">
+        <source>Page enabled in menus</source>
+        <target>Страница доступна в меню</target>
+      </segment>
+    </unit>
+    <unit id="nav_title">
+      <segment state="final">
+        <source>Alternative Navigation Title</source>
+        <target>Альтернативный заголовок для меню</target>
+      </segment>
+    </unit>
+    <unit id="new_until">
+      <segment state="final">
+        <source>Mark as 'New' Until</source>
+        <target>Отметить, как "Новая" вплоть до</target>
+      </segment>
+    </unit>
+    <unit id="no_search">
+      <segment state="final">
+        <source>Include in Search</source>
+        <target>Включить в поиск</target>
+      </segment>
+    </unit>
+    <unit id="php_tree_stop">
+      <segment state="final">
+        <source>Hide child pages in page tree</source>
+        <target>Скрыть дочерние страницы в дереве страниц</target>
+      </segment>
+    </unit>
+    <unit id="shortcut">
+      <segment state="final">
+        <source>Shortcut to page</source>
+        <target>Ссылка на страницу</target>
+      </segment>
+    </unit>
+    <unit id="shortcut_mode">
+      <segment state="final">
+        <source>Shortcut Mode</source>
+        <target>Режим ссылки</target>
+      </segment>
+    </unit>
+    <unit id="slug">
+      <segment state="final">
+        <source>URL Segment</source>
+        <target>Сегмент URL</target>
+      </segment>
+    </unit>
+    <unit id="subtitle">
+      <segment state="final">
+        <source>Subtitle</source>
+        <target>Подзаголовок</target>
+      </segment>
+    </unit>
+    <unit id="target">
+      <segment state="final">
+        <source>Target</source>
+        <target>Цель</target>
+      </segment>
+    </unit>
+    <unit id="title">
+      <segment state="final">
+        <source>Page title</source>
+        <target>Заголовок страницы</target>
+      </segment>
+    </unit>
+    <unit id="tsconfig">
+      <segment state="final">
+        <source>Page TSconfig</source>
+        <target>TSconfig страницы</target>
+      </segment>
+    </unit>
+    <unit id="tsconfig_includes">
+      <segment state="final">
+        <source>Include static Page TSconfig (from extensions)</source>
+        <target>Включить статический TSconfig страницы (из расширений)</target>
+      </segment>
+    </unit>
+    <unit id="url">
+      <segment state="final">
+        <source>URL</source>
+        <target>URL</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
