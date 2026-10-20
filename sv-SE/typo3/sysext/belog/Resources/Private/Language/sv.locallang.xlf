@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814781" source-language="en" datatype="plaintext" original="EXT:belog/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="belog" target-language="sv-SE">
+    <header/>
+    <body>
+      <trans-unit id="adminLog" resname="adminLog" approved="yes">
+        <source>Administration log</source>
+        <target state="final">Administrationslogg</target>
+      </trans-unit>
+      <trans-unit id="allUsers" resname="allUsers" approved="yes">
+        <source>[All users]</source>
+        <target state="final">[Alla användare]</target>
+      </trans-unit>
+      <trans-unit id="viaUser" resname="viaUser" approved="yes">
+        <source>via</source>
+        <target state="final">via</target>
+      </trans-unit>
+      <trans-unit id="live" resname="live" approved="yes">
+        <source>LIVE</source>
+        <target state="final">LIVE</target>
+      </trans-unit>
+      <trans-unit id="draft" resname="draft" approved="yes">
+        <source>Draft</source>
+        <target state="final">Utkast</target>
+      </trans-unit>
+      <trans-unit id="self" resname="self" approved="yes">
+        <source>Self</source>
+        <target state="final">Själv</target>
+      </trans-unit>
+      <trans-unit id="userGroup" resname="userGroup" approved="yes">
+        <source>Group</source>
+        <target state="final">Grupp</target>
+      </trans-unit>
+      <trans-unit id="thisWeek" resname="thisWeek" approved="yes">
+        <source>This week</source>
+        <target state="final">Denna vecka</target>
+      </trans-unit>
+      <trans-unit id="lastWeek" resname="lastWeek" approved="yes">
+        <source>Last week</source>
+        <target state="final">Förra veckan</target>
+      </trans-unit>
+      <trans-unit id="last7Days" resname="last7Days" approved="yes">
+        <source>Last 7 days</source>
+        <target state="final">Senaste 7 dagarna</target>
+      </trans-unit>
+      <trans-unit id="thisMonth" resname="thisMonth" approved="yes">
+        <source>This month</source>
+        <target state="final">Denna månad</target>
+      </trans-unit>
+      <trans-unit id="lastMonth" resname="lastMonth" approved="yes">
+        <source>Last month</source>
+        <target state="final">Förra månaden</target>
+      </trans-unit>
+      <trans-unit id="last31Days" resname="last31Days" approved="yes">
+        <source>Last 31 days</source>
+        <target state="final">Senaste 31 dagarna</target>
+      </trans-unit>
+      <trans-unit id="noLimit" resname="noLimit" approved="yes">
+        <source>No limit</source>
+        <target state="final">Ingen gräns</target>
+      </trans-unit>
+      <trans-unit id="actionAll" resname="actionAll" approved="yes">
+        <source>All</source>
+        <target state="final">Alla</target>
+      </trans-unit>
+      <trans-unit id="actionDatabase" resname="actionDatabase" approved="yes">
+        <source>Database</source>
+        <target state="final">Databas</target>
+      </trans-unit>
+      <trans-unit id="actionFile" resname="actionFile" approved="yes">
+        <source>File</source>
+        <target state="final">Fil</target>
+      </trans-unit>
+      <trans-unit id="actionCache" resname="actionCache" approved="yes">
+        <source>Cache</source>
+        <target state="final">Cache</target>
+      </trans-unit>
+      <trans-unit id="actionSettings" resname="actionSettings" approved="yes">
+        <source>Settings</source>
+        <target state="final">Inställningar</target>
+      </trans-unit>
+      <trans-unit id="actionLogin" resname="actionLogin" approved="yes">
+        <source>Login</source>
+        <target state="final">Logga in</target>
+      </trans-unit>
+      <trans-unit id="actionErrors" resname="actionErrors" approved="yes">
+        <source>Errors</source>
+        <target state="final">Fel</target>
+      </trans-unit>
+      <trans-unit id="group" resname="group" approved="yes">
+        <source>Group</source>
+        <target state="final">Grupp</target>
+      </trans-unit>
+      <trans-unit id="user" resname="user" approved="yes">
+        <source>User</source>
+        <target state="final">Användare</target>
+      </trans-unit>
+      <trans-unit id="users" resname="users" approved="yes">
+        <source>Users</source>
+        <target state="final">Användare</target>
+      </trans-unit>
+      <trans-unit id="time" resname="time" approved="yes">
+        <source>Time</source>
+        <target state="final">Tid</target>
+      </trans-unit>
+      <trans-unit id="max" resname="max" approved="yes">
+        <source>Max</source>
+        <target state="final">Max</target>
+      </trans-unit>
+      <trans-unit id="showHistory" resname="showHistory" approved="yes">
+        <source>Show History</source>
+        <target state="final">Visa historik</target>
+      </trans-unit>
+      <trans-unit id="overview" resname="overview" approved="yes">
+        <source>Overview</source>
+        <target state="final">Översikt</target>
+      </trans-unit>
+      <trans-unit id="type_1" resname="type_1" approved="yes">
+        <source>DB</source>
+        <target state="final">DB</target>
+      </trans-unit>
+      <trans-unit id="action_1_1" resname="action_1_1" approved="yes">
+        <source>Insert</source>
+        <target state="final">Infoga</target>
+      </trans-unit>
+      <trans-unit id="action_1_2" resname="action_1_2" approved="yes">
+        <source>Update</source>
+        <target state="final">Uppdatera</target>
+      </trans-unit>
+      <trans-unit id="action_1_3" resname="action_1_3" approved="yes">
+        <source>Delete</source>
+        <target state="final">Ta bort</target>
+      </trans-unit>
+      <trans-unit id="action_1_4" resname="action_1_4" approved="yes">
+        <source>Move</source>
+        <target state="final">Flytta</target>
+      </trans-unit>
+      <trans-unit id="action_1_5" resname="action_1_5" approved="yes">
+        <source>Check</source>
+        <target state="final">Kontrollera</target>
+      </trans-unit>
+      <trans-unit id="msg_1_0_1" resname="msg_1_0_1" approved="yes">
+        <source>Referer host '%s' and server host '%s' did not match!</source>
+        <target state="final">Referer host '%s' och server host '%s' matchade inte!</target>
+      </trans-unit>
+      <trans-unit id="msg_1_1_11" resname="msg_1_1_11" approved="yes">
+        <source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
+        <target state="final">Försök att infoga post på sidan '%s' (%s) där denna tabell, %s, inte är tillåten</target>
+      </trans-unit>
+      <trans-unit id="msg_1_1_12" resname="msg_1_1_12" approved="yes">
+        <source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
+        <target state="final">Försök att infoga en post på sidan '%s' (%s) från tabellen '%s' utan behörigheter. Eller icke-existerande sida.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_1" resname="msg_1_2_1" approved="yes">
+        <source>Attempt to modify table '%s' without permission</source>
+        <target state="final">Försök att ändra tabell '%s' utan behörighet</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_2" resname="msg_1_2_2" approved="yes">
+        <source>Attempt to modify record '%s' (%s) without permission. Or non-existing page.</source>
+        <target state="final">Försök att ändra post '%s' (%s) utan tillstånd. Eller icke-existerande sida.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_10" resname="msg_1_2_10" approved="yes">
+        <source>Record '%s' (%s) was updated.</source>
+        <target state="final">Post '%s' (%s) uppdaterades.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_12" resname="msg_1_2_12" approved="yes">
+        <source>MySQL error: '%s' (%s)</source>
+        <target state="final">MySQL fel: '%s' (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_1" resname="msg_1_4_1" approved="yes">
+        <source>Attempt to move record '%s' (%s) to after a non-existing record (uid=%s)</source>
+        <target state="final">Försök att flytta posten '%s' (%s) till efter en obefintlig post (uid=%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_2" resname="msg_1_4_2" approved="yes">
+        <source>Moved record '%s' (%s) to page '%s' (%s)</source>
+        <target state="final">Flyttade post '%s' (%s) till sidan '%s' (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_3" resname="msg_1_4_3" approved="yes">
+        <source>Moved record '%s' (%s) from page '%s' (%s)</source>
+        <target state="final">Flyttad post '%s' (%s) från sidan '%s' (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_4" resname="msg_1_4_4" approved="yes">
+        <source>Moved record '%s' (%s) on page '%s' (%s)</source>
+        <target state="final">Flyttade post '%s' (%s) till sidan '%s' (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_10" resname="msg_1_4_10" approved="yes">
+        <source>Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))</source>
+        <target state="final">Försök att flytta sidan '%s' (%s) till insidan av sin egen rotlinje (på sidan '%s' (%s))</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_11" resname="msg_1_4_11" approved="yes">
+        <source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
+        <target state="final">Försök att infoga post på sidan '%s' (%s) där denna tabell, %s, inte är tillåten</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_12" resname="msg_1_4_12" approved="yes">
+        <source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
+        <target state="final">Försök att infoga en post på sidan '%s' (%s) från tabellen '%s' utan behörigheter. Eller icke-existerande sida.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_13" resname="msg_1_4_13" approved="yes">
+        <source>Attempt to move record '%s' (%s) to after another record, although the table has no sorting row.</source>
+        <target state="final">Försök att flytta posten '%s' (%s) till efter en annan post, även om tabellen inte har någon sorteringsrad.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_14" resname="msg_1_4_14" approved="yes">
+        <source>Attempt to move record '%s' (%s) without having permissions to do so</source>
+        <target state="final">Försök att flytta posten '%s' (%s) utan att ha behörighet att göra det</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_1" resname="msg_1_5_1" approved="yes">
+        <source>You cannot change the 'doktype' of page '%s' to the desired value.</source>
+        <target state="final">Du kan inte ändra 'doktype' på sidan '%s' till önskat värde.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_2" resname="msg_1_5_2" approved="yes">
+        <source>'doktype' of page '%s' could not be changed because the page contains records from disallowed tables; %s</source>
+        <target state="final">'doktype' av sidan '%s' kunde inte ändras eftersom sidan innehåller poster från otillåtna tabeller; %s</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_3" resname="msg_1_5_3" approved="yes">
+        <source>Too few items in the list of values. (%s)</source>
+        <target state="final">För få objekt i listan över värden. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_10" resname="msg_1_5_10" approved="yes">
+        <source>Could not delete file '%s' (does not exist). (%s)</source>
+        <target state="final">Kunde inte ta bort filen '%s' (finns inte). (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_11" resname="msg_1_5_11" approved="yes">
+        <source>Copying file '%s' failed!: No destination file (%s) possible!. (%s)</source>
+        <target state="final">Kopiering av fil '%s' misslyckades!: Ingen målfil (%s) möjlig!. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_12" resname="msg_1_5_12" approved="yes">
+        <source>File extension '%s' is not allowed. (%s)</source>
+        <target state="final">Filen '%s' är inte tillåten. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_13" resname="msg_1_5_13" approved="yes">
+        <source>File size (%s) of file '%s' exceeds limit (%s). (%s)</source>
+        <target state="final">Filstorleken (%s) i filen '%s' överskrider gränsen (%s). (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_14" resname="msg_1_5_14" approved="yes">
+        <source>The destination (%s) or the source file (%s) does not exist. (%s)</source>
+        <target state="final">Destinationen (%s) eller källfilen (%s) finns inte. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_15" resname="msg_1_5_15" approved="yes">
+        <source>Copying to file '%s' failed! (%s)</source>
+        <target state="final">Kopiering till fil '%s' misslyckades! (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_16" resname="msg_1_5_16" approved="yes">
+        <source>Copying file '%s' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)</source>
+        <target state="final">Kopiering av fil '%s' misslyckades!: Målsökvägen (%s) kan skrivskyddas. Vänligen gör den skrivbar!. (%s)</target>
+      </trans-unit>
+      <trans-unit id="type_2" resname="type_2" approved="yes">
+        <source>FILE</source>
+        <target state="final">FIL</target>
+      </trans-unit>
+      <trans-unit id="action_2_1" resname="action_2_1" approved="yes">
+        <source>Upload</source>
+        <target state="final">Ladda upp</target>
+      </trans-unit>
+      <trans-unit id="action_2_2" resname="action_2_2" approved="yes">
+        <source>Copy</source>
+        <target state="final">Kopiera</target>
+      </trans-unit>
+      <trans-unit id="action_2_3" resname="action_2_3" approved="yes">
+        <source>Move</source>
+        <target state="final">Flytta</target>
+      </trans-unit>
+      <trans-unit id="action_2_4" resname="action_2_4" approved="yes">
+        <source>Delete</source>
+        <target state="final">Ta bort</target>
+      </trans-unit>
+      <trans-unit id="action_2_5" resname="action_2_5" approved="yes">
+        <source>Rename</source>
+        <target state="final">Döp om</target>
+      </trans-unit>
+      <trans-unit id="action_2_6" resname="action_2_6" approved="yes">
+        <source>New</source>
+        <target state="final">Ny</target>
+      </trans-unit>
+      <trans-unit id="action_2_7" resname="action_2_7" approved="yes">
+        <source>Unzip</source>
+        <target state="final">Packa upp</target>
+      </trans-unit>
+      <trans-unit id="action_2_8" resname="action_2_8" approved="yes">
+        <source>New file</source>
+        <target state="final">Ny fil</target>
+      </trans-unit>
+      <trans-unit id="action_2_9" resname="action_2_9" approved="yes">
+        <source>Edit</source>
+        <target state="final">Redigera</target>
+      </trans-unit>
+      <trans-unit id="msg_2_9_1" resname="msg_2_9_1" approved="yes">
+        <source>File saved to '%s', bytes: %s, MD5: %s </source>
+        <target state="final">Fil sparad i '%s', bytes: %s, MD5: %s </target>
+      </trans-unit>
+      <trans-unit id="type_3" resname="type_3" approved="yes">
+        <source>CACHE</source>
+        <target state="final">CACHE</target>
+      </trans-unit>
+      <trans-unit id="action_3_1" resname="action_3_1" approved="yes">
+        <source>Clear Cache</source>
+        <target state="final">Rensa cache</target>
+      </trans-unit>
+      <trans-unit id="type_4" resname="type_4" approved="yes">
+        <source>EXTENSION</source>
+        <target state="final">FÖRLÄNGNING</target>
+      </trans-unit>
+      <trans-unit id="type_5" resname="type_5" approved="yes">
+        <source>ERROR</source>
+        <target state="final">FEL</target>
+      </trans-unit>
+      <trans-unit id="action_5_0" resname="action_5_0" approved="yes">
+        <source>Error handler</source>
+        <target state="final">Felhanterare</target>
+      </trans-unit>
+      <trans-unit id="type_254" resname="type_254" approved="yes">
+        <source>SETTING</source>
+        <target state="final">INSTÄLLNING</target>
+      </trans-unit>
+      <trans-unit id="action_254_1" resname="action_254_1" approved="yes">
+        <source>Change</source>
+        <target state="final">Ändra</target>
+      </trans-unit>
+      <trans-unit id="type_255" resname="type_255" approved="yes">
+        <source>LOGIN</source>
+        <target state="final">LOGGA IN</target>
+      </trans-unit>
+      <trans-unit id="action_255_1" resname="action_255_1" approved="yes">
+        <source>LOGIN</source>
+        <target state="final">LOGGA IN</target>
+      </trans-unit>
+      <trans-unit id="action_255_2" resname="action_255_2" approved="yes">
+        <source>LOGOUT</source>
+        <target state="final">LOGGA UT</target>
+      </trans-unit>
+      <trans-unit id="action_255_3" resname="action_255_3" approved="yes">
+        <source>ATTEMPT</source>
+        <target state="final">FÖRSÖK</target>
+      </trans-unit>
+      <trans-unit id="chLog_title" resname="chLog_title" approved="yes">
+        <source>Admin Changelog</source>
+        <target state="final">Admin ändringslogg</target>
+      </trans-unit>
+      <trans-unit id="chLog_users_0" resname="chLog_users_0" approved="yes">
+        <source>All users</source>
+        <target state="final">Alla användare</target>
+      </trans-unit>
+      <trans-unit id="chLog_users_-1" resname="chLog_users_-1" approved="yes">
+        <source>Self</source>
+        <target state="final">Själv</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_0" resname="chLog_time_0" approved="yes">
+        <source>This week</source>
+        <target state="final">Denna vecka</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_1" resname="chLog_time_1" approved="yes">
+        <source>Last week</source>
+        <target state="final">Förra veckan</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_2" resname="chLog_time_2" approved="yes">
+        <source>Last 7 days</source>
+        <target state="final">Senaste 7 dagarna</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_10" resname="chLog_time_10" approved="yes">
+        <source>This month</source>
+        <target state="final">Denna månad</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_11" resname="chLog_time_11" approved="yes">
+        <source>Last month</source>
+        <target state="final">Förra månaden</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_12" resname="chLog_time_12" approved="yes">
+        <source>Last 31 days</source>
+        <target state="final">Senaste 31 dagarna</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_20" resname="chLog_time_20" approved="yes">
+        <source>No limit</source>
+        <target state="final">Ingen gräns</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_time" resname="chLog_l_time" approved="yes">
+        <source>Time</source>
+        <target state="final">Tid</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_user" resname="chLog_l_user" approved="yes">
+        <source>User</source>
+        <target state="final">Användare</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_action" resname="chLog_l_action" approved="yes">
+        <source>Action</source>
+        <target state="final">Aktivitet</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_types" resname="chLog_l_types" approved="yes">
+        <source>Type</source>
+        <target state="final">Typ</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_table" resname="chLog_l_table" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabell</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_details" resname="chLog_l_details" approved="yes">
+        <source>Details</source>
+        <target state="final">Detaljer</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
