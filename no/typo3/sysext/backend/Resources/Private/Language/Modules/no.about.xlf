@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/about.xlf" date="2011-10-17T20:22:34Z" product-name="typo3-cms-backend" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="introtext" approved="yes">
+        <source>Web Content Management System</source>
+        <target state="final">Web Content Management System</target>
+      </trans-unit>
+      <trans-unit id="userInfo" approved="yes">
+        <source>You're logged in as user</source>
+        <target state="final">Du er logget inn som bruker</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
