@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814907" source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:35Z" product-name="recycler" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Corbeille</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description" approved="yes">
+        <source>The recycler allows you to select any deleted data and undelete it. You can undelete recursive if the parent of the element is deleted too.</source>
+        <target state="final">La corbeille vous permet de sélectionner des données supprimées et les restaurer. Vous pouvez restaurer récursivement si le parent des éléments a aussi été supprimé.</target>
+      </trans-unit>
+      <trans-unit id="label_allrecordtypes" resname="label_allrecordtypes" approved="yes">
+        <source>All Record Types</source>
+        <target state="final">Tous les types d'enregistrement.</target>
+      </trans-unit>
+      <trans-unit id="button.cancel" resname="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuler</target>
+      </trans-unit>
+      <trans-unit id="button.delete" resname="button.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Supprimer</target>
+      </trans-unit>
+      <trans-unit id="button.deleteselected" resname="button.deleteselected" approved="yes">
+        <source>Delete {0} records</source>
+        <target state="final">Supprimer {0} enregistrements</target>
+      </trans-unit>
+      <trans-unit id="button.undo" resname="button.undo" approved="yes">
+        <source>Recover</source>
+        <target state="final">Restaurer</target>
+      </trans-unit>
+      <trans-unit id="button.expand" resname="button.expand" approved="yes">
+        <source>Expand record</source>
+        <target state="final">Etendre l'enregistrement</target>
+      </trans-unit>
+      <trans-unit id="button.undoselected" resname="button.undoselected" approved="yes">
+        <source>Recover {0} records</source>
+        <target state="final">Restaurer {0} enregistrements</target>
+      </trans-unit>
+      <trans-unit id="button.reload" resname="button.reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">Recharger</target>
+      </trans-unit>
+      <trans-unit id="modal.delete.header" resname="modal.delete.header" approved="yes">
+        <source>Confirm deletion</source>
+        <target state="final">Confirmer la suppression</target>
+      </trans-unit>
+      <trans-unit id="modal.undo.header" resname="modal.undo.header" approved="yes">
+        <source>Recover records</source>
+        <target state="final">Enregistrements restaurés</target>
+      </trans-unit>
+      <trans-unit id="modal.undo.recursive" resname="modal.undo.recursive" approved="yes">
+        <source>Recover content and subpages recursively</source>
+        <target state="final">Restaurer les contenus et les sous-pages récursivement</target>
+      </trans-unit>
+      <trans-unit id="modal.deletecontent.text" resname="modal.deletecontent.text" approved="yes">
+        <source>Do you really want to delete the record "{0}" {1} permanently? You cannot revert this action!</source>
+        <target state="final">Voulez-vous vraiment supprimer définitivement les enregistrements "{0}" {1} ? Aucun retour possible!</target>
+      </trans-unit>
+      <trans-unit id="modal.massdelete.text" resname="modal.massdelete.text" approved="yes">
+        <source>Do you really want to delete all selected records and potential subpages? You cannot revert this action!</source>
+        <target state="final">Voulez-vous vraiment supprimer tous les enregistrements sélectionnés et sous-pages potentielles? Aucun retour possible!</target>
+      </trans-unit>
+      <trans-unit id="modal.deletepage.text" resname="modal.deletepage.text" approved="yes">
+        <source>Do you really want to delete the page "{0}" {1} and all of its contents (records and pages) permanently? You cannot revert this action!</source>
+        <target state="final">Voulez-vous vraiment supprimer définitivement la page "{0}" {1} et tous ses contenus (enregistrements et pages)? Aucun retour possible!</target>
+      </trans-unit>
+      <trans-unit id="modal.undocontent.text" resname="modal.undocontent.text" approved="yes">
+        <source>Do you really want to recover the record "{0}" {1}?</source>
+        <target state="final">Voulez-vous vraiment restaurer l'enregistrement "{0}" {1}?</target>
+      </trans-unit>
+      <trans-unit id="modal.undopage.text" resname="modal.undopage.text" approved="yes">
+        <source>Do you really want to recover the page "{0}" {1}, its contents and optionally all of its subpages?</source>
+        <target state="final">Voulez-vous vraiment restaurer la page "{0}" {1}, ses contenus et potentiellement toutes les sous-pages?</target>
+      </trans-unit>
+      <trans-unit id="modal.undo.parentpages" resname="modal.undo.parentpages" approved="yes">
+        <source>All parent pages have been restored to ensure a valid rootline!</source>
+        <target state="final">Les pages parentes ont été restaurés pour s'assurer d'avoir une arborescence fonctionnelle !</target>
+      </trans-unit>
+      <trans-unit id="modal.massundo.text" resname="modal.massundo.text" approved="yes">
+        <source>Do you really want to recover all selected records and optionally potential subpages?</source>
+        <target state="final">Voulez-vous vraiment restaurer tous les enregistrements sélectionnés ainsi que les sous-pages potentielles?</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.norecordsselected" resname="flashmessage.delete.norecordsselected" approved="yes">
+        <source>No records set to delete.</source>
+        <target state="final">Aucun enregistrement définit à supprimer</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.success.singular" resname="flashmessage.delete.success.singular" approved="yes">
+        <source>One record was deleted.</source>
+        <target state="final">Un enregistrement a été supprimé.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.success.plural" resname="flashmessage.delete.success.plural" approved="yes">
+        <source>%d records were deleted.</source>
+        <target state="final">% enregistrements ont été supprimés.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.failure.singular" resname="flashmessage.delete.failure.singular" approved="yes">
+        <source>Could not delete one record.</source>
+        <target state="final">Impossible de supprimer un enregistrement.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.failure.plural" resname="flashmessage.delete.failure.plural" approved="yes">
+        <source>Could not delete %d records.</source>
+        <target state="final">Impossible de supprimer %d enregistrements.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.norecordsselected" resname="flashmessage.undo.norecordsselected" approved="yes">
+        <source>No records set to recover.</source>
+        <target state="final">Aucun enregistrement à restaurer.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.success.singular" resname="flashmessage.undo.success.singular" approved="yes">
+        <source>One record was recovered.</source>
+        <target state="final">Un enregistrement a été restauré.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.success.plural" resname="flashmessage.undo.success.plural" approved="yes">
+        <source>%d records were recovered.</source>
+        <target state="final">% enregistrements ont été restaurés.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.failure.singular" resname="flashmessage.undo.failure.singular" approved="yes">
+        <source>Could not recover one record.</source>
+        <target state="final">L'enregistrement ne peut pas être restauré.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.failure.plural" resname="flashmessage.undo.failure.plural" approved="yes">
+        <source>Could not recover %d records.</source>
+        <target state="final">% enregistrements ne peuvent pas être restaurés.</target>
+      </trans-unit>
+      <trans-unit id="table.header.uid" resname="table.header.uid" approved="yes">
+        <source>UID</source>
+        <target state="final">UID</target>
+      </trans-unit>
+      <trans-unit id="table.header.pid" resname="table.header.pid" approved="yes">
+        <source>PID</source>
+        <target state="final">PID</target>
+      </trans-unit>
+      <trans-unit id="table.header.record" resname="table.header.record" approved="yes">
+        <source>Record</source>
+        <target state="final">Enregistrement</target>
+      </trans-unit>
+      <trans-unit id="table.header.actions" resname="table.header.actions" approved="yes">
+        <source>Actions</source>
+        <target state="final">Actions</target>
+      </trans-unit>
+      <trans-unit id="table.header.recordtype" resname="table.header.recordtype" approved="yes">
+        <source>Record Type</source>
+        <target state="final">Type d'enregistrement</target>
+      </trans-unit>
+      <trans-unit id="table.header.tstamp" resname="table.header.tstamp" approved="yes">
+        <source>Last edit</source>
+        <target state="final">Dernière édition</target>
+      </trans-unit>
+      <trans-unit id="table.header.crdate" resname="table.header.crdate" approved="yes">
+        <source>Created on</source>
+        <target state="final">Créé le</target>
+      </trans-unit>
+      <trans-unit id="table.header.owner" resname="table.header.owner" approved="yes">
+        <source>Owner</source>
+        <target state="final">Propriétaire</target>
+      </trans-unit>
+      <trans-unit id="table.header.deletedBy" resname="table.header.deletedBy" approved="yes">
+        <source>Deleted by</source>
+        <target state="final">Supprimé par</target>
+      </trans-unit>
+      <trans-unit id="table.header.path" resname="table.header.path" approved="yes">
+        <source>Path</source>
+        <target state="final">Chemin</target>
+      </trans-unit>
+      <trans-unit id="record.deleted" resname="record.deleted" approved="yes">
+        <source>deleted</source>
+        <target state="final">supprimé</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
