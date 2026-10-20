@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="pages" approved="yes">
+        <source>Page</source>
+        <target state="final">صفحه</target>
+      </trans-unit>
+      <trans-unit id="be_users" approved="yes">
+        <source>Backend user</source>
+        <target state="final">کاربر بخش پشتیبان</target>
+      </trans-unit>
+      <trans-unit id="be_groups" approved="yes">
+        <source>Backend usergroup</source>
+        <target state="final">گروه بخش پشتیبان</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">فضای کار</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
