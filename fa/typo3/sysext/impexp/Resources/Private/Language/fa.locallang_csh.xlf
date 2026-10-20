@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814829" source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang_csh.xlf" date="2011-10-17T20:22:33Z" product-name="impexp" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>Import/Export</source>
+        <target state="final">واردکردن/صادرکردن</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Native Import/Export module for TYPO3 data. Can export single records, content of tables, single pages or whole branches of the page tree. Includes attached media like image and preserves relations between records. Exports only to TYPO3 specific format, either a binary format (.T3D) or XML. The format is meant for exchange between TYPO3 systems.</source>
+        <target state="final">بخش بومی صادرکردن/واردکرد داده‌های TYPO3. امکان صادر کردن ردیف‌ها، محتوا و جداول منفرد، یا صفحات مورد نظر و حتی تمام شاخه‌های یک ساختار درختی از این بخش مقدور است. ممکن است این صدور با تمام محتوای ضمیمه شده مثل تصاویر صورت پذیرد و ارتباط بین ردیف‌ها محفوظ خواهد بود. تنها به صورت مختص TYPO3 به شکل باینری (.T3D) یا XML انجام می‌پذیرد. این صورت‌بندی جهت تبادل بین سامانه‌های TYPO3 مختلف تمهید شده است.</target>
+      </trans-unit>
+      <trans-unit id="_.image" resname="_.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/impexp.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" approved="yes">
+        <source>Example of the preview display during export configuration of a page. Notice how records on the page are include plus how references inside the record is found and included as well (bottom of screen).</source>
+        <target state="final">نمونۀ نمایش بازنگری در موقعیت پیکربندی تنظیمات صادر کردن صفحه. به چگونگی شامل شدن ردیف‌ها در صفحه و همچنین چگونگی معلوم شدن مراجع داخل ردیف‌ها و شامل شدن آنها دقت کنید (انتهای صفحه).</target>
+      </trans-unit>
+      <trans-unit id="export.alttitle" resname="export.alttitle" approved="yes">
+        <source>Exporting records from TYPO3</source>
+        <target state="final">صادر کردن ردیف‌های TYPO3</target>
+      </trans-unit>
+      <trans-unit id="export.details" resname="export.details" xml:space="preserve" approved="yes">
+				<source>There are a number of methods by which you can export data from TYPO3:
+- Export a single page or branch of the page tree (use page icon context menu)
+- Export a single record from any page (use record icon context menu)
+- Export all records from a specific table on a specific page (using the Web&gt;List module)
+- Export an arbitrary selection of records from the clipboard (using the Web&gt;List module)
+
+The export format observes all TYPO3s methods for relations between the records in the export file. But you will have to configure how these relations are maintained, at least to some degree. Sometimes you would want to include records referred to, at other times you surely want to keep the original mapping. That depends on your objectives with the export.
+
+Regardless of your configuration for export you will always see a complete reflection of all chosen records and their internal relations in the preview display found in the bottom of the export module page.
+
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before exporting if there are any error messages there!</source>
+			<target state="final">روش‌های مختلفی برای صادرکردن داده‌ها از TYPO3 وجود دارد:
+- صادر کردن یک صفحۀ مجزا یا شاخه‌ای از ساختار درختی (با استفاده از نماد صفحه و فهرست جزئیات)
+- صادر کردن یک ردیف مجزا از هر صفحه‌ای (با استفاده از نماد ردیف و فهرست جزئیات آن)
+- صادر کردن همۀ ردیف‌ها از جدول خاص و صفحۀ مورد نظر (با استفاده از بخش وب&gt;فهرست)
+- صادر کردن مجموعۀ دلخواهی از ردیف‌ها از کلیپ‌برد (با استفاده از بخش وب&gt;فهرست)
+
+قالب و صورت‌بندی صادرات همۀ روندهای TYPO3 در خصوص روابط بین ردیف‌ها را در فایل خروجی رعایت می‌کند. اما شما باید حداقل درجۀ مشخصی را برای چگونگی ثبت این روابط تعیین کنید. گاهی اوقات شما می‌خواهید ردیف‌هائی را که به‌آن‌ها اشاره شده داشته باشید، گاهی هم می‌خواهید نقشه‌بندی اصلی را داشته باشید. بستگی به هدف شما از خروجی گرفتن دارد. 
+
+فارغ از پیکربندی شما برای صادرات، همواره شما انعکاس متکاملی از همۀ ردیف‌های انتخاب شده و ارتباطات داخلی آنها در نمایش بازنگری و در انتهای صفحۀ صادرات ملاحظه خواهید کرد.
+
+&lt;b&gt;پیام‌های خطا:&lt;/b&gt; قبل از خروجی گرفتن نهائی مطمئن شوید در برگۀ «پیام‌ها» پیام خطائی وجود نداشته باشد!</target></trans-unit>
+      <trans-unit id="_export.seeAlso" resname="_export.seeAlso" approved="yes">
+        <source>xMOD_tx_impexp:import</source>
+        <target state="final">xMOD_tx_impexp:import</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_export.image" resname="_export.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/export.png,
+EXT:impexp/Resources/Public/Images/cshimages/export1.png,
+EXT:impexp/Resources/Public/Images/cshimages/export2.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/export.png,
+EXT:impexp/Resources/Public/Images/cshimages/export1.png,
+EXT:impexp/Resources/Public/Images/cshimages/export2.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="export.image_descr" resname="export.image_descr" xml:space="preserve" approved="yes">
+				<source>To export a page or record, simply click the icon and select "Export" from the context menu.
+With the Web&gt;List module you can also export all records from a table by first clicking the table title to see only this table, then next to the CSV export you will find the export button for a T3D export of the table.
+You can export the contents of the clipboard as well by simply selecting "Export" in the menu.</source>
+			<target state="final">برای صادر کردن یک صفحه یا ردیف، بر روی نماد آن کلیک نموده و از فهرست ظاهر شده گزینۀ "صادرکردن" را انتخاب کنید.
+ بواسطۀ بخش وب&gt;فهرست نیز می‌توانید همۀ ردیف‌های مختلف را از جدول مورد نظر صادر کنید، برای این‌کار عنوان بر روی جدول مورد نظر کلیک نمائید تا جدول مورد نظر نمایش داده شود، سپس در کنار صدور CSV کلید صدور به شکل T3D را ملاحظه خواهید نمود تا جدول مورد نظر را صادر کنید.
+شما قادر خواهید بود محتوای موجود در «حافظۀ موقت» را صرفا با استفاده از گزینۀ "صدور" در فهرست صادر نمایید.</target></trans-unit>
+      <trans-unit id="pageTreeCfg.alttitle" resname="pageTreeCfg.alttitle" approved="yes">
+        <source>Configuration of page tree export</source>
+        <target state="final">پیکربندی صدور ساختاردرختی</target>
+      </trans-unit>
+      <trans-unit id="pageTreeCfg.description" resname="pageTreeCfg.description" xml:space="preserve" approved="yes">
+				<source>Here you configure how a page or a branch of the page tree should be exported. Using the selector box you can set the number of levels of subpages to include in the export.
+By default all records belonging to a page is included when a page is exported.</source>
+			<target state="final">از اینجا امکان پیکربندی چگونگی صدور یک صفحه یا یک شاخه از ساختار درختی ممکن می‌گردد. با استفاده از کادر انتخاب شما قادر خواهید بود سطوح و عمق زیرصفحات را برای صدور تعیین نمائید.
+به طور پیش‌‌فرض همۀ صفحات زیرمجموعۀ صفحۀ انتخاب شده شامل عملیات صدور خواهند بود.</target></trans-unit>
+      <trans-unit id="_pageTreeCfg.image" resname="_pageTreeCfg.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/pagetreecfg.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/pagetreecfg.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pageTreeDisplay.alttitle" resname="pageTreeDisplay.alttitle" approved="yes">
+        <source>Page Tree</source>
+        <target state="final">ساختاردرختی صفحات</target>
+      </trans-unit>
+      <trans-unit id="pageTreeDisplay.description" resname="pageTreeDisplay.description" approved="yes">
+        <source>Based on the levels selected for page tree export this will show the structure that is about to be exported. If any pages are specifically excluded by the exclude option they are not shown either.</source>
+        <target state="final">با توجه به عمق صفحات انتخاب شده برای صدور ساختار درختی، این بخش ساختاری را که برای صدور آماده شده است نمایش می‌دهد. در صورتی‌که هر یک از صفحات از عملیات صدور با استفاده از کلید مربوطه مستثنی شده باشد، در اینجا به نمایش در نخواهند آمد.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.alttitle" resname="pageTreeMode.alttitle" approved="yes">
+        <source>Levels</source>
+        <target state="final">عمق سطوح</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.description" resname="pageTreeMode.description" approved="yes">
+        <source>Here you select how deeply in the page tree from the current starting point to go for this export.</source>
+        <target state="final">در اینجا امکان انتخاب عمق صدور صفحات از صفحۀ فعلی تا مقدار مورد نظر وجود دارد.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
