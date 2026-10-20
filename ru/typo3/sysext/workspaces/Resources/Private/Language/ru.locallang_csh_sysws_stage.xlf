@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815018" source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_csh_sysws_stage.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Defines custom workspace stages in TYPO3 which allows for groups of people to work together in a defined process. More information about workspaces can be found in the document "Inside TYPO3".</source>
+        <target state="final">Определение пользовательских этапов рабочего процесса в TYPO3 позволяет группам людей взаимодействовать в рамках всего процесса. Дополнительная информация о рабочих областях имеется в документе "Inside TYPO3".</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the name of the workspace stage.</source>
+        <target state="final">Дайте название этапу рабочего процесса.</target>
+      </trans-unit>
+      <trans-unit id="responsible_persons.description" resname="responsible_persons.description" approved="yes">
+        <source>Define which BE users are responsible for this workspace stage. This selected BE users are possible recipients for the stage change emails.</source>
+        <target state="final">Определите, какие внутренние пользователи будут отвечать за данный этап работы. Эти пользователи получат возможность получать письма с уведомлением об изменениях на этапе.</target>
+      </trans-unit>
+      <trans-unit id="default_mailcomment.description" resname="default_mailcomment.description" approved="yes">
+        <source>Here its possible to define a standard mail comment which will be inserted into the stage change mail. When no standard mail comment was defined here its possible to write a comment for the mail on every stage change.</source>
+        <target state="final">Здесь можно определить стандартный комментарий в письме, уведомляющем об изменении этапа работы. Если здесь не определить стандартный комментарий, то его придется писать при каждом изменении этапа.</target>
+      </trans-unit>
+      <trans-unit id="notification_defaults.description" resname="notification_defaults.description" approved="yes">
+        <source>Select these backend users or backend groups that should be selected per default to receive a notification mail. Select only users/groups that are also selected as responsible for this stage.</source>
+        <target state="final">Выберете внутренних пользователей или их группы, которые будут выбраны по умолчанию в качестве получателей писем-уведомлений. Выбирайте лишь тех пользователей/группы, которые также являются ответственными за текущий этап.</target>
+      </trans-unit>
+      <trans-unit id="allow_notificaton_settings.description" resname="allow_notificaton_settings.description" approved="yes">
+        <source>Disable this checkbox to hide the recipient and additional recipient fields from the stage change popup window. Notifications are sent in the background nevertheless but based on configuration in workspace stage setting.</source>
+        <target state="final">Отключите этот флажок для скрытия полей получателя и дополнительных получателей из формы изменения этапа элемента. Уведомления будут отправляться в фоне, но с учетом настроек рабочего этапа.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
