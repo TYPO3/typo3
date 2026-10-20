@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf" date="2018-03-21T11:47:00Z" product-name="adminpanel" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="module.label" approved="yes">
+        <source>Debug</source>
+        <target state="final">Feilsøk</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.label" approved="yes">
+        <source>Log</source>
+        <target state="final">Logg</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.message" approved="yes">
+        <source>Log Message</source>
+        <target state="final">Logg melding</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.component" approved="yes">
+        <source>Component</source>
+        <target state="final">Komponent</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.level" approved="yes">
+        <source>Level</source>
+        <target state="final">Nivå</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByComponent" approved="yes">
+        <source>Group by Component</source>
+        <target state="final">Gruppere etter komponent</target>
+      </trans-unit>
+      <trans-unit id="submodule.events.label" approved="yes">
+        <source>Events</source>
+        <target state="final">Hendelser</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.query" approved="yes">
+        <source>Query</source>
+        <target state="final">Forespørsel</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryCount" approved="yes">
+        <source>Count</source>
+        <target state="final">Antall</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.label" approved="yes">
+        <source>Page title</source>
+        <target state="final">Sidetittel</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Tittel</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.provider" approved="yes">
+        <source>Provider</source>
+        <target state="final">Tilbyder</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Navn</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
