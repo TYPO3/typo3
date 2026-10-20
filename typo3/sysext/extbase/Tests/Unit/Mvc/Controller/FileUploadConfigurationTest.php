@@ -275,7 +275,7 @@ final class FileUploadConfigurationTest extends UnitTestCase
     public function ensureValidConfigurationThrowsExceptionIfTargetTypeIsNotFileReference(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('The FileUploadConfiguration can only be used for properties of type FileReference.');
+        $this->expectExceptionMessageIs('The FileUploadConfiguration can only be used for properties of type FileReference.');
         $this->expectExceptionCode(1721623184);
 
         $fileUploadConfiguration = new FileUploadConfiguration('myProperty');
@@ -293,7 +293,7 @@ final class FileUploadConfigurationTest extends UnitTestCase
     public function ensureValidConfigurationThrowsExceptionIfPropertyNameContainsDot(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('The property name for the FileUploadConfiguration must not contain any dot.');
+        $this->expectExceptionMessageIs('The property name for the FileUploadConfiguration must not contain any dot.');
         $this->expectExceptionCode(1724585391);
 
         $fileUploadConfiguration = new FileUploadConfiguration('foo.myProperty');
@@ -311,7 +311,7 @@ final class FileUploadConfigurationTest extends UnitTestCase
     public function ensureValidConfigurationThrowsExceptionIfMaxFilesIsLessThanMinFiles(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Maximum number of files cannot be less than minimum number of files.');
+        $this->expectExceptionMessageIs('Maximum number of files cannot be less than minimum number of files.');
         $this->expectExceptionCode(1711799765);
 
         $fileUploadConfiguration = new FileUploadConfiguration('myProperty');
@@ -331,7 +331,7 @@ final class FileUploadConfigurationTest extends UnitTestCase
     public function ensureValidConfigurationThrowsExceptionIfUploadFolderIsNotSet(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('An upload folder must be defined for the FileUploadConfiguration.');
+        $this->expectExceptionMessageIs('An upload folder must be defined for the FileUploadConfiguration.');
         $this->expectExceptionCode(1711799735);
 
         $fileUploadConfiguration = new FileUploadConfiguration('myProperty');
@@ -365,7 +365,7 @@ final class FileUploadConfigurationTest extends UnitTestCase
     public function ensureValidConfigurationThrowsExceptionIfUploadFolderIsNoCombinedIdentifier(string $folder): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('The upload folder must be a combined identifier - e.g. 1:/user_upload/');
+        $this->expectExceptionMessageIs('The upload folder must be a combined identifier - e.g. 1:/user_upload/');
         $this->expectExceptionCode(1711801071);
 
         $fileUploadConfiguration = new FileUploadConfiguration('myProperty');

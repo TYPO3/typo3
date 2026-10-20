@@ -53,7 +53,7 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": The identity property "foo" is no UID.');
+        $this->expectExceptionMessageIs('Exception while property mapping at property path "": The identity property "foo" is no UID.');
         $this->get(PropertyMapper::class)->convert('foo', BackendUser::class);
     }
 
@@ -62,7 +62,7 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
     {
         $this->expectException(TargetNotFoundException::class);
         $this->expectExceptionCode(1297933823);
-        $this->expectExceptionMessage('Object of type TYPO3\CMS\Beuser\Domain\Model\BackendUser with identity "2" not found.');
+        $this->expectExceptionMessageIs('Object of type TYPO3\CMS\Beuser\Domain\Model\BackendUser with identity "2" not found.');
         $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $configurationManager = $this->get(ConfigurationManagerInterface::class);
         $configurationManager->setRequest($request);
@@ -119,7 +119,7 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": Creation of objects not allowed. To enable this, you need to set the PropertyMappingConfiguration Value "CONFIGURATION_CREATION_ALLOWED" to TRUE');
+        $this->expectExceptionMessageIs('Exception while property mapping at property path "": Creation of objects not allowed. To enable this, you need to set the PropertyMappingConfiguration Value "CONFIGURATION_CREATION_ALLOWED" to TRUE');
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->setTypeConverterOption(
             PersistentObjectConverter::class,
@@ -148,7 +148,7 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": Property "nonExistant" was not found in target object of type "TYPO3\CMS\Beuser\Domain\Model\BackendUser".');
+        $this->expectExceptionMessageIs('Exception while property mapping at property path "": Property "nonExistant" was not found in target object of type "TYPO3\CMS\Beuser\Domain\Model\BackendUser".');
         $this->get(PropertyMapper::class)->convert(['nonExistant' => 'johndoe'], BackendUser::class);
     }
 
@@ -157,7 +157,7 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": Property "uid" having a value of type "int" could not be set in target object of type "TYPO3\CMS\Beuser\Domain\Model\BackendUser"');
+        $this->expectExceptionMessageIsOrContains('Exception while property mapping at property path "": Property "uid" having a value of type "int" could not be set in target object of type "TYPO3\CMS\Beuser\Domain\Model\BackendUser"');
         $this->get(PropertyMapper::class)->convert(['uid' => 7], BackendUser::class);
     }
 }

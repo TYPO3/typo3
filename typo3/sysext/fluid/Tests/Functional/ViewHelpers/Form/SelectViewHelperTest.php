@@ -130,7 +130,7 @@ EOT;
         $view->assign('options', $options);
 
         $this->expectException(MissingArgumentException::class);
-        $this->expectExceptionMessage('Missing parameter "optionValueField" in SelectViewHelper for array value options.');
+        $this->expectExceptionMessageIs('Missing parameter "optionValueField" in SelectViewHelper for array value options.');
         $this->expectExceptionCode(1682693720);
 
         $view->render();
@@ -162,7 +162,7 @@ EOT;
         $view->assign('options', $options);
 
         $this->expectException(MissingArgumentException::class);
-        $this->expectExceptionMessage('Missing parameter "optionLabelField" in SelectViewHelper for array value options.');
+        $this->expectExceptionMessageIs('Missing parameter "optionLabelField" in SelectViewHelper for array value options.');
         $this->expectExceptionCode(1682693721);
 
         $view->render();

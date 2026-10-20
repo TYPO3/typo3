@@ -57,7 +57,7 @@ final class SrcsetCandidateTest extends UnitTestCase
     public function calculateWidthFailsForDensityWithoutReferenceWidth(): void
     {
         self::expectExceptionCode(1697743145);
-        $this->expectExceptionMessage('Reference width needs to be specified if pixel density descriptors (e. g. 2x) are used in srcset: 2x');
+        $this->expectExceptionMessageIs('Reference width needs to be specified if pixel density descriptors (e. g. 2x) are used in srcset: 2x');
         new DensitySrcsetCandidate(2.0)->getCalculatedWidth();
     }
 

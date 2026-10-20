@@ -45,7 +45,7 @@ final class ImportExportUtilityTest extends AbstractImportExportTestCase
     public function importFails(string $filePath): void
     {
         $this->expectException(\ErrorException::class);
-        $this->expectExceptionMessage('No page records imported');
+        $this->expectExceptionMessageIs('No page records imported');
         $subject = new ImportExportUtility(new NoopEventDispatcher());
         $subject->importT3DFile($filePath, 0);
     }

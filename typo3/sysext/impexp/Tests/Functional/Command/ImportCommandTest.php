@@ -39,7 +39,7 @@ final class ImportCommandTest extends AbstractImportExportTestCase
     public function importCommandRequiresFileArgument(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Not enough arguments (missing: "file")');
+        $this->expectExceptionMessageIs('Not enough arguments (missing: "file").');
         $tester = new CommandTester($this->get(ImportCommand::class));
         $tester->execute([], []);
     }

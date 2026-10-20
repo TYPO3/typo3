@@ -235,7 +235,7 @@ final class ObjectConverterTest extends FunctionalTestCase
 
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": Type of child property "' . $propertyName . '" of class "' . $className . '" could not be derived from constructor arguments as said class does not have a constructor defined.');
+        $this->expectExceptionMessageIs('Exception while property mapping at property path "": Type of child property "' . $propertyName . '" of class "' . $className . '" could not be derived from constructor arguments as said class does not have a constructor defined.');
 
         $propertyMapper = $this->get(PropertyMapper::class);
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
@@ -260,7 +260,7 @@ final class ObjectConverterTest extends FunctionalTestCase
 
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": Type of child property "' . $propertyName . '" of class "' . $className . '" could not be derived from constructor arguments as the constructor of said class does not have a parameter with property name "' . $propertyName . '".');
+        $this->expectExceptionMessageIs('Exception while property mapping at property path "": Type of child property "' . $propertyName . '" of class "' . $className . '" could not be derived from constructor arguments as the constructor of said class does not have a parameter with property name "' . $propertyName . '".');
 
         $propertyMapper = $this->get(PropertyMapper::class);
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
@@ -285,7 +285,7 @@ final class ObjectConverterTest extends FunctionalTestCase
 
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": Type of child property "' . $propertyName . '" of class "' . $className . '" could not be derived from constructor argument "' . $propertyName . '". This usually happens if the argument misses a type hint.');
+        $this->expectExceptionMessageIs('Exception while property mapping at property path "": Type of child property "' . $propertyName . '" of class "' . $className . '" could not be derived from constructor argument "' . $propertyName . '". This usually happens if the argument misses a type hint.');
 
         $propertyMapper = $this->get(PropertyMapper::class);
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
@@ -303,7 +303,7 @@ final class ObjectConverterTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": Setter for property "name" had no type hint or documentation in target object of type "');
+        $this->expectExceptionMessageIsOrContains('Exception while property mapping at property path "": Setter for property "name" had no type hint or documentation in target object of type "');
 
         $class = new class {
             public function setName($name): void {}
@@ -325,7 +325,7 @@ final class ObjectConverterTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": Property "name" having a value of type "string" could not be set in target object of type "');
+        $this->expectExceptionMessageIsOrContains('Exception while property mapping at property path "": Property "name" having a value of type "string" could not be set in target object of type "');
 
         $class = new class {
             private string $name; // @phpstan-ignore property.unused (intentionally inaccessible property to test property mapping failure)
@@ -377,7 +377,7 @@ final class ObjectConverterTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": Missing constructor argument "color" for object of type "');
+        $this->expectExceptionMessageIsOrContains('Exception while property mapping at property path "": Missing constructor argument "color" for object of type "');
 
         $class = new class ('', '') {
             public $name;
@@ -400,7 +400,7 @@ final class ObjectConverterTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": Override of target type not allowed. To enable this, you need to set the PropertyMappingConfiguration Value "CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED" to TRUE.');
+        $this->expectExceptionMessageIs('Exception while property mapping at property path "": Override of target type not allowed. To enable this, you need to set the PropertyMappingConfiguration Value "CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED" to TRUE.');
 
         $class = new class {};
 
@@ -415,7 +415,7 @@ final class ObjectConverterTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": The given type "TYPO3Tests\TypeConverterTest\Domain\Model\Animal" is not a subtype of "');
+        $this->expectExceptionMessageIsOrContains('Exception while property mapping at property path "": The given type "TYPO3Tests\TypeConverterTest\Domain\Model\Animal" is not a subtype of "');
 
         $class = new class {};
 

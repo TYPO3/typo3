@@ -36,7 +36,7 @@ final class InstallUtilityTest extends FunctionalTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1776680483);
-        $this->expectExceptionMessage('Test afterPackageActivation event');
+        $this->expectExceptionMessageIs('Test afterPackageActivation event');
 
         $this->get(InstallUtility::class)->install('test_install_package_activation');
     }

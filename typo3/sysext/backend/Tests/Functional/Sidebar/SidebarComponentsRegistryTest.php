@@ -152,7 +152,7 @@ final class SidebarComponentsRegistryTest extends FunctionalTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1765923035);
-        $this->expectExceptionMessage('Sidebar component with identifier "non-existing-component" is not registered');
+        $this->expectExceptionMessageIs('Sidebar component with identifier "non-existing-component" is not registered');
 
         $registry = $this->createRegistry([]);
         $registry->getComponent('non-existing-component');

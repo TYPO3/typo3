@@ -100,7 +100,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode($expectedExceptionCode);
-        $this->expectExceptionMessage($message);
+        $this->expectExceptionMessageIs($message);
 
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
@@ -154,7 +154,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode($expectedExceptionCode);
-        $this->expectExceptionMessage($message);
+        $this->expectExceptionMessageIs($message);
 
         $cObj = $this->get(ContentObjectRenderer::class);
         $serverRequest = new ServerRequest()

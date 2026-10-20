@@ -132,8 +132,8 @@ final class ComponentsTest extends FunctionalTestCase
     #[DataProvider('invalidComponentsThrowExceptionDataProvider')]
     public function invalidComponentsThrowException(string $template, string $expectedException, int $expectedExceptionCode): void
     {
-        self::expectException($expectedException);
-        self::expectExceptionCode($expectedExceptionCode);
+        $this->expectException($expectedException);
+        $this->expectExceptionCode($expectedExceptionCode);
         /** @var FluidViewAdapter */
         $view = $this->get(FluidViewFactory::class)->create(new ViewFactoryData());
         $view->getRenderingContext()->getTemplatePaths()->setTemplateSource($template);
@@ -203,11 +203,11 @@ final class ComponentsTest extends FunctionalTestCase
     #[Test]
     public function missingComponentTemplateExceptionHasContextInformation(): void
     {
-        self::expectException(\TYPO3Fluid\Fluid\Core\Parser\Exception::class);
-        self::expectExceptionCode(1407060572);
-        $this->expectExceptionMessage('Error: The ViewHelper "<test:missingComponent>" could not be resolved.');
-        $this->expectExceptionMessage('The component template "MissingComponent/MissingComponent" in format ".html" could not be found in the configured template paths.');
-        $this->expectExceptionMessage('"' . implode('", "', [
+        $this->expectException(\TYPO3Fluid\Fluid\Core\Parser\Exception::class);
+        $this->expectExceptionCode(1407060572);
+        $this->expectExceptionMessageIsOrContains('Error: The ViewHelper "<test:missingComponent>" could not be resolved.');
+        $this->expectExceptionMessageIsOrContains('The component template "MissingComponent/MissingComponent" in format ".html" could not be found in the configured template paths.');
+        $this->expectExceptionMessageIsOrContains('"' . implode('", "', [
             // With default controller name "Default"
             ExtensionManagementUtility::extPath('components_override_test') . 'Resources/Private/Components/Default/MissingComponent/MissingComponent.fluid.html',
             ExtensionManagementUtility::extPath('components_override_test') . 'Resources/Private/Components/Default/MissingComponent/MissingComponent.html',

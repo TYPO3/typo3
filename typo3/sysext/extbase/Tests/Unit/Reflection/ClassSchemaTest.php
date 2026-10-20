@@ -93,7 +93,7 @@ final class ClassSchemaTest extends UnitTestCase
     public function classSchemaGenerationThrowsExceptionWithValidateAttributesForParamWithoutTypeHint(): void
     {
         $this->expectException(InvalidTypeHintException::class);
-        $this->expectExceptionMessage('Missing type information for parameter "$fooParam" in TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAttributeWithoutParamTypeHint->methodWithValidateAttributesAction(): Use a type hint.');
+        $this->expectExceptionMessageIs('Missing type information for parameter "$fooParam" in TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAttributeWithoutParamTypeHint->methodWithValidateAttributesAction(): Use a type hint.');
         $this->expectExceptionCode(1515075192);
 
         new ClassSchema(DummyControllerWithValidateAttributeWithoutParamTypeHint::class);

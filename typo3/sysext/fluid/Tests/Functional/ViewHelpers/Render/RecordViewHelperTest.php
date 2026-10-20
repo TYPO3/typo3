@@ -122,7 +122,7 @@ final class RecordViewHelperTest extends FunctionalTestCase
         $view->assign('record', $record);
 
         $this->expectException(InvalidArgumentValueException::class);
-        $this->expectExceptionMessage('The argument "record" was registered with type');
+        $this->expectExceptionMessageIsOrContains('The argument "record" was registered with type');
         $this->expectExceptionCode(1256475113);
 
         $view->render();
@@ -141,7 +141,7 @@ final class RecordViewHelperTest extends FunctionalTestCase
         $view->assign('record', $record);
 
         $this->expectException(InvalidArgumentValueException::class);
-        $this->expectExceptionMessage('The "record" argument must be an instance of');
+        $this->expectExceptionMessageIsOrContains('The "record" argument must be an instance of');
         $this->expectExceptionCode(1770215699);
 
         $view->render();

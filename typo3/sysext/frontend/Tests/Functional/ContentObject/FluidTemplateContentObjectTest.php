@@ -427,8 +427,8 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         );
         $this->expectException(InvalidTemplateResourceException::class);
         self::expectExceptionCode(1772572794);
-        $this->expectExceptionMessage('FLUIDTEMPLATE TypoScript object: Failed to resolve a template file for templateName "Missing".');
-        $this->expectExceptionMessage('"' . implode('", "', [
+        $this->expectExceptionMessageIsOrContains('FLUIDTEMPLATE TypoScript object: Failed to resolve a template file for templateName "Missing".');
+        $this->expectExceptionMessageIsOrContains('"' . implode('", "', [
             // With default controller name "Default"
             ExtensionManagementUtility::extPath('test_fluid_template') . 'Resources/Private/Templates/Default/Missing.fluid.html',
             ExtensionManagementUtility::extPath('test_fluid_template') . 'Resources/Private/Templates/Default/Missing.html',

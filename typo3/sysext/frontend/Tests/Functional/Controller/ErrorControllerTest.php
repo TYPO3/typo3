@@ -54,7 +54,7 @@ final class ErrorControllerTest extends FunctionalTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = '*';
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
-        $this->expectExceptionMessage('All your system are belong to us!');
+        $this->expectExceptionMessageIs('All your system are belong to us!');
         $this->expectExceptionCode(1518472181);
         $request = new ServerRequest();
         $request = new ServerRequest()->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
@@ -78,7 +78,7 @@ final class ErrorControllerTest extends FunctionalTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = '*';
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
-        $this->expectExceptionMessage('All your system are belong to us!');
+        $this->expectExceptionMessageIs('All your system are belong to us!');
         $this->expectExceptionCode(1607585445);
         $request = new ServerRequest();
         $request = new ServerRequest()->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));

@@ -75,7 +75,7 @@ final class PolymorphicDeserializerTest extends FunctionalTestCase
     public function spooledMailMessageCannotBeDeserialized(string $payload, string $expectedExceptionMessage, int $expectedExceptionCode): void
     {
         $this->expectException(DeserializerException::class);
-        $this->expectExceptionMessage($expectedExceptionMessage);
+        $this->expectExceptionMessageIs($expectedExceptionMessage);
         $this->expectExceptionCode($expectedExceptionCode);
 
         $result = $this->subject->deserialize($payload, [SentMessage::class]);

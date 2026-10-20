@@ -52,7 +52,7 @@ final class ValidatorClassNameResolverTest extends UnitTestCase
     public function resolveThrowsNoSuchValidatorExceptionDueToMissingClass(): void
     {
         $this->expectExceptionCode(1365799920);
-        $this->expectExceptionMessage('Validator class TYPO3\CMS\Extbase\Validation\Validator\NonExistingValidator does not exist');
+        $this->expectExceptionMessageIs('Validator class TYPO3\CMS\Extbase\Validation\Validator\NonExistingValidator does not exist');
 
         self::assertSame(IntegerValidator::class, ValidatorClassNameResolver::resolve('NonExisting'));
     }
@@ -61,7 +61,7 @@ final class ValidatorClassNameResolverTest extends UnitTestCase
     public function resolveThrowsNoSuchValidatorExceptionDueToClassInheritance(): void
     {
         $this->expectExceptionCode(1365776838);
-        $this->expectExceptionMessage(sprintf(
+        $this->expectExceptionMessageIs(sprintf(
             'Validator class %s must implement %s',
             CustomValidatorThatDoesNotImplementValidatorInterfaceValidator::class,
             ValidatorInterface::class

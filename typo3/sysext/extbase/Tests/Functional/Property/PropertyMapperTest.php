@@ -75,7 +75,7 @@ final class PropertyMapperTest extends FunctionalTestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": No converter found which can be used to convert from "integer" to "boolean"');
+        $this->expectExceptionMessageIsOrContains('Exception while property mapping at property path "": No converter found which can be used to convert from "integer" to "boolean"');
 
         $propertyMapper = $this->get(PropertyMapper::class);
         $propertyMapper->convert(9999, 'boolean');
@@ -93,7 +93,7 @@ final class PropertyMapperTest extends FunctionalTestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": Could not find a suitable type converter for "NonExistingClass" because no such class or interface exists.');
+        $this->expectExceptionMessageIs('Exception while property mapping at property path "": Could not find a suitable type converter for "NonExistingClass" because no such class or interface exists.');
 
         $propertyMapper = $this->get(PropertyMapper::class);
         $propertyMapper->convert(1, 'NonExistingClass');
@@ -104,7 +104,7 @@ final class PropertyMapperTest extends FunctionalTestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('There exist at least two converters which handle the conversion to an interface with priority "10"');
+        $this->expectExceptionMessageIsOrContains('There exist at least two converters which handle the conversion to an interface with priority "10"');
 
         $counter = new class implements ExtendedCountableInterface {
             public function count(): int
@@ -157,7 +157,7 @@ final class PropertyMapperTest extends FunctionalTestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('The source is not of type string, array, float, integer or boolean, but of type "object"');
+        $this->expectExceptionMessageIsOrContains('The source is not of type string, array, float, integer or boolean, but of type "object"');
 
         $generator = static function () {
             return 'string';
@@ -172,7 +172,7 @@ final class PropertyMapperTest extends FunctionalTestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": No converter found which can be used to convert from "boolean" to "TYPO3Tests\TypeConverterTest\Domain\Model\Cat"');
+        $this->expectExceptionMessageIsOrContains('Exception while property mapping at property path "": No converter found which can be used to convert from "boolean" to "TYPO3Tests\TypeConverterTest\Domain\Model\Cat"');
 
         $result = $this->get(PropertyMapper::class)->convert(false, Cat::class);
         self::assertNull($result);
@@ -248,7 +248,7 @@ final class PropertyMapperTest extends FunctionalTestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('It is not allowed to map property "color". You need to use $propertyMappingConfiguration->allowProperties(\'color\') to enable mapping of this property.');
+        $this->expectExceptionMessageIsOrContains('It is not allowed to map property "color". You need to use $propertyMappingConfiguration->allowProperties(\'color\') to enable mapping of this property.');
 
         $source = [
             'color' => 'black',

@@ -163,7 +163,7 @@ final class ContentAreaViewHelperTest extends FunctionalTestCase
         $view->assign('contentArea', $contentArea);
 
         $this->expectException(InvalidArgumentValueException::class);
-        $this->expectExceptionMessage('The argument "contentArea" was registered with type');
+        $this->expectExceptionMessageIsOrContains('The argument "contentArea" was registered with type');
         $this->expectExceptionCode(1256475113);
 
         $view->render();
@@ -183,7 +183,7 @@ final class ContentAreaViewHelperTest extends FunctionalTestCase
         $view->assign('contentArea', $contentArea);
 
         $this->expectException(InvalidArgumentValueException::class);
-        $this->expectExceptionMessage('The "contentArea" argument must be an instance of');
+        $this->expectExceptionMessageIsOrContains('The "contentArea" argument must be an instance of');
         $this->expectExceptionCode(1770212183);
 
         $view->render();

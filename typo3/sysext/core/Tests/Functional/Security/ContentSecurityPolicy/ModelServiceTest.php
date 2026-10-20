@@ -141,7 +141,7 @@ final class ModelServiceTest extends FunctionalTestCase
     public function buildMutationFromArrayThrowsValueError(array $array, string $expectedErrorMessage): void
     {
         $this->expectException(\ValueError::class);
-        $this->expectExceptionMessage($expectedErrorMessage);
+        $this->expectExceptionMessageIsOrContains($expectedErrorMessage);
         $subject = $this->get(ModelService::class);
         $subject->buildMutationFromArray($array);
     }

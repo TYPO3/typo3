@@ -95,7 +95,7 @@ final class DateTimeConverterTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": CONFIGURATION_DATE_FORMAT must be of type string, "array" given');
+        $this->expectExceptionMessageIs('Exception while property mapping at property path "": CONFIGURATION_DATE_FORMAT must be of type string, "array" given');
 
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->setTypeConverterOption(
@@ -297,7 +297,7 @@ final class DateTimeConverterTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": Could not convert the given source into a DateTime object because it was not an array with a valid date as a string');
+        $this->expectExceptionMessageIs('Exception while property mapping at property path "": Could not convert the given source into a DateTime object because it was not an array with a valid date as a string');
 
         $this->get(PropertyMapper::class)->convert([], \DateTime::class);
     }
@@ -307,7 +307,7 @@ final class DateTimeConverterTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": The specified timezone "foo" is invalid.');
+        $this->expectExceptionMessageIs('Exception while property mapping at property path "": The specified timezone "foo" is invalid.');
 
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->setTypeConverterOption(

@@ -173,7 +173,7 @@ final class ServiceProviderCompilationPassTest extends UnitTestCase
     public function exceptionForNonNullableExtensionArgument(): void
     {
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('A registered extension for the service "serviceA" requires the service to be available, which is missing.');
+        $this->expectExceptionMessageIs('A registered extension for the service "serviceA" requires the service to be available, which is missing.');
 
         $this->getContainer([
             TestServiceProviderOverride::class,

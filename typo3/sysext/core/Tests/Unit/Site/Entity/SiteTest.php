@@ -124,7 +124,7 @@ final class SiteTest extends UnitTestCase
     {
         $this->expectException(InvalidPageErrorHandlerException::class);
         $this->expectExceptionCode(1527432330);
-        $this->expectExceptionMessage('The configured error handler "' . Random::class . '" for status code 404 must implement the PageErrorHandlerInterface.');
+        $this->expectExceptionMessageIs('The configured error handler "' . Random::class . '" for status code 404 must implement the PageErrorHandlerInterface.');
         $subject = new Site('aint-misbehaving', 13, [
             'languages' => [],
             'errorHandling' => [
@@ -143,7 +143,7 @@ final class SiteTest extends UnitTestCase
     {
         $this->expectException(PageErrorHandlerNotConfiguredException::class);
         $this->expectExceptionCode(1522495914);
-        $this->expectExceptionMessage('No error handler given for the status code "404".');
+        $this->expectExceptionMessageIs('No error handler given for the status code "404".');
         $subject = new Site('aint-misbehaving', 13, ['languages' => []]);
         $subject->getErrorHandler(404);
     }
@@ -153,7 +153,7 @@ final class SiteTest extends UnitTestCase
     {
         $this->expectException(PageErrorHandlerNotConfiguredException::class);
         $this->expectExceptionCode(1522495914);
-        $this->expectExceptionMessage('No error handler given for the status code "404".');
+        $this->expectExceptionMessageIs('No error handler given for the status code "404".');
         $subject = new Site('aint-misbehaving', 13, [
             'languages' => [],
             'errorHandling' => [

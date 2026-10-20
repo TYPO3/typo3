@@ -91,7 +91,7 @@ final class ListenerProviderPassTest extends UnitTestCase
     public function cycleException(): void
     {
         $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionMessage('Your dependencies have cycles. That will not work out. Cycles found: legacy-hook->package4.listener, package4.listener->legacy-hook');
+        $this->expectExceptionMessageIs('Your dependencies have cycles. That will not work out. Cycles found: legacy-hook->package4.listener, package4.listener->legacy-hook');
 
         $this->getContainerWithListenerProvider([
             __DIR__ . '/Fixtures/Package1',

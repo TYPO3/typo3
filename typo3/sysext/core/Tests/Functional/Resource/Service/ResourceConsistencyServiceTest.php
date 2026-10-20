@@ -88,7 +88,7 @@ final class ResourceConsistencyServiceTest extends FunctionalTestCase
     {
         $this->expectException(ResultException::class);
         $this->expectExceptionCode(1747230949);
-        $this->expectExceptionMessage('Resource consistency check failed');
+        $this->expectExceptionMessageIs('Resource consistency check failed');
 
         $this->subject->validate(
             $this->storages[1],

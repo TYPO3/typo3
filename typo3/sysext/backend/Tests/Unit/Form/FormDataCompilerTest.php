@@ -133,7 +133,7 @@ final class FormDataCompilerTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1686867720);
-        $this->expectExceptionMessage('The current ServerRequestInterface must be provided in key "request"');
+        $this->expectExceptionMessageIs('The current ServerRequestInterface must be provided in key "request"');
 
         $this->subject->compile(
             [],

@@ -48,7 +48,7 @@ final class SrcsetAttributeTest extends UnitTestCase
     public function generateSrcsetWithMixedCandidates(): void
     {
         static::expectExceptionCode(1697745459);
-        $this->expectExceptionMessage('Invalid mix of w and x descriptors in srcset: dummy@100.jpg 100w, ..., dummy@2x.jpg 2x');
+        $this->expectExceptionMessageIs('Invalid mix of w and x descriptors in srcset: dummy@100.jpg 100w, ..., dummy@2x.jpg 2x');
         new SrcsetAttribute()
             ->addCandidate(new WidthSrcsetCandidate(100)->setUri('dummy@100.jpg'))
             ->addCandidate(new WidthSrcsetCandidate(200)->setUri('dummy@200.jpg'))

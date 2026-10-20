@@ -187,7 +187,7 @@ EOT
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1686813703);
-        $this->expectExceptionMessage('Using f:format.html in backend context is not allowed. Use f:sanitize.html or f:transform.html instead.');
+        $this->expectExceptionMessageIs('Using f:format.html in backend context is not allowed. Use f:sanitize.html or f:transform.html instead.');
 
         new TemplateView($context)->render();
     }

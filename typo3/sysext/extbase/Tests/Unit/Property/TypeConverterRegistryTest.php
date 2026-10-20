@@ -48,7 +48,7 @@ final class TypeConverterRegistryTest extends UnitTestCase
 
         $this->expectException(DuplicateTypeConverterException::class);
         $this->expectExceptionCode(1297951378);
-        $this->expectExceptionMessage(
+        $this->expectExceptionMessageIs(
             sprintf(
                 'There exist at least two type converters which handle the conversion from "boolean" to "boolean" with priority "10": %s and %s',
                 ltrim(BooleanConverter::class),
@@ -82,7 +82,7 @@ final class TypeConverterRegistryTest extends UnitTestCase
     {
         $this->expectException(TypeConverterException::class);
         $this->expectExceptionCode(1476044883);
-        $this->expectExceptionMessage('No converter found which can be used to convert from "array" to "boolean".');
+        $this->expectExceptionMessageIs('No converter found which can be used to convert from "array" to "boolean".');
 
         $this->subject->findTypeConverter('array', 'boolean');
     }
@@ -92,7 +92,7 @@ final class TypeConverterRegistryTest extends UnitTestCase
     {
         $this->expectException(InvalidTargetException::class);
         $this->expectExceptionCode(1297948764);
-        $this->expectExceptionMessage('Could not find a suitable type converter for "NonExistingClass" because no such class or interface exists.');
+        $this->expectExceptionMessageIs('Could not find a suitable type converter for "NonExistingClass" because no such class or interface exists.');
 
         $this->subject->findTypeConverter('integer', 'NonExistingClass');
     }
@@ -102,7 +102,7 @@ final class TypeConverterRegistryTest extends UnitTestCase
     {
         $this->expectException(TypeConverterException::class);
         $this->expectExceptionCode(1476044883);
-        $this->expectExceptionMessage('No converter found which can be used to convert from "array" to "stdClass".');
+        $this->expectExceptionMessageIs('No converter found which can be used to convert from "array" to "stdClass".');
 
         $this->subject->findTypeConverter('array', \stdClass::class);
     }

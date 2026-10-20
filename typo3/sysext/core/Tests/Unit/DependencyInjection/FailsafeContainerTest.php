@@ -188,7 +188,7 @@ final class FailsafeContainerTest extends UnitTestCase
         $container = new Container();
 
         $this->expectException(NotFoundExceptionInterface::class);
-        $this->expectExceptionMessage('Container entry "foo" is not available.');
+        $this->expectExceptionMessageIs('Container entry "foo" is not available.');
         $container->get('foo');
     }
 
@@ -343,7 +343,7 @@ final class FailsafeContainerTest extends UnitTestCase
         $container = new Container([$providerStub]);
 
         $this->expectException(ContainerExceptionInterface::class);
-        $this->expectExceptionMessage('Container entry "A" is part of a cyclic dependency chain.');
+        $this->expectExceptionMessageIs('Container entry "A" is part of a cyclic dependency chain.');
         $container->get('A');
     }
 
@@ -364,7 +364,7 @@ final class FailsafeContainerTest extends UnitTestCase
         $container = new Container([$providerStub]);
 
         $this->expectException(ContainerExceptionInterface::class);
-        $this->expectExceptionMessage('Container entry "A" is part of a cyclic dependency chain.');
+        $this->expectExceptionMessageIs('Container entry "A" is part of a cyclic dependency chain.');
         try {
             $container->get('A');
         } catch (ContainerExceptionInterface $e) {

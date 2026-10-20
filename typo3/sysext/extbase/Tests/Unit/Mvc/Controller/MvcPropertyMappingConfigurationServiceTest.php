@@ -218,7 +218,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $propertyMappingConfigurationService->injectHashService($hashService);
 
         $this->expectException(BadRequestException::class);
-        $this->expectExceptionMessage('The HMAC of the form could not be utilized.');
+        $this->expectExceptionMessageIs('The HMAC of the form could not be utilized.');
         $this->expectExceptionCode(1691267306);
 
         $propertyMappingConfigurationService->initializePropertyMappingConfigurationFromRequest($extbaseRequest, $arguments);
@@ -238,7 +238,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $propertyMappingConfigurationService->injectHashService($hashService);
 
         $this->expectException(BadRequestException::class);
-        $this->expectExceptionMessage('Trusted properties used outdated serialization format instead json.');
+        $this->expectExceptionMessageIs('Trusted properties used outdated serialization format instead json.');
         $this->expectExceptionCode(1699604555);
 
         $propertyMappingConfigurationService->initializePropertyMappingConfigurationFromRequest($extbaseRequest, $arguments);

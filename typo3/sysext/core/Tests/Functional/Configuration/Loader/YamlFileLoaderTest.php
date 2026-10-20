@@ -191,7 +191,7 @@ final class YamlFileLoaderTest extends FunctionalTestCase
     public function loadWihPlaceholdersInKeysResolvedKeyAlreadyExistingThrowsException(): void
     {
         $this->expectExceptionCode(1719316250);
-        $this->expectExceptionMessage('Placeholder key "%env("bar")%" can not be substituted with "foo" because key already exists');
+        $this->expectExceptionMessageIs('Placeholder key "%env("bar")%" can not be substituted with "foo" because key already exists');
         $this->expectException(\UnexpectedValueException::class);
         $fileName = 'EXT:core/Tests/Functional/Configuration/Loader/Fixtures/LoadWihPlaceholdersInKeysResolvedKeyAlreadyExisting.yaml';
         putenv('bar=foo');
@@ -206,7 +206,7 @@ final class YamlFileLoaderTest extends FunctionalTestCase
     public function loadWithUnresolvablePlaceholdersInKeysThrowsException(): void
     {
         $this->expectExceptionCode(1719672440);
-        $this->expectExceptionMessage('Unresolvable placeholder key "%env("notset1")%" could not be substituted.');
+        $this->expectExceptionMessageIs('Unresolvable placeholder key "%env("notset1")%" could not be substituted.');
         $this->expectException(\UnexpectedValueException::class);
         $fileName = 'EXT:core/Tests/Functional/Configuration/Loader/Fixtures/LoadWithUnresolvablePlaceholdersInKeys.yaml';
         putenv('env=bestVersion');

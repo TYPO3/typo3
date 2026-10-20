@@ -1400,7 +1400,7 @@ final class QueryBuilderTest extends UnitTestCase
         $queryBuilder->union('SELECT 1 AS field_one');
 
         $this->expectException(QueryException::class);
-        $this->expectExceptionMessage(
+        $this->expectExceptionMessageIs(
             'Insufficient UNION parts give, need at least 2. '
             . 'Please use union() and addUnion() to set enough UNION parts.',
         );

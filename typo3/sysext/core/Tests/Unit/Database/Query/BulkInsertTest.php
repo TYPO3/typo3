@@ -50,7 +50,7 @@ final class BulkInsertTest extends UnitTestCase
     public function getSQLWithoutSpecifiedValuesThrowsException(): void
     {
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('You need to add at least one set of values before generating the SQL.');
+        $this->expectExceptionMessageIs('You need to add at least one set of values before generating the SQL.');
 
         $query = new BulkInsertQuery($this->connection, $this->testTable);
 
@@ -255,7 +255,7 @@ final class BulkInsertTest extends UnitTestCase
     public function emptyInsertWithColumnSpecificationThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('No value specified for column bar (index 0).');
+        $this->expectExceptionMessageIs('No value specified for column bar (index 0).');
 
         $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
         $query->addValues([]);
@@ -265,7 +265,7 @@ final class BulkInsertTest extends UnitTestCase
     public function insertWithColumnSpecificationAndMultipleValuesForColumnThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Multiple values specified for column baz (index 1).');
+        $this->expectExceptionMessageIs('Multiple values specified for column baz (index 1).');
 
         $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
         $query->addValues(['bar', 'baz', 'baz' => 666]);
@@ -275,7 +275,7 @@ final class BulkInsertTest extends UnitTestCase
     public function insertWithColumnSpecificationAndMultipleTypesForColumnThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Multiple types specified for column baz (index 1).');
+        $this->expectExceptionMessageIs('Multiple types specified for column baz (index 1).');
 
         $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
         $query->addValues(

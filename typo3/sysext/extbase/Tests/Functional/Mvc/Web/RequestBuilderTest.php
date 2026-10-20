@@ -139,7 +139,7 @@ final class RequestBuilderTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1289843275);
-        $this->expectExceptionMessage('"extensionName" is not properly configured. Request can\'t be dispatched!');
+        $this->expectExceptionMessageIs('"extensionName" is not properly configured. Request can\'t be dispatched!');
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
@@ -152,7 +152,7 @@ final class RequestBuilderTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1289843277);
-        $this->expectExceptionMessage('"pluginName" is not properly configured. Request can\'t be dispatched!');
+        $this->expectExceptionMessageIs('"pluginName" is not properly configured. Request can\'t be dispatched!');
 
         $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration(['extensionName' => 'blog_example']);
@@ -513,7 +513,7 @@ final class RequestBuilderTest extends FunctionalTestCase
     {
         $this->expectException(InvalidControllerNameException::class);
         $this->expectExceptionCode(1313855173);
-        $this->expectExceptionMessage('The controller "NonExistentController" is not allowed by plugin "blog". Please check for TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin() in your ext_localconf.php.');
+        $this->expectExceptionMessageIs('The controller "NonExistentController" is not allowed by plugin "blog". Please check for TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin() in your ext_localconf.php.');
 
         $_GET['tx_blog_example_blog']['controller'] = 'NonExistentController';
 
@@ -549,7 +549,7 @@ final class RequestBuilderTest extends FunctionalTestCase
     {
         $this->expectException(PageNotFoundException::class);
         $this->expectExceptionCode(1313857897);
-        $this->expectExceptionMessage('The requested resource was not found');
+        $this->expectExceptionMessageIs('The requested resource was not found');
 
         $extensionName = 'blog_example';
         $pluginName = 'blog';
@@ -584,7 +584,7 @@ final class RequestBuilderTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1316104317);
-        $this->expectExceptionMessage('The default controller for extension "blog_example" and plugin "blog" can not be determined. Please check for TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin() in your ext_localconf.php.');
+        $this->expectExceptionMessageIs('The default controller for extension "blog_example" and plugin "blog" can not be determined. Please check for TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin() in your ext_localconf.php.');
 
         $extensionName = 'blog_example';
         $pluginName = 'blog';
@@ -671,7 +671,7 @@ final class RequestBuilderTest extends FunctionalTestCase
     {
         $this->expectException(InvalidActionNameException::class);
         $this->expectExceptionCode(1313855175);
-        $this->expectExceptionMessage('The action "NonExistentAction" (controller "TYPO3Tests\BlogExample\Controller\BlogController") is not allowed by this plugin / module. Please check TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin() in your ext_localconf.php / array key "controllerActions" defined in your Configuration/Backend/Modules.php.');
+        $this->expectExceptionMessageIs('The action "NonExistentAction" (controller "TYPO3Tests\BlogExample\Controller\BlogController") is not allowed by this plugin / module. Please check TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin() in your ext_localconf.php / array key "controllerActions" defined in your Configuration/Backend/Modules.php.');
 
         $extensionName = 'blog_example';
         $pluginName = 'blog';
@@ -705,7 +705,7 @@ final class RequestBuilderTest extends FunctionalTestCase
     {
         $this->expectException(PageNotFoundException::class);
         $this->expectExceptionCode(1313857898);
-        $this->expectExceptionMessage('The requested resource was not found');
+        $this->expectExceptionMessageIs('The requested resource was not found');
 
         $extensionName = 'blog_example';
         $pluginName = 'blog';
@@ -803,7 +803,7 @@ final class RequestBuilderTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1295479651);
-        $this->expectExceptionMessage('The default action can not be determined for controller "TYPO3Tests\BlogExample\Controller\BlogController". Please check TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin() in your ext_localconf.php.');
+        $this->expectExceptionMessageIs('The default action can not be determined for controller "TYPO3Tests\BlogExample\Controller\BlogController". Please check TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin() in your ext_localconf.php.');
 
         $extensionName = 'blog_example';
         $pluginName = 'blog';

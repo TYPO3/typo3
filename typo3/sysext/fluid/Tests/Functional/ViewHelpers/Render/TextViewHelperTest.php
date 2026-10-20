@@ -209,7 +209,7 @@ final class TextViewHelperTest extends FunctionalTestCase
 
         $this->expectException($exception);
         $this->expectExceptionCode($exceptionCode);
-        $this->expectExceptionMessage($exceptionMessage);
+        $this->expectExceptionMessageIsOrContains($exceptionMessage);
 
         $view->render();
     }

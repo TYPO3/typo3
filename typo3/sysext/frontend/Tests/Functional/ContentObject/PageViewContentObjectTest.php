@@ -111,9 +111,9 @@ final class PageViewContentObjectTest extends FunctionalTestCase
             ]
         );
         $this->expectException(InvalidTemplateResourceException::class);
-        self::expectExceptionCode(1742058289);
-        $this->expectExceptionMessage('PAGEVIEW TypoScript object: Failed to resolve a template file for page layout "Standard".');
-        $this->expectExceptionMessage('"' . implode('", "', [
+        $this->expectExceptionCode(1742058289);
+        $this->expectExceptionMessageIsOrContains('PAGEVIEW TypoScript object: Failed to resolve a template file for page layout "Standard".');
+        $this->expectExceptionMessageIsOrContains('"' . implode('", "', [
             // With default controller name "Default"
             ExtensionManagementUtility::extPath('test_fluidpagerendering') . 'Resources/Private/Templates/Pages/Pages/Default/Standard.fluid.html',
             ExtensionManagementUtility::extPath('test_fluidpagerendering') . 'Resources/Private/Templates/Pages/Pages/Default/Standard.html',
@@ -151,7 +151,7 @@ final class PageViewContentObjectTest extends FunctionalTestCase
         );
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1711748615);
-        $this->expectExceptionMessage(sprintf('Cannot use reserved name "%s" as variable name in PAGEVIEW.', $variableName));
+        $this->expectExceptionMessageIs(sprintf('Cannot use reserved name "%s" as variable name in PAGEVIEW.', $variableName));
         $this->executeFrontendSubRequest(new InternalRequest()->withPageId(self::ROOT_PAGE_ID));
     }
 
