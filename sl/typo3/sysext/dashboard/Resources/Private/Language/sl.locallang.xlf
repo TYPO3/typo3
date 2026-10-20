@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="close" approved="yes">
+        <source>Close</source>
+        <target state="final">Zapri</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Dashboard</source>
+        <target state="final">Nadzorna plošča</target>
+      </trans-unit>
+      <trans-unit id="widget.add.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Zapri</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Zapri</target>
+      </trans-unit>
+      <trans-unit id="dashboard.add.button.close" x-unused-since="14.3" approved="yes">
+        <source>Close</source>
+        <target state="final">Zapri</target>
+      </trans-unit>
+      <trans-unit id="dashboard.configure.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Zapri</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.ok" approved="yes">
+        <source>Yes, delete it</source>
+        <target state="final">Da, izbriši</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Prekliči</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.title" approved="yes">
+        <source>About TYPO3</source>
+        <target state="final">O TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widget_group.general" approved="yes">
+        <source>General</source>
+        <target state="final">Splošno</target>
+      </trans-unit>
+      <trans-unit id="widget_group.news" approved="yes">
+        <source>News</source>
+        <target state="final">Novice</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
