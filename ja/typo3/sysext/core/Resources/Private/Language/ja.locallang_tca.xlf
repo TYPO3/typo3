@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814885" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="file_mountpoints_edit_title" resname="file_mountpoints_edit_title" approved="yes">
+        <source>Edit filemount</source>
+        <target state="final">ファイルマウントを編集</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints_add_title" resname="file_mountpoints_add_title" approved="yes">
+        <source>Create new filemount</source>
+        <target state="final">新しいファイルマウントを作成</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints_list_title" resname="file_mountpoints_list_title" approved="yes">
+        <source>List filemounts</source>
+        <target state="final">ファイルマウントリスト</target>
+      </trans-unit>
+      <trans-unit id="be_users.username" resname="be_users.username" approved="yes">
+        <source>Username</source>
+        <target state="final">ユーザ名</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_rename" resname="be_users.file_permissions.files_rename" approved="yes">
+        <source>Files: Rename</source>
+        <target state="final">ファイル：名前の変更</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.file_delete" resname="be_users.file_permissions.file_delete" approved="yes">
+        <source>Files: Delete</source>
+        <target state="final">ファイル： 削除</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.options" resname="be_users.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">オプション</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.access" resname="be_users.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">アクセス権限</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_rename" resname="be_groups.file_permissions.folder_rename" approved="yes">
+        <source>Directory: Rename</source>
+        <target state="final">ディレクトリ：名前の変更</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_delete" resname="be_groups.file_permissions.folder_delete" approved="yes">
+        <source>Directory: Delete</source>
+        <target state="final">ディレクトリ： 削除</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_rename" resname="be_groups.file_permissions.files_rename" approved="yes">
+        <source>Files: Rename</source>
+        <target state="final">ファイル：名前の変更</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_delete" resname="be_groups.file_permissions.files_delete" approved="yes">
+        <source>Files: Delete</source>
+        <target state="final">ファイル： 削除</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.options" resname="be_groups.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">オプション</target>
+      </trans-unit>
+      <trans-unit id="sys_news.tabs.access" resname="sys_news.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">アクセス権限</target>
+      </trans-unit>
+      <trans-unit id="pages" resname="pages" approved="yes">
+        <source>Page</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_toggle" resname="pages.hidden_toggle" approved="yes">
+        <source>Page visible</source>
+        <target state="final">ページを表示</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_toggle_formlabel" resname="pages.hidden_toggle_formlabel" approved="yes">
+        <source>Page visible</source>
+        <target state="final">ページを表示</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide" resname="pages.nav_hide" approved="yes">
+        <source>Page not enabled in menus</source>
+        <target state="final">ページがメニューで有効になっていません</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_toggle" resname="pages.nav_hide_toggle" approved="yes">
+        <source>Page enabled in menus</source>
+        <target state="final">ページをメニューで有効</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_toggle_formlabel" resname="pages.nav_hide_toggle_formlabel" approved="yes">
+        <source>Page enabled in menus</source>
+        <target state="final">ページをメニューで有効</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.0" resname="doktype.I.0" approved="yes">
+        <source>Standard</source>
+        <target state="final">スタンダード</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.1" resname="doktype.I.1" approved="yes">
+        <source>SysFolder</source>
+        <target state="final">システムフォルダ</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.folder" resname="doktype.I.folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">フォルダ</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.2" resname="doktype.I.2" approved="yes">
+        <source>Recycler</source>
+        <target state="final">ゴミ箱</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Pagetitle</source>
+        <target state="final">ページタイトル</target>
+      </trans-unit>
+      <trans-unit id="pages.slug" resname="pages.slug" approved="yes">
+        <source>URL Segment</source>
+        <target state="final">URLセグメント</target>
+      </trans-unit>
+      <trans-unit id="be_users" resname="be_users" approved="yes">
+        <source>Backend user</source>
+        <target state="final">バックエンドユーザ</target>
+      </trans-unit>
+      <trans-unit id="be_groups" resname="be_groups" approved="yes">
+        <source>Backend usergroup</source>
+        <target state="final">バックエンドユーザグループ</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts" resname="sys_filemounts" approved="yes">
+        <source>Filemount</source>
+        <target state="final">ファイルマウント</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.name" resname="sys_file_storage.name" approved="yes">
+        <source>Name</source>
+        <target state="final">名前</target>
+      </trans-unit>
+      <trans-unit id="sys_file.name" resname="sys_file.name" approved="yes">
+        <source>Filename</source>
+        <target state="final">ファイル名</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.image" resname="sys_file.type.image" approved="yes">
+        <source>Image</source>
+        <target state="final">画像</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.imageoverlayPalette" resname="sys_file_reference.imageoverlayPalette" approved="yes">
+        <source>Image Metadata</source>
+        <target state="final">画像のメタデータ</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.crop" resname="sys_file_reference.crop" approved="yes">
+        <source>Image manipulation</source>
+        <target state="final">画像操作</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.type" resname="sys_file_collection.type" approved="yes">
+        <source>Type</source>
+        <target state="final">種類</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.folder" resname="sys_file_collection.folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">フォルダ</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.category" resname="sys_file_collection.category" approved="yes">
+        <source>Category</source>
+        <target state="final">カテゴリ</target>
+      </trans-unit>
+      <trans-unit id="sys_language" resname="sys_language" approved="yes">
+        <source>Website Language</source>
+        <target state="final">ウェブサイトの言語</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace" resname="sys_workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">ワークスペース</target>
+      </trans-unit>
+      <trans-unit id="sys_category" resname="sys_category" approved="yes">
+        <source>Category</source>
+        <target state="final">カテゴリ</target>
+      </trans-unit>
+      <trans-unit id="sys_category.title" resname="sys_category.title" approved="yes">
+        <source>Title</source>
+        <target state="final">タイトル</target>
+      </trans-unit>
+      <trans-unit id="sys_category.categories" resname="sys_category.categories" approved="yes">
+        <source>Categories</source>
+        <target state="final">カテゴリ</target>
+      </trans-unit>
+      <trans-unit id="sys_category.tabs.category" resname="sys_category.tabs.category" approved="yes">
+        <source>Categories</source>
+        <target state="final">カテゴリ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
