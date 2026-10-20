@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814989" source-language="en" datatype="plaintext" original="EXT:setup/Resources/Private/Language/locallang_csh_mod.xlf" date="2011-10-17T20:22:37Z" product-name="setup" target-language="fi">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>User &gt; Setup module</source>
+        <target state="final">User &gt; Setup moduli (Käyttäjä &gt; Asetukset aliohjelmat)</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The Setup module allows the backend user to customize TYPO3 for his own login sessions. This includes the backend language and various other interface features.</source>
+        <target state="final">Setup moduli (Käyttäjä) antaa taustakäyttäjälle mahdollisuuden muokata TYPO3 asetuksia omaan istuntoonsa. Muokkausmahdollisuuksia ovat mm. kielenvalinta ja monet muut käyttäjäliitynnän osa-alueet.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>&lt;b&gt;Notice [For Admins]:&lt;/b&gt; These settings can all be overridden or have their default values changed by "User TSconfig". To read more about this concept, see the link below!</source>
+        <target state="final">&lt;b&gt;Huomautus [Administraattoreille];&lt;/b&gt; Nämä asetukset voidaan kaikki ylirjoittaa tai niiden oletusarvot muuttaa käyttäen "Käyttäjän TSasetuksia" ("User TSconfig"). Lue lisää näistä käyttäen allaolevaa linkkiä!</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The Setup module is selected in the left menu.
+This is how the Setup module interface looks like - a list of options to configure.</source>
+			<target state="final">Setup moduli (Käyttäjä) valitaan vasemmasta valikosta. Tämän kaltaiselta Setup moduli (Käyttäjä) näyttää - lista asetettavista vaihtoehdoista.</target></trans-unit>
+      <trans-unit id="language.alttitle" resname="language.alttitle" approved="yes">
+        <source>Backend Language selection</source>
+        <target state="final">BE-taustan (hallinnointinäkymä) kielivalinta</target>
+      </trans-unit>
+      <trans-unit id="language.description" resname="language.description" approved="yes">
+        <source>Select the backend language you prefer. Most parts of TYPO3s backend (for regular users) are translated into other languages.</source>
+        <target state="final">Valitse haluamasi kieli. Suuri osa TYPO3n hallinnoinnista on käännetty monelle kielelle.</target>
+      </trans-unit>
+      <trans-unit id="language.image_descr" resname="language.image_descr" approved="yes">
+        <source>TYPO3 is translated into around 40 languages. English is the default language and all labels must be available in English first and foremost. This screenshot shows translations for Hebrew, Arabic, Russian and Chinese.</source>
+        <target state="final">TYPO3 on käännetty n. 40 kielelle. Englanti on oletuskieli ja kaikkien nimien on oltava ainakin englanniksi. Tässä näyte heprean, arabian, venäjän ja kiinan kielistä.</target>
+      </trans-unit>
+      <trans-unit id="option_showThumbs.alttitle" resname="option_showThumbs.alttitle" approved="yes">
+        <source>Show Thumbnails by default</source>
+        <target state="final">Näytä pienkuvakkeet oletuksena</target>
+      </trans-unit>
+      <trans-unit id="option_helpText.alttitle" resname="option_helpText.alttitle" approved="yes">
+        <source>Show help text when applicable</source>
+        <target state="final">Näytä avustava teksti kun mahdollista</target>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.alttitle" resname="option_maxTitleLen.alttitle" approved="yes">
+        <source>Maximum title length</source>
+        <target state="final">Otsikon maksimipituus</target>
+      </trans-unit>
+      <trans-unit id="option_copyLevels.alttitle" resname="option_copyLevels.alttitle" approved="yes">
+        <source>Recursive Copy</source>
+        <target state="final">Rekursiivinen kopiointi</target>
+      </trans-unit>
+      <trans-unit id="option_recursiveDelete.alttitle" resname="option_recursiveDelete.alttitle" approved="yes">
+        <source>Recursive Delete</source>
+        <target state="final">Rekursiivinen poisto</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.alttitle" resname="option_edit_RTE.alttitle" approved="yes">
+        <source>Enable Rich Text Editor</source>
+        <target state="final">Ota RTE (Rich Text Editor) käyttöön</target>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.alttitle" resname="option_edit_docModuleUpload.alttitle" approved="yes">
+        <source>Enable File Uploads in editing forms</source>
+        <target state="final">Mahdollista tiedostolataukset muokkauslomakkeilla</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_realName.alttitle" resname="option_beUser_realName.alttitle" approved="yes">
+        <source>Your real name</source>
+        <target state="final">Oikea nimesi</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_realName.description" resname="option_beUser_realName.description" approved="yes">
+        <source>Enter your real name here.</source>
+        <target state="final">Anna tähän oikea nimesi.</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_email.alttitle" resname="option_beUser_email.alttitle" approved="yes">
+        <source>Your email address</source>
+        <target state="final">Sähköpostiosoitteesi</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_email.description" resname="option_beUser_email.description" approved="yes">
+        <source>Make sure this is a valid email address for you. This is the contact address that the backend administrator will use if he needs to contact you. Also, the TYPO3 system might need to send you messages at various times and this will be the recipient address.</source>
+        <target state="final">Varmista että tämä sähköpostiosoitteesi on oikea.Tätä sähköpostiosoitetta taustanhoitaja käyttää yhteydenottoissa Sinuun. Myös TYPO3 toiminnot saattavat tarvita tätä sähköpostiosoitetta eri viestitoiminnoissa joilloin tämä on Sinun vastaanottajaosoite.</target>
+      </trans-unit>
+      <trans-unit id="option_emailMeAtLogin.alttitle" resname="option_emailMeAtLogin.alttitle" approved="yes">
+        <source>Notify by login</source>
+        <target state="final">Ilmoita sisäänkirjautumisesta (login)</target>
+      </trans-unit>
+      <trans-unit id="option_emailMeAtLogin.description" resname="option_emailMeAtLogin.description" approved="yes">
+        <source>If you set this option you will receive an email from TYPO3 each time you (or "someone") logs in using your username. You might like to receive such a "warning" as a security measure so you will know if someone else picks up your password and uses your account.</source>
+        <target state="final">Asettaessasi tämän vaihtoehdon lähettää TYPO3 Sinulle sähköpostiviestin sisäänkirjoittautumisestasi (ati jonkun muun tekemstä sissäkirjoittautumisesta joka on tehty nimelläsi). Voi ollaettä haluat tämän kaltaisen varoituksen turvallisuussyistä jotta tietäisin ovatko käyttäjätunnnuksesi ja salasanasi pysyneet salassa.</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.alttitle" resname="option_newPassword.alttitle" approved="yes">
+        <source>Change password</source>
+        <target state="final">Muuta salasanaa</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.details" resname="option_newPassword.details" approved="yes">
+        <source>The passwords are encrypted to an MD5 hash when you leave the field so no plain text password is sent over the wire.</source>
+        <target state="final">Salasanat on suojattu MD5 hash mentelmällä joten siirityessäsi pois tiedosta joten tekstimuotista salasanaa ei lähetetä verkkoon.</target>
+      </trans-unit>
+      <trans-unit id="option_newPasswordAgain.alttitle" resname="option_newPasswordAgain.alttitle" approved="yes">
+        <source>Change password, confirm</source>
+        <target state="final">Muuta salasanaa, vahvista</target>
+      </trans-unit>
+      <trans-unit id="option_newPasswordAgain.description" resname="option_newPasswordAgain.description" approved="yes">
+        <source>Confirm the new password by entering it again, exactly like above. If the two new passwords do not match, the password will not be changed.</source>
+        <target state="final">Vahvista uusi salasana antamalla se uudestaan. Jos salasanat eivät vastaa toisiaan, salasanaa ei muuteta.</target>
+      </trans-unit>
+      <trans-unit id="reset.alttitle" resname="reset.alttitle" approved="yes">
+        <source>Reset all Values to default</source>
+        <target state="final">Aseta kaikki tiedot oletusarvoihin</target>
+      </trans-unit>
+      <trans-unit id="reset.description" resname="reset.description" approved="yes">
+        <source>If you select this option all settings in this module will be reset to the default settings of the system.</source>
+        <target state="final">Jos valitset tämän vaihtoehdon, kaikki tämän aliohjeman asetukset asetetaan oletusarvoihinsa järjestelmässä.</target>
+      </trans-unit>
+      <trans-unit id="reset.details" resname="reset.details" approved="yes">
+        <source>This does not apply to user name, email and password settings of course.</source>
+        <target state="final">Tämä ei vaikuta käyttäjänimeen, sähköpostiin tai salasanaan.</target>
+      </trans-unit>
+      <trans-unit id="simuser.alttitle" resname="simuser.alttitle" approved="yes">
+        <source>Simulate backend user</source>
+        <target state="final">Simuloi taustakäyttäjää</target>
+      </trans-unit>
+      <trans-unit id="simuser.description" resname="simuser.description" approved="yes">
+        <source>This option allows "admin"-users to change settings for another backend user in the system.</source>
+        <target state="final">Tämä vaihtoehto sallii "admin"-käyttäjän muokkaavan toisen taustakäyttäjän asetuksia järjestelmässä.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
