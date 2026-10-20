@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/db.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="mod_linkvalidator" approved="yes">
+        <source>LinkValidator</source>
+        <target state="final">Validátor odkazů</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.name" approved="yes">
+        <source>LinkValidator</source>
+        <target state="final">Validátor odkazů</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.page" approved="yes">
+        <source>Start page (uid)</source>
+        <target state="final">Úvodní stránka (uid)</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Hloubka</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.languages" approved="yes">
+        <source>Languages to search for broken links (Leave empty for all languages).</source>
+        <target state="final">Jazyky pro hledání nefunkčních odkazů (pro všechny jazyky ponechte prázdné).</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.conf" approved="yes">
+        <source>Overwrite TSconfig</source>
+        <target state="final">Přepsat TSconfig</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.email" approved="yes">
+        <source>Send email report to</source>
+        <target state="final">Poslat report e-mailem na</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.emailOnBrokenLinkOnly" approved="yes">
+        <source>Send email on new broken links only</source>
+        <target state="final">Poslat e-mail pouze s nově nefunkčními odkazy</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.emailTemplateName" approved="yes">
+        <source>Email template name (without the extension)</source>
+        <target state="final">Název Templatu e-mailu (bez rozšíření)</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidEmail" approved="yes">
+        <source>Invalid email format</source>
+        <target state="final">Neplatný formát emailu</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidPage" approved="yes">
+        <source>Invalid page uid, please enter a valid page uid</source>
+        <target state="final">Neplatné uid stránky, zadejte prosím platné uid</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidDepth" approved="yes">
+        <source>There is no depth set, please set it to one of the offered values</source>
+        <target state="final">Není vybrána hloubka, nastavte ji na jednu z nabízených hodnot</target>
+      </trans-unit>
+      <trans-unit id="tasks.notice.useDefaultTemplate" approved="yes">
+        <source>
+					The templateName was automatically set to the default because either the field in the task
+					configuration is empty or no file is found for the given name. Please note that both a .html and
+					.txt file must exist under the configured templatePath.
+                </source>
+        <target state="final">
+					Šablona templateName byla automaticky nastavena na výchozí hodnotu, protože pole v konfiguraci úkolu je prázdné nebo nebyl nalezen žádný soubor s daným názvem. Upozorňujeme, že v nakonfigurované složce templatePath musí existovat soubory .html i .txt.
+                </target>
+      </trans-unit>
+      <trans-unit id="tasks.error.emptyToEmail" approved="yes">
+        <source>There must be at least one recipient defined</source>
+        <target state="final">Musí existovat alespoň jeden příjemce</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidToEmail" approved="yes">
+        <source>Invalid format of one or more of the recipient email addresses</source>
+        <target state="final">Neplatný formát jedné nebo více e-mailových adres příjemce</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidFromEmail" approved="yes">
+        <source>Invalid format of the email address in the from header</source>
+        <target state="final">Neplatný formát e-mailové adresy v záhlaví</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidPageUid" approved="yes">
+        <source>The given page id %d is invalid</source>
+        <target state="final">Zadané ID stránky %d je neplatné</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.title" approved="yes">
+        <source>TYPO3 LinkValidator report</source>
+        <target state="final">Report TYPO3 LinkValidátoru</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview" approved="yes">
+        <source>Overview of broken links</source>
+        <target state="final">Přehled neplatných odkazů</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview.all" approved="yes">
+        <source>Total broken links: %s (last report: %s)</source>
+        <target state="final">Celkem neplatnách odkazů: %s (předchozí report: %s)</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview.internal" approved="yes">
+        <source>Internal links: %s (last report: %s)</source>
+        <target state="final">Interní odkazy: %s (předchozí report: %s)</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview.external" approved="yes">
+        <source>External links: %s (last report: %s)</source>
+        <target state="final">Externí odkazy: %s (předchozí report: %s)</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.overview.file" approved="yes">
+        <source>File / Media links: %s (last report: %s)</source>
+        <target state="final">Odkazy na soubory / média: %s (předchozí report: %s)</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.listing" approved="yes">
+        <source>Listing of broken links</source>
+        <target state="final">Seznam neplatnách odkazů</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.listing.pageExplanation" approved="yes">
+        <source>If record type is "Page", the page id is the parent page.</source>
+        <target state="final">Pokud je typ záznamu "Stránka",  page ID je nadřazená stránka.</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.listing.hoverExpalantion" approved="yes">
+        <source>Hover over an element to see more information e.g. the record title.</source>
+        <target state="final">Přejeďte přes prvek, abyste viděli více informací, např. název záznamu.</target>
+      </trans-unit>
+      <trans-unit id="tasks.email.listing.explanation" approved="yes">
+        <source>Explanation: Record | Language | Page | Record type | Target | Link type</source>
+        <target state="final">Vysvětlení: Záznam | Jazyk | Stránka | Typ záznamu | Cíl | Typ odkazu</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.record" approved="yes">
+        <source>Record</source>
+        <target state="final">Záznam</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.language" approved="yes">
+        <source>Language</source>
+        <target state="final">Jazyk</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Stránka</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.recordType" approved="yes">
+        <source>Record type</source>
+        <target state="final">Typ záznamu</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.target" approved="yes">
+        <source>Target</source>
+        <target state="final">Cíl</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Typ</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.type.db" approved="yes">
+        <source>Internal</source>
+        <target state="final">Interní</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.type.external" approved="yes">
+        <source>External</source>
+        <target state="final">Externí</target>
+      </trans-unit>
+      <trans-unit id="task.email.brokenLinks.type.file" approved="yes">
+        <source>File / Media</source>
+        <target state="final">Soubor / Média</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
