@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="bg">
+    <header/>
+    <body>
+      <trans-unit id="welcome_header" approved="yes">
+        <source>User login</source>
+        <target state="final">Потребителски вход</target>
+      </trans-unit>
+      <trans-unit id="logout_header" approved="yes">
+        <source>You have logged out.</source>
+        <target state="final">Вие излязохте от сайта.</target>
+      </trans-unit>
+      <trans-unit id="error_header" approved="yes">
+        <source>Login failure</source>
+        <target state="final">Грешка при вход.</target>
+      </trans-unit>
+      <trans-unit id="success_header" approved="yes">
+        <source>Login successful</source>
+        <target state="final">Успешен вход</target>
+      </trans-unit>
+      <trans-unit id="success_message" approved="yes">
+        <source>You are now logged in as '###USER###'</source>
+        <target state="final">Вие влязохте като '###USER###'</target>
+      </trans-unit>
+      <trans-unit id="status_header" approved="yes">
+        <source>Current status</source>
+        <target state="final">Текущ статус</target>
+      </trans-unit>
+      <trans-unit id="login" approved="yes">
+        <source>Login</source>
+        <target state="final">Вход</target>
+      </trans-unit>
+      <trans-unit id="logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">Изход</target>
+      </trans-unit>
+      <trans-unit id="send_password" approved="yes">
+        <source>Send password</source>
+        <target state="final">Изпрати парола</target>
+      </trans-unit>
+      <trans-unit id="reset_password" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">Занули парола</target>
+      </trans-unit>
+      <trans-unit id="change_password_header" approved="yes">
+        <source>Change your password</source>
+        <target state="final">Промяна на парола</target>
+      </trans-unit>
+      <trans-unit id="change_password" approved="yes">
+        <source>Change your password</source>
+        <target state="final">Промяна на парола</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label1" approved="yes">
+        <source>Enter new password</source>
+        <target state="final">Въведете нова парола</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label2" approved="yes">
+        <source>Repeat new password</source>
+        <target state="final">Повторете новата парола</target>
+      </trans-unit>
+      <trans-unit id="forgot_header" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">Забравена парола?</target>
+      </trans-unit>
+      <trans-unit id="forgot_email_password" xml:space="preserve" approved="yes">
+        <source>Your password
+Hi %s
+
+Your username is "%s"
+Your password is "%s"</source>
+      <target state="final">Вашата парола Здравейте %s Вашето потребителско име е: "%s" Вашата парола е: "%s"</target></trans-unit>
+      <trans-unit id="forgot_message_emailSent" approved="yes">
+        <source>Your password has now been sent to the email address %s</source>
+        <target state="final">Вашата парола беше изпратена на и-мейл: %s</target>
+      </trans-unit>
+      <trans-unit id="forgot_header_backToLogin" approved="yes">
+        <source>Return to login form</source>
+        <target state="final">Връщане към формата за вход</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
