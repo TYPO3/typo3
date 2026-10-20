@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="clipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">Показати буфер обміну</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">Вставити вміст буфера обміну</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted into this folder</source>
+        <target state="final">Вставити в: Вміст буфера обміну вставляється в цю папку</target>
+      </trans-unit>
+      <trans-unit id="editMarked" approved="yes">
+        <source>Edit Metadata</source>
+        <target state="final">Редагувати метадані</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" approved="yes">
+        <source>Transfer to clipboard</source>
+        <target state="final">Перенести до буферу обміну</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" approved="yes">
+        <source>Remove from clipboard</source>
+        <target state="final">Видалити з буфера обміну</target>
+      </trans-unit>
+      <trans-unit id="c_name" approved="yes">
+        <source>Name</source>
+        <target state="final">Назва</target>
+      </trans-unit>
+      <trans-unit id="c_size" approved="yes">
+        <source>Size</source>
+        <target state="final">Розмір</target>
+      </trans-unit>
+      <trans-unit id="c_record_type" approved="yes">
+        <source>Type</source>
+        <target state="final">Тип</target>
+      </trans-unit>
+      <trans-unit id="c_rw" approved="yes">
+        <source>RW</source>
+        <target state="final">RW</target>
+      </trans-unit>
+      <trans-unit id="files" approved="yes">
+        <source>files</source>
+        <target state="final">файли</target>
+      </trans-unit>
+      <trans-unit id="temp" approved="yes">
+        <source>Temporary files</source>
+        <target state="final">Тимчасові файли</target>
+      </trans-unit>
+      <trans-unit id="read" approved="yes">
+        <source>R</source>
+        <target state="final">Ч</target>
+      </trans-unit>
+      <trans-unit id="recycler" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Переробник</target>
+      </trans-unit>
+      <trans-unit id="write" approved="yes">
+        <source>W</source>
+        <target state="final">З</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableTitle" approved="yes">
+        <source>Access denied.</source>
+        <target state="final">Доступ заборонено.</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableMessage" approved="yes">
+        <source>You are trying to access a folder in a storage that is not browsable.</source>
+        <target state="final">Ви намагаєтеся отримати доступ до папки в сховищі, яку не можна переглядати.</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsTitle" approved="yes">
+        <source>Missing folder permissions</source>
+        <target state="final">Відсутні дозволи для папок</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsMessage" approved="yes">
+        <source>You have no access to the folder "%s".</source>
+        <target state="final">У вас немає доступу до папки "%s".</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundTitle" approved="yes">
+        <source>Folder not found.</source>
+        <target state="final">Папку не знайдено.</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundMessage" approved="yes">
+        <source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
+        <target state="final">Неможливо отримати доступ до папки "%s". Спроба використати батьківську папку(и).</target>
+      </trans-unit>
+      <trans-unit id="translateMetadata" approved="yes">
+        <source>Translate metadata</source>
+        <target state="final">Перекласти метадані</target>
+      </trans-unit>
+      <trans-unit id="createMetadataForLanguage" approved="yes">
+        <source>Create metadata of this file for %s</source>
+        <target state="final">Створити метадані цього файлу для %s</target>
+      </trans-unit>
+      <trans-unit id="editMetadataForLanguage" approved="yes">
+        <source>Edit metadata of this file for %s</source>
+        <target state="final">Редагувати метадані цього файлу для %s</target>
+      </trans-unit>
+      <trans-unit id="paramError" approved="yes">
+        <source>Parameter Error</source>
+        <target state="final">Помилка параметра</target>
+      </trans-unit>
+      <trans-unit id="targetNoDir" approved="yes">
+        <source>Target was not a directory!</source>
+        <target state="final">Призначення не є каталогом!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
