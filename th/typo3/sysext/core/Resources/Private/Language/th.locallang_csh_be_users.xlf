@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814853" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_be_users.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="th">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>This is the table of backend administration users. Backend users can login in the backend of TYPO3 and are typically producers of content on a website.</source>
+        <target state="final">นี่คือโต๊ะของผู้บริหาร backend Backend ผู้ใช้สามารถเข้าสู่ระบบในส่วนหลังของ TYPO3 และมักจะผลิตเนื้อหาในเว็บไซต์</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>The main settings for a backend user is a username, password and group memberships. The username and password authenticates the user to the system. The group memberships enables the user to perform actions in TYPO3 since groups are the main source of permission settings for a backend user.
+Backend usergroups can also be understood as "roles". A usergroup can contain a configuration of permissions which allows the user to play a certain role in the system.
+
+&lt;b&gt;The "Admin" user&lt;/b&gt;
+There is a special kind of user, the "Admin" user. This user has access to everything in TYPO3. There are no limits for Admin-users at all. You should normally have only a single or two admin-users in your system.
+Admin-users are the only users who can create other backend users. Alternatively you can create an "Action" which enables other normal users to do it as well (with certain restrictions of course).
+
+&lt;b&gt;Location&lt;/b&gt;
+Backend users are always created in the root of the page tree (like Backend groups are).
+
+&lt;b&gt;Comparing Users&lt;/b&gt;
+To manage and compare users, getting an overview of their access credentials etc. you can use the Tools &gt; User Admin module (extension: beuser). It allows you to group users by various categories of permissions. You can also switch to another users account by a single click of a button.</source>
+			<target state="final">การตั้งค่าหลักสำหรับผู้ใช้แบ็กเอนด์เป็นชื่อผู้ผ่านและกลุ่มสมาชิก ชื่อผู้ใช้และรหัสผ่าน authenticates ระบบผู้ใช้ สมาชิกกลุ่มช่วยให้ผู้ใช้ผู้ใช้ดำเนินการใน TYPO3 ตั้งแต่กลุ่มเป็นหลักเป็นแหล่งรับอนุญาตจากการตั้งค่าสำหรับ backend กลุ่มผู้ Backend สามารถเข้าใจบทบาท"" usergroup สามารถมีการกำหนดค่าของสิทธิ์ที่ผู้ใช้สามารถมีบทบาทบางอย่างในระบบ &lt;b&gt; "Admin"ผู้&lt;/b&gt; มีชนิดพิเศษของผู้ใช้""ผู้ดูแลระบบ ผู้ใช้คนนี้สามารถเข้าถึงทุกสิ่งใน TYPO3 มีทั้งหมดไม่มีข้อ จำกัด สำหรับผู้ใช้ที่ - Admin คุณมักจะมีเพียงหนึ่งหรือสองผู้ใช้ผู้ดูแลระบบในระบบของคุณ Admin มีผู้ใช้เฉพาะผู้ใช้ที่สามารถสร้างผู้ใช้แบ็กเอนด์อื่นๆ หรือคุณสามารถสร้าง"Action"ซึ่งช่วยให้ผู้ใช้ปกติอื่น ๆ ที่จะทำเช่นกัน (ด้วยข้อ จำกัด บางหลักสูตร) &lt;b&gt;สถานที่&lt;/b&gt; ผู้ใช้ Backend ถูกสร้างขึ้นเสมอในต้นไม้รากของหน้า (เช่นกลุ่ม Backend มี) &lt;b&gt;เปรียบเทียบผู้ใช้&lt;/b&gt; ในการจัดการ และผู้ใช้เปรียบเทียบ, สิทธิการเข้าถึงของภาพรวมของ ฯลฯ คุณสามารถใช้เครื่องมือ User Admin module&gt; (นามสกุล : beuser) จะช่วยให้ผู้ใช้กลุ่มตามประเภทต่างๆของสิทธิ์ คุณยังสามารถสลับไปใช้อีกบัญชีโดยคลิกเดียวที่ปุ่ม</target></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>Backend users are found in the root of the page tree. "Admin" backend users can always be recognized on their icon being red while normal users have a blue icon.
+The editing form of a backend users record.
+The "Tools &gt; User Admin" module where you can get an overview of the users on the system and what permissions they have. Click the "SU" button to switch to a users account.</source>
+			<target state="final">ผู้ใช้ Backend พบในต้นไม้รากหน้าของ "Admin"ผู้ backend สามารถเสมอได้รับการยอมรับใน icon ของสีแดงในขณะที่ผู้ใช้ปกติจะมีไอคอนสีน้ำเงิน ฟอร์มการแก้ไขการบันทึกผู้ใช้ backend "Tools&gt; User Admin module"ที่คุณจะได้ภาพรวมของผู้ใช้ ระบบและสิ่งที่พวกเขามีสิทธิ์ SU คลิกปุ่ม"เพื่อสลับไปยังบัญชีผู้ใช้</target></trans-unit>
+      <trans-unit id="username.description" resname="username.description" approved="yes">
+        <source>Enter the login name of the backend user.</source>
+        <target state="final">ป้อนชื่อเข้าสู่ระบบของผู้ใช้แบ็กเอนด์</target>
+      </trans-unit>
+      <trans-unit id="username.details" resname="username.details" approved="yes">
+        <source>A username is required and must be in lowercase without spaces in it. Furthermore the username must be unique. If it is not unique a number will be appended automatically.</source>
+        <target state="final">ชื่อผู้ใช้จำเป็นและต้องเป็นตัวพิมพ์เล็กไม่มีช่องว่างในนั้น นอกจากชื่อผู้ใช้ต้องไม่ซ้ำกัน ถ้าไม่ซ้ำกันตัวเลขจะถูกผนวกโดยอัตโนมัติ</target>
+      </trans-unit>
+      <trans-unit id="password.description" resname="password.description" approved="yes">
+        <source>Enter the password for the backend username above (Notice the value you enter &lt;i&gt;will&lt;/i&gt; be readable in the field!).</source>
+        <target state="final">Enter! รหัสผ่าน backend สำหรับผู้ใช้ไป &lt;i&gt;(หมายเหตุค่าที่คุณใส่จะสามารถอ่านได้ในฟิลด์)&lt;/i&gt;</target>
+      </trans-unit>
+      <trans-unit id="password.details" resname="password.details" xml:space="preserve" approved="yes">
+				<source>The password is required. Before the password is sent to the server it's md5-hashed, so the password value itself is not transferred over the Internet. This is true both when editing the password and when the user logs in.
+While this principle does not reveal the raw password it is &lt;i&gt;not&lt;/i&gt; the same as real encryption. If you need the highest degree of security you should install the TYPO3 backend on a secure server.
+The password is stored in the database as an md5-hash and thus it's not possible to extract the original password from the database either. This means that 'lost passwords' must be substituted with a new password for the user.
+
+&lt;b&gt;Notice&lt;/b&gt;
+When you enter the password in the password field it is initially visible in clear text! First when the password field focus is lost will the password become a "list of dots".
+
+&lt;b&gt;User changing password&lt;/b&gt;
+Users can change their password from the User &gt; Setup module</source>
+			<target state="final">รหัสผ่านจะต้อง ก่อนรหัสผ่านจะถูกส่งไปที่เซิร์ฟเวอร์มัน md5 - hashed ดังนั้นค่ารหัสผ่านของตัวเองไม่ได้โอนผ่านทางอินเทอร์เน็ต นี้เป็นจริงทั้งเมื่อมีการแก้ไขรหัสผ่านและเมื่อผู้ใช้ล็อกเข้า &lt;i&gt;หลักการนี้ในขณะที่ไม่เปิดเผยรหัสผ่านดิบจะไม่เหมือนกับการเข้ารหัสจริง&lt;/i&gt; หากคุณต้องการความปลอดภัยสูงสุดของคุณควรติดตั้งแบ็กเอนด์ TYPO3 ในเซิร์ฟเวอร์ที่ปลอดภัย รหัสผ่านจะถูกจัดเก็บในฐานข้อมูล hash เป็น - md5 จึงจะไม่สามารถแยกรหัสผ่านเดิมจากฐานข้อมูลทั้ง ซึ่งหมายความว่า'รหัสผ่านหาย'ต้องใช้แทนรหัสผ่านใหม่สำหรับผู้ใช้ &lt;b&gt; หมายเหตุ&lt;/b&gt; เมื่อคุณใส่รหัสผ่านในช่องรหัสผ่านจะเริ่มปรากฏในข้อความที่ชัดเจน ครั้งแรกเมื่อโฟกัสฟิลด์รหัสผ่านรหัสผ่านหายจะเป็นรายการ"จุด" &lt;b&gt;ผู้ใช้เปลี่ยนรหัสผ่าน&lt;/b&gt; ผู้ใช้สามารถเปลี่ยนรหัสผ่านได้จาก&gt; ติดตั้งโมดูล User</target></trans-unit>
+      <trans-unit id="usergroup.description" resname="usergroup.description" approved="yes">
+        <source>Assign backend user groups to the user.</source>
+        <target state="final">กำหนด backend ใช้กลุ่มของผู้ให้กับผู้ใช้</target>
+      </trans-unit>
+      <trans-unit id="usergroup.details" resname="usergroup.details" xml:space="preserve" approved="yes">
+				<source>The backend user groups defines the permissions which the backend user will inherit. So unless the backend user is an 'Admin' user, he needs to be a member of one or more user groups in order to have practically any permissions assigned. The properties set in the user groups are mostly added together.
+The first (top) group in the list is the group which will, by default, be the owner of pages the user creates.</source>
+			<target state="final">กลุ่มผู้ใช้ backend กำหนดสิทธิ์ที่ผู้ใช้ส่วนหลังจะรับช่วง ดังนั้นหากผู้ใช้แบ็กเอนด์เป็น'ผู้ดูแลเขาจะต้องเป็นสมาชิกของกลุ่มหนึ่งหรือผู้ใช้เพื่อให้มีสิทธิ์ที่กำหนดจริง คุณสมบัติของชุดในกลุ่มผู้ใช้ส่วนใหญ่มากัน ครั้งแรก (top) กลุ่มในรายการเป็นผู้ใช้กลุ่มที่จะเริ่มต้นด้วยของเป็นเจ้าของหน้าสร้าง</target></trans-unit>
+      <trans-unit id="lockToDomain.details" resname="lockToDomain.details" approved="yes">
+        <source>A TYPO3 system may have multiple domains pointing to it. Therefore this option secures that users can login only from a certain host name.</source>
+        <target state="final">ระบบ TYPO3 อาจมีโดเมนหลายโดเมนชี้ไป นี้จึงยึดตัวเลือกที่ผู้ใช้สามารถเข้าสู่ระบบเท่านั้นจากชื่อโฮสต์บาง</target>
+      </trans-unit>
+      <trans-unit id="disableIPlock.description" resname="disableIPlock.description" approved="yes">
+        <source>Disable the lock of the backend users session to the remote IP number.</source>
+        <target state="final">Disable ล็อคของเซสชันผู้ใช้แบ็กเอนด์ที่หมายเลข IP ไกล</target>
+      </trans-unit>
+      <trans-unit id="disableIPlock.details" resname="disableIPlock.details" approved="yes">
+        <source>You will have to disable this lock if backend users are accessing TYPO3 from ISDN or modem connections which may shutdown and reconnect with a new IP. The same would be true for DHCP assignment of IP numbers where new IP numbers are frequently assigned.</source>
+        <target state="final">คุณจะต้องปิดล็อคนี้หากผู้ใช้แบ็กเอนด์ที่เข้า TYPO3 จาก ISDN หรือโมเด็มเชื่อมต่อที่ปิดอาจและเชื่อมต่อกับใหม่ IP เดียวกันจะจริงสำหรับการกำหนด DHCP ของตัวเลข IP ที่หมายเลข IP ใหม่จะถูกกำหนดบ่อย</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.description" resname="db_mountpoints.description" approved="yes">
+        <source>Assign startpoints for the users page tree.</source>
+        <target state="final">startpoints กำหนดสำหรับผู้ใช้ที่หน้าต้นไม้</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.details" resname="db_mountpoints.details" xml:space="preserve" approved="yes">
+				<source>The page tree used my all Web-submodules to navigate must have some points-of-entry defined. Here you should insert one or more references to a page which will represent a new root page for the page tree. This is called a 'Database mount'.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that backend user groups also has DB mounts which can be inherited by the user. So if you want a group of users to share a page tree, you should probably mount the page tree in the backend user group which they share instead.</source>
+			<target state="final">ต้นไม้หน้าใช้เว็บของฉันทั้งหมด submodules - to - navigate ต้องมีบางจุดของรายการที่กำหนด ที่นี่คุณควรแทรกหนึ่งหรืออ้างอิงถึงต้นไม้หน้าใหม่ที่จะรากแสดงหน้าสำหรับ นี้เรียกว่า"ฐานเมา' &lt;strong&gt;สังเกตว่า&lt;/strong&gt; backend ใช้กลุ่มของผู้ยังมี DB mounts ซึ่งสามารถสืบทอดโดยผู้ใช้ ดังนั้นหากคุณต้องการให้ผู้ใช้กลุ่มของการแบ่งปันต้นไม้หน้าคุณอาจจะติดต้นไม้หน้าในกลุ่มผู้ใช้แบ็กเอนด์ที่พวกเขาใช้แทน</target></trans-unit>
+      <trans-unit id="db_mountpoints.image_descr" resname="db_mountpoints.image_descr" xml:space="preserve" approved="yes">
+				<source>A DB mount is assigned to the user. Users can only operate on pages and records which are inside their DB mounts!
+When a page is mounted for a user it will become the root of their page tree. The user must have access to the page through the regular page permissions set in the Web &gt; Access module.</source>
+			<target state="final">DB ภูเขาถูกกำหนดให้กับผู้ใช้ ผู้ใช้สามารถทำงานบนหน้าเว็บและข้อมูลที่มีอยู่ใน mounts ของ DB! เมื่อเพจที่ติดตั้งสำหรับผู้ใช้จะกลายเป็นต้นไม้รากของหน้าของ ผู้ใช้ต้องเข้าถึงหน้าผ่านหน้าปกติกำหนดสิทธิ์ใน&gt; Web Access module</target></trans-unit>
+      <trans-unit id="file_mountpoints.description" resname="file_mountpoints.description" approved="yes">
+        <source>Assign startpoints for the file folder tree.</source>
+        <target state="final">startpoints กำหนดสำหรับต้นไม้โฟลเดอร์แฟ้ม</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints.details" resname="file_mountpoints.details" xml:space="preserve" approved="yes">
+				<source>The file folder tree is used by all File-submodules to navigate between the file folders on the webserver.
+Notice as with 'DB mounts' the file folder mounts may be inherited from the member groups of the user.
+See Backend Groups for details</source>
+			<target state="final">โฟลเดอร์ต้นไม้แฟ้มจะใช้ทั้งหมดไฟล์ submodules เพื่อนำทางระหว่างโฟลเดอร์ไฟล์บนเว็บเซิร์ฟเวอร์ เงื่อนไขเช่นเดียวกับ'DB mounts'โฟลเดอร์ file mounts อาจจะรับมาจากกลุ่มสมาชิกของผู้ใช้ Backend Groups ดูรายละเอียด</target></trans-unit>
+      <trans-unit id="email.description" resname="email.description" approved="yes">
+        <source>Enter the email address of the user.</source>
+        <target state="final">ป้อนที่อยู่อีเมลของผู้ใช้</target>
+      </trans-unit>
+      <trans-unit id="email.details" resname="email.details" xml:space="preserve" approved="yes">
+				<source>This address is rather important to enter because this is where messages from the system is sent.
+&lt;strong&gt;Notice&lt;/strong&gt; the user is able to change this value by himself from within the User&gt;Setup module.</source>
+			<target state="final">ที่อยู่นี้ค่อนข้างสำคัญเข้าเพราะเป็นข้อความจากระบบที่มีการส่ง &lt;strong&gt;หนังสือผู้ใช้สามารถเปลี่ยนแปลงตัวเองนี้ค่าโดยจากภายใน&gt;&lt;/strong&gt; การติดตั้งโมดูล User</target></trans-unit>
+      <trans-unit id="realName.description" resname="realName.description" approved="yes">
+        <source>Enter the ordinary name of the user, eg. John Doe.</source>
+        <target state="final">ป้อนชื่อสามัญของผู้ใช้เช่น John Doe</target>
+      </trans-unit>
+      <trans-unit id="realName.details" resname="realName.details" approved="yes">
+        <source>&lt;strong&gt;Notice&lt;/strong&gt; the user is able to change this value by himself from within the User&gt;Setup module.</source>
+        <target state="final">&lt;strong&gt;แจ้งผู้ใช้สามารถเปลี่ยนแปลงตัวเองนี้ค่าโดยจากภายใน&gt;&lt;/strong&gt; การติดตั้งโมดูล User</target>
+      </trans-unit>
+      <trans-unit id="disable.description" resname="disable.description" approved="yes">
+        <source>This option will temporarily disable the user from logging in.</source>
+        <target state="final">จะปิดตัวชั่วคราวจากผู้ใช้เข้าสู่ระบบนี้</target>
+      </trans-unit>
+      <trans-unit id="admin.description" resname="admin.description" approved="yes">
+        <source>'Admin' users have TOTAL access to the system!</source>
+        <target state="final">ผู้ใช้ Admin'ได้เข้ารวมกับระบบ!</target>
+      </trans-unit>
+      <trans-unit id="admin.details" resname="admin.details" xml:space="preserve" approved="yes">
+				<source>'Admin' can do anything TYPO3 allows and this kind of user should be used only for administrative purposes. All daily handling should be done with regular users.
+'Admin' users don't need to be members of any backend user groups. However you should be aware that any page created by an admin user without a group will not have any owner-group assigned and thus it will probably be invisible for other users. If this becomes a problem you can easily solve it by assigning a user group to the 'Admin' user anyway. This does of course not affect the permissions since they are unlimited, but the first group listed is by default the owner group of newly created pages.
+'Admin' users are easily recognized as they appear with a red icon instead of the ordinary blue user-icon.
+
+You should probably not assign any other users than yourself as an 'Admin' user.</source>
+			<target state="final">'Admin'สามารถทำอะไรให้ TYPO3 และผู้ใช้ประเภทนี้ควรใช้เฉพาะเพื่อการบริหาร ทั้งหมดจัดการรายวันจะทำกับผู้ใช้ปกติ 'ผู้ดูแลระบบไม่จำเป็นต้องเป็นสมาชิกของทุกกลุ่มผู้ใช้แบ็กเอนด์ แต่คุณควรทราบว่าผู้ใช้ใด ๆ ที่หน้าสร้าง admin โดยผู้ใช้จะไม่มีกลุ่มไม่มีกลุ่มใด - เจ้าของกำหนดจึงจะมันอาจจะมองไม่เห็นอื่นๆ ถ้านี้เป็นปัญหาอยู่แล้วสามารถให้คุณสามารถแก้ไขได้โดยผู้ใช้กำหนดกลุ่มเพื่อดูแล'ผู้ใช้ หลักสูตรนี้จะไม่ส่งผลกระทบต่อสิทธิ์เนื่องจากมีไม่ จำกัด แต่กลุ่มแรกจะแสดงตามค่าเริ่มต้นกลุ่มเจ้าของหน้าเว็บที่สร้างขึ้นใหม่ 'ผู้ดูแลระบบได้รับการยอมรับอย่างง่ายดายตามที่ปรากฏเป็นไอคอนสีแดงแทนสีฟ้าสามัญผู้ใช้ icon คุณควรอาจไม่ได้กำหนดผู้ใช้อื่น ๆ กว่าตัวเองเป็น'ผู้ดูแลระบบ</target></trans-unit>
+      <trans-unit id="options.description" resname="options.description" approved="yes">
+        <source>Select if the user should inherit page tree or folder tree mountpoints from member groups.</source>
+        <target state="final">เลือกหากผู้ใช้ควรสืบทอดต้นไม้หน้าหรือโฟลเดอร์ mountpoints ต้นจากกลุ่มสมาชิก</target>
+      </trans-unit>
+      <trans-unit id="options.details" resname="options.details" xml:space="preserve" approved="yes">
+				<source>It's a great advantage to let users inherit mountpoints from membergroups because it makes administration of the same mountpoints for many users extremely easy.
+If you don't check these options, you must make sure the mount points for the page tree and file folder tree is set specifically for the user.</source>
+			<target state="final">จะเป็นประโยชน์มากเพื่อให้ผู้ใช้สืบทอด mountpoints จาก membergroups เพราะมันทำให้การบริหาร mountpoints เดียวกันสำหรับผู้ใช้จำนวนมากง่ายมาก หากคุณไม่ได้ตรวจสอบตัวเลือกเหล่านี้คุณต้องให้แน่ใจว่าเมานท์สำหรับต้นไม้หน้าเว็บและไฟล์โฟลเดอร์เป็นต้นไม้ ชุดพิเศษสำหรับผู้ใช้</target></trans-unit>
+      <trans-unit id="file_permissions.description" resname="file_permissions.description" approved="yes">
+        <source>Select file operation permissions for the user.</source>
+        <target state="final">เลือก file สิทธิ์การทำงานสำหรับผู้ใช้</target>
+      </trans-unit>
+      <trans-unit id="fileoper_perms.description" resname="fileoper_perms.description" approved="yes">
+        <source>Select file operation permissions for the user.</source>
+        <target state="final">เลือก file สิทธิ์การทำงานสำหรับผู้ใช้</target>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Enter the date from which the account is active.</source>
+        <target state="final">ป้อนวันซึ่งเป็นบัญชีที่ใช้งานอยู่</target>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>Enter the date from which the account is disabled.</source>
+        <target state="final">ป้อนวันซึ่งบัญชีเป็นผู้พิการ</target>
+      </trans-unit>
+      <trans-unit id="lastlogin.description" resname="lastlogin.description" approved="yes">
+        <source>This field shows the user's last log in date.</source>
+        <target state="final">ข้อมูลนี้จะแสดงบันทึกล่าสุดของผู้ใช้ในวันที่</target>
+      </trans-unit>
+      <trans-unit id="lang.description" resname="lang.description" approved="yes">
+        <source>Select the &lt;i&gt;default&lt;/i&gt; language.</source>
+        <target state="final">&lt;i&gt;เลือกภาษาเริ่มต้น&lt;/i&gt;</target>
+      </trans-unit>
+      <trans-unit id="lang.details" resname="lang.details" xml:space="preserve" approved="yes">
+				<source>This determines the language of the backend interface for the user. All mainstream parts available for regular users are available in the system language selected.
+'Admin'-users however will experience that the 'Admin'-only parts of TYPO3 is in english. This includes all submodules in "Tools" and the Web&gt;Template module.
+
+&lt;b&gt;Notice&lt;/b&gt; this is only setting the default language. As soon as the user has logged in the language must be changed through the User&gt;Setup module. Also you will have to install the corresponding language pack which can be found as an extension on TYPO3.org with the prefix "csh_XX" where XX is the TYPO3 language key.</source>
+			<target state="final">นี้จะกำหนดผู้ใช้ภาษาแบ็กเอนด์ของอินเตอร์เฟซสำหรับ ทุกชิ้นส่วนหลักสำหรับผู้ใช้ปกติมีอยู่ในภาษาระบบที่เลือก 'ผู้ใช้ Admin' แต่จะพบว่า'เท่านั้นส่วน Admin' ของ TYPO3 เป็นภาษาอังกฤษ ซึ่งรวมถึง submodules ใน"Tools"และเว็บ&gt; module Template &lt;b&gt;ประกาศนี้เป็นเพียงการตั้งค่าภาษาเริ่มต้น&lt;/b&gt; ทันทีที่ผู้ใช้มีบันทึกไว้ในภาษาที่ต้องเปลี่ยนผ่าน&gt; การติดตั้งโมดูล User นอกจากนี้คุณจะต้องติดตั้งชุดภาษาที่สอดคล้องกันซึ่งสามารถพบได้เป็นส่วนขยายที่ TYPO3.org ด้วยคำนำหน้าว่า"csh_XX"ที่ XX เป็นภาษาหลัก TYPO3</target></trans-unit>
+      <trans-unit id="userMods.description" resname="userMods.description" approved="yes">
+        <source>Select available backend modules for the user.</source>
+        <target state="final">เลือกโมดูล backend สำหรับผู้ใช้</target>
+      </trans-unit>
+      <trans-unit id="userMods.details" resname="userMods.details" xml:space="preserve" approved="yes">
+				<source>This determines which 'menu items' are available for the user in the backend.
+
+Notice that the same list of modules may be configured for the backend user groups and that these will be inherited by the user in addition to the modules you select here. It's highly likely that you should not set any modules for the user himself but rather select the modules in the backend groups he's a member of. However this list provides a great way to add a single module for specific users.</source>
+			<target state="final">นี้จะกำหนด'รายการเมนู"ใช้ได้สำหรับแบ็กเอนด์ของผู้ใช้ในการ สังเกตว่ารายการเดียวกันของโมดูลอาจกำหนดค่าสำหรับกลุ่มผู้ใช้แบ็กเอนด์และที่เหล่านี้จะถูกสืบทอดโดยที่ผู้ใช้นอกจากเพื่อโมดูลที่คุณเลือก ก็มีแนวโน้มที่คุณไม่ควรตั้งโมดูลใด ๆ สำหรับตัวเอง แต่ผู้ใช้เลือกโมดูลในกลุ่ม backend ที่เขาเป็นสมาชิกของ แต่รายการนี้มีวิธีการที่ดีในการเพิ่มโมดูลเดียวสำหรับผู้ใช้เฉพาะ</target></trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>Enter additional TSconfig for the user (advanced).</source>
+        <target state="final">ใส่ TSconfig เพิ่มเติมสำหรับผู้ใช้ (ขั้นสูง)</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details" resname="TSconfig.details" approved="yes">
+        <source>This field allows you to extend the configuration of the user in severe details. A brief summary of the options include a more detailed configuration of the backend modules, setting of user specific default table field values, setting of Rich Text Editor options etc.</source>
+        <target state="final">ฟิลด์นี้จะขยายการกำหนดค่าของผู้ใช้ในรายที่รุนแรง สรุปโดยย่อของตัวเลือกที่มีการกำหนดค่ารายละเอียดของโมดูล backend การตั้งค่าของค่าเริ่มต้นตารางข้อมูลผู้ใช้เฉพาะการตั้งค่าตัวเลือก Rich Text Editor เป็นต้น</target>
+      </trans-unit>
+      <trans-unit id="allowed_languages.description" resname="allowed_languages.description" approved="yes">
+        <source>Select which record languages the group members are limited to edit.</source>
+        <target state="final">เลือกภาษาที่บันทึกสมาชิกกลุ่มจะถูก จำกัด ให้แก้ไข</target>
+      </trans-unit>
+      <trans-unit id="allowed_languages.details" resname="allowed_languages.details" approved="yes">
+        <source>You can also limit users to specific languages with user group settings. Please see the same field for backend user groups for more details.</source>
+        <target state="final">คุณยังสามารถกำหนดให้ผู้ใช้ภาษาที่มีการตั้งค่ากลุ่มผู้ใช้ โปรดดูข้อมูลเดียวกันสำหรับกลุ่มผู้ใช้แบ็กเอนด์สำหรับรายละเอียดเพิ่มเติม</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
