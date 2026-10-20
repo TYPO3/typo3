@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf" date="2017-12-29T20:23:34Z" product-name="redirects" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="notification.slug_and_redirects.title" approved="yes">
+        <source>Slugs updated and redirects created</source>
+        <target state="final">URL-Segmente aktualisiert und Weiterleitungen erstellt</target>
+      </trans-unit>
+      <trans-unit id="notification.slug_and_redirects.message" approved="yes">
+        <source>Because you renamed a slug, the slugs of all sub-pages were updated and redirects were created for you automatically.</source>
+        <target state="final">Da Sie ein URL-Segment umbenannt haben, wurden die URL-Segmente aller Unterseiten aktualisiert und Weiterleitungen automatisch für Sie erstellt.</target>
+      </trans-unit>
+      <trans-unit id="notification.slug_only.title" approved="yes">
+        <source>Slugs updated</source>
+        <target state="final">URL-Segmente aktualisiert</target>
+      </trans-unit>
+      <trans-unit id="notification.slug_only.message" approved="yes">
+        <source>Because you renamed a slug, the slugs of all sub-pages were updated for you automatically.</source>
+        <target state="final">Da Sie ein URL-Segment umbenannt haben, wurden die URL-Segmente aller Unterseiten automatisch für Sie aktualisiert.</target>
+      </trans-unit>
+      <trans-unit id="notification.redirects.button.revert_update" approved="yes">
+        <source>Revert update</source>
+        <target state="final">Update zurücksetzen</target>
+      </trans-unit>
+      <trans-unit id="notification.redirects.button.revert_redirect" approved="yes">
+        <source>Revert redirects only</source>
+        <target state="final">Nur Weiterleitungen zurücknehmen</target>
+      </trans-unit>
+      <trans-unit id="redirects_error_title" approved="yes">
+        <source>An error occurred</source>
+        <target state="final">Es ist ein Fehler aufgetreten</target>
+      </trans-unit>
+      <trans-unit id="redirects_error_message" approved="yes">
+        <source>Sorry something went wrong.</source>
+        <target state="final">Leider ist ein Fehler aufgetreten.</target>
+      </trans-unit>
+      <trans-unit id="revert_update_success_title" approved="yes">
+        <source>Revert successful</source>
+        <target state="final">Rücknahme erfolgreich</target>
+      </trans-unit>
+      <trans-unit id="revert_update_success_message" approved="yes">
+        <source>All slug changes of sub pages have been reverted.</source>
+        <target state="final">Alle Slug-Änderungen von Unterseiten wurden rückgängig gemacht.</target>
+      </trans-unit>
+      <trans-unit id="revert_redirects_success_title" approved="yes">
+        <source>Revert successful</source>
+        <target state="final">Rücknahme erfolgreich</target>
+      </trans-unit>
+      <trans-unit id="revert_redirects_success_message" approved="yes">
+        <source>All created redirects have been reverted.</source>
+        <target state="final">Alle erstellten Weiterleitungen wurden zurückgenommen.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
