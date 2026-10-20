@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1498839785" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Sort sub pages</source>
+        <target state="final">Сортувати підсторінки</target>
+      </trans-unit>
+      <trans-unit id="currentPageOrder" resname="currentPageOrder" approved="yes">
+        <source>Current page order</source>
+        <target state="final">Поточний порядок сторінок</target>
+      </trans-unit>
+      <trans-unit id="changeOrder" resname="changeOrder" approved="yes">
+        <source>Sort these pages by</source>
+        <target state="final">Сортувати ці сторінки за</target>
+      </trans-unit>
+      <trans-unit id="changeOrderConfirm" resname="changeOrderConfirm" approved="yes">
+        <source>You're about to change the order of the above pages. Are you sure you want to continue?</source>
+        <target state="final">Ви збираєтеся змінити порядок сортування вищезгаданих сторінок. Ви впевнені, що хочете продовжити?</target>
+      </trans-unit>
+      <trans-unit id="fieldTitle" resname="fieldTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Заголовок сторінки</target>
+      </trans-unit>
+      <trans-unit id="fieldSubtitle" resname="fieldSubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Підзаголовок</target>
+      </trans-unit>
+      <trans-unit id="fieldNavitle" resname="fieldNavitle" approved="yes">
+        <source>Navigation title</source>
+        <target state="final">Заголовок навігації</target>
+      </trans-unit>
+      <trans-unit id="fieldCrdate" resname="fieldCrdate" approved="yes">
+        <source>Create-time</source>
+        <target state="final">Час створення</target>
+      </trans-unit>
+      <trans-unit id="fieldTstamp" resname="fieldTstamp" approved="yes">
+        <source>Change-time</source>
+        <target state="final">Час модифікації</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTitle" resname="changeOrderByTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Заголовок сторінки</target>
+      </trans-unit>
+      <trans-unit id="changeOrderBySubtitle" resname="changeOrderBySubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Підзаголовок</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByNavtitle" resname="changeOrderByNavtitle" approved="yes">
+        <source>Navigation title</source>
+        <target state="final">Заголовок навігації</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTstamp" resname="changeOrderByTstamp" approved="yes">
+        <source>Change-time</source>
+        <target state="final">Час модифікації</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByCreate" resname="changeOrderByCreate" approved="yes">
+        <source>Create-time</source>
+        <target state="final">Час створення</target>
+      </trans-unit>
+      <trans-unit id="changeOrderReverse" resname="changeOrderReverse" approved="yes">
+        <source>Reverse current order</source>
+        <target state="final">Зворотній порядок сортування</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.title" resname="hasInvisiblePage.title" approved="yes">
+        <source>Invisible subpages</source>
+        <target state="final">Невидимі підсторінки</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.title" resname="noSubpages.title" approved="yes">
+        <source>No subpages</source>
+        <target state="final">Немає підсторінок</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.message" resname="noSubpages.message" approved="yes">
+        <source>Please select a page with subpages.</source>
+        <target state="final">Виберіть сторінку з підсторінками.</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.title" resname="notAvailableInWorkspace.title" approved="yes">
+        <source>Not implemented</source>
+        <target state="final">Не впроваджений</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.message" resname="notAvailableInWorkspace.message" approved="yes">
+        <source>Sorry, this function is not available in the current draft workspace!</source>
+        <target state="final">На жаль, ця функція недоступна в поточній робочій області чернетки!</target>
+      </trans-unit>
+      <trans-unit id="noEditPermissions" resname="noEditPermissions" approved="yes">
+        <source>No edit permissions on this sub page. This page can not be re-sorted among others.</source>
+        <target state="final">На цій підсторінці немає прав на редагування. Цю сторінку неможливо пересортувати серед інших.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
