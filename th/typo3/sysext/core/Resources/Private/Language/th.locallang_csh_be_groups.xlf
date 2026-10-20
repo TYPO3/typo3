@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814852" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_be_groups.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="th">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>This is the Backend administration user groups available for the Backend users. These determine the access credentials for the Backend users.</source>
+        <target state="final">นี่คือกลุ่มผู้บริหาร Backend สำหรับผู้ใช้ Backend เหล่านี้กำหนดสิทธิการเข้าถึงสำหรับผู้ใช้ Backend</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>Groups contain the main permission settings you can set for a backend user. Many users can be members of the same group and thus share permissions.
+When a user is a member of many groups (including sub-groups) then the permission settings are added together so that the more groups a user is a member of, the more access is granted to him.</source>
+			<target state="final">กลุ่มมีการอนุญาตตั้งหลักคุณสามารถตั้งค่าสำหรับผู้ใช้แบ็กเอนด์ ผู้ใช้หลายคนสามารถเป็นสมาชิกของกลุ่มเดียวกันจึงใช้สิทธิ์ เมื่อผู้ใช้เป็นสมาชิกของกลุ่มจำนวนมาก (รวมถึงกลุ่มย่อย) แล้วตั้งค่าสิทธิ์มีการเพิ่มร่วมกันเพื่อให้กลุ่มเพิ่มเติมผู้ใช้เป็นสมาชิกของที่เพิ่มเติม เข้าได้รับสิทธิ์เขา</target></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>Backend Usergroups are found in the root of the page tree where only "admin" users can edit them. The usergroups with red icons in this image are the ones with Access Lists enabled. The blue are just plain usergroups.
+This usergroup has Access Lists enabled. In the Access Lists you specify which modules, tables, database fields etc. the group members can access in TYPO3.</source>
+			<target state="final">กลุ่มผู้ Backend พบในพวกเขารากของต้นไม้หน้า"เท่านั้นที่ admin"ผู้ใช้สามารถแก้ไข กลุ่มผู้ที่มีไอคอนสีแดงในภาพนี้เป็นคนที่มี Access Lists เปิดการใช้งาน สีฟ้าเป็นกลุ่มที่ธรรมดาเพียง usergroup นี้มี Access Lists เปิดการใช้งาน ในรายการ Access คุณระบุ modules ตารางด้านฐานข้อมูลอื่น ๆ ของสมาชิกในกลุ่มสามารถเข้าถึง TYPO3</target></trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Name of the Backend usergroup. The name should be descriptive and can always be changed later.</source>
+        <target state="final">ชื่อ Backend usergroup ชื่อควรจะอธิบายและสามารถเสมอจะมีการเปลี่ยนแปลงในภายหลัง</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>Backend Usergroups are identified by their "uid" field value (integer) and therefore the title can always be changed. The "uid" can never be changed for a user group.</source>
+        <target state="final">กลุ่มผู้ Backend จะระบุด้วย"uid เขตข้อมูลค่าของ"(integer) ดังนั้นชื่อจะมีการเปลี่ยนแปลงได้เสมอ uid""จะไม่มีการเปลี่ยนแปลงสำหรับกลุ่มผู้ใช้</target>
+      </trans-unit>
+      <trans-unit id="title.image_descr" resname="title.image_descr" approved="yes">
+        <source>The usergroup title is shown in the record lists.</source>
+        <target state="final">ชื่อ usergroup จะปรากฏในบันทึกรายชื่อ</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.description" resname="db_mountpoints.description" approved="yes">
+        <source>Define page tree root points for the group members.</source>
+        <target state="final">กำหนดหน้าจุดรากต้นไม้สำหรับสมาชิกกลุ่ม</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.details" resname="db_mountpoints.details" xml:space="preserve" approved="yes">
+				<source>The page tree in TYPO3 must have some points-of-entry defined. Here you should insert one or more references to a page which will represent a new root page for the page tree. This is called a "Database mount" or "DB mount".
+DB mounts &lt;i&gt;may&lt;/i&gt; be inherited by the users which are members of this group. This depends on whether the user is configured to include the mounts set in the member groups.
+However it's recommended to use backend user groups like this to configure mounts. Especially if they need to be shared among many users.</source>
+			<target state="final">ต้นไม้หน้าใน TYPO3 ต้องมี - บางจุดของรายการที่กำหนด ที่นี่คุณควรแทรกหนึ่งหรืออ้างอิงถึงต้นไม้หน้าใหม่ที่จะรากแสดงหน้าสำหรับ นี้เรียกว่า"ฐานข้อมูลติด"หรือ"DB mount" DB mounts &lt;i&gt;อาจสืบทอดโดยผู้ใช้ที่เป็นสมาชิกของกลุ่มนี้&lt;/i&gt; นี้ขึ้นอยู่กับว่าผู้ใช้จะกำหนดให้รวม mounts ตั้งในกลุ่มสมาชิก แต่ก็แนะนำให้ใช้กลุ่มผู้ใช้แบ็กเอนด์นี้เพื่อกำหนดค่า mounts โดยเฉพาะถ้าพวกเขาจะต้องร่วมกันระหว่างผู้ใช้หลายคน</target></trans-unit>
+      <trans-unit id="db_mountpoints.image_descr" resname="db_mountpoints.image_descr" xml:space="preserve" approved="yes">
+				<source>Here a page is added as a "DB mount"...
+... and in the page tree of member users this will become the starting point for the page tree.</source>
+			<target state="final">ที่นี่หน้าจะเพิ่มเป็น"DB mount"... ... และต้นไม้หน้าของสมาชิกนี้จะเป็นจุดเริ่มต้นของต้นไม้หน้า</target></trans-unit>
+      <trans-unit id="file_mountpoints.description" resname="file_mountpoints.description" approved="yes">
+        <source>Define startpoints for the file folder tree.</source>
+        <target state="final">startpoints กำหนดสำหรับต้นไม้โฟลเดอร์แฟ้ม</target>
+      </trans-unit>
+      <trans-unit id="file_permissions.description" resname="file_permissions.description" approved="yes">
+        <source>Select file operation permissions for the group members.</source>
+        <target state="final">เลือก file สิทธิ์การทำงานสำหรับสมาชิกกลุ่ม</target>
+      </trans-unit>
+      <trans-unit id="fileoper_perms.description" resname="fileoper_perms.description" approved="yes">
+        <source>Select file operation permissions for the group members.</source>
+        <target state="final">เลือก file สิทธิ์การทำงานสำหรับสมาชิกกลุ่ม</target>
+      </trans-unit>
+      <trans-unit id="pagetypes_select.description" resname="pagetypes_select.description" approved="yes">
+        <source>Select which 'Types' of Pages the members may set.</source>
+        <target state="final">เลือกที่'ประเภท'ของหน้าสมาชิกอาจกำหนด</target>
+      </trans-unit>
+      <trans-unit id="pagetypes_select.image_descr" resname="pagetypes_select.image_descr" approved="yes">
+        <source>The list of typical page types available in a CMS context. Selecting Page types for a usergroup defines which of these options can be selected by member users.</source>
+        <target state="final">รายการประเภทหน้าทั่วไปที่มีอยู่ในบริบท CMS เลือกประเภท Page สำหรับ usergroup กำหนดที่ตัวเลือกเหล่านี้สามารถเลือกจากสมาชิก</target>
+      </trans-unit>
+      <trans-unit id="tables_modify.description" resname="tables_modify.description" approved="yes">
+        <source>Select which tables the members may modify.</source>
+        <target state="final">เลือกที่ตารางสมาชิกอาจแก้ไข</target>
+      </trans-unit>
+      <trans-unit id="tables_modify.details" resname="tables_modify.details" xml:space="preserve" approved="yes">
+				<source>An important part of setting permissions is to define which database tables a user is allowed to modify.
+Tables allowed for modification is automatically also allowed for selection and thus you don't need to set tables entered here in the "Tables (listing)" box.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that this list adds to the fields selected in other member groups of a user.</source>
+			<target state="final">เป็นส่วนสำคัญของการตั้งค่าสิทธิ์ที่จะกำหนดตารางฐานข้อมูลที่ผู้ใช้ที่สามารถปรับเปลี่ยน ตารางได้โดยอัตโนมัติสำหรับการแก้ไขได้ด้วยการเลือกและทำให้คุณไม่จำเป็นต้องกำหนดตารางใส่นี่ในตาราง"(รายการ) กล่อง" &lt;strong&gt;สังเกตว่ารายการนี้จะเพิ่มฟิลด์ที่เลือกไว้ในกลุ่มสมาชิกอื่น&lt;/strong&gt; ๆ ของผู้ใช้</target></trans-unit>
+      <trans-unit id="tables_modify.image_descr" resname="tables_modify.image_descr" xml:space="preserve" approved="yes">
+				<source>The screenshot above shows how the "Create new record" dialog looks for a user limited to editing only "Page" and "Page content" elements.
+The two tables are simply added to the list of "Tables (modify)" in the group Access Lists.
+This is (an example of) the full amount of elements that can be created on the page by the "admin" user for whom there are no restrictions.</source>
+			<target state="final">shot หน้าจอข้างต้นแสดงว่า"สร้างโต้ตอบ"บันทึกใหม่มององค์ประกอบผู้ใช้ จำกัด การแก้ไขเฉพาะ"หน้า"และ"Pagecontent" สองตารางมีการเพิ่มเพียงเพื่อตารางรายการ"(แก้ไข)"ในกลุ่ม Access รายการ นี้ (จากตัวอย่าง) เต็มจำนวนองค์ประกอบที่สามารถสร้างขึ้นบนหน้าโดย admin"ผู้ใช้"สำหรับผู้ที่มีไม่จำกัด</target></trans-unit>
+      <trans-unit id="tables_select.description" resname="tables_select.description" approved="yes">
+        <source>Select which tables the members may see in record lists ('modify' tables does not need to be re-entered here!).</source>
+        <target state="final">เลือกที่ตารางสมาชิกอาจเห็นในรายการบันทึก ('แก้ไขตาราง'ไม่ต้องป้อนอีกครั้งที่นี่!)</target>
+      </trans-unit>
+      <trans-unit id="tables_select.details" resname="tables_select.details" xml:space="preserve" approved="yes">
+				<source>This determines which tables - in addition to those selected in the "Tables (modify)" box - may be viewed and listed for the member users. He is not able to &lt;em&gt;edit&lt;/em&gt; the table - only select the records and view the content.
+This list is not very important. It's a pretty rare situation that a user may select tables but not modify them.</source>
+			<target state="final">นี้จะกำหนดตาราง -- นอกเหนือจากที่เลือกไว้ใน"ตาราง (แก้ไข)"กล่อง -- สามารถดูและแสดงสำหรับสมาชิก &lt;em&gt;เขาจะไม่สามารถแก้ไขตาราง&lt;/em&gt; -- เพียงเลือกระเบียนและดูเนื้อหา รายการนี้ไม่สำคัญมาก มันเป็นสถานการณ์ยากสวยที่ผู้ใช้สามารถเลือกตาราง แต่ไม่แก้ไขให้</target></trans-unit>
+      <trans-unit id="non_exclude_fields.description" resname="non_exclude_fields.description" approved="yes">
+        <source>Certain table fields are not available by default. Those fields can be explicitly enabled for the group members here.</source>
+        <target state="final">เขตข้อมูลตารางบางอย่างไม่สามารถใช้ได้ตามค่าเริ่มต้น เขตข้อมูลเหล่านั้นสามารถเปิดใช้งานอย่างชัดเจนสำหรับสมาชิกกลุ่มที่นี่</target>
+      </trans-unit>
+      <trans-unit id="non_exclude_fields.details" resname="non_exclude_fields.details" xml:space="preserve" approved="yes">
+				<source>"Allowed excludefields" allows you to detail the permissions granted to tables. By default all these fields are not available to users but must be specifically enabled by being selected here.
+One application of this is that pages are usually hidden by default and that the hidden field is not available for a user unless he has been granted access by this list of "Allowed excludefields". So the user may create a new page, but cannot un-hide the page - unless of course he has been assigned the "Page: Hide page" exclude field through one of his member groups.
+Of course it does not make any sense to add fields from tables which are not included in the list of tables allowed to be modified.</source>
+			<target state="final">"excludefields Allowed"ช่วยให้คุณสามารถดูรายละเอียดสิทธิ์ที่ได้รับไปยังตาราง โดยค่าเริ่มต้นเหล่านี้ทุกสาขาไม่สามารถใช้ได้กับผู้ใช้ แต่จะต้องเปิดการใช้งานเฉพาะโดยการเลือกที่นี่ หนึ่งโปรแกรมของนี้ที่หน้ามักจะถูกซ่อนโดยค่าเริ่มต้นและที่เขตข้อมูลที่ซ่อนไว้ไม่สามารถใช้ได้กับผู้ใช้หากเขาได้รับการเข้าถึงโดย excludefields นี้รายการ Allowed"ของ" เพื่อให้ผู้ใช้สามารถสร้างหน้าใหม่ แต่ไม่สามารถยกเลิกการซ่อนหน้า -- เว้นแต่แน่นอนเขาได้รับมอบหมาย"Page : หน้าซ่อน"ยกเว้นสาขาผ่านหนึ่งในกลุ่มสมาชิกของเขา แน่นอนจะไม่ทำให้รู้สึกใด ๆ เพิ่ม เขตข้อมูลจากตารางที่ไม่รวมอยู่ในตารางรายการอนุญาตให้แก้ไข</target></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Disables a user group.</source>
+        <target state="final">ปิดกลุ่มผู้ใช้</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.</source>
+        <target state="final">หากคุณปิดการใช้งานกลุ่มผู้ใช้ผู้ใช้ที่เป็นสมาชิกของกลุ่มจะมีผลไม่สืบทอดคุณสมบัติใดกลุ่มนี้อาจมีให้แก่พวกเขา</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.details" resname="lockToDomain.details" xml:space="preserve" approved="yes">
+				<source>A TYPO3 system may host multiple websites on multiple domains. Therefore this option secures that users can login only from a certain host name.
+Setting this to for example "www.my-domain.com" will require a user to be logged in from that domain if membership of this group should be gained. Otherwise the group will be ignored for the user.</source>
+			<target state="final">ระบบ TYPO3 อาจโฮสต์หลายเว็บไซต์บนโดเมนหลายโดเมน นี้จึงยึดตัวเลือกที่ผู้ใช้สามารถเข้าสู่ระบบเท่านั้นจากชื่อโฮสต์ที่กำหนด ค่านี้เช่น"domain.com - www.my"จะต้องมีผู้ที่จะเข้าสู่ระบบจากที่ได้รับโดเมนหากสมาชิกของกลุ่มนี้ควรจะ มิฉะนั้นกลุ่มจะไม่มีสำหรับผู้ใช้</target></trans-unit>
+      <trans-unit id="groupMods.description" resname="groupMods.description" approved="yes">
+        <source>Select available backend modules for the group members.</source>
+        <target state="final">เลือกโมดูล backend สำหรับสมาชิกกลุ่ม</target>
+      </trans-unit>
+      <trans-unit id="groupMods.details" resname="groupMods.details" xml:space="preserve" approved="yes">
+				<source>This determines which 'menu items' are available for the group members.
+This list of modules is added to any modules selected in other member groups of a user as well as the corresponding field of the user himself.</source>
+			<target state="final">นี้จะกำหนด'รายการเมนู'ที่ใช้ได้สำหรับสมาชิกกลุ่ม โมดูลนี้รายการจะถูกเพิ่มในโมดูลที่เลือกในกลุ่มสมาชิกอื่น ๆ ของผู้ใช้เป็นเขตข้อมูลที่ตรงกันของตัวเองของผู้ใช้</target></trans-unit>
+      <trans-unit id="groupMods.image_descr" resname="groupMods.image_descr" xml:space="preserve" approved="yes">
+				<source>The Backend Modules available for a user is reflected in the menu items of the backend. For most regular users only modules in the Web and File main modules are enabled. Typically "Web &gt; Page" is used for editing of page content.
+This is the assignment of Backend Modules to the user from the screenshot above. All four Web sub-modules and the two User sub-modules are configured here. However the File &gt; Filelist module must have been configured for another member group of this user (or inside the user profile itself which is also possible). The Help modules are all accessible by default and does not require explicit access.</source>
+			<target state="final">Modules Backend สำหรับผู้ใช้ที่ปรากฏในรายการเมนูของแบ็กเอนด์ สำหรับผู้ใช้ปกติมากที่สุดเท่านั้นโมดูลในเว็บและไฟล์โมดูลหลักมีการใช้งาน ปกติ"Web&gt; หน้า"ใช้สำหรับการแก้ไขเนื้อหาของหน้า นี้กำหนดของ Backend Modules ข้างต้นที่ผู้ใช้หน้าจอจาก shot ทั้งสี่ Web sub - modules และสอง User sub - modules มีการกำหนดค่าที่นี่ อย่างไรก็ตาม&gt; Filelist module ไฟล์ต้องได้รับการกำหนดค่าสำหรับกลุ่มสมาชิกคนอื่น ๆ ของผู้ใช้นี้ (หรือในโปรไฟล์ผู้ใช้เองซึ่งอาจเป็นไปได้) โมดูลช่วยเหลือทั้งหมดสามารถเข้าถึงได้โดยเริ่มต้นและไม่จำเป็นต้องเข้าถึงชัดเจน</target></trans-unit>
+      <trans-unit id="inc_access_lists.description" resname="inc_access_lists.description" approved="yes">
+        <source>Select whether the Access Lists for Page type, Tables, Module and Allowed excludefield are enabled for this group.</source>
+        <target state="final">เลือกว่ารายการประเภท Access Page, ตาราง, Module และ excludefield อนุญาตให้มีการใช้งานสำหรับกลุ่มนี้</target>
+      </trans-unit>
+      <trans-unit id="inc_access_lists.details" resname="inc_access_lists.details" xml:space="preserve" approved="yes">
+				<source>If this option is disabled the Access Lists cannot be configured for the group.
+When Access Lists are disabled the icon for the group is blue while it is red when Access Lists are enabled.</source>
+			<target state="final">หากตัวเลือกนี้พิการ Lists Access ไม่สามารถกำหนดค่าสำหรับกลุ่ม เมื่อ Access Lists ถูกปิดใช้งานกลุ่มที่ไอคอนเพื่อเป็นสีฟ้าขณะที่สีแดงเมื่อมีการใช้ Access Lists</target></trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a short description of the user group, what it is for and who should be members. This is for internal use only.</source>
+        <target state="final">ป้อนคำอธิบายสั้น ๆ ของกลุ่มผู้ใช้, สิ่งที่เป็นและที่ควรเป็นสมาชิก นี้สำหรับใช้ภายในเท่านั้น</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>User TSconfig: Additional configuration through TypoScript style values (Advanced).</source>
+        <target state="final">User TSconfig : การตั้งค่าเพิ่มเติมผ่านค่าแบบ TypoScript (Advanced)</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details" resname="TSconfig.details" approved="yes">
+        <source>User TSconfig can be set for each backend user and group. Configuration set for backend groups is inherited by the user who is a member of those groups. The available options typically cover user settings like those found in the User&gt;Setup module (in fact options from that module can be forcibly overridden from User TSconfig!), configuration of the "Admin Panel" (frontend), various backend tweaks (lock user to IP, may user clear all cache?, width of the navigation frame etc.) and backend module configuration (overriding any configuration set for backend modules in Page TSconfig).</source>
+        <target state="final">TSconfig ผู้ใช้สามารถตั้งค่าสำหรับผู้ใช้แบ็กเอนด์แต่ละกลุ่ม การตั้งค่ากำหนดสำหรับกลุ่ม backend สามารถสืบทอดโดยผู้ใช้ที่เป็นสมาชิกของกลุ่มเหล่านั้น ตัวเลือกที่มีมักจะครอบคลุมค่าใช้เช่นที่พบในโมดูล User&gt; Setup (ในตัวจริงจากโมดูลที่สามารถบังคับแทนที่จากผู้ใช้ TSconfig!) การกำหนดค่าของ"Admin Panel"frontend (), tweaks backend ต่างๆ (ผู้ใช้ล็อค ที่ IP, กรอบทางลัดแสดงผู้ใช้อาจล้างแคชทั้งหมดหรือความกว้างของกรอบนำทาง ฯลฯ ) และกำหนดค่า module backend (แทนที่ค่าตั้งสำหรับโมดูลในหน้า backend TSconfig มี)</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax without conditions and constants.</source>
+        <target state="final">ไวยากรณ์ TypoScript ไม่มีเงื่อนไขและค่าคงที่</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.image_descr" resname="TSconfig.image_descr" xml:space="preserve" approved="yes">
+				<source>In the TSconfig field help is right at hand - just click the TS wizard icon, then a window will pop up.
+In the pop-up window you will see a tree of possible configuration values. These are extracted from the TSconfig manual. You can click around to find the options you need to set through this wizard.</source>
+			<target state="final">ในช่วยสนาม TSconfig เหมาะสมในมือ -- คลิกที่ไอคอนตัว TS แล้วหน้าต่างจะปรากฏขึ้น ในหน้าต่าง pop - up ที่คุณจะเห็นค่าต้นไม้การกำหนดค่าเป็นไปได้ของ เหล่านี้เป็นสารสกัดจาก TSconfig คู่มือ คุณสามารถคลิกรอบเพื่อหาตัวเลือกที่คุณต้องตั้งผ่านตัวช่วยสร้างนี้</target></trans-unit>
+      <trans-unit id="subgroup.details" resname="subgroup.details" xml:space="preserve" approved="yes">
+				<source>The properties of subgroups are added to the properties of this group and basically they will simply be added to the list of member groups of any user which is a member of this group.
+This feature provides a great way to create 'Supervisor' user groups.</source>
+			<target state="final">คุณสมบัติของกลุ่มย่อยจะถูกเพิ่มคุณสมบัติของกลุ่มนี้และโดยทั่วไปเขาจะเป็นการเพิ่มในกลุ่มรายชื่อสมาชิกในกลุ่มนี้ของผู้ใดซึ่งเป็นของสมาชิก คุณลักษณะนี้จะให้เป็นวิธีที่ดีเพื่อสร้าง'ผู้ใช้กลุ่ม'Supervisor</target></trans-unit>
+      <trans-unit id="explicit_allowdeny.description" resname="explicit_allowdeny.description" approved="yes">
+        <source>Select field values to explicitly deny or allow for user group members.</source>
+        <target state="final">เลือกค่าเขตข้อมูลที่ชัดเจนปฏิเสธหรืออนุญาตให้สมาชิกกลุ่มผู้ใช้</target>
+      </trans-unit>
+      <trans-unit id="explicit_allowdeny.details" resname="explicit_allowdeny.details" xml:space="preserve" approved="yes">
+				<source>Selector box fields can be configured for access control on value level. This list represents all values that are configured for access control.
+Each value can be configured to require either explicit access (Allow) or explicit denial (Deny). If a value has the prefix "Allow" (green icon) it means that by default users &lt;em&gt;cannot&lt;/em&gt; set this value unless they are member of a user group which explicitly allows it (by setting this checkbox).
+If a value has the prefix "Deny" (red icon) it means that by default users can set this value unless they are member of a user group which explicitly denies it (by setting this checkbox).
+The list is organized so values from the same selector box is listed together. If values from a selectorbox is not present in the allow/deny list it simply means they are not evaluated and hence they can be set by anyone having access to the field in general.</source>
+			<target state="final">เลือกเขตข้อมูลกล่องสามารถกำหนดค่าสำหรับควบคุมการเข้าใช้ค่าระดับ รายการนี้เป็นค่าทั้งหมดที่มีการกำหนดค่าสำหรับการควบคุมการเข้าถึง แต่ละค่าสามารถกำหนดค่าให้ต้องใช้ทั้งชัดเจน (อนุญาต) หรือปฏิเสธชัดเจน (ปฏิเสธ) ถ้าค่าได้คำนำหน้าว่า"อนุญาต"(ไอคอนสีเขียว) &lt;em&gt;ก็หมายความว่าผู้ใช้เริ่มต้นไม่สามารถตั้งค่านี้จนกว่าจะมีสมาชิกของกลุ่มผู้ใช้ที่ชัดเจนให้มัน&lt;/em&gt; (โดยการตั้งค่าช่องนี้) ถ้าค่ามีคำนำหน้าว่า"ปฏิเสธ "(red icon) หมายความว่าผู้ใช้เริ่มต้นสามารถตั้งค่านี้หากพวกเขาเป็นสมาชิกของกลุ่มผู้ใช้ที่ชัดเจนปฏิเสธมัน (โดยการตั้งช่องทำเครื่องหมายนี้) จัดรายการเพื่อเลือกค่าจากกล่องเดียวกันปรากฏอยู่ร่วมกัน หากค่าจาก selectorbox ไม่อยู่ในอนุญาต / ปฏิเสธรายการนั้นก็หมายความว่าพวกเขาจะไม่การประเมินผลและเหตุที่พวกเขาจะสามารถตั้งโดยคนที่มีการเข้าถึงข้อมูลโดยรวม</target></trans-unit>
+      <trans-unit id="allowed_languages.description" resname="allowed_languages.description" approved="yes">
+        <source>Select which record languages the group members are limited to edit.</source>
+        <target state="final">เลือกภาษาที่บันทึกสมาชิกกลุ่มจะถูก จำกัด ให้แก้ไข</target>
+      </trans-unit>
+      <trans-unit id="allowed_languages.details" resname="allowed_languages.details" xml:space="preserve" approved="yes">
+				<source>Records in TYPO3 can be configured to carry information about their language. If that is the case access to these elements will also be evaluated based on whether the user has the language in question included from this list.
+If a user has no languages listed all together it simply means that he can edit &lt;em&gt;all&lt;/em&gt; languages!</source>
+			<target state="final">บันทึกใน TYPO3 สามารถกำหนดค่าเพื่อดำเนินการข้อมูลเกี่ยวกับภาษาของพวกเขา ถ้าที่ใช้กรณีที่องค์ประกอบเหล่านี้จะถูกประเมินตามว่าผู้ใช้มีคำถามในภาษารวมจากรายการนี้ หากผู้ใช้ภาษาไม่ไว้ด้วยกันมันหมายความว่าเขาสามารถแก้ไขภาษา &lt;em&gt;all!&lt;/em&gt;</target></trans-unit>
+      <trans-unit id="allowed_languages.image_descr" resname="allowed_languages.image_descr" approved="yes">
+        <source>This example shows a situation where two languages, Danish and German, are created in addition to the default language.</source>
+        <target state="final">ตัวอย่างนี้แสดงให้เห็นสถานการณ์ที่สองภาษาเดนมาร์กและเยอรมันถูกสร้างขึ้นนอกเหนือจากภาษาเริ่มต้น</target>
+      </trans-unit>
+      <trans-unit id="custom_options.description" resname="custom_options.description" approved="yes">
+        <source>Select custom permission options.</source>
+        <target state="final">เลือกตัวเลือกการอนุญาตที่กำหนดเอง</target>
+      </trans-unit>
+      <trans-unit id="custom_options.details" resname="custom_options.details" approved="yes">
+        <source>This list represents custom permissions introduced by various backend modules (from extensions). The significance of each option depends on the backend module that evaluates it.</source>
+        <target state="final">รายการนี้เป็นสิทธิ์ที่กำหนดเองโดยนำโมดูลต่างๆ backend (จากส่วนขยาย) ความสำคัญของแต่ละตัวขึ้นอยู่กับ module backend ที่ประเมินได้</target>
+      </trans-unit>
+      <trans-unit id="custom_options.image_descr" resname="custom_options.image_descr" approved="yes">
+        <source>This is just an example from an internal test application. It shows how checkboxes are added by a custom module under its own header. You can also show a description text with each checkbox to explain its function.</source>
+        <target state="final">นี้เป็นเพียงตัวอย่างจากโปรแกรมทดสอบภายใน ก็แสดงว่ามีการเพิ่มช่องทำเครื่องหมายโดยโมดูลที่กำหนดเองตามหัวของตัวเอง คุณยังสามารถแสดงข้อความที่มีคำอธิบายแต่ละช่องทำเครื่องหมายเพื่ออธิบายการทำงานของ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
