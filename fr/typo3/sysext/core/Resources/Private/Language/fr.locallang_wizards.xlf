@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_wizards.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="table_smallFields" approved="yes">
+        <source>Small fields</source>
+        <target state="final">Petits champs (formulaire)</target>
+      </trans-unit>
+      <trans-unit id="table_addColumn" approved="yes">
+        <source>Add column to the right</source>
+        <target state="final">Ajouter un colonne sur la droite</target>
+      </trans-unit>
+      <trans-unit id="table_removeColumn" approved="yes">
+        <source>Remove column</source>
+        <target state="final">Supprimer la colonne</target>
+      </trans-unit>
+      <trans-unit id="table_addRow" approved="yes">
+        <source>Add row below</source>
+        <target state="final">Ajouter un ligne après</target>
+      </trans-unit>
+      <trans-unit id="table_removeRow" approved="yes">
+        <source>Remove row</source>
+        <target state="final">Supprimer la ligne</target>
+      </trans-unit>
+      <trans-unit id="table_left" approved="yes">
+        <source>Move left</source>
+        <target state="final">Déplacer à gauche</target>
+      </trans-unit>
+      <trans-unit id="table_right" approved="yes">
+        <source>Move right</source>
+        <target state="final">Déplacer à droite</target>
+      </trans-unit>
+      <trans-unit id="table_up" approved="yes">
+        <source>Move up</source>
+        <target state="final">Déplacer en haut</target>
+      </trans-unit>
+      <trans-unit id="table_down" approved="yes">
+        <source>Move down</source>
+        <target state="final">Déplacer en bas</target>
+      </trans-unit>
+      <trans-unit id="table_top" approved="yes">
+        <source>Move to top</source>
+        <target state="final">Déplacer vers le sommet</target>
+      </trans-unit>
+      <trans-unit id="table_bottom" approved="yes">
+        <source>Move to bottom</source>
+        <target state="final">Déplacer vers le dernier</target>
+      </trans-unit>
+      <trans-unit id="table_start" approved="yes">
+        <source>Move to first column</source>
+        <target state="final">Déplacer vers la première colonne</target>
+      </trans-unit>
+      <trans-unit id="table_end" approved="yes">
+        <source>Move to last column</source>
+        <target state="final">Déplacer vers la dernière colonne</target>
+      </trans-unit>
+      <trans-unit id="table_setCount" approved="yes">
+        <source>Set row and column count</source>
+        <target state="final">Définir le nombre de lignes et de colonnes</target>
+      </trans-unit>
+      <trans-unit id="table_colCount" approved="yes">
+        <source>Column count</source>
+        <target state="final">Nombre de colonnes</target>
+      </trans-unit>
+      <trans-unit id="table_rowCount" approved="yes">
+        <source>Row count</source>
+        <target state="final">Nombre de lignes</target>
+      </trans-unit>
+      <trans-unit id="table_setCountHeadline" approved="yes">
+        <source>Change table size</source>
+        <target state="final">Modifier la taille du tableau</target>
+      </trans-unit>
+      <trans-unit id="table_buttonUpdate" approved="yes">
+        <source>Update</source>
+        <target state="final">Actualiser</target>
+      </trans-unit>
+      <trans-unit id="table_showCode" approved="yes">
+        <source>Show table code</source>
+        <target state="final">Afficher le code du tableau</target>
+      </trans-unit>
+      <trans-unit id="table_showCodeHeadline" approved="yes">
+        <source>Table code</source>
+        <target state="final">Code du tableau</target>
+      </trans-unit>
+      <trans-unit id="table_showCodeLabel" approved="yes">
+        <source>Raw value</source>
+        <target state="final">Valeur brute</target>
+      </trans-unit>
+      <trans-unit id="grid_windowTitle" approved="yes">
+        <source>Set cell name and column number</source>
+        <target state="final">Définir le nom de la cellule et le numéro de colonne</target>
+      </trans-unit>
+      <trans-unit id="grid_addColumn" approved="yes">
+        <source>Add column</source>
+        <target state="final">Ajouter une colonne</target>
+      </trans-unit>
+      <trans-unit id="grid_removeColumn" approved="yes">
+        <source>Remove column</source>
+        <target state="final">Supprimer la colonne</target>
+      </trans-unit>
+      <trans-unit id="grid_addRow" approved="yes">
+        <source>Add row</source>
+        <target state="final">Ajouter une ligne</target>
+      </trans-unit>
+      <trans-unit id="grid_removeRow" approved="yes">
+        <source>Remove row</source>
+        <target state="final">Supprimer la ligne</target>
+      </trans-unit>
+      <trans-unit id="grid_editCell" approved="yes">
+        <source>Edit cell</source>
+        <target state="final">Editer la cellule</target>
+      </trans-unit>
+      <trans-unit id="grid_cell_split_horizontal" approved="yes">
+        <source>Split Horizontally</source>
+        <target state="final">Diviser horizontalement</target>
+      </trans-unit>
+      <trans-unit id="grid_cell_split_vertical" approved="yes">
+        <source>Split Vertically</source>
+        <target state="final">Diviser verticalement</target>
+      </trans-unit>
+      <trans-unit id="grid_name" approved="yes">
+        <source>Name</source>
+        <target state="final">Nom</target>
+      </trans-unit>
+      <trans-unit id="grid_column" approved="yes">
+        <source>Column number</source>
+        <target state="final">Numéro de colonne</target>
+      </trans-unit>
+      <trans-unit id="grid_notSet" approved="yes">
+        <source>not set</source>
+        <target state="final">Non défini</target>
+      </trans-unit>
+      <trans-unit id="grid_nameHelp" approved="yes">
+        <source>Enter a name for the cell.</source>
+        <target state="final">Entrez un nom pour la cellule.</target>
+      </trans-unit>
+      <trans-unit id="grid_columnHelp" approved="yes">
+        <source>The column position defines in which area the content is rendered in the frontend.</source>
+        <target state="final">La position de la colonne défini dans quelle zone de contenu elle est affichée dans le frontend.</target>
+      </trans-unit>
+      <trans-unit id="imwizard.open-editor" approved="yes">
+        <source>Open Editor</source>
+        <target state="final">Ouvrir l'éditeur</target>
+      </trans-unit>
+      <trans-unit id="imwizard.supported-types-message" approved="yes">
+        <source>Image manipulation is only available for supported types</source>
+        <target state="final">La manipulation d'image n'est disponible que pour les types pris en charge</target>
+      </trans-unit>
+      <trans-unit id="imwizard.no-image-dimensions" approved="yes">
+        <source>No image dimensions could be determined.</source>
+        <target state="final">Aucune dimension d'image n'a pu être déterminée.</target>
+      </trans-unit>
+      <trans-unit id="imwizard.no-image-dimensions-message" approved="yes">
+        <source>Unable to provide image manipulation, because original dimensions of the image are unknown.</source>
+        <target state="final">Impossible de fournir la manipulation de l'image, car les dimensions originales de l'image sont inconnues.</target>
+      </trans-unit>
+      <trans-unit id="imwizard.image-manipulation" approved="yes">
+        <source>Image manipulation</source>
+        <target state="final">Manipulation des images</target>
+      </trans-unit>
+      <trans-unit id="imwizard.reset" approved="yes">
+        <source>Reset</source>
+        <target state="final">Réinitialiser</target>
+      </trans-unit>
+      <trans-unit id="imwizard.accept" approved="yes">
+        <source>Accept</source>
+        <target state="final">Accepter</target>
+      </trans-unit>
+      <trans-unit id="imwizard.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuler</target>
+      </trans-unit>
+      <trans-unit id="imwizard.preview" approved="yes">
+        <source>Preview</source>
+        <target state="final">Prévisualiser</target>
+      </trans-unit>
+      <trans-unit id="imwizard.aspect-ratio" approved="yes">
+        <source>Aspect ratio</source>
+        <target state="final">Ratio d'affichage</target>
+      </trans-unit>
+      <trans-unit id="imwizard.set-aspect-ratio" approved="yes">
+        <source>Set Aspect Ratio</source>
+        <target state="final">Paramétrer le ratio d'affichage</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.16_9" translate="no" approved="yes">
+        <source>16:9</source>
+        <target state="final">16:9</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.3_2" translate="no" approved="yes">
+        <source>3:2</source>
+        <target state="final">3:2</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.4_3" translate="no" approved="yes">
+        <source>4:3</source>
+        <target state="final">4:3</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.1_1" translate="no" approved="yes">
+        <source>1:1</source>
+        <target state="final">1:1</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.191_1" translate="no" approved="yes">
+        <source>1.91:1</source>
+        <target state="final">1.91:1</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.free" approved="yes">
+        <source>Free</source>
+        <target state="final">Libre</target>
+      </trans-unit>
+      <trans-unit id="imwizard.crop_variant.default" approved="yes">
+        <source>Default</source>
+        <target state="final">Par défaut</target>
+      </trans-unit>
+      <trans-unit id="imwizard.crop_variant.social" approved="yes">
+        <source>Social media</source>
+        <target state="final">Réseaux sociaux</target>
+      </trans-unit>
+      <trans-unit id="imwizard.sync-crop-variants" approved="yes">
+        <source>Apply changes to all crop variants</source>
+        <target state="final">Appliquer les modifications à toutes les variantes de recadrage</target>
+      </trans-unit>
+      <trans-unit id="imwizard.selection" approved="yes">
+        <source>Selected Size</source>
+        <target state="final">Taille sélectionnée</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.header" approved="yes">
+        <source>Translation behavior</source>
+        <target state="final">Comportement de la traduction</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.customValue" approved="yes">
+        <source>Custom value</source>
+        <target state="final">Valeur personnalisée</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.defaultLanguageValue" approved="yes">
+        <source>Value of default language</source>
+        <target state="final">Valeur de la langue par défaut</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.sourceLanguageValue" approved="yes">
+        <source>Value of %1s language</source>
+        <target state="final">Valeur de la langue %1s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
