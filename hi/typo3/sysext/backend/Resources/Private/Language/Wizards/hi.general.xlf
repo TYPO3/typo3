@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/general.xlf" date="2026-02-17T00:00:00Z" product-name="backend" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="wizard.loading" approved="yes">
+        <source>Loading...</source>
+        <target state="final">लोड हो रहा है...</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">रद्द करना</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.next" approved="yes">
+        <source>Next</source>
+        <target state="final">अगला</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.previous" approved="yes">
+        <source>Previous</source>
+        <target state="final">पहले का</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.finish" approved="yes">
+        <source>Finish</source>
+        <target state="final">खत्म करना</target>
+      </trans-unit>
+      <trans-unit id="wizard.loading_configuration" approved="yes">
+        <source>Loading wizard configuration...</source>
+        <target state="final">विज़ार्ड कॉन्फ़िगरेशन लोड हो रहा है...</target>
+      </trans-unit>
+      <trans-unit id="wizard.loading_steps" approved="yes">
+        <source>Loading step modules...</source>
+        <target state="final">स्टेप मॉड्यूल लोड हो रहे हैं...</target>
+      </trans-unit>
+      <trans-unit id="wizard.loading_finisher" approved="yes">
+        <source>Loading finisher...</source>
+        <target state="final">फिनिशर लोड हो रहा है...</target>
+      </trans-unit>
+      <trans-unit id="wizard.status.pending.message" approved="yes">
+        <source>Processing data...</source>
+        <target state="final">डेटा संसाधित हो रहा है...</target>
+      </trans-unit>
+      <trans-unit id="wizard.status.error.title" approved="yes">
+        <source>Error</source>
+        <target state="final">त्रुटि</target>
+      </trans-unit>
+      <trans-unit id="wizard.status.error.message" approved="yes">
+        <source>Failed to process data:</source>
+        <target state="final">डेटा प्रोसेस करने में विफलता:</target>
+      </trans-unit>
+      <trans-unit id="wizard.finisher.load_error.message" approved="yes">
+        <source>Failed to load finisher module:</source>
+        <target state="final">फ़िनिशर मॉड्यूल लोड करने में विफल:</target>
+      </trans-unit>
+      <trans-unit id="wizard.step.error.title" approved="yes">
+        <source>Error</source>
+        <target state="final">त्रुटि</target>
+      </trans-unit>
+      <!-- Step: Confirmation -->
+      <trans-unit id="step.confirmation.title" approved="yes">
+        <source>Confirmation</source>
+        <target state="final">पुष्टीकरण</target>
+      </trans-unit>
+      <trans-unit id="step.confirmation.headline" approved="yes">
+        <source>Confirm</source>
+        <target state="final">पुष्टि करें</target>
+      </trans-unit>
+      <trans-unit id="step.confirmation.description" approved="yes">
+        <source>Please review the following settings before proceeding:</source>
+        <target state="final">आगे बढ़ने से पहले, कृपया निम्नलिखित सेटिंग्स की समीक्षा करें:</target>
+      </trans-unit>
+      <!-- Step: Finisher -->
+      <trans-unit id="step.finisher.title" approved="yes">
+        <source>Finish</source>
+        <target state="final">समाप्त करें</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
