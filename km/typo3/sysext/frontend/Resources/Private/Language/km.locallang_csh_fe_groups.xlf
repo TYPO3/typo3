@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814795" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_fe_groups.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>This option disables the user group.</source>
+        <target state="final">ជម្រើស​នេះ​បិទ​ដំណើរការ​ក្រុម​អ្នក​ប្រើ ។</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" xml:space="preserve" approved="yes">
+				<source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.
+For instance if a page or content element was assigned access only by this group and you disable the group, no one would gain access to that page or content element.</source>
+			<target state="final">ប្រសិន​បើ​អ្នក​បិទ​ដំណើរការ​ក្រុម​ អ្នក​ប្រើ​ទាំងអស់​ដែល​ជា​សមាជិក​របស់​ក្រុម​នឹង​ទទួល​ឥទ្ធិពល​មិន​ទទួល​លក្ខណៈសម្បត្តិ​ពី​ក្រុម​នេះ ដែល​ផ្ដល់​ឲ្យ ។ ប្រសិន​បើ​ទំព័រ​មួយ ឬ ធាតុ​មាតិកា​មួយ​ត្រូវ​បាន​ផ្ដល់​សិទ្ធិ​តែ​ទៅ​លើ​ក្រុម​នេះ ហើយ​អ្នក​បិទ​ក្រុម ដូច្នេះ​គ្មាន​នរណា​ម្នាក់​អាច​ទទួល​សិទ្ធិ​លើ​ទំព័រ ឬ ធាតុ​មាតិកា​នោះ​ទេ ។</target></trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" approved="yes">
+        <source>fe_users:disable</source>
+        <target state="final">fe_users:disable</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Name of the group.</source>
+        <target state="final">ឈ្មោះ​របស់​ក្រុម ។</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>This title will appear as the group name in the 'Access'-list in other records.</source>
+        <target state="final">ចំណងជើង​នេះ​នឹង​បង្ហាញ​ជា​ឈ្មោះ​ក្រុម​ក្នុង​បញ្ជី "សិទ្ឌិ" ក្នុង​ទិន្នន័យ​ផ្សេងៗ​ទៀត ។</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.details" resname="lockToDomain.details" xml:space="preserve" approved="yes">
+				<source>This options may be important if you have multiple websites in the same TYPO3 database but still only one main storage page for all Website users. Thus the users may log in on any of the website URLs. This may be considered a feature (having a global login as a user) or a problem (in which case you should have multiple user storages anyway). However you may wish to limit the use of a Website usergroup to a specific website and thus you don't want the group to be enabled for the user when he logs in at another URL (still from the same database of course). By entering the host name of the website here, you restrict the group to be used only from within this domain.
+
+&lt;b&gt;Notice:&lt;/b&gt; The use for this option is not critical if you have multiple Website user storages, namely one for each site.</source>
+			<target state="final">ជម្រើស​នេះ​អាច​សំខាន់​ប្រសិន​បើ​អ្នក​មាន​វែបសាយ​ច្រើន​ប្រើ​ទិន្នន័យ TYPO3 ដូច​គ្នា ប៉ុន្តែ​នៅ​ប្រើ​ទំព័រ​មេ​ផ្ទុក​តែ​មួយ​សម្រាប់​អ្នក​ប្រើ​​វែបសាយ​ទាំងអស់ ។ ដូច្នេះ​អ្នក​ប្រើ​អាច​កត់ត្រាចូល​លើ​វែបសាយ url ណា​មួយ ។ នេះ​អាច​ចាត់​ជា​លក្ខណៈ​សម្បត្តិ (មាន​ការកត់ត្រាចូល​ជា​សកល​) ឬ បញ្ហា (ក្នុង​ករណី​នេះ​អ្នក​គួរ​មាន​​កន្លែង​ផ្ទុក​អ្នក​ប្រើ​ច្រើន​ផង​ដែរ) ។ ទោះ​ជា​យ៉ាង​ណា​ក៏​ដោយ អ្នក​អាច​ចង់​កម្រិត​លើ​ការប្រើ​របស់​អ្នក​ប្រើប្រាស់​វែបសាយ ដូច្នេះ​អ្នក​មិន​មិន​ចង់​ឲ្យ​ក្រុម​ដំណើរការ​ទៅ​លើ​អ្នក​ប្រើ​ពេល​គាត់​កត់ត្រាចូល​ក្នុង url ផ្សេង (ស្ថិត​នៅ​ក្នុង​ឃ្លាំង​ទិន្នន័យ​ដូច​គ្នា) ។ ដោយ​បំពេញ​ឈ្មោះ​ហស្ដិ៍​របស់​វែបសាយ​នៅ​ទីនេះ អ្នក​កម្រិត​ក្រុម​ដែល​ត្រូវ​បាន​ប្រើ​តែ​ពី​ដូមេន​នេះ ។ &lt;b&gt;សម្គាល់៖&lt;/b&gt; ការប្រើ​ជម្រើស​នេះ​មិន​ចាំបាច់​ទេ ប្រសិន​បើ​អ្នក​មាន​​កន្លែង​ផ្ទុក​អ្នក​ប្រើ​វែបសាយ​ច្រើន, ដាក់​ឈ្មោះ​មួយ​សម្រាប់​វែបសាយ​នីមួយៗ ។</target></trans-unit>
+      <trans-unit id="_lockToDomain.seeAlso" resname="_lockToDomain.seeAlso" approved="yes">
+        <source>fe_users:lockToDomain</source>
+        <target state="final">fe_users:lockToDomain</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="subgroup.description" resname="subgroup.description" approved="yes">
+        <source>Member of other groups.</source>
+        <target state="final">សមាជិក​ក្រុម ។</target>
+      </trans-unit>
+      <trans-unit id="subgroup.details" resname="subgroup.details" approved="yes">
+        <source>List of other groups that this group is a member of.</source>
+        <target state="final">បញ្ជី​ក្រុម​ផ្សេងៗ​ដែល​ក្រុម​នេះ​ជា​សមាជិក ។</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a description of the group.</source>
+        <target state="final">បំពេញ​ព័ត៌មាន​លម្អិត​ឲ្យ​ក្រុម ។</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" xml:space="preserve" approved="yes">
+				<source>This is for internal use and is just a way to put a note on what the group is for, why you created it and who should be members.
+Use it as you like.</source>
+			<target state="final">នេះ​សម្រាប់​ការប្រើប្រាស់​ខាង​ក្នុង និង គ្រាន់តែ​ជា​ការ​សរសេរ​លើ​​តើ​ក្រុម​នេះ​ដើម្បី​អ្វី, ហេតុ​អ្វី​អ្នក​បង្កើត​វា និង នរណា​គួរ​ជា​សមាជិក​របស់​ក្រុម ។ ប្រើ​វា​តាម​ចំណូល​ចិត្ត​របស់​អ្នក ។</target></trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>TSconfig for the group (advanced).</source>
+        <target state="final">TSconfig សម្រាប់​ក្រុម (កម្រិត​ខ្ពស់) ។</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details" resname="TSconfig.details" xml:space="preserve" approved="yes">
+				<source>This is the user TSconfig for the group. The values are inherited by any Website user who is a member of this group.
+The configuration is subject to being overridden in other groups and by the TSconfig of the user himself.</source>
+			<target state="final">នេះ​ជា​ការកំណត់ TypoScript លើ​ក្រុម ។ តម្លៃ​ត្រូវ​បាន​ទទួល​ពី​អ្នក​ប្រើ​វែបសាយ​ដែល​ជា​សមាជិក​ក្រុម ។ ការកំណត់​ជា​ប្រធាន​នៃ​ការ​បញ្ជាន់​លើ​ក្រុម​ផ្សេង​ទៀត និង ដោយ TSconfig អ្នក​ប្រើ​ខ្លួនឯង ។</target></trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax, without conditions and constants.</source>
+        <target state="final">រូបមន្ត TypoScript, គ្មាន​លក្ខខ័ណ្ឌ និង កុងស្ដង់ ។</target>
+      </trans-unit>
+      <trans-unit id="_TSconfig.seeAlso" resname="_TSconfig.seeAlso" approved="yes">
+        <source>fe_users:TSconfig</source>
+        <target state="final">fe_users:TSconfig</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Usergroups for Website users.</source>
+        <target state="final">ក្រុម​អ្នក​ប្រើ​សម្រាប់​អ្នក​ប្រើ​វែបសាយ ។</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The form for editing frontend users groups.
+Pages, Content Elements and other records for frontend display often have a selector box where you can define access restriction by selecting access for a certain group only.</source>
+			<target state="final">ទម្រង់​សម្រាប់​កែប្រែ​ក្រុម​អ្នក​ប្រើ frontend ។ ទំព័រ, ធាតុ​មាតិកា និង ទិន្នន័យ​ផ្សេង​ៗ​ទៀត​សម្រាប់​បង្ហាញ​លើ frontend តែងតែ​មាន​ប្រអប់​ជ្រើសរើស​សិទ្ធិ​សម្រាប់​តែ​ក្រុម​ណា​មួយ​ជាក់លាក់ ។</target></trans-unit>
+    </body>
+  </file>
+</xliff>
