@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814869" source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id="bigControlPanel" resname="bigControlPanel" approved="yes">
+        <source>Extended view</source>
+        <target state="final">ពង្រីក​ការមើល</target>
+      </trans-unit>
+      <trans-unit id="clipBoard" resname="clipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">បង្ហាញ​ឃ្លិបបត</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" resname="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">ផេសថ៍​ក្នុង​មាតិកា​ឃ្លិបបត</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" resname="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted into this folder</source>
+        <target state="final">ផេស្ត៍​ទៅ​ក្នុង៖ មាតិកា​ឃ្លិបបត​បាន​បញ្ជូល​ទៅ​ក្នុង​ថត​ឯកសារ​នេះ</target>
+      </trans-unit>
+      <trans-unit id="clip_markRecords" resname="clip_markRecords" approved="yes">
+        <source>Mark All/Mark none</source>
+        <target state="final">ដាក់​សម្គាល់​ទាំងអស់​/​មិន​ដាក់​សម្គាល់</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" resname="clip_selectMarked" approved="yes">
+        <source>Transfer the selection of files to clipboard</source>
+        <target state="final">បញ្ជូន​ឯកសារ​ដែល​បាន​ជ្រើសរើស​ទៅ​ឃ្លិបបត</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" resname="clip_deleteMarked" approved="yes">
+        <source>Delete marked</source>
+        <target state="final">លុប​កំណត់​សម្គាល់</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarkedWarning" resname="clip_deleteMarkedWarning" approved="yes">
+        <source>Are you sure you want to delete all marked files from this folder?</source>
+        <target state="final">តើ​អ្នក​ពិត​ជា​ចង់​លុប​កំណត់​សម្គាល់​ឯកសារ​ទាំងអស់​ពី​ថត​ឯកសារ​មែនទេ?</target>
+      </trans-unit>
+      <trans-unit id="displayThumbs" resname="displayThumbs" approved="yes">
+        <source>Display thumbnails</source>
+        <target state="final">បង្ហាញ​រូបភាព​តូច</target>
+      </trans-unit>
+      <trans-unit id="c_file" resname="c_file" approved="yes">
+        <source>File Name</source>
+        <target state="final">ឈ្មោះ​ឯកសារ</target>
+      </trans-unit>
+      <trans-unit id="c_size" resname="c_size" approved="yes">
+        <source>Size</source>
+        <target state="final">ទំហំ</target>
+      </trans-unit>
+      <trans-unit id="c_fileext" resname="c_fileext" approved="yes">
+        <source>Type</source>
+        <target state="final">ប្រភេទ</target>
+      </trans-unit>
+      <trans-unit id="c_tstamp" resname="c_tstamp" approved="yes">
+        <source>Last Modified</source>
+        <target state="final">កាលបរិច្ឆេទ</target>
+      </trans-unit>
+      <trans-unit id="c_rw" resname="c_rw" approved="yes">
+        <source>RW</source>
+        <target state="final">RW</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files" approved="yes">
+        <source>files</source>
+        <target state="final">ឯកសារ</target>
+      </trans-unit>
+      <trans-unit id="temp" resname="temp" approved="yes">
+        <source>Temporary files</source>
+        <target state="final">ឯកសារ​បណ្ដោះ​អាសន្ន</target>
+      </trans-unit>
+      <trans-unit id="role_folder_temporary" resname="role_folder_temporary" approved="yes">
+        <source>Temporary files</source>
+        <target state="final">ឯកសារ​បណ្ដោះ​អាសន្ន</target>
+      </trans-unit>
+      <trans-unit id="role_folder_recycler" resname="role_folder_recycler" approved="yes">
+        <source>Recycler</source>
+        <target state="final">ធុង​សំរាម</target>
+      </trans-unit>
+      <trans-unit id="read" resname="read" approved="yes">
+        <source>R</source>
+        <target state="final">R</target>
+      </trans-unit>
+      <trans-unit id="recycler" resname="recycler" approved="yes">
+        <source>Recycler</source>
+        <target state="final">ធុង​សំរាម</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Listing of files in the directory</source>
+        <target state="final">រាយ​ឈ្មោះ​ឯកសារ​ក្នុង​សឺមី​ផ្ទុក​ឯកសារ</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>This is the file administration system in TYPO3. It allows you to access the file mounts of your login. Through this module you can upload, copy, move an delete files on the server.</source>
+        <target state="final">នេះ​ជា​ប្រព័ន្ធ​គ្រប់គ្រង​ឯកសារ​ក្នុង TYPO3 ដែល​អនុញ្ញាត​ឱ្យ​អ្នក​​ចូល​ប្រើ​ឯកសារ​ម៉ោនថ៍​នៃ​ការ​កត់ត្រា​ចូល​របស់​អ្នក ។ តាម​រយៈ​ម៉ូឌុល​នេះ អ្នក​អាច​ផ្ទុក​ឡើង ចម្លង ប្ដូរ​ទីតាំង និង លុប​ឯកសារ​នៅ​លើ​ម៉ាស៊ីន​បម្រើ ។</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Filelist</source>
+        <target state="final">បញ្ជី​ឯកសារ</target>
+      </trans-unit>
+      <trans-unit id="write" resname="write" approved="yes">
+        <source>W</source>
+        <target state="final">W</target>
+      </trans-unit>
+      <trans-unit id="targetNoDir" resname="targetNoDir" approved="yes">
+        <source>Target was not a directory!</source>
+        <target state="final">គោលដៅ​មិនមែន​ជា​ថត​ឯកសារ!</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableTitle" resname="storageNotBrowsableTitle" approved="yes">
+        <source>Access denied.</source>
+        <target state="final">ការចូលដំណើរការ​ត្រូវបានហាមឃាត់។</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableMessage" resname="storageNotBrowsableMessage" approved="yes">
+        <source>You are trying to access a folder in a storage that is not browsable.</source>
+        <target state="final">អ្នកកំពុង​តែ​ព្យាយាម​ចូលដំណើរការ​សឺម៊ី​មួយ​នៅក្នុង​ការផ្ទុកដែល​មិនត្រូវបាន browsable ។</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundTitle" resname="folderNotFoundTitle" approved="yes">
+        <source>Folder not found.</source>
+        <target state="final">សឺម៊ី​មិនបានរកឃើញ។</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundMessage" resname="folderNotFoundMessage" approved="yes">
+        <source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
+        <target state="final">សឺម៊ី "%s" មិនអាច​ដំណើរការបាន។​ព្យាយាម​ប្រើ​សឺម៊ីមេ។</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
