@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1424776442" source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/locallang_tasks.xlf" date="2011-10-17T20:22:35Z" product-name="recycler" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="cleanerTaskTitle" resname="cleanerTaskTitle" approved="yes">
+        <source>Remove deleted records</source>
+        <target state="final">डिलीट किये गए रिकॉर्ड हटाए</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskDescription" resname="cleanerTaskDescription" approved="yes">
+        <source>Deletes rows from the database which are flagged "deleted"</source>
+        <target state="final">डेटाबेस में "देलेटेड" फ्लैग लगे हुई रॉ को डिलीट करे</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskPeriod" resname="cleanerTaskPeriod" approved="yes">
+        <source>Delete entries older than (in days)</source>
+        <target state="final">से पुरानी एंट्री को डिलीट करे (दिनों में)</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskTCA" resname="cleanerTaskTCA" approved="yes">
+        <source>Tables</source>
+        <target state="final">टेबल्स</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskDescriptionTables" resname="cleanerTaskDescriptionTables" approved="yes">
+        <source>Tables: %s</source>
+        <target state="final">टेबल्स: %s</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskDescriptionDays" resname="cleanerTaskDescriptionDays" approved="yes">
+        <source>Older than %d days(s)</source>
+        <target state="final">%d दिन(s) से पुरानी</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskErrorPeriod" resname="cleanerTaskErrorPeriod" approved="yes">
+        <source>The period has to be an integer and greater than zero.</source>
+        <target state="final">अवधि पूर्णांक और शून्य से अधिक होनी चाहिए।</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskErrorTCAempty" resname="cleanerTaskErrorTCAempty" approved="yes">
+        <source>You have to select at least one table.</source>
+        <target state="final">आपको कम से कम एक टेबल को चुनना पड़ेगा।</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskErrorTCANotSet" resname="cleanerTaskErrorTCANotSet" approved="yes">
+        <source>The table "%s" is not in the TCA.</source>
+        <target state="final">टेबल "%s" TCA में नहीं है।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
