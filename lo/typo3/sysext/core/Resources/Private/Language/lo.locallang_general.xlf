@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_general.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="LGL.hidden" approved="yes">
+        <source>Hide</source>
+        <target state="final">ເຊື່ອງ</target>
+      </trans-unit>
+      <trans-unit id="LGL.timestamp" approved="yes">
+        <source>Last Modified</source>
+        <target state="final">ແກ້ໄຂຫຼ້າສຸດ</target>
+      </trans-unit>
+      <trans-unit id="LGL.creationDate" approved="yes">
+        <source>Created At</source>
+        <target state="final">ສ້າງຂຶ້ນເມື່ອ</target>
+      </trans-unit>
+      <trans-unit id="LGL.creationUserId" approved="yes">
+        <source>Created By</source>
+        <target state="final">ສ້າງໂດຍ</target>
+      </trans-unit>
+      <trans-unit id="LGL.description" approved="yes">
+        <source>Description</source>
+        <target state="final">ຄຳອະທິບາຍ</target>
+      </trans-unit>
+      <trans-unit id="LGL.prependAtCopy" approved="yes">
+        <source>(copy %s)</source>
+        <target state="final">(ສຳເນົາ %s)</target>
+      </trans-unit>
+      <trans-unit id="LGL.layout" approved="yes">
+        <source>Frontend Layout</source>
+        <target state="final">ຮູບແບບໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="LGL.default_value" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າເລີ່ມຕົ້ນ</target>
+      </trans-unit>
+      <trans-unit id="LGL.normal" approved="yes">
+        <source>Normal</source>
+        <target state="final">ປົກກະຕິ</target>
+      </trans-unit>
+      <trans-unit id="LGL.images" approved="yes">
+        <source>Images</source>
+        <target state="final">ຮູບພາບ</target>
+      </trans-unit>
+      <trans-unit id="LGL.image" approved="yes">
+        <source>Image</source>
+        <target state="final">ຮູບພາບ</target>
+      </trans-unit>
+      <trans-unit id="LGL.width" approved="yes">
+        <source>Width</source>
+        <target state="final">ຄວາມກວ້າງ</target>
+      </trans-unit>
+      <trans-unit id="LGL.height" approved="yes">
+        <source>Height</source>
+        <target state="final">ຄວາມສູງ</target>
+      </trans-unit>
+      <trans-unit id="LGL.caption" approved="yes">
+        <source>Caption</source>
+        <target state="final">ຄຳບັນຍາຍຮູບ</target>
+      </trans-unit>
+      <trans-unit id="LGL.text" approved="yes">
+        <source>Text</source>
+        <target state="final">ຂໍ້ຄວາມ</target>
+      </trans-unit>
+      <trans-unit id="LGL.name" approved="yes">
+        <source>Name</source>
+        <target state="final">ຊື່</target>
+      </trans-unit>
+      <trans-unit id="LGL.first_name" approved="yes">
+        <source>First name</source>
+        <target state="final">ຊື່ແທ້</target>
+      </trans-unit>
+      <trans-unit id="LGL.middle_name" approved="yes">
+        <source>Middle name</source>
+        <target state="final">ຊື່ກາງ</target>
+      </trans-unit>
+      <trans-unit id="LGL.last_name" approved="yes">
+        <source>Last name</source>
+        <target state="final">ນາມສະກຸນ</target>
+      </trans-unit>
+      <trans-unit id="LGL.title" approved="yes">
+        <source>Title</source>
+        <target state="final">ຫົວຂໍ້</target>
+      </trans-unit>
+      <trans-unit id="LGL.title_person" approved="yes">
+        <source>Title</source>
+        <target state="final">ຄຳນຳໜ້າຊື່</target>
+      </trans-unit>
+      <trans-unit id="LGL.address" approved="yes">
+        <source>Address</source>
+        <target state="final">ທີ່ຢູ່</target>
+      </trans-unit>
+      <trans-unit id="LGL.phone" approved="yes">
+        <source>Phone</source>
+        <target state="final">ເບີໂທລະສັບ</target>
+      </trans-unit>
+      <trans-unit id="LGL.fax" approved="yes">
+        <source>Fax</source>
+        <target state="final">ແຟັກ</target>
+      </trans-unit>
+      <trans-unit id="LGL.author" approved="yes">
+        <source>Author</source>
+        <target state="final">ຜູ້ຂຽນ</target>
+      </trans-unit>
+      <trans-unit id="LGL.email" approved="yes">
+        <source>Email</source>
+        <target state="final">ອີເມວ</target>
+      </trans-unit>
+      <trans-unit id="LGL.company" approved="yes">
+        <source>Company</source>
+        <target state="final">ບໍລິສັດ</target>
+      </trans-unit>
+      <trans-unit id="LGL.city" approved="yes">
+        <source>City</source>
+        <target state="final">ເມືອງ</target>
+      </trans-unit>
+      <trans-unit id="LGL.zip" approved="yes">
+        <source>Zipcode</source>
+        <target state="final">ລະຫັດໄປສະນີ</target>
+      </trans-unit>
+      <trans-unit id="LGL.country" approved="yes">
+        <source>Country</source>
+        <target state="final">ປະເທດ</target>
+      </trans-unit>
+      <trans-unit id="LGL.www" approved="yes">
+        <source>www</source>
+        <target state="final">www</target>
+      </trans-unit>
+      <trans-unit id="LGL.lastlogin" approved="yes">
+        <source>Last login</source>
+        <target state="final">ເຂົ້າລະບົບຫຼ້າສຸດ</target>
+      </trans-unit>
+      <trans-unit id="LGL.note" approved="yes">
+        <source>Note</source>
+        <target state="final">ໝາຍເຫດ</target>
+      </trans-unit>
+      <trans-unit id="LGL.parameters" approved="yes">
+        <source>Parameters</source>
+        <target state="final">ພາລາມິເຕີ</target>
+      </trans-unit>
+      <trans-unit id="LGL.code" approved="yes">
+        <source>CODE</source>
+        <target state="final">ລະຫັດ</target>
+      </trans-unit>
+      <trans-unit id="LGL.links" approved="yes">
+        <source>Links</source>
+        <target state="final">ລິງເຊື່ອມຕໍ່</target>
+      </trans-unit>
+      <trans-unit id="LGL.language" approved="yes">
+        <source>Language</source>
+        <target state="final">ພາສາ</target>
+      </trans-unit>
+      <trans-unit id="LGL.category" approved="yes">
+        <source>Category</source>
+        <target state="final">ໝວດໝູ່</target>
+      </trans-unit>
+      <trans-unit id="LGL.shortcut_page" approved="yes">
+        <source>Shortcut to page</source>
+        <target state="final">ທາງລັດໄປຫາໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="LGL.keywords" approved="yes">
+        <source>Keywords (,)</source>
+        <target state="final">ຄຳຄົ້ນຫາ (,)</target>
+      </trans-unit>
+      <trans-unit id="LGL.disable" approved="yes">
+        <source>Disable</source>
+        <target state="final">ປິດໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="LGL.baseStorage" approved="yes">
+        <source>Storage</source>
+        <target state="final">ບ່ອນເກັບຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="LGL.folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">ໂຟນເດີ</target>
+      </trans-unit>
+      <trans-unit id="LGL.startingpoint" approved="yes">
+        <source>Startingpoint</source>
+        <target state="final">ຈຸດເລີ່ມຕົ້ນ</target>
+      </trans-unit>
+      <trans-unit id="LGL.disableRTE" approved="yes">
+        <source>Disable Rich Text Editor</source>
+        <target state="final">ປິດໃຊ້ງານເຄື່ອງມືແກ້ໄຂຂໍ້ຄວາມ (RTE)</target>
+      </trans-unit>
+      <trans-unit id="LGL.recursive" approved="yes">
+        <source>Recursive</source>
+        <target state="final">ແບບສືບເນື່ອງ</target>
+      </trans-unit>
+      <trans-unit id="LGL.siteLanguages" approved="yes">
+        <source>Site languages</source>
+        <target state="final">ພາສາຂອງເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="LGL.specialLanguages" approved="yes">
+        <source>Special languages</source>
+        <target state="final">ພາສາພິເສດ</target>
+      </trans-unit>
+      <trans-unit id="LGL.defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າເລີມຕົ້ນ</target>
+      </trans-unit>
+      <trans-unit id="LGL.allLanguages" approved="yes">
+        <source>[All]</source>
+        <target state="final">[ທັງໝົດ]</target>
+      </trans-unit>
+      <trans-unit id="LGL.error" approved="yes">
+        <source>Error!</source>
+        <target state="final">ເກີດຂໍ້ຜິດພາດ!</target>
+      </trans-unit>
+      <trans-unit id="LGL.visible" approved="yes">
+        <source>Visible</source>
+        <target state="final">ສະແດງໃຫ້ເຫັນ</target>
+      </trans-unit>
+      <trans-unit id="LGL.enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">ເປີດໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="LGL.disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">ປິດໃຊ້ງານ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
