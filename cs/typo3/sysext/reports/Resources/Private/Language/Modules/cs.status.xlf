@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/Modules/status.xlf" date="2026-11-10T13:37:37Z" product-name="status" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Get a status report about your site's operation and any detected problems.</source>
+        <target state="final">Získejte přehled o stavu provozu vašich stránek a o všech zjištěných problémech.</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Review key site parameters and installation issues. You can copy this information into TYPO3 support requests or project issue trackers.</source>
+        <target state="final">Projděte si klíčové parametry webu a problémy s instalací. Tyto informace můžete zkopírovat do žádostí o podporu v systému TYPO3 nebo do systémů pro sledování problémů v rámci projektu.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Status Report</source>
+        <target state="final">Hlášení o stavu</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
