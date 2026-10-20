@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814833" source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_db.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="index_config" resname="index_config">
+        <source>Indexing Configuration</source>
+        <target>crwdns76878:0crwdne76878:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.title" resname="index_config.title">
+        <source>Title</source>
+        <target>crwdns76880:0crwdne76880:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.description" resname="index_config.description">
+        <source>Description</source>
+        <target>crwdns76882:0crwdne76882:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.0" resname="index_config.type.I.0" translate="no">
+        <source>-</source>
+        <target>crwdns76884:0crwdne76884:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.1" resname="index_config.type.I.1">
+        <source>Database Records</source>
+        <target>crwdns76886:0crwdne76886:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.2" resname="index_config.type.I.2">
+        <source>Filepath on server</source>
+        <target>crwdns76888:0crwdne76888:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.3" resname="index_config.type.I.3">
+        <source>External URL</source>
+        <target>crwdns76890:0crwdne76890:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.4" resname="index_config.type.I.4">
+        <source>Page tree</source>
+        <target>crwdns76892:0crwdne76892:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.5" resname="index_config.type.I.5">
+        <source>Meta configuration</source>
+        <target>crwdns76894:0crwdne76894:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.type" resname="index_config.type">
+        <source>Type</source>
+        <target>crwdns76896:0crwdne76896:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.depth" resname="index_config.depth">
+        <source>Depth</source>
+        <target>crwdns76898:0crwdne76898:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.table2index" resname="index_config.table2index">
+        <source>Table to index</source>
+        <target>crwdns76900:0crwdne76900:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.table2index.I.0" resname="index_config.table2index.I.0" translate="no">
+        <source>-</source>
+        <target>crwdns76902:0crwdne76902:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.alternative_source_pid" resname="index_config.alternative_source_pid">
+        <source>Alternative Source Page</source>
+        <target>crwdns76904:0crwdne76904:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.get_params" resname="index_config.get_params">
+        <source>GET parameter string (with ###UID### substitution)</source>
+        <target>crwdns76906:0crwdne76906:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.fields" resname="index_config.fields">
+        <source>Fields (first is title)</source>
+        <target>crwdns76908:0crwdne76908:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.externalUrl" resname="index_config.externalUrl">
+        <source>External URL (eg. "http://www.domain.org/")</source>
+        <target>crwdns76910:0crwdne76910:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.chashcalc" resname="index_config.chashcalc">
+        <source>Calculate cHash (force caching)?</source>
+        <target>crwdns76912:0crwdne76912:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.filepath" resname="index_config.filepath">
+        <source>Filepath</source>
+        <target>crwdns76914:0crwdne76914:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.extensions" resname="index_config.extensions">
+        <source>Limit to extensions (commalist)</source>
+        <target>crwdns76916:0crwdne76916:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.url_deny" resname="index_config.url_deny">
+        <source>Enter sub-URLs in which not to decend</source>
+        <target>crwdns76918:0crwdne76918:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.records_indexonchange" resname="index_config.records_indexonchange">
+        <source>Index Records immediately when saved?</source>
+        <target>crwdns76920:0crwdne76920:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_next_indexing" resname="index_config.timer_next_indexing">
+        <source>Next indexing is scheduled (if empty, then immediately)</source>
+        <target>crwdns76922:0crwdne76922:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_offset" resname="index_config.timer_offset">
+        <source>Timing offset from midnight</source>
+        <target>crwdns76924:0crwdne76924:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency" resname="index_config.timer_frequency">
+        <source>How often would you like a re-index?</source>
+        <target>crwdns76926:0crwdne76926:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.0" resname="index_config.timer_frequency.I.0">
+        <source>Every hour</source>
+        <target>crwdns76928:0crwdne76928:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.1" resname="index_config.timer_frequency.I.1">
+        <source>Every day (24 hours)</source>
+        <target>crwdns76930:0crwdne76930:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.2" resname="index_config.timer_frequency.I.2">
+        <source>Every week</source>
+        <target>crwdns76932:0crwdne76932:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.recordsbatch" resname="index_config.recordsbatch">
+        <source>How many records to index a minute (default is 100)</source>
+        <target>crwdns76934:0crwdne76934:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.set_id" resname="index_config.set_id">
+        <source>Session ID (if &gt; zero, then indexing job is running)</source>
+        <target>crwdns76936:0crwdne76936:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.indexcfgs" resname="index_config.indexcfgs">
+        <source>Indexing configurations</source>
+        <target>crwdns76938:0crwdne76938:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.parameterCfgs" resname="index_config.parameterCfgs">
+        <source>Parameter combination configuration ([tablename]:&amp;[param]=###UID###)</source>
+        <target>crwdns76940:0crwdne76940:0</target>
+      </trans-unit>
+      <trans-unit id="index_config.rootpage" resname="index_config.rootpage">
+        <source>Root page</source>
+        <target>crwdns76942:0crwdne76942:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
