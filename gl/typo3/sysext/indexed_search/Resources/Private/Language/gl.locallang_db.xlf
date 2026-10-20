@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814833" source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_db.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="gl">
+    <header/>
+    <body>
+      <trans-unit id="index_config" resname="index_config" approved="yes">
+        <source>Indexing Configuration</source>
+        <target state="final">Configuración de indexación</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.1" resname="index_config.type.I.1" approved="yes">
+        <source>Database Records</source>
+        <target state="final">Rexistros da base de datos</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.2" resname="index_config.type.I.2" approved="yes">
+        <source>Filepath on server</source>
+        <target state="final">Ruta no servidor</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.3" resname="index_config.type.I.3" approved="yes">
+        <source>External URL</source>
+        <target state="final">URL externa</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.4" resname="index_config.type.I.4" approved="yes">
+        <source>Page tree</source>
+        <target state="final">Árbore de páxinas</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.5" resname="index_config.type.I.5" approved="yes">
+        <source>Meta configuration</source>
+        <target state="final">Configuración de etiquetas</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.0" resname="index_config.timer_frequency.I.0" approved="yes">
+        <source>Every hour</source>
+        <target state="final">Cada hora</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.1" resname="index_config.timer_frequency.I.1" approved="yes">
+        <source>Every day (24 hours)</source>
+        <target state="final">Cada día (24 horas)</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.2" resname="index_config.timer_frequency.I.2" approved="yes">
+        <source>Every week</source>
+        <target state="final">Cada semana</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
