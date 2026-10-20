@@ -1,0 +1,4 @@
+"tx_blogexample_domain_model_bookmark"
+,"uid","pid","title","tags"
+"tx_blogexample_domain_model_tag_mm"
+,"uid_local","uid_foreign","tablenames","fieldname","sorting","sorting_foreign"

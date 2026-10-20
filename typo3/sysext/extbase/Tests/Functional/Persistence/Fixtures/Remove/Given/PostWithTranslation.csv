@@ -1,0 +1,4 @@
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","date","tags","comments","additional_info","sorting","tstamp","crdate"
+,1,2,0,0,"Hello world",1768478400,0,0,0,1,1500000000,1500000000
+,2,2,1,1,"Hallo Welt",1768478400,0,0,0,2,1500000000,1500000000

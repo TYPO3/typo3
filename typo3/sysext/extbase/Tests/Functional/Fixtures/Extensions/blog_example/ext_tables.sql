@@ -23,3 +23,7 @@ CREATE TABLE tx_blogexample_domain_model_dateexample (
 CREATE TABLE tx_blogexample_domain_model_datetimeimmutableexample (
 	datetime_immutable_text varchar(255) DEFAULT '' NOT NULL,
 );
+
+CREATE TABLE tx_blogexample_domain_model_post (
+	bookmark int(11) DEFAULT 0 NOT NULL,
+);

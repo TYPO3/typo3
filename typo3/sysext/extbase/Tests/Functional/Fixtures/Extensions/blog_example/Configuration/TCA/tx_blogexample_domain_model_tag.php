@@ -33,7 +33,7 @@ return [
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_tag.items',
             'config' => [
                 'type' => 'group',
-                'allowed' => 'tx_blogexample_domain_model_person,tx_blogexample_domain_model_post',
+                'allowed' => 'tx_blogexample_domain_model_person,tx_blogexample_domain_model_post,tx_blogexample_domain_model_bookmark',
                 'size' => 10,
                 'MM' => 'tx_blogexample_domain_model_tag_mm',
                 'MM_oppositeUsage' => [
@@ -42,6 +42,9 @@ return [
                         'tags_special',
                     ],
                     'tx_blogexample_domain_model_post' => [
+                        'tags',
+                    ],
+                    'tx_blogexample_domain_model_bookmark' => [
                         'tags',
                     ],
                 ],

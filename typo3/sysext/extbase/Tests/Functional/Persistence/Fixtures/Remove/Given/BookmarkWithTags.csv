@@ -1,0 +1,7 @@
+"tx_blogexample_domain_model_bookmark"
+,"uid","pid","title","tags"
+,1,2,"TYPO3 news",2
+"tx_blogexample_domain_model_tag_mm"
+,"uid_local","uid_foreign","tablenames","fieldname","sorting","sorting_foreign"
+,1,1,"tx_blogexample_domain_model_bookmark","tags",1,1
+,2,1,"tx_blogexample_domain_model_bookmark","tags",1,2
