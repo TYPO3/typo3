@@ -679,6 +679,16 @@ export class Tree extends LitElement {
     return this;
   }
 
+  protected override willUpdate(changedProperties: PropertyValues<this>): void {
+    super.willUpdate(changedProperties);
+    if (changedProperties.has('nodeMap')) {
+      // Loading or filtering replaces the node objects; without looking the focused
+      // nodes up again, no tree item is left to carry tabindex="0"
+      this.focusedNode = this.focusedNode && this.getNodeByTreeIdentifier(this.focusedNode.__treeIdentifier);
+      this.lastFocusedNode = this.lastFocusedNode && this.getNodeByTreeIdentifier(this.lastFocusedNode.__treeIdentifier);
+    }
+  }
+
   protected override shouldUpdate(changedProperties: PropertyValues<this>): boolean {
     if (changedProperties.size === 1 &&
         changedProperties.has('currentScrollPosition') &&
@@ -1066,6 +1076,9 @@ export class Tree extends LitElement {
         insertPosition = previousNode!.depth == targetNode.depth ? 'after' : 'inside';
         targetNode = previousNode;
       }
+
+      // Dragging leaves nothing focused. The tree node gives the wizard a place to return the focus to.
+      this.focusNode(targetNode!);
 
       openPageWizardModal({
         doktype: String(newNodeData.doktype),
