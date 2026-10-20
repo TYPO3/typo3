@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="formManager.form_name" approved="yes">
+        <source>Name</source>
+        <target state="final">नाम</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_name_description" approved="yes">
+        <source>Enter a meaningful and descriptive name for the form. The name is displayed only in the TYPO3 backend.</source>
+        <target state="final">फॉर्म के लिए एक सार्थक और विवरणात्मक नाम दर्ज करें। नाम केवल TYPO3 बैकएंड में प्रदर्शित होता है।</target>
+      </trans-unit>
+      <trans-unit id="formManager.new_form_name" approved="yes">
+        <source>New form name</source>
+        <target state="final">नया फॉर्म नाम</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_storageLocation" approved="yes">
+        <source>Location</source>
+        <target state="final">लोकेशन</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_storageLocation_description" approved="yes">
+        <source>Select the location where the form will be saved.</source>
+        <target state="final">वह स्थान चुनें जहाँ फ़ॉर्म सेव जाएगा।</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_prototype" approved="yes">
+        <source>Form prototype</source>
+        <target state="final">फॉर्म प्रोटोटाइप</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_template" approved="yes">
+        <source>Template</source>
+        <target state="final">टेम्पलेट</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_template_description" approved="yes">
+        <source>Select a template for building your new form.</source>
+        <target state="final">अपना नया फ़ॉर्म बनाने के लिए एक टेम्प्लेट चुनें।</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_headline_general" approved="yes">
+        <source>General</source>
+        <target state="final">सामान्य</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_copied" approved="yes">
+        <source>Copied form</source>
+        <target state="final">कॉपी किया गया फॉर्म</target>
+      </trans-unit>
+      <trans-unit id="formManager.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">रद्द करें</target>
+      </trans-unit>
+      <trans-unit id="formManager.remove_form" approved="yes">
+        <source>Delete</source>
+        <target state="final">हटाएं</target>
+      </trans-unit>
+      <trans-unit id="formManager.remove_form_title" approved="yes">
+        <source>Confirm deletion</source>
+        <target state="final">हटाने की पुष्टि करें</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.title" approved="yes">
+        <source>Create new form</source>
+        <target state="final">नया फॉर्म बनाएँ</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step.modes.summary.title" approved="yes">
+        <source>Mode</source>
+        <target state="final">मोड</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.progressLabel" approved="yes">
+        <source>Choose</source>
+        <target state="final">चुनें</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.noStorages" approved="yes">
+        <source>You do not have permission to create forms. Please contact your administrator.</source>
+        <target state="final">आपके पास फ़ॉर्म बनाने की अनुमति नहीं है। कृपया अपने एडमिनिस्ट्रेटर से संपर्क करें।</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step2.title" approved="yes">
+        <source>Settings</source>
+        <target state="final">सेटिंग्स</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.title" approved="yes">
+        <source>Ready?</source>
+        <target state="final">तैयार?</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.progressLabel" approved="yes">
+        <source>Check</source>
+        <target state="final">जांचें</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.message" approved="yes">
+        <source>Just check and confirm the settings you have entered. Done? Then you are ready to go.</source>
+        <target state="final">बस जो सेटिंग्स आपने दर्ज की हैं, उन्हें जांचें और पुष्टि करें। हो गया? फिर आप तैयार हैं जाने के लिए।</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.check" approved="yes">
+        <source>Check and confirm</source>
+        <target state="final">जांचें और पुष्टि करें</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step4.errorTitle" approved="yes">
+        <source>Create</source>
+        <target state="final">बनाएँ</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step4.errorMessage" approved="yes">
+        <source>The form could not be saved</source>
+        <target state="final">फॉर्म सहेजा नहीं जा सका</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step.storages.title" approved="yes">
+        <source>Storage location</source>
+        <target state="final">स्टोरेज लोकेशन</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step.storages.description" approved="yes">
+        <source>Choose how the form should be saved:</source>
+        <target state="final">फॉर्म को कैसे सेव किया जाए, चुनें:</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step.storages.progressLabel" approved="yes">
+        <source>Storage</source>
+        <target state="final">स्टोरेज</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step.storages.summary.title" approved="yes">
+        <source>Storage</source>
+        <target state="final">स्टोरेज</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step1.title" approved="yes">
+        <source>Duplicate form "{0}"</source>
+        <target state="final">"{0}" फॉर्म की प्रतिलिपि बनाएं</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.title" approved="yes">
+        <source>Ready?</source>
+        <target state="final">तैयार?</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.progressLabel" approved="yes">
+        <source>Check</source>
+        <target state="final">जांचें</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.check" approved="yes">
+        <source>Check and confirm</source>
+        <target state="final">जांचें और पुष्टि करें</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.message" approved="yes">
+        <source>Just check and confirm the settings you have entered. Done? Then you are ready to go.</source>
+        <target state="final">बस जो सेटिंग्स आपने दर्ज की हैं, उन्हें जांचें और पुष्टि करें। हो गया? फिर आप तैयार हैं जाने के लिए।</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step3.errorTitle" approved="yes">
+        <source>Duplicate</source>
+        <target state="final">डुप्लीकेट</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step3.errorMessage" approved="yes">
+        <source>The form could not be saved</source>
+        <target state="final">फॉर्म सहेजा नहीं जा सका</target>
+      </trans-unit>
+      <trans-unit id="formManager.no_references" approved="yes">
+        <source>There are no references yet.</source>
+        <target state="final">अभी कोई संदर्भ नहीं हैं।</target>
+      </trans-unit>
+      <trans-unit id="formManager.table.field.control" approved="yes">
+        <source>Control</source>
+        <target state="final">नियंत्रण</target>
+      </trans-unit>
+      <trans-unit id="formManager.table.field.uid" approved="yes">
+        <source>Uid</source>
+        <target state="final">यूआईडी</target>
+      </trans-unit>
+      <trans-unit id="formManager.table.field.title" approved="yes">
+        <source>Title</source>
+        <target state="final">शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="formManager.btn.edit.title" approved="yes">
+        <source>Edit</source>
+        <target state="final">संपादित करें</target>
+      </trans-unit>
+      <trans-unit id="formManager.references.title" approved="yes">
+        <source>Form: {0}</source>
+        <target state="final">फॉर्म: {0}</target>
+      </trans-unit>
+      <trans-unit id="formManager.references.headline" approved="yes">
+        <source>References to this item</source>
+        <target state="final">इस आइटम के संदर्भ</target>
+      </trans-unit>
+      <trans-unit id="formManager.blankForm.label" x-unused-since="15.0" approved="yes">
+        <source>Blank form</source>
+        <target state="final">रिक्त फॉर्म</target>
+      </trans-unit>
+      <trans-unit id="formManager.blankForm.subtitle" x-unused-since="15.0" approved="yes">
+        <source>Start fresh</source>
+        <target state="final">ताजगी से शुरुआत करें</target>
+      </trans-unit>
+      <trans-unit id="formManager.blankForm.description" x-unused-since="15.0" approved="yes">
+        <source>Create a new form from scratch.</source>
+        <target state="final">स्क्रैच से एक नया फॉर्म बनाएँ।</target>
+      </trans-unit>
+      <trans-unit id="formManager.predefinedForm.label" x-unused-since="15.0" approved="yes">
+        <source>Predefined form</source>
+        <target state="final">पूर्वनिर्धारित फॉर्म</target>
+      </trans-unit>
+      <trans-unit id="formManager.predefinedForm.subtitle" x-unused-since="15.0" approved="yes">
+        <source>Use a form template</source>
+        <target state="final">एक फोर्म टेम्पलेट का उपयोग करें</target>
+      </trans-unit>
+      <trans-unit id="formManager.predefinedForm.description" x-unused-since="15.0" approved="yes">
+        <source>Create a new form and use an existing form template for it.</source>
+        <target state="final">एक नया फॉर्म बनाएँ और इसके लिए मौजूदा फॉर्म टेम्पलेट का उपयोग करें।</target>
+      </trans-unit>
+      <trans-unit id="formManager.finisher.redirect.success.title" approved="yes">
+        <source>Form created</source>
+        <target state="final">फ़ॉर्म बनाया गया</target>
+      </trans-unit>
+      <trans-unit id="formManager.finisher.redirect.success.description" approved="yes">
+        <source>The form has been successfully created. Click "Finish" to be redirected to the newly created form.</source>
+        <target state="final">फ़ॉर्म सफलतापूर्वक बना दिया गया है। नए बने फ़ॉर्म पर जाने के लिए "Finish" पर क्लिक करें।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
