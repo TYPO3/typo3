@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Sort sub pages</source>
+        <target state="final">Ordenar subpáginas</target>
+      </trans-unit>
+      <trans-unit id="currentPageOrder" approved="yes">
+        <source>Current page order</source>
+        <target state="final">Orden de la página actual</target>
+      </trans-unit>
+      <trans-unit id="changeOrder" approved="yes">
+        <source>Sort these pages by</source>
+        <target state="final">Ordenar estas páginas por</target>
+      </trans-unit>
+      <trans-unit id="changeOrderConfirm" x-unused-since="15.0" approved="yes">
+        <source>You're about to change the order of the above pages. Are you sure you want to continue?</source>
+        <target state="final">Estás a punto de cambiar el orden de las páginas anteriores. ¿Estás seguro de que quieres continuar?</target>
+      </trans-unit>
+      <trans-unit id="fieldTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Título de la página</target>
+      </trans-unit>
+      <trans-unit id="fieldSubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Subtítulo</target>
+      </trans-unit>
+      <trans-unit id="fieldCrdate" approved="yes">
+        <source>Create-time</source>
+        <target state="final">Fecha de creación</target>
+      </trans-unit>
+      <trans-unit id="fieldTstamp" approved="yes">
+        <source>Change-time</source>
+        <target state="final">Fecha de modificación</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Título de la página</target>
+      </trans-unit>
+      <trans-unit id="changeOrderBySubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Subtítulo</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByNavtitle" approved="yes">
+        <source>Navigation title</source>
+        <target state="final">Título de navegación</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTstamp" approved="yes">
+        <source>Change-time</source>
+        <target state="final">Fecha de modificación</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByCreate" approved="yes">
+        <source>Create-time</source>
+        <target state="final">Fecha de creación</target>
+      </trans-unit>
+      <trans-unit id="changeOrderReverse" approved="yes">
+        <source>Reverse current order</source>
+        <target state="final">Invertir el orden actual</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.title" approved="yes">
+        <source>Invisible subpages</source>
+        <target state="final">Subpáginas invisibles</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.title" approved="yes">
+        <source>No subpages</source>
+        <target state="final">No hay subpáginas</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.message" approved="yes">
+        <source>Please select a page with subpages.</source>
+        <target state="final">Por favor, selecciona una página con subpáginas.</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.title" approved="yes">
+        <source>Not implemented</source>
+        <target state="final">No implementado</target>
+      </trans-unit>
+      <trans-unit id="noEditPermissions" approved="yes">
+        <source>No edit permissions on this sub page. This page can not be re-sorted among others.</source>
+        <target state="final">No hay permisos de edición en esta subpágina. Esta página no puede ser reordenada con las otras.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
