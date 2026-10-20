@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814829" source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang_csh.xlf" date="2011-10-17T20:22:33Z" product-name="impexp" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="pageTreeMode.alttitle" resname="pageTreeMode.alttitle" approved="yes">
+        <source>Levels</source>
+        <target state="final">Ravni</target>
+      </trans-unit>
+      <trans-unit id="upload.details" resname="upload.details" approved="yes">
+        <source>Notice that there are usually limits set by the server (PHP) to the size of uploaded files. If hit, upload fails and an error message is shown.</source>
+        <target state="final">Upoštevajte, da strežnik (PHP) običajno določi omejitve velikosti prenesenih datotek. Če je ta presežena, prenos ni uspešen in prikaže se sporočilo o napaki.</target>
+      </trans-unit>
+      <trans-unit id="notes" resname="notes" approved="yes">
+        <source>Notes</source>
+        <target state="final">Opombe</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
