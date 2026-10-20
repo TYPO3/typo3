@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814909" source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_reports.xlf" date="2011-10-17T20:22:35Z" product-name="reports" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="status_ok" resname="status_ok" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="status_info" resname="status_info" approved="yes">
+        <source>Information</source>
+        <target state="final">Informasjon</target>
+      </trans-unit>
+      <trans-unit id="status_disabled" resname="status_disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Deaktivert</target>
+      </trans-unit>
+      <trans-unit id="status_enabled" resname="status_enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Aktivert</target>
+      </trans-unit>
+      <trans-unit id="status_empty" resname="status_empty" approved="yes">
+        <source>Empty</source>
+        <target state="final">Tom</target>
+      </trans-unit>
+      <trans-unit id="status_none" resname="status_none" approved="yes">
+        <source>None</source>
+        <target state="final">Ingen</target>
+      </trans-unit>
+      <trans-unit id="status_system" resname="status_system" approved="yes">
+        <source>System</source>
+        <target state="final">System</target>
+      </trans-unit>
+      <trans-unit id="status_security" resname="status_security" approved="yes">
+        <source>Security</source>
+        <target state="final">Sikkerhet</target>
+      </trans-unit>
+      <trans-unit id="status_configuration" resname="status_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Konfigurasjon</target>
+      </trans-unit>
+      <trans-unit id="status_phpVersion" resname="status_phpVersion" approved="yes">
+        <source>PHP Version</source>
+        <target state="final">PHP versjon</target>
+      </trans-unit>
+      <trans-unit id="status_webServer" resname="status_webServer" approved="yes">
+        <source>Web Server</source>
+        <target state="final">Nettverkstjener</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_site" resname="status_updateTask_email_site" approved="yes">
+        <source>Site</source>
+        <target state="final">Nettsted</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_issues" resname="status_updateTask_email_issues" approved="yes">
+        <source>Issues</source>
+        <target state="final">Problemer</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
