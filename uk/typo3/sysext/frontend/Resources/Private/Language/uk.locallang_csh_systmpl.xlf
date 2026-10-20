@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814802" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_systmpl.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>TypoScript template record.</source>
+        <target state="final">Запис шаблону TypoScript.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>The 'Template' records are the vital components used to set the design of the webpages. No matter how (almost) you would like to build your website, it must be initiated by a 'Template' record placed in the root of the page tree of the site.
+Basically, create a 'Template' record, enter a title and make sure to check of Clear constants, setup and Rootline. Then enter some TypoScript configuration in the Setup field and you're set.
+It's very important to read how to do all this in the documents listed below! Also make sure you use the Web&gt;Template module to do all the working with templates. It's a specialized tool to help you with this.</source>
+			<target state="final">Записи «Шаблони» є життєво важливими компонентами, які використовуються для встановлення дизайну веб-сторінок. Незалежно від того, як (майже) ви хотіли б побудувати свій веб-сайт, він повинен бути ініційований записом «Шаблон», розміщеним у корені дерева сторінок сайту.
+Загалом, створіть запис «Шаблон», введіть назву та переконайтеся, що перевірили Очистити константи, налаштування та кореневу лінію. Потім введіть деяку конфігурацію TypoScript у полі «Налаштування», і все готово.
+Дуже важливо прочитати, як все це зробити, у наведених нижче документах! Також переконайтеся, що ви використовуєте модуль Веб&gt;Шаблон для роботи з шаблонами. Це спеціальний інструмент, який допоможе вам у цьому.</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>static_template
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+TypoScript in 45 min| https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/</source>
+			<target state="final">static_template
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+TypoScript за 45 хв| https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/systemplate.png,
+EXT:frontend/Resources/Public/Images/cshimages/systemplate1.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/systemplate.png,
+EXT:frontend/Resources/Public/Images/cshimages/systemplate1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>A Template Record with constants and setup code.
+The Web&gt;Template module contains tools which will help you to edit and validate TypoScript structures.</source>
+			<target state="final">Шаблон запису з константами та кодом налаштування.
+Модуль Веб&gt;Шаблон містить інструменти, які допоможуть вам редагувати та перевіряти структури TypoScript.</target></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Hiding the template will deactivate the template record.</source>
+        <target state="final">Якщо приховати шаблон, запис шаблону буде деактивовано.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If the Template Record was the first record on a page hiding it will expose the second record on the page instead.</source>
+        <target state="final">Якщо запис шаблону був першим записом на сторінці, що приховує, замість нього відкриється другий запис на сторінці.</target>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Start time. Use this to enable a template on a certain date.</source>
+        <target state="final">Час початку. Використовуйте це, щоб увімкнути шаблон на певну дату.</target>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>End time. Use this to disable a template on a certain date.</source>
+        <target state="final">Час закінчення. Використовуйте це, щоб вимкнути шаблон на певну дату.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>The title of the template record is only an internal label and does not have any effect on the output in the frontend.</source>
+        <target state="final">Заголовок запису шаблону є лише внутрішньою міткою, яка не впливає на вихідні дані у інтерфейсі.</target>
+      </trans-unit>
+      <trans-unit id="sitetitle.description" resname="sitetitle.description" approved="yes">
+        <source>Website title. Typically this will automatically be prefixed all page titles in the &lt;title&gt; tag of the frontend pages.</source>
+        <target state="final">Назва сайту. Зазвичай це автоматично додає префікс усіх заголовків сторінок у &lt;title&gt; тег зовнішніх сторінок.</target>
+      </trans-unit>
+      <trans-unit id="constants.description" resname="constants.description" approved="yes">
+        <source>TypoScript Constants.</source>
+        <target state="final">Константи TypoScript.</target>
+      </trans-unit>
+      <trans-unit id="_constants.seeAlso" resname="_constants.seeAlso" approved="yes">
+        <source>static_template:constants</source>
+        <target state="final">static_template:constants</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="config.description" resname="config.description" approved="yes">
+        <source>TypoScript Setup code</source>
+        <target state="final">Код налаштування TypoScript</target>
+      </trans-unit>
+      <trans-unit id="config.details" resname="config.details" approved="yes">
+        <source>Read more about TypoScript Templates in TSref, TypoScript by Example and Getting Started.</source>
+        <target state="final">Дізнайтеся більше про шаблони TypoScript у TSref, TypoScript через Приклад та Початок роботи.</target>
+      </trans-unit>
+      <trans-unit id="_config.seeAlso" resname="_config.seeAlso" xml:space="preserve" approved="yes">
+				<source>static_template:config,
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+Getting Started | https://docs.typo3.org/typo3cms/GettingStartedTutorial/
+TypoScript in 45 min| https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/
+TypoScript Syntax | https://docs.typo3.org/typo3cms/TyposcriptSyntaxReference/</source>
+				
+			<target state="final">static_template:config,
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+Початок роботи | https://docs.typo3.org/typo3cms/GettingStartedTutorial/
+TypoScript за 45 хв| https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/
+Синтаксис TypoScript | https://docs.typo3.org/typo3cms/TyposcriptSyntaxReference/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="resources.description" resname="resources.description" approved="yes">
+        <source>Resource files for the template. For example a logo, a TTF-font etc.</source>
+        <target state="final">Файли ресурсів для шаблону. Наприклад, логотип, TTF-шрифт тощо.</target>
+      </trans-unit>
+      <trans-unit id="resources.details" resname="resources.details" approved="yes">
+        <source>Resource files can be referenced in TypoScript Template code by [filename]*.[ext] and has the advantage that the reference from TypoScript is not broken if you copy or export a Template Record where the resources ends up with new names.</source>
+        <target state="final">На файли ресурсів можна посилатися в коді шаблону TypoScript за допомогою [filename]*.[ext] і має перевагу в тому, що посилання з TypoScript не порушується, якщо ви копіюєте або експортуєте запис шаблону, де ресурси закінчуються з новими іменами.</target>
+      </trans-unit>
+      <trans-unit id="clear.description" resname="clear.description" approved="yes">
+        <source>Flags that will clear the inheritance of TypoScript code from former templates in the root line. There is a flag for Constants and one for Setup code.</source>
+        <target state="final">Прапорці, які очистять успадкування коду TypoScript від попередніх шаблонів у кореневому рядку. Існує прапорець для констант і один для коду налаштування.</target>
+      </trans-unit>
+      <trans-unit id="clear.details" resname="clear.details" approved="yes">
+        <source>In the Web &gt; Template / Template Analyzer module you can see how far back in the template tree that constants and setup code is inherited.</source>
+        <target state="final">У мережі Веб&gt; Шаблон / Аналізатор шаблонів ви можете побачити, як далеко в дереві шаблонів успадковуються константи та код налаштування.</target>
+      </trans-unit>
+      <trans-unit id="_clear.seeAlso" resname="_clear.seeAlso" approved="yes">
+        <source>sys_template:root</source>
+        <target state="final">sys_template:root</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_clear.image" resname="_clear.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/systemplate2.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/systemplate2.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="root.description" resname="root.description" approved="yes">
+        <source>Defines that the template represents a root of a website.</source>
+        <target state="final">Визначає, що шаблон представляє корінь веб-сайту.</target>
+      </trans-unit>
+      <trans-unit id="_root.seeAlso" resname="_root.seeAlso" approved="yes">
+        <source>sys_template:clear</source>
+        <target state="final">sys_template:clear</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="includeStaticAfterBasedOn.description" resname="includeStaticAfterBasedOn.description" approved="yes">
+        <source>If set, static templates will be included after "based-on" templates. It basically swaps the order of inclusion of these external TypoScript sources.</source>
+        <target state="final">Якщо встановлено, статичні шаблони будуть включені після шаблонів "на основі". По суті, він змінює порядок включення цих зовнішніх джерел TypoScript.</target>
+      </trans-unit>
+      <trans-unit id="includeStaticAfterBasedOn.details" resname="includeStaticAfterBasedOn.details" approved="yes">
+        <source>The Web &gt; Template / Template Analyzer module allows you to view the order of inclusion of all TypoScript sources your template uses.</source>
+        <target state="final">Інтернет &gt; Шаблон / Аналізатор шаблонів дозволяє переглядати порядок включення всіх джерел TypoScript, які використовує ваш шаблон.</target>
+      </trans-unit>
+      <trans-unit id="include_static.description" resname="include_static.description" approved="yes">
+        <source>Static Template records to include.</source>
+        <target state="final">Записи статичних шаблонів для включення.</target>
+      </trans-unit>
+      <trans-unit id="_include_static.seeAlso" resname="_include_static.seeAlso" approved="yes">
+        <source>static_template</source>
+        <target state="final">static_template</target>
+      </trans-unit>
+      <trans-unit id="include_static_file.description" resname="include_static_file.description" approved="yes">
+        <source>Static Template files to include.</source>
+        <target state="final">Файли статичних шаблонів для включення.</target>
+      </trans-unit>
+      <trans-unit id="include_static_file.details" resname="include_static_file.details" approved="yes">
+        <source>Static template files are registered by extensions contrary to Static Template records which come from the static database table, "static_template".</source>
+        <target state="final">Файли статичних шаблонів реєструються розширеннями, що відрізняються від записів статичного шаблону, які надходять із статичної таблиці бази даних "static_template".</target>
+      </trans-unit>
+      <trans-unit id="_include_static_file.seeAlso" resname="_include_static_file.seeAlso" approved="yes">
+        <source>sys_template:include_static</source>
+        <target state="final">sys_template:include_static</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="basedOn.description" resname="basedOn.description" approved="yes">
+        <source>Other Template Records that are included like "static templates".</source>
+        <target state="final">Інші записи шаблонів, які включено, як «статичні шаблони».</target>
+      </trans-unit>
+      <trans-unit id="static_file_mode.description" resname="static_file_mode.description" approved="yes">
+        <source>Define the mode of inclusion of static template files.</source>
+        <target state="final">Визначити режим включення файлів статичних шаблонів.</target>
+      </trans-unit>
+      <trans-unit id="static_file_mode.details" resname="static_file_mode.details" approved="yes">
+        <source>If you are in doubt about the inclusion order, make sure to use the Web &gt; Template / Template Analyzer to view the order.</source>
+        <target state="final">Якщо ви сумніваєтеся щодо порядку включення, обов’язково скористайтеся Веб &gt; Шаблон / Аналізатор шаблонів для перегляду замовлення.</target>
+      </trans-unit>
+      <trans-unit id="nextLevel.description" resname="nextLevel.description" approved="yes">
+        <source>Defines a template record to make active one level out in the page tree of this branch. This can be used to define another template record for the general website while having a special template for the frontpage.</source>
+        <target state="final">Визначає запис шаблону, щоб зробити активним на один рівень у дереві сторінок цієї гілки. Це можна використовувати для визначення іншого запису шаблону для загального веб-сайту, маючи спеціальний шаблон для головної сторінки.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a description of the template if you like.</source>
+        <target state="final">Якщо хочете, введіть опис шаблону.</target>
+      </trans-unit>
+      <trans-unit id="editorcfg.description" resname="editorcfg.description" approved="yes">
+        <source>Editor Configuration for the stylesheet editor extension.</source>
+        <target state="final">Конфігурація редактора для розширення редактора таблиці стилів.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
