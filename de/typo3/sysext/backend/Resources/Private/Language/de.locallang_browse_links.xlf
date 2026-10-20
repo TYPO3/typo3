@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_browse_links.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="linkBrowser" approved="yes">
+        <source>Link Browser</source>
+        <target state="final">Link Browser</target>
+      </trans-unit>
+      <trans-unit id="openLinkWizard" approved="yes">
+        <source>Open link wizard</source>
+        <target state="final">Link-Assistent öffnen</target>
+      </trans-unit>
+      <trans-unit id="removeLink" approved="yes">
+        <source>Remove link</source>
+        <target state="final">Link entfernen</target>
+      </trans-unit>
+      <trans-unit id="uploadImage" approved="yes">
+        <source>Upload Image</source>
+        <target state="final">Bild hochladen</target>
+      </trans-unit>
+      <trans-unit id="update" approved="yes">
+        <source>Update</source>
+        <target state="final">Aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="path" approved="yes">
+        <source>Path</source>
+        <target state="final">Pfad</target>
+      </trans-unit>
+      <trans-unit id="page" approved="yes">
+        <source>Page</source>
+        <target state="final">Seite</target>
+      </trans-unit>
+      <trans-unit id="file" approved="yes">
+        <source>File</source>
+        <target state="final">Datei</target>
+      </trans-unit>
+      <trans-unit id="folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">Ordner</target>
+      </trans-unit>
+      <trans-unit id="extUrl" approved="yes">
+        <source>External URL</source>
+        <target state="final">Externe URL</target>
+      </trans-unit>
+      <trans-unit id="email" approved="yes">
+        <source>Email</source>
+        <target state="final">E-Mail</target>
+      </trans-unit>
+      <trans-unit id="email.subject" approved="yes">
+        <source>Subject</source>
+        <target state="final">Betreff</target>
+      </trans-unit>
+      <trans-unit id="email.cc" approved="yes">
+        <source>CC</source>
+        <target state="final">CC</target>
+      </trans-unit>
+      <trans-unit id="email.bcc" approved="yes">
+        <source>BCC</source>
+        <target state="final">BCC</target>
+      </trans-unit>
+      <trans-unit id="email.body" approved="yes">
+        <source>Body</source>
+        <target state="final">Inhalt</target>
+      </trans-unit>
+      <trans-unit id="telephone" approved="yes">
+        <source>Telephone</source>
+        <target state="final">Telefon</target>
+      </trans-unit>
+      <trans-unit id="special" approved="yes">
+        <source>Special</source>
+        <target state="final">Spezial</target>
+      </trans-unit>
+      <trans-unit id="folderTree" approved="yes">
+        <source>Folder Tree</source>
+        <target state="final">Verzeichnisbaum</target>
+      </trans-unit>
+      <trans-unit id="files" approved="yes">
+        <source>Files</source>
+        <target state="final">Dateien</target>
+      </trans-unit>
+      <trans-unit id="folders" approved="yes">
+        <source>Folders</source>
+        <target state="final">Ordner</target>
+      </trans-unit>
+      <trans-unit id="target" approved="yes">
+        <source>Target</source>
+        <target state="final">Ziel</target>
+      </trans-unit>
+      <trans-unit id="linkRelationship" approved="yes">
+        <source>Relationship</source>
+        <target state="final">Beziehung</target>
+      </trans-unit>
+      <trans-unit id="class" approved="yes">
+        <source>CSS-Class</source>
+        <target state="final">CSS-Klasse</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="params" approved="yes">
+        <source>Additional link parameters</source>
+        <target state="final">Zusätzliche Link-Parameter</target>
+      </trans-unit>
+      <trans-unit id="newWindow" approved="yes">
+        <source>New window</source>
+        <target state="final">Neues Fenster</target>
+      </trans-unit>
+      <trans-unit id="top" approved="yes">
+        <source>Top</source>
+        <target state="final">Anfang</target>
+      </trans-unit>
+      <trans-unit id="none" approved="yes">
+        <source>None - new link!</source>
+        <target state="final">Keiner - neuer Link!</target>
+      </trans-unit>
+      <trans-unit id="pageTree" approved="yes">
+        <source>Page tree</source>
+        <target state="final">Seitenbaum</target>
+      </trans-unit>
+      <trans-unit id="contentElements" approved="yes">
+        <source>Content elements</source>
+        <target state="final">Inhaltselemente</target>
+      </trans-unit>
+      <trans-unit id="selectRecords" approved="yes">
+        <source>Select Records</source>
+        <target state="final">Datensätze auswählen</target>
+      </trans-unit>
+      <trans-unit id="addToList" approved="yes">
+        <source>Add to list...</source>
+        <target state="final">Zur Liste hinzufügen...</target>
+      </trans-unit>
+      <trans-unit id="info" approved="yes">
+        <source>Info</source>
+        <target state="final">Info</target>
+      </trans-unit>
+      <trans-unit id="emailAddress" approved="yes">
+        <source>Email address</source>
+        <target state="final">E-Mail-Adresse</target>
+      </trans-unit>
+      <trans-unit id="telephoneNumber" approved="yes">
+        <source>Telephone number</source>
+        <target state="final">Telefonnummer</target>
+      </trans-unit>
+      <trans-unit id="setLink" approved="yes">
+        <source>Set Link</source>
+        <target state="final">Link setzen</target>
+      </trans-unit>
+      <trans-unit id="linkTo" approved="yes">
+        <source>Link to %s</source>
+        <target state="final">Link zu %s</target>
+      </trans-unit>
+      <trans-unit id="urlPlaceholder" translate="no" approved="yes">
+        <source>https://...</source>
+        <target state="final">https://...</target>
+      </trans-unit>
+      <trans-unit id="clickToRedrawFullSize" approved="yes">
+        <source>Image is larger than shown here! Click to redraw page with full sized images.</source>
+        <target state="final">Bild ist größer als hier angezeigt! Klicken, um Seite mit Bildern in voller Größe neu zu laden.</target>
+      </trans-unit>
+      <trans-unit id="findDragDrop" approved="yes">
+        <source>Find and click on your image then drag it into the editor in the main window!</source>
+        <target state="final">Suchen und klicken Sie auf Ihr Bild, dann ziehen Sie es in den Editor im Hauptfenster!</target>
+      </trans-unit>
+      <trans-unit id="noWebFolder" approved="yes">
+        <source>You cannot drag images from this folder (yellow) because it is internal on the server.</source>
+        <target state="final">Sie können keine Bilder aus diesem Ordner (gelb) ziehen, da diese intern auf dem Server liegen.</target>
+      </trans-unit>
+      <trans-unit id="currentLink" approved="yes">
+        <source>Current Link</source>
+        <target state="final">Aktueller Link</target>
+      </trans-unit>
+      <trans-unit id="invalidChar" approved="yes">
+        <source>ERROR: Invalid character found in file path (%s). Cannot add the file!</source>
+        <target state="final">FEHLER: Ungültiges Zeichen im Dateipfad gefunden (%s). Datei kann nicht hinzugefügt werden!</target>
+      </trans-unit>
+      <trans-unit id="toggleSelection" approved="yes">
+        <source>Toggle selection</source>
+        <target state="final">Auswahl umkehren</target>
+      </trans-unit>
+      <trans-unit id="importSelection" approved="yes">
+        <source>Import selection</source>
+        <target state="final">Auswahl importieren</target>
+      </trans-unit>
+      <trans-unit id="recordSelector" approved="yes">
+        <source>Record selector</source>
+        <target state="final">Datensatzauswahl</target>
+      </trans-unit>
+      <trans-unit id="fileSelector" approved="yes">
+        <source>File selector</source>
+        <target state="final">Dateiauswahl</target>
+      </trans-unit>
+      <trans-unit id="folderSelector" approved="yes">
+        <source>Folder selector</source>
+        <target state="final">Ordnerauswahl</target>
+      </trans-unit>
+      <trans-unit id="createFolder" approved="yes">
+        <source>Create new folder</source>
+        <target state="final">Neuen Ordner erstellen</target>
+      </trans-unit>
+      <trans-unit id="page_id" approved="yes">
+        <source>Page ID</source>
+        <target state="final">Seiten-ID</target>
+      </trans-unit>
+      <trans-unit id="download" approved="yes">
+        <source>Force download</source>
+        <target state="final">Download forcieren</target>
+      </trans-unit>
+      <trans-unit id="download.customFilename" approved="yes">
+        <source>Custom filename</source>
+        <target state="final">Benutzerdefinierter Dateiname</target>
+      </trans-unit>
+      <trans-unit id="displayThumbs" approved="yes">
+        <source>Display thumbnails</source>
+        <target state="final">Miniaturansichten anzeigen</target>
+      </trans-unit>
+      <trans-unit id="no_files" approved="yes">
+        <source>No files found in %s</source>
+        <target state="final">Keine Dateien in %s gefunden</target>
+      </trans-unit>
+      <trans-unit id="no_files_search" approved="yes">
+        <source>No files found in %s for "%s"</source>
+        <target state="final">Keine Dateien in %s für "%s " gefunden</target>
+      </trans-unit>
+      <trans-unit id="recordNotFound" approved="yes">
+        <source>Record not found</source>
+        <target state="final">Datensatz nicht gefunden</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
