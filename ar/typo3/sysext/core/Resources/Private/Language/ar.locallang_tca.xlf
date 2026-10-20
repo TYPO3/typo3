@@ -1,0 +1,888 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814885" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="file_mountpoints" resname="file_mountpoints" approved="yes">
+        <source>File Mounts</source>
+        <target state="final">File Mounts</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints_edit_title" resname="file_mountpoints_edit_title" approved="yes">
+        <source>Edit filemount</source>
+        <target state="final">تعديل filemount</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints_add_title" resname="file_mountpoints_add_title" approved="yes">
+        <source>Create new filemount</source>
+        <target state="final">إنشاء filemount جديد</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints_list_title" resname="file_mountpoints_list_title" approved="yes">
+        <source>List filemounts</source>
+        <target state="final">قائمة filemounts</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints" resname="db_mountpoints" approved="yes">
+        <source>DB Mounts</source>
+        <target state="final">DB Mounts</target>
+      </trans-unit>
+      <trans-unit id="userMods" resname="userMods" approved="yes">
+        <source>Modules</source>
+        <target state="final">الوَحَدات</target>
+      </trans-unit>
+      <trans-unit id="allowed_languages" resname="allowed_languages" approved="yes">
+        <source>Limit to languages</source>
+        <target state="final">الاقتصار على اللغات</target>
+      </trans-unit>
+      <trans-unit id="category_perms" resname="category_perms" approved="yes">
+        <source>Category Mounts</source>
+        <target state="final">بناء الفئة</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms" resname="workspace_perms" approved="yes">
+        <source>Workspace permissions</source>
+        <target state="final">أُذُونات مساحة العمل</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms_live" resname="workspace_perms_live" approved="yes">
+        <source>Edit Live (Online)</source>
+        <target state="final">تعديل مباشر (مُتصل)</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms_draft" resname="workspace_perms_draft" approved="yes">
+        <source>Edit Draft (Offline)</source>
+        <target state="final">تعديل المُسَوَّدَة (دون اتصال)</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms_custom" resname="workspace_perms_custom" approved="yes">
+        <source>Create new workspace projects</source>
+        <target state="final">إنشاء مشاريع جديدة في مساحة العمل</target>
+      </trans-unit>
+      <trans-unit id="TSconfig" resname="TSconfig" approved="yes">
+        <source>TSconfig</source>
+        <target state="final">Tsconfig</target>
+      </trans-unit>
+      <trans-unit id="TSconfig_title" resname="TSconfig_title" approved="yes">
+        <source>TSconfig QuickReference</source>
+        <target state="final">مرجع TSconfig</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain" resname="lockToDomain" approved="yes">
+        <source>Lock to domain</source>
+        <target state="final">قفل للنطاق</target>
+      </trans-unit>
+      <trans-unit id="be_users.username" resname="be_users.username" approved="yes">
+        <source>Username</source>
+        <target state="final">اسم المستخدم</target>
+      </trans-unit>
+      <trans-unit id="be_users.password" resname="be_users.password" approved="yes">
+        <source>Password</source>
+        <target state="final">كلمة المرور</target>
+      </trans-unit>
+      <trans-unit id="be_users.avatar" resname="be_users.avatar" approved="yes">
+        <source>Avatar</source>
+        <target state="final">الصورة الرمزية</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup" resname="be_users.usergroup" approved="yes">
+        <source>Group</source>
+        <target state="final">المجموعة</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_edit_title" resname="be_users.usergroup_edit_title" approved="yes">
+        <source>Edit usergroup</source>
+        <target state="final">تعديل مجموعة المُستخدم</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_add_title" resname="be_users.usergroup_add_title" approved="yes">
+        <source>Create new group</source>
+        <target state="final">إنشاء مجموعة جديدة</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_list_title" resname="be_users.usergroup_list_title" approved="yes">
+        <source>List groups</source>
+        <target state="final">قائمة المجموعات</target>
+      </trans-unit>
+      <trans-unit id="be_users.disableIPlock" resname="be_users.disableIPlock" approved="yes">
+        <source>Disable IP lock for user</source>
+        <target state="final">تعطيل قفل IP للمستخدم</target>
+      </trans-unit>
+      <trans-unit id="be_users.IPlockState" resname="be_users.IPlockState" approved="yes">
+        <source>IP lock for user</source>
+        <target state="final">قفل IP للمستخدم</target>
+      </trans-unit>
+      <trans-unit id="be_users.admin" resname="be_users.admin" approved="yes">
+        <source>Admin (!)</source>
+        <target state="final">المُشرف (!)</target>
+      </trans-unit>
+      <trans-unit id="be_users.options" resname="be_users.options" approved="yes">
+        <source>Mount from groups</source>
+        <target state="final">البناء من المجموعات</target>
+      </trans-unit>
+      <trans-unit id="be_users.options_db_mounts" resname="be_users.options_db_mounts" approved="yes">
+        <source>DB Mounts</source>
+        <target state="final">DB Mounts</target>
+      </trans-unit>
+      <trans-unit id="be_users.options_file_mounts" resname="be_users.options_file_mounts" approved="yes">
+        <source>File Mounts</source>
+        <target state="final">File Mounts</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms" resname="be_users.fileoper_perms" approved="yes">
+        <source>Fileoperation permissions</source>
+        <target state="final">أذونات إدارة المِلَفّ</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files" resname="be_users.file_permissions.files" approved="yes">
+        <source>Files</source>
+        <target state="final">الملفات</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_read" resname="be_users.file_permissions.files_read" approved="yes">
+        <source>Files: Read</source>
+        <target state="final">الملفات: قراءة</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_write" resname="be_users.file_permissions.files_write" approved="yes">
+        <source>Files: Write</source>
+        <target state="final">الملفات: كتابة</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_add" resname="be_users.file_permissions.files_add" approved="yes">
+        <source>Files: Add</source>
+        <target state="final">الملفات: إضافة</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_rename" resname="be_users.file_permissions.files_rename" approved="yes">
+        <source>Files: Rename</source>
+        <target state="final">الملفات: إعادة تسمية</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_replace" resname="be_groups.file_permissions.files_replace" approved="yes">
+        <source>Files: Replace</source>
+        <target state="final">الملفات: استبدل</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_move" resname="be_users.file_permissions.files_move" approved="yes">
+        <source>Files: Move</source>
+        <target state="final">الملفات: نقل</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_copy" resname="be_users.file_permissions.files_copy" approved="yes">
+        <source>Files: Copy</source>
+        <target state="final">الملفات: نسخ</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_unzip" resname="be_users.fileoper_perms_unzip" approved="yes">
+        <source>Files: Unzip</source>
+        <target state="final">الملفات: فك ضغط</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.file_delete" resname="be_users.file_permissions.file_delete" approved="yes">
+        <source>Files: Delete</source>
+        <target state="final">الملفات: حذف</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_general" resname="be_users.fileoper_perms_general" approved="yes">
+        <source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
+        <target state="final">الملفات: تحميل،نسخ،نقل،حذف،إعادة تسمية،جديد،تعديل</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms" resname="be_users.fileoper_perms_diroper_perms" approved="yes">
+        <source>Directory: Move,Delete,Rename,New</source>
+        <target state="final">الدليل: نقل،حذف،إعادة تسمية،جديد</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms_copy" resname="be_users.fileoper_perms_diroper_perms_copy" approved="yes">
+        <source>Directory: Copy</source>
+        <target state="final">الدليل: نسخ</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms_delete" resname="be_users.fileoper_perms_diroper_perms_delete" approved="yes">
+        <source>Directory: Delete recursively (rm -Rf)</source>
+        <target state="final">الدليل: حذف بشكل متكرر (rm -Rf)</target>
+      </trans-unit>
+      <trans-unit id="be_users.lang" resname="be_users.lang" approved="yes">
+        <source>Default Language</source>
+        <target state="final">اللغة الإفتراضية</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.rights" resname="be_users.tabs.rights" approved="yes">
+        <source>Access Rights</source>
+        <target state="final">صلاحيات الوُصُول</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.mounts_and_workspaces" resname="be_users.tabs.mounts_and_workspaces" approved="yes">
+        <source>Mounts and Workspaces</source>
+        <target state="final">البناء ومساحات العمل</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.options" resname="be_users.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">الخيارات</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.extended" resname="be_users.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">مُوَسَّعْ "Extended"</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.access" resname="be_users.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">صَلاحِيَة الدخول</target>
+      </trans-unit>
+      <trans-unit id="be_groups.title" resname="be_groups.title" approved="yes">
+        <source>Grouptitle</source>
+        <target state="final">عنوان المجموعة</target>
+      </trans-unit>
+      <trans-unit id="be_groups.pagetypes_select" resname="be_groups.pagetypes_select" approved="yes">
+        <source>Page types</source>
+        <target state="final">أنواع الصفحة</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tables_modify" resname="be_groups.tables_modify" approved="yes">
+        <source>Tables (modify)</source>
+        <target state="final">الجداول (مُتَوَافِقة)</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tables_select" resname="be_groups.tables_select" approved="yes">
+        <source>Tables (listing)</source>
+        <target state="final">الجداول (مُدرجة)</target>
+      </trans-unit>
+      <trans-unit id="be_groups.non_exclude_fields" resname="be_groups.non_exclude_fields" approved="yes">
+        <source>Allowed excludefields</source>
+        <target state="final">الحقول المُستَبعَدة المسموح بها</target>
+      </trans-unit>
+      <trans-unit id="be_groups.explicit_allowdeny" resname="be_groups.explicit_allowdeny" approved="yes">
+        <source>Explicitly allow/deny field values</source>
+        <target state="final">سماح/رفض قيم الحقل بوضوح</target>
+      </trans-unit>
+      <trans-unit id="be_groups.custom_options" resname="be_groups.custom_options" approved="yes">
+        <source>Custom module options</source>
+        <target state="final">خيارات الوُحدة المُخصصة</target>
+      </trans-unit>
+      <trans-unit id="be_groups.inc_access_lists" resname="be_groups.inc_access_lists" approved="yes">
+        <source>Include Access Lists</source>
+        <target state="final">تضمين قوائم الوصول</target>
+      </trans-unit>
+      <trans-unit id="be_groups.subgroup" resname="be_groups.subgroup" approved="yes">
+        <source>Inherit settings from groups</source>
+        <target state="final">توريث الإعدادات من المجموعات</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.base_rights" resname="be_groups.tabs.base_rights" approved="yes">
+        <source>Access Lists</source>
+        <target state="final">قوائم صلاحِيات الوُصُول</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.mounts_and_workspaces" resname="be_groups.tabs.mounts_and_workspaces" approved="yes">
+        <source>Mounts and Workspaces</source>
+        <target state="final">البناء ومساحات العمل</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms" resname="be_groups.fileoper_perms" approved="yes">
+        <source>Fileoperation permissions</source>
+        <target state="final">أذونات إدارة المِلَفّ</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder" resname="be_groups.file_permissions.folder" approved="yes">
+        <source>Directory</source>
+        <target state="final">الدليل</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_read" resname="be_groups.file_permissions.folder_read" approved="yes">
+        <source>Directory: Read</source>
+        <target state="final">الدليل: قراءة</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_write" resname="be_groups.file_permissions.folder_write" approved="yes">
+        <source>Directory: Write</source>
+        <target state="final">الدليل: كتابة</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_add" resname="be_groups.file_permissions.folder_add" approved="yes">
+        <source>Directory: Add</source>
+        <target state="final">الدليل: إضافة</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_rename" resname="be_groups.file_permissions.folder_rename" approved="yes">
+        <source>Directory: Rename</source>
+        <target state="final">الدليل: إعادة التسمية</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_move" resname="be_groups.file_permissions.folder_move" approved="yes">
+        <source>Directory: Move</source>
+        <target state="final">الدليل: نقل</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_copy" resname="be_groups.file_permissions.folder_copy" approved="yes">
+        <source>Directory: Copy</source>
+        <target state="final">الدليل: نسخ</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_delete" resname="be_groups.file_permissions.folder_delete" approved="yes">
+        <source>Directory: Delete</source>
+        <target state="final">الدليل: حذف</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_recursivedelete" resname="be_groups.file_permissions.folder_recursivedelete" approved="yes">
+        <source>Directory: Delete recursively</source>
+        <target state="final">الدليل: حذف بشكل مُتكرر</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files" resname="be_groups.file_permissions.files" approved="yes">
+        <source>Files</source>
+        <target state="final">الملفات</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_read" resname="be_groups.file_permissions.files_read" approved="yes">
+        <source>Files: Read</source>
+        <target state="final">الملفات: قراءة</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_write" resname="be_groups.file_permissions.files_write" approved="yes">
+        <source>Files: Write</source>
+        <target state="final">الملفات: كتابة</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_edit" resname="be_groups.file_permissions.files_edit" approved="yes">
+        <source>Files: Edit</source>
+        <target state="final">المِلَفّ: تعديل</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_add" resname="be_groups.file_permissions.files_add" approved="yes">
+        <source>Files: Add</source>
+        <target state="final">الملفات: إضافة</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_rename" resname="be_groups.file_permissions.files_rename" approved="yes">
+        <source>Files: Rename</source>
+        <target state="final">الملفات: إعادة تسمية</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_move" resname="be_groups.file_permissions.files_move" approved="yes">
+        <source>Files: Move</source>
+        <target state="final">الملفات: نقل</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_copy" resname="be_groups.file_permissions.files_copy" approved="yes">
+        <source>Files: Copy</source>
+        <target state="final">الملفات: نسخ</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_unzip" resname="be_groups.fileoper_perms_unzip" approved="yes">
+        <source>Files: Unzip</source>
+        <target state="final">الملفات: فك ضغط</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_delete" resname="be_groups.file_permissions.files_delete" approved="yes">
+        <source>Files: Delete</source>
+        <target state="final">الملفات: حذف</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_general" resname="be_groups.fileoper_perms_general" approved="yes">
+        <source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
+        <target state="final">الملفات: تحميل،نسخ،نقل،حذف،إعادة تسمية،جديد،تعديل</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms" resname="be_groups.fileoper_perms_diroper_perms" approved="yes">
+        <source>Directory: Move,Delete,Rename,New</source>
+        <target state="final">الدليل: نقل،حذف،إعادة تسمية،جديد</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms_copy" resname="be_groups.fileoper_perms_diroper_perms_copy" approved="yes">
+        <source>Directory: Copy</source>
+        <target state="final">الدليل: نسخ</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms_delete" resname="be_groups.fileoper_perms_diroper_perms_delete" approved="yes">
+        <source>Directory: Delete recursively (rm -Rf)</source>
+        <target state="final">الدليل: حذف بشكل متكرر (rm -Rf)</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.options" resname="be_groups.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">الخيارات</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.extended" resname="be_groups.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">مُوَسَّعْ "Extended"</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.users" resname="sys_filemounts.tabs.users" approved="yes">
+        <source>Users</source>
+        <target state="final">المستخدمين</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.mountpoints" resname="sys_filemounts.tabs.mountpoints" approved="yes">
+        <source>Mountpoints</source>
+        <target state="final">نقطة البناء</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.publishing" resname="sys_filemounts.tabs.publishing" approved="yes">
+        <source>Publishing</source>
+        <target state="final">النشر</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.other" resname="sys_filemounts.tabs.other" approved="yes">
+        <source>Other</source>
+        <target state="final">أخر</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.title" resname="sys_filemounts.title" approved="yes">
+        <source>Label</source>
+        <target state="final">تسمية</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.path" resname="sys_filemounts.path" approved="yes">
+        <source>Path</source>
+        <target state="final">مسار</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.base" resname="sys_filemounts.base" approved="yes">
+        <source>Base</source>
+        <target state="final">الأساس "Base"</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.read_only" resname="sys_filemounts.read_only" approved="yes">
+        <source>Read-only</source>
+        <target state="final">للقراءة فقط</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.base_absolute" resname="sys_filemounts.base_absolute" approved="yes">
+        <source>absolute (root) / </source>
+        <target state="final">مطلق (الجذر) / </target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.base_relative" resname="sys_filemounts.base_relative" approved="yes">
+        <source>relative ../fileadmin/</source>
+        <target state="final">relative ../fileadmin/</target>
+      </trans-unit>
+      <trans-unit id="sys_history" resname="sys_history" approved="yes">
+        <source>System History</source>
+        <target state="final">تاريخ النظام</target>
+      </trans-unit>
+      <trans-unit id="sys_log" resname="sys_log" approved="yes">
+        <source>System Log</source>
+        <target state="final">سجل النظام</target>
+      </trans-unit>
+      <trans-unit id="sys_news" resname="sys_news" approved="yes">
+        <source>System News</source>
+        <target state="final">أخبار النظام</target>
+      </trans-unit>
+      <trans-unit id="sys_news.tabs.access" resname="sys_news.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">صَلاحِيَة الدخول</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.adminusers" resname="sys_workspace.adminusers" approved="yes">
+        <source>Owners</source>
+        <target state="final">المالك</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.members" resname="sys_workspace.members" approved="yes">
+        <source>Members</source>
+        <target state="final">الأعضاء</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.reviewers" resname="sys_workspace.reviewers" approved="yes">
+        <source>Reviewers</source>
+        <target state="final">المراجعين</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_time" resname="sys_workspace.publish_time" approved="yes">
+        <source>Publish</source>
+        <target state="final">نشر</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.unpublish_time" resname="sys_workspace.unpublish_time" approved="yes">
+        <source>Un-Publish</source>
+        <target state="final">إلغاء النشر</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.freeze" resname="sys_workspace.freeze" approved="yes">
+        <source>Freeze Editing</source>
+        <target state="final">تجميد التعديل</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.live_edit" resname="sys_workspace.live_edit" approved="yes">
+        <source>Allow "live" editing of records from tables without versioning</source>
+        <target state="final">السماح بتعديل السجلات "المباشرة" من الجداول دون الإِصدار</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.review_stage_edit" resname="sys_workspace.review_stage_edit" approved="yes">
+        <source>Allow members to edit records in "Review" stage</source>
+        <target state="final">السماح للأعضاء بتعديل السجلات في مرحلة "المُراجعة"</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.disable_autocreate" resname="sys_workspace.disable_autocreate" approved="yes">
+        <source>Disable auto-versioning when editing</source>
+        <target state="final">تعطيل الإصدار التلقائي عند التعديل</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.swap_modes" resname="sys_workspace.swap_modes" approved="yes">
+        <source>Swap modes</source>
+        <target state="final">تبديل الأوضاع</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.vtypes" resname="sys_workspace.vtypes" approved="yes">
+        <source>Disable Versioning Types for members and reviewers</source>
+        <target state="final">تعطيل أنواع الإصدار للأعضاء والمراجعين</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access" resname="sys_workspace.publish_access" approved="yes">
+        <source>Publish access</source>
+        <target state="final">نشر صَلاحِيَة الدخول</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification" resname="sys_workspace.stagechg_notification" approved="yes">
+        <source>Stage change notification by email</source>
+        <target state="final">مرحلة تغيير الإِشعار عن طريق البريد الإلكتروني</target>
+      </trans-unit>
+      <trans-unit id="pages" resname="pages" approved="yes">
+        <source>Page</source>
+        <target state="final">الصفحة</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_toggle" resname="pages.hidden_toggle" approved="yes">
+        <source>Page visible</source>
+        <target state="final">الصفحة مرئية</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_toggle_formlabel" resname="pages.hidden_toggle_formlabel" approved="yes">
+        <source>Page visible</source>
+        <target state="final">الصفحة مرئية</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide" resname="pages.nav_hide" approved="yes">
+        <source>Page not enabled in menus</source>
+        <target state="final">الصفحة غير مُفعَّلة في القوائم</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_toggle" resname="pages.nav_hide_toggle" approved="yes">
+        <source>Page enabled in menus</source>
+        <target state="final">الصفحة مُفعَّلة في القوائم</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_toggle_formlabel" resname="pages.nav_hide_toggle_formlabel" approved="yes">
+        <source>Page enabled in menus</source>
+        <target state="final">الصفحة مُفعَّلة في القوائم</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.0" resname="doktype.I.0" approved="yes">
+        <source>Standard</source>
+        <target state="final">قياسي</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.1" resname="doktype.I.1" approved="yes">
+        <source>SysFolder</source>
+        <target state="final">Sysfolder</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.folder" resname="doktype.I.folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">مُجلّد</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.2" resname="doktype.I.2" approved="yes">
+        <source>Recycler</source>
+        <target state="final">إعادة التدوير</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Pagetitle</source>
+        <target state="final">Pagetitle</target>
+      </trans-unit>
+      <trans-unit id="php_tree_stop" resname="php_tree_stop" approved="yes">
+        <source>Hide child pages in page tree</source>
+        <target state="final">إخفاء الصفحات الفرعية في شجرة الصفحة</target>
+      </trans-unit>
+      <trans-unit id="is_siteroot" resname="is_siteroot" approved="yes">
+        <source>Is root of website</source>
+        <target state="final">جذر الموقع</target>
+      </trans-unit>
+      <trans-unit id="pages.slug" resname="pages.slug" approved="yes">
+        <source>URL Segment</source>
+        <target state="final">مقطع URL</target>
+      </trans-unit>
+      <trans-unit id="be_users" resname="be_users" approved="yes">
+        <source>Backend user</source>
+        <target state="final">مُستخدم الواجهة الخلفية</target>
+      </trans-unit>
+      <trans-unit id="be_groups" resname="be_groups" approved="yes">
+        <source>Backend usergroup</source>
+        <target state="final">مجموعة مُستخدمي الواجهة الخلفية</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts" resname="sys_filemounts" approved="yes">
+        <source>Filemount</source>
+        <target state="final">Filemounts</target>
+      </trans-unit>
+      <trans-unit id="sys_collection" resname="sys_collection" approved="yes">
+        <source>Record Collection</source>
+        <target state="final">مجموعة السجلات</target>
+      </trans-unit>
+      <trans-unit id="sys_collection.title" resname="sys_collection.title" approved="yes">
+        <source>Collection-Name</source>
+        <target state="final">اسم المجموعة</target>
+      </trans-unit>
+      <trans-unit id="sys_collection.description" resname="sys_collection.description" approved="yes">
+        <source>Description</source>
+        <target state="final">الوَصف</target>
+      </trans-unit>
+      <trans-unit id="sys_collection.table_name" resname="sys_collection.table_name" approved="yes">
+        <source>Record Type of Collection</source>
+        <target state="final">نوع سجل المجموعة</target>
+      </trans-unit>
+      <trans-unit id="sys_collection.items" resname="sys_collection.items" approved="yes">
+        <source>Items</source>
+        <target state="final">عناصر</target>
+      </trans-unit>
+      <trans-unit id="sys_collection.type" resname="sys_collection.type" approved="yes">
+        <source>Type of collection</source>
+        <target state="final">نوع المجموعة</target>
+      </trans-unit>
+      <trans-unit id="sys_collection.type.static" resname="sys_collection.type.static" approved="yes">
+        <source>static record composition</source>
+        <target state="final">تكوين السجل الثابت</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage" resname="sys_file_storage" approved="yes">
+        <source>File Storage</source>
+        <target state="final">تخزين الملفات</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.type" resname="sys_file_storage.type" approved="yes">
+        <source>Entry point</source>
+        <target state="final">نقطة الدخول</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.name" resname="sys_file_storage.name" approved="yes">
+        <source>Name</source>
+        <target state="final">الاسم</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.description" resname="sys_file_storage.description" approved="yes">
+        <source>Description</source>
+        <target state="final">الوَصف</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.hidden" resname="sys_file_storage.hidden" approved="yes">
+        <source>Hide from listings</source>
+        <target state="final">إخفاء من القوائم</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.is_online" resname="sys_file_storage.is_online" approved="yes">
+        <source>Is online?</source>
+        <target state="final">مُتصل؟</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.is_default" resname="sys_file_storage.is_default" approved="yes">
+        <source>Is default storage?</source>
+        <target state="final">هل التخزين الافتراضي؟</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.is_browsable" resname="sys_file_storage.is_browsable" approved="yes">
+        <source>Is browsable?</source>
+        <target state="final">هل يمكن التصفّح؟</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.is_public" resname="sys_file_storage.is_public" approved="yes">
+        <source>Is publicly available?</source>
+        <target state="final">هل مُتاح للعامّة؟</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.is_writable" resname="sys_file_storage.is_writable" approved="yes">
+        <source>Is writable?</source>
+        <target state="final">هل قابل للكتابة؟</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.auto_extract_metadata" resname="sys_file_storage.auto_extract_metadata" approved="yes">
+        <source>Automatically extract metadata after upload</source>
+        <target state="final">استخراج البيانات الوَصفيّة تلقائياً بعد التحميل</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.capabilities" resname="sys_file_storage.capabilities" approved="yes">
+        <source>Capabilities</source>
+        <target state="final">المُؤَهّلات</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.processingfolder" resname="sys_file_storage.processingfolder" approved="yes">
+        <source>Folder for manipulated and temporary images etc.</source>
+        <target state="final">مُجلد للصور المتداولة والمؤقتة، إلخ.</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.processingfolder.placeholder" resname="sys_file_storage.processingfolder.placeholder" approved="yes">
+        <source>_processed_ or 1:/processed_files_storage_x</source>
+        <target state="final">_processed_ or 1:/processed_files_storage_x</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.driver" resname="sys_file_storage.driver" approved="yes">
+        <source>Driver</source>
+        <target state="final">السواقة</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.driver.local" resname="sys_file_storage.driver.local" approved="yes">
+        <source>Local Filesystem</source>
+        <target state="final">نظام الملفات المحلية</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.configuration" resname="sys_file_storage.configuration" approved="yes">
+        <source>Driver Configuration</source>
+        <target state="final">تكوين السواقة</target>
+      </trans-unit>
+      <trans-unit id="sys_file" resname="sys_file" approved="yes">
+        <source>File</source>
+        <target state="final">ملف</target>
+      </trans-unit>
+      <trans-unit id="sys_file.storage" resname="sys_file.storage" approved="yes">
+        <source>Storage</source>
+        <target state="final">التخزين</target>
+      </trans-unit>
+      <trans-unit id="sys_file.identifier" resname="sys_file.identifier" approved="yes">
+        <source>Identifier</source>
+        <target state="final">المُعَرِّف</target>
+      </trans-unit>
+      <trans-unit id="sys_file.name" resname="sys_file.name" approved="yes">
+        <source>Filename</source>
+        <target state="final">اسم الملف</target>
+      </trans-unit>
+      <trans-unit id="sys_file.title" resname="sys_file.title" approved="yes">
+        <source>Title</source>
+        <target state="final">عنوان</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type" resname="sys_file.type" approved="yes">
+        <source>File Type</source>
+        <target state="final">نوع الملف</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.unknown" resname="sys_file.type.unknown" approved="yes">
+        <source>Unknown</source>
+        <target state="final">غير معروف</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.text" resname="sys_file.type.text" approved="yes">
+        <source>Text</source>
+        <target state="final">نص</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.image" resname="sys_file.type.image" approved="yes">
+        <source>Image</source>
+        <target state="final">صورة</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.audio" resname="sys_file.type.audio" approved="yes">
+        <source>Audio</source>
+        <target state="final">صوت</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.video" resname="sys_file.type.video" approved="yes">
+        <source>Video</source>
+        <target state="final">فيديو</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.software" resname="sys_file.type.software" approved="yes">
+        <source>Software</source>
+        <target state="final">برمجية</target>
+      </trans-unit>
+      <trans-unit id="sys_file.mime_type" resname="sys_file.mime_type" approved="yes">
+        <source>Mime Type</source>
+        <target state="final">نوع Mime</target>
+      </trans-unit>
+      <trans-unit id="sys_file.sha1" resname="sys_file.sha1" approved="yes">
+        <source>SHA1</source>
+        <target state="final">SHA1</target>
+      </trans-unit>
+      <trans-unit id="sys_file.size" resname="sys_file.size" approved="yes">
+        <source>Size</source>
+        <target state="final">الحجم</target>
+      </trans-unit>
+      <trans-unit id="sys_file.usage_count" resname="sys_file.usage_count" approved="yes">
+        <source>Usage Count</source>
+        <target state="final">عدد الاستخدامات</target>
+      </trans-unit>
+      <trans-unit id="sys_file.description" resname="sys_file.description" approved="yes">
+        <source>Description</source>
+        <target state="final">الوَصف</target>
+      </trans-unit>
+      <trans-unit id="sys_file.alternative" resname="sys_file.alternative" approved="yes">
+        <source>Alternative Text</source>
+        <target state="final">النص البديل</target>
+      </trans-unit>
+      <trans-unit id="sys_file.missing" resname="sys_file.missing" approved="yes">
+        <source>Marked as missing</source>
+        <target state="final">تحديدُه كمفقود</target>
+      </trans-unit>
+      <trans-unit id="sys_file.metadata" resname="sys_file.metadata" approved="yes">
+        <source>Metadata records</source>
+        <target state="final">سجلات البيانات الوَصفيّة</target>
+      </trans-unit>
+      <trans-unit id="file.width" resname="file.width" approved="yes">
+        <source>Width</source>
+        <target state="final">العرض</target>
+      </trans-unit>
+      <trans-unit id="file.height" resname="file.height" approved="yes">
+        <source>Height</source>
+        <target state="final">الإرتفاع</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata" resname="sys_file_metadata" approved="yes">
+        <source>File Metadata</source>
+        <target state="final">البيانات الوَصفيّة للملف</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference" resname="sys_file_reference" approved="yes">
+        <source>File Reference</source>
+        <target state="final">مِلَفّ المرجع</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.uid_local" resname="sys_file_reference.uid_local" approved="yes">
+        <source>File</source>
+        <target state="final">ملف</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.uid_foreign" resname="sys_file_reference.uid_foreign" approved="yes">
+        <source>Used by content elements</source>
+        <target state="final">تستخدم بواسطة عناصر المحتوى</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.tablenames" resname="sys_file_reference.tablenames" approved="yes">
+        <source>Table name</source>
+        <target state="final">اسم الجدول</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.fieldname" resname="sys_file_reference.fieldname" approved="yes">
+        <source>Foreign Field</source>
+        <target state="final">حقل غريب</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.sorting_foreign" resname="sys_file_reference.sorting_foreign" approved="yes">
+        <source>Sorting foreign</source>
+        <target state="final">فرز غريب</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.table_local" resname="sys_file_reference.table_local" approved="yes">
+        <source>Local table</source>
+        <target state="final">جدول محلي</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.basicoverlayPalette" resname="sys_file_reference.basicoverlayPalette" approved="yes">
+        <source>File Metadata</source>
+        <target state="final">البيانات الوَصفيّة للملف</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.imageoverlayPalette" resname="sys_file_reference.imageoverlayPalette" approved="yes">
+        <source>Image Metadata</source>
+        <target state="final">البيانات الوَصفيّة للصورة</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.audioOverlayPalette" resname="sys_file_reference.audioOverlayPalette" approved="yes">
+        <source>Audio Metadata</source>
+        <target state="final">البيانات الوَصفيّة للصوت</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.videoOverlayPalette" resname="sys_file_reference.videoOverlayPalette" approved="yes">
+        <source>Video Metadata</source>
+        <target state="final">البيانات الوَصفيّة للفيديو</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.title" resname="sys_file_reference.title" approved="yes">
+        <source>Title</source>
+        <target state="final">العنوان</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.description" resname="sys_file_reference.description" approved="yes">
+        <source>Description (Caption)</source>
+        <target state="final">الوصف (شرح)</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.downloadname" resname="sys_file_reference.downloadname" approved="yes">
+        <source>Download Name</source>
+        <target state="final">اسم ملف التنزيل</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.alternative" resname="sys_file_reference.alternative" approved="yes">
+        <source>Alternative Text</source>
+        <target state="final">النص البديل</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.link" resname="sys_file_reference.link" approved="yes">
+        <source>Link</source>
+        <target state="final">الرابط</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.crop" resname="sys_file_reference.crop" approved="yes">
+        <source>Image manipulation</source>
+        <target state="final">معالجة الصور</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.autoplay" resname="sys_file_reference.autoplay" approved="yes">
+        <source>Autoplay</source>
+        <target state="final">تشغيل تلقائي</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection" resname="sys_file_collection" approved="yes">
+        <source>File collection</source>
+        <target state="final">مجموعة الملفات</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.files" resname="sys_file_collection.files" approved="yes">
+        <source>Files</source>
+        <target state="final">الملفات</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.title" resname="sys_file_collection.title" approved="yes">
+        <source>Title</source>
+        <target state="final">العنوان</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.type" resname="sys_file_collection.type" approved="yes">
+        <source>Type</source>
+        <target state="final">النوع</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.type.0" resname="sys_file_collection.type.0" approved="yes">
+        <source>Static selection of files</source>
+        <target state="final">اختيار ثابت للملفات</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.type.1" resname="sys_file_collection.type.1" approved="yes">
+        <source>Folder from Storage</source>
+        <target state="final">مجلد من التخزين</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.type.2" resname="sys_file_collection.type.2" approved="yes">
+        <source>Select by category</source>
+        <target state="final">حدد حسب الفئة</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.storage" resname="sys_file_collection.storage" approved="yes">
+        <source>File Storage</source>
+        <target state="final">تخزين الملفات</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.folder" resname="sys_file_collection.folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">مُجلّد</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.recursive" resname="sys_file_collection.recursive" approved="yes">
+        <source>Recursive</source>
+        <target state="final">مُتكرر</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.category" resname="sys_file_collection.category" approved="yes">
+        <source>Category</source>
+        <target state="final">الفئة</target>
+      </trans-unit>
+      <trans-unit id="sys_language" resname="sys_language" approved="yes">
+        <source>Website Language</source>
+        <target state="final">لغة الموقع</target>
+      </trans-unit>
+      <trans-unit id="sys_language.isocode" resname="sys_language.isocode" approved="yes">
+        <source>Select Official Language (ISO code)</source>
+        <target state="final">اختر اللغة الرسمية (رمز ISO)</target>
+      </trans-unit>
+      <trans-unit id="sys_language.language_isocode" resname="sys_language.language_isocode" approved="yes">
+        <source>Select language</source>
+        <target state="final">اختر اللغة</target>
+      </trans-unit>
+      <trans-unit id="sys_language.flag" resname="sys_language.flag" approved="yes">
+        <source>Select flag icon</source>
+        <target state="final">اختر رمز الصورة المُصغّرة</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace" resname="sys_workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">مساحة العمل</target>
+      </trans-unit>
+      <trans-unit id="editlock" resname="editlock" approved="yes">
+        <source>Restrict editing by non-Admins</source>
+        <target state="final">تقييد التعديل من قبل غير المُشرفين</target>
+      </trans-unit>
+      <trans-unit id="sys_category" resname="sys_category" approved="yes">
+        <source>Category</source>
+        <target state="final">فئة</target>
+      </trans-unit>
+      <trans-unit id="sys_category.title" resname="sys_category.title" approved="yes">
+        <source>Title</source>
+        <target state="final">العنوان</target>
+      </trans-unit>
+      <trans-unit id="sys_category.description" resname="sys_category.description" approved="yes">
+        <source>Description</source>
+        <target state="final">الوَصف</target>
+      </trans-unit>
+      <trans-unit id="sys_category.parent" resname="sys_category.parent" approved="yes">
+        <source>Parent</source>
+        <target state="final">الأصل</target>
+      </trans-unit>
+      <trans-unit id="sys_category.items" resname="sys_category.items" approved="yes">
+        <source>Items</source>
+        <target state="final">عناصر</target>
+      </trans-unit>
+      <trans-unit id="sys_category.categories" resname="sys_category.categories" approved="yes">
+        <source>Categories</source>
+        <target state="final">الفئات</target>
+      </trans-unit>
+      <trans-unit id="sys_category.tabs.category" resname="sys_category.tabs.category" approved="yes">
+        <source>Categories</source>
+        <target state="final">الفئات</target>
+      </trans-unit>
+      <trans-unit id="sys_category.tabs.items" resname="sys_category.tabs.items" approved="yes">
+        <source>Items</source>
+        <target state="final">العناصر</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
