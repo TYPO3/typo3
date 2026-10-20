@@ -21,6 +21,7 @@ enum SetError: string
 {
     case notFound = 'not-found';
     case missingDependency = 'missing-dependency';
+    case circularDependency = 'circular-dependency';
     case invalidSettingsDefinitions = 'invalid-settings-definitions';
     case invalidCategoryDefinitions = 'invalid-category-definitions';
     case invalidSettings = 'invalid-settings';
@@ -32,6 +33,7 @@ enum SetError: string
         return match ($this) {
             self::notFound => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.siteSet.notFound',
             self::missingDependency => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.siteSet.missingDependency',
+            self::circularDependency => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.siteSet.circularDependency',
             self::invalidSettingsDefinitions => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.siteSet.invalidSettingsDefinitions',
             self::invalidCategoryDefinitions => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.siteSet.invalidCategoryDefinitions',
             self::invalidSettings => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.siteSet.invalidSettings',

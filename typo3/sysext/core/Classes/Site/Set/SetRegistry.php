@@ -125,18 +125,55 @@ class SetRegistry
         return $this->orderedSets;
     }
 
-    protected function checkMissingDependencies(array $sets, SetDefinition $set): ?string
+    /**
+     * @param array<string, true> $path The sets on the way to $set, a dependency on one of
+     *                                  them is a cycle and reported by checkCircularDependencies()
+     */
+    protected function checkMissingDependencies(array $sets, SetDefinition $set, array $path = []): ?string
     {
+        $path[$set->name] = true;
         foreach ($set->dependencies as $dependencyName) {
+            if (isset($path[$dependencyName])) {
+                continue;
+            }
             $dependency = $sets[$dependencyName] ?? null;
             if ($dependency === null) {
                 return $dependencyName;
             }
-            $missingSubDependency = $this->checkMissingDependencies($sets, $dependency);
+            $missingSubDependency = $this->checkMissingDependencies($sets, $dependency, $path);
             if ($missingSubDependency !== null) {
                 return $dependencyName . '[' . $missingSubDependency . ']';
             }
         }
+        return null;
+    }
+
+    /**
+     * Optional dependencies are followed as well, since they take part in the ordering.
+     *
+     * @param array<string, true> $path The sets on the way to $set
+     * @param array<string, true> $checked Sets whose dependencies have been checked without finding a cycle
+     */
+    protected function checkCircularDependencies(array $sets, SetDefinition $set, array $path = [], array &$checked = []): ?string
+    {
+        if (isset($checked[$set->name])) {
+            return null;
+        }
+        $path[$set->name] = true;
+        foreach ([...$set->dependencies, ...$set->optionalDependencies] as $dependencyName) {
+            $dependency = $sets[$dependencyName] ?? null;
+            if ($dependency === null) {
+                continue;
+            }
+            if (isset($path[$dependencyName])) {
+                return $dependencyName;
+            }
+            $circularSubDependency = $this->checkCircularDependencies($sets, $dependency, $path, $checked);
+            if ($circularSubDependency !== null) {
+                return $dependencyName . '[' . $circularSubDependency . ']';
+            }
+        }
+        $checked[$set->name] = true;
         return null;
     }
 
@@ -148,6 +185,7 @@ class SetRegistry
         $tmp = [];
         $this->invalidSets = $this->setCollector->getInvalidSets();
         $sets = $this->setCollector->getSetDefinitions();
+        $availableSets = [];
         foreach ($sets as $set) {
             $missingDependency = $this->checkMissingDependencies($sets, $set);
             if ($missingDependency !== null) {
@@ -162,10 +200,27 @@ class SetRegistry
                 ];
                 continue;
             }
+            $availableSets[$set->name] = $set;
+        }
+        $checked = [];
+        foreach ($availableSets as $set) {
+            $circularDependency = $this->checkCircularDependencies($availableSets, $set, [], $checked);
+            if ($circularDependency !== null) {
+                $this->logger->error('Invalid set "{name}": Circular dependency "{dependency}"', [
+                    'name' => $set->name,
+                    'dependency' => $circularDependency,
+                ]);
+                $this->invalidSets[$set->name] = [
+                    'error' => SetError::circularDependency,
+                    'name' => $set->name,
+                    'context' => $circularDependency,
+                ];
+                continue;
+            }
             $tmp[$set->name] = [
                 'set' => $set,
                 'after' => $set->dependencies,
-                'after-resilient' => array_filter($set->optionalDependencies, static fn($dependency) => isset($sets[$dependency])),
+                'after-resilient' => array_filter($set->optionalDependencies, static fn($dependency) => isset($availableSets[$dependency])),
             ];
         }
 

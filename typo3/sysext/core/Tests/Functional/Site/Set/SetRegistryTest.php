@@ -180,6 +180,26 @@ final class SetRegistryTest extends FunctionalTestCase
             'error' => SetError::invalidRouteEnhancers,
             'context' => 'Superfluous keys in route enhancers file. Use "routeEnhancers" as root level key. Source: EXT:test_sets/Configuration/Sets/InvalidRouteEnhancersSuperfluousKey/route-enhancers.yaml',
         ];
+        yield [
+            'set' => 'typo3tests/circular-a',
+            'error' => SetError::circularDependency,
+            'context' => 'typo3tests/circular-b[typo3tests/circular-a]',
+        ];
+        yield [
+            'set' => 'typo3tests/circular-b',
+            'error' => SetError::circularDependency,
+            'context' => 'typo3tests/circular-a[typo3tests/circular-b]',
+        ];
+        yield [
+            'set' => 'typo3tests/depends-on-circular',
+            'error' => SetError::circularDependency,
+            'context' => 'typo3tests/circular-a[typo3tests/circular-b[typo3tests/circular-a]]',
+        ];
+        yield [
+            'set' => 'typo3tests/optional-circular-a',
+            'error' => SetError::circularDependency,
+            'context' => 'typo3tests/optional-circular-b[typo3tests/optional-circular-a]',
+        ];
     }
 
     #[DataProvider('invalidSetsDataProvider')]

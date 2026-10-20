@@ -1,0 +1,5 @@
+name: typo3tests/optional-circular-a
+label: Optional circular A
+
+optionalDependencies:
+  - typo3tests/optional-circular-b
