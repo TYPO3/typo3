@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf" date="2023-01-11T00:00:00Z" product-name="typo3-cms-backend" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Content Security Policy</source>
+        <target state="final">ນະໂຍບາຍຄວາມປອດໄພຂອງເນື້ອຫາ</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Allows to manage Content Security Policy settings.</source>
+        <target state="final">ອະນຸຍາດໃຫ້ຈັດການການກຳນົດຄ່ານະໂຍບາຍຄວາມປອດໄພຂອງເນື້ອຫາ.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Content Security Policy</source>
+        <target state="final">ນະໂຍບາຍຄວາມປອດໄພຂອງເນື້ອຫາ</target>
+      </trans-unit>
+      <trans-unit id="module.headline" approved="yes">
+        <source>Content Security Policy</source>
+        <target state="final">ນະໂຍບາຍຄວາມປອດໄພຂອງເນື້ອຫາ</target>
+      </trans-unit>
+      <trans-unit id="module.introtext" approved="yes">
+        <source>A list of the existing Content Security Policy Mutations can be viewed in the %s module.</source>
+        <target state="final">ລາຍການຂອງການປ່ຽນແປງນະໂຍບາຍຄວາມປອດໄພຂອງເນື້ອຫາທີ່ມີຢູ່ ສາມາດເບິ່ງໄດ້ໃນໂມດູນ %s.</target>
+      </trans-unit>
+      <trans-unit id="module.introtextLowlevelMissing" approved="yes">
+        <source>If you install the core EXT:lowlevel extension, you can see a list of the existing Content Security Policy Mutations in the %s module.</source>
+        <target state="final">ຖ້າທ່ານຕິດຕັ້ງສ່ວນເສີມ EXT:lowlevel, ທ່ານສາມາດເບິ່ງລາຍການຂອງການປ່ຽນແປງນະໂຍບາຍຄວາມປອດໄພຂອງເນື້ອຫາທີ່ມີຢູ່ໄດ້ໃນໂມດູນ %s.</target>
+      </trans-unit>
+      <trans-unit id="module.introtext.moduleName" approved="yes">
+        <source>Configuration</source>
+        <target state="final">ການກຳນົດຄ່າ</target>
+      </trans-unit>
+      <trans-unit id="module.callout.featureDisabled.title" approved="yes">
+        <source>Disabled feature flags</source>
+        <target state="final">ຕົວໝາຍຄຸນສົມບັດທີ່ຖືກປິດໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="module.callout.featureDisabled.message" approved="yes">
+        <source>The following feature flags are currently disabled and won't be shown in this module:</source>
+        <target state="final">ຕົວໝາຍຄຸນສົມບັດຕໍ່ໄປນີ້ຖືກປິດໃຊ້ງານຢູ່ໃນຂະນະນີ້ ແລະ ຈະບໍ່ສະແດງຢູ່ໃນໂມດູນນີ້:</target>
+      </trans-unit>
+      <trans-unit id="module.callout.customReporting.title" approved="yes">
+        <source>Reporting</source>
+        <target state="final">ການລາຍງານ</target>
+      </trans-unit>
+      <trans-unit id="module.callout.customReporting.message" approved="yes">
+        <source>Reporting is currently configured with these custom endpoints and won't be shown in this module:</source>
+        <target state="final">ປະຈຸບັນການລາຍງານໄດ້ຖືກກຳນົດຄ່າດ້ວຍຈຸດເຊື່ອມຕໍ່ເຫຼົ່ານີ້ ແລະ ຈະບໍ່ສະແດງຢູ່ໃນໂມດູນນີ້:</target>
+      </trans-unit>
+      <trans-unit id="module.label.noEntriesAvailable" approved="yes">
+        <source>No entries available.</source>
+        <target state="final">ບໍ່ມີລາຍການໃຫ້ສະແດງ.</target>
+      </trans-unit>
+      <trans-unit id="module.label.reports" approved="yes">
+        <source>Reports</source>
+        <target state="final">ລາຍງານ</target>
+      </trans-unit>
+      <trans-unit id="module.label.created" approved="yes">
+        <source>Created</source>
+        <target state="final">ສ້າງເມື່ອ</target>
+      </trans-unit>
+      <trans-unit id="module.label.scope" approved="yes">
+        <source>Scope</source>
+        <target state="final">ຂອບເຂດ</target>
+      </trans-unit>
+      <trans-unit id="module.label.removeAll" approved="yes">
+        <source>Remove all</source>
+        <target state="final">ລຶບອອກທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="module.label.violation" approved="yes">
+        <source>Violation</source>
+        <target state="final">ການລະເມີດ</target>
+      </trans-unit>
+      <trans-unit id="module.label.uri" approved="yes">
+        <source>URI</source>
+        <target state="final">URI</target>
+      </trans-unit>
+      <trans-unit id="module.label.all" approved="yes">
+        <source>All</source>
+        <target state="final">ທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="module.label.details" approved="yes">
+        <source>Details</source>
+        <target state="final">ລາຍລະອຽດ</target>
+      </trans-unit>
+      <trans-unit id="module.label.disposition" approved="yes">
+        <source>Disposition</source>
+        <target state="final">ການຈັດການ</target>
+      </trans-unit>
+      <trans-unit id="module.label.directive" approved="yes">
+        <source>Directive</source>
+        <target state="final">ຄຳສັ່ງແນະນຳ</target>
+      </trans-unit>
+      <trans-unit id="module.label.blocked_uri" approved="yes">
+        <source>Blocked URI</source>
+        <target state="final">URI ທີ່ຖືກບລັອກ</target>
+      </trans-unit>
+      <trans-unit id="module.label.document_uri" approved="yes">
+        <source>Document URI</source>
+        <target state="final">URI ຂອງເອກະສານ</target>
+      </trans-unit>
+      <trans-unit id="module.label.sample" approved="yes">
+        <source>Sample</source>
+        <target state="final">ຕົວຢ່າງ</target>
+      </trans-unit>
+      <trans-unit id="module.label.user_agent" approved="yes">
+        <source>User Agent</source>
+        <target state="final">ຕົວແທນຜູ້ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="module.label.uuid" approved="yes">
+        <source>UUID</source>
+        <target state="final">UUID</target>
+      </trans-unit>
+      <trans-unit id="module.label.source_file" approved="yes">
+        <source>Source File</source>
+        <target state="final">ໄຟລ໌ຕົ້ນສະບັບ</target>
+      </trans-unit>
+      <trans-unit id="module.label.summary" approved="yes">
+        <source>Summary</source>
+        <target state="final">ສະຫຼຸບ</target>
+      </trans-unit>
+      <trans-unit id="module.label.suggestions" approved="yes">
+        <source>Suggestions</source>
+        <target state="final">ຄຳແນະນຳ</target>
+      </trans-unit>
+      <trans-unit id="module.label.guide.no_record_selected" approved="yes">
+        <source>Select a row to see more information.</source>
+        <target state="final">ເລືອກແຖວໃດໜຶ່ງເພື່ອເບິ່ງຂໍ້ມູນເພີ່ມເຕີມ.</target>
+      </trans-unit>
+      <trans-unit id="module.label.showDetails" approved="yes">
+        <source>Show details for "%s" violation with URI: %s</source>
+        <target state="final">ສະແດງລາຍລະອຽດສຳລັບການລະເມີດ "%s" ດ້ວຍ URI: %s</target>
+      </trans-unit>
+      <trans-unit id="module.button.apply" approved="yes">
+        <source>Apply</source>
+        <target state="final">ນຳໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="module.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">ປິດ</target>
+      </trans-unit>
+      <trans-unit id="module.button.mute" approved="yes">
+        <source>Mute</source>
+        <target state="final">ງົດແຈ້ງເຕືອນ</target>
+      </trans-unit>
+      <trans-unit id="module.button.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">ລຶບ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
