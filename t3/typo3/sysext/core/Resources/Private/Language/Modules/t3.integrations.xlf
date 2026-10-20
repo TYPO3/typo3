@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Modules/integrations.xlf" date="2025-10-20T12:00:00Z" product-name="core" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>Integrations</source>
+        <target>crwdns377956:0crwdne377956:0</target>
+      </trans-unit>
+      <trans-unit id="short_description">
+        <source>External system integrations</source>
+        <target>crwdns379246:0crwdne379246:0</target>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>Setup integrations between TYPO3 and external services such as webhooks, translation providers, AI platforms, and other third-party tools.</source>
+        <target>crwdns392974:0crwdne392974:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
