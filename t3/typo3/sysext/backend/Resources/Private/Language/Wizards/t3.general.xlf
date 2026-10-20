@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/general.xlf" date="2026-02-17T00:00:00Z" product-name="backend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="wizard.loading">
+        <source>Loading...</source>
+        <target>crwdns392782:0crwdne392782:0</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.cancel">
+        <source>Cancel</source>
+        <target>crwdns392784:0crwdne392784:0</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.close">
+        <source>Close</source>
+        <target>crwdns415399:0crwdne415399:0</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.next">
+        <source>Next</source>
+        <target>crwdns392786:0crwdne392786:0</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.previous">
+        <source>Previous</source>
+        <target>crwdns392788:0crwdne392788:0</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.finish">
+        <source>Finish</source>
+        <target>crwdns392790:0crwdne392790:0</target>
+      </trans-unit>
+      <trans-unit id="wizard.loading_configuration">
+        <source>Loading wizard configuration...</source>
+        <target>crwdns392792:0crwdne392792:0</target>
+      </trans-unit>
+      <trans-unit id="wizard.loading_steps">
+        <source>Loading step modules...</source>
+        <target>crwdns392794:0crwdne392794:0</target>
+      </trans-unit>
+      <trans-unit id="wizard.loading_finisher">
+        <source>Loading finisher...</source>
+        <target>crwdns392796:0crwdne392796:0</target>
+      </trans-unit>
+      <trans-unit id="wizard.status.pending.message">
+        <source>Processing data...</source>
+        <target>crwdns392798:0crwdne392798:0</target>
+      </trans-unit>
+      <trans-unit id="wizard.status.error.title">
+        <source>Error</source>
+        <target>crwdns392800:0crwdne392800:0</target>
+      </trans-unit>
+      <trans-unit id="wizard.status.error.message">
+        <source>Failed to process data:</source>
+        <target>crwdns392802:0crwdne392802:0</target>
+      </trans-unit>
+      <trans-unit id="wizard.finisher.load_error.message">
+        <source>Failed to load finisher module:</source>
+        <target>crwdns392804:0crwdne392804:0</target>
+      </trans-unit>
+      <trans-unit id="wizard.step.error.title">
+        <source>Error</source>
+        <target>crwdns392806:0crwdne392806:0</target>
+      </trans-unit>
+      <!-- Step: Confirmation -->
+      <trans-unit id="step.confirmation.title">
+        <source>Confirmation</source>
+        <target>crwdns392808:0crwdne392808:0</target>
+      </trans-unit>
+      <trans-unit id="step.confirmation.headline">
+        <source>Confirm</source>
+        <target>crwdns392810:0crwdne392810:0</target>
+      </trans-unit>
+      <trans-unit id="step.confirmation.description">
+        <source>Please review the following settings before proceeding:</source>
+        <target>crwdns392812:0crwdne392812:0</target>
+      </trans-unit>
+      <!-- Step: Finisher -->
+      <trans-unit id="step.finisher.title">
+        <source>Finish</source>
+        <target>crwdns392814:0crwdne392814:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
