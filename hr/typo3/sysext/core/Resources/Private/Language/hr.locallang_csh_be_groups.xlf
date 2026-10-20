@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814852" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_be_groups.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>This is the Backend administration user groups available for the Backend users. These determine the access credentials for the Backend users.</source>
+        <target state="final">Ovo su administratorske korisničke grupe dostupne za korisnike pozadinsko sučelja. Ove korisničke grupe određuju pristupne ovlasti za pozadinske korisnike.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>Groups contain the main permission settings you can set for a backend user. Many users can be members of the same group and thus share permissions.
+When a user is a member of many groups (including sub-groups) then the permission settings are added together so that the more groups a user is a member of, the more access is granted to him.</source>
+			<target state="final">Grupe sadrže glavne postavke dopuštenja koje možete postaviti za korisnike pozadinskog sučelja. Mnogi korisnici mogu biti članovi iste grupe te samim time dijeliti dopuštenja.
+Kada je korisnik član mnogo grupa (uključujući i podgrupe) tada se dopuštenja zbrajaju tako da korisnik ima tim više dopuštenja što je član više grupa.</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users,
+"Inside TYPO3" about users / groups | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/UsersAndGroups/,
+How to set up a backend user | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/SettingUpANewUser/,
+Setting up groups (from "Getting Started") | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</source>
+			<target state="final">be_users,
+"TYPO3 iznutra" o korisnicima / grupama | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/UsersAndGroups/,
+Kako podesiti pozadinskog korisnika | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/SettingUpANewUser/,
+Podešavanje grupa (iz "Prvi koraci") | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</target></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>Backend Usergroups are found in the root of the page tree where only "admin" users can edit them. The usergroups with red icons in this image are the ones with Access Lists enabled. The blue are just plain usergroups.
+This usergroup has Access Lists enabled. In the Access Lists you specify which modules, tables, database fields etc. the group members can access in TYPO3.</source>
+			<target state="final">Korisničke grupe za korisnike pozadinskog sučelja nalaze se u korjenu stabla stranica gdje ih mogu uređivati jedino administrativni korisnici. Korisničke grupe sa crvenim ikonama na ovoj slici imaju omogućene Pristupne liste. Plave su korisničke grupe običnih korisnika.
+Ova korisnička grupa ima omogućene Pristupne liste. U Pristupnim listama određujete koji modulima, tablicama i poljima baza podataka korisnik ima pravo pristupa.</target></trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Name of the Backend usergroup. The name should be descriptive and can always be changed later.</source>
+        <target state="final">Naziv korisničke grupe pozadinskih korisnika. Naziv treba biti informativan a moguće ga je mijenjati kasnije.</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>Backend Usergroups are identified by their "uid" field value (integer) and therefore the title can always be changed. The "uid" can never be changed for a user group.</source>
+        <target state="final">Korisničke grupe pozadinskih korisnika identificiraju se putem "uid" polja (cijeli broj) zbog čega je uvijek moguće mijenjati naslov. Polje "uid" nikada se ne može mijenjati za korisničku grupu.</target>
+      </trans-unit>
+      <trans-unit id="title.image_descr" resname="title.image_descr" approved="yes">
+        <source>The usergroup title is shown in the record lists.</source>
+        <target state="final">Naslov korisničke grupe prikazuje se u popisima zapisa.</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.description" resname="db_mountpoints.description" approved="yes">
+        <source>Define page tree root points for the group members.</source>
+        <target state="final">Definiraj korjenske točke stabla stranica za članove grupe.</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.details" resname="db_mountpoints.details" xml:space="preserve" approved="yes">
+				<source>The page tree in TYPO3 must have some points-of-entry defined. Here you should insert one or more references to a page which will represent a new root page for the page tree. This is called a "Database mount" or "DB mount".
+DB mounts &lt;i&gt;may&lt;/i&gt; be inherited by the users which are members of this group. This depends on whether the user is configured to include the mounts set in the member groups.
+However it's recommended to use backend user groups like this to configure mounts. Especially if they need to be shared among many users.</source>
+			<target state="final">Stablo stranica u TYPO3 CMS-u mora imati definirane neke točke ulaska. Ovdje trebate navesti jednu ili više referenci na stranice koje će predstavljati novu korjensku stranicu za stablo stranica. Ovo se zove "Točka montiranja baze" ili "DB točka montiranja".
+Točke DB montiranja &lt;i&gt;mogu&lt;/i&gt; biti nasljedne za korisnike koji su članovi ove grupe. Ovo ovisi o tome je li korisnik podešen da uključuje točke montiranja postavljene u korisničkoj grupi.
+Preporuča se koristiti grupe pozadinski korisnika za podešavanje točki montiranja. Posebice ukoliko postavke treba dijeliti između mnogo korisnika.</target></trans-unit>
+      <trans-unit id="_db_mountpoints.seeAlso" resname="_db_mountpoints.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:file_mountpoints,
+be_users:db_mountpoints,
+be_users:options,
+xMOD_csh_corebe:list_module</source>
+				
+			<target state="final">be_groups:file_mountpoints,
+be_users:db_mountpoints,
+be_users:options,
+xMOD_csh_corebe:list_module</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="db_mountpoints.image_descr" resname="db_mountpoints.image_descr" xml:space="preserve" approved="yes">
+				<source>Here a page is added as a "DB mount"...
+... and in the page tree of member users this will become the starting point for the page tree.</source>
+			<target state="final">Ovdje se stranica dodaje kao "DB točka montiranja"...
+... a u stablu stranica korisnika članova ta točka će postati početna točka stabla stranica.</target></trans-unit>
+      <trans-unit id="file_mountpoints.description" resname="file_mountpoints.description" approved="yes">
+        <source>Define startpoints for the file folder tree.</source>
+        <target state="final">Definiraj početnu točku za stablo datotečnih mapa.</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints.details" resname="file_mountpoints.details" xml:space="preserve" approved="yes">
+				<source>The file folder tree is used by all File-submodules to navigate the file folders on the webserver. If you want users to access the servers file system through TYPO3 they need at least one File Mount (and access to eg. File &gt; Filelist module).
+You can mount a path in "fileadmin/" relative to the TYPO3 installation or you can mount an absolute path somewhere else on the server (outside webroot!). The last requires that $TYPO3_CONF_VARS[BE][lockRootPath] is defined. The path you mount is defined by the Filemount record you refer to by this field. So a File Mount just points to another record inside of which the details are configured. See screenshots below.
+"admin" users always have the "fileadmin/" folder mounted by default.
+Notice; as with 'DB mounts' the file folder mounts may be inherited by the users which are members of this group.</source>
+			<target state="final">Stablo datotečnih mapa koriste svi datotečni podmoduli za navigaciju mapa na web serveru. Ukoliko želite da korisnici pristupaju datotekama na serveru kroz TYPO3 potrebno im je podesiti barem jednu točku montiranja (i pristup recimo Datoteka &gt; Popis datoteka modulu).
+Možete montirati putanju u "fileadmin/" relativno na TYPO3 instalaciju ili možete montirati apsolutnu putanju negdje drugdje na serveru (van korjena weba!). Posljednje zahtjeva postavku $TYPO3_CONF_VARS[BE][lockRootPath]. Putanja koju montirate definirana je zapisom datotečnog montiranja na kojeg se pozivate ovim poljem. Dakle točka datotečnog montiranja jednostavno pokazuje na drugi zapis u kojem su specificirani detalji. Pogledajte ispod slike ekrana.
+Administrativni korisnici uvijek imaju montiranu "fileadmin/" mapu.
+Napomena: kao i sa 'DB točkama montiranja' točke montiranja mapa mogu naslijediti korisnici koju su članovi ove grupe.</target></trans-unit>
+      <trans-unit id="_file_mountpoints.seeAlso" resname="_file_mountpoints.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:db_mountpoints,
+be_users:file_mountpoints,
+be_users:options,
+be_users,
+sys_filemounts,
+xMOD_csh_corebe:filelist_module,
+More about File Mounts | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/</source>
+				
+			<target state="final">be_groups:db_mountpoints,
+be_users:file_mountpoints,
+be_users:options,
+be_users,
+sys_filemounts,
+xMOD_csh_corebe:filelist_module,
+Više o točkama montiranja | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="file_mountpoints.image_descr" resname="file_mountpoints.image_descr" xml:space="preserve" approved="yes">
+				<source>The File Mounts are references to records from the "Filemounts" table.
+In the Filemount record you define whether the path should be absolute (must be within $TYPO3_CONF_VARS[BE][lockRootPath]) or relative to "fileadmin/". In this case the Filemount points to "fileadmin/user_upload/"
+This is the page tree of the "admin" user. Notice the folder "user_upload" which is the folder referred to by the File Mount record.
+This shows the mounted folder as seen by a user who was member of the group.
+Filemount records are also created in the page tree root.</source>
+			<target state="final">Točke datotečnih montiranja su reference na zapise iz tablice "Točke datotečnog montiranja".
+U zapisu točke datotečnog montiranja specificirate treba li putanja biti apsolutna (mora biti unutar $TYPO3_CONF_VARS[BE][lockRootPath]) ili relativno u odnosu na mapu "fileadmin/". U ovom slučaju točka datotečnog montiranja pokazuje na "fileadmin/user_upload/"
+Ovo je stablo stranice "administrativnog" korisnika. Primjetite mapu "user_upload" na koju se odnosi zapis točke datotečnog montiranja.
+Ovo prikazuje montiranu mapu kako ju vidi korisnik koji je član grupe.
+Zapisi točki datotečnih montiranja nalaze se u korjenu stabla stranica.</target></trans-unit>
+      <trans-unit id="file_permissions.description" resname="file_permissions.description" approved="yes">
+        <source>Select file operation permissions for the group members.</source>
+        <target state="final">Odaberite dopuštenja za datotečne operacije za članove grupe.</target>
+      </trans-unit>
+      <trans-unit id="file_permissions.details" resname="file_permissions.details" xml:space="preserve" approved="yes">
+				<source>These settings relate to the functions found in the File&gt;Filelist module as well as general upload of files.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that these settings apply to all members of this group and extend the users permissions accordingly.</source>
+			<target state="final">Ove postavke odnose se na funkcije u modulu Datoteka&gt;Popis datoteka kao i općenito slanje datoteka.
+
+&lt;strong&gt;Napomena:&lt;/strong&gt; ove postavke vrijede za sve članove ove grupe te im proširuju korisničke ovlasti.</target></trans-unit>
+      <trans-unit id="file_permissions.seeAlso" resname="file_permissions.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:file_mountpoints,
+be_users:file_mountpoints,
+be_users:file_permissions</source>
+				
+			<target state="final">be_groups:file_mountpoints,
+be_users:file_mountpoints,
+be_users:file_permissions</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="fileoper_perms.description" resname="fileoper_perms.description" approved="yes">
+        <source>Select file operation permissions for the group members.</source>
+        <target state="final">Odaberite dopuštenja za datotečne operacije za članove grupe.</target>
+      </trans-unit>
+      <trans-unit id="fileoper_perms.details" resname="fileoper_perms.details" xml:space="preserve" approved="yes">
+				<source>These settings relate to the functions found in the File&gt;Filelist module as well as general upload of files.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that these settings apply to all members of this group and extend the users permissions accordingly.</source>
+			<target state="final">Ove postavke odnose se na funkcije u modulu Datoteka&gt;Popis datoteka kao i općenito slanje datoteka.
+
+&lt;strong&gt;Napomena:&lt;/strong&gt; ove postavke vrijede za sve članove ove grupe te im proširuju korisničke ovlasti.</target></trans-unit>
+      <trans-unit id="_fileoper_perms.seeAlso" resname="_fileoper_perms.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:file_mountpoints,
+be_users:file_mountpoints,
+be_users:file_permissions</source>
+				
+			<target state="final">be_groups:file_mountpoints,
+be_users:file_mountpoints,
+be_users:file_permissions</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="pagetypes_select.description" resname="pagetypes_select.description" approved="yes">
+        <source>Select which 'Types' of Pages the members may set.</source>
+        <target state="final">Odaberite koje tipove datoteka članovi mogu postavljati.</target>
+      </trans-unit>
+      <trans-unit id="pagetypes_select.details" resname="pagetypes_select.details" xml:space="preserve" approved="yes">
+				<source>This option limits the number of valid choices for the user when he is about to select a page type.
+Choice of Page types (doktype) for a page is associated with a) a special icon for the page, b) permitted tables on the page (see $PAGES_TYPES global variable) and c) if the page is a web page or "system folder" type.</source>
+			<target state="final">Ova opcija ograničava broj mogućih izbora za korisnika pri odabiru tipa stranice.
+Odabir tipa stranice (doktype) povezan je sa a) posebnom ikonom za stranicu, b) dopuštenim tablicama na stranici (pogledajte globalnu varijablu $PAGES_TYPES) i c) tipom same stranice - obična stranica ili s"istemska mapa".</target></trans-unit>
+      <trans-unit id="_pagetypes_select.seeAlso" resname="_pagetypes_select.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:doktype,
+be_groups:inc_access_lists</source>
+				
+			<target state="final">pages:doktype,
+be_groups:inc_access_lists</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="pagetypes_select.image_descr" resname="pagetypes_select.image_descr" approved="yes">
+        <source>The list of typical page types available in a CMS context. Selecting Page types for a usergroup defines which of these options can be selected by member users.</source>
+        <target state="final">Popis tipičnih tipova stranica dostupnih u CMS kontekstu. Odabir tipova stranica za korisničku grupu definira koje od ovih opcija mogu birati korisnici koji su članovi grupe.</target>
+      </trans-unit>
+      <trans-unit id="tables_modify.description" resname="tables_modify.description" approved="yes">
+        <source>Select which tables the members may modify.</source>
+        <target state="final">Odaberite koje tablice članovi mogu mijenjati.</target>
+      </trans-unit>
+      <trans-unit id="tables_modify.details" resname="tables_modify.details" xml:space="preserve" approved="yes">
+				<source>An important part of setting permissions is to define which database tables a user is allowed to modify.
+Tables allowed for modification is automatically also allowed for selection and thus you don't need to set tables entered here in the "Tables (listing)" box.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that this list adds to the fields selected in other member groups of a user.</source>
+			<target state="final">Bitan dio postavlja dopuštenja je definiranje tablica koje korisnik smije mijenjati.
+Tablice dopuštene za izmjenu automatski su dopuštene za odabir te ih stoga nije potrebno dodavati i u "Tablice (popis)" kućicu.
+
+&lt;strong&gt;Napomena:&lt;/strong&gt; ovaj popis dodaje poljima odabranim u drugim korisničkim grupama korisnika.</target></trans-unit>
+      <trans-unit id="_tables_modify.seeAlso" resname="_tables_modify.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:tables_select,
+be_groups:inc_access_lists,
+xMOD_csh_corebe:new_ce</source>
+				
+			<target state="final">be_groups:tables_select,
+be_groups:inc_access_lists,
+xMOD_csh_corebe:new_ce</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="tables_modify.image_descr" resname="tables_modify.image_descr" xml:space="preserve" approved="yes">
+				<source>The screenshot above shows how the "Create new record" dialog looks for a user limited to editing only "Page" and "Page content" elements.
+The two tables are simply added to the list of "Tables (modify)" in the group Access Lists.
+This is (an example of) the full amount of elements that can be created on the page by the "admin" user for whom there are no restrictions.</source>
+			<target state="final">Snimka ekrana iznad prikazuje kako dijaloški okvir "Stvori novi zapis" izgleda korisniku koji je ograničen na uređivanje elemenata tipa "Stranica" i "Sadržaj stranice".
+Dvije tablice su jednostavno dodane na popis "Tablice (uređivanje)" u Popisu dopuštenja grupe.
+Ovo je (primjer) puni popis elememata koje na stranici mogu stvoriti administrativni korisnici za koje nema ograničenja.</target></trans-unit>
+      <trans-unit id="tables_select.description" resname="tables_select.description" approved="yes">
+        <source>Select which tables the members may see in record lists ('modify' tables does not need to be re-entered here!).</source>
+        <target state="final">Odaberite koje tablice članovi mogu vidjeti u popisu zapisa ('izmjeni' tablice ne moraju se ponovno unositi ovdje!).</target>
+      </trans-unit>
+      <trans-unit id="tables_select.details" resname="tables_select.details" xml:space="preserve" approved="yes">
+				<source>This determines which tables - in addition to those selected in the "Tables (modify)" box - may be viewed and listed for the member users. He is not able to &lt;em&gt;edit&lt;/em&gt; the table - only select the records and view the content.
+This list is not very important. It's a pretty rare situation that a user may select tables but not modify them.</source>
+			<target state="final">Ovaj popis određuje koje tablice - uz one odabrane na popisu "Tablice (uređivanje)" - mogu biti pregledane i izlistane za korisnike članove. Korisnik nema prava &lt;em&gt;uređivanja&lt;/em&gt; tablice - samo odabira zapisa i pregleda sadržaja.
+Ovaj popis nije naročito važan. Situacija u kojoj korisnik smije odabirati tablice ali ne i mjenjati ih vrlo je rijetka.</target></trans-unit>
+      <trans-unit id="_tables_select.seeAlso" resname="_tables_select.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:tables_modify,
+be_groups:inc_access_lists</source>
+				
+			<target state="final">be_groups:tables_modify,
+be_groups:inc_access_lists</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="non_exclude_fields.description" resname="non_exclude_fields.description" approved="yes">
+        <source>Certain table fields are not available by default. Those fields can be explicitly enabled for the group members here.</source>
+        <target state="final">Određena polja tablica u startu nisu dostupna. Ta polja mogu se ovdje eksplicitno omogućiti za članove grupe.</target>
+      </trans-unit>
+      <trans-unit id="non_exclude_fields.details" resname="non_exclude_fields.details" xml:space="preserve" approved="yes">
+				<source>"Allowed excludefields" allows you to detail the permissions granted to tables. By default all these fields are not available to users but must be specifically enabled by being selected here.
+One application of this is that pages are usually hidden by default and that the hidden field is not available for a user unless he has been granted access by this list of "Allowed excludefields". So the user may create a new page, but cannot un-hide the page - unless of course he has been assigned the "Page: Hide page" exclude field through one of his member groups.
+Of course it does not make any sense to add fields from tables which are not included in the list of tables allowed to be modified.</source>
+			<target state="final">"Dopuštena polja isključivanja" omogućuju vam detaljna dopuštenja na tablice. Inicijalno, sva ova polja nisu dostupna korisniku već moraju biti eksplicitno odabrana ovdje.
+Jedna od upotreba ove funkcionalnosti je dopuštanje korisnicima da prikažu skrivene stranice. Korisnicima inicijalno nije dopušteno prikazivati skrivene stranice, no to je moguće promijeniti u popis "Dopuštenih polja isključivanja". Dakle korisnik može stvoriti novu stranicu, no ta stranica će biti skrivena i korisnik ju neće moći otkriti - naravno - osim ako mu je dopuštena ovlast polja isključivanja "Stranica: sakrij/otkrij stranicu" kroz neku od njegovih grupa.
+Dakako, nema smisla dodavati polja iz tablica koje nisu na popisu tablica dopuštenih za uređivanje.</target></trans-unit>
+      <trans-unit id="_non_exclude_fields.seeAlso" resname="_non_exclude_fields.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:inc_access_lists,
+Examples from "Getting Started" | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</source>
+				
+			<target state="final">be_groups:inc_access_lists,
+Primjeri iz "Prvi koraci" | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Disables a user group.</source>
+        <target state="final">be_users:lockToDomain, fe_users:lockToDomain, fe_groups:lockToDomain</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.</source>
+        <target state="final">Ukoliko onemogućite korisničku grupu korisnici članovi grupe neće više imati prava i privilegije koje su imali kao članovi grupe.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.details" resname="lockToDomain.details" xml:space="preserve" approved="yes">
+				<source>A TYPO3 system may host multiple websites on multiple domains. Therefore this option secures that users can login only from a certain host name.
+Setting this to for example "www.my-domain.com" will require a user to be logged in from that domain if membership of this group should be gained. Otherwise the group will be ignored for the user.</source>
+			<target state="final">TYPO3 sustav može biti domaćin višestrukim web stranicama na višestrukim domenama. Ova opcija omogućuje da se korisnik prisili da se prijavi sa određenog hosta.
+Postavljanje ovog polja na "www.moja-domena.hr" zahtjeva da se korisnik prijavio s dane domene ukoliko se korisniku želi dati članstvo u ovoj grupi. U suprotnom, ova grupa neće biti dostupna korisniku.</target></trans-unit>
+      <trans-unit id="_lockToDomain.seeAlso" resname="_lockToDomain.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:lockToDomain,
+fe_users:lockToDomain,
+fe_groups:lockToDomain</source>
+				
+			<target state="final">be_users:lockToDomain,
+fe_users:lockToDomain,
+fe_groups:lockToDomain</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="groupMods.description" resname="groupMods.description" approved="yes">
+        <source>Select available backend modules for the group members.</source>
+        <target state="final">Odaberite dostupne module pozadinskog sučelja za članove grupe.</target>
+      </trans-unit>
+      <trans-unit id="groupMods.details" resname="groupMods.details" xml:space="preserve" approved="yes">
+				<source>This determines which 'menu items' are available for the group members.
+This list of modules is added to any modules selected in other member groups of a user as well as the corresponding field of the user himself.</source>
+			<target state="final">Ovdje određujemo koje 'stavke izbornika' su dostupne za članove grupe.
+Ovaj popis modula bit će dodan modulima odabranim u drugim članskim grupama korisnika kao i odgovarajućem polju samog korisnika.</target></trans-unit>
+      <trans-unit id="_groupMods.seeAlso" resname="_groupMods.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:userMods,
+be_groups:inc_access_lists,
+Backend Interface | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/Backend/</source>
+				
+			<target state="final">be_users:userMods,
+be_groups:inc_access_lists,
+Pozadinsko sučelje | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/Backend/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="groupMods.image_descr" resname="groupMods.image_descr" xml:space="preserve" approved="yes">
+				<source>The Backend Modules available for a user is reflected in the menu items of the backend. For most regular users only modules in the Web and File main modules are enabled. Typically "Web &gt; Page" is used for editing of page content.
+This is the assignment of Backend Modules to the user from the screenshot above. All four Web sub-modules and the two User sub-modules are configured here. However the File &gt; Filelist module must have been configured for another member group of this user (or inside the user profile itself which is also possible). The Help modules are all accessible by default and does not require explicit access.</source>
+			<target state="final">Stavke izbornika u pozadinskom sučelju odražavaju dostupne pozadinske module. Za većinu običnih korisnika, omogućeni su samo moduli u Web i Datoteka glavnim modulima. Tipično "Web&gt;Stranica" modul se koristi za uređivanje sadržaja stranice.
+Ovo je pridruživanje pozadinskih modula korisniku iz snimke ekrana iznad. Sva četiri Web podmodula i dva Korisnik pod modula podešena su ovdje. Međutim Datoteka&gt;Popis datoteka modul očito su podešeni za drugu korisničku grupu ovog korisnika (ili unutar samog korisničkog profila, što je također moguće). Moduli pomoći su inicijalno svi dostupni te ne zahtjevaju posebna dopuštenja.</target></trans-unit>
+      <trans-unit id="inc_access_lists.description" resname="inc_access_lists.description" approved="yes">
+        <source>Select whether the Access Lists for Page type, Tables, Module and Allowed excludefield are enabled for this group.</source>
+        <target state="final">Odaberite hoći li Popis dopuštenja za tip stranice, tablice i module te Dopuštena polja isključenja biti omogućena za ovu grupu.</target>
+      </trans-unit>
+      <trans-unit id="inc_access_lists.details" resname="inc_access_lists.details" xml:space="preserve" approved="yes">
+				<source>If this option is disabled the Access Lists cannot be configured for the group.
+When Access Lists are disabled the icon for the group is blue while it is red when Access Lists are enabled.</source>
+			<target state="final">Popis dopuštenja nije moguće podesiti za grupu ukoliko je isključena ova opcija.
+Kada su popisi dopuštenja onemogućeni, ikona za grupu je plava. Kada su popisi dopušenja omogućeni, ikona je crvena.</target></trans-unit>
+      <trans-unit id="_inc_access_lists.seeAlso" resname="_inc_access_lists.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:pagetypes_select,
+be_groups:tables_modify,
+be_groups:tables_select,
+be_groups:groupMods,
+be_groups:non_exclude_fields</source>
+				
+			<target state="final">be_groups:pagetypes_select,
+be_groups:tables_modify,
+be_groups:tables_select,
+be_groups:groupMods,
+be_groups:non_exclude_fields</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a short description of the user group, what it is for and who should be members. This is for internal use only.</source>
+        <target state="final">Unesite kratki opis korisničke grupe, što grupa predstavlja te tko bi trebao biti član. Ovaj opis koristi se samo za internu uporabu.</target>
+      </trans-unit>
+      <trans-unit id="_description.seeAlso" resname="_description.seeAlso" approved="yes">
+        <source>fe_groups:description</source>
+        <target state="final">fe_groups:description</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>User TSconfig: Additional configuration through TypoScript style values (Advanced).</source>
+        <target state="final">Korisnički TSconfig: dodatne postavke kroz vrijednosti slične TypoScript-u (napredno).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details" resname="TSconfig.details" approved="yes">
+        <source>User TSconfig can be set for each backend user and group. Configuration set for backend groups is inherited by the user who is a member of those groups. The available options typically cover user settings like those found in the User&gt;Setup module (in fact options from that module can be forcibly overridden from User TSconfig!), configuration of the "Admin Panel" (frontend), various backend tweaks (lock user to IP, may user clear all cache?, width of the navigation frame etc.) and backend module configuration (overriding any configuration set for backend modules in Page TSconfig).</source>
+        <target state="final">Korisnički TSconfig može se podesiti za svakog pozadinskog korisnika i grupu. Postavke pozadinskih grupa vrijede za sve korisnike članove grupe. Dostupne opcije tipično predstavljaju postavke Korisnik&gt;Postavke modula (dapače, postavke tog modula mogu se mijenjati iz korisničkog TSconfig-a!), postavke iz "Admin panela" (prednje sučelje), različita ugađanja pozadinskog sučelja (zaključavanje korisnika na IP adresu, je li korisniku dopušteno isprazniti međuspremnik?, širina navigacijskog okvira i slično) i pozadinskih modula (ove postavke imaju prednost pred bilo kakvim postavkama pozadinskih podula u TSconfigu stranice).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax without conditions and constants.</source>
+        <target state="final">TypoScript sintaksa bez uvjeta i konstanti.</target>
+      </trans-unit>
+      <trans-unit id="_TSconfig.seeAlso" resname="_TSconfig.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:TSconfig
+fe_users:TSconfig
+fe_groups:TSconfig
+pages:TSconfig,
+TSconfig Reference| https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/,
+TypoScript Syntax | https://docs.typo3.org/typo3cms/TyposcriptSyntaxReference/</source>
+				
+			<target state="final">be_users:TSconfig
+fe_users:TSconfig
+fe_groups:TSconfig
+pages:TSconfig,
+TSconfig referenca | http://typo3.org/documentation/document-library/doc_core_tsconfig/User_TSconfig/,
+TypoScript sintaksa | http://typo3.org/documentation/document-library/doc_core_ts/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="TSconfig.image_descr" resname="TSconfig.image_descr" xml:space="preserve" approved="yes">
+				<source>In the TSconfig field help is right at hand - just click the TS wizard icon, then a window will pop up.
+In the pop-up window you will see a tree of possible configuration values. These are extracted from the TSconfig manual. You can click around to find the options you need to set through this wizard.</source>
+			<target state="final">U polju za unos TSconfiga pomoć je uvijek pri ruci - samo kliknite ikonu TS čarobnjaka i dobit ćete skočni prozor pomoći.
+U skočnom prozoru prikazat će Vam se stablo mogućih postavki. Ovo stablo učitava se iz TSconfig priručnika. U stablu možete izvući postavke koje su Vam potrebne od čarobnjaka.</target></trans-unit>
+      <trans-unit id="subgroup.description" resname="subgroup.description" approved="yes">
+        <source>All settings from the selected groups will be merged with the properties from this group, for example DB mounts, permissions, TSconfig, etc.</source>
+        <target state="final">Sve postavke odabranih grupa združit će se sa svojstvima ove grupe, primjerice točke montiranja baze podataka, dopuštenja, TSconfig i slično.</target>
+      </trans-unit>
+      <trans-unit id="subgroup.details" resname="subgroup.details" xml:space="preserve" approved="yes">
+				<source>The properties of subgroups are added to the properties of this group and basically they will simply be added to the list of member groups of any user which is a member of this group.
+This feature provides a great way to create 'Supervisor' user groups.</source>
+			<target state="final">Svojstva podrgupre dodaju se svojstvima ove grupe a zatim se primjenjuju na sve članove ove grupe.
+Ova funkcionalnost odlična je za stvaranje 'nadgledničkih' grupa.</target></trans-unit>
+      <trans-unit id="explicit_allowdeny.description" resname="explicit_allowdeny.description" approved="yes">
+        <source>Select field values to explicitly deny or allow for user group members.</source>
+        <target state="final">Odaberite polja koja će biti eksplicitno dopuštena ili onemogućena članovima korisničke grupe.</target>
+      </trans-unit>
+      <trans-unit id="explicit_allowdeny.details" resname="explicit_allowdeny.details" xml:space="preserve" approved="yes">
+				<source>Selector box fields can be configured for access control on value level. This list represents all values that are configured for access control.
+Each value can be configured to require either explicit access (Allow) or explicit denial (Deny). If a value has the prefix "Allow" (green icon) it means that by default users &lt;em&gt;cannot&lt;/em&gt; set this value unless they are member of a user group which explicitly allows it (by setting this checkbox).
+If a value has the prefix "Deny" (red icon) it means that by default users can set this value unless they are member of a user group which explicitly denies it (by setting this checkbox).
+The list is organized so values from the same selector box is listed together. If values from a selectorbox is not present in the allow/deny list it simply means they are not evaluated and hence they can be set by anyone having access to the field in general.</source>
+			<target state="final">Polja sa kućicama za odabire mogu se podesiti za kontrolu pristupa na razini vrijednosti. Ovaj popis predstavlja sve vrijednosti koje su podešene za kontrolu pristupa.
+Svaka vrijednost može biti podešena ili da zahtijeva eksplicitno dopuštenje (Dopusti) ili eksplicitnu zabranu (Zabrani). Ukoliko vrijednost ima prefiks "Dopusti" (zelena ikona) korisnici &lt;em&gt;ne mogu&lt;/em&gt; postaviti ovu vrijednost osim ako su članovi grupe koja eksplicitna dopušta postavljanje ove vrijednosti (označavanjem ove kućice).
+Ukoliko vrijednost ima prefiks "Zabranj" (crvena ikona) korisnici mogu postaviti ovu vrijednost osim ako su članovi grupe koja eksplicitno brani postavljanje ove vrijednosti (označavanjem ove kućice).
+Popis je organiziran tako da su vrijednosti iz iste kućice za odabir popisane zajedno. Ukoliko vrijednost iz kućice za odabir nije prisutna na dopusti/zabrani popisu to jednostavno znači da vrijednosti nisu evaluirane te mogu biti postavljene od strane bilo kojeg korisnika koji ima opći pristup polju.</target></trans-unit>
+      <trans-unit id="allowed_languages.description" resname="allowed_languages.description" approved="yes">
+        <source>Select which record languages the group members are limited to edit.</source>
+        <target state="final">Odaberite koje zapise jezika članovi grupe smiju uređivati.</target>
+      </trans-unit>
+      <trans-unit id="allowed_languages.details" resname="allowed_languages.details" xml:space="preserve" approved="yes">
+				<source>Records in TYPO3 can be configured to carry information about their language. If that is the case access to these elements will also be evaluated based on whether the user has the language in question included from this list.
+If a user has no languages listed all together it simply means that he can edit &lt;em&gt;all&lt;/em&gt; languages!</source>
+			<target state="final">U TYPO3 sustavu zapise je moguće podesiti da nose informaciju o jeziku. Ukoliko je jezika postavljen na taj način, pristup tim elementima će biti procijenjen na temelju jezičnih postavki korisnika.
+Ukoliko korisnik nema niti jedan jezik na popisu to znači da korisnik ima pravo uređivanja &lt;em&gt;za sve&lt;/em&gt; jezike!</target></trans-unit>
+      <trans-unit id="_allowed_languages.seeAlso" resname="_allowed_languages.seeAlso" approved="yes">
+        <source>be_users:allowed_languages</source>
+        <target state="final">be_users:allowed_languages</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="allowed_languages.image_descr" resname="allowed_languages.image_descr" approved="yes">
+        <source>This example shows a situation where two languages, Danish and German, are created in addition to the default language.</source>
+        <target state="final">Ovaj primjer prikazuje situaciju sa dva dodatna jezika, danski i njemački, uz zadani jezik.</target>
+      </trans-unit>
+      <trans-unit id="custom_options.description" resname="custom_options.description" approved="yes">
+        <source>Select custom permission options.</source>
+        <target state="final">Odaberite prilagođene opcije dopuštenja.</target>
+      </trans-unit>
+      <trans-unit id="custom_options.details" resname="custom_options.details" approved="yes">
+        <source>This list represents custom permissions introduced by various backend modules (from extensions). The significance of each option depends on the backend module that evaluates it.</source>
+        <target state="final">Ovaj popis prikazuje prilagođena dopuštenja koja su uveli različiti moduli pozadinskog sučelja (iz proširenja). Značenje svake opcije ovisi o modulu koji uvažava danu opciju.</target>
+      </trans-unit>
+      <trans-unit id="custom_options.image_descr" resname="custom_options.image_descr" approved="yes">
+        <source>This is just an example from an internal test application. It shows how checkboxes are added by a custom module under its own header. You can also show a description text with each checkbox to explain its function.</source>
+        <target state="final">Ovo je samo primjer iz interne testne aplikacije. Prikazano je kako modul dodaje kućice ispod zaglavlja. Moguće je dodati tekst sa opisom uz svaku kućicu kako bi se objasnila funkcija kućice.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
