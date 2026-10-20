@@ -173,6 +173,14 @@ final class DefaultSanitizerBuilderTest extends FunctionalTestCase
                 '<span class="icon"><svg><script>alert(1)</script></svg></span>',
                 '<span class="icon"></span>',
             ],
+            '#953' => [
+                '<div><svg onload="alert(1)"><circle onclick="alert(1)" r="2"></circle></svg></div>',
+                '<div><svg><circle r="2" /></svg></div>',
+            ],
+            '#954' => [
+                '<svg><use href="https://example.org/sprite.svg#icon"></use><circle r="2"></circle></svg>',
+                '<svg><use /><circle r="2" /></svg>',
+            ],
         ];
     }
 

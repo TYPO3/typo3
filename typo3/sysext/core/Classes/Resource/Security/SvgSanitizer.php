@@ -19,8 +19,6 @@ namespace TYPO3\CMS\Core\Resource\Security;
 
 use enshrined\svgSanitize\data\AllowedTags;
 use enshrined\svgSanitize\data\TagInterface;
-use enshrined\svgSanitize\data\XPath;
-use enshrined\svgSanitize\ElementReference\Resolver;
 use enshrined\svgSanitize\Sanitizer;
 
 readonly class SvgSanitizer
@@ -59,27 +57,18 @@ readonly class SvgSanitizer
     public function sanitizeNode(
         \DOMNode $node,
     ): \DOMNode {
-        $svgSanitizer = new class extends Sanitizer {
-            public function sanitizeDocument(\DOMDocument $document): void
-            {
-                $this->xmlDocument = $document;
-                $this->setUpBefore();
-                // Pre-process all identified elements
-                $xPath = new XPath($this->xmlDocument);
-                $this->elementReferenceResolver = new Resolver($xPath, $this->useNestingLimit);
-                $this->elementReferenceResolver->collect();
-                $elementsToRemove = $this->elementReferenceResolver->getElementsToRemove();
-                // Start the cleaning process
-                $this->startClean($this->xmlDocument->childNodes, $elementsToRemove);
-                $this->resetAfter();
-            }
-        };
-
         $svg = new \DOMDocument();
         $svg->appendChild($svg->importNode($node, true));
 
-        $svgSanitizer->removeRemoteReferences(true);
-        $svgSanitizer->sanitizeDocument($svg);
-        return $node->ownerDocument->importNode($svg->documentElement, true);
+        $sanitizer = new Sanitizer();
+        $sanitizer->removeRemoteReferences(true);
+        $sanitizer->removeXMLTag(true);
+        $sanitizedSvg = $sanitizer->sanitize((string)$svg->saveXML($svg->documentElement));
+
+        $sanitizedDocument = new \DOMDocument();
+        if (!is_string($sanitizedSvg) || $sanitizedSvg === '' || !$sanitizedDocument->loadXML($sanitizedSvg, LIBXML_NONET | LIBXML_NOBLANKS)) {
+            return $node->ownerDocument->createElementNS($node->namespaceURI, $node->nodeName);
+        }
+        return $node->ownerDocument->importNode($sanitizedDocument->documentElement, true);
     }
 }
