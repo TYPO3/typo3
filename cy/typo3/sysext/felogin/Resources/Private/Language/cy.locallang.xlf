@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814821" source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="cy">
+    <header/>
+    <body>
+      <trans-unit id="ll_welcome_header" resname="ll_welcome_header" approved="yes">
+        <source>User login</source>
+        <target state="final">Mewngofnodi defnyddiwr</target>
+      </trans-unit>
+      <trans-unit id="ll_welcome_message" resname="ll_welcome_message" approved="yes">
+        <source>Enter your username and password here in order to log in on the website</source>
+        <target state="final">Rhowch eich enw defnyddiwr a'ch cyfrinair yma er mwyn mewngofnodi ar y wefan</target>
+      </trans-unit>
+      <trans-unit id="ll_logout_header" resname="ll_logout_header" approved="yes">
+        <source>You have logged out.</source>
+        <target state="final">Rydych chi wedi allgofnodi.</target>
+      </trans-unit>
+      <trans-unit id="ll_logout_message" resname="ll_logout_message" approved="yes">
+        <source>You just logged out from your user session on this website. You can login again or as another user by the form below.</source>
+        <target state="final">Rydych chi newydd allgofnodi o'ch sesiwn defnyddiwr ar y wefan hon. Gallwch fewngofnodi eto neu fel defnyddiwr arall trwy'r ffurflen isod.</target>
+      </trans-unit>
+      <trans-unit id="ll_error_header" resname="ll_error_header" approved="yes">
+        <source>Login failure</source>
+        <target state="final">Methiant mewngofnodi</target>
+      </trans-unit>
+      <trans-unit id="ll_error_message" resname="ll_error_message" xml:space="preserve" approved="yes">
+				<source>An error occurred during login. Most likely you didn't enter the username or password correctly.
+Be certain that you enter them precisely as they are, including upper/lower case.
+Another possibility is that cookies might be disabled in your web browser.</source>
+			<target state="final">Digwyddodd gwall yn ystod mewngofnodi. Yn fwyaf tebygol na wnaethoch chi nodi'r enw defnyddiwr neu'r cyfrinair yn gywir.
+Sicrhewch eich bod yn eu nodi yn union fel y maent, gan gynnwys llythrennau bach / llythrennau bach.
+Posibilrwydd arall yw y gallai cwcis fod yn anabl yn eich porwr gwe.</target></trans-unit>
+      <trans-unit id="ll_success_header" resname="ll_success_header" approved="yes">
+        <source>Login successful</source>
+        <target state="final">Mewngofnodi yn llwyddiannus</target>
+      </trans-unit>
+      <trans-unit id="ll_success_message" resname="ll_success_message" approved="yes">
+        <source>You are now logged in as '###USER###'</source>
+        <target state="final">Rydych bellach wedi mewngofnodi fel '###USER###'</target>
+      </trans-unit>
+      <trans-unit id="ll_status_header" resname="ll_status_header" approved="yes">
+        <source>Current status</source>
+        <target state="final">Statws cyfredol</target>
+      </trans-unit>
+      <trans-unit id="ll_status_message" resname="ll_status_message" approved="yes">
+        <source>This is your current status</source>
+        <target state="final">Dyma'ch statws cyfredol</target>
+      </trans-unit>
+      <trans-unit id="cookie_warning" resname="cookie_warning" approved="yes">
+        <source>Warning: There is a possibility that cookies are not enabled in your web browser! If your login disappears on your next click that is the case and you should enable cookies (or accept cookies from this website) immediately!</source>
+        <target state="final">Rhybudd: Mae posibilrwydd na chaiff cwcis eu galluogi yn eich porwr gwe! Os yw'ch mewngofnodi'n diflannu ar eich clic nesaf, mae hynny'n wir a dylech alluogi cwcis (neu dderbyn cwcis o'r wefan hon) ar unwaith!</target>
+      </trans-unit>
+      <trans-unit id="username" resname="username" approved="yes">
+        <source>Username</source>
+        <target state="final">Enw defnyddiwr</target>
+      </trans-unit>
+      <trans-unit id="password" resname="password" approved="yes">
+        <source>Password</source>
+        <target state="final">Cyfrinair</target>
+      </trans-unit>
+      <trans-unit id="login" resname="login" approved="yes">
+        <source>Login</source>
+        <target state="final">Mewngofnodi</target>
+      </trans-unit>
+      <trans-unit id="permalogin" resname="permalogin" approved="yes">
+        <source>Stay logged in</source>
+        <target state="final">Arhoswch wedi mewngofnodi</target>
+      </trans-unit>
+      <trans-unit id="logout" resname="logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">Allgofnodi</target>
+      </trans-unit>
+      <trans-unit id="send_password" resname="send_password" approved="yes">
+        <source>Send password</source>
+        <target state="final">Anfon cyfrinair</target>
+      </trans-unit>
+      <trans-unit id="reset_password" resname="reset_password" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">Ailosod cyfrinair</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_header" resname="ll_change_password_header" approved="yes">
+        <source>Change your password</source>
+        <target state="final">Newid eich cyfrinair</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_message" resname="ll_change_password_message" approved="yes">
+        <source>Please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">Rhowch eich cyfrinair newydd ddwywaith. Mae angen isafswm hyd o%s ar gyfrinair.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_nolinkprefix_message" resname="ll_change_password_nolinkprefix_message" approved="yes">
+        <source>Error: there is no prefix for the link. Please set one of the following in your typoscript template: plugin.tx_felogin_pi1.feloginBaseURL = http://yourdomain/, config.baseURL = http://yourdomain/, config.absRefPrefix = /</source>
+        <target state="final">Gwall: nid oes rhagddodiad ar gyfer y ddolen. Gosodwch un o'r canlynol yn eich templed teiposysgrif: plugin.tx_felogin_pi1.feloginBaseURL = http://yourdomain/, config.baseURL = http://yourdomain/, config.absRefPrefix = /</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_notvalid_message" resname="ll_change_password_notvalid_message" approved="yes">
+        <source>The link you clicked is not valid. Please repeat the forgot password procedure.</source>
+        <target state="final">Nid yw'r ddolen y gwnaethoch chi ei chlicio yn ddilys. Ailadroddwch y weithdrefn cyfrinair anghofiedig.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_notequal_message" resname="ll_change_password_notequal_message" approved="yes">
+        <source>The passwords are not equal, please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">Nid yw'r cyfrineiriau'n gyfartal, nodwch eich cyfrinair newydd ddwywaith. Mae angen isafswm hyd o %s ar gyfrinair.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_tooshort_message" resname="ll_change_password_tooshort_message" approved="yes">
+        <source>The password length is too short. Please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">Mae hyd y cyfrinair yn rhy fyr. Rhowch eich cyfrinair newydd ddwywaith. Mae angen isafswm hyd o %s ar gyfrinair.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_done_message" resname="ll_change_password_done_message" approved="yes">
+        <source>Your password has been saved. You can now login with your new password.</source>
+        <target state="final">Mae eich cyfrinair wedi'i gadw. Nawr gallwch fewngofnodi gyda'ch cyfrinair newydd.</target>
+      </trans-unit>
+      <trans-unit id="change_password" resname="change_password" approved="yes">
+        <source>Change your password</source>
+        <target state="final">Newid eich cyfrinair</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label1" resname="newpassword_label1" approved="yes">
+        <source>Enter new password</source>
+        <target state="final">Rhowch gyfrinair newydd</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label2" resname="newpassword_label2" approved="yes">
+        <source>Repeat new password</source>
+        <target state="final">Ailadrodd cyfrinair newydd</target>
+      </trans-unit>
+      <trans-unit id="your_email" resname="your_email" approved="yes">
+        <source>Your email</source>
+        <target state="final">Dy ebost</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_header" resname="ll_forgot_header" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">Wedi anghofio eich cyfrinair?</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_email_password" resname="ll_forgot_email_password" xml:space="preserve" approved="yes">
+				<source>Your password
+Hi %s
+
+Your username is "%s"
+Your password is "%s"</source>
+			<target state="final">Eich cyfrinair
+Ei %s
+
+Eich enw defnyddiwr yw "%s"
+Eich cyfrinair yw "%s"</target></trans-unit>
+      <trans-unit id="ll_forgot_email_nopassword" resname="ll_forgot_email_nopassword" xml:space="preserve" approved="yes">
+				<source>Your password
+Hi %s
+
+We couldn't find a username for this email address and so cannot send the password to you. Probably you misspelled the email address (upper/lower case makes a difference) or maybe you even didn't register yet?</source>
+			<target state="final">Eich cyfrinair
+Ei %s
+
+Ni allem ddod o hyd i enw defnyddiwr ar gyfer y cyfeiriad e-bost hwn ac felly ni allwn anfon y cyfrinair atoch. Mae'n debyg eich bod wedi camsillafu'r cyfeiriad e-bost (mae llythrennau bach / llythrennau bach yn gwneud gwahaniaeth) neu efallai na wnaethoch chi gofrestru eto?</target></trans-unit>
+      <trans-unit id="ll_forgot_validate_reset_password" resname="ll_forgot_validate_reset_password" xml:space="preserve" approved="yes">
+				<source>Your new password
+Dear %s,
+
+This email was sent in response to your request to reset your password. Please click on the link below.
+%s
+
+For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.</source>
+			<target state="final">Eich cyfrinair newydd
+Annwyl %s,
+
+Anfonwyd yr e-bost hwn mewn ymateb i'ch cais i ailosod eich cyfrinair. Cliciwch ar y ddolen isod.
+%s
+
+Am resymau diogelwch, dim ond tan %s y mae'r cyswllt hwn yn weithredol. Os na ymwelwch â'r ddolen cyn hynny, bydd angen i chi ailadrodd y camau ailosod cyfrinair.</target></trans-unit>
+      <trans-unit id="ll_forgot_message" resname="ll_forgot_message" approved="yes">
+        <source>Please enter the email address by which you registered your user account. Then press "Send password" and your password will immediately be emailed to you. Make sure to spell your email address correctly.</source>
+        <target state="final">Rhowch y cyfeiriad e-bost y gwnaethoch chi gofrestru eich cyfrif defnyddiwr drwyddo. Yna pwyswch "Anfon cyfrinair" a bydd eich cyfrinair yn cael ei e-bostio atoch ar unwaith. Gwnewch yn siŵr eich bod yn sillafu'ch cyfeiriad e-bost yn gywir.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
