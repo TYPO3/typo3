@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814884" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="ro">
+    <header/>
+    <body>
+      <trans-unit id="query_loaded" resname="query_loaded" approved="yes">
+        <source>Query "%s" loaded!</source>
+        <target state="final">Query "%s" încărcat!</target>
+      </trans-unit>
+      <trans-unit id="query_from_action_loaded" resname="query_from_action_loaded" approved="yes">
+        <source>Query from action "%s" loaded!</source>
+        <target state="final">Query din acțiunea "%s" încărcat!</target>
+      </trans-unit>
+      <trans-unit id="query_saved" resname="query_saved" approved="yes">
+        <source>Query saved!</source>
+        <target state="final">Query salvat!</target>
+      </trans-unit>
+      <trans-unit id="query_notsaved" resname="query_notsaved" approved="yes">
+        <source>No query saved!</source>
+        <target state="final">Nici un query nu a fost salvat!</target>
+      </trans-unit>
+      <trans-unit id="query_removed" resname="query_removed" approved="yes">
+        <source>"%s" query entry removed!</source>
+        <target state="final">Query "%s" șters!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
