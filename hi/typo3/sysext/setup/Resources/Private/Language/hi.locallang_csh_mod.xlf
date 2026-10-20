@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814989" source-language="en" datatype="plaintext" original="EXT:setup/Resources/Private/Language/locallang_csh_mod.xlf" date="2011-10-17T20:22:37Z" product-name="setup" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>User &gt; Setup module</source>
+        <target state="final">उपयोगकर्ता&gt; सेटअप मॉड्यूल</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The Setup module allows the backend user to customize TYPO3 for his own login sessions. This includes the backend language and various other interface features.</source>
+        <target state="final">अपने खुद के लॉगिन सेशन के लिए टाइपो को अनुकूल करने के लिए सेटअप मॉड्यूल बैक-एन्ड उपयोगकर्ता को अनुमति देता है। यह बैकेंड भाषा और अन्य विभिन्न इंटरफेस विशेषताएं शामिल करता हैं।</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>&lt;b&gt;Notice [For Admins]:&lt;/b&gt; These settings can all be overridden or have their default values changed by "User TSconfig". To read more about this concept, see the link below!</source>
+        <target state="final">&lt;b&gt;सूचना [एडमिन के लिए]:&lt;/b&gt; यह सेटिंग सभी ओवर-रिद्देन की जा सकती है या उनकी डिफ़ॉल्ट वैल्यू "उपयोगकर्ता TSconfig" से बदली गयी है। इस सिद्धांत के बारे में अधिक पढ़ने के लिए, नीचे दी गई लिंक को देखे!</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" approved="yes">
+        <source>User TSconfig SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Setup/Index.html</source>
+        <target state="final">User TSconfig SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Setup/Index.html</target>
+      </trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:setup/Resources/Public/Images/cshimages/setup8.png,
+EXT:setup/Resources/Public/Images/cshimages/setup7.png</source>
+				
+			<target state="final">EXT:setup/Resources/Public/Images/cshimages/setup8.png,
+EXT:setup/Resources/Public/Images/cshimages/setup7.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The Setup module is selected in the left menu.
+This is how the Setup module interface looks like - a list of options to configure.</source>
+			<target state="final">सेटअप मॉड्यूल बाएँ मेनू में चुना हुआ है।
+यह दिखाता है कि सेटअप मॉड्यूल इंटरफ़ेस केसा दिखाई देता है - कॉन्फ़िगर करने के लिए विकल्पों की सूचि।</target></trans-unit>
+      <trans-unit id="language.alttitle" resname="language.alttitle" approved="yes">
+        <source>Backend Language selection</source>
+        <target state="final">बैकेंड भाषा का चुनाव</target>
+      </trans-unit>
+      <trans-unit id="language.description" resname="language.description" approved="yes">
+        <source>Select the backend language you prefer. Most parts of TYPO3s backend (for regular users) are translated into other languages.</source>
+        <target state="final">आप पसंद करते है ऐसी बैकेद भाषा चुने। टाइपो3 बैकेंड के अधिक भाग(नियमित उपयोगकर्ता के लिए) दूसरी भाषा में अनुवाद कर रहे है।</target>
+      </trans-unit>
+      <trans-unit id="language.details" resname="language.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Warning [technical]:&lt;/b&gt; If TYPO3 is not configured to use a single character set (through $TYPO3_CONF_VARS[BE][forceCharset]) then all data entered in the backend is submitted in the character set of the selected backend language. This leads to inconsistent data storage if some users are using the backend in Russian and others in English which uses different character sets.
+The solution clearly is to set the configuration option mentioned above to a value like "utf-8". This must be done by the developers responsible for the whole system configuration.</source>
+			<target state="final">&lt;b&gt;चेतावनी [तकनीकी]:&lt;/b&gt; यदि टाइपो3 एक केरेक्टर सेट($TYPO3_CONF_VARS[BE][forceCharset] के माध्यम से) का उपयोग करने के लिए कॉन्फ़िगर नहीं है तो बैकेंड में दर्ज किये गए सभी डेटा चुनी हुई बैकेंड भाषा में सबमिट किये गए हे। यह असंगत डेटा स्टोरेज के लिए होता है यदि कुछ उपयोगकर्ता बैकेंड का उपयोग रूस में करके है और दूसरे अंगरेजी में जो की अलग अलग केरेक्टर सेट का उपयोग करते है। 
+यह समाधान स्पष्ट रूप से "utf -8" के मूल्य की तरह ऊपर उल्लेख किये गए कॉन्फ़िगरेशन विकल्प को सेट करने के लिए है। पूरे सिस्टम के कॉन्फ़िगरेशन के लिए इसे डेवलपर्स जिम्मेदारी द्वारा ही किया जाना चाहिए।</target></trans-unit>
+      <trans-unit id="_language.image" resname="_language.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/lang.png</source>
+        <target state="final">EXT:setup/Resources/Public/Images/cshimages/lang.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="language.image_descr" resname="language.image_descr" approved="yes">
+        <source>TYPO3 is translated into around 40 languages. English is the default language and all labels must be available in English first and foremost. This screenshot shows translations for Hebrew, Arabic, Russian and Chinese.</source>
+        <target state="final">टाइपो3 लगभग 40 भाषाओं में अनुवाद किया है। अंग्रेजी डिफ़ॉल्ट भाषा है और सभी लेबल सबसे पहले अंगरेजी में उपलब्ध होना चाहिए। इस स्क्रीनशॉट से हिब्रू, अरबी, रूसी और चीनी अनुवाद का पता चलता है।</target>
+      </trans-unit>
+      <trans-unit id="option_startModule.alttitle" resname="option_startModule.alttitle" approved="yes">
+        <source>Start module</source>
+        <target state="final">आरंभ मॉड्यूल</target>
+      </trans-unit>
+      <trans-unit id="option_startModule.description" resname="option_startModule.description" xml:space="preserve" approved="yes">
+				<source>Let you select the module that is called when you login in the Backend
+The default module is "About Modules".</source>
+			<target state="final">जब आप बैकेंड में लोगिन करेंगे तब कॉल होने वाला मॉड्यूल को चुनें
+डिफ़ॉल्ट मॉड्यूल "मॉड्यूल के बारे में" है।</target></trans-unit>
+      <trans-unit id="option_showThumbs.alttitle" resname="option_showThumbs.alttitle" approved="yes">
+        <source>Show Thumbnails by default</source>
+        <target state="final">डिफ़ॉल्ट रूप से थंब-नेल्स दीखाए</target>
+      </trans-unit>
+      <trans-unit id="option_showThumbs.description" resname="option_showThumbs.description" approved="yes">
+        <source>In modules like the "Web &gt; List" and "File &gt; Filelist" you can enable the display of thumbnails of files (images/fonts) and records (if images are attached) with a checkbox. Setting this option will enable the display by default.</source>
+        <target state="final">"वेब&gt; सूचि" और "फाइल&gt; फाइल-सूचि" जेसे मॉड्यूल में आप थंब-नेल्स फाइल(इमेजिस/फ़ॉन्ट्स) और रिकॉर्ड(यदि इमेज जुडी हुई हो तो) को चेकबॉक्स द्वारा डिस्प्ले को सक्षम कर सकते है।इस विकल्प का सेटिंग डिफ़ॉल्ट रूप से डिस्प्ले के लिए सक्षम होगा।</target>
+      </trans-unit>
+      <trans-unit id="_option_showThumbs.image" resname="_option_showThumbs.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/setup5.png</source>
+        <target state="final">EXT:setup/Resources/Public/Images/cshimages/setup5.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="option_showThumbs.image_descr" resname="option_showThumbs.image_descr" approved="yes">
+        <source>When thumbnails display is enabled, files attached to records will be shown in the "Web &gt; List" module like this.</source>
+        <target state="final">जब थंब-नेल्स डिस्प्ले सक्षम हो, रिकॉर्ड के साथ जुडी हुई फाइल "वेब&gt; सूचि" मॉड्यूल में इस तरह दिखाई देंगी।</target>
+      </trans-unit>
+      <trans-unit id="option_helpText.alttitle" resname="option_helpText.alttitle" approved="yes">
+        <source>Show help text when applicable</source>
+        <target state="final">जब लागु हो तब सहायता टेक्स्ट दिखाए</target>
+      </trans-unit>
+      <trans-unit id="option_helpText.description" resname="option_helpText.description" approved="yes">
+        <source>If set, some help texts will appear by default. Applies to the "Legend" text in the Web&gt;Access module for instance.</source>
+        <target state="final">अगर सेट हो तो, कुछ मदद टेक्स्ट्स डिफ़ॉल्ट रूप से दिखाई देंगे। उदाहरण के लिए वेब&gt; एक्सेस मॉड्यूल में "लीजेंड" टेक्स्ट पर लागू।</target>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.alttitle" resname="option_maxTitleLen.alttitle" approved="yes">
+        <source>Maximum title length</source>
+        <target state="final">शीर्षक की महत्तम लम्बाई</target>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.description" resname="option_maxTitleLen.description" approved="yes">
+        <source>TYPO3 will often crop long titles of records etc. so only the first X characters are shown. Often the number of shown characters depends on this variable. For instance the length of page titles in the page tree is determined by this value.</source>
+        <target state="final">टाइपो3 रिकार्ड्स आदि के लम्बे शीर्षक क्रॉप करेंगे। इसलिए केवल पहले X केरेक्टर दिखाए जाते हैं। अक्सर दिखाए गए केरेक्टर की संख्या इस वेरिएबल पर निर्भर करती है। उदाहरण के लिए पेज ट्री में पेज शीर्षक की लम्बाई इस वैल्यू से निर्धारित की जाएगी।</target>
+      </trans-unit>
+      <trans-unit id="_option_maxTitleLen.image" resname="_option_maxTitleLen.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/setup6.png</source>
+        <target state="final">EXT:setup/Resources/Public/Images/cshimages/setup6.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.image_descr" resname="option_maxTitleLen.image_descr" approved="yes">
+        <source>In this case the Maximum Title length is set to 10 - and the result is that titles in the page tree - as well as other places in the backend - will be cropped after 10 characters, then suffixed by "...". The default value is "30".</source>
+        <target state="final">इस मामले में महत्तम शीर्षक लम्बाई 10 से सेट है और परिणाम पेज ट्री में ये शीर्षक है साथ ही साथ बैकेंड में अन्य स्थल 10 केरेक्टर के बाद क्रॉप किये जायेगे तब "..." से जोड़ा जायेगा। डिफ़ॉल्ट वैल्यू "30" है।</target>
+      </trans-unit>
+      <trans-unit id="option_copyLevels.alttitle" resname="option_copyLevels.alttitle" approved="yes">
+        <source>Recursive Copy</source>
+        <target state="final">पुनरावर्ती कॉपी</target>
+      </trans-unit>
+      <trans-unit id="option_copyLevels.description" resname="option_copyLevels.description" approved="yes">
+        <source>When you copy a page, subpages can also be copied along if you set this option. The number you set here defines the number of levels under a page to include in a copy operation.</source>
+        <target state="final">अगर आप इस विकल्प को सेट करते हो तो जब आप पेज को कॉपी करेगे तब सब-पेज भी उसके साथ कॉपी किये जायेगे। यहाँ पर आप जो नंबर सेट करेगे वो कॉपी ऑपरेशन में सामिल पेज के स्तर के नंबर को व्याख्याहित करेगा।</target>
+      </trans-unit>
+      <trans-unit id="option_recursiveDelete.alttitle" resname="option_recursiveDelete.alttitle" approved="yes">
+        <source>Recursive Delete</source>
+        <target state="final">पुनरावर्ती डिलीट</target>
+      </trans-unit>
+      <trans-unit id="option_recursiveDelete.description" resname="option_recursiveDelete.description" approved="yes">
+        <source>You cannot delete a page with subpages unless this flag is set. Be careful - setting this option means that TYPO3 will allow a whole tree of pages to be deleted in one go!</source>
+        <target state="final">जब तक ये फ्लैग सेट है आप पेज को सब-पेज के साथ डिलीट नहीं कर सकते। सावधान रहे इस विकल्प को सेट करने का मतलब है कि टाइपो3 पेज की पूरी ट्री को एक ही बार में डिलीट करने की अनुमति देगा।</target>
+      </trans-unit>
+      <trans-unit id="option_recursiveDelete.details" resname="option_recursiveDelete.details" approved="yes">
+        <source>You should also consider the performance issues involved when deleting a large page tree. It might take a considerable amount of time to do that and if PHP times out before the operation is finished the results might be unpredictable.</source>
+        <target state="final">जब आप कोई बड़ी पेज ट्री को डिलीट कर रहे हो तब आपको शामिल परफॉरमेंस के मुद्दो विचार करना चाहिए। ऐसा करने के लिए वह काफी समय ले शकता है और ऑपरेशन समाप्त होने से पहले अगर PHP समय खत्म हो जाता है तो परिणाम उम्मीद के विरुद्ध मिलेगा।</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.alttitle" resname="option_edit_RTE.alttitle" approved="yes">
+        <source>Enable Rich Text Editor</source>
+        <target state="final">रिच टेक्स्ट एडिटर सक्षम करें</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.description" resname="option_edit_RTE.description" approved="yes">
+        <source>If set, the Rich Text Editor in TYPO3 will be enabled for you. Normally you wouldn't want to disable this option.</source>
+        <target state="final">अगर सेट है तो, टाइपो3 में रिच टेक्स्ट एडिटर आपके लिए सक्षम होगा। आम तौर पे आप इस विकल्प को निष्क्रिय करना नहीं चाहेंगे।</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.details" resname="option_edit_RTE.details" approved="yes">
+        <source>A Rich Text Editor (RTE) means that a text editing field has buttons for making selected text bold, italic etc. Whether a RTE is available also depends on factors like the browser you are using and which extensions are installed. Finally RTEs are applied to only a few record fields. The most well known example would be the Text field of a Content Element.</source>
+        <target state="final">रिच टेक्स्ट एडिटर(RTE) का अर्थ है कि चुने हुए टेक्स्ट को बोल्ड, इटैलिक, आदि बनाने के लिए टेक्स्ट एडिटिंग फील्ड में बटन होगे। चाहे RTE मौजूदा फैक्टर्स जैसे कि आपके द्वारा उपयोग किया जाने वाला ब्राउज़र और कौन से एक्सटेंशन इनस्टॉल किये गये है इस पर भी आधार रखता है। अंत में RTEs केवल कुछ ही रिकॉर्ड फ़ील्ड्स के लिए लागू कर रहे हैं। सब से अच्छी तरह से जाने जाने वाला उदहारण कंटेंट एलिमेंट का टेक्स्ट फील्ड होगा।</target>
+      </trans-unit>
+      <trans-unit id="_option_edit_RTE.image" resname="_option_edit_RTE.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/rte.png</source>
+        <target state="final">EXT:setup/Resources/Public/Images/cshimages/rte.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.alttitle" resname="option_edit_docModuleUpload.alttitle" approved="yes">
+        <source>Enable File Uploads in editing forms</source>
+        <target state="final">एडिटिंग फॉर्म्स में फाइल अपलोड सक्षम</target>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.description" resname="option_edit_docModuleUpload.description" approved="yes">
+        <source>This option will enable an "Upload" box for each field in TYPO3 records where you can attach a file or image. Most likely you don't want to disable this since it is usually just a nice thing to have.</source>
+        <target state="final">यह विकल्प टाइपो3 रिकॉर्ड में आप जहाँ इमेज और फाइल जोड़ सके ऐसी सभी फील्ड के लिए अपलोड बॉक्स सक्षम करता है। सबसे अधिक ये संभावना है की जब तक ये आपके लिए एक अच्छी बात है आप इसको निष्क्रिय करना नहीं चाहते।</target>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.details" resname="option_edit_docModuleUpload.details" approved="yes">
+        <source>If you disable the Upload box there is still the TYPO3 Element Browser left for attaching files and images.</source>
+        <target state="final">अगर आप अपलोड बॉक्स अक्षम करते हो वह अभी भी फाइल और इमेजेज जोड़ने के लिए टाइपो एलिमेंट ब्राउज़र मौजूद होगा।</target>
+      </trans-unit>
+      <trans-unit id="_option_edit_docModuleUpload.image" resname="_option_edit_docModuleUpload.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/setup12.png</source>
+        <target state="final">EXT:setup/Resources/Public/Images/cshimages/setup12.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas.alttitle" resname="option_resizeTextareas.alttitle" approved="yes">
+        <source>Make Textareas Resizable</source>
+        <target state="final">टेक्स्ट-एरिया आकार बदलने योग्य बनो</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas.description" resname="option_resizeTextareas.description" approved="yes">
+        <source>This option will make textareas resizable. You will see the resize mouse cursor if you move mouse to the outer border of textarea.</source>
+        <target state="final">यह विकल्प टेक्स्ट-एरिया को आकार बदलने योग्य बनाएगा। यदि आप टेक्स्ट-एरिया की बाहरी बॉर्डर पर माउस को ले जायेंगे तो आप री-साइज माउस कर्सर को देखेंगे।</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas_MaxHeight.alttitle" resname="option_resizeTextareas_MaxHeight.alttitle" approved="yes">
+        <source>Maximal Height of Textarea</source>
+        <target state="final">टेक्स्ट-एरिया की अधिकतम ऊंचाई</target>
+      </trans-unit>
+      <trans-unit id="option_flexibleTextareas_MaxHeight.alttitle" resname="option_flexibleTextareas_MaxHeight.alttitle" approved="yes">
+        <source>Maximal Height of flexible textareas</source>
+        <target state="final">फ्लेक्सिबल टेक्स्ट-एरिया की अधिकतम ऊंचाई</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas_MaxHeight.description" resname="option_resizeTextareas_MaxHeight.description" approved="yes">
+        <source>Define the maximal height of textarea (in Pixel).</source>
+        <target state="final">टेक्स्ट-एरिया की अधिकतम उचाई को व्याख्याहित करे(पिक्सेल में)।</target>
+      </trans-unit>
+      <trans-unit id="option_flexibleTextareas_MaxHeight.description" resname="option_flexibleTextareas_MaxHeight.description" approved="yes">
+        <source>Define the maximal height of flexible textareas (in Pixel).</source>
+        <target state="final">फ्लेक्सिबल टेक्स्ट-एरिया की अधिकतम उचाई को व्याख्याहित करे(पिक्सेल में)।</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas_Flexible.alttitle" resname="option_resizeTextareas_Flexible.alttitle" approved="yes">
+        <source>Make Textareas Flexible</source>
+        <target state="final">टेक्स्ट-एरिया को फ्लेक्सिबल बनाए</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas_Flexible.description" resname="option_resizeTextareas_Flexible.description" approved="yes">
+        <source>This option will make textareas flexible. The height will grow automatically while typing. Limit is the maximal height set (default 600).</source>
+        <target state="final">यह विकल्प टेक्स्ट-एरिया को फ्लेक्सिबल बनाएगा। टाइपिंग के दौरान ऊंचाई अपने आप बढेगी। सीमा अधिकतम सेट की गई उचाई है (डिफ़ॉल्ट 600)।</target>
+      </trans-unit>
+      <trans-unit id="option_showHiddenFilesAndFolders.description" resname="option_showHiddenFilesAndFolders.description" approved="yes">
+        <source>Defines whether you want to list all the hidden files and folders (beginning with a .) in the filelist and element browser.</source>
+        <target state="final">व्याख्याहित करता है के आप फ़ाइल सूचि और एलिमेंट ब्राउज़र में सभी छुपी हुई फाइल्स और फोल्डर(a के साथ शुरुआत की।) की सूचि चाहते है।</target>
+      </trans-unit>
+      <trans-unit id="option_showHiddenFilesAndFolders.details" resname="option_showHiddenFilesAndFolders.details" approved="yes">
+        <source>By default all hidden files are not displayed in filelists and element browsers and link pickers. This option enables to additionally show the hidden files.</source>
+        <target state="final">सामान्य रूप से सभी छुपी हुई फाइले फाइल-सूचि, एलिमेंट ब्राउज़र और लिंक पिकर में डिस्प्ले नहीं की गई है। अतिरिक्त रूप से इस फ़ाइल को दिखने के लिए यह विकल्प सक्षम बनाता है।</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_realName.alttitle" resname="option_beUser_realName.alttitle" approved="yes">
+        <source>Your real name</source>
+        <target state="final">आपका असली नाम</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_realName.description" resname="option_beUser_realName.description" approved="yes">
+        <source>Enter your real name here.</source>
+        <target state="final">यहाँ अपने असली नाम दर्ज करे.</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_email.alttitle" resname="option_beUser_email.alttitle" approved="yes">
+        <source>Your email address</source>
+        <target state="final">आपका ईमेल एड्रेस</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_email.description" resname="option_beUser_email.description" approved="yes">
+        <source>Make sure this is a valid email address for you. This is the contact address that the backend administrator will use if he needs to contact you. Also, the TYPO3 system might need to send you messages at various times and this will be the recipient address.</source>
+        <target state="final">यकीन है कि यह आप के लिए एक वैलिड ईमेल एड्रेस है.यह आपका संपर्क एड्रेस है की जो बैकेंड एडमिनिस्ट्रेशन उपयोग करेगा यदि उसे आपसे संपर्क करने की जरुरत होगी इसके अलावा,TYPO3 सिस्टम को विभिन्न समय पर आपको संदेश भेजने की आवश्यकता हो सकती है और यह प्राप्तकर्ता एड्रेस होगा.</target>
+      </trans-unit>
+      <trans-unit id="option_emailMeAtLogin.alttitle" resname="option_emailMeAtLogin.alttitle" approved="yes">
+        <source>Notify by login</source>
+        <target state="final">लॉग इन करके सूचित करें</target>
+      </trans-unit>
+      <trans-unit id="option_emailMeAtLogin.description" resname="option_emailMeAtLogin.description" approved="yes">
+        <source>If you set this option you will receive an email from TYPO3 each time you (or "someone") logs in using your username. You might like to receive such a "warning" as a security measure so you will know if someone else picks up your password and uses your account.</source>
+        <target state="final">यदि आप इस विकल्प सेट करते हैं तो जब आप ( और "कोई भी") आपके उपयोगकर्ता नाम का प्रयोग करके लोगिन करेगा तब TYPO3 से आपको हर बार एक ईमेल प्राप्त होगा आप एक सुरक्षा उपाय के रूप में इस तरह के "चेतावनी" प्राप्त करना पसंद कर सकते है तो आपको पता होगा यदि कोई और आपके पासवर्ड को चुनता है और आपके खाते का उपयोग करता है.</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.alttitle" resname="option_newPassword.alttitle" approved="yes">
+        <source>Change password</source>
+        <target state="final">पासवर्ड बदलें</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.description" resname="option_newPassword.description" approved="yes">
+        <source>Enter a new password for your backend account</source>
+        <target state="final">अपने बैकएंड खाते के लिए नया पासवर्ड दर्ज करें</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.details" resname="option_newPassword.details" approved="yes">
+        <source>The passwords are encrypted to an MD5 hash when you leave the field so no plain text password is sent over the wire.</source>
+        <target state="final">जब आप फील्ड छोड़ते है तब पासवर्ड MD5 हैश में एन्क्रिप्टेड किया होगा इसलिए इसलिए कोई भी प्लैन-टेक्स्ट पासवर्ड तार पर नहीं भेजा नहीं जायेगा .</target>
+      </trans-unit>
+      <trans-unit id="option_newPasswordAgain.alttitle" resname="option_newPasswordAgain.alttitle" approved="yes">
+        <source>Change password, confirm</source>
+        <target state="final">पासवर्ड बदलें, कन्फर्म करे</target>
+      </trans-unit>
+      <trans-unit id="option_newPasswordAgain.description" resname="option_newPasswordAgain.description" approved="yes">
+        <source>Confirm the new password by entering it again, exactly like above. If the two new passwords do not match, the password will not be changed.</source>
+        <target state="final">इसे फिर वास्तव में ऊपर की तरह से दर्ज करके नए पासवर्ड को कन्फर्म करे.अगर दो नए पासवर्ड मैच नहीं होते,तो पासवर्ड बदला नहीं जाएगा.</target>
+      </trans-unit>
+      <trans-unit id="reset.alttitle" resname="reset.alttitle" approved="yes">
+        <source>Reset all Values to default</source>
+        <target state="final">सभी वैल्यू को डिफ़ॉल्ट पर रीसेट करे</target>
+      </trans-unit>
+      <trans-unit id="reset.description" resname="reset.description" approved="yes">
+        <source>If you select this option all settings in this module will be reset to the default settings of the system.</source>
+        <target state="final">यदि आप इस विकल्प को सिलेक्ट करते हैं तो इस मॉड्यूल में सभी सेटिंग्स सिस्टम के डिफॉल्ट सेटिंग पर रीसेट हो जाएंगे.</target>
+      </trans-unit>
+      <trans-unit id="reset.details" resname="reset.details" approved="yes">
+        <source>This does not apply to user name, email and password settings of course.</source>
+        <target state="final">बेशक यह उपयोगकर्ता नाम,ईमेल,और पासवर्ड सेटिंग्स को लागु नहीं होगा .</target>
+      </trans-unit>
+      <trans-unit id="simuser.alttitle" resname="simuser.alttitle" approved="yes">
+        <source>Simulate backend user</source>
+        <target state="final">बैकेंड उपयोगकर्ता सिमुलेट करे</target>
+      </trans-unit>
+      <trans-unit id="simuser.description" resname="simuser.description" approved="yes">
+        <source>This option allows "admin"-users to change settings for another backend user in the system.</source>
+        <target state="final">यह विकल्प सिस्टम में "एडमिन"-यूजर को दूसरे बैकेंड यूजर के सेटिंग्स को बदलने की अनुमति देता है.</target>
+      </trans-unit>
+      <trans-unit id="option_enableInstallTool.alttitle" resname="option_enableInstallTool.alttitle" approved="yes">
+        <source>Admin control for re-enabling Install Tool access</source>
+        <target state="final">इंस्टॉल टूल एक्सेस को पुनः सक्षम करने के लिए व्यवस्थापक नियंत्रण</target>
+      </trans-unit>
+      <trans-unit id="option_enableInstallTool.description" resname="option_enableInstallTool.description" approved="yes">
+        <source>By clicking this button, a file typo3conf/ENABLE_INSTALL_TOOL is created (or removed if it already exists). It unlocks the access to the Install Tool (password is still needed!) and will be removed automatically after 1 hour.</source>
+        <target state="final">इस बटन को क्लिक करके,एक फ़ाइल typo3conf/ENABLE_INSTALL_TOOL बनाई गई है (या हटाई गई है यदि यह पहले से ही मौजूद है).यह इनस्टॉल टूल के एक्सेस को उनलॉक्स करता है (पासवर्ड की अब भी जरूरत है) और 1 घंटे के बाद स्वचालित रूप से हटा दिया जाएगा.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
