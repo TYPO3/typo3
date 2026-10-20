@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1440157535" source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang.xlf" date="2015-08-21T11:45:35Z" product-name="filelist" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="search" resname="search">
+        <source>Search</source>
+        <target>crwdns73442:0crwdne73442:0</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.no_results" resname="flashmessage.no_results">
+        <source>No results found</source>
+        <target>crwdns73444:0crwdne73444:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
