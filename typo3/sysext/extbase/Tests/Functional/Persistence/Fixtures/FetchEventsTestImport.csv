@@ -1,0 +1,9 @@
+"pages"
+,"uid","pid","sorting","title","deleted","perms_everybody"
+,1,0,128,"Root",0,15
+tx_blogexample_domain_model_blog
+,uid,pid,title,deleted,hidden
+,1,0,Blog1,0,0
+tx_blogexample_domain_model_post
+,uid,pid,blog,title,deleted,hidden
+,1,0,1,Post1,0,0

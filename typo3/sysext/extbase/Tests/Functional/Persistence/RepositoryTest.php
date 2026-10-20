@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -454,5 +455,61 @@ final class RepositoryTest extends FunctionalTestCase
         $persistenceManager->persistAll();
 
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/TestResultRemoveObjectDoesNotWriteHistoryEntry.csv');
+    }
+
+    /**
+     * `Query::statement()` with a raw SQL string bypasses the query parser: no storage page, language or enable-field
+     * constraint is added, so the hidden post 20 is selected. The rows are still hydrated to managed objects, the one
+     * for uid 1 being the instance the identity map already holds.
+     */
+    #[Test]
+    public function rawSqlStatementHydratesManagedObjectsWithoutConstraints(): void
+    {
+        // Given: post 1 is already loaded and a raw SQL statement selects the visible post 1 and the hidden post 20
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RepositoryTestImport.csv');
+        $postRepository = $this->get(PostRepository::class);
+        $loaded = $postRepository->findByUid(1);
+        $query = $postRepository->createQuery();
+        self::assertInstanceOf(Query::class, $query);
+        $query->statement('SELECT * FROM tx_blogexample_domain_model_post WHERE uid IN (?, ?) ORDER BY uid', [1, 20]);
+
+        // When: the query is executed
+        $posts = $query->execute()->toArray();
+
+        // Then: both rows are returned, the hidden one included, and post 1 is the instance loaded before
+        self::assertSame(['Post1', 'post20 hidden'], array_map(static fn(Post $post): string => $post->getTitle(), $posts));
+        self::assertSame($loaded, $posts[0]);
+    }
+
+    /**
+     * `Query::statement()` with a `QueryBuilder` adds no constraint of its own, and there is no counterpart in core:
+     * the restrictions of the `QueryBuilder` alone decide which rows are returned. With its default restrictions the
+     * hidden post 20 and the deleted post 30 are left out, although the condition selects them, and the rows are
+     * hydrated to the same posts that the `QueryBuilder` returns when it is executed directly.
+     */
+    #[Test]
+    public function queryBuilderStatementAddsNoConstraintsOfItsOwn(): void
+    {
+        // Given: a QueryBuilder with its default restrictions selects the visible post 1, the hidden post 20 and the
+        // deleted post 30
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RepositoryTestImport.csv');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_blogexample_domain_model_post');
+        $queryBuilder
+            ->select('*')
+            ->from('tx_blogexample_domain_model_post')
+            ->where($queryBuilder->expr()->in('uid', [1, 20, 30]))
+            ->orderBy('uid');
+        $query = $this->get(PostRepository::class)->createQuery();
+        self::assertInstanceOf(Query::class, $query);
+        $query->statement($queryBuilder);
+
+        // When: the QueryBuilder is executed directly and passed to the query as its statement
+        $titlesOfQueryBuilder = array_column($queryBuilder->executeQuery()->fetchAllAssociative(), 'title');
+        $titlesOfQuery = array_map(static fn(Post $post): string => $post->getTitle(), $query->execute()->toArray());
+
+        // Then: both return the same titles, the hidden and the deleted post are left out by the restrictions of the
+        // QueryBuilder
+        self::assertSame($titlesOfQueryBuilder, $titlesOfQuery);
+        self::assertSame(['Post1'], $titlesOfQuery);
     }
 }
