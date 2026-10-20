@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="lt">
+  <file id="f1">
+    <unit id="hidden">
+      <segment state="final">
+        <source>Visibility of content element</source>
+        <target>Turinio elemento matomumas</target>
+      </segment>
+    </unit>
+    <unit id="type">
+      <segment state="final">
+        <source>Type</source>
+        <target>Tipas</target>
+      </segment>
+    </unit>
+    <unit id="column">
+      <segment state="final">
+        <source>Column</source>
+        <target>Stulpelis</target>
+      </segment>
+    </unit>
+    <unit id="filelink_size">
+      <segment state="final">
+        <source>Display file size information</source>
+        <target>Rodyti failo dydžio informaciją</target>
+      </segment>
+    </unit>
+    <unit id="header">
+      <segment state="final">
+        <source>Header</source>
+        <target>Antraštė</target>
+      </segment>
+    </unit>
+    <unit id="header_type">
+      <segment state="final">
+        <source>Type</source>
+        <target>Tipas</target>
+      </segment>
+    </unit>
+    <unit id="header_layout">
+      <segment state="final">
+        <source>Layout</source>
+        <target>Išdėstymas</target>
+      </segment>
+    </unit>
+    <unit id="header_position">
+      <segment state="final">
+        <source>Alignment</source>
+        <target>Lygiavimas</target>
+      </segment>
+    </unit>
+    <unit id="header_link">
+      <segment state="final">
+        <source>Link</source>
+        <target>Nuoroda</target>
+      </segment>
+    </unit>
+    <unit id="subheader">
+      <segment state="final">
+        <source>Subheader</source>
+        <target>Paantraštė</target>
+      </segment>
+    </unit>
+    <unit id="date">
+      <segment state="final">
+        <source>Date</source>
+        <target>Data</target>
+      </segment>
+    </unit>
+    <unit id="bodytext">
+      <segment state="final">
+        <source>Text</source>
+        <target>Tekstas</target>
+      </segment>
+    </unit>
+    <unit id="imageorientation">
+      <segment state="final">
+        <source>Position and Alignment</source>
+        <target>Pozicija ir lygiavimas</target>
+      </segment>
+    </unit>
+    <unit id="imagecols">
+      <segment state="final">
+        <source>Number of Columns</source>
+        <target>Stulpelių skaičius</target>
+      </segment>
+    </unit>
+    <unit id="imagewidth">
+      <segment state="final">
+        <source>Width of each element (px)</source>
+        <target>Kiekvieno elemento plotis (px)</target>
+      </segment>
+    </unit>
+    <unit id="imageheight">
+      <segment state="final">
+        <source>Height of each element (px)</source>
+        <target>Kiekvieno elemento aukštis (px)</target>
+      </segment>
+    </unit>
+    <unit id="imageborder">
+      <segment state="final">
+        <source>Border around each element</source>
+        <target>Rėmelis aplink kiekvieną elementą</target>
+      </segment>
+    </unit>
+    <unit id="image_zoom">
+      <segment state="final">
+        <source>Enlarge on Click</source>
+        <target>Padidinti paspaudus</target>
+      </segment>
+    </unit>
+    <unit id="section_index">
+      <segment state="final">
+        <source>Show in Section Menus</source>
+        <target>Rodyti skyrių meniu</target>
+      </segment>
+    </unit>
+    <unit id="link_to_top">
+      <segment state="final">
+        <source>Append with Link to Top of Page</source>
+        <target>Pridėti nuorodą į puslapio viršų</target>
+      </segment>
+    </unit>
+    <unit id="layout">
+      <segment state="final">
+        <source>Layout</source>
+        <target>Išdėstymas</target>
+      </segment>
+    </unit>
+    <unit id="frame_class">
+      <segment state="final">
+        <source>Frame</source>
+        <target>Rėmelis</target>
+      </segment>
+    </unit>
+    <unit id="space_before_class">
+      <segment state="final">
+        <source>Space Before</source>
+        <target>Tarpas prieš</target>
+      </segment>
+    </unit>
+    <unit id="space_after_class">
+      <segment state="final">
+        <source>Space After</source>
+        <target>Tarpas po</target>
+      </segment>
+    </unit>
+    <unit id="uploads.media">
+      <segment state="final">
+        <source>Single files</source>
+        <target>Atskiri failai</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
