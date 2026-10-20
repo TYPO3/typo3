@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814893" source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="mod_linkvalidator" resname="mod_linkvalidator" approved="yes">
+        <source>Linkvalidator</source>
+        <target state="final">लिंक-वेलिडेटर</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.name" resname="tasks.validate.name" approved="yes">
+        <source>Linkvalidator</source>
+        <target state="final">लिंक-वेलिडेटर</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.description" resname="tasks.validate.description" approved="yes">
+        <source>Search for broken links and store the result into the temporary table tx_linkvalidator_link in order to ease up the backend module.</source>
+        <target state="final">टूटी हुई लिंक के लिए सर्च करे और परिणाम को अस्थायी टेबल tx_linkvalidator_link में बैक-एन्ड मॉड्यूल को सुधरने के हेतु से इकठा करे।</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.page" resname="tasks.validate.page" approved="yes">
+        <source>Start page (uid)</source>
+        <target state="final">स्टार्ट पेज (uid)</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.depth" resname="tasks.validate.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">गहराई</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.conf" resname="tasks.validate.conf" approved="yes">
+        <source>Overwrite TSconfig</source>
+        <target state="final">ओवरराईट TSconfig</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.email" resname="tasks.validate.email" approved="yes">
+        <source>Send email report to</source>
+        <target state="final">को ईमेल रिपोर्ट भेजें</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.emailOnBrokenLinkOnly" resname="tasks.validate.emailOnBrokenLinkOnly" approved="yes">
+        <source>Send email on new broken links only</source>
+        <target state="final">केवल नई टूटी लिंक्स पर ईमेल भेजें</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.emailTemplateFile" resname="tasks.validate.emailTemplateFile" approved="yes">
+        <source>Email template file</source>
+        <target state="final">ईमेल टेम्पलेट फाइल</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidEmail" resname="tasks.validate.invalidEmail" approved="yes">
+        <source>Invalid email format!</source>
+        <target state="final">अमान्य ई-मेल स्वरूप!</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidPage" resname="tasks.validate.invalidPage" approved="yes">
+        <source>Invalid page uid, please enter a valid page uid!</source>
+        <target state="final">अमान्य पेज uid, कृपया मान्य पेज uid दर्ज करें!</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidDepth" resname="tasks.validate.invalidDepth" approved="yes">
+        <source>There is no depth set, please set it to one of the offered values!</source>
+        <target state="final">वहां कोई गहरी सेट नहीं है, कृपया यहा दी गई वैल्यू में से एक सेट करे!</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.noSubject" resname="tasks.error.noSubject" approved="yes">
+        <source>No subject for the notification email</source>
+        <target state="final">सूचना ईमेल के लिए कोई विषय नहीं।</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidToEmail" resname="tasks.error.invalidToEmail" approved="yes">
+        <source>Invalid format of one or more of the recipient email addresses!</source>
+        <target state="final">एक या अधिक प्राप्तकर्ता के ईमेल एड्रेस का अमान्य स्वरूप!</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidFromEmail" resname="tasks.error.invalidFromEmail" approved="yes">
+        <source>Invalid format of the email address in the from header</source>
+        <target state="final">फॉर्म हैडर में ईमेल एड्रेस का अमान्य स्वरूप</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidTSconfig" resname="tasks.error.invalidTSconfig" approved="yes">
+        <source>Invalid TSconfig in the task configuration!</source>
+        <target state="final">कार्य कॉन्फ़िगरेशन में अमान्य TSconfig!</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidEmailTemplateFile" resname="tasks.error.invalidEmailTemplateFile" approved="yes">
+        <source>The email template file is not existing!</source>
+        <target state="final">ईमेल टेम्पलेट फ़ाइल मौजूद नहीं है!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
