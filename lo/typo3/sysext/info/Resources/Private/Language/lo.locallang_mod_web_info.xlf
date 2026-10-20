@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814880" source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Page information</source>
+        <target state="final">ຂໍ້ມູນໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Page related information, eg. hit statistics, change log, record counts</source>
+        <target state="final">ຂໍ້ມູນທີ່ກ່ຽວຂ້ອງກັບໜ້າເວັບ, ເຊັ່ນ: ສະຖິຕິການເຂົ້າເບິ່ງ, ບັນທຶກການປ່ຽນແປງ, ຈຳນວນຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>The Web&gt;Info module is focused on statistic information about pages. This includes statistics of pagehits and a changelog allowing browsing of page history changes. An overview of the number of records on each page as well as page settings presented in a classic tree structure is provided.</source>
+        <target state="final">ໂມດູນ Web &gt; Info ແມ່ນເນັ້ນໃສ່ຂໍ້ມູນສະຖິຕິກ່ຽວກັບໜ້າເວັບຕ່າງໆ. ເຊິ່ງລວມມີສະຖິຕິການເຂົ້າເບິ່ງໜ້າເວັບ ແລະ ບັນທຶກການປ່ຽນແປງທີ່ຊ່ວຍໃຫ້ສາມາດເບິ່ງປະຫວັດການປ່ຽນແປງຂອງໜ້າເວັບໄດ້. ນອກຈາກນັ້ນ ຍັງມີພາບລວມຂອງຈຳນວນຂໍ້ມູນໃນແຕ່ລະໜ້າ ພ້ອມທັງການຕັ້ງຄ່າໜ້າເວັບທີ່ສະແດງໃນຮູບແບບໂຄງສ້າງແຜນພູມແບບດັ້ງເດີມ.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Info</source>
+        <target state="final">ຂໍ້ມູນ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
