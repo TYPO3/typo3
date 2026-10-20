@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="login_user_info" approved="yes">
+        <source>You are now logged in as '%s'</source>
+        <target state="final">Du er nu logget ind som '%s'</target>
+      </trans-unit>
+      <trans-unit id="welcome_header" approved="yes">
+        <source>User login</source>
+        <target state="final">Brugerlogin</target>
+      </trans-unit>
+      <trans-unit id="welcome_message" approved="yes">
+        <source>Enter your username and password here in order to log in on the website</source>
+        <target state="final">Indtast til brugernavn og adgangskode her, for at logge ind på websitet</target>
+      </trans-unit>
+      <trans-unit id="logout_header" approved="yes">
+        <source>You have logged out.</source>
+        <target state="final">Du har nu logget ud.</target>
+      </trans-unit>
+      <trans-unit id="logout_message" approved="yes">
+        <source>You just logged out from your user session on this website. You can login again or as another user by the form below.</source>
+        <target state="final">Du har netop logget ud af din brugersession på dette website. Du kan logge på igen som en anden bruger via formularen herunder.</target>
+      </trans-unit>
+      <trans-unit id="error_header" approved="yes">
+        <source>Login failure</source>
+        <target state="final">Fejl i login</target>
+      </trans-unit>
+      <trans-unit id="error_message" xml:space="preserve" approved="yes">
+        <source>An error occurred during login. Most likely you didn't enter the username or password correctly.
+Be certain that you enter them precisely as they are, including upper/lower case.
+Another possibility is that cookies might be disabled in your web browser.</source>
+      <target state="final">Et fejl opstod under log ind. Sandsynligvis indtastede du ikke dit brugernavn eller adgangskode korrekt. 
+Du bør sikre dig at du indtaster dem præcist som de er, også med store og små bogstaver.
+En anden mulighed kan være at cookies er deaktiveret i din browser.</target></trans-unit>
+      <trans-unit id="success_header" approved="yes">
+        <source>Login successful</source>
+        <target state="final">Du er logget ind</target>
+      </trans-unit>
+      <trans-unit id="success_message" approved="yes">
+        <source>You are now logged in as '###USER###'</source>
+        <target state="final">Du er nu logget in som '###USER###'</target>
+      </trans-unit>
+      <trans-unit id="status_header" approved="yes">
+        <source>Current status</source>
+        <target state="final">Nuværende status</target>
+      </trans-unit>
+      <trans-unit id="status_message" approved="yes">
+        <source>This is your current status</source>
+        <target state="final">Dette er din nuværende status</target>
+      </trans-unit>
+      <trans-unit id="username" approved="yes">
+        <source>Username</source>
+        <target state="final">Brugernavn</target>
+      </trans-unit>
+      <trans-unit id="password" approved="yes">
+        <source>Password</source>
+        <target state="final">Adgangskode</target>
+      </trans-unit>
+      <trans-unit id="login" approved="yes">
+        <source>Login</source>
+        <target state="final">Log ind</target>
+      </trans-unit>
+      <trans-unit id="permalogin" approved="yes">
+        <source>Stay logged in</source>
+        <target state="final">Forbliv logget ind</target>
+      </trans-unit>
+      <trans-unit id="logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">Log ud</target>
+      </trans-unit>
+      <trans-unit id="send_password" approved="yes">
+        <source>Send password</source>
+        <target state="final">Send adgangskode</target>
+      </trans-unit>
+      <trans-unit id="reset_password" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">Nulstil adgangskode</target>
+      </trans-unit>
+      <trans-unit id="change_password_header" approved="yes">
+        <source>Change your password</source>
+        <target state="final">Skift din adgangskode</target>
+      </trans-unit>
+      <trans-unit id="change_password_description" approved="yes">
+        <source>Please enter your new password twice.</source>
+        <target state="final">Indtast venligst din nye adgangskode to gange.</target>
+      </trans-unit>
+      <trans-unit id="password_requirement" approved="yes">
+        <source>Ensure that your new password matches the following requirements:</source>
+        <target state="final">Sørg for, at din nye adgangskode matcher følgende krav:</target>
+      </trans-unit>
+      <trans-unit id="change_password_nolinkprefix_message" approved="yes">
+        <source>Error: there is no prefix for the link. Please set one of the following in your typoscript: plugin.tx_felogin_pi1.feloginBaseURL = http://yourdomain/, config.baseURL = http://yourdomain/, config.absRefPrefix = /</source>
+        <target state="final">Fejl: Der er ingen præfiks for linket. Sæt venligst en af følgende i dit typoscript: plugin.x_felogin_pi1.feloginBaseURL = http://yourdomain/, config.baseURL = http://yourdomain/, config.absRefPrefix = /</target>
+      </trans-unit>
+      <trans-unit id="change_password_notvalid_message" approved="yes">
+        <source>The link you clicked is not valid. Please repeat the forgot password procedure.</source>
+        <target state="final">Linket du klikkede på er ikke gyldigt. Gentag venligst glemt adgangskode proceduren.</target>
+      </trans-unit>
+      <trans-unit id="change_password_notequal_message" approved="yes">
+        <source>The passwords are not equal, please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">Adgangskoder er ikke ens. Indtast venligst din adgangskode to gange. Adgangskoder skal være på minimum %s karakterer.</target>
+      </trans-unit>
+      <trans-unit id="change_password_tooshort_message" approved="yes">
+        <source>The password length is too short. Please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">Adgangskoden er for kort. Indtast venligst din adgangskode to gange. Adgangskoder skal være på minimum %s karakterer.</target>
+      </trans-unit>
+      <trans-unit id="change_password_done_message" approved="yes">
+        <source>Your password has been saved. You can now login with your new password.</source>
+        <target state="final">Din adgangskode er gemt. Du kan nu logge på med din nye adgangskode.</target>
+      </trans-unit>
+      <trans-unit id="change_password" approved="yes">
+        <source>Change your password</source>
+        <target state="final">Skift din adgangskode</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label1" approved="yes">
+        <source>Enter new password</source>
+        <target state="final">Indtast ny adgangskode</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label2" approved="yes">
+        <source>Repeat new password</source>
+        <target state="final">Gentag ny adgangskode</target>
+      </trans-unit>
+      <trans-unit id="your_email" approved="yes">
+        <source>Your email</source>
+        <target state="final">Din e-mail</target>
+      </trans-unit>
+      <trans-unit id="forgot_header" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">Har du glemt din adgangskode?</target>
+      </trans-unit>
+      <trans-unit id="forgot_email_password" xml:space="preserve" approved="yes">
+        <source>Your password
+Hi %s
+
+Your username is "%s"
+Your password is "%s"</source>
+      <target state="final">Din adgangskode
+Hej %s
+
+Dit brugernavn er "%s"
+Din adgangskode er "%s"</target></trans-unit>
+      <trans-unit id="forgot_email_nopassword" xml:space="preserve" approved="yes">
+        <source>Your password
+Hi %s
+
+We couldn't find a username for this email address and so cannot send the password to you. Probably you misspelled the email address (upper/lower case makes a difference) or maybe you even didn't register yet?</source>
+      <target state="final">Din adgangskode
+Hej %s
+
+Vi kunne ikke finde et brugernavn til denne e-mailadresse og vi kan derfor ikke sende adgangskoden til dig. Du har formentlig skrevet den forkerte e-mailadresse (store/små bogstaver gør en forskel) eller måske har du ikke registreret dig endnu?</target></trans-unit>
+      <trans-unit id="forgot_validate_reset_password" xml:space="preserve" approved="yes">
+        <source>Your new password
+Dear %s,
+
+This email was sent in response to your request to reset your password. Please click on the link below.
+%s
+
+For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.</source>
+      <target state="final">Din nye adgangskode
+Kære %s
+
+Denne e-mail blev sendt som følge af din forespørgsel om at nulstille din adgangskode. Klik venligst på linket herunder.
+%s
+
+Af sikkerhedsgrunde er linket kun aktivt indtil %s. Hvis du ikke besøger linket inden, vil du være nødsaget til at gentage proceduren for nulstilling igen.</target></trans-unit>
+      <trans-unit id="forgot_message" approved="yes">
+        <source>Please enter the email address by which you registered your user account. Then press "Send password" and your password will immediately be emailed to you. Make sure to spell your email address correctly.</source>
+        <target state="final">Indtast venligst den e-mailadresse som du anvendte da du registrerede din brugerkonto. Klik herefter på "Send adgangskode" og din adgangskode vil øjeblikkeligt blive sendt til dig. Du bør sikre dig at du staver din e-mailadresse korrekt.</target>
+      </trans-unit>
+      <trans-unit id="forgot_message_emailSent" approved="yes">
+        <source>Your password has now been sent to the email address %s</source>
+        <target state="final">Din adgangskode er nu blevet sendt til e-mailadressen %s</target>
+      </trans-unit>
+      <trans-unit id="forgot_reset_message" approved="yes">
+        <source>Please enter your username or email address. Instructions for resetting the password will be immediately emailed to you.</source>
+        <target state="final">Indtast venligst enten dit brugernavn eller din e-mailadresse. Instruktioner om hvordan du nulstiller din adgangskode vil øjeblikkeligt blive sendt til dig.</target>
+      </trans-unit>
+      <trans-unit id="forgot_reset_message_emailSent" approved="yes">
+        <source>An email has been sent to the address stored in your account and contains a link to reset your password. If you do not receive an email, your account or email address was not found.</source>
+        <target state="final">En e-mail er sendt til adressen på din konto og den indeholder et link til nulstilling af din adgangskode. Hvis du ikke modtager en e-mail, blev din konto eller e-mailadresse ikke fundet.</target>
+      </trans-unit>
+      <trans-unit id="forgot_header_backToLogin" approved="yes">
+        <source>Return to login form</source>
+        <target state="final">Tilbage til loginformular</target>
+      </trans-unit>
+      <trans-unit id="enter_your_data" approved="yes">
+        <source>Username or email address</source>
+        <target state="final">Brugernavn eller e-mailadresse</target>
+      </trans-unit>
+      <trans-unit id="password_recovery_mail_header" approved="yes">
+        <source>Your new password</source>
+        <target state="final">Din nye adgangskode</target>
+      </trans-unit>
+      <trans-unit id="password_recovery_link" approved="yes">
+        <source>Password recovery link</source>
+        <target state="final">Link til gendannelse af adgangskode</target>
+      </trans-unit>
+      <trans-unit id="password_recovery_link_expired" approved="yes">
+        <source>Your password recovery link is expired.</source>
+        <target state="final">Dit link til gendannelse af adgangskode er udløbet.</target>
+      </trans-unit>
+      <trans-unit id="empty_password_and_password_repeat" approved="yes">
+        <source>New password and new password repeat cannot be empty</source>
+        <target state="final">Ny adgangskode og gentaget adgangskode kan ikke være tomme</target>
+      </trans-unit>
+      <trans-unit id="password_must_match_repeated" approved="yes">
+        <source>New Password must match repeated password.</source>
+        <target state="final">Ny adgangskode skal matche gentaget adgangskode.</target>
+      </trans-unit>
+      <trans-unit id="forgot_validate_reset_password_html" xml:space="preserve" approved="yes">
+        <source>&lt;p&gt;Dear %s,&lt;/p&gt;
+&lt;p&gt;This email was sent in response to your request to reset your password. Please click on the link below.&lt;/p&gt;
+&lt;p&gt;%s&lt;/p&gt;
+&lt;p&gt;For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.&lt;/p&gt;</source>
+      <target state="final">&lt;p&gt;Kære %s&lt;/p&gt;
+&lt;p&gt;Denne e-mail blev sendt som følge af din forespørgsel om at nulstille din adgangskode. Klik venligst på linket herunder.&lt;/p&gt;
+&lt;p&gt;%s&lt;/p&gt;
+&lt;p&gt;Af sikkerhedsgrunde er linket kun aktivt indtil %s. Hvis du ikke besøger linket inden, vil du være nødsaget til at gentage proceduren for nulstilling igen&lt;/p&gt;</target></trans-unit>
+      <trans-unit id="forgot_validate_reset_password_plaintext" xml:space="preserve" approved="yes">
+        <source>Dear %s,
+
+This email was sent in response to your request to reset your password. Please click on the link below.
+%s
+
+For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.</source>
+      <target state="final">Kære %s
+
+Denne e-mail blev sendt som følge af din forespørgsel om at nulstille din adgangskode. Klik venligst på linket herunder.
+%s
+
+Af sikkerhedsgrunde er linket kun aktivt indtil %s. Hvis du ikke besøger linket inden, vil du være nødsaget til at gentage proceduren for nulstilling igen.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
