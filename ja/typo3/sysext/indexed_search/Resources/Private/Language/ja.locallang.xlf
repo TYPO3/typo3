@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814838" source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang.xlf" date="2011-12-18T10:19:20Z" product-name="indexed_search" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="form.freeIndexUid" resname="form.freeIndexUid" approved="yes">
+        <source>Category</source>
+        <target state="final">カテゴリ</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.0" resname="mediaTypes.0" approved="yes">
+        <source>Internal pages</source>
+        <target state="final">内部ページ</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.-1" resname="mediaTypes.-1" approved="yes">
+        <source>All media</source>
+        <target state="final">すべてのメディア</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.-2" resname="mediaTypes.-2" approved="yes">
+        <source>All External</source>
+        <target state="final">すべての外部</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.0" resname="indexingConfigurations.0" approved="yes">
+        <source>Pages</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_freq" resname="sortOrders.rank_freq" approved="yes">
+        <source>Frequency</source>
+        <target state="final">頻度</target>
+      </trans-unit>
+      <trans-unit id="result.page" resname="result.page" approved="yes">
+        <source>page</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="result.pages" resname="result.pages" approved="yes">
+        <source>pages</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="displayResults.page" resname="displayResults.page" approved="yes">
+        <source>Page</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="administration.menu.pages" resname="administration.menu.pages" approved="yes">
+        <source>List: Pages</source>
+        <target state="final">リスト：ページ</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.count" resname="administration.statistics.count" approved="yes">
+        <source>Count</source>
+        <target state="final">カウント</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.last24hours" resname="administration.statistics.mostSearched.last24hours" approved="yes">
+        <source>Last 24 hours</source>
+        <target state="final">過去24時間</target>
+      </trans-unit>
+      <trans-unit id="field.fileName" resname="field.fileName" approved="yes">
+        <source>Filename</source>
+        <target state="final">ファイル名</target>
+      </trans-unit>
+      <trans-unit id="field.count" resname="field.count" approved="yes">
+        <source>Count</source>
+        <target state="final">カウント</target>
+      </trans-unit>
+      <trans-unit id="field.id" resname="field.id" approved="yes">
+        <source>Page Id</source>
+        <target state="final">ページID</target>
+      </trans-unit>
+      <trans-unit id="field.frequency" resname="field.frequency" approved="yes">
+        <source>Frequency</source>
+        <target state="final">頻度</target>
+      </trans-unit>
+      <trans-unit id="administration.keywords" resname="administration.keywords" approved="yes">
+        <source>Page keywords</source>
+        <target state="final">ページのキーワード</target>
+      </trans-unit>
+      <trans-unit id="administration.keywords.current" resname="administration.keywords.current" approved="yes">
+        <source>Current page keywords</source>
+        <target state="final">現在のページのキーワード</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
