@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang.xlf" date="2011-12-18T10:19:20Z" product-name="indexed_search" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="localizedOperandAnd">
+        <source>AND</source>
+        <target>crwdns58982:0crwdne58982:0</target>
+      </trans-unit>
+      <trans-unit id="localizedOperandOr">
+        <source>OR</source>
+        <target>crwdns58984:0crwdne58984:0</target>
+      </trans-unit>
+      <trans-unit id="localizedOperandNot">
+        <source>NOT</source>
+        <target>crwdns58986:0crwdne58986:0</target>
+      </trans-unit>
+      <trans-unit id="form.legend">
+        <source>Search form</source>
+        <target>crwdns58992:0crwdne58992:0</target>
+      </trans-unit>
+      <trans-unit id="form.searchFor">
+        <source>Search for</source>
+        <target>crwdns58994:0crwdne58994:0</target>
+      </trans-unit>
+      <trans-unit id="form.extResume">
+        <source>Extended resume</source>
+        <target>crwdns58996:0crwdne58996:0</target>
+      </trans-unit>
+      <trans-unit id="form.atATime">
+        <source>at a time</source>
+        <target>crwdns58998:0crwdne58998:0</target>
+      </trans-unit>
+      <trans-unit id="form.orderBy">
+        <source>Order by</source>
+        <target>crwdns59000:0crwdne59000:0</target>
+      </trans-unit>
+      <trans-unit id="form.fromSection">
+        <source>From section</source>
+        <target>crwdns59002:0crwdne59002:0</target>
+      </trans-unit>
+      <trans-unit id="form.freeIndexUid">
+        <source>Category</source>
+        <target>crwdns59004:0crwdne59004:0</target>
+      </trans-unit>
+      <trans-unit id="form.searchIn">
+        <source>Search in</source>
+        <target>crwdns59006:0crwdne59006:0</target>
+      </trans-unit>
+      <trans-unit id="form.match">
+        <source>Match</source>
+        <target>crwdns59008:0crwdne59008:0</target>
+      </trans-unit>
+      <trans-unit id="form.style">
+        <source>Style</source>
+        <target>crwdns59010:0crwdne59010:0</target>
+      </trans-unit>
+      <trans-unit id="form.submit">
+        <source>Search</source>
+        <target>crwdns59012:0crwdne59012:0</target>
+      </trans-unit>
+      <trans-unit id="form.addToSearch">
+        <source>Add to current search words</source>
+        <target>crwdns59014:0crwdne59014:0</target>
+      </trans-unit>
+      <trans-unit id="form.linkToRegularSearch">
+        <source>Regular search</source>
+        <target>crwdns59016:0crwdne59016:0</target>
+      </trans-unit>
+      <trans-unit id="form.linkToAdvancedSearch">
+        <source>Advanced search</source>
+        <target>crwdns59018:0crwdne59018:0</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.0">
+        <source>Distinct word</source>
+        <target>crwdns59020:0crwdne59020:0</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.1">
+        <source>Part of word</source>
+        <target>crwdns59022:0crwdne59022:0</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.2">
+        <source>First part of word</source>
+        <target>crwdns59024:0crwdne59024:0</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.3">
+        <source>Last part of word</source>
+        <target>crwdns59026:0crwdne59026:0</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.20">
+        <source>Sentence</source>
+        <target>crwdns59030:0crwdne59030:0</target>
+      </trans-unit>
+      <trans-unit id="defaultOperands.0">
+        <source>All words (AND)</source>
+        <target>crwdns59032:0crwdne59032:0</target>
+      </trans-unit>
+      <trans-unit id="defaultOperands.1">
+        <source>Any words (OR)</source>
+        <target>crwdns59034:0crwdne59034:0</target>
+      </trans-unit>
+      <trans-unit id="sections.0">
+        <source>Whole site</source>
+        <target>crwdns59040:0crwdne59040:0</target>
+      </trans-unit>
+      <trans-unit id="sections.-1">
+        <source>Only this page</source>
+        <target>crwdns59042:0crwdne59042:0</target>
+      </trans-unit>
+      <trans-unit id="sections.-2">
+        <source>Top + level 1</source>
+        <target>crwdns59044:0crwdne59044:0</target>
+      </trans-unit>
+      <trans-unit id="sections.-3">
+        <source>Level 2 and out</source>
+        <target>crwdns59046:0crwdne59046:0</target>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel1">
+        <source>Level 1</source>
+        <target>crwdns59048:0crwdne59048:0</target>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel1All">
+        <source>All pages on level 1</source>
+        <target>crwdns59050:0crwdne59050:0</target>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel2">
+        <source>- Level 2</source>
+        <target>crwdns59052:0crwdne59052:0</target>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel2All">
+        <source>- All pages on level 2</source>
+        <target>crwdns59054:0crwdne59054:0</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.0">
+        <source>Internal pages</source>
+        <target>crwdns59056:0crwdne59056:0</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.-1">
+        <source>All media</source>
+        <target>crwdns59058:0crwdne59058:0</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.-2">
+        <source>All External</source>
+        <target>crwdns59060:0crwdne59060:0</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.-1">
+        <source>All, mixed</source>
+        <target>crwdns59062:0crwdne59062:0</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.-2">
+        <source>All, categorized</source>
+        <target>crwdns59064:0crwdne59064:0</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.0">
+        <source>Pages</source>
+        <target>crwdns59066:0crwdne59066:0</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurationHeader.-1">
+        <source>Mixed categories</source>
+        <target>crwdns59068:0crwdne59068:0</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurationHeader.0">
+        <source>Website Pages</source>
+        <target>crwdns59070:0crwdne59070:0</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_flag">
+        <source>Weight/Frequency</source>
+        <target>crwdns59072:0crwdne59072:0</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_freq">
+        <source>Frequency</source>
+        <target>crwdns59074:0crwdne59074:0</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_first">
+        <source>Close to top</source>
+        <target>crwdns59076:0crwdne59076:0</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_count">
+        <source>Number of words</source>
+        <target>crwdns59078:0crwdne59078:0</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.mtime">
+        <source>Date Modified</source>
+        <target>crwdns59080:0crwdne59080:0</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.title">
+        <source>Document title</source>
+        <target>crwdns59082:0crwdne59082:0</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.crdate">
+        <source>Creation date</source>
+        <target>crwdns59084:0crwdne59084:0</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.descending">
+        <source>Highest first</source>
+        <target>crwdns59086:0crwdne59086:0</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.ascending">
+        <source>Lowest first</source>
+        <target>crwdns59088:0crwdne59088:0</target>
+      </trans-unit>
+      <trans-unit id="groupBy.sections">
+        <source>Section hierarchy</source>
+        <target>crwdns59090:0crwdne59090:0</target>
+      </trans-unit>
+      <trans-unit id="groupBy.flat">
+        <source>Flat list</source>
+        <target>crwdns59092:0crwdne59092:0</target>
+      </trans-unit>
+      <trans-unit id="result.page">
+        <source>page</source>
+        <target>crwdns59094:0crwdne59094:0</target>
+      </trans-unit>
+      <trans-unit id="result.pages">
+        <source>pages</source>
+        <target>crwdns59096:0crwdne59096:0</target>
+      </trans-unit>
+      <trans-unit id="result.unnamedSection">
+        <source>Other</source>
+        <target>crwdns59098:0crwdne59098:0</target>
+      </trans-unit>
+      <trans-unit id="result.otherMatching">
+        <source>Other matching pages in the same document</source>
+        <target>crwdns59100:0crwdne59100:0</target>
+      </trans-unit>
+      <trans-unit id="result.otherPageAsWell">
+        <source>INFO: There was another page indexed as well. Probably indexed with another or no usergroup.</source>
+        <target>crwdns59102:0crwdne59102:0</target>
+      </trans-unit>
+      <trans-unit id="result.path">
+        <source>Path</source>
+        <target>crwdns59104:0crwdne59104:0</target>
+      </trans-unit>
+      <trans-unit id="result.modified">
+        <source>Modified</source>
+        <target>crwdns59106:0crwdne59106:0</target>
+      </trans-unit>
+      <trans-unit id="result.created">
+        <source>Created</source>
+        <target>crwdns59108:0crwdne59108:0</target>
+      </trans-unit>
+      <trans-unit id="result.size">
+        <source>Size</source>
+        <target>crwdns59110:0crwdne59110:0</target>
+      </trans-unit>
+      <trans-unit id="result.noResume">
+        <source>Note: This search hit may not accurately match the content on this page. The page resume cannot be shown.</source>
+        <target>crwdns59112:0crwdne59112:0</target>
+      </trans-unit>
+      <trans-unit id="result.memberGroups">
+        <source>Require membership of group numbers %s</source>
+        <target>crwdns59114:0%scrwdne59114:0</target>
+      </trans-unit>
+      <trans-unit id="result.ratingMatches">
+        <source>matches</source>
+        <target>crwdns59116:0crwdne59116:0</target>
+      </trans-unit>
+      <trans-unit id="result.noResult">
+        <source>No results found.</source>
+        <target>crwdns59118:0crwdne59118:0</target>
+      </trans-unit>
+      <trans-unit id="result.inSection">
+        <source>in the section</source>
+        <target>crwdns59120:0crwdne59120:0</target>
+      </trans-unit>
+      <trans-unit id="result.inNsection">
+        <source>in %s section</source>
+        <target>crwdns59122:0%scrwdne59122:0</target>
+      </trans-unit>
+      <trans-unit id="result.inNsections">
+        <source>in %s sections</source>
+        <target>crwdns59124:0%scrwdne59124:0</target>
+      </trans-unit>
+      <trans-unit id="searchFor">
+        <source>Search for</source>
+        <target>crwdns59126:0crwdne59126:0</target>
+      </trans-unit>
+      <trans-unit id="searchFor.or">
+        <source>or</source>
+        <target>crwdns59128:0crwdne59128:0</target>
+      </trans-unit>
+      <trans-unit id="searchFor.and">
+        <source>and</source>
+        <target>crwdns59130:0crwdne59130:0</target>
+      </trans-unit>
+      <trans-unit id="searchFor.andnot">
+        <source>but not</source>
+        <target>crwdns59132:0crwdne59132:0</target>
+      </trans-unit>
+      <trans-unit id="displayResults.previous">
+        <source>Previous</source>
+        <target>crwdns292605:0crwdne292605:0</target>
+      </trans-unit>
+      <trans-unit id="displayResults.page">
+        <source>Page</source>
+        <target>crwdns59136:0crwdne59136:0</target>
+      </trans-unit>
+      <trans-unit id="displayResults.next">
+        <source>Next</source>
+        <target>crwdns292607:0crwdne292607:0</target>
+      </trans-unit>
+      <trans-unit id="displayResults">
+        <source><![CDATA[Displaying results <strong>%1$s to %2$s</strong> out of <strong>%3$s</strong>]]></source>
+        <target><![CDATA[crwdns59140:0%1$scrwdnd59140:0%2$scrwdnd59140:0%3$scrwdne59140:0]]></target>
+      </trans-unit>
+      <trans-unit id="administration.menu.general">
+        <source>General statistics</source>
+        <target>crwdns59142:0crwdne59142:0</target>
+      </trans-unit>
+      <trans-unit id="administration.menu.pages">
+        <source>List of indexed pages</source>
+        <target>crwdns333274:0crwdne333274:0</target>
+      </trans-unit>
+      <trans-unit id="administration.menu.externalDocuments">
+        <source>List of indexed external documents</source>
+        <target>crwdns333276:0crwdne333276:0</target>
+      </trans-unit>
+      <trans-unit id="administration.menu.searchStatistic">
+        <source>Search statistics</source>
+        <target>crwdns59148:0crwdne59148:0</target>
+      </trans-unit>
+      <trans-unit id="administration.menu.statistic">
+        <source>Detailed statistics</source>
+        <target>crwdns59150:0crwdne59150:0</target>
+      </trans-unit>
+      <trans-unit id="administration.externalDocuments.headline">
+        <source>List of indexed external documents</source>
+        <target>crwdns333278:0crwdne333278:0</target>
+      </trans-unit>
+      <trans-unit id="administration.index.headline">
+        <source>General statistics</source>
+        <target>crwdns333280:0crwdne333280:0</target>
+      </trans-unit>
+      <trans-unit id="administration.pages.headline">
+        <source>List of indexed pages</source>
+        <target>crwdns333282:0crwdne333282:0</target>
+      </trans-unit>
+      <trans-unit id="administration.statistic.headline">
+        <source>Detailed statistics</source>
+        <target>crwdns333284:0crwdne333284:0</target>
+      </trans-unit>
+      <trans-unit id="administration.statisticDetails.headline">
+        <source>Details for a single result row</source>
+        <target>crwdns333286:0crwdne333286:0</target>
+      </trans-unit>
+      <trans-unit id="administration.statisticDetails.headlineWithItemTitle">
+        <source>Details for single result row "%s"</source>
+        <target>crwdns333288:0%scrwdne333288:0</target>
+      </trans-unit>
+      <trans-unit id="administration.wordDetail.headline">
+        <source>Detail view of a single word</source>
+        <target>crwdns333290:0crwdne333290:0</target>
+      </trans-unit>
+      <trans-unit id="administration.wordDetail.headlineWithWordTitle">
+        <source>Detail view of single word "%s"</source>
+        <target>crwdns333292:0%scrwdne333292:0</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.header">
+        <source>Row count by database table</source>
+        <target>crwdns59156:0crwdne59156:0</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.name">
+        <source>Name</source>
+        <target>crwdns59158:0crwdne59158:0</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.count">
+        <source>Count</source>
+        <target>crwdns59160:0crwdne59160:0</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.headerTypes">
+        <source>Hash Header Types</source>
+        <target>crwdns59162:0crwdne59162:0</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.headerTypes.count">
+        <source>Count / Unique count</source>
+        <target>crwdns59164:0crwdne59164:0</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.word">
+        <source>Word</source>
+        <target>crwdns59166:0crwdne59166:0</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.title">
+        <source>List of most searched words</source>
+        <target>crwdns59168:0crwdne59168:0</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.description">
+        <source>Statistics for all pages. Select a page with indexed search form to see several statistics.</source>
+        <target>crwdns59170:0crwdne59170:0</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.all">
+        <source>All</source>
+        <target>crwdns59172:0crwdne59172:0</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.last30days">
+        <source>Last 30 days</source>
+        <target>crwdns59174:0crwdne59174:0</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.last24hours">
+        <source>Last 24 hours</source>
+        <target>crwdns59176:0crwdne59176:0</target>
+      </trans-unit>
+      <trans-unit id="field.pageTitle">
+        <source>Page title</source>
+        <target>crwdns333294:0crwdne333294:0</target>
+      </trans-unit>
+      <trans-unit id="field.fileName">
+        <source>Filename</source>
+        <target>crwdns59186:0crwdne59186:0</target>
+      </trans-unit>
+      <trans-unit id="field.fileSize">
+        <source>Filesize</source>
+        <target>crwdns59188:0crwdne59188:0</target>
+      </trans-unit>
+      <trans-unit id="field.wordCount">
+        <source>Word count</source>
+        <target>crwdns59190:0crwdne59190:0</target>
+      </trans-unit>
+      <trans-unit id="field.words">
+        <source>Words</source>
+        <target>crwdns59192:0crwdne59192:0</target>
+      </trans-unit>
+      <trans-unit id="field.mtime">
+        <source>Modification time</source>
+        <target>crwdns59194:0crwdne59194:0</target>
+      </trans-unit>
+      <trans-unit id="field.indexed">
+        <source>Indexed</source>
+        <target>crwdns59196:0crwdne59196:0</target>
+      </trans-unit>
+      <trans-unit id="field.updated">
+        <source>Updated</source>
+        <target>crwdns59198:0crwdne59198:0</target>
+      </trans-unit>
+      <trans-unit id="field.parseTime">
+        <source>Parsetime [ms]</source>
+        <target>crwdns59200:0crwdne59200:0</target>
+      </trans-unit>
+      <trans-unit id="field.groups">
+        <source>#sec/gr/full</source>
+        <target>crwdns59202:0crwdne59202:0</target>
+      </trans-unit>
+      <trans-unit id="field.sub">
+        <source>Sub</source>
+        <target>crwdns59204:0crwdne59204:0</target>
+      </trans-unit>
+      <trans-unit id="field.staticPageArguments">
+        <source>Static Page Arguments</source>
+        <target>crwdns59206:0crwdne59206:0</target>
+      </trans-unit>
+      <trans-unit id="field.count">
+        <source>Count</source>
+        <target>crwdns59208:0crwdne59208:0</target>
+      </trans-unit>
+      <trans-unit id="field.first">
+        <source>First</source>
+        <target>crwdns59210:0crwdne59210:0</target>
+      </trans-unit>
+      <trans-unit id="field.pHash">
+        <source>PageHash</source>
+        <target>crwdns59212:0crwdne59212:0</target>
+      </trans-unit>
+      <trans-unit id="field.path">
+        <source>Path</source>
+        <target>crwdns59214:0crwdne59214:0</target>
+      </trans-unit>
+      <trans-unit id="field.id">
+        <source>Page Id</source>
+        <target>crwdns59216:0crwdne59216:0</target>
+      </trans-unit>
+      <trans-unit id="field.uniqueId">
+        <source>Uid</source>
+        <target>crwdns333296:0crwdne333296:0</target>
+      </trans-unit>
+      <trans-unit id="field.type">
+        <source>Type</source>
+        <target>crwdns59220:0crwdne59220:0</target>
+      </trans-unit>
+      <trans-unit id="field.title">
+        <source>Title</source>
+        <target>crwdns59222:0crwdne59222:0</target>
+      </trans-unit>
+      <trans-unit id="field.language">
+        <source>Language</source>
+        <target>crwdns59224:0crwdne59224:0</target>
+      </trans-unit>
+      <trans-unit id="field.frequency">
+        <source>Frequency</source>
+        <target>crwdns59226:0crwdne59226:0</target>
+      </trans-unit>
+      <trans-unit id="field.flag">
+        <source>Flag</source>
+        <target>crwdns59228:0crwdne59228:0</target>
+      </trans-unit>
+      <trans-unit id="field.content">
+        <source>Content</source>
+        <target>crwdns59232:0crwdne59232:0</target>
+      </trans-unit>
+      <trans-unit id="administration.notIndexed">
+        <source>Not indexed</source>
+        <target>crwdns333298:0crwdne333298:0</target>
+      </trans-unit>
+      <trans-unit id="administration.indexingDisabled">
+        <source>Indexing disabled for this page</source>
+        <target>crwdns415563:0crwdne415563:0</target>
+      </trans-unit>
+      <trans-unit id="administration.document.words">
+        <source>Words found on this page</source>
+        <target>crwdns337116:0crwdne337116:0</target>
+      </trans-unit>
+      <trans-unit id="administration.stopWords">
+        <source>Stopwords</source>
+        <target>crwdns59244:0crwdne59244:0</target>
+      </trans-unit>
+      <trans-unit id="administration.stopWords.save">
+        <source>Save stopwords</source>
+        <target>crwdns59246:0crwdne59246:0</target>
+      </trans-unit>
+      <trans-unit id="administration.word">
+        <source>Word</source>
+        <target>crwdns337118:0crwdne337118:0</target>
+      </trans-unit>
+      <trans-unit id="administration.words">
+        <source>Words</source>
+        <target>crwdns337120:0crwdne337120:0</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.sectionRecords">
+        <source>Section records for this phash</source>
+        <target>crwdns59258:0crwdne59258:0</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.view.overview">
+        <source>Overview</source>
+        <target>crwdns59266:0crwdne59266:0</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.view.content">
+        <source>Words and content</source>
+        <target>crwdns59268:0crwdne59268:0</target>
+      </trans-unit>
+      <trans-unit id="administration.phash.tableHeader">
+        <source>Phash row content</source>
+        <target>crwdns59270:0crwdne59270:0</target>
+      </trans-unit>
+      <trans-unit id="administration.removeEntry">
+        <source>Remove entry</source>
+        <target>crwdns59272:0crwdne59272:0</target>
+      </trans-unit>
+      <trans-unit id="administration.removeAllEntries">
+        <source>Remove all listed entries</source>
+        <target>crwdns59274:0crwdne59274:0</target>
+      </trans-unit>
+      <trans-unit id="administration.back">
+        <source>Back</source>
+        <target>crwdns59276:0crwdne59276:0</target>
+      </trans-unit>
+      <trans-unit id="administration.moduleFunctions.mode">
+        <source>Mode</source>
+        <target>crwdns141803:0crwdne141803:0</target>
+      </trans-unit>
+      <trans-unit id="administration.moduleFunctions.depth">
+        <source>Depth</source>
+        <target>crwdns141805:0crwdne141805:0</target>
+      </trans-unit>
+      <trans-unit id="administration.btn.details.title">
+        <source>Show details</source>
+        <target>crwdns342940:0crwdne342940:0</target>
+      </trans-unit>
+      <trans-unit id="administration.noPageSelected">
+        <source>Please select a page in the page tree.</source>
+        <target>crwdns333302:0crwdne333302:0</target>
+      </trans-unit>
+      <trans-unit id="administration.noRecords">
+        <source>No records found.</source>
+        <target>crwdns333304:0crwdne333304:0</target>
+      </trans-unit>
+      <trans-unit id="administration.noResult">
+        <source>No result found.</source>
+        <target>crwdns333306:0crwdne333306:0</target>
+      </trans-unit>
+      <trans-unit id="administration.noResultForPage">
+        <source>No result for the selected page found.</source>
+        <target>crwdns333308:0crwdne333308:0</target>
+      </trans-unit>
+      <trans-unit id="error.noTypoScript">
+        <source>Error: Please check that TypoScript for the Indexed Search plugin is included.</source>
+        <target>crwdns59280:0crwdne59280:0</target>
+      </trans-unit>
+      <trans-unit id="administration.flag.32">
+        <source>description</source>
+        <target>crwdns333320:0crwdne333320:0</target>
+      </trans-unit>
+      <trans-unit id="administration.flag.64">
+        <source>keyword</source>
+        <target>crwdns333322:0crwdne333322:0</target>
+      </trans-unit>
+      <trans-unit id="administration.flag.128">
+        <source>title</source>
+        <target>crwdns333324:0crwdne333324:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
