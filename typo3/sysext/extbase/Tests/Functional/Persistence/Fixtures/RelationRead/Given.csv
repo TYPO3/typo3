@@ -1,0 +1,23 @@
+"pages"
+,"uid","pid","title","doktype","sorting","perms_everybody"
+,1,0,"Site",1,128,15
+,2,1,"Blog storage",254,128,15
+"tx_blogexample_domain_model_person"
+,"uid","pid","firstname","lastname","email","deleted"
+,1,2,"Anna","Schmidt","anna@example.com",0
+,2,2,"Ben","Meier","ben@example.com",1
+"tx_blogexample_domain_model_tag"
+,"uid","pid","name"
+,1,2,"TYPO3"
+,2,2,"PHP"
+"tx_blogexample_domain_model_comment"
+,"uid","pid","post","post_table","post_field","author","email","content","date"
+,1,2,0,"","","Max","max@example.com","Nice read","2026-01-26 10:00:00"
+,2,2,0,"","","Moritz","moritz@example.com","Well written","2026-01-26 11:00:00"
+,3,2,1,"tx_blogexample_domain_model_post","pinned_comments","Clara","clara@example.com","Thank you","2026-01-26 12:00:00"
+,4,2,1,"tx_blogexample_domain_model_post","pinned_comments","Dieter","dieter@example.com","Good point","2026-01-26 13:00:00"
+,5,2,1,"tx_blogexample_domain_model_post","highlighted_comments","Emil","emil@example.com","Great","2026-01-26 14:00:00"
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","date","reviewer","picked_tags","referenced_tags","additional_comments","pinned_comments","highlighted_comments","sorting"
+,1,2,0,0,"First post",1768478400,2,"2,1","2,1","2,1",2,1,1
+,2,2,0,0,"Second post",1768478400,99,"","","",0,0,2

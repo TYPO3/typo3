@@ -34,6 +34,9 @@ return [
     \TYPO3Tests\BlogExample\Domain\Model\Category::class => [
         'tableName' => 'sys_category',
     ],
+    \TYPO3Tests\BlogExample\Domain\Model\PostWithRelations::class => [
+        'tableName' => 'tx_blogexample_domain_model_post',
+    ],
     \TYPO3Tests\BlogExample\Domain\Model\TtContent::class => [
         'tableName' => 'tt_content',
         'properties' => [
