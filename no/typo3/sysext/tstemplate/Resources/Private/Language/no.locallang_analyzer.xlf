@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815003" source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Title</source>
+        <target state="final">Tittel</target>
+      </trans-unit>
+      <trans-unit id="pid" resname="pid" approved="yes">
+        <source>PID</source>
+        <target state="final">PID</target>
+      </trans-unit>
+      <trans-unit id="displayOptions" resname="displayOptions" approved="yes">
+        <source>Display Options</source>
+        <target state="final">Visningsinnstillinger</target>
+      </trans-unit>
+      <trans-unit id="comments" resname="comments" approved="yes">
+        <source>Comments</source>
+        <target state="final">Kommentarer</target>
+      </trans-unit>
+      <trans-unit id="constants" resname="constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">Konstanter</target>
+      </trans-unit>
+      <trans-unit id="setup" resname="setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">Oppsett</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
