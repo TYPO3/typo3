@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="sys_note" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="widget.pagesWithInternalNote.title" approved="yes">
+        <source>System Notes</source>
+        <target state="final">ໝາຍເຫດລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.description" approved="yes">
+        <source>Shows a list of pages with system notes.</source>
+        <target state="final">ສະແດງລາຍຊື່ຂອງໜ້າທີ່ມີໝາຍເຫດລະບົບ.</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.all.title" approved="yes">
+        <source>All System Notes</source>
+        <target state="final">ໝາຍເຫດລະບົບທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.all.description" approved="yes">
+        <source>Shows a list of pages with system notes</source>
+        <target state="final">ສະແດງລາຍຊື່ຂອງໜ້າທີ່ມີໝາຍເຫດລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.default.title" approved="yes">
+        <source>Notes in the category "Default"</source>
+        <target state="final">ໝາຍເຫດໃນໝວດ "ຄ່າເລີ່ມຕົ້ນ"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.default.description" approved="yes">
+        <source>Shows a list of pages with system notes in the category "Default"</source>
+        <target state="final">ສະແດງລາຍຊື່ຂອງໜ້າທີ່ມີໝາຍເຫດລະບົບໃນໝວດ "ຄ່າເລີ່ມຕົ້ນ"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.todo.title" approved="yes">
+        <source>Notes in the category "ToDo"</source>
+        <target state="final">ໝາຍເຫດໃນໝວດ "ສິ່ງທີ່ຈະເຮັດ"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.todo.description" approved="yes">
+        <source>Shows a list of pages with system notes in the category "ToDo"</source>
+        <target state="final">ສະແດງລາຍຊື່ຂອງໜ້າທີ່ມີໝາຍເຫດລະບົບໃນໝວດ "ສິ່ງທີ່ຈະເຮັດ"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.template.title" approved="yes">
+        <source>Notes in the category "Template"</source>
+        <target state="final">ໝາຍເຫດໃນໝວດ "ແມ່ແບບ"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.template.description" approved="yes">
+        <source>Shows a list of pages with system notes in the category "Template"</source>
+        <target state="final">ສະແດງລາຍຊື່ຂອງໜ້າທີ່ມີໝາຍເຫດລະບົບໃນໝວດ "ແມ່ແບບ"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.notes.title" approved="yes">
+        <source>Notes in the category "Notes"</source>
+        <target state="final">ໝາຍເຫດໃນໝວດ "ໝາຍເຫດ"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.notes.description" approved="yes">
+        <source>Shows a list of pages with system notes in the category "Notes"</source>
+        <target state="final">ສະແດງລາຍຊື່ຂອງໜ້າທີ່ມີໝາຍເຫດລະບົບໃນໝວດ "ໝາຍເຫດ"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.instructions.title" approved="yes">
+        <source>Notes in the category "Instructions"</source>
+        <target state="final">ໝາຍເຫດໃນໝວດ "ຄຳແນະນຳ"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.instructions.description" approved="yes">
+        <source>Shows a list of pages with system notes in the category "Instructions"</source>
+        <target state="final">ສະແດງລາຍຊື່ຂອງໜ້າທີ່ມີໝາຍເຫດລະບົບໃນໝວດ "ຄຳແນະນຳ"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.setting.category.label" approved="yes">
+        <source>Category</source>
+        <target state="final">ໝວດໝູ່</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.setting.category.description" approved="yes">
+        <source>Category to be displayed.</source>
+        <target state="final">ໝວດໝູ່ທີ່ຈະສະແດງ.</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.setting.category.label.all" approved="yes">
+        <source>All</source>
+        <target state="final">ທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.created" approved="yes">
+        <source>Created</source>
+        <target state="final">ສ້າງແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.subjectmessage" approved="yes">
+        <source>Subject and message</source>
+        <target state="final">ຫົວຂໍ້ ແລະ ຂໍ້ຄວາມ</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.goto_page" approved="yes">
+        <source>Go to page</source>
+        <target state="final">ໄປທີ່ໜ້າ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
