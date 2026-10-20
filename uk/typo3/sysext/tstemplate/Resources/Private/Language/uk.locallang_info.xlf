@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_info.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="submodule.title" approved="yes">
+        <source>Edit TypoScript record</source>
+        <target state="final">Редагувати запис TypoScript</target>
+      </trans-unit>
+      <trans-unit id="submodule.titleWithRecord" approved="yes">
+        <source>Edit TypoScript record "%s"</source>
+        <target state="final">Редагувати запис TypoScript "%s"</target>
+      </trans-unit>
+      <trans-unit id="submodule.description" approved="yes">
+        <source>Modify the content of the selected TypoScript record of the current page. Modifications can be made either for configurations like TypoScript constants and setup or basics like the title and description of the TypoScript record itself.</source>
+        <target state="final">Змінити вміст вибраного запису TypoScript поточної сторінки. Зміни можна вносити або для конфігурацій, як-от константи та налаштування TypoScript, або для основних, як-от назва й опис самого запису TypoScript.</target>
+      </trans-unit>
+      <trans-unit id="options.selectedRecord" approved="yes">
+        <source>Selected record</source>
+        <target state="final">Вибраний запис</target>
+      </trans-unit>
+      <trans-unit id="table.column.constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">Сталі</target>
+      </trans-unit>
+      <trans-unit id="table.column.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Опис</target>
+      </trans-unit>
+      <trans-unit id="table.column.lines" approved="yes">
+        <source>%s lines</source>
+        <target state="final">%s рядків</target>
+      </trans-unit>
+      <trans-unit id="table.column.setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">Установка</target>
+      </trans-unit>
+      <trans-unit id="table.column.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Найменування</target>
+      </trans-unit>
+      <trans-unit id="btn.editTypoScriptRecord" approved="yes">
+        <source>Edit the whole TypoScript record</source>
+        <target state="final">Відредагуйте весь запис TypoScript</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
