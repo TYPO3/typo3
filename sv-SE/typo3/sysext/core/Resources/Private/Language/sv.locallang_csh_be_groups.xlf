@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814852" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_be_groups.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="sv-SE">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>This is the Backend administration user groups available for the Backend users. These determine the access credentials for the Backend users.</source>
+        <target state="final">Dethär är backend-administrationens användargrupper som BE-användare kan använda. Dessa begränsar BE-användarnas rättigheter.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Name of the Backend usergroup. The name should be descriptive and can always be changed later.</source>
+        <target state="final">Backend-användargruppens namn</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.description" resname="db_mountpoints.description" approved="yes">
+        <source>Define page tree root points for the group members.</source>
+        <target state="final">Bestäm startpunkter för användarnas sidträd.</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints.description" resname="file_mountpoints.description" approved="yes">
+        <source>Define startpoints for the file folder tree.</source>
+        <target state="final">Bestäm startpunkter för filhanteringsträdet.</target>
+      </trans-unit>
+      <trans-unit id="pagetypes_select.description" resname="pagetypes_select.description" approved="yes">
+        <source>Select which 'Types' of Pages the members may set.</source>
+        <target state="final">Välj vilka "Typer" av sidor som medlemmarna kan använda</target>
+      </trans-unit>
+      <trans-unit id="tables_modify.description" resname="tables_modify.description" approved="yes">
+        <source>Select which tables the members may modify.</source>
+        <target state="final">Välj vilka tabeller en användare kan ändra.</target>
+      </trans-unit>
+      <trans-unit id="tables_select.description" resname="tables_select.description" approved="yes">
+        <source>Select which tables the members may see in record lists ('modify' tables does not need to be re-entered here!).</source>
+        <target state="final">Välj vilka tabeller användarna kan se i listan ('ändra' tabellerna behöver inte fyllas i här också!).</target>
+      </trans-unit>
+      <trans-unit id="non_exclude_fields.description" resname="non_exclude_fields.description" approved="yes">
+        <source>Certain table fields are not available by default. Those fields can be explicitly enabled for the group members here.</source>
+        <target state="final">Vissa tabellfält är som standard spärrade. Dessa fält kan här öppnas för gruppens medlemmar.</target>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Disables a user group.</source>
+        <target state="final">Spärra en användargrupp.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.</source>
+        <target state="final">Om du spärrar en användargrupp kommer de egenskaper, som du ställt in för alla medlemmar i gruppen att begränsas.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.details" resname="lockToDomain.details" xml:space="preserve" approved="yes">
+				<source>A TYPO3 system may host multiple websites on multiple domains. Therefore this option secures that users can login only from a certain host name.
+Setting this to for example "www.my-domain.com" will require a user to be logged in from that domain if membership of this group should be gained. Otherwise the group will be ignored for the user.</source>
+			<target state="final">Ett TYPO3-system kan ha många domain under sig. Denna option säkerställer att användarna kan logga in endast från en viss värddator.</target></trans-unit>
+      <trans-unit id="groupMods.description" resname="groupMods.description" approved="yes">
+        <source>Select available backend modules for the group members.</source>
+        <target state="final">Välj tillbudsstående moduler för gruppens medlemmar</target>
+      </trans-unit>
+      <trans-unit id="inc_access_lists.description" resname="inc_access_lists.description" approved="yes">
+        <source>Select whether the Access Lists for Page type, Tables, Module and Allowed excludefield are enabled for this group.</source>
+        <target state="final">Välj om denna grupp skall kunna använda Sidtyp, Tabell, Modul och Godkända fält.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a short description of the user group, what it is for and who should be members. This is for internal use only.</source>
+        <target state="final">Fyll i en kort förklaring för användargruppen, gruppens uppgift och vilka medlemmarna är. Detta är endast för internt bruk.</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>User TSconfig: Additional configuration through TypoScript style values (Advanced).</source>
+        <target state="final">Tilläggskonfigurering med TypoScript stilvärden (avancerad).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax without conditions and constants.</source>
+        <target state="final">TypoScript stilar utan villkor och konstanter</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
