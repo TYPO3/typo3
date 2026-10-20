@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:theme_camino/Resources/Private/Language/backend_layouts.xlf" date="2026-01-14T12:00:00Z" product-name="theme_camino" target-language="nl">
+    <header/>
+    <body>
+      <!-- Backend layouts -->
+      <trans-unit id="backend_layout.colPos.0.name" approved="yes">
+        <source>Content area</source>
+        <target state="final">Inhoudsgebied</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.1.name" approved="yes">
+        <source>Sidebar</source>
+        <target state="final">Zijbalk</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.2.name" approved="yes">
+        <source>Hero area</source>
+        <target state="final">Hero-gebied</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.10.name" approved="yes">
+        <source>Footer: Meta navigation</source>
+        <target state="final">Voettekst: Metanavigatie</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.11.name" approved="yes">
+        <source>Footer: Column 1 (Logo)</source>
+        <target state="final">Voettekst: Kolom 1 (logo)</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.12.name" approved="yes">
+        <source>Footer: Column 2 (Menu)</source>
+        <target state="final">Voettekst: Kolom 2 (menu)</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.13.name" approved="yes">
+        <source>Footer: Column 3 (Menu)</source>
+        <target state="final">Voettekst: Kolom 3 (menu)</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.14.name" approved="yes">
+        <source>Footer: Column 4 (Menu)</source>
+        <target state="final">Voettekst: Kolom 4 (menu)</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.camino_startpage.title" approved="yes">
+        <source>Camino: Start page</source>
+        <target state="final">Camino: Startpagina</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.camino_contentpage.title" approved="yes">
+        <source>Camino: Content page (full-width)</source>
+        <target state="final">Camino: Inhoudspagina (volle breedte)</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.camino_contentpage_sidebar.title" approved="yes">
+        <source>Camino: Content page (with sidebar)</source>
+        <target state="final">Camino: Inhoudspagina (met zijbalk)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
