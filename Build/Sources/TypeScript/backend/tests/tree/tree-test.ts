@@ -190,3 +190,30 @@ describe('tree data loading', () => {
     expect(notificationStub.calledOnce).to.equal(true);
   });
 });
+
+describe('tree focus after the nodes were replaced', () => {
+  const createNodes = (tree: TestTree): TreeNodeInterface[] => tree.enhance([
+    { identifier: '1', depth: 0, loaded: true, hasChildren: true },
+    { identifier: '2', depth: 1, loaded: true, hasChildren: false },
+    { identifier: '3', depth: 1, loaded: true, hasChildren: false },
+  ] as unknown as TreeNodeInterface[]);
+
+  const getTabStops = (tree: TestTree): string[] => Array.from(tree.querySelectorAll<HTMLElement>('[role="treeitem"][tabindex="0"]'))
+    .map(element => element.dataset.id ?? '');
+
+  it('keeps the tab stop on the focused tree item', async () => {
+    const tree = document.createElement('typo3-test-storage-tree') as TestTree;
+    stub(tree, 'getNodeStatus').returns({ expanded: true });
+    tree.nodes = createNodes(tree);
+    document.body.append(tree);
+    await tree.updateComplete;
+    await tree.focusNode(tree.nodes[1]);
+    await tree.updateComplete;
+
+    tree.nodes = createNodes(tree);
+    await tree.updateComplete;
+
+    expect(getTabStops(tree)).to.deep.equal(['2']);
+    tree.remove();
+  });
+});
