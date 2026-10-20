@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1520862804" source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_cache.xlf" date="2018-03-12T13:52:00Z" product-name="adminpanel" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="module.label" resname="module.label">
+        <source>Cache</source>
+        <target>crwdns67360:0crwdne67360:0</target>
+      </trans-unit>
+      <trans-unit id="cache.no_cache" resname="cache.no_cache">
+        <source>No caching</source>
+        <target>crwdns67362:0crwdne67362:0</target>
+      </trans-unit>
+      <trans-unit id="cache.clear_current" resname="cache.clear_current">
+        <source>Clear cache of current page</source>
+        <target>crwdns67364:0crwdne67364:0</target>
+      </trans-unit>
+      <trans-unit id="cache.clear_pages" resname="cache.clear_pages">
+        <source>Clear frontend cache</source>
+        <target>crwdns67366:0crwdne67366:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
