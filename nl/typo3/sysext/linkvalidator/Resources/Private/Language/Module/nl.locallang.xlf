@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="linkvalidator" approved="yes">
+        <source>LinkValidator</source>
+        <target state="final">LinkValidator</target>
+      </trans-unit>
+      <trans-unit id="overview.headline" approved="yes">
+        <source>Link check</source>
+        <target state="final">Controle van links</target>
+      </trans-unit>
+      <trans-unit id="overview.headlineWithPageTitle" approved="yes">
+        <source>Link check of page "%s"</source>
+        <target state="final">Controle van links op pagina "%s"</target>
+      </trans-unit>
+      <trans-unit id="hooks.db" approved="yes">
+        <source>Internal Links</source>
+        <target state="final">Interne links</target>
+      </trans-unit>
+      <trans-unit id="hooks.file" approved="yes">
+        <source>File Links</source>
+        <target state="final">Links naar bestanden</target>
+      </trans-unit>
+      <trans-unit id="hooks.external" approved="yes">
+        <source>External Links</source>
+        <target state="final">Externe links</target>
+      </trans-unit>
+      <trans-unit id="filter.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Diepte</target>
+      </trans-unit>
+      <trans-unit id="filter.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Type</target>
+      </trans-unit>
+      <trans-unit id="filter.type.all" approved="yes">
+        <source>All link types</source>
+        <target state="final">Alle linktypes</target>
+      </trans-unit>
+      <trans-unit id="filter.btn.filter" approved="yes">
+        <source>Filter</source>
+        <target state="final">Filteren</target>
+      </trans-unit>
+      <trans-unit id="label_update" approved="yes">
+        <source>Check</source>
+        <target state="final">Controleren</target>
+      </trans-unit>
+      <trans-unit id="list.check.headline" approved="yes">
+        <source>Check of link types</source>
+        <target state="final">Controle van linktypes</target>
+      </trans-unit>
+      <trans-unit id="list.header" approved="yes">
+        <source>Listing of broken links</source>
+        <target state="final">Lijst met defecte links</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.errorMessage" approved="yes">
+        <source>Error message</source>
+        <target state="final">Foutmelding</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.field" approved="yes">
+        <source>Field</source>
+        <target state="final">Veld</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.lastCheck" approved="yes">
+        <source>Last check</source>
+        <target state="final">Laatste link</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.linkTarget" approved="yes">
+        <source>Link target</source>
+        <target state="final">Doel van link</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.linkText" approved="yes">
+        <source>Link text</source>
+        <target state="final">Linktekst</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.linkType" approved="yes">
+        <source>Link type</source>
+        <target state="final">Linktype</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.page" approved="yes">
+        <source>Located on page / folder</source>
+        <target state="final">Gelegen op pagina / map</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.parentPage" approved="yes">
+        <source>Parent page / folder</source>
+        <target state="final">Bovenliggende pagina / map</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.record" approved="yes">
+        <source>Record</source>
+        <target state="final">Record</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.table" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabel</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.uid" approved="yes">
+        <source>Uid</source>
+        <target state="final">Uid</target>
+      </trans-unit>
+      <trans-unit id="list.tableFoot.record" approved="yes">
+        <source>Record</source>
+        <target state="final">Record</target>
+      </trans-unit>
+      <trans-unit id="list.tableFoot.records" approved="yes">
+        <source>Records</source>
+        <target state="final">Records</target>
+      </trans-unit>
+      <trans-unit id="list.edit" approved="yes">
+        <source>Edit record containing this broken link</source>
+        <target state="final">Record met defecte link bewerken</target>
+      </trans-unit>
+      <trans-unit id="list.editField" approved="yes">
+        <source>Edit only the field containing this broken link</source>
+        <target state="final">Alleen het veld met deze defecte link bewerken</target>
+      </trans-unit>
+      <trans-unit id="list.report.btn.info.title" approved="yes">
+        <source>Display information</source>
+        <target state="final">Informatie weergeven</target>
+      </trans-unit>
+      <trans-unit id="list.report.linkText.noValue" approved="yes">
+        <source>[No value]</source>
+        <target state="final">[Geen waarde]</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagedeleted" approved="yes">
+        <source>Page '###title###' (id=###uid###) is deleted.</source>
+        <target state="final">Pagina '###title###' (id=###uid###) is verwijderd.</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagenotvisible" approved="yes">
+        <source>Page '###title###' (id=###uid###) is not visible.</source>
+        <target state="final">Pagina '###title###' (id=###uid###) is niet zichtbaar.</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagenotexisting" approved="yes">
+        <source>Page (id=###uid###) does not exist.</source>
+        <target state="final">Pagina (id=###uid###) bestaat niet.</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentmoved" approved="yes">
+        <source>Record '###title###' (id=###uid###) is not located on page ###wrongpage###, but on page ###rightpage###.</source>
+        <target state="final">Registreer '###title###' (id=###uid###) bevindt zich niet op pagina ###wrongpage###, maar op pagina ###rightpage###.</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentdeleted" approved="yes">
+        <source>Record '###title###' (id=###uid###) is deleted.</source>
+        <target state="final">Record '###title###' (id=###uid###) is verwijderd.</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentnotvisible" approved="yes">
+        <source>Record '###title###' (id=###uid###) is not visible.</source>
+        <target state="final">Record '###title###' (id=###uid###) is niet zichtbaar.</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentnotexisting" approved="yes">
+        <source>Record (id=###uid###) does not exist.</source>
+        <target state="final">Record (id=###uid###) bestaat niet.</target>
+      </trans-unit>
+      <trans-unit id="list.report.noinformation" approved="yes">
+        <source>No information about the error is available.</source>
+        <target state="final">Er is geen informatie over de fout beschikbaar.</target>
+      </trans-unit>
+      <trans-unit id="list.report.redirectloop" approved="yes">
+        <source>A redirect loop occurred. (%s: %s)</source>
+        <target state="final">Er is een doorverwijzingslus opgetreden (%s: %s)</target>
+      </trans-unit>
+      <trans-unit id="list.report.tooManyRedirects" approved="yes">
+        <source>Too many redirects.</source>
+        <target state="final">Teveel doorverwijzingen.</target>
+      </trans-unit>
+      <trans-unit id="list.report.filenotexisting" approved="yes">
+        <source>File doesn't exist.</source>
+        <target state="final">Bestand bestaat niet.</target>
+      </trans-unit>
+      <!-- external linktype check errors -->
+      <trans-unit id="linkcheck.error.external.generic" approved="yes">
+        <source>External link is broken.</source>
+        <target state="final">Externe link is verbroken.</target>
+      </trans-unit>
+      <trans-unit id="list.report.couldnotresolvehost" approved="yes">
+        <source>Could not resolve host. The given remote host was not resolved.</source>
+        <target state="final">Can de host niet vinden.</target>
+      </trans-unit>
+      <trans-unit id="list.report.errornetworkdata" approved="yes">
+        <source>Failure with receiving network data.</source>
+        <target state="final">Fout bij het ontvangen van netwerkdata.</target>
+      </trans-unit>
+      <trans-unit id="list.report.otherhttpcode" approved="yes">
+        <source>An error occurred (%s): "%s".</source>
+        <target state="final">Een fout is opgetreden (%s): "%s".</target>
+      </trans-unit>
+      <trans-unit id="list.report.httpexception" approved="yes">
+        <source>Exception: %s</source>
+        <target state="final">Uitzondering: %s</target>
+      </trans-unit>
+      <trans-unit id="list.report.networkexception" approved="yes">
+        <source>Network error / invalid domain</source>
+        <target state="final">Netwerkfout / ongelidg domein</target>
+      </trans-unit>
+      <!-- HTTP status code error messages -->
+      <trans-unit id="list.report.error.httpstatuscode.300" approved="yes">
+        <source>Multiple Choices (300).</source>
+        <target state="final">Meerdere keuzes (300).</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.httpstatuscode.305" approved="yes">
+        <source>Use proxy (305).</source>
+        <target state="final">Proxy gebruiken (305).</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.redirectPermanently" approved="yes">
+        <source>URL permanently redirects to another URL (%d).</source>
+        <target state="final">URL verwijst permanent door naar een andere URL (%d).</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.redirectTemporary" approved="yes">
+        <source>URL temporarily redirects to another URL (%d).</source>
+        <target state="final">URL verwijst tijdelijk door naar een andere URL (%d).</target>
+      </trans-unit>
+      <trans-unit id="list.report.pageforbidden403" approved="yes">
+        <source>Accessing this address is not allowed (403).</source>
+        <target state="final">Toegang tot deze URL is niet toegestaan (403).</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagenotfound404" approved="yes">
+        <source>The requested URL was not found (404).</source>
+        <target state="final">De gevraagde URL is niet gevonden (404).</target>
+      </trans-unit>
+      <trans-unit id="list.report.internalerror500" approved="yes">
+        <source>Internal Server Error (500)</source>
+        <target state="final">Interne serverfout (500)</target>
+      </trans-unit>
+      <trans-unit id="list.report.externalerror" approved="yes">
+        <source>External Link returned HTTP error code (%s).</source>
+        <target state="final">Externe link gaf een HTTP foutcode (%s).</target>
+      </trans-unit>
+      <!-- libcurl error messages from https://curl.haxx.se/libcurl/c/libcurl-errors.html -->
+      <!-- ignoring various FTP errors here: 10 - 15, 17, 19  and other error that are unlikely -->
+      <trans-unit id="list.report.error.libcurl.1" approved="yes">
+        <source>Unsupported protocol.</source>
+        <target state="final">Niet-ondersteund protocol.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.2" approved="yes">
+        <source>Initialization failed.</source>
+        <target state="final">Initialisatie mislukt.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.3" approved="yes">
+        <source>The URL was not properly formatted.</source>
+        <target state="final">De URL heeft niet het juiste formaat.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.4" approved="yes">
+        <source>Feature not supported.</source>
+        <target state="final">Functie wordt niet ondersteund.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.5" approved="yes">
+        <source>Couldn't resolve proxy.</source>
+        <target state="final">Kan proxy niet oplossen.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.6" approved="yes">
+        <source>Couldn't resolve host.</source>
+        <target state="final">Kon de host niet vinden.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.7" approved="yes">
+        <source>Failed to connect to host or proxy.</source>
+        <target state="final">Kan geen verbinding maken met host of proxy.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.8" approved="yes">
+        <source>The remote server sent data that could not be parsed.</source>
+        <target state="final">De externe server stuurde gegevens die niet konden worden verwerkt.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.9" approved="yes">
+        <source>Access denied.</source>
+        <target state="final">Toegang geweigerd.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.16" approved="yes">
+        <source>Generic HTTP/2 error.</source>
+        <target state="final">Algemene HTTP/2 fout.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.18" approved="yes">
+        <source>A file transfer was shorter or larger than expected.</source>
+        <target state="final">Een bestandsoverdracht was korter of groter dan verwacht.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.28" approved="yes">
+        <source>Timeout: The remote server possibly took too long to answer.</source>
+        <target state="final">Time-out: de externe server gaf mogelijk niet snel genoeg antwoord.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.35" approved="yes">
+        <source>Problem with SSl / TLS handshake.</source>
+        <target state="final">Probleem met SSl / TLS-handshake.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.47" approved="yes">
+        <source>Too many redirects.</source>
+        <target state="final">Te veel doorverwijzingen.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.55" approved="yes">
+        <source>General network error. Send failed.</source>
+        <target state="final">Algemene netwerkfout. Verzenden mislukt.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.56" approved="yes">
+        <source>General network error. Receive failed.</source>
+        <target state="final">Algemene netwerkfout. Ontvangen is mislukt.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.60" approved="yes">
+        <source>The remote server's SSL certificate was deemed not OK.</source>
+        <target state="final">Het SSL certificaat van de externe server werd niet OK geacht.</target>
+      </trans-unit>
+      <trans-unit id="list.report.error.libcurl.63" approved="yes">
+        <source>Maximum file size exceeded.</source>
+        <target state="final">Maximum bestandgrootte overschreden.</target>
+      </trans-unit>
+      <trans-unit id="list.msg.ok" approved="yes">
+        <source>Ok</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="list.msg.lastRun" approved="yes">
+        <source>%1$s %2$s</source>
+        <target state="final">%1$s %2$s</target>
+      </trans-unit>
+      <trans-unit id="list.no.broken.links.title" approved="yes">
+        <source>No broken links found</source>
+        <target state="final">Geen defecte links gevonden</target>
+      </trans-unit>
+      <trans-unit id="list.no.broken.links" approved="yes">
+        <source>There are no broken links for the selected link type restriction.</source>
+        <target state="final">Er zijn geen defecte links voor het geselecteerde link type.</target>
+      </trans-unit>
+      <trans-unit id="no.access.title" approved="yes">
+        <source>No access</source>
+        <target state="final">Geen toegang</target>
+      </trans-unit>
+      <trans-unit id="no.access" approved="yes">
+        <source>You do not have access to these listings.</source>
+        <target state="final">Geen toegang tot deze lijst.</target>
+      </trans-unit>
+      <trans-unit id="label_update-link-list" approved="yes">
+        <source>Checking links, please stand by.</source>
+        <target state="final">Links worden gecontroleerd, dit kan even duren.</target>
+      </trans-unit>
+      <trans-unit id="needs-recheck" approved="yes">
+        <source>Needs recheck</source>
+        <target state="final">Hercontrole nodig</target>
+      </trans-unit>
+      <trans-unit id="info.noPageSelected.message" approved="yes">
+        <source>Please select a page in the page tree.</source>
+        <target state="final">Selecteer een pagina in de paginaboom.</target>
+      </trans-unit>
+      <!-- Modal content -->
+      <trans-unit id="report.modal.info.title" approved="yes">
+        <source>Broken link</source>
+        <target state="final">Defecte link</target>
+      </trans-unit>
+      <trans-unit id="report.modal.info.title.withLinkText" approved="yes">
+        <source>Broken link: "%s"</source>
+        <target state="final">Defecte link: "%s"</target>
+      </trans-unit>
+      <trans-unit id="report.modal.info.headline.link" approved="yes">
+        <source>Link properties</source>
+        <target state="final">Eigenschappen van link</target>
+      </trans-unit>
+      <trans-unit id="report.modal.info.headline.record" approved="yes">
+        <source>Record information</source>
+        <target state="final">Recordinformatie</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
