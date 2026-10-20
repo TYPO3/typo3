@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf" date="2021-01-29T00:14:02Z" product-name="cms" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="totp.title" approved="yes">
+        <source>Time-based one-time password</source>
+        <target state="final">Tidsbaseret engangs adgangskode</target>
+      </trans-unit>
+      <trans-unit id="totp.description" approved="yes">
+        <source>This provider allows to authenticate with a single-use passcode which is based on the current time.
+					Each code is only valid for 30 seconds. You need an OTP application or device, supporting such tokens.</source>
+        <target state="final">Denne udbyder gør det muligt at godkende med en adgangskode til engangsbrug, som er baseret på den aktuelle tid.
+					Hver kode er kun gyldig i 30 sekunder. Du har brug for en OTP-applikation eller -enhed til understøttelse af sådanne tokens.</target>
+      </trans-unit>
+      <trans-unit id="totp.setupInstructions" approved="yes">
+        <source>The time-based one-time password provider enables you to strengthen your accounts' security by requiring a six-digit code on every login.
+					This provider is based on a shared secret, which will be exchanged between your OTP application (or device) and TYPO3. Each code takes the current time into account and is only valid for 30 seconds.
+
+					Setting up:
+					1. Scan the QR-code or directly enter the shared secret in your application or device
+					2. Add a specific name for this provider (optional)
+					3. Enter the generated six-digit code in the corresponding field
+					4. Submit the form to activate the provider
+
+					Note: In case your application supports otpauth:// URLs, you can retrieve the URL by clicking on the info button next to the shared secret.</source>
+        <target state="final">Den tidsbaserede engangs adgangskode-udbyder giver dig mulighed for at styrke dine konti's sikkerhed ved at kræve en sekscifret kode på hvert login.
+					Denne udbyder baseres på en delt secret, som vil blive udvekslet mellem din OTP applikation (eller enhed) og TYPO3. Hver kode tager den aktuelle tid i betragtning og er kun gyldig i 30 sekunder.
+
+					Opsætning:
+					1. Scan QR-koden eller skriv direkte den fælles secret i din applikation eller enhed
+					2. Tilføj et specifikt navn for denne udbyder (valgfri)
+					3. Indtast den genererede sekscifrede kode i det tilsvarende felt
+					4. Send formularen for at aktivere udbyderen
+
+Bemærk: Hvis din applikation understøtter otpauth:// URL'er, kan du hente URL'en ved at klikke på infoknappen ved siden af den delte secret.</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.title" approved="yes">
+        <source>Recovery codes</source>
+        <target state="final">Gendannelseskoder</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.description" approved="yes">
+        <source>This provider allows to authenticate with a set of single-use passcodes, in case you lost your
+					primary MFA credentials, or just have no access to them temporarily.</source>
+        <target state="final">Denne udbyder giver mulighed for at godkende med et sæt af engangskoder, i tilfælde af at du har mistet din computer, 
+					primære MFA legitimationsoplysninger, eller bare ikke har adgang til dem midlertidigt.</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.setupInstructions" approved="yes">
+        <source>Recovery codes are random eight-digit codes which can be used to authenticate, in case your lost your main authentication credentials. Each code is only valid once.
+					As soon as all recovery codes are exhausted, you're required to generate a new set. Therefore, periodically check the amount of remaining codes in the Edit / Change view of the provider.
+
+					Setting up:
+					1. Copy the recovery codes and store them at a safe place
+					2. Add a specific name for this provider (optional)
+					3. Submit the form to activate the provider - see below note
+
+					Note: Since the recovery codes are being encrypted and stored securely, this process can take some time.</source>
+        <target state="final">Gendannelseskoder er tilfældige ottecifrede koder, der kan bruges til at autentificere, hvis dine mistede dine vigtigste autentificeringsoplysninger. Hver kode er kun gyldig én gang.
+					Så snart alle gendannelseskoder er udløbet, skal du generere et nyt sæt. Derfor bør koder kontrolleres med mellemrum i mængden af resterende koder i Redigér/Skift visningen af leverandøren.
+
+					Opsætning:
+					1. Kopiér genoprettelseskoderne og opbevar dem på et sikkert sted
+					2. Tilføj et specifikt navn for denne udbyder (valgfri)
+					3 Indsend formularen for at aktivere udbyderen - se nedenstående note
+
+					Note: Da gendannelseskoderne krypteres og lagres sikkert kan denne proces tage nogen tid.</target>
+      </trans-unit>
+      <trans-unit id="totpInputLabel" approved="yes">
+        <source>Enter the generated six-digit code</source>
+        <target state="final">Indtast den genererede sekscifrede kode</target>
+      </trans-unit>
+      <trans-unit id="totpInputHelp" approved="yes">
+        <source>This code should now be displayed on your device or in your application.</source>
+        <target state="final">Denne kode skal nu vises på din enhed eller i din applikation.</target>
+      </trans-unit>
+      <trans-unit id="locked" approved="yes">
+        <source>The maximum attempts for this provider are exceeded. Please use another provider or contact your administrator.</source>
+        <target state="final">De maksimale forsøg for denne udbyder er overskredet. Brug venligst en anden udbyder eller kontakt din kontoadministrator.</target>
+      </trans-unit>
+      <trans-unit id="edit.table.head" approved="yes">
+        <source>Provider information</source>
+        <target state="final">Udbyderens oplysninger</target>
+      </trans-unit>
+      <trans-unit id="edit.table.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Navn</target>
+      </trans-unit>
+      <trans-unit id="edit.table.nameInputPlaceholder" approved="yes">
+        <source>Enter a name</source>
+        <target state="final">Indtast et navn</target>
+      </trans-unit>
+      <trans-unit id="edit.table.recoveryCodesLeft" approved="yes">
+        <source>Recovery codes left</source>
+        <target state="final">Gendannelseskoder tilbage</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUsed" approved="yes">
+        <source>Last used</source>
+        <target state="final">Sidst brugt</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUsed.default" approved="yes">
+        <source>Never</source>
+        <target state="final">Aldrig</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUpdated" approved="yes">
+        <source>Last updated</source>
+        <target state="final">Senest opdateret</target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate" approved="yes">
+        <source>Regenerate recovery codes</source>
+        <target state="final">Regenerér gendannelseskoder</target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate.description" approved="yes">
+        <source>
+					If you lost your recovery codes or just want to get fresh ones, you can
+					regenerate them by selecting the checkbox below. You've currently %d codes left.
+                </source>
+        <target state="final">
+					Hvis du har mistet dine gendannelseskoder eller blot ønsker at få friske koder, kan du
+					regenerere dem ved at vælge afkrydsningsfeltet nedenfor. Du har i øjeblikket %d koder tilbage.
+				                </target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate.inputLabel" approved="yes">
+        <source>Regenerate recovery codes</source>
+        <target state="final">Regenerér gendannelseskoder</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1" approved="yes">
+        <source>Step 1</source>
+        <target state="final">Trin 1</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1a" approved="yes">
+        <source>Step 1a</source>
+        <target state="final">Trin 1</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1b" approved="yes">
+        <source>Step 1b</source>
+        <target state="final">Trin 1b</target>
+      </trans-unit>
+      <trans-unit id="setup.step.2" approved="yes">
+        <source>Step 2</source>
+        <target state="final">Trin 2</target>
+      </trans-unit>
+      <trans-unit id="setup.step.3" approved="yes">
+        <source>Step 3</source>
+        <target state="final">Trin 3</target>
+      </trans-unit>
+      <trans-unit id="setup.qrCode.label" approved="yes">
+        <source>Scan the displayed QR code</source>
+        <target state="final">Skan den viste QR-kode</target>
+      </trans-unit>
+      <trans-unit id="setup.qrCode.help" approved="yes">
+        <source>Scan this code with your OTP application (e.g. Google Authenticator).</source>
+        <target state="final">Scan denne kode med din OTP-applikation (f.eks. Google Authenticator).</target>
+      </trans-unit>
+      <trans-unit id="setup.secret.label" approved="yes">
+        <source>Copy the shared secret</source>
+        <target state="final">Kopier den delte secret</target>
+      </trans-unit>
+      <trans-unit id="setup.secret.help" approved="yes">
+        <source>You can also enter the shared secret manually in your OTP application or device.</source>
+        <target state="final">Du kan også indtaste den delte secret manuelt i din OTP-enhed eller applikation.</target>
+      </trans-unit>
+      <trans-unit id="setup.name.label" approved="yes">
+        <source>Enter a name (optional)</source>
+        <target state="final">Indtast et navn (valgfrit)</target>
+      </trans-unit>
+      <trans-unit id="setup.name.help" approved="yes">
+        <source>Specify a custom name for this provider.</source>
+        <target state="final">Angiv et brugerdefineret navn for denne udbyder.</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.InputLabel" approved="yes">
+        <source>Recovery codes</source>
+        <target state="final">Gendannelseskoder</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.InputHelp" approved="yes">
+        <source>Copy these codes and store them at a safe place.</source>
+        <target state="final">Kopiér disse koder og opbevar dem på et sikkert sted.</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.reloadTitle" approved="yes">
+        <source>Reload recovery codes</source>
+        <target state="final">Genindlæs gendannelseskoder</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.reloadLabel" approved="yes">
+        <source>Reload</source>
+        <target state="final">Genindlæs</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.noActiveProviders.title" approved="yes">
+        <source>Setup not possible</source>
+        <target state="final">Opsætning er ikke mulig</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.noActiveProviders.message" approved="yes">
+        <source>Recovery codes are only meant as a fallback if you lose access to your main multi-factor authentication credentials. Therefore, please activate a comprehensive MFA provider first.</source>
+        <target state="final">Gendannelseskoder er kun ment som et mulighed for tilbagefald, hvis du mister adgangen til dine vigtigste flerfaktorautentificeringsoplysninger. Derfor skal du først aktivere en velvalgt MFA-udbyder.</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlButton.title" approved="yes">
+        <source>Show authentication URL</source>
+        <target state="final">Vis godkendelses-URL</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.title" approved="yes">
+        <source>Authentication URL</source>
+        <target state="final">Godkendelses-URL</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.description" approved="yes">
+        <source>In case you are not able to scan the QR code, but your OTP application supports
+					authentication URLs next to, or instead of plain shared secrets, you can copy and
+					paste the URL shown below. The URL contains some information like the issuer (this site)
+					and your email address or username. Most OTP applications will display this information
+					next to the generated codes.
+                </source>
+        <target state="final">I tilfælde af at du ikke er i stand til at scanne QR-koden, men din OTP-applikation understøtter
+					godkendelses-URL'er ved siden af, eller i stedet for almindelige delte secrets, kan du kopiere
+					og med det samme indsætte URL'en nedenfor. Webadressen indeholder nogle oplysninger som f. eks. 
+					udstederen (dette websted) og din e-mail-adresse eller brugernavn. De fleste OTP programmer vil 
+					vise denne information med det samme, ud for de genererede koder.
+				                </target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.ok" approved="yes">
+        <source>OK</source>
+        <target state="final">Ok</target>
+      </trans-unit>
+      <trans-unit id="auth.totp.inputLabel" approved="yes">
+        <source>Enter the six-digit code</source>
+        <target state="final">Indtast den sekscifrede kode</target>
+      </trans-unit>
+      <trans-unit id="auth.recoveryCodes.inputLabel" approved="yes">
+        <source>Enter an eight-digit recovery code</source>
+        <target state="final">Indtast en ottecifret gendannelseskode</target>
+      </trans-unit>
+      <trans-unit id="unlock.recoveryCodes.title" approved="yes">
+        <source>Your recovery codes were automatically updated!</source>
+        <target state="final">Dine gendannelseskoder blev automatisk opdateret!</target>
+      </trans-unit>
+      <trans-unit id="unlock.recoveryCodes.message" approved="yes">
+        <source>Please copy and store them at a safe place: %s</source>
+        <target state="final">Kopier og gem dem på et sikkert sted: %s</target>
+      </trans-unit>
+      <trans-unit id="update.recoveryCodes.title" approved="yes">
+        <source>Recovery codes successfully regenerated</source>
+        <target state="final">Gendannelseskoder blev regenereret</target>
+      </trans-unit>
+      <trans-unit id="update.recoveryCodes.message" approved="yes">
+        <source>Please copy and store them at a safe place: %s</source>
+        <target state="final">Kopiér og gem dem på et sikkert sted: %s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
