@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814821" source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="ll_welcome_header" resname="ll_welcome_header" approved="yes">
+        <source>User login</source>
+        <target state="final">उपयोगकर्ता लॉग-इनः</target>
+      </trans-unit>
+      <trans-unit id="ll_welcome_message" resname="ll_welcome_message" approved="yes">
+        <source>Enter your username and password here in order to log in on the website</source>
+        <target state="final">वेबसाइट पर लॉग इन करने के लिए यहां अपना उपयोगकर्ता नाम और पासवर्ड दर्ज करें</target>
+      </trans-unit>
+      <trans-unit id="ll_logout_header" resname="ll_logout_header" approved="yes">
+        <source>You have logged out.</source>
+        <target state="final">आपने लॉग-आउट कर लिया।</target>
+      </trans-unit>
+      <trans-unit id="ll_logout_message" resname="ll_logout_message" approved="yes">
+        <source>You just logged out from your user session on this website. You can login again or as another user by the form below.</source>
+        <target state="final">आपने इस वेबसाइट पर अपने उपयोगकर्ता सत्र से अभी-अभी लॉगआउट किया है। आप नीचे दिए गए फॉर्म द्वारा फिर से लॉग इन कर सकते हैं या किसी अन्य उपयोगकर्ता के रूप में।</target>
+      </trans-unit>
+      <trans-unit id="ll_error_header" resname="ll_error_header" approved="yes">
+        <source>Login failure</source>
+        <target state="final">लॉगइन असफलता</target>
+      </trans-unit>
+      <trans-unit id="ll_error_message" resname="ll_error_message" xml:space="preserve" approved="yes">
+				<source>An error occurred during login. Most likely you didn't enter the username or password correctly.
+Be certain that you enter them precisely as they are, including upper/lower case.
+Another possibility is that cookies might be disabled in your web browser.</source>
+			<target state="final">लॉगिन के दौरान एक त्रुटि हुई। संभवतः आपने उपयोगकर्ता नाम या पासवर्ड सही तरीके से नहीं दर्ज किया।सुनिश्चित करें कि आप उन्हें ठीक से दर्ज कर रहे हैं, सहित ऊपरी/निचली मामले।एक और संभावना यह है कि आपके वेब ब्राउजर में कुकी डिसेबल हो सकती है।</target></trans-unit>
+      <trans-unit id="ll_success_header" resname="ll_success_header" approved="yes">
+        <source>Login successful</source>
+        <target state="final">सफलतापूर्वक लॉग-इन</target>
+      </trans-unit>
+      <trans-unit id="ll_success_message" resname="ll_success_message" approved="yes">
+        <source>You are now logged in as '###USER###'</source>
+        <target state="final">अब आपने '###उपयोगकर्ता###' के रूप में लॉग-इन किया है</target>
+      </trans-unit>
+      <trans-unit id="ll_status_header" resname="ll_status_header" approved="yes">
+        <source>Current status</source>
+        <target state="final">वर्तमान स्टेटस</target>
+      </trans-unit>
+      <trans-unit id="ll_status_message" resname="ll_status_message" approved="yes">
+        <source>This is your current status</source>
+        <target state="final">यह आपकी वर्तमान स्थिति है</target>
+      </trans-unit>
+      <trans-unit id="cookie_warning" resname="cookie_warning" approved="yes">
+        <source>Warning: There is a possibility that cookies are not enabled in your web browser! If your login disappears on your next click that is the case and you should enable cookies (or accept cookies from this website) immediately!</source>
+        <target state="final">चेतावनी: वहाँ एक संभावना है कि आपके वेब ब्राउज़र में कुकीज़ सक्षम नहीं है! यदि आपका लॉग-इन आपकी अगली क्लिक पर गायब हो जाता है यह मामला है जिसमे आपको तुरंत कुकीज़ को सक्षम करना चाहिए (या इस वेबसाइट से कुकीज़ को स्वीकार ना चाहिए)!</target>
+      </trans-unit>
+      <trans-unit id="username" resname="username" approved="yes">
+        <source>Username</source>
+        <target state="final">उपयोगकर्ता नाम</target>
+      </trans-unit>
+      <trans-unit id="password" resname="password" approved="yes">
+        <source>Password</source>
+        <target state="final">पासवर्ड</target>
+      </trans-unit>
+      <trans-unit id="login" resname="login" approved="yes">
+        <source>Login</source>
+        <target state="final">लॉगइन</target>
+      </trans-unit>
+      <trans-unit id="permalogin" resname="permalogin" approved="yes">
+        <source>Stay logged in</source>
+        <target state="final">लॉग इन रहें</target>
+      </trans-unit>
+      <trans-unit id="logout" resname="logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">लॉगआउट</target>
+      </trans-unit>
+      <trans-unit id="send_password" resname="send_password" approved="yes">
+        <source>Send password</source>
+        <target state="final">पासवर्ड भेज</target>
+      </trans-unit>
+      <trans-unit id="reset_password" resname="reset_password" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">पासवर्ड फिर सेट करें</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_header" resname="ll_change_password_header" approved="yes">
+        <source>Change your password</source>
+        <target state="final">अपना पासवर्ड बदलें</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_notvalid_message" resname="ll_change_password_notvalid_message" approved="yes">
+        <source>The link you clicked is not valid. Please repeat the forgot password procedure.</source>
+        <target state="final">आपके द्वारा क्लिक किया गया लिंक मान्य नहीं है। कृपया पासवर्ड भूलने की प्रक्रिया को दोहराएं।</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_notequal_message" resname="ll_change_password_notequal_message" approved="yes">
+        <source>The passwords are not equal, please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">पासवर्ड समान नहीं हैं, कृपया अपना नया पासवर्ड दो बार दर्ज करें। पासवर्ड की न्यूनतम लंबाई %s वर्ण होती है।</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_tooshort_message" resname="ll_change_password_tooshort_message" approved="yes">
+        <source>The password length is too short. Please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">पासवर्ड की लंबाई बहुत छोटी है। कृपया अपना नया पासवर्ड दो बार दर्ज करें। पासवर्ड की न्यूनतम लंबाई %s वर्ण होनी चाहिए।</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_done_message" resname="ll_change_password_done_message" approved="yes">
+        <source>Your password has been saved. You can now login with your new password.</source>
+        <target state="final">आपका पासवर्ड सहेज लिया गया है। अब आप अपने नये पासवर्ड के साथ लॉग इन कर सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="change_password" resname="change_password" approved="yes">
+        <source>Change your password</source>
+        <target state="final">अपना पासवर्ड बदलें</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label1" resname="newpassword_label1" approved="yes">
+        <source>Enter new password</source>
+        <target state="final">नया पासवर्ड दाखिल करें</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label2" resname="newpassword_label2" approved="yes">
+        <source>Repeat new password</source>
+        <target state="final">नया पासवर्ड दोहराएँ</target>
+      </trans-unit>
+      <trans-unit id="your_email" resname="your_email" approved="yes">
+        <source>Your email</source>
+        <target state="final">आपका ईमेल</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_header" resname="ll_forgot_header" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">क्या आप अपना पासवर्ड भूल गए?</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_email_password" resname="ll_forgot_email_password" xml:space="preserve" approved="yes">
+				<source>Your password
+Hi %s
+
+Your username is "%s"
+Your password is "%s"</source>
+			<target state="final">आपका पासवर्ड 
+नमस्ते %s
+
+आपका उपयोगकर्ता नाम "%s" है 
+आपका पासवर्ड "%s" है</target></trans-unit>
+      <trans-unit id="ll_forgot_email_nopassword" resname="ll_forgot_email_nopassword" xml:space="preserve" approved="yes">
+				<source>Your password
+Hi %s
+
+We couldn't find a username for this email address and so cannot send the password to you. Probably you misspelled the email address (upper/lower case makes a difference) or maybe you even didn't register yet?</source>
+			<target state="final">आपका पासवर्ड
+Hi %s
+हम इस ईमेल एड्रेस के लिए एक उपयोगकर्ता नाम नहीं ढूंढ सके और इसलिए आपको पासवर्ड नहीं भेज सकते। सम्भवतः आपने ईमेल पता अशुद्ध ढंग से टाइप किया है (ऊपरी/निचली मामले में भेदभाव करता है) अथवा सम्भवतः आपने अभी तक पंजीकरण नहीं किया है?</target></trans-unit>
+      <trans-unit id="ll_forgot_validate_reset_password" resname="ll_forgot_validate_reset_password" xml:space="preserve" approved="yes">
+				<source>Your new password
+Dear %s,
+
+This email was sent in response to your request to reset your password. Please click on the link below.
+%s
+
+For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.</source>
+			<target state="final">आपका नया पासवर्डप्रिय %s,यह ईमेल आपके पासवर्ड रिसेट करने के अनुरोध के उत्तर में भेजी गई थी। कृपया निम्नलिखित लिंक पर क्लिक करें।%sसुरक्षा कारणों से, यह लिंक केवल %s तक सक्रिय है। अगर आप उस समय से पहले लिंक पर नहीं जाते हैं, तो आपको पासवर्ड रिसेट कदमों को दोहराना पड़ेगा।</target></trans-unit>
+      <trans-unit id="ll_forgot_message" resname="ll_forgot_message" approved="yes">
+        <source>Please enter the email address by which you registered your user account. Then press "Send password" and your password will immediately be emailed to you. Make sure to spell your email address correctly.</source>
+        <target state="final">कृपया यह ईमेल पता दर्ज करें जिससे आपने अपने उपयोगकर्ता खाता पंजीकृत किया था। फिर "पासवर्ड भेजें" दबाएं और आपका पासवर्ड तत्काल आपको ईमेल किया जाएगा। अपना ईमेल पता सही ढंग से लिखने का ध्यान रखें।</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_message_emailSent" resname="ll_forgot_message_emailSent" approved="yes">
+        <source>Your password has now been sent to the email address %s</source>
+        <target state="final">आपका पासवर्ड अभी-अभी ईमेल एड्रेस %s पर भेज दिया गया है</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_reset_message" resname="ll_forgot_reset_message" approved="yes">
+        <source>Please enter your username or email address. Instructions for resetting the password will be immediately emailed to you.</source>
+        <target state="final">कृपया अपना उपयोगकर्ता नाम या ईमेल पता दर्ज करें। पासवर्ड रीसेट करने के निर्देश तत्काल आपको ईमेल किए जाएंगे।</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_reset_message_emailSent" resname="ll_forgot_reset_message_emailSent" approved="yes">
+        <source>An email has been sent to the address stored in your account and contains a link to reset your password. If you do not receive an email, your account or email address was not found.</source>
+        <target state="final">आपके खाते में संग्रहीत पते पर एक ईमेल भेजी गई है और यह एक लिंक है जो आपके पासवर्ड को रिसेट करता है। यदि आप ईमेल प्राप्त नहीं करते हैं, तो आपका खाता या ईमेल पता नहीं मिला।</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_reset_message_error" resname="ll_forgot_reset_message_error" approved="yes">
+        <source>Your account or email address does not exist.</source>
+        <target state="final">आपका खाता या ईमेल एड्रेस मौजूद नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_header_backToLogin" resname="ll_forgot_header_backToLogin" approved="yes">
+        <source>Return to login form</source>
+        <target state="final">लॉग-इन फॉर्म पर वापस जाये</target>
+      </trans-unit>
+      <trans-unit id="ll_enter_your_data" resname="ll_enter_your_data" approved="yes">
+        <source>Username or email address</source>
+        <target state="final">उपयोगकर्ता नाम या ईमेल पता</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
