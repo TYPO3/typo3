@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:dashboard/Resources/Private/Language/module.xlf" date="2026-11-10T13:37:37Z" product-name="dashboard" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="short_description">
+        <source>Dashboard</source>
+        <target>crwdns379052:0crwdne379052:0</target>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>A dashboard that can show widgets of all kind of extensions</source>
+        <target>crwdns379054:0crwdne379054:0</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Dashboard</source>
+        <target>crwdns379056:0crwdne379056:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
