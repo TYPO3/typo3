@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/move_page.xlf" date="2024-03-08T20:22:34Z" product-name="backend" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="headline" approved="yes">
+        <source>Move page "%1$s" [%2$d]</source>
+        <target state="final">Déplacer la page « %1$s » [%2$d]</target>
+      </trans-unit>
+      <trans-unit id="currentPath" approved="yes">
+        <source>Current path</source>
+        <target state="final">Chemin actuel</target>
+      </trans-unit>
+      <trans-unit id="makeCopy" approved="yes">
+        <source>Copy page instead of moving page</source>
+        <target state="final">Copier la page au lieu de la déplacer</target>
+      </trans-unit>
+      <trans-unit id="samePageConflict" approved="yes">
+        <source>The page "%1$s" [%2$d] cannot get moved into itself.</source>
+        <target state="final">La page « %1$s » [%2$d] ne peut pas être déplacée dans elle-même.</target>
+      </trans-unit>
+      <trans-unit id="action.pasteAbove" approved="yes">
+        <source>Paste above</source>
+        <target state="final">Coller avant</target>
+      </trans-unit>
+      <trans-unit id="action.pasteBelow" approved="yes">
+        <source>Paste below</source>
+        <target state="final">Coller après</target>
+      </trans-unit>
+      <trans-unit id="action.pasteInto" approved="yes">
+        <source>Paste into</source>
+        <target state="final">Coller dans</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pageMoved.title" approved="yes">
+        <source>Page successfully moved</source>
+        <target state="final">Page déplacée avec succès</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pageMoved.message" approved="yes">
+        <source>The page "%s" has been successfully moved.</source>
+        <target state="final">La page « %s » a été déplacée avec succès.</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pageCopied.title" approved="yes">
+        <source>Page successfully copied</source>
+        <target state="final">Page copiée avec succès</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pageCopied.message" approved="yes">
+        <source>The page "%s" has been successfully copied.</source>
+        <target state="final">La page « %s » a été copiée avec succès.</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pagePasted.action.dismiss" approved="yes">
+        <source>Dismiss</source>
+        <target state="final">Fermer</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pagePasted.action.open" approved="yes">
+        <source>Open "%s"</source>
+        <target state="final">Ouvrir « %s »</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
