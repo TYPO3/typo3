@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814890" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_wizards.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id="rte_undoLastChange" resname="rte_undoLastChange" approved="yes">
+        <source>Undo/Redo last change (%s ago)</source>
+        <target state="final">មិន​ធ្វើ/ធ្វើ​ឡើង​វិញ​នូវ​ការផ្លាស់ប្ដូរ​ចុងក្រោយ (%s មុន)</target>
+      </trans-unit>
+      <trans-unit id="tsprop" resname="tsprop" approved="yes">
+        <source>TypoScript property lookup</source>
+        <target state="final">រក​មើល​លក្ខណៈសម្បត្តិ​របស់ TypoScript</target>
+      </trans-unit>
+      <trans-unit id="tsprop_TSref" resname="tsprop_TSref" approved="yes">
+        <source>TSref online</source>
+        <target state="final">TSref ខ្សែ​បើក</target>
+      </trans-unit>
+      <trans-unit id="tsprop_tsconfig" resname="tsprop_tsconfig" approved="yes">
+        <source>TSconfig online</source>
+        <target state="final">TSconfig ខ្សែ​បើក</target>
+      </trans-unit>
+      <trans-unit id="tsprop_title" resname="tsprop_title" approved="yes">
+        <source>Object title</source>
+        <target state="final">ចំណងជើង​វត្ថុ</target>
+      </trans-unit>
+      <trans-unit id="tsprop_prefix" resname="tsprop_prefix" approved="yes">
+        <source>Object prefix</source>
+        <target state="final">ពាក្យ​នាំមុខ​របស់​វត្ថុ</target>
+      </trans-unit>
+      <trans-unit id="tsprop_mixer_indent" resname="tsprop_mixer_indent" approved="yes">
+        <source>Indent +2</source>
+        <target state="final">ចូល​បន្ទាត់ +២</target>
+      </trans-unit>
+      <trans-unit id="tsprop_mixer_outdent" resname="tsprop_mixer_outdent" approved="yes">
+        <source>Outdent -2</source>
+        <target state="final">ចេញ​បន្ទាត់ -២</target>
+      </trans-unit>
+      <trans-unit id="tsprop_mixer_wrap" resname="tsprop_mixer_wrap" approved="yes">
+        <source>Wrap</source>
+        <target state="final">ស្រោប</target>
+      </trans-unit>
+      <trans-unit id="tsprop_mixer_transfer" resname="tsprop_mixer_transfer" approved="yes">
+        <source>Transfer &amp; Close</source>
+        <target state="final">បញ្ជូន និង​បិទ</target>
+      </trans-unit>
+      <trans-unit id="tsprop_addToList" resname="tsprop_addToList" approved="yes">
+        <source>Add to list...</source>
+        <target state="final">បញ្ចូល​ទៅ​ក្នុង​បញ្ជី...</target>
+      </trans-unit>
+      <trans-unit id="table_title" resname="table_title" approved="yes">
+        <source>Table wizard</source>
+        <target state="final">តារាង​វីហ្សាដ</target>
+      </trans-unit>
+      <trans-unit id="table_smallFields" resname="table_smallFields" approved="yes">
+        <source>Small fields</source>
+        <target state="final">ហ្វៀលដ៍​តូច</target>
+      </trans-unit>
+      <trans-unit id="table_addColumn" resname="table_addColumn" approved="yes">
+        <source>Add column to the right</source>
+        <target state="final">បន្ថែម​ជួរឈរ​ពី​ខាង​ស្ដាំ</target>
+      </trans-unit>
+      <trans-unit id="table_removeColumn" resname="table_removeColumn" approved="yes">
+        <source>Remove column</source>
+        <target state="final">លុប​ជួរឈរ</target>
+      </trans-unit>
+      <trans-unit id="table_addRow" resname="table_addRow" approved="yes">
+        <source>Add row below</source>
+        <target state="final">បន្ថែម​ជួរដេក​ពីក្រោម</target>
+      </trans-unit>
+      <trans-unit id="table_removeRow" resname="table_removeRow" approved="yes">
+        <source>Remove row</source>
+        <target state="final">លុប​ជួរដេក</target>
+      </trans-unit>
+      <trans-unit id="table_left" resname="table_left" approved="yes">
+        <source>Move left</source>
+        <target state="final">រំកិល​ទៅ​ឆ្វេង</target>
+      </trans-unit>
+      <trans-unit id="table_right" resname="table_right" approved="yes">
+        <source>Move right</source>
+        <target state="final">រំកិល​ទៅ​ស្ដាំ</target>
+      </trans-unit>
+      <trans-unit id="table_up" resname="table_up" approved="yes">
+        <source>Move up</source>
+        <target state="final">រំកិល​ឡើង</target>
+      </trans-unit>
+      <trans-unit id="table_down" resname="table_down" approved="yes">
+        <source>Move down</source>
+        <target state="final">រំកិល​ចុះ</target>
+      </trans-unit>
+      <trans-unit id="table_top" resname="table_top" approved="yes">
+        <source>Move to top</source>
+        <target state="final">រំកិល​ទៅ​​លើ​គេ</target>
+      </trans-unit>
+      <trans-unit id="table_bottom" resname="table_bottom" approved="yes">
+        <source>Move to bottom</source>
+        <target state="final">រំកិល​ទៅ​ក្រោម​គេ</target>
+      </trans-unit>
+      <trans-unit id="table_start" resname="table_start" approved="yes">
+        <source>Move to first column</source>
+        <target state="final">រំកិល​ទៅ​ជួរឈរ​ដើម​គេ</target>
+      </trans-unit>
+      <trans-unit id="table_end" resname="table_end" approved="yes">
+        <source>Move to last column</source>
+        <target state="final">រំកិល​ទៅ​ជួរ​ឈរ​ចុងក្រោយ</target>
+      </trans-unit>
+      <trans-unit id="table_noData" resname="table_noData" approved="yes">
+        <source>No table,field or uid given</source>
+        <target state="final">មិនមាន​តារាង, ហ្វៀលដ៍ ឬ uid ផ្ដល់​ឱ្យ</target>
+      </trans-unit>
+      <trans-unit id="forms_title" resname="forms_title" approved="yes">
+        <source>Forms wizard</source>
+        <target state="final">ទម្រង់​វីហ្សាដ</target>
+      </trans-unit>
+      <trans-unit id="forms_refresh" resname="forms_refresh" approved="yes">
+        <source>Refresh without saving</source>
+        <target state="final">រីហ្វ្រេស​មិន​រក្សាទុក</target>
+      </trans-unit>
+      <trans-unit id="forms_label" resname="forms_label" approved="yes">
+        <source>Label</source>
+        <target state="final">អក្សរ</target>
+      </trans-unit>
+      <trans-unit id="forms_type" resname="forms_type" approved="yes">
+        <source>Type</source>
+        <target state="final">ប្រភេទ</target>
+      </trans-unit>
+      <trans-unit id="forms_type_textarea" resname="forms_type_textarea" approved="yes">
+        <source>Text area</source>
+        <target state="final">Text area</target>
+      </trans-unit>
+      <trans-unit id="forms_type_input" resname="forms_type_input" approved="yes">
+        <source>Input field</source>
+        <target state="final">ហ្វៀលដ៍​បញ្ជូល</target>
+      </trans-unit>
+      <trans-unit id="forms_type_password" resname="forms_type_password" approved="yes">
+        <source>Password field</source>
+        <target state="final">ប្រអប់​លេខសម្ងាត់</target>
+      </trans-unit>
+      <trans-unit id="forms_type_file" resname="forms_type_file" approved="yes">
+        <source>File upload</source>
+        <target state="final">ឯកសារ​ដែល​អាប់ឡូត</target>
+      </trans-unit>
+      <trans-unit id="forms_type_check" resname="forms_type_check" approved="yes">
+        <source>Check box</source>
+        <target state="final">ប្រអប់​ធីក</target>
+      </trans-unit>
+      <trans-unit id="forms_type_select" resname="forms_type_select" approved="yes">
+        <source>Selector box</source>
+        <target state="final">ប្រអត់​ជ្រើស</target>
+      </trans-unit>
+      <trans-unit id="forms_type_radio" resname="forms_type_radio" approved="yes">
+        <source>Radio buttons</source>
+        <target state="final">ប៊ូតុង​រេឌីយ៉ូ</target>
+      </trans-unit>
+      <trans-unit id="forms_type_hidden" resname="forms_type_hidden" approved="yes">
+        <source>Hidden value</source>
+        <target state="final">តម្លៃ​មិន​បង្ហាញ</target>
+      </trans-unit>
+      <trans-unit id="forms_type_submit" resname="forms_type_submit" approved="yes">
+        <source>Submit Button</source>
+        <target state="final">ប៊ូតុង​បញ្ជូន</target>
+      </trans-unit>
+      <trans-unit id="forms_type_property" resname="forms_type_property" approved="yes">
+        <source>Property</source>
+        <target state="final">លក្ខណៈ​សម្បត្តិ</target>
+      </trans-unit>
+      <trans-unit id="forms_type_label" resname="forms_type_label" approved="yes">
+        <source>Label</source>
+        <target state="final">អក្សរ</target>
+      </trans-unit>
+      <trans-unit id="forms_required" resname="forms_required" approved="yes">
+        <source>Required</source>
+        <target state="final">ត្រូវការ</target>
+      </trans-unit>
+      <trans-unit id="forms_fieldName" resname="forms_fieldName" approved="yes">
+        <source>Field</source>
+        <target state="final">ហ្វៀលដ៍</target>
+      </trans-unit>
+      <trans-unit id="forms_cols" resname="forms_cols" approved="yes">
+        <source>Columns</source>
+        <target state="final">ជួរ​ឈរ</target>
+      </trans-unit>
+      <trans-unit id="forms_rows" resname="forms_rows" approved="yes">
+        <source>Rows</source>
+        <target state="final">ជួរ​ដេក</target>
+      </trans-unit>
+      <trans-unit id="forms_size" resname="forms_size" approved="yes">
+        <source>Size</source>
+        <target state="final">ទំហំ</target>
+      </trans-unit>
+      <trans-unit id="forms_max" resname="forms_max" approved="yes">
+        <source>Max</source>
+        <target state="final">អតិបរមា</target>
+      </trans-unit>
+      <trans-unit id="forms_autosize" resname="forms_autosize" approved="yes">
+        <source>Auto size</source>
+        <target state="final">ទំហំ​ស្វ័យប្រវត្តិ</target>
+      </trans-unit>
+      <trans-unit id="forms_extra" resname="forms_extra" approved="yes">
+        <source>No Wrap</source>
+        <target state="final">មិន​ចុះ​បន្ទាត់</target>
+      </trans-unit>
+      <trans-unit id="forms_default" resname="forms_default" approved="yes">
+        <source>Value</source>
+        <target state="final">តម្លៃ</target>
+      </trans-unit>
+      <trans-unit id="forms_multiple" resname="forms_multiple" approved="yes">
+        <source>Multiple</source>
+        <target state="final">ច្រើន</target>
+      </trans-unit>
+      <trans-unit id="forms_options" resname="forms_options" approved="yes">
+        <source>List options</source>
+        <target state="final">លិបិក្រម​ជម្រើស</target>
+      </trans-unit>
+      <trans-unit id="forms_checked" resname="forms_checked" approved="yes">
+        <source>Checked</source>
+        <target state="final">បាន​ធីក</target>
+      </trans-unit>
+      <trans-unit id="forms_preview" resname="forms_preview" approved="yes">
+        <source>Preview of element</source>
+        <target state="final">មើល​ធាតុ​ជាមុន</target>
+      </trans-unit>
+      <trans-unit id="forms_element" resname="forms_element" approved="yes">
+        <source>Element type</source>
+        <target state="final">ប្រភេទ​នៃ​ធាតុ</target>
+      </trans-unit>
+      <trans-unit id="forms_config" resname="forms_config" approved="yes">
+        <source>Detailed configuration</source>
+        <target state="final">លម្អិត​នៃ​ការកំណត់</target>
+      </trans-unit>
+      <trans-unit id="forms_eform_subject" resname="forms_eform_subject" approved="yes">
+        <source>Subject</source>
+        <target state="final">ប្រធាន​បទ</target>
+      </trans-unit>
+      <trans-unit id="forms_eform_recipient" resname="forms_eform_recipient" approved="yes">
+        <source>Recipient email</source>
+        <target state="final">អ៊ីម៉ែល​របស់​អ្នក​ទទួល</target>
+      </trans-unit>
+      <trans-unit id="forms_eform_html_enabled" resname="forms_eform_html_enabled" approved="yes">
+        <source>HTML mode enabled</source>
+        <target state="final">ដំណើរការ​ម៉ូត HTML</target>
+      </trans-unit>
+      <trans-unit id="forms_eform_formtype_mail" resname="forms_eform_formtype_mail" approved="yes">
+        <source>Send button label</source>
+        <target state="final">អក្សរ​សម្រាប់​​ប៊ូតុង​បញ្ជូន</target>
+      </trans-unit>
+      <trans-unit id="forms_special_eform" resname="forms_special_eform" approved="yes">
+        <source>Special configuration for mail forms</source>
+        <target state="final">ការកំណត់​ពិសេស​សម្រាប់​ទម្រង់​អ៊ីមេល</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_title" resname="colorpicker_title" approved="yes">
+        <source>Color Picker</source>
+        <target state="final">រើស​ពណ៌</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_setClose" resname="colorpicker_setClose" approved="yes">
+        <source>Save and Close</source>
+        <target state="final">រក្សាទុក និង​បិទ</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_black" resname="colorpicker_black" approved="yes">
+        <source>BLACK</source>
+        <target state="final">ខ្មៅ</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_white" resname="colorpicker_white" approved="yes">
+        <source>WHITE</source>
+        <target state="final">ស</target>
+      </trans-unit>
+      <trans-unit id="grid_windowTitle" resname="grid_windowTitle" approved="yes">
+        <source>Set cell name and column number</source>
+        <target state="final">កំណត់​ឈ្មោះ​ក្រឡា និង ចំនួន​គូឡោន</target>
+      </trans-unit>
+      <trans-unit id="grid_labelName" resname="grid_labelName" approved="yes">
+        <source>Name</source>
+        <target state="final">ឈ្មោះ</target>
+      </trans-unit>
+      <trans-unit id="grid_labelColumn" resname="grid_labelColumn" approved="yes">
+        <source>Column Number</source>
+        <target state="final">ចំនួន​គូឡោន</target>
+      </trans-unit>
+      <trans-unit id="grid_labelSave" resname="grid_labelSave" approved="yes">
+        <source>Save to cell</source>
+        <target state="final">រក្សាទុក​ទៅ​ក្រឡា</target>
+      </trans-unit>
+      <trans-unit id="grid_addColumn" resname="grid_addColumn" approved="yes">
+        <source>Add column</source>
+        <target state="final">ថែម​គូឡោន</target>
+      </trans-unit>
+      <trans-unit id="grid_removeColumn" resname="grid_removeColumn" approved="yes">
+        <source>Remove column</source>
+        <target state="final">លុប​ជួរឈរ</target>
+      </trans-unit>
+      <trans-unit id="grid_addRow" resname="grid_addRow" approved="yes">
+        <source>Add row</source>
+        <target state="final">ថែម​ជួរ​ដេក</target>
+      </trans-unit>
+      <trans-unit id="grid_removeRow" resname="grid_removeRow" approved="yes">
+        <source>Remove row</source>
+        <target state="final">លុប​ជួរដេក</target>
+      </trans-unit>
+      <trans-unit id="grid_editCell" resname="grid_editCell" approved="yes">
+        <source>Edit cell</source>
+        <target state="final">កែ​ក្រឡា</target>
+      </trans-unit>
+      <trans-unit id="grid_mergeCell" resname="grid_mergeCell" approved="yes">
+        <source>Combine with next cell</source>
+        <target state="final">បញ្ចូល​ជាមួយ​ក្រឡា​បន្ទាប់</target>
+      </trans-unit>
+      <trans-unit id="grid_splitCell" resname="grid_splitCell" approved="yes">
+        <source>Split cell</source>
+        <target state="final">កាត់​ចែក​ក្រឡា</target>
+      </trans-unit>
+      <trans-unit id="grid_name" resname="grid_name" approved="yes">
+        <source>Name</source>
+        <target state="final">ឈ្មោះ</target>
+      </trans-unit>
+      <trans-unit id="grid_column" resname="grid_column" approved="yes">
+        <source>Column number</source>
+        <target state="final">ចំនួន​គូឡោន</target>
+      </trans-unit>
+      <trans-unit id="grid_notSet" resname="grid_notSet" approved="yes">
+        <source>not set</source>
+        <target state="final">មិន​កំណត់</target>
+      </trans-unit>
+      <trans-unit id="grid_nameHelp" resname="grid_nameHelp" approved="yes">
+        <source>Enter a name for the cell.</source>
+        <target state="final">បំពេញ​ឈ្មោះ​ឲ្យ​ក្រឡា</target>
+      </trans-unit>
+      <trans-unit id="grid_columnHelp" resname="grid_columnHelp" approved="yes">
+        <source>The column position defines in which area the content is rendered in the frontend.</source>
+        <target state="final">ទីតាំង​គូឡោន​កំណត់​ក្នុង​កន្លែង​ដែល​មាតិកា​បង្ហាញ​លើ frontend ។</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
