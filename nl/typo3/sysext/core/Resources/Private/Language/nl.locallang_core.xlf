@@ -1,0 +1,2004 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_core.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="labels.datepicker.label" approved="yes">
+        <source>Open date picker</source>
+        <target state="final">Datumkiezer openen</target>
+      </trans-unit>
+      <trans-unit id="labels.openInNewWindow" approved="yes">
+        <source>Open in new window</source>
+        <target state="final">In nieuw venster openen</target>
+      </trans-unit>
+      <trans-unit id="labels.goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Ga terug</target>
+      </trans-unit>
+      <trans-unit id="labels.makeShortcut" approved="yes">
+        <source>Create a shortcut to this page?</source>
+        <target state="final">Een snelkoppeling naar deze pagina aanmaken?</target>
+      </trans-unit>
+      <trans-unit id="labels.makeBookmark" approved="yes">
+        <source>Create a bookmark to this record</source>
+        <target state="final">Een bladwijzer naar dit record aanmaken</target>
+      </trans-unit>
+      <trans-unit id="labels.alreadyBookmarked" approved="yes">
+        <source>This record is already bookmarked</source>
+        <target state="final">Dit record is al een bladwijzer</target>
+      </trans-unit>
+      <trans-unit id="labels.copyCurrentUrl" approved="yes">
+        <source>Copy URL of this record</source>
+        <target state="final">URL van dit record kopiëren</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord" approved="yes">
+        <source>The user '%s' began to edit this record %s ago.</source>
+        <target state="final">De gebruiker '%s' begon %s geleden dit record te bewerken.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord_content" approved="yes">
+        <source>The user '%s' began to edit content on this page %s ago.</source>
+        <target state="final">De gebruiker '%s' begon %s geleden de inhoud van deze pagina te bewerken.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecordUser" approved="yes">
+        <source>The %s '%s' began to edit this record %s ago.</source>
+        <target state="final">De %s '%s' begon %s geleden dit record te bewerken.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecordUser_content" approved="yes">
+        <source>The %s '%s' began to edit content on this page %s ago.</source>
+        <target state="final">De %s '%s' begon %s geleden de inhoud van deze pagina te bewerken.</target>
+      </trans-unit>
+      <trans-unit id="labels.color" approved="yes">
+        <source>Color</source>
+        <target state="final">Kleur</target>
+      </trans-unit>
+      <trans-unit id="labels.user" approved="yes">
+        <source>User</source>
+        <target state="final">Gebruiker</target>
+      </trans-unit>
+      <trans-unit id="labels.beUser" approved="yes">
+        <source>BE-User</source>
+        <target state="final">Backendgebruiker</target>
+      </trans-unit>
+      <trans-unit id="labels.feUser" approved="yes">
+        <source>FE-User</source>
+        <target state="final">Frontendgebruiker</target>
+      </trans-unit>
+      <trans-unit id="labels.unknownUser" approved="yes">
+        <source>-Unknown-</source>
+        <target state="final">-onbekend-</target>
+      </trans-unit>
+      <trans-unit id="labels.showRecords" approved="yes">
+        <source>Show records</source>
+        <target state="final">Records tonen</target>
+      </trans-unit>
+      <trans-unit id="labels.path" approved="yes">
+        <source>Path</source>
+        <target state="final">Pad</target>
+      </trans-unit>
+      <trans-unit id="labels.resetFilter" approved="yes">
+        <source>Reset Filter</source>
+        <target state="final">Filter wissen</target>
+      </trans-unit>
+      <trans-unit id="labels.table" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabel</target>
+      </trans-unit>
+      <trans-unit id="labels.upOneLevel" approved="yes">
+        <source>Up one level</source>
+        <target state="final">Een niveau omhoog</target>
+      </trans-unit>
+      <trans-unit id="labels.expandTable" approved="yes">
+        <source>Expand table</source>
+        <target state="final">Tabel uitklappen</target>
+      </trans-unit>
+      <trans-unit id="labels.collapseTable" approved="yes">
+        <source>Collapse table</source>
+        <target state="final">Tabel inklappen</target>
+      </trans-unit>
+      <trans-unit id="labels.enterSearchString" approved="yes">
+        <source>Enter search term</source>
+        <target state="final">Voer zoekterm in</target>
+      </trans-unit>
+      <trans-unit id="labels.enterSearchLevels" approved="yes">
+        <source>This page|1 level down|2 levels down|3 levels down|4 levels down</source>
+        <target state="final">Deze pagina|1 niveau lager|2 niveaus lager|3 niveaus lager|4 niveaus lager</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.0" approved="yes">
+        <source>This page</source>
+        <target state="final">Deze pagina</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.1" approved="yes">
+        <source>1 level down</source>
+        <target state="final">1 niveau omlaag</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.2" approved="yes">
+        <source>2 levels down</source>
+        <target state="final">2 niveau's omlaag</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.3" approved="yes">
+        <source>3 levels down</source>
+        <target state="final">3 niveau's omlaag</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.4" approved="yes">
+        <source>4 levels down</source>
+        <target state="final">4 niveau's omlaag</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.infinite" approved="yes">
+        <source>Infinite levels</source>
+        <target state="final">Oneindige niveau's</target>
+      </trans-unit>
+      <trans-unit id="labels.noEditPermission" approved="yes">
+        <source>Sorry, you didn't have proper permissions to perform this change.</source>
+        <target state="final">Sorry, u heeft niet de juiste bevoegdheden om deze wijziging uit te voeren.</target>
+      </trans-unit>
+      <trans-unit id="labels.fieldsMissing.title" approved="yes">
+        <source>Alert</source>
+        <target state="final">Waarschuwing</target>
+      </trans-unit>
+      <trans-unit id="labels.fieldsMissing" approved="yes">
+        <source>The fields marked with an exclamation mark are not yet correctly filled in. Please complete them properly.</source>
+        <target state="final">De velden gemarkeerd met een uitroepteken zijn nog niet correct ingevuld. Vul deze aan.</target>
+      </trans-unit>
+      <trans-unit id="labels.fieldsChanged" approved="yes">
+        <source>Important: There are unsaved changes in the form. Continuing without saving will discard your changes. Continue?</source>
+        <target state="final">Belangrijk: Er zijn niet-opgeslagen wijzigingen in het formulier. Doorgaan zonder opslaan zal uw wijzigingen annuleren. Doorgaan?</target>
+      </trans-unit>
+      <trans-unit id="labels.remainingCharacters" approved="yes">
+        <source>Remaining characters: {0}</source>
+        <target state="final">Tekens over: {0}</target>
+      </trans-unit>
+      <trans-unit id="labels.minCharactersLeft" approved="yes">
+        <source>Characters missing: {0}</source>
+        <target state="final">Tekens ontbreken: {0}</target>
+      </trans-unit>
+      <trans-unit id="labels.maxItemsAllowed" approved="yes">
+        <source>A maximum of {0} child records are allowed.</source>
+        <target state="final">Er zijn maximaal {0} subrecords toegestaan.</target>
+      </trans-unit>
+      <trans-unit id="labels.noRTEfound" approved="yes">
+        <source>Notice: This field can only be edited with a Rich Text Editor. No editor is currently available or enabled.</source>
+        <target state="final">Opmerking: Dit veld kan alleen worden bewerkt met de Rich Text Editor (RTE). Er is op dit moment geen Editor beschikbaar of geactiveerd.</target>
+      </trans-unit>
+      <trans-unit id="labels.recordInformation" approved="yes">
+        <source>Record information</source>
+        <target state="final">Record informatie</target>
+      </trans-unit>
+      <trans-unit id="labels.disableRTE" approved="yes">
+        <source>Disable Rich Text Editor (RTE)</source>
+        <target state="final">Rich Text Editor (RTE) uitschakelen</target>
+      </trans-unit>
+      <trans-unit id="labels._CONTROL_" approved="yes">
+        <source>Control</source>
+        <target state="final">Bedieningselement</target>
+      </trans-unit>
+      <trans-unit id="labels._PATH_" approved="yes">
+        <source>Path</source>
+        <target state="final">Pad</target>
+      </trans-unit>
+      <trans-unit id="labels._LOCALIZATION_" approved="yes">
+        <source>Localization</source>
+        <target state="final">Vertaling</target>
+      </trans-unit>
+      <trans-unit id="labels._REF_" approved="yes">
+        <source>References</source>
+        <target state="final">Referenties</target>
+      </trans-unit>
+      <trans-unit id="labels.uid" approved="yes">
+        <source>Unique ID</source>
+        <target state="final">Uniek ID</target>
+      </trans-unit>
+      <trans-unit id="labels.pid" approved="yes">
+        <source>Parent page ID</source>
+        <target state="final">ID van bovenliggende pagina</target>
+      </trans-unit>
+      <trans-unit id="labels.tstamp" approved="yes">
+        <source>Last modified</source>
+        <target state="final">Laatst gewijzigd</target>
+      </trans-unit>
+      <trans-unit id="labels.crdate" approved="yes">
+        <source>Creation date</source>
+        <target state="final">Aanmaakdatum</target>
+      </trans-unit>
+      <trans-unit id="labels.cruser_id" approved="yes">
+        <source>Created by</source>
+        <target state="final">Aangemaakt door</target>
+      </trans-unit>
+      <trans-unit id="labels.sorting" approved="yes">
+        <source>Sorting</source>
+        <target state="final">Sortering</target>
+      </trans-unit>
+      <trans-unit id="labels.sorting.asc" approved="yes">
+        <source>Sort ascending</source>
+        <target state="final">Oplopend sorteren</target>
+      </trans-unit>
+      <trans-unit id="labels.sorting.desc" approved="yes">
+        <source>Sort descending</source>
+        <target state="final">Aflopend sorteren</target>
+      </trans-unit>
+      <trans-unit id="labels.t3ver_state" approved="yes">
+        <source>Workspace status</source>
+        <target state="final">Werkruimte status</target>
+      </trans-unit>
+      <trans-unit id="labels.t3ver_wsid" approved="yes">
+        <source>Workspace ID</source>
+        <target state="final">Werkruimte ID</target>
+      </trans-unit>
+      <trans-unit id="labels.t3ver_oid" approved="yes">
+        <source>Live record ID</source>
+        <target state="final">Live record ID</target>
+      </trans-unit>
+      <trans-unit id="labels.t3ver_stage" approved="yes">
+        <source>Workspace stage</source>
+        <target state="final">Werkruimte stap</target>
+      </trans-unit>
+      <trans-unit id="labels.l10n_diffsource" approved="yes">
+        <source>Translation differences</source>
+        <target state="final">Verschillen in vertaling</target>
+      </trans-unit>
+      <trans-unit id="labels.setFields" approved="yes">
+        <source>Set fields</source>
+        <target state="final">Velden instellen</target>
+      </trans-unit>
+      <trans-unit id="labels.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Zoeken</target>
+      </trans-unit>
+      <trans-unit id="labels.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Auteur</target>
+      </trans-unit>
+      <trans-unit id="labels.note" approved="yes">
+        <source>Note</source>
+        <target state="final">Aantekening</target>
+      </trans-unit>
+      <trans-unit id="labels.category" approved="yes">
+        <source>Category</source>
+        <target state="final">Categorie</target>
+      </trans-unit>
+      <trans-unit id="labels.reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">Vernieuwen</target>
+      </trans-unit>
+      <trans-unit id="labels.language" approved="yes">
+        <source>Language</source>
+        <target state="final">Taal</target>
+      </trans-unit>
+      <trans-unit id="labels.languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">Talen</target>
+      </trans-unit>
+      <trans-unit id="labels.view" approved="yes">
+        <source>View</source>
+        <target state="final">Weergave</target>
+      </trans-unit>
+      <trans-unit id="labels.view.layout" approved="yes">
+        <source>Layout</source>
+        <target state="final">Lay-out</target>
+      </trans-unit>
+      <trans-unit id="labels.view.language_comparison" approved="yes">
+        <source>Language Comparison</source>
+        <target state="final">Taal vergelijken</target>
+      </trans-unit>
+      <trans-unit id="labels.view.list" approved="yes">
+        <source>List</source>
+        <target state="final">Lijst</target>
+      </trans-unit>
+      <trans-unit id="labels.view.tiles" approved="yes">
+        <source>Tiles</source>
+        <target state="final">Tegels</target>
+      </trans-unit>
+      <trans-unit id="labels.view.showThumbnails" approved="yes">
+        <source>Show thumbnails</source>
+        <target state="final">Miniaturen tonen</target>
+      </trans-unit>
+      <trans-unit id="labels.view.showClipboard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">Klembord tonen</target>
+      </trans-unit>
+      <trans-unit id="labels.view.showSearch" approved="yes">
+        <source>Show search</source>
+        <target state="final">Zoeken tonen</target>
+      </trans-unit>
+      <trans-unit id="labels.view.selectColumns" approved="yes">
+        <source>Select columns</source>
+        <target state="final">Kolommen selecteren</target>
+      </trans-unit>
+      <trans-unit id="labels.share" approved="yes">
+        <source>Share</source>
+        <target state="final">Delen</target>
+      </trans-unit>
+      <trans-unit id="labels.csv" approved="yes">
+        <source>Download CSV file</source>
+        <target state="final">CSV-bestand downloaden</target>
+      </trans-unit>
+      <trans-unit id="labels.no_title" approved="yes">
+        <source>No title</source>
+        <target state="final">Geen titel</target>
+      </trans-unit>
+      <trans-unit id="labels.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuleren</target>
+      </trans-unit>
+      <trans-unit id="labels.deactivate" approved="yes">
+        <source>Deactivate</source>
+        <target state="final">Deactiveren</target>
+      </trans-unit>
+      <trans-unit id="labels.hidden" approved="yes">
+        <source>Hidden</source>
+        <target state="final">Verborgen</target>
+      </trans-unit>
+      <trans-unit id="labels.starttime" approved="yes">
+        <source>Start</source>
+        <target state="final">Start</target>
+      </trans-unit>
+      <trans-unit id="labels.endtime" approved="yes">
+        <source>End</source>
+        <target state="final">Eind</target>
+      </trans-unit>
+      <trans-unit id="labels.minutesHoursDaysYears" approved="yes">
+        <source>min|hrs|days|yrs|min|hour|day|year</source>
+        <target state="final">min|uren|dagen|jaren|min|uur|dag| jaar</target>
+      </trans-unit>
+      <trans-unit id="labels.menu" approved="yes">
+        <source>Menu</source>
+        <target state="final">Menu</target>
+      </trans-unit>
+      <trans-unit id="labels.showPage" approved="yes">
+        <source>View webpage</source>
+        <target state="final">Webpagina bekijken</target>
+      </trans-unit>
+      <trans-unit id="labels.showList" approved="yes">
+        <source>Show record list</source>
+        <target state="final">Lijst records tonen</target>
+      </trans-unit>
+      <trans-unit id="labels.ws.deletedElement" approved="yes">
+        <source>Deleted element</source>
+        <target state="final">Verwijderd element</target>
+      </trans-unit>
+      <trans-unit id="labels.ws.newLocation" approved="yes">
+        <source>New location (Move-to Pointer) WSID#%s</source>
+        <target state="final">Nieuwe locatie (Verplaatsen-naar Wijzer) WSID#%s</target>
+      </trans-unit>
+      <trans-unit id="labels.ws.newElement" approved="yes">
+        <source>New element</source>
+        <target state="final">Nieuw element</target>
+      </trans-unit>
+      <trans-unit id="labels.days" approved="yes">
+        <source>days</source>
+        <target state="final">dagen</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_0" approved="yes">
+        <source>This page</source>
+        <target state="final">Deze pagina</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_1" approved="yes">
+        <source>1 level</source>
+        <target state="final">1 niveau</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_2" approved="yes">
+        <source>2 levels</source>
+        <target state="final">2 niveaus</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_3" approved="yes">
+        <source>3 levels</source>
+        <target state="final">3 niveaus</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_4" approved="yes">
+        <source>4 levels</source>
+        <target state="final">4 niveaus</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_infi" approved="yes">
+        <source>Infinite</source>
+        <target state="final">Oneindig</target>
+      </trans-unit>
+      <trans-unit id="labels.allow" approved="yes">
+        <source>Allow</source>
+        <target state="final">Toestaan</target>
+      </trans-unit>
+      <trans-unit id="labels.deny" approved="yes">
+        <source>Deny</source>
+        <target state="final">Niet toestaan</target>
+      </trans-unit>
+      <trans-unit id="labels.automatic" approved="yes">
+        <source>Auto</source>
+        <target state="final">Auto</target>
+      </trans-unit>
+      <trans-unit id="labels.enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Ingeschakeld</target>
+      </trans-unit>
+      <trans-unit id="labels.show" approved="yes">
+        <source>Show</source>
+        <target state="final">Tonen</target>
+      </trans-unit>
+      <trans-unit id="labels.openTreeOptionsMenu" approved="yes">
+        <source>Open tree options menu</source>
+        <target state="final">Menu voor boomopties openen</target>
+      </trans-unit>
+      <trans-unit id="labels.openPageTreeOptionsMenu" approved="yes">
+        <source>Open page tree options menu</source>
+        <target state="final">Menu voor paginaboomopties openen</target>
+      </trans-unit>
+      <trans-unit id="labels.refresh" approved="yes">
+        <source>Reload the tree from server</source>
+        <target state="final">Vernieuwen</target>
+      </trans-unit>
+      <trans-unit id="labels.collapse" approved="yes">
+        <source>Collapse all tree items</source>
+        <target state="final">Klap alle boomitems in</target>
+      </trans-unit>
+      <trans-unit id="labels.temporaryPageTreeEntryPoints" approved="yes">
+        <source>Cancel temporary Page Tree Entry Points</source>
+        <target state="final">Tijdelijke paginaboom ingangen annuleren</target>
+      </trans-unit>
+      <trans-unit id="labels.refreshList" approved="yes">
+        <source>Reload list from server</source>
+        <target state="final">Lijst vanaf server herladen</target>
+      </trans-unit>
+      <trans-unit id="labels.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Sluiten</target>
+      </trans-unit>
+      <trans-unit id="labels.tableWizard" approved="yes">
+        <source>Table Wizard</source>
+        <target state="final">Tabelassistent</target>
+      </trans-unit>
+      <trans-unit id="labels.new" approved="yes">
+        <source>New</source>
+        <target state="final">Nieuw</target>
+      </trans-unit>
+      <trans-unit id="labels.list" approved="yes">
+        <source>List</source>
+        <target state="final">Lijst</target>
+      </trans-unit>
+      <trans-unit id="labels.link" approved="yes">
+        <source>Link</source>
+        <target state="final">Link</target>
+      </trans-unit>
+      <trans-unit id="labels.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Bewerken</target>
+      </trans-unit>
+      <trans-unit id="labels.createNew" approved="yes">
+        <source>Create new</source>
+        <target state="final">Maak nieuwe</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewPage" approved="yes">
+        <source>Create new %s</source>
+        <target state="final">Nieuwe %s aanmaken</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewRecord" approved="yes">
+        <source>Create new %s on page "%s"</source>
+        <target state="final">Nieuwe %s op pagina "%s" aanmaken</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewTranslation" approved="yes">
+        <source>Create a %s translation</source>
+        <target state="final">Maak een %s vertaling</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewRecordRootLevel" approved="yes">
+        <source>Create new %s on root level</source>
+        <target state="final">Nieuwe %s op rootniveau aanmaken</target>
+      </trans-unit>
+      <trans-unit id="labels.editPage" approved="yes">
+        <source>Edit %s "%s"</source>
+        <target state="final">%s "%s" bewerken</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecord" approved="yes">
+        <source>Edit %s "%s" on page "%s"</source>
+        <target state="final">%s "%s" op pagina "%s" bewerken</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecordNoTitle" approved="yes">
+        <source>Edit %s on page "%s"</source>
+        <target state="final">%s op pagina "%s" bewerken</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecordRootLevel" approved="yes">
+        <source>Edit %s "%s" on root level</source>
+        <target state="final">%s "%s" op rootniveau bewerken</target>
+      </trans-unit>
+      <trans-unit id="labels.editMultiple" approved="yes">
+        <source>Edit multiple</source>
+        <target state="final">Meerdere bewerken</target>
+      </trans-unit>
+      <trans-unit id="labels.records" approved="yes">
+        <source>{count, plural, one {# record} other {# records}}</source>
+        <target state="final">{count, plural, one {# record} other {# records}}</target>
+      </trans-unit>
+      <trans-unit id="labels.rootLevel" approved="yes">
+        <source>Root level</source>
+        <target state="final">Rootniveau</target>
+      </trans-unit>
+      <trans-unit id="labels.addnew" approved="yes">
+        <source>Add new</source>
+        <target state="final">Nieuw toevoegen</target>
+      </trans-unit>
+      <trans-unit id="labels.toggleall" approved="yes">
+        <source>Toggle all</source>
+        <target state="final">Alles (de)selecteren</target>
+      </trans-unit>
+      <trans-unit id="labels.toggleSelection" approved="yes">
+        <source>Toggle selection</source>
+        <target state="final">Selectie omkeren</target>
+      </trans-unit>
+      <trans-unit id="labels.selected" approved="yes">
+        <source>Selected Items</source>
+        <target state="final">Geselecteerde items</target>
+      </trans-unit>
+      <trans-unit id="labels.items" approved="yes">
+        <source>Available Items</source>
+        <target state="final">Beschikbare items</target>
+      </trans-unit>
+      <trans-unit id="labels.filter_items" approved="yes">
+        <source>Filter items</source>
+        <target state="final">Items filteren</target>
+      </trans-unit>
+      <trans-unit id="labels.remove_selected" approved="yes">
+        <source>Remove selected items</source>
+        <target state="final">Geselecteerde items verwijderen</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_top" approved="yes">
+        <source>Move selected items to top</source>
+        <target state="final">Geselecteerd item naar begin van de lijst verplaatsen</target>
+      </trans-unit>
+      <trans-unit id="labels.move_up" approved="yes">
+        <source>Move selected items upwards</source>
+        <target state="final">Geselecteerd item een stap naar boven verplaatsen</target>
+      </trans-unit>
+      <trans-unit id="labels.move_down" approved="yes">
+        <source>Move selected items downwards</source>
+        <target state="final">Geselecteerd item een stap naar beneden verplaatsen</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_bottom" approved="yes">
+        <source>Move selected items to bottom</source>
+        <target state="final">Geselecteerd item naar eind van de lijst verplaatsen</target>
+      </trans-unit>
+      <trans-unit id="labels.move" approved="yes">
+        <source>Move this item</source>
+        <target state="final">Dit item verplaatsen</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_elements" approved="yes">
+        <source>Browse for elements</source>
+        <target state="final">Blader naar elementen</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_folder" approved="yes">
+        <source>Browse for folders</source>
+        <target state="final">Blader naar mappen</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_db" approved="yes">
+        <source>Browse for records</source>
+        <target state="final">Door records bladeren</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_file" approved="yes">
+        <source>Insert %s file(s) from the clipboard</source>
+        <target state="final">%s bestanden vanuit klembord invoegen</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_db" approved="yes">
+        <source>Insert %s record(s) from the clipboard</source>
+        <target state="final">%s records vanuit klembord invoegen</target>
+      </trans-unit>
+      <trans-unit id="labels.generalOptions" approved="yes">
+        <source>General options</source>
+        <target state="final">Algemene opties</target>
+      </trans-unit>
+      <trans-unit id="labels.generalOptions_more" approved="yes">
+        <source>General options (continued)</source>
+        <target state="final">Algemene opties (vervolg)</target>
+      </trans-unit>
+      <trans-unit id="labels.allTables" approved="yes">
+        <source>[All tables]</source>
+        <target state="final">[Alle tabellen]</target>
+      </trans-unit>
+      <trans-unit id="labels.noMatchingValue" approved="yes">
+        <source>Invalid value ("%s")</source>
+        <target state="final">Ongeldige waarde ("%s")</target>
+      </trans-unit>
+      <trans-unit id="labels.typeNotAllowedInColumn" approved="yes">
+        <source>This element of type "%s" is not allowed in this column.</source>
+        <target state="final">Dit element van het type "%s" is niet toegestaan in deze kolom.</target>
+      </trans-unit>
+      <trans-unit id="labels.noMatchingLabel" approved="yes">
+        <source>Missing label ("%s")</source>
+        <target state="final">Label ontbreekt ("%s")</target>
+      </trans-unit>
+      <trans-unit id="labels.thumbmode_clip" approved="yes">
+        <source>Show Thumbnails on ClipBoard</source>
+        <target state="final">Voorbeelden op klembord tonen</target>
+      </trans-unit>
+      <trans-unit id="labels.copymode" approved="yes">
+        <source>Copy items instead of moving them</source>
+        <target state="final">Items kopiëren in plaats van verplaatsen</target>
+      </trans-unit>
+      <trans-unit id="labels.normal" approved="yes">
+        <source>Normal (single record mode)</source>
+        <target state="final">Normaal (enkel record modus)</target>
+      </trans-unit>
+      <trans-unit id="labels.normal-description" approved="yes">
+        <source>"Normal" clipboard allows to copy/move one record at time.</source>
+        <target state="final">"Normaal" klembord staat het toe één record per keer te kopiëren/verplaatsen.</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs" approved="yes">
+        <source>Clipboard #</source>
+        <target state="final">Klembord nr.</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs-name" approved="yes">
+        <source>Clipboard #%s (multi-selection mode)</source>
+        <target state="final">Klembord #%s (multi-select modus)</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs-description" approved="yes">
+        <source>This clipboard allows to select and edit/copy/move multiple records at once. Choose it to show a checkbox by each record.</source>
+        <target state="final">Dit klembord maakt het mogelijk om meerdere records te selecteren en in één keer te bewerken/kopiëren/verplaatsen. Nadat dit klembord is gekozen verschijnt een checkbox bij elk record.</target>
+      </trans-unit>
+      <trans-unit id="labels.clipboard.delete_elements" approved="yes">
+        <source>Delete elements</source>
+        <target state="final">Elementen verwijderen</target>
+      </trans-unit>
+      <trans-unit id="labels.clipboard.clear_clipboard" approved="yes">
+        <source>Clear clipboard</source>
+        <target state="final">Klembord leegmakten</target>
+      </trans-unit>
+      <trans-unit id="labels.removeItem" approved="yes">
+        <source>Remove element</source>
+        <target state="final">Element verwijderen</target>
+      </trans-unit>
+      <trans-unit id="labels.holdDownCTRL" approved="yes">
+        <source>Important: Hold down the CTRL key while toggling elements in this list.</source>
+        <target state="final">Belangrijk: De CTRL-toets ingedrukt houden tijdens het kiezen van elementen in deze lijst.</target>
+      </trans-unit>
+      <trans-unit id="labels.revertSelection" approved="yes">
+        <source>Revert selection</source>
+        <target state="final">Selectie terugdraaien</target>
+      </trans-unit>
+      <trans-unit id="labels.setAllCheckboxes" approved="yes">
+        <source>Select All Checkboxes</source>
+        <target state="final">Alle vinkjes selecteren</target>
+      </trans-unit>
+      <trans-unit id="labels.openSelectionOptions" approved="yes">
+        <source>Open selection options</source>
+        <target state="final">Keuzeopties openen</target>
+      </trans-unit>
+      <trans-unit id="labels.checkAll" approved="yes">
+        <source>Check all</source>
+        <target state="final">Alles selecteren</target>
+      </trans-unit>
+      <trans-unit id="labels.uncheckAll" approved="yes">
+        <source>Uncheck all</source>
+        <target state="final">Alles deselecteren</target>
+      </trans-unit>
+      <trans-unit id="labels.selectAllLanguages" approved="yes">
+        <source>Select all available languages</source>
+        <target state="final">Alle beschikbare talen selecteren</target>
+      </trans-unit>
+      <trans-unit id="labels.deselectAllLanguages" approved="yes">
+        <source>Deselect all languages except default</source>
+        <target state="final">Alle talen behalve standaard deselecteren</target>
+      </trans-unit>
+      <trans-unit id="labels.defaultLanguageAlwaysShown" approved="yes">
+        <source>Default language is always shown</source>
+        <target state="final">Standaardtaal wordt altijd weergegeven</target>
+      </trans-unit>
+      <trans-unit id="labels.createTranslationFor" approved="yes">
+        <source>Create %s translation of this page</source>
+        <target state="final">%s vertaling van deze pagina maken</target>
+      </trans-unit>
+      <trans-unit id="labels.selection" approved="yes">
+        <source>Selection:</source>
+        <target state="final">Selectie:</target>
+      </trans-unit>
+      <trans-unit id="labels.noActionAvailable" approved="yes">
+        <source>No action available</source>
+        <target state="final">Geen actie beschikbaar</target>
+      </trans-unit>
+      <trans-unit id="labels.placeholder.override" approved="yes">
+        <source>Set element specific value (Default: "%s")</source>
+        <target state="final">Elementspecifieke waarde instellen (standaard: "%s")</target>
+      </trans-unit>
+      <trans-unit id="labels.placeholder.override_not_available" approved="yes">
+        <source>Set element specific value (No default)</source>
+        <target state="final">Elementspecifieke waarden instellen (geen standaard)</target>
+      </trans-unit>
+      <trans-unit id="labels.nullCheckbox" approved="yes">
+        <source>Set value</source>
+        <target state="final">Waarde instellen</target>
+      </trans-unit>
+      <trans-unit id="labels.changeInOrig" approved="yes">
+        <source>Changed in original translation</source>
+        <target state="final">Gewijzigd in origineel</target>
+      </trans-unit>
+      <trans-unit id="labels.expandAll" approved="yes">
+        <source>Expand all</source>
+        <target state="final">Alle uitklappen</target>
+      </trans-unit>
+      <trans-unit id="labels.generatePassword" approved="yes">
+        <source>Generate password</source>
+        <target state="final">Wachtwoord genereren</target>
+      </trans-unit>
+      <trans-unit id="labels.generatePassword.failed" approved="yes">
+        <source>Password generation failed. This could be due to a misconfiguration issue; please check the Administration log for details or contact your system administrator.</source>
+        <target state="final">Het genereren van het wachtwoord is mislukt. Dit kan worden veroorzaakt door een verkeerde configuratie; controleer het administratielogboek voor details of neem contact op met de systeembeheerder.</target>
+      </trans-unit>
+      <trans-unit id="labels.new_section" approved="yes">
+        <source>Create new</source>
+        <target state="final">Maak nieuwe</target>
+      </trans-unit>
+      <trans-unit id="labels.count" approved="yes">
+        <source>Quantity</source>
+        <target state="final">Hoeveelheid</target>
+      </trans-unit>
+      <trans-unit id="labels.title.searchIcon" approved="yes">
+        <source>Toggle search toolbar</source>
+        <target state="final">Activeer / deactiveer zoekbalk</target>
+      </trans-unit>
+      <trans-unit id="labels.title.searchString" approved="yes">
+        <source>Search term</source>
+        <target state="final">Zoekterm</target>
+      </trans-unit>
+      <trans-unit id="labels.title.limit" approved="yes">
+        <source>Limit</source>
+        <target state="final">Limiet</target>
+      </trans-unit>
+      <trans-unit id="labels.title.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Zoeken</target>
+      </trans-unit>
+      <trans-unit id="labels.title.search_levels" approved="yes">
+        <source>Search levels</source>
+        <target state="final">Zoekniveaus</target>
+      </trans-unit>
+      <trans-unit id="labels.label.searchString" approved="yes">
+        <source>Search term</source>
+        <target state="final">Zoekterm</target>
+      </trans-unit>
+      <trans-unit id="labels.label.limit" approved="yes">
+        <source>Limit</source>
+        <target state="final">Limiet</target>
+      </trans-unit>
+      <trans-unit id="labels.label.search_levels" approved="yes">
+        <source>Search levels</source>
+        <target state="final">Zoekniveaus</target>
+      </trans-unit>
+      <trans-unit id="labels.active" approved="yes">
+        <source>Active</source>
+        <target state="final">Actief</target>
+      </trans-unit>
+      <trans-unit id="labels.locked" approved="yes">
+        <source>Locked</source>
+        <target state="final">Vergrendeld</target>
+      </trans-unit>
+      <trans-unit id="labels.mfa.enabled" approved="yes">
+        <source>MFA enabled</source>
+        <target state="final">MFA ingeschakeld</target>
+      </trans-unit>
+      <trans-unit id="labels.mfa.disabled" approved="yes">
+        <source>MFA disabled</source>
+        <target state="final">MFA uitgeschakeld</target>
+      </trans-unit>
+      <trans-unit id="labels.recordReadonly" approved="yes">
+        <source>The table is defined as readonly and can't be edited.</source>
+        <target state="final">De tabel is gedefinieerd als alleen-lezen en kan niet gewijzigd worden.</target>
+      </trans-unit>
+      <trans-unit id="labels.inconsistentLanguageWarning" approved="yes">
+        <source>No translation parent assigned</source>
+        <target state="final">Geen bovenliggende vertaling toegewezen</target>
+      </trans-unit>
+      <trans-unit id="labels.notEditableInWorkspace" approved="yes">
+        <source>Not editable in this workspace without "Live" edit permissions.</source>
+        <target state="final">Niet bewerkbaar in deze werkruimte zonder rechten om "Live" te bewerken.</target>
+      </trans-unit>
+      <trans-unit id="labels.editingLiveRecordsWarning" approved="yes">
+        <source>Caution: These records are not versioned, you will edit the live records.</source>
+        <target state="final">Let op: Deze records zitten niet in versiebeheer, de live records zullen bewerkt worden.</target>
+      </trans-unit>
+      <trans-unit id="labels.th.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Naam</target>
+      </trans-unit>
+      <trans-unit id="labels.module_actions" approved="yes">
+        <source>Module actions</source>
+        <target state="final">Module-acties</target>
+      </trans-unit>
+      <trans-unit id="labels.new_page_translation" approved="yes">
+        <source>Create new translation</source>
+        <target state="final">Een nieuwe vertaling maken</target>
+      </trans-unit>
+      <trans-unit id="insert_after" approved="yes">
+        <source>Insert after</source>
+        <target state="final">Invoegen na</target>
+      </trans-unit>
+      <trans-unit id="insert_inside" approved="yes">
+        <source>Insert inside</source>
+        <target state="final">Invoegen binnen</target>
+      </trans-unit>
+      <trans-unit id="insert_page" approved="yes">
+        <source>Insert page</source>
+        <target state="final">Pagina invoegen</target>
+      </trans-unit>
+      <trans-unit id="insert_subpage" approved="yes">
+        <source>Insert subpage</source>
+        <target state="final">Subpagina invoegen</target>
+      </trans-unit>
+      <trans-unit id="alttext.suggestSearching" approved="yes">
+        <source>Searching...</source>
+        <target state="final">Zoeken...</target>
+      </trans-unit>
+      <trans-unit id="ver.online" approved="yes">
+        <source>Online</source>
+        <target state="final">Online</target>
+      </trans-unit>
+      <trans-unit id="ver.mgm" approved="yes">
+        <source>Version Management</source>
+        <target state="final">Versiebeheer</target>
+      </trans-unit>
+      <trans-unit id="ver.selVer" approved="yes">
+        <source>Select version</source>
+        <target state="final">Versie selecteren</target>
+      </trans-unit>
+      <trans-unit id="ver.swap" approved="yes">
+        <source>Swap/Publish</source>
+        <target state="final">Wisselen/Publiceren</target>
+      </trans-unit>
+      <trans-unit id="ver.swapPage" approved="yes">
+        <source>Publish this version of the page including content</source>
+        <target state="final">Deze versie van de pagina inclusief inhoud publiceren</target>
+      </trans-unit>
+      <trans-unit id="TYPO3_Element_Browser" approved="yes">
+        <source>TYPO3 Element Browser</source>
+        <target state="final">TYPO3-Elementverkenner</target>
+      </trans-unit>
+      <trans-unit id="labels.referencesToRecord" approved="yes">
+        <source>There are %s reference(s) to this record</source>
+        <target state="final">Er zijn %s referenties naar dit record</target>
+      </trans-unit>
+      <trans-unit id="labels.referencesToFile" approved="yes">
+        <source>There are %s reference(s) to this file</source>
+        <target state="final">Er zijn %s referenties naar dit bestand</target>
+      </trans-unit>
+      <trans-unit id="labels.translationsOfRecord" approved="yes">
+        <source>This record has %s translation(s) which will be deleted, too.</source>
+        <target state="final">Dit record heeft %s vertaling(en) die ook zullen worden verwijderd.</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.viewItem" approved="yes">
+        <source>View Item</source>
+        <target state="final">Item bekijken</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.fieldValues" approved="yes">
+        <source>Field values</source>
+        <target state="final">Veldwaarden</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.general" approved="yes">
+        <source>General</source>
+        <target state="final">Algemeen</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.references" approved="yes">
+        <source>References</source>
+        <target state="final">Referenties</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.referencesToThisItem" approved="yes">
+        <source>References to this item</source>
+        <target state="final">Verwijzingen naar dit item</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.referencesFromThisItem" approved="yes">
+        <source>References from this item</source>
+        <target state="final">Verwijzingen door dit item</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.file" approved="yes">
+        <source>File</source>
+        <target state="final">Bestand</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.dimensions" approved="yes">
+        <source>Dimensions</source>
+        <target state="final">Dimensies</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.filesize" approved="yes">
+        <source>Size</source>
+        <target state="final">Grootte</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.pixels" approved="yes">
+        <source>Pixels</source>
+        <target state="final">Pixels</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.files" approved="yes">
+        <source>files</source>
+        <target state="final">bestanden</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.cannotDisplayArchive" approved="yes">
+        <source>TYPO3_CONF_VARS[BE][disable_exec_function] is enabled, so the content of the archive file cannot be displayed.</source>
+        <target state="final">.</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.table" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabel</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.uid" approved="yes">
+        <source>Uid</source>
+        <target state="final">Uid</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.field" approved="yes">
+        <source>Field</source>
+        <target state="final">Veld</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.flexpointer" approved="yes">
+        <source>Flexpointer</source>
+        <target state="final">Flexpointer</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.softrefKey" approved="yes">
+        <source>Softref Key</source>
+        <target state="final">Softref-sleutel</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.sorting" approved="yes">
+        <source>Sorting</source>
+        <target state="final">Sortering</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.refTable" approved="yes">
+        <source>Ref Table</source>
+        <target state="final">Ref-tabel</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.refUid" approved="yes">
+        <source>Ref Uid</source>
+        <target state="final">Ref-uid</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.refString" approved="yes">
+        <source>Ref String</source>
+        <target state="final">Ref-tekenreeks</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.ftp_area" approved="yes">
+        <source>FTP Area</source>
+        <target state="final">FTP gebied</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.missing_record" approved="yes">
+        <source>Record is missing</source>
+        <target state="final">Record ontbreekt</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.pagetitle" approved="yes">
+        <source>New record</source>
+        <target state="final">Nieuw record</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.after" approved="yes">
+        <source>after</source>
+        <target state="final">na</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.inside" approved="yes">
+        <source>inside</source>
+        <target state="final">in</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.pagetitle" approved="yes">
+        <source>Upload files</source>
+        <target state="final">Bestanden uploaden</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.submit" approved="yes">
+        <source>Upload files</source>
+        <target state="final">Bestanden uploaden</target>
+      </trans-unit>
+      <trans-unit id="file_upload.dropzonehint.title" approved="yes">
+        <source>Drag &amp; drop to upload files</source>
+        <target state="final">Sleep bestanden hier om te uploaden</target>
+      </trans-unit>
+      <trans-unit id="file_upload.dropzonehint.message" approved="yes">
+        <source>Drop your files here, or &lt;u&gt;click, browse &amp; choose files&lt;/u&gt;</source>
+        <target state="final">Bestanden hier naartoe slepen, of &lt;u&gt;klik, blader &amp; kies bestanden&lt;/u&gt;</target>
+      </trans-unit>
+      <trans-unit id="file_upload.dropzone.close" approved="yes">
+        <source>Close file upload area</source>
+        <target state="final">Plek voor uploaden van bestanden sluiten</target>
+      </trans-unit>
+      <trans-unit id="file_upload.select-and-submit" approved="yes">
+        <source>Select &amp; upload files</source>
+        <target state="final">Kies &amp; upload bestanden</target>
+      </trans-unit>
+      <trans-unit id="file_upload.maxFileSizeExceeded" approved="yes">
+        <source>File "{0}" exceeds maximum file size of {1}</source>
+        <target state="final">Bestand "{0}" overschrijdt de maximale bestandsgrootte van {1}</target>
+      </trans-unit>
+      <trans-unit id="file_upload.fileNotAllowed" approved="yes">
+        <source>Filename "{0}" is not allowed</source>
+        <target state="final">Bestandsnaam "{0}" is niet toegestaan</target>
+      </trans-unit>
+      <trans-unit id="file_upload.fileExtensionExpected" approved="yes">
+        <source>Upload failed. A file with "{0}" extension is expected.</source>
+        <target state="final">Upload mislukt! Een bestand met "{0}" extensie wordt verwacht.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.fileExtensionDisallowed" approved="yes">
+        <source>Upload failed. The file extension "{0}" is not allowed.</source>
+        <target state="final">Upload mislukt. De bestandsextensie "{0}" is niet toegestaan.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.uploadFailed" approved="yes">
+        <source>Upload failed for "{0}"</source>
+        <target state="final">Upload mislukt voor "{0}"</target>
+      </trans-unit>
+      <trans-unit id="file_upload.uploadSucceeded" approved="yes">
+        <source>File has been uploaded.</source>
+        <target state="final">Bestand is geüpload.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.upload-in-progress" approved="yes">
+        <source>File upload in progress...</source>
+        <target state="final">Bestand uploaden...</target>
+      </trans-unit>
+      <trans-unit id="file_upload.upload-progress-info" approved="yes">
+        <source>Uploading file {0} out of {1} files.</source>
+        <target state="final">Uploaden van bestand {0} van {1}.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.upload-finished" approved="yes">
+        <source>Upload complete. Media module reloading...</source>
+        <target state="final">Uploaden compleet! Mediamodule wordt opnieuw geladen...</target>
+      </trans-unit>
+      <trans-unit id="file_upload.overwriteExistingFiles" approved="yes">
+        <source>Shall existing files be overwritten?</source>
+        <target state="final">Bestaande bestanden overschrijven?</target>
+      </trans-unit>
+      <trans-unit id="file_upload.header.originalFile" approved="yes">
+        <source>Original file</source>
+        <target state="final">Oorspronkelijk bestand</target>
+      </trans-unit>
+      <trans-unit id="file_upload.header.uploadedFile" approved="yes">
+        <source>Uploaded file</source>
+        <target state="final">Geüpload bestand</target>
+      </trans-unit>
+      <trans-unit id="file_upload.header.action" approved="yes">
+        <source>Action</source>
+        <target state="final">Actie</target>
+      </trans-unit>
+      <trans-unit id="file_upload.existingfiles.title" approved="yes">
+        <source>Some files exist already</source>
+        <target state="final">Een aantal bestanden bestaan reeds</target>
+      </trans-unit>
+      <trans-unit id="file_upload.existingfiles.description" approved="yes">
+        <source>Some files you wanted to upload exist already on the system. Please select what you want to do with each file.</source>
+        <target state="final">Een aantal van de bestanden die zijn geupload bestaan reeds op het systeem. Geef aan wat er met deze bestanden gedaan moet worden.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.skip" approved="yes">
+        <source>Skip the file</source>
+        <target state="final">Sla het bestand over</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">Hernoemen</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.override" approved="yes">
+        <source>Overwrite</source>
+        <target state="final">Overschrijven</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.use_existing" approved="yes">
+        <source>Use existing file</source>
+        <target state="final">Gebruik bestaand bestand</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.label" approved="yes">
+        <source>Alternatively, choose a mass action</source>
+        <target state="final">Anders, kies een bulkactie</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.empty" approved="yes">
+        <source>Please choose</source>
+        <target state="final">Maak een keuze</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.skip" approved="yes">
+        <source>Skip all files</source>
+        <target state="final">Alle bestanden overslaan</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.rename" approved="yes">
+        <source>Rename all files</source>
+        <target state="final">Alle bestanden hernoemen</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.override" approved="yes">
+        <source>Overwrite all files</source>
+        <target state="final">Alle bestanden overschrijven</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.use_existing" approved="yes">
+        <source>Use existing files</source>
+        <target state="final">Gebruik bestaande bestanden</target>
+      </trans-unit>
+      <trans-unit id="file_upload.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuleren</target>
+      </trans-unit>
+      <trans-unit id="file_upload.button.continue" approved="yes">
+        <source>Continue with selected actions</source>
+        <target state="final">Ga door met de geselecteerde acties</target>
+      </trans-unit>
+      <trans-unit id="file_upload.reload.filelist" approved="yes">
+        <source>Reload filelist</source>
+        <target state="final">Bestandslijst herladen</target>
+      </trans-unit>
+      <trans-unit id="file_upload.reload.filelist.message" approved="yes">
+        <source>To enable the controls, the filelist has to be reloaded.</source>
+        <target state="final">Om besturingselementen in te schakelen, moet de bestandslijst opnieuw geladen worden.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.reload.filelist.actions.dismiss" approved="yes">
+        <source>Dismiss</source>
+        <target state="final">Afwijzen</target>
+      </trans-unit>
+      <trans-unit id="file_upload.reload.filelist.actions.reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">Herladen</target>
+      </trans-unit>
+      <trans-unit id="file_download.prepare" approved="yes">
+        <source>File download is being prepared</source>
+        <target state="final">Bestand downloaden wordt voorbereid</target>
+      </trans-unit>
+      <trans-unit id="file_download.invalidSelection" approved="yes">
+        <source>The selected elements can not be downloaded</source>
+        <target state="final">De geselecteerde elementen kunnen niet worden gedownload</target>
+      </trans-unit>
+      <trans-unit id="file_download.success" approved="yes">
+        <source>File download successfully prepared</source>
+        <target state="final">Bestand downloaden succesvol voorbereid</target>
+      </trans-unit>
+      <trans-unit id="file_download.error" approved="yes">
+        <source>Could not prepare files for download</source>
+        <target state="final">Kan bestanden niet voorbereiden voor download</target>
+      </trans-unit>
+      <trans-unit id="file_download.noFiles" approved="yes">
+        <source>Could not find any allowed file</source>
+        <target state="final">Kan geen toegestaan bestand vinden</target>
+      </trans-unit>
+      <trans-unit id="file_download.noFiles.message" approved="yes">
+        <source>Please check your selection, since there might be file extension limitations, defined by your administrator.</source>
+        <target state="final">Controleer de selectie, omdat er beperkingen voor bestandsextensies kunnen zijn die gedefinieerd zijn door de beheerder.</target>
+      </trans-unit>
+      <trans-unit id="file_rename.title" approved="yes">
+        <source>Rename</source>
+        <target state="final">Hernoemen</target>
+      </trans-unit>
+      <trans-unit id="file_rename.label" approved="yes">
+        <source>New filename</source>
+        <target state="final">Nieuwe bestandsnaam</target>
+      </trans-unit>
+      <trans-unit id="file_rename.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuleren</target>
+      </trans-unit>
+      <trans-unit id="file_rename.button.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">Hernoemen</target>
+      </trans-unit>
+      <trans-unit id="folder_rename.label" approved="yes">
+        <source>New folder name</source>
+        <target state="final">Nieuwe mapnaam</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media" approved="yes">
+        <source>Add new media asset</source>
+        <target state="final">Nieuw mediabestand toevoegen</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.label" approved="yes">
+        <source>URL of remote source</source>
+        <target state="final">URL van de externe bron</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.allowedProviders" approved="yes">
+        <source>Allowed media providers</source>
+        <target state="final">Toegestane media-aanbieders</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.button" approved="yes">
+        <source>Add media by URL</source>
+        <target state="final">Toevoegen van media via URL</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.submit" approved="yes">
+        <source>Add media</source>
+        <target state="final">Toevoegen media</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.added" approved="yes">
+        <source>Added media</source>
+        <target state="final">Media toegevoegd</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.placeholder" approved="yes">
+        <source>Paste media URL here...</source>
+        <target state="final">Media-URL hier plakken...</target>
+      </trans-unit>
+      <trans-unit id="online_media.error.new_media.failed" approved="yes">
+        <source>Adding media failed</source>
+        <target state="final">Media toevoegen mislukt</target>
+      </trans-unit>
+      <trans-unit id="online_media.error.invalid_url" approved="yes">
+        <source>Unknown/not allowed URL</source>
+        <target state="final">Unbekende/niet-toegestane URL</target>
+      </trans-unit>
+      <trans-unit id="online_media.error.already_exists" approved="yes">
+        <source>Online media "%s" does already exist in this folder.</source>
+        <target state="final">Online media "%s" bestaat al in deze map.</target>
+      </trans-unit>
+      <trans-unit id="online_media.update.success" approved="yes">
+        <source>Successfully updated online media</source>
+        <target state="final">Online media succesvol bijgewerkt</target>
+      </trans-unit>
+      <trans-unit id="online_media.update.error" approved="yes">
+        <source>Error on updating online media</source>
+        <target state="final">Fout bij het bijwerken van online media</target>
+      </trans-unit>
+      <trans-unit id="file_clipupload.php.warning_head" approved="yes">
+        <source>Upload path error</source>
+        <target state="final">Verkeerd upload pad!</target>
+      </trans-unit>
+      <trans-unit id="file_clipupload.php.warning" approved="yes">
+        <source>No upload-folder is found. You should create a TEMP-folder ("_temp_") in the root of one of your mounts first</source>
+        <target state="final">Er is geen upload-map gevonden. Maak eerst een TEMP-map ("_temp_") in de hoofdmap van een van de startpunten</target>
+      </trans-unit>
+      <trans-unit id="mess.redraw" approved="yes">
+        <source>Redrawing the page will discard the current data. Do you want to continue?</source>
+        <target state="final">Opnieuw opbouwen van de pagina verwijdert de huidige data. Doorgaan?</target>
+      </trans-unit>
+      <trans-unit id="mess.delete" approved="yes">
+        <source>Are you sure you want to delete '%s'?</source>
+        <target state="final">Weet u zeker dat u '%s' wilt verwijderen?</target>
+      </trans-unit>
+      <trans-unit id="mess.delete.title" approved="yes">
+        <source>Delete this record?</source>
+        <target state="final">Dit record verwijderen?</target>
+      </trans-unit>
+      <trans-unit id="mess.deleteClip" approved="yes">
+        <source>Are you sure you want to delete ALL referenced elements (%s) on the clipboard?</source>
+        <target state="final">Weet u zeker dat u alle elementen (%s) wilt verwijderen van het klembord?</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login" approved="yes">
+        <source>Your login has probably expired. Do you want to refresh it now?</source>
+        <target state="final">Uw aanmelding is waarschijnlijk verlopen. Wilt u nu opnieuw aanmelden?</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_refresh_button" approved="yes">
+        <source>Stay logged in</source>
+        <target state="final">Ingelogd blijven</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_direct_logout_button" approved="yes">
+        <source>No, log out.</source>
+        <target state="final">Nee, afmelden</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_logging_in" approved="yes">
+        <source>Logging in...</source>
+        <target state="final">Aanmelden...</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_failed" approved="yes">
+        <source>Login failed</source>
+        <target state="final">Aanmelding mislukt</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_failed_message" approved="yes">
+        <source>Password not correct.</source>
+        <target state="final">Verkeerd wachtwoord.</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_title" approved="yes">
+        <source>Refresh Login to TYPO3 (User: %s)</source>
+        <target state="final">Aanmelding bij TYPO3 (Gebruiker: %s) vernieuwen</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_username" approved="yes">
+        <source>Username</source>
+        <target state="final">Gebruikersnaam</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_password" approved="yes">
+        <source>Password</source>
+        <target state="final">Wachtwoord</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_button" approved="yes">
+        <source>Login</source>
+        <target state="final">Aanmelden</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_exit_button" approved="yes">
+        <source>Exit</source>
+        <target state="final">Sluit</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_emptyPassword" approved="yes">
+        <source>Empty password is not allowed</source>
+        <target state="final">Leeg wachtwoord is niet toegestaan</target>
+      </trans-unit>
+      <trans-unit id="mess.please_wait" approved="yes">
+        <source>Please wait ...</source>
+        <target state="final">Een moment geduld ...</target>
+      </trans-unit>
+      <trans-unit id="mess.be_locked" approved="yes">
+        <source>The TYPO3 backend is currently locked for maintenance. Leave this browser window open and the backend will automatically become available again once maintenance is complete.</source>
+        <target state="final">De TYPO3 backend is momenteel gesloten wegens onderhoud. Laat het browservenster open staan. De backend zal automatisch weer beschikbaar worden zodra het onderhoud verricht is.</target>
+      </trans-unit>
+      <trans-unit id="mess.login_about_to_expire" approved="yes">
+        <source>Your TYPO3 login is about to expire. Please confirm that you want to stay logged in.</source>
+        <target state="final">Uw TYPO3-aanmelding verloopt elk moment. Bevestig dat u aangemeld wilt blijven.</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_logout_button" approved="yes">
+        <source>Log me out</source>
+        <target state="final">Afmelden</target>
+      </trans-unit>
+      <trans-unit id="mess.login_refresh_about_to_expire" approved="yes">
+        <source>Your TYPO3 login is about to expire. Please confirm that you want to be logged out.</source>
+        <target state="final">De TYPO3 login-sessie verloopt bijna. Bevestig dat je wilt worden afgemeld.</target>
+      </trans-unit>
+      <trans-unit id="mess.login_about_to_expire_title" approved="yes">
+        <source>TYPO3 login expiration notice</source>
+        <target state="final">Melding van verlopen TYPO3-aanmelding</target>
+      </trans-unit>
+      <trans-unit id="mess.login_expired" approved="yes">
+        <source>Your TYPO3 login has expired. You need to login again if you want to continue. Otherwise you can close the current browser window.</source>
+        <target state="final">Uw TYPO3 aanmelding is verlopen. U dient u opnieuw aan te melden als u verder wilt gaan. Anders kunt u uw huidige browservenster sluiten.</target>
+      </trans-unit>
+      <trans-unit id="mess.noSelItemForEdit" approved="yes">
+        <source>Please select one or more items in the list before you can edit.</source>
+        <target state="final">Selecteer een of meerdere items in de lijst voordat u iets kunt bewerken.</target>
+      </trans-unit>
+      <trans-unit id="mess.refreshRequired.title" approved="yes">
+        <source>Refresh required</source>
+        <target state="final">Verversen nodig</target>
+      </trans-unit>
+      <trans-unit id="mess.refreshRequired.content" approved="yes">
+        <source>This change will affect which fields are available in the form. Would you like to save now in order to refresh the display?</source>
+        <target state="final">Deze wijziging beïnvloedt welke velden beschikbaar zijn in het formulier. Nu opslaan om het scherm te verversen?</target>
+      </trans-unit>
+      <trans-unit id="mess.refreshRequired.cancel" approved="yes">
+        <source>Keep editing</source>
+        <target state="final">Doorgaan met bewerken</target>
+      </trans-unit>
+      <trans-unit id="mess.refreshRequired.confirm" approved="yes">
+        <source>Save and refresh</source>
+        <target state="final">Opslaan en verversen</target>
+      </trans-unit>
+      <trans-unit id="mess.move_into" approved="yes">
+        <source>Move "%s" into "%s"?</source>
+        <target state="final">"%s" naar "%s" verplaatsen?</target>
+      </trans-unit>
+      <trans-unit id="mess.move_before" approved="yes">
+        <source>Move "%s" to before "%s"?</source>
+        <target state="final">"%s" voor "%s" verplaatsen?</target>
+      </trans-unit>
+      <trans-unit id="mess.move_after" approved="yes">
+        <source>Move "%s" to after "%s"?</source>
+        <target state="final">"%s" na "%s" verplaatsen?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_into" approved="yes">
+        <source>Copy "%s" into "%s"?</source>
+        <target state="final">"%s" naar "%s" kopiëren?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_after" approved="yes">
+        <source>Copy "%s" to after "%s"?</source>
+        <target state="final">"%s" na "%s" kopiëren?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_into" approved="yes">
+        <source>Copy all elements (%s) from the clipboard into "%s"?</source>
+        <target state="final">Alle elementen (%s) van het klembord naar "%s" kopiëren?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_after" approved="yes">
+        <source>Copy all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target state="final">Alle elementen (%s) van het klembord naar de positie na "%s" kopiëren?</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_into" approved="yes">
+        <source>Move all elements (%s) from the clipboard into "%s"?</source>
+        <target state="final">Alle elementen (%s) van het klembord naar "%s" verplaatsen?</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_after" approved="yes">
+        <source>Move all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target state="final">Alle elementen (%s) van het klembord naar de positie na "%s" verplaatsen?</target>
+      </trans-unit>
+      <trans-unit id="rm.menu" approved="yes">
+        <source>[menu]</source>
+        <target state="final">[menu]</target>
+      </trans-unit>
+      <trans-unit id="rm.saveDoc" approved="yes">
+        <source>Save</source>
+        <target state="final">Opslaan</target>
+      </trans-unit>
+      <trans-unit id="rm.viewDoc" approved="yes">
+        <source>View</source>
+        <target state="final">Tonen</target>
+      </trans-unit>
+      <trans-unit id="rm.saveDocShow" approved="yes">
+        <source>Save and view page</source>
+        <target state="final">Opslaan en pagina tonen</target>
+      </trans-unit>
+      <trans-unit id="rm.saveCloseDoc" approved="yes">
+        <source>Save and close</source>
+        <target state="final">Opslaan en sluiten</target>
+      </trans-unit>
+      <trans-unit id="rm.saveCloseAllDocs" approved="yes">
+        <source>Save and close all</source>
+        <target state="final">Alle documenten opslaan en sluiten</target>
+      </trans-unit>
+      <trans-unit id="rm.saveNewDoc" approved="yes">
+        <source>Save and create a new one</source>
+        <target state="final">Opslaan en een nieuwe aanmaken</target>
+      </trans-unit>
+      <trans-unit id="rm.newDoc" approved="yes">
+        <source>New</source>
+        <target state="final">Nieuw</target>
+      </trans-unit>
+      <trans-unit id="rm.duplicateDoc" approved="yes">
+        <source>Duplicate</source>
+        <target state="final">Dupliceren</target>
+      </trans-unit>
+      <trans-unit id="labels.recordDuplicated" approved="yes">
+        <source>The record has been duplicated.</source>
+        <target state="final">Het record is gedupliceerd.</target>
+      </trans-unit>
+      <trans-unit id="labels.recordDuplicationFailed" approved="yes">
+        <source>The record could not be duplicated.</source>
+        <target state="final">Het record kon niet worden gedupliceerd.</target>
+      </trans-unit>
+      <trans-unit id="rm.closeDoc" approved="yes">
+        <source>Close</source>
+        <target state="final">Sluiten</target>
+      </trans-unit>
+      <trans-unit id="rm.adminFunctions" approved="yes">
+        <source>Admin functions</source>
+        <target state="final">Beheerfuncties</target>
+      </trans-unit>
+      <trans-unit id="rm.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Bewerken</target>
+      </trans-unit>
+      <trans-unit id="rm.export" approved="yes">
+        <source>Export</source>
+        <target state="final">Exporteer</target>
+      </trans-unit>
+      <trans-unit id="rm.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Verwijderen</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileNotDeletedHasReferences" approved="yes">
+        <source>File not deleted</source>
+        <target state="final">Bestand niet verwijderd</target>
+      </trans-unit>
+      <trans-unit id="message.description.fileNotDeletedHasReferences" approved="yes">
+        <source>The file "%s" cannot be deleted since it is still used at the following places</source>
+        <target state="final">Het bestand "%s" kan niet verwijderd worden omdat het nog gebruikt wordt op de volgende plaatsen</target>
+      </trans-unit>
+      <trans-unit id="message.header.folderNotDeletedHasFilesWithReferences" approved="yes">
+        <source>Folder not deleted</source>
+        <target state="final">Map niet verwijderd</target>
+      </trans-unit>
+      <trans-unit id="message.description.folderNotDeletedHasFilesWithReferences" approved="yes">
+        <source>The folder cannot be deleted since it still contains files in use.</source>
+        <target state="final">De map kan niet verwijderd worden omdat het nog bestanden bevat die gebruikt worden.</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileHasBrokenReferences" approved="yes">
+        <source>File has broken references</source>
+        <target state="final">Dit bestand heeft onjuiste referenties</target>
+      </trans-unit>
+      <trans-unit id="message.description.fileHasBrokenReferences" approved="yes">
+        <source>The file has %s broken reference(s) but it will be deleted regardless.</source>
+        <target state="final">Het bestand heeft %s onjuiste referentie(s) maar zal desondanks verwijderd worden.</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileNotFound" approved="yes">
+        <source>File not found</source>
+        <target state="final">Bestand niet gevonden</target>
+      </trans-unit>
+      <trans-unit id="message.description.fileNotFound" approved="yes">
+        <source>The file %s is not found, possible already removed.</source>
+        <target state="final">Het bestand %s is niet gevonden, mogelijk is het bestand reeds verwijderd.</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileDeleted" approved="yes">
+        <source>File deleted</source>
+        <target state="final">Bestand verwijderd</target>
+      </trans-unit>
+      <trans-unit id="message.description.fileDeleted" approved="yes">
+        <source>The file "%s" was successfully deleted.</source>
+        <target state="final">Het bestand "%s" werd succesvol verwijderd.</target>
+      </trans-unit>
+      <trans-unit id="message.header.folderDeleted" approved="yes">
+        <source>Folder deleted</source>
+        <target state="final">Map verwijderd</target>
+      </trans-unit>
+      <trans-unit id="message.description.folderDeleted" approved="yes">
+        <source>The folder "%s" was successfully deleted.</source>
+        <target state="final">Verwijderen van map "%s" is geslaagd.</target>
+      </trans-unit>
+      <trans-unit id="buttons.exit" approved="yes">
+        <source>Exit</source>
+        <target state="final">Sluit</target>
+      </trans-unit>
+      <trans-unit id="buttons.selMenu_modules" approved="yes">
+        <source>Modules</source>
+        <target state="final">Modules</target>
+      </trans-unit>
+      <trans-unit id="buttons.clear" approved="yes">
+        <source>Clear</source>
+        <target state="final">Wis</target>
+      </trans-unit>
+      <trans-unit id="buttons.clipboard" approved="yes">
+        <source>Clipboard</source>
+        <target state="final">Klembord</target>
+      </trans-unit>
+      <trans-unit id="buttons.removeAll" approved="yes">
+        <source>Remove all</source>
+        <target state="final">Alles verwijderen</target>
+      </trans-unit>
+      <trans-unit id="buttons.toggleLinkExplanation" approved="yes">
+        <source>Toggle link explanation</source>
+        <target state="final">Linkuitleg omschakelen</target>
+      </trans-unit>
+      <trans-unit id="buttons.toggleSlugExplanation" approved="yes">
+        <source>Toggle manual URL segment</source>
+        <target state="final">Handmatig URL-segment omschakelen</target>
+      </trans-unit>
+      <trans-unit id="buttons.recreateSlugExplanation" approved="yes">
+        <source>Recalculate URL segment from page title</source>
+        <target state="final">URL-segment uit paginatitel herberekenen</target>
+      </trans-unit>
+      <trans-unit id="buttons.deactivateMfa" approved="yes">
+        <source>Deactivate multi-factor authentication</source>
+        <target state="final">Multi-factor authenticatie deactiveren</target>
+      </trans-unit>
+      <trans-unit id="buttons.deactivateMfaProvider" approved="yes">
+        <source>Deactivate %s</source>
+        <target state="final">%s deactiveren</target>
+      </trans-unit>
+      <trans-unit id="buttons.deactivateMfa.confirmation.text" approved="yes">
+        <source>Deactivate all active providers? This action cannot be undone. Caution: This will affect all users and decrease the security of the system.</source>
+        <target state="final">Alle actieve aanbieders deactiveren? Deze actie kan niet ongedaan worden gemaakt. Let op: dit zal van invloed zijn op alle gebruikers en de beveiliging van het systeem verminderen.</target>
+      </trans-unit>
+      <trans-unit id="buttons.deactivateMfaProvider.confirmation.text" approved="yes">
+        <source>Deactivate %s? This action cannot be undone. Caution: This will affect all users and decrease the security of the system.</source>
+        <target state="final">%s deactiveren? Deze actie kan niet ongedaan worden gemaakt. Let op: dit zal invloed hebben op alle gebruikers en de beveiliging van het systeem verlagen.</target>
+      </trans-unit>
+      <trans-unit id="slugCreation.success.page" approved="yes">
+        <source>This page will be reachable via %s</source>
+        <target state="final">Deze pagina is bereikbaar via %s</target>
+      </trans-unit>
+      <trans-unit id="slugCreation.success.record" approved="yes">
+        <source>The URL part of this record will be %s</source>
+        <target state="final">Het URL-deel van dit record zal %s zijn</target>
+      </trans-unit>
+      <trans-unit id="slugCreation.error" approved="yes">
+        <source>The requested URL is already in use, but %s will be used instead</source>
+        <target state="final">De gevraagde URL is al in gebruik, maar %s zal in plaats daarvan worden gebruikt</target>
+      </trans-unit>
+      <trans-unit id="cm.copy" approved="yes">
+        <source>Copy</source>
+        <target state="final">Kopiëren</target>
+      </trans-unit>
+      <trans-unit id="cm.copyrelease" approved="yes">
+        <source>Copy release</source>
+        <target state="final">Kopiëren opheffen</target>
+      </trans-unit>
+      <trans-unit id="cm.cut" approved="yes">
+        <source>Cut</source>
+        <target state="final">Knippen</target>
+      </trans-unit>
+      <trans-unit id="cm.cutrelease" approved="yes">
+        <source>Cut release</source>
+        <target state="final">Knippen opheffen</target>
+      </trans-unit>
+      <trans-unit id="cm.view" approved="yes">
+        <source>Show</source>
+        <target state="final">Tonen</target>
+      </trans-unit>
+      <trans-unit id="cm.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Bewerken</target>
+      </trans-unit>
+      <trans-unit id="cm.editcontent" approved="yes">
+        <source>Edit content</source>
+        <target state="final">Inhoud bewerken</target>
+      </trans-unit>
+      <trans-unit id="cm.editMetadata" approved="yes">
+        <source>Edit Metadata of this file</source>
+        <target state="final">Metadata van dit bestand bewerken</target>
+      </trans-unit>
+      <trans-unit id="cm.editColumns" approved="yes">
+        <source>Edit columns</source>
+        <target state="final">Kolommen bewerken</target>
+      </trans-unit>
+      <trans-unit id="cm.new" approved="yes">
+        <source>New</source>
+        <target state="final">Nieuw</target>
+      </trans-unit>
+      <trans-unit id="cm.newSubpage" approved="yes">
+        <source>New subpage</source>
+        <target state="final">Nieuwe subpagina</target>
+      </trans-unit>
+      <trans-unit id="cm.newFilemount" approved="yes">
+        <source>New file mount</source>
+        <target state="final">Nieuwe bestandskoppeling</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteinto" approved="yes">
+        <source>Paste into</source>
+        <target state="final">Plakken in</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteafter" approved="yes">
+        <source>Paste after</source>
+        <target state="final">Plakken na</target>
+      </trans-unit>
+      <trans-unit id="cm.select" approved="yes">
+        <source>Select</source>
+        <target state="final">Selecteren</target>
+      </trans-unit>
+      <trans-unit id="cm.selectFile" approved="yes">
+        <source>Select %s</source>
+        <target state="final">Selecteer %s</target>
+      </trans-unit>
+      <trans-unit id="cm.deselect" approved="yes">
+        <source>Deselect</source>
+        <target state="final">Deselecteren</target>
+      </trans-unit>
+      <trans-unit id="cm.selectto" approved="yes">
+        <source>Select to</source>
+        <target state="final">Selecteren naar</target>
+      </trans-unit>
+      <trans-unit id="cm.deselectto" approved="yes">
+        <source>Deselect to</source>
+        <target state="final">Deselecteren naar</target>
+      </trans-unit>
+      <trans-unit id="cm.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Verwijderen</target>
+      </trans-unit>
+      <trans-unit id="cm.hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">Verberg</target>
+      </trans-unit>
+      <trans-unit id="cm.unhide" approved="yes">
+        <source>Unhide</source>
+        <target state="final">Zichtbaar maken</target>
+      </trans-unit>
+      <trans-unit id="cm.online" approved="yes">
+        <source>Turn online</source>
+        <target state="final">Online zetten</target>
+      </trans-unit>
+      <trans-unit id="cm.offline" approved="yes">
+        <source>Turn offline</source>
+        <target state="final">Offline brengen</target>
+      </trans-unit>
+      <trans-unit id="cm.upload" approved="yes">
+        <source>Upload Files</source>
+        <target state="final">Uploaden bestanden</target>
+      </trans-unit>
+      <trans-unit id="cm.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">Hernoemen</target>
+      </trans-unit>
+      <trans-unit id="cm.replace" approved="yes">
+        <source>Replace</source>
+        <target state="final">Vervangen</target>
+      </trans-unit>
+      <trans-unit id="cm.open" approved="yes">
+        <source>Open</source>
+        <target state="final">Open</target>
+      </trans-unit>
+      <trans-unit id="cm.save" approved="yes">
+        <source>Save</source>
+        <target state="final">Opslaan</target>
+      </trans-unit>
+      <trans-unit id="cm.unzip" approved="yes">
+        <source>Unzip</source>
+        <target state="final">Uitpakken</target>
+      </trans-unit>
+      <trans-unit id="cm.info" approved="yes">
+        <source>Info</source>
+        <target state="final">Info</target>
+      </trans-unit>
+      <trans-unit id="cm.createnew" approved="yes">
+        <source>Create new</source>
+        <target state="final">Maak nieuwe</target>
+      </trans-unit>
+      <trans-unit id="cm.createnew.link" approved="yes">
+        <source>Create new %s</source>
+        <target state="final">Nieuwe %s aanmaken</target>
+      </trans-unit>
+      <trans-unit id="cm.tempMountPoint" approved="yes">
+        <source>Mount as treeroot</source>
+        <target state="final">Plaats als root</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_into" approved="yes">
+        <source>Copy page into</source>
+        <target state="final">Kopieer pagina in</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_after" approved="yes">
+        <source>Copy page after</source>
+        <target state="final">Kopieer pagina na</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_into" approved="yes">
+        <source>Move page into</source>
+        <target state="final">Verplaats pagina in</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_after" approved="yes">
+        <source>Move page after</source>
+        <target state="final">Verplaats pagina na</target>
+      </trans-unit>
+      <trans-unit id="cm.copyFolder_into" approved="yes">
+        <source>Copy folder into</source>
+        <target state="final">Kopieer map in</target>
+      </trans-unit>
+      <trans-unit id="cm.moveFolder_into" approved="yes">
+        <source>Move folder into</source>
+        <target state="final">Verplaats map in</target>
+      </trans-unit>
+      <trans-unit id="cm.createNewRelation" approved="yes">
+        <source>Create new relation</source>
+        <target state="final">Maak nieuwe relatie</target>
+      </trans-unit>
+      <trans-unit id="cm.branchActions" approved="yes">
+        <source>Branch Actions</source>
+        <target state="final">Takacties</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPasteActions" approved="yes">
+        <source>Page Actions</source>
+        <target state="final">Pagina-acties</target>
+      </trans-unit>
+      <trans-unit id="cm.collapseBranch" approved="yes">
+        <source>Collapse Branch</source>
+        <target state="final">Inklappen tak</target>
+      </trans-unit>
+      <trans-unit id="cm.expandBranch" approved="yes">
+        <source>Expand Branch</source>
+        <target state="final">Uiklappen tak</target>
+      </trans-unit>
+      <trans-unit id="cm.more" approved="yes">
+        <source>More options...</source>
+        <target state="final">Meer opties....</target>
+      </trans-unit>
+      <trans-unit id="cm.allowedFileExtensions" approved="yes">
+        <source>Allowed file extensions</source>
+        <target state="final">Toegestane bestandsextensies</target>
+      </trans-unit>
+      <trans-unit id="cm.disallowedFileExtensions" approved="yes">
+        <source>Disallowed file extensions</source>
+        <target state="final">Niet-toegestane bestandsextensies</target>
+      </trans-unit>
+      <trans-unit id="cm.allowedEditableTextFileExtensions" approved="yes">
+        <source>Allowed editable text file extensions</source>
+        <target state="final">Toegestane bestandsextensies voor bewerkbare tekstbestanden</target>
+      </trans-unit>
+      <trans-unit id="cm.allowEmbedSources" approved="yes">
+        <source>Allowed media sources</source>
+        <target state="final">Toegestane media-aanbieders:</target>
+      </trans-unit>
+      <trans-unit id="cm.allowedRelations" approved="yes">
+        <source>Allowed relations</source>
+        <target state="final">Toegestane relaties</target>
+      </trans-unit>
+      <trans-unit id="cm.history" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">Geschiedenis/Ongedaan</target>
+      </trans-unit>
+      <trans-unit id="cm.transferToClipboard" approved="yes">
+        <source>Transfer to clipboard</source>
+        <target state="final">Overzetten naar klembord</target>
+      </trans-unit>
+      <trans-unit id="cm.removeFromClipboard" approved="yes">
+        <source>Remove from clipboard</source>
+        <target state="final">Verwijderen uit klembord</target>
+      </trans-unit>
+      <trans-unit id="sortable.dragmove" approved="yes">
+        <source>Drag to move</source>
+        <target state="final">Slepen om te verplaatsen</target>
+      </trans-unit>
+      <trans-unit id="tree.search_in_translated_pages" approved="yes">
+        <source>Search in translated pages</source>
+        <target state="final">Zoeken in vertaalde pagina's</target>
+      </trans-unit>
+      <trans-unit id="tree.search_by_frontend_uri" approved="yes">
+        <source>Search by website address (URL)</source>
+        <target state="final">Zoeken op websiteadres (URL)</target>
+      </trans-unit>
+      <trans-unit id="tree.searchTermInfo" approved="yes">
+        <source>Enter search term</source>
+        <target state="final">Vul zoekterm in</target>
+      </trans-unit>
+      <trans-unit id="tree.searchPageTree" approved="yes">
+        <source>Search page tree</source>
+        <target state="final">In paginaboom zoeken</target>
+      </trans-unit>
+      <trans-unit id="tree.searchFolderTree" approved="yes">
+        <source>Search folder tree</source>
+        <target state="final">Mapstructuur doorzoeken</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_pattern" approved="yes">
+        <source>The value of fileDenyPattern is not set to its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</source>
+        <target state="final">De waarde van fileDenyPattern is aangepast: %s. Wanneer TYPO3 onder Apache draait, kan een aangepaste waarde ervoor zorgen dat frontend en backend gebruikers kwaadwillende PHP scripts uit kunnen voeren.</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_pattern_partsNotPresent" approved="yes">
+        <source>Security risk: The new value of fileDenyPattern misses parts of its default: %s. If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious PHP scripts.</source>
+        <target state="final">Veiligheidsrisico! De nieuwe waarde van de fileDenyPattern mist delen van de standaard waarde: %s. Als TYPO3 op Apache loopt dan kan een aangepaste waarde gebruikers mogelijk in staat stellen kwaadaardige PHP scripts uit te voeren.</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_htaccess" approved="yes">
+        <source>The current value of fileDenyPattern allows to upload/create files with the name ".htaccess". If TYPO3 is running on Apache, this enables backend or frontend users to create and execute php scripts. Please reset the value of fileDenyPattern to its default.</source>
+        <target state="final">De huidige waarde van fileDenyPattern staat het uploaden/aanmaken van bestanden met de naam ".htaccess' toe. Wanneer TYPO3 onder Apache draait, geeft dit frontend en backend gebruikers de mogelijkheid om PHP scripts uit te voeren. Herstel de waarde van fileDenyPattern naar de standaardwaarde.</target>
+      </trans-unit>
+      <trans-unit id="warning.install_enabled" approved="yes">
+        <source>The Install Tool is permanently enabled. Delete the file "%s" when you have finished setting up TYPO3.</source>
+        <target state="final">De Installatiewerkset is aangezet. LET OP uit veiligheidsoverweging: Verwijder het bestand "%s" als de instellingen in TYPO3 gedaan zijn.</target>
+      </trans-unit>
+      <trans-unit id="warning.install_enabled_cmd" approved="yes">
+        <source>Click to remove the file now</source>
+        <target state="final">Klik om het bestand nu te verwijderen</target>
+      </trans-unit>
+      <trans-unit id="warning.install_trustedhosts" approved="yes">
+        <source>The trusted hosts pattern check is disabled. Please define the allowed hosts in the [SYS][trustedHostsPattern] section of the Install Tool.</source>
+        <target state="final">De controle op toegestane hosts is uitgeschakeld. Geef de toegestane hosts op in de [SYS][trustedHostsPattern] sectie van de Installatie Tool</target>
+      </trans-unit>
+      <trans-unit id="warning.install_update" approved="yes">
+        <source>This installation is not configured for the TYPO3 version it is running. If you did so intentionally, this message can be safely ignored. If you are unsure, visit the Upgrade Wizard section of the %sInstall Tool%s to see how TYPO3 would change.</source>
+        <target state="final">Deze installatie is niet geconfigureerd voor de huidige TYPO3 versie. Als dit opzettelijk zo is kan deze boodschap worden genegeerd. Bij twijfel: bezoek de sectie %sUpdate Assistent%s van de Install Tool om te zien hoe TYPO3 zou wijzigen.</target>
+      </trans-unit>
+      <trans-unit id="warning.header" approved="yes">
+        <source>Important Notice</source>
+        <target state="final">Belangrijke mededeling</target>
+      </trans-unit>
+      <trans-unit id="warning.backend_reference_index" approved="yes">
+        <source>The Reference Index is empty (table sys_refindex), which may occur after upgrades or maintenance operations. The last update found on TYPO3 Registry was on %3$s. Please rebuild it via %1$sSystem → Maintenance → Check and Update Reference Index%2$s.</source>
+        <target state="final">De referentie-index is leeg (tabel sys_refindex), wat kan optreden na upgrades of onderhoudswerkzaamheden. De laatste update die in het TYPO3 register is gevonden was op %3$s. Gelieve het opnieuw op te bouwen via %1$sSysteem → Onderhoud → Referentie Index Controleren en Bijwerken%2$s.</target>
+      </trans-unit>
+      <trans-unit id="warning.memcache_not_usable" approved="yes">
+        <source>Memcache is configured, but connection to memcached failed with these configuration(s)</source>
+        <target state="final">Memcache is geconfigureerd, maar de verbinding naar memcache kon niet gemaakt worden met de volgende configuratie(s):</target>
+      </trans-unit>
+      <trans-unit id="warning.file_missing" approved="yes">
+        <source>File is missing</source>
+        <target state="final">Bestand ontbreekt</target>
+      </trans-unit>
+      <trans-unit id="warning.file_missing_text" approved="yes">
+        <source>This file is marked as missing</source>
+        <target state="final">Dit bestand is gemarkeerd als ontbrekend</target>
+      </trans-unit>
+      <trans-unit id="warning.header.storage_is_no_public" approved="yes">
+        <source>Storage is not public</source>
+        <target state="final">Opslag is niet publiek</target>
+      </trans-unit>
+      <trans-unit id="warning.message.storage_is_no_public" approved="yes">
+        <source>The storage has been marked to be "publicly available" but is not detected as such by the driver. The setting has been reverted.</source>
+        <target state="final">De opslag is gelabeld als "publiek beschikbaar" maar dat is niet gedetecteerd door het stuurprogramma. De instelling is teruggedraaid.</target>
+      </trans-unit>
+      <trans-unit id="warning.inline_use_combination" approved="yes">
+        <source>This record will be modified globally.</source>
+        <target state="final">Dit record zal globaal gewijzigd worden.</target>
+      </trans-unit>
+      <trans-unit id="warning.tableDisplayOrder.message" approved="yes">
+        <source>The TSconfig setting for "mod.web_list.tableDisplayOrder" contains a circular dependency and cannot be resolved.</source>
+        <target state="final">De TSconfig instelling voor "mod.web_list.tableDisplayOrder" bevat een circulaire afhankelijkheid en kan niet worden opgelost.</target>
+      </trans-unit>
+      <trans-unit id="warning.tableDisplayOrder.title" approved="yes">
+        <source>Circular table ordering detected</source>
+        <target state="final">Circulaire tabelvolgorde gedetecteerd</target>
+      </trans-unit>
+      <trans-unit id="error.formProtection.tokenInvalid" approved="yes">
+        <source>Validating the security token of this form has failed. Please reload the form and submit it again.</source>
+        <target state="final">Valideren van het token van dit formulier is mislukt. Herlaadt aub het formulier en dien het formulier opnieuw in.</target>
+      </trans-unit>
+      <trans-unit id="extension.not.installed" approved="yes">
+        <source>Extension "%s" is not installed.</source>
+        <target state="final">Extensie "%s" is niet geinstalleerd.</target>
+      </trans-unit>
+      <trans-unit id="link.to.filefile.correctly" approved="yes">
+        <source>Please, do not link to this page.</source>
+        <target state="final">Link aub niet naar deze pagina.</target>
+      </trans-unit>
+      <trans-unit id="error.database_schema_mismatch" approved="yes">
+        <source>A SQL error occurred. This may indicate a schema mismatch between TCA and the database. Try running database compare in the Install Tool.</source>
+        <target state="final">Er is een SQL fout opgetreden. Dit kan wijzen op een verschil tussen TCA en de database. Probeer de databasevergelijking uit te voeren in de Install Tool.</target>
+      </trans-unit>
+      <trans-unit id="error.database_schema_mismatch_title" approved="yes">
+        <source>Database Error</source>
+        <target state="final">Database fout</target>
+      </trans-unit>
+      <trans-unit id="error.items_proc_func_error" approved="yes">
+        <source>An error occurred trying to process items for field "%1$s" (%2$s).</source>
+        <target state="final">Er is een fout opgetreden bij het verwerken van items voor veld "%1$s" (%2$s).</target>
+      </trans-unit>
+      <trans-unit id="error.invalidEmail" approved="yes">
+        <source>"%s" is not a valid e-mail address.</source>
+        <target state="final">"%s" is geen geldig e-mailadres.</target>
+      </trans-unit>
+      <trans-unit id="error.adminCanNotChangeSystemMaintainer" approved="yes">
+        <source>Non system maintainers cannot change details of system maintainers. The values have not been updated.</source>
+        <target state="final">Niet-systeembeheerders kunnen de details van de systeembeheerders niet wijzigen. De waarden zijn niet bijgewerkt.</target>
+      </trans-unit>
+      <trans-unit id="formEngine.beUser.information.adminCanNotChangeSystemMaintainer" approved="yes">
+        <source>This user is a system maintainer. Changing details of system maintainers is not allowed.</source>
+        <target state="final">Deze gebruiker is een systeemverantwoordelijke. Wijzigen van gegevens van systeemverantwoordelijken is niet toegestaan.</target>
+      </trans-unit>
+      <trans-unit id="formEngine.beUser.admin.information.userIsSystemMaintainer" approved="yes">
+        <source>This user is a system maintainer</source>
+        <target state="final">Deze gebruiker is een systeembeheerder</target>
+      </trans-unit>
+      <trans-unit id="formEngine.beUser.admin.information.userWillBecomeSystemMaintainer" approved="yes">
+        <source>This user is in the list of allowed system maintainers and will gain system level access if enabling admin access.</source>
+        <target state="final">Deze gebruiker staat in de lijst met toegestande systeembeheerders en krijgen toegang tot systeemniveau als admin-toegang wordt gegeven.</target>
+      </trans-unit>
+      <trans-unit id="formEngine.pages.backendLayout.information.inheritFromParentPage" approved="yes">
+        <source>This page will most likely use backend layout "%s", inherited from a parent page.</source>
+        <target state="final">Deze pagina zal waarschijnlijk backend lay-out "%s" gebruiken, die overerft is van een bovenliggende pagina.</target>
+      </trans-unit>
+      <trans-unit id="formEngine.pages.backendLayout.information.inheritedFromParentPage" approved="yes">
+        <source>This page is currently using backend layout "%s", inherited from a parent page.</source>
+        <target state="final">Deze pagina gebruikt momenteel backend lay-out "%s", overerft van een bovenliggende pagina.</target>
+      </trans-unit>
+      <trans-unit id="error.backendUserGroupListTypeError.header" approved="yes">
+        <source>Possible misconfiguration detected</source>
+        <target state="final">Mogelijke misconfiguratie ontdekt</target>
+      </trans-unit>
+      <trans-unit id="error.backendUserGroupListTypeError.message" approved="yes">
+        <source>Editing of at least one plugin was enabled but editing the page content type "Insert Plugin" is still disallowed. Group members won't be able to edit plugins unless you activate editing for the content type.</source>
+        <target state="final">Het bewerken van een of meer plug-ins is toegestaan, maar het is niet mogelijk om inhoudselementen van het type "Plug-in invoegen" te bewerken. Groepsleden zijn niet in staat de plug-ins te bewerken tot dat het bewerken van het inhoudstype wordt geactiveerd.</target>
+      </trans-unit>
+      <trans-unit id="error.missingLanguageIsocode" approved="yes">
+        <source>Missing ISO code for language "%s" (UID %d), please edit the language record and set it.</source>
+        <target state="final">Ontbrekende ISO-code voor taal "%s" (UID %d). Bewerk het taalrecord om het in te stellen.</target>
+      </trans-unit>
+      <trans-unit id="labels.deleteTitle" approved="yes">
+        <source>Revert to default Constant</source>
+        <target state="final">Standaard constante terugzetten</target>
+      </trans-unit>
+      <trans-unit id="labels.editTitle" approved="yes">
+        <source>Edit this Constant</source>
+        <target state="final">Deze constante bewerken</target>
+      </trans-unit>
+      <trans-unit id="pageTranslation" approved="yes">
+        <source>Page Translation</source>
+        <target state="final">Paginavertaling</target>
+      </trans-unit>
+      <trans-unit id="filestorage.invalidpathexception.title" approved="yes">
+        <source>Error in Path</source>
+        <target state="final">Fout in pad</target>
+      </trans-unit>
+      <trans-unit id="filestorage.invalidpathexception.message" approved="yes">
+        <source>You entered an invalid path for this File Storage. Note that "../" and "//" are not allowed when using an absolute path.</source>
+        <target state="final">Het pad van deze bestandsopslag is ongelding. Let op dat "../" en "//" niet zijn toegestaan bij een absoluut pad.</target>
+      </trans-unit>
+      <trans-unit id="iframe.listFrame" approved="yes">
+        <source>List frame (content area) to create and modify pages, content and records</source>
+        <target state="final">Lijstblok (gebied met inhoud) om pagina's, inhoud en records aan te maken en te wijzigen</target>
+      </trans-unit>
+      <trans-unit id="message.confirmation" approved="yes">
+        <source>Are you sure?</source>
+        <target state="final">Zeker weten?</target>
+      </trans-unit>
+      <trans-unit id="labels.datepicker.today" approved="yes">
+        <source>Today</source>
+        <target state="final">Vandaag</target>
+      </trans-unit>
+      <trans-unit id="labels.inputfield.clearButton.title" approved="yes">
+        <source>Clear input</source>
+        <target state="final">Invoer wissen</target>
+      </trans-unit>
+      <trans-unit id="labels.contextMenu.open" approved="yes">
+        <source>Open context menu</source>
+        <target state="final">Contextmenu openen</target>
+      </trans-unit>
+      <trans-unit id="labels.contextMenu.open.recordLabel" approved="yes">
+        <source>Open context menu for record: %s</source>
+        <target state="final">Contextmenu openen voor record: %s</target>
+      </trans-unit>
+      <trans-unit id="error.site.invalidSetDependencies" approved="yes">
+        <source>This site depends on invalid site sets</source>
+        <target state="final">Deze website is afhankelijk van ongeldige website sets</target>
+      </trans-unit>
+      <trans-unit id="error.siteSet.notFound" approved="yes">
+        <source>Site set '%1$s' not found (referenced by '%2$s')</source>
+        <target state="final">Site set '%1$s' niet gevonden (naar verwezen door '%2$s')</target>
+      </trans-unit>
+      <trans-unit id="error.siteSet.missingDependency" approved="yes">
+        <source>Site set '%1$s' is disabled: Missing dependency '%2$s'</source>
+        <target state="final">Site set '%1$s' is uitgeschakeld: Ontbrekende afhankelijkheid '%2$s'</target>
+      </trans-unit>
+      <trans-unit id="error.siteSet.invalidSettingsDefinitions" approved="yes">
+        <source>Site set '%1$s' is disabled due to invalid settings definitions: %2$s</source>
+        <target state="final">Site set '%1$s' is uitgeschakeld vanwege ongeldige instellingen definities: %2$s</target>
+      </trans-unit>
+      <trans-unit id="error.siteSet.invalidCategoryDefinitions" approved="yes">
+        <source>Site set '%1$s' is disabled due to invalid category definitions: %2$s</source>
+        <target state="final">Site set '%1$s' is uitgeschakeld vanwege ongeldige caterogiedefinities: %2$s</target>
+      </trans-unit>
+      <trans-unit id="error.siteSet.invalidSettings" approved="yes">
+        <source>Site set '%1$s' is disabled due to invalid settings: %2$s</source>
+        <target state="final">Site set '%1$s' is uitgeschakeld vanwege ongeldige instellingen: %2$s</target>
+      </trans-unit>
+      <trans-unit id="error.siteSet.invalidRouteEnhancers" approved="yes">
+        <source>Site set '%1$s' is disabled due to invalid route enhancers: %2$s</source>
+        <target state="final">Site set '%1$s' is uitgeschakeld vanwege ongeldige routing-verbeteringen: %2$s</target>
+      </trans-unit>
+      <trans-unit id="error.siteSet.invalidSet" approved="yes">
+        <source>Invalid site set '%1$s': %2$s</source>
+        <target state="final">Ongeldige siteset '%1$s': %2$s</target>
+      </trans-unit>
+      <trans-unit id="countries.default" approved="yes">
+        <source>Default countries</source>
+        <target state="final">Standaard landen</target>
+      </trans-unit>
+      <trans-unit id="countries.prioritized" approved="yes">
+        <source>Prioritized countries</source>
+        <target state="final">Geprioriteerde landen</target>
+      </trans-unit>
+      <trans-unit id="notifications.button.clearAll" approved="yes">
+        <source>Clear all</source>
+        <target state="final">Alles wissen</target>
+      </trans-unit>
+      <trans-unit id="labels.noSelectableItemsAvailable" approved="yes">
+        <source>No selectable items available. Check TCA, related records and TSconfig.</source>
+        <target state="final">Geen selecteerbare items beschikbaar. Controleer TCA, gerelateerde records en TSconfig.</target>
+      </trans-unit>
+      <trans-unit id="size_in_bytes" approved="yes">
+        <source>{numberOfBytes, plural, one {# byte} other {# bytes}}</source>
+        <target state="final">{numberOfBytes, plural, one {# byte} other {# bytes}}</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
