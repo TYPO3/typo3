@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814889" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_view_help.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="cy">
+    <header/>
+    <body>
+      <trans-unit id="details" resname="details" approved="yes">
+        <source>Details</source>
+        <target state="final">Manylion</target>
+      </trans-unit>
+      <trans-unit id="syntax" resname="syntax" approved="yes">
+        <source>Syntax</source>
+        <target state="final">Cystrawen</target>
+      </trans-unit>
+      <trans-unit id="seeAlso" resname="seeAlso" approved="yes">
+        <source>See also</source>
+        <target state="final">Gweld hefyd</target>
+      </trans-unit>
+      <trans-unit id="goBack" resname="goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Mynd yn ôl</target>
+      </trans-unit>
+      <trans-unit id="fullDescription" resname="fullDescription" approved="yes">
+        <source>See full description of table</source>
+        <target state="final">Gweler y disgrifiad llawn o'r tabl</target>
+      </trans-unit>
+      <trans-unit id="fullDescription_module" resname="fullDescription_module" approved="yes">
+        <source>See full description of module</source>
+        <target state="final">Gweler y disgrifiad llawn o'r modiwl</target>
+      </trans-unit>
+      <trans-unit id="goToToc" resname="goToToc" approved="yes">
+        <source>&lt;&lt; go to Manual Index</source>
+        <target state="final">&lt;&lt; ewch i'r Mynegai Llawlyfr</target>
+      </trans-unit>
+      <trans-unit id="to_top" resname="to_top" approved="yes">
+        <source>To top</source>
+        <target state="final">I'r brig</target>
+      </trans-unit>
+      <trans-unit id="TOC" resname="TOC" approved="yes">
+        <source>Table Of Contents</source>
+        <target state="final">Tabl Cynnwys</target>
+      </trans-unit>
+      <trans-unit id="TOC_core" resname="TOC_core" approved="yes">
+        <source>TYPO3 Core Features</source>
+        <target state="final">Nodweddion Craidd TYPO3</target>
+      </trans-unit>
+      <trans-unit id="TOC_modules" resname="TOC_modules" approved="yes">
+        <source>Backend Modules</source>
+        <target state="final">Modiwlau Backend</target>
+      </trans-unit>
+      <trans-unit id="TOC_tables" resname="TOC_tables" approved="yes">
+        <source>Database Tables</source>
+        <target state="final">Tablau Cronfa Ddata</target>
+      </trans-unit>
+      <trans-unit id="TOC_extensions" resname="TOC_extensions" approved="yes">
+        <source>Extensions</source>
+        <target state="final">Estyniadau</target>
+      </trans-unit>
+      <trans-unit id="TOC_glossary" resname="TOC_glossary" approved="yes">
+        <source>Glossary</source>
+        <target state="final">Geirfa</target>
+      </trans-unit>
+      <trans-unit id="TOC_other" resname="TOC_other" approved="yes">
+        <source>Other</source>
+        <target state="final">Arall</target>
+      </trans-unit>
+      <trans-unit id="close" resname="close" approved="yes">
+        <source>Close</source>
+        <target state="final">Caewch</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>TYPO3 Inline Help</source>
+        <target state="final">Cymorth Mewnol TYPO3</target>
+      </trans-unit>
+      <trans-unit id="manual_title" resname="manual_title" approved="yes">
+        <source>TYPO3 Inline User Manual</source>
+        <target state="final">Llawlyfr Defnyddiwr Mewnol TYPO3</target>
+      </trans-unit>
+      <trans-unit id="introduction" resname="introduction" approved="yes">
+        <source>Introduction</source>
+        <target state="final">Cyflwyniad</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description" approved="yes">
+        <source>The TYPO3 Inline User Manual is composed from the available help in this TYPO3 Installation (Context Sensitive Help). Here you will find a general description of the TYPO3 Core modules, installation specific Backend Modules and Database Tables that are available based on your login credentials.</source>
+        <target state="final">Mae Llawlyfr Defnyddiwr Mewnol TYPO3 wedi'i gyfansoddi o'r help sydd ar gael yn y Gosodiad TYPO3 hwn (Cymorth Sensitif Cyd-destun). Yma fe welwch ddisgrifiad cyffredinol o'r modiwlau Craidd TYPO3, Modiwlau Backend penodol a Thablau Cronfa Ddata sydd ar gael yn seiliedig ar eich cymwysterau mewngofnodi.</target>
+      </trans-unit>
+      <trans-unit id="full_manual" resname="full_manual" approved="yes">
+        <source>Full Manual (in one page)</source>
+        <target state="final">Llawlyfr Llawn (mewn un dudalen)</target>
+      </trans-unit>
+      <trans-unit id="full_manual_chapters" resname="full_manual_chapters" approved="yes">
+        <source>Manual Chapters</source>
+        <target state="final">Penodau Llawlyfr</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
