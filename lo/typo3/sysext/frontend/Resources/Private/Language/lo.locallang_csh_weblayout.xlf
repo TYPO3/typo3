@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814789" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_weblayout.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>Web &gt; Page Module</source>
+        <target state="final">ເວັບ &gt; ໂມດູນໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The page module is activated from the backend menu and is the primary module for all basic CMS operations you need to perform when maintaining website content.</source>
+        <target state="final">ໂມດູນໜ້າເວັບແມ່ນຖືກເປີດໃຊ້ຈາກເມນູສ່ວນຫຼັງ (backend) ແລະ ເປັນໂມດູນຫຼັກສຳລັບທຸກການດຳເນີນງານພື້ນຖານຂອງ CMS ທີ່ທ່ານຕ້ອງເຮັດໃນເວລາຈັດການເນື້ອໃນຂອງເວັບໄຊ.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>Selecting the module will display the page tree.  Click the title of the page you wish to edit content on, and in the right frame you will see the content of the page displayed by the Page module.
+
+The page module has various modes of display of content;
+
+&lt;b&gt;Columns&lt;/b&gt;
+The columns view will show Content Elements listed in the columns and in the order that they will appear on the website. A panel of buttons will allow you to hide/unhide, move and edit the elements easily.
+
+&lt;b&gt;QuickEdit&lt;/b&gt;
+In QuickEdit the first element on the page will be loaded into a form right away. It will depend on the implementation of your website as well as your general preferences if you like this mode more than the columns view.
+
+&lt;b&gt;Languages&lt;/b&gt;
+If your site supports multiple languages and uses the "one-tree-fits-all" concept for localization you will need this mode to control the translations of the content elements on a page.
+
+&lt;b&gt;Page information&lt;/b&gt;
+The page information view shows some statistical data about a page. This includes hit statistics if available.
+
+
+&lt;b&gt;General options&lt;/b&gt;
+In the top of the Page module you will find a row of icons that will bring you right to various features such as History/Undo (1), Create new content element (2), Move page (3), Create new page (4) and Edit page properties (5). See image below.
+
+&lt;b&gt;Defining number of displayed columns [Admin]&lt;/b&gt;
+Administrators can configure the Page module to display only the content columns that the website uses. This is done by Page TSconfig (so it can be configured per branch in the page tree!) and this particular option has the object path "mod.web_layout.tt_content.colPos_list".
+For instance "mod.web_layout.tt_content.colPos_list = 0,3" will set the display of the "Normal" and "Border" columns only.
+There are many other options for customization of the Page module in the object path "mod.web_layout" and Administrators should refer to the "TSconfig" reference linked to below.</source>
+			<target state="final">ການເລືອກໂມດູນນີ້ຈະສະແດງຜັງໂຄງສ້າງໜ້າເວັບ (page tree). ຄລິກໃສ່ຊື່ຂອງໜ້າທີ່ທ່ານຕ້ອງການແກ້ໄຂເນື້ອໃນ, ແລ້ວຢູ່ເບື້ອງຂວາທ່ານຈະເຫັນເນື້ອໃນຂອງໜ້ານັ້ນທີ່ສະແດງໂດຍໂມດູນໜ້າເວັບ.
+
+ໂມດູນໜ້າເວັບມີຮູບແບບການສະແດງເນື້ອໃນທີ່ຫຼາກຫຼາຍ;
+
+&lt;b&gt;ແບບຄໍລຳ (Columns)&lt;/b&gt;
+ການເບິ່ງແບບຄໍລຳຈະສະແດງອົງປະກອບເນື້ອໃນ (Content Elements) ທີ່ລຽງຕາມລໍາດັບທີ່ຈະປະກົດຢູ່ໃນເວັບໄຊ. ແຜງປຸ່ມກົດຈະຊ່ວຍໃຫ້ທ່ານ ສາມາດ ເຊື່ອງ/ສະແດງ, ຍ້າຍ ແລະ ແກ້ໄຂອົງປະກອບຕ່າງໆໄດ້ຢ່າງງ່າຍດາຍ.
+
+&lt;b&gt;ແບບແກ້ໄຂດ່ວນ (QuickEdit)&lt;/b&gt;
+ໃນໂໝດການແກ້ໄຂດ່ວນ, ອົງປະກອບທຳອິດຂອງໜ້າຈະຖືກໂຫຼດເຂົ້າໃນແບບຟອມທັນທີ. ມັນຂຶ້ນຢູ່ກັບການຕັ້ງຄ່າເວັບໄຊຂອງທ່ານ ແລະ ຄວາມຕ້ອງການທົ່ວໄປຂອງທ່ານວ່າຈະມັກໂໝດນີ້ຫຼາຍກວ່າການເບິ່ງແບບຄໍລຳຫຼືບໍ່.
+
+&lt;b&gt;ແບບພາສາ (Languages)&lt;/b&gt;
+ຖ້າເວັບໄຊຂອງທ່ານຮອງຮັບຫຼາຍພາສາ ແລະ ໃຊ້ລະບົບ "one-tree-fits-all" ສຳລັບການເຮັດເວັບໄຊຫຼາຍພາສາ, ທ່ານຈະຕ້ອງໃຊ້ໂໝດນີ້ເພື່ອຈັດການການແປອົງປະກອບເນື້ອໃນໃນໜ້າເວັບ.
+
+&lt;b&gt;ແບບຂໍ້ມູນໜ້າເວັບ (Page information)&lt;/b&gt;
+ການເບິ່ງຂໍ້ມູນໜ້າເວັບຈະສະແດງຂໍ້ມູນສະຖິຕິບາງຢ່າງກ່ຽວກັບໜ້າເວັບ, ລວມທັງສະຖິຕິການເຂົ້າເບິ່ງຖ້າມີ.
+
+&lt;b&gt;ຕົວເລືອກທົ່ວໄປ&lt;/b&gt;
+ຢູ່ສ່ວນເທິງຂອງໂມດູນໜ້າເວັບ, ທ່ານຈະເຫັນແຖວໄອຄອນທີ່ຈະພາທ່ານໄປຫາຄຸນສົມບັດຕ່າງໆ ເຊັ່ນ: ປະຫວັດ/ການຍົກເລີກ (1), ສ້າງອົງປະກອບເນື້ອໃນໃໝ່ (2), ຍ້າຍໜ້າເວັບ (3), ສ້າງໜ້າເວັບໃໝ່ (4) ແລະ ແກ້ໄຂຄຸນສົມບັດຂອງໜ້າເວັບ (5). ເບິ່ງຮູບພາບດ້ານລຸ່ມ.
+
+&lt;b&gt;ການກຳນົດຈຳນວນຄໍລຳທີ່ສະແດງ [ສຳລັບຜູ້ດູແລລະບົບ]&lt;/b&gt;
+ຜູ້ດູແລລະບົບສາມາດກຳນົດຄ່າໂມດູນໜ້າເວັບໃຫ້ສະແດງສະເພາະຄໍລຳເນື້ອໃນທີ່ເວັບໄຊໃຊ້ເທົ່ານັ້ນ. ສິ່ງນີ້ເຮັດໄດ້ໂດຍຜ່ານ Page TSconfig (ສາມາດກຳນົດຄ່າແຍກຕາມແຕ່ລະກິ່ງງ່າໃນຜັງໜ້າເວັບ!) ແລະ ຕົວເລືອກນີ້ມີ object path ແມ່ນ "mod.web_layout.tt_content.colPos_list".
+ຕົວຢ່າງ: "mod.web_layout.tt_content.colPos_list = 0,3" ຈະກຳນົດໃຫ້ສະແດງສະເພາະຄໍລຳ "Normal" ແລະ "Border" ເທົ່ານັ້ນ.
+ຍັງມີຕົວເລືອກອື່ນໆອີກຫຼາຍຢ່າງສຳລັບການປັບແຕ່ງໂມດູນໜ້າເວັບໃນ object path "mod.web_layout" ແລະ ຜູ້ດູແລລະບົບຄວນອ້າງອີງຈາກ "TSconfig" ຕາມລິ້ງດ້ານລຸ່ມ.</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>Configuring the Page module [Technical] | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/TSFE/,
+xMOD_csh_corebe:history_log,
+xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:TCEforms,
+About the page module | http://typo3.org/documentation/tips-tricks/the-new-page-editing-concept/
+Editing a page | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/
+The Page Module (Animation) | Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_05.gif</source>
+			<target state="final">ການກຳນົດຄ່າໂມດູນໜ້າເວັບ [ດ້ານເຕັກນິກ] | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/TSFE/,
+xMOD_csh_corebe:history_log,
+xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:TCEforms,
+ກ່ຽວກັບໂມດູນໜ້າເວັບ | http://typo3.org/documentation/tips-tricks/the-new-page-editing-concept/
+ການແກ້ໄຂໜ້າເວັບ | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/
+ໂມດູນໜ້າເວັບ (ພາບເຄື່ອນໄຫວ) | ການໃຊ້ຜັງໂຄງສ້າງໜ້າເວັບ (ພາບເຄື່ອນໄຫວ) | FILE:EXT:welcome/modsub/ani_05.gif</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_13.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_14.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_15.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_13.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_14.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_15.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>Click the Page module, then the title of a page in the page tree.
+The page module is now activated in the right frame, showing the content of the page you clicked in the page tree.
+These buttons are direct links to the History/Undo function (1), Create new content element wizard (2), Move page wizard (3), Create new page wizard (4) and Edit page properties form (5). See the links for more details.</source>
+			<target state="final">ຄລິກທີ່ໂມດູນໜ້າເວັບ, ຈາກນັ້ນຄລິກໃສ່ຊື່ຂອງໜ້າເວັບໃນຜັງໂຄງສ້າງໜ້າເວັບ.
+ຕອນນີ້ໂມດູນໜ້າເວັບຖືກເປີດໃຊ້ໃນເຟຣມດ້ານຂວາ, ໂດຍສະແດງເນື້ອໃນຂອງໜ້າທີ່ທ່ານຄລິກໃນຜັງໂຄງສ້າງ.
+ປຸ່ມເຫຼົ່ານີ້ແມ່ນລິ້ງໂດຍກົງໄປຫາຟັງຊັນ ປະຫວັດ/ການຍົກເລີກ (1), ເຄື່ອງມືຊ່ວຍສ້າງອົງປະກອບເນື້ອໃນໃໝ່ (2), ເຄື່ອງມືຊ່ວຍຍ້າຍໜ້າເວັບ (3), ເຄື່ອງມືຊ່ວຍສ້າງໜ້າເວັບໃໝ່ (4) ແລະ ແບບຟອມແກ້ໄຂຄຸນສົມບັດຂອງໜ້າເວັບ (5). ເບິ່ງລິ້ງຕ່າງໆສຳລັບລາຍລະອຽດເພີ່ມເຕີມ.</target></trans-unit>
+      <trans-unit id="quickEdit.alttitle" resname="quickEdit.alttitle" approved="yes">
+        <source>Quick Edit</source>
+        <target state="final">ການແກ້ໄຂດ່ວນ</target>
+      </trans-unit>
+      <trans-unit id="quickEdit.description" resname="quickEdit.description" approved="yes">
+        <source>The Quick Editor gives you direct access to the form fields of the page content.</source>
+        <target state="final">ຕົວແກ້ໄຂດ່ວນຊ່ວຍໃຫ້ທ່ານເຂົ້າເຖິງຊ່ອງຂໍ້ມູນຂອງເນື້ອໃນໜ້າເວັບໄດ້ໂດຍກົງ.</target>
+      </trans-unit>
+      <trans-unit id="quickEdit.details" resname="quickEdit.details" approved="yes">
+        <source>The Quick Editor is designed to cut down the number of clicks involved in getting to edit the page content. Simply by clicking the page title in the page tree you've got the first content element in the normal column loaded in the list frame. In the toolbar in the top you can select the other content elements on the page in the selector box.</source>
+        <target state="final">ຕົວແກ້ໄຂດ່ວນຖືກອອກແບບມາເພື່ອຫຼຸດຈຳນວນການຄລິກໃນການເຂົ້າຫາເພື່ອແກ້ໄຂເນື້ອໃນໜ້າເວັບ. ພຽງແຕ່ຄລິກໃສ່ຊື່ໜ້າເວັບໃນຜັງໂຄງສ້າງ, ອົງປະກອບເນື້ອໃນທຳອິດໃນຄໍລຳປົກກະຕິຈະຖືກໂຫຼດເຂົ້າໃນເຟຣມລາຍການທັນທີ. ໃນແຖບເຄື່ອງມືດ້ານເທິງ, ທ່ານສາມາດເລືອກອົງປະກອບເນື້ອໃນອື່ນໆໃນໜ້າເວັບໄດ້ຈາກກ່ອງຕົວເລືອກ.</target>
+      </trans-unit>
+      <trans-unit id="_quickEdit.seeAlso" resname="_quickEdit.seeAlso" approved="yes">
+        <source>_MOD_web_layout:quickEdit_selElement</source>
+        <target state="final">_MOD_web_layout:quickEdit_selElement</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_quickEdit.image" resname="_quickEdit.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_5.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_5.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="quickEdit.image_descr" resname="quickEdit.image_descr" approved="yes">
+        <source>The QuickEdit view cuts of one extra click by bringing the user directly to the editing form after clicking a page title in the page tree. The record shown is always the first content element from the Normal column.</source>
+        <target state="final">ການເບິ່ງແບບແກ້ໄຂດ່ວນຊ່ວຍຫຼຸດການຄລິກໄດ້ໜຶ່ງບາດ ໂດຍການພາຜູ້ໃຊ້ໄປຫາແບບຟອມການແກ້ໄຂໂດຍກົງຫຼັງຈາກຄລິກຊື່ໜ້າເວັບໃນຜັງໂຄງສ້າງ. ຂໍ້ມູນທີ່ສະແດງແມ່ນອົງປະກອບເນື້ອໃນທຳອິດຈາກຄໍລຳປົກກະຕິ (Normal) ສະເໝີ.</target>
+      </trans-unit>
+      <trans-unit id="quickEdit_selElement.alttitle" resname="quickEdit_selElement.alttitle" approved="yes">
+        <source>Content Elements</source>
+        <target state="final">ອົງປະກອບເນື້ອໃນ</target>
+      </trans-unit>
+      <trans-unit id="quickEdit_selElement.description" resname="quickEdit_selElement.description" approved="yes">
+        <source>This is an overview of the content elements on this page in QuickEdit mode. Select another element to edit or click a "New" icon to create a new content element.</source>
+        <target state="final">ນີ້ແມ່ນພາບລວມຂອງອົງປະກອບເນື້ອໃນໃນໜ້ານີ້ໃນໂໝດການແກ້ໄຂດ່ວນ. ເລືອກອົງປະກອບອື່ນເພື່ອແກ້ໄຂ ຫຼື ຄລິກໄອຄອນ "ໃໝ່" (New) ເພື່ອສ້າງອົງປະກອບເນື້ອໃນໃໝ່.</target>
+      </trans-unit>
+      <trans-unit id="_quickEdit_selElement.seeAlso" resname="_quickEdit_selElement.seeAlso" xml:space="preserve" approved="yes">
+				<source>_MOD_web_layout:quickEdit,
+xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_ce</source>
+				
+			<target state="final">_MOD_web_layout:quickEdit,
+xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_ce</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_quickEdit_selElement.image" resname="_quickEdit_selElement.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_4.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_4.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="quickEdit_selElement.image_descr" resname="quickEdit_selElement.image_descr" approved="yes">
+        <source>Overview of page content elements in the QuickEdit view. In the bottom there are links to two wizards: The "Move Content Element Wizard" and the "Create new Content Element Wizard". See the links below.</source>
+        <target state="final">ພາບລວມຂອງອົງປະກອບເນື້ອໃນໜ້າເວັບໃນການເບິ່ງແບບແກ້ໄຂດ່ວນ. ຢູ່ດ້ານລຸ່ມມີລິ້ງໄປຫາເຄື່ອງມືຊ່ວຍສ້າງສອງຢ່າງ: "ເຄື່ອງມືຊ່ວຍຍ້າຍອົງປະກອບເນື້ອໃນ" ແລະ "ເຄື່ອງມືຊ່ວຍສ້າງອົງປະກອບເນື້ອໃນໃໝ່". ເບິ່ງລິ້ງດ້ານລຸ່ມ.</target>
+      </trans-unit>
+      <trans-unit id="columns_1.alttitle" resname="columns_1.alttitle" approved="yes">
+        <source>Listing by Columns</source>
+        <target state="final">ລາຍການແບບຄໍລຳ</target>
+      </trans-unit>
+      <trans-unit id="columns_1.description" resname="columns_1.description" approved="yes">
+        <source>In the "Columns" view you can manage the content of a web page. If your web page supports multiple columns, you will be able to arrange your content elements in columns.</source>
+        <target state="final">ໃນການເບິ່ງແບບ "ຄໍລຳ", ທ່ານສາມາດຈັດການເນື້ອໃນຂອງໜ້າເວັບໄດ້. ຖ້າໜ້າເວັບຂອງທ່ານຮອງຮັບຫຼາຍຄໍລຳ, ທ່ານຈະສາມາດຈັດລຽງອົງປະກອບເນື້ອໃນຂອງທ່ານເປັນຄໍລຳໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="_columns_1.seeAlso" resname="_columns_1.seeAlso" approved="yes">
+        <source>_MOD_web_layout:columns_single</source>
+        <target state="final">_MOD_web_layout:columns_single</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_columns_1.image" resname="_columns_1.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_12.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_12.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="columns_1.image_descr" resname="columns_1.image_descr" approved="yes">
+        <source>When your website supports multiple content element zones in the template you will be able to use another column than the "Normal" column. Here the "Left" column is enabled. TYPO3 offers four columns by default, "Normal", "Right", "Left" and "Border". Their significance depends on individual implementations in the frontend templates.</source>
+        <target state="final">ເມື່ອເວັບໄຊຂອງທ່ານຮອງຮັບເຂດອົງປະກອບເນື້ອໃນຫຼາຍເຂດໃນເທັມເພລດ (template), ທ່ານຈະສາມາດໃຊ້ຄໍລຳອື່ນນອກຈາກຄໍລຳ "Normal" ໄດ້. ໃນທີ່ນີ້ຄໍລຳ "Left" ຖືກເປີດໃຊ້ງານ. ໂດຍປົກກະຕິ TYPO3 ຈະມີໃຫ້ສີ່ຄໍລຳຄື: "Normal", "Right", "Left" ແລະ "Border". ຄວາມສຳຄັນຂອງພວກມັນແມ່ນຂຶ້ນກັບການນຳໄປໃຊ້ໃນເທັມເພລດສ່ວນໜ້າເວັບ (frontend).</target>
+      </trans-unit>
+      <trans-unit id="columns_2.alttitle" resname="columns_2.alttitle" approved="yes">
+        <source>Listing by Language</source>
+        <target state="final">ລາຍການແບບພາສາ</target>
+      </trans-unit>
+      <trans-unit id="columns_2.description" resname="columns_2.description" approved="yes">
+        <source>In the "Languages" view you can control the content of the web page as it is divided into languages and columns. It enables users to create a new translation of a page.</source>
+        <target state="final">ໃນການເບິ່ງແບບ "ພາສາ", ທ່ານສາມາດຄວບຄຸມເນື້ອໃນຂອງໜ້າເວັບໄດ້ ເນື່ອງຈາກມັນຖືກແບ່ງອອກເປັນພາສາ ແລະ ຄໍລຳ. ມັນຊ່ວຍໃຫ້ຜູ້ໃຊ້ສາມາດສ້າງການແປໃໝ່ຂອງໜ້າເວັບໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="_columns_2.seeAlso" resname="_columns_2.seeAlso" approved="yes">
+        <source>sys_language</source>
+        <target state="final">sys_language</target>
+      </trans-unit>
+      <trans-unit id="_columns_2.image" resname="_columns_2.image" xml:space="preserve" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_6.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_7.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_11.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_10.png,</source>
+        
+      <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_6.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_7.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_11.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_10.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="columns_2.image_descr" resname="columns_2.image_descr" xml:space="preserve" approved="yes">
+        <source>In the Language view you can select to create a new translation of the page if one does not exist already. The available languages must be defined first by language records created in the root of the page tree.
+        This example shows how page content for three languages is shown side-by-side in the Page module.
+        In the top of the Page module you can also select between the available translations...
+        ... and if you select any of the additional languages (here "Danish" and "German") you will see the default language displayed side-by-side with the selected language</source>
+      <target state="final">ໃນການເບິ່ງແບບພາສາ, ທ່ານສາມາດເລືອກສ້າງການແປໃໝ່ຂອງໜ້າເວັບໄດ້ ຖ້າຫາກຍັງບໍ່ມີ. ພາສາທີ່ມີໃຫ້ນັ້ນຕ້ອງຖືກກຳນົດກ່ອນໂດຍຂໍ້ມູນພາສາທີ່ຖືກສ້າງຂຶ້ນໃນສ່ວນຮາກ (root) ຂອງຜັງໂຄງສ້າງໜ້າເວັບ.
+        ຕົວຢ່າງນີ້ສະແດງໃຫ້ເຫັນວິທີທີ່ເນື້ອໃນໜ້າເວັບສຳລັບສາມພາສາຖືກສະແດງຄຽງຂ້າງກັນໃນໂມດູນໜ້າເວັບ.
+        ຢູ່ສ່ວນເທິງຂອງໂມດູນໜ້າເວັບ, ທ່ານຍັງສາມາດເລືອກລະຫວ່າງການແປທີ່ມີຢູ່...
+        ... ແລະ ຖ້າທ່ານເລືອກພາສາເພີ່ມເຕີມໃດໜຶ່ງ (ໃນທີ່ນີ້ແມ່ນ "Danish" ແລະ "German") ທ່ານຈະເຫັນພາສາເລີ່ມຕົ້ນສະແດງຄຽງຂ້າງກັບພາສາທີ່ເລືອກ.</target></trans-unit>
+      <trans-unit id="columns_3.alttitle" resname="columns_3.alttitle" approved="yes">
+        <source>Page Information</source>
+        <target state="final">ຂໍ້ມູນໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="columns_3.description" resname="columns_3.description" approved="yes">
+        <source>In the "Page Information" view you can see various statistics about a page.</source>
+        <target state="final">ໃນການເບິ່ງ "ຂໍ້ມູນໜ້າເວັບ", ທ່ານສາມາດເຫັນສະຖິຕິດຕ່າງໆກ່ຽວກັບໜ້າເວັບ.</target>
+      </trans-unit>
+      <trans-unit id="columns_3.details" resname="columns_3.details" xml:space="preserve" approved="yes">
+				<source>The page information reveals information such as the date of creation and last modification of the page and its content.
+You can also see the subtitle, keywords and descriptions. This information is often used on websites for meta data or searching.</source>
+			<target state="final">ຂໍ້ມູນໜ້າເວັບຈະສະແດງຂໍ້ມູນ ເຊັ່ນ: ວັນທີສ້າງ ແລະ ການແກ້ໄຂຫຼ້າສຸດຂອງໜ້າເວັບ ແລະ ເນື້ອໃນຂອງມັນ.
+ທ່ານຍັງສາມາດເຫັນຫົວຂໍ້ຍ່ອຍ, ຄຳສຳຄັນ (keywords) ແລະ ຄຳອະທິບາຍ (descriptions). ຂໍ້ມູນນີ້ມັກຈະຖືກໃຊ້ໃນເວັບໄຊສຳລັບຂໍ້ມູນເມຕາ (meta data) ຫຼື ການຄົ້ນຫາ.</target></trans-unit>
+      <trans-unit id="_columns_3.image" resname="_columns_3.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_9.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_9.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="columns_single.alttitle" resname="columns_single.alttitle" approved="yes">
+        <source>Page content elements in a single column</source>
+        <target state="final">ອົງປະກອບເນື້ອໃນໜ້າເວັບໃນຄໍລຳດຽວ</target>
+      </trans-unit>
+      <trans-unit id="columns_single.description" resname="columns_single.description" approved="yes">
+        <source>The single column view will show the page content elements that define the content on this page of your website. Click an edit icon or element text to edit an element.</source>
+        <target state="final">ການເບິ່ງແບບຄໍລຳດຽວຈະສະແດງອົງປະກອບເນື້ອໃນໜ້າເວັບທີ່ກຳນົດເນື້ອໃນໃນໜ້ານີ້ຂອງເວັບໄຊຂອງທ່ານ. ຄລິກໄອຄອນແກ້ໄຂ ຫຼື ຂໍ້ຄວາມອົງປະກອບເພື່ອແກ້ໄຂອົງປະກອບນັ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="columns_single.details" resname="columns_single.details" xml:space="preserve" approved="yes">
+				<source>You can also hide, delete and move elements by using the control panels.
+Clicking the "New content element" icon you will be able to create new content elements in between the existing elements on the page.
+Click the icon of a content element if you wish to access the context menu of the element.</source>
+			<target state="final">ທ່ານຍັງສາມາດເຊື່ອງ, ລຶບ ແລະ ຍ້າຍອົງປະກອບຕ່າງໆໄດ້ໂດຍການໃຊ້ແຜງຄວບຄຸມ.
+ການຄລິກໄອຄອນ "ອົງປະກອບເນື້ອໃນໃໝ່" (New content element) ທ່ານຈະສາມາດສ້າງອົງປະກອບເນື້ອໃນໃໝ່ລະຫວ່າງອົງປະກອບທີ່ມີຢູ່ແລ້ວໃນໜ້າເວັບ.
+ຄລິກທີ່ໄອຄອນຂອງອົງປະກອບເນື້ອໃນ ຖ້າທ່ານຕ້ອງການເຂົ້າເຖິງເມນູຄຳສັ່ງ (context menu) ຂອງອົງປະກອບນັ້ນ.</target></trans-unit>
+      <trans-unit id="_columns_single.seeAlso" resname="_columns_single.seeAlso" approved="yes">
+        <source>_MOD_web_layout:columns_multi</source>
+        <target state="final">_MOD_web_layout:columns_multi</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_columns_single.image" resname="_columns_single.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_1.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_1.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="columns_single.image_descr" resname="columns_single.image_descr" approved="yes">
+        <source>Content Elements on a page are arranged in a specific order - the order they appear on the website. This order is also shown in the page module. The control panel allows you to move elements up and down as well as edit, hide and delete them. You can also just click the preview text shown here to access the editing form of the element.</source>
+        <target state="final">ອົງປະກອບເນື້ອໃນໃນໜ້າເວັບຖືກຈັດລຽງຕາມລຳດັບສະເພາະ - ເຊິ່ງເປັນລຳດັບທີ່ພວກມັນປະກົດຢູ່ໃນເວັບໄຊ. ລຳດັບນີ້ຍັງສະແດງຢູ່ໃນໂມດູນໜ້າເວັບຄືກັນ. ແຜງຄວບຄຸມຊ່ວຍໃຫ້ທ່ານຍ້າຍອົງປະກອບຂຶ້ນ ແລະ ລົງ ລວມທັງແກ້ໄຂ, ເຊື່ອງ ແລະ ລຶບພວກມັນ. ທ່ານຍັງສາມາດຄລິກໃສ່ຂໍ້ຄວາມຕົວຢ່າງທີ່ສະແດງຢູ່ນີ້ເພື່ອເຂົ້າຫາແບບຟອມການແກ້ໄຂຂອງອົງປະກອບໄດ້ເລີຍ.</target>
+      </trans-unit>
+      <trans-unit id="button_panel.alttitle" resname="button_panel.alttitle" approved="yes">
+        <source>The "Big Buttons"</source>
+        <target state="final">"ປຸ່ມກົດຂະໜາດໃຫຍ່"</target>
+      </trans-unit>
+      <trans-unit id="button_panel.description" resname="button_panel.description" approved="yes">
+        <source>These buttons will bring you to four most used functions in relation to building pages. From here you can edit the page properties (eg. the page title), you can move the current page to another position in the page tree, create a new page somewhere in the page tree or create new content elements on this page.</source>
+        <target state="final">ປຸ່ມເຫຼົ່ານີ້ຈະພາທ່ານໄປຫາສີ່ຟັງຊັນທີ່ຖືກໃຊ້ຫຼາຍທີ່ສຸດໃນການສ້າງໜ້າເວັບ. ຈາກບ່ອນນີ້ທ່ານສາມາດແກ້ໄຂຄຸນສົມບັດຂອງໜ້າເວັບ (ເຊັ່ນ: ຊື່ໜ້າເວັບ), ທ່ານສາມາດຍ້າຍໜ້າປັດຈຸບັນໄປຕຳແໜ່ງອື່ນໃນຜັງໂຄງສ້າງໜ້າເວັບ, ສ້າງໜ້າເວັບໃໝ່ຢູ່ບ່ອນໃດໜຶ່ງໃນຜັງ ຫຼື ສ້າງອົງປະກອບເນື້ອໃນໃໝ່ໃນໜ້ານີ້.</target>
+      </trans-unit>
+      <trans-unit id="_button_panel.seeAlso" resname="_button_panel.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:TCEforms,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_ce,</source>
+				
+			<target state="final">xMOD_csh_corebe:TCEforms,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_ce,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_button_panel.image" resname="_button_panel.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_2.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_2.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
