@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_relative_date_editor.xlf" date="2025-02-25T00:00:00Z" product-name="form" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="mode.no" approved="yes">
+        <source>No value</source>
+        <target state="final">मूल्य नहीं</target>
+      </trans-unit>
+      <trans-unit id="mode.today" approved="yes">
+        <source>Today</source>
+        <target state="final">आज</target>
+      </trans-unit>
+      <trans-unit id="mode.absolute" approved="yes">
+        <source>Absolute date</source>
+        <target state="final">निरपेक्ष तारीख</target>
+      </trans-unit>
+      <trans-unit id="mode.relative" approved="yes">
+        <source>Relative date</source>
+        <target state="final">सापेक्ष तारीख</target>
+      </trans-unit>
+      <trans-unit id="direction.past" approved="yes">
+        <source>past</source>
+        <target state="final">अतीत</target>
+      </trans-unit>
+      <trans-unit id="direction.future" approved="yes">
+        <source>future</source>
+        <target state="final">भविष्य</target>
+      </trans-unit>
+      <trans-unit id="unit.days" approved="yes">
+        <source>{count, plural, one {Day} other {Days}}</source>
+        <target state="final">{count, plural, one {दिन} other {दिन}}</target>
+      </trans-unit>
+      <trans-unit id="unit.weeks" approved="yes">
+        <source>{count, plural, one {Week} other {Weeks}}</source>
+        <target state="final">{count, plural, one {सप्ताह} other {सप्ताह}}</target>
+      </trans-unit>
+      <trans-unit id="unit.months" approved="yes">
+        <source>{count, plural, one {Month} other {Months}}</source>
+        <target state="final">{count, plural, one {महीना} other {महीने}}</target>
+      </trans-unit>
+      <trans-unit id="unit.years" approved="yes">
+        <source>{count, plural, one {Year} other {Years}}</source>
+        <target state="final">{count, plural, one {साल} other {साल}}</target>
+      </trans-unit>
+      <trans-unit id="mode.custom" approved="yes">
+        <source>Custom relative expression</source>
+        <target state="final">कस्टम रिलेटिव एक्सप्रेशन</target>
+      </trans-unit>
+      <trans-unit id="custom.placeholder" approved="yes">
+        <source>e.g. "sunday next month"</source>
+        <target state="final">जैसे: "अगले महीने का रविवार"</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
