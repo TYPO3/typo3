@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:styleguide/Resources/Private/Language/Modules/graphical_functions.xlf" date="2026-11-10T13:37:37Z" product-name="graphical_functions" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Graphical Functions</source>
+        <target state="final">Графические функции</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Image processing</source>
+        <target state="final">Обработка изображений</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Test and explore TYPO3's image processing capabilities with live examples.</source>
+        <target state="final">Протестируйте и изучите возможности обработки изображений в TYPO3 на реальных примерах.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
