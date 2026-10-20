@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:sys_note/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="sys_note" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="internal_note" approved="yes">
+        <source>Internal notes</source>
+        <target state="final">内部メモ</target>
+      </trans-unit>
+      <trans-unit id="edit_note" approved="yes">
+        <source>Edit note record</source>
+        <target state="final">注記レコードの編集</target>
+      </trans-unit>
+      <trans-unit id="category.1" approved="yes">
+        <source>Instructions</source>
+        <target state="final">説明</target>
+      </trans-unit>
+      <trans-unit id="category.2" approved="yes">
+        <source>Template</source>
+        <target state="final">テンプレート</target>
+      </trans-unit>
+      <trans-unit id="category.3" approved="yes">
+        <source>Notes</source>
+        <target state="final">メモ</target>
+      </trans-unit>
+      <trans-unit id="category.4" approved="yes">
+        <source>To-do</source>
+        <target state="final">やること</target>
+      </trans-unit>
+      <!-- To be moved to messages.xlf - see https://forge.typo3.org/issues/108900 -->
+    </body>
+  </file>
+</xliff>
