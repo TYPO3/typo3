@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/user_settings.xlf" date="2026-04-08T12:00:00Z" product-name="typo3-cms-backend" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Personal profile settings</source>
+        <target state="final">إعدادات الملف الشخصي</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>This module allows you to customize your backend user profile. Here you can change your active system language, name and email address. You may also configure other general features in the system.</source>
+        <target state="final">تُتيحُ لكَ هذهِ الوحدةُ تخصيصَ ملفِّكَ الشخصيِّ كمستخدمٍ للواجهةِ الخلفيةِ. يمكنُكَ هنا تغييرُ لغةِ النظامِ النشطةِ واسمِكَ وعنوانِ بريدِكَ الإلكترونيِّ. يمكنُكَ أيضاً تهيئةُ ميزاتٍ عامةٍ أخرى في النظامِ.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>User Settings</source>
+        <target state="final">إعدادات المُستخدم</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
