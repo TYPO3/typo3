@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814859" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysnews.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>This option will hide the news from showing up at the login screen.</source>
+        <target state="final">ຕົວເລືອກນີ້ຈະເຊື່ອງຂ່າວບໍ່ໃຫ້ສະແດງຢູ່ໜ້າຈໍເຂົ້າສູ່ລະບົບ.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the title of the news.</source>
+        <target state="final">ປ້ອນຫົວຂໍ້ຂອງຂ່າວ.</target>
+      </trans-unit>
+      <trans-unit id="content.description" resname="content.description" approved="yes">
+        <source>The news content to let editors know what's coming up. HTML is disabled, however, you can use line breaks.</source>
+        <target state="final">ເນື້ອໃນຂ່າວເພື່ອໃຫ້ຜູ້ຮຽບຮຽງຮູ້ວ່າຈະມີຫຍັງເກີດຂຶ້ນ. HTML ແມ່ນຖືກປິດໃຊ້ງານ, ແນວໃດກໍຕາມ ທ່ານສາມາດໃຊ້ການຂຶ້ນແຖວໃໝ່ໄດ້.</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>System news are shown at the TYPO3 login screen, allowing admins to inform editors about upcoming system maintenance and similar events.</source>
+        <target state="final">ຂ່າວສານລະບົບຈະສະແດງຢູ່ໜ້າຈໍເຂົ້າສູ່ລະບົບ TYPO3, ເຊິ່ງອະນຸຍາດໃຫ້ຜູ້ດູແລລະບົບແຈ້ງໃຫ້ຜູ້ຮຽບຮຽງຊາບ ກ່ຽວກັບການບຳລຸງຮັກສາລະບົບທີ່ຈະມາເຖິງ ແລະ ເຫດການອື່ນໆ ທີ່ຄ້າຍຄືກັນ.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
