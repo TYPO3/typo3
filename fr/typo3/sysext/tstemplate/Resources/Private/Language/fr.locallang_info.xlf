@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_info.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="submodule.title" approved="yes">
+        <source>Edit TypoScript record</source>
+        <target state="final">Modifier le gabarit TypoScript</target>
+      </trans-unit>
+      <trans-unit id="submodule.titleWithRecord" approved="yes">
+        <source>Edit TypoScript record "%s"</source>
+        <target state="final">Modifier le gabarit TypoScript "%s"</target>
+      </trans-unit>
+      <trans-unit id="submodule.description" approved="yes">
+        <source>Modify the content of the selected TypoScript record of the current page. Modifications can be made either for configurations like TypoScript constants and setup or basics like the title and description of the TypoScript record itself.</source>
+        <target state="final">Modifier le contenu du gabarit TypoScript sélectionné pour la page courante. Des modifications peuvent être apportées aux constantes et à la configuration TypoScript ainsi qu'aux informations basiques comme le titre et la description du gabarit TypoScript lui-même.</target>
+      </trans-unit>
+      <trans-unit id="options.selectedRecord" approved="yes">
+        <source>Selected record</source>
+        <target state="final">Gabarit sélectionné</target>
+      </trans-unit>
+      <trans-unit id="table.column.constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">Constantes</target>
+      </trans-unit>
+      <trans-unit id="table.column.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Description</target>
+      </trans-unit>
+      <trans-unit id="table.column.lines" approved="yes">
+        <source>%s lines</source>
+        <target state="final">%s lignes</target>
+      </trans-unit>
+      <trans-unit id="table.column.setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">Configuration</target>
+      </trans-unit>
+      <trans-unit id="table.column.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titre</target>
+      </trans-unit>
+      <trans-unit id="btn.editSiteConfiguration" approved="yes">
+        <source>Edit site configuration</source>
+        <target state="final">Modifier la configuration du site</target>
+      </trans-unit>
+      <trans-unit id="btn.editSiteSettings" approved="yes">
+        <source>Edit site settings</source>
+        <target state="final">Modifier les paramètres du site</target>
+      </trans-unit>
+      <trans-unit id="btn.editTypoScriptRecord" approved="yes">
+        <source>Edit the whole TypoScript record</source>
+        <target state="final">Éditer le gabarit TypoScript complet</target>
+      </trans-unit>
+      <trans-unit id="infoTypoScriptRecordFromSite.title" approved="yes">
+        <source>TypoScript settings have been implicitly generated from site sets includes</source>
+        <target state="final">Les paramètres de TypoScript ont été générés implicitement à partir des configurations prédéfinies (Site sets).</target>
+      </trans-unit>
+      <trans-unit id="infoTypoScriptRecordFromSite.message" approved="yes">
+        <source>The site configuration '%s' has one or more dependencies on site sets. The sets can be configured in the 'Sites » Setup' backend module. The TypoScript definitions can be edited on the file system.</source>
+        <target state="final">La configuration du site « %s » a une ou plusieurs dépendances avec les configurations prédéfinies (Site sets). Les paramètres peuvent être configurés dans le module backend « Gestionnaire de site &gt; Sites ». Les définitions de TypoScript peuvent être modifiées via le système de fichiers.</target>
+      </trans-unit>
+      <trans-unit id="noConstantsButSiteSettings.title" approved="yes">
+        <source>Site Settings available</source>
+        <target state="final">Paramètres du site disponibles</target>
+      </trans-unit>
+      <trans-unit id="noConstantsButSiteSettings.message" approved="yes">
+        <source>Edit site settings via the 'Sites » Setup' backend module.</source>
+        <target state="final">Modifier les paramètres du site via le module backend « Gestionnaire de site &gt; Sites ».</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
