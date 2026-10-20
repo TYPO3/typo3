@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="widget.rss.title" approved="yes">
+        <source>RSS Feed</source>
+        <target state="final">RSS Feed</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.description" approved="yes">
+        <source>Displays the latest entries from a customizable RSS feed.</source>
+        <target state="final">ສະແດງລາຍການຫຼ້າສຸດຈາກ RSS feed ທີ່ສາມາດປັບແຕ່ງໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.label.label" approved="yes">
+        <source>Label</source>
+        <target state="final">ປ້າຍຊື່</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.label.description" approved="yes">
+        <source>Defines the label of the widget.</source>
+        <target state="final">ກຳນົດປ້າຍຊື່ຂອງວິດເຈັດ (widget).</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.fieldUrl.label" approved="yes">
+        <source>RSS Feed</source>
+        <target state="final">RSS Feed</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.fieldUrl.description" approved="yes">
+        <source>Defines the URL or file providing the RSS Feed. This is read by the widget in order to fetch entries to show.</source>
+        <target state="final">ກຳນົດ URL ຫຼື ໄຟລ໌ທີ່ສະໜອງ RSS Feed. ຂໍ້ມູນນີ້ຈະຖືກອ່ານໂດຍວິດເຈັດເພື່ອດຶງລາຍການມາສະແດງ.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.limit.label" approved="yes">
+        <source>Limit</source>
+        <target state="final">ຈຳກັດ</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.limit.description" approved="yes">
+        <source>Defines how many RSS items should be shown.</source>
+        <target state="final">ກຳນົດຈຳນວນລາຍການ RSS ທີ່ຈະໃຫ້ສະແດງ.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.lifetime.label" approved="yes">
+        <source>Lifetime</source>
+        <target state="final">ໄລຍະເວລາເກັບຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.lifetime.description" approved="yes">
+        <source>Defines how long to wait, in seconds, until fetching RSS Feed again.</source>
+        <target state="final">ກຳນົດໄລຍະເວລາລໍຖ້າ (ເປັນວິນາທີ) ກ່ອນທີ່ຈະດຶງຂໍ້ມູນ RSS Feed ອີກຄັ້ງ.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.missingFeedConfiguration.title" approved="yes">
+        <source>Missing feed configuration</source>
+        <target state="final">ຂາດການຕັ້ງຄ່າ feed</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.missingFeedConfiguration.message" approved="yes">
+        <source>Please configure a feed URL to retrieve items from.</source>
+        <target state="final">ກະລຸນາຕັ້ງຄ່າ URL ຂອງ feed ເພື່ອດຶງຂໍ້ມູນລາຍການ.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.feedError.title" approved="yes">
+        <source>Feed error</source>
+        <target state="final">Feed ເກີດຂໍ້ຜິດພາດ</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.feedError.message" approved="yes">
+        <source>The feed at "%1$s" could not be parsed.</source>
+        <target state="final">Feed ຢູ່ທີ່ "%1$s" ບໍ່ສາມາດວິເຄາະຂໍ້ມູນໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.noItems.title" approved="yes">
+        <source>No items to display</source>
+        <target state="final">ບໍ່ມີລາຍການທີ່ຈະສະແດງ</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.noItems.message" approved="yes">
+        <source>The feed at "%1$s" does not contain any items.</source>
+        <target state="final">Feed ຢູ່ທີ່ "%1$s" ບໍ່ມີລາຍການໃດໆ.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
