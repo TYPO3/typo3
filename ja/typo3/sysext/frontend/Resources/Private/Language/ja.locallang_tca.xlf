@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814790" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="pages.palettes.standard" resname="pages.palettes.standard" approved="yes">
+        <source>Page</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.visibility" resname="pages.palettes.visibility" approved="yes">
+        <source>Visibility</source>
+        <target state="final">公開範囲</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.access" resname="pages.palettes.access" approved="yes">
+        <source>Publish Dates and Access Rights</source>
+        <target state="final">日付とアクセス権を公開</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.abstract" resname="pages.palettes.abstract" approved="yes">
+        <source>Abstract</source>
+        <target state="final">概要</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.metatags" resname="pages.palettes.metatags" approved="yes">
+        <source>Meta Tags</source>
+        <target state="final">メタタグ</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.layout" resname="pages.palettes.layout" approved="yes">
+        <source>Page Layout</source>
+        <target state="final">ページレイアウト</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.replace" resname="pages.palettes.replace" approved="yes">
+        <source>Replace Content</source>
+        <target state="final">コンテンツを置換</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.media" resname="pages.palettes.media" approved="yes">
+        <source>Files</source>
+        <target state="final">ファイル</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype_formlabel" resname="pages.doktype_formlabel" approved="yes">
+        <source>Type</source>
+        <target state="final">種類</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype.div.page" resname="pages.doktype.div.page" approved="yes">
+        <source>Page</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="pages.doktype.div.special" resname="pages.doktype.div.special" approved="yes">
+        <source>Special</source>
+        <target state="final">特別</target>
+      </trans-unit>
+      <trans-unit id="pages.title_formlabel" resname="pages.title_formlabel" approved="yes">
+        <source>Page Title</source>
+        <target state="final">ページのタイトル</target>
+      </trans-unit>
+      <trans-unit id="pages.starttime_formlabel" resname="pages.starttime_formlabel" approved="yes">
+        <source>Publish Date</source>
+        <target state="final">公開日時</target>
+      </trans-unit>
+      <trans-unit id="pages.endtime_formlabel" resname="pages.endtime_formlabel" approved="yes">
+        <source>Expiration Date</source>
+        <target state="final">有効期限</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_formlabel" resname="pages.hidden_formlabel" approved="yes">
+        <source>Page</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="pages.extendToSubpages_formlabel" resname="pages.extendToSubpages_formlabel" approved="yes">
+        <source>Extend to Subpages</source>
+        <target state="final">サブページまで拡張</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_title" resname="pages.nav_title" approved="yes">
+        <source>Navigation Title</source>
+        <target state="final">ナビゲーションタイトル</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_title_formlabel" resname="pages.nav_title_formlabel" approved="yes">
+        <source>Alternative Navigation Title</source>
+        <target state="final">代替ナビゲーションタイトル</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide" resname="pages.nav_hide" approved="yes">
+        <source>Hide in Menu</source>
+        <target state="final">メニューで非表示</target>
+      </trans-unit>
+      <trans-unit id="pages.subtitle" resname="pages.subtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">サブタイトル</target>
+      </trans-unit>
+      <trans-unit id="pages.subtitle_formlabel" resname="pages.subtitle_formlabel" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">サブタイトル</target>
+      </trans-unit>
+      <trans-unit id="pages.target" resname="pages.target" approved="yes">
+        <source>Target</source>
+        <target state="final">対象</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.metadata" resname="pages.tabs.metadata" approved="yes">
+        <source>Metadata</source>
+        <target state="final">メタデータ</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.files" resname="pages.tabs.files" approved="yes">
+        <source>Resources</source>
+        <target state="final">リソース</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.resources" resname="pages.tabs.resources" approved="yes">
+        <source>Resources</source>
+        <target state="final">リソース</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.access" resname="pages.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">アクセス権限</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.options" resname="pages.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">オプション</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.appearance" resname="pages.tabs.appearance" approved="yes">
+        <source>Appearance</source>
+        <target state="final">表示設定</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.behaviour" resname="pages.tabs.behaviour" approved="yes">
+        <source>Behaviour</source>
+        <target state="final">動作設定</target>
+      </trans-unit>
+      <trans-unit id="pages.abstract" resname="pages.abstract" approved="yes">
+        <source>Abstract</source>
+        <target state="final">概要</target>
+      </trans-unit>
+      <trans-unit id="pages.abstract_formlabel" resname="pages.abstract_formlabel" approved="yes">
+        <source>Abstract</source>
+        <target state="final">概要</target>
+      </trans-unit>
+      <trans-unit id="pages.keywords_formlabel" resname="pages.keywords_formlabel" approved="yes">
+        <source>Keywords</source>
+        <target state="final">キーワード</target>
+      </trans-unit>
+      <trans-unit id="pages.author_formlabel" resname="pages.author_formlabel" approved="yes">
+        <source>Author Name</source>
+        <target state="final">投稿者名</target>
+      </trans-unit>
+      <trans-unit id="pages.media" resname="pages.media" approved="yes">
+        <source>Files</source>
+        <target state="final">ファイル</target>
+      </trans-unit>
+      <trans-unit id="pages.media_formlabel" resname="pages.media_formlabel" approved="yes">
+        <source>Media</source>
+        <target state="final">メディア</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg_formlabel" resname="pages.l18n_cfg_formlabel" approved="yes">
+        <source>Localization</source>
+        <target state="final">ローカリゼーション</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg.I.1" resname="pages.l18n_cfg.I.1" approved="yes">
+        <source>Hide default language of page</source>
+        <target state="final">ページのデフォルトの言語を非表示</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg.I.2" resname="pages.l18n_cfg.I.2" approved="yes">
+        <source>Hide page if no translation for current language exists</source>
+        <target state="final">現在の言語の翻訳が存在しない場合はページを隠す</target>
+      </trans-unit>
+      <trans-unit id="pages.fe_login_mode_formlabel" resname="pages.fe_login_mode_formlabel" approved="yes">
+        <source>Login Behaviour</source>
+        <target state="final">ログインの動作</target>
+      </trans-unit>
+      <trans-unit id="pages.storage_pid_formlabel" resname="pages.storage_pid_formlabel" approved="yes">
+        <source>Page</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="pages.TSconfig_formlabel" resname="pages.TSconfig_formlabel" approved="yes">
+        <source>Page TSConfig</source>
+        <target state="final">ページTSconfig</target>
+      </trans-unit>
+      <trans-unit id="tt_content" resname="tt_content" approved="yes">
+        <source>Page Content</source>
+        <target state="final">ページコンテンツ</target>
+      </trans-unit>
+      <trans-unit id="fe_users.username" resname="fe_users.username" approved="yes">
+        <source>Username</source>
+        <target state="final">ユーザ名</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tabs.access" resname="fe_users.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">アクセス権限</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tabs.options" resname="fe_users.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">オプション</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.tabs.options" resname="fe_groups.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">オプション</target>
+      </trans-unit>
+      <trans-unit id="sys_template.root" resname="sys_template.root" approved="yes">
+        <source>Rootlevel</source>
+        <target state="final">ルートレベル</target>
+      </trans-unit>
+      <trans-unit id="sys_template.resources" resname="sys_template.resources" approved="yes">
+        <source>Resources</source>
+        <target state="final">リソース</target>
+      </trans-unit>
+      <trans-unit id="sys_template.tabs.files" resname="sys_template.tabs.files" approved="yes">
+        <source>Resources</source>
+        <target state="final">リソース</target>
+      </trans-unit>
+      <trans-unit id="sys_template.tabs.options" resname="sys_template.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">オプション</target>
+      </trans-unit>
+      <trans-unit id="sys_template.tabs.access" resname="sys_template.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">アクセス権限</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.tabs.access" resname="backend_layout.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">アクセス権限</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
