@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_resource.xlf" date="2023-02-21T00:00:00Z" product-name="cms" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="ajax.success">
+        <source>Success</source>
+        <target>crwdns278637:0crwdne278637:0</target>
+      </trans-unit>
+      <trans-unit id="ajax.success.message.renamed">
+        <source>The resource "%s" has been renamed to "%s".</source>
+        <target>crwdns278639:0%scrwdnd278639:0%scrwdne278639:0</target>
+      </trans-unit>
+      <trans-unit id="ajax.success.message.resourceReplaced">
+        <source>The resource %s has been replaced.</source>
+        <target>crwdns376680:0%scrwdne376680:0</target>
+      </trans-unit>
+      <trans-unit id="ajax.error">
+        <source>An error occurred</source>
+        <target>crwdns278641:0crwdne278641:0</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNotFileOrFolder">
+        <source>The resource must be a file or a folder.</source>
+        <target>crwdns278717:0crwdne278717:0</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNoPermissionRead">
+        <source>Reading this resource is not permitted.</source>
+        <target>crwdns411027:0crwdne411027:0</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNoPermissionRename">
+        <source>Renaming this resource is not permitted.</source>
+        <target>crwdns391408:0crwdne391408:0</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNameCannotBeEmpty">
+        <source>The resource name cannot be empty.</source>
+        <target>crwdns278649:0crwdne278649:0</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNameNotDifferent">
+        <source>The resource %s already has this name. No changes were made.</source>
+        <target>crwdns391410:0%scrwdne391410:0</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNotAvailableToUpload">
+        <source>No resource was selected to be uploaded.</source>
+        <target>crwdns376682:0crwdne376682:0</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNotRenamed">
+        <source>The resource %s could not be renamed.</source>
+        <target>crwdns376198:0%scrwdne376198:0</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNotFound">
+        <source>The resource was not found.</source>
+        <target>crwdns376684:0crwdne376684:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
