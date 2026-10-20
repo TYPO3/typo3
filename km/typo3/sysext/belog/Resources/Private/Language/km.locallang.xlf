@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814781" source-language="en" datatype="plaintext" original="EXT:belog/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="belog" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id="adminLog" resname="adminLog" approved="yes">
+        <source>Administration log</source>
+        <target state="final">កំណត់ហេតុ​របស់អ្នកគ្រប់គ្រង</target>
+      </trans-unit>
+      <trans-unit id="allUsers" resname="allUsers" approved="yes">
+        <source>[All users]</source>
+        <target state="final">[អ្នកប្រើប្រាស់​ទាំងអស់]</target>
+      </trans-unit>
+      <trans-unit id="any" resname="any" approved="yes">
+        <source>[Any]</source>
+        <target state="final">[មួយចំនួន]</target>
+      </trans-unit>
+      <trans-unit id="viaUser" resname="viaUser" approved="yes">
+        <source>via</source>
+        <target state="final">តាមរយៈ</target>
+      </trans-unit>
+      <trans-unit id="live" resname="live" approved="yes">
+        <source>LIVE</source>
+        <target state="final">LIVE</target>
+      </trans-unit>
+      <trans-unit id="draft" resname="draft" approved="yes">
+        <source>Draft</source>
+        <target state="final">ពង្រាង</target>
+      </trans-unit>
+      <trans-unit id="self" resname="self" approved="yes">
+        <source>Self</source>
+        <target state="final">Self</target>
+      </trans-unit>
+      <trans-unit id="thisWeek" resname="thisWeek" approved="yes">
+        <source>This week</source>
+        <target state="final">សប្ដាហ៍​នេះ</target>
+      </trans-unit>
+      <trans-unit id="lastWeek" resname="lastWeek" approved="yes">
+        <source>Last week</source>
+        <target state="final">សប្ដាហ៍​មុន</target>
+      </trans-unit>
+      <trans-unit id="last7Days" resname="last7Days" approved="yes">
+        <source>Last 7 days</source>
+        <target state="final">ប្រាំពីរ​ថ្ងៃ​មុន</target>
+      </trans-unit>
+      <trans-unit id="thisMonth" resname="thisMonth" approved="yes">
+        <source>This month</source>
+        <target state="final">ខែ​នេះ</target>
+      </trans-unit>
+      <trans-unit id="lastMonth" resname="lastMonth" approved="yes">
+        <source>Last month</source>
+        <target state="final">ខែ​មុន</target>
+      </trans-unit>
+      <trans-unit id="last31Days" resname="last31Days" approved="yes">
+        <source>Last 31 days</source>
+        <target state="final">សាមសិបមួយ​ថ្ងៃ​មុន</target>
+      </trans-unit>
+      <trans-unit id="noLimit" resname="noLimit" approved="yes">
+        <source>No limit</source>
+        <target state="final">មិន​កំណត់</target>
+      </trans-unit>
+      <trans-unit id="userDefined" resname="userDefined" approved="yes">
+        <source>User defined</source>
+        <target state="final">កំណត់​ដោយអ្នកប្រើប្រាស់</target>
+      </trans-unit>
+      <trans-unit id="set" resname="set" approved="yes">
+        <source>Set</source>
+        <target state="final">កំណត់</target>
+      </trans-unit>
+      <trans-unit id="20" resname="20" translate="no" approved="yes">
+        <source>20</source>
+        <target state="final">២០</target>
+      </trans-unit>
+      <trans-unit id="50" resname="50" translate="no" approved="yes">
+        <source>50</source>
+        <target state="final">៥០</target>
+      </trans-unit>
+      <trans-unit id="100" resname="100" translate="no" approved="yes">
+        <source>100</source>
+        <target state="final">១០០</target>
+      </trans-unit>
+      <trans-unit id="200" resname="200" translate="no" approved="yes">
+        <source>200</source>
+        <target state="final">២០០</target>
+      </trans-unit>
+      <trans-unit id="500" resname="500" translate="no" approved="yes">
+        <source>500</source>
+        <target state="final">៥០០</target>
+      </trans-unit>
+      <trans-unit id="1000" resname="1000" translate="no" approved="yes">
+        <source>1000</source>
+        <target state="final">១០០០</target>
+      </trans-unit>
+      <trans-unit id="actionAll" resname="actionAll" approved="yes">
+        <source>All</source>
+        <target state="final">ទាំងអស់</target>
+      </trans-unit>
+      <trans-unit id="actionDatabase" resname="actionDatabase" approved="yes">
+        <source>Database</source>
+        <target state="final">ឃ្លាំងផ្ទុកទិន្នន័យ</target>
+      </trans-unit>
+      <trans-unit id="actionFile" resname="actionFile" approved="yes">
+        <source>File</source>
+        <target state="final">ឯកសារ</target>
+      </trans-unit>
+      <trans-unit id="actionCache" resname="actionCache" approved="yes">
+        <source>Cache</source>
+        <target state="final">Cache</target>
+      </trans-unit>
+      <trans-unit id="actionSettings" resname="actionSettings" approved="yes">
+        <source>Settings</source>
+        <target state="final">ការកំណត់</target>
+      </trans-unit>
+      <trans-unit id="actionLogin" resname="actionLogin" approved="yes">
+        <source>Login</source>
+        <target state="final">ចូល</target>
+      </trans-unit>
+      <trans-unit id="actionErrors" resname="actionErrors" approved="yes">
+        <source>Errors</source>
+        <target state="final">កំហុសឆ្គង</target>
+      </trans-unit>
+      <trans-unit id="changesInFields" resname="changesInFields" approved="yes">
+        <source>Changes in fields: %s.</source>
+        <target state="final">ផ្លាស់ប្ដូរ​ក្នុងកាឡនៈ %s។</target>
+      </trans-unit>
+      <trans-unit id="showHistory" resname="showHistory" approved="yes">
+        <source>Show History</source>
+        <target state="final">បង្ហាញ​ប្រវត្តិ</target>
+      </trans-unit>
+      <trans-unit id="pagenameWithUID" resname="pagenameWithUID" approved="yes">
+        <source>%s" [UID: %s]</source>
+        <target state="final">%s" [UID: %s]</target>
+      </trans-unit>
+      <trans-unit id="overview" resname="overview" approved="yes">
+        <source>Overview</source>
+        <target state="final">ពិនិត្យសាកស្បង</target>
+      </trans-unit>
+      <trans-unit id="timeInfo" resname="timeInfo" approved="yes">
+        <source>These pages have log messages from %s to %s</source>
+        <target state="final">ទំព័រ​ទាំងអស់នេះ​មានសាកំណត់ហេតុ​ពី%sទៅ%s</target>
+      </trans-unit>
+      <trans-unit id="forNonPageRelatedActions" resname="forNonPageRelatedActions" approved="yes">
+        <source>for NON-PAGE related actions</source>
+        <target state="final">សម្រាប់​ទំព័រ​ដែលមិនទាក់ទង​នឹងសកម្មភាព</target>
+      </trans-unit>
+      <trans-unit id="forRootLevel" resname="forRootLevel" approved="yes">
+        <source>for ROOT LEVEL</source>
+        <target state="final">សម្រាប់​លំដាប់ROOT</target>
+      </trans-unit>
+      <trans-unit id="forPage" resname="forPage" approved="yes">
+        <source>for PAGE "%s" (UID: %s)</source>
+        <target state="final">សម្រាប់​ទំព័រ​"%s" (UID: %s)</target>
+      </trans-unit>
+      <trans-unit id="logForNonPageRelatedActionsOrRootLevelOrPage" resname="logForNonPageRelatedActionsOrRootLevelOrPage" approved="yes">
+        <source>Log %s from %s to %s</source>
+        <target state="final">កំណត់ហេតុ​%s​ពី​%s​ទៅ​%s</target>
+      </trans-unit>
+      <trans-unit id="type_1" resname="type_1" approved="yes">
+        <source>DB</source>
+        <target state="final">DB</target>
+      </trans-unit>
+      <trans-unit id="action_1_1" resname="action_1_1" approved="yes">
+        <source>Insert</source>
+        <target state="final">បញ្ចូល</target>
+      </trans-unit>
+      <trans-unit id="action_1_2" resname="action_1_2" approved="yes">
+        <source>Update</source>
+        <target state="final">កែប្រែ</target>
+      </trans-unit>
+      <trans-unit id="action_1_3" resname="action_1_3" approved="yes">
+        <source>Delete</source>
+        <target state="final">លុប</target>
+      </trans-unit>
+      <trans-unit id="action_1_4" resname="action_1_4" approved="yes">
+        <source>Move</source>
+        <target state="final">ឆែក</target>
+      </trans-unit>
+      <trans-unit id="action_1_5" resname="action_1_5" approved="yes">
+        <source>Check</source>
+        <target state="final">ឆែក</target>
+      </trans-unit>
+      <trans-unit id="msg_1_0_1" resname="msg_1_0_1" approved="yes">
+        <source>Referer host '%s' and server host '%s' did not match!</source>
+        <target state="final">ផ្អែកលើ​ host​ '%s' ​and ​server host '%s' ដែលមិនត្រឹមត្រូវ​ទេ!</target>
+      </trans-unit>
+      <trans-unit id="msg_1_1_11" resname="msg_1_1_11" approved="yes">
+        <source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
+        <target state="final">ព្យាយាម​បញ្ជូល​ទិន្នន័យ​លើ​ទំព័រ'%s' (%s)​​ដែលតារាងនេះ​,​%s,​​មិនបានអនុញ្ញាត</target>
+      </trans-unit>
+      <trans-unit id="msg_1_1_12" resname="msg_1_1_12" approved="yes">
+        <source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
+        <target state="final">ព្យាយាម​​បញ្ជូល​ទិន្នន័យ​លើ​ទំព័រ'%s' (%s)ពីតារាង​​'%s'ដែលមិនមានសិទ្ធិ។​ឫមិនមានទំព័រ។</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_1" resname="msg_1_2_1" approved="yes">
+        <source>Attempt to modify table '%s' without permission</source>
+        <target state="final">ព្យាយាម​កែ​តារាង​​'%s'​ដែលមិនមានសិទ្ធិ</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_2" resname="msg_1_2_2" approved="yes">
+        <source>Attempt to modify record '%s' (%s) without permission. Or non-existing page.</source>
+        <target state="final">ព្យាយាម​កែ​ប្រែ​ទិន្នន័យ​​'%s' (%s) ​ដែលមិនមានសិទ្ធិ។​ឫមិនមានទំព័រ។</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_10" resname="msg_1_2_10" approved="yes">
+        <source>Record '%s' (%s) was updated.</source>
+        <target state="final">ទិន្នន័យ​ '%s' (%s) ត្រូវបានកែប្រែ។</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_12" resname="msg_1_2_12" approved="yes">
+        <source>MySQL error: '%s' (%s)</source>
+        <target state="final">កំហុសឆ្គង MySQL: '%s' (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_1" resname="msg_1_4_1" approved="yes">
+        <source>Attempt to move record '%s' (%s) to after a non-existing record (uid=%s)</source>
+        <target state="final">ព្យាយាម​ធ្វើការផ្លាស់ទី​ទិន្នន័យ'%s' (%s)​ទៅដាក់​បន្ទាប់ពី​ទិន្នន័យដែលមិនមាន (uid=%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_2" resname="msg_1_4_2" approved="yes">
+        <source>Moved record '%s' (%s) to page '%s' (%s)</source>
+        <target state="final">ផ្លាស់ទី​ទិន្នន័យ​ '%s' (%s)ទៅទំព័រ'%s' (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_3" resname="msg_1_4_3" approved="yes">
+        <source>Moved record '%s' (%s) from page '%s' (%s)</source>
+        <target state="final">ផ្លាស់ទី​ទិន្នន័យ​ '%s' (%s)ពីទំព័រ'%s' (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_4" resname="msg_1_4_4" approved="yes">
+        <source>Moved record '%s' (%s) on page '%s' (%s)</source>
+        <target state="final">ផ្លាស់ទី​ទិន្នន័យ​ '%s' (%s)លើទំព័រ'%s' (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_10" resname="msg_1_4_10" approved="yes">
+        <source>Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))</source>
+        <target state="final">ព្យាយាម​ផ្លាស់ទី​ទំព័រ'%s'​(% s)​ទៅ​ដាក់ខាងក្នុង​​rootline​របស់ខ្លួន​(នៅទំព័រ​'% s'​(%s))</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_11" resname="msg_1_4_11" approved="yes">
+        <source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
+        <target state="final">ព្យាយាម​បញ្ជូល​ទិន្នន័យ​លើ​ទំព័រ'%s' (%s)​​ដែលតារាងនេះ​,​%s,​​មិនបានអនុញ្ញាត</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_12" resname="msg_1_4_12" approved="yes">
+        <source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
+        <target state="final">ព្យាយាម​​បញ្ជូល​ទិន្នន័យ​លើ​ទំព័រ'%s' (%s)ពីតារាង​​'%s'ដែលមិនមានសិទ្ធិ។​ឫមិនមានទំព័រ។</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_13" resname="msg_1_4_13" approved="yes">
+        <source>Attempt to move record '%s' (%s) to after another record, although the table has no sorting row.</source>
+        <target state="final">ព្យាយាម​ផ្លាស់ទី​ទិន្នន័យ​'%s'​(%s)​​ទៅដាក់​បន្ទាប់ពី​ទិន្នន័យ​មួយផ្សេងទៀត​,​ទោះបីជា​តារាង​គ្មាន​ការតម្រៀប​ជួរដេក។</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_14" resname="msg_1_4_14" approved="yes">
+        <source>Attempt to move record '%s' (%s) without having permissions to do so</source>
+        <target state="final">ព្យាយាម​ផ្លាស់ទី​ទិន្នន័យ​'%s'​(%s)​ដោយមិនមាន​សិទ្ធិ​ដើម្បី​ធ្វើដូច្នេះ​បាន</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_1" resname="msg_1_5_1" approved="yes">
+        <source>You cannot change the 'doktype' of page '%s' to the desired value.</source>
+        <target state="final">អ្នក​មិនអាច​ផ្លាស់ប្តូរ​'doktype'​'%s'​នៃទំព័រ​ទៅតាម​តម្លៃ​ដែល​អ្នកចង់បាន។</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_2" resname="msg_1_5_2" approved="yes">
+        <source>'doktype' of page '%s' could not be changed because the page contains records from disallowed tables; %s</source>
+        <target state="final">'doktype'​'%s'​នៃ​ទំព័រ​មិនអាច​ផ្លាស់ប្តូរបាន​ដោយសារ​តែ​ទំព័រ​មានផ្ទុក​ទិន្នន័យ​ពី​តារាង​មិនបានអនុញ្ញាត;​%s</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_3" resname="msg_1_5_3" approved="yes">
+        <source>Too few items in the list of values. (%s)</source>
+        <target state="final">ធាតុ​តិចពេក​នៅក្នុង​បញ្ជី​នៃតម្លៃនេះ។(%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_10" resname="msg_1_5_10" approved="yes">
+        <source>Could not delete file '%s' (does not exist). (%s)</source>
+        <target state="final">មិនអាច​លុប​ឯកសារ​'%s'​បាន(មិនមាន)។​(%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_11" resname="msg_1_5_11" approved="yes">
+        <source>Copying file '%s' failed!: No destination file (%s) possible!. (%s)</source>
+        <target state="final">ការចម្លង​ឯកសារ​'%s'​បានបរាជ័យ!​ទិសដៅ​ឯកសារ​មិនអាចមាន​(%s)!​​(%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_12" resname="msg_1_5_12" approved="yes">
+        <source>File extension '%s' is not allowed. (%s)</source>
+        <target state="final">ឯកសារ​អ៊ិចស្ទិនសិន​'%s'​មិនត្រូវបាន​អនុញ្ញាតឡើយ។​(%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_13" resname="msg_1_5_13" approved="yes">
+        <source>File size (%s) of file '%s' exceeds limit (%s). (%s)</source>
+        <target state="final">ទំហំ​ឯកសារ​(%s)​នៃ​ឯកសារ'%s'​លើសពី​ដែនកំណត់​(%s)។​(%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_14" resname="msg_1_5_14" approved="yes">
+        <source>The destination (%s) or the source file (%s) does not exist. (%s)</source>
+        <target state="final">ទិសដៅ​(%s)​ឬ​ប្រភព​ឯកសារ​(%s)​មិនមានទេ។​(%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_15" resname="msg_1_5_15" approved="yes">
+        <source>Copying to file '%s' failed! (%s)</source>
+        <target state="final">ចម្លង​ទៅ​កាន់ឯកសារ​'%s'បានបរាជ័យ!(%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_16" resname="msg_1_5_16" approved="yes">
+        <source>Copying file '%s' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)</source>
+        <target state="final">ការចម្លង​ឯកសារ​'%​s'​បានបរាជ័យ!:​ផ្លូវទិសដៅ​(%s)​អាច​ត្រូវ​បានការពារ។​សូម​ធ្វើឱ្យ​វា​អាចសរសេរបាន!។​(%s)</target>
+      </trans-unit>
+      <trans-unit id="type_2" resname="type_2" approved="yes">
+        <source>FILE</source>
+        <target state="final">ឯកសារ</target>
+      </trans-unit>
+      <trans-unit id="action_2_1" resname="action_2_1" approved="yes">
+        <source>Upload</source>
+        <target state="final">បញ្ជូលឡើង</target>
+      </trans-unit>
+      <trans-unit id="action_2_2" resname="action_2_2" approved="yes">
+        <source>Copy</source>
+        <target state="final">ចម្លង</target>
+      </trans-unit>
+      <trans-unit id="action_2_3" resname="action_2_3" approved="yes">
+        <source>Move</source>
+        <target state="final">ឆែក</target>
+      </trans-unit>
+      <trans-unit id="action_2_4" resname="action_2_4" approved="yes">
+        <source>Delete</source>
+        <target state="final">លុប</target>
+      </trans-unit>
+      <trans-unit id="action_2_5" resname="action_2_5" approved="yes">
+        <source>Rename</source>
+        <target state="final">ប្ដូរឈ្មោះ</target>
+      </trans-unit>
+      <trans-unit id="action_2_6" resname="action_2_6" approved="yes">
+        <source>New</source>
+        <target state="final">ថ្មី</target>
+      </trans-unit>
+      <trans-unit id="action_2_7" resname="action_2_7" approved="yes">
+        <source>Unzip</source>
+        <target state="final">Unzip</target>
+      </trans-unit>
+      <trans-unit id="action_2_8" resname="action_2_8" approved="yes">
+        <source>New file</source>
+        <target state="final">ឯកសារ​ថ្មី</target>
+      </trans-unit>
+      <trans-unit id="action_2_9" resname="action_2_9" approved="yes">
+        <source>Edit</source>
+        <target state="final">កែប្រែ</target>
+      </trans-unit>
+      <trans-unit id="msg_2_9_1" resname="msg_2_9_1" approved="yes">
+        <source>File saved to '%s', bytes: %s, MD5: %s </source>
+        <target state="final">ឯកសារ​បានរក្សាទុកជា '%s', មៃត៍: %s, MD5: %s </target>
+      </trans-unit>
+      <trans-unit id="type_3" resname="type_3" approved="yes">
+        <source>CACHE</source>
+        <target state="final">CACHE</target>
+      </trans-unit>
+      <trans-unit id="action_3_1" resname="action_3_1" approved="yes">
+        <source>Clear Cache</source>
+        <target state="final">សម្អាត Cache</target>
+      </trans-unit>
+      <trans-unit id="type_4" resname="type_4" approved="yes">
+        <source>EXTENSION</source>
+        <target state="final">អុិចស្ទិនហ្សិន</target>
+      </trans-unit>
+      <trans-unit id="type_5" resname="type_5" approved="yes">
+        <source>ERROR</source>
+        <target state="final">កំហុស</target>
+      </trans-unit>
+      <trans-unit id="type_254" resname="type_254" approved="yes">
+        <source>SETTING</source>
+        <target state="final">ការកំណត់</target>
+      </trans-unit>
+      <trans-unit id="action_254_1" resname="action_254_1" approved="yes">
+        <source>Change</source>
+        <target state="final">ផ្លាស់ប្ដូរ</target>
+      </trans-unit>
+      <trans-unit id="type_255" resname="type_255" approved="yes">
+        <source>LOGIN</source>
+        <target state="final">ចូល</target>
+      </trans-unit>
+      <trans-unit id="action_255_1" resname="action_255_1" approved="yes">
+        <source>LOGIN</source>
+        <target state="final">ចូល</target>
+      </trans-unit>
+      <trans-unit id="action_255_2" resname="action_255_2" approved="yes">
+        <source>LOGOUT</source>
+        <target state="final">ចាកចេញ</target>
+      </trans-unit>
+      <trans-unit id="action_255_3" resname="action_255_3" approved="yes">
+        <source>ATTEMPT</source>
+        <target state="final">ទំនងជា</target>
+      </trans-unit>
+      <trans-unit id="chLog_title" resname="chLog_title" approved="yes">
+        <source>Admin Changelog</source>
+        <target state="final">កំណត់ហេតុ​ប្រធាន</target>
+      </trans-unit>
+      <trans-unit id="chLog_users_0" resname="chLog_users_0" approved="yes">
+        <source>All users</source>
+        <target state="final">អ្នកប្រើប្រាស់​ទាំងអស់</target>
+      </trans-unit>
+      <trans-unit id="chLog_users_-1" resname="chLog_users_-1" approved="yes">
+        <source>Self</source>
+        <target state="final">Self</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_0" resname="chLog_time_0" approved="yes">
+        <source>This week</source>
+        <target state="final">សប្ដាហ៍​នេះ</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_1" resname="chLog_time_1" approved="yes">
+        <source>Last week</source>
+        <target state="final">សប្ដាហ៍​មុន</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_2" resname="chLog_time_2" approved="yes">
+        <source>Last 7 days</source>
+        <target state="final">ប្រាំពីរ​ថ្ងៃ​មុន</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_10" resname="chLog_time_10" approved="yes">
+        <source>This month</source>
+        <target state="final">ខែ​នេះ</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_11" resname="chLog_time_11" approved="yes">
+        <source>Last month</source>
+        <target state="final">ខែ​មុន</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_12" resname="chLog_time_12" approved="yes">
+        <source>Last 31 days</source>
+        <target state="final">សាមសិបមួយ​ថ្ងៃ​មុន</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_20" resname="chLog_time_20" approved="yes">
+        <source>No limit</source>
+        <target state="final">មិន​កំណត់</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_error" resname="chLog_l_error" approved="yes">
+        <source>E</source>
+        <target state="final">E</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_types" resname="chLog_l_types" approved="yes">
+        <source>Type</source>
+        <target state="final">ប្រភេទ</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_table" resname="chLog_l_table" approved="yes">
+        <source>Table</source>
+        <target state="final">តារាង</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_details" resname="chLog_l_details" approved="yes">
+        <source>Details</source>
+        <target state="final">ពឹស្ដារ</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.errorsInPeriod" resname="systemmessage.errorsInPeriod" approved="yes">
+        <source><![CDATA[We have found %1$d errors. Please check your <a href="%2$s">system log</a>.]]></source>
+        <target state="final"><![CDATA[យើង​បាន​រកឃើញ %1$d កំហុស។ សូម​ពិនិត្យមើល &lt;a href="%2$s"&gt;កំណត់ហេតុ​ប្រព័ន្ធ&lt;/a&gt; របស់អ្នក។]]></target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
