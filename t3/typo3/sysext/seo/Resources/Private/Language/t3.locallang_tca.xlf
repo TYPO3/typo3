@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1528554340" source-language="en" datatype="plaintext" original="EXT:seo/Resources/Private/Language/locallang_tca.xlf" date="2018-08-09T16:22:32Z" product-name="seo" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="pages.tabs.seo" resname="pages.tabs.seo">
+        <source>SEO</source>
+        <target>crwdns78918:0crwdne78918:0</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.seo" resname="pages.palettes.seo">
+        <source>General SEO settings</source>
+        <target>crwdns78920:0crwdne78920:0</target>
+      </trans-unit>
+      <trans-unit id="pages.seo_title" resname="pages.seo_title">
+        <source>Title for search engines</source>
+        <target>crwdns78922:0crwdne78922:0</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.robots" resname="pages.palettes.robots">
+        <source>Robot instructions</source>
+        <target>crwdns78924:0crwdne78924:0</target>
+      </trans-unit>
+      <trans-unit id="pages.no_index" resname="pages.no_index">
+        <source>No index</source>
+        <target>crwdns78926:0crwdne78926:0</target>
+      </trans-unit>
+      <trans-unit id="pages.no_index_formlabel" resname="pages.no_index_formlabel">
+        <source>Index this page</source>
+        <target>crwdns78928:0crwdne78928:0</target>
+      </trans-unit>
+      <trans-unit id="pages.no_follow" resname="pages.no_follow">
+        <source>No follow</source>
+        <target>crwdns78930:0crwdne78930:0</target>
+      </trans-unit>
+      <trans-unit id="pages.no_follow_formlabel" resname="pages.no_follow_formlabel">
+        <source>Follow this page</source>
+        <target>crwdns78932:0crwdne78932:0</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.opengraph" resname="pages.palettes.opengraph">
+        <source>Open Graph (Facebook)</source>
+        <target>crwdns78934:0crwdne78934:0</target>
+      </trans-unit>
+      <trans-unit id="pages.og_title" resname="pages.og_title">
+        <source>Title</source>
+        <target>crwdns78936:0crwdne78936:0</target>
+      </trans-unit>
+      <trans-unit id="pages.og_description" resname="pages.og_description">
+        <source>Description</source>
+        <target>crwdns78938:0crwdne78938:0</target>
+      </trans-unit>
+      <trans-unit id="pages.og_image" resname="pages.og_image">
+        <source>Image</source>
+        <target>crwdns78940:0crwdne78940:0</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.twittercards" resname="pages.palettes.twittercards">
+        <source>Twitter Cards</source>
+        <target>crwdns78942:0crwdne78942:0</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_title" resname="pages.twitter_title">
+        <source>Title</source>
+        <target>crwdns78944:0crwdne78944:0</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_description" resname="pages.twitter_description">
+        <source>Description</source>
+        <target>crwdns78946:0crwdne78946:0</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_image" resname="pages.twitter_image">
+        <source>Image</source>
+        <target>crwdns78948:0crwdne78948:0</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.canonical" resname="pages.palettes.canonical">
+        <source>Canonical</source>
+        <target>crwdns78950:0crwdne78950:0</target>
+      </trans-unit>
+      <trans-unit id="pages.canonical_link" resname="pages.canonical_link">
+        <source>Canonical link</source>
+        <target>crwdns78952:0crwdne78952:0</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.socialmedia" resname="pages.tabs.socialmedia">
+        <source>Social media</source>
+        <target>crwdns78954:0crwdne78954:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
