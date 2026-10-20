@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814865" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="shortcutDescription" resname="shortcutDescription" approved="yes">
+        <source>This is the shortcuts menu. You do not have any shortcuts added yet, you can do so by clicking the shortcut icon %icon%, which you can find on each page in the backend.</source>
+        <target state="final">Dit is het snelkoppelingenmenu. Er zijn nog geen snelkoppelingen gemaakt. Snelkoppelingen kunnen gemaakt worden door op de snelkoppelingsknop %icon% te klikken. Deze staat op elke pagina in de backend.</target>
+      </trans-unit>
+      <trans-unit id="shortcut_edit" resname="shortcut_edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Bewerk</target>
+      </trans-unit>
+      <trans-unit id="shortcut_create" resname="shortcut_create" approved="yes">
+        <source>Create</source>
+        <target state="final">Maak</target>
+      </trans-unit>
+      <trans-unit id="shortcut_editID" resname="shortcut_editID" approved="yes">
+        <source>Edit/Search</source>
+        <target state="final">Bewerk/Zoek</target>
+      </trans-unit>
+      <trans-unit id="shortcut_save" resname="shortcut_save" approved="yes">
+        <source>Update shortcut title</source>
+        <target state="final">Snelkoppeling actualiseren</target>
+      </trans-unit>
+      <trans-unit id="shortcut_saveClose" resname="shortcut_saveClose" approved="yes">
+        <source>Update and close editor</source>
+        <target state="final">Actualiseer en sluit editor</target>
+      </trans-unit>
+      <trans-unit id="shortcut_close" resname="shortcut_close" approved="yes">
+        <source>Close shortcut editor</source>
+        <target state="final">Sluit editor</target>
+      </trans-unit>
+      <trans-unit id="shortcut_delete" resname="shortcut_delete" approved="yes">
+        <source>Remove shortcut</source>
+        <target state="final">Verwijder snelkoppeling</target>
+      </trans-unit>
+      <trans-unit id="shortcut_loadEdit" resname="shortcut_loadEdit" approved="yes">
+        <source>Loading page</source>
+        <target state="final">Pagina wordt geladen</target>
+      </trans-unit>
+      <trans-unit id="shortcut_searchFor" resname="shortcut_searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">Zoeken naar</target>
+      </trans-unit>
+      <trans-unit id="shortcut_notEditable" resname="shortcut_notEditable" approved="yes">
+        <source>No editable page found!</source>
+        <target state="final">Geen bewerkbare pagina gevonden</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group" resname="shortcut_group" approved="yes">
+        <source>Group</source>
+        <target state="final">Groep</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_1" resname="shortcut_group_1" approved="yes">
+        <source>Pages</source>
+        <target state="final">Pagina's</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_2" resname="shortcut_group_2" approved="yes">
+        <source>Records</source>
+        <target state="final">Records</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_3" resname="shortcut_group_3" approved="yes">
+        <source>Files</source>
+        <target state="final">Bestanden</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_4" resname="shortcut_group_4" approved="yes">
+        <source>Tools</source>
+        <target state="final">Werkset</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_5" resname="shortcut_group_5" approved="yes">
+        <source>Miscellaneous</source>
+        <target state="final">Diversen</target>
+      </trans-unit>
+      <trans-unit id="shortcut_global" resname="shortcut_global" approved="yes">
+        <source>Global</source>
+        <target state="final">Globaal</target>
+      </trans-unit>
+      <trans-unit id="shortcut_all" resname="shortcut_all" approved="yes">
+        <source>All</source>
+        <target state="final">Alle</target>
+      </trans-unit>
+      <trans-unit id="shortcut_onlyAdmin" resname="shortcut_onlyAdmin" approved="yes">
+        <source>You cannot edit a shared shortcut!</source>
+        <target state="final">Een gedeelde snelkoppeling kan niet bewerkt worden!</target>
+      </trans-unit>
+      <trans-unit id="shortcut_selSC" resname="shortcut_selSC" approved="yes">
+        <source>Select shortcut</source>
+        <target state="final">Selecteer snelkoppeling</target>
+      </trans-unit>
+      <trans-unit id="shortcut_delAllInCat" resname="shortcut_delAllInCat" approved="yes">
+        <source>Delete all shortcuts in this group?</source>
+        <target state="final">Verwijder alle snelkoppelingen uit deze groep?</target>
+      </trans-unit>
+      <trans-unit id="shortcut_onlineWS" resname="shortcut_onlineWS" approved="yes">
+        <source>LIVE workspace</source>
+        <target state="final">LIVE workspace</target>
+      </trans-unit>
+      <trans-unit id="shortcut_active" resname="shortcut_active" approved="yes">
+        <source>active</source>
+        <target state="final">Actief</target>
+      </trans-unit>
+      <trans-unit id="shortcut_inactive" resname="shortcut_inactive" approved="yes">
+        <source>inactive</source>
+        <target state="final">Inactief</target>
+      </trans-unit>
+      <trans-unit id="shortcut_noWSfound" resname="shortcut_noWSfound" approved="yes">
+        <source>ERROR: No workspaces found!</source>
+        <target state="final">FOUT: Geen workspaces gevonden!</target>
+      </trans-unit>
+      <trans-unit id="shortcut_FEPreview" resname="shortcut_FEPreview" approved="yes">
+        <source>Enable Frontend Preview</source>
+        <target state="final">Frontend preview toestaan</target>
+      </trans-unit>
+      <trans-unit id="shortcut_workspace" resname="shortcut_workspace" approved="yes">
+        <source>Go to Workspace Module</source>
+        <target state="final">Ga naar Workspace module</target>
+      </trans-unit>
+      <trans-unit id="bookmark_description" resname="bookmark_description" approved="yes">
+        <source>This is the bookmarks menu. You do not have any bookmarks added yet, you can do so by clicking the bookmark icon %s, which you can find on each page in the backend.</source>
+        <target state="final">Dit is het favorietenmenu. Je hebt nog geen favorieten toegevoegd. Dit kan door het klikken op het favorietenpictogram %s, die op elke pagina in de backend staat.</target>
+      </trans-unit>
+      <trans-unit id="bookmark_edit" resname="bookmark_edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Bewerk</target>
+      </trans-unit>
+      <trans-unit id="bookmark_create" resname="bookmark_create" approved="yes">
+        <source>Create</source>
+        <target state="final">Maak</target>
+      </trans-unit>
+      <trans-unit id="bookmark_editID" resname="bookmark_editID" approved="yes">
+        <source>Edit/Search</source>
+        <target state="final">Bewerk/Zoek</target>
+      </trans-unit>
+      <trans-unit id="bookmark_save" resname="bookmark_save" approved="yes">
+        <source>Update bookmark title</source>
+        <target state="final">Update de titel van de bladwijzer</target>
+      </trans-unit>
+      <trans-unit id="bookmark_saveClose" resname="bookmark_saveClose" approved="yes">
+        <source>Update and close editor</source>
+        <target state="final">Actualiseer en sluit editor</target>
+      </trans-unit>
+      <trans-unit id="bookmark_close" resname="bookmark_close" approved="yes">
+        <source>Close bookmark editor</source>
+        <target state="final">Sluit bladwijzereditor</target>
+      </trans-unit>
+      <trans-unit id="bookmark_delete" resname="bookmark_delete" approved="yes">
+        <source>Remove bookmark</source>
+        <target state="final">Verwijder bladwijzer</target>
+      </trans-unit>
+      <trans-unit id="bookmark_loadEdit" resname="bookmark_loadEdit" approved="yes">
+        <source>Loading page</source>
+        <target state="final">Pagina wordt geladen</target>
+      </trans-unit>
+      <trans-unit id="bookmark_searchFor" resname="bookmark_searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">Zoeken naar</target>
+      </trans-unit>
+      <trans-unit id="bookmark_notEditable" resname="bookmark_notEditable" approved="yes">
+        <source>No editable page found!</source>
+        <target state="final">Geen bewerkbare pagina gevonden</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group" resname="bookmark_group" approved="yes">
+        <source>Group</source>
+        <target state="final">Groep</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_1" resname="bookmark_group_1" approved="yes">
+        <source>Pages</source>
+        <target state="final">Pagina's</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_2" resname="bookmark_group_2" approved="yes">
+        <source>Records</source>
+        <target state="final">Records</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_3" resname="bookmark_group_3" approved="yes">
+        <source>Files</source>
+        <target state="final">Bestanden</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_4" resname="bookmark_group_4" approved="yes">
+        <source>Tools</source>
+        <target state="final">Werkset</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_5" resname="bookmark_group_5" approved="yes">
+        <source>Miscellaneous</source>
+        <target state="final">Diversen</target>
+      </trans-unit>
+      <trans-unit id="bookmark_global" resname="bookmark_global" approved="yes">
+        <source>Global</source>
+        <target state="final">Globaal</target>
+      </trans-unit>
+      <trans-unit id="bookmark_all" resname="bookmark_all" approved="yes">
+        <source>All</source>
+        <target state="final">Alle</target>
+      </trans-unit>
+      <trans-unit id="bookmark_onlyAdmin" resname="bookmark_onlyAdmin" approved="yes">
+        <source>You cannot edit a shared bookmark!</source>
+        <target state="final">U kunt geen gedeelde bladwijzer bewerken!</target>
+      </trans-unit>
+      <trans-unit id="bookmark_selSC" resname="bookmark_selSC" approved="yes">
+        <source>Select bookmark</source>
+        <target state="final">Selecteer bladwijzer</target>
+      </trans-unit>
+      <trans-unit id="bookmark_delAllInCat" resname="bookmark_delAllInCat" approved="yes">
+        <source>Delete all bookmarks in this group</source>
+        <target state="final">Verwijder alle bladwijzers in eze groep</target>
+      </trans-unit>
+      <trans-unit id="bookmark_onlineWS" resname="bookmark_onlineWS" approved="yes">
+        <source>LIVE workspace</source>
+        <target state="final">LIVE workspace</target>
+      </trans-unit>
+      <trans-unit id="bookmark_active" resname="bookmark_active" approved="yes">
+        <source>active</source>
+        <target state="final">Actief</target>
+      </trans-unit>
+      <trans-unit id="bookmark_inactive" resname="bookmark_inactive" approved="yes">
+        <source>inactive</source>
+        <target state="final">Inactief</target>
+      </trans-unit>
+      <trans-unit id="bookmark_noWSfound" resname="bookmark_noWSfound" approved="yes">
+        <source>ERROR: No workspaces found!</source>
+        <target state="final">FOUT: Geen workspaces gevonden!</target>
+      </trans-unit>
+      <trans-unit id="bookmark_FEPreview" resname="bookmark_FEPreview" approved="yes">
+        <source>Enable Frontend Preview</source>
+        <target state="final">Frontend preview toestaan</target>
+      </trans-unit>
+      <trans-unit id="bookmark_workspaceComparisonView" resname="bookmark_workspaceComparisonView" approved="yes">
+        <source>Enable comparison view</source>
+        <target state="final">Vergelijkingsschermen inschakelen</target>
+      </trans-unit>
+      <trans-unit id="bookmark_workspace" resname="bookmark_workspace" approved="yes">
+        <source>Go to Workspace Module</source>
+        <target state="final">Ga naar Workspace module</target>
+      </trans-unit>
+      <trans-unit id="overwriteExistingFiles" resname="overwriteExistingFiles" approved="yes">
+        <source>Overwrite existing files</source>
+        <target state="final">Bestaande bestanden overschrijven</target>
+      </trans-unit>
+      <trans-unit id="uploadMultipleFilesInfo" resname="uploadMultipleFilesInfo" approved="yes">
+        <source>Upload multiple files by holding the Shift or CTRL-file pressed while selecting your files (works on modern browsers only).</source>
+        <target state="final">Om meerdere bestanden te uploaden kan de Shift or CTRL-toets ingedrukt gehouden worden tijdens het selecteren van bestanden (werkt alleen in recente browsers).</target>
+      </trans-unit>
+      <trans-unit id="fileMetaDataLocation" resname="fileMetaDataLocation" approved="yes">
+        <source>Location</source>
+        <target state="final">Locatie</target>
+      </trans-unit>
+      <trans-unit id="fileMetaErrorInvalidRecord" resname="fileMetaErrorInvalidRecord" approved="yes">
+        <source>File meta data not found</source>
+        <target state="final">Metadata van bestand niet gevonden</target>
+      </trans-unit>
+      <trans-unit id="selectPosition" resname="selectPosition" approved="yes">
+        <source>Select a position for the new page</source>
+        <target state="final">Kies een positie voor de nieuwe pagina</target>
+      </trans-unit>
+      <trans-unit id="pageSelectPosition" resname="pageSelectPosition" approved="yes">
+        <source>Page (select position)</source>
+        <target state="final">Pagina (kies positie)</target>
+      </trans-unit>
+      <trans-unit id="goBack" resname="goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Ga terug</target>
+      </trans-unit>
+      <trans-unit id="createNewPage" resname="createNewPage" approved="yes">
+        <source>Create a new page</source>
+        <target state="final">Nieuwe pagina aanmaken</target>
+      </trans-unit>
+      <trans-unit id="createNewContent" resname="createNewContent" approved="yes">
+        <source>Create a new content element</source>
+        <target state="final">Nieuw contentelement aanmaken</target>
+      </trans-unit>
+      <trans-unit id="clickForWizard" resname="clickForWizard" approved="yes">
+        <source>Click here for wizard!</source>
+        <target state="final">Klik hier voor de assistent!</target>
+      </trans-unit>
+      <trans-unit id="insertNewPageHere" resname="insertNewPageHere" approved="yes">
+        <source>Insert the new page here</source>
+        <target state="final">Voeg hier een nieuwe pagina in</target>
+      </trans-unit>
+      <trans-unit id="insertNewRecordHere" resname="insertNewRecordHere" approved="yes">
+        <source>Insert new record here</source>
+        <target state="final">Voeg hier nieuw record in</target>
+      </trans-unit>
+      <trans-unit id="movePageToHere" resname="movePageToHere" approved="yes">
+        <source>Move page to this position</source>
+        <target state="final">Verplaats pagina naar deze positie</target>
+      </trans-unit>
+      <trans-unit id="moveElement" resname="moveElement" approved="yes">
+        <source>Move element</source>
+        <target state="final">Verplaats element</target>
+      </trans-unit>
+      <trans-unit id="moveElements" resname="moveElements" approved="yes">
+        <source>Move elements</source>
+        <target state="final">Verplaats elementen</target>
+      </trans-unit>
+      <trans-unit id="copyElements" resname="copyElements" approved="yes">
+        <source>Copy elements</source>
+        <target state="final">Kopieer elementen</target>
+      </trans-unit>
+      <trans-unit id="selectPositionOfElement" resname="selectPositionOfElement" approved="yes">
+        <source>Select position of the element</source>
+        <target state="final">Selecteer positie van element</target>
+      </trans-unit>
+      <trans-unit id="movingElement" resname="movingElement" approved="yes">
+        <source>Move element</source>
+        <target state="final">Verplaats element</target>
+      </trans-unit>
+      <trans-unit id="makeCopy" resname="makeCopy" approved="yes">
+        <source>Make copy instead of moving element</source>
+        <target state="final">Maak een kopie in plaats van het element te verplaatsen</target>
+      </trans-unit>
+      <trans-unit id="newContentElement" resname="newContentElement" approved="yes">
+        <source>New content element</source>
+        <target state="final">Nieuw contentelement</target>
+      </trans-unit>
+      <trans-unit id="system_records" resname="system_records" approved="yes">
+        <source>System Records</source>
+        <target state="final">Systeemrecords</target>
+      </trans-unit>
+      <trans-unit id="1_selectType" resname="1_selectType" approved="yes">
+        <source>First select the type of the new content element</source>
+        <target state="final">Kies eerst het soort nieuwe inhoudselement</target>
+      </trans-unit>
+      <trans-unit id="2_selectPosition" resname="2_selectPosition" approved="yes">
+        <source>Now click on the position of the new content element</source>
+        <target state="final">Klik nu op de positie van het nieuwe inhoudselement</target>
+      </trans-unit>
+      <trans-unit id="CM_history" resname="CM_history" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">Geschiedenis/Herstel</target>
+      </trans-unit>
+      <trans-unit id="CM_perms" resname="CM_perms" approved="yes">
+        <source>Access</source>
+        <target state="final">Toegang</target>
+      </trans-unit>
+      <trans-unit id="CM_moveWizard" resname="CM_moveWizard" approved="yes">
+        <source>Move element</source>
+        <target state="final">Verplaats element</target>
+      </trans-unit>
+      <trans-unit id="CM_moveWizard_page" resname="CM_moveWizard_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">Verplaats pagina</target>
+      </trans-unit>
+      <trans-unit id="CM_newWizard" resname="CM_newWizard" approved="yes">
+        <source>'Create New' wizard</source>
+        <target state="final">'NIEUW' assistent</target>
+      </trans-unit>
+      <trans-unit id="CM_editPageProperties" resname="CM_editPageProperties" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">Pagina-eigenschappen</target>
+      </trans-unit>
+      <trans-unit id="CM_db_list" resname="CM_db_list" approved="yes">
+        <source>Web&gt;List module</source>
+        <target state="final">Web &gt; Lijst</target>
+      </trans-unit>
+      <trans-unit id="noEditPage" resname="noEditPage" approved="yes">
+        <source>You asked to edit page "%s" but you cannot edit this page. Now loading backend as usual.</source>
+        <target state="final">U probeert de pagina "%s" te bewerken. U kunt deze pagina echter niet bewerken. De backend wordt nu geladen zoals gebruikelijk.</target>
+      </trans-unit>
+      <trans-unit id="localize" resname="localize" approved="yes">
+        <source>Localize</source>
+        <target state="final">Lokaliseer</target>
+      </trans-unit>
+      <trans-unit id="localize.isLocalizable" resname="localize.isLocalizable" approved="yes">
+        <source>Record can be localized</source>
+        <target state="final">Record kan worden gelokaliseerd</target>
+      </trans-unit>
+      <trans-unit id="localize.wasRemovedInOriginal" resname="localize.wasRemovedInOriginal" approved="yes">
+        <source>Record was removed in original language</source>
+        <target state="final">Record is verwijderd uit originele taal</target>
+      </trans-unit>
+      <trans-unit id="localizeAllRecords" resname="localizeAllRecords" approved="yes">
+        <source>Localize all records</source>
+        <target state="final">Lokaliseer alle records</target>
+      </trans-unit>
+      <trans-unit id="synchronizeWithOriginalLanguage" resname="synchronizeWithOriginalLanguage" approved="yes">
+        <source>Synchronize with original language</source>
+        <target state="final">Synchroniseer met originele taal</target>
+      </trans-unit>
+      <trans-unit id="pageTree_filter" resname="pageTree_filter" approved="yes">
+        <source>Filter</source>
+        <target state="final">Filter</target>
+      </trans-unit>
+      <trans-unit id="switchtouser" resname="switchtouser" approved="yes">
+        <source>Switch to User</source>
+        <target state="final">Omschakelen naar gebruiker</target>
+      </trans-unit>
+      <trans-unit id="switchtousershort" resname="switchtousershort" approved="yes">
+        <source>SU</source>
+        <target state="final">WG</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_windowTitle" resname="fileUpload_windowTitle" approved="yes">
+        <source>File Upload Progress</source>
+        <target state="final">Voortgang van bestandsupload</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_buttonSelectFiles" resname="fileUpload_buttonSelectFiles" approved="yes">
+        <source>Select Files</source>
+        <target state="final">Selecteer bestanden</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_buttonCancelAll" resname="fileUpload_buttonCancelAll" approved="yes">
+        <source>Cancel All Uploads</source>
+        <target state="final">Onderbreek alle uploads</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentMaxFileSize" resname="fileUpload_infoComponentMaxFileSize" approved="yes">
+        <source>You can upload files with a maximum size of {0}.</source>
+        <target state="final">U kunt bestanden uploaden met een maximum grootte van {0}.</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentFileUploadLimit" resname="fileUpload_infoComponentFileUploadLimit" approved="yes">
+        <source>You can upload a total of {0}.</source>
+        <target state="final">U kunt maximaal {0} bestanden uploaden.</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentFileTypeLimit" resname="fileUpload_infoComponentFileTypeLimit" approved="yes">
+        <source>You can upload the following file types {0}.</source>
+        <target state="final">U kunt bestanden uploaden van de volgende bestandstypen {0}.</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentOverrideFiles" resname="fileUpload_infoComponentOverrideFiles" approved="yes">
+        <source>Overwrite existing files</source>
+        <target state="final">Bestaande bestanden overschrijven</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_processRunning" resname="fileUpload_processRunning" approved="yes">
+        <source>Another process is already uploading</source>
+        <target state="final">Een ander proces is al aan het uploaden</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadWait" resname="fileUpload_uploadWait" approved="yes">
+        <source>Waiting to start upload of {0}</source>
+        <target state="final">Wachten om {0} te uploaden</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadStarting" resname="fileUpload_uploadStarting" approved="yes">
+        <source>Starting upload of {0}</source>
+        <target state="final">Start van upload {0}</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadProgress" resname="fileUpload_uploadProgress" approved="yes">
+        <source>{0}% of {1} uploaded</source>
+        <target state="final">{0}% van {1} geupload</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadSuccess" resname="fileUpload_uploadSuccess" approved="yes">
+        <source>{0} was successfully uploaded!</source>
+        <target state="final">{0} is succesvol geüpload!</target>
+      </trans-unit>
+      <trans-unit id="pagetree_networkErrorTitle" resname="pagetree_networkErrorTitle" approved="yes">
+        <source>Page tree error</source>
+        <target state="final">Fout in paginaboom</target>
+      </trans-unit>
+      <trans-unit id="pagetree_networkErrorDesc" resname="pagetree_networkErrorDesc" approved="yes">
+        <source>Got unexpected response from the server. Please check logs for details.</source>
+        <target state="final">Kreeg een onverwachte reactie van de server. Kijk in de logs voor details.</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueLimitExceeded" resname="fileUpload_errorQueueLimitExceeded" approved="yes">
+        <source>Too many files selected</source>
+        <target state="final">Teveel bestanden geselecteerd</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueFileSizeLimit" resname="fileUpload_errorQueueFileSizeLimit" approved="yes">
+        <source>{0} is too big</source>
+        <target state="final">{0} is te groot</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueZeroByteFile" resname="fileUpload_errorQueueZeroByteFile" approved="yes">
+        <source>{0} is empty</source>
+        <target state="final">{0} is leeg</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueInvalidFiletype" resname="fileUpload_errorQueueInvalidFiletype" approved="yes">
+        <source>Filetype not allowed for {0}</source>
+        <target state="final">Bestandstype voor {0} niet toegestaan</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadHttp" resname="fileUpload_errorUploadHttp" approved="yes">
+        <source>Too many files selected</source>
+        <target state="final">Teveel bestanden geselecteerd</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadHttpError" resname="fileUpload_errorUploadHttpError" approved="yes">
+        <source>A HTTP error occurred: {0}</source>
+        <target state="final">Een HTTP-fout deed zich voor: {0}</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadMissingUrl" resname="fileUpload_errorUploadMissingUrl" approved="yes">
+        <source>Internal error: No Upload URL set</source>
+        <target state="final">Interne fout: Geen upload-URL gedefinieerd</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadIO" resname="fileUpload_errorUploadIO" approved="yes">
+        <source>Internal error: Problems while reading/writing the file</source>
+        <target state="final">Interne fout: Problemen tijdens schrijven/lezen van bestand</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadSecurityError" resname="fileUpload_errorUploadSecurityError" approved="yes">
+        <source>Internal error: {0}</source>
+        <target state="final">Interne fout: {0}</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadLimit" resname="fileUpload_errorUploadLimit" approved="yes">
+        <source>Upload limit exceeded</source>
+        <target state="final">Uploadlimiet overschreden</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadFailed" resname="fileUpload_errorUploadFailed" approved="yes">
+        <source>Upload failed</source>
+        <target state="final">Fout tijdens uploaden</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadFileIDNotFound" resname="fileUpload_errorUploadFileIDNotFound" approved="yes">
+        <source>Internal error: File ID not found</source>
+        <target state="final">Interne fout: File-ID niet gevonden</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadFileValidation" resname="fileUpload_errorUploadFileValidation" approved="yes">
+        <source>Internal error while validating the file</source>
+        <target state="final">Interne fout tijdens valideren van bestand</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadFileCancelled" resname="fileUpload_errorUploadFileCancelled" approved="yes">
+        <source>Upload of {0} canceled</source>
+        <target state="final">Upload van {0} onderbroken</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadStopped" resname="fileUpload_errorUploadStopped" approved="yes">
+        <source>Upload of {0} stopped</source>
+        <target state="final">Upload van {0} gestopt</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_allErrorMessageTitle" resname="fileUpload_allErrorMessageTitle" approved="yes">
+        <source>All uploads failed</source>
+        <target state="final">Alle uploads mislukt</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_allErrorMessageText" resname="fileUpload_allErrorMessageText" approved="yes">
+        <source>All of your uploads failed.&lt;br /&gt;&lt;br /&gt;If this problem persists, please try another browser, contact your administrator or disable this "Flash Uploader" in your User Settings.&lt;br /&gt;&lt;br /&gt;Detailed problem description:&lt;br /&gt;</source>
+        <target state="final">Alle uploads zijn mislukt. &lt;br /&gt;&lt;br /&gt;Wanneer dit probleem zich voor blijft doen, probeert u een andere browser, neem contact op met de Administrator van de site of zet de Flash Uploader in de Gebruikerswerkset, Instellingen uit.&lt;br /&gt;&lt;br /&gt;Gedetailleerde probleembeschrijving:&lt;br /&gt;</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_allError401" resname="fileUpload_allError401" approved="yes">
+        <source>The server returned the status code 401, which is related to a .htaccess file used for password protection on your server. Unfortunately this can not be handled by your browser's Flash plugin.</source>
+        <target state="final">De server geeft een status code 401, die verband houdt met een (met een wachtwoord beschermd) .htaccess bestand op de server. Helaas kan de Flash plugin van de browser hier niet mee omgaan.</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_allError2038" resname="fileUpload_allError2038" approved="yes">
+        <source>An input/output error occurred (Error #2038). This i.e. happens with servers using a self-signed SSL certificate, which is a limitation of your browser's Flash plugin.</source>
+        <target state="final">Een input/output fout deed zich voor (Fout #2038). Dit gebeurt met servers die een self-signed SSL-certificaat gebruiken. Dit is een beperking van de Flash-plugin van de browser.</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_title" resname="liveSearch_title" approved="yes">
+        <source>Short result list</source>
+        <target state="final">Korte lijst van resultaten</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_emptyText" resname="liveSearch_emptyText" approved="yes">
+        <source>Enter search term</source>
+        <target state="final">Voer zoekterm in</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_loadingText" resname="liveSearch_loadingText" approved="yes">
+        <source>Searching...</source>
+        <target state="final">Zoeken...</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_listEmptyText" resname="liveSearch_listEmptyText" approved="yes">
+        <source>No results found.</source>
+        <target state="final">Geen resultaten gevonden.</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_showAllResults" resname="liveSearch_showAllResults" approved="yes">
+        <source>Show All</source>
+        <target state="final">Toon alle</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpTitle" resname="liveSearch_helpTitle" approved="yes">
+        <source>How to use advanced search tags</source>
+        <target state="final">Hoe geavanceerde zoektags te gebruiken</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescription" resname="liveSearch_helpDescription" approved="yes">
+        <source>Search in certain tables</source>
+        <target state="final">In bepaalde tabellen zoeken</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescriptionPages" resname="liveSearch_helpDescriptionPages" approved="yes">
+        <source>#page:Home will search for all pages with the title "Home"</source>
+        <target state="final">#page:Home zoekt naar alle pagina's met de titel "Home"</target>
+      </trans-unit>
+      <trans-unit id="viewPort_tooltipModuleMenuSplit" resname="viewPort_tooltipModuleMenuSplit" approved="yes">
+        <source>Drag to resize the Modules Menu</source>
+        <target state="final">Sleep om het module menu te resizen</target>
+      </trans-unit>
+      <trans-unit id="viewPort_tooltipNavigationContainerSplitDrag" resname="viewPort_tooltipNavigationContainerSplitDrag" approved="yes">
+        <source>Drag to resize or double click to collapse the page tree area</source>
+        <target state="final">Sleep om afmetingen te wijzigen of klik om de boom in te klappen</target>
+      </trans-unit>
+      <trans-unit id="viewPort_tooltipNavigationContainerSplitClick" resname="viewPort_tooltipNavigationContainerSplitClick" approved="yes">
+        <source>Click to toggle the page tree area</source>
+        <target state="final">Klik om naar de paginaboom te schakelen</target>
+      </trans-unit>
+      <trans-unit id="viewPort_tooltipDebugPanelSplitDrag" resname="viewPort_tooltipDebugPanelSplitDrag" approved="yes">
+        <source>Drag to resize or click to collapse the Debug Panel.</source>
+        <target state="final">Sleep om te resizen of klik om het debugpaneel in te klappen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
