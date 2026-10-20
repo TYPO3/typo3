@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang.xlf" date="2023-02-15T18:03:32Z" product-name="beuser" target-language="cy">
+    <header/>
+    <body>
+      <!-- Docheader menu / Shortcut button title -->
+      <!-- Button / Links -->
+      <!-- Filter -->
+      <!-- Pagination -->
+      <!-- Backend users: General (ViewHelper labels, etc.) -->
+      <!-- Backend users: List -->
+      <!-- Backend users: Show -->
+      <!-- Backend users: Compare -->
+      <!-- Backend users: Online -->
+      <!-- Backend user groups: List -->
+      <!-- Backend user groups: Show -->
+      <!-- Backend user groups: Compare -->
+      <!-- File mounts -->
+      <!-- Password reset -->
+    </body>
+  </file>
+</xliff>
