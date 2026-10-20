@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_db.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="sys_workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Werkruimte</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.custom_stages" approved="yes">
+        <source>Custom stages</source>
+        <target state="final">Aangepaste stappen</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.responsible_persons" approved="yes">
+        <source>Responsible persons</source>
+        <target state="final">Verantwoordelijke personen</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.default_mailcomment" approved="yes">
+        <source>Default mail comment</source>
+        <target state="final">Standaard e-mailcommentaar</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.parentid" approved="yes">
+        <source>UID of parent record</source>
+        <target state="final">UID van het bovenliggende record</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage" approved="yes">
+        <source>Workspace Stage</source>
+        <target state="final">Stadium in workspace</target>
+      </trans-unit>
+      <trans-unit id="tabs.notification_settings" approved="yes">
+        <source>Notification settings</source>
+        <target state="final">Berichtinstellingen</target>
+      </trans-unit>
+      <trans-unit id="tabs.general" approved="yes">
+        <source>General</source>
+        <target state="final">Algemeen</target>
+      </trans-unit>
+      <trans-unit id="tabs.internal_stages" approved="yes">
+        <source>Internal Stages</source>
+        <target state="final">Interne stappen</target>
+      </trans-unit>
+      <trans-unit id="tabs.custom_stages" approved="yes">
+        <source>Custom Stages</source>
+        <target state="final">Aangepaste stappen</target>
+      </trans-unit>
+      <trans-unit id="tabs.publish_access" approved="yes">
+        <source>Publishing / Access</source>
+        <target state="final">Publiceren / Toegang</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.notification_defaults" approved="yes">
+        <source>Default notification recipients</source>
+        <target state="final">Standaard ontvangers voor e-mailberichten</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.allow_notificaton_settings" approved="yes">
+        <source>Allow notification settings during stage change</source>
+        <target state="final">Sta instellingen voor berichten toe tijdens wijzigen van stadium</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.edit" approved="yes">
+        <source>Stage "editing"</source>
+        <target state="final">Stap "bewerken"</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.publish" approved="yes">
+        <source>Stage "ready to publish"</source>
+        <target state="final">Stap "gereed voor publicatie"</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.execute" approved="yes">
+        <source>Stage "publishing execute"</source>
+        <target state="final">Stap "publicatie uitvoeren"</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog" approved="yes">
+        <source>Notification dialog settings</source>
+        <target state="final">Instellingenvenster voor berichten</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog.showDialog" approved="yes">
+        <source>Show Dialog</source>
+        <target state="final">Dialoog tonen</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog.changeablePreselection" approved="yes">
+        <source>Allow to change pre-selection of recipients</source>
+        <target state="final">Sta wijzigen voorselectie van ontvangers toe</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection" approved="yes">
+        <source>Pre-select recipients</source>
+        <target state="final">Voorselectie ontvangers</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.owners" approved="yes">
+        <source>Owners</source>
+        <target state="final">Eigenaars</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.members" approved="yes">
+        <source>Members</source>
+        <target state="final">Leden</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.editors" approved="yes">
+        <source>Unused, no functionality attached</source>
+        <target state="final">Ongebruikt, geen functionaliteit gekoppeld</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.responsiblePersons" approved="yes">
+        <source>Responsible Persons</source>
+        <target state="final">Verantwoordelijke personen</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.adminusers" approved="yes">
+        <source>Owners</source>
+        <target state="final">Eigenaars</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.members" approved="yes">
+        <source>Members</source>
+        <target state="final">Leden</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_time" approved="yes">
+        <source>Auto-publish changes on (requires scheduler task)</source>
+        <target state="final">Wijzigingen automatisch publiceren op (vereist taak in Taakplanner)</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.unpublish_time" approved="yes">
+        <source>Un-Publish changes on (requires scheduler task)</source>
+        <target state="final">Publicatie terugdraaien op (vereist taak in Taakplanner)</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.live_edit" approved="yes">
+        <source>Allow "live" editing of records from tables without versioning</source>
+        <target state="final">"Live" bewerken van records uit tabellen zonder versiebeheer toestaan</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access" approved="yes">
+        <source>Publish access</source>
+        <target state="final">Publicatietoegang</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access.1" approved="yes">
+        <source>Publish only content in publish stage</source>
+        <target state="final">Alleen inhoud in publicatie-stap publiceren</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access.2" approved="yes">
+        <source>Restrict publishing to workspace owners</source>
+        <target state="final">Publiceren tot werkruimte-eigenaren beperken</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access.3" approved="yes">
+        <source>Hide "Entire workspace" action drop down</source>
+        <target state="final">Verberg actie-keuzevakje "Gehele werkruimte"</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification" approved="yes">
+        <source>Send notifications upon state changes</source>
+        <target state="final">Stuur meldingen bij wijzigingen van de status</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification.description" approved="yes">
+        <source>This workspace-level setting determines if notifications are triggered when records transition to other stages or are published. Individual stages can have their own notification preferences.</source>
+        <target state="final">Deze instelling op werkruimte bepaalt of meldingen worden geactiveerd wanneer records worden omgezet naar andere stappen of worden gepubliceerd. Individuele stappen kunnen hun eigen voorkeuren hebben.</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.previewlink_lifetime" approved="yes">
+        <source>Lifetime in hours on how long a preview link will be valid</source>
+        <target state="final">Levensduur in uren hoe lang een voorbeeldlink geldig zal zijn</target>
+      </trans-unit>
+      <trans-unit id="tabs.users" approved="yes">
+        <source>Users</source>
+        <target state="final">Gebruikers</target>
+      </trans-unit>
+      <trans-unit id="tabs.mountpoints" approved="yes">
+        <source>Mountpoints</source>
+        <target state="final">Beginpunten</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
