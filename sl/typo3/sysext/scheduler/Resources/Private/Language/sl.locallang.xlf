@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814984" source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="button.cancel" resname="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Prekliči</target>
+      </trans-unit>
+      <trans-unit id="label.description" resname="label.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Opis</target>
+      </trans-unit>
+      <trans-unit id="label.type" resname="label.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Vrsta</target>
+      </trans-unit>
+      <trans-unit id="none" resname="none" approved="yes">
+        <source>None</source>
+        <target state="final">Brez</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
