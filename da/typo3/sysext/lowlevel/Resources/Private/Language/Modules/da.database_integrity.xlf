@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/Modules/database_integrity.xlf" date="2026-11-10T13:37:37Z" product-name="database_integrity" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Database</source>
+        <target state="final">Database</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Database query tools</source>
+        <target state="final">Databaseforespørgselsværktøjer</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Search and query the TYPO3 database using advanced tools.</source>
+        <target state="final">Søg og forespørg TYPO3 databasen ved hjælp af avancerede værktøjer.</target>
+      </trans-unit>
+      <trans-unit id="query_loaded" approved="yes">
+        <source>Query "%s" loaded</source>
+        <target state="final">Forespørgsel "%s" indlæst</target>
+      </trans-unit>
+      <trans-unit id="query_saved" approved="yes">
+        <source>Query saved</source>
+        <target state="final">Forespørgsel gemt</target>
+      </trans-unit>
+      <trans-unit id="query_removed" approved="yes">
+        <source>"%s" query entry removed</source>
+        <target state="final">"%s" forespørgselsbidrag fjernet</target>
+      </trans-unit>
+      <trans-unit id="undelete_only" approved="yes">
+        <source>Undelete</source>
+        <target state="final">Genopret</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
