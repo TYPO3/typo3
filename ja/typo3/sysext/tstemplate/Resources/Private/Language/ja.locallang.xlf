@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815007" source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="moduleTitle" resname="moduleTitle" approved="yes">
+        <source>Template tools</source>
+        <target state="final">テンプレートツール</target>
+      </trans-unit>
+      <trans-unit id="templateAnalyzer" resname="templateAnalyzer" approved="yes">
+        <source>Template Analyzer</source>
+        <target state="final">テンプレート解析</target>
+      </trans-unit>
+      <trans-unit id="constantEditor" resname="constantEditor" approved="yes">
+        <source>Constant Editor</source>
+        <target state="final">コンスタンツ編集</target>
+      </trans-unit>
+      <trans-unit id="infoModify" resname="infoModify" approved="yes">
+        <source>Info/Modify</source>
+        <target state="final">情報/修正</target>
+      </trans-unit>
+      <trans-unit id="objectBrowser" resname="objectBrowser" approved="yes">
+        <source>TypoScript Object Browser</source>
+        <target state="final">TypoScript オブジェクトブラウザー</target>
+      </trans-unit>
+      <trans-unit id="viewTemplates" resname="viewTemplates" approved="yes">
+        <source>Viewing templates of</source>
+        <target state="final">テンプレートの表示</target>
+      </trans-unit>
+      <trans-unit id="pageName" resname="pageName" approved="yes">
+        <source>Page name</source>
+        <target state="final">ページ名</target>
+      </trans-unit>
+      <trans-unit id="templates" resname="templates" approved="yes">
+        <source>Templates</source>
+        <target state="final"># テンプレート</target>
+      </trans-unit>
+      <trans-unit id="isRoot" resname="isRoot" approved="yes">
+        <source>Is Root?</source>
+        <target state="final">ルートですか？</target>
+      </trans-unit>
+      <trans-unit id="isExt" resname="isExt" approved="yes">
+        <source>Is Ext?</source>
+        <target state="final">拡張ですか？</target>
+      </trans-unit>
+      <trans-unit id="overview" resname="overview" approved="yes">
+        <source>This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.</source>
+        <target state="final">これはデータベース中の1つ以上のテンプレートレコードを含むページの全体図です。 ページに行くためにページタイトルをクリックしてください。</target>
+      </trans-unit>
+      <trans-unit id="areYouSure" resname="areYouSure" approved="yes">
+        <source>Are you sure you want to do this?</source>
+        <target state="final">これで本当にいいですか？</target>
+      </trans-unit>
+      <trans-unit id="noTemplate" resname="noTemplate" approved="yes">
+        <source>No template</source>
+        <target state="final">テンプレートがありません</target>
+      </trans-unit>
+      <trans-unit id="noTemplateDescription" resname="noTemplateDescription" approved="yes">
+        <source>There was no template on this page!</source>
+        <target state="final">このページにはテンプレートがありません！</target>
+      </trans-unit>
+      <trans-unit id="createTemplate" resname="createTemplate" approved="yes">
+        <source>Create a template record first in order to edit constants!</source>
+        <target state="final">最初にコンスタンスを編集するのに、テンプレートレコードを作成してください！</target>
+      </trans-unit>
+      <trans-unit id="newWebsite" resname="newWebsite" approved="yes">
+        <source>Create new website</source>
+        <target state="final">新規サイトを作成</target>
+      </trans-unit>
+      <trans-unit id="newWebsiteDescription" resname="newWebsiteDescription" approved="yes">
+        <source>If you want this page to be the root of a new website, optionally based on one of the standard templates, then press the button below</source>
+        <target state="final">このページを新しいウェブサイトのルートにしたい場合 必要に応じて標準テンプレートに基づいて、下のボタンを押します。</target>
+      </trans-unit>
+      <trans-unit id="newWebsiteAction" resname="newWebsiteAction" approved="yes">
+        <source>Create template for a new site</source>
+        <target state="final">新規サイトのテンプレートを作成</target>
+      </trans-unit>
+      <trans-unit id="extTemplate" resname="extTemplate" approved="yes">
+        <source>Create extension template</source>
+        <target state="final">拡張テンプレートを作成</target>
+      </trans-unit>
+      <trans-unit id="extTemplateDescription" resname="extTemplateDescription" approved="yes">
+        <source>An extension template allows you to enter TypoScript values that will affect only this page and subpages.</source>
+        <target state="final">拡張機能テンプレートでは、このページとサブページのみに影響を与えるTypoScriptの値を入力できます。</target>
+      </trans-unit>
+      <trans-unit id="titleNewSiteStandard" resname="titleNewSiteStandard" approved="yes">
+        <source>NEW SITE, based on standard</source>
+        <target state="final">標準の新規サイト</target>
+      </trans-unit>
+      <trans-unit id="titleNewSite" resname="titleNewSite" approved="yes">
+        <source>NEW SITE</source>
+        <target state="final">新規サイト</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
