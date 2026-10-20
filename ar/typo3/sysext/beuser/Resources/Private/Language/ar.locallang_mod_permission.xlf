@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="permissions" approved="yes">
+        <source>Permissions</source>
+        <target state="final">أُذُونات الوُصول</target>
+      </trans-unit>
+      <trans-unit id="ch_permissions" approved="yes">
+        <source>Change permissions</source>
+        <target state="final">تغيير الصلاحيّة</target>
+      </trans-unit>
+      <trans-unit id="Legend" approved="yes">
+        <source>Legend</source>
+        <target state="final">عنوان توضيحي</target>
+      </trans-unit>
+      <trans-unit id="Owner" approved="yes">
+        <source>Owner</source>
+        <target state="final">المالك</target>
+      </trans-unit>
+      <trans-unit id="Group" approved="yes">
+        <source>Group</source>
+        <target state="final">مجموعة</target>
+      </trans-unit>
+      <trans-unit id="Everybody" approved="yes">
+        <source>Everybody</source>
+        <target state="final">الجميع</target>
+      </trans-unit>
+      <trans-unit id="EditLock_descr" approved="yes">
+        <source>Disable the »Admin-only« edit lock for this page. Currently this page and all content is locked for editing by all non-Admin users.</source>
+        <target state="final">تعطيل "Admin-only" من تعديل قفل هذه الصفحة. حالياً هذه الصفحة وجميع المحتويات مقفلة للتعديل من قبل جميع المستخدمين الغير المشرفين.</target>
+      </trans-unit>
+      <trans-unit id="EditLock_descr2" approved="yes">
+        <source>Enable the »Admin-only« edit lock for this page</source>
+        <target state="final">تمكين "Admin-only" من تعديل القفل لهذه الصفحة</target>
+      </trans-unit>
+      <trans-unit id="Save" approved="yes">
+        <source>Save</source>
+        <target state="final">حفظ</target>
+      </trans-unit>
+      <trans-unit id="Abort" approved="yes">
+        <source>Abort</source>
+        <target state="final">إلغاء</target>
+      </trans-unit>
+      <trans-unit id="Edit" approved="yes">
+        <source>EDIT</source>
+        <target state="final">تعديل</target>
+      </trans-unit>
+      <trans-unit id="recursive" approved="yes">
+        <source>Set recursively</source>
+        <target state="final">تعيين بشكل متكرر</target>
+      </trans-unit>
+      <trans-unit id="page_affected" approved="yes">
+        <source>page affected</source>
+        <target state="final">الصفحة المُتأثرة</target>
+      </trans-unit>
+      <trans-unit id="pages_affected" approved="yes">
+        <source>pages affected</source>
+        <target state="final">الصفحة المُتأثرة</target>
+      </trans-unit>
+      <trans-unit id="user_overview" approved="yes">
+        <source>User overview</source>
+        <target state="final">نظرة عامة على المستخدم</target>
+      </trans-unit>
+      <trans-unit id="Mode" approved="yes">
+        <source>Mode</source>
+        <target state="final">وضع</target>
+      </trans-unit>
+      <trans-unit id="Depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">العمق</target>
+      </trans-unit>
+      <trans-unit id="level" approved="yes">
+        <source>level</source>
+        <target state="final">مستوى</target>
+      </trans-unit>
+      <trans-unit id="levels" approved="yes">
+        <source>levels</source>
+        <target state="final">مستويات</target>
+      </trans-unit>
+      <trans-unit id="User" approved="yes">
+        <source>User</source>
+        <target state="final">المستخدم</target>
+      </trans-unit>
+      <trans-unit id="changeOwner" approved="yes">
+        <source>Change owner</source>
+        <target state="final">تغيير المالك</target>
+      </trans-unit>
+      <trans-unit id="changeGroup" approved="yes">
+        <source>Change group</source>
+        <target state="final">تغيير المجموعة</target>
+      </trans-unit>
+      <trans-unit id="def" approved="yes">
+        <source>Definition: 'content' is records from all tables on a page - except from records from the table 'pages' (Pages).</source>
+        <target state="final">تعريف: 'المحتوى' هو السجلات من جميع الجداول في صفحة - باستثناء السجلات من الجدول 'الصفحات' (Pages).</target>
+      </trans-unit>
+      <trans-unit id="A_Granted" approved="yes">
+        <source>Access Granted</source>
+        <target state="final">تم إعطاء صلاحية للوصول</target>
+      </trans-unit>
+      <trans-unit id="A_Denied" approved="yes">
+        <source>Access Denied</source>
+        <target state="final">تم رفض الوصول</target>
+      </trans-unit>
+      <trans-unit id="1" approved="yes">
+        <source>Show page</source>
+        <target state="final">إظهار الصفحة</target>
+      </trans-unit>
+      <trans-unit id="16" approved="yes">
+        <source>Edit content</source>
+        <target state="final">تعديل المحتوى</target>
+      </trans-unit>
+      <trans-unit id="2" approved="yes">
+        <source>Edit page</source>
+        <target state="final">تعديل الصفحة</target>
+      </trans-unit>
+      <trans-unit id="4" approved="yes">
+        <source>Delete page</source>
+        <target state="final">حذف صفحة</target>
+      </trans-unit>
+      <trans-unit id="8" approved="yes">
+        <source>New pages</source>
+        <target state="final">صفحات جديدة</target>
+      </trans-unit>
+      <trans-unit id="1_t" approved="yes">
+        <source>Show/Copy page and content.</source>
+        <target state="final">إظهار/نسخ الصفحة والمحتوى.</target>
+      </trans-unit>
+      <trans-unit id="16_t" approved="yes">
+        <source>Change/Add/Delete/Move content.</source>
+        <target state="final">تغيير/إضافة/حذف/نقل المحتوى.</target>
+      </trans-unit>
+      <trans-unit id="2_t" approved="yes">
+        <source>Change page eg. change pagetitle etc.</source>
+        <target state="final">تغييرات في الصفحة، على سبيل المثال: تغيير عنوان الصفحة وإلخ.</target>
+      </trans-unit>
+      <trans-unit id="4_t" approved="yes">
+        <source>Delete/Move page and content.</source>
+        <target state="final">حذف/نقل الصفحة والمحتوى.</target>
+      </trans-unit>
+      <trans-unit id="8_t" approved="yes">
+        <source>Create new pages under this page.</source>
+        <target state="final">إنشاء صفحات جديدة تحت هذه الصفحة.</target>
+      </trans-unit>
+      <trans-unit id="WorkspaceWarning" approved="yes">
+        <source>Workspace Warning</source>
+        <target state="final">تحذير مساحة العمل</target>
+      </trans-unit>
+      <trans-unit id="WorkspaceWarningText" approved="yes">
+        <source>Permissions set in a workspace take effect only after the related elements are published. To apply permissions immediately, configure them in the Live workspace. (Permissions are always evaluated based on the Live workspace record or the placeholder of a draft version)</source>
+        <target state="final">لا تُفعّل الأذونات المُعيّنة في مساحة العمل إلا بعد نشر العناصر ذات الصلة. لتطبيق الأذونات فورًا، قم بتكوينها في مساحة العمل المباشرة. (يتم تقييم الأذونات دائمًا بناءً على سجل مساحة العمل المباشرة أو العنصر النائب في مسودة الإصدار)</target>
+      </trans-unit>
+      <trans-unit id="notSet" approved="yes">
+        <source>not set</source>
+        <target state="final">لم يتم تعيينه</target>
+      </trans-unit>
+      <trans-unit id="deleted" approved="yes">
+        <source>deleted</source>
+        <target state="final">محذوف</target>
+      </trans-unit>
+      <trans-unit id="noGroups" approved="yes">
+        <source>No user groups exist.</source>
+        <target state="final">لا توجد مجموعات مستخدمين.</target>
+      </trans-unit>
+      <trans-unit id="selectNone" approved="yes">
+        <source>   - none -   </source>
+        <target state="final">   --لا شئ--   </target>
+      </trans-unit>
+      <trans-unit id="selectUnchanged" approved="yes">
+        <source>   - leave unchanged -   </source>
+        <target state="final">   - البقاء دون تغيير -   </target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
