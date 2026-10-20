@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814816" source-language="en" datatype="plaintext" original="EXT:extbase/Resources/Private/Language/locallang.xlf" date="2012-10-17T19:30:32Z" product-name="extbase" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="property.error" resname="property.error" approved="yes">
+        <source>Validation errors for property "%s"</source>
+        <target state="final">ຂໍ້ຜິດພາດໃນການກວດສອບຄວາມຖືກຕ້ອງສຳລັບຄຸນສົມບັດ "%s"</target>
+      </trans-unit>
+      <trans-unit id="validator.emailaddress.notvalid" resname="validator.emailaddress.notvalid" approved="yes">
+        <source>The given subject was not a valid email address.</source>
+        <target state="final">ຂໍ້ມູນທີ່ລະບຸ ບໍ່ແມ່ນທີ່ຢູ່ອີເມວທີ່ຖືກຕ້ອງ.</target>
+      </trans-unit>
+      <trans-unit id="validator.stringlength.between" resname="validator.stringlength.between" approved="yes">
+        <source>The length of the given string was not between %s and %s characters.</source>
+        <target state="final">ຄວາມຍາວຂອງຂໍ້ຄວາມທີ່ລະບຸ ບໍ່ໄດ້ຢູ່ລະຫວ່າງ %s ຫາ %s ຕົວອັກສອນ.</target>
+      </trans-unit>
+      <trans-unit id="validator.stringlength.less" resname="validator.stringlength.less" approved="yes">
+        <source>The length of the given string is less than %s characters.</source>
+        <target state="final">ຄວາມຍາວຂອງຂໍ້ຄວາມທີ່ລະບຸ ນ້ອຍກວ່າ %s ຕົວອັກສອນ.</target>
+      </trans-unit>
+      <trans-unit id="validator.string.notvalid" resname="validator.string.notvalid" approved="yes">
+        <source>A valid string is expected.</source>
+        <target state="final">ຕ້ອງການຂໍ້ຄວາມທີ່ຖືກຕ້ອງ.</target>
+      </trans-unit>
+      <trans-unit id="validator.stringlength.exceed" resname="validator.stringlength.exceed" approved="yes">
+        <source>The length of the given string exceeded %s characters.</source>
+        <target state="final">ຄວາມຍາວຂອງຂໍ້ຄວາມທີ່ລະບຸ ເກີນ %s ຕົວອັກສອນ.</target>
+      </trans-unit>
+      <trans-unit id="validator.alphanumeric.notvalid" resname="validator.alphanumeric.notvalid" approved="yes">
+        <source>The given subject was not a valid alphanumeric string.</source>
+        <target state="final">ຂໍ້ມູນທີ່ລະບຸ ບໍ່ແມ່ນຂໍ້ຄວາມຕົວເລກ ແລະ ຕົວອັກສອນທີ່ຖືກຕ້ອງ.</target>
+      </trans-unit>
+      <trans-unit id="validator.datetime.notvalid" resname="validator.datetime.notvalid" approved="yes">
+        <source>The given subject was not a valid DateTime. Got: '%s'</source>
+        <target state="final">ຂໍ້ມູນທີ່ລະບຸ ບໍ່ແມ່ນວັນທີ ແລະ ເວລາທີ່ຖືກຕ້ອງ. ຂໍ້ມູນທີ່ໄດ້ຮັບແມ່ນ: '%s'</target>
+      </trans-unit>
+      <trans-unit id="validator.genericobject.noobject" resname="validator.genericobject.noobject" approved="yes">
+        <source>Value is no object.</source>
+        <target state="final">ຄ່າບໍ່ແມ່ນວັດຖຸ.</target>
+      </trans-unit>
+      <trans-unit id="validator.float.notvalid" resname="validator.float.notvalid" approved="yes">
+        <source>The given subject was not a valid float.</source>
+        <target state="final">ຂໍ້ມູນທີ່ລະບຸ ບໍ່ແມ່ນຕົວເລກທົດສະນິຍົມທີ່ຖືກຕ້ອງ.</target>
+      </trans-unit>
+      <trans-unit id="validator.text.notvalid" resname="validator.text.notvalid" approved="yes">
+        <source>The given subject was not a valid text (e.g. contained XML tags).</source>
+        <target state="final">ຂໍ້ມູນທີ່ລະບຸ ບໍ່ແມ່ນຂໍ້ຄວາມທີ່ຖືກຕ້ອງ (ຕົວຢ່າງ: ມີແທັກ XML ປົນຢູ່ນຳ).</target>
+      </trans-unit>
+      <trans-unit id="validator.regularexpression.empty" resname="validator.regularexpression.empty" approved="yes">
+        <source>The regular expression was empty.</source>
+        <target state="final">ສຳນວນປົກກະຕິວ່າງເປົ່າ.</target>
+      </trans-unit>
+      <trans-unit id="validator.regularexpression.nomatch" resname="validator.regularexpression.nomatch" approved="yes">
+        <source>The given subject did not match the pattern.</source>
+        <target state="final">ຂໍ້ມູນທີ່ລະບຸ ບໍ່ກົງກັບຮູບແບບ.</target>
+      </trans-unit>
+      <trans-unit id="validator.regularexpression.error" resname="validator.regularexpression.error" approved="yes">
+        <source>The regular expression '%s' contained an error.</source>
+        <target state="final">ສຳນວນປົກກະຕິ '%s' ມີຂໍ້ຜິດພາດ.</target>
+      </trans-unit>
+      <trans-unit id="validator.numberrange.notvalid" resname="validator.numberrange.notvalid" approved="yes">
+        <source>The given subject was not a valid number.</source>
+        <target state="final">ຂໍ້ມູນທີ່ລະບຸ ບໍ່ແມ່ນຕົວເລກທີ່ຖືກຕ້ອງ.</target>
+      </trans-unit>
+      <trans-unit id="validator.numberrange.range" resname="validator.numberrange.range" approved="yes">
+        <source>The given subject was not in the valid range (%s - %s).</source>
+        <target state="final">ຂໍ້ມູນທີ່ລະບຸ ບໍ່ໄດ້ຢູ່ໃນຊ່ວງທີ່ຖືກຕ້ອງ (%s - %s).</target>
+      </trans-unit>
+      <trans-unit id="validator.notempty.null" resname="validator.notempty.null" approved="yes">
+        <source>The given subject was NULL.</source>
+        <target state="final">ຂໍ້ມູນທີ່ລະບຸເປັນຄ່າຫວ່າງ (NULL).</target>
+      </trans-unit>
+      <trans-unit id="validator.notempty.empty" resname="validator.notempty.empty" approved="yes">
+        <source>The given subject was empty.</source>
+        <target state="final">ຂໍ້ມູນທີ່ລະບຸເປັນຄ່າຫວ່າງເປົ່າ.</target>
+      </trans-unit>
+      <trans-unit id="validator.number.notvalid" resname="validator.number.notvalid" approved="yes">
+        <source>The given subject was not a valid number.</source>
+        <target state="final">ຂໍ້ມູນທີ່ລະບຸ ບໍ່ແມ່ນຕົວເລກທີ່ຖືກຕ້ອງ.</target>
+      </trans-unit>
+      <trans-unit id="validator.integer.notvalid" resname="validator.integer.notvalid" approved="yes">
+        <source>The given subject was not a valid integer.</source>
+        <target state="final">ຂໍ້ມູນທີ່ລະບຸ ບໍ່ແມ່ນຕົວເລກຖ້ວນທີ່ຖືກຕ້ອງ.</target>
+      </trans-unit>
+      <trans-unit id="validator.boolean.nottrue" resname="validator.boolean.nottrue" approved="yes">
+        <source>The given subject was not true.</source>
+        <target state="final">ຂໍ້ມູນທີ່ລະບຸ ບໍ່ແມ່ນຄ່າທີ່ຖືກຕ້ອງ (true).</target>
+      </trans-unit>
+      <trans-unit id="validator.boolean.notfalse" resname="validator.boolean.notfalse" approved="yes">
+        <source>The given subject was not false.</source>
+        <target state="final">ຂໍ້ມູນທີ່ລະບຸ ບໍ່ແມ່ນຄ່າທີ່ຜິດ (false).</target>
+      </trans-unit>
+      <trans-unit id="validator.url.notvalid" resname="validator.url.notvalid" approved="yes">
+        <source>The given subject is no valid URL.</source>
+        <target state="final">ຂໍ້ມູນທີ່ລະບຸ ບໍ່ແມ່ນ URL ທີ່ຖືກຕ້ອງ.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
