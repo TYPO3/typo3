@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814796" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_fe_users.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id="username.description" resname="username.description" approved="yes">
+        <source>Enter the username of the website user. This is needed to login.</source>
+        <target state="final">បញ្ចូល​ឈ្មោះ​ប្រើ​របស់​អ្នក​ប្រើ​វែបសាយ ។ ឈ្មោះ​ប្រើ​នេះ​​ប្រើ​ដើម្បី​កត់ត្រា​ចូល ។</target>
+      </trans-unit>
+      <trans-unit id="username.syntax" resname="username.syntax" approved="yes">
+        <source>A username is required and must be in lowercase without spaces in it. The username must be unique among other usernames in the page where it's saved. If it is not unique a number will be prepended automatically.</source>
+        <target state="final">ត្រូវការ​ឈ្មោះ​ប្រើ​ចាំបាច់ និង ត្រូវ​សរសេរ​អក្សរ​តូច មិន​មាន​ដក​ឃ្លា ។ ឈ្មោះ​ប្រើ​ត្រូវ​តែ​ខុស​ពី​ឈ្មោះ​ប្រើ​ផ្សេងៗ​ទៀត​ក្នុង​ទំព័រ​ដែល​វាន​បាន​រក្សាទុក ។ ប្រសិន​បើ​វា​​មិន​ខុស​ពី​គេ លេខ​នឹង​បន្ថែម​ដោយ​ស្វ័យប្រវត្តិ ។</target>
+      </trans-unit>
+      <trans-unit id="password.description" resname="password.description" approved="yes">
+        <source>Enter the password for the username above. This is needed to login.</source>
+        <target state="final">បញ្ចូល​ពាក្យ​សម្ងាត់​ឲ្យ​ឈ្មោះ​ប្រើ​ខាង​លើ ។ ពាក្យ​សម្ងាត់​នេះ​ប្រើ​សម្រាប់​កត់ត្រា​ចូល ។</target>
+      </trans-unit>
+      <trans-unit id="password.syntax" resname="password.syntax" approved="yes">
+        <source>A password is required and must be in lowercase without spaces in it.</source>
+        <target state="final">ត្រូវការ​ពាក្យ​សម្ងាត់​ជា​ចាំបាច់ ហើយ​ត្រូវ​តែ​សរសេរ​ជា​អក្សរ​តូច មិន​មាន​ដក​ឃ្លា ។</target>
+      </trans-unit>
+      <trans-unit id="usergroup.description" resname="usergroup.description" approved="yes">
+        <source>Select a user group for the username.</source>
+        <target state="final">រើស​ក្រុម​អ្នក​ប្រើ​សម្រាប់​ឈ្មោះ​ប្រើ​នេះ ។</target>
+      </trans-unit>
+      <trans-unit id="usergroup.details" resname="usergroup.details" approved="yes">
+        <source>When a user logs in he is able to view all content which is access restricted to the user &lt;em&gt;group(s)&lt;/em&gt; the user is a member of. Therefore the user login primarily makes sense with regard to the member groups.</source>
+        <target state="final">ពេល​អ្នក​ប្រើ​កត់ត្រា​ចូល គាត់​អាច​មើល​រាល់​មាតិកា​ដែល​បាន​ផ្ដល់​សិទ្ធិ​ឲ្យ​&lt;em&gt;ក្រុម&lt;/em&gt;​អ្នក​ប្រើ ដែល​គាត់​ជា​សមាជិក​របស់​ក្រុម ។ ដូច្នេះ​សិទ្ធិ​របស់​អ្នក​ប្រើ​ត្រូវ​គោរព​តាម​សមាជិក​របស់​ក្រុម ។</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.details" resname="lockToDomain.details" approved="yes">
+        <source>A TYPO3 system may have multiple domains pointing to it. Therefore this option secures that users can login only from a certain host name.</source>
+        <target state="final">ប្រព័ន្ធ TYPO3 មាន​ដូមេន​ច្រើន​ដៅ​ទៅ​រក​វា ។ ដូច្នេះ​ជម្រើស​នេះ​មាន​សុវត្ថិភាព​ដែល​អ្នក​ប្រើ​អាច​កត់ត្រា​ចូល​ពី​ឈ្មោះ​ហស្ដិ៍​ជាក់លាក់ ។</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.syntax" resname="lockToDomain.syntax" approved="yes">
+        <source>Either a domain name, "www.typo3.org" or an IP address, "10.34.222.83"</source>
+        <target state="final">បំពេញ​ឈ្មោះ​ដូមេន, "www.typo3.com" ឬ អាសយដ្ឋាន​អាយភី, "10.34.222.83"</target>
+      </trans-unit>
+      <trans-unit id="_lockToDomain.seeAlso" resname="_lockToDomain.seeAlso" approved="yes">
+        <source>fe_groups:lockToDomain</source>
+        <target state="final">fe_groups:lockToDomain</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="name.description" resname="name.description" approved="yes">
+        <source>Enter the regular name of the user, both first- and surname.</source>
+        <target state="final">បំពេញ​ឈ្មោះ​របស់​អ្នក​ប្រើ ទាំង​នាម និង គោតនាម ។</target>
+      </trans-unit>
+      <trans-unit id="address.description" resname="address.description" approved="yes">
+        <source>Enter the street address of the user.</source>
+        <target state="final">បំពេញ​លេខ​ផ្លូវ​របស់​អ្នក​ប្រើ ។</target>
+      </trans-unit>
+      <trans-unit id="www.description" resname="www.description" approved="yes">
+        <source>Enter the homepage URL</source>
+        <target state="final">បំពេញ​ទីតាំង​តំណ​គេហទំព័រ</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the job title, eg. 'Director' or 'Accountant'.</source>
+        <target state="final">បំពេញ​មុខងារ​ការងារ, ឧ. 'អ្នក​គ្រប់គ្រង' ឬ 'គណនេយ្យករ' ។</target>
+      </trans-unit>
+      <trans-unit id="company.description" resname="company.description" approved="yes">
+        <source>Enter the name of the company in which the user is employed.</source>
+        <target state="final">បំពេញ​ឈ្មោះ​ក្រុមហ៊ុន​ដែល​អ្នក​ប្រើ​ធ្វើការ ។</target>
+      </trans-unit>
+      <trans-unit id="image.description" resname="image.description" approved="yes">
+        <source>Insert a photo of the user.</source>
+        <target state="final">បញ្ចូល​រូបភាព​របស់​អ្នក​ប្រើ ។</target>
+      </trans-unit>
+      <trans-unit id="disable.description" resname="disable.description" approved="yes">
+        <source>This option will temporarily disable the user from logging in.</source>
+        <target state="final">ជម្រើស​នេះ​នឹង​បិទ​ការកត់ត្រា​ចូល​របស់​អ្នក​ប្រើ​ជា​បណ្ដោះ​អាសន្ន ។</target>
+      </trans-unit>
+      <trans-unit id="_disable.seeAlso" resname="_disable.seeAlso" approved="yes">
+        <source>fe_users:starttime,fe_users:endtime</source>
+        <target state="final">fe_users:starttime,fe_users:endtime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Enter the date from which the account is active.</source>
+        <target state="final">បំពេញ​កាលបរិច្ឆេទ​ដែល​គណនី​ដំណើរការ ។</target>
+      </trans-unit>
+      <trans-unit id="starttime.syntax" resname="starttime.syntax" xml:space="preserve" approved="yes">
+				<source>The syntax is dd-mm-yy, but you can just enter a "d" in the field to insert todays date. Or "d+10" to insert the date 10 days from now etc.
+The field will re-format any input to fit the format it understands so you can just experiment and you will be able to clearly see how dates should be entered.</source>
+			<target state="final">រូបមន្ត dd-mm-yy, ប៉ុន្តែ​អ្នក​អាច​បំពេញ​ត្រឹម "d" នៅ​ក្នុង​ប្រអប់​ដើម្បី​បញ្ចូល​កាលបរិច្ឆេទ​បច្ចុប្បន្ន ។ ឬ "d+10" ដើម្បី​បញ្ចូល​កាលបរិច្ឆេទ​ ១០ ថ្ងៃ​ទៅ​មុខ​ទៀត​ពី​ពេល​បច្ចុប្បន្ន ។ល។ វា​នឹង​កំណត់​ទម្រង់​រាល់​ពេល​បញ្ចូល​ទៅ​តាម​ការកំណត់ ដែល​វា​យល់ ដូច្នេះ​អ្នក​អាច​គ្រាន់តែ​ពិសោធន៍ ហើយ​អ្នក​នឹង​អាច​​ឃើញ​ច្បាស់​ថា​គួរ​បញ្ចូល​ទម្រង់​កាលបរិច្ឆេទ​យ៉ាង​ណា ។</target></trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" approved="yes">
+        <source>fe_users:disable,fe_users:endtime</source>
+        <target state="final">fe_users:disable,fe_users:endtime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>Enter the date from which the account is disabled.</source>
+        <target state="final">បំពេញ​កាលបរិច្ឆេទ​ដែល​គណនី​ត្រូវ​បាន​បិទ​ដំណើរការ ។</target>
+      </trans-unit>
+      <trans-unit id="endtime.syntax" resname="endtime.syntax" approved="yes">
+        <source>See "Start"</source>
+        <target state="final">មើល "ចាប់ផ្ដើម"</target>
+      </trans-unit>
+      <trans-unit id="_endtime.seeAlso" resname="_endtime.seeAlso" approved="yes">
+        <source>fe_users:disable,fe_users:starttime</source>
+        <target state="final">fe_users:disable,fe_users:starttime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="lastlogin.description" resname="lastlogin.description" approved="yes">
+        <source>This field shows the user's last log in date.</source>
+        <target state="final">ប្រអប់​នេះ​បង្ហាញ​អំពី​កាលបរិច្ឆេទ​នៃ​ការកត់ត្រា​ចូល​ចុងក្រោយ​របស់​អ្នក​ប្រើ ។</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>Enter additional TSconfig for the user (advanced).</source>
+        <target state="final">បំពេញ​ TSconfig បន្ថែម​សម្រាប់​អ្នក​ប្រើ (កម្រិត​ខ្ពស់) ។</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax, without conditions and constants.</source>
+        <target state="final">រូបមន្ត TypoScript, ដោយ​គ្មាន​លក្ខ័ណ និង កុងស្ដង់ ។</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>A website login user.</source>
+        <target state="final">អ្នក​កត់ត្រាចូល​ប្រើ​វែបសាយ ។</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>These are users with a username and password who are allowed specific access to otherwise restricted areas on your website.</source>
+        <target state="final">អ្នក​ប្រើ​ទាំងនេះ រួម​ទាំង​ឈ្មោះ​ប្រើ និង ពាក្យ​សម្ងាត់ ដែល​ត្រូវ​បាន​ផ្ដល់​សិទ្ធិ​ជាក់លាក់​​ចំពោះ​ទីកន្លែង​ដែន​កំណត់​នៅ​លើ​វែបសាយ​របស់​អ្នក ។</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>fe_groups
+be_users</source>
+			<target state="final">fe_groups
+be_users</target></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>Part of the form for editing a frontend user.
+A typical login box (standard) on the website where frontend users can login.</source>
+			<target state="final">ផ្នែក​នៃ​ទម្រង់​សម្រាប់​កែប្រែ​លើ​អ្នក​ប្រើ frontend ។ ប្រអប់​កត់ត្រា​ចូល​ (ស្តង់ដារ) នៅ​លើ​វែបសាយ ដែល​អ្នក​ប្រើ frontend អាច​កត់ត្រា​ចូល ។</target></trans-unit>
+    </body>
+  </file>
+</xliff>
