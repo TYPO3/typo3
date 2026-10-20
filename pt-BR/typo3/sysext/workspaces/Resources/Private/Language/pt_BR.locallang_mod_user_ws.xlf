@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814876" source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Workspace overview</source>
+        <target state="final">Visão geral de Workspaces</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>Workspace overview showing the changes you have made in the workspace. Here you can also publish the changes to the website if you are allowed to do that.</source>
+        <target state="final">Visão geral de Workspaces mostrando as alterações feitas no espaço de trabalho. Aqui também pode publicar as alterações no site, se tiver permissão.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Workspace</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Workspace Manager</source>
+        <target state="final">Gerenciar Workspace</target>
+      </trans-unit>
+      <trans-unit id="menuitem_workspaces" resname="menuitem_workspaces" approved="yes">
+        <source>Workspace List</source>
+        <target state="final">Lista de Workspace</target>
+      </trans-unit>
+      <trans-unit id="filter_drafts" resname="filter_drafts" approved="yes">
+        <source>Drafts</source>
+        <target state="final">Rascunhos</target>
+      </trans-unit>
+      <trans-unit id="filter_archive" resname="filter_archive" approved="yes">
+        <source>Archive</source>
+        <target state="final">Arquivo</target>
+      </trans-unit>
+      <trans-unit id="filter_all" resname="filter_all" approved="yes">
+        <source>All</source>
+        <target state="final">Tudo</target>
+      </trans-unit>
+      <trans-unit id="diff_no_diff" resname="diff_no_diff" approved="yes">
+        <source>Do not show differences</source>
+        <target state="final">Não mostrar diferenças</target>
+      </trans-unit>
+      <trans-unit id="diff_show_inline" resname="diff_show_inline" approved="yes">
+        <source>Show differences inline</source>
+        <target state="final">Mostrar diferenças na entrelinhas</target>
+      </trans-unit>
+      <trans-unit id="diff_show_popup" resname="diff_show_popup" approved="yes">
+        <source>Show diff. popups (branches)</source>
+        <target state="final">Mostrar diff. popups (ramificações)</target>
+      </trans-unit>
+      <trans-unit id="label_errors" resname="label_errors" approved="yes">
+        <source>Errors</source>
+        <target state="final">Erros</target>
+      </trans-unit>
+      <trans-unit id="workspace_description_live" resname="workspace_description_live" approved="yes">
+        <source>The LIVE workspace allows changes to take effect immediately on the website. However versioning can be applied inside the live workspace and this overview shows you draft and archive versions from the various workspaces, including the LIVE workspace.</source>
+        <target state="final">O espaço de trabalho AO VIVO permite que as alterações entrem em vigor imediatamente no site. No entanto, o controle de versão pode ser aplicado dentro da área de trabalho ao vivo e esta visão geral mostra o rascunho e versões de arquivo das várias áreas de trabalho, incluindo o espaço de trabalho AO VIVO.</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_reviewers" resname="workspace_list_label_reviewers" approved="yes">
+        <source>Reviewers</source>
+        <target state="final">Revisores</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_reviewer" resname="workspace_list_access_reviewer" approved="yes">
+        <source>Reviewer</source>
+        <target state="final">Revisor</target>
+      </trans-unit>
+      <trans-unit id="label_commentforreviewer" resname="label_commentforreviewer" approved="yes">
+        <source>Comment for Reviewer</source>
+        <target state="final">Comentário para o revisor</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
