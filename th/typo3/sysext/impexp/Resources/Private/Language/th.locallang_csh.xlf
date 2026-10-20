@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814829" source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang_csh.xlf" date="2011-10-17T20:22:33Z" product-name="impexp" target-language="th">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>Import/Export</source>
+        <target state="final">นำเข้า / ส่งออก</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Native Import/Export module for TYPO3 data. Can export single records, content of tables, single pages or whole branches of the page tree. Includes attached media like image and preserves relations between records. Exports only to TYPO3 specific format, either a binary format (.T3D) or XML. The format is meant for exchange between TYPO3 systems.</source>
+        <target state="final">ภาษานำเข้า / ส่งออกโมดูลสำหรับข้อมูล TYPO3 สามารถส่งออกระเบียนเดียวเนื้อหาของตารางหน้าเดียวหรือสาขาของต้นไม้ทั้งหน้า รวมถึงสื่อที่แนบมาเช่นภาพและรักษาความสัมพันธ์ระหว่างระเบียน การส่งออกเพียงบางรูปแบบ TYPO3 ทั้งรูปแบบ binary (. T3D) หรือ XML รูปแบบเป็นหมายสำหรับการแลกเปลี่ยนระหว่างระบบ TYPO3</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" approved="yes">
+        <source>Example of the preview display during export configuration of a page. Notice how records on the page are include plus how references inside the record is found and included as well (bottom of screen).</source>
+        <target state="final">ตัวอย่างการแสดงตัวอย่างในระหว่างการตั้งค่าการส่งออกของหน้าเว็บ แจ้งให้ทราบวิธีการบันทึกในหน้านั้นมีทั้งบวกวิธีการอ้างอิงในการบันทึกพบและรวมทั้ง (ด้านล่างของจอภาพ)</target>
+      </trans-unit>
+      <trans-unit id="export.alttitle" resname="export.alttitle" approved="yes">
+        <source>Exporting records from TYPO3</source>
+        <target state="final">บันทึกการส่งออกจาก TYPO3</target>
+      </trans-unit>
+      <trans-unit id="export.details" resname="export.details" xml:space="preserve" approved="yes">
+				<source>There are a number of methods by which you can export data from TYPO3:
+- Export a single page or branch of the page tree (use page icon context menu)
+- Export a single record from any page (use record icon context menu)
+- Export all records from a specific table on a specific page (using the Web&gt;List module)
+- Export an arbitrary selection of records from the clipboard (using the Web&gt;List module)
+
+The export format observes all TYPO3s methods for relations between the records in the export file. But you will have to configure how these relations are maintained, at least to some degree. Sometimes you would want to include records referred to, at other times you surely want to keep the original mapping. That depends on your objectives with the export.
+
+Regardless of your configuration for export you will always see a complete reflection of all chosen records and their internal relations in the preview display found in the bottom of the export module page.
+
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before exporting if there are any error messages there!</source>
+			<target state="final">มี : มีจำนวนวิธีที่คุณสามารถส่งออกข้อมูลจาก TYPO3 -- ส่งออกหน้าเดียวหรือสาขาของต้นไม้หน้า (ใช้บริบทหน้าเมนูไอคอน) -- ส่งออกระเบียนเดียวจากหน้าใด ๆ (icon ใช้บันทึกเมนูบริบท) -- การส่งออก ระเบียนทั้งหมดจากตารางที่ระบุในหน้าเฉพาะ (โดยใช้&gt; module List Web) -- ส่งออกเลือกข้อของระเบียนจากคลิปบอร์ด (ใช้&gt; module List Web) รูปแบบการส่งออกสังเกตการ TYPO3s ทั้งหมดสำหรับความสัมพันธ์ระหว่างระเบียนใน file ส่งออก แต่คุณจะต้องกำหนดวิธีการรักษาความสัมพันธ์เหล่านี้อย่างน้อยในระดับหนึ่ง บางครั้งคุณต้องการรวมระเบียนอ้างถึงที่เวลาอื่น ๆ คุณแน่นอนต้องการเก็บแผนที่เดิม ที่ขึ้นอยู่กับวัตถุประสงค์ของการส่งออก ไม่ว่าตั้งค่าของคุณสำหรับการส่งออกคุณก็จะเห็นภาพสะท้อนที่สมบูรณ์ของระเบียนเลือกทั้งหมดและความสัมพันธ์ภายในของพวกเขาในการแสดงตัวอย่างที่พบในโมดูลด้านล่างส่งออกของหน้า &lt;b&gt;ข้อความ Error :&lt;/b&gt; จำปรึกษา ข้อความแท็บก่อนส่งออกหากมีข้อความผิดพลาด there!</target></trans-unit>
+      <trans-unit id="export.image_descr" resname="export.image_descr" xml:space="preserve" approved="yes">
+				<source>To export a page or record, simply click the icon and select "Export" from the context menu.
+With the Web&gt;List module you can also export all records from a table by first clicking the table title to see only this table, then next to the CSV export you will find the export button for a T3D export of the table.
+You can export the contents of the clipboard as well by simply selecting "Export" in the menu.</source>
+			<target state="final">ส่งออกหน้าหรือบันทึกเพียงคลิกที่ไอคอนและเลือก"ส่งออก"จากเมนูบริบท ด้วย&gt; module List Web คุณยังสามารถส่งออกระเบียนทั้งหมดจากตารางด้วยการคลิกที่ชื่อตารางเพื่อดูตารางนี้เท่านั้นแล้วต่อไป เพื่อการส่งออก CSV คุณจะพบปุ่มส่งออกเพื่อการส่งออก T3D ของตาราง คุณสามารถส่งออกเนื้อหาของคลิปบอร์ดด้วยโดยเพียงเลือก"ส่งออก"ในเมนู</target></trans-unit>
+      <trans-unit id="pageTreeCfg.alttitle" resname="pageTreeCfg.alttitle" approved="yes">
+        <source>Configuration of page tree export</source>
+        <target state="final">การตั้งค่าการส่งออกต้นไม้หน้า</target>
+      </trans-unit>
+      <trans-unit id="pageTreeCfg.description" resname="pageTreeCfg.description" xml:space="preserve" approved="yes">
+				<source>Here you configure how a page or a branch of the page tree should be exported. Using the selector box you can set the number of levels of subpages to include in the export.
+By default all records belonging to a page is included when a page is exported.</source>
+			<target state="final">ที่นี่คุณกำหนดค่าของหน้าหรือต้นไม้สาขาหน้าของควรส่งออก ใช้กล่องตัวเลือกที่คุณสามารถตั้ง subpages จำนวนของระดับของการรวมในการส่งออก โดยปกติระเบียนทั้งหมดเป็นของหน้ารวมเมื่อหน้าส่งออก</target></trans-unit>
+      <trans-unit id="pageTreeDisplay.alttitle" resname="pageTreeDisplay.alttitle" approved="yes">
+        <source>Page Tree</source>
+        <target state="final">หน้าแผนภาพต้นไม้</target>
+      </trans-unit>
+      <trans-unit id="pageTreeDisplay.description" resname="pageTreeDisplay.description" approved="yes">
+        <source>Based on the levels selected for page tree export this will show the structure that is about to be exported. If any pages are specifically excluded by the exclude option they are not shown either.</source>
+        <target state="final">ตามระดับที่เลือกสำหรับการส่งออกต้นไม้หน้านี้จะแสดงโครงสร้างที่เกี่ยวกับการส่งออก หากหน้าเว็บใด ๆ ยกเว้นเฉพาะโดยยกเว้นตัวเลือกที่จะไม่แสดงทั้ง</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.alttitle" resname="pageTreeMode.alttitle" approved="yes">
+        <source>Levels</source>
+        <target state="final">ระดับ</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.description" resname="pageTreeMode.description" approved="yes">
+        <source>Here you select how deeply in the page tree from the current starting point to go for this export.</source>
+        <target state="final">ที่นี่คุณเลือกวิธีลึกในต้นไม้หน้าจากจุดเริ่มต้นปัจจุบันไปเพื่อการส่งออกนี้</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.details" resname="pageTreeMode.details" approved="yes">
+        <source>If you select "Expanded tree" it will base the export on the currently expanded levels of the page tree. Another special option is "Tables on this page" which will not include the page record itself but only include records from tables on the page, depending on the table configuration of course.</source>
+        <target state="final">หากคุณเลือก"ต้นไม้ขยาย"จะฐานการส่งออกขยายตัวในระดับปัจจุบันของต้นไม้หน้า อีกตัวเลือกพิเศษ"ตารางในหน้านี้"ซึ่งจะไม่รวมระเบียนหน้าตัวเอง แต่รวมระเบียนจากตารางในหน้านั้นขึ้นอยู่กับการกำหนดค่าตารางของหลักสูตร</target>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.alttitle" resname="pageTreeRecordLimit.alttitle" approved="yes">
+        <source>Include tables</source>
+        <target state="final">ตารางรวม</target>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.description" resname="pageTreeRecordLimit.description" approved="yes">
+        <source>When you export a page all records on the page is included by default. By this selector you can pick which tables to include exclusively if there are certain records you are not interested in seeing included.</source>
+        <target state="final">เมื่อคุณส่งออกหน้าระเบียนทั้งหมดในหน้ารวมโดยค่าเริ่มต้น โดยตัวเลือกนี้คุณสามารถเลือกที่ตารางรวมเฉพาะถ้ามีการบันทึกบางท่านไม่สนใจดูรวม</target>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.details" resname="pageTreeRecordLimit.details" approved="yes">
+        <source>In the box "Max number of records" you can set a limit to how many records are selected from a single table. This is a runaway brake in case you have an unusual large amount of records from a table.</source>
+        <target state="final">ในช่อง"จำนวนสูงสุดของรายการ"คุณสามารถกำหนดวงเงินในการบันทึกจำนวนถูกเลือกจากตารางเดียว นี้เป็นเบรคผู้หลบหนีในกรณีที่คุณมีจำนวนมากผิดปกติของระเบียนจากตาราง</target>
+      </trans-unit>
+      <trans-unit id="singleRecord.alttitle" resname="singleRecord.alttitle" approved="yes">
+        <source>Export single record</source>
+        <target state="final">ส่งออกบันทึกเดียว</target>
+      </trans-unit>
+      <trans-unit id="singleRecord.description" resname="singleRecord.description" approved="yes">
+        <source>This overview tells you which independent records has been independently selected for export.</source>
+        <target state="final">ภาพรวมนี้จะบอกคุณที่บันทึกอิสระได้รับเลือกเป็นอิสระเพื่อการส่งออก</target>
+      </trans-unit>
+      <trans-unit id="singleRecord.image_descr" resname="singleRecord.image_descr" approved="yes">
+        <source>The way to export multiple records like this is using the clipboard like shown below.</source>
+        <target state="final">วิธีการส่งออกหลายระเบียนเช่นนี้คือการใช้คลิปบอร์ดเช่นที่แสดงด้านล่าง</target>
+      </trans-unit>
+      <trans-unit id="tableList.alttitle" resname="tableList.alttitle" approved="yes">
+        <source>Table export</source>
+        <target state="final">ส่งออกตาราง</target>
+      </trans-unit>
+      <trans-unit id="tableList.description" resname="tableList.description" approved="yes">
+        <source>Export of all records on a page from a specific table. This is configured from the Web&gt;List module where you will have to select table-only view and click a button in the top of the page.</source>
+        <target state="final">การส่งออกของระเบียนทั้งหมดในหน้าจากตารางที่ระบุ นี้มีการกำหนดค่าจากโมดูล Web&gt; รายการที่คุณจะต้องเลือกดูตารางเท่านั้นและคลิกที่ปุ่มด้านบนของหน้า</target>
+      </trans-unit>
+      <trans-unit id="tableList.details" resname="tableList.details" approved="yes">
+        <source>Tip: You can select multiple table lists by simply saving each selecting as a preset and finally load/merge the selections together.</source>
+        <target state="final">Tip : คุณสามารถเลือกตารางหลายรายการเพียงแค่บันทึกแต่ละเลือกเป็นที่ตั้งไว้และสุดท้ายโหลด / ผสานเลือกด้วยกัน</target>
+      </trans-unit>
+      <trans-unit id="tableList.image_descr" resname="tableList.image_descr" xml:space="preserve" approved="yes">
+				<source>Here two tables from different pages are selected. This is done by first selecting the one, saving it as a preset, then select the other and merge with the saved preset.
+Here you see how to use the Web&gt;List module to export all records from a table on a page.</source>
+			<target state="final">ที่นี่สองตารางจากหน้าเว็บที่แตกต่างกันจะถูกเลือก นี้จะกระทำโดยครั้งแรกเลือกหนึ่งให้บันทึกเป็นที่ตั้งไว้แล้วเลือกอื่น ๆ และรวมกับที่บันทึกไว้ล่วงหน้า นี่คุณดูวิธีใช้&gt; module List Web ส่งออกระเบียนทั้งหมดจากตารางบนหน้าเว็บ</target></trans-unit>
+      <trans-unit id="inclRelations.alttitle" resname="inclRelations.alttitle" approved="yes">
+        <source>Include relations</source>
+        <target state="final">relations รวม</target>
+      </trans-unit>
+      <trans-unit id="inclRelations.description" resname="inclRelations.description" approved="yes">
+        <source>Configure the tables from which you want to include records that are found as relations in the main export configuration.</source>
+        <target state="final">ตารางกำหนดค่าที่คุณต้องการรวมระเบียนที่พบเป็นความสัมพันธ์ในการกำหนดค่าส่งออกหลัก</target>
+      </trans-unit>
+      <trans-unit id="inclRelations.details" resname="inclRelations.details" xml:space="preserve" approved="yes">
+				<source>Background: When you export a record in TYPO3 it might contain relations to other records in the system. You have to tell the export interface what to do with these relations. Basically there are three scenarios:
+- If relations are found between records that are all in the export configuration, there is no problem: The relations are automatically mapped to the new id's of those records when imported.
+- If the records related to are not included the relation will be lost (indicated with an error message in the preview) unless you a) either select that table in this selector box in which case all relations to that table will be included or b) if you set the table as a static table (in which case the relation is untouched and imported as-is - but which will of course break if no record with that UID is found in the import system).
+
+&lt;b&gt;Soft References:&lt;/b&gt; Soft references are when a record contains pointers to external files or records but in fields where there are no formal relation configured. Examples of this is when a content element contains a "&amp;lt;link 123&amp;gt;" tag that represents a link to the page 123. This is not picked up formally as a reference, but is found anyhow as a "soft reference". The same goes for &amp;lt;img&amp;gt; tags with images from eg. "fileadmin/".
+By default soft references pointing to records or files will act as normal references; either including the referenced item or showing an error. However you can also choose to exclude the handling of individual soft references or maybe set the value as "editable" upon import. This is done with a selector box in the export preview.</source>
+			<target state="final">พื้นหลัง : เมื่อคุณส่งออกบันทึกใน TYPO3 มันอาจมีความสัมพันธ์กับระเบียนอื่น ๆ ในระบบ คุณต้องบอก interface การส่งออกจะทำอย่างไรกับความสัมพันธ์เหล่านี้ โดยทั่วไปมีสามสถานการณ์ : -- หากพบความสัมพันธ์ระหว่างระเบียนที่มีทั้งหมดในการกำหนดค่าการส่งออกมีปัญหา no : relations มีแมปโดยอัตโนมัติ id ใหม่ของระเบียนเหล่านั้นเมื่อนำเข้า -- หากบันทึกที่เกี่ยวข้องกับการไม่รวม ความสัมพันธ์จะหายไป (พบกับข้อความผิดพลาดในตัวอย่าง) นอกจากคุณจะ a) อาจเลือกช่องที่ตารางตัวเลือกนี้ในกรณีที่ความสัมพันธ์ทั้งหมดในตารางว่าจะรวมหรือ b) ถ้าคุณกำหนดตารางเป็นตารางคงที่ (ซึ่งในกรณีความสัมพันธ์เป็นแตะต้องและจะนำเข้าเป็น -- แต่การที่จะหยุดเรียนหากไม่พร้อมที่บันทึก UID พบในระบบนำเข้า) &lt;b&gt;อ้างอิง Soft :&lt;/b&gt; Soft อ้างอิงที่เมื่อบันทึกมีตัวชี้ไปยังแฟ้มภายนอกหรือระเบียน แต่ในเขตที่ไม่มีความสัมพันธ์ทางการกำหนด ตัวอย่างนี้คือเมื่อองค์ประกอบของเนื้อหาที่มี"123&gt; &lt;link"แท็กที่แสดง 123 ลิงค์ไปยังหน้า นี้ไม่ได้เลือกขึ้นเป็นข้อมูลอ้างอิงอย่างเป็นทางการ แต่พบ แต่อย่างใดเป็นอ้างอิงอ่อน" เดียวกันจะไปสำหรับแท็ก &lt;img&gt; กับภาพจากเช่น "fileadmin /" โดยปกติอ้างอิงอ่อนชี้ไปยังระเบียนหรือแฟ้มจะทำหน้าที่เป็นแหล่งอ้างอิงปกติ; รวมทั้งรายการอ้างอิงหรือแสดงข้อผิดพลาด แต่คุณสามารถเลือกที่จะไม่รวมอ้างอิงจัดการนุ่มของบุคคลหรืออาจกำหนดค่าเป็น"แก้ไข"เมื่อนำเข้า นี้จะกระทำกับกล่องตัวเลือกในตัวอย่างส่งออก</target></trans-unit>
+      <trans-unit id="inclRelations.image_descr" resname="inclRelations.image_descr" xml:space="preserve" approved="yes">
+				<source>This example shows tree examples of references; a) an image attached to a content element, b) a relation to a frontend usergroup UID, and c) a soft reference found in the bodytext field of a record, here it is the link-tag pointing to the page with UID 1.
+Notice in the previous image how the relation to the frontend user group was lost. This has been corrected in this screenshot where the fe_group table has been selected in the list of table for which to include relations. The result is that the frontend usergroup is included as a record outside the exported pagetree. If you wanted to keep the relation but not include the usergroup you have to set "fe_groups" as a static table instead. See below.
+This example shows a TypoScript Template Record where multiple soft references has been found. The first one is an email address. Here it is configured to be editable. This means that upon import the user will have a chance to edit the value before the import is actually done. This is very useful when exported files are used as templates. Another example includes a PHP script which we don't want to include in the export and therefore we have selected the exclude option for the soft reference.</source>
+			<target state="final">ตัวอย่างนี้จะแสดงตัวอย่างโครงสร้างของลำดับที่;) ภาพที่แนบมากับองค์ประกอบของเนื้อหาข) ความสัมพันธ์กับส่วนหน้ากลุ่มผู้ UID, และ c) อ้างอิงอ่อนที่พบในเขตข้อมูลของระเบียน bodytext, นี่คือการเชื่อมโยงแท็ก ชี้ไปที่หน้า 1 ด้วย UID ประกาศในรูปก่อนหน้าวิธีการเกี่ยวกับกลุ่มผู้ใช้ส่วนหน้าได้หายไป นี้ได้รับการแก้ไขในภาพนี้ที่ตาราง fe_group ได้รับเลือกในรายชื่อของตารางที่จะรวมความสัมพันธ์ ผลก็คือกลุ่มผู้ส่วนหน้ารวมเป็นบันทึกนอก pagetree ส่งออก หากคุณต้องการให้ความสัมพันธ์ แต่ไม่รวมถึงกลุ่มผู้ที่คุณต้องตั้งค่า"fe_groups"เป็นตารางคงที่แทน ดูด้านล่าง ตัวอย่างนี้แสดงให้เห็น TypoScript บันทึกแม่แบบที่การอ้างอิงหลายนุ่มได้ว่ามี คือส่วนแรกคือที่อยู่อีเมล นี่คือการกำหนดให้สามารถแก้ไขได้ ซึ่งหมายความว่าเมื่อนำเข้าผู้ใช้จะมีโอกาสที่จะแก้ไขค่าก่อนนำเข้าจะทำจริง ซึ่งจะเป็นประโยชน์มากเมื่อไฟล์ที่ส่งออกจะถูกใช้เป็นแม่แบบ อีกตัวอย่างหนึ่งรวมถึงสคริป PHP ซึ่งเราไม่ต้องการให้รวมอยู่ในการส่งออกและดังนั้นเราจึงได้เลือกไม่รวมตัวเลือกสำหรับการอ้างอิงอ่อน</target></trans-unit>
+      <trans-unit id="staticRelations.alttitle" resname="staticRelations.alttitle" approved="yes">
+        <source>Set static tables</source>
+        <target state="final">กำหนดตารางคงที่</target>
+      </trans-unit>
+      <trans-unit id="staticRelations.description" resname="staticRelations.description" approved="yes">
+        <source>Select which tables in addition to the static TYPO3 tables to keep relations untouched for. Takes precedence over "Include relations" configured tables.</source>
+        <target state="final">เลือกตารางที่นอกเหนือจากตาราง TYPO3 คงรักษาความสัมพันธ์แตะต้องสำหรับ จะเหนือกว่า"relations รวมตารางกำหนดค่า"</target>
+      </trans-unit>
+      <trans-unit id="staticRelations.details" resname="staticRelations.details" approved="yes">
+        <source>By default all relations to static tables in TYPO3 are kept untouched. Of course those static tables should be present in the import system in order for this to work correctly. However there might be circumstances where you move information between two systems where theoretically non-static tables should just keep relations untouched. Examples could be "sys_languages" or TemplaVoila data structures / template objects where two systems might contain the same set of records in those tables while you are importing pages and content elements freely.</source>
+        <target state="final">โดยเริ่มต้นความสัมพันธ์ทุกตารางที่อยู่ใน TYPO3 จะถูกเก็บไว้แตะต้อง แน่นอนคงที่ตารางจะอยู่ในระบบการนำเข้าเพื่อให้นี้ทำงานอย่างถูกต้อง แต่อาจจะมีกรณีที่คุณย้ายข้อมูลระหว่างสองระบบที่ทฤษฎีตารางไม่คงที่ก็ควรเก็บ relations แตะต้อง ตัวอย่างอาจจะ sys_languages"หรือ TemplaVoila โครงสร้างข้อมูล / แม่แบบวัตถุที่สองระบบอาจมีชุดเดียวกับบันทึกในตารางเหล่านั้นในขณะที่คุณกำลังนำเข้าหน้าและองค์ประกอบเนื้อหาเสรี</target>
+      </trans-unit>
+      <trans-unit id="staticRelations.image_descr" resname="staticRelations.image_descr" xml:space="preserve" approved="yes">
+				<source>In this example you see how a number of records are pointing to a System Language record which will become lost relations when imported because the record is not included in the export. However; in the target system the System Languages are exactly the same and therefore you just want a static mapping of the relations.
+The static mapping is obtained by selecting the "sys_language" table as a static template meaning that the relations are kept at their current values assuming that they will be exactly the same in the target system when imported.</source>
+			<target state="final">ในตัวอย่างนี้คุณเห็นระเบียนจำนวนชี้ไปยังภาษาที่บันทึกระบบจะกลายเป็นสูญเสียความสัมพันธ์เพราะเมื่อนำเข้าบันทึกไม่รวมอยู่ในการส่งออก แต่; ในระบบเป้าหมายภาษาเป็นระบบตรงเดียวกันดังนั้นคุณเพียงต้องการแผนที่แบบคงที่ของความสัมพันธ์ คงเป็นแผนที่ได้โดยเลือก sys_language""ตารางเป็นแม่คงหมายถึงความสัมพันธ์จะถูกเก็บไว้ที่ในปัจจุบัน ค่าสมมติว่าพวกเขาจะตรงเดียวกันในระบบเป้าหมายเมื่อนำเข้า</target></trans-unit>
+      <trans-unit id="excludedElements.alttitle" resname="excludedElements.alttitle" approved="yes">
+        <source>Excluded elements</source>
+        <target state="final">องค์ประกอบไม่รวม</target>
+      </trans-unit>
+      <trans-unit id="excludedElements.description" resname="excludedElements.description" approved="yes">
+        <source>By the "Exclude" checkbox you can exclude specific records from the preview display of the export. Which records has been picked for specific exclusion is listed here. You can also clear the exclusion configuration.</source>
+        <target state="final">โดย"ช่อง"ไม่รวมคุณสามารถรวมระเบียนแสดงเฉพาะจากตัวอย่างของการส่งออก ระเบียนที่มีการเลือกยกเว้นเฉพาะจะปรากฏที่นี่ คุณสามารถล้างการตั้งค่าการยกเว้น</target>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.alttitle" resname="htmlCssResources.alttitle" approved="yes">
+        <source>Exclude resources from HTML and CSS files</source>
+        <target state="final">ทรัพยากรยกเว้นจากไฟล์ HTML และ CSS</target>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.description" resname="htmlCssResources.description" approved="yes">
+        <source>When an HTML or CSS file is found as a soft reference the files are parsed for references to external media (such as images) and if any are found they are also exported. If you don't want this behaviour, click this option.</source>
+        <target state="final">เมื่อ HTML หรือไฟล์ CSS พบอ้างอิงนุ่มไฟล์ได้แยกอ้างอิงสื่อภายนอก (เช่นภาพ) และถ้าพบว่ามีการส่งออกยัง หากคุณไม่ต้องการพฤติกรรมนี้ให้คลิกตัวเลือกนี้</target>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.image_descr" resname="htmlCssResources.image_descr" approved="yes">
+        <source>In this example you can see that a soft reference has been found pointing to an HTML file inside fileadmin/ Since it was an HTML file it was parsed and further a number of files were found referenced inside it and now included with the export. This feature is specifically created to support export of template configurations where external HTML files play a role.</source>
+        <target state="final">ในตัวอย่างนี้คุณจะเห็นว่าการอ้างอิงอ่อนได้ว่ามีการชี้ไปยังแฟ้ม HTML ภายใน fileadmin / เนื่องจากเป็นไฟล์ HTML มันแยกและเพิ่มเติมจำนวนไฟล์ที่พบอ้างอิงในนั้นและขณะนี้พร้อมกับการส่งออก คุณลักษณะนี้ถูกสร้างขึ้นมาเพื่อสนับสนุนการส่งออกของแม่แบบการกำหนดค่าที่ไฟล์ HTML ภายนอกบทบาท</target>
+      </trans-unit>
+      <trans-unit id="extensionDependencies.alttitle" resname="extensionDependencies.alttitle" approved="yes">
+        <source>Extension Dependencies</source>
+        <target state="final">การขึ้นต่อ</target>
+      </trans-unit>
+      <trans-unit id="extensionDependencies.details" resname="extensionDependencies.details" approved="yes">
+        <source>During import warnings will appear for all selected extensions from this list which were not installed.</source>
+        <target state="final">ระหว่างวันที่นำเข้าคำเตือนจะปรากฏสำหรับการขยายที่เลือกทั้งหมดจากรายการที่ไม่ได้ติดตั้งนี้</target>
+      </trans-unit>
+      <trans-unit id="presets.alttitle" resname="presets.alttitle" approved="yes">
+        <source>Configuration presets</source>
+        <target state="final">presets Configuration</target>
+      </trans-unit>
+      <trans-unit id="presets.description" resname="presets.description" approved="yes">
+        <source>Enables you to save an export configuration for later re-use. Useful if you need to export the same configuration with regular intervals.</source>
+        <target state="final">ช่วยให้คุณประหยัดค่าส่งออกเพื่อใช้ในภายหลังอีก ประโยชน์ถ้าคุณต้องการส่งออกการตั้งค่าเดียวกันกับช่วงเวลาปกติ</target>
+      </trans-unit>
+      <trans-unit id="metadata.alttitle" resname="metadata.alttitle" approved="yes">
+        <source>Meta data setting</source>
+        <target state="final">ข้อมูลการ Meta</target>
+      </trans-unit>
+      <trans-unit id="metadata.description" resname="metadata.description" approved="yes">
+        <source>Set meta data for the export. This is highly encouraged if your exported content goes into eg. a template collection of sorts.</source>
+        <target state="final">ชุดข้อมูล meta สำหรับการส่งออก นี่คือการส่งเสริมการส่งออกสูงถ้าเนื้อหาของคุณจะเข้าสู่เช่น แม่แบบชุดแปลกๆ</target>
+      </trans-unit>
+      <trans-unit id="fileFormat.alttitle" resname="fileFormat.alttitle" approved="yes">
+        <source>File format options</source>
+        <target state="final">File เลือกรูปแบบ</target>
+      </trans-unit>
+      <trans-unit id="import.alttitle" resname="import.alttitle" approved="yes">
+        <source>Importing TYPO3 records</source>
+        <target state="final">นำเข้าระเบียน TYPO3</target>
+      </trans-unit>
+      <trans-unit id="importFile.alttitle" resname="importFile.alttitle" approved="yes">
+        <source>Select file to import</source>
+        <target state="final">เลือกไฟล์ที่จะนำเข้า</target>
+      </trans-unit>
+      <trans-unit id="importFile.description" resname="importFile.description" approved="yes">
+        <source>The files displayed are those with an extension T3D or XML from fileadmin/, fileadmin/export/ and your "TEMP" folder (if any).</source>
+        <target state="final">ภาพที่แสดงเป็นผู้ที่มีส่วนขยาย T3D หรือ XML จาก fileadmin / fileadmin / ส่งออก / และ"TEMP โฟลเดอร์"(ถ้ามี)</target>
+      </trans-unit>
+      <trans-unit id="update.alttitle" resname="update.alttitle" approved="yes">
+        <source>Update instead of Insert</source>
+        <target state="final">ปรับปรุงแทนการแทรก</target>
+      </trans-unit>
+      <trans-unit id="update.description" resname="update.description" approved="yes">
+        <source>By default the import operation inserts new records in the system. Using this option will update existing records.</source>
+        <target state="final">โดยปกติการนำเข้าแทรกระเบียนใหม่ในระบบ โดยใช้ตัวเลือกจะปรับปรุงระเบียนที่มีอยู่นี้</target>
+      </trans-unit>
+      <trans-unit id="update.details" resname="update.details" xml:space="preserve" approved="yes">
+				<source>There are certain requirements you have to meet if you want the "Update" process to work. The main thing is that the records updated are those with the SAME uid as the uid in the export file. Thus an update operation only makes real sense if the export and import systems are somehow related and the same UIDs can be expected in both ends. Otherwise it will be a mess!
+
+When you update page structures the import operation will automatically try to rearrange records so they also appear in the same hierarchy and order as in the export file. This can be disabled by checking the option "Ignore PID differences globally". In any case you can set individual records to Ignore/Respect the PID with a selectorbox in the preview.
+
+In the preview display you can also select if individual records should be flatly ignored during import or if you want them created as new records instead of being updates.
+As a help for managing updates the preview display will inform you about the path where the existing element with that UID is found. Use this to verify that you get what you expect!
+
+&lt;b&gt;Forcing the UID:&lt;/b&gt;
+If you intend to update a system and some elements from the import are not mappable to a UID already (ei. does not exist) you can choose in the preview display to force the UID during creation. This is an unorthodox thing to do since UIDs are normally created automatically by the database. The option makes most sense if you are trying to "synchronize" a copy of another system. The option may mess up certain database internals and the feature is therefore only available for admins.</source>
+			<target state="final">มีงานบางข้อกำหนดที่คุณต้องพบถ้าคุณต้องการปรับปรุง""กระบวนการที่ สิ่งสำคัญคือระเบียนที่ปรับปรุงเป็นผู้ที่มีไฟล์เดิม uid เป็นใน uid ส่งออก ดังนั้นการดำเนินการ update เท่านั้นทำให้รู้สึกจริงหากการส่งออกและนำเข้าระบบมีความสัมพันธ์อย่างใดและ UIDs เดียวกันสามารถคาดหวังในปลายทั้ง มิฉะนั้นจะถูกระเบียบ! เมื่อคุณปรับปรุงโครงสร้างหน้าการนำเข้าโดยอัตโนมัติจะพยายามจัดรายการจึงจะปรากฏในลำดับชั้นเดียวกันและลำดับในการส่งออกไฟล์ นี้สามารถใช้งานโดยเลือก"ตัวเลือก Ignore PID แตกต่างทั่วโลก" ในกรณีที่คุณสามารถกำหนดตำแหน่งบุคคลที่จะไม่เคารพ / PID กับภาพตัวอย่าง selectorbox ใน การแสดงตัวอย่างที่คุณสามารถเลือกบันทึกหากบุคคลควรละเว้นที่ราบระหว่างนำเข้าหรือถ้าคุณต้องการสร้างเป็นระเบียนใหม่แทนที่จะเป็น ปรับปรุง เป็นเส้นทางช่วยในการจัดการแสดงตัวอย่างแสดงการปรับปรุงจะแจ้งให้ทราบเกี่ยวกับองค์ประกอบที่มีอยู่กับที่พบ UID ใช้นี้เพื่อยืนยันว่าคุณได้รับสิ่งที่คุณคาดหวัง! &lt;b&gt; บังคับ UID :&lt;/b&gt; ถ้าคุณตั้งใจจะปรับปรุงระบบและองค์ประกอบบางส่วนจากการนำเข้าไม่ให้ UID mappable แล้ว (ei. ไม่อยู่) คุณสามารถเลือกในการแสดงการแสดงตัวอย่างใน กำลัง UID ระหว่างการสร้าง นี่เป็นสิ่งนอกรีตทำตั้งแต่ UIDs ถูกสร้างขึ้นตามปกติโดยอัตโนมัติจากฐานข้อมูล ตัวเลือกเหมาะสมที่สุดหากคุณพยายาม"ประสาน"ระบบคัดลอกการควบคุมของ เลือกรับประทานอาหารอาจขึ้น internals ฐานข้อมูลและคุณสมบัติบางจึงเฉพาะสำหรับผู้ดูแลระบบ</target></trans-unit>
+      <trans-unit id="update.image_descr" resname="update.image_descr" approved="yes">
+        <source>In Update mode you can select various settings for each record. You will also be able to see a diff-view where the differences between the existing record and the one from the import is shown.</source>
+        <target state="final">ในโหมดการปรับปรุงคุณสามารถเลือกการตั้งค่าต่างๆสำหรับแต่ละระเบียน คุณจะสามารถเห็นต่างมุมมองที่แตกต่างระหว่างการบันทึกที่มีอยู่และหนึ่งจากการนำเข้าจะปรากฏ</target>
+      </trans-unit>
+      <trans-unit id="options.alttitle" resname="options.alttitle" approved="yes">
+        <source>Import options</source>
+        <target state="final">ตัวเลือกการนำเข้า</target>
+      </trans-unit>
+      <trans-unit id="options.description" resname="options.description" approved="yes">
+        <source>Various options for import.</source>
+        <target state="final">ตัวเลือกต่างๆเพื่อนำเข้า</target>
+      </trans-unit>
+      <trans-unit id="action.alttitle" resname="action.alttitle" approved="yes">
+        <source>Import Action</source>
+        <target state="final">Action นำเข้า</target>
+      </trans-unit>
+      <trans-unit id="action.description" resname="action.description" xml:space="preserve" approved="yes">
+				<source>Press "Preview" to see the content of the import file or update the preview display according to changed configurations.
+Press "Import"/"Update" if you want to perform the actual import.
+
+Before importing make sure you change any editable soft references that are shown in the preview data.</source>
+			<target state="final">กด"Preview"เพื่อดูเนื้อหาของไฟล์ที่นำเข้าหรือปรับปรุงภาพตัวอย่างการแสดงผลตามการกำหนดค่าการเปลี่ยนแปลง กดปุ่ม"นำเข้า"/"Update"ถ้าคุณต้องการดำเนินการการนำเข้าจริง ก่อนที่จะนำเข้าให้แน่ใจว่าคุณเปลี่ยนการอ้างอิงใด ๆ ที่สามารถแก้ไขได้นุ่มที่แสดงอยู่ในข้อมูลตัวอย่าง</target></trans-unit>
+      <trans-unit id="action.image_descr" resname="action.image_descr" approved="yes">
+        <source>Example of the result view after importing. As you can see the RTE attached images (soft references) has been written to new file names and the difference view tells you that the names changed in the bodytext content.</source>
+        <target state="final">ตัวอย่างของการดูผลหลังจากนำเข้า ที่คุณสามารถดูภาพที่แนบมา RTE (อ้างอิงอ่อน) ได้เขียนชื่อแฟ้มใหม่และดูความแตกต่างบอกว่าชื่อเปลี่ยนในเนื้อหา bodytext</target>
+      </trans-unit>
+      <trans-unit id="enableLogging.alttitle" resname="enableLogging.alttitle" approved="yes">
+        <source>Enable System Logging</source>
+        <target state="final">ใช้ระบบเข้าสู่ระบบ</target>
+      </trans-unit>
+      <trans-unit id="enableLogging.description" resname="enableLogging.description" approved="yes">
+        <source>If you set this the system backend log will be filled with entries for all the actions that the import actually performs. By default this is left out for the sake of clarity.</source>
+        <target state="final">ถ้าคุณตั้งค่านี้เข้าสู่ระบบ backend ระบบจะเต็มไปด้วยรายการการดำเนินการทั้งหมดที่นำเข้าจริงมีประสิทธิภาพ โดยเริ่มต้นนี้เหลือออกเพื่อประโยชน์ของชัดเจน</target>
+      </trans-unit>
+      <trans-unit id="upload.alttitle" resname="upload.alttitle" approved="yes">
+        <source>Upload import file</source>
+        <target state="final">นำเข้าไฟล์ Upload</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
