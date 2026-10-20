@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="widget.rss.title" approved="yes">
+        <source>RSS Feed</source>
+        <target state="final">RSS-Feed</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.description" approved="yes">
+        <source>Displays the latest entries from a customizable RSS feed.</source>
+        <target state="final">Zeigt die neuesten Einträge eines anpassbaren RSS-Feeds an.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.label.label" approved="yes">
+        <source>Label</source>
+        <target state="final">Bezeichnung</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.label.description" approved="yes">
+        <source>Defines the label of the widget.</source>
+        <target state="final">Definiert die Bezeichnung des Widgets.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.fieldUrl.label" approved="yes">
+        <source>RSS Feed</source>
+        <target state="final">RSS-Feed</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.fieldUrl.description" approved="yes">
+        <source>Defines the URL or file providing the RSS Feed. This is read by the widget in order to fetch entries to show.</source>
+        <target state="final">Definiert die URL oder Datei, die den RSS-Feed bereitstellt. Diese wird vom Widget gelesen, um die anzuzeigenden Einträge zu holen.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.limit.label" approved="yes">
+        <source>Limit</source>
+        <target state="final">Limit</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.limit.description" approved="yes">
+        <source>Defines how many RSS items should be shown.</source>
+        <target state="final">Legt fest, wie viele RSS-Einträge angezeigt werden sollen.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.lifetime.label" approved="yes">
+        <source>Lifetime</source>
+        <target state="final">Lebensdauer</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.lifetime.description" approved="yes">
+        <source>Defines how long to wait, in seconds, until fetching RSS Feed again.</source>
+        <target state="final">Legt fest, wie lange (in Sekunden) gewartet werden soll, bis der RSS-Feed erneut abgerufen wird.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.missingFeedConfiguration.title" approved="yes">
+        <source>Missing feed configuration</source>
+        <target state="final">Fehlende Feed-Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.missingFeedConfiguration.message" approved="yes">
+        <source>Please configure a feed URL to retrieve items from.</source>
+        <target state="final">Bitte konfiguriere eine Feed-URL, von der du Artikel abrufen möchtest.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.feedError.title" approved="yes">
+        <source>Feed error</source>
+        <target state="final">Fehler im Feed</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.feedError.message" approved="yes">
+        <source>The feed at "%1$s" could not be parsed.</source>
+        <target state="final">Der Feed von „%1$s“ konnte nicht geparst werden.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.noItems.title" approved="yes">
+        <source>No items to display</source>
+        <target state="final">Es gibt keine Artikel zum Anzeigen.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.noItems.message" approved="yes">
+        <source>The feed at "%1$s" does not contain any items.</source>
+        <target state="final">Der Feed von „%1$s“ enthält keine Einträge.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
