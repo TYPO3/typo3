@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814876" source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Arbeidsflate</target>
+      </trans-unit>
+      <trans-unit id="filter_drafts" resname="filter_drafts" approved="yes">
+        <source>Drafts</source>
+        <target state="final">Utkast</target>
+      </trans-unit>
+      <trans-unit id="filter_archive" resname="filter_archive" approved="yes">
+        <source>Archive</source>
+        <target state="final">Arkiver</target>
+      </trans-unit>
+      <trans-unit id="filter_all" resname="filter_all" approved="yes">
+        <source>All</source>
+        <target state="final">Alle</target>
+      </trans-unit>
+      <trans-unit id="label_errors" resname="label_errors" approved="yes">
+        <source>Errors</source>
+        <target state="final">Feil</target>
+      </trans-unit>
+      <trans-unit id="label_workspace" resname="label_workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Arbeidsflate</target>
+      </trans-unit>
+      <trans-unit id="label_description" resname="label_description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beskrivelse</target>
+      </trans-unit>
+      <trans-unit id="label_options" resname="label_options" approved="yes">
+        <source>Options</source>
+        <target state="final">Valg</target>
+      </trans-unit>
+      <trans-unit id="label_status" resname="label_status" approved="yes">
+        <source>Status</source>
+        <target state="final">Status</target>
+      </trans-unit>
+      <trans-unit id="label_stage" resname="label_stage" approved="yes">
+        <source>Stage</source>
+        <target state="final">Scene</target>
+      </trans-unit>
+      <trans-unit id="label_publish" resname="label_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">Publiser</target>
+      </trans-unit>
+      <trans-unit id="img_title_publish" resname="img_title_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">Publiser</target>
+      </trans-unit>
+      <trans-unit id="img_title_edit_page" resname="img_title_edit_page" approved="yes">
+        <source>Edit page</source>
+        <target state="final">Rediger side</target>
+      </trans-unit>
+      <trans-unit id="img_title_show_more" resname="img_title_show_more" approved="yes">
+        <source>Show more</source>
+        <target state="final">Vis mer</target>
+      </trans-unit>
+      <trans-unit id="edit_workspace_go_back" resname="edit_workspace_go_back" approved="yes">
+        <source>Go back</source>
+        <target state="final">Gå tilbake</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_current_workspace" resname="workspace_list_label_current_workspace" approved="yes">
+        <source>Current</source>
+        <target state="final">Nåværende</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_workspace_title" resname="workspace_list_label_workspace_title" approved="yes">
+        <source>Title</source>
+        <target state="final">Tittel</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_workspace_description" resname="workspace_list_label_workspace_description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beskrivelse</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_owners" resname="workspace_list_label_owners" approved="yes">
+        <source>Owners</source>
+        <target state="final">Eiere</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_members" resname="workspace_list_label_members" approved="yes">
+        <source>Members</source>
+        <target state="final">Medlemmer</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_reviewers" resname="workspace_list_label_reviewers" approved="yes">
+        <source>Reviewers</source>
+        <target state="final">Godkjennere</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_file_mountpoints" resname="workspace_list_label_file_mountpoints" approved="yes">
+        <source>File mountpoints</source>
+        <target state="final">Fil monteringspunkt</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_frozen" resname="workspace_list_label_frozen" approved="yes">
+        <source>Frozen</source>
+        <target state="final">Deaktivert</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_label_frozen_yes" resname="workspace_list_label_frozen_yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Ja</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_admin" resname="workspace_list_access_admin" approved="yes">
+        <source>Admin</source>
+        <target state="final">Admin</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_online" resname="workspace_list_access_online" approved="yes">
+        <source>Online</source>
+        <target state="final">På nett</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_offline" resname="workspace_list_access_offline" approved="yes">
+        <source>Offline</source>
+        <target state="final">Frakoblet</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_owner" resname="workspace_list_access_owner" approved="yes">
+        <source>Owner</source>
+        <target state="final">Eier</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_member" resname="workspace_list_access_member" approved="yes">
+        <source>Member</source>
+        <target state="final">Medlem</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_reviewer" resname="workspace_list_access_reviewer" approved="yes">
+        <source>Reviewer</source>
+        <target state="final">Godkjenner</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_publishing_count_draft" resname="workspace_list_publishing_count_draft" approved="yes">
+        <source>Draft</source>
+        <target state="final">Kladd</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_publishing_count_archive" resname="workspace_list_publishing_count_archive" approved="yes">
+        <source>Archive</source>
+        <target state="final">Arkiver</target>
+      </trans-unit>
+      <trans-unit id="label_reject" resname="label_reject" approved="yes">
+        <source>Reject</source>
+        <target state="final">Avslå</target>
+      </trans-unit>
+      <trans-unit id="stage_editing" resname="stage_editing" approved="yes">
+        <source>Editing</source>
+        <target state="final">Redigering</target>
+      </trans-unit>
+      <trans-unit id="stage_publish" resname="stage_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">Publiser</target>
+      </trans-unit>
+      <trans-unit id="label_page" resname="label_page" approved="yes">
+        <source>Page</source>
+        <target state="final">Side</target>
+      </trans-unit>
+      <trans-unit id="label_showsubelements" resname="label_showsubelements" approved="yes">
+        <source>Show sub elements</source>
+        <target state="final">Vis underelementer</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_publish" resname="label_doaction_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">Publiser</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
