@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814817" source-language="en" datatype="plaintext" original="EXT:extbase/Resources/Private/Language/locallang_db.xlf" date="2011-10-17T20:22:32Z" product-name="extbase" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="fe_users.tx_extbase_type" resname="fe_users.tx_extbase_type" approved="yes">
+        <source>Record Type</source>
+        <target state="final">Type d'enregistrement</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tx_extbase_type.0" resname="fe_users.tx_extbase_type.0" approved="yes">
+        <source>undefined</source>
+        <target state="final">indéfini</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tx_extbase_type.Tx_Extbase_Domain_Model_FrontendUser" resname="fe_users.tx_extbase_type.Tx_Extbase_Domain_Model_FrontendUser" approved="yes">
+        <source>Tx_Extbase_Domain_Model_FrontendUser</source>
+        <target state="final">Tx_Extbase_Domain_Model_FrontendUser</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.tx_extbase_type" resname="fe_groups.tx_extbase_type" approved="yes">
+        <source>Record Type</source>
+        <target state="final">Type d'enregistrement</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.tx_extbase_type.0" resname="fe_groups.tx_extbase_type.0" approved="yes">
+        <source>undefined</source>
+        <target state="final">indéfini</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.tx_extbase_type.Tx_Extbase_Domain_Model_FrontendUserGroup" resname="fe_groups.tx_extbase_type.Tx_Extbase_Domain_Model_FrontendUserGroup" approved="yes">
+        <source>Tx_Extbase_Domain_Model_FrontendUserGroup</source>
+        <target state="final">Tx_Extbase_Domain_Model_FrontendUserGroup</target>
+      </trans-unit>
+      <trans-unit id="task.action" resname="task.action" approved="yes">
+        <source>CommandController Command</source>
+        <target state="final">Commande "CommandController"</target>
+      </trans-unit>
+      <trans-unit id="task.name" resname="task.name" approved="yes">
+        <source>Extbase CommandController Task</source>
+        <target state="final">Tâche "Extbase CommandController"</target>
+      </trans-unit>
+      <trans-unit id="task.description" resname="task.description" approved="yes">
+        <source>Allows Extbase CommandController commands to be configured and executed through the scheduler framework.</source>
+        <target state="final">Autorise les commandes "Extbase CommandController" à être configurée et exécutée via le planificateur de tâches.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
