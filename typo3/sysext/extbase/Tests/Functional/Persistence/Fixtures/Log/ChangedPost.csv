@@ -1,0 +1,3 @@
+"sys_log"
+,"tstamp","userid","type","action","error","tablename","recuid","details","log_data","event_pid","channel","level"
+,1700000000,1,1,2,0,"tx_blogexample_domain_model_post",3,"Record {table}:{uid} was updated","{""table"":""tx_blogexample_domain_model_post"",""uid"":3,""history"":""1""}",2,"content","info"

@@ -1,0 +1,6 @@
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","date","tags","comments","additional_info","related_posts","sorting","tstamp","crdate"
+,5,2,0,0,"Fifth post",1768478400,0,0,0,1,5,1500000000,1500000000
+"tx_blogexample_post_post_mm"
+,"uid_local","uid_foreign","sorting","sorting_foreign"
+,5,3,1,0

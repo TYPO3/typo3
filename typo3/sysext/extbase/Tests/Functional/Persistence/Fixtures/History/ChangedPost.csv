@@ -1,0 +1,3 @@
+"sys_history"
+,"actiontype","tablename","recuid","usertype","userid","tstamp","history_data","correlation_id"
+,2,"tx_blogexample_domain_model_post",3,"BE",1,1700000000,"{""oldRecord"":{""title"":""Third post"",""l18n_diffsource"":""""},""newRecord"":{""title"":""Changed post"",""l18n_diffsource"":""{\"title\":\"\"}""}}","\*"

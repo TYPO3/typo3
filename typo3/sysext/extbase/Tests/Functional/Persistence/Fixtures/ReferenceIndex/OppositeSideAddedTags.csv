@@ -1,0 +1,5 @@
+"sys_refindex"
+,"tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","ref_table","ref_uid","ref_field","ref_string"
+,"tx_blogexample_domain_model_tag",1,"items","","","",0,"tx_blogexample_domain_model_post",3,"tags",""
+,"tx_blogexample_domain_model_tag",1,"items","","","",1,"tx_blogexample_domain_model_post",4,"tags",""
+,"tx_blogexample_domain_model_tag",2,"items","","","",0,"tx_blogexample_domain_model_post",3,"tags",""

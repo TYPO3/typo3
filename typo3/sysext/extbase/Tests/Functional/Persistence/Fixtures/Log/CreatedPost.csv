@@ -1,0 +1,3 @@
+"sys_log"
+,"tstamp","userid","type","action","error","tablename","recuid","details","log_data","event_pid","channel","level"
+,1700000000,1,1,1,0,"tx_blogexample_domain_model_post",5,"Record {table}:{uid} was inserted on page {pid}","{""table"":""tx_blogexample_domain_model_post"",""uid"":5,""pid"":2}",2,"content","info"

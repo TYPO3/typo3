@@ -1,0 +1,3 @@
+"sys_history"
+,"actiontype","tablename","recuid","usertype","userid","tstamp","history_data","correlation_id"
+,4,"tx_blogexample_domain_model_post",3,"BE",1,1700000000,,"\*"
