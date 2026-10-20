@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814822" source-language="en" datatype="plaintext" original="EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf" date="2012-10-17T17:55:17Z" product-name="local lang" target-language="fi">
+    <header/>
+    <body>
+      <!-- sys_file_metadata fields -->
+      <trans-unit id="sys_file_metadata.visible" resname="sys_file_metadata.visible" approved="yes">
+        <source>Visible</source>
+        <target state="final">Näkyvä</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.status.2" resname="sys_file_metadata.status.2" approved="yes">
+        <source>Pending</source>
+        <target state="final">Odottaa</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.status.3" resname="sys_file_metadata.status.3" approved="yes">
+        <source>Under review</source>
+        <target state="final">Tarkastettavana</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.keywords" resname="sys_file_metadata.keywords" approved="yes">
+        <source>Keywords</source>
+        <target state="final">Avainsanat, keywords</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.caption" resname="sys_file_metadata.caption" approved="yes">
+        <source>Caption</source>
+        <target state="final">Kuvateksti</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.download_name" resname="sys_file_metadata.download_name" approved="yes">
+        <source>Download Name</source>
+        <target state="final">Latausnimi</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.creator" resname="sys_file_metadata.creator" approved="yes">
+        <source>Creator</source>
+        <target state="final">Tekijä</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.publisher" resname="sys_file_metadata.publisher" approved="yes">
+        <source>Publisher</source>
+        <target state="final">Julkaisija</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.source" resname="sys_file_metadata.source" approved="yes">
+        <source>Source</source>
+        <target state="final">Lähde</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.location_country" resname="sys_file_metadata.location_country" approved="yes">
+        <source>Country</source>
+        <target state="final">Maa</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.location_region" resname="sys_file_metadata.location_region" approved="yes">
+        <source>Region</source>
+        <target state="final">Alue</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.location_city" resname="sys_file_metadata.location_city" approved="yes">
+        <source>City</source>
+        <target state="final">Kaupunki</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.content_creation_date" resname="sys_file_metadata.content_creation_date" approved="yes">
+        <source>Content Creation Date</source>
+        <target state="final">Sisällön luontipäivä</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.content_modification_date" resname="sys_file_metadata.content_modification_date" approved="yes">
+        <source>Content Modification Date</source>
+        <target state="final">Sisällön muokkauspvm</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.width" resname="sys_file_metadata.width" approved="yes">
+        <source>Width</source>
+        <target state="final">Leveys</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.height" resname="sys_file_metadata.height" approved="yes">
+        <source>Height</source>
+        <target state="final">Korkeus</target>
+      </trans-unit>
+      <!-- sys_file_metadata tabs -->
+      <!-- sys_file_metadata placeholder -->
+      <!-- sys_file_metadata palette -->
+      <!-- fe_groups fields -->
+    </body>
+  </file>
+</xliff>
