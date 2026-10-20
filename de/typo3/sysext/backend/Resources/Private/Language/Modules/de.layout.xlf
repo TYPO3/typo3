@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/layout.xlf" date="2026-11-10T13:37:37Z" product-name="layout" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Manage page layout and structured content editing</source>
+        <target state="final">Seitenlayout und strukturierte Inhaltsbearbeitung verwalten</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>The Layout module provides a structured space for editing page content. It allows you to manage the visual layout of a page, arrange content elements in the correct columns, and maintain the overall structure of your site.</source>
+        <target state="final">Das Layout-Modul bietet einen strukturierten Bereich zum Bearbeiten von Seiteninhalten. Damit kannst du das visuelle Layout einer Seite verwalten, Inhaltselemente in den richtigen Spalten anordnen und die Gesamtstruktur deiner Website pflegen.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Layout</source>
+        <target state="final">Layout</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
