@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814849" source-language="en" datatype="plaintext" original="EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="removeLink" resname="removeLink">
+        <source>Remove link</source>
+        <target>crwdns77948:0crwdne77948:0</target>
+      </trans-unit>
+      <trans-unit id="uploadImage" resname="uploadImage">
+        <source>Upload Image</source>
+        <target>crwdns77950:0crwdne77950:0</target>
+      </trans-unit>
+      <trans-unit id="update" resname="update">
+        <source>Update</source>
+        <target>crwdns77952:0crwdne77952:0</target>
+      </trans-unit>
+      <trans-unit id="path" resname="path">
+        <source>Path</source>
+        <target>crwdns77954:0crwdne77954:0</target>
+      </trans-unit>
+      <trans-unit id="page" resname="page">
+        <source>Page</source>
+        <target>crwdns77956:0crwdne77956:0</target>
+      </trans-unit>
+      <trans-unit id="file" resname="file">
+        <source>File</source>
+        <target>crwdns77958:0crwdne77958:0</target>
+      </trans-unit>
+      <trans-unit id="folder" resname="folder">
+        <source>Folder</source>
+        <target>crwdns77960:0crwdne77960:0</target>
+      </trans-unit>
+      <trans-unit id="extUrl" resname="extUrl">
+        <source>External URL</source>
+        <target>crwdns77962:0crwdne77962:0</target>
+      </trans-unit>
+      <trans-unit id="email" resname="email">
+        <source>Email</source>
+        <target>crwdns77964:0crwdne77964:0</target>
+      </trans-unit>
+      <trans-unit id="special" resname="special">
+        <source>Special</source>
+        <target>crwdns77966:0crwdne77966:0</target>
+      </trans-unit>
+      <trans-unit id="folderTree" resname="folderTree">
+        <source>Folder Tree</source>
+        <target>crwdns77968:0crwdne77968:0</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files">
+        <source>Files</source>
+        <target>crwdns77970:0crwdne77970:0</target>
+      </trans-unit>
+      <trans-unit id="folders" resname="folders">
+        <source>Folders</source>
+        <target>crwdns77972:0crwdne77972:0</target>
+      </trans-unit>
+      <trans-unit id="target" resname="target">
+        <source>Target</source>
+        <target>crwdns77974:0crwdne77974:0</target>
+      </trans-unit>
+      <trans-unit id="linkRelationship" resname="linkRelationship">
+        <source>Relationship</source>
+        <target>crwdns77976:0crwdne77976:0</target>
+      </trans-unit>
+      <trans-unit id="class" resname="class">
+        <source>CSS-Class</source>
+        <target>crwdns77978:0crwdne77978:0</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title">
+        <source>Title</source>
+        <target>crwdns77980:0crwdne77980:0</target>
+      </trans-unit>
+      <trans-unit id="params" resname="params">
+        <source>Additional link parameters</source>
+        <target>crwdns77982:0crwdne77982:0</target>
+      </trans-unit>
+      <trans-unit id="newWindow" resname="newWindow">
+        <source>New window</source>
+        <target>crwdns77984:0crwdne77984:0</target>
+      </trans-unit>
+      <trans-unit id="top" resname="top">
+        <source>Top</source>
+        <target>crwdns77986:0crwdne77986:0</target>
+      </trans-unit>
+      <trans-unit id="none" resname="none">
+        <source>None - new link!</source>
+        <target>crwdns77988:0crwdne77988:0</target>
+      </trans-unit>
+      <trans-unit id="pageTree" resname="pageTree">
+        <source>Page tree</source>
+        <target>crwdns77990:0crwdne77990:0</target>
+      </trans-unit>
+      <trans-unit id="contentElements" resname="contentElements">
+        <source>Content elements</source>
+        <target>crwdns77992:0crwdne77992:0</target>
+      </trans-unit>
+      <trans-unit id="selectRecords" resname="selectRecords">
+        <source>Select Records</source>
+        <target>crwdns77994:0crwdne77994:0</target>
+      </trans-unit>
+      <trans-unit id="addToList" resname="addToList">
+        <source>Add to list...</source>
+        <target>crwdns77996:0crwdne77996:0</target>
+      </trans-unit>
+      <trans-unit id="info" resname="info">
+        <source>Info</source>
+        <target>crwdns77998:0crwdne77998:0</target>
+      </trans-unit>
+      <trans-unit id="emailAddress" resname="emailAddress">
+        <source>Email address</source>
+        <target>crwdns78000:0crwdne78000:0</target>
+      </trans-unit>
+      <trans-unit id="setLink" resname="setLink">
+        <source>Set Link</source>
+        <target>crwdns78002:0crwdne78002:0</target>
+      </trans-unit>
+      <trans-unit id="urlPlaceholder" resname="urlPlaceholder" translate="no">
+        <source>https://...</source>
+        <target>crwdns78004:0crwdne78004:0</target>
+      </trans-unit>
+      <trans-unit id="clickToRedrawFullSize" resname="clickToRedrawFullSize">
+        <source>Image is larger than shown here! Click to redraw page with full sized images.</source>
+        <target>crwdns78006:0crwdne78006:0</target>
+      </trans-unit>
+      <trans-unit id="findDragDrop" resname="findDragDrop">
+        <source>Find and click on your image then drag it into the editor in the main window!</source>
+        <target>crwdns78008:0crwdne78008:0</target>
+      </trans-unit>
+      <trans-unit id="noWebFolder" resname="noWebFolder">
+        <source>You cannot drag images from this folder (yellow) because it is internal on the server.</source>
+        <target>crwdns78010:0crwdne78010:0</target>
+      </trans-unit>
+      <trans-unit id="currentLink" resname="currentLink">
+        <source>Current Link</source>
+        <target>crwdns78012:0crwdne78012:0</target>
+      </trans-unit>
+      <trans-unit id="invalidChar" resname="invalidChar">
+        <source>ERROR: Invalid character found in file path (%s). Cannot add the file!</source>
+        <target>crwdns78014:0%scrwdne78014:0</target>
+      </trans-unit>
+      <trans-unit id="toggleSelection" resname="toggleSelection">
+        <source>Toggle selection</source>
+        <target>crwdns78016:0crwdne78016:0</target>
+      </trans-unit>
+      <trans-unit id="importSelection" resname="importSelection">
+        <source>Import selection</source>
+        <target>crwdns78018:0crwdne78018:0</target>
+      </trans-unit>
+      <trans-unit id="recordSelector" resname="recordSelector">
+        <source>Record selector</source>
+        <target>crwdns78020:0crwdne78020:0</target>
+      </trans-unit>
+      <trans-unit id="fileSelector" resname="fileSelector">
+        <source>File selector</source>
+        <target>crwdns78022:0crwdne78022:0</target>
+      </trans-unit>
+      <trans-unit id="folderSelector" resname="folderSelector">
+        <source>Folder selector</source>
+        <target>crwdns78024:0crwdne78024:0</target>
+      </trans-unit>
+      <trans-unit id="page_id" resname="page_id">
+        <source>Page ID</source>
+        <target>crwdns78026:0crwdne78026:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
