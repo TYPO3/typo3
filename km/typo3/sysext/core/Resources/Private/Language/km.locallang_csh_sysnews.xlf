@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814859" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysnews.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>This option will hide the news from showing up at the login screen.</source>
+        <target state="final">ជម្រើស​នេះ​នឹង​លាក់​ព័ត៌មាន​ដែល​បង្ហាញ​​លើ​អេក្រង់​កត់ត្រា​ចូល​ប្រើ ។</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the title of the news.</source>
+        <target state="final">បំពេញ​ចំណងជើង​ព័ត៌មាន</target>
+      </trans-unit>
+      <trans-unit id="content.description" resname="content.description" approved="yes">
+        <source>The news content to let editors know what's coming up. HTML is disabled, however, you can use line breaks.</source>
+        <target state="final">មាតិកា​​ព័ត៌មាន​អាច​ឲ្យ​អ្នក​កែ​ដឹង​អំពី​អ្វី​ដែល​កើត​មាន​ឡើង ។ HTML ត្រូវ​បាន​បិទ​ដំណើរការ, ប៉ុន្តែ​អ្នក​នៅ​អាច​ប្រើ​ចុះ​បន្ទាត់​បាន ។</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>System news are shown at the TYPO3 login screen, allowing admins to inform editors about upcoming system maintenance and similar events.</source>
+        <target state="final">ប្រព័ន្ធ​ព័ត៌មាន​ត្រូវ​បាន​បង្ហាញ​នៅ​ពេល​កត់ត្រា​ចូល​ប្រើ TYPO3 អនុញ្ញាត​ឲ្យ​អ្នក​គ្រប់គ្រង​ផ្ដល់​ដំណឹង​ដល់​អ្នក​កែ​អំពី​ការជួសជុល​ក្នុង​ពេល​ខាង​មុខ និង ដូច​ទៅ​នឹង​ព្រឹត្តិការណ៍ ។</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
