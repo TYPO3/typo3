@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="lo">
+  <file id="f1">
+    <unit id="enabled">
+      <segment state="final">
+        <source>Login enabled</source>
+        <target>ເປີດໃຊ້ງານການເຂົ້າລະບົບ</target>
+      </segment>
+    </unit>
+    <unit id="endtime">
+      <segment state="final">
+        <source>Account active until</source>
+        <target>ບັນຊີໃຊ້ງານໄດ້ຮອດ</target>
+      </segment>
+    </unit>
+    <unit id="group.enabled">
+      <segment state="final">
+        <source>Group enabled</source>
+        <target>ເປີດໃຊ້ງານກຸ່ມ</target>
+      </segment>
+    </unit>
+    <unit id="starttime">
+      <segment state="final">
+        <source>Account active from</source>
+        <target>ບັນຊີໃຊ້ງານໄດ້ເລີ່ມຈາກ</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
