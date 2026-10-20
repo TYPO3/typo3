@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814852" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_be_groups.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="gl">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>This is the Backend administration user groups available for the Backend users. These determine the access credentials for the Backend users.</source>
+        <target state="final">Esta é a administración de usuarios de backend dispoñible para usuarios de backend. Determina as credenciais de accesi para usuarios de backend.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>Groups contain the main permission settings you can set for a backend user. Many users can be members of the same group and thus share permissions.
+When a user is a member of many groups (including sub-groups) then the permission settings are added together so that the more groups a user is a member of, the more access is granted to him.</source>
+			<target state="final">Os grupos conteñen a configuración de permisos principais que de poden establecer para usuarios de backend. Varios usuarios poden ser membros do mesmo grupo e en consecuencia compartir permisos. Cando un usuario é membro de varios grupos (incluidos os subgrupos) os permisos son engadidos xuntos polo que cantos máis grupos teña un usuario máis permisos terá.</target></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>Backend Usergroups are found in the root of the page tree where only "admin" users can edit them. The usergroups with red icons in this image are the ones with Access Lists enabled. The blue are just plain usergroups.
+This usergroup has Access Lists enabled. In the Access Lists you specify which modules, tables, database fields etc. the group members can access in TYPO3.</source>
+			<target state="final">Grupos de usuarios de backend atópanse na raíz da árbore de páxinas onde só usuarios administradores poden editalos. Os grupos de usuarios con iconos vermellos nesta imaxe son os que teñen listas de acceso. Os azuis son grupos planos. Este grupo de usuarios ten listas de acceso dispoñibles. Nas lista de acceso podes especificar os módulos, táboas, campos, etc os membros poden acceder a TYPO3.</target></trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Name of the Backend usergroup. The name should be descriptive and can always be changed later.</source>
+        <target state="final">Nome do grupo de usuarios de backend. O nome debería ser descriptivo e debería poder ser cambiado posteriormente.</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>Backend Usergroups are identified by their "uid" field value (integer) and therefore the title can always be changed. The "uid" can never be changed for a user group.</source>
+        <target state="final">Os grupos de usuarios de backend son identificados polo seu campo "uid" (enteiro) e en tamén polo título que pode ser cambiado sempre. O "uid" nunca poderá ser cambiado para un grupo de usuarios.</target>
+      </trans-unit>
+      <trans-unit id="title.image_descr" resname="title.image_descr" approved="yes">
+        <source>The usergroup title is shown in the record lists.</source>
+        <target state="final">O título do grupo de usuarios é amosado las listas de rexistros.</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.description" resname="db_mountpoints.description" approved="yes">
+        <source>Define page tree root points for the group members.</source>
+        <target state="final">Define puntos da raíz da árbore para os membros do grupo.</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.details" resname="db_mountpoints.details" xml:space="preserve" approved="yes">
+				<source>The page tree in TYPO3 must have some points-of-entry defined. Here you should insert one or more references to a page which will represent a new root page for the page tree. This is called a "Database mount" or "DB mount".
+DB mounts &lt;i&gt;may&lt;/i&gt; be inherited by the users which are members of this group. This depends on whether the user is configured to include the mounts set in the member groups.
+However it's recommended to use backend user groups like this to configure mounts. Especially if they need to be shared among many users.</source>
+			<target state="final">A árbore de páxinas en TYPO3 debe ter certos puntos de entrada definidos. Aquí podes incluir un ou varias referencias a unha páxina que representará un novo punto raíz para a árbore de páxinas. Esto é chamado "punto de montaxe de base de datos" ou "punto de montaxe de BD". Os puntos de montaxe de BD &lt;i&gt;may&lt;/i&gt; ser herdados polos usuarios que son membros deste grupo. Esto depende de se o usuario foi configurado para incluir os puntos de montaxes no seus grupos membros. Sen embargo, é recomendado utilizar os usuarios de backend para configurar os puntos de montaxe, sobre todo se necesitan compartir información entre varios usuarios.</target></trans-unit>
+      <trans-unit id="db_mountpoints.image_descr" resname="db_mountpoints.image_descr" xml:space="preserve" approved="yes">
+				<source>Here a page is added as a "DB mount"...
+... and in the page tree of member users this will become the starting point for the page tree.</source>
+			<target state="final">Aquí, unha páxina é engadida como "punto de montaxe de BD"... ... e na árbore de páxinas de usuarios membros comezará dito punto para a árbore.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
