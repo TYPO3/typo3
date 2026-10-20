@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="overview.site" approved="yes">
+        <source>Site</source>
+        <target state="final">Sitio</target>
+      </trans-unit>
+      <trans-unit id="overview.siteIdentifier" approved="yes">
+        <source>Site identifier</source>
+        <target state="final">Identificador del sitio</target>
+      </trans-unit>
+      <trans-unit id="overview.addSiteConfiguration" approved="yes">
+        <source>Add new site configuration for this site</source>
+        <target state="final">Añadir una nueva configuración de sitio para este sitio</target>
+      </trans-unit>
+      <trans-unit id="overview.editSiteConfiguration" approved="yes">
+        <source>Edit site configuration</source>
+        <target state="final">Editar configuración del sitio</target>
+      </trans-unit>
+      <trans-unit id="overview.editSiteSettings" approved="yes">
+        <source>Edit site settings</source>
+        <target state="final">Editar configuración del sitio</target>
+      </trans-unit>
+      <trans-unit id="overview.editSiteSettingsUnavailable" approved="yes">
+        <source>This site provides no configurable settings</source>
+        <target state="final">Este sitio no proporciona características configurables</target>
+      </trans-unit>
+      <trans-unit id="overview.deleteSiteConfiguration" approved="yes">
+        <source>Delete site configuration</source>
+        <target state="final">Borrar configuración del sitio</target>
+      </trans-unit>
+      <trans-unit id="overview.baseUrl" approved="yes">
+        <source>Base URL</source>
+        <target state="final">URL base</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.title" approved="yes">
+        <source>Unassigned site configurations</source>
+        <target state="final">Configuraciones del sitio no asignadas</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedEntryPoints" approved="yes">
+        <source>Duplicated Entrypoints</source>
+        <target state="final">Entradas duplicadas</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedEntryPoints.listing" approved="yes">
+        <source>The following entry points are used more than once:</source>
+        <target state="final">Las siguientes entradas se utilizan más de una vez:</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedRootPage" approved="yes">
+        <source>Duplicated root pages</source>
+        <target state="final">Páginas raíz duplicadas</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedRootPage.message" approved="yes">
+        <source>The page with ID "%1s" is used in the following site configurations:</source>
+        <target state="final">La página con ID "%1s" se utiliza en las siguientes configuraciones del sitio:</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.languages.language_url" approved="yes">
+        <source>Full URL prefix</source>
+        <target state="final">Prefijo completo de URL</target>
+      </trans-unit>
+      <trans-unit id="edit.editSiteSettings" approved="yes">
+        <source>Edit site settings</source>
+        <target state="final">Editar configuración del sitio</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.title" approved="yes">
+        <source>Renamed identifier</source>
+        <target state="final">Identificador renombrado</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.message" approved="yes">
+        <source>Given site identifier "%1s" already exists. It has been renamed to "%2s". Maybe you want to edit the site again and give it a better name.</source>
+        <target state="final">Ya existe un identificador del sitio "%1s". Se ha renombrado a "%2s". Tal vez quieras editar el sitio de nuevo y darle un nombre mejor.</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.title" approved="yes">
+        <source>Identifier not changed</source>
+        <target state="final">Identificador no cambiado</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.message" approved="yes">
+        <source>Given site identifier "%1s" already exists and points to a different site. The existing identifier "%2s" for this site is kept.</source>
+        <target state="final">El identificador del sitio "%1s" ya existe y apunta a un sitio diferente. El identificador existente "%2s" para este sitio está cubierto.</target>
+      </trans-unit>
+      <trans-unit id="validation.required.title" approved="yes">
+        <source>Site configuration not saved</source>
+        <target state="final">Configuración del sitio no guardada</target>
+      </trans-unit>
+      <trans-unit id="validation.required.message" approved="yes">
+        <source>Field "%1s" is a required field, but no value has been provided.</source>
+        <target state="final">El campo "%1s" es un campo obligatorio, pero no se ha proporcionado ningún valor.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.title" approved="yes">
+        <source>Duplicate error code removed</source>
+        <target state="final">Código de error duplicado eliminado</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.message" approved="yes">
+        <source>Two error handler configurations for error code "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">Se encontraron dos configuraciones del manejador de errores para el código de error "%1s". Esto sería una configuración inválida, la de peligro ha sido eliminada.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.title" approved="yes">
+        <source>Duplicate language configuration removed</source>
+        <target state="final">Duplicar configuración del idioma eliminado</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.message" approved="yes">
+        <source>Two language configurations for language "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">Se encontraron dos configuraciones de idioma para el idioma "%1s". Esto sería una configuración no válida, la colgante ha sido eliminada.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
