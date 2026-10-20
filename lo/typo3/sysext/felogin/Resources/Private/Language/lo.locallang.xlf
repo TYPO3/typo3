@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814821" source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="ll_welcome_header" resname="ll_welcome_header" approved="yes">
+        <source>User login</source>
+        <target state="final">ເຂົ້າສູ່ລະບົບຜູ້ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="ll_welcome_message" resname="ll_welcome_message" approved="yes">
+        <source>Enter your username and password here in order to log in on the website</source>
+        <target state="final">ປ້ອນຊື່ຜູ້ໃຊ້ ແລະ ລະຫັດຜ່ານຂອງທ່ານທີ່ນີ້ເພື່ອເຂົ້າສູ່ລະບົບເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="ll_logout_header" resname="ll_logout_header" approved="yes">
+        <source>You have logged out.</source>
+        <target state="final">ທ່ານອອກຈາກລະບົບແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="ll_logout_message" resname="ll_logout_message" approved="yes">
+        <source>You just logged out from your user session on this website. You can login again or as another user by the form below.</source>
+        <target state="final">ທ່ານຫາກໍ່ອອກຈາກລະບົບຜູ້ໃຊ້ໃນເວັບໄຊນີ້. ທ່ານສາມາດເຂົ້າສູ່ລະບົບອີກຄັ້ງ ຫຼື ເຂົ້າໃນນາມຜູ້ໃຊ້ອື່ນໂດຍໃຊ້ແບບຟອມລຸ່ມນີ້.</target>
+      </trans-unit>
+      <trans-unit id="ll_error_header" resname="ll_error_header" approved="yes">
+        <source>Login failure</source>
+        <target state="final">ການເຂົ້າສູ່ລະບົບຜິດພາດ</target>
+      </trans-unit>
+      <trans-unit id="ll_error_message" resname="ll_error_message" xml:space="preserve" approved="yes">
+				<source>An error occurred during login. Most likely you didn't enter the username or password correctly.
+Be certain that you enter them precisely as they are, including upper/lower case.
+Another possibility is that cookies might be disabled in your web browser.</source>
+			<target state="final">ເກີດຂໍ້ຜິດພາດໃນລະຫວ່າງການເຂົ້າສູ່ລະບົບ. ສ່ວນຫຼາຍອາດເປັນຍ້ອນທ່ານປ້ອນຊື່ຜູ້ໃຊ້ ຫຼື ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ.
+ກະລຸນາກວດສອບໃຫ້ແນ່ໃຈວ່າທ່ານໄດ້ປ້ອນຂໍ້ມູນຖືກຕ້ອງທຸກຕົວອັກສອນ, ລວມທັງຕົວພິມໃຫຍ່ ແລະ ຕົວພິມນ້ອຍ.
+ອີກສາເຫດໜຶ່ງອາດເປັນຍ້ອນຄຸກກີ້ (cookies) ຖືກປິດໃຊ້ງານໃນບຣາວເຊີຂອງທ່ານ.</target></trans-unit>
+      <trans-unit id="ll_success_header" resname="ll_success_header" approved="yes">
+        <source>Login successful</source>
+        <target state="final">ເຂົ້າສູ່ລະບົບສຳເລັດແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="ll_success_message" resname="ll_success_message" approved="yes">
+        <source>You are now logged in as '###USER###'</source>
+        <target state="final">ທ່ານເຂົ້າສູ່ລະບົບແລ້ວໃນຊື່ '###USER###'</target>
+      </trans-unit>
+      <trans-unit id="ll_status_header" resname="ll_status_header" approved="yes">
+        <source>Current status</source>
+        <target state="final">ສະຖານະປະຈຸບັນ</target>
+      </trans-unit>
+      <trans-unit id="ll_status_message" resname="ll_status_message" approved="yes">
+        <source>This is your current status</source>
+        <target state="final">ນີ້ຄືສະຖານະປະຈຸບັນຂອງທ່ານ</target>
+      </trans-unit>
+      <trans-unit id="cookie_warning" resname="cookie_warning" approved="yes">
+        <source>Warning: There is a possibility that cookies are not enabled in your web browser! If your login disappears on your next click that is the case and you should enable cookies (or accept cookies from this website) immediately!</source>
+        <target state="final">ຄຳເຕືອນ: ມີຄວາມເປັນໄປໄດ້ວ່າຄຸກກີ້ (cookies) ບໍ່ໄດ້ຖືກເປີດໃຊ້ງານໃນບຣາວເຊີຂອງທ່ານ! ຖ້າການເຂົ້າສູ່ລະບົບຂອງທ່ານຫາຍໄປໃນຄລິກຕໍ່ໄປ, ນັ້ນແມ່ນສາເຫດ ແລະ ທ່ານຄວນເປີດໃຊ້ງານຄຸກກີ້ (ຫຼື ຍອມຮັບຄຸກກີ້ຈາກເວັບໄຊນີ້) ທັນທີ!</target>
+      </trans-unit>
+      <trans-unit id="username" resname="username" approved="yes">
+        <source>Username</source>
+        <target state="final">ຊື່ຜູ້ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="password" resname="password" approved="yes">
+        <source>Password</source>
+        <target state="final">ລະຫັດຜ່ານ</target>
+      </trans-unit>
+      <trans-unit id="login" resname="login" approved="yes">
+        <source>Login</source>
+        <target state="final">ເຂົ້າສູ່ລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="permalogin" resname="permalogin" approved="yes">
+        <source>Stay logged in</source>
+        <target state="final">ໃຫ້ຂ້ອຍຢູ່ໃນລະບົບຕະຫຼອດ</target>
+      </trans-unit>
+      <trans-unit id="logout" resname="logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">ອອກຈາກລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="send_password" resname="send_password" approved="yes">
+        <source>Send password</source>
+        <target state="final">ສົ່ງລະຫັດຜ່ານ</target>
+      </trans-unit>
+      <trans-unit id="reset_password" resname="reset_password" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">ຕັ້ງລະຫັດຜ່ານໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_header" resname="ll_change_password_header" approved="yes">
+        <source>Change your password</source>
+        <target state="final">ປ່ຽນລະຫັດຜ່ານຂອງທ່ານ</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_message" resname="ll_change_password_message" approved="yes">
+        <source>Please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">ກະລຸນາປ້ອນລະຫັດຜ່ານໃໝ່ຂອງທ່ານສອງຄັ້ງ. ລະຫັດຜ່ານຕ້ອງມີຄວາມຍາວຢ່າງໜ້ອຍ %s ຕົວອັກສອນ.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_nolinkprefix_message" resname="ll_change_password_nolinkprefix_message" approved="yes">
+        <source>Error: there is no prefix for the link. Please set one of the following in your typoscript template: plugin.tx_felogin_pi1.feloginBaseURL = http://yourdomain/, config.baseURL = http://yourdomain/, config.absRefPrefix = /</source>
+        <target state="final">ຂໍ້ຜິດພາດ: ບໍ່ມີຄຳນຳໜ້າ (prefix) ສຳລັບລິ້ງ. ກະລຸນາຕັ້ງຄ່າຢ່າງໃດຢ່າງໜຶ່ງຕໍ່ໄປນີ້ໃນ typoscript template ຂອງທ່ານ: plugin.tx_felogin_pi1.feloginBaseURL = http://yourdomain/, config.baseURL = http://yourdomain/, config.absRefPrefix = /</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_notvalid_message" resname="ll_change_password_notvalid_message" approved="yes">
+        <source>The link you clicked is not valid. Please repeat the forgot password procedure.</source>
+        <target state="final">ລິ້ງທີ່ທ່ານຄລິກບໍ່ຖືກຕ້ອງ. ກະລຸນາເຮັດຂັ້ນຕອນການຂໍລະຫັດຜ່ານໃໝ່ຄືນອີກຄັ້ງ.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_notequal_message" resname="ll_change_password_notequal_message" approved="yes">
+        <source>The passwords are not equal, please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">ລະຫັດຜ່ານບໍ່ກົງກັນ, ກະລຸນາປ້ອນລະຫັດຜ່ານໃໝ່ຂອງທ່ານສອງຄັ້ງ. ລະຫັດຜ່ານຕ້ອງມີຄວາມຍາວຢ່າງໜ້ອຍ %s ຕົວອັກສອນ.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_tooshort_message" resname="ll_change_password_tooshort_message" approved="yes">
+        <source>The password length is too short. Please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">ຄວາມຍາວຂອງລະຫັດຜ່ານສັ້ນເກີນໄປ. ກະລຸນາປ້ອນລະຫັດຜ່ານໃໝ່ຂອງທ່ານສອງຄັ້ງ. ລະຫັດຜ່ານຕ້ອງມີຄວາມຍາວຢ່າງໜ້ອຍ %s ຕົວອັກສອນ.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_done_message" resname="ll_change_password_done_message" approved="yes">
+        <source>Your password has been saved. You can now login with your new password.</source>
+        <target state="final">ລະຫັດຜ່ານຂອງທ່ານຖືກບັນທຶກແລ້ວ. ທ່ານສາມາດເຂົ້າສູ່ລະບົບດ້ວຍລະຫັດຜ່ານໃໝ່ຂອງທ່ານໄດ້ແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="change_password" resname="change_password" approved="yes">
+        <source>Change your password</source>
+        <target state="final">ປ່ຽນລະຫັດຜ່ານຂອງທ່ານ</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label1" resname="newpassword_label1" approved="yes">
+        <source>Enter new password</source>
+        <target state="final">ປ້ອນລະຫັດຜ່ານໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label2" resname="newpassword_label2" approved="yes">
+        <source>Repeat new password</source>
+        <target state="final">ປ້ອນລະຫັດຜ່ານໃໝ່ອີກຄັ້ງ</target>
+      </trans-unit>
+      <trans-unit id="your_email" resname="your_email" approved="yes">
+        <source>Your email</source>
+        <target state="final">ອີເມວຂອງທ່ານ</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_header" resname="ll_forgot_header" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">ລືມລະຫັດຜ່ານ?</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_email_password" resname="ll_forgot_email_password" xml:space="preserve" approved="yes">
+				<source>Your password
+Hi %s
+
+Your username is "%s"
+Your password is "%s"</source>
+			<target state="final">ລະຫັດຜ່ານຂອງທ່ານ
+ສະບາຍດີ %s
+
+ຊື່ຜູ້ໃຊ້ຂອງທ່ານແມ່ນ "%s"
+ລະຫັດຜ່ານຂອງທ່ານແມ່ນ "%s"</target></trans-unit>
+      <trans-unit id="ll_forgot_email_nopassword" resname="ll_forgot_email_nopassword" xml:space="preserve" approved="yes">
+				<source>Your password
+Hi %s
+
+We couldn't find a username for this email address and so cannot send the password to you. Probably you misspelled the email address (upper/lower case makes a difference) or maybe you even didn't register yet?</source>
+			<target state="final">ລະຫັດຜ່ານຂອງທ່ານ
+ສະບາຍດີ %s
+
+ພວກເຮົາບໍ່ພົບຊື່ຜູ້ໃຊ້ສຳລັບທີ່ຢູີ່ອີເມວນີ້ ດັ່ງນັ້ນຈຶ່ງບໍ່ສາມາດສົ່ງລະຫັດຜ່ານໃຫ້ທ່ານໄດ້. ບາງທີທ່ານອາດຈະພິມທີ່ຢູື່ອີເມວຜິດ (ຕົວພິມໃຫຍ່/ນ້ອຍ ມີຄວາມແຕກຕ່າງກັນ) ຫຼື ບາງທີທ່ານອາດຈະຍັງບໍ່ທັນໄດ້ລົງທະບຽນ?</target></trans-unit>
+      <trans-unit id="ll_forgot_validate_reset_password" resname="ll_forgot_validate_reset_password" xml:space="preserve" approved="yes">
+				<source>Your new password
+Dear %s,
+
+This email was sent in response to your request to reset your password. Please click on the link below.
+%s
+
+For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.</source>
+			<target state="final">ລະຫັດຜ່ານໃໝ່ຂອງທ່ານ
+ຮຽນ %s,
+
+ອີເມວນີ້ຖືກສົ່ງມາເພື່ອຕອບສະໜອງຕໍ່ການຮ້ອງຂໍຕັ້ງລະຫັດຜ່ານໃໝ່ຂອງທ່ານ. ກະລຸນາຄລິກລິ້ງຂ້າງລຸ່ມນີ້.
+%s
+
+ເພື່ອຄວາມປອດໄພ, ລິ້ງນີ້ຈະໃຊ້ງານໄດ້ຈົນຮອດ %s ເທົ່ານັ້ນ. ຖ້າທ່ານບໍ່ເຂົ້າໄປຕາມລິ້ງກ່ອນເວລານັ້ນ, ທ່ານຈະຕ້ອງໄດ້ເຮັດຂັ້ນຕອນການຕັ້ງລະຫັດຜ່ານໃໝ່ຄືນອີກຄັ້ງ.</target></trans-unit>
+      <trans-unit id="ll_forgot_message" resname="ll_forgot_message" approved="yes">
+        <source>Please enter the email address by which you registered your user account. Then press "Send password" and your password will immediately be emailed to you. Make sure to spell your email address correctly.</source>
+        <target state="final">ກະລຸນາປ້ອນທີ່ຢູື່ອີເມວທີ່ທ່ານໃຊ້ລົງທະບຽນບັນຊີຜູ້ໃຊ້ຂອງທ່ານ. ຈາກນັ້ນກົດ "ສົ່ງລະຫັດຜ່ານ" ແລະ ລະຫັດຜ່ານຂອງທ່ານຈະຖືກສົ່ງໄປຫາອີເມວຂອງທ່ານທັນທີ. ກະລຸນາກວດສອບໃຫ້ແນ່ໃຈວ່າທ່ານພິມທີ່ຢູື່ອີເມວຖືກຕ້ອງ.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_message_emailSent" resname="ll_forgot_message_emailSent" approved="yes">
+        <source>Your password has now been sent to the email address %s</source>
+        <target state="final">ລະຫັດຜ່ານຂອງທ່ານໄດ້ຖືກສົ່ງໄປທີ່ທີ່ຢູື່ອີເມວ %s ແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_reset_message" resname="ll_forgot_reset_message" approved="yes">
+        <source>Please enter your username or email address. Instructions for resetting the password will be immediately emailed to you.</source>
+        <target state="final">ກະລຸນາປ້ອນຊື່ຜູ້ໃຊ້ ຫຼື ທີ່ຢູື່ອີເມວຂອງທ່ານ. ຄຳແນະນຳສຳລັບການຕັ້ງລະຫັດຜ່ານໃໝ່ຈະຖືກສົ່ງຫາທ່ານທາງອີເມວທັນທີ.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_reset_message_emailSent" resname="ll_forgot_reset_message_emailSent" approved="yes">
+        <source>An email has been sent to the address stored in your account and contains a link to reset your password. If you do not receive an email, your account or email address was not found.</source>
+        <target state="final">ອີເມວໄດ້ຖືກສົ່ງໄປຍັງທີ່ຢູ່ທີ່ບັນທຶກໄວ້ໃນບັນຊີຂອງທ່ານແລ້ວ ເຊິ່ງມີລິ້ງສຳລັບຕັ້ງລະຫັດຜ່ານໃໝ່. ຖ້າທ່ານບໍ່ໄດ້ຮັບອີເມວ, ອາດເປັນຍ້ອນບໍ່ພົບບັນຊີ ຫຼື ທີ່ຢູື່ອີເມວຂອງທ່ານ.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_reset_message_error" resname="ll_forgot_reset_message_error" approved="yes">
+        <source>Your account or email address does not exist.</source>
+        <target state="final">ບໍ່ມີບັນຊີ ຫຼື ທີ່ຢູື່ອີເມວຂອງທ່ານຢູ່ໃນລະບົບ.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_header_backToLogin" resname="ll_forgot_header_backToLogin" approved="yes">
+        <source>Return to login form</source>
+        <target state="final">ກັບຄືນໄປຫາແບບຟອມເຂົ້າສູ່ລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="ll_enter_your_data" resname="ll_enter_your_data" approved="yes">
+        <source>Username or email address</source>
+        <target state="final">ຊື່ຜູ້ໃຊ້ ຫຼື ທີ່ຢູື່ອີເມວ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
