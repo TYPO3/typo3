@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:viewpage/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="viewpage" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="width" approved="yes">
+        <source>Width</source>
+        <target state="final">Šířka</target>
+      </trans-unit>
+      <trans-unit id="tablet" approved="yes">
+        <source>Tablet</source>
+        <target state="final">Tablet</target>
+      </trans-unit>
+      <trans-unit id="tabletLandscape" approved="yes">
+        <source>Tablet landscape</source>
+        <target state="final">Tablet na šířku</target>
+      </trans-unit>
+      <trans-unit id="tabletPortrait" approved="yes">
+        <source>Tablet portrait</source>
+        <target state="final">Tablet na výšku</target>
+      </trans-unit>
+      <trans-unit id="mobile" approved="yes">
+        <source>Mobile</source>
+        <target state="final">Mobil</target>
+      </trans-unit>
+      <trans-unit id="desktop" approved="yes">
+        <source>Desktop</source>
+        <target state="final">Plocha</target>
+      </trans-unit>
+      <trans-unit id="customWidth" approved="yes">
+        <source>Custom Size</source>
+        <target state="final">Vlastní velikost</target>
+      </trans-unit>
+      <trans-unit id="autoSize" approved="yes">
+        <source>Auto Size</source>
+        <target state="final">Automaticky</target>
+      </trans-unit>
+      <trans-unit id="refreshPage" approved="yes">
+        <source>Refresh page</source>
+        <target state="final">Obnovit stránku</target>
+      </trans-unit>
+      <trans-unit id="language" approved="yes">
+        <source>Language</source>
+        <target state="final">Jazyk</target>
+      </trans-unit>
+      <trans-unit id="automatic" approved="yes">
+        <source>Automatic</source>
+        <target state="final">Automaticky</target>
+      </trans-unit>
+      <trans-unit id="maximized" approved="yes">
+        <source>Maximized</source>
+        <target state="final">Maximalizováno</target>
+      </trans-unit>
+      <trans-unit id="custom" approved="yes">
+        <source>Custom</source>
+        <target state="final">Vlastní</target>
+      </trans-unit>
+      <trans-unit id="unidentified" approved="yes">
+        <source>Unidentified</source>
+        <target state="final">Neidentifikováno</target>
+      </trans-unit>
+      <trans-unit id="noValidPageSelected" approved="yes">
+        <source>Please select a page with a valid page type in the page tree to get a preview of it in different screen resolutions.</source>
+        <target state="final">Vyberte prosím stránku s platným typem stránky ze stromu stránek pro zobrazení náhledu v různých rozlišeních obrazovky.</target>
+      </trans-unit>
+      <trans-unit id="noSiteConfiguration" approved="yes">
+        <source>The requested page is missing a valid site configuration.</source>
+        <target state="final">Požadované stránce chybí platná konfigurace webu.</target>
+      </trans-unit>
+      <trans-unit id="iframe.title" approved="yes">
+        <source>View selected page in different screen resolutions</source>
+        <target state="final">Zobrazit vybranou stránku v různých rozlišení obrazovky</target>
+      </trans-unit>
+      <trans-unit id="moduleMenu.dropdown.label" approved="yes">
+        <source>Page language</source>
+        <target state="final">Jazyk stránky</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
