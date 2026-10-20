@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="overwriteExistingFiles" approved="yes">
+        <source>Overwrite existing files</source>
+        <target state="final">Perrašyti esamus failus</target>
+      </trans-unit>
+      <trans-unit id="uploadMultipleFilesInfo" approved="yes">
+        <source>Upload multiple files by holding the Shift or CTRL-file pressed while selecting your files (works on modern browsers only).</source>
+        <target state="final">Galite įkelti kelis failus laikydami nuspaustą Shift arba CTRL klavišą, kol pasirenkate failus (veikia tik šiuolaikinėse naršyklėse).</target>
+      </trans-unit>
+      <trans-unit id="fileMetaDataLocation" approved="yes">
+        <source>Location</source>
+        <target state="final">Vieta</target>
+      </trans-unit>
+      <trans-unit id="fileMetaErrorInvalidRecord" approved="yes">
+        <source>File meta data not found</source>
+        <target state="final">Failo metaduomenys nerasti</target>
+      </trans-unit>
+      <trans-unit id="selectPosition" approved="yes">
+        <source>Select a position for the new page</source>
+        <target state="final">Pasirinkite naujo puslapio vietą</target>
+      </trans-unit>
+      <trans-unit id="pageSelectPosition" approved="yes">
+        <source>Page (select position)</source>
+        <target state="final">Puslapis (pasirinkti vietą)</target>
+      </trans-unit>
+      <trans-unit id="pageSelectPositionError" approved="yes">
+        <source>Failed to fetch page details. This is likely due to missing permissions.</source>
+        <target state="final">Nepavyko gauti puslapio informacijos. Greičiausiai trūksta leidimų.</target>
+      </trans-unit>
+      <trans-unit id="goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Grįžti</target>
+      </trans-unit>
+      <trans-unit id="createNewPage" approved="yes">
+        <source>Create a new page</source>
+        <target state="final">Sukurti naują puslapį</target>
+      </trans-unit>
+      <trans-unit id="insertNewPageHere" x-unused-since="15.0" approved="yes">
+        <source>Insert the new page here</source>
+        <target state="final">Įterpti naują puslapį čia</target>
+      </trans-unit>
+      <trans-unit id="insertNewRecordHere" approved="yes">
+        <source>Insert new record here</source>
+        <target state="final">Įterpti naują įrašą čia</target>
+      </trans-unit>
+      <trans-unit id="moveElementToHere" approved="yes">
+        <source>Move element to this position</source>
+        <target state="final">Perkelti elementą į šią vietą</target>
+      </trans-unit>
+      <trans-unit id="moveElements" approved="yes">
+        <source>Move elements</source>
+        <target state="final">Perkelti elementus</target>
+      </trans-unit>
+      <trans-unit id="copyElements" approved="yes">
+        <source>Copy elements</source>
+        <target state="final">Kopijuoti elementus</target>
+      </trans-unit>
+      <trans-unit id="makeCopy" approved="yes">
+        <source>Make copy instead of moving element</source>
+        <target state="final">Padaryti kopiją vietoje elemento perkėlimo</target>
+      </trans-unit>
+      <trans-unit id="newRecordWizard.filter.placeholder" approved="yes">
+        <source>Search for any record type</source>
+        <target state="final">Ieškoti bet kokio įrašo tipo</target>
+      </trans-unit>
+      <trans-unit id="newRecordWizard.filter.noResults" approved="yes">
+        <source>Unfortunately, no record type matches your query, please try a different one.</source>
+        <target state="final">Deja, nė vienas įrašo tipas neatitinka jūsų užklausos, pabandykite kitą.</target>
+      </trans-unit>
+      <trans-unit id="newRecordWizard.recentlyUsed" approved="yes">
+        <source>Recently used</source>
+        <target state="final">Neseniai naudota</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.placeholder" approved="yes">
+        <source>Search for any content type</source>
+        <target state="final">Ieškoti bet kokio turinio tipo</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.noResults" approved="yes">
+        <source>Unfortunately, no content type matches your query, please try a different one.</source>
+        <target state="final">Deja, nė vienas turinio tipas neatitinka jūsų užklausos, pabandykite kitą.</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.userNotAllowed" approved="yes">
+        <source>No content elements are available with your current permissions.</source>
+        <target state="final">Pagal jūsų dabartines teises nėra prieinamų turinio elementų.</target>
+      </trans-unit>
+      <trans-unit id="system_records" approved="yes">
+        <source>System Records</source>
+        <target state="final">Sisteminiai įrašai</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.content" approved="yes">
+        <source>Content</source>
+        <target state="final">Turinys</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.backendaccess" approved="yes">
+        <source>Backend Access</source>
+        <target state="final">Prieiga prie administravimo dalies</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.frontendaccess" approved="yes">
+        <source>Frontend Access</source>
+        <target state="final">Prieiga prie svetainės dalies</target>
+      </trans-unit>
+      <trans-unit id="1_selectType" approved="yes">
+        <source>First select the type of the new content element</source>
+        <target state="final">Pirmiausia pasirinkite naujo turinio elemento tipą</target>
+      </trans-unit>
+      <trans-unit id="2_selectPosition" approved="yes">
+        <source>Now click on the position of the new content element</source>
+        <target state="final">Dabar spustelėkite naujo turinio elemento vietą</target>
+      </trans-unit>
+      <trans-unit id="CM_history" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">Istorija / Atšaukti</target>
+      </trans-unit>
+      <trans-unit id="CM_hideInMenus" approved="yes">
+        <source>Hide in menu</source>
+        <target state="final">Slėpti meniu</target>
+      </trans-unit>
+      <trans-unit id="CM_showInMenus" approved="yes">
+        <source>Show in menu</source>
+        <target state="final">Rodyti meniu</target>
+      </trans-unit>
+      <trans-unit id="CM_newWizard" approved="yes">
+        <source>'Create New' wizard</source>
+        <target state="final">„Sukurti naują“ vedlys</target>
+      </trans-unit>
+      <trans-unit id="localize" approved="yes">
+        <source>Localize</source>
+        <target state="final">Lokalizuoti</target>
+      </trans-unit>
+      <trans-unit id="localize.isLocalizable" approved="yes">
+        <source>Record can be localized</source>
+        <target state="final">Įrašas gali būti lokalizuotas</target>
+      </trans-unit>
+      <trans-unit id="localizeAllRecords" approved="yes">
+        <source>Localize all records</source>
+        <target state="final">Lokalizuoti visus įrašus</target>
+      </trans-unit>
+      <trans-unit id="synchronizeWithOriginalLanguage" approved="yes">
+        <source>Synchronize with original language</source>
+        <target state="final">Sinchronizuoti su originalia kalba</target>
+      </trans-unit>
+      <trans-unit id="tree_networkError" approved="yes">
+        <source>Navigation loading error</source>
+        <target state="final">Navigacijos įkėlimo klaida</target>
+      </trans-unit>
+      <trans-unit id="synchronizeFolderRelations.afterFolderRenamed" approved="yes">
+        <source>%d %s records referencing the renamed directory were updated.</source>
+        <target state="final">%d %s įrašai, kurie naudojo pervadintą katalogą, buvo atnaujinti.</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_listEmptyText" approved="yes">
+        <source>No results found.</source>
+        <target state="final">Rezultatų nerasta.</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_hasErrors" approved="yes">
+        <source>Something went wrong.</source>
+        <target state="final">Įvyko klaida.</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.versionizedRecord" approved="yes">
+        <source>Versionized record</source>
+        <target state="final">Versijuotas įrašas</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescriptionPages" approved="yes">
+        <source>`#page:Home` will search for all pages with the title "Home"</source>
+        <target state="final">#page:Home ieškos visų puslapių, kurių pavadinimas „Home“</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescriptionContent" approved="yes">
+        <source>`#content:Professional` will search for all content elements containing the term "Professional"</source>
+        <target state="final">#content:Professional ieškos visų turinio elementų, kuriuose yra žodis „Professional“</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_help.shortcutOpen" approved="yes">
+        <source><![CDATA[You can open the live search by pressing the <kbd><kbd>Ctrl</kbd> + <kbd>K</kbd></kbd> or <kbd><kbd>Cmd</kbd> + <kbd>K</kbd></kbd> keystroke]]></source>
+        <target state="final"><![CDATA[Tiesioginę paiešką galite atidaryti paspaudę <kbd><kbd>Ctrl</kbd> + <kbd>K</kbd></kbd> arba <kbd><kbd>Cmd</kbd> + <kbd>K</kbd></kbd> klavišus]]></target>
+      </trans-unit>
+      <trans-unit id="viewport_navigation_show" approved="yes">
+        <source>Show Navigation</source>
+        <target state="final">Rodyti navigaciją</target>
+      </trans-unit>
+      <trans-unit id="viewport_navigation_hide" approved="yes">
+        <source>Hide Navigation</source>
+        <target state="final">Slėpti navigaciją</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
