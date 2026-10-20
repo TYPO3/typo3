@@ -83,6 +83,45 @@ final class SetRegistryTest extends FunctionalTestCase
         self::assertEquals($expected, $setDefinitionsNames);
     }
 
+    public static function setsAreOrderedTheWayTheyAreRequestedDataProvider(): \Generator
+    {
+        yield 'unrelated sets, the one with a dependency first' => [
+            ['typo3tests/set-2', 'typo3tests/set-6'],
+            ['typo3tests/set-4', 'typo3tests/set-2', 'typo3tests/set-6'],
+        ];
+        yield 'unrelated sets, the one with a dependency last' => [
+            ['typo3tests/set-6', 'typo3tests/set-2'],
+            ['typo3tests/set-6', 'typo3tests/set-4', 'typo3tests/set-2'],
+        ];
+        yield 'sets sharing a dependency' => [
+            ['typo3tests/set-3', 'typo3tests/set-2'],
+            ['typo3tests/set-4', 'typo3tests/set-3', 'typo3tests/set-2'],
+        ];
+        yield 'dependency requested after the set depending on it' => [
+            ['typo3tests/set-2', 'typo3tests/set-4'],
+            ['typo3tests/set-4', 'typo3tests/set-2'],
+        ];
+        yield 'unrelated set before a set with nested and optional dependencies' => [
+            ['typo3tests/set-6', 'typo3tests/set-1'],
+            ['typo3tests/set-6', 'typo3tests/set-4', 'typo3tests/set-2', 'typo3tests/set-3', 'typo3tests/set-5', 'typo3tests/set-1'],
+        ];
+    }
+
+    /**
+     * @param list<string> $requestedSets
+     * @param list<string> $expected
+     */
+    #[DataProvider('setsAreOrderedTheWayTheyAreRequestedDataProvider')]
+    #[Test]
+    public function setsAreOrderedTheWayTheyAreRequested(array $requestedSets, array $expected): void
+    {
+        $setRegistry = $this->get(SetRegistry::class);
+        $setDefinitions = $setRegistry->getSets(...$requestedSets);
+        $setDefinitionsNames = array_map(static fn(SetDefinition $d): string => $d->name, $setDefinitions);
+
+        self::assertSame($expected, $setDefinitionsNames);
+    }
+
     #[Test]
     public function unavailableOptionalSetDependenciesAreIgnored(): void
     {

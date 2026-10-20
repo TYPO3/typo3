@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'TYPO3\CMS\Core\Site\Set\SetRegistry->hasDependency' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-111156-SiteSetsFollowTheOrderASiteDeclares.rst',
+        ],
+    ],
     'TYPO3\CMS\Core\Resource\ResourceStorage->getStorageRecord' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,

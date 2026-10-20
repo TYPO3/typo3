@@ -106,6 +106,24 @@ EOC;
     public static function matchesReturnsExpectedRestFilesDataProvider(): array
     {
         return [
+            'removed protected SetRegistry method called from a subclass' => [
+                require dirname(__DIR__, 5) . '/Configuration/ExtensionScanner/Php/MethodCallMatcher.php',
+                '<?php
+                class CustomSetRegistry extends \TYPO3\CMS\Core\Site\Set\SetRegistry
+                {
+                    public function usesBase(): bool
+                    {
+                        return $this->hasDependency(["vendor/addon"], "vendor/base");
+                    }
+                }',
+                [
+                    [
+                        'restFiles' => [
+                            'Breaking-111156-SiteSetsFollowTheOrderASiteDeclares.rst',
+                        ],
+                    ],
+                ],
+            ],
             'two rest candidates with same number of arguments' => [
                 [
                     'Foo->aMethod' => [

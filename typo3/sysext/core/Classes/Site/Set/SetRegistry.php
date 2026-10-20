@@ -49,16 +49,22 @@ class SetRegistry
      * Retrieve list of ordered sets, matched by
      * $setNames, including their dependencies (recursive)
      *
+     * The sets are ordered the way they are requested, each of them preceded by the sets it
+     * depends on. A set reached more than once keeps its first position, so a set always comes
+     * after its dependencies, and two sets without a dependency relation between them keep the
+     * order of $setNames.
+     *
      * @return list<SetDefinition>
      */
     public function getSets(string ...$setNames): array
     {
-        return array_values(array_filter(
-            $this->getOrderedSets(),
-            fn(SetDefinition $set): bool
-                => in_array($set->name, $setNames, true)
-                || $this->hasDependency($setNames, $set->name)
-        ));
+        $availableSets = $this->getOrderedSets();
+        $sets = [];
+        $visiting = [];
+        foreach ($setNames as $setName) {
+            $this->addSetWithDependencies($availableSets, $setName, $sets, $visiting);
+        }
+        return array_values($sets);
     }
 
     public function hasSet(string $setName): bool
@@ -237,31 +243,23 @@ class SetRegistry
         return $this->orderedSets;
     }
 
-    protected function hasDependency(array $setNames, string $dependency): bool
+    /**
+     * @param array<string, SetDefinition> $availableSets
+     * @param array<string, SetDefinition> $sets
+     * @param array<string, true> $visiting
+     */
+    protected function addSetWithDependencies(array $availableSets, string $setName, array &$sets, array &$visiting): void
     {
-        foreach ($setNames as $setName) {
-            $set = $this->getSet($setName);
-            if ($set === null) {
-                continue;
-            }
-
-            if (in_array($dependency, $set->dependencies, true)) {
-                return true;
-            }
-
-            if (in_array($dependency, $set->optionalDependencies, true)) {
-                return true;
-            }
-
-            if ($this->hasDependency($set->dependencies, $dependency)) {
-                return true;
-            }
-
-            if ($this->hasDependency($set->optionalDependencies, $dependency)) {
-                return true;
-            }
+        $set = $availableSets[$setName] ?? null;
+        if ($set === null || isset($sets[$setName]) || isset($visiting[$setName])) {
+            return;
         }
-        return false;
+        $visiting[$setName] = true;
+        foreach ([...$set->dependencies, ...$set->optionalDependencies] as $dependencyName) {
+            $this->addSetWithDependencies($availableSets, $dependencyName, $sets, $visiting);
+        }
+        unset($visiting[$setName]);
+        $sets[$setName] = $set;
     }
 
     #[AsEventListener('typo3-core/set-registry')]
