@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="submodule.title" approved="yes">
+        <source>Constant Editor</source>
+        <target state="final">Éditeur de constantes</target>
+      </trans-unit>
+      <trans-unit id="submodule.titleWithRecord" approved="yes">
+        <source>Constant Editor for TypoScript record "%s"</source>
+        <target state="final">Éditeur de constantes pour le gabarit TypoScript "%s"</target>
+      </trans-unit>
+      <trans-unit id="submodule.description" approved="yes">
+        <source>Overwrite constants and save them to the selected TypoScript record on the current page. Only options that have been made available for editing in the constant editor are shown below. In addition, more constants can exist in the system.</source>
+        <target state="final">Surcharger les constantes et les enregistrer dans le gabarit TypoScript sélectionné sur la page courante. Seules les options disponibles en modification dans l'éditeur de constantes sont affichées ci-dessous. D'autres constantes peuvent également exister dans le système.</target>
+      </trans-unit>
+      <trans-unit id="options.selectedCategory" approved="yes">
+        <source>Selected category</source>
+        <target state="final">Catégorie sélectionnée</target>
+      </trans-unit>
+      <trans-unit id="options.selectedRecord" approved="yes">
+        <source>Selected record</source>
+        <target state="final">Gabarit sélectionné</target>
+      </trans-unit>
+      <trans-unit id="infobox.message.noConstants" approved="yes">
+        <source>There are no editable constants available for the Constant Editor.</source>
+        <target state="final">Il n'y a aucune constante modifiable disponible pour l'éditeur de constantes.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
