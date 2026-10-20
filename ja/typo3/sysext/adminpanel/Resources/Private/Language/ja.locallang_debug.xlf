@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf" date="2018-03-21T11:47:00Z" product-name="adminpanel" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="module.shortinfoErrorsAndSQL" approved="yes">
+        <source>(%1$u Errors/Warnings, SQL: %2$ux / %3$u ms)</source>
+        <target state="final">(%1$u エラー/警告, SQL: %2$ux / %3$u ms)</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.label" approved="yes">
+        <source>Page title</source>
+        <target state="final">ページタイトル</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.name" approved="yes">
+        <source>Name</source>
+        <target state="final">名前</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
