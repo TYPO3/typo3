@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814837" source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_pi.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="default_search_word_entry" resname="default_search_word_entry" approved="yes">
+        <source>Search for</source>
+        <target state="final">Искать:</target>
+      </trans-unit>
+      <trans-unit id="submit_button_label" resname="submit_button_label" approved="yes">
+        <source>Search</source>
+        <target state="final">Поиск</target>
+      </trans-unit>
+      <trans-unit id="opt_type_0" resname="opt_type_0" approved="yes">
+        <source>Distinct word</source>
+        <target state="final">Отдельное слово</target>
+      </trans-unit>
+      <trans-unit id="opt_type_1" resname="opt_type_1" approved="yes">
+        <source>Part of word</source>
+        <target state="final">Часть слова</target>
+      </trans-unit>
+      <trans-unit id="opt_type_2" resname="opt_type_2" approved="yes">
+        <source>First part of word</source>
+        <target state="final">Первая часть слова</target>
+      </trans-unit>
+      <trans-unit id="opt_type_3" resname="opt_type_3" approved="yes">
+        <source>Last part of word</source>
+        <target state="final">Последняя часть слова</target>
+      </trans-unit>
+      <trans-unit id="opt_type_10" resname="opt_type_10" approved="yes">
+        <source>Sounds like</source>
+        <target state="final">Похоже по звучанию</target>
+      </trans-unit>
+      <trans-unit id="opt_type_20" resname="opt_type_20" approved="yes">
+        <source>Sentence</source>
+        <target state="final">Предложение</target>
+      </trans-unit>
+      <trans-unit id="opt_defOp_0" resname="opt_defOp_0" approved="yes">
+        <source>All words (AND)</source>
+        <target state="final">Все слова (И)</target>
+      </trans-unit>
+      <trans-unit id="opt_defOp_1" resname="opt_defOp_1" approved="yes">
+        <source>Any words (OR)</source>
+        <target state="final">Любое слово (ИЛИ)</target>
+      </trans-unit>
+      <trans-unit id="opt_sections_0" resname="opt_sections_0" approved="yes">
+        <source>Whole site</source>
+        <target state="final">Весь сайт</target>
+      </trans-unit>
+      <trans-unit id="opt_sections_-1" resname="opt_sections_-1" approved="yes">
+        <source>Only this page</source>
+        <target state="final">Только эта страница</target>
+      </trans-unit>
+      <trans-unit id="opt_sections_-2" resname="opt_sections_-2" approved="yes">
+        <source>Top + level 1</source>
+        <target state="final">Главная страница и один подуровень</target>
+      </trans-unit>
+      <trans-unit id="opt_sections_-3" resname="opt_sections_-3" approved="yes">
+        <source>Level 2 and out</source>
+        <target state="final">Второй уровень и ниже</target>
+      </trans-unit>
+      <trans-unit id="opt_freeIndexUid_-1" resname="opt_freeIndexUid_-1" approved="yes">
+        <source>All, mixed</source>
+        <target state="final">Все, одним списком</target>
+      </trans-unit>
+      <trans-unit id="opt_freeIndexUid_-2" resname="opt_freeIndexUid_-2" approved="yes">
+        <source>All, categorized</source>
+        <target state="final">Все, по категориям</target>
+      </trans-unit>
+      <trans-unit id="opt_freeIndexUid_0" resname="opt_freeIndexUid_0" approved="yes">
+        <source>Pages</source>
+        <target state="final">Страницы</target>
+      </trans-unit>
+      <trans-unit id="opt_freeIndexUid_header_-1" resname="opt_freeIndexUid_header_-1" approved="yes">
+        <source>Mixed categories</source>
+        <target state="final">Смешанные категории</target>
+      </trans-unit>
+      <trans-unit id="opt_freeIndexUid_header_0" resname="opt_freeIndexUid_header_0" approved="yes">
+        <source>Website Pages</source>
+        <target state="final">Страницы веб-сайта</target>
+      </trans-unit>
+      <trans-unit id="opt_media_-1" resname="opt_media_-1" approved="yes">
+        <source>All media</source>
+        <target state="final">Во всех видах информации</target>
+      </trans-unit>
+      <trans-unit id="opt_media_0" resname="opt_media_0" approved="yes">
+        <source>Internal pages</source>
+        <target state="final">Во внутренних страницах</target>
+      </trans-unit>
+      <trans-unit id="opt_media_-2" resname="opt_media_-2" approved="yes">
+        <source>All External</source>
+        <target state="final">Во внешних страницах</target>
+      </trans-unit>
+      <trans-unit id="opt_order_rank_flag" resname="opt_order_rank_flag" approved="yes">
+        <source>Weight/Frequency</source>
+        <target state="final">Весу/Частоте</target>
+      </trans-unit>
+      <trans-unit id="opt_order_rank_freq" resname="opt_order_rank_freq" approved="yes">
+        <source>Frequency</source>
+        <target state="final">Частоте</target>
+      </trans-unit>
+      <trans-unit id="opt_order_rank_first" resname="opt_order_rank_first" approved="yes">
+        <source>Close to top</source>
+        <target state="final">Расположению ближе к началу</target>
+      </trans-unit>
+      <trans-unit id="opt_order_rank_count" resname="opt_order_rank_count" approved="yes">
+        <source>Number of words</source>
+        <target state="final">Количеству слов</target>
+      </trans-unit>
+      <trans-unit id="opt_order_mtime" resname="opt_order_mtime" approved="yes">
+        <source>Date Modified</source>
+        <target state="final">Дате изменения</target>
+      </trans-unit>
+      <trans-unit id="opt_order_title" resname="opt_order_title" approved="yes">
+        <source>Document title</source>
+        <target state="final">Названию документа</target>
+      </trans-unit>
+      <trans-unit id="opt_order_crdate" resname="opt_order_crdate" approved="yes">
+        <source>Creation date</source>
+        <target state="final">Дате создания</target>
+      </trans-unit>
+      <trans-unit id="opt_group_sections" resname="opt_group_sections" approved="yes">
+        <source>Section hierarchy</source>
+        <target state="final">Древовидно</target>
+      </trans-unit>
+      <trans-unit id="opt_group_flat" resname="opt_group_flat" approved="yes">
+        <source>Flat list</source>
+        <target state="final">Плоским списком</target>
+      </trans-unit>
+      <trans-unit id="opt_lang_-1" resname="opt_lang_-1" approved="yes">
+        <source>All languages</source>
+        <target state="final">На всех языках</target>
+      </trans-unit>
+      <trans-unit id="opt_lang_0" resname="opt_lang_0" approved="yes">
+        <source>Default</source>
+        <target state="final">На основном языке</target>
+      </trans-unit>
+      <trans-unit id="opt_desc_0" resname="opt_desc_0" approved="yes">
+        <source>Highest first</source>
+        <target state="final">по убыванию</target>
+      </trans-unit>
+      <trans-unit id="opt_desc_1" resname="opt_desc_1" approved="yes">
+        <source>Lowest first</source>
+        <target state="final">по возрастанию</target>
+      </trans-unit>
+      <trans-unit id="opt_RL1" resname="opt_RL1" approved="yes">
+        <source>Level 1</source>
+        <target state="final">1-ый уровень:</target>
+      </trans-unit>
+      <trans-unit id="opt_RL1ALL" resname="opt_RL1ALL" approved="yes">
+        <source>All pages on level 1</source>
+        <target state="final">Все страницы на 1-ом уровне:</target>
+      </trans-unit>
+      <trans-unit id="opt_RL2" resname="opt_RL2" approved="yes">
+        <source>- Level 2</source>
+        <target state="final">- уровень 2:</target>
+      </trans-unit>
+      <trans-unit id="opt_RL2ALL" resname="opt_RL2ALL" approved="yes">
+        <source>- All pages on level 2</source>
+        <target state="final">- все страницы на 2-ом уровне</target>
+      </trans-unit>
+      <trans-unit id="form_legend" resname="form_legend" approved="yes">
+        <source>Search form</source>
+        <target state="final">Форма поиска</target>
+      </trans-unit>
+      <trans-unit id="form_searchFor" resname="form_searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">Искать:</target>
+      </trans-unit>
+      <trans-unit id="form_extResume" resname="form_extResume" approved="yes">
+        <source>Extended resume</source>
+        <target state="final">расширенное описание</target>
+      </trans-unit>
+      <trans-unit id="form_atATime" resname="form_atATime" approved="yes">
+        <source>at a time</source>
+        <target state="final">Результатов на странице</target>
+      </trans-unit>
+      <trans-unit id="form_orderBy" resname="form_orderBy" approved="yes">
+        <source>Order by</source>
+        <target state="final">Упорядочить по:</target>
+      </trans-unit>
+      <trans-unit id="form_fromSection" resname="form_fromSection" approved="yes">
+        <source>From section</source>
+        <target state="final">От записи:</target>
+      </trans-unit>
+      <trans-unit id="form_freeIndexUid" resname="form_freeIndexUid" approved="yes">
+        <source>Category</source>
+        <target state="final">Категория:</target>
+      </trans-unit>
+      <trans-unit id="form_searchIn" resname="form_searchIn" approved="yes">
+        <source>Search in</source>
+        <target state="final">Искать:</target>
+      </trans-unit>
+      <trans-unit id="form_match" resname="form_match" approved="yes">
+        <source>Match</source>
+        <target state="final">Совпадает:</target>
+      </trans-unit>
+      <trans-unit id="form_style" resname="form_style" approved="yes">
+        <source>Style</source>
+        <target state="final">Стиль:</target>
+      </trans-unit>
+      <trans-unit id="rules_header" resname="rules_header" approved="yes">
+        <source>Rules</source>
+        <target state="final">Правила:</target>
+      </trans-unit>
+      <trans-unit id="rules_text" resname="rules_text" xml:space="preserve" approved="yes">
+				<source>Only words with 2 or more characters are accepted
+Max 200 chars total
+Space is used to split words, "" can be used to search for a whole string (not indexed search then)
+AND, OR and NOT are prefix words, overruling the default operator
++/|/- equals AND, OR and NOT as operators.
+All search words are converted to lowercase.</source>
+			<target state="final">Поиск осуществляется только по словам с двумя и более буквами. Поисковая фраза может содержать до 200 символов. Слова разделяются пробелом, кавычки "" могут использоваться для поиска точного соответствия. Слова AND, OR и NОТ являются операторами. Их можно вставлять перед словами, чтобы получить более точные результаты поиска. Символы + | - соответствуют операторам AND, OR или NOT. Поиск не учитывает регистр символов.</target></trans-unit>
+      <trans-unit id="searchFor" resname="searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">Искать:</target>
+      </trans-unit>
+      <trans-unit id="searchFor_or" resname="searchFor_or" approved="yes">
+        <source>or</source>
+        <target state="final">или</target>
+      </trans-unit>
+      <trans-unit id="searchFor_and" resname="searchFor_and" approved="yes">
+        <source>and</source>
+        <target state="final">и</target>
+      </trans-unit>
+      <trans-unit id="searchFor_butNot" resname="searchFor_butNot" approved="yes">
+        <source>but not</source>
+        <target state="final">но не</target>
+      </trans-unit>
+      <trans-unit id="noResults" resname="noResults" approved="yes">
+        <source>NO results found.</source>
+        <target state="final">Нет результатов.</target>
+      </trans-unit>
+      <trans-unit id="inSection" resname="inSection" approved="yes">
+        <source>in the section</source>
+        <target state="final">в секции</target>
+      </trans-unit>
+      <trans-unit id="inNsection" resname="inNsection" approved="yes">
+        <source>in %s section</source>
+        <target state="final">в %s секции:</target>
+      </trans-unit>
+      <trans-unit id="inNsections" resname="inNsections" approved="yes">
+        <source>in %s sections</source>
+        <target state="final">в %s секциях:</target>
+      </trans-unit>
+      <trans-unit id="word_page" resname="word_page" approved="yes">
+        <source>page</source>
+        <target state="final">страница</target>
+      </trans-unit>
+      <trans-unit id="word_pages" resname="word_pages" approved="yes">
+        <source>pages</source>
+        <target state="final">страницы</target>
+      </trans-unit>
+      <trans-unit id="unnamedSection" resname="unnamedSection" approved="yes">
+        <source>Other</source>
+        <target state="final">Другие</target>
+      </trans-unit>
+      <trans-unit id="link_regularSearch" resname="link_regularSearch" approved="yes">
+        <source>Regular search</source>
+        <target state="final">Обычный поиск</target>
+      </trans-unit>
+      <trans-unit id="link_advancedSearch" resname="link_advancedSearch" approved="yes">
+        <source>Advanced search</source>
+        <target state="final">Расширенный поиск</target>
+      </trans-unit>
+      <trans-unit id="res_path" resname="res_path" approved="yes">
+        <source>Path</source>
+        <target state="final">Путь:</target>
+      </trans-unit>
+      <trans-unit id="res_modified" resname="res_modified" approved="yes">
+        <source>Modified</source>
+        <target state="final">Изменен:</target>
+      </trans-unit>
+      <trans-unit id="res_created" resname="res_created" approved="yes">
+        <source>Created</source>
+        <target state="final">Создан:</target>
+      </trans-unit>
+      <trans-unit id="res_size" resname="res_size" approved="yes">
+        <source>Size</source>
+        <target state="final">Размер:</target>
+      </trans-unit>
+      <trans-unit id="res_noResume" resname="res_noResume" approved="yes">
+        <source>Note: This search hit may not accurately match the content on this page. The page resume cannot be shown.</source>
+        <target state="final">Примечание: результат поиска может не совпадает с содержимым страницы.</target>
+      </trans-unit>
+      <trans-unit id="res_otherMatching" resname="res_otherMatching" approved="yes">
+        <source>Other matching pages in the same document</source>
+        <target state="final">Другие найденные страницы в том же документе:</target>
+      </trans-unit>
+      <trans-unit id="res_otherPageAsWell" resname="res_otherPageAsWell" approved="yes">
+        <source>INFO: There was another page indexed as well... Probably indexed with another or no usergroup.</source>
+        <target state="final">Примечание: индексирована также другая страница... Вероятно, индексация прошла в другой группе пользователей.</target>
+      </trans-unit>
+      <trans-unit id="res_memberGroups" resname="res_memberGroups" approved="yes">
+        <source>Require membership of group numbers %s</source>
+        <target state="final">Только для членов групп %s</target>
+      </trans-unit>
+      <trans-unit id="pi_list_browseresults_prev" resname="pi_list_browseresults_prev" approved="yes">
+        <source>&lt; Previous</source>
+        <target state="final">&lt; Назад</target>
+      </trans-unit>
+      <trans-unit id="pi_list_browseresults_page" resname="pi_list_browseresults_page" approved="yes">
+        <source>Page</source>
+        <target state="final">Cтраница</target>
+      </trans-unit>
+      <trans-unit id="pi_list_browseresults_next" resname="pi_list_browseresults_next" approved="yes">
+        <source>Next &gt;</source>
+        <target state="final">Вперёд &gt;</target>
+      </trans-unit>
+      <trans-unit id="pi_list_browseresults_display" resname="pi_list_browseresults_display" approved="yes">
+        <source>Displaying results ###TAG_BEGIN###%1$s to %2$s###TAG_END### out of ###TAG_BEGIN###%3$s###TAG_END###</source>
+        <target state="final">Результаты ###TAG_BEGIN###%s-%s###TAG_END### из ###TAG_BEGIN###%s###TAG_END###</target>
+      </trans-unit>
+      <trans-unit id="local_operator_AND" resname="local_operator_AND" approved="yes">
+        <source>AND</source>
+        <target state="final">И</target>
+      </trans-unit>
+      <trans-unit id="local_operator_OR" resname="local_operator_OR" approved="yes">
+        <source>OR</source>
+        <target state="final">ИЛИ</target>
+      </trans-unit>
+      <trans-unit id="local_operator_NOT" resname="local_operator_NOT" approved="yes">
+        <source>NOT</source>
+        <target state="final">НЕ</target>
+      </trans-unit>
+      <trans-unit id="makerating_addToCurrentSearch" resname="makerating_addToCurrentSearch" approved="yes">
+        <source>Add to current search words</source>
+        <target state="final">Добавить слова в этот поисковый запрос</target>
+      </trans-unit>
+      <trans-unit id="maketitle_matches" resname="maketitle_matches" approved="yes">
+        <source>matches</source>
+        <target state="final">Соответствия</target>
+      </trans-unit>
+      <trans-unit id="pi_wizard_title" resname="pi_wizard_title" approved="yes">
+        <source>Indexed Search</source>
+        <target state="final">Поиск</target>
+      </trans-unit>
+      <trans-unit id="pi_wizard_description" resname="pi_wizard_description" approved="yes">
+        <source>Search based on a database stored index.</source>
+        <target state="final">Поиск на основе индекса, хранимого в базе данных.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
