@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815001" source-language="en" datatype="plaintext" original="EXT:taskcenter/Resources/Private/Language/locallang_task.xlf" date="2011-10-17T20:22:37Z" product-name="taskcenter" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Tasks</source>
+        <target state="final">Tareas</target>
+      </trans-unit>
+      <trans-unit id="task_overview" resname="task_overview" approved="yes">
+        <source>Overview</source>
+        <target state="final">Visión general</target>
+      </trans-unit>
+      <trans-unit id="error_header" resname="error_header" approved="yes">
+        <source>Error</source>
+        <target state="final">Error</target>
+      </trans-unit>
+      <trans-unit id="error-access" resname="error-access" approved="yes">
+        <source>No access to this module.</source>
+        <target state="final">Sin acceso a este módulo.</target>
+      </trans-unit>
+      <trans-unit id="error_no-instance" resname="error_no-instance" approved="yes">
+        <source>The class "%s" does not implement the task interface "%s" which is necessary to be displayed here.</source>
+        <target state="final">La clase %s no está implementada en la interfaz de tareas %s que es necesaria para mostrarla aquí.</target>
+      </trans-unit>
+      <trans-unit id="no-tasks" resname="no-tasks" approved="yes">
+        <source>No tasks have been registered yet.</source>
+        <target state="final">No hay tareas registradas todavía.</target>
+      </trans-unit>
+      <trans-unit id="lReplyAddress" resname="lReplyAddress" approved="yes">
+        <source>Reply address is your email</source>
+        <target state="final">La dirección de respuesta es tu correo electrónico</target>
+      </trans-unit>
+      <trans-unit id="lSelf" resname="lSelf" approved="yes">
+        <source>Self</source>
+        <target state="final">Propio</target>
+      </trans-unit>
+      <trans-unit id="lSendNew" resname="lSendNew" approved="yes">
+        <source>Send message</source>
+        <target state="final">Enviar mensaje</target>
+      </trans-unit>
+      <trans-unit id="lSendReply" resname="lSendReply" approved="yes">
+        <source>Reply to message</source>
+        <target state="final">Responder al mensaje</target>
+      </trans-unit>
+      <trans-unit id="listSeparator_Groups" resname="listSeparator_Groups" approved="yes">
+        <source>__Groups:__</source>
+        <target state="final">__Grupos:__</target>
+      </trans-unit>
+      <trans-unit id="lHomedir" resname="lHomedir" approved="yes">
+        <source>Home dir</source>
+        <target state="final">Directorio de inicio</target>
+      </trans-unit>
+      <trans-unit id="lNone" resname="lNone" approved="yes">
+        <source>[none]</source>
+        <target state="final">[ninguno]</target>
+      </trans-unit>
+      <trans-unit id="lCreate" resname="lCreate" approved="yes">
+        <source>Create</source>
+        <target state="final">Crear</target>
+      </trans-unit>
+      <trans-unit id="lCancel" resname="lCancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Cancelar</target>
+      </trans-unit>
+      <trans-unit id="lDelete_warning_title" resname="lDelete_warning_title" approved="yes">
+        <source>Please confirm</source>
+        <target state="final">Por favor, confirma</target>
+      </trans-unit>
+      <trans-unit id="lDelete_warning" resname="lDelete_warning" approved="yes">
+        <source>Are you sure you want to delete this user?</source>
+        <target state="final">¿Estás seguro de que quieres eliminar este usuario?</target>
+      </trans-unit>
+      <trans-unit id="lDelete" resname="lDelete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Borrar</target>
+      </trans-unit>
+      <trans-unit id="lUpdate" resname="lUpdate" approved="yes">
+        <source>Update</source>
+        <target state="final">Actualizar</target>
+      </trans-unit>
+      <trans-unit id="taskcenter-about" resname="taskcenter-about" xml:space="preserve" approved="yes">
+				<source>
+&lt;p&gt;The menu on the left side shows all allowed tasks and let you allow to complete your tasks in an efficient way.&lt;/p&gt;
+&lt;ul class="withicons"&gt;
+&lt;li&gt;Clicking on the title of a task will open a detailed view of the task itself.&lt;/li&gt;
+&lt;li&gt;Click on the arrow on the right side will open/close the submenu of the task.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br /&gt;
+&lt;strong&gt;Note:&lt;/strong&gt; Set the taskcenter as the default module after your login to be even faster!
+
+</source>
+			<target state="final">
+&lt;p&gt;El menú de la izquierda muestra todas las tareas permitidas y te permite completar tus tareas de forma eficiente.&lt;/p&gt;
+&lt;ul class="withicons"&gt;
+&lt;li&gt; Seleccionado el título de una tarea se abrirá una vista propia de la tarea más detallada.&lt;/li&gt;
+&lt;li&gt;Haz clic en la flecha de la derecha para abrir/cerrar el submenú de la tarea&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br /&gt;
+¡&lt;strong&gt;Nota:&lt;/strong&gt; Configura el centro de tarea con el módulo predeterminado después de iniciar sesión para que sea más rápido!
+
+</target></trans-unit>
+      <trans-unit id="taskcenter-adminheader" resname="taskcenter-adminheader" approved="yes">
+        <source>Create a task</source>
+        <target state="final">Crear una tarea</target>
+      </trans-unit>
+      <trans-unit id="taskcenter-admin" resname="taskcenter-admin" approved="yes">
+        <source>It is simple to extend the taskcenter by a custom task. For more information please look into the manual of the extension 'taskcenter'.</source>
+        <target state="final">Es fácil extender el centro de tareas a través una tarea personalizada. Para más información, por favor consulta el manual de la extensión 'centro de tareas'.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
