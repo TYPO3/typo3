@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814789" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_weblayout.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>Web &gt; Page Module</source>
+        <target state="final">वेब&gt; पृष्ठ मॉड्यूल</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The page module is activated from the backend menu and is the primary module for all basic CMS operations you need to perform when maintaining website content.</source>
+        <target state="final">पेज मॉड्यूल बैकएंड मेनू से सक्रिय है और सभी बुनियादी सीएमएस संचालन आप जब वेबसाइट की सामग्री को बनाए रखने के प्रदर्शन करने की जरूरत के लिए प्राथमिक मॉड्यूल है।</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>Selecting the module will display the page tree.  Click the title of the page you wish to edit content on, and in the right frame you will see the content of the page displayed by the Page module.
+
+The page module has various modes of display of content;
+
+&lt;b&gt;Columns&lt;/b&gt;
+The columns view will show Content Elements listed in the columns and in the order that they will appear on the website. A panel of buttons will allow you to hide/unhide, move and edit the elements easily.
+
+&lt;b&gt;QuickEdit&lt;/b&gt;
+In QuickEdit the first element on the page will be loaded into a form right away. It will depend on the implementation of your website as well as your general preferences if you like this mode more than the columns view.
+
+&lt;b&gt;Languages&lt;/b&gt;
+If your site supports multiple languages and uses the "one-tree-fits-all" concept for localization you will need this mode to control the translations of the content elements on a page.
+
+&lt;b&gt;Page information&lt;/b&gt;
+The page information view shows some statistical data about a page. This includes hit statistics if available.
+
+
+&lt;b&gt;General options&lt;/b&gt;
+In the top of the Page module you will find a row of icons that will bring you right to various features such as History/Undo (1), Create new content element (2), Move page (3), Create new page (4) and Edit page properties (5). See image below.
+
+&lt;b&gt;Defining number of displayed columns [Admin]&lt;/b&gt;
+Administrators can configure the Page module to display only the content columns that the website uses. This is done by Page TSconfig (so it can be configured per branch in the page tree!) and this particular option has the object path "mod.web_layout.tt_content.colPos_list".
+For instance "mod.web_layout.tt_content.colPos_list = 0,3" will set the display of the "Normal" and "Border" columns only.
+There are many other options for customization of the Page module in the object path "mod.web_layout" and Administrators should refer to the "TSconfig" reference linked to below.</source>
+			<target state="final">मॉड्यूल का चयन  पेज ट्री को प्रदर्शित करेगा। आप जिस पेज पर सामग्री को संपादित करने के लिए इच्छा के शीर्षक पर क्लिक करें और सही फ्रेम में पेज मॉड्यूल के द्वारा प्रदर्शित की सामग्री को देखेंगे। 
+
+पेज मॉड्यूल सामग्री के प्रदर्शन के विभिन्न तरीके हैं; 
+&lt;b&gt; कॉलम &lt;/ b&gt; 
+कॉलम देखें कॉलम में और आदेश है कि वे वेबसाइट पर दिखाई देगा में सूचीबद्ध सामग्री तत्वों को प्रदर्शित करेगा। बटन का एक पैनल आप को छिपाने के लिए / सामने लाएँ, कदम है और आसानी से तत्वों को संपादित की अनुमति देगा। 
+
+&lt;b&gt; QuickEdit &lt;/ b&gt; 
+QuickEdit में पृष्ठ पर पहला तत्व एक फार्म में सही दूर लोड किया जाएगा। यह अगर तुम इस विधा से भी अधिक स्तंभों देखने की तरह अपनी वेबसाइट के साथ ही अपने सामान्य वरीयताओं के कार्यान्वयन पर निर्भर करेगा। 
+
+&lt;b&gt; भाषाएं &lt;/ b&gt; 
+अपनी साइट पर कई भाषाओं का समर्थन करता है और "एक पेड़ फिट सभी" अवधारणा स्थानीयकरण के लिए आप एक पृष्ठ पर सामग्री तत्वों का अनुवाद नियंत्रित करने के लिए इस विधा की आवश्यकता होगी का उपयोग करता है। 
+
+&lt;b&gt; इस पृष्ठ पर जानकारी &lt;/ b&gt; 
+इस पृष्ठ पर जानकारी देखें एक पृष्ठ के बारे में कुछ सांख्यिकीय आंकड़ों से पता चलता है। इस हिट आँकड़े उपलब्ध करता है, तो भी शामिल है। 
+
+
+&lt;b&gt; सामान्य विकल्प &lt;/ b&gt; \bपृष्ठ मॉड्यूल के शीर्ष में आप प्रतीक है कि आप इस तरह के इतिहास / पूर्ववत के रूप में विभिन्न सुविधाओं के लिए सही लाएगा की एक पंक्ति मिलेगा (1), नई सामग्री तत्व (2) बनाएँ, (3), नया पृष्ठ बनाएँ पेज पर ले जाएँ (4 ) और संपादित पेज गुण (5)। नीचे की छवि देखते हैं। 
+
+&lt;b&gt; प्रदर्शित किया कॉलम के निर्णायक संख्या [admin] &lt;/ b&gt; 
+व्यवस्थापकों के ही है कि वेबसाइट का उपयोग करता सामग्री कॉलम प्रदर्शित करने के लिए पृष्ठ मॉड्यूल विन्यस्त कर सकते हैं। इस पृष्ठ TSconfig द्वारा किया जाता है (इसलिए यह शाखा प्रति पृष्ठ पेड़ में विन्यस्त किया जा सकता है!) और इस विशेष विकल्प वस्तु पथ "mod.web_layout.tt_content.colPos_list" है। 
+उदाहरण के लिए "mod.web_layout.tt_content.colPos_list = 0,3" "सामान्य" और "सीमा" केवल स्तंभों के प्रदर्शन की स्थापना की जाएगी। 
+वहाँ वस्तु पथ "mod.web_layout" में पृष्ठ मॉड्यूल के अनुकूलन के लिए कई अन्य विकल्प हैं और व्यवस्थापकों के नीचे से जुड़ा हुआ है "TSconfig" संदर्भ का उल्लेख करना चाहिए।</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>Configuring the Page module [Technical] | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/TSFE/,
+xMOD_csh_corebe:history_log,
+xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:TCEforms,
+About the page module | http://typo3.org/documentation/tips-tricks/the-new-page-editing-concept/
+Editing a page | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/
+The Page Module (Animation) | Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_05.gif</source>
+			<target state="final">Configuring the Page module [Technical] | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/TSFE/,
+xMOD_csh_corebe:history_log,
+xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:TCEforms,
+About the page module | http://typo3.org/documentation/tips-tricks/the-new-page-editing-concept/
+Editing a page | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/
+The Page Module (Animation) | Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_05.gif</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_13.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_14.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_15.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_13.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_14.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_15.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>Click the Page module, then the title of a page in the page tree.
+The page module is now activated in the right frame, showing the content of the page you clicked in the page tree.
+These buttons are direct links to the History/Undo function (1), Create new content element wizard (2), Move page wizard (3), Create new page wizard (4) and Edit page properties form (5). See the links for more details.</source>
+			<target state="final">पेज मॉड्यूल, तो पेज ट्री में एक पेज के शीर्षक पर क्लिक करें। 
+पेज मॉड्यूल सही फ्रेम में सक्रिय नहीं है, आप पेज पेज पेड़ में क्लिक की सामग्री दिखा। 
+ये बटन इतिहास / पूर्ववत समारोह के लिए सीधे संपर्क (1), नई सामग्री तत्व जादूगर बनाएँ (2), पेज विज़ार्ड घूमने (3), नया पृष्ठ जादूगर बनाएं हैं (4) और संपादित पेज गुण फार्म (5)। अधिक जानकारी के लिए लिंक देखें।</target></trans-unit>
+      <trans-unit id="quickEdit.alttitle" resname="quickEdit.alttitle" approved="yes">
+        <source>Quick Edit</source>
+        <target state="final">क्विक एडिट</target>
+      </trans-unit>
+      <trans-unit id="quickEdit.description" resname="quickEdit.description" approved="yes">
+        <source>The Quick Editor gives you direct access to the form fields of the page content.</source>
+        <target state="final">त्वरित संपादक आप पेज की सामग्री के फार्म क्षेत्रों के लिए सीधी पहुँच देता है।</target>
+      </trans-unit>
+      <trans-unit id="quickEdit.details" resname="quickEdit.details" approved="yes">
+        <source>The Quick Editor is designed to cut down the number of clicks involved in getting to edit the page content. Simply by clicking the page title in the page tree you've got the first content element in the normal column loaded in the list frame. In the toolbar in the top you can select the other content elements on the page in the selector box.</source>
+        <target state="final">त्वरित संपादक पेज की सामग्री को संपादित करने के लिए प्राप्त करने में शामिल क्लिक्स की संख्या में कटौती करने के लिए बनाया गया है। बस पृष्ठ के पेड़ में पेज शीर्षक पर क्लिक करके आप सामान्य सूची फ्रेम में लोड स्तंभ में पहला सामग्री तत्व मिल गया है। शीर्ष में उपकरण पट्टी में आप चयनकर्ता बॉक्स में पृष्ठ पर अन्य सामग्री तत्वों का चयन कर सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="_quickEdit.seeAlso" resname="_quickEdit.seeAlso" approved="yes">
+        <source>_MOD_web_layout:quickEdit_selElement</source>
+        <target state="final">_MOD_web_layout:quickEdit_selElement</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_quickEdit.image" resname="_quickEdit.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_5.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_5.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="quickEdit.image_descr" resname="quickEdit.image_descr" approved="yes">
+        <source>The QuickEdit view cuts of one extra click by bringing the user directly to the editing form after clicking a page title in the page tree. The record shown is always the first content element from the Normal column.</source>
+        <target state="final">पेज पेड़ में एक पृष्ठ का शीर्षक क्लिक करने के बाद संपादन प्रपत्र को सीधे उपयोगकर्ता लाकर एक अतिरिक्त क्लिक के QuickEdit दृश्य में कटौती। रिकॉर्ड से पता चला हमेशा सामान्य स्तंभ से पहले सामग्री तत्व है।</target>
+      </trans-unit>
+      <trans-unit id="quickEdit_selElement.alttitle" resname="quickEdit_selElement.alttitle" approved="yes">
+        <source>Content Elements</source>
+        <target state="final">कंटेंट एलिमेंटस</target>
+      </trans-unit>
+      <trans-unit id="quickEdit_selElement.description" resname="quickEdit_selElement.description" approved="yes">
+        <source>This is an overview of the content elements on this page in QuickEdit mode. Select another element to edit or click a "New" icon to create a new content element.</source>
+        <target state="final">इस त्वरित संपादन मोड में इस पेज की सामग्री तत्वों के एक सिंहावलोकन है। एक और तत्व संपादित करने या नया सामग्री तत्व बनाने के लिए एक "नया" आइकन पर क्लिक करने के लिए चयन करें।</target>
+      </trans-unit>
+      <trans-unit id="_quickEdit_selElement.seeAlso" resname="_quickEdit_selElement.seeAlso" xml:space="preserve" approved="yes">
+				<source>_MOD_web_layout:quickEdit,
+xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_ce</source>
+				
+			<target state="final">_MOD_web_layout:quickEdit,
+xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_ce</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_quickEdit_selElement.image" resname="_quickEdit_selElement.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_4.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_4.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="quickEdit_selElement.image_descr" resname="quickEdit_selElement.image_descr" approved="yes">
+        <source>Overview of page content elements in the QuickEdit view. In the bottom there are links to two wizards: The "Move Content Element Wizard" and the "Create new Content Element Wizard". See the links below.</source>
+        <target state="final">QuickEdit दृश्य में पेज की सामग्री तत्वों का अवलोकन। तल में दो विजार्ड के लिए लिंक देखते हैं: "ले जाएँ सामग्री तत्व विजार्ड" और "नई सामग्री तत्व विजार्ड बनाएँ"। नीचे दिए गए लिंक देखें।</target>
+      </trans-unit>
+      <trans-unit id="columns_1.alttitle" resname="columns_1.alttitle" approved="yes">
+        <source>Listing by Columns</source>
+        <target state="final">स्तंभों द्वारा सूचीकरण</target>
+      </trans-unit>
+      <trans-unit id="columns_1.description" resname="columns_1.description" approved="yes">
+        <source>In the "Columns" view you can manage the content of a web page. If your web page supports multiple columns, you will be able to arrange your content elements in columns.</source>
+        <target state="final">"कॉलम" दृश्य में, आप वेब पेज की सामग्री प्रबंधित कर सकते हैं। अगर आपका वेब पेज कई कॉलम का समर्थन करता है, तो आप अपनी सामग्री के तत्वों को कॉलम में व्यवस्थित कर पाएँगे।</target>
+      </trans-unit>
+      <trans-unit id="_columns_1.seeAlso" resname="_columns_1.seeAlso" approved="yes">
+        <source>_MOD_web_layout:columns_single</source>
+        <target state="final">_MOD_web_layout:columns_single</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_columns_1.image" resname="_columns_1.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_12.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_12.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="columns_1.image_descr" resname="columns_1.image_descr" approved="yes">
+        <source>When your website supports multiple content element zones in the template you will be able to use another column than the "Normal" column. Here the "Left" column is enabled. TYPO3 offers four columns by default, "Normal", "Right", "Left" and "Border". Their significance depends on individual implementations in the frontend templates.</source>
+        <target state="final">जब आपकी वेबसाइट टेम्पलेट में कई कंटेंट एलिमेंट ज़ोन का समर्थन करती है, तो आप "सामान्य" कॉलम के अलावा किसी अन्य कॉलम का उपयोग कर पाएँगे। यहाँ "बाएँ" कॉलम सक्षम है। TYPO3 डिफ़ॉल्ट रूप से चार कॉलम प्रदान करता है, "सामान्य", "दाएँ", "बाएँ" और "बॉर्डर"। इनका महत्व फ्रंटएंड टेम्पलेट्स में अलग-अलग कार्यान्वयन पर निर्भर करता है।</target>
+      </trans-unit>
+      <trans-unit id="columns_2.alttitle" resname="columns_2.alttitle" approved="yes">
+        <source>Listing by Language</source>
+        <target state="final">लिस्टिंग बय लैंग्वेज</target>
+      </trans-unit>
+      <trans-unit id="columns_2.description" resname="columns_2.description" approved="yes">
+        <source>In the "Languages" view you can control the content of the web page as it is divided into languages and columns. It enables users to create a new translation of a page.</source>
+        <target state="final">"भाषाएँ" दृश्य में, आप वेब पेज की सामग्री को नियंत्रित कर सकते हैं क्योंकि यह भाषाओं और स्तंभों में विभाजित है। यह उपयोगकर्ताओं को किसी पेज का नया अनुवाद बनाने में सक्षम बनाता है।</target>
+      </trans-unit>
+      <trans-unit id="_columns_2.seeAlso" resname="_columns_2.seeAlso" approved="yes">
+        <source>sys_language</source>
+        <target state="final">सिस्टम_भाषा</target>
+      </trans-unit>
+      <trans-unit id="_columns_2.image" resname="_columns_2.image" xml:space="preserve" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_6.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_7.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_11.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_10.png,</source>
+        
+      <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_6.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_7.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_11.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_10.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="columns_2.image_descr" resname="columns_2.image_descr" xml:space="preserve" approved="yes">
+        <source>In the Language view you can select to create a new translation of the page if one does not exist already. The available languages must be defined first by language records created in the root of the page tree.
+        This example shows how page content for three languages is shown side-by-side in the Page module.
+        In the top of the Page module you can also select between the available translations...
+        ... and if you select any of the additional languages (here "Danish" and "German") you will see the default language displayed side-by-side with the selected language</source>
+      <target state="final">भाषा दृश्य में, यदि पृष्ठ का कोई अनुवाद पहले से मौजूद नहीं है, तो आप उसका नया अनुवाद बनाने का विकल्प चुन सकते हैं। उपलब्ध भाषाओं को पहले पृष्ठ वृक्ष के मूल में बनाए गए भाषा रिकॉर्ड द्वारा परिभाषित किया जाना चाहिए।
+यह उदाहरण दिखाता है कि पृष्ठ मॉड्यूल में तीन भाषाओं की पृष्ठ सामग्री एक साथ कैसे दिखाई जाती है।
+पृष्ठ मॉड्यूल के शीर्ष पर, आप उपलब्ध अनुवादों में से भी चुन सकते हैं...
+... और यदि आप कोई अतिरिक्त भाषा (यहाँ "डेनिश" और "जर्मन") चुनते हैं, तो आपको डिफ़ॉल्ट भाषा चयनित भाषा के साथ-साथ दिखाई देगी</target></trans-unit>
+      <trans-unit id="columns_3.alttitle" resname="columns_3.alttitle" approved="yes">
+        <source>Page Information</source>
+        <target state="final">पेज जानकारी</target>
+      </trans-unit>
+      <trans-unit id="columns_3.description" resname="columns_3.description" approved="yes">
+        <source>In the "Page Information" view you can see various statistics about a page.</source>
+        <target state="final">"पृष्ठ सूचना" दृश्य में आप एक पृष्ठ के बारे में विभिन्न आंकड़े देख सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="columns_3.details" resname="columns_3.details" xml:space="preserve" approved="yes">
+				<source>The page information reveals information such as the date of creation and last modification of the page and its content.
+You can also see the subtitle, keywords and descriptions. This information is often used on websites for meta data or searching.</source>
+			<target state="final">इस पृष्ठ पर जानकारी में इस तरह के निर्माण और पेज और इसकी सामग्री के अंतिम संशोधन की तारीख के रूप में जानकारी का पता चलता है। 
+आप भी उपशीर्षक, खोजशब्दों और विवरण देख सकते हैं। यह जानकारी अक्सर मेटा डेटा या खोज के लिए वेबसाइटों पर प्रयोग किया जाता है।</target></trans-unit>
+      <trans-unit id="_columns_3.image" resname="_columns_3.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_9.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_9.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="columns_single.alttitle" resname="columns_single.alttitle" approved="yes">
+        <source>Page content elements in a single column</source>
+        <target state="final">पेज कंटेंट एलिमेंट्स इन ए सिंगल कॉलम</target>
+      </trans-unit>
+      <trans-unit id="columns_single.description" resname="columns_single.description" approved="yes">
+        <source>The single column view will show the page content elements that define the content on this page of your website. Click an edit icon or element text to edit an element.</source>
+        <target state="final">एकल स्तंभ देखें पेज की सामग्री तत्वों है कि अपनी वेबसाइट के इस पेज पर सामग्री को परिभाषित दिखाएगा। एक तत्व संपादित करने के लिए एक संपादित करें आइकन या तत्व पाठ पर क्लिक करें।</target>
+      </trans-unit>
+      <trans-unit id="columns_single.details" resname="columns_single.details" xml:space="preserve" approved="yes">
+				<source>You can also hide, delete and move elements by using the control panels.
+Clicking the "New content element" icon you will be able to create new content elements in between the existing elements on the page.
+Click the icon of a content element if you wish to access the context menu of the element.</source>
+			<target state="final">तुम भी छुपा सकते हैं, हटाने और नियंत्रण पैनल का उपयोग करके तत्वों को स्थानांतरित। 
+आप पृष्ठ पर मौजूदा तत्वों के बीच में नई सामग्री तत्वों को बनाने में सक्षम हो जाएगा "नई सामग्री तत्व" आइकन पर क्लिक। 
+आप तत्व के संदर्भ मेनू का उपयोग करना चाहते हैं तो एक सामग्री तत्व के आइकन पर क्लिक करें।</target></trans-unit>
+      <trans-unit id="_columns_single.seeAlso" resname="_columns_single.seeAlso" approved="yes">
+        <source>_MOD_web_layout:columns_multi</source>
+        <target state="final">_MOD_web_layout:columns_multi</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_columns_single.image" resname="_columns_single.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_1.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_1.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="columns_single.image_descr" resname="columns_single.image_descr" approved="yes">
+        <source>Content Elements on a page are arranged in a specific order - the order they appear on the website. This order is also shown in the page module. The control panel allows you to move elements up and down as well as edit, hide and delete them. You can also just click the preview text shown here to access the editing form of the element.</source>
+        <target state="final">क्रम में वे वेबसाइट पर दिखाई देते हैं - एक पेज पर सामग्री तत्वों एक विशेष क्रम में व्यवस्थित कर रहे हैं। यह आदेश भी पेज मॉड्यूल में दिखाया गया है। नियंत्रण कक्ष आप संपादित के रूप में तत्वों को स्थानांतरित करने के लिए और नीचे के रूप में अच्छी तरह से छिपाने के लिए और उन्हें हटाने के लिए अनुमति देता है। आप भी सिर्फ पूर्वावलोकन पाठ तत्व का संपादन फार्म का उपयोग करने के लिए यहाँ दिखाए क्लिक कर सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="button_panel.alttitle" resname="button_panel.alttitle" approved="yes">
+        <source>The "Big Buttons"</source>
+        <target state="final">"बिग बटन्स"</target>
+      </trans-unit>
+      <trans-unit id="button_panel.description" resname="button_panel.description" approved="yes">
+        <source>These buttons will bring you to four most used functions in relation to building pages. From here you can edit the page properties (eg. the page title), you can move the current page to another position in the page tree, create a new page somewhere in the page tree or create new content elements on this page.</source>
+        <target state="final">ये बटन पृष्ठों के निर्माण के संबंध में चार सबसे अधिक इस्तेमाल किया कार्यों पर ले जायेगा। यहाँ से आप पेज गुण (जैसे। पेज शीर्षक) संपादित कर सकते हैं, आप पृष्ठ के पेड़ में एक और स्थिति के लिए वर्तमान पृष्ठ के लिए कदम पेज पेड़ में कहीं न कहीं एक नया पृष्ठ बनाने या इस पेज पर नई सामग्री तत्वों बना सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="_button_panel.seeAlso" resname="_button_panel.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:TCEforms,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_ce,</source>
+				
+			<target state="final">xMOD_csh_corebe:TCEforms,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_ce,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_button_panel.image" resname="_button_panel.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_2.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_2.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
