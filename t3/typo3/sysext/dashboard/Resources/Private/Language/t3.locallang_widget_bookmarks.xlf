@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="widget.bookmarks.title" xml:space="preserve">
+        <source>Bookmarks</source>
+      <target>crwdns391194:0crwdne391194:0</target></trans-unit>
+      <trans-unit id="widget.bookmarks.description" xml:space="preserve">
+        <source>Display your bookmarks as a dashboard widget.</source>
+      <target>crwdns391196:0crwdne391196:0</target></trans-unit>
+      <trans-unit id="widget.bookmarks.setting.groups.label" xml:space="preserve">
+        <source>Bookmark groups</source>
+      <target>crwdns391198:0crwdne391198:0</target></trans-unit>
+      <trans-unit id="widget.bookmarks.setting.groups.description" xml:space="preserve">
+        <source>Bookmark groups to be displayed.</source>
+      <target>crwdns391200:0crwdne391200:0</target></trans-unit>
+      <trans-unit id="widget.bookmarks.setting.limit.label" xml:space="preserve">
+        <source>Limit</source>
+      <target>crwdns391202:0crwdne391202:0</target></trans-unit>
+      <trans-unit id="widget.bookmarks.setting.limit.description" xml:space="preserve">
+        <source>Maximum number of bookmarks to display.</source>
+      <target>crwdns391204:0crwdne391204:0</target></trans-unit>
+      <trans-unit id="widget.bookmarks.setting.showAll" xml:space="preserve">
+        <source>Show all bookmarks</source>
+      <target>crwdns391206:0crwdne391206:0</target></trans-unit>
+      <trans-unit id="widget.bookmarks.manageBookmarks" xml:space="preserve">
+        <source>Manage bookmarks</source>
+      <target>crwdns391208:0crwdne391208:0</target></trans-unit>
+    </body>
+  </file>
+</xliff>
