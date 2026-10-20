@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/Modules/form_editor.xlf" date="2026-01-30T13:37:37Z" product-name="form" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Form Editor</source>
+        <target state="final">Formulier-editor</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Build and customize forms using the visual form editor. Add fields, configure validations, and set up finishers.</source>
+        <target state="final">Bouw en pas formulieren aan met behulp van de visuele formulier-editor. Voeg velden toe, configureer validaties en configureer afronders.</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Edit forms</source>
+        <target state="final">Formulieren bewerken</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
