@@ -1890,8 +1890,14 @@ class ResourceStorage implements ResourceStorageInterface
         // In case we deal with a file, also copy corresponding metadata
         if ($file instanceof File) {
             $metaDataAspect = $newFileObject->getMetaData();
+            // The metadata of the file is resolved for the workspace and language of the current context,
+            // but the metadata record of the copy is a live record in the default language
+            $metaData = array_diff_key(
+                $file->getMetaData()->get(),
+                array_flip(['sys_language_uid', 'l10n_parent', 't3ver_oid', 't3ver_wsid', 't3ver_state', 't3ver_stage'])
+            );
             // Add meta data of file while keeping existing properties like "file", "uid", etc.
-            $metaDataAspect->add(array_replace($file->getMetaData()->get(), $metaDataAspect->get()));
+            $metaDataAspect->add(array_replace($metaData, $metaDataAspect->get()));
             $metaDataAspect->save();
         }
 
