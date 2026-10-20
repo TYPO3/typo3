@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_new.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>Create multiple pages</source>
+        <target>crwdns50676:0crwdne50676:0</target>
+      </trans-unit>
+      <trans-unit id="canNotCreateNew.title">
+        <source>Insufficient permissions</source>
+        <target>crwdns50678:0crwdne50678:0</target>
+      </trans-unit>
+      <trans-unit id="canNotCreateNew.message">
+        <source>Sorry, you are not allowed to create new subpages to this page due to access restrictions.</source>
+        <target>crwdns50680:0crwdne50680:0</target>
+      </trans-unit>
+      <trans-unit id="newPage">
+        <source>Page</source>
+        <target>crwdns50682:0crwdne50682:0</target>
+      </trans-unit>
+      <trans-unit id="addMoreLines">
+        <source>Add more lines</source>
+        <target>crwdns50684:0crwdne50684:0</target>
+      </trans-unit>
+      <trans-unit id="listEnd">
+        <source>Place new pages after the existing subpages</source>
+        <target>crwdns50686:0crwdne50686:0</target>
+      </trans-unit>
+      <trans-unit id="hidePages">
+        <source>Hide new pages</source>
+        <target>crwdns50688:0crwdne50688:0</target>
+      </trans-unit>
+      <trans-unit id="hidePagesInMenus">
+        <source>Hide new pages in menus</source>
+        <target>crwdns50690:0crwdne50690:0</target>
+      </trans-unit>
+      <trans-unit id="create">
+        <source>Create pages</source>
+        <target>crwdns50692:0crwdne50692:0</target>
+      </trans-unit>
+      <trans-unit id="reset">
+        <source>Clear fields</source>
+        <target>crwdns50694:0crwdne50694:0</target>
+      </trans-unit>
+      <trans-unit id="newSubPages">
+        <source>New page structure</source>
+        <target>crwdns50696:0crwdne50696:0</target>
+      </trans-unit>
+      <trans-unit id="newSubPages.pageTitle">
+        <source>Page title</source>
+        <target>crwdns279649:0crwdne279649:0</target>
+      </trans-unit>
+      <trans-unit id="noPagesCreated.title">
+        <source>No pages added</source>
+        <target>crwdns50698:0crwdne50698:0</target>
+      </trans-unit>
+      <trans-unit id="noPagesCreated.message">
+        <source>No pages were created.</source>
+        <target>crwdns50700:0crwdne50700:0</target>
+      </trans-unit>
+      <trans-unit id="pagesCreated.title">
+        <source>Pages added</source>
+        <target>crwdns50702:0crwdne50702:0</target>
+      </trans-unit>
+      <trans-unit id="pagesCreated.message">
+        <source>The pages were created successfully.</source>
+        <target>crwdns50704:0crwdne50704:0</target>
+      </trans-unit>
+      <trans-unit id="multiplePagesCanNotBeCreated.title">
+        <source>Creation of multiple is disabled because of field requirements</source>
+        <target>crwdns393986:0crwdne393986:0</target>
+      </trans-unit>
+      <trans-unit id="multiplePagesCanNotBeCreated.message">
+        <source>Please use the page creation wizard instead.</source>
+        <target>crwdns393988:0crwdne393988:0</target>
+      </trans-unit>
+      <trans-unit id="multiplePagesCanNotBeCreated.buttonLabel">
+        <source>Create single page</source>
+        <target>crwdns393990:0crwdne393990:0</target>
+      </trans-unit>
+      <trans-unit id="availablePageTypesHaveBeenFiltered.title">
+        <source>Some page types have been filtered because of field requirements</source>
+        <target>crwdns393992:0crwdne393992:0</target>
+      </trans-unit>
+      <trans-unit id="availablePageTypesHaveBeenFiltered.message">
+        <source>The following page types need to be created using the page creation wizard:</source>
+        <target>crwdns393994:0crwdne393994:0</target>
+      </trans-unit>
+      <trans-unit id="availablePageTypesHaveBeenFiltered.buttonLabel">
+        <source>Create single page</source>
+        <target>crwdns393996:0crwdne393996:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
