@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_webinfo.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="he">
+    <header/>
+    <body>
+      <trans-unit id="page_title" approved="yes">
+        <source>Pagetree overview</source>
+        <target state="final">עץ הדפים - סקירה כללית</target>
+      </trans-unit>
+      <trans-unit id="pages_0" approved="yes">
+        <source>Basic settings</source>
+        <target state="final">הגדרות בסיסיות</target>
+      </trans-unit>
+      <trans-unit id="pages_2" approved="yes">
+        <source>Cache and Age</source>
+        <target state="final">מתמון ותוקף/גיל</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_viewPage" approved="yes">
+        <source>View page</source>
+        <target state="final">הצג דף</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_page" approved="yes">
+        <source>Page</source>
+        <target state="final">‏דף</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_default" approved="yes">
+        <source>Default</source>
+        <target state="final">ברירת מחדל</target>
+      </trans-unit>
+      <trans-unit id="lang_getlangsta_createNewTranslationHeaders" approved="yes">
+        <source>Create new translation headers</source>
+        <target state="final">צור כותרות מתורגמות חדשות</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_CEcount" approved="yes">
+        <source>Content Element Count</source>
+        <target state="final">מספר פריטי תוכן</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
