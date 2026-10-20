@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="clipBoard">
+        <source>Show clipboard</source>
+        <target>crwdns56036:0crwdne56036:0</target>
+      </trans-unit>
+      <trans-unit id="clip_paste">
+        <source>Paste in clipboard content</source>
+        <target>crwdns56038:0crwdne56038:0</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto">
+        <source>Paste into: Clipboard content is inserted into this folder</source>
+        <target>crwdns56040:0crwdne56040:0</target>
+      </trans-unit>
+      <trans-unit id="editMarked">
+        <source>Edit Metadata</source>
+        <target>crwdns141715:0crwdne141715:0</target>
+      </trans-unit>
+      <trans-unit id="editColumns">
+        <source>Edit specific Metadata</source>
+        <target>crwdns338136:0crwdne338136:0</target>
+      </trans-unit>
+      <trans-unit id="deleteMarked">
+        <source>Delete marked items</source>
+        <target>crwdns342914:0crwdne342914:0</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked">
+        <source>Transfer to clipboard</source>
+        <target>crwdns141717:0crwdne141717:0</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked">
+        <source>Remove from clipboard</source>
+        <target>crwdns141719:0crwdne141719:0</target>
+      </trans-unit>
+      <trans-unit id="deleteMarkedWarning">
+        <source>Are you sure you want to delete all marked items from this folder?</source>
+        <target>crwdns342916:0crwdne342916:0</target>
+      </trans-unit>
+      <trans-unit id="c_name">
+        <source>Name</source>
+        <target>crwdns141721:0crwdne141721:0</target>
+      </trans-unit>
+      <trans-unit id="c_size">
+        <source>Size</source>
+        <target>crwdns56056:0crwdne56056:0</target>
+      </trans-unit>
+      <trans-unit id="c_record_type">
+        <source>Type</source>
+        <target>crwdns141723:0crwdne141723:0</target>
+      </trans-unit>
+      <trans-unit id="c_rw">
+        <source>RW</source>
+        <target>crwdns56062:0crwdne56062:0</target>
+      </trans-unit>
+      <trans-unit id="files">
+        <source>files</source>
+        <target>crwdns56064:0crwdne56064:0</target>
+      </trans-unit>
+      <trans-unit id="temp">
+        <source>Temporary files</source>
+        <target>crwdns56066:0crwdne56066:0</target>
+      </trans-unit>
+      <trans-unit id="read">
+        <source>R</source>
+        <target>crwdns56068:0crwdne56068:0</target>
+      </trans-unit>
+      <trans-unit id="recycler">
+        <source>Recycler</source>
+        <target>crwdns56070:0crwdne56070:0</target>
+      </trans-unit>
+      <trans-unit id="write">
+        <source>W</source>
+        <target>crwdns56078:0crwdne56078:0</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableTitle">
+        <source>Access denied.</source>
+        <target>crwdns56080:0crwdne56080:0</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableMessage">
+        <source>You are trying to access a folder in a storage that is not browsable.</source>
+        <target>crwdns56082:0crwdne56082:0</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsTitle">
+        <source>Missing folder permissions</source>
+        <target>crwdns56084:0crwdne56084:0</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsMessage">
+        <source>You have no access to the folder "%s".</source>
+        <target>crwdns56086:0%scrwdne56086:0</target>
+      </trans-unit>
+      <trans-unit id="localStorageOfflineTitle">
+        <source>Base folder for local storage missing or not allowed</source>
+        <target>crwdns304770:0crwdne304770:0</target>
+      </trans-unit>
+      <trans-unit id="localStorageOfflineMessage">
+        <source>Verify that the base folder for the storage "%s" exists and is allowed to be accessed.</source>
+        <target>crwdns304772:0%scrwdne304772:0</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundTitle">
+        <source>Folder not found.</source>
+        <target>crwdns56088:0crwdne56088:0</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundMessage">
+        <source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
+        <target>crwdns56090:0%scrwdne56090:0</target>
+      </trans-unit>
+      <trans-unit id="translateMetadata">
+        <source>Translate metadata</source>
+        <target>crwdns56092:0crwdne56092:0</target>
+      </trans-unit>
+      <trans-unit id="createMetadataForLanguage">
+        <source>Create metadata of this file for %s</source>
+        <target>crwdns56094:0%scrwdne56094:0</target>
+      </trans-unit>
+      <trans-unit id="editMetadataForLanguage">
+        <source>Edit metadata of this file for %s</source>
+        <target>crwdns56096:0%scrwdne56096:0</target>
+      </trans-unit>
+      <trans-unit id="paramError">
+        <source>Parameter Error</source>
+        <target>crwdns56098:0crwdne56098:0</target>
+      </trans-unit>
+      <trans-unit id="targetNoDir">
+        <source>Target was not a directory!</source>
+        <target>crwdns56100:0crwdne56100:0</target>
+      </trans-unit>
+      <trans-unit id="reloadMetadata">
+        <source>Reload Metadata</source>
+        <target>crwdns297524:0crwdne297524:0</target>
+      </trans-unit>
+      <trans-unit id="rangeIndicator">
+        <source>Media %1$d - %2$d</source>
+        <target>crwdns391246:0%1$dcrwdnd391246:0%2$dcrwdne391246:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
