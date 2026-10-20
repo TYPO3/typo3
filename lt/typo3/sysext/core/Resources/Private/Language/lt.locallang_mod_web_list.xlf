@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="clip_pasteAfter" approved="yes">
+        <source>Paste after: Clipboard content is inserted after this record</source>
+        <target state="final">Įklijuoti po: iškarpinės turinys bus įterptas po šiuo įrašu</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted on this page</source>
+        <target state="final">Įklijuoti į: iškarpinės turinys bus įterptas šiame puslapyje</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">Įklijuoti iškarpinės turinį</target>
+      </trans-unit>
+      <trans-unit id="clip_markRecords" approved="yes">
+        <source>Mark All/Mark none</source>
+        <target state="final">Pažymėti visus / nepažymėti nė vieno</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" approved="yes">
+        <source>Transfer the selection of records to clipboard</source>
+        <target state="final">Perkelti pažymėtus įrašus į iškarpinę</target>
+      </trans-unit>
+      <trans-unit id="clip_duplicates" approved="yes">
+        <source>Mark duplicates</source>
+        <target state="final">Pažymėti dublikatus</target>
+      </trans-unit>
+      <trans-unit id="clip_editMarked" approved="yes">
+        <source>Edit marked</source>
+        <target state="final">Redaguoti pažymėtus</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" approved="yes">
+        <source>Delete marked</source>
+        <target state="final">Ištrinti pažymėtus</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarkedWarning" approved="yes">
+        <source>Are you sure you want to delete all marked records from the table '%s'?</source>
+        <target state="final">Ar tikrai norite ištrinti visus pažymėtus įrašus iš lentelės „%s“?</target>
+      </trans-unit>
+      <trans-unit id="showInfo" approved="yes">
+        <source>Info</source>
+        <target state="final">Informacija</target>
+      </trans-unit>
+      <trans-unit id="edit" approved="yes">
+        <source>Edit record</source>
+        <target state="final">Redaguoti įrašą</target>
+      </trans-unit>
+      <trans-unit id="editPage" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">Redaguoti puslapio savybes</target>
+      </trans-unit>
+      <trans-unit id="new" approved="yes">
+        <source>New record</source>
+        <target state="final">Naujas įrašas</target>
+      </trans-unit>
+      <trans-unit id="newRecordOfType" approved="yes">
+        <source>New %s</source>
+        <target state="final">Naujas %s</target>
+      </trans-unit>
+      <trans-unit id="newPage" approved="yes">
+        <source>Create new page after this page</source>
+        <target state="final">Sukurti naują puslapį po šiuo puslapiu</target>
+      </trans-unit>
+      <trans-unit id="newRecord" approved="yes">
+        <source>Create new record after this record</source>
+        <target state="final">Sukurti naują įrašą po šiuo įrašu</target>
+      </trans-unit>
+      <trans-unit id="newRecordGeneral" approved="yes">
+        <source>Create new record</source>
+        <target state="final">Sukurti naują įrašą</target>
+      </trans-unit>
+      <trans-unit id="moveUp" approved="yes">
+        <source>Move up in list</source>
+        <target state="final">Perkelti aukštyn sąraše</target>
+      </trans-unit>
+      <trans-unit id="moveDown" approved="yes">
+        <source>Move down in list</source>
+        <target state="final">Perkelti žemyn sąraše</target>
+      </trans-unit>
+      <trans-unit id="move_record" approved="yes">
+        <source>Re-position content element</source>
+        <target state="final">Perkelti turinio elementą</target>
+      </trans-unit>
+      <trans-unit id="move_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">Perkelti puslapį</target>
+      </trans-unit>
+      <trans-unit id="hide" approved="yes">
+        <source>Hide record</source>
+        <target state="final">Slėpti įrašą</target>
+      </trans-unit>
+      <trans-unit id="unHide" approved="yes">
+        <source>Un-hide record</source>
+        <target state="final">Rodyti paslėptą įrašą</target>
+      </trans-unit>
+      <trans-unit id="hidePage" approved="yes">
+        <source>Hide page</source>
+        <target state="final">Slėpti puslapį</target>
+      </trans-unit>
+      <trans-unit id="unHidePage" approved="yes">
+        <source>Un-hide page</source>
+        <target state="final">Rodyti paslėptą puslapį</target>
+      </trans-unit>
+      <trans-unit id="prevLevel" approved="yes">
+        <source>Move this page to the position after the current parent page (Inwards)</source>
+        <target state="final">Perkelti šį puslapį į poziciją po dabartiniu tėviniu puslapiu (į vidų)</target>
+      </trans-unit>
+      <trans-unit id="nextLevel" approved="yes">
+        <source>Move this page to be a subpage of the page above (Outwards)</source>
+        <target state="final">Perkelti šį puslapį kaip viršuje esančio puslapio subpuslapį (į išorę)</target>
+      </trans-unit>
+      <trans-unit id="delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Ištrinti</target>
+      </trans-unit>
+      <trans-unit id="history" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">Istorija / Atšaukti</target>
+      </trans-unit>
+      <trans-unit id="displayVersions" approved="yes">
+        <source>Display versions</source>
+        <target state="final">Rodyti versijas</target>
+      </trans-unit>
+      <trans-unit id="permissions" approved="yes">
+        <source>Set permissions for page</source>
+        <target state="final">Nustatyti puslapio teises</target>
+      </trans-unit>
+      <trans-unit id="largeControl" approved="yes">
+        <source>Extended view</source>
+        <target state="final">Išplėstinis rodinys</target>
+      </trans-unit>
+      <trans-unit id="contractView" approved="yes">
+        <source>List all tables</source>
+        <target state="final">Rodyti visas lenteles</target>
+      </trans-unit>
+      <trans-unit id="expandView" approved="yes">
+        <source>List only this table</source>
+        <target state="final">Rodyti tik šią lentelę</target>
+      </trans-unit>
+      <trans-unit id="collapseExpandTable" approved="yes">
+        <source>Collapse and expand records of table "%s"</source>
+        <target state="final">Suskleisti arba išplėsti lentelės „%s“ įrašus</target>
+      </trans-unit>
+      <trans-unit id="showClipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">Rodyti iškarpinę</target>
+      </trans-unit>
+      <trans-unit id="editShownColumns" approved="yes">
+        <source>Edit all shown fields of the listed records</source>
+        <target state="final">Redaguoti visus rodomus sąrašo įrašų laukus</target>
+      </trans-unit>
+      <trans-unit id="editThisColumn" approved="yes">
+        <source>Edit the '%s' field of the listed records</source>
+        <target state="final">Redaguoti rodomų įrašų lauką „%s“</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" approved="yes">
+        <source>Are you sure you want to delete the record '%s'?</source>
+        <target state="final">Ar tikrai norite ištrinti įrašą „%s“?</target>
+      </trans-unit>
+      <trans-unit id="localization" approved="yes">
+        <source>Localization view</source>
+        <target state="final">Lokalizacijos rodinys</target>
+      </trans-unit>
+      <trans-unit id="defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytoji</target>
+      </trans-unit>
+      <trans-unit id="multipleLanguages" approved="yes">
+        <source>All languages</source>
+        <target state="final">Visos kalbos</target>
+      </trans-unit>
+      <trans-unit id="Localize" approved="yes">
+        <source>Localize to</source>
+        <target state="final">Lokalizuoti į</target>
+      </trans-unit>
+      <trans-unit id="viewRecords" approved="yes">
+        <source>Viewing records of</source>
+        <target state="final">Rodomi įrašai iš</target>
+      </trans-unit>
+      <trans-unit id="pageIndicator" approved="yes">
+        <source>Page %1$s of %2$d</source>
+        <target state="final">Puslapis %1$s iš %2$d</target>
+      </trans-unit>
+      <trans-unit id="rangeIndicator" approved="yes">
+        <source>Records %1$d - %2$d</source>
+        <target state="final">Įrašai %1$d – %2$d</target>
+      </trans-unit>
+      <trans-unit id="missingTcaColumnsMessageTitle" approved="yes">
+        <source>Missing TCA definition</source>
+        <target state="final">Trūksta TCA aprašymo</target>
+      </trans-unit>
+      <trans-unit id="missingTcaColumnsMessage" approved="yes">
+        <source>No fields for table "%s" have been found. $TCA['%s']['columns'] does not contain the necessary definitions.</source>
+        <target state="final">Lentelės „%s“ laukai nerasti. $TCA['%s']['columns'] neturi reikalingų aprašymų.</target>
+      </trans-unit>
+      <trans-unit id="noRecordsOnThisPage" approved="yes">
+        <source>There are no records on this page.</source>
+        <target state="final">Šiame puslapyje nėra įrašų.</target>
+      </trans-unit>
+      <trans-unit id="noRecordsOfTypeOnThisPage" approved="yes">
+        <source>There are no records of type "%s" on this page.</source>
+        <target state="final">Šiame puslapyje nėra „%s“ tipo įrašų.</target>
+      </trans-unit>
+      <trans-unit id="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Atšaukti</target>
+      </trans-unit>
+      <trans-unit id="button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Uždaryti</target>
+      </trans-unit>
+      <trans-unit id="button.ok" approved="yes">
+        <source>OK</source>
+        <target state="final">Gerai</target>
+      </trans-unit>
+      <trans-unit id="button.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Ištrinti</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
