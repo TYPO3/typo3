@@ -1,0 +1,1205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814854" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="cy">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>TYPO3 Core</source>
+        <target state="final">Craidd TYPO3</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>TYPO3 is a Content Management Framework which consists of a central program core with only limited functionality. To extend this core system there are hundreds of extensions which in combination will provide a very capable system.</source>
+        <target state="final">Fframwaith Rheoli Cynnwys yw TYPO3 sy'n cynnwys craidd rhaglen ganolog gyda swyddogaeth gyfyngedig yn unig. Er mwyn ymestyn y system graidd hon mae cannoedd o estyniadau a fydd, gyda'i gilydd, yn darparu system alluog iawn.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>For most people TYPO3 is equivalent to a CMS providing a backend for management of the content and a frontend engine for website display. However TYPO3s core is natively designed to be a general purpose framework for management of database content. The core of TYPO3 delivers a set of principles for storage of this content, user access management, editing of the content, uploading and managing files etc. Many of these principles are expressed as an API (Application Programmers Interface) for use in the &lt;em&gt;extensions&lt;/em&gt; which ultimately adds most of the real functionality.</source>
+        <target state="final">I'r rhan fwyaf o bobl mae TYPO3 yn cyfateb i CMS sy'n darparu backend ar gyfer rheoli'r cynnwys ac injan frontend ar gyfer arddangos gwefan. Fodd bynnag, mae craidd TYPO3s wedi'i gynllunio'n frodorol i fod yn fframwaith pwrpas cyffredinol ar gyfer rheoli cynnwys cronfa ddata. Mae craidd TYPO3 yn cyflwyno set o egwyddorion ar gyfer storio'r cynnwys hwn, rheoli mynediad defnyddwyr, golygu'r cynnwys, uwchlwytho a rheoli ffeiliau ac ati. Mynegir llawer o'r egwyddorion hyn fel API (Rhyngwyneb Rhaglenwyr Cymwysiadau) i'w defnyddio yn y &lt;em&gt;estyniad.&lt;/em&gt; sydd yn y pen draw yn ychwanegu'r rhan fwyaf o'r ymarferoldeb go iawn.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" approved="yes">
+        <source>Inside TYPO3 | https://docs.typo3.org/typo3cms/InsideTypo3Reference/</source>
+        <target state="final">Y tu mewn i TYPO3 | https://docs.typo3.org/typo3cms/InsideTypo3Reference/</target>
+      </trans-unit>
+      <trans-unit id="_.image" resname="_.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/login.png</source>
+        <target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / login.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" approved="yes">
+        <source>TYPO3 backend login screen.</source>
+        <target state="final">Sgrin mewngofnodi backend TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.alttitle" resname="menu_modules.alttitle" approved="yes">
+        <source>Backend modules</source>
+        <target state="final">Modiwlau backend</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.description" resname="menu_modules.description" approved="yes">
+        <source>The Backend menu reflects the hierarchy of main- and sub-modules in TYPO3. Click a menu item to access the corresponding module.</source>
+        <target state="final">Mae'r ddewislen Backend yn adlewyrchu hierarchaeth prif ac is-fodiwlau yn TYPO3. Cliciwch eitem ar y ddewislen i gael mynediad i'r modiwl cyfatebol.</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.details" resname="menu_modules.details" xml:space="preserve" approved="yes">
+				<source>Backend Users might see different menu items depending on their access permissions. The "Admin" user on a system will always see all modules available.
+
+You can configure the backend to display the menu in two alternative versions (useful on smaller screens); As a selector box or list of icons in the top frame of the backend.
+
+When you click the little "+" or "-" icons next to the main modules, you can collapse (-) or expand (+) all the sub modules. By selecting the "Expand all" check box, all items are expanded. When the checkbox is unselected again, the menu changes back to the previous folding state. If you click "Expand all" and collapse a main module afterwards, the previous folding state is discarded and "Expand all" is unselected again.</source>
+			<target state="final">Efallai y bydd Defnyddwyr Penwythnos yn gweld gwahanol eitemau ar y fwydlen yn dibynnu ar eu caniatâd mynediad. Bydd y defnyddiwr "Admin" ar system bob amser yn gweld yr holl fodiwlau ar gael.
+
+Gallwch chi ffurfweddu'r backend i arddangos y ddewislen mewn dau fersiwn amgen (yn ddefnyddiol ar sgriniau llai); Fel blwch detholwr neu restr o eiconau yn ffrâm uchaf y backend.
+
+Pan gliciwch yr eiconau bach "+" neu "-" wrth ymyl y prif fodiwlau, gallwch gwympo (-) neu ehangu (+) yr holl is-fodiwlau. Trwy ddewis y blwch gwirio "Ehangu popeth", mae'r holl eitemau'n cael eu hehangu. Pan fydd y blwch gwirio heb ei ddewis eto, mae'r ddewislen yn newid yn ôl i'r wladwriaeth blygu flaenorol. Os cliciwch "Ehangu popeth" a chwympo prif fodiwl wedi hynny, caiff y wladwriaeth blygu flaenorol ei thaflu ac mae "Ehangu popeth" heb ei ddewis eto.</target></trans-unit>
+      <trans-unit id="_menu_modules.seeAlso" resname="_menu_modules.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:groupMods,
+be_users:userMods,
+More about Modules | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/Index.html</source>
+				
+			<target state="final">be_groups: groupMods,
+be_users: userMods,
+Mwy am Fodiwlau | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/Index.html</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_menu_modules.image" resname="_menu_modules.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_2.png,
+EXT:core/Resources/Public/Images/cshimages/core_3.png</source>
+				
+			<target state="final">EXT: core / Resources / Public / Images / cshimages / core_2.png,
+EXT: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_3.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="menu_modules.image_descr" resname="menu_modules.image_descr" xml:space="preserve" approved="yes">
+				<source>This is the range of menu options for a typical backend user.
+For another backend user it might be different. This screenshot shows how another user has different permissions set and therefore access to other modules only. Also the backend language has been set different for this user.</source>
+			<target state="final">Dyma'r ystod o opsiynau dewislen ar gyfer defnyddiwr backend nodweddiadol.
+I ddefnyddiwr backend arall gallai fod yn wahanol. Mae'r screenshot hwn yn dangos sut mae gan ddefnyddiwr arall set caniatâd gwahanol ac felly mynediad at fodiwlau eraill yn unig. Hefyd mae'r iaith backend wedi'i gosod yn wahanol i'r defnyddiwr hwn.</target></trans-unit>
+      <trans-unit id="menu_adminFunction.alttitle" resname="menu_adminFunction.alttitle" approved="yes">
+        <source>Admin Functions</source>
+        <target state="final">Swyddogaethau Gweinyddol</target>
+      </trans-unit>
+      <trans-unit id="menu_adminFunction.description" resname="menu_adminFunction.description" approved="yes">
+        <source>The Admin Functions allow administrators to clear caches etc.</source>
+        <target state="final">Mae'r Swyddogaethau Gweinyddol yn caniatáu i weinyddwyr glirio caches ac ati.</target>
+      </trans-unit>
+      <trans-unit id="menu_adminFunction.details" resname="menu_adminFunction.details" xml:space="preserve" approved="yes">
+				<source>TYPO3 has multiple caching systems:
+
+&lt;b&gt;Database Cache&lt;/b&gt;
+A very central cache is the database cache table, "cache_hash", which needs to be flushed after certain major changes in the system. You "clear all cache" by clicking the link with the blue icon. After this operation any website content should be re-generated from the sources rather than be delivered from caches. This operation clears &lt;i&gt;all&lt;/i&gt; database tables registered as flushable cache tables.
+
+&lt;b&gt;Cached PHP configuration files from Extensions&lt;/b&gt;
+TYPO3 also caches small configuration scripts from extensions, "ext_localconf.php" and "ext_tables.php". These files are simply read from all installed extensions and concatenated into temporary PHP scripts found in the typo3temp/Cache/Code/cache_core/ folder. Sometimes you need to remove these files so TYPO3 re-writes them from the originals. This is done by the "Clear temp_CACHED" link.
+
+&lt;b&gt;Notice:&lt;/b&gt; You should not clear these caches without a second thought. Clearing caches may affect performance on your server negatively for a while. Obviously the cached content has to be regenerated which takes time and under heavy load it might make your server un-available for a while.</source>
+			<target state="final">Mae gan TYPO3 nifer o systemau caching:
+
+&lt;b&gt;Cache Cronfa Ddata&lt;/b&gt;
+Cache canolog iawn yw tabl storfa'r gronfa ddata, "cache_hash", y mae angen ei fflysio ar ôl rhai newidiadau mawr yn y system. Rydych chi'n "clirio pob storfa" trwy glicio ar y ddolen gyda'r eicon glas. Ar ôl y llawdriniaeth hon dylid ail-gynhyrchu unrhyw gynnwys gwefan o'r ffynonellau yn hytrach na'i ddosbarthu o storfeydd. Mae'r llawdriniaeth hon yn clirio &lt;i&gt;o'r&lt;/i&gt; tabl cronfa ddata sydd wedi'u cofrestru fel tablau storfa fflamadwy.
+
+&lt;b&gt;ffeiliau cyfluniad PHP wedi'u storio o Estyniadau&lt;/b&gt;
+TYPO3 hefyd yn cipio sgriptiau cyfluniad bach o estyniadau, "ext_localconf.php" ac "ext_tables.php". Mae'r ffeiliau hyn yn syml yn cael eu darllen o'r holl estyniadau sydd wedi'u gosod a'u cyd-fynd yn sgriptiau PHP dros dro a geir yn y ffolder typo3temp / Cache / Code / cache_core /. Weithiau mae angen i chi gael gwared ar y ffeiliau hyn fel bod TYPO3 yn eu hail-ysgrifennu o'r rhai gwreiddiol. Gwneir hyn gan y ddolen "Clear temp_CACHED".
+
+&lt;b&gt;Rhybudd:&lt;/b&gt; Ni ddylech glirio'r storfeydd hyn heb ail feddwl. Gall caches clirio effeithio'n negyddol ar berfformiad ar eich gweinydd am ychydig. Yn amlwg mae'n rhaid adfywio'r cynnwys wedi'i storio sy'n cymryd amser ac o dan lwyth trwm, fe allai sicrhau nad yw'ch gweinydd ar gael am ychydig.</target></trans-unit>
+      <trans-unit id="_menu_adminFunction.seeAlso" resname="_menu_adminFunction.seeAlso" approved="yes">
+        <source>be_users:admin</source>
+        <target state="final">be_users: admin</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_menu_adminFunction.image" resname="_menu_adminFunction.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_1.png</source>
+        <target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_1.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pagetree.alttitle" resname="pagetree.alttitle" approved="yes">
+        <source>The Page Tree</source>
+        <target state="final">Y Goeden Tudalen</target>
+      </trans-unit>
+      <trans-unit id="pagetree.description" resname="pagetree.description" approved="yes">
+        <source>This is the hierarchical organization of pages in TYPO3. Typically websites are build so they reflect the page structure in the page tree directly in the website navigation.</source>
+        <target state="final">Dyma drefn hierarchaidd tudalennau yn TYPO3. Yn nodweddiadol mae gwefannau yn cael eu hadeiladu fel eu bod yn adlewyrchu strwythur y dudalen yn y goeden dudalen yn uniongyrchol wrth fordwyo'r wefan.</target>
+      </trans-unit>
+      <trans-unit id="pagetree.details" resname="pagetree.details" xml:space="preserve" approved="yes">
+				<source>The page tree works like a file system. Each page is like a directory where you can store files. In TYPO3 you store database records inside of each page. Some of these records, typically called "Content Elements", contains the website content of pages. Other records can be from plugins like a glossary or a guestbook and they are only displayed indirectly by a plugin inserted as a Content Element.
+Some backend users will see only a part of the page tree for a website. This feature allows the administrator to configure backend users with different responsibilities for maintaining branches of the page tree.
+
+&lt;b&gt;Navigating the tree&lt;/b&gt;
+Simply click the +/- buttons to expand and contract the branches of the tree.
+If you click the page icons you should see a context menu pop up. It will contain options specifically for that page.
+Clicking the title of a page is another option. It will load the right frame of the Web main module with the selected sub-module. The content shown in the right frame will be related to the page clicked.</source>
+			<target state="final">Mae'r goeden dudalen yn gweithio fel system ffeiliau. Mae pob tudalen fel cyfeiriadur lle gallwch chi storio ffeiliau. Yn TYPO3 rydych chi'n storio cofnodion cronfa ddata y tu mewn i bob tudalen. Mae rhai o'r cofnodion hyn, a elwir yn nodweddiadol yn "Elfennau Cynnwys", yn cynnwys cynnwys gwefannau tudalennau. Gall cofnodion eraill ddod o ategion fel geirfa neu lyfr gwestai a dim ond ategyn a fewnosodir fel Elfen Cynnwys y cânt eu harddangos yn anuniongyrchol.
+Dim ond rhan o'r goeden dudalen ar gyfer gwefan y bydd rhai defnyddwyr backend yn ei gweld. Mae'r nodwedd hon yn caniatáu i'r gweinyddwr ffurfweddu defnyddwyr backend sydd â gwahanol gyfrifoldebau dros gynnal canghennau o'r goeden dudalen.
+
+&lt;b&gt;Llywio'r goeden&lt;/b&gt;
+Cliciwch ar y botymau +/- i ehangu a chontractio canghennau'r goeden.
+Os cliciwch yr eiconau tudalen dylech weld dewislen cyd-destun yn ymddangos. Bydd yn cynnwys opsiynau yn benodol ar gyfer y dudalen honno.
+clicio teitl tudalen yn opsiwn arall. Bydd yn llwytho ffrâm gywir prif fodiwl y We gyda'r is-fodiwl a ddewiswyd. Bydd y cynnwys a ddangosir yn y ffrâm gywir yn gysylltiedig â'r dudalen a gliciwch.</target></trans-unit>
+      <trans-unit id="_pagetree.seeAlso" resname="_pagetree.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module,
+More about the Page Tree | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageTree/
+Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_01.gif
+Clicking Icons or Titles? (Animation) | FILE:EXT:welcome/modsub/ani_06.gif
+Creating pages (Animation) | FILE:EXT:welcome/modsub/ani_07.gif
+Moving pages (Animation) | FILE:EXT:welcome/modsub/ani_08.gif</source>
+				
+			<target state="final">xMOD_csh_corebe: list_module,
+Mwy am y Goeden Tudalen | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageTree/
+Defnyddio'r goeden dudalen (Animeiddio) | FILE: EXT: croeso / modsub / ani_01.gif
+Eiconau Clicio neu Deitlau? (Animeiddio) | FILE: EXT: croeso / modsub / ani_06.gif
+Creu tudalennau (Animeiddio) | FILE: EXT: croeso / modsub / ani_07.gif
+Tudalennau symudol (Animeiddio) | FILE: EXT: croeso / modsub / ani_08.gif</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_pagetree.image" resname="_pagetree.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_4.png,
+EXT:core/Resources/Public/Images/cshimages/core_5.png,
+EXT:core/Resources/Public/Images/cshimages/core_6.png,
+EXT:core/Resources/Public/Images/cshimages/core_7.png</source>
+				
+			<target state="final">EXT: core / Resources / Public / Images / cshimages / core_4.png,
+EXT: core / Resources / Public / Images / cshimages / core_5.png,
+EXT: core / Resources / Public / Images / cshimages / core_6.png,
+ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_7.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="pagetree.image_descr" resname="pagetree.image_descr" xml:space="preserve" approved="yes">
+				<source>An example of a Page Tree in TYPO3. The page tree is available under any of the Web sub-modules in the menu.
+Clicking the icon of a page displays a context sensitive menu with options for that particular page.
+Clicking the title of a page in the page tree will load the right frame with the current submodule. The page id is passed to the module so it displays content related to the page you clicked.
+Holding the mouse pointer over a page icon for a few seconds will display tool-tip information telling you details about the state of the page. Here a page is access restricted and you will be told which group the access is set for by the tool-tip.</source>
+			<target state="final">Enghraifft o Goeden Tudalen yn TYPO3. Mae'r goeden dudalen ar gael o dan unrhyw un o'r is-fodiwlau Gwe yn y ddewislen.
+clicio eicon tudalen yn dangos bwydlen sy'n sensitif i gyd-destun gydag opsiynau ar gyfer y dudalen benodol honno.
+clicio teitl tudalen yn y goeden dudalen yn llwytho'r ffrâm gywir gyda'r is-fodiwl cyfredol. Mae'r id tudalen yn cael ei basio i'r modiwl felly mae'n dangos cynnwys sy'n gysylltiedig â'r dudalen y gwnaethoch chi ei chlicio.
+dal pwyntydd y llygoden dros eicon tudalen am ychydig eiliadau yn dangos gwybodaeth blaen offer yn dweud wrthych fanylion am gyflwr y dudalen. Yma mae tudalen yn gyfyngedig o ran mynediad a dywedir wrthych ar ba grŵp y mae'r domen offer yn gosod y mynediad.</target></trans-unit>
+      <trans-unit id="filetree.alttitle" resname="filetree.alttitle" approved="yes">
+        <source>The Folder Tree</source>
+        <target state="final">Y Goeden Ffolder</target>
+      </trans-unit>
+      <trans-unit id="filetree.description" resname="filetree.description" approved="yes">
+        <source>Shows the directory structure of a mounted path on the webserver. You can browse the folder tree like you are used to browse the file system on your own computer.</source>
+        <target state="final">Yn dangos strwythur cyfeirlyfr llwybr wedi'i osod ar y gwe-we. Gallwch bori trwy'r goeden ffolder fel rydych chi'n cael eich defnyddio i bori trwy'r system ffeiliau ar eich cyfrifiadur eich hun.</target>
+      </trans-unit>
+      <trans-unit id="filetree.details" resname="filetree.details" xml:space="preserve" approved="yes">
+				<source>The Folder Tree is available for any sub-module of the File main module in TYPO3. The File module is like a little web-based FTP-client inside of TYPO3 which allows you to upload, rename, copy, move, delete and edit files inside TYPO3.
+Most users of TYPO3 doesn't need access to the File module and sub-modules in order to upload images on web-pages. They can do this directly when editing Content Elements. But the File module is useful for maintaining collections of files on the server, for example an image archive or files for download.
+
+&lt;b&gt;Navigating the Folder Tree&lt;/b&gt;
+You can expand and contract the folder tree by the +/- icons.
+Clicking a folder icon will display a pop-up menu with options related to that particular folder. Options include copy/cut/paste, rename, upload etc.
+Clicking the folder title will load the currently active sub-module in the right frame of the backend. The sub-module will typically show files and folders inside the folder you clicked.
+
+&lt;b&gt;Granting access to the Folder Tree&lt;/b&gt;
+The administrator needs to allow backend users to access the File modules and in addition make a file mount available to them before they can use the Folder Tree.</source>
+			<target state="final">Mae'r Goeden Ffolder ar gael ar gyfer unrhyw is-fodiwl o'r prif fodiwl File yn TYPO3. Mae'r modiwl Ffeil fel ychydig o gleient FTP ar y we y tu mewn i TYPO3 sy'n eich galluogi i uwchlwytho, ailenwi, copïo, symud, dileu a golygu ffeiliau y tu mewn i TYPO3.
+Nid oes angen mynediad i'r modiwl Ffeil ac is-fodiwlau ar y mwyafrif o ddefnyddwyr TYPO3 er mwyn uwchlwytho delweddau ar dudalennau gwe. Gallant wneud hyn yn uniongyrchol wrth olygu Elfennau Cynnwys. Ond mae'r modiwl File yn ddefnyddiol ar gyfer cynnal casgliadau o ffeiliau ar y gweinydd, er enghraifft archif delweddau neu ffeiliau i'w lawrlwytho.
+
+&lt;b&gt;Llywio'r Goeden Ffolder&lt;/b&gt;
+Gallwch ehangu a chontractio'r goeden ffolder gan yr +/- eiconau.
+clicio eicon ffolder yn dangos dewislen naidlen gydag opsiynau sy'n gysylltiedig â'r ffolder benodol honno. Ymhlith yr opsiynau mae copi / torri / pastio, ailenwi, uwchlwytho ac ati.
+clicio teitl y ffolder yn llwytho'r is-fodiwl gweithredol ar hyn o bryd yn ffrâm dde'r backend. Bydd yr is-fodiwl fel arfer yn dangos ffeiliau a ffolderau y tu mewn i'r ffolder y gwnaethoch chi ei glicio.
+
+&lt;b&gt;Caniatáu mynediad i'r Goeden Ffolder&lt;/b&gt;
+Mae angen i'r gweinyddwr ganiatáu i ddefnyddwyr backend gael mynediad i'r modiwlau Ffeil ac ar ben hynny sicrhau bod mownt ffeil ar gael iddynt cyn y gallant ddefnyddio'r Goeden Ffolder.</target></trans-unit>
+      <trans-unit id="_filetree.seeAlso" resname="_filetree.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:groupMods,
+be_groups:file_mountpoints,
+be_users:file_mountpoints,
+Managing files in TYPO3 | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/ManagingFilesInTypo3/
+Uploading Files | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/UploadingImagesToTheArchive/,
+Details about file mounts | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/,
+sys_filemounts,
+xMOD_csh_corebe:filelist_module</source>
+				
+			<target state="final">be_groups: groupMods,
+be_groups: file_mountpoints,
+be_users: file_mountpoints,
+Rheoli ffeiliau yn TYPO3 | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/ManagingFilesInTypo3/
+Llwytho Ffeiliau | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/UploadingImagesToTheArchive/,
+Manylion am mowntiau ffeiliau | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/,
+sys_filemounts,
+xMOD_csh_corebe: filelist_module</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_filetree.image" resname="_filetree.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_8.png,
+EXT:core/Resources/Public/Images/cshimages/core_9.png,
+EXT:core/Resources/Public/Images/cshimages/core_10.png</source>
+				
+			<target state="final">EXT: core / Resources / Public / Images / cshimages / core_8.png,
+EXT: core / Resources / Public / Images / cshimages / core_9.png,
+EXT: core / Resources / Public / Images / cshimages / core_10.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="filetree.image_descr" resname="filetree.image_descr" xml:space="preserve" approved="yes">
+				<source>The Folder Tree of the "fileadmin/" folder. This is mounted by default for "Admin"-users. Other users will have to have a file mount configured for them first.
+Clicking the icon of a folder displays the context menu of the folder.
+If you click the folder title in the Folder Tree you will see the sub-module loaded in the right frame. Here it is the File &gt; Filelist module that will display files and folders inside. Clicking the icon of a file will display a context menu for the file.</source>
+			<target state="final">Coeden Ffolder y ffolder "fileadmin /". Mae hwn wedi'i osod yn ddiofyn ar gyfer "Admin" -users. Bydd yn rhaid i ddefnyddwyr eraill gael mownt ffeil wedi'i ffurfweddu ar eu cyfer yn gyntaf.
+clicio eicon ffolder yn dangos dewislen cyd-destun y ffolder.
+Os cliciwch deitl y ffolder yn y Goeden Ffolder fe welwch yr is-fodiwl wedi'i lwytho yn y ffrâm gywir. Dyma fodiwl Rhestr Ffeil Ffeil &gt; a fydd yn arddangos ffeiliau a ffolderau y tu mewn. Bydd clicio eicon ffeil yn dangos dewislen cyd-destun ar gyfer y ffeil.</target></trans-unit>
+      <trans-unit id="tcatree.collapseAll" resname="tcatree.collapseAll" approved="yes">
+        <source>Collapse All</source>
+        <target state="final">Cwymp Pawb</target>
+      </trans-unit>
+      <trans-unit id="tcatree.expandAll" resname="tcatree.expandAll" approved="yes">
+        <source>Expand All</source>
+        <target state="final">Ehangu Pawb</target>
+      </trans-unit>
+      <trans-unit id="tcatree.toggleHideUnchecked" resname="tcatree.toggleHideUnchecked" approved="yes">
+        <source>hide/show unchecked items</source>
+        <target state="final">cuddio / dangos eitemau heb eu gwirio</target>
+      </trans-unit>
+      <trans-unit id="tcatree.findItem" resname="tcatree.findItem" approved="yes">
+        <source>Find Item</source>
+        <target state="final">Dewch o Hyd i Eitem</target>
+      </trans-unit>
+      <trans-unit id="list_module.alttitle" resname="list_module.alttitle" approved="yes">
+        <source>The Web&gt;List module</source>
+        <target state="final">Y modiwl Rhestr&gt;</target>
+      </trans-unit>
+      <trans-unit id="list_module.description" resname="list_module.description" approved="yes">
+        <source>Listing records located on a page. From here you can copy/cut/paste records around in the system. You can edit records, access the change history of elements etc.</source>
+        <target state="final">Rhestru cofnodion ar dudalen. O'r fan hon, gallwch gopïo / torri / pastio cofnodion o gwmpas yn y system. Gallwch olygu cofnodion, cyrchu hanes newid elfennau ac ati.</target>
+      </trans-unit>
+      <trans-unit id="_list_module.seeAlso" resname="_list_module.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:pagetree,
+xMOD_csh_corebe:list_module_root,
+xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:TCEforms
+Selective Editing | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/SelectiveEditing/
+The List module ("Inside TYPO3") | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/CoreModules/ListModule/,</source>
+				
+			<target state="final">xMOD_csh_corebe: pagetree,
+xMOD_csh_corebe: list_module_root,
+xMOD_csh_corebe: filelist_module,
+xMOD_csh_corebe: TCEforms
+Golygu Dewisol | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/SelectiveEditing/
+Modiwl y Rhestr ("Y tu mewn i TYPO3") | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/CoreModules/ListModule/,</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_list_module.image" resname="_list_module.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_11.png,
+EXT:core/Resources/Public/Images/cshimages/core_12.png,
+EXT:core/Resources/Public/Images/cshimages/core_34.png,</source>
+				
+			<target state="final">EXT: core / Resources / Public / Images / cshimages / core_11.png,
+EXT: core / Resources / Public / Images / cshimages / core_12.png,
+EXT: core / Resources / Public / Images / cshimages / core_34.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="list_module.image_descr" resname="list_module.image_descr" xml:space="preserve" approved="yes">
+				<source>Here the page "Cameras" has been clicked in the page tree and in the right frame the Web&gt;List module shows the contents of the page. Here a single content element (Shop Plugin) is inserted in order to display the other items on the page which are three product records in this case.
+If you enable "Extended mode" and the "Clipboard" you will get additional buttons in the interface to operate on the records shown here. Also notice how you can click any record icon to get a "Clickmenu" for the element.
+Here you see the single-table mode active for the "Page content" table (Content Elements). In the fieldbox the "Hide" field is selected to be included in the listing. If you click any of the edit icons (marked with red border) you will be able to edit [from left to right] a) all listed fields (here "Header" and "Hide"), b) full record or c) a single field (eg. "Hide") for &lt;u&gt;only&lt;/u&gt; the selected records (defined by the checkboxes seen).</source>
+			<target state="final">Yma mae'r dudalen "Camerâu" wedi'i chlicio yn y goeden dudalen ac yn y ffrâm gywir mae'r&gt;dangos cynnwys y dudalen. Yma mewnosodir un elfen cynnwys (Shop Plugin) er mwyn arddangos yr eitemau eraill ar y dudalen sy'n dri chofnod cynnyrch yn yr achos hwn.
+Os ydych chi'n galluogi "modd estynedig" a'r "Clipfwrdd" fe gewch fotymau ychwanegol yn y rhyngwyneb i weithredu ar y cofnodion a ddangosir yma. Sylwch hefyd sut y gallwch glicio unrhyw eicon recordio i gael "Clickmenu" ar gyfer yr elfen.
+Yma fe welwch y modd un tabl yn weithredol ar gyfer y tabl "Cynnwys Tudalen" (Elfennau Cynnwys). Yn y blwch maes dewisir y maes "Cuddio" i'w gynnwys yn y rhestriad. Os cliciwch unrhyw un o'r eiconau golygu (wedi'u marcio â ffin goch) byddwch yn gallu golygu [o'r chwith i'r dde] a) yr holl feysydd rhestredig (yma "Pennawd" a "Cuddio"), b) cofnod llawn neu c) a maes sengl (ee. "Cuddio") ar gyfer &lt;u&gt;unig&lt;/u&gt; y cofnodion a ddewiswyd (a ddiffinnir gan y blychau gwirio a welir).</target></trans-unit>
+      <trans-unit id="list_module_noId.alttitle" resname="list_module_noId.alttitle" approved="yes">
+        <source>Web&gt;List module with no ID given</source>
+        <target state="final">Gwe&gt;Rhestr modiwl heb unrhyw ID wedi'i roi</target>
+      </trans-unit>
+      <trans-unit id="list_module_noId.description" resname="list_module_noId.description" approved="yes">
+        <source>The Web&gt;List module must have a page ID passed to it before it can display any content. Please click a page title in the Page Tree.</source>
+        <target state="final">Rhaid i'r modiwl Rhestr Gwe&gt;gael ID tudalen wedi'i basio iddo cyn y gall arddangos unrhyw gynnwys. Cliciwch ar deitl tudalen yn y Goeden Tudalen.</target>
+      </trans-unit>
+      <trans-unit id="_list_module_noId.seeAlso" resname="_list_module_noId.seeAlso" approved="yes">
+        <source>xMOD_csh_corebe:list_module</source>
+        <target state="final">xMOD_csh_corebe: list_module</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="list_module_root.alttitle" resname="list_module_root.alttitle" approved="yes">
+        <source>Root of the Page Tree</source>
+        <target state="final">Gwreiddyn y Goeden Dudalen</target>
+      </trans-unit>
+      <trans-unit id="list_module_root.description" resname="list_module_root.description" approved="yes">
+        <source>The root of the Page Tree is having id 0 (zero = no page) and the special circumstance is that records in the page tree root can be accessed and edited &lt;i&gt;only&lt;/i&gt; by "Admin" users.</source>
+        <target state="final">Mae gwraidd y Goeden Tudalen yn cael id 0 (sero = dim tudalen) a'r amgylchiad arbennig yw y gall defnyddwyr "Gweinyddol" &lt;i&gt;unig&lt;/i&gt;</target>
+      </trans-unit>
+      <trans-unit id="list_module_root.details" resname="list_module_root.details" xml:space="preserve" approved="yes">
+				<source>Only records from certain database tables are allowed to be created in the page tree root. This includes Backend Users, Backend Groups, File Mount records, Language records etc., and you cannot create Content Elements or Frontend Users in the root of the Page Tree. It also works the other way around; For example you cannot create Backend Users anywhere in the page tree.
+Usually records that are located in the page tree root are somehow "global" for the whole TYPO3 installation and doesn't make sense inside a specific branch of the page tree.</source>
+			<target state="final">Dim ond cofnodion o rai tablau cronfa ddata y caniateir eu creu yng ngwraidd coeden y dudalen. Mae hyn yn cynnwys Defnyddwyr Backend, Grwpiau Backend, cofnodion File Mount, cofnodion Iaith ac ati, ac ni allwch greu Elfennau Cynnwys na Defnyddwyr Frontend yng ngwraidd y Goeden Dudalen. Mae hefyd yn gweithio y ffordd arall; Er enghraifft ni allwch greu Defnyddwyr Backend yn unrhyw le yn y goeden dudalen.
+Fel arfer mae cofnodion sydd yng ngwraidd y goeden dudalen rywsut yn "fyd-eang" ar gyfer y gosodiad TYPO3 cyfan ac nid ydyn nhw'n gwneud synnwyr y tu mewn i gangen benodol o'r goeden dudalen.</target></trans-unit>
+      <trans-unit id="_list_module_root.seeAlso" resname="_list_module_root.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module
+The List module ("Inside TYPO3") | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/CoreModules/ListModule/</source>
+				
+			<target state="final">xMOD_csh_corebe: list_module
+Modiwl y Rhestr ("Y tu mewn i TYPO3") | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/CoreModules/ListModule/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_list_module_root.image" resname="_list_module_root.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_13.png,
+EXT:core/Resources/Public/Images/cshimages/core_14.png,</source>
+				
+			<target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_13.png,
+EXT: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_14.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="list_module_root.image_descr" resname="list_module_root.image_descr" xml:space="preserve" approved="yes">
+				<source>Example of records in the page tree root; Backend users, groups, filemounts and website languages.
+When "Admin"-users wants to create a new record in the page tree root they will see a limited number of record types to create. This reflects which tables are configured to be created in the page tree root.</source>
+			<target state="final">Enghraifft o gofnodion yng ngwraidd coeden y dudalen; Defnyddwyr backend, grwpiau, cyfrif ffeiliau ac ieithoedd gwefan.
+Pan fydd "Admin" -users eisiau creu cofnod newydd yng ngwraidd coeden y dudalen byddant yn gweld nifer gyfyngedig o fathau o gofnodion i'w creu. Mae hyn yn adlewyrchu pa dablau sydd wedi'u ffurfweddu i'w creu yng ngwraidd coeden y dudalen.</target></trans-unit>
+      <trans-unit id="list_clipboard.alttitle" resname="list_clipboard.alttitle" approved="yes">
+        <source>TYPO3 Clipboard</source>
+        <target state="final">Clipfwrdd TYPO3</target>
+      </trans-unit>
+      <trans-unit id="list_clipboard.description" resname="list_clipboard.description" approved="yes">
+        <source>The clipboard is an internal registry where records and files can be "stored" temporarily. Usually the clipboard is used for copy/cut/paste operations internally of one or more elements.</source>
+        <target state="final">Mae'r clipfwrdd yn gofrestrfa fewnol lle gellir "storio" cofnodion a ffeiliau dros dro. Fel arfer defnyddir y clipfwrdd ar gyfer gweithrediadau copi / torri / pastio yn fewnol o un neu fwy o elfennau.</target>
+      </trans-unit>
+      <trans-unit id="_list_clipboard.seeAlso" resname="_list_clipboard.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:filelist_clipboard,
+Using the clipboard | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/UsingTheListModuleEffectively/
+Numeric Clipboard pads | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/TheNumericClipboardPads-ManagingManyElements/
+Clipboard details [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/GeneralInterfaceFeatures/Clipboard/,
+Accessing clipboard in scripts [Technical] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/Clipboard/</source>
+				
+			<target state="final">xMOD_csh_corebe: list_module,
+xMOD_csh_corebe: filelist_clipboard,
+Defnyddio'r clipfwrdd | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/UsingTheListModuleEffectively/
+bad Clipfwrdd Rhifol | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/TheNumericClipboardPads-ManagingManyElements/
+Manylion y clipfwrdd [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/GeneralInterfaceFeatures/Clipboard/,
+Cyrchu clipfwrdd mewn sgriptiau [Technical] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/Clipboard/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_list_clipboard.image" resname="_list_clipboard.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_16.png,
+EXT:core/Resources/Public/Images/cshimages/core_17.png,</source>
+				
+			<target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_16.png,
+EXT: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_17.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="list_clipboard.image_descr" resname="list_clipboard.image_descr" xml:space="preserve" approved="yes">
+				<source>Whenever you use the copy/cut/paste functions in the clickmenus you will actually use the clipboard to store the element internally in TYPO3.
+If you select one of the numeric clipboard pads you will be able to store more than a single element on the clipboard at a time. In the record listings you will then see checkboxes next to the elements by which you can select/deselect elements for the clipboard.</source>
+			<target state="final">Pryd bynnag y byddwch chi'n defnyddio'r swyddogaethau copi / torri / pastio yn y clicmenus, byddwch chi mewn gwirionedd yn defnyddio'r clipfwrdd i storio'r elfen yn fewnol yn TYPO3.
+Os dewiswch un o'r padiau clipfwrdd rhifol byddwch yn gallu storio mwy nag un elfen ar y clipfwrdd ar y tro. Yn y rhestrau cofnodion fe welwch flychau gwirio wrth ymyl yr elfennau y gallwch ddewis / dad-ddewis elfennau ar gyfer y clipfwrdd.</target></trans-unit>
+      <trans-unit id="list_searchbox.alttitle" resname="list_searchbox.alttitle" approved="yes">
+        <source>Search Box</source>
+        <target state="final">Blwch Chwilio</target>
+      </trans-unit>
+      <trans-unit id="list_searchbox.description" resname="list_searchbox.description" approved="yes">
+        <source>By this search box you can do a free text search in all the listed records. You can also search recursively in sub-pages by selecting a number of levels to search in the selector box to the right of the search field.</source>
+        <target state="final">Trwy'r blwch chwilio hwn gallwch wneud chwiliad testun am ddim yn yr holl gofnodion rhestredig. Gallwch hefyd chwilio'n gylchol mewn is-dudalennau trwy ddewis nifer o lefelau i'w chwilio yn y blwch dewiswyr i'r dde o'r maes chwilio.</target>
+      </trans-unit>
+      <trans-unit id="_list_searchbox.seeAlso" resname="_list_searchbox.seeAlso" approved="yes">
+        <source>xMOD_csh_corebe:list_module</source>
+        <target state="final">xMOD_csh_corebe: list_module</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_list_searchbox.image" resname="_list_searchbox.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_15.png,</source>
+        <target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_15.png,</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="list_options.alttitle" resname="list_options.alttitle" approved="yes">
+        <source>List module options</source>
+        <target state="final">Rhestrwch opsiynau modiwl</target>
+      </trans-unit>
+      <trans-unit id="list_options.description" resname="list_options.description" approved="yes">
+        <source>Enable additional options like the "Extended view" mode to see additional control buttons for each record in the listing or the "Clipboard" to see the clipboard and its content.</source>
+        <target state="final">Galluogi opsiynau ychwanegol fel y modd "Golwg estynedig" i weld botymau rheoli ychwanegol ar gyfer pob cofnod yn y rhestriad neu'r "Clipfwrdd" i weld y clipfwrdd a'i gynnwys.</target>
+      </trans-unit>
+      <trans-unit id="_list_options.seeAlso" resname="_list_options.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:list_clipboard,
+xMOD_csh_corebe:filelist_options</source>
+				
+			<target state="final">xMOD_csh_corebe: list_module,
+xMOD_csh_corebe: list_clipboard,
+xMOD_csh_corebe: filelist_options</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_list_options.image" resname="_list_options.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_18.png,
+EXT:core/Resources/Public/Images/cshimages/core_19.png,</source>
+				
+			<target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_18.png,
+EXT: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_19.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="list_options.image_descr" resname="list_options.image_descr" xml:space="preserve" approved="yes">
+				<source>The options checkboxes.
+Selecting "Extended view" will enable the control buttons in the record lists.</source>
+			<target state="final">Y blychau gwirio opsiynau.
+dewis "Golwg estynedig" yn galluogi'r botymau rheoli yn y rhestrau cofnodion.</target></trans-unit>
+      <trans-unit id="pagetree_overview.alttitle" resname="pagetree_overview.alttitle" approved="yes">
+        <source>Pagetree Overview</source>
+        <target state="final">Trosolwg Pagetree</target>
+      </trans-unit>
+      <trans-unit id="pagetree_overview.description" resname="pagetree_overview.description" approved="yes">
+        <source>The Pagetree Overview shows information related to pages for a branch of the page tree. This includes start- and stop-times, cache settings etc.</source>
+        <target state="final">Mae Trosolwg Pagetree yn dangos gwybodaeth sy'n gysylltiedig â thudalennau ar gyfer cangen o'r goeden dudalen. Mae hyn yn cynnwys amseroedd cychwyn a stopio, gosodiadau storfa ac ati.</target>
+      </trans-unit>
+      <trans-unit id="_pagetree_overview.seeAlso" resname="_pagetree_overview.seeAlso" xml:space="preserve" approved="yes">
+				<source>_MOD_web_info:func_0,
+_MOD_web_info:func_1,
+_MOD_web_info:func_2,
+_MOD_web_info:stat</source>
+				
+			<target state="final">_MOD_web_info: func_0,
+_MOD_web_info: func_1,
+_MOD_web_info: func_2,
+_MOD_web_info: stat</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_pagetree_overview.image" resname="_pagetree_overview.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_1.png</source>
+        <target state="final">ESTYN: frontend / Adnoddau / Cyhoeddus / Delweddau / cshimages / pagetree_overview_1.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pagetree_overview.image_descr" resname="pagetree_overview.image_descr" approved="yes">
+        <source>One of the features of the Pagetree Overview module is that you can see what types of records are found on pages in a branch. Here record counts are shown for a page tree branch 2 levels down.</source>
+        <target state="final">Un o nodweddion modiwl Trosolwg Pagetree yw y gallwch weld pa fathau o gofnodion sydd i'w cael ar dudalennau mewn cangen. Yma dangosir cyfrifiadau ar gyfer cangen coeden dudalen 2 lefel i lawr.</target>
+      </trans-unit>
+      <trans-unit id="new_regular.alttitle" resname="new_regular.alttitle" approved="yes">
+        <source>Create new record</source>
+        <target state="final">Creu cofnod newydd</target>
+      </trans-unit>
+      <trans-unit id="new_regular.description" resname="new_regular.description" approved="yes">
+        <source>This list shows the types of records (database tables) you can create on the page. Click a table name to select the type.</source>
+        <target state="final">Mae'r rhestr hon yn dangos y mathau o gofnodion (tablau cronfa ddata) y gallwch eu creu ar y dudalen. Cliciwch enw tabl i ddewis y math.</target>
+      </trans-unit>
+      <trans-unit id="_new_regular.seeAlso" resname="_new_regular.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:new_pages</source>
+				
+			<target state="final">xMOD_csh_corebe: new_ce,
+xMOD_csh_corebe: new_pages</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_new_regular.image" resname="_new_regular.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_70.png</source>
+        <target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_70.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="new_regular.image_descr" resname="new_regular.image_descr" approved="yes">
+        <source>The selection of records a user can create on this particular page. The selection depends on the user's permissions and the page type. For example a Folder page type can contain any kind of record while regular pages can contain only some types (like Content Elements).</source>
+        <target state="final">Y dewis o gofnodion y gall defnyddiwr eu creu ar y dudalen benodol hon. Mae'r dewis yn dibynnu ar ganiatâd y defnyddiwr a'r math o dudalen. Er enghraifft, gall math o dudalen Ffolder gynnwys unrhyw fath o gofnod tra gall tudalennau rheolaidd gynnwys rhai mathau yn unig (fel Elfennau Cynnwys).</target>
+      </trans-unit>
+      <trans-unit id="new_pages.alttitle" resname="new_pages.alttitle" approved="yes">
+        <source>Create new page wizard</source>
+        <target state="final">Creu dewin tudalen newydd</target>
+      </trans-unit>
+      <trans-unit id="new_pages.description" resname="new_pages.description" approved="yes">
+        <source>Creating a new page means you have to find a position for it in the page tree. This wizard helps you find this position easily by clicking the flashing arrow pointing to the position you want.</source>
+        <target state="final">Mae creu tudalen newydd yn golygu bod yn rhaid i chi ddod o hyd i safle ar ei chyfer yn y goeden dudalen. Mae'r dewin hwn yn eich helpu i ddod o hyd i'r sefyllfa hon yn hawdd trwy glicio ar y saeth sy'n fflachio gan bwyntio at y safle rydych chi ei eisiau.</target>
+      </trans-unit>
+      <trans-unit id="_new_pages.seeAlso" resname="_new_pages.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:new_regular,
+xMOD_csh_corebe:new_ce,
+How to create a new page | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/</source>
+				
+			<target state="final">xMOD_csh_corebe: new_regular,
+xMOD_csh_corebe: new_ce,
+Sut i greu tudalen newydd | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_new_pages.image" resname="_new_pages.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_20.png,
+EXT:core/Resources/Public/Images/cshimages/core_21.png,</source>
+				
+			<target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_20.png,
+EXT: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_21.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="new_pages.image_descr" resname="new_pages.image_descr" xml:space="preserve" approved="yes">
+				<source>Between each page in the tree you find small icons that point out a place for a new page. Select a position by clicking one of these icons.
+To access the "Create new page wizard" in the first place, just click the link in the Create new record dialog.</source>
+			<target state="final">Rhwng pob tudalen yn y goeden fe welwch eiconau bach sy'n tynnu sylw at le ar gyfer tudalen newydd. Dewiswch safle trwy glicio ar un o'r eiconau hyn.
+I gael mynediad i'r "Creu dewin tudalen newydd" yn y lle cyntaf, cliciwch ar y ddolen yn y dialog Creu cofnod newydd.</target></trans-unit>
+      <trans-unit id="new_ce.alttitle" resname="new_ce.alttitle" approved="yes">
+        <source>Create new Content Element Wizard</source>
+        <target state="final">Creu Dewin Elfen Cynnwys newydd</target>
+      </trans-unit>
+      <trans-unit id="new_ce.description" resname="new_ce.description" approved="yes">
+        <source>Content Elements come in many flavors and inserting new content on a page means you have to select the right element type. This wizard helps you to pick a main type of element before you actually begin to enter content.</source>
+        <target state="final">Mae gan Elfennau Cynnwys lawer o flasau ac mae mewnosod cynnwys newydd ar dudalen yn golygu bod yn rhaid i chi ddewis y math cywir o elfen. Mae'r dewin hwn yn eich helpu i ddewis prif fath o elfen cyn i chi ddechrau mewnbynnu cynnwys.</target>
+      </trans-unit>
+      <trans-unit id="new_ce.details" resname="new_ce.details" approved="yes">
+        <source>Selecting an element type here will just preset the content element with certain values. You can always change the values later and if you cannot find exactly the type you need you can just pick the one that comes closest to your need, then adjust the details later.</source>
+        <target state="final">Bydd dewis math o elfen yma yn rhagosod yr elfen gynnwys gyda rhai gwerthoedd yn unig. Gallwch chi bob amser newid y gwerthoedd yn nes ymlaen ac os na allwch chi ddod o hyd i'r union fath sydd ei angen arnoch chi gallwch ddewis yr un sydd agosaf at eich angen, yna addaswch y manylion yn nes ymlaen.</target>
+      </trans-unit>
+      <trans-unit id="_new_ce.seeAlso" resname="_new_ce.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_regular,
+How to create new page content | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/
+More about Content Element types | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageContent/
+Adding Custom elements [Technical] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/ContentElementWizard/</source>
+				
+			<target state="final">xMOD_csh_corebe: new_pages,
+xMOD_csh_corebe: new_regular,
+Sut i greu cynnwys tudalen newydd | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/
+Mwy am fathau Elfen Cynnwys | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageContent/
+Ychwanegu elfennau Custom [Technical] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/ContentElementWizard/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_new_ce.image" resname="_new_ce.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_22.png,
+EXT:core/Resources/Public/Images/cshimages/core_23.png,
+EXT:core/Resources/Public/Images/cshimages/core_24.png,</source>
+				
+			<target state="final">EXT: core / Resources / Public / Images / cshimages / core_22.png,
+EXT: core / Resources / Public / Images / cshimages / core_23.png,
+EXT: core / Resources / Public / Images / cshimages / core_24.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="new_ce.image_descr" resname="new_ce.image_descr" xml:space="preserve" approved="yes">
+				<source>The Content Element wizard presents a set of preset types. Just select one by clicking its title.
+After selecting the type you will (often) have to select a position of the element among the other existing Content Elements on the page.
+You can access the Content Element wizard from the Create new record dialog.</source>
+			<target state="final">Mae'r dewin Elfen Cynnwys yn cyflwyno set o fathau rhagosodedig. Dewiswch un trwy glicio ar ei deitl.
+Ar ôl dewis y math bydd yn rhaid i chi (yn aml) ddewis safle o'r elfen ymhlith yr Elfennau Cynnwys eraill sy'n bodoli ar y dudalen.
+Gallwch gyrchu'r dewin Elfen Cynnwys o'r ymgom Creu cofnod newydd.</target></trans-unit>
+      <trans-unit id="move_el_pages.alttitle" resname="move_el_pages.alttitle" approved="yes">
+        <source>Move page wizard</source>
+        <target state="final">Symud dewin tudalen</target>
+      </trans-unit>
+      <trans-unit id="move_el_pages.description" resname="move_el_pages.description" approved="yes">
+        <source>By this wizard you can visually re-position (or copy) a page inside TYPO3. The element you move is shown in the top.</source>
+        <target state="final">Yn ôl y dewin hwn gallwch ail-leoli (neu gopïo) tudalen y tu mewn i TYPO3. Dangosir yr elfen rydych chi'n ei symud yn y brig.</target>
+      </trans-unit>
+      <trans-unit id="move_el_pages.details" resname="move_el_pages.details" approved="yes">
+        <source>As an alternative to using the regular Copy/Cut/Paste functions in the clickmenus of records you can also use the move-page wizard. It lets you re-position a page by a visual view of the page tree rather than using the concept of "Paste into" and "Paste after".</source>
+        <target state="final">Fel dewis arall yn lle defnyddio'r swyddogaethau Copïo / Torri / Gludo rheolaidd yn y clicwsws o gofnodion gallwch hefyd ddefnyddio'r dewin tudalen symud. Mae'n caniatáu ichi ail-leoli tudalen trwy olwg weledol o'r goeden dudalen yn hytrach na defnyddio'r cysyniad o "Gludo i mewn" a "Gludo ar ôl".</target>
+      </trans-unit>
+      <trans-unit id="_move_el_pages.seeAlso" resname="_move_el_pages.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_pages,
+Moving pages | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/</source>
+				
+			<target state="final">xMOD_csh_corebe: move_el_cs,
+xMOD_csh_corebe: new_pages,
+Tudalennau symudol | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_move_el_pages.image" resname="_move_el_pages.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_27.png,
+EXT:core/Resources/Public/Images/cshimages/core_28.png,</source>
+				
+			<target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_27.png,
+EXT: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_28.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="move_el_pages.image_descr" resname="move_el_pages.image_descr" xml:space="preserve" approved="yes">
+				<source>The wizard works like when you create new pages with the wizard; You position the element by the grey arrows.
+To access the "Move page wizard" you open the clickmenu of the page, select "More options..." and then "Move page". Alternatively you can click the "Move page" icon in the "Extended view" of the Web&gt;List module.</source>
+			<target state="final">Mae'r dewin yn gweithio fel pan fyddwch chi'n creu tudalennau newydd gyda'r dewin; Rydych chi'n gosod yr elfen wrth y saethau llwyd.
+Er mwyn cyrchu'r "Dewin tudalen symud" rydych chi'n agor clic-dudalen y dudalen, dewiswch "Mwy o opsiynau ..." ac yna "Symud tudalen". Fel arall gallwch glicio ar yr eicon "Symud tudalen" yn "Golwg estynedig" y modiwl Rhestr&gt;</target></trans-unit>
+      <trans-unit id="move_el_cs.alttitle" resname="move_el_cs.alttitle" approved="yes">
+        <source>Move Content Element Wizard</source>
+        <target state="final">Symud Dewin Elfen Cynnwys</target>
+      </trans-unit>
+      <trans-unit id="move_el_cs.description" resname="move_el_cs.description" approved="yes">
+        <source>By this wizard you can visually re-position (or copy) a Content Element inside TYPO3. The element you move is shown in the top.</source>
+        <target state="final">Yn ôl y dewin hwn gallwch ail-leoli (neu gopïo) Elfen Cynnwys y tu mewn i TYPO3. Dangosir yr elfen rydych chi'n ei symud yn y brig.</target>
+      </trans-unit>
+      <trans-unit id="move_el_cs.details" resname="move_el_cs.details" approved="yes">
+        <source>By the grey icons in the content element list you can point out the new position of the content element. If you need to move the element to another page, simply browse the page tree in the bottom of the wizard.</source>
+        <target state="final">Yn ôl yr eiconau llwyd yn y rhestr elfennau cynnwys gallwch dynnu sylw at safle newydd yr elfen gynnwys. Os oes angen i chi symud yr elfen i dudalen arall, dim ond pori'r goeden dudalen yng ngwaelod y dewin.</target>
+      </trans-unit>
+      <trans-unit id="_move_el_cs.seeAlso" resname="_move_el_cs.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_regular</source>
+				
+			<target state="final">xMOD_csh_corebe: move_el_pages,
+xMOD_csh_corebe: new_regular</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_move_el_cs.image" resname="_move_el_cs.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_25.png,
+EXT:core/Resources/Public/Images/cshimages/core_26.png,</source>
+				
+			<target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_25.png,
+EXT: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_26.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="move_el_cs.image_descr" resname="move_el_cs.image_descr" xml:space="preserve" approved="yes">
+				<source>The wizard works like when you create new Content Elements with the wizard; You position the element by the grey arrows.
+To access the "Move Content Element Wizard" you click the "Move element" icon in the "Extended view" of the Web&gt;List module.</source>
+			<target state="final">Mae'r dewin yn gweithio fel pan fyddwch chi'n creu Elfennau Cynnwys newydd gyda'r dewin; Rydych chi'n gosod yr elfen wrth y saethau llwyd.
+I gyrchu'r "Dewin Elfen Cynnwys Cynnwys" rydych chi'n clicio ar yr eicon "Symud elfen" yn "Golwg estynedig" y modiwl Rhestr&gt;</target></trans-unit>
+      <trans-unit id="history_log.alttitle" resname="history_log.alttitle" approved="yes">
+        <source>History log</source>
+        <target state="final">Log hanes</target>
+      </trans-unit>
+      <trans-unit id="history_log.description" resname="history_log.description" approved="yes">
+        <source>The History log gives you a visual overview of the changes that has happened to the element over the last editing operations. You can roll back changes to any state by using the icons in the interface.</source>
+        <target state="final">Mae'r log Hanes yn rhoi trosolwg gweledol i chi o'r newidiadau sydd wedi digwydd i'r elfen dros y gweithrediadau golygu diwethaf. Gallwch dreiglo newidiadau i unrhyw wladwriaeth yn ôl trwy ddefnyddio'r eiconau yn y rhyngwyneb.</target>
+      </trans-unit>
+      <trans-unit id="history_log.details" resname="history_log.details" xml:space="preserve" approved="yes">
+				<source>By default 20 states of history data is preserved in TYPO3 and after a week it expires. The history is very useful for tracking changes to a record since you can see which user did what at which point in time - and roll back any changes you didn't like.
+If you click the roll-back pencil you will revert the element to the state it had at that particular time.
+If you click the Info icon you will see in detail what the difference is from current time to this state of the element.
+
+&lt;b&gt;Configuring levels and expire times [for admins]&lt;/b&gt;
+If you want to extend the number of history states to above the default 20 you can easily do so using Page TSconfig - meaning that it can even depend on the branch of the page tree where the record is stored! See link below.
+
+&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</source>
+			<target state="final">Yn ddiofyn cedwir 20 cyflwr hanes yn TYPO3 ac ar ôl wythnos mae'n dod i ben. Mae'r hanes yn ddefnyddiol iawn ar gyfer olrhain newidiadau i gofnod oherwydd gallwch weld pa ddefnyddiwr a wnaeth beth ar yr adeg honno - a rholio yn ôl unrhyw newidiadau nad oeddech yn eu hoffi.
+Os cliciwch y pensil dychwelyd, byddwch yn dychwelyd yr elfen i'r cyflwr a oedd ganddo ar yr adeg benodol honno.
+Os cliciwch yr eicon Gwybodaeth fe welwch yn fanwl beth yw'r gwahaniaeth o'r amser cyfredol i gyflwr yr elfen hon.
+
+&lt;b&gt;Ffurfweddu lefelau ac amseroedd dod i ben [ar gyfer edmygwyr]&lt;/b&gt;
+Os ydych chi am ymestyn nifer y taleithiau hanes i fod yn uwch na'r 20 diofyn, gallwch chi wneud hynny'n hawdd gan ddefnyddio Tudalen TSconfig - sy'n golygu y gall hyd yn oed ddibynnu ar gangen y goeden dudalen lle mae'r cofnod yn cael ei storio! Gweler y ddolen isod.
+
+&lt;b&gt;Rhybudd:&lt;/b&gt; Os na welwch werthoedd gwahaniaeth coch / gwyrdd, nid yw'r gweinydd TYPO3 yn rhedeg ymlaen yn cefnogi gwneud safbwyntiau gwahaniaeth neu mae wedi'i ffurfweddu'n anghywir i ddarparu'r nodwedd hon.</target></trans-unit>
+      <trans-unit id="_history_log.image" resname="_history_log.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_37.png,
+EXT:core/Resources/Public/Images/cshimages/core_38.png</source>
+				
+			<target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_37.png,
+EXT: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_38.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="history_log.image_descr" resname="history_log.image_descr" xml:space="preserve" approved="yes">
+				<source>You can access the History/Undo log from the Web&gt;List module when in "Extended view" mode. Alternatively you can access it under "More options..." in the clickmenu of an element.
+The History log shows visually the changes between each step of editing.</source>
+			<target state="final">Gallwch gyrchu'r log Hanes / Dadwneud o'r&gt;pan yn y modd "Golwg estynedig". Fel arall gallwch ei gyrchu o dan "Mwy o opsiynau ..." yng nghlicio elfen.
+Mae'r log Hanes yn dangos yn weledol y newidiadau rhwng pob cam o olygu.</target></trans-unit>
+      <trans-unit id="history_sum.alttitle" resname="history_sum.alttitle" approved="yes">
+        <source>History Summary</source>
+        <target state="final">Crynodeb Hanes</target>
+      </trans-unit>
+      <trans-unit id="history_sum.description" resname="history_sum.description" approved="yes">
+        <source>This shows the total difference between the selected state in history to the current state of this element.</source>
+        <target state="final">Mae hyn yn dangos cyfanswm y gwahaniaeth rhwng y wladwriaeth a ddewiswyd mewn hanes i gyflwr presennol yr elfen hon.</target>
+      </trans-unit>
+      <trans-unit id="history_sum.details" resname="history_sum.details" xml:space="preserve" approved="yes">
+				<source>You can browse forth and back in the history using the arrow buttons in the upper left corner. You can also save a state in history by the little "disk-icon".
+Finally you can revert either the whole record to this state in history by the revert icon in the top &lt;em&gt;or&lt;/em&gt; you can revert only a single field if you like to by clicking the revert icon displayed for each field.
+
+&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</source>
+			<target state="final">Gallwch bori ymlaen ac yn ôl yn yr hanes gan ddefnyddio'r botymau saeth yn y gornel chwith uchaf. Gallwch hefyd arbed gwladwriaeth mewn hanes gan yr "eicon disg" bach.
+Yn olaf, gallwch ddychwelyd y cofnod cyfan i'r cyflwr hwn mewn hanes gan yr eicon dychwelyd yn yr &lt;em&gt;neu&lt;/em&gt; uchaf, gallwch ddychwelyd un maes yn unig os dymunwch trwy glicio ar yr eicon dychwelyd a ddangosir ar gyfer pob maes.
+
+&lt;b&gt;Rhybudd:&lt;/b&gt; Os na welwch werthoedd gwahaniaeth coch / gwyrdd, nid yw'r gweinydd TYPO3 yn rhedeg ymlaen yn cefnogi gwneud barn gwahaniaeth neu mae wedi'i ffurfweddu'n anghywir i ddarparu'r nodwedd hon.</target></trans-unit>
+      <trans-unit id="_history_sum.image" resname="_history_sum.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_39.png</source>
+        <target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_39.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="history_sum.image_descr" resname="history_sum.image_descr" approved="yes">
+        <source>The Info view of a state in history shows the "sum" of changes from current time to that point in history for the element.</source>
+        <target state="final">Mae'r farn Gwybodaeth am wladwriaeth mewn hanes yn dangos "swm" y newidiadau o'r amser cyfredol i'r pwynt hwnnw mewn hanes ar gyfer yr elfen.</target>
+      </trans-unit>
+      <trans-unit id="history_entry.alttitle" resname="history_entry.alttitle" approved="yes">
+        <source>Log entry history</source>
+        <target state="final">Hanes mynediad log</target>
+      </trans-unit>
+      <trans-unit id="history_entry.description" resname="history_entry.description" approved="yes">
+        <source>This view displays the changes made to the content element for the log entry you clicked. The red and green values in the text shows the previous/new values of the record.</source>
+        <target state="final">Mae'r olygfa hon yn dangos y newidiadau a wnaed i'r elfen gynnwys ar gyfer y cofnod log y gwnaethoch chi ei glicio. Mae'r gwerthoedd coch a gwyrdd yn y testun yn dangos gwerthoedd blaenorol / newydd y cofnod.</target>
+      </trans-unit>
+      <trans-unit id="history_entry.details" resname="history_entry.details" approved="yes">
+        <source>&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</source>
+        <target state="final">&lt;b&gt;Rhybudd:&lt;/b&gt; Os na welwch werthoedd gwahaniaeth coch / gwyrdd, nid yw'r gweinydd TYPO3 yn rhedeg ymlaen yn cefnogi gwneud safbwyntiau gwahaniaeth neu mae wedi'i ffurfweddu'n anghywir i ddarparu'r nodwedd hon.</target>
+      </trans-unit>
+      <trans-unit id="_history_entry.image" resname="_history_entry.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_40.png</source>
+        <target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_40.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="TCEforms.alttitle" resname="TCEforms.alttitle" approved="yes">
+        <source>TYPO3 Editing Forms</source>
+        <target state="final">Ffurflenni Golygu TYPO3</target>
+      </trans-unit>
+      <trans-unit id="TCEforms.description" resname="TCEforms.description" approved="yes">
+        <source>All records in TYPO3 is edited through a standardized form interface like the one you see here. No matter if you edit pages, content elements, guestbook items or user records you will use the same familiar interface.</source>
+        <target state="final">Mae'r holl gofnodion yn TYPO3 yn cael eu golygu trwy ryngwyneb ffurflen safonol fel yr un a welwch yma. Ni waeth a ydych chi'n golygu tudalennau, elfennau cynnwys, eitemau llyfrau gwestai neu gofnodion defnyddwyr, byddwch chi'n defnyddio'r un rhyngwyneb cyfarwydd.</target>
+      </trans-unit>
+      <trans-unit id="TCEforms.details" resname="TCEforms.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Saving content&lt;/b&gt;
+Just press one of the save-buttons in the top of bottom of the form. There are some variants allowing you to "Save and close document" or "Save document and View page". The latter will save the document and open a new window where the affected page is shown (be sure to disable pop-up blockers for this function!)
+
+&lt;b&gt;Editing multiple records at a time&lt;/b&gt;
+From the Web&gt;List module you can activate editing of multiple records at a time. This is done when you list a single table and enable multiple columns for display (see Web&gt;List module for details) - then icons will link you to a form with multiple records displayed, possibly with only certain fields available for editing.
+
+&lt;b&gt;Frontend Editing&lt;/b&gt;
+Another way of editing records in TYPO3 is using the website frontend. Depending on your user credentials you will see small pencil icons in the frontend. When you click these you will be guided to a form where you can also change the content.
+
+&lt;b&gt;Customize the forms [for Admins]&lt;/b&gt;
+You can customize the TCEforms in many ways using User TSconfig and Page TSconfig. See links below.</source>
+			<target state="final">&lt;b&gt;Arbed cynnwys&lt;/b&gt;
+Pwyswch un o'r botymau arbed ar frig gwaelod y ffurflen. Mae yna rai amrywiadau sy'n eich galluogi i "Cadw a chau dogfen" neu "Cadw dogfen a Gweld tudalen". Bydd yr olaf yn arbed y ddogfen ac yn agor ffenestr newydd lle dangosir y dudalen yr effeithir arni (gwnewch yn siŵr eich bod yn analluogi atalyddion naidlen ar gyfer y swyddogaeth hon!)
+
+&lt;b&gt;Golygu cofnodion lluosog ar y tro&lt;/b&gt;
+O'r&gt;gallwch actifadu. golygu nifer o gofnodion ar y tro. Gwneir hyn pan fyddwch yn rhestru un tabl ac yn galluogi sawl colofn i'w harddangos (gweler&gt;am fanylion) - yna bydd eiconau yn eich cysylltu â ffurflen gyda chofnodion lluosog yn cael eu harddangos, o bosibl gyda dim ond rhai meysydd ar gael i'w golygu.
+
+&lt;b&gt;Golygu Frontend&lt;/b&gt;
+Ffordd arall o olygu cofnodion yn TYPO3 yw defnyddio'r frontend gwefan. Yn dibynnu ar eich cymwysterau defnyddiwr fe welwch eiconau pensil bach yn y ffrynt. Pan gliciwch y rhain cewch eich tywys i ffurflen lle gallwch hefyd newid y cynnwys.
+
+&lt;b&gt;Addaswch y ffurflenni [ar gyfer Admins]&lt;/b&gt;
+Gallwch chi addasu'r TCEforms mewn sawl ffordd gan ddefnyddio User TSconfig a Page TSconfig. Gweler y dolenni isod.</target></trans-unit>
+      <trans-unit id="_TCEforms.seeAlso" resname="_TCEforms.seeAlso" xml:space="preserve" approved="yes">
+				<source>Editing pages | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/
+Frontend Editing | http://typo3.org/documentation/document-library/doc_tut_quickstart/Frontend_editing/,
+xMOD_csh_corebe:list_module
+User TSconfig related to forms | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/
+Page TSconfig related to forms | https://docs.typo3.org/typo3cms/CoreApiReference/Rte/Transformations/Tsconfig/
+Linking to the edit forms [Technical] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/EditLinks/</source>
+			<target state="final">Tudalennau golygu | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/
+Golygu Frontend | http://typo3.org/documentation/document-library/doc_tut_quickstart/Frontend_editing/,
+xMOD_csh_corebe: list_module
+Defnyddiwr TSconfig yn gysylltiedig â ffurflenni | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/
+Tudalen TSconfig yn ymwneud â ffurflenni | https://docs.typo3.org/typo3cms/CoreApiReference/Rte/Transformations/Tsconfig/
+Cysylltu â'r ffurflenni golygu [Technical] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/EditLinks/</target></trans-unit>
+      <trans-unit id="_TCEforms.image" resname="_TCEforms.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_30.png,
+EXT:core/Resources/Public/Images/cshimages/core_29.png,
+EXT:core/Resources/Public/Images/cshimages/core_32.png,
+EXT:core/Resources/Public/Images/cshimages/core_33.png,
+EXT:core/Resources/Public/Images/cshimages/core_31.png,</source>
+				
+			<target state="final">EXT: core / Resources / Public / Images / cshimages / core_30.png,
+EXT: core / Resources / Public / Images / cshimages / core_29.png,
+EXT: core / Resources / Public / Images / cshimages / core_32.png,
+ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_33.png,
+EXT: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_31.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="TCEforms.image_descr" resname="TCEforms.image_descr" xml:space="preserve" approved="yes">
+				<source>This is how a typical record is edited in TYPO3. The form display is standardized for all types of records. You will always see the same buttons in the top for saving or closing. In the blue bar you will see the type of record (table name) and the ID number that each record has (uid). Here the record is a page with ID "2" and the title "Content Elements".
+The "additional fields" from the example above is located in a so called "palette". This is an example of three content elements being edited at the same time. You can edit multiple records by using the links from the Web&gt;List module in single-table mode. Notice that not only are three records shown at the same time - it is also a limited number of fields shown for editing, here "Header" and "Hide". You can combine this almost any way you like. This is of course very useful if you need to edit only the header of multiple records.</source>
+			<target state="final">Dyma sut mae cofnod nodweddiadol yn cael ei olygu yn TYPO3. Mae'r arddangosfa ffurflen wedi'i safoni ar gyfer pob math o gofnodion. Byddwch bob amser yn gweld yr un botymau yn y brig ar gyfer arbed neu gau. Yn y bar glas fe welwch y math o gofnod (enw'r tabl) a'r rhif ID sydd gan bob cofnod (uid). Yma mae'r cofnod yn dudalen gydag ID "2" a'r teitl "Elfennau Cynnwys".
+Mae'r "caeau ychwanegol" o'r enghraifft uchod wedi'u lleoli mewn "palet" fel y'i gelwir. Dyma enghraifft o dair elfen gynnwys yn cael eu golygu ar yr un pryd. Gallwch olygu cofnodion lluosog trwy ddefnyddio'r dolenni o'r&gt;yn y modd un tabl. Sylwch nid yn unig y dangosir tri chofnod ar yr un pryd - mae hefyd yn nifer gyfyngedig o feysydd a ddangosir i'w golygu, yma "Pennawd" a "Cuddio". Gallwch gyfuno hyn bron unrhyw ffordd y dymunwch. Mae hyn yn ddefnyddiol iawn wrth gwrs os oes angen i chi olygu pennawd cofnodion lluosog yn unig.</target></trans-unit>
+      <trans-unit id="TCEforms_cacheSelector.alttitle" resname="TCEforms_cacheSelector.alttitle" approved="yes">
+        <source>Forms Menu</source>
+        <target state="final">Dewislen Ffurflenni</target>
+      </trans-unit>
+      <trans-unit id="TCEforms_cacheSelector.description" resname="TCEforms_cacheSelector.description" approved="yes">
+        <source>This is alternative ways to select "Save"/"Close" operations for records. You can also select "clear-cache" operations if you are allowed access to them.</source>
+        <target state="final">Dyma ffyrdd amgen o ddewis gweithrediadau "Save" / "Close" ar gyfer cofnodion. Gallwch hefyd ddewis gweithrediadau "clir-storfa" os caniateir mynediad iddynt.</target>
+      </trans-unit>
+      <trans-unit id="TCEforms_cacheSelector.details" resname="TCEforms_cacheSelector.details" xml:space="preserve" approved="yes">
+				<source>Clearing the cache for pages and clearing all cache can be done from this menu as well. If you wonder why content on the frontend webpage seems to be different from what is in the database you might need to clear the page cache by using one of these options.
+If cache options are not available for you, you should ask your administrator to enable it for you. (Admins: See link below to TSconfig.)</source>
+			<target state="final">Gellir clirio'r storfa ar gyfer tudalennau a chlirio'r holl storfa o'r ddewislen hon hefyd. Os ydych chi'n meddwl tybed pam mae'n ymddangos bod cynnwys ar dudalen we frontend yn wahanol i'r hyn sydd yn y gronfa ddata efallai y bydd angen i chi glirio storfa'r dudalen trwy ddefnyddio un o'r opsiynau hyn.
+Os nad oes opsiynau storfa ar gael i chi, dylech ofyn i'ch gweinyddwr ei alluogi ar eich cyfer chi. (Admins: Gweler y ddolen isod i TSconfig.)</target></trans-unit>
+      <trans-unit id="_TCEforms_cacheSelector.seeAlso" resname="_TCEforms_cacheSelector.seeAlso" approved="yes">
+        <source>User TSconfig (See "clearCache.pages/.all") | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Options/</source>
+        <target state="final">Defnyddiwr TSconfig (Gweler "clearCache.pages / .all") | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Options/</target>
+      </trans-unit>
+      <trans-unit id="_TCEforms_cacheSelector.image" resname="_TCEforms_cacheSelector.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_36.png,</source>
+        <target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_36.png,</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="perm_module.alttitle" resname="perm_module.alttitle" approved="yes">
+        <source>Viewing page permissions</source>
+        <target state="final">Gweld caniatâd tudalen</target>
+      </trans-unit>
+      <trans-unit id="perm_module.description" resname="perm_module.description" approved="yes">
+        <source>This view will tell you about the page permissions in the page tree.</source>
+        <target state="final">Bydd yr olygfa hon yn dweud wrthych am y caniatâd tudalen yn y goeden dudalen.</target>
+      </trans-unit>
+      <trans-unit id="perm_module.details" resname="perm_module.details" xml:space="preserve" approved="yes">
+				<source>There are two modes you can select:
+
+&lt;b&gt;User overview:&lt;/b&gt;
+This will show you the permissions for &lt;em&gt;your&lt;/em&gt; login. So the green/red indicators will reflect the combined user/group/everyone permissions that apply to your login!
+If there is a grey background behind the indicators it tells you that you are the owner of the page.
+
+&lt;b&gt;Permissions&lt;/b&gt;
+Shows the permissions settings for owner / group / everybody. You will be able to edit these settings by clicking the edit icon next to the page title. Only an owner of a page (or the "Admin"-user) can change permissions for the page.</source>
+			<target state="final">Mae dau fodd y gallwch eu dewis:
+
+&lt;b&gt;Trosolwg defnyddiwr:&lt;/b&gt;
+Bydd hyn yn dangos y caniatâd i chi ar gyfer &lt;em&gt;eich&lt;/em&gt; mewngofnodi. Felly bydd y dangosyddion gwyrdd / coch yn adlewyrchu'r caniatâd defnyddiwr / grŵp / pawb cyfun sy'n berthnasol i'ch mewngofnodi!
+Os oes cefndir llwyd y tu ôl i'r dangosyddion mae'n dweud wrthych mai chi yw perchennog y dudalen.
+
+&lt;b&gt;Caniatadau&lt;/b&gt;
+dangos y gosodiadau caniatâd ar gyfer perchennog / grŵp / pawb. Byddwch yn gallu golygu'r gosodiadau hyn trwy glicio ar yr eicon golygu wrth ymyl teitl y dudalen. Dim ond perchennog tudalen (neu'r "Gweinyddwr" -user) all newid caniatâd ar gyfer y dudalen.</target></trans-unit>
+      <trans-unit id="_perm_module.seeAlso" resname="_perm_module.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:perm_module_setting,
+User Management How-to | https://docs.typo3.org/typo3cms/GettingStartedTutorial/UserManagement/SettingUpUserPermissions/
+Permission system in TYPO3 [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/AccessControlOptions/,
+_MOD_user_setup:option_helpText</source>
+				
+			<target state="final">xMOD_csh_corebe: perm_module_setting,
+Rheoli Defnyddwyr Sut i wneud | https://docs.typo3.org/typo3cms/GettingStartedTutorial/UserManagement/SettingUpUserPermissions/
+System ganiatâd yn TYPO3 [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/AccessControlOptions/,
+_MOD_user_setup: opsiwn_helpText</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_perm_module.image" resname="_perm_module.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_43.png,
+EXT:core/Resources/Public/Images/cshimages/core_41.png,</source>
+				
+			<target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_43.png,
+EXT: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_41.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="perm_module_setting.alttitle" resname="perm_module_setting.alttitle" approved="yes">
+        <source>Setting permissions for a page</source>
+        <target state="final">Gosod caniatâd ar gyfer tudalen</target>
+      </trans-unit>
+      <trans-unit id="perm_module_setting.description" resname="perm_module_setting.description" approved="yes">
+        <source>Select the owner user and group plus the permissions for each in the matrix. Only an owner of a page (or the "Admin"-user) can change permissions for the page.</source>
+        <target state="final">Dewiswch y perchennog defnyddiwr a'r grŵp ynghyd â'r caniatâd ar gyfer pob un yn y matrics. Dim ond perchennog tudalen (neu'r "Gweinyddwr" -user) all newid caniatâd ar gyfer y dudalen.</target>
+      </trans-unit>
+      <trans-unit id="perm_module_setting.details" resname="perm_module_setting.details" xml:space="preserve" approved="yes">
+				<source>Setting permissions is done in five categories for owner / group / everybody so it works much like permissions for files and folders in many operating systems.
+
+&lt;b&gt;Show page&lt;/b&gt;
+If set, a user can see the page and its content in the backend. The user can also copy the content but not move, delete or edit.
+
+&lt;b&gt;Edit content&lt;/b&gt;
+Allows users to add, delete, change and move records (other than page records) on this page. This permission must be given if users should be allowed to create Content Elements etc. on the page.
+
+&lt;b&gt;Edit page&lt;/b&gt;
+Allows a user to edit the page record itself. This could be changing the page title or moving the page to another location.
+
+&lt;b&gt;Delete page&lt;/b&gt;
+If set, a user is allowed to delete the page and the content on the page.
+
+&lt;b&gt;New pages&lt;/b&gt;
+Allows users to create sub-pages to this page.</source>
+			<target state="final">Gwneir gosod caniatâd mewn pum categori ar gyfer perchennog / grŵp / pawb felly mae'n gweithio'n debyg iawn i ganiatâd ar gyfer ffeiliau a ffolderau mewn llawer o systemau gweithredu.
+
+&lt;b&gt;Dangos tudalen&lt;/b&gt;
+Os yw wedi'i osod, gall defnyddiwr weld y dudalen a'i chynnwys yn yr ôl-benwythnos. Gall y defnyddiwr hefyd gopïo'r cynnwys ond nid symud, dileu na golygu.
+
+&lt;b&gt;Golygu cynnwys&lt;/b&gt;
+Yn caniatáu i ddefnyddwyr ychwanegu, dileu, newid a symud cofnodion (heblaw cofnodion tudalen) ar y dudalen hon. Rhaid rhoi’r caniatâd hwn os dylid caniatáu i ddefnyddwyr greu Elfennau Cynnwys ac ati ar y dudalen.
+
+&lt;b&gt;Golygu tudalen&lt;/b&gt;
+Yn caniatáu i ddefnyddiwr olygu cofnod y dudalen ei hun. Gallai hyn fod yn newid teitl y dudalen neu'n symud y dudalen i leoliad arall.
+
+&lt;b&gt;Dileu tudalen&lt;/b&gt;
+Os yw wedi'i osod, caniateir i ddefnyddiwr ddileu'r dudalen a'r cynnwys ar y dudalen.
+
+&lt;b&gt;Tudalennau newydd&lt;/b&gt;
+Yn caniatáu i ddefnyddwyr greu is-dudalennau i'r dudalen hon.</target></trans-unit>
+      <trans-unit id="_perm_module_setting.seeAlso" resname="_perm_module_setting.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:perm_module,
+User Management Howto | https://docs.typo3.org/typo3cms/GettingStartedTutorial/UserManagement/SettingUpUserPermissions/</source>
+				
+			<target state="final">xMOD_csh_corebe: perm_module,
+Rheoli Defnyddwyr Howto | https://docs.typo3.org/typo3cms/GettingStartedTutorial/UserManagement/SettingUpUserPermissions/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_perm_module_setting.image" resname="_perm_module_setting.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_42.png</source>
+        <target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_42.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="perm_module_setting.image_descr" resname="perm_module_setting.image_descr" approved="yes">
+        <source>In this matrix you can set permissions for owner, group and everybody in the five categories available.</source>
+        <target state="final">Yn y matrics hwn gallwch osod caniatâd ar gyfer perchennog, grŵp a phawb yn y pum categori sydd ar gael.</target>
+      </trans-unit>
+      <trans-unit id="filelist_module.alttitle" resname="filelist_module.alttitle" approved="yes">
+        <source>File &gt; Filelist module</source>
+        <target state="final">Modiwl &gt; Ffeil Rhestr Ffeiliau</target>
+      </trans-unit>
+      <trans-unit id="filelist_module.description" resname="filelist_module.description" approved="yes">
+        <source>Shows the files and folders from the folder title you have clicked in the folder tree. Click the icons of the files and folders to perform various actions on the elements.</source>
+        <target state="final">Yn dangos y ffeiliau a'r ffolderau o deitl y ffolder rydych chi wedi'i glicio yn y goeden ffolder. Cliciwch eiconau'r ffeiliau a'r ffolderau i gyflawni gweithredoedd amrywiol ar yr elfennau.</target>
+      </trans-unit>
+      <trans-unit id="_filelist_module.seeAlso" resname="_filelist_module.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:filetree,
+be_groups:file_mountpoints,
+sys_filemounts</source>
+				
+			<target state="final">xMOD_csh_corebe: list_module,
+xMOD_csh_corebe: filetree,
+be_groups: file_mountpoints,
+sys_filemounts</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_filelist_module.image" resname="_filelist_module.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_47.png,
+EXT:core/Resources/Public/Images/cshimages/core_49.png</source>
+				
+			<target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_47.png,
+EXT: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_49.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="filelist_module.image_descr" resname="filelist_module.image_descr" xml:space="preserve" approved="yes">
+				<source>Here the content of the TEMP folder is shown in the list frame. You can see the filetype, the modification time, size of the file. If you click the filename you will open the file in the browser (if the path is in the web-root).
+When you click a file icon you see a context menu appear over it. Here you can perform file operations on the item.</source>
+			<target state="final">Yma dangosir cynnwys y ffolder TEMP yn y ffrâm rhestr. Gallwch weld y ffurf ffeil, yr amser addasu, maint y ffeil. Os cliciwch enw'r ffeil byddwch yn agor y ffeil yn y porwr (os yw'r llwybr yng ngwraidd y we).
+Pan gliciwch eicon ffeil fe welwch ddewislen cyd-destun yn ymddangos drosti. Yma gallwch berfformio gweithrediadau ffeiliau ar yr eitem.</target></trans-unit>
+      <trans-unit id="filelist_clipboard.alttitle" resname="filelist_clipboard.alttitle" approved="yes">
+        <source>Filelist Clipboard</source>
+        <target state="final">Clipfwrdd Rhestr Ffeiliau</target>
+      </trans-unit>
+      <trans-unit id="filelist_clipboard.description" resname="filelist_clipboard.description" approved="yes">
+        <source>The TYPO3 clipboard works for files as well as for database records (see the Web&gt;List module). You only need to enable the clipboard if you want to use the numeric clipboard pads.</source>
+        <target state="final">Mae clipfwrdd TYPO3 yn gweithio ar gyfer ffeiliau yn ogystal ag ar gyfer cofnodion cronfa ddata (gweler y modiwl Rhestr&gt;Dim ond os ydych chi am ddefnyddio'r padiau clipfwrdd rhifol y mae angen i chi alluogi'r clipfwrdd.</target>
+      </trans-unit>
+      <trans-unit id="_filelist_clipboard.seeAlso" resname="_filelist_clipboard.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_clipboard,
+About the Clipboard [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/GeneralInterfaceFeatures/Clipboard/</source>
+				
+			<target state="final">xMOD_csh_corebe: list_clipboard,
+Ynglŷn â'r Clipfwrdd [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/GeneralInterfaceFeatures/Clipboard/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_filelist_clipboard.image" resname="_filelist_clipboard.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_44.png,
+EXT:core/Resources/Public/Images/cshimages/core_46.png</source>
+				
+			<target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_44.png,
+EXT: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_46.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="filelist_clipboard.image_descr" resname="filelist_clipboard.image_descr" xml:space="preserve" approved="yes">
+				<source>This shows the "Normal" pad on the clipboard. Here an image is now stored. The "Thumbnails" button of the clipboard is enabled so you will see the image icon.
+When the numeric clipboard pads are enabled you will be able to place multiple items on the clipboard at one time. If the items selected are found in the current folder you can also see the selection reflected in the checkboxes of the items. To paste the contents into a file folder you use the paste icons available in the Filelist module.</source>
+			<target state="final">Mae hyn yn dangos y pad "Arferol" ar y clipfwrdd. Yma mae delwedd bellach wedi'i storio. Mae botwm "Mân-luniau" y clipfwrdd wedi'i alluogi felly fe welwch eicon y ddelwedd.
+Pan fydd y padiau clipfwrdd rhifol wedi'u galluogi byddwch yn gallu gosod nifer o eitemau ar y clipfwrdd ar yr un pryd. Os yw'r eitemau a ddewiswyd i'w gweld yn y ffolder gyfredol gallwch hefyd weld y detholiad yn cael ei adlewyrchu ym mlychau gwirio'r eitemau. I gludo'r cynnwys mewn ffolder ffeiliau rydych chi'n defnyddio'r eiconau past sydd ar gael yn y modiwl Rhestr Ffeiliau.</target></trans-unit>
+      <trans-unit id="filelist_options.alttitle" resname="filelist_options.alttitle" approved="yes">
+        <source>File &gt; Filelist options</source>
+        <target state="final">Ffeil &gt; Opsiynau Rhestr Ffeiliau</target>
+      </trans-unit>
+      <trans-unit id="filelist_options.description" resname="filelist_options.description" approved="yes">
+        <source>You can enable the display of image thumbnails and show the clipboard if you need to copy/cut/paste multiple files or folders at a time.</source>
+        <target state="final">Gallwch chi alluogi arddangos mân-luniau delwedd a dangos y clipfwrdd os oes angen i chi gopïo / torri / pastio ffeiliau neu ffolderau lluosog ar y tro.</target>
+      </trans-unit>
+      <trans-unit id="_filelist_options.image" resname="_filelist_options.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_48.png</source>
+        <target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_48.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="filelist_options.image_descr" resname="filelist_options.image_descr" approved="yes">
+        <source>Enabling thumbnails means that all image file types will be displayed with their thumbnails. This makes it easy to browse an archive of files.</source>
+        <target state="final">Mae galluogi mân-luniau yn golygu y bydd pob math o ffeil ddelwedd yn cael ei harddangos gyda'u mân-luniau. Mae hyn yn ei gwneud hi'n hawdd pori archif o ffeiliau.</target>
+      </trans-unit>
+      <trans-unit id="file_edit.alttitle" resname="file_edit.alttitle" approved="yes">
+        <source>Editing a file</source>
+        <target state="final">Golygu ffeil</target>
+      </trans-unit>
+      <trans-unit id="file_edit.description" resname="file_edit.description" approved="yes">
+        <source>You can edit the contents of a text file with this dialog.</source>
+        <target state="final">Gallwch olygu cynnwys ffeil testun gyda'r ymgom hwn.</target>
+      </trans-unit>
+      <trans-unit id="_file_edit.seeAlso" resname="_file_edit.seeAlso" approved="yes">
+        <source>xMOD_csh_corebe:filelist_module</source>
+        <target state="final">xMOD_csh_corebe: filelist_module</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_file_edit.image" resname="_file_edit.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_50.png</source>
+        <target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_50.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="file_edit.image_descr" resname="file_edit.image_descr" approved="yes">
+        <source>The editing form for a file is this simple textarea field. It's nothing fancy and experienced coders will miss such as TAB-functionality, but it can edit a stylesheet if badly needed...</source>
+        <target state="final">Y ffurflen olygu ar gyfer ffeil yw'r maes textarea syml hwn. Nid yw'n ddim byd y bydd codwyr ffansi a phrofiadol yn ei golli fel TAB-ymarferoldeb, ond gall olygu taflen arddull os oes angen mawr ...</target>
+      </trans-unit>
+      <trans-unit id="file_new.alttitle" resname="file_new.alttitle" approved="yes">
+        <source>Creating a new file or folder</source>
+        <target state="final">Creu ffeil neu ffolder newydd</target>
+      </trans-unit>
+      <trans-unit id="file_new.description" resname="file_new.description" approved="yes">
+        <source>Create new files and folder inside the folder you have selected.</source>
+        <target state="final">Creu ffeiliau a ffolder newydd y tu mewn i'r ffolder rydych chi wedi'i ddewis.</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.alttitle" resname="file_newfolder.alttitle" approved="yes">
+        <source>Creating a new folder</source>
+        <target state="final">Creu ffolder newydd</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.description" resname="file_newfolder.description" approved="yes">
+        <source>Enter a name for a new file folder in the tree here. If you want to create multiple folders, please select the number of new folders before entering folder names.</source>
+        <target state="final">Rhowch enw ar gyfer ffolder ffeiliau newydd yn y goeden yma. Os ydych chi am greu ffolderau lluosog, dewiswch nifer y ffolderau newydd cyn nodi enwau ffolderi.</target>
+      </trans-unit>
+      <trans-unit id="_file_newfolder.seeAlso" resname="_file_newfolder.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:file_newfile,
+xMOD_csh_corebe:file_rename</source>
+				
+			<target state="final">xMOD_csh_corebe: filelist_module,
+xMOD_csh_corebe: file_newfile,
+xMOD_csh_corebe: file_rename</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_file_newfolder.image" resname="_file_newfolder.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_51.png,
+EXT:core/Resources/Public/Images/cshimages/core_52.png,
+EXT:core/Resources/Public/Images/cshimages/core_53.png,</source>
+				
+			<target state="final">EXT: core / Resources / Public / Images / cshimages / core_51.png,
+EXT: core / Resources / Public / Images / cshimages / core_52.png,
+EXT: core / Resources / Public / Images / cshimages / core_53.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="file_newfolder.image_descr" resname="file_newfolder.image_descr" xml:space="preserve" approved="yes">
+				<source>To create a new folder you first click the parent folder icon in the folder tree.
+As the next step you select the number of folders to create and then you enter the new folder names.
+After pressing the "Create folders" button the folders will appear in the folder tree when you reload it.</source>
+			<target state="final">I greu ffolder newydd, byddwch yn gyntaf yn clicio eicon y ffolder rhiant yn y goeden ffolder.
+Fel y cam nesaf byddwch chi'n dewis nifer y ffolderau i'w creu ac yna byddwch chi'n nodi'r enwau ffolder newydd.
+Ar ôl pwyso'r botwm "Creu ffolderau" bydd y ffolderau'n ymddangos yn y goeden ffolderi pan fyddwch chi'n ei hail-lwytho.</target></trans-unit>
+      <trans-unit id="file_newfile.alttitle" resname="file_newfile.alttitle" approved="yes">
+        <source>Creating a new file</source>
+        <target state="final">Creu ffeil newydd</target>
+      </trans-unit>
+      <trans-unit id="file_newfile.description" resname="file_newfile.description" approved="yes">
+        <source>Enter a filename here if you want to create a new text-based file. Notice that it must have one of the endings in the list of text-endings shown below (except "php" endings).</source>
+        <target state="final">Rhowch enw ffeil yma os ydych chi am greu ffeil testun newydd. Sylwch fod yn rhaid iddo gael un o'r terfyniadau yn y rhestr o derfyniadau testun a ddangosir isod (ac eithrio terfyniadau "php").</target>
+      </trans-unit>
+      <trans-unit id="file_newfile.details" resname="file_newfile.details" approved="yes">
+        <source>Newly created files will have the size of 0 (zero). After creating a new file it would be natural that you wanted to edit the file to put content into it. This is done simply by clicking the icon of the file and select "Edit" from the clickmenu.</source>
+        <target state="final">Bydd ffeiliau sydd newydd eu creu maint 0 (sero). Ar ôl creu ffeil newydd, byddai'n naturiol eich bod am olygu'r ffeil i roi cynnwys ynddo. Gwneir hyn yn syml trwy glicio eicon y ffeil a dewis "Golygu" o'r clicmenu.</target>
+      </trans-unit>
+      <trans-unit id="_file_newfile.seeAlso" resname="_file_newfile.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:file_edit,
+xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:file_newfolder,
+xMOD_csh_corebe:file_rename</source>
+				
+			<target state="final">xMOD_csh_corebe: file_edit,
+xMOD_csh_corebe: filelist_module,
+xMOD_csh_corebe: file_newfolder,
+xMOD_csh_corebe: file_rename</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_file_newfile.image" resname="_file_newfile.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_51.png,
+EXT:core/Resources/Public/Images/cshimages/core_54.png,
+EXT:core/Resources/Public/Images/cshimages/core_55.png,</source>
+				
+			<target state="final">EXT: core / Resources / Public / Images / cshimages / core_51.png,
+EXT: core / Resources / Public / Images / cshimages / core_54.png,
+EXT: core / Resources / Public / Images / cshimages / core_55.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="file_newfile.image_descr" resname="file_newfile.image_descr" xml:space="preserve" approved="yes">
+				<source>To create a new file, first click the folder icon where you want to create the file. Select "New".
+Then enter the filename in the dialog in the right frame.
+After pressing "Create file" you will see a new, empty file in the folder you selected.</source>
+			<target state="final">I greu ffeil newydd, yn gyntaf cliciwch eicon y ffolder lle rydych chi am greu'r ffeil. Dewiswch "Newydd".
+Yna rhowch enw'r ffeil yn y dialog yn y ffrâm gywir.
+Ar ôl pwyso "Creu ffeil" fe welwch ffeil wag newydd yn y ffolder a ddewisoch.</target></trans-unit>
+      <trans-unit id="file_newMedia.alttitle" resname="file_newMedia.alttitle" approved="yes">
+        <source>Adding a new media asset</source>
+        <target state="final">Ychwanegu ased cyfryngau newydd</target>
+      </trans-unit>
+      <trans-unit id="file_newMedia.description" resname="file_newMedia.description" approved="yes">
+        <source>Enter an URL to a media asset here. Notice that it must be from one of the allowed providers listed below.</source>
+        <target state="final">Rhowch URL i ased cyfryngau yma. Sylwch fod yn rhaid iddo fod gan un o'r darparwyr a ganiateir a restrir isod.</target>
+      </trans-unit>
+      <trans-unit id="file_rename.alttitle" resname="file_rename.alttitle" approved="yes">
+        <source>Rename a file or folder</source>
+        <target state="final">Ail-enwi ffeil neu ffolder</target>
+      </trans-unit>
+      <trans-unit id="file_rename.description" resname="file_rename.description" approved="yes">
+        <source>You can rename files or folders in TYPO3 quite easily. Just notice that certain characters are not allowed. So use a-z, numbers, underscores and don't make the names too long. If you enter invalid characters it will be automatically corrected.</source>
+        <target state="final">Gallwch ailenwi ffeiliau neu ffolderau yn TYPO3 yn eithaf hawdd. Sylwch na chaniateir rhai cymeriadau. Felly defnyddiwch az, rhifau, tanlinelliadau a pheidiwch â gwneud yr enwau'n rhy hir. Os nodwch nodau annilys bydd yn cael ei gywiro'n awtomatig.</target>
+      </trans-unit>
+      <trans-unit id="_file_rename.seeAlso" resname="_file_rename.seeAlso" approved="yes">
+        <source>xMOD_csh_corebe:filelist_module</source>
+        <target state="final">xMOD_csh_corebe: filelist_module</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_file_rename.image" resname="_file_rename.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_56.png,
+EXT:core/Resources/Public/Images/cshimages/core_57.png,</source>
+				
+			<target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_56.png,
+EXT: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_57.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="file_rename.image_descr" resname="file_rename.image_descr" xml:space="preserve" approved="yes">
+				<source>To rename a file (or folder for that sake) just click the icon of it, select "Rename" and enter the new name.
+Notice that restrictions may apply on filenaming, for instance ".php" is usually not a valid extension of a filename for security reasons.</source>
+			<target state="final">I ailenwi ffeil (neu ffolder er mwyn hynny) cliciwch yr eicon ohoni, dewiswch "Ail-enwi" a nodi'r enw newydd.
+Sylwch y gall cyfyngiadau fod yn berthnasol i enwi ffeiliau, er enghraifft nid yw ".php" fel arfer yn estyniad dilys o enw ffeil am resymau diogelwch.</target></trans-unit>
+      <trans-unit id="file_upload.alttitle" resname="file_upload.alttitle" approved="yes">
+        <source>Uploading files.</source>
+        <target state="final">Llwytho ffeiliau i fyny.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.description" resname="file_upload.description" approved="yes">
+        <source>Here you can upload one or more files to the server. Start by selecting the number of files to upload, then you begin to select files from your local computer to upload.</source>
+        <target state="final">Yma gallwch uwchlwytho un neu fwy o ffeiliau i'r gweinydd. Dechreuwch trwy ddewis nifer y ffeiliau i'w llwytho i fyny, yna byddwch chi'n dechrau dewis ffeiliau o'ch cyfrifiadur lleol i'w llwytho i fyny.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.details" resname="file_upload.details" xml:space="preserve" approved="yes">
+				<source>If the filenames you upload exist already they will be renamed with a numeric suffix, eg. "file_01.jpg". However you can avoid this behaviour if you select "Overwrite existing files" before pressing the "Upload" button.
+
+Normally there is a limit to the size of files you can upload. By default PHP will allow you to upload around 2MB. TYPO3 is configured to allow 10MB internally by default. These settings can be changed by your server administrator if you need them changed.
+
+Notice that file uploads may take a significant amount of time, even if you have fast internet access via DSL etc. If you have large amount of files you want to upload - or if the files are very large - you should consider using an FTP client instead. It depends not on TYPO3 but on the webserver whether this is an options for you.</source>
+			<target state="final">Os yw'r enwau ffeiliau rydych chi'n eu huwchlwytho yn bodoli eisoes, byddan nhw'n cael eu hailenwi ag ôl-ddodiad rhifol, ee. "ffeil_01.jpg". Fodd bynnag, gallwch osgoi'r ymddygiad hwn os dewiswch "Ysgrifennu ffeiliau sy'n bodoli eisoes" cyn pwyso'r botwm "Llwytho i fyny".
+
+Fel rheol mae cyfyngiad ar faint y ffeiliau y gallwch eu huwchlwytho. Yn ddiofyn bydd PHP yn caniatáu ichi uwchlwytho tua 2MB. Mae TYPO3 wedi'i ffurfweddu i ganiatáu 10MB yn fewnol yn ddiofyn. Gall gweinyddwr eich gweinydd newid y gosodiadau hyn os bydd angen ichi eu newid.
+
+Sylwch y gallai uwchlwytho ffeiliau gymryd cryn dipyn o amser, hyd yn oed os oes gennych fynediad cyflym i'r rhyngrwyd trwy DSL ac ati. Os oes gennych lawer iawn o ffeiliau rydych chi am eu huwchlwytho - neu os yw'r ffeiliau'n fawr iawn - dylech ystyried defnyddio FTP cleient yn lle. Mae'n dibynnu nid ar TYPO3 ond ar y gwe-weydd a yw hwn yn opsiynau i chi.</target></trans-unit>
+      <trans-unit id="_file_upload.seeAlso" resname="_file_upload.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:filelist_module,
+How-to upload files | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/UploadingImagesToTheArchive/</source>
+				
+			<target state="final">xMOD_csh_corebe: filelist_module,
+Sut-i uwchlwytho ffeiliau | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/UploadingImagesToTheArchive/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_file_upload.image" resname="_file_upload.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_58.png,
+EXT:core/Resources/Public/Images/cshimages/core_59.png,</source>
+				
+			<target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_58.png,
+EXT: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_59.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="file_upload.image_descr" resname="file_upload.image_descr" xml:space="preserve" approved="yes">
+				<source>To upload files, first click the folder icon where you want to upload to. From the clickmenu you select "Upload files".
+In the next screen you select the number of files and click the "Browse..." buttons to select files from your computer. Finally you click the "Upload files" button to start the upload process (which might take some minutes with large files!)</source>
+			<target state="final">I uwchlwytho ffeiliau, yn gyntaf cliciwch eicon y ffolder lle rydych chi am uwchlwytho. O'r clickmenu rydych chi'n dewis "Llwytho ffeiliau".
+Yn y sgrin nesaf byddwch chi'n dewis nifer y ffeiliau ac yn clicio ar y botymau "Pori ..." i ddewis ffeiliau o'ch cyfrifiadur. Yn olaf, rydych chi'n clicio ar y botwm "Llwytho ffeiliau i fyny" i ddechrau'r broses uwchlwytho (a allai gymryd rhai munudau gyda ffeiliau mawr!)</target></trans-unit>
+      <trans-unit id="wizard_table_wiz.alttitle" resname="wizard_table_wiz.alttitle" approved="yes">
+        <source>Table wizard</source>
+        <target state="final">Dewin bwrdd</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz.description" resname="wizard_table_wiz.description" approved="yes">
+        <source>The table wizard helps you create tables that are normally stored in the database by XML or a syntax where each line represents a row and each cell is divided by a vertical line sign, "|". This wizard makes it transparent for you.</source>
+        <target state="final">Mae'r dewin bwrdd yn eich helpu i greu tablau sydd fel arfer yn cael eu storio yn y gronfa ddata gan XML neu gystrawen lle mae pob llinell yn cynrychioli rhes a bod pob cell wedi'i rhannu ag arwydd llinell fertigol, "|". Mae'r dewin hwn yn ei gwneud hi'n dryloyw i chi.</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz.details" resname="wizard_table_wiz.details" xml:space="preserve" approved="yes">
+				<source>The wizard is quite simple. By the buttons to the left and in the bottom you can add, delete and move columns and rows in the table.
+You can also disable the setting "Small fields" below the wizard if you want larger textarea fields for the editing.</source>
+			<target state="final">Mae'r dewin yn eithaf syml. Wrth y botymau ar y chwith ac yn y gwaelod gallwch ychwanegu, dileu a symud colofnau a rhesi yn y tabl.
+Gallwch hefyd analluogi'r gosodiad "Meysydd bach" o dan y dewin os ydych chi eisiau meysydd textarea mwy ar gyfer y golygu.</target></trans-unit>
+      <trans-unit id="_wizard_table_wiz.seeAlso" resname="_wizard_table_wiz.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:wizard_forms_wiz,
+Table Wizard details [Technical]| https://docs.typo3.org/typo3cms/TCAReference/AdditionalFeatures/CoreWizardScripts/</source>
+				
+			<target state="final">xMOD_csh_corebe: wizard_forms_wiz,
+Manylion Dewin Tabl [Technical]| https://docs.typo3.org/typo3cms/TCAReference/AdditionalFeatures/CoreWizardScripts/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_wizard_table_wiz.image" resname="_wizard_table_wiz.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_63.png</source>
+        <target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_63.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz_buttons.alttitle" resname="wizard_table_wiz_buttons.alttitle" approved="yes">
+        <source>Table wizard buttons</source>
+        <target state="final">Botymau dewin bwrdd</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz_buttons.description" resname="wizard_table_wiz_buttons.description" approved="yes">
+        <source>Use the refresh button to update the form without saving it. When you are done you should click one of the real save buttons to save and return to the form from which you entered the wizard. The information from this wizard should then be saved into the field the wizard was associated with.</source>
+        <target state="final">Defnyddiwch y botwm adnewyddu i ddiweddaru'r ffurflen heb ei chadw. Pan fyddwch wedi'ch gwneud, dylech glicio un o'r botymau arbed go iawn i arbed a dychwelyd i'r ffurflen y gwnaethoch chi nodi'r dewin ohoni. Yna dylid arbed y wybodaeth o'r dewin hwn i'r cae yr oedd y dewin yn gysylltiedig ag ef.</target>
+      </trans-unit>
+      <trans-unit id="_wizard_table_wiz_buttons.image" resname="_wizard_table_wiz_buttons.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_62.png</source>
+        <target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_62.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="shortcuts.alttitle" resname="shortcuts.alttitle" approved="yes">
+        <source>Backend Shortcuts</source>
+        <target state="final">Llwybrau Byr Backend</target>
+      </trans-unit>
+      <trans-unit id="shortcuts.description" resname="shortcuts.description" approved="yes">
+        <source>You can create shortcuts to modules in TYPO3 quite easily. The treat is that you can jump between screens in TYPO3 in &lt;em&gt;one&lt;/em&gt; click rather than multiple clicks through backend modules etc. The frame also contains a field for entering a page or record id to edit or just search records.</source>
+        <target state="final">Gallwch greu llwybrau byr i fodiwlau yn TYPO3 yn eithaf hawdd. Y wledd yw y gallwch chi neidio rhwng sgriniau yn TYPO3 mewn &lt;em&gt;un&lt;/em&gt; hytrach na chlicio lluosog trwy fodiwlau backend ac ati. Mae'r ffrâm hefyd yn cynnwys maes ar gyfer mynd i mewn i dudalen neu recordio id i olygu neu chwilio cofnodion yn unig.</target>
+      </trans-unit>
+      <trans-unit id="shortcuts.details" resname="shortcuts.details" xml:space="preserve" approved="yes">
+				<source>In order to create a shortcut it must be supported by the module you want to create the shortcut to. Whether shortcuts are supported can be seen in the bottom of a module. If there is a small "shortcut" icon you can click it to create the shortcut.
+
+In the shortcut frame you can also enter a page id to edit in the "Edit Page ID" box. This will load the current page module with the id provided in the box.
+
+Only "Admin"-users can access the shortcut frame in TYPO3 by default. Other users must have it enabled by the User TSconfig option, "options.shortcutFrame = 1". See link below for details (Admins).
+
+Editing pages from an id is easy with the shortcut frame. Simply enter an integer number and that page will be loaded for editing. If you enter "[table]:[id]" then it will try to edit a record from the [table] table, for example "tt_content:123" will look for content element 123 (for admins only). Finally, if you enter a string that doesn't match a page or other record the Web&gt;List module will be invoked doing a search in the first database mount you have.</source>
+			<target state="final">Er mwyn creu llwybr byr mae'n rhaid iddo gael ei gefnogi gan y modiwl rydych chi am greu'r llwybr byr iddo. Gellir gweld a yw llwybrau byr yn cael eu cefnogi yng ngwaelod modiwl. Os oes eicon "llwybr byr" bach gallwch ei glicio i greu'r llwybr byr.
+
+Yn y ffrâm llwybr byr gallwch hefyd nodi id tudalen i'w olygu yn y blwch "Edit Page ID". Bydd hyn yn llwytho modiwl y dudalen gyfredol gyda'r id a ddarperir yn y blwch.
+
+Dim ond "Gweinyddwyr" sy'n gallu cyrchu'r ffrâm llwybr byr yn TYPO3 yn ddiofyn. Rhaid i ddefnyddwyr eraill gael ei alluogi gan yr opsiwn Defnyddiwr TSconfig, "options.shortcutFrame = 1". Gweler y ddolen isod am fanylion (Admins).
+
+golygu tudalennau o id yn hawdd gyda'r ffrâm llwybr byr. Rhowch rif cyfanrif yn syml a bydd y dudalen honno'n cael ei llwytho i'w golygu. Os nodwch "[table]:[id]" yna bydd yn ceisio golygu cofnod o'r [table] , er enghraifft bydd "tt_content: 123" yn edrych am elfen cynnwys 123 (ar gyfer edmygwyr yn unig). Yn olaf, os byddwch chi'n nodi llinyn nad yw'n cyd-fynd â thudalen neu gofnod arall,&gt;cael ei ddefnyddio i chwilio yn y mownt cronfa ddata gyntaf sydd gennych chi.</target></trans-unit>
+      <trans-unit id="_shortcuts.seeAlso" resname="_shortcuts.seeAlso" approved="yes">
+        <source>User TSconfig -&gt;SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/</source>
+        <target state="final">Defnyddiwr TSconfig -&gt;SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/</target>
+      </trans-unit>
+      <trans-unit id="_shortcuts.image" resname="_shortcuts.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_64.png,
+EXT:core/Resources/Public/Images/cshimages/core_65.png,
+EXT:core/Resources/Public/Images/cshimages/core_67.png,
+EXT:core/Resources/Public/Images/cshimages/core_68.png,</source>
+				
+			<target state="final">EXT: core / Resources / Public / Images / cshimages / core_64.png,
+EXT: core / Resources / Public / Images / cshimages / core_65.png,
+EXT: core / Resources / Public / Images / cshimages / core_67.png,
+ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_68.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="shortcuts.image_descr" resname="shortcuts.image_descr" xml:space="preserve" approved="yes">
+				<source>To create a shortcut to a page, just click the short cut icon usually found in the bottom of pages.
+You will have to confirm the creation of the shortcut. It is nothing dangerous - only annoying to clean up if you happen to create shortcuts against your own will. Just answer "OK" here.
+When you answer "OK" you should immediately see the shortcut frame reload and a new icon (the module icon) appear. If you click this icon you will now jump to the page you created the shortcut from!
+You can name shortcuts, you can even group them and share them. If you want to edit or delete a shortcut you select the "Edit" checkbox and then click the shortcut icon. This will reload the shortcut frame so you get a field for entering a title. You can also delete all shortcuts in a "group" - here, just click the "0" (zero) to the left of the icons and you will remove all shortcuts in the group.</source>
+			<target state="final">I greu llwybr byr i dudalen, cliciwch yr eicon toriad byr a geir fel arfer yng ngwaelod tudalennau.
+Bydd yn rhaid i chi gadarnhau creu'r llwybr byr. Nid yw'n ddim byd peryglus - dim ond blino glanhau os ydych chi'n digwydd creu llwybrau byr yn erbyn eich ewyllys eich hun. Atebwch "Iawn" yma.
+Pan fyddwch chi'n ateb "Iawn" dylech weld ail-lwytho'r ffrâm llwybr byr ar unwaith ac eicon newydd (eicon y modiwl) yn ymddangos. Os cliciwch yr eicon hwn byddwch nawr yn neidio i'r dudalen y gwnaethoch chi greu'r llwybr byr ohoni!
+Gallwch enwi llwybrau byr, gallwch chi hyd yn oed eu grwpio a'u rhannu. Os ydych chi am olygu neu ddileu llwybr byr byddwch chi'n dewis y blwch gwirio "Golygu" ac yna cliciwch yr eicon llwybr byr. Bydd hyn yn ail-lwytho'r ffrâm llwybr byr fel eich bod chi'n cael maes ar gyfer nodi teitl. Gallwch hefyd ddileu'r holl lwybrau byr mewn "grŵp" - yma, cliciwch ar y "0" (sero) i'r chwith o'r eiconau a byddwch yn cael gwared ar yr holl lwybrau byr yn y grŵp.</target></trans-unit>
+      <trans-unit id="bookmarks.alttitle" resname="bookmarks.alttitle" approved="yes">
+        <source>Backend Bookmarks</source>
+        <target state="final">Llyfrnodau Penwythnos</target>
+      </trans-unit>
+      <trans-unit id="bookmarks.description" resname="bookmarks.description" approved="yes">
+        <source>You can create bookmarks to modules in TYPO3 quite easily. The treat is that you can jump between screens in TYPO3 in &lt;em&gt;one&lt;/em&gt; click rather than multiple clicks through backend modules etc. The frame also contains a field for entering a page or record id to edit or just search records.</source>
+        <target state="final">Gallwch greu nodau tudalen i fodiwlau yn TYPO3 yn eithaf hawdd. Y wledd yw y gallwch chi neidio rhwng sgriniau yn TYPO3 mewn &lt;em&gt;un&lt;/em&gt; hytrach na chlicio lluosog trwy fodiwlau backend ac ati. Mae'r ffrâm hefyd yn cynnwys maes ar gyfer mynd i mewn i dudalen neu recordio id i olygu neu chwilio cofnodion yn unig.</target>
+      </trans-unit>
+      <trans-unit id="bookmarks.details" resname="bookmarks.details" approved="yes">
+        <source>In order to create a bookmark it must be supported by the module you want to create the bookmark to. Whether bookmarks are supported can be seen in the top of a module. If there is a small star icon you can click it to create the bookmark.</source>
+        <target state="final">Er mwyn creu nod tudalen mae'n rhaid iddo gael ei gefnogi gan y modiwl rydych chi am greu'r nod tudalen iddo. Gellir gweld a yw nodau tudalen yn cael eu cefnogi ar frig modiwl. Os oes eicon seren fach gallwch ei glicio i greu'r nod tudalen.</target>
+      </trans-unit>
+      <trans-unit id="_bookmarks.seeAlso" resname="_bookmarks.seeAlso" approved="yes">
+        <source>User TSconfig -&gt;SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/</source>
+        <target state="final">Defnyddiwr TSconfig -&gt;SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/</target>
+      </trans-unit>
+      <trans-unit id="_bookmarks.image" resname="_bookmarks.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_64.png,
+EXT:core/Resources/Public/Images/cshimages/core_65.png,
+EXT:core/Resources/Public/Images/cshimages/core_67.png,
+EXT:core/Resources/Public/Images/cshimages/core_68.png,</source>
+				
+			<target state="final">EXT: core / Resources / Public / Images / cshimages / core_64.png,
+EXT: core / Resources / Public / Images / cshimages / core_65.png,
+EXT: core / Resources / Public / Images / cshimages / core_67.png,
+ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / core_68.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="bookmarks.image_descr" resname="bookmarks.image_descr" xml:space="preserve" approved="yes">
+				<source>To create a bookmark to a page, just click the star icon usually found in the top of pages.
+You will have to confirm the creation of the bookmark. It is nothing dangerous - only annoying to clean up if you happen to create bookmarks against your own will. Just answer "OK" here.
+When you answer "OK" you should immediately see the bookmark icon in the toolbar reloading and, after opening the menu, the new entry appear. If you click this entry, you will now jump to the page you created the bookmark from!
+You can name bookmarks, you can even group them and share them. If you want to edit or delete a bookmark you select the "Edit" checkbox and then click the bookmark icon.</source>
+			<target state="final">I greu nod tudalen i dudalen, cliciwch yr eicon seren sydd fel arfer ar frig tudalennau.
+Bydd yn rhaid i chi gadarnhau creu'r nod tudalen. Nid yw'n ddim byd peryglus - dim ond blino glanhau os ydych chi'n digwydd creu nodau tudalen yn erbyn eich ewyllys eich hun. Atebwch "Iawn" yma.
+Pan fyddwch chi'n ateb "Iawn" dylech weld yr eicon nod tudalen yn y bar offer yn ail-lwytho ar unwaith ac, ar ôl agor y ddewislen, mae'r cofnod newydd yn ymddangos. Os cliciwch y cofnod hwn, byddwch nawr yn neidio i'r dudalen y gwnaethoch chi greu'r nod tudalen ohoni!
+Gallwch enwi nodau tudalen, gallwch hyd yn oed eu grwpio a'u rhannu. Os ydych chi am olygu neu ddileu nod tudalen, dewiswch y blwch gwirio "Golygu" ac yna cliciwch yr eicon nod tudalen.</target></trans-unit>
+      <trans-unit id="workspaceSelector.alttitle" resname="workspaceSelector.alttitle" approved="yes">
+        <source>Workspace Selector</source>
+        <target state="final">Dewisydd Gweithle</target>
+      </trans-unit>
+      <trans-unit id="workspaceSelector.description" resname="workspaceSelector.description" approved="yes">
+        <source>By this selectorbox you can switch between the workspaces available to you. When you switch workspace the whole backend will reload.</source>
+        <target state="final">Yn ôl y blwch detholwr hwn gallwch newid rhwng y lleoedd gwaith sydd ar gael i chi. Pan fyddwch chi'n newid man gwaith bydd y backend cyfan yn ail-lwytho.</target>
+      </trans-unit>
+      <trans-unit id="workspaceSelector.details" resname="workspaceSelector.details" xml:space="preserve" approved="yes">
+				<source>There are two basic workspace types in TYPO3: The "Live" workspace and a number of "Draft" workspaces.
+When working in the Live workspace all changes you make will take immediate effect. This is the default and traditional state of operation in TYPO3.
+When working in a customly created workspaces changes are not applied to the live website but rather made through new versions of any element editable. Since versioning doesn't apply to all elements in TYPO3 there are limitations to what can be done in draft workspaces; Only elements with versioning support can be edited and everything else is read-only. Draft workspaces allow preview in the frontend. When changes are final in a draft workspace they can be published into the live workspace.</source>
+			<target state="final">Mae dau fath o le gwaith sylfaenol yn TYPO3: Y gweithle "Live" a nifer o leoedd gwaith "Drafft".
+Wrth weithio yn y gweithle Live, bydd yr holl newidiadau a wnewch yn dod i rym ar unwaith. Dyma'r cyflwr gweithredu diofyn a thraddodiadol yn TYPO3.
+Wrth weithio mewn gweithle a grëwyd yn benodol ni roddir newidiadau ar y wefan fyw ond yn hytrach fe'u gwneir trwy fersiynau newydd o unrhyw elfen y gellir ei golygu. Gan nad yw fersiwn yn berthnasol i bob elfen yn TYPO3 mae cyfyngiadau i'r hyn y gellir ei wneud mewn gweithleoedd drafft; Dim ond elfennau â chefnogaeth fersiwn y gellir eu golygu ac mae popeth arall yn ddarllenadwy yn unig. Mae lleoedd gwaith drafft yn caniatáu rhagolwg yn y ffrynt. Pan fydd newidiadau'n derfynol mewn man gwaith drafft gellir eu cyhoeddi i'r gweithle byw.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
