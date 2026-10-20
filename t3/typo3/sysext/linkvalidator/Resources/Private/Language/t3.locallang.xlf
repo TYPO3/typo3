@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814893" source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="mod_linkvalidator" resname="mod_linkvalidator">
+        <source>Linkvalidator</source>
+        <target>crwdns77682:0crwdne77682:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.name" resname="tasks.validate.name">
+        <source>Linkvalidator</source>
+        <target>crwdns77684:0crwdne77684:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.description" resname="tasks.validate.description">
+        <source>Search for broken links and store the result into the temporary table tx_linkvalidator_link in order to ease up the backend module.</source>
+        <target>crwdns77686:0crwdne77686:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.page" resname="tasks.validate.page">
+        <source>Start page (uid)</source>
+        <target>crwdns77688:0crwdne77688:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.depth" resname="tasks.validate.depth">
+        <source>Depth</source>
+        <target>crwdns77690:0crwdne77690:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.conf" resname="tasks.validate.conf">
+        <source>Overwrite TSconfig</source>
+        <target>crwdns77692:0crwdne77692:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.email" resname="tasks.validate.email">
+        <source>Send email report to</source>
+        <target>crwdns77694:0crwdne77694:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.emailOnBrokenLinkOnly" resname="tasks.validate.emailOnBrokenLinkOnly">
+        <source>Send email on new broken links only</source>
+        <target>crwdns77696:0crwdne77696:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.emailTemplateFile" resname="tasks.validate.emailTemplateFile">
+        <source>Email template file</source>
+        <target>crwdns77698:0crwdne77698:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidEmail" resname="tasks.validate.invalidEmail">
+        <source>Invalid email format!</source>
+        <target>crwdns77700:0crwdne77700:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidPage" resname="tasks.validate.invalidPage">
+        <source>Invalid page uid, please enter a valid page uid!</source>
+        <target>crwdns77702:0crwdne77702:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.validate.invalidDepth" resname="tasks.validate.invalidDepth">
+        <source>There is no depth set, please set it to one of the offered values!</source>
+        <target>crwdns77704:0crwdne77704:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.noSubject" resname="tasks.error.noSubject">
+        <source>No subject for the notification email</source>
+        <target>crwdns77706:0crwdne77706:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidToEmail" resname="tasks.error.invalidToEmail">
+        <source>Invalid format of one or more of the recipient email addresses!</source>
+        <target>crwdns77708:0crwdne77708:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidFromEmail" resname="tasks.error.invalidFromEmail">
+        <source>Invalid format of the email address in the from header</source>
+        <target>crwdns77710:0crwdne77710:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidTSconfig" resname="tasks.error.invalidTSconfig">
+        <source>Invalid TSconfig in the task configuration!</source>
+        <target>crwdns77712:0crwdne77712:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidEmailTemplateFile" resname="tasks.error.invalidEmailTemplateFile">
+        <source>The email template file is not existing!</source>
+        <target>crwdns77714:0crwdne77714:0</target>
+      </trans-unit>
+      <trans-unit id="tasks.error.invalidPageUid" resname="tasks.error.invalidPageUid">
+        <source>The given page id %d is invalid!</source>
+        <target>crwdns77716:0%dcrwdne77716:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
