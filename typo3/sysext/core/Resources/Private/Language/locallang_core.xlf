@@ -1506,6 +1506,9 @@
       <trans-unit id="error.siteSet.missingDependency">
         <source>Site set '%1$s' is disabled: Missing dependency '%2$s'</source>
       </trans-unit>
+      <trans-unit id="error.siteSet.circularDependency">
+        <source>Site set '%1$s' is disabled: Circular dependency '%2$s'</source>
+      </trans-unit>
       <trans-unit id="error.siteSet.invalidSettingsDefinitions">
         <source>Site set '%1$s' is disabled due to invalid settings definitions: %2$s</source>
       </trans-unit>

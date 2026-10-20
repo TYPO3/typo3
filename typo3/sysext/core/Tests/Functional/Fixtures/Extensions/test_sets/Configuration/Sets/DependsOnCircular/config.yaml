@@ -1,0 +1,5 @@
+name: typo3tests/depends-on-circular
+label: Depends on a circular set
+
+dependencies:
+  - typo3tests/circular-a
