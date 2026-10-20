@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814793" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_pages.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="th">
+    <header/>
+    <body>
+      <trans-unit id="layout.description" resname="layout.description" approved="yes">
+        <source>The Frontend Layout can change the way a page design appears.</source>
+        <target state="final">เลย์เอาต์ของส่วนหน้าสามารถเปลี่ยนวิธีการออกแบบเพจจะปรากฏขึ้น</target>
+      </trans-unit>
+      <trans-unit id="layout.details" resname="layout.details" approved="yes">
+        <source>This option may not have any impact on the Frontend page design since it depends on whether the Frontend template uses it. Most templates do not use it.</source>
+        <target state="final">ตัวเลือกนี้อาจมีผลกระทบต่อการออกแบบหน้าส่วนหน้าใด ๆ เนื่องจากมันขึ้นอยู่กับว่าแม่แบบของส่วนหน้าจะใช้มัน แม่แบบส่วนใหญ่ไม่ใช้</target>
+      </trans-unit>
+      <trans-unit id="doktype.description" resname="doktype.description" approved="yes">
+        <source>Page Type determines whether the page is normal webpage, a shortcut to another webpage, or used in other internal ways.</source>
+        <target state="final">ประเภทเพจกำหนดว่าหน้าเป็นหน้าเว็บปกติทางลัดไปยังหน้าเว็บอื่นหรือใช้ในรูปแบบภายในอื่น ๆ</target>
+      </trans-unit>
+      <trans-unit id="doktype.details" resname="doktype.details" xml:space="preserve" approved="yes">
+				<source>'Standard' is the most common Page Type and is used for normal webpages.
+'Backend User Section' is an option which creates pages that are only visible in the Frontend for Backend users who are logged in.
+
+&lt;b&gt;Link&lt;/b&gt;
+'Shortcut' pages jump to another page in the Pagetree.
+'Mount Point' pages bring content from another branch of the Pagetree into the current branch.
+'Link to External URL' is similar to 'Shortcut' but points to external URLs instead of TYPO3 pages.
+
+&lt;b&gt;Special&lt;/b&gt;
+'Folder' is a page type which is not shown as a webpage but is instead stores records of your choice.
+'Recycler' is a garbage can. Pages and records in the Recycler are not visible in the Frontend.
+'Menu Separator' is only useful if your Frontend memus are programmed to use it. It does not represent a page with content but is intended to be an unclickable placeholder in the menu.
+
+&lt;b&gt;Notice&lt;/b&gt; Each Page Type is represented by a unique icon. The available page types can be restricted for users so all of the options described above may not be visible. Finally, particuilar record typoes may only be allowed on certain page types, but any record can be placed in a 'Folder.'</source>
+			<target state="final">'มาตรฐาน'ที่พบมากที่สุดคือประเภทเพจและจะใช้สำหรับหน้าเว็บปกติ 'แบ็กเอนด์ของผู้ใช้ส่วน'เป็นตัวเลือกที่จะสร้างหน้าเว็บที่เป็นเพียงการมองเห็นได้ในส่วนหน้าสำหรับผู้ใช้แบ็กเอนด์ที่กำลังเข้าสู่ระบบค่ะ Link &lt;b&gt; &lt;/ b&gt; หน้า'ทางลัด'ไปที่หน้าใน Pagetree อื่น หน้า'จุดเมานท์'นำเนื้อหาจากสาขาของ Pagetree อื่นลงในสาขาปัจจุบัน 'เชื่อมโยงไปยัง URL ภายนอก'คล้ายกับ'ทางลัด'แต่ชี้ไปยัง URL ที่ภายนอกแทนหน้า TYPO3 &lt;b&gt; พิเศษ &lt;/ b&gt; 'Folder'เป็นประเภทเพจที่ไม่แสดงเป็นหน้าเว็บ แต่สามารถบันทึกเก็บแทนการเลือกของคุณ 'Recycler'ขยะจะสามารถ หน้าที่และระเบียนใน Recycler จะไม่ปรากฏในส่วนหน้า 'เมนูเส้นแบ่ง'เป็นเพียงประโยชน์หาก memus ส่วนหน้าของคุณจะถูกตั้งโปรแกรมให้ใช้งานได้ มันไม่ได้แสดงหน้าเว็บที่มีเนื้อหา แต่มีวัตถุประสงค์เพื่อเป็นตัวยึด unclickable ในเมนู &lt;b&gt; ประกาศ &lt;/ b&gt; แต่ละประเภทเพจจะแสดงเป็นไอคอนที่ไม่ซ้ำกัน ประเภทเพจที่ใช้ได้สามารถถูก จำกัด สำหรับผู้ใช้เพื่อให้ตัวเลือกทั้งหมดที่อธิบายข้างต้นอาจไม่เห็น สุดท้าย typoes บันทึก particuilar อาจเพียงได้รับอนุญาตบนหน้าเว็บบางประเภท แต่บันทึกใด ๆ ที่สามารถวางใน'โฟลเดอร์.'</target></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>If this is checked, the page will be disabled on the website.</source>
+        <target state="final">หากมีการตรวจสอบ, หน้าจะมีการปิดการใช้งานบนเว็บไซต์</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" xml:space="preserve" approved="yes">
+				<source>The 'Disable,' 'Start,' 'Stop,' and 'Access' options are all about limiting access to pages and are thus related in functionality. When a page is not visible due to one of these options, the page will not show up in the site navigation.
+Notice, these options are related &lt;em&gt;only&lt;/em&gt; to the page for which they are set. If you want their effect to cover the subpages as well, you must enable the 'Extend to Subpages' option.
+When you're logged in as a Backend user you can preview disabled pages if you have read access to them.</source>
+			<target state="final">'เลิกใช้งาน','เริ่มต้น','หยุด'และเลือก'การเข้าถึงทั้งหมดเกี่ยวกับการ จำกัด การเข้าถึงไปยังหน้าเว็บและมีความสัมพันธ์กันดังนั้นในการทำงาน เมื่อหน้ามองไม่เห็นเนื่องจากหนึ่งในตัวเลือกเหล่านี้หน้าจะไม่ปรากฏในการใช้งานเว็บไซต์ แจ้งให้ทราบตัวเลือกเหล่านี้มีความสัมพันธ์กัน &lt;em&gt; เท่านั้น &lt;/ em&gt; ไปยังหน้าเว็บที่พวกเขามีการตั้งค่า ถ้าคุณต้องการให้ครอบคลุมถึงผลกระทบของพวกเขาหน้าย่อยเช่นกันคุณต้องเปิดการใช้งาน'ขยายเพื่อใช้งานหน้าเว็บย่อย'ตัวเลือก เมื่อคุณเข้าสู่ระบบเป็นผู้ใช้แบ็กเอนด์หน้าปิดการใช้งานสามารถดูตัวอย่างคุณถ้าคุณใช้งานได้กับพวกเขา</target></trans-unit>
+      <trans-unit id="hidden.image_descr" resname="hidden.image_descr" xml:space="preserve" approved="yes">
+				<source>The page icon of a disabled page is dimmed and a red X is added.
+If you view a page that is hidden and you are logged in into the Backend you will still be able to see the page. The red "Preview" box will tell you that this page is visible to you because of this special circumstance.</source>
+			<target state="final">ไอคอนของหน้าปิดการใช้งานเป็นสีจางและสีแดง X จะถูกเพิ่ม ถ้าคุณดูหน้าเว็บที่ถูกซ่อนอยู่และคุณได้เข้าสู่ระบบเป็นแบ็กเอนด์คุณจะยังสามารถมองเห็นหน้า กล่องสีแดง"Preview"จะบอกคุณว่าหน้านี้จะปรากฏแก่คุณเนื่องจาก circumstance.em พิเศษนี้</target></trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>The Publish Date determines when the page will be visible online. If the Publish Date is not set, the page will be available immediately.</source>
+        <target state="final">กำหนดวันที่เผยแพร่เมื่อหน้าจะสามารถมองเห็นได้ออนไลน์ หากวันที่เผยแพร่ไม่ได้ถูกตั้ง, หน้าจะมีการใช้การได้ทันที</target>
+      </trans-unit>
+      <trans-unit id="starttime.syntax" resname="starttime.syntax" xml:space="preserve" approved="yes">
+				<source>The Publish Date Format is either DD-MM-YYYY or MM-DD-YYYY depending on how TYPO3 is configured. There are also several shortcuts you can use when entering the date.
+If you insert a 'd' the current date will be inserted. You can also append any value in the field with a number such as '+10' which will add 10 days to the current value. For example, entering 'd+10' would result in a date 10 days from now.</source>
+			<target state="final">วันที่เผยแพร่รูปแบบเป็นทั้ง DD - MM - YYYY หรือ MM - DD - YYYY TYPO3 ขึ้นอยู่กับวิธีการกำหนดค่า นอกจากนี้ยังมีทางลัดหลายประการที่คุณสามารถใช้เมื่อเข้าสู่วันที่ ถ้าคุณแทรก'd'วันที่ปัจจุบันจะถูกแทรก นอกจากนี้คุณยังสามารถผนวกค่าในเขตข้อมูลใด ๆ ที่มีหมายเลข +10' เช่น'ซึ่งจะเพิ่ม 10 วันเพื่อค่าปัจจุบัน ตัวอย่างเช่นการป้อน'd +10' จะส่งผลให้ในวันที่ 10 วันนับจากนี้</target></trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>The Expiration Date specifies when the page will no longer be visible online.</source>
+        <target state="final">หมดอายุวันที่ระบุเมื่อเพจนั้นจะไม่สามารถมองเห็นได้ออนไลน์</target>
+      </trans-unit>
+      <trans-unit id="endtime.syntax" resname="endtime.syntax" approved="yes">
+        <source>See Page / Publication Date (click below)</source>
+        <target state="final">ดูหน้า / เอกสารเผยแพร่วันที่ (คลิกด้านล่าง)</target>
+      </trans-unit>
+      <trans-unit id="fe_group.description" resname="fe_group.description" approved="yes">
+        <source>If Usergroup Access Rights is set to a usergroup name, only website users who are members of the selected usergroup will be able to view the page. The special option 'Hide at Login' means the page will &lt;em&gt;not&lt;/em&gt; be visible for any website users that are logged in. Likewise "Show at Any Login" will make the page visible for any logged in Frontend user.</source>
+        <target state="final">หากกลุ่มผู้เข้าใช้สิทธิถูกตั้งค่าเป็นชื่อกลุ่มผู้, ผู้ใช้เฉพาะเว็บไซต์ที่เป็นสมาชิกของกลุ่มผู้ที่เลือกจะสามารถดูหน้าเว็บ 'ซ่อนที่เข้าสู่ระบบ'ตัวเลือกพิเศษหมายถึงหน้าจะ &lt;em&gt; ไม่ &lt;/ em&gt; สามารถมองเห็นได้สำหรับผู้ใช้งานเว็บไซต์ใด ๆ ที่เข้าสู่ระบบค่ะเช่นกัน"แสดงที่เข้าสู่ระบบใด ๆ ที่อาจจะทำให้หน้าใด ๆ ที่เห็นได้สำหรับผู้ใช้เข้าสู่ระบบในส่วนหน้า</target>
+      </trans-unit>
+      <trans-unit id="extendToSubpages.description" resname="extendToSubpages.description" approved="yes">
+        <source>By default the Publication Date, Expiration Date, Usergroup Access Rights, and Page Visibility options &lt;em&gt;only&lt;/em&gt; affect the page where they are set. If the option 'Extend to Subpages' is checked for the page, then all subpages are affected as well.</source>
+        <target state="final">โดยค่าเริ่มต้นตีพิมพ์วันที่หมดอายุวันที่, กลุ่มผู้สิทธิ์การเข้าถึงและการมองเห็นหน้าตัวเลือก &lt;em&gt; เท่านั้น &lt;/ em&gt; มีผลกับเพจที่พวกเขามีการตั้งค่า หาก'ขยายเพื่อใช้งานหน้าเว็บย่อย'ตัวเลือกที่มีการตรวจสอบหน้าแล้วหน้าย่อยทั้งหมดที่ได้รับผลกระทบเช่นกัน</target>
+      </trans-unit>
+      <trans-unit id="extendToSubpages.details" resname="extendToSubpages.details" xml:space="preserve" approved="yes">
+				<source>Consider a scenario where you want to create a section of subpages that are only visible for logged in users. Setting the Usergroup Access Rights for the top page in the section would remove the page from menus if no user was logged in.
+However, the subpage could still be accessed by guessing the ID number of the page and entering it manually in the URL. Setting the 'Extend to Subpages' option would extend the Usergroup Access Rights from the top page through all subpages as well.</source>
+			<target state="final">พิจารณาสถานการณ์ที่คุณต้องการสร้างส่วนของหน้าย่อยที่มีเฉพาะที่เห็นได้สำหรับผู้ใช้เข้าสู่ระบบ การตั้งค่ากลุ่มผู้สิทธิ์การเข้าถึงสำหรับหน้าเว็บด้านบนในส่วนที่จะเอาออกจากหน้าเมนูหากผู้ใช้ไม่ได้เข้าสู่ระบบค่ะ แต่หน้าย่อยยังคงสามารถเข้าถึงได้โดยคาดเดารหัสของหน้าเว็บและการป้อนด้วยตนเองใน URL การตั้งค่า'ขยายเพื่อใช้งานหน้าเว็บย่อย'ตัวเลือกที่จะขยายกลุ่มผู้เข้าใช้สิทธิจากหน้าส่วนบนผ่านหน้าย่อยด้วยเช่นกัน</target></trans-unit>
+      <trans-unit id="extendToSubpages.image_descr" resname="extendToSubpages.image_descr" approved="yes">
+        <source>This page has access restricted to a certain group and has "Extend to Subpages" set as well. This is reflected in the way the page icon has changed.</source>
+        <target state="final">หน้านี้มีการ จำกัด การเข้าถึงกลุ่มบางและมี"ขยายเพื่อใช้งานหน้าเว็บย่อย"กำหนดเป็นอย่างดี นี้จะปรากฏในลักษณะที่ไอคอนหน้ามีการเปลี่ยนแปลง</target>
+      </trans-unit>
+      <trans-unit id="target.description" resname="target.description" approved="yes">
+        <source>This sets the default Link Target for menu items linking to this page. Can also used to open the page as a popup window.</source>
+        <target state="final">นี้จะตั้งค่าเริ่มต้นการเชื่อมโยงเป้าหมายสำหรับรายการเมนูเชื่อมโยงไปยังหน้านี้ สามารถใช้ในการเปิดหน้าเป็นหน้าต่างป๊อปอัพ</target>
+      </trans-unit>
+      <trans-unit id="target.details" resname="target.details" xml:space="preserve" approved="yes">
+				<source>The Link Target overrides the default Link Target behavior, which should already be configured correctly for most pages in the website TypoScript template.
+There are additional options available by using the Link Target field
+
+Setting an integer value at the beginning of the field sets it as the default type for the page.
+For example, if an RSS feed is configured in TypoScript as typeNum=100, setting the Link Target to 100 could be used to add an RSS link in the menu.
+
+The following syntax is used to open the page in a popup window:
+400x200 - Opens the page in a 400x200 popup window.
+230x450:resizable=0,location=1 - Opens the page in a 230x450 popup window that is not resizable and has an address bar.
+
+Combined:
+100 600x350 - Opens the page in a 600x350 popup with type=100
+2 _blank - Opens the page with target "_blank" and type=2</source>
+			<target state="final">Link Target แทนที่ค่าเริ่มต้นการเชื่อมโยงพฤติกรรมเป้าหมายที่ควรได้รับการกำหนดค่าอย่างถูกต้องสำหรับหน้าเว็บที่มากที่สุดในเว็บไซต์แม่แบบ TypoScript มีตัวเลือกเพิ่มเติมสามารถใช้ได้โดยใช้การเชื่อมโยงเขตข้อมูลเป้าหมาย ได้แก่ การตั้งค่าจำนวนเต็มที่จุดเริ่มต้นของเขตข้อมูลที่กำหนดเป็นประเภทเริ่มต้นสำหรับหน้า ตัวอย่างเช่นถ้าฟีด RSS การกำหนดค่าใน TypoScript เป็น = 100 typeNum, การตั้งค่าการเชื่อมโยงเป้าหมายถึง 100 สามารถนำมาใช้เพื่อเพิ่มการเชื่อมโยง RSS ในเมนู ไวยากรณ์ต่อไปนี้จะใช้ในการเปิดหน้าเว็บในหน้าต่างป๊อปอัพ : 400x200 -- เปิดหน้าในหน้าต่างป๊อปอัพ 400x200 สถานที่ตั้ง = 0, ปรับขนาดได้ = 1 -- เปิดเพจในหน้าต่างป๊อปอัพ 230x450 ที่ไม่ได้ปรับขนาดได้และมีแถบที่อยู่ : 230x450 รวม : 100 600x350 -- เปิดหน้าใน 600x350 ป๊อปอัพที่มีประเภท = 100 2 _blank -- เปิดหน้าโดยมีเป้าหมาย"_blank"ชนิดและ = 2</target></trans-unit>
+      <trans-unit id="cache_timeout.description" resname="cache_timeout.description" approved="yes">
+        <source>Sets the Cache Lifetime for the page.</source>
+        <target state="final">ชุดแคชอายุการใช้งานสำหรับหน้า</target>
+      </trans-unit>
+      <trans-unit id="cache_timeout.details" resname="cache_timeout.details" xml:space="preserve" approved="yes">
+				<source>By default, pages are cached for 24 hours. After 24 hours, the page is constructed again and rewritten to the cache. Depending on your configuration, the cache may be cleared at midnight.
+When specific pages need a longer or shorter cache lifetime than the default, this option can be used.</source>
+			<target state="final">โดยค่าเริ่มต้นหน้าจะถูกเก็บไว้เป็นเวลา 24 ชั่วโมง หลังจาก 24 ชั่วโมงหน้าถูกสร้างอีกครั้งและเขียนใหม่ให้แคช ทั้งนี้ขึ้นอยู่กับการกำหนดค่าของคุณแคชอาจถูกลบในเวลาเที่ยงคืน เมื่ออายุการใช้งานหน้าเว็บที่ระบุต้องแคชอีกต่อไปหรือน้อยกว่าค่าเริ่มต้นตัวเลือกนี้สามารถนำมาใช้</target></trans-unit>
+      <trans-unit id="no_search.description" resname="no_search.description" approved="yes">
+        <source>If enabled, this option excludes the page from searching operations on the website.</source>
+        <target state="final">ถ้าเปิดตัวเลือกนี้ไม่รวมหน้าการดำเนินงานจากการค้นหาในเว็บไซต์</target>
+      </trans-unit>
+      <trans-unit id="author.description" resname="author.description" approved="yes">
+        <source>Enter the page author's name.</source>
+        <target state="final">ใส่ชื่อผู้เขียนของหน้าเว็บ</target>
+      </trans-unit>
+      <trans-unit id="author.details" resname="author.details" xml:space="preserve" approved="yes">
+				<source>Whether the author name is used or not depends on the setup of your TypoScript template.
+
+- You may use it in a meta-tag.
+- If you're using TYPO3 pages as 'articles' then you could use this field to display the name of the page (article) author.</source>
+			<target state="final">ไม่ว่าชื่อผู้เขียนมีการใช้หรือไม่ขึ้นอยู่กับการตั้งค่าของแม่ TypoScript ของคุณ -- คุณอาจจะใช้ในเมตาแท็ก -- หากคุณกำลังใช้หน้า TYPO3 เป็น'บทความ'จากนั้นคุณสามารถใช้ฟิลด์นี้เพื่อแสดงชื่อของเพจ (บทความ) ผู้เขียน</target></trans-unit>
+      <trans-unit id="author_email.description" resname="author_email.description" approved="yes">
+        <source>Enter the page author's email address.</source>
+        <target state="final">ป้้้อนที่อยู่อีเมลผู้เขียนของหน้าเว็บ</target>
+      </trans-unit>
+      <trans-unit id="module.description" resname="module.description" approved="yes">
+        <source>Define the page as containing a Frontend plugin.</source>
+        <target state="final">กำหนดหน้าเว็บที่มีปลั๊กอินของส่วนหน้า</target>
+      </trans-unit>
+      <trans-unit id="module.details" resname="module.details" xml:space="preserve" approved="yes">
+				<source>Setting this option lets the Backend knows this page contains specific content or has a specific purpose, such as containing a forum or acting as the root page of a shop section on the website. Based on this setting the Backend is able to display a shortcut list as well as relevant functionality in the 'Web&gt;Modules' module. The Frontend display is largely not affected.
+Marking a page as containing a 'Shop' plugin simply means it'll show up in the shortcut list of modules in the backend.
+
+For additional details on this option, refer to the administration documentation.
+
+It's recommended that only admin-users have access to this field!</source>
+			<target state="final">การตั้งค่าตัวเลือกนี้ทำให้รู้ว่าแบ็กเอนด์หน้านี้มีเนื้อหาที่เฉพาะเจาะจงหรือมีจุดมุ่งหมายเฉพาะเช่นที่มีฟอรั่มหรือทำหน้าที่เป็นรูทเพจของส่วนร้านค้าบนเว็บไซต์ ขึ้นอยู่กับการตั้งค่าแบ็กเอนด์นี้สามารถแสดงรายการทางลัดรวมทั้งฟังก์ชันการทำงานที่เกี่ยวข้องใน'Web&gt; Modules'โมดูล แสดงส่วนหน้าเป็นส่วนใหญ่ไม่ได้รับผลกระทบ การทำเครื่องหมายหน้าเป็นที่มี'ร้าน'ปลั๊กอินนั้นหมายถึงว่ามันจะแสดงขึ้นในรายการทางลัดของโมดูลในแบ็กเอนด์ สำหรับรายละเอียดเพิ่มเติมเกี่ยวกับตัวเลือกนี้ให้ดูที่เอกสารการบริหาร ขอแนะนำให้เฉพาะผู้ใช้ผู้ดูแลระบบสามารถเข้าถึงข้อมูลนี้!</target></trans-unit>
+      <trans-unit id="media.description" resname="media.description" approved="yes">
+        <source>Attach media files related to the page.</source>
+        <target state="final">แนบไฟล์สื่อที่เกี่ยวข้องกับหน้า</target>
+      </trans-unit>
+      <trans-unit id="media.details" resname="media.details" xml:space="preserve" approved="yes">
+				<source>This field allows you to attach various files to the page, but how these files are used depends on your template.
+As an example the template could be use this field to allow a logo to be attached to the page or it might expect the first file to be an image used as a link in the navigation menu. Remember, this totally depends on how the template is programmed.</source>
+			<target state="final">ฟิลด์นี้จะช่วยให้คุณสามารถแนบไฟล์ต่างๆไปยังหน้า แต่วิธีการใช้แฟ้มเหล่านี้ขึ้นอยู่กับแม่แบบของคุณ ตัวอย่างเช่นแม่อาจจะใช้ฟิลด์นี้เพื่ออนุญาตให้มีโลโก้ที่จะแนบมากับหน้าหรืออาจคาดหวังว่าไฟล์แรกที่จะใช้ภาพเป็นลิงค์ในเมนูนำทาง โปรดจำไว้ว่าทั้งหมดนี้ขึ้นอยู่กับแม่แบบเป็นโปรแกรม</target></trans-unit>
+      <trans-unit id="subtitle.description" resname="subtitle.description" approved="yes">
+        <source>Enter a subtitle if needed.</source>
+        <target state="final">ใส่คำบรรยายถ้าจำเป็น</target>
+      </trans-unit>
+      <trans-unit id="subtitle.details" resname="subtitle.details" approved="yes">
+        <source>Whether this field is used or not depends on the template. In most cases it's not used.</source>
+        <target state="final">ไม่ว่าฟิลด์นี้ใช้หรือไม่ขึ้นอยู่กับแม่แบบ ในกรณีส่วนใหญ่ก็ไม่ได้ใช้</target>
+      </trans-unit>
+      <trans-unit id="url.description" resname="url.description" approved="yes">
+        <source>Enter the URL this page redirects to.</source>
+        <target state="final">ป้อน URL ของหน้านี้เปลี่ยนเส้นทางไปยัง ..</target>
+      </trans-unit>
+      <trans-unit id="shortcut.description" resname="shortcut.description" approved="yes">
+        <source>Select a page to act as the Shortcut Target. When the current page is requested in the Frontend, it will be redirected to the Shortcut Target.</source>
+        <target state="final">เลือกหน้าเพื่อทำหน้าที่เป็นทางลัดเป้าหมาย เมื่อมีคำขอสำหรับเพจปัจจุบันในส่วนหน้านี้จะถูกนำไปยังเป้าหมายทางลัด</target>
+      </trans-unit>
+      <trans-unit id="shortcut.details" resname="shortcut.details" xml:space="preserve" approved="yes">
+				<source>Click the 'Browse for Records' icon and a new window will appear in which you can easily select a page to act as the Shortcut Target.
+
+This option is used only if the page 'Type' is set to 'Shortcut.'</source>
+			<target state="final">คลิกที่'เลือกดูรายการ'ไอคอนและหน้าต่างใหม่จะปรากฏในที่คุณสามารถเลือกให้ทำหน้าที่เป็นทางลัดเป้าหมาย ตัวเลือกนี้จะใช้เฉพาะเมื่อเพจ'ประเภท'ตั้ง'ทางลัด.'</target></trans-unit>
+      <trans-unit id="shortcut.image_descr" resname="shortcut.image_descr" approved="yes">
+        <source>Select a Shortcut Target page with the Element Browser.</source>
+        <target state="final">เลือกหน้าทางลัดเป้าหมายด้วยธาตุเบราว์เซอร์</target>
+      </trans-unit>
+      <trans-unit id="keywords.description" resname="keywords.description" approved="yes">
+        <source>Enter keywords for the page separated by commas. You may also use short phrases.</source>
+        <target state="final">ป้อนคำหลักของหน้าคั่นด้วยเครื่องหมายจุลภาค นอกจากนี้คุณยังอาจใช้วลีสั้น ๆ</target>
+      </trans-unit>
+      <trans-unit id="keywords.details" resname="keywords.details" xml:space="preserve" approved="yes">
+				<source>Most TYPO3 websites use these keywords in a meta-tag on the page, but you may have to setup the appropriate TypoScript template yourself.
+
+To optimize your page for search engines like Google you should not use more than 3 to 6 keywords. You should also make sure that the keywords are found in the content of the page.
+
+Note that search engine extensions for TYPO3 such as Indexed Search can also be configured to make use of the keywords.
+
+The keywords can also be used to create a menu of related pages. Create a Content Element of type 'Sitemap' and then choose the menu type &lt;i&gt;Related pages (based on keywords)&lt;/i&gt;.</source>
+			<target state="final">ส่วนใหญ่เว็บไซต์ TYPO3 ใช้คำหลักเหล่านี้ในเมตาแท็กในหน้า แต่คุณอาจจะมีการติดตั้งแม่แบบ TypoScript ที่เหมาะสมด้วยตัวคุณเอง ในการเพิ่มประสิทธิภาพของหน้าเว็บของคุณสำหรับเครื่องมือค้นหาเช่น Google ที่คุณไม่ควรใช้มากกว่า 3 ถึง 6 คำหลัก นอกจากนี้คุณควรตรวจสอบให้แน่ใจว่าคำหลักที่มีอยู่ในเนื้อหาของหน้าเว็บ โปรดทราบว่าส่วนขยายของเครื่องมือค้นหาสำหรับ TYPO3 เช่นค้นหาดัชนียังสามารถกำหนดค่าเพื่อให้การใช้คำหลัก คำหลักที่ยังสามารถใช้ในการสร้างเมนูของหน้าเว็บที่เกี่ยวข้อง สร้างองค์ประกอบของเนื้อหาของพิมพ์'แผนผังเว็บไซต์'จากนั้นเลือกเมนูชนิด &lt;i&gt; หน้าที่เกี่ยวข้อง (ตามคำหลัก) &lt;/ i&gt;</target></trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a short description of the page. It will be displayed in the result lists of most search engines.</source>
+        <target state="final">ป้อนคำอธิบายสั้น ๆ ของหน้าเว็บ จะแสดงในผลรายการของเครื่องมือค้นหามากที่สุด</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" xml:space="preserve" approved="yes">
+				<source>Most websites insert this description in a meta-tag on the page, but you may have to configure this yourself in your TypoScript template.
+
+Most search engines will display the description in their result list. Thus, the text should be short (about 160 characters maximum), and its wording should make sense when it shows up in the result list.
+
+In addition, the description will be displayed if you create a Content Element of type 'Sitemap' and then choose the menu type &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt;. If an abstract exists for the page, it will be used instead of the description.
+
+&lt;b&gt;Note:&lt;/b&gt; Some search engines only use the description if the text is not found elsewhere in the content. So do not just repeat yourself.</source>
+			<target state="final">แทรกคำอธิบายเว็บไซต์ส่วนใหญ่ในเมตาแท็กในหน้านี้ แต่คุณอาจจะต้องกำหนดค่านี้ด้วยตัวเองในแม่แบบของคุณ TypoScript เครื่องมือค้นหาส่วนใหญ่จะแสดงรายละเอียดในผลของรายการ ดังนั้นข้อความควรจะสั้น ๆ (ประมาณ 160 ตัวอักษรสูงสุด), และคำที่ควรจะทำให้รู้สึกเมื่อมันปรากฏขึ้นในผลรายการ นอกจากนี้รายละเอียดจะปรากฏขึ้นถ้าคุณสร้างวัตถุเนื้อหาของพิมพ์'แผนผังเว็บไซต์'จากนั้นเลือกเมนูชนิด &lt;i&gt; เมนูของหน้าย่อยไปยังหน้าเว็บเหล่านี้ (มีนามธรรม) &lt;/ i&gt; หากนามธรรมแล้วสำหรับหน้านี้จะถูกนำมาใช้แทนคำอธิบาย &lt;b&gt; หมายเหตุ : &lt;/ b&gt; บางระบบค้นหาจะใช้คำอธิบายถ้าข้อความนั้นไม่พบที่อื่น ๆ ในเนื้อหา ดังนั้นไม่เพียงแค่ทำซ้ำตัวเอง</target></trans-unit>
+      <trans-unit id="abstract.description" resname="abstract.description" approved="yes">
+        <source>Enter an abstract of the contents. It may be displayed in an overview of articles.</source>
+        <target state="final">[abstract.description] ใส่นามธรรมของเนื้อหา มันอาจจะปรากฏในภาพรวมของบทความ</target>
+      </trans-unit>
+      <trans-unit id="abstract.details" resname="abstract.details" xml:space="preserve" approved="yes">
+				<source>An abstract is a short description of the page content that might be a little longer than the one in the &lt;i&gt;Description&lt;/i&gt; field.
+
+Unlike the description, the abstract is not meant for display in search engine result lists, but is instead intended for you own use.
+
+If you create a Content Element of type &lt;i&gt;Sitemap&lt;/i&gt; and then choose &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt; an overview of pages will be created. If an abstract is available for a page it will be used instead of the description.
+
+&lt;b&gt;Note:&lt;/b&gt; You do not have to enter the text of the description into the &lt;i&gt;Abstract field&lt;/i&gt; again.
+
+Admins can also make custom use of this field via their TypoScript templates.</source>
+			<target state="final">นามธรรมเป็นคำอธิบายสั้น ๆ ของเนื้อหาของหน้าเว็บที่อาจจะมีน้อยนานกว่าหนึ่งในรายละเอียด &lt;i&gt; &lt;/ i&gt; เขตข้อมูล ซึ่งแตกต่างจากคำอธิบายให้เป็นนามธรรมไม่ได้หมายสำหรับการแสดงผลในการค้นหารายชื่อผลเครื่องยนต์ แต่มีไว้สำหรับคุณเองแทนการใช้ ถ้าคุณสร้างวัตถุเนื้อหาของชนิด &lt;i&gt; Sitemap &lt;/ i&gt; จากนั้นเลือกเมนู &lt;i&gt; ของหน้าย่อยไปยังหน้าเว็บเหล่านี้ (มีนามธรรม) &lt;/ i&gt; ภาพรวมของหน้าเว็บจะถูกสร้างขึ้น ถ้าเป็นนามธรรมสามารถใช้ได้สำหรับหน้ามันจะถูกใช้แทนส่วนของรายละเอียด &lt;b&gt; หมายเหตุ : &lt;/ b&gt; คุณไม่ต้องป้อนตัวอักษรของรายละเอียดลงในเขตข้อมูลบทคัดย่อ &lt;i&gt; &lt;/ i&gt; อีกครั้ง ผู้ดูแลระบบยังสามารถใช้กำหนดเองของข้อมูลนี้ผ่านทางของพวกเขา TypoScript แม่แบบ</target></trans-unit>
+      <trans-unit id="newUntil.description" resname="newUntil.description" approved="yes">
+        <source>Enter the date at which this page is no longer considered new.</source>
+        <target state="final">ป้อนวันที่ที่หน้านี้ถือว่าไม่ใหม่</target>
+      </trans-unit>
+      <trans-unit id="newUntil.details" resname="newUntil.details" xml:space="preserve" approved="yes">
+				<source>The 'New Until' date of the page has no effect on the display of the webpage. This value is instead for internal use as a reminder of the date when the content of this page should be revised. If the content of the page will become outdated on a certain day, you could set this value to that approximate date.
+To get an overview of when pages will be outdated, use the 'Pagetree overview' in the 'Web&gt;Info' Module.</source>
+			<target state="final">วันที่'ใหม่จนกว่า'ของหน้ามีผลกับการแสดงผลหน้าเว็บที่ไม่มี ค่านี้แทนสำหรับการใช้ภายในเป็นเครื่องระลึกถึงวันที่เมื่อเนื้อหาของหน้านี้ควรจะปรับปรุง ถ้าเนื้อหาของหน้าเว็บจะกลายเป็นล้าสมัยในวันใดวันหนึ่งคุณสามารถตั้งค่านี้เป็นตัวอย่างว่าในวันที่ เพื่อให้ได้ภาพรวมของเมื่อหน้าจะล้าสมัยให้ใช้'ภาพรวม Pagetree'ใน'Web&gt; ข้อมูล'โมดูล</target></trans-unit>
+      <trans-unit id="newUntil.syntax" resname="newUntil.syntax" approved="yes">
+        <source>See Page / Publication Date (click below)</source>
+        <target state="final">ดูหน้า / เอกสารเผยแพร่วันที่ (คลิกด้านล่าง)</target>
+      </trans-unit>
+      <trans-unit id="lastUpdated.description" resname="lastUpdated.description" approved="yes">
+        <source>Enter the date and time of the most recent update to this page.</source>
+        <target state="final">ป้อนวันที่และเวลาในการอัปเดตเมื่อเร็ว ๆ นี้ส่วนใหญ่มาที่หน้านี้)</target>
+      </trans-unit>
+      <trans-unit id="lastUpdated.details" resname="lastUpdated.details" xml:space="preserve" approved="yes">
+				<source>How the value of this field is used is determined by the TypoScript template of the website. 'Last Update' content needs to be inserted on the pages and the TypoScript template must be configured to use this value.
+The most common use is to display the date from the automatically updated 'tstamp' field &lt;em&gt;unless&lt;/em&gt; the 'Last Update' field is set. In this case, the date in 'Last Update' is used.</source>
+			<target state="final">วิธีค่าของเขตข้อมูลนี้จะถูกใช้จะถูกกำหนดโดย TypoScript แม่แบบของเว็บไซต์ เนื้อหา'ปรับปรุงข้อมูลล่าสุดความต้องการที่จะแทรกในหน้าเว็บและแม่ TypoScript ต้องกำหนดค่าให้ใช้ค่านี้ ใช้งานโดยทั่วไปก็คือการแสดงวันที่จาก &lt;em&gt; ฟิลด์'tstamp'การปรับปรุงโดยอัตโนมัติเว้นแต่ &lt;/ em&gt; ฟิลด์'Last Update'ถูกตั้งค่า ในกรณีนี้ในวันที่'Last Update'มีการใช้</target></trans-unit>
+      <trans-unit id="lastUpdated.syntax" resname="lastUpdated.syntax" xml:space="preserve" approved="yes">
+				<source>The format is HH:MM DD-MM-YYYY or HH:MM MM-DD-YYYY depending on your TYPO3 configuration.
+If you insert a 'd' the current time and date is inserted. You can also append any value in the field with a number lie '+10' which will add 10 days to the current value.</source>
+			<target state="final">รูปแบบเป็น HH : MM DD - MM - YYYY หรือ HH : MM MM - DD - YYYY ขึ้นอยู่กับการกำหนดค่าของคุณ TYPO3 ถ้าคุณแทรก'd'วันและเวลาปัจจุบันจะถูกแทรก นอกจากนี้คุณยังสามารถผนวกค่าใด ๆ ในเขตข้อมูลที่มีอยู่จำนวน +10''ซึ่งจะเพิ่ม 10 วันเพื่อค่าปัจจุบัน</target></trans-unit>
+      <trans-unit id="nav_hide.description" resname="nav_hide.description" approved="yes">
+        <source>With this option the page will be not appear in menus in the Frontend. The page can still be viewed if linked by going directly to its URL.</source>
+        <target state="final">ด้วยตัวเลือกนี้หน้าจะมีการไม่ปรากฏในเมนูในส่วนหน้า หน้ายังคงสามารถดูได้โดยไปหากมีการเชื่อมโยงโดยตรงไปยัง URL ของ</target>
+      </trans-unit>
+      <trans-unit id="nav_title.description" resname="nav_title.description" approved="yes">
+        <source>Alternative Navigation Title for menu items in the Frontend. When set, this value is used instead of the Page Title.</source>
+        <target state="final">ทดแทนการนำชื่อของรายการเมนูในส่วนหน้า เมื่อตั้งค่านี้สามารถนำมาใช้แทนหน้าชื่อเรื่อง</target>
+      </trans-unit>
+      <trans-unit id="content_from_pid.description" resname="content_from_pid.description" xml:space="preserve" approved="yes">
+				<source>If set, this is an alternative page to select Content Elements from.
+Whether this field is used depends on the website's TypoScript template.</source>
+			<target state="final">ถ้าตั้งค่านี้เป็นหน้าทางเลือกเพื่อเลือกองค์ประกอบของเนื้อหาจาก ไม่ว่าฟิลด์นี้ใช้ขึ้นอยู่กับแม่ TypoScript เว็บไซต์ของ</target></trans-unit>
+      <trans-unit id="shortcut_mode.description" resname="shortcut_mode.description" approved="yes">
+        <source>Select a Shortcut Mode. By default the shortcut page must have a Shortcut Target to jump to. Other options are to go to the first subpage, to a random subpage, or back up to the parent page.</source>
+        <target state="final">เลือกโหมดทางลัด โดยค่าเริ่มต้นหน้าทางลัดทางลัดต้องมีเป้าหมายเพื่อข้ามไปยัง ตัวเลือกอื่น ๆ เพื่อไปที่หน้าย่อยแรกที่หน้าย่อยแบบสุ่มหรือกลับไปที่หน้าหลัก</target>
+      </trans-unit>
+      <trans-unit id="mount_pid.description" resname="mount_pid.description" approved="yes">
+        <source>Mount this page. If set, subpages of this page come from the Mounted Page instead.</source>
+        <target state="final">Mount หน้านี้ หากตั้งหน้าย่อยของหน้านี้มาจากติดหน้าแทน</target>
+      </trans-unit>
+      <trans-unit id="mount_pid.details" resname="mount_pid.details" approved="yes">
+        <source>In the Frontend this is done by adding a new variable, &amp;MP, to the URL. This links the mounted branch to the main branch by pairing page ids.</source>
+        <target state="final">ในส่วนหน้านี้จะกระทำโดยการเพิ่มตัวแปรใหม่และ MP เพื่อ URL นี้การเชื่อมโยงสาขาติดตั้งให้กับสาขาหลักโดยการจับคู่หน้ารหัส</target>
+      </trans-unit>
+      <trans-unit id="mount_pid_ol.description" resname="mount_pid_ol.description" approved="yes">
+        <source>Show content for the current page or replace it completely with the Mounted Page.</source>
+        <target state="final">เนื้อหาแสดงหน้าปัจจุบันหรือแทนที่อย่างสมบูรณ์กับแบบติดหน้า</target>
+      </trans-unit>
+      <trans-unit id="title.description.+" resname="title.description.+" approved="yes">
+        <source>This is normally shown in the website navigation.</source>
+        <target state="final">นี้จะปรากฏขึ้นตามปกติในการใช้งานเว็บไซต์</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details.+" resname="TSconfig.details.+" xml:space="preserve" approved="yes">
+				<source>&lt;strong&gt;Example:&lt;/strong&gt;
+The 'Web&gt;Page' module lets you create content in four columns, Left, Normal, Right, Border if the template has been configured to use this option. (However, most websites use only one or two columns so some of these content columns are just taking up space and confusing users.)
+If you enter this string in the 'TSConfig' field, the 'Web&gt;Page' Module will only show the 'Normal' and 'Border' column!
+
+&lt;em&gt;mod.web_layout.tt_content.colPos_list = 0,3&lt;/em&gt;
+
+(Must be entered in a single line!)</source>
+			<target state="final">&lt;strong&gt; ตัวอย่าง : &lt;/ strong&gt; โมดูล'Web&gt; หน้า'ช่วยให้คุณสามารถสร้างเนื้อหาในสี่คอลัมน์ซ้าย, ปกติ, ขวา, ชายแดนถ้าแม่ได้รับการกำหนดค่าให้ใช้ตัวเลือกนี้ (แต่เว็บไซต์ส่วนใหญ่ใช้เพียงหนึ่งหรือสองคอลัมน์เพื่อบางคอลัมน์เนื้อหาเหล่านี้เป็นเพียงการใช้พื้นที่และผู้ใช้สับสน.) หากคุณป้อนสตริงในฟิลด์'TSConfig'นี้'Web&gt; หน้า'โมดูลที่จะแสดงเฉพาะ'ปกติ'และคอลัมน์'ชายแดน'! mod.web_layout.tt_content.colPos_list &lt;em&gt; = 0,3 &lt;/ em&gt; (จะต้องใส่ในบรรทัดเดียว!)</target></trans-unit>
+      <trans-unit id="l18n_cfg.description" resname="l18n_cfg.description" approved="yes">
+        <source>Affect availability of pages in the various languages.</source>
+        <target state="final">มีผลต่อความพร้อมของหน้าเว็บในภาษาต่างๆ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
