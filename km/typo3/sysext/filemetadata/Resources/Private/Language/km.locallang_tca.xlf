@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814822" source-language="en" datatype="plaintext" original="EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf" date="2012-10-17T17:55:17Z" product-name="local lang" target-language="km">
+    <header/>
+    <body>
+      <!-- sys_file_metadata fields -->
+      <trans-unit id="sys_file_metadata.status.3" resname="sys_file_metadata.status.3" approved="yes">
+        <source>Under review</source>
+        <target state="final">ស្ថិតក្រោម​ការត្រួតពិនិត្យ</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.keywords" resname="sys_file_metadata.keywords" approved="yes">
+        <source>Keywords</source>
+        <target state="final">ពាក្យសម្គាល់</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.caption" resname="sys_file_metadata.caption" approved="yes">
+        <source>Caption</source>
+        <target state="final">បទអធិប្បាយ</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.download_name" resname="sys_file_metadata.download_name" approved="yes">
+        <source>Download Name</source>
+        <target state="final">ឈ្មោះ​ទាញយក</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.location_country" resname="sys_file_metadata.location_country" approved="yes">
+        <source>Country</source>
+        <target state="final">ប្រទេស</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.location_city" resname="sys_file_metadata.location_city" approved="yes">
+        <source>City</source>
+        <target state="final">ទីក្រុង</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.latitude" resname="sys_file_metadata.latitude" approved="yes">
+        <source>Latitude</source>
+        <target state="final">រយៈទទឹង</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.longitude" resname="sys_file_metadata.longitude" approved="yes">
+        <source>Longitude</source>
+        <target state="final">រយៈបណ្ដោយ</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.ranking" resname="sys_file_metadata.ranking" approved="yes">
+        <source>Ranking</source>
+        <target state="final">ចំណាត់ថ្នាក់</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.note" resname="sys_file_metadata.note" approved="yes">
+        <source>Note</source>
+        <target state="final">សម្គាល់</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.pages" resname="sys_file_metadata.pages" approved="yes">
+        <source>Number of Pages</source>
+        <target state="final">ចំនួន​ទំព័រ</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.width" resname="sys_file_metadata.width" approved="yes">
+        <source>Width</source>
+        <target state="final">បណ្ដោយ</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.height" resname="sys_file_metadata.height" approved="yes">
+        <source>Height</source>
+        <target state="final">ទទឹង</target>
+      </trans-unit>
+      <!-- sys_file_metadata tabs -->
+      <!-- sys_file_metadata placeholder -->
+      <!-- sys_file_metadata palette -->
+      <trans-unit id="palette.metrics" resname="palette.metrics" approved="yes">
+        <source>Metrics</source>
+        <target state="final">រង្វាស់ជាម៉ែត្រ</target>
+      </trans-unit>
+      <!-- fe_groups fields -->
+    </body>
+  </file>
+</xliff>
