@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/Modules/short_urls.xlf" date="2025-11-13T18:00:15Z" product-name="redirects" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Short URLs</source>
+        <target state="final">Trumpos nuorodos</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Short URLs Administration</source>
+        <target state="final">Trumpų nuorodų administravimas</target>
+      </trans-unit>
+      <trans-unit id="heading_text" approved="yes">
+        <source>Short URL Management</source>
+        <target state="final">Trumpų nuorodų valdymas</target>
+      </trans-unit>
+      <trans-unit id="add_text" approved="yes">
+        <source>Add Short URL</source>
+        <target state="final">Pridėti trumpą nuorodą</target>
+      </trans-unit>
+      <trans-unit id="not_found.message" approved="yes">
+        <source>There are currently no Short URLs found in the database.</source>
+        <target state="final">Šiuo metu duomenų bazėje trumpų nuorodų nerasta.</target>
+      </trans-unit>
+      <trans-unit id="create" approved="yes">
+        <source>Create new Short URL</source>
+        <target state="final">Sukurti naują trumpą nuorodą</target>
+      </trans-unit>
+      <trans-unit id="delete.title" approved="yes">
+        <source>Delete Short URLs</source>
+        <target state="final">Ištrinti trumpas nuorodas</target>
+      </trans-unit>
+      <trans-unit id="show" approved="yes">
+        <source>Show Short URL</source>
+        <target state="final">Rodyti trumpą nuorodą</target>
+      </trans-unit>
+      <trans-unit id="generate_short_url" approved="yes">
+        <source>Generate Short URL</source>
+        <target state="final">Generuoti trumpą nuorodą</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicate_short_url" approved="yes">
+        <source>This Short URL already exists. Please choose a different source host or source path.</source>
+        <target state="final">Ši trumpa nuoroda jau egzistuoja. Pasirinkite kitą šaltinio prieglobą arba šaltinio kelią.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
