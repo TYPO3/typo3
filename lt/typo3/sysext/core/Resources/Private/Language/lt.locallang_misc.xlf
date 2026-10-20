@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814865" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="overwriteExistingFiles" resname="overwriteExistingFiles" approved="yes">
+        <source>Overwrite existing files</source>
+        <target state="final">Perrašyti esamus failus</target>
+      </trans-unit>
+      <trans-unit id="uploadMultipleFilesInfo" resname="uploadMultipleFilesInfo" approved="yes">
+        <source>Upload multiple files by holding the Shift or CTRL-file pressed while selecting your files (works on modern browsers only).</source>
+        <target state="final">Galite įkelti kelis failus laikydami nuspaustą Shift arba CTRL klavišą, kol pasirenkate failus (veikia tik šiuolaikinėse naršyklėse).</target>
+      </trans-unit>
+      <trans-unit id="fileMetaDataLocation" resname="fileMetaDataLocation" approved="yes">
+        <source>Location</source>
+        <target state="final">Vieta</target>
+      </trans-unit>
+      <trans-unit id="fileMetaErrorInvalidRecord" resname="fileMetaErrorInvalidRecord" approved="yes">
+        <source>File meta data not found</source>
+        <target state="final">Failo metaduomenys nerasti</target>
+      </trans-unit>
+      <trans-unit id="selectPosition" resname="selectPosition" approved="yes">
+        <source>Select a position for the new page</source>
+        <target state="final">Pasirinkite naujo puslapio vietą</target>
+      </trans-unit>
+      <trans-unit id="pageSelectPosition" resname="pageSelectPosition" approved="yes">
+        <source>Page (select position)</source>
+        <target state="final">Puslapis (pasirinkti vietą)</target>
+      </trans-unit>
+      <trans-unit id="goBack" resname="goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Grįžti</target>
+      </trans-unit>
+      <trans-unit id="createNewPage" resname="createNewPage" approved="yes">
+        <source>Create a new page</source>
+        <target state="final">Sukurti naują puslapį</target>
+      </trans-unit>
+      <trans-unit id="insertNewPageHere" resname="insertNewPageHere" approved="yes">
+        <source>Insert the new page here</source>
+        <target state="final">Įterpti naują puslapį čia</target>
+      </trans-unit>
+      <trans-unit id="insertNewRecordHere" resname="insertNewRecordHere" approved="yes">
+        <source>Insert new record here</source>
+        <target state="final">Įterpti naują įrašą čia</target>
+      </trans-unit>
+      <trans-unit id="moveElements" resname="moveElements" approved="yes">
+        <source>Move elements</source>
+        <target state="final">Perkelti elementus</target>
+      </trans-unit>
+      <trans-unit id="copyElements" resname="copyElements" approved="yes">
+        <source>Copy elements</source>
+        <target state="final">Kopijuoti elementus</target>
+      </trans-unit>
+      <trans-unit id="makeCopy" resname="makeCopy" approved="yes">
+        <source>Make copy instead of moving element</source>
+        <target state="final">Padaryti kopiją vietoje elemento perkėlimo</target>
+      </trans-unit>
+      <trans-unit id="system_records" resname="system_records" approved="yes">
+        <source>System Records</source>
+        <target state="final">Sisteminiai įrašai</target>
+      </trans-unit>
+      <trans-unit id="1_selectType" resname="1_selectType" approved="yes">
+        <source>First select the type of the new content element</source>
+        <target state="final">Pirmiausia pasirinkite naujo turinio elemento tipą</target>
+      </trans-unit>
+      <trans-unit id="2_selectPosition" resname="2_selectPosition" approved="yes">
+        <source>Now click on the position of the new content element</source>
+        <target state="final">Dabar spustelėkite naujo turinio elemento vietą</target>
+      </trans-unit>
+      <trans-unit id="CM_history" resname="CM_history" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">Istorija / Atšaukti</target>
+      </trans-unit>
+      <trans-unit id="CM_newWizard" resname="CM_newWizard" approved="yes">
+        <source>'Create New' wizard</source>
+        <target state="final">„Sukurti naują“ vedlys</target>
+      </trans-unit>
+      <trans-unit id="localize" resname="localize" approved="yes">
+        <source>Localize</source>
+        <target state="final">Lokalizuoti</target>
+      </trans-unit>
+      <trans-unit id="localize.isLocalizable" resname="localize.isLocalizable" approved="yes">
+        <source>Record can be localized</source>
+        <target state="final">Įrašas gali būti lokalizuotas</target>
+      </trans-unit>
+      <trans-unit id="localizeAllRecords" resname="localizeAllRecords" approved="yes">
+        <source>Localize all records</source>
+        <target state="final">Lokalizuoti visus įrašus</target>
+      </trans-unit>
+      <trans-unit id="synchronizeWithOriginalLanguage" resname="synchronizeWithOriginalLanguage" approved="yes">
+        <source>Synchronize with original language</source>
+        <target state="final">Sinchronizuoti su originalia kalba</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentOverrideFiles" resname="fileUpload_infoComponentOverrideFiles" approved="yes">
+        <source>Overwrite existing files</source>
+        <target state="final">Perrašyti esamus failus</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_listEmptyText" resname="liveSearch_listEmptyText" approved="yes">
+        <source>No results found.</source>
+        <target state="final">Rezultatų nerasta.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
