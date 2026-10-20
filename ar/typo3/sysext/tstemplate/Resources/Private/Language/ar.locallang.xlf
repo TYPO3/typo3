@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815007" source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="moduleTitle" resname="moduleTitle" approved="yes">
+        <source>Template tools</source>
+        <target state="final">أدوات القالب</target>
+      </trans-unit>
+      <trans-unit id="templateAnalyzer" resname="templateAnalyzer" approved="yes">
+        <source>Template Analyzer</source>
+        <target state="final">مُحلّل القالب</target>
+      </trans-unit>
+      <trans-unit id="constantEditor" resname="constantEditor" approved="yes">
+        <source>Constant Editor</source>
+        <target state="final">مُحرّر الثوابت</target>
+      </trans-unit>
+      <trans-unit id="infoModify" resname="infoModify" approved="yes">
+        <source>Info/Modify</source>
+        <target state="final">معلومات/تعديل</target>
+      </trans-unit>
+      <trans-unit id="objectBrowser" resname="objectBrowser" approved="yes">
+        <source>TypoScript Object Browser</source>
+        <target state="final">مُتَصفّح كائن TypoScript</target>
+      </trans-unit>
+      <trans-unit id="viewTemplates" resname="viewTemplates" approved="yes">
+        <source>Viewing templates of</source>
+        <target state="final">عرض القوالب لـ</target>
+      </trans-unit>
+      <trans-unit id="pageName" resname="pageName" approved="yes">
+        <source>Page name</source>
+        <target state="final">اسم الصفحة</target>
+      </trans-unit>
+      <trans-unit id="templates" resname="templates" approved="yes">
+        <source>Templates</source>
+        <target state="final">القوالب</target>
+      </trans-unit>
+      <trans-unit id="isRoot" resname="isRoot" approved="yes">
+        <source>Is Root?</source>
+        <target state="final">هل الجذر؟</target>
+      </trans-unit>
+      <trans-unit id="isExt" resname="isExt" approved="yes">
+        <source>Is Ext?</source>
+        <target state="final">هل الإضافة؟</target>
+      </trans-unit>
+      <trans-unit id="overview" resname="overview" approved="yes">
+        <source>This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.</source>
+        <target state="final">هذه نظرة عامة على الصفحات الموجودة في قاعدة البيانات التي تحتوي على سجل قالب واحد أو أكثر. أنقر فوق عنوان الصفحة للذهاب إلى الصفحة.</target>
+      </trans-unit>
+      <trans-unit id="areYouSure" resname="areYouSure" approved="yes">
+        <source>Are you sure you want to do this?</source>
+        <target state="final">هل أنت متأكد من أنك تريد القيام بهذا؟</target>
+      </trans-unit>
+      <trans-unit id="noTemplate" resname="noTemplate" approved="yes">
+        <source>No template</source>
+        <target state="final">لا يوجد قالب</target>
+      </trans-unit>
+      <trans-unit id="noTemplateDescription" resname="noTemplateDescription" approved="yes">
+        <source>There was no template on this page!</source>
+        <target state="final">لم يكن هناك قالب في هذه الصفحة!</target>
+      </trans-unit>
+      <trans-unit id="createTemplate" resname="createTemplate" approved="yes">
+        <source>Create a template record first in order to edit constants!</source>
+        <target state="final">أنشئ سجل قالب أولاً من أجل تعديل الثوابت!</target>
+      </trans-unit>
+      <trans-unit id="createTemplateToEditConfiguration" resname="createTemplateToEditConfiguration" approved="yes">
+        <source>You need to create a template record below in order to edit your configuration.</source>
+        <target state="final">تحتاج إلى إنشاء سجل قالب أدناه من أجل تعديل الإعدادات الخاصة بك.</target>
+      </trans-unit>
+      <trans-unit id="newWebsite" resname="newWebsite" approved="yes">
+        <source>Create new website</source>
+        <target state="final">انشاء موقع جديد</target>
+      </trans-unit>
+      <trans-unit id="newWebsiteDescription" resname="newWebsiteDescription" approved="yes">
+        <source>If you want this page to be the root of a new website, optionally based on one of the standard templates, then press the button below</source>
+        <target state="final">إذا كنت تريد أن تكون هذه الصفحة جذراً لموقع ويب جديد، بناءً على أحد القوالب القياسية اختيارياً، فاضغط على الزر أدناه</target>
+      </trans-unit>
+      <trans-unit id="newWebsiteAction" resname="newWebsiteAction" approved="yes">
+        <source>Create template for a new site</source>
+        <target state="final">إنشاء قالب لموقع جديد</target>
+      </trans-unit>
+      <trans-unit id="extTemplate" resname="extTemplate" approved="yes">
+        <source>Create extension template</source>
+        <target state="final">إنشاء قالب إضافة</target>
+      </trans-unit>
+      <trans-unit id="extTemplateDescription" resname="extTemplateDescription" approved="yes">
+        <source>An extension template allows you to enter TypoScript values that will affect only this page and subpages.</source>
+        <target state="final">يسمح لك قالب الإضافة بإدخال قِيَم TypoScript التي ستؤثر فقط على هذه الصفحة والصفحات الفرعية.</target>
+      </trans-unit>
+      <trans-unit id="extTemplateAction" resname="extTemplateAction" approved="yes">
+        <source>Click here to create an extension template.</source>
+        <target state="final">انقر هنا لإنشاء قالب إضافة.</target>
+      </trans-unit>
+      <trans-unit id="goToClosest" resname="goToClosest" approved="yes">
+        <source>Go to closest page with template</source>
+        <target state="final">اذهب إلى أقرب صفحة مع القالب</target>
+      </trans-unit>
+      <trans-unit id="goToClosestDescription" resname="goToClosestDescription" approved="yes">
+        <source>Closest template is on page '%s' (uid %s).</source>
+        <target state="final">القالب الأقرب هو في الصفحة ''%s' (uid %s).</target>
+      </trans-unit>
+      <trans-unit id="goToClosestAction" resname="goToClosestAction" approved="yes">
+        <source>Click here to go.</source>
+        <target state="final">انقر هنا للذهاب.</target>
+      </trans-unit>
+      <trans-unit id="titleNewSiteStandard" resname="titleNewSiteStandard" approved="yes">
+        <source>NEW SITE, based on standard</source>
+        <target state="final">الموقع الجديد، استناداً إلى المِعيار</target>
+      </trans-unit>
+      <trans-unit id="titleNewSite" resname="titleNewSite" approved="yes">
+        <source>NEW SITE</source>
+        <target state="final">صفحة جديدة</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
