@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_bookmarks.xlf" date="2025-01-08T00:00:00Z" product-name="lang" target-language="lt">
+    <header/>
+    <body>
+      <!-- Group labels -->
+      <trans-unit id="group_default" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="group_pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">Puslapiai</target>
+      </trans-unit>
+      <trans-unit id="group_records" approved="yes">
+        <source>Records</source>
+        <target state="final">Įrašai</target>
+      </trans-unit>
+      <trans-unit id="group_files" approved="yes">
+        <source>Files</source>
+        <target state="final">Failai</target>
+      </trans-unit>
+      <trans-unit id="group_tools" approved="yes">
+        <source>Tools</source>
+        <target state="final">Įrankiai</target>
+      </trans-unit>
+      <trans-unit id="group_miscellaneous" approved="yes">
+        <source>Miscellaneous</source>
+        <target state="final">Įvairūs</target>
+      </trans-unit>
+      <trans-unit id="global" approved="yes">
+        <source>Global</source>
+        <target state="final">Globalus</target>
+      </trans-unit>
+      <trans-unit id="all" approved="yes">
+        <source>All</source>
+        <target state="final">Visi</target>
+      </trans-unit>
+      <!-- UI labels -->
+      <trans-unit id="title" approved="yes">
+        <source>Bookmarks</source>
+        <target state="final">Žymelės</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>You have not added any bookmarks yet. Use the share icon on any backend page to create one.</source>
+        <target state="final">Dar nepridėjote jokių žymelių. Norėdami ją sukurti, naudokite bendrinimo ikoną bet kuriame administravimo puslapyje.</target>
+      </trans-unit>
+      <trans-unit id="notGrouped" approved="yes">
+        <source>Not grouped</source>
+        <target state="final">Nesugrupuota</target>
+      </trans-unit>
+      <trans-unit id="empty" approved="yes">
+        <source>No bookmarks yet. Add bookmarks using the share icon on pages throughout the backend.</source>
+        <target state="final">Kol kas nėra žymių. Pridėkite žymes naudodami bendrinimo ikoną skirtinguose administravimo puslapiuose.</target>
+      </trans-unit>
+      <trans-unit id="manage" approved="yes">
+        <source>Manage bookmarks</source>
+        <target state="final">Tvarkyti žymes</target>
+      </trans-unit>
+      <trans-unit id="delete" approved="yes">
+        <source>Delete bookmark</source>
+        <target state="final">Ištrinti žymę</target>
+      </trans-unit>
+      <trans-unit id="fieldTitle" approved="yes">
+        <source>Title</source>
+        <target state="final">Pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="fieldGroup" approved="yes">
+        <source>Group</source>
+        <target state="final">Grupė</target>
+      </trans-unit>
+      <!-- Success notifications for bookmarks -->
+      <trans-unit id="success.created.title" approved="yes">
+        <source>Bookmark created</source>
+        <target state="final">Žymė sukurta</target>
+      </trans-unit>
+      <trans-unit id="success.created.message" approved="yes">
+        <source>The bookmark was created.</source>
+        <target state="final">Žymė buvo sukurta.</target>
+      </trans-unit>
+      <trans-unit id="success.updated.title" approved="yes">
+        <source>Bookmark updated</source>
+        <target state="final">Žymė atnaujinta</target>
+      </trans-unit>
+      <trans-unit id="success.updated.message" approved="yes">
+        <source>Bookmark updated successfully.</source>
+        <target state="final">Žymė sėkmingai atnaujinta.</target>
+      </trans-unit>
+      <trans-unit id="success.deleted.title" approved="yes">
+        <source>Bookmark deleted</source>
+        <target state="final">Žymė ištrinta</target>
+      </trans-unit>
+      <trans-unit id="success.deleted.message" approved="yes">
+        <source>Bookmark deleted successfully.</source>
+        <target state="final">Žymė sėkmingai ištrinta.</target>
+      </trans-unit>
+      <trans-unit id="success.deletedMultiple.title" approved="yes">
+        <source>Bookmarks deleted</source>
+        <target state="final">Žymės ištrintos</target>
+      </trans-unit>
+      <trans-unit id="success.deletedMultiple.message" approved="yes">
+        <source>%d bookmark(s) deleted.</source>
+        <target state="final">Ištrinta %d žymė(-ės).</target>
+      </trans-unit>
+      <trans-unit id="success.moved.title" approved="yes">
+        <source>Bookmarks moved</source>
+        <target state="final">Žymės perkeltos</target>
+      </trans-unit>
+      <trans-unit id="success.moved.message" approved="yes">
+        <source>%d bookmark(s) moved.</source>
+        <target state="final">Perkelta %d žymė(-ės).</target>
+      </trans-unit>
+      <!-- Success notifications for groups -->
+      <trans-unit id="success.groupCreated.title" approved="yes">
+        <source>Group created</source>
+        <target state="final">Grupė sukurta</target>
+      </trans-unit>
+      <trans-unit id="success.groupCreated.message" approved="yes">
+        <source>Group created successfully.</source>
+        <target state="final">Grupė sėkmingai sukurta.</target>
+      </trans-unit>
+      <trans-unit id="success.groupUpdated.title" approved="yes">
+        <source>Group updated</source>
+        <target state="final">Grupė ištrinta</target>
+      </trans-unit>
+      <trans-unit id="success.groupUpdated.message" approved="yes">
+        <source>Group updated successfully.</source>
+        <target state="final">Grupė sėkmingai ištrinta.</target>
+      </trans-unit>
+      <trans-unit id="success.groupDeleted.title" approved="yes">
+        <source>Group deleted</source>
+        <target state="final">Grupė ištrinta</target>
+      </trans-unit>
+      <trans-unit id="success.groupDeleted.message" approved="yes">
+        <source>Group deleted successfully.</source>
+        <target state="final">Grupė sėkmingai ištrinta.</target>
+      </trans-unit>
+      <!-- Error notifications for bookmarks -->
+      <trans-unit id="error.unknown.message" approved="yes">
+        <source>An unexpected error occurred.</source>
+        <target state="final">Įvyko nenumatyta klaida.</target>
+      </trans-unit>
+      <trans-unit id="error.notFound.message" approved="yes">
+        <source>Bookmark not found.</source>
+        <target state="final">Žymė nerasta.</target>
+      </trans-unit>
+      <trans-unit id="error.accessDenied.message" approved="yes">
+        <source>You do not have permission to edit this bookmark.</source>
+        <target state="final">Neturite teisės redaguoti šios žymės.</target>
+      </trans-unit>
+      <trans-unit id="error.globalGroupNotAllowed.message" approved="yes">
+        <source>Only administrators can assign bookmarks to global groups.</source>
+        <target state="final">Tik administratoriai gali priskirti žymes globalioms grupėms.</target>
+      </trans-unit>
+      <trans-unit id="error.createFailed.title" approved="yes">
+        <source>Bookmark creation failed</source>
+        <target state="final">Nepavyko sukurti žymės</target>
+      </trans-unit>
+      <trans-unit id="error.createFailed.message" approved="yes">
+        <source>The bookmark could not be created.</source>
+        <target state="final">Žymės sukurti nepavyko.</target>
+      </trans-unit>
+      <trans-unit id="error.updateFailed.title" approved="yes">
+        <source>Bookmark update failed</source>
+        <target state="final">Nepavyko atnaujinti žymės</target>
+      </trans-unit>
+      <trans-unit id="error.updateFailed.message" approved="yes">
+        <source>The bookmark could not be updated.</source>
+        <target state="final">Žymės atnaujinti nepavyko.</target>
+      </trans-unit>
+      <trans-unit id="error.deleteFailed.title" approved="yes">
+        <source>Bookmark deletion failed</source>
+        <target state="final">Nepavyko ištrinti žymės</target>
+      </trans-unit>
+      <trans-unit id="error.deleteFailed.message" approved="yes">
+        <source>The bookmarks could not be deleted.</source>
+        <target state="final">Žymių ištrinti nepavyko.</target>
+      </trans-unit>
+      <trans-unit id="error.moveFailed.title" approved="yes">
+        <source>Move failed</source>
+        <target state="final">Perkelti nepavyko</target>
+      </trans-unit>
+      <trans-unit id="error.moveFailed.message" approved="yes">
+        <source>The bookmarks could not be moved.</source>
+        <target state="final">Žymių perkelti nepavyko.</target>
+      </trans-unit>
+      <trans-unit id="error.missingRoute.message" approved="yes">
+        <source>The bookmark could not be created because route information is missing.</source>
+        <target state="final">Žymės nepavyko sukurti, nes trūksta maršruto informacijos.</target>
+      </trans-unit>
+      <trans-unit id="error.missingBookmarkId.message" approved="yes">
+        <source>Missing bookmark ID.</source>
+        <target state="final">Trūksta žymės ID.</target>
+      </trans-unit>
+      <trans-unit id="error.missingBookmarkIds.message" approved="yes">
+        <source>Missing bookmark IDs.</source>
+        <target state="final">Trūksta žymių ID.</target>
+      </trans-unit>
+      <!-- Error notifications for groups -->
+      <trans-unit id="error.groupCreateFailed.title" approved="yes">
+        <source>Group creation failed</source>
+        <target state="final">Nepavyko sukurti grupės</target>
+      </trans-unit>
+      <trans-unit id="error.groupCreateFailed.message" approved="yes">
+        <source>The group could not be created.</source>
+        <target state="final">Grupės sukurti nepavyko.</target>
+      </trans-unit>
+      <trans-unit id="error.groupUpdateFailed.title" approved="yes">
+        <source>Group update failed</source>
+        <target state="final">Nepavyko atnaujinti grupės</target>
+      </trans-unit>
+      <trans-unit id="error.groupUpdateFailed.message" approved="yes">
+        <source>The group could not be updated.</source>
+        <target state="final">Grupės atnaujinti nepavyko.</target>
+      </trans-unit>
+      <trans-unit id="error.groupDeleteFailed.title" approved="yes">
+        <source>Group deletion failed</source>
+        <target state="final">Nepavyko ištrinti grupės</target>
+      </trans-unit>
+      <trans-unit id="error.groupDeleteFailed.message" approved="yes">
+        <source>The group could not be deleted.</source>
+        <target state="final">Grupės ištrinti nepavyko.</target>
+      </trans-unit>
+      <trans-unit id="error.groupReorderFailed.message" approved="yes">
+        <source>The groups could not be reordered.</source>
+        <target state="final">Nepavyko pakeisti grupių tvarkos.</target>
+      </trans-unit>
+      <trans-unit id="error.missingGroupId.message" approved="yes">
+        <source>Missing group ID.</source>
+        <target state="final">Trūksta grupės ID.</target>
+      </trans-unit>
+      <trans-unit id="error.missingGroupIds.message" approved="yes">
+        <source>Missing group IDs.</source>
+        <target state="final">Trūksta grupių ID.</target>
+      </trans-unit>
+      <trans-unit id="error.missingLabel.message" approved="yes">
+        <source>Group label is required.</source>
+        <target state="final">Grupės pavadinimas yra privalomas.</target>
+      </trans-unit>
+      <!-- Button labels -->
+      <trans-unit id="action.create" approved="yes">
+        <source>Create bookmark</source>
+        <target state="final">Sukurti žymą</target>
+      </trans-unit>
+      <trans-unit id="action.remove" approved="yes">
+        <source>Remove bookmark</source>
+        <target state="final">Pašalinti žymą</target>
+      </trans-unit>
+      <trans-unit id="action.save" approved="yes">
+        <source>Save</source>
+        <target state="final">Išsaugoti</target>
+      </trans-unit>
+      <trans-unit id="action.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Atšaukti</target>
+      </trans-unit>
+      <trans-unit id="action.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Ištrinti</target>
+      </trans-unit>
+      <!-- Edit view labels -->
+      <trans-unit id="details" approved="yes">
+        <source>Details</source>
+        <target state="final">Išsami informacija</target>
+      </trans-unit>
+      <trans-unit id="details.route" approved="yes">
+        <source>Route</source>
+        <target state="final">Maršrutas</target>
+      </trans-unit>
+      <trans-unit id="details.url" approved="yes">
+        <source>URL</source>
+        <target state="final">URL</target>
+      </trans-unit>
+      <trans-unit id="details.parameters" approved="yes">
+        <source>Parameters</source>
+        <target state="final">Parametrai</target>
+      </trans-unit>
+      <!-- Confirmation dialogs -->
+      <trans-unit id="confirmDelete.title" approved="yes">
+        <source>Delete bookmark</source>
+        <target state="final">Ištrinti žymą</target>
+      </trans-unit>
+      <trans-unit id="confirmDelete.message" approved="yes">
+        <source>Delete the bookmark permanently? You cannot undo this action.</source>
+        <target state="final">Ar tikrai norite visam laikui ištrinti žymą? Šio veiksmo atšaukti negalėsite.</target>
+      </trans-unit>
+      <trans-unit id="confirmDeleteMultiple.title" approved="yes">
+        <source>Delete bookmarks</source>
+        <target state="final">Ištrinti žymas</target>
+      </trans-unit>
+      <trans-unit id="confirmDeleteMultiple.message" approved="yes">
+        <source>Delete the %d bookmark(s) permanently? You cannot undo this action.</source>
+        <target state="final">Ar tikrai norite visam laikui ištrinti %d žymą(-as)? Šio veiksmo atšaukti negalėsite.</target>
+      </trans-unit>
+      <trans-unit id="confirmDeleteGroup.title" approved="yes">
+        <source>Delete group</source>
+        <target state="final">Ištrinti grupę</target>
+      </trans-unit>
+      <trans-unit id="confirmDeleteGroup.message" approved="yes">
+        <source>Delete the bookmark group "%s"? Bookmarks in this group will be moved to the Default group.</source>
+        <target state="final">Ar tikrai norite ištrinti žymų grupę „%s“? Šios grupės žymos bus perkeltos į numatytąją grupę.</target>
+      </trans-unit>
+      <!-- Manager view labels -->
+      <trans-unit id="manager.selectAll" approved="yes">
+        <source>Select all</source>
+        <target state="final">Pažymėti viską</target>
+      </trans-unit>
+      <trans-unit id="manager.deselectAll" approved="yes">
+        <source>Deselect all</source>
+        <target state="final">Atžymėti viską</target>
+      </trans-unit>
+      <trans-unit id="manager.moveToGroup" approved="yes">
+        <source>Move to group</source>
+        <target state="final">Perkelti į grupę</target>
+      </trans-unit>
+      <trans-unit id="manager.deleteSelected" approved="yes">
+        <source>Delete</source>
+        <target state="final">Ištrinti</target>
+      </trans-unit>
+      <trans-unit id="manager.manageGroups" approved="yes">
+        <source>Manage Groups</source>
+        <target state="final">Tvarkyti grupes</target>
+      </trans-unit>
+      <trans-unit id="manager.newGroup" approved="yes">
+        <source>New Group</source>
+        <target state="final">Nauja grupė</target>
+      </trans-unit>
+      <trans-unit id="manager.createGroup" approved="yes">
+        <source>Create Group</source>
+        <target state="final">Sukurti grupę</target>
+      </trans-unit>
+      <trans-unit id="manager.editGroup" approved="yes">
+        <source>Edit Group</source>
+        <target state="final">Redaguoti grupę</target>
+      </trans-unit>
+      <trans-unit id="manager.noGroups" approved="yes">
+        <source>You have not created any groups yet. Click "New Group" to create one.</source>
+        <target state="final">Dar nesukūrėte jokių grupių. Spustelėkite „Nauja grupė“, kad ją sukurtumėte.</target>
+      </trans-unit>
+      <trans-unit id="manager.label" approved="yes">
+        <source>Label</source>
+        <target state="final">Pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="manager.back" approved="yes">
+        <source>Back</source>
+        <target state="final">Atgal</target>
+      </trans-unit>
+      <trans-unit id="manager.editBookmark" approved="yes">
+        <source>Edit bookmark</source>
+        <target state="final">Redaguoti žymą</target>
+      </trans-unit>
+      <trans-unit id="manager.dragToReorder" approved="yes">
+        <source>Drag to reorder</source>
+        <target state="final">Vilkite, kad pakeistumėte tvarką</target>
+      </trans-unit>
+      <trans-unit id="manager.moveUp" approved="yes">
+        <source>Move up</source>
+        <target state="final">Perkelti aukštyn</target>
+      </trans-unit>
+      <trans-unit id="manager.moveDown" approved="yes">
+        <source>Move down</source>
+        <target state="final">Perkelti žemyn</target>
+      </trans-unit>
+      <trans-unit id="manager.locked" approved="yes">
+        <source>This bookmark cannot be edited</source>
+        <target state="final">Šios žymės redaguoti negalima</target>
+      </trans-unit>
+      <trans-unit id="manager.notAccessible" approved="yes">
+        <source>Not accessible</source>
+        <target state="final">Nepasiekiama</target>
+      </trans-unit>
+      <trans-unit id="groupType.user" approved="yes">
+        <source>My Groups</source>
+        <target state="final">Mano grupės</target>
+      </trans-unit>
+      <trans-unit id="groupType.system" approved="yes">
+        <source>System Groups</source>
+        <target state="final">Sistemos grupės</target>
+      </trans-unit>
+      <trans-unit id="groupType.global" approved="yes">
+        <source>Global Groups</source>
+        <target state="final">Globalios grupės</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
