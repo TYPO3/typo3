@@ -17,8 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Site\Set;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Package\AbstractServiceProvider;
+use TYPO3\CMS\Core\Site\Set\InvalidSetException;
+use TYPO3\CMS\Core\Site\Set\SetCollector;
+use TYPO3\CMS\Core\Site\Set\SetError;
 use TYPO3\CMS\Core\Site\Set\YamlSetDefinitionProvider;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class YamlSetDefinitionProviderTest extends FunctionalTestCase
@@ -36,6 +43,63 @@ final class YamlSetDefinitionProviderTest extends FunctionalTestCase
         parent::setUp();
 
         $this->subject = $this->get(YamlSetDefinitionProvider::class);
+    }
+
+    public static function malformedSetDefinitionIsReportedAsInvalidSetDataProvider(): \Generator
+    {
+        yield 'scalar instead of a mapping' => ["not-a-mapping\n"];
+        yield 'list instead of a mapping' => ["- typo3tests/a-list\n"];
+        yield 'empty file' => [''];
+        yield 'numeric name' => ["name: 123\nlabel: Numeric name\n"];
+        yield 'name as a mapping' => ["name:\n  foo: bar\nlabel: Mapping as name\n"];
+    }
+
+    #[DataProvider('malformedSetDefinitionIsReportedAsInvalidSetDataProvider')]
+    #[Test]
+    public function malformedSetDefinitionIsReportedAsInvalidSet(string $yaml): void
+    {
+        $setPath = Environment::getVarPath() . '/tests/malformed-set/';
+        GeneralUtility::mkdir_deep($setPath);
+        file_put_contents($setPath . 'config.yaml', $yaml);
+
+        try {
+            $this->subject->get(new \SplFileInfo($setPath . 'config.yaml'));
+            self::fail('Malformed set definition was accepted');
+        } catch (InvalidSetException $e) {
+            self::assertSame('', $e->getSetName());
+            self::assertStringContainsString($setPath . 'config.yaml', $e->getMessage());
+        }
+    }
+
+    #[Test]
+    public function allMalformedSetDefinitionsAreReportedTogether(): void
+    {
+        $packagePath = Environment::getVarPath() . '/tests/malformed-sets/';
+        $definitions = iterator_to_array(self::malformedSetDefinitionIsReportedAsInvalidSetDataProvider());
+        foreach ($definitions as $name => [$yaml]) {
+            $setPath = $packagePath . 'Configuration/Sets/' . $name . '/';
+            GeneralUtility::mkdir_deep($setPath);
+            file_put_contents($setPath . 'config.yaml', $yaml);
+        }
+
+        $collector = AbstractServiceProvider::configureSetCollector(
+            $this->getContainer(),
+            new SetCollector(),
+            $packagePath,
+            'typo3tests/test-sets',
+        );
+        $invalidSets = $collector->getInvalidSets();
+
+        self::assertCount(count($definitions), $invalidSets);
+        self::assertSame([], $collector->getSetDefinitions());
+        foreach (array_keys($definitions) as $name) {
+            $source = 'EXT:test_sets/Configuration/Sets/' . $name . '/config.yaml';
+            $invalidSet = array_find($invalidSets, static fn(array $error): bool => str_contains($error['context'], $source));
+
+            self::assertNotNull($invalidSet, $name);
+            self::assertSame(SetError::invalidSet, $invalidSet['error']);
+            self::assertNotSame('', $invalidSet['name']);
+        }
     }
 
     #[Test]
