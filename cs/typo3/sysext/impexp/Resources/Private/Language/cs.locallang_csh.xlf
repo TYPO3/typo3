@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814829" source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang_csh.xlf" date="2011-10-17T20:22:33Z" product-name="impexp" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>Import/Export</source>
+        <target state="final">Import/Export</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Native Import/Export module for TYPO3 data. Can export single records, content of tables, single pages or whole branches of the page tree. Includes attached media like image and preserves relations between records. Exports only to TYPO3 specific format, either a binary format (.T3D) or XML. The format is meant for exchange between TYPO3 systems.</source>
+        <target state="final">Nativní modul pro import/export dat TYPO3. Lze exportovat jednotlivé záznamy, obsah tabulek, jednotlivé stránky nebo celé větve stromu stránek. Zahrnuje připojená média, například obrázek, a zachovává vztahy mezi záznamy. Exportuje pouze do specifického formátu TYPO3, buď do binárního formátu (.T3D), nebo do XML. Tento formát je určen pro výměnu mezi systémy TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="_.image" resname="_.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/impexp.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" approved="yes">
+        <source>Example of the preview display during export configuration of a page. Notice how records on the page are include plus how references inside the record is found and included as well (bottom of screen).</source>
+        <target state="final">Příklad zobrazení náhledu při konfiguraci exportu stránky. Všimněte si, jak jsou záznamy na stránce zahrnuty a jak jsou nalezeny a zahrnuty také odkazy uvnitř záznamu (spodní část obrazovky).</target>
+      </trans-unit>
+      <trans-unit id="export.alttitle" resname="export.alttitle" approved="yes">
+        <source>Exporting records from TYPO3</source>
+        <target state="final">Exportování záznamů z TYPO3</target>
+      </trans-unit>
+      <trans-unit id="export.description" resname="export.description" approved="yes">
+        <source>To export TYPO3 T3D/XML files you click any record icon or page in the page tree (including the root page!), select "More options" and then "Export". This will bring up the export interface where you can configure options for your export session.</source>
+        <target state="final">Chcete-li exportovat soubory TYPO3 T3D/XML, klikněte na libovolnou ikonu záznamu nebo stránky ve stromu stránek (včetně kořenové stránky!), vyberte „Další možnosti“ a poté „Exportovat“. Tím se zobrazí rozhraní pro export, ve kterém můžete nastavit možnosti relace exportu.</target>
+      </trans-unit>
+      <trans-unit id="export.details" resname="export.details" xml:space="preserve" approved="yes">
+				<source>There are a number of methods by which you can export data from TYPO3:
+- Export a single page or branch of the page tree (use page icon context menu)
+- Export a single record from any page (use record icon context menu)
+- Export all records from a specific table on a specific page (using the Web&gt;List module)
+- Export an arbitrary selection of records from the clipboard (using the Web&gt;List module)
+
+The export format observes all TYPO3s methods for relations between the records in the export file. But you will have to configure how these relations are maintained, at least to some degree. Sometimes you would want to include records referred to, at other times you surely want to keep the original mapping. That depends on your objectives with the export.
+
+Regardless of your configuration for export you will always see a complete reflection of all chosen records and their internal relations in the preview display found in the bottom of the export module page.
+
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before exporting if there are any error messages there!</source>
+			<target state="final">Existuje řada metod, kterými můžete exportovat data z TYPO3:
+- Exportovat jednu stránku nebo větev stromu stránek (pomocí kontextové nabídky ikony stránky)
+- Exportovat jeden záznam z libovolné stránky (použijte kontextovou nabídku ikony záznamu).
+- Exportovat všechny záznamy z konkrétní tabulky na konkrétní stránce (pomocí modulu Web&gt;Záznamy).
+- Exportovat libovolný výběr záznamů ze schránky (pomocí modulu Web&gt;Záznamy)
+
+Formát exportu dodržuje všechny metody TYPO3 pro vztahy mezi záznamy v exportním souboru. Budete však muset nakonfigurovat, jak se tyto vztahy alespoň do určité míry udržují. Někdy byste chtěli zahrnout záznamy, na které se odkazuje, jindy jistě chcete zachovat původní mapování. To záleží na vašich cílech při exportu.
+
+Bez ohledu na konfiguraci exportu vždy uvidíte kompletní odraz všech vybraných záznamů a jejich vnitřních vztahů v náhledovém zobrazení, které najdete v dolní části stránky modulu exportu.
+
+&lt;b&gt;Chybová hlášení:&lt;/b&gt; Nezapomeňte se před exportem podívat na záložku Zprávy, zda se tam neobjevují chybová hlášení!</target></trans-unit>
+      <trans-unit id="_export.seeAlso" resname="_export.seeAlso" approved="yes">
+        <source>xMOD_tx_impexp:import</source>
+        <target state="final">xMOD_tx_impexp:import</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_export.image" resname="_export.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/export.png,
+EXT:impexp/Resources/Public/Images/cshimages/export1.png,
+EXT:impexp/Resources/Public/Images/cshimages/export2.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/export.png,
+EXT:impexp/Resources/Public/Images/cshimages/export1.png,
+EXT:impexp/Resources/Public/Images/cshimages/export2.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="export.image_descr" resname="export.image_descr" xml:space="preserve" approved="yes">
+				<source>To export a page or record, simply click the icon and select "Export" from the context menu.
+With the Web&gt;List module you can also export all records from a table by first clicking the table title to see only this table, then next to the CSV export you will find the export button for a T3D export of the table.
+You can export the contents of the clipboard as well by simply selecting "Export" in the menu.</source>
+			<target state="final">Chcete-li stránku nebo záznam exportovat, klikněte na ikonu a z kontextové nabídky vyberte možnost „Exportovat“.
+V modulu Web&gt;Záznamy můžete také exportovat všechny záznamy z tabulky tak, že nejprve kliknete na název tabulky, aby se zobrazila pouze tato tabulka, a poté vedle tlačítka CSV najdete tlačítko pro export tabulky do T3D.
+Obsah schránky můžete exportovat také jednoduchým výběrem položky „Export“ v nabídce.</target></trans-unit>
+      <trans-unit id="pageTreeCfg.alttitle" resname="pageTreeCfg.alttitle" approved="yes">
+        <source>Configuration of page tree export</source>
+        <target state="final">Konfigurace exportu stromu stránek</target>
+      </trans-unit>
+      <trans-unit id="pageTreeCfg.description" resname="pageTreeCfg.description" xml:space="preserve" approved="yes">
+				<source>Here you configure how a page or a branch of the page tree should be exported. Using the selector box you can set the number of levels of subpages to include in the export.
+By default all records belonging to a page is included when a page is exported.</source>
+			<target state="final">Zde nastavíte, jak se má stránka nebo větev stromu stránek exportovat. Pomocí výběrového pole můžete nastavit počet úrovní podstránek, které mají být do exportu zahrnuty.
+Ve výchozím nastavení jsou při exportu stránky zahrnuty všechny záznamy patřící k dané stránce.</target></trans-unit>
+      <trans-unit id="_pageTreeCfg.image" resname="_pageTreeCfg.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/pagetreecfg.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/pagetreecfg.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pageTreeDisplay.alttitle" resname="pageTreeDisplay.alttitle" approved="yes">
+        <source>Page Tree</source>
+        <target state="final">Strom stránek</target>
+      </trans-unit>
+      <trans-unit id="pageTreeDisplay.description" resname="pageTreeDisplay.description" approved="yes">
+        <source>Based on the levels selected for page tree export this will show the structure that is about to be exported. If any pages are specifically excluded by the exclude option they are not shown either.</source>
+        <target state="final">Na základě úrovní vybraných pro export stromu stránek se zobrazí struktura, která má být exportována. Pokud jsou některé stránky výslovně vyloučeny volbou vyloučit, rovněž se nezobrazí.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.alttitle" resname="pageTreeMode.alttitle" approved="yes">
+        <source>Levels</source>
+        <target state="final">Úrovně</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.description" resname="pageTreeMode.description" approved="yes">
+        <source>Here you select how deeply in the page tree from the current starting point to go for this export.</source>
+        <target state="final">Zde vyberete, jak hluboko ve stromu stránek od aktuálního výchozího bodu se má exportovat.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.details" resname="pageTreeMode.details" approved="yes">
+        <source>If you select "Expanded tree" it will base the export on the currently expanded levels of the page tree. Another special option is "Tables on this page" which will not include the page record itself but only include records from tables on the page, depending on the table configuration of course.</source>
+        <target state="final">Pokud vyberete možnost „Rozšířený strom“, bude export založen na aktuálně rozšířených úrovních stromu stránky. Další speciální možností je „Tabulky na této stránce“, která nezahrne samotný záznam stránky, ale pouze záznamy z tabulek na stránce, samozřejmě v závislosti na konfiguraci tabulky.</target>
+      </trans-unit>
+      <trans-unit id="_pageTreeMode.image" resname="_pageTreeMode.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/impexp_misc.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp_misc.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.alttitle" resname="pageTreeRecordLimit.alttitle" approved="yes">
+        <source>Include tables</source>
+        <target state="final">Zahrnout tabulky</target>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.description" resname="pageTreeRecordLimit.description" approved="yes">
+        <source>When you export a page all records on the page is included by default. By this selector you can pick which tables to include exclusively if there are certain records you are not interested in seeing included.</source>
+        <target state="final">Při exportu stránky jsou ve výchozím nastavení zahrnuty všechny záznamy na stránce. Pomocí tohoto selektoru můžete vybrat, které tabulky se mají zahrnout výhradně, pokud některé záznamy nemáte zájem vidět zahrnuté.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.details" resname="pageTreeRecordLimit.details" approved="yes">
+        <source>In the box "Max number of records" you can set a limit to how many records are selected from a single table. This is a runaway brake in case you have an unusual large amount of records from a table.</source>
+        <target state="final">V poli „Max. počet záznamů“ můžete nastavit omezení počtu záznamů vybraných z jedné tabulky. Jedná se o záchrannou brzdu v případě, že máte neobvykle velké množství záznamů z jedné tabulky.</target>
+      </trans-unit>
+      <trans-unit id="singleRecord.alttitle" resname="singleRecord.alttitle" approved="yes">
+        <source>Export single record</source>
+        <target state="final">Exportovat jeden záznam</target>
+      </trans-unit>
+      <trans-unit id="singleRecord.description" resname="singleRecord.description" approved="yes">
+        <source>This overview tells you which independent records has been independently selected for export.</source>
+        <target state="final">V tomto přehledu se dozvíte, které nezávislé záznamy byly nezávisle vybrány pro export.</target>
+      </trans-unit>
+      <trans-unit id="_singleRecord.image" resname="_singleRecord.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/singlerecord.png,
+EXT:impexp/Resources/Public/Images/cshimages/export2.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/singlerecord.png,
+EXT:impexp/Resources/Public/Images/cshimages/export2.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="singleRecord.image_descr" resname="singleRecord.image_descr" approved="yes">
+        <source>The way to export multiple records like this is using the clipboard like shown below.</source>
+        <target state="final">Takto lze exportovat více záznamů pomocí schránky, jak je uvedeno níže.</target>
+      </trans-unit>
+      <trans-unit id="tableList.alttitle" resname="tableList.alttitle" approved="yes">
+        <source>Table export</source>
+        <target state="final">Export tabulky</target>
+      </trans-unit>
+      <trans-unit id="tableList.description" resname="tableList.description" approved="yes">
+        <source>Export of all records on a page from a specific table. This is configured from the Web&gt;List module where you will have to select table-only view and click a button in the top of the page.</source>
+        <target state="final">Export všech záznamů na stránce z určité tabulky. To se konfiguruje v modulu Web&gt;Záznamy, kde je třeba vybrat zobrazení pouze pro tabulky a kliknout na tlačítko v horní části stránky.</target>
+      </trans-unit>
+      <trans-unit id="tableList.details" resname="tableList.details" approved="yes">
+        <source>Tip: You can select multiple table lists by simply saving each selecting as a preset and finally load/merge the selections together.</source>
+        <target state="final">Tip: Můžete vybrat více seznamů tabulek tak, že každý výběr jednoduše uložíte jako předvolbu a nakonec výběry načtete/spojíte dohromady.</target>
+      </trans-unit>
+      <trans-unit id="_tableList.image" resname="_tableList.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/tablelist.png,
+EXT:impexp/Resources/Public/Images/cshimages/export1.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/tablelist.png,
+EXT:impexp/Resources/Public/Images/cshimages/export1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="tableList.image_descr" resname="tableList.image_descr" xml:space="preserve" approved="yes">
+				<source>Here two tables from different pages are selected. This is done by first selecting the one, saving it as a preset, then select the other and merge with the saved preset.
+Here you see how to use the Web&gt;List module to export all records from a table on a page.</source>
+			<target state="final">Zde jsou vybrány dvě tabulky z různých stránek. To se provede tak, že se nejprve vybere jedna, uloží se jako předvolba, pak se vybere druhá a sloučí se s uloženou předvolbou.
+Zde vidíte, jak pomocí modulu Web&gt;Záznamy exportovat všechny záznamy z tabulky na stránce.</target></trans-unit>
+      <trans-unit id="inclRelations.alttitle" resname="inclRelations.alttitle" approved="yes">
+        <source>Include relations</source>
+        <target state="final">Zahrnout vztahy</target>
+      </trans-unit>
+      <trans-unit id="inclRelations.description" resname="inclRelations.description" approved="yes">
+        <source>Configure the tables from which you want to include records that are found as relations in the main export configuration.</source>
+        <target state="final">Nakonfigurujte tabulky, ze kterých chcete zahrnout záznamy, které se nacházejí jako vztahy v hlavní konfiguraci exportu.</target>
+      </trans-unit>
+      <trans-unit id="inclRelations.details" resname="inclRelations.details" xml:space="preserve" approved="yes">
+				<source>Background: When you export a record in TYPO3 it might contain relations to other records in the system. You have to tell the export interface what to do with these relations. Basically there are three scenarios:
+- If relations are found between records that are all in the export configuration, there is no problem: The relations are automatically mapped to the new id's of those records when imported.
+- If the records related to are not included the relation will be lost (indicated with an error message in the preview) unless you a) either select that table in this selector box in which case all relations to that table will be included or b) if you set the table as a static table (in which case the relation is untouched and imported as-is - but which will of course break if no record with that UID is found in the import system).
+
+&lt;b&gt;Soft References:&lt;/b&gt; Soft references are when a record contains pointers to external files or records but in fields where there are no formal relation configured. Examples of this is when a content element contains a "&amp;lt;link 123&amp;gt;" tag that represents a link to the page 123. This is not picked up formally as a reference, but is found anyhow as a "soft reference". The same goes for &amp;lt;img&amp;gt; tags with images from eg. "fileadmin/".
+By default soft references pointing to records or files will act as normal references; either including the referenced item or showing an error. However you can also choose to exclude the handling of individual soft references or maybe set the value as "editable" upon import. This is done with a selector box in the export preview.</source>
+			<target state="final">Souvislosti: Při exportu záznamu v TYPO3 může obsahovat vztahy k jiným záznamům v systému. Exportnímu rozhraní musíte říci, co má s těmito vztahy udělat. V zásadě existují tři scénáře:
+- Pokud jsou vztahy nalezeny mezi záznamy, které jsou všechny v konfiguraci exportu, není to žádný problém: vztahy jsou při importu automaticky namapovány na nová id těchto záznamů.
+- Pokud nejsou zahrnuty záznamy, kterých se vztahy týkají, vztah se ztratí (což je indikováno chybovou zprávou v náhledu), pokud a) buď v tomto výběrovém poli nevyberete danou tabulku, a v tom případě budou zahrnuty všechny vztahy k této tabulce, nebo b) pokud nenastavíte tabulku jako statickou tabulku (v tom případě se vztah nedotkne a importuje se tak, jak je - což se ale samozřejmě přeruší, pokud se v importním systému nenajde žádný záznam s tímto UID).
+
+&lt;b&gt;Měkké reference:&lt;/b&gt; Měkké reference jsou případy, kdy záznam obsahuje odkazy na externí soubory nebo záznamy, ale v polích, kde není nastaven žádný formální vztah. Příkladem může být situace, kdy prvek obsahu obsahuje značku „&amp;lt;link 123&amp;gt;“, která představuje referenci na stránku 123. Ten není formálně zachycen jako odkaz, ale je stejně nalezen jako „měkká reference“. Totéž platí pro značky &amp;lt;img&amp;gt; s obrázky např. z „fileadmin/“.
+Ve výchozím nastavení se měkké odkazy směřující na záznamy nebo soubory chovají jako normální odkazy; buď zahrnují odkazovanou položku, nebo zobrazí chybu. Můžete však také zvolit, zda chcete vyloučit zpracování jednotlivých měkkých referencí, nebo třeba nastavit hodnotu jako „editovatelnou“ při importu. To se provádí pomocí výběrového pole v náhledu exportu.</target></trans-unit>
+      <trans-unit id="_inclRelations.image" resname="_inclRelations.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/references.png,
+EXT:impexp/Resources/Public/Images/cshimages/references1.png,
+EXT:impexp/Resources/Public/Images/cshimages/references2.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/references.png,
+EXT:impexp/Resources/Public/Images/cshimages/references1.png,
+EXT:impexp/Resources/Public/Images/cshimages/references2.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="inclRelations.image_descr" resname="inclRelations.image_descr" xml:space="preserve" approved="yes">
+				<source>This example shows tree examples of references; a) an image attached to a content element, b) a relation to a frontend usergroup UID, and c) a soft reference found in the bodytext field of a record, here it is the link-tag pointing to the page with UID 1.
+Notice in the previous image how the relation to the frontend user group was lost. This has been corrected in this screenshot where the fe_group table has been selected in the list of table for which to include relations. The result is that the frontend usergroup is included as a record outside the exported pagetree. If you wanted to keep the relation but not include the usergroup you have to set "fe_groups" as a static table instead. See below.
+This example shows a TypoScript Template Record where multiple soft references has been found. The first one is an email address. Here it is configured to be editable. This means that upon import the user will have a chance to edit the value before the import is actually done. This is very useful when exported files are used as templates. Another example includes a PHP script which we don't want to include in the export and therefore we have selected the exclude option for the soft reference.</source>
+			<target state="final">Tento příklad ukazuje stromové příklady referencí: a) obrázek připojený k prvku obsahu, b) vztah k frontendovému UID skupiny uživatelů a c) měkká reference nalezená v poli bodytext záznamu, zde se jedná o odkaz-tag směřující na stránku s UID 1.
+Všimněte si, jak se na předchozím obrázku ztratil vztah k frontendové skupině uživatelů. To bylo opraveno na tomto snímku, kde byla v seznamu tabulek, pro které se mají zahrnout vztahy, vybrána tabulka fe_group. Výsledkem je, že frontendová uživatelská skupina je zahrnuta jako záznam mimo exportovaný strom stránek. Pokud jste chtěli zachovat vztah, ale nezahrnout uživatelskou skupinu, musíte místo toho nastavit „fe_groups“ jako statickou tabulku. Viz níže.
+Tento příklad ukazuje záznam šablony TypoScript, kde bylo nalezeno více měkkých referencí. První z nich je e-mailová adresa. Zde je nastavena tak, aby ji bylo možné upravovat. To znamená, že při importu bude mít uživatel možnost hodnotu upravit ještě předtím, než se import skutečně provede. To je velmi užitečné, když se exportované soubory používají jako šablony. Další příklad obsahuje skript PHP, který nechceme zahrnout do exportu, a proto jsme u měkké reference zvolili možnost vyloučit.</target></trans-unit>
+      <trans-unit id="staticRelations.alttitle" resname="staticRelations.alttitle" approved="yes">
+        <source>Set static tables</source>
+        <target state="final">Nastavit statické tabulky</target>
+      </trans-unit>
+      <trans-unit id="staticRelations.description" resname="staticRelations.description" approved="yes">
+        <source>Select which tables in addition to the static TYPO3 tables to keep relations untouched for. Takes precedence over "Include relations" configured tables.</source>
+        <target state="final">Vyberte, pro které tabulky kromě statických tabulek TYPO3 mají být vztahy zachovány. Mají přednost před tabulkami nakonfigurovanými na „Zahrnout vztahy“.</target>
+      </trans-unit>
+      <trans-unit id="staticRelations.details" resname="staticRelations.details" approved="yes">
+        <source>By default all relations to static tables in TYPO3 are kept untouched. Of course those static tables should be present in the import system in order for this to work correctly. However there might be circumstances where you move information between two systems where theoretically non-static tables should just keep relations untouched. Examples could be "sys_languages" or TemplaVoila data structures / template objects where two systems might contain the same set of records in those tables while you are importing pages and content elements freely.</source>
+        <target state="final">Ve výchozím nastavení jsou všechny vztahy ke statickým tabulkám v TYPO3 zachovány beze změny. Tyto statické tabulky by samozřejmě měly být přítomny v importním systému, aby to fungovalo správně. Mohou však nastat okolnosti, kdy přesouváte informace mezi dvěma systémy, kdy by teoreticky měly být vztahy k nestatickým tabulkám právě zachovány nedotčené. Příkladem mohou být „sys_languages“ nebo datové struktury / objekty šablon TemplaVoila, kde dva systémy mohou obsahovat stejnou sadu záznamů v těchto tabulkách, zatímco vy volně importujete stránky a prvky obsahu.</target>
+      </trans-unit>
+      <trans-unit id="_staticRelations.image" resname="_staticRelations.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/static.png,
+EXT:impexp/Resources/Public/Images/cshimages/static1.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/static.png,
+EXT:impexp/Resources/Public/Images/cshimages/static1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="staticRelations.image_descr" resname="staticRelations.image_descr" xml:space="preserve" approved="yes">
+				<source>In this example you see how a number of records are pointing to a System Language record which will become lost relations when imported because the record is not included in the export. However; in the target system the System Languages are exactly the same and therefore you just want a static mapping of the relations.
+The static mapping is obtained by selecting the "sys_language" table as a static template meaning that the relations are kept at their current values assuming that they will be exactly the same in the target system when imported.</source>
+			<target state="final">V tomto příkladu vidíte, jak řada záznamů ukazuje na záznam jazyka systému, který se při importu stane ztraceným vztahem, protože záznam není zahrnut do exportu. V cílovém systému jsou však systémové jazyky naprosto stejné, a proto chcete pouze statické mapování vztahů.
+Statické mapování získáte výběrem tabulky „sys_language“ jako statické šablony, což znamená, že vztahy zůstanou zachovány ve svých současných hodnotách za předpokladu, že budou v cílovém systému při importu naprosto stejné.</target></trans-unit>
+      <trans-unit id="excludedElements.alttitle" resname="excludedElements.alttitle" approved="yes">
+        <source>Excluded elements</source>
+        <target state="final">Vyloučené prvky</target>
+      </trans-unit>
+      <trans-unit id="excludedElements.description" resname="excludedElements.description" approved="yes">
+        <source>By the "Exclude" checkbox you can exclude specific records from the preview display of the export. Which records has been picked for specific exclusion is listed here. You can also clear the exclusion configuration.</source>
+        <target state="final">Pomocí zaškrtávacího políčka „Vyloučit“ můžete ze zobrazení náhledu exportu vyloučit konkrétní záznamy. Které záznamy byly vybrány pro konkrétní vyloučení, je uvedeno zde. Konfiguraci vyloučení můžete také vymazat.</target>
+      </trans-unit>
+      <trans-unit id="_excludedElements.image" resname="_excludedElements.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/excludebox.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/excludebox.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.alttitle" resname="htmlCssResources.alttitle" approved="yes">
+        <source>Exclude resources from HTML and CSS files</source>
+        <target state="final">Vyloučit zdroje z HTML a CSS souborů</target>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.description" resname="htmlCssResources.description" approved="yes">
+        <source>When an HTML or CSS file is found as a soft reference the files are parsed for references to external media (such as images) and if any are found they are also exported. If you don't want this behaviour, click this option.</source>
+        <target state="final">Pokud je soubor HTML nebo CSS nalezen jako měkká reference, jsou soubory analyzovány na odkazy na externí média (například obrázky), a pokud jsou nalezeny, jsou také exportovány. Pokud si toto chování nepřejete, klikněte na tuto možnost.</target>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.details" resname="htmlCssResources.details" approved="yes">
+        <source>Notice: Resources found inside an HTML or CSS file are not analyzed further. For instance it means that any CSS files referred to from within an HTML will not be traversed - but CSS files referred to inside the Setup or Constant field of a TypoScript template record will be!</source>
+        <target state="final">Upozornění: Zdroje nalezené uvnitř souboru HTML nebo CSS nejsou dále analyzovány. To například znamená, že žádné soubory CSS, na které se odkazuje uvnitř HTML, nebudou procházeny - ale soubory CSS, na které se odkazuje uvnitř pole Setup nebo Constant záznamu šablony TypoScript, procházeny budou!</target>
+      </trans-unit>
+      <trans-unit id="_htmlCssResources.image" resname="_htmlCssResources.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/htmlcss.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/htmlcss.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.image_descr" resname="htmlCssResources.image_descr" approved="yes">
+        <source>In this example you can see that a soft reference has been found pointing to an HTML file inside fileadmin/ Since it was an HTML file it was parsed and further a number of files were found referenced inside it and now included with the export. This feature is specifically created to support export of template configurations where external HTML files play a role.</source>
+        <target state="final">V tomto příkladu vidíte, že byla nalezena měkká reference na soubor HTML uvnitř souboru fileadmin/ Protože se jednalo o soubor HTML, byl analyzován a dále v něm byla nalezena řada souborů, na které se odkazuje a které jsou nyní zahrnuty do exportu. Tato funkce je speciálně vytvořena pro podporu exportu konfigurací šablon, kde hrají roli externí soubory HTML.</target>
+      </trans-unit>
+      <trans-unit id="extensionDependencies.alttitle" resname="extensionDependencies.alttitle" approved="yes">
+        <source>Extension Dependencies</source>
+        <target state="final">Závislosti rozšíření</target>
+      </trans-unit>
+      <trans-unit id="extensionDependencies.description" resname="extensionDependencies.description" approved="yes">
+        <source>Select which extensions should be installed in the import system in order for your exported content to work correctly. Examples could be "templavoila" for templating, "fluid_styled_content" for the template, "tt_news" for a news archive etc.</source>
+        <target state="final">Vyberte, která rozšíření by měla být nainstalována v importním systému, aby exportovaný obsah správně fungoval. Příkladem může být „templavoila“ pro šablony, „fluid_styled_content“ pro šablonu, „tt_news“ pro archiv zpráv atd.</target>
+      </trans-unit>
+      <trans-unit id="extensionDependencies.details" resname="extensionDependencies.details" approved="yes">
+        <source>During import warnings will appear for all selected extensions from this list which were not installed.</source>
+        <target state="final">Během importu se zobrazí upozornění pro všechny vybrané rozšíření z tohoto seznamu, které nebyly nainstalovány.</target>
+      </trans-unit>
+      <trans-unit id="_extensionDependencies.image" resname="_extensionDependencies.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/extdep.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/extdep.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="presets.alttitle" resname="presets.alttitle" approved="yes">
+        <source>Configuration presets</source>
+        <target state="final">Předvolby konfigurací</target>
+      </trans-unit>
+      <trans-unit id="presets.description" resname="presets.description" approved="yes">
+        <source>Enables you to save an export configuration for later re-use. Useful if you need to export the same configuration with regular intervals.</source>
+        <target state="final">Umožňuje uložit konfiguraci exportu pro pozdější opětovné použití. Užitečné, pokud potřebujete exportovat stejnou konfiguraci v pravidelných intervalech.</target>
+      </trans-unit>
+      <trans-unit id="presets.details" resname="presets.details" xml:space="preserve" approved="yes">
+				<source>In the "Select preset" box you can select any previously saved preset to load. If you are exporting a page the presets listed will be those found for the start page ID. For records, any preset can be loaded.
+To load a preset, select it in the selector and press "Load". If you press "Merge" instead the settings from the preset will be merged with the current configuration. This is meaningful in cases where you select multiple individual tables or records.
+To save a preset, simply enter a title in the title box and press "Save". This will create a new preset. If you press save while having selected an existing preset you will overwrite it.
+To delete old presets, simply select it and press "Delete".
+
+The checkbox "Public" can be set if you want to share your preset with other users of the system. Otherwise they are personal to you.
+
+In the Taskcenter you can see a list of your presets and jump directly to them.</source>
+			<target state="final">V poli „Vybrat předvolbu“ můžete vybrat libovolnou dříve uloženou předvolbu, kterou chcete načíst. Pokud exportujete stránku, budou v seznamu uvedeny předvolby nalezené pro ID počáteční stránky. U záznamů lze načíst libovolnou předvolbu.
+Chcete-li načíst předvolbu, vyberte ji ve výběrovém poli a stiskněte tlačítko „Načíst“. Pokud místo toho stisknete „Sloučit“, budou nastavení z předvolby sloučena s aktuální konfigurací. To má smysl v případech, kdy vyberete více jednotlivých tabulek nebo záznamů.
+Chcete-li předvolbu uložit, jednoduše zadejte název do pole pro název a stiskněte tlačítko „Uložit“. Tím se vytvoří nová předvolba. Pokud stisknete tlačítko Uložit, zatímco máte vybranou stávající předvolbu, přepíšete ji.
+Chcete-li odstranit staré předvolby, jednoduše je vyberte a stiskněte tlačítko „Smazat“.
+
+Zaškrtávací políčko „Veřejné“ lze nastavit, pokud chcete předvolbu sdílet s ostatními uživateli systému. V opačném případě jsou osobní pro vás.
+
+V Centru úloh můžete zobrazit seznam svých předvoleb a přejít přímo na ně.</target></trans-unit>
+      <trans-unit id="_presets.image" resname="_presets.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/impexp_misc1.png,
+EXT:impexp/Resources/Public/Images/cshimages/impexp_misc2.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp_misc1.png,
+EXT:impexp/Resources/Public/Images/cshimages/impexp_misc2.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="presets.image_descr" resname="presets.image_descr" xml:space="preserve" approved="yes">
+				<source>The preset selector in the export interface.
+Presets from the task center.</source>
+			<target state="final">Výběr předvoleb v rozhraní exportu.
+Předvolby z centra úloh.</target></trans-unit>
+      <trans-unit id="metadata.alttitle" resname="metadata.alttitle" approved="yes">
+        <source>Meta data setting</source>
+        <target state="final">Nastavení metadat</target>
+      </trans-unit>
+      <trans-unit id="metadata.description" resname="metadata.description" approved="yes">
+        <source>Set meta data for the export. This is highly encouraged if your exported content goes into eg. a template collection of sorts.</source>
+        <target state="final">Nastavení metadat pro export. To je velmi vhodné, pokud exportovaný obsah přechází např. do kolekce šablon.</target>
+      </trans-unit>
+      <trans-unit id="metadata.details" resname="metadata.details" xml:space="preserve" approved="yes">
+				<source>The meta data will help users of your exported files to know what they can expect to be inside and what things they should be aware of and take into account during import.
+The "Title" and "Description" should contain the basic information about the export.
+The "Notes" field can be used for additional details, especially remarks about intensions or requirements that apply.</source>
+			<target state="final">Metadata pomohou uživatelům vašich exportovaných souborů zjistit, co mohou očekávat uvnitř a na co by si měli dát pozor a co by měli vzít v úvahu při importu.
+„Název“ a ‚Popis‘ by měly obsahovat základní informace o exportu.
+Pole „Poznámky“ lze použít pro další podrobnosti, zejména poznámky o záměrech nebo požadavcích, které se na ně vztahují.</target></trans-unit>
+      <trans-unit id="_metadata.image" resname="_metadata.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/metadata.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/metadata.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="fileFormat.alttitle" resname="fileFormat.alttitle" approved="yes">
+        <source>File format options</source>
+        <target state="final">Možnosti formátu souboru</target>
+      </trans-unit>
+      <trans-unit id="fileFormat.description" resname="fileFormat.description" approved="yes">
+        <source>You can export your records to a generic XML format which potentially can be imported by other applications. However, the schema of the XML is TYPO3 specific. Alternatively, you can select a TYPO3 specific binary format called "T3D".</source>
+        <target state="final">Záznamy můžete exportovat do obecného formátu XML, který mohou případně importovat jiné aplikace. Schéma XML je však specifické pro TYPO3. Alternativně můžete zvolit binární formát specifický pro TYPO3 s názvem „T3D“.</target>
+      </trans-unit>
+      <trans-unit id="fileFormat.details" resname="fileFormat.details" xml:space="preserve" approved="yes">
+				<source>Generally you should use the XML format. The T3D compressed format is usually smaller, but much harder to read and process.
+
+Entering a file name to save makes it possible to write your export directly to a file (pressing "Save to filename") instead of downloading it (pressing "Download export"). The correct file extensions depending on file format is automatically applied. Files are saved in a proper file mount in "fileadmin/". This is shown to you upon saving. Existing files are overwritten.</source>
+			<target state="final">Obecně byste měli používat formát XML. Komprimovaný formát T3D je obvykle menší, ale mnohem hůře se čte a zpracovává.
+
+Zadání názvu souboru pro uložení umožňuje zapsat export přímo do souboru (stisknutím tlačítka „Uložit do názvu souboru“) namísto jeho stažení (stisknutím tlačítka „Stáhnout export“). Automaticky se použijí správné přípony souborů v závislosti na jejich formátu. Soubory jsou ukládány do správné přípojky v adresáři „fileadmin/“. To se vám zobrazí při ukládání. Existující soubory jsou přepsány.</target></trans-unit>
+      <trans-unit id="_fileFormat.image" resname="_fileFormat.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/fileformat.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/fileformat.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="import.alttitle" resname="import.alttitle" approved="yes">
+        <source>Importing TYPO3 records</source>
+        <target state="final">Import TYPO3 záznamů</target>
+      </trans-unit>
+      <trans-unit id="import.description" resname="import.description" approved="yes">
+        <source>To import TYPO3 T3D/XML files into the page tree you click any page in the page tree (including the root page!), select "More options" and then "Import". This will bring up the import interface where you can select a file to import or upload a new one.</source>
+        <target state="final">Chcete-li do stromu stránek importovat soubory TYPO3 T3D/XML, klikněte na libovolnou stránku ve stromu stránek (včetně kořenové stránky!), vyberte „Další možnosti“ a poté „Importovat“. Tím se zobrazí rozhraní pro import, kde můžete vybrat soubor k importu nebo nahrát nový.</target>
+      </trans-unit>
+      <trans-unit id="import.details" resname="import.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Tip: Import into a Folder&lt;/b&gt;
+To make sure that no records are lost during the import, you can make yourself safe by importing into a Folder you create first. After the import you can move all records to the final destinations. An example of such a scenario is if you configured the export to include relations; In that case a number of records may follow the export outside the page tree structure you are exporting. To make sure that all of these external records are written to the database, importing into a Folder is a good idea.
+
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before/after importing to see if there are any error messages there!</source>
+			<target state="final">&lt;b&gt;Tip: Import do složky&lt;/b&gt;
+Abyste měli jistotu, že se během importu neztratí žádné záznamy, můžete se zabezpečit tím, že budete importovat do složky, kterou si nejprve vytvoříte. Po importu můžete všechny záznamy přesunout do cílových destinací. Příkladem takového scénáře je, pokud jste nakonfigurovali export tak, aby zahrnoval vztahy; V takovém případě může následovat řada záznamů mimo stromovou strukturu stránek, kterou exportujete. Abyste se ujistili, že všechny tyto externí záznamy budou zapsány do databáze, je dobré importovat do složky.
+
+&lt;b&gt;Chybová hlášení:&lt;/b&gt; Nezapomeňte se před/po importu podívat na záložku Zprávy, zda tam nejsou nějaká chybová hlášení!</target></trans-unit>
+      <trans-unit id="_import.seeAlso" resname="_import.seeAlso" approved="yes">
+        <source>xMOD_tx_impexp:export</source>
+        <target state="final">xMOD_tx_impexp:export</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_import.image" resname="_import.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/import.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/import.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="importFile.alttitle" resname="importFile.alttitle" approved="yes">
+        <source>Select file to import</source>
+        <target state="final">Vyberte soubor, který chcete importovat</target>
+      </trans-unit>
+      <trans-unit id="importFile.description" resname="importFile.description" approved="yes">
+        <source>The files displayed are those with an extension T3D or XML from fileadmin/, fileadmin/export/ and your "TEMP" folder (if any).</source>
+        <target state="final">Zobrazené soubory jsou ty, které mají příponu T3D nebo XML z fileadmin/, fileadmin/export/ a vaší složky "TEMP" (pokud nějaká existuje).</target>
+      </trans-unit>
+      <trans-unit id="_importFile.seeAlso" resname="_importFile.seeAlso" approved="yes">
+        <source>xMOD_tx_impexp:fileFormat</source>
+        <target state="final">xMOD_tx_impexp:fileFormat</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_importFile.image" resname="_importFile.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/import_selectfile.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/import_selectfile.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="update.alttitle" resname="update.alttitle" approved="yes">
+        <source>Update instead of Insert</source>
+        <target state="final">Aktualizovat místo vložení</target>
+      </trans-unit>
+      <trans-unit id="update.description" resname="update.description" approved="yes">
+        <source>By default the import operation inserts new records in the system. Using this option will update existing records.</source>
+        <target state="final">Ve výchozím nastavení operace importu vloží do systému nové záznamy. Použitím této možnosti se aktualizují existující záznamy.</target>
+      </trans-unit>
+      <trans-unit id="update.details" resname="update.details" xml:space="preserve" approved="yes">
+				<source>There are certain requirements you have to meet if you want the "Update" process to work. The main thing is that the records updated are those with the SAME uid as the uid in the export file. Thus an update operation only makes real sense if the export and import systems are somehow related and the same UIDs can be expected in both ends. Otherwise it will be a mess!
+
+When you update page structures the import operation will automatically try to rearrange records so they also appear in the same hierarchy and order as in the export file. This can be disabled by checking the option "Ignore PID differences globally". In any case you can set individual records to Ignore/Respect the PID with a selectorbox in the preview.
+
+In the preview display you can also select if individual records should be flatly ignored during import or if you want them created as new records instead of being updates.
+As a help for managing updates the preview display will inform you about the path where the existing element with that UID is found. Use this to verify that you get what you expect!
+
+&lt;b&gt;Forcing the UID:&lt;/b&gt;
+If you intend to update a system and some elements from the import are not mappable to a UID already (ei. does not exist) you can choose in the preview display to force the UID during creation. This is an unorthodox thing to do since UIDs are normally created automatically by the database. The option makes most sense if you are trying to "synchronize" a copy of another system. The option may mess up certain database internals and the feature is therefore only available for admins.</source>
+			<target state="final">Chcete-li, aby proces „Aktualizace“ fungoval, musíte splnit určité požadavky. Hlavním požadavkem je, aby byly aktualizovány záznamy se STEJNÝM uid, jako je uid v exportním souboru. Operace aktualizace má tedy skutečný smysl pouze tehdy, pokud jsou exportní a importní systémy nějak propojeny a lze očekávat stejné UID na obou koncích. V opačném případě v tom bude zmatek!
+
+Při aktualizaci struktury stránek se operace importu automaticky pokusí změnit uspořádání záznamů tak, aby se také objevily ve stejné hierarchii a pořadí jako v exportním souboru. To lze vypnout zaškrtnutím volby „Ignorovat globálně rozdíly PID“. V každém případě můžete jednotlivým záznamům nastavit ignorování/respektování PID pomocí výběrového pole v náhledu.
+
+V zobrazení náhledu můžete také zvolit, zda mají být jednotlivé záznamy při importu ignorovány, nebo zda mají být vytvořeny jako nové záznamy a ne jako aktualizace.
+Jako pomůcka pro správu aktualizací vás zobrazení náhledu informuje o cestě, kde se nachází existující prvek s daným UID. Použijte ji k ověření, zda dostanete to, co očekáváte!
+
+&lt;b&gt;Vynucení UID:&lt;/b&gt;
+Pokud hodláte aktualizovat systém a některé prvky z importu již nelze přiřadit k UID (ei. neexistuje), můžete v náhledovém zobrazení zvolit vynucení UID při vytváření. Jedná se o netradiční postup, protože UID jsou obvykle vytvářena automaticky databází. Tato volba má největší smysl, pokud se snažíte „synchronizovat“ kopii jiného systému. Tato volba může narušit některé vnitřní funkce databáze, a proto je tato funkce dostupná pouze pro správce.</target></trans-unit>
+      <trans-unit id="_update.image" resname="_update.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/impexp_misc4.png,
+EXT:impexp/Resources/Public/Images/cshimages/update.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp_misc4.png,
+EXT:impexp/Resources/Public/Images/cshimages/update.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="update.image_descr" resname="update.image_descr" approved="yes">
+        <source>In Update mode you can select various settings for each record. You will also be able to see a diff-view where the differences between the existing record and the one from the import is shown.</source>
+        <target state="final">V režimu aktualizace můžete pro každý záznam vybrat různá nastavení. Budete také moci zobrazit rozdílové zobrazení, kde se zobrazí rozdíly mezi stávajícím záznamem a záznamem z importu.</target>
+      </trans-unit>
+      <trans-unit id="options.alttitle" resname="options.alttitle" approved="yes">
+        <source>Import options</source>
+        <target state="final">Možnosti importu</target>
+      </trans-unit>
+      <trans-unit id="options.description" resname="options.description" approved="yes">
+        <source>Various options for import.</source>
+        <target state="final">Různé možnosti importu.</target>
+      </trans-unit>
+      <trans-unit id="options.details" resname="options.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Do not show differences in records&lt;/b&gt;
+When a structure has been imported you will see a difference view of all records which tells you whether the written content matched the import data or if not, what changed. In many cases content &lt;i&gt;should&lt;/i&gt; change (eg. relations and file references) so it is not an error if you see red and green values. Basically the difference view is a feature you can use for visual validation of the import success. It brings piece-of-mind to those who is enlightened to understand what it tells... :-)
+Green strings represent the actual written data while red represents the original value from the import file and black represents data that is the same.
+
+&lt;b&gt;Allow to write banned file extensions (eg. PHP scripts), if any&lt;/b&gt;
+Also an option for admins-only; Allows PHP-files (for example from soft references in TypoScript templates) to be written to the system. This is normally not allowed behavior for security reasons.</source>
+			<target state="final">&lt;b&gt;Nezobrazovat rozdíly v záznamech&lt;/b&gt;
+Po importu struktury se zobrazí zobrazení rozdílů všech záznamů, které vám řekne, zda zapsaný obsah odpovídá importovaným datům, a pokud ne, co se změnilo. V mnoha případech by se obsah &lt;i&gt;měl&lt;/i&gt; změnit (např. vztahy a odkazy na soubory), takže není chybou, pokud vidíte červené a zelené hodnoty. Zobrazení rozdílů je v podstatě funkce, kterou můžete použít pro vizuální ověření úspěšnosti importu. Přináší klid na duši těm, kteří jsou osvícení, aby pochopili, co říká... :-)
+Zelené řetězce představují skutečně zapsaná data, zatímco červené představují původní hodnotu z importního souboru a černé představují data, která jsou stejná.
+
+&lt;b&gt;Umožňuje zapisovat zakázané přípony souborů (např. PHP skripty), pokud existují&lt;/b&gt;
+Také volba pouze pro administrátory; Umožňuje zapisovat do systému PHP-soubory (např. z měkkých odkazů v šablonách TypoScript). Toto chování není za normálních okolností z bezpečnostních důvodů povoleno.</target></trans-unit>
+      <trans-unit id="_options.image" resname="_options.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/impexp_misc3.png,
+EXT:impexp/Resources/Public/Images/cshimages/phpext.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp_misc3.png,
+EXT:impexp/Resources/Public/Images/cshimages/phpext.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="options.image_descr" resname="options.image_descr" xml:space="preserve" approved="yes">
+				<source>Options for import.
+Here you are told that this PHP file cannot be allowed - because you didn't select the option "Allow to write banned file extensions (eg. PHP scripts), if any"</source>
+			<target state="final">Možnosti importu.
+Zde se dozvíte, že tento soubor PHP nelze povolit - protože jste nezvolili možnost „Povolit zápis zakázaných přípon souborů (např. skriptů PHP), pokud existují“.</target></trans-unit>
+      <trans-unit id="action.alttitle" resname="action.alttitle" approved="yes">
+        <source>Import Action</source>
+        <target state="final">Akce importování</target>
+      </trans-unit>
+      <trans-unit id="action.description" resname="action.description" xml:space="preserve" approved="yes">
+				<source>Press "Preview" to see the content of the import file or update the preview display according to changed configurations.
+Press "Import"/"Update" if you want to perform the actual import.
+
+Before importing make sure you change any editable soft references that are shown in the preview data.</source>
+			<target state="final">Stisknutím tlačítka „Náhled“ zobrazíte obsah importovaného souboru nebo aktualizujete zobrazení náhledu podle změněných konfigurací.
+Pokud chcete provést skutečný import, stiskněte „Importovat“/„Aktualizovat“.
+
+Před importem se ujistěte, že jste změnili všechny editovatelné měkké odkazy, které jsou zobrazeny v náhledu dat.</target></trans-unit>
+      <trans-unit id="_action.image" resname="_action.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/diffview.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/diffview.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="action.image_descr" resname="action.image_descr" approved="yes">
+        <source>Example of the result view after importing. As you can see the RTE attached images (soft references) has been written to new file names and the difference view tells you that the names changed in the bodytext content.</source>
+        <target state="final">Příklad zobrazení výsledků po importu. Jak vidíte, obrázky připojené k RTE (měkké reference) byly zapsány do nových názvů souborů a zobrazení rozdílů vám říká, že se názvy změnily v obsahu bodytextu.</target>
+      </trans-unit>
+      <trans-unit id="enableLogging.alttitle" resname="enableLogging.alttitle" approved="yes">
+        <source>Enable System Logging</source>
+        <target state="final">Povolit logování systému</target>
+      </trans-unit>
+      <trans-unit id="enableLogging.description" resname="enableLogging.description" approved="yes">
+        <source>If you set this the system backend log will be filled with entries for all the actions that the import actually performs. By default this is left out for the sake of clarity.</source>
+        <target state="final">Pokud tuto hodnotu nastavíte, bude systémový protokol backendu naplněn záznamy o všech akcích, které import skutečně provede. Ve výchozím nastavení je tato možnost z důvodu přehlednosti vynechána.</target>
+      </trans-unit>
+      <trans-unit id="upload.alttitle" resname="upload.alttitle" approved="yes">
+        <source>Upload import file</source>
+        <target state="final">Nahrát importovací soubor</target>
+      </trans-unit>
+      <trans-unit id="upload.description" resname="upload.description" approved="yes">
+        <source>Select a file to import from your local computer and upload it here. If the upload completes successfully you can immediately see its content displayed in the preview display.</source>
+        <target state="final">Vyberte soubor, který chcete importovat z místního počítače, a nahrajte jej sem. Pokud se nahrávání úspěšně dokončí, můžete ihned vidět jeho obsah zobrazený na náhledovém displeji.</target>
+      </trans-unit>
+      <trans-unit id="upload.details" resname="upload.details" approved="yes">
+        <source>Notice that there are usually limits set by the server (PHP) to the size of uploaded files. If hit, upload fails and an error message is shown.</source>
+        <target state="final">Všimněte si, že velikost nahrávaných souborů je obvykle omezena serverem (PHP). Pokud je překročí, nahrávání se nezdaří a zobrazí se chybová zpráva.</target>
+      </trans-unit>
+      <trans-unit id="task.title" resname="task.title" approved="yes">
+        <source>Preset title</source>
+        <target state="final">Název předvolby</target>
+      </trans-unit>
+      <trans-unit id="task.icon" resname="task.icon" approved="yes">
+        <source>Icon</source>
+        <target state="final">Ikona</target>
+      </trans-unit>
+      <trans-unit id="task.public" resname="task.public" approved="yes">
+        <source>Public</source>
+        <target state="final">Veřejný</target>
+      </trans-unit>
+      <trans-unit id="task.owner" resname="task.owner" approved="yes">
+        <source>Owner</source>
+        <target state="final">Vlastník</target>
+      </trans-unit>
+      <trans-unit id="task.page" resname="task.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Stránka</target>
+      </trans-unit>
+      <trans-unit id="task.path" resname="task.path" approved="yes">
+        <source>Path</source>
+        <target state="final">Cesta</target>
+      </trans-unit>
+      <trans-unit id="task.meta" resname="task.meta" approved="yes">
+        <source>Meta data</source>
+        <target state="final">Meta data</target>
+      </trans-unit>
+      <trans-unit id="task.own" resname="task.own" approved="yes">
+        <source>Own</source>
+        <target state="final">Vlastnit</target>
+      </trans-unit>
+      <trans-unit id="notes" resname="notes" approved="yes">
+        <source>Notes</source>
+        <target state="final">Poznámky</target>
+      </trans-unit>
+      <trans-unit id="single-record" resname="single-record" approved="yes">
+        <source>Single record</source>
+        <target state="final">Jeden záznam</target>
+      </trans-unit>
+      <trans-unit id="no-presets" resname="no-presets" approved="yes">
+        <source>No presets found!</source>
+        <target state="final">Nenalezeny žádné předvolby!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
