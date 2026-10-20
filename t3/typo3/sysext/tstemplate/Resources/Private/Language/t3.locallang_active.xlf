@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_active.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="submodule.title">
+        <source>Active TypoScript</source>
+        <target>crwdns279651:0crwdne279651:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.titleWithRecord">
+        <source>Active TypoScript for record "%s"</source>
+        <target>crwdns279653:0%scrwdne279653:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.description">
+        <source>Overview of the current TypoScript configuration of the system, divided into constants and setup parts. Optionally, the constant values can be displayed directly in the setup. A targeted search for values and TypoScript names is possible. The list of results can also be filtered according to TypoScript conditions.</source>
+        <target>crwdns279655:0crwdne279655:0</target>
+      </trans-unit>
+      <trans-unit id="infobox.message.noTypoScriptFound">
+        <source>No TypoScript found.</source>
+        <target>crwdns279657:0crwdne279657:0</target>
+      </trans-unit>
+      <trans-unit id="options.displayComments">
+        <source>Display comments</source>
+        <target>crwdns279659:0crwdne279659:0</target>
+      </trans-unit>
+      <trans-unit id="options.displayConstantSubstitutions">
+        <source>Substitute constants in setup</source>
+        <target>crwdns279661:0crwdne279661:0</target>
+      </trans-unit>
+      <trans-unit id="options.selectedRecord">
+        <source>Selected record</source>
+        <target>crwdns279663:0crwdne279663:0</target>
+      </trans-unit>
+      <trans-unit id="options.sortAlphabetically">
+        <source>Sort keys alphabetically</source>
+        <target>crwdns279665:0crwdne279665:0</target>
+      </trans-unit>
+      <trans-unit id="sectionHeadline.constants">
+        <source>Constants</source>
+        <target>crwdns279667:0crwdne279667:0</target>
+      </trans-unit>
+      <trans-unit id="sectionHeadline.setup">
+        <source>Setup</source>
+        <target>crwdns279669:0crwdne279669:0</target>
+      </trans-unit>
+      <trans-unit id="panel.header.conditions">
+        <source>Conditions</source>
+        <target>crwdns279671:0crwdne279671:0</target>
+      </trans-unit>
+      <trans-unit id="panel.header.configuration">
+        <source>Configuration</source>
+        <target>crwdns279673:0crwdne279673:0</target>
+      </trans-unit>
+      <trans-unit id="panel.info.conditionActiveCount.multiple">
+        <source>%s active conditions</source>
+        <target>crwdns279677:0%scrwdne279677:0</target>
+      </trans-unit>
+      <trans-unit id="panel.info.conditionActiveCount.single">
+        <source>%s active condition</source>
+        <target>crwdns279679:0%scrwdne279679:0</target>
+      </trans-unit>
+      <trans-unit id="panel.info.conditionWithConstant">
+        <source>Constant usage: [%s]</source>
+        <target>crwdns279681:0[%s]crwdne279681:0</target>
+      </trans-unit>
+      <trans-unit id="tree.valueWithConstant">
+        <source>Constant usage: %s</source>
+        <target>crwdns279683:0%scrwdne279683:0</target>
+      </trans-unit>
+      <!-- Edit action -->
+      <trans-unit id="editAction.submodule.title">
+        <source>Edit single property</source>
+        <target>crwdns279685:0crwdne279685:0</target>
+      </trans-unit>
+      <trans-unit id="editAction.submodule.titleWithTemplate">
+        <source>Edit single property in TypoScript record "%s"</source>
+        <target>crwdns279687:0%scrwdne279687:0</target>
+      </trans-unit>
+      <trans-unit id="editAction.infobox.title.noTypoScriptTemplateOnCurrentPage">
+        <source>No TypoScript record on the current page</source>
+        <target>crwdns279689:0crwdne279689:0</target>
+      </trans-unit>
+      <trans-unit id="editAction.infobox.message.noTypoScriptTemplateOnCurrentPage">
+        <source>You cannot edit properties and values if there is no current TypoScript record in which the configuration can be stored. Please create an extension TypoScript record in "Edit TypoScript Record" first.</source>
+        <target>crwdns279691:0crwdne279691:0</target>
+      </trans-unit>
+      <trans-unit id="editAction.addProperty.headline">
+        <source>Add or override child property</source>
+        <target>crwdns279693:0crwdne279693:0</target>
+      </trans-unit>
+      <trans-unit id="editAction.addProperty.btn">
+        <source>Add</source>
+        <target>crwdns279695:0crwdne279695:0</target>
+      </trans-unit>
+      <trans-unit id="editAction.editProperty.headline">
+        <source>Edit current value</source>
+        <target>crwdns279697:0crwdne279697:0</target>
+      </trans-unit>
+      <trans-unit id="editAction.editProperty.btn">
+        <source>Update</source>
+        <target>crwdns279699:0crwdne279699:0</target>
+      </trans-unit>
+      <trans-unit id="editAction.clearObject.headline">
+        <source>Clear the object</source>
+        <target>crwdns279701:0crwdne279701:0</target>
+      </trans-unit>
+      <trans-unit id="editAction.clearObject.infotextWithProperty">
+        <source>The object will be cleared via the statement:</source>
+        <target>crwdns279703:0crwdne279703:0</target>
+      </trans-unit>
+      <trans-unit id="editAction.clearObject.btn">
+        <source>Clear now</source>
+        <target>crwdns279705:0crwdne279705:0</target>
+      </trans-unit>
+      <!-- Update action -->
+      <trans-unit id="updateAction.lineAdded">
+        <source>Line added to current TypoScript record</source>
+        <target>crwdns279707:0crwdne279707:0</target>
+      </trans-unit>
+      <trans-unit id="updateAction.lineNotAdded">
+        <source>No line added to current TypoScript record</source>
+        <target>crwdns279709:0crwdne279709:0</target>
+      </trans-unit>
+      <trans-unit id="updateAction.noSpaces">
+        <source>You must enter a property with characters "a-z", "A-Z", "0-9", or ".". Dots will be quoted. No spaces or special chars.</source>
+        <target>crwdns279711:0crwdne279711:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
