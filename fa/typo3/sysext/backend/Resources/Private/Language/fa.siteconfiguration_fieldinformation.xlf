@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1522923345" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="site.rootPageId" resname="site.rootPageId" approved="yes">
+        <source>You must create a page with a site root flag.</source>
+        <target state="final">شما باید صفحه‌ای با پرچم ریشه بسازید.</target>
+      </trans-unit>
+      <trans-unit id="site.identifier" resname="site.identifier" approved="yes">
+        <source>This name will be used to create the configuration directory. Mind the recommendations for directory names (only a-z,0-9,_,-) and make it unique.</source>
+        <target state="final">این نام برای ساخت مستقیم پیکربندی به کار برده می‌شود. شرایط ایجاد نام برای دایرکتوری‌ها را به یاد داشته باشید (فقط a-z,0-9,_,-). این نام باید منحصربه‌فرد باشد.</target>
+      </trans-unit>
+      <trans-unit id="site.base" resname="site.base" approved="yes">
+        <source>Main URL to call the frontend in default language. Can be https://www.example.com/ or just /, if it is just a / you cannot rely on TYPO3 creating
+					full URLs</source>
+        <target state="final">نشانی اصلی برای فراخوان صفحات خروجی با زبان پیش‌فرض. می‌تواند https://www.example.com/ باشد یا فقط / . در صورتی که فقط / است، شما نمی‌توانید برای ساخت نشانی‌های کامل به تایپوتری تکیه کنید.</target>
+      </trans-unit>
+      <trans-unit id="site.baseVariants" resname="site.baseVariants" approved="yes">
+        <source>This allows you to specify variants of the site's base. Can be used, for example, if you have a different domain for your staging environment.</source>
+        <target state="final">این به شما امکان تعیین پایه‌های مختلف وبگاه را می‌دهد. مثلا اگر یک دامنۀ دیگر برای محیط کاربردهای آزمایشی داشته باشید.</target>
+      </trans-unit>
+      <trans-unit id="site_language.base" resname="site_language.base" approved="yes">
+        <source>Use a full qualified domain "https://www.mydomain.fr/" or "/fr/". Use "/" to keep the main URL for the default language. Add language specific suffixes to use those, or configure complete URLs for independent domains.</source>
+        <target state="final">یک دامنۀ کامل و واجد شرایط انتخاب کنید "https://www.mydomain.fr/" یا "/fr/". از "/" برای نگاه‌داشت نشانی اصلی برای زبان پیش‌فرض استفاده نمائید. پس‌وندهای خاص به زبان برای استفاده از آن‌ها برگزینید یا نشانی‌های کامل برای دامنه‌های مستقل پیکربندی نمائید.</target>
+      </trans-unit>
+      <trans-unit id="site_language.locale" resname="site_language.locale" approved="yes">
+        <source>Used for localized date and currency formats. E.g. "de_DE" or "en_US.UTF-8".</source>
+        <target state="final">استفاده برای شکل تاریخ و واحدپولی بومی. مثال "de_DE" یا "en_US.UTF-8"</target>
+      </trans-unit>
+      <trans-unit id="site_language.iso-639-1" resname="site_language.iso-639-1" approved="yes">
+        <source>ISO 639-1 code of the Language</source>
+        <target state="final">کد ISO 639-1 زبان</target>
+      </trans-unit>
+      <trans-unit id="site_language.hreflang" resname="site_language.hreflang" approved="yes">
+        <source>Used within for "lang" and "hreflang" attributes</source>
+        <target state="final">برای مشخصه‌های "lang" و "hreflang" استفاده می‌شود</target>
+      </trans-unit>
+      <trans-unit id="site_language.navigationTitle" resname="site_language.navigationTitle" approved="yes">
+        <source>Used within language-related menus</source>
+        <target state="final">استفاده در فهرست‌های مربوط به زبان</target>
+      </trans-unit>
+      <trans-unit id="site_language.direction" resname="site_language.direction" approved="yes">
+        <source>Language direction for "dir" attribute</source>
+        <target state="final">جهت زبان برای مشخصۀ "dir"</target>
+      </trans-unit>
+      <trans-unit id="site_language.typo3Language" resname="site_language.typo3Language" approved="yes">
+        <source>Select the language to be used from translation files. Keep default if no translation files are available.</source>
+        <target state="final">زبانی که باید از فایل‌های زبان مورد استفاده قرار گیرد را انتخاب کنید. در صورتی که هیچ فایل ترجمه‌ای وجود ندارد، پیش‌فرض را انتخاب کنید.</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode" resname="site_errorhandling.errorCode" approved="yes">
+        <source>Make sure to have at least 0 (not defined otherwise) configured in order to serve helpful error messages to your visitors.</source>
+        <target state="final">اطمینان حاصل کنید پیکربندی حداقل 0 باشد (در غیر اینصورت تعریف نخواهد شد) تا پیام‌های خطای معنادار برای کاربران شما داشته باشد.</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplate" resname="site_errorhandling.errorFluidTemplate" approved="yes">
+        <source>Path to the fluid template file given by absolute, relative path (from site root) or by referring the template file inside an extension with "EXT:" prefix.</source>
+        <target state="final">مسیر مطلق، نسبی (به ریشۀ سایت) فایل قالب Fluid یا بواسطۀ ارجاع به فایل قالب درون یک افزونه با پیش‌وند "EXT:".</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorPhpClassFQCN" resname="site_errorhandling.errorPhpClassFQCN" approved="yes">
+        <source>Fully qualified class name to a class that implements the PageErrorHandlerInterface.</source>
+        <target state="final">نام کامل کلاس منطبق بر شرایط برای کلاسی که PageErrorHandlerInterface را در بر دارد.</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.base" resname="site_base_variant.base" approved="yes">
+        <source>For example "https://staging.domain.tld" or "http://www.domain.local"</source>
+        <target state="final">برای مثال https://staging.domain.tld" یا "http://www.domain.local"</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition" resname="site_base_variant.condition" approved="yes">
+        <source>Expression to match this base variant.</source>
+        <target state="final">عبارت برای انطباق با این جایگزین</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
