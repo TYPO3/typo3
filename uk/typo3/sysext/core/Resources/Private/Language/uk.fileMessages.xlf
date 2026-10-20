@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1447138381" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/fileMessages.xlf" date="2015-11-10T06:53:10Z" product-name="core" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="FileUtility.CannotCopyFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeCopied" resname="FileUtility.CannotCopyFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeCopied" approved="yes">
+        <source>Cannot copy folder "%s" into target folder "%s", because the target folder is already within the folder to be copied!</source>
+        <target state="final">Неможливо скопіювати папку "%s" у цільову папку "%s", оскільки цільова папка вже знаходиться в папці, яку потрібно скопіювати!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CannotMoveFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeMoved" resname="FileUtility.CannotMoveFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeMoved" approved="yes">
+        <source>Cannot move folder "%s" into target folder "%s", because the target folder is already within the folder to be moved!</source>
+        <target state="final">Неможливо перемістити теку "%s" у цільову папку "%s", тому що цільова тека вже знаходиться в папці, в яку переміщується!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotAccessAllNecessaryResources" resname="FileUtility.CouldNotAccessAllNecessaryResources" approved="yes">
+        <source>Could not access all necessary resources. Source file or destination maybe was not within your mountpoints? T="%s", D="%s"</source>
+        <target state="final">Не вдалося отримати доступ до всіх необхідних ресурсів. Вихідний або цільовий файл, можливо, не був у межах вашої точки монтування? T="%s", D="%s</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteDirectory" resname="FileUtility.CouldNotDeleteDirectory" approved="yes">
+        <source>Could not delete directory! Is directory "%s" empty? (You are not allowed to delete directories recursively).</source>
+        <target state="final">Не вдалося видалити каталог! Папка "%s" порожня? (Ви не маєте права видаляти каталоги рекурсивно).</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteDirectory1" resname="FileUtility.CouldNotDeleteDirectory1" approved="yes">
+        <source>Could not delete directory "%s"! There might be a problem with write permissions.</source>
+        <target state="final">Не вдалося видалити каталог "%s"! Можливо є проблема з правами на запис.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteFile" resname="FileUtility.CouldNotDeleteFile" approved="yes">
+        <source>Could not delete file "%s". There might be a problem with write permissions.</source>
+        <target state="final">Не вдалося видалити файл "%s". Можливо є проблема з правами на запис.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationExistedAlready" resname="FileUtility.DestinationExistedAlready" approved="yes">
+        <source>Destination "%s" already exists!</source>
+        <target state="final">Пункт призначення "%s" вже існує!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationPathWasNotWithinYourMountpoints" resname="FileUtility.DestinationPathWasNotWithinYourMountpoints" approved="yes">
+        <source>Destination path "%s" was not within your mountpoints!</source>
+        <target state="final">Шлях призначення "%s" не був серед ваших точок монтування!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationWasNotADirectory" resname="FileUtility.DestinationWasNotADirectory" approved="yes">
+        <source>Destination "%s" was not a directory.</source>
+        <target state="final">Призначення "%s" не є каталогом.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryCopiedTo" resname="FileUtility.DirectoryCopiedTo" approved="yes">
+        <source>Directory "%s" copied to "%s".</source>
+        <target state="final">Каталог "%s" скопійовано в "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryCreatedIn" resname="FileUtility.DirectoryCreatedIn" approved="yes">
+        <source>Directory "%s" created in "%s".</source>
+        <target state="final">Каталог "%s" створено в "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryMovedTo" resname="FileUtility.DirectoryMovedTo" approved="yes">
+        <source>Directory "%s" moved to "%s".</source>
+        <target state="final">Папка "%s" переміщена в "%s.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryNotCreated" resname="FileUtility.DirectoryNotCreated" approved="yes">
+        <source>Directory "%s" not created. There might be a problem with write permissions in "%s"?</source>
+        <target state="final">Каталог "%s" не створено. Можливо, виникла проблема з дозволами на запис у "%s"?</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedFromTo" resname="FileUtility.DirectoryRenamedFromTo" approved="yes">
+        <source>Directory renamed from "%s" to "%s".</source>
+        <target state="final">Каталог перейменовано з "%s" на "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedFromToCharReplaced" resname="FileUtility.DirectoryRenamedFromToCharReplaced" approved="yes">
+        <source>Directory renamed from "%s" to "%s". Characters in the new directory name have been replaced.</source>
+        <target state="final">Папка перейменована з "%s" на "%s". Символи в імені нової теки були замінені.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedSameName" resname="FileUtility.DirectoryRenamedSameName" approved="yes">
+        <source>Directory "%s" was not renamed. (Same name as before)</source>
+        <target state="final">Тека "%s" не була перейменована. (Те ж ім'я, що й раніше)</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotCopiedTo" resname="FileUtility.DirectoryWasNotCopiedTo" approved="yes">
+        <source>Directory "%s" WAS NOT copied to "%s"! There might be a problem with write permissions</source>
+        <target state="final">Каталог "%s" НЕ БУВ скопійований до "%s"! Можливо, виникла проблема з дозволами на запис</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotMovedTo" resname="FileUtility.DirectoryWasNotMovedTo" approved="yes">
+        <source>Directory "%s" WAS NOT moved to "%s"! There might be a problem with write permissions</source>
+        <target state="final">Каталог "%s" НЕ БУВ переміщений до "%s"! Можливо, виникла проблема з дозволами на запис</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotRenamed" resname="FileUtility.DirectoryWasNotRenamed" approved="yes">
+        <source>Directory "%s" was not renamed! There might be a problem with write permissions in "%s"?</source>
+        <target state="final">Каталог "%s" не було перейменовано! Можливо, виникла проблема з дозволами на запис у "%s"?</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileNameIsNotAllowedIn" resname="FileUtility.ExtensionOfFileNameIsNotAllowedIn" approved="yes">
+        <source>Extension of file name "%s" is not allowed in "%s"!</source>
+        <target state="final">Розширення назви файлу "%s" не допускається в "%s"!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileNameOrWasNotAllowed" resname="FileUtility.ExtensionOfFileNameOrWasNotAllowed" approved="yes">
+        <source>Extension of file name "%s" or "%s" was not allowed!</source>
+        <target state="final">Розширення імені файлу "%s" або "%s" не було дозволено!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileWasNotAllowed" resname="FileUtility.ExtensionOfFileWasNotAllowed" approved="yes">
+        <source>Extension of file "%s" was not allowed!</source>
+        <target state="final">Розширення файлу "%s" заборонено!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileAlreadyExistsInFolder" resname="FileUtility.FileAlreadyExistsInFolder" approved="yes">
+        <source>File "%s" already exists in folder "%s"!</source>
+        <target state="final">Файл "%s" вже існує в папці "%s"!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileCopiedTo" resname="FileUtility.FileCopiedTo" approved="yes">
+        <source>File "%s" copied to "%s".</source>
+        <target state="final">Каталог "%s" скопійовано в "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileCreated" resname="FileUtility.FileCreated" approved="yes">
+        <source>File created: "%s".</source>
+        <target state="final">Файл створено: "%s.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileNameSanitized" resname="FileUtility.FileNameSanitized" approved="yes">
+        <source>The file name "%s" is invalid, the file was automatically renamed to "%s".</source>
+        <target state="final">Ім'я файлу "%s" неприпустиме, файл автоматично перейменовано на "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExistedAlreadyIn" resname="FileUtility.FileExistedAlreadyIn" approved="yes">
+        <source>File existed already in "%s"!</source>
+        <target state="final">Файл вже існує в "%s"!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExtensionIsNotATextfileFormat" resname="FileUtility.FileExtensionIsNotATextfileFormat" approved="yes">
+        <source>File extension "%s" is not a textfile format! (%s).</source>
+        <target state="final">Розширення файлу "%s" не є текстовим форматом файлу! (%s).</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExtensionIsNotzip" resname="FileUtility.FileExtensionIsNotzip" approved="yes">
+        <source>File extension is not "zip".</source>
+        <target state="final">Розширення файлу не є "zip".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileMovedTo" resname="FileUtility.FileMovedTo" approved="yes">
+        <source>File "%s" moved to "%s".</source>
+        <target state="final">Файл "%s" переміщено в "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileNameWasNotAllowed" resname="FileUtility.FileNameWasNotAllowed" approved="yes">
+        <source>File name "%s" was not allowed!</source>
+        <target state="final">Ім'я файлу "%s" не було дозволено!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileOrDestinationWasNotWithinYourMountpoints" resname="FileUtility.FileOrDestinationWasNotWithinYourMountpoints" approved="yes">
+        <source>File "%s" or destination "%s" was not within your mountpoints!</source>
+        <target state="final">Файл "%s" або пункт призначення"%s" не був у ваших точках монтування!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileOrDirectoryExistedAlready" resname="FileUtility.FileOrDirectoryExistedAlready" approved="yes">
+        <source>File or directory "%s" already exists!</source>
+        <target state="final">Файл або директорія «%s» вже існує!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileRenamedFromTo" resname="FileUtility.FileRenamedFromTo" approved="yes">
+        <source>File renamed from "%s" to "%s".</source>
+        <target state="final">Файл перейменовано з "%s" на "%s.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileRenamedSameName" resname="FileUtility.FileRenamedSameName" approved="yes">
+        <source>File "%s" was not renamed. (Same name as before)</source>
+        <target state="final">Файл "%s" не було перейменовано. (Та ж назва, що й раніше)</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileSavedToBytesMd5" resname="FileUtility.FileSavedToBytesMd5" approved="yes">
+        <source>File saved to "%s", bytes: %s, MD5: %s.</source>
+        <target state="final">Файл збережено до "%s", байтів: %s, MD5: %s.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotCopiedTo" resname="FileUtility.FileWasNotCopiedTo" approved="yes">
+        <source>File "%s" WAS NOT copied to "%s"! There might be a problem with write permissions.</source>
+        <target state="final">Файл "%s" НЕ БУЛО скопійовано до "%s"! Існує проблема з правами запису.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotCreated" resname="FileUtility.FileWasNotCreated" approved="yes">
+        <source>File "%s" was not created! There might be a problem with write permissions in "%s"?</source>
+        <target state="final">Файл "%s" не був створений! Виникла проблема з правами на запис з правами на запис у файл "%s"?</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotRenamed" resname="FileUtility.FileWasNotRenamed" approved="yes">
+        <source>File "%s" was not renamed! There might be a problem with write permissions in "%s"?</source>
+        <target state="final">Файл "%s" не був перейменований! Може бути проблема з правами на запис на "%s?</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotSaved" resname="FileUtility.FileWasNotSaved" approved="yes">
+        <source>File "%s" was not saved! There might be a problem with write permissions.</source>
+        <target state="final">Файл "%s" не збережено! Виникла проблема з правами на запис.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotSaved2" resname="FileUtility.FileWasNotSaved2" approved="yes">
+        <source>File "%s" was not saved! File extension rejected!</source>
+        <target state="final">Файл "%s" не збережено! Розширення файлу відхилено!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoFileWasUploaded" resname="FileUtility.NoFileWasUploaded" approved="yes">
+        <source>No file was uploaded!</source>
+        <target state="final">Жодного файлу не завантажено!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoFileWasUploadedForReplacing" resname="FileUtility.NoFileWasUploadedForReplacing" approved="yes">
+        <source>No file was uploaded for replacing!</source>
+        <target state="final">Не було завантажено жодного файлу для заміни!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoNameForNewFolderGiven" resname="FileUtility.NoNameForNewFolderGiven" approved="yes">
+        <source>No name for new folder given!</source>
+        <target state="final">Не вказано ім'я для нової папки!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoUniqueFilenameAvailableIn" resname="FileUtility.NoUniqueFilenameAvailableIn" approved="yes">
+        <source>No unique filename available in "%s"!</source>
+        <target state="final">Немає унікального імені файлу в "%s"!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ReplacingFileTo" resname="FileUtility.ReplacingFileTo" approved="yes">
+        <source>Replacing file "%s" to "%s".</source>
+        <target state="final">Заміна файлу "%s" на "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetAlreadyExists" resname="FileUtility.TargetAlreadyExists" approved="yes">
+        <source>Target "%s" already exists!</source>
+        <target state="final">Призначення "%s" вже існує!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetWasNotAFile" resname="FileUtility.TargetWasNotAFile" approved="yes">
+        <source>Target "%s" was not a file!</source>
+        <target state="final">Призначення "%s" не є файлом!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetWasNotWithinYourMountpoints" resname="FileUtility.TargetWasNotWithinYourMountpoints" approved="yes">
+        <source>Target was not within your mountpoints! T="%s".</source>
+        <target state="final">Ціль не знаходиться всередині ваших точок монтування! Т="%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFileDidNotExist" resname="FileUtility.TheFileDidNotExist" approved="yes">
+        <source>The file "%s" did not exist!</source>
+        <target state="final">Файл "%s" не існує!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToCopyAFileBetweenStoragesIsNotYetImplemented" resname="FileUtility.TheFunctionToCopyAFileBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>The function to copy a file between storages is not yet implemented.</source>
+        <target state="final">Функція для копіювання файлу між сховищами ще не реалізована.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToCopyAFolderBetweenStoragesIsNotYetImplemented" resname="FileUtility.TheFunctionToCopyAFolderBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>The function to copy a folder between storages is not yet implemented.</source>
+        <target state="final">Функція для копіювання папки між сховищами ще не реалізована.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToMoveAFileBetweenStoragesIsNotYetImplemented" resname="FileUtility.TheFunctionToMoveAFileBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>The function to move a file between storages is not yet implemented.</source>
+        <target state="final">Функція для переміщення файлу між сховищами ще не реалізована.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToMoveAFolderBetweenStoragesIsNotYetImplemented" resname="FileUtility.TheFunctionToMoveAFolderBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>The function to move a folder between storages is not yet implemented.</source>
+        <target state="final">Функція для переміщення папки між сховищами ще не реалізована.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheUploadHasFailedNoUploadedFileFound" resname="FileUtility.TheUploadHasFailedNoUploadedFileFound" approved="yes">
+        <source>The upload has failed, no uploaded file found!</source>
+        <target state="final">Завантаження не вдалося, не знайдено завантаженого файлу!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheUploadedFileExceedsTheSize-limit" resname="FileUtility.TheUploadedFileExceedsTheSize-limit" approved="yes">
+        <source>The uploaded file "%s" exceeds the size-limit</source>
+        <target state="final">Завантажений файл "%s" перевищує ліміт розміру</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UnzippingFileIn" resname="FileUtility.UnzippingFileIn" approved="yes">
+        <source>Unzipping file "%s" in "%s".</source>
+        <target state="final">Розархівування файлу "%s" в "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UploadedFileCouldNotBeMoved" resname="FileUtility.UploadedFileCouldNotBeMoved" approved="yes">
+        <source>Uploaded file could not be moved! There might be a problem with write permissions in "%s"?</source>
+        <target state="final">Не вдалося перемістити завантажений файл! Можливо, в "%s" проблема з правами на запис?</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UploadingFileTo" resname="FileUtility.UploadingFileTo" approved="yes">
+        <source>Uploading file "%s" to "%s".</source>
+        <target state="final">Завантаження файлу "%s" до "%s.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToAccessTheDirectory" resname="FileUtility.YouAreNotAllowedToAccessTheDirectory" approved="yes">
+        <source>You are not allowed to access the directory.</source>
+        <target state="final">Ви не можете отримати доступ до каталогу.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToAccessTheFile" resname="FileUtility.YouAreNotAllowedToAccessTheFile" approved="yes">
+        <source>You are not allowed to access the file.</source>
+        <target state="final">Ви не маєте доступу до файлу.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCopyDirectories" resname="FileUtility.YouAreNotAllowedToCopyDirectories" approved="yes">
+        <source>You are not allowed to copy directories.</source>
+        <target state="final">Вам не дозволено копіювати каталоги.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCopyFiles" resname="FileUtility.YouAreNotAllowedToCopyFiles" approved="yes">
+        <source>You are not allowed to copy files.</source>
+        <target state="final">Вам не дозволено копіювати файли.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.InvalidFolderName" resname="FileUtility.InvalidFolderName" approved="yes">
+        <source>Invalid folder name "%s"!</source>
+        <target state="final">Неприпустиме ім'я папки "%s"!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCreateDirectories" resname="FileUtility.YouAreNotAllowedToCreateDirectories" approved="yes">
+        <source>You are not allowed to create directories!</source>
+        <target state="final">У вас немає прав для створення каталогів!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCreateFiles" resname="FileUtility.YouAreNotAllowedToCreateFiles" approved="yes">
+        <source>You are not allowed to create files!</source>
+        <target state="final">Вам не дозволено створювати файли!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToEditFiles" resname="FileUtility.YouAreNotAllowedToEditFiles" approved="yes">
+        <source>You are not allowed to edit files!</source>
+        <target state="final">Вам не дозволено редагувати файли!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToMoveDirectories" resname="FileUtility.YouAreNotAllowedToMoveDirectories" approved="yes">
+        <source>You are not allowed to move directories.</source>
+        <target state="final">Вам не дозволено переміщати каталоги.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToMoveFiles" resname="FileUtility.YouAreNotAllowedToMoveFiles" approved="yes">
+        <source>You are not allowed to move files.</source>
+        <target state="final">Ви не можете перемістити файли.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToOverride" resname="FileUtility.YouAreNotAllowedToOverride" approved="yes">
+        <source>You are not allowed to override "%s"!</source>
+        <target state="final">Ви не можете перевизначити "%s"!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToRenameDirectories" resname="FileUtility.YouAreNotAllowedToRenameDirectories" approved="yes">
+        <source>You are not allowed to rename directories!</source>
+        <target state="final">У вас немає прав на перейменування каталогів!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToRenameFiles" resname="FileUtility.YouAreNotAllowedToRenameFiles" approved="yes">
+        <source>You are not allowed to rename files!</source>
+        <target state="final">Вам не дозволено перейменовувати файли!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToUnzipFiles" resname="FileUtility.YouAreNotAllowedToUnzipFiles" approved="yes">
+        <source>You are not allowed to unzip files.</source>
+        <target state="final">Ви не можете розпакувати файли.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToUploadFiles" resname="FileUtility.YouAreNotAllowedToUploadFiles" approved="yes">
+        <source>You are not allowed to upload files!</source>
+        <target state="final">Вам не дозволено завантажувати файли!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouDontHaveFullAccessToTheDestinationDirectory" resname="FileUtility.YouDontHaveFullAccessToTheDestinationDirectory" approved="yes">
+        <source>You don't have full access to the destination directory "%s"!</source>
+        <target state="final">Ви не маєте повного доступу до цільового каталогу "%s"!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
