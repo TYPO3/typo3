@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_layout.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="he">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Page content</source>
+        <target state="final">תוכן עמוד</target>
+      </trans-unit>
+      <trans-unit id="noEditItems" approved="yes">
+        <source>Sorry, you do not have permissions to edit items on this page!</source>
+        <target state="final">מצטערים, אין לך הרשאות לערוך פריטים בדף זה!</target>
+      </trans-unit>
+      <trans-unit id="noEditPage" approved="yes">
+        <source>Sorry, you do not have permissions to edit this page!</source>
+        <target state="final">מצטערים, אין לך הרשאות לערוך עמוד זה!</target>
+      </trans-unit>
+      <trans-unit id="moveUp" approved="yes">
+        <source>Move record up</source>
+        <target state="final">העבר רשומה למעלה</target>
+      </trans-unit>
+      <trans-unit id="moveDown" approved="yes">
+        <source>Move record down</source>
+        <target state="final">העבר רשומה למטה</target>
+      </trans-unit>
+      <trans-unit id="unHide" approved="yes">
+        <source>Un-hide</source>
+        <target state="final">להציג</target>
+      </trans-unit>
+      <trans-unit id="hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">הסתר</target>
+      </trans-unit>
+      <trans-unit id="edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">ערוך</target>
+      </trans-unit>
+      <trans-unit id="newAfter" approved="yes">
+        <source>New record after this one</source>
+        <target state="final">רשומה חדשה אחרי רשומה זות</target>
+      </trans-unit>
+      <trans-unit id="move_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">הזז עמוד</target>
+      </trans-unit>
+      <trans-unit id="deleteItem" approved="yes">
+        <source>Delete</source>
+        <target state="final">מחק</target>
+      </trans-unit>
+      <trans-unit id="editColumn" approved="yes">
+        <source>Edit this column</source>
+        <target state="final">ערוך עמודה זאת</target>
+      </trans-unit>
+      <trans-unit id="editPageProperties_curLang" approved="yes">
+        <source>Edit translation properties</source>
+        <target state="final">ערוך מאפיניי תרגום</target>
+      </trans-unit>
+      <trans-unit id="editInRTE" approved="yes">
+        <source>Edit in Rich Text Editor</source>
+        <target state="final">ערוך בעורך טקסט עשיר</target>
+      </trans-unit>
+      <trans-unit id="newPageContent" approved="yes">
+        <source>Create page content</source>
+        <target state="final">צור תוכן דף</target>
+      </trans-unit>
+      <trans-unit id="newPageContent2" approved="yes">
+        <source>New content</source>
+        <target state="final">תוכן חדש</target>
+      </trans-unit>
+      <trans-unit id="content" approved="yes">
+        <source>Content</source>
+        <target state="final">תוכן</target>
+      </trans-unit>
+      <trans-unit id="newLabel" approved="yes">
+        <source>NEW</source>
+        <target state="final">חדש</target>
+      </trans-unit>
+      <trans-unit id="defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">ברירת מחדל</target>
+      </trans-unit>
+      <trans-unit id="newPage" approved="yes">
+        <source>Create new page</source>
+        <target state="final">צור עמוד חדש</target>
+      </trans-unit>
+      <trans-unit id="newPage2" approved="yes">
+        <source>New page</source>
+        <target state="final">עמוד חדש</target>
+      </trans-unit>
+      <trans-unit id="noAccess" approved="yes">
+        <source>No edit access</source>
+        <target state="final">אפשרות עריכה חסומה</target>
+      </trans-unit>
+      <trans-unit id="tt_board_subject" approved="yes">
+        <source>Subject</source>
+        <target state="final">נושא</target>
+      </trans-unit>
+      <trans-unit id="tt_board_author" approved="yes">
+        <source>Author</source>
+        <target state="final">יוצר</target>
+      </trans-unit>
+      <trans-unit id="tt_board_date" approved="yes">
+        <source>Date</source>
+        <target state="final">תאריך</target>
+      </trans-unit>
+      <trans-unit id="tt_board_age" approved="yes">
+        <source>Age</source>
+        <target state="final">גיל</target>
+      </trans-unit>
+      <trans-unit id="gridView" approved="yes">
+        <source>Grid-View</source>
+        <target state="final">תצוגת גלריה</target>
+      </trans-unit>
+      <trans-unit id="m_tt_board_0" approved="yes">
+        <source>List topics only</source>
+        <target state="final">רשימת נושאים בלבד</target>
+      </trans-unit>
+      <trans-unit id="m_tt_board_expand" approved="yes">
+        <source>Expand Threads</source>
+        <target state="final">הרחב אשכולות</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_0" approved="yes">
+        <source>Short List</source>
+        <target state="final">רשימה קצרה</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_1" approved="yes">
+        <source>Address list</source>
+        <target state="final">רשימת כתובות</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_2" approved="yes">
+        <source>Personal info</source>
+        <target state="final">פרטים אישיים</target>
+      </trans-unit>
+      <trans-unit id="m_tt_links_1" approved="yes">
+        <source>Whole URL</source>
+        <target state="final">קישור מלא</target>
+      </trans-unit>
+      <trans-unit id="m_tt_links_2" approved="yes">
+        <source>Alternative note</source>
+        <target state="final">הערה נוספת</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_date" approved="yes">
+        <source>Date</source>
+        <target state="final">תאריך</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_date_ext" approved="yes">
+        <source>Date - extended</source>
+        <target state="final">תאריך - מורחב</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_todo" approved="yes">
+        <source>Todo</source>
+        <target state="final">משימות</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_todo_ext" approved="yes">
+        <source>Todo - extended</source>
+        <target state="final">פרטים משימות</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_ext" approved="yes">
+        <source>Extended</source>
+        <target state="final">מורחב</target>
+      </trans-unit>
+      <trans-unit id="m_tt_products_ext" approved="yes">
+        <source>Extended</source>
+        <target state="final">מורחב</target>
+      </trans-unit>
+      <trans-unit id="m_default" approved="yes">
+        <source>Default</source>
+        <target state="final">ברירת מחדל</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
