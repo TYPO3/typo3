@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814843" source-language="en" datatype="plaintext" original="EXT:install/Resources/Private/Language/Report/locallang.xlf" date="2011-10-17T20:22:33Z" product-name="install" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="environment.status.title" resname="environment.status.title" approved="yes">
+        <source>System environment check</source>
+        <target state="final">Systemsjekk</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.error" resname="environment.status.message.error" approved="yes">
+        <source>The system environment check returned errors. Those errors will affect the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target state="final">Systemsjekken melder om feilmeldinger. Disse feilmeldingene vil påvirke funksjonen og stabiliteten til TYPO3 CMS-installasjonen. Vennligst sjekk "Systemmiljø" i Installasjonsverktøyet for detaljer.</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.warning" resname="environment.status.message.warning" approved="yes">
+        <source>The system environment check returned warnings. Those warnings might have a negative effect on the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target state="final">Systemsjekken melder om advarsler. Disse advarslene kan ha en negativ innvirkning på funksjonaliteten og stabiliteten til TYPO3 CMS-installasjonen. Vennligst sjekk "Systemmiljø" i Installasjonsverktøyet for detaljer.</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.notice" resname="environment.status.message.notice" approved="yes">
+        <source>The system environment check returned notices. Those should not affect the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target state="final">Systemsjekken melder om beskjeder. Disse skal ikke påvirke funksjonaliteten og stabiliteten til TYPO3 CMS-installasjonen. Vennligst sjekk "Systemmiljø" i Installasjonsverktøyet for detaljer.</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.ok" resname="environment.status.message.ok" xml:space="preserve">
+				<source/>
+			</trans-unit>
+      <trans-unit id="environment.status.message.info" resname="environment.status.message.info" xml:space="preserve">
+				<source/>
+			</trans-unit>
+      <trans-unit id="status_fileSystem" resname="status_fileSystem" approved="yes">
+        <source>File System</source>
+        <target state="final">Filsystem</target>
+      </trans-unit>
+      <trans-unit id="status_writable" resname="status_writable" approved="yes">
+        <source>Writable</source>
+        <target state="final">Skrivbar</target>
+      </trans-unit>
+      <trans-unit id="status_missingDirectory" resname="status_missingDirectory" approved="yes">
+        <source>Required directory missing</source>
+        <target state="final">Påkrevet mappe mangler</target>
+      </trans-unit>
+      <trans-unit id="status_nonExistingDirectory" resname="status_nonExistingDirectory" approved="yes">
+        <source>Directory not existing</source>
+        <target state="final">Mappe eksisterer ikke</target>
+      </trans-unit>
+      <trans-unit id="status_recommendedWritableDirectory" resname="status_recommendedWritableDirectory" approved="yes">
+        <source>Directory should be writable</source>
+        <target state="final">Mappe bør være skrivbar</target>
+      </trans-unit>
+      <trans-unit id="status_requiredWritableDirectory" resname="status_requiredWritableDirectory" approved="yes">
+        <source>Directory not writable</source>
+        <target state="final">Mappe er ikke skrivbar</target>
+      </trans-unit>
+      <trans-unit id="status_directoryDoesNotExist" resname="status_directoryDoesNotExist" approved="yes">
+        <source>%s does not exist.</source>
+        <target state="final">%s eksisterer ikke.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryDoesNotExistCouldNotCreate" resname="status_directoryDoesNotExistCouldNotCreate" approved="yes">
+        <source>%s does not exist and could not be created.</source>
+        <target state="final">%s eksisterer ikke og kunne ikke oprettes.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryShouldAlsoBeWritable" resname="status_directoryShouldAlsoBeWritable" approved="yes">
+        <source>Also note that it should be writable, if it did exist.</source>
+        <target state="final">Merk også at den burde ha vært skrivbar hvis den eksisterte.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
