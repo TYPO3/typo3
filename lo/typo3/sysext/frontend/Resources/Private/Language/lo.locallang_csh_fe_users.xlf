@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814796" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_fe_users.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="username.description" resname="username.description" approved="yes">
+        <source>Enter the username of the website user. This is needed to login.</source>
+        <target state="final">ປ້ອນຊື່ຜູ້ໃຊ້ຂອງຜູ້ໃຊ້ເວັບໄຊ. ສິ່ງນີ້ຈຳເປັນສຳລັບການເຂົ້າສູ່ລະບົບ.</target>
+      </trans-unit>
+      <trans-unit id="username.syntax" resname="username.syntax" approved="yes">
+        <source>A username is required and must be in lowercase without spaces in it. The username must be unique among other usernames in the page where it's saved. If it is not unique a number will be prepended automatically.</source>
+        <target state="final">ຈຳເປັນຕ້ອງມີຊື່ຜູ້ໃຊ້ ແລະ ຕ້ອງເປັນຕົວອັກສອນພິມນ້ອຍໂດຍບໍ່ມີວາງເວັ້ນ. ຊື່ຜູ້ໃຊ້ຕ້ອງບໍ່ຊ້ຳກັບຊື່ຜູ້ໃຊ້ອື່ນໆໃນໜ້າທີ່ມັນຖືກບັນທຶກໄວ້. ຖ້າມັນຊ້ຳກັນ, ຕົວເລກຈະຖືກຕື່ມໃສ່ທາງໜ້າໂດຍອັດຕະໂນມັດ.</target>
+      </trans-unit>
+      <trans-unit id="_username.seeAlso" resname="_username.seeAlso" approved="yes">
+        <source>Creating Frontend Users and Groups | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</source>
+        <target state="final">ການສ້າງຜູ້ໃຊ້ ແລະ ກຸ່ມສ່ວນໜ້າເວັບ (Frontend)</target>
+      </trans-unit>
+      <trans-unit id="password.description" resname="password.description" approved="yes">
+        <source>Enter the password for the username above. This is needed to login.</source>
+        <target state="final">ປ້ອນລະຫັດຜ່ານສຳລັບຊື່ຜູ້ໃຊ້ຂ້າງເທິງ. ສິ່ງນີ້ຈຳເປັນສຳລັບການເຂົ້າສູ່ລະບົບ.</target>
+      </trans-unit>
+      <trans-unit id="password.syntax" resname="password.syntax" approved="yes">
+        <source>A password is required and must be in lowercase without spaces in it.</source>
+        <target state="final">ຈຳເປັນຕ້ອງມີລະຫັດຜ່ານ ແລະ ຕ້ອງເປັນຕົວອັກສອນພິມນ້ອຍໂດຍບໍ່ມີວາງເວັ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="usergroup.description" resname="usergroup.description" approved="yes">
+        <source>Select a user group for the username.</source>
+        <target state="final">ເລືອກກຸ່ມຜູ້ໃຊ້ສຳລັບຊື່ຜູ້ໃຊ້ນີ້.</target>
+      </trans-unit>
+      <trans-unit id="usergroup.details" resname="usergroup.details" approved="yes">
+        <source>When a user logs in he is able to view all content which is access restricted to the user &lt;em&gt;group(s)&lt;/em&gt; the user is a member of. Therefore the user login primarily makes sense with regard to the member groups.</source>
+        <target state="final">ເມື່ອຜູ້ໃຊ້ເຂົ້າສູ່ລະບົບ, ເຂົາເຈົ້າຈະສາມາດເບິ່ງເນື້ອຫາທັງໝົດທີ່ຖືກຈຳກັດການເຂົ້າເຖິງໃຫ້ກັບ &lt;em&gt;ກຸ່ມ&lt;/em&gt; ຜູ້ໃຊ້ທີ່ເຂົາເຈົ້າເປັນສະມາຊິກຢູ່. ດັ່ງນັ້ນ, ການເຂົ້າສູ່ລະບົບຂອງຜູ້ໃຊ້ຈຶ່ງມີຄວາມໝາຍຫຼັກໃນສ່ວນທີ່ກ່ຽວຂ້ອງກັບກຸ່ມສະມາຊິກ.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.description" resname="lockToDomain.description" approved="yes">
+        <source>Enter the host name from which the user is forced to login. NOTICE: this is not a security feature and can be circumvented by faking HTTP_HOST.</source>
+        <target state="final">ປ້ອນຊື່ໂຮສ (Host name) ທີ່ບັງຄັບໃຫ້ຜູ້ໃຊ້ເຂົ້າສູ່ລະບົບ. ໝາຍເຫດ: ນີ້ບໍ່ແມ່ນຄຸນສົມບັດດ້ານຄວາມປອດໄພ ແລະ ສາມາດຖືກຫຼອກລວງໄດ້ໂດຍການປອມແປງ HTTP_HOST.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.details" resname="lockToDomain.details" approved="yes">
+        <source>A TYPO3 system may have multiple domains pointing to it. Therefore this option secures that users can login only from a certain host name.</source>
+        <target state="final">ລະບົບ TYPO3 ອາດຈະມີຫຼາຍໂດເມນທີ່ຊີ້ມາຍັງມັນ. ດັ່ງນັ້ນ ຕົວເລືອກນີ້ຈຶ່ງຊ່ວຍຮັບປະກັນວ່າຜູ້ໃຊ້ສາມາດເຂົ້າສູ່ລະບົບໄດ້ຈາກຊື່ໂຮສໃດໜຶ່ງທີ່ກຳນົດໄວ້ເທົ່ານັ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.syntax" resname="lockToDomain.syntax" approved="yes">
+        <source>Either a domain name, "www.typo3.org" or an IP address, "10.34.222.83"</source>
+        <target state="final">ອາດຈະເປັນຊື່ໂດເມນ, "www.typo3.org" ຫຼື ທີ່ຢູ່ IP, "10.34.222.83"</target>
+      </trans-unit>
+      <trans-unit id="_lockToDomain.seeAlso" resname="_lockToDomain.seeAlso" approved="yes">
+        <source>fe_groups:lockToDomain</source>
+        <target state="final">ຕົວເລືອກນີ້ຈະປິດການເຂົ້າສູ່ລະບົບຂອງຜູ້ໃຊ້ໄວ້ຊົ່ວຄາວ.</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="name.description" resname="name.description" approved="yes">
+        <source>Enter the regular name of the user, both first- and surname.</source>
+        <target state="final">ປ້ອນຊື່ປົກກະຕິຂອງຜູ້ໃຊ້, ທັງຊື່ ແລະ ນາມສະກຸນ.</target>
+      </trans-unit>
+      <trans-unit id="address.description" resname="address.description" approved="yes">
+        <source>Enter the street address of the user.</source>
+        <target state="final">ປ້ອນທີ່ຢູ່ຖະໜົນຂອງຜູ້ໃຊ້.</target>
+      </trans-unit>
+      <trans-unit id="www.description" resname="www.description" approved="yes">
+        <source>Enter the homepage URL</source>
+        <target state="final">ປ້ອນ URL ຂອງໜ້າທຳອິດ</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the job title, eg. 'Director' or 'Accountant'.</source>
+        <target state="final">ປ້ອນຕຳແໜ່ງງານ, ເຊັ່ນ: 'ຜູ້ນຳພາ' ຫຼື 'ບັນຊີ'.</target>
+      </trans-unit>
+      <trans-unit id="company.description" resname="company.description" approved="yes">
+        <source>Enter the name of the company in which the user is employed.</source>
+        <target state="final">ປ້ອນຊື່ບໍລິສັດທີ່ຜູ້ໃຊ້ເຮັດວຽກຢູ່.</target>
+      </trans-unit>
+      <trans-unit id="image.description" resname="image.description" approved="yes">
+        <source>Insert a photo of the user.</source>
+        <target state="final">ແຊກຮູບພາບຂອງຜູ້ໃຊ້.</target>
+      </trans-unit>
+      <trans-unit id="disable.description" resname="disable.description" approved="yes">
+        <source>This option will temporarily disable the user from logging in.</source>
+        <target state="final">ຕົວເລືອກນີ້ຈະປິດການເຂົ້າສູ່ລະບົບຂອງຜູ້ໃຊ້ໄວ້ຊົ່ວຄາວ.</target>
+      </trans-unit>
+      <trans-unit id="_disable.seeAlso" resname="_disable.seeAlso" approved="yes">
+        <source>fe_users:starttime,fe_users:endtime</source>
+        <target state="final">fe_users:starttime, fe_users:endtime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Enter the date from which the account is active.</source>
+        <target state="final">ປ້ອນວັນທີທີ່ບັນຊີເລີ່ມມີຜົນໃຊ້ງານ.</target>
+      </trans-unit>
+      <trans-unit id="starttime.syntax" resname="starttime.syntax" xml:space="preserve" approved="yes">
+				<source>The syntax is dd-mm-yy, but you can just enter a "d" in the field to insert todays date. Or "d+10" to insert the date 10 days from now etc.
+The field will re-format any input to fit the format it understands so you can just experiment and you will be able to clearly see how dates should be entered.</source>
+			<target state="final">ຮູບແບບແມ່ນ ວວ-ດດ-ປປ, ແຕ່ເຈົ້າສາມາດປ້ອນ "d" ໃສ່ໃນຟີວເພື່ອແຊກວັນທີຂອງມື້ນີ້. ຫຼື "d+10" ເພື່ອແຊກວັນທີໃນອີກ 10 ວັນຂ້າງໜ້າ ແລະ ອື່ນໆ. ຟີວຈະຈັດຮູບແບບການປ້ອນຂໍ້ມູນໃດໆຄືນໃໝ່ໃຫ້ກົງກັບຮູບແບບທີ່ມັນເຂົ້າໃຈ, ດັ່ງນັ້ນເຈົ້າສາມາດທົດລອງໄດ້ ແລະ ເຈົ້າຈະເຫັນໄດ້ຢ່າງຊັດເຈນວ່າຄວນປ້ອນວັນທີແນວໃດ.</target></trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" approved="yes">
+        <source>fe_users:disable,fe_users:endtime</source>
+        <target state="final">fe_users:disable, fe_users:endtime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>Enter the date from which the account is disabled.</source>
+        <target state="final">ປ້ອນວັນທີທີ່ບັນຊີຖືກປິດການໃຊ້ງານ.</target>
+      </trans-unit>
+      <trans-unit id="endtime.syntax" resname="endtime.syntax" approved="yes">
+        <source>See "Start"</source>
+        <target state="final">ເບິ່ງ "ເລີ່ມຕົ້ນ"</target>
+      </trans-unit>
+      <trans-unit id="_endtime.seeAlso" resname="_endtime.seeAlso" approved="yes">
+        <source>fe_users:disable,fe_users:starttime</source>
+        <target state="final">fe_users:disable, fe_users:starttime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="lastlogin.description" resname="lastlogin.description" approved="yes">
+        <source>This field shows the user's last log in date.</source>
+        <target state="final">ຟີວນີ້ສະແດງວັນທີເຂົ້າສູ່ລະບົບຄັ້ງຫຼ້າສຸດຂອງຜູ້ໃຊ້.</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>Enter additional TSconfig for the user (advanced).</source>
+        <target state="final">ປ້ອນ TSconfig ເພີ່ມເຕີມສຳລັບຜູ້ໃຊ້ (ຂັ້ນສູງ).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details" resname="TSconfig.details" xml:space="preserve" approved="yes">
+				<source>This field allows you to enter TypoScript style configuration values for the user. Currently there are no system defined keys. If there ever will be, they will be described in detail in the administrative documentation.
+
+The primary use of this field (as well as the 'sister'-field in the Website usergroup table) is for custom purposes. In this case, you should use the root-key "user" for your customly defined values. Thus you don't risk any future system keys to interfere with your configuration.
+
+You access the values of the configuration from your frontend plugins by calling the function &lt;em&gt;$GLOBALS["TSFE"]-&gt;fe_user-&gt;getUserTSconf()&lt;/em&gt; which will return an array with the valuetree in it.
+
+&lt;b&gt;Warning:&lt;/b&gt; You should use Website user/group TSconfig in your PHP-scripts ONLY if your resulting content is NOT being cached! So call it from TypoScript USER_INT cObjects or disable caching from your PHP-code by calling &lt;em&gt;$GLOBALS["TSFE"]-&gt;set_no_cache();&lt;/em&gt;
+
+&lt;b&gt;TSconfig from Website usergroups:&lt;/b&gt;
+Notice that the configuration from the field TSconfig in the member groups of the user is accumulated and prepended to the TSconfig of the user before it's parsed. This means for instance that a key defined in the TSconfig of the user (this field) will override the same key defined in the last (bottom) usergroup in the list which will again override the same key defined in the first (top) usergroup in the list.
+
+&lt;b&gt;Example:&lt;/b&gt;
+Let's imagine you want to define for a user that his name is printed in the bottom of the webpages when he is logged in. First of all you must write a PHP-function and insert the result from it as a USER_INT cObject in the bottom of the page. But your function needs to know, whether or not this user is configured to have his name printed. So you decide to use a custom TSconfig key, 'user.printUserName':
+
+&lt;em&gt;In the TSconfig field of the user or usergroup:&lt;/em&gt;
+
+user.printUserName = 1
+
+
+&lt;em&gt;In your PHP-function:&lt;/em&gt;
+
+$userTSConfig = $GLOBALS["TSFE"]-&gt;fe_user-&gt;getUserTSconf();
+if ($userTSConfig["user."]["printUserName"]) {
+return $GLOBALS["TSFE"]-&gt;fe_user-&gt;user["name"];
+}</source>
+			<target state="final">ຟີວນີ້ອະນຸຍາດໃຫ້ເຈົ້າປ້ອນຄ່າການຕັ້ງຄ່າໃນຮູບແບບ TypoScript ສຳລັບຜູ້ໃຊ້. ໃນປັດຈຸບັນຍັງບໍ່ມີຄີ (key) ທີ່ລະບົບກຳນົດໄວ້. ຖ້າມີໃນອະນາຄົດ, ພວກມັນຈະຖືກອະທິບາຍຢ່າງລະອຽດໃນເອກະສານການບໍລິຫານລະບົບ.
+ຈຸດປະສົງຫຼັກຂອງຟີວນີ້ (ລວມທັງຟີວທີ່ຄືກັນໃນຕາຕະລາງກຸ່ມຜູ້ໃຊ້ເວັບໄຊ) ແມ່ນເພື່ອໃຊ້ງານຕາມຄວາມຕ້ອງການຂອງເຈົ້າເອງ. ໃນກໍລະນີນີ້ນ, ເຈົ້າຄວນໃຊ້ຄີຮາກ (root-key) "user" ສຳລັບຄ່າທີ່ເຈົ້າກຳນົດເອງ. ວິທີນີ້ຈະຊ່ວຍຫຼຸດຜ່ອນຄວາມສ່ຽງທີ່ຄີຂອງລະບົບໃນອະນາຄົດຈະມາຂັດແຍ່ງກັບການຕັ້ງຄ່າຂອງເຈົ້າ.
+ເຈົ້າສາມາດເຂົ້າເຖິງຄ່າຕ່າງໆຂອງການຕັ້ງຄ່າຈາກປລັກອິນສ່ວນໜ້າເວັບ (frontend plugins) ໂດຍການເອີ້ນໃຊ້ຟັງຊັນ &lt;em&gt;$GLOBALS["TSFE"]-&gt;fe_user-&gt;getUserTSconf()&lt;/em&gt; ເຊິ່ງຈະສົ່ງຄືນເປັນອາເຣ (array) ທີ່ມີໂຄງສ້າງຄ່າຕ່າງໆຢູ່ໃນນັ້ນ.
+&lt;b&gt;ຄຳເຕືອນ:&lt;/b&gt; ເຈົ້າຄວນໃຊ້ TSconfig ຂອງຜູ້ໃຊ້/ກຸ່ມຜູ້ໃຊ້ເວັບໄຊ ໃນສະຄຣິບ PHP ຂອງເຈົ້າ ສະເພາະຕອນທີ່ເນື້ອຫາທີ່ສະແດງນັ້ນບໍ່ໄດ້ຖືກເກັບໄວ້ໃນແຄັດ (cache) ເທົັ້ນັ້ນ! ດັ່ງນັ້ນ, ໃຫ້ເອີ້ນໃຊ້ມັນຈາກ TypoScript USER_INT cObjects ຫຼື ປິດການໃຊ້ງານແຄັດຈາກໂຄ້ດ PHP ໂດຍການເອີ້ນໃຊ້ &lt;em&gt;$GLOBALS["TSFE"]-&gt;set_no_cache();&lt;/em&gt;
+&lt;b&gt;TSconfig ຈາກກຸ່ມຜູ້ໃຊ້ເວັບໄຊ:&lt;/b&gt; ຂໍໃຫ້ສັງເກດວ່າ ການຕັ້ງຄ່າຈາກຟີວ TSconfig ໃນກຸ່ມສະມາຊິກຂອງຜູ້ໃຊ້ຈະຖືກຮວບຮວມ ແລະ ຕື່ມໃສ່ທາງໜ້າ TSconfig ຂອງຜູ້ໃຊ້ກ່ອນທີ່ຈະຖືກປະມວນຜົນ. ນີ້ໝາຍຄວາມວ່າ ຄີທີ່ກຳນົດໃນ TSconfig ຂອງຜູ້ໃຊ້ (ຟີວນີ້) ຈະຂຽນທັບຄີດຽວກັນທີ່ກຳນົດໄວ້ໃນກຸ່ມຜູ້ໃຊ້ສຸດທ້າຍ (ລຸ່ມສຸດ) ໃນລາຍການ, ເຊິ່ງກຸ່ມນັ້ນກໍຈະຂຽນທັບຄີດຽວກັນທີ່ກຳນົດໄວ້ໃນກຸ່ມຜູ້ໃຊ້ທຳອິດ (ເທິງສຸດ) ໃນລາຍການ.
+&lt;b&gt;ຕົວຢ່າງ:&lt;/b&gt; ສົມມຸດວ່າເຈົ້າຕ້ອງການກຳນົດໃຫ້ຜູ້ໃຊ້ຄົນໜຶ່ງມີຊື່ສະແດງຢູ່ທາງລຸ່ມຂອງໜ້າເວັບເມື່ອເຂົາເຈົ້າເຂົ້າສູ່ລະບົບ. ກ່ອນອື່ນໝົດ, ເຈົ້າຕ້ອງຂຽນຟັງຊັນ PHP ແລະ ແຊກຜົນລັບຈາກມັນເປັນ USER_INT cObject ໄວ້ທີ່ສ່ວນລຸ່ມຂອງໜ້າເວັບ. ແຕ່ຟັງຊັນຂອງເຈົ້າຕ້ອງຮູ້ວ່າ ຜູ້ໃຊ້ນີ້ຖືກກຳນົດໃຫ້ສະແດງຊື່ຫຼືບໍ່. ດັ່ງນັ້ນ ເຈົ້າຈຶ່ງຕັດສິນໃຈໃຊ້ຄີ TSconfig ທີ່ກຳນົດເອງ ຄື: 'user.printUserName':
+&lt;em&gt;ໃນຟີວ TSconfig ຂອງຜູ້ໃຊ້ ຫຼື ກຸ່ມຜູ້ໃຊ້:&lt;/em&gt;
+&lt;em&gt;ໃນຟັງຊັນ PHP ຂອງເຈົ້າ:&lt;/em&gt;</target></trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax, without conditions and constants.</source>
+        <target state="final">ໄວຍາກອນ TypoScript, ໂດຍບໍ່ມີເງື່ອນໄຂ ແລະ ຄ່າຄົງທີ່.</target>
+      </trans-unit>
+      <trans-unit id="_TSconfig.seeAlso" resname="_TSconfig.seeAlso" xml:space="preserve" approved="yes">
+				<source>TSconfig for TSFE | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/TCEmain/
+pages:TSconfig,
+fe_groups:TSconfig,
+be_users:TSconfig,
+be_groups:TSconfig</source>
+			<target state="final">TSconfig ສຳລັບ TSFE | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/TCEMain/ 
+pages:TSconfig, 
+fe_groups:TSconfig, 
+be_users:TSconfig, 
+be_groups:TSconfig
+</target></trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>A website login user.</source>
+        <target state="final">ຜູ້ໃຊ້ສຳລັບເຂົ້າສູ່ລະບົບເວັບໄຊ.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>These are users with a username and password who are allowed specific access to otherwise restricted areas on your website.</source>
+        <target state="final">ເຫຼົ່ານີ້ແມ່ນຜູ້ໃຊ້ທີ່ມີຊື່ຜູ້ໃຊ້ ແລະ ລະຫັດຜ່ານ ເຊິ່ງໄດ້ຮັບອະນຸຍາດໃຫ້ເຂົ້າເຖິງບາງສ່ວນທີ່ຖືກຈຳກັດໄວ້ໃນເວັບໄຊຂອງທ່ານ.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>fe_groups
+be_users</source>
+			<target state="final">fe_groups, 
+be_users</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/feusers_1.png,
+EXT:frontend/Resources/Public/Images/cshimages/feusers_2.png,</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/feusers_1.png, EXT:frontend/Resources/Public/Images/cshimages/feusers_2.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>Part of the form for editing a frontend user.
+A typical login box (standard) on the website where frontend users can login.</source>
+			<target state="final">ສ່ວນໜຶ່ງຂອງຟອມສຳລັບການແກ້ໄຂຜູ້ໃຊ້ສ່ວນໜ້າເວັບ. ກ່ອງເຂົ້າສູ່ລະບົບທົ່ວໄປ (ມາດຕະຖານ) ໃນເວັບໄຊທີ່ຜູ້ໃຊ້ສ່ວນໜ້າເວັບສາມາດເຂົ້າສູ່ລະບົບໄດ້.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
