@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814865" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="bs">
+    <header/>
+    <body>
+      <trans-unit id="shortcut_edit" resname="shortcut_edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Editovanje</target>
+      </trans-unit>
+      <trans-unit id="shortcut_editID" resname="shortcut_editID" approved="yes">
+        <source>Edit/Search</source>
+        <target state="final">Edituj ID stranice</target>
+      </trans-unit>
+      <trans-unit id="shortcut_save" resname="shortcut_save" approved="yes">
+        <source>Update shortcut title</source>
+        <target state="final">Osvježi naslov kratice</target>
+      </trans-unit>
+      <trans-unit id="shortcut_saveClose" resname="shortcut_saveClose" approved="yes">
+        <source>Update and close editor</source>
+        <target state="final">Osvježi i zatvori editor</target>
+      </trans-unit>
+      <trans-unit id="shortcut_close" resname="shortcut_close" approved="yes">
+        <source>Close shortcut editor</source>
+        <target state="final">Zatvori editor kratica</target>
+      </trans-unit>
+      <trans-unit id="shortcut_delete" resname="shortcut_delete" approved="yes">
+        <source>Remove shortcut</source>
+        <target state="final">Obriši kraticu</target>
+      </trans-unit>
+      <trans-unit id="shortcut_loadEdit" resname="shortcut_loadEdit" approved="yes">
+        <source>Loading page</source>
+        <target state="final">Učitavanje stranice</target>
+      </trans-unit>
+      <trans-unit id="shortcut_notEditable" resname="shortcut_notEditable" approved="yes">
+        <source>No editable page found!</source>
+        <target state="final">Nema niti jedne stranice koja se može editovati!</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group" resname="shortcut_group" approved="yes">
+        <source>Group</source>
+        <target state="final">Grupa</target>
+      </trans-unit>
+      <trans-unit id="shortcut_onlyAdmin" resname="shortcut_onlyAdmin" approved="yes">
+        <source>You cannot edit a shared shortcut!</source>
+        <target state="final">Ne možete editovati dijeljenju kraticu!</target>
+      </trans-unit>
+      <trans-unit id="shortcut_selSC" resname="shortcut_selSC" approved="yes">
+        <source>Select shortcut</source>
+        <target state="final">Odaberi kraticu</target>
+      </trans-unit>
+      <trans-unit id="shortcut_delAllInCat" resname="shortcut_delAllInCat" approved="yes">
+        <source>Delete all shortcuts in this group?</source>
+        <target state="final">Obriši sve kratice u ovoj grupi?</target>
+      </trans-unit>
+      <trans-unit id="bookmark_edit" resname="bookmark_edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Editovanje</target>
+      </trans-unit>
+      <trans-unit id="bookmark_editID" resname="bookmark_editID" approved="yes">
+        <source>Edit/Search</source>
+        <target state="final">Edituj ID stranice</target>
+      </trans-unit>
+      <trans-unit id="bookmark_saveClose" resname="bookmark_saveClose" approved="yes">
+        <source>Update and close editor</source>
+        <target state="final">Osvježi i zatvori editor</target>
+      </trans-unit>
+      <trans-unit id="bookmark_loadEdit" resname="bookmark_loadEdit" approved="yes">
+        <source>Loading page</source>
+        <target state="final">Učitavanje stranice</target>
+      </trans-unit>
+      <trans-unit id="bookmark_notEditable" resname="bookmark_notEditable" approved="yes">
+        <source>No editable page found!</source>
+        <target state="final">Nema niti jedne stranice koja se može editovati!</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group" resname="bookmark_group" approved="yes">
+        <source>Group</source>
+        <target state="final">Grupa</target>
+      </trans-unit>
+      <trans-unit id="overwriteExistingFiles" resname="overwriteExistingFiles" approved="yes">
+        <source>Overwrite existing files</source>
+        <target state="final">Pripiši postojeće datoteke</target>
+      </trans-unit>
+      <trans-unit id="selectPosition" resname="selectPosition" approved="yes">
+        <source>Select a position for the new page</source>
+        <target state="final">Odaberite poziciju za novu stranicu</target>
+      </trans-unit>
+      <trans-unit id="goBack" resname="goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">idi nazad</target>
+      </trans-unit>
+      <trans-unit id="createNewPage" resname="createNewPage" approved="yes">
+        <source>Create a new page</source>
+        <target state="final">Napravi novu stranicu</target>
+      </trans-unit>
+      <trans-unit id="clickForWizard" resname="clickForWizard" approved="yes">
+        <source>Click here for wizard!</source>
+        <target state="final">Kliknite ovdje za čarobnjaka!</target>
+      </trans-unit>
+      <trans-unit id="insertNewPageHere" resname="insertNewPageHere" approved="yes">
+        <source>Insert the new page here</source>
+        <target state="final">Ubacite novu stranicu ovdje</target>
+      </trans-unit>
+      <trans-unit id="insertNewRecordHere" resname="insertNewRecordHere" approved="yes">
+        <source>Insert new record here</source>
+        <target state="final">Ubacite novi zapis ovdje</target>
+      </trans-unit>
+      <trans-unit id="movePageToHere" resname="movePageToHere" approved="yes">
+        <source>Move page to this position</source>
+        <target state="final">Premjesti stranicu na ovu poziciju</target>
+      </trans-unit>
+      <trans-unit id="moveElement" resname="moveElement" approved="yes">
+        <source>Move element</source>
+        <target state="final">Pomjeri element</target>
+      </trans-unit>
+      <trans-unit id="selectPositionOfElement" resname="selectPositionOfElement" approved="yes">
+        <source>Select position of the element</source>
+        <target state="final">Odaberi poziciju za element</target>
+      </trans-unit>
+      <trans-unit id="movingElement" resname="movingElement" approved="yes">
+        <source>Move element</source>
+        <target state="final">Pomjeri element</target>
+      </trans-unit>
+      <trans-unit id="makeCopy" resname="makeCopy" approved="yes">
+        <source>Make copy instead of moving element</source>
+        <target state="final">Napravi kopiju umjesto premještanja elementa</target>
+      </trans-unit>
+      <trans-unit id="newContentElement" resname="newContentElement" approved="yes">
+        <source>New content element</source>
+        <target state="final">Novi element sadržaja</target>
+      </trans-unit>
+      <trans-unit id="CM_history" resname="CM_history" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">Historija/Undo</target>
+      </trans-unit>
+      <trans-unit id="CM_perms" resname="CM_perms" approved="yes">
+        <source>Access</source>
+        <target state="final">Pristup</target>
+      </trans-unit>
+      <trans-unit id="CM_moveWizard" resname="CM_moveWizard" approved="yes">
+        <source>Move element</source>
+        <target state="final">Pomjeri element</target>
+      </trans-unit>
+      <trans-unit id="CM_moveWizard_page" resname="CM_moveWizard_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">Premjesti stranicu</target>
+      </trans-unit>
+      <trans-unit id="CM_newWizard" resname="CM_newWizard" approved="yes">
+        <source>'Create New' wizard</source>
+        <target state="final">"Napravi novo" čarobnjak</target>
+      </trans-unit>
+      <trans-unit id="CM_db_list" resname="CM_db_list" approved="yes">
+        <source>Web&gt;List module</source>
+        <target state="final">Web&gt;Lista modul</target>
+      </trans-unit>
+      <trans-unit id="noEditPage" resname="noEditPage" approved="yes">
+        <source>You asked to edit page "%s" but you cannot edit this page. Now loading backend as usual.</source>
+        <target state="final">Tražili ste da editujete stranicu "%s" ali je vi ne možete editovati. Učitava se backend kao i obično.</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentOverrideFiles" resname="fileUpload_infoComponentOverrideFiles" approved="yes">
+        <source>Overwrite existing files</source>
+        <target state="final">Pripiši postojeće datoteke</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
