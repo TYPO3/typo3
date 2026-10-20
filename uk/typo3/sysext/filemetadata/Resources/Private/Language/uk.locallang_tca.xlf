@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814822" source-language="en" datatype="plaintext" original="EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf" date="2012-10-17T17:55:17Z" product-name="local lang" target-language="uk">
+    <header/>
+    <body>
+      <!-- sys_file_metadata fields -->
+      <trans-unit id="sys_file_metadata.visible" resname="sys_file_metadata.visible" approved="yes">
+        <source>Visible</source>
+        <target state="final">Видимий</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space.grey" resname="sys_file_metadata.color_space.grey" approved="yes">
+        <source>Grey</source>
+        <target state="final">Сірий</target>
+      </trans-unit>
+      <!-- sys_file_metadata tabs -->
+      <!-- sys_file_metadata placeholder -->
+      <!-- sys_file_metadata palette -->
+      <!-- fe_groups fields -->
+    </body>
+  </file>
+</xliff>
