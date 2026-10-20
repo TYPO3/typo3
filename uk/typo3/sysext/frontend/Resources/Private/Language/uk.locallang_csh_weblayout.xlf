@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814789" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_weblayout.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>Web &gt; Page Module</source>
+        <target state="final">Веб &gt; Модуль сторінки</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The page module is activated from the backend menu and is the primary module for all basic CMS operations you need to perform when maintaining website content.</source>
+        <target state="final">Модуль сторінки активується у фоновому меню та є основним модулем для всіх основних операцій CMS, які потрібно виконувати під час підтримки вмісту веб-сайту.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>Selecting the module will display the page tree.  Click the title of the page you wish to edit content on, and in the right frame you will see the content of the page displayed by the Page module.
+
+The page module has various modes of display of content;
+
+&lt;b&gt;Columns&lt;/b&gt;
+The columns view will show Content Elements listed in the columns and in the order that they will appear on the website. A panel of buttons will allow you to hide/unhide, move and edit the elements easily.
+
+&lt;b&gt;QuickEdit&lt;/b&gt;
+In QuickEdit the first element on the page will be loaded into a form right away. It will depend on the implementation of your website as well as your general preferences if you like this mode more than the columns view.
+
+&lt;b&gt;Languages&lt;/b&gt;
+If your site supports multiple languages and uses the "one-tree-fits-all" concept for localization you will need this mode to control the translations of the content elements on a page.
+
+&lt;b&gt;Page information&lt;/b&gt;
+The page information view shows some statistical data about a page. This includes hit statistics if available.
+
+
+&lt;b&gt;General options&lt;/b&gt;
+In the top of the Page module you will find a row of icons that will bring you right to various features such as History/Undo (1), Create new content element (2), Move page (3), Create new page (4) and Edit page properties (5). See image below.
+
+&lt;b&gt;Defining number of displayed columns [Admin]&lt;/b&gt;
+Administrators can configure the Page module to display only the content columns that the website uses. This is done by Page TSconfig (so it can be configured per branch in the page tree!) and this particular option has the object path "mod.web_layout.tt_content.colPos_list".
+For instance "mod.web_layout.tt_content.colPos_list = 0,3" will set the display of the "Normal" and "Border" columns only.
+There are many other options for customization of the Page module in the object path "mod.web_layout" and Administrators should refer to the "TSconfig" reference linked to below.</source>
+			<target state="final">Вибір модуля відобразить дерево сторінок. Клацніть заголовок сторінки, вміст якої ви бажаєте відредагувати, і в правому фреймі ви побачите вміст сторінки, який відображається модулем Сторінка.
+
+Сторінковий модуль має різні режими відображення контенту;
+
+&lt;b&gt;Стовпці&lt;/b&gt;
+Перегляд стовпців відображатиме елементи вмісту, перелічені в стовпцях і в тому порядку, у якому вони відображатимуться на веб-сайті. Панель кнопок дозволить вам легко приховувати/відображати, переміщувати та редагувати елементи.
+
+&lt;b&gt;Швидке редагування&lt;/b&gt;
+У QuickEdit перший елемент на сторінці буде завантажено у форму одразу. Це залежатиме від реалізації вашого веб-сайту, а також від ваших загальних уподобань, чи подобається вам цей режим більше, ніж перегляд стовпців.
+
+&lt;b&gt;Мови&lt;/b&gt;
+Якщо ваш сайт підтримує кілька мов і використовує концепцію «єдиного дерева для всіх» для локалізації, вам знадобиться цей режим, щоб керувати перекладами Елементів Вмісту на сторінці.
+
+&lt;b&gt;Інформація про сторінку&lt;/b&gt;
+Перегляд інформації про сторінку показує деякі статистичні дані про сторінку. Це включає статистику відвідувань, якщо вона доступна.
+
+
+&lt;b&gt;Загальні параметри&lt;/b&gt;
+У верхній частині модуля «Сторінка» ви знайдете ряд піктограм, за допомогою яких можна переходити до різноманітних функцій, таких як Історія/Скасування (1), Створити новий елемент вмісту (2), Перемістити сторінку (3), Створити нову сторінку (4) і Редагувати властивості сторінки (5). Дивіться зображення нижче.
+
+&lt;b&gt;Визначення кількості відображених стовпців [Admin]&lt;/b&gt;
+Адміністратори можуть налаштувати модуль Page для відображення лише стовпців вмісту, які використовує веб-сайт. Це робиться за допомогою Page TSconfig (тому його можна налаштувати для кожної гілки в дереві сторінок!), і цей конкретний параметр має шлях до об’єкта "mod.web_layout.tt_content.colPos_list".
+Наприклад, "mod.web_layout.tt_content.colPos_list = 0,3" встановить відображення лише стовпців "Normal" і "Border".
+Є багато інших варіантів для налаштування модуля сторінки в шляху до об’єкта "mod.web_layout", і адміністраторам слід звернутися до посилання "TSconfig", посилання на яке наведено нижче.</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>Configuring the Page module [Technical] | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/TSFE/,
+xMOD_csh_corebe:history_log,
+xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:TCEforms,
+About the page module | http://typo3.org/documentation/tips-tricks/the-new-page-editing-concept/
+Editing a page | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/
+The Page Module (Animation) | Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_05.gif</source>
+			<target state="final">Налаштування модуля Сторінка [Technical] | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/TSFE/,
+xMOD_csh_corebe:history_log,
+xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:TCEforms,
+Про модуль сторінки | http://typo3.org/documentation/tips-tricks/the-new-page-editing-concept/
+Редагування сторінки | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/
+Модуль сторінки (Анімація) | Використання дерева сторінок (Анімація) | FILE:EXT:welcome/modsub/ani_05.gif</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_13.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_14.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_15.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_13.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_14.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_15.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>Click the Page module, then the title of a page in the page tree.
+The page module is now activated in the right frame, showing the content of the page you clicked in the page tree.
+These buttons are direct links to the History/Undo function (1), Create new content element wizard (2), Move page wizard (3), Create new page wizard (4) and Edit page properties form (5). See the links for more details.</source>
+			<target state="final">Клацніть модуль Сторінка, а потім назву сторінки в дереві сторінок.
+Тепер модуль сторінки активується в правому фреймі, показуючи вміст сторінки, яку ви клацнули в дереві сторінок.
+Ці кнопки є прямими посиланнями на функцію «Історія/Скасування» (1), майстер створення нового елемента вмісту (2), майстер переміщення сторінки (3), майстер створення нової сторінки (4) і форму редагування властивостей сторінки (5). Щоб дізнатися більше, перегляньте посилання.</target></trans-unit>
+      <trans-unit id="quickEdit.alttitle" resname="quickEdit.alttitle" approved="yes">
+        <source>Quick Edit</source>
+        <target state="final">Швидке редагування</target>
+      </trans-unit>
+      <trans-unit id="quickEdit.description" resname="quickEdit.description" approved="yes">
+        <source>The Quick Editor gives you direct access to the form fields of the page content.</source>
+        <target state="final">Швидкий редактор надає прямий доступ до полів форми вмісту сторінки.</target>
+      </trans-unit>
+      <trans-unit id="quickEdit.details" resname="quickEdit.details" approved="yes">
+        <source>The Quick Editor is designed to cut down the number of clicks involved in getting to edit the page content. Simply by clicking the page title in the page tree you've got the first content element in the normal column loaded in the list frame. In the toolbar in the top you can select the other content elements on the page in the selector box.</source>
+        <target state="final">Швидкий редактор призначений для скорочення кількості клацань, необхідних для редагування вмісту сторінки. Просто клацнувши заголовок сторінки в дереві сторінок, ви отримаєте перший елемент вмісту у звичайному стовпці, завантаженому у рамці списку. На панелі інструментів у верхній частині ви можете вибрати інші елементи вмісту на сторінці в полі вибору.</target>
+      </trans-unit>
+      <trans-unit id="_quickEdit.seeAlso" resname="_quickEdit.seeAlso" approved="yes">
+        <source>_MOD_web_layout:quickEdit_selElement</source>
+        <target state="final">_MOD_web_layout:quickEdit_selElement</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_quickEdit.image" resname="_quickEdit.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_5.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_5.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="quickEdit.image_descr" resname="quickEdit.image_descr" approved="yes">
+        <source>The QuickEdit view cuts of one extra click by bringing the user directly to the editing form after clicking a page title in the page tree. The record shown is always the first content element from the Normal column.</source>
+        <target state="final">Перегляд QuickEdit скорочує один додатковий клік, переводячи користувача безпосередньо до форми редагування після кліку на заголовок сторінки в дереві сторінок. Показаний запис завжди є першим елементом вмісту зі стовпця Normal.</target>
+      </trans-unit>
+      <trans-unit id="quickEdit_selElement.alttitle" resname="quickEdit_selElement.alttitle" approved="yes">
+        <source>Content Elements</source>
+        <target state="final">Елементи Вмісту</target>
+      </trans-unit>
+      <trans-unit id="quickEdit_selElement.description" resname="quickEdit_selElement.description" approved="yes">
+        <source>This is an overview of the content elements on this page in QuickEdit mode. Select another element to edit or click a "New" icon to create a new content element.</source>
+        <target state="final">Це огляд елементів вмісту на цій сторінці в режимі Швидкого редагування. Виберіть інший елемент для редагування або натисніть піктограму «Новий», щоб створити новий Елемент Вмісту.</target>
+      </trans-unit>
+      <trans-unit id="_quickEdit_selElement.seeAlso" resname="_quickEdit_selElement.seeAlso" xml:space="preserve" approved="yes">
+				<source>_MOD_web_layout:quickEdit,
+xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_ce</source>
+				
+			<target state="final">_MOD_web_layout:quickEdit,
+xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_ce</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_quickEdit_selElement.image" resname="_quickEdit_selElement.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_4.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_4.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="quickEdit_selElement.image_descr" resname="quickEdit_selElement.image_descr" approved="yes">
+        <source>Overview of page content elements in the QuickEdit view. In the bottom there are links to two wizards: The "Move Content Element Wizard" and the "Create new Content Element Wizard". See the links below.</source>
+        <target state="final">Огляд елементів вмісту сторінки в поданні QuickEdit. Унизу є посилання на два майстри: «Майстер переміщення елемента вмісту» та «Майстер створення нового елемента вмісту». Перегляньте посилання нижче.</target>
+      </trans-unit>
+      <trans-unit id="columns_1.alttitle" resname="columns_1.alttitle" approved="yes">
+        <source>Listing by Columns</source>
+        <target state="final">Список за стовпцями</target>
+      </trans-unit>
+      <trans-unit id="columns_1.description" resname="columns_1.description" approved="yes">
+        <source>In the "Columns" view you can manage the content of a web page. If your web page supports multiple columns, you will be able to arrange your content elements in columns.</source>
+        <target state="final">У режимі перегляду «Стовпці» можна керувати вмістом веб-сторінки. Якщо ваша веб-сторінка підтримує кілька стовпців, ви зможете розташовувати елементи вмісту в стовпцях.</target>
+      </trans-unit>
+      <trans-unit id="_columns_1.seeAlso" resname="_columns_1.seeAlso" approved="yes">
+        <source>_MOD_web_layout:columns_single</source>
+        <target state="final">_MOD_web_layout:columns_single</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_columns_1.image" resname="_columns_1.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_12.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_12.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="columns_1.image_descr" resname="columns_1.image_descr" approved="yes">
+        <source>When your website supports multiple content element zones in the template you will be able to use another column than the "Normal" column. Here the "Left" column is enabled. TYPO3 offers four columns by default, "Normal", "Right", "Left" and "Border". Their significance depends on individual implementations in the frontend templates.</source>
+        <target state="final">Якщо ваш веб-сайт підтримує декілька зон елементів вмісту в шаблоні, ви зможете використовувати інший стовпець, ніж стовпець "Звичайний". Тут увімкнено стовпець «Лівий». TYPO3 пропонує чотири стовпці за замовчуванням: «Звичайний», «Правий», «Лівий» і «Межа». Їх значення залежить від індивідуальних реалізацій у шаблонах інтерфейсу.</target>
+      </trans-unit>
+      <trans-unit id="columns_2.alttitle" resname="columns_2.alttitle" approved="yes">
+        <source>Listing by Language</source>
+        <target state="final">Список за мовою</target>
+      </trans-unit>
+      <trans-unit id="columns_2.description" resname="columns_2.description" approved="yes">
+        <source>In the "Languages" view you can control the content of the web page as it is divided into languages and columns. It enables users to create a new translation of a page.</source>
+        <target state="final">У режимі перегляду «Мови» ви можете керувати вмістом веб-сторінки, оскільки він розділений на мови та стовпці. Це дозволяє користувачам створювати новий переклад сторінки.</target>
+      </trans-unit>
+      <trans-unit id="_columns_2.seeAlso" resname="_columns_2.seeAlso" approved="yes">
+        <source>sys_language</source>
+        <target state="final">sys_language</target>
+      </trans-unit>
+      <trans-unit id="_columns_2.image" resname="_columns_2.image" xml:space="preserve" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_6.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_7.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_11.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_10.png,</source>
+        
+      <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_6.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_7.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_11.png,
+        EXT:frontend/Resources/Public/Images/cshimages/pagemodule_10.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="columns_2.image_descr" resname="columns_2.image_descr" xml:space="preserve" approved="yes">
+        <source>In the Language view you can select to create a new translation of the page if one does not exist already. The available languages must be defined first by language records created in the root of the page tree.
+        This example shows how page content for three languages is shown side-by-side in the Page module.
+        In the top of the Page module you can also select between the available translations...
+        ... and if you select any of the additional languages (here "Danish" and "German") you will see the default language displayed side-by-side with the selected language</source>
+      <target state="final">У вікні «Мова» ви можете створити новий переклад сторінки, якщо його ще не існує. Доступні мови мають бути спочатку визначені записами мови, створеними в корені дерева сторінок.
+         У цьому прикладі показано, як вміст сторінки для трьох мов відображається поруч у модулі «Сторінка».
+         У верхній частині модуля сторінки ви також можете вибрати між доступними перекладами...
+         ... і якщо ви виберете будь-яку з додаткових мов (тут «датська» та «німецька»), ви побачите мову за замовчуванням, яка відображається поряд із вибраною мовою</target></trans-unit>
+      <trans-unit id="columns_3.alttitle" resname="columns_3.alttitle" approved="yes">
+        <source>Page Information</source>
+        <target state="final">Відомості про сторінку</target>
+      </trans-unit>
+      <trans-unit id="columns_3.description" resname="columns_3.description" approved="yes">
+        <source>In the "Page Information" view you can see various statistics about a page.</source>
+        <target state="final">У розділі "Відомості про сторінку" ви можете побачити різні статистичні дані про сторінку.</target>
+      </trans-unit>
+      <trans-unit id="columns_3.details" resname="columns_3.details" xml:space="preserve" approved="yes">
+				<source>The page information reveals information such as the date of creation and last modification of the page and its content.
+You can also see the subtitle, keywords and descriptions. This information is often used on websites for meta data or searching.</source>
+			<target state="final">Відомості про сторінку розкривають таку інформацію, як дата створення й останньої зміни сторінки та її вміст.
+Ви також можете побачити субтитри, ключові слова та описи. Ця інформація часто використовується на веб-сайтах для метаданих або пошуку.</target></trans-unit>
+      <trans-unit id="_columns_3.image" resname="_columns_3.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_9.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_9.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="columns_single.alttitle" resname="columns_single.alttitle" approved="yes">
+        <source>Page content elements in a single column</source>
+        <target state="final">Елементи вмісту сторінки в одному стовпці</target>
+      </trans-unit>
+      <trans-unit id="columns_single.description" resname="columns_single.description" approved="yes">
+        <source>The single column view will show the page content elements that define the content on this page of your website. Click an edit icon or element text to edit an element.</source>
+        <target state="final">У режимі перегляду в одному стовпці буде показано елементи вмісту сторінки, які визначають вміст цієї сторінки вашого веб-сайту. Натисніть піктограму редагування або текст елемента, щоб відредагувати елемент.</target>
+      </trans-unit>
+      <trans-unit id="columns_single.details" resname="columns_single.details" xml:space="preserve" approved="yes">
+				<source>You can also hide, delete and move elements by using the control panels.
+Clicking the "New content element" icon you will be able to create new content elements in between the existing elements on the page.
+Click the icon of a content element if you wish to access the context menu of the element.</source>
+			<target state="final">Ви також можете приховувати, видаляти та переміщувати елементи за допомогою панелей керування.
+Натиснувши піктограму «Новий елемент вмісту», ви зможете створювати нові елементи вмісту між існуючими елементами на сторінці.
+Натисніть піктограму елемента вмісту, якщо ви бажаєте отримати доступ до контекстного меню елемента.</target></trans-unit>
+      <trans-unit id="_columns_single.seeAlso" resname="_columns_single.seeAlso" approved="yes">
+        <source>_MOD_web_layout:columns_multi</source>
+        <target state="final">_MOD_web_layout:columns_multi</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_columns_single.image" resname="_columns_single.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_1.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_1.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="columns_single.image_descr" resname="columns_single.image_descr" approved="yes">
+        <source>Content Elements on a page are arranged in a specific order - the order they appear on the website. This order is also shown in the page module. The control panel allows you to move elements up and down as well as edit, hide and delete them. You can also just click the preview text shown here to access the editing form of the element.</source>
+        <target state="final">Елементи Вмісту на сторінці впорядковуються в певному порядку – тому порядку, в якому вони з’являються на веб-сайті. Цей порядок також відображається в модулі сторінки. Панель керування дозволяє переміщувати елементи вгору та вниз, а також редагувати, приховувати та видаляти їх. Ви також можете просто клацнути текст попереднього перегляду, показаний тут, щоб отримати доступ до форми редагування елемента.</target>
+      </trans-unit>
+      <trans-unit id="button_panel.alttitle" resname="button_panel.alttitle" approved="yes">
+        <source>The "Big Buttons"</source>
+        <target state="final">"Великі кнопки"</target>
+      </trans-unit>
+      <trans-unit id="button_panel.description" resname="button_panel.description" approved="yes">
+        <source>These buttons will bring you to four most used functions in relation to building pages. From here you can edit the page properties (eg. the page title), you can move the current page to another position in the page tree, create a new page somewhere in the page tree or create new content elements on this page.</source>
+        <target state="final">Ці кнопки переведуть вас до чотирьох найуживаніших функцій для створення сторінок. Тут ви можете редагувати властивості сторінки (наприклад, назву сторінки), ви можете перемістити поточну сторінку в іншу позицію в дереві сторінок, створити нову сторінку десь у дереві сторінок або створити нові елементи вмісту на цій сторінці.</target>
+      </trans-unit>
+      <trans-unit id="_button_panel.seeAlso" resname="_button_panel.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:TCEforms,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_ce,</source>
+				
+			<target state="final">xMOD_csh_corebe:TCEforms,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_ce,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_button_panel.image" resname="_button_panel.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_2.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_2.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
