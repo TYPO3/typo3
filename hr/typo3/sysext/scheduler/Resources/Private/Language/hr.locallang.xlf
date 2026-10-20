@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Otkaži</target>
+      </trans-unit>
+      <trans-unit id="function.scheduler" approved="yes">
+        <source>Scheduled tasks</source>
+        <target state="final">Planirani zadaci</target>
+      </trans-unit>
+      <trans-unit id="function.check" approved="yes">
+        <source>Setup check</source>
+        <target state="final">Provjera postavki</target>
+      </trans-unit>
+      <trans-unit id="hdg.cliScript" approved="yes">
+        <source>CLI script</source>
+        <target state="final">CLI skripta</target>
+      </trans-unit>
+      <trans-unit id="hdg.lastRun" approved="yes">
+        <source>Last run</source>
+        <target state="final">Posljednje pokretanje</target>
+      </trans-unit>
+      <trans-unit id="label.automatically" approved="yes">
+        <source>automatically</source>
+        <target state="final">automatski</target>
+      </trans-unit>
+      <trans-unit id="label.cachingFrameworkGarbageCollection.selectBackends" approved="yes">
+        <source>Backend types</source>
+        <target state="final">Tipovi pozadinskog sučelja</target>
+      </trans-unit>
+      <trans-unit id="label.recyclerGarbageCollection.numberOfDays" approved="yes">
+        <source>Number of days until removing files</source>
+        <target state="final">Broj dana do uklanjanja datoteka</target>
+      </trans-unit>
+      <trans-unit id="label.checkAll" approved="yes">
+        <source>Check/uncheck all</source>
+        <target state="final">Označi/odznači sve</target>
+      </trans-unit>
+      <trans-unit id="label.cron" approved="yes">
+        <source>Cron</source>
+        <target state="final">Kron</target>
+      </trans-unit>
+      <trans-unit id="label.defType" approved="yes">
+        <source>Definition type</source>
+        <target state="final">Tip definicije</target>
+      </trans-unit>
+      <trans-unit id="label.defType.interval" approved="yes">
+        <source>Interval</source>
+        <target state="final">Interval</target>
+      </trans-unit>
+      <trans-unit id="label.defType.cron" approved="yes">
+        <source>Cron command</source>
+        <target state="final">Kron naredba</target>
+      </trans-unit>
+      <trans-unit id="label.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Opis</target>
+      </trans-unit>
+      <trans-unit id="label.email" approved="yes">
+        <source>Email</source>
+        <target state="final">E-pošta</target>
+      </trans-unit>
+      <trans-unit id="label.end" approved="yes">
+        <source>End (HH:MM DD-MM-YYYY)</source>
+        <target state="final">Kraj (HH:MM DD-MM-YYYY)</target>
+      </trans-unit>
+      <trans-unit id="label.frequency" approved="yes">
+        <source>Frequency</source>
+        <target state="final">Učestalost</target>
+      </trans-unit>
+      <trans-unit id="label.frequency.long" approved="yes">
+        <source>Frequency (seconds or cron command)</source>
+        <target state="final">Učestalost (sekunde ili kron naredba)</target>
+      </trans-unit>
+      <trans-unit id="label.id" approved="yes">
+        <source>ID</source>
+        <target state="final">ID</target>
+      </trans-unit>
+      <trans-unit id="label.lastExecution" approved="yes">
+        <source>Last Execution</source>
+        <target state="final">Posljednje izvršavanje</target>
+      </trans-unit>
+      <trans-unit id="label.manual" approved="yes">
+        <source>Manual</source>
+        <target state="final">Priručnik</target>
+      </trans-unit>
+      <trans-unit id="label.manually" approved="yes">
+        <source>manually</source>
+        <target state="final">ručno</target>
+      </trans-unit>
+      <trans-unit id="label.nextExecution" approved="yes">
+        <source>Next Execution</source>
+        <target state="final">Sljedeće izvršavanje</target>
+      </trans-unit>
+      <trans-unit id="label.parallel" approved="yes">
+        <source>Parallel Execution</source>
+        <target state="final">Paralelno izvršavanje</target>
+      </trans-unit>
+      <trans-unit id="label.parallel.long" approved="yes">
+        <source>Allow Parallel Execution</source>
+        <target state="final">Dopusti paralelno izvršavanje</target>
+      </trans-unit>
+      <trans-unit id="label.serverTime" approved="yes">
+        <source>Server time</source>
+        <target state="final">Vrijeme poslužitelja</target>
+      </trans-unit>
+      <trans-unit id="label.sleepTime" approved="yes">
+        <source>Sleep time</source>
+        <target state="final">Vrijeme spavanja</target>
+      </trans-unit>
+      <trans-unit id="label.start" approved="yes">
+        <source>Start (HH:MM DD-MM-YYYY)</source>
+        <target state="final">Početak (HH:MM DD-MM-YYYY)</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageIndexing.storage" approved="yes">
+        <source>Storage to index</source>
+        <target state="final">Spremnik u indeks</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.fileCount" approved="yes">
+        <source>Number of files per run</source>
+        <target state="final">Broj datoteka po izvršavanju</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.registeredExtractors" approved="yes">
+        <source>Registered extractors</source>
+        <target state="final">Registrirani ekstraktori</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.registeredExtractors.extractor" approved="yes">
+        <source>%1$s with priority %2$d</source>
+        <target state="final">%1$s s prioritetom %2$d</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.allTables" approved="yes">
+        <source>Clean all available tables</source>
+        <target state="final">Očisti sve dostupne tablice</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.table" approved="yes">
+        <source>Table to clean up</source>
+        <target state="final">Tablice koje treba očistiti</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.additionalInformationTable" approved="yes">
+        <source>Table: %s</source>
+        <target state="final">Tablica: %s</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.additionalInformationAllTables" approved="yes">
+        <source>All tables</source>
+        <target state="final">Sve tablice</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.numberOfDays" approved="yes">
+        <source>Delete entries older than given number of days</source>
+        <target state="final">Izbriši zapise starije od danog broja dana</target>
+      </trans-unit>
+      <trans-unit id="label.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Tip</target>
+      </trans-unit>
+      <trans-unit id="label.type.recurring" approved="yes">
+        <source>Recurring</source>
+        <target state="final">Ponavljajući</target>
+      </trans-unit>
+      <trans-unit id="label.type.single" approved="yes">
+        <source>Single</source>
+        <target state="final">Jednokratni</target>
+      </trans-unit>
+      <trans-unit id="label.group" approved="yes">
+        <source>Task group</source>
+        <target state="final">Grupa zadataka</target>
+      </trans-unit>
+      <trans-unit id="msg.delete" approved="yes">
+        <source>Are you sure you want to delete this task?</source>
+        <target state="final">Zaista želite izbrisati ovaj zadatak?</target>
+      </trans-unit>
+      <trans-unit id="msg.deleteError" approved="yes">
+        <source>The task could not be deleted.</source>
+        <target state="final">Zadatak nije moguće izbrisati.</target>
+      </trans-unit>
+      <trans-unit id="msg.deleteSuccess" approved="yes">
+        <source>The task was successfully deleted.</source>
+        <target state="final">Zadatak je uspješno izbrisan.</target>
+      </trans-unit>
+      <trans-unit id="msg.endDateSmallerThanStartDate" approved="yes">
+        <source>The end date is before the start date.</source>
+        <target state="final">Datum završetka je prije datuma početka.</target>
+      </trans-unit>
+      <trans-unit id="msg.frequencyError" approved="yes">
+        <source>Invalid frequency. Please enter either a number of seconds or a valid cron command. The cron parser said: %1$s [code: %2$d].</source>
+        <target state="final">Neispravna učestalost. Molimo Vas da unesete ili broj sekundi ili ispravnu kron naredbu. Kron čitač javlja sljedeće: %1$s [kod: %2$d].</target>
+      </trans-unit>
+      <trans-unit id="msg.incompleteLastRun" approved="yes">
+        <source>The information about the last execution of the Scheduler is incomplete.</source>
+        <target state="final">Informacije o posljednjem izvršenju Rasporednika su nepotpune.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidFrequency" approved="yes">
+        <source>Invalid frequency. Please enter either a number of seconds or a valid cron command.</source>
+        <target state="final">Neispravna učestalost. Molimo Vas da unesete ili broj sekundi ili ispravnu kron naredbu.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidSleepTime" approved="yes">
+        <source>Please enter a sleep time greater or equal to 0 (zero).</source>
+        <target state="final">Molimo Vas da unesete vrijeme spavanja u trajanju od 0 (nula) ili dulje.</target>
+      </trans-unit>
+      <trans-unit id="msg.lastRun" approved="yes">
+        <source>The Scheduler was last started (%1$s) on %2$s at %3$s and ended on %4$s at %5$s.</source>
+        <target state="final">Rasporednik je posljednji put pokrenut (%1$s) dana %2$s u %3$s te je završio na datum %4$s u %5$s.</target>
+      </trans-unit>
+      <trans-unit id="msg.canNotDeleteRunningTask" approved="yes">
+        <source>A running task may not be deleted.</source>
+        <target state="final">Zadatak koji se trenutno izvršava ne može biti izbrisan.</target>
+      </trans-unit>
+      <trans-unit id="msg.maynotEditRunningTask" approved="yes">
+        <source>A running task may not be edited.</source>
+        <target state="final">Zadatak koji se trenutno izvršava ne može se uređivati.</target>
+      </trans-unit>
+      <trans-unit id="msg.maynotStopNonRunningTask" approved="yes">
+        <source>The task is not running. There are no executions to unmark.</source>
+        <target state="final">Zadatak se trenutno ne izvršava. Nema izvršenja koja bi se mogla odznačiti.</target>
+      </trans-unit>
+      <trans-unit id="msg.noEmail" approved="yes">
+        <source>Please enter an email address.</source>
+        <target state="final">Molimo Vas da uneste adresu e-pošte.</target>
+      </trans-unit>
+      <trans-unit id="msg.noFrequency" approved="yes">
+        <source>No frequency was defined, either as an interval or as a cron command.</source>
+        <target state="final">Nije zadana učestalost, niti kao interval niti kao kron naredba.</target>
+      </trans-unit>
+      <trans-unit id="msg.noLastRun" approved="yes">
+        <source>The Scheduler has never yet run or the information about the last run has been lost.</source>
+        <target state="final">Rasporednik ili nikada nije pokrenut ili je informacija o posljednjem pokretanju izgubljena.</target>
+      </trans-unit>
+      <trans-unit id="msg.executionFailed" approved="yes">
+        <source>Execution of task "%1$s" failed with the following message: %2$s</source>
+        <target state="final">Izvršenje zadatka "%1$s" nije uspjelo uz sljedeću poruku: %2$s</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.additionalInformationAllTables" approved="yes">
+        <source>All tables</source>
+        <target state="final">Sve tablice</target>
+      </trans-unit>
+      <!-- Moved from messages.xlf to solve https://forge.typo3.org/issues/108902-->
+    </body>
+  </file>
+</xliff>
