@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:viewpage/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="viewpage" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="noValidPageSelected" approved="yes">
+        <source>Please select a page with a valid page type in the page tree to get a preview of it in different screen resolutions.</source>
+        <target state="final">ページツリーで有効なページタイプを選択して、異なる画面解像度でプレビューを取得してください。</target>
+      </trans-unit>
+      <trans-unit id="moduleMenu.dropdown.label" approved="yes">
+        <source>Page language</source>
+        <target state="final">ページ言語</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
