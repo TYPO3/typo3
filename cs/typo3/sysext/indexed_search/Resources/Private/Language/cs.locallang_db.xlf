@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_db.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="index_config" approved="yes">
+        <source>Indexing Configuration</source>
+        <target state="final">Konfigurace indexace</target>
+      </trans-unit>
+      <trans-unit id="index_config.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Název</target>
+      </trans-unit>
+      <trans-unit id="index_config.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Popis</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.0" translate="no" approved="yes">
+        <source>-</source>
+        <target state="final">-</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.1" approved="yes">
+        <source>Database Records</source>
+        <target state="final">Databázové záznamy</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.2" approved="yes">
+        <source>Filepath on server</source>
+        <target state="final">Cesta na serveru</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.3" approved="yes">
+        <source>External URL</source>
+        <target state="final">Externí URL</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.4" approved="yes">
+        <source>Page tree</source>
+        <target state="final">Stránková struktura</target>
+      </trans-unit>
+      <trans-unit id="index_config.type.I.5" approved="yes">
+        <source>Meta configuration</source>
+        <target state="final">Meta konfigurace</target>
+      </trans-unit>
+      <trans-unit id="index_config.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Typ</target>
+      </trans-unit>
+      <trans-unit id="index_config.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Hloubka</target>
+      </trans-unit>
+      <trans-unit id="index_config.table2index" approved="yes">
+        <source>Table to index</source>
+        <target state="final">Tabulka k indexování</target>
+      </trans-unit>
+      <trans-unit id="index_config.table2index.I.0" translate="no" approved="yes">
+        <source>-</source>
+        <target state="final">-</target>
+      </trans-unit>
+      <trans-unit id="index_config.alternative_source_pid" approved="yes">
+        <source>Alternative Source Page</source>
+        <target state="final">Alternativní zdrojová stránka</target>
+      </trans-unit>
+      <trans-unit id="index_config.get_params" approved="yes">
+        <source>GET parameter string (with ###UID### substitution)</source>
+        <target state="final">Řetězec parametrů GET (se substitucí ###UID####)</target>
+      </trans-unit>
+      <trans-unit id="index_config.fields" approved="yes">
+        <source>Fields (first is title)</source>
+        <target state="final">Pole (první je název)</target>
+      </trans-unit>
+      <trans-unit id="index_config.externalUrl" approved="yes">
+        <source>External URL (eg. "http://www.domain.org/")</source>
+        <target state="final">Externí URL (eg. "http://www.domain.org/")</target>
+      </trans-unit>
+      <trans-unit id="index_config.filepath" approved="yes">
+        <source>Filepath</source>
+        <target state="final">Cesta k souboru</target>
+      </trans-unit>
+      <trans-unit id="index_config.extensions" approved="yes">
+        <source>Limit to extensions (commalist)</source>
+        <target state="final">Limit na rozšíření (seznam oddělený čárkou)</target>
+      </trans-unit>
+      <trans-unit id="index_config.url_deny" approved="yes">
+        <source>Enter sub-URLs in which not to decend</source>
+        <target state="final">Zadejte dílčí adresy URL, na které se nemá klesat</target>
+      </trans-unit>
+      <trans-unit id="index_config.records_indexonchange" approved="yes">
+        <source>Index Records immediately when saved?</source>
+        <target state="final">Indexovat záznamy ihned po uložení?</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_next_indexing" approved="yes">
+        <source>Next indexing is scheduled (if empty, then immediately)</source>
+        <target state="final">Další indexování je naplánováno (pokud je prázdné, pak okamžitě)</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_offset" approved="yes">
+        <source>Timing offset from midnight</source>
+        <target state="final">Časový posun od půlnoci</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency" approved="yes">
+        <source>How often would you like a re-index?</source>
+        <target state="final">Jak často byste chtěli provádět novou indexaci?</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.0" approved="yes">
+        <source>Every hour</source>
+        <target state="final">Každou hodinu</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.1" approved="yes">
+        <source>Every day (24 hours)</source>
+        <target state="final">Každý den (24 hodin)</target>
+      </trans-unit>
+      <trans-unit id="index_config.timer_frequency.I.2" approved="yes">
+        <source>Every week</source>
+        <target state="final">Každý týden</target>
+      </trans-unit>
+      <trans-unit id="index_config.recordsbatch" approved="yes">
+        <source>How many records to index a minute (default is 100)</source>
+        <target state="final">Kolik záznamů indexovat za minutu (výchozí je 100)</target>
+      </trans-unit>
+      <trans-unit id="index_config.set_id" approved="yes">
+        <source>Session ID (if &gt; zero, then indexing job is running)</source>
+        <target state="final">Session ID (pokud &gt; nula, pak je indexovací úloha spuštěna)</target>
+      </trans-unit>
+      <trans-unit id="index_config.indexcfgs" approved="yes">
+        <source>Indexing configurations</source>
+        <target state="final">Nastavení indexace</target>
+      </trans-unit>
+      <trans-unit id="index_config.parameterCfgs" approved="yes">
+        <source>Parameter combination configuration ([tablename]:&amp;[param]=###UID###)</source>
+        <target state="final">Konfigurace kombinace parametrů ([tablename]:&amp;[param]=####UID###)</target>
+      </trans-unit>
+      <trans-unit id="index_config.rootpage" approved="yes">
+        <source>Root page</source>
+        <target state="final">Kořenová stránka</target>
+      </trans-unit>
+      <trans-unit id="plugin_title" approved="yes">
+        <source>Indexed Search</source>
+        <target state="final">Indexované vyhledávání</target>
+      </trans-unit>
+      <trans-unit id="plugin_description" approved="yes">
+        <source>Search based on a database stored index.</source>
+        <target state="final">Vyhledávání na základě databázového indexu.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
