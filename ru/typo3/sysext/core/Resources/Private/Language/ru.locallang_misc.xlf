@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="overwriteExistingFiles" approved="yes">
+        <source>Overwrite existing files</source>
+        <target state="final">Перезаписать существующие файлы</target>
+      </trans-unit>
+      <trans-unit id="uploadMultipleFilesInfo" approved="yes">
+        <source>Upload multiple files by holding the Shift or CTRL-file pressed while selecting your files (works on modern browsers only).</source>
+        <target state="final">Для того чтобы загрузить несколько файлов зажмите при выделении Shift или Ctrl. (Работает только в современных браузерах)</target>
+      </trans-unit>
+      <trans-unit id="fileMetaDataLocation" approved="yes">
+        <source>Location</source>
+        <target state="final">Расположение:</target>
+      </trans-unit>
+      <trans-unit id="fileMetaErrorInvalidRecord" approved="yes">
+        <source>File meta data not found</source>
+        <target state="final">Мета-данные файла не найдены</target>
+      </trans-unit>
+      <trans-unit id="selectPosition" approved="yes">
+        <source>Select a position for the new page</source>
+        <target state="final">Выбрать позицию для новой страницы</target>
+      </trans-unit>
+      <trans-unit id="pageSelectPosition" approved="yes">
+        <source>Page (select position)</source>
+        <target state="final">Страница (выбор позиции)</target>
+      </trans-unit>
+      <trans-unit id="pageSelectPositionError" approved="yes">
+        <source>Failed to fetch page details. This is likely due to missing permissions.</source>
+        <target state="final">Не удалось получить сведения о странице. Вероятно, это связано с отсутствием необходимых разрешений.</target>
+      </trans-unit>
+      <trans-unit id="goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Вернуться назад</target>
+      </trans-unit>
+      <trans-unit id="createNewPage" approved="yes">
+        <source>Create a new page</source>
+        <target state="final">Создать новую страницу</target>
+      </trans-unit>
+      <trans-unit id="insertNewPageHere" x-unused-since="15.0" approved="yes">
+        <source>Insert the new page here</source>
+        <target state="final">Вставить новую страницу сюда</target>
+      </trans-unit>
+      <trans-unit id="insertNewRecordHere" approved="yes">
+        <source>Insert new record here</source>
+        <target state="final">Вставить новую запись сюда</target>
+      </trans-unit>
+      <trans-unit id="moveElementToHere" approved="yes">
+        <source>Move element to this position</source>
+        <target state="final">Переместить элемент в эту позицию</target>
+      </trans-unit>
+      <trans-unit id="moveElements" approved="yes">
+        <source>Move elements</source>
+        <target state="final">Переместить элементы</target>
+      </trans-unit>
+      <trans-unit id="copyElements" approved="yes">
+        <source>Copy elements</source>
+        <target state="final">Копировать элементы</target>
+      </trans-unit>
+      <trans-unit id="copyElementToHere" approved="yes">
+        <source>Copy element to this position</source>
+        <target state="final">Копировать элемент на эту позицию</target>
+      </trans-unit>
+      <trans-unit id="makeCopy" approved="yes">
+        <source>Make copy instead of moving element</source>
+        <target state="final">Копирование элементов вместо их перемещения</target>
+      </trans-unit>
+      <trans-unit id="newRecordWizard.filter.placeholder" approved="yes">
+        <source>Search for any record type</source>
+        <target state="final">Поиск записей любого типа</target>
+      </trans-unit>
+      <trans-unit id="newRecordWizard.filter.noResults" approved="yes">
+        <source>Unfortunately, no record type matches your query, please try a different one.</source>
+        <target state="final">К сожалению, ни один тип записи не соответствует вашему запросу, пожалуйста, попробуйте сформулировать запрос иначе.</target>
+      </trans-unit>
+      <trans-unit id="newRecordWizard.recentlyUsed" approved="yes">
+        <source>Recently used</source>
+        <target state="final">Недавно использованные</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.placeholder" approved="yes">
+        <source>Search for any content type</source>
+        <target state="final">Поиск любого типа содержимого</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.noResults" approved="yes">
+        <source>Unfortunately, no content type matches your query, please try a different one.</source>
+        <target state="final">К сожалению, ни один из типов содержимого не соответствует вашему запросу, попробуйте по-другому.</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.userNotAllowed" approved="yes">
+        <source>No content elements are available with your current permissions.</source>
+        <target state="final">С вашими текущими разрешениями никакие элементы содержимого не доступны.</target>
+      </trans-unit>
+      <trans-unit id="system_records" approved="yes">
+        <source>System Records</source>
+        <target state="final">Системные записи</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.content" approved="yes">
+        <source>Content</source>
+        <target state="final">Содержимое</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.backendaccess" approved="yes">
+        <source>Backend Access</source>
+        <target state="final">Доступ во внутренний интерфейс</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.frontendaccess" approved="yes">
+        <source>Frontend Access</source>
+        <target state="final">Доступ к внешнему интерфейсу</target>
+      </trans-unit>
+      <trans-unit id="1_selectType" approved="yes">
+        <source>First select the type of the new content element</source>
+        <target state="final">Сначала выберите тип нового элемента содержимого</target>
+      </trans-unit>
+      <trans-unit id="2_selectPosition" approved="yes">
+        <source>Now click on the position of the new content element</source>
+        <target state="final">Теперь укажите положение нового элемента содержимого</target>
+      </trans-unit>
+      <trans-unit id="CM_history" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">История/Отмена</target>
+      </trans-unit>
+      <trans-unit id="CM_hideInMenus" approved="yes">
+        <source>Hide in menu</source>
+        <target state="final">Скрыть в меню</target>
+      </trans-unit>
+      <trans-unit id="CM_showInMenus" approved="yes">
+        <source>Show in menu</source>
+        <target state="final">Показать в меню</target>
+      </trans-unit>
+      <trans-unit id="CM_newWizard" approved="yes">
+        <source>'Create New' wizard</source>
+        <target state="final">Мастер создания нового</target>
+      </trans-unit>
+      <trans-unit id="localize" approved="yes">
+        <source>Localize</source>
+        <target state="final">Перевести</target>
+      </trans-unit>
+      <trans-unit id="localize.isLocalizable" approved="yes">
+        <source>Record can be localized</source>
+        <target state="final">Запись может быть переведена</target>
+      </trans-unit>
+      <trans-unit id="localizeAllRecords" approved="yes">
+        <source>Localize all records</source>
+        <target state="final">Перевести все записи</target>
+      </trans-unit>
+      <trans-unit id="synchronizeWithOriginalLanguage" approved="yes">
+        <source>Synchronize with original language</source>
+        <target state="final">Синхронизировать с исходным языком</target>
+      </trans-unit>
+      <trans-unit id="tree_networkError" approved="yes">
+        <source>Navigation loading error</source>
+        <target state="final">Ошибка загрузки навигации</target>
+      </trans-unit>
+      <trans-unit id="tree_networkErrorDescription" approved="yes">
+        <source>Got unexpected response from the server. Please check logs for details.</source>
+        <target state="final">Получен неожиданный ответ от сервера. Детали в журнале.</target>
+      </trans-unit>
+      <trans-unit id="synchronizeFolderRelations.afterFolderRenamed" approved="yes">
+        <source>%d %s records referencing the renamed directory were updated.</source>
+        <target state="final">%d %s записей, ссылающихся на переименованную директорию, были обновлены.</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_listEmptyText" approved="yes">
+        <source>No results found.</source>
+        <target state="final">Поиск не дал результатов.</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_hasErrors" approved="yes">
+        <source>Something went wrong.</source>
+        <target state="final">Что-то пошло не так.</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.versionizedRecord" approved="yes">
+        <source>Versionized record</source>
+        <target state="final">Версионизированная запись</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescriptionPages" approved="yes">
+        <source>`#page:Home` will search for all pages with the title "Home"</source>
+        <target state="final">`#page:Дом` будет искать все страницы с заголовком "Дом"</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescriptionContent" approved="yes">
+        <source>`#content:Professional` will search for all content elements containing the term "Professional"</source>
+        <target state="final">`#content:Professional` выполнит поиск всех материалов, содержащих термин «Professional»</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_help.shortcutOpen" approved="yes">
+        <source><![CDATA[You can open the live search by pressing the <kbd><kbd>Ctrl</kbd> + <kbd>K</kbd></kbd> or <kbd><kbd>Cmd</kbd> + <kbd>K</kbd></kbd> keystroke]]></source>
+        <target state="final"><![CDATA[Вы можете открыть поиск в реальном времени нажав <kbd><kbd>Ctrl</kbd> + <kbd>K</kbd></kbd> или <kbd><kbd>Cmd</kbd> + <kbd>K</kbd></kbd>]]></target>
+      </trans-unit>
+      <trans-unit id="liveSearch_search" approved="yes">
+        <source>Search</source>
+        <target state="final">Поиск</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_searchIn" approved="yes">
+        <source>Search records in</source>
+        <target state="final">Поиск записей в</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_activeFilters" approved="yes">
+        <source>active filters</source>
+        <target state="final">активные фильтры</target>
+      </trans-unit>
+      <trans-unit id="viewport_navigation_show" approved="yes">
+        <source>Show Navigation</source>
+        <target state="final">Показать навигацию</target>
+      </trans-unit>
+      <trans-unit id="viewport_navigation_hide" approved="yes">
+        <source>Hide Navigation</source>
+        <target state="final">Скрыть навигацию</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
