@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814796" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_fe_users.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="cy">
+    <header/>
+    <body>
+      <trans-unit id="username.description" resname="username.description" approved="yes">
+        <source>Enter the username of the website user. This is needed to login.</source>
+        <target state="final">Rhowch enw defnyddiwr defnyddiwr y wefan. Mae angen hyn i fewngofnodi.</target>
+      </trans-unit>
+      <trans-unit id="username.syntax" resname="username.syntax" approved="yes">
+        <source>A username is required and must be in lowercase without spaces in it. The username must be unique among other usernames in the page where it's saved. If it is not unique a number will be prepended automatically.</source>
+        <target state="final">Mae angen enw defnyddiwr a rhaid iddo fod mewn llythrennau bach heb leoedd ynddo. Rhaid i'r enw defnyddiwr fod yn unigryw ymhlith enwau defnyddwyr eraill ar y dudalen lle mae wedi'i gadw. Os nad yw'n unigryw, bydd rhif yn cael ei dalu'n awtomatig.</target>
+      </trans-unit>
+      <trans-unit id="_username.seeAlso" resname="_username.seeAlso" approved="yes">
+        <source>Creating Frontend Users and Groups | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</source>
+        <target state="final">Creu Defnyddwyr a Grwpiau Frontend | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</target>
+      </trans-unit>
+      <trans-unit id="password.description" resname="password.description" approved="yes">
+        <source>Enter the password for the username above. This is needed to login.</source>
+        <target state="final">Rhowch y cyfrinair ar gyfer yr enw defnyddiwr uchod. Mae angen hyn i fewngofnodi.</target>
+      </trans-unit>
+      <trans-unit id="password.syntax" resname="password.syntax" approved="yes">
+        <source>A password is required and must be in lowercase without spaces in it.</source>
+        <target state="final">Mae angen cyfrinair a rhaid iddo fod mewn llythrennau bach heb leoedd ynddo.</target>
+      </trans-unit>
+      <trans-unit id="usergroup.description" resname="usergroup.description" approved="yes">
+        <source>Select a user group for the username.</source>
+        <target state="final">Dewiswch grŵp defnyddwyr ar gyfer yr enw defnyddiwr.</target>
+      </trans-unit>
+      <trans-unit id="usergroup.details" resname="usergroup.details" approved="yes">
+        <source>When a user logs in he is able to view all content which is access restricted to the user &lt;em&gt;group(s)&lt;/em&gt; the user is a member of. Therefore the user login primarily makes sense with regard to the member groups.</source>
+        <target state="final">Pan fydd defnyddiwr yn mewngofnodi ei fod yn gallu gweld yr holl gynnwys sydd yn mynediad cyfyngedig i'r defnyddiwr &lt;em&gt;grwp (iau)&lt;/em&gt; y defnyddiwr yn aelod o. Felly mae'r mewngofnodi defnyddwyr yn bennaf yn gwneud synnwyr o ran y grwpiau sy'n aelodau.</target>
+      </trans-unit>
+      <trans-unit id="name.description" resname="name.description" approved="yes">
+        <source>Enter the regular name of the user, both first- and surname.</source>
+        <target state="final">Rhowch enw rheolaidd y defnyddiwr, yn gyntaf ac yn gyfenw.</target>
+      </trans-unit>
+      <trans-unit id="address.description" resname="address.description" approved="yes">
+        <source>Enter the street address of the user.</source>
+        <target state="final">Rhowch gyfeiriad stryd y defnyddiwr.</target>
+      </trans-unit>
+      <trans-unit id="www.description" resname="www.description" approved="yes">
+        <source>Enter the homepage URL</source>
+        <target state="final">Rhowch URL yr hafan</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the job title, eg. 'Director' or 'Accountant'.</source>
+        <target state="final">Rhowch deitl y swydd, ee. 'Cyfarwyddwr' neu 'Gyfrifydd'.</target>
+      </trans-unit>
+      <trans-unit id="company.description" resname="company.description" approved="yes">
+        <source>Enter the name of the company in which the user is employed.</source>
+        <target state="final">Rhowch enw'r cwmni y mae'r defnyddiwr yn gyflogedig ynddo.</target>
+      </trans-unit>
+      <trans-unit id="image.description" resname="image.description" approved="yes">
+        <source>Insert a photo of the user.</source>
+        <target state="final">Mewnosod llun o'r defnyddiwr.</target>
+      </trans-unit>
+      <trans-unit id="_disable.seeAlso" resname="_disable.seeAlso" approved="yes">
+        <source>fe_users:starttime,fe_users:endtime</source>
+        <target state="final">fe_users: amser cychwyn, fe_users: endtime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Enter the date from which the account is active.</source>
+        <target state="final">Nodwch y dyddiad y mae'r cyfrif yn weithredol.</target>
+      </trans-unit>
+      <trans-unit id="starttime.syntax" resname="starttime.syntax" xml:space="preserve" approved="yes">
+				<source>The syntax is dd-mm-yy, but you can just enter a "d" in the field to insert todays date. Or "d+10" to insert the date 10 days from now etc.
+The field will re-format any input to fit the format it understands so you can just experiment and you will be able to clearly see how dates should be entered.</source>
+			<target state="final">Mae'r gystrawen yn dd-mm-yy, ond gallwch chi nodi "d" yn y maes i fewnosod y dyddiad heddiw. Neu "d + 10" i fewnosod y dyddiad 10 diwrnod o nawr ac ati.
+Bydd y maes yn ail-fformatio unrhyw fewnbwn i gyd-fynd â'r fformat y mae'n ei ddeall fel y gallwch arbrofi yn unig a byddwch yn gallu gweld yn glir sut y dylid nodi dyddiadau.</target></trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" approved="yes">
+        <source>fe_users:disable,fe_users:endtime</source>
+        <target state="final">fe_users: analluoga, fe_users: endtime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>Enter the date from which the account is disabled.</source>
+        <target state="final">Nodwch y dyddiad y mae'r cyfrif yn anabl.</target>
+      </trans-unit>
+      <trans-unit id="endtime.syntax" resname="endtime.syntax" approved="yes">
+        <source>See "Start"</source>
+        <target state="final">Gweler "Start"</target>
+      </trans-unit>
+      <trans-unit id="_endtime.seeAlso" resname="_endtime.seeAlso" approved="yes">
+        <source>fe_users:disable,fe_users:starttime</source>
+        <target state="final">fe_users: analluoga, fe_users: amser cychwyn</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="lastlogin.description" resname="lastlogin.description" approved="yes">
+        <source>This field shows the user's last log in date.</source>
+        <target state="final">Mae'r maes hwn yn dangos dyddiad mewngofnodi olaf y defnyddiwr.</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>Enter additional TSconfig for the user (advanced).</source>
+        <target state="final">Rhowch TSconfig ychwanegol ar gyfer y defnyddiwr (uwch).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax, without conditions and constants.</source>
+        <target state="final">Cystrawen typoScript, heb amodau a chysonion.</target>
+      </trans-unit>
+      <trans-unit id="_TSconfig.seeAlso" resname="_TSconfig.seeAlso" xml:space="preserve" approved="yes">
+				<source>TSconfig for TSFE | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/TCEmain/
+pages:TSconfig,
+fe_groups:TSconfig,
+be_users:TSconfig,
+be_groups:TSconfig</source>
+			<target state="final">TSconfig ar gyfer TSFE | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/TCEmain/
+tudalen: TSconfig,
+fe_groups: TSconfig,
+be_users: TSconfig,
+be_groups: TSconfig</target></trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>A website login user.</source>
+        <target state="final">Defnyddiwr mewngofnodi gwefan.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>These are users with a username and password who are allowed specific access to otherwise restricted areas on your website.</source>
+        <target state="final">Defnyddwyr ag enw defnyddiwr a chyfrinair yw'r rhain y caniateir mynediad penodol iddynt i ardaloedd sydd fel arall wedi'u cyfyngu ar eich gwefan.</target>
+      </trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/feusers_1.png,
+EXT:frontend/Resources/Public/Images/cshimages/feusers_2.png,</source>
+				
+			<target state="final">EXT: frontend / Resources / Public / Images / cshimages / feusers_1.png,
+EXT: frontend / Resources / Public / Images / cshimages / feusers_2.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>Part of the form for editing a frontend user.
+A typical login box (standard) on the website where frontend users can login.</source>
+			<target state="final">Rhan o'r ffurflen ar gyfer golygu defnyddiwr frontend.
+Blwch mewngofnodi nodweddiadol (safonol) ar y wefan lle gall defnyddwyr frontend fewngofnodi.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
