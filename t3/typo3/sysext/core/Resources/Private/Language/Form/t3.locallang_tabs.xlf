@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1477231202" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf" date="2016-10-23T20:22:33Z" product-name="tabs" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="general" resname="general">
+        <source>General</source>
+        <target>crwdns68954:0crwdne68954:0</target>
+      </trans-unit>
+      <trans-unit id="access" resname="access">
+        <source>Access</source>
+        <target>crwdns68956:0crwdne68956:0</target>
+      </trans-unit>
+      <trans-unit id="accesscapabilities" resname="accesscapabilities">
+        <source>Access capabilities</source>
+        <target>crwdns68958:0crwdne68958:0</target>
+      </trans-unit>
+      <trans-unit id="categories" resname="categories">
+        <source>Categories</source>
+        <target>crwdns68960:0crwdne68960:0</target>
+      </trans-unit>
+      <trans-unit id="notes" resname="notes">
+        <source>Notes</source>
+        <target>crwdns68962:0crwdne68962:0</target>
+      </trans-unit>
+      <trans-unit id="language" resname="language">
+        <source>Language</source>
+        <target>crwdns68964:0crwdne68964:0</target>
+      </trans-unit>
+      <trans-unit id="extended" resname="extended">
+        <source>Extended</source>
+        <target>crwdns68966:0crwdne68966:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
