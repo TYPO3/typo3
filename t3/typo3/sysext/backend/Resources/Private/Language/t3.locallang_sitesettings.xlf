@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf" date="2024-09-10T12:13:00Z" product-name="backend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="edit.headline">
+        <source>Site Settings for "%s"</source>
+        <target>crwdns355526:0%scrwdne355526:0</target>
+      </trans-unit>
+      <trans-unit id="edit.noSettings.title">
+        <source>No settings available</source>
+        <target>crwdns342644:0crwdne342644:0</target>
+      </trans-unit>
+      <trans-unit id="edit.noSettings.message">
+        <source>The site '%s' does not provide configurable settings.</source>
+        <target>crwdns342646:0%scrwdne342646:0</target>
+      </trans-unit>
+      <trans-unit id="edit.yamlExport">
+        <source>YAML export</source>
+        <target>crwdns342648:0crwdne342648:0</target>
+      </trans-unit>
+      <trans-unit id="edit.editSiteConfiguration">
+        <source>Edit site configuration</source>
+        <target>crwdns342650:0crwdne342650:0</target>
+      </trans-unit>
+      <trans-unit id="save.message.updated">
+        <source>Settings updated.</source>
+        <target>crwdns342668:0crwdne342668:0</target>
+      </trans-unit>
+      <trans-unit id="categories.other">
+        <source>Other</source>
+        <target>crwdns342670:0crwdne342670:0</target>
+      </trans-unit>
+      <trans-unit id="labels.edit">
+        <source>Edit Site Settings "%s"</source>
+        <target>crwdns380770:0%scrwdne380770:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
