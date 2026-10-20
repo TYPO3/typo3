@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815001" source-language="en" datatype="plaintext" original="EXT:taskcenter/Resources/Private/Language/locallang_task.xlf" date="2011-10-17T20:22:37Z" product-name="taskcenter" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+        <source>Tasks</source>
+        <target>crwdns79598:0crwdne79598:0</target>
+      </trans-unit>
+      <trans-unit id="task_overview" resname="task_overview">
+        <source>Overview</source>
+        <target>crwdns79600:0crwdne79600:0</target>
+      </trans-unit>
+      <trans-unit id="error_header" resname="error_header">
+        <source>Error</source>
+        <target>crwdns79602:0crwdne79602:0</target>
+      </trans-unit>
+      <trans-unit id="error-access" resname="error-access">
+        <source>No access to this module.</source>
+        <target>crwdns79604:0crwdne79604:0</target>
+      </trans-unit>
+      <trans-unit id="error_no-instance" resname="error_no-instance">
+        <source>The class "%s" does not implement the task interface "%s" which is necessary to be displayed here.</source>
+        <target>crwdns79606:0%scrwdnd79606:0%scrwdne79606:0</target>
+      </trans-unit>
+      <trans-unit id="no-tasks" resname="no-tasks">
+        <source>No tasks have been registered yet.</source>
+        <target>crwdns79608:0crwdne79608:0</target>
+      </trans-unit>
+      <trans-unit id="lReplyAddress" resname="lReplyAddress">
+        <source>Reply address is your email</source>
+        <target>crwdns79610:0crwdne79610:0</target>
+      </trans-unit>
+      <trans-unit id="lSelf" resname="lSelf">
+        <source>Self</source>
+        <target>crwdns79612:0crwdne79612:0</target>
+      </trans-unit>
+      <trans-unit id="lSendNew" resname="lSendNew">
+        <source>Send message</source>
+        <target>crwdns79614:0crwdne79614:0</target>
+      </trans-unit>
+      <trans-unit id="lSendReply" resname="lSendReply">
+        <source>Reply to message</source>
+        <target>crwdns79616:0crwdne79616:0</target>
+      </trans-unit>
+      <trans-unit id="listSeparator_Groups" resname="listSeparator_Groups">
+        <source>__Groups:__</source>
+        <target>crwdns79618:0crwdne79618:0</target>
+      </trans-unit>
+      <trans-unit id="lHomedir" resname="lHomedir">
+        <source>Home dir</source>
+        <target>crwdns79620:0crwdne79620:0</target>
+      </trans-unit>
+      <trans-unit id="lNone" resname="lNone">
+        <source>[none]</source>
+        <target>crwdns79622:0crwdne79622:0</target>
+      </trans-unit>
+      <trans-unit id="lCreate" resname="lCreate">
+        <source>Create</source>
+        <target>crwdns79624:0crwdne79624:0</target>
+      </trans-unit>
+      <trans-unit id="lCancel" resname="lCancel">
+        <source>Cancel</source>
+        <target>crwdns79626:0crwdne79626:0</target>
+      </trans-unit>
+      <trans-unit id="lDelete_warning_title" resname="lDelete_warning_title">
+        <source>Please confirm</source>
+        <target>crwdns79628:0crwdne79628:0</target>
+      </trans-unit>
+      <trans-unit id="lDelete_warning" resname="lDelete_warning">
+        <source>Are you sure you want to delete this user?</source>
+        <target>crwdns79630:0crwdne79630:0</target>
+      </trans-unit>
+      <trans-unit id="lDelete" resname="lDelete">
+        <source>Delete</source>
+        <target>crwdns79632:0crwdne79632:0</target>
+      </trans-unit>
+      <trans-unit id="lUpdate" resname="lUpdate">
+        <source>Update</source>
+        <target>crwdns79634:0crwdne79634:0</target>
+      </trans-unit>
+      <trans-unit id="taskcenter-about" resname="taskcenter-about" xml:space="preserve">
+				<source>
+&lt;p&gt;The menu on the left side shows all allowed tasks and let you allow to complete your tasks in an efficient way.&lt;/p&gt;
+&lt;ul class="withicons"&gt;
+&lt;li&gt;Clicking on the title of a task will open a detailed view of the task itself.&lt;/li&gt;
+&lt;li&gt;Click on the arrow on the right side will open/close the submenu of the task.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br /&gt;
+&lt;strong&gt;Note:&lt;/strong&gt; Set the taskcenter as the default module after your login to be even faster!
+
+</source>
+			<target>
+crwdns79636:0crwdne79636:0
+
+</target></trans-unit>
+      <trans-unit id="taskcenter-adminheader" resname="taskcenter-adminheader">
+        <source>Create a task</source>
+        <target>crwdns79638:0crwdne79638:0</target>
+      </trans-unit>
+      <trans-unit id="taskcenter-admin" resname="taskcenter-admin">
+        <source>It is simple to extend the taskcenter by a custom task. For more information please look into the manual of the extension 'taskcenter'.</source>
+        <target>crwdns79640:0crwdne79640:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
