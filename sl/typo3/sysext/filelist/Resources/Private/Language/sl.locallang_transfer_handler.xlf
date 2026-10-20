@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_transfer_handler.xlf" date="2023-02-24T00:00:00Z" product-name="cms" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="message.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Prekliči</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
