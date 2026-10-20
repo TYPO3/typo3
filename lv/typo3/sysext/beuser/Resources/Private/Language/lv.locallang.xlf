@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814783" source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang.xlf" date="2012-07-16T10:11:32Z" product-name="beuser" target-language="lv">
+    <header/>
+    <body>
+      <trans-unit id="activeSessions" resname="activeSessions" approved="yes">
+        <source>Active Sessions</source>
+        <target state="final">Aktīvās sesijas</target>
+      </trans-unit>
+      <trans-unit id="userName" resname="userName" approved="yes">
+        <source>Username</source>
+        <target state="final">Lietotājvārds</target>
+      </trans-unit>
+      <trans-unit id="realName" resname="realName" approved="yes">
+        <source>Real Name</source>
+        <target state="final">Īstais vārds</target>
+      </trans-unit>
+      <trans-unit id="lastAccess" resname="lastAccess" approved="yes">
+        <source>Last access</source>
+        <target state="final">Pēdējā piekļuve</target>
+      </trans-unit>
+      <trans-unit id="ipAddress" resname="ipAddress" approved="yes">
+        <source>IP address</source>
+        <target state="final">IP adrese</target>
+      </trans-unit>
+      <trans-unit id="backendUserListing" resname="backendUserListing" approved="yes">
+        <source>Backend User Listing</source>
+        <target state="final">Lietotāju saraksts</target>
+      </trans-unit>
+      <trans-unit id="subGroups" resname="subGroups" approved="yes">
+        <source>Sub Groups</source>
+        <target state="final">Apakšgrupas</target>
+      </trans-unit>
+      <trans-unit id="email" resname="email" approved="yes">
+        <source>Email</source>
+        <target state="final">E-pasts</target>
+      </trans-unit>
+      <trans-unit id="admin" resname="admin" approved="yes">
+        <source>Admin</source>
+        <target state="final">Administrators</target>
+      </trans-unit>
+      <trans-unit id="users" resname="users" approved="yes">
+        <source>Users</source>
+        <target state="final">Lietotāji</target>
+      </trans-unit>
+      <trans-unit id="yes" resname="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Jā</target>
+      </trans-unit>
+      <trans-unit id="no" resname="no" approved="yes">
+        <source>No</source>
+        <target state="final">Nē</target>
+      </trans-unit>
+      <trans-unit id="never" resname="never" approved="yes">
+        <source>Never</source>
+        <target state="final">Nekad</target>
+      </trans-unit>
+      <trans-unit id="disable" resname="disable" approved="yes">
+        <source>Disable</source>
+        <target state="final">Atslēgt</target>
+      </trans-unit>
+      <trans-unit id="disable_compare" resname="disable_compare" approved="yes">
+        <source>Is active?</source>
+        <target state="final">Ir aktīvs?</target>
+      </trans-unit>
+      <trans-unit id="startDateAndTime" resname="startDateAndTime" approved="yes">
+        <source>Start</source>
+        <target state="final">Sākt</target>
+      </trans-unit>
+      <trans-unit id="endDateAndTime" resname="endDateAndTime" approved="yes">
+        <source>Stop</source>
+        <target state="final">Beigt</target>
+      </trans-unit>
+      <trans-unit id="lastLogin" resname="lastLogin" approved="yes">
+        <source>Last login</source>
+        <target state="final">Pēdējā ierakstīšanās</target>
+      </trans-unit>
+      <trans-unit id="allowedLanguages" resname="allowedLanguages" approved="yes">
+        <source>Limit to languages</source>
+        <target state="final">Ierobežot valodas</target>
+      </trans-unit>
+      <trans-unit id="dbMountPoints" resname="dbMountPoints" approved="yes">
+        <source>DB mountpoints</source>
+        <target state="final">Datubāzes montēšanas punkti</target>
+      </trans-unit>
+      <trans-unit id="inactiveOnly" resname="inactiveOnly" approved="yes">
+        <source>Inactive only</source>
+        <target state="final">Tikai neaktīvie</target>
+      </trans-unit>
+      <trans-unit id="loginBefore" resname="loginBefore" approved="yes">
+        <source>Logged in before</source>
+        <target state="final">Iepriekš pieteicies</target>
+      </trans-unit>
+      <trans-unit id="neverLoggedIn" resname="neverLoggedIn" approved="yes">
+        <source>Never logged in</source>
+        <target state="final">Nekad nav pieteicies</target>
+      </trans-unit>
+      <trans-unit id="filter" resname="filter" approved="yes">
+        <source>Filter</source>
+        <target state="final">Filtrs</target>
+      </trans-unit>
+      <trans-unit id="reallyLogout" resname="reallyLogout" approved="yes">
+        <source>Really logout</source>
+        <target state="final">Apstiprināt atteikšanos</target>
+      </trans-unit>
+      <trans-unit id="endSession" resname="endSession" approved="yes">
+        <source>End session</source>
+        <target state="final">Beigt sesiju</target>
+      </trans-unit>
+      <trans-unit id="backendUsers" resname="backendUsers" approved="yes">
+        <source>Backend users</source>
+        <target state="final">Lietotāji</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroupsMenu" resname="backendUserGroupsMenu" approved="yes">
+        <source>Backend user groups</source>
+        <target state="final">Iekšējo lietotāju grupas</target>
+      </trans-unit>
+      <trans-unit id="onlineUsers" resname="onlineUsers" approved="yes">
+        <source>Online users</source>
+        <target state="final">Tiešsasites lietotāji</target>
+      </trans-unit>
+      <trans-unit id="backendUserAdministration" resname="backendUserAdministration" approved="yes">
+        <source>Backend User Administration</source>
+        <target state="final">Lietotāju administrēšana</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup" resname="backendUserGroup" approved="yes">
+        <source>User group</source>
+        <target state="final">Lietotāju grupa</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroups" resname="backendUserGroups" approved="yes">
+        <source>Member of groups</source>
+        <target state="final">Grupas</target>
+      </trans-unit>
+      <trans-unit id="changeToMode" resname="changeToMode" approved="yes">
+        <source>[change-to mode]</source>
+        <target state="final">[pārslēgšanās režīms]</target>
+      </trans-unit>
+      <trans-unit id="terminateSessionSuccess" resname="terminateSessionSuccess" approved="yes">
+        <source>Session successfully terminated.</source>
+        <target state="final">Sesija veiksmīgi pārtraukta.</target>
+      </trans-unit>
+      <trans-unit id="online" resname="online" approved="yes">
+        <source>online</source>
+        <target state="final">tiešsaistē</target>
+      </trans-unit>
+      <trans-unit id="visibility.hide" resname="visibility.hide" approved="yes">
+        <source>hide</source>
+        <target state="final">slēpt</target>
+      </trans-unit>
+      <trans-unit id="visibility.unhide" resname="visibility.unhide" approved="yes">
+        <source>unhide</source>
+        <target state="final">parādīt</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
