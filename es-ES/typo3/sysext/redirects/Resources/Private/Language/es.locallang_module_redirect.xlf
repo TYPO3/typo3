@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1515791952" source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf" date="2017-12-29T20:23:34Z" product-name="redirects" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Redirect Administration</source>
+        <target state="final">Administración de redirecciones</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>This is the administration area for Web Redirects.</source>
+        <target state="final">Este es el área de administración de Redirecciones Web.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Redirects</source>
+        <target state="final">Redirecciones</target>
+      </trans-unit>
+      <trans-unit id="source_host_global_text" resname="source_host_global_text" approved="yes">
+        <source>Global redirect (any domain)</source>
+        <target state="final">Redirección global (cualquier dominio)</target>
+      </trans-unit>
+      <trans-unit id="heading_text" resname="heading_text" approved="yes">
+        <source>Redirect Management</source>
+        <target state="final">Gestión de Redirecciones</target>
+      </trans-unit>
+      <trans-unit id="redirect_add_text" resname="redirect_add_text" approved="yes">
+        <source>Add redirect</source>
+        <target state="final">Añadir redirección</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found.title" resname="redirect_not_found.title" approved="yes">
+        <source>No redirects found!</source>
+        <target state="final">¡No se encontraron redirecciones!</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found.message" resname="redirect_not_found.message" approved="yes">
+        <source>There are currently no redirect records found in the database.</source>
+        <target state="final">Actualmente no hay registros de redirección encontrados en la base de datos.</target>
+      </trans-unit>
+      <trans-unit id="redirect_create" resname="redirect_create" approved="yes">
+        <source>Create new redirect</source>
+        <target state="final">Crear nueva redirección</target>
+      </trans-unit>
+      <trans-unit id="filter.destination" resname="filter.destination" approved="yes">
+        <source>Destination (Path or Page ID)</source>
+        <target state="final">Destino (Ruta o ID de la página)</target>
+      </trans-unit>
+      <trans-unit id="filter.sendButton" resname="filter.sendButton" approved="yes">
+        <source>Send</source>
+        <target state="final">Enviar</target>
+      </trans-unit>
+      <trans-unit id="record_disabled" resname="record_disabled" approved="yes">
+        <source>Redirect is not activated!</source>
+        <target state="final">¡La redirección no está activada!</target>
+      </trans-unit>
+      <trans-unit id="source_host" resname="source_host" approved="yes">
+        <source>Source Host</source>
+        <target state="final">Host de origen</target>
+      </trans-unit>
+      <trans-unit id="source_path" resname="source_path" approved="yes">
+        <source>Source Path</source>
+        <target state="final">Ruta de origen</target>
+      </trans-unit>
+      <trans-unit id="destination" resname="destination" approved="yes">
+        <source>Destination</source>
+        <target state="final">Destino</target>
+      </trans-unit>
+      <trans-unit id="hits" resname="hits" approved="yes">
+        <source>Hits</source>
+        <target state="final">Visitas</target>
+      </trans-unit>
+      <trans-unit id="hit_text" resname="hit_text" approved="yes">
+        <source>%s hit</source>
+        <target state="final">%s visita</target>
+      </trans-unit>
+      <trans-unit id="hits_text" resname="hits_text" approved="yes">
+        <source>%s hits</source>
+        <target state="final">%s visitas</target>
+      </trans-unit>
+      <trans-unit id="hit_reset" resname="hit_reset" approved="yes">
+        <source>Reset Hit Counter (!)</source>
+        <target state="final">Restablecer contador de visitas (!)</target>
+      </trans-unit>
+      <trans-unit id="hit_reset.confirm.title" resname="hit_reset.confirm.title" approved="yes">
+        <source>Reset the hitcounter of this record?</source>
+        <target state="final">¿Restablecer el marcador de este registro?</target>
+      </trans-unit>
+      <trans-unit id="hit_reset.confirm.content" resname="hit_reset.confirm.content" approved="yes">
+        <source>Are you sure you want to reset the hitcounter of this record?</source>
+        <target state="final">¿Estás seguro de que quieres restablecer el contador de contacto de este registro?</target>
+      </trans-unit>
+      <trans-unit id="hit_last" resname="hit_last" approved="yes">
+        <source>Last Hit on</source>
+        <target state="final">Últimas visitas en </target>
+      </trans-unit>
+      <trans-unit id="hit_last_never" resname="hit_last_never" approved="yes">
+        <source>Never</source>
+        <target state="final">Nunca</target>
+      </trans-unit>
+      <trans-unit id="visit_destination" resname="visit_destination" approved="yes">
+        <source>Go to</source>
+        <target state="final">Ir a</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
