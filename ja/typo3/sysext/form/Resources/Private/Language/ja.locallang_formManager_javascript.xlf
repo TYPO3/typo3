@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1477653834" source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="formManager.new_form_name" resname="formManager.new_form_name" xml:space="preserve" approved="yes">
+                <source>New form name</source>
+            <target state="final">新しいフォーム名</target></trans-unit>
+      <trans-unit id="formManager.cancel" resname="formManager.cancel" xml:space="preserve" approved="yes">
+                <source>Cancel</source>
+            <target state="final">キャンセル</target></trans-unit>
+      <trans-unit id="formManager.remove_form" resname="formManager.remove_form" xml:space="preserve" approved="yes">
+                <source>Remove</source>
+            <target state="final">削除</target></trans-unit>
+      <trans-unit id="formManager.page" resname="formManager.page" xml:space="preserve" approved="yes">
+                <source>Page</source>
+            <target state="final">ページ</target></trans-unit>
+      <trans-unit id="formManager.record" resname="formManager.record" xml:space="preserve" approved="yes">
+                <source>Record</source>
+            <target state="final">レコード</target></trans-unit>
+    </body>
+  </file>
+</xliff>
