@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814820" source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/Database.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="is">
+    <header/>
+    <body>
+      <trans-unit id="tt_content.CType_pi1" resname="tt_content.CType_pi1" approved="yes">
+        <source>Website User Login</source>
+        <target state="final">Innskráningu á vefsvæði</target>
+      </trans-unit>
+      <trans-unit id="felogin_redirectPid" resname="felogin_redirectPid" approved="yes">
+        <source>Redirect at Login to Page (felogin)</source>
+        <target state="final">Við innskráningu skal senda á síðu (FE):</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.general_header" resname="tt_content.pi_flexform.general_header" approved="yes">
+        <source>General Header</source>
+        <target state="final">Hefðbundin - fyrirsögn:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.general_message" resname="tt_content.pi_flexform.general_message" approved="yes">
+        <source>General Message</source>
+        <target state="final">Hefðbundin - skilaboð:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirect_header" resname="tt_content.pi_flexform.redirect_header" approved="yes">
+        <source>Redirect Header</source>
+        <target state="final">Flytja á - fyrirsögn:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirect_message" resname="tt_content.pi_flexform.redirect_message" approved="yes">
+        <source>Redirect Message</source>
+        <target state="final">Flytja á - skilaboð:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.welcome_header" resname="tt_content.pi_flexform.welcome_header" approved="yes">
+        <source>Welcome Header</source>
+        <target state="final">Velkominn - fyrirsögn:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.welcome_message" resname="tt_content.pi_flexform.welcome_message" approved="yes">
+        <source>Welcome Message</source>
+        <target state="final">Velkominn - skilaboð:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.success_header" resname="tt_content.pi_flexform.success_header" approved="yes">
+        <source>Login Success Header</source>
+        <target state="final">Innskráning tókst - fyrirsögn:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.success_message" resname="tt_content.pi_flexform.success_message" approved="yes">
+        <source>Login Success Message</source>
+        <target state="final">Innskráning tókst - skilaboð:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.error_header" resname="tt_content.pi_flexform.error_header" approved="yes">
+        <source>Login Error Header</source>
+        <target state="final">Innskráning mistókst - fyrirsögn:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.error_message" resname="tt_content.pi_flexform.error_message" approved="yes">
+        <source>Login Error Message</source>
+        <target state="final">Innskráning mistókst - skilaboð:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.status_header" resname="tt_content.pi_flexform.status_header" approved="yes">
+        <source>Status Display Header</source>
+        <target state="final">Sýna stöðu - fyrirsögn:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.status_message" resname="tt_content.pi_flexform.status_message" approved="yes">
+        <source>Status Display Message</source>
+        <target state="final">Sýna stöðu - skilaboð:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.logout_header" resname="tt_content.pi_flexform.logout_header" approved="yes">
+        <source>Logout Header</source>
+        <target state="final">Afskráning - fyrirsögn:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.logout_message" resname="tt_content.pi_flexform.logout_message" approved="yes">
+        <source>Logout Message</source>
+        <target state="final">Afskráning - skilaboð:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.forgot_header" resname="tt_content.pi_flexform.forgot_header" approved="yes">
+        <source>Forgot Password Header</source>
+        <target state="final">Gleymt lykilorð - fyrirsögn</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.forgot_message" resname="tt_content.pi_flexform.forgot_message" approved="yes">
+        <source>Forgot Password Message</source>
+        <target state="final">Gleymt lykilorð - skilaboð</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.sheet_general" resname="tt_content.pi_flexform.sheet_general" approved="yes">
+        <source>General</source>
+        <target state="final">Hefðbundið</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.sheet_redirect" resname="tt_content.pi_flexform.sheet_redirect" approved="yes">
+        <source>Redirects</source>
+        <target state="final">Flytja á möguleikar</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.sheet_messages" resname="tt_content.pi_flexform.sheet_messages" approved="yes">
+        <source>Messages</source>
+        <target state="final">Skilaboð</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.show_forgot_password" resname="tt_content.pi_flexform.show_forgot_password" approved="yes">
+        <source>Display Password Recovery Link</source>
+        <target state="final">Sýna "Gleymt lykilorð?" tengill:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.show_permalogin" resname="tt_content.pi_flexform.show_permalogin" approved="yes">
+        <source>Display Remember Login Option</source>
+        <target state="final">Sýna "Vera innskráður" val (ef það er kveikt á því í uppsetningunni)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.groupSelectmode_showAll" resname="tt_content.pi_flexform.groupSelectmode_showAll" approved="yes">
+        <source>Show all</source>
+        <target state="final">Sýna allt</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.groupSelectmode_showSelected" resname="tt_content.pi_flexform.groupSelectmode_showSelected" approved="yes">
+        <source>Show selected</source>
+        <target state="final">Sýna valda</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.groupSelectmode_FromTS" resname="tt_content.pi_flexform.groupSelectmode_FromTS" approved="yes">
+        <source>(from Typoscript)</source>
+        <target state="final">(úr Typoscript)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode" resname="tt_content.pi_flexform.redirectMode" approved="yes">
+        <source>Redirect Mode</source>
+        <target state="final">Flytja á (þú verður að velja möguleikana, ekki er flutt nema eitthvað sé valið):</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectFirstMethod" resname="tt_content.pi_flexform.redirectFirstMethod" approved="yes">
+        <source>Use First Supported Mode from Selection</source>
+        <target state="final">Nota fyrsta möguleikann á listanum:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectDisable" resname="tt_content.pi_flexform.redirectDisable" approved="yes">
+        <source>Disable Redirect</source>
+        <target state="final">Óvirkja flytja:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectPageLogin" resname="tt_content.pi_flexform.redirectPageLogin" approved="yes">
+        <source>After Successful Login Redirect to Page</source>
+        <target state="final">Eftir að innskráning tókst flytja á:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectPageLoginError" resname="tt_content.pi_flexform.redirectPageLoginError" approved="yes">
+        <source>After Failed Login Redirect to Page</source>
+        <target state="final">Eftir að innskráning mistókst flytja á:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectPageLogout" resname="tt_content.pi_flexform.redirectPageLogout" approved="yes">
+        <source>After Logout Redirect to Page</source>
+        <target state="final">Eftir afskráningu flytja á:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.template_file" resname="tt_content.pi_flexform.template_file" approved="yes">
+        <source>Template File</source>
+        <target state="final">Template skrá:</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
