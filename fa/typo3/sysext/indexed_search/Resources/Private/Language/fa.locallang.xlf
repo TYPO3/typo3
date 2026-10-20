@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang.xlf" date="2011-12-18T10:19:20Z" product-name="indexed_search" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="localizedOperandAnd" approved="yes">
+        <source>AND</source>
+        <target state="final">AND</target>
+      </trans-unit>
+      <trans-unit id="localizedOperandOr" approved="yes">
+        <source>OR</source>
+        <target state="final">OR</target>
+      </trans-unit>
+      <trans-unit id="localizedOperandNot" approved="yes">
+        <source>NOT</source>
+        <target state="final">NOT</target>
+      </trans-unit>
+      <trans-unit id="form.legend" approved="yes">
+        <source>Search form</source>
+        <target state="final">برگۀ جستجو</target>
+      </trans-unit>
+      <trans-unit id="form.searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">جستجو برای</target>
+      </trans-unit>
+      <trans-unit id="form.extResume" approved="yes">
+        <source>Extended resume</source>
+        <target state="final">جمع‌بندی مفصل</target>
+      </trans-unit>
+      <trans-unit id="form.atATime" approved="yes">
+        <source>at a time</source>
+        <target state="final">در یک زمان</target>
+      </trans-unit>
+      <trans-unit id="form.orderBy" approved="yes">
+        <source>Order by</source>
+        <target state="final">ترتیب بر اساس</target>
+      </trans-unit>
+      <trans-unit id="form.fromSection" approved="yes">
+        <source>From section</source>
+        <target state="final">از بخش</target>
+      </trans-unit>
+      <trans-unit id="form.freeIndexUid" approved="yes">
+        <source>Category</source>
+        <target state="final">دسته</target>
+      </trans-unit>
+      <trans-unit id="form.searchIn" approved="yes">
+        <source>Search in</source>
+        <target state="final">جستجو در</target>
+      </trans-unit>
+      <trans-unit id="form.match" approved="yes">
+        <source>Match</source>
+        <target state="final">تطبیق</target>
+      </trans-unit>
+      <trans-unit id="form.style" approved="yes">
+        <source>Style</source>
+        <target state="final">سبک</target>
+      </trans-unit>
+      <trans-unit id="form.submit" approved="yes">
+        <source>Search</source>
+        <target state="final">جست‌وجو</target>
+      </trans-unit>
+      <trans-unit id="form.addToSearch" approved="yes">
+        <source>Add to current search words</source>
+        <target state="final">افزودن به کلمات جستجوی فعلی</target>
+      </trans-unit>
+      <trans-unit id="form.linkToRegularSearch" approved="yes">
+        <source>Regular search</source>
+        <target state="final">جستجوی عادی</target>
+      </trans-unit>
+      <trans-unit id="form.linkToAdvancedSearch" approved="yes">
+        <source>Advanced search</source>
+        <target state="final">جستجوی پیش‌رفته</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.0" approved="yes">
+        <source>Distinct word</source>
+        <target state="final">کلمات جدا از هم</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.1" approved="yes">
+        <source>Part of word</source>
+        <target state="final">بخشی از کلمه</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.2" approved="yes">
+        <source>First part of word</source>
+        <target state="final">اولین بخش کلمه</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.3" approved="yes">
+        <source>Last part of word</source>
+        <target state="final">آخرین بخش کلمه</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.20" approved="yes">
+        <source>Sentence</source>
+        <target state="final">جلمه</target>
+      </trans-unit>
+      <trans-unit id="defaultOperands.0" approved="yes">
+        <source>All words (AND)</source>
+        <target state="final">همۀ کلمات (AND)</target>
+      </trans-unit>
+      <trans-unit id="defaultOperands.1" approved="yes">
+        <source>Any words (OR)</source>
+        <target state="final">یکی از کلمات (یا)</target>
+      </trans-unit>
+      <trans-unit id="sections.0" approved="yes">
+        <source>Whole site</source>
+        <target state="final">همۀ پایگاه‌اینترنتی</target>
+      </trans-unit>
+      <trans-unit id="sections.-1" approved="yes">
+        <source>Only this page</source>
+        <target state="final">فقط این صفحه</target>
+      </trans-unit>
+      <trans-unit id="sections.-2" approved="yes">
+        <source>Top + level 1</source>
+        <target state="final">بخشی از کلمه</target>
+      </trans-unit>
+      <trans-unit id="sections.-3" approved="yes">
+        <source>Level 2 and out</source>
+        <target state="final">سطح ۲ و بیرون</target>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel1All" approved="yes">
+        <source>All pages on level 1</source>
+        <target state="final">همه صفحات سطح ۱</target>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel2All" approved="yes">
+        <source>- All pages on level 2</source>
+        <target state="final">- همه صفحات سطح ۲</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.0" approved="yes">
+        <source>Internal pages</source>
+        <target state="final">صفحات داخلی</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.-1" approved="yes">
+        <source>All media</source>
+        <target state="final">همۀ انواع رسانه</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.-2" approved="yes">
+        <source>All External</source>
+        <target state="final">همۀ بیرونی‌ها</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.-1" approved="yes">
+        <source>All, mixed</source>
+        <target state="final">همه، ترکیبی</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.-2" approved="yes">
+        <source>All, categorized</source>
+        <target state="final">همه، دسته‌بندی‌شده</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.0" approved="yes">
+        <source>Pages</source>
+        <target state="final">صفحه</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurationHeader.-1" approved="yes">
+        <source>Mixed categories</source>
+        <target state="final">دسته‌بندی ترکیبی</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurationHeader.0" approved="yes">
+        <source>Website Pages</source>
+        <target state="final">صفحات وبگاه</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_flag" approved="yes">
+        <source>Weight/Frequency</source>
+        <target state="final">وزن/بسامد</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_freq" approved="yes">
+        <source>Frequency</source>
+        <target state="final">بسامد</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_first" approved="yes">
+        <source>Close to top</source>
+        <target state="final">نزدیک به بالا</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_count" approved="yes">
+        <source>Number of words</source>
+        <target state="final">تعداد کلمات</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.mtime" approved="yes">
+        <source>Date Modified</source>
+        <target state="final">تاریخ تغییر</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.title" approved="yes">
+        <source>Document title</source>
+        <target state="final">عنوان سند</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.crdate" approved="yes">
+        <source>Creation date</source>
+        <target state="final">تاریخ ساخت</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.descending" approved="yes">
+        <source>Highest first</source>
+        <target state="final">اول بالاترین</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.ascending" approved="yes">
+        <source>Lowest first</source>
+        <target state="final">اول پائین‌ترین</target>
+      </trans-unit>
+      <trans-unit id="groupBy.sections" approved="yes">
+        <source>Section hierarchy</source>
+        <target state="final">ساختار بخش‌ها</target>
+      </trans-unit>
+      <trans-unit id="groupBy.flat" approved="yes">
+        <source>Flat list</source>
+        <target state="final">فهرست ساده</target>
+      </trans-unit>
+      <trans-unit id="result.page" approved="yes">
+        <source>page</source>
+        <target state="final">صفحه</target>
+      </trans-unit>
+      <trans-unit id="result.pages" approved="yes">
+        <source>pages</source>
+        <target state="final">صفحه</target>
+      </trans-unit>
+      <trans-unit id="result.unnamedSection" approved="yes">
+        <source>Other</source>
+        <target state="final">سایر</target>
+      </trans-unit>
+      <trans-unit id="result.otherPageAsWell" approved="yes">
+        <source>INFO: There was another page indexed as well. Probably indexed with another or no usergroup.</source>
+        <target state="final">جهت اطلاع: صفحۀ دیگری نیز فهرست‌بندی شده است. ممکن است با گروه‌کاربری دیگر یا بدون گروه‌کاربری فهرست شده باشد.</target>
+      </trans-unit>
+      <trans-unit id="result.noResume" approved="yes">
+        <source>Note: This search hit may not accurately match the content on this page. The page resume cannot be shown.</source>
+        <target state="final">توجه: این عملکرد جستجو ممکن است دقیقا مطابق با محتوای این صفحه نباشد. جمع‌بندی صفحه قابل نمایش داده نیست.</target>
+      </trans-unit>
+      <trans-unit id="result.memberGroups" approved="yes">
+        <source>Require membership of group numbers %s</source>
+        <target state="final">نیاز به عضویت در شماره گروه‌های %s</target>
+      </trans-unit>
+      <trans-unit id="result.ratingMatches" approved="yes">
+        <source>matches</source>
+        <target state="final">مطابقت‌ها</target>
+      </trans-unit>
+      <trans-unit id="result.noResult" approved="yes">
+        <source>No results found.</source>
+        <target state="final">نتیجه‌ای یافت نشد.</target>
+      </trans-unit>
+      <trans-unit id="result.inSection" approved="yes">
+        <source>in the section</source>
+        <target state="final">در بخش</target>
+      </trans-unit>
+      <trans-unit id="searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">جستجو برای</target>
+      </trans-unit>
+      <trans-unit id="searchFor.or" approved="yes">
+        <source>or</source>
+        <target state="final">یا</target>
+      </trans-unit>
+      <trans-unit id="searchFor.and" approved="yes">
+        <source>and</source>
+        <target state="final">و</target>
+      </trans-unit>
+      <trans-unit id="searchFor.andnot" approved="yes">
+        <source>but not</source>
+        <target state="final">اما نه</target>
+      </trans-unit>
+      <trans-unit id="displayResults.page" approved="yes">
+        <source>Page</source>
+        <target state="final">صفحه</target>
+      </trans-unit>
+      <trans-unit id="displayResults" approved="yes">
+        <source><![CDATA[Displaying results <strong>%1$s to %2$s</strong> out of <strong>%3$s</strong>]]></source>
+        <target state="final"><![CDATA[نمایش نتایج &lt;strong&gt;%1$s تا %2$s&lt;/strong&gt; از &lt;strong&gt;%3$s&lt;/strong&gt;]]></target>
+      </trans-unit>
+      <trans-unit id="administration.menu.general" approved="yes">
+        <source>General statistics</source>
+        <target state="final">آمار عمومی</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.name" approved="yes">
+        <source>Name</source>
+        <target state="final">نام</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.count" approved="yes">
+        <source>Count</source>
+        <target state="final">تعداد</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.headerTypes" approved="yes">
+        <source>Hash Header Types</source>
+        <target state="final">انواع Header Hash</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.word" approved="yes">
+        <source>Word</source>
+        <target state="final">کلمه</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.title" approved="yes">
+        <source>List of most searched words</source>
+        <target state="final">فهرست کلماتی که بیشتر جستجو شده اند</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.description" approved="yes">
+        <source>Statistics for all pages. Select a page with indexed search form to see several statistics.</source>
+        <target state="final">آمار همۀ صفحات. یک صفحه را که دارای برگۀ indexed_search (جستجوی فهرست محور) باشد انتخاب کنید تا آمار مربوط به آن را مشاهده کنید.</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.all" approved="yes">
+        <source>All</source>
+        <target state="final">همه</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.last30days" approved="yes">
+        <source>Last 30 days</source>
+        <target state="final">۳۰ روز آخر</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.last24hours" approved="yes">
+        <source>Last 24 hours</source>
+        <target state="final">۲۴ ساعت آخر</target>
+      </trans-unit>
+      <trans-unit id="field.fileName" approved="yes">
+        <source>Filename</source>
+        <target state="final">نام فایل</target>
+      </trans-unit>
+      <trans-unit id="field.fileSize" approved="yes">
+        <source>Filesize</source>
+        <target state="final">اندازۀ فایل</target>
+      </trans-unit>
+      <trans-unit id="field.wordCount" approved="yes">
+        <source>Word count</source>
+        <target state="final">تعداد کلمات</target>
+      </trans-unit>
+      <trans-unit id="field.words" approved="yes">
+        <source>Words</source>
+        <target state="final">کلمه</target>
+      </trans-unit>
+      <trans-unit id="field.mtime" approved="yes">
+        <source>Modification time</source>
+        <target state="final">زمان تغییر</target>
+      </trans-unit>
+      <trans-unit id="field.indexed" approved="yes">
+        <source>Indexed</source>
+        <target state="final">فهرست‌شده</target>
+      </trans-unit>
+      <trans-unit id="field.updated" approved="yes">
+        <source>Updated</source>
+        <target state="final">به‌روز شده</target>
+      </trans-unit>
+      <trans-unit id="field.groups" approved="yes">
+        <source>#sec/gr/full</source>
+        <target state="final">#sec/gr/full</target>
+      </trans-unit>
+      <trans-unit id="field.sub" approved="yes">
+        <source>Sub</source>
+        <target state="final">زیر</target>
+      </trans-unit>
+      <trans-unit id="field.count" approved="yes">
+        <source>Count</source>
+        <target state="final">تعداد</target>
+      </trans-unit>
+      <trans-unit id="field.first" approved="yes">
+        <source>First</source>
+        <target state="final">اولین</target>
+      </trans-unit>
+      <trans-unit id="field.pHash" approved="yes">
+        <source>PageHash</source>
+        <target state="final">PageHash</target>
+      </trans-unit>
+      <trans-unit id="field.id" approved="yes">
+        <source>Page Id</source>
+        <target state="final">شناسۀ صفحه</target>
+      </trans-unit>
+      <trans-unit id="field.type" approved="yes">
+        <source>Type</source>
+        <target state="final">نوع</target>
+      </trans-unit>
+      <trans-unit id="field.title" approved="yes">
+        <source>Title</source>
+        <target state="final">عنوان</target>
+      </trans-unit>
+      <trans-unit id="field.language" approved="yes">
+        <source>Language</source>
+        <target state="final">زبان</target>
+      </trans-unit>
+      <trans-unit id="field.frequency" approved="yes">
+        <source>Frequency</source>
+        <target state="final">بسامد</target>
+      </trans-unit>
+      <trans-unit id="field.flag" approved="yes">
+        <source>Flag</source>
+        <target state="final">نشان</target>
+      </trans-unit>
+      <trans-unit id="field.content" approved="yes">
+        <source>Content</source>
+        <target state="final">محتوا</target>
+      </trans-unit>
+      <trans-unit id="administration.stopWords" approved="yes">
+        <source>Stopwords</source>
+        <target state="final">کلمات‌توقف</target>
+      </trans-unit>
+      <trans-unit id="administration.stopWords.save" approved="yes">
+        <source>Save stopwords</source>
+        <target state="final">ذخیرۀ کلمات‌توقف</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.sectionRecords" approved="yes">
+        <source>Section records for this phash</source>
+        <target state="final">ردیف‌های بخش‌های مربوط به این phash</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.view.overview" approved="yes">
+        <source>Overview</source>
+        <target state="final">مرور کلی</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.view.content" approved="yes">
+        <source>Words and content</source>
+        <target state="final">کلمات و محتوا</target>
+      </trans-unit>
+      <trans-unit id="administration.phash.tableHeader" approved="yes">
+        <source>Phash row content</source>
+        <target state="final">محتوای Phash ردیف</target>
+      </trans-unit>
+      <trans-unit id="administration.removeEntry" approved="yes">
+        <source>Remove entry</source>
+        <target state="final">حذف ورودی</target>
+      </trans-unit>
+      <trans-unit id="administration.removeAllEntries" approved="yes">
+        <source>Remove all listed entries</source>
+        <target state="final">حذف تمام ورودی‌های فهرست شده</target>
+      </trans-unit>
+      <trans-unit id="administration.back" approved="yes">
+        <source>Back</source>
+        <target state="final">بازگشت</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
