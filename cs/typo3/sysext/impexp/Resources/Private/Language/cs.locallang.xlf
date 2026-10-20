@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:33Z" product-name="impexp" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="import" approved="yes">
+        <source>Import</source>
+        <target state="final">Import</target>
+      </trans-unit>
+      <trans-unit id="export" approved="yes">
+        <source>Export</source>
+        <target state="final">Exportovat</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Import / Export</source>
+        <target state="final">Import / Export</target>
+      </trans-unit>
+      <trans-unit id="title_import" approved="yes">
+        <source>Import</source>
+        <target state="final">Import</target>
+      </trans-unit>
+      <trans-unit id="title_export" approved="yes">
+        <source>Export</source>
+        <target state="final">Exportovat</target>
+      </trans-unit>
+      <trans-unit id="tableselec_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Konfigurace</target>
+      </trans-unit>
+      <trans-unit id="exportdata_savedFile" approved="yes">
+        <source>SAVED FILE</source>
+        <target state="final">Uložený soubor</target>
+      </trans-unit>
+      <trans-unit id="exportdata_savedInSBytes" approved="yes">
+        <source>Saved in "%s", bytes %s</source>
+        <target state="final">Uloženo za "%s", bytů %s</target>
+      </trans-unit>
+      <trans-unit id="exportdata_problemsSavingFile" approved="yes">
+        <source>Problems saving file</source>
+        <target state="final">Problémy při ukládání souboru</target>
+      </trans-unit>
+      <trans-unit id="exportdata_badPathS" approved="yes">
+        <source>Bad path: "%s"</source>
+        <target state="final">Špatná cesta: "%s"</target>
+      </trans-unit>
+      <trans-unit id="exportdata_filePreset" approved="yes">
+        <source>File &amp; Preset</source>
+        <target state="final">Soubor &amp; nastavení</target>
+      </trans-unit>
+      <trans-unit id="exportdata_advancedOptions" approved="yes">
+        <source>Advanced Options</source>
+        <target state="final">Rozšířené možnosti</target>
+      </trans-unit>
+      <trans-unit id="exportdata_messages" approved="yes">
+        <source>Messages</source>
+        <target state="final">Zprávy</target>
+      </trans-unit>
+      <trans-unit id="execlistqu_structureToBeExported" approved="yes">
+        <source>Structure to be exported</source>
+        <target state="final">Struktura k exportu</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_toggle_all_disabled_records" approved="yes">
+        <source>Toggle disabled records</source>
+        <target state="final">Přepnout deaktivované záznamy</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_exportPagetreeConfiguration" approved="yes">
+        <source>Export pagetree configuration</source>
+        <target state="final">Exportovat konfiguraci stránky</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_pageId" approved="yes">
+        <source>Page ID</source>
+        <target state="final">ID stránky</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_tree" approved="yes">
+        <source>Tree</source>
+        <target state="final">Strom</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_noTreeExportedOnly" approved="yes">
+        <source>No tree exported - only tables on the page.</source>
+        <target state="final">Žádný strom exportován - pouze tabulky na stránce.</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_tablesOnThisPage" approved="yes">
+        <source>Tables on this page</source>
+        <target state="final">Tabulky na stránce</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_levels" approved="yes">
+        <source>Levels</source>
+        <target state="final">Úrovně</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_includeTables" approved="yes">
+        <source>Include tables</source>
+        <target state="final">Zahrnout tabulky</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_exportSingleRecord" approved="yes">
+        <source>Export single record</source>
+        <target state="final">Exportovat jeden záznam</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_record" approved="yes">
+        <source>Record</source>
+        <target state="final">Záznam</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_exportTablesFromPages" approved="yes">
+        <source>Export tables from pages</source>
+        <target state="final">Exportovat tabulky ze stránek</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_tablePids" approved="yes">
+        <source>Table/Pids</source>
+        <target state="final">Tabulka/Pid</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_tableListEntry" approved="yes">
+        <source>Table "%s" from %s</source>
+        <target state="final">Tabulka "%s" z %s</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_relationsAndExclusions" approved="yes">
+        <source>Relations and Exclusions</source>
+        <target state="final">Vztahy a vyloučení</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_includeRelationsToTables" approved="yes">
+        <source>Include relations to tables</source>
+        <target state="final">Zahrnout vztahy s tabulkami</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_useStaticRelationsFor" approved="yes">
+        <source>Use static relations for tables</source>
+        <target state="final">Použít statické vztahy pro tabulky</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_showStaticRelations" approved="yes">
+        <source>Show static relations</source>
+        <target state="final">Zobrazit statické vztahy</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_excludeElements" approved="yes">
+        <source>Exclude elements</source>
+        <target state="final">Vyloučit prvky</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_clearAllManualExclusions" approved="yes">
+        <source>Clear all manual exclusions</source>
+        <target state="final">Vymazat všechna ruční vyloučení</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_noManuallyExcludedElementsYet" approved="yes">
+        <source>No manually excluded elements yet. Exclude by setting checkboxes below in the element display.</source>
+        <target state="final">Zatím žádné ručně vyloučené prvky. Vyloučení provedete nastavením zaškrtávacích políček níže v zobrazení prvků.</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_excludeDisabledElements" approved="yes">
+        <source>Exclude disabled elements</source>
+        <target state="final">Vyloučit skryté prvky</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Aktualizovat</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_files" approved="yes">
+        <source>Files</source>
+        <target state="final">Soubory</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_saveFilesOutsideExportFile" approved="yes">
+        <source>Save files in extra folder beside the export file</source>
+        <target state="final">Ukládat soubory do další složky vedle vyexportovaného souboru</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_saveFilesOutsideExportFile_limit" approved="yes">
+        <source>(supported for "Save to filename" only)</source>
+        <target state="final">(podporováno pouze pro "Uložit do názvu souboru")</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_siteConfigurations" approved="yes">
+        <source>Site configurations</source>
+        <target state="final">Konfigurace webu</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_includeSiteConfigurations" approved="yes">
+        <source>Include site configurations for exported root pages (admin only)</source>
+        <target state="final">Zahrnout konfigurace stránek pro exportované kořenové stránky (pouze pro správce)</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_extensionDependencies" approved="yes">
+        <source>Extension dependencies</source>
+        <target state="final">Závislosti na rozšířeních</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_selectExtensionsThatThe" approved="yes">
+        <source>Select extensions that the exported content depends on</source>
+        <target state="final">Vyberte rozšíření, na kterých závisí exportovaný obsah</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Aktualizovat</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_presets" approved="yes">
+        <source>Presets</source>
+        <target state="final">Předvolby</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_selectPreset" approved="yes">
+        <source>Select preset</source>
+        <target state="final">Vybrat předvolbu</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_load" approved="yes">
+        <source>Load</source>
+        <target state="final">Nahrát</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_save" approved="yes">
+        <source>Save</source>
+        <target state="final">Uložit</target>
+      </trans-unit>
+      <trans-unit id="pleaseConfirm" approved="yes">
+        <source>Please confirm</source>
+        <target state="final">Prosím, potvrďte</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_areYouSure" approved="yes">
+        <source>Are you sure?</source>
+        <target state="final">Jste si jistí?</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Vymazat</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_merge" approved="yes">
+        <source>Merge</source>
+        <target state="final">Spojit</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_titleOfNewPreset" approved="yes">
+        <source>Title of new preset</source>
+        <target state="final">Název nové předvolby</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_public" approved="yes">
+        <source>Public</source>
+        <target state="final">Veřejný</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_outputOptions" approved="yes">
+        <source>Output options</source>
+        <target state="final">Možnosti výstupu</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_title" approved="yes">
+        <source>Title</source>
+        <target state="final">Název</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_description" approved="yes">
+        <source>Description</source>
+        <target state="final">Popis</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_notes" approved="yes">
+        <source>Notes</source>
+        <target state="final">Poznámky</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_t3d_compressed" approved="yes">
+        <source>T3D file / compressed</source>
+        <target state="final">T3D soubor / zkomprimovaný</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_t3d" approved="yes">
+        <source>T3D file</source>
+        <target state="final">T3D soubor</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_xml" approved="yes">
+        <source>XML</source>
+        <target state="final">XML</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_fileFormat" approved="yes">
+        <source>File format</source>
+        <target state="final">Formát souboru</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_filenameSavedInS" approved="yes">
+        <source>Filename (saved in "%s")</source>
+        <target state="final">Název souboru (uloženo v "%s")</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_downloadExport" approved="yes">
+        <source>Download export</source>
+        <target state="final">Stáhnout export</target>
+      </trans-unit>
+      <trans-unit id="importdata_saveToFilename" approved="yes">
+        <source>Save to filename</source>
+        <target state="final">Uložit do souboru</target>
+      </trans-unit>
+      <trans-unit id="importdata_selectFileToImport" approved="yes">
+        <source>Select file to import</source>
+        <target state="final">Vyberte soubor, který chcete importovat</target>
+      </trans-unit>
+      <trans-unit id="importdata_file" approved="yes">
+        <source>File</source>
+        <target state="final">Soubor</target>
+      </trans-unit>
+      <trans-unit id="importdata_fromPathS" approved="yes">
+        <source>From path: %s</source>
+        <target state="final">Z cesty: %s</target>
+      </trans-unit>
+      <trans-unit id="importdata_noteNoDecompressorAvailable" approved="yes">
+        <source>NOTE: No decompressor available for compressed files!</source>
+        <target state="final">POZN: Žádný decompressor pro zkomprimovaná data k dispozici!</target>
+      </trans-unit>
+      <trans-unit id="importdata_importOptions" approved="yes">
+        <source>Import Options</source>
+        <target state="final">Volby pro import</target>
+      </trans-unit>
+      <trans-unit id="importdata_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Aktualizovat</target>
+      </trans-unit>
+      <trans-unit id="importdata_updateRecords" approved="yes">
+        <source>Update records</source>
+        <target state="final">Aktualizovat záznamy</target>
+      </trans-unit>
+      <trans-unit id="importdata_thisOptionRequiresThat" approved="yes">
+        <source>This option requires that the structure you import already exists on this server and only needs to be updated with new content!</source>
+        <target state="final">Tato volba vyžaduje existující odpovídající strukturu na serveru která se pouze aktualizuje novým obsahem z importu.</target>
+      </trans-unit>
+      <trans-unit id="importdata_ignorePidDifferencesGlobally" approved="yes">
+        <source>Ignore PID differences globally</source>
+        <target state="final">Ignorovat všechny rozdíly v PID</target>
+      </trans-unit>
+      <trans-unit id="importdata_ifYouSetThis" approved="yes">
+        <source>The position of updated elements will not be updated to match the structure of the input file.</source>
+        <target state="final">Poloha aktualizovaných prvků nebude aktualizována tak, aby odpovídala struktuře vstupního souboru.</target>
+      </trans-unit>
+      <trans-unit id="importdata_force_all_UIDS" approved="yes">
+        <source>Force ALL UIDs values</source>
+        <target state="final">Vynutit UID hodnoty</target>
+      </trans-unit>
+      <trans-unit id="importdata_force_all_UIDS_descr" approved="yes">
+        <source>BE VERY CAREFUL WITH THIS: the original UID value of all imported records will be forced to be the same (Admin Only).</source>
+        <target state="final">BUĎTE VELMI OPATRNÍ: původní hodnota UID všech importovaných záznamů bude vynucena tak, aby byla stejná (pouze pro správce).</target>
+      </trans-unit>
+      <trans-unit id="importdata_options" approved="yes">
+        <source>Options</source>
+        <target state="final">Možnosti</target>
+      </trans-unit>
+      <trans-unit id="importdata_doNotShowDifferences" approved="yes">
+        <source>Do not show differences in records</source>
+        <target state="final">Nezobrazovat rozdíly v záznamech</target>
+      </trans-unit>
+      <trans-unit id="importdata_greenValuesAreFrom" approved="yes">
+        <source>Hides the resulting differences for each field of every imported records in the preview table.</source>
+        <target state="final">Skryje výsledné rozdíly pro každé pole každého importovaného záznamu v náhledu tabulce.</target>
+      </trans-unit>
+      <trans-unit id="importdata_action" approved="yes">
+        <source>Action</source>
+        <target state="final">Akce</target>
+      </trans-unit>
+      <trans-unit id="importdata_preview" approved="yes">
+        <source>Preview</source>
+        <target state="final">Náhled</target>
+      </trans-unit>
+      <trans-unit id="importdata_import" approved="yes">
+        <source>Import</source>
+        <target state="final">Importovat</target>
+      </trans-unit>
+      <trans-unit id="importdata_newImport" approved="yes">
+        <source>New import</source>
+        <target state="final">Nový import</target>
+      </trans-unit>
+      <trans-unit id="importdata_enableLogging" approved="yes">
+        <source>Enable logging</source>
+        <target state="final">Povolit logování</target>
+      </trans-unit>
+      <trans-unit id="importdata_writeIndividualDbActions" approved="yes">
+        <source>Write individual database actions during import to the log</source>
+        <target state="final">Zapsat jednotlivé akce databáze během importu do logu</target>
+      </trans-unit>
+      <trans-unit id="importdata_thisIsDisabledBy" approved="yes">
+        <source>This is disabled by default since there might be hundred of entries generated.</source>
+        <target state="final">Tato funkce je ve výchozím nastavení zakázána, protože by mohlo být vygenerováno až několik stovek záznamů.</target>
+      </trans-unit>
+      <trans-unit id="importdata_uploadFileFromLocal" approved="yes">
+        <source>Upload file from local computer</source>
+        <target state="final">Nahrát soubor z počítače</target>
+      </trans-unit>
+      <trans-unit id="importdata_browse" approved="yes">
+        <source>Browse</source>
+        <target state="final">Procházet</target>
+      </trans-unit>
+      <trans-unit id="importdata_uploadStatus" approved="yes">
+        <source>Upload status</source>
+        <target state="final">Stav nahrávání</target>
+      </trans-unit>
+      <trans-unit id="importdata_success" approved="yes">
+        <source>Success</source>
+        <target state="final">Úspěšně dokončeno</target>
+      </trans-unit>
+      <trans-unit id="importdata_failureNoFileUploaded" approved="yes">
+        <source>Failure: No file uploaded - was it too big? Check system log.</source>
+        <target state="final">Chyba: Soubor nenahrán - byl moc velký? Zkontroluj systémový log.</target>
+      </trans-unit>
+      <trans-unit id="importdata_upload" approved="yes">
+        <source>Upload</source>
+        <target state="final">Upload</target>
+      </trans-unit>
+      <trans-unit id="importdata_upload_error" approved="yes">
+        <source>Upload error</source>
+        <target state="final">Chyba nahrávání</target>
+      </trans-unit>
+      <trans-unit id="importdata_upload_nodata" approved="yes">
+        <source>The import module hasn't received any data. This may occur due to a file upload with a large file. Please check the file size of your uploaded file with the server's post_max_size and upload_max_filesize configuration.</source>
+        <target state="final">Modul pro import neobdržel žádná data. K tomu může dojít kvůli nahrání souboru s velkým souborem. Zkontrolujte prosím velikost nahraného souboru s konfigurací post_max_size serveru a upload_max_filesize.</target>
+      </trans-unit>
+      <trans-unit id="importdata_metaData" approved="yes">
+        <source>Meta data</source>
+        <target state="final">Meta data</target>
+      </trans-unit>
+      <trans-unit id="importdata_title" approved="yes">
+        <source>Title</source>
+        <target state="final">Název</target>
+      </trans-unit>
+      <trans-unit id="importdata_description" approved="yes">
+        <source>Description</source>
+        <target state="final">Popis</target>
+      </trans-unit>
+      <trans-unit id="importdata_notes" approved="yes">
+        <source>Notes</source>
+        <target state="final">Poznámky</target>
+      </trans-unit>
+      <trans-unit id="importdata_packager" approved="yes">
+        <source>Packager</source>
+        <target state="final">Packager</target>
+      </trans-unit>
+      <trans-unit id="importdata_email" approved="yes">
+        <source>Email</source>
+        <target state="final">Email</target>
+      </trans-unit>
+      <trans-unit id="importdata_metaData_1387" approved="yes">
+        <source>Meta data</source>
+        <target state="final">Meta data</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteConfigurations" approved="yes">
+        <source>Site Configurations</source>
+        <target state="final">Konfigurace webu</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteConfigurationsAdminOnly" approved="yes">
+        <source>This import contains site configurations that will not be imported because importing site configurations requires administrator privileges.</source>
+        <target state="final">Tento import obsahuje konfigurace webů, které nebudou importovány, protože import konfigurací webů vyžaduje oprávnění správce.</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteIdentifier" approved="yes">
+        <source>Identifier</source>
+        <target state="final">Identifikátor</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteWebsiteTitle" approved="yes">
+        <source>Website Title</source>
+        <target state="final">Název webu</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteBase" approved="yes">
+        <source>Base</source>
+        <target state="final">Báze</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteRootPage" approved="yes">
+        <source>Root Page</source>
+        <target state="final">Kořenová stránka</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteLanguages" approved="yes">
+        <source>Languages</source>
+        <target state="final">Jazyky</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteLanguageId" approved="yes">
+        <source>ID</source>
+        <target state="final">ID</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteLanguageLocale" approved="yes">
+        <source>Locale</source>
+        <target state="final">Jazyk</target>
+      </trans-unit>
+      <trans-unit id="importdata_siteDependencies" approved="yes">
+        <source>Dependencies</source>
+        <target state="final">Závislosti</target>
+      </trans-unit>
+      <trans-unit id="importdata_messages" approved="yes">
+        <source>Messages</source>
+        <target state="final">Zprávy</target>
+      </trans-unit>
+      <trans-unit id="importdata_structureHasBeenImported" approved="yes">
+        <source>Structure has been imported, here is the result</source>
+        <target state="final">Struktura byla naimportována, zde je výsledek</target>
+      </trans-unit>
+      <trans-unit id="importdata_structureNotImported" approved="yes">
+        <source>The Import has failed, refer to the messages tab to view errors</source>
+        <target state="final">Import se nezdařil, podívejte se na záložku zpráv pro zobrazení chyb</target>
+      </trans-unit>
+      <trans-unit id="importdata_no_default_upload_folder" approved="yes">
+        <source>No default upload folder</source>
+        <target state="final">Není nastavena výchozí složka pro nahrávání</target>
+      </trans-unit>
+      <trans-unit id="filterpage_structureToBeImported" approved="yes">
+        <source>Structure to be imported</source>
+        <target state="final">Struktura k importu</target>
+      </trans-unit>
+      <trans-unit id="ALL_tables" approved="yes">
+        <source>[ ALL tables ]</source>
+        <target state="final">[ VŠECHNY tabulky ]</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_controls" approved="yes">
+        <source>Controls</source>
+        <target state="final">Ovládání</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_title" approved="yes">
+        <source>Title</source>
+        <target state="final">Název</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_message" approved="yes">
+        <source>Message</source>
+        <target state="final">Zpráva</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_updateMode" approved="yes">
+        <source>Update Mode</source>
+        <target state="final">Aktualizovat režim</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_currentPath" approved="yes">
+        <source>Current Path</source>
+        <target state="final">Aktuální cesta</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_result" approved="yes">
+        <source>Result</source>
+        <target state="final">Výsledek</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_displaycon_insidePagetree" approved="yes">
+        <source>Inside pagetree</source>
+        <target state="final">Uvnitř stromu stránek</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_outsidePagetree" approved="yes">
+        <source>Outside pagetree</source>
+        <target state="final">Mimo strom stránek</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_softReferencesFiles" approved="yes">
+        <source>Soft References Files</source>
+        <target state="final">Měkké referenční soubory</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Aktualizovat</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_insert" approved="yes">
+        <source>Insert</source>
+        <target state="final">Vložit</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_importAsNew" approved="yes">
+        <source>Import as new</source>
+        <target state="final">Importovat jako nové</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_ignorePid" approved="yes">
+        <source>Ignore PID</source>
+        <target state="final">Ignorovat PID</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_respectPid" approved="yes">
+        <source>Respect PID</source>
+        <target state="final">Zachovávat PID</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_forceUidSAdmin" approved="yes">
+        <source>Force UID [%s] (Admin)</source>
+        <target state="final">Vynutit UID [%s] (Admin)</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_exclude" approved="yes">
+        <source>Exclude</source>
+        <target state="final">Vyřadit</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_title" approved="yes">
+        <source>Title</source>
+        <target state="final">Název</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_descr" approved="yes">
+        <source>Descr</source>
+        <target state="final">Popis</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_value" approved="yes">
+        <source>Value</source>
+        <target state="final">Hodnota</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_softrefsel_record" approved="yes">
+        <source>Record</source>
+        <target state="final">Záznam</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_softrefsel_editable" approved="yes">
+        <source>Editable</source>
+        <target state="final">Upravitelný</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_softrefsel_exclude" approved="yes">
+        <source>Exclude</source>
+        <target state="final">Vyřadit</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_printerror_description" approved="yes">
+        <source>Description</source>
+        <target state="final">Popis</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
