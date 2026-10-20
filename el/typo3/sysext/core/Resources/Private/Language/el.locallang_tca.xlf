@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814885" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="el">
+    <header/>
+    <body>
+      <trans-unit id="file_mountpoints_edit_title" resname="file_mountpoints_edit_title" approved="yes">
+        <source>Edit filemount</source>
+        <target state="final">Επεξεργασία σημείου προσάρτησης αρχείων</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints_add_title" resname="file_mountpoints_add_title" approved="yes">
+        <source>Create new filemount</source>
+        <target state="final">Δημιουργία νέου σημείου προσάρτησης αρχείων</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints_list_title" resname="file_mountpoints_list_title" approved="yes">
+        <source>List filemounts</source>
+        <target state="final">Λίστα σημείων προσάρτησης αρχείων</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms_live" resname="workspace_perms_live" approved="yes">
+        <source>Edit Live (Online)</source>
+        <target state="final">Live επεξεργασία (συνδεδεμένα)</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms_draft" resname="workspace_perms_draft" approved="yes">
+        <source>Edit Draft (Offline)</source>
+        <target state="final">Πρόχειρη επεξεργασία (αποσυνδεμένα)</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms_custom" resname="workspace_perms_custom" approved="yes">
+        <source>Create new workspace projects</source>
+        <target state="final">Δημιουργία νέων χώρων εργασίας</target>
+      </trans-unit>
+      <trans-unit id="TSconfig_title" resname="TSconfig_title" approved="yes">
+        <source>TSconfig QuickReference</source>
+        <target state="final">Γρήγορη αναφορά TSconfig:</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_edit_title" resname="be_users.usergroup_edit_title" approved="yes">
+        <source>Edit usergroup</source>
+        <target state="final">Επεξεργασία ομάδας χρηστών</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_add_title" resname="be_users.usergroup_add_title" approved="yes">
+        <source>Create new group</source>
+        <target state="final">Δημιουργία νέας ομάδας</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_list_title" resname="be_users.usergroup_list_title" approved="yes">
+        <source>List groups</source>
+        <target state="final">Εμφάνιση ομάδων</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_unzip" resname="be_users.fileoper_perms_unzip" approved="yes">
+        <source>Files: Unzip</source>
+        <target state="final">Αρχεία: Αποσυμπίεση</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_general" resname="be_users.fileoper_perms_general" approved="yes">
+        <source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
+        <target state="final">Αρχεία: Μεταφόρτωση, Αντιγραφή, Μετακίνηση, Διαγραφή, Μετονομασία, Δημιουργία, Επεξεργασία</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms" resname="be_users.fileoper_perms_diroper_perms" approved="yes">
+        <source>Directory: Move,Delete,Rename,New</source>
+        <target state="final">Φάκελος: Μετακίνηση, Διαγραφή, Μετονομασία, Δημιουργία</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms_copy" resname="be_users.fileoper_perms_diroper_perms_copy" approved="yes">
+        <source>Directory: Copy</source>
+        <target state="final">Φάκελος: Αντιγραφή</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms_delete" resname="be_users.fileoper_perms_diroper_perms_delete" approved="yes">
+        <source>Directory: Delete recursively (rm -Rf)</source>
+        <target state="final">Φάκελος: Αναδρομική διαγραφή (rm -Rf)</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.rights" resname="be_users.tabs.rights" approved="yes">
+        <source>Access Rights</source>
+        <target state="final">Δικαιώματα Πρόσβασης</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.mounts_and_workspaces" resname="be_users.tabs.mounts_and_workspaces" approved="yes">
+        <source>Mounts and Workspaces</source>
+        <target state="final">Σημεία προσάρτησης και χώροι εργασίας</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.options" resname="be_users.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">Επιλογές</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.extended" resname="be_users.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Εκτεταμένες επιλογές</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.access" resname="be_users.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Πρόσβαση</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.base_rights" resname="be_groups.tabs.base_rights" approved="yes">
+        <source>Access Lists</source>
+        <target state="final">Λίστες πρόσβασης</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.mounts_and_workspaces" resname="be_groups.tabs.mounts_and_workspaces" approved="yes">
+        <source>Mounts and Workspaces</source>
+        <target state="final">Σημεία προσάρτησης και χώροι εργασίας</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_copy" resname="be_groups.file_permissions.folder_copy" approved="yes">
+        <source>Directory: Copy</source>
+        <target state="final">Φάκελος: Αντιγραφή</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_unzip" resname="be_groups.fileoper_perms_unzip" approved="yes">
+        <source>Files: Unzip</source>
+        <target state="final">Αρχεία: Αποσυμπίεση</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_general" resname="be_groups.fileoper_perms_general" approved="yes">
+        <source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
+        <target state="final">Αρχεία: Μεταφόρτωση, Αντιγραφή, Μετακίνηση, Διαγραφή, Μετονομασία, Δημιουργία, Επεξεργασία</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms" resname="be_groups.fileoper_perms_diroper_perms" approved="yes">
+        <source>Directory: Move,Delete,Rename,New</source>
+        <target state="final">Φάκελος: Μετακίνηση, Διαγραφή, Μετονομασία, Δημιουργία</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms_copy" resname="be_groups.fileoper_perms_diroper_perms_copy" approved="yes">
+        <source>Directory: Copy</source>
+        <target state="final">Φάκελος: Αντιγραφή</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms_delete" resname="be_groups.fileoper_perms_diroper_perms_delete" approved="yes">
+        <source>Directory: Delete recursively (rm -Rf)</source>
+        <target state="final">Φάκελος: Αναδρομική διαγραφή (rm -Rf)</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.options" resname="be_groups.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">Επιλογές</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.extended" resname="be_groups.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Εκτεταμένες επιλογές</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.users" resname="sys_filemounts.tabs.users" approved="yes">
+        <source>Users</source>
+        <target state="final">Χρήστες</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.mountpoints" resname="sys_filemounts.tabs.mountpoints" approved="yes">
+        <source>Mountpoints</source>
+        <target state="final">Σημεία προσάρτησης</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.publishing" resname="sys_filemounts.tabs.publishing" approved="yes">
+        <source>Publishing</source>
+        <target state="final">Δημοσίευση</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.other" resname="sys_filemounts.tabs.other" approved="yes">
+        <source>Other</source>
+        <target state="final">Άλλο</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.base_relative" resname="sys_filemounts.base_relative" approved="yes">
+        <source>relative ../fileadmin/</source>
+        <target state="final">σχετικό ../fileadmin/</target>
+      </trans-unit>
+      <trans-unit id="sys_news.tabs.access" resname="sys_news.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Πρόσβαση</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.freeze" resname="sys_workspace.freeze" approved="yes">
+        <source>Freeze Editing</source>
+        <target state="final">"Πάγωμα" Επεξεργασίας</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.live_edit" resname="sys_workspace.live_edit" approved="yes">
+        <source>Allow "live" editing of records from tables without versioning</source>
+        <target state="final">Άδεια "live" επεξεργασίας εγγραφών από τους πίνακες χωρίς διατήρηση διαδοχικών εκδόσεων</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.review_stage_edit" resname="sys_workspace.review_stage_edit" approved="yes">
+        <source>Allow members to edit records in "Review" stage</source>
+        <target state="final">Άδεια στα μέλη για να επεξεργάζονται εγγραφές στο στάδιο "Επανεξέτασης"</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.disable_autocreate" resname="sys_workspace.disable_autocreate" approved="yes">
+        <source>Disable auto-versioning when editing</source>
+        <target state="final">Απενεργοποίηση αυτόματης διατήρησης εκδόσεων κατά την επεξεργασία</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.swap_modes" resname="sys_workspace.swap_modes" approved="yes">
+        <source>Swap modes</source>
+        <target state="final">Εναλλαγή κατάστασης</target>
+      </trans-unit>
+      <trans-unit id="pages" resname="pages" approved="yes">
+        <source>Page</source>
+        <target state="final">Σελίδα</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.0" resname="doktype.I.0" approved="yes">
+        <source>Standard</source>
+        <target state="final">Τυπική</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.1" resname="doktype.I.1" approved="yes">
+        <source>SysFolder</source>
+        <target state="final">Φάκελος Συστήματος</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.2" resname="doktype.I.2" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Κάδος ανακύκλωσης</target>
+      </trans-unit>
+      <trans-unit id="be_users" resname="be_users" approved="yes">
+        <source>Backend user</source>
+        <target state="final">Χρήστης backend</target>
+      </trans-unit>
+      <trans-unit id="be_groups" resname="be_groups" approved="yes">
+        <source>Backend usergroup</source>
+        <target state="final">Ομάδα χρηστών backend</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts" resname="sys_filemounts" approved="yes">
+        <source>Filemount</source>
+        <target state="final">Σημείο προσάρτησης αρχείων</target>
+      </trans-unit>
+      <trans-unit id="sys_language" resname="sys_language" approved="yes">
+        <source>Website Language</source>
+        <target state="final">Γλώσσα Δικτυακού Τόπου</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace" resname="sys_workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Χώρος εργασίας</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
