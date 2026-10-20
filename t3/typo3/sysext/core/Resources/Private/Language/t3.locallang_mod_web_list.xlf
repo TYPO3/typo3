@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814881" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
+        <source>List of database-records</source>
+        <target>crwdns71936:0crwdne71936:0</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+        <source>The Web&gt;List module provides low level access to records appearing on a page.</source>
+        <target>crwdns71938:0crwdne71938:0</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+        <source>List</source>
+        <target>crwdns71940:0crwdne71940:0</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteAfter" resname="clip_pasteAfter">
+        <source>Paste after: Clipboard content is inserted after this record</source>
+        <target>crwdns71942:0crwdne71942:0</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" resname="clip_pasteInto">
+        <source>Paste into: Clipboard content is inserted on this page</source>
+        <target>crwdns71944:0crwdne71944:0</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" resname="clip_paste">
+        <source>Paste in clipboard content</source>
+        <target>crwdns71946:0crwdne71946:0</target>
+      </trans-unit>
+      <trans-unit id="clip_markRecords" resname="clip_markRecords">
+        <source>Mark All/Mark none</source>
+        <target>crwdns71948:0crwdne71948:0</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" resname="clip_selectMarked">
+        <source>Transfer the selection of records to clipboard</source>
+        <target>crwdns71950:0crwdne71950:0</target>
+      </trans-unit>
+      <trans-unit id="clip_duplicates" resname="clip_duplicates">
+        <source>Mark duplicates</source>
+        <target>crwdns71952:0crwdne71952:0</target>
+      </trans-unit>
+      <trans-unit id="clip_editMarked" resname="clip_editMarked">
+        <source>Edit marked</source>
+        <target>crwdns71954:0crwdne71954:0</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" resname="clip_deleteMarked">
+        <source>Delete marked</source>
+        <target>crwdns71956:0crwdne71956:0</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarkedWarning" resname="clip_deleteMarkedWarning">
+        <source>Are you sure you want to delete all marked records from the table '%s'?</source>
+        <target>crwdns71958:0%scrwdne71958:0</target>
+      </trans-unit>
+      <trans-unit id="showInfo" resname="showInfo">
+        <source>Display information</source>
+        <target>crwdns71960:0crwdne71960:0</target>
+      </trans-unit>
+      <trans-unit id="edit" resname="edit">
+        <source>Edit record</source>
+        <target>crwdns71962:0crwdne71962:0</target>
+      </trans-unit>
+      <trans-unit id="editPage" resname="editPage">
+        <source>Edit page properties</source>
+        <target>crwdns71964:0crwdne71964:0</target>
+      </trans-unit>
+      <trans-unit id="new" resname="new">
+        <source>New record</source>
+        <target>crwdns71966:0crwdne71966:0</target>
+      </trans-unit>
+      <trans-unit id="newPage" resname="newPage">
+        <source>Create new page after this page</source>
+        <target>crwdns71968:0crwdne71968:0</target>
+      </trans-unit>
+      <trans-unit id="newRecord" resname="newRecord">
+        <source>Create new record after this record</source>
+        <target>crwdns71970:0crwdne71970:0</target>
+      </trans-unit>
+      <trans-unit id="newRecordGeneral" resname="newRecordGeneral">
+        <source>Create new record</source>
+        <target>crwdns71972:0crwdne71972:0</target>
+      </trans-unit>
+      <trans-unit id="moveUp" resname="moveUp">
+        <source>Move up in list</source>
+        <target>crwdns71974:0crwdne71974:0</target>
+      </trans-unit>
+      <trans-unit id="moveDown" resname="moveDown">
+        <source>Move down in list</source>
+        <target>crwdns71976:0crwdne71976:0</target>
+      </trans-unit>
+      <trans-unit id="move_record" resname="move_record">
+        <source>Re-position content element</source>
+        <target>crwdns71978:0crwdne71978:0</target>
+      </trans-unit>
+      <trans-unit id="move_page" resname="move_page">
+        <source>Move page</source>
+        <target>crwdns71980:0crwdne71980:0</target>
+      </trans-unit>
+      <trans-unit id="hide" resname="hide">
+        <source>Hide record</source>
+        <target>crwdns71982:0crwdne71982:0</target>
+      </trans-unit>
+      <trans-unit id="unHide" resname="unHide">
+        <source>Un-hide record</source>
+        <target>crwdns71984:0crwdne71984:0</target>
+      </trans-unit>
+      <trans-unit id="hidePage" resname="hidePage">
+        <source>Hide page</source>
+        <target>crwdns71986:0crwdne71986:0</target>
+      </trans-unit>
+      <trans-unit id="unHidePage" resname="unHidePage">
+        <source>Un-hide page</source>
+        <target>crwdns71988:0crwdne71988:0</target>
+      </trans-unit>
+      <trans-unit id="prevLevel" resname="prevLevel">
+        <source>Move this page to the position after the current parent page (Inwards)</source>
+        <target>crwdns71990:0crwdne71990:0</target>
+      </trans-unit>
+      <trans-unit id="nextLevel" resname="nextLevel">
+        <source>Move this page to be a subpage of the page above (Outwards)</source>
+        <target>crwdns71992:0crwdne71992:0</target>
+      </trans-unit>
+      <trans-unit id="delete" resname="delete">
+        <source>Delete record (!)</source>
+        <target>crwdns71994:0crwdne71994:0</target>
+      </trans-unit>
+      <trans-unit id="restore" resname="restore">
+        <source>Restore record</source>
+        <target>crwdns71996:0crwdne71996:0</target>
+      </trans-unit>
+      <trans-unit id="history" resname="history">
+        <source>Display change history / Un-do</source>
+        <target>crwdns71998:0crwdne71998:0</target>
+      </trans-unit>
+      <trans-unit id="displayVersions" resname="displayVersions">
+        <source>Display versions</source>
+        <target>crwdns72000:0crwdne72000:0</target>
+      </trans-unit>
+      <trans-unit id="permissions" resname="permissions">
+        <source>Set permissions for page</source>
+        <target>crwdns72002:0crwdne72002:0</target>
+      </trans-unit>
+      <trans-unit id="largeControl" resname="largeControl">
+        <source>Extended view</source>
+        <target>crwdns72004:0crwdne72004:0</target>
+      </trans-unit>
+      <trans-unit id="contractView" resname="contractView">
+        <source>List all tables</source>
+        <target>crwdns72006:0crwdne72006:0</target>
+      </trans-unit>
+      <trans-unit id="expandView" resname="expandView">
+        <source>List only this table</source>
+        <target>crwdns72008:0crwdne72008:0</target>
+      </trans-unit>
+      <trans-unit id="showClipBoard" resname="showClipBoard">
+        <source>Show clipboard</source>
+        <target>crwdns72010:0crwdne72010:0</target>
+      </trans-unit>
+      <trans-unit id="editShownColumns" resname="editShownColumns">
+        <source>Edit all shown fields of the listed records</source>
+        <target>crwdns72012:0crwdne72012:0</target>
+      </trans-unit>
+      <trans-unit id="editThisColumn" resname="editThisColumn">
+        <source>Edit the '%s' field of the listed records</source>
+        <target>crwdns72014:0%scrwdne72014:0</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" resname="deleteWarning">
+        <source>Are you sure you want to delete this record?</source>
+        <target>crwdns72016:0crwdne72016:0</target>
+      </trans-unit>
+      <trans-unit id="restoreWarning" resname="restoreWarning">
+        <source>Are you sure you want to restore this record by reverting the delete status?</source>
+        <target>crwdns72018:0crwdne72018:0</target>
+      </trans-unit>
+      <trans-unit id="localization" resname="localization">
+        <source>Localization view</source>
+        <target>crwdns72020:0crwdne72020:0</target>
+      </trans-unit>
+      <trans-unit id="defaultLanguage" resname="defaultLanguage">
+        <source>Default</source>
+        <target>crwdns72022:0crwdne72022:0</target>
+      </trans-unit>
+      <trans-unit id="multipleLanguages" resname="multipleLanguages">
+        <source>All languages</source>
+        <target>crwdns72024:0crwdne72024:0</target>
+      </trans-unit>
+      <trans-unit id="Localize" resname="Localize">
+        <source>Localize to</source>
+        <target>crwdns72026:0crwdne72026:0</target>
+      </trans-unit>
+      <trans-unit id="viewRecords" resname="viewRecords">
+        <source>Viewing records of</source>
+        <target>crwdns72028:0crwdne72028:0</target>
+      </trans-unit>
+      <trans-unit id="pageIndicator" resname="pageIndicator">
+        <source>Page %1$s of %2$d</source>
+        <target>crwdns72030:0%1$scrwdnd72030:0%2$dcrwdne72030:0</target>
+      </trans-unit>
+      <trans-unit id="rangeIndicator" resname="rangeIndicator">
+        <source>Records %1$d - %2$d</source>
+        <target>crwdns72032:0%1$dcrwdnd72032:0%2$dcrwdne72032:0</target>
+      </trans-unit>
+      <trans-unit id="missingTcaColumnsMessageTitle" resname="missingTcaColumnsMessageTitle">
+        <source>Missing TCA definition</source>
+        <target>crwdns72034:0crwdne72034:0</target>
+      </trans-unit>
+      <trans-unit id="missingTcaColumnsMessage" resname="missingTcaColumnsMessage">
+        <source>No fields for table "%s" have been found. $TCA['%s']['columns'] does not contain the necessary definitions.</source>
+        <target>crwdns72036:0%scrwdnd72036:0$TCA['%s']['columns']crwdne72036:0</target>
+      </trans-unit>
+      <trans-unit id="noRecordsOnThisPage" resname="noRecordsOnThisPage">
+        <source>There are no records on this page.</source>
+        <target>crwdns72038:0crwdne72038:0</target>
+      </trans-unit>
+      <trans-unit id="noRecordsOfTypeOnThisPage" resname="noRecordsOfTypeOnThisPage">
+        <source>There are no records of type "%s" on this page.</source>
+        <target>crwdns72040:0%scrwdne72040:0</target>
+      </trans-unit>
+      <trans-unit id="button.cancel" resname="button.cancel">
+        <source>Cancel</source>
+        <target>crwdns72042:0crwdne72042:0</target>
+      </trans-unit>
+      <trans-unit id="button.close" resname="button.close">
+        <source>Close</source>
+        <target>crwdns72044:0crwdne72044:0</target>
+      </trans-unit>
+      <trans-unit id="button.ok" resname="button.ok">
+        <source>OK</source>
+        <target>crwdns72046:0crwdne72046:0</target>
+      </trans-unit>
+      <trans-unit id="button.delete" resname="button.delete">
+        <source>Delete</source>
+        <target>crwdns72048:0crwdne72048:0</target>
+      </trans-unit>
+      <trans-unit id="button.yes" resname="button.yes">
+        <source>Yes</source>
+        <target>crwdns85862:0crwdne85862:0</target>
+      </trans-unit>
+      <trans-unit id="button.no" resname="button.no">
+        <source>No</source>
+        <target>crwdns85864:0crwdne85864:0</target>
+      </trans-unit>
+      <trans-unit id="notification.request.title" resname="notification.request.title">
+        <source>Allow notifications?</source>
+        <target>crwdns85866:0crwdne85866:0</target>
+      </trans-unit>
+      <trans-unit id="notification.request.description" resname="notification.request.description">
+        <source>TYPO3 can send important notifications, e.g. when your login expires. To enable notifications, please click "Yes" and confirm your browser's notification request. If you choose "no", we will not ask again.</source>
+        <target>crwdns85868:0crwdne85868:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
