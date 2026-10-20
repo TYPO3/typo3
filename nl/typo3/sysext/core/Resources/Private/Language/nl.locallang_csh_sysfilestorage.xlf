@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814801" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilestorage.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>File storage, which acts as an entry root point to a file-based structure. See it like a drive or a hard drive volume in your local machine.</source>
+        <target state="final">Bestandsopslag die als ingang dient voor een bestandgebaseerde structuur. Is te zien als een schijfletter of een schijfvolume op een PC.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details">
+        <source/>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Disabling the storage will result in removing it from any listings in the backend. Existing file relations will still exist.</source>
+        <target state="final">Het deactiveren van een opslag zorgt ervoor dat het verwijderd wordt van alle lijsten in de backend. Bestaande koppelingen met bestanden blijven bestaan.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If you set up a file storage, it will show up on any folder lists, thus allowing to basically browse through the files in this file repository. If you set this checkbox, this storage will be excluded from any listings in the backend. Any existing file references will still exist further.</source>
+        <target state="final">Als je een bestandsopslag inricht zal het getoond worden in elke lijst met mappen. Daardoor is het mogelijk om de bestanden in deze bestandsrepository te bladeren. Met deze optie zal de opslag niet in lijsten in de backend getoond worden. Bestaande relaties met bestanden blijven gewoon bestaan.</target>
+      </trans-unit>
+      <trans-unit id="name.description" resname="name.description" approved="yes">
+        <source>The visible identifier for this file storage.</source>
+        <target state="final">De zichtbare identificatie voor deze bestandsopslag.</target>
+      </trans-unit>
+      <trans-unit id="name.details" resname="name.details" approved="yes">
+        <source>The label entered here will be shown as the name for the entry point in the TYPO3 Backend. Be sure to make it descriptive and logical for your editors.</source>
+        <target state="final">Het label dat hier is ingevoerd wordt getoond als naam van de ingang in de TYPO3 Backend. Zorg ervoor dat het een logisch opschrift is voor de redacteuren.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>A description of this storage.</source>
+        <target state="final">Een beschijving voor deze opslag.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" approved="yes">
+        <source>This description field is used to explain e.g. the location of the storage, also what this storage is meant for or what it contains.</source>
+        <target state="final">Dit veld met omschrijving wordt gebruikt om bijv. de locatie van de opslag uit te leggen, waarvoor het bedoeld is of wat het bevat.</target>
+      </trans-unit>
+      <trans-unit id="driver.description" resname="driver.description" approved="yes">
+        <source>Choose the driver as the technical backbone of the storage. Once you've chosen a driver, and saved it, additional configuration will show up.</source>
+        <target state="final">Kies de driver als technische basis van de opslag. Als een driver gekozen is en opgeslagen is zullen extra opties verschijnen.</target>
+      </trans-unit>
+      <trans-unit id="driver.details" resname="driver.details" approved="yes">
+        <source>The driver is the technical background of a storage, and thus also defines whether the location of the storage is local (= on the same machine as this TYPO3 installation) or remote like a WebDAV server connection. Search for extensions in the TYPO3 Extension Repository that extend this driver list.</source>
+        <target state="final">De driver is de technische achtergrond van een opslag en bepaalt dus ook of de locatie van de opslag lokaal (= op dezelfde machine als deze TYPO3 installatie) of op afstand is zoals een verbinding met een WebDAV server. Extensies in de TYPO3 extensie repository kunnen extra drivers bieden.</target>
+      </trans-unit>
+      <trans-unit id="processingfolder.description" resname="processingfolder.description" approved="yes">
+        <source>Defines the directory on this storage to be used to save temporary files like resized images.</source>
+        <target state="final">Bepaalt de map op de opslag die gebruikt wordt als tijdelijke opslag voor bijv. geschaalde afbeeldingen.</target>
+      </trans-unit>
+      <trans-unit id="is_browsable.description" resname="is_browsable.description" approved="yes">
+        <source>If set, backend users can browse through this storage. Otherwise it will show up as a unselectable item in the list.</source>
+        <target state="final">Indien ingesteld kunnen backend gebruikers deze opslag doorzoeken. Anders wordt het getoond als een niet-selecteerbaar item in de lijst.</target>
+      </trans-unit>
+      <trans-unit id="is_public.description" resname="is_public.description" approved="yes">
+        <source>If set, then the files in this storage can be linked directly from the outside world. If this is not set, make sure to provide additional possibilities to access the files in this storage.</source>
+        <target state="final">Indien geactiveerd kunnen de bestanden in deze opslag direct vanuit de buitenwereld benaderd worden. Als het niet geactiveerd is moeten er extra mogelijkheden gemaakt worden om bestanden in deze opslag te benaderen.</target>
+      </trans-unit>
+      <trans-unit id="is_writable.description" resname="is_writable.description" approved="yes">
+        <source>If set, then users are allowed to modify, add, delete files/folders on this storage.</source>
+        <target state="final">Indien actief mogen gebruikers betanden/mappen in deze opslag wijzigen, toevoegen en verwijderen.</target>
+      </trans-unit>
+      <trans-unit id="is_online.description" resname="is_online.description" approved="yes">
+        <source>This flag is usually set. If TYPO3 cannot connect to this storage (because it maybe temporary down), then the flag will be checked, and the storage will behave like it is non-browsable in the TYPO3 backend. The admin needs to manually activate it again if it was offline.</source>
+        <target state="final">Deze optie is meestal actief. Als TYPO3 geen verbinding met deze opslag kan maken (misschien tijdelijk onbereikbaar) dan wordt deze optie gedeactiveerd en zal de opslag zich gedragen als een niet-doorzoekbare opslag in de backend. De beheerder moet de opslag handmatig activeren als deze offline is geweest.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
