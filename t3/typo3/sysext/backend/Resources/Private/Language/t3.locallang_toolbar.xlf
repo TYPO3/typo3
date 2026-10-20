@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_toolbar.xlf" date="2024-06-17T15:00:00Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="toolbarItems.clearCache">
+        <source>Clear cache</source>
+        <target>crwdns339178:0crwdne339178:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.help">
+        <source>Help</source>
+        <target>crwdns339180:0crwdne339180:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sidebarCollapse">
+        <source>Collapse sidebar</source>
+        <target>crwdns386096:0crwdne386096:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sidebarExpand">
+        <source>Expand sidebar</source>
+        <target>crwdns386098:0crwdne386098:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.search">
+        <source>Search</source>
+        <target>crwdns339184:0crwdne339184:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.searchbarOpenClose">
+        <source>Open/Close searchbar</source>
+        <target>crwdns339186:0crwdne339186:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo">
+        <source>System Information</source>
+        <target>crwdns339188:0crwdne339188:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.intro.text">
+        <source>This is a short system overview. For advanced information please head to: </source>
+        <target>crwdns339190:0crwdne339190:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.intro.link">
+        <source>Environment Module</source>
+        <target>crwdns339192:0crwdne339192:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.allgood" xml:space="preserve">
+        <source>Your system is fully operational.
+Have a nice day.</source>
+      <target>crwdns339194:0crwdne339194:0</target></trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.applicationcontext">
+        <source>Application Context</source>
+        <target>crwdns339196:0crwdne339196:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.installationMethod">
+        <source>Installation Method</source>
+        <target>crwdns372700:0crwdne372700:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.installationMethod.classic">
+        <source>Classic mode</source>
+        <target>crwdns372702:0crwdne372702:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.installationMethod.composer">
+        <source>Composer mode</source>
+        <target>crwdns372704:0crwdne372704:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.database">
+        <source>Database</source>
+        <target>crwdns339200:0crwdne339200:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.database.offline">
+        <source>Offline</source>
+        <target>crwdns339202:0crwdne339202:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.debugger">
+        <source>Debugger</source>
+        <target>crwdns339204:0crwdne339204:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.gitrevision">
+        <source>GIT Revision</source>
+        <target>crwdns339206:0crwdne339206:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.operatingsystem">
+        <source>Operating System</source>
+        <target>crwdns339208:0crwdne339208:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.phpversion">
+        <source>PHP Version</source>
+        <target>crwdns339210:0crwdne339210:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.typo3-version">
+        <source>TYPO3 Version</source>
+        <target>crwdns339212:0crwdne339212:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.webserver">
+        <source>Web Server</source>
+        <target>crwdns355540:0crwdne355540:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.toolbarOpenClose">
+        <source>Open/Close toolbar</source>
+        <target>crwdns339216:0crwdne339216:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.account.switchToUserMode.tooltip">
+        <source>Switch to User</source>
+        <target>crwdns339218:0crwdne339218:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.account.switchToUserMode.account.prefix">
+        <source>SU</source>
+        <target>crwdns339220:0crwdne339220:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.recentlySwitchedUsers">
+        <source>Recently switched to</source>
+        <target>crwdns339222:0crwdne339222:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.recentlySwitchedUsers.su.tooltip">
+        <source>Switch to user %s</source>
+        <target>crwdns339224:0%scrwdne339224:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.btn.exitSwitchUser">
+        <source>Exit switch user mode</source>
+        <target>crwdns339226:0crwdne339226:0</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.btn.logout">
+        <source>Logout</source>
+        <target>crwdns339228:0crwdne339228:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
