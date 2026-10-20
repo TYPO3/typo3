@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="overwriteExistingFiles" approved="yes">
+        <source>Overwrite existing files</source>
+        <target state="final">ຂຽນທັບໄຟລ໌ທີ່ມີຢູ່</target>
+      </trans-unit>
+      <trans-unit id="uploadMultipleFilesInfo" approved="yes">
+        <source>Upload multiple files by holding the Shift or CTRL-file pressed while selecting your files (works on modern browsers only).</source>
+        <target state="final">ອັບໂຫຼດຫຼາຍໄຟລ໌ພ້ອມກັນໂດຍການກົດປຸ່ມ Shift ຫຼື CTRL ຄ້າງໄວ້ໃນຂະນະທີ່ເລືອກໄຟລ໌ (ໃຊ້ໄດ້ກັບບຣາວເຊີລຸ້ນໃໝ່ເທົັ້ນັ້ນ).</target>
+      </trans-unit>
+      <trans-unit id="fileMetaDataLocation" approved="yes">
+        <source>Location</source>
+        <target state="final">ສະຖານທີ່</target>
+      </trans-unit>
+      <trans-unit id="fileMetaErrorInvalidRecord" approved="yes">
+        <source>File meta data not found</source>
+        <target state="final">ບໍ່ພົບຂໍ້ມູນເມຕາຂອງໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="selectPosition" approved="yes">
+        <source>Select a position for the new page</source>
+        <target state="final">ເລືອກຕຳແໜ່ງສຳລັບໜ້າໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="pageSelectPosition" approved="yes">
+        <source>Page (select position)</source>
+        <target state="final">ໜ້າ (ເລືອກຕຳແໜ່ງ)</target>
+      </trans-unit>
+      <trans-unit id="pageSelectPositionError" approved="yes">
+        <source>Failed to fetch page details. This is likely due to missing permissions.</source>
+        <target state="final">ລົ້ມເຫຼວໃນການດຶງຂໍ້ມູນລາຍລະອຽດຂອງໜ້າ. ນີ້ອາດຈະເປັນຍ້ອນບໍ່ມີສິດອະນຸຍາດ.</target>
+      </trans-unit>
+      <trans-unit id="goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">ກັບຄືນ</target>
+      </trans-unit>
+      <trans-unit id="createNewPage" approved="yes">
+        <source>Create a new page</source>
+        <target state="final">ສ້າງໜ້າໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="insertNewPageHere" x-unused-since="15.0" approved="yes">
+        <source>Insert the new page here</source>
+        <target state="final">ແຊກໜ້າໃໝ່ໃສ່ບ່ອນນີ້</target>
+      </trans-unit>
+      <trans-unit id="insertNewRecordHere" approved="yes">
+        <source>Insert new record here</source>
+        <target state="final">ແຊກຂໍ້ມູນໃໝ່ໃສ່ບ່ອນນີ້</target>
+      </trans-unit>
+      <trans-unit id="moveElementToHere" approved="yes">
+        <source>Move element to this position</source>
+        <target state="final">ຍ້າຍອົງປະກອບມາຍັງຕຳແໜ່ງນີ້</target>
+      </trans-unit>
+      <trans-unit id="moveElements" approved="yes">
+        <source>Move elements</source>
+        <target state="final">ຍ້າຍອົງປະກອບ</target>
+      </trans-unit>
+      <trans-unit id="copyElements" approved="yes">
+        <source>Copy elements</source>
+        <target state="final">ຄັດລອກອົງປະກອບ</target>
+      </trans-unit>
+      <trans-unit id="copyElementToHere" approved="yes">
+        <source>Copy element to this position</source>
+        <target state="final">ຄັດລອກອົງປະກອບມາຍັງຕຳແໜ່ງນີ້</target>
+      </trans-unit>
+      <trans-unit id="makeCopy" approved="yes">
+        <source>Make copy instead of moving element</source>
+        <target state="final">ສ້າງສຳເນົາແທນການຍ້າຍອົງປະກອບ</target>
+      </trans-unit>
+      <trans-unit id="newRecordWizard.filter.placeholder" approved="yes">
+        <source>Search for any record type</source>
+        <target state="final">ຄົ້ນຫາປະເພດຂໍ້ມູນໃດໜຶ່ງ</target>
+      </trans-unit>
+      <trans-unit id="newRecordWizard.filter.noResults" approved="yes">
+        <source>Unfortunately, no record type matches your query, please try a different one.</source>
+        <target state="final">ໜ້າເສຍດາຍ, ບໍ່ມີປະເພດຂໍ້ມູນທີ່ກົງກັບຄຳຄົ້ນຫາຂອງທ່ານ, ກະລຸນາລອງໃໝ່ດ້ວຍຄຳຄົ້ນຫາອື່ນ.</target>
+      </trans-unit>
+      <trans-unit id="newRecordWizard.recentlyUsed" approved="yes">
+        <source>Recently used</source>
+        <target state="final">ໃຊ້ເມື່ອບໍ່ດົນມານີ້</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.placeholder" approved="yes">
+        <source>Search for any content type</source>
+        <target state="final">ຄົ້ນຫາປະເພດເນື້ອຫາໃດໜຶ່ງ</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.noResults" approved="yes">
+        <source>Unfortunately, no content type matches your query, please try a different one.</source>
+        <target state="final">ໜ້າເສຍດາຍ, ບໍ່ມີປະເພດເນື້ອຫາທີ່ກົງກັບຄຳຄົ້ນຫາຂອງທ່ານ, ກະລຸນາລອງໃໝ່ດ້ວຍຄຳຄົ້ນຫາອື່ນ.</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.userNotAllowed" approved="yes">
+        <source>No content elements are available with your current permissions.</source>
+        <target state="final">ບໍ່ມີເນື້ອຫາທີ່ສາມາດໃຊ້ໄດ້ຕາມສິດການເຂົ້າເຖິງປັດຈຸບັນຂອງທ່ານ.</target>
+      </trans-unit>
+      <trans-unit id="system_records" approved="yes">
+        <source>System Records</source>
+        <target state="final">ຂໍ້ມູນລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.content" approved="yes">
+        <source>Content</source>
+        <target state="final">ເນື້ອຫາ</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.backendaccess" approved="yes">
+        <source>Backend Access</source>
+        <target state="final">ການເຂົ້າເຖິງລະບົບຫຼັງບ້ານ</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.frontendaccess" approved="yes">
+        <source>Frontend Access</source>
+        <target state="final">ການເຂົ້າເຖິງລະບົບໜ້າບ້ານ</target>
+      </trans-unit>
+      <trans-unit id="1_selectType" approved="yes">
+        <source>First select the type of the new content element</source>
+        <target state="final">ທຳອິດ ໃຫ້ເລືອກປະເພດຂອງອົງປະກອບເນື້ອຫາໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="2_selectPosition" approved="yes">
+        <source>Now click on the position of the new content element</source>
+        <target state="final">ຈາກນັ້ນ ໃຫ້ຄລິກໃສ່ຕຳແໜ່ງຂອງອົງປະກອບເນື້ອຫາໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="CM_history" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">ປະຫວັດ/ຍົກເລີກ</target>
+      </trans-unit>
+      <trans-unit id="CM_hideInMenus" approved="yes">
+        <source>Hide in menu</source>
+        <target state="final">ເຊື່ອງໃນເມນູ</target>
+      </trans-unit>
+      <trans-unit id="CM_showInMenus" approved="yes">
+        <source>Show in menu</source>
+        <target state="final">ສະແດງໃນເມນູ</target>
+      </trans-unit>
+      <trans-unit id="CM_newWizard" approved="yes">
+        <source>'Create New' wizard</source>
+        <target state="final">ຕົວຊ່ວຍສ້າງ 'ສ້າງໃໝ່'</target>
+      </trans-unit>
+      <trans-unit id="localize" approved="yes">
+        <source>Localize</source>
+        <target state="final">ເຮັດໃຫ້ເປັນພາສາທ້ອງຖິ່ນ</target>
+      </trans-unit>
+      <trans-unit id="localize.isLocalizable" approved="yes">
+        <source>Record can be localized</source>
+        <target state="final">ຂໍ້ມູນສາມາດເຮັດເປັນພາສາທ້ອງຖິ່ນໄດ້</target>
+      </trans-unit>
+      <trans-unit id="localizeAllRecords" approved="yes">
+        <source>Localize all records</source>
+        <target state="final">ເຮັດຂໍ້ມູນທັງໝົດໃຫ້ເປັນພາສາທ້ອງຖິ່ນ</target>
+      </trans-unit>
+      <trans-unit id="synchronizeWithOriginalLanguage" approved="yes">
+        <source>Synchronize with original language</source>
+        <target state="final">ປະສານຂໍ້ມູນກັບພາສາຕົ້ນສະບັບ</target>
+      </trans-unit>
+      <trans-unit id="tree_networkError" approved="yes">
+        <source>Navigation loading error</source>
+        <target state="final">ເກີດຂໍ້ຜິດພາດໃນການໂຫຼດການນຳທາງ</target>
+      </trans-unit>
+      <trans-unit id="tree_networkErrorDescription" approved="yes">
+        <source>Got unexpected response from the server. Please check logs for details.</source>
+        <target state="final">ໄດ້ຮັບການຕອບສະໜອງທີ່ບໍ່ຄາດຄິດຈາກເຊີບເວີ. ກະລຸນາກວດສອບບັນທຶກ (logs) ເພື່ອເບິ່ງລາຍລະອຽດ.</target>
+      </trans-unit>
+      <trans-unit id="synchronizeFolderRelations.afterFolderRenamed" approved="yes">
+        <source>%d %s records referencing the renamed directory were updated.</source>
+        <target state="final">ອັບເດດຂໍ້ມູນ %d %s ທີ່ອ້າງອີງເຖິງໂຟນເດີທີ່ປ່ຽນຊື່ແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_listEmptyText" approved="yes">
+        <source>No results found.</source>
+        <target state="final">ບໍ່ພົບຜົນການຄົ້ນຫາ.</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_hasErrors" approved="yes">
+        <source>Something went wrong.</source>
+        <target state="final">ເກີດຂໍ້ຜິດພາດບາງຢ່າງ.</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.versionizedRecord" approved="yes">
+        <source>Versionized record</source>
+        <target state="final">ຂໍ້ມູນທີ່ມີການກຳນົດເວີຊັນ</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescriptionPages" approved="yes">
+        <source>`#page:Home` will search for all pages with the title "Home"</source>
+        <target state="final">`#page:Home` ຈະຄົ້ນຫາທຸກໜ້າທີ່ມີຊື່ວ່າ "Home"</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescriptionContent" approved="yes">
+        <source>`#content:Professional` will search for all content elements containing the term "Professional"</source>
+        <target state="final">`#content:Professional` ຈະຄົ້ນຫາທຸກອົງປະກອບເນື້ອຫາທີ່ມີຄຳວ່າ "Professional"</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_help.shortcutOpen" approved="yes">
+        <source><![CDATA[You can open the live search by pressing the <kbd><kbd>Ctrl</kbd> + <kbd>K</kbd></kbd> or <kbd><kbd>Cmd</kbd> + <kbd>K</kbd></kbd> keystroke]]></source>
+        <target state="final"><![CDATA[ທ່ານສາມາດເປີດການຄົ້ນຫາແບບສົດໆໄດ້ໂດຍການກົດປຸ່ມ <kbd><kbd>Ctrl</kbd> + <kbd>K</kbd></kbd> ຫຼື <kbd><kbd>Cmd</kbd> + <kbd>K</kbd></kbd>]]></target>
+      </trans-unit>
+      <trans-unit id="liveSearch_search" approved="yes">
+        <source>Search</source>
+        <target state="final">ຄົ້ນຫາ</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_searchIn" approved="yes">
+        <source>Search records in</source>
+        <target state="final">ຄົ້ນຫາຂໍ້ມູນໃນ</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_activeFilters" approved="yes">
+        <source>active filters</source>
+        <target state="final">ຕົວຕອງທີ່ກຳລັງໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="viewport_navigation_show" approved="yes">
+        <source>Show Navigation</source>
+        <target state="final">ສະແດງການນຳທາງ</target>
+      </trans-unit>
+      <trans-unit id="viewport_navigation_hide" approved="yes">
+        <source>Hide Navigation</source>
+        <target state="final">ເຊື່ອງການນຳທາງ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
