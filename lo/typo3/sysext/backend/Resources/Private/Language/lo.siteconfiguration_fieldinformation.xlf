@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1522923345" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="site.rootPageId" resname="site.rootPageId" approved="yes">
+        <source>You must create a page with a site root flag.</source>
+        <target state="final">ທ່ານຕ້ອງສ້າງໜ້າທີ່ມີເຄື່ອງໝາຍຮາກຂອງເວັບໄຊ.</target>
+      </trans-unit>
+      <trans-unit id="site.identifier" resname="site.identifier" approved="yes">
+        <source>This name will be used to create the configuration directory. Mind the recommendations for directory names (only a-z,0-9,_,-) and make it unique.</source>
+        <target state="final">ຊື່ນີ້ຈະຖືກໃຊ້ເພື່ອສ້າງໂຟນເດີການຕັ້ງຄ່າ. ກະລຸນາປະຕິບັດຕາມຄຳແນະນຳສຳລັບການຕັ້ງຊື່ໂຟນເດີ (ໃຊ້ໄດ້ສະເພາະ a-z, 0-9, _, -) ແລະ ໃຫ້ແນ່ໃຈວ່າມັນບໍ່ຊ້ຳກັນ.</target>
+      </trans-unit>
+      <trans-unit id="site.base" resname="site.base" approved="yes">
+        <source>Main URL to call the frontend in default language. Can be https://www.example.com/ or just /, if it is just a / you cannot rely on TYPO3 creating
+					full URLs</source>
+        <target state="final">URL ຫຼັກເພື່ອເອີ້ນໃຊ້ frontend ໃນພາສາເລີ່ມຕົ້ນ. ສາມາດເປັນ https://www.example.com/ ຫຼື ພຽງແຕ່ /, ຖ້າຫາກເປັນພຽງແຕ່ / ທ່ານຈະບໍ່ສາມາດອາໄສໃຫ້ TYPO3 ສ້າງ URL ແບບເຕັມໄດ້</target>
+      </trans-unit>
+      <trans-unit id="site.baseVariants" resname="site.baseVariants" approved="yes">
+        <source>This allows you to specify variants of the site's base. Can be used, for example, if you have a different domain for your staging environment.</source>
+        <target state="final">ສ່ວນນີ້ຊ່ວຍໃຫ້ທ່ານສາມາດກຳນົດຮູບແບບຕ່າງໆຂອງພື້ນຖານເວັບໄຊ. ຕົວຢ່າງ: ສາມາດໃຊ້ໄດ້ໃນກໍລະນີທີ່ທ່ານມີໂດເມນອື່ນສຳລັບສະພາບແວດລ້ອມການທົດສອບ (staging environment).</target>
+      </trans-unit>
+      <trans-unit id="site_language.base" resname="site_language.base" approved="yes">
+        <source>Use a full qualified domain "https://www.mydomain.fr/" or "/fr/". Use "/" to keep the main URL for the default language. Add language specific suffixes to use those, or configure complete URLs for independent domains.</source>
+        <target state="final">ໃຊ້ໂດເມນແບບເຕັມ "https://www.mydomain.fr/" ຫຼື "/fr/". ໃຊ້ "/" ເພື່ອຮັກສາ URL ຫຼັກສຳລັບພາສາເລີ່ມຕົ້ນ. ເພີ່ມສ່ວນຕໍ່ທ້າຍສະເພາະຂອງພາສາເພື່ອໃຊ້ງານ ຫຼື ຕັ້ງຄ່າ URL ແບບເຕັມສຳລັບໂດເມນທີ່ເປັນອິດສະຫຼະ.</target>
+      </trans-unit>
+      <trans-unit id="site_language.locale" resname="site_language.locale" approved="yes">
+        <source>Used for localized date and currency formats. E.g. "de_DE" or "en_US.UTF-8".</source>
+        <target state="final">ໃຊ້ສຳລັບຮູບແບບວັນທີ ແລະ ສະກຸນເງິນຕາມທ້ອງຖິ່ນ. ຕົວຢ່າງ: "de_DE" ຫຼື "en_US.UTF-8".</target>
+      </trans-unit>
+      <trans-unit id="site_language.iso-639-1" resname="site_language.iso-639-1" approved="yes">
+        <source>ISO 639-1 code of the Language</source>
+        <target state="final">ລະຫັດ ISO 639-1 ຂອງພາສາ</target>
+      </trans-unit>
+      <trans-unit id="site_language.hreflang" resname="site_language.hreflang" approved="yes">
+        <source>Used within for "lang" and "hreflang" attributes</source>
+        <target state="final">ໃຊ້ພາຍໃນສຳລັບແອດທິບິວ (attributes) "lang" ແລະ "hreflang"</target>
+      </trans-unit>
+      <trans-unit id="site_language.navigationTitle" resname="site_language.navigationTitle" approved="yes">
+        <source>Used within language-related menus</source>
+        <target state="final">ໃຊ້ພາຍໃນເມນູທີ່ກ່ຽວຂ້ອງກັບພາສາ</target>
+      </trans-unit>
+      <trans-unit id="site_language.direction" resname="site_language.direction" approved="yes">
+        <source>Language direction for "dir" attribute</source>
+        <target state="final">ທິດທາງຂອງພາສາສຳລັບແອດທິບິວ (attribute) "dir"</target>
+      </trans-unit>
+      <trans-unit id="site_language.typo3Language" resname="site_language.typo3Language" approved="yes">
+        <source>Select the language to be used from translation files. Keep default if no translation files are available.</source>
+        <target state="final">ເລືອກພາສາທີ່ຈະໃຊ້ຈາກໄຟລ໌ການແປ. ໃຫ້ຄົງຄ່າເລີ່ມຕົ້ນໄວ້ ຖ້າບໍ່ມີໄຟລ໌ການແປທີ່ພ້ອມໃຊ້ງານ.</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode" resname="site_errorhandling.errorCode" approved="yes">
+        <source>Make sure to have at least 0 (not defined otherwise) configured in order to serve helpful error messages to your visitors.</source>
+        <target state="final">ໃຫ້ແນ່ໃຈວ່າໄດ້ຕັ້ງຄ່າຢ່າງໜ້ອຍ 0 (ຖ້າບໍ່ໄດ້ກຳນົດເປັນຢ່າງອື່ນ) ເພື່ອສະແດງຂໍ້ຄວາມຂໍ້ຜິດພາດທີ່ເປັນປະໂຫຍດໃຫ້ແກ່ຜູ້ເຂົ້າຊົມ.</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplate" resname="site_errorhandling.errorFluidTemplate" approved="yes">
+        <source>Path to the fluid template file given by absolute, relative path (from site root) or by referring the template file inside an extension with "EXT:" prefix.</source>
+        <target state="final">ເສັ້ນທາງໄປຫາໄຟລ໌ Fluid template ໂດຍລະບຸເປັນເສັ້ນທາງແບບເຕັມ (absolute), ເສັ້ນທາງແບບທຽບຖານ (relative) ຈາກຮາກຂອງເວັບໄຊ ຫຼື ອ້າງອີງໄຟລ໌ template ພາຍໃນສ່ວນເສີມ (extension) ດ້ວຍຄຳນຳໜ້າ "EXT:".</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorPhpClassFQCN" resname="site_errorhandling.errorPhpClassFQCN" approved="yes">
+        <source>Fully qualified class name to a class that implements the PageErrorHandlerInterface.</source>
+        <target state="final">ຊື່ Class ແບບເຕັມ (FQCN) ທີ່ນຳໃຊ້ PageErrorHandlerInterface.</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.base" resname="site_base_variant.base" approved="yes">
+        <source>For example "https://staging.domain.tld" or "http://www.domain.local"</source>
+        <target state="final">ຕົວຢ່າງ "https://staging.domain.tld" ຫຼື "http://www.domain.local"</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition" resname="site_base_variant.condition" approved="yes">
+        <source>Expression to match this base variant.</source>
+        <target state="final">ນິພົດ (Expression) ເພື່ອໃຫ້ກົງກັບຮູບແບບພື້ນຖານນີ້.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
