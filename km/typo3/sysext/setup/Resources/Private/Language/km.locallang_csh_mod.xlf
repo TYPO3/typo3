@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814989" source-language="en" datatype="plaintext" original="EXT:setup/Resources/Private/Language/locallang_csh_mod.xlf" date="2011-10-17T20:22:37Z" product-name="setup" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>User &gt; Setup module</source>
+        <target state="final">ម៉ូឌុល អ្នកប្រើ &gt; ដំឡើង</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The Setup module allows the backend user to customize TYPO3 for his own login sessions. This includes the backend language and various other interface features.</source>
+        <target state="final">ម៉ូឌុល​ដំឡើង អនុញ្ញាត​ឱ្យ​អ្នក​ប្រើ backend កែប្រែ TYPO3 សម្រាប់​ការកត់ត្រា​ចូល​ផ្ទាល់​ខ្លួន​របស់​គាត់ ។ ដែល​មាន ភាសា backend និង លក្ខណៈ​សម្បត្តិ​​អន្តរមុខ​ផ្សេងៗ​ទៀត​ ។</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>&lt;b&gt;Notice [For Admins]:&lt;/b&gt; These settings can all be overridden or have their default values changed by "User TSconfig". To read more about this concept, see the link below!</source>
+        <target state="final">&lt;b&gt;ចំណាំ [សម្រាប់​អ្នក​គ្រប់គ្រង]៖&lt;/b&gt; ការកំណត់​នេះ អាច​បញ្ជាន់​ពី​លើ ឬ មាន​តម្លៃ​លំនាំ​ដើម​​ដែល​បាន​កែ​ដោយ "TSconfig អ្នកប្រើ" ។ ដើម្បី​អាន​ព័ត៌មាន​បន្ថែម សូម​មើល​តំណ​ខាង​ក្រោម!</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The Setup module is selected in the left menu.
+This is how the Setup module interface looks like - a list of options to configure.</source>
+			<target state="final">ម៉ូឌុល​ដំឡើង ត្រូវ​បាន​រើស​នៅ​មឺនុយ​ខាង​ឆ្វេង ។ នេះ​ជា​អន្តរមុខ​នៃ​ម៉ូឌុល​ដំឡើង - បញ្ជី​នៃ​ជម្រើស​ដើម្បី​កំណត់ ។</target></trans-unit>
+      <trans-unit id="language.alttitle" resname="language.alttitle" approved="yes">
+        <source>Backend Language selection</source>
+        <target state="final">ការជ្រើសរើស​ភាសា backend</target>
+      </trans-unit>
+      <trans-unit id="language.description" resname="language.description" approved="yes">
+        <source>Select the backend language you prefer. Most parts of TYPO3s backend (for regular users) are translated into other languages.</source>
+        <target state="final">រើស​ភាសា backend ដែល​អ្នក​ពេញ​ចិត្ត ។ ក្នុង​ផ្នែក​មួយ​ចំនួន​របស់ backend TYPO3 (សម្រាប់​អ្នក​ប្រើ​ធម្មតា) ត្រូវ​បាន​បកប្រែ​ទៅ​ភាសា​ផ្សេង​ទៀត ។</target>
+      </trans-unit>
+      <trans-unit id="language.image_descr" resname="language.image_descr" approved="yes">
+        <source>TYPO3 is translated into around 40 languages. English is the default language and all labels must be available in English first and foremost. This screenshot shows translations for Hebrew, Arabic, Russian and Chinese.</source>
+        <target state="final">TYPO3 ត្រូវ​បាន​បកប្រែ​មក​ប្រហែល ៤០ ភាសា ។ អង់គ្លេស​ជា​ភាសា​ដើម ហើយ​រាល់​អក្សរ​ទាំងអស់​មាន​ជា​ភាសា​អង់គ្លេស​ជា​បឋម និង មុន​គេ​បង្អស់ ។ រូបភាព​នៃ បង្ហាញ​អំពី​ការបកប្រែ​ភាសា អ៊‍ីប្រូ អារ៉ាប់ រុស្ស៊ី និង ចិន ។</target>
+      </trans-unit>
+      <trans-unit id="option_startModule.alttitle" resname="option_startModule.alttitle" approved="yes">
+        <source>Start module</source>
+        <target state="final">ចាប់ផ្ដើម​ម៉ូឌុល</target>
+      </trans-unit>
+      <trans-unit id="option_startModule.description" resname="option_startModule.description" xml:space="preserve" approved="yes">
+				<source>Let you select the module that is called when you login in the Backend
+The default module is "About Modules".</source>
+			<target state="final">ឱ្យ​អ្នក​រើស​ម៉ូឌុល​ដែល​ត្រូវ​បាន​ហៅ ពេល​អ្នក​កត់ត្រា​ចូល​ទៅ​​ Backend ម៉ូឌុល​លំនាំ​ដើម "អំពី​ម៉ូឌុល" ។</target></trans-unit>
+    </body>
+  </file>
+</xliff>
