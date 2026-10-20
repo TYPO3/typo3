@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf" date="2017-12-29T20:23:34Z" product-name="redirects" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="source_host_global_text" approved="yes">
+        <source>Global redirect (any domain)</source>
+        <target state="final">Redirección global (cualquier dominio)</target>
+      </trans-unit>
+      <trans-unit id="heading_text" approved="yes">
+        <source>Redirect Management</source>
+        <target state="final">Gestión de Redirecciones</target>
+      </trans-unit>
+      <trans-unit id="redirect_add_text" approved="yes">
+        <source>Add redirect</source>
+        <target state="final">Añadir redirección</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found.message" approved="yes">
+        <source>There are currently no redirect records found in the database.</source>
+        <target state="final">Actualmente no hay registros de redirección encontrados en la base de datos.</target>
+      </trans-unit>
+      <trans-unit id="redirect_create" approved="yes">
+        <source>Create new redirect</source>
+        <target state="final">Crear nueva redirección</target>
+      </trans-unit>
+      <trans-unit id="hit_last_never" approved="yes">
+        <source>Never</source>
+        <target state="final">Nunca</target>
+      </trans-unit>
+      <trans-unit id="visit_destination" approved="yes">
+        <source>Go to</source>
+        <target state="final">Ir a</target>
+      </trans-unit>
+      <trans-unit id="view_redirect" approved="yes">
+        <source>View redirect</source>
+        <target state="final">Ver redirección</target>
+      </trans-unit>
+      <trans-unit id="labels.delete.title" approved="yes">
+        <source>Delete redirects</source>
+        <target state="final">Eliminar redirecciones</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
