@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/Modules/short_urls.xlf" date="2025-11-13T18:00:15Z" product-name="redirects" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Short URLs</source>
+        <target state="final">URL ສັ້ນ</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Short URLs Administration</source>
+        <target state="final">ການບໍລິຫານ URL ສັ້ນ</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Create and manage Short URLs that redirect to longer links for easier sharing and tracking.</source>
+        <target state="final">ສ້າງ ແລະ ຈັດການ URL ສັ້ນ ທີ່ປ່ຽນເສັ້ນທາງໄປຫາລິ້ງທີ່ຍາວກວ່າ ເພື່ອໃຫ້ງ່າຍຕໍ່ການແບ່ງປັນ ແລະ ຕິດຕາມ.</target>
+      </trans-unit>
+      <trans-unit id="heading_text" approved="yes">
+        <source>Short URL Management</source>
+        <target state="final">ການຈັດການ URL ສັ້ນ</target>
+      </trans-unit>
+      <trans-unit id="add_text" approved="yes">
+        <source>Add Short URL</source>
+        <target state="final">ເພີ່ມ URL ສັ້ນ</target>
+      </trans-unit>
+      <trans-unit id="not_found_with_filter.message" approved="yes">
+        <source>No Short URL could be found with the current set of filters applied.</source>
+        <target state="final">ບໍ່ພົບ URL ສັ້ນ ຕາມຊຸດຕົວກອງທີ່ໃຊ້ໃນປັດຈຸບັນ.</target>
+      </trans-unit>
+      <trans-unit id="not_found.title" approved="yes">
+        <source>No Short URLs found</source>
+        <target state="final">ບໍ່ພົບ URL ສັ້ນ</target>
+      </trans-unit>
+      <trans-unit id="not_found.message" approved="yes">
+        <source>There are currently no Short URLs found in the database.</source>
+        <target state="final">ໃນປັດຈຸບັນ ບໍ່ພົບຂໍ້ມູນ URL ສັ້ນ ໃນຖານຂໍ້ມູນ.</target>
+      </trans-unit>
+      <trans-unit id="create" approved="yes">
+        <source>Create new Short URL</source>
+        <target state="final">ສ້າງ URL ສັ້ນໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="delete.title" approved="yes">
+        <source>Delete Short URLs</source>
+        <target state="final">ລຶບ URL ສັ້ນ</target>
+      </trans-unit>
+      <trans-unit id="delete.message" approved="yes">
+        <source>Delete all marked Short URLs permanently? You cannot undo this action.</source>
+        <target state="final">ລຶບ URL ສັ້ນ ທັງໝົດທີ່ເລືອກໄວ້ແບບຖາວອນບໍ? ເຈົ້າບໍ່ສາມາດຍົກເລີກການດຳເນີນການນີ້ໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="show" approved="yes">
+        <source>Show Short URL</source>
+        <target state="final">ສະແດງ URL ສັ້ນ</target>
+      </trans-unit>
+      <trans-unit id="generate_short_url" approved="yes">
+        <source>Generate Short URL</source>
+        <target state="final">ສ້າງ URL ສັ້ນ</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicate_short_url" approved="yes">
+        <source>This Short URL already exists. Please choose a different source host or source path.</source>
+        <target state="final">URL ສັ້ນ ນີ້ມີຢູ່ແລ້ວ. ກະລຸນາເລືອກ ໂຮສຕົ້ນທາງ ຫຼື ເສັ້ນທາງຕົ້ນທາງ ອື່ນ.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
