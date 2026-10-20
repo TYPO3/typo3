@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_column_selector.xlf" date="2021-08-25T02:11:02Z" product-name="backend" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="showColumns" approved="yes">
+        <source>Show columns</source>
+        <target state="final">Prikaži stolpce</target>
+      </trans-unit>
+      <trans-unit id="showColumnsSelection" approved="yes">
+        <source>Show columns for %s</source>
+        <target state="final">Pokaži stolpce za %s</target>
+      </trans-unit>
+      <trans-unit id="columnsFilter" approved="yes">
+        <source>Filter by:</source>
+        <target state="final">Filtriraj po:</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
