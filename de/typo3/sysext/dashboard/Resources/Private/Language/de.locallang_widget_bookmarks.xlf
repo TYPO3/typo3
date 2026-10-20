@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="widget.bookmarks.title" xml:space="preserve" approved="yes">
+        <source>Bookmarks</source>
+      <target state="final">Lesezeichen</target></trans-unit>
+      <trans-unit id="widget.bookmarks.description" xml:space="preserve" approved="yes">
+        <source>Display your bookmarks as a dashboard widget.</source>
+      <target state="final">Aktuelle Lesezeichen als Dashboard-Widget anzeigen.</target></trans-unit>
+      <trans-unit id="widget.bookmarks.setting.groups.label" xml:space="preserve" approved="yes">
+        <source>Bookmark groups</source>
+      <target state="final">Lesezeichengruppen</target></trans-unit>
+      <trans-unit id="widget.bookmarks.setting.groups.description" xml:space="preserve" approved="yes">
+        <source>Bookmark groups to be displayed.</source>
+      <target state="final">Anzuzeigende Lesezeichengruppen.</target></trans-unit>
+      <trans-unit id="widget.bookmarks.setting.limit.label" xml:space="preserve" approved="yes">
+        <source>Limit</source>
+      <target state="final">Limit</target></trans-unit>
+      <trans-unit id="widget.bookmarks.setting.limit.description" xml:space="preserve" approved="yes">
+        <source>Maximum number of bookmarks to display.</source>
+      <target state="final">Maximale Anzahl der anzuzeigenden Lesezeichen.</target></trans-unit>
+      <trans-unit id="widget.bookmarks.setting.showAll" xml:space="preserve" approved="yes">
+        <source>Show all bookmarks</source>
+      <target state="final">Alle Lesezeichen anzeigen</target></trans-unit>
+      <trans-unit id="widget.bookmarks.manageBookmarks" xml:space="preserve" approved="yes">
+        <source>Manage bookmarks</source>
+      <target state="final">Lesezeichen verwalten</target></trans-unit>
+    </body>
+  </file>
+</xliff>
