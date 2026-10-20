@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814821" source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="ll_welcome_header" resname="ll_welcome_header" approved="yes">
+        <source>User login</source>
+        <target state="final">Вход в систему</target>
+      </trans-unit>
+      <trans-unit id="ll_welcome_message" resname="ll_welcome_message" approved="yes">
+        <source>Enter your username and password here in order to log in on the website</source>
+        <target state="final">Для авторизации на сайте введите свои имя пользователя и пароль</target>
+      </trans-unit>
+      <trans-unit id="ll_logout_header" resname="ll_logout_header" approved="yes">
+        <source>You have logged out.</source>
+        <target state="final">Вы вышли из системы.</target>
+      </trans-unit>
+      <trans-unit id="ll_logout_message" resname="ll_logout_message" approved="yes">
+        <source>You just logged out from your user session on this website. You can login again or as another user by the form below.</source>
+        <target state="final">Вы автоматически вошли в систему. Чтобы зарегистрироваться снова или войти в систему под другим именем, используйте форму ниже.</target>
+      </trans-unit>
+      <trans-unit id="ll_error_header" resname="ll_error_header" approved="yes">
+        <source>Login failure</source>
+        <target state="final">Ошибка при входе в систему</target>
+      </trans-unit>
+      <trans-unit id="ll_error_message" resname="ll_error_message" xml:space="preserve" approved="yes">
+				<source>An error occurred during login. Most likely you didn't enter the username or password correctly.
+Be certain that you enter them precisely as they are, including upper/lower case.
+Another possibility is that cookies might be disabled in your web browser.</source>
+			<target state="final">Произошла ошибка при входе в систему. Вероятно имя пользователя или пароль не верные.
+Проверьте, правильно ли введены данные, был ли использован правильный язык, заглавные или прописные буквы.
+Убедитесь также, допускает ли Ваш обозреватель Cookies.</target></trans-unit>
+      <trans-unit id="ll_success_header" resname="ll_success_header" approved="yes">
+        <source>Login successful</source>
+        <target state="final">Вход в систему прошел успешно</target>
+      </trans-unit>
+      <trans-unit id="ll_success_message" resname="ll_success_message" approved="yes">
+        <source>You are now logged in as '###USER###'</source>
+        <target state="final">Ваше имя пользователя: '###USER###'</target>
+      </trans-unit>
+      <trans-unit id="ll_status_header" resname="ll_status_header" approved="yes">
+        <source>Current status</source>
+        <target state="final">Текущий статус</target>
+      </trans-unit>
+      <trans-unit id="ll_status_message" resname="ll_status_message" approved="yes">
+        <source>This is your current status</source>
+        <target state="final">Ваш текущий статус</target>
+      </trans-unit>
+      <trans-unit id="cookie_warning" resname="cookie_warning" approved="yes">
+        <source>Warning: There is a possibility that cookies are not enabled in your web browser! If your login disappears on your next click that is the case and you should enable cookies (or accept cookies from this website) immediately!</source>
+        <target state="final">Внимание: Возможно в вашем браузере запрещены cookies! Если форма входа не отобразится после следующего щелчка, разрешите cookies (или примите cookies этого сайта) незамедлительно!</target>
+      </trans-unit>
+      <trans-unit id="username" resname="username" approved="yes">
+        <source>Username</source>
+        <target state="final">Имя пользователя</target>
+      </trans-unit>
+      <trans-unit id="password" resname="password" approved="yes">
+        <source>Password</source>
+        <target state="final">Пароль</target>
+      </trans-unit>
+      <trans-unit id="login" resname="login" approved="yes">
+        <source>Login</source>
+        <target state="final">Вход в систему</target>
+      </trans-unit>
+      <trans-unit id="permalogin" resname="permalogin" approved="yes">
+        <source>Stay logged in</source>
+        <target state="final">Запомнить меня</target>
+      </trans-unit>
+      <trans-unit id="logout" resname="logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">Выход из системы</target>
+      </trans-unit>
+      <trans-unit id="send_password" resname="send_password" approved="yes">
+        <source>Send password</source>
+        <target state="final">Отправить пароль</target>
+      </trans-unit>
+      <trans-unit id="reset_password" resname="reset_password" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">Сбросить пароль</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_header" resname="ll_change_password_header" approved="yes">
+        <source>Change your password</source>
+        <target state="final">Изменить свой пароль</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_message" resname="ll_change_password_message" approved="yes">
+        <source>Please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">Введите свой пароль дважды. Длина пароля должна быть по крайней мере %s символов.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_nolinkprefix_message" resname="ll_change_password_nolinkprefix_message" approved="yes">
+        <source>Error: there is no prefix for the link. Please set one of the following in your typoscript template: plugin.tx_felogin_pi1.feloginBaseURL = http://yourdomain/, config.baseURL = http://yourdomain/, config.absRefPrefix = /</source>
+        <target state="final">Ошибка: нет префикса для ссылки. Установите один из следующих с своем шаблоне typoscript: plugin.tx_felogin_pi1.feloginBaseURL = http://yourdomain/, config.baseURL = http://yourdomain/, config.absRefPrefix = /</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_notvalid_message" resname="ll_change_password_notvalid_message" approved="yes">
+        <source>The link you clicked is not valid. Please repeat the forgot password procedure.</source>
+        <target state="final">Неверная ссылка. Повторите процедуру восстановления пароля.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_notequal_message" resname="ll_change_password_notequal_message" approved="yes">
+        <source>The passwords are not equal, please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">Подтвержденный пароль не верен, дважды введите новый пароль. Длина пароля должна быть по крайней мере %s символов.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_tooshort_message" resname="ll_change_password_tooshort_message" approved="yes">
+        <source>The password length is too short. Please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">Введенный пароль слишком короткий. Введите пароль дважды. Длина пароля должна быть по крайней мере %s символов.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_done_message" resname="ll_change_password_done_message" approved="yes">
+        <source>Your password has been saved. You can now login with your new password.</source>
+        <target state="final">Пароль сохранен. Теперь можно зарегистрироваться с новым паролем.</target>
+      </trans-unit>
+      <trans-unit id="change_password" resname="change_password" approved="yes">
+        <source>Change your password</source>
+        <target state="final">Изменить свой пароль</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label1" resname="newpassword_label1" approved="yes">
+        <source>Enter new password</source>
+        <target state="final">Ввод нового пароля</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label2" resname="newpassword_label2" approved="yes">
+        <source>Repeat new password</source>
+        <target state="final">Повторите новый пароль</target>
+      </trans-unit>
+      <trans-unit id="your_email" resname="your_email" approved="yes">
+        <source>Your email</source>
+        <target state="final">Ваш email</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_header" resname="ll_forgot_header" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">Забыли пароль?</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_email_password" resname="ll_forgot_email_password" xml:space="preserve" approved="yes">
+				<source>Your password
+Hi %s
+
+Your username is "%s"
+Your password is "%s"</source>
+			<target state="final">Ваш пароль
+Здравствуйте %s
+
+Ваше имя пользователя: "%s"
+Ваш пароль: "%s"</target></trans-unit>
+      <trans-unit id="ll_forgot_email_nopassword" resname="ll_forgot_email_nopassword" xml:space="preserve" approved="yes">
+				<source>Your password
+Hi %s
+
+We couldn't find a username for this email address and so cannot send the password to you. Probably you misspelled the email address (upper/lower case makes a difference) or maybe you even didn't register yet?</source>
+			<target state="final">Ваш пароль
+Здравствуйте %s
+
+Мы не можем найти пользователя с именем, которое соответствует указанному вами адресу электронной почты и в связи с этим, мы не можем отправить вам ваш пароль. Возможно, вы ошиблись в адресе электронной почты (учтите, регистр символов важен) или ещё не зарегистрировались?</target></trans-unit>
+      <trans-unit id="ll_forgot_validate_reset_password" resname="ll_forgot_validate_reset_password" xml:space="preserve" approved="yes">
+				<source>Your new password
+Dear %s,
+
+This email was sent in response to your request to reset your password. Please click on the link below.
+%s
+
+For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.</source>
+			<target state="final">Ваш новый пароль
+Уважаемый %s,
+
+Это письмо было послано в ответ на просьбу сброса пароля. Щелкните по ссылке ниже.
+%s
+
+В целях безопасности, эта ссылка действительна в течение %s. Если за это время Вы не смогли перейти по ссылке, повторите процедуру сброса пароля.</target></trans-unit>
+      <trans-unit id="ll_forgot_message" resname="ll_forgot_message" approved="yes">
+        <source>Please enter the email address by which you registered your user account. Then press "Send password" and your password will immediately be emailed to you. Make sure to spell your email address correctly.</source>
+        <target state="final">Введите пожалуйста, email адрес, указанный при регистрации. Нажмите на "Отправить пароль" и вы получите пароль на данный адрес незамедлительно. Удостоверьтесь в правильности указанного адреса.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_message_emailSent" resname="ll_forgot_message_emailSent" approved="yes">
+        <source>Your password has now been sent to the email address %s</source>
+        <target state="final">Ваш пароль был выслан по адресу %s</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_reset_message" resname="ll_forgot_reset_message" approved="yes">
+        <source>Please enter your username or email address. Instructions for resetting the password will be immediately emailed to you.</source>
+        <target state="final">Введите свое имя пользователя или адрес электронной почты. Инструкция по сбросу пароля будет немедленно отправлена по введенному адресу.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_reset_message_emailSent" resname="ll_forgot_reset_message_emailSent" approved="yes">
+        <source>An email has been sent to the address stored in your account and contains a link to reset your password. If you do not receive an email, your account or email address was not found.</source>
+        <target state="final">По адресу, сохраненному для учетной записи, было отправлено письмо со ссылкой для сброса пароля. Если письмо не было получено, то такая учетная запись или адрес электронной почты не найдены.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_reset_message_error" resname="ll_forgot_reset_message_error" approved="yes">
+        <source>Your account or email address does not exist.</source>
+        <target state="final">Не найдена учетная запись или адрес email.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_header_backToLogin" resname="ll_forgot_header_backToLogin" approved="yes">
+        <source>Return to login form</source>
+        <target state="final">Вернуться к форме входа в систему</target>
+      </trans-unit>
+      <trans-unit id="ll_enter_your_data" resname="ll_enter_your_data" approved="yes">
+        <source>Username or email address</source>
+        <target state="final">Имя пользователя или адрес электронной почты</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
