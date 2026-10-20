@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_download.xlf" date="2012-06-17T10:22:33Z" product-name="recordlist" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="download" approved="yes">
+        <source>Download</source>
+        <target state="final">Prenos</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.generalSettings" approved="yes">
+        <source>General settings</source>
+        <target state="final">Splošne nastavitve</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.selectedColumns" approved="yes">
+        <source>Selected columns</source>
+        <target state="final">Izbrani stolpci</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.allColumns" approved="yes">
+        <source>All columns</source>
+        <target state="final">Vsi stolpci</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.filename" approved="yes">
+        <source>Filename</source>
+        <target state="final">Ime datoteke</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
