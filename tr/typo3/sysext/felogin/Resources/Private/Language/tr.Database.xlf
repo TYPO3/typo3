@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814820" source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/Database.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="tr">
+    <header/>
+    <body>
+      <trans-unit id="tt_content.CType_pi1" resname="tt_content.CType_pi1" approved="yes">
+        <source>Website User Login</source>
+        <target state="final">Site kullanıcı girişi</target>
+      </trans-unit>
+      <trans-unit id="felogin_redirectPid" resname="felogin_redirectPid" approved="yes">
+        <source>Redirect at Login to Page (felogin)</source>
+        <target state="final">Girişte şu sayfaya yönlendir</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.general_header" resname="tt_content.pi_flexform.general_header" approved="yes">
+        <source>General Header</source>
+        <target state="final">Genel Başlık</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.general_message" resname="tt_content.pi_flexform.general_message" approved="yes">
+        <source>General Message</source>
+        <target state="final">Genel mesaj</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.sheet_general" resname="tt_content.pi_flexform.sheet_general" approved="yes">
+        <source>General</source>
+        <target state="final">Genel</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.show_forgot_password" resname="tt_content.pi_flexform.show_forgot_password" approved="yes">
+        <source>Display Password Recovery Link</source>
+        <target state="final">'Parola kayıp?' linkini göster:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.field_manualOrder" resname="tt_content.pi_flexform.field_manualOrder" approved="yes">
+        <source>Using fieldlists below:</source>
+        <target state="final">Altdaki alan listelerini kullan:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.field_orderList" resname="tt_content.pi_flexform.field_orderList" approved="yes">
+        <source>User Fields/list:</source>
+        <target state="final">Liste görüntüsü</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.field_orderDetails" resname="tt_content.pi_flexform.field_orderDetails" approved="yes">
+        <source>User Fields/details:</source>
+        <target state="final">Detaylı görüntü</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
