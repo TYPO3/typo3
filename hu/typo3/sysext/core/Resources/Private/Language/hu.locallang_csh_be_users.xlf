@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814853" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_be_users.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="hu">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>This is the table of backend administration users. Backend users can login in the backend of TYPO3 and are typically producers of content on a website.</source>
+        <target state="final">Ez a Backend adminisztrátor felhasználók táblázata. A backend felhasználók tudnak belépni a TYPO3 backend részébe, és általában ők állítják elő a wbeoldal tartalmát.</target>
+      </trans-unit>
+      <trans-unit id="username.description" resname="username.description" approved="yes">
+        <source>Enter the login name of the backend user.</source>
+        <target state="final">Add meg a backend felhasználó bejelentkezési nevét.</target>
+      </trans-unit>
+      <trans-unit id="username.details" resname="username.details" approved="yes">
+        <source>A username is required and must be in lowercase without spaces in it. Furthermore the username must be unique. If it is not unique a number will be appended automatically.</source>
+        <target state="final">A felhasználó név szükséges és csak kisbetűkből állhat szóköz nélkül. Továbbá a felhasználói névnek egyedinek kell lennie. Ha nem egyedi, akkor mögé automatikusan egy szám kerül.</target>
+      </trans-unit>
+      <trans-unit id="password.description" resname="password.description" approved="yes">
+        <source>Enter the password for the backend username above (Notice the value you enter &lt;i&gt;will&lt;/i&gt; be readable in the field!).</source>
+        <target state="final">Add meg a fenti backend felhasználó jelszavát. Figyelj, mert a beírt adat &lt;i&gt;olvasható lesz&lt;/i&gt; a mezőben.</target>
+      </trans-unit>
+      <trans-unit id="password.details" resname="password.details" xml:space="preserve" approved="yes">
+				<source>The password is required. Before the password is sent to the server it's md5-hashed, so the password value itself is not transferred over the Internet. This is true both when editing the password and when the user logs in.
+While this principle does not reveal the raw password it is &lt;i&gt;not&lt;/i&gt; the same as real encryption. If you need the highest degree of security you should install the TYPO3 backend on a secure server.
+The password is stored in the database as an md5-hash and thus it's not possible to extract the original password from the database either. This means that 'lost passwords' must be substituted with a new password for the user.
+
+&lt;b&gt;Notice&lt;/b&gt;
+When you enter the password in the password field it is initially visible in clear text! First when the password field focus is lost will the password become a "list of dots".
+
+&lt;b&gt;User changing password&lt;/b&gt;
+Users can change their password from the User &gt; Setup module</source>
+			<target state="final">A jelszó kötelező. Mielött a szerverre továbbításra kerül md5 szerint kódolódik, így maga a jelszó nem továbbítódik az interneten. ez igaz mind a jelszó szerkesztésére mind a felhasználó bejelentkezésére is. Mivel ez a dolog nem látható kívülről, a feldolgozott jelszó &lt;i&gt;nem&lt;/i&gt; azonos a valódi titkosítással. Ha magasabb fokú biztonság szükséges, a TYPO3 backend rendszert egy biztonságos szerverre kell telepíteni. A jelszó md5 kódolással kerül tárolásra az adatbázisban, így a jelszót nem lehet visszafejteni az adatbázisból sem. Ezt azt jelenti, hogy az elfelejtett jelszót újjal kell helyettesíteni</target></trans-unit>
+      <trans-unit id="usergroup.description" resname="usergroup.description" approved="yes">
+        <source>Assign backend user groups to the user.</source>
+        <target state="final">Backend felhasználócsoport hozzárendelése a felhasználóhoz.</target>
+      </trans-unit>
+      <trans-unit id="usergroup.details" resname="usergroup.details" xml:space="preserve" approved="yes">
+				<source>The backend user groups defines the permissions which the backend user will inherit. So unless the backend user is an 'Admin' user, he needs to be a member of one or more user groups in order to have practically any permissions assigned. The properties set in the user groups are mostly added together.
+The first (top) group in the list is the group which will, by default, be the owner of pages the user creates.</source>
+			<target state="final">A backend felhasználócsoport jogosultságokat ad meg, amelyeket a backend felhasználó örököl. Így a felhasználó hacsak nem 'Adminisztrátor ' felhasználó, egy vagy több csoporttagsággal kell rendelkeznie, hogy gyakorlatilag jogosultsággal rendelkezzen A felhasználó csoport tulajdonságai általában összeadódnak. Ez első (legfelső) csoport a listában az a csoport, amelyik a felhasználó által létrehozott oldal tulajdonosa lesz.</target></trans-unit>
+      <trans-unit id="lockToDomain.details" resname="lockToDomain.details" approved="yes">
+        <source>A TYPO3 system may have multiple domains pointing to it. Therefore this option secures that users can login only from a certain host name.</source>
+        <target state="final">A TYPO3 rendszerre több domain mutathat. Így az opció biztosítja, hogy a felhasználó csak bizonyos hosztgépről jelentkezhet be.</target>
+      </trans-unit>
+      <trans-unit id="disableIPlock.description" resname="disableIPlock.description" approved="yes">
+        <source>Disable the lock of the backend users session to the remote IP number.</source>
+        <target state="final">Távoli backend felhasználók IP cím zárolásának megszüntetése.</target>
+      </trans-unit>
+      <trans-unit id="disableIPlock.details" resname="disableIPlock.details" approved="yes">
+        <source>You will have to disable this lock if backend users are accessing TYPO3 from ISDN or modem connections which may shutdown and reconnect with a new IP. The same would be true for DHCP assignment of IP numbers where new IP numbers are frequently assigned.</source>
+        <target state="final">Akkor kapcsold ki, ha vannak backend felhasználók, akik ISDN vagy modem használatával kapcsolódnak a TYPO3-hoz, és az IP címük változhat újrakapcsolódáskor. Ugyanez érvényes, ha DHCP szerver rendeli a felhasználókhoz az IP címeket.</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.description" resname="db_mountpoints.description" approved="yes">
+        <source>Assign startpoints for the users page tree.</source>
+        <target state="final">A felhasználó oldalrendszeréhez kiindulópontot rendel.</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.details" resname="db_mountpoints.details" xml:space="preserve" approved="yes">
+				<source>The page tree used my all Web-submodules to navigate must have some points-of-entry defined. Here you should insert one or more references to a page which will represent a new root page for the page tree. This is called a 'Database mount'.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that backend user groups also has DB mounts which can be inherited by the user. So if you want a group of users to share a page tree, you should probably mount the page tree in the backend user group which they share instead.</source>
+			<target state="final">Az összes, navigálásra használt web-almodul oldalrendszerének rendelkeznie kell megadott belépési ponttal. Itt egy vagy több hivatkozást kell beszúrni egy oldalhoz, amely az oldalcsoporthoz új kiinduló oldalt ad meg. Ezt hívják adatbázis csatolásnak. &lt;strong&gt;Figyelem:&lt;/strong&gt; a backend felhasználó csoportoknak szintén vannak adatbáziscsatolásaik, amelyek a felhasználótól öröklődtek. Így, hogy egy felhasználócsoport megoszthasson egy oldalrendszert, azt valószinűleg csatolni kell ahhoz a backend felhasználó csoporthoz, amely megosztja azokat.</target></trans-unit>
+      <trans-unit id="db_mountpoints.image_descr" resname="db_mountpoints.image_descr" xml:space="preserve" approved="yes">
+				<source>A DB mount is assigned to the user. Users can only operate on pages and records which are inside their DB mounts!
+When a page is mounted for a user it will become the root of their page tree. The user must have access to the page through the regular page permissions set in the Web &gt; Access module.</source>
+			<target state="final">A DB mount a felhasználóhoz tartozik. A felhasználók csak azon oldalakon és rekordokon tevékenykedhetnek, amik a DB mount-jukon belül vannak. Amikor egy oldal mount-olódik egy felhasználóhoz, akkor az lesz a gyökere az oldalfának. A felhasználónak rendelkeznie kell jogosultsággal az oldalhoz, amit a Web &gt; Elérés modulban lehet megadni.</target></trans-unit>
+      <trans-unit id="file_mountpoints.description" resname="file_mountpoints.description" approved="yes">
+        <source>Assign startpoints for the file folder tree.</source>
+        <target state="final">A fájlrendszerhez kiindulópontot rendel.</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints.details" resname="file_mountpoints.details" xml:space="preserve" approved="yes">
+				<source>The file folder tree is used by all File-submodules to navigate between the file folders on the webserver.
+Notice as with 'DB mounts' the file folder mounts may be inherited from the member groups of the user.
+See Backend Groups for details</source>
+			<target state="final">A fájl könyvtár-rendszert az összes, a webszerver fájlkönyvtárai közötti navigálásra szánt fájl almodul használja. &lt;em&gt;Bármely&lt;-/em&gt; fájlfeltöltéshez a felhasználónak &lt;em&gt;rendelkeznie kell&lt;/em&gt; '_temp_' nevű csatolt fájlkönyvtárral (amelyik a feltöltés alapértelmezett könyvtára). Meg kell jegyezni, hogy az adatbázis csatolásokhoz hasonlóan, a fájlkönyvtár csatolások is öröklődnek a csoporthoz tartozó felhasználóktól.</target></trans-unit>
+      <trans-unit id="email.description" resname="email.description" approved="yes">
+        <source>Enter the email address of the user.</source>
+        <target state="final">Add meg a felhasználó email címét.</target>
+      </trans-unit>
+      <trans-unit id="email.details" resname="email.details" xml:space="preserve" approved="yes">
+				<source>This address is rather important to enter because this is where messages from the system is sent.
+&lt;strong&gt;Notice&lt;/strong&gt; the user is able to change this value by himself from within the User&gt;Setup module.</source>
+			<target state="final">A címet nagyon fontos megadni mivel ide érkeznek a rendszer üzenetei. &lt;strong&gt;Figyelem:&lt;/strong&gt; a felhasználó maga megváltoztathatja ezt az adatot a Felhasználó&gt;Beállítás modulban.</target></trans-unit>
+      <trans-unit id="realName.description" resname="realName.description" approved="yes">
+        <source>Enter the ordinary name of the user, eg. John Doe.</source>
+        <target state="final">Add meg a felhasználó szabályos nevét, pl.: John Doe</target>
+      </trans-unit>
+      <trans-unit id="realName.details" resname="realName.details" approved="yes">
+        <source>&lt;strong&gt;Notice&lt;/strong&gt; the user is able to change this value by himself from within the User&gt;Setup module.</source>
+        <target state="final">&lt;strong&gt;Figyelem:&lt;/strong&gt; a felhasználó maga megváltoztathatja ezt az adatot a Felhasználó&gt;Beállítás modulban.</target>
+      </trans-unit>
+      <trans-unit id="disable.description" resname="disable.description" approved="yes">
+        <source>This option will temporarily disable the user from logging in.</source>
+        <target state="final">Ez az opció ideiglenesen megakadályozza a felhasználót a bejelentkezésben.</target>
+      </trans-unit>
+      <trans-unit id="admin.description" resname="admin.description" approved="yes">
+        <source>'Admin' users have TOTAL access to the system!</source>
+        <target state="final">Az 'Adminisztrátor' felhasználók az ÖSSZES jogosultsággal rendelkeznek a rendszerben!</target>
+      </trans-unit>
+      <trans-unit id="admin.details" resname="admin.details" xml:space="preserve" approved="yes">
+				<source>'Admin' can do anything TYPO3 allows and this kind of user should be used only for administrative purposes. All daily handling should be done with regular users.
+'Admin' users don't need to be members of any backend user groups. However you should be aware that any page created by an admin user without a group will not have any owner-group assigned and thus it will probably be invisible for other users. If this becomes a problem you can easily solve it by assigning a user group to the 'Admin' user anyway. This does of course not affect the permissions since they are unlimited, but the first group listed is by default the owner group of newly created pages.
+'Admin' users are easily recognized as they appear with a red icon instead of the ordinary blue user-icon.
+
+You should probably not assign any other users than yourself as an 'Admin' user.</source>
+			<target state="final">Az 'Admin' bármit megtehet, amit a TYPO3 megenged, ez az adminisztrátor típus csak adminisztrációs céllal használható. A napi karbantartásokat normál felhasználókkal ajánlatos elvégeztetni. Az 'Admin' felhasználóknak nem kell szükségképpen egyik backend felhasználó csoporthoz sem tartozni. Tehát óvakodni kell attól, hogy oldalakat létrehozó 'Admin' felhasználók ne tartozzanak egyik csoportba sem, mert így valószinűleg láthatatlanok más felhasználók részére. Ha ez a probléma felmerül, könnyen megoldható egy csoport hozzárendelése az 'Admin'-hoz valamilyen módon. Ez természetesen nem érinti a jogosultságokat, mivel ezek korlátlanok, de az első listába felvett csoport alapértelmezésként az újonnan létrehozott oldalak tulajdonos csoportja. Az 'Admin' felhasználók könnyen felismerhetőek piros ikonukról a szokásos kék felhasználói ikonnal ellentétben. Valószínűleg csak magadat fogod 'Admin' felhasználóként felvenni.</target></trans-unit>
+      <trans-unit id="options.description" resname="options.description" approved="yes">
+        <source>Select if the user should inherit page tree or folder tree mountpoints from member groups.</source>
+        <target state="final">Válaszd ki, ha a felhasználónak örökölnie ajánlatos az oldal- és fájlrendszer csatlakozási pontokat a tagcsoporttól.</target>
+      </trans-unit>
+      <trans-unit id="options.details" resname="options.details" xml:space="preserve" approved="yes">
+				<source>It's a great advantage to let users inherit mountpoints from membergroups because it makes administration of the same mountpoints for many users extremely easy.
+If you don't check these options, you must make sure the mount points for the page tree and file folder tree is set specifically for the user.</source>
+			<target state="final">Nagy előny a felhasználóknak a tagcsoporttól öröklési csatolópontokat adni, mert ez igen megkönnyíti ugyanannak a csatolópontnak az adminisztrációját. Ha nem ellenőrzöd ezeket a funkciókat, meg kell győződnöd arról, hogy az oldalrendszer csatolópontjai és a fájl könyvtárrendszer be legyen állítva a felhasználó részére.</target></trans-unit>
+      <trans-unit id="file_permissions.description" resname="file_permissions.description" approved="yes">
+        <source>Select file operation permissions for the user.</source>
+        <target state="final">Válassz működési engedélyt a felhasználónak.</target>
+      </trans-unit>
+      <trans-unit id="fileoper_perms.description" resname="fileoper_perms.description" approved="yes">
+        <source>Select file operation permissions for the user.</source>
+        <target state="final">Válassz működési engedélyt a felhasználónak.</target>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Enter the date from which the account is active.</source>
+        <target state="final">Add meg azt a dátumot, amikortól a fiók aktív.</target>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>Enter the date from which the account is disabled.</source>
+        <target state="final">Add meg azt a dátumot, amikortól a fiók nem engedélyezett.</target>
+      </trans-unit>
+      <trans-unit id="lang.description" resname="lang.description" approved="yes">
+        <source>Select the &lt;i&gt;default&lt;/i&gt; language.</source>
+        <target state="final">Válaszd ki az &lt;i&gt;alapértelmezett&lt;/i&gt; nyelvet!</target>
+      </trans-unit>
+      <trans-unit id="lang.details" resname="lang.details" xml:space="preserve" approved="yes">
+				<source>This determines the language of the backend interface for the user. All mainstream parts available for regular users are available in the system language selected.
+'Admin'-users however will experience that the 'Admin'-only parts of TYPO3 is in english. This includes all submodules in "Tools" and the Web&gt;Template module.
+
+&lt;b&gt;Notice&lt;/b&gt; this is only setting the default language. As soon as the user has logged in the language must be changed through the User&gt;Setup module. Also you will have to install the corresponding language pack which can be found as an extension on TYPO3.org with the prefix "csh_XX" where XX is the TYPO3 language key.</source>
+			<target state="final">Meghatározza a felhasználó részére a backend felület nyelvét. Minden, a normál felhasználók részére elérhető főfolyam a rendszer kiválasztott nyelvén lesz elérhető. Az 'Admin' felhasználók tehát azt tapasztalják, hogy a TYPO3-ban csak 'Admin'-részek angol nyelvűek. Ebbe beletartozik az "Eszközök" összes almodulja valamint a Web&gt;Sablon modul. &lt;b&gt;Figyelem:&lt;/b&gt; ez csak az alapértelmezett nyelv. Amint a felhasználó bejelentkezik, a nyelv megváltoztatható a Felhasználó&gt;Telepítés modulban.</target></trans-unit>
+      <trans-unit id="userMods.description" resname="userMods.description" approved="yes">
+        <source>Select available backend modules for the user.</source>
+        <target state="final">Válaszd ki a felhasználó számára elérhető backend modulokat.</target>
+      </trans-unit>
+      <trans-unit id="userMods.details" resname="userMods.details" xml:space="preserve" approved="yes">
+				<source>This determines which 'menu items' are available for the user in the backend.
+
+Notice that the same list of modules may be configured for the backend user groups and that these will be inherited by the user in addition to the modules you select here. It's highly likely that you should not set any modules for the user himself but rather select the modules in the backend groups he's a member of. However this list provides a great way to add a single module for specific users.</source>
+			<target state="final">Megadja a felhasználó által elérhető menüpontokat. Fontos, hogy maga a modullista konfigurálható a backend felhasználó csoportok részére és ezeket a felhasználó örökölje az itt kiválaszott modulokkal együtt. Igen valószínű, hogy nem állítunk be semmilyen modult magára a felhasználóra, hanem inkább annak a csoportnak, aminek a tagja. Tehát a lista nagy lehetőséget biztosít egy egyszerű modul hozzárendeléshez bizonyos felhasználók részére.</target></trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>Enter additional TSconfig for the user (advanced).</source>
+        <target state="final">Kiegészítő TSconfig megadása a felhasználónak (részletes).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details" resname="TSconfig.details" approved="yes">
+        <source>This field allows you to extend the configuration of the user in severe details. A brief summary of the options include a more detailed configuration of the backend modules, setting of user specific default table field values, setting of Rich Text Editor options etc.</source>
+        <target state="final">Ez a mező lehetőséget ad a felhasználó konfigurálásának jelentős kiterjesztésére. Az opció rövid összegzése magában foglalja a backend modulok részletes konfigurációját a felhasználó specifikus alapértelmezett tábla mezők beállításával, a Rich Text Editor kiválasztási lehetőségével. A lista idővel nőni fog és az adminsztrációs dokumentációban résztesen ki lesz fejtve, főleg az 'admin_guide.pdf'-ben (lásd alább).</target>
+      </trans-unit>
+      <trans-unit id="allowed_languages.description" resname="allowed_languages.description" approved="yes">
+        <source>Select which record languages the group members are limited to edit.</source>
+        <target state="final">Azon nyelvi rekordok kiválasztása, amiket a csoport tagjai szerkeszthetnek.</target>
+      </trans-unit>
+      <trans-unit id="allowed_languages.details" resname="allowed_languages.details" approved="yes">
+        <source>You can also limit users to specific languages with user group settings. Please see the same field for backend user groups for more details.</source>
+        <target state="final">A felhasználókat korlátozni lehet a nyelvben is a csoportbeállításokkal. Nézd meg ugyanezt a mezőt a felhasználócsoportoknál is.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
