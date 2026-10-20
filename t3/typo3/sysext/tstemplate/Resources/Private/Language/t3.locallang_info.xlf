@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_info.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="submodule.title">
+        <source>Edit TypoScript record</source>
+        <target>crwdns275241:0crwdne275241:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.titleWithRecord">
+        <source>Edit TypoScript record "%s"</source>
+        <target>crwdns275243:0%scrwdne275243:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.description">
+        <source>Modify the content of the selected TypoScript record of the current page. Modifications can be made either for configurations like TypoScript constants and setup or basics like the title and description of the TypoScript record itself.</source>
+        <target>crwdns275245:0crwdne275245:0</target>
+      </trans-unit>
+      <trans-unit id="options.selectedRecord">
+        <source>Selected record</source>
+        <target>crwdns275247:0crwdne275247:0</target>
+      </trans-unit>
+      <trans-unit id="table.column.constants">
+        <source>Constants</source>
+        <target>crwdns275249:0crwdne275249:0</target>
+      </trans-unit>
+      <trans-unit id="table.column.description">
+        <source>Description</source>
+        <target>crwdns275251:0crwdne275251:0</target>
+      </trans-unit>
+      <trans-unit id="table.column.lines">
+        <source>%s lines</source>
+        <target>crwdns275253:0%scrwdne275253:0</target>
+      </trans-unit>
+      <trans-unit id="table.column.setup">
+        <source>Setup</source>
+        <target>crwdns275255:0crwdne275255:0</target>
+      </trans-unit>
+      <trans-unit id="table.column.title">
+        <source>Title</source>
+        <target>crwdns275257:0crwdne275257:0</target>
+      </trans-unit>
+      <trans-unit id="btn.editSiteConfiguration">
+        <source>Edit site configuration</source>
+        <target>crwdns367202:0crwdne367202:0</target>
+      </trans-unit>
+      <trans-unit id="btn.editSiteSettings">
+        <source>Edit site settings</source>
+        <target>crwdns367204:0crwdne367204:0</target>
+      </trans-unit>
+      <trans-unit id="btn.editTypoScriptRecord">
+        <source>Edit the whole TypoScript record</source>
+        <target>crwdns275259:0crwdne275259:0</target>
+      </trans-unit>
+      <trans-unit id="infoTypoScriptRecordFromSite.title">
+        <source>TypoScript settings have been implicitly generated from site sets includes</source>
+        <target>crwdns367206:0crwdne367206:0</target>
+      </trans-unit>
+      <trans-unit id="infoTypoScriptRecordFromSite.message">
+        <source>The site configuration '%s' has one or more dependencies on site sets. The sets can be configured in the 'Sites » Setup' backend module. The TypoScript definitions can be edited on the file system.</source>
+        <target>crwdns381010:0%scrwdne381010:0</target>
+      </trans-unit>
+      <trans-unit id="noConstantsButSiteSettings.title">
+        <source>Site Settings available</source>
+        <target>crwdns367210:0crwdne367210:0</target>
+      </trans-unit>
+      <trans-unit id="noConstantsButSiteSettings.message">
+        <source>Edit site settings via the 'Sites » Setup' backend module.</source>
+        <target>crwdns381012:0crwdne381012:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
