@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf" date="2023-01-19T14:41:00Z" product-name="cms" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="module.pagetsconfig.noAccess" approved="yes">
+        <source>Access to this module denied.</source>
+        <target state="final">تم رفض الوصول إلى هذه الوحدة.</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.headline" approved="yes">
+        <source>Pages containing page TSconfig</source>
+        <target state="final">الصفحات التي تحتوي على Page Tsconfig</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.description" approved="yes">
+        <source>Global overview of all pages in the database containing page TSconfig.</source>
+        <target state="final">نظرة عامّة على جميع الصفحات في قاعدة البيانات التي تحتوي على Page TSconfig.</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.noRecords" approved="yes">
+        <source>There are no pages containing page TSconfig settings in the page configuration.</source>
+        <target state="final">لا توجد صفحات تحتوي على إعدادات TSconfig للصفحة المُخصصة في تكوين الصفحة.</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.pagetitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">عنوان الصفحة</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.written_tsconfig_lines" approved="yes">
+        <source>Number of lines of code in field "TSconfig"</source>
+        <target state="final">عدد أسطر الكود في الحقل "TSconfig"</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.headline" approved="yes">
+        <source>Active page TSconfig of page "%s"</source>
+        <target state="final">تفعيل Page TSconfig لصفحة "%s"</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.description" approved="yes">
+        <source>Overview of the current page TSconfig of the system. A targeted search for values and names is possible. The list of results can also be filtered according to conditions.</source>
+        <target state="final">نظرة عامّة على Page TSconfig الحالي للنظام. من الممكن البحث عن القِيم والأسماء المُستهدفة. ويمكن أيضاً تصفية قائمة النتائج وفقا للشروط.</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.displayConstantSubstitutions" approved="yes">
+        <source>Substitute constants in page TSconfig</source>
+        <target state="final">استبدال الثوابت في Page TSconfig</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.displayComments" approved="yes">
+        <source>Display comments</source>
+        <target state="final">عرض التعليقات</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.sortAlphabetically" approved="yes">
+        <source>Sort keys alphabetically</source>
+        <target state="final">فرز المفاتيح أبجديّاً</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.header.conditions" approved="yes">
+        <source>Conditions</source>
+        <target state="final">الشروط</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.info.conditionActiveCount.multiple" approved="yes">
+        <source>%s active conditions</source>
+        <target state="final">%s من الشروط النَشِطَة</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.info.conditionActiveCount.single" approved="yes">
+        <source>%s active condition</source>
+        <target state="final">%s حالة نشطة</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.info.conditionWithConstant" approved="yes">
+        <source>Site settings usage: [%s]</source>
+        <target state="final">استخدام إعدادات الموقع: [%s]</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.header.configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">التكوين</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.siteSettings" approved="yes">
+        <source>Constants from site settings</source>
+        <target state="final">الثوابت من إعدادات الموقع</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.activePageTsConfig" approved="yes">
+        <source>Page TSconfig</source>
+        <target state="final">Page TSconfig</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.noPageTSconfigAvailable" approved="yes">
+        <source>No suitable page TSconfig available.</source>
+        <target state="final">لا يتوفر Page TSconfig مُناسب.</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.tree.valueWithConstant" approved="yes">
+        <source>Constant usage: [%s]</source>
+        <target state="final">الاستخدام الثابت: [%s]</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.headline" approved="yes">
+        <source>Included page TSconfig of page "%s"</source>
+        <target state="final">تشمل Page TSconfig لصفحة "%s"</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.description" approved="yes">
+        <source>Overview of the included TypoScript and include order for the current page.</source>
+        <target state="final">عرض عام لـ TypoScript المضمنة وإدراج ترتيب للصفحة الحالية.</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.siteSettings" approved="yes">
+        <source>Constants from site settings</source>
+        <target state="final">الثوابت من إعدادات الموقع</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.pagetsconfig" approved="yes">
+        <source>Page TSconfig</source>
+        <target state="final">Page TSconfig</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.panel.header.configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">التكوين</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.panel.header.syntaxErrors" approved="yes">
+        <source>Syntax scanner warnings</source>
+        <target state="final">تحذيرات الماسح الضوئي</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.panel.info.syntaxErrorCount.single" approved="yes">
+        <source>%s syntax warning</source>
+        <target state="final">تحذير بناء الجملة %s</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.panel.info.syntaxErrorCount.multiple" approved="yes">
+        <source>%s syntax warnings</source>
+        <target state="final">%s تحذيرات بناء الجملة</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.sourceCode" approved="yes">
+        <source>Show affected code snippet</source>
+        <target state="final">إظهار قُصاصات الكود البرمجي</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.type.line.invalid" approved="yes">
+        <source>Invalid line in "%1$s", line number "%2$s"</source>
+        <target state="final">سطر غير صالح في "%1$s"، رقم السطر "%2$s"</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.type.brace.excess" approved="yes">
+        <source>Brace in excess in "%1$s", line number "%2$s"</source>
+        <target state="final">الدعامة الزائدة في "%1$s"، سطر رقم "%2$s"</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.type.brace.missing" approved="yes">
+        <source>Brace missing in "%1$s", line number "%2$s"</source>
+        <target state="final">الدعامة مفقودة في "%1$s"، سطر رَقَم "%2$s"</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.type.import.empty" approved="yes">
+        <source>Import does not find a file in "%1$s", line number "%2$s"</source>
+        <target state="final">عملية الاستيراد لا تستطيع العثور على المِلَفّ في "%1$s"، رقم السطر "%2$s"</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.Segment" approved="yes">
+        <source>Code segment</source>
+        <target state="final">جزء من الكود</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.AtImport" approved="yes">
+        <source>Included via "@import"</source>
+        <target state="final">تم تضمينها عبر "@import"</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.Condition" approved="yes">
+        <source>Condition (then)</source>
+        <target state="final">الشرط (then)</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.ConditionElse" approved="yes">
+        <source>Condition (else)</source>
+        <target state="final">الشرط (else)</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.ConditionStop" approved="yes">
+        <source>Condition (end)</source>
+        <target state="final">الشرط (end)</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.TsConfig" approved="yes">
+        <source>TSconfig</source>
+        <target state="final">Tsconfig</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.Site" approved="yes">
+        <source>Site</source>
+        <target state="final">الموقع</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.btn.sourceCode" approved="yes">
+        <source>Show code</source>
+        <target state="final">إظهار الكود</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.btn.sourceCodeWithResolvedIncludes" approved="yes">
+        <source>Show code including possible includes/imports</source>
+        <target state="final">إظهار الكود بما في ذلك includes/imports المحتملة</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
