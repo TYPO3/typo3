@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815017" source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="legend.moved" resname="legend.moved" approved="yes">
+        <source>moved</source>
+        <target state="final">perkeltas</target>
+      </trans-unit>
+      <trans-unit id="legend.deleted" resname="legend.deleted" approved="yes">
+        <source>deleted</source>
+        <target state="final">ištrintas</target>
+      </trans-unit>
+      <trans-unit id="legend.new" resname="legend.new" approved="yes">
+        <source>created</source>
+        <target state="final">sukurtas</target>
+      </trans-unit>
+      <trans-unit id="legend.hidden" resname="legend.hidden" approved="yes">
+        <source>hidden</source>
+        <target state="final">paslėptas</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Workspaces</source>
+        <target state="final">Darbo sritys</target>
+      </trans-unit>
+      <trans-unit id="ok" resname="ok" approved="yes">
+        <source>Ok</source>
+        <target state="final">Gerai</target>
+      </trans-unit>
+      <trans-unit id="cancel" resname="cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Atšaukti</target>
+      </trans-unit>
+      <trans-unit id="chooseMassAction" resname="chooseMassAction" approved="yes">
+        <source>Choose mass action</source>
+        <target state="final">Pasirinkite masinį veiksmą</target>
+      </trans-unit>
+      <trans-unit id="chooseSelectionAction" resname="chooseSelectionAction" approved="yes">
+        <source>Choose selection action</source>
+        <target state="final">Pasirinkite veiksmą pažymėtiems elementams</target>
+      </trans-unit>
+      <trans-unit id="chooseAction" resname="chooseAction" approved="yes">
+        <source>Choose staging action</source>
+        <target state="final">Pasirinkite publikavimo veiksmą</target>
+      </trans-unit>
+      <trans-unit id="item" resname="item" approved="yes">
+        <source>item</source>
+        <target state="final">elementas</target>
+      </trans-unit>
+      <trans-unit id="items" resname="items" approved="yes">
+        <source>items</source>
+        <target state="final">elementai</target>
+      </trans-unit>
+      <trans-unit id="recordsToDisplay" resname="recordsToDisplay" approved="yes">
+        <source>Records to display</source>
+        <target state="final">Rodomi įrašai</target>
+      </trans-unit>
+      <trans-unit id="reviewandpublish" resname="reviewandpublish" approved="yes">
+        <source>review and publish</source>
+        <target state="final">peržiūrėti ir publikuoti</target>
+      </trans-unit>
+      <trans-unit id="workspacelist" resname="workspacelist" approved="yes">
+        <source>Workspace List</source>
+        <target state="final">Darbo sričių sąrašas</target>
+      </trans-unit>
+      <trans-unit id="actionSendToStage" resname="actionSendToStage" approved="yes">
+        <source>Send to stage</source>
+        <target state="final">Siųsti į etapą</target>
+      </trans-unit>
+      <trans-unit id="publish_execute_action_option" resname="publish_execute_action_option" approved="yes">
+        <source>Publish to LIVE</source>
+        <target state="final">Publikuoti į LIVE</target>
+      </trans-unit>
+      <trans-unit id="close" resname="close" approved="yes">
+        <source>Close</source>
+        <target state="final">Uždaryti</target>
+      </trans-unit>
+      <trans-unit id="runMassAction.done" resname="runMassAction.done" approved="yes">
+        <source>Done processing %d elements</source>
+        <target state="final">Apdorota elementų: %d</target>
+      </trans-unit>
+      <trans-unit id="runMassAction.init" resname="runMassAction.init" approved="yes">
+        <source>init</source>
+        <target state="final">inicijuoti</target>
+      </trans-unit>
+      <trans-unit id="tooltip.publishAll" resname="tooltip.publishAll" approved="yes">
+        <source>Really publish entire workspace?</source>
+        <target state="final">Ar tikrai publikuoti visą darbo sritį?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardAll" resname="tooltip.discardAll" approved="yes">
+        <source>Do you really want to discard changes from the whole workspace?</source>
+        <target state="final">Ar tikrai norite atmesti visos darbo srities pakeitimus?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.publishSelected" resname="tooltip.publishSelected" approved="yes">
+        <source>Really publish selected elements?</source>
+        <target state="final">Ar tikrai publikuoti pasirinktus elementus?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardSelected" resname="tooltip.discardSelected" approved="yes">
+        <source>Really discard changes of the selected elements?</source>
+        <target state="final">Ar tikrai atmesti pasirinktų elementų pakeitimus?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.generatePagePreview" resname="tooltip.generatePagePreview" approved="yes">
+        <source>Generate page preview links</source>
+        <target state="final">Generuoti puslapio peržiūros nuorodas</target>
+      </trans-unit>
+      <trans-unit id="tooltip.showChanges" resname="tooltip.showChanges" approved="yes">
+        <source>Show changes</source>
+        <target state="final">Rodyti pakeitimus</target>
+      </trans-unit>
+      <trans-unit id="previewLink" resname="previewLink" approved="yes">
+        <source>Preview Link</source>
+        <target state="final">Peržiūros nuoroda</target>
+      </trans-unit>
+      <trans-unit id="error.noResponse" resname="error.noResponse" approved="yes">
+        <source>The server did not send any response whether the action was successful.</source>
+        <target state="final">Serveris neatsiuntė jokio atsakymo, ar veiksmas buvo sėkmingas.</target>
+      </trans-unit>
+      <trans-unit id="rowDetails" resname="rowDetails" approved="yes">
+        <source>Row details...</source>
+        <target state="final">Eilutės informacija...</target>
+      </trans-unit>
+      <trans-unit id="column.difference" resname="column.difference" approved="yes">
+        <source>Difference</source>
+        <target state="final">Skirtumas</target>
+      </trans-unit>
+      <trans-unit id="column.changeDate" resname="column.changeDate" approved="yes">
+        <source>Modification</source>
+        <target state="final">Pakeitimas</target>
+      </trans-unit>
+      <trans-unit id="column.stage" resname="column.stage" approved="yes">
+        <source>Current Stage</source>
+        <target state="final">Dabartinis etapas</target>
+      </trans-unit>
+      <trans-unit id="column.actions" resname="column.actions" approved="yes">
+        <source>Actions</source>
+        <target state="final">Veiksmai</target>
+      </trans-unit>
+      <trans-unit id="column.wsPath" resname="column.wsPath" approved="yes">
+        <source>Path</source>
+        <target state="final">Kelias</target>
+      </trans-unit>
+      <trans-unit id="column.uid" resname="column.uid" approved="yes">
+        <source>WS ID</source>
+        <target state="final">WS ID</target>
+      </trans-unit>
+      <trans-unit id="column.oid" resname="column.oid" approved="yes">
+        <source>Live ID</source>
+        <target state="final">Live ID</target>
+      </trans-unit>
+      <trans-unit id="column.workspaceName" resname="column.workspaceName" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Darbo sritis</target>
+      </trans-unit>
+      <trans-unit id="column.livePath" resname="column.livePath" approved="yes">
+        <source>Live path</source>
+        <target state="final">Live kelias</target>
+      </trans-unit>
+      <trans-unit id="column.integrity" resname="column.integrity" approved="yes">
+        <source>Integrity</source>
+        <target state="final">Integralumas</target>
+      </trans-unit>
+      <trans-unit id="tooltip.viewElementAction" resname="tooltip.viewElementAction" approved="yes">
+        <source>Preview element</source>
+        <target state="final">Peržiūrėti elementą</target>
+      </trans-unit>
+      <trans-unit id="tooltip.editElementAction" resname="tooltip.editElementAction" approved="yes">
+        <source>Edit element</source>
+        <target state="final">Redaguoti elementą</target>
+      </trans-unit>
+      <trans-unit id="tooltip.openPage" resname="tooltip.openPage" approved="yes">
+        <source>Open version of page</source>
+        <target state="final">Atidaryti puslapio versiją</target>
+      </trans-unit>
+      <trans-unit id="tooltip.sendToPrevStage" resname="tooltip.sendToPrevStage" approved="yes">
+        <source>Send record to previous Stage</source>
+        <target state="final">Siųsti įrašą į ankstesnį etapą</target>
+      </trans-unit>
+      <trans-unit id="tooltip.sendToNextStage" resname="tooltip.sendToNextStage" approved="yes">
+        <source>Send record to next Stage</source>
+        <target state="final">Siųsti įrašą į kitą etapą</target>
+      </trans-unit>
+      <trans-unit id="tooltip.expand" resname="tooltip.expand" approved="yes">
+        <source>Expand element and show relations</source>
+        <target state="final">Išplėsti elementą ir parodyti ryšius</target>
+      </trans-unit>
+      <trans-unit id="tooltip.showHistory" resname="tooltip.showHistory" approved="yes">
+        <source>Show history of workspace version</source>
+        <target state="final">Rodyti darbo srities versijos istoriją</target>
+      </trans-unit>
+      <trans-unit id="window.discardAll.title" resname="window.discardAll.title" approved="yes">
+        <source>Discard all workspace version of current page.</source>
+        <target state="final">Atmesti visas dabartinio puslapio darbo srities versijas.</target>
+      </trans-unit>
+      <trans-unit id="window.discard.message" resname="window.discard.message" approved="yes">
+        <source>Do you really want to discard this version from workspace?</source>
+        <target state="final">Ar tikrai norite atmesti šią versiją iš darbo srities?</target>
+      </trans-unit>
+      <trans-unit id="window.discardAll.message" resname="window.discardAll.message" approved="yes">
+        <source>Do you really want to discard all versions from page?</source>
+        <target state="final">Ar tikrai norite atmesti visas puslapio versijas?</target>
+      </trans-unit>
+      <trans-unit id="window.massAction.title" resname="window.massAction.title" approved="yes">
+        <source>Prepare to start mass action</source>
+        <target state="final">Pasiruošti pradėti masinį veiksmą</target>
+      </trans-unit>
+      <trans-unit id="window.selectionAction.title" resname="window.selectionAction.title" approved="yes">
+        <source>Prepare to execute actions on selection</source>
+        <target state="final">Pasiruošti vykdyti veiksmus pažymėtiems elementams</target>
+      </trans-unit>
+      <trans-unit id="error.sendToNextStage.noRecordFound" resname="error.sendToNextStage.noRecordFound" approved="yes">
+        <source>The record element could not be found.</source>
+        <target state="final">Įrašo elementas nerastas.</target>
+      </trans-unit>
+      <trans-unit id="error.sendToPrevStage.noPreviousStage" resname="error.sendToPrevStage.noPreviousStage" approved="yes">
+        <source>The record element is already in editing stage, there is no previous stage.</source>
+        <target state="final">Įrašo elementas jau yra redagavimo etape, ankstesnio etapo nėra.</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.itemsWillBeSentTo" resname="window.sendToNextStageWindow.itemsWillBeSentTo" approved="yes">
+        <source>The selected element(s) will be sent to</source>
+        <target state="final">Pasirinktas (-i) elementas (-ai) bus išsiųstas į</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.selectAll" resname="window.sendToNextStageWindow.selectAll" approved="yes">
+        <source>Select all</source>
+        <target state="final">Pažymėti viską</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.deselectAll" resname="window.sendToNextStageWindow.deselectAll" approved="yes">
+        <source>Uncheck all</source>
+        <target state="final">Nužymėti viską</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.sendMailTo" resname="window.sendToNextStageWindow.sendMailTo" approved="yes">
+        <source>Send mail to</source>
+        <target state="final">Siųsti el. laišką</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.additionalRecipients" resname="window.sendToNextStageWindow.additionalRecipients" approved="yes">
+        <source>Additional recipients</source>
+        <target state="final">Papildomi gavėjai</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.additionalRecipients.hint" resname="window.sendToNextStageWindow.additionalRecipients.hint" approved="yes">
+        <source>One recipient per line</source>
+        <target state="final">Po vieną gavėją kiekvienoje eilutėje</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.comments" resname="window.sendToNextStageWindow.comments" approved="yes">
+        <source>Comments</source>
+        <target state="final">Komentarai</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges" resname="window.recordChanges" approved="yes">
+        <source>Record changes</source>
+        <target state="final">Įrašo pakeitimai</target>
+      </trans-unit>
+      <trans-unit id="window.recordInformation" resname="window.recordInformation" approved="yes">
+        <source>Information for "{0}"</source>
+        <target state="final">Informacija apie „{0}“</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.changeSummary" resname="window.recordChanges.tabs.changeSummary" approved="yes">
+        <source>Summary of changes</source>
+        <target state="final">Pakeitimų santrauka</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.comments" resname="window.recordChanges.tabs.comments" approved="yes">
+        <source>Comments</source>
+        <target state="final">Komentarai</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.history" resname="window.recordChanges.tabs.history" approved="yes">
+        <source>History</source>
+        <target state="final">Istorija</target>
+      </trans-unit>
+      <trans-unit id="window.recordHistory" resname="window.recordHistory" approved="yes">
+        <source>History of record "{0}"</source>
+        <target state="final">Įrašo „{0}“ istorija</target>
+      </trans-unit>
+      <trans-unit id="error.getStageTitle.stageNotFound" resname="error.getStageTitle.stageNotFound" approved="yes">
+        <source>Stage not found</source>
+        <target state="final">Etapas nerastas</target>
+      </trans-unit>
+      <trans-unit id="info.newpage.detail" resname="info.newpage.detail" approved="yes">
+        <source>The previewed page has been created in a workspace and has no live counterpart.</source>
+        <target state="final">Peržiūrimas puslapis buvo sukurtas darbo srityje ir neturi live versijos.</target>
+      </trans-unit>
+      <trans-unit id="preview.livePreview" resname="preview.livePreview" approved="yes">
+        <source>Live</source>
+        <target state="final">Live</target>
+      </trans-unit>
+      <trans-unit id="preview.livePreviewDetail" resname="preview.livePreviewDetail" approved="yes">
+        <source>Click this element to hide the workspace version and see the live version of the page.</source>
+        <target state="final">Spustelėkite šį elementą, kad paslėptumėte darbo srities versiją ir pamatytumėte live puslapio versiją.</target>
+      </trans-unit>
+      <trans-unit id="preview.workspacePreview" resname="preview.workspacePreview" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Darbo sritis</target>
+      </trans-unit>
+      <trans-unit id="preview.workspacePreviewDetail" resname="preview.workspacePreviewDetail" approved="yes">
+        <source>Click this element to hide the live version and see the workspace version of the page.</source>
+        <target state="final">Spustelėkite šį elementą, kad paslėptumėte live versiją ir pamatytumėte darbo srities puslapio versiją.</target>
+      </trans-unit>
+      <trans-unit id="preview.modeSlider" resname="preview.modeSlider" approved="yes">
+        <source>Slider</source>
+        <target state="final">Slankiklis</target>
+      </trans-unit>
+      <trans-unit id="preview.modeVbox" resname="preview.modeVbox" approved="yes">
+        <source>Vertical</source>
+        <target state="final">Vertikaliai</target>
+      </trans-unit>
+      <trans-unit id="preview.modeHbox" resname="preview.modeHbox" approved="yes">
+        <source>Horizontal</source>
+        <target state="final">Horizontaliai</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_publish" resname="label_doaction_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">Publikuoti</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_discard" resname="label_doaction_discard" approved="yes">
+        <source>Discard</source>
+        <target state="final">Atmesti</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_generatePreviewLinks" resname="label_doaction_generatePreviewLinks" approved="yes">
+        <source>Generate Workspace Preview Links</source>
+        <target state="final">Generuoti darbo srities peržiūros nuorodas</target>
+      </trans-unit>
+      <trans-unit id="info.elementAlreadyModified" resname="info.elementAlreadyModified" approved="yes">
+        <source>Element is in workspace stage "%s", modifications will send it back to "%s".</source>
+        <target state="final">Elementas yra darbo srities etape „%s“, pakeitimai jį grąžins į „%s“.</target>
+      </trans-unit>
+      <trans-unit id="live_workspace" resname="live_workspace" approved="yes">
+        <source>Live Workspace</source>
+        <target state="final">Live darbo sritis</target>
+      </trans-unit>
+      <trans-unit id="workspace_version" resname="workspace_version" approved="yes">
+        <source>Workspace version</source>
+        <target state="final">Darbo srities versija</target>
+      </trans-unit>
+      <trans-unit id="current_step" resname="current_step" approved="yes">
+        <source><![CDATA[<b>Current stage step</b>: {0} (<b>{1}</b>/{2})]]></source>
+        <target state="final"><![CDATA[<b>Dabartinis etapo žingsnis</b>: {0} (<b>{1}</b>/{2})]]></target>
+      </trans-unit>
+      <trans-unit id="path" resname="path" approved="yes">
+        <source><![CDATA[<b>Path</b>: {0}]]></source>
+        <target state="final"><![CDATA[<b>Kelias</b>: {0}]]></target>
+      </trans-unit>
+      <trans-unit id="stage" resname="stage" approved="yes">
+        <source>Stage {0}</source>
+        <target state="final">Etapas {0}</target>
+      </trans-unit>
+      <trans-unit id="comments" resname="comments" approved="yes">
+        <source><![CDATA[User comments for <b>step {0} of stage</b> "{1}"]]></source>
+        <target state="final"><![CDATA[Naudotojo komentarai <b>{0} žingsniui etape</b> „{1}“]]></target>
+      </trans-unit>
+      <trans-unit id="language.allLanguages" resname="language.allLanguages" approved="yes">
+        <source>all languages</source>
+        <target state="final">visos kalbos</target>
+      </trans-unit>
+      <trans-unit id="language.selectLanguage" resname="language.selectLanguage" approved="yes">
+        <source>all languages</source>
+        <target state="final">visos kalbos</target>
+      </trans-unit>
+      <trans-unit id="integrity.dependsOnDefaultLanguageRecord" resname="integrity.dependsOnDefaultLanguageRecord" approved="yes">
+        <source><![CDATA[Record "%s" depends on default language record]]></source>
+        <target state="final"><![CDATA[Įrašas „%s“ priklauso nuo numatytosios kalbos įrašo]]></target>
+      </trans-unit>
+      <trans-unit id="integrity.isDefaultLanguageRecord" resname="integrity.isDefaultLanguageRecord" approved="yes">
+        <source><![CDATA[Default language record for record "%s"]]></source>
+        <target state="final"><![CDATA[Numatytosios kalbos įrašas įrašui „%s“]]></target>
+      </trans-unit>
+      <trans-unit id="integrity.hasIssuesQuestion" resname="integrity.hasIssuesQuestion" approved="yes">
+        <source>Do you want to continue?</source>
+        <target state="final">Ar norite tęsti?</target>
+      </trans-unit>
+      <trans-unit id="status.info" resname="status.info" approved="yes">
+        <source>Information</source>
+        <target state="final">Informacija</target>
+      </trans-unit>
+      <trans-unit id="status.warning" resname="status.warning" approved="yes">
+        <source>Warning</source>
+        <target state="final">Įspėjimas</target>
+      </trans-unit>
+      <trans-unit id="status.error" resname="status.error" approved="yes">
+        <source>Error</source>
+        <target state="final">Klaida</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
