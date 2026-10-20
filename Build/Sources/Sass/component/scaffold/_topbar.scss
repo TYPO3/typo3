@@ -20,7 +20,11 @@
     --topbar-item-hover-border-color: color-mix(in srgb, var(--topbar-item-bg), var(--topbar-item-color) 20%);
     --topbar-item-focus-color: var(--typo3-scaffold-header-color);
     --topbar-item-focus-bg: color-mix(in srgb, var(--topbar-item-bg), var(--topbar-item-color) 10%);
-    --topbar-item-focus-border-color: color-mix(in srgb, var(--topbar-item-bg), var(--topbar-item-color) 25%);
+    --topbar-item-focus-border-color:
+        light-dark(
+            color-mix(in srgb, var(--topbar-item-bg), var(--topbar-item-color) 85%),
+            color-mix(in srgb, var(--topbar-item-bg), var(--topbar-item-color) 55%)
+        );
     position: relative;
     display: flex;
     align-items: center;

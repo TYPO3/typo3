@@ -62,7 +62,8 @@
     .btn-check:focus-visible + &,
     &:has(*:focus-visible),
     &:focus-visible {
-        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-btn-focus-border-color), transparent 25%);
+        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-btn-focus-border-color), transparent 5%);
+        outline-offset: var(--typo3-outline-offset);
     }
 
     .btn-check:checked + &,
