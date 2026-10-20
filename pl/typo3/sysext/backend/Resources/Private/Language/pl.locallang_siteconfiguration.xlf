@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="overview.site" approved="yes">
+        <source>Site</source>
+        <target state="final">Witryna</target>
+      </trans-unit>
+      <trans-unit id="overview.siteIdentifier" approved="yes">
+        <source>Site identifier</source>
+        <target state="final">Identyfikator Strony</target>
+      </trans-unit>
+      <trans-unit id="overview.addSiteConfiguration" approved="yes">
+        <source>Add new site configuration for this site</source>
+        <target state="final">Dodaj nową konfigurację witryny dla tej witryny</target>
+      </trans-unit>
+      <trans-unit id="overview.deleteSiteConfiguration" approved="yes">
+        <source>Delete site configuration</source>
+        <target state="final">Usuń konfigurację strony</target>
+      </trans-unit>
+      <trans-unit id="overview.baseUrl" approved="yes">
+        <source>Base URL</source>
+        <target state="final">Podstawowy adres URL</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.title" approved="yes">
+        <source>Unassigned site configurations</source>
+        <target state="final">Nieprzypisane konfiguracje witryny</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedEntryPoints" approved="yes">
+        <source>Duplicated Entrypoints</source>
+        <target state="final">Zduplikowane punkty wejścia</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedEntryPoints.listing" approved="yes">
+        <source>The following entry points are used more than once:</source>
+        <target state="final">Następujące punkty wejścia są wykorzystywane więcej niż jeden raz:</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.languages.language_url" approved="yes">
+        <source>Full URL prefix</source>
+        <target state="final">Pełny prefiks URL</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.title" approved="yes">
+        <source>Renamed identifier</source>
+        <target state="final">Zmieniono nazwę identyfikatora</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.message" approved="yes">
+        <source>Given site identifier "%1s" already exists. It has been renamed to "%2s". Maybe you want to edit the site again and give it a better name.</source>
+        <target state="final">Podany identyfikator witryny "%1s" już istnieje. Został on zmieniony na "%2s". Może chcesz ponownie edytować witrynę i nadać mu lepszą nazwę.</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.title" approved="yes">
+        <source>Identifier not changed</source>
+        <target state="final">Identyfikator nie został zmieniony</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.message" approved="yes">
+        <source>Given site identifier "%1s" already exists and points to a different site. The existing identifier "%2s" for this site is kept.</source>
+        <target state="final">Podany identyfikator witryny "%1s" już istnieje i wskazuje na inną witrynę. Istniejący identyfikator "%2s" dla tej witryny jest zachowany.</target>
+      </trans-unit>
+      <trans-unit id="validation.required.title" approved="yes">
+        <source>Site configuration not saved</source>
+        <target state="final">Konfiguracja witryny nie została zapisana</target>
+      </trans-unit>
+      <trans-unit id="validation.required.message" approved="yes">
+        <source>Field "%1s" is a required field, but no value has been provided.</source>
+        <target state="final">Pole "%1s" jest polem wymaganym, ale nie podano żadnej wartości.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.title" approved="yes">
+        <source>Duplicate error code removed</source>
+        <target state="final">Usunięto zduplikowany kod błędu</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.message" approved="yes">
+        <source>Two error handler configurations for error code "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">Znaleziono dwie konfiguracje obsługi błędów dla kodu błędu "%1s". Byłaby to nieprawidłowa konfiguracja, zawieszona została usunięta.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.title" approved="yes">
+        <source>Duplicate language configuration removed</source>
+        <target state="final">Zduplikowana konfiguracja języka została usunięta</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.message" approved="yes">
+        <source>Two language configurations for language "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">Znaleziono dwie konfiguracje języka dla języka "%1s". Byłaby to nieprawidłowa konfiguracja, zawieszona została usunięta.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
