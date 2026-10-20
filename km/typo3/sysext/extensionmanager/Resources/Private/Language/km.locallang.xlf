@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814818" source-language="en" datatype="plaintext" original="EXT:extensionmanager/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id="extensionManager" resname="extensionManager" approved="yes">
+        <source>Extension Manager</source>
+        <target state="final">គ្រប់គ្រង​សមាសភាគ</target>
+      </trans-unit>
+      <trans-unit id="manageExtensions" resname="manageExtensions" approved="yes">
+        <source>Manage Extensions</source>
+        <target state="final">គ្រប់គ្រង​សមាសភាគ</target>
+      </trans-unit>
+      <trans-unit id="getExtensions" resname="getExtensions" approved="yes">
+        <source>Get Extensions</source>
+        <target state="final">ទទួល​សមាសភាគ</target>
+      </trans-unit>
+      <trans-unit id="showAllVersions" resname="showAllVersions" approved="yes">
+        <source>Show all versions of</source>
+        <target state="final">បង្ហាញគ្រប់​កំណែប្រែ</target>
+      </trans-unit>
+      <trans-unit id="extConfTemplate.backToList" resname="extConfTemplate.backToList" approved="yes">
+        <source>Back to list</source>
+        <target state="final">ត្រលប់ទៅកាន់​តារាង</target>
+      </trans-unit>
+      <trans-unit id="updateScript.headline" resname="updateScript.headline" approved="yes">
+        <source>Update script for %s</source>
+        <target state="final">បន្ទាន់​សម័យ ស្ក្រីបសម្រាប់ %s</target>
+      </trans-unit>
+      <trans-unit id="updateScript.none" resname="updateScript.none" approved="yes">
+        <source>No update necessary.</source>
+        <target state="final">មិន​មាន​ការ​បន្ទាន់​សម័យ​​ដែល​ចាំបាច់​នោះទេ។</target>
+      </trans-unit>
+      <trans-unit id="extensionList.update.script" resname="extensionList.update.script" approved="yes">
+        <source>Execute the update script</source>
+        <target state="final">ដំណើរការ​ ការ​បន្ទាន់​សម័យ​ស្ក្រីប</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadsql" resname="extensionList.downloadsql" approved="yes">
+        <source>Download SQL Dump</source>
+        <target state="final">ទាញយក SQL Dump</target>
+      </trans-unit>
+      <trans-unit id="extensionList.remove" resname="extensionList.remove" approved="yes">
+        <source>Remove</source>
+        <target state="final">លុបចោល</target>
+      </trans-unit>
+      <trans-unit id="extensionList.update" resname="extensionList.update" approved="yes">
+        <source>Update</source>
+        <target state="final">បន្ទាន់​សម័យ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateToVersion" resname="extensionList.updateToVersion" approved="yes">
+        <source>Update to version %s</source>
+        <target state="final">បន្ទាន់​សម័យ​ទៅ​កាន់​កំណែប្រែ %s</target>
+      </trans-unit>
+      <trans-unit id="extensionList.deactivate" resname="extensionList.deactivate" approved="yes">
+        <source>Deactivate</source>
+        <target state="final">បញ្ឈប់​ដំណើរការ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.activate" resname="extensionList.activate" approved="yes">
+        <source>Activate</source>
+        <target state="final">ដំណើរការ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadzip" resname="extensionList.downloadzip" approved="yes">
+        <source>Download as zip</source>
+        <target state="final">ទាញយក​ជា zip</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uploadExtension" resname="extensionList.uploadExtension" approved="yes">
+        <source>Upload Extension .t3x/.zip</source>
+        <target state="final">ដាក់បញ្ចូល​សមាសភាគ .t3x/.zip</target>
+      </trans-unit>
+      <trans-unit id="extensionList.overwriteExtension" resname="extensionList.overwriteExtension" approved="yes">
+        <source>Overwrite</source>
+        <target state="final">សរសេរពីលើ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.overwritingDisabled" resname="extensionList.overwritingDisabled" approved="yes">
+        <source>Extension is already available and overwriting was not enabled</source>
+        <target state="final">សមាសភាគ​គឺមាន​ហើយ និង​ការសរសេពីលើមិន​បាន​បើកទេ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.loading" resname="extensionList.loading" approved="yes">
+        <source>Loading form...</source>
+        <target state="final">កុំពុង​ដំណើរការ​ទម្រង់</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.update" resname="extensionList.header.update" approved="yes">
+        <source>Upd.</source>
+        <target state="final">ឡើង</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.title.update" resname="extensionList.header.title.update" approved="yes">
+        <source>Update</source>
+        <target state="final">បន្ទាន់​សម័យ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.activate" resname="extensionList.header.activate" approved="yes">
+        <source>A/D</source>
+        <target state="final">A/D</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.title.activate" resname="extensionList.header.title.activate" approved="yes">
+        <source>Activate / Deactivate</source>
+        <target state="final">ដំណើរការ/បិត​ដំណើរការ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionName" resname="extensionList.header.extensionName" approved="yes">
+        <source>Extension</source>
+        <target state="final">សមាសភាគ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.version" resname="extensionList.header.version" approved="yes">
+        <source>Version</source>
+        <target state="final">កំណែប្រែ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionKey" resname="extensionList.header.extensionKey" approved="yes">
+        <source>Key</source>
+        <target state="final">គន្លឺះ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionVersion" resname="extensionList.header.extensionVersion" approved="yes">
+        <source>Version</source>
+        <target state="final">កំណែប្រែ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionActions" resname="extensionList.header.extensionActions" approved="yes">
+        <source>Actions</source>
+        <target state="final">សកម្មភាព</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionState" resname="extensionList.header.extensionState" approved="yes">
+        <source>State</source>
+        <target state="final">សភាព</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.uploadComment" resname="extensionList.header.uploadComment" approved="yes">
+        <source>Upload Comment</source>
+        <target state="final">បញ្ចូល​​មតិ​យោបល</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.lastUpdate" resname="extensionList.header.lastUpdate" approved="yes">
+        <source>Last Updated</source>
+        <target state="final">បាន​បន្ទាន់​សម័យ​ចុង​ក្រោយ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.description" resname="extensionList.header.description" approved="yes">
+        <source>Description</source>
+        <target state="final">ពណ៌នា</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.author" resname="extensionList.header.author" approved="yes">
+        <source>Author</source>
+        <target state="final">អ្នក​និពន្ធ</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.searchExtensions" resname="searchTemplate.searchExtensions" approved="yes">
+        <source>Search extensions</source>
+        <target state="final">ស្វែង​រកសមាសភាគ</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.submitButton" resname="searchTemplate.submitButton" approved="yes">
+        <source>Go</source>
+        <target state="final">ទៅ</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.resetSearchButton" resname="searchTemplate.resetSearchButton" approved="yes">
+        <source>Reset Search</source>
+        <target state="final">លុប​ស្វែងរក</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.yourSearch" resname="searchTemplate.yourSearch" approved="yes">
+        <source>Your search</source>
+        <target state="final">លទ្ធផល​ស្វែង​រក​របស់អ្នក</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.searchAgain" resname="searchTemplate.searchAgain" approved="yes">
+        <source>Search again</source>
+        <target state="final">ស្វែង​រក​ម្ដង​ទៀត</target>
+      </trans-unit>
+      <trans-unit id="uploadTemplate.uploadButton" resname="uploadTemplate.uploadButton" approved="yes">
+        <source>Upload!</source>
+        <target state="final">ដាក់បញ្ចូល!</target>
+      </trans-unit>
+      <trans-unit id="uploadTemplate.extensionLabel" resname="uploadTemplate.extensionLabel" approved="yes">
+        <source>Extension</source>
+        <target state="final">សមាសភាគ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.removalConfirmation.title" resname="extensionList.removalConfirmation.title" approved="yes">
+        <source>Extension Removal</source>
+        <target state="final">លុប​សមាសភាគ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.removalConfirmation.message" resname="extensionList.removalConfirmation.message" approved="yes">
+        <source>The extension is currently installed. Uninstall extension?</source>
+        <target state="final">សមាសភាគបាន​បញ្ចូល​រួច​ហើយ។ តើ​អ្នក​ចង់លុបវាមែនទេ?</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateConfirmation.title" resname="extensionList.updateConfirmation.title" approved="yes">
+        <source>Update?</source>
+        <target state="final">បន្ទាន់សម័យ?</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateConfirmation.questionVersionComments" resname="extensionList.updateConfirmation.questionVersionComments" approved="yes">
+        <source>Version Comments</source>
+        <target state="final">កំណែប្រែ​មតិ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFlashMessage.title" resname="extensionList.updateFlashMessage.title" approved="yes">
+        <source>Extension Update</source>
+        <target state="final">បន្ទាន់សម័យ​សមាសភាគ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFlashMessage.body" resname="extensionList.updateFlashMessage.body" approved="yes">
+        <source>%s was updated!</source>
+        <target state="final">%s បាន​ដាក់បញ្ចូល។</target>
+      </trans-unit>
+      <trans-unit id="extensionList.removalConfirmation.question" resname="extensionList.removalConfirmation.question" approved="yes">
+        <source>Are you sure you want to remove the extension?</source>
+        <target state="final">តើ​អ្នក​ប្រាកដ​ហើយ​មែន​ទេ​ ដែល​ចង់លុប​សមាសភាព​នេះ?</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.headline" resname="downloadExtension.dependencies.headline" approved="yes">
+        <source>The following dependencies have to be resolved before installation:
+
+
+				</source>
+        <target state="final">ខាង​ក្រោម​នេះ​ជា​សមាសភាគ​ទាកទង ត្រូវតម្លើង​វាជាមុន​ការតំឡើង​សមាសភាពនវ៖
+
+
+				</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.typeHeadline" resname="downloadExtension.dependencies.typeHeadline" xml:space="preserve" approved="yes">
+				<source>&lt;h3&gt;Extensions marked for %s:&lt;/h3&gt;
+%s
+
+
+				</source>
+			<target state="final">&lt;h3&gt;សមាសភាគ​សម្រាប់ %s:&lt;/h3&gt;
+%s
+
+
+				</target></trans-unit>
+      <trans-unit id="downloadExtension.dependencies.resolveAutomatically" resname="downloadExtension.dependencies.resolveAutomatically" approved="yes">
+        <source>Shall these dependencies be resolved automatically?</source>
+        <target state="final">សមាសភាគ​ទាកទង​ទាំង​នេះ​ គូតែដោះស្រាយ​ដោយ​ស្វ័យ​ប្រវត្ដ។</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.errorTitle" resname="downloadExtension.dependencies.errorTitle" approved="yes">
+        <source>Dependencies could not be resolved</source>
+        <target state="final">សមាសភាគ​ទាកទង​ទាំងនេះ​មិន​ដំណើរការបានទេ។</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencyType.download" resname="downloadExtension.dependencyType.download" approved="yes">
+        <source>download</source>
+        <target state="final">ទាយយក</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencyType.install" resname="downloadExtension.dependencyType.install" approved="yes">
+        <source>install</source>
+        <target state="final">តំឡើង</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadError.title" resname="extensionList.dependenciesResolveDownloadError.title" approved="yes">
+        <source>Download Error</source>
+        <target state="final">ទាញ​យក​មាន​បញ្ហា</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.message" resname="extensionList.dependenciesResolveDownloadSuccess.message" approved="yes">
+        <source>Your installation of {0} was successful.</source>
+        <target state="final">អ្នក​បាន​តម្លើង {} ជោជ័យហើយ។</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.header" resname="extensionList.dependenciesResolveDownloadSuccess.header" approved="yes">
+        <source>Log</source>
+        <target state="final">លុក</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.item" resname="extensionList.dependenciesResolveDownloadSuccess.item" approved="yes">
+        <source>Extensions</source>
+        <target state="final">សមាសភាគ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveFlashMessage.title" resname="extensionList.dependenciesResolveFlashMessage.title" approved="yes">
+        <source>{0} installed.</source>
+        <target state="final">{0} បាន​តម្លើង។</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uploadFlashMessage.title" resname="extensionList.uploadFlashMessage.title" approved="yes">
+        <source>Extension Upload</source>
+        <target state="final">ដាក់បញ្ចូល​សមាសភាគ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uploadFlashMessage.message" resname="extensionList.uploadFlashMessage.message" approved="yes">
+        <source>%s was uploaded!</source>
+        <target state="final">{0} បាន​ដាក់បញ្ចូល។</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTerFlashMessage.title" resname="extensionList.updateFromTerFlashMessage.title" approved="yes">
+        <source>Update Extension List</source>
+        <target state="final">បន្ទាន់តារាង​សមាសភាគ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadViewHelper.submit" resname="extensionList.downloadViewHelper.submit" approved="yes">
+        <source>Import and Install</source>
+        <target state="final">ទាញ​បញ្ចូល​ហើយតម្លើង</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.label" resname="extensionList.showAllVersions.label" approved="yes">
+        <source>Show all versions</source>
+        <target state="final">បង្ហាញ​កំណែប្រែទាំង​អស់</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.extensionKey" resname="extensionList.showAllVersions.extensionKey" approved="yes">
+        <source>Extension key</source>
+        <target state="final">គន្លឺះសមាសភាគ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.version" resname="extensionList.showAllVersions.version" approved="yes">
+        <source>Version</source>
+        <target state="final">កំណែប្រែ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.lastUploaded" resname="extensionList.showAllVersions.lastUploaded" approved="yes">
+        <source>Last uploaded</source>
+        <target state="final">ដាក់បញ្ចូល​ចុងក្រោយ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.downloads" resname="extensionList.showAllVersions.downloads" approved="yes">
+        <source>Downloads</source>
+        <target state="final">ទាញ​យក</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.category" resname="extensionList.showAllVersions.category" approved="yes">
+        <source>Category</source>
+        <target state="final">ចំណាត់​ក្រុម</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.manual" resname="extensionList.showAllVersions.manual" approved="yes">
+        <source>Manual</source>
+        <target state="final">ផ្ទាល់ដៃ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.author" resname="extensionList.showAllVersions.author" approved="yes">
+        <source>Author</source>
+        <target state="final">អ្នក​និពន្ធ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.readOnline" resname="extensionList.showAllVersions.readOnline" approved="yes">
+        <source>Read online</source>
+        <target state="final">អានលើបណ្ដាញ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.key" resname="extensionList.distribution.key" approved="yes">
+        <source>Key</source>
+        <target state="final">គន្លឺះ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.author" resname="extensionList.distribution.author" approved="yes">
+        <source>Author</source>
+        <target state="final">អ្នក​និពន្ធ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.version" resname="extensionList.distribution.version" approved="yes">
+        <source>Version</source>
+        <target state="final">កំណែប្រែ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.downloads" resname="extensionList.distribution.downloads" approved="yes">
+        <source>Downloads</source>
+        <target state="final">ទាញ​យក</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.buttonLabel" resname="extensionList.updateFromTer.buttonLabel" approved="yes">
+        <source>Update now</source>
+        <target state="final">ដាក់បញ្ចូលឥឡូវ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.noInfo" resname="extensionList.updateFromTer.lastUpdate.noInfo" approved="yes">
+        <source>unknown</source>
+        <target state="final">មិន​ស្គាល់</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.fullTimeFormat" resname="extensionList.updateFromTer.lastUpdate.fullTimeFormat" approved="yes">
+        <source>Y-m-d H:i:s</source>
+        <target state="final">Y-m-d H:i:s</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.noTimeOfLastUpdate" resname="extensionList.updateFromTer.lastUpdate.noTimeOfLastUpdate" approved="yes">
+        <source>No last update time known.</source>
+        <target state="final">មិន​ស្គាល់​ពេល​បន្ទាន់សម័យ​ចុង​ក្រោយ។</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.never" resname="extensionList.updateFromTer.never" approved="yes">
+        <source>Never</source>
+        <target state="final">មិន​ដែល</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.version" resname="distribution.dependency.version" approved="yes">
+        <source>Version</source>
+        <target state="final">កំណែប្រែ</target>
+      </trans-unit>
+      <trans-unit id="task.updateExtensionListTask.name" resname="task.updateExtensionListTask.name" approved="yes">
+        <source>Update extension list</source>
+        <target state="final">បន្ទាន់សម័យ​តារាង​សមាសភាគ</target>
+      </trans-unit>
+      <trans-unit id="task.updateExtensionListTask.description" resname="task.updateExtensionListTask.description" approved="yes">
+        <source>Update TER extension list on a regular basis. Once a day is a good interval.</source>
+        <target state="final">បន្ទាន់​សម័យ TER តារាង​សមាសភាគ​ជាទៀងទាត់។ មួយ​ថ្ងៃម្ដង​គឺប្រសើបំផុត។</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.title" resname="report.status.mainRepository.title" approved="yes">
+        <source>Update status of typo3.org main repository extension list</source>
+        <target state="final">បន្ទាន់សម័យរបស់​ typo3.org ពីតារាង​សមាសភាគសំខាន់</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notFound.value" resname="report.status.mainRepository.notFound.value" approved="yes">
+        <source>Error</source>
+        <target state="final">បញ្ហា</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notFound.message" resname="report.status.mainRepository.notFound.message" approved="yes">
+        <source>The typo3.org extension repository was not found. Please import the main typo3.org extension repository in the install tool wizard.</source>
+        <target state="final">រក​មិន​ឃើញ​សមាសភាគ repository របស់ typo3.org។ សូម​ទាញ​យកសមាសភាគ​ពី typo3 extension repository នៅក្នុង Install Tool</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notUpToDate.value" resname="report.status.mainRepository.notUpToDate.value" approved="yes">
+        <source>Extension list is not up to date!</source>
+        <target state="final">សមាសភាគ មិន​បាន​បន្ទាន​សម័យ។</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notUpToDate.message" resname="report.status.mainRepository.notUpToDate.message" approved="yes">
+        <source>The Main Repository extension list is older than 7 days. Please update it in the Extension manager or Scheduler.</source>
+        <target state="final">តារាង​សមាសភាគ Repository សំខាន់​យួរជាង​ ៧ថ្ងៃ។ សូមបន្ទាន់​សម័យ​វានៅ​កន្លែ គ្រប់គ្រង​សមាសភាគ ឬ​តាម​កាលវិភាគ។</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.upToDate.value" resname="report.status.mainRepository.upToDate.value" approved="yes">
+        <source>OK</source>
+        <target state="final">យល់ព្រម</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.title" resname="report.status.loadedExtensions.title" approved="yes">
+        <source>Security status of loaded extensions</source>
+        <target state="final">សុវត្ថភាពនៃកាទាញ​យក​សមាសភាគ</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.noInsecureExtensionLoaded.value" resname="report.status.loadedExtensions.noInsecureExtensionLoaded.value" approved="yes">
+        <source>OK</source>
+        <target state="final">យល់ព្រម</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.value" resname="report.status.loadedExtensions.insecureExtensionLoaded.value" approved="yes">
+        <source>%s insecure extension(s) found</source>
+        <target state="final">%s សមាសភាគ​មិន​មាន​សុវត្ថិភាព​បាន​រកឃើញ។</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.message" resname="report.status.loadedExtensions.insecureExtensionLoaded.message" approved="yes">
+        <source>The following extensions are insecure and usage might damage your system. Please update these extensions as soon as possible or remove them from your system:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">សមាសភាព​ខាង​ក្រោម​គឺមិន​សុវត្ថភាពទេ បើប្រើប្រាស់​អាច​នឹង​ប៉ះពាល​ដល់ ស៊ីស្តែម​របស់អ្នក។ សូម​ធ្វើការ​បន្ទាន់​សម័យ​សមាសភាព​ទាំង​នេះ​តាមតែអាច​ធ្វើទៅបាន ឬក៏លុបពួកវាចេញពីស៊ីស្តែម​របស់អ្នក៖&lt;br&gt;&lt;br&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.title" resname="report.status.existingExtensions.title" approved="yes">
+        <source>Security status of existing, but not loaded extensions</source>
+        <target state="final">ស្ថានភាពសុវត្ថិភាពកុំពុងកើតឡើ តែ​មិន​អាច​ទាញ​សមាសភាគបាន។</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.noInsecureExtensionExists.value" resname="report.status.existingExtensions.noInsecureExtensionExists.value" approved="yes">
+        <source>OK</source>
+        <target state="final">យល់ព្រម</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.insecureExtensionExists.value" resname="report.status.existingExtensions.insecureExtensionExists.value" approved="yes">
+        <source>%s insecure extension(s) found</source>
+        <target state="final">%s សមាសភាគ​មិន​មាន​សុវត្ថិភាព​បាន​រកឃើញ។</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.insecureExtensionExists.message" resname="report.status.existingExtensions.insecureExtensionExists.message" approved="yes">
+        <source>The following extensions were found on your system, but are currently not installed. Please delete the extensions using the extension manager:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">សមាសភាព​ខាង​ក្រោម​បាន​រក​ឃើញ​នៅ​ក្នុង​​​ប្រព័ន្ធ​របស់អ្នក ប៉ុន្តែ​ពួកវា​មិន​តំឡើង​នោះទេ។​ សូម​លុបសមាសភាគ​ទាំងនេះ​ដោយ​ប្រើ ការគ្រប់សមាសភាគ៖ &lt;br&gt;&lt;br&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.title" resname="report.status.loadedOutdatedExtensions.title" approved="yes">
+        <source>Outdated status of loaded extensions</source>
+        <target state="final">ស្ថាន​ភាព​ផុតពេល​របស់ស​មាសភាគ​បាន​លេញឡើង។</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.noOutdatedExtensionLoaded.value" resname="report.status.loadedOutdatedExtensions.noOutdatedExtensionLoaded.value" approved="yes">
+        <source>OK</source>
+        <target state="final">យល់ព្រម</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.value" resname="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.value" approved="yes">
+        <source>%s outdated extension(s) found</source>
+        <target state="final">%s សមាគភាក​ផុតេល​ត្រូវបាន​រកឃើញ។</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message" resname="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message" approved="yes">
+        <source>The following extensions are outdated and may not be compatible with your installation. Please make sure these extensions are compatible and ask the extension author to publish updates:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">សមាសភាគខាង​ក្រោម គឺចាស់ហើង​ ហើយ​ភាគច្រើន​មិន​ដំណើរការ​ជាមួយប្រព័ន្ធរបស់អ្នក។ សូម​ធ្វើអោយ​ប្រកដថា​ពួគវាគឺអាច​ដំណើរការបាន នឹង​សួម​អោយ​អ្នក​បង្កើតសមាសភាគទាំងនោះដើម្បី​ធ្វើការបន្ទាន់សម័យ៖ &lt;br&gt;&lt;br&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.title" resname="report.status.existingOutdatedExtensions.title" approved="yes">
+        <source>Outdated status of existing, but not loaded extensions</source>
+        <target state="final">ស្ថានភាព​នៃការ​ផុតកំណត់បាន​កុំពុងមាន ប៉ុន្តែ​មិន​ទាញ​សមាសភាគបាន</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.noOutdatedExtensionExists.value" resname="report.status.existingOutdatedExtensions.noOutdatedExtensionExists.value" approved="yes">
+        <source>OK</source>
+        <target state="final">យល់ព្រម</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.value" resname="report.status.existingOutdatedExtensions.outdatedExtensionExists.value" approved="yes">
+        <source>%s outdated extension(s) found</source>
+        <target state="final">%s សមាគភាក​ផុតេល​ត្រូវបាន​រកឃើញ។</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.message" resname="report.status.existingOutdatedExtensions.outdatedExtensionExists.message" approved="yes">
+        <source>The following extensions were found on your system, but are currently not installed. Please make sure they are compatible with your system before installing them:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">សមាសភាគទាំងនេះ​បាន​រកឃើញ​ក្នុង​ប្រព័ន្ធ​របស់​អ្នក​ ប៉ុន្តែ​មិន​តម្លើងបាន​ពេលនវ។ សូម​ធ្វើអោយ​ប្រកដថា​ពួកវា​អាច​ដំណើរការជាមួយ​ប្រព័ន្ធ​របស់អ្នក មុន​នឹង​តម្លើង​​ពួកវា៖ &lt;br&gt;&lt;br&gt;%s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
