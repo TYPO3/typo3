@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814785" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_layout.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Page content</source>
+        <target state="final">Puslapio turinys</target>
+      </trans-unit>
+      <trans-unit id="noEditItems" resname="noEditItems" approved="yes">
+        <source>Sorry, you do not have permissions to edit items on this page!</source>
+        <target state="final">Atsiprašome, jūs neturite teisės redaguoti šio puslapio elementų!</target>
+      </trans-unit>
+      <trans-unit id="noEditPage" resname="noEditPage" approved="yes">
+        <source>Sorry, you do not have permissions to edit this page!</source>
+        <target state="final">Atsiprašome, jūs neturite teisės redaguoti šio puslapio!</target>
+      </trans-unit>
+      <trans-unit id="moveUp" resname="moveUp" approved="yes">
+        <source>Move record up</source>
+        <target state="final">Perkelti įrašą aukštyn</target>
+      </trans-unit>
+      <trans-unit id="moveDown" resname="moveDown" approved="yes">
+        <source>Move record down</source>
+        <target state="final">Perkelti įrašą žemyn</target>
+      </trans-unit>
+      <trans-unit id="unHide" resname="unHide" approved="yes">
+        <source>Un-hide</source>
+        <target state="final">Rodyti</target>
+      </trans-unit>
+      <trans-unit id="hide" resname="hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">Slėpti</target>
+      </trans-unit>
+      <trans-unit id="edit" resname="edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Redaguoti</target>
+      </trans-unit>
+      <trans-unit id="newAfter" resname="newAfter" approved="yes">
+        <source>New record after this one</source>
+        <target state="final">Naujas įrašas po šiuo</target>
+      </trans-unit>
+      <trans-unit id="move_record" resname="move_record" approved="yes">
+        <source>Re-position current content element</source>
+        <target state="final">Perkelti dabartinį turinio elementą</target>
+      </trans-unit>
+      <trans-unit id="move_page" resname="move_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">Perkelti puslapį</target>
+      </trans-unit>
+      <trans-unit id="deleteItem" resname="deleteItem" approved="yes">
+        <source>Delete</source>
+        <target state="final">Ištrinti</target>
+      </trans-unit>
+      <trans-unit id="pasteIntoColumn" resname="pasteIntoColumn" approved="yes">
+        <source>Paste into this column</source>
+        <target state="final">Įklijuoti į šį stulpelį</target>
+      </trans-unit>
+      <trans-unit id="pasteAfterRecord" resname="pasteAfterRecord" approved="yes">
+        <source>Paste after this record</source>
+        <target state="final">Įklijuoti po šiuo įrašu</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.title.paste" resname="paste.modal.title.paste" approved="yes">
+        <source>Paste record</source>
+        <target state="final">Įklijuoti įrašą</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.button.cancel" resname="paste.modal.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Atšaukti</target>
+      </trans-unit>
+      <trans-unit id="editColumn" resname="editColumn" approved="yes">
+        <source>Edit this column</source>
+        <target state="final">Redaguoti šį stulpelį</target>
+      </trans-unit>
+      <trans-unit id="editPageProperties_curLang" resname="editPageProperties_curLang" approved="yes">
+        <source>Edit translation properties</source>
+        <target state="final">Redaguoti vertimo savybes</target>
+      </trans-unit>
+      <trans-unit id="editInRTE" resname="editInRTE" approved="yes">
+        <source>Edit in Rich Text Editor</source>
+        <target state="final">Redaguoti Rich Text redaktoriuje</target>
+      </trans-unit>
+      <trans-unit id="newPageContent" resname="newPageContent" approved="yes">
+        <source>Create page content</source>
+        <target state="final">Sukurti puslapio turinį</target>
+      </trans-unit>
+      <trans-unit id="newPageContent_translate" resname="newPageContent_translate" approved="yes">
+        <source>Translate</source>
+        <target state="final">Versti</target>
+      </trans-unit>
+      <trans-unit id="newPageContent2" resname="newPageContent2" approved="yes">
+        <source>New content</source>
+        <target state="final">Naujas turinys</target>
+      </trans-unit>
+      <trans-unit id="content" resname="content" approved="yes">
+        <source>Content</source>
+        <target state="final">Turinys</target>
+      </trans-unit>
+      <trans-unit id="newInColumn" resname="newInColumn" approved="yes">
+        <source>Create new record in top of this column</source>
+        <target state="final">Sukurti naują įrašą šio stulpelio viršuje</target>
+      </trans-unit>
+      <trans-unit id="records" resname="records" approved="yes">
+        <source>records</source>
+        <target state="final">įrašai</target>
+      </trans-unit>
+      <trans-unit id="pageInformation" resname="pageInformation" approved="yes">
+        <source>Page information</source>
+        <target state="final">Puslapio informacija</target>
+      </trans-unit>
+      <trans-unit id="goToTable" resname="goToTable" approved="yes">
+        <source>Go to table</source>
+        <target state="final">Eiti į lentelę</target>
+      </trans-unit>
+      <trans-unit id="internalNotes" resname="internalNotes" approved="yes">
+        <source>Internal notes</source>
+        <target state="final">Vidinės pastabos</target>
+      </trans-unit>
+      <trans-unit id="clearCache" resname="clearCache" approved="yes">
+        <source>Click here to clear cache for this page.</source>
+        <target state="final">Spustelėkite čia, kad išvalytumėte šio puslapio spartinančiąją atmintį.</target>
+      </trans-unit>
+      <trans-unit id="hiddenCE" resname="hiddenCE" approved="yes">
+        <source>Show hidden content elements</source>
+        <target state="final">Rodyti paslėptus turinio elementus</target>
+      </trans-unit>
+      <trans-unit id="newLabel" resname="newLabel" approved="yes">
+        <source>NEW</source>
+        <target state="final">NAUJA</target>
+      </trans-unit>
+      <trans-unit id="defaultLanguage" resname="defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="editLanguageHeader" resname="editLanguageHeader" approved="yes">
+        <source>Edit language header</source>
+        <target state="final">Redaguoti kalbos antraštę</target>
+      </trans-unit>
+      <trans-unit id="editPageProperties" resname="editPageProperties" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">Redaguoti puslapio savybes</target>
+      </trans-unit>
+      <trans-unit id="editPageLanguageOverlayProperties" resname="editPageLanguageOverlayProperties" approved="yes">
+        <source>Edit page language overlay properties</source>
+        <target state="final">Redaguoti puslapio kalbos perdengimo savybes</target>
+      </trans-unit>
+      <trans-unit id="newRecordGeneral" resname="newRecordGeneral" approved="yes">
+        <source>Create new record</source>
+        <target state="final">Sukurti naują įrašą</target>
+      </trans-unit>
+      <trans-unit id="CEonThisPage" resname="CEonThisPage" approved="yes">
+        <source>Content elements on this page</source>
+        <target state="final">Šio puslapio turinio elementai</target>
+      </trans-unit>
+      <trans-unit id="newPage" resname="newPage" approved="yes">
+        <source>Create new page</source>
+        <target state="final">Sukurti naują puslapį</target>
+      </trans-unit>
+      <trans-unit id="newPage2" resname="newPage2" approved="yes">
+        <source>New page</source>
+        <target state="final">Naujas puslapis</target>
+      </trans-unit>
+      <trans-unit id="noAccess" resname="noAccess" approved="yes">
+        <source>No edit access</source>
+        <target state="final">Nėra redagavimo teisių</target>
+      </trans-unit>
+      <trans-unit id="noAccess_msg" resname="noAccess_msg" approved="yes">
+        <source>You do not have access to edit the requested record.</source>
+        <target state="final">Jūs neturite teisės redaguoti prašomo įrašo.</target>
+      </trans-unit>
+      <trans-unit id="notAssigned" resname="notAssigned" approved="yes">
+        <source>Not assigned</source>
+        <target state="final">Nepriskirta</target>
+      </trans-unit>
+      <trans-unit id="undoLastChange" resname="undoLastChange" approved="yes">
+        <source>Undo/Redo last change (%s ago)</source>
+        <target state="final">Atšaukti / pakartoti paskutinį pakeitimą (prieš %s)</target>
+      </trans-unit>
+      <trans-unit id="recordHistory" resname="recordHistory" approved="yes">
+        <source>View record change history</source>
+        <target state="final">Peržiūrėti įrašo pakeitimų istoriją</target>
+      </trans-unit>
+      <trans-unit id="viewContent" resname="viewContent" approved="yes">
+        <source>Viewing content of</source>
+        <target state="final">Peržiūrimas turinys</target>
+      </trans-unit>
+      <trans-unit id="tt_board_subject" resname="tt_board_subject" approved="yes">
+        <source>Subject</source>
+        <target state="final">Tema</target>
+      </trans-unit>
+      <trans-unit id="tt_board_author" resname="tt_board_author" approved="yes">
+        <source>Author</source>
+        <target state="final">Autorius</target>
+      </trans-unit>
+      <trans-unit id="tt_board_date" resname="tt_board_date" approved="yes">
+        <source>Date</source>
+        <target state="final">Data</target>
+      </trans-unit>
+      <trans-unit id="tt_board_age" resname="tt_board_age" approved="yes">
+        <source>Age</source>
+        <target state="final">Amžius</target>
+      </trans-unit>
+      <trans-unit id="tt_board_RE" resname="tt_board_RE" approved="yes">
+        <source>RE</source>
+        <target state="final">RE</target>
+      </trans-unit>
+      <trans-unit id="gridView" resname="gridView" approved="yes">
+        <source>Grid-View</source>
+        <target state="final">Tinklelio rodinys</target>
+      </trans-unit>
+      <trans-unit id="m_tt_board_0" resname="m_tt_board_0" approved="yes">
+        <source>List topics only</source>
+        <target state="final">Rodyti tik temas</target>
+      </trans-unit>
+      <trans-unit id="m_tt_board_expand" resname="m_tt_board_expand" approved="yes">
+        <source>Expand Threads</source>
+        <target state="final">Išplėsti gijas</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_0" resname="m_tt_address_0" approved="yes">
+        <source>Short List</source>
+        <target state="final">Trumpas sąrašas</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_1" resname="m_tt_address_1" approved="yes">
+        <source>Address list</source>
+        <target state="final">Adresų sąrašas</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_2" resname="m_tt_address_2" approved="yes">
+        <source>Personal info</source>
+        <target state="final">Asmeninė informacija</target>
+      </trans-unit>
+      <trans-unit id="m_tt_links_1" resname="m_tt_links_1" approved="yes">
+        <source>Whole URL</source>
+        <target state="final">Pilnas URL</target>
+      </trans-unit>
+      <trans-unit id="m_tt_links_2" resname="m_tt_links_2" approved="yes">
+        <source>Alternative note</source>
+        <target state="final">Alternatyvi pastaba</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_date" resname="m_tt_calender_date" approved="yes">
+        <source>Date</source>
+        <target state="final">Data</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_date_ext" resname="m_tt_calender_date_ext" approved="yes">
+        <source>Date - extended</source>
+        <target state="final">Data – išplėsta</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_todo" resname="m_tt_calender_todo" approved="yes">
+        <source>Todo</source>
+        <target state="final">Užduotis</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_todo_ext" resname="m_tt_calender_todo_ext" approved="yes">
+        <source>Todo - extended</source>
+        <target state="final">Užduotis – išplėsta</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_ext" resname="m_tt_calender_ext" approved="yes">
+        <source>Extended</source>
+        <target state="final">Išplėsta</target>
+      </trans-unit>
+      <trans-unit id="m_tt_products_ext" resname="m_tt_products_ext" approved="yes">
+        <source>Extended</source>
+        <target state="final">Išplėsta</target>
+      </trans-unit>
+      <trans-unit id="m_default" resname="m_default" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="pI_crUser" resname="pI_crUser" approved="yes">
+        <source>Created by</source>
+        <target state="final">Sukūrė</target>
+      </trans-unit>
+      <trans-unit id="pI_crDate" resname="pI_crDate" approved="yes">
+        <source>Created date</source>
+        <target state="final">Sukūrimo data</target>
+      </trans-unit>
+      <trans-unit id="pI_lastChange" resname="pI_lastChange" approved="yes">
+        <source>Last change</source>
+        <target state="final">Paskutinis pakeitimas</target>
+      </trans-unit>
+      <trans-unit id="pI_lastChangeContent" resname="pI_lastChangeContent" approved="yes">
+        <source>Last change, content</source>
+        <target state="final">Paskutinis turinio pakeitimas</target>
+      </trans-unit>
+      <trans-unit id="pI_hitsTotal" resname="pI_hitsTotal" approved="yes">
+        <source>Total Hits</source>
+        <target state="final">Iš viso peržiūrų</target>
+      </trans-unit>
+      <trans-unit id="pI_hitsPeriod" resname="pI_hitsPeriod" approved="yes">
+        <source>Hits Period</source>
+        <target state="final">Peržiūrų laikotarpis</target>
+      </trans-unit>
+      <trans-unit id="pI_hits24hours" resname="pI_hits24hours" approved="yes">
+        <source>Last 24 hours</source>
+        <target state="final">Paskutinės 24 valandos</target>
+      </trans-unit>
+      <trans-unit id="pI_hits10days" resname="pI_hits10days" approved="yes">
+        <source>Last 10 days</source>
+        <target state="final">Paskutinės 10 dienų</target>
+      </trans-unit>
+      <trans-unit id="content_from_pid_title" resname="content_from_pid_title" approved="yes">
+        <source>Page uses content from this page: %s</source>
+        <target state="final">Puslapis naudoja turinį iš šio puslapio: %s</target>
+      </trans-unit>
+      <trans-unit id="content_on_pid_title" resname="content_on_pid_title" approved="yes">
+        <source>This content is also shown on: %s</source>
+        <target state="final">Šis turinys taip pat rodomas: %s</target>
+      </trans-unit>
+      <trans-unit id="pageIsExternalLinkMessage" resname="pageIsExternalLinkMessage" approved="yes">
+        <source>Page is a link to the following external URL: %s</source>
+        <target state="final">Puslapis yra nuoroda į šį išorinį URL: %s</target>
+      </trans-unit>
+      <trans-unit id="pageIsInternalLinkMessage" resname="pageIsInternalLinkMessage" approved="yes">
+        <source>Page is a link to the following page: %s</source>
+        <target state="final">Puslapis yra nuoroda į šį puslapį: %s</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredInternalLinkMessage" resname="pageIsMisconfiguredInternalLinkMessage" approved="yes">
+        <source>Page is configured to be a link but there is actually no valid target defined.</source>
+        <target state="final">Puslapis nustatytas kaip nuoroda, tačiau nėra nurodytas galiojantis tikslas.</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredOrNotAccessibleInternalLinkMessage" resname="pageIsMisconfiguredOrNotAccessibleInternalLinkMessage" approved="yes">
+        <source>Page is configured to be a link but there is actually no target defined which is accessible in the frontend.</source>
+        <target state="final">Puslapis nustatytas kaip nuoroda, tačiau nėra nurodytas tikslas, kuris būtų pasiekiamas frontend aplinkoje.</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredFirstSubpageMessage" resname="pageIsMisconfiguredFirstSubpageMessage" approved="yes">
+        <source>Page is configured to be a link to the first subpage but there is actually no such page accessible in the frontend.</source>
+        <target state="final">Puslapis nustatytas kaip nuoroda į pirmąjį po puslapį, tačiau frontend aplinkoje toks puslapis nepasiekiamas.</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredParentPageMessage" resname="pageIsMisconfiguredParentPageMessage" approved="yes">
+        <source>Page is configured to be a link to the parent page but there is actually no such page accessible in the frontend.</source>
+        <target state="final">Puslapis nustatytas kaip nuoroda į tėvinį puslapį, tačiau frontend aplinkoje toks puslapis nepasiekiamas.</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredExternalLinkMessage" resname="pageIsMisconfiguredExternalLinkMessage" approved="yes">
+        <source>Page is configured to be an external link but there is actually no URL defined.</source>
+        <target state="final">Puslapis sukonfigūruotas kaip išorinė nuoroda, tačiau iš tikrųjų nėra apibrėžto URL.</target>
+      </trans-unit>
+      <trans-unit id="goToListModule" resname="goToListModule" approved="yes">
+        <source>Go to list module</source>
+        <target state="final">Eiti į sąrašo modulį</target>
+      </trans-unit>
+      <trans-unit id="goToListModuleMessage" resname="goToListModuleMessage" approved="yes">
+        <source>The current page is a folder. Folders usually don't contain content elements but are used for collecting other types of records.</source>
+        <target state="final">Dabartinis puslapis yra aplankas. Aplankai paprastai neturi turinio elementų, bet naudojami kitų tipų įrašams saugoti.</target>
+      </trans-unit>
+      <trans-unit id="staleTranslationWarning" resname="staleTranslationWarning" approved="yes">
+        <source>Make sure that this behavior is intended and does not pose a problem for you. We highlighted the problematic records for you.</source>
+        <target state="final">Įsitikinkite, kad toks elgesys yra numatytas ir nesukelia problemų. Probleminius įrašus pažymėjome.</target>
+      </trans-unit>
+      <trans-unit id="staleTranslationWarningTitle" resname="staleTranslationWarningTitle" approved="yes">
+        <source>Inconsistent content detected in language "%s"</source>
+        <target state="final">Aptiktas nenuoseklus turinys kalboje „%s“</target>
+      </trans-unit>
+      <trans-unit id="languageModeFree" resname="languageModeFree" approved="yes">
+        <source>Free Mode</source>
+        <target state="final">Laisvas režimas</target>
+      </trans-unit>
+      <trans-unit id="languageModeConnected" resname="languageModeConnected" approved="yes">
+        <source>Connected Mode</source>
+        <target state="final">Susietas režimas</target>
+      </trans-unit>
+      <trans-unit id="languageModeMixed" resname="languageModeMixed" approved="yes">
+        <source>Mixed Mode</source>
+        <target state="final">Mišrus režimas</target>
+      </trans-unit>
+      <trans-unit id="staleUnusedElementsWarning" resname="staleUnusedElementsWarning" approved="yes">
+        <source>These elements don't belong to any of the available columns of this page. You should either delete them or move them to existing columns. We highlighted the problematic records for you.</source>
+        <target state="final">Šie elementai nepriklauso nė vienam iš galimų šio puslapio stulpelių. Juos reikėtų ištrinti arba perkelti į esamus stulpelius. Probleminius įrašus pažymėjome.</target>
+      </trans-unit>
+      <trans-unit id="staleUnusedElementsWarningTitle" resname="staleUnusedElementsWarningTitle" approved="yes">
+        <source>Unused elements detected on this page</source>
+        <target state="final">Šiame puslapyje aptikti nenaudojami elementai</target>
+      </trans-unit>
+      <trans-unit id="localize.chooseLanguage" resname="localize.chooseLanguage" approved="yes">
+        <source>Choose your language</source>
+        <target state="final">Pasirinkite kalbą</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.header" resname="localize.wizard.header" approved="yes">
+        <source>Localize record &quot;{0}&quot; into {1}</source>
+        <target state="final">Lokalizuoti įrašą „{0}“ į {1}</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.header_page" resname="localize.wizard.header_page" approved="yes">
+        <source>Localize page &quot;{0}&quot; into {1}</source>
+        <target state="final">Lokalizuoti puslapį „{0}“ į {1}</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.cancel" resname="localize.wizard.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Atšaukti</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.next" resname="localize.wizard.button.next" approved="yes">
+        <source>Next</source>
+        <target state="final">Toliau</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.process" resname="localize.wizard.button.process" approved="yes">
+        <source>Start processing</source>
+        <target state="final">Pradėti apdorojimą</target>
+      </trans-unit>
+      <trans-unit id="localize.view.chooseLanguage" resname="localize.view.chooseLanguage" approved="yes">
+        <source>Choose the language from which you want to localize the content</source>
+        <target state="final">Pasirinkite kalbą, iš kurios norite lokalizuoti turinį</target>
+      </trans-unit>
+      <trans-unit id="localize.view.summary" resname="localize.view.summary" approved="yes">
+        <source>Record summary</source>
+        <target state="final">Įrašo santrauka</target>
+      </trans-unit>
+      <trans-unit id="localize.view.processing" resname="localize.view.processing" approved="yes">
+        <source>Processing...</source>
+        <target state="final">Apdorojama...</target>
+      </trans-unit>
+      <trans-unit id="localize.progress.step" resname="localize.progress.step" approved="yes">
+        <source>Step {0} of {1}</source>
+        <target state="final">Žingsnis {0} iš {1}</target>
+      </trans-unit>
+      <trans-unit id="error.invalidBackendLayout" resname="error.invalidBackendLayout" approved="yes">
+        <source>The selected page layout is mis-configured, no columns are specified to be editable. Please update your backend layout to have at least one parameter "colPos" set.</source>
+        <target state="final">Pasirinktas puslapio išdėstymas neteisingai sukonfigūruotas – nenurodyti redaguojami stulpeliai. Atnaujinkite backend išdėstymą, kad būtų nustatytas bent vienas parametras „colPos“.</target>
+      </trans-unit>
+      <trans-unit id="dragdrop.copy.message" resname="dragdrop.copy.message" approved="yes">
+        <source>Press CTRL to copy</source>
+        <target state="final">Paspauskite CTRL, kad kopijuotumėte</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
