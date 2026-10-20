@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1515791927" source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_db.xlf" date="2017-12-29T20:22:14Z" product-name="redirects" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="sys_redirect" resname="sys_redirect">
+        <source>Redirect</source>
+        <target>crwdns78134:0crwdne78134:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.source_host" resname="sys_redirect.source_host">
+        <source>Source Domain</source>
+        <target>crwdns78136:0crwdne78136:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.source_path" resname="sys_redirect.source_path">
+        <source>Source Path</source>
+        <target>crwdns78138:0crwdne78138:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.force_https" resname="sys_redirect.force_https">
+        <source>SSL Redirect</source>
+        <target>crwdns78140:0crwdne78140:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.force_https.0" resname="sys_redirect.force_https.0">
+        <source>Force SSL Redirect</source>
+        <target>crwdns78142:0crwdne78142:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.keep_query_parameters" resname="sys_redirect.keep_query_parameters">
+        <source>GET Parameters</source>
+        <target>crwdns78144:0crwdne78144:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.keep_query_parameters.0" resname="sys_redirect.keep_query_parameters.0">
+        <source>Keep GET Parameters</source>
+        <target>crwdns78146:0crwdne78146:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.respect_query_parameters" resname="sys_redirect.respect_query_parameters">
+        <source>GET Parameters (source)</source>
+        <target>crwdns78148:0crwdne78148:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.respect_query_parameters.0" resname="sys_redirect.respect_query_parameters.0">
+        <source>Respect GET Parameters</source>
+        <target>crwdns78150:0crwdne78150:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target" resname="sys_redirect.target">
+        <source>Target</source>
+        <target>crwdns78152:0crwdne78152:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode" resname="sys_redirect.target_statuscode">
+        <source>Status Code HTTP Header</source>
+        <target>crwdns78154:0crwdne78154:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.301" resname="sys_redirect.target_statuscode.301">
+        <source>301 Moved Permanently</source>
+        <target>crwdns78156:0crwdne78156:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.302" resname="sys_redirect.target_statuscode.302">
+        <source>302 Found</source>
+        <target>crwdns78158:0crwdne78158:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.303" resname="sys_redirect.target_statuscode.303">
+        <source>303 See Other</source>
+        <target>crwdns78160:0crwdne78160:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.307" resname="sys_redirect.target_statuscode.307">
+        <source>307 Temporary Redirect</source>
+        <target>crwdns78162:0crwdne78162:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.hitcount" resname="sys_redirect.hitcount">
+        <source>Count</source>
+        <target>crwdns78164:0crwdne78164:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.lasthiton" resname="sys_redirect.lasthiton">
+        <source>Last Hit On</source>
+        <target>crwdns78166:0crwdne78166:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.hitcountState" resname="sys_redirect.hitcountState">
+        <source>Hit Counter</source>
+        <target>crwdns78168:0crwdne78168:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disable_hitcount" resname="sys_redirect.disable_hitcount">
+        <source>Disable Hit Counter</source>
+        <target>crwdns78170:0crwdne78170:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disable_hitcount.0" resname="sys_redirect.disable_hitcount.0">
+        <source>Disable</source>
+        <target>crwdns78172:0crwdne78172:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.redirectCount" resname="tabs.redirectCount">
+        <source>Statistics</source>
+        <target>crwdns78174:0crwdne78174:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.is_regexp" resname="sys_redirect.is_regexp">
+        <source>Is regular expression?</source>
+        <target>crwdns78176:0crwdne78176:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.is_regexp.0" resname="sys_redirect.is_regexp.0">
+        <source>Yes</source>
+        <target>crwdns78178:0crwdne78178:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disabled" resname="sys_redirect.disabled">
+        <source>Disable</source>
+        <target>crwdns78180:0crwdne78180:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disabled.0" resname="sys_redirect.disabled.0">
+        <source>Deactivate redirect</source>
+        <target>crwdns78182:0crwdne78182:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
