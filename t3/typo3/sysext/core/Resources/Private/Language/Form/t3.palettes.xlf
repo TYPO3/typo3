@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Form/palettes.xlf" date="2025-01-22T20:22:33Z" product-name="palettes" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="general">
+        <source>General</source>
+        <target>crwdns378150:0crwdne378150:0</target>
+      </trans-unit>
+      <trans-unit id="account">
+        <source>Account</source>
+        <target>crwdns378152:0crwdne378152:0</target>
+      </trans-unit>
+      <trans-unit id="authentication">
+        <source>Authentication</source>
+        <target>crwdns378154:0crwdne378154:0</target>
+      </trans-unit>
+      <trans-unit id="permission_languages">
+        <source>Language Permissions</source>
+        <target>crwdns378156:0crwdne378156:0</target>
+      </trans-unit>
+      <trans-unit id="permission_general">
+        <source>General Permissions</source>
+        <target>crwdns378158:0crwdne378158:0</target>
+      </trans-unit>
+      <trans-unit id="permission_specific">
+        <source>Specific Permissions</source>
+        <target>crwdns378160:0crwdne378160:0</target>
+      </trans-unit>
+      <trans-unit id="standard">
+        <source>Page</source>
+        <target>crwdns378162:0crwdne378162:0</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Title</source>
+        <target>crwdns378164:0crwdne378164:0</target>
+      </trans-unit>
+      <trans-unit id="visibility">
+        <source>Visibility</source>
+        <target>crwdns378166:0crwdne378166:0</target>
+      </trans-unit>
+      <trans-unit id="access">
+        <source>Publish Dates and Access Rights</source>
+        <target>crwdns378168:0crwdne378168:0</target>
+      </trans-unit>
+      <trans-unit id="abstract">
+        <source>Abstract</source>
+        <target>crwdns378170:0crwdne378170:0</target>
+      </trans-unit>
+      <trans-unit id="metatags">
+        <source>Meta Tags</source>
+        <target>crwdns378172:0crwdne378172:0</target>
+      </trans-unit>
+      <trans-unit id="editorial">
+        <source>Editorial</source>
+        <target>crwdns378174:0crwdne378174:0</target>
+      </trans-unit>
+      <trans-unit id="layout">
+        <source>Layout</source>
+        <target>crwdns378176:0crwdne378176:0</target>
+      </trans-unit>
+      <trans-unit id="page_layout">
+        <source>Page Layout</source>
+        <target>crwdns378178:0crwdne378178:0</target>
+      </trans-unit>
+      <trans-unit id="use_as_container">
+        <source>Use as Container</source>
+        <target>crwdns378180:0crwdne378180:0</target>
+      </trans-unit>
+      <trans-unit id="replace">
+        <source>Replace Content</source>
+        <target>crwdns378182:0crwdne378182:0</target>
+      </trans-unit>
+      <trans-unit id="links">
+        <source>Links to this Page</source>
+        <target>crwdns378184:0crwdne378184:0</target>
+      </trans-unit>
+      <trans-unit id="caching">
+        <source>Caching</source>
+        <target>crwdns378186:0crwdne378186:0</target>
+      </trans-unit>
+      <trans-unit id="language">
+        <source>Language</source>
+        <target>crwdns378188:0crwdne378188:0</target>
+      </trans-unit>
+      <trans-unit id="miscellaneous">
+        <source>Miscellaneous</source>
+        <target>crwdns378190:0crwdne378190:0</target>
+      </trans-unit>
+      <trans-unit id="media">
+        <source>Files</source>
+        <target>crwdns378192:0crwdne378192:0</target>
+      </trans-unit>
+      <trans-unit id="storage">
+        <source>Storage Page</source>
+        <target>crwdns378194:0crwdne378194:0</target>
+      </trans-unit>
+      <trans-unit id="config">
+        <source>Configuration</source>
+        <target>crwdns378196:0crwdne378196:0</target>
+      </trans-unit>
+      <trans-unit id="headers">
+        <source>Headlines</source>
+        <target>crwdns378198:0crwdne378198:0</target>
+      </trans-unit>
+      <trans-unit id="header">
+        <source>Header</source>
+        <target>crwdns378200:0crwdne378200:0</target>
+      </trans-unit>
+      <trans-unit id="content_layout">
+        <source>Content Element Layout</source>
+        <target>crwdns378202:0crwdne378202:0</target>
+      </trans-unit>
+      <trans-unit id="media_behaviour">
+        <source>Media Behavior</source>
+        <target>crwdns378204:0crwdne378204:0</target>
+      </trans-unit>
+      <trans-unit id="accessibility">
+        <source>Accessibility</source>
+        <target>crwdns378206:0crwdne378206:0</target>
+      </trans-unit>
+      <trans-unit id="downloads_layout">
+        <source>Downloads Layout</source>
+        <target>crwdns378208:0crwdne378208:0</target>
+      </trans-unit>
+      <trans-unit id="table_layout">
+        <source>Table Layout</source>
+        <target>crwdns378210:0crwdne378210:0</target>
+      </trans-unit>
+      <trans-unit id="links_appearance">
+        <source>Links</source>
+        <target>crwdns378212:0crwdne378212:0</target>
+      </trans-unit>
+      <trans-unit id="settings_gallery">
+        <source>Gallery Settings</source>
+        <target>crwdns378214:0crwdne378214:0</target>
+      </trans-unit>
+      <trans-unit id="media_adjustments">
+        <source>Media Adjustments</source>
+        <target>crwdns378216:0crwdne378216:0</target>
+      </trans-unit>
+      <trans-unit id="metrics">
+        <source>Metrics</source>
+        <target>crwdns378218:0crwdne378218:0</target>
+      </trans-unit>
+      <trans-unit id="geolocation">
+        <source>Geo Location</source>
+        <target>crwdns378220:0crwdne378220:0</target>
+      </trans-unit>
+      <trans-unit id="contentdate">
+        <source>Content Date</source>
+        <target>crwdns378222:0crwdne378222:0</target>
+      </trans-unit>
+      <trans-unit id="gps">
+        <source>GPS</source>
+        <target>crwdns378224:0crwdne378224:0</target>
+      </trans-unit>
+      <trans-unit id="seo">
+        <source>General SEO Settings</source>
+        <target>crwdns378226:0crwdne378226:0</target>
+      </trans-unit>
+      <trans-unit id="robots">
+        <source>Robot instructions</source>
+        <target>crwdns378228:0crwdne378228:0</target>
+      </trans-unit>
+      <trans-unit id="opengraph">
+        <source>Open Graph (Facebook)</source>
+        <target>crwdns378230:0crwdne378230:0</target>
+      </trans-unit>
+      <trans-unit id="twittercards">
+        <source>X / Twitter Cards</source>
+        <target>crwdns378232:0crwdne378232:0</target>
+      </trans-unit>
+      <trans-unit id="canonical">
+        <source>Canonical</source>
+        <target>crwdns378234:0crwdne378234:0</target>
+      </trans-unit>
+      <trans-unit id="sitemap">
+        <source>Sitemap</source>
+        <target>crwdns378236:0crwdne378236:0</target>
+      </trans-unit>
+      <trans-unit id="additional">
+        <source>Additional Configuration</source>
+        <target>crwdns378238:0crwdne378238:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
