@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/db.xlf" date="2020-09-19T08:53:36Z" product-name="impexp" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="tx_impexp_presets">
+        <source>Export Configuration</source>
+        <target>crwdns378502:0crwdne378502:0</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Title</source>
+        <target>crwdns378504:0crwdne378504:0</target>
+      </trans-unit>
+      <trans-unit id="public">
+        <source>Public</source>
+        <target>crwdns378506:0crwdne378506:0</target>
+      </trans-unit>
+      <trans-unit id="user_uid">
+        <source>Owner</source>
+        <target>crwdns378508:0crwdne378508:0</target>
+      </trans-unit>
+      <trans-unit id="item_uid">
+        <source>Page Root</source>
+        <target>crwdns378510:0crwdne378510:0</target>
+      </trans-unit>
+      <trans-unit id="preset_data">
+        <source>Configuration</source>
+        <target>crwdns378512:0crwdne378512:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
