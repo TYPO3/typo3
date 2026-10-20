@@ -1,0 +1,1385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814851" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_core.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="labels.openInNewWindow" resname="labels.openInNewWindow" approved="yes">
+        <source>Open in new window</source>
+        <target state="final">Atverti naujame lange</target>
+      </trans-unit>
+      <trans-unit id="labels.goBack" resname="labels.goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Grįžti atgal</target>
+      </trans-unit>
+      <trans-unit id="labels.makeShortcut" resname="labels.makeShortcut" approved="yes">
+        <source>Create a shortcut to this page?</source>
+        <target state="final">Sukurti šio puslapio nuorodą?</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord" resname="labels.lockedRecord" approved="yes">
+        <source>The user '%s' began to edit this record %s ago.</source>
+        <target state="final">Naudotojas „%s“ pradėjo redaguoti šį įrašą prieš %s.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord_content" resname="labels.lockedRecord_content" approved="yes">
+        <source>The user '%s' began to edit content on this page %s ago.</source>
+        <target state="final">Naudotojas „%s“ pradėjo redaguoti šio puslapio turinį prieš %s.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecordUser" resname="labels.lockedRecordUser" approved="yes">
+        <source>The %s '%s' began to edit this record %s ago.</source>
+        <target state="final">%s „%s“ pradėjo redaguoti šį įrašą prieš %s.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecordUser_content" resname="labels.lockedRecordUser_content" approved="yes">
+        <source>The %s '%s' began to edit content on this page %s ago.</source>
+        <target state="final">%s „%s“ pradėjo redaguoti šio puslapio turinį prieš %s.</target>
+      </trans-unit>
+      <trans-unit id="labels.user" resname="labels.user" approved="yes">
+        <source>User</source>
+        <target state="final">Naudotojas</target>
+      </trans-unit>
+      <trans-unit id="labels.beUser" resname="labels.beUser" approved="yes">
+        <source>BE-User</source>
+        <target state="final">BE naudotojas</target>
+      </trans-unit>
+      <trans-unit id="labels.feUser" resname="labels.feUser" approved="yes">
+        <source>FE-User</source>
+        <target state="final">FE naudotojas</target>
+      </trans-unit>
+      <trans-unit id="labels.unknownUser" resname="labels.unknownUser" approved="yes">
+        <source>-Unknown-</source>
+        <target state="final">-Nežinomas-</target>
+      </trans-unit>
+      <trans-unit id="labels.showRecords" resname="labels.showRecords" approved="yes">
+        <source>Show records</source>
+        <target state="final">Rodyti įrašus</target>
+      </trans-unit>
+      <trans-unit id="labels.path" resname="labels.path" approved="yes">
+        <source>Path</source>
+        <target state="final">Kelias</target>
+      </trans-unit>
+      <trans-unit id="labels.resetFilter" resname="labels.resetFilter" approved="yes">
+        <source>Reset Filter</source>
+        <target state="final">Atstatyti filtrą</target>
+      </trans-unit>
+      <trans-unit id="labels.table" resname="labels.table" approved="yes">
+        <source>Table</source>
+        <target state="final">Lentelė</target>
+      </trans-unit>
+      <trans-unit id="labels.upOneLevel" resname="labels.upOneLevel" approved="yes">
+        <source>Up one level</source>
+        <target state="final">Vienu lygiu aukštyn</target>
+      </trans-unit>
+      <trans-unit id="labels.expandTable" resname="labels.expandTable" approved="yes">
+        <source>Expand table</source>
+        <target state="final">Išskleisti lentelę</target>
+      </trans-unit>
+      <trans-unit id="labels.collapseTable" resname="labels.collapseTable" approved="yes">
+        <source>Collapse table</source>
+        <target state="final">Suskleisti lentelę</target>
+      </trans-unit>
+      <trans-unit id="labels.enterSearchString" resname="labels.enterSearchString" approved="yes">
+        <source>Enter search term</source>
+        <target state="final">Įveskite paieškos frazę</target>
+      </trans-unit>
+      <trans-unit id="labels.enterSearchLevels" resname="labels.enterSearchLevels" approved="yes">
+        <source>This page|1 level down|2 levels down|3 levels down|4 levels down</source>
+        <target state="final">Šis puslapis|1 lygiu žemiau|2 lygiais žemiau|3 lygiais žemiau|4 lygiais žemiau</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.0" resname="labels.searchLevel.0" approved="yes">
+        <source>This page</source>
+        <target state="final">Šis puslapis</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.1" resname="labels.searchLevel.1" approved="yes">
+        <source>1 level down</source>
+        <target state="final">1 lygiu žemiau</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.2" resname="labels.searchLevel.2" approved="yes">
+        <source>2 levels down</source>
+        <target state="final">2 lygiais žemiau</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.3" resname="labels.searchLevel.3" approved="yes">
+        <source>3 levels down</source>
+        <target state="final">3 lygiais žemiau</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.4" resname="labels.searchLevel.4" approved="yes">
+        <source>4 levels down</source>
+        <target state="final">4 lygiais žemiau</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.infinite" resname="labels.searchLevel.infinite" approved="yes">
+        <source>Infinite levels</source>
+        <target state="final">Neribotas lygių skaičius</target>
+      </trans-unit>
+      <trans-unit id="labels.noEditPermission" resname="labels.noEditPermission" approved="yes">
+        <source>Sorry, you didn't have proper permissions to perform this change.</source>
+        <target state="final">Atsiprašome, neturite pakankamų teisių šiam pakeitimui atlikti.</target>
+      </trans-unit>
+      <trans-unit id="labels.fieldsMissing" resname="labels.fieldsMissing" approved="yes">
+        <source>The fields marked with an exclamation mark are not yet correctly filled in. Please complete them properly.</source>
+        <target state="final">Laukai, pažymėti šauktuku, dar nėra tinkamai užpildyti. Užpildykite juos teisingai.</target>
+      </trans-unit>
+      <trans-unit id="labels.remainingCharacters" resname="labels.remainingCharacters" approved="yes">
+        <source>Remaining characters: {0}</source>
+        <target state="final">Likę simboliai: {0}</target>
+      </trans-unit>
+      <trans-unit id="labels.maxItemsAllowed" resname="labels.maxItemsAllowed" approved="yes">
+        <source>A maximum of {0} child records are allowed.</source>
+        <target state="final">Leidžiamas daugiausia {0} vaikinių įrašų skaičius.</target>
+      </trans-unit>
+      <trans-unit id="labels.noRTEfound" resname="labels.noRTEfound" approved="yes">
+        <source>Notice: This field can only be edited with a Rich Text Editor. No editor is currently available or enabled.</source>
+        <target state="final">Pastaba: šį lauką galima redaguoti tik raiškiojo teksto rengykle. Šiuo metu jokia rengyklė nėra pasiekiama arba įjungta.</target>
+      </trans-unit>
+      <trans-unit id="labels.recordInformation" resname="labels.recordInformation" approved="yes">
+        <source>Record information</source>
+        <target state="final">Įrašo informacija</target>
+      </trans-unit>
+      <trans-unit id="labels.disableRTE" resname="labels.disableRTE" approved="yes">
+        <source>Disable Rich Text Editor (RTE)</source>
+        <target state="final">Išjungti raiškiojo teksto rengyklę (RTE)</target>
+      </trans-unit>
+      <trans-unit id="labels._CONTROL_" resname="labels._CONTROL_" approved="yes">
+        <source>Control</source>
+        <target state="final">Valdymas</target>
+      </trans-unit>
+      <trans-unit id="labels._PATH_" resname="labels._PATH_" approved="yes">
+        <source>Path</source>
+        <target state="final">Kelias</target>
+      </trans-unit>
+      <trans-unit id="labels._LOCALIZATION_" resname="labels._LOCALIZATION_" approved="yes">
+        <source>Localization</source>
+        <target state="final">Lokalizacija</target>
+      </trans-unit>
+      <trans-unit id="labels.setFields" resname="labels.setFields" approved="yes">
+        <source>Set fields</source>
+        <target state="final">Nustatyti laukus</target>
+      </trans-unit>
+      <trans-unit id="labels.search" resname="labels.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Ieškoti</target>
+      </trans-unit>
+      <trans-unit id="labels.author" resname="labels.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Autorius</target>
+      </trans-unit>
+      <trans-unit id="labels.note" resname="labels.note" approved="yes">
+        <source>Note</source>
+        <target state="final">Pastaba</target>
+      </trans-unit>
+      <trans-unit id="labels.category" resname="labels.category" approved="yes">
+        <source>Category</source>
+        <target state="final">Kategorija</target>
+      </trans-unit>
+      <trans-unit id="labels.reload" resname="labels.reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">Perkrauti</target>
+      </trans-unit>
+      <trans-unit id="labels.csv" resname="labels.csv" approved="yes">
+        <source>Download CSV file</source>
+        <target state="final">Atsisiųsti CSV failą</target>
+      </trans-unit>
+      <trans-unit id="labels.clear_cache" resname="labels.clear_cache" approved="yes">
+        <source>Clear cache for this page</source>
+        <target state="final">Išvalyti šio puslapio podėlį</target>
+      </trans-unit>
+      <trans-unit id="labels.no_title" resname="labels.no_title" approved="yes">
+        <source>No title</source>
+        <target state="final">Be pavadinimo</target>
+      </trans-unit>
+      <trans-unit id="labels.cancel" resname="labels.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Atšaukti</target>
+      </trans-unit>
+      <trans-unit id="labels.hidden" resname="labels.hidden" approved="yes">
+        <source>Hidden</source>
+        <target state="final">Paslėpta</target>
+      </trans-unit>
+      <trans-unit id="labels.starttime" resname="labels.starttime" approved="yes">
+        <source>Start</source>
+        <target state="final">Pradžia</target>
+      </trans-unit>
+      <trans-unit id="labels.endtime" resname="labels.endtime" approved="yes">
+        <source>End</source>
+        <target state="final">Pabaiga</target>
+      </trans-unit>
+      <trans-unit id="labels.minutesHoursDaysYears" resname="labels.minutesHoursDaysYears" approved="yes">
+        <source>min|hrs|days|yrs|min|hour|day|year</source>
+        <target state="final">min|val|dienos|metai|minutė|valanda|diena|metai</target>
+      </trans-unit>
+      <trans-unit id="labels.menu" resname="labels.menu" approved="yes">
+        <source>Menu</source>
+        <target state="final">Meniu</target>
+      </trans-unit>
+      <trans-unit id="labels.showPage" resname="labels.showPage" approved="yes">
+        <source>View webpage</source>
+        <target state="final">Peržiūrėti tinklalapį</target>
+      </trans-unit>
+      <trans-unit id="labels.showList" resname="labels.showList" approved="yes">
+        <source>Show record list</source>
+        <target state="final">Rodyti įrašų sąrašą</target>
+      </trans-unit>
+      <trans-unit id="labels.days" resname="labels.days" approved="yes">
+        <source>days</source>
+        <target state="final">dienos</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_0" resname="labels.depth_0" approved="yes">
+        <source>This page</source>
+        <target state="final">Šis puslapis</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_1" resname="labels.depth_1" approved="yes">
+        <source>1 level</source>
+        <target state="final">1 lygis</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_2" resname="labels.depth_2" approved="yes">
+        <source>2 levels</source>
+        <target state="final">2 lygiai</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_3" resname="labels.depth_3" approved="yes">
+        <source>3 levels</source>
+        <target state="final">3 lygiai</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_4" resname="labels.depth_4" approved="yes">
+        <source>4 levels</source>
+        <target state="final">4 lygiai</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_infi" resname="labels.depth_infi" approved="yes">
+        <source>Infinite</source>
+        <target state="final">Neribota</target>
+      </trans-unit>
+      <trans-unit id="labels.allow" resname="labels.allow" approved="yes">
+        <source>Allow</source>
+        <target state="final">Leisti</target>
+      </trans-unit>
+      <trans-unit id="labels.deny" resname="labels.deny" approved="yes">
+        <source>Deny</source>
+        <target state="final">Drausti</target>
+      </trans-unit>
+      <trans-unit id="labels.automatic" resname="labels.automatic" approved="yes">
+        <source>Auto</source>
+        <target state="final">Automatiškai</target>
+      </trans-unit>
+      <trans-unit id="labels.enabled" resname="labels.enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Įjungta</target>
+      </trans-unit>
+      <trans-unit id="labels.show" resname="labels.show" approved="yes">
+        <source>Show</source>
+        <target state="final">Rodyti</target>
+      </trans-unit>
+      <trans-unit id="labels.refresh" resname="labels.refresh" approved="yes">
+        <source>Reload the tree from server</source>
+        <target state="final">Perkrauti medį iš serverio</target>
+      </trans-unit>
+      <trans-unit id="labels.refreshList" resname="labels.refreshList" approved="yes">
+        <source>Reload list from server</source>
+        <target state="final">Perkrauti sąrašą iš serverio</target>
+      </trans-unit>
+      <trans-unit id="labels.close" resname="labels.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Uždaryti</target>
+      </trans-unit>
+      <trans-unit id="labels.tableWizard" resname="labels.tableWizard" approved="yes">
+        <source>Table Wizard</source>
+        <target state="final">Lentelių vedlys</target>
+      </trans-unit>
+      <trans-unit id="labels.list" resname="labels.list" approved="yes">
+        <source>List</source>
+        <target state="final">Sąrašas</target>
+      </trans-unit>
+      <trans-unit id="labels.link" resname="labels.link" approved="yes">
+        <source>Link</source>
+        <target state="final">Nuoroda</target>
+      </trans-unit>
+      <trans-unit id="labels.edit" resname="labels.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Redaguoti</target>
+      </trans-unit>
+      <trans-unit id="labels.createNew" resname="labels.createNew" approved="yes">
+        <source>Create new</source>
+        <target state="final">Sukurti naują</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewPage" resname="labels.createNewPage" approved="yes">
+        <source>Create new %s</source>
+        <target state="final">Sukurti naują %s</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewRecord" resname="labels.createNewRecord" approved="yes">
+        <source>Create new %s on page "%s"</source>
+        <target state="final">Sukurti naują %s puslapyje „%s“</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewRecordRootLevel" resname="labels.createNewRecordRootLevel" approved="yes">
+        <source>Create new %s on root level</source>
+        <target state="final">Sukurti naują %s šakniniame lygyje</target>
+      </trans-unit>
+      <trans-unit id="labels.editPage" resname="labels.editPage" approved="yes">
+        <source>Edit %s "%s"</source>
+        <target state="final">Redaguoti %s „%s“</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecord" resname="labels.editRecord" approved="yes">
+        <source>Edit %s "%s" on page "%s"</source>
+        <target state="final">Redaguoti %s „%s“ puslapyje „%s“</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecordNoTitle" resname="labels.editRecordNoTitle" approved="yes">
+        <source>Edit %s on page "%s"</source>
+        <target state="final">Redaguoti %s puslapyje „%s“</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecordRootLevel" resname="labels.editRecordRootLevel" approved="yes">
+        <source>Edit %s "%s" on root level</source>
+        <target state="final">Redaguoti %s „%s“ šakniniame lygyje</target>
+      </trans-unit>
+      <trans-unit id="labels.addnew" resname="labels.addnew" approved="yes">
+        <source>Add new</source>
+        <target state="final">Pridėti naują</target>
+      </trans-unit>
+      <trans-unit id="labels.toggleall" resname="labels.toggleall" approved="yes">
+        <source>Toggle all</source>
+        <target state="final">Perjungti visus</target>
+      </trans-unit>
+      <trans-unit id="labels.selected" resname="labels.selected" approved="yes">
+        <source>Selected Items</source>
+        <target state="final">Pasirinkti elementai</target>
+      </trans-unit>
+      <trans-unit id="labels.items" resname="labels.items" approved="yes">
+        <source>Available Items</source>
+        <target state="final">Galimi elementai</target>
+      </trans-unit>
+      <trans-unit id="labels.remove_selected" resname="labels.remove_selected" approved="yes">
+        <source>Remove selected items</source>
+        <target state="final">Pašalinti pasirinktus elementus</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_top" resname="labels.move_to_top" approved="yes">
+        <source>Move selected items to top</source>
+        <target state="final">Perkelti pasirinktus elementus į viršų</target>
+      </trans-unit>
+      <trans-unit id="labels.move_up" resname="labels.move_up" approved="yes">
+        <source>Move selected items upwards</source>
+        <target state="final">Perkelti pasirinktus elementus aukščiau</target>
+      </trans-unit>
+      <trans-unit id="labels.move_down" resname="labels.move_down" approved="yes">
+        <source>Move selected items downwards</source>
+        <target state="final">Perkelti pasirinktus elementus žemiau</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_bottom" resname="labels.move_to_bottom" approved="yes">
+        <source>Move selected items to bottom</source>
+        <target state="final">Perkelti pasirinktus elementus į apačią</target>
+      </trans-unit>
+      <trans-unit id="labels.move" resname="labels.move" approved="yes">
+        <source>Move this item</source>
+        <target state="final">Perkelti šį elementą</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_db" resname="labels.browse_db" approved="yes">
+        <source>Browse for records</source>
+        <target state="final">Naršyti įrašų</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_file" resname="labels.clipInsert_file" approved="yes">
+        <source>Insert %s file(s) from the clipboard</source>
+        <target state="final">Įterpti %s failą(-us) iš iškarpinės</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_db" resname="labels.clipInsert_db" approved="yes">
+        <source>Insert %s record(s) from the clipboard</source>
+        <target state="final">Įterpti %s įrašą(-us) iš iškarpinės</target>
+      </trans-unit>
+      <trans-unit id="labels.generalOptions" resname="labels.generalOptions" approved="yes">
+        <source>General options</source>
+        <target state="final">Bendrosios parinktys</target>
+      </trans-unit>
+      <trans-unit id="labels.generalOptions_more" resname="labels.generalOptions_more" approved="yes">
+        <source>General options (continued)</source>
+        <target state="final">Bendrosios parinktys (tęsinys)</target>
+      </trans-unit>
+      <trans-unit id="labels.allTables" resname="labels.allTables" approved="yes">
+        <source>[All tables]</source>
+        <target state="final">[Visos lentelės]</target>
+      </trans-unit>
+      <trans-unit id="labels.thumbmode_clip" resname="labels.thumbmode_clip" approved="yes">
+        <source>Show Thumbnails on ClipBoard</source>
+        <target state="final">Rodyti miniatiūras iškarpinėje</target>
+      </trans-unit>
+      <trans-unit id="labels.copymode" resname="labels.copymode" approved="yes">
+        <source>Copy items instead of moving them</source>
+        <target state="final">Kopijuoti elementus, o ne juos perkelti</target>
+      </trans-unit>
+      <trans-unit id="labels.normal" resname="labels.normal" approved="yes">
+        <source>Normal (single record mode)</source>
+        <target state="final">Įprasta (vieno įrašo veiksena)</target>
+      </trans-unit>
+      <trans-unit id="labels.normal-description" resname="labels.normal-description" approved="yes">
+        <source>"Normal" clipboard allows to copy/move one record at time.</source>
+        <target state="final">„Įprasta“ iškarpinė leidžia vienu metu kopijuoti / perkelti po vieną įrašą.</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs" resname="labels.cliptabs" approved="yes">
+        <source>Clipboard #</source>
+        <target state="final">Iškarpinė #</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs-name" resname="labels.cliptabs-name" approved="yes">
+        <source>Clipboard #%s (multi-selection mode)</source>
+        <target state="final">Iškarpinė #%s (kelių pasirinkimų veiksena)</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs-description" resname="labels.cliptabs-description" approved="yes">
+        <source>This clipboard allows to select and edit/copy/move multiple records at once. Choose it to show a checkbox by each record.</source>
+        <target state="final">Ši iškarpinė leidžia vienu metu pasirinkti ir redaguoti / kopijuoti / perkelti kelis įrašus. Pasirinkite ją, jei norite prie kiekvieno įrašo rodyti žymimąjį langelį.</target>
+      </trans-unit>
+      <trans-unit id="labels.clipboard.delete_elements" resname="labels.clipboard.delete_elements" approved="yes">
+        <source>Delete elements</source>
+        <target state="final">Ištrinti elementus</target>
+      </trans-unit>
+      <trans-unit id="labels.clipboard.clear_clipboard" resname="labels.clipboard.clear_clipboard" approved="yes">
+        <source>Clear clipboard</source>
+        <target state="final">Išvalyti iškarpinę</target>
+      </trans-unit>
+      <trans-unit id="labels.revertSelection" resname="labels.revertSelection" approved="yes">
+        <source>Revert selection</source>
+        <target state="final">Apversti pasirinkimą</target>
+      </trans-unit>
+      <trans-unit id="labels.setAllCheckboxes" resname="labels.setAllCheckboxes" approved="yes">
+        <source>Select All Checkboxes</source>
+        <target state="final">Pažymėti visus žymimuosius langelius</target>
+      </trans-unit>
+      <trans-unit id="labels.checkAll" resname="labels.checkAll" approved="yes">
+        <source>Check all</source>
+        <target state="final">Pažymėti viską</target>
+      </trans-unit>
+      <trans-unit id="labels.uncheckAll" resname="labels.uncheckAll" approved="yes">
+        <source>Uncheck all</source>
+        <target state="final">Nužymėti viską</target>
+      </trans-unit>
+      <trans-unit id="labels.placeholder.override" resname="labels.placeholder.override" approved="yes">
+        <source>Set element specific value (Default: "%s")</source>
+        <target state="final">Nustatyti elementui skirtą reikšmę (Numatytoji: „%s“)</target>
+      </trans-unit>
+      <trans-unit id="labels.placeholder.override_not_available" resname="labels.placeholder.override_not_available" approved="yes">
+        <source>Set element specific value (No default)</source>
+        <target state="final">Nustatyti elementui skirtą reikšmę (Numatytosios nėra)</target>
+      </trans-unit>
+      <trans-unit id="labels.nullCheckbox" resname="labels.nullCheckbox" approved="yes">
+        <source>Set value</source>
+        <target state="final">Nustatyti reikšmę</target>
+      </trans-unit>
+      <trans-unit id="labels.changeInOrig" resname="labels.changeInOrig" approved="yes">
+        <source>Changed in original translation</source>
+        <target state="final">Pakeista originaliame vertime</target>
+      </trans-unit>
+      <trans-unit id="labels.expandAll" resname="labels.expandAll" approved="yes">
+        <source>Expand all</source>
+        <target state="final">Išskleisti viską</target>
+      </trans-unit>
+      <trans-unit id="labels.new_section" resname="labels.new_section" approved="yes">
+        <source>Create new</source>
+        <target state="final">Sukurti naują</target>
+      </trans-unit>
+      <trans-unit id="labels.count" resname="labels.count" approved="yes">
+        <source>Quantity</source>
+        <target state="final">Kiekis</target>
+      </trans-unit>
+      <trans-unit id="labels.title.searchIcon" resname="labels.title.searchIcon" approved="yes">
+        <source>Toggle search toolbar</source>
+        <target state="final">Perjungti paieškos įrankių juostą</target>
+      </trans-unit>
+      <trans-unit id="labels.title.searchString" resname="labels.title.searchString" approved="yes">
+        <source>Search term</source>
+        <target state="final">Paieškos frazė</target>
+      </trans-unit>
+      <trans-unit id="labels.title.limit" resname="labels.title.limit" approved="yes">
+        <source>Limit</source>
+        <target state="final">Limitas</target>
+      </trans-unit>
+      <trans-unit id="labels.title.search" resname="labels.title.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Ieškoti</target>
+      </trans-unit>
+      <trans-unit id="labels.title.search_levels" resname="labels.title.search_levels" approved="yes">
+        <source>Search levels</source>
+        <target state="final">Paieškos lygiai</target>
+      </trans-unit>
+      <trans-unit id="labels.label.searchString" resname="labels.label.searchString" approved="yes">
+        <source>Search term</source>
+        <target state="final">Paieškos frazė</target>
+      </trans-unit>
+      <trans-unit id="labels.label.limit" resname="labels.label.limit" approved="yes">
+        <source>Limit</source>
+        <target state="final">Limitas</target>
+      </trans-unit>
+      <trans-unit id="labels.label.search_levels" resname="labels.label.search_levels" approved="yes">
+        <source>Search levels</source>
+        <target state="final">Paieškos lygiai</target>
+      </trans-unit>
+      <trans-unit id="labels.recordReadonly" resname="labels.recordReadonly" approved="yes">
+        <source>The table is defined as readonly and can't be edited.</source>
+        <target state="final">Lentelė apibrėžta kaip tik skaitymui, todėl jos redaguoti negalima.</target>
+      </trans-unit>
+      <trans-unit id="alttext.suggestSearching" resname="alttext.suggestSearching" approved="yes">
+        <source>Searching...</source>
+        <target state="final">Ieškoma...</target>
+      </trans-unit>
+      <trans-unit id="ver.mgm" resname="ver.mgm" approved="yes">
+        <source>Version Management</source>
+        <target state="final">Versijų valdymas</target>
+      </trans-unit>
+      <trans-unit id="ver.selVer" resname="ver.selVer" approved="yes">
+        <source>Select version</source>
+        <target state="final">Pasirinkti versiją</target>
+      </trans-unit>
+      <trans-unit id="ver.swap" resname="ver.swap" approved="yes">
+        <source>Swap/Publish</source>
+        <target state="final">Sukeisti / publikuoti</target>
+      </trans-unit>
+      <trans-unit id="ver.swapPage" resname="ver.swapPage" approved="yes">
+        <source>Publish this version of the page including content</source>
+        <target state="final">Publikuoti šią puslapio versiją kartu su turiniu</target>
+      </trans-unit>
+      <trans-unit id="TYPO3_Element_Browser" resname="TYPO3_Element_Browser" approved="yes">
+        <source>TYPO3 Element Browser</source>
+        <target state="final">TYPO3 elementų naršyklė</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.viewItem" resname="show_item.php.viewItem" approved="yes">
+        <source>View Item</source>
+        <target state="final">Peržiūrėti elementą</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.referencesToThisItem" resname="show_item.php.referencesToThisItem" approved="yes">
+        <source>References to this item</source>
+        <target state="final">Nuorodos į šį elementą</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.referencesFromThisItem" resname="show_item.php.referencesFromThisItem" approved="yes">
+        <source>References from this item</source>
+        <target state="final">Nuorodos iš šio elemento</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.file" resname="show_item.php.file" approved="yes">
+        <source>File</source>
+        <target state="final">Failas</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.dimensions" resname="show_item.php.dimensions" approved="yes">
+        <source>Dimensions</source>
+        <target state="final">Matmenys</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.filesize" resname="show_item.php.filesize" approved="yes">
+        <source>Size</source>
+        <target state="final">Dydis</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.pixels" resname="show_item.php.pixels" approved="yes">
+        <source>Pixels</source>
+        <target state="final">Pikseliai</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.files" resname="show_item.php.files" approved="yes">
+        <source>files</source>
+        <target state="final">failai</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.table" resname="show_item.php.table" approved="yes">
+        <source>Table</source>
+        <target state="final">Lentelė</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.uid" resname="show_item.php.uid" approved="yes">
+        <source>Uid</source>
+        <target state="final">Uid</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.title" resname="show_item.php.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.field" resname="show_item.php.field" approved="yes">
+        <source>Field</source>
+        <target state="final">Laukas</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.flexpointer" resname="show_item.php.flexpointer" approved="yes">
+        <source>Flexpointer</source>
+        <target state="final">Flexpointer</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.softrefKey" resname="show_item.php.softrefKey" approved="yes">
+        <source>Softref Key</source>
+        <target state="final">Softref raktas</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.sorting" resname="show_item.php.sorting" approved="yes">
+        <source>Sorting</source>
+        <target state="final">Rikiavimas</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.refTable" resname="show_item.php.refTable" approved="yes">
+        <source>Ref Table</source>
+        <target state="final">Nuorodos lentelė</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.refUid" resname="show_item.php.refUid" approved="yes">
+        <source>Ref Uid</source>
+        <target state="final">Nuorodos Uid</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.refString" resname="show_item.php.refString" approved="yes">
+        <source>Ref String</source>
+        <target state="final">Nuorodos eilutė</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.pagetitle" resname="db_new.php.pagetitle" approved="yes">
+        <source>New record</source>
+        <target state="final">Naujas įrašas</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.after" resname="db_new.php.after" approved="yes">
+        <source>after</source>
+        <target state="final">po</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.inside" resname="db_new.php.inside" approved="yes">
+        <source>inside</source>
+        <target state="final">viduje</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.pagetitle" resname="file_upload.php.pagetitle" approved="yes">
+        <source>Upload files</source>
+        <target state="final">Įkelti failus</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.submit" resname="file_upload.php.submit" approved="yes">
+        <source>Upload files</source>
+        <target state="final">Įkelti failus</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.files" resname="file_upload.php.files" approved="yes">
+        <source>files</source>
+        <target state="final">failai</target>
+      </trans-unit>
+      <trans-unit id="file_upload.dropzonehint.title" resname="file_upload.dropzonehint.title" approved="yes">
+        <source>Drag &amp; drop to upload files</source>
+        <target state="final">Vilkite ir numeskite, kad įkeltumėte failus</target>
+      </trans-unit>
+      <trans-unit id="file_upload.dropzonehint.message" resname="file_upload.dropzonehint.message" approved="yes">
+        <source>Drop your files here, or &lt;u&gt;click, browse &amp; choose files&lt;/u&gt;</source>
+        <target state="final">Numeskite failus čia arba &lt;u&gt;spustelėkite, naršykite ir pasirinkite failus&lt;/u&gt;</target>
+      </trans-unit>
+      <trans-unit id="file_upload.select-and-submit" resname="file_upload.select-and-submit" approved="yes">
+        <source>Select &amp; upload files</source>
+        <target state="final">Pasirinkti ir įkelti failus</target>
+      </trans-unit>
+      <trans-unit id="file_upload.upload-in-progress" resname="file_upload.upload-in-progress" approved="yes">
+        <source>File upload in progress...</source>
+        <target state="final">Vyksta failo įkėlimas...</target>
+      </trans-unit>
+      <trans-unit id="file_upload.upload-progress-info" resname="file_upload.upload-progress-info" approved="yes">
+        <source>Uploading file {0} out of {1} files.</source>
+        <target state="final">Įkeliamas failas {0} iš {1} failų.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.overwriteExistingFiles" resname="file_upload.overwriteExistingFiles" approved="yes">
+        <source>Shall existing files be overwritten?</source>
+        <target state="final">Ar perrašyti esamus failus?</target>
+      </trans-unit>
+      <trans-unit id="file_upload.header.originalFile" resname="file_upload.header.originalFile" approved="yes">
+        <source>Original file</source>
+        <target state="final">Originalus failas</target>
+      </trans-unit>
+      <trans-unit id="file_upload.header.uploadedFile" resname="file_upload.header.uploadedFile" approved="yes">
+        <source>Uploaded file</source>
+        <target state="final">Įkeltas failas</target>
+      </trans-unit>
+      <trans-unit id="file_upload.header.action" resname="file_upload.header.action" approved="yes">
+        <source>Action</source>
+        <target state="final">Veiksmas</target>
+      </trans-unit>
+      <trans-unit id="file_upload.existingfiles.title" resname="file_upload.existingfiles.title" approved="yes">
+        <source>Some files exist already</source>
+        <target state="final">Kai kurie failai jau egzistuoja</target>
+      </trans-unit>
+      <trans-unit id="file_upload.existingfiles.description" resname="file_upload.existingfiles.description" approved="yes">
+        <source>Some files you wanted to upload exist already on the system. Please select what you want to do with each file.</source>
+        <target state="final">Kai kurie failai, kuriuos norėjote įkelti, sistemoje jau egzistuoja. Pasirinkite, ką norite daryti su kiekvienu failu.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.skip" resname="file_upload.actions.skip" approved="yes">
+        <source>Skip the file</source>
+        <target state="final">Praleisti failą</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.rename" resname="file_upload.actions.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">Pervadinti</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.override" resname="file_upload.actions.override" approved="yes">
+        <source>Overwrite</source>
+        <target state="final">Perrašyti</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.use_existing" resname="file_upload.actions.use_existing" approved="yes">
+        <source>Use existing file</source>
+        <target state="final">Naudoti esamą failą</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.label" resname="file_upload.actions.all.label" approved="yes">
+        <source>Alternatively, choose a mass action</source>
+        <target state="final">Arba pasirinkite masinį veiksmą</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.empty" resname="file_upload.actions.all.empty" approved="yes">
+        <source>Please choose</source>
+        <target state="final">Prašome pasirinkti</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.skip" resname="file_upload.actions.all.skip" approved="yes">
+        <source>Skip all files</source>
+        <target state="final">Praleisti visus failus</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.rename" resname="file_upload.actions.all.rename" approved="yes">
+        <source>Rename all files</source>
+        <target state="final">Pervadinti visus failus</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.override" resname="file_upload.actions.all.override" approved="yes">
+        <source>Overwrite all files</source>
+        <target state="final">Perrašyti visus failus</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.use_existing" resname="file_upload.actions.all.use_existing" approved="yes">
+        <source>Use existing files</source>
+        <target state="final">Naudoti esamus failus</target>
+      </trans-unit>
+      <trans-unit id="file_upload.button.cancel" resname="file_upload.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Atšaukti</target>
+      </trans-unit>
+      <trans-unit id="file_upload.button.continue" resname="file_upload.button.continue" approved="yes">
+        <source>Continue with selected actions</source>
+        <target state="final">Tęsti su pasirinktais veiksmais</target>
+      </trans-unit>
+      <trans-unit id="file_rename.actions.cancel" resname="file_rename.actions.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Atšaukti</target>
+      </trans-unit>
+      <trans-unit id="file_rename.actions.override" resname="file_rename.actions.override" approved="yes">
+        <source>Overwrite</source>
+        <target state="final">Perrašyti</target>
+      </trans-unit>
+      <trans-unit id="file_rename.php.pagetitle" resname="file_rename.php.pagetitle" approved="yes">
+        <source>Rename</source>
+        <target state="final">Pervadinti</target>
+      </trans-unit>
+      <trans-unit id="file_rename.php.submit" resname="file_rename.php.submit" approved="yes">
+        <source>Rename</source>
+        <target state="final">Pervadinti</target>
+        <note>This label is not used since TYPO3 v9.</note>
+      </trans-unit>
+      <trans-unit id="file_replace.php.pagetitle" resname="file_replace.php.pagetitle" approved="yes">
+        <source>Replace</source>
+        <target state="final">Pakeisti</target>
+      </trans-unit>
+      <trans-unit id="file_replace.php.submit" resname="file_replace.php.submit" approved="yes">
+        <source>Replace</source>
+        <target state="final">Pakeisti</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.pagetitle" resname="file_edit.php.pagetitle" approved="yes">
+        <source>Edit</source>
+        <target state="final">Redaguoti</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.submit" resname="file_edit.php.submit" approved="yes">
+        <source>Save</source>
+        <target state="final">Išsaugoti</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media" resname="online_media.new_media" approved="yes">
+        <source>Add new media asset</source>
+        <target state="final">Pridėti naują medijos išteklių</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.allowedProviders" resname="online_media.new_media.allowedProviders" approved="yes">
+        <source>Allowed media providers</source>
+        <target state="final">Leidžiami medijos teikėjai</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.button" resname="online_media.new_media.button" approved="yes">
+        <source>Add media by URL</source>
+        <target state="final">Pridėti mediją pagal URL</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.submit" resname="online_media.new_media.submit" approved="yes">
+        <source>Add media</source>
+        <target state="final">Pridėti mediją</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.added" resname="online_media.new_media.added" approved="yes">
+        <source>Added media</source>
+        <target state="final">Medija pridėta</target>
+      </trans-unit>
+      <trans-unit id="online_media.error.new_media.failed" resname="online_media.error.new_media.failed" approved="yes">
+        <source>Adding media failed</source>
+        <target state="final">Nepavyko pridėti medijos</target>
+      </trans-unit>
+      <trans-unit id="online_media.error.invalid_url" resname="online_media.error.invalid_url" approved="yes">
+        <source>Unknown/not allowed URL</source>
+        <target state="final">Nežinomas / neleidžiamas URL</target>
+      </trans-unit>
+      <trans-unit id="file_clipupload.php.warning_head" resname="file_clipupload.php.warning_head" approved="yes">
+        <source>Upload path error</source>
+        <target state="final">Įkėlimo kelio klaida</target>
+      </trans-unit>
+      <trans-unit id="mess.redraw" resname="mess.redraw" approved="yes">
+        <source>Redrawing the page will discard the current data. Do you want to continue?</source>
+        <target state="final">Perbraižant puslapį dabartiniai duomenys bus prarasti. Ar norite tęsti?</target>
+      </trans-unit>
+      <trans-unit id="mess.delete" resname="mess.delete" approved="yes">
+        <source>Are you sure you want to delete '%s'?</source>
+        <target state="final">Ar tikrai norite ištrinti „%s“?</target>
+      </trans-unit>
+      <trans-unit id="mess.deleteClip" resname="mess.deleteClip" approved="yes">
+        <source>Are you sure you want to delete ALL referenced elements (%s) on the clipboard?</source>
+        <target state="final">Ar tikrai norite ištrinti VISUS nurodytus elementus (%s) iškarpinėje?</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_direct_logout_button" resname="mess.refresh_direct_logout_button" approved="yes">
+        <source>No, log out.</source>
+        <target state="final">Ne, atsijungti.</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_logging_in" resname="mess.refresh_login_logging_in" approved="yes">
+        <source>Logging in...</source>
+        <target state="final">Jungiamasi...</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_failed" resname="mess.refresh_login_failed" approved="yes">
+        <source>Login failed</source>
+        <target state="final">Prisijungti nepavyko</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_failed_message" resname="mess.refresh_login_failed_message" approved="yes">
+        <source>Password not correct.</source>
+        <target state="final">Neteisingas slaptažodis.</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_title" resname="mess.refresh_login_title" approved="yes">
+        <source>Refresh Login to TYPO3 (User: %s)</source>
+        <target state="final">Atnaujinti TYPO3 prisijungimą (naudotojas: %s)</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_username" resname="mess.refresh_login_username" approved="yes">
+        <source>Username</source>
+        <target state="final">Naudotojo vardas</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_password" resname="mess.refresh_login_password" approved="yes">
+        <source>Password</source>
+        <target state="final">Slaptažodis</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_button" resname="mess.refresh_login_button" approved="yes">
+        <source>Login</source>
+        <target state="final">Prisijungti</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_exit_button" resname="mess.refresh_exit_button" approved="yes">
+        <source>Exit</source>
+        <target state="final">Išeiti</target>
+      </trans-unit>
+      <trans-unit id="mess.please_wait" resname="mess.please_wait" approved="yes">
+        <source>Please wait ...</source>
+        <target state="final">Prašome palaukti ...</target>
+      </trans-unit>
+      <trans-unit id="mess.be_locked" resname="mess.be_locked" approved="yes">
+        <source>The TYPO3 backend is currently locked for maintenance. Leave this browser window open and the backend will automatically become available again once maintenance is complete.</source>
+        <target state="final">TYPO3 administravimo sąsaja šiuo metu užrakinta dėl priežiūros darbų. Palikite šį naršyklės langą atvertą, ir administravimo sąsaja automatiškai vėl taps prieinama, kai priežiūra bus baigta.</target>
+      </trans-unit>
+      <trans-unit id="mess.login_about_to_expire" resname="mess.login_about_to_expire" approved="yes">
+        <source>Your TYPO3 login is about to expire. Please confirm that you want to stay logged in.</source>
+        <target state="final">Jūsų TYPO3 prisijungimo sesijos galiojimas netrukus baigsis. Patvirtinkite, kad norite likti prisijungę.</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_logout_button" resname="mess.refresh_login_logout_button" approved="yes">
+        <source>Log me out</source>
+        <target state="final">Atjungti mane</target>
+      </trans-unit>
+      <trans-unit id="mess.login_refresh_about_to_expire" resname="mess.login_refresh_about_to_expire" approved="yes">
+        <source>Your TYPO3 login is about to expire. Please confirm that you want to be logged out.</source>
+        <target state="final">Jūsų TYPO3 prisijungimo sesijos galiojimas netrukus baigsis. Patvirtinkite, kad norite būti atjungti.</target>
+      </trans-unit>
+      <trans-unit id="mess.login_about_to_expire_title" resname="mess.login_about_to_expire_title" approved="yes">
+        <source>TYPO3 login expiration notice</source>
+        <target state="final">TYPO3 prisijungimo galiojimo pabaigos pranešimas</target>
+      </trans-unit>
+      <trans-unit id="mess.login_expired" resname="mess.login_expired" approved="yes">
+        <source>Your TYPO3 login has expired. You need to login again if you want to continue. Otherwise you can close the current browser window.</source>
+        <target state="final">Jūsų TYPO3 prisijungimo sesijos galiojimas baigėsi. Jei norite tęsti, turite prisijungti iš naujo. Kitu atveju galite uždaryti dabartinį naršyklės langą.</target>
+      </trans-unit>
+      <trans-unit id="mess.noSelItemForEdit" resname="mess.noSelItemForEdit" approved="yes">
+        <source>Please select one or more items in the list before you can edit.</source>
+        <target state="final">Prieš redaguodami pasirinkite vieną ar daugiau elementų sąraše.</target>
+      </trans-unit>
+      <trans-unit id="mess.refreshRequired.title" resname="mess.refreshRequired.title" approved="yes">
+        <source>Refresh required</source>
+        <target state="final">Reikia perkrauti</target>
+      </trans-unit>
+      <trans-unit id="mess.refreshRequired.content" resname="mess.refreshRequired.content" approved="yes">
+        <source>This change will affect which fields are available in the form. Would you like to save now in order to refresh the display?</source>
+        <target state="final">Šis pakeitimas turės įtakos tam, kurie laukai bus pasiekiami formoje. Ar norite dabar išsaugoti, kad būtų atnaujintas rodinys?</target>
+      </trans-unit>
+      <trans-unit id="mess.move_into" resname="mess.move_into" approved="yes">
+        <source>Move "%s" into "%s"?</source>
+        <target state="final">Perkelti „%s“ į „%s“?</target>
+      </trans-unit>
+      <trans-unit id="mess.move_after" resname="mess.move_after" approved="yes">
+        <source>Move "%s" to after "%s"?</source>
+        <target state="final">Perkelti „%s“ po „%s“?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_into" resname="mess.copy_into" approved="yes">
+        <source>Copy "%s" into "%s"?</source>
+        <target state="final">Kopijuoti „%s“ į „%s“?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_after" resname="mess.copy_after" approved="yes">
+        <source>Copy "%s" to after "%s"?</source>
+        <target state="final">Kopijuoti „%s“ po „%s“?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_into" resname="mess.copycb_into" approved="yes">
+        <source>Copy all elements (%s) from the clipboard into "%s"?</source>
+        <target state="final">Kopijuoti visus elementus (%s) iš iškarpinės į „%s“?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_after" resname="mess.copycb_after" approved="yes">
+        <source>Copy all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target state="final">Kopijuoti visus elementus (%s) iš iškarpinės į vietą po „%s“?</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_into" resname="mess.movecb_into" approved="yes">
+        <source>Move all elements (%s) from the clipboard into "%s"?</source>
+        <target state="final">Perkelti visus elementus (%s) iš iškarpinės į „%s“?</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_after" resname="mess.movecb_after" approved="yes">
+        <source>Move all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target state="final">Perkelti visus elementus (%s) iš iškarpinės į vietą po „%s“?</target>
+      </trans-unit>
+      <trans-unit id="rm.menu" resname="rm.menu" approved="yes">
+        <source>[menu]</source>
+        <target state="final">[meniu]</target>
+      </trans-unit>
+      <trans-unit id="rm.saveDoc" resname="rm.saveDoc" approved="yes">
+        <source>Save</source>
+        <target state="final">Išsaugoti</target>
+      </trans-unit>
+      <trans-unit id="rm.viewDoc" resname="rm.viewDoc" approved="yes">
+        <source>View</source>
+        <target state="final">Peržiūrėti</target>
+      </trans-unit>
+      <trans-unit id="rm.saveDocShow" resname="rm.saveDocShow" approved="yes">
+        <source>Save and view page</source>
+        <target state="final">Išsaugoti ir peržiūrėti puslapį</target>
+      </trans-unit>
+      <trans-unit id="rm.saveCloseDoc" resname="rm.saveCloseDoc" approved="yes">
+        <source>Save and close</source>
+        <target state="final">Išsaugoti ir uždaryti</target>
+      </trans-unit>
+      <trans-unit id="rm.saveCloseAllDocs" resname="rm.saveCloseAllDocs" approved="yes">
+        <source>Save and close all</source>
+        <target state="final">Išsaugoti ir uždaryti visus</target>
+      </trans-unit>
+      <trans-unit id="rm.saveNewDoc" resname="rm.saveNewDoc" approved="yes">
+        <source>Save and create a new one</source>
+        <target state="final">Išsaugoti ir sukurti naują</target>
+      </trans-unit>
+      <trans-unit id="rm.newDoc" resname="rm.newDoc" approved="yes">
+        <source>New</source>
+        <target state="final">Naujas</target>
+      </trans-unit>
+      <trans-unit id="rm.duplicateDoc" resname="rm.duplicateDoc" approved="yes">
+        <source>Duplicate</source>
+        <target state="final">Dubliuoti</target>
+      </trans-unit>
+      <trans-unit id="labels.recordDuplicated" resname="labels.recordDuplicated" approved="yes">
+        <source>The record has been duplicated.</source>
+        <target state="final">Įrašas buvo dubliuotas.</target>
+      </trans-unit>
+      <trans-unit id="rm.closeDoc" resname="rm.closeDoc" approved="yes">
+        <source>Close</source>
+        <target state="final">Uždaryti</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_thisPage" resname="rm.clearCache_thisPage" approved="yes">
+        <source>This page</source>
+        <target state="final">Šis puslapis</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_all" resname="rm.clearCache_all" approved="yes">
+        <source>Clear FE cache</source>
+        <target state="final">Išvalyti FE spartinančiąją atmintį</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_pages" resname="rm.clearCache_pages" approved="yes">
+        <source>Clear Page Cache</source>
+        <target state="final">Išvalyti puslapio spartinančiąją atmintį</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_allTypo3Conf" resname="rm.clearCache_allTypo3Conf" approved="yes">
+        <source>Clear cache in typo3conf/</source>
+        <target state="final">Išvalyti spartinančiąją atmintį kataloge typo3conf/</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCacheMenu_all" resname="rm.clearCacheMenu_all" approved="yes">
+        <source>Clear all caches</source>
+        <target state="final">Išvalyti visą spartinančiąją atmintį</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCacheMenu_pages" resname="rm.clearCacheMenu_pages" approved="yes">
+        <source>Clear page content cache</source>
+        <target state="final">Išvalyti puslapio turinio spartinančiąją atmintį</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCacheMenu_allTypo3Conf" resname="rm.clearCacheMenu_allTypo3Conf" approved="yes">
+        <source>Clear configuration cache</source>
+        <target state="final">Išvalyti konfigūracijos spartinančiąją atmintį</target>
+      </trans-unit>
+      <trans-unit id="flushPageCachesTitle" resname="flushPageCachesTitle" approved="yes">
+        <source>Flush frontend caches</source>
+        <target state="final">Išvalyti svetainės spartinančiąją atmintį</target>
+      </trans-unit>
+      <trans-unit id="flushPageCachesDescription" resname="flushPageCachesDescription" approved="yes">
+        <source>Clear frontend and page-related caches.</source>
+        <target state="final">Išvalyti svetainės ir su puslapiais susijusią spartinančiąją atmintį.</target>
+      </trans-unit>
+      <trans-unit id="flushAllCachesTitle2" resname="flushAllCachesTitle2" approved="yes">
+        <source>Flush all caches</source>
+        <target state="final">Išvalyti visą spartinančiąją atmintį</target>
+      </trans-unit>
+      <trans-unit id="rm.adminFunctions" resname="rm.adminFunctions" approved="yes">
+        <source>Admin functions</source>
+        <target state="final">Administratoriaus funkcijos</target>
+      </trans-unit>
+      <trans-unit id="rm.edit" resname="rm.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Redaguoti</target>
+      </trans-unit>
+      <trans-unit id="rm.export" resname="rm.export" approved="yes">
+        <source>Export</source>
+        <target state="final">Eksportuoti</target>
+      </trans-unit>
+      <trans-unit id="rm.delete" resname="rm.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Ištrinti</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileNotDeletedHasReferences" resname="message.header.fileNotDeletedHasReferences" approved="yes">
+        <source>File not deleted</source>
+        <target state="final">Failas neištrintas</target>
+      </trans-unit>
+      <trans-unit id="message.header.folderNotDeletedHasFilesWithReferences" resname="message.header.folderNotDeletedHasFilesWithReferences" approved="yes">
+        <source>Folder not deleted</source>
+        <target state="final">Aplankas neištrintas</target>
+      </trans-unit>
+      <trans-unit id="message.description.folderNotDeletedHasFilesWithReferences" resname="message.description.folderNotDeletedHasFilesWithReferences" approved="yes">
+        <source>The folder cannot be deleted since it still contains files in use.</source>
+        <target state="final">Aplanko negalima ištrinti, nes jame vis dar yra naudojamų failų.</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileHasBrokenReferences" resname="message.header.fileHasBrokenReferences" approved="yes">
+        <source>File has broken references</source>
+        <target state="final">Failas turi nutrūkusių nuorodų</target>
+      </trans-unit>
+      <trans-unit id="message.description.fileHasBrokenReferences" resname="message.description.fileHasBrokenReferences" approved="yes">
+        <source>The file has %s broken reference(s) but it will be deleted regardless.</source>
+        <target state="final">Failas turi %s nutrūkusią(-ias) nuorodą(-as), tačiau vis tiek bus ištrintas.</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileNotFound" resname="message.header.fileNotFound" approved="yes">
+        <source>File not found</source>
+        <target state="final">Failas nerastas</target>
+      </trans-unit>
+      <trans-unit id="message.description.fileNotFound" resname="message.description.fileNotFound" approved="yes">
+        <source>The file %s is not found, possible already removed.</source>
+        <target state="final">Failas %s nerastas, galbūt jau pašalintas.</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileDeleted" resname="message.header.fileDeleted" approved="yes">
+        <source>File deleted</source>
+        <target state="final">Failas ištrintas</target>
+      </trans-unit>
+      <trans-unit id="message.description.fileDeleted" resname="message.description.fileDeleted" approved="yes">
+        <source>The file "%s" was successfully deleted.</source>
+        <target state="final">Failas „%s“ sėkmingai ištrintas.</target>
+      </trans-unit>
+      <trans-unit id="message.header.folderDeleted" resname="message.header.folderDeleted" approved="yes">
+        <source>Folder deleted</source>
+        <target state="final">Aplankas ištrintas</target>
+      </trans-unit>
+      <trans-unit id="message.description.folderDeleted" resname="message.description.folderDeleted" approved="yes">
+        <source>The folder "%s" was successfully deleted.</source>
+        <target state="final">Aplankas „%s“ sėkmingai ištrintas.</target>
+      </trans-unit>
+      <trans-unit id="message.header.folderNotDeletedHasFiles" resname="message.header.folderNotDeletedHasFiles" approved="yes">
+        <source>Folder not deleted</source>
+        <target state="final">Aplankas neištrintas</target>
+      </trans-unit>
+      <trans-unit id="buttons.exit" resname="buttons.exit" approved="yes">
+        <source>Exit</source>
+        <target state="final">Išeiti</target>
+      </trans-unit>
+      <trans-unit id="buttons.clear" resname="buttons.clear" approved="yes">
+        <source>Clear</source>
+        <target state="final">Išvalyti</target>
+      </trans-unit>
+      <trans-unit id="buttons.clipboard" resname="buttons.clipboard" approved="yes">
+        <source>Clipboard</source>
+        <target state="final">Iškarpinė</target>
+      </trans-unit>
+      <trans-unit id="buttons.toggleLinkExplanation" resname="buttons.toggleLinkExplanation" approved="yes">
+        <source>Toggle link explanation</source>
+        <target state="final">Perjungti nuorodos paaiškinimą</target>
+      </trans-unit>
+      <trans-unit id="buttons.toggleSlugExplanation" resname="buttons.toggleSlugExplanation" approved="yes">
+        <source>Toggle manual URL segment</source>
+        <target state="final">Perjungti rankinį URL segmentą</target>
+      </trans-unit>
+      <trans-unit id="buttons.recreateSlugExplanation" resname="buttons.recreateSlugExplanation" approved="yes">
+        <source>Recalculate URL segment from page title</source>
+        <target state="final">Perskaičiuoti URL segmentą pagal puslapio pavadinimą</target>
+      </trans-unit>
+      <trans-unit id="slugCreation.success.page" resname="slugCreation.success.page" approved="yes">
+        <source>This page will be reachable via %s</source>
+        <target state="final">Šis puslapis bus pasiekiamas adresu %s</target>
+      </trans-unit>
+      <trans-unit id="slugCreation.success.record" resname="slugCreation.success.record" approved="yes">
+        <source>The URL part of this record will be %s</source>
+        <target state="final">Šio įrašo URL dalis bus %s</target>
+      </trans-unit>
+      <trans-unit id="slugCreation.error" resname="slugCreation.error" approved="yes">
+        <source>The requested URL is already in use, but %s will be used instead</source>
+        <target state="final">Prašomas URL jau naudojamas, tačiau vietoj jo bus naudojamas %s</target>
+      </trans-unit>
+      <trans-unit id="cm.copy" resname="cm.copy" approved="yes">
+        <source>Copy</source>
+        <target state="final">Kopijuoti</target>
+      </trans-unit>
+      <trans-unit id="cm.cut" resname="cm.cut" approved="yes">
+        <source>Cut</source>
+        <target state="final">Iškirpti</target>
+      </trans-unit>
+      <trans-unit id="cm.cutrelease" resname="cm.cutrelease" approved="yes">
+        <source>Cut release</source>
+        <target state="final">Atleisti iškirpimą</target>
+      </trans-unit>
+      <trans-unit id="cm.view" resname="cm.view" approved="yes">
+        <source>Show</source>
+        <target state="final">Rodyti</target>
+      </trans-unit>
+      <trans-unit id="cm.edit" resname="cm.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Redaguoti</target>
+      </trans-unit>
+      <trans-unit id="cm.editcontent" resname="cm.editcontent" approved="yes">
+        <source>Edit content</source>
+        <target state="final">Redaguoti turinį</target>
+      </trans-unit>
+      <trans-unit id="cm.editMetadata" resname="cm.editMetadata" approved="yes">
+        <source>Edit Metadata of this file</source>
+        <target state="final">Redaguoti šio failo metaduomenis</target>
+      </trans-unit>
+      <trans-unit id="cm.new" resname="cm.new" approved="yes">
+        <source>New</source>
+        <target state="final">Naujas</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteinto" resname="cm.pasteinto" approved="yes">
+        <source>Paste into</source>
+        <target state="final">Įklijuoti į vidų</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteafter" resname="cm.pasteafter" approved="yes">
+        <source>Paste after</source>
+        <target state="final">Įklijuoti po</target>
+      </trans-unit>
+      <trans-unit id="cm.select" resname="cm.select" approved="yes">
+        <source>Select</source>
+        <target state="final">Pasirinkti</target>
+      </trans-unit>
+      <trans-unit id="cm.deselect" resname="cm.deselect" approved="yes">
+        <source>Deselect</source>
+        <target state="final">Atšaukti pasirinkimą</target>
+      </trans-unit>
+      <trans-unit id="cm.selectto" resname="cm.selectto" approved="yes">
+        <source>Select to</source>
+        <target state="final">Pasirinkti iki</target>
+      </trans-unit>
+      <trans-unit id="cm.deselectto" resname="cm.deselectto" approved="yes">
+        <source>Deselect to</source>
+        <target state="final">Atšaukti pasirinkimą iki</target>
+      </trans-unit>
+      <trans-unit id="cm.delete" resname="cm.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Ištrinti</target>
+      </trans-unit>
+      <trans-unit id="cm.hide" resname="cm.hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">Slėpti</target>
+      </trans-unit>
+      <trans-unit id="cm.unhide" resname="cm.unhide" approved="yes">
+        <source>Unhide</source>
+        <target state="final">Rodyti</target>
+      </trans-unit>
+      <trans-unit id="cm.online" resname="cm.online" approved="yes">
+        <source>Turn online</source>
+        <target state="final">Įjungti internete</target>
+      </trans-unit>
+      <trans-unit id="cm.offline" resname="cm.offline" approved="yes">
+        <source>Turn offline</source>
+        <target state="final">Išjungti internete</target>
+      </trans-unit>
+      <trans-unit id="cm.upload" resname="cm.upload" approved="yes">
+        <source>Upload Files</source>
+        <target state="final">Įkelti failus</target>
+      </trans-unit>
+      <trans-unit id="cm.rename" resname="cm.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">Pervadinti</target>
+      </trans-unit>
+      <trans-unit id="cm.replace" resname="cm.replace" approved="yes">
+        <source>Replace</source>
+        <target state="final">Pakeisti</target>
+      </trans-unit>
+      <trans-unit id="cm.open" resname="cm.open" approved="yes">
+        <source>Open</source>
+        <target state="final">Atidaryti</target>
+      </trans-unit>
+      <trans-unit id="cm.save" resname="cm.save" approved="yes">
+        <source>Save</source>
+        <target state="final">Išsaugoti</target>
+      </trans-unit>
+      <trans-unit id="cm.unzip" resname="cm.unzip" approved="yes">
+        <source>Unzip</source>
+        <target state="final">Išpakuoti</target>
+      </trans-unit>
+      <trans-unit id="cm.info" resname="cm.info" approved="yes">
+        <source>Info</source>
+        <target state="final">Informacija</target>
+      </trans-unit>
+      <trans-unit id="cm.createnew" resname="cm.createnew" approved="yes">
+        <source>Create new</source>
+        <target state="final">Sukurti naują</target>
+      </trans-unit>
+      <trans-unit id="cm.createnew.link" resname="cm.createnew.link" approved="yes">
+        <source>Create new %s</source>
+        <target state="final">Sukurti naują %s</target>
+      </trans-unit>
+      <trans-unit id="cm.tempMountPoint" resname="cm.tempMountPoint" approved="yes">
+        <source>Mount as treeroot</source>
+        <target state="final">Prijungti kaip medžio šaknį</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_into" resname="cm.copyPage_into" approved="yes">
+        <source>Copy page into</source>
+        <target state="final">Kopijuoti puslapį į vidų</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_after" resname="cm.copyPage_after" approved="yes">
+        <source>Copy page after</source>
+        <target state="final">Kopijuoti puslapį po</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_into" resname="cm.movePage_into" approved="yes">
+        <source>Move page into</source>
+        <target state="final">Perkelti puslapį į vidų</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_after" resname="cm.movePage_after" approved="yes">
+        <source>Move page after</source>
+        <target state="final">Perkelti puslapį po</target>
+      </trans-unit>
+      <trans-unit id="cm.copyFolder_into" resname="cm.copyFolder_into" approved="yes">
+        <source>Copy folder into</source>
+        <target state="final">Kopijuoti aplanką į vidų</target>
+      </trans-unit>
+      <trans-unit id="cm.moveFolder_into" resname="cm.moveFolder_into" approved="yes">
+        <source>Move folder into</source>
+        <target state="final">Perkelti aplanką į vidų</target>
+      </trans-unit>
+      <trans-unit id="cm.createNewRelation" resname="cm.createNewRelation" approved="yes">
+        <source>Create new relation</source>
+        <target state="final">Sukurti naują ryšį</target>
+      </trans-unit>
+      <trans-unit id="cm.branchActions" resname="cm.branchActions" approved="yes">
+        <source>Branch Actions</source>
+        <target state="final">Šakos veiksmai</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPasteActions" resname="cm.copyPasteActions" approved="yes">
+        <source>Page Actions</source>
+        <target state="final">Puslapio veiksmai</target>
+      </trans-unit>
+      <trans-unit id="cm.collapseBranch" resname="cm.collapseBranch" approved="yes">
+        <source>Collapse Branch</source>
+        <target state="final">Suskleisti šaką</target>
+      </trans-unit>
+      <trans-unit id="cm.expandBranch" resname="cm.expandBranch" approved="yes">
+        <source>Expand Branch</source>
+        <target state="final">Išskleisti šaką</target>
+      </trans-unit>
+      <trans-unit id="cm.more" resname="cm.more" approved="yes">
+        <source>More options...</source>
+        <target state="final">Daugiau parinkčių...</target>
+      </trans-unit>
+      <trans-unit id="cm.allowedFileExtensions" resname="cm.allowedFileExtensions" approved="yes">
+        <source>Allowed file extensions</source>
+        <target state="final">Leidžiami failų plėtiniai</target>
+      </trans-unit>
+      <trans-unit id="cm.allowedEditableTextFileExtensions" resname="cm.allowedEditableTextFileExtensions" approved="yes">
+        <source>Allowed editable text file extensions</source>
+        <target state="final">Leidžiami redaguojamų tekstinių failų plėtiniai</target>
+      </trans-unit>
+      <trans-unit id="cm.allowEmbedSources" resname="cm.allowEmbedSources" approved="yes">
+        <source>Allowed media sources</source>
+        <target state="final">Leidžiami medijos šaltiniai</target>
+      </trans-unit>
+      <trans-unit id="cm.allowedRelations" resname="cm.allowedRelations" approved="yes">
+        <source>Allowed relations</source>
+        <target state="final">Leidžiami ryšiai</target>
+      </trans-unit>
+      <trans-unit id="sortable.dragmove" resname="sortable.dragmove" approved="yes">
+        <source>Drag to move</source>
+        <target state="final">Vilkite, kad perkeltumėte</target>
+      </trans-unit>
+      <trans-unit id="tree.searchTermInfo" resname="tree.searchTermInfo" approved="yes">
+        <source>Enter search term</source>
+        <target state="final">Įveskite paieškos frazę</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_pattern" resname="warning.file_deny_pattern" approved="yes">
+        <source>The value of fileDenyPattern is not set to its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</source>
+        <target state="final">Reikšmė fileDenyPattern nenustatyta kaip numatytoji:%s Jei TYPO3 veikia su Apache, pakeista reikšmė gali leisti administravimo ar svetainės naudotojams vykdyti kenkėjiškus php scenarijus.</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_htaccess" resname="warning.file_deny_htaccess" approved="yes">
+        <source>The current value of fileDenyPattern allows to upload/create files with the name ".htaccess". If TYPO3 is running on Apache, this enables backend or frontend users to create and execute php scripts. Please reset the value of fileDenyPattern to its default.</source>
+        <target state="final">Dabartinė fileDenyPattern reikšmė leidžia įkelti / kurti failus pavadinimu „.htaccess“. Jei TYPO3 veikia su Apache, tai leidžia administravimo ar svetainės naudotojams kurti ir vykdyti php scenarijus. Atstatykite fileDenyPattern reikšmę į numatytąją.</target>
+      </trans-unit>
+      <trans-unit id="warning.install_enabled" resname="warning.install_enabled" approved="yes">
+        <source>The Install Tool is permanently enabled. Delete the file "%s" when you have finished setting up TYPO3.</source>
+        <target state="final">Diegimo įrankis įjungtas visam laikui. Baigę TYPO3 sąranką, ištrinkite failą „%s“.</target>
+      </trans-unit>
+      <trans-unit id="warning.install_trustedhosts" resname="warning.install_trustedhosts" approved="yes">
+        <source>The trusted hosts pattern check is disabled. Please define the allowed hosts in the [SYS][trustedHostsPattern] section of the Install Tool.</source>
+        <target state="final">Patikimų serverių šablono tikrinimas išjungtas. Nustatykite leidžiamus serverius diegimo įrankio skiltyje [SYS][trustedHostsPattern].</target>
+      </trans-unit>
+      <trans-unit id="warning.memcache_not_usable" resname="warning.memcache_not_usable" approved="yes">
+        <source>Memcache is configured, but connection to memcached failed with these configuration(s)</source>
+        <target state="final">Memcache yra sukonfigūruota, tačiau prisijungti prie memcached nepavyko naudojant šią konfigūraciją</target>
+      </trans-unit>
+      <trans-unit id="warning.file_missing_text" resname="warning.file_missing_text" approved="yes">
+        <source>This file is marked as missing</source>
+        <target state="final">Šis failas pažymėtas kaip trūkstamas</target>
+      </trans-unit>
+      <trans-unit id="warning.header.storage_is_no_public" resname="warning.header.storage_is_no_public" approved="yes">
+        <source>Storage is not public</source>
+        <target state="final">Saugykla nėra vieša</target>
+      </trans-unit>
+      <trans-unit id="warning.message.storage_is_no_public" resname="warning.message.storage_is_no_public" approved="yes">
+        <source>The storage has been marked to be "publicly available" but is not detected as such by the driver. The setting has been reverted.</source>
+        <target state="final">Saugykla buvo pažymėta kaip „viešai prieinama“, tačiau tvarkyklė jos tokios neaptiko. Nustatymas buvo atstatytas.</target>
+      </trans-unit>
+      <trans-unit id="warning.inline_use_combination" resname="warning.inline_use_combination" approved="yes">
+        <source>This record will be modified globally.</source>
+        <target state="final">Šis įrašas bus pakeistas globaliai.</target>
+      </trans-unit>
+      <trans-unit id="error.formProtection.tokenInvalid" resname="error.formProtection.tokenInvalid" approved="yes">
+        <source>Validating the security token of this form has failed. Please reload the form and submit it again.</source>
+        <target state="final">Nepavyko patvirtinti šios formos saugumo rakto. Perkraukite formą ir pateikite ją dar kartą.</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.search" resname="toolbarItems.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Ieškoti</target>
+      </trans-unit>
+      <trans-unit id="extension.not.installed" resname="extension.not.installed" approved="yes">
+        <source>Extension "%s" is not installed.</source>
+        <target state="final">Plėtinys „%s“ nėra įdiegtas.</target>
+      </trans-unit>
+      <trans-unit id="link.to.filefile.correctly" resname="link.to.filefile.correctly" approved="yes">
+        <source>Please, do not link to this page.</source>
+        <target state="final">Prašome nesieti su šiuo puslapiu.</target>
+      </trans-unit>
+      <trans-unit id="error.database_schema_mismatch" resname="error.database_schema_mismatch" approved="yes">
+        <source>A SQL error occurred. This may indicate a schema mismatch between TCA and the database. Try running database compare in the Install Tool.</source>
+        <target state="final">Įvyko SQL klaida. Tai gali reikšti schemos neatitikimą tarp TCA ir duomenų bazės. Pabandykite paleisti duomenų bazės palyginimą diegimo įrankyje.</target>
+      </trans-unit>
+      <trans-unit id="error.database_schema_mismatch_title" resname="error.database_schema_mismatch_title" approved="yes">
+        <source>Database Error</source>
+        <target state="final">Duomenų bazės klaida</target>
+      </trans-unit>
+      <trans-unit id="error.items_proc_func_error" resname="error.items_proc_func_error" approved="yes">
+        <source>An error occurred trying to process items for field "%1$s" (%2$s).</source>
+        <target state="final">Bandant apdoroti lauko „%1$s“ (%2$s) elementus įvyko klaida.</target>
+      </trans-unit>
+      <trans-unit id="error.invalidEmail" resname="error.invalidEmail" approved="yes">
+        <source>"%s" is not a valid e-mail address.</source>
+        <target state="final">„%s“ nėra galiojantis el. pašto adresas.</target>
+      </trans-unit>
+      <trans-unit id="formEngine.beUser.admin.information.userIsSystemMaintainer" resname="formEngine.beUser.admin.information.userIsSystemMaintainer" approved="yes">
+        <source>This user is a system maintainer</source>
+        <target state="final">Šis naudotojas yra sistemos prižiūrėtojas</target>
+      </trans-unit>
+      <trans-unit id="formEngine.beUser.admin.information.userWillBecomeSystemMaintainer" resname="formEngine.beUser.admin.information.userWillBecomeSystemMaintainer" approved="yes">
+        <source>This user is in the list of allowed system maintainers and will gain system level access if enabling admin access.</source>
+        <target state="final">Šis naudotojas yra leidžiamų sistemos prižiūrėtojų sąraše ir įjungus administratoriaus prieigą gaus sistemos lygio prieigą.</target>
+      </trans-unit>
+      <trans-unit id="error.backendUserGroupListTypeError.header" resname="error.backendUserGroupListTypeError.header" approved="yes">
+        <source>Possible misconfiguration detected</source>
+        <target state="final">Aptikta galima neteisinga konfigūracija</target>
+      </trans-unit>
+      <trans-unit id="error.backendUserGroupListTypeError.message" resname="error.backendUserGroupListTypeError.message" approved="yes">
+        <source>Editing of at least one plugin was enabled but editing the page content type "Insert Plugin" is still disallowed. Group members won't be able to edit plugins unless you activate editing for the content type.</source>
+        <target state="final">Bent vieno įskiepio redagavimas buvo įjungtas, tačiau puslapio turinio tipą „Įterpti įskiepį“ redaguoti vis dar draudžiama. Grupės nariai negalės redaguoti įskiepių, kol neįjungsite šio turinio tipo redagavimo.</target>
+      </trans-unit>
+      <trans-unit id="error.missingLanguageIsocode" resname="error.missingLanguageIsocode" approved="yes">
+        <source>Missing ISO code for language "%s" (UID %d), please edit the language record and set it.</source>
+        <target state="final">Trūksta kalbos „%s“ ISO kodo (UID %d), redaguokite kalbos įrašą ir jį nustatykite.</target>
+      </trans-unit>
+      <trans-unit id="labels.deleteTitle" resname="labels.deleteTitle" approved="yes">
+        <source>Revert to default Constant</source>
+        <target state="final">Atstatyti į numatytąją konstantą</target>
+      </trans-unit>
+      <trans-unit id="labels.editTitle" resname="labels.editTitle" approved="yes">
+        <source>Edit this Constant</source>
+        <target state="final">Redaguoti šią konstantą</target>
+      </trans-unit>
+      <trans-unit id="pageTranslation" resname="pageTranslation" approved="yes">
+        <source>Page Translation</source>
+        <target state="final">Puslapio vertimas</target>
+      </trans-unit>
+      <trans-unit id="filestorage.invalidpathexception.title" resname="filestorage.invalidpathexception.title" approved="yes">
+        <source>Error in Path</source>
+        <target state="final">Kelio klaida</target>
+      </trans-unit>
+      <trans-unit id="filestorage.invalidpathexception.message" resname="filestorage.invalidpathexception.message" approved="yes">
+        <source>You entered an invalid path for this File Storage. Note that "../" and "//" are not allowed when using an absolute path.</source>
+        <target state="final">Įvedėte neteisingą šios failų saugyklos kelią. Atkreipkite dėmesį, kad naudojant absoliutų kelią „../“ ir „//“ nėra leidžiami.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
