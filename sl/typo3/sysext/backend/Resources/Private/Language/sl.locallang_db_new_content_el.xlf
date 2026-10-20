@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814786" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="sel1" resname="sel1" approved="yes">
+        <source>Please select the type of page content you wish to create</source>
+        <target state="final">Prosimo, izberite tip vsebine, ki jo želite ustvariti na strani</target>
+      </trans-unit>
+      <trans-unit id="common" resname="common" approved="yes">
+        <source>Typical page content</source>
+        <target state="final">Tipična vsebina strani</target>
+      </trans-unit>
+      <trans-unit id="common_headerOnly_title" resname="common_headerOnly_title" approved="yes">
+        <source>Header Only</source>
+        <target state="final">Samo naslov</target>
+      </trans-unit>
+      <trans-unit id="common_headerOnly_description" resname="common_headerOnly_description" approved="yes">
+        <source>Adds a header only.</source>
+        <target state="final">Doda samo naslov.</target>
+      </trans-unit>
+      <trans-unit id="common_regularText_title" resname="common_regularText_title" approved="yes">
+        <source>Regular Text Element</source>
+        <target state="final">Običajno besedilo</target>
+      </trans-unit>
+      <trans-unit id="common_regularText_description" resname="common_regularText_description" approved="yes">
+        <source>A regular text element with header and bodytext fields.</source>
+        <target state="final">Običajno besedilo z naslovom in telesom besedila.</target>
+      </trans-unit>
+      <trans-unit id="common_textImage_title" resname="common_textImage_title" approved="yes">
+        <source>Text &amp; Images</source>
+        <target state="final">Besedilo s sliko</target>
+      </trans-unit>
+      <trans-unit id="common_textImage_description" resname="common_textImage_description" approved="yes">
+        <source>Any number of images wrapped right around a regular text element.</source>
+        <target state="final">Poljubno število slik, oblitih z običajnim besedilom.</target>
+      </trans-unit>
+      <trans-unit id="common_textMedia_title" resname="common_textMedia_title" approved="yes">
+        <source>Text &amp; Media</source>
+        <target state="final">Besedilo s predstavnostno vsebino</target>
+      </trans-unit>
+      <trans-unit id="common_textMedia_description" resname="common_textMedia_description" approved="yes">
+        <source>Any number of media wrapped right around a regular text element.</source>
+        <target state="final">Poljubno število predstavnostne vsebine, oblite z običajnim besedilom.</target>
+      </trans-unit>
+      <trans-unit id="common_imagesOnly_title" resname="common_imagesOnly_title" approved="yes">
+        <source>Images Only</source>
+        <target state="final">Samo slike</target>
+      </trans-unit>
+      <trans-unit id="common_imagesOnly_description" resname="common_imagesOnly_description" approved="yes">
+        <source>Any number of images aligned in columns and rows with a caption.</source>
+        <target state="final">Poljubno število slik, poravnanih v stolpce in vrstice z opisi.</target>
+      </trans-unit>
+      <trans-unit id="common_bulletList_title" resname="common_bulletList_title" approved="yes">
+        <source>Bullet List</source>
+        <target state="final">Seznam</target>
+      </trans-unit>
+      <trans-unit id="common_bulletList_description" resname="common_bulletList_description" approved="yes">
+        <source>A single bullet list.</source>
+        <target state="final">Samostojen neoštevilčen seznam.</target>
+      </trans-unit>
+      <trans-unit id="common_table_title" resname="common_table_title" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabela</target>
+      </trans-unit>
+      <trans-unit id="common_table_description" resname="common_table_description" approved="yes">
+        <source>A simple table.</source>
+        <target state="final">Enostavna tabela.</target>
+      </trans-unit>
+      <trans-unit id="menu" resname="menu" approved="yes">
+        <source>Menu</source>
+        <target state="final">Meni</target>
+      </trans-unit>
+      <trans-unit id="menu_abstract.description" resname="menu_abstract.description" approved="yes">
+        <source>Menu of subpages of selected pages including abstracts</source>
+        <target state="final">Meni podstrani izbranih strani, vključujoč povzetke</target>
+      </trans-unit>
+      <trans-unit id="menu_categorized_pages.title" resname="menu_categorized_pages.title" approved="yes">
+        <source>Categorized pages</source>
+        <target state="final">Kategorizirane strani</target>
+      </trans-unit>
+      <trans-unit id="menu_pages.title" resname="menu_pages.title" approved="yes">
+        <source>Pages</source>
+        <target state="final">Strani</target>
+      </trans-unit>
+      <trans-unit id="menu_pages.description" resname="menu_pages.description" approved="yes">
+        <source>Menu of selected pages</source>
+        <target state="final">Meni izbranih strani</target>
+      </trans-unit>
+      <trans-unit id="menu_subpages.title" resname="menu_subpages.title" approved="yes">
+        <source>Subpages</source>
+        <target state="final">Podstrani</target>
+      </trans-unit>
+      <trans-unit id="menu_subpages.description" resname="menu_subpages.description" approved="yes">
+        <source>Menu of subpages of selected pages</source>
+        <target state="final">Meni podstrani izbranih strani</target>
+      </trans-unit>
+      <trans-unit id="menu_categorized_pages.description" resname="menu_categorized_pages.description" approved="yes">
+        <source>Pages for selected categories</source>
+        <target state="final">Strani za izbrane kategorije</target>
+      </trans-unit>
+      <trans-unit id="menu_related_pages.title" resname="menu_related_pages.title" approved="yes">
+        <source>Related pages</source>
+        <target state="final">Povezane strani</target>
+      </trans-unit>
+      <trans-unit id="menu_section.title" resname="menu_section.title" approved="yes">
+        <source>Section index</source>
+        <target state="final">Sekcijski meni</target>
+      </trans-unit>
+      <trans-unit id="menu_section.description" resname="menu_section.description" approved="yes">
+        <source>Page content marked for section menus</source>
+        <target state="final">Vsebina strani, označena za sekcijske menije</target>
+      </trans-unit>
+      <trans-unit id="menu_section_pages.title" resname="menu_section_pages.title" approved="yes">
+        <source>Section index of subpages from selected pages</source>
+        <target state="final">Sekcijski meni podstrani izbranih strani</target>
+      </trans-unit>
+      <trans-unit id="menu_section_pages.description" resname="menu_section_pages.description" approved="yes">
+        <source>Menu of subpages of selected pages including sections</source>
+        <target state="final">Meni podstrani izbranih strani, vključujoč sekcije</target>
+      </trans-unit>
+      <trans-unit id="menu_sitemap.title" resname="menu_sitemap.title" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">Zemljevid spletnega mesta</target>
+      </trans-unit>
+      <trans-unit id="menu_sitemap_pages.title" resname="menu_sitemap_pages.title" approved="yes">
+        <source>Sitemaps of selected pages</source>
+        <target state="final">Zemljevid izbranih strani</target>
+      </trans-unit>
+      <trans-unit id="menu_sitemap_pages.description" resname="menu_sitemap_pages.description" approved="yes">
+        <source>Expanded menu of all subpages for selected pages</source>
+        <target state="final">Razširi meni vseh podstrani za izbrane strani</target>
+      </trans-unit>
+      <trans-unit id="special" resname="special" approved="yes">
+        <source>Special elements</source>
+        <target state="final">Posebni elementi</target>
+      </trans-unit>
+      <trans-unit id="special_filelinks_title" resname="special_filelinks_title" approved="yes">
+        <source>File Links</source>
+        <target state="final">Povezave do datotek</target>
+      </trans-unit>
+      <trans-unit id="special_filelinks_description" resname="special_filelinks_description" approved="yes">
+        <source>Makes a list of files for download.</source>
+        <target state="final">Ustvari seznam datotek za prenos.</target>
+      </trans-unit>
+      <trans-unit id="special_sitemap_title" resname="special_sitemap_title" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">Zemljevid spletnega mesta</target>
+      </trans-unit>
+      <trans-unit id="special_plainHTML_title" resname="special_plainHTML_title" approved="yes">
+        <source>Plain HTML</source>
+        <target state="final">Enostaven HTML</target>
+      </trans-unit>
+      <trans-unit id="special_plainHTML_description" resname="special_plainHTML_description" approved="yes">
+        <source>With this element you can insert raw HTML code on the page.</source>
+        <target state="final">S tem elementom lahko vstavite HTML kodo na stran.</target>
+      </trans-unit>
+      <trans-unit id="special_divider_title" resname="special_divider_title" approved="yes">
+        <source>Divider</source>
+        <target state="final">Ločila</target>
+      </trans-unit>
+      <trans-unit id="special_divider_description" resname="special_divider_description" approved="yes">
+        <source>This element inserts a visual divider, which is by default a horizontal line.</source>
+        <target state="final">Ta element vstavi vizualno ločnico, ki je privzeto vodoravna črta.</target>
+      </trans-unit>
+      <trans-unit id="special_shortcut_title" resname="special_shortcut_title" approved="yes">
+        <source>Insert records</source>
+        <target state="final">Vstavi zapise</target>
+      </trans-unit>
+      <trans-unit id="special_shortcut_description" resname="special_shortcut_description" approved="yes">
+        <source>With this element you can embed other content elements.</source>
+        <target state="final">S tem elementom lahko vstavite druge vsebinske elemente.</target>
+      </trans-unit>
+      <trans-unit id="forms" resname="forms" approved="yes">
+        <source>Form elements</source>
+        <target state="final">Elementi obrazca</target>
+      </trans-unit>
+      <trans-unit id="plugins" resname="plugins" approved="yes">
+        <source>Plugins</source>
+        <target state="final">Vtičniki</target>
+      </trans-unit>
+      <trans-unit id="plugins_general_title" resname="plugins_general_title" approved="yes">
+        <source>General Plugin</source>
+        <target state="final">Splošni vtičnik</target>
+      </trans-unit>
+      <trans-unit id="plugins_general_description" resname="plugins_general_description" approved="yes">
+        <source>Select this element type to insert a plugin which cannot be found amongst the options below.</source>
+        <target state="final">Izberite to vrsto elementa, če želite vstaviti vtičnik, ki ga ni mogoče najti med spodnjimi možnostmi.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
