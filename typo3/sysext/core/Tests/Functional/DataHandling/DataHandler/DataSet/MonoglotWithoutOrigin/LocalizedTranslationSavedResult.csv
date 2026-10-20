@@ -1,0 +1,10 @@
+"tx_testirreforeignfield_hotel"
+,"uid","pid","sys_language_uid","l18n_parent","title","offers"
+,1,1,0,0,"Grand Hotel",2
+,2,1,1,1,"Großes Hotel",2
+"tx_testirreforeignfield_offer"
+,"uid","pid","parentid","title","t3_origuid","deleted"
+,1,1,1,"Breakfast included",0,0
+,2,1,1,"Late checkout",0,0
+,3,1,2,"Breakfast included",1,0
+,4,1,2,"Late checkout",2,0

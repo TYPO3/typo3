@@ -1,0 +1,10 @@
+"pages"
+,"uid","pid","title","sorting","deleted","perms_everybody"
+,1,0,"Root",128,0,15
+"tx_testirreforeignfield_hotel"
+,"uid","pid","sys_language_uid","l18n_parent","l10n_source","title","offers"
+,1,1,0,0,0,"Grand Hotel",2
+"tx_testirreforeignfield_offer"
+,"uid","pid","parentid","parenttable","title","sorting","deleted"
+,1,1,1,"tx_testirreforeignfield_hotel","Breakfast included",128,0
+,2,1,1,"tx_testirreforeignfield_hotel","Late checkout",256,0

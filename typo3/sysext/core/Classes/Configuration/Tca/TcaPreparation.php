@@ -50,6 +50,7 @@ readonly class TcaPreparation
         $tca = $this->configureLinkSoftReferences($tca);
         $tca = $this->configureSelectSingle($tca);
         $tca = $this->configureRelationshipToOne($tca);
+        $tca = $this->configureAncestorReferenceForMonoglotChildren($tca);
         $tca = $this->addSystemFieldsToShowitemTypes($tca);
         $tca = $this->addIgnoredPageTypeRestrictionRecords($tca);
         return $tca;
@@ -383,6 +384,39 @@ readonly class TcaPreparation
                     // Hard set/override: 'maxitems' to 1, since relationship [x]ToOne - as the name suggests -
                     // only allows a single item to be selected.
                     $fieldConfig['config']['maxitems'] = 1;
+                }
+            }
+        }
+        return $tca;
+    }
+
+    /**
+     * A language-aware table synchronizing an inline or file field to its translations
+     * ("l10n_mode" => "exclude" or "allowLanguageSynchronization") gives each translation
+     * copies of the children. If the child table is not language-aware, the copies can only
+     * be found again through the "origUid" of the child table, which is enforced here.
+     */
+    protected function configureAncestorReferenceForMonoglotChildren(array $tca): array
+    {
+        foreach ($tca as $tableDefinition) {
+            if (!isset($tableDefinition['ctrl']['languageField']) || !is_array($tableDefinition['columns'] ?? null)) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldConfig) {
+                $childTable = $fieldConfig['config']['foreign_table'] ?? null;
+                if (!in_array($fieldConfig['config']['type'] ?? null, ['inline', 'file'], true)
+                    || !is_string($childTable)
+                    || !is_array($tca[$childTable] ?? null)
+                    || isset($tca[$childTable]['ctrl']['languageField'])
+                    || isset($tca[$childTable]['ctrl']['origUid'])
+                    || isset($tca[$childTable]['columns']['t3_origuid'])
+                ) {
+                    continue;
+                }
+                if (($fieldConfig['l10n_mode'] ?? null) === 'exclude'
+                    || ($fieldConfig['config']['behaviour']['allowLanguageSynchronization'] ?? false)
+                ) {
+                    $tca[$childTable]['ctrl']['origUid'] = 't3_origuid';
                 }
             }
         }

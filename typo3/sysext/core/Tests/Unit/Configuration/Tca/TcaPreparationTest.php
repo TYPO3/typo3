@@ -856,6 +856,121 @@ final class TcaPreparationTest extends UnitTestCase
         self::assertEquals(0, $subject['foo']['columns']['relation']['config']['maxitems'] ?? 0);
     }
 
+    public static function configureAncestorReferenceForMonoglotChildrenDataProvider(): iterable
+    {
+        yield 'l10n_mode exclude' => [
+            ['l10n_mode' => 'exclude'],
+            [],
+            't3_origuid',
+        ];
+        yield 'allowLanguageSynchronization' => [
+            ['config' => ['behaviour' => ['allowLanguageSynchronization' => true]]],
+            [],
+            't3_origuid',
+        ];
+        yield 'existing origUid of the child table is kept' => [
+            ['l10n_mode' => 'exclude'],
+            ['ctrl' => ['origUid' => 'custom_origuid']],
+            'custom_origuid',
+        ];
+        yield 'field without synchronization' => [
+            [],
+            [],
+            null,
+        ];
+        yield 'l10n_mode prefixLangTitle' => [
+            ['l10n_mode' => 'prefixLangTitle'],
+            [],
+            null,
+        ];
+        yield 'allowLanguageSynchronization disabled' => [
+            ['config' => ['behaviour' => ['allowLanguageSynchronization' => false]]],
+            [],
+            null,
+        ];
+        yield 'language aware child table' => [
+            ['l10n_mode' => 'exclude'],
+            ['ctrl' => ['languageField' => 'sys_language_uid']],
+            null,
+        ];
+        yield 'inline relation using MM' => [
+            ['l10n_mode' => 'exclude', 'config' => ['foreign_field' => null, 'MM' => 'tx_parent_child_mm']],
+            [],
+            't3_origuid',
+        ];
+        yield 'select relation' => [
+            ['l10n_mode' => 'exclude', 'config' => ['type' => 'select', 'renderType' => 'selectMultipleSideBySide']],
+            [],
+            null,
+        ];
+        yield 'child table with a column named t3_origuid' => [
+            ['l10n_mode' => 'exclude'],
+            ['columns' => ['t3_origuid' => ['config' => ['type' => 'number']]]],
+            null,
+        ];
+    }
+
+    #[DataProvider('configureAncestorReferenceForMonoglotChildrenDataProvider')]
+    #[Test]
+    public function configureAncestorReferenceForMonoglotChildren(array $fieldOverride, array $childTableOverride, ?string $expectedOrigUid): void
+    {
+        $field = [
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'tx_child',
+                'foreign_field' => 'parentid',
+            ],
+        ];
+        ArrayUtility::mergeRecursiveWithOverrule($field, $fieldOverride);
+        $childTable = [
+            'ctrl' => ['title' => 'Child'],
+            'columns' => ['title' => ['config' => ['type' => 'input']]],
+        ];
+        ArrayUtility::mergeRecursiveWithOverrule($childTable, $childTableOverride);
+        $subject = new TcaPreparation()->prepare([
+            'tx_parent' => [
+                'ctrl' => ['languageField' => 'sys_language_uid', 'transOrigPointerField' => 'l10n_parent'],
+                'columns' => ['children' => $field],
+            ],
+            'tx_child' => $childTable,
+        ]);
+        self::assertSame($expectedOrigUid, $subject['tx_child']['ctrl']['origUid'] ?? null);
+    }
+
+    #[Test]
+    public function configureAncestorReferenceForMonoglotChildrenIgnoresMonoglotParent(): void
+    {
+        $subject = new TcaPreparation()->prepare([
+            'tx_parent' => [
+                'columns' => [
+                    'children' => [
+                        'l10n_mode' => 'exclude',
+                        'config' => ['type' => 'inline', 'foreign_table' => 'tx_child', 'foreign_field' => 'parentid'],
+                    ],
+                ],
+            ],
+            'tx_child' => ['ctrl' => ['title' => 'Child'], 'columns' => []],
+        ]);
+        self::assertArrayNotHasKey('origUid', $subject['tx_child']['ctrl']);
+    }
+
+    #[Test]
+    public function configureAncestorReferenceForMonoglotChildrenIgnoresMissingChildTable(): void
+    {
+        $tca = [
+            'tx_parent' => [
+                'ctrl' => ['languageField' => 'sys_language_uid', 'transOrigPointerField' => 'l10n_parent'],
+                'columns' => [
+                    'children' => [
+                        'l10n_mode' => 'exclude',
+                        'config' => ['type' => 'inline', 'foreign_table' => 'tx_child', 'foreign_field' => 'parentid'],
+                    ],
+                ],
+            ],
+        ];
+        self::assertSame($tca, new TcaPreparation()->prepare($tca));
+    }
+
     #[Test]
     public function addSystemFieldsWorksForTtContentOnly(): void
     {
