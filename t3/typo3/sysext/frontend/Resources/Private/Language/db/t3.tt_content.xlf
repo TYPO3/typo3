@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="t3">
+  <file id="f1">
+    <unit id="hidden">
+      <segment state="initial">
+        <source>Visibility of content element</source>
+        <target>crwdns378450:0crwdne378450:0</target>
+      </segment>
+    </unit>
+    <unit id="type">
+      <segment state="initial">
+        <source>Type</source>
+        <target>crwdns378452:0crwdne378452:0</target>
+      </segment>
+    </unit>
+    <unit id="column">
+      <segment state="initial">
+        <source>Column</source>
+        <target>crwdns378454:0crwdne378454:0</target>
+      </segment>
+    </unit>
+    <unit id="filelink_size">
+      <segment state="initial">
+        <source>Display file size information</source>
+        <target>crwdns378652:0crwdne378652:0</target>
+      </segment>
+    </unit>
+    <unit id="header">
+      <segment state="initial">
+        <source>Header</source>
+        <target>crwdns378456:0crwdne378456:0</target>
+      </segment>
+    </unit>
+    <unit id="header_type">
+      <segment state="initial">
+        <source>Type</source>
+        <target>crwdns378458:0crwdne378458:0</target>
+      </segment>
+    </unit>
+    <unit id="header_layout">
+      <segment state="initial">
+        <source>Layout</source>
+        <target>crwdns378460:0crwdne378460:0</target>
+      </segment>
+    </unit>
+    <unit id="header_position">
+      <segment state="initial">
+        <source>Alignment</source>
+        <target>crwdns378462:0crwdne378462:0</target>
+      </segment>
+    </unit>
+    <unit id="header_link">
+      <segment state="initial">
+        <source>Link</source>
+        <target>crwdns378464:0crwdne378464:0</target>
+      </segment>
+    </unit>
+    <unit id="subheader">
+      <segment state="initial">
+        <source>Subheader</source>
+        <target>crwdns378466:0crwdne378466:0</target>
+      </segment>
+    </unit>
+    <unit id="date">
+      <segment state="initial">
+        <source>Date</source>
+        <target>crwdns378468:0crwdne378468:0</target>
+      </segment>
+    </unit>
+    <unit id="bodytext">
+      <segment state="initial">
+        <source>Text</source>
+        <target>crwdns378470:0crwdne378470:0</target>
+      </segment>
+    </unit>
+    <unit id="imageorientation">
+      <segment state="initial">
+        <source>Position and Alignment</source>
+        <target>crwdns378472:0crwdne378472:0</target>
+      </segment>
+    </unit>
+    <unit id="imagecols">
+      <segment state="initial">
+        <source>Number of Columns</source>
+        <target>crwdns378474:0crwdne378474:0</target>
+      </segment>
+    </unit>
+    <unit id="imagewidth">
+      <segment state="initial">
+        <source>Width of each element (px)</source>
+        <target>crwdns378476:0crwdne378476:0</target>
+      </segment>
+    </unit>
+    <unit id="imageheight">
+      <segment state="initial">
+        <source>Height of each element (px)</source>
+        <target>crwdns378478:0crwdne378478:0</target>
+      </segment>
+    </unit>
+    <unit id="imageborder">
+      <segment state="initial">
+        <source>Border around each element</source>
+        <target>crwdns378480:0crwdne378480:0</target>
+      </segment>
+    </unit>
+    <unit id="image_zoom">
+      <segment state="initial">
+        <source>Enlarge on Click</source>
+        <target>crwdns378482:0crwdne378482:0</target>
+      </segment>
+    </unit>
+    <unit id="section_index">
+      <segment state="initial">
+        <source>Show in Section Menus</source>
+        <target>crwdns378484:0crwdne378484:0</target>
+      </segment>
+    </unit>
+    <unit id="link_to_top">
+      <segment state="initial">
+        <source>Append with Link to Top of Page</source>
+        <target>crwdns378486:0crwdne378486:0</target>
+      </segment>
+    </unit>
+    <unit id="layout">
+      <segment state="initial">
+        <source>Layout</source>
+        <target>crwdns378488:0crwdne378488:0</target>
+      </segment>
+    </unit>
+    <unit id="frame_class">
+      <segment state="initial">
+        <source>Frame</source>
+        <target>crwdns378490:0crwdne378490:0</target>
+      </segment>
+    </unit>
+    <unit id="space_before_class">
+      <segment state="initial">
+        <source>Space Before</source>
+        <target>crwdns378492:0crwdne378492:0</target>
+      </segment>
+    </unit>
+    <unit id="space_after_class">
+      <segment state="initial">
+        <source>Space After</source>
+        <target>crwdns378494:0crwdne378494:0</target>
+      </segment>
+    </unit>
+    <unit id="uploads.media">
+      <segment state="initial">
+        <source>Single files</source>
+        <target>crwdns378654:0crwdne378654:0</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
