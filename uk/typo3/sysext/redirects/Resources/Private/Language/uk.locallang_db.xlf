@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_db.xlf" date="2017-12-29T20:22:14Z" product-name="redirects" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="sys_redirect" approved="yes">
+        <source>Redirect</source>
+        <target state="final">Перенаправлення</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.source_host" approved="yes">
+        <source>Source Domain</source>
+        <target state="final">Домен джерела</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.source_path" approved="yes">
+        <source>Source Path</source>
+        <target state="final">Шлях до джерела</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.force_https" approved="yes">
+        <source>SSL Redirect</source>
+        <target state="final">SSL перенаправлення</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.force_https.0" approved="yes">
+        <source>Force SSL Redirect</source>
+        <target state="final">Примусове перенаправлення SSL</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.keep_query_parameters" approved="yes">
+        <source>GET Parameters</source>
+        <target state="final">GET параметри</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.keep_query_parameters.0" approved="yes">
+        <source>Keep GET Parameters</source>
+        <target state="final">Зберігайте параметри GET</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.respect_query_parameters" approved="yes">
+        <source>GET Parameters (source)</source>
+        <target state="final">GET параметри (джерело)</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.respect_query_parameters.0" approved="yes">
+        <source>Respect GET Parameters</source>
+        <target state="final">Дотримуватись параметрів GET</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target" approved="yes">
+        <source>Target</source>
+        <target state="final">Цільове</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode" approved="yes">
+        <source>Status Code HTTP Header</source>
+        <target state="final">HTTP-заголовок коду стану</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.301" approved="yes">
+        <source>301 Moved Permanently</source>
+        <target state="final">301 Постійно переміщено</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.302" approved="yes">
+        <source>302 Found</source>
+        <target state="final">302 Знайдено</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.303" approved="yes">
+        <source>303 See Other</source>
+        <target state="final">303 Дивитися інші</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.307" approved="yes">
+        <source>307 Temporary Redirect</source>
+        <target state="final">307 Тимчасове перенаправлення</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.308" approved="yes">
+        <source>308 Permanent Redirect</source>
+        <target state="final">308 Постійне перенаправлення</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.keep" approved="yes">
+        <source>Keep HTTP method</source>
+        <target state="final">Залишити HTTP-метод</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.change" approved="yes">
+        <source>Change HTTP method to GET</source>
+        <target state="final">Змінити метод HTTP на GET</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.lasthiton" approved="yes">
+        <source>Last Hit on</source>
+        <target state="final">Останній удар</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.hitcountState" approved="yes">
+        <source>Hit Counter</source>
+        <target state="final">Лічильник попадань</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disable_hitcount" approved="yes">
+        <source>Disable Hit Counter</source>
+        <target state="final">Вимкнути Лічильник попадань</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disable_hitcount.0" approved="yes">
+        <source>Disable</source>
+        <target state="final">Вимкнути</target>
+      </trans-unit>
+      <trans-unit id="tabs.redirectCount" approved="yes">
+        <source>Statistics</source>
+        <target state="final">Статистика</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.protected" approved="yes">
+        <source>Protected</source>
+        <target state="final">Захищено</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.protected.description" approved="yes">
+        <source>When enabled, this redirect will be skipped by scheduled cleanup tasks that might delete redirects under certain conditions.</source>
+        <target state="final">Якщо ввімкнено, це перенаправлення буде пропущено запланованими завданнями очищення, які можуть видалити перенаправлення за певних умов.</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.is_regexp" approved="yes">
+        <source>Is regular expression?</source>
+        <target state="final">Чи є регулярним виразом?</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.is_regexp.0" approved="yes">
+        <source>Yes</source>
+        <target state="final">Так</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disabled" approved="yes">
+        <source>Disable</source>
+        <target state="final">Вимкнути</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disabled.0" approved="yes">
+        <source>Deactivate redirect</source>
+        <target state="final">Деактивувати перенаправлення</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.creation_type" approved="yes">
+        <source>Creation Type</source>
+        <target state="final">Тип створення</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.creation_type.1" approved="yes">
+        <source>manually created</source>
+        <target state="final">створено вручну</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.creation_type.0" approved="yes">
+        <source>automatically created</source>
+        <target state="final">створено автоматично</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
