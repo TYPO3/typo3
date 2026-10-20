@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/Modules/form_editor.xlf" date="2026-01-30T13:37:37Z" product-name="form" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Form Editor</source>
+        <target state="final">Editor formulářů</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Build and customize forms using the visual form editor. Add fields, configure validations, and set up finishers.</source>
+        <target state="final">Vytvářejte a přizpůsobujte formuláře pomocí vizuálního editoru formulářů. Přidávejte pole, nastavujte ověření a konfigurujte akce po odeslání.</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Edit forms</source>
+        <target state="final">Upravit formuláře</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
