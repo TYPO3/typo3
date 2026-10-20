@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814785" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_layout.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="tr">
+    <header/>
+    <body>
+      <trans-unit id="nextThree" resname="nextThree" approved="yes">
+        <source>Edit next %s records</source>
+        <target state="final">Sonraki %s kaydı düzenleyin</target>
+      </trans-unit>
+      <trans-unit id="recursiveDeleteWarning" resname="recursiveDeleteWarning" approved="yes">
+        <source>You can recover pages with subpages only with the recycler. Are you sure you want to delete these pages?</source>
+        <target state="final">Alt sayfası bulunan sayfaları yalnızca geri dönüştürücüyle kurtarabilirsiniz. Bu sayfaları silmek istediğinizden emin misiniz?</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.pastecopy" resname="paste.modal.pastecopy" approved="yes">
+        <source>Do you want to copy the record to this position?</source>
+        <target state="final">Kaydı bu pozisyona kopyalamak istiyor musunuz?</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.paste" resname="paste.modal.paste" approved="yes">
+        <source>Do you want to move the record to this position?</source>
+        <target state="final">Kaydı bu pozisyona taşımak istiyor musunuz?</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.button.pastecopy" resname="paste.modal.button.pastecopy" approved="yes">
+        <source>Copy</source>
+        <target state="final">Kopyala</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.button.paste" resname="paste.modal.button.paste" approved="yes">
+        <source>Move</source>
+        <target state="final">Taşı</target>
+      </trans-unit>
+      <trans-unit id="new_language" resname="new_language" approved="yes">
+        <source>Make new translation of this page</source>
+        <target state="final">Bu sayfanın yeni çevirisini yap</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
