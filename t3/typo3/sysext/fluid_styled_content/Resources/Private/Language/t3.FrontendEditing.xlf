@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1428662501" source-language="en" datatype="plaintext" original="EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf" date="2014-02-07T20:22:32Z" product-name="fluid_styled_content" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="editIcon.bullets" resname="editIcon.bullets">
+        <source>Edit bullet list</source>
+        <target>crwdns73660:0crwdne73660:0</target>
+      </trans-unit>
+      <trans-unit id="editIcon.header" resname="editIcon.header">
+        <source>Edit header</source>
+        <target>crwdns73662:0crwdne73662:0</target>
+      </trans-unit>
+      <trans-unit id="editIcon.html" resname="editIcon.html">
+        <source>Edit pure HTML content</source>
+        <target>crwdns73664:0crwdne73664:0</target>
+      </trans-unit>
+      <trans-unit id="editIcon.list" resname="editIcon.list">
+        <source>Change/configure plugin</source>
+        <target>crwdns73666:0crwdne73666:0</target>
+      </trans-unit>
+      <trans-unit id="editIcon.menu" resname="editIcon.menu">
+        <source>Edit menu/sitemap</source>
+        <target>crwdns73668:0crwdne73668:0</target>
+      </trans-unit>
+      <trans-unit id="editIcon.shortcut" resname="editIcon.shortcut">
+        <source>Edit record list</source>
+        <target>crwdns73670:0crwdne73670:0</target>
+      </trans-unit>
+      <trans-unit id="editIcon.table" resname="editIcon.table">
+        <source>Edit table</source>
+        <target>crwdns73672:0crwdne73672:0</target>
+      </trans-unit>
+      <trans-unit id="editIcon.image" resname="editIcon.image">
+        <source>Edit image</source>
+        <target>crwdns73674:0crwdne73674:0</target>
+      </trans-unit>
+      <trans-unit id="editIcon.textmedia" resname="editIcon.textmedia">
+        <source>Edit text &amp; media</source>
+        <target>crwdns73676:0crwdne73676:0</target>
+      </trans-unit>
+      <trans-unit id="editIcon.textpic" resname="editIcon.textpic">
+        <source>Edit text &amp; images</source>
+        <target>crwdns73678:0crwdne73678:0</target>
+      </trans-unit>
+      <trans-unit id="editIcon.uploads" resname="editIcon.uploads">
+        <source>Edit file list</source>
+        <target>crwdns73680:0crwdne73680:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
