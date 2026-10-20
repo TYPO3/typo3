@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Modules/site.xlf" date="2025-11-10T13:37:37Z" product-name="site" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Sites</source>
+        <target state="final">Sites</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Configuration and management tools for sites</source>
+        <target state="final">Outils de configuration et de gestion des sites</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>This module provides access to all configured sites within the installation. It offers an overview of domains, routing behavior, language setups, and site-related settings. From here, you can quickly navigate to the configuration of individual sites and manage multi-site environments.</source>
+        <target state="final">Ce module fournit un accès à tous les sites configurés dans l'installation. Il offre une vue d'ensemble des domaines, des comportements de routage, des configurations de langue et des paramètres liés au site. À partir de là, vous pouvez rapidement accéder à la configuration de chaque site et gérer les environnements multi-sites.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
