@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="formManager.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Avbryt</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step2.title" approved="yes">
+        <source>Settings</source>
+        <target state="final">Innstillinger</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step4.errorTitle" approved="yes">
+        <source>Create</source>
+        <target state="final">Lag</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step3.errorTitle" approved="yes">
+        <source>Duplicate</source>
+        <target state="final">Duplisere</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
