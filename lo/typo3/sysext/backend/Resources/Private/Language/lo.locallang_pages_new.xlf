@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_new.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Create multiple pages</source>
+        <target state="final">ສ້າງຫຼາຍໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="canNotCreateNew.title" approved="yes">
+        <source>Insufficient permissions</source>
+        <target state="final">ສິດທິບໍ່ພຽງພໍ</target>
+      </trans-unit>
+      <trans-unit id="canNotCreateNew.message" approved="yes">
+        <source>Sorry, you are not allowed to create new subpages to this page due to access restrictions.</source>
+        <target state="final">ຂໍອະໄພ, ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ສ້າງໜ້າຍ່ອຍໃໝ່ໃນໜ້ານີ້ ເນື່ອງຈາກການຈຳກັດການເຂົ້າເຖິງ.</target>
+      </trans-unit>
+      <trans-unit id="newPage" approved="yes">
+        <source>Page</source>
+        <target state="final">ໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="addMoreLines" approved="yes">
+        <source>Add more lines</source>
+        <target state="final">ເພີ່ມແຖວຕື່ມ</target>
+      </trans-unit>
+      <trans-unit id="listEnd" approved="yes">
+        <source>Place new pages after the existing subpages</source>
+        <target state="final">ວາງໜ້າໃໝ່ໄວ້ຫຼັງໜ້າຍ່ອຍທີ່ມີຢູ່ແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="hidePages" approved="yes">
+        <source>Hide new pages</source>
+        <target state="final">ເຊື່ອງໜ້າໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="hidePagesInMenus" approved="yes">
+        <source>Hide new pages in menus</source>
+        <target state="final">ເຊື່ອງໜ້າໃໝ່ໃນເມນູ</target>
+      </trans-unit>
+      <trans-unit id="create" approved="yes">
+        <source>Create pages</source>
+        <target state="final">ສ້າງໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="reset" approved="yes">
+        <source>Clear fields</source>
+        <target state="final">ລ້າງຂໍ້ມູນໃນຫ້ອງປ້ອນ</target>
+      </trans-unit>
+      <trans-unit id="newSubPages" approved="yes">
+        <source>New page structure</source>
+        <target state="final">ໂຄງສ້າງໜ້າໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="newSubPages.pageTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">ຊື່ຫົວຂໍ້ໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="noPagesCreated.title" approved="yes">
+        <source>No pages added</source>
+        <target state="final">ບໍ່ມີການເພີ່ມໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="noPagesCreated.message" approved="yes">
+        <source>No pages were created.</source>
+        <target state="final">ບໍ່ມີໜ້າໃດຖືກສ້າງຂຶ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="pagesCreated.title" approved="yes">
+        <source>Pages added</source>
+        <target state="final">ເພີ່ມໜ້າແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="pagesCreated.message" approved="yes">
+        <source>The pages were created successfully.</source>
+        <target state="final">ສ້າງໜ້າສຳເລັດແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="multiplePagesCanNotBeCreated.title" approved="yes">
+        <source>Creation of multiple is disabled because of field requirements</source>
+        <target state="final">ປິດການໃຊ້ງານການສ້າງຫຼາຍໜ້າເນື່ອງຈາກຂໍ້ກຳນົດຂອງຟິວ (field)</target>
+      </trans-unit>
+      <trans-unit id="multiplePagesCanNotBeCreated.message" approved="yes">
+        <source>Please use the page creation wizard instead.</source>
+        <target state="final">ກະລຸນານຳໃຊ້ຕົວຊ່ວຍສ້າງໜ້າແທນ.</target>
+      </trans-unit>
+      <trans-unit id="multiplePagesCanNotBeCreated.buttonLabel" approved="yes">
+        <source>Create single page</source>
+        <target state="final">ສ້າງໜ້າດຽວ</target>
+      </trans-unit>
+      <trans-unit id="availablePageTypesHaveBeenFiltered.title" approved="yes">
+        <source>Some page types have been filtered because of field requirements</source>
+        <target state="final">ບາງປະເພດໜ້າຖືກກອງອອກເນື່ອງຈາກຂໍ້ກຳນົດຂອງຟິວ (field)</target>
+      </trans-unit>
+      <trans-unit id="availablePageTypesHaveBeenFiltered.message" approved="yes">
+        <source>The following page types need to be created using the page creation wizard:</source>
+        <target state="final">ປະເພດໜ້າຕໍ່ໄປນີ້ຕ້ອງໄດ້ສ້າງໂດຍການນຳໃຊ້ຕົວຊ່ວຍສ້າງໜ້າ:</target>
+      </trans-unit>
+      <trans-unit id="availablePageTypesHaveBeenFiltered.buttonLabel" approved="yes">
+        <source>Create single page</source>
+        <target state="final">ສ້າງໜ້າດຽວ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
