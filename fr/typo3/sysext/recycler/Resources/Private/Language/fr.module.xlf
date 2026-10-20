@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/module.xlf" date="2026-11-10T13:37:37Z" product-name="recycler" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Corbeille</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Restore or permanently remove deleted records</source>
+        <target state="final">Restaurer ou supprimer définitivement les enregistrements supprimés</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Allows you to restore deleted records or remove them permanently from the database. Supports single, multiple, and recursive actions, such as restoring a page with all its content elements. Filter by page or table to review deleted records before taking action.</source>
+        <target state="final">Vous permet de restaurer les enregistrements supprimés ou de les supprimer définitivement de la base de données. Supporte les actions simples, multiples, récursives, comme la restauration d'une page avec tous ses éléments de contenu. Filtrer par page ou par table pour examiner les enregistrements supprimés avant d'agir.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
