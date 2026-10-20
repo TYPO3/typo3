@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1471786343" source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/Database.xlf" date="2016-08-21T20:15:32Z" product-name="form" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.contentElementUid.label" resname="tt_content.finishersDefinition.Confirmation.contentElementUid.label" xml:space="preserve" approved="yes">
+                <source>Record</source>
+            <target state="final">レコード</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.label" resname="tt_content.finishersDefinition.EmailToSender.label" xml:space="preserve" approved="yes">
+                <source>Email to sender (form submitter)</source>
+            <target state="final">送信者へのメール(フォーム送信者)</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.label" resname="tt_content.finishersDefinition.EmailToReceiver.label" xml:space="preserve" approved="yes">
+                <source>Email to receiver (you)</source>
+            <target state="final">受信者へのメール(あなた)</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.pageUid.label" resname="tt_content.finishersDefinition.Redirect.pageUid.label" xml:space="preserve" approved="yes">
+                <source>Page</source>
+            <target state="final">ページ</target></trans-unit>
+      <trans-unit id="formManager.edit_existing_forms" resname="formManager.edit_existing_forms" xml:space="preserve" approved="yes">
+                <source>Edit existing forms</source>
+            <target state="final">既存のフォームを編集</target></trans-unit>
+      <trans-unit id="formManager.options" resname="formManager.options" xml:space="preserve" approved="yes">
+                <source>Options</source>
+            <target state="final">オプション</target></trans-unit>
+      <trans-unit id="formManager.forms_not_found.title" resname="formManager.forms_not_found.title" xml:space="preserve" approved="yes">
+                <source>No forms found!</source>
+            <target state="final">フォームが見つかりません</target></trans-unit>
+      <trans-unit id="formManager.forms_not_found.message" resname="formManager.forms_not_found.message" xml:space="preserve" approved="yes">
+                <source>There are currently no forms found in the system.</source>
+            <target state="final">現在、システムにフォームが見つかりません。</target></trans-unit>
+      <trans-unit id="formEditor.save_button" resname="formEditor.save_button" xml:space="preserve" approved="yes">
+                <source>Save</source>
+            <target state="final">保存</target></trans-unit>
+      <trans-unit id="formEditor.form_settings_button" resname="formEditor.form_settings_button" xml:space="preserve" approved="yes">
+                <source>Settings</source>
+            <target state="final">設定</target></trans-unit>
+      <trans-unit id="formEditor.formElementGroups.html5.label" resname="formEditor.formElementGroups.html5.label" xml:space="preserve" approved="yes">
+                <source>Special elements</source>
+            <target state="final">特別なエレメント</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveSuccessFlashMessageTitle" resname="formEditor.elements.Form.saveSuccessFlashMessageTitle" xml:space="preserve" approved="yes">
+                <source>Save</source>
+            <target state="final">保存</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveErrorFlashMessageTitle" resname="formEditor.elements.Form.saveErrorFlashMessageTitle" xml:space="preserve" approved="yes">
+                <source>Save</source>
+            <target state="final">保存:</target></trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.cancleButton" resname="formEditor.modals.removeElement.cancleButton" xml:space="preserve" approved="yes">
+                <source>Cancel</source>
+            <target state="final">キャンセル</target></trans-unit>
+      <trans-unit id="formEditor.modals.close.confirmButton" resname="formEditor.modals.close.confirmButton" xml:space="preserve" approved="yes">
+                <source>Yes, discard my changes</source>
+            <target state="final">はい、変更を破棄します</target></trans-unit>
+      <trans-unit id="formEditor.modals.close.cancleButton" resname="formEditor.modals.close.cancleButton" xml:space="preserve" approved="yes">
+                <source>No, I will continue editing</source>
+            <target state="final">いいえ、編集を続けます</target></trans-unit>
+      <trans-unit id="formEditor.pagination.title" resname="formEditor.pagination.title" xml:space="preserve" approved="yes">
+                <source>Step {0} of {1}</source>
+            <target state="final">ステップ {0}/{1}</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.EmailToSender.label" resname="formEditor.elements.Form.editor.finishers.EmailToSender.label" xml:space="preserve" approved="yes">
+                <source>Email to sender (form submitter)</source>
+            <target state="final">送信者へのメール(フォーム送信者)</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.EmailToReceiver.label" resname="formEditor.elements.Form.editor.finishers.EmailToReceiver.label" xml:space="preserve" approved="yes">
+                <source>Email to receiver (you)</source>
+            <target state="final">受信者へのメール(あなた)</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.header.label" resname="formEditor.elements.Form.finisher.EmailToSender.editor.header.label" xml:space="preserve" approved="yes">
+                <source>Email to sender (form submitter)</source>
+            <target state="final">送信者へのメール(フォーム送信者)</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label" resname="formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label" xml:space="preserve" approved="yes">
+                <source>Email to receiver (you)</source>
+            <target state="final">受信者へのメール(あなた)</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.pageUid.label" resname="formEditor.elements.Form.finisher.Redirect.editor.pageUid.label" xml:space="preserve" approved="yes">
+                <source>Page</source>
+            <target state="final">ページ</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.pageUid.buttonLabel" resname="formEditor.elements.Form.finisher.Redirect.editor.pageUid.buttonLabel" xml:space="preserve" approved="yes">
+                <source>Page</source>
+            <target state="final">ページ</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.buttonLabel" resname="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.buttonLabel" xml:space="preserve" approved="yes">
+                <source>Page Content</source>
+            <target state="final">ページコンテンツ</target></trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.step.label" resname="formEditor.elements.Date.editor.step.label" xml:space="preserve" approved="yes">
+                <source>Frequency</source>
+            <target state="final">頻度</target></trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.editor.label.label" resname="formEditor.elements.StaticText.editor.label.label" xml:space="preserve" approved="yes">
+                <source>Header</source>
+            <target state="final">ヘッダー</target></trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.label" resname="formEditor.elements.ContentElement.label" xml:space="preserve" approved="yes">
+                <source>Content element</source>
+            <target state="final">コンテンツエレメント</target></trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.editor.contentElement.buttonLabel" resname="formEditor.elements.ContentElement.editor.contentElement.buttonLabel" xml:space="preserve" approved="yes">
+                <source>Page Content</source>
+            <target state="final">ページコンテンツ</target></trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.label" resname="formEditor.elements.ImageUpload.label" xml:space="preserve" approved="yes">
+                <source>Image upload</source>
+            <target state="final">画像アップロード</target></trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.label" resname="formEditor.elements.ImageUpload.editor.allowedMimeTypes.label" xml:space="preserve" approved="yes">
+                <source>Allowed file mime types</source>
+            <target state="final">許可されているファイル種別</target></trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.jpg" resname="formEditor.elements.ImageUpload.editor.allowedMimeTypes.jpg" xml:space="preserve" approved="yes">
+                <source>Images (jpg)</source>
+            <target state="final">画像 (jpg)</target></trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.png" resname="formEditor.elements.ImageUpload.editor.allowedMimeTypes.png" xml:space="preserve" approved="yes">
+                <source>Images (png)</source>
+            <target state="final">画像 (png)</target></trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.bmp" resname="formEditor.elements.ImageUpload.editor.allowedMimeTypes.bmp" xml:space="preserve" approved="yes">
+                <source>Images (bmp)</source>
+            <target state="final">画像 (bmp)</target></trans-unit>
+    </body>
+  </file>
+</xliff>
