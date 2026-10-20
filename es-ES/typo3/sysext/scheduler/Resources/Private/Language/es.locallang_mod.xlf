@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814987" source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang_mod.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>Scheduler administration module. Check all registered tasks. Add, modify or delete tasks.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</source>
+        <target state="final">Módulo de administración de programadores. Compruebe todas las tareas registradas. Añadir, modificar o eliminar tareas.&lt;br /&gt;&lt;em&gt;¡Acceso solo para usuarios 'admin'!&lt;/em&gt;</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
