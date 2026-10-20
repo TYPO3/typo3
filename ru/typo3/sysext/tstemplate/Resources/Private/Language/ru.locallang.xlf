@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="noRecordFound.infobox.title" approved="yes">
+        <source>No TypoScript record on the current page</source>
+        <target state="final">На текущей странице нет записей TypoScript</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.infobox.message" approved="yes">
+        <source>You need to create a TypoScript record in order to edit your configuration.</source>
+        <target state="final">Для редактирования настроек необходимо создать запись TypoScript.</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.goToClosestRecord.description" approved="yes">
+        <source>The closest TypoScript record is located on page '%s' (uid %s).</source>
+        <target state="final">Ближайшая запись с TypoScript находится на странице '%s' (uid %s).</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.goToClosestRecord.link.title" approved="yes">
+        <source>Select this TypoScript record</source>
+        <target state="final">Выберите эту запись TypoScript</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createRootTypoScriptRecord.headline" approved="yes">
+        <source>Root TypoScript record</source>
+        <target state="final">Корневая запись TypoScript</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createRootTypoScriptRecord.description" approved="yes">
+        <source>Choose this option if you want this page to be the root of a new site.</source>
+        <target state="final">Включите этот параметр, если нужно сделать эту страницу корнем нового сайта.</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createRootTypoScriptRecord.link.title" approved="yes">
+        <source>Create a root TypoScript record</source>
+        <target state="final">Создать корневую запись TypoScript</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createRootTypoScriptRecord.title.placeholder" approved="yes">
+        <source>NEW SITE</source>
+        <target state="final">НОВЫЙ САЙТ</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createAdditionalTypoScriptRecord.headline" approved="yes">
+        <source>Additional TypoScript record</source>
+        <target state="final">Дополнительная запись TypoScript</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createAdditionalTypoScriptRecord.description" approved="yes">
+        <source>An additional TypoScript record allows you to enter TypoScript values that will affect only this page and subpages.</source>
+        <target state="final">Дополнительная запись TypoScript позволяет вводить значения TypoScript, влияющие только на эту страницу и подстраницы.</target>
+      </trans-unit>
+      <trans-unit id="noRecordFound.createAdditionalTypoScriptRecord.link.title" approved="yes">
+        <source>Create an additional TypoScript record</source>
+        <target state="final">Создать дополнительную запись TypoScript</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
