@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="submodule.title" approved="yes">
+        <source>Included TypoScript</source>
+        <target state="final">Включений TypoScript</target>
+      </trans-unit>
+      <trans-unit id="submodule.titleWithRecord" approved="yes">
+        <source>Included TypoScript for record "%s"</source>
+        <target state="final">Включено TypoScript для запису "%s"</target>
+      </trans-unit>
+      <trans-unit id="submodule.description" approved="yes">
+        <source>Overview of the included TypoScript and include order for the current page.</source>
+        <target state="final">Огляд включених TypoScript та включення порядку для поточної сторінки.</target>
+      </trans-unit>
+      <trans-unit id="infobox.message.noTypoScriptFound" approved="yes">
+        <source>No TypoScript found.</source>
+        <target state="final">TypoScript не знайдено.</target>
+      </trans-unit>
+      <trans-unit id="options.selectedRecord" approved="yes">
+        <source>Selected record</source>
+        <target state="final">Виберіть запис</target>
+      </trans-unit>
+      <trans-unit id="sectionHeadline.constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">Сталі</target>
+      </trans-unit>
+      <trans-unit id="sectionHeadline.setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">Установка</target>
+      </trans-unit>
+      <trans-unit id="panel.header.configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Налаштування</target>
+      </trans-unit>
+      <trans-unit id="tree.child.btn.sourceCode" approved="yes">
+        <source>Show code</source>
+        <target state="final">Показати код</target>
+      </trans-unit>
+      <trans-unit id="tree.child.btn.sourceCodeWithResolvedIncludes" approved="yes">
+        <source>Show code including possible includes/imports</source>
+        <target state="final">Показати код, включаючи можливі включення/імпорт</target>
+      </trans-unit>
+      <trans-unit id="tree.child.setting.clear" approved="yes">
+        <source>Clear</source>
+        <target state="final">Очистити</target>
+      </trans-unit>
+      <trans-unit id="tree.child.setting.root" approved="yes">
+        <source>Root</source>
+        <target state="final">Корінь</target>
+      </trans-unit>
+      <trans-unit id="tree.child.sysTemplateRecord" approved="yes">
+        <source>TypoScript record (page UID %s)</source>
+        <target state="final">Запис TypoScript (page UID %s)</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.AtImport" approved="yes">
+        <source>Included via "@import"</source>
+        <target state="final">Включено через "@import"</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.Condition" approved="yes">
+        <source>Condition (then)</source>
+        <target state="final">Умова (тоді)</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.ConditionElse" approved="yes">
+        <source>Condition (else)</source>
+        <target state="final">Умова (інакше)</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.DefaultTypoScript" approved="yes">
+        <source>Included via "$GLOBALS"</source>
+        <target state="final">Включено через "$GLOBALS"</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.DefaultTypoScriptMagicKey" approved="yes">
+        <source>Included via "$GLOBALS"</source>
+        <target state="final">Включено через "$GLOBALS"</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.DefaultTypoScriptMagicKey_formlabel" approved="yes">
+        <source>Default content rendering</source>
+        <target state="final">Відтворення вмісту за замовчуванням</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.ExtensionStatic" approved="yes">
+        <source>TypoScript set (loaded automatically)</source>
+        <target state="final">Набір TypoScript (завантажується автоматично)</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.File" approved="yes">
+        <source>Part of a TypoScript set</source>
+        <target state="final">Частина набору TypoScript</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.IncludeStaticFileDatabase" approved="yes">
+        <source>TypoScript set</source>
+        <target state="final">Набір TypoScript</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.IncludeStaticFileFile" approved="yes">
+        <source>TypoScript set (included via file)</source>
+        <target state="final">Набір TypoScript (включений через файл)</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.Root" approved="yes">
+        <source>Root</source>
+        <target state="final">Корінь</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.Segment" approved="yes">
+        <source>Code segment</source>
+        <target state="final">Сегмент коду</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.Site" approved="yes">
+        <source>Site</source>
+        <target state="final">Сайт</target>
+      </trans-unit>
+      <trans-unit id="tree.child.type.SysTemplate" approved="yes">
+        <source>TypoScript record</source>
+        <target state="final">Запис TypoScript</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
