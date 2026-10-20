@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/localization.xlf" date="2025-10-28T00:00:00Z" product-name="backend" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="wizard.error.message" approved="yes">
+        <source>Failed to load wizard configuration. Please try again.</source>
+        <target state="final">Impossible de charger la configuration de l'assistant. Veuillez réessayer.</target>
+      </trans-unit>
+      <trans-unit id="wizard.error.title" approved="yes">
+        <source>Configuration error</source>
+        <target state="final">Erreur de configuration</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.no_steps_available.title" approved="yes">
+        <source>Warning</source>
+        <target state="final">Avertissement</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.noop.success.title" approved="yes">
+        <source>No operation required</source>
+        <target state="final">Aucune opération requise</target>
+      </trans-unit>
+      <!-- Step: Content selection -->
+      <trans-unit id="step.content_selection.title" approved="yes">
+        <source>Content selection</source>
+        <target state="final">Sélection du contenu</target>
+      </trans-unit>
+      <trans-unit id="step.content_selection.summary.title" approved="yes">
+        <source>Content Element(s)</source>
+        <target state="final">Élément(s) de contenu</target>
+      </trans-unit>
+      <trans-unit id="step.content_selection.summary.amount" approved="yes">
+        <source>%s Element(s)</source>
+        <target state="final">%s élément(s) </target>
+      </trans-unit>
+      <trans-unit id="step.content_selection.error.message" approved="yes">
+        <source>Failed to load records for selection</source>
+        <target state="final">Impossible de charger les enregistrements pour la sélection</target>
+      </trans-unit>
+      <trans-unit id="step.content_selection.button.select_all" approved="yes">
+        <source>Select all</source>
+        <target state="final">Tout sélectionner</target>
+      </trans-unit>
+      <trans-unit id="step.content_selection.button.deselect_all" approved="yes">
+        <source>Deselect all</source>
+        <target state="final">Tout désélectionner</target>
+      </trans-unit>
+      <trans-unit id="step.content_selection.no_content.message" approved="yes">
+        <source>This page does not contain any content elements.</source>
+        <target state="final">Cette page ne contient aucun élément de contenu.</target>
+      </trans-unit>
+      <!-- Step: Handler selection -->
+      <!-- Step: Mode -->
+      <trans-unit id="step.modes.title" approved="yes">
+        <source>Mode</source>
+        <target state="final">Mode</target>
+      </trans-unit>
+      <trans-unit id="step.modes.summary.title" approved="yes">
+        <source>Mode</source>
+        <target state="final">Mode</target>
+      </trans-unit>
+      <!-- Step: Source language -->
+      <!-- Step: Target language -->
+      <!-- Handlers -->
+      <trans-unit id="handler.manual.label" approved="yes">
+        <source>Manual Translation</source>
+        <target state="final">Traduction manuelle</target>
+      </trans-unit>
+      <!-- Error Messages -->
+    </body>
+  </file>
+</xliff>
