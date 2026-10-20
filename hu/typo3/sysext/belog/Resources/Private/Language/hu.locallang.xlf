@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814781" source-language="en" datatype="plaintext" original="EXT:belog/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="belog" target-language="hu">
+    <header/>
+    <body>
+      <trans-unit id="adminLog" resname="adminLog" approved="yes">
+        <source>Administration log</source>
+        <target state="final">Adminisztrációs napló</target>
+      </trans-unit>
+      <trans-unit id="allUsers" resname="allUsers" approved="yes">
+        <source>[All users]</source>
+        <target state="final">[Minden felhasználó]</target>
+      </trans-unit>
+      <trans-unit id="any" resname="any" approved="yes">
+        <source>[Any]</source>
+        <target state="final">[Mind]</target>
+      </trans-unit>
+      <trans-unit id="live" resname="live" approved="yes">
+        <source>LIVE</source>
+        <target state="final">LIVE</target>
+      </trans-unit>
+      <trans-unit id="draft" resname="draft" approved="yes">
+        <source>Draft</source>
+        <target state="final">Vázlat</target>
+      </trans-unit>
+      <trans-unit id="self" resname="self" approved="yes">
+        <source>Self</source>
+        <target state="final">Saját</target>
+      </trans-unit>
+      <trans-unit id="thisWeek" resname="thisWeek" approved="yes">
+        <source>This week</source>
+        <target state="final">Ezen a héten</target>
+      </trans-unit>
+      <trans-unit id="lastWeek" resname="lastWeek" approved="yes">
+        <source>Last week</source>
+        <target state="final">Előző héten</target>
+      </trans-unit>
+      <trans-unit id="last7Days" resname="last7Days" approved="yes">
+        <source>Last 7 days</source>
+        <target state="final">utolsó 7 napon</target>
+      </trans-unit>
+      <trans-unit id="thisMonth" resname="thisMonth" approved="yes">
+        <source>This month</source>
+        <target state="final">Ebben a hónapban</target>
+      </trans-unit>
+      <trans-unit id="lastMonth" resname="lastMonth" approved="yes">
+        <source>Last month</source>
+        <target state="final">Előző hónapban</target>
+      </trans-unit>
+      <trans-unit id="last31Days" resname="last31Days" approved="yes">
+        <source>Last 31 days</source>
+        <target state="final">Utolsó 31 nap</target>
+      </trans-unit>
+      <trans-unit id="noLimit" resname="noLimit" approved="yes">
+        <source>No limit</source>
+        <target state="final">Nincs korlát</target>
+      </trans-unit>
+      <trans-unit id="userDefined" resname="userDefined" approved="yes">
+        <source>User defined</source>
+        <target state="final">Felhasználó által definiált</target>
+      </trans-unit>
+      <trans-unit id="set" resname="set" approved="yes">
+        <source>Set</source>
+        <target state="final">Beállít</target>
+      </trans-unit>
+      <trans-unit id="20" resname="20" translate="no" approved="yes">
+        <source>20</source>
+        <target state="final">20</target>
+      </trans-unit>
+      <trans-unit id="50" resname="50" translate="no" approved="yes">
+        <source>50</source>
+        <target state="final">50</target>
+      </trans-unit>
+      <trans-unit id="100" resname="100" translate="no" approved="yes">
+        <source>100</source>
+        <target state="final">100</target>
+      </trans-unit>
+      <trans-unit id="200" resname="200" translate="no" approved="yes">
+        <source>200</source>
+        <target state="final">200</target>
+      </trans-unit>
+      <trans-unit id="500" resname="500" translate="no" approved="yes">
+        <source>500</source>
+        <target state="final">500</target>
+      </trans-unit>
+      <trans-unit id="1000" resname="1000" translate="no" approved="yes">
+        <source>1000</source>
+        <target state="final">1000</target>
+      </trans-unit>
+      <trans-unit id="actionAll" resname="actionAll" approved="yes">
+        <source>All</source>
+        <target state="final">Mind</target>
+      </trans-unit>
+      <trans-unit id="actionDatabase" resname="actionDatabase" approved="yes">
+        <source>Database</source>
+        <target state="final">Adatbázis</target>
+      </trans-unit>
+      <trans-unit id="actionFile" resname="actionFile" approved="yes">
+        <source>File</source>
+        <target state="final">Fájl</target>
+      </trans-unit>
+      <trans-unit id="actionCache" resname="actionCache" approved="yes">
+        <source>Cache</source>
+        <target state="final">Gyorsítótár</target>
+      </trans-unit>
+      <trans-unit id="actionSettings" resname="actionSettings" approved="yes">
+        <source>Settings</source>
+        <target state="final">Beállítások</target>
+      </trans-unit>
+      <trans-unit id="actionLogin" resname="actionLogin" approved="yes">
+        <source>Login</source>
+        <target state="final">Bejelentkezés</target>
+      </trans-unit>
+      <trans-unit id="actionErrors" resname="actionErrors" approved="yes">
+        <source>Errors</source>
+        <target state="final">Hibák</target>
+      </trans-unit>
+      <trans-unit id="changesInFields" resname="changesInFields" approved="yes">
+        <source>Changes in fields: %s.</source>
+        <target state="final">Módosítások a következő mezőkben: $s.</target>
+      </trans-unit>
+      <trans-unit id="showHistory" resname="showHistory" approved="yes">
+        <source>Show History</source>
+        <target state="final">Előzmények megjelenítése</target>
+      </trans-unit>
+      <trans-unit id="pagenameWithUID" resname="pagenameWithUID" approved="yes">
+        <source>%s" [UID: %s]</source>
+        <target state="final">%s" [UID: %s]</target>
+      </trans-unit>
+      <trans-unit id="overview" resname="overview" approved="yes">
+        <source>Overview</source>
+        <target state="final">Áttekintés</target>
+      </trans-unit>
+      <trans-unit id="timeInfo" resname="timeInfo" approved="yes">
+        <source>These pages have log messages from %s to %s</source>
+        <target state="final">Ezeken az oldalakon vannak napló bejegyzések %s - %s között</target>
+      </trans-unit>
+      <trans-unit id="forNonPageRelatedActions" resname="forNonPageRelatedActions" approved="yes">
+        <source>for NON-PAGE related actions</source>
+        <target state="final">Nem oldalhoz kapcsolódó műveletek</target>
+      </trans-unit>
+      <trans-unit id="forRootLevel" resname="forRootLevel" approved="yes">
+        <source>for ROOT LEVEL</source>
+        <target state="final">Root szint részére</target>
+      </trans-unit>
+      <trans-unit id="forPage" resname="forPage" approved="yes">
+        <source>for PAGE "%s" (UID: %s)</source>
+        <target state="final">"%s" (UID: %s) oldalhoz</target>
+      </trans-unit>
+      <trans-unit id="logForNonPageRelatedActionsOrRootLevelOrPage" resname="logForNonPageRelatedActionsOrRootLevelOrPage" approved="yes">
+        <source>Log %s from %s to %s</source>
+        <target state="final">%s Napló %s - %s között</target>
+      </trans-unit>
+      <trans-unit id="type_1" resname="type_1" approved="yes">
+        <source>DB</source>
+        <target state="final">DB</target>
+      </trans-unit>
+      <trans-unit id="action_1_1" resname="action_1_1" approved="yes">
+        <source>Insert</source>
+        <target state="final">Hozzáadás</target>
+      </trans-unit>
+      <trans-unit id="action_1_2" resname="action_1_2" approved="yes">
+        <source>Update</source>
+        <target state="final">Frissítés</target>
+      </trans-unit>
+      <trans-unit id="action_1_3" resname="action_1_3" approved="yes">
+        <source>Delete</source>
+        <target state="final">Törlés</target>
+      </trans-unit>
+      <trans-unit id="action_1_4" resname="action_1_4" approved="yes">
+        <source>Move</source>
+        <target state="final">Ellenőrzés</target>
+      </trans-unit>
+      <trans-unit id="action_1_5" resname="action_1_5" approved="yes">
+        <source>Check</source>
+        <target state="final">Ellenőrzés</target>
+      </trans-unit>
+      <trans-unit id="msg_1_0_1" resname="msg_1_0_1" approved="yes">
+        <source>Referer host '%s' and server host '%s' did not match!</source>
+        <target state="final">Kérelmező host '%s' és a szerver host '%s' nem egyezik.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_1_11" resname="msg_1_1_11" approved="yes">
+        <source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
+        <target state="final">Rekord elhelyezésének kísérlete a '%s' oldalon, ahol '%s' tábla nem engedélyezett</target>
+      </trans-unit>
+      <trans-unit id="msg_1_1_12" resname="msg_1_1_12" approved="yes">
+        <source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
+        <target state="final">Rekord elhelyezésének kísérlete a '%s' oldalon, a '%s' táblából a szükséges jogosultságok nélkül. (Vagy nem létezik az oldal!)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_1" resname="msg_1_2_1" approved="yes">
+        <source>Attempt to modify table '%s' without permission</source>
+        <target state="final">Tábla '%s' módosítási kísérlet szükséges jogosultságok nélkül.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_2" resname="msg_1_2_2" approved="yes">
+        <source>Attempt to modify record '%s' (%s) without permission. Or non-existing page.</source>
+        <target state="final">Rekord módosítási kísérlet '%s' (%s) a szükséges jogosultságok nélkül. (Vagy nem létezik az oldal!)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_10" resname="msg_1_2_10" approved="yes">
+        <source>Record '%s' (%s) was updated.</source>
+        <target state="final">Rekord '%s' (%s) frissítve.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_12" resname="msg_1_2_12" approved="yes">
+        <source>MySQL error: '%s' (%s)</source>
+        <target state="final">MySQL hiba: '%s' (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_1" resname="msg_1_4_1" approved="yes">
+        <source>Attempt to move record '%s' (%s) to after a non-existing record (uid=%s)</source>
+        <target state="final">Rekord áthelyezési kísérlet '%s' (%s) egy nem létező rekord mögé (uid=%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_2" resname="msg_1_4_2" approved="yes">
+        <source>Moved record '%s' (%s) to page '%s' (%s)</source>
+        <target state="final">Áthelyezett rekord '%s' (%s) az '%s' (%s) oldalra</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_3" resname="msg_1_4_3" approved="yes">
+        <source>Moved record '%s' (%s) from page '%s' (%s)</source>
+        <target state="final">Áthelyezett rekord '%s' (%s) az '%s' (%s) oldalról</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_4" resname="msg_1_4_4" approved="yes">
+        <source>Moved record '%s' (%s) on page '%s' (%s)</source>
+        <target state="final">Áthelyezett rekord '%s' (%s) az '%s' (%s) oldalon belül</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_10" resname="msg_1_4_10" approved="yes">
+        <source>Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))</source>
+        <target state="final">Próbálkozás a '%s' (%s) oldal áthelyezésére a kezdőlap szintjére ('%s' oldalnál (%s))</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_11" resname="msg_1_4_11" approved="yes">
+        <source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
+        <target state="final">Rekord elhelyezésének kísérlete a '%s' oldalon, ahol '%s' tábla nem engedélyezett</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_12" resname="msg_1_4_12" approved="yes">
+        <source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
+        <target state="final">Rekord elhelyezésének kísérlete a '%s' oldalon, a '%s' táblából a szükséges jogosultságok nélkül. (Vagy nem létezik az oldal!)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_13" resname="msg_1_4_13" approved="yes">
+        <source>Attempt to move record '%s' (%s) to after another record, although the table has no sorting row.</source>
+        <target state="final">Próbálkozás '%s' (%s) rekord másik rekord utáni áthelyezésére, ám a tábla nem tartalmaz sorba rendezési oszlopot.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_14" resname="msg_1_4_14" approved="yes">
+        <source>Attempt to move record '%s' (%s) without having permissions to do so</source>
+        <target state="final">Próbálkozás '%s' (%s) rekord áthelyezésére jogosultságok nélkül.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_1" resname="msg_1_5_1" approved="yes">
+        <source>You cannot change the 'doktype' of page '%s' to the desired value.</source>
+        <target state="final">Az oldal '%s' típusát 'doktype' nem tudja megváltoztatni a kívánt értékre.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_2" resname="msg_1_5_2" approved="yes">
+        <source>'doktype' of page '%s' could not be changed because the page contains records from disallowed tables; %s</source>
+        <target state="final">Az oldal '%s' típusa 'doktype' nem változtatható meg, mert a rekordok nem engedélyezett táblákat tartalmaznak. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_3" resname="msg_1_5_3" approved="yes">
+        <source>Too few items in the list of values. (%s)</source>
+        <target state="final">Túl sok elem található az elemek listáján. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_10" resname="msg_1_5_10" approved="yes">
+        <source>Could not delete file '%s' (does not exist). (%s)</source>
+        <target state="final">Fájl törlés sikertelen '%s' (nem létezik). (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_11" resname="msg_1_5_11" approved="yes">
+        <source>Copying file '%s' failed!: No destination file (%s) possible!. (%s)</source>
+        <target state="final">Fájl másolás '%s' sikertelen!: Nem lehetséges cél fájl (%s)! (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_12" resname="msg_1_5_12" approved="yes">
+        <source>File extension '%s' is not allowed. (%s)</source>
+        <target state="final">Fájl kiterjesztés '%s' nem engedélyezett. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_13" resname="msg_1_5_13" approved="yes">
+        <source>File size (%s) of file '%s' exceeds limit (%s). (%s)</source>
+        <target state="final">Fájl méret (%s) '%s' átlépi a beállított limitet (%s). (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_14" resname="msg_1_5_14" approved="yes">
+        <source>The destination (%s) or the source file (%s) does not exist. (%s)</source>
+        <target state="final">A célfájl (%s), vagy a forrás fájl (%s) nem létezik. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_15" resname="msg_1_5_15" approved="yes">
+        <source>Copying to file '%s' failed! (%s)</source>
+        <target state="final">Másolás a '%s' fájlba sikertelen! (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_16" resname="msg_1_5_16" approved="yes">
+        <source>Copying file '%s' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)</source>
+        <target state="final">Fájl másolás '%s' sikertelen!: A cél útvonal (%s) feltehetőleg írásvédett. Tegye írhatóvá! (%s)</target>
+      </trans-unit>
+      <trans-unit id="type_2" resname="type_2" approved="yes">
+        <source>FILE</source>
+        <target state="final">FÁJL</target>
+      </trans-unit>
+      <trans-unit id="action_2_1" resname="action_2_1" approved="yes">
+        <source>Upload</source>
+        <target state="final">Feltöltés</target>
+      </trans-unit>
+      <trans-unit id="action_2_2" resname="action_2_2" approved="yes">
+        <source>Copy</source>
+        <target state="final">Másolás</target>
+      </trans-unit>
+      <trans-unit id="action_2_3" resname="action_2_3" approved="yes">
+        <source>Move</source>
+        <target state="final">Ellenőrzés</target>
+      </trans-unit>
+      <trans-unit id="action_2_4" resname="action_2_4" approved="yes">
+        <source>Delete</source>
+        <target state="final">Törlés</target>
+      </trans-unit>
+      <trans-unit id="action_2_5" resname="action_2_5" approved="yes">
+        <source>Rename</source>
+        <target state="final">Átnevezés</target>
+      </trans-unit>
+      <trans-unit id="action_2_6" resname="action_2_6" approved="yes">
+        <source>New</source>
+        <target state="final">Új</target>
+      </trans-unit>
+      <trans-unit id="action_2_7" resname="action_2_7" approved="yes">
+        <source>Unzip</source>
+        <target state="final">Kicsomagolás</target>
+      </trans-unit>
+      <trans-unit id="action_2_8" resname="action_2_8" approved="yes">
+        <source>New file</source>
+        <target state="final">Új fájl</target>
+      </trans-unit>
+      <trans-unit id="action_2_9" resname="action_2_9" approved="yes">
+        <source>Edit</source>
+        <target state="final">Szerkesztés</target>
+      </trans-unit>
+      <trans-unit id="msg_2_9_1" resname="msg_2_9_1" approved="yes">
+        <source>File saved to '%s', bytes: %s, MD5: %s </source>
+        <target state="final">Fájl mentve '%s', %s bájt, MD5: %s </target>
+      </trans-unit>
+      <trans-unit id="type_3" resname="type_3" approved="yes">
+        <source>CACHE</source>
+        <target state="final">Gyorsítótár</target>
+      </trans-unit>
+      <trans-unit id="type_254" resname="type_254" approved="yes">
+        <source>SETTING</source>
+        <target state="final">BEÁLLÍTÁSOK</target>
+      </trans-unit>
+      <trans-unit id="action_254_1" resname="action_254_1" approved="yes">
+        <source>Change</source>
+        <target state="final">Változtatás</target>
+      </trans-unit>
+      <trans-unit id="type_255" resname="type_255" approved="yes">
+        <source>LOGIN</source>
+        <target state="final">BEJELENTKEZÉS</target>
+      </trans-unit>
+      <trans-unit id="action_255_1" resname="action_255_1" approved="yes">
+        <source>LOGIN</source>
+        <target state="final">BEJELENTKEZÉS</target>
+      </trans-unit>
+      <trans-unit id="action_255_2" resname="action_255_2" approved="yes">
+        <source>LOGOUT</source>
+        <target state="final">KIJELENTKEZÉS</target>
+      </trans-unit>
+      <trans-unit id="action_255_3" resname="action_255_3" approved="yes">
+        <source>ATTEMPT</source>
+        <target state="final">KÍSÉRLET</target>
+      </trans-unit>
+      <trans-unit id="chLog_title" resname="chLog_title" approved="yes">
+        <source>Admin Changelog</source>
+        <target state="final">Adminisztrátor - Változások naplója</target>
+      </trans-unit>
+      <trans-unit id="chLog_users_0" resname="chLog_users_0" approved="yes">
+        <source>All users</source>
+        <target state="final">Minden felhasználó</target>
+      </trans-unit>
+      <trans-unit id="chLog_users_-1" resname="chLog_users_-1" approved="yes">
+        <source>Self</source>
+        <target state="final">Saját</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_0" resname="chLog_time_0" approved="yes">
+        <source>This week</source>
+        <target state="final">Ezen a héten</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_1" resname="chLog_time_1" approved="yes">
+        <source>Last week</source>
+        <target state="final">Előző héten</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_2" resname="chLog_time_2" approved="yes">
+        <source>Last 7 days</source>
+        <target state="final">utolsó 7 napon</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_10" resname="chLog_time_10" approved="yes">
+        <source>This month</source>
+        <target state="final">Ebben a hónapban</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_11" resname="chLog_time_11" approved="yes">
+        <source>Last month</source>
+        <target state="final">Előző hónapban</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_12" resname="chLog_time_12" approved="yes">
+        <source>Last 31 days</source>
+        <target state="final">Utolsó 31 nap</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_20" resname="chLog_time_20" approved="yes">
+        <source>No limit</source>
+        <target state="final">Nincs korlát</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_error" resname="chLog_l_error" approved="yes">
+        <source>E</source>
+        <target state="final">H</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_types" resname="chLog_l_types" approved="yes">
+        <source>Type</source>
+        <target state="final">Típus</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_table" resname="chLog_l_table" approved="yes">
+        <source>Table</source>
+        <target state="final">Tábla</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_details" resname="chLog_l_details" approved="yes">
+        <source>Details</source>
+        <target state="final">Részletek</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.errorsInPeriod" resname="systemmessage.errorsInPeriod" approved="yes">
+        <source><![CDATA[We have found %1$d errors. Please check your <a href="%2$s">system log</a>.]]></source>
+        <target state="final"><![CDATA[%1$d hibát találtunk. Kérjük ellenőrizze a &lt;a href="%2$s"&gt;rendszer naplóban&lt;/a&gt;.]]></target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
