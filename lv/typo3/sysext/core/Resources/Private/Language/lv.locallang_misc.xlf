@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814865" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="lv">
+    <header/>
+    <body>
+      <trans-unit id="shortcutDescription" resname="shortcutDescription" approved="yes">
+        <source>This is the shortcuts menu. You do not have any shortcuts added yet, you can do so by clicking the shortcut icon %icon%, which you can find on each page in the backend.</source>
+        <target state="final">Šī ir saīsinājumu izvēlne. Jūs vēl neesat pievienojis nevienu saīsinājumu. Lai to izdarītu - klikšķiniet uz saīsinājumu ikonu %icon%, kuru Jūs varat atrast ikvienā administrācijas lapā.</target>
+      </trans-unit>
+      <trans-unit id="shortcut_edit" resname="shortcut_edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Labot</target>
+      </trans-unit>
+      <trans-unit id="shortcut_create" resname="shortcut_create" approved="yes">
+        <source>Create</source>
+        <target state="final">Izveidot</target>
+      </trans-unit>
+      <trans-unit id="shortcut_editID" resname="shortcut_editID" approved="yes">
+        <source>Edit/Search</source>
+        <target state="final">Labot/Meklēt</target>
+      </trans-unit>
+      <trans-unit id="shortcut_save" resname="shortcut_save" approved="yes">
+        <source>Update shortcut title</source>
+        <target state="final">Atjaunot norādes virsrakstu</target>
+      </trans-unit>
+      <trans-unit id="shortcut_saveClose" resname="shortcut_saveClose" approved="yes">
+        <source>Update and close editor</source>
+        <target state="final">Atjaunot un aizvērt redaktoru</target>
+      </trans-unit>
+      <trans-unit id="shortcut_close" resname="shortcut_close" approved="yes">
+        <source>Close shortcut editor</source>
+        <target state="final">Aizvērt norāžu redaktoru</target>
+      </trans-unit>
+      <trans-unit id="shortcut_delete" resname="shortcut_delete" approved="yes">
+        <source>Remove shortcut</source>
+        <target state="final">Dzēst norādi</target>
+      </trans-unit>
+      <trans-unit id="shortcut_loadEdit" resname="shortcut_loadEdit" approved="yes">
+        <source>Loading page</source>
+        <target state="final">Ielādēju lapu</target>
+      </trans-unit>
+      <trans-unit id="shortcut_notEditable" resname="shortcut_notEditable" approved="yes">
+        <source>No editable page found!</source>
+        <target state="final">Nav atrastas lapas, kuras var labot!</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group" resname="shortcut_group" approved="yes">
+        <source>Group</source>
+        <target state="final">Grupa</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_1" resname="shortcut_group_1" approved="yes">
+        <source>Pages</source>
+        <target state="final">Lapas</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_2" resname="shortcut_group_2" approved="yes">
+        <source>Records</source>
+        <target state="final">Ieraksti</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_3" resname="shortcut_group_3" approved="yes">
+        <source>Files</source>
+        <target state="final">Faili</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_4" resname="shortcut_group_4" approved="yes">
+        <source>Tools</source>
+        <target state="final">Rīki</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_5" resname="shortcut_group_5" approved="yes">
+        <source>Miscellaneous</source>
+        <target state="final">Dažādi</target>
+      </trans-unit>
+      <trans-unit id="shortcut_global" resname="shortcut_global" approved="yes">
+        <source>Global</source>
+        <target state="final">Globāls</target>
+      </trans-unit>
+      <trans-unit id="shortcut_all" resname="shortcut_all" approved="yes">
+        <source>All</source>
+        <target state="final">Visas</target>
+      </trans-unit>
+      <trans-unit id="shortcut_onlyAdmin" resname="shortcut_onlyAdmin" approved="yes">
+        <source>You cannot edit a shared shortcut!</source>
+        <target state="final">Jus nevarat labot koplietošanas norādi!</target>
+      </trans-unit>
+      <trans-unit id="shortcut_selSC" resname="shortcut_selSC" approved="yes">
+        <source>Select shortcut</source>
+        <target state="final">Izvēlieties norādi</target>
+      </trans-unit>
+      <trans-unit id="shortcut_delAllInCat" resname="shortcut_delAllInCat" approved="yes">
+        <source>Delete all shortcuts in this group?</source>
+        <target state="final">Dzēst visas norādes šajā grupā?</target>
+      </trans-unit>
+      <trans-unit id="shortcut_onlineWS" resname="shortcut_onlineWS" approved="yes">
+        <source>LIVE workspace</source>
+        <target state="final">Tiešā darba vieta</target>
+      </trans-unit>
+      <trans-unit id="shortcut_active" resname="shortcut_active" approved="yes">
+        <source>active</source>
+        <target state="final">aktīvs</target>
+      </trans-unit>
+      <trans-unit id="shortcut_inactive" resname="shortcut_inactive" approved="yes">
+        <source>inactive</source>
+        <target state="final">neaktīvs</target>
+      </trans-unit>
+      <trans-unit id="shortcut_noWSfound" resname="shortcut_noWSfound" approved="yes">
+        <source>ERROR: No workspaces found!</source>
+        <target state="final">KĻŪDA: Darba vieta nav atrodama</target>
+      </trans-unit>
+      <trans-unit id="shortcut_workspace" resname="shortcut_workspace" approved="yes">
+        <source>Go to Workspace Module</source>
+        <target state="final">Doties uz Darba vides moduli</target>
+      </trans-unit>
+      <trans-unit id="bookmark_edit" resname="bookmark_edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Labot</target>
+      </trans-unit>
+      <trans-unit id="bookmark_create" resname="bookmark_create" approved="yes">
+        <source>Create</source>
+        <target state="final">Izveidot</target>
+      </trans-unit>
+      <trans-unit id="bookmark_editID" resname="bookmark_editID" approved="yes">
+        <source>Edit/Search</source>
+        <target state="final">Labot/Meklēt</target>
+      </trans-unit>
+      <trans-unit id="bookmark_saveClose" resname="bookmark_saveClose" approved="yes">
+        <source>Update and close editor</source>
+        <target state="final">Atjaunot un aizvērt redaktoru</target>
+      </trans-unit>
+      <trans-unit id="bookmark_loadEdit" resname="bookmark_loadEdit" approved="yes">
+        <source>Loading page</source>
+        <target state="final">Ielādēju lapu</target>
+      </trans-unit>
+      <trans-unit id="bookmark_notEditable" resname="bookmark_notEditable" approved="yes">
+        <source>No editable page found!</source>
+        <target state="final">Nav atrastas lapas, kuras var labot!</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group" resname="bookmark_group" approved="yes">
+        <source>Group</source>
+        <target state="final">Grupa</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_1" resname="bookmark_group_1" approved="yes">
+        <source>Pages</source>
+        <target state="final">Lapas</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_2" resname="bookmark_group_2" approved="yes">
+        <source>Records</source>
+        <target state="final">Ieraksti</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_3" resname="bookmark_group_3" approved="yes">
+        <source>Files</source>
+        <target state="final">Faili</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_4" resname="bookmark_group_4" approved="yes">
+        <source>Tools</source>
+        <target state="final">Rīki</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_5" resname="bookmark_group_5" approved="yes">
+        <source>Miscellaneous</source>
+        <target state="final">Dažādi</target>
+      </trans-unit>
+      <trans-unit id="bookmark_global" resname="bookmark_global" approved="yes">
+        <source>Global</source>
+        <target state="final">Globāls</target>
+      </trans-unit>
+      <trans-unit id="bookmark_all" resname="bookmark_all" approved="yes">
+        <source>All</source>
+        <target state="final">Visas</target>
+      </trans-unit>
+      <trans-unit id="bookmark_onlyAdmin" resname="bookmark_onlyAdmin" approved="yes">
+        <source>You cannot edit a shared bookmark!</source>
+        <target state="final">Jus nevarat labot koplietošanas norādi!</target>
+      </trans-unit>
+      <trans-unit id="bookmark_delAllInCat" resname="bookmark_delAllInCat" approved="yes">
+        <source>Delete all bookmarks in this group</source>
+        <target state="final">Dzēst visas norādes šajā grupā?</target>
+      </trans-unit>
+      <trans-unit id="bookmark_onlineWS" resname="bookmark_onlineWS" approved="yes">
+        <source>LIVE workspace</source>
+        <target state="final">Tiešā darba vieta</target>
+      </trans-unit>
+      <trans-unit id="bookmark_active" resname="bookmark_active" approved="yes">
+        <source>active</source>
+        <target state="final">aktīvs</target>
+      </trans-unit>
+      <trans-unit id="bookmark_inactive" resname="bookmark_inactive" approved="yes">
+        <source>inactive</source>
+        <target state="final">neaktīvs</target>
+      </trans-unit>
+      <trans-unit id="bookmark_noWSfound" resname="bookmark_noWSfound" approved="yes">
+        <source>ERROR: No workspaces found!</source>
+        <target state="final">KĻŪDA: Darba vieta nav atrodama</target>
+      </trans-unit>
+      <trans-unit id="bookmark_workspace" resname="bookmark_workspace" approved="yes">
+        <source>Go to Workspace Module</source>
+        <target state="final">Doties uz Darba vides moduli</target>
+      </trans-unit>
+      <trans-unit id="overwriteExistingFiles" resname="overwriteExistingFiles" approved="yes">
+        <source>Overwrite existing files</source>
+        <target state="final">Pārrakstīt esošos failus</target>
+      </trans-unit>
+      <trans-unit id="selectPosition" resname="selectPosition" approved="yes">
+        <source>Select a position for the new page</source>
+        <target state="final">Izvēlies jaunās lapas pozīciju</target>
+      </trans-unit>
+      <trans-unit id="pageSelectPosition" resname="pageSelectPosition" approved="yes">
+        <source>Page (select position)</source>
+        <target state="final">Lapa (izvēlieties pozīciju)</target>
+      </trans-unit>
+      <trans-unit id="goBack" resname="goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Atpakaļ</target>
+      </trans-unit>
+      <trans-unit id="createNewPage" resname="createNewPage" approved="yes">
+        <source>Create a new page</source>
+        <target state="final">Izveidot jaunu lapu</target>
+      </trans-unit>
+      <trans-unit id="createNewContent" resname="createNewContent" approved="yes">
+        <source>Create a new content element</source>
+        <target state="final">Izveidot jaunu satura elementu</target>
+      </trans-unit>
+      <trans-unit id="clickForWizard" resname="clickForWizard" approved="yes">
+        <source>Click here for wizard!</source>
+        <target state="final">Šeit ir meistars!</target>
+      </trans-unit>
+      <trans-unit id="insertNewPageHere" resname="insertNewPageHere" approved="yes">
+        <source>Insert the new page here</source>
+        <target state="final">Ievietot jaunu lapu šeit</target>
+      </trans-unit>
+      <trans-unit id="insertNewRecordHere" resname="insertNewRecordHere" approved="yes">
+        <source>Insert new record here</source>
+        <target state="final">Ievietot jaunu ierakstu šeit</target>
+      </trans-unit>
+      <trans-unit id="movePageToHere" resname="movePageToHere" approved="yes">
+        <source>Move page to this position</source>
+        <target state="final">Pārvietot lapu uz šo pozīciju</target>
+      </trans-unit>
+      <trans-unit id="moveElement" resname="moveElement" approved="yes">
+        <source>Move element</source>
+        <target state="final">Pārvietot elementu</target>
+      </trans-unit>
+      <trans-unit id="moveElements" resname="moveElements" approved="yes">
+        <source>Move elements</source>
+        <target state="final">Pārvietot elementus</target>
+      </trans-unit>
+      <trans-unit id="copyElements" resname="copyElements" approved="yes">
+        <source>Copy elements</source>
+        <target state="final">Kopēt elementus</target>
+      </trans-unit>
+      <trans-unit id="selectPositionOfElement" resname="selectPositionOfElement" approved="yes">
+        <source>Select position of the element</source>
+        <target state="final">Izvēlieties elementa pozīciju</target>
+      </trans-unit>
+      <trans-unit id="movingElement" resname="movingElement" approved="yes">
+        <source>Move element</source>
+        <target state="final">Pārvietot elementu</target>
+      </trans-unit>
+      <trans-unit id="makeCopy" resname="makeCopy" approved="yes">
+        <source>Make copy instead of moving element</source>
+        <target state="final">Kopēt elementu, nevis pārvietot</target>
+      </trans-unit>
+      <trans-unit id="newContentElement" resname="newContentElement" approved="yes">
+        <source>New content element</source>
+        <target state="final">Jauns satura elements</target>
+      </trans-unit>
+      <trans-unit id="system_records" resname="system_records" approved="yes">
+        <source>System Records</source>
+        <target state="final">Sistēmas ieraksti</target>
+      </trans-unit>
+      <trans-unit id="CM_history" resname="CM_history" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">Vēsture/Atcelšana</target>
+      </trans-unit>
+      <trans-unit id="CM_perms" resname="CM_perms" approved="yes">
+        <source>Access</source>
+        <target state="final">Pieeja</target>
+      </trans-unit>
+      <trans-unit id="CM_moveWizard" resname="CM_moveWizard" approved="yes">
+        <source>Move element</source>
+        <target state="final">Pārvietot elementu</target>
+      </trans-unit>
+      <trans-unit id="CM_moveWizard_page" resname="CM_moveWizard_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">Pārvietot lapu</target>
+      </trans-unit>
+      <trans-unit id="CM_newWizard" resname="CM_newWizard" approved="yes">
+        <source>'Create New' wizard</source>
+        <target state="final">'Izveidot Jaunu' meistars</target>
+      </trans-unit>
+      <trans-unit id="CM_editPageProperties" resname="CM_editPageProperties" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">Labot lapas īpašības</target>
+      </trans-unit>
+      <trans-unit id="CM_db_list" resname="CM_db_list" approved="yes">
+        <source>Web&gt;List module</source>
+        <target state="final">Web&gt;Saraksta modulis</target>
+      </trans-unit>
+      <trans-unit id="noEditPage" resname="noEditPage" approved="yes">
+        <source>You asked to edit page "%s" but you cannot edit this page. Now loading backend as usual.</source>
+        <target state="final">Jūs gribējāt labot lapu "%s", bet jūs to nevarat. Tagad sistēma tiks ielādēta kā parasti.</target>
+      </trans-unit>
+      <trans-unit id="localize" resname="localize" approved="yes">
+        <source>Localize</source>
+        <target state="final">Tulkot</target>
+      </trans-unit>
+      <trans-unit id="localize.isLocalizable" resname="localize.isLocalizable" approved="yes">
+        <source>Record can be localized</source>
+        <target state="final">Ierakstu var tulkot</target>
+      </trans-unit>
+      <trans-unit id="localize.wasRemovedInOriginal" resname="localize.wasRemovedInOriginal" approved="yes">
+        <source>Record was removed in original language</source>
+        <target state="final">Ieraksts tika pārnests uz oriģinālo valodu</target>
+      </trans-unit>
+      <trans-unit id="localizeAllRecords" resname="localizeAllRecords" approved="yes">
+        <source>Localize all records</source>
+        <target state="final">Tulkot visus ierakstus</target>
+      </trans-unit>
+      <trans-unit id="synchronizeWithOriginalLanguage" resname="synchronizeWithOriginalLanguage" approved="yes">
+        <source>Synchronize with original language</source>
+        <target state="final">Sinhronizet ar oriģinālo valodu</target>
+      </trans-unit>
+      <trans-unit id="pageTree_filter" resname="pageTree_filter" approved="yes">
+        <source>Filter</source>
+        <target state="final">Filtrs</target>
+      </trans-unit>
+      <trans-unit id="switchtouser" resname="switchtouser" approved="yes">
+        <source>Switch to User</source>
+        <target state="final">Pārslēgties uz lietotāju</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_windowTitle" resname="fileUpload_windowTitle" approved="yes">
+        <source>File Upload Progress</source>
+        <target state="final">Faila augšupielādes progress</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_buttonSelectFiles" resname="fileUpload_buttonSelectFiles" approved="yes">
+        <source>Select Files</source>
+        <target state="final">Izvēlieties failus</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_buttonCancelAll" resname="fileUpload_buttonCancelAll" approved="yes">
+        <source>Cancel All Uploads</source>
+        <target state="final">Atcelt visas augšupielādes</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentMaxFileSize" resname="fileUpload_infoComponentMaxFileSize" approved="yes">
+        <source>You can upload files with a maximum size of {0}.</source>
+        <target state="final">Jūs varat augšupielādēt failus līdz maksimālajam izmēram {0}</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentFileTypeLimit" resname="fileUpload_infoComponentFileTypeLimit" approved="yes">
+        <source>You can upload the following file types {0}.</source>
+        <target state="final">Jūs varat augšupielādēt failus ar sekojošiem paplašinājumiem {0}</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentOverrideFiles" resname="fileUpload_infoComponentOverrideFiles" approved="yes">
+        <source>Overwrite existing files</source>
+        <target state="final">Pārrakstīt esošos failus</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadStarting" resname="fileUpload_uploadStarting" approved="yes">
+        <source>Starting upload of {0}</source>
+        <target state="final">Sāk {0} augšupielādi</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadProgress" resname="fileUpload_uploadProgress" approved="yes">
+        <source>{0}% of {1} uploaded</source>
+        <target state="final">Augšupielādēti {0}% no {1}</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadSuccess" resname="fileUpload_uploadSuccess" approved="yes">
+        <source>{0} was successfully uploaded!</source>
+        <target state="final">{0} tika veiksmīgi augšupielādēts!</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueFileSizeLimit" resname="fileUpload_errorQueueFileSizeLimit" approved="yes">
+        <source>{0} is too big</source>
+        <target state="final">{0} ir pārāk liels</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueZeroByteFile" resname="fileUpload_errorQueueZeroByteFile" approved="yes">
+        <source>{0} is empty</source>
+        <target state="final">{0} ir tukšs</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueInvalidFiletype" resname="fileUpload_errorQueueInvalidFiletype" approved="yes">
+        <source>Filetype not allowed for {0}</source>
+        <target state="final">Faila paplašinājums nav atļauts priekš {0}</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
