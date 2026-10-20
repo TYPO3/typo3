@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/move_content_elements.xlf" date="2024-03-08T20:22:34Z" product-name="backend" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="headline.move" approved="yes">
+        <source>Move element "%s" [%d]</source>
+        <target state="final">Element „%s“ verschieben [%d]</target>
+      </trans-unit>
+      <trans-unit id="headline.copy" approved="yes">
+        <source>Copy element "%s" [%d]</source>
+        <target state="final">Element „%s“ kopieren [%d]</target>
+      </trans-unit>
+      <trans-unit id="currentPath" approved="yes">
+        <source>Current path</source>
+        <target state="final">Aktueller Pfad</target>
+      </trans-unit>
+      <trans-unit id="makeCopy" approved="yes">
+        <source>Copy element instead of moving</source>
+        <target state="final">Element kopieren statt verschieben</target>
+      </trans-unit>
+      <trans-unit id="moveElement.notification.elementMoved.title" approved="yes">
+        <source>Element successfully moved</source>
+        <target state="final">Element erfolgreich verschoben</target>
+      </trans-unit>
+      <trans-unit id="moveElement.notification.elementMoved.message" approved="yes">
+        <source>The element "%s" has been successfully moved.</source>
+        <target state="final">Das Element „%s“ wurde erfolgreich verschoben.</target>
+      </trans-unit>
+      <trans-unit id="moveElement.notification.elementCopied.title" approved="yes">
+        <source>Element successfully copied</source>
+        <target state="final">Element erfolgreich kopiert</target>
+      </trans-unit>
+      <trans-unit id="moveElement.notification.elementCopied.message" approved="yes">
+        <source>The element "%s" has been successfully copied.</source>
+        <target state="final">Das Element „%s“ wurde erfolgreich kopiert.</target>
+      </trans-unit>
+      <trans-unit id="moveElement.notification.elementPasted.action.dismiss" approved="yes">
+        <source>Dismiss</source>
+        <target state="final">Verwerfen</target>
+      </trans-unit>
+      <trans-unit id="moveElement.notification.elementPasted.action.open" approved="yes">
+        <source>Open "%s"</source>
+        <target state="final">Öffne „%s“</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
