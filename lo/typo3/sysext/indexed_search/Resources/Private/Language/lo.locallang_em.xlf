@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814839" source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_em.xlf" date="2011-10-17T20:22:32Z" product-name="indexed_search" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="indexedsearch.config.pdftools" resname="indexedsearch.config.pdftools" approved="yes">
+        <source>Path to PDF parsers: The indexer uses the applications 'pdftotext' and 'pdfinfo' for extracting content from PDF files. These applications must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">ເສັ້ນທາງໄປຫາຕົວແຍກ PDF: ຕົວຈັດດັດສະນີໃຊ້ແອັບພລິເຄຊັນ 'pdftotext' ແລະ 'pdfinfo' ເພື່ອດຶງເອົາເນື້ອຫາຈາກໄຟລ໌ PDF. ແອັບພລິເຄຊັນເຫຼົ່ານີ້ຕ້ອງຖືກຕິດຕັ້ງໄວ້ໃນເສັ້ນທາງນີ້. ຖ້າບໍ່ດັ່ງນັ້ນ ໃຫ້ປະຫວ່າງໄວ້.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.pdf_mode" resname="indexedsearch.config.pdf_mode" approved="yes">
+        <source>PDF parsing mode: Zero=whole file is indexed in one. Positive value indicates number of pages at a time, eg. "5" would mean 1-5,6-10,.... Negative integer would indicate (abs value) number of groups. Eg "3" groups of 10 pages would be 1-4,5-8,9-10. Range is -100 to 100.</source>
+        <target state="final">ໂໝດການແຍກ PDF: ສູນ=ໄຟລ໌ທັງໝົດຈະຖືກຈັດດັດສະນີໃນບາດດຽວ. ຄ່າບວກໝາຍເຖິງຈຳນວນໜ້າໃນແຕ່ລະຄັ້ງ, ຕົວຢ່າງ: "5" ໝາຍເຖິງ 1-5, 6-10,.... ຄ່າລົບໝາຍເຖິງ (ຄ່າສຳບູນ) ຈຳນວນກຸ່ມ. ຕົວຢ່າງ "3" ກຸ່ມ ຂອງ 10 ໜ້າ ຈະແມ່ນ 1-4, 5-8, 9-10. ຊ່ວງແມ່ນ -100 ຫາ 100.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unzip" resname="indexedsearch.config.unzip" approved="yes">
+        <source>Path to unzip: The indexer uses "unzip" to extract the contents from OpenOffice.org/Oasis OpenDocument files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">ເສັ້ນທາງໄປຫາ unzip: ຕົວຈັດດັດສະນີໃຊ້ "unzip" ເພື່ອດຶງເອົາເນື້ອຫາຈາກໄຟລ໌ OpenOffice.org/Oasis OpenDocument. ແອັບພລິເຄຊັນຕ້ອງຖືກຕິດຕັ້ງໄວ້ໃນເສັ້ນທາງນີ້. ຖ້າບໍ່ດັ່ງນັ້ນ ໃຫ້ປະຫວ່າງໄວ້.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.catdoc" resname="indexedsearch.config.catdoc" approved="yes">
+        <source>Path to WORD parser: The indexer uses the application 'catdoc' for extracting content from WORD files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">ເສັ້ນທາງໄປຫາຕົວແຍກ WORD: ຕົວຈັດດັດສະນີໃຊ້ແອັບພລິເຄຊັນ 'catdoc' ເພື່ອດຶງເອົາເນື້ອຫາຈາກໄຟລ໌ WORD. ແອັບພລິເຄຊັນຕ້ອງຖືກຕິດຕັ້ງໄວ້ໃນເສັ້ນທາງນີ້. ຖ້າບໍ່ດັ່ງນັ້ນ ໃຫ້ປະຫວ່າງໄວ້.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.xlhtml" resname="indexedsearch.config.xlhtml" approved="yes">
+        <source>Path to EXCEL parser: The indexer uses the application 'xlhtml' for extracting content from EXCEL files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">ເສັ້ນທາງໄປຫາຕົວແຍກ EXCEL: ຕົວຈັດດັດສະນີໃຊ້ແອັບພລິເຄຊັນ 'xlhtml' ເພື່ອດຶງເອົາເນື້ອຫາຈາກໄຟລ໌ EXCEL. ແອັບພລິເຄຊັນຕ້ອງຖືກຕິດຕັ້ງໄວ້ໃນເສັ້ນທາງນີ້. ຖ້າບໍ່ດັ່ງນັ້ນ ໃຫ້ປະຫວ່າງໄວ້.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ppthtml" resname="indexedsearch.config.ppthtml" approved="yes">
+        <source>Path to POWERPOINT parser: The indexer uses the application 'ppthtml' for extracting content from POWERPOINT files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">ເສັ້ນທາງໄປຫາຕົວແຍກ POWERPOINT: ຕົວຈັດດັດສະນີໃຊ້ແອັບພລິເຄຊັນ 'ppthtml' ເພື່ອດຶງເອົາເນື້ອຫາຈາກໄຟລ໌ POWERPOINT. ແອັບພລິເຄຊັນຕ້ອງຖືກຕິດຕັ້ງໄວ້ໃນເສັ້ນທາງນີ້. ຖ້າບໍ່ດັ່ງນັ້ນ ໃຫ້ປະຫວ່າງໄວ້.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unrtf" resname="indexedsearch.config.unrtf" approved="yes">
+        <source>Path to RTF parser: The indexer uses the application 'unrtf' for extracting content from RTF files. The application must be installed in this path. Otherwise leave the field empty.</source>
+        <target state="final">ເສັ້ນທາງໄປຫາຕົວແຍກ RTF: ຕົວຈັດດັດສະນີໃຊ້ແອັບພລິເຄຊັນ 'unrtf' ເພື່ອດຶງເອົາເນື້ອຫາຈາກໄຟລ໌ RTF. ແອັບພລິເຄຊັນຕ້ອງຖືກຕິດຕັ້ງໄວ້ໃນເສັ້ນທາງນີ້. ຖ້າບໍ່ດັ່ງນັ້ນ ໃຫ້ປະຫວ່າງໄວ້.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.debugMode" resname="indexedsearch.config.debugMode" approved="yes">
+        <source>Debug mode: If set, debugging information is collected during indexing and can be shown in the backend. Only for debugging since it slows down the system and fills the database with crap.</source>
+        <target state="final">ໂໝດດີບັກ: ຫາກຕັ້ງໄວ້, ຂໍ້ມູນການດີບັກຈະຖືກເກັບຮວບຮວມໃນລະຫວ່າງການຈັດດັດສະນີ ແລະ ສາມາດສະແດງຜົນໃນສ່ວນຫຼັງບ້ານ (backend). ໃຊ້ເພື່ອການດີບັກເທົ່ານັ້ນ ເພາະມັນຈະເຮັດໃຫ້ລະບົບຊ້າລົງ ແລະ ເຮັດໃຫ້ຖານຂໍ້ມູນເຕັມໄປດ້ວຍຂໍ້ມູນທີ່ບໍ່ຈຳເປັນ.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.fullTextDataLength" resname="indexedsearch.config.fullTextDataLength" approved="yes">
+        <source>Full Text Data Length: If set, the full text data stored will be limited to this byte length. It means you can save some database space but to the degree you cut the length down you also limit possibilities to search for sentences and the search result resume will be limited.</source>
+        <target state="final">ຄວາມຍາວຂໍ້ມູນຂໍ້ຄວາມເຕັມ: ຫາກຕັ້ງໄວ້, ຂໍ້ມູນຂໍ້ຄວາມເຕັມທີ່ຖືກຈັດເກັບຈະຖືກຈຳກັດຢູ່ທີ່ຄວາມຍາວໄບຕ໌ (byte) ນີ້. ມັນໝາຍຄວາມວ່າເຈົ້າສາມາດປະຢັດພື້ນທີ່ຖານຂໍ້ມູນໄດ້ບາງສ່ວນ ແຕ່ໃນລະດັບທີ່ເຈົ້າຕັດຄວາມຍາວລົງ ເຈົ້າກໍຈະຈຳກັດຄວາມສາມາດໃນການຄົ້ນຫາປະໂຫຍກ ແລະ ບົດສະຫຼຸບຜົນການຄົ້ນຫາຈະຖືກຈຳກັດເຊັ່ນກັນ.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.disableFrontendIndexing" resname="indexedsearch.config.disableFrontendIndexing" approved="yes">
+        <source>Disable Indexing in Frontend: By default pages are indexed during viewing of pages in the frontend. You can disable this features so indexing of pages is only initiated through the backend page crawler.</source>
+        <target state="final">ປິດການຈັດດັດສະນີໃນສ່ວນໜ້າເວັບ (Frontend): ໂດຍປົກກະຕິແລ້ວ ໜ້າເວັບຈະຖືກຈັດດັດສະນີໃນຂະນະທີ່ເປີດເບິ່ງໃນສ່ວນໜ້າເວັບ. ເຈົ້າສາມາດປິດຄຸນສົມບັດນີ້ໄດ້ ເພື່ອໃຫ້ການຈັດດັດສະນີໜ້າເວັບເລີ່ມຕົ້ນຜ່ານຕົວເກັບກຳຂໍ້ມູນ (crawler) ໃນສ່ວນຫຼັງບ້ານ (backend) ເທົ່ານັ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.enableMetaphoneSearch" resname="indexedsearch.config.enableMetaphoneSearch" approved="yes">
+        <source>Enable metaphone search (sounds like): 0=disabled, 1=use internal metaphone parser, 2=use advanced doubleMetaphone parser.</source>
+        <target state="final">ເປີດໃຊ້ການຄົ້ນຫາແບບ metaphone (ອອກສຽງຄ້າຍຄື): 0=ປິດໃຊ້ງານ, 1=ໃຊ້ຕົວແຍກ metaphone ພາຍໃນ, 2=ໃຊ້ຕົວແຍກ doubleMetaphone ຂັ້ນສູງ.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.minAge" resname="indexedsearch.config.minAge" approved="yes">
+        <source>Min TTL (hours) for indexed page: The time in hours that must pass before an indexed page can be indexed again regardless of changes on the page.</source>
+        <target state="final">TTL ຕ່ຳສຸດ (ຊົ່ວໂມງ) ສຳລັບໜ້າທີ່ຖືກຈັດດັດສະນີ: ເວລາເປັນຊົ່ວໂມງທີ່ຈະຕ້ອງຜ່ານໄປ ກ່ອນທີ່ໜ້າທີ່ຖືກຈັດດັດສະນີແລ້ວຈະສາມາດຖືກຈັດດັດສະນີໃໝ່ໄດ້ອີກຄັ້ງ ໂດຍບໍ່ຄຳນຶງເຖິງການປ່ຽນແປງໃນໜ້າເວັບ.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.maxAge" resname="indexedsearch.config.maxAge" approved="yes">
+        <source>Deprecated! Max TTL (hours) for indexed page: The time in hours that is the maximum age of an indexed page before it will get indexed again. Usually the index is kept consistent, therefore you won't need this feature.</source>
+        <target state="final">ຍົກເລີກການນຳໃຊ້ແລ້ວ! TTL ສູງສຸດ (ຊົ່ວໂມງ) ສຳລັບໜ້າທີ່ຖືກຈັດດັດສະນີ: ເວລາເປັນຊົ່ວໂມງເຊິ່ງເປັນອາຍຸສູງສຸດຂອງໜ້າທີ່ຖືກຈັດດັດສະນີ ກ່ອນທີ່ມັນຈະຖືກຈັດດັດສະນີໃໝ່ອີກຄັ້ງ. ໂດຍປົກກະຕິດັດສະນີຈະຖືກຮັກສາໃຫ້ສອດຄ່ອງກັນຢູ່ແລ້ວ, ດັ່ງນັ້ນເຈົ້າອາດຈະບໍ່ຈຳເປັນຕ້ອງໃຊ້ຄຸນສົມບັດນີ້.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.maxExternalFiles" resname="indexedsearch.config.maxExternalFiles" approved="yes">
+        <source>Max external files to index: When external files are found on a page this number indicates how many may be indexed at that point. This prevents pages with links to many external documents to take the server down - but it may also prevent documents from being indexed.</source>
+        <target state="final">ຈຳນວນໄຟລ໌ພາຍນອກສູງສຸດທີ່ຈະຈັດດັດສະນີ: ເມື່ອພົບໄຟລ໌ພາຍນອກໃນໜ້າເວັບ, ຕົວເລກນີ້ຈະລະບຸວ່າສາມາດຈັດດັດສະນີໄດ້ຈັກໄຟລ໌ໃນຈຸດນັ້ນ. ສິ່ງນີ້ຊ່ວຍປ້ອງກັນບໍ່ໃຫ້ໜ້າເວັບທີ່ມີລິ້ງໄປຫາເອກະສານພາຍນອກຈຳນວນຫຼາຍເຮັດໃຫ້ເຊີບເວີເຮັດວຽກໜັກເກີນໄປ - ແຕ່ມັນອາດຈະປ້ອງກັນບໍ່ໃຫ້ບາງເອກະສານຖືກຈັດດັດສະນີເຊັ່ນກັນ.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.useCrawlerForExternalFiles" resname="indexedsearch.config.useCrawlerForExternalFiles" approved="yes">
+        <source>Use "crawler" extension to index external files: When external files are found on a page they are added to the "crawler" extensions queue and indexed via the cronscript running the crawler. This eliminates problems with for example many PDF files on a page. Requires a proper configuration of the "crawler" extension.</source>
+        <target state="final">ໃຊ້ສ່ວນຂະຫຍາຍ "crawler" ເພື່ອຈັດດັດສະນີໄຟລ໌ພາຍນອກ: ເມື່ອພົບໄຟລ໌ພາຍນອກໃນໜ້າເວັບ ພວກມັນຈະຖືກເພີ່ມເຂົ້າໃນຄິວຂອງສ່ວນຂະຫຍາຍ "crawler" ແລະ ຖືກຈັດດັດສະນີຜ່ານ cronscript ທີ່ກຳລັງເຮັດວຽກ. ສິ່ງນີ້ຊ່ວຍຫຼຸດຜ່ອນບັນຫາ ຕົວຢ່າງເຊັ່ນ ມີໄຟລ໌ PDF ຈຳນວນຫຼາຍໃນໜ້າດຽວ. ຕ້ອງມີການຕັ້ງຄ່າສ່ວນຂະຫຍາຍ "crawler" ຢ່າງຖືກຕ້ອງ.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.flagBitMask" resname="indexedsearch.config.flagBitMask" approved="yes">
+        <source>Bitmask for Flags (Advanced): By this value (0-255) you can filter the importance of &lt;title&gt; (128), &lt;keywords&gt; (64) and &lt;description&gt; (32) content from HTML documents. By setting this to 0, none of these fields will have any importance over the other. The default value 192 means that title-tag content and meta-keywords will be flagged (and rated higher in search results)</source>
+        <target state="final">Bitmask ສຳລັບ Flags (ຂັ້ນສູງ): ດ້ວຍຄ່ານີ້ (0-255) ເຈົ້າສາມາດກັ່ນຕອງຄວາມສຳຄັນຂອງເນື້ອຫາ &lt;title&gt; (128), &lt;keywords&gt; (64) ແລະ &lt;description&gt; (32) ຈາກເອກະສານ HTML. ໂດຍການຕັ້ງຄ່ານີ້ເປັນ 0, ຈະບໍ່ມີຟີວໃດມີຄວາມສຳຄັນຫຼາຍກວ່າຟີວອື່ນ. ຄ່າເລີ່ມຕົ້ນ 192 ໝາຍຄວາມວ່າ ເນື້ອຫາ title-tag ແລະ meta-keywords ຈະຖືກກຳນົດຄວາມສຳຄັນ (ແລະ ຖືກຈັດອັນດັບສູງກວ່າໃນຜົນການຄົ້ນຫາ)</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ignoreExtensions" resname="indexedsearch.config.ignoreExtensions" approved="yes">
+        <source>Ignore Extensions: List of file extensions that the external parser will ignore (despite having support for them). Comma list.</source>
+        <target state="final">ເມີນເສີຍນາມສະກຸນໄຟລ໌: ລາຍຊື່ນາມສະກຸນໄຟລ໌ທີ່ຕົວແຍກພາຍນອກຈະເມີນເສີຍ (ເຖິງແມ່ນວ່າຈະຮອງຮັບພວກມັນກໍຕາມ). ຂັ້ນດ້ວຍຈຸດ.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.indexExternalURLs" resname="indexedsearch.config.indexExternalURLs" approved="yes">
+        <source>Index External HTML URLs: If set, links to external URLs will be indexed if they are of type "text/html".</source>
+        <target state="final">ຈັດດັດສະນີ URL ຂອງ HTML ພາຍນອກ: ຫາກຕັ້ງໄວ້, ລິ້ງໄປຫາ URL ພາຍນອກຈະຖືກຈັດດັດສະນີ ຫາກພວກມັນເປັນປະເພດ "text/html".</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.useMysqlFulltext" resname="indexedsearch.config.useMysqlFulltext" approved="yes">
+        <source>Use MySQL specific fulltext search - Update database schema in install tool after toggling this flag</source>
+        <target state="final">ໃຊ້ການຄົ້ນຫາຂໍ້ຄວາມເຕັມ (fulltext) ສະເພາະຂອງ MySQL - ອັບເດດໂຄງສ້າງຖານຂໍ້ມູນ (database schema) ໃນເຄື່ອງມືຕິດຕັ້ງ ຫຼັງຈາກປ່ຽນຄ່ານີ້</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.trackIpInStatistic" resname="indexedsearch.config.trackIpInStatistic" approved="yes">
+        <source>Define the privacy level of the logged IP: 0 for no mask which means no privacy, 1 for masking the host and 2 for masking host and subnet (full privacy)</source>
+        <target state="final">ກຳນົດລະດັບຄວາມເປັນສ່ວນຕົວຂອງ IP ທີ່ຖືກບັນທຶກ: 0 ສຳລັບບໍ່ມີການປົກປິດ (mask) ເຊິ່ງໝາຍເຖິງບໍ່ມີຄວາມເປັນສ່ວນຕົວ, 1 ສຳລັບການປົກປິດ host ແລະ 2 ສຳລັບການປົກປິດ host ແລະ subnet (ຄວາມເປັນສ່ວນຕົວເຕັມຮູບແບບ).</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
