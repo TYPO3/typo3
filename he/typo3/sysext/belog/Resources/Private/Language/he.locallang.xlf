@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:belog/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="belog" target-language="he">
+    <header/>
+    <body>
+      <trans-unit id="actionLogin" approved="yes">
+        <source>Login</source>
+        <target state="final">כניסה</target>
+      </trans-unit>
+      <trans-unit id="type_255" approved="yes">
+        <source>LOGIN</source>
+        <target state="final">כניסה</target>
+      </trans-unit>
+      <trans-unit id="action_255_1" approved="yes">
+        <source>LOGIN</source>
+        <target state="final">כניסה</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
