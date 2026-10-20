@@ -1,0 +1,4 @@
+"tx_linkvalidator_link",,,,,,,
+,"record_uid","record_pid","field","table_name","link_title","url","link_type"
+,1,1,"bodytext","tt_content","hidden by parent",3,"db"
+,1,1,"bodytext","tt_content","expired by grandparent",8,"db"
