@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1522785604" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="site.tab.languages" resname="site.tab.languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">Jeziki</target>
+      </trans-unit>
+      <trans-unit id="site_language.language" resname="site_language.language" approved="yes">
+        <source>Language</source>
+        <target state="final">Jezik</target>
+      </trans-unit>
+      <trans-unit id="site_language.title" resname="site_language.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Naslov</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.404" resname="site_errorhandling.errorCode.404" approved="yes">
+        <source>404 (Page not found)</source>
+        <target state="final">404 (Strani ni mogoče najti)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler.page" resname="site_errorhandling.errorHandler.page" approved="yes">
+        <source>Show Content from Page</source>
+        <target state="final">Prikaži vsebino strani</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorContentSource" resname="site_errorhandling.errorContentSource" approved="yes">
+        <source>Show Content from Page</source>
+        <target state="final">Prikaži vsebino strani</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
