@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="de">
+  <file id="f1">
+    <unit id="title">
+      <segment state="final">
+        <source>Raw search</source>
+        <target>Volltextsuche</target>
+      </segment>
+    </unit>
+    <unit id="short_description">
+      <segment state="final">
+        <source>Raw search in all fields</source>
+        <target>Unbearbeitete Suche in sämtlichen Feldern</target>
+      </segment>
+    </unit>
+    <unit id="description">
+      <segment state="final">
+        <source>Searches all database tables and fields for a given value.</source>
+        <target>Durchsucht alle Datenbanktabellen und Felder nach einem angegebenen Wert.</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
