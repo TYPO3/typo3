@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815005" source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_info.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id="fileChanged" resname="fileChanged" approved="yes">
+        <source>File changed</source>
+        <target state="final">Datoteka je izmijenjena</target>
+      </trans-unit>
+      <trans-unit id="resourceUpdated" resname="resourceUpdated" approved="yes">
+        <source>Resource '%s' has been updated.</source>
+        <target state="final">Sredstvo '%s' je ažurirano.</target>
+      </trans-unit>
+      <trans-unit id="templateInformation" resname="templateInformation" approved="yes">
+        <source>Template information</source>
+        <target state="final">Informacije o predlošku</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Title</source>
+        <target state="final">Naslov</target>
+      </trans-unit>
+      <trans-unit id="sitetitle" resname="sitetitle" approved="yes">
+        <source>Sitetitle</source>
+        <target state="final">Naslov stranice</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description" approved="yes">
+        <source>Description</source>
+        <target state="final">Opis</target>
+      </trans-unit>
+      <trans-unit id="uploadResource" resname="uploadResource" approved="yes">
+        <source>Upload resource</source>
+        <target state="final">Pošalji sredstvo</target>
+      </trans-unit>
+      <trans-unit id="newTextResource" resname="newTextResource" approved="yes">
+        <source>New text resource (enter name)</source>
+        <target state="final">Novo tekstualno sredstvo (unesite ime)</target>
+      </trans-unit>
+      <trans-unit id="updateResourceList" resname="updateResourceList" approved="yes">
+        <source>Update resource list</source>
+        <target state="final">Ažuriraj popis sredstava</target>
+      </trans-unit>
+      <trans-unit id="constants" resname="constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">Konstante</target>
+      </trans-unit>
+      <trans-unit id="filesizeExceeded" resname="filesizeExceeded" approved="yes">
+        <source>Filesize exceeded %s KBytes</source>
+        <target state="final">Veličina datoteka premašuje %s KB</target>
+      </trans-unit>
+      <trans-unit id="notAllowed" resname="notAllowed" approved="yes">
+        <source>Files larger than %s KBytes are not allowed to be edited.</source>
+        <target state="final">Nije dopušteno uređivanje datoteka čija veličina premašuje %s KB.</target>
+      </trans-unit>
+      <trans-unit id="setup" resname="setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">Postavke</target>
+      </trans-unit>
+      <trans-unit id="resources" resname="resources" approved="yes">
+        <source>Resources</source>
+        <target state="final">Sredstva</target>
+      </trans-unit>
+      <trans-unit id="editToView" resname="editToView" approved="yes">
+        <source>(edit to view, %s lines)</source>
+        <target state="final">(uredi za pregled, %s redaka)</target>
+      </trans-unit>
+      <trans-unit id="editTemplateRecord" resname="editTemplateRecord" approved="yes">
+        <source>Edit the whole template record</source>
+        <target state="final">Uredi čitav zapis predloška</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
