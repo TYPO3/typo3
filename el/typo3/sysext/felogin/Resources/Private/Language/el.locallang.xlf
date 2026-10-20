@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814821" source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="el">
+    <header/>
+    <body>
+      <trans-unit id="ll_welcome_header" resname="ll_welcome_header" approved="yes">
+        <source>User login</source>
+        <target state="final">Σύνδεση χρήστη</target>
+      </trans-unit>
+      <trans-unit id="ll_welcome_message" resname="ll_welcome_message" approved="yes">
+        <source>Enter your username and password here in order to log in on the website</source>
+        <target state="final">Εισάγετε το όνομα χρήστη και το μυστικό κωδικό για να εισέλθετε στον ιστότοπο</target>
+      </trans-unit>
+      <trans-unit id="ll_logout_header" resname="ll_logout_header" approved="yes">
+        <source>You have logged out.</source>
+        <target state="final">Έχετε αποσυνδεθεί.</target>
+      </trans-unit>
+      <trans-unit id="ll_logout_message" resname="ll_logout_message" approved="yes">
+        <source>You just logged out from your user session on this website. You can login again or as another user by the form below.</source>
+        <target state="final">Μόλις αποσυνδεθήκατε από τη συνεδρία σας σε αυτό τον ιστότοπο. Μπορείτε να συνδεθείτε ξανά ή να συνδεθείτε ως διαφορετικός χρήστης με την παρακάτω φόρμα.</target>
+      </trans-unit>
+      <trans-unit id="ll_error_header" resname="ll_error_header" approved="yes">
+        <source>Login failure</source>
+        <target state="final">Αποτυχία σύνδεσης</target>
+      </trans-unit>
+      <trans-unit id="ll_error_message" resname="ll_error_message" xml:space="preserve" approved="yes">
+				<source>An error occurred during login. Most likely you didn't enter the username or password correctly.
+Be certain that you enter them precisely as they are, including upper/lower case.
+Another possibility is that cookies might be disabled in your web browser.</source>
+			<target state="final">Υπήρξε σφάλμα κατά τη σύνδεσή σας. Το πιο πιθανό είναι να μην εισάγατε σωστά το όνομα χρήστη ή το μυστικό κωδικό.
+Σιγουρευτείτε ότι τα εισάγετε όπως ακριβώς είναι, περιλαμβανομένων πεζών/κεφαλαίων.
+Μία άλλη πιθανότητα είναι να είναι απενεργοποιημένα τα cookies στην εφαρμογή πλοήγησής σας.</target></trans-unit>
+      <trans-unit id="ll_success_header" resname="ll_success_header" approved="yes">
+        <source>Login successful</source>
+        <target state="final">Επιτυχής σύνδεση</target>
+      </trans-unit>
+      <trans-unit id="ll_success_message" resname="ll_success_message" approved="yes">
+        <source>You are now logged in as '###USER###'</source>
+        <target state="final">Έχετε συνδεθεί ως '###USER###'</target>
+      </trans-unit>
+      <trans-unit id="ll_status_header" resname="ll_status_header" approved="yes">
+        <source>Current status</source>
+        <target state="final">Τρέχουσα κατάσταση</target>
+      </trans-unit>
+      <trans-unit id="ll_status_message" resname="ll_status_message" approved="yes">
+        <source>This is your current status</source>
+        <target state="final">Αυτή είναι η τρέχουσα κατάστασή σας</target>
+      </trans-unit>
+      <trans-unit id="cookie_warning" resname="cookie_warning" approved="yes">
+        <source>Warning: There is a possibility that cookies are not enabled in your web browser! If your login disappears on your next click that is the case and you should enable cookies (or accept cookies from this website) immediately!</source>
+        <target state="final">Προσοχή: Υπάρχει περίπτωση τα cookies να μην είναι ενεργοποιημένα στο φυλλομετρητή σας! Αν η φόρμα σύνδεσης εξαφανιστεί στο επόμενο κλικ τότε θα πρέπει να ενεργοποιήσετε τα cookies (ή να αποδεχθείτε τα cookies από αυτό τον ιστότοπο) αμέσως!</target>
+      </trans-unit>
+      <trans-unit id="username" resname="username" approved="yes">
+        <source>Username</source>
+        <target state="final">Όνομα χρήστη</target>
+      </trans-unit>
+      <trans-unit id="password" resname="password" approved="yes">
+        <source>Password</source>
+        <target state="final">Μυστικός κωδικός</target>
+      </trans-unit>
+      <trans-unit id="login" resname="login" approved="yes">
+        <source>Login</source>
+        <target state="final">Σύνδεση</target>
+      </trans-unit>
+      <trans-unit id="permalogin" resname="permalogin" approved="yes">
+        <source>Stay logged in</source>
+        <target state="final">Παραμείνετε συνδεδεμένος/η</target>
+      </trans-unit>
+      <trans-unit id="logout" resname="logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">Αποσύνδεση</target>
+      </trans-unit>
+      <trans-unit id="send_password" resname="send_password" approved="yes">
+        <source>Send password</source>
+        <target state="final">Αποστολή κωδικού πρόσβασης</target>
+      </trans-unit>
+      <trans-unit id="reset_password" resname="reset_password" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">Αρχικοποίηση κωδικού</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_header" resname="ll_change_password_header" approved="yes">
+        <source>Change your password</source>
+        <target state="final">Αλλαγή κωδικού</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_notvalid_message" resname="ll_change_password_notvalid_message" approved="yes">
+        <source>The link you clicked is not valid. Please repeat the forgot password procedure.</source>
+        <target state="final">Ο σύνδεσμος που κάνατε κλικ δεν είναι έγκυρος. Παρακαλώ επαναλάβετε τη διαδικασία ξέχασα τον κωδικό.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_notequal_message" resname="ll_change_password_notequal_message" approved="yes">
+        <source>The passwords are not equal, please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">Οι κωδικοί πρόσβασης δεν είναι ίδιοι, παρακαλώ εισάγετε το νέο σας μυστικό κωδικό δύο φορές. Ο κωδικός πρόσβασης χρειάζεται ένα ελάχιστο μήκος %s χαρακτήρων.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_tooshort_message" resname="ll_change_password_tooshort_message" approved="yes">
+        <source>The password length is too short. Please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">Το μήκος του κωδικού πρόσβασης είναι πολύ μικρό. Παρακαλώ εισάγετε το νέο κωδικό σας δύο φορές. Ο κωδικός πρόσβασης απαιτεί ένα ελάχιστο πλήθος %s χαρακτήρων.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_done_message" resname="ll_change_password_done_message" approved="yes">
+        <source>Your password has been saved. You can now login with your new password.</source>
+        <target state="final">Ο κωδικός σας έχει αλλάξει. Μπορείτε τώρα να συνδεθείτε με τον νέο σας μυστικό κωδικό.</target>
+      </trans-unit>
+      <trans-unit id="change_password" resname="change_password" approved="yes">
+        <source>Change your password</source>
+        <target state="final">Αλλαγή κωδικού</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label1" resname="newpassword_label1" approved="yes">
+        <source>Enter new password</source>
+        <target state="final">Εισάγετε νέο κωδικό</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label2" resname="newpassword_label2" approved="yes">
+        <source>Repeat new password</source>
+        <target state="final">Επανάληψη κωδικού</target>
+      </trans-unit>
+      <trans-unit id="your_email" resname="your_email" approved="yes">
+        <source>Your email</source>
+        <target state="final">Το email σας</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_header" resname="ll_forgot_header" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">Ξεχάσατε τον κωδικό σας;</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_email_password" resname="ll_forgot_email_password" xml:space="preserve" approved="yes">
+				<source>Your password
+Hi %s
+
+Your username is "%s"
+Your password is "%s"</source>
+			<target state="final">Ο κωδικός σας
+Γεια σας %s,
+
+To όνομα χρήστη σας είναι "%s". 
+Ο κωδικός πρόσβασης είναι "%s".</target></trans-unit>
+      <trans-unit id="ll_forgot_message" resname="ll_forgot_message" approved="yes">
+        <source>Please enter the email address by which you registered your user account. Then press "Send password" and your password will immediately be emailed to you. Make sure to spell your email address correctly.</source>
+        <target state="final">Παρακαλώ εισάγετε τη διεύθυνση ηλεκτρονικού ταχυδρομείου με την οποία καταχωρήσατε το λογαριασμό χρήστη σας. Στη συνέχεια, πατήστε "Αποστολή μυστικού κωδικού" και ο κωδικός σας θα σας αποσταλεί αμέσως. Βεβαιωθείτε ότι ορθογραφήστε σωστά τη διεύθυνση ηλεκτρονικού ταχυδρομείου σας.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_message_emailSent" resname="ll_forgot_message_emailSent" approved="yes">
+        <source>Your password has now been sent to the email address %s</source>
+        <target state="final">Ο κωδικός πρόσβασής σας έχει σταλεί στη διεύθυνση email σας %s.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_reset_message" resname="ll_forgot_reset_message" approved="yes">
+        <source>Please enter your username or email address. Instructions for resetting the password will be immediately emailed to you.</source>
+        <target state="final">Παρακαλώ εισάγετε το όνομα χρήστη ή τη διεύθυνση ηλεκτρονικού ταχυδρομείου. Οι οδηγίες για την επαναφορά του κωδικού πρόσβασης θα σας αποσταλούν αμέσως.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_reset_message_emailSent" resname="ll_forgot_reset_message_emailSent" approved="yes">
+        <source>An email has been sent to the address stored in your account and contains a link to reset your password. If you do not receive an email, your account or email address was not found.</source>
+        <target state="final">Ένα μήνυμα ηλεκτρονικού ταχυδρομείου έχει σταλεί στη διεύθυνση που είναι αποθηκευμένη στο λογαριασμό σας και περιέχει ένα σύνδεσμο για να επαναφέρετε τον κωδικό πρόσβασής σας. Αν δε λάβετε email, ο λογαριασμός σας ή η διεύθυνση ηλεκτρονικού ταχυδρομείου δε βρέθηκαν.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_reset_message_error" resname="ll_forgot_reset_message_error" approved="yes">
+        <source>Your account or email address does not exist.</source>
+        <target state="final">Ο λογαριασμός σας ή η διεύθυνση email δεν υπάρχουν.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_header_backToLogin" resname="ll_forgot_header_backToLogin" approved="yes">
+        <source>Return to login form</source>
+        <target state="final">Επιστροφή στη φόρμα σύνδεσης</target>
+      </trans-unit>
+      <trans-unit id="ll_enter_your_data" resname="ll_enter_your_data" approved="yes">
+        <source>Username or email address</source>
+        <target state="final">Όνομα χρήστη ή διεύθυνση email</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
