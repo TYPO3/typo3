@@ -1,0 +1,1117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814851" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_core.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="ro">
+    <header/>
+    <body>
+      <trans-unit id="labels.openInNewWindow" resname="labels.openInNewWindow" approved="yes">
+        <source>Open in new window</source>
+        <target state="final">Deschide într-o fereastră nouă</target>
+      </trans-unit>
+      <trans-unit id="labels.goBack" resname="labels.goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Înapoi</target>
+      </trans-unit>
+      <trans-unit id="labels.makeShortcut" resname="labels.makeShortcut" approved="yes">
+        <source>Create a shortcut to this page?</source>
+        <target state="final">Creaţi o scurtătură către această pagină?</target>
+      </trans-unit>
+      <trans-unit id="labels.makeBookmark" resname="labels.makeBookmark" approved="yes">
+        <source>Create a bookmark to this page</source>
+        <target state="final">Adaugă această pagină la Favorite</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord" resname="labels.lockedRecord" approved="yes">
+        <source>The user '%s' began to edit this record %s ago.</source>
+        <target state="final">Utilizatorul '%s' a început să editeze această înregistrare în urmă cu %s.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord_content" resname="labels.lockedRecord_content" approved="yes">
+        <source>The user '%s' began to edit content on this page %s ago.</source>
+        <target state="final">Utilizatorul '%s' a început să editeze conţinutul acestei pagini în urmă cu %s.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecordUser" resname="labels.lockedRecordUser" approved="yes">
+        <source>The %s '%s' began to edit this record %s ago.</source>
+        <target state="final">Utilizatorul %s '%s' a început să editeze această înregistrare în urmă cu %s.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecordUser_content" resname="labels.lockedRecordUser_content" approved="yes">
+        <source>The %s '%s' began to edit content on this page %s ago.</source>
+        <target state="final">Utilizatorul %s '%s' a început să editeze conţinutul acestei pagini în urmă cu %s.</target>
+      </trans-unit>
+      <trans-unit id="labels.user" resname="labels.user" approved="yes">
+        <source>User</source>
+        <target state="final">Utilizator</target>
+      </trans-unit>
+      <trans-unit id="labels.beUser" resname="labels.beUser" approved="yes">
+        <source>BE-User</source>
+        <target state="final">Utilizator BE</target>
+      </trans-unit>
+      <trans-unit id="labels.feUser" resname="labels.feUser" approved="yes">
+        <source>FE-User</source>
+        <target state="final">Utilizator FE</target>
+      </trans-unit>
+      <trans-unit id="labels.unknownUser" resname="labels.unknownUser" approved="yes">
+        <source>-Unknown-</source>
+        <target state="final">-Necunoscut-</target>
+      </trans-unit>
+      <trans-unit id="labels.showRecords" resname="labels.showRecords" approved="yes">
+        <source>Show records</source>
+        <target state="final">Arată înregistrările</target>
+      </trans-unit>
+      <trans-unit id="labels.path" resname="labels.path" approved="yes">
+        <source>Path</source>
+        <target state="final">Cale</target>
+      </trans-unit>
+      <trans-unit id="labels.resetFilter" resname="labels.resetFilter" approved="yes">
+        <source>Reset Filter</source>
+        <target state="final">Resetare filtru</target>
+      </trans-unit>
+      <trans-unit id="labels.table" resname="labels.table" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabelă</target>
+      </trans-unit>
+      <trans-unit id="labels.upOneLevel" resname="labels.upOneLevel" approved="yes">
+        <source>Up one level</source>
+        <target state="final">Un nivel mai sus</target>
+      </trans-unit>
+      <trans-unit id="labels.expandTable" resname="labels.expandTable" approved="yes">
+        <source>Expand table</source>
+        <target state="final">Extindere tabelă</target>
+      </trans-unit>
+      <trans-unit id="labels.collapseTable" resname="labels.collapseTable" approved="yes">
+        <source>Collapse table</source>
+        <target state="final">Colaps tabelă</target>
+      </trans-unit>
+      <trans-unit id="labels.enterSearchLevels" resname="labels.enterSearchLevels" approved="yes">
+        <source>This page|1 level down|2 levels down|3 levels down|4 levels down</source>
+        <target state="final">Această pagină|1 nivel jos|2 nivele jos|3 nivele jos|4 nivele jos</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.0" resname="labels.searchLevel.0" approved="yes">
+        <source>This page</source>
+        <target state="final">Această pagină</target>
+      </trans-unit>
+      <trans-unit id="labels.noEditPermission" resname="labels.noEditPermission" approved="yes">
+        <source>Sorry, you didn't have proper permissions to perform this change.</source>
+        <target state="final">Nu puteţi efectua modificările! Nu aveţi acces!</target>
+      </trans-unit>
+      <trans-unit id="labels.fieldsChanged" resname="labels.fieldsChanged" xml:space="preserve" approved="yes">
+				<source>There are unsaved changes in the form!
+Do you want to continue WITHOUT saving?</source>
+			<target state="final">Unele modifcări nu au fost salvate! Continuaţi FĂRĂ a salva?</target></trans-unit>
+      <trans-unit id="labels.noRTEfound" resname="labels.noRTEfound" approved="yes">
+        <source>Notice: This field can only be edited with a Rich Text Editor. No editor is currently available or enabled.</source>
+        <target state="final">Notă: Nu puteţi edita acest câmp, deoarece poate fi editat doar cu RTE, dar nici un astfel de editor nu este disponibil sau a fost dezactivat.</target>
+      </trans-unit>
+      <trans-unit id="labels.disableRTE" resname="labels.disableRTE" approved="yes">
+        <source>Disable Rich Text Editor (RTE)</source>
+        <target state="final">Dezactivare Rich Text Editor (RTE)</target>
+      </trans-unit>
+      <trans-unit id="labels._CONTROL_" resname="labels._CONTROL_" approved="yes">
+        <source>Control</source>
+        <target state="final">Control</target>
+      </trans-unit>
+      <trans-unit id="labels._PATH_" resname="labels._PATH_" approved="yes">
+        <source>Path</source>
+        <target state="final">Cale</target>
+      </trans-unit>
+      <trans-unit id="labels._LOCALIZATION_" resname="labels._LOCALIZATION_" approved="yes">
+        <source>Localization</source>
+        <target state="final">Localizare</target>
+      </trans-unit>
+      <trans-unit id="labels.setFields" resname="labels.setFields" approved="yes">
+        <source>Set fields</source>
+        <target state="final">Setare cîmp</target>
+      </trans-unit>
+      <trans-unit id="labels.search" resname="labels.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Căutare</target>
+      </trans-unit>
+      <trans-unit id="labels.reload" resname="labels.reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">Reîncarcă</target>
+      </trans-unit>
+      <trans-unit id="labels.csv" resname="labels.csv" approved="yes">
+        <source>Download CSV file</source>
+        <target state="final">Download fişier CSV</target>
+      </trans-unit>
+      <trans-unit id="labels.clear_cache" resname="labels.clear_cache" approved="yes">
+        <source>Clear cache for this page</source>
+        <target state="final">Şterge cache pentru această pagină</target>
+      </trans-unit>
+      <trans-unit id="labels.no_title" resname="labels.no_title" approved="yes">
+        <source>No title</source>
+        <target state="final">Fără titlu</target>
+      </trans-unit>
+      <trans-unit id="labels.cancel" resname="labels.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Anulare</target>
+      </trans-unit>
+      <trans-unit id="labels.hidden" resname="labels.hidden" approved="yes">
+        <source>Hidden</source>
+        <target state="final">Ascuns</target>
+      </trans-unit>
+      <trans-unit id="labels.starttime" resname="labels.starttime" approved="yes">
+        <source>Start</source>
+        <target state="final">Start</target>
+      </trans-unit>
+      <trans-unit id="labels.endtime" resname="labels.endtime" approved="yes">
+        <source>End</source>
+        <target state="final">Stop</target>
+      </trans-unit>
+      <trans-unit id="labels.showPage" resname="labels.showPage" approved="yes">
+        <source>View webpage</source>
+        <target state="final">Vizualizare pagină</target>
+      </trans-unit>
+      <trans-unit id="labels.showList" resname="labels.showList" approved="yes">
+        <source>Show record list</source>
+        <target state="final">Arată lista înregistrărilor</target>
+      </trans-unit>
+      <trans-unit id="labels.days" resname="labels.days" approved="yes">
+        <source>days</source>
+        <target state="final">zile</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_0" resname="labels.depth_0" approved="yes">
+        <source>This page</source>
+        <target state="final">Această pagină</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_1" resname="labels.depth_1" approved="yes">
+        <source>1 level</source>
+        <target state="final">1 nivel</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_2" resname="labels.depth_2" approved="yes">
+        <source>2 levels</source>
+        <target state="final">2 nivele</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_3" resname="labels.depth_3" approved="yes">
+        <source>3 levels</source>
+        <target state="final">3 nivele</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_4" resname="labels.depth_4" approved="yes">
+        <source>4 levels</source>
+        <target state="final">4 nivele</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_infi" resname="labels.depth_infi" approved="yes">
+        <source>Infinite</source>
+        <target state="final">Infinit</target>
+      </trans-unit>
+      <trans-unit id="labels.allow" resname="labels.allow" approved="yes">
+        <source>Allow</source>
+        <target state="final">Permis</target>
+      </trans-unit>
+      <trans-unit id="labels.deny" resname="labels.deny" approved="yes">
+        <source>Deny</source>
+        <target state="final">Interzis</target>
+      </trans-unit>
+      <trans-unit id="labels.automatic" resname="labels.automatic" approved="yes">
+        <source>Auto</source>
+        <target state="final">Auto</target>
+      </trans-unit>
+      <trans-unit id="labels.enabled" resname="labels.enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Activat</target>
+      </trans-unit>
+      <trans-unit id="labels.show" resname="labels.show" approved="yes">
+        <source>Show</source>
+        <target state="final">Vizualizare</target>
+      </trans-unit>
+      <trans-unit id="labels.generalTab" resname="labels.generalTab" approved="yes">
+        <source>General</source>
+        <target state="final">General</target>
+      </trans-unit>
+      <trans-unit id="labels.refresh" resname="labels.refresh" approved="yes">
+        <source>Reload the tree from server</source>
+        <target state="final">Reîncarcă structura de la server.</target>
+      </trans-unit>
+      <trans-unit id="labels.temporaryDBmount" resname="labels.temporaryDBmount" approved="yes">
+        <source>Cancel temporary DB mount</source>
+        <target state="final">Renunţă la montarea DB temporară</target>
+      </trans-unit>
+      <trans-unit id="labels.refreshList" resname="labels.refreshList" approved="yes">
+        <source>Reload list from server</source>
+        <target state="final">Reîncarcă lista de pe server</target>
+      </trans-unit>
+      <trans-unit id="labels.close" resname="labels.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Închidere</target>
+      </trans-unit>
+      <trans-unit id="labels.new" resname="labels.new" approved="yes">
+        <source>NEW</source>
+        <target state="final">NOU</target>
+      </trans-unit>
+      <trans-unit id="labels.edit" resname="labels.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Editare</target>
+      </trans-unit>
+      <trans-unit id="labels.createNew" resname="labels.createNew" approved="yes">
+        <source>Create new</source>
+        <target state="final">Creează nou</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewPage" resname="labels.createNewPage" approved="yes">
+        <source>Create new %s</source>
+        <target state="final">Creează nouă %s</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewRecord" resname="labels.createNewRecord" approved="yes">
+        <source>Create new %s on page "%s"</source>
+        <target state="final">Creează înregistrare nouă %s pe pagina "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewRecordRootLevel" resname="labels.createNewRecordRootLevel" approved="yes">
+        <source>Create new %s on root level</source>
+        <target state="final">Creează nouă înregistrare %s pe pagina rădăcină</target>
+      </trans-unit>
+      <trans-unit id="labels.editPage" resname="labels.editPage" approved="yes">
+        <source>Edit %s "%s"</source>
+        <target state="final">Modificare %s "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecord" resname="labels.editRecord" approved="yes">
+        <source>Edit %s "%s" on page "%s"</source>
+        <target state="final">Modificare înregistrare %s "%s" pe pagina "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecordNoTitle" resname="labels.editRecordNoTitle" approved="yes">
+        <source>Edit %s on page "%s"</source>
+        <target state="final">Modificare înnregistrare %s pe pagina "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecordRootLevel" resname="labels.editRecordRootLevel" approved="yes">
+        <source>Edit %s "%s" on root level</source>
+        <target state="final">Modificare înregistrare %s "%s" pe pagina rădăcină</target>
+      </trans-unit>
+      <trans-unit id="labels.rootLevel" resname="labels.rootLevel" approved="yes">
+        <source>root level</source>
+        <target state="final">rădăcină</target>
+      </trans-unit>
+      <trans-unit id="labels.addnew" resname="labels.addnew" approved="yes">
+        <source>Add new</source>
+        <target state="final">Adaugă nouă</target>
+      </trans-unit>
+      <trans-unit id="labels.toggleall" resname="labels.toggleall" approved="yes">
+        <source>Toggle all</source>
+        <target state="final">Comutați tot</target>
+      </trans-unit>
+      <trans-unit id="labels.selected" resname="labels.selected" approved="yes">
+        <source>Selected Items</source>
+        <target state="final">Elemente selecționate</target>
+      </trans-unit>
+      <trans-unit id="labels.items" resname="labels.items" approved="yes">
+        <source>Available Items</source>
+        <target state="final">Elemente disponibile</target>
+      </trans-unit>
+      <trans-unit id="labels.remove_selected" resname="labels.remove_selected" approved="yes">
+        <source>Remove selected items</source>
+        <target state="final">Şterge elementele selectate</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_top" resname="labels.move_to_top" approved="yes">
+        <source>Move selected items to top</source>
+        <target state="final">Mută elementul selectat în sus</target>
+      </trans-unit>
+      <trans-unit id="labels.move_up" resname="labels.move_up" approved="yes">
+        <source>Move selected items upwards</source>
+        <target state="final">Mută elementele selectate în sus</target>
+      </trans-unit>
+      <trans-unit id="labels.move_down" resname="labels.move_down" approved="yes">
+        <source>Move selected items downwards</source>
+        <target state="final">Mută elementele selectate în jos</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_bottom" resname="labels.move_to_bottom" approved="yes">
+        <source>Move selected items to bottom</source>
+        <target state="final">Mută elementele selectate în partea de jos</target>
+      </trans-unit>
+      <trans-unit id="labels.move" resname="labels.move" approved="yes">
+        <source>Move this item</source>
+        <target state="final">Mută acest element</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_file" resname="labels.browse_file" approved="yes">
+        <source>Browse for files</source>
+        <target state="final">Răsfoire fişiere</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_db" resname="labels.browse_db" approved="yes">
+        <source>Browse for records</source>
+        <target state="final">Răsfoire înregistrări</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_file" resname="labels.clipInsert_file" approved="yes">
+        <source>Insert %s file(s) from the clipboard</source>
+        <target state="final">Inserare %s fişier(e) din clipboard</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_db" resname="labels.clipInsert_db" approved="yes">
+        <source>Insert %s record(s) from the clipboard</source>
+        <target state="final">Inserare %s înregistrări din clipboard</target>
+      </trans-unit>
+      <trans-unit id="labels.allTables" resname="labels.allTables" approved="yes">
+        <source>[All tables]</source>
+        <target state="final">[Toate tabelele]</target>
+      </trans-unit>
+      <trans-unit id="labels.noMatchingValue" resname="labels.noMatchingValue" approved="yes">
+        <source>INVALID VALUE ("%s")</source>
+        <target state="final">VALOAREA CURENTĂ NU ESTE DISPONIBILĂ ("%s")</target>
+      </trans-unit>
+      <trans-unit id="labels.thumbmode_clip" resname="labels.thumbmode_clip" approved="yes">
+        <source>Show Thumbnails on ClipBoard</source>
+        <target state="final">Previzualizare imagini în clipboard.</target>
+      </trans-unit>
+      <trans-unit id="labels.copymode" resname="labels.copymode" approved="yes">
+        <source>Copy items instead of moving them</source>
+        <target state="final">Copiere elemente fără a le muta.</target>
+      </trans-unit>
+      <trans-unit id="labels.normal" resname="labels.normal" approved="yes">
+        <source>Normal (single record mode)</source>
+        <target state="final">Normal (mod o singură înregistrare)</target>
+      </trans-unit>
+      <trans-unit id="labels.normal-description" resname="labels.normal-description" approved="yes">
+        <source>"Normal" clipboard allows to copy/move one record at time.</source>
+        <target state="final">"Normal" clipboard-ul permite copierea/mutarea cîte unei înregistrări odată.</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs" resname="labels.cliptabs" approved="yes">
+        <source>Clipboard #</source>
+        <target state="final">Clipboard #</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs-name" resname="labels.cliptabs-name" approved="yes">
+        <source>Clipboard #%s (multi-selection mode)</source>
+        <target state="final">Clipboard #%s (mod multi-selecție)</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs-description" resname="labels.cliptabs-description" approved="yes">
+        <source>This clipboard allows to select and edit/copy/move multiple records at once. Choose it to show a checkbox by each record.</source>
+        <target state="final">Acest clipboard vă permite să selectaţi şi să editaţi/copiaţi/deplasaţi multiple înregistrări deodată. Alegeţi-l pentru a afişă o căsuţă checkbox lîngă fiecare înregistrare.</target>
+      </trans-unit>
+      <trans-unit id="labels.removeItem" resname="labels.removeItem" approved="yes">
+        <source>Remove item</source>
+        <target state="final">Şterge elemente</target>
+      </trans-unit>
+      <trans-unit id="labels.holdDownCTRL" resname="labels.holdDownCTRL" approved="yes">
+        <source>Important: Hold down the CTRL key while toggling elements in this list!</source>
+        <target state="final">Important: Ţineţi apăsată tasta CTRL pentru a modifica selecţia!</target>
+      </trans-unit>
+      <trans-unit id="labels.revertSelection" resname="labels.revertSelection" approved="yes">
+        <source>Revert selection</source>
+        <target state="final">Revenire selectare</target>
+      </trans-unit>
+      <trans-unit id="labels.setAllCheckboxes" resname="labels.setAllCheckboxes" approved="yes">
+        <source>Select All Checkboxes</source>
+        <target state="final">Selectează tot</target>
+      </trans-unit>
+      <trans-unit id="labels.checkAll" resname="labels.checkAll" approved="yes">
+        <source>Check all</source>
+        <target state="final">Selecționare tot</target>
+      </trans-unit>
+      <trans-unit id="labels.uncheckAll" resname="labels.uncheckAll" approved="yes">
+        <source>Uncheck all</source>
+        <target state="final">Deselecționare tot</target>
+      </trans-unit>
+      <trans-unit id="labels.changeInOrig" resname="labels.changeInOrig" approved="yes">
+        <source>Changed in original translation</source>
+        <target state="final">Modificat în traducerea originală</target>
+      </trans-unit>
+      <trans-unit id="labels.expandAll" resname="labels.expandAll" approved="yes">
+        <source>Expand all</source>
+        <target state="final">Extindere tot</target>
+      </trans-unit>
+      <trans-unit id="labels.new_section" resname="labels.new_section" approved="yes">
+        <source>Create new</source>
+        <target state="final">Creează nou</target>
+      </trans-unit>
+      <trans-unit id="labels.findRecord" resname="labels.findRecord" approved="yes">
+        <source>Find records</source>
+        <target state="final">Elemente găsite</target>
+      </trans-unit>
+      <trans-unit id="labels.noRecordFound" resname="labels.noRecordFound" approved="yes">
+        <source>No record found</source>
+        <target state="final">Nici o înregistrare găsită</target>
+      </trans-unit>
+      <trans-unit id="labels.title.search" resname="labels.title.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Căutare</target>
+      </trans-unit>
+      <trans-unit id="alttext.suggestSearching" resname="alttext.suggestSearching" approved="yes">
+        <source>Searching...</source>
+        <target state="final">Căutare...</target>
+      </trans-unit>
+      <trans-unit id="ver.online" resname="ver.online" approved="yes">
+        <source>ONLINE</source>
+        <target state="final">ONLINE</target>
+      </trans-unit>
+      <trans-unit id="ver.mgm" resname="ver.mgm" approved="yes">
+        <source>Version Management</source>
+        <target state="final">Management Versiune</target>
+      </trans-unit>
+      <trans-unit id="ver.swap" resname="ver.swap" approved="yes">
+        <source>Swap/Publish</source>
+        <target state="final">Schimb/Publicare</target>
+      </trans-unit>
+      <trans-unit id="ver.swapPage" resname="ver.swapPage" approved="yes">
+        <source>Publish this version of the page including content</source>
+        <target state="final">Publică această versiune a paginii, inclusiv conţinutul</target>
+      </trans-unit>
+      <trans-unit id="TYPO3_Element_Browser" resname="TYPO3_Element_Browser" approved="yes">
+        <source>TYPO3 Element Browser</source>
+        <target state="final">Browser elemente TYPO3</target>
+      </trans-unit>
+      <trans-unit id="labels.referencesToRecord" resname="labels.referencesToRecord" approved="yes">
+        <source>(There are %s reference(s) to this record!)</source>
+        <target state="final">(Există %s referințe către această înregistrare)</target>
+      </trans-unit>
+      <trans-unit id="labels.translationsOfRecord" resname="labels.translationsOfRecord" approved="yes">
+        <source>(This record has %s translation(s) which will be deleted, too!)</source>
+        <target state="final">(Această înregistrare are %s traduceri ce vor fi de asemenea șterse!)</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.viewItem" resname="show_item.php.viewItem" approved="yes">
+        <source>View Item</source>
+        <target state="final">Vizualizare element</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.file" resname="show_item.php.file" approved="yes">
+        <source>File</source>
+        <target state="final">Fişier</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.dimensions" resname="show_item.php.dimensions" approved="yes">
+        <source>Dimensions</source>
+        <target state="final">Dimensiuni</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.filesize" resname="show_item.php.filesize" approved="yes">
+        <source>Size</source>
+        <target state="final">Mărime</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.pixels" resname="show_item.php.pixels" approved="yes">
+        <source>Pixels</source>
+        <target state="final">Pixeli</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.files" resname="show_item.php.files" approved="yes">
+        <source>files</source>
+        <target state="final">fişiere</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.cannotDisplayArchive" resname="show_item.php.cannotDisplayArchive" approved="yes">
+        <source>Sorry, TYPO3_CONF_VARS[BE][disable_exec_function] was set, so cannot display content of archive file.</source>
+        <target state="final">Ne pare rău, opțiunea TYPO3_CONF_VARS[BE][disable_exec_function] este activă deci nu putem afișa conținutul arhivei.</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.table" resname="show_item.php.table" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabelă</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.ftp_area" resname="show_item.php.ftp_area" approved="yes">
+        <source>FTP AREA</source>
+        <target state="final">ZONĂ FTP</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.pagetitle" resname="db_new.php.pagetitle" approved="yes">
+        <source>New record</source>
+        <target state="final">Înregistrare nouă</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.after" resname="db_new.php.after" approved="yes">
+        <source>after</source>
+        <target state="final">după</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.inside" resname="db_new.php.inside" approved="yes">
+        <source>inside</source>
+        <target state="final">în interiorul</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.pagetitle" resname="file_upload.php.pagetitle" approved="yes">
+        <source>Upload files</source>
+        <target state="final">Upload fişiere</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.submit" resname="file_upload.php.submit" approved="yes">
+        <source>Upload files</source>
+        <target state="final">Upload fişiere</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.files" resname="file_upload.php.files" approved="yes">
+        <source>files</source>
+        <target state="final">fişiere</target>
+      </trans-unit>
+      <trans-unit id="file_upload.dropzonehint.title" resname="file_upload.dropzonehint.title" approved="yes">
+        <source>Drag &amp; drop to upload files</source>
+        <target state="final">Drag &amp; drop pentru a încărca fișiere</target>
+      </trans-unit>
+      <trans-unit id="file_upload.dropzonehint.message" resname="file_upload.dropzonehint.message" approved="yes">
+        <source>Drop your files here, or &lt;u&gt;click, browse &amp; choose files&lt;/u&gt;</source>
+        <target state="final">Glisați fișierele aici, sau faceți &lt;u&gt;click, răsfoiți și selecționați fișierele&lt;/u&gt;</target>
+      </trans-unit>
+      <trans-unit id="file_upload.select-and-submit" resname="file_upload.select-and-submit" approved="yes">
+        <source>Select &amp; upload files</source>
+        <target state="final">Selecție și încărcare fișiere</target>
+      </trans-unit>
+      <trans-unit id="file_upload.maxFileSizeExceeded" resname="file_upload.maxFileSizeExceeded" approved="yes">
+        <source>File &quot;{0}&quot; exceeds maximum file size of {1}!</source>
+        <target state="final">Fișierul "{0}" depășește mărimea maximă permisă de {1}!</target>
+      </trans-unit>
+      <trans-unit id="file_upload.fileNotAllowed" resname="file_upload.fileNotAllowed" approved="yes">
+        <source>Filename &quot;{0}&quot; is not allowed!</source>
+        <target state="final">Fișierul "{0}" nu este autorizat!</target>
+      </trans-unit>
+      <trans-unit id="file_upload.fileExtensionExpected" resname="file_upload.fileExtensionExpected" approved="yes">
+        <source>Upload failed! A file with &quot;{0}&quot; extension is expected!</source>
+        <target state="final">Încărcarea a eșuat! Este așteptat un fișier cu extensia "{0}" !</target>
+      </trans-unit>
+      <trans-unit id="file_upload.uploadFailed" resname="file_upload.uploadFailed" approved="yes">
+        <source>Upload of file &quot;{0}&quot; failed!</source>
+        <target state="final">Încărcarea fișierului "{0}" a eșuat!</target>
+      </trans-unit>
+      <trans-unit id="file_upload.upload-in-progress" resname="file_upload.upload-in-progress" approved="yes">
+        <source>File upload in progress...</source>
+        <target state="final">Încărcare fișier în curs...</target>
+      </trans-unit>
+      <trans-unit id="file_upload.upload-progress-info" resname="file_upload.upload-progress-info" approved="yes">
+        <source>Uploading file {0} out of {1} files.</source>
+        <target state="final">Încărcare fișier {0} dintr-un total de {1} fișiere.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.upload-finished" resname="file_upload.upload-finished" approved="yes">
+        <source>Upload complete! Filelist reloading...</source>
+        <target state="final">Încărcare completă! Lista de fișiere se reîncarcă...</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.rename" resname="file_upload.actions.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">Redenumire</target>
+      </trans-unit>
+      <trans-unit id="file_upload.button.cancel" resname="file_upload.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Anulare</target>
+      </trans-unit>
+      <trans-unit id="file_rename.actions.cancel" resname="file_rename.actions.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Anulare</target>
+      </trans-unit>
+      <trans-unit id="file_rename.php.pagetitle" resname="file_rename.php.pagetitle" approved="yes">
+        <source>Rename</source>
+        <target state="final">Redenumire</target>
+      </trans-unit>
+      <trans-unit id="file_rename.php.submit" resname="file_rename.php.submit" approved="yes">
+        <source>Rename</source>
+        <target state="final">Redenumire</target>
+        <note>This label is not used since TYPO3 v9.</note>
+      </trans-unit>
+      <trans-unit id="file_edit.php.pagetitle" resname="file_edit.php.pagetitle" approved="yes">
+        <source>Edit</source>
+        <target state="final">Editare</target>
+      </trans-unit>
+      <trans-unit id="file_clipupload.php.warning_head" resname="file_clipupload.php.warning_head" approved="yes">
+        <source>Upload path error</source>
+        <target state="final">Calea de încărcare este greşită</target>
+      </trans-unit>
+      <trans-unit id="file_clipupload.php.warning" resname="file_clipupload.php.warning" approved="yes">
+        <source>No upload-folder is found. You should create a TEMP-folder ("_temp_") in the root of one of your mounts first!</source>
+        <target state="final">Nu pot găsi directorul de upload. Ar trebui creat un director temporar ("_temp") în una din rădăcinile tale de mount!</target>
+      </trans-unit>
+      <trans-unit id="mess.redraw" resname="mess.redraw" approved="yes">
+        <source>Redrawing the page will discard the current data. Do you want to continue?</source>
+        <target state="final">Redesenarea paginii va duce la pierderea datelor. Doriţi să continuaţi?</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login" resname="mess.refresh_login" xml:space="preserve" approved="yes">
+				<source>Your login has probably expired.
+Do you want to refresh it now?</source>
+			<target state="final">Sesiunea de conectare a expirat. Doriţi să vă reconectaţi acum?</target></trans-unit>
+      <trans-unit id="mess.refresh_login_refresh_button" resname="mess.refresh_login_refresh_button" approved="yes">
+        <source>Stay logged in!</source>
+        <target state="final">Rămîneți conectat!</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_direct_logout_button" resname="mess.refresh_direct_logout_button" approved="yes">
+        <source>No, log out.</source>
+        <target state="final">Nu, deconectează.</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_logging_in" resname="mess.refresh_login_logging_in" approved="yes">
+        <source>Logging in...</source>
+        <target state="final">Conectare...</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_failed" resname="mess.refresh_login_failed" approved="yes">
+        <source>Login failed</source>
+        <target state="final">Conectarea a eșuat</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_failed_message" resname="mess.refresh_login_failed_message" approved="yes">
+        <source>Password not correct.</source>
+        <target state="final">Parola nu este corectă.</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_title" resname="mess.refresh_login_title" approved="yes">
+        <source>Refresh Login to TYPO3 (User: %s)</source>
+        <target state="final">Actualizare conexiune la TYPO3 (Utilizator: %s)</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_username" resname="mess.refresh_login_username" approved="yes">
+        <source>Username</source>
+        <target state="final">Utilizator</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_password" resname="mess.refresh_login_password" approved="yes">
+        <source>Password</source>
+        <target state="final">Parolă</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_button" resname="mess.refresh_login_button" approved="yes">
+        <source>Login</source>
+        <target state="final">Conectare</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_exit_button" resname="mess.refresh_exit_button" approved="yes">
+        <source>Exit</source>
+        <target state="final">Ieșire</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_emptyPassword" resname="mess.refresh_login_emptyPassword" approved="yes">
+        <source>Empty password is not allowed!</source>
+        <target state="final">O parolă vidă nu este acceptată!</target>
+      </trans-unit>
+      <trans-unit id="mess.please_wait" resname="mess.please_wait" approved="yes">
+        <source>Please wait ...</source>
+        <target state="final">Vă rugăm așteptați...</target>
+      </trans-unit>
+      <trans-unit id="mess.be_locked" resname="mess.be_locked" approved="yes">
+        <source>The TYPO3 backend is currently locked for maintenance. Leave this browser window open and the backend will automatically become available again once maintenance is complete.</source>
+        <target state="final">Backend-ul TYPO3 este momentan blocat din motive de mentenanță. Lăsați această fereastră deschisă și de îndată ce mentenanța este completă pagina va redeveni automat disponibilă.</target>
+      </trans-unit>
+      <trans-unit id="mess.login_about_to_expire" resname="mess.login_about_to_expire" approved="yes">
+        <source>Your TYPO3 login is about to expire. Please confirm that you want to stay logged in.</source>
+        <target state="final">Conexiunea TYPO3 este pe cale să expire. Vă rugăm confirmați dacă doriți să rămîneți conectat.</target>
+      </trans-unit>
+      <trans-unit id="mess.login_about_to_expire_title" resname="mess.login_about_to_expire_title" approved="yes">
+        <source>TYPO3 login expiration notice</source>
+        <target state="final">Aviz de expirare a conexiunii TYPO3</target>
+      </trans-unit>
+      <trans-unit id="mess.login_expired" resname="mess.login_expired" approved="yes">
+        <source>Your TYPO3 login has expired. You need to login again if you want to continue. Otherwise you can close the current browser window.</source>
+        <target state="final">Conexiunea TYPO3 a expirat. Trebuie să vă reconectați dacă doriți să continuați. Dacă nu doriți să vă reconectați puteți să închideți fereastra navigatorului.</target>
+      </trans-unit>
+      <trans-unit id="mess.noSelItemForEdit" resname="mess.noSelItemForEdit" approved="yes">
+        <source>Please select one or more items in the list before you can edit.</source>
+        <target state="final">Selectaţi unul sau mai multe elemente din listă pentru a le putea edita.</target>
+      </trans-unit>
+      <trans-unit id="mess.move_into" resname="mess.move_into" approved="yes">
+        <source>Move "%s" into "%s"?</source>
+        <target state="final">Mutaţi "%s" în "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.move_after" resname="mess.move_after" approved="yes">
+        <source>Move "%s" to after "%s"?</source>
+        <target state="final">Mutaţi "%s" după "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_into" resname="mess.copy_into" approved="yes">
+        <source>Copy "%s" into "%s"?</source>
+        <target state="final">Copiaţi "%s" în "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_after" resname="mess.copy_after" approved="yes">
+        <source>Copy "%s" to after "%s"?</source>
+        <target state="final">Copiaţi "%s" după "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_into" resname="mess.copycb_into" approved="yes">
+        <source>Copy all elements (%s) from the clipboard into "%s"?</source>
+        <target state="final">Copiaţi toate elementele ("%s") din clipboard în "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_after" resname="mess.copycb_after" approved="yes">
+        <source>Copy all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target state="final">Copiaţi toate elementele ("%s") din clipboard după "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_into" resname="mess.movecb_into" approved="yes">
+        <source>Move all elements (%s) from the clipboard into "%s"?</source>
+        <target state="final">Mutaţi toate elementele ("%s") din clipboard în "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_after" resname="mess.movecb_after" approved="yes">
+        <source>Move all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target state="final">Mutaţi toate elementele ("%s") din clipboard după "%s"?</target>
+      </trans-unit>
+      <trans-unit id="rm.menu" resname="rm.menu" approved="yes">
+        <source>[menu]</source>
+        <target state="final">[meniu]</target>
+      </trans-unit>
+      <trans-unit id="rm.newDoc" resname="rm.newDoc" approved="yes">
+        <source>New</source>
+        <target state="final">Nou</target>
+      </trans-unit>
+      <trans-unit id="rm.closeDoc" resname="rm.closeDoc" approved="yes">
+        <source>Close</source>
+        <target state="final">Închidere</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_clearCache" resname="rm.clearCache_clearCache" approved="yes">
+        <source>Clear cache</source>
+        <target state="final">Golește cache</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_thisPage" resname="rm.clearCache_thisPage" approved="yes">
+        <source>This page</source>
+        <target state="final">Această pagină</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_all" resname="rm.clearCache_all" approved="yes">
+        <source>Clear FE cache</source>
+        <target state="final">Golește cache FE</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_pages" resname="rm.clearCache_pages" approved="yes">
+        <source>Clear Page Cache</source>
+        <target state="final">Golește Cache pagină</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_allTypo3Conf" resname="rm.clearCache_allTypo3Conf" approved="yes">
+        <source>Clear cache in typo3conf/</source>
+        <target state="final">Șterge cache-ul din typo3conf/</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCacheMenu_all" resname="rm.clearCacheMenu_all" approved="yes">
+        <source>Clear all caches</source>
+        <target state="final">Golește întreg cache-ul</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCacheMenu_pages" resname="rm.clearCacheMenu_pages" approved="yes">
+        <source>Clear page content cache</source>
+        <target state="final">Golește cache-ul conținutului paginii</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCacheMenu_allTypo3Conf" resname="rm.clearCacheMenu_allTypo3Conf" approved="yes">
+        <source>Clear configuration cache</source>
+        <target state="final">Golește cache-ul de configurare</target>
+      </trans-unit>
+      <trans-unit id="flushPageCachesTitle" resname="flushPageCachesTitle" approved="yes">
+        <source>Flush frontend caches</source>
+        <target state="final">Golește cache frontend</target>
+      </trans-unit>
+      <trans-unit id="flushPageCachesDescription" resname="flushPageCachesDescription" approved="yes">
+        <source>Clear frontend and page-related caches.</source>
+        <target state="final">Golește cache frontend și cache-ul specific paginilor.</target>
+      </trans-unit>
+      <trans-unit id="flushAllCachesTitle2" resname="flushAllCachesTitle2" approved="yes">
+        <source>Flush all caches</source>
+        <target state="final">Golește întreg cache-ul</target>
+      </trans-unit>
+      <trans-unit id="rm.adminFunctions" resname="rm.adminFunctions" approved="yes">
+        <source>Admin functions</source>
+        <target state="final">Funcţii administrative</target>
+      </trans-unit>
+      <trans-unit id="rm.edit" resname="rm.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Editare</target>
+      </trans-unit>
+      <trans-unit id="rm.export" resname="rm.export" approved="yes">
+        <source>Export</source>
+        <target state="final">Export</target>
+      </trans-unit>
+      <trans-unit id="rm.delete" resname="rm.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Ştergere</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileNotDeletedHasReferences" resname="message.header.fileNotDeletedHasReferences" approved="yes">
+        <source>File not deleted</source>
+        <target state="final">Fișierul nu a fost șters</target>
+      </trans-unit>
+      <trans-unit id="message.header.folderNotDeletedHasFilesWithReferences" resname="message.header.folderNotDeletedHasFilesWithReferences" approved="yes">
+        <source>Folder not deleted</source>
+        <target state="final">Directorul nu a fost șters</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileDeleted" resname="message.header.fileDeleted" approved="yes">
+        <source>File deleted</source>
+        <target state="final">Fișier șters</target>
+      </trans-unit>
+      <trans-unit id="message.description.fileDeleted" resname="message.description.fileDeleted" approved="yes">
+        <source>The file "%s" was successfully deleted.</source>
+        <target state="final">Fișierul "%s" a fost șters cu succes.</target>
+      </trans-unit>
+      <trans-unit id="message.header.folderDeleted" resname="message.header.folderDeleted" approved="yes">
+        <source>Folder deleted</source>
+        <target state="final">Director șters</target>
+      </trans-unit>
+      <trans-unit id="message.description.folderDeleted" resname="message.description.folderDeleted" approved="yes">
+        <source>The folder "%s" was successfully deleted.</source>
+        <target state="final">Directorul "%s" a fost șters cu succes.</target>
+      </trans-unit>
+      <trans-unit id="message.header.folderNotDeletedHasFiles" resname="message.header.folderNotDeletedHasFiles" approved="yes">
+        <source>Folder not deleted</source>
+        <target state="final">Directorul nu a fost șters</target>
+      </trans-unit>
+      <trans-unit id="message.description.folderNotDeletedHasFiles" resname="message.description.folderNotDeletedHasFiles" approved="yes">
+        <source>The folder cannot be deleted since it still contains files.</source>
+        <target state="final">Directorul nu poate fi șters din moment ce conține fișiere.</target>
+      </trans-unit>
+      <trans-unit id="buttons.logout" resname="buttons.logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">Deconectare</target>
+      </trans-unit>
+      <trans-unit id="buttons.exit" resname="buttons.exit" approved="yes">
+        <source>Exit</source>
+        <target state="final">Ieșire</target>
+      </trans-unit>
+      <trans-unit id="buttons.selMenu_modules" resname="buttons.selMenu_modules" approved="yes">
+        <source>MODULES</source>
+        <target state="final">MODULES</target>
+      </trans-unit>
+      <trans-unit id="buttons.clear" resname="buttons.clear" approved="yes">
+        <source>Clear</source>
+        <target state="final">Golire</target>
+      </trans-unit>
+      <trans-unit id="buttons.clipboard" resname="buttons.clipboard" approved="yes">
+        <source>Clipboard</source>
+        <target state="final">Clipboard</target>
+      </trans-unit>
+      <trans-unit id="cm.copy" resname="cm.copy" approved="yes">
+        <source>Copy</source>
+        <target state="final">Copiere</target>
+      </trans-unit>
+      <trans-unit id="cm.cut" resname="cm.cut" approved="yes">
+        <source>Cut</source>
+        <target state="final">Tăiere</target>
+      </trans-unit>
+      <trans-unit id="cm.view" resname="cm.view" approved="yes">
+        <source>Show</source>
+        <target state="final">Vizualizare</target>
+      </trans-unit>
+      <trans-unit id="cm.edit" resname="cm.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Editare</target>
+      </trans-unit>
+      <trans-unit id="cm.editcontent" resname="cm.editcontent" approved="yes">
+        <source>Edit content</source>
+        <target state="final">Editare conținut</target>
+      </trans-unit>
+      <trans-unit id="cm.editMetadata" resname="cm.editMetadata" approved="yes">
+        <source>Edit Metadata of this file</source>
+        <target state="final">Editare metainformații pentru acest fișier</target>
+      </trans-unit>
+      <trans-unit id="cm.new" resname="cm.new" approved="yes">
+        <source>New</source>
+        <target state="final">Nou</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteinto" resname="cm.pasteinto" approved="yes">
+        <source>Paste into</source>
+        <target state="final">Lipeşte în</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteafter" resname="cm.pasteafter" approved="yes">
+        <source>Paste after</source>
+        <target state="final">Lipeşte după</target>
+      </trans-unit>
+      <trans-unit id="cm.select" resname="cm.select" approved="yes">
+        <source>Select</source>
+        <target state="final">Selectează</target>
+      </trans-unit>
+      <trans-unit id="cm.deselect" resname="cm.deselect" approved="yes">
+        <source>Deselect</source>
+        <target state="final">Deselectează</target>
+      </trans-unit>
+      <trans-unit id="cm.selectto" resname="cm.selectto" approved="yes">
+        <source>Select to</source>
+        <target state="final">Selectează pînă la</target>
+      </trans-unit>
+      <trans-unit id="cm.deselectto" resname="cm.deselectto" approved="yes">
+        <source>Deselect to</source>
+        <target state="final">Deselectează pînă la</target>
+      </trans-unit>
+      <trans-unit id="cm.delete" resname="cm.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Ştergere</target>
+      </trans-unit>
+      <trans-unit id="cm.hide" resname="cm.hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">Ascunde</target>
+      </trans-unit>
+      <trans-unit id="cm.unhide" resname="cm.unhide" approved="yes">
+        <source>Unhide</source>
+        <target state="final">Arată</target>
+      </trans-unit>
+      <trans-unit id="cm.online" resname="cm.online" approved="yes">
+        <source>Turn online</source>
+        <target state="final">Pornește</target>
+      </trans-unit>
+      <trans-unit id="cm.offline" resname="cm.offline" approved="yes">
+        <source>Turn offline</source>
+        <target state="final">Oprește</target>
+      </trans-unit>
+      <trans-unit id="cm.upload" resname="cm.upload" approved="yes">
+        <source>Upload Files</source>
+        <target state="final">Upload fişiere</target>
+      </trans-unit>
+      <trans-unit id="cm.rename" resname="cm.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">Redenumire</target>
+      </trans-unit>
+      <trans-unit id="cm.open" resname="cm.open" approved="yes">
+        <source>Open</source>
+        <target state="final">Deschide</target>
+      </trans-unit>
+      <trans-unit id="cm.unzip" resname="cm.unzip" approved="yes">
+        <source>Unzip</source>
+        <target state="final">Dezarhivare</target>
+      </trans-unit>
+      <trans-unit id="cm.info" resname="cm.info" approved="yes">
+        <source>Info</source>
+        <target state="final">Info</target>
+      </trans-unit>
+      <trans-unit id="cm.createnew" resname="cm.createnew" approved="yes">
+        <source>Create new</source>
+        <target state="final">Creează nou</target>
+      </trans-unit>
+      <trans-unit id="cm.createnew.link" resname="cm.createnew.link" approved="yes">
+        <source>Create new %s</source>
+        <target state="final">Creează nouă %s</target>
+      </trans-unit>
+      <trans-unit id="cm.tempMountPoint" resname="cm.tempMountPoint" approved="yes">
+        <source>Mount as treeroot</source>
+        <target state="final">Mount ca director rădăcină</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_into" resname="cm.copyPage_into" approved="yes">
+        <source>Copy page into</source>
+        <target state="final">Copie pagină în</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_after" resname="cm.copyPage_after" approved="yes">
+        <source>Copy page after</source>
+        <target state="final">Copie pagină după</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_into" resname="cm.movePage_into" approved="yes">
+        <source>Move page into</source>
+        <target state="final">Mută pagină în</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_after" resname="cm.movePage_after" approved="yes">
+        <source>Move page after</source>
+        <target state="final">Mută pagină după</target>
+      </trans-unit>
+      <trans-unit id="cm.copyFolder_into" resname="cm.copyFolder_into" approved="yes">
+        <source>Copy folder into</source>
+        <target state="final">Copie director în</target>
+      </trans-unit>
+      <trans-unit id="cm.moveFolder_into" resname="cm.moveFolder_into" approved="yes">
+        <source>Move folder into</source>
+        <target state="final">Mută director în</target>
+      </trans-unit>
+      <trans-unit id="cm.createNewRelation" resname="cm.createNewRelation" approved="yes">
+        <source>Create new relation</source>
+        <target state="final">Creare relație nouă</target>
+      </trans-unit>
+      <trans-unit id="cm.branchActions" resname="cm.branchActions" approved="yes">
+        <source>Branch Actions</source>
+        <target state="final">Acțiuni ramură</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPasteActions" resname="cm.copyPasteActions" approved="yes">
+        <source>Page Actions</source>
+        <target state="final">Acțiuni pagină</target>
+      </trans-unit>
+      <trans-unit id="cm.collapseBranch" resname="cm.collapseBranch" approved="yes">
+        <source>Collapse Branch</source>
+        <target state="final">Colaps ramură</target>
+      </trans-unit>
+      <trans-unit id="cm.expandBranch" resname="cm.expandBranch" approved="yes">
+        <source>Expand Branch</source>
+        <target state="final">Extindere ramură</target>
+      </trans-unit>
+      <trans-unit id="cm.more" resname="cm.more" approved="yes">
+        <source>More options...</source>
+        <target state="final">Mai multe opţiuni...</target>
+      </trans-unit>
+      <trans-unit id="tree.defaultPageTitle" resname="tree.defaultPageTitle" approved="yes">
+        <source>[Default Title]</source>
+        <target state="final">[Titlu implicit]</target>
+      </trans-unit>
+      <trans-unit id="tree.activeFilterMode" resname="tree.activeFilterMode" approved="yes">
+        <source>Active Filtering Mode</source>
+        <target state="final">Mod filtru activ</target>
+      </trans-unit>
+      <trans-unit id="tree.buttonNewNode" resname="tree.buttonNewNode" approved="yes">
+        <source>Create new pages</source>
+        <target state="final">Creare pagini noi</target>
+      </trans-unit>
+      <trans-unit id="tree.buttonFilter" resname="tree.buttonFilter" approved="yes">
+        <source>Filter tree</source>
+        <target state="final">Filtrare arborescență</target>
+      </trans-unit>
+      <trans-unit id="warning.install_password" resname="warning.install_password" approved="yes">
+        <source>The Install Tool is still using the default password "joh316". Update this within the %sAbout section%s of the Install Tool.</source>
+        <target state="final">Unealta de Instalare încă folosește parola implicită "joh316". Modificați parola în secțiunea %sAbout section%s din unealta de Instalare.</target>
+      </trans-unit>
+      <trans-unit id="warning.installtool_default_password" resname="warning.installtool_default_password" approved="yes">
+        <source>The Install Tool is still using the default password "joh316". Update this within the %sImportant actions section%s of the Install Tool.</source>
+        <target state="final">Unealta de Instalare încă folosește parola implicită "joh316". Modificați parola în secțiunea %sImportant actions section%s din unealta de Instalare.</target>
+      </trans-unit>
+      <trans-unit id="warning.backend_admin" resname="warning.backend_admin" approved="yes">
+        <source>The default backend user "admin" with password "password" is still present. %sEdit this account%s, either deleting it completely or changing the username and password.</source>
+        <target state="final">Utilizatorul implicit backend "admin" cu parola "password" este încă prezent. %Modificați acest cont%s, fie ștergându-l complet fie modificând utilizatorul și parola.</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_pattern" resname="warning.file_deny_pattern" approved="yes">
+        <source>The value of fileDenyPattern is not set to its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</source>
+        <target state="final">Valoarea fileDenyPattern nu este setată la cea implicită:%s Dacă TYPO3 rulează pe Apache, o valoare customizată ar putea permite utilizatorilor backend sau frontend să execute scripturi php periculoase.</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_pattern_partsNotPresent" resname="warning.file_deny_pattern_partsNotPresent" approved="yes">
+        <source>Security Risk! The new value of fileDenyPattern misses parts of its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</source>
+        <target state="final">Risc de securitate! Noua valoare fileDenyPattern nu e setată la cea implicită:%s Dacă TYPO3 rulează pe Apache, o versiune customizată ar putea permite utilizatorilor backend sau frontend să execute scripturi periculoase.</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_htaccess" resname="warning.file_deny_htaccess" approved="yes">
+        <source>The current value of fileDenyPattern allows to upload/create files with the name ".htaccess". If TYPO3 is running on Apache, this enables backend or frontend users to create and execute php scripts. Please reset the value of fileDenyPattern to its default.</source>
+        <target state="final">Valoarea curentă fileDenyPattern permite încărcarea/crearea de fişiere cu numele ".htaccess". Dacă TYPO3 rulează pe Apache, acest lucru permite utiizatorilor backend sau frontend să creeze şi să execute scripturi php. Vă rugăm să resetaţi valoarea fileDenyPattern la cea implicită.</target>
+      </trans-unit>
+      <trans-unit id="warning.install_enabled" resname="warning.install_enabled" approved="yes">
+        <source>The Install Tool is permanently enabled. Delete the file "%s" when you have finished setting up TYPO3.</source>
+        <target state="final">Unealta de Instalare este activă permanent. Ștergeți fișierul "%s" odată ce ați terminat de configurat TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="warning.install_enabled_cmd" resname="warning.install_enabled_cmd" approved="yes">
+        <source>Click to remove the file now!</source>
+        <target state="final">Click pentru a șterge fișierul acum!</target>
+      </trans-unit>
+      <trans-unit id="warning.install_update" resname="warning.install_update" approved="yes">
+        <source>This installation is not configured for the TYPO3 version it is running. If you did so intentionally, this message can be safely ignored. If you are unsure, visit the Update Wizard section of the %sInstall Tool%s to see how TYPO3 would change.</source>
+        <target state="final">Această instalare nu este configurată pentru versiunea TYPO3 curentă. Dacă ați făcut asta intenționat, acest mesaj poate fi ignorat. Dacă nu sunteți sigur, verificați secțiunea Actualizare Asistent din %sUnealta de Instalare%s pentru a vedea cum s-ar putea modifica TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="warning.header" resname="warning.header" approved="yes">
+        <source>Important Notice!</source>
+        <target state="final">Notă importantă!</target>
+      </trans-unit>
+      <trans-unit id="warning.backend_reference" resname="warning.backend_reference" approved="yes">
+        <source>The Reference Index table is empty which is likely the result of a recent TYPO3 upgrade. Please go to %sTools&gt;DB Check%s and update the reference index.</source>
+        <target state="final">Tabela de index a referințelor este goală ceea ce e posibil să fie rezultatul unei actualizări făcute TYPO3. Vă rugăm mergeți la %sUnelte&gt;Verificare BD%s și actualizați indexul referințelor.</target>
+      </trans-unit>
+      <trans-unit id="warning.file_missing" resname="warning.file_missing" approved="yes">
+        <source>File is missing!</source>
+        <target state="final">Fișierul lipsește!</target>
+      </trans-unit>
+      <trans-unit id="warning.header.storage_is_no_public" resname="warning.header.storage_is_no_public" approved="yes">
+        <source>Storage is not public</source>
+        <target state="final">Magazia nu este publică</target>
+      </trans-unit>
+      <trans-unit id="warning.message.storage_is_no_public" resname="warning.message.storage_is_no_public" approved="yes">
+        <source>The storage has been marked to be "publicly available" but is not detected as such by the driver. The setting has been reverted.</source>
+        <target state="final">Magazia a fost marcată să fie "disponibilă public" dar nu e detectată ca fiind așa de către driver. Această setare a fost inversată.</target>
+      </trans-unit>
+      <trans-unit id="warning.inline_use_combination" resname="warning.inline_use_combination" approved="yes">
+        <source>This record will be modified globally.</source>
+        <target state="final">Această înregistrare va fi modificată global.</target>
+      </trans-unit>
+      <trans-unit id="error.formProtection.tokenInvalid" resname="error.formProtection.tokenInvalid" approved="yes">
+        <source>Validating the security token of this form has failed. Please reload the form and submit it again.</source>
+        <target state="final">Validarea token-ului de securitate pentru acest formular a eșuat. Vă rugăm reîncărcați formularul și retrimiteți-l.</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.shortcuts" resname="toolbarItems.shortcuts" approved="yes">
+        <source>Shortcuts</source>
+        <target state="final">Scurtături</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.shortcut" resname="toolbarItems.shortcut" approved="yes">
+        <source>Shortcut</source>
+        <target state="final">Scurtătură</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.shortcutsGroup" resname="toolbarItems.shortcutsGroup" approved="yes">
+        <source>Shortcut Group</source>
+        <target state="final">Grup de scurtături</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.shortcutsEdit" resname="toolbarItems.shortcutsEdit" approved="yes">
+        <source>Edit Shortcut</source>
+        <target state="final">Editare scurtătură</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.shortcutsDelete" resname="toolbarItems.shortcutsDelete" approved="yes">
+        <source>Delete Shortcut</source>
+        <target state="final">Ștergere scurtătură</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.bookmarks" resname="toolbarItems.bookmarks" approved="yes">
+        <source>Bookmarks</source>
+        <target state="final">Favorite</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.bookmark" resname="toolbarItems.bookmark" approved="yes">
+        <source>Bookmark</source>
+        <target state="final">Favorit</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.bookmarksGroup" resname="toolbarItems.bookmarksGroup" approved="yes">
+        <source>Bookmark group</source>
+        <target state="final">Grup favorite</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.bookmarksEdit" resname="toolbarItems.bookmarksEdit" approved="yes">
+        <source>Edit bookmark</source>
+        <target state="final">Editare favorit</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.bookmarksDelete" resname="toolbarItems.bookmarksDelete" approved="yes">
+        <source>Delete bookmark</source>
+        <target state="final">Ștergere favorit</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.search" resname="toolbarItems.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Căutare</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.workspace" resname="toolbarItems.workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Spațiu de lucru</target>
+      </trans-unit>
+      <trans-unit id="extension.not.installed" resname="extension.not.installed" approved="yes">
+        <source>Extension "%s" is not installed.</source>
+        <target state="final">Extensia "%s" nu este instalată.</target>
+      </trans-unit>
+      <trans-unit id="link.to.filefile.correctly" resname="link.to.filefile.correctly" approved="yes">
+        <source>Please, do not link to this page.</source>
+        <target state="final">Vă rugăm nu creați linkuri spre această pagină.</target>
+      </trans-unit>
+      <trans-unit id="csh_tooltip_loading" resname="csh_tooltip_loading" approved="yes">
+        <source>Loading help...</source>
+        <target state="final">Încărcare ajutor...</target>
+      </trans-unit>
+      <trans-unit id="error.database_schema_mismatch" resname="error.database_schema_mismatch" approved="yes">
+        <source>A SQL error occurred. This may indicate a schema mismatch between TCA and the database. Try running database compare in the Install Tool.</source>
+        <target state="final">A intervenit o eroare SQL. Aceasta poate indica o neconcordanță între TCA și baza de date. Încercați să rulați compararea bazei de date în unealta de Instalare.</target>
+      </trans-unit>
+      <trans-unit id="error.database_schema_mismatch_title" resname="error.database_schema_mismatch_title" approved="yes">
+        <source>Database Error</source>
+        <target state="final">Eroare bază de date</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
