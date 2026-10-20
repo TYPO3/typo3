@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1475977066" source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="tr">
+    <header/>
+    <body>
+      <trans-unit id="validation.error.1613126216" resname="validation.error.1613126216" xml:space="preserve" approved="yes">
+                <source>The file extension provided "%s" does not match to expected media types. Please refer to the description of this field.</source>
+            <target state="final">Sağlanan dosya uzantısı "%s", beklenen medya türleriyle eşleşmiyor. Lütfen bu alanın açıklamasına bakın.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
