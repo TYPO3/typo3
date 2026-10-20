@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814994" source-language="en" datatype="plaintext" original="EXT:sys_action/Resources/Private/Language/locallang_csh_sysaction.xlf" date="2011-10-17T20:22:37Z" product-name="sys_action" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>An 'Action' is a configuration of a specific task which may be performed by assigned usergroups via the Task Center.</source>
+        <target state="final">Eine "Aktion" ist ein vordefinierter Arbeitsablauf, welcher im Aufgabenzentrum von dazu autorisierten Benutzergruppen gestartet werden kann.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>Currently an Action may be configured to create additional backend usergroups without being and admin-user and by selecting from a limited set of options. Another option is to let an action initiate a SQL SELECT-query in the database and return the result as a CSV file.
+Actions can be assigned to a Backend usergroup and they are activated by a single click in the Task Center.</source>
+			<target state="final">Derzeit können Aktionen dazu verwendet werden, zusätzliche Backend-Benutzer anzulegen (ohne selbst Administrator zu sein). Desweiteren können Sie vordefinierte Datenbankabfragen (SELECT FROM) als Aktion definieren. Das Abfrageergebnis wird dabei in einer CSV-Datei (kommagetrennte Werteliste) zurückgeliefert. Aktionen können Backend-Benutzergruppen zugeordnet und durch einen einzigen Mausklick im Aufgabenzentrum ausgelöst werden.</target></trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the title of the action. This is shown in the list of available actions in the Task Center.</source>
+        <target state="final">Geben Sie einen Namen für die Aktion an. Dieser Name wird in der Übersicht der verfügbaren Aktionen innerhalb des Aufgabenzentrums angezeigt.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Describe what the action does or allows to do.</source>
+        <target state="final">Beschreiben Sie, was genau die Aktion bewirkt.</target>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Check this option if you wish to disable the availability of the action or non-admin users.</source>
+        <target state="final">Wählen Sie diese Option, wenn Sie die Aktion vor normalen Benutzern verstecken wollen.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>This option is a great way to disable an action during changes made to it because it still allows you as an 'Admin'-user to activate it for test purposes.</source>
+        <target state="final">Damit ist es Ihnen als Administrator möglich, eine Aktion zu entwickeln oder zu verändern. Während der Entwicklungsphase ist die Aktion dann nur für Administratoren sichtbar und nur diese können sie auch ausführen.</target>
+      </trans-unit>
+      <trans-unit id="type.description" resname="type.description" approved="yes">
+        <source>Select the action type.</source>
+        <target state="final">Wählen Sie die Art der Aktion.</target>
+      </trans-unit>
+      <trans-unit id="type.details" resname="type.details" xml:space="preserve" approved="yes">
+				<source>&lt;strong&gt;"Create Backend User"&lt;/strong&gt; allows to create backend users with a limited set of options. This action type is meant for semi-administrators among your users which is in charge of daily user administration - still without being full fledged 'Admin'-users with 'a License to Kill everything'.
+When you select this option, you get to enter a 'template' user, enter a prefix which the new users will automatically have and whether or not a user home-dir is created in the process. Finally you can select a limited number of usergroups which the can be selected among.
+
+&lt;strong&gt;"SQL-query"&lt;/strong&gt; allows to make a fixed SQL SELECT-query in the database returned as CSV lists. When you have created an action of this type, you need to go to the System &gt; DB check (prior to v7 this can be found on Tools &gt; DB check) module and enter the Advanced Search feature. Here you can design your SQL-query. When you have designed it to select what you want correctly, you can select this action (by it's name) and save the query to the action there. From that point it will be effective from the Task Center. (Notice that the form of output selected in the Advanced Search function is also stored, so make sure to select CSV output there!)</source>
+			<target state="final">&lt;strong&gt;"Neuen Backend-Benutzer anlegen"&lt;/strong&gt; erlaubt es, neue Benutzer mit klar definierten Rechten anzulegen. Mit diesem Aktionstyp können Sie die Benutzerverwaltung an andere Systembenutzer delegieren, ohne diesen dazu gleich volle Administrationsrechte zu erteilen.
+Wenn Sie diese Option wählen, müssen Sie festlegen, welchen bereits vorhandenen Benutzer Sie als "Vorlage" für neue Benutzer verwenden wollen, welches Namenspräfix durch diese Aktion neu erstellte Benutzer erhalten sollen und ob zusammen mit dem Benutzer gleichzeitig auch ein entsprechendes Heimatverzeichnis erstellt werden soll. Abschließend können Sie noch festlegen, welchen Benutzerguppen neu angelegte Benutzer zugewiesen werden können.
+
+&lt;strong&gt;"SQL-Abfrage"&lt;/strong&gt; erlaubt es, eine vordefinierte Datenbankabfrage (SQL SELECT) auszuführen. Das Ergebnis dieser Abfrage wird dann als CSV-Datei zurückgeliefert. Nachdem Sie die Aktion angelegt haben, müssen Sie noch das Modul Werkzeuge &gt; DB Überprüfung und dort die erweterten Einstellungen aufrufen. Dort können Sie die eigentliche SQL-Abfrage erstellen und abspeichern. Sobald die Abfrage das gewünschte Ergebnis liefert, können Sie diese Abfrage der eben erstellten Aktion zuweisen, indem Sie im Menüpunkt "Laden/Speichern" den Namen der Aktion auswählen und dann abspeichern. Danach steht die Aktion dann im Aufgabenzentrum zur Verfügung. Achten Sie darauf, dass Sie als Ausgabeformat für die Datenbankabfrage CSV gewählt haben!</target></trans-unit>
+      <trans-unit id="assign_to_groups.description" resname="assign_to_groups.description" approved="yes">
+        <source>Select the backend users groups allowed to activate the action in the Task Center.</source>
+        <target state="final">Wählen Sie die Backend-Benutzergruppen, denen Sie diese Aktion im Aufgabenzentrum zur Verfügung stellen wollen.</target>
+      </trans-unit>
+      <trans-unit id="t1_userprefix.description" resname="t1_userprefix.description" approved="yes">
+        <source>Enter a prefix which is forcibly prepended to new usernames (eg. "news_")</source>
+        <target state="final">Geben Sie einen Präfix an, den durch eine Aktion neu angelegte Benutzernamen automatisch erhalten sollen (z. B. "neu_")</target>
+      </trans-unit>
+      <trans-unit id="t1_allowed_groups.description" resname="t1_allowed_groups.description" approved="yes">
+        <source>Enter the Backend user groups which the user performing the action is able to choose among (if any).</source>
+        <target state="final">Geben Sie hier gegebenenfalls die Backend-Benutzergruppen an, welche der Benutzer beim Erstellen neuer Backend-Benutzer zuweisen darf.</target>
+      </trans-unit>
+      <trans-unit id="t1_create_user_dir.description" resname="t1_create_user_dir.description" approved="yes">
+        <source>If checked, a private home-directory is also created during user creation. </source>
+        <target state="final">Mit dieser Option können Sie beim Erstellen neuer Benutzer gleichzeitig auch deren private Heimatverzeichnisse erzeugen lassen. </target>
+      </trans-unit>
+      <trans-unit id="t1_create_user_dir.details" resname="t1_create_user_dir.details" approved="yes">
+        <source>&lt;strong&gt;Notice:&lt;/strong&gt; $TYPO3_CONF_VARS["BE"]["userHomePath"] must be configured correctly along with $TYPO3_CONF_VARS["BE"]["lockRootPath"] and writable!</source>
+        <target state="final">&lt;strong&gt;Bemerkung:&lt;/strong&gt; Damit Sie diese Option nutzen können, müssen Sie zuerst die Variablen $TYPO3_CONF_VARS['BE']['userHomePath'] und $TYPO3_CONF_VARS['BE']['lockRootPath'] richtig konfigurieren. Die angegebenen Verzeichnisse müssen beschreibbar sein!</target>
+      </trans-unit>
+      <trans-unit id="t1_copy_of_user.description" resname="t1_copy_of_user.description" approved="yes">
+        <source>Insert a current Backend user which will be used as a template for the new users created. </source>
+        <target state="final">Geben Sie den Namen eines bereits existierenden Backend-Benutzers an, dessen Einstellungen als Vorlage für neue Benutzer dienen soll. </target>
+      </trans-unit>
+      <trans-unit id="t1_copy_of_user.details" resname="t1_copy_of_user.details" xml:space="preserve" approved="yes">
+				<source>All values are copied to the new user, except username, password, name and email is of course overridden.
+If the template user is a member of a group which is not defined among the "Groups which may be assigned through the action" that group is still set for the user and cannot be removed by the user carrying out the action.</source>
+			<target state="final">Mit Ausnahme der persönlichen Informationen (Name, Benutzername, Passwort und E-Mail) werden alle Werte dieses Benutzers auf den neu angelegten Benutzer übertragen. Sollte der Benutzer, der als Vorlage zur Erstellung dient, einer Benutzergruppe angehören, die nicht in den "Benutzergruppen, die durch die Aktion zugewiesen werden können" aufgeführt ist, so wird der neue Benutzer dennoch in dieser Gruppe angelegt. Der Ersteller kann die Gruppenzugehörigkeit aber nicht mehr ändern.</target></trans-unit>
+      <trans-unit id="t4_recordsToEdit.description" resname="t4_recordsToEdit.description" approved="yes">
+        <source>[FILL IN] sys_action-&gt;t4_recordsToEdit</source>
+        <target state="final">[FILL IN] sys_action-&gt;t4_recordsToEdit</target>
+      </trans-unit>
+      <trans-unit id="t3_listPid.description" resname="t3_listPid.description" approved="yes">
+        <source>[FILL IN] sys_action-&gt;t3_listPid</source>
+        <target state="final">[FILL IN] sys_action-&gt;t3_listPid</target>
+      </trans-unit>
+      <trans-unit id="t3_tables.description" resname="t3_tables.description" approved="yes">
+        <source>[FILL IN] sys_action-&gt;t3_tables</source>
+        <target state="final">[FILL IN] sys_action-&gt;t3_tables</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
