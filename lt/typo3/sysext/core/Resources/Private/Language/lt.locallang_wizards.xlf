@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814890" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_wizards.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="table_smallFields" resname="table_smallFields" approved="yes">
+        <source>Small fields</source>
+        <target state="final">Maži laukai</target>
+      </trans-unit>
+      <trans-unit id="table_addColumn" resname="table_addColumn" approved="yes">
+        <source>Add column to the right</source>
+        <target state="final">Pridėti stulpelį dešinėje</target>
+      </trans-unit>
+      <trans-unit id="table_removeColumn" resname="table_removeColumn" approved="yes">
+        <source>Remove column</source>
+        <target state="final">Pašalinti stulpelį</target>
+      </trans-unit>
+      <trans-unit id="table_addRow" resname="table_addRow" approved="yes">
+        <source>Add row below</source>
+        <target state="final">Pridėti eilutę apačioje</target>
+      </trans-unit>
+      <trans-unit id="table_removeRow" resname="table_removeRow" approved="yes">
+        <source>Remove row</source>
+        <target state="final">Pašalinti eilutę</target>
+      </trans-unit>
+      <trans-unit id="table_left" resname="table_left" approved="yes">
+        <source>Move left</source>
+        <target state="final">Perkelti į kairę</target>
+      </trans-unit>
+      <trans-unit id="table_right" resname="table_right" approved="yes">
+        <source>Move right</source>
+        <target state="final">Perkelti į dešinę</target>
+      </trans-unit>
+      <trans-unit id="table_up" resname="table_up" approved="yes">
+        <source>Move up</source>
+        <target state="final">Perkelti aukštyn</target>
+      </trans-unit>
+      <trans-unit id="table_down" resname="table_down" approved="yes">
+        <source>Move down</source>
+        <target state="final">Perkelti žemyn</target>
+      </trans-unit>
+      <trans-unit id="table_top" resname="table_top" approved="yes">
+        <source>Move to top</source>
+        <target state="final">Perkelti į viršų</target>
+      </trans-unit>
+      <trans-unit id="table_bottom" resname="table_bottom" approved="yes">
+        <source>Move to bottom</source>
+        <target state="final">Perkelti į apačią</target>
+      </trans-unit>
+      <trans-unit id="table_start" resname="table_start" approved="yes">
+        <source>Move to first column</source>
+        <target state="final">Perkelti į pirmą stulpelį</target>
+      </trans-unit>
+      <trans-unit id="table_end" resname="table_end" approved="yes">
+        <source>Move to last column</source>
+        <target state="final">Perkelti į paskutinį stulpelį</target>
+      </trans-unit>
+      <trans-unit id="grid_windowTitle" resname="grid_windowTitle" approved="yes">
+        <source>Set cell name and column number</source>
+        <target state="final">Nustatyti langelio pavadinimą ir stulpelio numerį</target>
+      </trans-unit>
+      <trans-unit id="grid_labelName" resname="grid_labelName" approved="yes">
+        <source>Name</source>
+        <target state="final">Pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="grid_addColumn" resname="grid_addColumn" approved="yes">
+        <source>Add column</source>
+        <target state="final">Pridėti stulpelį</target>
+      </trans-unit>
+      <trans-unit id="grid_removeColumn" resname="grid_removeColumn" approved="yes">
+        <source>Remove column</source>
+        <target state="final">Pašalinti stulpelį</target>
+      </trans-unit>
+      <trans-unit id="grid_addRow" resname="grid_addRow" approved="yes">
+        <source>Add row</source>
+        <target state="final">Pridėti eilutę</target>
+      </trans-unit>
+      <trans-unit id="grid_removeRow" resname="grid_removeRow" approved="yes">
+        <source>Remove row</source>
+        <target state="final">Pašalinti eilutę</target>
+      </trans-unit>
+      <trans-unit id="grid_editCell" resname="grid_editCell" approved="yes">
+        <source>Edit cell</source>
+        <target state="final">Redaguoti langelį</target>
+      </trans-unit>
+      <trans-unit id="grid_name" resname="grid_name" approved="yes">
+        <source>Name</source>
+        <target state="final">Pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="grid_column" resname="grid_column" approved="yes">
+        <source>Column number</source>
+        <target state="final">Stulpelio numeris</target>
+      </trans-unit>
+      <trans-unit id="grid_notSet" resname="grid_notSet" approved="yes">
+        <source>not set</source>
+        <target state="final">nenustatyta</target>
+      </trans-unit>
+      <trans-unit id="grid_nameHelp" resname="grid_nameHelp" approved="yes">
+        <source>Enter a name for the cell.</source>
+        <target state="final">Įveskite langelio pavadinimą.</target>
+      </trans-unit>
+      <trans-unit id="grid_columnHelp" resname="grid_columnHelp" approved="yes">
+        <source>The column position defines in which area the content is rendered in the frontend.</source>
+        <target state="final">Stulpelio pozicija nurodo, kurioje srityje turinys bus atvaizduojamas svetainėje.</target>
+      </trans-unit>
+      <trans-unit id="imwizard.open-editor" resname="imwizard.open-editor" approved="yes">
+        <source>Open Editor</source>
+        <target state="final">Atidaryti redaktorių</target>
+      </trans-unit>
+      <trans-unit id="imwizard.supported-types-message" resname="imwizard.supported-types-message" approved="yes">
+        <source>Image manipulation is only available for supported types</source>
+        <target state="final">Vaizdo redagavimas galimas tik palaikomiems tipams</target>
+      </trans-unit>
+      <trans-unit id="imwizard.no-image-dimensions" resname="imwizard.no-image-dimensions" approved="yes">
+        <source>No image dimensions could be determined.</source>
+        <target state="final">Nepavyko nustatyti vaizdo matmenų.</target>
+      </trans-unit>
+      <trans-unit id="imwizard.no-image-dimensions-message" resname="imwizard.no-image-dimensions-message" approved="yes">
+        <source>Unable to provide image manipulation, because original dimensions of the image are unknown.</source>
+        <target state="final">Vaizdo redagavimas negalimas, nes nežinomi originalūs vaizdo matmenys.</target>
+      </trans-unit>
+      <trans-unit id="imwizard.image-manipulation" resname="imwizard.image-manipulation" approved="yes">
+        <source>Image manipulation</source>
+        <target state="final">Vaizdo redagavimas</target>
+      </trans-unit>
+      <trans-unit id="imwizard.reset" resname="imwizard.reset" approved="yes">
+        <source>Reset</source>
+        <target state="final">Atstatyti</target>
+      </trans-unit>
+      <trans-unit id="imwizard.accept" resname="imwizard.accept" approved="yes">
+        <source>Accept</source>
+        <target state="final">Patvirtinti</target>
+      </trans-unit>
+      <trans-unit id="imwizard.cancel" resname="imwizard.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Atšaukti</target>
+      </trans-unit>
+      <trans-unit id="imwizard.preview" resname="imwizard.preview" approved="yes">
+        <source>Preview</source>
+        <target state="final">Peržiūra</target>
+      </trans-unit>
+      <trans-unit id="imwizard.aspect-ratio" resname="imwizard.aspect-ratio" approved="yes">
+        <source>Aspect ratio</source>
+        <target state="final">Kraštinių santykis</target>
+      </trans-unit>
+      <trans-unit id="imwizard.set-aspect-ratio" resname="imwizard.set-aspect-ratio" approved="yes">
+        <source>Set Aspect Ratio</source>
+        <target state="final">Nustatyti kraštinių santykį</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.free" resname="imwizard.ratio.free" approved="yes">
+        <source>Free</source>
+        <target state="final">Laisvas</target>
+      </trans-unit>
+      <trans-unit id="imwizard.crop_variant.default" resname="imwizard.crop_variant.default" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytoji</target>
+      </trans-unit>
+      <trans-unit id="imwizard.crop_variant.social" resname="imwizard.crop_variant.social" approved="yes">
+        <source>Social media</source>
+        <target state="final">Socialiniai tinklai</target>
+      </trans-unit>
+      <trans-unit id="imwizard.selection" resname="imwizard.selection" approved="yes">
+        <source>Selected Size</source>
+        <target state="final">Pasirinktas dydis</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.header" resname="localizationStateSelector.header" approved="yes">
+        <source>Translation behavior</source>
+        <target state="final">Vertimo elgsena</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.customValue" resname="localizationStateSelector.customValue" approved="yes">
+        <source>Custom value</source>
+        <target state="final">Pasirinktinė reikšmė</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.defaultLanguageValue" resname="localizationStateSelector.defaultLanguageValue" approved="yes">
+        <source>Value of default language</source>
+        <target state="final">Numatytoji kalbos reikšmė</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.sourceLanguageValue" resname="localizationStateSelector.sourceLanguageValue" approved="yes">
+        <source>Value of %1s language</source>
+        <target state="final">%1s kalbos reikšmė</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
