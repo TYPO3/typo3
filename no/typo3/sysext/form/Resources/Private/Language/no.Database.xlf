@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/Database.xlf" date="2016-08-21T20:15:32Z" product-name="form" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="default" approved="yes">
+        <source>Default</source>
+        <target state="final">Forvalg</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.sheet_general" approved="yes">
+        <source>General</source>
+        <target state="final">Generelt</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.label" approved="yes">
+        <source>Confirmation</source>
+        <target state="final">Bekreftelse</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.message.label" approved="yes">
+        <source>Text</source>
+        <target state="final">Tekst</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.contentElementUid.label" approved="yes">
+        <source>Record</source>
+        <target state="final">Post</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.label" approved="yes">
+        <source>Recipients</source>
+        <target state="final">Mottakere</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.item.label" approved="yes">
+        <source>Recipient</source>
+        <target state="final">Mottaker</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.email.label" approved="yes">
+        <source>Email Address</source>
+        <target state="final">E-postadresse</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.name.label" approved="yes">
+        <source>Name</source>
+        <target state="final">Navn</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.title.label" approved="yes">
+        <source>Title</source>
+        <target state="final">Tittel</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.title.label" approved="yes">
+        <source>Title</source>
+        <target state="final">Tittel</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.label" approved="yes">
+        <source>Redirect</source>
+        <target state="final">Omdiriger</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.pageUid.label" approved="yes">
+        <source>Page</source>
+        <target state="final">Side</target>
+      </trans-unit>
+      <trans-unit id="formManager.location" approved="yes">
+        <source>Location</source>
+        <target state="final">Plassering</target>
+      </trans-unit>
+      <trans-unit id="formManager.references" approved="yes">
+        <source>References</source>
+        <target state="final">Referanser</target>
+      </trans-unit>
+      <trans-unit id="formManager.options" approved="yes">
+        <source>Options</source>
+        <target state="final">Valg</target>
+      </trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.label" approved="yes">
+        <source>Standard</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="formEditor.loading" approved="yes">
+        <source>Loading...</source>
+        <target state="final">Laster...</target>
+      </trans-unit>
+      <trans-unit id="formEditor.spinner" approved="yes">
+        <source>Loading...</source>
+        <target state="final">Laster...</target>
+      </trans-unit>
+      <trans-unit id="formEditor.save_button" approved="yes">
+        <source>Save</source>
+        <target state="final">Lagre</target>
+      </trans-unit>
+      <trans-unit id="formEditor.undo_button" approved="yes">
+        <source>Undo</source>
+        <target state="final">Angre</target>
+      </trans-unit>
+      <trans-unit id="formEditor.redo_button" approved="yes">
+        <source>Redo</source>
+        <target state="final">Gjør om</target>
+      </trans-unit>
+      <trans-unit id="formEditor.previous_step_button" approved="yes">
+        <source>Previous step</source>
+        <target state="final">Forrige trinn</target>
+      </trans-unit>
+      <trans-unit id="formEditor.next_step_button" approved="yes">
+        <source>Next step</source>
+        <target state="final">Neste trinn</target>
+      </trans-unit>
+      <trans-unit id="formEditor.structure" approved="yes">
+        <source>Structure</source>
+        <target state="final">Struktur</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.NotEmpty.label" approved="yes">
+        <source>Required</source>
+        <target state="final">Påkrevd</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.NaiveEmail.label" approved="yes">
+        <source>Invalid email address</source>
+        <target state="final">Ugyldig e-mail adresse</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.html5.label" approved="yes">
+        <source>Special elements</source>
+        <target state="final">Spesielle elementer</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveSuccessFlashMessageTitle" approved="yes">
+        <source>Save</source>
+        <target state="final">Lagre</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveErrorFlashMessageTitle" approved="yes">
+        <source>Save</source>
+        <target state="final">Lagre</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.confirmButton" approved="yes">
+        <source>Remove</source>
+        <target state="final">Fjern</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.lastAvailablePageFlashMessageTitle" approved="yes">
+        <source>Error</source>
+        <target state="final">Feil</target>
+      </trans-unit>
+      <trans-unit id="formEditor.pagination.title" approved="yes">
+        <source>Step {0} of {1}</source>
+        <target state="final">Steg {0} av {1}</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label" approved="yes">
+        <source>Minimum</source>
+        <target state="final">Minimum</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label" approved="yes">
+        <source>Maximum</source>
+        <target state="final">Maksimum</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.placeholder.label" approved="yes">
+        <source>Placeholder</source>
+        <target state="final">Plassholder</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.defaultValue.label" approved="yes">
+        <source>Default value</source>
+        <target state="final">Standardverdi</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.pattern.label" approved="yes">
+        <source>Pattern</source>
+        <target state="final">Mønster</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.step.label" approved="yes">
+        <source>Step</source>
+        <target state="final">Trinn</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.EmailAddress.label" approved="yes">
+        <source>Email</source>
+        <target state="final">E-post</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Number.label" approved="yes">
+        <source>Number</source>
+        <target state="final">Nummer</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.NumberRange.label" approved="yes">
+        <source>Number range</source>
+        <target state="final">Nummerområde</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.header.label" approved="yes">
+        <source>Email</source>
+        <target state="final">E-post</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Number.editor.header.label" approved="yes">
+        <source>Number</source>
+        <target state="final">Nummer</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.header.label" approved="yes">
+        <source>Number range</source>
+        <target state="final">Nummerområde</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SelectionMixin.editor.options.label" approved="yes">
+        <source>Choices</source>
+        <target state="final">Valg</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.submitButtonLabel.value" approved="yes">
+        <source>Submit</source>
+        <target state="final">Send</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.subject.label" approved="yes">
+        <source>Subject</source>
+        <target state="final">Emne</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.label" approved="yes">
+        <source>Recipients</source>
+        <target state="final">Mottakere</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title" approved="yes">
+        <source>Email Address</source>
+        <target state="final">E-postadresse</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title" approved="yes">
+        <source>Name</source>
+        <target state="final">Navn</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.title.label" approved="yes">
+        <source>Title</source>
+        <target state="final">Tittel</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.subject.label" approved="yes">
+        <source>Subject</source>
+        <target state="final">Emne</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.recipients.label" approved="yes">
+        <source>Recipients</source>
+        <target state="final">Mottakere</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.title.label" approved="yes">
+        <source>Title</source>
+        <target state="final">Tittel</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.pageUid.label" approved="yes">
+        <source>Page</source>
+        <target state="final">Side</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.pageUid.buttonLabel" approved="yes">
+        <source>Page</source>
+        <target state="final">Side</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.buttonLabel" approved="yes">
+        <source>Page Content</source>
+        <target state="final">Sideinnhold</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.message.label" approved="yes">
+        <source>Text</source>
+        <target state="final">Tekst</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ReadOnlyFormElement.editor.label.label" approved="yes">
+        <source>Label</source>
+        <target state="final">Betegnelse</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.label.label" approved="yes">
+        <source>Label</source>
+        <target state="final">Betegnelse</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.elementDescription.label" approved="yes">
+        <source>Description</source>
+        <target state="final">Beskrivelse</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.validators.DateRange.editor.header.label" approved="yes">
+        <source>Date range</source>
+        <target state="final">Datoperiode</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label" approved="yes">
+        <source>Extra small</source>
+        <target state="final">Ekstra liten</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label" approved="yes">
+        <source>Small</source>
+        <target state="final">Liten</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label" approved="yes">
+        <source>Medium</source>
+        <target state="final">Middels</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label" approved="yes">
+        <source>Large</source>
+        <target state="final">Stor</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.label" approved="yes">
+        <source>Step</source>
+        <target state="final">Trinn</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.previousButtonLabel.value" approved="yes">
+        <source>Previous step</source>
+        <target state="final">Forrige trinn</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.nextButtonLabel.value" approved="yes">
+        <source>Next step</source>
+        <target state="final">Neste trinn</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.previousButtonLabel.value" approved="yes">
+        <source>Previous step</source>
+        <target state="final">Forrige trinn</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.nextButtonLabel.value" approved="yes">
+        <source>Next step</source>
+        <target state="final">Neste trinn</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Text.label" approved="yes">
+        <source>Text</source>
+        <target state="final">Tekst</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Email.label" approved="yes">
+        <source>Email address</source>
+        <target state="final">Epost-adresse</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Url.label" approved="yes">
+        <source>URL</source>
+        <target state="final">URL</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Number.label" approved="yes">
+        <source>Number</source>
+        <target state="final">Nummer</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Number.editor.validators.Number.label" approved="yes">
+        <source>Number</source>
+        <target state="final">Nummer</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.label" approved="yes">
+        <source>Date</source>
+        <target state="final">Dato</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.step.label" approved="yes">
+        <source>Frequency</source>
+        <target state="final">Hyppighet</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.validators.DateRange.label" approved="yes">
+        <source>Date range</source>
+        <target state="final">Datoperiode</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.header.label" approved="yes">
+        <source>Date range</source>
+        <target state="final">Datoperiode</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Password.label" approved="yes">
+        <source>Password</source>
+        <target state="final">Passord</target>
+      </trans-unit>
+      <trans-unit id="formEditor.element.AdvancedPassword.editor.confirmationLabel.predefinedDefaults" approved="yes">
+        <source>Confirmation</source>
+        <target state="final">Bekreftelse</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Textarea.label" approved="yes">
+        <source>Textarea</source>
+        <target state="final">Tekstområde</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Checkbox.label" approved="yes">
+        <source>Checkbox</source>
+        <target state="final">Avkrysningsboks</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.RadioButton.label" approved="yes">
+        <source>Radio button</source>
+        <target state="final">Radioknapp</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateTime.editor.header.label" approved="yes">
+        <source>Date/time</source>
+        <target state="final">Dato/tid</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.editor.label.label" approved="yes">
+        <source>Header</source>
+        <target state="final">Overskrift</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.editor.staticText.label" approved="yes">
+        <source>Text</source>
+        <target state="final">Tekst</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Hidden.label" approved="yes">
+        <source>Hidden</source>
+        <target state="final">Skjult</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Hidden.editor.defaultValue.label" approved="yes">
+        <source>Value</source>
+        <target state="final">Verdi</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.editor.contentElement.buttonLabel" approved="yes">
+        <source>Page Content</source>
+        <target state="final">Sideinnhold</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.label" approved="yes">
+        <source>File upload</source>
+        <target state="final">Filopplasting</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.doc" approved="yes">
+        <source>Documents (doc)</source>
+        <target state="final">Dokumenter (doc)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.docx" approved="yes">
+        <source>Documents (docx)</source>
+        <target state="final">Dokumenter (docx)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.xls" approved="yes">
+        <source>Documents (xls)</source>
+        <target state="final">Dokumenter (xls)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.xlsx" approved="yes">
+        <source>Documents (xlsx)</source>
+        <target state="final">Dokumenter (xlsx)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.pdf" approved="yes">
+        <source>Documents (pdf)</source>
+        <target state="final">Dokumenter (pdf)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.odt" approved="yes">
+        <source>Documents (odt)</source>
+        <target state="final">Dokumenter (odt)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.ods" approved="yes">
+        <source>Documents (ods)</source>
+        <target state="final">Dokumenter (ods)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.remove" approved="yes">
+        <source>Remove</source>
+        <target state="final">Fjern</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
