@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_extconf.xlf" date="2023-06-19T06:49:15Z" product-name="redirects" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="showCheckintegrityInfoInReports.enable">
+        <source>Show report warning if checkintegrity has not been run.</source>
+        <target>crwdns393898:0crwdne393898:0</target>
+      </trans-unit>
+      <trans-unit id="showCheckintegrityInfoInReports.seconds">
+        <source>Set validity period (seconds) for the last checkintegrity report.</source>
+        <target>crwdns393900:0crwdne393900:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
