@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1521629231" source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf" date="2018-03-21T11:47:00Z" product-name="adminpanel" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="module.label" resname="module.label">
+        <source>Debug</source>
+        <target>crwdns67368:0crwdne67368:0</target>
+      </trans-unit>
+      <trans-unit id="module.shortinfo" resname="module.shortinfo">
+        <source>(%s Errors/Warnings)</source>
+        <target>crwdns67370:0%scrwdne67370:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.label" resname="submodule.log.label">
+        <source>Log</source>
+        <target>crwdns67372:0crwdne67372:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.message" resname="submodule.log.message">
+        <source>Log Message</source>
+        <target>crwdns67374:0crwdne67374:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.component" resname="submodule.log.component">
+        <source>Component</source>
+        <target>crwdns67376:0crwdne67376:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.level" resname="submodule.log.level">
+        <source>Level</source>
+        <target>crwdns67378:0crwdne67378:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByComponent" resname="submodule.log.groupByComponent">
+        <source>Group by Component</source>
+        <target>crwdns67380:0crwdne67380:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByLevel" resname="submodule.log.groupByLevel">
+        <source>Group by Level</source>
+        <target>crwdns67382:0crwdne67382:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.startLevel" resname="submodule.log.startLevel">
+        <source>Display only levels equal or higher to</source>
+        <target>crwdns67384:0crwdne67384:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.noEntries" resname="submodule.log.noEntries">
+        <source>No log entries.</source>
+        <target>crwdns67386:0crwdne67386:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.label" resname="submodule.queryInformation.label">
+        <source>Query Information</source>
+        <target>crwdns67388:0crwdne67388:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.query" resname="submodule.queryInformation.query">
+        <source>Query</source>
+        <target>crwdns67390:0crwdne67390:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queries" resname="submodule.queryInformation.queries">
+        <source>Queries</source>
+        <target>crwdns67392:0crwdne67392:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.backtrace" resname="submodule.queryInformation.backtrace">
+        <source>Backtrace</source>
+        <target>crwdns67394:0crwdne67394:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.doctrineDebug" resname="submodule.queryInformation.doctrineDebug">
+        <source>SQL Debug</source>
+        <target>crwdns67396:0crwdne67396:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.sqlQuery" resname="submodule.queryInformation.sqlQuery">
+        <source>SQL Query</source>
+        <target>crwdns67398:0crwdne67398:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryCount" resname="submodule.queryInformation.queryCount">
+        <source>Count</source>
+        <target>crwdns67400:0crwdne67400:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryTime" resname="submodule.queryInformation.queryTime">
+        <source>Total Time [ms]</source>
+        <target>crwdns67402:0crwdne67402:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
