@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814858" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_syslang.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the name of this additional system language.</source>
+        <target state="final">इस एडिशनल सिस्टम भाषा का नाम दर्ज करें।</target>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>This option will hide the system language from being available in the backend.</source>
+        <target state="final">यह विकल्प बैकएंड में उपलब्ध होने से सिस्टम भाषा छिपा होगा।</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Defines which languages are alternatively available on each webpage.</source>
+        <target state="final">परिभाषित करता है जो भाषाओं प्रत्येक वेबपेज पर वैकल्पिक रूप से उपलब्ध हैं।</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>The Web&gt;Page module has a feature which allows users to edit page content divided into not only columns but also languages. The languages available for translation are determined by the number of Website Language record created.</source>
+			<target state="final">वेब&gt;पृष्ठ मॉड्यूल में एक ऐसी सुविधा है, जो उपयोगकर्ताओं को पेज सामग्री को केवल कॉलम ही नहीं बल्कि भाषाओं के आधार पर भी संपादित करने की अनुमति देती है। अनुवाद के लिए उपलब्ध भाषाएँ बनाए गए Website Language रिकॉर्ड की संख्या पर निर्धारित होती हैं।</target></trans-unit>
+    </body>
+  </file>
+</xliff>
