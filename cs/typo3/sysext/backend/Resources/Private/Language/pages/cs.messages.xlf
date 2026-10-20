@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="cs">
+  <file id="f1">
+    <unit id="link_missing">
+      <segment state="final">
+        <source>The "%1$s" field is required to resolve links for pages of type "%2$s". Please provide a value in the page properties.</source>
+        <target>Pole „%1$s“ je nutné k vyřešení odkazů na stránky typu „%2$s“. Zadejte prosím hodnotu ve vlastnostech stránky.</target>
+      </segment>
+    </unit>
+    <unit id="link_invalid">
+      <segment state="final">
+        <source>Invalid link in "%1$s": "%2$s" cannot be resolved. Select a valid destination in the page properties.</source>
+        <target>Neplatný odkaz v „%1$s“: Nelze vyřešit „%2$s“. Vyberte platný cíl ve vlastnostech stránky.</target>
+      </segment>
+    </unit>
+    <unit id="link_destination">
+      <segment state="final">
+        <source>Page of type "%1$s" links to the following %2$s: %3$s.</source>
+        <target>Stránka typu "%1$s" odkazuje na následující %2$s: %3$s.</target>
+      </segment>
+    </unit>
+    <unit id="link_current">
+      <segment state="final">
+        <source>Page of type "%1$s" links to current request url, and dynamic value cannot be displayed here.</source>
+        <target>Stránka typu "%1$s" odkazuje na aktuální URL a dynamickou hodnotu zde nelze zobrazit.</target>
+      </segment>
+    </unit>
+    <unit id="link_current_with_added_queryparameters">
+      <segment state="final">
+        <source>Page of type "%1$s" appends %2$s to current request url, and dynamic value cannot be displayed here.</source>
+        <target>Stránka typu "%1$s" doplňuje %2$s k aktuální URL a dynamickou hodnotu zde nelze zobrazit.</target>
+      </segment>
+    </unit>
+    <unit id="link_destination_record">
+      <segment state="final">
+        <source>Page of type "%1$s" links to the following record of type "%2$s": %3$s.</source>
+        <target>Stránka typu "%1$s" odkazuje na následující záznam typu "%2$s": %3$s.</target>
+      </segment>
+    </unit>
+    <unit id="link_destination_additional_parameters">
+      <segment state="final">
+        <source>Additional parameters: "%s".</source>
+        <target>Další parametry: "%s".</target>
+      </segment>
+    </unit>
+    <unit id="link_destination_content_element">
+      <segment state="final">
+        <source>Page of type "%1$s" links to content element %2$s on page %3$s.</source>
+        <target>Stránka typu "%1$s" odkazuje na prvek obsahu %2$s na stránce %3$s.</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
