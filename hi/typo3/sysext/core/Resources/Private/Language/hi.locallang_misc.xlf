@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="overwriteExistingFiles" approved="yes">
+        <source>Overwrite existing files</source>
+        <target state="final">मौजूदा फाइल्स को ओवरराइड करे</target>
+      </trans-unit>
+      <trans-unit id="uploadMultipleFilesInfo" approved="yes">
+        <source>Upload multiple files by holding the Shift or CTRL-file pressed while selecting your files (works on modern browsers only).</source>
+        <target state="final">शिफ्ट और Ctrl-फ़ाइल दबाया, जबकि (केवल आधुनिक ब्राउज़रों पर काम करता है) अपनी फ़ाइलों का चयन धारण करके कई फ़ाइलें अपलोड करें।</target>
+      </trans-unit>
+      <trans-unit id="fileMetaDataLocation" approved="yes">
+        <source>Location</source>
+        <target state="final">लोकेशन</target>
+      </trans-unit>
+      <trans-unit id="fileMetaErrorInvalidRecord" approved="yes">
+        <source>File meta data not found</source>
+        <target state="final">फाइल का मेटा डेटा नहीं मिला</target>
+      </trans-unit>
+      <trans-unit id="selectPosition" approved="yes">
+        <source>Select a position for the new page</source>
+        <target state="final">नए पेज की पोजीशन चुने</target>
+      </trans-unit>
+      <trans-unit id="pageSelectPosition" approved="yes">
+        <source>Page (select position)</source>
+        <target state="final">पेज(पोजीशन चुने )</target>
+      </trans-unit>
+      <trans-unit id="pageSelectPositionError" approved="yes">
+        <source>Failed to fetch page details. This is likely due to missing permissions.</source>
+        <target state="final">पृष्ठ का विवरण प्राप्त नहीं किया जा सका। यह संभवतः आवश्यक अनुमतियों के अभाव के कारण है।</target>
+      </trans-unit>
+      <trans-unit id="goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">पीछे जाएँ</target>
+      </trans-unit>
+      <trans-unit id="createNewPage" approved="yes">
+        <source>Create a new page</source>
+        <target state="final">नया पेज बनाएं</target>
+      </trans-unit>
+      <trans-unit id="insertNewPageHere" x-unused-since="15.0" approved="yes">
+        <source>Insert the new page here</source>
+        <target state="final">यहाँ नया पेज डालें</target>
+      </trans-unit>
+      <trans-unit id="insertNewRecordHere" approved="yes">
+        <source>Insert new record here</source>
+        <target state="final">यहाँ नया रिकॉर्ड डालें</target>
+      </trans-unit>
+      <trans-unit id="moveElementToHere" approved="yes">
+        <source>Move element to this position</source>
+        <target state="final">एलिमेंट को इस स्थान पर ले जाएँ।</target>
+      </trans-unit>
+      <trans-unit id="moveElements" approved="yes">
+        <source>Move elements</source>
+        <target state="final">एलिमेंट्स खिसकाएँ</target>
+      </trans-unit>
+      <trans-unit id="copyElements" approved="yes">
+        <source>Copy elements</source>
+        <target state="final">एलिमेंट्स की नक़ल करे</target>
+      </trans-unit>
+      <trans-unit id="copyElementToHere" approved="yes">
+        <source>Copy element to this position</source>
+        <target state="final">इस स्थिति में तत्व की प्रतिलिपि बनाएँ</target>
+      </trans-unit>
+      <trans-unit id="makeCopy" approved="yes">
+        <source>Make copy instead of moving element</source>
+        <target state="final">एलिमेंट खिसका ने के बजाये नक़ल करे</target>
+      </trans-unit>
+      <trans-unit id="newRecordWizard.filter.placeholder" approved="yes">
+        <source>Search for any record type</source>
+        <target state="final">किसी भी रिकॉर्ड प्रकार को खोजें</target>
+      </trans-unit>
+      <trans-unit id="newRecordWizard.filter.noResults" approved="yes">
+        <source>Unfortunately, no record type matches your query, please try a different one.</source>
+        <target state="final">दुर्भाग्यवश, आपकी क्वेरी से मेल खाने वाला कोई रिकॉर्ड प्रकार नहीं मिला; कृपया कोई दूसरा आज़माएँ।</target>
+      </trans-unit>
+      <trans-unit id="newRecordWizard.recentlyUsed" approved="yes">
+        <source>Recently used</source>
+        <target state="final">हाल ही में इस्तेमाल किए गए</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.placeholder" approved="yes">
+        <source>Search for any content type</source>
+        <target state="final">किसी भी प्रकार की सामग्री खोजें</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.noResults" approved="yes">
+        <source>Unfortunately, no content type matches your query, please try a different one.</source>
+        <target state="final">दुर्भाग्यवश, आपकी क्वेरी से मेल खाने वाला कोई कंटेंट टाइप नहीं मिला; कृपया कोई दूसरा आज़माएँ।</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.userNotAllowed" approved="yes">
+        <source>No content elements are available with your current permissions.</source>
+        <target state="final">आपकी वर्तमान अनुमतियों के साथ कोई सामग्री तत्व उपलब्ध नहीं हैं।</target>
+      </trans-unit>
+      <trans-unit id="system_records" approved="yes">
+        <source>System Records</source>
+        <target state="final">सिस्टम रेकॉर्डस</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.content" approved="yes">
+        <source>Content</source>
+        <target state="final">कंटेंट</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.backendaccess" approved="yes">
+        <source>Backend Access</source>
+        <target state="final">बैकएंड एक्सेस</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.frontendaccess" approved="yes">
+        <source>Frontend Access</source>
+        <target state="final">फ्रंटएंड एक्सेस</target>
+      </trans-unit>
+      <trans-unit id="1_selectType" approved="yes">
+        <source>First select the type of the new content element</source>
+        <target state="final">सबसे पहले, नए कंटेंट एलिमेंट का प्रकार चुनें।</target>
+      </trans-unit>
+      <trans-unit id="2_selectPosition" approved="yes">
+        <source>Now click on the position of the new content element</source>
+        <target state="final">अब नए कंटेंट एलिमेंट की जगह पर क्लिक करें।</target>
+      </trans-unit>
+      <trans-unit id="CM_history" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">हीटस्ट्री/अनडू</target>
+      </trans-unit>
+      <trans-unit id="CM_hideInMenus" approved="yes">
+        <source>Hide in menu</source>
+        <target state="final">मेनू में छिपाएँ</target>
+      </trans-unit>
+      <trans-unit id="CM_showInMenus" approved="yes">
+        <source>Show in menu</source>
+        <target state="final">मेनू में दिखाएँ</target>
+      </trans-unit>
+      <trans-unit id="CM_newWizard" approved="yes">
+        <source>'Create New' wizard</source>
+        <target state="final">विजार्ड 'नया बनाएं'</target>
+      </trans-unit>
+      <trans-unit id="localize" approved="yes">
+        <source>Localize</source>
+        <target state="final">लोकलाइस</target>
+      </trans-unit>
+      <trans-unit id="localize.isLocalizable" approved="yes">
+        <source>Record can be localized</source>
+        <target state="final">रिकॉर्ड लोकलाईज हो सकता है</target>
+      </trans-unit>
+      <trans-unit id="localizeAllRecords" approved="yes">
+        <source>Localize all records</source>
+        <target state="final">सभी रिकॉर्ड लोकलाइज करे</target>
+      </trans-unit>
+      <trans-unit id="synchronizeWithOriginalLanguage" approved="yes">
+        <source>Synchronize with original language</source>
+        <target state="final">सिंक्रोनाइज विथ ओरिजिनल लैंग्वेज</target>
+      </trans-unit>
+      <trans-unit id="tree_networkError" approved="yes">
+        <source>Navigation loading error</source>
+        <target state="final">नेविगेशन लोडिंग त्रुटि</target>
+      </trans-unit>
+      <trans-unit id="tree_networkErrorDescription" approved="yes">
+        <source>Got unexpected response from the server. Please check logs for details.</source>
+        <target state="final">सर्वर से अप्रत्याशित प्रतिक्रिया मिली। विवरण के लिए लॉग्स की जाँच करें।</target>
+      </trans-unit>
+      <trans-unit id="synchronizeFolderRelations.afterFolderRenamed" approved="yes">
+        <source>%d %s records referencing the renamed directory were updated.</source>
+        <target state="final">पुनर्नामित निर्देशिका का संदर्भ देने वाले %d %s अभिलेखों को अद्यतन किया गया।</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_listEmptyText" approved="yes">
+        <source>No results found.</source>
+        <target state="final">कोई रिजल्ट नहीं मिला।</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_hasErrors" approved="yes">
+        <source>Something went wrong.</source>
+        <target state="final">कुछ गलत हो गया।</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.versionizedRecord" approved="yes">
+        <source>Versionized record</source>
+        <target state="final">संस्करणित रिकॉर्ड</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescriptionPages" approved="yes">
+        <source>`#page:Home` will search for all pages with the title "Home"</source>
+        <target state="final">#page:Home "Home" शीर्षक वाले सभी पृष्ठों को खोजेगा।</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescriptionContent" approved="yes">
+        <source>`#content:Professional` will search for all content elements containing the term "Professional"</source>
+        <target state="final">#content:Professional "Professional" शब्द को शामिल करने वाले सभी सामग्री तत्वों को खोजेगा।</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_help.shortcutOpen" approved="yes">
+        <source><![CDATA[You can open the live search by pressing the <kbd><kbd>Ctrl</kbd> + <kbd>K</kbd></kbd> or <kbd><kbd>Cmd</kbd> + <kbd>K</kbd></kbd> keystroke]]></source>
+        <target state="final"><![CDATA[आप <kbd><kbd>Ctrl</kbd> + <kbd>K</kbd></kbd> या <kbd><kbd>Cmd</kbd> + <kbd>K</kbd></kbd> कुंजी संयोजन दबाकर लाइव सर्च खोल सकते हैं।]]></target>
+      </trans-unit>
+      <trans-unit id="liveSearch_search" approved="yes">
+        <source>Search</source>
+        <target state="final">खोजें</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_searchIn" approved="yes">
+        <source>Search records in</source>
+        <target state="final">में रिकॉर्ड खोजें</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_activeFilters" approved="yes">
+        <source>active filters</source>
+        <target state="final">सक्रिय फ़िल्टर</target>
+      </trans-unit>
+      <trans-unit id="viewport_navigation_show" approved="yes">
+        <source>Show Navigation</source>
+        <target state="final">नेविगेशन दिखाएँ</target>
+      </trans-unit>
+      <trans-unit id="viewport_navigation_hide" approved="yes">
+        <source>Hide Navigation</source>
+        <target state="final">नेविगेशन छिपाएँ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
