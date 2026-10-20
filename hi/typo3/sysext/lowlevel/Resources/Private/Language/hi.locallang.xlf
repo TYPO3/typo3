@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="moduleMenu.dropdown.label" approved="yes">
+        <source>Configuration to show</source>
+        <target state="final">दिखाने के लिए कॉन्फ़िगरेशन</target>
+      </trans-unit>
+      <trans-unit id="configuration.headline" approved="yes">
+        <source>Configuration of "%1s"</source>
+        <target state="final">"%1s" का कॉन्फ़िगरेशन</target>
+      </trans-unit>
+      <trans-unit id="usersettings" x-unused-since="15.0" approved="yes">
+        <source>$GLOBALS['TYPO3_USER_SETTINGS'] (User Settings Configuration)</source>
+        <target state="final">$GLOBALS['TYPO3_USER_SETTINGS'] (उपयोगकर्ता सेटिंग्स कॉन्फ़िगरेशन)</target>
+      </trans-unit>
+      <trans-unit id="routes" approved="yes">
+        <source>Backend Routes</source>
+        <target state="final">बैकएण्ड मार्गों</target>
+      </trans-unit>
+      <trans-unit id="httpMiddlewareStacks" approved="yes">
+        <source>HTTP Middlewares (PSR-15)</source>
+        <target state="final">HTTP मिडलवेयर (PSR-15)</target>
+      </trans-unit>
+      <trans-unit id="contentSecurityPolicyMutations" approved="yes">
+        <source>Content Security Policy Mutations</source>
+        <target state="final">कॉन्टेंट सुरक्षा नीति परिवर्तन</target>
+      </trans-unit>
+      <trans-unit id="eventListeners" approved="yes">
+        <source>Event Listeners (PSR-14)</source>
+        <target state="final">Event Listeners (PSR-14)</target>
+      </trans-unit>
+      <trans-unit id="softReferenceParsers" approved="yes">
+        <source>Soft Reference Parsers</source>
+        <target state="final">सॉफ्ट रेफरेंस पार्सर्स</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems" approved="yes">
+        <source>Backend Toolbar Items</source>
+        <target state="final">बैकएंड टूलबार आइटम</target>
+      </trans-unit>
+      <trans-unit id="symfonyExpressionLanguage" approved="yes">
+        <source>Symfony Expression Language Providers</source>
+        <target state="final">Symfony एक्सप्रेशन लैंग्वेज प्रोवाइडर्स</target>
+      </trans-unit>
+      <trans-unit id="translationDomainList" approved="yes">
+        <source>Translation Domain List</source>
+        <target state="final">अनुवाद डोमेन सूची</target>
+      </trans-unit>
+      <trans-unit id="doctrineDbalDriverMiddlewares" approved="yes">
+        <source>Doctrine DBAL Driver Middlewares</source>
+        <target state="final">Doctrine DBAL ड्राइवर मिडलवेयर्स</target>
+      </trans-unit>
+      <trans-unit id="formYamlConfiguration" approved="yes">
+        <source>Form: YAML Configuration</source>
+        <target state="final">फ़ॉर्म: YAML कॉन्फ़िगरेशन</target>
+      </trans-unit>
+      <trans-unit id="backendModules" approved="yes">
+        <source>Backend Modules</source>
+        <target state="final">बैकएंड मॉड्यूल</target>
+      </trans-unit>
+      <trans-unit id="pagesTypes" approved="yes">
+        <source>Table permissions per page type</source>
+        <target state="final">प्रति पृष्ठ प्रकार टेबल अनुमति</target>
+      </trans-unit>
+      <trans-unit id="search.submit" approved="yes">
+        <source>Search All Records</source>
+        <target state="final">सभी रिकॉर्ड खोजें</target>
+        <note>Label of submit button to search within the database (raw search in all fields)</note>
+      </trans-unit>
+      <trans-unit id="search" approved="yes">
+        <source>Search</source>
+        <target state="final">सर्च</target>
+      </trans-unit>
+      <trans-unit id="fullSearch" approved="yes">
+        <source>Full search</source>
+        <target state="final">पूर्ण सर्च</target>
+      </trans-unit>
+      <trans-unit id="selectRecords" approved="yes">
+        <source>Select records</source>
+        <target state="final">रिकॉर्ड चुने</target>
+      </trans-unit>
+      <trans-unit id="countResults" approved="yes">
+        <source>Count results</source>
+        <target state="final">परिणाम गिने</target>
+      </trans-unit>
+      <trans-unit id="explainQuery" approved="yes">
+        <source>Explain query</source>
+        <target state="final">क्वेरी समझाओ</target>
+      </trans-unit>
+      <trans-unit id="csvExport" approved="yes">
+        <source>CSV Export</source>
+        <target state="final">CSV निर्यात</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.flashMessage.noResultsFoundMessage" approved="yes">
+        <source>The query returned no results.</source>
+        <target state="final">इस क्वेरी का कोई परिणाम नहीं मिला।</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.queryOptions" approved="yes">
+        <source>Query options</source>
+        <target state="final">क्वेरी विकल्प</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.querySQL" approved="yes">
+        <source>Full SQL query</source>
+        <target state="final">पूर्ण SQL क्वेरी</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.querySQL.error" approved="yes">
+        <source>SQL error</source>
+        <target state="final">SQL त्रुटि</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.querySettings" approved="yes">
+        <source>Query compilation</source>
+        <target state="final">क्वेरी कम्पाइलेशन</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.queryStorage" approved="yes">
+        <source>Load/save query</source>
+        <target state="final">क्वेरी लोड/सहेजें</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.result" approved="yes">
+        <source>Result</source>
+        <target state="final">परिणाम</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.type.count.resultsFound" approved="yes">
+        <source>records found.</source>
+        <target state="final">रिकॉर्ड मिले।</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.btn.delete.label" approved="yes">
+        <source>Delete</source>
+        <target state="final">हटाएँ</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.btn.load.label" approved="yes">
+        <source>Load</source>
+        <target state="final">लोड</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.btn.save.label" approved="yes">
+        <source>Save</source>
+        <target state="final">सेव</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.groupBy.label" approved="yes">
+        <source>Group by</source>
+        <target state="final">ग्रुप बाय</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.limit.label" approved="yes">
+        <source>Limit</source>
+        <target state="final">लिमिट</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.makeQuery.label" approved="yes">
+        <source>Result type</source>
+        <target state="final">परिणाम प्रकार</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.orderBy.label" approved="yes">
+        <source>Order by</source>
+        <target state="final">ऑर्डर बाय</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.orderBy.descending" approved="yes">
+        <source>Descending</source>
+        <target state="final">घटते क्रम में</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.searchType.label" approved="yes">
+        <source>Search type</source>
+        <target state="final">तलाश की विधि</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.query.label" approved="yes">
+        <source>Query</source>
+        <target state="final">क्वेरी</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryFields.label" approved="yes">
+        <source>Fields</source>
+        <target state="final">फ़ील्ड्स</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryTable.label" approved="yes">
+        <source>Table</source>
+        <target state="final">टेबल</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryStore.storage.label" approved="yes">
+        <source>Saved queries</source>
+        <target state="final">Saved Queries</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryStore.storage.0" approved="yes">
+        <source>[New]</source>
+        <target state="final">[न्यू]</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryStore.title.label" approved="yes">
+        <source>Title</source>
+        <target state="final"> शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryConfig.comparison.negate" approved="yes">
+        <source>Negate</source>
+        <target state="final">निगेट</target>
+      </trans-unit>
+      <trans-unit id="showSQL" approved="yes">
+        <source>Show SQL parts</source>
+        <target state="final">SQL भाग दिखाएँ</target>
+      </trans-unit>
+      <trans-unit id="useFormattedStrings" approved="yes">
+        <source>Use formatted strings, labels and dates instead of original values for results</source>
+        <target state="final">परिणाम के लिए मूल वैल्यू की जगह उपयोगकर्ता द्वारा स्वरूपित strings, लेबल्स और तारीखे उपयोग करे</target>
+      </trans-unit>
+      <trans-unit id="dontUseOrigValues" approved="yes">
+        <source>Don't use original values in brackets as prefix for labeled results</source>
+        <target state="final">लेबल किए गए परिणामों के लिए कोष्ठकों (brackets) में मूल मान को प्रीफिक्स के रूप में उपयोग न करें।</target>
+      </trans-unit>
+      <trans-unit id="sortOptions" approved="yes">
+        <source>Sort selectbox-options for relations by label and not by value</source>
+        <target state="final">सबंध के लिए सेलेक्टबॉक्स-विकल्प को वैल्यू के द्वारा नहीं और लेबल के द्वारा सॉर्ट करे</target>
+      </trans-unit>
+      <trans-unit id="showDeleted" approved="yes">
+        <source>Show even deleted entries (with undelete buttons)</source>
+        <target state="final">डिलीटेड एंट्री को भी दिखाए ( अनडीलेटेड बटन के साथ)</target>
+      </trans-unit>
+      <trans-unit id="no_results" approved="yes">
+        <source>No results found for "%s".</source>
+        <target state="final">"%s" के लिए कोई परिणाम नहीं मिला।</target>
+        <note>Info text in case no results are found for a given search term</note>
+      </trans-unit>
+      <trans-unit id="no_sword" approved="yes">
+        <source>Enter a search term to search for records</source>
+        <target state="final">रिकॉर्ड खोजने के लिए खोज शब्द दर्ज करें</target>
+      </trans-unit>
+      <trans-unit id="count" approved="yes">
+        <source>Count</source>
+        <target state="final">गिनती</target>
+      </trans-unit>
+      <trans-unit id="search_whole_database" approved="yes">
+        <source>Search whole Database</source>
+        <target state="final">पूरा डेटाबेस सर्च करें</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
