@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="close" approved="yes">
+        <source>Close</source>
+        <target state="final">إغلاق</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Dashboard</source>
+        <target state="final">لوحة التحكم</target>
+      </trans-unit>
+      <trans-unit id="widget.add" approved="yes">
+        <source>Add widget</source>
+        <target state="final">اضافة تطبيق مصغر</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard" approved="yes">
+        <source>Add widget to "%s"</source>
+        <target state="final">إضافة عنصر واجهة المستخدم إلى "%s"</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard.searchLabel" approved="yes">
+        <source>Search for dashboard widgets</source>
+        <target state="final">البحث عن أدوات لوحة التحكم</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard.searchNotFound" approved="yes">
+        <source>Unfortunately no dashboard widget matches your query, please try a different one.</source>
+        <target state="final">لسوء الحظ، لا توجد أداة لوحة التحكم تطابق استعلامك، يرجى تجرِبة استعلام مختلف.</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard.userNotAllowed" approved="yes">
+        <source>No widgets are available with your current permissions.</source>
+        <target state="final">لا تتوفر أي أدوات بالصلاحيات الحالية الخاصة بك.</target>
+      </trans-unit>
+      <trans-unit id="widget.add.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">إغلاق</target>
+      </trans-unit>
+      <trans-unit id="widget.add.button.ok" approved="yes">
+        <source>Add widget</source>
+        <target state="final">اضافة تطبيق مصغر</target>
+      </trans-unit>
+      <trans-unit id="widget.refresh" approved="yes">
+        <source>Refresh Widget</source>
+        <target state="final">تحديث القطعة</target>
+      </trans-unit>
+      <trans-unit id="widget.settings" approved="yes">
+        <source>Widget Settings</source>
+        <target state="final">إعدادات القطعة</target>
+      </trans-unit>
+      <trans-unit id="widget.settings.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">إغلاق</target>
+      </trans-unit>
+      <trans-unit id="widget.settings.button.save" approved="yes">
+        <source>Save</source>
+        <target state="final"> حفظ</target>
+      </trans-unit>
+      <trans-unit id="widget.settings.unchanged" approved="yes">
+        <source>Settings unchanged</source>
+        <target state="final">لم تتغير الاعدادات</target>
+      </trans-unit>
+      <trans-unit id="widget.move" approved="yes">
+        <source>Move Widget</source>
+        <target state="final">نقل القطعة</target>
+      </trans-unit>
+      <trans-unit id="widget.remove" approved="yes">
+        <source>Remove Widget</source>
+        <target state="final">إزالة القطعة</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">إغلاق</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.button.ok" approved="yes">
+        <source>Remove</source>
+        <target state="final">إزالة</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.confirm.title" approved="yes">
+        <source>Remove widget</source>
+        <target state="final">إزالة التطبيق المُصغّر</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.confirm.message" approved="yes">
+        <source>Are you sure you want to remove this widget?</source>
+        <target state="final">هل أنت متأكد من أنك تريد حذف هذا التطبيق المُصغّر؟</target>
+      </trans-unit>
+      <trans-unit id="widget.error" approved="yes">
+        <source>An error occurred while retrieving information for this widget. Please try again, and if the problem persists, contact your administrator.</source>
+        <target state="final">حدث خطأ أثناء استرداد المعلومات لهذا التطبيق المُصغّر. الرجاء المحاولة مرة أخرى، وإذا استمرت المشكلة، اتصل بالمسؤول.</target>
+      </trans-unit>
+      <trans-unit id="dashboard.headline" approved="yes">
+        <source>Dashboard "%s"</source>
+        <target state="final">لوحة التحكم "%s"</target>
+      </trans-unit>
+      <trans-unit id="dashboard.default" approved="yes">
+        <source>My dashboard</source>
+        <target state="final">لوحة التحكم الخاصّة بي</target>
+      </trans-unit>
+      <trans-unit id="dashboard.default.description" approved="yes">
+        <source>Create a new dashboard with some general TYPO3 widgets on it</source>
+        <target state="final">إنشاء لوحة تحكم جديدة مع بعض أدوات TYPO3 العامة عليها</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty" approved="yes">
+        <source>Empty dashboard</source>
+        <target state="final">لوحة تحكم فارغة</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.description" approved="yes">
+        <source>Your dashboard will be created without any widget on it.</source>
+        <target state="final">سيتم إنشاء لوحة التحكم الخاصة بك دون أي تطبيقات مُصغّرة عليها.</target>
+      </trans-unit>
+      <trans-unit id="dashboard.add" approved="yes">
+        <source>Add dashboard</source>
+        <target state="final">إضافة لوحة تحكم</target>
+      </trans-unit>
+      <trans-unit id="dashboard.add.button.close" x-unused-since="14.3" approved="yes">
+        <source>Close</source>
+        <target state="final">إغلاق</target>
+      </trans-unit>
+      <trans-unit id="dashboard.add.button.ok" x-unused-since="14.3" approved="yes">
+        <source>Add Dashboard</source>
+        <target state="final">إضافة لوحة تحكم</target>
+      </trans-unit>
+      <trans-unit id="dashboard.configure" approved="yes">
+        <source>Configure dashboard</source>
+        <target state="final">تكخصيص لوحة التحكم</target>
+      </trans-unit>
+      <trans-unit id="dashboard.configure.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">إغلاق</target>
+      </trans-unit>
+      <trans-unit id="dashboard.configure.button.ok" approved="yes">
+        <source>Save Dashboard</source>
+        <target state="final">حفظ لوحة التحكم</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete" approved="yes">
+        <source>Delete dashboard</source>
+        <target state="final">حذف لوحة التحكم</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.sure" approved="yes">
+        <source>Are you sure you want to delete this dashboard?</source>
+        <target state="final">هل أنت متأكد من أنك تريد حذف لوحة التحكم هذه؟</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.ok" approved="yes">
+        <source>Yes, delete it</source>
+        <target state="final">نعم، إحذفه!</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">إلغاء</target>
+      </trans-unit>
+      <trans-unit id="dashboard.title" approved="yes">
+        <source>Title of dashboard</source>
+        <target state="final">عنوان لوحة التحكم</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.title" approved="yes">
+        <source>Getting Started with TYPO3</source>
+        <target state="final">البدء مع TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.description" approved="yes">
+        <source>Add a shortcut to the TYPO3 Getting Started Tutorial.</source>
+        <target state="final">أضف اختصاراً إلى البرنامَج التعليمي الخاص بـ TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.text" approved="yes">
+        <source>New to TYPO3? In our Getting Started Tutorial you will learn the basics how to use TYPO3.</source>
+        <target state="final">هل أنت جديد على TYPO3؟ في درسنا التعليمي الذي يبدأ سوف تتعلم أساسيات استخدام TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.content.label" approved="yes">
+        <source>Getting Started Tutorial</source>
+        <target state="final">بدء البرنامج التعليمي</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.title" approved="yes">
+        <source>TypoScript Template Reference</source>
+        <target state="final">مرجع قالب TypoScript</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.description" approved="yes">
+        <source>Add a shortcut to the TYPO3 TypoScript Template Reference.</source>
+        <target state="final">إضافة اختصار إلى مرجع قالب TypoScript TypoScript.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.text" approved="yes">
+        <source>This document is a reference, used to lookup TypoScript templating.</source>
+        <target state="final">هذا المستند هو مرجع، يستخدم للبحث عن قالب TypoScript.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.content.label" approved="yes">
+        <source>TypoScript Template Reference</source>
+        <target state="final">مرجع قالب TypoScript</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.title" approved="yes">
+        <source>TSconfig Reference</source>
+        <target state="final">مرجع TSconfig</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.description" approved="yes">
+        <source>Add a shortcut to the TYPO3 TSconfig Reference.</source>
+        <target state="final">إضافة اختصار إلى مرجع TSconfig TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.text" approved="yes">
+        <source>This document describes TSconfig and its options.</source>
+        <target state="final">تصف هذه الوثيقة TSconfig وخياراته.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.content.label" approved="yes">
+        <source>TSconfig Reference</source>
+        <target state="final">مرجع TSconfig</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.title" approved="yes">
+        <source>TYPO3 news</source>
+        <target state="final">TYPO3 أخبار</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.description" approved="yes">
+        <source>Add a list of news items from the TYPO3 project</source>
+        <target state="final">إضافة قائمة إخبارية من مشروع TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.moreItems" approved="yes">
+        <source>More TYPO3 news</source>
+        <target state="final">المزيد من أخبار TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.title" approved="yes">
+        <source>About TYPO3</source>
+        <target state="final">حول TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.description" approved="yes">
+        <source>Some general information about TYPO3 and the version used</source>
+        <target state="final">بعض المعلومات العامة عن TYPO3 والنسخة المستخدمة</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.text" approved="yes">
+        <source><![CDATA[TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.<br /><br />For further information visit <a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer">typo3.org</a>.<br /><br />TYPO3 CMS is <b>freely available</b> under the <a href="https://typo3.org/project/licenses/" target="_blank" rel="noreferrer">TYPO3-license (GNU/GPL)</a>.<br /><br />You are using version %s - Copyright %s %s]]></source>
+        <target state="final"><![CDATA[TYPO3 CMS هو نظام إدارة محتوى مفتوح المصدر، يستخدم حول العالم لبناء وإدارة مواقع الويب من جميع الأنواع، من المواقع الصغيرة للمؤسسات غير الربحية إلى حلول المؤسسات متعددة اللغات للشركات الكبيرة.<br /><br />لمزيد من المعلومات، تفضل بزيارة <a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer">typo3.org</a>.<br /><br />CMS  <b>مُتاح مجاناً</b> تحت شهادة <a href="https://typo3.org/typo3-cms/overview/licenses/" target="_blank" rel="noreferrer">TYPO3-license (GNU/GPL)</a>.<br /><br />أنت تستخدم الإصدار %s - Copyright %s %s]]></target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.logo" approved="yes">
+        <source>TYPO3 CMS logo</source>
+        <target state="final">شعار TYPO3 CMS</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.title" approved="yes">
+        <source>Number of errors in system log</source>
+        <target state="final">عدد الأخطاء في سجل النظام</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.description" approved="yes">
+        <source>Shows the number of errors in the sys log of the last month, grouped by date</source>
+        <target state="final">يظهر عدد الأخطاء في سجل الأنظمة في الشهر الماضي، مُجمّعة حسب التاريخ</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.buttonText" approved="yes">
+        <source>Show all errors in log</source>
+        <target state="final">عرض جميع الأخطاء في السجل</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogUsers.buttonText" approved="yes">
+        <source>Show all user logins</source>
+        <target state="final">إظهار جميع تسجيلات الدخول للمستخدم</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.chart.dataSet.0" approved="yes">
+        <source>Number of errors</source>
+        <target state="final">عدد الأخطاء</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.title" approved="yes">
+        <source>Type of backend users</source>
+        <target state="final">نوع مُستخدمي الواجهة الخلفية</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.description" approved="yes">
+        <source>Shows the amount of normal- and admin-users</source>
+        <target state="final">عرض كَمّيَّة المستخدمين العاديين والمشرفين</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.normalUsers" approved="yes">
+        <source>Normal users</source>
+        <target state="final">المستخدمون العاديون</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.adminUsers" approved="yes">
+        <source>Admin users</source>
+        <target state="final">المستخدمون المُشرفون</target>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.title" approved="yes">
+        <source>Failed backend logins</source>
+        <target state="final">فشل تسجيل الدخول في الواجهة الخلفية</target>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.subtitle" approved="yes">
+        <source>In last 24 hours</source>
+        <target state="final">في آخر 24 ساعة</target>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.description" approved="yes">
+        <source>Information about the number of failed logins during the last 24 hours.</source>
+        <target state="final">معلومات عن عدد محاولات تسجيل الدخول الفاشلة خلال الساعات الـ 24 الأخيرة.</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.title" approved="yes">
+        <source>TYPO3 security advisories</source>
+        <target state="final">استشارات الأمان TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.description" approved="yes">
+        <source>Add a list of security advisories from the TYPO3 project</source>
+        <target state="final">إضافة قائمة بالتحذيرات الأمنية من مشروع TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.moreItems" approved="yes">
+        <source>More TYPO3 security advisories</source>
+        <target state="final">المزيد من الإشعارات الأمنية من TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.title" approved="yes">
+        <source>Latest changed pages</source>
+        <target state="final">آخر التغييرات على الصفحات</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.title.restrictToCurrentUser" approved="yes">
+        <source>My latest changed pages</source>
+        <target state="final">أحدث صفحاتي المُتغيرة</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.description" approved="yes">
+        <source>Show a list of pages where the latest changes were made</source>
+        <target state="final">إظهار قائمة بالصفحات التي تم إجراء أحدث التغييرات عليها</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.empty" approved="yes">
+        <source>No history found</source>
+        <target state="final">العثور على أي سجل </target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.settings.restrictToCurrentUser" approved="yes">
+        <source>Only show my changes</source>
+        <target state="final">إظهار التغييرات الخاصة بي فقط</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.change" approved="yes">
+        <source>Change</source>
+        <target state="final">تغيير</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.user" approved="yes">
+        <source>User</source>
+        <target state="final">المُستخدم</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.user.userNotFound" approved="yes">
+        <source>Not Found</source>
+        <target state="final">غير موجود</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.page" approved="yes">
+        <source>Page</source>
+        <target state="final">الصفحة </target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.page.workspace" approved="yes">
+        <source>Changes in current selected workspace</source>
+        <target state="final">التغييرات في مساحة العمل المُحددة الحالية</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.page.pagetree" approved="yes">
+        <source>Position in pagetree</source>
+        <target state="final">الموضع في شجرة الصفحة</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control" approved="yes">
+        <source>Control</source>
+        <target state="final">التحكّم</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.recordHistory" approved="yes">
+        <source>Show history</source>
+        <target state="final">إظهار السجل</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.viewWebpage" approved="yes">
+        <source>View webpage</source>
+        <target state="final">عرض صفحة ويب</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.editPageContent" approved="yes">
+        <source>Edit page content</source>
+        <target state="final">تعديل محتوى الصفحة</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.editPage" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">تعديل خصائص الصفحة</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.table.tt_content" approved="yes">
+        <source>Content</source>
+        <target state="final">المحتوى</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.table.pages" approved="yes">
+        <source>Page</source>
+        <target state="final">الصفحة</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.title" approved="yes">
+        <source>Latest backend logins</source>
+        <target state="final">أحدثُ عمليَّاتِ تسجيلِ الدخولِ إلى الواجهةِ الخلفيةِ</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.description" approved="yes">
+        <source>Shows the latest backend user logins.</source>
+        <target state="final">يعرضُ أحدثَ عمليَّاتِ تسجيلِ الدخولِ لمُستخدمي الواجهةِ الخلفيةِ.</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.empty" approved="yes">
+        <source>No backend login history found</source>
+        <target state="final">لم يُعثَرْ على أيِّ سجلِّ دخولٍ للواجهةِ الخلفيةِ</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.time" approved="yes">
+        <source>Time</source>
+        <target state="final">الوقت</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.user" approved="yes">
+        <source>User</source>
+        <target state="final">المُستخدم</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.user.notFound" approved="yes">
+        <source>Not found</source>
+        <target state="final">غيرُ موجودٍ</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.user.edit" approved="yes">
+        <source>Edit user</source>
+        <target state="final">تعديل المُستخدم</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.settings.limit" approved="yes">
+        <source>Number of logins to display</source>
+        <target state="final">عددُ عمليَّاتِ تسجيلِ الدخولِ المعروضةِ</target>
+      </trans-unit>
+      <trans-unit id="widget_group.general" approved="yes">
+        <source>General</source>
+        <target state="final">عام</target>
+      </trans-unit>
+      <trans-unit id="widget_group.typo3" approved="yes">
+        <source>TYPO3 community</source>
+        <target state="final">مجتمع TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widget_group.news" approved="yes">
+        <source>News</source>
+        <target state="final">الأخبَار</target>
+      </trans-unit>
+      <trans-unit id="widget_group.documentation" approved="yes">
+        <source>Documentation</source>
+        <target state="final">إرشادات الإستخدام</target>
+      </trans-unit>
+      <trans-unit id="widget_group.system" approved="yes">
+        <source>System Information</source>
+        <target state="final">معلومات النظام</target>
+      </trans-unit>
+      <trans-unit id="widget_group.content" approved="yes">
+        <source>Content</source>
+        <target state="final">المحتوى</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.title" approved="yes">
+        <source>No widgets</source>
+        <target state="final">لا يوجد أدوات مُصغّرة</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.description" approved="yes">
+        <source>There are no widgets on this dashboard yet. You can add widgets now by clicking on the button below.</source>
+        <target state="final">لا توجد أدوات مُصغّرة على لوحة التحكم هذه حتى الآن. يمكنك إضافة الأدوات الآن بالنقر على الزر أدناه.</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.button" approved="yes">
+        <source>Add a widget</source>
+        <target state="final">اضف تطبيق مُصفّر</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
