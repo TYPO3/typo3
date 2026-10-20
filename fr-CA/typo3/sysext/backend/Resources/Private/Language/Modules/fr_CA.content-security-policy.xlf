@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf" date="2023-01-11T00:00:00Z" product-name="typo3-cms-backend" target-language="fr-CA">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Content Security Policy</source>
+        <target state="final">Stratégie de sécurité du contenu</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Allows to manage Content Security Policy settings.</source>
+        <target state="final">Permet de gérer les paramètres de la stratégie de sécurité du contenu (Content Security Policy).</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Content Security Policy</source>
+        <target state="final">Stratégie de sécurité du contenu</target>
+      </trans-unit>
+      <trans-unit id="module.headline" approved="yes">
+        <source>Content Security Policy</source>
+        <target state="final">Politique de sécurité du contenu</target>
+      </trans-unit>
+      <trans-unit id="module.introtext" approved="yes">
+        <source>A list of the existing Content Security Policy Mutations can be viewed in the %s module.</source>
+        <target state="final">Une liste des mutations de la politique de sécurité de contenu existante peut être consultée dans le module %s.</target>
+      </trans-unit>
+      <trans-unit id="module.introtextLowlevelMissing" approved="yes">
+        <source>If you install the core EXT:lowlevel extension, you can see a list of the existing Content Security Policy Mutations in the %s module.</source>
+        <target state="final">Si vous installez l'extension core EXT:lowlevel , vous pourrez voir une liste des mutations existantes de la stratégie de sécurité du contenu (CSP) dans le module %s.</target>
+      </trans-unit>
+      <trans-unit id="module.introtext.moduleName" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Configuration</target>
+      </trans-unit>
+      <trans-unit id="module.callout.featureDisabled.title" approved="yes">
+        <source>Disabled feature flags</source>
+        <target state="final">Indicateurs de fonctionnalités désactivées</target>
+      </trans-unit>
+      <trans-unit id="module.callout.featureDisabled.message" approved="yes">
+        <source>The following feature flags are currently disabled and won't be shown in this module:</source>
+        <target state="final">Les options suivantes sont actuellement désactivées et ne seront pas affichées dans ce module :</target>
+      </trans-unit>
+      <trans-unit id="module.callout.customReporting.title" approved="yes">
+        <source>Reporting</source>
+        <target state="final">Rapport</target>
+      </trans-unit>
+      <trans-unit id="module.callout.customReporting.message" approved="yes">
+        <source>Reporting is currently configured with these custom endpoints and won't be shown in this module:</source>
+        <target state="final">Le rapport est actuellement configuré avec ces terminaux personnalisés et ne sera pas affiché dans ce module :</target>
+      </trans-unit>
+      <trans-unit id="module.label.noEntriesAvailable" approved="yes">
+        <source>No entries available.</source>
+        <target state="final">Aucune entrée disponible.</target>
+      </trans-unit>
+      <trans-unit id="module.label.reports" approved="yes">
+        <source>Reports</source>
+        <target state="final">Rapports</target>
+      </trans-unit>
+      <trans-unit id="module.label.created" approved="yes">
+        <source>Created</source>
+        <target state="final">Créé</target>
+      </trans-unit>
+      <trans-unit id="module.label.scope" approved="yes">
+        <source>Scope</source>
+        <target state="final">Portée</target>
+      </trans-unit>
+      <trans-unit id="module.label.removeAll" approved="yes">
+        <source>Remove all</source>
+        <target state="final">Tout supprimer</target>
+      </trans-unit>
+      <trans-unit id="module.label.violation" approved="yes">
+        <source>Violation</source>
+        <target state="final">Violation</target>
+      </trans-unit>
+      <trans-unit id="module.label.uri" approved="yes">
+        <source>URI</source>
+        <target state="final">URI</target>
+      </trans-unit>
+      <trans-unit id="module.label.all" approved="yes">
+        <source>All</source>
+        <target state="final">Tous</target>
+      </trans-unit>
+      <trans-unit id="module.label.details" approved="yes">
+        <source>Details</source>
+        <target state="final">Détails</target>
+      </trans-unit>
+      <trans-unit id="module.label.disposition" approved="yes">
+        <source>Disposition</source>
+        <target state="final">Disposition</target>
+      </trans-unit>
+      <trans-unit id="module.label.directive" approved="yes">
+        <source>Directive</source>
+        <target state="final">Directive</target>
+      </trans-unit>
+      <trans-unit id="module.label.blocked_uri" approved="yes">
+        <source>Blocked URI</source>
+        <target state="final">URI bloquée</target>
+      </trans-unit>
+      <trans-unit id="module.label.document_uri" approved="yes">
+        <source>Document URI</source>
+        <target state="final">URI du document</target>
+      </trans-unit>
+      <trans-unit id="module.label.sample" approved="yes">
+        <source>Sample</source>
+        <target state="final">Exemple</target>
+      </trans-unit>
+      <trans-unit id="module.label.user_agent" approved="yes">
+        <source>User Agent</source>
+        <target state="final">Agent utilisateur</target>
+      </trans-unit>
+      <trans-unit id="module.label.uuid" approved="yes">
+        <source>UUID</source>
+        <target state="final">UUID</target>
+      </trans-unit>
+      <trans-unit id="module.label.source_file" approved="yes">
+        <source>Source File</source>
+        <target state="final">Fichier source</target>
+      </trans-unit>
+      <trans-unit id="module.label.summary" approved="yes">
+        <source>Summary</source>
+        <target state="final">Résumé</target>
+      </trans-unit>
+      <trans-unit id="module.label.suggestions" approved="yes">
+        <source>Suggestions</source>
+        <target state="final">Suggestions</target>
+      </trans-unit>
+      <trans-unit id="module.label.guide.no_record_selected" approved="yes">
+        <source>Select a row to see more information.</source>
+        <target state="final">Sélectionnez une ligne pour voir plus d'informations.</target>
+      </trans-unit>
+      <trans-unit id="module.label.showDetails" approved="yes">
+        <source>Show details for "%s" violation with URI: %s</source>
+        <target state="final">Afficher les détails de la violation « %s » avec l'URI : %s</target>
+      </trans-unit>
+      <trans-unit id="module.button.apply" approved="yes">
+        <source>Apply</source>
+        <target state="final">Appliquer</target>
+      </trans-unit>
+      <trans-unit id="module.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Fermer</target>
+      </trans-unit>
+      <trans-unit id="module.button.mute" approved="yes">
+        <source>Mute</source>
+        <target state="final">Mode silencieux</target>
+      </trans-unit>
+      <trans-unit id="module.button.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Supprimer</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
