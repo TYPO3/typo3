@@ -1,0 +1,1560 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_core.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="bg">
+    <header/>
+    <body>
+      <trans-unit id="labels.datepicker.label" approved="yes">
+        <source>Open date picker</source>
+        <target state="final">Отвори избор на дата</target>
+      </trans-unit>
+      <trans-unit id="labels.openInNewWindow" approved="yes">
+        <source>Open in new window</source>
+        <target state="final">Отвори в нов прозорец</target>
+      </trans-unit>
+      <trans-unit id="labels.goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Назад</target>
+      </trans-unit>
+      <trans-unit id="labels.makeShortcut" approved="yes">
+        <source>Create a shortcut to this page?</source>
+        <target state="final">Препратка (shortcut) към тази страница?</target>
+      </trans-unit>
+      <trans-unit id="labels.makeBookmark" approved="yes">
+        <source>Create a bookmark to this record</source>
+        <target state="final">Създайте отметка за този запис</target>
+      </trans-unit>
+      <trans-unit id="labels.alreadyBookmarked" approved="yes">
+        <source>This record is already bookmarked</source>
+        <target state="final">Записът вече е отметнат</target>
+      </trans-unit>
+      <trans-unit id="labels.copyCurrentUrl" approved="yes">
+        <source>Copy URL of this record</source>
+        <target state="final">Копиране на URL на този запис</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord" approved="yes">
+        <source>The user '%s' began to edit this record %s ago.</source>
+        <target state="final">Потребителя '%s' започна да редактира този запис преди %s.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord_content" approved="yes">
+        <source>The user '%s' began to edit content on this page %s ago.</source>
+        <target state="final">Потребителя '%s' започна да редактира съдържанието на страницата преди %s.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecordUser" approved="yes">
+        <source>The %s '%s' began to edit this record %s ago.</source>
+        <target state="final">%s '%s' започна да редактира този запис преди %s.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecordUser_content" approved="yes">
+        <source>The %s '%s' began to edit content on this page %s ago.</source>
+        <target state="final">%s '%s' започна да редактира съдържанието на тази страница преди %s</target>
+      </trans-unit>
+      <trans-unit id="labels.color" approved="yes">
+        <source>Color</source>
+        <target state="final">Цвят</target>
+      </trans-unit>
+      <trans-unit id="labels.user" approved="yes">
+        <source>User</source>
+        <target state="final">Потребител</target>
+      </trans-unit>
+      <trans-unit id="labels.beUser" approved="yes">
+        <source>BE-User</source>
+        <target state="final">BE-Потребител</target>
+      </trans-unit>
+      <trans-unit id="labels.feUser" approved="yes">
+        <source>FE-User</source>
+        <target state="final">FE-Потребител</target>
+      </trans-unit>
+      <trans-unit id="labels.unknownUser" approved="yes">
+        <source>-Unknown-</source>
+        <target state="final">-Непознат-</target>
+      </trans-unit>
+      <trans-unit id="labels.showRecords" approved="yes">
+        <source>Show records</source>
+        <target state="final">Покажи записите</target>
+      </trans-unit>
+      <trans-unit id="labels.path" approved="yes">
+        <source>Path</source>
+        <target state="final">Път</target>
+      </trans-unit>
+      <trans-unit id="labels.resetFilter" approved="yes">
+        <source>Reset Filter</source>
+        <target state="final">Занули филтър</target>
+      </trans-unit>
+      <trans-unit id="labels.table" approved="yes">
+        <source>Table</source>
+        <target state="final">Таблица</target>
+      </trans-unit>
+      <trans-unit id="labels.upOneLevel" approved="yes">
+        <source>Up one level</source>
+        <target state="final">Едно ниво нагоре</target>
+      </trans-unit>
+      <trans-unit id="labels.expandTable" approved="yes">
+        <source>Expand table</source>
+        <target state="final">Разшири таблица</target>
+      </trans-unit>
+      <trans-unit id="labels.collapseTable" approved="yes">
+        <source>Collapse table</source>
+        <target state="final">Свий таблица</target>
+      </trans-unit>
+      <trans-unit id="labels.enterSearchString" approved="yes">
+        <source>Enter search term</source>
+        <target state="final">Въведете термин за търсене</target>
+      </trans-unit>
+      <trans-unit id="labels.enterSearchLevels" approved="yes">
+        <source>This page|1 level down|2 levels down|3 levels down|4 levels down</source>
+        <target state="final">Тази страница|1 ниво надолу|2 ниво надолу|3 ниво надолу|4 ниво надолу</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.0" approved="yes">
+        <source>This page</source>
+        <target state="final">Тази страница</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.1" approved="yes">
+        <source>1 level down</source>
+        <target state="final">1 ниво надолу</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.2" approved="yes">
+        <source>2 levels down</source>
+        <target state="final">2 нива надолу</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.3" approved="yes">
+        <source>3 levels down</source>
+        <target state="final">3 нива надолу</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.4" approved="yes">
+        <source>4 levels down</source>
+        <target state="final">4 нива надолу</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.infinite" approved="yes">
+        <source>Infinite levels</source>
+        <target state="final">Безброй нива</target>
+      </trans-unit>
+      <trans-unit id="labels.noEditPermission" approved="yes">
+        <source>Sorry, you didn't have proper permissions to perform this change.</source>
+        <target state="final">Съжаляваме, нямате необходимите позволения да направите промяната.</target>
+      </trans-unit>
+      <trans-unit id="labels.fieldsMissing" approved="yes">
+        <source>The fields marked with an exclamation mark are not yet correctly filled in. Please complete them properly.</source>
+        <target state="final">Полетата, маркирани с удивителна, все още не са правилно попълнени. Моля, попълнете ги правилно.</target>
+      </trans-unit>
+      <trans-unit id="labels.fieldsChanged" approved="yes">
+        <source>Important: There are unsaved changes in the form. Continuing without saving will discard your changes. Continue?</source>
+        <target state="final">Важно: има незапазени промени във формата. Продължаване без съхранение ще отхвърли промените ви. Продължение?</target>
+      </trans-unit>
+      <trans-unit id="labels.remainingCharacters" approved="yes">
+        <source>Remaining characters: {0}</source>
+        <target state="final">Оставащи символи: {0}</target>
+      </trans-unit>
+      <trans-unit id="labels.minCharactersLeft" approved="yes">
+        <source>Characters missing: {0}</source>
+        <target state="final">Липсващи символи: {0}</target>
+      </trans-unit>
+      <trans-unit id="labels.maxItemsAllowed" approved="yes">
+        <source>A maximum of {0} child records are allowed.</source>
+        <target state="final">Позволени са максимум {0} детски записа.</target>
+      </trans-unit>
+      <trans-unit id="labels.noRTEfound" approved="yes">
+        <source>Notice: This field can only be edited with a Rich Text Editor. No editor is currently available or enabled.</source>
+        <target state="final">Бележка: Това поле може да бъде редактирано само с Rich Text Editor. В момента няма или не е включен никакъв едитор.</target>
+      </trans-unit>
+      <trans-unit id="labels.recordInformation" approved="yes">
+        <source>Record information</source>
+        <target state="final">Информация за запис</target>
+      </trans-unit>
+      <trans-unit id="labels.disableRTE" approved="yes">
+        <source>Disable Rich Text Editor (RTE)</source>
+        <target state="final">Изключване на Rich Text Editor (RTE)</target>
+      </trans-unit>
+      <trans-unit id="labels._CONTROL_" approved="yes">
+        <source>Control</source>
+        <target state="final">Контрол</target>
+      </trans-unit>
+      <trans-unit id="labels._PATH_" approved="yes">
+        <source>Path</source>
+        <target state="final">Път</target>
+      </trans-unit>
+      <trans-unit id="labels._LOCALIZATION_" approved="yes">
+        <source>Localization</source>
+        <target state="final">Локализация</target>
+      </trans-unit>
+      <trans-unit id="labels._REF_" approved="yes">
+        <source>References</source>
+        <target state="final">Референции</target>
+      </trans-unit>
+      <trans-unit id="labels.uid" approved="yes">
+        <source>Unique ID</source>
+        <target state="final">Уникален ID</target>
+      </trans-unit>
+      <trans-unit id="labels.pid" approved="yes">
+        <source>Parent page ID</source>
+        <target state="final">ID на родителска страница</target>
+      </trans-unit>
+      <trans-unit id="labels.tstamp" approved="yes">
+        <source>Last modified</source>
+        <target state="final">Последно променен</target>
+      </trans-unit>
+      <trans-unit id="labels.crdate" approved="yes">
+        <source>Creation date</source>
+        <target state="final">Дата на създаване</target>
+      </trans-unit>
+      <trans-unit id="labels.cruser_id" approved="yes">
+        <source>Created by</source>
+        <target state="final">Създаден/но от</target>
+      </trans-unit>
+      <trans-unit id="labels.sorting" approved="yes">
+        <source>Sorting</source>
+        <target state="final">Сортиране</target>
+      </trans-unit>
+      <trans-unit id="labels.sorting.asc" approved="yes">
+        <source>Sort ascending</source>
+        <target state="final">Възходящо сортиране</target>
+      </trans-unit>
+      <trans-unit id="labels.sorting.desc" approved="yes">
+        <source>Sort descending</source>
+        <target state="final">Низходящо сортиране</target>
+      </trans-unit>
+      <trans-unit id="labels.t3ver_state" approved="yes">
+        <source>Workspace status</source>
+        <target state="final">Статус на работното пространство</target>
+      </trans-unit>
+      <trans-unit id="labels.t3ver_wsid" approved="yes">
+        <source>Workspace ID</source>
+        <target state="final">ID на работното пространство</target>
+      </trans-unit>
+      <trans-unit id="labels.t3ver_oid" approved="yes">
+        <source>Live record ID</source>
+        <target state="final">ID на записа на живо</target>
+      </trans-unit>
+      <trans-unit id="labels.setFields" approved="yes">
+        <source>Set fields</source>
+        <target state="final">Настройка на полета</target>
+      </trans-unit>
+      <trans-unit id="labels.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Търсене</target>
+      </trans-unit>
+      <trans-unit id="labels.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Автор</target>
+      </trans-unit>
+      <trans-unit id="labels.note" approved="yes">
+        <source>Note</source>
+        <target state="final">Бележка</target>
+      </trans-unit>
+      <trans-unit id="labels.category" approved="yes">
+        <source>Category</source>
+        <target state="final">Категория</target>
+      </trans-unit>
+      <trans-unit id="labels.reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">Презареди</target>
+      </trans-unit>
+      <trans-unit id="labels.language" approved="yes">
+        <source>Language</source>
+        <target state="final">Език</target>
+      </trans-unit>
+      <trans-unit id="labels.languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">Езици</target>
+      </trans-unit>
+      <trans-unit id="labels.view" approved="yes">
+        <source>View</source>
+        <target state="final">Преглед</target>
+      </trans-unit>
+      <trans-unit id="labels.view.layout" approved="yes">
+        <source>Layout</source>
+        <target state="final">Оформление</target>
+      </trans-unit>
+      <trans-unit id="labels.view.language_comparison" approved="yes">
+        <source>Language Comparison</source>
+        <target state="final">Сравнение на езиците</target>
+      </trans-unit>
+      <trans-unit id="labels.view.list" approved="yes">
+        <source>List</source>
+        <target state="final">Списък</target>
+      </trans-unit>
+      <trans-unit id="labels.view.tiles" approved="yes">
+        <source>Tiles</source>
+        <target state="final">Кутии</target>
+      </trans-unit>
+      <trans-unit id="labels.view.showThumbnails" approved="yes">
+        <source>Show thumbnails</source>
+        <target state="final">Показване на умалени изображения</target>
+      </trans-unit>
+      <trans-unit id="labels.view.showClipboard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">Показване на буферната памет</target>
+      </trans-unit>
+      <trans-unit id="labels.view.showSearch" approved="yes">
+        <source>Show search</source>
+        <target state="final">Показване на търсене</target>
+      </trans-unit>
+      <trans-unit id="labels.view.selectColumns" approved="yes">
+        <source>Select columns</source>
+        <target state="final">Избор на колони</target>
+      </trans-unit>
+      <trans-unit id="labels.share" approved="yes">
+        <source>Share</source>
+        <target state="final">Сподели</target>
+      </trans-unit>
+      <trans-unit id="labels.csv" approved="yes">
+        <source>Download CSV file</source>
+        <target state="final">Сваляне на CSV файл</target>
+      </trans-unit>
+      <trans-unit id="labels.no_title" approved="yes">
+        <source>No title</source>
+        <target state="final">Без заглавие</target>
+      </trans-unit>
+      <trans-unit id="labels.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Отказ</target>
+      </trans-unit>
+      <trans-unit id="labels.deactivate" approved="yes">
+        <source>Deactivate</source>
+        <target state="final">Деактивиране</target>
+      </trans-unit>
+      <trans-unit id="labels.hidden" approved="yes">
+        <source>Hidden</source>
+        <target state="final">Скрит</target>
+      </trans-unit>
+      <trans-unit id="labels.starttime" approved="yes">
+        <source>Start</source>
+        <target state="final">Старт</target>
+      </trans-unit>
+      <trans-unit id="labels.endtime" approved="yes">
+        <source>End</source>
+        <target state="final">Край</target>
+      </trans-unit>
+      <trans-unit id="labels.minutesHoursDaysYears" approved="yes">
+        <source>min|hrs|days|yrs|min|hour|day|year</source>
+        <target state="final">минути|часове|дни|години|час|ден|година</target>
+      </trans-unit>
+      <trans-unit id="labels.menu" approved="yes">
+        <source>Menu</source>
+        <target state="final">Меню</target>
+      </trans-unit>
+      <trans-unit id="labels.showPage" approved="yes">
+        <source>View webpage</source>
+        <target state="final">Виж уеб страницата</target>
+      </trans-unit>
+      <trans-unit id="labels.showList" approved="yes">
+        <source>Show record list</source>
+        <target state="final">Покажи списъка със записи</target>
+      </trans-unit>
+      <trans-unit id="labels.ws.deletedElement" approved="yes">
+        <source>Deleted element</source>
+        <target state="final">Изтрит елемент</target>
+      </trans-unit>
+      <trans-unit id="labels.ws.newLocation" approved="yes">
+        <source>New location (Move-to Pointer) WSID#%s</source>
+        <target state="final">Нова локация (Move-to Pointer) WSID#%s</target>
+      </trans-unit>
+      <trans-unit id="labels.ws.newElement" approved="yes">
+        <source>New element</source>
+        <target state="final">Нов елемент</target>
+      </trans-unit>
+      <trans-unit id="labels.days" approved="yes">
+        <source>days</source>
+        <target state="final">дни</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_0" approved="yes">
+        <source>This page</source>
+        <target state="final">Тази страница</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_1" approved="yes">
+        <source>1 level</source>
+        <target state="final">1 ниво</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_2" approved="yes">
+        <source>2 levels</source>
+        <target state="final">2 ниво</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_3" approved="yes">
+        <source>3 levels</source>
+        <target state="final">3 ниво</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_4" approved="yes">
+        <source>4 levels</source>
+        <target state="final">4 ниво:</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_infi" approved="yes">
+        <source>Infinite</source>
+        <target state="final">Безкраен</target>
+      </trans-unit>
+      <trans-unit id="labels.allow" approved="yes">
+        <source>Allow</source>
+        <target state="final">Разреши</target>
+      </trans-unit>
+      <trans-unit id="labels.deny" approved="yes">
+        <source>Deny</source>
+        <target state="final">Забрани</target>
+      </trans-unit>
+      <trans-unit id="labels.automatic" approved="yes">
+        <source>Auto</source>
+        <target state="final">Автоматично</target>
+      </trans-unit>
+      <trans-unit id="labels.enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Разрешен</target>
+      </trans-unit>
+      <trans-unit id="labels.show" approved="yes">
+        <source>Show</source>
+        <target state="final">Покажи</target>
+      </trans-unit>
+      <trans-unit id="labels.openTreeOptionsMenu" approved="yes">
+        <source>Open tree options menu</source>
+        <target state="final">Отвори менюто с опции на дървото</target>
+      </trans-unit>
+      <trans-unit id="labels.openPageTreeOptionsMenu" approved="yes">
+        <source>Open page tree options menu</source>
+        <target state="final">Отваряне на менюто с опции на дървото от страници</target>
+      </trans-unit>
+      <trans-unit id="labels.refresh" approved="yes">
+        <source>Reload the tree from server</source>
+        <target state="final">Презареждане на дървото от сървъра</target>
+      </trans-unit>
+      <trans-unit id="labels.collapse" approved="yes">
+        <source>Collapse all tree items</source>
+        <target state="final">Свий всички елементи в дървото</target>
+      </trans-unit>
+      <trans-unit id="labels.temporaryPageTreeEntryPoints" approved="yes">
+        <source>Cancel temporary Page Tree Entry Points</source>
+        <target state="final">Откажете временните входни точки на дървото от страници</target>
+      </trans-unit>
+      <trans-unit id="labels.refreshList" approved="yes">
+        <source>Reload list from server</source>
+        <target state="final">Презареди листа от сървъра</target>
+      </trans-unit>
+      <trans-unit id="labels.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Затвори</target>
+      </trans-unit>
+      <trans-unit id="labels.tableWizard" approved="yes">
+        <source>Table Wizard</source>
+        <target state="final">Табличен помощник</target>
+      </trans-unit>
+      <trans-unit id="labels.new" approved="yes">
+        <source>New</source>
+        <target state="final">Нов</target>
+      </trans-unit>
+      <trans-unit id="labels.list" approved="yes">
+        <source>List</source>
+        <target state="final">Списък</target>
+      </trans-unit>
+      <trans-unit id="labels.link" approved="yes">
+        <source>Link</source>
+        <target state="final">Връзка</target>
+      </trans-unit>
+      <trans-unit id="labels.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Редакция</target>
+      </trans-unit>
+      <trans-unit id="labels.createNew" approved="yes">
+        <source>Create new</source>
+        <target state="final">Създай Нов</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewPage" approved="yes">
+        <source>Create new %s</source>
+        <target state="final">Създай нов %s</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewRecord" approved="yes">
+        <source>Create new %s on page "%s"</source>
+        <target state="final">Създай нов %s на страница "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewTranslation" approved="yes">
+        <source>Create a %s translation</source>
+        <target state="final">Създаване на %s превод</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewRecordRootLevel" approved="yes">
+        <source>Create new %s on root level</source>
+        <target state="final">Създай нов %s на ниво корен</target>
+      </trans-unit>
+      <trans-unit id="labels.editPage" approved="yes">
+        <source>Edit %s "%s"</source>
+        <target state="final">Редактирай %s "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecord" approved="yes">
+        <source>Edit %s "%s" on page "%s"</source>
+        <target state="final">Редактирай %s "%s" на страница "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecordNoTitle" approved="yes">
+        <source>Edit %s on page "%s"</source>
+        <target state="final">Редактирай %s на страница "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecordRootLevel" approved="yes">
+        <source>Edit %s "%s" on root level</source>
+        <target state="final">Редактирай %s "%s" на ниво корен</target>
+      </trans-unit>
+      <trans-unit id="labels.editMultiple" approved="yes">
+        <source>Edit multiple</source>
+        <target state="final">Редактиране на множество</target>
+      </trans-unit>
+      <trans-unit id="labels.rootLevel" approved="yes">
+        <source>Root level</source>
+        <target state="final">Ниво корен</target>
+      </trans-unit>
+      <trans-unit id="labels.addnew" approved="yes">
+        <source>Add new</source>
+        <target state="final">Добави нов</target>
+      </trans-unit>
+      <trans-unit id="labels.toggleall" approved="yes">
+        <source>Toggle all</source>
+        <target state="final">Скрий/ПОкажи всички</target>
+      </trans-unit>
+      <trans-unit id="labels.toggleSelection" approved="yes">
+        <source>Toggle selection</source>
+        <target state="final">Превключи избора</target>
+      </trans-unit>
+      <trans-unit id="labels.selected" approved="yes">
+        <source>Selected Items</source>
+        <target state="final">Избран/и</target>
+      </trans-unit>
+      <trans-unit id="labels.items" approved="yes">
+        <source>Available Items</source>
+        <target state="final">Елементи</target>
+      </trans-unit>
+      <trans-unit id="labels.remove_selected" approved="yes">
+        <source>Remove selected items</source>
+        <target state="final">Премахни избраните артикули</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_top" approved="yes">
+        <source>Move selected items to top</source>
+        <target state="final">Премести избраните артикули нагоре</target>
+      </trans-unit>
+      <trans-unit id="labels.move_up" approved="yes">
+        <source>Move selected items upwards</source>
+        <target state="final">Премести избраните артикули нагоре</target>
+      </trans-unit>
+      <trans-unit id="labels.move_down" approved="yes">
+        <source>Move selected items downwards</source>
+        <target state="final">Премести избраните артикули надолу</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_bottom" approved="yes">
+        <source>Move selected items to bottom</source>
+        <target state="final">Премести избраните артикули най-отдолу</target>
+      </trans-unit>
+      <trans-unit id="labels.move" approved="yes">
+        <source>Move this item</source>
+        <target state="final">Премести този артикул</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_elements" approved="yes">
+        <source>Browse for elements</source>
+        <target state="final">Избор от елементи</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_folder" approved="yes">
+        <source>Browse for folders</source>
+        <target state="final">Избор от папки</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_db" approved="yes">
+        <source>Browse for records</source>
+        <target state="final">Преглеждане за записи</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_file" approved="yes">
+        <source>Insert %s file(s) from the clipboard</source>
+        <target state="final">Вмъкване на %s файл(ове) от clipboard</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_db" approved="yes">
+        <source>Insert %s record(s) from the clipboard</source>
+        <target state="final">Вмъкване на %s запис(и) от clipboard</target>
+      </trans-unit>
+      <trans-unit id="labels.generalOptions" approved="yes">
+        <source>General options</source>
+        <target state="final">Основни опции</target>
+      </trans-unit>
+      <trans-unit id="labels.generalOptions_more" approved="yes">
+        <source>General options (continued)</source>
+        <target state="final">Основни опции (продължение)</target>
+      </trans-unit>
+      <trans-unit id="labels.allTables" approved="yes">
+        <source>[All tables]</source>
+        <target state="final">[Всички таблици]</target>
+      </trans-unit>
+      <trans-unit id="labels.noMatchingValue" approved="yes">
+        <source>Invalid value ("%s")</source>
+        <target state="final">Невалидна стойност ("%s")</target>
+      </trans-unit>
+      <trans-unit id="labels.noMatchingLabel" approved="yes">
+        <source>Missing label ("%s")</source>
+        <target state="final">Липсващо заглавие ("%s")</target>
+      </trans-unit>
+      <trans-unit id="labels.thumbmode_clip" approved="yes">
+        <source>Show Thumbnails on ClipBoard</source>
+        <target state="final">Покажи умалени изображения (Thumbnails) в ClipBoard</target>
+      </trans-unit>
+      <trans-unit id="labels.copymode" approved="yes">
+        <source>Copy items instead of moving them</source>
+        <target state="final">Копиране на артикули, вместо да се местят</target>
+      </trans-unit>
+      <trans-unit id="labels.normal" approved="yes">
+        <source>Normal (single record mode)</source>
+        <target state="final">Нормален (режим на единичен запис)</target>
+      </trans-unit>
+      <trans-unit id="labels.normal-description" approved="yes">
+        <source>"Normal" clipboard allows to copy/move one record at time.</source>
+        <target state="final">"Нормална" временна памет позволява копиране/преместване на един запис по едно време.</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs" approved="yes">
+        <source>Clipboard #</source>
+        <target state="final">Clipboard #</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs-name" approved="yes">
+        <source>Clipboard #%s (multi-selection mode)</source>
+        <target state="final">Буферна памет #%s (многоизборен режим)</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs-description" approved="yes">
+        <source>This clipboard allows to select and edit/copy/move multiple records at once. Choose it to show a checkbox by each record.</source>
+        <target state="final">Тази буферна памет позволява избирането и редактирането/копирането/преместването на множество записи едновременно. Изберете я, за да се покаже отметка за всеки запис.</target>
+      </trans-unit>
+      <trans-unit id="labels.clipboard.delete_elements" approved="yes">
+        <source>Delete elements</source>
+        <target state="final">Изтриване на елементи</target>
+      </trans-unit>
+      <trans-unit id="labels.clipboard.clear_clipboard" approved="yes">
+        <source>Clear clipboard</source>
+        <target state="final">Почистване на буферната памет</target>
+      </trans-unit>
+      <trans-unit id="labels.removeItem" approved="yes">
+        <source>Remove element</source>
+        <target state="final">Премахване на елемент</target>
+      </trans-unit>
+      <trans-unit id="labels.holdDownCTRL" approved="yes">
+        <source>Important: Hold down the CTRL key while toggling elements in this list.</source>
+        <target state="final">Важно: задръжте натиснат CTRL клавиш, докато избирате елементи от този списък.</target>
+      </trans-unit>
+      <trans-unit id="labels.revertSelection" approved="yes">
+        <source>Revert selection</source>
+        <target state="final">Обръщане на селекцията</target>
+      </trans-unit>
+      <trans-unit id="labels.setAllCheckboxes" approved="yes">
+        <source>Select All Checkboxes</source>
+        <target state="final">Избор на всички Checkboxes</target>
+      </trans-unit>
+      <trans-unit id="labels.openSelectionOptions" approved="yes">
+        <source>Open selection options</source>
+        <target state="final">Отваряне на избраните опции</target>
+      </trans-unit>
+      <trans-unit id="labels.checkAll" approved="yes">
+        <source>Check all</source>
+        <target state="final">Маркирай всички</target>
+      </trans-unit>
+      <trans-unit id="labels.uncheckAll" approved="yes">
+        <source>Uncheck all</source>
+        <target state="final">Размаркирай всички</target>
+      </trans-unit>
+      <trans-unit id="labels.selectAllLanguages" approved="yes">
+        <source>Select all available languages</source>
+        <target state="final">Избор на всички налични езици</target>
+      </trans-unit>
+      <trans-unit id="labels.deselectAllLanguages" approved="yes">
+        <source>Deselect all languages except default</source>
+        <target state="final">Деселектиране на всички езици с изключение на езика по подразбиране</target>
+      </trans-unit>
+      <trans-unit id="labels.defaultLanguageAlwaysShown" approved="yes">
+        <source>Default language is always shown</source>
+        <target state="final">Езикът по подразбиране е винаги показан</target>
+      </trans-unit>
+      <trans-unit id="labels.createTranslationFor" approved="yes">
+        <source>Create %s translation of this page</source>
+        <target state="final">Създаване на %s превод на тази страница</target>
+      </trans-unit>
+      <trans-unit id="labels.selection" approved="yes">
+        <source>Selection:</source>
+        <target state="final">Избор:</target>
+      </trans-unit>
+      <trans-unit id="labels.noActionAvailable" approved="yes">
+        <source>No action available</source>
+        <target state="final">Не е налично действие</target>
+      </trans-unit>
+      <trans-unit id="labels.placeholder.override" approved="yes">
+        <source>Set element specific value (Default: "%s")</source>
+        <target state="final">Задаване на специфична стойност на елемента (По подразбиране: "%s")</target>
+      </trans-unit>
+      <trans-unit id="labels.placeholder.override_not_available" approved="yes">
+        <source>Set element specific value (No default)</source>
+        <target state="final">Задаване на специфична стойност на елемента (без подразбиране)</target>
+      </trans-unit>
+      <trans-unit id="labels.nullCheckbox" approved="yes">
+        <source>Set value</source>
+        <target state="final">Задаване на стойност</target>
+      </trans-unit>
+      <trans-unit id="labels.changeInOrig" approved="yes">
+        <source>Changed in original translation</source>
+        <target state="final">Промяна в оригиналния превод</target>
+      </trans-unit>
+      <trans-unit id="labels.expandAll" approved="yes">
+        <source>Expand all</source>
+        <target state="final">Разшири всички</target>
+      </trans-unit>
+      <trans-unit id="labels.generatePassword" approved="yes">
+        <source>Generate password</source>
+        <target state="final">Генериране на парола</target>
+      </trans-unit>
+      <trans-unit id="labels.new_section" approved="yes">
+        <source>Create new</source>
+        <target state="final">Създай Нов</target>
+      </trans-unit>
+      <trans-unit id="labels.count" approved="yes">
+        <source>Quantity</source>
+        <target state="final">Количество</target>
+      </trans-unit>
+      <trans-unit id="labels.title.searchIcon" approved="yes">
+        <source>Toggle search toolbar</source>
+        <target state="final">Превключи лентата с инструменти за търсене</target>
+      </trans-unit>
+      <trans-unit id="labels.title.searchString" approved="yes">
+        <source>Search term</source>
+        <target state="final">Търсен термин</target>
+      </trans-unit>
+      <trans-unit id="labels.title.limit" approved="yes">
+        <source>Limit</source>
+        <target state="final">Ограничение</target>
+      </trans-unit>
+      <trans-unit id="labels.title.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Търсене</target>
+      </trans-unit>
+      <trans-unit id="labels.title.search_levels" approved="yes">
+        <source>Search levels</source>
+        <target state="final">Нива на търсене</target>
+      </trans-unit>
+      <trans-unit id="labels.label.searchString" approved="yes">
+        <source>Search term</source>
+        <target state="final">Търсен термин</target>
+      </trans-unit>
+      <trans-unit id="labels.label.limit" approved="yes">
+        <source>Limit</source>
+        <target state="final">Ограничение</target>
+      </trans-unit>
+      <trans-unit id="labels.label.search_levels" approved="yes">
+        <source>Search levels</source>
+        <target state="final">Нива на търсене</target>
+      </trans-unit>
+      <trans-unit id="labels.active" approved="yes">
+        <source>Active</source>
+        <target state="final">Активен</target>
+      </trans-unit>
+      <trans-unit id="labels.locked" approved="yes">
+        <source>Locked</source>
+        <target state="final">Заключен</target>
+      </trans-unit>
+      <trans-unit id="labels.mfa.enabled" approved="yes">
+        <source>MFA enabled</source>
+        <target state="final">MFA активиран</target>
+      </trans-unit>
+      <trans-unit id="labels.mfa.disabled" approved="yes">
+        <source>MFA disabled</source>
+        <target state="final">MFA деактивиран</target>
+      </trans-unit>
+      <trans-unit id="labels.recordReadonly" approved="yes">
+        <source>The table is defined as readonly and can't be edited.</source>
+        <target state="final">Таблицата е зададена само за четене и не може да бъде редактирана.</target>
+      </trans-unit>
+      <trans-unit id="labels.inconsistentLanguageWarning" approved="yes">
+        <source>No translation parent assigned</source>
+        <target state="final">Няма зададен родителски превод</target>
+      </trans-unit>
+      <trans-unit id="labels.notEditableInWorkspace" approved="yes">
+        <source>Not editable in this workspace without "Live" edit permissions.</source>
+        <target state="final">Не е редактируем в това работно пространство без "Live" права за редактиране.</target>
+      </trans-unit>
+      <trans-unit id="labels.editingLiveRecordsWarning" approved="yes">
+        <source>Caution: These records are not versioned, you will edit the live records.</source>
+        <target state="final">Внимание: тези записи не са версионирани, ще редактирате записите на живо.</target>
+      </trans-unit>
+      <trans-unit id="labels.th.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Име</target>
+      </trans-unit>
+      <trans-unit id="labels.module_actions" approved="yes">
+        <source>Module actions</source>
+        <target state="final">Действия на модула</target>
+      </trans-unit>
+      <trans-unit id="labels.new_page_translation" approved="yes">
+        <source>Create new translation</source>
+        <target state="final">Създаване на нов превод</target>
+      </trans-unit>
+      <trans-unit id="alttext.suggestSearching" approved="yes">
+        <source>Searching...</source>
+        <target state="final">Търсене...</target>
+      </trans-unit>
+      <trans-unit id="ver.online" approved="yes">
+        <source>Online</source>
+        <target state="final">Онлайн</target>
+      </trans-unit>
+      <trans-unit id="ver.mgm" approved="yes">
+        <source>Version Management</source>
+        <target state="final">Управлението на версиите</target>
+      </trans-unit>
+      <trans-unit id="ver.selVer" approved="yes">
+        <source>Select version</source>
+        <target state="final">Избор на версия</target>
+      </trans-unit>
+      <trans-unit id="ver.swap" approved="yes">
+        <source>Swap/Publish</source>
+        <target state="final">Размяна/Публикуване</target>
+      </trans-unit>
+      <trans-unit id="ver.swapPage" approved="yes">
+        <source>Publish this version of the page including content</source>
+        <target state="final">Публикуване на тази версия на страницата, включително и съдържанието</target>
+      </trans-unit>
+      <trans-unit id="TYPO3_Element_Browser" approved="yes">
+        <source>TYPO3 Element Browser</source>
+        <target state="final">TYPO3 Елементен броузър</target>
+      </trans-unit>
+      <trans-unit id="labels.referencesToRecord" approved="yes">
+        <source>There are %s reference(s) to this record</source>
+        <target state="final">Има %s референция/и към този запис</target>
+      </trans-unit>
+      <trans-unit id="labels.referencesToFile" approved="yes">
+        <source>There are %s reference(s) to this file</source>
+        <target state="final">Има %s референция/и към този файл</target>
+      </trans-unit>
+      <trans-unit id="labels.translationsOfRecord" approved="yes">
+        <source>This record has %s translation(s) which will be deleted, too.</source>
+        <target state="final">Записът има %s превод/и, кой/ито ще бъдат изтрите също.</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.viewItem" approved="yes">
+        <source>View Item</source>
+        <target state="final">Преглед на запис</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.fieldValues" approved="yes">
+        <source>Field values</source>
+        <target state="final">Стойности на поле</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.general" approved="yes">
+        <source>General</source>
+        <target state="final">Основни</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.references" approved="yes">
+        <source>References</source>
+        <target state="final">Референции</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.referencesToThisItem" approved="yes">
+        <source>References to this item</source>
+        <target state="final">Референции към този обект</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.referencesFromThisItem" approved="yes">
+        <source>References from this item</source>
+        <target state="final">Референции от този обект</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.file" approved="yes">
+        <source>File</source>
+        <target state="final">Файл</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.dimensions" approved="yes">
+        <source>Dimensions</source>
+        <target state="final">Размери</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.filesize" approved="yes">
+        <source>Size</source>
+        <target state="final">Размер</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.pixels" approved="yes">
+        <source>Pixels</source>
+        <target state="final">Пиксели</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.files" approved="yes">
+        <source>files</source>
+        <target state="final">файлове</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.cannotDisplayArchive" approved="yes">
+        <source>TYPO3_CONF_VARS[BE][disable_exec_function] is enabled, so the content of the archive file cannot be displayed.</source>
+        <target state="final">TYPO3_CONF_VARS[BE][disable_exec_function] е активно, така че съдържанието на архивния файл не може да бъде показано.</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.table" approved="yes">
+        <source>Table</source>
+        <target state="final">Таблица</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.uid" approved="yes">
+        <source>Uid</source>
+        <target state="final">Uid</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Заглавие</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.field" approved="yes">
+        <source>Field</source>
+        <target state="final">Поле</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.flexpointer" approved="yes">
+        <source>Flexpointer</source>
+        <target state="final">Flexpointer</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.softrefKey" approved="yes">
+        <source>Softref Key</source>
+        <target state="final">Softref ключ</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.sorting" approved="yes">
+        <source>Sorting</source>
+        <target state="final">Сортиране</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.refTable" approved="yes">
+        <source>Ref Table</source>
+        <target state="final">Таблица с референции</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.refUid" approved="yes">
+        <source>Ref Uid</source>
+        <target state="final">Референтен Uid</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.refString" approved="yes">
+        <source>Ref String</source>
+        <target state="final">Референтен низ</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.ftp_area" approved="yes">
+        <source>FTP Area</source>
+        <target state="final">FTP област</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.missing_record" approved="yes">
+        <source>Record is missing</source>
+        <target state="final">Липсва запис</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.pagetitle" approved="yes">
+        <source>New record</source>
+        <target state="final">Нов запис</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.after" approved="yes">
+        <source>after</source>
+        <target state="final">преди</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.inside" approved="yes">
+        <source>inside</source>
+        <target state="final">вътре</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.pagetitle" approved="yes">
+        <source>Upload files</source>
+        <target state="final">Качени (Upload) файлове</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.submit" approved="yes">
+        <source>Upload files</source>
+        <target state="final">Качени (Upload) файлове</target>
+      </trans-unit>
+      <trans-unit id="file_upload.dropzonehint.title" approved="yes">
+        <source>Drag &amp; drop to upload files</source>
+        <target state="final">Грабни &amp; провлачи за качване на файлове</target>
+      </trans-unit>
+      <trans-unit id="file_upload.dropzonehint.message" approved="yes">
+        <source>Drop your files here, or &lt;u&gt;click, browse &amp; choose files&lt;/u&gt;</source>
+        <target state="final">Пуснете вашите файлове тук, или &lt;u&gt;щракнете за избор на файлове&lt;/u&gt;</target>
+      </trans-unit>
+      <trans-unit id="file_upload.dropzone.close" approved="yes">
+        <source>Close file upload area</source>
+        <target state="final">Затвори областта за качване на файл</target>
+      </trans-unit>
+      <trans-unit id="file_upload.select-and-submit" approved="yes">
+        <source>Select &amp; upload files</source>
+        <target state="final">Избиране &amp; качване на файлове</target>
+      </trans-unit>
+      <trans-unit id="file_upload.maxFileSizeExceeded" approved="yes">
+        <source>File "{0}" exceeds maximum file size of {1}</source>
+        <target state="final">Файлът "{0}" надвишава максималния размер на файла от {1}</target>
+      </trans-unit>
+      <trans-unit id="file_upload.fileNotAllowed" approved="yes">
+        <source>Filename "{0}" is not allowed</source>
+        <target state="final">Името на файла "{0}" не е позволено</target>
+      </trans-unit>
+      <trans-unit id="file_upload.fileExtensionExpected" approved="yes">
+        <source>Upload failed. A file with "{0}" extension is expected.</source>
+        <target state="final">Качването е неуспешно. Очаква се файл с "{0}" разширение.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.fileExtensionDisallowed" approved="yes">
+        <source>Upload failed. The file extension "{0}" is not allowed.</source>
+        <target state="final">Качването е неуспешно. Разширението на файла "{0}" не е позволено.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.uploadFailed" approved="yes">
+        <source>Upload failed for "{0}"</source>
+        <target state="final">Качването е неуспешно за "{0}"</target>
+      </trans-unit>
+      <trans-unit id="file_upload.uploadSucceeded" approved="yes">
+        <source>File has been uploaded.</source>
+        <target state="final">Файлът е качен.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.upload-in-progress" approved="yes">
+        <source>File upload in progress...</source>
+        <target state="final">Качването на файла е в прогрес...</target>
+      </trans-unit>
+      <trans-unit id="file_upload.upload-progress-info" approved="yes">
+        <source>Uploading file {0} out of {1} files.</source>
+        <target state="final">Качване на файл {0} от {1} файлове.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.upload-finished" approved="yes">
+        <source>Upload complete. Media module reloading...</source>
+        <target state="final">Качването приключи. Модулът "Медия" се презарежда...</target>
+      </trans-unit>
+      <trans-unit id="file_upload.overwriteExistingFiles" approved="yes">
+        <source>Shall existing files be overwritten?</source>
+        <target state="final">Трябва ли съществуващите файлове да бъдат презаписани?</target>
+      </trans-unit>
+      <trans-unit id="file_upload.header.originalFile" approved="yes">
+        <source>Original file</source>
+        <target state="final">Оригинален файл</target>
+      </trans-unit>
+      <trans-unit id="file_upload.header.uploadedFile" approved="yes">
+        <source>Uploaded file</source>
+        <target state="final">Качен файл</target>
+      </trans-unit>
+      <trans-unit id="file_upload.header.action" approved="yes">
+        <source>Action</source>
+        <target state="final">Действие</target>
+      </trans-unit>
+      <trans-unit id="file_upload.existingfiles.title" approved="yes">
+        <source>Some files exist already</source>
+        <target state="final">Някои файлове вече съществуват</target>
+      </trans-unit>
+      <trans-unit id="file_upload.existingfiles.description" approved="yes">
+        <source>Some files you wanted to upload exist already on the system. Please select what you want to do with each file.</source>
+        <target state="final">Някои файлове, които искахте да качите, вече съществуват в системата. Моля изберете какво искате да направите с всеки един файл.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.skip" approved="yes">
+        <source>Skip the file</source>
+        <target state="final">Пропускане на файла</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">Преименуване</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.override" approved="yes">
+        <source>Overwrite</source>
+        <target state="final">Презапис</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.use_existing" approved="yes">
+        <source>Use existing file</source>
+        <target state="final">Използване на съществуващ файл</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.label" approved="yes">
+        <source>Alternatively, choose a mass action</source>
+        <target state="final">Алтернативно, изберете масово действие</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.empty" approved="yes">
+        <source>Please choose</source>
+        <target state="final">Моля изберете</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.skip" approved="yes">
+        <source>Skip all files</source>
+        <target state="final">Пропускане на всички файлове</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.rename" approved="yes">
+        <source>Rename all files</source>
+        <target state="final">Преименуване на всички файлове</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.override" approved="yes">
+        <source>Overwrite all files</source>
+        <target state="final">Презаписване на всички файлове</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.use_existing" approved="yes">
+        <source>Use existing files</source>
+        <target state="final">Използване на съществуващи файлове</target>
+      </trans-unit>
+      <trans-unit id="file_upload.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Отказ</target>
+      </trans-unit>
+      <trans-unit id="file_upload.button.continue" approved="yes">
+        <source>Continue with selected actions</source>
+        <target state="final">Продължете с избраните действия</target>
+      </trans-unit>
+      <trans-unit id="file_upload.reload.filelist" approved="yes">
+        <source>Reload filelist</source>
+        <target state="final">Презареждане на списъка с файлове</target>
+      </trans-unit>
+      <trans-unit id="file_upload.reload.filelist.message" approved="yes">
+        <source>To enable the controls, the filelist has to be reloaded.</source>
+        <target state="final">За активиране на контролите, списъкът с файлове трябва да бъде презареден.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.reload.filelist.actions.dismiss" approved="yes">
+        <source>Dismiss</source>
+        <target state="final">Отхвърляне</target>
+      </trans-unit>
+      <trans-unit id="file_upload.reload.filelist.actions.reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">Презареждане</target>
+      </trans-unit>
+      <trans-unit id="file_download.prepare" approved="yes">
+        <source>File download is being prepared</source>
+        <target state="final">Сваленето на файл се подготвя</target>
+      </trans-unit>
+      <trans-unit id="file_download.invalidSelection" approved="yes">
+        <source>The selected elements can not be downloaded</source>
+        <target state="final">Избраните елементи не могат да бъдат свалени</target>
+      </trans-unit>
+      <trans-unit id="file_download.success" approved="yes">
+        <source>File download successfully prepared</source>
+        <target state="final">Сваленето на файл е подготвено успешно</target>
+      </trans-unit>
+      <trans-unit id="file_download.error" approved="yes">
+        <source>Could not prepare files for download</source>
+        <target state="final">Не може да се подготви свалянето на файлове</target>
+      </trans-unit>
+      <trans-unit id="file_download.noFiles" approved="yes">
+        <source>Could not find any allowed file</source>
+        <target state="final">Не може да бъде намерен нито един позволен файл</target>
+      </trans-unit>
+      <trans-unit id="file_download.noFiles.message" approved="yes">
+        <source>Please check your selection, since there might be file extension limitations, defined by your administrator.</source>
+        <target state="final">Моля проверете вашия избор, тъй като може да има ограничения на файлови разширения, зададени от вашия администратор.</target>
+      </trans-unit>
+      <trans-unit id="file_rename.title" approved="yes">
+        <source>Rename</source>
+        <target state="final">Преименуване</target>
+      </trans-unit>
+      <trans-unit id="file_rename.label" approved="yes">
+        <source>New filename</source>
+        <target state="final">Ново име на файл</target>
+      </trans-unit>
+      <trans-unit id="file_rename.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Отказ</target>
+      </trans-unit>
+      <trans-unit id="file_rename.button.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">Преименуване</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media" approved="yes">
+        <source>Add new media asset</source>
+        <target state="final">Добавяне на нов медиен актив</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.label" approved="yes">
+        <source>URL of remote source</source>
+        <target state="final">URL на отдалечен източник</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.allowedProviders" approved="yes">
+        <source>Allowed media providers</source>
+        <target state="final">Позволени медийни доставчици</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.button" approved="yes">
+        <source>Add media by URL</source>
+        <target state="final">Добавяне на медия чрез URL</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.submit" approved="yes">
+        <source>Add media</source>
+        <target state="final">Добавяне на медия</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.added" approved="yes">
+        <source>Added media</source>
+        <target state="final">Добавена медия</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.placeholder" approved="yes">
+        <source>Paste media URL here...</source>
+        <target state="final">Поставете URL на медията тук...</target>
+      </trans-unit>
+      <trans-unit id="online_media.error.new_media.failed" approved="yes">
+        <source>Adding media failed</source>
+        <target state="final">Добавянето на медия е неуспешно</target>
+      </trans-unit>
+      <trans-unit id="online_media.error.invalid_url" approved="yes">
+        <source>Unknown/not allowed URL</source>
+        <target state="final">Неизвестен/непозволен URL</target>
+      </trans-unit>
+      <trans-unit id="online_media.error.already_exists" approved="yes">
+        <source>Online media "%s" does already exist in this folder.</source>
+        <target state="final">Онлайн медията "%s" вече съществува в тази папка.</target>
+      </trans-unit>
+      <trans-unit id="online_media.update.success" approved="yes">
+        <source>Successfully updated online media</source>
+        <target state="final">Успешно обновена онлайн медия</target>
+      </trans-unit>
+      <trans-unit id="online_media.update.error" approved="yes">
+        <source>Error on updating online media</source>
+        <target state="final">Грешка при обновяване на онлайн медия</target>
+      </trans-unit>
+      <trans-unit id="file_clipupload.php.warning_head" approved="yes">
+        <source>Upload path error</source>
+        <target state="final">Грешка в пътя на качване</target>
+      </trans-unit>
+      <trans-unit id="file_clipupload.php.warning" approved="yes">
+        <source>No upload-folder is found. You should create a TEMP-folder ("_temp_") in the root of one of your mounts first</source>
+        <target state="final">Не е намерена папка за качване. Първо трябва да създадете TEMP-папка ("_temp_") в корена на някой от вашите файлови пространства.</target>
+      </trans-unit>
+      <trans-unit id="mess.redraw" approved="yes">
+        <source>Redrawing the page will discard the current data. Do you want to continue?</source>
+        <target state="final">Презареждането на страницата ще изтрие текущите данни. Желаете ли да продължите?</target>
+      </trans-unit>
+      <trans-unit id="mess.delete" approved="yes">
+        <source>Are you sure you want to delete '%s'?</source>
+        <target state="final">Сигурни ли сте, че желаете да изтриете "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.delete.title" approved="yes">
+        <source>Delete this record?</source>
+        <target state="final">Изтриване на този запис?</target>
+      </trans-unit>
+      <trans-unit id="mess.deleteClip" approved="yes">
+        <source>Are you sure you want to delete ALL referenced elements (%s) on the clipboard?</source>
+        <target state="final">Сигурни ли сте, че искате да изтриете ВСИЧКИ референтни елементи (%s) от буферната памет?</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login" approved="yes">
+        <source>Your login has probably expired. Do you want to refresh it now?</source>
+        <target state="final">Вероятно валидността ви за вход е изтекла. Искате ли да я обновите сега?</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_refresh_button" approved="yes">
+        <source>Stay logged in</source>
+        <target state="final">Останете влезли</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_direct_logout_button" approved="yes">
+        <source>No, log out.</source>
+        <target state="final">Не, изход</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_logging_in" approved="yes">
+        <source>Logging in...</source>
+        <target state="final">Влизане...</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_failed" approved="yes">
+        <source>Login failed</source>
+        <target state="final">Неуспешен вход</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_failed_message" approved="yes">
+        <source>Password not correct.</source>
+        <target state="final">Неправилна парола.</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_title" approved="yes">
+        <source>Refresh Login to TYPO3 (User: %s)</source>
+        <target state="final">Обнови входа към TYPO3 (Потребител: %s)</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_username" approved="yes">
+        <source>Username</source>
+        <target state="final">Потебителско име</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_password" approved="yes">
+        <source>Password</source>
+        <target state="final">Парола</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_button" approved="yes">
+        <source>Login</source>
+        <target state="final">Вход</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_exit_button" approved="yes">
+        <source>Exit</source>
+        <target state="final">Изход</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_emptyPassword" approved="yes">
+        <source>Empty password is not allowed</source>
+        <target state="final">Празна парола не е позволена</target>
+      </trans-unit>
+      <trans-unit id="mess.please_wait" approved="yes">
+        <source>Please wait ...</source>
+        <target state="final">Моля, изчакайте...</target>
+      </trans-unit>
+      <trans-unit id="mess.be_locked" approved="yes">
+        <source>The TYPO3 backend is currently locked for maintenance. Leave this browser window open and the backend will automatically become available again once maintenance is complete.</source>
+        <target state="final">TYPO3 backend текущо е заключен за поддръжка. Затворете вашият браузър прозорец и backend автоматично ще бъде активиран след като поддръжката приключи.</target>
+      </trans-unit>
+      <trans-unit id="mess.login_about_to_expire" approved="yes">
+        <source>Your TYPO3 login is about to expire. Please confirm that you want to stay logged in.</source>
+        <target state="final">Вашият TYPO3 вход изтича. Моля, потвърдете,</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_logout_button" approved="yes">
+        <source>Log me out</source>
+        <target state="final">Излизане</target>
+      </trans-unit>
+      <trans-unit id="mess.login_refresh_about_to_expire" approved="yes">
+        <source>Your TYPO3 login is about to expire. Please confirm that you want to be logged out.</source>
+        <target state="final">Вашият TYPO3 вход изтича. Моля, потвърдете, че искате да излезете.</target>
+      </trans-unit>
+      <trans-unit id="mess.login_about_to_expire_title" approved="yes">
+        <source>TYPO3 login expiration notice</source>
+        <target state="final">TYPO3 съобщение за изтичаща сесия</target>
+      </trans-unit>
+      <trans-unit id="mess.login_expired" approved="yes">
+        <source>Your TYPO3 login has expired. You need to login again if you want to continue. Otherwise you can close the current browser window.</source>
+        <target state="final">Вашата TYPO3 сесия изтече. Необходимо е да се влезете отново, ако желаете да продължите. В противен случай може да затворите текущият прозорец на браузъра.</target>
+      </trans-unit>
+      <trans-unit id="mess.noSelItemForEdit" approved="yes">
+        <source>Please select one or more items in the list before you can edit.</source>
+        <target state="final">Моля, изберете един или повече елементи от листа преди да можете да ги редактирате.</target>
+      </trans-unit>
+      <trans-unit id="mess.refreshRequired.title" approved="yes">
+        <source>Refresh required</source>
+        <target state="final">Изисква се обновяване</target>
+      </trans-unit>
+      <trans-unit id="mess.refreshRequired.content" approved="yes">
+        <source>This change will affect which fields are available in the form. Would you like to save now in order to refresh the display?</source>
+        <target state="final">Тази промяна ще повлияе на това кои полета са налични във формуляра. Искате ли да запазите сега, за да обновите показването?</target>
+      </trans-unit>
+      <trans-unit id="mess.refreshRequired.cancel" approved="yes">
+        <source>Keep editing</source>
+        <target state="final">Продължи редактирането</target>
+      </trans-unit>
+      <trans-unit id="mess.refreshRequired.confirm" approved="yes">
+        <source>Save and refresh</source>
+        <target state="final">Съхрани и обнови</target>
+      </trans-unit>
+      <trans-unit id="mess.move_into" approved="yes">
+        <source>Move "%s" into "%s"?</source>
+        <target state="final">Премести "%s" в "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.move_before" approved="yes">
+        <source>Move "%s" to before "%s"?</source>
+        <target state="final">Премести "%s" след "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.move_after" approved="yes">
+        <source>Move "%s" to after "%s"?</source>
+        <target state="final">Премести "%s" след "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_into" approved="yes">
+        <source>Copy "%s" into "%s"?</source>
+        <target state="final">Копирай "%s" в "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_after" approved="yes">
+        <source>Copy "%s" to after "%s"?</source>
+        <target state="final">Копирай "%s" след "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_into" approved="yes">
+        <source>Copy all elements (%s) from the clipboard into "%s"?</source>
+        <target state="final">Копирай всички елементи (%s) от времения буфер (Clipboard) в "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_after" approved="yes">
+        <source>Copy all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target state="final">Копирай всички елементи (%s) от временния буфер (Clipboard) към позицията след "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_into" approved="yes">
+        <source>Move all elements (%s) from the clipboard into "%s"?</source>
+        <target state="final">Премести всички елементи (%s) от временния буфер (Clipboard) в "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_after" approved="yes">
+        <source>Move all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target state="final">Премести всички елементи (%s) от временния буфер (Clipboard) към позицията след "%s"?</target>
+      </trans-unit>
+      <trans-unit id="rm.menu" approved="yes">
+        <source>[menu]</source>
+        <target state="final">[меню]</target>
+      </trans-unit>
+      <trans-unit id="rm.saveDoc" approved="yes">
+        <source>Save</source>
+        <target state="final">Съхраняване</target>
+      </trans-unit>
+      <trans-unit id="rm.viewDoc" approved="yes">
+        <source>View</source>
+        <target state="final">Преглед</target>
+      </trans-unit>
+      <trans-unit id="rm.saveDocShow" approved="yes">
+        <source>Save and view page</source>
+        <target state="final">Запазване и преглед на страницата</target>
+      </trans-unit>
+      <trans-unit id="rm.saveCloseDoc" approved="yes">
+        <source>Save and close</source>
+        <target state="final">Запазване и затваряне</target>
+      </trans-unit>
+      <trans-unit id="rm.saveCloseAllDocs" approved="yes">
+        <source>Save and close all</source>
+        <target state="final">Запазване и затваряне на всички</target>
+      </trans-unit>
+      <trans-unit id="rm.saveNewDoc" approved="yes">
+        <source>Save and create a new one</source>
+        <target state="final">Запазване и създаване на нов</target>
+      </trans-unit>
+      <trans-unit id="rm.newDoc" approved="yes">
+        <source>New</source>
+        <target state="final">Нов</target>
+      </trans-unit>
+      <trans-unit id="rm.duplicateDoc" approved="yes">
+        <source>Duplicate</source>
+        <target state="final">Дублиране</target>
+      </trans-unit>
+      <trans-unit id="labels.recordDuplicated" approved="yes">
+        <source>The record has been duplicated.</source>
+        <target state="final">Записът е дублиран.</target>
+      </trans-unit>
+      <trans-unit id="labels.recordDuplicationFailed" approved="yes">
+        <source>The record could not be duplicated.</source>
+        <target state="final">Записът не може да бъде дублиран.</target>
+      </trans-unit>
+      <trans-unit id="rm.closeDoc" approved="yes">
+        <source>Close</source>
+        <target state="final">Затвори</target>
+      </trans-unit>
+      <trans-unit id="rm.adminFunctions" approved="yes">
+        <source>Admin functions</source>
+        <target state="final">Администраторски функции</target>
+      </trans-unit>
+      <trans-unit id="rm.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Редакция</target>
+      </trans-unit>
+      <trans-unit id="rm.export" approved="yes">
+        <source>Export</source>
+        <target state="final">Експорт</target>
+      </trans-unit>
+      <trans-unit id="rm.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Изтрий</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileNotDeletedHasReferences" approved="yes">
+        <source>File not deleted</source>
+        <target state="final">Файлът не е изтрит</target>
+      </trans-unit>
+      <trans-unit id="message.header.folderNotDeletedHasFilesWithReferences" approved="yes">
+        <source>Folder not deleted</source>
+        <target state="final">Папката не е изтрита</target>
+      </trans-unit>
+      <trans-unit id="message.description.folderNotDeletedHasFilesWithReferences" approved="yes">
+        <source>The folder cannot be deleted since it still contains files in use.</source>
+        <target state="final">Папката не може да бъде изтрита, тъй като все още съдържа файлове, които се използват.</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileHasBrokenReferences" approved="yes">
+        <source>File has broken references</source>
+        <target state="final">Файлът има повредени референции</target>
+      </trans-unit>
+      <trans-unit id="message.description.fileHasBrokenReferences" approved="yes">
+        <source>The file has %s broken reference(s) but it will be deleted regardless.</source>
+        <target state="final">Файлът има %s повредени референции, но ще бъде изтрит въпреки това.</target>
+      </trans-unit>
+      <trans-unit id="buttons.exit" approved="yes">
+        <source>Exit</source>
+        <target state="final">Изход</target>
+      </trans-unit>
+      <trans-unit id="buttons.clear" approved="yes">
+        <source>Clear</source>
+        <target state="final">Изчисти</target>
+      </trans-unit>
+      <trans-unit id="buttons.clipboard" approved="yes">
+        <source>Clipboard</source>
+        <target state="final">Временен буфер (Clipboard)</target>
+      </trans-unit>
+      <trans-unit id="cm.copy" approved="yes">
+        <source>Copy</source>
+        <target state="final">Копирай</target>
+      </trans-unit>
+      <trans-unit id="cm.cut" approved="yes">
+        <source>Cut</source>
+        <target state="final">Изрежи</target>
+      </trans-unit>
+      <trans-unit id="cm.view" approved="yes">
+        <source>Show</source>
+        <target state="final">Покажи</target>
+      </trans-unit>
+      <trans-unit id="cm.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Редакция</target>
+      </trans-unit>
+      <trans-unit id="cm.new" approved="yes">
+        <source>New</source>
+        <target state="final">Нов</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteinto" approved="yes">
+        <source>Paste into</source>
+        <target state="final">Постави в</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteafter" approved="yes">
+        <source>Paste after</source>
+        <target state="final">Постави след</target>
+      </trans-unit>
+      <trans-unit id="cm.select" approved="yes">
+        <source>Select</source>
+        <target state="final">Избери</target>
+      </trans-unit>
+      <trans-unit id="cm.deselect" approved="yes">
+        <source>Deselect</source>
+        <target state="final">Деселектирай</target>
+      </trans-unit>
+      <trans-unit id="cm.selectto" approved="yes">
+        <source>Select to</source>
+        <target state="final">Селектирай към</target>
+      </trans-unit>
+      <trans-unit id="cm.deselectto" approved="yes">
+        <source>Deselect to</source>
+        <target state="final">Деселектирай към</target>
+      </trans-unit>
+      <trans-unit id="cm.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Изтрий</target>
+      </trans-unit>
+      <trans-unit id="cm.hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">Скрий</target>
+      </trans-unit>
+      <trans-unit id="cm.unhide" approved="yes">
+        <source>Unhide</source>
+        <target state="final">Покажи</target>
+      </trans-unit>
+      <trans-unit id="cm.upload" approved="yes">
+        <source>Upload Files</source>
+        <target state="final">Качване на файлове</target>
+      </trans-unit>
+      <trans-unit id="cm.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">Преименуване</target>
+      </trans-unit>
+      <trans-unit id="cm.open" approved="yes">
+        <source>Open</source>
+        <target state="final">Отвори</target>
+      </trans-unit>
+      <trans-unit id="cm.unzip" approved="yes">
+        <source>Unzip</source>
+        <target state="final">Разархивирай</target>
+      </trans-unit>
+      <trans-unit id="cm.info" approved="yes">
+        <source>Info</source>
+        <target state="final">Инфо</target>
+      </trans-unit>
+      <trans-unit id="cm.createnew" approved="yes">
+        <source>Create new</source>
+        <target state="final">Създай Нов</target>
+      </trans-unit>
+      <trans-unit id="cm.createnew.link" approved="yes">
+        <source>Create new %s</source>
+        <target state="final">Създай нов %s</target>
+      </trans-unit>
+      <trans-unit id="cm.tempMountPoint" approved="yes">
+        <source>Mount as treeroot</source>
+        <target state="final">Закачи като корен на дървото</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_into" approved="yes">
+        <source>Copy page into</source>
+        <target state="final">Копирай страница в</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_after" approved="yes">
+        <source>Copy page after</source>
+        <target state="final">Копирай страница след</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_into" approved="yes">
+        <source>Move page into</source>
+        <target state="final">Премести страница в</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_after" approved="yes">
+        <source>Move page after</source>
+        <target state="final">Премести страница след</target>
+      </trans-unit>
+      <trans-unit id="cm.copyFolder_into" approved="yes">
+        <source>Copy folder into</source>
+        <target state="final">Копирай папка в</target>
+      </trans-unit>
+      <trans-unit id="cm.moveFolder_into" approved="yes">
+        <source>Move folder into</source>
+        <target state="final">Премести папка в</target>
+      </trans-unit>
+      <trans-unit id="cm.createNewRelation" approved="yes">
+        <source>Create new relation</source>
+        <target state="final">Създай нова релация</target>
+      </trans-unit>
+      <trans-unit id="cm.branchActions" approved="yes">
+        <source>Branch Actions</source>
+        <target state="final">Действия в клона</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPasteActions" approved="yes">
+        <source>Page Actions</source>
+        <target state="final">Действия на страница</target>
+      </trans-unit>
+      <trans-unit id="cm.collapseBranch" approved="yes">
+        <source>Collapse Branch</source>
+        <target state="final">Свий клон</target>
+      </trans-unit>
+      <trans-unit id="cm.expandBranch" approved="yes">
+        <source>Expand Branch</source>
+        <target state="final">Разшири клон</target>
+      </trans-unit>
+      <trans-unit id="cm.more" approved="yes">
+        <source>More options...</source>
+        <target state="final">Повече опции...</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_pattern" approved="yes">
+        <source>The value of fileDenyPattern is not set to its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</source>
+        <target state="final">Стойността на fileDenyPattern не е еднаква с нейната стойност по подразбиране:%s Ако TYPO3 работи под Apache, зададената стойност може да позволи на backend и frontend потребителите да изпълняват злонамерни php скриптове.</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_htaccess" approved="yes">
+        <source>The current value of fileDenyPattern allows to upload/create files with the name ".htaccess". If TYPO3 is running on Apache, this enables backend or frontend users to create and execute php scripts. Please reset the value of fileDenyPattern to its default.</source>
+        <target state="final">Текущата стойност на fileDenyPattern позволява качване/създаване на файлове с име ".htaccess". Ако TYPO3 работи под Apache, това позволява потребителите от backend-а и frontend-а да създават и изпълняват php скриптове. Моля, пставете стойността на fileDenyPattern да бъде тази по подразбиране.</target>
+      </trans-unit>
+      <trans-unit id="warning.install_enabled" approved="yes">
+        <source>The Install Tool is permanently enabled. Delete the file "%s" when you have finished setting up TYPO3.</source>
+        <target state="final">Инсталационният инструмент е налице. Изтрийте файла "%s" след приключване на настройката на TYPO3.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
