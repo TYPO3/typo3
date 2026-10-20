@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:theme_camino/Resources/Private/Language/backend_fields.xlf" date="2026-01-13T15:46:30Z" product-name="theme_camino" target-language="it">
+    <header/>
+    <body>
+      <!-- General: Image crop variants -->
+      <trans-unit id="cropVariants.default" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="cropVariants.sm" approved="yes">
+        <source>SM (&gt; 768px)</source>
+        <target state="final">SM (&gt; 768px)</target>
+      </trans-unit>
+      <trans-unit id="cropVariants.md" approved="yes">
+        <source>MD (&gt; 1024px)</source>
+        <target state="final">MD (&gt; 1024px)</target>
+      </trans-unit>
+      <trans-unit id="cropVariants.lg" approved="yes">
+        <source>LG (&gt; 1280px)</source>
+        <target state="final">LG (&gt; 1280px)</target>
+      </trans-unit>
+      <trans-unit id="cropVariants.xl" approved="yes">
+        <source>XL (&gt; 1440px)</source>
+        <target state="final">XL (&gt; 1440px)</target>
+      </trans-unit>
+      <trans-unit id="cropVariants.xxl" approved="yes">
+        <source>XXL (&gt; 1920px)</source>
+        <target state="final">XXL (&gt; 1920px)</target>
+      </trans-unit>
+      <!-- pages -->
+      <trans-unit id="pages.tx_themecamino_logo" approved="yes">
+        <source>Logo</source>
+        <target state="final">Logo</target>
+      </trans-unit>
+      <trans-unit id="pages.tx_themecamino_logo.description" approved="yes">
+        <source>The selected file is displayed both in the header next to the main menu and in the footer.</source>
+        <target state="final">Il file selezionato viene visualizzato sia nell'intestazione accanto al menù principale che nel piè di pagina.</target>
+      </trans-unit>
+      <!-- tt_content -->
+      <trans-unit id="tt_content.group.camino_hero" approved="yes">
+        <source>Hero</source>
+        <target state="final">Hero</target>
+      </trans-unit>
+      <trans-unit id="tt_content.group.camino_teaser" approved="yes">
+        <source>Teaser</source>
+        <target state="final">Teaser</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tabs.teaser" approved="yes">
+        <source>Teaser items</source>
+        <target state="final">Elementi Teaser</target>
+      </trans-unit>
+      <trans-unit id="tt_content.palettes.camino_linklabel" approved="yes">
+        <source>Link / Call to Action (CTA)</source>
+        <target state="final">Collegamento / Invito all'Azione (CTA)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.palettes.camino_linklabelconfig" approved="yes">
+        <source>Link / Call to Action (CTA)</source>
+        <target state="final">Collegamento / Invito all'Azione (CTA)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.palettes.camino_linklabelicon" approved="yes">
+        <source>Link / Call to Action (CTA)</source>
+        <target state="final">Collegamento / Invito all'Azione (CTA)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.palettes.camino_linklabeliconconfig" approved="yes">
+        <source>Link / Call to Action (CTA)</source>
+        <target state="final">Collegamento / Invito all'Azione (CTA)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.palettes.camino_person" approved="yes">
+        <source>Personal details</source>
+        <target state="final">Dati personali</target>
+      </trans-unit>
+      <trans-unit id="tt_content.bodytext.types.person-palette.label" approved="yes">
+        <source>Quote / Testimonial</source>
+        <target state="final">Citazione / referenza</target>
+      </trans-unit>
+      <trans-unit id="tt_content.header.types.person-palette.label" approved="yes">
+        <source>Name</source>
+        <target state="final">Nome</target>
+      </trans-unit>
+      <trans-unit id="tt_content.subheader.types.person-palette.label" approved="yes">
+        <source>Position / Title of the person</source>
+        <target state="final">Posizione / Titolo</target>
+      </trans-unit>
+      <trans-unit id="tt_content.frame_class.label" approved="yes">
+        <source>Background color</source>
+        <target state="final">Colore di sfondo</target>
+      </trans-unit>
+      <trans-unit id="tt_content.frame_class.I.default" approved="yes">
+        <source>None</source>
+        <target state="final">Nessuno</target>
+      </trans-unit>
+      <trans-unit id="tt_content.frame_class.I.bg-10" approved="yes">
+        <source>Light</source>
+        <target state="final">Chiaro</target>
+      </trans-unit>
+      <trans-unit id="tt_content.frame_class.I.bg-80" approved="yes">
+        <source>Dark</source>
+        <target state="final">Scuro</target>
+      </trans-unit>
+      <trans-unit id="tt_content.frame_class.I.bg-100" approved="yes">
+        <source>Primary color</source>
+        <target state="final">Colore principale</target>
+      </trans-unit>
+      <trans-unit id="tt_content.header.label.ALT" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">Nome (non visibile in frontend)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.header.description.ALT" approved="yes">
+        <source>The name won't be displayed as header above the element, but will be used as reference in menus.</source>
+        <target state="final">Il nome non verrà visualizzato come intestazione sopra l'elemento, ma sarà usato come riferimento nei menù.</target>
+      </trans-unit>
+      <trans-unit id="tt_content.header_layout.label" approved="yes">
+        <source>Rank / Hierarchy</source>
+        <target state="final">Grado / Gerarchia</target>
+      </trans-unit>
+      <trans-unit id="tt_content.header_layout.option.0" approved="yes">
+        <source>Default (P)</source>
+        <target state="final">Predefinito (P)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.header_layout.option.1" approved="yes">
+        <source>H1</source>
+        <target state="final">H1</target>
+      </trans-unit>
+      <trans-unit id="tt_content.header_layout.option.2" approved="yes">
+        <source>H2</source>
+        <target state="final">H2</target>
+      </trans-unit>
+      <trans-unit id="tt_content.header_layout.option.3" approved="yes">
+        <source>H3</source>
+        <target state="final">H3</target>
+      </trans-unit>
+      <trans-unit id="tt_content.header_layout.option.4" approved="yes">
+        <source>H4</source>
+        <target state="final">H4</target>
+      </trans-unit>
+      <trans-unit id="tt_content.header_layout.option.5" approved="yes">
+        <source>H5</source>
+        <target state="final">H5</target>
+      </trans-unit>
+      <trans-unit id="tt_content.imageorient.I.27" approved="yes">
+        <source>Beside text, Right (small)</source>
+        <target state="final">Di fianco al testo, a destra (piccolo)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.imageorient.I.28" approved="yes">
+        <source>Beside Text, Left (small)</source>
+        <target state="final">Di fianco al testo, a sinistra (piccolo)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_header_style" approved="yes">
+        <source>Style</source>
+        <target state="final">Stile</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_header_style.option.default" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_header_style.option.large" approved="yes">
+        <source>Large</source>
+        <target state="final">Grande</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_header_style.option.small" approved="yes">
+        <source>Small</source>
+        <target state="final">Piccolo</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link" approved="yes">
+        <source>Link</source>
+        <target state="final">Collegamento</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config" approved="yes">
+        <source>Link configuration</source>
+        <target state="final">Configurazione collegamento</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.itemgroup.inverted" approved="yes">
+        <source>Icon before text</source>
+        <target state="final">Icona prima del testo</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.0" approved="yes">
+        <source>Primary button</source>
+        <target state="final">Pulsante principale</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.secondary" approved="yes">
+        <source>Secondary button</source>
+        <target state="final">Pulsante secondario</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.soft" approved="yes">
+        <source>Soft button</source>
+        <target state="final">Pulsante leggero</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.text" approved="yes">
+        <source>Text only button</source>
+        <target state="final">Pulsante solo testo</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.inverted" approved="yes">
+        <source>Primary button, icon before text</source>
+        <target state="final">Pulsante principale, icona prima del testo</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.inverted-secondary" approved="yes">
+        <source>Secondary button, icon before text</source>
+        <target state="final">Pulsante secondario, icona prima del testo</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.inverted-soft" approved="yes">
+        <source>Soft button, icon before text</source>
+        <target state="final">Pulsante leggero, icona prima del testo</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.inverted-text" approved="yes">
+        <source>Text only button, icon before text</source>
+        <target state="final">Pulsante solo testo, icona prima del testo</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_icon" approved="yes">
+        <source>Link icon</source>
+        <target state="final">Icona del collegamento</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.none" approved="yes">
+        <source>No Icon</source>
+        <target state="final">Nessuna icona</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.arrow-left" approved="yes">
+        <source>Arrow, left</source>
+        <target state="final">Freccia, sinistra</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.arrow-right" approved="yes">
+        <source>Arrow, right</source>
+        <target state="final">Freccia, destra</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.chevron" approved="yes">
+        <source>Chevron</source>
+        <target state="final">Chevron</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.chevron-double-left" approved="yes">
+        <source>Chevron, double left</source>
+        <target state="final">Chevron, doppia sinistra</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.chevron-double-right" approved="yes">
+        <source>Chevron, double right</source>
+        <target state="final">Chevron, doppia destra</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.chevron-left" approved="yes">
+        <source>Chevron, left</source>
+        <target state="final">Chevron, sinistra</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.chevron-right" approved="yes">
+        <source>Chevron, right</source>
+        <target state="final">Chevron, destra</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Chiudi</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.download" approved="yes">
+        <source>Download</source>
+        <target state="final">Scarica</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.globe" approved="yes">
+        <source>Globe</source>
+        <target state="final">Globo</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.launch" approved="yes">
+        <source>Launch</source>
+        <target state="final">Avvia</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.mail" approved="yes">
+        <source>Mail</source>
+        <target state="final">Email</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.menu" approved="yes">
+        <source>Menu</source>
+        <target state="final">Menù</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.phone" approved="yes">
+        <source>Phone</source>
+        <target state="final">Telefono</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.play" approved="yes">
+        <source>Play</source>
+        <target state="final">Riproduci</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Cerca</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.social-mastodon" approved="yes">
+        <source>Mastodon</source>
+        <target state="final">Mastodon</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.social-facebook" approved="yes">
+        <source>Facebook</source>
+        <target state="final">Facebook</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.social-instagram" approved="yes">
+        <source>Instagram</source>
+        <target state="final">Instagram</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.social-linkedin" approved="yes">
+        <source>LinkedIn</source>
+        <target state="final">LinkedIn</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.social-x" approved="yes">
+        <source>X (Twitter)</source>
+        <target state="final">X (Twitter)</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.social-xing" approved="yes">
+        <source>Xing</source>
+        <target state="final">Xing</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.social-youtube" approved="yes">
+        <source>YouTube</source>
+        <target state="final">YouTube</target>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.zoom" approved="yes">
+        <source>Zoom</source>
+        <target state="final">Zoom</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_label" approved="yes">
+        <source>Link label</source>
+        <target state="final">Etichetta collegamento</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_list_elements" approved="yes">
+        <source>List items</source>
+        <target state="final">Voci elenco</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_list_elements.appearance.newRecordLinkTitle" approved="yes">
+        <source>Add item</source>
+        <target state="final">Aggiungi voce</target>
+      </trans-unit>
+      <!-- CType 'camino_author' -->
+      <trans-unit id="tt_content.CType.camino_author.label" approved="yes">
+        <source>Author card</source>
+        <target state="final">Scheda autore</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_author.description" approved="yes">
+        <source>Insert an author card.</source>
+        <target state="final">Inserisci una scheda autore.</target>
+      </trans-unit>
+      <trans-unit id="tt_content.bodytext.types.camino_author.label" approved="yes">
+        <source>Description</source>
+        <target state="final">Descrizione</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_list_elements.types.camino_author.label" approved="yes">
+        <source>Contact details</source>
+        <target state="final">Dettagli contatto</target>
+      </trans-unit>
+      <!-- CType 'camino_hero' -->
+      <trans-unit id="tt_content.CType.camino_hero.label" approved="yes">
+        <source>Hero / Page header</source>
+        <target state="final"> Hero / Intestazione pagina</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_hero.description" approved="yes">
+        <source>Insert a Hero / Page header element.</source>
+        <target state="final">Inserisci Hero / Intestazione pagina.</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_hero_small.label" approved="yes">
+        <source>Hero / Page header (small)</source>
+        <target state="final">Hero / Intestazione pagina (piccolo)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_hero_small.description" approved="yes">
+        <source>Insert a Hero / Page header element (smaller version).</source>
+        <target state="final">Inserisci Hero / Intestazione pagina (piccolo).</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_hero_text_only.label" approved="yes">
+        <source>Hero / Page header (text-only)</source>
+        <target state="final">Hero / Intestazione pagina (solo testo)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_hero_text_only.description" approved="yes">
+        <source>Insert a Hero / Page header element (text-only version).</source>
+        <target state="final">Inserisci Hero / Intestazione pagina (solo testo).</target>
+      </trans-unit>
+      <!-- CType 'camino_linklist' -->
+      <trans-unit id="tt_content.CType.camino_linklist.label" approved="yes">
+        <source>Link list</source>
+        <target state="final">Elenco collegamenti</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_linklist.description" approved="yes">
+        <source>Insert a list of links, used for link lists / menu in the footer.</source>
+        <target state="final">Inserisce una serie di collegamenti, usati per liste di collegamenti / menù nel piè di pagina.</target>
+      </trans-unit>
+      <!-- CType 'camino_sociallinks' -->
+      <trans-unit id="tt_content.CType.camino_sociallinks.label" approved="yes">
+        <source>Social media icons</source>
+        <target state="final">Icone social media</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_sociallinks.description" approved="yes">
+        <source>Insert a list of links to social media platforms.</source>
+        <target state="final">Inserisce un elenco di collegamenti alle piattaforme di social media.</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_list_elements.types.camino_sociallinks.label" approved="yes">
+        <source>Links</source>
+        <target state="final">Collegamenti</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_list_elements.types.camino_sociallinks.description" approved="yes">
+        <source>Icons are automatically set according to the link target. The following platforms are available for the link type "External URL": Mastodon, Facebook, Instagram, LinkedIn, X (Twitter) and YouTube. Links to other platforms are not supported and will use a generic icon.</source>
+        <target state="final">Le icone sono impostate automaticamente in base alla destinazione del collegamento. Le seguenti piattaforme sono disponibili per il tipo di collegamento "URL esterno": Facebook, Instagram, LinkedIn, X (Twitter) e YouTube. I collegamenti ad altre piattaforme non sono supportati e useranno un'icona generica.</target>
+      </trans-unit>
+      <!-- CType 'camino_testimonial' -->
+      <trans-unit id="tt_content.CType.camino_testimonial.label" approved="yes">
+        <source>Testimonial</source>
+        <target state="final">Referenza</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_testimonial.description" approved="yes">
+        <source>Insert a testimonial, with a quote and an optional picture of the person.</source>
+        <target state="final">Inserisci una referenza, con una citazione e una foto opzionale della persona.</target>
+      </trans-unit>
+      <!-- CType 'camino_textmedia_teaser' -->
+      <trans-unit id="tt_content.CType.camino_textmedia_teaser.label" approved="yes">
+        <source>Text-Media Teaser</source>
+        <target state="final">Teaser Testo-Media</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_textmedia_teaser.description" approved="yes">
+        <source>Add a teaser to link to articles, pages, and other content on your site.</source>
+        <target state="final">Aggiungi un Teaser per collegare articoli, pagine e altri contenuti sul tuo sito.</target>
+      </trans-unit>
+      <trans-unit id="tt_content.subheader.types.camino_textmedia_teaser.label" approved="yes">
+        <source>Category</source>
+        <target state="final">Categoria</target>
+      </trans-unit>
+      <!-- CType 'camino_textmedia_teaser_grid' -->
+      <trans-unit id="tt_content.CType.camino_textmedia_teaser_grid.label" approved="yes">
+        <source>Text-Media Teaser Grid</source>
+        <target state="final">Griglia Teaser Testo-Media</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_textmedia_teaser_grid.description" approved="yes">
+        <source>Add a grid of teasers to link to articles, pages, and other content on your site.</source>
+        <target state="final">Aggiungi una griglia Teaser per collegare articoli, pagine e altri contenuti sul tuo sito.</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_list_elements.types.camino_textmedia_teaser_grid.label" approved="yes">
+        <source>Teaser items</source>
+        <target state="final">Elementi Teaser</target>
+      </trans-unit>
+      <!-- CType 'camino_textteaser' -->
+      <trans-unit id="tt_content.CType.camino_textteaser.label" approved="yes">
+        <source>Text teaser</source>
+        <target state="final">Teaser di testo</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_textteaser.description" approved="yes">
+        <source>Insert a text teaser with a CTA.</source>
+        <target state="final">Inserisci un Teaser di testo con un invito all'azione ( CTA).</target>
+      </trans-unit>
+      <!-- List item -->
+      <trans-unit id="tx_themecamino_list_item" approved="yes">
+        <source>List item</source>
+        <target state="final">Voce elenco</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.palettes.linklabelicon" approved="yes">
+        <source>Link / Call to Action (CTA)</source>
+        <target state="final">Collegamento / Invito all'Azione (CTA)</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.palettes.linklabeliconconfig" approved="yes">
+        <source>Link / Call to Action (CTA)</source>
+        <target state="final">Collegamento / Invito all'Azione (CTA)</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.category" approved="yes">
+        <source>Category</source>
+        <target state="final">Categoria</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.date" approved="yes">
+        <source>Date</source>
+        <target state="final">Data</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.header" approved="yes">
+        <source>Header</source>
+        <target state="final">Intestazione</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.images" approved="yes">
+        <source>Images</source>
+        <target state="final">Immagini</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.images.addFileReference" approved="yes">
+        <source>Add image</source>
+        <target state="final">Aggiungi immagine</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.link" approved="yes">
+        <source>Link</source>
+        <target state="final">Collegamento</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.link_config" approved="yes">
+        <source>Link configuration</source>
+        <target state="final">Configurazione collegamento</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.link_icon" approved="yes">
+        <source>Link icon</source>
+        <target state="final">Icona del collegamento</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.link_label" approved="yes">
+        <source>Label for Link</source>
+        <target state="final">Etichetta per il collegamento</target>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.text" approved="yes">
+        <source>Text</source>
+        <target state="final">Testo</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
