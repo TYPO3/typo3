@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="lo">
+  <file id="f1">
+    <unit id="abstract">
+      <segment state="final">
+        <source>Abstract</source>
+        <target>ບົດຄັດຫຍໍ້</target>
+      </segment>
+    </unit>
+    <unit id="author">
+      <segment state="final">
+        <source>Author Name</source>
+        <target>ຊື່ຜູ້ຂຽນ</target>
+      </segment>
+    </unit>
+    <unit id="author_email">
+      <segment state="final">
+        <source>Author Email</source>
+        <target>ອີເມວຜູ້ຂຽນ</target>
+      </segment>
+    </unit>
+    <unit id="backend_layout">
+      <segment state="final">
+        <source>Backend Layout (this page only)</source>
+        <target>ຮູບແບບການຈັດວາງສ່ວນຫຼັງບ້ານ (ສະເພາະໜ້ານີ້)</target>
+      </segment>
+    </unit>
+    <unit id="backend_layout_next_level">
+      <segment state="final">
+        <source>Backend Layout (subpages of this page)</source>
+        <target>ຮູບແບບການຈັດວາງສ່ວນຫຼັງບ້ານ (ໜ້າຍ່ອຍຂອງໜ້ານີ້)</target>
+      </segment>
+    </unit>
+    <unit id="cache_tags">
+      <segment state="final">
+        <source>Cache Tags</source>
+        <target>ປ້າຍກຳກັບແຄຊ໌</target>
+      </segment>
+    </unit>
+    <unit id="cache_timeout">
+      <segment state="final">
+        <source>Cache Lifetime</source>
+        <target>ອາຍຸການເກັບແຄຊ໌</target>
+      </segment>
+    </unit>
+    <unit id="content_from_pid">
+      <segment state="final">
+        <source>Show Content from this page</source>
+        <target>ສະແດງເນື້ອຫາຈາກໜ້ານີ້</target>
+      </segment>
+    </unit>
+    <unit id="description">
+      <segment state="final">
+        <source>Description for search engines</source>
+        <target>ຄຳອະທິບາຍສຳລັບເຄື່ອງມືຄົ້ນຫາ</target>
+      </segment>
+    </unit>
+    <unit id="doktype">
+      <segment state="final">
+        <source>Type</source>
+        <target>ປະເພດ</target>
+      </segment>
+    </unit>
+    <unit id="doktype.be_user_section">
+      <segment state="final">
+        <source>Backend User Section</source>
+        <target>ສ່ວນຜູ້ໃຊ້ລະບົບຫຼັງບ້ານ</target>
+      </segment>
+    </unit>
+    <unit id="doktype.default">
+      <segment state="final">
+        <source>Standard Page</source>
+        <target>ໜ້າເວັບມາດຕະຖານ</target>
+      </segment>
+    </unit>
+    <unit id="doktype.link">
+      <segment state="final">
+        <source>Link</source>
+        <target>ລິ້ງ</target>
+      </segment>
+    </unit>
+    <unit id="doktype.mountpoint">
+      <segment state="final">
+        <source>Mount Point</source>
+        <target>ຈຸດເຊື່ອມຕໍ່</target>
+      </segment>
+    </unit>
+    <unit id="doktype.shortcut">
+      <segment state="final">
+        <source>Shortcut</source>
+        <target>ທາງລັດ</target>
+      </segment>
+    </unit>
+    <unit id="doktype.spacer">
+      <segment state="final">
+        <source>Menu Separator</source>
+        <target>ເສັ້ນແບ່ງເມນູ</target>
+      </segment>
+    </unit>
+    <unit id="doktype.sysfolder">
+      <segment state="final">
+        <source>Folder</source>
+        <target>ໂຟນເດີ</target>
+      </segment>
+    </unit>
+    <unit id="doktype.group.link">
+      <segment state="final">
+        <source>Link</source>
+        <target>ລິ້ງ</target>
+      </segment>
+    </unit>
+    <unit id="doktype.group.page">
+      <segment state="final">
+        <source>Page</source>
+        <target>ໜ້າເວັບ</target>
+      </segment>
+    </unit>
+    <unit id="doktype.group.special">
+      <segment state="final">
+        <source>Special</source>
+        <target>ພິເສດ</target>
+      </segment>
+    </unit>
+    <unit id="extend_to_subpages">
+      <segment state="final">
+        <source>Extend to Subpages</source>
+        <target>ຂະຫຍາຍໄປຍັງໜ້າຍ່ອຍ</target>
+      </segment>
+    </unit>
+    <unit id="hidden">
+      <segment state="final">
+        <source>Page visible</source>
+        <target>ການສະແດງຜົນຂອງໜ້າ</target>
+      </segment>
+    </unit>
+    <unit id="is_siteroot">
+      <segment state="final">
+        <source>Use as Root Page</source>
+        <target>ໃຊ້ເປັນໜ້າຫຼັກ (Root Page)</target>
+      </segment>
+    </unit>
+    <unit id="keywords">
+      <segment state="final">
+        <source>Keywords</source>
+        <target>ຄຳສັບຫຼັກ</target>
+      </segment>
+    </unit>
+    <unit id="link">
+      <segment state="final">
+        <source>Link destination</source>
+        <target>ປາຍທາງການເຊື່ອມຕໍ່</target>
+      </segment>
+    </unit>
+    <unit id="link.description">
+      <segment state="final">
+        <source>Defines the destination this page links to — for example a page, file, or external URL. </source>
+        <target>ກຳນົດປາຍທາງທີ່ໜ້ານີ້ເຊື່ອມຕໍ່ໄປຫາ — ຕົວຢ່າງ: ໜ້າເວັບ, ໄຟລ໌ ຫຼື URL ພາຍນອກ. </target>
+      </segment>
+    </unit>
+    <unit id="l18n_cfg">
+      <segment state="final">
+        <source>Localization</source>
+        <target>ການກຳນົດທ້ອງຖິ່ນ</target>
+      </segment>
+    </unit>
+    <unit id="last_updated">
+      <segment state="final">
+        <source>Last Update</source>
+        <target>ອັບເດດຫຼ້າສຸດ</target>
+      </segment>
+    </unit>
+    <unit id="layout">
+      <segment state="final">
+        <source>Frontend Layout</source>
+        <target>ຮູບແບບການຈັດວາງສ່ວນໜ້າບ້ານ</target>
+      </segment>
+    </unit>
+    <unit id="link.target">
+      <segment state="final">
+        <source>Link target</source>
+        <target>ເປົ້າໝາຍການເຊື່ອມຕໍ່</target>
+      </segment>
+    </unit>
+    <unit id="media">
+      <segment state="final">
+        <source>Media</source>
+        <target>ສື່</target>
+      </segment>
+    </unit>
+    <unit id="module">
+      <segment state="final">
+        <source>Contains Plugin</source>
+        <target>ປະກອບມີປລັກອິນ</target>
+      </segment>
+    </unit>
+    <unit id="mount_pid">
+      <segment state="final">
+        <source>Mounted page</source>
+        <target>ໜ້າທີ່ຖືກຕິດຕັ້ງ (Mount)</target>
+      </segment>
+    </unit>
+    <unit id="mount_pid_ol">
+      <segment state="final">
+        <source>Mount Point Display Option</source>
+        <target>ຕົວເລືອກການສະແດງຜົນຈຸດເຊື່ອມຕໍ່</target>
+      </segment>
+    </unit>
+    <unit id="nav_hide">
+      <segment state="final">
+        <source>Page enabled in menus</source>
+        <target>ເປີດໃຊ້ງານໜ້າໃນເມນູ</target>
+      </segment>
+    </unit>
+    <unit id="nav_title">
+      <segment state="final">
+        <source>Alternative Navigation Title</source>
+        <target>ຊື່ຫົວຂໍ້ການນຳທາງສຳຮອງ</target>
+      </segment>
+    </unit>
+    <unit id="new_until">
+      <segment state="final">
+        <source>Mark as 'New' Until</source>
+        <target>ໝາຍວ່າ 'ໃໝ່' ຈົນກວ່າຈະຮອດ</target>
+      </segment>
+    </unit>
+    <unit id="no_search">
+      <segment state="final">
+        <source>Include in Search</source>
+        <target>ລວມເຂົ້າໃນການຄົ້ນຫາ</target>
+      </segment>
+    </unit>
+    <unit id="php_tree_stop">
+      <segment state="final">
+        <source>Hide child pages in page tree</source>
+        <target>ເຊື່ອງໜ້າຍ່ອຍໃນໂຄງສ້າງຕົ້ນໄມ້ຂອງໜ້າ</target>
+      </segment>
+    </unit>
+    <unit id="shortcut">
+      <segment state="final">
+        <source>Shortcut to page</source>
+        <target>ທາງລັດໄປຫາໜ້າ</target>
+      </segment>
+    </unit>
+    <unit id="shortcut_mode">
+      <segment state="final">
+        <source>Shortcut Mode</source>
+        <target>ໂໝດທາງລັດ</target>
+      </segment>
+    </unit>
+    <unit id="slug">
+      <segment state="final">
+        <source>URL Segment</source>
+        <target>ສ່ວນຂອງ URL</target>
+      </segment>
+    </unit>
+    <unit id="subtitle">
+      <segment state="final">
+        <source>Subtitle</source>
+        <target>ຫົວຂໍ້ຍ່ອຍ</target>
+      </segment>
+    </unit>
+    <unit id="target">
+      <segment state="final">
+        <source>Target</source>
+        <target>ເປົ້າໝາຍ</target>
+      </segment>
+    </unit>
+    <unit id="title">
+      <segment state="final">
+        <source>Page title</source>
+        <target>ຫົວຂໍ້ໜ້າ</target>
+      </segment>
+    </unit>
+    <unit id="tsconfig">
+      <segment state="final">
+        <source>Page TSconfig</source>
+        <target>ການຕັ້ງຄ່າ TSconfig ຂອງໜ້າ</target>
+      </segment>
+    </unit>
+    <unit id="tsconfig_includes">
+      <segment state="final">
+        <source>Include static Page TSconfig (from extensions)</source>
+        <target>ລວມເອົາ TSconfig ຂອງໜ້າແບບຄົງທີ່ (ຈາກສ່ວນເສີມ)</target>
+      </segment>
+    </unit>
+    <unit id="url">
+      <segment state="final">
+        <source>URL</source>
+        <target>URL</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
