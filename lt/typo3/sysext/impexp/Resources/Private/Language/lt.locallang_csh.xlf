@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814829" source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang_csh.xlf" date="2011-10-17T20:22:33Z" product-name="impexp" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="_.image" resname="_.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/impexp.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" approved="yes">
+        <source>Example of the preview display during export configuration of a page. Notice how records on the page are include plus how references inside the record is found and included as well (bottom of screen).</source>
+        <target state="final">Pavyzdys, kaip atrodo peržiūros ekranas eksportuojant puslapio konfigūraciją. Atkreipkite dėmesį, kaip įtraukiami puslapio įrašai ir kaip randamos bei įtraukiamos nuorodos įrašo viduje (ekrano apačioje).</target>
+      </trans-unit>
+      <trans-unit id="export.alttitle" resname="export.alttitle" approved="yes">
+        <source>Exporting records from TYPO3</source>
+        <target state="final">Įrašų eksportavimas iš TYPO3</target>
+      </trans-unit>
+      <trans-unit id="export.description" resname="export.description" approved="yes">
+        <source>To export TYPO3 T3D/XML files you click any record icon or page in the page tree (including the root page!), select "More options" and then "Export". This will bring up the export interface where you can configure options for your export session.</source>
+        <target state="final">Norėdami eksportuoti TYPO3 T3D/XML failus, spustelėkite bet kurią įrašo piktogramą arba puslapį puslapių medyje (įskaitant pagrindinį puslapį!), pasirinkite „Daugiau parinkčių“ ir tada „Eksportuoti“. Tai atvers eksporto sąsają, kurioje galėsite konfigūruoti eksporto sesijos parinktis.</target>
+      </trans-unit>
+      <trans-unit id="export.details" resname="export.details" xml:space="preserve" approved="yes">
+				<source>There are a number of methods by which you can export data from TYPO3:
+- Export a single page or branch of the page tree (use page icon context menu)
+- Export a single record from any page (use record icon context menu)
+- Export all records from a specific table on a specific page (using the Web&gt;List module)
+- Export an arbitrary selection of records from the clipboard (using the Web&gt;List module)
+
+The export format observes all TYPO3s methods for relations between the records in the export file. But you will have to configure how these relations are maintained, at least to some degree. Sometimes you would want to include records referred to, at other times you surely want to keep the original mapping. That depends on your objectives with the export.
+
+Regardless of your configuration for export you will always see a complete reflection of all chosen records and their internal relations in the preview display found in the bottom of the export module page.
+
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before exporting if there are any error messages there!</source>
+			<target state="final">Yra keletas būdų, kaip eksportuoti duomenis iš TYPO3:
+- Eksportuoti vieną puslapį arba puslapio medžio šaką (naudokite puslapio piktogramos kontekstinį meniu)
+- Eksportuoti vieną įrašą iš bet kurio puslapio (naudokite įrašo piktogramos kontekstinį meniu)
+- Eksportuoti visus įrašus iš konkrečios lentelės konkrečiame puslapyje (naudodami modulį „Web&gt;List“)
+- Eksportuoti pasirinktus įrašus iš iškarpinės (naudodami modulį „Web&gt;List“)
+
+Eksporto formate laikomasi visų TYPO3 metodų, taikomų eksporto faile esančių įrašų tarpusavio ryšiams. Tačiau turėsite bent jau iš dalies konfigūruoti, kaip šie ryšiai bus išlaikyti. Kartais norėsite įtraukti įrašus, į kuriuos daroma nuoroda, o kartais tikrai norėsite išlaikyti pradinį atitikmenį. Tai priklauso nuo jūsų eksporto tikslų.
+
+Nepriklausomai nuo jūsų eksporto konfigūracijos, eksporto modulio puslapio apačioje esančiame peržiūros lange visada matysite visus pasirinktus įrašus ir jų vidinius ryšius.
+
+&lt;b&gt;Klaidų pranešimai:&lt;/b&gt; Prieš eksportuodami nepamirškite patikrinti, ar „Pranešimai“ skirtuke nėra klaidų pranešimų!</target></trans-unit>
+      <trans-unit id="_export.seeAlso" resname="_export.seeAlso" approved="yes">
+        <source>xMOD_tx_impexp:import</source>
+        <target state="final">xMOD_tx_impexp:import</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_export.image" resname="_export.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/export.png,
+EXT:impexp/Resources/Public/Images/cshimages/export1.png,
+EXT:impexp/Resources/Public/Images/cshimages/export2.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/export.png,
+EXT:impexp/Resources/Public/Images/cshimages/export1.png,
+EXT:impexp/Resources/Public/Images/cshimages/export2.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="export.image_descr" resname="export.image_descr" xml:space="preserve" approved="yes">
+				<source>To export a page or record, simply click the icon and select "Export" from the context menu.
+With the Web&gt;List module you can also export all records from a table by first clicking the table title to see only this table, then next to the CSV export you will find the export button for a T3D export of the table.
+You can export the contents of the clipboard as well by simply selecting "Export" in the menu.</source>
+			<target state="final">Norėdami eksportuoti puslapį ar įrašą, tiesiog spustelėkite piktogramą ir iš kontekstinio meniu pasirinkite „Eksportuoti“.
+Naudodami modulį „Web&gt;List“ taip pat galite eksportuoti visus įrašus iš lentelės, pirmiausia spustelėdami lentelės pavadinimą, kad matytumėte tik šią lentelę, tada šalia CSV eksporto rasite eksporto mygtuką, skirtą lentelės eksportui į T3D.
+Taip pat galite eksportuoti iškarpinės turinį, tiesiog pasirinkdami meniu „Eksportuoti“.</target></trans-unit>
+      <trans-unit id="pageTreeCfg.alttitle" resname="pageTreeCfg.alttitle" approved="yes">
+        <source>Configuration of page tree export</source>
+        <target state="final">Puslapių medžio eksporto konfigūracija</target>
+      </trans-unit>
+      <trans-unit id="pageTreeCfg.description" resname="pageTreeCfg.description" xml:space="preserve" approved="yes">
+				<source>Here you configure how a page or a branch of the page tree should be exported. Using the selector box you can set the number of levels of subpages to include in the export.
+By default all records belonging to a page is included when a page is exported.</source>
+			<target state="final">Čia galite nustatyti, kaip turi būti eksportuojamas puslapis arba puslapio medžio šaka. Naudodami pasirinkimo langelį galite nustatyti, kiek pakopų puslapių turi būti įtraukta į eksportą.
+Pagal numatytuosius nustatymus, eksportuojant puslapį įtraukiami visi įrašai, priklausantys tam puslapiui.</target></trans-unit>
+      <trans-unit id="_pageTreeCfg.image" resname="_pageTreeCfg.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/pagetreecfg.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/pagetreecfg.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pageTreeDisplay.alttitle" resname="pageTreeDisplay.alttitle" approved="yes">
+        <source>Page Tree</source>
+        <target state="final">Puslapių medis</target>
+      </trans-unit>
+      <trans-unit id="pageTreeDisplay.description" resname="pageTreeDisplay.description" approved="yes">
+        <source>Based on the levels selected for page tree export this will show the structure that is about to be exported. If any pages are specifically excluded by the exclude option they are not shown either.</source>
+        <target state="final">Remiantis puslapių medžio eksportui pasirinktomis pakopomis, bus rodomas eksportuotinas struktūros vaizdas. Jei kokie nors puslapiai yra specialiai pašalinti naudojant pašalinimo parinktį, jie taip pat nebus rodomi.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.alttitle" resname="pageTreeMode.alttitle" approved="yes">
+        <source>Levels</source>
+        <target state="final">Lygiai</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.description" resname="pageTreeMode.description" approved="yes">
+        <source>Here you select how deeply in the page tree from the current starting point to go for this export.</source>
+        <target state="final">Čia galite pasirinkti, kaip giliai į puslapio medį nuo dabartinio pradinio taško eiti šiam eksportui.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.details" resname="pageTreeMode.details" approved="yes">
+        <source>If you select "Expanded tree" it will base the export on the currently expanded levels of the page tree. Another special option is "Tables on this page" which will not include the page record itself but only include records from tables on the page, depending on the table configuration of course.</source>
+        <target state="final">Jei pasirinksite „Išplėstą medį“, eksportas bus pagrįstas šiuo metu išplėstais puslapio medžio lygiais. Kita speciali parinktis yra „Šio puslapio lentelės“, kuri neįtrauks paties puslapio įrašo, bet tik įrašus iš puslapio lentelių, žinoma, priklausomai nuo lentelių konfigūracijos.</target>
+      </trans-unit>
+      <trans-unit id="_pageTreeMode.image" resname="_pageTreeMode.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/impexp_misc.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp_misc.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.alttitle" resname="pageTreeRecordLimit.alttitle" approved="yes">
+        <source>Include tables</source>
+        <target state="final">Įtraukti lenteles</target>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.description" resname="pageTreeRecordLimit.description" approved="yes">
+        <source>When you export a page all records on the page is included by default. By this selector you can pick which tables to include exclusively if there are certain records you are not interested in seeing included.</source>
+        <target state="final">Kai eksportuojate puslapį, visi puslapio įrašai įtraukiami pagal numatytuosius nustatymus. Naudodami šį selektorių, galite pasirinkti, kurias lenteles įtraukti, jei yra tam tikrų įrašų, kurių nenorite matyti.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.details" resname="pageTreeRecordLimit.details" approved="yes">
+        <source>In the box "Max number of records" you can set a limit to how many records are selected from a single table. This is a runaway brake in case you have an unusual large amount of records from a table.</source>
+        <target state="final">Lauke „Maksimalus įrašų skaičius“ galite nustatyti ribą, kiek įrašų bus atrenkama iš vienos lentelės. Tai yra stabdžiai, jei turite neįprastai didelį įrašų skaičių lentelėje.</target>
+      </trans-unit>
+      <trans-unit id="singleRecord.alttitle" resname="singleRecord.alttitle" approved="yes">
+        <source>Export single record</source>
+        <target state="final">Eksportuoti vieną įrašą</target>
+      </trans-unit>
+      <trans-unit id="singleRecord.description" resname="singleRecord.description" approved="yes">
+        <source>This overview tells you which independent records has been independently selected for export.</source>
+        <target state="final">Ši apžvalga parodo, kurie nepriklausomi įrašai buvo nepriklausomai atrinkti eksportui.</target>
+      </trans-unit>
+      <trans-unit id="_singleRecord.image" resname="_singleRecord.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/singlerecord.png,
+EXT:impexp/Resources/Public/Images/cshimages/export2.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/singlerecord.png,
+EXT:impexp/Resources/Public/Images/cshimages/export2.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="singleRecord.image_descr" resname="singleRecord.image_descr" approved="yes">
+        <source>The way to export multiple records like this is using the clipboard like shown below.</source>
+        <target state="final">Tokius kelis įrašus galima eksportuoti naudodami iškarpinę, kaip parodyta žemiau.</target>
+      </trans-unit>
+      <trans-unit id="tableList.alttitle" resname="tableList.alttitle" approved="yes">
+        <source>Table export</source>
+        <target state="final">Lentelės eksportavimas</target>
+      </trans-unit>
+      <trans-unit id="tableList.description" resname="tableList.description" approved="yes">
+        <source>Export of all records on a page from a specific table. This is configured from the Web&gt;List module where you will have to select table-only view and click a button in the top of the page.</source>
+        <target state="final">Visų įrašų iš tam tikros lentelės eksportavimas. Tai konfigūruojama modulyje „Web&gt;List“, kur turėsite pasirinkti tik lentelės peržiūrą ir spustelėti mygtuką puslapio viršuje.</target>
+      </trans-unit>
+      <trans-unit id="tableList.details" resname="tableList.details" approved="yes">
+        <source>Tip: You can select multiple table lists by simply saving each selecting as a preset and finally load/merge the selections together.</source>
+        <target state="final">Patarimas: galite pasirinkti kelis lentelių sąrašus, tiesiog išsaugodami kiekvieną pasirinkimą kaip išankstinį nustatymą ir galiausiai įkeldami / sujungdami pasirinkimus.</target>
+      </trans-unit>
+      <trans-unit id="_tableList.image" resname="_tableList.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/tablelist.png,
+EXT:impexp/Resources/Public/Images/cshimages/export1.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/tablelist.png,
+EXT:impexp/Resources/Public/Images/cshimages/export1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="tableList.image_descr" resname="tableList.image_descr" xml:space="preserve" approved="yes">
+				<source>Here two tables from different pages are selected. This is done by first selecting the one, saving it as a preset, then select the other and merge with the saved preset.
+Here you see how to use the Web&gt;List module to export all records from a table on a page.</source>
+			<target state="final">Čia pasirinkta dvi lenteles iš skirtingų puslapių. Tai padaryta pirmiausia pasirinkus vieną, išsaugojus ją kaip išankstinį nustatymą, tada pasirinkus kitą ir sujungus su išsaugotu išankstiniu nustatymu.
+Čia matote, kaip naudoti modulį „Web&gt;List“ (Tinklas&gt;Sąrašas), kad eksportuotumėte visus įrašus iš lentelės puslapyje.</target></trans-unit>
+      <trans-unit id="inclRelations.alttitle" resname="inclRelations.alttitle" approved="yes">
+        <source>Include relations</source>
+        <target state="final">Įtraukti santykius</target>
+      </trans-unit>
+      <trans-unit id="inclRelations.description" resname="inclRelations.description" approved="yes">
+        <source>Configure the tables from which you want to include records that are found as relations in the main export configuration.</source>
+        <target state="final">Konfigūruokite lenteles, iš kurių norite įtraukti įrašus, kurie pagrindinėje eksporto konfigūracijoje randami kaip santykiai.</target>
+      </trans-unit>
+      <trans-unit id="inclRelations.details" resname="inclRelations.details" xml:space="preserve" approved="yes">
+				<source>Background: When you export a record in TYPO3 it might contain relations to other records in the system. You have to tell the export interface what to do with these relations. Basically there are three scenarios:
+- If relations are found between records that are all in the export configuration, there is no problem: The relations are automatically mapped to the new id's of those records when imported.
+- If the records related to are not included the relation will be lost (indicated with an error message in the preview) unless you a) either select that table in this selector box in which case all relations to that table will be included or b) if you set the table as a static table (in which case the relation is untouched and imported as-is - but which will of course break if no record with that UID is found in the import system).
+
+&lt;b&gt;Soft References:&lt;/b&gt; Soft references are when a record contains pointers to external files or records but in fields where there are no formal relation configured. Examples of this is when a content element contains a "&amp;lt;link 123&amp;gt;" tag that represents a link to the page 123. This is not picked up formally as a reference, but is found anyhow as a "soft reference". The same goes for &amp;lt;img&amp;gt; tags with images from eg. "fileadmin/".
+By default soft references pointing to records or files will act as normal references; either including the referenced item or showing an error. However you can also choose to exclude the handling of individual soft references or maybe set the value as "editable" upon import. This is done with a selector box in the export preview.</source>
+			<target state="final">Kontekstas: Eksportuojant įrašą TYPO3, jis gali turėti ryšių su kitais įrašais sistemoje. Eksporto sąsajoje reikia nurodyti, ką daryti su šiais ryšiais. Iš esmės yra trys scenarijai:
+- Jei randami ryšiai tarp įrašų, kurie visi yra eksporto konfigūracijoje, problemų nekyla: importuojant ryšiai automatiškai priskiriami naujiems tų įrašų identifikatoriams.
+- Jei susiję įrašai nėra įtraukti, ryšys bus prarastas (tai bus nurodyta peržiūros lange rodomu klaidos pranešimu), nebent a) pasirinksite tą lentelę šiame pasirinkimo laukelyje, ir tuomet visi ryšiai su ta lentele bus įtraukti, arba b) nustatysite lentelę kaip statinę lentelę (tuomet ryšys nebus keičiamas ir bus importuotas toks, koks yra, bet, žinoma, jis bus nutrauktas, jei importo sistemoje nebus rasta įrašo su tuo UID). .
+
+&lt;b&gt;Minkštos nuorodos:&lt;/b&gt; Minkštos nuorodos yra tada, kai įrašas turi nuorodas į išorinius failus ar įrašus, bet laukuose, kuriuose nėra sukonfigūruota oficiali sąsaja. Pavyzdžiui, kai turinio elementas turi žymę „&amp;lt;link 123&amp;gt;“, kuri reiškia nuorodą į puslapį 123. Tai nėra oficialiai laikoma nuoroda, bet vis tiek randama kaip „minkšta nuoroda“. Tas pats galioja ir žymėms &amp;lt;img&amp;gt; su vaizdais, pvz., iš „fileadmin/“.
+Pagal numatytuosius nustatymus minkštosios nuorodos, nukreipiančios į įrašus ar failus, veiks kaip įprastos nuorodos: įtrauks nuorodą į elementą arba parodys klaidą. Tačiau taip pat galite pasirinkti, kad atskirų minkštųjų nuorodų tvarkymas būtų išskirtas, arba importuojant nustatyti vertę kaip „redaguojamą“. Tai daroma eksporto peržiūros lange esančiu pasirinkimo laukeliu.</target></trans-unit>
+      <trans-unit id="_inclRelations.image" resname="_inclRelations.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/references.png,
+EXT:impexp/Resources/Public/Images/cshimages/references1.png,
+EXT:impexp/Resources/Public/Images/cshimages/references2.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/references.png,
+EXT:impexp/Resources/Public/Images/cshimages/references1.png,
+EXT:impexp/Resources/Public/Images/cshimages/references2.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="inclRelations.image_descr" resname="inclRelations.image_descr" xml:space="preserve" approved="yes">
+				<source>This example shows tree examples of references; a) an image attached to a content element, b) a relation to a frontend usergroup UID, and c) a soft reference found in the bodytext field of a record, here it is the link-tag pointing to the page with UID 1.
+Notice in the previous image how the relation to the frontend user group was lost. This has been corrected in this screenshot where the fe_group table has been selected in the list of table for which to include relations. The result is that the frontend usergroup is included as a record outside the exported pagetree. If you wanted to keep the relation but not include the usergroup you have to set "fe_groups" as a static table instead. See below.
+This example shows a TypoScript Template Record where multiple soft references has been found. The first one is an email address. Here it is configured to be editable. This means that upon import the user will have a chance to edit the value before the import is actually done. This is very useful when exported files are used as templates. Another example includes a PHP script which we don't want to include in the export and therefore we have selected the exclude option for the soft reference.</source>
+			<target state="final">Šiame pavyzdyje pateikiami trys nuorodų pavyzdžiai: a) prie turinio elemento pridėtas vaizdas, b) ryšys su priekinės dalies vartotojų grupės UID ir c) įrašo teksto lauke esanti minkšta nuoroda, šiuo atveju tai nuoroda į puslapį su UID 1.
+Atkreipkite dėmesį į ankstesnį paveikslėlį, kuriame matyti, kaip buvo prarastas ryšys su priekinės dalies vartotojų grupe. Tai buvo ištaisyta šiame ekrano kopijoje, kurioje fe_group lentelė buvo pasirinkta lentelių, į kurias įtraukti ryšius, sąraše. Rezultatas yra toks, kad priekinės dalies vartotojų grupė yra įtraukta kaip įrašas už eksportuoto puslapių medžio ribų. Jei norite išlaikyti ryšį, bet neįtraukti vartotojų grupės, turite nustatyti „fe_groups“ kaip statinę lentelę. Žiūrėkite žemiau.
+Šis pavyzdys rodo TypoScript šablono įrašą, kuriame rasta keletas minkštųjų nuorodų. Pirmoji yra el. pašto adresas. Čia jis sukonfigūruotas kaip redaguojamas. Tai reiškia, kad importuojant vartotojas turės galimybę redaguoti vertę prieš faktiškai atlikdamas importą. Tai labai naudinga, kai eksportuoti failai naudojami kaip šablonai. Kitas pavyzdys yra PHP skriptas, kurio nenorime įtraukti į eksportą, todėl pasirinkome minkštosios nuorodos išskyrimo parinktį.</target></trans-unit>
+      <trans-unit id="staticRelations.alttitle" resname="staticRelations.alttitle" approved="yes">
+        <source>Set static tables</source>
+        <target state="final">Nustatyti statinius lenteles</target>
+      </trans-unit>
+      <trans-unit id="staticRelations.description" resname="staticRelations.description" approved="yes">
+        <source>Select which tables in addition to the static TYPO3 tables to keep relations untouched for. Takes precedence over "Include relations" configured tables.</source>
+        <target state="final">Pasirinkite, kurioms lentelėms, be statinių TYPO3 lentelių, santykiai turi likti nepakitę. Tai turi pirmenybę prieš „Įtraukti santykius“ konfigūruotas lenteles.</target>
+      </trans-unit>
+      <trans-unit id="staticRelations.details" resname="staticRelations.details" approved="yes">
+        <source>By default all relations to static tables in TYPO3 are kept untouched. Of course those static tables should be present in the import system in order for this to work correctly. However there might be circumstances where you move information between two systems where theoretically non-static tables should just keep relations untouched. Examples could be "sys_languages" or TemplaVoila data structures / template objects where two systems might contain the same set of records in those tables while you are importing pages and content elements freely.</source>
+        <target state="final">Pagal numatytuosius nustatymus visi ryšiai su statinėmis lentelėmis TYPO3 sistemoje lieka nepakitę. Žinoma, kad tai veiktų tinkamai, šios statinės lentelės turėtų būti importavimo sistemoje. Tačiau gali būti atvejų, kai perkeliate informaciją tarp dviejų sistemų, kuriose teoriškai nestatinės lentelės turėtų išlaikyti nepakitusius ryšius. Pavyzdžiai galėtų būti „sys_languages“ arba TemplaVoila duomenų struktūros / šablonų objektai, kur dvi sistemos gali turėti tą patį įrašų rinkinį šiose lentelėse, o jūs laisvai importuojate puslapius ir turinio elementus.</target>
+      </trans-unit>
+      <trans-unit id="_staticRelations.image" resname="_staticRelations.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/static.png,
+EXT:impexp/Resources/Public/Images/cshimages/static1.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/static.png,
+EXT:impexp/Resources/Public/Images/cshimages/static1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="staticRelations.image_descr" resname="staticRelations.image_descr" xml:space="preserve" approved="yes">
+				<source>In this example you see how a number of records are pointing to a System Language record which will become lost relations when imported because the record is not included in the export. However; in the target system the System Languages are exactly the same and therefore you just want a static mapping of the relations.
+The static mapping is obtained by selecting the "sys_language" table as a static template meaning that the relations are kept at their current values assuming that they will be exactly the same in the target system when imported.</source>
+			<target state="final">Šiame pavyzdyje matote, kaip keletas įrašų nurodo sistemos kalbos įrašą, kuris importuojant bus prarastas, nes įrašas nėra įtrauktas į eksportą. Tačiau tikslinėje sistemoje sistemos kalbos yra visiškai tokios pačios, todėl jums reikia tik statinio santykių atvaizdavimo.
+Statinis atitikimas gaunamas pasirinkus lentelę „sys_language“ kaip statinį šabloną, o tai reiškia, kad santykiai išlaikomi esamomis vertėmis, darant prielaidą, kad jie bus lygiai tokie patys tikslinėje sistemoje po importavimo.</target></trans-unit>
+      <trans-unit id="excludedElements.alttitle" resname="excludedElements.alttitle" approved="yes">
+        <source>Excluded elements</source>
+        <target state="final">Išskirti elementai</target>
+      </trans-unit>
+      <trans-unit id="excludedElements.description" resname="excludedElements.description" approved="yes">
+        <source>By the "Exclude" checkbox you can exclude specific records from the preview display of the export. Which records has been picked for specific exclusion is listed here. You can also clear the exclusion configuration.</source>
+        <target state="final">Pažymėdami žymės langelį „Išskirti“ galite išskirti tam tikrus įrašus iš eksporto peržiūros ekrano. Čia yra išvardyti įrašai, kurie buvo pasirinkti tam tikram išskyrimui. Taip pat galite išvalyti išskyrimo konfigūraciją.</target>
+      </trans-unit>
+      <trans-unit id="_excludedElements.image" resname="_excludedElements.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/excludebox.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/excludebox.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.alttitle" resname="htmlCssResources.alttitle" approved="yes">
+        <source>Exclude resources from HTML and CSS files</source>
+        <target state="final">Išskirti išteklius iš HTML ir CSS failų</target>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.description" resname="htmlCssResources.description" approved="yes">
+        <source>When an HTML or CSS file is found as a soft reference the files are parsed for references to external media (such as images) and if any are found they are also exported. If you don't want this behaviour, click this option.</source>
+        <target state="final">Kai HTML arba CSS failas randamas kaip minkšta nuoroda, failai analizuojami ieškant nuorodų į išorines laikmenas (pavyzdžiui, vaizdus), ir jei tokios randamos, jos taip pat eksportuojamos. Jei nenorite, kad taip būtų daroma, spustelėkite šią parinktį.</target>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.details" resname="htmlCssResources.details" approved="yes">
+        <source>Notice: Resources found inside an HTML or CSS file are not analyzed further. For instance it means that any CSS files referred to from within an HTML will not be traversed - but CSS files referred to inside the Setup or Constant field of a TypoScript template record will be!</source>
+        <target state="final">Pastaba: HTML arba CSS faile esantys ištekliai toliau neanalizuojami. Tai reiškia, kad, pavyzdžiui, HTML faile nurodyti CSS failai nebus peržiūrimi, tačiau TypoScript šablono įrašo lauke „Setup“ arba „Constant“ nurodyti CSS failai bus peržiūrimi!</target>
+      </trans-unit>
+      <trans-unit id="_htmlCssResources.image" resname="_htmlCssResources.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/htmlcss.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/htmlcss.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.image_descr" resname="htmlCssResources.image_descr" approved="yes">
+        <source>In this example you can see that a soft reference has been found pointing to an HTML file inside fileadmin/ Since it was an HTML file it was parsed and further a number of files were found referenced inside it and now included with the export. This feature is specifically created to support export of template configurations where external HTML files play a role.</source>
+        <target state="final">Šiame pavyzdyje matyti, kad rasta minkšta nuoroda, nukreipianti į HTML failą, esantį fileadmin/ Kadangi tai buvo HTML failas, jis buvo išanalizuotas ir jame rasta keletas failų, į kuriuos buvo nuorodos, ir dabar jie įtraukti į eksportą. Ši funkcija sukurta specialiai tam, kad būtų galima eksportuoti šablonų konfigūracijas, kuriose svarbų vaidmenį atlieka išoriniai HTML failai.</target>
+      </trans-unit>
+      <trans-unit id="extensionDependencies.alttitle" resname="extensionDependencies.alttitle" approved="yes">
+        <source>Extension Dependencies</source>
+        <target state="final">Išplėtimo priklausomybės</target>
+      </trans-unit>
+      <trans-unit id="extensionDependencies.description" resname="extensionDependencies.description" approved="yes">
+        <source>Select which extensions should be installed in the import system in order for your exported content to work correctly. Examples could be "templavoila" for templating, "fluid_styled_content" for the template, "tt_news" for a news archive etc.</source>
+        <target state="final">Pasirinkite, kokios plėtinės turėtų būti įdiegtos importo sistemoje, kad eksportuotas turinys veiktų tinkamai. Pavyzdžiai galėtų būti „templavoila“ šablonams, „fluid_styled_content“ šablonui, „tt_news“ naujienų archyvui ir pan.</target>
+      </trans-unit>
+      <trans-unit id="extensionDependencies.details" resname="extensionDependencies.details" approved="yes">
+        <source>During import warnings will appear for all selected extensions from this list which were not installed.</source>
+        <target state="final">Importuojant bus rodomi įspėjimai apie visas iš šio sąrašo pasirinktas plėtines, kurios nebuvo įdiegtos.</target>
+      </trans-unit>
+      <trans-unit id="_extensionDependencies.image" resname="_extensionDependencies.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/extdep.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/extdep.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="presets.alttitle" resname="presets.alttitle" approved="yes">
+        <source>Configuration presets</source>
+        <target state="final">Konfigūracijos nustatymai</target>
+      </trans-unit>
+      <trans-unit id="presets.description" resname="presets.description" approved="yes">
+        <source>Enables you to save an export configuration for later re-use. Useful if you need to export the same configuration with regular intervals.</source>
+        <target state="final">Leidžia išsaugoti eksporto konfigūraciją, kad ją būtų galima naudoti vėliau. Tai naudinga, jei reikia reguliariai eksportuoti tą pačią konfigūraciją.</target>
+      </trans-unit>
+      <trans-unit id="_presets.image" resname="_presets.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/impexp_misc1.png,
+EXT:impexp/Resources/Public/Images/cshimages/impexp_misc2.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp_misc1.png,
+EXT:impexp/Resources/Public/Images/cshimages/impexp_misc2.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="metadata.alttitle" resname="metadata.alttitle" approved="yes">
+        <source>Meta data setting</source>
+        <target state="final">Metaduomenų nustatymas</target>
+      </trans-unit>
+      <trans-unit id="metadata.description" resname="metadata.description" approved="yes">
+        <source>Set meta data for the export. This is highly encouraged if your exported content goes into eg. a template collection of sorts.</source>
+        <target state="final">Nustatykite eksporto metaduomenis. Tai ypač rekomenduojama, jei eksportuojamas turinys patenka, pvz., į šablonų rinkinį.</target>
+      </trans-unit>
+      <trans-unit id="_metadata.image" resname="_metadata.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/metadata.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/metadata.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="fileFormat.alttitle" resname="fileFormat.alttitle" approved="yes">
+        <source>File format options</source>
+        <target state="final">Failo formato parinktys</target>
+      </trans-unit>
+      <trans-unit id="fileFormat.description" resname="fileFormat.description" approved="yes">
+        <source>You can export your records to a generic XML format which potentially can be imported by other applications. However, the schema of the XML is TYPO3 specific. Alternatively, you can select a TYPO3 specific binary format called "T3D".</source>
+        <target state="final">Jūs galite eksportuoti savo įrašus į bendrąjį XML formatą, kurį gali importuoti kitos programos. Tačiau XML schema yra specifinė TYPO3 sistemai. Taip pat galite pasirinkti TYPO3 sistemai specifinį binarinį formatą, vadinamą „T3D“.</target>
+      </trans-unit>
+      <trans-unit id="fileFormat.details" resname="fileFormat.details" xml:space="preserve" approved="yes">
+				<source>Generally you should use the XML format. The T3D compressed format is usually smaller, but much harder to read and process.
+
+Entering a file name to save makes it possible to write your export directly to a file (pressing "Save to filename") instead of downloading it (pressing "Download export"). The correct file extensions depending on file format is automatically applied. Files are saved in a proper file mount in "fileadmin/". This is shown to you upon saving. Existing files are overwritten.</source>
+			<target state="final">Paprastai reikėtų naudoti XML formatą. T3D suspaustas formatas paprastai yra mažesnis, bet daug sunkiau skaitomas ir apdorojamas.
+
+Įvedus failo pavadinimą, kurį norite išsaugoti, eksportą galima įrašyti tiesiai į failą (spausdami „Išsaugoti į failą“), o ne atsisiųsti (spausdami „Atsisiųsti eksportą“). Priklausomai nuo failo formato, automatiškai pritaikomi teisingi failo plėtiniai. Failai išsaugomi tinkamoje failų saugykloje „fileadmin/“. Tai parodoma išsaugojimo metu. Esami failai perrašomi.</target></trans-unit>
+      <trans-unit id="_fileFormat.image" resname="_fileFormat.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/fileformat.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/fileformat.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="import.alttitle" resname="import.alttitle" approved="yes">
+        <source>Importing TYPO3 records</source>
+        <target state="final">TYPO3 įrašų importavimas</target>
+      </trans-unit>
+      <trans-unit id="import.description" resname="import.description" approved="yes">
+        <source>To import TYPO3 T3D/XML files into the page tree you click any page in the page tree (including the root page!), select "More options" and then "Import". This will bring up the import interface where you can select a file to import or upload a new one.</source>
+        <target state="final">Norėdami importuoti TYPO3 T3D/XML failus į puslapių medį, spustelėkite bet kurį puslapį puslapių medyje (įskaitant pagrindinį puslapį!), pasirinkite „Daugiau parinkčių“ ir tada „Importuoti“. Tai atvers importo sąsają, kurioje galėsite pasirinkti importuotiną failą arba įkelti naują.</target>
+      </trans-unit>
+      <trans-unit id="import.details" resname="import.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Tip: Import into a Folder&lt;/b&gt;
+To make sure that no records are lost during the import, you can make yourself safe by importing into a Folder you create first. After the import you can move all records to the final destinations. An example of such a scenario is if you configured the export to include relations; In that case a number of records may follow the export outside the page tree structure you are exporting. To make sure that all of these external records are written to the database, importing into a Folder is a good idea.
+
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before/after importing to see if there are any error messages there!</source>
+			<target state="final">&lt;b&gt;Patarimas: importuoti į aplanką&lt;/b&gt;
+Norėdami įsitikinti, kad importuojant nebus prarasta jokių įrašų, galite apsidrausti importuodami į iš anksto sukurtą aplanką. Po importo galite perkelti visus įrašus į galutines vietas. Pavyzdžiui, jei eksportą konfigūravote taip, kad jis apimtų ryšius; Tokiu atveju dalis įrašų gali būti eksportuojami už eksportuojamos puslapio medžio struktūros ribų. Norėdami įsitikinti, kad visi šie išoriniai įrašai būtų įrašyti į duomenų bazę, rekomenduojama importuoti į aplanką.
+
+&lt;b&gt;Klaidų pranešimai:&lt;/b&gt; Prieš ir po importo nepamirškite patikrinti skirtuką „Pranešimai“, ar jame nėra klaidų pranešimų!</target></trans-unit>
+      <trans-unit id="_import.seeAlso" resname="_import.seeAlso" approved="yes">
+        <source>xMOD_tx_impexp:export</source>
+        <target state="final">xMOD_tx_impexp:export</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_import.image" resname="_import.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/import.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/import.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="importFile.alttitle" resname="importFile.alttitle" approved="yes">
+        <source>Select file to import</source>
+        <target state="final">Pasirinkite importuotiną failą</target>
+      </trans-unit>
+      <trans-unit id="importFile.description" resname="importFile.description" approved="yes">
+        <source>The files displayed are those with an extension T3D or XML from fileadmin/, fileadmin/export/ and your "TEMP" folder (if any).</source>
+        <target state="final">Rodyti failai yra tie, kurių plėtinys yra T3D arba XML iš fileadmin/, fileadmin/export/ ir jūsų „TEMP“ aplanko (jei yra).</target>
+      </trans-unit>
+      <trans-unit id="_importFile.seeAlso" resname="_importFile.seeAlso" approved="yes">
+        <source>xMOD_tx_impexp:fileFormat</source>
+        <target state="final">xMOD_tx_impexp:fileFormat</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_importFile.image" resname="_importFile.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/import_selectfile.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/import_selectfile.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="update.alttitle" resname="update.alttitle" approved="yes">
+        <source>Update instead of Insert</source>
+        <target state="final">Atnaujinti vietoj įterpti</target>
+      </trans-unit>
+      <trans-unit id="update.description" resname="update.description" approved="yes">
+        <source>By default the import operation inserts new records in the system. Using this option will update existing records.</source>
+        <target state="final">Pagal numatytuosius nustatymus importavimo operacija į sistemą įterpia naujus įrašus. Naudojant šią parinktį, bus atnaujinti esami įrašai.</target>
+      </trans-unit>
+      <trans-unit id="update.details" resname="update.details" xml:space="preserve" approved="yes">
+				<source>There are certain requirements you have to meet if you want the "Update" process to work. The main thing is that the records updated are those with the SAME uid as the uid in the export file. Thus an update operation only makes real sense if the export and import systems are somehow related and the same UIDs can be expected in both ends. Otherwise it will be a mess!
+
+When you update page structures the import operation will automatically try to rearrange records so they also appear in the same hierarchy and order as in the export file. This can be disabled by checking the option "Ignore PID differences globally". In any case you can set individual records to Ignore/Respect the PID with a selectorbox in the preview.
+
+In the preview display you can also select if individual records should be flatly ignored during import or if you want them created as new records instead of being updates.
+As a help for managing updates the preview display will inform you about the path where the existing element with that UID is found. Use this to verify that you get what you expect!
+
+&lt;b&gt;Forcing the UID:&lt;/b&gt;
+If you intend to update a system and some elements from the import are not mappable to a UID already (ei. does not exist) you can choose in the preview display to force the UID during creation. This is an unorthodox thing to do since UIDs are normally created automatically by the database. The option makes most sense if you are trying to "synchronize" a copy of another system. The option may mess up certain database internals and the feature is therefore only available for admins.</source>
+			<target state="final">Jei norite, kad „Atnaujinimo“ procesas veiktų, turite įvykdyti tam tikrus reikalavimus. Svarbiausia, kad būtų atnaujinami įrašai, kurių uid yra TOKS PAT kaip uid eksporto faile. Taigi atnaujinimo operacija turi prasmę tik tuo atveju, jei eksporto ir importo sistemos yra kažkaip susijusios ir abiejose pusėse galima tikėtis tų pačių UID. Kitaip bus tikra sumaištis!
+
+Atnaujinant puslapių struktūras, importavimo operacija automatiškai bandys pertvarkyti įrašus taip, kad jie taip pat būtų rodomi ta pačia hierarchija ir tvarka kaip eksporto faile. Tai galima išjungti pažymėjus parinktį „Ignoruoti PID skirtumus visuotinai“. Bet kuriuo atveju galite nustatyti, kad atskiri įrašai būtų ignoruojami/atsižvelgiama į PID, naudodami pasirinkimo langelį peržiūroje.
+
+Peržiūros lange taip pat galite pasirinkti, ar atskiri įrašai turi būti visiškai ignoruojami importo metu, ar norite, kad jie būtų sukurti kaip nauji įrašai, o ne atnaujinami.
+Kad padėtų valdyti atnaujinimus, peržiūros lange bus nurodytas kelias, kuriuo galima rasti esamą elementą su tuo UID. Naudokite tai, kad patikrintumėte, ar gaunate tai, ko tikitės!
+
+&lt;b&gt;UID priverstinis nustatymas:&lt;/b&gt;
+Jei ketinate atnaujinti sistemą, o kai kurie importuoti elementai negali būti susieti su jau esamu UID (t. y. jo nėra), peržiūros lange galite pasirinkti priverstinį UID nustatymą kūrimo metu. Tai yra netradicinis veiksmas, nes UID paprastai yra automatiškai sukuriamas duomenų bazėje. Ši parinktis yra labiausiai tikslinga, jei bandote „sinchronizuoti“ kitos sistemos kopiją. Ši parinktis gali sutrikdyti tam tikrus duomenų bazės vidinius procesus, todėl ši funkcija yra prieinama tik administratoriams.</target></trans-unit>
+      <trans-unit id="_update.image" resname="_update.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/impexp_misc4.png,
+EXT:impexp/Resources/Public/Images/cshimages/update.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp_misc4.png,
+EXT:impexp/Resources/Public/Images/cshimages/update.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="update.image_descr" resname="update.image_descr" approved="yes">
+        <source>In Update mode you can select various settings for each record. You will also be able to see a diff-view where the differences between the existing record and the one from the import is shown.</source>
+        <target state="final">Atnaujinimo režimu galite pasirinkti įvairius nustatymus kiekvienam įrašui. Taip pat galėsite matyti skirtumų peržiūrą, kurioje rodomi esamo įrašo ir importuoto įrašo skirtumai.</target>
+      </trans-unit>
+      <trans-unit id="options.alttitle" resname="options.alttitle" approved="yes">
+        <source>Import options</source>
+        <target state="final">Importavimo parinktys</target>
+      </trans-unit>
+      <trans-unit id="options.description" resname="options.description" approved="yes">
+        <source>Various options for import.</source>
+        <target state="final">Įvairios importo galimybės.</target>
+      </trans-unit>
+      <trans-unit id="_options.image" resname="_options.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/impexp_misc3.png,
+EXT:impexp/Resources/Public/Images/cshimages/phpext.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp_misc3.png,
+EXT:impexp/Resources/Public/Images/cshimages/phpext.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="action.alttitle" resname="action.alttitle" approved="yes">
+        <source>Import Action</source>
+        <target state="final">Importuoti veiksmą</target>
+      </trans-unit>
+      <trans-unit id="action.description" resname="action.description" xml:space="preserve" approved="yes">
+				<source>Press "Preview" to see the content of the import file or update the preview display according to changed configurations.
+Press "Import"/"Update" if you want to perform the actual import.
+
+Before importing make sure you change any editable soft references that are shown in the preview data.</source>
+			<target state="final">Paspauskite „Peržiūra“, kad pamatytumėte importo failo turinį arba atnaujintumėte peržiūros ekraną pagal pakeistas konfigūracijas.
+Paspauskite „Importuoti“/„Atnaujinti“, jei norite atlikti faktinį importą.
+
+Prieš importuodami įsitikinkite, kad pakeitėte visas redaguojamas nuorodas, kurios rodomos peržiūros duomenyse.</target></trans-unit>
+      <trans-unit id="_action.image" resname="_action.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/diffview.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/diffview.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="action.image_descr" resname="action.image_descr" approved="yes">
+        <source>Example of the result view after importing. As you can see the RTE attached images (soft references) has been written to new file names and the difference view tells you that the names changed in the bodytext content.</source>
+        <target state="final">Pavyzdys, kaip atrodo rezultatai po importavimo. Kaip matote, RTE pridėti vaizdai (soft references) buvo perrašyti į naujus failų pavadinimus, o skirtumų peržiūra rodo, kad pavadinimai buvo pakeisti teksto turinyje.</target>
+      </trans-unit>
+      <trans-unit id="enableLogging.alttitle" resname="enableLogging.alttitle" approved="yes">
+        <source>Enable System Logging</source>
+        <target state="final">Įjungti sistemos registravimą</target>
+      </trans-unit>
+      <trans-unit id="enableLogging.description" resname="enableLogging.description" approved="yes">
+        <source>If you set this the system backend log will be filled with entries for all the actions that the import actually performs. By default this is left out for the sake of clarity.</source>
+        <target state="final">Jei nustatysite šią parinktį, sistemos užkulisinis žurnalas bus užpildytas įrašais apie visas veiksmus, kuriuos iš tikrųjų atlieka importas. Pagal numatytuosius nustatymus tai yra praleista aiškumo sumetimais.</target>
+      </trans-unit>
+      <trans-unit id="upload.alttitle" resname="upload.alttitle" approved="yes">
+        <source>Upload import file</source>
+        <target state="final">Įkelti importo failą</target>
+      </trans-unit>
+      <trans-unit id="upload.description" resname="upload.description" approved="yes">
+        <source>Select a file to import from your local computer and upload it here. If the upload completes successfully you can immediately see its content displayed in the preview display.</source>
+        <target state="final">Pasirinkite failą, kurį norite importuoti iš savo kompiuterio, ir įkelkite jį čia. Jei įkėlimas pavyks, jo turinį iš karto galėsite pamatyti peržiūros lange.</target>
+      </trans-unit>
+      <trans-unit id="upload.details" resname="upload.details" approved="yes">
+        <source>Notice that there are usually limits set by the server (PHP) to the size of uploaded files. If hit, upload fails and an error message is shown.</source>
+        <target state="final">Atkreipkite dėmesį, kad paprastai serveris (PHP) nustato įkeltų failų dydžio ribas. Jei riba viršijama, įkėlimas nepavyksta ir rodomas klaidos pranešimas.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
