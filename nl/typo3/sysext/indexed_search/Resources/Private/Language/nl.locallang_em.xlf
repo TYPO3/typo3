@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_em.xlf" date="2011-10-17T20:22:32Z" product-name="indexed_search" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="indexedsearch.config.pdftools" approved="yes">
+        <source>Path to PDF parsers: Specify the directory containing the "pdftotext" and "pdfinfo" applications used to extract content from PDF files. Leave empty if not available.</source>
+        <target state="final">Pad naar PDF-parsers: Geef de map op met de applicaties "pdftotext" en "pdfinfo" die gebruikt worden om inhoud uit PDF-bestanden te halen. Laat leeg indien niet beschikbaar.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.pdf_mode" approved="yes">
+        <source>PDF Parsing Mode: Define how PDF files are split during indexing. "0" indexes the entire file at once. A positive value sets the number of pages per batch (e.g. "5" → pages 1–5, 6–10, …). A negative value sets the number of groups (e.g. "-3" → file split into 3 groups). Allowed range: -100 to 100.</source>
+        <target state="final">PDF Parsing Modus: Definieer hoe PDF-bestanden worden gesplitst tijdens het indexeren. "0" indexeert het hele bestand tegelijk. Een positieve waarde stelt het aantal pagina's per batch in (bijv. . "5" → pagina's 1–5, 6–10, …). Een negatieve waarde stelt het aantal groepen in (bijv. . "-3" → bestand gesplitst in 3 groepen). Toegestaan bereik: -100 tot 100.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unzip" approved="yes">
+        <source>Path to unzip: Specify the directory containing the "unzip" application used to extract content from OpenOffice.org/Oasis OpenDocument files. Leave empty if not available.</source>
+        <target state="final">Pad naar unzip: Specificeer de map met de applicatie "unzip" om de inhoud van OpenOffice.org/Oasis OpenDocument bestanden uit te pakken. Laat leeg indien niet beschikbaar.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.catdoc" approved="yes">
+        <source>Path to WORD parser: Specify the directory containing the "catdoc" application used to extract content from MS WORD files. Leave empty if not available.</source>
+        <target state="final">Pad naar WORD parser: Geef de map op met de "catdoc" toepassing voor het extraheren van MS WORD bestanden. Laat leeg indien niet beschikbaar.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.xlhtml" approved="yes">
+        <source>Path to EXCEL parser: Specify the directory containing the "xlhtml" application used to extract content from MS EXCEL files. Leave empty if not available.</source>
+        <target state="final">Pad naar EXCEL parser: Geef de map op met de toepassing "xlhtml" om de inhoud van MS EXCEL bestanden uit te pakken. Laat leeg indien niet beschikbaar.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ppthtml" approved="yes">
+        <source>Path to POWERPOINT parser: Specify the directory containing the "ppthtml" application used to extract content from MS POWERPOINT files. Leave empty if not available.</source>
+        <target state="final">Pad naar POWERPOINT parser: Geef de map op met de "ppthtml" applicatie die gebruikt wordt om de inhoud van MS POWERPOINT bestanden uit te pakken. Laat leeg indien niet beschikbaar.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.unrtf" approved="yes">
+        <source>Path to RTF parser: Specify the directory containing the "unrtf" application used to extract content from RTF files. Leave empty if not available.</source>
+        <target state="final">Pad naar RTF parser: Specificeer de map met de "unrtf" applicatie om de inhoud van RTF bestanden uit te pakken. Laat leeg indien niet beschikbaar.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.fullTextDataLength" approved="yes">
+        <source>Full Text Data Length: Limit the amount of full-text data stored (in bytes). Lower values reduce database usage but also restrict sentence-level searching and the length of search result excerpts.</source>
+        <target state="final">Lengte volledige tekstgegevens: beperk de hoeveelheid data die voor volledige tekst opgeslagen wordt (in bytes). Lagere waarden verminderen het gebruik van database, maar beperken ook het zoeken op zinsniveau en de lengte van fragmenten in zoekresultaten.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.disableFrontendIndexing" approved="yes">
+        <source>Disable Indexing in Frontend: Prevent pages from being indexed during frontend access. Indexing is then performed only by the backend page crawler.</source>
+        <target state="final">Indexeren in frontend uitschakelen: voorkomt dat pagina's geïndexeerd worden tijdens frontend toegang. Indexeren wordt dan alleen uitgevoerd door de backend pagina-crawler.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.minAge" approved="yes">
+        <source>Min TTL (hours) for Indexed Page: Set the minimum time (in hours) that must pass before an indexed page is eligible for re-indexing, regardless of page changes.</source>
+        <target state="final">Min TTL (uren) voor Geïndexeerde Pagina: Stel de minimale tijd (in uren) in die moet verstrijken voordat een geïndexeerde pagina in aanmerking komt voor herindexering, ongeacht de wijzigingen van de pagina.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.maxExternalFiles" approved="yes">
+        <source>Max External Files to Index: Limit how many external files found on a page are indexed. This helps prevent excessive server load but may leave some documents unindexed.</source>
+        <target state="final">Maximum externe bestanden om te indexeren: Beperk hoeveel externe bestanden er gevonden worden op een pagina. Dit helpt overmatige serverbelasting te voorkomen, maar kan sommige documenten ongeïndexeerd laten.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.flagBitMask" approved="yes">
+        <source>Bitmask for Flags (Advanced): Define the weighting of HTML metadata during indexing (value range: 0–255). &lt;title&gt; = 128, &lt;keywords&gt; = 64, &lt;description&gt; = 32. Set to 0 to give these fields no additional weight. Default 192 prioritizes title and keywords in search results.</source>
+        <target state="final">Bitmask voor vlaggen (Geavanceerd): Definieer het gewicht van HTML-metadata tijdens het indexeren (bereik: 0–255). &lt;title&gt; = 128, &lt;keywords&gt; = 64, &lt;description&gt; = 32. Stel in op 0 om deze velden geen extra gewicht te geven. Standaard 192 geeft prioriteit aan titel en trefwoorden in zoekresultaten.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.ignoreExtensions" approved="yes">
+        <source>Ignore Extensions: Specify a comma-separated list of file extensions that the external parser should ignore, even if supported.</source>
+        <target state="final">Extensies negeren: Geef een komma gescheiden lijst op van bestandsextensies die de externe parser moet negeren, zelfs als deze wordt ondersteund.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.indexExternalURLs" approved="yes">
+        <source>Index External HTML URLs: Enable indexing of external links when the target content type is "text/html"..</source>
+        <target state="final">Indexeer externe HTML-URL's: indexering van externe links inschakelen als het doelinhoudstype "text/html" is.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.useMysqlFulltext" approved="yes">
+        <source>Enable MySQL specific fulltext search: After toggling this flag the database schema should be updated using System → Maintenance →  Analyze Database Structure.</source>
+        <target state="final">Schakel MySQL specifieke fulltext zoekopdracht in: Na het omschakelen van deze vlag moet het databaseschema worden bijgewerkt met behulp van Systeem → Maintenance → Analyze Database Structure.</target>
+      </trans-unit>
+      <trans-unit id="indexedsearch.config.deleteFromIndexAfterEditing" approved="yes">
+        <source>Remove content from index if page or its content is edited</source>
+        <target state="final">Inhoud van de index verwijderen als pagina of de inhoud ervan is bewerkt</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
