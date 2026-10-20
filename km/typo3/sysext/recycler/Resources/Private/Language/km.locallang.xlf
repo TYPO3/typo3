@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814907" source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:35Z" product-name="recycler" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Recycler</source>
+        <target state="final">ធុង​សំរាម</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description" approved="yes">
+        <source>The recycler allows you to select any deleted data and undelete it. You can undelete recursive if the parent of the element is deleted too.</source>
+        <target state="final">ធុងសំរាម​អនុញ្ញាត​ឱ្យ​អ្នក​រើស​នូវ​ទិន្នន័យ​​ដែល​បាន​លុប និង​មិន​ធ្វើ​ការលុប​ឡើង​វិញ ។ អ្នក​អាច​ធ្វើការ​មិន​លុប​​ផ្ទួន ប្រសិន​បើ​ធាតុ​ដែល​ជា​មេ​របស់​វា​បាន​លុប​ដែរ ។</target>
+      </trans-unit>
+      <trans-unit id="button.delete" resname="button.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">លុប</target>
+      </trans-unit>
+      <trans-unit id="table.header.tstamp" resname="table.header.tstamp" approved="yes">
+        <source>Last edit</source>
+        <target state="final">ការកែ​ចុងក្រោយ</target>
+      </trans-unit>
+      <trans-unit id="table.header.owner" resname="table.header.owner" approved="yes">
+        <source>Owner</source>
+        <target state="final">ម្ចាស់</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
