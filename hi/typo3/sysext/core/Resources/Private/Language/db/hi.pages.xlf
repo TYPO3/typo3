@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="hi">
+  <file id="f1">
+    <unit id="abstract">
+      <segment state="final">
+        <source>Abstract</source>
+        <target>सारांश</target>
+      </segment>
+    </unit>
+    <unit id="author">
+      <segment state="final">
+        <source>Author Name</source>
+        <target>लेखक का नाम</target>
+      </segment>
+    </unit>
+    <unit id="author_email">
+      <segment state="final">
+        <source>Author Email</source>
+        <target>लेखक का ईमेल</target>
+      </segment>
+    </unit>
+    <unit id="backend_layout">
+      <segment state="final">
+        <source>Backend Layout (this page only)</source>
+        <target>बैकएंड लेआउट (केवल यह पृष्ठ)</target>
+      </segment>
+    </unit>
+    <unit id="backend_layout_next_level">
+      <segment state="final">
+        <source>Backend Layout (subpages of this page)</source>
+        <target>बैकएंड लेआउट (इस पृष्ठ के उप-पृष्ठ)</target>
+      </segment>
+    </unit>
+    <unit id="cache_tags">
+      <segment state="final">
+        <source>Cache Tags</source>
+        <target>कैश टैग्स</target>
+      </segment>
+    </unit>
+    <unit id="cache_timeout">
+      <segment state="final">
+        <source>Cache Lifetime</source>
+        <target>कैश लाइफटाइम</target>
+      </segment>
+    </unit>
+    <unit id="content_from_pid">
+      <segment state="final">
+        <source>Show Content from this page</source>
+        <target>इस पृष्ठ की सामग्री दिखाएँ</target>
+      </segment>
+    </unit>
+    <unit id="description">
+      <segment state="final">
+        <source>Description for search engines</source>
+        <target>सर्च इंजन के लिए विवरण</target>
+      </segment>
+    </unit>
+    <unit id="doktype">
+      <segment state="final">
+        <source>Type</source>
+        <target>टाइप</target>
+      </segment>
+    </unit>
+    <unit id="doktype.be_user_section">
+      <segment state="final">
+        <source>Backend User Section</source>
+        <target>बैकएंड उपयोगकर्ता अनुभाग</target>
+      </segment>
+    </unit>
+    <unit id="doktype.default">
+      <segment state="final">
+        <source>Standard Page</source>
+        <target>स्टैंडर्ड पेज</target>
+      </segment>
+    </unit>
+    <unit id="doktype.link">
+      <segment state="final">
+        <source>Link</source>
+        <target>लिंक</target>
+      </segment>
+    </unit>
+    <unit id="doktype.mountpoint">
+      <segment state="final">
+        <source>Mount Point</source>
+        <target>माउंट पॉइंट</target>
+      </segment>
+    </unit>
+    <unit id="doktype.shortcut">
+      <segment state="final">
+        <source>Shortcut</source>
+        <target>शॉर्टकट</target>
+      </segment>
+    </unit>
+    <unit id="doktype.spacer">
+      <segment state="final">
+        <source>Menu Separator</source>
+        <target>मेनू विभाजक</target>
+      </segment>
+    </unit>
+    <unit id="doktype.sysfolder">
+      <segment state="final">
+        <source>Folder</source>
+        <target>फ़ोल्डर</target>
+      </segment>
+    </unit>
+    <unit id="doktype.group.link">
+      <segment state="final">
+        <source>Link</source>
+        <target>लिंक</target>
+      </segment>
+    </unit>
+    <unit id="doktype.group.page">
+      <segment state="final">
+        <source>Page</source>
+        <target>पृष्ठ</target>
+      </segment>
+    </unit>
+    <unit id="doktype.group.special">
+      <segment state="final">
+        <source>Special</source>
+        <target>विशेष</target>
+      </segment>
+    </unit>
+    <unit id="extend_to_subpages">
+      <segment state="final">
+        <source>Extend to Subpages</source>
+        <target>उप-पृष्ठों तक विस्तार करें</target>
+      </segment>
+    </unit>
+    <unit id="hidden">
+      <segment state="final">
+        <source>Page visible</source>
+        <target>पेज दिखाई दे रहा है</target>
+      </segment>
+    </unit>
+    <unit id="is_siteroot">
+      <segment state="final">
+        <source>Use as Root Page</source>
+        <target>रूट पेज के रूप में उपयोग करें</target>
+      </segment>
+    </unit>
+    <unit id="keywords">
+      <segment state="final">
+        <source>Keywords</source>
+        <target>कीवर्ड</target>
+      </segment>
+    </unit>
+    <unit id="link">
+      <segment state="final">
+        <source>Link destination</source>
+        <target>लिंक का गंतव्य</target>
+      </segment>
+    </unit>
+    <unit id="link.description">
+      <segment state="final">
+        <source>Defines the destination this page links to — for example a page, file, or external URL. </source>
+        <target>यह उस गंतव्य को परिभाषित करता है जिससे यह पृष्ठ लिंक होता है — उदाहरण के लिए, कोई पृष्ठ, फ़ाइल या बाहरी URL। </target>
+      </segment>
+    </unit>
+    <unit id="l18n_cfg">
+      <segment state="final">
+        <source>Localization</source>
+        <target>स्थानीयकरण</target>
+      </segment>
+    </unit>
+    <unit id="last_updated">
+      <segment state="final">
+        <source>Last Update</source>
+        <target>आखिरी अपडेट</target>
+      </segment>
+    </unit>
+    <unit id="layout">
+      <segment state="final">
+        <source>Frontend Layout</source>
+        <target>फ्रंटएंड लेआउट</target>
+      </segment>
+    </unit>
+    <unit id="link.target">
+      <segment state="final">
+        <source>Link target</source>
+        <target>लिंक लक्ष्य</target>
+      </segment>
+    </unit>
+    <unit id="media">
+      <segment state="final">
+        <source>Media</source>
+        <target>मिडिया</target>
+      </segment>
+    </unit>
+    <unit id="module">
+      <segment state="final">
+        <source>Contains Plugin</source>
+        <target>प्लगइन शामिल है</target>
+      </segment>
+    </unit>
+    <unit id="mount_pid">
+      <segment state="final">
+        <source>Mounted page</source>
+        <target>माउंटेड पेज</target>
+      </segment>
+    </unit>
+    <unit id="mount_pid_ol">
+      <segment state="final">
+        <source>Mount Point Display Option</source>
+        <target>माउंट पॉइंट प्रदर्शन विकल्प</target>
+      </segment>
+    </unit>
+    <unit id="nav_hide">
+      <segment state="final">
+        <source>Page enabled in menus</source>
+        <target>पेज मेनू में सक्षम है</target>
+      </segment>
+    </unit>
+    <unit id="nav_title">
+      <segment state="final">
+        <source>Alternative Navigation Title</source>
+        <target>वैकल्पिक नेविगेशन शीर्षक</target>
+      </segment>
+    </unit>
+    <unit id="new_until">
+      <segment state="final">
+        <source>Mark as 'New' Until</source>
+        <target>'नया' के रूप में चिह्नित करें जब तक</target>
+      </segment>
+    </unit>
+    <unit id="no_search">
+      <segment state="final">
+        <source>Include in Search</source>
+        <target>खोज में शामिल करें</target>
+      </segment>
+    </unit>
+    <unit id="php_tree_stop">
+      <segment state="final">
+        <source>Hide child pages in page tree</source>
+        <target>पेज ट्री में चाइल्ड पेज छिपाएँ</target>
+      </segment>
+    </unit>
+    <unit id="shortcut">
+      <segment state="final">
+        <source>Shortcut to page</source>
+        <target>पेज का शॉर्टकट</target>
+      </segment>
+    </unit>
+    <unit id="shortcut_mode">
+      <segment state="final">
+        <source>Shortcut Mode</source>
+        <target>शॉर्टकट मोड</target>
+      </segment>
+    </unit>
+    <unit id="slug">
+      <segment state="final">
+        <source>URL Segment</source>
+        <target>यूआरएल सेगमेंट</target>
+      </segment>
+    </unit>
+    <unit id="subtitle">
+      <segment state="final">
+        <source>Subtitle</source>
+        <target>सबटाइटल</target>
+      </segment>
+    </unit>
+    <unit id="target">
+      <segment state="final">
+        <source>Target</source>
+        <target>टार्गेट</target>
+      </segment>
+    </unit>
+    <unit id="title">
+      <segment state="final">
+        <source>Page title</source>
+        <target>पेज टाइटल</target>
+      </segment>
+    </unit>
+    <unit id="tsconfig">
+      <segment state="final">
+        <source>Page TSconfig</source>
+        <target>पेज TSconfig</target>
+      </segment>
+    </unit>
+    <unit id="tsconfig_includes">
+      <segment state="final">
+        <source>Include static Page TSconfig (from extensions)</source>
+        <target>स्टैटिक पेज TSconfig शामिल करें (एक्सटेंशनों से)</target>
+      </segment>
+    </unit>
+    <unit id="url">
+      <segment state="final">
+        <source>URL</source>
+        <target>URL</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
