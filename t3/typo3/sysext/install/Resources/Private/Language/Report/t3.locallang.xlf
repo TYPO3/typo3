@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:install/Resources/Private/Language/Report/locallang.xlf" date="2011-10-17T20:22:33Z" product-name="install" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="environment.status.title">
+        <source>System environment check</source>
+        <target>crwdns59926:0crwdne59926:0</target>
+      </trans-unit>
+      <trans-unit id="environment.status.value">
+        <source>%1$s Test(s)</source>
+        <target>crwdns59928:0%1$scrwdne59928:0</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.error">
+        <source>The system environment check returned errors. Those errors will affect the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target>crwdns59930:0crwdne59930:0</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.warning">
+        <source>The system environment check returned warnings. Those warnings might have a negative effect on the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target>crwdns59932:0crwdne59932:0</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.notice">
+        <source>The system environment check returned notices. Those should not affect the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target>crwdns59934:0crwdne59934:0</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.ok">
+        <source/>
+      </trans-unit>
+      <trans-unit id="environment.status.message.info">
+        <source/>
+      </trans-unit>
+      <trans-unit id="status_fileSystem">
+        <source>File System</source>
+        <target>crwdns59936:0crwdne59936:0</target>
+      </trans-unit>
+      <trans-unit id="status_writable">
+        <source>Writable</source>
+        <target>crwdns59938:0crwdne59938:0</target>
+      </trans-unit>
+      <trans-unit id="status_missingDirectory">
+        <source>Required directory missing</source>
+        <target>crwdns59940:0crwdne59940:0</target>
+      </trans-unit>
+      <trans-unit id="status_nonExistingDirectory">
+        <source>Directory not existing</source>
+        <target>crwdns59942:0crwdne59942:0</target>
+      </trans-unit>
+      <trans-unit id="status_recommendedWritableDirectory">
+        <source>Directory should be writable</source>
+        <target>crwdns59944:0crwdne59944:0</target>
+      </trans-unit>
+      <trans-unit id="status_requiredWritableDirectory">
+        <source>Directory not writable</source>
+        <target>crwdns59946:0crwdne59946:0</target>
+      </trans-unit>
+      <trans-unit id="status_directoryDoesNotExist">
+        <source>%s does not exist.</source>
+        <target>crwdns59948:0%scrwdne59948:0</target>
+      </trans-unit>
+      <trans-unit id="status_directoryDoesNotExistCouldNotCreate">
+        <source>%s does not exist and could not be created.</source>
+        <target>crwdns59950:0%scrwdne59950:0</target>
+      </trans-unit>
+      <trans-unit id="status_directoryShouldAlsoBeWritable">
+        <source>Also note that it should be writable, if it did exist.</source>
+        <target>crwdns59952:0crwdne59952:0</target>
+      </trans-unit>
+      <trans-unit id="status_directoryShouldBeWritable">
+        <source>%s should be writable.</source>
+        <target>crwdns59954:0%scrwdne59954:0</target>
+      </trans-unit>
+      <trans-unit id="status_directoryMustBeWritable">
+        <source>%s must be writable.</source>
+        <target>crwdns59956:0%scrwdne59956:0</target>
+      </trans-unit>
+      <trans-unit id="status_remainingUpdates">
+        <source>Remaining updates</source>
+        <target>crwdns59958:0crwdne59958:0</target>
+      </trans-unit>
+      <trans-unit id="status_remoteFetchException">
+        <source>Could not fetch version matrix of TYPO3. Maybe this instance is blocked by a firewall?</source>
+        <target>crwdns59960:0crwdne59960:0</target>
+      </trans-unit>
+      <trans-unit id="status_isDevelopmentVersion">
+        <source>This version of TYPO3 seems to be a development version. Thus no update information exists.</source>
+        <target>crwdns59962:0crwdne59962:0</target>
+      </trans-unit>
+      <trans-unit id="status_patchLevelNotFoundInReleaseMatrix">
+        <source>It seems that this TYPO3 version has never been released. Thus no update information exists.</source>
+        <target>crwdns59964:0crwdne59964:0</target>
+      </trans-unit>
+      <trans-unit id="status_newVersionSecurityRelevant">
+        <source>There is a new version of TYPO3 available, updating is security relevant. Please update to version %s.</source>
+        <target>crwdns141827:0%scrwdne141827:0</target>
+      </trans-unit>
+      <trans-unit id="status_newVersion">
+        <source>There is a new version of TYPO3 available. You can update to version %s.</source>
+        <target>crwdns141829:0%scrwdne141829:0</target>
+      </trans-unit>
+      <trans-unit id="status_elts_information">
+        <source>The currently installed TYPO3 version %s doesn't receive any community-driven updates anymore, consider subscribing to Extended Long Term Support (ELTS) releases. Get more information at %s.</source>
+        <target>crwdns141831:0%scrwdnd141831:0%scrwdne141831:0</target>
+      </trans-unit>
+      <trans-unit id="status_elts_download">
+        <source>Please visit %s to download the release in your ELTS area.</source>
+        <target>crwdns141833:0%scrwdne141833:0</target>
+      </trans-unit>
+      <trans-unit id="status_elts_subscribe">
+        <source>The currently installed TYPO3 version %s doesn't receive any community-driven updates anymore, consider subscribing to Extended Long Term Support (ELTS) releases. Get more information at %s.</source>
+        <target>crwdns141835:0%scrwdnd141835:0%scrwdne141835:0</target>
+      </trans-unit>
+      <trans-unit id="status_versionOutdated">
+        <source>The TYPO3 version you're using is not supported anymore. You should update to a supported version.</source>
+        <target>crwdns59970:0crwdne59970:0</target>
+      </trans-unit>
+      <trans-unit id="status_noAutomaticCheck">
+        <source>Automatic update checking failed, please check for updates manually.</source>
+        <target>crwdns59972:0crwdne59972:0</target>
+      </trans-unit>
+      <trans-unit id="status_uptodate">
+        <source>Your TYPO3 version is up-to-date.</source>
+        <target>crwdns59974:0crwdne59974:0</target>
+      </trans-unit>
+      <trans-unit id="status_installTool">
+        <source>Install Tool</source>
+        <target>crwdns59978:0crwdne59978:0</target>
+      </trans-unit>
+      <trans-unit id="status_enabledPermanently">
+        <source>Enabled permanently</source>
+        <target>crwdns59980:0crwdne59980:0</target>
+      </trans-unit>
+      <trans-unit id="status_enabledTemporarily">
+        <source>Enabled temporarily</source>
+        <target>crwdns59982:0crwdne59982:0</target>
+      </trans-unit>
+      <trans-unit id="status_installEnabledTemporarily">
+        <source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
+        <target>crwdns59984:0%scrwdnd59984:0%scrwdne59984:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
