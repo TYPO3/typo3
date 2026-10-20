@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:styleguide/Resources/Private/Language/Modules/overview.xlf" date="2026-11-10T13:37:37Z" product-name="overview" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>The module offers the creation of a page tree either with TCA demo records or content elements.&lt;br /&gt;In addition, the most well-known backend components that come with the TYPO3 CMS are presented.</source>
+        <target state="final">تقدم الوحدة إمكانية إنشاء شجرة الصفحات، إما بسجلات تجريبية TCA أو عناصر محتوى &lt;br /&gt; إضافة إلى ذلك، يتم تقديم أشهر مكونات الواجهة الخلفية المُتضمنة في نظام إدارة المحتوى TYPO3 CMS.</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Interactively explore TYPO3 backend UI components, design tokens, and example page trees for testing and demonstration.</source>
+        <target state="final">استكشافٌ تفاعليٌّ لمكوّناتِ واجهةِ TYPO3 الخلفيةِ، ورموزِ التصميمِ، وأشجارِ الصفحاتِ التجريبيةِ لأغراضِ الاختبارِ والعرضِ التوضيحيِّ.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Styleguide</source>
+        <target state="final">دليل المَظهر (Styleguide)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
