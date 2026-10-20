@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814882" source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="permissions" resname="permissions" approved="yes">
+        <source>Permissions</source>
+        <target state="final">ສິດການເຂົ້າເຖິງ</target>
+      </trans-unit>
+      <trans-unit id="ch_permissions" resname="ch_permissions" approved="yes">
+        <source>Change permissions</source>
+        <target state="final">ປ່ຽນແປງສິດ</target>
+      </trans-unit>
+      <trans-unit id="Legend" resname="Legend" approved="yes">
+        <source>Legend</source>
+        <target state="final">ຄຳອະທິບາຍສັນຍະລັກ</target>
+      </trans-unit>
+      <trans-unit id="Owner" resname="Owner" approved="yes">
+        <source>Owner</source>
+        <target state="final">ເຈົ້າຂອງ</target>
+      </trans-unit>
+      <trans-unit id="Group" resname="Group" approved="yes">
+        <source>Group</source>
+        <target state="final">ກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="Everybody" resname="Everybody" approved="yes">
+        <source>Everybody</source>
+        <target state="final">ທຸກຄົນ</target>
+      </trans-unit>
+      <trans-unit id="EditLock" resname="EditLock" approved="yes">
+        <source>Lock</source>
+        <target state="final">ລັອກ</target>
+      </trans-unit>
+      <trans-unit id="EditLock_descr" resname="EditLock_descr" approved="yes">
+        <source>Disable the »Admin-only« edit lock for this page. Currently this page and all content is locked for editing by all non-Admin users.</source>
+        <target state="final">ປິດການນຳໃຊ້ການລັອກການແກ້ໄຂແບບ "ສະເພາະຜູ້ດູແລລະບົບ" ສຳລັບໜ້ານີ້. ໃນປັດຈຸບັນ ໜ້ານີ້ ແລະ ເນື້ອຫາທັງໝົດຖືກລັອກບໍ່ໃຫ້ແກ້ໄຂໂດຍຜູ້ໃຊ້ທີ່ບໍ່ແມ່ນຜູ້ດູແລລະບົບ.</target>
+      </trans-unit>
+      <trans-unit id="EditLock_descr2" resname="EditLock_descr2" approved="yes">
+        <source>Enable the »Admin-only« edit lock for this page</source>
+        <target state="final">ເປີດການນຳໃຊ້ການລັອກການແກ້ໄຂແບບ "ສະເພາະຜູ້ດູແລລະບົບ" ສຳລັບໜ້ານີ້</target>
+      </trans-unit>
+      <trans-unit id="Save" resname="Save" approved="yes">
+        <source>Save</source>
+        <target state="final">ບັນທຶກ</target>
+      </trans-unit>
+      <trans-unit id="Abort" resname="Abort" approved="yes">
+        <source>Abort</source>
+        <target state="final">ຍົກເລີກ</target>
+      </trans-unit>
+      <trans-unit id="Edit" resname="Edit" approved="yes">
+        <source>EDIT</source>
+        <target state="final">ແກ້ໄຂ</target>
+      </trans-unit>
+      <trans-unit id="recursive" resname="recursive" approved="yes">
+        <source>Set recursively</source>
+        <target state="final">ຕັ້ງຄ່າແບບລວມທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="page_affected" resname="page_affected" approved="yes">
+        <source>page affected</source>
+        <target state="final">ໜ້າທີ່ມີຜົນກະທົບ</target>
+      </trans-unit>
+      <trans-unit id="pages_affected" resname="pages_affected" approved="yes">
+        <source>pages affected</source>
+        <target state="final">ບັນດາໜ້າທີ່ມີຜົນກະທົບ</target>
+      </trans-unit>
+      <trans-unit id="user_overview" resname="user_overview" approved="yes">
+        <source>User overview</source>
+        <target state="final">ພາບລວມຜູ້ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="Mode" resname="Mode" approved="yes">
+        <source>Mode</source>
+        <target state="final">ຮູບແບບ</target>
+      </trans-unit>
+      <trans-unit id="Depth" resname="Depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">ຄວາມເລິກ</target>
+      </trans-unit>
+      <trans-unit id="level" resname="level" approved="yes">
+        <source>level</source>
+        <target state="final">ລະດັບ</target>
+      </trans-unit>
+      <trans-unit id="levels" resname="levels" approved="yes">
+        <source>levels</source>
+        <target state="final">ລະດັບຕ່າງໆ</target>
+      </trans-unit>
+      <trans-unit id="User" resname="User" approved="yes">
+        <source>User</source>
+        <target state="final">ຜູ້ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="def" resname="def" approved="yes">
+        <source>Definition: 'content' is records from all tables on a page - except from records from the table 'pages' (Pages).</source>
+        <target state="final">ຄຳນິຍາມ: 'ເນື້ອຫາ' ແມ່ນຂໍ້ມູນຈາກທຸກຕາຕະລາງໃນໜ້າ - ຍົກເວັ້ນຂໍ້ມູນຈາກຕາຕະລາງ 'pages' (ໜ້າ).</target>
+      </trans-unit>
+      <trans-unit id="A_Granted" resname="A_Granted" approved="yes">
+        <source>Access Granted</source>
+        <target state="final">ໄດ້ຮັບອະນຸຍາດການເຂົ້າເຖິງ</target>
+      </trans-unit>
+      <trans-unit id="A_Denied" resname="A_Denied" approved="yes">
+        <source>Access Denied</source>
+        <target state="final">ຖືກປະຕິເສດການເຂົ້າເຖິງ</target>
+      </trans-unit>
+      <trans-unit id="1" resname="1" approved="yes">
+        <source>Show page</source>
+        <target state="final">ສະແດງໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="16" resname="16" approved="yes">
+        <source>Edit content</source>
+        <target state="final">ແກ້ໄຂເນື້ອຫາ</target>
+      </trans-unit>
+      <trans-unit id="2" resname="2" approved="yes">
+        <source>Edit page</source>
+        <target state="final">ແກ້ໄຂໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="4" resname="4" approved="yes">
+        <source>Delete page</source>
+        <target state="final">ລຶບໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="8" resname="8" approved="yes">
+        <source>New pages</source>
+        <target state="final">ໜ້າໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="1_t" resname="1_t" approved="yes">
+        <source>Show/Copy page and content.</source>
+        <target state="final">ສະແດງ/ຄັດລອກ ໜ້າ ແລະ ເນື້ອຫາ.</target>
+      </trans-unit>
+      <trans-unit id="16_t" resname="16_t" approved="yes">
+        <source>Change/Add/Delete/Move content.</source>
+        <target state="final">ປ່ຽນແປງ/ເພີ່ມ/ລຶບ/ຍ້າຍ ເນື້ອຫາ.</target>
+      </trans-unit>
+      <trans-unit id="2_t" resname="2_t" approved="yes">
+        <source>Change page eg. change pagetitle etc.</source>
+        <target state="final">ປ່ຽນແປງໜ້າ ເຊັ່ນ: ປ່ຽນຫົວຂໍ້ໜ້າ ແລະ ອື່ນໆ.</target>
+      </trans-unit>
+      <trans-unit id="4_t" resname="4_t" approved="yes">
+        <source>Delete/Move page and content.</source>
+        <target state="final">ລຶບ/ຍ້າຍ ໜ້າ ແລະ ເນື້ອຫາ.</target>
+      </trans-unit>
+      <trans-unit id="8_t" resname="8_t" approved="yes">
+        <source>Create new pages under this page.</source>
+        <target state="final">ສ້າງໜ້າໃໝ່ພາຍໃຕ້ໜ້ານີ້.</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Page editing permissions</source>
+        <target state="final">ສິດໃນການແກ້ໄຂໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>Setting of page permissions is vital for controlling backend user access to pages. You can assign a user and a group as owners of a page and set access permissions for each.</source>
+        <target state="final">ການຕັ້ງຄ່າສິດຂອງໜ້າແມ່ນມີຄວາມສຳຄັນຫຼາຍໃນການຄວບຄຸມການເຂົ້າເຖິງໜ້າຕ່າງໆຂອງຜູ້ໃຊ້ລະບົບຫຼັງບ້ານ. ເຈົ້າສາມາດກຳນົດຜູ້ໃຊ້ ແລະ ກຸ່ມ ເປັນເຈົ້າຂອງໜ້າ ແລະ ຕັ້ງຄ່າສິດການເຂົ້າເຖິງສຳລັບແຕ່ລະຄົນໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Access</source>
+        <target state="final">ການເຂົ້າເຖິງ</target>
+      </trans-unit>
+      <trans-unit id="WorkspaceWarning" resname="WorkspaceWarning" approved="yes">
+        <source>Workspace Warning</source>
+        <target state="final">ຄຳເຕືອນພື້ນທີ່ເຮັດວຽກ</target>
+      </trans-unit>
+      <trans-unit id="WorkspaceWarningText" resname="WorkspaceWarningText" approved="yes">
+        <source>Permissions you set in the workspace are effective on the elements only after they are published! If you need to set permissions which are effective right now, you must do so in the Live workspace. (Permissions are always evaluated on the Live workspace record/placeholder of a draft version)</source>
+        <target state="final">ສິດການເຂົ້າເຖິງທີ່ເຈົ້າຕັ້ງຄ່າໃນພື້ນທີ່ເຮັດວຽກ (Workspace) ຈະມີຜົນຕໍ່ອົງປະກອບຕ່າງໆ ກໍ່ຕໍ່ເມື່ອພວກມັນຖືກເຜີຍແຜ່ແລ້ວເທົ່ານັ້ນ! ຫາກເຈົ້າຕ້ອງການຕັ້ງຄ່າສິດໃຫ້ມີຜົນໃນທັນທີ, ເຈົ້າຕ້ອງເຮັດໃນພື້ນທີ່ເຮັດວຽກຈິງ (Live workspace). (ສິດການເຂົ້າເຖິງແມ່ນຖືກປະເມີນຈາກຂໍ້ມູນຕົວຈິງ/ຕົວແທນຂອງເວີຊັນຮ່າງ ໃນພື້ນທີ່ເຮັດວຽກຈິງສະເໝີ)</target>
+      </trans-unit>
+      <trans-unit id="notSet" resname="notSet" approved="yes">
+        <source>not set</source>
+        <target state="final">ບໍ່ໄດ້ຕັ້ງຄ່າ</target>
+      </trans-unit>
+      <trans-unit id="deleted" resname="deleted" approved="yes">
+        <source>deleted</source>
+        <target state="final">ລຶບແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="noGroups" resname="noGroups" approved="yes">
+        <source>No user groups exist.</source>
+        <target state="final">ບໍ່ມີກຸ່ມຜູ້ໃຊ້.</target>
+      </trans-unit>
+      <trans-unit id="selectNone" resname="selectNone" approved="yes">
+        <source>   - none -   </source>
+        <target state="final">   - ບໍ່ມີ -   </target>
+      </trans-unit>
+      <trans-unit id="selectUnchanged" resname="selectUnchanged" approved="yes">
+        <source>   - leave unchanged -   </source>
+        <target state="final">   - ປະໄວ້ຄືເກົ່າ -   </target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
