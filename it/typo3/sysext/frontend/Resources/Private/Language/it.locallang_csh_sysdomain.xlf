@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814800" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_sysdomain.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Determines the entrypoint of a certain host name.</source>
+        <target state="final">Determina il punto di ingresso di un certo nome host.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>When a TYPO3 database contains more than a single website, you'll typically have to assign a domain name to each new websites "root-page". In practice you point all the domains to the same TYPO3 database on the server, but then you insert these Domain records at the positions in the page tree where you want to direct requests to the domain. And thus pages 'outside' that point will not be accessible from that domain.
+This is like "Virtual hosts" in Apache servers.
+
+(Should probably be available for admin only.)</source>
+			<target state="final">Quando un database TYPO3 contiene più di un singolo sito web, in genere dovrai assegnare un nome di dominio a ogni "pagina radice" del nuovo sito web. In pratica tutti i domini puntano allo stesso database TYPO3 sul server, ma poi inserisci questi record "Dominio", nelle posizioni nell'albero delle pagine (pagina radice) in cui desideri indirizzare le richieste al dominio. E così le pagine 'al di fuori di quel punto" non saranno accessibili da quel dominio.
+È come se fossero "host virtuali" nei server Apache.
+
+(Probabilmente dovrebbe essere disponibile solo per l'amministratore)</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>sys_language
+sys_template</source>
+			<target state="final">sys_language
+sys_template</target></trans-unit>
+      <trans-unit id="domainName.description" resname="domainName.description" approved="yes">
+        <source>Enter the host name, eg. "www.my-domain.com".</source>
+        <target state="final">Inserisci il nome host, es. "www.my-domain.com".</target>
+      </trans-unit>
+      <trans-unit id="domainName.details" resname="domainName.details" xml:space="preserve" approved="yes">
+				<source>Before a domain record will have any effect you must make sure that the domains A-record is pointed towards the server and that your server is setup to direct requests to this TYPO3 database. So basically before entering anything here, make sure a request to the domain you wish to enter arrives at the root of the current page tree.
+When you create a domain record and the host name in it (be it a real domain name or an IP address) matches the hostname of the URL, the TypoScript based front end will limit the available page to only those in the page tree from this point and outwards. In effect you will 'arrive' at the page where this record is and furthermore users cannot see pages with ids outside this branch.
+
+&lt;strong&gt;Notice, &lt;/strong&gt;if you run TYPO3 from a subdirectory of the domain name, you must include the subdirectory as well, eg. "www.my-domain.org/typo3_subdir/"</source>
+			<target state="final">Prima che un record "Dominio" possa avere effetto è necessario assicurarsi che gli A-record (nel DNS) dei domini puntino verso il server e che il server sia configurato per indirizzare le richieste a questo database TYPO3. Quindi, fondamentalmente, prima di inserire qualsiasi cosa, assicurati che una richiesta al dominio, che desideri inserire, arrivi alla radice dell'Albero delle Pagine.
+Quando si crea un record Dominio e il nome host inserito (nome di dominio o indirizzo IP) corrisponde al nome host dell'URL, TypoScript di frontend confinerà la pagina disponibile a quelle presenti nell'albero delle pagine da questo punto. In pratica 'atterrerai' alla pagina dove è stato creato il record Dominio e inoltre gli utenti non potranno vedere le pagine al di fuori di questo ramo.
+
+&lt;strong&gt;Avviso, &lt;/strong&gt;se esegui TYPO3 da una sotto-cartella del nome di dominio, è necessario includere anche la sotto-cartella, es. "www.my-domain.org/typo3_subdir/"</target></trans-unit>
+      <trans-unit id="redirectTo.description" resname="redirectTo.description" approved="yes">
+        <source>All requests to the domain will be redirected to this URL, if any value is entered.</source>
+        <target state="final">Se inserisci un valore, tutte le richieste al dominio verranno reindirizzate a questo URL.</target>
+      </trans-unit>
+      <trans-unit id="redirectTo.details" resname="redirectTo.details" xml:space="preserve" approved="yes">
+				<source>Make sure to prepend "http://" or equally to the value! Basically a "Location: " header is just issued to this value!
+&lt;strong&gt;Warning:&lt;/strong&gt; You cannot use this to 'redirect' to a specific page id within the same domain as the record has! If you do that it'll just go into an endless loop because the redirect is redirecting to itself!
+
+Good Example:
+Domain: "my-domain.org"
+Redirect: "www.my-domain.org"
+
+This redirects requests to what is infact another domain name, namely "www.my-domain.org"
+
+Bad Example:
+Domain: "www.my-domain.org"
+Redirect: "www.my-domain.org/?id=10"
+
+This will go into an eternal loop because the domain name has in fact not changed!
+
+
+Virtual directories:
+If you're using TYPO3 on a unix computer you can make 'virtual subdirectories' to a website, still within the same database. See document list for more information. In that case you should enter the hostname with the subdirectory appended, like this: "my-domain.org/subdir/". If the combination of host name and current subdirectory matches the value, the domain record will be correctly detected and limit page access to the page tree below the Domain record.</source>
+			<target state="final">Assicurati di anteporre "http://". In pratica viene inserito un "Location: " nello header con questo valore!
+&lt;strong&gt;Attenzione:&lt;/strong&gt; Non puoi usarlo per 'reindirizzare' a una specifica pagina all'interno dello stesso dominio del record! Se lo fai, entrerà in un loop infinito perché il reindirizzamento è su se stesso!
+
+Esempio corretto:
+Dominio: "my-domain.org"
+Reindirizzamento: "www.my-domain.org"
+
+Questo reindirizza le richieste a ciò che è, di fatto, un altro nome di dominio, vale a dire "www. y-domain.org"
+
+Esempio errato:
+Dominio: "www.my-domain.org"
+Reindirizzamento: "www.my-domain.org/?id=10"
+
+Questo andrà in un loop infinito perché il nome di dominio non è cambiato!
+
+
+Cartelle virtuali:
+Se stai usando TYPO3 su un computer unix puoi creare delle 'sottocartelle virtuali' a un sito web, sempre all'interno dello stesso database. Vedi la documentazione per maggiori informazioni. In tal caso dovresti inserire il nome host con la sotto-cartella, così: "my-domain.org/subdir/". Se la combinazione di nome host e sottocartella corrente corrisponde al valore, il record Dominio verrà rilevato correttamente e limiterà l'accesso alla pagina all'albero delle pagine sotto il record Dominio.</target></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Use this option to temporarily disable the Domain record.</source>
+        <target state="final">Usa questa opzione per disabilitare temporaneamente il record Dominio.</target>
+      </trans-unit>
+      <trans-unit id="prepend_params.description" resname="prepend_params.description" approved="yes">
+        <source>If set, any GET parameters in the calling URL will be transferred to the redirect URL.</source>
+        <target state="final">Se impostato, qualsiasi parametro GET nell'URL verrà trasferito all'URL di reindirizzamento.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
