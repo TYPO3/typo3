@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814816" source-language="en" datatype="plaintext" original="EXT:extbase/Resources/Private/Language/locallang.xlf" date="2012-10-17T19:30:32Z" product-name="extbase" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="property.error" resname="property.error" approved="yes">
+        <source>Validation errors for property "%s"</source>
+        <target state="final">प्रॉपर्टी "% s" के लिए वेलिडेशन एरर</target>
+      </trans-unit>
+      <trans-unit id="validator.emailaddress.notvalid" resname="validator.emailaddress.notvalid" approved="yes">
+        <source>The given subject was not a valid email address.</source>
+        <target state="final">दिए गए विषय के वैलिड ईमेल एड्रेस नहीं था.</target>
+      </trans-unit>
+      <trans-unit id="validator.stringlength.between" resname="validator.stringlength.between" approved="yes">
+        <source>The length of the given string was not between %s and %s characters.</source>
+        <target state="final">दिए गए स्ट्रिंग की लंबाई% s और% s करैक्टर के बीच नहीं थी.</target>
+      </trans-unit>
+      <trans-unit id="validator.stringlength.less" resname="validator.stringlength.less" approved="yes">
+        <source>The length of the given string is less than %s characters.</source>
+        <target state="final">दिए गए स्ट्रिंग की लंबाई %s करैक्टर की तुलना में कम है.</target>
+      </trans-unit>
+      <trans-unit id="validator.string.notvalid" resname="validator.string.notvalid" approved="yes">
+        <source>A valid string is expected.</source>
+        <target state="final">एक वैलिड स्ट्रिंग की उम्मीद है.</target>
+      </trans-unit>
+      <trans-unit id="validator.stringlength.exceed" resname="validator.stringlength.exceed" approved="yes">
+        <source>The length of the given string exceeded %s characters.</source>
+        <target state="final">दिए गए स्ट्रिंग की लंबाई% s करैक्टर से अधिक है.</target>
+      </trans-unit>
+      <trans-unit id="validator.alphanumeric.notvalid" resname="validator.alphanumeric.notvalid" approved="yes">
+        <source>The given subject was not a valid alphanumeric string.</source>
+        <target state="final">दिए गए विषय के लिए अल्फान्यूमेरिक स्ट्रिंग वैलिड नहीं था.</target>
+      </trans-unit>
+      <trans-unit id="validator.datetime.notvalid" resname="validator.datetime.notvalid" approved="yes">
+        <source>The given subject was not a valid DateTime. Got: '%s'</source>
+        <target state="final">दिए गए विषय को वैलिड दिनांक समय नहीं था.समझे: '% s'</target>
+      </trans-unit>
+      <trans-unit id="validator.genericobject.noobject" resname="validator.genericobject.noobject" approved="yes">
+        <source>Value is no object.</source>
+        <target state="final">वैल्यू ऑब्जेक्ट नहीं है.</target>
+      </trans-unit>
+      <trans-unit id="validator.float.notvalid" resname="validator.float.notvalid" approved="yes">
+        <source>The given subject was not a valid float.</source>
+        <target state="final">दिए गए विषय में वैलिड फ्लोट नहीं था.</target>
+      </trans-unit>
+      <trans-unit id="validator.text.notvalid" resname="validator.text.notvalid" approved="yes">
+        <source>The given subject was not a valid text (e.g. contained XML tags).</source>
+        <target state="final">दिए गए विषय में वैलिड टेक्स्ट नहीं था(e.g.XML टैग्स शामिल).</target>
+      </trans-unit>
+      <trans-unit id="validator.regularexpression.empty" resname="validator.regularexpression.empty" approved="yes">
+        <source>The regular expression was empty.</source>
+        <target state="final">रेगुलर एक्सप्रेशन खाली था.</target>
+      </trans-unit>
+      <trans-unit id="validator.regularexpression.nomatch" resname="validator.regularexpression.nomatch" approved="yes">
+        <source>The given subject did not match the pattern.</source>
+        <target state="final">दिया गया सब्जेक्ट पैटर्न के साथ मेल नहीं खाता.</target>
+      </trans-unit>
+      <trans-unit id="validator.regularexpression.error" resname="validator.regularexpression.error" approved="yes">
+        <source>The regular expression '%s' contained an error.</source>
+        <target state="final">रेगुलर एक्सप्रेशन '%s' में एरर शामिल.</target>
+      </trans-unit>
+      <trans-unit id="validator.numberrange.notvalid" resname="validator.numberrange.notvalid" approved="yes">
+        <source>The given subject was not a valid number.</source>
+        <target state="final">दिया गया सब्जेक्ट वैलिड संख्या नहीं था.</target>
+      </trans-unit>
+      <trans-unit id="validator.numberrange.range" resname="validator.numberrange.range" approved="yes">
+        <source>The given subject was not in the valid range (%s - %s).</source>
+        <target state="final">दिया गया सब्जेक्ट वैलिड रेंज में नहीं था(%s-%s).</target>
+      </trans-unit>
+      <trans-unit id="validator.notempty.null" resname="validator.notempty.null" approved="yes">
+        <source>The given subject was NULL.</source>
+        <target state="final">दिया गया सब्जेक्ट NULL था</target>
+      </trans-unit>
+      <trans-unit id="validator.notempty.empty" resname="validator.notempty.empty" approved="yes">
+        <source>The given subject was empty.</source>
+        <target state="final">दिया गया सब्जेक्ट खाली था.</target>
+      </trans-unit>
+      <trans-unit id="validator.number.notvalid" resname="validator.number.notvalid" approved="yes">
+        <source>The given subject was not a valid number.</source>
+        <target state="final">दिया गया सब्जेक्ट वैलिड संख्या नहीं था.</target>
+      </trans-unit>
+      <trans-unit id="validator.integer.notvalid" resname="validator.integer.notvalid" approved="yes">
+        <source>The given subject was not a valid integer.</source>
+        <target state="final">दिया गया सब्जेक्ट वैलिड इन्टिजर नहीं था.</target>
+      </trans-unit>
+      <trans-unit id="validator.boolean.nottrue" resname="validator.boolean.nottrue" approved="yes">
+        <source>The given subject was not true.</source>
+        <target state="final">दिया गया सब्जेक्ट सच नहीं था.</target>
+      </trans-unit>
+      <trans-unit id="validator.boolean.notfalse" resname="validator.boolean.notfalse" approved="yes">
+        <source>The given subject was not false.</source>
+        <target state="final">दिया गया सब्जेक्ट फॉल्स नहीं था.</target>
+      </trans-unit>
+      <trans-unit id="validator.url.notvalid" resname="validator.url.notvalid" approved="yes">
+        <source>The given subject is no valid URL.</source>
+        <target state="final">दिया गया विषय कोई वैध URL नहीं है।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
