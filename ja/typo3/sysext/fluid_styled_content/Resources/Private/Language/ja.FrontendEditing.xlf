@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1428662501" source-language="en" datatype="plaintext" original="EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf" date="2014-02-07T20:22:32Z" product-name="fluid_styled_content" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="editIcon.image" resname="editIcon.image" approved="yes">
+        <source>Edit image</source>
+        <target state="final">画像を編集</target>
+      </trans-unit>
+      <trans-unit id="editIcon.textmedia" resname="editIcon.textmedia" approved="yes">
+        <source>Edit text &amp; media</source>
+        <target state="final">テキスト &amp; メディアを編集</target>
+      </trans-unit>
+      <trans-unit id="editIcon.textpic" resname="editIcon.textpic" approved="yes">
+        <source>Edit text &amp; images</source>
+        <target state="final">テキスト &amp; 画像を編集</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
