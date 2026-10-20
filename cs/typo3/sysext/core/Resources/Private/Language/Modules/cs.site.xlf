@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Modules/site.xlf" date="2025-11-10T13:37:37Z" product-name="site" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Sites</source>
+        <target state="final">Weby</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Configuration and management tools for sites</source>
+        <target state="final">Konfigurační a řídicí nástroje pro weby</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>This module provides access to all configured sites within the installation. It offers an overview of domains, routing behavior, language setups, and site-related settings. From here, you can quickly navigate to the configuration of individual sites and manage multi-site environments.</source>
+        <target state="final">Tento modul umožňuje přístup ke všem nakonfigurovaným webům v rámci instalace. Poskytuje přehled o doménách, nastavení směrování, jazykových nastaveních a dalších parametrech souvisejících s weby. Odtud můžete rychle přejít k nastavení jednotlivých webů a spravovat prostředí s více weby.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
