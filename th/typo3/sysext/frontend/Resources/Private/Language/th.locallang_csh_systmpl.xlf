@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814802" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_systmpl.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="th">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>TypoScript template record.</source>
+        <target state="final">TypoScript แม่แบบบันทึก</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>The 'Template' records are the vital components used to set the design of the webpages. No matter how (almost) you would like to build your website, it must be initiated by a 'Template' record placed in the root of the page tree of the site.
+Basically, create a 'Template' record, enter a title and make sure to check of Clear constants, setup and Rootline. Then enter some TypoScript configuration in the Setup field and you're set.
+It's very important to read how to do all this in the documents listed below! Also make sure you use the Web&gt;Template module to do all the working with templates. It's a specialized tool to help you with this.</source>
+			<target state="final">'บันทึกแม่แบบเป็นองค์ประกอบสำคัญที่ใช้ในการกำหนดหน้าเว็บที่ออกแบบของ เว็บไซต์ไม่มีไม่ว่า (เกือบ) ต้องการของคุณสร้างนั้นจะต้องได้ริเริ่มโดย'บันทึกแม่แบบไว้ในเว็บไซต์หน้ารากของต้นไม้ของ ทั่วไปสร้าง'บันทึกแม่แบบใส่ชื่อและทำ โปรดตรวจสอบค่าคง Clear, การตั้งค่าและ Rootline แล้วป้อนค่าบาง TypoScript ในช่องติดตั้งและคุณตั้ง เป็นสิ่งสำคัญมากในการอ่านวิธีการทำทั้งหมดนี้ในเอกสารด้านล่างนี้! ยังให้แน่ใจว่าคุณใช้&gt; แม่แบบโมดูล Web ทำทั้งหมดกับที่ทำงานแม่ จะเป็นเครื่องมือเฉพาะเพื่อช่วยให้คุณมีนี้</target></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>A Template Record with constants and setup code.
+The Web&gt;Template module contains tools which will help you to edit and validate TypoScript structures.</source>
+			<target state="final">แม่แบบรายการที่มีค่าคงที่และรหัสติดตั้ง &gt; แม่แบบโมดูล Web มีเครื่องมือที่จะช่วยให้คุณสามารถแก้ไขและตรวจสอบโครงสร้าง TypoScript</target></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Hiding the template will deactivate the template record.</source>
+        <target state="final">ซ่อนแม่แบบจะปิดแม่แบบบันทึก</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If the Template Record was the first record on a page hiding it will expose the second record on the page instead.</source>
+        <target state="final">หากแม่แบบรายการเป็นรายการแรกที่ซ่อนหน้าจะเปิดเผยบันทึกสองหน้าแทน</target>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Start time. Use this to enable a template on a certain date.</source>
+        <target state="final">เวลาเริ่มต้น นี้เพื่อให้สามารถใช้แม่แบบในวันหนึ่ง</target>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>End time. Use this to disable a template on a certain date.</source>
+        <target state="final">เวลาสิ้นสุด นี้เพื่อปิดการใช้แม่แบบในวันหนึ่ง</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>The title of the template record is only an internal label and does not have any effect on the output in the frontend.</source>
+        <target state="final">ชื่อของแม่แบบการบันทึกเพียงป้ายภายในและไม่มีผลต่อการส่งออกใน frontend ใดๆ</target>
+      </trans-unit>
+      <trans-unit id="sitetitle.description" resname="sitetitle.description" approved="yes">
+        <source>Website title. Typically this will automatically be prefixed all page titles in the &lt;title&gt; tag of the frontend pages.</source>
+        <target state="final">ชื่อเว็บไซต์ ซึ่งโดยปกติจะนำหน้าชื่อโดยอัตโนมัติทุกหน้าใน &lt;title&gt; แท็กหน้า frontend</target>
+      </trans-unit>
+      <trans-unit id="constants.description" resname="constants.description" approved="yes">
+        <source>TypoScript Constants.</source>
+        <target state="final">คง TypoScript</target>
+      </trans-unit>
+      <trans-unit id="config.description" resname="config.description" approved="yes">
+        <source>TypoScript Setup code</source>
+        <target state="final">รหัส TypoScript Setup</target>
+      </trans-unit>
+      <trans-unit id="config.details" resname="config.details" approved="yes">
+        <source>Read more about TypoScript Templates in TSref, TypoScript by Example and Getting Started.</source>
+        <target state="final">อ่านเพิ่มเติมเกี่ยวกับ TypoScript Templates ใน TSref, TypoScript โดยตัวอย่างและการเริ่มต้น</target>
+      </trans-unit>
+      <trans-unit id="resources.description" resname="resources.description" approved="yes">
+        <source>Resource files for the template. For example a logo, a TTF-font etc.</source>
+        <target state="final">Resource แฟ้มสำหรับแม่แบบ เช่นโลโก้, ฯลฯ TTF - font</target>
+      </trans-unit>
+      <trans-unit id="resources.details" resname="resources.details" approved="yes">
+        <source>Resource files can be referenced in TypoScript Template code by [filename]*.[ext] and has the advantage that the reference from TypoScript is not broken if you copy or export a Template Record where the resources ends up with new names.</source>
+        <target state="final">ไฟล์ Resource สามารถอ้างอิงในรหัส TypoScript Template by [filename] *. [ext] และมีความได้เปรียบที่อ้างอิงจาก TypoScript ไม่เสียหากคุณคัดลอกหรือส่งออกแม่แบบรายการที่ทรัพยากรที่ลงท้ายด้วยชื่อใหม่</target>
+      </trans-unit>
+      <trans-unit id="clear.description" resname="clear.description" approved="yes">
+        <source>Flags that will clear the inheritance of TypoScript code from former templates in the root line. There is a flag for Constants and one for Setup code.</source>
+        <target state="final">ธงว่าจะชัดเจนมรดกของรหัส TypoScript จากอดีตแม่แบบในสายหลัก มีธงสำหรับค่าคงที่และสำหรับรหัสการติดตั้งเป็น</target>
+      </trans-unit>
+      <trans-unit id="root.description" resname="root.description" approved="yes">
+        <source>Defines that the template represents a root of a website.</source>
+        <target state="final">กำหนดว่าแม่เป็นรากของเว็บไซต์</target>
+      </trans-unit>
+      <trans-unit id="includeStaticAfterBasedOn.description" resname="includeStaticAfterBasedOn.description" approved="yes">
+        <source>If set, static templates will be included after "based-on" templates. It basically swaps the order of inclusion of these external TypoScript sources.</source>
+        <target state="final">หากตั้ง static แม่แบบจะรวมหลังจาก"based - on"แม่แบบ มัน swaps พื้นเพื่อการรวมของเหล่านี้มา TypoScript ภายนอก</target>
+      </trans-unit>
+      <trans-unit id="include_static.description" resname="include_static.description" approved="yes">
+        <source>Static Template records to include.</source>
+        <target state="final">บันทึก Static แม่รวม</target>
+      </trans-unit>
+      <trans-unit id="include_static_file.description" resname="include_static_file.description" approved="yes">
+        <source>Static Template files to include.</source>
+        <target state="final">Static แม่แบบภาพรวม</target>
+      </trans-unit>
+      <trans-unit id="include_static_file.details" resname="include_static_file.details" approved="yes">
+        <source>Static template files are registered by extensions contrary to Static Template records which come from the static database table, "static_template".</source>
+        <target state="final">Static แบบไฟล์จดทะเบียนนามสกุลขัดต่อบันทึก Static แม่ที่มาจากตารางฐานข้อมูลคงที่"static_template"</target>
+      </trans-unit>
+      <trans-unit id="basedOn.description" resname="basedOn.description" approved="yes">
+        <source>Other Template Records that are included like "static templates".</source>
+        <target state="final">แม่แบบอื่น ๆ Records ที่มีอยู่เช่น"คงแม่"</target>
+      </trans-unit>
+      <trans-unit id="static_file_mode.description" resname="static_file_mode.description" approved="yes">
+        <source>Define the mode of inclusion of static template files.</source>
+        <target state="final">กำหนดโหมดของการรวมของแฟ้มแม่แบบคงที่</target>
+      </trans-unit>
+      <trans-unit id="nextLevel.description" resname="nextLevel.description" approved="yes">
+        <source>Defines a template record to make active one level out in the page tree of this branch. This can be used to define another template record for the general website while having a special template for the frontpage.</source>
+        <target state="final">กำหนดแม่แบบบันทึกเพื่อให้งานออกมาในระดับหนึ่งต้นไม้หน้าของสาขานี้ นี้สามารถใช้ในการกำหนดควบคุมแบบบันทึกสำหรับเว็บไซต์ทั่วไปขณะที่มีแม่แบบสำหรับ frontpage พิเศษ</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a description of the template if you like.</source>
+        <target state="final">ป้อนคำอธิบายของแม่หากคุณต้องการ</target>
+      </trans-unit>
+      <trans-unit id="editorcfg.description" resname="editorcfg.description" approved="yes">
+        <source>Editor Configuration for the stylesheet editor extension.</source>
+        <target state="final">Editor Configuration เพื่อขยาย editor stylesheet</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
