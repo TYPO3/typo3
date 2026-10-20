@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:extbase/Resources/Private/Language/locallang.xlf" date="2012-10-17T19:30:32Z" product-name="extbase" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="converter.datetime.notrecognized" approved="yes">
+        <source>The date "%s" was not recognized (for format "%s").</source>
+        <target state="final">दिनांक "%s" पहचाना नहीं गया (प्रारूप "%s" के लिए)।</target>
+      </trans-unit>
+      <trans-unit id="property.error" approved="yes">
+        <source>Validation errors for property "%s"</source>
+        <target state="final">प्रॉपर्टी "% s" के लिए वेलिडेशन एरर</target>
+      </trans-unit>
+      <trans-unit id="validator.emailaddress.notvalid" approved="yes">
+        <source>The given subject was not a valid email address.</source>
+        <target state="final">दिए गए विषय के वैलिड ईमेल एड्रेस नहीं था.</target>
+      </trans-unit>
+      <trans-unit id="validator.stringlength.between" approved="yes">
+        <source>The length of the given string was not between %s and %s characters.</source>
+        <target state="final">दिए गए स्ट्रिंग की लंबाई% s और% s करैक्टर के बीच नहीं थी.</target>
+      </trans-unit>
+      <trans-unit id="validator.stringlength.less" approved="yes">
+        <source>The length of the given string is less than %s characters.</source>
+        <target state="final">दिए गए स्ट्रिंग की लंबाई %s करैक्टर की तुलना में कम है.</target>
+      </trans-unit>
+      <trans-unit id="validator.string.notvalid" approved="yes">
+        <source>A valid string is expected.</source>
+        <target state="final">एक वैलिड स्ट्रिंग की उम्मीद है.</target>
+      </trans-unit>
+      <trans-unit id="validator.stringlength.exceed" approved="yes">
+        <source>The length of the given string exceeded %s characters.</source>
+        <target state="final">दिए गए स्ट्रिंग की लंबाई% s करैक्टर से अधिक है.</target>
+      </trans-unit>
+      <trans-unit id="validator.alphanumeric.notvalid" approved="yes">
+        <source>The given subject was not a valid alphanumeric string.</source>
+        <target state="final">दिए गए विषय के लिए अल्फान्यूमेरिक स्ट्रिंग वैलिड नहीं था.</target>
+      </trans-unit>
+      <trans-unit id="validator.datetime.notvalid" approved="yes">
+        <source>The given subject was not a valid DateTime. Got: '%s'</source>
+        <target state="final">दिए गए विषय को वैलिड दिनांक समय नहीं था.समझे: '% s'</target>
+      </trans-unit>
+      <trans-unit id="validator.float.notvalid" approved="yes">
+        <source>The given subject was not a valid float.</source>
+        <target state="final">दिए गए विषय में वैलिड फ्लोट नहीं था.</target>
+      </trans-unit>
+      <trans-unit id="validator.text.notvalid" approved="yes">
+        <source>The given subject was not a valid text (e.g. contained XML tags).</source>
+        <target state="final">दिए गए विषय में वैलिड टेक्स्ट नहीं था(e.g.XML टैग्स शामिल).</target>
+      </trans-unit>
+      <trans-unit id="validator.regularexpression.nomatch" approved="yes">
+        <source>The given subject did not match the pattern.</source>
+        <target state="final">दिया गया सब्जेक्ट पैटर्न के साथ मेल नहीं खाता.</target>
+      </trans-unit>
+      <trans-unit id="validator.numberrange.notvalid" approved="yes">
+        <source>The given subject was not a valid number.</source>
+        <target state="final">दिया गया सब्जेक्ट वैलिड संख्या नहीं था.</target>
+      </trans-unit>
+      <trans-unit id="validator.numberrange.range" approved="yes">
+        <source>The given subject was not in the valid range (%s - %s).</source>
+        <target state="final">दिया गया सब्जेक्ट वैलिड रेंज में नहीं था(%s-%s).</target>
+      </trans-unit>
+      <trans-unit id="validator.notempty.null" approved="yes">
+        <source>The given subject was NULL.</source>
+        <target state="final">दिया गया सब्जेक्ट NULL था</target>
+      </trans-unit>
+      <trans-unit id="validator.notempty.empty" approved="yes">
+        <source>The given subject was empty.</source>
+        <target state="final">दिया गया सब्जेक्ट खाली था.</target>
+      </trans-unit>
+      <trans-unit id="validator.number.notvalid" approved="yes">
+        <source>The given subject was not a valid number.</source>
+        <target state="final">दिया गया सब्जेक्ट वैलिड संख्या नहीं था.</target>
+      </trans-unit>
+      <trans-unit id="validator.integer.notvalid" approved="yes">
+        <source>The given subject was not a valid integer.</source>
+        <target state="final">दिया गया सब्जेक्ट वैलिड इन्टिजर नहीं था.</target>
+      </trans-unit>
+      <trans-unit id="validator.boolean.nottrue" approved="yes">
+        <source>The given subject was not true.</source>
+        <target state="final">दिया गया सब्जेक्ट सच नहीं था.</target>
+      </trans-unit>
+      <trans-unit id="validator.boolean.notfalse" approved="yes">
+        <source>The given subject was not false.</source>
+        <target state="final">दिया गया सब्जेक्ट फॉल्स नहीं था.</target>
+      </trans-unit>
+      <trans-unit id="validator.url.notvalid" approved="yes">
+        <source>The given subject is no valid URL.</source>
+        <target state="final">दिया गया विषय कोई वैध URL नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="validation.fileextension.notallowed" approved="yes">
+        <source>The file extension '%s' is not allowed.</source>
+        <target state="final">फ़ाइल एक्सटेंशन '%s' की अनुमति नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="validation.fileextensionmimetypeconsistency.notallowed" approved="yes">
+        <source>The resolved media type "%s" is not allowed for file extension "%s".</source>
+        <target state="final">फ़ाइल एक्सटेंशन "%s" के लिए हल किया गया मीडिया प्रकार "%s" अनुमत नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="validation.mimetype.notallowed" approved="yes">
+        <source>The mime type '%s' is not allowed.</source>
+        <target state="final">फ़ाइल एक्सटेंशन '%s' की अनुमति नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="validation.mimetype.invalidextension" approved="yes">
+        <source>The file extension provided "%s" does not match to expected media types.</source>
+        <target state="final">प्रदान किया गया फ़ाइल एक्सटेंशन "%s" अपेक्षित मीडिया प्रकार से मेल नहीं खाता है।</target>
+      </trans-unit>
+      <trans-unit id="validation.denyphpupload.notallowed" approved="yes">
+        <source>Uploading of files with PHP executable file extensions is not allowed.</source>
+        <target state="final">PHP निष्पादन योग्य फ़ाइल एक्सटेंशन वाली फ़ाइलों को अपलोड करने की अनुमति नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="validation.filesize.less" approved="yes">
+        <source>The file must be larger than %s in size.</source>
+        <target state="final">फ़ाइल का आकार %s से बड़ा होना चाहिए।</target>
+      </trans-unit>
+      <trans-unit id="validation.filesize.exceed" approved="yes">
+        <source>The file must be smaller than %s in size.</source>
+        <target state="final">फ़ाइल का आकार %s से छोटा होना चाहिए।</target>
+      </trans-unit>
+      <trans-unit id="validation.imagedimensions.width.notvalid" approved="yes">
+        <source>The image must be exactly %s pixels in width.</source>
+        <target state="final">छवि की चौड़ाई ठीक %s पिक्सेल होनी चाहिए।</target>
+      </trans-unit>
+      <trans-unit id="validation.imagedimensions.height.notvalid" approved="yes">
+        <source>The image must be exactly %s pixels in height.</source>
+        <target state="final">छवि की ऊंचाई ठीक %s पिक्सेल होनी चाहिए।</target>
+      </trans-unit>
+      <trans-unit id="validation.imagedimensions.minwidth.notvalid" approved="yes">
+        <source>The image must at least have a width of %s pixels.</source>
+        <target state="final">छवि की चौड़ाई कम से कम %s पिक्सेल होनी चाहिए।</target>
+      </trans-unit>
+      <trans-unit id="validation.imagedimensions.minheight.notvalid" approved="yes">
+        <source>The image must at least have a height of %s pixels.</source>
+        <target state="final">छवि की ऊंचाई कम से कम %s पिक्सेल होनी चाहिए।</target>
+      </trans-unit>
+      <trans-unit id="validation.imagedimensions.maxwidth.notvalid" approved="yes">
+        <source>The image is too wide. The maximum width is %s pixels.</source>
+        <target state="final">छवि बहुत चौड़ी है। अधिकतम चौड़ाई %s पिक्सेल है।</target>
+      </trans-unit>
+      <trans-unit id="validation.imagedimensions.maxheight.notvalid" approved="yes">
+        <source>The image is too high. The maximum height is %s pixels.</source>
+        <target state="final">छवि बहुत ऊँची है। अधिकतम ऊँचाई %s पिक्सेल है।</target>
+      </trans-unit>
+      <trans-unit id="filehandlingserviceconfiguration.minfiles.notvalid" approved="yes">
+        <source>You must at least upload %s file(s).</source>
+        <target state="final">आपको कम से कम %s फ़ाइल(फ़ाइलें) अपलोड करनी होंगी।</target>
+      </trans-unit>
+      <trans-unit id="filehandlingserviceconfiguration.minfiles.delete.notvalid" approved="yes">
+        <source>The file could not be deleted, because the minimum file upload amount would not be fulfilled after deletion.</source>
+        <target state="final">फ़ाइल को हटाया नहीं जा सका, क्योंकि हटाने के बाद न्यूनतम फ़ाइल अपलोड मात्रा पूरी नहीं हो पाएगी।</target>
+      </trans-unit>
+      <trans-unit id="filehandlingserviceconfiguration.maxfiles.notvalid" approved="yes">
+        <source>The maximum amount of %s file(s) is exceeded.</source>
+        <target state="final">%s फ़ाइल(फ़ाइलों) की अधिकतम मात्रा पार हो गई है।</target>
+      </trans-unit>
+      <trans-unit id="class_configuration" approved="yes">
+        <source>Extbase: Class Configuration</source>
+        <target state="final">एक्स्टबेस: क्लास कॉन्फ़िगरेशन</target>
+      </trans-unit>
+      <trans-unit id="ratelimit.action.defaultmessage" approved="yes">
+        <source>Too many requests. Please try again later.</source>
+        <target state="final">बहुत अधिक अनुरोध। कृपया कुछ समय बाद पुनः प्रयास करें।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
