@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_new.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Create multiple pages</source>
+        <target state="final">मल्टीपल पेज बनाए</target>
+      </trans-unit>
+      <trans-unit id="canNotCreateNew.title" approved="yes">
+        <source>Insufficient permissions</source>
+        <target state="final">अपर्याप्त अनुमतियाँ</target>
+      </trans-unit>
+      <trans-unit id="canNotCreateNew.message" approved="yes">
+        <source>Sorry, you are not allowed to create new subpages to this page due to access restrictions.</source>
+        <target state="final">क्षमा करें, एक्सेस प्रतिबंधों के कारण आपको इस पृष्ठ के अंतर्गत नई उप-पेज बनाने की अनुमति नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="newPage" approved="yes">
+        <source>Page</source>
+        <target state="final">पेज</target>
+      </trans-unit>
+      <trans-unit id="addMoreLines" approved="yes">
+        <source>Add more lines</source>
+        <target state="final">अधिक लाइनों को जोड़े</target>
+      </trans-unit>
+      <trans-unit id="listEnd" approved="yes">
+        <source>Place new pages after the existing subpages</source>
+        <target state="final">मौजूदा सब-पेज के बाद नए पन्ने रखे</target>
+      </trans-unit>
+      <trans-unit id="hidePages" approved="yes">
+        <source>Hide new pages</source>
+        <target state="final">नए पन्ने छुपाएं</target>
+      </trans-unit>
+      <trans-unit id="hidePagesInMenus" approved="yes">
+        <source>Hide new pages in menus</source>
+        <target state="final">मेनू में नए पन्ने छुपाएं</target>
+      </trans-unit>
+      <trans-unit id="create" approved="yes">
+        <source>Create pages</source>
+        <target state="final">पन्ने बनाए</target>
+      </trans-unit>
+      <trans-unit id="reset" approved="yes">
+        <source>Clear fields</source>
+        <target state="final">फील्ड्स साफ करे</target>
+      </trans-unit>
+      <trans-unit id="newSubPages" approved="yes">
+        <source>New page structure</source>
+        <target state="final">नया पेज ढांचा</target>
+      </trans-unit>
+      <trans-unit id="newSubPages.pageTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">पृष्ठ का शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="noPagesCreated.title" approved="yes">
+        <source>No pages added</source>
+        <target state="final">कोई पृष्ठ नहीं जोड़ा गया</target>
+      </trans-unit>
+      <trans-unit id="noPagesCreated.message" approved="yes">
+        <source>No pages were created.</source>
+        <target state="final">कोई पृष्ठ नहीं बनाया गया था।</target>
+      </trans-unit>
+      <trans-unit id="pagesCreated.title" approved="yes">
+        <source>Pages added</source>
+        <target state="final">पृष्ठ जोड़े गए</target>
+      </trans-unit>
+      <trans-unit id="pagesCreated.message" approved="yes">
+        <source>The pages were created successfully.</source>
+        <target state="final">पृष्ठ सफलतापूर्वक बनाए गए।</target>
+      </trans-unit>
+      <trans-unit id="multiplePagesCanNotBeCreated.title" approved="yes">
+        <source>Creation of multiple is disabled because of field requirements</source>
+        <target state="final">फ़ील्ड आवश्यकताओं के कारण एक से अधिक बनाने की अनुमति निष्क्रिय है।</target>
+      </trans-unit>
+      <trans-unit id="multiplePagesCanNotBeCreated.message" approved="yes">
+        <source>Please use the page creation wizard instead.</source>
+        <target state="final">कृपया इसके बजाय पेज बनाने वाले विज़ार्ड का उपयोग करें।</target>
+      </trans-unit>
+      <trans-unit id="multiplePagesCanNotBeCreated.buttonLabel" approved="yes">
+        <source>Create single page</source>
+        <target state="final">एक पृष्ठ बनाएँ</target>
+      </trans-unit>
+      <trans-unit id="availablePageTypesHaveBeenFiltered.title" approved="yes">
+        <source>Some page types have been filtered because of field requirements</source>
+        <target state="final">फील्ड आवश्यकताओं के कारण कुछ पेज प्रकारों को फ़िल्टर कर दिया गया है</target>
+      </trans-unit>
+      <trans-unit id="availablePageTypesHaveBeenFiltered.message" approved="yes">
+        <source>The following page types need to be created using the page creation wizard:</source>
+        <target state="final">निम्नलिखित पेज प्रकारों को पेज निर्माण विज़ार्ड का उपयोग करके बनाया जाना आवश्यक है:</target>
+      </trans-unit>
+      <trans-unit id="availablePageTypesHaveBeenFiltered.buttonLabel" approved="yes">
+        <source>Create single page</source>
+        <target state="final">एकल पृष्ठ बनाएँ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
