@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="overview.title" approved="yes">
+        <source>Setup</source>
+        <target state="final">Настройка</target>
+      </trans-unit>
+      <trans-unit id="overview.site" approved="yes">
+        <source>Site</source>
+        <target state="final">Сайт</target>
+      </trans-unit>
+      <trans-unit id="overview.siteIdentifier" approved="yes">
+        <source>Site identifier</source>
+        <target state="final">Идентификатор сайта</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.title" approved="yes">
+        <source>No root pages available</source>
+        <target state="final">Нет доступных корневых страниц</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.message" approved="yes">
+        <source>Please create at least one root page in the Layout module. A root page must be a content page at the top level (not a folder or separator) or have the "Root Page" flag enabled (Page Properties → Behavior tab).</source>
+        <target state="final">Создайте хотя бы одну корневую страницу в модуле Макет. Корневая страница должна быть страницей для материалов верхнего уровня (не папкой или разделителем) или иметь включенный флаг «Корневая страница» (Свойства страницы → вкладка «Поведение»).</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.link.label" approved="yes">
+        <source>Open the documentation</source>
+        <target state="final">Открыть документацию</target>
+      </trans-unit>
+      <trans-unit id="overview.addSiteConfiguration" approved="yes">
+        <source>Add new site configuration for this site</source>
+        <target state="final">Добавить новую конфигурацию для этого сайта</target>
+      </trans-unit>
+      <trans-unit id="overview.editSiteConfiguration" approved="yes">
+        <source>Edit site configuration</source>
+        <target state="final">Редактировать конфигурацию сайта</target>
+      </trans-unit>
+      <trans-unit id="overview.editSiteSettings" approved="yes">
+        <source>Edit site settings</source>
+        <target state="final">Изменить настройки сайта</target>
+      </trans-unit>
+      <trans-unit id="overview.editSiteSettingsUnavailable" approved="yes">
+        <source>This site provides no configurable settings</source>
+        <target state="final">Этот сайт не предоставляет никаких настраиваемых параметров</target>
+      </trans-unit>
+      <trans-unit id="overview.deleteSiteConfiguration" approved="yes">
+        <source>Delete site configuration</source>
+        <target state="final">Удалить конфигурацию сайта</target>
+      </trans-unit>
+      <trans-unit id="overview.baseUrl" approved="yes">
+        <source>Base URL</source>
+        <target state="final">Основной URL</target>
+      </trans-unit>
+      <trans-unit id="overview.rootPagesWithoutSiteConfiguration.title" approved="yes">
+        <source>Pages without a site configuration</source>
+        <target state="final">Страницы без конфигурации сайта</target>
+      </trans-unit>
+      <trans-unit id="overview.rootPagesWithoutSiteConfiguration.description" approved="yes">
+        <source>The following root pages have no site configuration:</source>
+        <target state="final">Следующие корневые страницы не имеют конфигурации сайта:</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.title" approved="yes">
+        <source>Unassigned site configurations</source>
+        <target state="final">Неназначенные настройки сайта</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.description" approved="yes">
+        <source>The following site configurations don't belong to any page anymore and can be removed.</source>
+        <target state="final">Следующие конфигурации сайта больше не относятся ни к одной странице и не могут быть удалены.</target>
+      </trans-unit>
+      <trans-unit id="overview.invalidSets.title" approved="yes">
+        <source>Invalid site set configurations</source>
+        <target state="final">Недопустимый набор настроек сайта</target>
+      </trans-unit>
+      <trans-unit id="overview.invalidSets.description" approved="yes">
+        <source>The following site sets contain errors and therefore could not be loaded.</source>
+        <target state="final">Следующие наборы настроек сайтов содержат ошибки из-за которых не могут быть загружены.</target>
+      </trans-unit>
+      <trans-unit id="overview.invalidSets.set" approved="yes">
+        <source>Set</source>
+        <target state="final">Набор настроек</target>
+      </trans-unit>
+      <trans-unit id="overview.invalidSets.error" approved="yes">
+        <source>Error</source>
+        <target state="final">Ошибка</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedEntryPoints" approved="yes">
+        <source>Duplicated Entrypoints</source>
+        <target state="final">Точки входа дублируются</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedEntryPoints.listing" approved="yes">
+        <source>The following entry points are used more than once:</source>
+        <target state="final">Следующие точки входа используются более одного раза:</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedRootPage" approved="yes">
+        <source>Duplicated root pages</source>
+        <target state="final">Дублирующиеся корневые страницы</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedRootPage.message" approved="yes">
+        <source>The page with ID "%1s" is used in the following site configurations:</source>
+        <target state="final">Страница с ID "%1s" используется в следующих конфигурациях сайта:</target>
+      </trans-unit>
+      <trans-unit id="overview.btn.details" approved="yes">
+        <source>View details</source>
+        <target state="final">Подробнее</target>
+      </trans-unit>
+      <trans-unit id="overview.entry_point" approved="yes">
+        <source>Entry Point</source>
+        <target state="final">Точка входа</target>
+      </trans-unit>
+      <trans-unit id="overview.error_handling" approved="yes">
+        <source>Error handling</source>
+        <target state="final">Обработка ошибок</target>
+      </trans-unit>
+      <trans-unit id="overview.status.title" approved="yes">
+        <source>Status</source>
+        <target state="final">Статус</target>
+      </trans-unit>
+      <trans-unit id="overview.info.all_sites.multiple" approved="yes">
+        <source><![CDATA[The installation includes <strong>%s configured sites</strong>.]]></source>
+        <target state="final"><![CDATA[Установка включает в себя <strong>%s настроенных сайтов</strong>.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.all_sites.single" approved="yes">
+        <source><![CDATA[The installation includes <strong>%s configured site</strong>.]]></source>
+        <target state="final"><![CDATA[Установка включает <strong>%s настроенный сайт</strong>.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.root_pages_without_site_sonfiguration.multiple" approved="yes">
+        <source><![CDATA[<strong>%s root pages</strong> are lacking a site configuration.]]></source>
+        <target state="final"><![CDATA[<strong>%s корневых страниц</strong> не имеют настроенных сайтов.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.root_pages_without_site_sonfiguration.single" approved="yes">
+        <source><![CDATA[<strong>%s page</strong> is lacking a site configuration.]]></source>
+        <target state="final"><![CDATA[<strong>%s страница</strong> не имеет конфигурации сайта.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.unassigned_sites.multiple" approved="yes">
+        <source><![CDATA[There are currently <strong>%s site configurations</strong> that are not assigned to any page.]]></source>
+        <target state="final"><![CDATA[Имеется <strong>%s конфигураций сайта</strong>, не привязанных ни к одной странице.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.unassigned_sites.single" approved="yes">
+        <source><![CDATA[There is currently <strong>%s site configuration</strong> that is not assigned to any page.]]></source>
+        <target state="final"><![CDATA[Имеется <strong>%s конфигурация сайта</strong>, не привязанная ни к одной странице.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">Языки</target>
+      </trans-unit>
+      <trans-unit id="overview.languages.amount" approved="yes">
+        <source>and %s more</source>
+        <target state="final">и еще %s</target>
+      </trans-unit>
+      <trans-unit id="overview.root_pages_without_site_configuration.title" approved="yes">
+        <source>Sites</source>
+        <target state="final">Сайты</target>
+      </trans-unit>
+      <trans-unit id="overview.site_sets" approved="yes">
+        <source>Dependencies to site sets</source>
+        <target state="final">Зависимости от настроек сайтов</target>
+      </trans-unit>
+      <trans-unit id="overview.site_sets.yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Да</target>
+      </trans-unit>
+      <trans-unit id="overview.static_routes" approved="yes">
+        <source>Static routes</source>
+        <target state="final">Статические маршруты</target>
+      </trans-unit>
+      <trans-unit id="overview.no_sites_with_site_configuration.title" approved="yes">
+        <source>No configured sites available</source>
+        <target state="final">Нет настроенных сайтов</target>
+      </trans-unit>
+      <trans-unit id="overview.no_sites_with_site_configuration.message" approved="yes">
+        <source>At least one root page must have a site configuration.</source>
+        <target state="final">По крайней мере одна корневая страница должна иметь конфигурацию сайта.</target>
+      </trans-unit>
+      <trans-unit id="overview.none" approved="yes">
+        <source>None</source>
+        <target state="final">Нет</target>
+      </trans-unit>
+      <trans-unit id="detail.headline_with_site_identifier" approved="yes">
+        <source>Setup of "%s"</source>
+        <target state="final">Настройка "%s"</target>
+      </trans-unit>
+      <trans-unit id="detail.headline_with_page_title" approved="yes">
+        <source>Setup of site "%s"</source>
+        <target state="final">Настройка сайта "%s"</target>
+      </trans-unit>
+      <trans-unit id="detail.not_configured" approved="yes">
+        <source>Not configured.</source>
+        <target state="final">Не настроено.</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.error_handling" approved="yes">
+        <source>Error handling</source>
+        <target state="final">Обработка ошибок</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.headline" approved="yes">
+        <source>Site configuration</source>
+        <target state="final">Конфигурация сайта</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">Языки</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.languages.language" approved="yes">
+        <source>Language</source>
+        <target state="final">Язык</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.languages.language_url" approved="yes">
+        <source>Full URL prefix</source>
+        <target state="final">Полный префикс URL</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.static_routes" approved="yes">
+        <source>Static routes</source>
+        <target state="final">Статические маршруты</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.route_enhancers" approved="yes">
+        <source>Route enhancers</source>
+        <target state="final">Обработчики маршрута</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.active_settings.headline" approved="yes">
+        <source>Active settings</source>
+        <target state="final">Активные настройки</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.active_settings.custom_site_settings" approved="yes">
+        <source>Settings within site configuration (e.g. via 'settings.yaml')</source>
+        <target state="final">Настройки в конфигурации сайта (например, в файле settings.yaml)</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.dependencies.headline" approved="yes">
+        <source>Dependencies</source>
+        <target state="final">Зависимости</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.dependencies.text" approved="yes">
+        <source><![CDATA[Settings can be stored directly via the site configuration, or indirectly by loading them as a dependency of another site set.<br>The following dependencies are stored in the site configuration:]]></source>
+        <target state="final"><![CDATA[Настройки можно сохранить напрямую в конфигурации сайта или косвенно, загрузив их как зависимость в других настройках сайтов. <br>В конфигурации сайта сохраняются следующие зависимости:]]></target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.headline" approved="yes">
+        <source>Site settings</source>
+        <target state="final">Настройки сайта</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.no_settings_found.message" approved="yes">
+        <source><![CDATA[Settings are listed here as soon as they are either present in a <code>settings.yaml</code> file in the site folder or there is one or more dependencies on site sets in the site configuration.]]></source>
+        <target state="final"><![CDATA[Настройки указаны здесь, так как они либо присутствуют в файле <code>settings.yaml</code> в папке сайта, либо входят в зависимости настроек сайта в конфигурации сайта.]]></target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.no_settings_found.title" approved="yes">
+        <source>No site settings were found for this site</source>
+        <target state="final">Для этого сайта не найдено настроек сайта</target>
+      </trans-unit>
+      <trans-unit id="edit.editSiteSettings" approved="yes">
+        <source>Edit site settings</source>
+        <target state="final">Изменить настройки сайта</target>
+      </trans-unit>
+      <trans-unit id="edit.site_configuration" approved="yes">
+        <source>Edit site configuration</source>
+        <target state="final">Редактировать конфигурацию сайта</target>
+      </trans-unit>
+      <trans-unit id="edit.typeLabel" approved="yes">
+        <source>Site configuration</source>
+        <target state="final">Конфигурация сайта</target>
+      </trans-unit>
+      <trans-unit id="edit.createNewSite" approved="yes">
+        <source>Create new site</source>
+        <target state="final">Создать новый сайт</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.title" approved="yes">
+        <source>Renamed identifier</source>
+        <target state="final">Переименованный идентификатор</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.message" approved="yes">
+        <source>Given site identifier "%1s" already exists. It has been renamed to "%2s". Maybe you want to edit the site again and give it a better name.</source>
+        <target state="final">Уже имеется заданный идентификатор сайта "%1s". Он был переименован в "%2s". Возможно, вы захотите вернуться к редактированию сайта и дать ему лучшее название.</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.title" approved="yes">
+        <source>Identifier not changed</source>
+        <target state="final">Идентификатор не изменился</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.message" approved="yes">
+        <source>Given site identifier "%1s" already exists and points to a different site. The existing identifier "%2s" for this site is kept.</source>
+        <target state="final">Данный идентификатор сайта "%1s" уже существует и указывает на другой сайт. Сохраняется существующий идентификатор "%2s" для этого сайта.</target>
+      </trans-unit>
+      <trans-unit id="validation.required.title" approved="yes">
+        <source>Site configuration not saved</source>
+        <target state="final">Конфигурация сайта не сохранена</target>
+      </trans-unit>
+      <trans-unit id="validation.required.message" approved="yes">
+        <source>Field "%1s" is a required field, but no value has been provided.</source>
+        <target state="final">Поле "%1s" обязательно, но не заполнено.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.title" approved="yes">
+        <source>Duplicate error code removed</source>
+        <target state="final">Дубликат кода ошибки удалён</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.message" approved="yes">
+        <source>Two error handler configurations for error code "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">Найдено две настройки обработчиков ошибки с кодом "%1s". Это ошибочная настройки и один из обработчиков удалён.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.title" approved="yes">
+        <source>Duplicate language configuration removed</source>
+        <target state="final">Удален дубликат настройки языка</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.message" approved="yes">
+        <source>Two language configurations for language "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">Найдено две настройки для языка "%1s". Это ошибочная настройка, и одна из них удалена.</target>
+      </trans-unit>
+      <trans-unit id="labels.detail" approved="yes">
+        <source>View Site Configuration "%s"</source>
+        <target state="final">Просмотр конфигурации сайта "%s"</target>
+      </trans-unit>
+      <trans-unit id="contextMenu.editSiteSettings" approved="yes">
+        <source>Edit Site Settings</source>
+        <target state="final">Изменить настройки сайта</target>
+      </trans-unit>
+      <trans-unit id="contextMenu.editSiteConfiguration" approved="yes">
+        <source>Edit Site</source>
+        <target state="final">Редактировать сайт</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
