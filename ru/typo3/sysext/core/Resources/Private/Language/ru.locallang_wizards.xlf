@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_wizards.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="table_smallFields" approved="yes">
+        <source>Small fields</source>
+        <target state="final">Маленькие поля</target>
+      </trans-unit>
+      <trans-unit id="table_addColumn" approved="yes">
+        <source>Add column to the right</source>
+        <target state="final">Добавить колонку справа</target>
+      </trans-unit>
+      <trans-unit id="table_removeColumn" approved="yes">
+        <source>Remove column</source>
+        <target state="final">Убрать колонку</target>
+      </trans-unit>
+      <trans-unit id="table_addRow" approved="yes">
+        <source>Add row below</source>
+        <target state="final">Добавить ряд ниже</target>
+      </trans-unit>
+      <trans-unit id="table_removeRow" approved="yes">
+        <source>Remove row</source>
+        <target state="final">Убрать ряд</target>
+      </trans-unit>
+      <trans-unit id="table_left" approved="yes">
+        <source>Move left</source>
+        <target state="final">Переместить левее</target>
+      </trans-unit>
+      <trans-unit id="table_right" approved="yes">
+        <source>Move right</source>
+        <target state="final">Переместить правее</target>
+      </trans-unit>
+      <trans-unit id="table_up" approved="yes">
+        <source>Move up</source>
+        <target state="final">Переместить выше</target>
+      </trans-unit>
+      <trans-unit id="table_down" approved="yes">
+        <source>Move down</source>
+        <target state="final">Переместить ниже</target>
+      </trans-unit>
+      <trans-unit id="table_top" approved="yes">
+        <source>Move to top</source>
+        <target state="final">Переместить в начало</target>
+      </trans-unit>
+      <trans-unit id="table_bottom" approved="yes">
+        <source>Move to bottom</source>
+        <target state="final">Переместить в конец</target>
+      </trans-unit>
+      <trans-unit id="table_start" approved="yes">
+        <source>Move to first column</source>
+        <target state="final">Переместить в первую колонку</target>
+      </trans-unit>
+      <trans-unit id="table_end" approved="yes">
+        <source>Move to last column</source>
+        <target state="final">Переместить в последнюю колонку</target>
+      </trans-unit>
+      <trans-unit id="table_setCount" approved="yes">
+        <source>Set row and column count</source>
+        <target state="final">Установить количество строк и столбцов</target>
+      </trans-unit>
+      <trans-unit id="table_colCount" approved="yes">
+        <source>Column count</source>
+        <target state="final">Количество столбцов</target>
+      </trans-unit>
+      <trans-unit id="table_rowCount" approved="yes">
+        <source>Row count</source>
+        <target state="final">Количество строк</target>
+      </trans-unit>
+      <trans-unit id="table_setCountHeadline" approved="yes">
+        <source>Change table size</source>
+        <target state="final">Изменить размер таблицы</target>
+      </trans-unit>
+      <trans-unit id="table_buttonUpdate" approved="yes">
+        <source>Update</source>
+        <target state="final">Обновить</target>
+      </trans-unit>
+      <trans-unit id="table_showCode" approved="yes">
+        <source>Show table code</source>
+        <target state="final">Показать код таблицы</target>
+      </trans-unit>
+      <trans-unit id="table_showCodeHeadline" approved="yes">
+        <source>Table code</source>
+        <target state="final">Код таблицы</target>
+      </trans-unit>
+      <trans-unit id="table_showCodeLabel" approved="yes">
+        <source>Raw value</source>
+        <target state="final">Неотформатированное значение</target>
+      </trans-unit>
+      <trans-unit id="grid_windowTitle" approved="yes">
+        <source>Set cell name and column number</source>
+        <target state="final">Установить название ячейки и номер столбца</target>
+      </trans-unit>
+      <trans-unit id="grid_addColumn" approved="yes">
+        <source>Add column</source>
+        <target state="final">Добавить столбец</target>
+      </trans-unit>
+      <trans-unit id="grid_removeColumn" approved="yes">
+        <source>Remove column</source>
+        <target state="final">Убрать колонку</target>
+      </trans-unit>
+      <trans-unit id="grid_addRow" approved="yes">
+        <source>Add row</source>
+        <target state="final">Добавить строку</target>
+      </trans-unit>
+      <trans-unit id="grid_removeRow" approved="yes">
+        <source>Remove row</source>
+        <target state="final">Убрать ряд</target>
+      </trans-unit>
+      <trans-unit id="grid_editCell" approved="yes">
+        <source>Edit cell</source>
+        <target state="final">Править ячейку</target>
+      </trans-unit>
+      <trans-unit id="grid_cell_merge_right" approved="yes">
+        <source>Merge Right</source>
+        <target state="final">Объединить справа</target>
+      </trans-unit>
+      <trans-unit id="grid_cell_merge_down" approved="yes">
+        <source>Merge Down</source>
+        <target state="final">Объединить вниз</target>
+      </trans-unit>
+      <trans-unit id="grid_cell_split_horizontal" approved="yes">
+        <source>Split Horizontally</source>
+        <target state="final">Разбить по горизонтали</target>
+      </trans-unit>
+      <trans-unit id="grid_cell_split_vertical" approved="yes">
+        <source>Split Vertically</source>
+        <target state="final">Разбить по вертикали</target>
+      </trans-unit>
+      <trans-unit id="grid_name" approved="yes">
+        <source>Name</source>
+        <target state="final">Название</target>
+      </trans-unit>
+      <trans-unit id="grid_column" approved="yes">
+        <source>Column number</source>
+        <target state="final">Номер столбца</target>
+      </trans-unit>
+      <trans-unit id="grid_identifier" approved="yes">
+        <source>Identifier</source>
+        <target state="final">Идентификатор</target>
+      </trans-unit>
+      <trans-unit id="grid_slideMode" approved="yes">
+        <source>Slide mode</source>
+        <target state="final">Режим слайдов</target>
+      </trans-unit>
+      <trans-unit id="grid_notSet" approved="yes">
+        <source>not set</source>
+        <target state="final">не установлено</target>
+      </trans-unit>
+      <trans-unit id="grid_nameHelp" approved="yes">
+        <source>Enter a name for the cell.</source>
+        <target state="final">Введите название ячейки</target>
+      </trans-unit>
+      <trans-unit id="grid_columnHelp" approved="yes">
+        <source>The column position defines in which area the content is rendered in the frontend.</source>
+        <target state="final">Позиция столбца определяет область формирования содержимого во внешнем интерфейсе.</target>
+      </trans-unit>
+      <trans-unit id="grid_identifierHelp" approved="yes">
+        <source>The identifier is a human-readable unique label, used to access the items in this column.</source>
+        <target state="final">Идентификатор является человеко-читаемой уникальной меткой, используемой для доступа к элементам в этом столбце.</target>
+      </trans-unit>
+      <trans-unit id="grid_slideModeHelp" approved="yes">
+        <source>The slide mode defines which elements should be fetched for the column in the frontend.</source>
+        <target state="final">Режим слайда определяет, какие элементы должны быть загружены для столбца на сайте.</target>
+      </trans-unit>
+      <trans-unit id="imwizard.open-editor" approved="yes">
+        <source>Open Editor</source>
+        <target state="final">Открыть редактор</target>
+      </trans-unit>
+      <trans-unit id="imwizard.supported-types-message" approved="yes">
+        <source>Image manipulation is only available for supported types</source>
+        <target state="final">Работа с изображениями доступна только для поддерживаемых типов</target>
+      </trans-unit>
+      <trans-unit id="imwizard.no-image-dimensions" approved="yes">
+        <source>No image dimensions could be determined.</source>
+        <target state="final">Невозможно определить размеры изображения.</target>
+      </trans-unit>
+      <trans-unit id="imwizard.no-image-dimensions-message" approved="yes">
+        <source>Unable to provide image manipulation, because original dimensions of the image are unknown.</source>
+        <target state="final">Редактирование изображения недоступно, поскольку исходные размеры изображения неизвестны.</target>
+      </trans-unit>
+      <trans-unit id="imwizard.image-manipulation" approved="yes">
+        <source>Image manipulation</source>
+        <target state="final">Манипуляции с изображением</target>
+      </trans-unit>
+      <trans-unit id="imwizard.reset" approved="yes">
+        <source>Reset</source>
+        <target state="final">Сброс</target>
+      </trans-unit>
+      <trans-unit id="imwizard.accept" approved="yes">
+        <source>Accept</source>
+        <target state="final">Принять</target>
+      </trans-unit>
+      <trans-unit id="imwizard.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Отмена</target>
+      </trans-unit>
+      <trans-unit id="imwizard.preview" approved="yes">
+        <source>Preview</source>
+        <target state="final">Предпросмотр</target>
+      </trans-unit>
+      <trans-unit id="imwizard.aspect-ratio" approved="yes">
+        <source>Aspect ratio</source>
+        <target state="final">Пропорционально</target>
+      </trans-unit>
+      <trans-unit id="imwizard.set-aspect-ratio" approved="yes">
+        <source>Set Aspect Ratio</source>
+        <target state="final">Установить соотношение сторон</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.16_9" translate="no" approved="yes">
+        <source>16:9</source>
+        <target state="final">16:9</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.3_2" translate="no" approved="yes">
+        <source>3:2</source>
+        <target state="final">3:2</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.4_3" translate="no" approved="yes">
+        <source>4:3</source>
+        <target state="final">4:3</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.1_1" translate="no" approved="yes">
+        <source>1:1</source>
+        <target state="final">1:1</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.191_1" translate="no" approved="yes">
+        <source>1.91:1</source>
+        <target state="final">1.91:1</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.free" approved="yes">
+        <source>Free</source>
+        <target state="final">Свободно</target>
+      </trans-unit>
+      <trans-unit id="imwizard.crop_variant.default" approved="yes">
+        <source>Default</source>
+        <target state="final">По умолчанию</target>
+      </trans-unit>
+      <trans-unit id="imwizard.crop_variant.social" approved="yes">
+        <source>Social media</source>
+        <target state="final">Социальные медиа</target>
+      </trans-unit>
+      <trans-unit id="imwizard.sync-crop-variants" approved="yes">
+        <source>Apply changes to all crop variants</source>
+        <target state="final">Применить изменения ко всем вариантам обрезки</target>
+      </trans-unit>
+      <trans-unit id="imwizard.selection" approved="yes">
+        <source>Selected Size</source>
+        <target state="final">Размер выделения</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.header" approved="yes">
+        <source>Translation behavior</source>
+        <target state="final">Поведение перевода</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.customValue" approved="yes">
+        <source>Custom value</source>
+        <target state="final">Другое значение</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.defaultLanguageValue" approved="yes">
+        <source>Value of default language</source>
+        <target state="final">Значение языка по умолчанию</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.sourceLanguageValue" approved="yes">
+        <source>Value of %1s language</source>
+        <target state="final">Значение из %1s языка</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
