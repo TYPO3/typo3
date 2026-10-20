@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:opendocs/Resources/Private/Language/locallang_widget_recentdocuments.xlf" date="2011-10-17T20:22:34Z" product-name="opendocs" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="widget.title">
+        <source>Recently opened documents</source>
+        <target>crwdns393066:0crwdne393066:0</target>
+      </trans-unit>
+      <trans-unit id="widget.description">
+        <source>Displays recently opened documents in the system.</source>
+        <target>crwdns393068:0crwdne393068:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
