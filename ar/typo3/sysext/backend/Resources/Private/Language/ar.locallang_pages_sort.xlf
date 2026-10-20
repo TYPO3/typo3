@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Sort sub pages</source>
+        <target state="final">ترتيب الصفحات الفرعية</target>
+      </trans-unit>
+      <trans-unit id="currentPageOrder" approved="yes">
+        <source>Current page order</source>
+        <target state="final">ترتيب الصفحة الحالية</target>
+      </trans-unit>
+      <trans-unit id="changeOrder" approved="yes">
+        <source>Sort these pages by</source>
+        <target state="final">ترتيب هذه الصفحات حسب</target>
+      </trans-unit>
+      <trans-unit id="changeOrderConfirm" x-unused-since="15.0" approved="yes">
+        <source>You're about to change the order of the above pages. Are you sure you want to continue?</source>
+        <target state="final">أنت على وشك تغيير ترتيب الصفحات أعلاه. هل أنت متأكد من أنك تريد المتابعة؟</target>
+      </trans-unit>
+      <trans-unit id="fieldTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">عنوان الصفحة</target>
+      </trans-unit>
+      <trans-unit id="fieldSubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">العنوان الفرعي</target>
+      </trans-unit>
+      <trans-unit id="fieldCrdate" approved="yes">
+        <source>Create-time</source>
+        <target state="final">وقت الإنشاء</target>
+      </trans-unit>
+      <trans-unit id="fieldTstamp" approved="yes">
+        <source>Change-time</source>
+        <target state="final">وقت التغيير</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">عنوان الصفحة</target>
+      </trans-unit>
+      <trans-unit id="changeOrderBySubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">العنوان الفرعي</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByNavtitle" approved="yes">
+        <source>Navigation title</source>
+        <target state="final">عنوان التنقّل "Navigation"</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTstamp" approved="yes">
+        <source>Change-time</source>
+        <target state="final">وقت التغيير</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByCreate" approved="yes">
+        <source>Create-time</source>
+        <target state="final">وقت الإنشاء</target>
+      </trans-unit>
+      <trans-unit id="changeOrderReverse" approved="yes">
+        <source>Reverse current order</source>
+        <target state="final">عكس الترتيب الحالي</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.title" approved="yes">
+        <source>Invisible subpages</source>
+        <target state="final">صفحات فرعية غير مرئية</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.message" approved="yes">
+        <source>Some subpages are not visible because of access restrictions. These hidden pages are excluded from sorting.</source>
+        <target state="final">بعض الصفحات الفرعية غير مرئية بسبب قيود الوصول. هذه الصفحات المخفية مستثناة من الفرز.</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.title" approved="yes">
+        <source>No subpages</source>
+        <target state="final">لا توجد صفحات فرعية</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.message" approved="yes">
+        <source>Please select a page with subpages.</source>
+        <target state="final">الرجاء تحديد صفحة فيها صفحات فرعية.</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.title" approved="yes">
+        <source>Not implemented</source>
+        <target state="final">لم يتم التنفيذ</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.message" approved="yes">
+        <source>This function is not available in the current draft workspace; please switch back to the LIVE workspace.</source>
+        <target state="final">هذه الوظيفة غير مُتاحة في مساحة عمل المسودة الحالية؛ يرجى التبديل مرة أخرى إلى مساحة العمل المباشرة Live.</target>
+      </trans-unit>
+      <trans-unit id="noEditPermissions" approved="yes">
+        <source>No edit permissions on this sub page. This page can not be re-sorted among others.</source>
+        <target state="final">لا تملك الإذن للتعديل على هذه الصفحة الفرعية. لا يمكن إعادة فرز هذه الصفحة بين آخرين.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
