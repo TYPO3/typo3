@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814801" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilestorage.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>File storage, which acts as an entry root point to a file-based structure. See it like a drive or a hard drive volume in your local machine.</source>
+        <target state="final">O repositório de arquivos funciona como um ponto de entrada principal para uma estrutura baseada em arquivos. Veja como um disco rígido em sua máquina local.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details">
+        <source/>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Disabling the storage will result in removing it from any listings in the backend. Existing file relations will still exist.</source>
+        <target state="final">Desabilitar o repositório resultará em removê-lo de qualquer listagem no backend. Relacionamentos de arquivos continuarão existindo.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If you set up a file storage, it will show up on any folder lists, thus allowing to basically browse through the files in this file repository. If you set this checkbox, this storage will be excluded from any listings in the backend. Any existing file references will still exist further.</source>
+        <target state="final">Se você definir um repositório de arquivos, este será exibido em qualquer lista de pastas e ainda permitirá navegar basicamente através de seus arquivos. Se você atribuir esta caixa de seleção, este repositório será excluído de qualquer listagem do backend. Todas as referências de arquivos continuarão existindo.</target>
+      </trans-unit>
+      <trans-unit id="name.description" resname="name.description" approved="yes">
+        <source>The visible identifier for this file storage.</source>
+        <target state="final">O identificador visível para este arquivo de repositório.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>A description of this storage.</source>
+        <target state="final">Uma descrição deste repositório.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" approved="yes">
+        <source>This description field is used to explain e.g. the location of the storage, also what this storage is meant for or what it contains.</source>
+        <target state="final">Este campo de descrição é usado para explicar, por exemplo, a localização do repositório, também a finalidade ou o que ele contém.</target>
+      </trans-unit>
+      <trans-unit id="driver.description" resname="driver.description" approved="yes">
+        <source>Choose the driver as the technical backbone of the storage. Once you've chosen a driver, and saved it, additional configuration will show up.</source>
+        <target state="final">Escolha o driver como a espinha dorsal técnica do repositório. Uma vez escolhido um driver, e salvo, configurações adicionais serão exibidas.</target>
+      </trans-unit>
+      <trans-unit id="driver.details" resname="driver.details" approved="yes">
+        <source>The driver is the technical background of a storage, and thus also defines whether the location of the storage is local (= on the same machine as this TYPO3 installation) or remote like a WebDAV server connection. Search for extensions in the TYPO3 Extension Repository that extend this driver list.</source>
+        <target state="final">O driver é o plano de fundo de um repositório e também define se este será local (na mesma máquina como esta instalação do TYPO3) ou remoto como uma conexão a um servidor WebDAV. Procure por extensões no Repositório de Extensões do TYPO3 que extendam esta lista de drivers.</target>
+      </trans-unit>
+      <trans-unit id="processingfolder.description" resname="processingfolder.description" approved="yes">
+        <source>Defines the directory on this storage to be used to save temporary files like resized images.</source>
+        <target state="final">Define o diretório neste armazenamento que será usado para salvar arquivos temporários como, por exemplo, imagens redimensionadas.</target>
+      </trans-unit>
+      <trans-unit id="is_browsable.description" resname="is_browsable.description" approved="yes">
+        <source>If set, backend users can browse through this storage. Otherwise it will show up as a unselectable item in the list.</source>
+        <target state="final">Se atribuído, usuários do backend poderão navegar neste repositório. Caso contrário ele será exibido como um item não selecionável na lista.</target>
+      </trans-unit>
+      <trans-unit id="is_public.description" resname="is_public.description" approved="yes">
+        <source>If set, then the files in this storage can be linked directly from the outside world. If this is not set, make sure to provide additional possibilities to access the files in this storage.</source>
+        <target state="final">Se atribuído, os arquivos deste repositório podem ser vinculados diretamente do mundo externo. Se isto não for atribuído, tenha certeza de fornecer possibilidades adicionais de acessar os arquivos neste repositório.</target>
+      </trans-unit>
+      <trans-unit id="is_writable.description" resname="is_writable.description" approved="yes">
+        <source>If set, then users are allowed to modify, add, delete files/folders on this storage.</source>
+        <target state="final">Se atribuído, então usuários terão permissão para modificar, adicionar, deletar arquivos/pastas neste repositório.</target>
+      </trans-unit>
+      <trans-unit id="is_online.description" resname="is_online.description" approved="yes">
+        <source>This flag is usually set. If TYPO3 cannot connect to this storage (because it maybe temporary down), then the flag will be checked, and the storage will behave like it is non-browsable in the TYPO3 backend. The admin needs to manually activate it again if it was offline.</source>
+        <target state="final">Esta sinalização é comumente atribuída. Se o TYPO3 não pode conectar a este repositório (porque ele está temporariamente fora do ar), então a sinalização será marcada e o repositório irá se comportar como se não fosse navegável no backend do TYPO3. O admin precisa ativá-lo manualmente se ele esteve fora do ar.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
