@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_webinfo.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="page_title" approved="yes">
+        <source>Pagetree overview</source>
+        <target state="final">ພາບລວມແຜນພູມໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="pages_0" approved="yes">
+        <source>Basic settings</source>
+        <target state="final">ການຕັ້ງຄ່າພື້ນຖານ</target>
+      </trans-unit>
+      <trans-unit id="pages_2" approved="yes">
+        <source>Cache and Age</source>
+        <target state="final">ແຄັດ ແລະ ອາຍຸ</target>
+      </trans-unit>
+      <trans-unit id="pages_1" approved="yes">
+        <source>Record overview</source>
+        <target state="final">ພາບລວມຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="pages_layouts" approved="yes">
+        <source>Layouts</source>
+        <target state="final">ເຄົ້າຮ່າງ</target>
+      </trans-unit>
+      <trans-unit id="actual_backend_layout" approved="yes">
+        <source>Actual backend layout</source>
+        <target state="final">ເຄົ້າຮ່າງສ່ວນຫຼັງທີ່ໃຊ້ຈິງ</target>
+      </trans-unit>
+      <trans-unit id="lang_title" approved="yes">
+        <source>Localization overview</source>
+        <target state="final">ພາບລວມການກຳນົດທ້ອງຖິ່ນ</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editPage" approved="yes">
+        <source>Edit page content</source>
+        <target state="final">ແກ້ໄຂເນື້ອຫາໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editTranslatedPage" approved="yes">
+        <source>Edit translated page content</source>
+        <target state="final">ແກ້ໄຂເນື້ອຫາໜ້າເວັບທີ່ແປແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_viewPage" approved="yes">
+        <source>View page</source>
+        <target state="final">ເບິ່ງໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_viewTranslatedPage" approved="yes">
+        <source>View translated page</source>
+        <target state="final">ເບິ່ງໜ້າເວັບທີ່ແປແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editPageProperties" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">ແກ້ໄຂຄຸນສົມບັດໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editTranslatedPageProperties" approved="yes">
+        <source>Edit translated page properties</source>
+        <target state="final">ແກ້ໄຂຄຸນສົມບັດໜ້າເວັບທີ່ແປແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editAllPageProperties" approved="yes">
+        <source>Edit all page properties</source>
+        <target state="final">ແກ້ໄຂຄຸນສົມບັດໜ້າເວັບທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editAllTranslationedPageProperties" approved="yes">
+        <source>Edit all translated page properties</source>
+        <target state="final">ແກ້ໄຂຄຸນສົມບັດໜ້າເວັບທີ່ແປແລ້ວທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_badThingThereAre" approved="yes">
+        <source>Multiple translated page records exist for this language, but only one is allowed. Please remove the extra records.</source>
+        <target state="final">ມີຂໍ້ມູນໜ້າເວັບທີ່ແປແລ້ວຫຼາຍລາຍການສຳລັບພາສານີ້, ແຕ່ອະນຸຍາດໃຫ້ມີພຽງລາຍການດຽວເທົ່ານັ້ນ. ກະລຸນາລຶບຂໍ້ມູນສ່ວນເກີນອອກ.</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_page" approved="yes">
+        <source>Page</source>
+        <target state="final">ໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_default" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າເລີ່ມຕົ້ນ</target>
+      </trans-unit>
+      <trans-unit id="lang_getlangsta_createNewTranslationHeaders" approved="yes">
+        <source>Create new translation headers</source>
+        <target state="final">ສ້າງສ່ວນຫົວການແປໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_CEcount" approved="yes">
+        <source>Content Element Count</source>
+        <target state="final">ຈຳນວນອົງປະກອບເນື້ອຫາ</target>
+      </trans-unit>
+      <trans-unit id="moduleFunctions.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">ຄວາມເລິກ</target>
+      </trans-unit>
+      <trans-unit id="moduleFunctions.type" approved="yes">
+        <source>Type</source>
+        <target state="final">ປະເພດ</target>
+      </trans-unit>
+      <trans-unit id="moduleFunctions.lang" approved="yes">
+        <source>Language</source>
+        <target state="final">ພາສາ</target>
+      </trans-unit>
+      <trans-unit id="error.noAccess.title" approved="yes">
+        <source>No access</source>
+        <target state="final">ບໍ່ມີສິດເຂົ້າເຖິງ</target>
+      </trans-unit>
+      <trans-unit id="error.noAccess.message" approved="yes">
+        <source>You don't have access to this module.</source>
+        <target state="final">ເຈົ້າບໍ່ມີສິດເຂົ້າເຖິງໂມດູນນີ້.</target>
+      </trans-unit>
+      <trans-unit id="info.noContent.message" approved="yes">
+        <source>There are no page information available.</source>
+        <target state="final">ບໍ່ມີຂໍ້ມູນໜ້າເວັບ.</target>
+      </trans-unit>
+      <trans-unit id="info.noPageSelected.message" approved="yes">
+        <source>Please select a page in the page tree.</source>
+        <target state="final">ກະລຸນາເລືອກໜ້າເວັບໃນແຜນພູມໜ້າເວັບ.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
