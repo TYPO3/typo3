@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_common.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="about" approved="yes">
+        <source>About</source>
+        <target state="final">حول</target>
+      </trans-unit>
+      <trans-unit id="and" approved="yes">
+        <source>and</source>
+        <target state="final">و</target>
+      </trans-unit>
+      <trans-unit id="ascending" approved="yes">
+        <source>Ascending</source>
+        <target state="final">تصاعدي</target>
+      </trans-unit>
+      <trans-unit id="back" approved="yes">
+        <source>Back</source>
+        <target state="final">عودة</target>
+      </trans-unit>
+      <trans-unit id="byteSizeUnits" approved="yes">
+        <source> B| KB| MB| GB</source>
+        <target state="final"> B| KB| MB| GB</target>
+      </trans-unit>
+      <trans-unit id="cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">إلغاء</target>
+      </trans-unit>
+      <trans-unit id="category" approved="yes">
+        <source>Category</source>
+        <target state="final">فئة</target>
+      </trans-unit>
+      <trans-unit id="close" approved="yes">
+        <source>Close</source>
+        <target state="final">إغلاق</target>
+      </trans-unit>
+      <trans-unit id="delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">حذف</target>
+      </trans-unit>
+      <trans-unit id="descending" approved="yes">
+        <source>Descending</source>
+        <target state="final">تنازلي</target>
+      </trans-unit>
+      <trans-unit id="details" approved="yes">
+        <source>Details</source>
+        <target state="final">تفاصيل</target>
+      </trans-unit>
+      <trans-unit id="disable" approved="yes">
+        <source>Disable</source>
+        <target state="final">تعطيل</target>
+      </trans-unit>
+      <trans-unit id="disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">مُعطّل</target>
+      </trans-unit>
+      <trans-unit id="down" approved="yes">
+        <source>Down</source>
+        <target state="final">أسفل</target>
+      </trans-unit>
+      <trans-unit id="download" approved="yes">
+        <source>Download</source>
+        <target state="final">تنزيل</target>
+      </trans-unit>
+      <trans-unit id="edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">تعديل</target>
+      </trans-unit>
+      <trans-unit id="editField" approved="yes">
+        <source>Edit field</source>
+        <target state="final">تعديل الحقل</target>
+      </trans-unit>
+      <trans-unit id="editFile" approved="yes">
+        <source>Edit file</source>
+        <target state="final">تعديل الملف</target>
+      </trans-unit>
+      <trans-unit id="enable" approved="yes">
+        <source>Enable</source>
+        <target state="final">تفعيل</target>
+      </trans-unit>
+      <trans-unit id="enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">مُفعَّل</target>
+      </trans-unit>
+      <trans-unit id="file" approved="yes">
+        <source>File</source>
+        <target state="final">ملف</target>
+      </trans-unit>
+      <trans-unit id="files" approved="yes">
+        <source>Files</source>
+        <target state="final">ملفات</target>
+      </trans-unit>
+      <trans-unit id="folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">مجلد</target>
+      </trans-unit>
+      <trans-unit id="first" approved="yes">
+        <source>First</source>
+        <target state="final">الأوّل</target>
+      </trans-unit>
+      <trans-unit id="from" approved="yes">
+        <source>From</source>
+        <target state="final">من</target>
+      </trans-unit>
+      <trans-unit id="go" approved="yes">
+        <source>Go</source>
+        <target state="final">ابدأ</target>
+      </trans-unit>
+      <trans-unit id="goTo" approved="yes">
+        <source>Go to</source>
+        <target state="final">اذهب إلى</target>
+      </trans-unit>
+      <trans-unit id="help" approved="yes">
+        <source>Help</source>
+        <target state="final">مساعدة</target>
+      </trans-unit>
+      <trans-unit id="item" approved="yes">
+        <source>Item</source>
+        <target state="final">عنصر</target>
+      </trans-unit>
+      <trans-unit id="items" approved="yes">
+        <source>Items</source>
+        <target state="final">عناصر</target>
+      </trans-unit>
+      <trans-unit id="last" approved="yes">
+        <source>Last</source>
+        <target state="final">آخر</target>
+      </trans-unit>
+      <trans-unit id="left" approved="yes">
+        <source>Left</source>
+        <target state="final">يسار</target>
+      </trans-unit>
+      <trans-unit id="login" approved="yes">
+        <source>Login</source>
+        <target state="final">تسجيل الدخول</target>
+      </trans-unit>
+      <trans-unit id="logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">تسجيل الخروج</target>
+      </trans-unit>
+      <trans-unit id="more" approved="yes">
+        <source>More</source>
+        <target state="final">المزيد</target>
+      </trans-unit>
+      <trans-unit id="move" approved="yes">
+        <source>Move</source>
+        <target state="final">نقل</target>
+      </trans-unit>
+      <trans-unit id="new" approved="yes">
+        <source>New</source>
+        <target state="final">جديد</target>
+      </trans-unit>
+      <trans-unit id="next" approved="yes">
+        <source>Next</source>
+        <target state="final">التّالي</target>
+      </trans-unit>
+      <trans-unit id="no" approved="yes">
+        <source>No</source>
+        <target state="final">لا</target>
+      </trans-unit>
+      <trans-unit id="ok" approved="yes">
+        <source>OK</source>
+        <target state="final">موافق</target>
+      </trans-unit>
+      <trans-unit id="open" approved="yes">
+        <source>Open</source>
+        <target state="final">فتح</target>
+      </trans-unit>
+      <trans-unit id="page" approved="yes">
+        <source>Page</source>
+        <target state="final">صفحة</target>
+      </trans-unit>
+      <trans-unit id="pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">صفحات</target>
+      </trans-unit>
+      <trans-unit id="previous" approved="yes">
+        <source>Previous</source>
+        <target state="final">السّابق</target>
+      </trans-unit>
+      <trans-unit id="print" approved="yes">
+        <source>Print</source>
+        <target state="final">طباعة</target>
+      </trans-unit>
+      <trans-unit id="reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">إعادة تحميل</target>
+      </trans-unit>
+      <trans-unit id="right" approved="yes">
+        <source>Right</source>
+        <target state="final">يمين</target>
+      </trans-unit>
+      <trans-unit id="save" approved="yes">
+        <source>Save</source>
+        <target state="final">حفظ</target>
+      </trans-unit>
+      <trans-unit id="saveAndClose" approved="yes">
+        <source>Save and close</source>
+        <target state="final">حفظ وإغلاق</target>
+      </trans-unit>
+      <trans-unit id="saveAndCloseDoc" approved="yes">
+        <source>Save and close document</source>
+        <target state="final">حفظ وإغلاق المستند</target>
+      </trans-unit>
+      <trans-unit id="saveAndCreateNewDoc" approved="yes">
+        <source>Save and create new document</source>
+        <target state="final">حفظ وإنشاء مستند جديد</target>
+      </trans-unit>
+      <trans-unit id="saveAndViewPage" approved="yes">
+        <source>Save and view page</source>
+        <target state="final">حفظ وعرض الصفحة</target>
+      </trans-unit>
+      <trans-unit id="search" approved="yes">
+        <source>Search</source>
+        <target state="final">بحث</target>
+      </trans-unit>
+      <trans-unit id="send" approved="yes">
+        <source>Send</source>
+        <target state="final">إرسال</target>
+      </trans-unit>
+      <trans-unit id="start" approved="yes">
+        <source>Start</source>
+        <target state="final">بدء</target>
+      </trans-unit>
+      <trans-unit id="stop" approved="yes">
+        <source>Stop</source>
+        <target state="final">توقف</target>
+      </trans-unit>
+      <trans-unit id="submit" approved="yes">
+        <source>Submit</source>
+        <target state="final">إرسال</target>
+      </trans-unit>
+      <trans-unit id="to" approved="yes">
+        <source>To</source>
+        <target state="final">إلى</target>
+      </trans-unit>
+      <trans-unit id="tsRef" approved="yes">
+        <source>TSref reference</source>
+        <target state="final">مرجع TSref</target>
+      </trans-unit>
+      <trans-unit id="undefined" approved="yes">
+        <source>Undefined</source>
+        <target state="final">غير مُعرّف</target>
+      </trans-unit>
+      <trans-unit id="up" approved="yes">
+        <source>Up</source>
+        <target state="final">أعلى</target>
+      </trans-unit>
+      <trans-unit id="upload" approved="yes">
+        <source>Upload</source>
+        <target state="final">تحميل</target>
+      </trans-unit>
+      <trans-unit id="user" approved="yes">
+        <source>User</source>
+        <target state="final">مستخدم</target>
+      </trans-unit>
+      <trans-unit id="users" approved="yes">
+        <source>Users</source>
+        <target state="final">مستخدمين</target>
+      </trans-unit>
+      <trans-unit id="view" approved="yes">
+        <source>View</source>
+        <target state="final">عرض</target>
+      </trans-unit>
+      <trans-unit id="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">نعم</target>
+      </trans-unit>
+      <trans-unit id="notAvailableAbbreviation" approved="yes">
+        <source>N/A</source>
+        <target state="final">N/A</target>
+      </trans-unit>
+      <trans-unit id="pleaseConfirm" approved="yes">
+        <source>Please confirm</source>
+        <target state="final">يرجى التأكيد</target>
+      </trans-unit>
+      <!-- Colors -->
+      <trans-unit id="color" approved="yes">
+        <source>Color</source>
+        <target state="final">اللون</target>
+      </trans-unit>
+      <trans-unit id="color.red" approved="yes">
+        <source>Red</source>
+        <target state="final">الأحمر</target>
+      </trans-unit>
+      <trans-unit id="color.orange" approved="yes">
+        <source>Orange</source>
+        <target state="final">البرتقالي</target>
+      </trans-unit>
+      <trans-unit id="color.yellow" approved="yes">
+        <source>Yellow</source>
+        <target state="final">الأصفر</target>
+      </trans-unit>
+      <trans-unit id="color.lime" approved="yes">
+        <source>Lime</source>
+        <target state="final">ليموني</target>
+      </trans-unit>
+      <trans-unit id="color.green" approved="yes">
+        <source>Green</source>
+        <target state="final">الأخضر</target>
+      </trans-unit>
+      <trans-unit id="color.teal" approved="yes">
+        <source>Teal</source>
+        <target state="final">أزرق مخضّر</target>
+      </trans-unit>
+      <trans-unit id="color.blue" approved="yes">
+        <source>Blue</source>
+        <target state="final">الأزرق</target>
+      </trans-unit>
+      <trans-unit id="color.indigo" approved="yes">
+        <source>Indigo</source>
+        <target state="final">النِيلي</target>
+      </trans-unit>
+      <trans-unit id="color.purple" approved="yes">
+        <source>Purple</source>
+        <target state="final">البنفسجي</target>
+      </trans-unit>
+      <trans-unit id="color.magenta" approved="yes">
+        <source>Magenta</source>
+        <target state="final">الأرجواني</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
