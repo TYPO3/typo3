@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814801" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilestorage.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>File storage, which acts as an entry root point to a file-based structure. See it like a drive or a hard drive volume in your local machine.</source>
+        <target state="final">Úložiště souborů, které slouží jako vstupní kořenový bod do struktury založené na souborech. Chápejte jej jako jednotku nebo svazek pevného disku v místním počítači.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details">
+        <source/>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Disabling the storage will result in removing it from any listings in the backend. Existing file relations will still exist.</source>
+        <target state="final">Zakázáním úložiště dojde k jeho odstranění ze všech výpisů v backendu. Stávající vztahy k souborům budou nadále existovat.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If you set up a file storage, it will show up on any folder lists, thus allowing to basically browse through the files in this file repository. If you set this checkbox, this storage will be excluded from any listings in the backend. Any existing file references will still exist further.</source>
+        <target state="final">Pokud nastavíte úložiště souborů, zobrazí se ve všech seznamech složek a umožní v podstatě procházet soubory v tomto úložišti souborů. Pokud toto políčko nastavíte, bude toto úložiště vyloučeno ze všech seznamů v backendu. Veškeré existující odkazy na soubory budou existovat i nadále.</target>
+      </trans-unit>
+      <trans-unit id="name.description" resname="name.description" approved="yes">
+        <source>The visible identifier for this file storage.</source>
+        <target state="final">Viditelný identifikátor pro toto úložiště souborů.</target>
+      </trans-unit>
+      <trans-unit id="name.details" resname="name.details" approved="yes">
+        <source>The label entered here will be shown as the name for the entry point in the TYPO3 Backend. Be sure to make it descriptive and logical for your editors.</source>
+        <target state="final">Zde zadané označení se zobrazí jako název vstupního bodu v backendu TYPO3. Dbejte na to, aby byl popisný a logický pro vaše editory.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>A description of this storage.</source>
+        <target state="final">Popis tohoto úložiště.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" approved="yes">
+        <source>This description field is used to explain e.g. the location of the storage, also what this storage is meant for or what it contains.</source>
+        <target state="final">Toto pole popisu slouží k vysvětlení např. umístění úložiště, ale také k čemu je toto úložiště určeno nebo co obsahuje.</target>
+      </trans-unit>
+      <trans-unit id="driver.description" resname="driver.description" approved="yes">
+        <source>Choose the driver as the technical backbone of the storage. Once you've chosen a driver, and saved it, additional configuration will show up.</source>
+        <target state="final">Zvolte ovladač jako technickou páteř úložiště. Po výběru ovladače a jeho uložení se zobrazí další konfigurace.</target>
+      </trans-unit>
+      <trans-unit id="driver.details" resname="driver.details" approved="yes">
+        <source>The driver is the technical background of a storage, and thus also defines whether the location of the storage is local (= on the same machine as this TYPO3 installation) or remote like a WebDAV server connection. Search for extensions in the TYPO3 Extension Repository that extend this driver list.</source>
+        <target state="final">Ovladač je technickým zázemím úložiště, a proto také určuje, zda je umístění úložiště místní (= na stejném počítači jako instalace TYPO3) nebo vzdálené jako připojení k serveru WebDAV. V repozitáři rozšíření TYPO3 hledejte rozšíření, která tento seznam ovladačů rozšiřují.</target>
+      </trans-unit>
+      <trans-unit id="processingfolder.description" resname="processingfolder.description" approved="yes">
+        <source>Defines the directory on this storage to be used to save temporary files like resized images.</source>
+        <target state="final">Definuje adresář v tomto úložišti, který se bude používat k ukládání dočasných souborů, například obrázků se změněnou velikostí.</target>
+      </trans-unit>
+      <trans-unit id="is_browsable.description" resname="is_browsable.description" approved="yes">
+        <source>If set, backend users can browse through this storage. Otherwise it will show up as a unselectable item in the list.</source>
+        <target state="final">Pokud je nastaveno, mohou uživatelé backendu procházet toto úložiště. V opačném případě se v seznamu zobrazí jako položka, kterou nelze vybrat.</target>
+      </trans-unit>
+      <trans-unit id="is_public.description" resname="is_public.description" approved="yes">
+        <source>If set, then the files in this storage can be linked directly from the outside world. If this is not set, make sure to provide additional possibilities to access the files in this storage.</source>
+        <target state="final">Pokud je nastaveno, lze soubory v tomto úložišti propojit přímo z vnějšího světa. Pokud není nastavena, nezapomeňte zajistit další možnosti přístupu k souborům v tomto úložišti.</target>
+      </trans-unit>
+      <trans-unit id="is_writable.description" resname="is_writable.description" approved="yes">
+        <source>If set, then users are allowed to modify, add, delete files/folders on this storage.</source>
+        <target state="final">Pokud je nastaveno, uživatelé mohou v tomto úložišti upravovat, přidávat a odstraňovat soubory/složky.</target>
+      </trans-unit>
+      <trans-unit id="is_online.description" resname="is_online.description" approved="yes">
+        <source>This flag is usually set. If TYPO3 cannot connect to this storage (because it maybe temporary down), then the flag will be checked, and the storage will behave like it is non-browsable in the TYPO3 backend. The admin needs to manually activate it again if it was offline.</source>
+        <target state="final">Tento příznak je obvykle nastaven. Pokud se TYPO3 nemůže k tomuto úložišti připojit (protože je možná dočasně vypnuté), pak se příznak zaškrtne a úložiště se bude v backendu TYPO3 chovat jako neprohlížitelné. Správce jej musí znovu ručně aktivovat, pokud bylo offline.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
