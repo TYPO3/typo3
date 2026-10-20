@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814796" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_fe_users.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="username.description" resname="username.description" approved="yes">
+        <source>Enter the username of the website user. This is needed to login.</source>
+        <target state="final">Skriv inn brukernavnet til webside-brukeren. Dette er nødvendig for innlogging.</target>
+      </trans-unit>
+      <trans-unit id="username.syntax" resname="username.syntax" approved="yes">
+        <source>A username is required and must be in lowercase without spaces in it. The username must be unique among other usernames in the page where it's saved. If it is not unique a number will be prepended automatically.</source>
+        <target state="final">Brukernavnet er nødvendig, og må skrives med små bokstaver og uten bruk av mellomrom. Brukernavnet må også være unikt i forhold til andre brukernavn på siden der det er lagret. Hvis det ikke er unikt vil et nummer automatisk bli lagt til.</target>
+      </trans-unit>
+      <trans-unit id="password.description" resname="password.description" approved="yes">
+        <source>Enter the password for the username above. This is needed to login.</source>
+        <target state="final">Skriv inn passordet for brukernavnet over. Dette er nødvendig for innlogging.</target>
+      </trans-unit>
+      <trans-unit id="password.syntax" resname="password.syntax" approved="yes">
+        <source>A password is required and must be in lowercase without spaces in it.</source>
+        <target state="final">Passordet er påkrevd og burde være med små bokstaver uten mellomrom.</target>
+      </trans-unit>
+      <trans-unit id="usergroup.description" resname="usergroup.description" approved="yes">
+        <source>Select a user group for the username.</source>
+        <target state="final">Velg en brukergruppe for brukernavnet.</target>
+      </trans-unit>
+      <trans-unit id="usergroup.details" resname="usergroup.details" approved="yes">
+        <source>When a user logs in he is able to view all content which is access restricted to the user &lt;em&gt;group(s)&lt;/em&gt; the user is a member of. Therefore the user login primarily makes sense with regard to the member groups.</source>
+        <target state="final">Når en bruker logger seg inn kan han/hun se alt innhold som er begrenset til den/de &lt;em&gt;brukergruppen(e)&lt;/em&gt; brukeren er medlem av. På grunn av dette har brukerinnlogging mest mening når det brukes sammen med brukergrupper.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.details" resname="lockToDomain.details" approved="yes">
+        <source>A TYPO3 system may have multiple domains pointing to it. Therefore this option secures that users can login only from a certain host name.</source>
+        <target state="final">Et TYPO3-system kan ha mange domener. Dette valget kan brukes for å sperre bruker til kun ett av disse domenene.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.syntax" resname="lockToDomain.syntax" approved="yes">
+        <source>Either a domain name, "www.typo3.org" or an IP address, "10.34.222.83"</source>
+        <target state="final">Skriv inn et domenenavn, f.eks. 'www.typo3.com', eller en IP-adresse: '10.34.222.82'</target>
+      </trans-unit>
+      <trans-unit id="name.description" resname="name.description" approved="yes">
+        <source>Enter the regular name of the user, both first- and surname.</source>
+        <target state="final">Skriv inn brukerens virkelige navn.</target>
+      </trans-unit>
+      <trans-unit id="address.description" resname="address.description" approved="yes">
+        <source>Enter the street address of the user.</source>
+        <target state="final">Skriv inn adressen til brukeren.</target>
+      </trans-unit>
+      <trans-unit id="www.description" resname="www.description" approved="yes">
+        <source>Enter the homepage URL</source>
+        <target state="final">Skriv inn URL til hjemmesiden.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the job title, eg. 'Director' or 'Accountant'.</source>
+        <target state="final">Skriv inn brukerens jobbtittel, f.eks.: 'Direktør' eller 'Regnskapsfører'.</target>
+      </trans-unit>
+      <trans-unit id="company.description" resname="company.description" approved="yes">
+        <source>Enter the name of the company in which the user is employed.</source>
+        <target state="final">Skriv inn firmaet denne brukeren tilhører.</target>
+      </trans-unit>
+      <trans-unit id="image.description" resname="image.description" approved="yes">
+        <source>Insert a photo of the user.</source>
+        <target state="final">Sett inn et bilde av brukeren.</target>
+      </trans-unit>
+      <trans-unit id="disable.description" resname="disable.description" approved="yes">
+        <source>This option will temporarily disable the user from logging in.</source>
+        <target state="final">Dette valget vil midlertidig hindre brukeren fra å logge seg inn.</target>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Enter the date from which the account is active.</source>
+        <target state="final">Skriv inn datoen for når kontoen blir aktivert.</target>
+      </trans-unit>
+      <trans-unit id="starttime.syntax" resname="starttime.syntax" xml:space="preserve" approved="yes">
+				<source>The syntax is dd-mm-yy, but you can just enter a "d" in the field to insert todays date. Or "d+10" to insert the date 10 days from now etc.
+The field will re-format any input to fit the format it understands so you can just experiment and you will be able to clearly see how dates should be entered.</source>
+			<target state="final">Syntaksen er 'dd-mm-yy', men du kan også skrive inn en "d" for å sette inn dagens dato. Eller "d+10" for å sette inn datoen om ti dager fra nå, etc. Feltet vil automatisk omformatere seg til et format det forstår, slik at du fritt kan eksperimentere litt for å se hvordan du burde skrive inn en dato.</target></trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>Enter the date from which the account is disabled.</source>
+        <target state="final">Skriv inn datoen for når konten blir deaktivert.</target>
+      </trans-unit>
+      <trans-unit id="endtime.syntax" resname="endtime.syntax" approved="yes">
+        <source>See "Start"</source>
+        <target state="final">Se 'Startdato'</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>Enter additional TSconfig for the user (advanced).</source>
+        <target state="final">Skriv inn ekstra TSconfig for brukeren (avansert)</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax, without conditions and constants.</source>
+        <target state="final">TypoScript-syntaks, uten konstanter eller kriterier (conditions).</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>A website login user.</source>
+        <target state="final">En Webside-bruker.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>These are users with a username and password who are allowed specific access to otherwise restricted areas on your website.</source>
+        <target state="final">Dette er bruker med brukernavn og passord som har tilgang til områder og innhold som ellers er sperret på websiden.</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>Part of the form for editing a frontend user.
+A typical login box (standard) on the website where frontend users can login.</source>
+			<target state="final">Del av skjemaet for endring av frontside-brukere. En typisk innloggingsboks på websiden der brukerne kan logge inn.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
