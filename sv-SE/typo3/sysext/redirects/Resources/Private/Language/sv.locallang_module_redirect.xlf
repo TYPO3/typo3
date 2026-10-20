@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf" date="2017-12-29T20:23:34Z" product-name="redirects" target-language="sv-SE">
+    <header/>
+    <body>
+      <trans-unit id="source_host_global_text" approved="yes">
+        <source>Global redirect (any domain)</source>
+        <target state="final">Global omdirigering (oavsett domän)</target>
+      </trans-unit>
+      <trans-unit id="heading_text" approved="yes">
+        <source>Redirect Management</source>
+        <target state="final">Omdirigeringshantering</target>
+      </trans-unit>
+      <trans-unit id="redirect_add_text" approved="yes">
+        <source>Add redirect</source>
+        <target state="final">Lägg till omdirigering</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found.message" approved="yes">
+        <source>There are currently no redirect records found in the database.</source>
+        <target state="final">Inga omdirigeringsposter för närvarande i databasen.</target>
+      </trans-unit>
+      <trans-unit id="redirect_create" approved="yes">
+        <source>Create new redirect</source>
+        <target state="final">Skapa ny omdirigering</target>
+      </trans-unit>
+      <trans-unit id="filter.targetStatusCode" approved="yes">
+        <source>Status Code</source>
+        <target state="final">Statuskod</target>
+      </trans-unit>
+      <trans-unit id="destination_status_code" approved="yes">
+        <source>Status Code</source>
+        <target state="final">Statuskod</target>
+      </trans-unit>
+      <trans-unit id="hit_last_never" approved="yes">
+        <source>Never</source>
+        <target state="final">Aldrig</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
