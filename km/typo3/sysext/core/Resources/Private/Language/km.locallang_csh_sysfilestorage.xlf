@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814801" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilestorage.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>File storage, which acts as an entry root point to a file-based structure. See it like a drive or a hard drive volume in your local machine.</source>
+        <target state="final">ការផ្ទុក​ឯកសារ​​ដែល​ដើរតួនាទី​​ជាចំណុច​ធាតុ​មេ​មួយ​ទៅ​ឯកសារ​ដែល​ផ្អែកលើ​រចនាសម្ព័ន្ធ។ មើលទៅ​វា​ដូចជា​ដ្រាយ​ឬ​ភាគថាសរឹងដ្រាយមួយ​នៅក្នុង​ម៉ាស៊ីន​របស់អ្នក។</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details">
+        <source/>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Disabling the storage will result in removing it from any listings in the backend. Existing file relations will still exist.</source>
+        <target state="final">បិទការផ្ទុក​នឹងមានលទ្ធផល​ក្នុង​ការយកចេញ​វា​ពីបញ្ជីណាមួយ​ក្នុង​កម្មវិធីខាងក្រោយ។​ ឯកសារដែល​មានទំនាក់ទំនង​ស្រាប់​នឹងនៅតែមាន។</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If you set up a file storage, it will show up on any folder lists, thus allowing to basically browse through the files in this file repository. If you set this checkbox, this storage will be excluded from any listings in the backend. Any existing file references will still exist further.</source>
+        <target state="final">ប្រសិនបើ​អ្នក​កំណត់​ការផ្ទុក​ឯកសារមួយ​វា​នឹងបង្ហាញ​លើបញ្ជីថតណាមួយ​ជាកត្តា​ដែលអនុញ្ញាត​ឱ្យរកមើល​តាមរយៈ​ឯកសារ​នៅក្នុង​ឃ្លាំងឯកសារនេះ។ ប្រសិនបើ​អ្នក​កំណត់​ប្រអប់ធីកនេះ​ការផ្ទុកនេះ​នឹងត្រូវបានដកចេញ​ពីបញ្ជីណាមួយ​ក្នុងកម្មវិធីខាងក្រោយ។ ​​ឯកសារ​យោង​ដែលមានស្រាប់​នឹងនៅតែមាន​បន្តទៀត។</target>
+      </trans-unit>
+      <trans-unit id="name.description" resname="name.description" approved="yes">
+        <source>The visible identifier for this file storage.</source>
+        <target state="final">ការកំណត់​អត្តសញ្ញាណ​ដែលអាចមើលឃើញ​សម្រាប់​ការផ្ទុក​ឯកសារ​នេះ។</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>A description of this storage.</source>
+        <target state="final">សេចក្ដីពិពណ៌នា​របស់ការផ្ទុក​នេះ។</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" approved="yes">
+        <source>This description field is used to explain e.g. the location of the storage, also what this storage is meant for or what it contains.</source>
+        <target state="final">សេចក្ដីពណ៌នានេះ​គឺត្រូវបានប្រើ​ដើម្បី​ពន្យល់​ឧទាហរណ៍​ទីតាំងនៃការផ្ទុក​,​ការផ្ទុកនេះសម្រាប់ធ្វើអ្វី​ឬមានផ្ទុកអ្វី។</target>
+      </trans-unit>
+      <trans-unit id="driver.description" resname="driver.description" approved="yes">
+        <source>Choose the driver as the technical backbone of the storage. Once you've chosen a driver, and saved it, additional configuration will show up.</source>
+        <target state="final">ជ្រើសរើស​កម្មវិធីបញ្ជា​ដែលជា​backbone​បច្ចេកទេស​នៃ​ការផ្ទុក។​ពេលអ្នកបានជ្រើសរើស​កម្មវិធីបញ្ជាមួយ​និងបានរក្សាទុកវា​រចនាសម្ព័ន្ធ​បន្ថែម​នឹង​បង្ហាញ​ឡើង។</target>
+      </trans-unit>
+      <trans-unit id="driver.details" resname="driver.details" approved="yes">
+        <source>The driver is the technical background of a storage, and thus also defines whether the location of the storage is local (= on the same machine as this TYPO3 installation) or remote like a WebDAV server connection. Search for extensions in the TYPO3 Extension Repository that extend this driver list.</source>
+        <target state="final">កម្មវិធីបញ្ជា​គឺជា​បច្ចេកទេស​នៃការផ្ទុកមួយ​ហើយក៏បានកំណត់ថាតើ​ទីតាំង​នៃការផ្ទុក​គឺ​ស្ថិតនៅក្នុង​តំបន់ (= នៅលើ​ម៉ាស៊ីន​ដូចគ្នា​ដែលដំឡើង​TYPO3) ឬចូលពីចម្ងាយដូចជាការតភ្ជាប់ម៉ាស៊ីនបម្រើ WebDAV ។ ស្វែងរក​ផ្នែកបន្ថែម​ក្នុងឃ្លាំង​ផ្នែកបន្ថែម​TYPO3​ដែលពង្រីក​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​បញ្ជីកម្មវិធីបញ្ជានេះ។</target>
+      </trans-unit>
+      <trans-unit id="is_browsable.description" resname="is_browsable.description" approved="yes">
+        <source>If set, backend users can browse through this storage. Otherwise it will show up as a unselectable item in the list.</source>
+        <target state="final">ប្រសិនបើកំណត់​អ្នកប្រើកម្មវិធីខាងក្រោយ​អាច​រកមើល​តាមរយៈ​ការផ្ទុក​នេះ។​បើមិនដូច្នោះ​ទេ​វា​នឹង​បង្ហាញឡើង​ដូចជា​មិនជ្រើសធាតុមួយនៅក្នុងបញ្ជី។</target>
+      </trans-unit>
+      <trans-unit id="is_public.description" resname="is_public.description" approved="yes">
+        <source>If set, then the files in this storage can be linked directly from the outside world. If this is not set, make sure to provide additional possibilities to access the files in this storage.</source>
+        <target state="final">ប្រសិនបើ​កំណត់,​បន្ទាប់មក​ឯកសារ​នៅក្នុង​ការផ្ទុក​នេះ​អាច​ត្រូវបានភ្ជាប់ទំនាក់ទំនង​ដោយផ្ទាល់​ពីពិភពខាងក្រៅ។ ប្រសិនបើ​វាមិនត្រូវបានកំណត់​សូមប្រាកដថា​អ្នក​ផ្តល់​នូវលទ្ធភាព​បន្ថែមទៀត​ដើម្បី​ចូលដំណើរការ​ឯកសារ​នៅក្នុងការផ្ទុក​នេះ។</target>
+      </trans-unit>
+      <trans-unit id="is_writable.description" resname="is_writable.description" approved="yes">
+        <source>If set, then users are allowed to modify, add, delete files/folders on this storage.</source>
+        <target state="final">ប្រសិនបើកំណត់,​បន្ទាប់​មកអ្នកប្រើ​ត្រូវបានអនុញ្ញាត​ឱ្យកែប្រែបន្ថែម,​លុបឯកសារ/ថត​នៅក្នុង​ការផ្ទុកនេះ។</target>
+      </trans-unit>
+      <trans-unit id="is_online.description" resname="is_online.description" approved="yes">
+        <source>This flag is usually set. If TYPO3 cannot connect to this storage (because it maybe temporary down), then the flag will be checked, and the storage will behave like it is non-browsable in the TYPO3 backend. The admin needs to manually activate it again if it was offline.</source>
+        <target state="final">ទង់នេះ​ជាធម្មតា​ត្រូវបាន​កំណត់។​ប្រសិនបើ​TYPO3​មិនអាច​តភ្ជាប់ទៅ​ការផ្ទុកនេះ​(ពីព្រោះ​វា​ប្រហែលជា​បណ្តោះអាសន្ម) ,​ហើយបន្ទាប់មក​ទង់​នឹងត្រូវបាន​ធីក​, និង​ការផ្ទុក​នឹង​មាន​ឥរិយាបថ​ដូច​ជាវា​មិនមែនជា​​browsable​នៅក្នុងTYPO3​ផ្នែកខាងក្រោយ។​ អ្នកគ្រប់គ្រងនេះ​ត្រូវការ​ធ្វើឱ្យសកម្ម​ដោយដៃ​ម្ដងទៀត​ប្រសិនបើ​វា​ត្រូវបាន​នៅ​ក្រៅបណ្ដាញ។</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
