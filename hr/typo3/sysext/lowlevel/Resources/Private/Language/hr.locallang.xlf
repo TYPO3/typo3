@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id="usersettings" x-unused-since="15.0" approved="yes">
+        <source>$GLOBALS['TYPO3_USER_SETTINGS'] (User Settings Configuration)</source>
+        <target state="final">$GLOBALS['TYPO3_USER_SETTINGS'] (Konfiguracija korisničkih postavki)</target>
+      </trans-unit>
+      <trans-unit id="routes" approved="yes">
+        <source>Backend Routes</source>
+        <target state="final">Rute pozadinskog sučelja</target>
+      </trans-unit>
+      <trans-unit id="search" approved="yes">
+        <source>Search</source>
+        <target state="final">Traži</target>
+      </trans-unit>
+      <trans-unit id="fullSearch" approved="yes">
+        <source>Full search</source>
+        <target state="final">Potpuna pretraga</target>
+      </trans-unit>
+      <trans-unit id="selectRecords" approved="yes">
+        <source>Select records</source>
+        <target state="final">Odaberite zapise</target>
+      </trans-unit>
+      <trans-unit id="countResults" approved="yes">
+        <source>Count results</source>
+        <target state="final">Rezultati brojanja</target>
+      </trans-unit>
+      <trans-unit id="explainQuery" approved="yes">
+        <source>Explain query</source>
+        <target state="final">Objasni upit</target>
+      </trans-unit>
+      <trans-unit id="csvExport" approved="yes">
+        <source>CSV Export</source>
+        <target state="final">Izvoz u CSV</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.result" approved="yes">
+        <source>Result</source>
+        <target state="final">Rezultat</target>
+      </trans-unit>
+      <trans-unit id="showSQL" approved="yes">
+        <source>Show SQL parts</source>
+        <target state="final">Prikaži SQL dijelove</target>
+      </trans-unit>
+      <trans-unit id="useFormattedStrings" approved="yes">
+        <source>Use formatted strings, labels and dates instead of original values for results</source>
+        <target state="final">Koristi formatirane stringove, oznake i datume umjesto originalnih vrijednosti za rezultate</target>
+      </trans-unit>
+      <trans-unit id="sortOptions" approved="yes">
+        <source>Sort selectbox-options for relations by label and not by value</source>
+        <target state="final">Poredaj opcije padajućeg izbornika za relacije po oznaci a ne po vrijednosti</target>
+      </trans-unit>
+      <trans-unit id="showDeleted" approved="yes">
+        <source>Show even deleted entries (with undelete buttons)</source>
+        <target state="final">Prikaži čak i izbrisane zapise (uz gumb za poništavanje brisanja)</target>
+      </trans-unit>
+      <trans-unit id="count" approved="yes">
+        <source>Count</source>
+        <target state="final">Broj</target>
+      </trans-unit>
+      <trans-unit id="search_whole_database" approved="yes">
+        <source>Search whole Database</source>
+        <target state="final">Pretraži cijelu bazu podataka</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
