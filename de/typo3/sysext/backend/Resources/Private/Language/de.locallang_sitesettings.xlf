@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf" date="2024-09-10T12:13:00Z" product-name="backend" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="edit.headline" approved="yes">
+        <source>Site Settings for "%s"</source>
+        <target state="final">Einstellungen für Site "%s"</target>
+      </trans-unit>
+      <trans-unit id="edit.noSettings.title" approved="yes">
+        <source>No settings available</source>
+        <target state="final">Keine Einstellungen verfügbar</target>
+      </trans-unit>
+      <trans-unit id="edit.noSettings.message" approved="yes">
+        <source>The site '%s' does not provide configurable settings.</source>
+        <target state="final">Die Site '%s' bietet keine anpassbaren Einstellungen.</target>
+      </trans-unit>
+      <trans-unit id="edit.yamlExport" approved="yes">
+        <source>YAML export</source>
+        <target state="final">YAML-Export</target>
+      </trans-unit>
+      <trans-unit id="edit.editSiteConfiguration" approved="yes">
+        <source>Edit site configuration</source>
+        <target state="final">Site-Konfiguration bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="save.message.updated" approved="yes">
+        <source>Settings updated.</source>
+        <target state="final">Einstellungen aktualisiert.</target>
+      </trans-unit>
+      <trans-unit id="categories.other" approved="yes">
+        <source>Other</source>
+        <target state="final">Sonstige</target>
+      </trans-unit>
+      <trans-unit id="labels.edit" approved="yes">
+        <source>Edit Site Settings "%s"</source>
+        <target state="final">Website-Einstellungen bearbeiten „%s“</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
