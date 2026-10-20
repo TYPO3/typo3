@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Workspaces</source>
+        <target state="final">Radni prostori</target>
+      </trans-unit>
+      <trans-unit id="ok" approved="yes">
+        <source>Ok</source>
+        <target state="final">U redu</target>
+      </trans-unit>
+      <trans-unit id="cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Otkaži</target>
+      </trans-unit>
+      <trans-unit id="chooseMassAction" approved="yes">
+        <source>Choose mass action</source>
+        <target state="final">Odaberite masovnu radnju</target>
+      </trans-unit>
+      <trans-unit id="chooseSelectionAction" approved="yes">
+        <source>Choose selection action</source>
+        <target state="final">Odaberite radnju odabira</target>
+      </trans-unit>
+      <trans-unit id="chooseAction" approved="yes">
+        <source>Choose staging action</source>
+        <target state="final">Odaberite akciju faze</target>
+      </trans-unit>
+      <trans-unit id="item" approved="yes">
+        <source>item</source>
+        <target state="final">stavka</target>
+      </trans-unit>
+      <trans-unit id="items" approved="yes">
+        <source>items</source>
+        <target state="final">stavke</target>
+      </trans-unit>
+      <trans-unit id="recordsToDisplay" approved="yes">
+        <source>Records to display</source>
+        <target state="final">Prikaži zapise</target>
+      </trans-unit>
+      <trans-unit id="reviewandpublish" approved="yes">
+        <source>review and publish</source>
+        <target state="final">pregledaj i objavi</target>
+      </trans-unit>
+      <trans-unit id="workspacelist" approved="yes">
+        <source>Workspace List</source>
+        <target state="final">Popis radnih prostora</target>
+      </trans-unit>
+      <trans-unit id="actionSendToStage" approved="yes">
+        <source>Send to stage</source>
+        <target state="final">Pošalji u stage</target>
+      </trans-unit>
+      <trans-unit id="publish_execute_action_option" approved="yes">
+        <source>Publish to LIVE</source>
+        <target state="final">Objavi u ŽIVO</target>
+      </trans-unit>
+      <trans-unit id="close" approved="yes">
+        <source>Close</source>
+        <target state="final">Zatvori</target>
+      </trans-unit>
+      <trans-unit id="runMassAction.done" approved="yes">
+        <source>Done processing %d elements</source>
+        <target state="final">Završena obrada %d elemenata</target>
+      </trans-unit>
+      <trans-unit id="runMassAction.init" approved="yes">
+        <source>init</source>
+        <target state="final">init</target>
+      </trans-unit>
+      <trans-unit id="tooltip.publishAll" approved="yes">
+        <source>Really publish entire workspace?</source>
+        <target state="final">Zaista želite objaviti čitav radni prostor?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardAll" approved="yes">
+        <source>Do you really want to discard changes from the whole workspace?</source>
+        <target state="final">Zaista želite odbaciti izmjene u čitavom radnom prostoru?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.publishSelected" approved="yes">
+        <source>Really publish selected elements?</source>
+        <target state="final">Zaista želite objaviti odabrane elemente?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardSelected" approved="yes">
+        <source>Really discard changes of the selected elements?</source>
+        <target state="final">Zaista želite odbaciti izmjene odabranih elemenata?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.generatePagePreview" approved="yes">
+        <source>Generate page preview links</source>
+        <target state="final">Prikaži poveznice za predpregled</target>
+      </trans-unit>
+      <trans-unit id="tooltip.showChanges" approved="yes">
+        <source>Show changes</source>
+        <target state="final">Prikaži izmjene</target>
+      </trans-unit>
+      <trans-unit id="previewLink" approved="yes">
+        <source>Preview Link</source>
+        <target state="final">Poveznica za predpregled</target>
+      </trans-unit>
+      <trans-unit id="error.noResponse" approved="yes">
+        <source>The server did not send any response whether the action was successful.</source>
+        <target state="final">Server nije poslao obavijest o uspjehu akcije.</target>
+      </trans-unit>
+      <trans-unit id="rowDetails" approved="yes">
+        <source>Row details...</source>
+        <target state="final">Detalji retka...</target>
+      </trans-unit>
+      <trans-unit id="column.difference" approved="yes">
+        <source>Difference</source>
+        <target state="final">Razlika</target>
+      </trans-unit>
+      <trans-unit id="column.changeDate" approved="yes">
+        <source>Modification</source>
+        <target state="final">Izmjena</target>
+      </trans-unit>
+      <trans-unit id="column.stage" approved="yes">
+        <source>Current Stage</source>
+        <target state="final">Tranutna faza</target>
+      </trans-unit>
+      <trans-unit id="column.actions" approved="yes">
+        <source>Actions</source>
+        <target state="final">Akcije</target>
+      </trans-unit>
+      <trans-unit id="column.wsPath" approved="yes">
+        <source>Path</source>
+        <target state="final">Putanja</target>
+      </trans-unit>
+      <trans-unit id="column.uid" approved="yes">
+        <source>WS ID</source>
+        <target state="final">WS ID</target>
+      </trans-unit>
+      <trans-unit id="column.oid" approved="yes">
+        <source>Live ID</source>
+        <target state="final">Live ID</target>
+      </trans-unit>
+      <trans-unit id="column.workspaceName" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Radni prostor</target>
+      </trans-unit>
+      <trans-unit id="column.livePath" approved="yes">
+        <source>Live path</source>
+        <target state="final">Živa putanja</target>
+      </trans-unit>
+      <trans-unit id="column.integrity" approved="yes">
+        <source>Integrity</source>
+        <target state="final">Integritet</target>
+      </trans-unit>
+      <trans-unit id="tooltip.viewElementAction" approved="yes">
+        <source>Preview element</source>
+        <target state="final">Pregledaj element</target>
+      </trans-unit>
+      <trans-unit id="tooltip.editElementAction" approved="yes">
+        <source>Edit element</source>
+        <target state="final">Uredi element</target>
+      </trans-unit>
+      <trans-unit id="tooltip.openPage" approved="yes">
+        <source>Open version of page</source>
+        <target state="final">Otvori inačicu stranice</target>
+      </trans-unit>
+      <trans-unit id="tooltip.sendToPrevStage" approved="yes">
+        <source>Send record to previous Stage</source>
+        <target state="final">Pošalji zapis na prethodnu fazu</target>
+      </trans-unit>
+      <trans-unit id="tooltip.sendToNextStage" approved="yes">
+        <source>Send record to next Stage</source>
+        <target state="final">Pošalji zapis na sljedeću fazu</target>
+      </trans-unit>
+      <trans-unit id="tooltip.showHistory" approved="yes">
+        <source>Show history of workspace version</source>
+        <target state="final">Prikaži povijest verzija iz radnog prostora</target>
+      </trans-unit>
+      <trans-unit id="window.discardAll.title" approved="yes">
+        <source>Discard all workspace version of current page.</source>
+        <target state="final">Odbaci sve inačice trenutne stranice iz radnog prostora.</target>
+      </trans-unit>
+      <trans-unit id="window.discard.message" approved="yes">
+        <source>Do you really want to discard this version from workspace?</source>
+        <target state="final">Zaista želite odbaciti ovu inačicu iz radnog prostora?</target>
+      </trans-unit>
+      <trans-unit id="window.discardAll.message" approved="yes">
+        <source>Do you really want to discard all versions from page?</source>
+        <target state="final">Zaista želite odbaciti sve inačice sa stranice?</target>
+      </trans-unit>
+      <trans-unit id="window.massAction.title" approved="yes">
+        <source>Prepare to start mass action</source>
+        <target state="final">Pripremi početak masovne akcije</target>
+      </trans-unit>
+      <trans-unit id="window.selectionAction.title" approved="yes">
+        <source>Prepare to execute actions on selection</source>
+        <target state="final">Pripremi izvršenje akcija na odabiru</target>
+      </trans-unit>
+      <trans-unit id="error.sendToNextStage.noRecordFound" approved="yes">
+        <source>The record element could not be found.</source>
+        <target state="final">Element zapisa nije pronađen.</target>
+      </trans-unit>
+      <trans-unit id="error.sendToPrevStage.noPreviousStage" approved="yes">
+        <source>The record element is already in editing stage, there is no previous stage.</source>
+        <target state="final">Zapis elementa je veću u fazi uređivanja, ne postoji prethodna faza.</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.itemsWillBeSentTo" approved="yes">
+        <source>The selected element(s) will be sent to</source>
+        <target state="final">Odabrani elementi bit će poslani u</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.sendMailTo" approved="yes">
+        <source>Send mail to</source>
+        <target state="final">Pošalji e-mail na:</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.additionalRecipients" approved="yes">
+        <source>Additional recipients</source>
+        <target state="final">Dodatni primatelji</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.additionalRecipients.hint" approved="yes">
+        <source>One recipient per line</source>
+        <target state="final">Jedan primatelj po retku</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.comments" approved="yes">
+        <source>Comments</source>
+        <target state="final">Komentari</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges" approved="yes">
+        <source>Record changes</source>
+        <target state="final">Izmjene zapisa</target>
+      </trans-unit>
+      <trans-unit id="window.recordInformation" approved="yes">
+        <source>Information for "{0}"</source>
+        <target state="final">Informacije o "{0}"</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.changeSummary" approved="yes">
+        <source>Summary of changes</source>
+        <target state="final">Sažetak izmjena</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.comments" approved="yes">
+        <source>Comments</source>
+        <target state="final">Komentari</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.history" approved="yes">
+        <source>History</source>
+        <target state="final">Povijest</target>
+      </trans-unit>
+      <trans-unit id="window.recordHistory" approved="yes">
+        <source>History of record "{0}"</source>
+        <target state="final">Povijest zapisa "{0}"</target>
+      </trans-unit>
+      <trans-unit id="error.getStageTitle.stageNotFound" approved="yes">
+        <source>Stage not found</source>
+        <target state="final">Faza nije pronađena</target>
+      </trans-unit>
+      <trans-unit id="info.newpage.detail" approved="yes">
+        <source>The previewed page has been created in a workspace and has no live counterpart.</source>
+        <target state="final">Pregledana stranica je stvorena u radnom prostoru i nema živu inačicu.</target>
+      </trans-unit>
+      <trans-unit id="preview.livePreview" approved="yes">
+        <source>Live</source>
+        <target state="final">Živo</target>
+      </trans-unit>
+      <trans-unit id="preview.livePreviewDetail" approved="yes">
+        <source>Click this element to hide the workspace version and see the live version of the page.</source>
+        <target state="final">Kliknite ovaj element kako bi sakrili inačicu radnog prostora i vidjeli živu inačicu stranice.</target>
+      </trans-unit>
+      <trans-unit id="preview.workspacePreview" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Radni prostor</target>
+      </trans-unit>
+      <trans-unit id="preview.workspacePreviewDetail" approved="yes">
+        <source>Click this element to hide the live version and see the workspace version of the page.</source>
+        <target state="final">Kliknite ovaj element kako bi sakrili živu inačicu i vidjeli radnu verziju stranice.</target>
+      </trans-unit>
+      <trans-unit id="preview.modeSlider" approved="yes">
+        <source>Slider</source>
+        <target state="final">Klizač</target>
+      </trans-unit>
+      <trans-unit id="preview.modeVbox" approved="yes">
+        <source>Vertical</source>
+        <target state="final">Okomito</target>
+      </trans-unit>
+      <trans-unit id="preview.modeHbox" approved="yes">
+        <source>Horizontal</source>
+        <target state="final">Vodoravno</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">Objavi</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_discard" approved="yes">
+        <source>Discard</source>
+        <target state="final">Odbaci</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_generatePreviewLinks" approved="yes">
+        <source>Generate Workspace Preview Links</source>
+        <target state="final">Načini poveznicu za predpregled radnog prostora</target>
+      </trans-unit>
+      <trans-unit id="info.elementAlreadyModified" approved="yes">
+        <source>Element is in workspace stage "%s", modifications will send it back to "%s".</source>
+        <target state="final">Element je u fazi "%s" radnog prostora, izmjene će ga poslati nazad u fazu "%s".</target>
+      </trans-unit>
+      <trans-unit id="live_workspace" approved="yes">
+        <source>Live Workspace</source>
+        <target state="final">Živi radni prostor</target>
+      </trans-unit>
+      <trans-unit id="workspace_version" approved="yes">
+        <source>Workspace version</source>
+        <target state="final">Inačica radnog prostora</target>
+      </trans-unit>
+      <trans-unit id="current_step" approved="yes">
+        <source><![CDATA[<b>Current stage step</b>: {0} (<b>{1}</b>/{2})]]></source>
+        <target state="final"><![CDATA[&lt;b&gt;Korak trenutne faze&lt;/b&gt;: {0} (&lt;b&gt;{1}&lt;/b&gt;/{2})]]></target>
+      </trans-unit>
+      <trans-unit id="path" approved="yes">
+        <source><![CDATA[<b>Path</b>: {0}]]></source>
+        <target state="final"><![CDATA[&lt;b&gt;Putanja&lt;/b&gt;: {0}]]></target>
+      </trans-unit>
+      <trans-unit id="stage" approved="yes">
+        <source>Stage {0}</source>
+        <target state="final">Faza {0}</target>
+      </trans-unit>
+      <trans-unit id="comments" approved="yes">
+        <source><![CDATA[User comments for <b>step {0} of stage</b> "{1}"]]></source>
+        <target state="final"><![CDATA[Komentari korisnika za &lt;b&gt;korak faze {0}&lt;/b&gt; "{1}"]]></target>
+      </trans-unit>
+      <trans-unit id="language.allLanguages" approved="yes">
+        <source>all languages</source>
+        <target state="final">svi jezici</target>
+      </trans-unit>
+      <trans-unit id="language.selectLanguage" approved="yes">
+        <source>all languages</source>
+        <target state="final">svi jezici</target>
+      </trans-unit>
+      <trans-unit id="integrity.dependsOnDefaultLanguageRecord" approved="yes">
+        <source><![CDATA[Record "%s" depends on default language record]]></source>
+        <target state="final"><![CDATA[Zapis "%s" ovisi o zapisu zadanog jezika]]></target>
+      </trans-unit>
+      <trans-unit id="integrity.isDefaultLanguageRecord" approved="yes">
+        <source><![CDATA[Default language record for record "%s"]]></source>
+        <target state="final"><![CDATA[Zadani zapis jezika za zapis "%s"]]></target>
+      </trans-unit>
+      <trans-unit id="integrity.hasIssuesQuestion" approved="yes">
+        <source>Do you want to continue?</source>
+        <target state="final">Želite li nastaviti?</target>
+      </trans-unit>
+      <trans-unit id="status.info" approved="yes">
+        <source>Information</source>
+        <target state="final">Informacije</target>
+      </trans-unit>
+      <trans-unit id="status.warning" approved="yes">
+        <source>Warning</source>
+        <target state="final">Upozorenje</target>
+      </trans-unit>
+      <trans-unit id="status.error" approved="yes">
+        <source>Error</source>
+        <target state="final">Greška</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
