@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814843" source-language="en" datatype="plaintext" original="EXT:install/Resources/Private/Language/Report/locallang.xlf" date="2011-10-17T20:22:33Z" product-name="install" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="environment.status.title" resname="environment.status.title" approved="yes">
+        <source>System environment check</source>
+        <target state="final">Kontrola prostředí systému</target>
+      </trans-unit>
+      <trans-unit id="environment.status.value" resname="environment.status.value" approved="yes">
+        <source>%1$s Test(s)</source>
+        <target state="final">%1$s Test(y)</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.error" resname="environment.status.message.error" approved="yes">
+        <source>The system environment check returned errors. Those errors will affect the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target state="final">Kontrola prostředí systému vrátila chyby. Tyto chyby budou mít vliv na funkčnost a stabilitu instance TYPO3 CMS. Prosím, zkontrolujte "Prostředí systému" instalačního nástroje pro všechny podrobnosti.</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.warning" resname="environment.status.message.warning" approved="yes">
+        <source>The system environment check returned warnings. Those warnings might have a negative effect on the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target state="final">Kontrola prostředí systému vrátila varování. Tato varování mohou mít negativní vliv na funkčnost a stabilitu instance TYPO3 CMS. Prosím, zkontrolujte "Prostředí systému" instalačního nástroje pro všechny podrobnosti.</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.notice" resname="environment.status.message.notice" approved="yes">
+        <source>The system environment check returned notices. Those should not affect the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target state="final">Kontrola prostředí systému vrátila upozornění. Tato upozornění by neměla mít vliv na funkčnost a stabilitu instance TYPO3 CMS. Prosím, zkontrolujte "Prostředí systému" instalačního nástroje pro všechny podrobnosti.</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.ok" resname="environment.status.message.ok" xml:space="preserve">
+				<source/>
+			</trans-unit>
+      <trans-unit id="environment.status.message.info" resname="environment.status.message.info" xml:space="preserve">
+				<source/>
+			</trans-unit>
+      <trans-unit id="status_fileSystem" resname="status_fileSystem" approved="yes">
+        <source>File System</source>
+        <target state="final">Systém souborů</target>
+      </trans-unit>
+      <trans-unit id="status_writable" resname="status_writable" approved="yes">
+        <source>Writable</source>
+        <target state="final">Zapisovatelný</target>
+      </trans-unit>
+      <trans-unit id="status_missingDirectory" resname="status_missingDirectory" approved="yes">
+        <source>Required directory missing</source>
+        <target state="final">Požadovaná složka chybí</target>
+      </trans-unit>
+      <trans-unit id="status_nonExistingDirectory" resname="status_nonExistingDirectory" approved="yes">
+        <source>Directory not existing</source>
+        <target state="final">Složka neexistuje</target>
+      </trans-unit>
+      <trans-unit id="status_recommendedWritableDirectory" resname="status_recommendedWritableDirectory" approved="yes">
+        <source>Directory should be writable</source>
+        <target state="final">Složka musí být zapisovatelná</target>
+      </trans-unit>
+      <trans-unit id="status_requiredWritableDirectory" resname="status_requiredWritableDirectory" approved="yes">
+        <source>Directory not writable</source>
+        <target state="final">Složka není zapisovatelná</target>
+      </trans-unit>
+      <trans-unit id="status_directoryDoesNotExist" resname="status_directoryDoesNotExist" approved="yes">
+        <source>%s does not exist.</source>
+        <target state="final">%s neexistuje.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryDoesNotExistCouldNotCreate" resname="status_directoryDoesNotExistCouldNotCreate" approved="yes">
+        <source>%s does not exist and could not be created.</source>
+        <target state="final">%s neexistuje a nelze ji vytvořit.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryShouldAlsoBeWritable" resname="status_directoryShouldAlsoBeWritable" approved="yes">
+        <source>Also note that it should be writable, if it did exist.</source>
+        <target state="final">Vezměte na vědomí, že by měla být zapisovatelná, pokud by existovala.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryShouldBeWritable" resname="status_directoryShouldBeWritable" approved="yes">
+        <source>%s should be writable.</source>
+        <target state="final">%s by měl být zapisovatelný.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryMustBeWritable" resname="status_directoryMustBeWritable" approved="yes">
+        <source>%s must be writable.</source>
+        <target state="final">%s musí být zapisovatelný.</target>
+      </trans-unit>
+      <trans-unit id="status_remainingUpdates" resname="status_remainingUpdates" approved="yes">
+        <source>Remaining updates</source>
+        <target state="final">Zbývající aktualizace</target>
+      </trans-unit>
+      <trans-unit id="status_remoteFetchException" resname="status_remoteFetchException" approved="yes">
+        <source>Could not fetch version matrix of TYPO3. Maybe this instance is blocked by a firewall?</source>
+        <target state="final">Nelze načíst verze TYPO3. Možná je tato instance zablokována firewallem?</target>
+      </trans-unit>
+      <trans-unit id="status_isDevelopmentVersion" resname="status_isDevelopmentVersion" approved="yes">
+        <source>This version of TYPO3 seems to be a development version. Thus no update information exists.</source>
+        <target state="final">Tato verze TYPO3 se zdá být vývojářskou verzí. Proto neexistují žádné informace o aktualizaci.</target>
+      </trans-unit>
+      <trans-unit id="status_patchLevelNotFoundInReleaseMatrix" resname="status_patchLevelNotFoundInReleaseMatrix" approved="yes">
+        <source>It seems that this TYPO3 version has never been released. Thus no update information exists.</source>
+        <target state="final">Zdá se, že tato verze TYPO3 nebyla nikdy vydána. Proto neexistují žádné informace o aktualizaci.</target>
+      </trans-unit>
+      <trans-unit id="status_newVersionSecurityRelevant" resname="status_newVersionSecurityRelevant" approved="yes">
+        <source>There is a new version of TYPO3 available, updating is security relevant. Please update to version %s.</source>
+        <target state="final">K dispozici je nová verze TYPO3, aktualizace je bezpečnostně relevantní. Aktualizujte prosím na verzi %s.</target>
+      </trans-unit>
+      <trans-unit id="status_newVersion" resname="status_newVersion" approved="yes">
+        <source>There is a new version of TYPO3 available. You can update to version %s.</source>
+        <target state="final">K dispozici je nová verze TYPO3. Můžete aktualizovat na verzi %s.</target>
+      </trans-unit>
+      <trans-unit id="status_elts_information" resname="status_elts_information" approved="yes">
+        <source>The currently installed TYPO3 version %s doesn't receive any community-driven updates anymore, consider subscribing to Extended Long Term Support (ELTS) releases. Get more information at %s.</source>
+        <target state="final">Aktuálně nainstalovaná TYPO3 verze %s již nenabízí žádné aktualizace od komunity, zvažte odebírání verze Extended Long Term Support (ELTS). Získejte více informací na %s.</target>
+      </trans-unit>
+      <trans-unit id="status_elts_download" resname="status_elts_download" approved="yes">
+        <source>Please visit %s to download the release in your ELTS area.</source>
+        <target state="final">Prosím navštivte %s a stáhněte si vydání vaší ELTS.</target>
+      </trans-unit>
+      <trans-unit id="status_elts_subscribe" resname="status_elts_subscribe" approved="yes">
+        <source>The currently installed TYPO3 version %s doesn't receive any community-driven updates anymore, consider subscribing to Extended Long Term Support (ELTS) releases. Get more information at %s.</source>
+        <target state="final">Aktuálně nainstalovaná TYPO3 verze %s již nenabízí žádné aktualizace od komunity, zvažte odebírání verze Extended Long Term Support (ELTS). Získejte více informací na %s.</target>
+      </trans-unit>
+      <trans-unit id="status_versionOutdated" resname="status_versionOutdated" approved="yes">
+        <source>The TYPO3 version you're using is not supported anymore. You should update to a supported version.</source>
+        <target state="final">Verze TYPO3, kterou používáte, již není podporována. Měli byste aktualizovat na podporovanou verzi.</target>
+      </trans-unit>
+      <trans-unit id="status_noAutomaticCheck" resname="status_noAutomaticCheck" approved="yes">
+        <source>Automatic update checking failed, please check for updates manually.</source>
+        <target state="final">Automatická kontrola aktualizací se nezdařila, prosím zkontrolujte aktualizace ručně.</target>
+      </trans-unit>
+      <trans-unit id="status_uptodate" resname="status_uptodate" approved="yes">
+        <source>Your TYPO3 version is up-to-date.</source>
+        <target state="final">Vaše verze TYPO3 je aktuální.</target>
+      </trans-unit>
+      <trans-unit id="status_installToolPassword" resname="status_installToolPassword" approved="yes">
+        <source>Install Tool Password</source>
+        <target state="final">Heslo instalačního nástroje</target>
+      </trans-unit>
+      <trans-unit id="status_installTool" resname="status_installTool" approved="yes">
+        <source>Install Tool</source>
+        <target state="final">Instalační nástroj</target>
+      </trans-unit>
+      <trans-unit id="status_enabledPermanently" resname="status_enabledPermanently" approved="yes">
+        <source>Enabled permanently</source>
+        <target state="final">Povoleno trvale</target>
+      </trans-unit>
+      <trans-unit id="status_enabledTemporarily" resname="status_enabledTemporarily" approved="yes">
+        <source>Enabled temporarily</source>
+        <target state="final">Povoleno dočasně</target>
+      </trans-unit>
+      <trans-unit id="status_installEnabledTemporarily" resname="status_installEnabledTemporarily" approved="yes">
+        <source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
+        <target state="final">Instaleční nástroj je dočasně povolen. Smažte soubor "%s", pokud jste dokončili nastavení. Pokud Instalační nástroj nebudete používat, bude automaticky deaktivován během %s minut.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
