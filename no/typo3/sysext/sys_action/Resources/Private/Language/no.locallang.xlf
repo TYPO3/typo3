@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814993" source-language="en" datatype="plaintext" original="EXT:sys_action/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="sys_action" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="sys_action" resname="sys_action" approved="yes">
+        <source>Action</source>
+        <target state="final">Handling</target>
+      </trans-unit>
+      <trans-unit id="edit-sys_action" resname="edit-sys_action" approved="yes">
+        <source>Edit record</source>
+        <target state="final">Rediger element</target>
+      </trans-unit>
+      <trans-unit id="success" resname="success" approved="yes">
+        <source>Success</source>
+        <target state="final">Suksess</target>
+      </trans-unit>
+      <trans-unit id="action_t1_legend_configuration" resname="action_t1_legend_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Konfigurasjon</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
