@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814801" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilestorage.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description">
+        <source>File storage, which acts as an entry root point to a file-based structure. See it like a drive or a hard drive volume in your local machine.</source>
+        <target>crwdns71432:0crwdne71432:0</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details">
+        <source/>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description">
+        <source>Disabling the storage will result in removing it from any listings in the backend. Existing file relations will still exist.</source>
+        <target>crwdns71434:0crwdne71434:0</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details">
+        <source>If you set up a file storage, it will show up on any folder lists, thus allowing to basically browse through the files in this file repository. If you set this checkbox, this storage will be excluded from any listings in the backend. Any existing file references will still exist further.</source>
+        <target>crwdns71436:0crwdne71436:0</target>
+      </trans-unit>
+      <trans-unit id="name.description" resname="name.description">
+        <source>The visible identifier for this file storage.</source>
+        <target>crwdns71438:0crwdne71438:0</target>
+      </trans-unit>
+      <trans-unit id="name.details" resname="name.details">
+        <source>The label entered here will be shown as the name for the entry point in the TYPO3 Backend. Be sure to make it descriptive and logical for your editors.</source>
+        <target>crwdns71440:0crwdne71440:0</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description">
+        <source>A description of this storage.</source>
+        <target>crwdns71442:0crwdne71442:0</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details">
+        <source>This description field is used to explain e.g. the location of the storage, also what this storage is meant for or what it contains.</source>
+        <target>crwdns71444:0crwdne71444:0</target>
+      </trans-unit>
+      <trans-unit id="driver.description" resname="driver.description">
+        <source>Choose the driver as the technical backbone of the storage. Once you've chosen a driver, and saved it, additional configuration will show up.</source>
+        <target>crwdns71446:0crwdne71446:0</target>
+      </trans-unit>
+      <trans-unit id="driver.details" resname="driver.details">
+        <source>The driver is the technical background of a storage, and thus also defines whether the location of the storage is local (= on the same machine as this TYPO3 installation) or remote like a WebDAV server connection. Search for extensions in the TYPO3 Extension Repository that extend this driver list.</source>
+        <target>crwdns71448:0crwdne71448:0</target>
+      </trans-unit>
+      <trans-unit id="processingfolder.description" resname="processingfolder.description">
+        <source>Defines the directory on this storage to be used to save temporary files like resized images.</source>
+        <target>crwdns71450:0crwdne71450:0</target>
+      </trans-unit>
+      <trans-unit id="is_browsable.description" resname="is_browsable.description">
+        <source>If set, backend users can browse through this storage. Otherwise it will show up as a unselectable item in the list.</source>
+        <target>crwdns71452:0crwdne71452:0</target>
+      </trans-unit>
+      <trans-unit id="is_public.description" resname="is_public.description">
+        <source>If set, then the files in this storage can be linked directly from the outside world. If this is not set, make sure to provide additional possibilities to access the files in this storage.</source>
+        <target>crwdns71454:0crwdne71454:0</target>
+      </trans-unit>
+      <trans-unit id="is_writable.description" resname="is_writable.description">
+        <source>If set, then users are allowed to modify, add, delete files/folders on this storage.</source>
+        <target>crwdns71456:0crwdne71456:0</target>
+      </trans-unit>
+      <trans-unit id="is_online.description" resname="is_online.description">
+        <source>This flag is usually set. If TYPO3 cannot connect to this storage (because it maybe temporary down), then the flag will be checked, and the storage will behave like it is non-browsable in the TYPO3 backend. The admin needs to manually activate it again if it was offline.</source>
+        <target>crwdns71458:0crwdne71458:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
