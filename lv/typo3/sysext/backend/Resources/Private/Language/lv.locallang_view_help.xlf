@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814889" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_view_help.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="lv">
+    <header/>
+    <body>
+      <trans-unit id="details" resname="details" approved="yes">
+        <source>Details</source>
+        <target state="final">Sīkāk</target>
+      </trans-unit>
+      <trans-unit id="syntax" resname="syntax" approved="yes">
+        <source>Syntax</source>
+        <target state="final">Sintakse</target>
+      </trans-unit>
+      <trans-unit id="seeAlso" resname="seeAlso" approved="yes">
+        <source>See also</source>
+        <target state="final">Skatīt arī</target>
+      </trans-unit>
+      <trans-unit id="goBack" resname="goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Atgriezties</target>
+      </trans-unit>
+      <trans-unit id="fullDescription" resname="fullDescription" approved="yes">
+        <source>See full description of table</source>
+        <target state="final">Skatīt tabulas pilnu aprakstu</target>
+      </trans-unit>
+      <trans-unit id="fullDescription_module" resname="fullDescription_module" approved="yes">
+        <source>See full description of module</source>
+        <target state="final">Skatīt modula pilnu aprakstu</target>
+      </trans-unit>
+      <trans-unit id="goToToc" resname="goToToc" approved="yes">
+        <source>&lt;&lt; go to Manual Index</source>
+        <target state="final">&lt;&lt; atpakaļ uz satura rādītāju</target>
+      </trans-unit>
+      <trans-unit id="to_top" resname="to_top" approved="yes">
+        <source>To top</source>
+        <target state="final">Uz augšu</target>
+      </trans-unit>
+      <trans-unit id="TOC" resname="TOC" approved="yes">
+        <source>Table Of Contents</source>
+        <target state="final">Satura rādītājs</target>
+      </trans-unit>
+      <trans-unit id="TOC_core" resname="TOC_core" approved="yes">
+        <source>TYPO3 Core Features</source>
+        <target state="final">TYPO3 galvenās funkcijas</target>
+      </trans-unit>
+      <trans-unit id="TOC_modules" resname="TOC_modules" approved="yes">
+        <source>Backend Modules</source>
+        <target state="final">Backend moduļi</target>
+      </trans-unit>
+      <trans-unit id="TOC_tables" resname="TOC_tables" approved="yes">
+        <source>Database Tables</source>
+        <target state="final">Datubāzes tabulas</target>
+      </trans-unit>
+      <trans-unit id="TOC_extensions" resname="TOC_extensions" approved="yes">
+        <source>Extensions</source>
+        <target state="final">Paplašīnājumi</target>
+      </trans-unit>
+      <trans-unit id="TOC_glossary" resname="TOC_glossary" approved="yes">
+        <source>Glossary</source>
+        <target state="final">Glosārijs</target>
+      </trans-unit>
+      <trans-unit id="TOC_other" resname="TOC_other" approved="yes">
+        <source>Other</source>
+        <target state="final">Un citi</target>
+      </trans-unit>
+      <trans-unit id="close" resname="close" approved="yes">
+        <source>Close</source>
+        <target state="final">Aizvērt</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>TYPO3 Inline Help</source>
+        <target state="final">TYPO3 palīdzība</target>
+      </trans-unit>
+      <trans-unit id="manual_title" resname="manual_title" approved="yes">
+        <source>TYPO3 Inline User Manual</source>
+        <target state="final">TYPO3 iekļautā rokasgrāmata</target>
+      </trans-unit>
+      <trans-unit id="introduction" resname="introduction" approved="yes">
+        <source>Introduction</source>
+        <target state="final">Ievads</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description" approved="yes">
+        <source>The TYPO3 Inline User Manual is composed from the available help in this TYPO3 Installation (Context Sensitive Help). Here you will find a general description of the TYPO3 Core modules, installation specific Backend Modules and Database Tables that are available based on your login credentials.</source>
+        <target state="final">TYPO3 iekļauta rokasgrāmata tiek sastādīta no esošiem tekstiem palīdzībā (kontekstatkarīgā palīdzība). Tajā iekļauti apraksti par TYPO3 galvenajiem moduļiem, šīs sistēmas specifiskiem moduļiem un datubāžu tabulām. Atkarībā no jūsu piekļuves tiesibām, izmainās rokasgrāmatas saturs.</target>
+      </trans-unit>
+      <trans-unit id="full_manual" resname="full_manual" approved="yes">
+        <source>Full Manual (in one page)</source>
+        <target state="final">Pilna rokasgrāmatas versija (vienā lapā)</target>
+      </trans-unit>
+      <trans-unit id="full_manual_chapters" resname="full_manual_chapters" approved="yes">
+        <source>Manual Chapters</source>
+        <target state="final">Rokasgrāmatas nodaļas</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
