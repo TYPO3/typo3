@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814863" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_general.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="LGL.hide_at_login" resname="LGL.hide_at_login" approved="yes">
+        <source>Hide at login</source>
+        <target state="final">پنهان‌سازی هنگام ورود</target>
+      </trans-unit>
+      <trans-unit id="LGL.any_login" resname="LGL.any_login" approved="yes">
+        <source>Show at any login</source>
+        <target state="final">نشان دادن در هر ورود</target>
+      </trans-unit>
+      <trans-unit id="LGL.usergroups" resname="LGL.usergroups" approved="yes">
+        <source>__Usergroups:__</source>
+        <target state="final">_گروه‌های کاربران:_</target>
+      </trans-unit>
+      <trans-unit id="LGL.prependAtCopy" resname="LGL.prependAtCopy" approved="yes">
+        <source>(copy %s)</source>
+        <target state="final">(کپی %s)</target>
+      </trans-unit>
+      <trans-unit id="LGL.default_value" resname="LGL.default_value" approved="yes">
+        <source>Default</source>
+        <target state="final">پیش فرض</target>
+      </trans-unit>
+      <trans-unit id="LGL.normal" resname="LGL.normal" approved="yes">
+        <source>Normal</source>
+        <target state="final">عادی</target>
+      </trans-unit>
+      <trans-unit id="LGL.links" resname="LGL.links" approved="yes">
+        <source>Links</source>
+        <target state="final">لینک‌ها</target>
+      </trans-unit>
+      <trans-unit id="LGL.external" resname="LGL.external" approved="yes">
+        <source>External URL</source>
+        <target state="final">آدرس اینترنتی خارجی</target>
+      </trans-unit>
+      <trans-unit id="LGL.allLanguages" resname="LGL.allLanguages" approved="yes">
+        <source>[All]</source>
+        <target state="final">[همه]</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
