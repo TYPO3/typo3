@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814912" source-language="en" datatype="plaintext" original="EXT:rsaauth/Resources/Private/Language/locallang_em.xlf" date="2011-10-17T20:22:32Z" product-name="rsaauth" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="rsaauth.config.temporaryDirectory" resname="rsaauth.config.temporaryDirectory" approved="yes">
+        <source>Path to the temporary directory:This directory will contain temporary files for encryption/decrytion. It should be located outside of the web site root and it should not be /tmp. Directory permissions should be 0700 and the owner should be the web server user. If left empty, typo3conf/ will be used and it is INSECURE! Make sure that the directory is included into open_basedir if you use this setting.</source>
+        <target state="final">ເສັ້ນທາງໄປຫາໄດເຣັກທໍຣີຊົ່ວຄາວ: ໄດເຣັກທໍຣີນີ້ຈະບັນຈຸໄຟລ໌ຊົ່ວຄາວສຳລັບການເຂົ້າລະຫັດ/ການຖອດລະຫັດ. ມັນຄວນຈະຕັ້ງຢູ່ນອກ root ຂອງເວັບໄຊ ແລະ ບໍ່ຄວນແມ່ນ /tmp. ສິດການເຂົ້າເຖິງໄດເຣັກທໍຣີຄວນແມ່ນ 0700 ແລະ ເຈົ້າຂອງຄວນແມ່ນຜູ້ໃຊ້ເວັບເຊີເວີ. ຫາກປະວ່າງໄວ້, typo3conf/ ຈະຖືກນຳໃຊ້ ແລະ ມັນບໍ່ປອດໄພ! ໃຫ້ແນ່ໃຈວ່າໄດ້ລວມໄດເຣັກທໍຣີນີ້ເຂົ້າໃນ open_basedir ຫາກເຈົ້ານຳໃຊ້ການຕັ້ງຄ່ານີ້.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
