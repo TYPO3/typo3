@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815003" source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="currentTemplate" resname="currentTemplate">
+        <source>Current template</source>
+        <target>crwdns79696:0crwdne79696:0</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title">
+        <source>Title</source>
+        <target>crwdns79698:0crwdne79698:0</target>
+      </trans-unit>
+      <trans-unit id="rootlevel" resname="rootlevel">
+        <source>Rootlevel</source>
+        <target>crwdns79700:0crwdne79700:0</target>
+      </trans-unit>
+      <trans-unit id="clearSetup" resname="clearSetup">
+        <source>Clear Setup</source>
+        <target>crwdns79702:0crwdne79702:0</target>
+      </trans-unit>
+      <trans-unit id="clearConstants" resname="clearConstants">
+        <source>Clear Constants</source>
+        <target>crwdns79704:0crwdne79704:0</target>
+      </trans-unit>
+      <trans-unit id="pid" resname="pid">
+        <source>PID</source>
+        <target>crwdns79706:0crwdne79706:0</target>
+      </trans-unit>
+      <trans-unit id="rootline" resname="rootline">
+        <source>Rootline</source>
+        <target>crwdns79708:0crwdne79708:0</target>
+      </trans-unit>
+      <trans-unit id="nextLevel" resname="nextLevel">
+        <source>Next Level</source>
+        <target>crwdns79710:0crwdne79710:0</target>
+      </trans-unit>
+      <trans-unit id="templateHierarchy" resname="templateHierarchy">
+        <source>Template hierarchy</source>
+        <target>crwdns79712:0crwdne79712:0</target>
+      </trans-unit>
+      <trans-unit id="displayOptions" resname="displayOptions">
+        <source>Display Options</source>
+        <target>crwdns79714:0crwdne79714:0</target>
+      </trans-unit>
+      <trans-unit id="lineNumbers" resname="lineNumbers">
+        <source>Line numbers</source>
+        <target>crwdns79716:0crwdne79716:0</target>
+      </trans-unit>
+      <trans-unit id="syntaxHighlight" resname="syntaxHighlight">
+        <source>Syntax highlight</source>
+        <target>crwdns79718:0crwdne79718:0</target>
+      </trans-unit>
+      <trans-unit id="comments" resname="comments">
+        <source>Comments</source>
+        <target>crwdns79720:0crwdne79720:0</target>
+      </trans-unit>
+      <trans-unit id="cropLines" resname="cropLines">
+        <source>Crop lines</source>
+        <target>crwdns79722:0crwdne79722:0</target>
+      </trans-unit>
+      <trans-unit id="blockMode" resname="blockMode">
+        <source>Block mode</source>
+        <target>crwdns79724:0crwdne79724:0</target>
+      </trans-unit>
+      <trans-unit id="constants" resname="constants">
+        <source>Constants</source>
+        <target>crwdns79726:0crwdne79726:0</target>
+      </trans-unit>
+      <trans-unit id="setup" resname="setup">
+        <source>Setup</source>
+        <target>crwdns79728:0crwdne79728:0</target>
+      </trans-unit>
+      <trans-unit id="viewCompleteTS" resname="viewCompleteTS">
+        <source>View the complete TS Listing</source>
+        <target>crwdns79730:0crwdne79730:0</target>
+      </trans-unit>
+      <trans-unit id="completeTS" resname="completeTS">
+        <source>Complete TS</source>
+        <target>crwdns79732:0crwdne79732:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
