@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_webinfo.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="page_title" approved="yes">
+        <source>Pagetree overview</source>
+        <target state="final">Огляд дерева сторінки</target>
+      </trans-unit>
+      <trans-unit id="pages_0" approved="yes">
+        <source>Basic settings</source>
+        <target state="final">Основні налаштування</target>
+      </trans-unit>
+      <trans-unit id="pages_2" approved="yes">
+        <source>Cache and Age</source>
+        <target state="final">Кеш та Вік</target>
+      </trans-unit>
+      <trans-unit id="pages_1" approved="yes">
+        <source>Record overview</source>
+        <target state="final">Огляд запису</target>
+      </trans-unit>
+      <trans-unit id="pages_layouts" approved="yes">
+        <source>Layouts</source>
+        <target state="final">Макети</target>
+      </trans-unit>
+      <trans-unit id="actual_backend_layout" approved="yes">
+        <source>Actual backend layout</source>
+        <target state="final">Фактичний макет серверної частини</target>
+      </trans-unit>
+      <trans-unit id="lang_title" approved="yes">
+        <source>Localization overview</source>
+        <target state="final">Огляд локалізації</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_viewPage" approved="yes">
+        <source>View page</source>
+        <target state="final">Переглянути сторінку</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_page" approved="yes">
+        <source>Page</source>
+        <target state="final">Сторінка</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_default" approved="yes">
+        <source>Default</source>
+        <target state="final">За замовчуванням</target>
+      </trans-unit>
+      <trans-unit id="lang_getlangsta_createNewTranslationHeaders" approved="yes">
+        <source>Create new translation headers</source>
+        <target state="final">Створити нові заголовки перекладу</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_CEcount" approved="yes">
+        <source>Content Element Count</source>
+        <target state="final">Кількість елементів контенту</target>
+      </trans-unit>
+      <trans-unit id="moduleFunctions.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Глибина</target>
+      </trans-unit>
+      <trans-unit id="moduleFunctions.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Тип</target>
+      </trans-unit>
+      <trans-unit id="moduleFunctions.lang" approved="yes">
+        <source>Language</source>
+        <target state="final">Мова</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
