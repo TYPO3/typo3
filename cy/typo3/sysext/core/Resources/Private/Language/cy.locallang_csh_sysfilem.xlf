@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814857" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilem.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="cy">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Filemounts describe a filepath on the server, relative or absolute.</source>
+        <target state="final">Mae ffeiliau yn disgrifio llwybr ffeil ar y gweinydd, yn gymharol neu'n absoliwt.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>By creating a file mount record and placing a reference to it in a Backend usergroup you can allow a user access to the file mount in the File&gt;List module.
+Filemounts may also configure access to a path on the server to which the user has FTP-access. Just remember to set file-permissions on the server correctly so the webserver user (which PHP is running as) has at least read access to the FTP-dir.
+You can only mount absolute paths if they are within the base path set in $TYPO3_CONF_VARS[BE][lockRootPath]</source>
+			<target state="final">Trwy greu cofnod mowntio ffeiliau a gosod cyfeiriad ato mewn grŵp defnyddwyr Backend gallwch ganiatáu mynediad i ddefnyddiwr i'r mownt ffeil yn y modiwl Rhestr&gt;
+Gall Ffeiliau hefyd ffurfweddu mynediad i lwybr ar y gweinydd y mae gan y defnyddiwr fynediad FTP iddo. Cofiwch osod caniatâd ffeiliau ar y gweinydd yn gywir fel bod gan y defnyddiwr gwe-we (y mae PHP yn rhedeg fel) o leiaf ddarllen mynediad i'r FTP-dir.
+Dim ond os ydyn nhw o fewn y llwybr sylfaen a osodir yn $TYPO3_CONF_VARS[BE][lockRootPath]</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:file_mountpoints,
+be_users:file_mountpoints,
+More about File mounts | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/</source>
+				
+			<target state="final">be_groups: file_mountpoints,
+be_users: file_mountpoints,
+Mwy am mowntiau Ffeil | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_.image" resname="_.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/filemount_1.png</source>
+        <target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / filemount_1.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter a title for the filemount. The title will appear as the name of the file mount when it is applied to users and groups.</source>
+        <target state="final">Rhowch deitl ar gyfer y ffeil. Bydd y teitl yn ymddangos fel enw'r mownt ffeil pan fydd yn cael ei gymhwyso i ddefnyddwyr a grwpiau.</target>
+      </trans-unit>
+      <trans-unit id="_title.image" resname="_title.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/be_groups_5.png</source>
+        <target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / be_groups_5.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="path.description" resname="path.description" approved="yes">
+        <source>Enter the path of the filemount, relative or absolute depending on the settings of BASE.</source>
+        <target state="final">Rhowch lwybr y swm ffeil, cymharol neu absoliwt yn dibynnu ar osodiadau BASE.</target>
+      </trans-unit>
+      <trans-unit id="path.details" resname="path.details" xml:space="preserve" approved="yes">
+				<source>If BASE is set to relative, the path mounted is found in the subfolder "fileadmin/" of the website. Then you should enter the subfolder in "fileadmin/" as path. For instance if you want to mount access to "fileadmin/user_uploads/all/" then enter the value "user_uploads/all" as the value of PATH.
+If BASE is absolute you should enter the absolute path on the server, eg. "/home/ftp_upload" or "C:/home/ftp_upload". Further you must make sure the configuration variable $TYPO3_CONF_VARS[BE][lockRootPath] contains the first part of the path you want to mount.
+
+&lt;strong&gt;Notice:&lt;/strong&gt; In any case, make sure the webserver user which PHP is running as has &lt;em&gt;at least&lt;/em&gt; read-access to the path. If not, the mount will simply not appear without any warnings.
+If you have problems - especially with absolute mounts - try to mount something "simple" like a relative path in fileadmin. If that is working well, try the absolute path.
+
+Your PHP-configuration may also impose other restrictions on you if open_basedir is enabled. Then use relative paths.</source>
+			<target state="final">Os yw BASE wedi'i osod yn gymharol, mae'r llwybr wedi'i osod i'w weld yn is-ffolder "fileadmin /" y wefan. Yna dylech nodi'r is-ffolder yn "fileadmin /" fel llwybr. Er enghraifft, os ydych chi am gynyddu mynediad i "fileadmin / user_uploads / all /" yna nodwch y gwerth "user_uploads / all" fel gwerth PATH.
+Os yw BASE yn absoliwt dylech nodi'r llwybr absoliwt ar y gweinydd, ee. "/ home / ftp_upload" neu "C: / home / ftp_upload". Ymhellach, rhaid i chi sicrhau bod y newidyn cyfluniad $TYPO3_CONF_VARS[BE][lockRootPath] cynnwys rhan gyntaf y llwybr rydych chi am ei osod.
+
+&lt;strong&gt;Rhybudd:&lt;/strong&gt; Beth bynnag, gwnewch yn siŵr bod gan y defnyddiwr gwe-we y mae PHP yn ei redeg &lt;em&gt;o leiaf&lt;/em&gt; mynediad darllenadwy i'r llwybr. Os na, ni fydd y mownt yn ymddangos heb unrhyw rybuddion.
+Os ydych chi'n cael problemau - yn enwedig gyda mowntiau absoliwt - ceisiwch osod rhywbeth "syml" fel llwybr cymharol yn fileadmin. Os yw hynny'n gweithio'n dda, rhowch gynnig ar y llwybr absoliwt.
+
+Efallai y bydd eich cyfluniad PHP hefyd yn gosod cyfyngiadau eraill arnoch chi os yw open_basedir wedi'i alluogi. Yna defnyddiwch lwybrau cymharol.</target></trans-unit>
+      <trans-unit id="_path.seeAlso" resname="_path.seeAlso" xml:space="preserve" approved="yes">
+				<source>sys_filemounts:base,
+be_groups:file_mountpoints,
+sys_filemounts</source>
+				
+			<target state="final">sys_filemounts: sylfaen,
+be_groups: file_mountpoints,
+sys_filemounts</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_path.image" resname="_path.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/be_groups_6.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_7.png</source>
+				
+			<target state="final">EXT: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / be_groups_6.png,
+EXT: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / be_groups_7.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="path.image_descr" resname="path.image_descr" xml:space="preserve" approved="yes">
+				<source>This is a filemount relative to "fileadmin/". The mounted folder is "fileadmin/user_upload/" since "user_upload" is the value of the "Path" field.
+The directory structure of "fileadmin/" where you can see the "user_upload" folder in the bottom of the list.</source>
+			<target state="final">Mae hwn yn swm ffeil o'i gymharu â "fileadmin /". Y ffolder wedi'i mowntio yw "fileadmin / user_upload /" gan mai "user_upload" yw gwerth y maes "Llwybr".
+Strwythur cyfeiriadur "fileadmin /" lle gallwch weld y ffolder "user_upload" yng ngwaelod y rhestr.</target></trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>All backend users using the mount will not have access anymore. This includes 'Admin'-users.</source>
+        <target state="final">Ni fydd gan bob defnyddiwr backend sy'n defnyddio'r mownt fynediad mwyach. Mae hyn yn cynnwys defnyddwyr 'Admin'.</target>
+      </trans-unit>
+      <trans-unit id="base.description" resname="base.description" approved="yes">
+        <source>Determines whether the value of the PATH field is to be recognized as an absolute path on the server or a path relative to the fileadmin/ subfolder to the website.</source>
+        <target state="final">Yn penderfynu a yw gwerth y maes PATH i'w gydnabod fel llwybr absoliwt ar y gweinydd neu lwybr mewn perthynas â'r ffeil / is-ffolder i'r wefan.</target>
+      </trans-unit>
+      <trans-unit id="_base.seeAlso" resname="_base.seeAlso" approved="yes">
+        <source>sys_filemounts:path</source>
+        <target state="final">sys_filemounts: llwybr</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="read_only.description" resname="read_only.description" approved="yes">
+        <source>Display this file mount as read-only.</source>
+        <target state="final">Arddangos y mownt ffeil hwn fel darllenadwy yn unig.</target>
+      </trans-unit>
+      <trans-unit id="read_only.details" resname="read_only.details" approved="yes">
+        <source>Read-only file mounts are displayed in the Filelist and the Element Browser. They allow displaying of files and folders which are neither writable nor editable for the user.</source>
+        <target state="final">Mae mowntiau ffeiliau darllen yn unig yn cael eu harddangos yn y Rhestr Ffeiliau a'r Porwr Elfen. Maent yn caniatáu arddangos ffeiliau a ffolderau nad oes modd eu hysgrifennu na'u golygu i'r defnyddiwr.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
