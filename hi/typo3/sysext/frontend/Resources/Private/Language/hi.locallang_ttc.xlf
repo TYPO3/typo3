@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_ttc.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="layout.I.1" approved="yes">
+        <source>Layout 1</source>
+        <target state="final">लेआउट 1</target>
+      </trans-unit>
+      <trans-unit id="layout.I.2" approved="yes">
+        <source>Layout 2</source>
+        <target state="final">लेआउट 2</target>
+      </trans-unit>
+      <trans-unit id="layout.I.3" approved="yes">
+        <source>Layout 3</source>
+        <target state="final">लेआउट 3</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.0" approved="yes">
+        <source>Left</source>
+        <target state="final">बाएं</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.1" approved="yes">
+        <source>Normal</source>
+        <target state="final">सामान्य</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.2" approved="yes">
+        <source>Right</source>
+        <target state="final">दांएं</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.3" approved="yes">
+        <source>Border</source>
+        <target state="final">बॉर्डर</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.unused" approved="yes">
+        <source>Unused</source>
+        <target state="final">अनयूज़्ड</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.shortcut_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">नाम (फ्रंटएन्ड में दिखाई नहीं देगा)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.div_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">नाम (फ्रंटएन्ड में दिखाई नहीं देगा)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.html_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">नाम (फ्रंटएन्ड में दिखाई नहीं देगा)</target>
+      </trans-unit>
+      <trans-unit id="header.description.ALT" approved="yes">
+        <source>The name won't be displayed as header above the element, but will be used as reference in menus.</source>
+        <target state="final">नाम को एलीमेंट के ऊपर हेडर के रूप में प्रदर्शित नहीं किया जाएगा, बल्कि मेनू में संदर्भ के रूप में उपयोग किया जाएगा।</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.1" approved="yes">
+        <source>Center</source>
+        <target state="final">बीच में</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.2" approved="yes">
+        <source>Right</source>
+        <target state="final">दांएं</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.3" approved="yes">
+        <source>Left</source>
+        <target state="final">बाएं</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.1" approved="yes">
+        <source>Layout 1</source>
+        <target state="final">लेआउट 1</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.2" approved="yes">
+        <source>Layout 2</source>
+        <target state="final">लेआउट 2</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.3" approved="yes">
+        <source>Layout 3</source>
+        <target state="final">लेआउट 3</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.4" approved="yes">
+        <source>Layout 4</source>
+        <target state="final">लेआउट 4</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.5" approved="yes">
+        <source>Layout 5</source>
+        <target state="final">लेआउट 5</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.6" approved="yes">
+        <source>Hidden</source>
+        <target state="final">हिडन</target>
+      </trans-unit>
+      <trans-unit id="bullets_type" approved="yes">
+        <source>Type of bullets</source>
+        <target state="final">बुलेट का प्रकार</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.0" approved="yes">
+        <source>Unordered list (bullets)</source>
+        <target state="final">अव्यवस्थित सूची(bullets)</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.1" approved="yes">
+        <source>Ordered list (numbers)</source>
+        <target state="final">आदेशित सूची(numbers)</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.2" approved="yes">
+        <source>Definition list</source>
+        <target state="final">परिभाषा सूची</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.0" approved="yes">
+        <source>Above, center</source>
+        <target state="final">अबोवे , सेण्टर</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.1" approved="yes">
+        <source>Above, right</source>
+        <target state="final">अबोवे , राईट</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.2" approved="yes">
+        <source>Above, left</source>
+        <target state="final">अबोवे , लेफ्ट</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.3" approved="yes">
+        <source>Below, center</source>
+        <target state="final">बिफोर,सेण्टर</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.4" approved="yes">
+        <source>Below, right</source>
+        <target state="final">बेलोव, राइट</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.5" approved="yes">
+        <source>Below, left</source>
+        <target state="final">बेलोव,लेफ्ट</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.6" approved="yes">
+        <source>In text, right</source>
+        <target state="final">इन टेक्स्ट, राईट</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.7" approved="yes">
+        <source>In text, left</source>
+        <target state="final">इन टेक्स्ट, लेफ्ट</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.9" approved="yes">
+        <source>Beside Text, Right</source>
+        <target state="final">बीसाइड टेक्स्ट, राईट</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.10" approved="yes">
+        <source>Beside Text, Left</source>
+        <target state="final">बीसाइड टेक्स्ट, लेफ्ट</target>
+      </trans-unit>
+      <trans-unit id="images.addFileReference" approved="yes">
+        <source>Add image</source>
+        <target state="final">इमेज ऐड करे।</target>
+      </trans-unit>
+      <trans-unit id="cols" approved="yes">
+        <source>Columns</source>
+        <target state="final">कॉलम्स</target>
+      </trans-unit>
+      <trans-unit id="cols.I.0" approved="yes">
+        <source>Auto</source>
+        <target state="final">ऑटो</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.0" approved="yes">
+        <source>0 levels (only selected page)</source>
+        <target state="final">0 लेवल्स(केवल सिलेक्टेड पेज)</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.1" approved="yes">
+        <source>1 level</source>
+        <target state="final">१ लेवल</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.2" approved="yes">
+        <source>2 levels</source>
+        <target state="final">2 लेवल</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.3" approved="yes">
+        <source>3 levels</source>
+        <target state="final">3 लेवल्स</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.4" approved="yes">
+        <source>4 levels</source>
+        <target state="final">4 लेवल्स</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.5" approved="yes">
+        <source>Infinite</source>
+        <target state="final">अनन्त</target>
+      </trans-unit>
+      <trans-unit id="media" approved="yes">
+        <source>Files</source>
+        <target state="final">फिल्स</target>
+      </trans-unit>
+      <trans-unit id="media.ALT.uploads_formlabel" approved="yes">
+        <source>Select single files</source>
+        <target state="final">एक फ़ाइल को सिलेक्ट करें।</target>
+      </trans-unit>
+      <trans-unit id="media.addFileReference" approved="yes">
+        <source>Add file</source>
+        <target state="final">ऐड फाइल</target>
+      </trans-unit>
+      <trans-unit id="multimedia" approved="yes">
+        <source>File</source>
+        <target state="final">फ़ाइल</target>
+      </trans-unit>
+      <trans-unit id="multimedia_formlabel" approved="yes">
+        <source>Selected Media File</source>
+        <target state="final">सिलेक्टेड मीडिया फाइल</target>
+      </trans-unit>
+      <trans-unit id="file_collections" approved="yes">
+        <source>File collections</source>
+        <target state="final">फाइल कलेक्शन्स</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting" approved="yes">
+        <source>Sort file list</source>
+        <target state="final">फ़ाइल सूची क्रमबद्ध करें</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.none" approved="yes">
+        <source>no sorting</source>
+        <target state="final">कोई छँटाई नहीं</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.extension" approved="yes">
+        <source>by file extension</source>
+        <target state="final">फ़ाइल एक्सटेंशन द्वारा</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.name" approved="yes">
+        <source>by filename</source>
+        <target state="final">फ़ाइल नाम से</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.type" approved="yes">
+        <source>by file type</source>
+        <target state="final">फ़ाइल प्रकार के अनुसार</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.size" approved="yes">
+        <source>by file size</source>
+        <target state="final">फ़ाइल आकार के अनुसार</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.creation_date" approved="yes">
+        <source>by file creation date</source>
+        <target state="final">फ़ाइल निर्माण दिनांक के अनुसार</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.modification_date" approved="yes">
+        <source>by file modification date</source>
+        <target state="final">फ़ाइल संशोधन तिथि के अनुसार</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.title" approved="yes">
+        <source>by file metadata title</source>
+        <target state="final">फ़ाइल मेटाडेटा टाइटल के अनुसार</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction" approved="yes">
+        <source>Sorting direction</source>
+        <target state="final">क्रमबद्ध दिशा</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction.ascending" approved="yes">
+        <source>Ascending (default)</source>
+        <target state="final">बढ़ते क्रम में (डिफ़ॉल्ट)</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction.descending" approved="yes">
+        <source>Descending</source>
+        <target state="final">घटते क्रम में</target>
+      </trans-unit>
+      <trans-unit id="target" approved="yes">
+        <source>Target</source>
+        <target state="final">लक्ष्य</target>
+      </trans-unit>
+      <trans-unit id="target.I.1" approved="yes">
+        <source>New window</source>
+        <target state="final">नया विन्डो</target>
+      </trans-unit>
+      <trans-unit id="records" approved="yes">
+        <source>Items</source>
+        <target state="final">आइटम्स</target>
+      </trans-unit>
+      <trans-unit id="records_formlabel" approved="yes">
+        <source>Records</source>
+        <target state="final">रिकार्ड्स</target>
+      </trans-unit>
+      <trans-unit id="space_class_none" approved="yes">
+        <source>None</source>
+        <target state="final">नोन</target>
+      </trans-unit>
+      <trans-unit id="space_class_extra_small" approved="yes">
+        <source>Extra Small</source>
+        <target state="final">बहुत छोटा</target>
+      </trans-unit>
+      <trans-unit id="space_class_small" approved="yes">
+        <source>Small</source>
+        <target state="final">छोटा</target>
+      </trans-unit>
+      <trans-unit id="space_class_medium" approved="yes">
+        <source>Medium</source>
+        <target state="final">मध्यम</target>
+      </trans-unit>
+      <trans-unit id="space_class_large" approved="yes">
+        <source>Large</source>
+        <target state="final">बड़ा</target>
+      </trans-unit>
+      <trans-unit id="space_class_extra_large" approved="yes">
+        <source>Extra Large</source>
+        <target state="final">अतिरिक्त बड़ा</target>
+      </trans-unit>
+      <trans-unit id="frame_class.default" approved="yes">
+        <source>Default</source>
+        <target state="final">डिफ़ॉल्ट</target>
+      </trans-unit>
+      <trans-unit id="frame_class.ruler_before" approved="yes">
+        <source>Ruler Before</source>
+        <target state="final">रूलर से पहले</target>
+      </trans-unit>
+      <trans-unit id="frame_class.ruler_after" approved="yes">
+        <source>Ruler After</source>
+        <target state="final">रूलर के बाद</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent" approved="yes">
+        <source>Indent</source>
+        <target state="final">इनडेन्ट</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent_left" approved="yes">
+        <source>Indent, 33/66%</source>
+        <target state="final">इनडेन्ट,33/66%</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent_right" approved="yes">
+        <source>Indent, 66/33%</source>
+        <target state="final">इनडेन्ट 66/33%</target>
+      </trans-unit>
+      <trans-unit id="frame_class.none" approved="yes">
+        <source>No Frame</source>
+        <target state="final">कोई फ्रेम नहीं</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform" approved="yes">
+        <source>Plugin Options</source>
+        <target state="final">प्लगइन ओप्तिओंस</target>
+      </trans-unit>
+      <trans-unit id="selected_categories" approved="yes">
+        <source>Selected categories</source>
+        <target state="final">चयनित केटेगरी</target>
+      </trans-unit>
+      <trans-unit id="category_field" approved="yes">
+        <source>Category field</source>
+        <target state="final">केटेगरी फील्ड</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.menu_formlabel" approved="yes">
+        <source>Selected Pages</source>
+        <target state="final">सिलेक्टेड पेजिस</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.list_formlabel" approved="yes">
+        <source>Record Storage Page</source>
+        <target state="final">रिकार्ड संग्रहण पृष्ठ</target>
+      </trans-unit>
+      <trans-unit id="tabs.text" approved="yes">
+        <source>Text</source>
+        <target state="final">टेक्स्ट्</target>
+      </trans-unit>
+      <trans-unit id="tabs.media" approved="yes">
+        <source>Media</source>
+        <target state="final">मीडिया</target>
+      </trans-unit>
+      <trans-unit id="tabs.plugin" approved="yes">
+        <source>Plugin</source>
+        <target state="final">प्लगइन</target>
+      </trans-unit>
+      <trans-unit id="starttime_formlabel" approved="yes">
+        <source>Publish Date</source>
+        <target state="final">प्रकाशन तारीख़</target>
+      </trans-unit>
+      <trans-unit id="endtime_formlabel" approved="yes">
+        <source>Expiration Date</source>
+        <target state="final">समाप्ति तारीख</target>
+      </trans-unit>
+      <trans-unit id="fe_group_formlabel" approved="yes">
+        <source>Usergroup Access Rights</source>
+        <target state="final">यूजरगरूप के एक्सेस राइट्स</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.bulletlist_formlabel" approved="yes">
+        <source>Bullet List</source>
+        <target state="final">बुलेट लिस्ट</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.html_formlabel" approved="yes">
+        <source>HTML Code</source>
+        <target state="final">HTML कोड</target>
+      </trans-unit>
+      <trans-unit id="field.table.bodytext" approved="yes">
+        <source>Table content</source>
+        <target state="final">टेबल कॉन्टेंट</target>
+      </trans-unit>
+      <trans-unit id="tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">एक्सेस</target>
+      </trans-unit>
+      <trans-unit id="tabs.appearance" approved="yes">
+        <source>Appearance</source>
+        <target state="final">अपीयरेंस</target>
+      </trans-unit>
+      <trans-unit id="tabs.behaviour" approved="yes">
+        <source>Behavior</source>
+        <target state="final">व्यवहार</target>
+      </trans-unit>
+      <trans-unit id="tabs.images" approved="yes">
+        <source>Images</source>
+        <target state="final">इमेजिस</target>
+      </trans-unit>
+      <trans-unit id="tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">एक्सटेंडेड</target>
+      </trans-unit>
+      <trans-unit id="tabs.accessibility" approved="yes">
+        <source>Accessibility</source>
+        <target state="final">एक्सेसिबिलिटी</target>
+      </trans-unit>
+      <trans-unit id="group.default" approved="yes">
+        <source>Typical page content</source>
+        <target state="final">पृष्ठ का सामान्य सामग्री कंटेंट</target>
+      </trans-unit>
+      <trans-unit id="group.lists" approved="yes">
+        <source>Lists</source>
+        <target state="final">लिस्ट</target>
+      </trans-unit>
+      <trans-unit id="group.menu" approved="yes">
+        <source>Menu</source>
+        <target state="final">मेन्यू</target>
+      </trans-unit>
+      <trans-unit id="group.forms" approved="yes">
+        <source>Form elements</source>
+        <target state="final">फॉर्म एलिमेंट्स</target>
+      </trans-unit>
+      <trans-unit id="group.special" approved="yes">
+        <source>Special elements</source>
+        <target state="final">विशेष एलिमेंट्स</target>
+      </trans-unit>
+      <trans-unit id="group.plugins" approved="yes">
+        <source>Plugins</source>
+        <target state="final">प्लगइन्स</target>
+      </trans-unit>
+      <trans-unit id="CType.header" approved="yes">
+        <source>Header Only</source>
+        <target state="final">केवल शीर्षलेख</target>
+      </trans-unit>
+      <trans-unit id="CType.header.description" approved="yes">
+        <source>Adds a header only.</source>
+        <target state="final">केवल एक शीर्षक जोड़ता है।</target>
+      </trans-unit>
+      <trans-unit id="CType.text" approved="yes">
+        <source>Regular Text Element</source>
+        <target state="final">नियमित टेक्स्ट एलिमेंट</target>
+      </trans-unit>
+      <trans-unit id="CType.text.description" approved="yes">
+        <source>A regular text element with header and bodytext fields.</source>
+        <target state="final">शीर्षक और बोडीटेक्स्ट फ़ील्ड्स के साथ एक नियमित टेक्स्ट एलिमेंट।</target>
+      </trans-unit>
+      <trans-unit id="CType.textpic" approved="yes">
+        <source>Text &amp; Images</source>
+        <target state="final">टेक्स्ट &amp; इमेजिस</target>
+      </trans-unit>
+      <trans-unit id="CType.textpic.description" approved="yes">
+        <source>Any number of images wrapped right around a regular text element.</source>
+        <target state="final">किसी भी संख्या के इमेजिस एक नियमित टेक्स्ट एलिमेंट के आसपास लपेटेगा</target>
+      </trans-unit>
+      <trans-unit id="CType.textmedia" approved="yes">
+        <source>Text &amp; Media</source>
+        <target state="final">टेक्स्ट &amp; मीडिया</target>
+      </trans-unit>
+      <trans-unit id="CType.textmedia.description" approved="yes">
+        <source>Any number of media wrapped right around a regular text element.</source>
+        <target state="final">किसी भी संख्या के मीडिया एक नियमित टेक्स्ट एलिमेंट के आसपास लपेटेगा</target>
+      </trans-unit>
+      <trans-unit id="CType.image" approved="yes">
+        <source>Images Only</source>
+        <target state="final">केवल इमेजिस</target>
+      </trans-unit>
+      <trans-unit id="CType.image.description" approved="yes">
+        <source>Any number of images aligned in columns and rows with a caption.</source>
+        <target state="final">किसी भी संख्या के इमेजिस कॉलम और एक शीर्षक के साथ रॉ में गठबंधन।</target>
+      </trans-unit>
+      <trans-unit id="CType.bullets" approved="yes">
+        <source>Bullet List</source>
+        <target state="final">बुलेट लिस्ट</target>
+      </trans-unit>
+      <trans-unit id="CType.bullets.description" approved="yes">
+        <source>A single bullet list.</source>
+        <target state="final">अकेली बुलेट सूची</target>
+      </trans-unit>
+      <trans-unit id="CType.table" approved="yes">
+        <source>Table</source>
+        <target state="final">टेबल</target>
+      </trans-unit>
+      <trans-unit id="CType.table.description" approved="yes">
+        <source>A simple table.</source>
+        <target state="final">एक साधारण टेबल ।</target>
+      </trans-unit>
+      <trans-unit id="CType.uploads" approved="yes">
+        <source>File Links</source>
+        <target state="final">फाइल लिंक्स</target>
+      </trans-unit>
+      <trans-unit id="CType.uploads.description" approved="yes">
+        <source>Makes a list of files for download.</source>
+        <target state="final">डाउनलोड के लिए फ़ाइलों की एक सूची बनाता है।</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_abstract" approved="yes">
+        <source>Abstracts</source>
+        <target state="final">एब्स्ट्रेक्ट</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_abstract.description" approved="yes">
+        <source>Menu of subpages of selected pages including abstracts</source>
+        <target state="final">मेनू ऑफ़ सबपजेस ऑफ़ सिलेक्टेड पेजीस इन्क्लूडिंग अब्स्ट्रैट्स</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_content" approved="yes">
+        <source>Categorized content</source>
+        <target state="final">वर्गीकृत सामग्री</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_content.description" approved="yes">
+        <source>Content elements for selected categories</source>
+        <target state="final">कंटेंट एलिमेंट्स फॉर सेलेक्टेड कैटेगोरीएस</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_pages" approved="yes">
+        <source>Categorized pages</source>
+        <target state="final">वर्गीकृत पृष्ठ</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_pages.description" approved="yes">
+        <source>Pages for selected categories</source>
+        <target state="final">चयनित श्रेणियों के लिए पेज</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">पेज</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_pages.description" approved="yes">
+        <source>Menu of selected pages</source>
+        <target state="final">मेनू ऑफ़ सिलेक्टेड पेजीस</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_subpages" approved="yes">
+        <source>Subpages</source>
+        <target state="final">उपपृष्ठ</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_subpages.description" approved="yes">
+        <source>Menu of subpages of selected pages</source>
+        <target state="final">मेनू ऑफ़ सबपेजेस ऑफ़ सिलेक्टेड पेजीस</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_recently_updated" approved="yes">
+        <source>Recently updated pages</source>
+        <target state="final">हाल ही में अद्यतन पृष्ठों</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_recently_updated.description" approved="yes">
+        <source>Menu of recently updated pages</source>
+        <target state="final">हाल ही में अपडेट किए गए पृष्ठ</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_related_pages" approved="yes">
+        <source>Related pages</source>
+        <target state="final">संबंधित पृष्ठ</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_related_pages.description" approved="yes">
+        <source>Menu of related pages based on keywords</source>
+        <target state="final">कीवर्ड के आधार पर संबंधित पृष्ठों का मेनू</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section" approved="yes">
+        <source>Section index</source>
+        <target state="final">सेक्शन इंडेक्स</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section.description" approved="yes">
+        <source>Page content marked for section menus</source>
+        <target state="final">सेक्शन मेनू के लिए चिन्हित पेज कंटेंट</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section_pages" approved="yes">
+        <source>Section index of subpages from selected pages</source>
+        <target state="final">खंडों के साथ उपपृष्ठों का मेन्यू चयनित पृष्ठों के साइट के सभी उपपृष्ठों का विस्तृत मेन्यू</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section_pages.description" approved="yes">
+        <source>Menu of subpages of selected pages including sections</source>
+        <target state="final">मेनू ऑफ़ सबपजेस ऑफ़ सिलेक्टेड पेजीस इन्क्लूडिंग सेक्शन्स</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">साइटमेप</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap.description" approved="yes">
+        <source>Expanded menu of all subpages of the current site</source>
+        <target state="final">साइट की सभी उपपृष्ठों का मेन्यू</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap_pages" approved="yes">
+        <source>Sitemaps of selected pages</source>
+        <target state="final">सिलेक्टेड पेज की साइटमैप</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap_pages.description" approved="yes">
+        <source>Expanded menu of all subpages for selected pages</source>
+        <target state="final">चयनित पेजों की सभी सबपेजों का विस्तृत मेनू</target>
+      </trans-unit>
+      <trans-unit id="CType.shortcut" approved="yes">
+        <source>Insert records</source>
+        <target state="final">रिकॉर्डस इन्सर्ट करे</target>
+      </trans-unit>
+      <trans-unit id="CType.shortcut.description" approved="yes">
+        <source>With this element you can embed other content elements.</source>
+        <target state="final">इस तत्व के साथ आप अन्य कंटेंट एलीमेंट को एम्बेड कर सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="CType.list" approved="yes">
+        <source>General Plugin</source>
+        <target state="final">सामान्य प्लगिन</target>
+      </trans-unit>
+      <trans-unit id="CType.list.description" approved="yes">
+        <source>Select this element type to insert a plugin which cannot be found amongst the options below.</source>
+        <target state="final">नीचे दिए गए विकल्पों के बीच नहीं पाया जा सका एसे प्लगइन डालने के लिए इस एलिमेंट का चयन करें।</target>
+      </trans-unit>
+      <trans-unit id="CType.div" approved="yes">
+        <source>Divider</source>
+        <target state="final">डिवाइडर</target>
+      </trans-unit>
+      <trans-unit id="CType.div.description" approved="yes">
+        <source>This element inserts a visual divider, which is by default a horizontal line.</source>
+        <target state="final">यह एलिमेंट एक विसुअल भाजक इन्सर्ट करता है, जो डिफ़ॉल्ट एक हॉरिजॉन्टल रेखा के द्वारा होता है।</target>
+      </trans-unit>
+      <trans-unit id="CType.html" approved="yes">
+        <source>Plain HTML</source>
+        <target state="final">सादे HTML</target>
+      </trans-unit>
+      <trans-unit id="CType.html.description" approved="yes">
+        <source>With this element you can insert raw HTML code on the page.</source>
+        <target state="final">इस एलिमेंट के साथ आप पेज पर रॉ HTML कोड इन्सर्ट कर सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="asset_references" approved="yes">
+        <source>Media elements</source>
+        <target state="final">Media एलिमेंट्स</target>
+      </trans-unit>
+      <trans-unit id="asset_references.addFileReference" approved="yes">
+        <source>Add media file</source>
+        <target state="final">मीडिया फ़ाइल जोड़ें</target>
+      </trans-unit>
+      <trans-unit id="uploads_description" approved="yes">
+        <source>Display description</source>
+        <target state="final">प्रदर्शन का विवरण</target>
+      </trans-unit>
+      <trans-unit id="uploads_type" approved="yes">
+        <source>Display file/icon/thumbnail</source>
+        <target state="final">फ़ाइल/आइकन/थंबनेल प्रदर्शित करें</target>
+      </trans-unit>
+      <trans-unit id="uploads_type.0" approved="yes">
+        <source>Only file name</source>
+        <target state="final">केवल फ़ाइल का नाम</target>
+      </trans-unit>
+      <trans-unit id="uploads_type.1" approved="yes">
+        <source>File name and file extension icon</source>
+        <target state="final">फ़ाइल का नाम और फ़ाइल एक्सटेंशन आइकन</target>
+      </trans-unit>
+      <trans-unit id="uploads_type.2" approved="yes">
+        <source>File name and thumbnail (if possible)</source>
+        <target state="final">फ़ाइल का नाम और थंबनेल (यदि संभव हो)</target>
+      </trans-unit>
+      <trans-unit id="table_class" approved="yes">
+        <source>Table style</source>
+        <target state="final">टेबल स्टाइल</target>
+      </trans-unit>
+      <trans-unit id="table_class.default" approved="yes">
+        <source>Default</source>
+        <target state="final">डिफ़ॉल्ट</target>
+      </trans-unit>
+      <trans-unit id="table_class.striped" approved="yes">
+        <source>Striped</source>
+        <target state="final">Striped</target>
+      </trans-unit>
+      <trans-unit id="table_class.bordered" approved="yes">
+        <source>Bordered</source>
+        <target state="final">बॉर्डर</target>
+      </trans-unit>
+      <trans-unit id="table_caption" approved="yes">
+        <source>Table caption</source>
+        <target state="final">टेबल कैप्शन</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter" approved="yes">
+        <source>Field Delimiter</source>
+        <target state="final">फील्ड डिलिमिटर</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter.124" approved="yes">
+        <source>| (Pipe)</source>
+        <target state="final">| (पाइप)</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter.59" approved="yes">
+        <source>; (Semicolon)</source>
+        <target state="final">; (सेमीकोलन)</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter.58" approved="yes">
+        <source>: (Colon)</source>
+        <target state="final">:(कॉलन)</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter.44" approved="yes">
+        <source>, (Comma)</source>
+        <target state="final">,(कोमा)</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter.9" approved="yes">
+        <source>⇥ (Tab)</source>
+        <target state="final">⇥ (टैब)</target>
+      </trans-unit>
+      <trans-unit id="table_enclosure" approved="yes">
+        <source>Text enclosure</source>
+        <target state="final">टेक्स्ट एनक्लोसर</target>
+      </trans-unit>
+      <trans-unit id="table_enclosure.0" approved="yes">
+        <source>None</source>
+        <target state="final">कोई नहीं</target>
+      </trans-unit>
+      <trans-unit id="table_enclosure.39" approved="yes">
+        <source>' (Single quotes)</source>
+        <target state="final">' (सिंगल कोट्स)</target>
+      </trans-unit>
+      <trans-unit id="table_enclosure.34" approved="yes">
+        <source>" (Double quotes)</source>
+        <target state="final">" (डबल कोट्स)</target>
+      </trans-unit>
+      <trans-unit id="table_header_position" approved="yes">
+        <source>Table header position</source>
+        <target state="final">टेबल हेडर पोजीशन</target>
+      </trans-unit>
+      <trans-unit id="table_header_position.0" approved="yes">
+        <source>No header</source>
+        <target state="final">हेडर नहीं</target>
+      </trans-unit>
+      <trans-unit id="table_header_position.1" approved="yes">
+        <source>Top</source>
+        <target state="final">ऊपर</target>
+      </trans-unit>
+      <trans-unit id="table_header_position.2" approved="yes">
+        <source>Left</source>
+        <target state="final">बाएं</target>
+      </trans-unit>
+      <trans-unit id="table_tfoot" approved="yes">
+        <source>Use table footer (wrap last row with &lt;tfoot&gt; tags)</source>
+        <target state="final">टेबल फ़ूटर का उपयोग करें (अंतिम पंक्ति को &lt;tfoot&gt; टैग्स में लपेटें)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
