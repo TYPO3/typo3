@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1498839785" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="fieldTitle" resname="fieldTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Sidetittel</target>
+      </trans-unit>
+      <trans-unit id="fieldSubtitle" resname="fieldSubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Mellomtittel</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTitle" resname="changeOrderByTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Sidetittel</target>
+      </trans-unit>
+      <trans-unit id="changeOrderBySubtitle" resname="changeOrderBySubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Mellomtittel</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
