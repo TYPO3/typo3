@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="pl">
+  <file id="f1">
+    <unit id="hidden">
+      <segment state="final">
+        <source>Visibility of content element</source>
+        <target>Widoczność elementu treści</target>
+      </segment>
+    </unit>
+    <unit id="type">
+      <segment state="final">
+        <source>Type</source>
+        <target>Typ</target>
+      </segment>
+    </unit>
+    <unit id="column">
+      <segment state="final">
+        <source>Column</source>
+        <target>Kolumna</target>
+      </segment>
+    </unit>
+    <unit id="filelink_size">
+      <segment state="final">
+        <source>Display file size information</source>
+        <target>Wyświetl informacje o rozmiarze pliku</target>
+      </segment>
+    </unit>
+    <unit id="header">
+      <segment state="final">
+        <source>Header</source>
+        <target>Nagłówek</target>
+      </segment>
+    </unit>
+    <unit id="header_type">
+      <segment state="final">
+        <source>Type</source>
+        <target>Typ</target>
+      </segment>
+    </unit>
+    <unit id="header_layout">
+      <segment state="final">
+        <source>Layout</source>
+        <target>Układ</target>
+      </segment>
+    </unit>
+    <unit id="header_position">
+      <segment state="final">
+        <source>Alignment</source>
+        <target>Wyrównanie</target>
+      </segment>
+    </unit>
+    <unit id="header_link">
+      <segment state="final">
+        <source>Link</source>
+        <target>Odnośnik</target>
+      </segment>
+    </unit>
+    <unit id="subheader">
+      <segment state="final">
+        <source>Subheader</source>
+        <target>Podnagłówek</target>
+      </segment>
+    </unit>
+    <unit id="date">
+      <segment state="final">
+        <source>Date</source>
+        <target>Data</target>
+      </segment>
+    </unit>
+    <unit id="bodytext">
+      <segment state="final">
+        <source>Text</source>
+        <target>Tekst</target>
+      </segment>
+    </unit>
+    <unit id="imageorientation">
+      <segment state="final">
+        <source>Position and Alignment</source>
+        <target>Położenie i wyrównanie</target>
+      </segment>
+    </unit>
+    <unit id="imagecols">
+      <segment state="final">
+        <source>Number of Columns</source>
+        <target>Liczba kolumn</target>
+      </segment>
+    </unit>
+    <unit id="imagewidth">
+      <segment state="final">
+        <source>Width of each element (px)</source>
+        <target>Szerokość każdego elementu (px)</target>
+      </segment>
+    </unit>
+    <unit id="imageheight">
+      <segment state="final">
+        <source>Height of each element (px)</source>
+        <target>Wysokość każdego elementu (px)</target>
+      </segment>
+    </unit>
+    <unit id="imageborder">
+      <segment state="final">
+        <source>Border around each element</source>
+        <target>Ramka wokół każdego elementu</target>
+      </segment>
+    </unit>
+    <unit id="image_zoom">
+      <segment state="final">
+        <source>Enlarge on Click</source>
+        <target>Powiększ po kliknięciu</target>
+      </segment>
+    </unit>
+    <unit id="section_index">
+      <segment state="final">
+        <source>Show in Section Menus</source>
+        <target>Pokaż w menu sekcji</target>
+      </segment>
+    </unit>
+    <unit id="link_to_top">
+      <segment state="final">
+        <source>Append with Link to Top of Page</source>
+        <target>Dodaj odnośnik do początku strony</target>
+      </segment>
+    </unit>
+    <unit id="layout">
+      <segment state="final">
+        <source>Layout</source>
+        <target>Układ</target>
+      </segment>
+    </unit>
+    <unit id="frame_class">
+      <segment state="final">
+        <source>Frame</source>
+        <target>Ramka</target>
+      </segment>
+    </unit>
+    <unit id="space_before_class">
+      <segment state="final">
+        <source>Space Before</source>
+        <target>Odstęp przed</target>
+      </segment>
+    </unit>
+    <unit id="space_after_class">
+      <segment state="final">
+        <source>Space After</source>
+        <target>Odstęp po</target>
+      </segment>
+    </unit>
+    <unit id="uploads.media">
+      <segment state="final">
+        <source>Single files</source>
+        <target>Pojedyncze pliki</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
