@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814801" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilestorage.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>File storage, which acts as an entry root point to a file-based structure. See it like a drive or a hard drive volume in your local machine.</source>
+        <target state="final">ບ່ອນເກັບຮັກສາໄຟລ໌, ເຊິ່ງເຮັດໜ້າທີ່ເປັນຈຸດເລີ່ມຕົ້ນຫຼັກເຂົ້າສູ່ໂຄງສ້າງແບບອີງຕາມໄຟລ໌. ໃຫ້ເບິ່ງມັນຄືກັບໄດຣ໌ ຫຼື ພາກສ່ວນຂອງຮາດດິດໃນເຄື່ອງຄອມພິວເຕີຂອງທ່ານ.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details">
+        <source/>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Disabling the storage will result in removing it from any listings in the backend. Existing file relations will still exist.</source>
+        <target state="final">ການປິດການໃຊ້ງານບ່ອນຈັດເກັບຂໍ້ມູນຈະສົ່ງຜົນໃຫ້ມັນຖືກລຶບອອກຈາກລາຍການຕ່າງໆໃນສ່ວນຈັດການ. ການເຊື່ອມໂຍງໄຟລ໌ທີ່ມີຢູ່ແລ້ວຍັງຈະຄົງຢູ່ຄືເກົ່າ.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If you set up a file storage, it will show up on any folder lists, thus allowing to basically browse through the files in this file repository. If you set this checkbox, this storage will be excluded from any listings in the backend. Any existing file references will still exist further.</source>
+        <target state="final">ຖ້າທ່ານຕັ້ງຄ່າບ່ອນເກັບຂໍ້ມູນໄຟລ໌, ມັນຈະສະແດງຢູ່ໃນລາຍການໂຟນເດີຕ່າງໆ, ເຮັດໃຫ້ສາມາດເຂົ້າເບິ່ງໄຟລ໌ຕ່າງໆໃນບ່ອນເກັບໄຟລ໌ນີ້ໄດ້. ຖ້າທ່ານໝາຍເອົາຫ້ອງນີ້, ບ່ອນເກັບຂໍ້ມູນນີ້ຈະຖືກແຍກອອກຈາກລາຍການຕ່າງໆໃນລະບົບຫຼັງບ້ານ. ສ່ວນການອ້າງອີງໄຟລ໌ທີ່ມີຢູ່ແລ້ວຈະຍັງຄົງໃຊ້ງານໄດ້ຕໍ່ໄປ.</target>
+      </trans-unit>
+      <trans-unit id="name.description" resname="name.description" approved="yes">
+        <source>The visible identifier for this file storage.</source>
+        <target state="final">ຕົວລະບຸທີ່ເບິ່ງເຫັນໄດ້ສຳລັບບ່ອນເກັບຂໍ້ມູນໄຟລ໌ນີ້.</target>
+      </trans-unit>
+      <trans-unit id="name.details" resname="name.details" approved="yes">
+        <source>The label entered here will be shown as the name for the entry point in the TYPO3 Backend. Be sure to make it descriptive and logical for your editors.</source>
+        <target state="final">ຊື່ທີ່ລະບຸຢູ່ບ່ອນນີ້ຈະຖືກສະແດງເປັນຊື່ສຳລັບຈຸດເຂົ້າເຖິງໃນລະບົບຫຼັງບ້ານ TYPO3. ຄວນໝັ້ນໃຈວ່າໄດ້ຕັ້ງຊື່ໃຫ້ຈະແຈ້ງ ແລະ ເປັນເຫດເປັນຜົນສຳລັບຜູ້ແກ້ໄຂຂໍ້ມູນຂອງທ່ານ.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>A description of this storage.</source>
+        <target state="final">ຄຳອະທິບາຍຂອງບ່ອນເກັບຂໍ້ມູນນີ້.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" approved="yes">
+        <source>This description field is used to explain e.g. the location of the storage, also what this storage is meant for or what it contains.</source>
+        <target state="final">ຫ້ອງຄຳອະທິບາຍນີ້ຖືກໃຊ້ເພື່ອອະທິບາຍ ເຊັ່ນ: ທີ່ຕັ້ງຂອງບ່ອນເກັບຂໍ້ມູນ, ລວມທັງຈຸດປະສົງຂອງບ່ອນເກັບຂໍ້ມູນນີ້ ຫຼື ສິ່ງທີ່ມັນບັນຈຸໄວ້.</target>
+      </trans-unit>
+      <trans-unit id="driver.description" resname="driver.description" approved="yes">
+        <source>Choose the driver as the technical backbone of the storage. Once you've chosen a driver, and saved it, additional configuration will show up.</source>
+        <target state="final">ເລືອກໄດຣເວີເພື່ອເປັນໂຄງສ້າງທາງເຕັກນິກພື້ນຖານຂອງບ່ອນເກັບຂໍ້ມູນ. ເມື່ອທ່ານເລືອກໄດຣເວີ ແລະ ບັນທຶກແລ້ວ, ການຕັ້ງຄ່າເພີ່ມເຕີມຈະປາກົດຂຶ້ນມາ.</target>
+      </trans-unit>
+      <trans-unit id="driver.details" resname="driver.details" approved="yes">
+        <source>The driver is the technical background of a storage, and thus also defines whether the location of the storage is local (= on the same machine as this TYPO3 installation) or remote like a WebDAV server connection. Search for extensions in the TYPO3 Extension Repository that extend this driver list.</source>
+        <target state="final">ໄດຣເວີແມ່ນພື້ນຖານທາງເຕັກນິກຂອງບ່ອນເກັບຂໍ້ມູນ, ແລະ ຍັງເປັນຕົວ ກຳນົດວ່າທີ່ຕັ້ງຂອງບ່ອນເກັບຂໍ້ມູນນັ້ນຢູ່ໃນເຄື່ອງ (= ຢູ່ໃນເຄື່ອງດຽວກັນກັບທີ່ຕິດຕັ້ງ TYPO3 ນີ້) ຫຼື ຢູ່ທາງໄກ ເຊັ່ນການເຊື່ອມຕໍ່ກັບເຊີບເວີ WebDAV. ສາມາດຄົ້ນຫາສ່ວນເສີມໃນ TYPO3 Extension Repository ທີ່ຊ່ວຍເພີ່ມລາຍການໄດຣເວີນີ້ໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="processingfolder.description" resname="processingfolder.description" approved="yes">
+        <source>Defines the directory on this storage to be used to save temporary files like resized images.</source>
+        <target state="final">ກຳນົດໄດເຣັກທໍຣີໃນບ່ອນເກັບຂໍ້ມູນນີ້ ເພື່ອໃຊ້ສຳລັບບັນທຶກໄຟລ໌ຊົ່ວຄາວ ເຊັ່ນ: ຮູບພາບທີ່ຖືກປັບຂະໜາດ.</target>
+      </trans-unit>
+      <trans-unit id="is_browsable.description" resname="is_browsable.description" approved="yes">
+        <source>If set, backend users can browse through this storage. Otherwise it will show up as a unselectable item in the list.</source>
+        <target state="final">ຖ້າຕັ້ງຄ່າໄວ້, ຜູ້ໃຊ້ລະບົບຫຼັງບ້ານຈະສາມາດເຂົ້າເບິ່ງຜ່ານບ່ອນເກັບຂໍ້ມູນນີ້ໄດ້. ຖ້າບໍ່ດັ່ງນັ້ນ ມັນຈະສະແດງເປັນລາຍການທີ່ບໍ່ສາມາດເລືອກໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="is_public.description" resname="is_public.description" approved="yes">
+        <source>If set, then the files in this storage can be linked directly from the outside world. If this is not set, make sure to provide additional possibilities to access the files in this storage.</source>
+        <target state="final">ຖ້າຕັ້ງຄ່າໄວ້, ໄຟລ໌ໃນບ່ອນເກັບຂໍ້ມູນນີ້ຈະສາມາດເຊື່ອມຕໍ່ໄດ້ໂດຍກົງຈາກພາຍນອກ. ຖ້າບໍ່ໄດ້ຕັ້ງຄ່າໄວ້, ໃຫ້ໝັ້ນໃຈວ່າໄດ້ກະກຽມຊ່ອງທາງເພີ່ມເຕີມເພື່ອເຂົ້າເຖິງໄຟລ໌ໃນບ່ອນເກັບຂໍ້ມູນນີ້.</target>
+      </trans-unit>
+      <trans-unit id="is_writable.description" resname="is_writable.description" approved="yes">
+        <source>If set, then users are allowed to modify, add, delete files/folders on this storage.</source>
+        <target state="final">ຖ້າຕັ້ງຄ່າໄວ້, ຜູ້ໃຊ້ຈະໄດ້ຮັບອະນຸຍາດໃຫ້ແກ້ໄຂ, ເພີ່ມ, ຫຼື ລຶບ ໄຟລ໌/ໂຟນເດີ ໃນບ່ອນເກັບຂໍ້ມູນນີ້ໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="is_online.description" resname="is_online.description" approved="yes">
+        <source>This flag is usually set. If TYPO3 cannot connect to this storage (because it maybe temporary down), then the flag will be checked, and the storage will behave like it is non-browsable in the TYPO3 backend. The admin needs to manually activate it again if it was offline.</source>
+        <target state="final">ໂດຍປົກກະຕິແລ້ວເຄື່ອງໝາຍນີ້ຈະຖືກຕັ້ງໄວ້. ຖ້າ TYPO3 ບໍ່ສາມາດເຊື່ອມຕໍ່ກັບບ່ອນເກັບຂໍ້ມູນນີ້ໄດ້ (ຍ້ອນວ່າລະບົບອາດຈະຢຸດເຮັດວຽກຊົ່ວຄາວ), ເຄື່ອງໝາຍຈະຖືກກວດສອບ ແລະ ບ່ອນເກັບຂໍ້ມູນຈະເຮັດວຽກຄືກັບວ່າມັນບໍ່ສາມາດເຂົ້າເບິ່ງໄດ້ໃນລະບົບຫຼັງບ້ານ TYPO3. ຜູ້ດູແລລະບົບຈຳເປັນຕ້ອງໄດ້ເປີດໃຊ້ງານມັນຄືນໃໝ່ດ້ວຍຕົນເອງ ຖ້າມັນຢູ່ໃນສະຖານະອອຟລາຍ.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
