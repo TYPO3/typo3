@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814789" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_weblayout.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="quickEdit_selElement.alttitle" resname="quickEdit_selElement.alttitle" approved="yes">
+        <source>Content Elements</source>
+        <target state="final">Vsebinski elementi</target>
+      </trans-unit>
+      <trans-unit id="columns_2.alttitle" resname="columns_2.alttitle" approved="yes">
+        <source>Listing by Language</source>
+        <target state="final">Razvrsti po jezikih</target>
+      </trans-unit>
+      <trans-unit id="columns_2.description" resname="columns_2.description" approved="yes">
+        <source>In the "Languages" view you can control the content of the web page as it is divided into languages and columns. It enables users to create a new translation of a page.</source>
+        <target state="final">V pogledu "Jeziki" lahko nadzorujete vsebino spletne strani, ki je razdeljena na jezike in stolpce. Uporabnikom omogoča, da ustvarijo nov prevod strani.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
