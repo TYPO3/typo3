@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="clipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">Zobrazit schránku</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">Vložit do obsahu schránky</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted into this folder</source>
+        <target state="final">Vložit do: Obsah schránky se vloží do této složky</target>
+      </trans-unit>
+      <trans-unit id="editMarked" approved="yes">
+        <source>Edit Metadata</source>
+        <target state="final">Upravit metadata</target>
+      </trans-unit>
+      <trans-unit id="editColumns" approved="yes">
+        <source>Edit specific Metadata</source>
+        <target state="final">Upravit specifická metadata</target>
+      </trans-unit>
+      <trans-unit id="deleteMarked" approved="yes">
+        <source>Delete marked items</source>
+        <target state="final">Odstranit označené položky</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" approved="yes">
+        <source>Transfer to clipboard</source>
+        <target state="final">Přenést do schránky</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" approved="yes">
+        <source>Remove from clipboard</source>
+        <target state="final">Odstranit ze schránky</target>
+      </trans-unit>
+      <trans-unit id="deleteMarkedWarning" approved="yes">
+        <source>Are you sure you want to delete all marked items from this folder?</source>
+        <target state="final">Jste si jisti, že chcete odstranit všechny označené položky z této složky?</target>
+      </trans-unit>
+      <trans-unit id="c_name" approved="yes">
+        <source>Name</source>
+        <target state="final">Název</target>
+      </trans-unit>
+      <trans-unit id="c_size" approved="yes">
+        <source>Size</source>
+        <target state="final">Velikost</target>
+      </trans-unit>
+      <trans-unit id="c_record_type" approved="yes">
+        <source>Type</source>
+        <target state="final">Typ</target>
+      </trans-unit>
+      <trans-unit id="c_rw" approved="yes">
+        <source>RW</source>
+        <target state="final">RW</target>
+      </trans-unit>
+      <trans-unit id="files" approved="yes">
+        <source>files</source>
+        <target state="final">soubory</target>
+      </trans-unit>
+      <trans-unit id="temp" approved="yes">
+        <source>Temporary files</source>
+        <target state="final">Dočasné soubory</target>
+      </trans-unit>
+      <trans-unit id="read" approved="yes">
+        <source>R</source>
+        <target state="final">R</target>
+      </trans-unit>
+      <trans-unit id="recycler" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Recyklátor</target>
+      </trans-unit>
+      <trans-unit id="write" approved="yes">
+        <source>W</source>
+        <target state="final">W</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableTitle" approved="yes">
+        <source>Access denied.</source>
+        <target state="final">Přístup odmítnut.</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableMessage" approved="yes">
+        <source>You are trying to access a folder in a storage that is not browsable.</source>
+        <target state="final">Pokoušíte se přistupovat ke složce v úložišti, které nelze procházet.</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsTitle" approved="yes">
+        <source>Missing folder permissions</source>
+        <target state="final">Chybějící oprávnění složky</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsMessage" approved="yes">
+        <source>You have no access to the folder "%s".</source>
+        <target state="final">Nemáte přístup ke složce "%s".</target>
+      </trans-unit>
+      <trans-unit id="localStorageOfflineTitle" approved="yes">
+        <source>Base folder for local storage missing or not allowed</source>
+        <target state="final">Základní složka pro místní úložiště chybí nebo nemá dostatečná práva</target>
+      </trans-unit>
+      <trans-unit id="localStorageOfflineMessage" approved="yes">
+        <source>Verify that the base folder for the storage "%s" exists and is allowed to be accessed.</source>
+        <target state="final">Ověřte, zda základní složka úložiště "%s" existuje nebo má dostatečná práva.</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundTitle" approved="yes">
+        <source>Folder not found.</source>
+        <target state="final">Složka nenalezena.</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundMessage" approved="yes">
+        <source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
+        <target state="final">Složka "%s" není přístupná. Pokuste se použít nadřazenou složku.</target>
+      </trans-unit>
+      <trans-unit id="translateMetadata" approved="yes">
+        <source>Translate metadata</source>
+        <target state="final">Přeložit metadata</target>
+      </trans-unit>
+      <trans-unit id="createMetadataForLanguage" approved="yes">
+        <source>Create metadata of this file for %s</source>
+        <target state="final">Vytvořit metadata tohoto souboru pro %s</target>
+      </trans-unit>
+      <trans-unit id="editMetadataForLanguage" approved="yes">
+        <source>Edit metadata of this file for %s</source>
+        <target state="final">Upravit Metadata souboru pro %s</target>
+      </trans-unit>
+      <trans-unit id="paramError" approved="yes">
+        <source>Parameter Error</source>
+        <target state="final">Chyba parametru</target>
+      </trans-unit>
+      <trans-unit id="targetNoDir" approved="yes">
+        <source>Target was not a directory!</source>
+        <target state="final">Cíl nebyl adresářem!</target>
+      </trans-unit>
+      <trans-unit id="reloadMetadata" approved="yes">
+        <source>Reload Metadata</source>
+        <target state="final">Znovu načíst metadata</target>
+      </trans-unit>
+      <trans-unit id="rangeIndicator" approved="yes">
+        <source>Media %1$d - %2$d</source>
+        <target state="final">Média %1$d - %2$d</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
