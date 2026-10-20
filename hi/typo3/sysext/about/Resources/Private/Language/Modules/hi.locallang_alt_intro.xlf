@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814848" source-language="en" datatype="plaintext" original="EXT:about/Resources/Private/Language/Modules/locallang_alt_intro.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="introtext" resname="introtext" approved="yes">
+        <source>Web Content Management System</source>
+        <target state="final">वेब कंटेंट मैनेजमेंट सिस्टम</target>
+      </trans-unit>
+      <trans-unit id="introtext2" resname="introtext2" approved="yes">
+        <source>This is a brief description of the available modules.</source>
+        <target state="final">यह उपलब्ध मॉड्यूल का एक संक्षिप्त विवरण है।</target>
+      </trans-unit>
+      <trans-unit id="endText" resname="endText" approved="yes">
+        <source>Features may vary depending on your website and permissions</source>
+        <target state="final">सुविधाओं को अपनी वेबसाइट और अनुमतियों के आधार पर भिन्न हो सकते हैं</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
