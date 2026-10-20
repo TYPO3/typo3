@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:sys_note/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:37Z" product-name="sys_note" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="sys_note" approved="yes">
+        <source>Internal note</source>
+        <target state="final">Interne Notiz</target>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.0" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.1" approved="yes">
+        <source>Instructions</source>
+        <target state="final">Anweisungen</target>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.2" approved="yes">
+        <source>Template</source>
+        <target state="final">Vorlage</target>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.3" approved="yes">
+        <source>Notes</source>
+        <target state="final">Notizen</target>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.4" approved="yes">
+        <source>To-do</source>
+        <target state="final">To-Do</target>
+      </trans-unit>
+      <trans-unit id="sys_note.subject" approved="yes">
+        <source>Subject</source>
+        <target state="final">Betreff</target>
+      </trans-unit>
+      <trans-unit id="sys_note.message" approved="yes">
+        <source>Message</source>
+        <target state="final">Inhalt</target>
+      </trans-unit>
+      <trans-unit id="sys_note.personal" approved="yes">
+        <source>Personal</source>
+        <target state="final">Persönlich</target>
+      </trans-unit>
+      <trans-unit id="sys_note.position" approved="yes">
+        <source>Position</source>
+        <target state="final">Position</target>
+      </trans-unit>
+      <trans-unit id="sys_note.position.top" approved="yes">
+        <source>Top</source>
+        <target state="final">Oben</target>
+      </trans-unit>
+      <trans-unit id="sys_note.position.bottom" approved="yes">
+        <source>Bottom</source>
+        <target state="final">Unten</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
