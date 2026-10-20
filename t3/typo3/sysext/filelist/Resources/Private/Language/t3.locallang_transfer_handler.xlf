@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_transfer_handler.xlf" date="2023-02-24T00:00:00Z" product-name="cms" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="message.transfer_resource.title">
+        <source>Transfer Resource</source>
+        <target>crwdns278657:0crwdne278657:0</target>
+      </trans-unit>
+      <trans-unit id="message.transfer_resource.text">
+        <source>Transfer "%s" to "%s"?</source>
+        <target>crwdns278659:0%scrwdnd278659:0%scrwdne278659:0</target>
+      </trans-unit>
+      <trans-unit id="message.transfer_resources.title">
+        <source>Transfer Resources</source>
+        <target>crwdns278661:0crwdne278661:0</target>
+      </trans-unit>
+      <trans-unit id="message.transfer_resources.text">
+        <source>Transfer %d resources to "%s"?</source>
+        <target>crwdns278663:0%dcrwdnd278663:0%scrwdne278663:0</target>
+      </trans-unit>
+      <trans-unit id="message.button.cancel">
+        <source>Cancel</source>
+        <target>crwdns278665:0crwdne278665:0</target>
+      </trans-unit>
+      <trans-unit id="message.button.copy">
+        <source>Copy</source>
+        <target>crwdns278667:0crwdne278667:0</target>
+      </trans-unit>
+      <trans-unit id="message.button.move">
+        <source>Move</source>
+        <target>crwdns278669:0crwdne278669:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
