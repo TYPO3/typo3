@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815007" source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="moduleTitle" resname="moduleTitle" approved="yes">
+        <source>Template tools</source>
+        <target state="final">Malverktøy</target>
+      </trans-unit>
+      <trans-unit id="templateAnalyzer" resname="templateAnalyzer" approved="yes">
+        <source>Template Analyzer</source>
+        <target state="final">Analyse av maler</target>
+      </trans-unit>
+      <trans-unit id="constantEditor" resname="constantEditor" approved="yes">
+        <source>Constant Editor</source>
+        <target state="final">Konstantedigerer</target>
+      </trans-unit>
+      <trans-unit id="infoModify" resname="infoModify" approved="yes">
+        <source>Info/Modify</source>
+        <target state="final">Informasjon/Endre</target>
+      </trans-unit>
+      <trans-unit id="objectBrowser" resname="objectBrowser" approved="yes">
+        <source>TypoScript Object Browser</source>
+        <target state="final">TypoScript Objektutforskjer</target>
+      </trans-unit>
+      <trans-unit id="viewTemplates" resname="viewTemplates" approved="yes">
+        <source>Viewing templates of</source>
+        <target state="final">Viser mal av</target>
+      </trans-unit>
+      <trans-unit id="pageName" resname="pageName" approved="yes">
+        <source>Page name</source>
+        <target state="final">Sidenavn</target>
+      </trans-unit>
+      <trans-unit id="templates" resname="templates" approved="yes">
+        <source>Templates</source>
+        <target state="final"># Mal</target>
+      </trans-unit>
+      <trans-unit id="isRoot" resname="isRoot" approved="yes">
+        <source>Is Root?</source>
+        <target state="final">Er rot?</target>
+      </trans-unit>
+      <trans-unit id="isExt" resname="isExt" approved="yes">
+        <source>Is Ext?</source>
+        <target state="final">Er Ext</target>
+      </trans-unit>
+      <trans-unit id="areYouSure" resname="areYouSure" approved="yes">
+        <source>Are you sure you want to do this?</source>
+        <target state="final">Sikker på at det er dette du vil?</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
