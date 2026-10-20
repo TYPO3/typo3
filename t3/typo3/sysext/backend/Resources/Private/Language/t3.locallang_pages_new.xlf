@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815013" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_new.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title">
+        <source>Create multiple pages</source>
+        <target>crwdns68070:0crwdne68070:0</target>
+      </trans-unit>
+      <trans-unit id="canNotCreateNew.title" resname="canNotCreateNew.title">
+        <source>Insufficient permissions</source>
+        <target>crwdns68072:0crwdne68072:0</target>
+      </trans-unit>
+      <trans-unit id="canNotCreateNew.message" resname="canNotCreateNew.message">
+        <source>Sorry, you are not allowed to create new subpages to this page due to access restrictions.</source>
+        <target>crwdns68074:0crwdne68074:0</target>
+      </trans-unit>
+      <trans-unit id="newPage" resname="newPage">
+        <source>Page</source>
+        <target>crwdns68076:0crwdne68076:0</target>
+      </trans-unit>
+      <trans-unit id="addMoreLines" resname="addMoreLines">
+        <source>Add more lines</source>
+        <target>crwdns68078:0crwdne68078:0</target>
+      </trans-unit>
+      <trans-unit id="listEnd" resname="listEnd">
+        <source>Place new pages after the existing subpages</source>
+        <target>crwdns68080:0crwdne68080:0</target>
+      </trans-unit>
+      <trans-unit id="hidePages" resname="hidePages">
+        <source>Hide new pages</source>
+        <target>crwdns68082:0crwdne68082:0</target>
+      </trans-unit>
+      <trans-unit id="hidePagesInMenus" resname="hidePagesInMenus">
+        <source>Hide new pages in menus</source>
+        <target>crwdns68084:0crwdne68084:0</target>
+      </trans-unit>
+      <trans-unit id="create" resname="create">
+        <source>Create pages</source>
+        <target>crwdns68086:0crwdne68086:0</target>
+      </trans-unit>
+      <trans-unit id="reset" resname="reset">
+        <source>Clear fields</source>
+        <target>crwdns68088:0crwdne68088:0</target>
+      </trans-unit>
+      <trans-unit id="newSubPages" resname="newSubPages">
+        <source>New page structure</source>
+        <target>crwdns68090:0crwdne68090:0</target>
+      </trans-unit>
+      <trans-unit id="noPagesCreated.title" resname="noPagesCreated.title">
+        <source>No pages added</source>
+        <target>crwdns68092:0crwdne68092:0</target>
+      </trans-unit>
+      <trans-unit id="noPagesCreated.message" resname="noPagesCreated.message">
+        <source>No pages were created.</source>
+        <target>crwdns68094:0crwdne68094:0</target>
+      </trans-unit>
+      <trans-unit id="pagesCreated.title" resname="pagesCreated.title">
+        <source>Pages added</source>
+        <target>crwdns68096:0crwdne68096:0</target>
+      </trans-unit>
+      <trans-unit id="pagesCreated.message" resname="pagesCreated.message">
+        <source>The pages were created successfully.</source>
+        <target>crwdns68098:0crwdne68098:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
