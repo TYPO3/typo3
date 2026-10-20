@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815019" source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_db.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="sys_workspace_stage" resname="sys_workspace_stage" approved="yes">
+        <source>Workspace Stage</source>
+        <target state="final">موقعیت فضای کاری</target>
+      </trans-unit>
+      <trans-unit id="tabs.notification_settings" resname="tabs.notification_settings" approved="yes">
+        <source>Notification settings</source>
+        <target state="final">تنظیمات اطلاع‌رسانی</target>
+      </trans-unit>
+      <trans-unit id="tabs.general" resname="tabs.general" approved="yes">
+        <source>General</source>
+        <target state="final">عمومی</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.allow_notificaton_settings" resname="sys_workspace_stage.allow_notificaton_settings" approved="yes">
+        <source>Allow notification settings during stage change</source>
+        <target state="final">امکان تغییر تنظیمات اطلاع رسانی هنگام تغییر موقعیت</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
