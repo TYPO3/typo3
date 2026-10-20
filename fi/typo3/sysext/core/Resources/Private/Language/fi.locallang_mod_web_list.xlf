@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814881" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="fi">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>List of database-records</source>
+        <target state="final">Luettelo tietokannan tietueista</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>The Web&gt;List module provides low level access to records appearing on a page.</source>
+        <target state="final">WWW&gt;Luettelo -moduli mahdollistaa alemman tason käsittelyn sivun tietueille. Kun muut modulit ovat pääsääntöisesti erikoistuneet tiettyihin toimenpiteisiin tietyissä tietokannan tauluissa, on tällä modulilla mahdollisuus äärimmäisiin toimiin pelkillä tietueilla.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>List</source>
+        <target state="final">Luettelo</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteAfter" resname="clip_pasteAfter" approved="yes">
+        <source>Paste after: Clipboard content is inserted after this record</source>
+        <target state="final">Liitä jälkeen: Leikepöydän sisältö lisätään tämän tietueen jälkeen</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" resname="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted on this page</source>
+        <target state="final">Liitä sisään: Leikepöydän sisältö lisätään tälle sivulle</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" resname="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">Liitä leikepöydälle</target>
+      </trans-unit>
+      <trans-unit id="clip_markRecords" resname="clip_markRecords" approved="yes">
+        <source>Mark All/Mark none</source>
+        <target state="final">Merkitse kaikki/Poista merkinnät</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" resname="clip_selectMarked" approved="yes">
+        <source>Transfer the selection of records to clipboard</source>
+        <target state="final">Siirrä valitut tietueet leikepöydälle</target>
+      </trans-unit>
+      <trans-unit id="clip_duplicates" resname="clip_duplicates" approved="yes">
+        <source>Mark duplicates</source>
+        <target state="final">Merkitse kaksoiskappaleet</target>
+      </trans-unit>
+      <trans-unit id="clip_editMarked" resname="clip_editMarked" approved="yes">
+        <source>Edit marked</source>
+        <target state="final">Muokkaa merkittyjä</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" resname="clip_deleteMarked" approved="yes">
+        <source>Delete marked</source>
+        <target state="final">Poista merkityt</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarkedWarning" resname="clip_deleteMarkedWarning" approved="yes">
+        <source>Are you sure you want to delete all marked records from the table '%s'?</source>
+        <target state="final">Haluatko todella poistaa kaikki merkityt tietueet taulusta '%s'?</target>
+      </trans-unit>
+      <trans-unit id="showInfo" resname="showInfo" approved="yes">
+        <source>Display information</source>
+        <target state="final">Näytä tiedot</target>
+      </trans-unit>
+      <trans-unit id="edit" resname="edit" approved="yes">
+        <source>Edit record</source>
+        <target state="final">Muokkaa tietuetta</target>
+      </trans-unit>
+      <trans-unit id="editPage" resname="editPage" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">Muokkaa sivun ominaisuuksia</target>
+      </trans-unit>
+      <trans-unit id="new" resname="new" approved="yes">
+        <source>New record</source>
+        <target state="final">Uusi tietue</target>
+      </trans-unit>
+      <trans-unit id="newPage" resname="newPage" approved="yes">
+        <source>Create new page after this page</source>
+        <target state="final">Luo uusi sivu tämän sivun jälkeen</target>
+      </trans-unit>
+      <trans-unit id="newRecord" resname="newRecord" approved="yes">
+        <source>Create new record after this record</source>
+        <target state="final">Luo uusi tietue tämän tietueen jälkeen</target>
+      </trans-unit>
+      <trans-unit id="newRecordGeneral" resname="newRecordGeneral" approved="yes">
+        <source>Create new record</source>
+        <target state="final">Luo uusi tietue</target>
+      </trans-unit>
+      <trans-unit id="moveUp" resname="moveUp" approved="yes">
+        <source>Move up in list</source>
+        <target state="final">Siirrä ylös listalla</target>
+      </trans-unit>
+      <trans-unit id="moveDown" resname="moveDown" approved="yes">
+        <source>Move down in list</source>
+        <target state="final">Siirrä alas listalla</target>
+      </trans-unit>
+      <trans-unit id="move_record" resname="move_record" approved="yes">
+        <source>Re-position content element</source>
+        <target state="final">Sijoita sisältö-elementti uudelleen</target>
+      </trans-unit>
+      <trans-unit id="move_page" resname="move_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">Siirrä sivua</target>
+      </trans-unit>
+      <trans-unit id="hide" resname="hide" approved="yes">
+        <source>Hide record</source>
+        <target state="final">Piilota tietue</target>
+      </trans-unit>
+      <trans-unit id="unHide" resname="unHide" approved="yes">
+        <source>Un-hide record</source>
+        <target state="final">Ota tietue pois piilosta</target>
+      </trans-unit>
+      <trans-unit id="hidePage" resname="hidePage" approved="yes">
+        <source>Hide page</source>
+        <target state="final">Piilota sivu</target>
+      </trans-unit>
+      <trans-unit id="unHidePage" resname="unHidePage" approved="yes">
+        <source>Un-hide page</source>
+        <target state="final">Ota sivu piilosta</target>
+      </trans-unit>
+      <trans-unit id="prevLevel" resname="prevLevel" approved="yes">
+        <source>Move this page to the position after the current parent page (Inwards)</source>
+        <target state="final">Siirrä sivu nykyisen ylemmän tason jälkeiseksi</target>
+      </trans-unit>
+      <trans-unit id="nextLevel" resname="nextLevel" approved="yes">
+        <source>Move this page to be a subpage of the page above (Outwards)</source>
+        <target state="final">Siirrä sivu edellisen sivun alapuolelle</target>
+      </trans-unit>
+      <trans-unit id="delete" resname="delete" approved="yes">
+        <source>Delete record (!)</source>
+        <target state="final">Poista tietue (!)</target>
+      </trans-unit>
+      <trans-unit id="history" resname="history" approved="yes">
+        <source>Display change history / Un-do</source>
+        <target state="final">Näytä muutoshistoria / Palauta</target>
+      </trans-unit>
+      <trans-unit id="displayVersions" resname="displayVersions" approved="yes">
+        <source>Display versions</source>
+        <target state="final">Näytä versiot</target>
+      </trans-unit>
+      <trans-unit id="permissions" resname="permissions" approved="yes">
+        <source>Set permissions for page</source>
+        <target state="final">Aseta sivun käyttöoikeudet</target>
+      </trans-unit>
+      <trans-unit id="largeControl" resname="largeControl" approved="yes">
+        <source>Extended view</source>
+        <target state="final">Laajennettu näyttö</target>
+      </trans-unit>
+      <trans-unit id="contractView" resname="contractView" approved="yes">
+        <source>List all tables</source>
+        <target state="final">Listaa kaikki taulut</target>
+      </trans-unit>
+      <trans-unit id="expandView" resname="expandView" approved="yes">
+        <source>List only this table</source>
+        <target state="final">Listaa ainoastaan tämä taulu</target>
+      </trans-unit>
+      <trans-unit id="showClipBoard" resname="showClipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">Näytä leikepöytä</target>
+      </trans-unit>
+      <trans-unit id="editShownColumns" resname="editShownColumns" approved="yes">
+        <source>Edit all shown fields of the listed records</source>
+        <target state="final">Muokkaa kaikkia näytettyjä kenttiä listatuista tietueista</target>
+      </trans-unit>
+      <trans-unit id="editThisColumn" resname="editThisColumn" approved="yes">
+        <source>Edit the '%s' field of the listed records</source>
+        <target state="final">Muotoile '%s' tietoa listatuista tietueista</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" resname="deleteWarning" approved="yes">
+        <source>Are you sure you want to delete this record?</source>
+        <target state="final">Oletko varma, että haluat poistaa tämän tietueen?</target>
+      </trans-unit>
+      <trans-unit id="localization" resname="localization" approved="yes">
+        <source>Localization view</source>
+        <target state="final">Lokalisointinäyttö</target>
+      </trans-unit>
+      <trans-unit id="defaultLanguage" resname="defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">Oletus</target>
+      </trans-unit>
+      <trans-unit id="multipleLanguages" resname="multipleLanguages" approved="yes">
+        <source>All languages</source>
+        <target state="final">Kaikki kielet</target>
+      </trans-unit>
+      <trans-unit id="viewRecords" resname="viewRecords" approved="yes">
+        <source>Viewing records of</source>
+        <target state="final">Näytetään tietueet</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
