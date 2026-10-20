@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814789" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_weblayout.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="sv-SE">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>Web &gt; Page Module</source>
+        <target state="final">Webb &gt; Sidmodul</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The page module is activated from the backend menu and is the primary module for all basic CMS operations you need to perform when maintaining website content.</source>
+        <target state="final">Sidmodulen aktiveras från backend-menyn och är den primära modulen för alla grundläggande CMS-operationer du behöver utföra när du underhåller webbplatsinnehåll.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>Selecting the module will display the page tree.  Click the title of the page you wish to edit content on, and in the right frame you will see the content of the page displayed by the Page module.
+
+The page module has various modes of display of content;
+
+&lt;b&gt;Columns&lt;/b&gt;
+The columns view will show Content Elements listed in the columns and in the order that they will appear on the website. A panel of buttons will allow you to hide/unhide, move and edit the elements easily.
+
+&lt;b&gt;QuickEdit&lt;/b&gt;
+In QuickEdit the first element on the page will be loaded into a form right away. It will depend on the implementation of your website as well as your general preferences if you like this mode more than the columns view.
+
+&lt;b&gt;Languages&lt;/b&gt;
+If your site supports multiple languages and uses the "one-tree-fits-all" concept for localization you will need this mode to control the translations of the content elements on a page.
+
+&lt;b&gt;Page information&lt;/b&gt;
+The page information view shows some statistical data about a page. This includes hit statistics if available.
+
+
+&lt;b&gt;General options&lt;/b&gt;
+In the top of the Page module you will find a row of icons that will bring you right to various features such as History/Undo (1), Create new content element (2), Move page (3), Create new page (4) and Edit page properties (5). See image below.
+
+&lt;b&gt;Defining number of displayed columns [Admin]&lt;/b&gt;
+Administrators can configure the Page module to display only the content columns that the website uses. This is done by Page TSconfig (so it can be configured per branch in the page tree!) and this particular option has the object path "mod.web_layout.tt_content.colPos_list".
+For instance "mod.web_layout.tt_content.colPos_list = 0,3" will set the display of the "Normal" and "Border" columns only.
+There are many other options for customization of the Page module in the object path "mod.web_layout" and Administrators should refer to the "TSconfig" reference linked to below.</source>
+			<target state="final">Om du väljer modulen visas sidträdet. Klicka på titeln på sidan du vill redigera innehåll på, och i den högra ramen ser du innehållet på sidan som visas av sidmodulen. \ N\ nSidmodulen har olika sätt att visa innehållet, \ n\ n&lt;B&gt; Kolumner &lt;/ b&gt; \ nKolumnvyn visar innehållselementen listade i kolumnerna och i den ordning de visas på webbplatsen. En panel med knappar gör att du enkelt kan dölja / ta fram, flytta och redigera elementen. \ N\ n&lt;B&gt; Snabbredigering &lt;/ b&gt; \ nI Snabbredigeringsvyn laddas det första elementet på sidan direkt i ett formulär. Vyn baseras på implementationen av din webbplats och dina allmänna preferenser, om du föredrar detta visningsläget mer än kolumnvisningen. \ N\ n&lt;B&gt; Språk &lt;/ b&gt; \ nOm din webbplats stöder flera språk och använder konceptet "one-tree-fits-all" för lokalisering, behöver du detta visningsläget för att kontrollera översättningarna av innehållselementen på en sida. \ N\ n&lt;b&gt; Sidinformation &lt;/ b&gt; \ nSidinformationen visar statistisk information om en sida. Detta inkluderar träffstatistik om det är tillgängligt. \ N\ n\ n&lt;b&gt; Allmänna alternativ &lt;/ b&gt; \ nI toppen av sidmodulen hittar du en rad ikoner som ger dig tillgång till olika funktioner som Historik / Ångra (1), Skapa nytt innehållselement (2), Flytta sida (3), Skapa ny sida (4) ) och redigera sidegenskaper (5). Se bilden nedan. \ N\ n&lt;b&gt; Definiera antal visade kolumner [Admin] &lt;/ b&gt; \ nAdministratörer kan konfigurera Sidmodulen för att bara visa innehållskolumnerna som webbplatsen använder. Detta görs av Page TSconfig (så det kan konfigureras per gren i sidträdet!) Och det här alternativet har objektbanan "mod.web_layout.tt_content.colPos_list". \ NTill exempel "mod.web_layout.tt_content.colPos_list = 0,3" ställer in displayen av kolumnerna "Normal" och "Border". \ NDet finns många andra alternativ för anpassning av sidmodulen i objektvägen "mod.web_layout" och administratörer bör hänvisa till "TSconfig" -referensen kopplad till nedan.</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>Configuring the Page module [Technical] | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/TSFE/,
+xMOD_csh_corebe:history_log,
+xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:TCEforms,
+About the page module | http://typo3.org/documentation/tips-tricks/the-new-page-editing-concept/
+Editing a page | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/
+The Page Module (Animation) | Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_05.gif</source>
+			<target state="final">Configuring the Page module [Technical] | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/TSFE/,
+xMOD_csh_corebe:history_log,
+xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:TCEforms,
+About the page module | http://typo3.org/documentation/tips-tricks/the-new-page-editing-concept/
+Editing a page | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/
+The Page Module (Animation) | Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_05.gif</target></trans-unit>
+      <trans-unit id="quickEdit.alttitle" resname="quickEdit.alttitle" approved="yes">
+        <source>Quick Edit</source>
+        <target state="final">Snabbredigerare</target>
+      </trans-unit>
+      <trans-unit id="quickEdit.description" resname="quickEdit.description" approved="yes">
+        <source>The Quick Editor gives you direct access to the form fields of the page content.</source>
+        <target state="final">Snabbredigeraren ger dig direkt tillgång till formulärfälten för sidinnehållet.</target>
+      </trans-unit>
+      <trans-unit id="quickEdit_selElement.image_descr" resname="quickEdit_selElement.image_descr" approved="yes">
+        <source>Overview of page content elements in the QuickEdit view. In the bottom there are links to two wizards: The "Move Content Element Wizard" and the "Create new Content Element Wizard". See the links below.</source>
+        <target state="final">Översikt av sidinnehållselement i Snabbredigeringsvyn. Längst ner finns länkar till två guider: "Guiden Flytta innehållselement" och "Skapa nytt innehållsguiden". Se länkarna nedan.</target>
+      </trans-unit>
+      <trans-unit id="columns_2.alttitle" resname="columns_2.alttitle" approved="yes">
+        <source>Listing by Language</source>
+        <target state="final">Lista via Språk</target>
+      </trans-unit>
+      <trans-unit id="columns_3.alttitle" resname="columns_3.alttitle" approved="yes">
+        <source>Page Information</source>
+        <target state="final">Sidinformation</target>
+      </trans-unit>
+      <trans-unit id="columns_3.description" resname="columns_3.description" approved="yes">
+        <source>In the "Page Information" view you can see various statistics about a page.</source>
+        <target state="final">I "Sidinformation"-vyn kan du se olika statistik för en sida.</target>
+      </trans-unit>
+      <trans-unit id="_columns_3.image" resname="_columns_3.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_9.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_9.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="columns_single.details" resname="columns_single.details" xml:space="preserve" approved="yes">
+				<source>You can also hide, delete and move elements by using the control panels.
+Clicking the "New content element" icon you will be able to create new content elements in between the existing elements on the page.
+Click the icon of a content element if you wish to access the context menu of the element.</source>
+			<target state="final">Du kan också gömma, radera och flytta element genom att använda kontrollpanelen. \ NGenom att klicka på ikonen "Nytt innehållselement" kan du skapa nya innehållselement mellan de befintliga elementen på sidan. \ NKlicka på ikonen för ett innehållselement om du vill komma åt elementets snabbmeny.</target></trans-unit>
+      <trans-unit id="_columns_single.seeAlso" resname="_columns_single.seeAlso" approved="yes">
+        <source>_MOD_web_layout:columns_multi</source>
+        <target state="final">_MOD_web_layout:columns_multi</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_columns_single.image" resname="_columns_single.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_1.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_1.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="columns_single.image_descr" resname="columns_single.image_descr" approved="yes">
+        <source>Content Elements on a page are arranged in a specific order - the order they appear on the website. This order is also shown in the page module. The control panel allows you to move elements up and down as well as edit, hide and delete them. You can also just click the preview text shown here to access the editing form of the element.</source>
+        <target state="final">Innehållselement på en sida är ordnade i en viss ordning - den ordning de visas på webbplatsen. Denna order visas också i Sida-modulen. På kontrollpanelen kan du flytta element upp och ner samt redigera, dölja och radera dem. Du kan också klicka på förhandsgranskningstexten som visas här för att komma åt elementets redigeringsformulär.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
