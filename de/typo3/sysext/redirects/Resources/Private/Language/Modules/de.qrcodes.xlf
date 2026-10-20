@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/Modules/qrcodes.xlf" date="2025-11-13T18:00:15Z" product-name="redirects" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>QR Codes</source>
+        <target state="final">QR-Codes</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>QR Codes Administration</source>
+        <target state="final">Verwaltung von QR-Codes</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Generate and customize QR codes to provide quick, scannable access to your digital content.</source>
+        <target state="final">Erstelle und passe QR-Codes an, um einen schnellen, scanbaren Zugriff auf deine digitalen Inhalte zu ermöglichen.</target>
+      </trans-unit>
+      <trans-unit id="heading_text" approved="yes">
+        <source>QR Code Management</source>
+        <target state="final">QR-Code-Verwaltung</target>
+      </trans-unit>
+      <trans-unit id="add_text" approved="yes">
+        <source>Add QR Code</source>
+        <target state="final">QR-Code hinzufügen</target>
+      </trans-unit>
+      <trans-unit id="not_found_with_filter.message" approved="yes">
+        <source>No QR Code could be found with the current set of filters applied.</source>
+        <target state="final">Mit aktuell eingestellten Filtern konnte kein QR-Code gefunden werden.</target>
+      </trans-unit>
+      <trans-unit id="not_found.title" approved="yes">
+        <source>No QR Codes found</source>
+        <target state="final">Es wurden keine QR-Codes gefunden</target>
+      </trans-unit>
+      <trans-unit id="not_found.message" approved="yes">
+        <source>There are currently no QR Codes found in the database.</source>
+        <target state="final">Derzeit sind keine QR-Codes in der Datenbank gefunden worden.</target>
+      </trans-unit>
+      <trans-unit id="create" approved="yes">
+        <source>Create new QR Code</source>
+        <target state="final">Neuen QR-Code erstellen</target>
+      </trans-unit>
+      <trans-unit id="delete.title" approved="yes">
+        <source>Delete QR Codes</source>
+        <target state="final">QR-Codes löschen</target>
+      </trans-unit>
+      <trans-unit id="delete.message" approved="yes">
+        <source>Delete all marked QR Codes permanently? You cannot undo this action.</source>
+        <target state="final">Alle markierten QR-Codes endgültig löschen? Diese Aktion kann nicht rückgängig gemacht werden.</target>
+      </trans-unit>
+      <trans-unit id="download" approved="yes">
+        <source>Download</source>
+        <target state="final">Herunterladen</target>
+      </trans-unit>
+      <trans-unit id="show" approved="yes">
+        <source>Show QR Code</source>
+        <target state="final">QR-Code anzeigen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
