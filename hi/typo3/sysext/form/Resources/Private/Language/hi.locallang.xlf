@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1475977066" source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="element.ImageUpload.properties.SummaryPage.altText" resname="element.ImageUpload.properties.SummaryPage.altText" xml:space="preserve" approved="yes">
+                <source>Uploaded image</source>
+            <target state="final">अपलोड की गई छवि</target></trans-unit>
+      <trans-unit id="element.DatePicker.properties.timeSelectorHourLabel" resname="element.DatePicker.properties.timeSelectorHourLabel" xml:space="preserve" approved="yes">
+                <source>Hour</source>
+            <target state="final">घंटे</target></trans-unit>
+      <trans-unit id="element.DatePicker.properties.timeSelectorMinuteLabel" resname="element.DatePicker.properties.timeSelectorMinuteLabel" xml:space="preserve" approved="yes">
+                <source>Minute</source>
+            <target state="final">मिनट</target></trans-unit>
+      <trans-unit id="validation.error.1221560910" resname="validation.error.1221560910" xml:space="preserve" approved="yes">
+                <source>This field is mandatory.</source>
+            <target state="final">यह क्षेत्र अनिवार्य है।</target></trans-unit>
+      <trans-unit id="validation.error.1221560718" resname="validation.error.1221560718" xml:space="preserve" approved="yes">
+                <source>This field is mandatory.</source>
+            <target state="final">यह क्षेत्र अनिवार्य है।</target></trans-unit>
+      <trans-unit id="validation.error.1347992400" resname="validation.error.1347992400" xml:space="preserve" approved="yes">
+                <source>This field is mandatory.</source>
+            <target state="final">यह क्षेत्र अनिवार्य है।</target></trans-unit>
+      <trans-unit id="validation.error.1347992453" resname="validation.error.1347992453" xml:space="preserve" approved="yes">
+                <source>This field is mandatory.</source>
+            <target state="final">यह क्षेत्र अनिवार्य है।</target></trans-unit>
+      <trans-unit id="validation.error.1238087674" resname="validation.error.1238087674" xml:space="preserve" approved="yes">
+                <source>You must enter a valid date.</source>
+            <target state="final">आपको एक मान्य तारीख दर्ज करनी होगी।</target></trans-unit>
+      <trans-unit id="validation.error.1221551320" resname="validation.error.1221551320" xml:space="preserve" approved="yes">
+                <source>You can only enter letters or digits.</source>
+            <target state="final">आप केवल अक्षर या अंक दर्ज कर सकते हैं।</target></trans-unit>
+      <trans-unit id="validation.error.1221565786" resname="validation.error.1221565786" xml:space="preserve" approved="yes">
+                <source>You can only enter non formatted text without any markup (e.g without XML tags).</source>
+            <target state="final">आप केवल XML टैग के बिना कोई शिष्टाचार मार्गदर्शन नहीं कर सकते हैं।</target></trans-unit>
+      <trans-unit id="validation.error.1238110957" resname="validation.error.1238110957" xml:space="preserve" approved="yes">
+                <source>You can only enter non formatted text without any markup (e.g without XML tags).</source>
+            <target state="final">आप बिना किसी मार्कअप (जैसे XML टैग के बिना) के केवल गैर-स्वरूपित पाठ ही दर्ज कर सकते हैं।</target></trans-unit>
+      <trans-unit id="validation.error.1269883975" resname="validation.error.1269883975" xml:space="preserve" approved="yes">
+                <source>You can only enter non formatted text without any markup (e.g without XML tags).</source>
+            <target state="final">आप केवल XML टैग के बिना कोई शिष्टाचार मार्गदर्शन नहीं कर सकते हैं।(उदाहरण के लिए XML टैग के बिना)।</target></trans-unit>
+      <trans-unit id="validation.error.1428504122" resname="validation.error.1428504122" xml:space="preserve" approved="yes">
+                <source>Your text must be a minimum of %s characters in length and no longer than %s.</source>
+            <target state="final">आपको %s अक्षरों से अधिक का पाठ दर्ज करना होगा।</target></trans-unit>
+      <trans-unit id="validation.error.1238108068" resname="validation.error.1238108068" xml:space="preserve" approved="yes">
+                <source>You must enter text which is longer than %s characters.</source>
+            <target state="final">आपको %s अक्षरों से अधिक का पाठ नहीं दर्ज करना होगा।</target></trans-unit>
+      <trans-unit id="validation.error.1238108069" resname="validation.error.1238108069" xml:space="preserve" approved="yes">
+                <source>You must enter text which is no longer than %s characters.</source>
+            <target state="final">आपको एक मान्य ईमेल पता दर्ज करना होगा।</target></trans-unit>
+      <trans-unit id="validation.error.1221559976" resname="validation.error.1221559976" xml:space="preserve" approved="yes">
+                <source>You must enter a valid email address.</source>
+            <target state="final">आपको एक मान्य ईमेल पता दर्ज करना होगा।</target></trans-unit>
+      <trans-unit id="validation.error.1221560494" resname="validation.error.1221560494" xml:space="preserve" approved="yes">
+                <source>You must enter a valid number.</source>
+            <target state="final">आपको एक वैध संख्या दर्ज करनी होगी।</target></trans-unit>
+      <trans-unit id="validation.error.1221560288" resname="validation.error.1221560288" xml:space="preserve" approved="yes">
+                <source>You must enter a valid floating point number.</source>
+            <target state="final">आपको एक वैध फ़्लोटिंग पॉइंट संख्या दर्ज करनी होगी।</target></trans-unit>
+      <trans-unit id="validation.error.1221563685" resname="validation.error.1221563685" xml:space="preserve" approved="yes">
+                <source>You must enter a valid number.</source>
+            <target state="final">आपको एक वैध संख्या दर्ज करनी होगी।</target></trans-unit>
+      <trans-unit id="validation.error.1221561046" resname="validation.error.1221561046" xml:space="preserve" approved="yes">
+                <source>You must enter a valid number between %s and %s.</source>
+            <target state="final">आपको %s और %s के बीच एक मान्य संख्या दर्ज करनी होगी।</target></trans-unit>
+      <trans-unit id="validation.error.1221565130" resname="validation.error.1221565130" xml:space="preserve" approved="yes">
+                <source>You must enter a valid value. Please refer to the description of this field.</source>
+            <target state="final">आपको एक मान्य मान दर्ज करना होगा। कृपया इस फ़ील्ड का विवरण देखें।</target></trans-unit>
+      <trans-unit id="validation.error.1475002976" resname="validation.error.1475002976" xml:space="preserve" approved="yes">
+                <source>You must enter a countable subject.</source>
+            <target state="final">आपको एक गणनीय विषय दर्ज करना होगा।</target></trans-unit>
+      <trans-unit id="validation.error.1475002994" resname="validation.error.1475002994" xml:space="preserve" approved="yes">
+                <source>You must select between %s to %s elements.</source>
+            <target state="final">आपको %s से %s तत्वों के बीच चयन करना होगा।</target></trans-unit>
+      <trans-unit id="validation.error.1471708997" resname="validation.error.1471708997" xml:space="preserve" approved="yes">
+                <source>You must enter an instance of \TYPO3\CMS\Extbase\Domain\Model\FileReference or \TYPO3\CMS\Core\Resource\File.</source>
+            <target state="final">आपको \TYPO3\CMS\Extbase\Domain\Model\FileReference या \TYPO3\CMS\Core\Resource\File का एक उदाहरण दर्ज करना होगा।</target></trans-unit>
+      <trans-unit id="validation.error.1471708998" resname="validation.error.1471708998" xml:space="preserve" approved="yes">
+                <source>You entered an incorrect media type, "%s" is not allowed for this file. Please refer to the description of this field.</source>
+            <target state="final">आपने गलत मीडिया प्रकार दर्ज किया है, इस फ़ाइल के लिए "%s" की अनुमति नहीं है। कृपया इस फ़ील्ड का विवरण देखें।</target></trans-unit>
+      <trans-unit id="validation.error.1613126216" resname="validation.error.1613126216" xml:space="preserve" approved="yes">
+                <source>The file extension provided "%s" does not match to expected media types. Please refer to the description of this field.</source>
+            <target state="final">दिया गया फ़ाइल एक्सटेंशन "%s" अपेक्षित मीडिया प्रकारों से मेल नहीं खाता। कृपया इस फ़ील्ड का विवरण देखें।</target></trans-unit>
+      <trans-unit id="validation.error.1476396435" resname="validation.error.1476396435" xml:space="preserve" approved="yes">
+                <source>You must NOT fill this field.</source>
+            <target state="final">आपको यह फ़ील्ड नहीं भरना चाहिए।</target></trans-unit>
+      <trans-unit id="validation.error.1505303626" resname="validation.error.1505303626" xml:space="preserve" approved="yes">
+                <source>You must enter an instance of \TYPO3\CMS\Extbase\Domain\Model\FileReference or \TYPO3\CMS\Core\Resource\File.</source>
+            <target state="final">आपको \TYPO3\CMS\Extbase\Domain\Model\FileReference या \TYPO3\CMS\Core\Resource\File का एक उदाहरण दर्ज करना होगा।</target></trans-unit>
+      <trans-unit id="validation.error.1505305752" resname="validation.error.1505305752" xml:space="preserve" approved="yes">
+                <source>You must select a file that is larger than %s in size.</source>
+            <target state="final">आपको %s से बड़ी आकार वाली फ़ाइल चुननी होगी।</target></trans-unit>
+      <trans-unit id="validation.error.1505305753" resname="validation.error.1505305753" xml:space="preserve" approved="yes">
+                <source>You must select a file that is no larger than %s.</source>
+            <target state="final">आपको ऐसी फ़ाइल चुननी होगी जो %s से बड़ी न हो।</target></trans-unit>
+      <trans-unit id="validation.error.1521293686" resname="validation.error.1521293686" xml:space="preserve" approved="yes">
+                <source>You must select a date before %s.</source>
+            <target state="final">आपको %s से पहले की तारीख चुननी होगी।</target></trans-unit>
+      <trans-unit id="validation.error.1521293687" resname="validation.error.1521293687" xml:space="preserve" approved="yes">
+                <source>You must select a date after %s.</source>
+            <target state="final">आपको %s के बाद की तारीख चुननी होगी।</target></trans-unit>
+      <trans-unit id="validation.error.1556283177" resname="validation.error.1556283177" xml:space="preserve" approved="yes">
+                <source>Password does not match confirmation</source>
+            <target state="final">पुष्टि पासवर्ड मेल नहीं खाता</target></trans-unit>
+      <trans-unit id="form_new_wizard_title" resname="form_new_wizard_title" xml:space="preserve" approved="yes">
+                <source>Form</source>
+            <target state="final">फॉर्म</target></trans-unit>
+      <trans-unit id="form_new_wizard_description" resname="form_new_wizard_description" xml:space="preserve" approved="yes">
+                <source>A form that allows website users to submit messages.</source>
+            <target state="final">एक फ़ॉर्म जो वेबसाइट उपयोगकर्ताओं को संदेश भेजने की अनुमति देता है।</target></trans-unit>
+      <trans-unit id="upload.error.150530345" resname="upload.error.150530345" xml:space="preserve" approved="yes">
+                <source>Maximum file size exceeded.</source>
+            <target state="final">अधिकतम फ़ाइल आकार पार हो गया।</target></trans-unit>
+      <trans-unit id="upload.error.150530346" resname="upload.error.150530346" xml:space="preserve" approved="yes">
+                <source>Upload failed. The file was only partially uploaded, please try again.</source>
+            <target state="final">अपलोड विफल. फ़ाइल आंशिक रूप से अपलोड हुई है, कृपया पुनः प्रयास करें।</target></trans-unit>
+      <trans-unit id="upload.error.150530347" resname="upload.error.150530347" xml:space="preserve" approved="yes">
+                <source>No file was uploaded.</source>
+            <target state="final">कोई फ़ाइल अपलोड नहीं की गई।</target></trans-unit>
+      <trans-unit id="upload.error.150530348" resname="upload.error.150530348" xml:space="preserve" approved="yes">
+                <source>Upload failed.</source>
+            <target state="final">अपलोड फेल्ड।</target></trans-unit>
+    </body>
+  </file>
+</xliff>
