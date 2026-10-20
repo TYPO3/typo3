@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf" date="2016-10-23T20:22:33Z" product-name="tabs" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="general" approved="yes">
+        <source>General</source>
+        <target state="final">Général</target>
+      </trans-unit>
+      <trans-unit id="access" approved="yes">
+        <source>Access</source>
+        <target state="final">Accès</target>
+      </trans-unit>
+      <trans-unit id="accesscapabilities" approved="yes">
+        <source>Access capabilities</source>
+        <target state="final">Droits d'accès</target>
+      </trans-unit>
+      <trans-unit id="account_security" approved="yes">
+        <source>Account security</source>
+        <target state="final">Sécurité du compte</target>
+      </trans-unit>
+      <trans-unit id="backend_appearance" approved="yes">
+        <source>Backend appearance</source>
+        <target state="final">Apparence du backend</target>
+      </trans-unit>
+      <trans-unit id="categories" approved="yes">
+        <source>Categories</source>
+        <target state="final">Catégories</target>
+      </trans-unit>
+      <trans-unit id="capabilities" approved="yes">
+        <source>Capabilities</source>
+        <target state="final">Capacités</target>
+      </trans-unit>
+      <trans-unit id="notes" approved="yes">
+        <source>Notes</source>
+        <target state="final">Notes</target>
+      </trans-unit>
+      <trans-unit id="language" approved="yes">
+        <source>Language</source>
+        <target state="final">Langue</target>
+      </trans-unit>
+      <trans-unit id="extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Étendu</target>
+      </trans-unit>
+      <trans-unit id="appearance" approved="yes">
+        <source>Appearance</source>
+        <target state="final">Apparence</target>
+      </trans-unit>
+      <trans-unit id="behaviour" approved="yes">
+        <source>Behavior</source>
+        <target state="final">Comportement</target>
+      </trans-unit>
+      <trans-unit id="images" approved="yes">
+        <source>Images</source>
+        <target state="final">Images</target>
+      </trans-unit>
+      <trans-unit id="accessibility" approved="yes">
+        <source>Accessibility</source>
+        <target state="final">Accessibilité</target>
+      </trans-unit>
+      <trans-unit id="text" approved="yes">
+        <source>Text</source>
+        <target state="final">Texte</target>
+      </trans-unit>
+      <trans-unit id="media" approved="yes">
+        <source>Media</source>
+        <target state="final">Média</target>
+      </trans-unit>
+      <trans-unit id="plugin" approved="yes">
+        <source>Plugin</source>
+        <target state="final">Plugin</target>
+      </trans-unit>
+      <trans-unit id="personalization" approved="yes">
+        <source>Personalization</source>
+        <target state="final">Personnalisation</target>
+      </trans-unit>
+      <trans-unit id="metadata" approved="yes">
+        <source>Metadata</source>
+        <target state="final">Métadonnées</target>
+      </trans-unit>
+      <trans-unit id="reset_configuration" approved="yes">
+        <source>Reset configuration</source>
+        <target state="final">Réinitialiser la configuration</target>
+      </trans-unit>
+      <trans-unit id="resources" approved="yes">
+        <source>Resources</source>
+        <target state="final">Ressources</target>
+      </trans-unit>
+      <trans-unit id="seo" approved="yes">
+        <source>SEO</source>
+        <target state="final">SEO</target>
+      </trans-unit>
+      <trans-unit id="socialmedia" approved="yes">
+        <source>Social Media</source>
+        <target state="final">Réseaux sociaux</target>
+      </trans-unit>
+      <trans-unit id="options" approved="yes">
+        <source>Options</source>
+        <target state="final">Options</target>
+      </trans-unit>
+      <trans-unit id="audio" approved="yes">
+        <source>Audio</source>
+        <target state="final">Audio</target>
+      </trans-unit>
+      <trans-unit id="video" approved="yes">
+        <source>Video</source>
+        <target state="final">Vidéo</target>
+      </trans-unit>
+      <trans-unit id="camera" approved="yes">
+        <source>Camera</source>
+        <target state="final">Appareil photo</target>
+      </trans-unit>
+      <trans-unit id="permissions" approved="yes">
+        <source>Permissions</source>
+        <target state="final">Permissions</target>
+      </trans-unit>
+      <trans-unit id="mounts" approved="yes">
+        <source>Mounts</source>
+        <target state="final">Montages</target>
+      </trans-unit>
+      <trans-unit id="personaldata" approved="yes">
+        <source>Personal Data</source>
+        <target state="final">Données personnelles</target>
+      </trans-unit>
+      <trans-unit id="items" approved="yes">
+        <source>Items</source>
+        <target state="final">Éléments</target>
+      </trans-unit>
+      <trans-unit id="recordpermissions" approved="yes">
+        <source>Record Permissions</source>
+        <target state="final">Permissions de l'enregistrement</target>
+      </trans-unit>
+      <trans-unit id="modulepermissions" approved="yes">
+        <source>Module Permissions</source>
+        <target state="final">Permissions du module</target>
+      </trans-unit>
+      <trans-unit id="advancedoptions" approved="yes">
+        <source>Advanced Options</source>
+        <target state="final">Options avancées</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
