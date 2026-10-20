@@ -1,0 +1,1242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814854" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>TYPO3 Core</source>
+        <target state="final">TYPO3 कोर</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>TYPO3 is a Content Management Framework which consists of a central program core with only limited functionality. To extend this core system there are hundreds of extensions which in combination will provide a very capable system.</source>
+        <target state="final">TYPO3 कंटेंट मैनेजमेंट सिस्टम है जो लिमिटेड फंक्शनलिटी के साथ सेंट्रल प्रोग्राम कोर को कैनसिस्ट करता है।इस कोर सिस्टम को एक्सटेंड करने के लिए सैकड़ों एक्सटेंशन के कॉम्बिनेशन बहुत ही सक्षम सिस्टम प्रदान करता है।</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>For most people TYPO3 is equivalent to a CMS providing a backend for management of the content and a frontend engine for website display. However TYPO3s core is natively designed to be a general purpose framework for management of database content. The core of TYPO3 delivers a set of principles for storage of this content, user access management, editing of the content, uploading and managing files etc. Many of these principles are expressed as an API (Application Programmers Interface) for use in the &lt;em&gt;extensions&lt;/em&gt; which ultimately adds most of the real functionality.</source>
+        <target state="final">ज्यादातर लोगों के लिए एक typo3 CMS बैकएंड कॉन्टेंट को मैनेजमेंट करने के लिए और फ्रॉन्टेन्ड इंजिन वेबसाइट को डिसप्ले कराने के बराबर है।हालांकि TYPO3s कोर नेटिवली डेटाबेस कंटेंट के मैनजमेंट के लिए एक सामान्य फ्रेमवर्क परपोज़ के लिए बनाया गया है।typo3 कॉर कंटेंट के स्टोरेज , यूजर के एक्सेस मैनेजमेंट ,कॉन्टेंट को एडिटिंग और उप्लोडिंग &amp; फाइल्स को मैनेजिंग करने के लिए सिद्धांतों के एक सेट में डिलिवर्स करता है।इन सिद्धांतों में से कई API(एप्लीकेशन प्रोगरामिंग इंटरफ़ेस) को &lt;em&gt; एक्सटेंशन्स &lt;/em&gt; में उपप्योग करते है जो अंत में रियल फंक्शनालिटी ko ऐड करते हैं।</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" approved="yes">
+        <source>Inside TYPO3 | https://docs.typo3.org/typo3cms/InsideTypo3Reference/</source>
+        <target state="final">TYPO3 के अंदर | https://docs.typo3.org/typo3cms/InsideTypo3Reference/</target>
+      </trans-unit>
+      <trans-unit id="_.image" resname="_.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/login.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/login.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" approved="yes">
+        <source>TYPO3 backend login screen.</source>
+        <target state="final">TYPO3 बैकेंड लॉगिन स्क्रीन।</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.alttitle" resname="menu_modules.alttitle" approved="yes">
+        <source>Backend modules</source>
+        <target state="final">बैकेंड मॉड्यूल्स</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.description" resname="menu_modules.description" approved="yes">
+        <source>The Backend menu reflects the hierarchy of main- and sub-modules in TYPO3. Click a menu item to access the corresponding module.</source>
+        <target state="final">बैकेंड मोड्यूल TYPO3 मेंइन और सब-मेंइन मॉड्यूल की हायरार्की दर्शाता है।अनुरूप मोड्यूल को एक्सेस करने के लिए मेनू आइटम पर क्लिक करे।</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.details" resname="menu_modules.details" xml:space="preserve" approved="yes">
+				<source>Backend Users might see different menu items depending on their access permissions. The "Admin" user on a system will always see all modules available.
+
+You can configure the backend to display the menu in two alternative versions (useful on smaller screens); As a selector box or list of icons in the top frame of the backend.
+
+When you click the little "+" or "-" icons next to the main modules, you can collapse (-) or expand (+) all the sub modules. By selecting the "Expand all" check box, all items are expanded. When the checkbox is unselected again, the menu changes back to the previous folding state. If you click "Expand all" and collapse a main module afterwards, the previous folding state is discarded and "Expand all" is unselected again.</source>
+			<target state="final">बैकेंड यूजर को अलग मेनू आइटम्स दिख सकते है वो उसके एक्सेस परमिशन निर्भर करता है।सिस्टम के "एडमिन" यूजर हमेशा सभी अवलेबल मॉड्यूल्स को देख सकेगा।आप मेनू को दो अलग अल्टरनेटिव वर्जन(छोटी स्क्रीन के लये उपयोगी) में डिस्प्ले करने के लिए बैकेंड को कन्फ़िगर कर सकते है।जब आप मेंइन मोड्यूल के बाद छोटे "+" और "-" आइकॉन क्लिक करते है, आप सभी सब-मॉड्यूल्स को कलेप्स(-) और एक्सपान्ड(+) कर सकते है।"एक्सपान्ड ऑल" चेकबॉक्स को सेलेक्ट कर के, सभी आइटम एक्सपान्ड कर सकते है।जब चेकबॉक्स को फिर से उन-सिलेक्टेड करते है, तो मेनू के चेंजिज फिरसे पिछले फोल्डिंग स्टेट में वापस आएगा।अगर आप "एक्सपान्ड ऑल" क्लिक करते है और मेंइन मोडुले को फिर से कॉलेप्स करते है, तो पिछले फोल्डिंग स्टेट को छोड़ देगा और एक्सपान्ड ऑल फिर से उन-सिलेक्टेड हो जायेगा।</target></trans-unit>
+      <trans-unit id="_menu_modules.seeAlso" resname="_menu_modules.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:groupMods,
+be_users:userMods,
+More about Modules | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/Index.html</source>
+				
+			<target state="final">be_groups:groupMods,be_users:userMods,मॉड्यूल के बारे में अधिक| https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/Index.html</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_menu_modules.image" resname="_menu_modules.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_2.png,
+EXT:core/Resources/Public/Images/cshimages/core_3.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_2.png,
+EXT:core/Resources/Public/Images/cshimages/core_3.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="menu_modules.image_descr" resname="menu_modules.image_descr" xml:space="preserve" approved="yes">
+				<source>This is the range of menu options for a typical backend user.
+For another backend user it might be different. This screenshot shows how another user has different permissions set and therefore access to other modules only. Also the backend language has been set different for this user.</source>
+			<target state="final">टिपिकल बैकएंड यूजर के लिए ये मेनू ऑप्शन्स रेंज है।
+दूसरे बैकेंड यूजर के लिए ये अलग हो सकते है।ये स्क्रीनशॉट दिखायेगा दूसरे उसेर्स के पास केसी अलग पार्मिशन्स सेट की गई है और इस लिए सिर्फ दूसरे मॉड्यूल एक्सेस कर सकते है।इसके अलावा बैकेंड भाषा इस यूजर के लिए अलग-अलग सेट की गई है।</target></trans-unit>
+      <trans-unit id="menu_adminFunction.alttitle" resname="menu_adminFunction.alttitle" approved="yes">
+        <source>Admin Functions</source>
+        <target state="final">एडमिन के फंक्शन्स</target>
+      </trans-unit>
+      <trans-unit id="menu_adminFunction.description" resname="menu_adminFunction.description" approved="yes">
+        <source>The Admin Functions allow administrators to clear caches etc.</source>
+        <target state="final">एडमिन के फंक्शन्स अडमिंस्ट्रेटर यूजर को कैश क्लियर करने आदि की अनुमति देता है।</target>
+      </trans-unit>
+      <trans-unit id="menu_adminFunction.details" resname="menu_adminFunction.details" xml:space="preserve" approved="yes">
+				<source>TYPO3 has multiple caching systems:
+
+&lt;b&gt;Database Cache&lt;/b&gt;
+A very central cache is the database cache table, "cache_hash", which needs to be flushed after certain major changes in the system. You "clear all cache" by clicking the link with the blue icon. After this operation any website content should be re-generated from the sources rather than be delivered from caches. This operation clears &lt;i&gt;all&lt;/i&gt; database tables registered as flushable cache tables.
+
+&lt;b&gt;Cached PHP configuration files from Extensions&lt;/b&gt;
+TYPO3 also caches small configuration scripts from extensions, "ext_localconf.php" and "ext_tables.php". These files are simply read from all installed extensions and concatenated into temporary PHP scripts found in the typo3temp/Cache/Code/cache_core/ folder. Sometimes you need to remove these files so TYPO3 re-writes them from the originals. This is done by the "Clear temp_CACHED" link.
+
+&lt;b&gt;Notice:&lt;/b&gt; You should not clear these caches without a second thought. Clearing caches may affect performance on your server negatively for a while. Obviously the cached content has to be regenerated which takes time and under heavy load it might make your server un-available for a while.</source>
+			<target state="final">TYPO3 के पास मल्टी कैशिंग सिस्टम है।
+
+&lt;b&gt;डेटाबेस कैश&lt;/b&gt;
+बहुत ही केन्द्रीय कैश डेटाबेस कैश टेबल है ,"कैश_हैश", जो सिस्टम के महत्त्वपूर्ण परिवर्तन के बाद फ्लश करना पड़ता है।ब्लू आइकॉन के साथ लिंक को क्लिक करके आप "क्लियर सभी कैश" कर सकते है।इस ऑपरेशन के बाद कोई भी वेब साइट का कंटेंट कैश से डिलीवर्ड होने की बजाय सोर्स से फिर से जेनरेट होगा।ये आपरेशन &lt;i&gt;सभी&lt;/i&gt; डेटाबेस टेबल साफ कर देगा जो फ्लशेबल कैश टेबल्स से रजिस्टर्ड है।
+
+&lt;b&gt;एक्सटेंशन्स से कैच्ड php कन्फिगरेशन फाइल्स&lt;/b&gt;
+TYPO3 "ext_localconf.php" और "ext_tables.php" एक्सटेंशन जैसे छोटे कान्फ़िग्रेशन स्क्रिप्ट्स से भी कैश करता है।यह फाइल्स सभी इन्सटॉल्ड एक्सटेंशन्स से रीड करता है और typo3temp/Cache/Code/cache_core/ फोल्डर में मिला टेम्पररी php मिली स्क्रिप्ट को कंकटे करता है।कोई समय आपको यह फाइल्स हटाना पड़ता है इसलये TYPO3 ओरिजनल्स को रे-राईट कर देता है।"temp_CACHED साफ करे" लिंक के द्वारा पूरा कर सकते है।
+
+&lt;b&gt;नोटिस:&lt;/b&gt;
+दूसरे थॉट के बिना आप ये कैश क्लियर नहीं कर सकते। कैश साफ़ करना आप के सर्वर के लिए कुछ समय नेगेटिव असर कर सकता है। जाहिर है कैश कंटेंट को रे-जेनरेट करना है जो समय लगता है और हेवी लोड में यह आपके सर्वर को थोड़ी देर के लिए अनुपलब्ध कर सकता है।</target></trans-unit>
+      <trans-unit id="_menu_adminFunction.seeAlso" resname="_menu_adminFunction.seeAlso" approved="yes">
+        <source>be_users:admin</source>
+        <target state="final">be_users:एडमिन</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_menu_adminFunction.image" resname="_menu_adminFunction.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_1.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/core_1.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pagetree.alttitle" resname="pagetree.alttitle" approved="yes">
+        <source>The Page Tree</source>
+        <target state="final">पेज ट्री</target>
+      </trans-unit>
+      <trans-unit id="pagetree.description" resname="pagetree.description" approved="yes">
+        <source>This is the hierarchical organization of pages in TYPO3. Typically websites are build so they reflect the page structure in the page tree directly in the website navigation.</source>
+        <target state="final">यह में पेजिस की हिरार्चीकैल आर्गेनाइजेशन है।आमतौर पर वेब साइट्स बनाई जाती है ताकि वे पेज का स्ट्रक्चर पेज ट्री में रिफ्लेक्ट करे सीधा वेब साइट नेविगेशन।</target>
+      </trans-unit>
+      <trans-unit id="pagetree.details" resname="pagetree.details" xml:space="preserve" approved="yes">
+				<source>The page tree works like a file system. Each page is like a directory where you can store files. In TYPO3 you store database records inside of each page. Some of these records, typically called "Content Elements", contains the website content of pages. Other records can be from plugins like a glossary or a guestbook and they are only displayed indirectly by a plugin inserted as a Content Element.
+Some backend users will see only a part of the page tree for a website. This feature allows the administrator to configure backend users with different responsibilities for maintaining branches of the page tree.
+
+&lt;b&gt;Navigating the tree&lt;/b&gt;
+Simply click the +/- buttons to expand and contract the branches of the tree.
+If you click the page icons you should see a context menu pop up. It will contain options specifically for that page.
+Clicking the title of a page is another option. It will load the right frame of the Web main module with the selected sub-module. The content shown in the right frame will be related to the page clicked.</source>
+			<target state="final">पेज ट्री फाइल सिस्टम की तरह काम करता है. सभी पेज डायरेक्टरी जेसे है जहाँ आप फाइल्स को स्टोर कर सकते है। TYPO3 में आप डेटाबेस रेकॉर्ड हर एक पेज में स्टोर करते है। इन में से कुछ रेकॉर्डस को "कंटेंट एलिमेंट" कहा जाता है, जो पेजिस के वेबसाइट कंटेंट को कन्टेइन करता है।अन्य रिकार्ड्स प्लगइन से हो सकते है जैसे ग्लोसरी और गेस्टबुक ये प्लगिन के द्वारा इन्सर्ट किया हुआ कॉन्टेंट एलिमेंट इन-डायरेक्टली डिस्प्ले किया जाता है।
+कुछ बैकेंड यूजर्स वेबसाइट के लिए पेज ट्री का पार्ट ही देख पाएंगे।यह सुविधा एडमिनिस्ट्रेटर को अलग रिस्पॉसिबिलिटीज़ के साथ पेज ट्री की ब्रांचीस को मेन्टेइन करने के लिए बैकेंड यूजर कॉन्फ़िगर करने की अनुमति देता है।
+&lt;b&gt;ट्री नेविगेटिंग करना&lt;/b&gt;
+पेज ट्री की ब्रांचीस एक्सपैंड और कॉन्ट्रैक्ट करने के लिए केवल +/- बटन्स क्लिक करे।
+अगर आप पेज आइकॉन क्लिक करेंगे तो आप कॉन्टेक्स्ट मेनू पॉपअप देखेंगे।इसमें पेज के लिए विशेष रूप से ऑप्शंस दिए गए होंगे।
+अगर आप पेज का शीर्षक दूसरा ऑप्शन क्लिक करेंगे।तो ये सिलेक्टेड सब-मॉड्यूल के साथ वेब मेंइन मॉड्यूल की राईट फ्रेम लोड करेगा।क्लिक किये गए पेज का कंटेंट राईट फ्रेम में दिखाएगा।</target></trans-unit>
+      <trans-unit id="_pagetree.seeAlso" resname="_pagetree.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module,
+More about the Page Tree | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageTree/
+Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_01.gif
+Clicking Icons or Titles? (Animation) | FILE:EXT:welcome/modsub/ani_06.gif
+Creating pages (Animation) | FILE:EXT:welcome/modsub/ani_07.gif
+Moving pages (Animation) | FILE:EXT:welcome/modsub/ani_08.gif</source>
+				
+			<target state="final">xMOD_csh_corebe:list_module,
+More about the Page Tree | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageTree/
+Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_01.gif
+Clicking Icons or Titles? (Animation) | FILE:EXT:welcome/modsub/ani_06.gif
+Creating pages (Animation) | FILE:EXT:welcome/modsub/ani_07.gif
+Moving pages (Animation) | FILE:EXT:welcome/modsub/ani_08.gif</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_pagetree.image" resname="_pagetree.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_4.png,
+EXT:core/Resources/Public/Images/cshimages/core_5.png,
+EXT:core/Resources/Public/Images/cshimages/core_6.png,
+EXT:core/Resources/Public/Images/cshimages/core_7.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_4.png,
+EXT:core/Resources/Public/Images/cshimages/core_5.png,
+EXT:core/Resources/Public/Images/cshimages/core_6.png,
+EXT:core/Resources/Public/Images/cshimages/core_7.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="pagetree.image_descr" resname="pagetree.image_descr" xml:space="preserve" approved="yes">
+				<source>An example of a Page Tree in TYPO3. The page tree is available under any of the Web sub-modules in the menu.
+Clicking the icon of a page displays a context sensitive menu with options for that particular page.
+Clicking the title of a page in the page tree will load the right frame with the current submodule. The page id is passed to the module so it displays content related to the page you clicked.
+Holding the mouse pointer over a page icon for a few seconds will display tool-tip information telling you details about the state of the page. Here a page is access restricted and you will be told which group the access is set for by the tool-tip.</source>
+			<target state="final">Typo3 में पेज ट्री का उदाहरण।पेज ट्री कोई भी वेब के सब-मोड्यूल के मेनू में उपलब्ध है।
+पेज के आइकॉन क्लिक करने से उसी पेज के ऑप्शंस के साथ सेंसिटिव कॉन्टेक्स्ट मेनू दिखेंगे।
+पेज आइकॉन को क्लिक करते पर्टिक्युलर पेज के लिए ऑप्शन्स मेनू के साथ सेंसिटिव कॉन्टेक्स्ट मेनू दिखेंगे
+पेज शीर्षक पर क्लिक करते ही पेज ट्री करंट सब-मॉड्यूल के साथ राईट फ्रेम में लोड होगी।मोड्यूल को पेज ID पास क गई है इसलिए ये अपने क्लिक किये हुए पेज के संबंधित कंटेंट ही डिस्प्ले करेगा। पेज आइकॉन पर माउस पॉइंटर को थोड़ी सेकंड पकडे रखने से टूल-टिप इनफार्मेशन पेज के स्टेट के बारेमे जानकारी कहेगा।यहाँ पेज एक्सेस प्रतिबंधित है और किस ग्रुप के लिए एक्सेस सेट किया गया है वो टूल-टिप के द्वारा बताया जायेगा।</target></trans-unit>
+      <trans-unit id="filetree.alttitle" resname="filetree.alttitle" approved="yes">
+        <source>The Folder Tree</source>
+        <target state="final">फ़ोल्डर ट्री</target>
+      </trans-unit>
+      <trans-unit id="filetree.description" resname="filetree.description" approved="yes">
+        <source>Shows the directory structure of a mounted path on the webserver. You can browse the folder tree like you are used to browse the file system on your own computer.</source>
+        <target state="final">वेब सर्वर पर ड्रेस्ट्री स्ट्रक्चर का माउंटेड पथ दिखाता है।आप फोल्डर ट्री को ब्राउज कर सकते है जैसे आप अपनी ओवन कंप्यूटर फ़ाइल सिस्टम को ब्राउज करते है।</target>
+      </trans-unit>
+      <trans-unit id="filetree.details" resname="filetree.details" xml:space="preserve" approved="yes">
+				<source>The Folder Tree is available for any sub-module of the File main module in TYPO3. The File module is like a little web-based FTP-client inside of TYPO3 which allows you to upload, rename, copy, move, delete and edit files inside TYPO3.
+Most users of TYPO3 doesn't need access to the File module and sub-modules in order to upload images on web-pages. They can do this directly when editing Content Elements. But the File module is useful for maintaining collections of files on the server, for example an image archive or files for download.
+
+&lt;b&gt;Navigating the Folder Tree&lt;/b&gt;
+You can expand and contract the folder tree by the +/- icons.
+Clicking a folder icon will display a pop-up menu with options related to that particular folder. Options include copy/cut/paste, rename, upload etc.
+Clicking the folder title will load the currently active sub-module in the right frame of the backend. The sub-module will typically show files and folders inside the folder you clicked.
+
+&lt;b&gt;Granting access to the Folder Tree&lt;/b&gt;
+The administrator needs to allow backend users to access the File modules and in addition make a file mount available to them before they can use the Folder Tree.</source>
+			<target state="final">TYPO3 में फ़ोल्डर ट्री फाइल मेंइन मॉड्यूल के किसी भी सब मॉड्यूल के लिए उपलब्ध है।फाइल मोडुले TYPO3 में एक छोटे वेब-बेस फ्तप-क्लाइंट के जैसा है जो आपको TYPO3 के अन्दर की फाइल्स को अपलोड, नाम बदलने, कॉपी, खिसकाना और एडिट करने की अनुमति देता है।
+TYPO3 के मोस्ट यूज़र्स को इमेज अपलोड करने के लिए फाइल मॉड्यूल और सब-मोड्यूल के उपयोग की जरूरत नहीं है, ये वो कंटेंट एलिमेंट के एडिटिंग के दौरान कर सकते है।फाइल मोड्यूल सर्वर पर फाइल्स के कलेक्शन्स को मेंटेन करने के लिए उपयोगी है, उदाहरण रूप इमेज अर्चिव करने के लिए और फाइल्स डाउनलोड करने के लिए।
+&lt;b&gt;फोल्डर ट्री नेविगेटिंग करना&lt;/b&gt;
+आप +/- इकोन्स के द्वारा फोल्डर ट्री को एक्सपैंड और कॉन्ट्रैक्ट कर सकते है
+फोल्डर आइकॉन को क्लिक करते पर्टिक्युलर फोल्डर के लिए ओप्तिओंस के साथ पॉपअप खुलेगा। ऑप्शंस में कॉपी/कट/पेस्ट, नाम बदलना, अपलोड आदि इंन्कलूड होंगे।
+फोल्डर शीर्षक पर क्लिक करने से करंट एक्टिव सब-मोड्यूल को बैकेंड के राईट फ्रेम में लोड करेगा। आम तौर पर सब-मोड्यूल आपने क्लिक किये हुए फोल्डर के अंदर की फाइल्स और फोल्डर दिखता है। 
+&lt;b&gt;फोल्डर ट्री को एक्सेस देना&lt;/b&gt;
+बैकेंड युसर फोल्डर ट्री का उपयोग करे उसके पहले एडमिनिस्ट्रेटर को बैकेंड यूजर को फाइल मोड्यूल उपयोग करने की अनुमति देना और फाइल माउंट अवेलेबल करवाना होगा।</target></trans-unit>
+      <trans-unit id="_filetree.seeAlso" resname="_filetree.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:groupMods,
+be_groups:file_mountpoints,
+be_users:file_mountpoints,
+Managing files in TYPO3 | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/ManagingFilesInTypo3/
+Uploading Files | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/UploadingImagesToTheArchive/,
+Details about file mounts | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/,
+sys_filemounts,
+xMOD_csh_corebe:filelist_module</source>
+				
+			<target state="final">be_groups:groupMods,
+be_groups:file_mountpoints,
+be_users:file_mountpoints,
+TYPO3 में फाइल्स मेनेज करे | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/ManagingFilesInTypo3/
+उप्लोडिंग फाइल्स| https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/UploadingImagesToTheArchive/,
+फाइल माउंट के बारेमे जानकारी| https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/,
+sys_filemounts,
+xMOD_csh_corebe:filelist_module</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_filetree.image" resname="_filetree.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_8.png,
+EXT:core/Resources/Public/Images/cshimages/core_9.png,
+EXT:core/Resources/Public/Images/cshimages/core_10.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_8.png,
+EXT:core/Resources/Public/Images/cshimages/core_9.png,
+EXT:core/Resources/Public/Images/cshimages/core_10.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="filetree.image_descr" resname="filetree.image_descr" xml:space="preserve" approved="yes">
+				<source>The Folder Tree of the "fileadmin/" folder. This is mounted by default for "Admin"-users. Other users will have to have a file mount configured for them first.
+Clicking the icon of a folder displays the context menu of the folder.
+If you click the folder title in the Folder Tree you will see the sub-module loaded in the right frame. Here it is the File &gt; Filelist module that will display files and folders inside. Clicking the icon of a file will display a context menu for the file.</source>
+			<target state="final">"Fileadmin /" फ़ोल्डर के फ़ोल्डर ट्री। ये "एडमिन" यूजर के लिए डिफ़ॉल्ट माउंट किया गया है।अन्य यूजर को पहले अपने लिए फाइल माउंट कॉन्फ़िगर करना होगा।फोल्डर आइकॉन को क्लिक करते, फोल्डर का कॉन्टेक्स्ट मेनू दिखेंगे।अगर आप फोल्डर ट्री में फोल्डर शीर्षक पर क्लिक करेंगे,तो आप राइट फ्रेम में लोड किया सब मोड्यूल देखेंगे।यहाँ ये फ़ाइल&gt; फाइल लिस्ट मॉड्यूल है जिसमे फाइल्स और फ़ोल्डर्स डिस्प्ले होंगे। फाइल के आइकॉन पर क्लिक करते, फाइल के लिए कॉन्टेक्स्ट मेनू दिखेंगे।</target></trans-unit>
+      <trans-unit id="tcatree.collapseAll" resname="tcatree.collapseAll" approved="yes">
+        <source>Collapse All</source>
+        <target state="final">सभी कोलेप्स</target>
+      </trans-unit>
+      <trans-unit id="tcatree.expandAll" resname="tcatree.expandAll" approved="yes">
+        <source>Expand All</source>
+        <target state="final">सभी एक्सपान्ड</target>
+      </trans-unit>
+      <trans-unit id="tcatree.toggleHideUnchecked" resname="tcatree.toggleHideUnchecked" approved="yes">
+        <source>hide/show unchecked items</source>
+        <target state="final">बिना चुने आइटम छिपाएँ/दिखाएँ</target>
+      </trans-unit>
+      <trans-unit id="tcatree.findItem" resname="tcatree.findItem" approved="yes">
+        <source>Find Item</source>
+        <target state="final">आइटम ढूंढें</target>
+      </trans-unit>
+      <trans-unit id="list_module.alttitle" resname="list_module.alttitle" approved="yes">
+        <source>The Web&gt;List module</source>
+        <target state="final">वेब&gt;लिस्ट मॉड्यूल</target>
+      </trans-unit>
+      <trans-unit id="list_module.description" resname="list_module.description" approved="yes">
+        <source>Listing records located on a page. From here you can copy/cut/paste records around in the system. You can edit records, access the change history of elements etc.</source>
+        <target state="final">पेज पर लोकेटेड रिकॉर्ड का लिस्टिंग।यहाँ से आप सिस्टम अराउंड रेकॉर्ड की नक़ल,कट,पेस्ट कर सकते है।यहाँ से आप रिकॉर्ड एडिट, एलिमेंट की चेंज हिस्ट्री आदि को एक्सेस कर सकते है।</target>
+      </trans-unit>
+      <trans-unit id="list_module.details" resname="list_module.details" xml:space="preserve" approved="yes">
+				<source>The list module is like the file manager in an Operating System; it provides basic access to all "elements" available in the system. In TYPO3 almost all information is stored in the database and managed after the same principles internally. For instance Content Elements representing page content are database records just like backend users are. The Web&gt;List module allows us to create, modify and delete both kinds of records after the same principles.
+
+The Web&gt;List module might not be the best "view" of the content on a page for any situation. For instance if you want to manage website content on a page (Content Elements) you should rather use the "Web&gt;Page" module which is designed to display content elements more optimized. But the List module will always give you access to whatever is on the page in a basic way if no better module is available for management.
+
+&lt;b&gt;Single-table mode&lt;/b&gt;
+If you click the tabel title in the listing you will enter single-table mode. In this mode you can select additional fields from the table to show in the listing. Also you will get additional editing facilities, for instance you will be able to edit multiple records at a time and even only certain fields from those records. See the screenshot for more details.</source>
+			<target state="final">लिस्ट मोड्यूल ऑपरेटिंग सिस्टम के फाइल मैनेजर के जैसा है;सिस्टम में उपलब्ध सभी "एलिमेंट" को बेसिक एक्सेस प्रोवाइड करता है। TYPO3 में लगभग सभी माहिती डेटाबेस में स्टोर होती है और बाद में एक ही प्रिंसिपल्स में इंटरनली मैनेज होते है।कंटेंट एलिमेंट्स पेज कंटेंट को डेटाबेस से रिप्रेजेंट करता है जैसे बैकेंड यूज़र्स।वेब&gt;लिस्ट मोड्यूल एक से प्रिंसिपल्स के बाद सभी तरह के रेकॉर्ड बनाने, सुधारने और मिटने दोनों की अनुमति देता है।
+
+कोई भी स्थिति में वेब&gt;लिस्ट मोड्यूल पेज के पर के कंटेंट के लिए बेस्ट "व्यू" नहीं हो सकता बल्कि आप ज्यादा ऑप्टीमाइज़्ड "वेब&gt;पेज" मोड्यूल जो कंटेंट एलिमेंट डिस्प्ले करने के लिए डिसाइन किया गया है उसका का उपयोग करे।पर लिस्ट मोड्यूल पेज में जो भी हो उसको हमेशा बेसिक तरीके से एक्सेस देता है अगर कोई अच्छा मोडुले उपस्थित नहीं।
+
+&lt;b&gt;सिंगल-टेबल मोड&lt;/b&gt;
+अगर आप टेबल लिस्टिंग के टाइटल पर क्लिक करेंगे तो आप सिंगल टेबल-मोड़ में दाखिल होंगे।इस मॉड्यूल में आप लिस्टिंग में दिखने के लिए टेबल से एडिशनल फील्ड को चुन सकते है और उन रेकॉर्ड से भी केवल कुछ फील्ड।अधिक जानकारी के लिए स्क्रीनशॉट देखें।</target></trans-unit>
+      <trans-unit id="_list_module.seeAlso" resname="_list_module.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:pagetree,
+xMOD_csh_corebe:list_module_root,
+xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:TCEforms
+Selective Editing | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/SelectiveEditing/
+The List module ("Inside TYPO3") | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/CoreModules/ListModule/,</source>
+				
+			<target state="final">xMOD_csh_corebe:pagetree,
+xMOD_csh_corebe:list_module_root,
+xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:TCEforms
+सेलेक्टिव एडिटिंग | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/SelectiveEditing/
+लिस्ट मॉड्यूल (TYPO3 के अंदर)| https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/CoreModules/ListModule/,</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_list_module.image" resname="_list_module.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_11.png,
+EXT:core/Resources/Public/Images/cshimages/core_12.png,
+EXT:core/Resources/Public/Images/cshimages/core_34.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_11.png,
+EXT:core/Resources/Public/Images/cshimages/core_12.png,
+EXT:core/Resources/Public/Images/cshimages/core_34.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="list_module.image_descr" resname="list_module.image_descr" xml:space="preserve" approved="yes">
+				<source>Here the page "Cameras" has been clicked in the page tree and in the right frame the Web&gt;List module shows the contents of the page. Here a single content element (Shop Plugin) is inserted in order to display the other items on the page which are three product records in this case.
+If you enable "Extended mode" and the "Clipboard" you will get additional buttons in the interface to operate on the records shown here. Also notice how you can click any record icon to get a "Clickmenu" for the element.
+Here you see the single-table mode active for the "Page content" table (Content Elements). In the fieldbox the "Hide" field is selected to be included in the listing. If you click any of the edit icons (marked with red border) you will be able to edit [from left to right] a) all listed fields (here "Header" and "Hide"), b) full record or c) a single field (eg. "Hide") for &lt;u&gt;only&lt;/u&gt; the selected records (defined by the checkboxes seen).</source>
+			<target state="final">यहाँ पेज "कैमरा" पेज ट्री में और वेब&gt;लिस्ट मॉड्यूल्स के सही फर्म में क्लिक किया गया है जो पेज के कंटेंट से पता चलता है।यहां एक भी कंटेंट एलिमेंट(दुकान प्लगइन) पेज जो इस मामले में तीन उत्पाद रिकॉर्ड कर रहे हैं पर अन्य आइटम डिस्प्ले करने में डाला जाता है।
+यदि आप "एक्सटेंडेड मोड" और "क्लिपबोर्ड" के लिए सक्षम हो तो आपको यहाँ दिखये गए रिकॉर्ड को ऑपरेट करने के लिए इंटरफ़ेस में अतिरिक्त बटन मिल जाएगा।नोटिश के आप कीसभी एलेमेन्ट के क्लिककमेणु को केशे रेकॉर्ड के आइकॉन पर क्लिक कर पा सकते है। 
+यहाँ आप एकल टेबल मोड को "पेज कॉन्टेट" टेबल (कंटेंट एलिमेंट्स) के लिए सक्रिय देखें।फील्ड बॉक्स में "हाईड" फील्ड को लिस्ट में शामिल करने के लिए चुना गया है.अगर आप किसी भी एडिट आइकॉन पर क्लिक करे (लाल बॉर्डर के साथ चिह्नित), तो आप a)सभी  लिस्टेड फ़ील्ड्स को एडिट(लेफ्ट से राईट ) कर शकते हे(यहाँ  "हैडर" और "हाईड"), b)फुल रेकॉर्ड  या c) एक फिएल्ड (जैसे। "मिटायें")  के लिए &lt;u&gt; केवल &lt;/ u&gt; सिलेक्टेड रिकॉर्ड (चेक बॉक्स द्वारा डिफिएंड )।</target></trans-unit>
+      <trans-unit id="list_module_noId.alttitle" resname="list_module_noId.alttitle" approved="yes">
+        <source>Web&gt;List module with no ID given</source>
+        <target state="final">वेब&gt;लिस्ट मॉड्यूल के साथ कोई ID नहीं दी गई</target>
+      </trans-unit>
+      <trans-unit id="list_module_noId.description" resname="list_module_noId.description" approved="yes">
+        <source>The Web&gt;List module must have a page ID passed to it before it can display any content. Please click a page title in the Page Tree.</source>
+        <target state="final">वेब&gt;लिस्ट मोड्यूल कोई कंटेंट डिस्प्ले करे उसके पहले इसके पास पेज ID पास की गई होनी चाहिए। कृपया पेज ट्री के पेज शीर्षक पर क्लिक करे।</target>
+      </trans-unit>
+      <trans-unit id="_list_module_noId.seeAlso" resname="_list_module_noId.seeAlso" approved="yes">
+        <source>xMOD_csh_corebe:list_module</source>
+        <target state="final">xMOD_csh_corebe:list_module</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="list_module_root.alttitle" resname="list_module_root.alttitle" approved="yes">
+        <source>Root of the Page Tree</source>
+        <target state="final">पेज ट्री का रूट</target>
+      </trans-unit>
+      <trans-unit id="list_module_root.description" resname="list_module_root.description" approved="yes">
+        <source>The root of the Page Tree is having id 0 (zero = no page) and the special circumstance is that records in the page tree root can be accessed and edited &lt;i&gt;only&lt;/i&gt; by "Admin" users.</source>
+        <target state="final">पेज ट्री रुट ID 0(0=कोई पेज नहीं) होना और पेज ट्री रुट के उस रिकॉर्ड के कोई विशेष सर्कम्स्टैन्स को &lt;i&gt;सिर्फ&lt;/i&gt; एडमिन यूज़र्स के द्वारा ही एक्सेस किया जा सकता है।</target>
+      </trans-unit>
+      <trans-unit id="list_module_root.details" resname="list_module_root.details" xml:space="preserve" approved="yes">
+				<source>Only records from certain database tables are allowed to be created in the page tree root. This includes Backend Users, Backend Groups, File Mount records, Language records etc., and you cannot create Content Elements or Frontend Users in the root of the Page Tree. It also works the other way around; For example you cannot create Backend Users anywhere in the page tree.
+Usually records that are located in the page tree root are somehow "global" for the whole TYPO3 installation and doesn't make sense inside a specific branch of the page tree.</source>
+			<target state="final">सिर्फ डेटाबेस टेबल के रेकॉर्ड को ही पेज ट्री रुट में बनाने की अनुमति है। बैकेंड उसेर्स, बैकेंड ग्रुप्स, फाइल माउंट रिकार्ड्स, लैंग्वेज रिकार्ड्स आदि को इंन्कलूड करता है, और आप पेज ट्री रुत में कंटेंट एलिमेंट या फ्रॉन्टेन्ड यूजर बना नहीं सकते। यह भी दूसरी तरह के आसपास काम करता है;उदहारण रूप आप पेज ट्री में कोई भी जग बैकेंड यूजर बना नहीं सकते।
+आम तौर पर पेज ट्री रुट पर के रिकॉर्ड किसी न किसी तरह से पुरे टाइपो के इन्सटॉलेशन के लिए "ग्लोबल" होते है।पेज ट्री की स्पेसिफ़िक ब्रांच के अंदर मतलब नहीं है।</target></trans-unit>
+      <trans-unit id="_list_module_root.seeAlso" resname="_list_module_root.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module
+The List module ("Inside TYPO3") | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/CoreModules/ListModule/</source>
+				
+			<target state="final">xMOD_csh_corebe:list_moduleलिस्ट मॉड्यूल("typo3 के अंदर")| https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/CoreModules/ListModule/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_list_module_root.image" resname="_list_module_root.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_13.png,
+EXT:core/Resources/Public/Images/cshimages/core_14.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_13.png,
+EXT:core/Resources/Public/Images/cshimages/core_14.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="list_module_root.image_descr" resname="list_module_root.image_descr" xml:space="preserve" approved="yes">
+				<source>Example of records in the page tree root; Backend users, groups, filemounts and website languages.
+When "Admin"-users wants to create a new record in the page tree root they will see a limited number of record types to create. This reflects which tables are configured to be created in the page tree root.</source>
+			<target state="final">पेज ट्री रुट में रेकॉर्ड का उदाहरण;बैकेंड उसेर्स, ग्रुप्स, फाइल माउंट्स और वेबसाइट भाषा।
+जब "एडमिन"-यूजर पेज ट्री रुट में नया रेकॉर्ड बनाना चाहता है, रेकॉर्ड बनाने के लिए वे सिर्फ सीमित संख्या के रेकॉर्ड प्रकार ही देखेगा।ये रिफ्लेक्ट करता है कि क्रिएट करने के लिए को से टेबल्स पेज ट्री रुट में कॉन्फ़िगर किया गया है।</target></trans-unit>
+      <trans-unit id="list_clipboard.alttitle" resname="list_clipboard.alttitle" approved="yes">
+        <source>TYPO3 Clipboard</source>
+        <target state="final">TYPO3 क्लिपबोर्ड</target>
+      </trans-unit>
+      <trans-unit id="list_clipboard.description" resname="list_clipboard.description" approved="yes">
+        <source>The clipboard is an internal registry where records and files can be "stored" temporarily. Usually the clipboard is used for copy/cut/paste operations internally of one or more elements.</source>
+        <target state="final">क्लिपबोर्ड इंटरनल रजिस्ट्री है जहाँ रिकार्ड्स और फाइल्स टेम्पररी स्टोर कर सके। आमतौर पर क्लिपबोर्ड नक़ल/कट/पेस्ट जैसे आतंरिक रूप से एक या एक से अधिक एलिमेंट का ऑपरेशन करने के लिए होता है।</target>
+      </trans-unit>
+      <trans-unit id="_list_clipboard.seeAlso" resname="_list_clipboard.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:filelist_clipboard,
+Using the clipboard | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/UsingTheListModuleEffectively/
+Numeric Clipboard pads | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/TheNumericClipboardPads-ManagingManyElements/
+Clipboard details [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/GeneralInterfaceFeatures/Clipboard/,
+Accessing clipboard in scripts [Technical] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/Clipboard/</source>
+				
+			<target state="final">xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:filelist_clipboard,
+क्लिपबोर्ड का उपयोग कर के | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/UsingTheListModuleEffectively/
+न्यूमेरिक क्लिपबोर्ड पेड्स| https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/TheNumericClipboardPads-ManagingManyElements/
+क्लिपबोर्ड डिटेल्स [टेक्निकल]| https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/GeneralInterfaceFeatures/Clipboard/,
+एक्सेसिंग क्लिपबोर्ड इन स्क्रिप्ट्स [टेक्निकल] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/Clipboard/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_list_clipboard.image" resname="_list_clipboard.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_16.png,
+EXT:core/Resources/Public/Images/cshimages/core_17.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_16.png,
+EXT:core/Resources/Public/Images/cshimages/core_17.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="list_clipboard.image_descr" resname="list_clipboard.image_descr" xml:space="preserve" approved="yes">
+				<source>Whenever you use the copy/cut/paste functions in the clickmenus you will actually use the clipboard to store the element internally in TYPO3.
+If you select one of the numeric clipboard pads you will be able to store more than a single element on the clipboard at a time. In the record listings you will then see checkboxes next to the elements by which you can select/deselect elements for the clipboard.</source>
+			<target state="final">जब भी आप क्लिक मेनुस में कट,कॉपी,पेस्ट फंक्शन्स का उपयोग करते है, वास्तव में आप एलिमेंट को इंटरनली TYPO3 में स्टोर करने के लिए क्लिपबोर्ड का इस्तेमाल करते है।
+अगर आप न्यूमेरिक क्लिपबोर्ड पेडस में से एक का चयन करते हैं तो आप एक ही टाइम पर एक से ज्यादा एलिमेंट से ज्यादा स्टोर करने के लिए काबिल हो जायेंगे।रेकॉर्ड लिस्टिंग में आप बाद में एलिमेंट के बाद चेकबोसिस देखेंगे जिस के द्वारा आप एलिमेंट को सेलेक्ट/डी-सेलेक्ट कर सकते है।</target></trans-unit>
+      <trans-unit id="list_searchbox.alttitle" resname="list_searchbox.alttitle" approved="yes">
+        <source>Search Box</source>
+        <target state="final">सर्च बॉक्स</target>
+      </trans-unit>
+      <trans-unit id="list_searchbox.description" resname="list_searchbox.description" approved="yes">
+        <source>By this search box you can do a free text search in all the listed records. You can also search recursively in sub-pages by selecting a number of levels to search in the selector box to the right of the search field.</source>
+        <target state="final">इस सर्चबॉक्स से आप सभी लिस्टेड रेकॉर्ड में फ्री टेक्स्ट सर्च कर सकते है।सर्च फील्ड के राईट सिलेक्टर बॉक्स से लेवल के नंबर चुन कर आप सब-पेजिस में रिकर्सिली सर्च भी कर सकते है।</target>
+      </trans-unit>
+      <trans-unit id="_list_searchbox.seeAlso" resname="_list_searchbox.seeAlso" approved="yes">
+        <source>xMOD_csh_corebe:list_module</source>
+        <target state="final">xMOD_csh_corebe:list_module</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_list_searchbox.image" resname="_list_searchbox.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_15.png,</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/core_15.png,</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="list_options.alttitle" resname="list_options.alttitle" approved="yes">
+        <source>List module options</source>
+        <target state="final">लिस्ट मॉड्यूल ऑप्शन</target>
+      </trans-unit>
+      <trans-unit id="list_options.description" resname="list_options.description" approved="yes">
+        <source>Enable additional options like the "Extended view" mode to see additional control buttons for each record in the listing or the "Clipboard" to see the clipboard and its content.</source>
+        <target state="final">लिस्टिंग के प्रत्येक रेकॉर्ड एडिशनल कन्ट्रोल बटन्स को देखने के लये एडिशनल ऑप्शन्स "एक्सटेंडेड व्यू" मोड को इनेबल करे या क्लिपबोर्ड और उसके कॉन्टेंट देखने के लिए "क्लिपबोर्ड"।</target>
+      </trans-unit>
+      <trans-unit id="_list_options.seeAlso" resname="_list_options.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:list_clipboard,
+xMOD_csh_corebe:filelist_options</source>
+				
+			<target state="final">xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:list_clipboard,
+xMOD_csh_corebe:filelist_options</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_list_options.image" resname="_list_options.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_18.png,
+EXT:core/Resources/Public/Images/cshimages/core_19.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_18.png,
+EXT:core/Resources/Public/Images/cshimages/core_19.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="list_options.image_descr" resname="list_options.image_descr" xml:space="preserve" approved="yes">
+				<source>The options checkboxes.
+Selecting "Extended view" will enable the control buttons in the record lists.</source>
+			<target state="final">ऑप्शन्स चेकबॉक्सीस।"एक्सटेंडेड व्यू" सेलेक्ट करना रिकॉर्ड लिस्ट्स के कंट्रोल बटन को इनेबल करेगा।</target></trans-unit>
+      <trans-unit id="pagetree_overview.alttitle" resname="pagetree_overview.alttitle" approved="yes">
+        <source>Pagetree Overview</source>
+        <target state="final">पेजट्री ओवरव्यू</target>
+      </trans-unit>
+      <trans-unit id="pagetree_overview.description" resname="pagetree_overview.description" approved="yes">
+        <source>The Pagetree Overview shows information related to pages for a branch of the page tree. This includes start- and stop-times, cache settings etc.</source>
+        <target state="final">पेजट्री ओवरव्यू पेज ट्री की किसी शाखा से संबंधित पेजों की जानकारी दिखाता है। इसमें प्रारंभ और समाप्ति समय, कैश सेटिंग्स आदि शामिल हैं।</target>
+      </trans-unit>
+      <trans-unit id="_pagetree_overview.seeAlso" resname="_pagetree_overview.seeAlso" xml:space="preserve" approved="yes">
+				<source>_MOD_web_info:func_0,
+_MOD_web_info:func_1,
+_MOD_web_info:func_2,
+_MOD_web_info:stat</source>
+				
+			<target state="final">_MOD_web_info:func_0,
+_MOD_web_info:func_1,
+_MOD_web_info:func_2,
+_MOD_web_info:stat</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_pagetree_overview.image" resname="_pagetree_overview.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_1.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_1.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pagetree_overview.image_descr" resname="pagetree_overview.image_descr" approved="yes">
+        <source>One of the features of the Pagetree Overview module is that you can see what types of records are found on pages in a branch. Here record counts are shown for a page tree branch 2 levels down.</source>
+        <target state="final">पेजट्री ओवरव्यू मॉड्यूल की एक विशेषता यह है कि आप देख सकते हैं कि किसी शाखा के पेजों पर किस प्रकार के रिकॉर्ड मौजूद हैं। यहां 2 स्तर नीचे तक की पेज ट्री शाखा के लिए रिकॉर्ड की संख्या दिखाई जाती है।</target>
+      </trans-unit>
+      <trans-unit id="new_regular.alttitle" resname="new_regular.alttitle" approved="yes">
+        <source>Create new record</source>
+        <target state="final">नया रिकॉर्ड बनाए</target>
+      </trans-unit>
+      <trans-unit id="new_regular.description" resname="new_regular.description" approved="yes">
+        <source>This list shows the types of records (database tables) you can create on the page. Click a table name to select the type.</source>
+        <target state="final">ये लिस्ट रिकॉर्ड(डेटाबेस टेबल्स) का प्रकार दर्शाता है को आप पेज पर कर सकते है। टाइप सेलेक्ट करने के लिए टॉवल पर क्लिक करे।</target>
+      </trans-unit>
+      <trans-unit id="_new_regular.seeAlso" resname="_new_regular.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:new_pages</source>
+				
+			<target state="final">xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:new_pages</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_new_regular.image" resname="_new_regular.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_70.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/core_70.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="new_regular.image_descr" resname="new_regular.image_descr" approved="yes">
+        <source>The selection of records a user can create on this particular page. The selection depends on the user's permissions and the page type. For example a Folder page type can contain any kind of record while regular pages can contain only some types (like Content Elements).</source>
+        <target state="final">रेकॉर्ड सिलेक्शन इस पेज पर यूजर बन सकता है। सिलेक्शन यूजर परमिशन एंड पेज के प्रकार पर निर्भर है।उदहारण रूप फोल्डर पेज प्रकार कोई भी रेकर्ड शामिल कर सकता है जब की रेगुलर पेज सिर्फ कुछ प्रकार ही शामिल कर सकता है(कंटेंट एलिमेंट्स जैसे)।</target>
+      </trans-unit>
+      <trans-unit id="new_pages.alttitle" resname="new_pages.alttitle" approved="yes">
+        <source>Create new page wizard</source>
+        <target state="final">नया विजार्ड बनाएं</target>
+      </trans-unit>
+      <trans-unit id="new_pages.description" resname="new_pages.description" approved="yes">
+        <source>Creating a new page means you have to find a position for it in the page tree. This wizard helps you find this position easily by clicking the flashing arrow pointing to the position you want.</source>
+        <target state="final">नया पेज बनाना मतलब आप को पेज ट्री में इसकी पोजीशन खोजनी होंगी। यह विज़ार्ड आपको आप जो पोजीशन चाहते है उस फ्लशिंग एर्रो पर क्लिक करके आसानी से पोजीशन खोजने में मदद करेगा ।</target>
+      </trans-unit>
+      <trans-unit id="_new_pages.seeAlso" resname="_new_pages.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:new_regular,
+xMOD_csh_corebe:new_ce,
+How to create a new page | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/</source>
+				
+			<target state="final">xMOD_csh_corebe:new_regular,
+xMOD_csh_corebe:new_ce,
+नया पेज कैसे बनाये | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_new_pages.image" resname="_new_pages.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_20.png,
+EXT:core/Resources/Public/Images/cshimages/core_21.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_20.png,
+EXT:core/Resources/Public/Images/cshimages/core_21.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="new_pages.image_descr" resname="new_pages.image_descr" xml:space="preserve" approved="yes">
+				<source>Between each page in the tree you find small icons that point out a place for a new page. Select a position by clicking one of these icons.
+To access the "Create new page wizard" in the first place, just click the link in the Create new record dialog.</source>
+			<target state="final">सभी पेज के बीच में आप एक छोटा आइकॉन मिलेगा जो नए पेज के लिए जग दर्शाता है।उस में से कोई एक आइकॉन पर क्लिक करके पोजिशन सेलेक्ट कर सकते है।
+पहली जगह में "न्यू पेज विज़ार्ड बनाये" का उपयोग करने के लिए, सिर्फ क्रिएट न्यू रेकॉर्ड डायलॉग पर क्लिक करे।</target></trans-unit>
+      <trans-unit id="new_ce.alttitle" resname="new_ce.alttitle" approved="yes">
+        <source>Create new Content Element Wizard</source>
+        <target state="final">क्रिएट न्यू कंटेंट एलिमेंट विज़ार्ड</target>
+      </trans-unit>
+      <trans-unit id="new_ce.description" resname="new_ce.description" approved="yes">
+        <source>Content Elements come in many flavors and inserting new content on a page means you have to select the right element type. This wizard helps you to pick a main type of element before you actually begin to enter content.</source>
+        <target state="final">कंटेंट एलिमेंट्स कई प्रकार में आते है और पेज में कंटेंट डालते है इस लिए आप को सही कंटेंट एलिमेंट प्रकार चुनना होगा।ये विज़ार्ड आप को कंटेंट ऐड करने से पहले एलिमेंट की मेंइन टाइप चुनने में मदद करेगा।</target>
+      </trans-unit>
+      <trans-unit id="new_ce.details" resname="new_ce.details" approved="yes">
+        <source>Selecting an element type here will just preset the content element with certain values. You can always change the values later and if you cannot find exactly the type you need you can just pick the one that comes closest to your need, then adjust the details later.</source>
+        <target state="final">यहाँ एलिमेंट का प्रकार चुनना सिर्फ कुछ वैल्यू के साथ कंटेंट एलिमेंट को प्रीसेट करना है।आप हमेशा बाद में वैल्यू बदल सकते है।अगर आप अपना ज़रूरी सही प्रकार ठीक से नहीं ढूंढ सकते तो आप अपनी ज़रूरत के सब से नज़दीक का प्रकार चुन सकते है और बाद में ठीक कर सकते है।</target>
+      </trans-unit>
+      <trans-unit id="_new_ce.seeAlso" resname="_new_ce.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_regular,
+How to create new page content | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/
+More about Content Element types | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageContent/
+Adding Custom elements [Technical] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/ContentElementWizard/</source>
+				
+			<target state="final">xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_regular,
+नया पेज कंटेंट कैसे बनाये| https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/
+कंटेंट एलिमेंट के बारे में अधिक | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageContent/
+कस्टम एलिमेंट डालना| https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/ContentElementWizard/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_new_ce.image" resname="_new_ce.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_22.png,
+EXT:core/Resources/Public/Images/cshimages/core_23.png,
+EXT:core/Resources/Public/Images/cshimages/core_24.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_22.png,
+EXT:core/Resources/Public/Images/cshimages/core_23.png,
+EXT:core/Resources/Public/Images/cshimages/core_24.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="new_ce.image_descr" resname="new_ce.image_descr" xml:space="preserve" approved="yes">
+				<source>The Content Element wizard presents a set of preset types. Just select one by clicking its title.
+After selecting the type you will (often) have to select a position of the element among the other existing Content Elements on the page.
+You can access the Content Element wizard from the Create new record dialog.</source>
+			<target state="final">कंटेंट एलिमेंट विज़ार्ड प्रीसेट प्रकार को प्रेजेंट्स करता है।सिर्फ इसके टाइटल पर क्लिक कर के एक को चुने।
+प्रकार चुनने के बाद आप को (अक्सर) मौजूद कंटेंट एलिमेंट के बिच एलिमेंट की पोजीशन सेलेक्ट करनी होगी।
+नया रिकॉर्ड बनाये डायलॉग से आप कंटेंट एलिमेंट विज़ार्ड को एक्सेस कर सकते है।</target></trans-unit>
+      <trans-unit id="move_el_pages.alttitle" resname="move_el_pages.alttitle" approved="yes">
+        <source>Move page wizard</source>
+        <target state="final">पेज विज़ार्ड खिसकाए</target>
+      </trans-unit>
+      <trans-unit id="move_el_pages.description" resname="move_el_pages.description" approved="yes">
+        <source>By this wizard you can visually re-position (or copy) a page inside TYPO3. The element you move is shown in the top.</source>
+        <target state="final">इस विज़ार्ड से आप TYPO3 में पेज को विजुअली रे-पोजीशन(और नक़ल) कर सकते है। जो एलिमेंट को आप खिसकाते है वो ऊपर दिखेंगे।</target>
+      </trans-unit>
+      <trans-unit id="move_el_pages.details" resname="move_el_pages.details" approved="yes">
+        <source>As an alternative to using the regular Copy/Cut/Paste functions in the clickmenus of records you can also use the move-page wizard. It lets you re-position a page by a visual view of the page tree rather than using the concept of "Paste into" and "Paste after".</source>
+        <target state="final">रेकॉर्ड के लिए क्लिक मेनू में नक़ल/कट/पेस्ट फंक्शन्स का नियमित उपयोग के वैकल्पिक तौर पर आप विज़ार्ड में पेज खिसकाए का भी उपयोग कर सकते है। "में पेस्ट करें" और "बाद पेस्ट करे" कॉन्सेप्ट का उपयोग करने के बजाय पेज ट्री के विसुअल व्यू के द्वारा पेज को री-पोजीशन करे।</target>
+      </trans-unit>
+      <trans-unit id="_move_el_pages.seeAlso" resname="_move_el_pages.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_pages,
+Moving pages | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/</source>
+				
+			<target state="final">xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_pages,
+पेज खिसकाना | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_move_el_pages.image" resname="_move_el_pages.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_27.png,
+EXT:core/Resources/Public/Images/cshimages/core_28.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_27.png,
+EXT:core/Resources/Public/Images/cshimages/core_28.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="move_el_pages.image_descr" resname="move_el_pages.image_descr" xml:space="preserve" approved="yes">
+				<source>The wizard works like when you create new pages with the wizard; You position the element by the grey arrows.
+To access the "Move page wizard" you open the clickmenu of the page, select "More options..." and then "Move page". Alternatively you can click the "Move page" icon in the "Extended view" of the Web&gt;List module.</source>
+			<target state="final">विज़ार्ड काम करता है जैसे जब आप विज़ार्ड के द्वारा नया पेज बनाते करते है; आप ग्रे आइकॉन से एलिमेंट को पोज़िशन कर सकते है।
+"पेज विज़ार्ड खिसकाए" एक्सेस करने के लिए पेज के क्लिक मेनू को ओपन करे और "ज्यादा विकल्प" चुने और उसके बाद "पेज खिसकाए"।अल्टर्नेटिवली आप वेब&gt;लिस्ट मॉड्यूल के "एक्सटेंडेड व्यू" में "पेज खिसकाए" आइकॉन पर क्लिक कर सकते है।</target></trans-unit>
+      <trans-unit id="move_el_cs.alttitle" resname="move_el_cs.alttitle" approved="yes">
+        <source>Move Content Element Wizard</source>
+        <target state="final">कंटेंट एलिमेंट विजार्ड खिसकाएँ</target>
+      </trans-unit>
+      <trans-unit id="move_el_cs.description" resname="move_el_cs.description" approved="yes">
+        <source>By this wizard you can visually re-position (or copy) a Content Element inside TYPO3. The element you move is shown in the top.</source>
+        <target state="final">TYPO3 के अंदर आप इस विज़ार्ड के द्वारा कंटेंट एलिमेंट विसुअली री-पोजीशन(और नक़ल) कर सकते है।आप जो एलिमेंट खिसकते है वो ऊपर दिखेगा।</target>
+      </trans-unit>
+      <trans-unit id="move_el_cs.details" resname="move_el_cs.details" approved="yes">
+        <source>By the grey icons in the content element list you can point out the new position of the content element. If you need to move the element to another page, simply browse the page tree in the bottom of the wizard.</source>
+        <target state="final">कंटेंट एलिमेंट लिस्ट में ग्रे आइकॉन के द्वारा आप नए कंटेंट एलिमेंट की पोजीशन को पॉइंट आउट कर सकते है।अगर आपको एलिमेंट को नए पेज पर खिसकाना पड़े तो सिर्फ पेज ट्री को विज़ार्ड के निचे ब्राउज करे।</target>
+      </trans-unit>
+      <trans-unit id="_move_el_cs.seeAlso" resname="_move_el_cs.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_regular</source>
+				
+			<target state="final">xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_regular</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_move_el_cs.image" resname="_move_el_cs.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_25.png,
+EXT:core/Resources/Public/Images/cshimages/core_26.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_25.png,
+EXT:core/Resources/Public/Images/cshimages/core_26.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="move_el_cs.image_descr" resname="move_el_cs.image_descr" xml:space="preserve" approved="yes">
+				<source>The wizard works like when you create new Content Elements with the wizard; You position the element by the grey arrows.
+To access the "Move Content Element Wizard" you click the "Move element" icon in the "Extended view" of the Web&gt;List module.</source>
+			<target state="final">विज़ार्ड काम करता है जैसे आप जब आप विज़ार्ड में नया कंटेंट एलिमेंट बनाते है।
+"कंटेंट एलिमेंट विज़ार्ड" का उपयोग करने के लिए आप वेब&gt;लिस्ट मॉड्यूल के "एक्सटेंडेड व्यू" में "एलिमेंट खिसकाए" आइकॉन पर क्लिक करे।</target></trans-unit>
+      <trans-unit id="history_log.alttitle" resname="history_log.alttitle" approved="yes">
+        <source>History log</source>
+        <target state="final">हिस्ट्री लोग</target>
+      </trans-unit>
+      <trans-unit id="history_log.description" resname="history_log.description" approved="yes">
+        <source>The History log gives you a visual overview of the changes that has happened to the element over the last editing operations. You can roll back changes to any state by using the icons in the interface.</source>
+        <target state="final">हिस्ट्री लोग आप को एलिमेंट पर हुए अंतम एडिटिंग ऑपरेशन्स का विजुअल ओवरव्यू देता है। इंटरफ़ेस में आइकॉन का उपयोग करके आप कोई भी स्टेज से चेंजिज को वापस ला सकते है।</target>
+      </trans-unit>
+      <trans-unit id="history_log.details" resname="history_log.details" xml:space="preserve" approved="yes">
+				<source>By default 20 states of history data is preserved in TYPO3 and after a week it expires. The history is very useful for tracking changes to a record since you can see which user did what at which point in time - and roll back any changes you didn't like.
+If you click the roll-back pencil you will revert the element to the state it had at that particular time.
+If you click the Info icon you will see in detail what the difference is from current time to this state of the element.
+
+&lt;b&gt;Configuring levels and expire times [for admins]&lt;/b&gt;
+If you want to extend the number of history states to above the default 20 you can easily do so using Page TSconfig - meaning that it can even depend on the branch of the page tree where the record is stored! See link below.
+
+&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</source>
+			<target state="final">डिफ़ॉल्ट TYPO3 में हिस्ट्री के 20 स्टेटस संरक्षित रहते है और एक सप्ताह के बाद एक्सपायर हो जाता है।रेकॉर्ड के बदलाव को ट्रैक करने के लिए हिस्ट्री बहुत ही उपयोगी है  तब तक आप किस यूजर ने क्या किस टाइम कौनसे पॉइंट पर किये बदलाव देख सकते है और आप का नापसन्द बदलाव को रोल-बेक कर सकते है।
+अगर आप रोल-बैक पेन्सिल पर क्लिक करते है तो उस स्टेट से पर्टिक्युलर टाइम का एलिमेंट फिरसे वापस आ जायेगा।
+&lt;b&gt;लेवल्स और एक्सपायर टाइम कॉन्फ़िगर करना&lt;/b&gt;
+अगर आप ऊपर के डिफ़ॉल्ट 20 हिस्ट्री लेवल से बढ़ाना चाहते है तो आप आसानी से पेज TSconfig के द्वारा कर सकते है- इसका मतलब है की ये पेज ट्री की ब्रांच पे निर्भर करता है जहाँ रेकॉर्ड स्टोर किया गया है! नीचे की लिंक देखे।
+
+&lt;b&gt;नोटिस:&lt;/b&gt;अगर आप रेड/ग्रीन अलग वैल्यू नहीं देख सकते, TYPO3 जिस सर्वर चल रहा है ये अलग व्यू सपोर्ट नहीं करता और इस सुविधा प्रदान करने के लिए गलत तरीके से कॉन्फ़िगर किया गया है।</target></trans-unit>
+      <trans-unit id="_history_log.seeAlso" resname="_history_log.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:history_sum,
+Configuring History using Page TSconfig | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Mod/
+Undo/History article | http://typo3.org/documentation/tips-tricks/the-undohistory-feature/</source>
+				
+			<target state="final">xMOD_csh_corebe:history_sum,
+पेज TSconfig के द्वारा हिस्ट्री कंफीगरिंग:| https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Mod/
+अनडू/हिस्ट्री आर्टिकल | http://typo3.org/documentation/tips-tricks/the-undohistory-feature/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_history_log.image" resname="_history_log.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_37.png,
+EXT:core/Resources/Public/Images/cshimages/core_38.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_37.png,
+EXT:core/Resources/Public/Images/cshimages/core_38.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="history_log.image_descr" resname="history_log.image_descr" xml:space="preserve" approved="yes">
+				<source>You can access the History/Undo log from the Web&gt;List module when in "Extended view" mode. Alternatively you can access it under "More options..." in the clickmenu of an element.
+The History log shows visually the changes between each step of editing.</source>
+			<target state="final">"एक्सटेंडेड व्यू" मोड में आप वेब&gt;लिस्ट मॉड्यूल से आप हिस्ट्री/अनडू लोग एक्सेस कर सकते है। वैकल्पिक रूप से आप इसे एलिमेंट के क्लिक मेनू में "ज्यादा विकल्प" के द्वारा एक्सेस कर सकते है।
+हिस्ट्री लोग एडिटिंग प्रत्येक स्टेप के बीच का विज्युअल चेंजिस दिखता है।</target></trans-unit>
+      <trans-unit id="history_sum.alttitle" resname="history_sum.alttitle" approved="yes">
+        <source>History Summary</source>
+        <target state="final">हिस्ट्री समरी</target>
+      </trans-unit>
+      <trans-unit id="history_sum.description" resname="history_sum.description" approved="yes">
+        <source>This shows the total difference between the selected state in history to the current state of this element.</source>
+        <target state="final">ये हिस्ट्री में एलिमेंट के चुने स्टेट से करंट स्टेट बिच में कुल अन्तर को दिखाता है।</target>
+      </trans-unit>
+      <trans-unit id="history_sum.details" resname="history_sum.details" xml:space="preserve" approved="yes">
+				<source>You can browse forth and back in the history using the arrow buttons in the upper left corner. You can also save a state in history by the little "disk-icon".
+Finally you can revert either the whole record to this state in history by the revert icon in the top &lt;em&gt;or&lt;/em&gt; you can revert only a single field if you like to by clicking the revert icon displayed for each field.
+
+&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</source>
+			<target state="final">आप हिस्ट्री में ऊपरी बाएं कोने का एरो बटन का उपयोग कर के आगे और पीछे ब्राउज कर सकते है।आप छोटे "डिस्क-आइकॉन" का उपयोग कर के हिस्ट्री का स्टेट सेव भी कर सकते है।
+अंत में आप हिस्ट्री के इस स्टेट में पूरे रिकॉर्ड को शीर्ष के रिवर्ट आइकॉन के द्वारा रिवर्ट कर सकते है &lt;em&gt;और&lt;/em&gt;प्रत्येक फ़ाइल के रिवर्ट आइकॉन को क्लिक करके आप सिर्फ सिंगल फील्ड रिवर्ट कर सकते है।
+
+&lt;b&gt;नोटिस:&lt;/b&gt;अगर आप रेड/ग्रीन अलग वैल्यू नहीं देख सकते, TYPO3 जिस सर्वर चल रहा है ये अलग व्यू सपोर्ट नहीं करता और इस सुविधा प्रदान करने के लिए गलत तरीके से कॉन्फ़िगर किया गया है।</target></trans-unit>
+      <trans-unit id="_history_sum.seeAlso" resname="_history_sum.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:history_entry,
+Undo/History article | http://typo3.org/documentation/tips-tricks/the-undohistory-feature/</source>
+				
+			<target state="final">xMOD_csh_corebe:history_entry,
+अनडू/हिस्ट्री आर्टिकल | http://typo3.org/documentation/tips-tricks/the-undohistory-feature/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_history_sum.image" resname="_history_sum.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_39.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/core_39.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="history_sum.image_descr" resname="history_sum.image_descr" approved="yes">
+        <source>The Info view of a state in history shows the "sum" of changes from current time to that point in history for the element.</source>
+        <target state="final">हिस्ट्री में स्टेट का इन्फो व्यू चेंजिज हिस्ट्री में एलिमेंट का वर्त्तमान टाइम से उस पॉइंट तक का "सम" दिखता है।</target>
+      </trans-unit>
+      <trans-unit id="history_entry.alttitle" resname="history_entry.alttitle" approved="yes">
+        <source>Log entry history</source>
+        <target state="final">लोग एंट्री हिस्ट्री</target>
+      </trans-unit>
+      <trans-unit id="history_entry.description" resname="history_entry.description" approved="yes">
+        <source>This view displays the changes made to the content element for the log entry you clicked. The red and green values in the text shows the previous/new values of the record.</source>
+        <target state="final">ये व्यू आपने क्लिक लिए हुए लोग एंट्री के लिए किये कंटेंट एलिमेंट में किये चेंजिज दिखता है। टेक्स्ट में रेड/ग्रीन वैल्यू रेकॉर्ड की प्रीवियस/नई वैल्यू दिखता है।</target>
+      </trans-unit>
+      <trans-unit id="history_entry.details" resname="history_entry.details" approved="yes">
+        <source>&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</source>
+        <target state="final">&lt;b&gt;नोटिस:&lt;/b&gt;अगर आप रेड/ग्रीन अलग वैल्यू नहीं देख सकते, TYPO3 जिस सर्वर चल रहा है ये अलग व्यू सपोर्ट नहीं करता और इस सुविधा प्रदान करने के लिए गलत तरीके से कॉन्फ़िगर किया गया है।</target>
+      </trans-unit>
+      <trans-unit id="_history_entry.image" resname="_history_entry.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_40.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/core_40.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="TCEforms.alttitle" resname="TCEforms.alttitle" approved="yes">
+        <source>TYPO3 Editing Forms</source>
+        <target state="final">TYPO3 एडिटिंग फॉर्म्स</target>
+      </trans-unit>
+      <trans-unit id="TCEforms.description" resname="TCEforms.description" approved="yes">
+        <source>All records in TYPO3 is edited through a standardized form interface like the one you see here. No matter if you edit pages, content elements, guestbook items or user records you will use the same familiar interface.</source>
+        <target state="final">TYPO3 में सभी रेकॉर्ड स्टैंडर्डाइज किये गए फॉर्म इंटरफ़ेस के द्वारा एडिट किया गया है। इसका कोई मतलब नहीं के आप पेज, कंटेंट एलिमेंट्स,गेस्टबुक आइटम या यूजर रिकॉर्ड को एडिट करते है आप एक ही परिचित इटेरफस का उपयोग करेंगे।</target>
+      </trans-unit>
+      <trans-unit id="TCEforms.details" resname="TCEforms.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Saving content&lt;/b&gt;
+Just press one of the save-buttons in the top of bottom of the form. There are some variants allowing you to "Save and close document" or "Save document and View page". The latter will save the document and open a new window where the affected page is shown (be sure to disable pop-up blockers for this function!)
+
+&lt;b&gt;Editing multiple records at a time&lt;/b&gt;
+From the Web&gt;List module you can activate editing of multiple records at a time. This is done when you list a single table and enable multiple columns for display (see Web&gt;List module for details) - then icons will link you to a form with multiple records displayed, possibly with only certain fields available for editing.
+
+&lt;b&gt;Frontend Editing&lt;/b&gt;
+Another way of editing records in TYPO3 is using the website frontend. Depending on your user credentials you will see small pencil icons in the frontend. When you click these you will be guided to a form where you can also change the content.
+
+&lt;b&gt;Customize the forms [for Admins]&lt;/b&gt;
+You can customize the TCEforms in many ways using User TSconfig and Page TSconfig. See links below.</source>
+			<target state="final">&lt;b&gt;कॉन्टेंट बचाना&lt;/b&gt;
+बस फार्म के नीचे के शीर्ष में बचाये-बटन दबाये।वहाँ आपको "बचाए और पेज देखे","बचाए और बंद करे" जैसे कुछ अनुमति वेरिएंट हैं।बाद में पेज सेव होगा और नया विंडो खुलेगा जहा अफेक्टेड पेज दिखेगा (सुनिश्चिंत रहे की इस फंक्शन के लिए पॉपअप-ब्लॉकर डिसएबल हे!)।
+
+&lt;b&gt;एक टाइम पर मल्टीप्ल रेकॉर्ड एडिट करना&lt;/b&gt;
+वेब&gt;लिस्ट मॉड्यूल से आप मल्टीप्ल रेकॉर्ड एडिटिंग एक्टिवेट हर सकते है।ये पूरा होता है जब आप डिस्प्ले करने के लिए सिंगल टेबल लिस्ट और मल्टी कॉलम इनेबल करते है (जानकारी के लिए वेब&gt;लिस्ट मॉड्यूल देखे)-बाद में आइकॉन आप को फॉर्म के साथ लिंक कर देगा साथ में मल्टीप्ल रेकॉर्ड डिस्प्ले करने,सिर्फ कुछ फील्ड एडिटिंग करने अवेलेबल करेगा।
+
+&lt;b&gt;फ्रॉन्टेन्ड एडिटिंग&lt;/b&gt;
+वेबसाइट फ्रॉन्टेन्ड का उपयोग करके टाइपो में रेकॉर्ड एडिट करने का दूसरा तरीका है।आप के यूजर क्रेडेंशियल पर निर्भर है आप फ्रॉन्टेन्ड में छोटी पेन्सिल का आइकॉन देखेंगे।जब आप ये क्लिक करेंगे आपको फॉर्म पर गाइड किया जायेगा जहाँ आप कंटेंट को एडिट भी कर सकते है।
+
+&lt;b&gt;फॉर्म्स कस्टमाइज़ करना[एडमिन के लिए]&lt;/b&gt;
+आप TCEforms को यूजर TSconfig और पेज TSconfig का उपयोग करके कई तरीके से कस्टमाइज़ कर सकते है।नीचे की लिंक्स देखें।</target></trans-unit>
+      <trans-unit id="_TCEforms.seeAlso" resname="_TCEforms.seeAlso" xml:space="preserve" approved="yes">
+				<source>Editing pages | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/
+Frontend Editing | http://typo3.org/documentation/document-library/doc_tut_quickstart/Frontend_editing/,
+xMOD_csh_corebe:list_module
+User TSconfig related to forms | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/
+Page TSconfig related to forms | https://docs.typo3.org/typo3cms/CoreApiReference/Rte/Transformations/Tsconfig/
+Linking to the edit forms [Technical] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/EditLinks/</source>
+			<target state="final">एडिटिंग पेजिस | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/
+फ्रॉन्टेन्ड एडिटिंग | http://typo3.org/documentation/document-library/doc_tut_quickstart/Frontend_editing/,
+xMOD_csh_corebe:list_module
+फॉर्म्स के रिलेटेड यूजर TSconfig | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/
+फॉर्म्स के रिलेटेड पेज TSconfig | https://docs.typo3.org/typo3cms/CoreApiReference/Rte/Transformations/Tsconfig/
+एडिट फॉर्म के साथ लिंक करना[टेक्निकल] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/EditLinks/</target></trans-unit>
+      <trans-unit id="_TCEforms.image" resname="_TCEforms.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_30.png,
+EXT:core/Resources/Public/Images/cshimages/core_29.png,
+EXT:core/Resources/Public/Images/cshimages/core_32.png,
+EXT:core/Resources/Public/Images/cshimages/core_33.png,
+EXT:core/Resources/Public/Images/cshimages/core_31.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_30.png,
+EXT:core/Resources/Public/Images/cshimages/core_29.png,
+EXT:core/Resources/Public/Images/cshimages/core_32.png,
+EXT:core/Resources/Public/Images/cshimages/core_33.png,
+EXT:core/Resources/Public/Images/cshimages/core_31.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="TCEforms.image_descr" resname="TCEforms.image_descr" xml:space="preserve" approved="yes">
+				<source>This is how a typical record is edited in TYPO3. The form display is standardized for all types of records. You will always see the same buttons in the top for saving or closing. In the blue bar you will see the type of record (table name) and the ID number that each record has (uid). Here the record is a page with ID "2" and the title "Content Elements".
+The "additional fields" from the example above is located in a so called "palette". This is an example of three content elements being edited at the same time. You can edit multiple records by using the links from the Web&gt;List module in single-table mode. Notice that not only are three records shown at the same time - it is also a limited number of fields shown for editing, here "Header" and "Hide". You can combine this almost any way you like. This is of course very useful if you need to edit only the header of multiple records.</source>
+			<target state="final">यह ऐसे ही एक रिकॉर्ड typo3 में एडिटेड किया जाता है।ये फॉर्म रिकॉर्ड के सभी टाइप्स के लिए स्टैंडर्डाईज डिसप्ले करता है।तुम हमेशा सेव या क्लोज करने के लिए शीर्ष में एक ही बटन देखेंगे।ब्लू बार में आप रिकॉर्ड (टेबलनेम) के प्रकार और ID नंबर है कि प्रत्येक रिकॉर्ड (UID) देखेंगे।</target></trans-unit>
+      <trans-unit id="TCEforms_cacheSelector.alttitle" resname="TCEforms_cacheSelector.alttitle" approved="yes">
+        <source>Forms Menu</source>
+        <target state="final">फॉर्म्स मेनू</target>
+      </trans-unit>
+      <trans-unit id="TCEforms_cacheSelector.description" resname="TCEforms_cacheSelector.description" approved="yes">
+        <source>This is alternative ways to select "Save"/"Close" operations for records. You can also select "clear-cache" operations if you are allowed access to them.</source>
+        <target state="final">रेकॉर्ड के लिए "बचाने"/"बंद" ऑपरेशन्स करने के लिए ये दूसरा रास्ता है। अगर आप को एक्सेस करने की अनुमति है तो आप "क्लियर-कैश" आपरेशन भी एक्सेस कर सकते है।</target>
+      </trans-unit>
+      <trans-unit id="TCEforms_cacheSelector.details" resname="TCEforms_cacheSelector.details" xml:space="preserve" approved="yes">
+				<source>Clearing the cache for pages and clearing all cache can be done from this menu as well. If you wonder why content on the frontend webpage seems to be different from what is in the database you might need to clear the page cache by using one of these options.
+If cache options are not available for you, you should ask your administrator to enable it for you. (Admins: See link below to TSconfig.)</source>
+			<target state="final">पेज के लिए कैश साफ़ करना और सभी कैश सैर करना दोनों ही मेनू से पूरा कर सकते है। अगर आप आश्चर्य में है कि फ्रॉन्टेन्ड कंटेंट क्यों अलग दीखता है जो डाटाबेस में है, आप को शायद इस में से एक ऑप्शन्स का उपयोग पेज का कैश साफ़ करने की जरुरत है।
+अगर आपके लिए कैश ऑप्शंस उपलब्ध नहीं है तो आप अपने अदम्नस्ट्रेटर को अपने लिए इनेबल करने के लिए पूछ सकते है (एडमिन्स:TSconfg के लिए नीचे की लिंक देखे)।</target></trans-unit>
+      <trans-unit id="_TCEforms_cacheSelector.seeAlso" resname="_TCEforms_cacheSelector.seeAlso" approved="yes">
+        <source>User TSconfig (See "clearCache.pages/.all") | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Options/</source>
+        <target state="final">यूजर TS कॉन्फिग("clearCache.pages/.all" देखे)| https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Options/</target>
+      </trans-unit>
+      <trans-unit id="_TCEforms_cacheSelector.image" resname="_TCEforms_cacheSelector.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_36.png,</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/core_36.png,</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="perm_module.alttitle" resname="perm_module.alttitle" approved="yes">
+        <source>Viewing page permissions</source>
+        <target state="final">पेज अनुमतिया देखें</target>
+      </trans-unit>
+      <trans-unit id="perm_module.description" resname="perm_module.description" approved="yes">
+        <source>This view will tell you about the page permissions in the page tree.</source>
+        <target state="final">इस दृश्य के बारे में पेज ट्री में पेज अनुमतियों आपको बता देंगे।</target>
+      </trans-unit>
+      <trans-unit id="perm_module.details" resname="perm_module.details" xml:space="preserve" approved="yes">
+				<source>There are two modes you can select:
+
+&lt;b&gt;User overview:&lt;/b&gt;
+This will show you the permissions for &lt;em&gt;your&lt;/em&gt; login. So the green/red indicators will reflect the combined user/group/everyone permissions that apply to your login!
+If there is a grey background behind the indicators it tells you that you are the owner of the page.
+
+&lt;b&gt;Permissions&lt;/b&gt;
+Shows the permissions settings for owner / group / everybody. You will be able to edit these settings by clicking the edit icon next to the page title. Only an owner of a page (or the "Admin"-user) can change permissions for the page.</source>
+			<target state="final">आप दो मोड चुन सकते है:
+
+&lt;b&gt;यूजर ओवरव्यू&lt;/b&gt;
+ये आपको लोगन के लिए परमिशन दिखाएगा। रेड/ग्रीन इंडीकेटर्स आपके लोगिन के साथ जुड़े हुए यूजर/ग्रुप/एवरीवन की पेर्मिशन्स दिखाता है!
+ अगर वह इंडीकेटर्स के पीछे ग्रे बैकग्रउंड होता है ये कहता है कि आप इस पेज के ओनर है।
+
+&lt;b&gt;पेर्मिशन्स&lt;/b&gt;
+ओनर / ग्रुप / एवरीबॉडी के लिए परमशन्स सेटिंग्स दिखता है। आप ये सेटिंग्स पेज टाइटल के बाद का आइकॉन क्लक कर के एडिट कर ने के लिए काबिल है। सिर्फ पेज का ओनर(और "एडमिन"-यूजर) ही इस परमिशन को बदल सकता है।</target></trans-unit>
+      <trans-unit id="_perm_module.seeAlso" resname="_perm_module.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:perm_module_setting,
+User Management How-to | https://docs.typo3.org/typo3cms/GettingStartedTutorial/UserManagement/SettingUpUserPermissions/
+Permission system in TYPO3 [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/AccessControlOptions/,
+_MOD_user_setup:option_helpText</source>
+				
+			<target state="final">xMOD_csh_corebe:perm_module_setting,
+प्रयोक्ता प्रबंधन कैसे- | https://docs.typo3.org/typo3cms/GettingStartedTutorial/UserManagement/SettingUpUserPermissions/
+TYPO3 [Technical]  में अनुमति प्रणाली| https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/AccessControlOptions/,
+_MOD_user_setup:option_helpText</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_perm_module.image" resname="_perm_module.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_43.png,
+EXT:core/Resources/Public/Images/cshimages/core_41.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_43.png,
+EXT:core/Resources/Public/Images/cshimages/core_41.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="perm_module_setting.alttitle" resname="perm_module_setting.alttitle" approved="yes">
+        <source>Setting permissions for a page</source>
+        <target state="final">पेज के लिए परमिशन सेट</target>
+      </trans-unit>
+      <trans-unit id="perm_module_setting.description" resname="perm_module_setting.description" approved="yes">
+        <source>Select the owner user and group plus the permissions for each in the matrix. Only an owner of a page (or the "Admin"-user) can change permissions for the page.</source>
+        <target state="final">मेट्रिक्स में ओनर यूजर और ग्रुप का और सब के लिए पार्मिशन्स का चयन करे। पेज का ओनर (और "एडमिन"-यूजर) ही पेज की परमिशन दे सकता है।</target>
+      </trans-unit>
+      <trans-unit id="perm_module_setting.details" resname="perm_module_setting.details" xml:space="preserve" approved="yes">
+				<source>Setting permissions is done in five categories for owner / group / everybody so it works much like permissions for files and folders in many operating systems.
+
+&lt;b&gt;Show page&lt;/b&gt;
+If set, a user can see the page and its content in the backend. The user can also copy the content but not move, delete or edit.
+
+&lt;b&gt;Edit content&lt;/b&gt;
+Allows users to add, delete, change and move records (other than page records) on this page. This permission must be given if users should be allowed to create Content Elements etc. on the page.
+
+&lt;b&gt;Edit page&lt;/b&gt;
+Allows a user to edit the page record itself. This could be changing the page title or moving the page to another location.
+
+&lt;b&gt;Delete page&lt;/b&gt;
+If set, a user is allowed to delete the page and the content on the page.
+
+&lt;b&gt;New pages&lt;/b&gt;
+Allows users to create sub-pages to this page.</source>
+			<target state="final">अनुमति सेटिंग एडमिन/ग्रुप/ सभी के लिए पांच कैटेगरीज़ में किया हुआ है, ये कई ऑपरेटिंग सिस्टम में फाइल और फोल्डर की अनुमति के जैसे ही काम करता है।
+
+&lt;b&gt;पेज दिखाए&lt;/b&gt;
+अगर सेट है तो यूजर बैकेंड में पेज और उसके कंटेंट देख सकते है। यूजर कंटेंट की नकल भी कर सकता है पर खिसका,डिलीट,एडिट नहीं कर सकता।
+
+&lt;b&gt;एडिट कंटेंट&lt;/b&gt;यूजर्स को इस पेज पर रिकॉर्ड(पेज रिकॉर्ड के अलावा अन्य) ऐड, डिलीट, बदलने और खिसका ने की अनुमति देता है।यह अनुमति सिर्फ तो ही दी जा सकती है अगर यूजर को इस पेज में कंटेंट एलिमेंट आदि बनाने की अनुमति दी गई है।
+
+&lt;b&gt;एडिट पेज&lt;/b&gt;
+यूजर को अपने आप पेज रेकॉर्ड को एडिट करने की अनुमति देता है।इस पेज का शीर्षक बदली किया जा सकता है और अन्य लोकेशन पर पेज खिसका सकते है।
+
+&lt;b&gt;पेज हटाये&lt;/b&gt;&lt;
+अगर सेट है तो यूजर को पेज में पेज और पेज कंटेंट को हटाने की अनुमति देता है।
+
+&lt;b&gt;नए पेजिस&lt;/b&gt;
+यूजर को इस पेज पर सब-पेज बनाने की अनुमति देता है।</target></trans-unit>
+      <trans-unit id="_perm_module_setting.seeAlso" resname="_perm_module_setting.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:perm_module,
+User Management Howto | https://docs.typo3.org/typo3cms/GettingStartedTutorial/UserManagement/SettingUpUserPermissions/</source>
+				
+			<target state="final">xMOD_csh_corebe:perm_module,
+यूजर मैनेजमेंट कैसे | https://docs.typo3.org/typo3cms/GettingStartedTutorial/UserManagement/SettingUpUserPermissions/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_perm_module_setting.image" resname="_perm_module_setting.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_42.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/core_42.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="perm_module_setting.image_descr" resname="perm_module_setting.image_descr" approved="yes">
+        <source>In this matrix you can set permissions for owner, group and everybody in the five categories available.</source>
+        <target state="final">इस मेट्रिक्स में आप ओनर, ग्रुप और सब के लिए उपलब्ध पांच कैटेगरीज में से अनुमति सेट कर सके है।</target>
+      </trans-unit>
+      <trans-unit id="filelist_module.alttitle" resname="filelist_module.alttitle" approved="yes">
+        <source>File &gt; Filelist module</source>
+        <target state="final">फ़ाइल&gt; फ़ाइल लिस्ट मॉड्यूल</target>
+      </trans-unit>
+      <trans-unit id="filelist_module.description" resname="filelist_module.description" approved="yes">
+        <source>Shows the files and folders from the folder title you have clicked in the folder tree. Click the icons of the files and folders to perform various actions on the elements.</source>
+        <target state="final">ये फाइल्स और फोल्डर को दिखाता है जिस पेज ट्री के फोल्डर के शीर्षक पर क्लिक किया है।एलिमेंट पर विविध एक्शन परफॉर्म करने के लिए फाइल्स और फोल्डर के आइकॉन पर क्लिक करे।</target>
+      </trans-unit>
+      <trans-unit id="filelist_module.details" resname="filelist_module.details" xml:space="preserve" approved="yes">
+				<source>The File &gt; Filelist module provides the main interface to the web-based "FTP-features" in TYPO3. Clicking a folder in the navigation frame will display the files in that folder in the list frame to the right.
+
+If you click the icon of a file you will see a menu pop up with menu items related to the file or folder. This enables you to edit, rename and copy files to name a few.
+
+&lt;b&gt;The "TEMP" folder&lt;/b&gt;
+There is a special folder, the "TEMP" folder. This is meant to be used for temporary uploads of files that are going to be attached to TYPO3 records later. Content in the TEMP folder should be possible to flush once in a while when the folder becomes too crowded with files. So don't store persistent data in there!
+The actual folder name is actually "_temp_". The interface will just interprete this with "TEMP" in bold.
+The same applies to folders named "_recycler_" - they will be trash cans in the folder tree.</source>
+			<target state="final">TYPO3 में फाइल &gt; फाइल लिस्ट मॉड्यूल वेब-बेस्ड "FTP-फीचर्स" को मेंइन इंटरफ़ेस प्रोवाइड करता है।फोल्डर को क्लिक करने से नेविगेशन फ्रेम लिस्ट फ्रेम में राइट साइड उस फाइल के अंदर की फाइल्स दिखायेगा।
+
+अगर आप फ़ाइल के आइकॉन क्लिक करेंगे तो फाइल और फोल्डर के रिलेटेड मेनू आइटम मेनू पॉपअप में दिखेंगे जो आप फाइल नाम को एडिट, नाम बदलना और कॉपी करने को इनेबल करेगा।
+
+&lt;b&gt;"टेम्प" फोल्डर&lt;/b&gt;
+टेम्प फोल्डर बहोत ही खास टेबल है।इसका मतलब ये फाइल्स के टेम्पररी अपलोड्स जो बाद में TYPO3 रेकॉर्ड में अट्टेच होंगे उसके लिए उपयोगी है।टेम्प फोल्डर के कंटेंट का फ्लश हो जाना मुमकिन है जब फोल्डर बहोत साडी फाइल्स बन जाती है।इसलये यहाँ लगातार देता स्टोर न करे!
+वास्तविक फ़ोल्डर का नाम वास्तव में  "_temp_" है।इंटरफ़ेस सिर्फ "टेम्प" बोल्ड में इसे इंटरप्रेट करता है।
+"_recycler_" फोल्डर नाम के लिए एक ही लागू होता है-ये फोल्डर ट्री में ट्रेश कैन्स है।</target></trans-unit>
+      <trans-unit id="_filelist_module.seeAlso" resname="_filelist_module.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:filetree,
+be_groups:file_mountpoints,
+sys_filemounts</source>
+				
+			<target state="final">xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:filetree,
+be_groups:file_mountpoints,
+sys_filemounts</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_filelist_module.image" resname="_filelist_module.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_47.png,
+EXT:core/Resources/Public/Images/cshimages/core_49.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_47.png,
+EXT:core/Resources/Public/Images/cshimages/core_49.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="filelist_module.image_descr" resname="filelist_module.image_descr" xml:space="preserve" approved="yes">
+				<source>Here the content of the TEMP folder is shown in the list frame. You can see the filetype, the modification time, size of the file. If you click the filename you will open the file in the browser (if the path is in the web-root).
+When you click a file icon you see a context menu appear over it. Here you can perform file operations on the item.</source>
+			<target state="final">यहाँ टेम्प फोल्डर का कंटेंट लिस्ट फ्रेम में दिखेगा। आप फाइल एक्सटेंशन, मॉडिफिकेशन टाइम, फाइल की साइज देख सकते है। अगर आप फ़ाइल नाम पर क्लिक करेंगे आप फाइल को ब्राउज़र में ओपन करेंगे(अगर पाथ वेब-रुट है)।
+अगर आप फाइल आइकॉन क्लिक करेंगे तो उसके ऊपर आप कॉन्टेक्स्ट मेनू देखेंगे।यहाँ आप आइटम पर फले आपरेशन परफॉर्म कर सकते है।</target></trans-unit>
+      <trans-unit id="filelist_clipboard.alttitle" resname="filelist_clipboard.alttitle" approved="yes">
+        <source>Filelist Clipboard</source>
+        <target state="final">फाइल लिस्ट क्लिपबोर्ड</target>
+      </trans-unit>
+      <trans-unit id="filelist_clipboard.description" resname="filelist_clipboard.description" approved="yes">
+        <source>The TYPO3 clipboard works for files as well as for database records (see the Web&gt;List module). You only need to enable the clipboard if you want to use the numeric clipboard pads.</source>
+        <target state="final">TYPO3 क्लिपबोर्ड फाइल्स के साथ साथ डेटाबेस रेकॉर्ड(वेब&gt;लिस्ट मोड्यूल देखे) के लिए भी काम करता है।आप को क्लिपबोर्ड को इनेबल करने की जरुरत पड़ेगी अगर आप न्यूमेरिक क्लिपबोर्ड पैड्स का उपयोग करना चाहते है।</target>
+      </trans-unit>
+      <trans-unit id="_filelist_clipboard.seeAlso" resname="_filelist_clipboard.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_clipboard,
+About the Clipboard [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/GeneralInterfaceFeatures/Clipboard/</source>
+				
+			<target state="final">xMOD_csh_corebe:list_clipboard,
+क्लिपबोर्ड के बारेमे [टेक्निकल]| https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/GeneralInterfaceFeatures/Clipboard/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_filelist_clipboard.image" resname="_filelist_clipboard.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_44.png,
+EXT:core/Resources/Public/Images/cshimages/core_46.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_44.png,
+EXT:core/Resources/Public/Images/cshimages/core_46.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="filelist_clipboard.image_descr" resname="filelist_clipboard.image_descr" xml:space="preserve" approved="yes">
+				<source>This shows the "Normal" pad on the clipboard. Here an image is now stored. The "Thumbnails" button of the clipboard is enabled so you will see the image icon.
+When the numeric clipboard pads are enabled you will be able to place multiple items on the clipboard at one time. If the items selected are found in the current folder you can also see the selection reflected in the checkboxes of the items. To paste the contents into a file folder you use the paste icons available in the Filelist module.</source>
+			<target state="final">ये क्लिपबोर्ड पर "सामान्य" पेड़ दिखता है। यहाँ अब इमेज स्टोर हो गई है। क्लिपबोर्ड का "थम्बनेल" बटन इनेबल है इस लिए आप इमेज का आइकॉन देख सकते है
+जब क्लिपबोर्ड का नुमेरिक पेड्स इनेबल है आप एक ही समय पर मल्टिपल आइटम क्लिपबोर्ड में रख सकते है। अगर चुनी गई आइटम करंट फोल्डर में पाई गई, आप चेकबॉक्स में आइटम के चयन रेफ्लेक्टस भी देख सकते है। फाइल फोल्डर में कंटेंट को पेस्ट करने के लिए आप फाइल लिस्ट मॉड्यूल में उपलब्ध पेस्ट आइकॉन का उपयोग कर सकते है।</target></trans-unit>
+      <trans-unit id="filelist_options.alttitle" resname="filelist_options.alttitle" approved="yes">
+        <source>File &gt; Filelist options</source>
+        <target state="final">फाइल &gt; फिलिलिस्ट ऑप्शन्स</target>
+      </trans-unit>
+      <trans-unit id="filelist_options.description" resname="filelist_options.description" approved="yes">
+        <source>You can enable the display of image thumbnails and show the clipboard if you need to copy/cut/paste multiple files or folders at a time.</source>
+        <target state="final">अगर आप एक ही टाइम पर एक से ज्यादा फाइल्स और फोल्डर को कट/कॉपी/पेस्ट करने की जरुरत है तो आप इमेज थम्बनैल्स और क्लिपबोर्ड दिखाना इनेबल कर सकते हो।</target>
+      </trans-unit>
+      <trans-unit id="_filelist_options.seeAlso" resname="_filelist_options.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_options,
+_MOD_user_setup:option_showThumbs,
+xMOD_csh_corebe:filelist_clipboard</source>
+				
+			<target state="final">xMOD_csh_corebe:list_options,
+_MOD_user_setup:option_showThumbs,
+xMOD_csh_corebe:filelist_clipboard</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_filelist_options.image" resname="_filelist_options.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_48.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/core_48.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="filelist_options.image_descr" resname="filelist_options.image_descr" approved="yes">
+        <source>Enabling thumbnails means that all image file types will be displayed with their thumbnails. This makes it easy to browse an archive of files.</source>
+        <target state="final">इनेबलिंग थम्बनैल्स मतलब सभी इमेज फ़ाइल प्रकार उसके थम्बनैल्स के साथ दिखेगा।यह फाइल्स का अर्चिव ब्राउज़ करने के लिए आसान बनाता है।</target>
+      </trans-unit>
+      <trans-unit id="file_edit.alttitle" resname="file_edit.alttitle" approved="yes">
+        <source>Editing a file</source>
+        <target state="final">फाइल का एडीटींग</target>
+      </trans-unit>
+      <trans-unit id="file_edit.description" resname="file_edit.description" approved="yes">
+        <source>You can edit the contents of a text file with this dialog.</source>
+        <target state="final">इस डायलॉग के साथ आप टेक्स्ट फ़ाइल का कंटेंट को एडिट कर सकते है।</target>
+      </trans-unit>
+      <trans-unit id="_file_edit.seeAlso" resname="_file_edit.seeAlso" approved="yes">
+        <source>xMOD_csh_corebe:filelist_module</source>
+        <target state="final">xMOD_csh_corebe:filelist_module</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_file_edit.image" resname="_file_edit.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_50.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/core_50.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="file_edit.image_descr" resname="file_edit.image_descr" approved="yes">
+        <source>The editing form for a file is this simple textarea field. It's nothing fancy and experienced coders will miss such as TAB-functionality, but it can edit a stylesheet if badly needed...</source>
+        <target state="final">फाइल के लिए फॉर्म एडिट करना ये इस टेक्स्ट-एरिया फील्ड जैसा है, के कोई फेंसी नहीं है। अनुभवी कॉडर टेब-फंक्षनॅलिटी मिस करेंगे, पर अगर बुरी तरह जरुरत पड़े तो ये स्टाइलशीट एडिट कर सकते हैं...</target>
+      </trans-unit>
+      <trans-unit id="file_new.alttitle" resname="file_new.alttitle" approved="yes">
+        <source>Creating a new file or folder</source>
+        <target state="final">नई फाइल या फ़ोल्डर बनाना</target>
+      </trans-unit>
+      <trans-unit id="file_new.description" resname="file_new.description" approved="yes">
+        <source>Create new files and folder inside the folder you have selected.</source>
+        <target state="final">चयनित फ़ोल्डर के अंदर नई फाइलें और फ़ोल्डर बनाएं।</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.alttitle" resname="file_newfolder.alttitle" approved="yes">
+        <source>Creating a new folder</source>
+        <target state="final">नया फोल्डर बनाए</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.description" resname="file_newfolder.description" approved="yes">
+        <source>Enter a name for a new file folder in the tree here. If you want to create multiple folders, please select the number of new folders before entering folder names.</source>
+        <target state="final">यहाँ नए फाइल फोल्डर के लिए नाम दाखिल करे। अगर आप मल्टीपल फ़ोल्डर्स बनाना चाहते है, तो कृपया नाम दर्ज करने से पहले नए फोल्डर की संख्या चुन ले।</target>
+      </trans-unit>
+      <trans-unit id="_file_newfolder.seeAlso" resname="_file_newfolder.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:file_newfile,
+xMOD_csh_corebe:file_rename</source>
+				
+			<target state="final">xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:file_newfile,
+xMOD_csh_corebe:file_rename</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_file_newfolder.image" resname="_file_newfolder.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_51.png,
+EXT:core/Resources/Public/Images/cshimages/core_52.png,
+EXT:core/Resources/Public/Images/cshimages/core_53.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_51.png,
+EXT:core/Resources/Public/Images/cshimages/core_52.png,
+EXT:core/Resources/Public/Images/cshimages/core_53.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="file_newfolder.image_descr" resname="file_newfolder.image_descr" xml:space="preserve" approved="yes">
+				<source>To create a new folder you first click the parent folder icon in the folder tree.
+As the next step you select the number of folders to create and then you enter the new folder names.
+After pressing the "Create folders" button the folders will appear in the folder tree when you reload it.</source>
+			<target state="final">फोल्डर बकने के लिए पहले आप फोल्डर ट्री में पेरेन्ट फोल्डर आइकॉन पर क्लिक करे।
+दूसरे स्टेप में आप फोल्डर बनाने के लिए संख्या चुनें और आप नए फोल्डर के नाम डाले।
+"फ़ोल्डर्स बनाये" बटन को क्लिक करने के बाद, फ़ोल्डर्स फोल्डर ट्री में दिखेंगे जब आप इसको रे-लोड करेंगे।</target></trans-unit>
+      <trans-unit id="file_newfile.alttitle" resname="file_newfile.alttitle" approved="yes">
+        <source>Creating a new file</source>
+        <target state="final">नया फ़ाइल बनाए</target>
+      </trans-unit>
+      <trans-unit id="file_newfile.description" resname="file_newfile.description" approved="yes">
+        <source>Enter a filename here if you want to create a new text-based file. Notice that it must have one of the endings in the list of text-endings shown below (except "php" endings).</source>
+        <target state="final">अगर आप टेक्स्ट-बेस फाइल बनाना चाहते है तो यह नाम दाखिल करे।नोटिस करे की टेस्ट-एंडिंग लिस्ट में इसका एक एंडिंग होता ही है निचे देखे(सिवाय "php" एन्डिंग)।</target>
+      </trans-unit>
+      <trans-unit id="file_newfile.details" resname="file_newfile.details" approved="yes">
+        <source>Newly created files will have the size of 0 (zero). After creating a new file it would be natural that you wanted to edit the file to put content into it. This is done simply by clicking the icon of the file and select "Edit" from the clickmenu.</source>
+        <target state="final">नयी बनायीं गई फाइल का साइज़ 0(शुन्य) होगा। बनने के बाद ये सामान्य है की आप कंटेंट ऐड करने के लिए फाइल को एडिट करना चाहेंगे। ये फाइल आइकॉन पर क्लिक कर के क्लिक मेनू से "एडिट" चुन कर आसानी से पूरा कर सकते है।</target>
+      </trans-unit>
+      <trans-unit id="_file_newfile.seeAlso" resname="_file_newfile.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:file_edit,
+xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:file_newfolder,
+xMOD_csh_corebe:file_rename</source>
+				
+			<target state="final">xMOD_csh_corebe:file_edit,
+xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:file_newfolder,
+xMOD_csh_corebe:file_rename</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_file_newfile.image" resname="_file_newfile.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_51.png,
+EXT:core/Resources/Public/Images/cshimages/core_54.png,
+EXT:core/Resources/Public/Images/cshimages/core_55.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_51.png,
+EXT:core/Resources/Public/Images/cshimages/core_54.png,
+EXT:core/Resources/Public/Images/cshimages/core_55.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="file_newfile.image_descr" resname="file_newfile.image_descr" xml:space="preserve" approved="yes">
+				<source>To create a new file, first click the folder icon where you want to create the file. Select "New".
+Then enter the filename in the dialog in the right frame.
+After pressing "Create file" you will see a new, empty file in the folder you selected.</source>
+			<target state="final">नयी फाइल बनाने के लिए फ़ल्डर आइकॉन पर क्लिक करें जहाँ आप फाइल बनाना चाहते है। "नया" चुने
+राईट फ्रेम में डायलॉग में फाइल का नाम डाले। 
+"नयी फाइल बनाये" दबाते आप अपने चुने फोल्डर में नयी, खली फाइल बनी हुई देखेंगे।</target></trans-unit>
+      <trans-unit id="file_newMedia.alttitle" resname="file_newMedia.alttitle" approved="yes">
+        <source>Adding a new media asset</source>
+        <target state="final">नए मीडिया एसेट्स ऐड करना</target>
+      </trans-unit>
+      <trans-unit id="file_newMedia.description" resname="file_newMedia.description" approved="yes">
+        <source>Enter an URL to a media asset here. Notice that it must be from one of the allowed providers listed below.</source>
+        <target state="final">मीडिया एसेट का URL यहाँ दर्ज करे। नोटिस करे की ये एक फॉर्म नीचे दी गयी अलाउड प्रोवाइडर्स लिस्ट में से एक होना चाहिए।</target>
+      </trans-unit>
+      <trans-unit id="file_rename.alttitle" resname="file_rename.alttitle" approved="yes">
+        <source>Rename a file or folder</source>
+        <target state="final">फ़ाइल और फ़ोल्डर का नाम बदलें</target>
+      </trans-unit>
+      <trans-unit id="file_rename.description" resname="file_rename.description" approved="yes">
+        <source>You can rename files or folders in TYPO3 quite easily. Just notice that certain characters are not allowed. So use a-z, numbers, underscores and don't make the names too long. If you enter invalid characters it will be automatically corrected.</source>
+        <target state="final">TYPO3 में आप फाइल्स और फोल्डर का जल्दी और आसानी से नाम बदल सकते है। सिर्फ देखे कि कुछ कैरेक्टर को इजाजत नहीं है।इस लिए a-z, नंबर और अंडर-स्कोर का उपयोग करे और नाम लंम्बा ना करे।अगर आप वेलिड कैरेक्टर डालेंगे, ये ऑटोमेटिकली करेक्ट कर देगा।</target>
+      </trans-unit>
+      <trans-unit id="_file_rename.seeAlso" resname="_file_rename.seeAlso" approved="yes">
+        <source>xMOD_csh_corebe:filelist_module</source>
+        <target state="final">xMOD_csh_corebe:filelist_module</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_file_rename.image" resname="_file_rename.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_56.png,
+EXT:core/Resources/Public/Images/cshimages/core_57.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_56.png,
+EXT:core/Resources/Public/Images/cshimages/core_57.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="file_rename.image_descr" resname="file_rename.image_descr" xml:space="preserve" approved="yes">
+				<source>To rename a file (or folder for that sake) just click the icon of it, select "Rename" and enter the new name.
+Notice that restrictions may apply on filenaming, for instance ".php" is usually not a valid extension of a filename for security reasons.</source>
+			<target state="final">फाइल्स(के फोल्डर की खातिर) का नाम बदल ने के लिए सिर्फ इसके आइकॉन पर क्लिक करे, "नाम बदले" सेलेक्ट करे और नया नाम डाले। 
+ध्यान दे की फाइल नेमिंग पर रेस्ट्रिक्शन्स अप्लाई हो सकते है, उदहारण रूप .php फ़ाइल नाम एक्सटेंशन सिक्योरिटी की वजह से वैलिड नहीं है।</target></trans-unit>
+      <trans-unit id="file_upload.alttitle" resname="file_upload.alttitle" approved="yes">
+        <source>Uploading files.</source>
+        <target state="final">उप्लोडिंग फाइल्स।</target>
+      </trans-unit>
+      <trans-unit id="file_upload.description" resname="file_upload.description" approved="yes">
+        <source>Here you can upload one or more files to the server. Start by selecting the number of files to upload, then you begin to select files from your local computer to upload.</source>
+        <target state="final">यहाँ से आप सर्वर पर एक या ज्यादा फाइल्स अपलोड कर सकते है। अपलोड करने के लिए फाइल्स के नंबर चुन के उसके बाद आप अपने लोकल कंप्यूटर से अपलोड करने के लिए फाइल्स चुनना शरू कर सकते है।</target>
+      </trans-unit>
+      <trans-unit id="file_upload.details" resname="file_upload.details" xml:space="preserve" approved="yes">
+				<source>If the filenames you upload exist already they will be renamed with a numeric suffix, eg. "file_01.jpg". However you can avoid this behaviour if you select "Overwrite existing files" before pressing the "Upload" button.
+
+Normally there is a limit to the size of files you can upload. By default PHP will allow you to upload around 2MB. TYPO3 is configured to allow 10MB internally by default. These settings can be changed by your server administrator if you need them changed.
+
+Notice that file uploads may take a significant amount of time, even if you have fast internet access via DSL etc. If you have large amount of files you want to upload - or if the files are very large - you should consider using an FTP client instead. It depends not on TYPO3 but on the webserver whether this is an options for you.</source>
+			<target state="final">अगर अपलोड फ़ाइल नाम पहले से ही मौजूद है वे नाम नुमेरिक सफ़िक्स के साथ री-नेम हो जायेंगे, जैसे "file_01.jpg". आप ये बेहेवियर अपलोड करने से पहले "ओवरराईट एक्सिस्टिंग फाइल्स" चुन कर टाल सकते है।
+
+सामान्य रूप से आप अपलोड करने के लिए फाइल साइज लिमिटेड होती है। डिफॉल्ड php आप को 2MB के आस-पास अपलोड करने की अनुमति देता है। TYPO3 डिफ़ॉल्ट 10MB इंटरनली अनुमति देने के लिए कॉन्फ़िगर किया गया है। अगर आपको बदलने की जरुरत पड़े तो आप ये सेटिंग आपके सर्वर एडमनिस्ट्रेटर के द्वारा बदल सकते है। 
+
+अगर आप के पास DSL आदि के साथ फ़ास्ट इन्टरनेट कनेक्शन है फर भी फाइल अपलोड कुछ ज्यादा समय ले सकता है।अगर आप के पास अपलोड करने के लिए ज्यादा फाइल्स है और बहोत ही बड़े साइज की फाइल्स है तो इसके आलावा FTP-क्लाइंट का उपयोग करे। ये TYPO3 पर निर्भर नहीं करता पर आप के पास जो भी विकल्प है उस वेबसर्वर पर करता है।</target></trans-unit>
+      <trans-unit id="_file_upload.seeAlso" resname="_file_upload.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:filelist_module,
+How-to upload files | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/UploadingImagesToTheArchive/</source>
+				
+			<target state="final">xMOD_csh_corebe: filelist_module, 
+कैसे-फाइल अपलोड |https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/UploadingImagesToTheArchive/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_file_upload.image" resname="_file_upload.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_58.png,
+EXT:core/Resources/Public/Images/cshimages/core_59.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_58.png,
+EXT:core/Resources/Public/Images/cshimages/core_59.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="file_upload.image_descr" resname="file_upload.image_descr" xml:space="preserve" approved="yes">
+				<source>To upload files, first click the folder icon where you want to upload to. From the clickmenu you select "Upload files".
+In the next screen you select the number of files and click the "Browse..." buttons to select files from your computer. Finally you click the "Upload files" button to start the upload process (which might take some minutes with large files!)</source>
+			<target state="final">फ़ाइलों को अपलोड करने के लिए, पहले फ़ोल्डर आइकन जहां आप अपनी फाईल अपलोड करना चाहते हैं वह पर क्लिक करें। क्लिक मेनू से आप "अपलोड फ़ाइलें" चुनें।
+अगले स्क्रीन में आप कई सारी फ़ाइलों को सिलेक्ट करें और अपने कंप्यूटर से फ़ाइलों को सेलेक्ट करने के लिए "ब्राउज़ ..." बटन क्लिक करें। अंत में आप अपलोड करने की प्रोसेस शुरू करने के लिए "अपलोड फ़ाइलें" बटन पर क्लिक करें (जिसमे बड़ी फ़ाइलों के साथ कुछ मिनट लग सकते हैं!)</target></trans-unit>
+      <trans-unit id="wizard_table_wiz.alttitle" resname="wizard_table_wiz.alttitle" approved="yes">
+        <source>Table wizard</source>
+        <target state="final">टेबल विजार्ड</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz.description" resname="wizard_table_wiz.description" approved="yes">
+        <source>The table wizard helps you create tables that are normally stored in the database by XML or a syntax where each line represents a row and each cell is divided by a vertical line sign, "|". This wizard makes it transparent for you.</source>
+        <target state="final">टेबल विज़ार्ड XML से आपको डेटाबेस में टेबल क्रिएट करने में मदद करता हे और जिश्मे एक लाइन रो रेप्रजेंट करता है और एक सेल जो वर्टीकल साइन "|" से डिवाइडेड होगी यह विज़ार्ड आप के लिए ट्रांसपैरंट बनाता है।</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz.details" resname="wizard_table_wiz.details" xml:space="preserve" approved="yes">
+				<source>The wizard is quite simple. By the buttons to the left and in the bottom you can add, delete and move columns and rows in the table.
+You can also disable the setting "Small fields" below the wizard if you want larger textarea fields for the editing.</source>
+			<target state="final">विजार्ड काफी सरल है। बाईं ओर और नीचे आप जोड़ सकते हैं, हटा सकते हैं और तालिका में स्तंभों और पंक्तियों के लिए कदम में बटन के द्वारा। 
+तुम भी विजार्ड नीचे की स्थापना "छोटे क्षेत्रों" को निष्क्रिय यदि आप संपादन के लिए बड़ा textarea क्षेत्रों चाहते हैं।</target></trans-unit>
+      <trans-unit id="_wizard_table_wiz.seeAlso" resname="_wizard_table_wiz.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:wizard_forms_wiz,
+Table Wizard details [Technical]| https://docs.typo3.org/typo3cms/TCAReference/AdditionalFeatures/CoreWizardScripts/</source>
+				
+			<target state="final">xMOD_csh_corebe:wizard_forms_wiz,
+टेबल विजार्ड विवरण [Technical]| https://docs.typo3.org/typo3cms/TCAReference/AdditionalFeatures/CoreWizardScripts/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_wizard_table_wiz.image" resname="_wizard_table_wiz.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_63.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/core_63.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz_buttons.alttitle" resname="wizard_table_wiz_buttons.alttitle" approved="yes">
+        <source>Table wizard buttons</source>
+        <target state="final">टेबल विजार्ड बटन</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz_buttons.description" resname="wizard_table_wiz_buttons.description" approved="yes">
+        <source>Use the refresh button to update the form without saving it. When you are done you should click one of the real save buttons to save and return to the form from which you entered the wizard. The information from this wizard should then be saved into the field the wizard was associated with.</source>
+        <target state="final">फॉर्म अपडेट करने के लिए रिफ्रेश बटन का उपयोग करे(इसे बचाए बिना), उदहारण रूप आप फील्ड का प्रकार चेंज करते है या कुछ और। जब आप पूरा कर लेते है आप बचने और जिसमें से आप विज़ार्ड में प्रवेश कियाथा उस फॉर्म पर आने के लिए असल बचाएँ पर क्लिक कर सकते है।विज़ार्ड के बारेमे जानकारी फील्ड में सेव की जायेगी जिस के साथै विज़ार्ड जुड़ा होगा।</target>
+      </trans-unit>
+      <trans-unit id="_wizard_table_wiz_buttons.image" resname="_wizard_table_wiz_buttons.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_62.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/core_62.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="shortcuts.alttitle" resname="shortcuts.alttitle" approved="yes">
+        <source>Backend Shortcuts</source>
+        <target state="final">बैकेंड शॉर्टकट्स</target>
+      </trans-unit>
+      <trans-unit id="shortcuts.description" resname="shortcuts.description" approved="yes">
+        <source>You can create shortcuts to modules in TYPO3 quite easily. The treat is that you can jump between screens in TYPO3 in &lt;em&gt;one&lt;/em&gt; click rather than multiple clicks through backend modules etc. The frame also contains a field for entering a page or record id to edit or just search records.</source>
+        <target state="final">तुम बहुत आसानी से typo3 में मॉड्यूल के लिए शॉर्टकट बना सकते हैं। इलाज है कि आप में &lt;em&gt; एक &lt;/ em&gt; बजाय बैकेंड मॉड्यूल आदि फ्रेम भी एक पृष्ठ या रिकार्ड आईडी में प्रवेश संपादित करने के लिए या बस खोज रिकॉर्ड के लिए एक क्षेत्र शामिल हैं के माध्यम से क्लिक अनेक क्लिक से typo3 में स्क्रीन के बीच कूद कर सकते है।</target>
+      </trans-unit>
+      <trans-unit id="shortcuts.details" resname="shortcuts.details" xml:space="preserve" approved="yes">
+				<source>In order to create a shortcut it must be supported by the module you want to create the shortcut to. Whether shortcuts are supported can be seen in the bottom of a module. If there is a small "shortcut" icon you can click it to create the shortcut.
+
+In the shortcut frame you can also enter a page id to edit in the "Edit Page ID" box. This will load the current page module with the id provided in the box.
+
+Only "Admin"-users can access the shortcut frame in TYPO3 by default. Other users must have it enabled by the User TSconfig option, "options.shortcutFrame = 1". See link below for details (Admins).
+
+Editing pages from an id is easy with the shortcut frame. Simply enter an integer number and that page will be loaded for editing. If you enter "[table]:[id]" then it will try to edit a record from the [table] table, for example "tt_content:123" will look for content element 123 (for admins only). Finally, if you enter a string that doesn't match a page or other record the Web&gt;List module will be invoked doing a search in the first database mount you have.</source>
+			<target state="final">आदेश में एक शॉर्टकट बनाने के लिए यह मॉड्यूल आप के लिए शॉर्टकट बनाना चाहते हैं द्वारा समर्थित होना चाहिए। शॉर्टकट समर्थन कर रहे हैं एक मॉड्यूल के तल में देखा जा सकता है या नहीं। अगर वहाँ एक छोटा सा "शॉर्टकट" आइकन है, तो आप इसे क्लिक करें शॉर्टकट बनाने के लिए कर सकते हैं। 
+
+शॉर्टकट फ्रेम में भी 'पृष्ठ संपादित आईडी "बॉक्स में संपादित करने के लिए एक पृष्ठ आईडी दर्ज कर सकते हैं। इस बॉक्स में प्रदान की आईडी के साथ वर्तमान पृष्ठ मॉड्यूल लोड होगा। 
+
+केवल "व्यवस्थापक" -उपयोगकर्ताओं डिफ़ॉल्ट रूप से typo3 में शॉर्टकट फ्रेम का उपयोग कर सकते हैं। अन्य उपयोगकर्ताओं के लिए यह "फ्रेम = 1 options.shortcut" यूजर TSconfig विकल्प के द्वारा सक्षम होना आवश्यक है। विवरण (प्रशासन) के लिए नीचे दिए गए लिंक देखें। 
+
+एक आईडी से पृष्ठों का संपादन शॉर्टकट फ्रेम के साथ आसान है। बस एक पूर्णांक नंबर दर्ज करें और उस पृष्ठ संपादन के लिए लोड किया जाएगा। आप दर्ज करते हैं "[तालिका] [id]": (केवल व्यवस्थापक के लिए) सामग्री तत्व 123 के लिए दिखेगा तो यह उदाहरण के लिए, [तालिका] तालिका से एक रिकार्ड को संपादित करने की कोशिश करेंगे "123 tt_content"। अंत में, यदि आप एक स्ट्रिंग है कि एक पृष्ठ या अन्य रिकॉर्ड वेब मेल नहीं खाता में प्रवेश&gt; सूची मॉड्यूल माउंट आपके पास पहले डेटाबेस में एक खोज कर रही लागू किया जाएगा।</target></trans-unit>
+      <trans-unit id="_shortcuts.seeAlso" resname="_shortcuts.seeAlso" approved="yes">
+        <source>User TSconfig -&gt;SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/</source>
+        <target state="final">यूजर TSconfig -&gt;SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/</target>
+      </trans-unit>
+      <trans-unit id="_shortcuts.image" resname="_shortcuts.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_64.png,
+EXT:core/Resources/Public/Images/cshimages/core_65.png,
+EXT:core/Resources/Public/Images/cshimages/core_67.png,
+EXT:core/Resources/Public/Images/cshimages/core_68.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_64.png,
+EXT:core/Resources/Public/Images/cshimages/core_65.png,
+EXT:core/Resources/Public/Images/cshimages/core_67.png,
+EXT:core/Resources/Public/Images/cshimages/core_68.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="shortcuts.image_descr" resname="shortcuts.image_descr" xml:space="preserve" approved="yes">
+				<source>To create a shortcut to a page, just click the short cut icon usually found in the bottom of pages.
+You will have to confirm the creation of the shortcut. It is nothing dangerous - only annoying to clean up if you happen to create shortcuts against your own will. Just answer "OK" here.
+When you answer "OK" you should immediately see the shortcut frame reload and a new icon (the module icon) appear. If you click this icon you will now jump to the page you created the shortcut from!
+You can name shortcuts, you can even group them and share them. If you want to edit or delete a shortcut you select the "Edit" checkbox and then click the shortcut icon. This will reload the shortcut frame so you get a field for entering a title. You can also delete all shortcuts in a "group" - here, just click the "0" (zero) to the left of the icons and you will remove all shortcuts in the group.</source>
+			<target state="final">एक पेज के लिए एक शॉर्टकट बनाने के लिए, बस छोटा रास्ता आइकन आमतौर पर पृष्ठों के तल में पाया क्लिक करें। 
+आप शॉर्टकट के निर्माण की पुष्टि करनी होगी। केवल साफ करने के लिए अगर आप अपने खुद इच्छा के विरुद्ध शॉर्टकट बनाने के लिए होता है कष्टप्रद - यह खतरनाक कुछ भी नहीं है। बस "ठीक है" यहाँ जवाब। 
+जब आप का जवाब "ठीक" आप तुरंत शॉर्टकट फ्रेम लोड करें और एक नया प्रतीक (मॉड्यूल आइकन) दिखाई देखना चाहिए। आप इस आइकन आप अब पेज आप से शॉर्टकट बन जाएगा, तो क्लिक करें! 
+आप शॉर्टकट नाम कर सकते हैं आप भी उन्हें समूह कर सकते हैं और उन्हें साझा। आप संपादित या एक शॉर्टकट को नष्ट करना चाहते हैं तो आप "संपादित करें" चेकबॉक्स का चयन और तब शॉर्टकट आइकन पर क्लिक करें। इस शॉर्टकट फ्रेम को फिर से लोड ताकि आप एक शीर्षक में प्रवेश करने के लिए एक क्षेत्र मिल जाएगा। (शून्य) के प्रतीक के बाईं ओर यहाँ सिर्फ "0" क्लिक करें और आप समूह में सभी शॉर्टकट निकाल देंगे - तुम भी सभी शॉर्टकट "समूह" में हटा सकते हैं।</target></trans-unit>
+      <trans-unit id="bookmarks.alttitle" resname="bookmarks.alttitle" approved="yes">
+        <source>Backend Bookmarks</source>
+        <target state="final">बैकेंड बुकमार्क</target>
+      </trans-unit>
+      <trans-unit id="bookmarks.description" resname="bookmarks.description" approved="yes">
+        <source>You can create bookmarks to modules in TYPO3 quite easily. The treat is that you can jump between screens in TYPO3 in &lt;em&gt;one&lt;/em&gt; click rather than multiple clicks through backend modules etc. The frame also contains a field for entering a page or record id to edit or just search records.</source>
+        <target state="final">तुम बहुत आसानी से TYPO3 में मॉड्यूल को बुकमार्क बना सकते हैं। इलाज है कि आप में &lt;em&gt; एक &lt;/ em&gt; बजाय बैकेंड मॉड्यूल आदि फ्रेम भी एक पृष्ठ या रिकार्ड आईडी में प्रवेश संपादित करने के लिए या बस खोज रिकॉर्ड के लिए एक क्षेत्र शामिल हैं के माध्यम से क्लिक अनेक क्लिक से TYPO3 में स्क्रीन के बीच कूद कर सकते है।</target>
+      </trans-unit>
+      <trans-unit id="bookmarks.details" resname="bookmarks.details" approved="yes">
+        <source>In order to create a bookmark it must be supported by the module you want to create the bookmark to. Whether bookmarks are supported can be seen in the top of a module. If there is a small star icon you can click it to create the bookmark.</source>
+        <target state="final">आदेश में एक बुकमार्क बनाने के लिए यह मॉड्यूल आप को बुकमार्क बनाने के लिए चाहते द्वारा समर्थित होना चाहिए। बुकमार्क का समर्थन कर रहे एक मॉड्यूल के शीर्ष में देखा जा सकता है या नहीं। अगर वहाँ एक छोटे स्टार आइकन है आप इसे क्लिक करें बुकमार्क बनाने के लिए कर सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="_bookmarks.seeAlso" resname="_bookmarks.seeAlso" approved="yes">
+        <source>User TSconfig -&gt;SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/</source>
+        <target state="final">यूजर TSconfig -&gt;SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/</target>
+      </trans-unit>
+      <trans-unit id="_bookmarks.image" resname="_bookmarks.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_64.png,
+EXT:core/Resources/Public/Images/cshimages/core_65.png,
+EXT:core/Resources/Public/Images/cshimages/core_67.png,
+EXT:core/Resources/Public/Images/cshimages/core_68.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_64.png,
+EXT:core/Resources/Public/Images/cshimages/core_65.png,
+EXT:core/Resources/Public/Images/cshimages/core_67.png,
+EXT:core/Resources/Public/Images/cshimages/core_68.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="bookmarks.image_descr" resname="bookmarks.image_descr" xml:space="preserve" approved="yes">
+				<source>To create a bookmark to a page, just click the star icon usually found in the top of pages.
+You will have to confirm the creation of the bookmark. It is nothing dangerous - only annoying to clean up if you happen to create bookmarks against your own will. Just answer "OK" here.
+When you answer "OK" you should immediately see the bookmark icon in the toolbar reloading and, after opening the menu, the new entry appear. If you click this entry, you will now jump to the page you created the bookmark from!
+You can name bookmarks, you can even group them and share them. If you want to edit or delete a bookmark you select the "Edit" checkbox and then click the bookmark icon.</source>
+			<target state="final">एक पेज पर एक बुकमार्क बनाने के लिए, बस आमतौर पर पेजेस के शीर्ष में पाया स्टार आइकन पर क्लिक करें। 
+आप बुकमार्क के निर्माण की पुष्टि करनी होगी। केवल साफ करने के लिए अगर आप अपने खुद इच्छा के विरुद्ध बुकमार्क बनाने के लिए होता है कष्टप्रद - यह खतरनाक कुछ भी नहीं है। बस "ठीक है" यहाँ जवाब। 
+जब आप का जवाब "ठीक" आप तुरंत उपकरण पट्टी को फिर से लोड में बुकमार्क आइकन देखना चाहिए और, मेनू खोलने के बाद, नई प्रविष्टि दिखाई देते हैं। आप इस प्रविष्टि क्लिक करें, तो आप अब पेज आप से बुकमार्क बन जाएगा! 
+आप बुकमार्क नाम कर सकते हैं, आप भी उन्हें समूह कर सकते हैं और उन्हें साझा। आप संपादित या बुकमार्क को नष्ट करना चाहते हैं तो आप "संपादित करें" चेकबॉक्स चुनें और फिर बुकमार्क आइकन पर क्लिक करें।</target></trans-unit>
+      <trans-unit id="workspaceSelector.alttitle" resname="workspaceSelector.alttitle" approved="yes">
+        <source>Workspace Selector</source>
+        <target state="final">वर्कस्पेस सिलेक्टर</target>
+      </trans-unit>
+      <trans-unit id="workspaceSelector.description" resname="workspaceSelector.description" approved="yes">
+        <source>By this selectorbox you can switch between the workspaces available to you. When you switch workspace the whole backend will reload.</source>
+        <target state="final">इस सेलेक्टरबोक्स से आप आप के लिए उपलब्ध वर्कस्पेस के बीच स्विच कर सकते है. पूरा बैकेंड फिरसे रीलोड होगा जब आप वर्कस्पेस स्विच करते है।</target>
+      </trans-unit>
+      <trans-unit id="workspaceSelector.details" resname="workspaceSelector.details" xml:space="preserve" approved="yes">
+				<source>There are two basic workspace types in TYPO3: The "Live" workspace and a number of "Draft" workspaces.
+When working in the Live workspace all changes you make will take immediate effect. This is the default and traditional state of operation in TYPO3.
+When working in a customly created workspaces changes are not applied to the live website but rather made through new versions of any element editable. Since versioning doesn't apply to all elements in TYPO3 there are limitations to what can be done in draft workspaces; Only elements with versioning support can be edited and everything else is read-only. Draft workspaces allow preview in the frontend. When changes are final in a draft workspace they can be published into the live workspace.</source>
+			<target state="final">TYPO3 में दो मूल वर्कस्पेस प्रकार होते हैं: "Live" वर्कस्पेस और कई "Draft" वर्कस्पेस।
+Live वर्कस्पेस में काम करते समय आपके द्वारा किए गए सभी बदलाव तुरंत प्रभावी हो जाते हैं। यह TYPO3 का डिफ़ॉल्ट और पारंपरिक संचालन मोड है।
+कस्टम बनाए गए वर्कस्पेस में काम करते समय बदलाव लाइव वेबसाइट पर सीधे लागू नहीं होते, बल्कि किसी भी संपादन योग्य तत्व के नए वर्ज़न के रूप में किए जाते हैं। चूंकि TYPO3 में सभी तत्वों पर वर्ज़निंग लागू नहीं होती, इसलिए Draft वर्कस्पेस में कुछ सीमाएँ होती हैं; केवल वे तत्व जिनमें वर्ज़निंग सपोर्ट है, उन्हें संपादित किया जा सकता है और बाकी केवल पढ़ने के लिए होते हैं।
+Draft वर्कस्पेस में फ्रंटएंड प्रीव्यू की सुविधा होती है। जब बदलाव अंतिम हो जाते हैं, तो उन्हें Live वर्कस्पेस में प्रकाशित किया जा सकता है।</target></trans-unit>
+    </body>
+  </file>
+</xliff>
