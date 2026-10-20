@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814795" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_fe_groups.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>This option disables the user group.</source>
+        <target state="final">تعمل هذه الخاصية على إلغاء محموعة المستخدم</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" xml:space="preserve" approved="yes">
+				<source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.
+For instance if a page or content element was assigned access only by this group and you disable the group, no one would gain access to that page or content element.</source>
+			<target state="final">ما إن تم إلغاء مجموعة المستخدم فلا يصبح أحد من أعضاء هذه المجموعة التمتع بأي الخصائص التي منحتها لهم هذه المجموعة. فعلى سبيل المثال إذا كات المجموعة لها إمكانية الدخول على صفحة ما أو عنصر محتوى معين فإنه مجرد إلغاء المجموعة لا يستطيع أى من الأعضاء الدخول على هذه الصفحة أو على هذا العنصر مرة أخرى.</target></trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" approved="yes">
+        <source>fe_users:disable</source>
+        <target state="final">fe_users:تعطيل</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Name of the group.</source>
+        <target state="final">تسمية المموعة</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>This title will appear as the group name in the 'Access'-list in other records.</source>
+        <target state="final">يظهر هذا العنوان عند تسمية المحموعة في قائمة الدخول في مجموعة أخرى من السجلات.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.description" resname="lockToDomain.description" approved="yes">
+        <source>Enter the host name from which the group will be available only. NOTICE: this is not a security feature and can be circumvented by faking HTTP_HOST.</source>
+        <target state="final">أدخل اسم المضيف "Host" الذي يُجبر المستخدم على تسجيل الدخول منه. ملاحظة: هذه ليست ميزة أمنية ويمكن التحايل عليها عن طريق التقاط HTTP_HOST.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.details" resname="lockToDomain.details" xml:space="preserve" approved="yes">
+				<source>This options may be important if you have multiple websites in the same TYPO3 database but still only one main storage page for all Website users. Thus the users may log in on any of the website URLs. This may be considered a feature (having a global login as a user) or a problem (in which case you should have multiple user storages anyway). However you may wish to limit the use of a Website usergroup to a specific website and thus you don't want the group to be enabled for the user when he logs in at another URL (still from the same database of course). By entering the host name of the website here, you restrict the group to be used only from within this domain.
+
+&lt;b&gt;Notice:&lt;/b&gt; The use for this option is not critical if you have multiple Website user storages, namely one for each site.</source>
+			<target state="final">قد تكون هذه الخيارات هامة إذا ما كنت تتعامل مع أكثر من صفحة وب على نفس قاعدة البيانات الخاصة بتيبو3 غير أنه مازال هناك صفحة واحدة أساسية للتخزين لكل مستخدمي صفحة الوب.وعلى ذلك فيمكن للمستخدمين الدخول على أي من روابط الوب.قد يعد ذلك خاصية ( حييث تنمح الدخول العام للمستخدم) أو قد تعتبر مشكلة ( في حالة ما إذا كان هناك تخزين لأكثر من مستخدم).إلا انك قد تكون في حاجة إلى قصر استخدام محموعة المستخدم من خلال صفحة وب بعينها وبالتالى فإنك لا تريد أن تكون المحموعة متاحةللمستخدم إذا ما دخل على رابط آخر.( المستخدم لنفس قاعدة البيانات بالطبع).فما إن أدخلت اسم المضيف فإنك بذلك تجعل استخدام المجموعة قاصراً فقك على المشرف. &lt;b&gt;Notice:&lt;/b&gt; إستخدام هذا الخيار قد لا يكون حرجاً إذا ما كنت أنشأت العديد من صفحات تخزين المستخدين للوب، ولك منها اسم خاص بها.</target></trans-unit>
+      <trans-unit id="_lockToDomain.seeAlso" resname="_lockToDomain.seeAlso" approved="yes">
+        <source>fe_users:lockToDomain</source>
+        <target state="final">fe_users:lockTodomain</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="subgroup.description" resname="subgroup.description" approved="yes">
+        <source>Member of other groups.</source>
+        <target state="final">عضو في مجموعات أخرى.</target>
+      </trans-unit>
+      <trans-unit id="subgroup.details" resname="subgroup.details" approved="yes">
+        <source>List of other groups that this group is a member of.</source>
+        <target state="final">قائمة بالمجموعات الأُخرى التي تنتمي إليها هذه المجموعة.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a description of the group.</source>
+        <target state="final">إدخال توصيف للصفحة</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" xml:space="preserve" approved="yes">
+				<source>This is for internal use and is just a way to put a note on what the group is for, why you created it and who should be members.
+Use it as you like.</source>
+			<target state="final">تستخدم هذه الخاصية في حالة الأستخدام الداخلى وفي حالة إضافة ملاحظات عن المجموعة ما هو إختصاصاها و لماذا أنشأت و من يمكنة الإنضمام لها. يمكنك استخدام هذه الخاصية كيفما شئت.</target></trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>TSconfig for the group (advanced).</source>
+        <target state="final">TSconfig لتوصيف المجموعات ( المتقدمة).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details" resname="TSconfig.details" xml:space="preserve" approved="yes">
+				<source>This is the user TSconfig for the group. The values are inherited by any Website user who is a member of this group.
+The configuration is subject to being overridden in other groups and by the TSconfig of the user himself.</source>
+			<target state="final">كل مستخدم في المجموعة له TSconfig.فالمعطيات يمكن أن تورث من أي مستخدم للوب و عضو في المجموعة. وخاصية التوصيف يمكن للمجموعات الأخرى أن تتجاوزها و كذلك بواسطة TSconfig الخاص بالمستخدم نفسه.</target></trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax, without conditions and constants.</source>
+        <target state="final">تركيب مخطوطة تيبو الخاصة دون أي شروط أو ثوابت.</target>
+      </trans-unit>
+      <trans-unit id="_TSconfig.seeAlso" resname="_TSconfig.seeAlso" approved="yes">
+        <source>fe_users:TSconfig</source>
+        <target state="final">fe_users:TSconfig</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Usergroups for Website users.</source>
+        <target state="final">مجموعات المستخدمين لمستخدمي الوب</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>The access restriction in TYPO3 is assigned to these usergroups. When a page or other element is access restricted to a group, only Website users which are members of that group will be able to view the element on the website.</source>
+        <target state="final">تم تقييد الوُصول في TYPO3 لمجموعات المستخدمين هذه. عندما تكون صفحة أو عنصر ما، مُقيّد الوصول إليه باستثناء مجموعة مُستخدمين ما، فإن أعضاء هذه المجموعة فقط سيتمكنون من رؤية وعرض هذه الصفحة أو العنصر على موقع الويب.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>fe_users,
+About access restricting pages | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/PasswordProtectedPages/</source>
+			<target state="final">fe_users,
+للمزيد حول تقييد الوصول إلى الصفحات | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/PasswordProtectedPages/</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/fegroups_3.png,
+EXT:frontend/Resources/Public/Images/cshimages/fegroups_4.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/fegroups_3.png,
+EXT:frontend/Resources/Public/Images/cshimages/fegroups_4.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The form for editing frontend users groups.
+Pages, Content Elements and other records for frontend display often have a selector box where you can define access restriction by selecting access for a certain group only.</source>
+			<target state="final">هناك صياغة خاصة لتحرير مجموعات المستخدمين الأمامية.فغالباً ما يكون للصفحات،عناصر المحتوى،وأى سجلات أخرى تحتوي على صندوق إختيار حيث يمكن تحديد عملية تقيد الدخول وذلك بقصر عملية الدخول على مجموعة واحدة بعينها.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
