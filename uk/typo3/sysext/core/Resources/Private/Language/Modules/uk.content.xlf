@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Modules/content.xlf" date="2025-10-15T20:00:34Z" product-name="lang" target-language="uk">
+    <header/>
+    <body>
+      <!-- intentionally left blank, not utilized (for now) -->
+      <trans-unit id="description">
+        <source/>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
