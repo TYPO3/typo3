@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/Modules/statistics.xlf" date="2026-11-10T13:37:37Z" product-name="statistics" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Shows database record statistics</source>
+        <target state="final">ສະແດງສະຖິຕິຂໍ້ມູນໃນຖານຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Get statistics for database records, including total, translated, hidden, and deleted pages, page type distribution, and and detailed table records with lost record detection. The report analyzes the entire page tree.</source>
+        <target state="final">ຮັບສະຖິຕິສຳລັບບັນທຶກຖານຂໍ້ມູນ, ລວມທັງໜ້າທັງໝົດ, ໜ້າທີ່ແປແລ້ວ, ໜ້າທີ່ຖືກເຊື່ອງ, ແລະ ໜ້າທີ່ຖືກລຶບ, ການແຈກຢາຍປະເພດໜ້າ, ແລະ ບັນທຶກຕາຕະລາງແບບລະອຽດພ້ອມກັບການກວດຫາບັນທຶກທີ່ຕົກຄ້າງ. ລາຍງານຈະວິເຄາະໂຄງສ້າງໜ້າທັງໝົດ.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Record Statistics</source>
+        <target state="final">ສະຖິຕິຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="doktype" approved="yes">
+        <source>Document types</source>
+        <target state="final">ປະເພດເອກະສານ</target>
+      </trans-unit>
+      <trans-unit id="doktype_value" approved="yes">
+        <source>Document types (value)</source>
+        <target state="final">ປະເພດເອກະສານ (ຄ່າ)</target>
+      </trans-unit>
+      <trans-unit id="count" approved="yes">
+        <source>Count</source>
+        <target state="final">ຈຳນວນ</target>
+      </trans-unit>
+      <trans-unit id="pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">ໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="total_pages" approved="yes">
+        <source>Total number of default language pages</source>
+        <target state="final">ຈຳນວນໜ້າພາສາເລີ່ມຕົ້ນທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="translated_pages" approved="yes">
+        <source>Total number of translated pages</source>
+        <target state="final">ຈຳນວນໜ້າທີ່ແປແລ້ວທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="deleted_pages" approved="yes">
+        <source>Marked-deleted pages</source>
+        <target state="final">ໜ້າທີ່ຖືກໝາຍວ່າລຶບ</target>
+      </trans-unit>
+      <trans-unit id="hidden_pages" approved="yes">
+        <source>Hidden pages</source>
+        <target state="final">ໜ້າທີ່ຖືກເຊື່ອງ</target>
+      </trans-unit>
+      <trans-unit id="tables" approved="yes">
+        <source>Tables</source>
+        <target state="final">ຕາຕະລາງ</target>
+      </trans-unit>
+      <trans-unit id="label" approved="yes">
+        <source>Label</source>
+        <target state="final">ປ້າຍຊື່</target>
+      </trans-unit>
+      <trans-unit id="tablename" approved="yes">
+        <source>Table name</source>
+        <target state="final">ຊື່ຕາຕະລາງ</target>
+      </trans-unit>
+      <trans-unit id="total_lost" approved="yes">
+        <source>Records total / lost</source>
+        <target state="final">ຂໍ້ມູນທັງໝົດ / ທີ່ສູນຫາຍ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
