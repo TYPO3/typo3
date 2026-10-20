@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:35Z" product-name="reports" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="reports_overview" approved="yes">
+        <source>Reports overview</source>
+        <target state="final">Report-Übersicht</target>
+      </trans-unit>
+      <trans-unit id="choose_report" approved="yes">
+        <source>Report</source>
+        <target state="final">Bericht:</target>
+      </trans-unit>
+      <trans-unit id="noReportsTitle" approved="yes">
+        <source>No registered reports</source>
+        <target state="final">Keine registrierten Berichte</target>
+      </trans-unit>
+      <trans-unit id="noReportsMessage" approved="yes">
+        <source>There are no reports registered in the system and default reports have been disabled.</source>
+        <target state="final">Es sind keinerlei Reports im System registriert und Standardreports wurden deaktiviert.</target>
+      </trans-unit>
+      <trans-unit id="link.openModule" approved="yes">
+        <source>Open</source>
+        <target state="final">Öffnen</target>
+      </trans-unit>
+      <trans-unit id="link.openModuleWithTitle" approved="yes">
+        <source>Open %1s</source>
+        <target state="final">%1s öffnen</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.title" approved="yes">
+        <source>Content Statistics</source>
+        <target state="final">Inhaltsstatistiken</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.shortDescription" approved="yes">
+        <source>Shows statistics about used content elements</source>
+        <target state="final">Zeigt Statistiken über verwendete Inhaltselemente an</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.description" approved="yes">
+        <source>Provides an overview of all content element types, showing how often each appears across the site. Includes summaries per type.</source>
+        <target state="final">Bietet eine Übersicht über alle Inhaltselement-Typen, die anzeigen, wie oft jede Seite angezeigt wird. Enthält Zusammenfassungen pro Typ.</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic" approved="yes">
+        <source>Statistics</source>
+        <target state="final">Statistiken</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.header" approved="yes">
+        <source>Existing Content Element Types</source>
+        <target state="final">Vorhandene Inhaltselement-Typen</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.description" approved="yes">
+        <source>The listed content elements include both visible and hidden records.</source>
+        <target state="final">Die aufgelisteten Inhaltselemente enthalten sowohl sichtbare als auch versteckte Elemente.</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.explanation" approved="yes">
+        <source>Keep in mind that some elements may not appear on any page, and others might be rendered by alternative methods (TypoScript, ViewHelpers, etc.). As a result, it is not technically possible to determine actual usage.</source>
+        <target state="final">Beachten Sie, dass einige Elemente möglicherweise auf keiner Seite erscheinen und andere durch alternative Methoden (TypoScript, ViewHelpers, etc.) gerendert werden. Infolgedessen ist es technisch nicht möglich, die tatsächliche Verwendung zu bestimmen.</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.error" approved="yes">
+        <source>The content element database table's schema ("tt_content") could not be analyzed due to a missing or disabled schema type.</source>
+        <target state="final">Das Schema der Datenbanktabelle für Inhaltselemente ("tt_content") konnte aufgrund eines fehlenden oder deaktivierten Schematyps nicht analysiert werden.</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.unusedElements.header" approved="yes">
+        <source>Unused content elements</source>
+        <target state="final">Nicht verwendete Inhaltselemente</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.unusedElements.description" approved="yes">
+        <source>This list includes content element types that are not used anywhere, or whose existing instances are all flagged as deleted.</source>
+        <target state="final">Diese Liste enthält Inhaltselement-Typen, die nicht verwendet werden oder deren vorhandene Instanzen als gelöscht markiert wurden.</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.fields" approved="yes">
+        <source>%d fields</source>
+        <target state="final">%d Felder</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Typ</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.excluded" approved="yes">
+        <source>Excluded</source>
+        <target state="final">Ausgeschlossen</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.not_excluded" approved="yes">
+        <source>Always visible</source>
+        <target state="final">Immer sichtbar</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.required" approved="yes">
+        <source>Required</source>
+        <target state="final">Benötigt</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic.active_text" approved="yes">
+        <source>%d active / %d hidden</source>
+        <target state="final">%d aktiv / %d versteckt</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic.deleted_text" approved="yes">
+        <source>%d deleted</source>
+        <target state="final">%d gelöscht</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic.deleted" approved="yes">
+        <source>Deleted</source>
+        <target state="final">Gelöscht</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.records" approved="yes">
+        <source>Records</source>
+        <target state="final">Datensätze</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.noRecords" approved="yes">
+        <source>No records found</source>
+        <target state="final">Keine Datensätze gefunden</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
