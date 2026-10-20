@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814989" source-language="en" datatype="plaintext" original="EXT:setup/Resources/Private/Language/locallang_csh_mod.xlf" date="2011-10-17T20:22:37Z" product-name="setup" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>User &gt; Setup module</source>
+        <target state="final">ユーザ&gt;セットアップモジュール</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The Setup module allows the backend user to customize TYPO3 for his own login sessions. This includes the backend language and various other interface features.</source>
+        <target state="final">セットアップモジュールでは、バックエンドユーザがバックエンドで使用する言語やインターフェース機能など、ログインセッションをカスタマイズできます。</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>&lt;b&gt;Notice [For Admins]:&lt;/b&gt; These settings can all be overridden or have their default values changed by "User TSconfig". To read more about this concept, see the link below!</source>
+        <target state="final">&lt;b&gt;注意 [管理者向け]&lt;/b&gt;この設定は"User TSconfig"でオーバーライドもしくはデフォルトの値を設定できます。くわしくは次のリンク先を参照してください。</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" approved="yes">
+        <source>User TSconfig SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Setup/Index.html</source>
+        <target state="final">User TSconfig SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Setup/Index.html</target>
+      </trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:setup/Resources/Public/Images/cshimages/setup8.png,
+EXT:setup/Resources/Public/Images/cshimages/setup7.png</source>
+				
+			<target state="final">EXT:setup/Resources/Public/Images/cshimages/setup8.png,
+EXT:setup/Resources/Public/Images/cshimages/setup7.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The Setup module is selected in the left menu.
+This is how the Setup module interface looks like - a list of options to configure.</source>
+			<target state="final">セットアップモジュールは左のメニューに表示されます。セットアップモジュールのインターフェースには、設定可能なオプションのリストが表示されます。</target></trans-unit>
+      <trans-unit id="language.alttitle" resname="language.alttitle" approved="yes">
+        <source>Backend Language selection</source>
+        <target state="final">バックエンドで使用する言語の指定</target>
+      </trans-unit>
+      <trans-unit id="language.description" resname="language.description" approved="yes">
+        <source>Select the backend language you prefer. Most parts of TYPO3s backend (for regular users) are translated into other languages.</source>
+        <target state="final">バックエンドで使用する言語を指定します。TYPO3の(一般ユーザ向け)バックエンドのほとんどが各国語に翻訳されています。</target>
+      </trans-unit>
+      <trans-unit id="language.details" resname="language.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Warning [technical]:&lt;/b&gt; If TYPO3 is not configured to use a single character set (through $TYPO3_CONF_VARS[BE][forceCharset]) then all data entered in the backend is submitted in the character set of the selected backend language. This leads to inconsistent data storage if some users are using the backend in Russian and others in English which uses different character sets.
+The solution clearly is to set the configuration option mentioned above to a value like "utf-8". This must be done by the developers responsible for the whole system configuration.</source>
+			<target state="final">&lt;b&gt;警告[技術]:&lt;/b&gt; もし、TYPO3 が $TYPO3_CONF_VARS[BE][forceCharset] でシングルバイト文字を使うように設置されていないなら、すべてのデータは、選択されたバックエンド言語の文字セットで更新されます。これは、ロシア語でバックエンドを使用しているユーザーや、異なる文字セットを使用している英語のユーザーがいると、データの格納が不一致になります。
+解決策は、上記の設定オプションを "utf-8"のような値に設定することです。これはシステム構成全体を担当する開発者が行う必要があります。</target></trans-unit>
+      <trans-unit id="_language.image" resname="_language.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/lang.png</source>
+        <target state="final">EXT:setup/Resources/Public/Images/cshimages/lang.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="language.image_descr" resname="language.image_descr" approved="yes">
+        <source>TYPO3 is translated into around 40 languages. English is the default language and all labels must be available in English first and foremost. This screenshot shows translations for Hebrew, Arabic, Russian and Chinese.</source>
+        <target state="final">TYPO3 は約40の言語に翻訳されています。英語はデフォルト言語であり、すべてのラベルは、まず英語で利用可能でなければなりません。このスクリーンショットは、ヘブライ語、アラビア語、ロシア語、中国語の翻訳を示しています。</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_realName.alttitle" resname="option_beUser_realName.alttitle" approved="yes">
+        <source>Your real name</source>
+        <target state="final">あなたの本名</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_realName.description" resname="option_beUser_realName.description" approved="yes">
+        <source>Enter your real name here.</source>
+        <target state="final">ここに本名を入力してください。</target>
+      </trans-unit>
+      <trans-unit id="option_emailMeAtLogin.alttitle" resname="option_emailMeAtLogin.alttitle" approved="yes">
+        <source>Notify by login</source>
+        <target state="final">ログイン時に通知</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
