@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1521629227" source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_edit.xlf" date="2018-03-21T11:47:00Z" product-name="adminpanel" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="module.label" resname="module.label">
+        <source>Edit</source>
+        <target>crwdns67404:0crwdne67404:0</target>
+      </trans-unit>
+      <trans-unit id="displayFieldIcons" resname="displayFieldIcons">
+        <source>Display edit icons</source>
+        <target>crwdns67406:0crwdne67406:0</target>
+      </trans-unit>
+      <trans-unit id="displayIcons" resname="displayIcons">
+        <source>Display edit panels</source>
+        <target>crwdns67408:0crwdne67408:0</target>
+      </trans-unit>
+      <trans-unit id="openAB" resname="openAB">
+        <source>Open TYPO3 Backend</source>
+        <target>crwdns67410:0crwdne67410:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
