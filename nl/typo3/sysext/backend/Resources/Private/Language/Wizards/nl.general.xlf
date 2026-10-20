@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/general.xlf" date="2026-02-17T00:00:00Z" product-name="backend" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="wizard.loading" approved="yes">
+        <source>Loading...</source>
+        <target state="final">Bezig met laden...</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuleren</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Sluiten</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.next" approved="yes">
+        <source>Next</source>
+        <target state="final">Volgende</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.previous" approved="yes">
+        <source>Previous</source>
+        <target state="final">Vorige</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.finish" approved="yes">
+        <source>Finish</source>
+        <target state="final">Voltooien</target>
+      </trans-unit>
+      <trans-unit id="wizard.loading_configuration" approved="yes">
+        <source>Loading wizard configuration...</source>
+        <target state="final">Configuratie van assistent laden...</target>
+      </trans-unit>
+      <trans-unit id="wizard.loading_steps" approved="yes">
+        <source>Loading step modules...</source>
+        <target state="final">Stapmodules laden...</target>
+      </trans-unit>
+      <trans-unit id="wizard.loading_finisher" approved="yes">
+        <source>Loading finisher...</source>
+        <target state="final">Afronder laden...</target>
+      </trans-unit>
+      <trans-unit id="wizard.status.pending.message" approved="yes">
+        <source>Processing data...</source>
+        <target state="final">Gegevens verwerken...</target>
+      </trans-unit>
+      <trans-unit id="wizard.status.error.title" approved="yes">
+        <source>Error</source>
+        <target state="final">Fout</target>
+      </trans-unit>
+      <trans-unit id="wizard.status.error.message" approved="yes">
+        <source>Failed to process data:</source>
+        <target state="final">Gegevens verwerken mislukt:</target>
+      </trans-unit>
+      <trans-unit id="wizard.finisher.load_error.message" approved="yes">
+        <source>Failed to load finisher module:</source>
+        <target state="final">Afrondermodule laden mislukt:</target>
+      </trans-unit>
+      <trans-unit id="wizard.step.error.title" approved="yes">
+        <source>Error</source>
+        <target state="final">Fout</target>
+      </trans-unit>
+      <!-- Step: Confirmation -->
+      <trans-unit id="step.confirmation.title" approved="yes">
+        <source>Confirmation</source>
+        <target state="final">Bevestiging</target>
+      </trans-unit>
+      <trans-unit id="step.confirmation.headline" approved="yes">
+        <source>Confirm</source>
+        <target state="final">Bevestigen</target>
+      </trans-unit>
+      <trans-unit id="step.confirmation.description" approved="yes">
+        <source>Please review the following settings before proceeding:</source>
+        <target state="final">Controleer de volgende instellingen alvorens door te gaan:</target>
+      </trans-unit>
+      <!-- Step: Finisher -->
+      <trans-unit id="step.finisher.title" approved="yes">
+        <source>Finish</source>
+        <target state="final">Voltooien</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
