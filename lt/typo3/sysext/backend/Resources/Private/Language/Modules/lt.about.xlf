@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/about.xlf" date="2011-10-17T20:22:34Z" product-name="typo3-cms-backend" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>About TYPO3 CMS</source>
+        <target state="final">Apie TYPO3 CMS</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Displays the basic facts about the TYPO3 application, version and licensing terms.</source>
+        <target state="final">Rodo pagrindinę informaciją apie TYPO3 programą, jos versiją ir licencijos sąlygas.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>About TYPO3 CMS</source>
+        <target state="final">Apie TYPO3 CMS</target>
+      </trans-unit>
+      <trans-unit id="typo3_logo" approved="yes">
+        <source>TYPO3 CMS logo</source>
+        <target state="final">TYPO3 CMS logotipas</target>
+      </trans-unit>
+      <trans-unit id="information" approved="yes">
+        <source>TYPO3 Information</source>
+        <target state="final">TYPO3 informacija</target>
+      </trans-unit>
+      <trans-unit id="welcome" approved="yes">
+        <source>TYPO3 CMS - Professional Web Content Management System</source>
+        <target state="final">TYPO3 CMS – profesionali žiniatinklio turinio valdymo sistema</target>
+      </trans-unit>
+      <trans-unit id="minor" approved="yes">
+        <source>TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.&lt;br /&gt;&lt;br /&gt;For further information visit &lt;a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer"&gt;typo3.org&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;TYPO3 CMS is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href="https://typo3.org/project/licenses/" target="_blank"&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;You are using %s %s</source>
+        <target state="final">TYPO3 CMS yra verslo klasės atvirojo kodo turinio valdymo sistema, naudojama visame pasaulyje kuriant ir valdant įvairių tipų svetaines – nuo mažų ne pelno organizacijų svetainių iki daugiakalbių įmonių sprendimų didelėms korporacijoms.&lt;br /&gt;&lt;br /&gt;Daugiau informacijos rasite &lt;a href="https://typo3.org/typo3-cms/
+" target="_blank" rel="noreferrer"&gt;typo3.org&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;TYPO3 CMS yra &lt;b&gt;laisvai prieinama&lt;/b&gt; pagal &lt;a href="https://typo3.org/project/licenses/
+" target="_blank"&gt;TYPO3 licenciją (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;Jūs naudojate %s %s</target>
+      </trans-unit>
+      <trans-unit id="cms_description" approved="yes">
+        <source>TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.&lt;br /&gt;&lt;br /&gt;For further information visit &lt;a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer"&gt;typo3.org&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;TYPO3 CMS is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href="https://typo3.org/project/licenses/" target="_blank"&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;Copyright %s %s</source>
+        <target state="final">TYPO3 CMS yra verslo klasės atvirojo kodo turinio valdymo sistema, naudojama visame pasaulyje kuriant ir valdant įvairių tipų svetaines – nuo mažų ne pelno organizacijų svetainių iki daugiakalbių įmonių sprendimų didelėms korporacijoms.&lt;br /&gt;&lt;br /&gt;Daugiau informacijos rasite &lt;a href="https://typo3.org/typo3-cms/
+" target="_blank" rel="noreferrer"&gt;typo3.org&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;TYPO3 CMS yra &lt;b&gt;laisvai prieinama&lt;/b&gt; pagal &lt;a href="https://typo3.org/project/licenses/
+" target="_blank"&gt;TYPO3 licenciją (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;Autorių teisės %s %s</target>
+      </trans-unit>
+      <trans-unit id="community_credits" approved="yes">
+        <source>Community Credits</source>
+        <target state="final">Bendruomenės padėkos</target>
+      </trans-unit>
+      <trans-unit id="information_detail" approved="yes">
+        <source>Visit &lt;a href="https://typo3.org/community/" target="_blank" rel="noreferrer"&gt;typo3.org/community/&lt;/a&gt; if you want to know why TYPO3 rocks.</source>
+        <target state="final">Apsilankykite &lt;a href="https://typo3.org/community/
+" target="_blank" rel="noreferrer"&gt;typo3.org/community/&lt;/a&gt;, jei norite sužinoti, kodėl TYPO3 yra puikus pasirinkimas.</target>
+      </trans-unit>
+      <trans-unit id="coredevs" approved="yes">
+        <source>Core Team</source>
+        <target state="final">Pagrindinė komanda</target>
+      </trans-unit>
+      <trans-unit id="coredevs_detail" approved="yes">
+        <source>Visit &lt;a href="https://typo3.org/teams-committees/core-development/" target="_blank" rel="noreferrer"&gt;typo3.org/teams-committees/core-development/&lt;/a&gt; for the complete member list.&lt;br /&gt;&lt;br /&gt;The Git Repository and the ChangeLog can be found &lt;a href="https://forge.typo3.org/projects/typo3cms-core/" target="_blank"&gt;here&lt;/a&gt;.</source>
+        <target state="final">Apsilankykite &lt;a href="https://typo3.org/teams-committees/core-development/
+" target="_blank" rel="noreferrer"&gt;typo3.org/teams-committees/core-development/&lt;/a&gt;, kad pamatytumėte visą narių sąrašą.&lt;br /&gt;&lt;br /&gt;Git saugyklą ir pakeitimų žurnalą rasite &lt;a href="https://forge.typo3.org/projects/typo3cms-core/
+" target="_blank"&gt;čia&lt;/a&gt;.</target>
+      </trans-unit>
+      <trans-unit id="extension_authors" approved="yes">
+        <source>Extension Authors</source>
+        <target state="final">Plėtinių autoriai</target>
+      </trans-unit>
+      <trans-unit id="extension_list_info" approved="yes">
+        <source>This is a list of the people who contributed to the extensions you're using in your installation.</source>
+        <target state="final">Tai sąrašas žmonių, kurie prisidėjo prie plėtinių, naudojamų jūsų sistemoje.</target>
+      </trans-unit>
+      <trans-unit id="extension" approved="yes">
+        <source>Extension</source>
+        <target state="final">Plėtinys</target>
+      </trans-unit>
+      <trans-unit id="extension_author" approved="yes">
+        <source>Author</source>
+        <target state="final">Autorius</target>
+      </trans-unit>
+      <trans-unit id="donation.sectionHeadline" approved="yes">
+        <source>TYPO3 Donation and community</source>
+        <target state="final">TYPO3 paramos ir bendruomenės informacija</target>
+      </trans-unit>
+      <trans-unit id="donation_header" approved="yes">
+        <source>TYPO3 Donation</source>
+        <target state="final">Parama TYPO3</target>
+      </trans-unit>
+      <trans-unit id="donation_message" approved="yes">
+        <source>It would be great if you could donate. TYPO3 CMS is Open Source and relies heavily on donations from its users and supporters.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Thank you&lt;/b&gt; for making this great Content Management System even better with your support!</source>
+        <target state="final">Būtų puiku, jei galėtumėte paaukoti. TYPO3 CMS yra atvirojo kodo projektas ir labai priklauso nuo naudotojų bei rėmėjų paramos.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Ačiū&lt;/b&gt;, kad savo parama padedate šiai turinio valdymo sistemai tapti dar geresne!</target>
+      </trans-unit>
+      <trans-unit id="donation_button" approved="yes">
+        <source>Donate now</source>
+        <target state="final">Paaukoti dabar</target>
+      </trans-unit>
+      <trans-unit id="external_libraries" approved="yes">
+        <source>External Libraries</source>
+        <target state="final">Išorinės bibliotekos</target>
+      </trans-unit>
+      <trans-unit id="external_thanks" approved="yes">
+        <source>TYPO3 CMS core uses and thanks these external Open Source projects:</source>
+        <target state="final">TYPO3 CMS branduolys naudoja ir dėkoja šiems išoriniams atvirojo kodo projektams:</target>
+      </trans-unit>
+      <trans-unit id="external_libraries.table.column.name" approved="yes">
+        <source>Project name</source>
+        <target state="final">Projekto pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="external_libraries.table.column.website" approved="yes">
+        <source>Website</source>
+        <target state="final">Svetainė</target>
+      </trans-unit>
+      <trans-unit id="introtext" approved="yes">
+        <source>Web Content Management System</source>
+        <target state="final">Žiniatinklio turinio valdymo sistema</target>
+      </trans-unit>
+      <trans-unit id="modules.headline" approved="yes">
+        <source>Modules</source>
+        <target state="final">Moduliai</target>
+      </trans-unit>
+      <trans-unit id="modules.introtext" approved="yes">
+        <source>This is a brief description of the available modules.</source>
+        <target state="final">Trumpas galimų modulių aprašymas.</target>
+      </trans-unit>
+      <trans-unit id="endText" approved="yes">
+        <source>Features may vary depending on your website and permissions</source>
+        <target state="final">Funkcijos gali skirtis priklausomai nuo jūsų svetainės ir turimų teisių</target>
+      </trans-unit>
+      <trans-unit id="userInfo" approved="yes">
+        <source>You're logged in as user</source>
+        <target state="final">Jūs esate prisijungę kaip naudotojas</target>
+      </trans-unit>
+      <trans-unit id="link.openModule" approved="yes">
+        <source>Open module</source>
+        <target state="final">Atidaryti modulį</target>
+      </trans-unit>
+      <trans-unit id="link.openModuleWithTitle" approved="yes">
+        <source>Open %1s module</source>
+        <target state="final">Atidaryti %1s modulį</target>
+      </trans-unit>
+      <trans-unit id="noSubModules" approved="yes">
+        <source>There are currently no functions available for this module.</source>
+        <target state="final">Šiuo metu šiam moduliui nėra prieinamų funkcijų.</target>
+      </trans-unit>
+      <trans-unit id="noSubModulesWithTitle" approved="yes">
+        <source>There are currently no functions available for the %1s module.</source>
+        <target state="final">Šiuo metu moduliui %1s nėra prieinamų funkcijų.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
