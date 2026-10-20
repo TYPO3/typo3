@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814829" source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang_csh.xlf" date="2011-10-17T20:22:33Z" product-name="impexp" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>Import/Export</source>
+        <target state="final">Uvoz/izvoz</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Native Import/Export module for TYPO3 data. Can export single records, content of tables, single pages or whole branches of the page tree. Includes attached media like image and preserves relations between records. Exports only to TYPO3 specific format, either a binary format (.T3D) or XML. The format is meant for exchange between TYPO3 systems.</source>
+        <target state="final">Izvorni TYPO3 modul za uvoz i izvoz podataka. Moguće je izvesti pojedinačne zapise, sadržaj tablica, pojedinačne stranice ili čitave grane stabla stranica. Priključeni medijski dodaci poput slika bit će uključeni u izvoz a bit će očuvani i odnosi između pojedinih zapisa. Izvor je moguć jedino u specifičan TYPO3 format, bilo binarno (.T3D) ili XML. Format je namjenjen razmjeni između TYPO3 sustava.</target>
+      </trans-unit>
+      <trans-unit id="_.image" resname="_.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/impexp.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" approved="yes">
+        <source>Example of the preview display during export configuration of a page. Notice how records on the page are include plus how references inside the record is found and included as well (bottom of screen).</source>
+        <target state="final">Primjer pretpregleda tijekom izvoza konfiguracije stranice. Primjetite kako su uključeni zapisi na stranici te kako su pronađene veze među zapisima također uključene u izvoz (dno ekrana).</target>
+      </trans-unit>
+      <trans-unit id="export.alttitle" resname="export.alttitle" approved="yes">
+        <source>Exporting records from TYPO3</source>
+        <target state="final">Izvor zapisa iz TYPO3 sustava</target>
+      </trans-unit>
+      <trans-unit id="export.details" resname="export.details" xml:space="preserve" approved="yes">
+				<source>There are a number of methods by which you can export data from TYPO3:
+- Export a single page or branch of the page tree (use page icon context menu)
+- Export a single record from any page (use record icon context menu)
+- Export all records from a specific table on a specific page (using the Web&gt;List module)
+- Export an arbitrary selection of records from the clipboard (using the Web&gt;List module)
+
+The export format observes all TYPO3s methods for relations between the records in the export file. But you will have to configure how these relations are maintained, at least to some degree. Sometimes you would want to include records referred to, at other times you surely want to keep the original mapping. That depends on your objectives with the export.
+
+Regardless of your configuration for export you will always see a complete reflection of all chosen records and their internal relations in the preview display found in the bottom of the export module page.
+
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before exporting if there are any error messages there!</source>
+			<target state="final">Postoji nekoliko metoda izvoza podataka iz TYPO3 sustava:
+- Izvoz pojedine stranice ili grane stabla stranice (koristite kontekstualni izbornik dostupan putem ikone stranice)
+- Izvoz pojedinačnog zapisa sa bilo koje stranice (koristite kontekstualni izbornik dostupan putem ikone zapisa)
+- Izvoz svih zapisa iz pojedine tablice na određenoj stranici (koristite modul Web&gt;Popis)
+- Izvez slobodnog odabira zapisa iz međuspremnika (koristite modul Web&gt;Popis)
+
+Oblikovanje izvoza poštuje sve TYPO3 metode povezivanja zapisa u datoteci izvoza. Međutim, bit će potrebno odrediti, barem donekle, kako će se ove poveznice održavati. Ponekad ćete htjeti uključiti same zapise na koje se odnosi poveznica, ponekad ćete, pak, htjeti zadržati poveznice. Ovo ovisi o cilju izvoza.
+
+Neovisno o postavkama izvoza uvijek ćete vidjeti potpuni prikaz svih odabranih zapisa i njihovih internih poveznica u pretprikazu pri dnu stranice modula za izvoz.
+
+&lt;b&gt;Poruke o greškama:&lt;/b&gt; ne zaboravite provjeriti možebitne poruke o greškama na listu s porukama!</target></trans-unit>
+      <trans-unit id="_export.seeAlso" resname="_export.seeAlso" approved="yes">
+        <source>xMOD_tx_impexp:import</source>
+        <target state="final">xMOD_tx_impexp:import</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_export.image" resname="_export.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/export.png,
+EXT:impexp/Resources/Public/Images/cshimages/export1.png,
+EXT:impexp/Resources/Public/Images/cshimages/export2.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/export.png,
+EXT:impexp/Resources/Public/Images/cshimages/export1.png,
+EXT:impexp/Resources/Public/Images/cshimages/export2.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="export.image_descr" resname="export.image_descr" xml:space="preserve" approved="yes">
+				<source>To export a page or record, simply click the icon and select "Export" from the context menu.
+With the Web&gt;List module you can also export all records from a table by first clicking the table title to see only this table, then next to the CSV export you will find the export button for a T3D export of the table.
+You can export the contents of the clipboard as well by simply selecting "Export" in the menu.</source>
+			<target state="final">Kako bi izvezli stranicu ili zapis jednostavno kliknite na ikonu i odaberite "Izvoz" iz kontekstualnog izbornika.
+Pomoću Web&gt;Popis modula možete također izvesti sve zapise iz tablice kliknuvši prvo na naslov tablice kako bi prikazali samo tu tablicu a zatim pored CSV izvoza možete pronaći gumb za izvoz tablice u T3D obliku.
+Putem opcije "Izvoz" u izborniku moguće je izvesti i sadržaj međuspremnika.</target></trans-unit>
+      <trans-unit id="pageTreeCfg.alttitle" resname="pageTreeCfg.alttitle" approved="yes">
+        <source>Configuration of page tree export</source>
+        <target state="final">Namještanje izvoza stabla stranica</target>
+      </trans-unit>
+      <trans-unit id="pageTreeCfg.description" resname="pageTreeCfg.description" xml:space="preserve" approved="yes">
+				<source>Here you configure how a page or a branch of the page tree should be exported. Using the selector box you can set the number of levels of subpages to include in the export.
+By default all records belonging to a page is included when a page is exported.</source>
+			<target state="final">Ovdje možete postaviti kako treba izvesti stranicu ili granu stabla stranica. Koristeći odabir možete postaviti broj razina podstranica koje treba uključiti u izvoz.
+Prema zadanima postavkama svi zapisi koji pripadaju stranici bit će uključeni u izvoz.</target></trans-unit>
+      <trans-unit id="_pageTreeCfg.image" resname="_pageTreeCfg.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/pagetreecfg.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/pagetreecfg.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pageTreeDisplay.alttitle" resname="pageTreeDisplay.alttitle" approved="yes">
+        <source>Page Tree</source>
+        <target state="final">Stablo stranica</target>
+      </trans-unit>
+      <trans-unit id="pageTreeDisplay.description" resname="pageTreeDisplay.description" approved="yes">
+        <source>Based on the levels selected for page tree export this will show the structure that is about to be exported. If any pages are specifically excluded by the exclude option they are not shown either.</source>
+        <target state="final">Ovdje ćete, ovisno o razinama odabranim za izvoz, vidjeti strukturu koja će upravo biti izvezena. Stranice koje su eksplicitno isključene iz izvoza neće biti prikazane u ovom pretpregledu.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.alttitle" resname="pageTreeMode.alttitle" approved="yes">
+        <source>Levels</source>
+        <target state="final">Razine</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.description" resname="pageTreeMode.description" approved="yes">
+        <source>Here you select how deeply in the page tree from the current starting point to go for this export.</source>
+        <target state="final">Ovdje možete odabrati koliko duboko u stablu stranica, od trenutne početne točke, želite ići za ovaj izvoz.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.details" resname="pageTreeMode.details" approved="yes">
+        <source>If you select "Expanded tree" it will base the export on the currently expanded levels of the page tree. Another special option is "Tables on this page" which will not include the page record itself but only include records from tables on the page, depending on the table configuration of course.</source>
+        <target state="final">Ukoliko odaberete "Proširi stablo" izvoz će biti zasnovan na trenutno proširenim razinama stabla stranica. Opcija "Tablice na ovoj stranice" će izvesti samo zapise sa tablice na trenutnoj stranici ali ne i samu stranicu, uvažavajući pri tome, naravno, postavke tablice.</target>
+      </trans-unit>
+      <trans-unit id="_pageTreeMode.image" resname="_pageTreeMode.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/impexp_misc.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp_misc.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.alttitle" resname="pageTreeRecordLimit.alttitle" approved="yes">
+        <source>Include tables</source>
+        <target state="final">Uključi tablice</target>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.description" resname="pageTreeRecordLimit.description" approved="yes">
+        <source>When you export a page all records on the page is included by default. By this selector you can pick which tables to include exclusively if there are certain records you are not interested in seeing included.</source>
+        <target state="final">Prema zadanim postavkama, kada izvezete stranicu, svi zapisi na danoj stranici su uključeni u izvoz. Ovim odabirom možete eksplicitno zadati koje tablie uključiti u izvoz ukoliko postoje neki zapisi koje ne želite u izvozu.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.details" resname="pageTreeRecordLimit.details" approved="yes">
+        <source>In the box "Max number of records" you can set a limit to how many records are selected from a single table. This is a runaway brake in case you have an unusual large amount of records from a table.</source>
+        <target state="final">U polju "Najveći dopušteni broj zapisa" možete postaviti ograničenje na broj izvezenih zapisa iz pojedine tablice. Ova postavka služi kao sigurnosna zabrana za sprečavanje podivljalog izvoza u slučaju neobično velikog broja zapisa u tablici.</target>
+      </trans-unit>
+      <trans-unit id="singleRecord.alttitle" resname="singleRecord.alttitle" approved="yes">
+        <source>Export single record</source>
+        <target state="final">Izvezi jedan zapis</target>
+      </trans-unit>
+      <trans-unit id="singleRecord.description" resname="singleRecord.description" approved="yes">
+        <source>This overview tells you which independent records has been independently selected for export.</source>
+        <target state="final">Ovaj pretpregled prikazuje koji neovisni zapisi su odabrani za izvoz.</target>
+      </trans-unit>
+      <trans-unit id="_singleRecord.image" resname="_singleRecord.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/singlerecord.png,
+EXT:impexp/Resources/Public/Images/cshimages/export2.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/singlerecord.png,
+EXT:impexp/Resources/Public/Images/cshimages/export2.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="singleRecord.image_descr" resname="singleRecord.image_descr" approved="yes">
+        <source>The way to export multiple records like this is using the clipboard like shown below.</source>
+        <target state="final">Način za ovako izvesti višestruke zapise je koristeći međuspremnik kako je prikazano niže.</target>
+      </trans-unit>
+      <trans-unit id="tableList.alttitle" resname="tableList.alttitle" approved="yes">
+        <source>Table export</source>
+        <target state="final">Izvoz tablice</target>
+      </trans-unit>
+      <trans-unit id="tableList.description" resname="tableList.description" approved="yes">
+        <source>Export of all records on a page from a specific table. This is configured from the Web&gt;List module where you will have to select table-only view and click a button in the top of the page.</source>
+        <target state="final">Izvoz svih zapisa na stranici iz pojedine tablice. Ovo se postavlja iz modula Web&gt;Popis gdje ćete morati odabrati prikaz samo tablica te kliknuti na gumb na vrhu stranice.</target>
+      </trans-unit>
+      <trans-unit id="tableList.details" resname="tableList.details" approved="yes">
+        <source>Tip: You can select multiple table lists by simply saving each selecting as a preset and finally load/merge the selections together.</source>
+        <target state="final">Naputa: višestruke popise tablica možete odabrati spremajući svaki popis odabravši ga kao pretpostavku te u konačnici spajanjem/učitavanjem odabira.</target>
+      </trans-unit>
+      <trans-unit id="_tableList.image" resname="_tableList.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/tablelist.png,
+EXT:impexp/Resources/Public/Images/cshimages/export1.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/tablelist.png,
+EXT:impexp/Resources/Public/Images/cshimages/export1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="tableList.image_descr" resname="tableList.image_descr" xml:space="preserve" approved="yes">
+				<source>Here two tables from different pages are selected. This is done by first selecting the one, saving it as a preset, then select the other and merge with the saved preset.
+Here you see how to use the Web&gt;List module to export all records from a table on a page.</source>
+			<target state="final">Ovdje su odabrane dvije tablice sa različitih stranica. Ovo je postignuto na način da se prvo odabere jedna, spremi kao pretpostavka, zatim odabere druga te spoji sa spremljenom pretpostavkom.
+Ovdje možete vidjeti kako koristiti module Web&gt;List kako bi izvezli sve zapise sa tablice na stranici.</target></trans-unit>
+      <trans-unit id="inclRelations.alttitle" resname="inclRelations.alttitle" approved="yes">
+        <source>Include relations</source>
+        <target state="final">Uključi veze</target>
+      </trans-unit>
+      <trans-unit id="inclRelations.description" resname="inclRelations.description" approved="yes">
+        <source>Configure the tables from which you want to include records that are found as relations in the main export configuration.</source>
+        <target state="final">Postavite tablice iz kojih želite uključiti zapise koji su pronađeni kao veze u postavkama glavnog izvoza.</target>
+      </trans-unit>
+      <trans-unit id="inclRelations.details" resname="inclRelations.details" xml:space="preserve" approved="yes">
+				<source>Background: When you export a record in TYPO3 it might contain relations to other records in the system. You have to tell the export interface what to do with these relations. Basically there are three scenarios:
+- If relations are found between records that are all in the export configuration, there is no problem: The relations are automatically mapped to the new id's of those records when imported.
+- If the records related to are not included the relation will be lost (indicated with an error message in the preview) unless you a) either select that table in this selector box in which case all relations to that table will be included or b) if you set the table as a static table (in which case the relation is untouched and imported as-is - but which will of course break if no record with that UID is found in the import system).
+
+&lt;b&gt;Soft References:&lt;/b&gt; Soft references are when a record contains pointers to external files or records but in fields where there are no formal relation configured. Examples of this is when a content element contains a "&amp;lt;link 123&amp;gt;" tag that represents a link to the page 123. This is not picked up formally as a reference, but is found anyhow as a "soft reference". The same goes for &amp;lt;img&amp;gt; tags with images from eg. "fileadmin/".
+By default soft references pointing to records or files will act as normal references; either including the referenced item or showing an error. However you can also choose to exclude the handling of individual soft references or maybe set the value as "editable" upon import. This is done with a selector box in the export preview.</source>
+			<target state="final">Pozadina: kada izvezete zapis u sustavu TYPO3, taj zapis može sadržavati poveznice prema drugim zapisima u sustavu. Sučelju za izvoz potrebno je reći što činiti sa tim poveznicama. Postoje tri osnovna scenarija:
+- Ukoliko su poveznice između zapisa koji su već odabrani za izvoz tada nema problema: poveznice će biti automatski postavljene između novih zapisa prilikom uvoza.
+- Ukoliko zapisi koji su povezani nisu uključeni u izvoz, poveznica će biti izgubljena (što će biti naznačeno porukom o grešci u pretpregledu) osima ako a) odaberete tablicu tog zapisa u polju za odabir u kom slučaju će sve poveznice na tu tablicu biti uključene ili b) postavite tablicu kao statičnu tablicu (u kojem slučaju poveznica ostaje netaknuta a uvoz je takav kakav je - no to će naravno uzrokovati grešku ukoliko zapis sa danim ID brojem ne postoji u sustavu u koji se uvozi).
+
+&lt;b&gt;Meke poveznice:&lt;/b&gt; Meke poveznice su one poveznice koje pokazuju na vanjske datoteke ili zapise unutar nekog zapisa no unutar polja koja nisu postavljena kao službena polja za poveznice. Primjer toga je kada element sadržaja sadrži tag "&amp;lt;link 123&amp;gt;". Isto vrijedi za &amp;lt;img&amp;gt; tagove sa slikama iz recimo "fileadmin/" mape.
+Prema zadanim postavkama, meke poveznice prema zapisima ili datotekama ponašat će se kao normalne poveznice; ili će se uključiti stavka na koju se povezuje, ili će se prikazati poruka o grešci. Međutim, kod mekih poveznica, također je moguće odabrati da se meke poveznice zanemare ili možda podesiti vrijednost kao vrijednost koja se može uređivati  kod uvoza. Ovo je moguće postaviti odabirom u pretpregledu izvoza.</target></trans-unit>
+      <trans-unit id="_inclRelations.image" resname="_inclRelations.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/references.png,
+EXT:impexp/Resources/Public/Images/cshimages/references1.png,
+EXT:impexp/Resources/Public/Images/cshimages/references2.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/references.png,
+EXT:impexp/Resources/Public/Images/cshimages/references1.png,
+EXT:impexp/Resources/Public/Images/cshimages/references2.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="inclRelations.image_descr" resname="inclRelations.image_descr" xml:space="preserve" approved="yes">
+				<source>This example shows tree examples of references; a) an image attached to a content element, b) a relation to a frontend usergroup UID, and c) a soft reference found in the bodytext field of a record, here it is the link-tag pointing to the page with UID 1.
+Notice in the previous image how the relation to the frontend user group was lost. This has been corrected in this screenshot where the fe_group table has been selected in the list of table for which to include relations. The result is that the frontend usergroup is included as a record outside the exported pagetree. If you wanted to keep the relation but not include the usergroup you have to set "fe_groups" as a static table instead. See below.
+This example shows a TypoScript Template Record where multiple soft references has been found. The first one is an email address. Here it is configured to be editable. This means that upon import the user will have a chance to edit the value before the import is actually done. This is very useful when exported files are used as templates. Another example includes a PHP script which we don't want to include in the export and therefore we have selected the exclude option for the soft reference.</source>
+			<target state="final">Ovaj primjer prikazuje tri primjera referenci; a) sliku pridruženu elementu sadržaja, b) relaciju prema UID-u korisničke grupe prednjeg sučelja, te c) meku referencu iz polja zapisa zvanog bodytext, ovdje je to tag poveznice koji pokazuje na stranicu sa UID-om 1.
+Primjetite kako se kod prethodne slike izgubila relacija prema grupi korisnika prednjeg sučelja. To je ispravljeno u ovoj snimci zaslona gdje je tablica fe_group odabrana na popisu tablica čije relacije će biti uključene. Rezultat je da će grupa korisnika prednjeg sučelja biti uključena kao zapis izvan izvezenog stabla stranica. Ukoliko želite zadržati relaciju a ne želite uključiti korisničku grupu morate postaviti "fe_groups" kao statičnu tablicu. Pogledajte niže.
+Ovaj primjer prikazuje TypoScript zapis predloška gdje se nalaze višestruke meke reference. Prva referenca je e-mail adresa. Ovdje je podešena tako da se može uređivati. To znači da će korisnik tijekom uvoza imati priliku urediti vrijednost prije nego li se uvoz izvrši. Ovo je vrlo korisno kada se izvezene datoteke koriste kao predlošci. Još jedan primjer je PHP skripta koju ne želimo uključiti u izvoz te smo stoga odabrali opciju isključivanja za meku referencu.</target></trans-unit>
+      <trans-unit id="staticRelations.alttitle" resname="staticRelations.alttitle" approved="yes">
+        <source>Set static tables</source>
+        <target state="final">Postavi statične tablice</target>
+      </trans-unit>
+      <trans-unit id="staticRelations.description" resname="staticRelations.description" approved="yes">
+        <source>Select which tables in addition to the static TYPO3 tables to keep relations untouched for. Takes precedence over "Include relations" configured tables.</source>
+        <target state="final">Odaberite za koje tablice, osim statičnih tablica TYPO3 sustava, treba ostaviti netaknute poveznice. Ova postavka ima prvenstvo nad postavkom "Uključi poveznice" postavljenih tablica.</target>
+      </trans-unit>
+      <trans-unit id="staticRelations.details" resname="staticRelations.details" approved="yes">
+        <source>By default all relations to static tables in TYPO3 are kept untouched. Of course those static tables should be present in the import system in order for this to work correctly. However there might be circumstances where you move information between two systems where theoretically non-static tables should just keep relations untouched. Examples could be "sys_languages" or TemplaVoila data structures / template objects where two systems might contain the same set of records in those tables while you are importing pages and content elements freely.</source>
+        <target state="final">Prema zadanim postavkama, relacije prema statičnim tablicama u TYPO3 sustavu ostaju netaknute. Naravno, kako bi ovo funkcioniralo, potrebno je da te iste statične tablice budu prisutne u sustavu u kojem će biti odrađen uvoz. Međutim, moguće su, barem u teoriji, situacije u kojima tablice koje nisu statične trebaju zadržati netaknute relacije. Primjer bi mogla biti tablica "sys_languages" ili TemplaVoila podatkovne strukture / objekti predložaka gdje dva sustava mogu sadržavati isti skup zapisa u tim tablicama dok slobodno uvozite stranice i elemente sadržaja.</target>
+      </trans-unit>
+      <trans-unit id="_staticRelations.image" resname="_staticRelations.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/static.png,
+EXT:impexp/Resources/Public/Images/cshimages/static1.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/static.png,
+EXT:impexp/Resources/Public/Images/cshimages/static1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="staticRelations.image_descr" resname="staticRelations.image_descr" xml:space="preserve" approved="yes">
+				<source>In this example you see how a number of records are pointing to a System Language record which will become lost relations when imported because the record is not included in the export. However; in the target system the System Languages are exactly the same and therefore you just want a static mapping of the relations.
+The static mapping is obtained by selecting the "sys_language" table as a static template meaning that the relations are kept at their current values assuming that they will be exactly the same in the target system when imported.</source>
+			<target state="final">U ovom primjeru možete vidjeti kako više zapisa pokazuje na zapis Sistemskog jezika što će uzrokovati izgubljenim relacijama kod uvoza jer zapis nije uključen kod izvoza. Međutim, kod ciljnog sustava jezici sustava su identični te zbog toga želimo samo statično mapiranje relacija.
+To možemo postići odabirom "sys_language" tablice kao statičnog predloška što znači da će relacije biti zadržane na njihovim trenutnim vrijednostima pretpostavljajući da će njihove vrijednosti biti identične u ciljnom sustavu kod uvoza.</target></trans-unit>
+      <trans-unit id="excludedElements.alttitle" resname="excludedElements.alttitle" approved="yes">
+        <source>Excluded elements</source>
+        <target state="final">Isključeni elementi</target>
+      </trans-unit>
+      <trans-unit id="excludedElements.description" resname="excludedElements.description" approved="yes">
+        <source>By the "Exclude" checkbox you can exclude specific records from the preview display of the export. Which records has been picked for specific exclusion is listed here. You can also clear the exclusion configuration.</source>
+        <target state="final">Označavanjem kućice "Isključi" pojedine zapise možete isključiti iz predpregleda izvoza. Ovdje su prikazani zapisi koji su odabrani za specifično isključenje. Također možete resetirati podešenje isključenja.</target>
+      </trans-unit>
+      <trans-unit id="_excludedElements.image" resname="_excludedElements.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/excludebox.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/excludebox.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.alttitle" resname="htmlCssResources.alttitle" approved="yes">
+        <source>Exclude resources from HTML and CSS files</source>
+        <target state="final">Isključi resurse iz HTML i CSS datoteka</target>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.description" resname="htmlCssResources.description" approved="yes">
+        <source>When an HTML or CSS file is found as a soft reference the files are parsed for references to external media (such as images) and if any are found they are also exported. If you don't want this behaviour, click this option.</source>
+        <target state="final">Kada se pronađe HTML ili CSS datoteka kao meka referenca, datoteka biva pretražena za reference na vanjske medije (poput slika) te, ukoliko takve reference budu pronađene, i ti mediji bivaju izvezeni. Ukoliko ne želite ovu funkcionalnost, kliknite na ovu opciju.</target>
+      </trans-unit>
+      <trans-unit id="_htmlCssResources.image" resname="_htmlCssResources.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/htmlcss.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/htmlcss.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.image_descr" resname="htmlCssResources.image_descr" approved="yes">
+        <source>In this example you can see that a soft reference has been found pointing to an HTML file inside fileadmin/ Since it was an HTML file it was parsed and further a number of files were found referenced inside it and now included with the export. This feature is specifically created to support export of template configurations where external HTML files play a role.</source>
+        <target state="final">U ovom primjeru možete vidjeti kako soft referenca pokazuje na HTML datoteku unutar fileadmin/ mape. Pošto je u pitanju HTML datoteka ista je dalje parsirana te je pronađeno više referenciranih datoteka koje su zatim uključene u izvoz. Ova funkcionalnost je dizajnirane ciljano za situacije izvoza konfiguracija predložaka gdje eksterne HTML datoteke imaju bitnu ulogu.</target>
+      </trans-unit>
+      <trans-unit id="extensionDependencies.alttitle" resname="extensionDependencies.alttitle" approved="yes">
+        <source>Extension Dependencies</source>
+        <target state="final">Ovisnosti proširenja</target>
+      </trans-unit>
+      <trans-unit id="extensionDependencies.details" resname="extensionDependencies.details" approved="yes">
+        <source>During import warnings will appear for all selected extensions from this list which were not installed.</source>
+        <target state="final">Tijekom uvoza će se pojaviti upozorenja za sva odabrana proširenja s ovog popisa koja nisu instalirana u ciljnom sustavu.</target>
+      </trans-unit>
+      <trans-unit id="_extensionDependencies.image" resname="_extensionDependencies.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/extdep.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/extdep.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="presets.alttitle" resname="presets.alttitle" approved="yes">
+        <source>Configuration presets</source>
+        <target state="final">Predpodešenja postavki</target>
+      </trans-unit>
+      <trans-unit id="presets.description" resname="presets.description" approved="yes">
+        <source>Enables you to save an export configuration for later re-use. Useful if you need to export the same configuration with regular intervals.</source>
+        <target state="final">Ova funkcionalnost omogućuje Vam spremiti postavke izvoza za kasniju ponovnu uprabu. Ovo mogućnost korisna je kada trebate vršiti isti izvoz postavki u redovitim intervalima.</target>
+      </trans-unit>
+      <trans-unit id="_presets.image" resname="_presets.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/impexp_misc1.png,
+EXT:impexp/Resources/Public/Images/cshimages/impexp_misc2.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp_misc1.png,
+EXT:impexp/Resources/Public/Images/cshimages/impexp_misc2.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="metadata.alttitle" resname="metadata.alttitle" approved="yes">
+        <source>Meta data setting</source>
+        <target state="final">Postavke metapodataka</target>
+      </trans-unit>
+      <trans-unit id="metadata.description" resname="metadata.description" approved="yes">
+        <source>Set meta data for the export. This is highly encouraged if your exported content goes into eg. a template collection of sorts.</source>
+        <target state="final">Odaberi metapodatke za izvoz. Ova opcija se preporuča ukoliko Vaš izvezeni sadržaj ide primjerice u kolekciju predložaka.</target>
+      </trans-unit>
+      <trans-unit id="metadata.details" resname="metadata.details" xml:space="preserve" approved="yes">
+				<source>The meta data will help users of your exported files to know what they can expect to be inside and what things they should be aware of and take into account during import.
+The "Title" and "Description" should contain the basic information about the export.
+The "Notes" field can be used for additional details, especially remarks about intensions or requirements that apply.</source>
+			<target state="final">Meta podaci će pomoći korisnicima Vaših izveženih datoteka u razumjevanju sadržaja Vašeg izvoza te u obraćanju pažnje na stvari koje su bitne tijekom uvoza.
+"Naslov" i "Opis" trebaju sadržavati osnovne informacije o izvozu.
+Polje "Napomene" može se koristiti za dodatne detalje, posebice napomene o namjerama ili zahtjevima koji važe za dani izvoz.</target></trans-unit>
+      <trans-unit id="_metadata.image" resname="_metadata.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/metadata.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/metadata.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="fileFormat.alttitle" resname="fileFormat.alttitle" approved="yes">
+        <source>File format options</source>
+        <target state="final">Opcije formata datoteke</target>
+      </trans-unit>
+      <trans-unit id="_fileFormat.image" resname="_fileFormat.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/fileformat.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/fileformat.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="import.alttitle" resname="import.alttitle" approved="yes">
+        <source>Importing TYPO3 records</source>
+        <target state="final">Uvozim TYPO3 zapise</target>
+      </trans-unit>
+      <trans-unit id="import.details" resname="import.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Tip: Import into a Folder&lt;/b&gt;
+To make sure that no records are lost during the import, you can make yourself safe by importing into a Folder you create first. After the import you can move all records to the final destinations. An example of such a scenario is if you configured the export to include relations; In that case a number of records may follow the export outside the page tree structure you are exporting. To make sure that all of these external records are written to the database, importing into a Folder is a good idea.
+
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before/after importing to see if there are any error messages there!</source>
+			<target state="final">&lt;b&gt;Savjet: Uvezite u Sys Mapu&lt;/b&gt;
+Kako bi se pobrinuli da ne dođe do gubitka zapisa tijekom uvoza može prvo uvesti zapise u SysMapu koju ste stvorili prije uvoza. Nakon uvoza možete premjestiti sve zapise na njihova konačna odredišta. Primjer takvog scenarija je ukoliko ste podesili izvoz koji uključuje relacije; u takvom slučaju znatan broj zapisa može u izvozu završiti izvan strukture stranica koju izvozite. Kako bi bili sigurni da su svi ti vanjski zapisi spremljeni u bazu podataka poslužite se uvozom u SysMapu.
+
+&lt;b&gt;Poruke o grešci:&lt;/b&gt; nemojte zaboraviti baciti pogled na list s porukama prije/nakon uvoza kako bi provjerili je li došlo do kakvih grešaka!</target></trans-unit>
+      <trans-unit id="_import.seeAlso" resname="_import.seeAlso" approved="yes">
+        <source>xMOD_tx_impexp:export</source>
+        <target state="final">xMOD_tx_impexp:export</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_import.image" resname="_import.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/import.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/import.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="importFile.alttitle" resname="importFile.alttitle" approved="yes">
+        <source>Select file to import</source>
+        <target state="final">Odaberite datoteku za uvoz</target>
+      </trans-unit>
+      <trans-unit id="importFile.description" resname="importFile.description" approved="yes">
+        <source>The files displayed are those with an extension T3D or XML from fileadmin/, fileadmin/export/ and your "TEMP" folder (if any).</source>
+        <target state="final">Prikazane su datoteke s datotečnim nastavkom T3D ili XML iz mape fileadmin/, fileadmin/export/ i Vaše "TEMP" mape (ukoliko imate istu).</target>
+      </trans-unit>
+      <trans-unit id="_importFile.seeAlso" resname="_importFile.seeAlso" approved="yes">
+        <source>xMOD_tx_impexp:fileFormat</source>
+        <target state="final">xMOD_tx_impexp:fileFormat</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_importFile.image" resname="_importFile.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/import_selectfile.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/import_selectfile.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="update.alttitle" resname="update.alttitle" approved="yes">
+        <source>Update instead of Insert</source>
+        <target state="final">Ažuriraj umjesto umetanja</target>
+      </trans-unit>
+      <trans-unit id="update.description" resname="update.description" approved="yes">
+        <source>By default the import operation inserts new records in the system. Using this option will update existing records.</source>
+        <target state="final">Prema zadanim postavkama radnja uvoza dodaje nove zapise u sustav. Korištenjem ove opcije doći će do ažuriranja postojećih zapisa.</target>
+      </trans-unit>
+      <trans-unit id="update.details" resname="update.details" xml:space="preserve" approved="yes">
+				<source>There are certain requirements you have to meet if you want the "Update" process to work. The main thing is that the records updated are those with the SAME uid as the uid in the export file. Thus an update operation only makes real sense if the export and import systems are somehow related and the same UIDs can be expected in both ends. Otherwise it will be a mess!
+
+When you update page structures the import operation will automatically try to rearrange records so they also appear in the same hierarchy and order as in the export file. This can be disabled by checking the option "Ignore PID differences globally". In any case you can set individual records to Ignore/Respect the PID with a selectorbox in the preview.
+
+In the preview display you can also select if individual records should be flatly ignored during import or if you want them created as new records instead of being updates.
+As a help for managing updates the preview display will inform you about the path where the existing element with that UID is found. Use this to verify that you get what you expect!
+
+&lt;b&gt;Forcing the UID:&lt;/b&gt;
+If you intend to update a system and some elements from the import are not mappable to a UID already (ei. does not exist) you can choose in the preview display to force the UID during creation. This is an unorthodox thing to do since UIDs are normally created automatically by the database. The option makes most sense if you are trying to "synchronize" a copy of another system. The option may mess up certain database internals and the feature is therefore only available for admins.</source>
+			<target state="final">Postoje određeni uvjeti koje morate ispuniti kako bi proces "Ažuriranja" funkcionirao. Glavni zahtjev je da su uid identifikatori zapisa u izbozu jednaki uid identifikatorima u bazi podataka. Dakle, ažuriranje ima smisla jedino ukoliko su sustavi izvoza i uvoza na neki način povezani te se mogu očekivati isti UID identifikatori na obje strane. U suprotnom će doći do potpune zbrke!
+
+Kada uvezete strukturu stranice proces uvoza će pokušati automatski prerasporediti zapise tako da se pojavljuju jednako raspoređeni kako su biti u datoteci izvoza. Ovu funkcionalnost moguće je onemogućiti opcijom "Globalno zanemari PID razlike". U svakom slučaju možete podesiti Zanemarivanje/Poštivanje PID identifikatora za pojedinačne zapise pomoću izbornika u pregledu.
+
+U pregledu možete također odabrati hoće li pojedini zapisi biti zanemareni ili ih želite stvoriti kao nove zapise umjesto ažuriranja postojećih.
+Kao pomoć pri upravljanju ažuriranjima, prikaz pregleda će Vas izvijestiti o putanji gdje se nalazi postojeći element sa danim UID-om. Pomoću ove informacije možete potvrditi da ćete dobiti rezultat koji očekujete!
+
+&lt;b&gt;Prisili UID:&lt;/b&gt;
+Ukoliko planirate ažurirati sustav a neke elemente iz uvoza nije moguće upariti sa postojećim UID-om (primjerice ukoliko element s danim UID-om ne postoji) možete u pregledu odabrati da se prisili isti UID tijekom stvaranja elementa. Ovo je neobična radnja jer se UID brojevi uobičajeno stvaraju automatski u bazi podataka. Ova opcija ima najviše smisla kada pokušavate "sinhronizirati" kopiju drugog sustava. Ova opcija može zbrčkati određena interna stanja baze podataka te je stoga dostupna jedino administrativnim korisnicima.</target></trans-unit>
+      <trans-unit id="_update.image" resname="_update.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/impexp_misc4.png,
+EXT:impexp/Resources/Public/Images/cshimages/update.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp_misc4.png,
+EXT:impexp/Resources/Public/Images/cshimages/update.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="update.image_descr" resname="update.image_descr" approved="yes">
+        <source>In Update mode you can select various settings for each record. You will also be able to see a diff-view where the differences between the existing record and the one from the import is shown.</source>
+        <target state="final">U načinu osvježavanja možete odabrati različite postavke za svaki zapis. Također ćete moći vidjeti pregled razlika između postojećeg zapisa i zapisa iz uvoza.</target>
+      </trans-unit>
+      <trans-unit id="options.alttitle" resname="options.alttitle" approved="yes">
+        <source>Import options</source>
+        <target state="final">Opcije uvoza</target>
+      </trans-unit>
+      <trans-unit id="options.description" resname="options.description" approved="yes">
+        <source>Various options for import.</source>
+        <target state="final">Različite opcije kod uvoza.</target>
+      </trans-unit>
+      <trans-unit id="_options.image" resname="_options.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/impexp_misc3.png,
+EXT:impexp/Resources/Public/Images/cshimages/phpext.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp_misc3.png,
+EXT:impexp/Resources/Public/Images/cshimages/phpext.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="action.alttitle" resname="action.alttitle" approved="yes">
+        <source>Import Action</source>
+        <target state="final">Akcija uvoza</target>
+      </trans-unit>
+      <trans-unit id="action.description" resname="action.description" xml:space="preserve" approved="yes">
+				<source>Press "Preview" to see the content of the import file or update the preview display according to changed configurations.
+Press "Import"/"Update" if you want to perform the actual import.
+
+Before importing make sure you change any editable soft references that are shown in the preview data.</source>
+			<target state="final">Kliknite "Pregled" kako bi vidjeli sadržaj datoteke za uvoz ili kako bi ažurirali prikaz pregleda prema promjenama u konfiguraciji.
+Kliknite "Uvoz"/"Ažuriranje" ukoliko želite izvršiti uvoz.
+
+Prije samog uvoza morate se pobrinuti da promijenite meke reference koje se mogu uređivati a prikazane su u podacima pregleda.</target></trans-unit>
+      <trans-unit id="_action.image" resname="_action.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/diffview.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/diffview.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="action.image_descr" resname="action.image_descr" approved="yes">
+        <source>Example of the result view after importing. As you can see the RTE attached images (soft references) has been written to new file names and the difference view tells you that the names changed in the bodytext content.</source>
+        <target state="final">Primjer pregleda rezultata nakon uvoza. Kao što možete vidjeti, slike pridružene u RTE (meke reference) spremljene su u datoteke s novim imenima a pregled razlika govori Vam da su imena promijenjena u tijelu sadržaja.</target>
+      </trans-unit>
+      <trans-unit id="enableLogging.alttitle" resname="enableLogging.alttitle" approved="yes">
+        <source>Enable System Logging</source>
+        <target state="final">Omogući zapisnik sustava</target>
+      </trans-unit>
+      <trans-unit id="enableLogging.description" resname="enableLogging.description" approved="yes">
+        <source>If you set this the system backend log will be filled with entries for all the actions that the import actually performs. By default this is left out for the sake of clarity.</source>
+        <target state="final">Ukoliko omogućite ovu opcija pozadinski zapisnik će biti popunjen unosima svih akcija koje uvoz izvršava. Prema zadanima opcijama, ovi unosi se izostavljaju zbog jasnoće.</target>
+      </trans-unit>
+      <trans-unit id="upload.alttitle" resname="upload.alttitle" approved="yes">
+        <source>Upload import file</source>
+        <target state="final">Pošalji datoteku za uvoz</target>
+      </trans-unit>
+      <trans-unit id="upload.description" resname="upload.description" approved="yes">
+        <source>Select a file to import from your local computer and upload it here. If the upload completes successfully you can immediately see its content displayed in the preview display.</source>
+        <target state="final">Odaberite datoteku za uvoz s Vašeg računala te ju pošaljite ovdje. Predpregled sadržaja datoteke moguće je vidjeti odmah nakon uspješnog prijenosa.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
