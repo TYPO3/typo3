@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814857" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilem.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="hu">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Filemounts describe a filepath on the server, relative or absolute.</source>
+        <target state="final">A filemount egy relatív vagy abszolút file elérési utat jelent a szerveren.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter a title for the filemount. The title will appear as the name of the file mount when it is applied to users and groups.</source>
+        <target state="final">Add meg a filemount nevét</target>
+      </trans-unit>
+      <trans-unit id="path.description" resname="path.description" approved="yes">
+        <source>Enter the path of the filemount, relative or absolute depending on the settings of BASE.</source>
+        <target state="final">Add meg a filemount elérési útját, relatív vagy abszolút módon a BASE beállításoktól függően.</target>
+      </trans-unit>
+      <trans-unit id="path.image_descr" resname="path.image_descr" xml:space="preserve" approved="yes">
+				<source>This is a filemount relative to "fileadmin/". The mounted folder is "fileadmin/user_upload/" since "user_upload" is the value of the "Path" field.
+The directory structure of "fileadmin/" where you can see the "user_upload" folder in the bottom of the list.</source>
+			<target state="final">Ez a filemount relatív a "fileadmin/"-hoz képest. A mount-olt könyvtár a "fileadmin/user_upload" egészen addig, amíg a "user_upload" az "Útvonal" mező értéke. A "fileadmin/" könyvtárszerkezetében az "user_upload" könyvtárat a lista végén találod.</target></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Use this option to temporarily disable the filemount.</source>
+        <target state="final">Akkor használd, ha ideiglenesen le akarsz tiltani egy filemount-ot.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>All backend users using the mount will not have access anymore. This includes 'Admin'-users.</source>
+        <target state="final">A mount-ot használó összes backend felhasználónak megszünt az elérése, beleértve az 'Admin' felhasználókat is.</target>
+      </trans-unit>
+      <trans-unit id="base.description" resname="base.description" approved="yes">
+        <source>Determines whether the value of the PATH field is to be recognized as an absolute path on the server or a path relative to the fileadmin/ subfolder to the website.</source>
+        <target state="final">Meghatározza, hogy az ÚTVONAL mező értéke abszolút szerverútként vagy a fileadmin/ alkönyvtárhoz képest relatív módon legyen értelmezve.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
