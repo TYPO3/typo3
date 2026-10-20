@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814781" source-language="en" datatype="plaintext" original="EXT:belog/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="belog" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="adminLog" resname="adminLog" approved="yes">
+        <source>Administration log</source>
+        <target state="final">एडमिनिस्ट्रेशन लोग</target>
+      </trans-unit>
+      <trans-unit id="allUsers" resname="allUsers" approved="yes">
+        <source>[All users]</source>
+        <target state="final">[सभी उपयोगकर्ताओं]</target>
+      </trans-unit>
+      <trans-unit id="any" resname="any" approved="yes">
+        <source>[Any]</source>
+        <target state="final">[कोई भी]</target>
+      </trans-unit>
+      <trans-unit id="viaUser" resname="viaUser" approved="yes">
+        <source>via</source>
+        <target state="final">via</target>
+      </trans-unit>
+      <trans-unit id="live" resname="live" approved="yes">
+        <source>LIVE</source>
+        <target state="final">लाइव</target>
+      </trans-unit>
+      <trans-unit id="draft" resname="draft" approved="yes">
+        <source>Draft</source>
+        <target state="final">ड्राफ्ट</target>
+      </trans-unit>
+      <trans-unit id="self" resname="self" approved="yes">
+        <source>Self</source>
+        <target state="final">स्वयं</target>
+      </trans-unit>
+      <trans-unit id="userGroup" resname="userGroup" approved="yes">
+        <source>Group</source>
+        <target state="final">समूह</target>
+      </trans-unit>
+      <trans-unit id="thisWeek" resname="thisWeek" approved="yes">
+        <source>This week</source>
+        <target state="final">इस सप्ताह</target>
+      </trans-unit>
+      <trans-unit id="lastWeek" resname="lastWeek" approved="yes">
+        <source>Last week</source>
+        <target state="final">पिछले सप्ताह</target>
+      </trans-unit>
+      <trans-unit id="last7Days" resname="last7Days" approved="yes">
+        <source>Last 7 days</source>
+        <target state="final">आखरी 7 दिन</target>
+      </trans-unit>
+      <trans-unit id="thisMonth" resname="thisMonth" approved="yes">
+        <source>This month</source>
+        <target state="final">इस महीने</target>
+      </trans-unit>
+      <trans-unit id="lastMonth" resname="lastMonth" approved="yes">
+        <source>Last month</source>
+        <target state="final">पिछले महीने</target>
+      </trans-unit>
+      <trans-unit id="last31Days" resname="last31Days" approved="yes">
+        <source>Last 31 days</source>
+        <target state="final">अंतिम 31 दिन</target>
+      </trans-unit>
+      <trans-unit id="noLimit" resname="noLimit" approved="yes">
+        <source>No limit</source>
+        <target state="final">कोई सीमा नहीं</target>
+      </trans-unit>
+      <trans-unit id="userDefined" resname="userDefined" approved="yes">
+        <source>User defined</source>
+        <target state="final">उपयोगकर्ता द्वारा डिफाइंड</target>
+      </trans-unit>
+      <trans-unit id="set" resname="set" approved="yes">
+        <source>Set</source>
+        <target state="final">सेट करें</target>
+      </trans-unit>
+      <trans-unit id="20" resname="20" translate="no" approved="yes">
+        <source>20</source>
+        <target state="final">20</target>
+      </trans-unit>
+      <trans-unit id="50" resname="50" translate="no" approved="yes">
+        <source>50</source>
+        <target state="final">50</target>
+      </trans-unit>
+      <trans-unit id="100" resname="100" translate="no" approved="yes">
+        <source>100</source>
+        <target state="final">100</target>
+      </trans-unit>
+      <trans-unit id="200" resname="200" translate="no" approved="yes">
+        <source>200</source>
+        <target state="final">200</target>
+      </trans-unit>
+      <trans-unit id="500" resname="500" translate="no" approved="yes">
+        <source>500</source>
+        <target state="final">500</target>
+      </trans-unit>
+      <trans-unit id="1000" resname="1000" translate="no" approved="yes">
+        <source>1000</source>
+        <target state="final">1000</target>
+      </trans-unit>
+      <trans-unit id="actionAll" resname="actionAll" approved="yes">
+        <source>All</source>
+        <target state="final">सब</target>
+      </trans-unit>
+      <trans-unit id="actionDatabase" resname="actionDatabase" approved="yes">
+        <source>Database</source>
+        <target state="final">डेटाबेस</target>
+      </trans-unit>
+      <trans-unit id="actionFile" resname="actionFile" approved="yes">
+        <source>File</source>
+        <target state="final">फ़ाइल</target>
+      </trans-unit>
+      <trans-unit id="actionCache" resname="actionCache" approved="yes">
+        <source>Cache</source>
+        <target state="final">कैश</target>
+      </trans-unit>
+      <trans-unit id="actionSettings" resname="actionSettings" approved="yes">
+        <source>Settings</source>
+        <target state="final">सेटिंग</target>
+      </trans-unit>
+      <trans-unit id="actionLogin" resname="actionLogin" approved="yes">
+        <source>Login</source>
+        <target state="final">लॉगइन</target>
+      </trans-unit>
+      <trans-unit id="actionErrors" resname="actionErrors" approved="yes">
+        <source>Errors</source>
+        <target state="final">गलती</target>
+      </trans-unit>
+      <trans-unit id="group" resname="group" approved="yes">
+        <source>Group</source>
+        <target state="final">समूह</target>
+      </trans-unit>
+      <trans-unit id="user" resname="user" approved="yes">
+        <source>User</source>
+        <target state="final">उपयोगकर्ता</target>
+      </trans-unit>
+      <trans-unit id="users" resname="users" approved="yes">
+        <source>Users</source>
+        <target state="final">उपयोगकर्ताओं</target>
+      </trans-unit>
+      <trans-unit id="time" resname="time" approved="yes">
+        <source>Time</source>
+        <target state="final">समय</target>
+      </trans-unit>
+      <trans-unit id="max" resname="max" approved="yes">
+        <source>Max</source>
+        <target state="final">अधिकतम</target>
+      </trans-unit>
+      <trans-unit id="changesInFields" resname="changesInFields" approved="yes">
+        <source>Changes in fields: %s.</source>
+        <target state="final">फील्ड में परिवर्तन:%s.</target>
+      </trans-unit>
+      <trans-unit id="showHistory" resname="showHistory" approved="yes">
+        <source>Show History</source>
+        <target state="final">हिस्ट्री दिखाए</target>
+      </trans-unit>
+      <trans-unit id="action" resname="action" approved="yes">
+        <source>Action</source>
+        <target state="final">कार्रवाई</target>
+      </trans-unit>
+      <trans-unit id="workspace" resname="workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">कार्यस्थान</target>
+      </trans-unit>
+      <trans-unit id="pagenameWithUID" resname="pagenameWithUID" approved="yes">
+        <source>%s" [UID: %s]</source>
+        <target state="final">%s" [यूआईडी: %s]</target>
+      </trans-unit>
+      <trans-unit id="overview" resname="overview" approved="yes">
+        <source>Overview</source>
+        <target state="final">ओवरव्यू</target>
+      </trans-unit>
+      <trans-unit id="timeInfo" resname="timeInfo" approved="yes">
+        <source>These pages have log messages from %s to %s</source>
+        <target state="final">इस पेज में %s से %s तक के सभी लोग संदेश है</target>
+      </trans-unit>
+      <trans-unit id="forNonPageRelatedActions" resname="forNonPageRelatedActions" approved="yes">
+        <source>for NON-PAGE related actions</source>
+        <target state="final">नॉन-पेज से संबंधित कार्यों के लिए</target>
+      </trans-unit>
+      <trans-unit id="forRootLevel" resname="forRootLevel" approved="yes">
+        <source>for ROOT LEVEL</source>
+        <target state="final">रूट स्तर के लिए</target>
+      </trans-unit>
+      <trans-unit id="forPage" resname="forPage" approved="yes">
+        <source>for PAGE "%s" (UID: %s)</source>
+        <target state="final">पेज "%s" के लिए (यूआईडी:% s)</target>
+      </trans-unit>
+      <trans-unit id="logForNonPageRelatedActionsOrRootLevelOrPage" resname="logForNonPageRelatedActionsOrRootLevelOrPage" approved="yes">
+        <source>Log %s from %s to %s</source>
+        <target state="final">लॉग %s %s से s% तक</target>
+      </trans-unit>
+      <trans-unit id="type_1" resname="type_1" approved="yes">
+        <source>DB</source>
+        <target state="final">DB</target>
+      </trans-unit>
+      <trans-unit id="action_1_1" resname="action_1_1" approved="yes">
+        <source>Insert</source>
+        <target state="final">Insert</target>
+      </trans-unit>
+      <trans-unit id="action_1_2" resname="action_1_2" approved="yes">
+        <source>Update</source>
+        <target state="final">अपडेट</target>
+      </trans-unit>
+      <trans-unit id="action_1_3" resname="action_1_3" approved="yes">
+        <source>Delete</source>
+        <target state="final">मिटाएँ</target>
+      </trans-unit>
+      <trans-unit id="action_1_4" resname="action_1_4" approved="yes">
+        <source>Move</source>
+        <target state="final">खिसकाएँ</target>
+      </trans-unit>
+      <trans-unit id="action_1_5" resname="action_1_5" approved="yes">
+        <source>Check</source>
+        <target state="final">जाँच</target>
+      </trans-unit>
+      <trans-unit id="msg_1_0_1" resname="msg_1_0_1" approved="yes">
+        <source>Referer host '%s' and server host '%s' did not match!</source>
+        <target state="final">रीफर होस्ट '%s' और सर्वर होस्ट '%s' मेच नहीं हुआ!</target>
+      </trans-unit>
+      <trans-unit id="msg_1_1_11" resname="msg_1_1_11" approved="yes">
+        <source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
+        <target state="final">पेज '% s' (% s) पर रिकॉर्ड इन्सर्ट करने का प्रयास है, जहां इस टेबल, % s की अनुमति नहीं है</target>
+      </trans-unit>
+      <trans-unit id="msg_1_1_12" resname="msg_1_1_12" approved="yes">
+        <source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
+        <target state="final">अनुमति के बिना पेज '%s' (%s) में टेबल '%s' में से रिकॉर्ड इन्सर्ट करने का प्रयास। या गैर मौजूदा पेज।</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_1" resname="msg_1_2_1" approved="yes">
+        <source>Attempt to modify table '%s' without permission</source>
+        <target state="final">बिना अनुमति के टेबल '%s' मॉडिफाई करने का प्रयास</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_2" resname="msg_1_2_2" approved="yes">
+        <source>Attempt to modify record '%s' (%s) without permission. Or non-existing page.</source>
+        <target state="final">बिना अनुमति के रिकार्ड '% s' (% s) को मॉडिफाई करने का प्रयास. या गैर मौजूदा पेज.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_10" resname="msg_1_2_10" approved="yes">
+        <source>Record '%s' (%s) was updated.</source>
+        <target state="final">रिकार्ड '% s' (% s) अपडेट किया गया था।</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_12" resname="msg_1_2_12" approved="yes">
+        <source>MySQL error: '%s' (%s)</source>
+        <target state="final">MySQL एरर :% s (% s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_1" resname="msg_1_4_1" approved="yes">
+        <source>Attempt to move record '%s' (%s) to after a non-existing record (uid=%s)</source>
+        <target state="final">एक गैर मौजूदा रिकॉर्ड (uid =% s) के बाद रिकार्ड '% s' (% s) को मूव करने का प्रयास</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_2" resname="msg_1_4_2" approved="yes">
+        <source>Moved record '%s' (%s) to page '%s' (%s)</source>
+        <target state="final">पेज '%s' (%s) में रिकार्ड '% s' (% s) मूव किया गया</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_3" resname="msg_1_4_3" approved="yes">
+        <source>Moved record '%s' (%s) from page '%s' (%s)</source>
+        <target state="final">पेज '%s' (%s) से रिकार्ड '% s' (% s) मूव किया गया</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_4" resname="msg_1_4_4" approved="yes">
+        <source>Moved record '%s' (%s) on page '%s' (%s)</source>
+        <target state="final">पेज '%s' (%s) पर रिकार्ड '% s' (% s) मूव किया गया</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_10" resname="msg_1_4_10" approved="yes">
+        <source>Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))</source>
+        <target state="final">अपने आप के rootline(पेज '% s' (% s) पर)के अंदर पेज '%s' (%s) मूव करने प्रयास</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_11" resname="msg_1_4_11" approved="yes">
+        <source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
+        <target state="final">पेज '% s' (% s) पर रिकॉर्ड इन्सर्ट करने का प्रयास है, जहां इस टेबल, % s की अनुमति नहीं है</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_12" resname="msg_1_4_12" approved="yes">
+        <source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
+        <target state="final">अनुमति के बिना पेज '%s' (%s) में टेबल '%s' में से रिकॉर्ड इन्सर्ट करने का प्रयास। या गैर मौजूदा पेज।</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_13" resname="msg_1_4_13" approved="yes">
+        <source>Attempt to move record '%s' (%s) to after another record, although the table has no sorting row.</source>
+        <target state="final">एक रिकॉर्ड के बाद रिकॉर्ड '%s' (%s) को मूव करने का प्रयास, हालांकि टेबल रो सॉर्टिंग नहीं करता.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_14" resname="msg_1_4_14" approved="yes">
+        <source>Attempt to move record '%s' (%s) without having permissions to do so</source>
+        <target state="final">बिना अनुमति के रिकॉर्ड '%s'(%s) मूव करने का प्रयास</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_1" resname="msg_1_5_1" approved="yes">
+        <source>You cannot change the 'doktype' of page '%s' to the desired value.</source>
+        <target state="final">आप पेज का 'doktype' इच्छित मूल्य में नहीं बदल सकते।</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_2" resname="msg_1_5_2" approved="yes">
+        <source>'doktype' of page '%s' could not be changed because the page contains records from disallowed tables; %s</source>
+        <target state="final">पेज '%s' का 'doktype' बदला नहीं जा सकता है क्योंकि पेज के रिकार्ड्स बिना अनुमति वाले टेबल;%s में से आता है</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_3" resname="msg_1_5_3" approved="yes">
+        <source>Too few items in the list of values. (%s)</source>
+        <target state="final">मूल्य की लिस्ट में भी कुछ आइटम।(%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_10" resname="msg_1_5_10" approved="yes">
+        <source>Could not delete file '%s' (does not exist). (%s)</source>
+        <target state="final">फ़ाइल '%s' को नष्ट नहीं किया जा सका (मौजूद नहीं है).(% s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_11" resname="msg_1_5_11" approved="yes">
+        <source>Copying file '%s' failed!: No destination file (%s) possible!. (%s)</source>
+        <target state="final">फाइल '%s' की कॉपी असफल!: कोई डेस्टिनेशन फाइल (%s) संभव नहीं है!। (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_12" resname="msg_1_5_12" approved="yes">
+        <source>File extension '%s' is not allowed. (%s)</source>
+        <target state="final">फाइल एक्सटेंशन '%s' की अनुमति नहीं है।(%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_13" resname="msg_1_5_13" approved="yes">
+        <source>File size (%s) of file '%s' exceeds limit (%s). (%s)</source>
+        <target state="final">फाइल '%s' की फाइल साइज(%s) सिमा (%s) से अधिक है।(%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_14" resname="msg_1_5_14" approved="yes">
+        <source>The destination (%s) or the source file (%s) does not exist. (%s)</source>
+        <target state="final">डेस्टिनेशन (%s) और सोर्स फाइल(%s) मौजूद नहीं है।(%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_15" resname="msg_1_5_15" approved="yes">
+        <source>Copying to file '%s' failed! (%s)</source>
+        <target state="final">फाइल'%s' में कॉपी विफल हुई है !(%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_16" resname="msg_1_5_16" approved="yes">
+        <source>Copying file '%s' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)</source>
+        <target state="final">फ़ाइल(%s) की कॉपी विफल हुई है!: डेस्टिनेशन पथ (%s) शायद लिखने के लिए प्रोटेक्टेड है। कृपया इसे लिखने के लिए सक्षम करे!.(%s)</target>
+      </trans-unit>
+      <trans-unit id="type_2" resname="type_2" approved="yes">
+        <source>FILE</source>
+        <target state="final">फ़ाइल</target>
+      </trans-unit>
+      <trans-unit id="action_2_1" resname="action_2_1" approved="yes">
+        <source>Upload</source>
+        <target state="final">अपलोड</target>
+      </trans-unit>
+      <trans-unit id="action_2_2" resname="action_2_2" approved="yes">
+        <source>Copy</source>
+        <target state="final">नक़ल करें</target>
+      </trans-unit>
+      <trans-unit id="action_2_3" resname="action_2_3" approved="yes">
+        <source>Move</source>
+        <target state="final">खिसकाएँ</target>
+      </trans-unit>
+      <trans-unit id="action_2_4" resname="action_2_4" approved="yes">
+        <source>Delete</source>
+        <target state="final">मिटाएँ</target>
+      </trans-unit>
+      <trans-unit id="action_2_5" resname="action_2_5" approved="yes">
+        <source>Rename</source>
+        <target state="final">नाम बदलें</target>
+      </trans-unit>
+      <trans-unit id="action_2_6" resname="action_2_6" approved="yes">
+        <source>New</source>
+        <target state="final">नया</target>
+      </trans-unit>
+      <trans-unit id="action_2_7" resname="action_2_7" approved="yes">
+        <source>Unzip</source>
+        <target state="final">खोलना</target>
+      </trans-unit>
+      <trans-unit id="action_2_8" resname="action_2_8" approved="yes">
+        <source>New file</source>
+        <target state="final">नई फ़ाइल</target>
+      </trans-unit>
+      <trans-unit id="action_2_9" resname="action_2_9" approved="yes">
+        <source>Edit</source>
+        <target state="final">एडिट</target>
+      </trans-unit>
+      <trans-unit id="msg_2_9_1" resname="msg_2_9_1" approved="yes">
+        <source>File saved to '%s', bytes: %s, MD5: %s </source>
+        <target state="final">फ़ाइल '%s', bytes: %s, MD5:%s , में सेव हुई है </target>
+      </trans-unit>
+      <trans-unit id="type_3" resname="type_3" approved="yes">
+        <source>CACHE</source>
+        <target state="final">कैश</target>
+      </trans-unit>
+      <trans-unit id="action_3_1" resname="action_3_1" approved="yes">
+        <source>Clear Cache</source>
+        <target state="final">कैश को साफ़ करें</target>
+      </trans-unit>
+      <trans-unit id="type_4" resname="type_4" approved="yes">
+        <source>EXTENSION</source>
+        <target state="final">एक्सटेंशन</target>
+      </trans-unit>
+      <trans-unit id="type_5" resname="type_5" approved="yes">
+        <source>ERROR</source>
+        <target state="final">गलती</target>
+      </trans-unit>
+      <trans-unit id="action_5_0" resname="action_5_0" approved="yes">
+        <source>Error handler</source>
+        <target state="final">एरर हैंडलर</target>
+      </trans-unit>
+      <trans-unit id="type_254" resname="type_254" approved="yes">
+        <source>SETTING</source>
+        <target state="final">सेटिंग</target>
+      </trans-unit>
+      <trans-unit id="action_254_1" resname="action_254_1" approved="yes">
+        <source>Change</source>
+        <target state="final">परिवर्तन</target>
+      </trans-unit>
+      <trans-unit id="type_255" resname="type_255" approved="yes">
+        <source>LOGIN</source>
+        <target state="final">लॉग इन करें</target>
+      </trans-unit>
+      <trans-unit id="action_255_1" resname="action_255_1" approved="yes">
+        <source>LOGIN</source>
+        <target state="final">लॉग इन करें</target>
+      </trans-unit>
+      <trans-unit id="action_255_2" resname="action_255_2" approved="yes">
+        <source>LOGOUT</source>
+        <target state="final">लोग आउट</target>
+      </trans-unit>
+      <trans-unit id="action_255_3" resname="action_255_3" approved="yes">
+        <source>ATTEMPT</source>
+        <target state="final">प्रयास</target>
+      </trans-unit>
+      <trans-unit id="chLog_title" resname="chLog_title" approved="yes">
+        <source>Admin Changelog</source>
+        <target state="final">एडमिन लोगपरिवर्तन</target>
+      </trans-unit>
+      <trans-unit id="chLog_users_0" resname="chLog_users_0" approved="yes">
+        <source>All users</source>
+        <target state="final">सभी उपयोगकर्ताओं</target>
+      </trans-unit>
+      <trans-unit id="chLog_users_-1" resname="chLog_users_-1" approved="yes">
+        <source>Self</source>
+        <target state="final">स्वयं</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_0" resname="chLog_time_0" approved="yes">
+        <source>This week</source>
+        <target state="final">इस सप्ताह</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_1" resname="chLog_time_1" approved="yes">
+        <source>Last week</source>
+        <target state="final">पिछले सप्ताह</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_2" resname="chLog_time_2" approved="yes">
+        <source>Last 7 days</source>
+        <target state="final">आखरी 7 दिन</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_10" resname="chLog_time_10" approved="yes">
+        <source>This month</source>
+        <target state="final">इस महीने</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_11" resname="chLog_time_11" approved="yes">
+        <source>Last month</source>
+        <target state="final">पिछले महीने</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_12" resname="chLog_time_12" approved="yes">
+        <source>Last 31 days</source>
+        <target state="final">अंतिम 31 दिन</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_20" resname="chLog_time_20" approved="yes">
+        <source>No limit</source>
+        <target state="final">कोई सीमा नहीं</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_time" resname="chLog_l_time" approved="yes">
+        <source>Time</source>
+        <target state="final">समय</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_user" resname="chLog_l_user" approved="yes">
+        <source>User</source>
+        <target state="final">उपयोगकर्ता</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_error" resname="chLog_l_error" approved="yes">
+        <source>E</source>
+        <target state="final">E</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_action" resname="chLog_l_action" approved="yes">
+        <source>Action</source>
+        <target state="final">कार्रवाई</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_types" resname="chLog_l_types" approved="yes">
+        <source>Type</source>
+        <target state="final">प्रकार</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_table" resname="chLog_l_table" approved="yes">
+        <source>Table</source>
+        <target state="final">टेबल</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_details" resname="chLog_l_details" approved="yes">
+        <source>Details</source>
+        <target state="final">विवरण</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuUsers" resname="chLog_menuUsers" approved="yes">
+        <source>Users</source>
+        <target state="final">उपयोगकर्ताओं</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuDepth" resname="chLog_menuDepth" approved="yes">
+        <source>Depth</source>
+        <target state="final">गहराई</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuTime" resname="chLog_menuTime" approved="yes">
+        <source>Time</source>
+        <target state="final">समय</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.errorsInPeriod" resname="systemmessage.errorsInPeriod" approved="yes">
+        <source><![CDATA[We have found %1$d errors. Please check your <a href="%2$s">system log</a>.]]></source>
+        <target state="final"><![CDATA[हमें %1$d गलतियां मिली है। कृपया अपने &lt;a href="%2$s"&gt; सिस्टम लॉग &lt;/a&gt; की जाँच करें।]]></target>
+      </trans-unit>
+      <trans-unit id="actions" resname="actions" approved="yes">
+        <source>Actions</source>
+        <target state="final">कार्रवाई</target>
+      </trans-unit>
+      <trans-unit id="actions.delete" resname="actions.delete" approved="yes">
+        <source>Delete similar errors</source>
+        <target state="final">समान त्रुटियाँ हटाएँ</target>
+      </trans-unit>
+      <trans-unit id="actions.deleteWarnings" resname="actions.deleteWarnings" approved="yes">
+        <source>Delete similar warnings</source>
+        <target state="final">समान चेतावनियाँ हटाएँ</target>
+      </trans-unit>
+      <trans-unit id="actions.delete.message" resname="actions.delete.message" approved="yes">
+        <source>Total entries deleted: %1$d</source>
+        <target state="final">कुल हटाई गई प्रविष्टियाँ: %1$d</target>
+      </trans-unit>
+      <trans-unit id="actions.delete.noRowFound" resname="actions.delete.noRowFound" approved="yes">
+        <source>Log entry could not be found.</source>
+        <target state="final">लॉग प्रविष्टि नहीं मिल सकी.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
