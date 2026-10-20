@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filemetadata/Resources/Private/Language/db.xlf" date="2012-10-17T17:55:17Z" product-name="filemetadata" target-language="lt">
+    <header/>
+    <body>
+      <!-- sys_file_metadata fields -->
+      <trans-unit id="sys_file_metadata.status" approved="yes">
+        <source>Status</source>
+        <target state="final">Būsena</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.status.1" approved="yes">
+        <source>Ok</source>
+        <target state="final">GERAI</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.status.2" approved="yes">
+        <source>Pending</source>
+        <target state="final">Laukiama</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.status.3" approved="yes">
+        <source>Under review</source>
+        <target state="final">Peržiūrima</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.keywords" approved="yes">
+        <source>Keywords</source>
+        <target state="final">Raktažodžiai</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.caption" approved="yes">
+        <source>Caption</source>
+        <target state="final">Antraštė</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.creator_tool" approved="yes">
+        <source>Creator Tool</source>
+        <target state="final">Kūrimo įrankis</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.download_name" approved="yes">
+        <source>Download Name</source>
+        <target state="final">Atsisiuntimo pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.creator" approved="yes">
+        <source>Creator</source>
+        <target state="final">Kūrėjas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.publisher" approved="yes">
+        <source>Publisher</source>
+        <target state="final">Leidėjas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.source" approved="yes">
+        <source>Source</source>
+        <target state="final">Šaltinis</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.copyright" approved="yes">
+        <source>Copyright</source>
+        <target state="final">Autorių teisės</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.location_country" approved="yes">
+        <source>Country</source>
+        <target state="final">Šalis</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.location_region" approved="yes">
+        <source>Region</source>
+        <target state="final">Regionas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.location_city" approved="yes">
+        <source>City</source>
+        <target state="final">Miestas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.latitude" approved="yes">
+        <source>Latitude</source>
+        <target state="final">Platuma</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.longitude" approved="yes">
+        <source>Longitude</source>
+        <target state="final">Ilguma</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.ranking" approved="yes">
+        <source>Ranking</source>
+        <target state="final">Reitingas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.content_creation_date" approved="yes">
+        <source>Content Creation Date</source>
+        <target state="final">Turinio sukūrimo data</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.content_modification_date" approved="yes">
+        <source>Content Modification Date</source>
+        <target state="final">Turinio pakeitimo data</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.note" approved="yes">
+        <source>Note</source>
+        <target state="final">Pastaba</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit" approved="yes">
+        <source>Unit</source>
+        <target state="final">Vienetas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit.px" approved="yes">
+        <source>Pixels</source>
+        <target state="final">Pikseliai</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit.cm" approved="yes">
+        <source>Centimeters</source>
+        <target state="final">Centimetrai</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit.in" approved="yes">
+        <source>Inches</source>
+        <target state="final">Coliai</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit.mm" approved="yes">
+        <source>Millimeters</source>
+        <target state="final">Milimetrai</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit.m" approved="yes">
+        <source>Meters</source>
+        <target state="final">Metrai</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit.p" approved="yes">
+        <source>Picas</source>
+        <target state="final">Pikos</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.unit.pt" approved="yes">
+        <source>Points</source>
+        <target state="final">Punktai</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.duration" approved="yes">
+        <source>Duration (in seconds)</source>
+        <target state="final">Trukmė (sekundėmis)</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space" approved="yes">
+        <source>Color Space</source>
+        <target state="final">Spalvų erdvė</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space.RGB" approved="yes">
+        <source>RGB</source>
+        <target state="final">RGB</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space.sRGB" approved="yes">
+        <source>sRGB</source>
+        <target state="final">sRGB</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space.CMYK" approved="yes">
+        <source>CMYK</source>
+        <target state="final">CMYK</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space.CMY" approved="yes">
+        <source>CMY</source>
+        <target state="final">CMY</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space.YUV" approved="yes">
+        <source>YUV</source>
+        <target state="final">YUV</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space.grey" approved="yes">
+        <source>Gray</source>
+        <target state="final">Pilka</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.color_space.indx" approved="yes">
+        <source>Indexed</source>
+        <target state="final">Indeksuota</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.pages" approved="yes">
+        <source>Number of Pages</source>
+        <target state="final">Puslapių skaičius</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.language" approved="yes">
+        <source>File Language</source>
+        <target state="final">Failo kalba</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.fe_groups" approved="yes">
+        <source>Frontend Permission</source>
+        <target state="final">Frontendo prieigos teisės</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.width" approved="yes">
+        <source>Width</source>
+        <target state="final">Plotis</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.height" approved="yes">
+        <source>Height</source>
+        <target state="final">Aukštis</target>
+      </trans-unit>
+      <!-- sys_file_metadata tabs -->
+      <!-- sys_file_metadata placeholder -->
+      <trans-unit id="placeholder.keywords" approved="yes">
+        <source>Keyword #1, keyword #2, ...</source>
+        <target state="final">Raktažodis #1, raktažodis #2, ...</target>
+      </trans-unit>
+      <!-- sys_file_metadata palette -->
+      <!-- fe_groups fields -->
+      <trans-unit id="fe_groups.files" approved="yes">
+        <source>Allowed files</source>
+        <target state="final">Leidžiami failai</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
