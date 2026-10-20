@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="sk">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Workspaces</source>
+        <target state="final">Pracovné plochy</target>
+      </trans-unit>
+      <trans-unit id="ok" approved="yes">
+        <source>Ok</source>
+        <target state="final">Ok</target>
+      </trans-unit>
+      <trans-unit id="cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Zrušiť</target>
+      </trans-unit>
+      <trans-unit id="chooseMassAction" approved="yes">
+        <source>Choose mass action</source>
+        <target state="final">Vyberte hromadnú akciu</target>
+      </trans-unit>
+      <trans-unit id="item" approved="yes">
+        <source>item</source>
+        <target state="final">položka</target>
+      </trans-unit>
+      <trans-unit id="items" approved="yes">
+        <source>items</source>
+        <target state="final">položky</target>
+      </trans-unit>
+      <trans-unit id="recordsToDisplay" approved="yes">
+        <source>Records to display</source>
+        <target state="final">Záznamy na zobrazenie</target>
+      </trans-unit>
+      <trans-unit id="reviewandpublish" approved="yes">
+        <source>review and publish</source>
+        <target state="final">skontrolovať a publikovať</target>
+      </trans-unit>
+      <trans-unit id="workspacelist" approved="yes">
+        <source>Workspace List</source>
+        <target state="final">Zoznam pracovných plôh</target>
+      </trans-unit>
+      <trans-unit id="actionSendToStage" approved="yes">
+        <source>Send to stage</source>
+        <target state="final">Zmeniť stav do fázy</target>
+      </trans-unit>
+      <trans-unit id="publish_execute_action_option" approved="yes">
+        <source>Publish to LIVE</source>
+        <target state="final">Publikovať do LIVE</target>
+      </trans-unit>
+      <trans-unit id="close" approved="yes">
+        <source>Close</source>
+        <target state="final">Zatvoriť</target>
+      </trans-unit>
+      <trans-unit id="runMassAction.done" approved="yes">
+        <source>Done processing %d elements</source>
+        <target state="final">Hotových %d prvkov</target>
+      </trans-unit>
+      <trans-unit id="runMassAction.init" approved="yes">
+        <source>init</source>
+        <target state="final">spustiť</target>
+      </trans-unit>
+      <trans-unit id="tooltip.publishAll" approved="yes">
+        <source>Really publish entire workspace?</source>
+        <target state="final">Publikovať celú pracovnú plochu?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardAll" approved="yes">
+        <source>Do you really want to discard changes from the whole workspace?</source>
+        <target state="final">Skutočne chete zrušiť zmeny z celej pracovnej plochy?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.publishSelected" approved="yes">
+        <source>Really publish selected elements?</source>
+        <target state="final">Skutočne chcete publikovať vybrané prvky?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardSelected" approved="yes">
+        <source>Really discard changes of the selected elements?</source>
+        <target state="final">Skutočne chcete zrušiť úpravy vybraných prvkov?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.generatePagePreview" approved="yes">
+        <source>Generate page preview links</source>
+        <target state="final">Generovať odkazy na náhľad stránky</target>
+      </trans-unit>
+      <trans-unit id="previewLink" approved="yes">
+        <source>Preview Link</source>
+        <target state="final">Odkaz na náhľad</target>
+      </trans-unit>
+      <trans-unit id="error.noResponse" approved="yes">
+        <source>The server did not send any response whether the action was successful.</source>
+        <target state="final">Server neposlal žiadnu odpoveď o tom, či akcia bola úspešná.</target>
+      </trans-unit>
+      <trans-unit id="rowDetails" approved="yes">
+        <source>Row details...</source>
+        <target state="final">Detaily riadka...</target>
+      </trans-unit>
+      <trans-unit id="column.difference" approved="yes">
+        <source>Difference</source>
+        <target state="final">Rozdiel</target>
+      </trans-unit>
+      <trans-unit id="column.changeDate" approved="yes">
+        <source>Modification</source>
+        <target state="final">Úprava</target>
+      </trans-unit>
+      <trans-unit id="column.stage" approved="yes">
+        <source>Current Stage</source>
+        <target state="final">Aktuálna fáza</target>
+      </trans-unit>
+      <trans-unit id="column.actions" approved="yes">
+        <source>Actions</source>
+        <target state="final">Akcie</target>
+      </trans-unit>
+      <trans-unit id="column.wsPath" approved="yes">
+        <source>Path</source>
+        <target state="final">Cesta</target>
+      </trans-unit>
+      <trans-unit id="column.uid" approved="yes">
+        <source>WS ID</source>
+        <target state="final">WS ID</target>
+      </trans-unit>
+      <trans-unit id="column.oid" approved="yes">
+        <source>Live ID</source>
+        <target state="final">Live ID</target>
+      </trans-unit>
+      <trans-unit id="column.workspaceName" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Workspace</target>
+      </trans-unit>
+      <trans-unit id="column.livePath" approved="yes">
+        <source>Live path</source>
+        <target state="final">Live cesta</target>
+      </trans-unit>
+      <trans-unit id="tooltip.viewElementAction" approved="yes">
+        <source>Preview element</source>
+        <target state="final">Náhľad prvku</target>
+      </trans-unit>
+      <trans-unit id="tooltip.editElementAction" approved="yes">
+        <source>Edit element</source>
+        <target state="final">Upraviť prvok</target>
+      </trans-unit>
+      <trans-unit id="tooltip.openPage" approved="yes">
+        <source>Open version of page</source>
+        <target state="final">Otvoriť verziu stránky</target>
+      </trans-unit>
+      <trans-unit id="tooltip.sendToPrevStage" approved="yes">
+        <source>Send record to previous Stage</source>
+        <target state="final">Poslať záznam do predchádzajúcej fáze</target>
+      </trans-unit>
+      <trans-unit id="tooltip.sendToNextStage" approved="yes">
+        <source>Send record to next Stage</source>
+        <target state="final">Poslať záznam do nasledujúcej fáze</target>
+      </trans-unit>
+      <trans-unit id="tooltip.showHistory" approved="yes">
+        <source>Show history of workspace version</source>
+        <target state="final">Zobraziť históriu workspace verzie</target>
+      </trans-unit>
+      <trans-unit id="window.discardAll.title" approved="yes">
+        <source>Discard all workspace version of current page.</source>
+        <target state="final">Zrušiť všetky workspace verzie aktuálnej stránky.</target>
+      </trans-unit>
+      <trans-unit id="window.discard.message" approved="yes">
+        <source>Do you really want to discard this version from workspace?</source>
+        <target state="final">Naozaj chcete zružiť túto verziu z workspace-u?</target>
+      </trans-unit>
+      <trans-unit id="window.discardAll.message" approved="yes">
+        <source>Do you really want to discard all versions from page?</source>
+        <target state="final">Naozaj chcete zrušiť všetky verzie zo stránky?</target>
+      </trans-unit>
+      <trans-unit id="window.massAction.title" approved="yes">
+        <source>Prepare to start mass action</source>
+        <target state="final">Pripraviť na spustenie hromadnej akcie</target>
+      </trans-unit>
+      <trans-unit id="window.selectionAction.title" approved="yes">
+        <source>Prepare to execute actions on selection</source>
+        <target state="final">Pripraviť na vykonanie akcií na označenom</target>
+      </trans-unit>
+      <trans-unit id="error.sendToNextStage.noRecordFound" approved="yes">
+        <source>The record element could not be found.</source>
+        <target state="final">Záznam sa nenašiel.</target>
+      </trans-unit>
+      <trans-unit id="error.sendToPrevStage.noPreviousStage" approved="yes">
+        <source>The record element is already in editing stage, there is no previous stage.</source>
+        <target state="final">Záznam je už v editačnej fáze, žiadna predchádzajúca fáza neexistuje.</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.itemsWillBeSentTo" approved="yes">
+        <source>The selected element(s) will be sent to</source>
+        <target state="final">Vybrané prvky budú odoslané do</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.sendMailTo" approved="yes">
+        <source>Send mail to</source>
+        <target state="final">Poslať mail pre</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.additionalRecipients" approved="yes">
+        <source>Additional recipients</source>
+        <target state="final">Ďalší adresáti</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.comments" approved="yes">
+        <source>Comments</source>
+        <target state="final">Komentáre</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.comments" approved="yes">
+        <source>Comments</source>
+        <target state="final">Komentáre</target>
+      </trans-unit>
+      <trans-unit id="error.getStageTitle.stageNotFound" approved="yes">
+        <source>Stage not found</source>
+        <target state="final">Fáza sa nenašla</target>
+      </trans-unit>
+      <trans-unit id="info.newpage.detail" approved="yes">
+        <source>The previewed page has been created in a workspace and has no live counterpart.</source>
+        <target state="final">Zobrazená stránka bola vytvorená vo workspace a neexistuje k nej live verzia.</target>
+      </trans-unit>
+      <trans-unit id="preview.livePreview" approved="yes">
+        <source>Live</source>
+        <target state="final">Live</target>
+      </trans-unit>
+      <trans-unit id="preview.livePreviewDetail" approved="yes">
+        <source>Click this element to hide the workspace version and see the live version of the page.</source>
+        <target state="final">Kliknite na túto položku na skrytie workspace verzie a zobrazenie live verzie stránky.</target>
+      </trans-unit>
+      <trans-unit id="preview.workspacePreview" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Workspace</target>
+      </trans-unit>
+      <trans-unit id="preview.workspacePreviewDetail" approved="yes">
+        <source>Click this element to hide the live version and see the workspace version of the page.</source>
+        <target state="final">Kliknite na túto položku na skrytie live verzie a zobrazenie workspace verzie stránky.</target>
+      </trans-unit>
+      <trans-unit id="preview.modeSlider" approved="yes">
+        <source>Slider</source>
+        <target state="final">Posuvník</target>
+      </trans-unit>
+      <trans-unit id="preview.modeVbox" approved="yes">
+        <source>Vertical</source>
+        <target state="final">Vertikálne</target>
+      </trans-unit>
+      <trans-unit id="preview.modeHbox" approved="yes">
+        <source>Horizontal</source>
+        <target state="final">Horizntálne</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">Publikovať</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_discard" approved="yes">
+        <source>Discard</source>
+        <target state="final">Zrušiť</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
