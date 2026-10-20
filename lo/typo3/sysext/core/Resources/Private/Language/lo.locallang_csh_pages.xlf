@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814793" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_pages.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="layout.description" resname="layout.description" approved="yes">
+        <source>The Frontend Layout can change the way a page design appears.</source>
+        <target state="final">ຮູບແບບການຈັດວາງສ່ວນໜ້າເວັບ (Frontend Layout) ສາມາດປ່ຽນຮູບແບບການອອກແບບຂອງໜ້າເວັບທີ່ປາກົດອອກມາໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="layout.details" resname="layout.details" approved="yes">
+        <source>This option may not have any impact on the Frontend page design since it depends on whether the Frontend template uses it. Most templates do not use it.</source>
+        <target state="final">ຕົວເລືອກນີ້ອາດຈະບໍ່ມີຜົນກະທົບຕໍ່ການອອກແບບໜ້າເວັບສ່ວນໜ້າ ເນື່ອງຈາກມັນຂຶ້ນກັບວ່າແມ່ແບບ (Template) ຂອງສ່ວນໜ້າເວັບນັ້ນໄດ້ນຳໃຊ້ມັນຫຼືບໍ່. ເຊິ່ງແມ່ແບບສ່ວນໃຫຍ່ແມ່ນບໍ່ໄດ້ນຳໃຊ້ມັນ.</target>
+      </trans-unit>
+      <trans-unit id="doktype.description" resname="doktype.description" approved="yes">
+        <source>Page Type determines whether the page is normal webpage, a shortcut to another webpage, or used in other internal ways.</source>
+        <target state="final">ປະເພດໜ້າເວັບ ເປັນຕົວກຳນົດວ່າໜ້າເວັບນັ້ນເປັນໜ້າເວັບປົກກະຕິ, ເປັນທາງລັດໄປຫາໜ້າເວັບອື່ນ, ຫຼື ຖືກນໍາໃຊ້ໃນຮູບແບບພາຍໃນອື່ນໆ.</target>
+      </trans-unit>
+      <trans-unit id="doktype.details" resname="doktype.details" xml:space="preserve" approved="yes">
+				<source>'Standard' is the most common Page Type and is used for normal webpages.
+'Backend User Section' is an option which creates pages that are only visible in the Frontend for Backend users who are logged in.
+
+&lt;b&gt;Link&lt;/b&gt;
+'Shortcut' pages jump to another page in the Pagetree.
+'Mount Point' pages bring content from another branch of the Pagetree into the current branch.
+'Link to External URL' is similar to 'Shortcut' but points to external URLs instead of TYPO3 pages.
+
+&lt;b&gt;Special&lt;/b&gt;
+'Folder' is a page type which is not shown as a webpage but is instead stores records of your choice.
+'Recycler' is a garbage can. Pages and records in the Recycler are not visible in the Frontend.
+'Menu Separator' is only useful if your Frontend memus are programmed to use it. It does not represent a page with content but is intended to be an unclickable placeholder in the menu.
+
+&lt;b&gt;Notice&lt;/b&gt; Each Page Type is represented by a unique icon. The available page types can be restricted for users so all of the options described above may not be visible. Finally, particuilar record typoes may only be allowed on certain page types, but any record can be placed in a 'Folder.'</source>
+			<target state="final">'Standard' ແມ່ນປະເພດໜ້າເວັບທີ່ພົບເຫັນໄດ້ທົ່ວໄປທີ່ສຸດ ແລະ ໃຊ້ສຳລັບໜ້າເວັບປົກກະຕິ.
+'Backend User Section' ແມ່ນຕົວເລືອກທີ່ສ້າງໜ້າເວັບໃຫ້ສະເພາະຜູ້ໃຊ້ລະບົບຫຼັງບ້ານທີ່ເຂົ້າສູ່ລະບົບແລ້ວເຫັນໃນສ່ວນໜ້າເວັບເທົ່ານັ້ນ.
+
+&lt;b&gt;ລິ້ງ (Link)&lt;/b&gt;
+ໜ້າ 'ທາງລັດ (Shortcut)' ຈະໂດດໄປຫາໜ້າອື່ນໃນໂຄງສ້າງໜ້າເວັບ (Pagetree).
+ໜ້າ 'ຈຸດເຊື່ອມຕໍ່ (Mount Point)' ຈະດຶງເນື້ອຫາຈາກກິ່ງອື່ນຂອງໂຄງສ້າງໜ້າເວັບມາໃສ່ໃນກິ່ງປັດຈຸບັນ.
+'ລິ້ງໄປຫາ URL ພາຍນອກ (Link to External URL)' ແມ່ນຄ້າຍຄືກັບ 'ທາງລັດ' ແຕ່ຈະຊີ້ໄປຫາ URL ພາຍນອກແທນໜ້າເວັບຂອງ TYPO3.
+
+&lt;b&gt;ພິເສດ (Special)&lt;/b&gt;
+'ໂຟນເດີ (Folder)' ແມ່ນປະເພດໜ້າເວັບທີ່ບໍ່ສະແດງເປັນໜ້າເວັບ ແຕ່ໃຊ້ສຳລັບເກັບຂໍ້ມູນທີ່ເຈົ້າຕ້ອງການ.
+'ຖັງຂີ້ເຫຍື້ອ (Recycler)' ແມ່ນບ່ອນເກັບຂໍ້ມູນທີ່ລຶບຖິ້ມ. ໜ້າເວັບ ແລະ ຂໍ້ມູນໃນຖັງຂີ້ເຫຍື້ອຈະບໍ່ປາກົດໃຫ້ເຫັນໃນສ່ວນໜ້າເວັບ.
+'ຕົວຂັ້ນເມນູ (Menu Separator)' ຈະມີປະໂຫຍກໍຕໍ່ເມື່ອເມນູສ່ວນໜ້າເວັບຂອງເຈົ້າຖືກຂຽນໂປຣແກຣມມາໃຫ້ຮອງຮັບ. ມັນບໍ່ໄດ້ເປັນຕົວແທນຂອງໜ້າເວັບທີ່ມີເນື້ອຫາ ແຕ່ມີໄວ້ເພື່ອເປັນຕົວຂັ້ນທີ່ຄລິກບໍ່ໄດ້ໃນເມນູ.
+
+&lt;b&gt;ໝາຍເຫດ (Notice)&lt;/b&gt; ປະເພດໜ້າເວັບແຕ່ລະຢ່າງຈະຖືກສະແດງດ້ວຍໄອຄອນທີ່ເປັນເອກະລັກ. ປະເພດໜ້າເວັບທີ່ມີໃຫ້ໃຊ້ອາດຖືກຈຳກັດສຳລັບຜູ້ໃຊ້ ດັ່ງນັ້ນຕົວເລືອກທັງໝົດທີ່ກ່າວມາຂ້າງເທິງອາດຈະບໍ່ປາກົດໃຫ້ເຫັນທັງໝົດ. ສຸດທ້າຍ, ປະເພດຂໍ້ມູນບາງຢ່າງອາດຖືກອະນຸຍາດໃຫ້ຢູ່ໃນບາງປະເພດໜ້າເວັບເທົ່ານັ້ນ, ແຕ່ຂໍ້ມູນໃດໆກໍຕາມສາມາດຖືກຈັດເກັບໄວ້ໃນ 'ໂຟນເດີ' ໄດ້.</target></trans-unit>
+      <trans-unit id="_doktype.seeAlso" resname="_doktype.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:shortcut,
+pages:url</source>
+				
+			<target state="final">pages:shortcut,
+pages:url</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>If this is checked, the page will be disabled on the website.</source>
+        <target state="final">ຫາກເລືອກເອົາຫ້ອງນີ້, ໜ້າເວັບຈະຖືກປິດການໃຊ້ງານໃນເວັບໄຊ.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" xml:space="preserve" approved="yes">
+				<source>The 'Disable,' 'Start,' 'Stop,' and 'Access' options are all about limiting access to pages and are thus related in functionality. When a page is not visible due to one of these options, the page will not show up in the site navigation.
+Notice, these options are related &lt;em&gt;only&lt;/em&gt; to the page for which they are set. If you want their effect to cover the subpages as well, you must enable the 'Extend to Subpages' option.
+When you're logged in as a Backend user you can preview disabled pages if you have read access to them.</source>
+			<target state="final">ຕົວເລືອກ 'ປິດການໃຊ້ງານ (Disable),' 'ເລີ່ມ (Start),' 'ຢຸດ (Stop),' ແລະ 'ການເຂົ້າເຖິງ (Access)' ລ້ວນແຕ່ກ່ຽວກັບການຈຳກັດການເຂົ້າເຖິງໜ້າເວັບ ແລະ ມີການເຮັດວຽກທີ່ກ່ຽວຂ້ອງກັນ. ເມື່ອໜ້າເວັບບໍ່ສະແດງຜົນຍ້ອນຕົວເລືອກໃດໜຶ່ງເຫຼົ່ານີ້, ໜ້ານັ້ນຈະບໍ່ປາກົດຢູ່ໃນການນຳທາງ (Navigation) ຂອງເວັບໄຊ.
+ໝາຍເຫດ, ຕົວເລືອກເຫຼົ່ານີ້ມີຜົນ &lt;em&gt;ສະເພາະ&lt;/em&gt; ກັບໜ້າທີ່ຖືກຕັ້ງຄ່າເທົ່ານັ້ນ. ຖ້າເຈົ້າຕ້ອງການໃຫ້ມີຜົນຄຸ້ມຄອງໄປເຖິງໜ້າຍ່ອຍ (Subpages) ນຳ, ເຈົ້າຕ້ອງເປີດໃຊ້ຕົວເລືອກ 'ນຳໃຊ້ກັບໜ້າຍ່ອຍ (Extend to Subpages)'.
+ເມື່ອເຈົ້າເຂົ້າສູ່ລະບົບເປັນຜູ້ໃຊ້ລະບົບຫຼັງບ້ານ (Backend user), ເຈົ້າສາມາດເບິ່ງຕົວຢ່າງໜ້າທີ່ຖືກປິດການໃຊ້ງານໄດ້ ຖ້າເຈົ້າມີສິດໃນການອ່ານໜ້ານັ້ນ.</target></trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" approved="yes">
+        <source>pages:starttime,pages:endtime,pages:fe_group,pages:extendToSubpages</source>
+        <target state="final">pages:starttime,pages:endtime,pages:fe_group,pages:extendToSubpages</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_hidden.image" resname="_hidden.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/hidden_page.gif,
+EXT:core/Resources/Public/Images/cshimages/pages_1.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/hidden_page.gif,
+EXT:core/Resources/Public/Images/cshimages/pages_1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="hidden.image_descr" resname="hidden.image_descr" xml:space="preserve" approved="yes">
+				<source>The page icon of a disabled page is dimmed and a red X is added.
+If you view a page that is hidden and you are logged in into the Backend you will still be able to see the page. The red "Preview" box will tell you that this page is visible to you because of this special circumstance.</source>
+			<target state="final">ໄອຄອນຂອງໜ້າເວັບທີ່ຖືກປິດການໃຊ້ງານຈະເປັນສີມົວໆ ແລະ ມີເຄື່ອງໝາຍ X ສີແດງເພີ່ມເຂົ້າມາ.
+ຖ້າເຈົ້າເບິ່ງໜ້າທີ່ຖືກເຊື່ອງໄວ້ໃນຂະນະທີ່ເຂົ້າສູ່ລະບົບຫຼັງບ້ານຢູ່, ເຈົ້າຈະຍັງສາມາດເຫັນໜ້ານັ້ນໄດ້. ກ່ອງຂໍ້ຄວາມ "Preview" ສີແດງຈະບອກໃຫ້ຮູ້ວ່າໜ້ານີ້ສະແດງໃຫ້ເຈົ້າເຫັນໄດ້ຍ້ອນກໍລະນີພິເສດນີ້.</target></trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>The Publish Date determines when the page will be visible online. If the Publish Date is not set, the page will be available immediately.</source>
+        <target state="final">ວັນທີເຜີຍແຜ່ ເປັນຕົວກຳນົດວ່າໜ້າເວັບຈະສະແດງທາງອອນໄລນ໌ເມື່ອໃດ. ຖ້າບໍ່ໄດ້ຕັ້ງວັນທີເຜີຍແຜ່, ໜ້າເວັບຈະສາມາດໃຊ້ງານໄດ້ທັນທີ.</target>
+      </trans-unit>
+      <trans-unit id="starttime.syntax" resname="starttime.syntax" xml:space="preserve" approved="yes">
+				<source>The Publish Date Format is either DD-MM-YYYY or MM-DD-YYYY depending on how TYPO3 is configured. There are also several shortcuts you can use when entering the date.
+If you insert a 'd' the current date will be inserted. You can also append any value in the field with a number such as '+10' which will add 10 days to the current value. For example, entering 'd+10' would result in a date 10 days from now.</source>
+			<target state="final">ຮູບແບບວັນທີເຜີຍແຜ່ແມ່ນ ວັນ-ເດືອນ-ປີ (DD-MM-YYYY) ຫຼື ເດືອນ-ວັນ-ປີ (MM-DD-YYYY) ຂຶ້ນກັບການຕັ້ງຄ່າຂອງ TYPO3. ນອກນັ້ນຍັງມີທາງລັດຫຼາຍຢ່າງທີ່ເຈົ້າສາມາດໃຊ້ໄດ້ເມື່ອປ້ອນວັນທີ.
+ຖ້າເຈົ້າປ້ອນ 'd', ວັນທີປັດຈຸບັນຈະຖືກໃສ່ໃຫ້ໂດຍອັດຕະໂນມັດ. ເຈົ້າຍັງສາມາດເພີ່ມຄ່າໃສ່ໃນຫ້ອງນັ້ນດ້ວຍຕົວເລກ ເຊັ່ນ '+10' ເພື່ອເພີ່ມອີກ 10 ວັນ ຈາກຄ່າປັດຈຸບັນ. ຕົວຢ່າງ: ການປ້ອນ 'd+10' ຈະໄດ້ວັນທີໃນອີກ 10 ວັນຂ້າງໜ້າ.</target></trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" approved="yes">
+        <source>pages:endtime,pages:hidden</source>
+        <target state="final">pages:endtime,pages:hidden</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" approved="yes">
+        <source>tt_content</source>
+        <target state="final">tt_content</target>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>The Expiration Date specifies when the page will no longer be visible online.</source>
+        <target state="final">ວັນທີໝົດອາຍຸ ແມ່ນກຳນົດວ່າໜ້າເວັບຈະບໍ່ສະແດງທາງອອນໄລນ໌ອີກຕໍ່ໄປເມື່ອໃດ.</target>
+      </trans-unit>
+      <trans-unit id="endtime.syntax" resname="endtime.syntax" approved="yes">
+        <source>See Page / Publication Date (click below)</source>
+        <target state="final">ເບິ່ງ ໜ້າ / ວັນທີເຜີຍແຜ່ (ຄລິກຂ້າງລຸ່ມ)</target>
+      </trans-unit>
+      <trans-unit id="_endtime.seeAlso" resname="_endtime.seeAlso" approved="yes">
+        <source>pages:starttime</source>
+        <target state="final">pages:starttime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="fe_group.description" resname="fe_group.description" approved="yes">
+        <source>If Usergroup Access Rights is set to a usergroup name, only website users who are members of the selected usergroup will be able to view the page. The special option 'Hide at Login' means the page will &lt;em&gt;not&lt;/em&gt; be visible for any website users that are logged in. Likewise "Show at Any Login" will make the page visible for any logged in Frontend user.</source>
+        <target state="final">ຖ້າ "ສິດການເຂົ້າເຖິງຂອງກຸ່ມຜູ້ໃຊ້" ຖືກຕັ້ງເປັນຊື່ກຸ່ມຜູ້ໃຊ້ໃດໜຶ່ງ, ຈະມີພຽງແຕ່ຜູ້ໃຊ້ເວັບໄຊທີ່ເປັນສະມາຊິກຂອງກຸ່ມນັ້ນເທົ່ານັ້ນທີ່ສາມາດເບິ່ງໜ້ານີ້ໄດ້. ຕົວເລືອກພິເສດ 'ເຊື່ອງເມື່ອເຂົ້າສູ່ລະບົບ (Hide at Login)' ໝາຍຄວາມວ່າໜ້ານີ້ຈະ &lt;em&gt;ບໍ່&lt;/em&gt; ສະແດງໃຫ້ຜູ້ໃຊ້ເວັບໄຊທີ່ເຂົ້າສູ່ລະບົບແລ້ວເຫັນ. ໃນທາງກັບກັນ "ສະແດງເມື່ອມີການເຂົ້າສູ່ລະບົບ (Show at Any Login)" ຈະເຮັດໃຫ້ໜ້າເວັບສະແດງໃຫ້ຜູ້ໃຊ້ທຸກຄົນທີ່ເຂົ້າສູ່ລະບົບເຫັນ.</target>
+      </trans-unit>
+      <trans-unit id="_fe_group.seeAlso" resname="_fe_group.seeAlso" approved="yes">
+        <source>fe_groups</source>
+        <target state="final">fe_groups</target>
+      </trans-unit>
+      <trans-unit id="_fe_group.image" resname="_fe_group.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/fegroups_4.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/fegroups_4.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="extendToSubpages.description" resname="extendToSubpages.description" approved="yes">
+        <source>By default the Publication Date, Expiration Date, Usergroup Access Rights, and Page Visibility options &lt;em&gt;only&lt;/em&gt; affect the page where they are set. If the option 'Extend to Subpages' is checked for the page, then all subpages are affected as well.</source>
+        <target state="final">ໂດຍທົ່ວໄປແລ້ວ ຕົວເລືອກ ວັນທີເຜີຍແຜ່, ວັນທີໝົດອາຍຸ, ສິດການເຂົ້າເຖິງຂອງກຸ່ມຜູ້ໃຊ້, ແລະ ການສະແດງຜົນຂອງໜ້າເວັບ ຈະມີຜົນ &lt;em&gt;ສະເພາະ&lt;/em&gt; ກັບໜ້າທີ່ຖືກຕັ້ງຄ່າເທົ່ານັ້ນ. ຖ້າຕົວເລືອກ 'ນຳໃຊ້ກັບໜ້າຍ່ອຍ (Extend to Subpages)' ຖືກເລືອກໄວ້, ໜ້າຍ່ອຍທັງໝົດກໍຈະໄດ້ຮັບຜົນນຳເຊັ່ນກັນ.</target>
+      </trans-unit>
+      <trans-unit id="extendToSubpages.details" resname="extendToSubpages.details" xml:space="preserve" approved="yes">
+				<source>Consider a scenario where you want to create a section of subpages that are only visible for logged in users. Setting the Usergroup Access Rights for the top page in the section would remove the page from menus if no user was logged in.
+However, the subpage could still be accessed by guessing the ID number of the page and entering it manually in the URL. Setting the 'Extend to Subpages' option would extend the Usergroup Access Rights from the top page through all subpages as well.</source>
+			<target state="final">ສົມມຸດວ່າເຈົ້າຕ້ອງການສ້າງສ່ວນຂອງໜ້າຍ່ອຍທີ່ໃຫ້ສະເພາະຜູ້ໃຊ້ທີ່ເຂົ້າສູ່ລະບົບແລ້ວເຫັນເທົ່ານັ້ນ. ການຕັ້ງຄ່າສິດການເຂົ້າເຖິງຂອງກຸ່ມຜູ້ໃຊ້ສຳລັບໜ້າຫຼັກຂອງສ່ວນນັ້ນ ຈະເຮັດໃຫ້ໜ້ານັ້ນຫາຍໄປຈາກເມນູຖ້າບໍ່ມີການເຂົ້າສູ່ລະບົບ.
+ແນວໃດກໍຕາມ, ໜ້າຍ່ອຍຍັງອາດຈະຖືກເຂົ້າເຖິງໄດ້ໂດຍການເດົາໝາຍເລກ ID ຂອງໜ້າ ແລະ ປ້ອນໃສ່ URL ໂດຍກົງ. ການຕັ້ງຕົວເລືອກ 'ນຳໃຊ້ກັບໜ້າຍ່ອຍ (Extend to Subpages)' ຈະຊ່ວຍຂະຫຍາຍສິດການເຂົ້າເຖິງຈາກໜ້າຫຼັກໄປຫາໜ້າຍ່ອຍທັງໝົດນຳອີກ.</target></trans-unit>
+      <trans-unit id="_extendToSubpages.seeAlso" resname="_extendToSubpages.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:hidden,
+pages:starttime,
+pages:endtime,
+pages:fe_group</source>
+				
+			<target state="final">pages:hidden,
+pages:starttime,
+pages:endtime,
+pages:fe_group</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_extendToSubpages.image" resname="_extendToSubpages.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/pages_2.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/pages_2.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="extendToSubpages.image_descr" resname="extendToSubpages.image_descr" approved="yes">
+        <source>This page has access restricted to a certain group and has "Extend to Subpages" set as well. This is reflected in the way the page icon has changed.</source>
+        <target state="final">ໜ້ານີ້ໄດ້ຖືກຈຳກັດການເຂົ້າເຖິງສະເພາະບາງກຸ່ມ ແລະ ໄດ້ຕັ້ງຄ່າ "ນຳໃຊ້ກັບໜ້າຍ່ອຍ" ໄວ້ນຳ. ເຊິ່ງຈະສັງເກດເຫັນໄດ້ຈາກໄອຄອນຂອງໜ້າເວັບທີ່ປ່ຽນແປງໄປ.</target>
+      </trans-unit>
+      <trans-unit id="alias.description" resname="alias.description" approved="yes">
+        <source>A URL Alias is a unique identification string for a page. You can use this string instead of the ID number to refer to the page.</source>
+        <target state="final">URL Alias ແມ່ນຂໍ້ຄວາມລະບຸຕົວຕົນທີ່ບໍ່ຊ້ຳກັນສຳລັບໜ້າເວັບ. ເຈົ້າສາມາດໃຊ້ຂໍ້ຄວາມນີ້ແທນໝາຍເລກ ID ເພື່ອອ້າງອີງເຖິງໜ້າເວັບໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="alias.details" resname="alias.details" xml:space="preserve" approved="yes">
+				<source>Ultimately a page is identified by its ID number. For example, you may access a page in TYPO3 at '.../?id=123'. If the page with ID '123' has the URL Alias 'one_two_three', then the URL '.../?id=one_two_three' would display exactly the same page, because 'one_two_three' is a URL Alias for the ID '123'.
+URL Aliases are normally assigned to only the most frequently used pages rather than all pages. In most TYPO3 configurations you would be able to use the syntax '.. &amp;lt;link one_two_three&amp;gt;go to the page&amp;lt;/link&amp;gt; ..' to create a link to the page. This is easier to remember.
+Another use is if you need to change which page a commonly used link points to. In this case you can delete the URL Alias for the original page and re-add it on the new page. All links using the URL Alias would now refer to the new page and its ID number.</source>
+			<target state="final">ໃນທີ່ສຸດແລ້ວ ໜ້າເວັບຈະຖືກລະບຸດ້ວຍໝາຍເລກ ID ຂອງມັນ. ຕົວຢ່າງ: ເຈົ້າອາດຈະເຂົ້າເຖິງໜ້າເວັບໃນ TYPO3 ຜ່ານ '.../?id=123'. ຖ້າໜ້າທີ່ມີ ID '123' ມີ URL Alias ແມ່ນ 'one_two_three', URL '.../?id=one_two_three' ກໍຈະສະແດງໜ້າດຽວກັນນັ້ນ ເພາະ 'one_two_three' ແມ່ນ URL Alias ສຳລັບ ID '123'.
+ໂດຍປົກກະຕິແລ້ວ URL Alias ຈະຖືກກຳນົດໃຫ້ສະເພາະໜ້າເວັບທີ່ຖືກນຳໃຊ້ເລື້ອຍໆເທົ່ານັ້ນ ບໍ່ແມ່ນທຸກໆໜ້າ. ໃນການຕັ້ງຄ່າ TYPO3 ສ່ວນໃຫຍ່ ເຈົ້າສາມາດໃຊ້ໄວຍາກອນ '.. &amp;lt;link one_two_three&amp;gt;ໄປທີ່ໜ້າເວັບ&amp;lt;/link&amp;gt; ..' ເພື່ອສ້າງລິ້ງໄປຫາໜ້າເວັບນັ້ນ ເຊິ່ງຈະຈື່ໄດ້ງ່າຍກວ່າ.
+ການນຳໃຊ້ອື່ນແມ່ນ ເມື່ອເຈົ້າຕ້ອງການປ່ຽນໜ້າເວັບທີ່ລິ້ງທີ່ໃຊ້ເປັນປະຈຳນັ້ນຊີ້ໄປຫາ. ໃນກໍລະນີນີ້ ເຈົ້າສາມາດລຶບ URL Alias ຂອງໜ້າເດີມອອກ ແລະ ເພີ່ມມັນເຂົ້າໃນໜ້າໃໝ່. ລິ້ງທັງໝົດທີ່ໃຊ້ URL Alias ນັ້ນ ກໍຈະອ້າງອີງໄປຫາໜ້າໃໝ່ ແລະ ໝາຍເລກ ID ໃໝ່ຂອງມັນທັນທີ.</target></trans-unit>
+      <trans-unit id="alias.syntax" resname="alias.syntax" xml:space="preserve" approved="yes">
+				<source>A URL Alias can contain only lowercase alphanumeric characters and must be unique.
+Please note: If the URL Alias already exists in the site, it will have a number added to the end of it.</source>
+			<target state="final">URL Alias ສາມາດປະກອບມີພຽງແຕ່ຕົວອັກສອນພາສາອັງກິດພິມນ້ອຍ ແລະ ຕົວເລກເທົ່ານັ້ນ ແລະ ຕ້ອງບໍ່ຊ້ຳກັນ.
+ໝາຍເຫດ: ຫາກ URL Alias ນັ້ນມີຢູ່ແລ້ວໃນເວັບໄຊ, ມັນຈະມີຕົວເລກເພີ່ມເຂົ້າທາງທ້າຍໂດຍອັດຕະໂນມັດ.</target></trans-unit>
+      <trans-unit id="target.description" resname="target.description" approved="yes">
+        <source>This sets the default Link Target for menu items linking to this page. Can also used to open the page as a popup window.</source>
+        <target state="final">ນີ້ແມ່ນການຕັ້ງຄ່າ ເປົ້າໝາຍລິ້ງ (Link Target) ເລີ່ມຕົ້ນ ສຳລັບລາຍການເມນູທີ່ລິ້ງມາມາຫາໜ້ານີ້. ນອກນັ້ນຍັງສາມາດໃຊ້ເພື່ອເປີດໜ້າເວັບເປັນໜ້າຕ່າງປັອບອັບ (Popup) ໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="target.details" resname="target.details" xml:space="preserve" approved="yes">
+				<source>The Link Target overrides the default Link Target behavior, which should already be configured correctly for most pages in the website TypoScript template.
+There are additional options available by using the Link Target field
+
+Setting an integer value at the beginning of the field sets it as the default type for the page.
+For example, if an RSS feed is configured in TypoScript as typeNum=100, setting the Link Target to 100 could be used to add an RSS link in the menu.
+
+The following syntax is used to open the page in a popup window:
+400x200 - Opens the page in a 400x200 popup window.
+230x450:resizable=0,location=1 - Opens the page in a 230x450 popup window that is not resizable and has an address bar.
+
+Combined:
+100 600x350 - Opens the page in a 600x350 popup with type=100
+2 _blank - Opens the page with target "_blank" and type=2</source>
+			<target state="final">ເປົ້າໝາຍລິ້ງ ຈະຂ້າມຜ່ານການເຮັດວຽກຂອງເປົ້າໝາຍລິ້ງເລີ່ມຕົ້ນ, ເຊິ່ງປົກກະຕິແລ້ວຈະຖືກຕັ້ງຄ່າໄວ້ຢ່າງຖືກຕ້ອງສຳລັບໜ້າສ່ວນໃຫຍ່ໃນແມ່ແບບ TypoScript ຂອງເວັບໄຊ.
+ມີຕົວເລືອກເພີ່ມເຕີມໃນການນຳໃຊ້ຫ້ອງເປົ້າໝາຍລິ້ງ ດັ່ງນີ້:
+
+ການໃສ່ຄ່າຕົວເລກຈຳນວນຖ້ວນຢູ່ທາງໜ້າ ຈະເປັນການກຳນົດປະເພດ (type) ເລີ່ມຕົ້ນໃຫ້ກັບໜ້າ.
+ຕົວຢ່າງ: ຖ້າ RSS feed ຖືກຕັ້ງຄ່າໃນ TypoScript ເປັນ typeNum=100, ການຕັ້ງເປົ້າໝາຍລິ້ງເປັນ 100 ຈະຖືກໃຊ້ເພື່ອເພີ່ມລິ້ງ RSS ໃນເມນູ.
+
+ໄວຍາກອນຕໍ່ໄປນີ້ແມ່ນໃຊ້ເພື່ອເປີດໜ້າເວັບໃນໜ້າຕ່າງປັອບອັບ:
+400x200 - ເປີດໜ້າເວັບໃນໜ້າຕ່າງປັອບອັບຂະໜາດ 400x200.
+230x450:resizable=0,location=1 - ເປີດໜ້າເວັບໃນໜ້າຕ່າງປັອບອັບຂະໜາດ 230x450 ທີ່ບໍ່ສາມາດປັບຂະໜາດໄດ້ ແລະ ມີແຖບທີ່ຢູ່ (address bar).
+
+ການໃຊ້ຮ່ວມກັນ:
+100 600x350 - ເປີດໜ້າເວັບໃນປັອບອັບຂະໜາດ 600x350 ດ້ວຍ type=100
+2 _blank - ເປີດໜ້າເວັບດ້ວຍເປົ້າໝາຍ "_blank" ແລະ type=2</target></trans-unit>
+      <trans-unit id="cache_timeout.description" resname="cache_timeout.description" approved="yes">
+        <source>Sets the Cache Lifetime for the page.</source>
+        <target state="final">ຕັ້ງຄ່າໄລຍະເວລາເກັບແຄສ (Cache Lifetime) ສຳລັບໜ້າເວັບ.</target>
+      </trans-unit>
+      <trans-unit id="cache_timeout.details" resname="cache_timeout.details" xml:space="preserve" approved="yes">
+				<source>By default, pages are cached for 24 hours. After 24 hours, the page is constructed again and rewritten to the cache. Depending on your configuration, the cache may be cleared at midnight.
+When specific pages need a longer or shorter cache lifetime than the default, this option can be used.</source>
+			<target state="final">ໂດຍທົ່ວໄປ, ໜ້າເວັບຈະຖືກເກັບແຄສໄວ້ເປັນເວລາ 24 ຊົ່ວໂມງ. ຫຼັງຈາກ 24 ຊົ່ວໂມງ, ໜ້າເວັບຈະຖືກສ້າງຂຶ້ນໃໝ່ ແລະ ຂຽນທັບລົງໃນແຄສ. ຂຶ້ນກັບການຕັ້ງຄ່າຂອງເຈົ້າ, ແຄສອາດຈະຖືກລຶບລ້າງໃນຕອນທ່ຽງຄືນ.
+ເມື່ອໜ້າໃດໜຶ່ງຕ້ອງການໄລຍະເວລາເກັບແຄສທີ່ຍາວ ຫຼື ສັ້ນກວ່າຄ່າເລີ່ມຕົ້ນ, ສາມາດໃຊ້ຕົວເລືອກນີ້ໄດ້.</target></trans-unit>
+      <trans-unit id="no_search.description" resname="no_search.description" approved="yes">
+        <source>If enabled, this option excludes the page from searching operations on the website.</source>
+        <target state="final">ຫາກເປີດໃຊ້, ຕົວເລືອກນີ້ຈະແຍກໜ້າເວັບອອກຈາກການຄົ້ນຫາໃນເວັບໄຊ.</target>
+      </trans-unit>
+      <trans-unit id="php_tree_stop.description" resname="php_tree_stop.description" approved="yes">
+        <source>If enabled, this option excludes the subtree from rendering in the backend.</source>
+        <target state="final">ຖ້າເປີດໃຊ້, ຕົວເລືອກນີ້ຈະແຍກກິ່ງງ່າຍ່ອຍ (Subtree) ອອກຈາກການສະແດງຜົນໃນລະບົບຫຼັງບ້ານ.</target>
+      </trans-unit>
+      <trans-unit id="author.description" resname="author.description" approved="yes">
+        <source>Enter the page author's name.</source>
+        <target state="final">ໃສ່ຊື່ຜູ້ຂຽນໜ້າເວັບ.</target>
+      </trans-unit>
+      <trans-unit id="author.details" resname="author.details" xml:space="preserve" approved="yes">
+				<source>Whether the author name is used or not depends on the setup of your TypoScript template.
+
+- You may use it in a meta-tag.
+- If you're using TYPO3 pages as 'articles' then you could use this field to display the name of the page (article) author.</source>
+			<target state="final">ຊື່ຜູ້ຂຽນຈະຖືກນຳໃຊ້ຫຼືບໍ່ນັ້ນ ແມ່ນຂຶ້ນກັບການຕັ້ງຄ່າແມ່ແບບ TypoScript ຂອງເຈົ້າ.
+
+- ເຈົ້າອາດຈະໃຊ້ມັນໃນ meta-tag.
+- ຖ້າເຈົ້າໃຊ້ໜ້າ TYPO3 ເປັນ 'ບົດຄວາມ (articles)', ເຈົ້າສາມາດໃຊ້ຫ້ອງນີ້ເພື່ອສະແດງຊື່ຜູ້ຂຽນໜ້າ (ບົດຄວາມ) ນັ້ນໆໄດ້.</target></trans-unit>
+      <trans-unit id="_author.seeAlso" resname="_author.seeAlso" approved="yes">
+        <source>pages:author_email</source>
+        <target state="final">pages:author_email</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="author_email.description" resname="author_email.description" approved="yes">
+        <source>Enter the page author's email address.</source>
+        <target state="final">ໃສ່ທີ່ຢູ່ອີເມລ໌ຂອງຜູ້ຂຽນໜ້າເວັບ.</target>
+      </trans-unit>
+      <trans-unit id="_author_email.seeAlso" resname="_author_email.seeAlso" approved="yes">
+        <source>pages:author</source>
+        <target state="final">pages:author</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="module.description" resname="module.description" approved="yes">
+        <source>Define the page as containing a Frontend plugin.</source>
+        <target state="final">ກຳນົດວ່າໜ້າເວັບນີ້ມີ ປລັກອິນສ່ວນໜ້າ (Frontend plugin).</target>
+      </trans-unit>
+      <trans-unit id="module.details" resname="module.details" xml:space="preserve" approved="yes">
+				<source>Setting this option lets the Backend knows this page contains specific content or has a specific purpose, such as containing a forum or acting as the root page of a shop section on the website. Based on this setting the Backend is able to display a shortcut list as well as relevant functionality in the 'Web&gt;Modules' module. The Frontend display is largely not affected.
+Marking a page as containing a 'Shop' plugin simply means it'll show up in the shortcut list of modules in the backend.
+
+For additional details on this option, refer to the administration documentation.
+
+It's recommended that only admin-users have access to this field!</source>
+			<target state="final">ການຕັ້ງຕົວເລືອກນີ້ຈະຊ່ວຍໃຫ້ລະບົບຫຼັງບ້ານຮູ້ວ່າໜ້ານີ້ມີເນື້ອຫາສະເພາະ ຫຼື ມີຈຸດປະສົງສະເພາະໃດໜຶ່ງ ເຊັ່ນ: ເປັນບ່ອນເກັບເວັບບອດ (forum) ຫຼື ເປັນໜ້າຫຼັກຂອງສ່ວນຮ້ານຄ້າໃນເວັບໄຊ. ຈາກການຕັ້ງຄ່ານີ້, ລະບົບຫຼັງບ້ານຈະສາມາດສະແດງລາຍການທາງລັດລວມເຖິງຟັງຊັນທີ່ກ່ຽວຂ້ອງໃນໂມດູນ 'Web&gt;Modules' ໄດ້. ສ່ວນການສະແດງຜົນໃນໜ້າເວັບແມ່ນຈະບໍ່ໄດ້ຮັບຜົນກະທົບຫຍັງຫຼາຍ.
+ການໝາຍວ່າໜ້າເວັບມີປລັກອິນ 'Shop' ໝາຍເຖິງໜ້ານັ້ນຈະປາກົດຢູ່ໃນລາຍການທາງລັດຂອງໂມດູນໃນລະບົບຫຼັງບ້ານ.
+
+ສຳລັບລາຍລະອຽດເພີ່ມເຕີມກ່ຽວກັບຕົວເລືອກນີ້, ກະລຸນາເບິ່ງເອກະສານການບໍລິຫານລະບົບ.
+
+ແນະນຳໃຫ້ສະເພາະຜູ້ດູແລລະບົບ (Admin) ເທົ່ານັ້ນທີ່ມີສິດເຂົ້າເຖິງຫ້ອງນີ້!</target></trans-unit>
+      <trans-unit id="media.description" resname="media.description" approved="yes">
+        <source>Attach media files related to the page.</source>
+        <target state="final">ແນບໄຟລ໌ສື່ຕ່າງໆທີ່ກ່ຽວຂ້ອງກັບໜ້າເວັບ.</target>
+      </trans-unit>
+      <trans-unit id="media.details" resname="media.details" xml:space="preserve" approved="yes">
+				<source>This field allows you to attach various files to the page, but how these files are used depends on your template.
+As an example the template could be use this field to allow a logo to be attached to the page or it might expect the first file to be an image used as a link in the navigation menu. Remember, this totally depends on how the template is programmed.</source>
+			<target state="final">ຫ້ອງນີ້ຊ່ວຍໃຫ້ເຈົ້າສາມາດແນບໄຟລ໌ຕ່າງໆໃສ່ໃນໜ້າເວັບໄດ້, ແຕ່ວ່າໄຟລ໌ເຫຼົ່ານັ້ນຈະຖືກນຳໃຊ້ແນວໃດແມ່ນຂຶ້ນກັບແມ່ແບບ (Template) ຂອງເຈົ້າ.
+ຕົວຢ່າງ: ແມ່ແບບອາດຈະໃຊ້ຫ້ອງນີ້ເພື່ອໃຫ້ແນບໂລໂກ້ໃສ່ໜ້າເວັບ ຫຼື ອາດຈະກຳນົດໃຫ້ໄຟລ໌ທຳອິດເປັນຮູບພາບທີ່ຈະໃຊ້ເປັນລິ້ງໃນເມນູນຳທາງ. ຢ່າລືມວ່າ ທຸກຢ່າງແມ່ນຂຶ້ນກັບການຂຽນໂປຣແກຣມຂອງແມ່ແບບນັ້ນໆ.</target></trans-unit>
+      <trans-unit id="subtitle.description" resname="subtitle.description" approved="yes">
+        <source>Enter a subtitle if needed.</source>
+        <target state="final">ໃສ່ຫົວຂໍ້ຮອງ ຫຼື ຄຳອະທິບາຍເພີ່ມເຕີມ ຖ້າຈຳເປັນ.</target>
+      </trans-unit>
+      <trans-unit id="subtitle.details" resname="subtitle.details" approved="yes">
+        <source>Whether this field is used or not depends on the template. In most cases it's not used.</source>
+        <target state="final">ຫ້ອງນີ້ຈະຖືກນຳໃຊ້ຫຼືບໍ່ແມ່ນຂຶ້ນກັບແມ່ແບບ. ໃນກໍລະນີສ່ວນໃຫຍ່ແມ່ນຈະບໍ່ໄດ້ຖືກນຳໃຊ້.</target>
+      </trans-unit>
+      <trans-unit id="url.description" resname="url.description" approved="yes">
+        <source>Enter the URL this page redirects to.</source>
+        <target state="final">ປ້ອນ URL ທີ່ໜ້ານີ້ຈະລິ້ງໄປຫາ.</target>
+      </trans-unit>
+      <trans-unit id="url.details" resname="url.details" xml:space="preserve" approved="yes">
+				<source>For example, 'http://www.typo3.org'.
+
+This option is used only if the page 'Type' is set to 'Link to External URL.'</source>
+			<target state="final">ຕົວຢ່າງ: 'http://www.typo3.org'.
+
+ຕົວເລືອກນີ້ຈະຖືກນຳໃຊ້ກໍຕໍ່ເມື່ອ 'ປະເພດ' ຂອງໜ້າເວັບຖືກຕັ້ງເປັນ 'ລິ້ງໄປຫາ URL ພາຍນອກ (Link to External URL)' ເທົ່ານັ້ນ.</target></trans-unit>
+      <trans-unit id="shortcut.description" resname="shortcut.description" approved="yes">
+        <source>Select a page to act as the Shortcut Target. When the current page is requested in the Frontend, it will be redirected to the Shortcut Target.</source>
+        <target state="final">ເລືອກໜ້າເວັບທີ່ຈະໃຊ້ເປັນ ເປົ້າໝາຍທາງລັດ (Shortcut Target). ເມື່ອມີການເຂົ້າເບິ່ງໜ້າປັດຈຸບັນ, ມັນຈະຖືກສົ່ງໄປຫາໜ້າທີ່ເປັນເປົ້າໝາຍທາງລັດນັ້ນໂດຍອັດຕະໂນມັດ.</target>
+      </trans-unit>
+      <trans-unit id="shortcut.details" resname="shortcut.details" xml:space="preserve" approved="yes">
+				<source>Click the 'Browse for Records' icon and a new window will appear in which you can easily select a page to act as the Shortcut Target.
+
+This option is used only if the page 'Type' is set to 'Shortcut.'</source>
+			<target state="final">ຄລິກທີ່ໄອຄອນ 'ຄົ້ນຫາຂໍ້ມູນ (Browse for Records)' ແລ້ວໜ້າຕ່າງໃໝ່ຈະປາກົດຂຶ້ນ ເຊິ່ງເຈົ້າສາມາດເລືອກໜ້າທີ່ຈະໃຊ້ເປັນເປົ້າໝາຍທາງລັດໄດ້ຢ່າງງ່າຍດາຍ.
+
+ຕົວເລືອກນີ້ຈະຖືກນຳໃຊ້ກໍຕໍ່ເມື່ອ 'ປະເພດ' ຂອງໜ້າເວັບຖືກຕັ້ງເປັນ 'ທາງລັດ (Shortcut)' ເທົ່ານັ້ນ.</target></trans-unit>
+      <trans-unit id="_shortcut.seeAlso" resname="_shortcut.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:doktype,
+pages:shortcut_mode</source>
+				
+			<target state="final">pages:doktype,
+pages:shortcut_mode</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_shortcut.image" resname="_shortcut.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/page_shortcut.gif</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/page_shortcut.gif</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="shortcut.image_descr" resname="shortcut.image_descr" approved="yes">
+        <source>Select a Shortcut Target page with the Element Browser.</source>
+        <target state="final">ເລືອກໜ້າເປົ້າໝາຍທາງລັດ ດ້ວຍຕົວເລືອກອົງປະກອບ (Element Browser).</target>
+      </trans-unit>
+      <trans-unit id="keywords.description" resname="keywords.description" approved="yes">
+        <source>Enter keywords for the page separated by commas. You may also use short phrases.</source>
+        <target state="final">ໃສ່ຄຳສັບຫຼັກ (Keywords) ສຳລັບໜ້າເວັບ ໂດຍຂັ້ນດ້ວຍເຄື່ອງໝາຍຈຸດ. ເຈົ້າສາມາດໃຊ້ເປັນປະໂຫຍກສັ້ນໆກໍໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="keywords.details" resname="keywords.details" xml:space="preserve" approved="yes">
+				<source>Most TYPO3 websites use these keywords in a meta-tag on the page, but you may have to setup the appropriate TypoScript template yourself.
+
+To optimize your page for search engines like Google you should not use more than 3 to 6 keywords. You should also make sure that the keywords are found in the content of the page.
+
+Note that search engine extensions for TYPO3 such as Indexed Search can also be configured to make use of the keywords.
+
+The keywords can also be used to create a menu of related pages. Create a Content Element of type 'Sitemap' and then choose the menu type &lt;i&gt;Related pages (based on keywords)&lt;/i&gt;.</source>
+			<target state="final">ເວັບໄຊ TYPO3 ສ່ວນໃຫຍ່ຈະໃຊ້ຄຳສັບຫຼັກເຫຼົ່ານີ້ໃນ meta-tag ຂອງໜ້າເວັບ, ແຕ່ເຈົ້າອາດຈະຕ້ອງຕັ້ງຄ່າແມ່ແບບ TypoScript ໃຫ້ເໝາະສົມດ້ວຍຕົນເອງ.
+
+ເພື່ອໃຫ້ໜ້າເວັບຂອງເຈົ້າຄົ້ນຫາໄດ້ງ່າຍໃນ Search Engine ເຊັ່ນ Google, ເຈົ້າບໍ່ຄວນໃຊ້ຄຳສັບຫຼັກເກີນ 3 ຫາ 6 ຄຳ. ນອກນັ້ນ ເຈົ້າຄວນກວດສອບໃຫ້ແນ່ໃຈວ່າຄຳສັບຫຼັກເຫຼົ່ານັ້ນມີຢູ່ໃນເນື້ອຫາຂອງໜ້າເວັບນຳ.
+
+ໝາຍເຫດ: ສ່ວນເສີມສຳລັບການຄົ້ນຫາໃນ TYPO3 ເຊັ່ນ Indexed Search ສາມາດຖືກຕັ້ງຄ່າໃຫ້ໃຊ້ປະໂຫຍກຈາກຄຳສັບຫຼັກເຫຼົ່ານີ້ໄດ້.
+
+ຄຳສັບຫຼັກຍັງສາມາດໃຊ້ເພື່ອສ້າງເມນູຂອງໜ້າທີ່ກ່ຽວຂ້ອງໄດ້. ໂດຍການສ້າງອົງປະກອບເນື້ອຫາ (Content Element) ປະເພດ 'Sitemap' ແລ້ວເລືອກປະເພດເມນູເປັນ &lt;i&gt;ໜ້າທີ່ກ່ຽວຂ້ອງ (ອີງຕາມຄຳສັບຫຼັກ)&lt;/i&gt;.</target></trans-unit>
+      <trans-unit id="_keywords.seeAlso" resname="_keywords.seeAlso" approved="yes">
+        <source>pages:description</source>
+        <target state="final">pages:description</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a short description of the page. It will be displayed in the result lists of most search engines.</source>
+        <target state="final">ໃສ່ຄຳອະທິບາຍສັ້ນໆກ່ຽວກັບໜ້າເວັບ. ມັນຈະຖືກສະແດງຢູ່ໃນລາຍການຜົນການຄົ້ນຫາຂອງ Search Engine ສ່ວນໃຫຍ່.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" xml:space="preserve" approved="yes">
+				<source>Most websites insert this description in a meta-tag on the page, but you may have to configure this yourself in your TypoScript template.
+
+Most search engines will display the description in their result list. Thus, the text should be short (about 160 characters maximum), and its wording should make sense when it shows up in the result list.
+
+In addition, the description will be displayed if you create a Content Element of type 'Sitemap' and then choose the menu type &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt;. If an abstract exists for the page, it will be used instead of the description.
+
+&lt;b&gt;Note:&lt;/b&gt; Some search engines only use the description if the text is not found elsewhere in the content. So do not just repeat yourself.</source>
+			<target state="final">ເວັບໄຊສ່ວນໃຫຍ່ຈະໃສ່ຄຳອະທິບາຍນີ້ໄວ້ໃນ meta-tag ຂອງໜ້າເວັບ, ແຕ່ເຈົ້າອາດຈະຕ້ອງຕັ້ງຄ່າໃນແມ່ແບບ TypoScript ຂອງເຈົ້າເອງ.
+
+Search Engine ສ່ວນໃຫຍ່ຈະສະແດງຄຳອະທິບາຍນີ້ໃນລາຍການຜົນການຄົ້ນຫາ. ດັ່ງນັ້ນ, ຂໍ້ຄວາມຄວນຈະສັ້ນ (ປະມານບໍ່ເກີນ 160 ຕົວອັກສອນ), ແລະ ຄວນໃຊ້ຄຳເວົ້າທີ່ອ່ານແລ້ວເຂົ້າໃຈງ່າຍເມື່ອມັນປາກົດຢູ່ໃນຜົນການຄົ້ນຫາ.
+
+ນອກນັ້ນ, ຄຳອະທິບາຍນີ້ຈະຖືກສະແດງຫາກເຈົ້າສ້າງອົງປະກອບເນື້ອຫາປະເພດ 'Sitemap' ແລ້ວເລືອກປະເພດເມນູເປັນ &lt;i&gt;ເມນູໜ້າຍ່ອຍຂອງໜ້າເຫຼົ່ານີ້ (ພ້ອມບົດຄັດຫຍໍ້)&lt;/i&gt;. ຖ້າມີບົດຄັດຫຍໍ້ (abstract) ຢູ່ແລ້ວ, ມັນຈະຖືກນຳມາໃຊ້ແທນຄຳອະທິບາຍນີ້.
+
+&lt;b&gt;ໝາຍເຫດ:&lt;/b&gt; Search Engine ບາງແຫ່ງຈະໃຊ້ຄຳອະທິບາຍນີ້ກໍຕໍ່ເມື່ອບໍ່ພົບຂໍ້ຄວາມດັ່ງກ່າວໃນສ່ວນອື່ນໆຂອງເນື້ອຫາເທົ່ານັ້ນ. ດັ່ງນັ້ນ ບໍ່ຄວນຂຽນຂໍ້ຄວາມທີ່ຊ້ຳກັບເນື້ອຫາຫຼັກຫຼາຍເກີນໄປ.</target></trans-unit>
+      <trans-unit id="_description.seeAlso" resname="_description.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:keywords
+pages:abstract</source>
+			<target state="final">pages:keywords
+pages:abstract</target></trans-unit>
+      <trans-unit id="abstract.description" resname="abstract.description" approved="yes">
+        <source>Enter an abstract of the contents. It may be displayed in an overview of articles.</source>
+        <target state="final">ໃສ່ບົດຄັດຫຍໍ້ຂອງເນື້ອຫາ. ມັນອາດຈະຖືກສະແດງຢູ່ໃນສ່ວນພາບລວມຂອງບົດຄວາມ.</target>
+      </trans-unit>
+      <trans-unit id="abstract.details" resname="abstract.details" xml:space="preserve" approved="yes">
+				<source>An abstract is a short description of the page content that might be a little longer than the one in the &lt;i&gt;Description&lt;/i&gt; field.
+
+Unlike the description, the abstract is not meant for display in search engine result lists, but is instead intended for you own use.
+
+If you create a Content Element of type &lt;i&gt;Sitemap&lt;/i&gt; and then choose &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt; an overview of pages will be created. If an abstract is available for a page it will be used instead of the description.
+
+&lt;b&gt;Note:&lt;/b&gt; You do not have to enter the text of the description into the &lt;i&gt;Abstract field&lt;/i&gt; again.
+
+Admins can also make custom use of this field via their TypoScript templates.</source>
+			<target state="final">ບົດຄັດຫຍໍ້ (Abstract) ແມ່ນຄຳອະທິບາຍສັ້ນໆກ່ຽວກັບເນື້ອຫາຂອງໜ້າເວັບ ເຊິ່ງອາດຈະຍາວກວ່າຂໍ້ຄວາມໃນຫ້ອງ &lt;i&gt;ຄຳອະທິບາຍ (Description)&lt;/i&gt; ເລັກນ້ອຍ.
+
+ບົດຄັດຫຍໍ້ບໍ່ຄືກັບຄຳອະທິບາຍ ເພາະມັນບໍ່ໄດ້ມີໄວ້ເພື່ອສະແດງໃນຜົນການຄົ້ນຫາຂອງ Search Engine ແຕ່ມີໄວ້ເພື່ອການນຳໃຊ້ພາຍໃນເວັບໄຊຂອງເຈົ້າເອງ.
+
+ຖ້າເຈົ້າສ້າງອົງປະກອບເນື້ອຫາປະເພດ &lt;i&gt;Sitemap&lt;/i&gt; ແລ້ວເລືອກ &lt;i&gt;ເມນູໜ້າຍ່ອຍຂອງໜ້າເຫຼົ່ານີ້ (ພ້ອມບົດຄັດຫຍໍ້)&lt;/i&gt;, ພາບລວມຂອງໜ້າເວັບຕ່າງໆຈະຖືກສ້າງຂຶ້ນ. ຫາກໜ້າໃດມີບົດຄັດຫຍໍ້, ມັນຈະຖືກນຳມາໃຊ້ແທນຄຳອະທິບາຍ.
+
+&lt;b&gt;ໝາຍເຫດ:&lt;/b&gt; ເຈົ້າບໍ່ຈຳເປັນຕ້ອງໃສ່ຂໍ້ຄວາມດຽວກັບຄຳອະທິບາຍລົງໃນ &lt;i&gt;ຫ້ອງບົດຄັດຫຍໍ້&lt;/i&gt; ອີກ.
+
+ຜູ້ດູແລລະບົບຍັງສາມາດນຳໃຊ້ຫ້ອງນີ້ໃນຮູບແບບອື່ນໆ ຜ່ານແມ່ແບບ TypoScript ຂອງພວກເຂົາໄດ້.</target></trans-unit>
+      <trans-unit id="_abstract.seeAlso" resname="_abstract.seeAlso" approved="yes">
+        <source>pages:description</source>
+        <target state="final">pages:description</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="newUntil.description" resname="newUntil.description" approved="yes">
+        <source>Enter the date at which this page is no longer considered new.</source>
+        <target state="final">ໃສ່ວັນທີທີ່ໜ້າເວັບນີ້ຈະບໍ່ຖືກຖືວ່າເປັນໜ້າ "ໃໝ່" ອີກຕໍ່ໄປ.</target>
+      </trans-unit>
+      <trans-unit id="newUntil.details" resname="newUntil.details" xml:space="preserve" approved="yes">
+				<source>The 'New Until' date of the page has no effect on the display of the webpage. This value is instead for internal use as a reminder of the date when the content of this page should be revised. If the content of the page will become outdated on a certain day, you could set this value to that approximate date.
+To get an overview of when pages will be outdated, use the 'Pagetree overview' in the 'Web&gt;Info' Module.</source>
+			<target state="final">ວັນທີ 'ເປັນຂອງໃໝ່ຈົນເຖິງ (New Until)' ຂອງໜ້າເວັບຈະບໍ່ມີຜົນຕໍ່ການສະແດງຜົນໃນໜ້າເວັບ. ຄ່ານີ້ມີໄວ້ເພື່ອໃຊ້ພາຍໃນເພື່ອເຕືອນວ່າຄວນກວດສອບເນື້ອຫາຂອງໜ້ານີ້ຄືນໃໝ່ເມື່ອໃດ. ຖ້າເນື້ອຫາຈະໝົດອາຍຸໃນມື້ໃດມື້ໜຶ່ງ, ເຈົ້າສາມາດຕັ້ງຄ່ານີ້ໄວ້ເປັນວັນທີປະມານນັ້ນ.
+ເພື່ອເບິ່ງພາບລວມວ່າໜ້າໃດຈະໝົດອາຍຸເມື່ອໃດ, ໃຫ້ໃຊ້ 'ພາບລວມໂຄງສ້າງໜ້າເວັບ (Pagetree overview)' ໃນໂມດູນ 'Web&gt;Info'.</target></trans-unit>
+      <trans-unit id="newUntil.syntax" resname="newUntil.syntax" approved="yes">
+        <source>See Page / Publication Date (click below)</source>
+        <target state="final">ເບິ່ງ ໜ້າ / ວັນທີເຜີຍແຜ່ (ຄລິກຂ້າງລຸ່ມ)</target>
+      </trans-unit>
+      <trans-unit id="_newUntil.seeAlso" resname="_newUntil.seeAlso" approved="yes">
+        <source>pages:starttime</source>
+        <target state="final">pages:starttime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="lastUpdated.description" resname="lastUpdated.description" approved="yes">
+        <source>Enter the date and time of the most recent update to this page.</source>
+        <target state="final">ໃສ່ວັນທີ ແລະ ເວລາທີ່ມີການອັບເດດໜ້ານີ້ຫຼ້າສຸດ.</target>
+      </trans-unit>
+      <trans-unit id="lastUpdated.details" resname="lastUpdated.details" xml:space="preserve" approved="yes">
+				<source>How the value of this field is used is determined by the TypoScript template of the website. 'Last Update' content needs to be inserted on the pages and the TypoScript template must be configured to use this value.
+The most common use is to display the date from the automatically updated 'tstamp' field &lt;em&gt;unless&lt;/em&gt; the 'Last Update' field is set. In this case, the date in 'Last Update' is used.</source>
+			<target state="final">ການນຳໃຊ້ຄ່າໃນຫ້ອງນີ້ແມ່ນຂຶ້ນກັບແມ່ແບບ TypoScript ຂອງເວັບໄຊ. ເນື້ອຫາ 'ອັບເດດຫຼ້າສຸດ' ຕ້ອງຖືກໃສ່ລົງໃນໜ້າເວັບ ແລະ ແມ່ແບບ TypoScript ຕ້ອງຖືກຕັ້ງຄ່າໃຫ້ໃຊ້ຄ່ານີ້.
+ການນຳໃຊ້ທົ່ວໄປທີ່ສຸດແມ່ນການສະແດງວັນທີຈາກຫ້ອງ 'tstamp' ທີ່ອັບເດດອັດຕະໂນມັດ &lt;em&gt;ເວັ້ນເສຍແຕ່&lt;/em&gt; ຫ້ອງ 'ອັບເດດຫຼ້າສຸດ' ຈະຖືກຕັ້ງຄ່າໄວ້. ໃນກໍລະນີນັ້ນ, ຈະໃຊ້ວັນທີຈາກຫ້ອງ 'ອັບເດດຫຼ້າສຸດ' ແທນ.</target></trans-unit>
+      <trans-unit id="lastUpdated.syntax" resname="lastUpdated.syntax" xml:space="preserve" approved="yes">
+				<source>The format is HH:MM DD-MM-YYYY or HH:MM MM-DD-YYYY depending on your TYPO3 configuration.
+If you insert a 'd' the current time and date is inserted. You can also append any value in the field with a number lie '+10' which will add 10 days to the current value.</source>
+			<target state="final">ຮູບແບບແມ່ນ ເວລາ (HH:MM) ວັນ-ເດືອນ-ປີ (DD-MM-YYYY) ຫຼື ເວລາ ເດືອນ-ວັນ-ປີ (MM-DD-YYYY) ຂຶ້ນກັບການຕັ້ງຄ່າ TYPO3 ຂອງເຈົ້າ.
+ຖ້າເຈົ້າປ້ອນ 'd', ເວລາ ແລະ ວັນທີປັດຈຸບັນຈະຖືກໃສ່ໃຫ້. ເຈົ້າຍັງສາມາດເພີ່ມຄ່າໃນຫ້ອງດ້ວຍຕົວເລກ ເຊັ່ນ '+10' ເພື່ອເພີ່ມອີກ 10 ວັນ ຈາກຄ່າປັດຈຸບັນ.</target></trans-unit>
+      <trans-unit id="nav_hide.description" resname="nav_hide.description" approved="yes">
+        <source>With this option the page will be not appear in menus in the Frontend. The page can still be viewed if linked by going directly to its URL.</source>
+        <target state="final">ດ້ວຍຕົວເລືອກນີ້, ໜ້າເວັບຈະບໍ່ປາກົດຢູ່ໃນເມນູຂອງສ່ວນໜ້າເວັບ. ແຕ່ຍັງສາມາດເຂົ້າເບິ່ງໜ້າເວັບໄດ້ຫາກມີລິ້ງ ຫຼື ເຂົ້າໄປທີ່ URL ຂອງໜ້ານັ້ນໂດຍກົງ.</target>
+      </trans-unit>
+      <trans-unit id="_nav_hide.seeAlso" resname="_nav_hide.seeAlso" approved="yes">
+        <source>pages:nav_title</source>
+        <target state="final">pages:nav_title</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="nav_title.description" resname="nav_title.description" approved="yes">
+        <source>Alternative Navigation Title for menu items in the Frontend. When set, this value is used instead of the Page Title.</source>
+        <target state="final">ຊື່ສຳລັບການນຳທາງ (Navigation Title) ທາງເລືອກ ສຳລັບລາຍການເມນູໃນສ່ວນໜ້າເວັບ. ເມື່ອຕັ້ງຄ່ານີ້, ມັນຈະຖືກນຳໃຊ້ແທນ "ຊື່ໜ້າເວັບ (Page Title)".</target>
+      </trans-unit>
+      <trans-unit id="content_from_pid.description" resname="content_from_pid.description" xml:space="preserve" approved="yes">
+				<source>If set, this is an alternative page to select Content Elements from.
+Whether this field is used depends on the website's TypoScript template.</source>
+			<target state="final">ຫາກຕັ້ງຄ່ານີ້, ມັນຈະເປັນໜ້າທາງເລືອກໃນການເລືອກອົງປະກອບເນື້ອຫາ (Content Elements) ມາໃຊ້.
+ຫ້ອງນີ້ຈະຖືກນຳໃຊ້ຫຼືບໍ່ແມ່ນຂຶ້ນກັບແມ່ແບບ TypoScript ຂອງເວັບໄຊ.</target></trans-unit>
+      <trans-unit id="shortcut_mode.description" resname="shortcut_mode.description" approved="yes">
+        <source>Select a Shortcut Mode. By default the shortcut page must have a Shortcut Target to jump to. Other options are to go to the first subpage, to a random subpage, or back up to the parent page.</source>
+        <target state="final">ເລືອກຮູບແບບທາງລັດ (Shortcut Mode). ໂດຍທົ່ວໄປ ໜ້າທາງລັດຕ້ອງມີເປົ້າໝາຍທາງລັດເພື່ອໂດດໄປຫາ. ຕົວເລືອກອື່ນໆແມ່ນ ໄປຫາໜ້າຍ່ອຍທຳອິດ, ໄປຫາໜ້າຍ່ອຍແບບສຸ່ມ, ຫຼື ກັບຄືນໄປຫາໜ້າຫຼັກ (Parent page).</target>
+      </trans-unit>
+      <trans-unit id="mount_pid.description" resname="mount_pid.description" approved="yes">
+        <source>Mount this page. If set, subpages of this page come from the Mounted Page instead.</source>
+        <target state="final">ເຊື່ອມຕໍ່ (Mount) ໜ້ານີ້. ຫາກຕັ້ງຄ່າ, ໜ້າຍ່ອຍຂອງໜ້ານີ້ຈະມາຈາກ "ໜ້າທີ່ຖືກເຊື່ອມຕໍ່ (Mounted Page)" ແທນ.</target>
+      </trans-unit>
+      <trans-unit id="mount_pid.details" resname="mount_pid.details" approved="yes">
+        <source>In the Frontend this is done by adding a new variable, &amp;MP, to the URL. This links the mounted branch to the main branch by pairing page ids.</source>
+        <target state="final">ໃນສ່ວນໜ້າເວັບ, ສິ່ງນີ້ເຮັດໄດ້ໂດຍການເພີ່ມຕົວແປໃໝ່ &amp;MP ເຂົ້າໃນ URL. ນີ້ແມ່ນການລິ້ງສາຂາທີ່ຖືກເຊື່ອມຕໍ່ເຂົ້າກັບສາຂາຫຼັກໂດຍການຈັບຄູ່ ID ຂອງໜ້າ.</target>
+      </trans-unit>
+      <trans-unit id="_mount_pid.seeAlso" resname="_mount_pid.seeAlso" approved="yes">
+        <source>pages:mount_pid_ol</source>
+        <target state="final">pages:mount_pid_ol</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="mount_pid_ol.description" resname="mount_pid_ol.description" approved="yes">
+        <source>Show content for the current page or replace it completely with the Mounted Page.</source>
+        <target state="final">ສະແດງເນື້ອຫາສຳລັບໜ້າປັດຈຸບັນ ຫຼື ແທນທີ່ມັນທັງໝົດດ້ວຍໜ້າທີ່ຖືກເຊື່ອມຕໍ່ (Mounted Page).</target>
+      </trans-unit>
+      <trans-unit id="_mount_pid_ol.seeAlso" resname="_mount_pid_ol.seeAlso" approved="yes">
+        <source>pages:mount_pid</source>
+        <target state="final">pages:mount_pid</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="title.description.+" resname="title.description.+" approved="yes">
+        <source>This is normally shown in the website navigation.</source>
+        <target state="final">ປົກກະຕິແລ້ວ ສິ່ງນີ້ຈະຖືກສະແດງໃນສ່ວນການນຳທາງຂອງເວັບໄຊ.</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details.+" resname="TSconfig.details.+" xml:space="preserve" approved="yes">
+				<source>&lt;strong&gt;Example:&lt;/strong&gt;
+The 'Web&gt;Page' module lets you create content in four columns, Left, Normal, Right, Border if the template has been configured to use this option. (However, most websites use only one or two columns so some of these content columns are just taking up space and confusing users.)
+If you enter this string in the 'TSConfig' field, the 'Web&gt;Page' Module will only show the 'Normal' and 'Border' column!
+
+&lt;em&gt;mod.web_layout.tt_content.colPos_list = 0,3&lt;/em&gt;
+
+(Must be entered in a single line!)</source>
+			<target state="final">&lt;strong&gt;ຕົວຢ່າງ:&lt;/strong&gt;
+ໂມດູນ 'Web&gt;Page' ຊ່ວຍໃຫ້ເຈົ້າສ້າງເນື້ອຫາໄດ້ໃນ 4 ຄໍລຳ ຄື: ຊ້າຍ (Left), ປົກກະຕິ (Normal), ຂວາ (Right), ແລະ ຂອບ (Border) ຫາກແມ່ແບບຖືກຕັ້ງຄ່າໃຫ້ໃຊ້ຕົວເລືອກນີ້. (ແນວໃດກໍຕາມ, ເວັບໄຊສ່ວນໃຫຍ່ໃຊ້ພຽງແຕ່ໜຶ່ງ ຫຼື ສອງຄໍລຳ ດັ່ງນັ້ນບາງຄໍລຳຈຶ່ງເປັນການເປືອງເນື້ອທີ່ ແລະ ເຮັດໃຫ້ຜູ້ໃຊ້ສັບສົນ.)
+ຫາກເຈົ້າປ້ອນຂໍ້ຄວາມນີ້ລົງໃນຫ້ອງ 'TSConfig', ໂມດູນ 'Web&gt;Page' ຈະສະແດງສະເພາະຄໍລຳ 'Normal' ແລະ 'Border' ເທົ່ານັ້ນ!
+
+&lt;em&gt;mod.web_layout.tt_content.colPos_list = 0,3&lt;/em&gt;
+
+(ຕ້ອງປ້ອນໃນແຖວດຽວ!)</target></trans-unit>
+      <trans-unit id="l18n_cfg.description" resname="l18n_cfg.description" approved="yes">
+        <source>Affect availability of pages in the various languages.</source>
+        <target state="final">ມີຜົນຕໍ່ການມີໃຫ້ໃຊ້ຂອງໜ້າເວັບໃນພາສາຕ່າງໆ.</target>
+      </trans-unit>
+      <trans-unit id="l18n_cfg.details" resname="l18n_cfg.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Hide default language of page&lt;/b&gt;
+If set, the page is only available in translated versions and not in the default language. Any attempt to access the page in the default language will result in an error message.
+
+&lt;b&gt;Hide page if no translation for current language exists&lt;/b&gt;
+If set, any attempt to access the page in a translation that does not exist will result in an error message. By default, accessing an untranslated page will just show the default language instead.</source>
+			<target state="final">&lt;b&gt;ເຊື່ອງພາສາເລີ່ມຕົ້ນຂອງໜ້າເວັບ&lt;/b&gt;
+ຫາກຕັ້ງຄ່ານີ້, ໜ້າເວັບຈະມີໃຫ້ໃຊ້ສະເພາະເວີຊັນທີ່ແປແລ້ວເທົ່ານັ້ນ ແລະ ບໍ່ມີໃນພາສາເລີ່ມຕົ້ນ. ການພະຍາຍາມເຂົ້າເຖິງໜ້າໃນພາສາເລີ່ມຕົ້ນຈະເຮັດໃຫ້ເກີດຂໍ້ຄວາມຜິດພາດ.
+
+&lt;b&gt;ເຊື່ອງໜ້າເວັບ ຫາກບໍ່ມີການແປສຳລັບພາສາປັດຈຸບັນ&lt;/b&gt;
+ຫາກຕັ້ງຄ່ານີ້, ການພະຍາຍາມເຂົ້າເຖິງໜ້າໃນພາສາທີ່ບໍ່ມີການແປຈະເຮັດໃຫ້ເກີດຂໍ້ຄວາມຜິດພາດ. ໂດຍທົ່ວໄປ, ການເຂົ້າເຖິງໜ້າທີ່ບໍ່ໄດ້ແປຈະສະແດງເປັນພາສາເລີ່ມຕົ້ນແທນ.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
