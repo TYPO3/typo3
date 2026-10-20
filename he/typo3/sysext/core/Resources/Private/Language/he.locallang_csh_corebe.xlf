@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814854" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="he">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>TYPO3 Core</source>
+        <target state="final">TYPO3 מרכז מערכת</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>TYPO3 is a Content Management Framework which consists of a central program core with only limited functionality. To extend this core system there are hundreds of extensions which in combination will provide a very capable system.</source>
+        <target state="final">TYPO3 היא מערכת שמסדרת אינפורמציה שכוללת תוכנית מרכזית עם יכולות מוגבלות. כדי להרחיב את המערכת המרכזית יש מאות תוספות אפשריות לשלב איתה שגורמים למערכת עם הרבה יותר יכולות.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>For most people TYPO3 is equivalent to a CMS providing a backend for management of the content and a frontend engine for website display. However TYPO3s core is natively designed to be a general purpose framework for management of database content. The core of TYPO3 delivers a set of principles for storage of this content, user access management, editing of the content, uploading and managing files etc. Many of these principles are expressed as an API (Application Programmers Interface) for use in the &lt;em&gt;extensions&lt;/em&gt; which ultimately adds most of the real functionality.</source>
+        <target state="final">לאנשים רבים TYPO3 הוא שווה לCMS שנותן גב לניהול של החומר ופורנט למנוע של ראיית אתרים. אבל המרכז של typo3 שולח רשימת עקרונות לשמירה של החומר, ניהול גישת המשתמש, עריכה של החומר, ניהול והעלאת קבצים וכ״ו. רב העקרונות אלה מבעים בצורת API (Application Programmers Interface) לשימוש ב&lt;em&gt;extensions&lt;/em&gt; שבסופו של דבר מוסיף רוב היכולות האמיתיות.</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" approved="yes">
+        <source>TYPO3 backend login screen.</source>
+        <target state="final">מסך כניסה ל-TYPO3 backend.</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.alttitle" resname="menu_modules.alttitle" approved="yes">
+        <source>Backend modules</source>
+        <target state="final">מודולים backend</target>
+      </trans-unit>
+      <trans-unit id="menu_adminFunction.alttitle" resname="menu_adminFunction.alttitle" approved="yes">
+        <source>Admin Functions</source>
+        <target state="final">פונקציונליות ניהולית</target>
+      </trans-unit>
+      <trans-unit id="pagetree.alttitle" resname="pagetree.alttitle" approved="yes">
+        <source>The Page Tree</source>
+        <target state="final">עץ הדפים</target>
+      </trans-unit>
+      <trans-unit id="filetree.alttitle" resname="filetree.alttitle" approved="yes">
+        <source>The Folder Tree</source>
+        <target state="final">עץ התיקיות</target>
+      </trans-unit>
+      <trans-unit id="tcatree.findItem" resname="tcatree.findItem" approved="yes">
+        <source>Find Item</source>
+        <target state="final">חפש פריט</target>
+      </trans-unit>
+      <trans-unit id="list_module.alttitle" resname="list_module.alttitle" approved="yes">
+        <source>The Web&gt;List module</source>
+        <target state="final">מדור אתר&gt;רשימות</target>
+      </trans-unit>
+      <trans-unit id="list_module_root.alttitle" resname="list_module_root.alttitle" approved="yes">
+        <source>Root of the Page Tree</source>
+        <target state="final">שורש עץ הדפים</target>
+      </trans-unit>
+      <trans-unit id="list_searchbox.alttitle" resname="list_searchbox.alttitle" approved="yes">
+        <source>Search Box</source>
+        <target state="final">תיבת חיפוש</target>
+      </trans-unit>
+      <trans-unit id="new_regular.alttitle" resname="new_regular.alttitle" approved="yes">
+        <source>Create new record</source>
+        <target state="final">צור רשומה חדשה</target>
+      </trans-unit>
+      <trans-unit id="history_log.alttitle" resname="history_log.alttitle" approved="yes">
+        <source>History log</source>
+        <target state="final">דו"ח היסטורי</target>
+      </trans-unit>
+      <trans-unit id="TCEforms_cacheSelector.alttitle" resname="TCEforms_cacheSelector.alttitle" approved="yes">
+        <source>Forms Menu</source>
+        <target state="final">תפריט טפסים</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.alttitle" resname="file_newfolder.alttitle" approved="yes">
+        <source>Creating a new folder</source>
+        <target state="final">יצירת תיקייה חדשה</target>
+      </trans-unit>
+      <trans-unit id="file_newfile.alttitle" resname="file_newfile.alttitle" approved="yes">
+        <source>Creating a new file</source>
+        <target state="final">יצירת קובץ חדש</target>
+      </trans-unit>
+      <trans-unit id="file_upload.alttitle" resname="file_upload.alttitle" approved="yes">
+        <source>Uploading files.</source>
+        <target state="final">הלעת קבצים מתבצעת</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz.alttitle" resname="wizard_table_wiz.alttitle" approved="yes">
+        <source>Table wizard</source>
+        <target state="final">אשף טבלאות</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
