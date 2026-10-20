@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814899" source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang_mod.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Database integrity check</source>
+        <target state="final">Kontrola integrity databáze</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>Here you can check the integrity of the database tables configured by the $TCA. For instance all records must belong to a page record. In addition the existence of uploaded files attached to records (normally residing in uploads/* folders) are verified as well. You can also get a view of the total pagetree including deleted pages. Finally you've got access to a global database search facility.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</source>
+        <target state="final">Zde můžete kontrolovat integritu databázových tabulek konfigurovaných v $TCA. Například všechny záznamy musí patřit k záznamu stránky. Navíc je ověřena existence nahraných souborů připojených k záznamům (obvykle se nacházejí ve složkách uploads/*). Také můžete vidět celkový strom včetně odstraněných stránek. Konečně máte přístup ke globálnímu vyhledávání v databázi.&lt;br /&gt;&lt;em&gt;Přístup pouze pro 'admin' uživatele!&lt;/em&gt;</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>DB check</source>
+        <target state="final">DB kontrola</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
