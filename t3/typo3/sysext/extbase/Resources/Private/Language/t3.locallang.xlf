@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:extbase/Resources/Private/Language/locallang.xlf" date="2012-10-17T19:30:32Z" product-name="extbase" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="converter.datetime.notrecognized">
+        <source>The date "%s" was not recognized (for format "%s").</source>
+        <target>crwdns339242:0%scrwdnd339242:0%scrwdne339242:0</target>
+      </trans-unit>
+      <trans-unit id="property.error">
+        <source>Validation errors for property "%s"</source>
+        <target>crwdns55338:0%scrwdne55338:0</target>
+      </trans-unit>
+      <trans-unit id="validator.emailaddress.notvalid">
+        <source>The given subject was not a valid email address.</source>
+        <target>crwdns55340:0crwdne55340:0</target>
+      </trans-unit>
+      <trans-unit id="validator.stringlength.between">
+        <source>The length of the given string was not between %s and %s characters.</source>
+        <target>crwdns55342:0%scrwdnd55342:0%scrwdne55342:0</target>
+      </trans-unit>
+      <trans-unit id="validator.stringlength.less">
+        <source>The length of the given string is less than %s characters.</source>
+        <target>crwdns55344:0%scrwdne55344:0</target>
+      </trans-unit>
+      <trans-unit id="validator.string.notvalid">
+        <source>A valid string is expected.</source>
+        <target>crwdns55346:0crwdne55346:0</target>
+      </trans-unit>
+      <trans-unit id="validator.stringlength.exceed">
+        <source>The length of the given string exceeded %s characters.</source>
+        <target>crwdns55348:0%scrwdne55348:0</target>
+      </trans-unit>
+      <trans-unit id="validator.alphanumeric.notvalid">
+        <source>The given subject was not a valid alphanumeric string.</source>
+        <target>crwdns55350:0crwdne55350:0</target>
+      </trans-unit>
+      <trans-unit id="validator.datetime.notvalid">
+        <source>The given subject was not a valid DateTime. Got: '%s'</source>
+        <target>crwdns55352:0%scrwdne55352:0</target>
+      </trans-unit>
+      <trans-unit id="validator.float.notvalid">
+        <source>The given subject was not a valid float.</source>
+        <target>crwdns55356:0crwdne55356:0</target>
+      </trans-unit>
+      <trans-unit id="validator.text.notvalid">
+        <source>The given subject was not a valid text (e.g. contained XML tags).</source>
+        <target>crwdns55358:0crwdne55358:0</target>
+      </trans-unit>
+      <trans-unit id="validator.regularexpression.nomatch">
+        <source>The given subject did not match the pattern.</source>
+        <target>crwdns55362:0crwdne55362:0</target>
+      </trans-unit>
+      <trans-unit id="validator.numberrange.notvalid">
+        <source>The given subject was not a valid number.</source>
+        <target>crwdns55366:0crwdne55366:0</target>
+      </trans-unit>
+      <trans-unit id="validator.numberrange.range">
+        <source>The given subject was not in the valid range (%s - %s).</source>
+        <target>crwdns55368:0%scrwdnd55368:0%scrwdne55368:0</target>
+      </trans-unit>
+      <trans-unit id="validator.notempty.null">
+        <source>The given subject was NULL.</source>
+        <target>crwdns55370:0crwdne55370:0</target>
+      </trans-unit>
+      <trans-unit id="validator.notempty.empty">
+        <source>The given subject was empty.</source>
+        <target>crwdns55372:0crwdne55372:0</target>
+      </trans-unit>
+      <trans-unit id="validator.number.notvalid">
+        <source>The given subject was not a valid number.</source>
+        <target>crwdns55374:0crwdne55374:0</target>
+      </trans-unit>
+      <trans-unit id="validator.integer.notvalid">
+        <source>The given subject was not a valid integer.</source>
+        <target>crwdns55376:0crwdne55376:0</target>
+      </trans-unit>
+      <trans-unit id="validator.boolean.nottrue">
+        <source>The given subject was not true.</source>
+        <target>crwdns55378:0crwdne55378:0</target>
+      </trans-unit>
+      <trans-unit id="validator.boolean.notfalse">
+        <source>The given subject was not false.</source>
+        <target>crwdns55380:0crwdne55380:0</target>
+      </trans-unit>
+      <trans-unit id="validator.url.notvalid">
+        <source>The given subject is no valid URL.</source>
+        <target>crwdns55382:0crwdne55382:0</target>
+      </trans-unit>
+      <trans-unit id="validation.fileextension.notallowed">
+        <source>The file extension '%s' is not allowed.</source>
+        <target>crwdns374968:0%scrwdne374968:0</target>
+      </trans-unit>
+      <trans-unit id="validation.fileextensionmimetypeconsistency.notallowed">
+        <source>The resolved media type "%s" is not allowed for file extension "%s".</source>
+        <target>crwdns374970:0%scrwdnd374970:0%scrwdne374970:0</target>
+      </trans-unit>
+      <trans-unit id="validation.mimetype.notallowed">
+        <source>The mime type '%s' is not allowed.</source>
+        <target>crwdns342884:0%scrwdne342884:0</target>
+      </trans-unit>
+      <trans-unit id="validation.mimetype.invalidextension">
+        <source>The file extension provided "%s" does not match to expected media types.</source>
+        <target>crwdns342886:0%scrwdne342886:0</target>
+      </trans-unit>
+      <trans-unit id="validation.denyphpupload.notallowed">
+        <source>Uploading of files with PHP executable file extensions is not allowed.</source>
+        <target>crwdns342888:0crwdne342888:0</target>
+      </trans-unit>
+      <trans-unit id="validation.filesize.less">
+        <source>The file must be larger than %s in size.</source>
+        <target>crwdns342890:0%scrwdne342890:0</target>
+      </trans-unit>
+      <trans-unit id="validation.filesize.exceed">
+        <source>The file must be smaller than %s in size.</source>
+        <target>crwdns342892:0%scrwdne342892:0</target>
+      </trans-unit>
+      <trans-unit id="validation.imagedimensions.width.notvalid">
+        <source>The image must be exactly %s pixels in width.</source>
+        <target>crwdns342894:0%scrwdne342894:0</target>
+      </trans-unit>
+      <trans-unit id="validation.imagedimensions.height.notvalid">
+        <source>The image must be exactly %s pixels in height.</source>
+        <target>crwdns342896:0%scrwdne342896:0</target>
+      </trans-unit>
+      <trans-unit id="validation.imagedimensions.minwidth.notvalid">
+        <source>The image must at least have a width of %s pixels.</source>
+        <target>crwdns342898:0%scrwdne342898:0</target>
+      </trans-unit>
+      <trans-unit id="validation.imagedimensions.minheight.notvalid">
+        <source>The image must at least have a height of %s pixels.</source>
+        <target>crwdns342900:0%scrwdne342900:0</target>
+      </trans-unit>
+      <trans-unit id="validation.imagedimensions.maxwidth.notvalid">
+        <source>The image is too wide. The maximum width is %s pixels.</source>
+        <target>crwdns342902:0%scrwdne342902:0</target>
+      </trans-unit>
+      <trans-unit id="validation.imagedimensions.maxheight.notvalid">
+        <source>The image is too high. The maximum height is %s pixels.</source>
+        <target>crwdns342904:0%scrwdne342904:0</target>
+      </trans-unit>
+      <trans-unit id="filehandlingserviceconfiguration.minfiles.notvalid">
+        <source>You must at least upload %s file(s).</source>
+        <target>crwdns342906:0%scrwdne342906:0</target>
+      </trans-unit>
+      <trans-unit id="filehandlingserviceconfiguration.minfiles.delete.notvalid">
+        <source>The file could not be deleted, because the minimum file upload amount would not be fulfilled after deletion.</source>
+        <target>crwdns342908:0crwdne342908:0</target>
+      </trans-unit>
+      <trans-unit id="filehandlingserviceconfiguration.maxfiles.notvalid">
+        <source>The maximum amount of %s file(s) is exceeded.</source>
+        <target>crwdns342910:0%scrwdne342910:0</target>
+      </trans-unit>
+      <trans-unit id="class_configuration">
+        <source>Extbase: Class Configuration</source>
+        <target>crwdns392448:0crwdne392448:0</target>
+      </trans-unit>
+      <trans-unit id="ratelimit.action.defaultmessage">
+        <source>Too many requests. Please try again later.</source>
+        <target>crwdns392980:0crwdne392980:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
