@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1447138381" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/fileMessages.xlf" date="2015-11-10T06:53:10Z" product-name="core" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="FileUtility.CouldNotDeleteDirectory1" resname="FileUtility.CouldNotDeleteDirectory1" approved="yes">
+        <source>Could not delete directory "%s"! There might be a problem with write permissions.</source>
+        <target state="final">Nepavyko ištrinti katalogo „%s“! Gali būti rašymo teisių problema.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileCopiedTo" resname="FileUtility.FileCopiedTo" approved="yes">
+        <source>File "%s" copied to "%s".</source>
+        <target state="final">Failas „%s“ nukopijuotas į „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExtensionIsNotzip" resname="FileUtility.FileExtensionIsNotzip" approved="yes">
+        <source>File extension is not "zip".</source>
+        <target state="final">Failo plėtinys nėra „zip“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileMovedTo" resname="FileUtility.FileMovedTo" approved="yes">
+        <source>File "%s" moved to "%s".</source>
+        <target state="final">Failas „%s“ perkeltas į „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileOrDestinationWasNotWithinYourMountpoints" resname="FileUtility.FileOrDestinationWasNotWithinYourMountpoints" approved="yes">
+        <source>File "%s" or destination "%s" was not within your mountpoints!</source>
+        <target state="final">Failas „%s“ arba paskirties vieta „%s“ nėra jūsų prijungimo taškuose.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileRenamedFromTo" resname="FileUtility.FileRenamedFromTo" approved="yes">
+        <source>File renamed from "%s" to "%s".</source>
+        <target state="final">Failas pervadintas iš „%s“ į „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotSaved2" resname="FileUtility.FileWasNotSaved2" approved="yes">
+        <source>File "%s" was not saved! File extension rejected!</source>
+        <target state="final">Failas „%s“ nebuvo išsaugotas! Failo plėtinys atmestas!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UnzippingFileIn" resname="FileUtility.UnzippingFileIn" approved="yes">
+        <source>Unzipping file "%s" in "%s".</source>
+        <target state="final">Failas „%s“ išpakuojamas į „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToUnzipFiles" resname="FileUtility.YouAreNotAllowedToUnzipFiles" approved="yes">
+        <source>You are not allowed to unzip files.</source>
+        <target state="final">Jums neleidžiama išpakuoti failų.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
