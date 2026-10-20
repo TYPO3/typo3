@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814859" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysnews.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>This option will hide the news from showing up at the login screen.</source>
+        <target state="final">यह विकल्प लॉगिन स्क्रीन पर खबर को छिपाएगा ।</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the title of the news.</source>
+        <target state="final">न्यूज़ का शीर्षक दर्ज करें।</target>
+      </trans-unit>
+      <trans-unit id="content.description" resname="content.description" approved="yes">
+        <source>The news content to let editors know what's coming up. HTML is disabled, however, you can use line breaks.</source>
+        <target state="final">न्यूज़ कंटेन एडिटर्स जानते हैं कि क्या आ रहा है यह बताने के लिए। HTML डिसेबल्ड है, हालांकि, आप लाइन ब्रेकस. उपयोग कर सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>System news are shown at the TYPO3 login screen, allowing admins to inform editors about upcoming system maintenance and similar events.</source>
+        <target state="final">सिस्टम न्यूज़ typo3 लॉगिन स्क्रीन पर दिखाए जाते हैं, अडमिन्स आगामी सिस्टम मेंटेनेंस और इसी तरह की घटनाओं के बारे में सूचित करने के लिए एडिटर्स की इजाजत दी।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
