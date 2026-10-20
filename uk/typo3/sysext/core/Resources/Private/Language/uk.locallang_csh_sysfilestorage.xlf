@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814801" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilestorage.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>File storage, which acts as an entry root point to a file-based structure. See it like a drive or a hard drive volume in your local machine.</source>
+        <target state="final">Сховище файлів, яке діє як коренева точка входу до файлової структури. Подивіться на диск або об'єм жорсткого диска на вашій локальній машині.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details">
+        <source/>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Disabling the storage will result in removing it from any listings in the backend. Existing file relations will still exist.</source>
+        <target state="final">Вимкнення сховища призведе до видалення його з усіх списків у серверній частині. Існуючі файлові відносини залишаться.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If you set up a file storage, it will show up on any folder lists, thus allowing to basically browse through the files in this file repository. If you set this checkbox, this storage will be excluded from any listings in the backend. Any existing file references will still exist further.</source>
+        <target state="final">Якщо ви налаштуєте сховище файлів, воно відображатиметься в будь-якому списку папок, таким чином дозволяючи в основному переглядати файли в цьому сховищі файлів. Якщо встановити цей прапорець, це сховище буде виключено з усіх списків у серверній частині. Будь-які існуючі посилання на файли залишаться надалі.</target>
+      </trans-unit>
+      <trans-unit id="name.description" resname="name.description" approved="yes">
+        <source>The visible identifier for this file storage.</source>
+        <target state="final">Видимий ідентифікатор цього сховища файлів.</target>
+      </trans-unit>
+      <trans-unit id="name.details" resname="name.details" approved="yes">
+        <source>The label entered here will be shown as the name for the entry point in the TYPO3 Backend. Be sure to make it descriptive and logical for your editors.</source>
+        <target state="final">Введена тут мітка відображатиметься як назва точки входу у серверній частині TYPO3. Обов’язково зробіть його описовим і логічним для ваших редакторів.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>A description of this storage.</source>
+        <target state="final">Опис цього сховища.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" approved="yes">
+        <source>This description field is used to explain e.g. the location of the storage, also what this storage is meant for or what it contains.</source>
+        <target state="final">Це поле опису використовується для пояснення, напр. розташування сховища, а також для чого це сховище призначене або що воно містить.</target>
+      </trans-unit>
+      <trans-unit id="driver.description" resname="driver.description" approved="yes">
+        <source>Choose the driver as the technical backbone of the storage. Once you've chosen a driver, and saved it, additional configuration will show up.</source>
+        <target state="final">Виберіть драйвер як технічну основу сховища. Коли ви виберете драйвер і збережете його, з’явиться додаткова конфігурація.</target>
+      </trans-unit>
+      <trans-unit id="driver.details" resname="driver.details" approved="yes">
+        <source>The driver is the technical background of a storage, and thus also defines whether the location of the storage is local (= on the same machine as this TYPO3 installation) or remote like a WebDAV server connection. Search for extensions in the TYPO3 Extension Repository that extend this driver list.</source>
+        <target state="final">Драйвер є технічною основою сховища, і, таким чином, він також визначає, чи є розташування сховища локальним (= на тій самій машині, що й ця інсталяція TYPO3) чи віддаленим, як-от підключення до сервера WebDAV. Шукайте розширення в репозиторії розширень TYPO3, які розширюють цей список драйверів.</target>
+      </trans-unit>
+      <trans-unit id="processingfolder.description" resname="processingfolder.description" approved="yes">
+        <source>Defines the directory on this storage to be used to save temporary files like resized images.</source>
+        <target state="final">Визначає каталог у цьому сховищі, який буде використовуватися для збереження тимчасових файлів, наприклад зображень зі зміненим розміром.</target>
+      </trans-unit>
+      <trans-unit id="is_browsable.description" resname="is_browsable.description" approved="yes">
+        <source>If set, backend users can browse through this storage. Otherwise it will show up as a unselectable item in the list.</source>
+        <target state="final">Якщо встановлено, серверні користувачі можуть переглядати це сховище. Інакше він відображатиметься як елемент списку, який неможливо вибрати.</target>
+      </trans-unit>
+      <trans-unit id="is_public.description" resname="is_public.description" approved="yes">
+        <source>If set, then the files in this storage can be linked directly from the outside world. If this is not set, make sure to provide additional possibilities to access the files in this storage.</source>
+        <target state="final">Якщо встановлено, файли в цьому сховищі можуть бути пов’язані безпосередньо із зовнішнього світу. Якщо це значення не встановлено, переконайтеся, що ви надали додаткові можливості доступу до файлів у цьому сховищі.</target>
+      </trans-unit>
+      <trans-unit id="is_writable.description" resname="is_writable.description" approved="yes">
+        <source>If set, then users are allowed to modify, add, delete files/folders on this storage.</source>
+        <target state="final">Якщо встановлено, користувачам дозволено змінювати, додавати, видаляти файли/папки в цьому сховищі.</target>
+      </trans-unit>
+      <trans-unit id="is_online.description" resname="is_online.description" approved="yes">
+        <source>This flag is usually set. If TYPO3 cannot connect to this storage (because it maybe temporary down), then the flag will be checked, and the storage will behave like it is non-browsable in the TYPO3 backend. The admin needs to manually activate it again if it was offline.</source>
+        <target state="final">Цей прапор зазвичай встановлюється. Якщо TYPO3 не може підключитися до цього сховища (оскільки воно, можливо, тимчасово не працює), тоді буде позначено прапорець, і сховище поводитиметься так, ніби його не можна переглядати у серверній частині TYPO3. Адміністратор повинен знову вручну активувати його, якщо він був офлайн.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
