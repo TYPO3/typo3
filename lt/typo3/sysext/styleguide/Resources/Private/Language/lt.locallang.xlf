@@ -1,0 +1,1956 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:styleguide/Resources/Private/Language/locallang.xlf" date="2026-11-10T13:37:37Z" product-name="styleguide" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="componentsOverview.headline" approved="yes">
+        <source>Components</source>
+        <target state="final">Komponentai</target>
+      </trans-unit>
+      <trans-unit id="componentsOverview.link.title" approved="yes">
+        <source>Open %1s component</source>
+        <target state="final">Atverti komponentą „%1s“</target>
+      </trans-unit>
+      <trans-unit id="managePageTrees.headline" approved="yes">
+        <source>Manage example page trees</source>
+        <target state="final">Tvarkyti pavyzdinius puslapių medžius</target>
+      </trans-unit>
+      <trans-unit id="stylesOverview.headline" approved="yes">
+        <source>Styles</source>
+        <target state="final">Stiliai</target>
+      </trans-unit>
+      <trans-unit id="stylesOverview.link.title" approved="yes">
+        <source>Open %1s style</source>
+        <target state="final">Atverti stilių „%1s“</target>
+      </trans-unit>
+      <trans-unit id="styleguide" approved="yes">
+        <source>Styleguide</source>
+        <target state="final">Stiliaus vadovas</target>
+      </trans-unit>
+      <trans-unit id="action.accordion" approved="yes">
+        <source>Accordion</source>
+        <target state="final">Akordeonas</target>
+      </trans-unit>
+      <trans-unit id="action.accordion.description" approved="yes">
+        <source>Collapsible content sections that expand and collapse to show or hide information.</source>
+        <target state="final">Suskleidžiamos turinio sekcijos, kurios išsiskleidžia ir susiskleidžia, kad parodytų arba paslėptų informaciją.</target>
+      </trans-unit>
+      <trans-unit id="action.avatar" approved="yes">
+        <source>Avatar</source>
+        <target state="final">Avataras</target>
+      </trans-unit>
+      <trans-unit id="action.avatar.description" approved="yes">
+        <source>Display images representing backend users with optional status indicators.</source>
+        <target state="final">Rodo atvaizdus, vaizduojančius vidinės sąsajos naudotojus, su pasirenkamais būsenos indikatoriais.</target>
+      </trans-unit>
+      <trans-unit id="action.badges" approved="yes">
+        <source>Badges</source>
+        <target state="final">Ženkleliai</target>
+      </trans-unit>
+      <trans-unit id="action.badges.description" approved="yes">
+        <source>Small labels for displaying status, counts, or categorization information.</source>
+        <target state="final">Mažos etiketės būsenai, kiekiams arba kategorizavimo informacijai rodyti.</target>
+      </trans-unit>
+      <trans-unit id="action.breadcrumbs" approved="yes">
+        <source>Breadcrumbs</source>
+        <target state="final">Naršymo kelias</target>
+      </trans-unit>
+      <trans-unit id="action.breadcrumbs.description" approved="yes">
+        <source>Navigation trail showing the current location in the backend hierarchy, including modules and records.</source>
+        <target state="final">Naršymo kelias, rodantis esamą vietą vidinės sąsajos hierarchijoje, įskaitant modulius ir įrašus.</target>
+      </trans-unit>
+      <trans-unit id="action.buttons" approved="yes">
+        <source>Buttons</source>
+        <target state="final">Mygtukai</target>
+      </trans-unit>
+      <trans-unit id="action.buttons.description" approved="yes">
+        <source>Interactive elements for triggering actions with various styles, sizes, and states.</source>
+        <target state="final">Interaktyvūs elementai veiksmams vykdyti su įvairiais stiliais, dydžiais ir būsenomis.</target>
+      </trans-unit>
+      <trans-unit id="action.cards" approved="yes">
+        <source>Cards</source>
+        <target state="final">Kortelės</target>
+      </trans-unit>
+      <trans-unit id="action.cards.description" approved="yes">
+        <source>Flexible containers for grouping related content, displayed individually or in groups.</source>
+        <target state="final">Lankstūs konteineriai susijusiam turiniui grupuoti, rodomi atskirai arba grupėmis.</target>
+      </trans-unit>
+      <trans-unit id="action.checkboxes" approved="yes">
+        <source>Checkboxes</source>
+        <target state="final">Žymimieji langeliai</target>
+      </trans-unit>
+      <trans-unit id="action.checkboxes.description" approved="yes">
+        <source>Form controls for selecting one or more options, including toggles and switches.</source>
+        <target state="final">Formos valdikliai vienam ar keliems pasirinkimams žymėti, įskaitant perjungiklius ir jungiklius.</target>
+      </trans-unit>
+      <trans-unit id="action.comboboxes" approved="yes">
+        <source>Comboboxes</source>
+        <target state="final">Kombinuotieji laukai</target>
+      </trans-unit>
+      <trans-unit id="action.comboboxes.description" approved="yes">
+        <source>Input fields with dropdown suggestions for selecting or entering values.</source>
+        <target state="final">Įvesties laukai su išskleidžiamomis pasiūlomis reikšmėms pasirinkti arba įvesti.</target>
+      </trans-unit>
+      <trans-unit id="action.contentNavigation" approved="yes">
+        <source>Content Navigation</source>
+        <target state="final">Turinio navigacija</target>
+      </trans-unit>
+      <trans-unit id="action.contentNavigation.description" approved="yes">
+        <source>A two-panel container with a resizable navigation area and a flexible content area.</source>
+        <target state="final">Dviejų sričių konteineris su keičiamo dydžio navigacijos sritimi ir lanksčia turinio sritimi.</target>
+      </trans-unit>
+      <trans-unit id="action.datetime" approved="yes">
+        <source>Datetime / Relative Time</source>
+        <target state="final">Data ir laikas / santykinis laikas</target>
+      </trans-unit>
+      <trans-unit id="action.datetime.description" approved="yes">
+        <source>Web component for displaying timestamps in relative format with localization support.</source>
+        <target state="final">Tinklalapio komponentas laiko žymoms rodyti santykiniu formatu su lokalizacijos palaikymu.</target>
+      </trans-unit>
+      <trans-unit id="action.colorTokens" approved="yes">
+        <source>Color Tokens</source>
+        <target state="final">Spalvų žetonai</target>
+      </trans-unit>
+      <trans-unit id="action.colorTokens.description" approved="yes">
+        <source>Predefined color values and design tokens used throughout the TYPO3 backend interface.</source>
+        <target state="final">Iš anksto nustatytos spalvų reikšmės ir dizaino žetonai, naudojami visoje TYPO3 vidinėje sąsajoje.</target>
+      </trans-unit>
+      <trans-unit id="action.accentAndState" approved="yes">
+        <source>Accent and State</source>
+        <target state="final">Akcentas ir būsena</target>
+      </trans-unit>
+      <trans-unit id="action.accentAndState.description" approved="yes">
+        <source>Stateful color variants for interactive elements including accent colors and semantic states.</source>
+        <target state="final">Interaktyvių elementų būsenų spalvų variantai, įskaitant akcentines spalvas ir semantines būsenas.</target>
+      </trans-unit>
+      <trans-unit id="action.componentsOverview" approved="yes">
+        <source>Components overview</source>
+        <target state="final">Komponentų apžvalga</target>
+      </trans-unit>
+      <trans-unit id="action.componentsOverview.description" approved="yes">
+        <source>Browse all available UI components in the TYPO3 backend component library.</source>
+        <target state="final">Naršykite visus galimus UI komponentus TYPO3 vidinės sąsajos komponentų bibliotekoje.</target>
+      </trans-unit>
+      <trans-unit id="action.developerTools" approved="yes">
+        <source>Developer Tools</source>
+        <target state="final">Kūrėjo įrankiai</target>
+      </trans-unit>
+      <trans-unit id="action.developerTools.description" approved="yes">
+        <source>Specialized components and utilities for development and debugging purposes.</source>
+        <target state="final">Specializuoti komponentai ir priemonės kūrimo bei derinimo tikslams.</target>
+      </trans-unit>
+      <trans-unit id="action.dropdown" approved="yes">
+        <source>Dropdown</source>
+        <target state="final">Išskleidžiamasis meniu</target>
+      </trans-unit>
+      <trans-unit id="action.dropdown.description" approved="yes">
+        <source>Toggleable overlays for displaying lists, menus, and contextual actions.</source>
+        <target state="final">Perjungiami persidengiantys sluoksniai sąrašams, meniu ir kontekstiniams veiksmams rodyti.</target>
+      </trans-unit>
+      <trans-unit id="action.flashMessages" approved="yes">
+        <source>Flash messages</source>
+        <target state="final">Pranešimai</target>
+      </trans-unit>
+      <trans-unit id="action.flashMessages.description" approved="yes">
+        <source>Temporary notifications for displaying feedback about user actions and system events.</source>
+        <target state="final">Laikini pranešimai, skirti pateikti grįžtamąjį ryšį apie naudotojo veiksmus ir sistemos įvykius.</target>
+      </trans-unit>
+      <trans-unit id="action.form" approved="yes">
+        <source>Form</source>
+        <target state="final">Forma</target>
+      </trans-unit>
+      <trans-unit id="action.form.description" approved="yes">
+        <source>Complete form layouts combining various input fields and controls.</source>
+        <target state="final">Pilni formų išdėstymai, jungiantieji įvairius įvesties laukus ir valdiklius.</target>
+      </trans-unit>
+      <trans-unit id="action.icons" approved="yes">
+        <source>Icons</source>
+        <target state="final">Piktogramos</target>
+      </trans-unit>
+      <trans-unit id="action.icons.description" approved="yes">
+        <source>Complete library of icons available for use in the TYPO3 backend interface.</source>
+        <target state="final">Pilna piktogramų biblioteka, prieinama naudoti TYPO3 vidinėje sąsajoje.</target>
+      </trans-unit>
+      <trans-unit id="action.infobox" approved="yes">
+        <source>Infobox</source>
+        <target state="final">Informacinis blokas</target>
+      </trans-unit>
+      <trans-unit id="action.infobox.description" approved="yes">
+        <source>Highlighted containers for displaying important information and contextual help.</source>
+        <target state="final">Išskirti konteineriai svarbiai informacijai ir kontekstinei pagalbai rodyti.</target>
+      </trans-unit>
+      <trans-unit id="action.input" approved="yes">
+        <source>Input</source>
+        <target state="final">Įvestis</target>
+      </trans-unit>
+      <trans-unit id="action.input.description" approved="yes">
+        <source>Text input fields with support for various types, states, and sizes.</source>
+        <target state="final">Teksto įvesties laukai su įvairių tipų, būsenų ir dydžių palaikymu.</target>
+      </trans-unit>
+      <trans-unit id="action.listGroups" approved="yes">
+        <source>List groups</source>
+        <target state="final">Sąrašų grupės</target>
+      </trans-unit>
+      <trans-unit id="action.listGroups.description" approved="yes">
+        <source>Lists for displaying a series of content.</source>
+        <target state="final">Sąrašai turinio sekai rodyti.</target>
+      </trans-unit>
+      <trans-unit id="action.managePageTrees" approved="yes">
+        <source>Manage example page trees</source>
+        <target state="final">Tvarkyti pavyzdinius puslapių medžius</target>
+      </trans-unit>
+      <trans-unit id="action.managePageTrees.description" approved="yes">
+        <source>Create and manage example page trees with TCA demo records or content elements for testing purposes.</source>
+        <target state="final">Kurkite ir tvarkykite pavyzdinius puslapių medžius su TCA demonstraciniais įrašais arba turinio elementais testavimo tikslais.</target>
+      </trans-unit>
+      <trans-unit id="action.modal" approved="yes">
+        <source>Modal</source>
+        <target state="final">Modalinis langas</target>
+      </trans-unit>
+      <trans-unit id="action.modal.description" approved="yes">
+        <source>Dialog windows that appear on top of page content for focused interactions.</source>
+        <target state="final">Dialogo langai, kurie pasirodo virš puslapio turinio sutelktoms sąveikoms.</target>
+      </trans-unit>
+      <trans-unit id="action.navs" approved="yes">
+        <source>Navs</source>
+        <target state="final">Navigacijos</target>
+      </trans-unit>
+      <trans-unit id="action.navs.description" approved="yes">
+        <source>Navigation components including tabs, pills, and flat navigation styles.</source>
+        <target state="final">Navigacijos komponentai, įskaitant korteles, tabletes ir plokščią navigacijos stilių.</target>
+      </trans-unit>
+      <trans-unit id="action.notifications" approved="yes">
+        <source>Notifications</source>
+        <target state="final">Pranešimai</target>
+      </trans-unit>
+      <trans-unit id="action.notifications.description" approved="yes">
+        <source>Temporary messages for informing users about events with optional action buttons.</source>
+        <target state="final">Laikini pranešimai naudotojams informuoti apie įvykius su pasirenkamais veiksmo mygtukais.</target>
+      </trans-unit>
+      <trans-unit id="action.pagination" approved="yes">
+        <source>Pagination</source>
+        <target state="final">Puslapiavimas</target>
+      </trans-unit>
+      <trans-unit id="action.pagination.description" approved="yes">
+        <source>Controls for navigating through multi-page content and data sets.</source>
+        <target state="final">Valdikliai naršyti kelių puslapių turinį ir duomenų rinkinius.</target>
+      </trans-unit>
+      <trans-unit id="action.panels" approved="yes">
+        <source>Panels</source>
+        <target state="final">Skydeliai</target>
+      </trans-unit>
+      <trans-unit id="action.panels.description" approved="yes">
+        <source>Collapsible content containers for organizing information into sections.</source>
+        <target state="final">Suskleidžiami turinio konteineriai informacijai organizuoti į sekcijas.</target>
+      </trans-unit>
+      <trans-unit id="action.progressIndicators" approved="yes">
+        <source>Progress indicators</source>
+        <target state="final">Eigos indikatoriai</target>
+      </trans-unit>
+      <trans-unit id="action.progressIndicators.description" approved="yes">
+        <source>Visual indicators showing completion status of tasks and processes.</source>
+        <target state="final">Vizualūs indikatoriai, rodantys užduočių ir procesų vykdymo būseną.</target>
+      </trans-unit>
+      <trans-unit id="action.progressTrackers" approved="yes">
+        <source>Progress trackers</source>
+        <target state="final">Eigos sekikliai</target>
+      </trans-unit>
+      <trans-unit id="action.progressTrackers.description" approved="yes">
+        <source>Segmented progress displays for multi-step processes like wizards.</source>
+        <target state="final">Segmentuoti eigos atvaizdai kelių žingsnių procesams, pvz., vedliams.</target>
+      </trans-unit>
+      <trans-unit id="action.radio" approved="yes">
+        <source>Radio</source>
+        <target state="final">Akutės</target>
+      </trans-unit>
+      <trans-unit id="action.radio.description" approved="yes">
+        <source>Form controls for selecting a single option from multiple choices.</source>
+        <target state="final">Formos valdikliai vienam pasirinkimui iš kelių galimų variantų.</target>
+      </trans-unit>
+      <trans-unit id="action.select" approved="yes">
+        <source>Select</source>
+        <target state="final">Pasirinkimas</target>
+      </trans-unit>
+      <trans-unit id="action.select.description" approved="yes">
+        <source>Dropdown menus for choosing one or more options from a list.</source>
+        <target state="final">Išskleidžiamieji meniu vienam ar keliems pasirinkimams iš sąrašo.</target>
+      </trans-unit>
+      <trans-unit id="action.shadows" approved="yes">
+        <source>Shadows</source>
+        <target state="final">Šešėliai</target>
+      </trans-unit>
+      <trans-unit id="action.shadows.description" approved="yes">
+        <source>Shadow effects and elevation styles used to create depth in the interface.</source>
+        <target state="final">Šešėlių efektai ir iškėlimo stiliai, naudojami sąsajos gyliui kurti.</target>
+      </trans-unit>
+      <trans-unit id="action.stylesOverview" approved="yes">
+        <source>Styles overview</source>
+        <target state="final">Stilių apžvalga</target>
+      </trans-unit>
+      <trans-unit id="action.stylesOverview.description" approved="yes">
+        <source>Browse all available design styles including colors, typography, and visual tokens.</source>
+        <target state="final">Naršykite visus galimus dizaino stilius, įskaitant spalvas, tipografiją ir vaizdinius žetonus.</target>
+      </trans-unit>
+      <trans-unit id="action.surfaces" approved="yes">
+        <source>Surfaces</source>
+        <target state="final">Paviršiai</target>
+      </trans-unit>
+      <trans-unit id="action.surfaces.description" approved="yes">
+        <source>Background surfaces and container styles that define the visual hierarchy.</source>
+        <target state="final">Fono paviršiai ir konteinerių stiliai, apibrėžiantys vaizdinę hierarchiją.</target>
+      </trans-unit>
+      <trans-unit id="action.tab" approved="yes">
+        <source>Tabs</source>
+        <target state="final">Kortelės</target>
+      </trans-unit>
+      <trans-unit id="action.tab.description" approved="yes">
+        <source>Organized content sections with clickable headers for switching between views.</source>
+        <target state="final">Organizuotos turinio sekcijos su spustelėjamomis antraštėmis perjungti rodinius.</target>
+      </trans-unit>
+      <trans-unit id="action.tables" approved="yes">
+        <source>Tables</source>
+        <target state="final">Lentelės</target>
+      </trans-unit>
+      <trans-unit id="action.tables.description" approved="yes">
+        <source>Structured layouts for displaying tabular data with optional action icons.</source>
+        <target state="final">Struktūruoti išdėstymai lenteliniams duomenims rodyti su pasirenkamomis veiksmų piktogramomis.</target>
+      </trans-unit>
+      <trans-unit id="action.textarea" approved="yes">
+        <source>Textarea</source>
+        <target state="final">Teksto sritis</target>
+      </trans-unit>
+      <trans-unit id="action.textarea.description" approved="yes">
+        <source>Multi-line text input fields for entering longer content.</source>
+        <target state="final">Kelių eilučių teksto įvesties laukai ilgesniam turiniui įvesti.</target>
+      </trans-unit>
+      <trans-unit id="action.trees" approved="yes">
+        <source>Trees</source>
+        <target state="final">Medžiai</target>
+      </trans-unit>
+      <trans-unit id="action.trees.description" approved="yes">
+        <source>Hierarchical tree structures for displaying nested data and navigation.</source>
+        <target state="final">Hierarchinės medžio struktūros įdėtiems duomenims ir navigacijai rodyti.</target>
+      </trans-unit>
+      <trans-unit id="action.typography" approved="yes">
+        <source>Typography</source>
+        <target state="final">Tipografija</target>
+      </trans-unit>
+      <trans-unit id="action.typography.description" approved="yes">
+        <source>Font styles, sizes, weights, and text formatting used throughout the backend.</source>
+        <target state="final">Šrifto stiliai, dydžiai, storiai ir teksto formatavimas, naudojami visoje vidinėje sąsajoje.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeProcessingError" approved="yes">
+        <source>An error occured while processing the page tree</source>
+        <target state="final">Apdorojant puslapių medį įvyko klaida</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateButton" approved="yes">
+        <source>Create page tree</source>
+        <target state="final">Sukurti puslapių medį</target>
+      </trans-unit>
+      <trans-unit id="tcaDeleteButton" approved="yes">
+        <source>Delete page tree and all related records</source>
+        <target state="final">Ištrinti puslapių medį ir visus susijusius įrašus</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionOkTitle" approved="yes">
+        <source>Data created</source>
+        <target state="final">Duomenys sukurti</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionOkBody" approved="yes">
+        <source>A page tree with TCA demo records was created.</source>
+        <target state="final">Buvo sukurtas puslapių medis su TCA demonstraciniais įrašais.</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionFailedTitle" approved="yes">
+        <source>No data created</source>
+        <target state="final">Duomenys nesukurti</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionFailedBody" approved="yes">
+        <source>A page tree with TCA demo records exists already. Please delete that first.</source>
+        <target state="final">Puslapių medis su TCA demonstraciniais įrašais jau egzistuoja. Pirmiausia jį ištrinkite.</target>
+      </trans-unit>
+      <trans-unit id="tcaDeleteActionOkTitle" approved="yes">
+        <source>Data deleted</source>
+        <target state="final">Duomenys ištrinti</target>
+      </trans-unit>
+      <trans-unit id="tcaDeleteActionOkBody" approved="yes">
+        <source>The page tree and all related records were deleted.</source>
+        <target state="final">Puslapių medis ir visi susiję įrašai buvo ištrinti.</target>
+      </trans-unit>
+      <trans-unit id="extConfTemplateLocalizedLabel" approved="yes">
+        <source>A localized label</source>
+        <target state="final">Lokalizuota etiketė</target>
+      </trans-unit>
+      <trans-unit id="translatedHelpTextForSelectCheckBox3" approved="yes">
+        <source>A localized help text</source>
+        <target state="final">Lokalizuotas pagalbos tekstas</target>
+      </trans-unit>
+      <trans-unit id="minimalTableTitle" approved="yes">
+        <source>Form engine - Minimal table configuration</source>
+        <target state="final">Formų variklis – minimali lentelės konfigūracija</target>
+      </trans-unit>
+      <trans-unit id="minimalTableTitleField" approved="yes">
+        <source>Title field</source>
+        <target state="final">Pavadinimo laukas</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateButtonWithSets" approved="yes">
+        <source>Create page tree with site sets</source>
+        <target state="final">Sukurti puslapių medį su svetainės rinkiniais</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateButtonWithSysTemplate" approved="yes">
+        <source>Create page tree with sys_template</source>
+        <target state="final">Sukurti puslapių medį su sys_template</target>
+      </trans-unit>
+      <trans-unit id="frontendDeleteButton" approved="yes">
+        <source>Delete page tree and all related records</source>
+        <target state="final">Ištrinti puslapių medį ir visus susijusius įrašus</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionOkTitle" approved="yes">
+        <source>Data created</source>
+        <target state="final">Duomenys sukurti</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionOkBody" approved="yes">
+        <source>A page tree with content elements was created.</source>
+        <target state="final">Buvo sukurtas puslapių medis su turinio elementais.</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionFailedTitle" approved="yes">
+        <source>No data created</source>
+        <target state="final">Duomenys nesukurti</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionFailedBody" approved="yes">
+        <source>A page tree with content elements exists already. Please delete that first.</source>
+        <target state="final">Puslapių medis su turinio elementais jau egzistuoja. Pirmiausia jį ištrinkite.</target>
+      </trans-unit>
+      <trans-unit id="frontendDeleteActionOkTitle" approved="yes">
+        <source>Data deleted</source>
+        <target state="final">Duomenys ištrinti</target>
+      </trans-unit>
+      <trans-unit id="frontendDeleteActionOkBody" approved="yes">
+        <source>The page tree and all related records were deleted.</source>
+        <target state="final">Puslapių medis ir visi susiję įrašai buvo ištrinti.</target>
+      </trans-unit>
+      <trans-unit id="itemGroupLabel" approved="yes">
+        <source>Item group from locallang</source>
+        <target state="final">Elementų grupė iš locallang</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideFrontend.title" approved="yes">
+        <source>Styleguide Frontend</source>
+        <target state="final">Stiliaus vadovas Frontend daliai</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideFrontend.colpos.0" approved="yes">
+        <source>Main content</source>
+        <target state="final">Pagrindinis turinys</target>
+      </trans-unit>
+      <trans-unit id="colorScheme.selector.label" approved="yes">
+        <source>Color scheme:</source>
+        <target state="final">Spalvų schema:</target>
+      </trans-unit>
+      <trans-unit id="section.colorScheme.headline" approved="yes">
+        <source>Color scheme</source>
+        <target state="final">Spalvų schema</target>
+      </trans-unit>
+      <trans-unit id="section.frontend.headline" approved="yes">
+        <source>Frontend Styleguide</source>
+        <target state="final">Frontend dalies stiliaus vadovas</target>
+      </trans-unit>
+      <!-- Component: Avatar -->
+      <trans-unit id="component.avatar.headline" approved="yes">
+        <source>Avatar</source>
+        <target state="final">Avataras</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.introtext" approved="yes">
+        <source><![CDATA[An avatar displays an image that represents a backend user and can provide additional information such as their status.<br>Avatars can be displayed with an own ViewHelper. If an avatar image is stored in the user settings, this will be used instead of the standard image.]]></source>
+        <target state="final"><![CDATA[Avataras rodo atvaizdą, kuris vaizduoja vidinės sąsajos naudotoją, ir gali pateikti papildomos informacijos, pvz., jo būseną.<br>Avatarai gali būti rodomi naudojant atskirą ViewHelper. Jei naudotojo nustatymuose yra išsaugotas avataro atvaizdas, bus naudojamas jis, o ne standartinis atvaizdas.]]></target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.default.text" approved="yes">
+        <source>Display the backend user's avatar image or a static fallback image for users without avatar images.</source>
+        <target state="final">Rodyti vidinės sąsajos naudotojo avataro atvaizdą arba statinį atsarginį atvaizdą naudotojams be avataro atvaizdų.</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.withStatus.headline" approved="yes">
+        <source>Status</source>
+        <target state="final">Būsena</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.withStatus.text" approved="yes">
+        <source>If set, the backend user type (normal user or admin user) and its status (disabled or not) will be displayed next to the avatar. </source>
+        <target state="final">Jei nustatyta, šalia avataro bus rodoma vidinės sąsajos naudotojo rūšis (įprastas naudotojas arba administratorius) ir jo būsena (išjungtas ar ne).</target>
+      </trans-unit>
+      <!-- Component: Badge -->
+      <trans-unit id="component.badge.headline" approved="yes">
+        <source>Badges</source>
+        <target state="final">Ženkleliai</target>
+      </trans-unit>
+      <trans-unit id="component.badge.introtext" approved="yes">
+        <source>Small labels for displaying status, counts, or categorization information in a compact format.</source>
+        <target state="final">Mažos etiketės būsenai, kiekiams arba kategorizavimo informacijai rodyti kompaktišku formatu.</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Spalva</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.shape.headline" approved="yes">
+        <source>Shape</source>
+        <target state="final">Forma</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.withinHeadlines.headline" approved="yes">
+        <source>Usage within headings</source>
+        <target state="final">Naudojimas antraštėse</target>
+      </trans-unit>
+      <!-- Component: Breadcrumb -->
+      <trans-unit id="component.breadcrumb.headline" approved="yes">
+        <source>Breadcrumb</source>
+        <target state="final">Naršymo kelias</target>
+      </trans-unit>
+      <trans-unit id="component.breadcrumb.introtext" approved="yes">
+        <source>Navigation trail showing the current location in the backend hierarchy, including modules and pages.</source>
+        <target state="final">Naršymo kelias, rodantis esamą vietą vidinės sąsajos hierarchijoje, įskaitant modulius ir puslapius.</target>
+      </trans-unit>
+      <!-- Component: Button -->
+      <trans-unit id="component.button.headline" approved="yes">
+        <source>Buttons</source>
+        <target state="final">Mygtukai</target>
+      </trans-unit>
+      <trans-unit id="component.button.introtext" approved="yes">
+        <source>Interactive elements for triggering actions, available in various colors, sizes, and states.</source>
+        <target state="final">Interaktyvūs elementai veiksmams vykdyti, galimi įvairių spalvų, dydžių ir būsenų.</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Spalva</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.stateActive.headline" approved="yes">
+        <source>Active state</source>
+        <target state="final">Aktyvi būsena</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.stateDisabled.headline" approved="yes">
+        <source>Disabled state</source>
+        <target state="final">Išjungta būsena</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.types.headline" approved="yes">
+        <source>Types</source>
+        <target state="final">Tipai</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.withIcon.headline" approved="yes">
+        <source>Additional icon</source>
+        <target state="final">Papildoma piktograma</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Dydis</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.size.default.headline" approved="yes">
+        <source>Default size</source>
+        <target state="final">Numatytasis dydis</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.size.small.headline" approved="yes">
+        <source>Small size</source>
+        <target state="final">Mažas dydis</target>
+      </trans-unit>
+      <!-- Component: Card -->
+      <trans-unit id="component.card.headline" approved="yes">
+        <source>Cards</source>
+        <target state="final">Kortelės</target>
+      </trans-unit>
+      <trans-unit id="component.card.introtext" approved="yes">
+        <source>Cards can be displayed individually or in groups.</source>
+        <target state="final">Kortelės gali būti rodomos atskirai arba grupėmis.</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.alignment.headline" approved="yes">
+        <source>Alignment</source>
+        <target state="final">Lygiuotė</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.alignment.text" approved="yes">
+        <source><![CDATA[If you have multiple cards and each have a link or button, they may not align properly depending on the length of the previously placed headings or description text. To ensure they align regardless of previous content, place the link or button inside <code>div.card-footer</code> and not inside <code>div.card-body</code>. This way the links will always be aligned at the bottom of the card.]]></source>
+        <target state="final"><![CDATA[Jei turite kelias korteles ir kiekviena jų turi nuorodą arba mygtuką, jie gali būti netinkamai sulygiuoti, priklausomai nuo prieš tai esančių antraščių ar aprašymo teksto ilgio. Kad jie būtų sulygiuoti nepriklausomai nuo ankstesnio turinio, įdėkite nuorodą arba mygtuką į <code>div.card-footer</code>, o ne į <code>div.card-body</code>. Taip nuorodos visada bus sulygiuotos kortelės apačioje.]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Spalva</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.color.text" approved="yes">
+        <source><![CDATA[It is possible to color cards. However, this option is rarely used - so please use this option sparingly. All available options are listed below. If needed assign one of the following classes to the <code>div.card</code>.<br> If you want to display the card in its default state, it is not necessary to add <code>.card-default</code> to the <code>div.card</code> - just omit the extra class.]]></source>
+        <target state="final"><![CDATA[Korteles galima nuspalvinti. Tačiau ši galimybė naudojama retai, todėl naudokite ją saikingai. Visi galimi variantai pateikti žemiau. Jei reikia, priskirkite vieną iš toliau nurodytų klasių elementui <code>div.card</code>.<br> Jei norite rodyti kortelę numatytąja būsena, nebūtina pridėti <code>.card-default</code> prie <code>div.card</code> – tiesiog praleiskite papildomą klasę.]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.default.text" approved="yes">
+        <source>This is an example of a single card with its possible content. Unless further defined via CSS, a single card takes on the full width of the place it has been put into.</source>
+        <target state="final">Tai vienos kortelės su galimu jos turiniu pavyzdys. Jei CSS nenurodyta kitaip, viena kortelė užims visą vietos, į kurią ji įdėta, plotį.</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.extensionManangerModule.headline" approved="yes">
+        <source>"Extension Manager" module</source>
+        <target state="final">Modulis „Plėtinių tvarkyklė“</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.extensionManangerModule.text" approved="yes">
+        <source>In the extension manager it is possible to get pre-configured distributions. For this view, the cards have been enhanced with an image and some badges.</source>
+        <target state="final">Plėtinių tvarkyklėje galima gauti iš anksto sukonfigūruotus distribucinius paketus. Šiam vaizdui kortelės papildytos atvaizdu ir keliais ženkleliais.</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.formFieldsInCards.headline" approved="yes">
+        <source>Form fields in cards</source>
+        <target state="final">Formos laukai kortelėse</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.formFieldsInCards.text" approved="yes">
+        <source><![CDATA[It is also possible to display forms and form fields in cards. This is done, for example, in the "Upload Extension" section of the <a href="%1s">"Extensions" module</a>, in the "Feature Toggles" overlay in the <a href="%2s">"Settings" module</a> and in the "Raw search" submodule of the <a href="%3s">"Database" module</a>.]]></source>
+        <target state="final"><![CDATA[Taip pat galima rodyti formas ir formų laukus kortelėse. Tai daroma, pavyzdžiui, skiltyje „Įkelti plėtinį“ <a href="%1s">modulyje „Plėtiniai“</a>, perdangoje „Funkcijų perjungikliai“ <a href="%2s">modulyje „Nustatymai“</a> ir posluoksnyje „Neapdorota paieška“ <a href="%3s">modulyje „Duomenų bazė“</a>.]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.listsInCards.headline" approved="yes">
+        <source>Lists in cards</source>
+        <target state="final">Sąrašai kortelėse</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.multipleCards.headline" approved="yes">
+        <source>Multiple cards</source>
+        <target state="final">Kelios kortelės</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.multipleCards.text" approved="yes">
+        <source><![CDATA[To display multiple cards, group them by wrapping them with <code>div.card-container</code>.]]></source>
+        <target state="final"><![CDATA[Norėdami rodyti kelias korteles, sugrupuokite jas apgaubdami <code>div.card-container</code>.]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.rowsInCards.headline" approved="yes">
+        <source>Rows in cards</source>
+        <target state="final">Eilutės kortelėse</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.rowsInCards.text" approved="yes">
+        <source>On top of the element information overlay, rows are included within the card component.</source>
+        <target state="final">Virš elemento informacijos perdangos eilutės yra įtrauktos į kortelės komponentą.</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Dydis</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.size.text" approved="yes">
+        <source><![CDATA[To give the card the desired size, assign one of the following classes to the <code>div.card</code>. If only a single card is used, it must be wrapped with <code>div.card-container</code> as with multiple cards.]]></source>
+        <target state="final"><![CDATA[Norėdami suteikti kortelei pageidaujamą dydį, priskirkite vieną iš toliau nurodytų klasių elementui <code>div.card</code>. Jei naudojama tik viena kortelė, ji turi būti apgaubta <code>div.card-container</code>, kaip ir kelių kortelių atveju.]]></target>
+      </trans-unit>
+      <!-- Component: Checkbox -->
+      <trans-unit id="component.checkbox.headline" approved="yes">
+        <source>Checkboxes</source>
+        <target state="final">Žymimieji langeliai</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.introtext" approved="yes">
+        <source>Form controls for selecting one or more options, including standard checkboxes, toggles, and switches.</source>
+        <target state="final">Formos valdikliai vienam ar keliems pasirinkimams pažymėti, įskaitant standartinius žymimuosius langelius, perjungiklius ir jungiklius.</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.card.headline" approved="yes">
+        <source>Card-Layout</source>
+        <target state="final">Kortelės išdėstymas</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.checkBoxToggleButton.headline" approved="yes">
+        <source>Checkbox toggle button</source>
+        <target state="final">Žymimojo langelio perjungimo mygtukas</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.iconToggle.headline" approved="yes">
+        <source>Icon Toggle</source>
+        <target state="final">Piktogramos perjungiklis</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.labeledToggle.headline" approved="yes">
+        <source>Labeled Toggle</source>
+        <target state="final">Perjungiklis su etikete</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.switch.headline" approved="yes">
+        <source>Switch</source>
+        <target state="final">Jungiklis</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.toggle.headline" approved="yes">
+        <source>Toggle</source>
+        <target state="final">Perjungiklis</target>
+      </trans-unit>
+      <!-- Component: Combobox -->
+      <trans-unit id="component.combobox.headline" approved="yes">
+        <source>Comboboxes</source>
+        <target state="final">Kombinuotieji laukai</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.introtext" approved="yes">
+        <source>Input fields with dropdown suggestions for selecting or entering values, combining text input with selection capabilities.</source>
+        <target state="final">Įvesties laukai su išskleidžiamomis pasiūlomis reikšmėms pasirinkti arba įvesti, derinant teksto įvestį su pasirinkimo galimybėmis.</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.placeholder.headline" approved="yes">
+        <source>Placeholder</source>
+        <target state="final">Paaiškinamasis testas</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.disabled.headline" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Išjungta</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.readonly.headline" approved="yes">
+        <source>Readonly</source>
+        <target state="final">Tik skaitymui</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.additionalText.headline" approved="yes">
+        <source>Additional text</source>
+        <target state="final">Papildomas tekstas</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">Būsena</target>
+      </trans-unit>
+      <!-- Component: Dropdown -->
+      <trans-unit id="component.dropdown.headline" approved="yes">
+        <source>Dropdown</source>
+        <target state="final">Išskleidžiamasis meniu</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.introtext" approved="yes">
+        <source>Toggleable overlays for displaying lists, menus, and contextual actions in a compact dropdown format.</source>
+        <target state="final">Perjungiami persidengiantys sluoksniai sąrašams, meniu ir kontekstiniams veiksmams rodyti kompaktišku išskleidžiamojo meniu formatu.</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.toggles.headline" approved="yes">
+        <source>Toggles</source>
+        <target state="final">Perjungikliai</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.basic.headline" approved="yes">
+        <source>Basic</source>
+        <target state="final">Pagrindinis</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.states.headline" approved="yes">
+        <source>States</source>
+        <target state="final">Būsenos</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.header.headline" approved="yes">
+        <source>Header</source>
+        <target state="final">Antraštė</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.advancedbuttons.headline" approved="yes">
+        <source>Advanced Buttons</source>
+        <target state="final">Išplėstiniai mygtukai</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.text.headline" approved="yes">
+        <source>Text</source>
+        <target state="final">Tekstas</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.rows.headline" approved="yes">
+        <source>Rows</source>
+        <target state="final">Eilutės</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.divider.headline" approved="yes">
+        <source>Divider</source>
+        <target state="final">Skirtukas</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.table.headline" approved="yes">
+        <source>Table</source>
+        <target state="final">Lentelė</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.listitemswithactions.headline" approved="yes">
+        <source>List items with actions</source>
+        <target state="final">Sąrašo elementai su veiksmais</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.positions.headline" approved="yes">
+        <source>Positions</source>
+        <target state="final">Pozicijos</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.nestedsubmenu.headline" approved="yes">
+        <source>Nested Submenu</source>
+        <target state="final">Įdėtasis submeniu</target>
+      </trans-unit>
+      <!-- Component: Developer Tools -->
+      <trans-unit id="component.developerTools.headline" approved="yes">
+        <source>Developer Tools</source>
+        <target state="final">Kūrėjų įrankiai</target>
+      </trans-unit>
+      <trans-unit id="component.developerTools.introtext" approved="yes">
+        <source>Specialized components and utilities designed for development, debugging, and testing purposes.</source>
+        <target state="final">Specializuoti komponentai ir priemonės, skirtos kūrimui, derinimui ir testavimui.</target>
+      </trans-unit>
+      <trans-unit id="component.developerTools.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <!-- Component: Exception -->
+      <!-- Component: Flash message -->
+      <trans-unit id="component.flashMessage.headline" approved="yes">
+        <source>Flash messages</source>
+        <target state="final">Trumpieji pranešimai</target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.introtext" approved="yes">
+        <source>Temporary notifications for displaying feedback about user actions and system events in various severity levels.</source>
+        <target state="final">Laikini pranešimai, skirti rodyti grįžtamąjį ryšį apie naudotojo veiksmus ir sistemos įvykius įvairiais svarbos lygiais.</target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Spalva</target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.section.color.text" approved="yes">
+        <source><![CDATA[The color is decided by setting the corresponding <code>TYPO3\CMS\Core\Type\ContextualFeedbackSeverity</code>. The following options are available:]]></source>
+        <target state="final"><![CDATA[Spalva nustatoma nustatant atitinkamą <code>TYPO3\CMS\Core\Type\ContextualFeedbackSeverity</code>. Prieinamos šios parinktys:]]></target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <!-- Component: Form -->
+      <trans-unit id="component.form.headline" approved="yes">
+        <source>Form</source>
+        <target state="final">Forma</target>
+      </trans-unit>
+      <trans-unit id="component.form.introtext" approved="yes">
+        <source>Complete form layouts combining various input fields, controls, and validation patterns.</source>
+        <target state="final">Pilni formų išdėstymai, apjungiantys įvairius įvesties laukus, valdiklius ir validavimo šablonus.</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.allFields.headline" approved="yes">
+        <source>Form with all fields and labels</source>
+        <target state="final">Forma su visais laukais ir etiketėmis</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.allFieldsRtlDirection.headline" approved="yes">
+        <source>Form with all fields and labels (right-to-left direction)</source>
+        <target state="final">Forma su visais laukais ir etiketėmis (iš dešinės į kairę kryptis)</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.formFieldsInRows.headline" approved="yes">
+        <source>Form fields in rows</source>
+        <target state="final">Formos laukai eilutėse</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.loginFormExample.headline" approved="yes">
+        <source>Login form example</source>
+        <target state="final">Prisijungimo formos pavyzdys</target>
+      </trans-unit>
+      <!-- Component: Infobox -->
+      <trans-unit id="component.infobox.headline" approved="yes">
+        <source>Infobox</source>
+        <target state="final">Informacinis blokas</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.introtext" approved="yes">
+        <source>This is a fluid based widget for the backend that can be inserted as view helper.</source>
+        <target state="final">Tai Fluid pagrindu sukurtas administravimo aplinkos valdiklis, kurį galima įterpti kaip vaizdo pagalbininką.</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Spalva</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.customIcon.headline" approved="yes">
+        <source>Custom icon</source>
+        <target state="final">Pasirinktinė piktograma</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.customIcon.text" approved="yes">
+        <source><![CDATA[It is also possible to use a custom icon. Just pass the icon identifier as <code>iconName</code> to the view helper. The identifier must be registered in your TYPO3 installation.]]></source>
+        <target state="final"><![CDATA[Taip pat galima naudoti pasirinktinę piktogramą. Tiesiog perduokite piktogramos identifikatorių kaip <code>iconName</code> vaizdo pagalbininkui. Identifikatorius turi būti užregistruotas jūsų TYPO3 diegime.]]></target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.withoutIcon.headline" approved="yes">
+        <source>Without icon</source>
+        <target state="final">Be piktogramos</target>
+      </trans-unit>
+      <!-- Component: Input -->
+      <trans-unit id="component.input.headline" approved="yes">
+        <source>Input</source>
+        <target state="final">Įvestis</target>
+      </trans-unit>
+      <trans-unit id="component.input.introtext" approved="yes">
+        <source>Text input fields supporting various types, states, and sizes for single-line data entry.</source>
+        <target state="final">Teksto įvesties laukai, palaikantys įvairius tipus, būsenas ir dydžius vienos eilutės duomenims įvesti.</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.disabled.headline" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Išjungta</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.fileUpload.headline" approved="yes">
+        <source>File upload</source>
+        <target state="final">Failo įkėlimas</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.email.headline" approved="yes">
+        <source>Email</source>
+        <target state="final">El. paštas</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.placeholder.headline" approved="yes">
+        <source>Placeholder</source>
+        <target state="final">Paaiškinamasis tekstas</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.additionalText.headline" approved="yes">
+        <source>Additional text</source>
+        <target state="final">Papildomas tekstas</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.password.headline" approved="yes">
+        <source>Password</source>
+        <target state="final">Slaptažodis</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.search.headline" approved="yes">
+        <source>Search</source>
+        <target state="final">Paieška</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">Būsena</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Dydis</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.size.default.headline" approved="yes">
+        <source>Default size</source>
+        <target state="final">Numatytasis dydis</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.size.small.headline" approved="yes">
+        <source>Small size</source>
+        <target state="final">Mažas dydis</target>
+      </trans-unit>
+      <!-- Component: List groups -->
+      <trans-unit id="component.listGroups.headline" approved="yes">
+        <source>List groups</source>
+        <target state="final">Sąrašų grupės</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.introtext" approved="yes">
+        <source>Lists for displaying a series of content.</source>
+        <target state="final">Sąrašai, skirti rodyti turinio seką.</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.borderless.headline" approved="yes">
+        <source>Borderless</source>
+        <target state="final">Be rėmelių</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.borderless.text" approved="yes">
+        <source><![CDATA[Add <code>.list-group-flush</code> to remove the surrounding border and display the list group borderless in a parent container (e.g., cards)]]></source>
+        <target state="final"><![CDATA[Pridėkite <code>.list-group-flush</code>, kad pašalintumėte išorinį rėmelį ir sąrašų grupę be rėmelio rodytumėte tėviniame konteineryje (pvz., kortelėse)]]></target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.links.headline" approved="yes">
+        <source>Links and buttons</source>
+        <target state="final">Nuorodos ir mygtukai</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">Būsena</target>
+      </trans-unit>
+      <!-- Component: Modal -->
+      <trans-unit id="component.modal.headline" approved="yes">
+        <source>Modal</source>
+        <target state="final">Modalinis langas</target>
+      </trans-unit>
+      <trans-unit id="component.modal.introtext" approved="yes">
+        <source>Modals on buttons can be triggered using the t3js-modal-trigger class. There are various data attributes to customize text and behavior. Not all of them are shown here.</source>
+        <target state="final">Modaliniai langai, priskirti mygtukams, gali būti aktyvuojami naudojant klasę t3js-modal-trigger. Tekstui ir veiksenai tinkinti yra įvairių data atributų. Čia parodyti ne visi.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.customTitleContent.headline" approved="yes">
+        <source>Custom title and content within the modal</source>
+        <target state="final">Pasirinktinis pavadinimas ir turinys modaliniame lange</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.severity.headline" approved="yes">
+        <source>Severity</source>
+        <target state="final">Svarbos lygis</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.severity.description" approved="yes">
+        <source>Set the visual style of the modal using severity levels to indicate the nature of the content or action.</source>
+        <target state="final">Nustatykite modalinio lango vaizdinį stilių naudodami svarbos lygius, kurie nurodo turinio ar veiksmo pobūdį.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Dydis</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.size.description" approved="yes">
+        <source>Control the width of the modal. The default size grows based on content, while other sizes have fixed widths.</source>
+        <target state="final">Valdykite modalinio lango plotį. Numatytasis dydis didėja pagal turinį, o kiti dydžiai turi fiksuotą plotį.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.position.headline" approved="yes">
+        <source>Position</source>
+        <target state="final">Pozicija</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.headline" approved="yes">
+        <source>Playground</source>
+        <target state="final">Bandymų sritis</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.description" approved="yes">
+        <source>Interactively test different modal configurations by selecting options below.</source>
+        <target state="final">Interaktyviai išbandykite skirtingas modalinio lango konfigūracijas, pasirinkdami parinktis žemiau.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.position" approved="yes">
+        <source>Position</source>
+        <target state="final">Pozicija</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.size" approved="yes">
+        <source>Size</source>
+        <target state="final">Dydis</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.severity" approved="yes">
+        <source>Severity</source>
+        <target state="final">Svarbos lygis</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.hideHeader" approved="yes">
+        <source>Hide header</source>
+        <target state="final">Slėpti antraštę</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.staticBackdrop" approved="yes">
+        <source>Static backdrop</source>
+        <target state="final">Statinis fonas</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.openModal" approved="yes">
+        <source>Open modal</source>
+        <target state="final">Atidaryti modalinį langą</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Taip</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.no" approved="yes">
+        <source>No</source>
+        <target state="final">Ne</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.hideHeader.headline" approved="yes">
+        <source>Hide header</source>
+        <target state="final">Slėpti antraštę</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.hideHeader.description" approved="yes">
+        <source>Hide the modal header for a cleaner look. The title is still used for accessibility purposes.</source>
+        <target state="final">Paslėpkite modalinio lango antraštę, kad vaizdas būtų švaresnis. Pavadinimas vis tiek naudojamas prieinamumo tikslais.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.staticBackdrop.headline" approved="yes">
+        <source>Static backdrop</source>
+        <target state="final">Statinis fonas</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.staticBackdrop.description" approved="yes">
+        <source>Prevent the modal from closing when clicking outside of it. Users must use the buttons or close icon to dismiss.</source>
+        <target state="final">Neleisti modaliniam langui užsidaryti spustelėjus už jo ribų. Naudotojai turi naudoti mygtukus arba uždarymo piktogramą.</target>
+      </trans-unit>
+      <!-- Component: Navs -->
+      <trans-unit id="component.navs.headline" approved="yes">
+        <source>Navs</source>
+        <target state="final">Navigacija</target>
+      </trans-unit>
+      <trans-unit id="component.navs.introtext" approved="yes">
+        <source>Navigation components including tabs, pills, and flat navigation styles for organizing content.</source>
+        <target state="final">Navigacijos komponentai, įskaitant korteles, piliules ir plokščius navigacijos stilius turiniui tvarkyti.</target>
+      </trans-unit>
+      <trans-unit id="component.navs.basic.headline" approved="yes">
+        <source>Basic</source>
+        <target state="final">Pagrindinis</target>
+      </trans-unit>
+      <trans-unit id="component.navs.flat.headline" approved="yes">
+        <source>Flat</source>
+        <target state="final">Plokščias</target>
+      </trans-unit>
+      <trans-unit id="component.navs.pills.headline" approved="yes">
+        <source>Pills</source>
+        <target state="final">Piliulės</target>
+      </trans-unit>
+      <trans-unit id="component.navs.tabs.headline" approved="yes">
+        <source>Tabs</source>
+        <target state="final">Kortelės</target>
+      </trans-unit>
+      <!-- Component: Notification -->
+      <trans-unit id="component.notification.headline" approved="yes">
+        <source>Notifications</source>
+        <target state="final">Pranešimai</target>
+      </trans-unit>
+      <trans-unit id="component.notification.introtext" approved="yes">
+        <source>Temporary messages for informing users about events with optional action buttons and different severity levels. Error notifications persist until dismissed.</source>
+        <target state="final">Laikini pranešimai, skirti informuoti naudotojus apie įvykius, su pasirenkamais veiksmų mygtukais ir skirtingais svarbos lygiais. Klaidos pranešimai išlieka, kol nėra uždaromi.</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.headline" approved="yes">
+        <source>Action Buttons</source>
+        <target state="final">Veiksmų mygtukai</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.text" approved="yes">
+        <source>Notification can be enriched with action buttons to trigger two kinds of actions: immediate action and deferred actions.</source>
+        <target state="final">Pranešimai gali būti papildyti veiksmų mygtukais, kurie suaktyvina dviejų rūšių veiksmus: momentinius veiksmus ir atidėtus veiksmus.</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.immediateAction.headline" approved="yes">
+        <source>Immediate Action</source>
+        <target state="final">Momentinis veiksmas</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.immediateAction.text" approved="yes">
+        <source>Immediate actions are executed directly when the action button is triggered. The notification will dismiss immediately. This action type is suitable for action that don't need any processing time, e.g. calling a backend module.</source>
+        <target state="final">Momentiniai veiksmai vykdomi iš karto, kai suaktyvinamas veiksmų mygtukas. Pranešimas bus iš karto atšauktas. Šis veiksmų tipas tinkamas veiksmams, kuriems nereikia jokio apdorojimo laiko, pvz., iškviečiant valdymo sąsajos modulį.</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.deferredAction.headline" approved="yes">
+        <source>Deferred Action</source>
+        <target state="final">Atidėtas veiksmas</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.deferredAction.text" approved="yes">
+        <source>Deferred actions are suitable for actions that need a period of time until they finish, e.g. AJAX calls. The notifications will close as soon the action has ended successfully. When invoked, the button will show a spinner icon to indicate some activity.</source>
+        <target state="final">Momentiniai veiksmai vykdomi iš karto, kai suaktyvinamas veiksmų mygtukas. Pranešimas bus iš karto atšauktas. Šis veiksmų tipas tinkamas veiksmams, kuriems nereikia jokio apdorojimo laiko, pvz., iškviečiant valdymo sąsajos modulį.</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="component.notification.implementation.html" approved="yes">
+        <source>Implementation via HTML:</source>
+        <target state="final">Įgyvendinimas per HTML:</target>
+      </trans-unit>
+      <trans-unit id="component.notification.implementation.script" approved="yes">
+        <source>Implementation via script:</source>
+        <target state="final">Įgyvendinimas per scenarijų:</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.severity.headline" approved="yes">
+        <source>Severity</source>
+        <target state="final">Svarbos lygis</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.severity.text" approved="yes">
+        <source>All notifications disappear after 5 seconds by default, except for the error message, which will remain stuck unless reconfigured.</source>
+        <target state="final">Visi pranešimai pagal numatytuosius nustatymus išnyksta po 5 sekundžių, išskyrus klaidos pranešimą, kuris lieka rodomas, jei nėra perkonfigūruotas.</target>
+      </trans-unit>
+      <!-- Component: Pagination -->
+      <trans-unit id="component.pagination.headline" approved="yes">
+        <source>Pagination</source>
+        <target state="final">Puslapiavimas</target>
+      </trans-unit>
+      <trans-unit id="component.pagination.introtext" approved="yes">
+        <source>Controls for navigating through multi-page content and data sets with page numbers and navigation arrows.</source>
+        <target state="final">Valdikliai, skirti naršyti kelių puslapių turinį ir duomenų rinkinius naudojant puslapių numerius ir naršymo rodykles.</target>
+      </trans-unit>
+      <trans-unit id="component.pagination.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <!-- Component: Panels -->
+      <trans-unit id="component.panels.headline" approved="yes">
+        <source>Panels</source>
+        <target state="final">Skydeliai</target>
+      </trans-unit>
+      <trans-unit id="component.panels.introtext" approved="yes">
+        <source>Collapsible content containers for organizing information into expandable and collapsible sections.</source>
+        <target state="final">Suskleidžiami turinio konteineriai, skirti informacijai tvarkyti išskleidžiamose ir suskleidžiamose sekcijose.</target>
+      </trans-unit>
+      <trans-unit id="component.panels.collapsible.headline" approved="yes">
+        <source>Collapsible</source>
+        <target state="final">Suskleidžiamas</target>
+      </trans-unit>
+      <trans-unit id="component.panels.nesting.headline" approved="yes">
+        <source>Nesting</source>
+        <target state="final">Įdėjimas</target>
+      </trans-unit>
+      <trans-unit id="component.panels.variants.headline" approved="yes">
+        <source>Variants</source>
+        <target state="final">Variantai</target>
+      </trans-unit>
+      <trans-unit id="component.panels.loader.headline" approved="yes">
+        <source>Loader</source>
+        <target state="final">Įkėlimo indikatorius</target>
+      </trans-unit>
+      <trans-unit id="component.panels.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Dydis</target>
+      </trans-unit>
+      <trans-unit id="component.panels.progress.headline" approved="yes">
+        <source>Progress</source>
+        <target state="final">Eiga</target>
+      </trans-unit>
+      <trans-unit id="component.panels.progressComponent.headline" approved="yes">
+        <source>Progress Component</source>
+        <target state="final">Eigos komponentas</target>
+      </trans-unit>
+      <trans-unit id="component.panels.header.headline" approved="yes">
+        <source>Header</source>
+        <target state="final">Antraštė</target>
+      </trans-unit>
+      <trans-unit id="component.panels.headerRecord.headline" approved="yes">
+        <source>Header with icon and actions</source>
+        <target state="final">Antraštė su piktograma ir veiksmais</target>
+      </trans-unit>
+      <trans-unit id="component.panels.headerFile.headline" approved="yes">
+        <source>Header with thumbnail and actions</source>
+        <target state="final">Antraštė su miniatiūra ir veiksmais</target>
+      </trans-unit>
+      <trans-unit id="component.panels.headerSection.headline" approved="yes">
+        <source>Header with section controls</source>
+        <target state="final">Antraštė su sekcijos valdikliais</target>
+      </trans-unit>
+      <trans-unit id="component.panels.body.headline" approved="yes">
+        <source>Body</source>
+        <target state="final">Turinys</target>
+      </trans-unit>
+      <trans-unit id="component.panels.footer.headline" approved="yes">
+        <source>Footer</source>
+        <target state="final">Poraštė</target>
+      </trans-unit>
+      <trans-unit id="component.panels.list.headline" approved="yes">
+        <source>List</source>
+        <target state="final">Sąrašas</target>
+      </trans-unit>
+      <trans-unit id="component.panels.table.headline" approved="yes">
+        <source>Table</source>
+        <target state="final">Lentelė</target>
+      </trans-unit>
+      <!-- Component: Progress indicator -->
+      <trans-unit id="component.progressIndicator.headline" approved="yes">
+        <source>Progress indicators</source>
+        <target state="final">Eigos indikatoriai</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.introtext" approved="yes">
+        <source><![CDATA[Progress bars represent a specific state that can be displayed in a percental fashion, e.g. amount of uploaded files, executed Upgrade Wizards or disk space usage.<br>If the exact amount of data being loaded is not known, progress bars may be rendered in an indeterminate state.<br>If applicable, use clear wording that describes the progress bar.]]></source>
+        <target state="final"><![CDATA[Eigos juostos atspindi konkrečią būseną, kurią galima rodyti procentiniu formatu, pvz., įkeltų failų kiekį, įvykdytus naujinimo vedlius arba disko vietos naudojimą.<br>Jei tikslus įkeliamų duomenų kiekis nežinomas, eigos juostos gali būti rodomos neapibrėžtoje būsenoje.<br>Jei taikoma, naudokite aiškias formuluotes, apibūdinančias eigos juostą.]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.interactiveDemos.headline" approved="yes">
+        <source>Interactive Demos</source>
+        <target state="final">Interaktyvūs demonstraciniai pavyzdžiai</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.headline" approved="yes">
+        <source>Indeterminate Progress Bar</source>
+        <target state="final">Neapibrėžta eigos juosta</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.text" approved="yes">
+        <source><![CDATA[Creates a progress bar in indeterminate state, then calls done() to trigger the transition to 100% and removal.]]></source>
+        <target state="final"><![CDATA[Sukuria neapibrėžtos būsenos eigos juostą, tada iškviečia done(), kad būtų inicijuotas perėjimas į 100 % ir pašalinimas.]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.button" approved="yes">
+        <source>Start Indeterminate Progress</source>
+        <target state="final">Pradėti neapibrėžtą eigą</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.buttonDelayed" approved="yes">
+        <source>Start Indeterminate Progress (with delay)</source>
+        <target state="final">Pradėti neapibrėžtą eigą (su delsa)</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.headline" approved="yes">
+        <source>Determinate Progress Bar</source>
+        <target state="final">Apibrėžta eigos juosta</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.text" approved="yes">
+        <source><![CDATA[Creates a progress bar with an initial value, then calls done() to trigger the transition to 100% and removal.]]></source>
+        <target state="final"><![CDATA[Sukuria eigos juostą su pradine reikšme, tada iškviečia done() funkciją, kad suaktyvintų perėjimą į 100% ir pašalinimą.]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.button" approved="yes">
+        <source>Start Determinate Progress</source>
+        <target state="final">Pradėti apibrėžtą eigą</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.buttonDelayed" approved="yes">
+        <source>Start Determinate Progress (with delay)</source>
+        <target state="final">Pradėti neapibrėžtą eigą (su delsa)</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.reusable.headline" approved="yes">
+        <source>Reusable Progress Bar</source>
+        <target state="final">Apibrėžta eigos juosta</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.reusable.text" approved="yes">
+        <source>Demonstrates how calling start() cancels a done() operation that is already in progress. The progress bar below calls done() after 1 second, but start() is called 100ms later to cancel the removal.</source>
+        <target state="final">Parodo, kaip iškvietus start() nutraukiama jau vykdoma done() operacija. Toliau pateikta eigos juosta iškviečia done() po 1 sekundės, tačiau po 100 ms iškviečiamas start(), kad būtų atšauktas pašalinimas.</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.reusable.button" approved="yes">
+        <source>Run Demo</source>
+        <target state="final">Paleisti demonstraciją</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.customLabel.headline" approved="yes">
+        <source>Custom label</source>
+        <target state="final">Pasirinktinis užrašas</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.customLabel.text" approved="yes">
+        <source>Optionally, a label can be displayed below the progress bar.</source>
+        <target state="final">Pasirinktinai po eigos juosta gali būti rodomas užrašas.</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.default.text" approved="yes">
+        <source>By default, an indefinite progress is displayed.</source>
+        <target state="final">Pagal numatytuosius nustatymus rodoma neapibrėžta eiga.</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.maxValue.headline" approved="yes">
+        <source>Max value</source>
+        <target state="final">Maksimali reikšmė</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.ridiculousMaxValue.headline" approved="yes">
+        <source>Ridiculous max value</source>
+        <target state="final">Juokinga maksimali reikšmė</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.severity.headline" approved="yes">
+        <source>Severity</source>
+        <target state="final">Svarbumo lygis</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.value.headline" approved="yes">
+        <source>Value</source>
+        <target state="final">Reikšmė</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.table.headline" approved="yes">
+        <source>Progress Bar with Table</source>
+        <target state="final">Eigos juosta su lentele</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.table.text" approved="yes">
+        <source>Demonstrates using a progress bar as the first child of a table wrapper to indicate loading state.</source>
+        <target state="final">Parodo, kaip naudoti eigos juostą kaip pirmąjį lentelės apvalkalo elementą, nurodant įkėlimo būseną.</target>
+      </trans-unit>
+      <!-- Component: Progress trackers -->
+      <trans-unit id="component.progressTrackers.headline" approved="yes">
+        <source>Progress trackers</source>
+        <target state="final">Eigos sekikliai</target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.introtext" approved="yes">
+        <source><![CDATA[Progress trackers are a segmented variant of progress bars, dividing the progress bar into equal chunks.<br>The primary usage is in wizard components.]]></source>
+        <target state="final"><![CDATA[Eigos sekikliai yra segmentuota eigos juostų versija, padalijanti eigos juostą į lygias dalis.<br>Pagrindinė paskirtis – vedlio komponentuose.]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.section.activeStage.headline" approved="yes">
+        <source>Active stage</source>
+        <target state="final">Aktyvus etapas</target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.section.demo.headline" approved="yes">
+        <source>Demo</source>
+        <target state="final">Demonstracija</target>
+      </trans-unit>
+      <!-- Component: Radio -->
+      <trans-unit id="component.radio.headline" approved="yes">
+        <source>Radio buttons</source>
+        <target state="final">Radijo mygtukai</target>
+      </trans-unit>
+      <trans-unit id="component.radio.introtext" approved="yes">
+        <source>Form controls for selecting a single exclusive option from multiple mutually exclusive choices.</source>
+        <target state="final">Formos valdikliai, skirti pasirinkti vieną iš kelių tarpusavyje nesuderinamų parinkčių.</target>
+      </trans-unit>
+      <trans-unit id="component.radio.section.card.headline" approved="yes">
+        <source>Card-Layout</source>
+        <target state="final">Kortelių išdėstymas</target>
+      </trans-unit>
+      <trans-unit id="component.radio.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <!-- Component: Content Navigation -->
+      <trans-unit id="component.contentNavigation.headline" approved="yes">
+        <source>Content Navigation</source>
+        <target state="final">Turinio navigacija</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.introtext" approved="yes">
+        <source><![CDATA[A two-panel container with a resizable navigation area and a flexible content area. The navigation panel is optional, resizable, and can be collapsed to the left. The content panel is required and fills the remaining space.]]></source>
+        <target state="final"><![CDATA[Dviejų sričių konteineris su keičiamo dydžio navigacijos sritimi ir lanksčia turinio sritimi. Navigacijos sritis yra pasirenkama, gali būti keičiama jos plotis ir ji gali būti suskleidžiama į kairę. Turinio sritis yra privaloma ir užpildo likusią vietą.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.basic.headline" approved="yes">
+        <source>Basic usage</source>
+        <target state="final">Pagrindinis naudojimas</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.basic.text" approved="yes">
+        <source><![CDATA[The content navigation uses named slots: <code>navigation</code> and <code>content</code>. The <code>content</code> slot is required. The navigation panel can be collapsed by dragging below half of its minimum width. When collapsed, an expand button with the panel title is displayed.]]></source>
+        <target state="final"><![CDATA[Turinio navigacija naudoja vardinius lizdus: <code>navigation</code> ir <code>content</code>. <code>content</code> lizdas yra privalomas. Navigacijos sritį galima suskleisti nutempiant ją žemiau pusės minimalaus pločio. Suskleidus rodomas išskleidimo mygtukas su srities pavadinimu.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.controls.headline" approved="yes">
+        <source>External controls</source>
+        <target state="final">Išoriniai valdikliai</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.controls.text" approved="yes">
+        <source><![CDATA[The navigation panel can be expanded or collapsed programmatically using <code>expand()</code>, <code>collapse()</code>, and <code>isCollapsed()</code> methods.]]></source>
+        <target state="final"><![CDATA[Navigacijos sritį galima išskleisti arba suskleisti programiškai naudojant metodus <code>expand()</code>, <code>collapse()</code> ir <code>isCollapsed()</code>.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.toggleButton.headline" approved="yes">
+        <source>Toggle button</source>
+        <target state="final">Perjungimo mygtukas</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.toggleButton.text" approved="yes">
+        <source><![CDATA[The <code>&lt;typo3-backend-content-navigation-toggle&gt;</code> component provides a button to expand or collapse the navigation. Place it anywhere within the content-navigation component. Use <code>action="collapse"</code> for a collapse button (visible when expanded) or <code>action="expand"</code> for an expand button (visible when collapsed). The component automatically shows/hides based on the navigation state and reads labels from the parent content-navigation's <code>navigation-label-collapse</code> and <code>navigation-label-expand</code> attributes.]]></source>
+        <target state="final"><![CDATA[Komponentas <code><typo3-backend-content-navigation-toggle></code> pateikia mygtuką navigacijai išskleisti arba suskleisti. Jį galima patalpinti bet kur turinio navigacijos komponente. Naudokite <code>action="collapse"</code> suskleidimo mygtukui (matomas, kai išskleista) arba <code>action="expand"</code> išskleidimo mygtukui (matomas, kai suskleista). Komponentas automatiškai rodo arba slepia mygtuką pagal navigacijos būseną ir naudoja etiketes iš tėvinio content-navigation atributo <code>navigation-label-collapse</code> ir <code>navigation-label-expand</code>.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.hidingPanels.headline" approved="yes">
+        <source>Hiding navigation</source>
+        <target state="final">Navigacijos slėpimas</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.hidingPanels.text" approved="yes">
+        <source><![CDATA[The navigation panel can be hidden by adding the <code>hidden</code> attribute to the slotted element. Use the component's <code>showNavigation()</code>, <code>hideNavigation()</code>, and <code>isNavigationHidden()</code> methods for programmatic control.]]></source>
+        <target state="final"><![CDATA[Navigacijos sritį galima paslėpti pridedant atributą <code>hidden</code> į elementą su priskirtu lizdu. Programiniam valdymui naudokite komponento metodus <code>showNavigation()</code>, <code>hideNavigation()</code> ir <code>isNavigationHidden()</code>.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.persistence.headline" approved="yes">
+        <source>Width persistence</source>
+        <target state="final">Pločio išsaugojimas</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.persistence.text" approved="yes">
+        <source><![CDATA[The navigation width is automatically persisted to <code>localStorage</code> using the container's <code>identifier</code> attribute. Resize the panel below, then reload the page to see the width restored.]]></source>
+        <target state="final"><![CDATA[Navigacijos plotis automatiškai išsaugomas <code>localStorage</code> naudojant konteinerio atributą <code>identifier</code>. Pakeiskite srities plotį žemiau, tada perkraukite puslapį – pamatysite atkurtą plotį.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.rtl.headline" approved="yes">
+        <source>Right-to-left support</source>
+        <target state="final">Dešinės į kairę kalbų palaikymas</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.rtl.text" approved="yes">
+        <source><![CDATA[The container automatically adapts to right-to-left layouts. The navigation panel appears on the right and drag directions are mirrored.]]></source>
+        <target state="final"><![CDATA[Konteineris automatiškai prisitaiko prie išdėstymo iš dešinės į kairę. Navigacijos sritis rodoma dešinėje, o tempimo kryptys atspindimos veidrodiniu principu.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.flyout.headline" approved="yes">
+        <source>Flyout mode</source>
+        <target state="final">Išskleidžiamas režimas</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.flyout.text" approved="yes">
+        <source><![CDATA[When the container becomes too narrow (below 750px), the navigation automatically switches to flyout mode using CSS container queries. In flyout mode, the navigation overlays the content instead of sitting beside it, and resizing is disabled.]]></source>
+        <target state="final"><![CDATA[Kai konteineris tampa per siauras (mažiau nei 750 px), navigacija automatiškai persijungia į išskleidžiamą režimą naudojant CSS konteinerio užklausas. Šiame režime navigacija uždengia turinį, o ne rodoma šalia jo, ir dydžio keitimas yra išjungtas.]]></target>
+      </trans-unit>
+      <!-- Component: Select -->
+      <trans-unit id="component.select.headline" approved="yes">
+        <source>Select</source>
+        <target state="final">Pasirinkimas</target>
+      </trans-unit>
+      <trans-unit id="component.select.introtext" approved="yes">
+        <source>Dropdown menus for choosing one or more options from a predefined list of values.</source>
+        <target state="final">Išskleidžiamieji meniu, skirti pasirinkti vieną ar daugiau parinkčių iš iš anksto apibrėžto reikšmių sąrašo.</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.multiple.headline" approved="yes">
+        <source>Multiple selection</source>
+        <target state="final">Kelių reikšmių pasirinkimas</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.optgroup.headline" approved="yes">
+        <source>Option groups</source>
+        <target state="final">Parinkčių grupės</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.optgroup.single.headline" approved="yes">
+        <source>Single selection with option groups</source>
+        <target state="final">Vienas pasirinkimas su parinkčių grupėmis</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.optgroup.multiple.headline" approved="yes">
+        <source>Multiple selection with option groups</source>
+        <target state="final">Kelių reikšmių pasirinkimas su parinkčių grupėmis</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">Būsena</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Dydis</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.size.default.headline" approved="yes">
+        <source>Default size</source>
+        <target state="final">Numatytasis dydis</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.size.small.headline" approved="yes">
+        <source>Small size</source>
+        <target state="final">Mažas dydis</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.colorScheme.optgroup.single.headline" approved="yes">
+        <source>Single selection with option groups</source>
+        <target state="final">Vienas pasirinkimas su parinkčių grupėmis</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.colorScheme.optgroup.multiple.headline" approved="yes">
+        <source>Multiple selection with option groups</source>
+        <target state="final">Kelių reikšmių pasirinkimas su parinkčių grupėmis</target>
+      </trans-unit>
+      <!-- Component: Status indicator -->
+      <!-- Component: Tabs -->
+      <trans-unit id="component.tabs.headline" approved="yes">
+        <source>Tab</source>
+        <target state="final">Kortelė</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.introtext" approved="yes">
+        <source>Organized content sections with clickable headers for switching between different views and panels.</source>
+        <target state="final">Struktūruotos turinio sekcijos su paspaudžiamomis antraštėmis, leidžiančiomis perjungti skirtingus rodinius ir skydelius.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.default.text" approved="yes">
+        <source>Basic tab navigation with two tabs.</source>
+        <target state="final">Pagrindinė skirtukų navigacija su dviem skirtukais.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.persistence.headline" approved="yes">
+        <source>Persistence</source>
+        <target state="final">Duomenų išsaugojimas</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.persistence.text" approved="yes">
+        <source>Adding data-store-last-tab to the tab list stores the last selected tab in the browser session. This requires a stable id on the tab list element.</source>
+        <target state="final">Pridėjus data-store-last-tab prie skirtukų sąrašo, paskutinis pasirinktas skirtukas išsaugomas naršyklės sesijoje. Tam reikalingas stabilus id skirtukų sąrašo elemente.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.validation.headline" approved="yes">
+        <source>Validation State</source>
+        <target state="final">Tikrinimo būsena</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.validation.text" approved="yes">
+        <source>Tabs containing validation errors are highlighted with a danger indicator. The &lt;code&gt;has-validation-error&lt;/code&gt; class is added to the &lt;code&gt;nav-item&lt;/code&gt; element.</source>
+        <target state="final">Skirtukai, kuriuose yra tikrinimo klaidų, paryškinami pavojaus indikatoriumi. Klasė &lt;code&gt;has-validation-error&lt;/code&gt; pridedama prie &lt;code&gt;nav-item&lt;/code&gt; elemento.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.overflow.headline" approved="yes">
+        <source>Scrollable</source>
+        <target state="final">Slenkamas</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.overflow.text" approved="yes">
+        <source>When tabs do not fit in one line, scroll arrows appear at the edges. Resize the container to see the effect.</source>
+        <target state="final">Kai skirtukai netelpa į vieną eilutę, kraštuose atsiranda slinkimo rodyklės. Pakeiskite konteinerio dydį, kad pamatytumėte efektą.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.migration.headline" approved="yes">
+        <source>Bootstrap Migration</source>
+        <target state="final">Bootstrap perkėlimas</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.migration.text" approved="yes">
+        <source>Tabs using Bootstrap data-bs-toggle attributes are automatically migrated to data-typo3-tab at runtime. Anchor elements are replaced with buttons.</source>
+        <target state="final">Skirtukai, naudojantys Bootstrap atributus data-bs-toggle, vykdymo metu automatiškai perkeliami į data-typo3-tab. Inkariniai elementai pakeičiami mygtukais.</target>
+      </trans-unit>
+      <!-- Component: Table -->
+      <trans-unit id="component.table.headline" approved="yes">
+        <source>Tables</source>
+        <target state="final">Lentelės</target>
+      </trans-unit>
+      <trans-unit id="component.table.introtext" approved="yes">
+        <source>Use tables to show tabular data. The action icons should always be in the last table row cell.</source>
+        <target state="final">Naudokite lenteles duomenims pateikti lentelės forma. Veiksmų piktogramos visada turėtų būti paskutiniame lentelės eilutės langelyje.</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Spalva</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.color.text" approved="yes">
+        <source><![CDATA[To color table rows, a class can be added to the <code>tr</code> element.]]></source>
+        <target state="final"><![CDATA[Norint nuspalvinti lentelės eilutes, klase galima pridėti prie <code>tr</code> elemento.]]></target>
+      </trans-unit>
+      <trans-unit id="component.table.section.colorScheme.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.colorScheme.colorFullExample.headline" approved="yes">
+        <source>Color (full example)</source>
+        <target state="final">Spalva (pilnas pavyzdys)</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.wideTables.headline" approved="yes">
+        <source>Wide tables</source>
+        <target state="final">Plačios lentelės</target>
+      </trans-unit>
+      <!-- Component: Textarea -->
+      <trans-unit id="component.textarea.headline" approved="yes">
+        <source>Textarea</source>
+        <target state="final">Teksto laukas</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.introtext" approved="yes">
+        <source>Multi-line text input fields for entering and editing longer content and formatted text.</source>
+        <target state="final">Kelių eilučių teksto įvedimo laukai ilgesniam turiniui ir formatuotam tekstui įvesti bei redaguoti.</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.disabled.headline" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Išjungtas</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.placeholder.headline" approved="yes">
+        <source>Placeholder</source>
+        <target state="final">Paaiškinamasis tekstas</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">Būsena</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Dydis</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.size.default.headline" approved="yes">
+        <source>Default size</source>
+        <target state="final">Numatytasis dydis</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.size.small.headline" approved="yes">
+        <source>Small size</source>
+        <target state="final">Mažas dydis</target>
+      </trans-unit>
+      <!-- Component: Tree -->
+      <trans-unit id="component.tree.headline" approved="yes">
+        <source>Trees</source>
+        <target state="final">Medžiai</target>
+      </trans-unit>
+      <trans-unit id="component.tree.introtext" approved="yes">
+        <source>Hierarchical tree structures for displaying and navigating nested data with expandable and collapsible nodes.</source>
+        <target state="final">Hierarchinės medžio struktūros, skirtos rodyti ir naršyti įdėtus duomenis su išskleidžiamais ir suskleidžiamais mazgais.</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.collapsibleTree.headline" approved="yes">
+        <source>Collapsible tree</source>
+        <target state="final">Suskleidžiamas medis</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.collapsibleTree.text" approved="yes">
+        <source><![CDATA[Collapsible trees are used to show the configuration in a more structured way. Lower levels can be opened and closed, while the entries are collapsed by default. If a user opens entries, this state is saved in the session. There are additional data attributes that can be added to <code>div.treelist-collapse</code> to configure the collapse state.]]></source>
+        <target state="final"><![CDATA[Suskleidžiami medžiai naudojami konfigūracijai pateikti struktūruotesniu būdu. Žemesni lygiai gali būti atidaromi ir uždaromi, o įrašai pagal numatytuosius nustatymus yra suskleisti. Jei naudotojas atidaro įrašus, ši būsena išsaugoma sesijoje. Taip pat galima pridėti papildomus duomenų atributus prie <code>div.treelist-collapse</code>, kad būtų konfigūruojama suskleidimo būsena.]]></target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.fileTree.headline" approved="yes">
+        <source>File tree</source>
+        <target state="final">Failų medis</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.fileTree.text" approved="yes">
+        <source>File trees are initialized via TypeScript like the page trees.</source>
+        <target state="final">Failų medžiai inicijuojami per TypeScript taip pat kaip puslapių medžiai.</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.pageTree.headline" approved="yes">
+        <source>Page tree</source>
+        <target state="final">Puslapių medis</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.pageTree.text" approved="yes">
+        <source>Initialization of a page tree is done via TypeScript as in the code example below.</source>
+        <target state="final">Puslapių medžio inicializavimas atliekamas per TypeScript, kaip parodyta žemiau pateiktame kodo pavyzdyje.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.headline" approved="yes">
+        <source>Datetime Component</source>
+        <target state="final">Datos ir laiko komponentas</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.introtext" approved="yes">
+        <source>Web component for displaying timestamps in absolute format (default) or relative format (e.g., "2 minutes ago"). Uses Luxon for localized formatting and respects the user's backend language setting and TYPO3's configured date formats. Supports custom Luxon format strings for complete control over the display format. When using relative mode, hover over the time to see the full datetime in a tooltip.</source>
+        <target state="final">Žiniatinklio komponentas laiko žymėms rodyti absoliučiu formatu (numatytasis) arba santykiniame formate (pvz., „prieš 2 minutes"). Naudoja Luxon lokalizuotam formatavimui ir atsižvelgia į vartotojo valdymo sąsajos kalbos nustatymą bei TYPO3 sukonfigūruotus datos formatus. Palaiko pasirinktinius Luxon formato eilutes visiškai valdyti rodymo formatą. Naudojant santykinį režimą, užveskite pelę ant laiko, kad pamatytumėte visą datos ir laiko informaciją patarime.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.basicUsage.headline" approved="yes">
+        <source>Basic Usage (Absolute Display)</source>
+        <target state="final">Pagrindinis naudojimas (absoliutus rodymas)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.basicUsage.absoluteDisplay" approved="yes">
+        <source>Absolute Display (default)</source>
+        <target state="final">Absoliutus rodymas (numatytasis)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.basicUsage.isoTimestamp" approved="yes">
+        <source>ISO Timestamp</source>
+        <target state="final">ISO laiko žymė</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeTime.headline" approved="yes">
+        <source>Relative Time Display</source>
+        <target state="final">Santykinio laiko rodymas</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeTime.text" approved="yes">
+        <source>Using mode="relative", the component displays timestamps in relative format (e.g., "2 hours ago"). Hover to see the absolute datetime.</source>
+        <target state="final">Naudojant mode="relative", komponentas rodo laiko žymes santykiniu formatu (pvz., „prieš 2 valandas"). Užveskite pelę, kad pamatytumėte absoliutų datos ir laiko formatą.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeTime.relativeDisplay" approved="yes">
+        <source>Relative Display</source>
+        <target state="final">Santykinis rodymas</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.autoUpdate.headline" approved="yes">
+        <source>Automatic Updates in Relative Mode</source>
+        <target state="final">Automatiniai atnaujinimai santykiniame režime</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.autoUpdate.text" approved="yes">
+        <source>In relative mode, the component automatically updates itself with adaptive frequency based on elapsed time: &lt;1 minute updates every second, &lt;1 hour updates every minute, &lt;1 day every 5 minutes, and &gt;1 day every 30 minutes. No configuration needed.</source>
+        <target state="final">Santykiniame režime komponentas automatiškai atnaujinamas adaptyviu dažnumu, atsižvelgiant į praėjusį laiką: &lt;1 minutė atnaujinama kas sekundę, &lt;1 valanda – kas minutę, &lt;1 diena – kas 5 minutes, o &gt;1 diena – kas 30 minučių. Konfigūracijos nereikia.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.autoUpdate.lastUpdated" approved="yes">
+        <source>Last updated:</source>
+        <target state="final">Paskutinį kartą atnaujinta:</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.headline" approved="yes">
+        <source>Unix Timestamp Support</source>
+        <target state="final">Unix laiko žymės palaikymas</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.text" approved="yes">
+        <source>The component automatically detects and handles Unix timestamps (in seconds).</source>
+        <target state="final">Komponentas automatiškai aptinka ir apdoroja Unix laiko žymes (sekundėmis).</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.format" approved="yes">
+        <source>Format</source>
+        <target state="final">Formatas</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.value" approved="yes">
+        <source>Value</source>
+        <target state="final">Reikšmė</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.absoluteDisplay" approved="yes">
+        <source>Absolute Display</source>
+        <target state="final">Absoliutus rodymas</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.isoReference" approved="yes">
+        <source>ISO Reference</source>
+        <target state="final">ISO nuoroda</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.fluidViewHelper" approved="yes">
+        <source>Fluid ViewHelper</source>
+        <target state="final">Fluid ViewHelper</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.modeComparison.headline" approved="yes">
+        <source>Mode Comparison</source>
+        <target state="final">Režimų palyginimas</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.modeComparison.text" approved="yes">
+        <source>Side-by-side comparison of absolute (default) and relative display modes.</source>
+        <target state="final">Absoliutaus (numatytojo) ir santykinio rodymo režimų palyginimas vienas šalia kito.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.headline" approved="yes">
+        <source>Absolute Display Formats</source>
+        <target state="final">Absoliutaus rodymo formatai</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.text" approved="yes">
+        <source>The format attribute is optional and uses TYPO3's configured date format by default. Available values: date (default), datetime, or custom Luxon format strings. The TYPO3 configured formats are defined in $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] and $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'].</source>
+        <target state="final">Atributas format yra neprivalomas ir pagal numatytuosius nustatymus naudoja TYPO3 sukonfigūruotą datos formatą. Prieinamos reikšmės: date (numatytasis), datetime arba pasirinktinės Luxon formato eilutės. TYPO3 sukonfigūruoti formatai apibrėžiami $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ir $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'].</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.display" approved="yes">
+        <source>Display</source>
+        <target state="final">Rodymas</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.dateDefault" approved="yes">
+        <source>date (default - TYPO3 configured date)</source>
+        <target state="final">date (numatytasis – TYPO3 sukonfigūruota data)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.datetimeConfigured" approved="yes">
+        <source>datetime (TYPO3 configured datetime)</source>
+        <target state="final">datetime (TYPO3 sukonfigūruotas data ir laikas)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.customFormats.headline" approved="yes">
+        <source>Custom Format Strings</source>
+        <target state="final">Pasirinktinės formato eilutės</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.customFormats.text" approved="yes">
+        <source>The format attribute also accepts custom Luxon format strings for complete control over the display format.</source>
+        <target state="final">Atributas format taip pat priima pasirinktines Luxon formato eilutes visiškai valdyti rodymo formatą.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.customFormats.customFormatString" approved="yes">
+        <source>Custom Format String</source>
+        <target state="final">Pasirinktinė formato eilutė</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.headline" approved="yes">
+        <source>Relative Time Without Seconds</source>
+        <target state="final">Santykinis laikas be sekundžių</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.text" approved="yes">
+        <source>By default, relative mode rounds up to the nearest minute. Use the relative-show-seconds attribute to display exact seconds instead.</source>
+        <target state="final">Pagal numatytuosius nustatymus santykinis režimas suapvalina iki artimiausios minutės. Naudokite atributą relative-show-seconds, kad vietoje to būtų rodomos tikslios sekundės.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.withoutSeconds" approved="yes">
+        <source>Without Seconds (Default)</source>
+        <target state="final">Be sekundžių (numatytasis)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.withSeconds" approved="yes">
+        <source>With Seconds</source>
+        <target state="final">Su sekundėmis</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.headline" approved="yes">
+        <source>With Threshold (Show Absolute Date for Old Timestamps)</source>
+        <target state="final">Su riba (rodyti absoliutų datos formatą seniems laiko žymėms)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.text" approved="yes">
+        <source>In relative mode, using the threshold-days attribute switches to absolute date format for timestamps older than a specified number of days.</source>
+        <target state="final">Santykiniame režime, naudojant atributą threshold-days, laiko žymėms, senesnėms nei nurodytas dienų skaičius, perjungiama į absoliutų datos formatą.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.withoutThreshold" approved="yes">
+        <source>Without Threshold</source>
+        <target state="final">Be ribos</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.withThreshold" approved="yes">
+        <source>With Threshold (90 days)</source>
+        <target state="final">Su riba (90 dienų)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.headline" approved="yes">
+        <source>Attributes</source>
+        <target state="final">Atributai</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.attribute" approved="yes">
+        <source>Attribute</source>
+        <target state="final">Atributas</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Tipas</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Aprašymas</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.datetime.type" approved="yes">
+        <source>string (required)</source>
+        <target state="final">eilutė (privaloma)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.datetime.description" approved="yes">
+        <source>ISO 8601 timestamp (e.g., "2024-01-15T10:30:00+01:00") or Unix timestamp</source>
+        <target state="final">ISO 8601 laiko žymė (pvz., „2024-01-15T10:30:00+01:00") arba Unix laiko žymė</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.mode.type" approved="yes">
+        <source>string (optional)</source>
+        <target state="final">eilutė (neprivaloma)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.mode.description" approved="yes">
+        <source>Display mode: "absolute" (default) or "relative"</source>
+        <target state="final">Rodymo režimas: „absolute" (numatytasis) arba „relative"</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.format.type" approved="yes">
+        <source>string (optional)</source>
+        <target state="final">eilutė (neprivaloma)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.format.description" approved="yes">
+        <source>Format for absolute mode: "date" (default - uses $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']), "datetime" (uses ddmmyy + hhmm), or custom Luxon format string (e.g., "dd.MM.yyyy HH:mm")</source>
+        <target state="final">Absoliutaus režimo formatas: „date" (numatytasis – naudoja $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']), „datetime" (naudoja ddmmyy + hhmm) arba pasirinktinė Luxon formato eilutė (pvz., „dd.MM.yyyy HH:mm")</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.thresholdDays.type" approved="yes">
+        <source>number (optional)</source>
+        <target state="final">skaičius (neprivalomas)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.thresholdDays.description" approved="yes">
+        <source>Switch to absolute date format for timestamps older than N days (only for relative mode). Default: 0 (always relative)</source>
+        <target state="final">Perjungti į absoliutų datos formatą laiko žymėms, senesnėms nei N dienų (tik santykiniam režimui). Numatytasis: 0 (visada santykinis)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.relativeShowSeconds.type" approved="yes">
+        <source>boolean (optional)</source>
+        <target state="final">loginė reikšmė (neprivaloma)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.relativeShowSeconds.description" approved="yes">
+        <source>Show exact seconds in relative mode. When absent (default), times within the last minute display as "1 minute ago". When present, displays "X seconds ago".</source>
+        <target state="final">Rodyti tikslias sekundes santykiniame režime. Kai nenurodyta (numatytasis), laikai per paskutinę minutę rodomi kaip „prieš 1 minutę". Kai nurodyta, rodoma „prieš X sekundžių".</target>
+      </trans-unit>
+      <!-- Styles: Color tokens -->
+      <trans-unit id="styles.colorTokens.headline" approved="yes">
+        <source>Color Tokens</source>
+        <target state="final">Spalvų žetonai</target>
+      </trans-unit>
+      <trans-unit id="styles.colorTokens.introtext" approved="yes">
+        <source><![CDATA[Surfaces used in the TYPO3 Backend, for <strong>internal usage only</strong>.]]></source>
+        <target state="final"><![CDATA[Paviršiai, naudojami TYPO3 administravimo aplinkoje, <strong>tik vidiniam naudojimui</strong>.]]></target>
+      </trans-unit>
+      <!-- Styles: Accent and State -->
+      <trans-unit id="styles.accentAndState.headline" approved="yes">
+        <source>Accent and State</source>
+        <target state="final">Akcentai ir būsenos</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.introtext" approved="yes">
+        <source><![CDATA[Stateful color variants used for interactive elements in the TYPO3 Backend, for <strong>internal usage only</strong>. These include accent colors (primary, secondary) and semantic state colors (info, success, warning, danger, notice) with their respective default, hover, focus, and disabled variants.]]></source>
+        <target state="final"><![CDATA[Būsenomis pagrįstos spalvų variacijos, naudojamos interaktyviems elementams TYPO3 administravimo aplinkoje, <strong>tik vidiniam naudojimui</strong>. Tai apima akcentines spalvas (pirminė, antrinė) ir semantines būsenos spalvas (informacija, sėkmė, įspėjimas, pavojus, pranešimas) su atitinkamomis numatytosiomis, užvedimo, fokusavimo ir išjungtomis variacijomis.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.accentColors.headline" approved="yes">
+        <source>Accent Colors</source>
+        <target state="final">Akcentinės spalvos</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.stateColors.headline" approved="yes">
+        <source>State Colors</source>
+        <target state="final">Būsenos spalvos</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.decorativeColors.headline" approved="yes">
+        <source>Decorative Colors</source>
+        <target state="final">Dekoratyvinės spalvos</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.decorativeColors.text" approved="yes">
+        <source>Plain color variants without semantic meaning. Use these for visual distinction only, such as workspace indicators, category tags, or user-assigned labels where colors are decorative rather than communicating status.</source>
+        <target state="final">Paprastos spalvų variantai be semantinės reikšmės. Naudokite juos tik vizualiniam atskyrimui, pavyzdžiui, darbo srities indikatoriai, kategorijų žymos arba vartotojo priskirtos etiketės, kur spalvos yra dekoratyvinės, o ne perteikia būseną.</target>
+      </trans-unit>
+      <!-- Styles: Icons -->
+      <trans-unit id="styles.icons.headline" approved="yes">
+        <source>Icons</source>
+        <target state="final">Piktogramos</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.introtext" approved="yes">
+        <source>Icons can be used in backend modules. TYPO3 automatically sends the corresponding HTML output code.</source>
+        <target state="final">Piktogramos gali būti naudojamos administravimo moduliuose. TYPO3 automatiškai pateikia atitinkamą HTML išvesties kodą.</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Numatytasis</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.overlay.headline" approved="yes">
+        <source>Overlay</source>
+        <target state="final">Perdanga</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.overview.headline" approved="yes">
+        <source>Overview</source>
+        <target state="final">Apžvalga</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Dydis</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.headline" approved="yes">
+        <source>Usage</source>
+        <target state="final">Naudojimas</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.bitmap.headline" approved="yes">
+        <source>Bitmap</source>
+        <target state="final">Bitmap</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.implementation" approved="yes">
+        <source>Implementation in Fluid via ViewHelper:</source>
+        <target state="final">Įgyvendinimas Fluid per ViewHelper:</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.registration" approved="yes">
+        <source>Registration:</source>
+        <target state="final">Registravimas:</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.svg.headline" approved="yes">
+        <source>SVG</source>
+        <target state="final">SVG</target>
+      </trans-unit>
+      <!-- Styles: Shadows -->
+      <trans-unit id="styles.shadows.headline" approved="yes">
+        <source>Shadows</source>
+        <target state="final">Šešėliai</target>
+      </trans-unit>
+      <trans-unit id="styles.shadows.introtext" approved="yes">
+        <source><![CDATA[Shadows used in the TYPO3 Backend, for <strong>internal usage only</strong>.]]></source>
+        <target state="final"><![CDATA[Šešėliai, naudojami TYPO3 administravimo aplinkoje, <strong>tik vidiniam naudojimui</strong>.]]></target>
+      </trans-unit>
+      <!-- Styles: Surfaces -->
+      <trans-unit id="styles.surfaces.headline" approved="yes">
+        <source>Surfaces</source>
+        <target state="final">Paviršiai</target>
+      </trans-unit>
+      <trans-unit id="styles.surfaces.introtext" approved="yes">
+        <source><![CDATA[Surfaces used in the TYPO3 Backend, for <strong>internal usage only</strong>.]]></source>
+        <target state="final"><![CDATA[Paviršiai, naudojami TYPO3 administravimo aplinkoje, <strong>tik vidiniam naudojimui</strong>.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Spalva</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.natural.headline" approved="yes">
+        <source>Natural</source>
+        <target state="final">Natūralus</target>
+      </trans-unit>
+      <!-- Styles: Typography -->
+      <trans-unit id="styles.typography.headline" approved="yes">
+        <source>Typography</source>
+        <target state="final">Tipografija</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.introtext" approved="yes">
+        <source>Font styles, sizes, weights, and text formatting guidelines used throughout the TYPO3 backend.</source>
+        <target state="final">Šriftų stiliai, dydžiai, storis ir teksto formatavimo gairės, naudojamos visoje TYPO3 administravimo aplinkoje.</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.headings.headline" approved="yes">
+        <source>Headings</source>
+        <target state="final">Antraštės</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.headings.text" approved="yes">
+        <source><![CDATA[Headline "H1" is the main headline within each backend module. Only added once to every backend page.<br>Headline "H2" is the headline for every section in backend modules. Place above each section and use several times.<br>Headline "H3" can be used to split section content into logical units. Place in between paragraphs within section.<br>Headline "H4" might be used to split off meta / footer information.]]></source>
+        <target state="final"><![CDATA[Antraštė „H1“ yra pagrindinė antraštė kiekviename administravimo modulyje. Ji naudojama tik vieną kartą kiekviename administravimo puslapyje.<br>Antraštė „H2“ yra kiekvienos sekcijos antraštė administravimo moduliuose. Ji dedama virš kiekvienos sekcijos ir gali būti naudojama kelis kartus.<br>Antraštė „H3“ gali būti naudojama sekcijos turiniui suskirstyti į logines dalis. Ji dedama tarp pastraipų sekcijoje.<br>Antraštė „H4“ gali būti naudojama metaduomenims / poraštės informacijai atskirti.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.links.headline" approved="yes">
+        <source>Links</source>
+        <target state="final">Nuorodos</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.headline" approved="yes">
+        <source>Lists</source>
+        <target state="final">Sąrašai</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.text" approved="yes">
+        <source><![CDATA[By default, ordered and unordered lists are formatted with bullets and decimals. By adding <code>class="list-unstyled"</code> to the ol or ul tag, it is possible to structure content in list form without the typical list styling.]]></source>
+        <target state="final"><![CDATA[Pagal numatytuosius nustatymus numeruoti ir nenumeruoti sąrašai formatuojami su ženkleliais ir skaičiais. Pridėjus <code>class="list-unstyled"</code> prie ol arba ul žymos, galima pateikti turinį sąrašo forma be įprasto sąrašo stiliaus.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.ordered.headline" approved="yes">
+        <source>Ordered list</source>
+        <target state="final">Numeruotas sąrašas</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.unordered.headline" approved="yes">
+        <source>Unordered list</source>
+        <target state="final">Nenumeruotas sąrašas</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.paragraph.headline" approved="yes">
+        <source>Paragraph</source>
+        <target state="final">Pastraipa</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.smallText.headline" approved="yes">
+        <source>Small text</source>
+        <target state="final">Mažas tekstas</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.smallText.text" approved="yes">
+        <source>Footer information, small notices can be wrapped in small text tag.</source>
+        <target state="final">Poraštės informacija ir trumpi pranešimai gali būti pateikiami naudojant mažo teksto žymą.</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.textColor.headline" approved="yes">
+        <source>Text color</source>
+        <target state="final">Teksto spalva</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
