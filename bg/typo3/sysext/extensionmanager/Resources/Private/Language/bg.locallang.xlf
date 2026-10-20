@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:extensionmanager/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="bg">
+    <header/>
+    <body>
+      <trans-unit id="extensionManager" approved="yes">
+        <source>Extension Manager</source>
+        <target state="final">Мениджър на разширения</target>
+      </trans-unit>
+      <trans-unit id="manageExtensions" approved="yes">
+        <source>Manage Extensions</source>
+        <target state="final">Управление на разширения</target>
+      </trans-unit>
+      <trans-unit id="getExtensions" approved="yes">
+        <source>Get Extensions</source>
+        <target state="final">Вземи разширения</target>
+      </trans-unit>
+      <trans-unit id="showAllVersions" approved="yes">
+        <source>Show all versions of</source>
+        <target state="final">Покажи всички версии на</target>
+      </trans-unit>
+      <trans-unit id="extConfTemplate.backToList" approved="yes">
+        <source>Back to list</source>
+        <target state="final">Обратно към списъка</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadsql" approved="yes">
+        <source>Download SQL Dump</source>
+        <target state="final">Свали SQL Dump</target>
+      </trans-unit>
+      <trans-unit id="extensionList.remove" approved="yes">
+        <source>Remove</source>
+        <target state="final">Изтрий</target>
+      </trans-unit>
+      <trans-unit id="extensionList.update" approved="yes">
+        <source>Update</source>
+        <target state="final">Обнови</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateToVersion" approved="yes">
+        <source>Update to version %s</source>
+        <target state="final">Обнови до версия %s</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateDisabled" approved="yes">
+        <source>An update is available but this operation is currently disabled</source>
+        <target state="final">Има наличен обновяване, но тази операция текущо е скрита</target>
+      </trans-unit>
+      <trans-unit id="extensionList.deactivate" approved="yes">
+        <source>Deactivate</source>
+        <target state="final">Деактивирай</target>
+      </trans-unit>
+      <trans-unit id="extensionList.activate" approved="yes">
+        <source>Activate</source>
+        <target state="final">Активирай</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadzip" approved="yes">
+        <source>Download as zip</source>
+        <target state="final">Свали като zip</target>
+      </trans-unit>
+      <trans-unit id="extensionList.overwriteExtension" approved="yes">
+        <source>Overwrite</source>
+        <target state="final">Презапиши</target>
+      </trans-unit>
+      <trans-unit id="extensionList.overwritingDisabled" approved="yes">
+        <source>Extension is already available and overwriting was not enabled</source>
+        <target state="final">Разширението вече е обновено и презаписване не е налично</target>
+      </trans-unit>
+      <trans-unit id="extensionList.loading" approved="yes">
+        <source>Loading form...</source>
+        <target state="final">Зареждане на форма...</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.update" approved="yes">
+        <source>Upd.</source>
+        <target state="final">Обновяване</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.title.update" approved="yes">
+        <source>Update</source>
+        <target state="final">Обнови</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.activate" approved="yes">
+        <source>A/D</source>
+        <target state="final">A/D</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.title.activate" approved="yes">
+        <source>Activate / Deactivate</source>
+        <target state="final">Активиране / Деактивиране</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionName" approved="yes">
+        <source>Extension</source>
+        <target state="final">Разширение</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Версия</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionKey" approved="yes">
+        <source>Key</source>
+        <target state="final">Ключ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionVersion" approved="yes">
+        <source>Version</source>
+        <target state="final">Версия</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionActions" approved="yes">
+        <source>Actions</source>
+        <target state="final">Действия</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionState" approved="yes">
+        <source>State</source>
+        <target state="final">Състояние</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.uploadComment" approved="yes">
+        <source>Upload Comment</source>
+        <target state="final">Качи коментар</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.lastUpdate" approved="yes">
+        <source>Last Updated</source>
+        <target state="final">Последно обновени</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Описание</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Автор</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.searchExtensions" approved="yes">
+        <source>Search extensions</source>
+        <target state="final">Търсене на разширения</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.submitButton" approved="yes">
+        <source>Go</source>
+        <target state="final">Отиди до</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.resetSearchButton" approved="yes">
+        <source>Reset Search</source>
+        <target state="final">Занули търсенето</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.yourSearch" approved="yes">
+        <source>Your search</source>
+        <target state="final">Вашето търсене</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.searchAgain" approved="yes">
+        <source>Search again</source>
+        <target state="final">Търси отново</target>
+      </trans-unit>
+      <trans-unit id="uploadTemplate.extensionLabel" approved="yes">
+        <source>Extension</source>
+        <target state="final">Разширение</target>
+      </trans-unit>
+      <trans-unit id="extensionList.removalConfirmation.title" approved="yes">
+        <source>Extension Removal</source>
+        <target state="final">Премахване на разширение</target>
+      </trans-unit>
+      <trans-unit id="extensionList.removalConfirmation.message" approved="yes">
+        <source>The extension is currently installed. Uninstall extension?</source>
+        <target state="final">Разширението е инсталирано. Деинсталиране на разширението?</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateConfirmation.title" approved="yes">
+        <source>Update?</source>
+        <target state="final">Обновяване?</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateConfirmation.questionVersionComments" approved="yes">
+        <source>Version Comments</source>
+        <target state="final">Коментари на версията</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFlashMessage.title" approved="yes">
+        <source>Extension Update</source>
+        <target state="final">Обновяване на разширение</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.headline" approved="yes">
+        <source>The following dependencies have to be resolved before installation:</source>
+        <target state="final">Следните зависимости трябва да бъдат решени преди инсталация:</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.resolveAutomatically" approved="yes">
+        <source>Shall these dependencies be resolved automatically?</source>
+        <target state="final">Дали тези зависимости да бъдат решени автоматично?</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Версия</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Автор</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.key" approved="yes">
+        <source>Key</source>
+        <target state="final">Ключ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Автор</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Версия</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Версия</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
