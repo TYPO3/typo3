@@ -36,7 +36,7 @@ final class BootstrapRendererTest extends UnitTestCase
             ContextualFeedbackSeverity::NOTICE
         );
         $output = $subject->render([$flashMessage]);
-        self::assertStringContainsString('<div class="typo3-messages">', $output);
+        self::assertStringContainsString('<div class="typo3-messages" aria-live="assertive">', $output);
         self::assertStringContainsString('<div class="alert alert-notice">', $output);
         self::assertStringContainsString('<div class="alert-content">', $output);
         self::assertStringContainsString('<div class="alert-title">messageTitle</div>', $output);
@@ -53,7 +53,7 @@ final class BootstrapRendererTest extends UnitTestCase
             ContextualFeedbackSeverity::NOTICE
         );
         $output = $subject->render([$flashMessage]);
-        self::assertStringContainsString('<div class="typo3-messages">', $output);
+        self::assertStringContainsString('<div class="typo3-messages" aria-live="assertive">', $output);
         self::assertStringContainsString('<div class="alert alert-notice">', $output);
         self::assertStringContainsString('<div class="alert-content">', $output);
         self::assertStringContainsString('<p class="alert-message">messageBody</p>', $output);

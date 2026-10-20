@@ -45,7 +45,7 @@ readonly class BootstrapRenderer implements FlashMessageRendererInterface
     public function render(array $flashMessages): string
     {
         $markup = [];
-        $markup[] = '<div class="typo3-messages">';
+        $markup[] = '<div class="typo3-messages" aria-live="assertive">';
         foreach ($flashMessages as $flashMessage) {
             $messageTitle = $flashMessage->getTitle();
             $markup[] = '<div class="alert alert-' . htmlspecialchars($flashMessage->getSeverity()->getCssClass()) . '">';
