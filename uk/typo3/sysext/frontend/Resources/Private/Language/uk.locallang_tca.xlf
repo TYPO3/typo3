@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="pages.title_formlabel" approved="yes">
+        <source>Page Title</source>
+        <target state="final">Назва сторінки</target>
+      </trans-unit>
+      <trans-unit id="pages.starttime_formlabel" approved="yes">
+        <source>Publish Date</source>
+        <target state="final">Дата публікації</target>
+      </trans-unit>
+      <trans-unit id="pages.endtime_formlabel" approved="yes">
+        <source>Expiration Date</source>
+        <target state="final">Термін дії</target>
+      </trans-unit>
+      <trans-unit id="pages.fe_group_formlabel" approved="yes">
+        <source>Usergroup Access Rights</source>
+        <target state="final">Права доступу групи користувачів</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden" approved="yes">
+        <source>Hide page</source>
+        <target state="final">Сховати сторінку</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_formlabel" approved="yes">
+        <source>Page</source>
+        <target state="final">Сторінка</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_checkbox_1_formlabel" approved="yes">
+        <source>Disable</source>
+        <target state="final">Вимкнено</target>
+      </trans-unit>
+      <trans-unit id="pages.layout.I.1" approved="yes">
+        <source>Layout 1</source>
+        <target state="final">Макет 1</target>
+      </trans-unit>
+      <trans-unit id="pages.layout.I.2" approved="yes">
+        <source>Layout 2</source>
+        <target state="final">Макет 2</target>
+      </trans-unit>
+      <trans-unit id="pages.layout.I.3" approved="yes">
+        <source>Layout 3</source>
+        <target state="final">Макет 3</target>
+      </trans-unit>
+      <trans-unit id="pages.extendToSubpages" approved="yes">
+        <source>Include Subpages</source>
+        <target state="final">Включити підсторінки</target>
+      </trans-unit>
+      <trans-unit id="pages.extendToSubpages_formlabel" approved="yes">
+        <source>Extend to Subpages</source>
+        <target state="final">Розширити до підсторінок</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_title" approved="yes">
+        <source>Navigation Title</source>
+        <target state="final">Заголовок панелі навігації</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_title_formlabel" approved="yes">
+        <source>Alternative Navigation Title</source>
+        <target state="final">Альтернативний заголовок панелі навігації</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide" approved="yes">
+        <source>Hide in Menu</source>
+        <target state="final">Сховати в меню</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_formlabel" approved="yes">
+        <source>In Menus</source>
+        <target state="final">В меню</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_checkbox_1_formlabel" approved="yes">
+        <source>Hide</source>
+        <target state="final">Приховати</target>
+      </trans-unit>
+      <trans-unit id="pages.subtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Підзаголовок</target>
+      </trans-unit>
+      <trans-unit id="pages.subtitle_formlabel" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Підзаголовок</target>
+      </trans-unit>
+      <trans-unit id="pages.target" approved="yes">
+        <source>Target</source>
+        <target state="final">Цільовий</target>
+      </trans-unit>
+      <trans-unit id="pages.target_formlabel" approved="yes">
+        <source>Link Target</source>
+        <target state="final">Цільове посилання</target>
+      </trans-unit>
+      <trans-unit id="pages.url" approved="yes">
+        <source>URL</source>
+        <target state="final">URL</target>
+      </trans-unit>
+      <trans-unit id="pages.lastUpdated" approved="yes">
+        <source>Last Updated</source>
+        <target state="final">Востаннє оновлено</target>
+      </trans-unit>
+      <trans-unit id="pages.lastUpdated_formlabel" approved="yes">
+        <source>Last Update</source>
+        <target state="final">Останнє оновлення</target>
+      </trans-unit>
+      <trans-unit id="pages.newUntil" approved="yes">
+        <source>'New' Until</source>
+        <target state="final">'Новий' До</target>
+      </trans-unit>
+      <trans-unit id="pages.newUntil_formlabel" approved="yes">
+        <source>Mark as 'New' Until</source>
+        <target state="final">Відмітити як 'Нове' до</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout" approved="yes">
+        <source>Cache Expires</source>
+        <target state="final">Термін дії кешу закінчується</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout_formlabel" approved="yes">
+        <source>Cache Lifetime</source>
+        <target state="final">Термін дії кешу</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.1" approved="yes">
+        <source>1 min</source>
+        <target state="final">1 хв</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.2" approved="yes">
+        <source>5 min</source>
+        <target state="final">5 хв</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.3" approved="yes">
+        <source>15 min</source>
+        <target state="final">15 хв</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.4" approved="yes">
+        <source>30 min</source>
+        <target state="final">30 хв</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.5" approved="yes">
+        <source>1 hour</source>
+        <target state="final">1 година</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.6" approved="yes">
+        <source>4 hours</source>
+        <target state="final">4 години</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.7" approved="yes">
+        <source>1 day</source>
+        <target state="final">1 день</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.8" approved="yes">
+        <source>2 days</source>
+        <target state="final">2 дні</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.9" approved="yes">
+        <source>7 days</source>
+        <target state="final">7 днів</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.10" approved="yes">
+        <source>1 month</source>
+        <target state="final">1 місяць</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_tags" approved="yes">
+        <source>Cache Tags</source>
+        <target state="final">Теги кешу</target>
+      </trans-unit>
+      <trans-unit id="pages.editlock_formlabel" approved="yes">
+        <source>Editable for Admins Only</source>
+        <target state="final">Редагується лише для Адміністраторів</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.metadata" approved="yes">
+        <source>Metadata</source>
+        <target state="final">Метадані</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.files" approved="yes">
+        <source>Resources</source>
+        <target state="final">Ресурси</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.resources" approved="yes">
+        <source>Resources</source>
+        <target state="final">Ресурси</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Доступ</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">Параметри</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.mount" approved="yes">
+        <source>Mount</source>
+        <target state="final">Монтувати</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.shortcut" approved="yes">
+        <source>Shortcut</source>
+        <target state="final">Ярлик</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.url" approved="yes">
+        <source>URL</source>
+        <target state="final">URL</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Розширено</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.appearance" approved="yes">
+        <source>Appearance</source>
+        <target state="final">Зовнішній вигляд</target>
+      </trans-unit>
+      <trans-unit id="pages.no_search" approved="yes">
+        <source>Include in Search</source>
+        <target state="final">Включити до пошуку</target>
+      </trans-unit>
+      <trans-unit id="pages.no_search_formlabel" approved="yes">
+        <source>Include in Search</source>
+        <target state="final">Включити до пошуку</target>
+      </trans-unit>
+      <trans-unit id="pages.no_search_checkbox_1_formlabel" approved="yes">
+        <source>Disable</source>
+        <target state="final">Вимкнено</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode" approved="yes">
+        <source>Shortcut Mode</source>
+        <target state="final">Режим швидкого доступу</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode_formlabel" approved="yes">
+        <source>Shortcut Mode</source>
+        <target state="final">Режим швидкого доступу</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode.I.0" approved="yes">
+        <source>Selected page</source>
+        <target state="final">Вибрана сторінка</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode.I.1" approved="yes">
+        <source>First subpage of selected/current page</source>
+        <target state="final">Перша підсторінка вибраної/поточної сторінки</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode.I.3" approved="yes">
+        <source>Parent page of selected/current page</source>
+        <target state="final">Батьківська сторінка обраної/поточної сторінки</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_formlabel" approved="yes">
+        <source>Shortcut Target</source>
+        <target state="final">Цільовий ярлик</target>
+      </trans-unit>
+      <trans-unit id="pages.content_from_pid" approved="yes">
+        <source>Show content from this page instead</source>
+        <target state="final">Натомість показувати вміст цієї сторінки</target>
+      </trans-unit>
+      <trans-unit id="pages.content_from_pid_formlabel" approved="yes">
+        <source>Show Content from Page</source>
+        <target state="final">Показати вміст сторінки</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid" approved="yes">
+        <source>Mount Point of</source>
+        <target state="final">Точка монтування</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_formlabel" approved="yes">
+        <source>Mounted page</source>
+        <target state="final">Змонтована сторінка</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol" approved="yes">
+        <source>Mount Point redirects to mounted page</source>
+        <target state="final">Точка монтування перенаправляє на змонтовану сторінку</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol_formlabel" approved="yes">
+        <source>Mount Point Display Option</source>
+        <target state="final">Параметр відображення точки монтування</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol.I.0" approved="yes">
+        <source>Show this page</source>
+        <target state="final">Показати цю сторінку</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol.I.1" approved="yes">
+        <source>Show the mounted page</source>
+        <target state="final">Показати змонтовану сторінку</target>
+      </trans-unit>
+      <trans-unit id="pages.abstract" approved="yes">
+        <source>Abstract</source>
+        <target state="final">Абстрактний</target>
+      </trans-unit>
+      <trans-unit id="pages.abstract_formlabel" approved="yes">
+        <source>Abstract</source>
+        <target state="final">Абстрактний</target>
+      </trans-unit>
+      <trans-unit id="pages.keywords_formlabel" approved="yes">
+        <source>Keywords</source>
+        <target state="final">Ключові слова</target>
+      </trans-unit>
+      <trans-unit id="pages.author_formlabel" approved="yes">
+        <source>Author Name</source>
+        <target state="final">Ім’я автора</target>
+      </trans-unit>
+      <trans-unit id="pages.author_email_formlabel" approved="yes">
+        <source>Author Email</source>
+        <target state="final">Електронна адреса автора</target>
+      </trans-unit>
+      <trans-unit id="pages.media" approved="yes">
+        <source>Files</source>
+        <target state="final">Файли</target>
+      </trans-unit>
+      <trans-unit id="pages.media_formlabel" approved="yes">
+        <source>Media</source>
+        <target state="final">Медіа</target>
+      </trans-unit>
+      <trans-unit id="pages.php_tree_stop_formlabel" approved="yes">
+        <source>Hide child pages in page tree</source>
+        <target state="final">Сховати дочірні сторінки в дереві сторінки</target>
+      </trans-unit>
+      <trans-unit id="pages.is_siteroot" approved="yes">
+        <source>Is Root of Website</source>
+        <target state="final">Є коренем веб-сайту</target>
+      </trans-unit>
+      <trans-unit id="pages.is_siteroot_formlabel" approved="yes">
+        <source>Use as Root Page</source>
+        <target state="final">Використовувати як кореневу сторінку</target>
+      </trans-unit>
+      <trans-unit id="pages.module" approved="yes">
+        <source>Contains Plugin</source>
+        <target state="final">Містить плагін</target>
+      </trans-unit>
+      <trans-unit id="pages.module_formlabel" approved="yes">
+        <source>Contains Plugin</source>
+        <target state="final">Містить плагін</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.1" approved="yes">
+        <source>Shop</source>
+        <target state="final">Магазин</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.2" approved="yes">
+        <source>Board</source>
+        <target state="final">Дошка</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.3" approved="yes">
+        <source>News</source>
+        <target state="final">Новини</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.4" approved="yes">
+        <source>Website Users</source>
+        <target state="final">Користувачі сайту</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.5" approved="yes">
+        <source>Direct Mail</source>
+        <target state="final">Пряма розсилка</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.6" approved="yes">
+        <source>Approvals</source>
+        <target state="final">Затвердження</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg" approved="yes">
+        <source>Localization Settings</source>
+        <target state="final">Параметри локалізації</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg_formlabel" approved="yes">
+        <source>Localization</source>
+        <target state="final">Локалізація</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg.I.1" approved="yes">
+        <source>Hide default language of page</source>
+        <target state="final">Приховати мову сторінки за замовчуванням</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg.I.2" approved="yes">
+        <source>Hide page if no translation for current language exists</source>
+        <target state="final">Приховати сторінку, якщо немає перекладу для поточної мови</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg.I.2a" approved="yes">
+        <source>Show page even if no translation exists</source>
+        <target state="final">Показати сторінку, навіть якщо переклад не існує</target>
+      </trans-unit>
+      <trans-unit id="pages.storage_pid_formlabel" approved="yes">
+        <source>Page</source>
+        <target state="final">Сторінка</target>
+      </trans-unit>
+      <trans-unit id="pages.TSconfig_formlabel" approved="yes">
+        <source>Page TSconfig</source>
+        <target state="final">Сторінкове TSconfig</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout_formlabel" approved="yes">
+        <source>Backend Layout (this page only)</source>
+        <target state="final">Макет backend (тільки ця сторінка)</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout_next_level_formlabel" approved="yes">
+        <source>Backend Layout (subpages of this page)</source>
+        <target state="final">Макет backend (підсторінки цієї сторінки)</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout.none" approved="yes">
+        <source>None</source>
+        <target state="final">Жоден</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout.default" approved="yes">
+        <source>Default</source>
+        <target state="final">За замовчуванням</target>
+      </trans-unit>
+      <trans-unit id="pages.tsconfig_includes" approved="yes">
+        <source>Include static Page TSconfig (from extensions)</source>
+        <target state="final">Включити статичну сторінку TSconfig (із розширення)</target>
+      </trans-unit>
+      <trans-unit id="tt_content" approved="yes">
+        <source>Page Content</source>
+        <target state="final">Вміст сторінки</target>
+      </trans-unit>
+      <trans-unit id="fe_users" approved="yes">
+        <source>Website User</source>
+        <target state="final">Користувач сайту</target>
+      </trans-unit>
+      <trans-unit id="fe_users.username" approved="yes">
+        <source>Username</source>
+        <target state="final">Імʼя користувача</target>
+      </trans-unit>
+      <trans-unit id="fe_users.password" approved="yes">
+        <source>Password</source>
+        <target state="final">Пароль</target>
+      </trans-unit>
+      <trans-unit id="fe_users.usergroup" approved="yes">
+        <source>Groups</source>
+        <target state="final">Групи</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Доступ</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Розширено</target>
+      </trans-unit>
+      <trans-unit id="fe_groups" approved="yes">
+        <source>Website Usergroup</source>
+        <target state="final">Група користувачів сайту</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.title" approved="yes">
+        <source>Group Title</source>
+        <target state="final">Назва групи</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.subgroup" approved="yes">
+        <source>Subgroups</source>
+        <target state="final">Підгрупи</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Розширено</target>
+      </trans-unit>
+      <trans-unit id="sys_template" approved="yes">
+        <source>TypoScript record</source>
+        <target state="final">Запис TypoScript</target>
+      </trans-unit>
+      <trans-unit id="sys_template.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Найменування</target>
+      </trans-unit>
+      <trans-unit id="sys_template.root" approved="yes">
+        <source>Rootlevel</source>
+        <target state="final">Кореневий рівень</target>
+      </trans-unit>
+      <trans-unit id="sys_template.rootDescription" approved="yes">
+        <source>When enabled, the page is marked as "Rootline Root". This is most often set only once for the uppermost TypoScript record.
+				This can be used in frontend to stop at this page when creating for example "breadcrumb" menus, even if there are further parent pages. The flag especially
+				affects these TypoScript "getText" properties: "level", "levelmedia", "leveltitle", "levelfield" and "leveluid".</source>
+        <target state="final">Якщо ввімкнено, сторінка позначається як «Коренева лінія». Найчастіше це встановлюється лише один раз для самого верхнього запису TypoScript.
+Це можна використати у інтерфейсі, щоб зупинитися на цій сторінці під час створення, наприклад, меню «навігації», навіть якщо є інші батьківські сторінки. Прапор особливо впливає на ці властивості TypoScript "getText": "level", "levelmedia", "leveltitle", "levelfield" і "leveluid".</target>
+      </trans-unit>
+      <trans-unit id="sys_template.clear" approved="yes">
+        <source>Clear</source>
+        <target state="final">Очистити</target>
+      </trans-unit>
+      <trans-unit id="sys_template.clearDescription" approved="yes">
+        <source>Remove TypoScript settings from TypoScript records up in rootline. This is most often set only once for the uppermost TypoScript record that is most often
+			 	located on the same page that has "Use as Root Page" flag set and the "Site" configuration attached in the site module.</source>
+        <target state="final">Видаліть налаштування TypoScript із записів TypoScript у кореневій лінії. Найчастіше це встановлюється лише один раз для самого верхнього запису TypoScript, який найчастіше знаходиться на тій самій сторінці, де встановлено прапорець «Використовувати як кореневу сторінку» та конфігурацію «Сайт», долучену до модуля сайту.</target>
+      </trans-unit>
+      <trans-unit id="sys_template.constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">Константи</target>
+      </trans-unit>
+      <trans-unit id="sys_template.resources" approved="yes">
+        <source>Resources</source>
+        <target state="final">Ресурси</target>
+      </trans-unit>
+      <trans-unit id="sys_template.include_static_file" approved="yes">
+        <source>Include TypoScript sets</source>
+        <target state="final">Включити набори TypoScript</target>
+      </trans-unit>
+      <trans-unit id="sys_template.include_static_fileDescription" approved="yes">
+        <source>Extensions often deliver default TypoScript to set up basic frontend rendering. These can be loaded here.
+				To keep TypoScript structures clean and tidy, this is often set only for the main TypoScript record located on the same page that has "Use as Root Page" flag set,
+				has a "Site" configuration attached in the site module, and has the above "Clear" and "Rootlevel" flags set.</source>
+        <target state="final">Розширення часто надають TypoScript за замовчуванням для налаштування базового рендерингу інтерфейсу. Їх можна завантажити тут.
+Щоб підтримувати структури TypoScript чистими та охайними, це часто встановлюється лише для основного запису TypoScript, розташованого на тій самій сторінці, де встановлено прапорець «Використовувати як кореневу сторінку», має конфігурацію «Сайт», прикріплену до модуля сайту, і має встановлені вище прапорці «Очистити» та «Кореневий рівень».</target>
+      </trans-unit>
+      <trans-unit id="sys_template.basedOn" approved="yes">
+        <source>Include TypoScript records</source>
+        <target state="final">Включати записи TypoScript</target>
+      </trans-unit>
+      <trans-unit id="sys_template.basedOnDescription" approved="yes">
+        <source>Include additional TypoScript records located elsewhere in the page tree. This can be used to load the same TypoScript records at multiple places in a page tree.
+			 	This isn't used very often nowadays and it's often easier to understand and maintain the site by extracting TypoScript configuration to files
+				and to load the full set in a single main TypoScript record.
+            </source>
+        <target state="final">Включіть додаткові записи TypoScript, розташовані в іншому місці дерева сторінок. Це можна використовувати для завантаження тих самих записів TypoScript у кількох місцях дерева сторінок.
+Нині це використовується не дуже часто, і часто легше зрозуміти та підтримувати сайт, витягнувши конфігурацію TypoScript у файли та завантаживши повний набір в одному основному записі TypoScript.
+            </target>
+      </trans-unit>
+      <trans-unit id="sys_template.includeStaticAfterBasedOn" approved="yes">
+        <source>Load TypoScript sets after included TypoScript records</source>
+        <target state="final">Завантажувати набори TypoScript після включених записів TypoScript</target>
+      </trans-unit>
+      <trans-unit id="sys_template.includeStaticAfterBasedOnDescription" approved="yes">
+        <source>When using both fields "Include TypoScript sets" and "Include TypoScript records" in a TypoScript record, this flag allows swapping their load order.</source>
+        <target state="final">У разі використання обох полів «Включити набори TypoScript» і «Включити записи TypoScript» у записі TypoScript цей прапорець дозволяє поміняти їх порядок завантаження.</target>
+      </trans-unit>
+      <trans-unit id="sys_template.config" approved="yes">
+        <source>Setup</source>
+        <target state="final">Налаштування</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode" approved="yes">
+        <source>Loading order of TypoScript sets</source>
+        <target state="final">Порядок завантаження наборів TypoScript</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_modeDescription" approved="yes">
+        <source>This seldom used feature affects if and when TypoScript sets from extensions (ext_typoscript_setup.typoscript and ext_typoscript_constants.typoscript)
+				are loaded. There are very few cases where setting this to a different value than the default value "0" is useful.</source>
+        <target state="final">Ця рідко використовувана функція впливає на те, чи завантажуються набори TypoScript із розширень (ext_typoscript_setup.typoscript і ext_typoscript_constants.typoscript). Є дуже небагато випадків, коли встановлення цього значення, відмінного від стандартного значення "0", є корисним.</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.0" approved="yes">
+        <source>Default (include before if root flag is set)</source>
+        <target state="final">Типово (включити перед встановленням прапорця)</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.1" approved="yes">
+        <source>Always include before this typoscript record</source>
+        <target state="final">Завжди включайте перед цим записом typoscript</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.2" approved="yes">
+        <source>Never include before this typoscript record</source>
+        <target state="final">Ніколи не включайте перед цим записом typoscript</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.3" approved="yes">
+        <source>Include before all static typoscript if root flag is set</source>
+        <target state="final">Включати перед усім статичним текстом, якщо встановлено прапор кореня</target>
+      </trans-unit>
+      <trans-unit id="sys_template.basedOn_add" approved="yes">
+        <source>Add new TypoScript record</source>
+        <target state="final">Додати новий запис TypoScript</target>
+      </trans-unit>
+      <trans-unit id="sys_template.basedOn_edit" approved="yes">
+        <source>Edit template</source>
+        <target state="final">Редагувати шаблон</target>
+      </trans-unit>
+      <trans-unit id="sys_template.tabs.files" approved="yes">
+        <source>Resources</source>
+        <target state="final">Ресурси</target>
+      </trans-unit>
+      <trans-unit id="sys_template.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Доступ</target>
+      </trans-unit>
+      <trans-unit id="backend_layout" approved="yes">
+        <source>Backend Layout</source>
+        <target state="final">Макет Backend</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Назва</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.config" approved="yes">
+        <source>Config</source>
+        <target state="final">Налаштування</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.wizard" approved="yes">
+        <source>Wizard</source>
+        <target state="final">Майстер</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.icon" approved="yes">
+        <source>Icon</source>
+        <target state="final">Значок</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Доступ</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Розширено</target>
+      </trans-unit>
+      <trans-unit id="no_mount_pid" approved="yes">
+        <source>No Mount Point is set</source>
+        <target state="final">Точки монтування не встановлено</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
