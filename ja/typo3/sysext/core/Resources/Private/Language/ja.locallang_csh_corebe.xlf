@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814854" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>TYPO3 Core</source>
+        <target state="final">TYPO3コア</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>TYPO3 is a Content Management Framework which consists of a central program core with only limited functionality. To extend this core system there are hundreds of extensions which in combination will provide a very capable system.</source>
+        <target state="final">TYPO3は、コンテンツマネージメントシステムフレームワークで中核をなすプログラムで、限定された機能だけを提供します。このコアシステムを拡張する数多くのエクステンションで、非常に高機能なシステムを構築できます。</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>For most people TYPO3 is equivalent to a CMS providing a backend for management of the content and a frontend engine for website display. However TYPO3s core is natively designed to be a general purpose framework for management of database content. The core of TYPO3 delivers a set of principles for storage of this content, user access management, editing of the content, uploading and managing files etc. Many of these principles are expressed as an API (Application Programmers Interface) for use in the &lt;em&gt;extensions&lt;/em&gt; which ultimately adds most of the real functionality.</source>
+        <target state="final">TYPO3はコンテンツ管理のバックエンドと、ウェブサイトを表示するフロントエンド機能を提供するCMSの1つと考えることができます。けれどもTYPO3のコアシステムは、データベースコンテンツの汎用的なマネージメントフレームワークとして設計されました。TYPO3のコアシステムは、コンテンツの保管、アクセス権限の管理、コンテンツの編集、ファイルのアップロードと管理といった基本機能を提供します。こうした機能はAPI(アプリケーションプログラムインターフェース)として用意されて、&lt;em&gt;エクステンション&lt;/em&gt;はこのAPIを使って実際に機能を実装します。</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" approved="yes">
+        <source>TYPO3 backend login screen.</source>
+        <target state="final">TYPO3バックエンドログイン画面 2004年夏バージョン(3.6.1)</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.alttitle" resname="menu_modules.alttitle" approved="yes">
+        <source>Backend modules</source>
+        <target state="final">バックエンドモジュール</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.description" resname="menu_modules.description" approved="yes">
+        <source>The Backend menu reflects the hierarchy of main- and sub-modules in TYPO3. Click a menu item to access the corresponding module.</source>
+        <target state="final">バックエンドメニューは、TYPO3のメインモジュールとサブモジュールの階層構造になっています。モジュールにアクセスするにはメニューをクリックします。</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.details" resname="menu_modules.details" xml:space="preserve" approved="yes">
+				<source>Backend Users might see different menu items depending on their access permissions. The "Admin" user on a system will always see all modules available.
+
+You can configure the backend to display the menu in two alternative versions (useful on smaller screens); As a selector box or list of icons in the top frame of the backend.
+
+When you click the little "+" or "-" icons next to the main modules, you can collapse (-) or expand (+) all the sub modules. By selecting the "Expand all" check box, all items are expanded. When the checkbox is unselected again, the menu changes back to the previous folding state. If you click "Expand all" and collapse a main module afterwards, the previous folding state is discarded and "Expand all" is unselected again.</source>
+			<target state="final">アクセス権限によってバックエンドユーザに表示されるメニューは異なります。システムの"管理者"ユーザには、利用可能なモジュールすべてが表示されます。 バックエンドのメニューにはディスプレイの大きさに応じて、セレクトボックス形式とバックエンドの上部フレームにアイコンを表示する表示形式の2種類があります。</target></trans-unit>
+      <trans-unit id="menu_modules.image_descr" resname="menu_modules.image_descr" xml:space="preserve" approved="yes">
+				<source>This is the range of menu options for a typical backend user.
+For another backend user it might be different. This screenshot shows how another user has different permissions set and therefore access to other modules only. Also the backend language has been set different for this user.</source>
+			<target state="final">これは、一般的なバックエンドユーザに表示されるメニューです。ユーザによっては違うメニューが表示されることもあります。このスクリーンショットでは、パーミッションによってユーザがアクセスできるモジュールが異なることがわかります。それから、バックエンドで表示される言語もユーザごとに異なります。</target></trans-unit>
+      <trans-unit id="menu_adminFunction.alttitle" resname="menu_adminFunction.alttitle" approved="yes">
+        <source>Admin Functions</source>
+        <target state="final">管理者機能</target>
+      </trans-unit>
+      <trans-unit id="menu_adminFunction.description" resname="menu_adminFunction.description" approved="yes">
+        <source>The Admin Functions allow administrators to clear caches etc.</source>
+        <target state="final">管理者は、管理者機能でキャッシュの消去などの操作を行うことができます。</target>
+      </trans-unit>
+      <trans-unit id="menu_adminFunction.details" resname="menu_adminFunction.details" xml:space="preserve" approved="yes">
+				<source>TYPO3 has multiple caching systems:
+
+&lt;b&gt;Database Cache&lt;/b&gt;
+A very central cache is the database cache table, "cache_hash", which needs to be flushed after certain major changes in the system. You "clear all cache" by clicking the link with the blue icon. After this operation any website content should be re-generated from the sources rather than be delivered from caches. This operation clears &lt;i&gt;all&lt;/i&gt; database tables registered as flushable cache tables.
+
+&lt;b&gt;Cached PHP configuration files from Extensions&lt;/b&gt;
+TYPO3 also caches small configuration scripts from extensions, "ext_localconf.php" and "ext_tables.php". These files are simply read from all installed extensions and concatenated into temporary PHP scripts found in the typo3temp/Cache/Code/cache_core/ folder. Sometimes you need to remove these files so TYPO3 re-writes them from the originals. This is done by the "Clear temp_CACHED" link.
+
+&lt;b&gt;Notice:&lt;/b&gt; You should not clear these caches without a second thought. Clearing caches may affect performance on your server negatively for a while. Obviously the cached content has to be regenerated which takes time and under heavy load it might make your server un-available for a while.</source>
+			<target state="final">TYPO3には複数のキャッシュの仕組があります。 &lt;b&gt;データベースキャッシュ&lt;/b&gt; キャッシュの仕組の中心的役割を果たすのはデータベースキャッシュテーブルです。この"cache_hash"は、システムに大きな変更を行った場合にクリアする必要があります。キャッシュのクリアには、お会いアイコンのリンクをクリックします。この操作を行うと、ウェブサイトのコンテンツは、キャッシュからではなく実際のデータから再生成されます。この操作では、キャッシュ可能なデータベーステーブル&lt;i&gt;すべて&lt;/i&gt;がクリアされます。 &lt;b&gt;エクステンションのキャッシュPHP設定ファイル&lt;/b&gt; TYPO3は、エクステンションの設定スクリプト、"ext_localconf.php"と"ext_tables.php"もキャッシュします。こうしたファイルはインストールされたエクステンションから読み込まれ、typo3conf/フォルダの中に"temp_CACHED_*.php"という一時ファイルとして格納されます。このファイルを削除して、TYPO3にオリジナルの設定ファイルからこのファイルを生成させる必要になることがあります。それには"temp_CACHEDのクリア"をクリックします。 &lt;b&gt;注意&lt;/b&gt; このキャッシュを無闇にクリアしてはいけません。このキャッシュをクリアすると、一定時間、サーバのパフォーマンスに悪影響を及ぼします。キャッシュを生成するには時間がかかりますし、負荷が高い場合はしばらくの間サーバが反応しなくなることさえあります。</target></trans-unit>
+      <trans-unit id="list_module.alttitle" resname="list_module.alttitle" approved="yes">
+        <source>The Web&gt;List module</source>
+        <target state="final">ウェブ&gt;一覧 モジュール</target>
+      </trans-unit>
+      <trans-unit id="TCEforms.alttitle" resname="TCEforms.alttitle" approved="yes">
+        <source>TYPO3 Editing Forms</source>
+        <target state="final">TYPO3フォームの編集</target>
+      </trans-unit>
+      <trans-unit id="TCEforms_cacheSelector.alttitle" resname="TCEforms_cacheSelector.alttitle" approved="yes">
+        <source>Forms Menu</source>
+        <target state="final">フォームメニュー</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.alttitle" resname="file_newfolder.alttitle" approved="yes">
+        <source>Creating a new folder</source>
+        <target state="final">新しいフォルダの作成</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
