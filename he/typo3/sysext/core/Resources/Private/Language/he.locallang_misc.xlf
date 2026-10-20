@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814865" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="he">
+    <header/>
+    <body>
+      <trans-unit id="shortcut_edit" resname="shortcut_edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">עריכה</target>
+      </trans-unit>
+      <trans-unit id="shortcut_create" resname="shortcut_create" approved="yes">
+        <source>Create</source>
+        <target state="final">צור</target>
+      </trans-unit>
+      <trans-unit id="shortcut_editID" resname="shortcut_editID" approved="yes">
+        <source>Edit/Search</source>
+        <target state="final">עריכת זהות הדך</target>
+      </trans-unit>
+      <trans-unit id="shortcut_save" resname="shortcut_save" approved="yes">
+        <source>Update shortcut title</source>
+        <target state="final">עדכן כותרת של קיצור דרך</target>
+      </trans-unit>
+      <trans-unit id="shortcut_saveClose" resname="shortcut_saveClose" approved="yes">
+        <source>Update and close editor</source>
+        <target state="final">עדכן וסגור עורך</target>
+      </trans-unit>
+      <trans-unit id="shortcut_close" resname="shortcut_close" approved="yes">
+        <source>Close shortcut editor</source>
+        <target state="final">סגור עורך קיצורי דרך</target>
+      </trans-unit>
+      <trans-unit id="shortcut_delete" resname="shortcut_delete" approved="yes">
+        <source>Remove shortcut</source>
+        <target state="final">הסר קיצור דרך</target>
+      </trans-unit>
+      <trans-unit id="shortcut_loadEdit" resname="shortcut_loadEdit" approved="yes">
+        <source>Loading page</source>
+        <target state="final">טוען דף</target>
+      </trans-unit>
+      <trans-unit id="shortcut_notEditable" resname="shortcut_notEditable" approved="yes">
+        <source>No editable page found!</source>
+        <target state="final">לא נמצא דף הניתן לעריכה!</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group" resname="shortcut_group" approved="yes">
+        <source>Group</source>
+        <target state="final">קבוצה</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_1" resname="shortcut_group_1" approved="yes">
+        <source>Pages</source>
+        <target state="final">דפים</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_2" resname="shortcut_group_2" approved="yes">
+        <source>Records</source>
+        <target state="final">רשומות</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_3" resname="shortcut_group_3" approved="yes">
+        <source>Files</source>
+        <target state="final">קבצים</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_4" resname="shortcut_group_4" approved="yes">
+        <source>Tools</source>
+        <target state="final">כלים</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_5" resname="shortcut_group_5" approved="yes">
+        <source>Miscellaneous</source>
+        <target state="final">שׁוֹנוֹת</target>
+      </trans-unit>
+      <trans-unit id="shortcut_global" resname="shortcut_global" approved="yes">
+        <source>Global</source>
+        <target state="final">גלובלי</target>
+      </trans-unit>
+      <trans-unit id="shortcut_all" resname="shortcut_all" approved="yes">
+        <source>All</source>
+        <target state="final">הכל</target>
+      </trans-unit>
+      <trans-unit id="shortcut_onlyAdmin" resname="shortcut_onlyAdmin" approved="yes">
+        <source>You cannot edit a shared shortcut!</source>
+        <target state="final">אינך יכול לערוך קיצור דרך משותף!</target>
+      </trans-unit>
+      <trans-unit id="shortcut_selSC" resname="shortcut_selSC" approved="yes">
+        <source>Select shortcut</source>
+        <target state="final">בחר קיצור דרך</target>
+      </trans-unit>
+      <trans-unit id="shortcut_delAllInCat" resname="shortcut_delAllInCat" approved="yes">
+        <source>Delete all shortcuts in this group?</source>
+        <target state="final">למחוק כל קיצורי דרך בקבוצה זו?</target>
+      </trans-unit>
+      <trans-unit id="shortcut_onlineWS" resname="shortcut_onlineWS" approved="yes">
+        <source>LIVE workspace</source>
+        <target state="final">אזור עבודה "ראשי"</target>
+      </trans-unit>
+      <trans-unit id="shortcut_active" resname="shortcut_active" approved="yes">
+        <source>active</source>
+        <target state="final">פעילה</target>
+      </trans-unit>
+      <trans-unit id="shortcut_inactive" resname="shortcut_inactive" approved="yes">
+        <source>inactive</source>
+        <target state="final">כבוי</target>
+      </trans-unit>
+      <trans-unit id="shortcut_noWSfound" resname="shortcut_noWSfound" approved="yes">
+        <source>ERROR: No workspaces found!</source>
+        <target state="final">שגיא: לא נמצאו אזורי עבודה!</target>
+      </trans-unit>
+      <trans-unit id="bookmark_edit" resname="bookmark_edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">עריכה</target>
+      </trans-unit>
+      <trans-unit id="bookmark_create" resname="bookmark_create" approved="yes">
+        <source>Create</source>
+        <target state="final">צור</target>
+      </trans-unit>
+      <trans-unit id="bookmark_editID" resname="bookmark_editID" approved="yes">
+        <source>Edit/Search</source>
+        <target state="final">עריכת זהות הדך</target>
+      </trans-unit>
+      <trans-unit id="bookmark_saveClose" resname="bookmark_saveClose" approved="yes">
+        <source>Update and close editor</source>
+        <target state="final">עדכן וסגור עורך</target>
+      </trans-unit>
+      <trans-unit id="bookmark_loadEdit" resname="bookmark_loadEdit" approved="yes">
+        <source>Loading page</source>
+        <target state="final">טוען דף</target>
+      </trans-unit>
+      <trans-unit id="bookmark_notEditable" resname="bookmark_notEditable" approved="yes">
+        <source>No editable page found!</source>
+        <target state="final">לא נמצא דף הניתן לעריכה!</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group" resname="bookmark_group" approved="yes">
+        <source>Group</source>
+        <target state="final">קבוצה</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_1" resname="bookmark_group_1" approved="yes">
+        <source>Pages</source>
+        <target state="final">דפים</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_2" resname="bookmark_group_2" approved="yes">
+        <source>Records</source>
+        <target state="final">רשומות</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_3" resname="bookmark_group_3" approved="yes">
+        <source>Files</source>
+        <target state="final">קבצים</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_4" resname="bookmark_group_4" approved="yes">
+        <source>Tools</source>
+        <target state="final">כלים</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_5" resname="bookmark_group_5" approved="yes">
+        <source>Miscellaneous</source>
+        <target state="final">שׁוֹנוֹת</target>
+      </trans-unit>
+      <trans-unit id="bookmark_global" resname="bookmark_global" approved="yes">
+        <source>Global</source>
+        <target state="final">גלובלי</target>
+      </trans-unit>
+      <trans-unit id="bookmark_all" resname="bookmark_all" approved="yes">
+        <source>All</source>
+        <target state="final">הכל</target>
+      </trans-unit>
+      <trans-unit id="bookmark_onlyAdmin" resname="bookmark_onlyAdmin" approved="yes">
+        <source>You cannot edit a shared bookmark!</source>
+        <target state="final">אינך יכול לערוך סימניה משותפת!</target>
+      </trans-unit>
+      <trans-unit id="bookmark_delAllInCat" resname="bookmark_delAllInCat" approved="yes">
+        <source>Delete all bookmarks in this group</source>
+        <target state="final">למחוק כל סימניות בקבוצה זו</target>
+      </trans-unit>
+      <trans-unit id="bookmark_onlineWS" resname="bookmark_onlineWS" approved="yes">
+        <source>LIVE workspace</source>
+        <target state="final">אזור עבודה "ראשי"</target>
+      </trans-unit>
+      <trans-unit id="bookmark_active" resname="bookmark_active" approved="yes">
+        <source>active</source>
+        <target state="final">פעילה</target>
+      </trans-unit>
+      <trans-unit id="bookmark_inactive" resname="bookmark_inactive" approved="yes">
+        <source>inactive</source>
+        <target state="final">כבוי</target>
+      </trans-unit>
+      <trans-unit id="bookmark_noWSfound" resname="bookmark_noWSfound" approved="yes">
+        <source>ERROR: No workspaces found!</source>
+        <target state="final">שגיא: לא נמצאו אזורי עבודה!</target>
+      </trans-unit>
+      <trans-unit id="overwriteExistingFiles" resname="overwriteExistingFiles" approved="yes">
+        <source>Overwrite existing files</source>
+        <target state="final">לכתוב על קבצים הקיימים</target>
+      </trans-unit>
+      <trans-unit id="fileMetaDataLocation" resname="fileMetaDataLocation" approved="yes">
+        <source>Location</source>
+        <target state="final">מיקום</target>
+      </trans-unit>
+      <trans-unit id="selectPosition" resname="selectPosition" approved="yes">
+        <source>Select a position for the new page</source>
+        <target state="final">בחר מיקום לדף חדש</target>
+      </trans-unit>
+      <trans-unit id="goBack" resname="goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">לחזור אחורה</target>
+      </trans-unit>
+      <trans-unit id="createNewPage" resname="createNewPage" approved="yes">
+        <source>Create a new page</source>
+        <target state="final">לצור דף חדש</target>
+      </trans-unit>
+      <trans-unit id="createNewContent" resname="createNewContent" approved="yes">
+        <source>Create a new content element</source>
+        <target state="final">צור פריט תוכן חדש</target>
+      </trans-unit>
+      <trans-unit id="clickForWizard" resname="clickForWizard" approved="yes">
+        <source>Click here for wizard!</source>
+        <target state="final">לחץ כאן לעוזר!</target>
+      </trans-unit>
+      <trans-unit id="insertNewPageHere" resname="insertNewPageHere" approved="yes">
+        <source>Insert the new page here</source>
+        <target state="final">השתל את הדף החדש כאן</target>
+      </trans-unit>
+      <trans-unit id="insertNewRecordHere" resname="insertNewRecordHere" approved="yes">
+        <source>Insert new record here</source>
+        <target state="final">השתל רשומה חדשה כאן</target>
+      </trans-unit>
+      <trans-unit id="movePageToHere" resname="movePageToHere" approved="yes">
+        <source>Move page to this position</source>
+        <target state="final">הזז דף למקום זה</target>
+      </trans-unit>
+      <trans-unit id="moveElement" resname="moveElement" approved="yes">
+        <source>Move element</source>
+        <target state="final">הזז פריט</target>
+      </trans-unit>
+      <trans-unit id="moveElements" resname="moveElements" approved="yes">
+        <source>Move elements</source>
+        <target state="final">הזז פריטים</target>
+      </trans-unit>
+      <trans-unit id="copyElements" resname="copyElements" approved="yes">
+        <source>Copy elements</source>
+        <target state="final">העתק פריט</target>
+      </trans-unit>
+      <trans-unit id="selectPositionOfElement" resname="selectPositionOfElement" approved="yes">
+        <source>Select position of the element</source>
+        <target state="final">בחר מיקום של הפריט</target>
+      </trans-unit>
+      <trans-unit id="movingElement" resname="movingElement" approved="yes">
+        <source>Move element</source>
+        <target state="final">הזז פריט</target>
+      </trans-unit>
+      <trans-unit id="makeCopy" resname="makeCopy" approved="yes">
+        <source>Make copy instead of moving element</source>
+        <target state="final">צור עתק במקום להזיז פריט</target>
+      </trans-unit>
+      <trans-unit id="newContentElement" resname="newContentElement" approved="yes">
+        <source>New content element</source>
+        <target state="final">פריט תוכן חדש</target>
+      </trans-unit>
+      <trans-unit id="CM_history" resname="CM_history" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">היסטוריה/בטל</target>
+      </trans-unit>
+      <trans-unit id="CM_perms" resname="CM_perms" approved="yes">
+        <source>Access</source>
+        <target state="final">גישה</target>
+      </trans-unit>
+      <trans-unit id="CM_moveWizard" resname="CM_moveWizard" approved="yes">
+        <source>Move element</source>
+        <target state="final">הזז פריט</target>
+      </trans-unit>
+      <trans-unit id="CM_moveWizard_page" resname="CM_moveWizard_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">הזז דף</target>
+      </trans-unit>
+      <trans-unit id="CM_newWizard" resname="CM_newWizard" approved="yes">
+        <source>'Create New' wizard</source>
+        <target state="final">עוזר "צור חדש"</target>
+      </trans-unit>
+      <trans-unit id="CM_editPageProperties" resname="CM_editPageProperties" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">ערוך מאפיני דף</target>
+      </trans-unit>
+      <trans-unit id="CM_db_list" resname="CM_db_list" approved="yes">
+        <source>Web&gt;List module</source>
+        <target state="final">מודול רשת&gt;רשימה</target>
+      </trans-unit>
+      <trans-unit id="noEditPage" resname="noEditPage" approved="yes">
+        <source>You asked to edit page "%s" but you cannot edit this page. Now loading backend as usual.</source>
+        <target state="final">בקשת לערוך דף "%s" אבל אינך יכול לערוך אותו. טוען ממשק אחורי כרגיל.</target>
+      </trans-unit>
+      <trans-unit id="localize" resname="localize" approved="yes">
+        <source>Localize</source>
+        <target state="final">צור תרגום</target>
+      </trans-unit>
+      <trans-unit id="localize.isLocalizable" resname="localize.isLocalizable" approved="yes">
+        <source>Record can be localized</source>
+        <target state="final">פריט תוכן ניתן לתרגום</target>
+      </trans-unit>
+      <trans-unit id="localize.wasRemovedInOriginal" resname="localize.wasRemovedInOriginal" approved="yes">
+        <source>Record was removed in original language</source>
+        <target state="final">פריט תוכן הוסר בשפה המקורית</target>
+      </trans-unit>
+      <trans-unit id="localizeAllRecords" resname="localizeAllRecords" approved="yes">
+        <source>Localize all records</source>
+        <target state="final">צור תרגום לכל פרטי תוכן</target>
+      </trans-unit>
+      <trans-unit id="synchronizeWithOriginalLanguage" resname="synchronizeWithOriginalLanguage" approved="yes">
+        <source>Synchronize with original language</source>
+        <target state="final">סינכרון עם שפת מקור</target>
+      </trans-unit>
+      <trans-unit id="pageTree_filter" resname="pageTree_filter" approved="yes">
+        <source>Filter</source>
+        <target state="final">פילטר</target>
+      </trans-unit>
+      <trans-unit id="switchtouser" resname="switchtouser" approved="yes">
+        <source>Switch to User</source>
+        <target state="final">עבור למשתמש</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_buttonSelectFiles" resname="fileUpload_buttonSelectFiles" approved="yes">
+        <source>Select Files</source>
+        <target state="final">בחירת קבצים</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentOverrideFiles" resname="fileUpload_infoComponentOverrideFiles" approved="yes">
+        <source>Overwrite existing files</source>
+        <target state="final">לכתוב על קבצים הקיימים</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueZeroByteFile" resname="fileUpload_errorQueueZeroByteFile" approved="yes">
+        <source>{0} is empty</source>
+        <target state="final">}0{ ריק</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadFailed" resname="fileUpload_errorUploadFailed" approved="yes">
+        <source>Upload failed</source>
+        <target state="final">תהליך העלה נכשל</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_emptyText" resname="liveSearch_emptyText" approved="yes">
+        <source>Enter search term</source>
+        <target state="final">חפש מילים</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_loadingText" resname="liveSearch_loadingText" approved="yes">
+        <source>Searching...</source>
+        <target state="final">מחפש...</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
