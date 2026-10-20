@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814882" source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id="permissions" resname="permissions" approved="yes">
+        <source>Permissions</source>
+        <target state="final">សិទ្ធិ</target>
+      </trans-unit>
+      <trans-unit id="ch_permissions" resname="ch_permissions" approved="yes">
+        <source>Change permissions</source>
+        <target state="final">ផ្លាស់ប្ដូរ​​សិទ្ធិ</target>
+      </trans-unit>
+      <trans-unit id="Legend" resname="Legend" approved="yes">
+        <source>Legend</source>
+        <target state="final">កំណត់​សម្គាល់</target>
+      </trans-unit>
+      <trans-unit id="Owner" resname="Owner" approved="yes">
+        <source>Owner</source>
+        <target state="final">ម្ចាស់</target>
+      </trans-unit>
+      <trans-unit id="Group" resname="Group" approved="yes">
+        <source>Group</source>
+        <target state="final">ក្រុម</target>
+      </trans-unit>
+      <trans-unit id="Everybody" resname="Everybody" approved="yes">
+        <source>Everybody</source>
+        <target state="final">គ្រប់គ្នា</target>
+      </trans-unit>
+      <trans-unit id="EditLock" resname="EditLock" approved="yes">
+        <source>Lock</source>
+        <target state="final">ចាក់សោ</target>
+      </trans-unit>
+      <trans-unit id="levels" resname="levels" approved="yes">
+        <source>levels</source>
+        <target state="final">កម្រិត</target>
+      </trans-unit>
+      <trans-unit id="User" resname="User" approved="yes">
+        <source>User</source>
+        <target state="final">អ្នកប្រើ</target>
+      </trans-unit>
+      <trans-unit id="A_Granted" resname="A_Granted" approved="yes">
+        <source>Access Granted</source>
+        <target state="final">ការ​ចូលដំណើរការ​ត្រូវបាន​អនុញ្ញាត</target>
+      </trans-unit>
+      <trans-unit id="A_Denied" resname="A_Denied" approved="yes">
+        <source>Access Denied</source>
+        <target state="final">ការ​ចូល​ដំណើរការ​ត្រូវ​បាន​បដិសេធ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
