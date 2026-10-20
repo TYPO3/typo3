@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>Sort sub pages</source>
+        <target>crwdns50716:0crwdne50716:0</target>
+      </trans-unit>
+      <trans-unit id="currentPageOrder">
+        <source>Current page order</source>
+        <target>crwdns50718:0crwdne50718:0</target>
+      </trans-unit>
+      <trans-unit id="changeOrder">
+        <source>Sort these pages by</source>
+        <target>crwdns50720:0crwdne50720:0</target>
+      </trans-unit>
+      <trans-unit id="changeOrderConfirm" x-unused-since="15.0">
+        <source>You're about to change the order of the above pages. Are you sure you want to continue?</source>
+        <target>crwdns50722:0crwdne50722:0</target>
+      </trans-unit>
+      <trans-unit id="sort">
+        <source>Sort</source>
+        <target>crwdns415409:0crwdne415409:0</target>
+      </trans-unit>
+      <trans-unit id="sort_by_title.title">
+        <source>Sort pages by page title</source>
+        <target>crwdns415411:0crwdne415411:0</target>
+      </trans-unit>
+      <trans-unit id="sort_by_title.description">
+        <source>The pages will be sorted by their page title. Continue? You can restore the previous order using the 'History/Undo' feature.</source>
+        <target>crwdns415413:0crwdne415413:0</target>
+      </trans-unit>
+      <trans-unit id="sort_by_subtitle.title">
+        <source>Sort pages by subtitle</source>
+        <target>crwdns415415:0crwdne415415:0</target>
+      </trans-unit>
+      <trans-unit id="sort_by_subtitle.description">
+        <source>The pages will be sorted by their subtitle. Continue? You can restore the previous order using the 'History/Undo' feature.</source>
+        <target>crwdns415417:0crwdne415417:0</target>
+      </trans-unit>
+      <trans-unit id="sort_by_navigation_title.title">
+        <source>Sort pages by navigation title</source>
+        <target>crwdns415419:0crwdne415419:0</target>
+      </trans-unit>
+      <trans-unit id="sort_by_navigation_title.description">
+        <source>The pages will be sorted by their navigation title. Continue? You can restore the previous order using the 'History/Undo' feature.</source>
+        <target>crwdns415421:0crwdne415421:0</target>
+      </trans-unit>
+      <trans-unit id="sort_by_change_time.title">
+        <source>Sort pages by change-time</source>
+        <target>crwdns415423:0crwdne415423:0</target>
+      </trans-unit>
+      <trans-unit id="sort_by_change-time.description">
+        <source>The pages will be sorted by their change-time. Continue? You can restore the previous order using the 'History/Undo' feature.</source>
+        <target>crwdns415425:0crwdne415425:0</target>
+      </trans-unit>
+      <trans-unit id="sort_by_create-time.title">
+        <source>Sort pages by create-time</source>
+        <target>crwdns415427:0crwdne415427:0</target>
+      </trans-unit>
+      <trans-unit id="sort_by_create-time.description">
+        <source>The pages will be sorted by their create-time. Continue? You can restore the previous order using the 'History/Undo' feature.</source>
+        <target>crwdns415429:0crwdne415429:0</target>
+      </trans-unit>
+      <trans-unit id="sort_by_reverse_order.title">
+        <source>Reverse the page order</source>
+        <target>crwdns415431:0crwdne415431:0</target>
+      </trans-unit>
+      <trans-unit id="sort_by_reverse_order.description">
+        <source>The pages will be sorted by reversing the current page order. Continue? You can restore the previous order using the 'History/Undo' feature.</source>
+        <target>crwdns415433:0crwdne415433:0</target>
+      </trans-unit>
+      <trans-unit id="fieldTitle">
+        <source>Page title</source>
+        <target>crwdns50724:0crwdne50724:0</target>
+      </trans-unit>
+      <trans-unit id="fieldSubtitle">
+        <source>Subtitle</source>
+        <target>crwdns50726:0crwdne50726:0</target>
+      </trans-unit>
+      <trans-unit id="fieldNavTitle">
+        <source>Navigation title</source>
+        <target>crwdns415435:0crwdne415435:0</target>
+      </trans-unit>
+      <trans-unit id="fieldCrdate">
+        <source>Create-time</source>
+        <target>crwdns50730:0crwdne50730:0</target>
+      </trans-unit>
+      <trans-unit id="fieldTstamp">
+        <source>Change-time</source>
+        <target>crwdns50732:0crwdne50732:0</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTitle">
+        <source>Page title</source>
+        <target>crwdns50734:0crwdne50734:0</target>
+      </trans-unit>
+      <trans-unit id="changeOrderBySubtitle">
+        <source>Subtitle</source>
+        <target>crwdns50736:0crwdne50736:0</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByNavtitle">
+        <source>Navigation title</source>
+        <target>crwdns50738:0crwdne50738:0</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTstamp">
+        <source>Change-time</source>
+        <target>crwdns50740:0crwdne50740:0</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByCreate">
+        <source>Create-time</source>
+        <target>crwdns50742:0crwdne50742:0</target>
+      </trans-unit>
+      <trans-unit id="changeOrderReverse">
+        <source>Reverse current order</source>
+        <target>crwdns50744:0crwdne50744:0</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.title">
+        <source>Invisible subpages</source>
+        <target>crwdns50746:0crwdne50746:0</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.message">
+        <source>Some subpages are not visible because of access restrictions. These hidden pages are excluded from sorting.</source>
+        <target>crwdns381246:0crwdne381246:0</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.title">
+        <source>No subpages</source>
+        <target>crwdns50750:0crwdne50750:0</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.message">
+        <source>Please select a page with subpages.</source>
+        <target>crwdns50752:0crwdne50752:0</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.title">
+        <source>Not implemented</source>
+        <target>crwdns50754:0crwdne50754:0</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.message">
+        <source>This function is not available in the current draft workspace; please switch back to the LIVE workspace.</source>
+        <target>crwdns381248:0crwdne381248:0</target>
+      </trans-unit>
+      <trans-unit id="noEditPermissions">
+        <source>No edit permissions on this sub page. This page can not be re-sorted among others.</source>
+        <target>crwdns50758:0crwdne50758:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
