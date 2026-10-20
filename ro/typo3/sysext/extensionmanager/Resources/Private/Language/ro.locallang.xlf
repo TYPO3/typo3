@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:extensionmanager/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="ro">
+    <header/>
+    <body>
+      <trans-unit id="extensionManager" approved="yes">
+        <source>Extension Manager</source>
+        <target state="final">Mangerul de extensii</target>
+      </trans-unit>
+      <trans-unit id="manageExtensions" approved="yes">
+        <source>Manage Extensions</source>
+        <target state="final">Gestionează extensii</target>
+      </trans-unit>
+      <trans-unit id="installExtension" approved="yes">
+        <source>Install Extension</source>
+        <target state="final">Instalează extensie</target>
+      </trans-unit>
+      <trans-unit id="getExtensions" approved="yes">
+        <source>Get Extensions</source>
+        <target state="final">Obțineți extensii</target>
+      </trans-unit>
+      <trans-unit id="showAllVersions" approved="yes">
+        <source>Show all versions of</source>
+        <target state="final">Arată toate versiunile</target>
+      </trans-unit>
+      <trans-unit id="extConfTemplate.backToList" approved="yes">
+        <source>Back to list</source>
+        <target state="final">Înapoi la listă</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadsql" approved="yes">
+        <source>Download SQL Dump</source>
+        <target state="final">Descărcați exportul SQL</target>
+      </trans-unit>
+      <trans-unit id="extensionList.remove" approved="yes">
+        <source>Remove</source>
+        <target state="final">Ștergeți</target>
+      </trans-unit>
+      <trans-unit id="extensionList.update" approved="yes">
+        <source>Update</source>
+        <target state="final">Actualizare</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateToVersion" approved="yes">
+        <source>Update to version %s</source>
+        <target state="final">Actualizați la versiunea %s</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateDisabled" approved="yes">
+        <source>An update is available but this operation is currently disabled</source>
+        <target state="final">O actualizare este disponibilă dar această operație este momentan dezactivată</target>
+      </trans-unit>
+      <trans-unit id="extensionList.deactivate" approved="yes">
+        <source>Deactivate</source>
+        <target state="final">Dezactivați</target>
+      </trans-unit>
+      <trans-unit id="extensionList.activate" approved="yes">
+        <source>Activate</source>
+        <target state="final">Activați</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadzip" approved="yes">
+        <source>Download as zip</source>
+        <target state="final">Descărcați ca arhivă zip</target>
+      </trans-unit>
+      <trans-unit id="extensionList.overwriteExtension" approved="yes">
+        <source>Overwrite</source>
+        <target state="final">Suprascriere</target>
+      </trans-unit>
+      <trans-unit id="extensionList.overwritingDisabled" approved="yes">
+        <source>Extension is already available and overwriting was not enabled</source>
+        <target state="final">Extensia este deja disponibilă și suprascrierea nu a fost activată</target>
+      </trans-unit>
+      <trans-unit id="extensionList.loading" approved="yes">
+        <source>Loading form...</source>
+        <target state="final">Încărcare formular...</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.update" approved="yes">
+        <source>Upd.</source>
+        <target state="final">Act.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.title.update" approved="yes">
+        <source>Update</source>
+        <target state="final">Actualizare</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.activate" approved="yes">
+        <source>A/D</source>
+        <target state="final">A/D</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.title.activate" approved="yes">
+        <source>Activate / Deactivate</source>
+        <target state="final">Activare/Dezactivare</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionName" approved="yes">
+        <source>Extension</source>
+        <target state="final">Extensie</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Versiune</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionKey" approved="yes">
+        <source>Key</source>
+        <target state="final">Cheie</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionVersion" approved="yes">
+        <source>Version</source>
+        <target state="final">Versiune</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionActions" approved="yes">
+        <source>Actions</source>
+        <target state="final">Acțiuni</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionState" approved="yes">
+        <source>State</source>
+        <target state="final">Stare</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionType" approved="yes">
+        <source>Type</source>
+        <target state="final">Tip</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.uploadComment" approved="yes">
+        <source>Upload Comment</source>
+        <target state="final">Comentariu actualizare</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.lastUpdate" approved="yes">
+        <source>Last Updated</source>
+        <target state="final">Ultima actualizare</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Descriere</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Autor</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.searchExtensions" approved="yes">
+        <source>Search extensions</source>
+        <target state="final">Căutare extensii</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.submitButton" approved="yes">
+        <source>Go</source>
+        <target state="final">Trimite</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.resetSearchButton" approved="yes">
+        <source>Reset Search</source>
+        <target state="final">Reinițializare căutare</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.yourSearch" approved="yes">
+        <source>Your search</source>
+        <target state="final">Căutarea dvs.</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.searchAgain" approved="yes">
+        <source>Search again</source>
+        <target state="final">Refaceți căutarea</target>
+      </trans-unit>
+      <trans-unit id="uploadTemplate.extensionLabel" approved="yes">
+        <source>Extension</source>
+        <target state="final">Extensie</target>
+      </trans-unit>
+      <trans-unit id="extensionList.removalConfirmation.title" approved="yes">
+        <source>Extension Removal</source>
+        <target state="final">Ștergere extensie</target>
+      </trans-unit>
+      <trans-unit id="extensionList.removalConfirmation.message" approved="yes">
+        <source>The extension is currently installed. Uninstall extension?</source>
+        <target state="final">Această extensie este momentan instalată. Vreți să o dezinstalați?</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateConfirmation.title" approved="yes">
+        <source>Update?</source>
+        <target state="final">Actualizare?</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateConfirmation.questionVersionComments" approved="yes">
+        <source>Version Comments</source>
+        <target state="final">Comentariile versiunii</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFlashMessage.title" approved="yes">
+        <source>Extension Update</source>
+        <target state="final">Actualizare extensie</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.headline" approved="yes">
+        <source>The following dependencies have to be resolved before installation:</source>
+        <target state="final">Următoarele dependențe trebuie rezolvate înainte de a începe instalarea:</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.resolveAutomatically" approved="yes">
+        <source>Shall these dependencies be resolved automatically?</source>
+        <target state="final">Doriți ca aceste dependențe să fie rezolvate automat?</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencyType.download" approved="yes">
+        <source>download</source>
+        <target state="final">descărcați</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencyType.install" approved="yes">
+        <source>install</source>
+        <target state="final">instalare</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencyType.update" approved="yes">
+        <source>update</source>
+        <target state="final">actualizare</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.updateExtension.error" approved="yes">
+        <source>Error while updating extension</source>
+        <target state="final">Eroare în timpul actualizării extensiei</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadError.title" approved="yes">
+        <source>Download Error</source>
+        <target state="final">Eroare de descărcare</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.message" approved="yes">
+        <source>Your installation of {0} was successful.</source>
+        <target state="final">Instalarea {0} a fost făcută cu succes.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.header" approved="yes">
+        <source>Log</source>
+        <target state="final">Jurnal</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.item" approved="yes">
+        <source>Extensions</source>
+        <target state="final">Extensii</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveFlashMessage.title" approved="yes">
+        <source>{0} installed.</source>
+        <target state="final">{0} instalată.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uploadFlashMessage.title" approved="yes">
+        <source>Extension Upload</source>
+        <target state="final">Încărcare extensie</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTerFlashMessage.title" approved="yes">
+        <source>Update Extension List</source>
+        <target state="final">Actualizare listă de extensii</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadViewHelper.submit" approved="yes">
+        <source>Import and Install</source>
+        <target state="final">Importați și instalați</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.label" approved="yes">
+        <source>Show all versions</source>
+        <target state="final">Arată toate versiunile</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.extensionKey" approved="yes">
+        <source>Extension key</source>
+        <target state="final">Cheie extensie</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Versiune</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.lastUploaded" approved="yes">
+        <source>Last uploaded</source>
+        <target state="final">Ultima actualizare</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.downloads" approved="yes">
+        <source>Downloads</source>
+        <target state="final">Descărcări</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.category" approved="yes">
+        <source>Category</source>
+        <target state="final">Categorie</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.manual" approved="yes">
+        <source>Manual</source>
+        <target state="final">Manual</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Autor</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.readOnline" approved="yes">
+        <source>Read online</source>
+        <target state="final">Citiți online</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.key" approved="yes">
+        <source>Key</source>
+        <target state="final">Cheie</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Autor</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Versiune</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.downloads" approved="yes">
+        <source>Downloads</source>
+        <target state="final">Descărcări</target>
+      </trans-unit>
+      <trans-unit id="extensionList.officialDistribution" approved="yes">
+        <source>Official distribution</source>
+        <target state="final">Distribuție oficială</target>
+      </trans-unit>
+      <trans-unit id="distributions" approved="yes">
+        <source>Get preconfigured distribution</source>
+        <target state="final">Obțineți o distribuție preconfigurată</target>
+      </trans-unit>
+      <trans-unit id="extensionList.installImpexp" approved="yes">
+        <source>Please install the Import/Export (impexp) extension to enable distribution support.</source>
+        <target state="final">Vă rugăm să instalați extensia de Import/Export (impexp) pentru a avea acces la distribuții.</target>
+      </trans-unit>
+      <trans-unit id="distribution.installImpexp" approved="yes">
+        <source>Install impexp</source>
+        <target state="final">Instalați impexp</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.buttonLabel" approved="yes">
+        <source>Update now</source>
+        <target state="final">Actualizați acum</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.noInfo" approved="yes">
+        <source>unknown</source>
+        <target state="final">necunoscut</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.fullTimeFormat" approved="yes">
+        <source>Y-m-d H:i:s</source>
+        <target state="final">d.m.Y H:i:s</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.noTimeOfLastUpdate" approved="yes">
+        <source>No last update time known.</source>
+        <target state="final">Nu se cunoaște data ultimei actualizări.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.never" approved="yes">
+        <source>Never</source>
+        <target state="final">Niciodată</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uninstall.dependencyError" approved="yes">
+        <source>Cannot deactivate extension '%s' - The extension(s) '%s' depend on it.</source>
+        <target state="final">Nu pot dezactiva extensia '%s' - Extensiile '%s' depind de această extensie.</target>
+      </trans-unit>
+      <trans-unit id="distribution.error.headline" approved="yes">
+        <source>Could not install distribution '%s'</source>
+        <target state="final">Nu pot instala distribuția '%s'</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.headline" approved="yes">
+        <source>Congratulations...</source>
+        <target state="final">Felicitări...</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.openViewModule" approved="yes">
+        <source>View your website</source>
+        <target state="final">Să vedeți site-ul dvs. web</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.openPageModule" approved="yes">
+        <source>Start editing your website</source>
+        <target state="final">Să începeți să editați conținului site-ului dvs. web</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.identifier" approved="yes">
+        <source>Identifier</source>
+        <target state="final">Identificator</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Tip</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Versiune</target>
+      </trans-unit>
+      <trans-unit id="task.updateExtensionListTask.name" approved="yes">
+        <source>Update extension list</source>
+        <target state="final">Actualizare listă de extensii</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.title" approved="yes">
+        <source>Update status of typo3.org main repository extension list</source>
+        <target state="final">Actualizare statut al listei de extensii pentru depozitul principal typo3.org</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notFound.value" approved="yes">
+        <source>Error</source>
+        <target state="final">Eroare</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notFound.message" approved="yes">
+        <source>The typo3.org extension repository was not found. Please import the main typo3.org extension repository in the install tool wizard.</source>
+        <target state="final">Depozitul de extensii typo3.org nu a fost găsit. Vă rugăm importați depozitul de extensii typo3.org în asistentul Uneltei de Instalare.</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notUpToDate.message" approved="yes">
+        <source>The Main Repository extension list is older than 7 days. Please update it in the Extension manager or Scheduler.</source>
+        <target state="final">Lista de extensii a Depozitului Principal este mai veche de 7 zile. Vă rugăm să o actualizați în Managerul de extensii sau în Planificator.</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.upToDate.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.title" approved="yes">
+        <source>Security status of loaded extensions</source>
+        <target state="final">Starea securității extensiilor încărcate</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.noInsecureExtensionLoaded.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.value" approved="yes">
+        <source>%s insecure extension(s) found</source>
+        <target state="final">%s extensii nesecurizate găsite</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.message" approved="yes">
+        <source>The following extensions are insecure and usage might damage your system. Please update these extensions as soon as possible or remove them from your system:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">Următoarele extensii sunt nesigure și folosirea lor v-ar expune riscurilor de securitate. Vă rugăm să actualizați aceste extensii cît de rapid posibil sau să le ștergeți din sistem:&lt;br&gt;&lt;br&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.title" approved="yes">
+        <source>Security status of existing, but not loaded extensions</source>
+        <target state="final">Starea de securitate a extensiilor existente, dar neîncărcate</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.noInsecureExtensionExists.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.insecureExtensionExists.value" approved="yes">
+        <source>%s insecure extension(s) found</source>
+        <target state="final">%s extensii nesecurizate găsite</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.insecureExtensionExists.message" approved="yes">
+        <source>The following extensions were found on your system, but are currently not installed. Please delete the extensions using the extension manager:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">Următoarele extensii au fost găsite pe sistemul dvs, dar sunt momentan neinstalate. Vă rugăm să ștergeți aceste extensii folosind Managerul de extensii: &lt;br&gt;&lt;br&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.title" approved="yes">
+        <source>Outdated status of loaded extensions</source>
+        <target state="final">Statutul depășit al extensiilor încărcate</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.noOutdatedExtensionLoaded.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.value" approved="yes">
+        <source>%s outdated extension(s) found</source>
+        <target state="final">%s extensii depășite găsite</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message" approved="yes">
+        <source>The following extensions are outdated and may not be compatible with your installation. Please make sure these extensions are compatible and ask the extension author to publish updates:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">Următoarele extensii sunt depășite și e posibil să nu mai fie compatibile cu sistemul dvs. Vă rugăm să vă asigurați că aceste extensii sunt compatibile și cereți autorului extensiei să le actualizeze:&lt;br&gt;&lt;br&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.title" approved="yes">
+        <source>Outdated status of existing, but not loaded extensions</source>
+        <target state="final">Statutul depășit al extensiilor existente, dar neîncărcate</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.noOutdatedExtensionExists.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.value" approved="yes">
+        <source>%s outdated extension(s) found</source>
+        <target state="final">%s extensii depășite găsite</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.message" approved="yes">
+        <source>The following extensions were found on your system, but are currently not installed. Please make sure they are compatible with your system before installing them:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">Următoarele extensii au fost găsite în sistemul dumneavoastră însă nu sunt momentan instalate. Vă rugăm asigurați-vă că sunt compatibile cu sistemul dumneavoastră înainte de a le instala:&lt;br&gt;&lt;br&gt;%s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
