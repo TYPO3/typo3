@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="de">
+  <file id="f1">
+    <unit id="abstract">
+      <segment state="final">
+        <source>Abstract</source>
+        <target>Zusammenfassung</target>
+      </segment>
+    </unit>
+    <unit id="author">
+      <segment state="final">
+        <source>Author Name</source>
+        <target>Name des Autors</target>
+      </segment>
+    </unit>
+    <unit id="author_email">
+      <segment state="final">
+        <source>Author Email</source>
+        <target>E-Mailadresse des Autors</target>
+      </segment>
+    </unit>
+    <unit id="backend_layout">
+      <segment state="final">
+        <source>Backend Layout (this page only)</source>
+        <target>Backend-Layout (nur für diese Seite)</target>
+      </segment>
+    </unit>
+    <unit id="backend_layout_next_level">
+      <segment state="final">
+        <source>Backend Layout (subpages of this page)</source>
+        <target>Backend-Layout (für Unterseiten dieser Seite)</target>
+      </segment>
+    </unit>
+    <unit id="cache_tags">
+      <segment state="final">
+        <source>Cache Tags</source>
+        <target>Cache-Tags</target>
+      </segment>
+    </unit>
+    <unit id="cache_timeout">
+      <segment state="final">
+        <source>Cache Lifetime</source>
+        <target>Cache-Lebensdauer</target>
+      </segment>
+    </unit>
+    <unit id="content_from_pid">
+      <segment state="final">
+        <source>Show Content from this page</source>
+        <target>Inhalt dieser Seite anzeigen</target>
+      </segment>
+    </unit>
+    <unit id="description">
+      <segment state="final">
+        <source>Description for search engines</source>
+        <target>Beschreibung für Suchmaschinen</target>
+      </segment>
+    </unit>
+    <unit id="doktype">
+      <segment state="final">
+        <source>Type</source>
+        <target>Typ</target>
+      </segment>
+    </unit>
+    <unit id="doktype.be_user_section">
+      <segment state="final">
+        <source>Backend User Section</source>
+        <target>Backend-Benutzerbereich</target>
+      </segment>
+    </unit>
+    <unit id="doktype.default">
+      <segment state="final">
+        <source>Standard Page</source>
+        <target>Standardseite</target>
+      </segment>
+    </unit>
+    <unit id="doktype.link">
+      <segment state="final">
+        <source>Link</source>
+        <target>Link</target>
+      </segment>
+    </unit>
+    <unit id="doktype.mountpoint">
+      <segment state="final">
+        <source>Mount Point</source>
+        <target>Einstiegspunkt</target>
+      </segment>
+    </unit>
+    <unit id="doktype.shortcut">
+      <segment state="final">
+        <source>Shortcut</source>
+        <target>Verweis</target>
+      </segment>
+    </unit>
+    <unit id="doktype.spacer">
+      <segment state="final">
+        <source>Menu Separator</source>
+        <target>Trennzeichen für Menü</target>
+      </segment>
+    </unit>
+    <unit id="doktype.sysfolder">
+      <segment state="final">
+        <source>Folder</source>
+        <target>Ordner</target>
+      </segment>
+    </unit>
+    <unit id="doktype.group.link">
+      <segment state="final">
+        <source>Link</source>
+        <target>Link</target>
+      </segment>
+    </unit>
+    <unit id="doktype.group.page">
+      <segment state="final">
+        <source>Page</source>
+        <target>Seite</target>
+      </segment>
+    </unit>
+    <unit id="doktype.group.special">
+      <segment state="final">
+        <source>Special</source>
+        <target>Spezial</target>
+      </segment>
+    </unit>
+    <unit id="extend_to_subpages">
+      <segment state="final">
+        <source>Extend to Subpages</source>
+        <target>Auf Unterseiten ausdehnen</target>
+      </segment>
+    </unit>
+    <unit id="hidden">
+      <segment state="final">
+        <source>Page visible</source>
+        <target>Seite sichtbar</target>
+      </segment>
+    </unit>
+    <unit id="is_siteroot">
+      <segment state="final">
+        <source>Use as Root Page</source>
+        <target>Als Anfang der Website benutzen</target>
+      </segment>
+    </unit>
+    <unit id="keywords">
+      <segment state="final">
+        <source>Keywords</source>
+        <target>Schlagworte</target>
+      </segment>
+    </unit>
+    <unit id="link">
+      <segment state="final">
+        <source>Link destination</source>
+        <target>Linkziel</target>
+      </segment>
+    </unit>
+    <unit id="link.description">
+      <segment state="final">
+        <source>Defines the destination this page links to — for example a page, file, or external URL. </source>
+        <target>Definiert das Ziel, auf das diese Seite verlinkt – beispielsweise eine Seite, eine Datei oder eine externe URL. </target>
+      </segment>
+    </unit>
+    <unit id="l18n_cfg">
+      <segment state="final">
+        <source>Localization</source>
+        <target>Übersetzung</target>
+      </segment>
+    </unit>
+    <unit id="last_updated">
+      <segment state="final">
+        <source>Last Update</source>
+        <target>Letzte Aktualisierung</target>
+      </segment>
+    </unit>
+    <unit id="layout">
+      <segment state="final">
+        <source>Frontend Layout</source>
+        <target>Frontend-Layout</target>
+      </segment>
+    </unit>
+    <unit id="link.target">
+      <segment state="final">
+        <source>Link target</source>
+        <target>Linkziel</target>
+      </segment>
+    </unit>
+    <unit id="media">
+      <segment state="final">
+        <source>Media</source>
+        <target>Medien</target>
+      </segment>
+    </unit>
+    <unit id="module">
+      <segment state="final">
+        <source>Contains Plugin</source>
+        <target>Enthält Erweiterung</target>
+      </segment>
+    </unit>
+    <unit id="mount_pid">
+      <segment state="final">
+        <source>Mounted page</source>
+        <target>Einstiegsseite</target>
+      </segment>
+    </unit>
+    <unit id="mount_pid_ol">
+      <segment state="final">
+        <source>Mount Point Display Option</source>
+        <target>Einstiegspunkt Anzeigeoption</target>
+      </segment>
+    </unit>
+    <unit id="nav_hide">
+      <segment state="final">
+        <source>Page enabled in menus</source>
+        <target>Seite in Menüs aktiviert</target>
+      </segment>
+    </unit>
+    <unit id="nav_title">
+      <segment state="final">
+        <source>Alternative Navigation Title</source>
+        <target>Alternativer Navigationstitel</target>
+      </segment>
+    </unit>
+    <unit id="new_until">
+      <segment state="final">
+        <source>Mark as 'New' Until</source>
+        <target>Als 'Neu' markieren bis</target>
+      </segment>
+    </unit>
+    <unit id="no_search">
+      <segment state="final">
+        <source>Include in Search</source>
+        <target>In Suche einbeziehen</target>
+      </segment>
+    </unit>
+    <unit id="php_tree_stop">
+      <segment state="final">
+        <source>Hide child pages in page tree</source>
+        <target>Verberge Unterseiten im Seitenbaum</target>
+      </segment>
+    </unit>
+    <unit id="shortcut">
+      <segment state="final">
+        <source>Shortcut to page</source>
+        <target>Verknüpfung zu Seite</target>
+      </segment>
+    </unit>
+    <unit id="shortcut_mode">
+      <segment state="final">
+        <source>Shortcut Mode</source>
+        <target>Shortcut-Modus</target>
+      </segment>
+    </unit>
+    <unit id="slug">
+      <segment state="final">
+        <source>URL Segment</source>
+        <target>URL Segment</target>
+      </segment>
+    </unit>
+    <unit id="subtitle">
+      <segment state="final">
+        <source>Subtitle</source>
+        <target>Untertitel</target>
+      </segment>
+    </unit>
+    <unit id="target">
+      <segment state="final">
+        <source>Target</source>
+        <target>Ziel</target>
+      </segment>
+    </unit>
+    <unit id="title">
+      <segment state="final">
+        <source>Page title</source>
+        <target>Seitentitel</target>
+      </segment>
+    </unit>
+    <unit id="tsconfig">
+      <segment state="final">
+        <source>Page TSconfig</source>
+        <target>Seiten-TSconfig</target>
+      </segment>
+    </unit>
+    <unit id="tsconfig_includes">
+      <segment state="final">
+        <source>Include static Page TSconfig (from extensions)</source>
+        <target>Seiten-TSconfig einbinden (aus Erweiterungen)</target>
+      </segment>
+    </unit>
+    <unit id="url">
+      <segment state="final">
+        <source>URL</source>
+        <target>URL</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
