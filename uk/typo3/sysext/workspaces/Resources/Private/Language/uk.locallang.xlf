@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815017" source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="legend.label" resname="legend.label" approved="yes">
+        <source>Legend</source>
+        <target state="final">Легенда</target>
+      </trans-unit>
+      <trans-unit id="legend.edited" resname="legend.edited" approved="yes">
+        <source>edited</source>
+        <target state="final">відредаговано</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Workspaces</source>
+        <target state="final">Робочі області</target>
+      </trans-unit>
+      <trans-unit id="ok" resname="ok" approved="yes">
+        <source>Ok</source>
+        <target state="final">Гаразд</target>
+      </trans-unit>
+      <trans-unit id="cancel" resname="cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Скасувати</target>
+      </trans-unit>
+      <trans-unit id="chooseMassAction" resname="chooseMassAction" approved="yes">
+        <source>Choose mass action</source>
+        <target state="final">Виберіть масову дію</target>
+      </trans-unit>
+      <trans-unit id="chooseSelectionAction" resname="chooseSelectionAction" approved="yes">
+        <source>Choose selection action</source>
+        <target state="final">Виберіть дію вибору</target>
+      </trans-unit>
+      <trans-unit id="chooseAction" resname="chooseAction" approved="yes">
+        <source>Choose staging action</source>
+        <target state="final">Виберіть інсценізацію дії</target>
+      </trans-unit>
+      <trans-unit id="item" resname="item" approved="yes">
+        <source>item</source>
+        <target state="final">елемент</target>
+      </trans-unit>
+      <trans-unit id="items" resname="items" approved="yes">
+        <source>items</source>
+        <target state="final">елементи</target>
+      </trans-unit>
+      <trans-unit id="recordsToDisplay" resname="recordsToDisplay" approved="yes">
+        <source>Records to display</source>
+        <target state="final">Записи для відображення</target>
+      </trans-unit>
+      <trans-unit id="reviewandpublish" resname="reviewandpublish" approved="yes">
+        <source>review and publish</source>
+        <target state="final">переглянути та опублікувати</target>
+      </trans-unit>
+      <trans-unit id="workspacelist" resname="workspacelist" approved="yes">
+        <source>Workspace List</source>
+        <target state="final">Список робочої області</target>
+      </trans-unit>
+      <trans-unit id="editorInLive" resname="editorInLive" xml:space="preserve" approved="yes">
+				<source>You are in LIVE workspace. You have to select a draft workspace before you can review and
+					publish changes.
+				</source>
+			<target state="final">Ви в робочому просторі LIVE. Ви повинні вибрати чернетку робочої області, перш ніж переглядати та
+опублікувати зміни.
+				</target></trans-unit>
+      <trans-unit id="actionSendToStage" resname="actionSendToStage" approved="yes">
+        <source>Send to stage</source>
+        <target state="final">Надіслати до етапу</target>
+      </trans-unit>
+      <trans-unit id="publish_execute_action_option" resname="publish_execute_action_option" approved="yes">
+        <source>Publish to LIVE</source>
+        <target state="final">Опублікувати в LIVE</target>
+      </trans-unit>
+      <trans-unit id="close" resname="close" approved="yes">
+        <source>Close</source>
+        <target state="final">Закрити</target>
+      </trans-unit>
+      <trans-unit id="runMassAction.done" resname="runMassAction.done" approved="yes">
+        <source>Done processing %d elements</source>
+        <target state="final">Обробку %d елементів завершено</target>
+      </trans-unit>
+      <trans-unit id="runMassAction.init" resname="runMassAction.init" approved="yes">
+        <source>init</source>
+        <target state="final">ініціалізація</target>
+      </trans-unit>
+      <trans-unit id="tooltip.publishAll" resname="tooltip.publishAll" approved="yes">
+        <source>Really publish entire workspace?</source>
+        <target state="final">Дійсно опублікувати всю робочу область?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.swapAll" resname="tooltip.swapAll" approved="yes">
+        <source>Really swap entire workspace?</source>
+        <target state="final">Справді поміняти весь робочий простір?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardAll" resname="tooltip.discardAll" approved="yes">
+        <source>Do you really want to discard changes from the whole workspace?</source>
+        <target state="final">Ви справді бажаєте скасувати зміни в усьому робочому просторі?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.publishSelected" resname="tooltip.publishSelected" approved="yes">
+        <source>Really publish selected elements?</source>
+        <target state="final">Ви впевнені, що хочете опублікувати вибрані елементи?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.swapSelected" resname="tooltip.swapSelected" approved="yes">
+        <source>Really swap selected elements?</source>
+        <target state="final">Справді поміняти місцями вибрані елементи?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardSelected" resname="tooltip.discardSelected" approved="yes">
+        <source>Really discard changes of the selected elements?</source>
+        <target state="final">Скасувати зміни вибраних елементів?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.affectWholeWorkspace" resname="tooltip.affectWholeWorkspace" xml:space="preserve" approved="yes">
+				<source>Please note that this will affect all changes in the current workspace, which may be more than
+					you are currently seeing on your screen.
+				</source>
+			<target state="final">Зауважте, що це вплине на всі зміни в поточній робочій області, яка може бути більшою, ніж ви зараз бачите на екрані.
+				</target></trans-unit>
+      <trans-unit id="tooltip.generatePagePreview" resname="tooltip.generatePagePreview" approved="yes">
+        <source>Generate page preview links</source>
+        <target state="final">Створення посилань для попереднього перегляду сторінок</target>
+      </trans-unit>
+      <trans-unit id="tooltip.showChanges" resname="tooltip.showChanges" approved="yes">
+        <source>Show changes</source>
+        <target state="final">Показати зміни</target>
+      </trans-unit>
+      <trans-unit id="previewLink" resname="previewLink" approved="yes">
+        <source>Preview Link</source>
+        <target state="final">Попередній перегляд посилання</target>
+      </trans-unit>
+      <trans-unit id="error.noResponse" resname="error.noResponse" approved="yes">
+        <source>The server did not send any response whether the action was successful.</source>
+        <target state="final">Сервер не надіслав жодної відповіді щодо успішності дії.</target>
+      </trans-unit>
+      <trans-unit id="rowDetails" resname="rowDetails" approved="yes">
+        <source>Row details...</source>
+        <target state="final">Деталі рядка...</target>
+      </trans-unit>
+      <trans-unit id="column.difference" resname="column.difference" approved="yes">
+        <source>Difference</source>
+        <target state="final">Відмінності</target>
+      </trans-unit>
+      <trans-unit id="column.changeDate" resname="column.changeDate" approved="yes">
+        <source>Modification</source>
+        <target state="final">Модифікація</target>
+      </trans-unit>
+      <trans-unit id="column.stage" resname="column.stage" approved="yes">
+        <source>Current Stage</source>
+        <target state="final">Поточний етап</target>
+      </trans-unit>
+      <trans-unit id="column.actions" resname="column.actions" approved="yes">
+        <source>Actions</source>
+        <target state="final">Дії</target>
+      </trans-unit>
+      <trans-unit id="column.wsPath" resname="column.wsPath" approved="yes">
+        <source>Path</source>
+        <target state="final">Шлях</target>
+      </trans-unit>
+      <trans-unit id="column.wsTitle" resname="column.wsTitle" approved="yes">
+        <source>Changed</source>
+        <target state="final">Змінено</target>
+      </trans-unit>
+      <trans-unit id="column.uid" resname="column.uid" approved="yes">
+        <source>WS ID</source>
+        <target state="final">WS ID</target>
+      </trans-unit>
+      <trans-unit id="column.oid" resname="column.oid" approved="yes">
+        <source>Live ID</source>
+        <target state="final">Live ID</target>
+      </trans-unit>
+      <trans-unit id="column.workspaceName" resname="column.workspaceName" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Робоча область</target>
+      </trans-unit>
+      <trans-unit id="column.livePath" resname="column.livePath" approved="yes">
+        <source>Live path</source>
+        <target state="final">Живий шлях</target>
+      </trans-unit>
+      <trans-unit id="column.liveTitle" resname="column.liveTitle" approved="yes">
+        <source>Live title</source>
+        <target state="final">Жива назва</target>
+      </trans-unit>
+      <trans-unit id="column.wsSwapColumn" resname="column.wsSwapColumn" approved="yes">
+        <source>Swap workspace</source>
+        <target state="final">Поміняти робоче середовище</target>
+      </trans-unit>
+      <trans-unit id="column.integrity" resname="column.integrity" approved="yes">
+        <source>Integrity</source>
+        <target state="final">Цілісність</target>
+      </trans-unit>
+      <trans-unit id="tooltip.viewElementAction" resname="tooltip.viewElementAction" approved="yes">
+        <source>Preview element</source>
+        <target state="final">Попередній перегляд елемента</target>
+      </trans-unit>
+      <trans-unit id="tooltip.editElementAction" resname="tooltip.editElementAction" approved="yes">
+        <source>Edit element</source>
+        <target state="final">Редагувати елемент</target>
+      </trans-unit>
+      <trans-unit id="tooltip.openPage" resname="tooltip.openPage" approved="yes">
+        <source>Open version of page</source>
+        <target state="final">Відкрити версію сторінки</target>
+      </trans-unit>
+      <trans-unit id="tooltip.sendToPrevStage" resname="tooltip.sendToPrevStage" approved="yes">
+        <source>Send record to previous Stage</source>
+        <target state="final">Надіслати запис до попереднього етапу</target>
+      </trans-unit>
+      <trans-unit id="tooltip.sendToNextStage" resname="tooltip.sendToNextStage" approved="yes">
+        <source>Send record to next Stage</source>
+        <target state="final">Надіслати запис до наступного етапу</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardVersion" resname="tooltip.discardVersion" approved="yes">
+        <source>Discard workspace version of record.</source>
+        <target state="final">Вилучити робоче середовище запису.</target>
+      </trans-unit>
+      <trans-unit id="tooltip.swap" resname="tooltip.swap" approved="yes">
+        <source>Swap live and workspace versions of record</source>
+        <target state="final">Поміняйте живу та робочу версії запису</target>
+      </trans-unit>
+      <trans-unit id="tooltip.expand" resname="tooltip.expand" approved="yes">
+        <source>Expand element and show relations</source>
+        <target state="final">Розгорнути елементи і показати відносини</target>
+      </trans-unit>
+      <trans-unit id="tooltip.showHistory" resname="tooltip.showHistory" approved="yes">
+        <source>Show history of workspace version</source>
+        <target state="final">Показати історію версії робочого середовища</target>
+      </trans-unit>
+      <trans-unit id="window.discard.title" resname="window.discard.title" approved="yes">
+        <source>Discard workspace version of record.</source>
+        <target state="final">Вилучити робоче середовище запису.</target>
+      </trans-unit>
+      <trans-unit id="window.discardAll.title" resname="window.discardAll.title" approved="yes">
+        <source>Discard all workspace version of current page.</source>
+        <target state="final">Скасувати всі версії робочої області поточної сторінки.</target>
+      </trans-unit>
+      <trans-unit id="window.discard.message" resname="window.discard.message" approved="yes">
+        <source>Do you really want to discard this version from workspace?</source>
+        <target state="final">Ви дійсно бажаєте скасувати цю версію з робочої області?</target>
+      </trans-unit>
+      <trans-unit id="window.discardAll.message" resname="window.discardAll.message" approved="yes">
+        <source>Do you really want to discard all versions from page?</source>
+        <target state="final">Ви дійсно бажаєте скасувати всі версії зі сторінки?</target>
+      </trans-unit>
+      <trans-unit id="window.swap.title" resname="window.swap.title" approved="yes">
+        <source>Swap version</source>
+        <target state="final">Поміняти версію</target>
+      </trans-unit>
+      <trans-unit id="window.swap.message" resname="window.swap.message" approved="yes">
+        <source>Do you really want to swap this version?</source>
+        <target state="final">Ви дійсно бажаєте замінити цю версію?</target>
+      </trans-unit>
+      <trans-unit id="window.massAction.title" resname="window.massAction.title" approved="yes">
+        <source>Prepare to start mass action</source>
+        <target state="final">Підготуйтеся до початку масової дії</target>
+      </trans-unit>
+      <trans-unit id="window.selectionAction.title" resname="window.selectionAction.title" approved="yes">
+        <source>Prepare to execute actions on selection</source>
+        <target state="final">Підготуйтеся до виконання дій по відбору</target>
+      </trans-unit>
+      <trans-unit id="error.stageId.integer" resname="error.stageId.integer" approved="yes">
+        <source>StageId is supposed to be an integer</source>
+        <target state="final">StageId повинен бути цілим числом</target>
+      </trans-unit>
+      <trans-unit id="error.stageId.invalid" resname="error.stageId.invalid" xml:space="preserve" approved="yes">
+				<source>The stage to be used seems to be invalid and cannot be used. Please consider to use the update
+					wizard in the install tool to fix this.
+				</source>
+			<target state="final">Етап, який буде використано, здається недійсним та не може бути використаним. Щоб виправити це, скористайтеся майстром оновлення в інструменті встановлення.
+				</target></trans-unit>
+      <trans-unit id="error.sendToNextStage.noRecordFound" resname="error.sendToNextStage.noRecordFound" approved="yes">
+        <source>The record element could not be found.</source>
+        <target state="final">Елемент запису не знайдено.</target>
+      </trans-unit>
+      <trans-unit id="error.sendToPrevStage.noPreviousStage" resname="error.sendToPrevStage.noPreviousStage" approved="yes">
+        <source>The record element is already in editing stage, there is no previous stage.</source>
+        <target state="final">Елемент запису вже знаходиться у стадії редагування, немає попередньої стадії.</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.itemsWillBeSentTo" resname="window.sendToNextStageWindow.itemsWillBeSentTo" approved="yes">
+        <source>The selected element(s) will be sent to</source>
+        <target state="final">Вибрані елемент(и) будуть відправлені на</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.selectAll" resname="window.sendToNextStageWindow.selectAll" approved="yes">
+        <source>Select all</source>
+        <target state="final">Вибрати всі</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.deselectAll" resname="window.sendToNextStageWindow.deselectAll" approved="yes">
+        <source>Uncheck all</source>
+        <target state="final">Зняти всі відмітки</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.sendMailTo" resname="window.sendToNextStageWindow.sendMailTo" approved="yes">
+        <source>Send mail to</source>
+        <target state="final">Надіслати листа</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.additionalRecipients" resname="window.sendToNextStageWindow.additionalRecipients" approved="yes">
+        <source>Additional recipients</source>
+        <target state="final">Додаткові одержувачі</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.additionalRecipients.hint" resname="window.sendToNextStageWindow.additionalRecipients.hint" approved="yes">
+        <source>One recipient per line</source>
+        <target state="final">Один одержувач на рядок</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.comments" resname="window.sendToNextStageWindow.comments" approved="yes">
+        <source>Comments</source>
+        <target state="final">Коментарі</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges" resname="window.recordChanges" approved="yes">
+        <source>Record changes</source>
+        <target state="final">Зміна запису</target>
+      </trans-unit>
+      <trans-unit id="window.recordInformation" resname="window.recordInformation" approved="yes">
+        <source>Information for "{0}"</source>
+        <target state="final">Інформація для "{0}"</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.changeSummary" resname="window.recordChanges.tabs.changeSummary" approved="yes">
+        <source>Summary of changes</source>
+        <target state="final">Підсумок змін</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.comments" resname="window.recordChanges.tabs.comments" approved="yes">
+        <source>Comments</source>
+        <target state="final">Коментарі</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.history" resname="window.recordChanges.tabs.history" approved="yes">
+        <source>History</source>
+        <target state="final">Історія</target>
+      </trans-unit>
+      <trans-unit id="window.recordHistory" resname="window.recordHistory" approved="yes">
+        <source>History of record "{0}"</source>
+        <target state="final">Історія запису "{0}"</target>
+      </trans-unit>
+      <trans-unit id="error.getStageTitle.stageNotFound" resname="error.getStageTitle.stageNotFound" approved="yes">
+        <source>Stage not found</source>
+        <target state="final">Етап не знайдено</target>
+      </trans-unit>
+      <trans-unit id="info.newpage" resname="info.newpage" approved="yes">
+        <source>New Page!</source>
+        <target state="final">Нова сторінка!</target>
+      </trans-unit>
+      <trans-unit id="info.newpage.detail" resname="info.newpage.detail" approved="yes">
+        <source>The previewed page has been created in a workspace and has no live counterpart.</source>
+        <target state="final">Сторінку попереднього перегляду було створено в робочій області та їй немає аналогів у реальному часі.</target>
+      </trans-unit>
+      <trans-unit id="preview.visualPreview" resname="preview.visualPreview" approved="yes">
+        <source>Visual preview</source>
+        <target state="final">Попередній перегляд</target>
+      </trans-unit>
+      <trans-unit id="preview.listView" resname="preview.listView" approved="yes">
+        <source>List view</source>
+        <target state="final">У вигляді списку</target>
+      </trans-unit>
+      <trans-unit id="preview.livePreview" resname="preview.livePreview" approved="yes">
+        <source>Live</source>
+        <target state="final">Наживо</target>
+      </trans-unit>
+      <trans-unit id="preview.livePreviewDetail" resname="preview.livePreviewDetail" approved="yes">
+        <source>Click this element to hide the workspace version and see the live version of the page.</source>
+        <target state="final">Натисніть на цей елемент, щоб приховати версію робочої області і побачити живу версію сторінки.</target>
+      </trans-unit>
+      <trans-unit id="preview.workspacePreview" resname="preview.workspacePreview" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Робоча область</target>
+      </trans-unit>
+      <trans-unit id="preview.workspacePreviewDetail" resname="preview.workspacePreviewDetail" approved="yes">
+        <source>Click this element to hide the live version and see the workspace version of the page.</source>
+        <target state="final">Натисніть на цей елемент, щоб приховати живу версію та побачити версію робочої області сторінки.</target>
+      </trans-unit>
+      <trans-unit id="preview.modeSlider" resname="preview.modeSlider" approved="yes">
+        <source>Slider</source>
+        <target state="final">Слайдер</target>
+      </trans-unit>
+      <trans-unit id="preview.modeVbox" resname="preview.modeVbox" approved="yes">
+        <source>Vertical</source>
+        <target state="final">Вертикально</target>
+      </trans-unit>
+      <trans-unit id="preview.modeHbox" resname="preview.modeHbox" approved="yes">
+        <source>Horizontal</source>
+        <target state="final">Горизонтально</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_publish" resname="label_doaction_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">Опублікувати</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_swap" resname="label_doaction_swap" approved="yes">
+        <source>Swap</source>
+        <target state="final">Замінити</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_discard" resname="label_doaction_discard" approved="yes">
+        <source>Discard</source>
+        <target state="final">Відмінити</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_generatePreviewLinks" resname="label_doaction_generatePreviewLinks" approved="yes">
+        <source>Generate Workspace Preview Links</source>
+        <target state="final">Створити робочу область попереднього перегляду посилань</target>
+      </trans-unit>
+      <trans-unit id="info.elementAlreadyModified" resname="info.elementAlreadyModified" approved="yes">
+        <source>Element is in workspace stage "%s", modifications will send it back to "%s".</source>
+        <target state="final">Елемент знаходиться в етапі робочого простору"%s, зміни будуть відправлені назад на "%s".</target>
+      </trans-unit>
+      <trans-unit id="live_workspace" resname="live_workspace" approved="yes">
+        <source>Live Workspace</source>
+        <target state="final">Жива робоча область</target>
+      </trans-unit>
+      <trans-unit id="workspace_version" resname="workspace_version" approved="yes">
+        <source>Workspace version</source>
+        <target state="final">Версія робочої області</target>
+      </trans-unit>
+      <trans-unit id="current_step" resname="current_step" approved="yes">
+        <source><![CDATA[<b>Current stage step</b>: {0} (<b>{1}</b>/{2})]]></source>
+        <target state="final"><![CDATA[<b>Поточний етап</b>: {0} (<b>{1}</b>/{2})]]></target>
+      </trans-unit>
+      <trans-unit id="path" resname="path" approved="yes">
+        <source><![CDATA[<b>Path</b>: {0}]]></source>
+        <target state="final"><![CDATA[<b>Шлях</b>: {0}]]></target>
+      </trans-unit>
+      <trans-unit id="stage" resname="stage" approved="yes">
+        <source>Stage {0}</source>
+        <target state="final">Етап {0}</target>
+      </trans-unit>
+      <trans-unit id="comments" resname="comments" approved="yes">
+        <source><![CDATA[User comments for <b>step {0} of stage</b> "{1}"]]></source>
+        <target state="final"><![CDATA[Коментарі користувачів для <b>кроку {0} етапу</b> "{1}"]]></target>
+      </trans-unit>
+      <trans-unit id="language.allLanguages" resname="language.allLanguages" approved="yes">
+        <source>all languages</source>
+        <target state="final">усі мови</target>
+      </trans-unit>
+      <trans-unit id="language.selectLanguage" resname="language.selectLanguage" approved="yes">
+        <source>all languages</source>
+        <target state="final">усі мови</target>
+      </trans-unit>
+      <trans-unit id="integrity.dependsOnDefaultLanguageRecord" resname="integrity.dependsOnDefaultLanguageRecord" approved="yes">
+        <source><![CDATA[Record "%s" depends on default language record]]></source>
+        <target state="final"><![CDATA[Запис"%s" залежить від запису мови за замовчуванням]]></target>
+      </trans-unit>
+      <trans-unit id="integrity.isDefaultLanguageRecord" resname="integrity.isDefaultLanguageRecord" approved="yes">
+        <source><![CDATA[Default language record for record "%s"]]></source>
+        <target state="final"><![CDATA[Запис мови за замовчуванням для запису "%s"]]></target>
+      </trans-unit>
+      <trans-unit id="integrity.hasIssuesDescription" resname="integrity.hasIssuesDescription" approved="yes">
+        <source>The integrity check discovered several issues, see status icons infront of each record for further details.</source>
+        <target state="final">Під час перевірки цілісності було виявлено кілька проблем, дивіться піктограми стану перед кожним записом, щоб отримати додаткові відомості.</target>
+      </trans-unit>
+      <trans-unit id="integrity.hasIssuesQuestion" resname="integrity.hasIssuesQuestion" approved="yes">
+        <source>Do you want to continue?</source>
+        <target state="final">Бажаєте продовжити?</target>
+      </trans-unit>
+      <trans-unit id="status.info" resname="status.info" approved="yes">
+        <source>Information</source>
+        <target state="final">Інформація</target>
+      </trans-unit>
+      <trans-unit id="status.warning" resname="status.warning" approved="yes">
+        <source>Warning</source>
+        <target state="final">Попередження</target>
+      </trans-unit>
+      <trans-unit id="status.error" resname="status.error" approved="yes">
+        <source>Error</source>
+        <target state="final">Помилка</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
