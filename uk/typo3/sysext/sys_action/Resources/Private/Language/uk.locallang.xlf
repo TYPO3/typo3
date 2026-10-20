@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814993" source-language="en" datatype="plaintext" original="EXT:sys_action/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="sys_action" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="sys_action" resname="sys_action" approved="yes">
+        <source>Action</source>
+        <target state="final">Дія</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description" approved="yes">
+        <source>An 'Action' is a configuration of a specific task which may be performed by assigned usergroups via the Task Center.</source>
+        <target state="final">«Дія» — це налаштування певного завдання, яке можуть виконувати призначені групи користувачів через Центр завдань.</target>
+      </trans-unit>
+      <trans-unit id="new-sys_action" resname="new-sys_action" approved="yes">
+        <source>Create a new action</source>
+        <target state="final">Створіть нову дію</target>
+      </trans-unit>
+      <trans-unit id="edit-sys_action" resname="edit-sys_action" approved="yes">
+        <source>Edit record</source>
+        <target state="final">Редагувати запис</target>
+      </trans-unit>
+      <trans-unit id="action_error-not-found" resname="action_error-not-found" approved="yes">
+        <source>The action doesn't exist</source>
+        <target state="final">Дія не існує</target>
+      </trans-unit>
+      <trans-unit id="action_not-found" resname="action_not-found" approved="yes">
+        <source>No actions found</source>
+        <target state="final">Дій не знайдено</target>
+      </trans-unit>
+      <trans-unit id="action_not-found-description" resname="action_not-found-description" approved="yes">
+        <source>Currently there are no actions yet defined!</source>
+        <target state="final">Наразі ще не визначено жодних дій!</target>
+      </trans-unit>
+      <trans-unit id="action_error-access" resname="action_error-access" approved="yes">
+        <source>You don't have sufficient rights to see the records. Please ask the administrator to set those for you.</source>
+        <target state="final">Ви не маєте достатніх прав для перегляду записів. Будь ласка, попросіть адміністратора встановити їх для вас.</target>
+      </trans-unit>
+      <trans-unit id="error-wrong-email" resname="error-wrong-email" approved="yes">
+        <source>The E-mail address is wrong.</source>
+        <target state="final">E-mail адреса неправильна.</target>
+      </trans-unit>
+      <trans-unit id="error-username-empty" resname="error-username-empty" approved="yes">
+        <source>The username is empty.</source>
+        <target state="final">Ім'я користувача порожнє.</target>
+      </trans-unit>
+      <trans-unit id="error-password-empty" resname="error-password-empty" approved="yes">
+        <source>The password is empty.</source>
+        <target state="final">Пароль порожній.</target>
+      </trans-unit>
+      <trans-unit id="error-wrong-user" resname="error-wrong-user" approved="yes">
+        <source>You are not allowed to edit this user.</source>
+        <target state="final">Ви не можете редагувати цього користувача.</target>
+      </trans-unit>
+      <trans-unit id="success" resname="success" approved="yes">
+        <source>Success</source>
+        <target state="final">Успішно</target>
+      </trans-unit>
+      <trans-unit id="success-user-created" resname="success-user-created" approved="yes">
+        <source>The user has been created.</source>
+        <target state="final">Користувача створено.</target>
+      </trans-unit>
+      <trans-unit id="success-user-updated" resname="success-user-updated" approved="yes">
+        <source>The user has been updated.</source>
+        <target state="final">Користувач був оновлений.</target>
+      </trans-unit>
+      <trans-unit id="action_noType" resname="action_noType" approved="yes">
+        <source>Error: The action had no type defined.</source>
+        <target state="final">Помилка: Подія не має визначеного типу.</target>
+      </trans-unit>
+      <trans-unit id="action_notReady" resname="action_notReady" approved="yes">
+        <source>Error: The action configuration is not finished.</source>
+        <target state="final">Помилка: Конфігурацію події не закінчено.</target>
+      </trans-unit>
+      <trans-unit id="action_download_file" resname="action_download_file" approved="yes">
+        <source>Click here to download the exported data in a file</source>
+        <target state="final">Натисніть тут, щоб завантажити експортовані дані в файл</target>
+      </trans-unit>
+      <trans-unit id="action_editQuery" resname="action_editQuery" approved="yes">
+        <source>Edit Query</source>
+        <target state="final">Редагувати запит</target>
+      </trans-unit>
+      <trans-unit id="action_createQuery" resname="action_createQuery" approved="yes">
+        <source>Create Query</source>
+        <target state="final">Створити запит</target>
+      </trans-unit>
+      <trans-unit id="action_emptyQuery" resname="action_emptyQuery" approved="yes">
+        <source>Query is empty, create one first!</source>
+        <target state="final">Запит порожній, спершу створіть його!</target>
+      </trans-unit>
+      <trans-unit id="action_error" resname="action_error" approved="yes">
+        <source>Action error!</source>
+        <target state="final">Помилка дії!</target>
+      </trans-unit>
+      <trans-unit id="action_lowlevelMissing" resname="action_lowlevelMissing" approved="yes">
+        <source>The extension 'lowlevel' must be installed in order to create a query.</source>
+        <target state="final">Щоб створити запит, необхідно встановити розширення "низький рівень".</target>
+      </trans-unit>
+      <trans-unit id="action_t2_result" resname="action_t2_result" approved="yes">
+        <source>Result of query</source>
+        <target state="final">Результат запиту</target>
+      </trans-unit>
+      <trans-unit id="action_Create" resname="action_Create" approved="yes">
+        <source>Create Backend User</source>
+        <target state="final">Створити користувача backend</target>
+      </trans-unit>
+      <trans-unit id="action_Update" resname="action_Update" approved="yes">
+        <source>Update Backend User</source>
+        <target state="final">Оновити користувача backend</target>
+      </trans-unit>
+      <trans-unit id="action_t1_listOfUsers" resname="action_t1_listOfUsers" approved="yes">
+        <source>List of backend users</source>
+        <target state="final">Список backend користувачів</target>
+      </trans-unit>
+      <trans-unit id="action_t1_legend_generalFields" resname="action_t1_legend_generalFields" approved="yes">
+        <source>General fields</source>
+        <target state="final">Загальні поля</target>
+      </trans-unit>
+      <trans-unit id="action_t1_legend_configuration" resname="action_t1_legend_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Налаштування</target>
+      </trans-unit>
+      <trans-unit id="action_toolbaritem" resname="action_toolbaritem" approved="yes">
+        <source>Open System Actions</source>
+        <target state="final">Відкрити системні дії</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
