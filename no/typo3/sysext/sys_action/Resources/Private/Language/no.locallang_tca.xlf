@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814995" source-language="en" datatype="plaintext" original="EXT:sys_action/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:37Z" product-name="sys_action" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="sys_action" resname="sys_action" approved="yes">
+        <source>Action</source>
+        <target state="final">Handling</target>
+      </trans-unit>
+      <trans-unit id="sys_action.hidden" resname="sys_action.hidden" approved="yes">
+        <source>Deactivated</source>
+        <target state="final">Deaktivert</target>
+      </trans-unit>
+      <trans-unit id="sys_action.tab.access" resname="sys_action.tab.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Adgang</target>
+      </trans-unit>
+      <trans-unit id="sys_action.tab.create_user.settings" resname="sys_action.tab.create_user.settings" approved="yes">
+        <source>Settings</source>
+        <target state="final">Innstillinger</target>
+      </trans-unit>
+      <trans-unit id="sys_action.tab.record_list.settings" resname="sys_action.tab.record_list.settings" approved="yes">
+        <source>Settings</source>
+        <target state="final">Innstillinger</target>
+      </trans-unit>
+      <trans-unit id="sys_action.tab.edit_records.settings" resname="sys_action.tab.edit_records.settings" approved="yes">
+        <source>Settings</source>
+        <target state="final">Innstillinger</target>
+      </trans-unit>
+      <trans-unit id="sys_action.tab.new_record.settings" resname="sys_action.tab.new_record.settings" approved="yes">
+        <source>Settings</source>
+        <target state="final">Innstillinger</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
