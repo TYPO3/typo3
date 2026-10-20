@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="permissions" approved="yes">
+        <source>Permissions</source>
+        <target state="final">Teisės</target>
+      </trans-unit>
+      <trans-unit id="ch_permissions" approved="yes">
+        <source>Change permissions</source>
+        <target state="final">Keisti teises</target>
+      </trans-unit>
+      <trans-unit id="Legend" approved="yes">
+        <source>Legend</source>
+        <target state="final">Legenda</target>
+      </trans-unit>
+      <trans-unit id="Owner" approved="yes">
+        <source>Owner</source>
+        <target state="final">Savininkas</target>
+      </trans-unit>
+      <trans-unit id="Group" approved="yes">
+        <source>Group</source>
+        <target state="final">Grupė</target>
+      </trans-unit>
+      <trans-unit id="Everybody" approved="yes">
+        <source>Everybody</source>
+        <target state="final">Visi</target>
+      </trans-unit>
+      <trans-unit id="EditLock_descr" approved="yes">
+        <source>Disable the »Admin-only« edit lock for this page. Currently this page and all content is locked for editing by all non-Admin users.</source>
+        <target state="final">Išjungti šio puslapio „tik administratoriui“ redagavimo užraktą. Šiuo metu šis puslapis ir visas jo turinys yra užrakintas redagavimui visiems ne administratoriaus naudotojams.</target>
+      </trans-unit>
+      <trans-unit id="EditLock_descr2" approved="yes">
+        <source>Enable the »Admin-only« edit lock for this page</source>
+        <target state="final">Įjungti šio puslapio „tik administratoriui“ redagavimo užraktą</target>
+      </trans-unit>
+      <trans-unit id="Save" approved="yes">
+        <source>Save</source>
+        <target state="final">Išsaugoti</target>
+      </trans-unit>
+      <trans-unit id="Abort" approved="yes">
+        <source>Abort</source>
+        <target state="final">Nutraukti</target>
+      </trans-unit>
+      <trans-unit id="Edit" approved="yes">
+        <source>EDIT</source>
+        <target state="final">REDAGUOTI</target>
+      </trans-unit>
+      <trans-unit id="recursive" approved="yes">
+        <source>Set recursively</source>
+        <target state="final">Nustatyti rekursyviai</target>
+      </trans-unit>
+      <trans-unit id="page_affected" approved="yes">
+        <source>page affected</source>
+        <target state="final">paveiktas puslapis</target>
+      </trans-unit>
+      <trans-unit id="pages_affected" approved="yes">
+        <source>pages affected</source>
+        <target state="final">paveikti puslapiai</target>
+      </trans-unit>
+      <trans-unit id="user_overview" approved="yes">
+        <source>User overview</source>
+        <target state="final">Naudotojų apžvalga</target>
+      </trans-unit>
+      <trans-unit id="Mode" approved="yes">
+        <source>Mode</source>
+        <target state="final">Režimas</target>
+      </trans-unit>
+      <trans-unit id="Depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Gylis</target>
+      </trans-unit>
+      <trans-unit id="level" approved="yes">
+        <source>level</source>
+        <target state="final">lygis</target>
+      </trans-unit>
+      <trans-unit id="levels" approved="yes">
+        <source>levels</source>
+        <target state="final">lygiai</target>
+      </trans-unit>
+      <trans-unit id="User" approved="yes">
+        <source>User</source>
+        <target state="final">Naudotojas</target>
+      </trans-unit>
+      <trans-unit id="changeOwner" approved="yes">
+        <source>Change owner</source>
+        <target state="final">Keisti savininką</target>
+      </trans-unit>
+      <trans-unit id="changeGroup" approved="yes">
+        <source>Change group</source>
+        <target state="final">Keisti grupę</target>
+      </trans-unit>
+      <trans-unit id="def" approved="yes">
+        <source>Definition: 'content' is records from all tables on a page - except from records from the table 'pages' (Pages).</source>
+        <target state="final">Apibrėžimas: „turinys“ – tai įrašai iš visų puslapio lentelių, išskyrus lentelės „pages“ (Puslapiai) įrašus.</target>
+      </trans-unit>
+      <trans-unit id="A_Granted" approved="yes">
+        <source>Access Granted</source>
+        <target state="final">Prieiga suteikta</target>
+      </trans-unit>
+      <trans-unit id="A_Denied" approved="yes">
+        <source>Access Denied</source>
+        <target state="final">Prieiga uždrausta</target>
+      </trans-unit>
+      <trans-unit id="1" approved="yes">
+        <source>Show page</source>
+        <target state="final">Rodyti puslapį</target>
+      </trans-unit>
+      <trans-unit id="16" approved="yes">
+        <source>Edit content</source>
+        <target state="final">Redaguoti turinį</target>
+      </trans-unit>
+      <trans-unit id="2" approved="yes">
+        <source>Edit page</source>
+        <target state="final">Redaguoti puslapį</target>
+      </trans-unit>
+      <trans-unit id="4" approved="yes">
+        <source>Delete page</source>
+        <target state="final">Ištrinti puslapį</target>
+      </trans-unit>
+      <trans-unit id="8" approved="yes">
+        <source>New pages</source>
+        <target state="final">Nauji puslapiai</target>
+      </trans-unit>
+      <trans-unit id="1_t" approved="yes">
+        <source>Show/Copy page and content.</source>
+        <target state="final">Rodyti / kopijuoti puslapį ir turinį.</target>
+      </trans-unit>
+      <trans-unit id="16_t" approved="yes">
+        <source>Change/Add/Delete/Move content.</source>
+        <target state="final">Keisti / pridėti / ištrinti / perkelti turinį.</target>
+      </trans-unit>
+      <trans-unit id="2_t" approved="yes">
+        <source>Change page eg. change pagetitle etc.</source>
+        <target state="final">Keisti puslapį, pvz., pakeisti puslapio pavadinimą ir pan.</target>
+      </trans-unit>
+      <trans-unit id="4_t" approved="yes">
+        <source>Delete/Move page and content.</source>
+        <target state="final">Ištrinti / perkelti puslapį ir turinį.</target>
+      </trans-unit>
+      <trans-unit id="8_t" approved="yes">
+        <source>Create new pages under this page.</source>
+        <target state="final">Kurti naujus puslapius po šiuo puslapiu.</target>
+      </trans-unit>
+      <trans-unit id="WorkspaceWarning" approved="yes">
+        <source>Workspace Warning</source>
+        <target state="final">Darbo srities įspėjimas</target>
+      </trans-unit>
+      <trans-unit id="WorkspaceWarningText" approved="yes">
+        <source>Permissions set in a workspace take effect only after the related elements are published. To apply permissions immediately, configure them in the Live workspace. (Permissions are always evaluated based on the Live workspace record or the placeholder of a draft version)</source>
+        <target state="final">Darbo srityje nustatytos teisės įsigalioja tik po susijusių elementų publikavimo. Norėdami taikyti teises iš karto, konfigūruokite jas „Live“ darbo srityje. (Teisės visada vertinamos pagal „Live“ darbo srities įrašą arba juodraščio versijos pakaitinį įrašą)</target>
+      </trans-unit>
+      <trans-unit id="notSet" approved="yes">
+        <source>not set</source>
+        <target state="final">nenustatyta</target>
+      </trans-unit>
+      <trans-unit id="deleted" approved="yes">
+        <source>deleted</source>
+        <target state="final">ištrinta</target>
+      </trans-unit>
+      <trans-unit id="noGroups" approved="yes">
+        <source>No user groups exist.</source>
+        <target state="final">Nėra naudotojų grupių.</target>
+      </trans-unit>
+      <trans-unit id="selectNone" approved="yes">
+        <source>   - none -   </source>
+        <target state="final">   - nėra -   </target>
+      </trans-unit>
+      <trans-unit id="selectUnchanged" approved="yes">
+        <source>   - leave unchanged -   </source>
+        <target state="final">   - palikti nepakeista -   </target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
