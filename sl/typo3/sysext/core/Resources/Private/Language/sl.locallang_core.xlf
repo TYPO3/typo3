@@ -1,0 +1,876 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_core.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="labels.openInNewWindow" approved="yes">
+        <source>Open in new window</source>
+        <target state="final">Odpri v novem oknu</target>
+      </trans-unit>
+      <trans-unit id="labels.goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Nazaj</target>
+      </trans-unit>
+      <trans-unit id="labels.makeShortcut" approved="yes">
+        <source>Create a shortcut to this page?</source>
+        <target state="final">Ustvari bližnjico do te strani?</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord" approved="yes">
+        <source>The user '%s' began to edit this record %s ago.</source>
+        <target state="final">Uporabnik '%s' je pričel urejati ta zapis pred %s</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord_content" approved="yes">
+        <source>The user '%s' began to edit content on this page %s ago.</source>
+        <target state="final">Uporabnik '%s' je pričel urejati vsebino te strani pred %s</target>
+      </trans-unit>
+      <trans-unit id="labels.user" approved="yes">
+        <source>User</source>
+        <target state="final">Uporabnik</target>
+      </trans-unit>
+      <trans-unit id="labels.showRecords" approved="yes">
+        <source>Show records</source>
+        <target state="final">Pokaži zapise</target>
+      </trans-unit>
+      <trans-unit id="labels.path" approved="yes">
+        <source>Path</source>
+        <target state="final">Pot</target>
+      </trans-unit>
+      <trans-unit id="labels.resetFilter" approved="yes">
+        <source>Reset Filter</source>
+        <target state="final">Ponastavi filter</target>
+      </trans-unit>
+      <trans-unit id="labels.table" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabela</target>
+      </trans-unit>
+      <trans-unit id="labels.upOneLevel" approved="yes">
+        <source>Up one level</source>
+        <target state="final">Nivo višje</target>
+      </trans-unit>
+      <trans-unit id="labels.enterSearchString" approved="yes">
+        <source>Enter search term</source>
+        <target state="final">Vnesi iskalni izraz</target>
+      </trans-unit>
+      <trans-unit id="labels.enterSearchLevels" approved="yes">
+        <source>This page|1 level down|2 levels down|3 levels down|4 levels down</source>
+        <target state="final">Ta stran je |1 nivo nižje|2 nivoja nižje|3 nivoje nižje|4 nivoje nižje</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.0" approved="yes">
+        <source>This page</source>
+        <target state="final">Ta stran</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.1" approved="yes">
+        <source>1 level down</source>
+        <target state="final">1 raven nižje</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.2" approved="yes">
+        <source>2 levels down</source>
+        <target state="final">2 ravni nižje</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.3" approved="yes">
+        <source>3 levels down</source>
+        <target state="final">3 ravni nižje</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.4" approved="yes">
+        <source>4 levels down</source>
+        <target state="final">4 ravni nižje</target>
+      </trans-unit>
+      <trans-unit id="labels.noEditPermission" approved="yes">
+        <source>Sorry, you didn't have proper permissions to perform this change.</source>
+        <target state="final">Nimate pravic, potrebnih za vnos te spremembe.</target>
+      </trans-unit>
+      <trans-unit id="labels.noRTEfound" approved="yes">
+        <source>Notice: This field can only be edited with a Rich Text Editor. No editor is currently available or enabled.</source>
+        <target state="final">Opomba: To polje lahko urejate samo z urejevalnikom RTE, vendar trenutno ni nameščen ali omogočen noben urejevalnik.</target>
+      </trans-unit>
+      <trans-unit id="labels.disableRTE" approved="yes">
+        <source>Disable Rich Text Editor (RTE)</source>
+        <target state="final">Izklopi RTE (rich text editor)</target>
+      </trans-unit>
+      <trans-unit id="labels._CONTROL_" approved="yes">
+        <source>Control</source>
+        <target state="final">Kontrola</target>
+      </trans-unit>
+      <trans-unit id="labels._PATH_" approved="yes">
+        <source>Path</source>
+        <target state="final">Pot</target>
+      </trans-unit>
+      <trans-unit id="labels._LOCALIZATION_" approved="yes">
+        <source>Localization</source>
+        <target state="final">Prevod</target>
+      </trans-unit>
+      <trans-unit id="labels.setFields" approved="yes">
+        <source>Set fields</source>
+        <target state="final">Nastavi polja</target>
+      </trans-unit>
+      <trans-unit id="labels.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Išči</target>
+      </trans-unit>
+      <trans-unit id="labels.category" approved="yes">
+        <source>Category</source>
+        <target state="final">Kategorija</target>
+      </trans-unit>
+      <trans-unit id="labels.reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">Osveži</target>
+      </trans-unit>
+      <trans-unit id="labels.language" approved="yes">
+        <source>Language</source>
+        <target state="final">Jezik</target>
+      </trans-unit>
+      <trans-unit id="labels.view" approved="yes">
+        <source>View</source>
+        <target state="final">Poglej</target>
+      </trans-unit>
+      <trans-unit id="labels.view.layout" approved="yes">
+        <source>Layout</source>
+        <target state="final">Postavitev</target>
+      </trans-unit>
+      <trans-unit id="labels.view.language_comparison" approved="yes">
+        <source>Language Comparison</source>
+        <target state="final">Primerjava jezikov</target>
+      </trans-unit>
+      <trans-unit id="labels.view.list" approved="yes">
+        <source>List</source>
+        <target state="final">Seznam</target>
+      </trans-unit>
+      <trans-unit id="labels.share" approved="yes">
+        <source>Share</source>
+        <target state="final">Deli</target>
+      </trans-unit>
+      <trans-unit id="labels.csv" approved="yes">
+        <source>Download CSV file</source>
+        <target state="final">Prenesi CSV datoteko</target>
+      </trans-unit>
+      <trans-unit id="labels.no_title" approved="yes">
+        <source>No title</source>
+        <target state="final">Brez naslova</target>
+      </trans-unit>
+      <trans-unit id="labels.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Prekliči</target>
+      </trans-unit>
+      <trans-unit id="labels.hidden" approved="yes">
+        <source>Hidden</source>
+        <target state="final">Skrito</target>
+      </trans-unit>
+      <trans-unit id="labels.starttime" approved="yes">
+        <source>Start</source>
+        <target state="final">Začetek</target>
+      </trans-unit>
+      <trans-unit id="labels.endtime" approved="yes">
+        <source>End</source>
+        <target state="final">Konec</target>
+      </trans-unit>
+      <trans-unit id="labels.menu" approved="yes">
+        <source>Menu</source>
+        <target state="final">Meni</target>
+      </trans-unit>
+      <trans-unit id="labels.showPage" approved="yes">
+        <source>View webpage</source>
+        <target state="final">Poglej stran</target>
+      </trans-unit>
+      <trans-unit id="labels.showList" approved="yes">
+        <source>Show record list</source>
+        <target state="final">Prikaži seznam zapisov</target>
+      </trans-unit>
+      <trans-unit id="labels.days" approved="yes">
+        <source>days</source>
+        <target state="final">dnevi</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_0" approved="yes">
+        <source>This page</source>
+        <target state="final">Ta stran</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_1" approved="yes">
+        <source>1 level</source>
+        <target state="final">1 nivo</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_2" approved="yes">
+        <source>2 levels</source>
+        <target state="final">2 nivoja</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_3" approved="yes">
+        <source>3 levels</source>
+        <target state="final">3 nivoji</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_4" approved="yes">
+        <source>4 levels</source>
+        <target state="final">4 nivoji</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_infi" approved="yes">
+        <source>Infinite</source>
+        <target state="final">Neskončno</target>
+      </trans-unit>
+      <trans-unit id="labels.allow" approved="yes">
+        <source>Allow</source>
+        <target state="final">Dovoli</target>
+      </trans-unit>
+      <trans-unit id="labels.deny" approved="yes">
+        <source>Deny</source>
+        <target state="final">Ne dovoli</target>
+      </trans-unit>
+      <trans-unit id="labels.show" approved="yes">
+        <source>Show</source>
+        <target state="final">Prikaži</target>
+      </trans-unit>
+      <trans-unit id="labels.refresh" approved="yes">
+        <source>Reload the tree from server</source>
+        <target state="final">Osveži drevo s strežnika</target>
+      </trans-unit>
+      <trans-unit id="labels.collapse" approved="yes">
+        <source>Collapse all tree items</source>
+        <target state="final">Skrči vse elemente drevesa</target>
+      </trans-unit>
+      <trans-unit id="labels.refreshList" approved="yes">
+        <source>Reload list from server</source>
+        <target state="final">Osveži seznam</target>
+      </trans-unit>
+      <trans-unit id="labels.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Zapri</target>
+      </trans-unit>
+      <trans-unit id="labels.link" approved="yes">
+        <source>Link</source>
+        <target state="final">Povezava</target>
+      </trans-unit>
+      <trans-unit id="labels.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Uredi</target>
+      </trans-unit>
+      <trans-unit id="labels.createNew" approved="yes">
+        <source>Create new</source>
+        <target state="final">Ustvari novo</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewPage" approved="yes">
+        <source>Create new %s</source>
+        <target state="final">Ustvari novo %s</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewRecord" approved="yes">
+        <source>Create new %s on page "%s"</source>
+        <target state="final">Ustvari novo %s na strani "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecordRootLevel" approved="yes">
+        <source>Edit %s "%s" on root level</source>
+        <target state="final">Uredi %s "%s" na korenskem nivoju</target>
+      </trans-unit>
+      <trans-unit id="labels.toggleall" approved="yes">
+        <source>Toggle all</source>
+        <target state="final">Vklopi vse</target>
+      </trans-unit>
+      <trans-unit id="labels.selected" approved="yes">
+        <source>Selected Items</source>
+        <target state="final">Izbrano</target>
+      </trans-unit>
+      <trans-unit id="labels.items" approved="yes">
+        <source>Available Items</source>
+        <target state="final">Predmeti</target>
+      </trans-unit>
+      <trans-unit id="labels.remove_selected" approved="yes">
+        <source>Remove selected items</source>
+        <target state="final">Odstrani izbrane predmete</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_top" approved="yes">
+        <source>Move selected items to top</source>
+        <target state="final">Premakni izbran predmet na vrh</target>
+      </trans-unit>
+      <trans-unit id="labels.move_up" approved="yes">
+        <source>Move selected items upwards</source>
+        <target state="final">Premakni izbrane predmete navzgor</target>
+      </trans-unit>
+      <trans-unit id="labels.move_down" approved="yes">
+        <source>Move selected items downwards</source>
+        <target state="final">Premakni izbrane predmete navzdol</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_bottom" approved="yes">
+        <source>Move selected items to bottom</source>
+        <target state="final">Premakni izbran predmet na dno</target>
+      </trans-unit>
+      <trans-unit id="labels.move" approved="yes">
+        <source>Move this item</source>
+        <target state="final">Premakni ta predmet</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_db" approved="yes">
+        <source>Browse for records</source>
+        <target state="final">Poišči zapise</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_file" approved="yes">
+        <source>Insert %s file(s) from the clipboard</source>
+        <target state="final">Vstavi %s datotek iz odložišča</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_db" approved="yes">
+        <source>Insert %s record(s) from the clipboard</source>
+        <target state="final">Vstavi %s zapisov iz odložišča</target>
+      </trans-unit>
+      <trans-unit id="labels.generalOptions" approved="yes">
+        <source>General options</source>
+        <target state="final">Splošne možnosti</target>
+      </trans-unit>
+      <trans-unit id="labels.generalOptions_more" approved="yes">
+        <source>General options (continued)</source>
+        <target state="final">Splošne možnosti (nadaljevanje)</target>
+      </trans-unit>
+      <trans-unit id="labels.allTables" approved="yes">
+        <source>[All tables]</source>
+        <target state="final">[Vse tabele]</target>
+      </trans-unit>
+      <trans-unit id="labels.thumbmode_clip" approved="yes">
+        <source>Show Thumbnails on ClipBoard</source>
+        <target state="final">Prikaži ikone predmetov v odložišču</target>
+      </trans-unit>
+      <trans-unit id="labels.copymode" approved="yes">
+        <source>Copy items instead of moving them</source>
+        <target state="final">Kopiraj predmete namesto da jih premakneš</target>
+      </trans-unit>
+      <trans-unit id="labels.normal" approved="yes">
+        <source>Normal (single record mode)</source>
+        <target state="final">Normalno (način enega zapisa)</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs" approved="yes">
+        <source>Clipboard #</source>
+        <target state="final">Odložišče #</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs-name" approved="yes">
+        <source>Clipboard #%s (multi-selection mode)</source>
+        <target state="final">Odložišče #%s (način večkratne izbire)</target>
+      </trans-unit>
+      <trans-unit id="labels.removeItem" approved="yes">
+        <source>Remove element</source>
+        <target state="final">Odstrani element</target>
+      </trans-unit>
+      <trans-unit id="labels.revertSelection" approved="yes">
+        <source>Revert selection</source>
+        <target state="final">Obrni izbor</target>
+      </trans-unit>
+      <trans-unit id="labels.setAllCheckboxes" approved="yes">
+        <source>Select All Checkboxes</source>
+        <target state="final">Izberi vse možnosti</target>
+      </trans-unit>
+      <trans-unit id="labels.placeholder.override" approved="yes">
+        <source>Set element specific value (Default: "%s")</source>
+        <target state="final">Nastavi vrednost za določen element (privzeto: "%s")</target>
+      </trans-unit>
+      <trans-unit id="labels.placeholder.override_not_available" approved="yes">
+        <source>Set element specific value (No default)</source>
+        <target state="final">Nastavitev vrednosti za določen element (brez privzetih vrednosti)</target>
+      </trans-unit>
+      <trans-unit id="labels.changeInOrig" approved="yes">
+        <source>Changed in original translation</source>
+        <target state="final">Spremenjeno v izvirnem prevodu</target>
+      </trans-unit>
+      <trans-unit id="labels.expandAll" approved="yes">
+        <source>Expand all</source>
+        <target state="final">Razširi vse</target>
+      </trans-unit>
+      <trans-unit id="labels.new_section" approved="yes">
+        <source>Create new</source>
+        <target state="final">Ustvari novo</target>
+      </trans-unit>
+      <trans-unit id="labels.title.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Išči</target>
+      </trans-unit>
+      <trans-unit id="labels.title.search_levels" approved="yes">
+        <source>Search levels</source>
+        <target state="final">Išči po nivojih</target>
+      </trans-unit>
+      <trans-unit id="labels.label.search_levels" approved="yes">
+        <source>Search levels</source>
+        <target state="final">Išči po nivojih</target>
+      </trans-unit>
+      <trans-unit id="ver.mgm" approved="yes">
+        <source>Version Management</source>
+        <target state="final">Urejanje verzij</target>
+      </trans-unit>
+      <trans-unit id="ver.swap" approved="yes">
+        <source>Swap/Publish</source>
+        <target state="final">Zamnjaj/Objavi</target>
+      </trans-unit>
+      <trans-unit id="ver.swapPage" approved="yes">
+        <source>Publish this version of the page including content</source>
+        <target state="final">Objavi to verzijo strani skupaj s vsebino</target>
+      </trans-unit>
+      <trans-unit id="TYPO3_Element_Browser" approved="yes">
+        <source>TYPO3 Element Browser</source>
+        <target state="final">Typo3 iskalnik elementov</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.viewItem" approved="yes">
+        <source>View Item</source>
+        <target state="final">Prikaži predmet</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.general" approved="yes">
+        <source>General</source>
+        <target state="final">Splošno</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.file" approved="yes">
+        <source>File</source>
+        <target state="final">Datoteka</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.dimensions" approved="yes">
+        <source>Dimensions</source>
+        <target state="final">Dimenzije</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.filesize" approved="yes">
+        <source>Size</source>
+        <target state="final">Velikost</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.files" approved="yes">
+        <source>files</source>
+        <target state="final">datoteke</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.table" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabela</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Naslov</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.pagetitle" approved="yes">
+        <source>New record</source>
+        <target state="final">Nov zapis</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.after" approved="yes">
+        <source>after</source>
+        <target state="final">za</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.inside" approved="yes">
+        <source>inside</source>
+        <target state="final">v</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.pagetitle" approved="yes">
+        <source>Upload files</source>
+        <target state="final">Prenesi datoteke</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.submit" approved="yes">
+        <source>Upload files</source>
+        <target state="final">Prenesi datoteke</target>
+      </trans-unit>
+      <trans-unit id="file_upload.dropzonehint.title" approved="yes">
+        <source>Drag &amp; drop to upload files</source>
+        <target state="final">Povlecite &amp; spustite za nalaganje datotek</target>
+      </trans-unit>
+      <trans-unit id="file_upload.dropzonehint.message" approved="yes">
+        <source>Drop your files here, or &lt;u&gt;click, browse &amp; choose files&lt;/u&gt;</source>
+        <target state="final">Datoteke odvrzite sem ali &lt;u&gt;kliknite, preglejte in izberite datoteke&lt;/u&gt;</target>
+      </trans-unit>
+      <trans-unit id="file_upload.select-and-submit" approved="yes">
+        <source>Select &amp; upload files</source>
+        <target state="final">Izberi in naloži datoteke</target>
+      </trans-unit>
+      <trans-unit id="file_upload.overwriteExistingFiles" approved="yes">
+        <source>Shall existing files be overwritten?</source>
+        <target state="final">Ali naj se obstoječe datoteke prepišejo?</target>
+      </trans-unit>
+      <trans-unit id="file_upload.header.uploadedFile" approved="yes">
+        <source>Uploaded file</source>
+        <target state="final">Naložena datoteka</target>
+      </trans-unit>
+      <trans-unit id="file_upload.header.action" approved="yes">
+        <source>Action</source>
+        <target state="final">Dejanje</target>
+      </trans-unit>
+      <trans-unit id="file_upload.existingfiles.title" approved="yes">
+        <source>Some files exist already</source>
+        <target state="final">Nekatere datoteke že obstajajo</target>
+      </trans-unit>
+      <trans-unit id="file_upload.existingfiles.description" approved="yes">
+        <source>Some files you wanted to upload exist already on the system. Please select what you want to do with each file.</source>
+        <target state="final">Nekatere datoteke, ki ste jih želeli naložiti, že obstajajo v sistemu. Izberite, kaj želite storiti s posamezno datoteko.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.skip" approved="yes">
+        <source>Skip the file</source>
+        <target state="final">Preskoči datoteko</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">Preimenuj</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.override" approved="yes">
+        <source>Overwrite</source>
+        <target state="final">Prepiši</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.use_existing" approved="yes">
+        <source>Use existing file</source>
+        <target state="final">Uporabi obstoječo datoteko</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.label" approved="yes">
+        <source>Alternatively, choose a mass action</source>
+        <target state="final">Lahko izberete tudi množično akcijo</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.empty" approved="yes">
+        <source>Please choose</source>
+        <target state="final">Prosimo, izberite</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.skip" approved="yes">
+        <source>Skip all files</source>
+        <target state="final">Preskoči vse datoteke</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.rename" approved="yes">
+        <source>Rename all files</source>
+        <target state="final">Preimenuj vse datoteke</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.override" approved="yes">
+        <source>Overwrite all files</source>
+        <target state="final">Prepiši vse datoteke</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.use_existing" approved="yes">
+        <source>Use existing files</source>
+        <target state="final">Uporabi obstoječo datoteko</target>
+      </trans-unit>
+      <trans-unit id="file_upload.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Prekliči</target>
+      </trans-unit>
+      <trans-unit id="file_upload.button.continue" approved="yes">
+        <source>Continue with selected actions</source>
+        <target state="final">Nadaljuj z izbranimi dejanji</target>
+      </trans-unit>
+      <trans-unit id="file_upload.reload.filelist.actions.dismiss" approved="yes">
+        <source>Dismiss</source>
+        <target state="final">Opusti</target>
+      </trans-unit>
+      <trans-unit id="file_upload.reload.filelist.actions.reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">Ponovno naloži</target>
+      </trans-unit>
+      <trans-unit id="file_rename.title" approved="yes">
+        <source>Rename</source>
+        <target state="final">Preimenuj</target>
+      </trans-unit>
+      <trans-unit id="file_rename.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Prekliči</target>
+      </trans-unit>
+      <trans-unit id="file_rename.button.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">Preimenuj</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media" approved="yes">
+        <source>Add new media asset</source>
+        <target state="final">Dodaj novo predstavnostno vsebino</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.allowedProviders" approved="yes">
+        <source>Allowed media providers</source>
+        <target state="final">Dovoljeni ponudniki</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.button" approved="yes">
+        <source>Add media by URL</source>
+        <target state="final">Dodaj predstavnostno vsebino preko URL</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.submit" approved="yes">
+        <source>Add media</source>
+        <target state="final">Dodaj predstavnostno datoteko</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.added" approved="yes">
+        <source>Added media</source>
+        <target state="final">Dodana predstavnostna vsebina</target>
+      </trans-unit>
+      <trans-unit id="online_media.error.new_media.failed" approved="yes">
+        <source>Adding media failed</source>
+        <target state="final">Dodajanje predstavnostne datoteke ni uspelo</target>
+      </trans-unit>
+      <trans-unit id="file_clipupload.php.warning_head" approved="yes">
+        <source>Upload path error</source>
+        <target state="final">Napaka poti za prenos.</target>
+      </trans-unit>
+      <trans-unit id="mess.redraw" approved="yes">
+        <source>Redrawing the page will discard the current data. Do you want to continue?</source>
+        <target state="final">Osvežitev strani bo zavrgla vse trenutne podatke. Želite nadaljevati?</target>
+      </trans-unit>
+      <trans-unit id="mess.delete" approved="yes">
+        <source>Are you sure you want to delete '%s'?</source>
+        <target state="final">Ali ste prepričani, da želite izbrisati %s?</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_exit_button" approved="yes">
+        <source>Exit</source>
+        <target state="final">Izhod</target>
+      </trans-unit>
+      <trans-unit id="mess.noSelItemForEdit" approved="yes">
+        <source>Please select one or more items in the list before you can edit.</source>
+        <target state="final">Prosim, izberite enega ali več predmetov s seznama, preden začnete urejati.</target>
+      </trans-unit>
+      <trans-unit id="mess.refreshRequired.title" approved="yes">
+        <source>Refresh required</source>
+        <target state="final">Potrebna osvežitev</target>
+      </trans-unit>
+      <trans-unit id="mess.refreshRequired.content" approved="yes">
+        <source>This change will affect which fields are available in the form. Would you like to save now in order to refresh the display?</source>
+        <target state="final">Ta sprememba bo vplivala na to, katera polja so na voljo v obrazcu. Ali želite shraniti zdaj, da se prikaz osveži?</target>
+      </trans-unit>
+      <trans-unit id="mess.move_into" approved="yes">
+        <source>Move "%s" into "%s"?</source>
+        <target state="final">Premakni "%s" v "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.move_after" approved="yes">
+        <source>Move "%s" to after "%s"?</source>
+        <target state="final">Premakni "%s" za "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_into" approved="yes">
+        <source>Copy "%s" into "%s"?</source>
+        <target state="final">Kopiraj "%s" v "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_after" approved="yes">
+        <source>Copy "%s" to after "%s"?</source>
+        <target state="final">Kopiraj "%s" za "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_into" approved="yes">
+        <source>Copy all elements (%s) from the clipboard into "%s"?</source>
+        <target state="final">Kopiraj vse predmete (%s) iz odložišča v "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_after" approved="yes">
+        <source>Copy all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target state="final">Kopiraj vse predmete (%s) iz odložišča na pozicijo za "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_into" approved="yes">
+        <source>Move all elements (%s) from the clipboard into "%s"?</source>
+        <target state="final">Premakni vse predmete (%s) iz odložišča v "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_after" approved="yes">
+        <source>Move all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target state="final">Premakni vse predmete (%s) iz odložišča na pozicijo za "%s"?</target>
+      </trans-unit>
+      <trans-unit id="rm.menu" approved="yes">
+        <source>[menu]</source>
+        <target state="final">[menu]</target>
+      </trans-unit>
+      <trans-unit id="rm.saveDoc" approved="yes">
+        <source>Save</source>
+        <target state="final">Shrani</target>
+      </trans-unit>
+      <trans-unit id="rm.viewDoc" approved="yes">
+        <source>View</source>
+        <target state="final">Poglej</target>
+      </trans-unit>
+      <trans-unit id="rm.saveDocShow" approved="yes">
+        <source>Save and view page</source>
+        <target state="final">Shrani in poglej stran</target>
+      </trans-unit>
+      <trans-unit id="rm.saveCloseDoc" approved="yes">
+        <source>Save and close</source>
+        <target state="final">Shrani in zapri</target>
+      </trans-unit>
+      <trans-unit id="rm.saveCloseAllDocs" approved="yes">
+        <source>Save and close all</source>
+        <target state="final">Shrani in zapri vse</target>
+      </trans-unit>
+      <trans-unit id="rm.newDoc" approved="yes">
+        <source>New</source>
+        <target state="final">Novo</target>
+      </trans-unit>
+      <trans-unit id="rm.closeDoc" approved="yes">
+        <source>Close</source>
+        <target state="final">Zapri</target>
+      </trans-unit>
+      <trans-unit id="rm.adminFunctions" approved="yes">
+        <source>Admin functions</source>
+        <target state="final">Admin funkcije</target>
+      </trans-unit>
+      <trans-unit id="rm.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Uredi</target>
+      </trans-unit>
+      <trans-unit id="rm.export" approved="yes">
+        <source>Export</source>
+        <target state="final">Izvoz</target>
+      </trans-unit>
+      <trans-unit id="rm.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Izbriši</target>
+      </trans-unit>
+      <trans-unit id="buttons.exit" approved="yes">
+        <source>Exit</source>
+        <target state="final">Izhod</target>
+      </trans-unit>
+      <trans-unit id="buttons.clear" approved="yes">
+        <source>Clear</source>
+        <target state="final">Razveljavi</target>
+      </trans-unit>
+      <trans-unit id="buttons.clipboard" approved="yes">
+        <source>Clipboard</source>
+        <target state="final">Odložišče</target>
+      </trans-unit>
+      <trans-unit id="buttons.removeAll" approved="yes">
+        <source>Remove all</source>
+        <target state="final">Odstrani vse</target>
+      </trans-unit>
+      <trans-unit id="buttons.toggleLinkExplanation" approved="yes">
+        <source>Toggle link explanation</source>
+        <target state="final">Preklopi razlago povezav</target>
+      </trans-unit>
+      <trans-unit id="buttons.toggleSlugExplanation" approved="yes">
+        <source>Toggle manual URL segment</source>
+        <target state="final">Preklopite ročni segment URL</target>
+      </trans-unit>
+      <trans-unit id="buttons.recreateSlugExplanation" approved="yes">
+        <source>Recalculate URL segment from page title</source>
+        <target state="final">Ponovno izračunavanje segmenta URL iz naslova strani</target>
+      </trans-unit>
+      <trans-unit id="slugCreation.success.page" approved="yes">
+        <source>This page will be reachable via %s</source>
+        <target state="final">Ta stran bo dosegljiva prek %s</target>
+      </trans-unit>
+      <trans-unit id="cm.copy" approved="yes">
+        <source>Copy</source>
+        <target state="final">Kopiraj</target>
+      </trans-unit>
+      <trans-unit id="cm.cut" approved="yes">
+        <source>Cut</source>
+        <target state="final">Izreži</target>
+      </trans-unit>
+      <trans-unit id="cm.view" approved="yes">
+        <source>Show</source>
+        <target state="final">Prikaži</target>
+      </trans-unit>
+      <trans-unit id="cm.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Uredi</target>
+      </trans-unit>
+      <trans-unit id="cm.editMetadata" approved="yes">
+        <source>Edit Metadata of this file</source>
+        <target state="final">Urejanje metapodatkov te datoteke</target>
+      </trans-unit>
+      <trans-unit id="cm.new" approved="yes">
+        <source>New</source>
+        <target state="final">Novo</target>
+      </trans-unit>
+      <trans-unit id="cm.newSubpage" approved="yes">
+        <source>New subpage</source>
+        <target state="final">Nova podstran</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteinto" approved="yes">
+        <source>Paste into</source>
+        <target state="final">Prilepi v</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteafter" approved="yes">
+        <source>Paste after</source>
+        <target state="final">Prilepi za</target>
+      </trans-unit>
+      <trans-unit id="cm.select" approved="yes">
+        <source>Select</source>
+        <target state="final">Izberi</target>
+      </trans-unit>
+      <trans-unit id="cm.deselect" approved="yes">
+        <source>Deselect</source>
+        <target state="final">Razveljavi izbor</target>
+      </trans-unit>
+      <trans-unit id="cm.selectto" approved="yes">
+        <source>Select to</source>
+        <target state="final">Izberi do</target>
+      </trans-unit>
+      <trans-unit id="cm.deselectto" approved="yes">
+        <source>Deselect to</source>
+        <target state="final">Razveljavi izbor do</target>
+      </trans-unit>
+      <trans-unit id="cm.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Izbriši</target>
+      </trans-unit>
+      <trans-unit id="cm.hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">Skrij</target>
+      </trans-unit>
+      <trans-unit id="cm.unhide" approved="yes">
+        <source>Unhide</source>
+        <target state="final">Prikaži</target>
+      </trans-unit>
+      <trans-unit id="cm.upload" approved="yes">
+        <source>Upload Files</source>
+        <target state="final">Prenesi datoteko</target>
+      </trans-unit>
+      <trans-unit id="cm.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">Preimenuj</target>
+      </trans-unit>
+      <trans-unit id="cm.replace" approved="yes">
+        <source>Replace</source>
+        <target state="final">Zamenjaj</target>
+      </trans-unit>
+      <trans-unit id="cm.open" approved="yes">
+        <source>Open</source>
+        <target state="final">Odpri</target>
+      </trans-unit>
+      <trans-unit id="cm.save" approved="yes">
+        <source>Save</source>
+        <target state="final">Shrani</target>
+      </trans-unit>
+      <trans-unit id="cm.unzip" approved="yes">
+        <source>Unzip</source>
+        <target state="final">Odpakiraj (unzip)</target>
+      </trans-unit>
+      <trans-unit id="cm.info" approved="yes">
+        <source>Info</source>
+        <target state="final">Info</target>
+      </trans-unit>
+      <trans-unit id="cm.createnew" approved="yes">
+        <source>Create new</source>
+        <target state="final">Ustvari novo</target>
+      </trans-unit>
+      <trans-unit id="cm.createnew.link" approved="yes">
+        <source>Create new %s</source>
+        <target state="final">Ustvari novo %s</target>
+      </trans-unit>
+      <trans-unit id="cm.tempMountPoint" approved="yes">
+        <source>Mount as treeroot</source>
+        <target state="final">Priključi kot koren drevesa</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_into" approved="yes">
+        <source>Copy page into</source>
+        <target state="final">Kopiraj stran v</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_after" approved="yes">
+        <source>Copy page after</source>
+        <target state="final">Kopiraj stran za</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_into" approved="yes">
+        <source>Move page into</source>
+        <target state="final">Premakni stran v</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_after" approved="yes">
+        <source>Move page after</source>
+        <target state="final">Premakni stran za</target>
+      </trans-unit>
+      <trans-unit id="cm.copyFolder_into" approved="yes">
+        <source>Copy folder into</source>
+        <target state="final">Kopiraj mapo v</target>
+      </trans-unit>
+      <trans-unit id="cm.moveFolder_into" approved="yes">
+        <source>Move folder into</source>
+        <target state="final">Premakni mapo v</target>
+      </trans-unit>
+      <trans-unit id="cm.createNewRelation" approved="yes">
+        <source>Create new relation</source>
+        <target state="final">Ustvari novo povezavo</target>
+      </trans-unit>
+      <trans-unit id="cm.more" approved="yes">
+        <source>More options...</source>
+        <target state="final">Več možnosti...</target>
+      </trans-unit>
+      <trans-unit id="cm.allowedFileExtensions" approved="yes">
+        <source>Allowed file extensions</source>
+        <target state="final">Dovoljene končnice datotek</target>
+      </trans-unit>
+      <trans-unit id="cm.disallowedFileExtensions" approved="yes">
+        <source>Disallowed file extensions</source>
+        <target state="final">Nedovoljene končnice datotek</target>
+      </trans-unit>
+      <trans-unit id="cm.allowedEditableTextFileExtensions" approved="yes">
+        <source>Allowed editable text file extensions</source>
+        <target state="final">Dovoljene razširitve besedilnih datotek, ki jih je mogoče urejati</target>
+      </trans-unit>
+      <trans-unit id="tree.searchTermInfo" approved="yes">
+        <source>Enter search term</source>
+        <target state="final">Vnesi iskalni izraz</target>
+      </trans-unit>
+      <trans-unit id="formEngine.pages.backendLayout.information.inheritedFromParentPage" approved="yes">
+        <source>This page is currently using backend layout "%s", inherited from a parent page.</source>
+        <target state="final">Ta stran trenutno uporablja zaledno postavitev "%s", podedovano od nadrejene strani.</target>
+      </trans-unit>
+      <trans-unit id="pageTranslation" approved="yes">
+        <source>Page Translation</source>
+        <target state="final">Prevod strani</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
