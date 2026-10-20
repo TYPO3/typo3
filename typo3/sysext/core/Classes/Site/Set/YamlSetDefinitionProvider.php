@@ -61,11 +61,19 @@ class YamlSetDefinitionProvider
         $virtualSetPath ??= $path . '/';
         // No placeholders or imports processed on purpose
         // Use dependencies for shared sets
+        $source = $virtualSetPath . basename($filename);
         try {
             $set = Yaml::parseFile($filename);
         } catch (ParseException $e) {
-            $source = $virtualSetPath . basename($filename);
             throw new InvalidSetException('Failed to parse set definition from "' . $source . '": ' . $e->getMessage(), 1711024370, $e);
+        }
+        // Checked before anything else reads from it, since the name is handed on with
+        // every exception thrown for this set
+        if (!is_array($set) || array_is_list($set)) {
+            throw new InvalidSetException('Invalid set definition in "' . $source . '": Expected a mapping', 1792484344);
+        }
+        if (!is_string($set['name'] ?? '')) {
+            throw new InvalidSetException('Invalid set definition in "' . $source . '": "name" must be a string', 1792484345);
         }
         $setName = $set['name'] ?? '';
 

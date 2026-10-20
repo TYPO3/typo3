@@ -258,14 +258,14 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
                 ],
             ];
 
+            $virtualSetPath = 'EXT:' . $extensionKey . '/Configuration/Sets/' . basename(dirname($fileInfo->getPathname())) . '/';
             try {
-                $virtualSetPath = 'EXT:' . $extensionKey . '/Configuration/Sets/' . basename(dirname($fileInfo->getPathname())) . '/';
                 $setCollector->add($setProvider->get($fileInfo, $virtualSetPath));
             } catch (InvalidSettingsDefinitionsException|InvalidCategoryDefinitionsException|InvalidSettingsException|InvalidSetRouteEnhancersException|InvalidSetException $e) {
                 $errorDetails = $errorMap[get_class($e)];
                 $setCollector->addError(
                     $errorDetails['error'],
-                    $e->getSetName(),
+                    $e->getSetName() ?: hash('xxh32', ($virtualSetPath . $fileInfo->getFilename())),
                     $e->getMessage(),
                 );
 
