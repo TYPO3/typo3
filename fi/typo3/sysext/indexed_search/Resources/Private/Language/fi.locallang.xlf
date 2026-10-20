@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814838" source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang.xlf" date="2011-12-18T10:19:20Z" product-name="indexed_search" target-language="fi">
+    <header/>
+    <body>
+      <trans-unit id="localizedOperandAnd" resname="localizedOperandAnd" approved="yes">
+        <source>AND</source>
+        <target state="final">JA</target>
+      </trans-unit>
+      <trans-unit id="localizedOperandOr" resname="localizedOperandOr" approved="yes">
+        <source>OR</source>
+        <target state="final">TAI</target>
+      </trans-unit>
+      <trans-unit id="localizedOperandNot" resname="localizedOperandNot" approved="yes">
+        <source>NOT</source>
+        <target state="final">EI</target>
+      </trans-unit>
+      <trans-unit id="rules.headline" resname="rules.headline" approved="yes">
+        <source>Rules</source>
+        <target state="final">Säännöt</target>
+      </trans-unit>
+      <trans-unit id="form.legend" resname="form.legend" approved="yes">
+        <source>Search form</source>
+        <target state="final">Hakulomake</target>
+      </trans-unit>
+      <trans-unit id="form.searchFor" resname="form.searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">Haku sanalla</target>
+      </trans-unit>
+      <trans-unit id="form.orderBy" resname="form.orderBy" approved="yes">
+        <source>Order by</source>
+        <target state="final">Järjestä</target>
+      </trans-unit>
+      <trans-unit id="form.fromSection" resname="form.fromSection" approved="yes">
+        <source>From section</source>
+        <target state="final">Osiosta</target>
+      </trans-unit>
+      <trans-unit id="form.freeIndexUid" resname="form.freeIndexUid" approved="yes">
+        <source>Category</source>
+        <target state="final">Kategoria</target>
+      </trans-unit>
+      <trans-unit id="form.searchIn" resname="form.searchIn" approved="yes">
+        <source>Search in</source>
+        <target state="final">Hake kohteista</target>
+      </trans-unit>
+      <trans-unit id="form.match" resname="form.match" approved="yes">
+        <source>Match</source>
+        <target state="final">Osuma</target>
+      </trans-unit>
+      <trans-unit id="form.style" resname="form.style" approved="yes">
+        <source>Style</source>
+        <target state="final">Tyyli</target>
+      </trans-unit>
+      <trans-unit id="form.submit" resname="form.submit" approved="yes">
+        <source>Search</source>
+        <target state="final">Hae</target>
+      </trans-unit>
+      <trans-unit id="form.addToSearch" resname="form.addToSearch" approved="yes">
+        <source>Add to current search words</source>
+        <target state="final">Lisää hakusanoihin</target>
+      </trans-unit>
+      <trans-unit id="form.linkToAdvancedSearch" resname="form.linkToAdvancedSearch" approved="yes">
+        <source>Advanced search</source>
+        <target state="final">Tarkennettu haku</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.1" resname="searchTypes.1" approved="yes">
+        <source>Part of word</source>
+        <target state="final">Sanan osa</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.2" resname="searchTypes.2" approved="yes">
+        <source>First part of word</source>
+        <target state="final">Sanan alkuosa</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.3" resname="searchTypes.3" approved="yes">
+        <source>Last part of word</source>
+        <target state="final">Sanan loppuosa</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.10" resname="searchTypes.10" approved="yes">
+        <source>Sounds like</source>
+        <target state="final">kuulostaa samalta kuin</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.20" resname="searchTypes.20" approved="yes">
+        <source>Sentence</source>
+        <target state="final">Lause</target>
+      </trans-unit>
+      <trans-unit id="defaultOperands.0" resname="defaultOperands.0" approved="yes">
+        <source>All words (AND)</source>
+        <target state="final">Kaikki sanat (JA)</target>
+      </trans-unit>
+      <trans-unit id="defaultOperands.1" resname="defaultOperands.1" approved="yes">
+        <source>Any words (OR)</source>
+        <target state="final">Mikä tahansa sana (TAI)</target>
+      </trans-unit>
+      <trans-unit id="languageUids.-1" resname="languageUids.-1" approved="yes">
+        <source>All languages</source>
+        <target state="final">Kaikki kielet</target>
+      </trans-unit>
+      <trans-unit id="languageUids.0" resname="languageUids.0" approved="yes">
+        <source>Default</source>
+        <target state="final">Oletus</target>
+      </trans-unit>
+      <trans-unit id="sections.0" resname="sections.0" approved="yes">
+        <source>Whole site</source>
+        <target state="final">Sivuston laajuinen</target>
+      </trans-unit>
+      <trans-unit id="sections.-1" resname="sections.-1" approved="yes">
+        <source>Only this page</source>
+        <target state="final">Vain tämä sivu</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.0" resname="mediaTypes.0" approved="yes">
+        <source>Internal pages</source>
+        <target state="final">Sisäisiä sivuja</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.-1" resname="mediaTypes.-1" approved="yes">
+        <source>All media</source>
+        <target state="final">Kaikki media</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.-2" resname="mediaTypes.-2" approved="yes">
+        <source>All External</source>
+        <target state="final">Kaikki ulkoiset</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.-1" resname="indexingConfigurations.-1" approved="yes">
+        <source>All, mixed</source>
+        <target state="final">Kaikki, sekalaisia</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.-2" resname="indexingConfigurations.-2" approved="yes">
+        <source>All, categorized</source>
+        <target state="final">Kaikki, kategorisoitu</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.0" resname="indexingConfigurations.0" approved="yes">
+        <source>Pages</source>
+        <target state="final">Sivut</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurationHeader.-1" resname="indexingConfigurationHeader.-1" approved="yes">
+        <source>Mixed categories</source>
+        <target state="final">Sekalaiset kategoriat</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurationHeader.0" resname="indexingConfigurationHeader.0" approved="yes">
+        <source>Website Pages</source>
+        <target state="final">Sivuston sivut</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_freq" resname="sortOrders.rank_freq" approved="yes">
+        <source>Frequency</source>
+        <target state="final">Esiintymistiheys</target>
+      </trans-unit>
+      <trans-unit id="searchFor" resname="searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">Haku sanalla</target>
+      </trans-unit>
+      <trans-unit id="field.fileName" resname="field.fileName" approved="yes">
+        <source>Filename</source>
+        <target state="final">Tiedoston nimi</target>
+      </trans-unit>
+      <trans-unit id="field.frequency" resname="field.frequency" approved="yes">
+        <source>Frequency</source>
+        <target state="final">Esiintymistiheys</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
