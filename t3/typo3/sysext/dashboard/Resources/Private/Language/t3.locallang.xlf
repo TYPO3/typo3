@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="close">
+        <source>Close</source>
+        <target>crwdns85538:0crwdne85538:0</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Dashboard</source>
+        <target>crwdns85540:0crwdne85540:0</target>
+      </trans-unit>
+      <trans-unit id="widget.add">
+        <source>Add widget</source>
+        <target>crwdns85542:0crwdne85542:0</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard">
+        <source>Add widget to "%s"</source>
+        <target>crwdns333402:0%scrwdne333402:0</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard.searchLabel">
+        <source>Search for dashboard widgets</source>
+        <target>crwdns333404:0crwdne333404:0</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard.searchNotFound">
+        <source>Unfortunately no dashboard widget matches your query, please try a different one.</source>
+        <target>crwdns333406:0crwdne333406:0</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard.userNotAllowed">
+        <source>No widgets are available with your current permissions.</source>
+        <target>crwdns391346:0crwdne391346:0</target>
+      </trans-unit>
+      <trans-unit id="widget.add.button.close">
+        <source>Close</source>
+        <target>crwdns85544:0crwdne85544:0</target>
+      </trans-unit>
+      <trans-unit id="widget.add.button.ok">
+        <source>Add widget</source>
+        <target>crwdns85546:0crwdne85546:0</target>
+      </trans-unit>
+      <trans-unit id="widget.refresh">
+        <source>Refresh Widget</source>
+        <target>crwdns370296:0crwdne370296:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.label">
+        <source>Widget pagination</source>
+        <target>crwdns415491:0crwdne415491:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.previous">
+        <source>Previous page</source>
+        <target>crwdns415493:0crwdne415493:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.next">
+        <source>Next page</source>
+        <target>crwdns415495:0crwdne415495:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.setting.itemsPerPage.label">
+        <source>Items per page</source>
+        <target>crwdns415497:0crwdne415497:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.setting.itemsPerPage.description">
+        <source>Number of items shown at once before the widget paginates.</source>
+        <target>crwdns415499:0crwdne415499:0</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.status">
+        <source>Page %1$d of %2$d</source>
+        <target>crwdns415501:0%1$dcrwdnd415501:0%2$dcrwdne415501:0</target>
+      </trans-unit>
+      <trans-unit id="widget.settings">
+        <source>Widget Settings</source>
+        <target>crwdns374396:0crwdne374396:0</target>
+      </trans-unit>
+      <trans-unit id="widget.settings.button.close">
+        <source>Close</source>
+        <target>crwdns374398:0crwdne374398:0</target>
+      </trans-unit>
+      <trans-unit id="widget.settings.button.save">
+        <source>Save</source>
+        <target>crwdns374400:0crwdne374400:0</target>
+      </trans-unit>
+      <trans-unit id="widget.settings.unchanged">
+        <source>Settings unchanged</source>
+        <target>crwdns374402:0crwdne374402:0</target>
+      </trans-unit>
+      <trans-unit id="widget.move">
+        <source>Move Widget</source>
+        <target>crwdns370298:0crwdne370298:0</target>
+      </trans-unit>
+      <trans-unit id="widget.remove">
+        <source>Remove Widget</source>
+        <target>crwdns370300:0crwdne370300:0</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.button.close">
+        <source>Close</source>
+        <target>crwdns85548:0crwdne85548:0</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.button.ok">
+        <source>Remove</source>
+        <target>crwdns85550:0crwdne85550:0</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.confirm.title">
+        <source>Remove widget</source>
+        <target>crwdns85552:0crwdne85552:0</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.confirm.message">
+        <source>Are you sure you want to remove this widget?</source>
+        <target>crwdns85554:0crwdne85554:0</target>
+      </trans-unit>
+      <trans-unit id="widget.error">
+        <source>An error occurred while retrieving information for this widget. Please try again, and if the problem persists, contact your administrator.</source>
+        <target>crwdns85556:0crwdne85556:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.headline">
+        <source>Dashboard "%s"</source>
+        <target>crwdns342848:0%scrwdne342848:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.default">
+        <source>My dashboard</source>
+        <target>crwdns85558:0crwdne85558:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.default.description">
+        <source>Create a new dashboard with some general TYPO3 widgets on it</source>
+        <target>crwdns85560:0crwdne85560:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty">
+        <source>Empty dashboard</source>
+        <target>crwdns85562:0crwdne85562:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.description">
+        <source>Your dashboard will be created without any widget on it.</source>
+        <target>crwdns85564:0crwdne85564:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.add">
+        <source>Add dashboard</source>
+        <target>crwdns85566:0crwdne85566:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.preset.title">
+        <source>Preset</source>
+        <target>crwdns415503:0crwdne415503:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.preset.headline">
+        <source>Select a preset</source>
+        <target>crwdns415505:0crwdne415505:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.preset.loadError">
+        <source>The dashboard presets could not be loaded.</source>
+        <target>crwdns415507:0crwdne415507:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.title.title">
+        <source>Title</source>
+        <target>crwdns415509:0crwdne415509:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.success.title">
+        <source>Dashboard created</source>
+        <target>crwdns415511:0crwdne415511:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.success.message">
+        <source>The dashboard has been created and is now being opened.</source>
+        <target>crwdns415513:0crwdne415513:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.add.button.close" x-unused-since="14.3">
+        <source>Close</source>
+        <target>crwdns85568:0crwdne85568:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.add.button.ok" x-unused-since="14.3">
+        <source>Add Dashboard</source>
+        <target>crwdns85570:0crwdne85570:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.configure">
+        <source>Configure dashboard</source>
+        <target>crwdns85572:0crwdne85572:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.configure.button.close">
+        <source>Close</source>
+        <target>crwdns85574:0crwdne85574:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.configure.button.ok">
+        <source>Save Dashboard</source>
+        <target>crwdns85576:0crwdne85576:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete">
+        <source>Delete dashboard</source>
+        <target>crwdns85578:0crwdne85578:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.sure">
+        <source>Are you sure you want to delete this dashboard?</source>
+        <target>crwdns85580:0crwdne85580:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.ok">
+        <source>Yes, delete it</source>
+        <target>crwdns85582:0crwdne85582:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.cancel">
+        <source>Cancel</source>
+        <target>crwdns85584:0crwdne85584:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.title">
+        <source>Title of dashboard</source>
+        <target>crwdns85586:0crwdne85586:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.title">
+        <source>Getting Started with TYPO3</source>
+        <target>crwdns85588:0crwdne85588:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.description">
+        <source>Add a shortcut to the TYPO3 Getting Started Tutorial.</source>
+        <target>crwdns85590:0crwdne85590:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.text">
+        <source>New to TYPO3? In our Getting Started Tutorial you will learn the basics how to use TYPO3.</source>
+        <target>crwdns85592:0crwdne85592:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.content.label">
+        <source>Getting Started Tutorial</source>
+        <target>crwdns85594:0crwdne85594:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.title">
+        <source>TypoScript Template Reference</source>
+        <target>crwdns85642:0crwdne85642:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.description">
+        <source>Add a shortcut to the TYPO3 TypoScript Template Reference.</source>
+        <target>crwdns85644:0crwdne85644:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.text">
+        <source>This document is a reference, used to lookup TypoScript templating.</source>
+        <target>crwdns85646:0crwdne85646:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.content.label">
+        <source>TypoScript Template Reference</source>
+        <target>crwdns85648:0crwdne85648:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.title">
+        <source>TSconfig Reference</source>
+        <target>crwdns85634:0crwdne85634:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.description">
+        <source>Add a shortcut to the TYPO3 TSconfig Reference.</source>
+        <target>crwdns85636:0crwdne85636:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.text">
+        <source>This document describes TSconfig and its options.</source>
+        <target>crwdns85638:0crwdne85638:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.content.label">
+        <source>TSconfig Reference</source>
+        <target>crwdns85640:0crwdne85640:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.title">
+        <source>TYPO3 news</source>
+        <target>crwdns85596:0crwdne85596:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.description">
+        <source>Add a list of news items from the TYPO3 project</source>
+        <target>crwdns85598:0crwdne85598:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.moreItems">
+        <source>More TYPO3 news</source>
+        <target>crwdns85600:0crwdne85600:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.title">
+        <source>About TYPO3</source>
+        <target>crwdns86070:0crwdne86070:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.description">
+        <source>Some general information about TYPO3 and the version used</source>
+        <target>crwdns86072:0crwdne86072:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.text">
+        <source><![CDATA[TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.<br /><br />For further information visit <a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer">typo3.org</a>.<br /><br />TYPO3 CMS is <b>freely available</b> under the <a href="https://typo3.org/project/licenses/" target="_blank" rel="noreferrer">TYPO3-license (GNU/GPL)</a>.<br /><br />You are using version %s - Copyright %s %s]]></source>
+        <target><![CDATA[crwdns141637:0%scrwdnd141637:0%scrwdnd141637:0%scrwdne141637:0]]></target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.logo">
+        <source>TYPO3 CMS logo</source>
+        <target>crwdns110114:0crwdne110114:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.title">
+        <source>Number of errors in system log</source>
+        <target>crwdns85660:0crwdne85660:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.description">
+        <source>Shows the number of errors in the sys log of the last month, grouped by date</source>
+        <target>crwdns85662:0crwdne85662:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.buttonText">
+        <source>Show all errors in log</source>
+        <target>crwdns85664:0crwdne85664:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogUsers.buttonText">
+        <source>Show all user logins</source>
+        <target>crwdns391386:0crwdne391386:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.chart.dataSet.0">
+        <source>Number of errors</source>
+        <target>crwdns85666:0crwdne85666:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.title">
+        <source>Type of backend users</source>
+        <target>crwdns85668:0crwdne85668:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.description">
+        <source>Shows the amount of normal- and admin-users</source>
+        <target>crwdns85670:0crwdne85670:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.normalUsers">
+        <source>Normal users</source>
+        <target>crwdns85672:0crwdne85672:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.adminUsers">
+        <source>Admin users</source>
+        <target>crwdns85674:0crwdne85674:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.title">
+        <source>Failed backend logins</source>
+        <target>crwdns85678:0crwdne85678:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.subtitle">
+        <source>In last 24 hours</source>
+        <target>crwdns85680:0crwdne85680:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.description">
+        <source>Information about the number of failed logins during the last 24 hours.</source>
+        <target>crwdns85682:0crwdne85682:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.title">
+        <source>TYPO3 security advisories</source>
+        <target>crwdns85684:0crwdne85684:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.description">
+        <source>Add a list of security advisories from the TYPO3 project</source>
+        <target>crwdns85686:0crwdne85686:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.moreItems">
+        <source>More TYPO3 security advisories</source>
+        <target>crwdns85688:0crwdne85688:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.title">
+        <source>Latest changed pages</source>
+        <target>crwdns342850:0crwdne342850:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.title.restrictToCurrentUser">
+        <source>My latest changed pages</source>
+        <target>crwdns378256:0crwdne378256:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.description">
+        <source>Show a list of pages where the latest changes were made</source>
+        <target>crwdns366356:0crwdne366356:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.empty">
+        <source>No history found</source>
+        <target>crwdns342854:0crwdne342854:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.settings.restrictToCurrentUser">
+        <source>Only show my changes</source>
+        <target>crwdns378258:0crwdne378258:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.change">
+        <source>Change</source>
+        <target>crwdns342856:0crwdne342856:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.user">
+        <source>User</source>
+        <target>crwdns342858:0crwdne342858:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.user.userNotFound">
+        <source>Not Found</source>
+        <target>crwdns342860:0crwdne342860:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.page">
+        <source>Page</source>
+        <target>crwdns342862:0crwdne342862:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.page.workspace">
+        <source>Changes in current selected workspace</source>
+        <target>crwdns342864:0crwdne342864:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.page.pagetree">
+        <source>Position in pagetree</source>
+        <target>crwdns342866:0crwdne342866:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control">
+        <source>Control</source>
+        <target>crwdns342868:0crwdne342868:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.recordHistory">
+        <source>Show history</source>
+        <target>crwdns342870:0crwdne342870:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.viewWebpage">
+        <source>View webpage</source>
+        <target>crwdns342872:0crwdne342872:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.editPageContent">
+        <source>Edit page content</source>
+        <target>crwdns342874:0crwdne342874:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.editPage">
+        <source>Edit page properties</source>
+        <target>crwdns342876:0crwdne342876:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.table.tt_content">
+        <source>Content</source>
+        <target>crwdns342878:0crwdne342878:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.table.pages">
+        <source>Page</source>
+        <target>crwdns342880:0crwdne342880:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.title">
+        <source>Latest backend logins</source>
+        <target>crwdns391388:0crwdne391388:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.description">
+        <source>Shows the latest backend user logins.</source>
+        <target>crwdns391390:0crwdne391390:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.empty">
+        <source>No backend login history found</source>
+        <target>crwdns391392:0crwdne391392:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.time">
+        <source>Time</source>
+        <target>crwdns391394:0crwdne391394:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.user">
+        <source>User</source>
+        <target>crwdns391396:0crwdne391396:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.user.notFound">
+        <source>Not found</source>
+        <target>crwdns391398:0crwdne391398:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.user.edit">
+        <source>Edit user</source>
+        <target>crwdns391400:0crwdne391400:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.settings.limit">
+        <source>Number of logins to display</source>
+        <target>crwdns391402:0crwdne391402:0</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.settings.limit.description">
+        <source>Number of backend user logins to show at once. Further logins are available via the pagination.</source>
+        <target>crwdns415515:0crwdne415515:0</target>
+      </trans-unit>
+      <trans-unit id="widget_group.general">
+        <source>General</source>
+        <target>crwdns85606:0crwdne85606:0</target>
+      </trans-unit>
+      <trans-unit id="widget_group.typo3">
+        <source>TYPO3 community</source>
+        <target>crwdns86074:0crwdne86074:0</target>
+      </trans-unit>
+      <trans-unit id="widget_group.news">
+        <source>News</source>
+        <target>crwdns86076:0crwdne86076:0</target>
+      </trans-unit>
+      <trans-unit id="widget_group.documentation">
+        <source>Documentation</source>
+        <target>crwdns85652:0crwdne85652:0</target>
+      </trans-unit>
+      <trans-unit id="widget_group.system">
+        <source>System Information</source>
+        <target>crwdns85676:0crwdne85676:0</target>
+      </trans-unit>
+      <trans-unit id="widget_group.content">
+        <source>Content</source>
+        <target>crwdns342882:0crwdne342882:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.title">
+        <source>No widgets</source>
+        <target>crwdns85610:0crwdne85610:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.description">
+        <source>There are no widgets on this dashboard yet. You can add widgets now by clicking on the button below.</source>
+        <target>crwdns85612:0crwdne85612:0</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.button">
+        <source>Add a widget</source>
+        <target>crwdns85614:0crwdne85614:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
