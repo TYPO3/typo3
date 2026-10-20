@@ -1,0 +1,7 @@
+"tx_blogexample_domain_model_blog"
+,"uid","pid","title","posts","tstamp","crdate"
+,1,2,"Tech blog",2,1700000000,1500000000
+"tx_blogexample_domain_model_post"
+,"uid","pid","title","blog","sorting","tstamp","crdate"
+,1,2,"First post",1,1,1700000000,1700000000
+,2,2,"Second post",1,2,1700000000,1700000000

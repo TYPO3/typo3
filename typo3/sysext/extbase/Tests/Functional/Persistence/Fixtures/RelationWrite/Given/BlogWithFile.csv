@@ -1,0 +1,6 @@
+"sys_file"
+,"uid","pid","storage","identifier","identifier_hash","folder_hash","extension","mime_type","name","sha1","size","type","tstamp","creation_date","modification_date"
+,1,0,1,"/logo.jpg","0123456789012345678901234567890123456789","0123456789012345678901234567890123456789","jpg","image/jpeg","logo.jpg","0123456789012345678901234567890123456789",1,2,1500000000,1500000000,1500000000
+"tx_blogexample_domain_model_blog"
+,"uid","pid","title","description","posts","logo","tstamp","crdate"
+,1,2,"Tech blog","News about TYPO3",0,0,1500000000,1500000000

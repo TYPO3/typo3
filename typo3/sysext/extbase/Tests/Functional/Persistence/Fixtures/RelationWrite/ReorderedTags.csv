@@ -1,0 +1,7 @@
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","tags","tstamp","crdate"
+,1,2,0,0,"Hello world",2,1700000000,1500000000
+"tx_blogexample_domain_model_tag_mm"
+,"uid_local","uid_foreign","tablenames","fieldname","sorting","sorting_foreign"
+,1,1,"tx_blogexample_domain_model_post","tags",0,2
+,2,1,"tx_blogexample_domain_model_post","tags",0,1

@@ -1,0 +1,11 @@
+"be_users"
+,"uid","pid","tstamp","username","password","admin","disable","starttime","endtime","options","crdate","workspace_perms","deleted","lastlogin","workspace_id"
+,1,0,1366642540,"admin","$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",1,0,0,0,0,1366642540,1,0,1371033743,0
+"pages"
+,"uid","pid","title","doktype","sorting","perms_everybody"
+,1,0,"Site",1,128,15
+,2,1,"Blog storage",254,128,15
+"tx_blogexample_domain_model_tag"
+,"uid","pid","name","tstamp","crdate"
+,1,2,"TYPO3",1500000000,1500000000
+,2,2,"PHP",1500000000,1500000000

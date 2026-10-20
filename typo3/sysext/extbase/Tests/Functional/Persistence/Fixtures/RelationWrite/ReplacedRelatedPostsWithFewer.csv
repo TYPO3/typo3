@@ -1,0 +1,8 @@
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","related_posts","tstamp","crdate"
+,1,2,0,0,"Hello world",1,1700000000,1500000000
+,2,2,0,0,"Second post",0,1500000000,1500000000
+,3,2,0,0,"Third post",0,1500000000,1500000000
+"tx_blogexample_post_post_mm"
+,"uid_local","uid_foreign","sorting","sorting_foreign"
+,1,3,1,0

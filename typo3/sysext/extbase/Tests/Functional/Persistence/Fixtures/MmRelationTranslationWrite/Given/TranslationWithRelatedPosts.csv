@@ -1,0 +1,10 @@
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","date","related_posts","sorting","tstamp","crdate"
+,1,2,0,0,"Hello world",1768478400,2,1,1500000000,1500000000
+,2,2,1,1,"Hallo Welt",1768478400,2,2,1500000000,1500000000
+"tx_blogexample_post_post_mm"
+,"uid_local","uid_foreign","sorting","sorting_foreign"
+,1,7,1,0
+,1,8,2,0
+,2,7,1,0
+,2,8,2,0

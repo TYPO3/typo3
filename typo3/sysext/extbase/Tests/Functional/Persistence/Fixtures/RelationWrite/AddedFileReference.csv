@@ -1,0 +1,6 @@
+"tx_blogexample_domain_model_blog"
+,"uid","pid","title","logo","tstamp","crdate"
+,1,2,"Tech blog",1,1700000000,1500000000
+"sys_file_reference"
+,"uid","pid","uid_local","uid_foreign","tablenames","fieldname","sorting_foreign","tstamp","crdate"
+,1,2,1,1,"tx_blogexample_domain_model_blog","logo",1,1700000000,1700000000
