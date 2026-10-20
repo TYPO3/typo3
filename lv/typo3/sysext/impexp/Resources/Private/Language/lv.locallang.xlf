@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814828" source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:33Z" product-name="impexp" target-language="lv">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Import / Export</source>
+        <target state="final">Imports / Eksports</target>
+      </trans-unit>
+      <trans-unit id="tableselec_configuration" resname="tableselec_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Konfigurācija</target>
+      </trans-unit>
+      <trans-unit id="exportdata_savedFile" resname="exportdata_savedFile" approved="yes">
+        <source>SAVED FILE</source>
+        <target state="final">FAILS SAGLABĀTS</target>
+      </trans-unit>
+      <trans-unit id="exportdata_savedInSBytes" resname="exportdata_savedInSBytes" approved="yes">
+        <source>Saved in "%s", bytes %s</source>
+        <target state="final">Saglabāts kā "%s", %s baiti</target>
+      </trans-unit>
+      <trans-unit id="exportdata_problemsSavingFile" resname="exportdata_problemsSavingFile" approved="yes">
+        <source>Problems saving file</source>
+        <target state="final">Problēmas faila saglabāšanā</target>
+      </trans-unit>
+      <trans-unit id="exportdata_badPathS" resname="exportdata_badPathS" approved="yes">
+        <source>Bad path: "%s"</source>
+        <target state="final">Nederīgs celš: "%s"</target>
+      </trans-unit>
+      <trans-unit id="exportdata_filePreset" resname="exportdata_filePreset" approved="yes">
+        <source>File &amp; Preset</source>
+        <target state="final">Fails, Preset</target>
+      </trans-unit>
+      <trans-unit id="exportdata_advancedOptions" resname="exportdata_advancedOptions" approved="yes">
+        <source>Advanced Options</source>
+        <target state="final">Advancēti uzstādijumi</target>
+      </trans-unit>
+      <trans-unit id="exportdata_messages" resname="exportdata_messages" approved="yes">
+        <source>Messages</source>
+        <target state="final">Ziņas</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_noTreeExportedOnly" resname="makeconfig_noTreeExportedOnly" approved="yes">
+        <source>No tree exported - only tables on the page.</source>
+        <target state="final">Nav eksportēts neviens lapas koks - tikai tabulas lapā</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_tablesOnThisPage" resname="makeconfig_tablesOnThisPage" approved="yes">
+        <source>Tables on this page</source>
+        <target state="final">Tabulas šajā lapā</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_expandedTree" resname="makeconfig_expandedTree" approved="yes">
+        <source>Expanded tree</source>
+        <target state="final">Izvērstu lapas koku</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_update" resname="makeadvanc_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Atjaunot</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_update" resname="makesavefo_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Atjaunot</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_load" resname="makesavefo_load" approved="yes">
+        <source>Load</source>
+        <target state="final">Ielādēt</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_save" resname="makesavefo_save" approved="yes">
+        <source>Save</source>
+        <target state="final">Saglabāt</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_areYouSure" resname="makesavefo_areYouSure" approved="yes">
+        <source>Are you sure?</source>
+        <target state="final">Vai esat pārliecināts?</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_delete" resname="makesavefo_delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Dzēst</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_merge" resname="makesavefo_merge" approved="yes">
+        <source>Merge</source>
+        <target state="final">Sapludināt</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_t3dFileCompressed" resname="makesavefo_t3dFileCompressed" approved="yes">
+        <source>T3D file / compressed</source>
+        <target state="final">T3D fails / saspiests</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_t3dFile" resname="makesavefo_t3dFile" approved="yes">
+        <source>T3D file</source>
+        <target state="final">T3D fails</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_xml" resname="makesavefo_xml" approved="yes">
+        <source>XML</source>
+        <target state="final">XML</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_downloadExport" resname="makesavefo_downloadExport" approved="yes">
+        <source>Download export</source>
+        <target state="final">Lejuplādēt eksportu</target>
+      </trans-unit>
+      <trans-unit id="importdata_saveToFilename" resname="importdata_saveToFilename" approved="yes">
+        <source>Save to filename</source>
+        <target state="final">Saglabāt ar faila vārdu</target>
+      </trans-unit>
+      <trans-unit id="importdata_fromPathS" resname="importdata_fromPathS" approved="yes">
+        <source>(From path: %s)</source>
+        <target state="final">(No ceļa: %s)</target>
+      </trans-unit>
+      <trans-unit id="importdata_noteNoDecompressorAvailable" resname="importdata_noteNoDecompressorAvailable" approved="yes">
+        <source>NOTE: No decompressor available for compressed files!</source>
+        <target state="final">PIEZĪME: Nav pieejams atspiežamais saspiestiem failiem!</target>
+      </trans-unit>
+      <trans-unit id="importdata_update" resname="importdata_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Atjaunot</target>
+      </trans-unit>
+      <trans-unit id="importdata_updateRecords" resname="importdata_updateRecords" approved="yes">
+        <source>Update records</source>
+        <target state="final">Atjaunot ierakstus</target>
+      </trans-unit>
+      <trans-unit id="importdata_thisOptionRequiresThat" resname="importdata_thisOptionRequiresThat" approved="yes">
+        <source>This option requires that the structure you import already exists on this server and only needs to be updated with new content!</source>
+        <target state="final">Šī opcija ļauj importējot struktūru, kas jau ir uz servera, atjaunot tikai tās saturu</target>
+      </trans-unit>
+      <trans-unit id="importdata_ignorePidDifferencesGlobally" resname="importdata_ignorePidDifferencesGlobally" approved="yes">
+        <source>Ignore PID differences globally</source>
+        <target state="final">Globāli ignorēt PID atšķirības</target>
+      </trans-unit>
+      <trans-unit id="importdata_ifYouSetThis" resname="importdata_ifYouSetThis" approved="yes">
+        <source>If you set this option, the position of updated elements will not be updated to match the structure of the input file.</source>
+        <target state="final">Ja Jūs uzstādīsiet šo izvēlni, tad elementu pozīcija netiks modernizēta, lai atbilstu ievada faila struktūrai.</target>
+      </trans-unit>
+      <trans-unit id="importdata_force_all_UIDS" resname="importdata_force_all_UIDS" approved="yes">
+        <source>Force ALL UIDs values</source>
+        <target state="final">Uzspiest visas UID vērtības</target>
+      </trans-unit>
+      <trans-unit id="importdata_force_all_UIDS_descr" resname="importdata_force_all_UIDS_descr" approved="yes">
+        <source>With this option the original UID value of all imported records are forced to be the same. BE VERY CAREFUL WITH THIS! (Admin Only).</source>
+        <target state="final">Ar šo opciju oriģinālās UID vērtības visos importētos ierakstos tiks veidotas vienādas. ESIET ĻOTI UZMANĪGI AR ŠO OPCIJU! (Tikai administratoriem)</target>
+      </trans-unit>
+      <trans-unit id="importdata_doNotShowDifferences" resname="importdata_doNotShowDifferences" approved="yes">
+        <source>Do not show differences in records</source>
+        <target state="final">Nerādīt atšķirības ierakstos</target>
+      </trans-unit>
+      <trans-unit id="importdata_greenValuesAreFrom" resname="importdata_greenValuesAreFrom" approved="yes">
+        <source>Green values are from the import file, red values from the current database record and black values are similar in both versions.</source>
+        <target state="final">Zaļie dati ir no importētā faila, sarkanie dati ir no esošās datu bāzes ieraksta, melnie dati ir vienādi abās versijās.</target>
+      </trans-unit>
+      <trans-unit id="importdata_allowToWriteBanned" resname="importdata_allowToWriteBanned" approved="yes">
+        <source>Allow to write banned file extensions (eg. PHP scripts), if any</source>
+        <target state="final">Atļaut neatļautus datnes paplašinājumus (peim., PHP skripti), ja tādi ir</target>
+      </trans-unit>
+      <trans-unit id="importdata_preview" resname="importdata_preview" approved="yes">
+        <source>Preview</source>
+        <target state="final">Priekšskatīt</target>
+      </trans-unit>
+      <trans-unit id="importdata_update_299e" resname="importdata_update_299e" approved="yes">
+        <source>Update</source>
+        <target state="final">Atjaunot</target>
+      </trans-unit>
+      <trans-unit id="importdata_areYouSure" resname="importdata_areYouSure" approved="yes">
+        <source>Are you sure?</source>
+        <target state="final">Vai esat pārliecināts?</target>
+      </trans-unit>
+      <trans-unit id="importdata_newImport" resname="importdata_newImport" approved="yes">
+        <source>New import</source>
+        <target state="final">Jauns imports</target>
+      </trans-unit>
+      <trans-unit id="importdata_writeIndividualDbActions" resname="importdata_writeIndividualDbActions" approved="yes">
+        <source>Write individual DB actions during import to the log</source>
+        <target state="final">Rakstīt žurnālā individualas DB pavēles importa laikā</target>
+      </trans-unit>
+      <trans-unit id="importdata_thisIsDisabledBy" resname="importdata_thisIsDisabledBy" approved="yes">
+        <source>This is disabled by default since there may be hundred of entries generated.</source>
+        <target state="final">Parasti šis nav aktivēts, jo var radīt simtiem ierakstu žurnalā.</target>
+      </trans-unit>
+      <trans-unit id="importdata_failureNoFileUploaded" resname="importdata_failureNoFileUploaded" approved="yes">
+        <source>Failure: No file uploaded - was it too big? Check system log.</source>
+        <target state="final">Kļūme: Neviens fails nav agšuplādēts - vai tas bija par lielu? Pārbaudīt sistēma žurnālu.</target>
+      </trans-unit>
+      <trans-unit id="importdata_upload" resname="importdata_upload" approved="yes">
+        <source>Upload</source>
+        <target state="final">augšupielāde</target>
+      </trans-unit>
+      <trans-unit id="importdata_messages" resname="importdata_messages" approved="yes">
+        <source>Messages</source>
+        <target state="final">Ziņas</target>
+      </trans-unit>
+      <trans-unit id="ALL_tables" resname="ALL_tables" approved="yes">
+        <source>ALL tables</source>
+        <target state="final">VISAS tabulas</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_update" resname="impexpcore_singlereco_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Atjaunot</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_insert" resname="impexpcore_singlereco_insert" approved="yes">
+        <source>Insert</source>
+        <target state="final">Ievietot</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_importAsNew" resname="impexpcore_singlereco_importAsNew" approved="yes">
+        <source>Import as new</source>
+        <target state="final">Importēt ka jaunu</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_ignorePid" resname="impexpcore_singlereco_ignorePid" approved="yes">
+        <source>Ignore PID</source>
+        <target state="final">Ignorēt PID</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_respectPid" resname="impexpcore_singlereco_respectPid" approved="yes">
+        <source>Respect PID</source>
+        <target state="final">Ņemt vērā PID</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_forceUidSAdmin" resname="impexpcore_singlereco_forceUidSAdmin" approved="yes">
+        <source>Force UID [%s] (Admin)</source>
+        <target state="final">Uzspiest UID [%s] (Admin)</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_exclude" resname="impexpcore_singlereco_exclude" approved="yes">
+        <source>Exclude</source>
+        <target state="final">Izņemot</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_softrefsel_editable" resname="impexpcore_softrefsel_editable" approved="yes">
+        <source>Editable</source>
+        <target state="final">Labojams</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_softrefsel_exclude" resname="impexpcore_softrefsel_exclude" approved="yes">
+        <source>Exclude</source>
+        <target state="final">Izņemot</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
