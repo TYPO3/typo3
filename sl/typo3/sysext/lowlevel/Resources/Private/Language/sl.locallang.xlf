@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814900" source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="csvExport" resname="csvExport" approved="yes">
+        <source>CSV Export</source>
+        <target state="final">CSV izvoz</target>
+      </trans-unit>
+      <trans-unit id="xmlExport" resname="xmlExport" approved="yes">
+        <source>XML Export</source>
+        <target state="final">XML izvoz</target>
+      </trans-unit>
+      <trans-unit id="showDeleted" resname="showDeleted" approved="yes">
+        <source>Show even deleted entries (with undelete buttons)</source>
+        <target state="final">Prikaži tudi izbrisane vnose (z gumbi za brisanje)</target>
+      </trans-unit>
+      <trans-unit id="pattern" resname="pattern" approved="yes">
+        <source>Pattern</source>
+        <target state="final">Vzorec</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files" approved="yes">
+        <source>Files</source>
+        <target state="final">Datoteke</target>
+      </trans-unit>
+      <trans-unit id="pages" resname="pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">Strani</target>
+      </trans-unit>
+      <trans-unit id="relations" resname="relations" approved="yes">
+        <source>Relations</source>
+        <target state="final">Povezave</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
