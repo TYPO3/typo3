@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814859" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysnews.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>This option will hide the news from showing up at the login screen.</source>
+        <target state="final">Esta opção ocultará as notícias que aparecem na tela de acesso.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the title of the news.</source>
+        <target state="final">Insere o título das notícias.</target>
+      </trans-unit>
+      <trans-unit id="content.description" resname="content.description" approved="yes">
+        <source>The news content to let editors know what's coming up. HTML is disabled, however, you can use line breaks.</source>
+        <target state="final">O conteúdo de notícias para permitir que os editores saibam o que está por vir. O HTML é desabilitado, entretanto, você pode utilizar quebras de linha.</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>System news are shown at the TYPO3 login screen, allowing admins to inform editors about upcoming system maintenance and similar events.</source>
+        <target state="final">O sistema de notícias é exibido na tela de acesso do TYPO3, permitindo que administradores informem aos editor sobre manutenções de sistema e eventos similares vindouros.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
