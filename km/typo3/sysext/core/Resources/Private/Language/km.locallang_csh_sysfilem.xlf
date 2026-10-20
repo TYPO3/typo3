@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814857" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilem.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Filemounts describe a filepath on the server, relative or absolute.</source>
+        <target state="final">ឯកសារ​ម៉ោនថ៍​បង្ហាញ​អំពី​ទីតាំង​របស់​ឯកសារ​នៅ​លើ​ម៉ាស៊ីន​បម្រើ, មាន​ទំនាក់ទំនង ឬ ជាក់លាក់ ។</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter a title for the filemount. The title will appear as the name of the file mount when it is applied to users and groups.</source>
+        <target state="final">បំពេញ​ចំណងជើង​ឯកសារ​ម៉ោនថ៍ ។ ចំណងជើង​នឹង​បង្ហាញ​ជា​ឈ្មោះ​របស់​ឯកសារ​ម៉ោនថ៍ ពេល​វា​​កំណត់​លើ​អ្នក​ប្រើ ឬ ក្រុម ។</target>
+      </trans-unit>
+      <trans-unit id="path.description" resname="path.description" approved="yes">
+        <source>Enter the path of the filemount, relative or absolute depending on the settings of BASE.</source>
+        <target state="final">បំពេញ​ទីតាំង​ឯកសារ​ម៉ោនថ៍, ទាក់ទង ឬ ជាក់លាក់ ផ្អែក​លើ​ការកំណត់​នៃ មូលដ្ឋាន ។</target>
+      </trans-unit>
+      <trans-unit id="_path.seeAlso" resname="_path.seeAlso" xml:space="preserve" approved="yes">
+				<source>sys_filemounts:base,
+be_groups:file_mountpoints,
+sys_filemounts</source>
+				
+			<target state="final">sys_filemounts:base,
+be_groups:file_mountpoints,
+sys_filemounts</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="path.image_descr" resname="path.image_descr" xml:space="preserve" approved="yes">
+				<source>This is a filemount relative to "fileadmin/". The mounted folder is "fileadmin/user_upload/" since "user_upload" is the value of the "Path" field.
+The directory structure of "fileadmin/" where you can see the "user_upload" folder in the bottom of the list.</source>
+			<target state="final">នេះ​ជា​ឯកសារ​ម៉ោនថ៍​ទាក់ទង​ទៅ​នឹង "fileadmin/" ។ សឺមី​ដែល​បាន​ម៉ោនថ៍​គឺ "fileadmin/user_upload/" ដែល "user_upload" ជា​តម្លៃ​របស់​ប្រអប់ "ទីតាំង" ។ រចនាសម្ព័ន្ធ​របស់​សឺមី​នៃ "fileadmin/" ដែល​អ្នក​មើល​ឃើញ​សឺមី "user_upload" ស្ថិត​នៅ​ខាងក្រោម​បញ្ជី ។</target></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Use this option to temporarily disable the filemount.</source>
+        <target state="final">ប្រើ​ជម្រើស​នេះ​ដើម្បី​បិទ​ដំណើរការ​ឯកសារ​ម៉ោនថ៍​បណ្ដោះ​អាសន្ន ។</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>All backend users using the mount will not have access anymore. This includes 'Admin'-users.</source>
+        <target state="final">គ្រប់​អ្នក​ប្រើ backend ទាំងអស់​ដែល​ប្រើ​ម៉ោនថ៍​នឹង​មិន​អាច​ប្រើ​បាន​ទៀត​ទេ រួម​ទាំង​អ្នក​ "គ្រប់គ្រង" ផង​ដែរ ។</target>
+      </trans-unit>
+      <trans-unit id="base.description" resname="base.description" approved="yes">
+        <source>Determines whether the value of the PATH field is to be recognized as an absolute path on the server or a path relative to the fileadmin/ subfolder to the website.</source>
+        <target state="final">កំណត់​តម្លៃ​លើ​ប្រអប់​ទីតាំង​ដែល​ជា​តម្លៃ​ទីតាំង​ជាក់លាក់​លើ​ម៉ាស៊ីន​បម្រើ ទាក់ទង​នឹង fileadmin/ ទីតាំង​កូន​របស់​វែបសាយ ។</target>
+      </trans-unit>
+      <trans-unit id="_base.seeAlso" resname="_base.seeAlso" approved="yes">
+        <source>sys_filemounts:path</source>
+        <target state="final">sys_filemounts:path</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
