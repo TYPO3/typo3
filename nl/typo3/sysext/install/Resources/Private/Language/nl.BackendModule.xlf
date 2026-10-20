@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814842" source-language="en" datatype="plaintext" original="EXT:install/Resources/Private/Language/BackendModule.xlf" date="2011-10-17T20:22:33Z" product-name="install" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Install Tool</source>
+        <target state="final">Installatie-module</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>Provides a simple link to the Install Tool. Notice the Install Tool (in typo3/install/) must be enabled.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</source>
+        <target state="final">Biedt een link naar de Installatie-module. Let op dat de Installatie-module (in typo3/install/) actief moet zijn.&lt;br /&gt;&lt;em&gt;Toegang alleen voor beheerders!&lt;/em&gt;</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Install</source>
+        <target state="final">Installatie</target>
+      </trans-unit>
+      <trans-unit id="confirmUnlockInstallToolTitle" resname="confirmUnlockInstallToolTitle" approved="yes">
+        <source>The Install Tool is locked</source>
+        <target state="final">De Installatie-module is niet actief.</target>
+      </trans-unit>
+      <trans-unit id="confirmUnlockInstallToolMessage" resname="confirmUnlockInstallToolMessage" xml:space="preserve" approved="yes">
+				<source>&lt;p&gt;For security reasons the Install Tool is locked by default.&lt;/p&gt;
+&lt;p&gt;To enable the Install Tool, the file &lt;strong&gt;ENABLE_INSTALL_TOOL&lt;/strong&gt; must be created in the directory &lt;strong&gt;typo3conf/&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Just click the button below, the file will be created for you and the Install Tool will be unlocked.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Security note: &lt;/strong&gt;When you are finished with your work, please log out of the Install Tool. Otherwise TYPO3 will automatically lock the Install Tool after one hour.&lt;/p&gt;
+				</source>
+			<target state="final">&lt;p&gt;Om veiligheidsredenen is de Installatie-module standaard geblokkeerd.&lt;/p&gt;
+&lt;p&gt;Plaats een leeg bestand met de naam ENABLE_INSTALL_TOOL in typo3conf/ om de Installatie-module vrij te geven.&lt;/p&gt;
+&lt;p&gt;Met een druk op de knop is dit bestand aan te maken en is de Installatie-module beschikbaar.&lt;/p&gt;
+&lt;p&gt;Het is aan te raden om na het afronden van de werkzaamheden bij de Installlatie-module af te melden. Anders
+zal TYPO3 de Installatie-module  automatisch blokkeren na een uur.&lt;/p&gt;
+				</target></trans-unit>
+      <trans-unit id="confirmUnlockInstallToolButton" resname="confirmUnlockInstallToolButton" approved="yes">
+        <source>Unlock the Install&amp;#160;Tool</source>
+        <target state="final">Install Tool vrijgeven</target>
+      </trans-unit>
+      <trans-unit id="cancel" resname="cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuleren</target>
+      </trans-unit>
+      <trans-unit id="confirm" resname="confirm" approved="yes">
+        <source>Confirm</source>
+        <target state="final">Bevestigen</target>
+      </trans-unit>
+      <trans-unit id="sudoUserPasswordConfirm" resname="sudoUserPasswordConfirm" approved="yes">
+        <source>Confirm with user password</source>
+        <target state="final">Met gebruikerswachtwoord bevestigen</target>
+      </trans-unit>
+      <trans-unit id="sudoInstallToolPasswordConfirm" resname="sudoInstallToolPasswordConfirm" approved="yes">
+        <source>Confirm with Install Tool password</source>
+        <target state="final">Bevestigen met wachtwoord van installatieprogramma</target>
+      </trans-unit>
+      <trans-unit id="sudoPasswordInvalid" resname="sudoPasswordConfirm" approved="yes">
+        <source>Invalid password</source>
+        <target state="final">Ongeldig wachtwoord</target>
+      </trans-unit>
+      <trans-unit id="sudoUserPasswordMode" resname="sudoUserPasswordMode" approved="yes">
+        <source>Use user password instead</source>
+        <target state="final">Gebruikerswachtwoord in plaats daarvan gebruiken</target>
+      </trans-unit>
+      <trans-unit id="sudoInstallToolPasswordMode" resname="sudoInstallToolPasswordMode" approved="yes">
+        <source>Use Install Tool password instead</source>
+        <target state="final">In plaats daarvan het wachtwoord van het installatieprogramma gebruiken</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
