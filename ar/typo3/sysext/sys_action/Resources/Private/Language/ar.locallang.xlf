@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814993" source-language="en" datatype="plaintext" original="EXT:sys_action/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="sys_action" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="sys_action" resname="sys_action" approved="yes">
+        <source>Action</source>
+        <target state="final">إجراء</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description" approved="yes">
+        <source>An 'Action' is a configuration of a specific task which may be performed by assigned usergroups via the Task Center.</source>
+        <target state="final">المصطلح 'Action' هو تكوين لمهمة محددة يمكن أن تقوم بها مجموعات المستخدمين المعينة عن طريق مركز المهام.</target>
+      </trans-unit>
+      <trans-unit id="new-sys_action" resname="new-sys_action" approved="yes">
+        <source>Create a new action</source>
+        <target state="final">إنشاء إجراء جديد</target>
+      </trans-unit>
+      <trans-unit id="edit-sys_action" resname="edit-sys_action" approved="yes">
+        <source>Edit record</source>
+        <target state="final">تعديل السجل</target>
+      </trans-unit>
+      <trans-unit id="action_error-not-found" resname="action_error-not-found" approved="yes">
+        <source>The action doesn't exist</source>
+        <target state="final">الإجراء غير موجود</target>
+      </trans-unit>
+      <trans-unit id="action_not-found" resname="action_not-found" approved="yes">
+        <source>No actions found</source>
+        <target state="final">لم يتم العثور على إجراءات</target>
+      </trans-unit>
+      <trans-unit id="action_not-found-description" resname="action_not-found-description" approved="yes">
+        <source>Currently there are no actions yet defined!</source>
+        <target state="final">حاليّاً لا توجد اجراءات محددة بعد!</target>
+      </trans-unit>
+      <trans-unit id="action_error-access" resname="action_error-access" approved="yes">
+        <source>You don't have sufficient rights to see the records. Please ask the administrator to set those for you.</source>
+        <target state="final">ليس لديك أذونات كافية لمشاهدة السجلات. الرجاء الطلب من المسؤول إعطاءك تلك الأذونات.</target>
+      </trans-unit>
+      <trans-unit id="error-wrong-email" resname="error-wrong-email" approved="yes">
+        <source>The E-mail address is wrong.</source>
+        <target state="final">عنوان البريد الإلكتروني خاطئ.</target>
+      </trans-unit>
+      <trans-unit id="error-username-empty" resname="error-username-empty" approved="yes">
+        <source>The username is empty.</source>
+        <target state="final">اسم المستخدم فارغ.</target>
+      </trans-unit>
+      <trans-unit id="error-password-empty" resname="error-password-empty" approved="yes">
+        <source>The password is empty.</source>
+        <target state="final">كلمة المرور فارغة.</target>
+      </trans-unit>
+      <trans-unit id="error-wrong-user" resname="error-wrong-user" approved="yes">
+        <source>You are not allowed to edit this user.</source>
+        <target state="final">غير مسموح لك بتعديل هذا المستخدم.</target>
+      </trans-unit>
+      <trans-unit id="success" resname="success" approved="yes">
+        <source>Success</source>
+        <target state="final">نجاح</target>
+      </trans-unit>
+      <trans-unit id="success-user-created" resname="success-user-created" approved="yes">
+        <source>The user has been created.</source>
+        <target state="final">تم إنشاء المستخدم.</target>
+      </trans-unit>
+      <trans-unit id="success-user-updated" resname="success-user-updated" approved="yes">
+        <source>The user has been updated.</source>
+        <target state="final">تم تحديث المستخدم.</target>
+      </trans-unit>
+      <trans-unit id="action_noType" resname="action_noType" approved="yes">
+        <source>Error: The action had no type defined.</source>
+        <target state="final">خطأ: لم يتم تعريف نوع الإجراء.</target>
+      </trans-unit>
+      <trans-unit id="action_notReady" resname="action_notReady" approved="yes">
+        <source>Error: The action configuration is not finished.</source>
+        <target state="final">خطأ: لم يتم الانتهاء من تكوين الإجراء.</target>
+      </trans-unit>
+      <trans-unit id="action_download_file" resname="action_download_file" approved="yes">
+        <source>Click here to download the exported data in a file</source>
+        <target state="final">انقر هنا لتنزيل البيانات المُصدّرَة في ملف</target>
+      </trans-unit>
+      <trans-unit id="action_editQuery" resname="action_editQuery" approved="yes">
+        <source>Edit Query</source>
+        <target state="final">تعديل الاستعلام</target>
+      </trans-unit>
+      <trans-unit id="action_createQuery" resname="action_createQuery" approved="yes">
+        <source>Create Query</source>
+        <target state="final">إنشاء استعلام</target>
+      </trans-unit>
+      <trans-unit id="action_emptyQuery" resname="action_emptyQuery" approved="yes">
+        <source>Query is empty, create one first!</source>
+        <target state="final">الاستعلام فارغ، قم بإنشاء واحد أولاً!</target>
+      </trans-unit>
+      <trans-unit id="action_error" resname="action_error" approved="yes">
+        <source>Action error!</source>
+        <target state="final">خطأ في الإجراء!</target>
+      </trans-unit>
+      <trans-unit id="action_lowlevelMissing" resname="action_lowlevelMissing" approved="yes">
+        <source>The extension 'lowlevel' must be installed in order to create a query.</source>
+        <target state="final">يجب تثبيت الإضافة 'lowlevel' من أجل إنشاء الاستعلام.</target>
+      </trans-unit>
+      <trans-unit id="action_t2_result" resname="action_t2_result" approved="yes">
+        <source>Result of query</source>
+        <target state="final">نتيجة الاستعلام</target>
+      </trans-unit>
+      <trans-unit id="action_Create" resname="action_Create" approved="yes">
+        <source>Create Backend User</source>
+        <target state="final">إنشاء مستخدم للواجهة الخلفية</target>
+      </trans-unit>
+      <trans-unit id="action_Update" resname="action_Update" approved="yes">
+        <source>Update Backend User</source>
+        <target state="final">تحديث مستخدم الواجهة الخلفية</target>
+      </trans-unit>
+      <trans-unit id="action_t1_listOfUsers" resname="action_t1_listOfUsers" approved="yes">
+        <source>List of backend users</source>
+        <target state="final">قائمة مستخدمي الواجهة الخلفية</target>
+      </trans-unit>
+      <trans-unit id="action_t1_legend_generalFields" resname="action_t1_legend_generalFields" approved="yes">
+        <source>General fields</source>
+        <target state="final">حقول عامة</target>
+      </trans-unit>
+      <trans-unit id="action_t1_legend_configuration" resname="action_t1_legend_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">الإعدادات</target>
+      </trans-unit>
+      <trans-unit id="action_toolbaritem" resname="action_toolbaritem" approved="yes">
+        <source>Open System Actions</source>
+        <target state="final">فتح إجراءات النظام</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
