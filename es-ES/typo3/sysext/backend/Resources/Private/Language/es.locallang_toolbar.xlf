@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_toolbar.xlf" date="2024-06-17T15:00:00Z" product-name="lang" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="toolbarItems.clearCache" approved="yes">
+        <source>Clear cache</source>
+        <target state="final">Limpiar caché</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.help" approved="yes">
+        <source>Help</source>
+        <target state="final">Ayuda</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Buscar</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.searchbarOpenClose" approved="yes">
+        <source>Open/Close searchbar</source>
+        <target state="final">Abrir/Cerrar barra de búsqueda</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo" approved="yes">
+        <source>System Information</source>
+        <target state="final">Información del sistema</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.intro.text" approved="yes">
+        <source>This is a short system overview. For advanced information please head to: </source>
+        <target state="final">Esta es una descripción breve del sistema. Para más información, por favor, dirígete a: </target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.intro.link" approved="yes">
+        <source>Environment Module</source>
+        <target state="final">Módulo del entorno</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.allgood" xml:space="preserve" approved="yes">
+        <source>Your system is fully operational.
+Have a nice day.</source>
+      <target state="final">Su sistema está en completas condiciones de servicio.
+Que tenga un buen día.</target></trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.applicationcontext" approved="yes">
+        <source>Application Context</source>
+        <target state="final">Contexto de la aplicación</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.database" approved="yes">
+        <source>Database</source>
+        <target state="final">Base de datos</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.database.offline" approved="yes">
+        <source>Offline</source>
+        <target state="final">Desconectado</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.debugger" approved="yes">
+        <source>Debugger</source>
+        <target state="final">Depurador</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.gitrevision" approved="yes">
+        <source>GIT Revision</source>
+        <target state="final">Revisión de Git</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.operatingsystem" approved="yes">
+        <source>Operating System</source>
+        <target state="final">Sistema Operativo</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.phpversion" approved="yes">
+        <source>PHP Version</source>
+        <target state="final">Versión de PHP</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.typo3-version" approved="yes">
+        <source>TYPO3 Version</source>
+        <target state="final">Versión de TYPO3</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.webserver" approved="yes">
+        <source>Web Server</source>
+        <target state="final">Servidor Web</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.toolbarOpenClose" approved="yes">
+        <source>Open/Close toolbar</source>
+        <target state="final">Abrir/Cerrar barra de herramientas</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.account.switchToUserMode.tooltip" approved="yes">
+        <source>Switch to User</source>
+        <target state="final">Cambiar al usuario</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.account.switchToUserMode.account.prefix" approved="yes">
+        <source>SU</source>
+        <target state="final">SU</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.recentlySwitchedUsers" approved="yes">
+        <source>Recently switched to</source>
+        <target state="final">Cambiado recientemente a</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.recentlySwitchedUsers.su.tooltip" approved="yes">
+        <source>Switch to user %s</source>
+        <target state="final">Cambiar a usuario %s</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.btn.exitSwitchUser" approved="yes">
+        <source>Exit switch user mode</source>
+        <target state="final">Salir del modo de suplantación de usuario</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.btn.logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">Cerrar sesión</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
