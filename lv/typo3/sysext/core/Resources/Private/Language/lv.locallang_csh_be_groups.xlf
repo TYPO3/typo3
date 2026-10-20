@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814852" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_be_groups.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="lv">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>This is the Backend administration user groups available for the Backend users. These determine the access credentials for the Backend users.</source>
+        <target state="final">Šis ir Backend administrācijas lietotāju grupas, kas ir pieejamas Backend lietotājiem. Šīs grupas nosaka pieejas akreditācijas datus Backend lietotājiem.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>Groups contain the main permission settings you can set for a backend user. Many users can be members of the same group and thus share permissions.
+When a user is a member of many groups (including sub-groups) then the permission settings are added together so that the more groups a user is a member of, the more access is granted to him.</source>
+			<target state="final">Grupas satur pamata attļaujas uzstādījumus, kurus varat piemērot Backend lietotājam. Vairāki lietotāji var būt vienas grupas dalībnieki un tādejādi dalīt pieejas atļaujas. Lietotājam esot vairāku grupu dalībniekam (iekļaujot apakšgrupas) pieejas atļaujas tiek apvienotas, līdz ar ko, jo vairāk grupās ir iekļauts lietotājs, jo vairāk tam tiek piešķirta pieeja.</target></trans-unit>
+      <trans-unit id="title.image_descr" resname="title.image_descr" approved="yes">
+        <source>The usergroup title is shown in the record lists.</source>
+        <target state="final">Lietotāju grupas nosaukums ir parādīts ierakstu sarakstā.</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.description" resname="db_mountpoints.description" approved="yes">
+        <source>Define page tree root points for the group members.</source>
+        <target state="final">Definējiet lapas koka sākumpunktu grupas locekļiem.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
