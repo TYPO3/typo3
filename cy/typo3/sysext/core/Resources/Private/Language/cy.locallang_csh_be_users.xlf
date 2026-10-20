@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814853" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_be_users.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="cy">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>This is the table of backend administration users. Backend users can login in the backend of TYPO3 and are typically producers of content on a website.</source>
+        <target state="final">Dyma'r tabl o ddefnyddwyr gweinyddu backend. Gall defnyddwyr backend fewngofnodi yn ôl-benwythnos TYPO3 ac yn nodweddiadol maent yn gynhyrchwyr cynnwys ar wefan.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>The main settings for a backend user is a username, password and group memberships. The username and password authenticates the user to the system. The group memberships enables the user to perform actions in TYPO3 since groups are the main source of permission settings for a backend user.
+Backend usergroups can also be understood as "roles". A usergroup can contain a configuration of permissions which allows the user to play a certain role in the system.
+
+&lt;b&gt;The "Admin" user&lt;/b&gt;
+There is a special kind of user, the "Admin" user. This user has access to everything in TYPO3. There are no limits for Admin-users at all. You should normally have only a single or two admin-users in your system.
+Admin-users are the only users who can create other backend users. Alternatively you can create an "Action" which enables other normal users to do it as well (with certain restrictions of course).
+
+&lt;b&gt;Location&lt;/b&gt;
+Backend users are always created in the root of the page tree (like Backend groups are).
+
+&lt;b&gt;Comparing Users&lt;/b&gt;
+To manage and compare users, getting an overview of their access credentials etc. you can use the Tools &gt; User Admin module (extension: beuser). It allows you to group users by various categories of permissions. You can also switch to another users account by a single click of a button.</source>
+			<target state="final">Y prif leoliadau ar gyfer defnyddiwr backend yw enw defnyddiwr, cyfrinair ac aelodaeth grŵp. Mae'r enw defnyddiwr a'r cyfrinair yn dilysu'r defnyddiwr i'r system. Mae aelodaeth y grŵp yn galluogi'r defnyddiwr i gyflawni gweithredoedd yn TYPO3 gan mai grwpiau yw prif ffynhonnell gosodiadau caniatâd ar gyfer defnyddiwr ôl-bac.
+Gellir deall grwpiau defnyddwyr backend hefyd fel "rolau". Gall grŵp defnyddwyr gynnwys cyfluniad o ganiatadau sy'n caniatáu i'r defnyddiwr chwarae rhan benodol yn y system.
+
+&lt;b&gt;Y defnyddiwr "Admin"&lt;/b&gt;
+yna fath arbennig o ddefnyddiwr, y defnyddiwr "Admin". Mae gan y defnyddiwr hwn fynediad at bopeth yn TYPO3. Nid oes unrhyw derfynau i ddefnyddwyr Gweinyddol o gwbl. Fel rheol, dim ond un neu ddau o ddefnyddwyr gweinyddol ddylai fod gennych yn eich system.
+Defnyddwyr gweinyddol yw'r unig ddefnyddwyr sy'n gallu creu defnyddwyr ôl-bac eraill. Fel arall gallwch greu "Gweithred" sy'n galluogi defnyddwyr arferol eraill i'w wneud hefyd (gyda rhai cyfyngiadau wrth gwrs).
+
+&lt;b&gt;Lleoliad&lt;/b&gt;
+defnyddwyr backend bob amser yn cael eu creu yng ngwraidd y goeden dudalen (fel mae grwpiau Backend).
+
+&lt;b&gt;Cymharu Defnyddwyr&lt;/b&gt;
+Er mwyn rheoli a chymharu defnyddwyr, gan gael trosolwg o'u cymwysterau mynediad ac ati, gallwch ddefnyddio'r &gt; (estyniad: beuser). Mae'n caniatáu ichi grwpio defnyddwyr yn ôl gwahanol gategorïau o ganiatadau. Gallwch hefyd newid i gyfrif defnyddiwr arall trwy un clic botwm.</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups,
+About backend users | https://docs.typo3.org/typo3cms/GettingStartedTutorial/UserManagement/BackendUsers/
+Setting up a new user and group | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/SettingUpANewUser/
+Users and Groups [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/UsersAndGroups/</source>
+			<target state="final">be_groups,
+Ynglŷn â defnyddwyr backend | https://docs.typo3.org/typo3cms/GettingStartedTutorial/UserManagement/BackendUsers/
+Sefydlu defnyddiwr a grŵp newydd | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/SettingUpANewUser/
+a Grŵp [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/UsersAndGroups/</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/beuser_2.png,
+EXT:core/Resources/Public/Images/cshimages/beuser_1.png,
+EXT:core/Resources/Public/Images/cshimages/beuser_3.png</source>
+				
+			<target state="final">EXT: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / beuser_2.png,
+EXT: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / beuser_1.png,
+EXT: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / beuser_3.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>Backend users are found in the root of the page tree. "Admin" backend users can always be recognized on their icon being red while normal users have a blue icon.
+The editing form of a backend users record.
+The "Tools &gt; User Admin" module where you can get an overview of the users on the system and what permissions they have. Click the "SU" button to switch to a users account.</source>
+			<target state="final">Mae defnyddwyr backend i'w cael yng ngwraidd y goeden dudalen. Gellir cydnabod defnyddwyr backend "Admin" bob amser ar eu heicon yn goch tra bod gan ddefnyddwyr arferol eicon glas.
+Ffurf golygu cofnod defnyddwyr ôl-benwythnos.
+Y &gt; " lle gallwch gael trosolwg o'r defnyddwyr ar y system a pha ganiatadau sydd ganddynt. Cliciwch y botwm "SU" i newid i gyfrif defnyddiwr.</target></trans-unit>
+      <trans-unit id="username.description" resname="username.description" approved="yes">
+        <source>Enter the login name of the backend user.</source>
+        <target state="final">Rhowch enw mewngofnodi defnyddiwr y backend.</target>
+      </trans-unit>
+      <trans-unit id="username.details" resname="username.details" approved="yes">
+        <source>A username is required and must be in lowercase without spaces in it. Furthermore the username must be unique. If it is not unique a number will be appended automatically.</source>
+        <target state="final">Mae angen enw defnyddiwr a rhaid iddo fod mewn llythrennau bach heb leoedd ynddo. Ar ben hynny mae'n rhaid i'r enw defnyddiwr fod yn unigryw. Os nad yw'n unigryw, atodir rhif yn awtomatig.</target>
+      </trans-unit>
+      <trans-unit id="_username.seeAlso" resname="_username.seeAlso" approved="yes">
+        <source>be_users:password</source>
+        <target state="final">be_users: cyfrinair</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="password.description" resname="password.description" approved="yes">
+        <source>Enter the password for the backend username above (Notice the value you enter &lt;i&gt;will&lt;/i&gt; be readable in the field!).</source>
+        <target state="final">Rhowch y cyfrinair ar gyfer yr enw defnyddiwr ol-wyneb uchod (Hysbysiad gwerth chi fynd i mewn &lt;i&gt;Bydd&lt;/i&gt; yn ddarllenadwy yn y maes!).</target>
+      </trans-unit>
+      <trans-unit id="password.details" resname="password.details" xml:space="preserve" approved="yes">
+				<source>The password is required. Before the password is sent to the server it's md5-hashed, so the password value itself is not transferred over the Internet. This is true both when editing the password and when the user logs in.
+While this principle does not reveal the raw password it is &lt;i&gt;not&lt;/i&gt; the same as real encryption. If you need the highest degree of security you should install the TYPO3 backend on a secure server.
+The password is stored in the database as an md5-hash and thus it's not possible to extract the original password from the database either. This means that 'lost passwords' must be substituted with a new password for the user.
+
+&lt;b&gt;Notice&lt;/b&gt;
+When you enter the password in the password field it is initially visible in clear text! First when the password field focus is lost will the password become a "list of dots".
+
+&lt;b&gt;User changing password&lt;/b&gt;
+Users can change their password from the User &gt; Setup module</source>
+			<target state="final">Mae angen y cyfrinair. Cyn i'r cyfrinair gael ei anfon i'r gweinydd mae'n md5-hashed, felly ni chaiff gwerth y cyfrinair ei hun ei drosglwyddo dros y Rhyngrwyd. Mae hyn yn wir wrth olygu'r cyfrinair a phan fydd y defnyddiwr yn mewngofnodi.
+Er nad yw'r egwyddor hon yn datgelu'r cyfrinair amrwd, mae &lt;i&gt;nid&lt;/i&gt; yr un peth ag amgryptio go iawn. Os oes angen y lefel uchaf o ddiogelwch arnoch, dylech osod ôl-benwythnos TYPO3 ar weinydd diogel.
+Mae'r cyfrinair yn cael ei storio yn y gronfa ddata fel md5-hash ac felly nid yw'n bosibl tynnu'r cyfrinair gwreiddiol o'r gronfa ddata chwaith. Mae hyn yn golygu bod yn rhaid rhoi cyfrinair newydd yn lle'r 'cyfrineiriau coll'.
+
+&lt;b&gt;Rhybudd&lt;/b&gt;
+Pan fyddwch yn nodi'r cyfrinair yn y maes cyfrinair, mae'n weladwy i ddechrau mewn testun clir! Yn gyntaf pan gollir ffocws y maes cyfrinair a fydd y cyfrinair yn dod yn "rhestr o ddotiau".
+
+&lt;b&gt;Cyfrinair newid defnyddiwr&lt;/b&gt;
+Gall defnyddwyr newid eu cyfrinair o'r modiwl Gosod &gt;</target></trans-unit>
+      <trans-unit id="_password.seeAlso" resname="_password.seeAlso" approved="yes">
+        <source>_MOD_user_setup:option_newPassword</source>
+        <target state="final">_MOD_user_setup: opsiwn_newPassword</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="usergroup.description" resname="usergroup.description" approved="yes">
+        <source>Assign backend user groups to the user.</source>
+        <target state="final">Neilltuwch grwpiau defnyddwyr ôl-benwythnos i'r defnyddiwr.</target>
+      </trans-unit>
+      <trans-unit id="usergroup.details" resname="usergroup.details" xml:space="preserve" approved="yes">
+				<source>The backend user groups defines the permissions which the backend user will inherit. So unless the backend user is an 'Admin' user, he needs to be a member of one or more user groups in order to have practically any permissions assigned. The properties set in the user groups are mostly added together.
+The first (top) group in the list is the group which will, by default, be the owner of pages the user creates.</source>
+			<target state="final">Mae'r grwpiau defnyddwyr backend yn diffinio'r caniatâd y bydd y defnyddiwr backend yn ei etifeddu. Felly oni bai bod y defnyddiwr backend yn ddefnyddiwr 'Admin', mae angen iddo fod yn aelod o un neu fwy o grwpiau defnyddwyr er mwyn cael bron unrhyw ganiatâd. Mae'r eiddo a osodir yn y grwpiau defnyddwyr yn cael eu hadio at ei gilydd yn bennaf.
+Y grŵp cyntaf (uchaf) yn y rhestr yw'r grŵp a fydd, yn ddiofyn, yn berchennog tudalennau y mae'r defnyddiwr yn eu creu.</target></trans-unit>
+      <trans-unit id="_usergroup.seeAlso" resname="_usergroup.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:TSconfig,
+be_groups</source>
+				
+			<target state="final">be_users: TSconfig,
+be_groups</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="db_mountpoints.description" resname="db_mountpoints.description" approved="yes">
+        <source>Assign startpoints for the users page tree.</source>
+        <target state="final">Neilltuwch fannau cychwyn ar gyfer y goeden dudalen defnyddwyr.</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.details" resname="db_mountpoints.details" xml:space="preserve" approved="yes">
+				<source>The page tree used my all Web-submodules to navigate must have some points-of-entry defined. Here you should insert one or more references to a page which will represent a new root page for the page tree. This is called a 'Database mount'.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that backend user groups also has DB mounts which can be inherited by the user. So if you want a group of users to share a page tree, you should probably mount the page tree in the backend user group which they share instead.</source>
+			<target state="final">Rhaid i'r goeden dudalen a ddefnyddiodd fy holl is-fodiwlau Gwe i lywio gael diffinio rhai pwyntiau mynediad. Yma dylech fewnosod un neu fwy o gyfeiriadau at dudalen a fydd yn cynrychioli tudalen wraidd newydd ar gyfer y goeden dudalen. Gelwir hyn yn 'Fownt Cronfa Ddata'.
+
+&lt;strong&gt;Rhybudd&lt;/strong&gt; bod gan grwpiau defnyddwyr backend hefyd mowntiau DB y gall y defnyddiwr eu hetifeddu. Felly os ydych chi am i grŵp o ddefnyddwyr rannu coeden dudalen, mae'n debyg y dylech chi osod y goeden dudalen yn y grŵp defnyddwyr backend y maen nhw'n ei rhannu yn lle.</target></trans-unit>
+      <trans-unit id="_db_mountpoints.seeAlso" resname="_db_mountpoints.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:db_mountpoints,
+be_users:file_mountpoints,
+be_users:options,
+xMOD_csh_corebe:perm_module,
+xMOD_csh_corebe:pagetree</source>
+				
+			<target state="final">be_groups: db_mountpoints,
+be_users: file_mountpoints,
+be_users: opsiynau,
+xMOD_csh_corebe: perm_module,
+xMOD_csh_corebe: pagetree</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_db_mountpoints.image" resname="_db_mountpoints.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/be_groups_3.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_4.png</source>
+				
+			<target state="final">EXT: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / be_groups_3.png,
+EXT: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / be_groups_4.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="db_mountpoints.image_descr" resname="db_mountpoints.image_descr" xml:space="preserve" approved="yes">
+				<source>A DB mount is assigned to the user. Users can only operate on pages and records which are inside their DB mounts!
+When a page is mounted for a user it will become the root of their page tree. The user must have access to the page through the regular page permissions set in the Web &gt; Access module.</source>
+			<target state="final">Neilltuir mownt DB i'r defnyddiwr. Dim ond ar dudalennau a chofnodion sydd y tu mewn i'w mowntiau DB y gall defnyddwyr weithredu!
+Pan osodir tudalen ar gyfer defnyddiwr bydd yn dod yn wraidd eu coeden dudalen. Rhaid i'r defnyddiwr gael mynediad i'r dudalen trwy'r caniatâd tudalen rheolaidd a osodir yn y modiwl Mynediad &gt;</target></trans-unit>
+      <trans-unit id="file_mountpoints.description" resname="file_mountpoints.description" approved="yes">
+        <source>Assign startpoints for the file folder tree.</source>
+        <target state="final">Neilltuwch fannau cychwyn ar gyfer y goeden ffolder ffeiliau.</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints.details" resname="file_mountpoints.details" xml:space="preserve" approved="yes">
+				<source>The file folder tree is used by all File-submodules to navigate between the file folders on the webserver.
+Notice as with 'DB mounts' the file folder mounts may be inherited from the member groups of the user.
+See Backend Groups for details</source>
+			<target state="final">Defnyddir y goeden ffolder ffeiliau gan yr holl is-fodiwlau Ffeil i lywio rhwng y ffolderau ffeiliau ar y gwe-weydd.
+Rhybudd fel gyda 'mowntiau DB' gellir etifeddu mowntiau'r ffolder ffeiliau gan grwpiau sy'n aelodau o'r defnyddiwr.
+Gweler Grwpiau Backend am fanylion</target></trans-unit>
+      <trans-unit id="_file_mountpoints.seeAlso" resname="_file_mountpoints.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:file_mountpoints,
+be_users:db_mountpoints,
+be_users:options,
+xMOD_csh_corebe:filetree,
+sys_filemounts</source>
+				
+			<target state="final">be_groups: file_mountpoints,
+be_users: db_mountpoints,
+be_users: opsiynau,
+xMOD_csh_corebe: filetree,
+sys_filemounts</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="email.description" resname="email.description" approved="yes">
+        <source>Enter the email address of the user.</source>
+        <target state="final">Rhowch gyfeiriad e-bost y defnyddiwr.</target>
+      </trans-unit>
+      <trans-unit id="email.details" resname="email.details" xml:space="preserve" approved="yes">
+				<source>This address is rather important to enter because this is where messages from the system is sent.
+&lt;strong&gt;Notice&lt;/strong&gt; the user is able to change this value by himself from within the User&gt;Setup module.</source>
+			<target state="final">Mae'r cyfeiriad hwn yn eithaf pwysig i fynd i mewn oherwydd dyma lle mae negeseuon o'r system yn cael eu hanfon.
+&lt;strong&gt;Rhybudd&lt;/strong&gt; mae'r defnyddiwr yn gallu newid y gwerth hwn ar ei ben ei hun o'r modiwl Gosod&gt;</target></trans-unit>
+      <trans-unit id="_email.seeAlso" resname="_email.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:realName,
+_MOD_user_setup:option_newPassword</source>
+				
+			<target state="final">be_users: realName,
+_MOD_user_setup: option_newPassword</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="realName.description" resname="realName.description" approved="yes">
+        <source>Enter the ordinary name of the user, eg. John Doe.</source>
+        <target state="final">Rhowch enw cyffredin y defnyddiwr, ee. John Doe.</target>
+      </trans-unit>
+      <trans-unit id="realName.details" resname="realName.details" approved="yes">
+        <source>&lt;strong&gt;Notice&lt;/strong&gt; the user is able to change this value by himself from within the User&gt;Setup module.</source>
+        <target state="final">&lt;strong&gt;Hysbysiad&lt;/strong&gt; mae'r defnyddiwr yn gallu newid y gwerth hwn ar ei ben ei hun o'r modiwl Gosod&gt;</target>
+      </trans-unit>
+      <trans-unit id="_realName.seeAlso" resname="_realName.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:email,
+_MOD_user_setup:option_newPassword</source>
+				
+			<target state="final">be_users: e-bost,
+_MOD_user_setup: option_newPassword</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_disable.seeAlso" resname="_disable.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:starttime,
+be_users:endtime</source>
+				
+			<target state="final">be_users: amser cychwyn,
+be_users: endtime</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="admin.description" resname="admin.description" approved="yes">
+        <source>'Admin' users have TOTAL access to the system!</source>
+        <target state="final">Mae gan ddefnyddwyr 'Admin' fynediad CYFANSWM i'r system!</target>
+      </trans-unit>
+      <trans-unit id="admin.details" resname="admin.details" xml:space="preserve" approved="yes">
+				<source>'Admin' can do anything TYPO3 allows and this kind of user should be used only for administrative purposes. All daily handling should be done with regular users.
+'Admin' users don't need to be members of any backend user groups. However you should be aware that any page created by an admin user without a group will not have any owner-group assigned and thus it will probably be invisible for other users. If this becomes a problem you can easily solve it by assigning a user group to the 'Admin' user anyway. This does of course not affect the permissions since they are unlimited, but the first group listed is by default the owner group of newly created pages.
+'Admin' users are easily recognized as they appear with a red icon instead of the ordinary blue user-icon.
+
+You should probably not assign any other users than yourself as an 'Admin' user.</source>
+			<target state="final">Gall 'Admin' wneud unrhyw beth y mae TYPO3 yn ei ganiatáu a dim ond at ddibenion gweinyddol y dylid defnyddio'r math hwn o ddefnyddiwr. Dylai'r holl driniaethau dyddiol gael ei wneud gyda defnyddwyr rheolaidd.
+Nid oes angen i ddefnyddwyr 'Gweinyddol' fod yn aelodau o unrhyw grwpiau defnyddwyr ôl-benwythnos. Fodd bynnag, dylech fod yn ymwybodol na fydd unrhyw dudalen perchennog a grëir gan unrhyw dudalen a grëir gan ddefnyddiwr gweinyddol heb grŵp ac felly mae'n debyg y bydd yn anweledig i ddefnyddwyr eraill. Os daw hyn yn broblem gallwch ei datrys yn hawdd trwy aseinio grŵp defnyddwyr i'r defnyddiwr 'Admin' beth bynnag. Wrth gwrs, nid yw hyn yn effeithio ar y caniatâd gan eu bod yn ddiderfyn, ond y grŵp cyntaf a restrir yn ddiofyn yw grŵp perchnogion tudalennau sydd newydd eu creu.
+Mae'n hawdd adnabod defnyddwyr 'Admin' gan eu bod yn ymddangos gydag eicon coch yn lle'r eicon defnyddiwr glas cyffredin.
+
+Mae'n debyg na ddylech aseinio unrhyw ddefnyddwyr eraill na chi'ch hun fel defnyddiwr 'Gweinyddol'.</target></trans-unit>
+      <trans-unit id="_admin.image" resname="_admin.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/beuser_4.png</source>
+        <target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / beuser_4.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="options.description" resname="options.description" approved="yes">
+        <source>Select if the user should inherit page tree or folder tree mountpoints from member groups.</source>
+        <target state="final">Dewiswch a ddylai'r defnyddiwr etifeddu pwyntiau pwyntio coeden dudalen neu ffolder gan grwpiau sy'n aelodau.</target>
+      </trans-unit>
+      <trans-unit id="options.details" resname="options.details" xml:space="preserve" approved="yes">
+				<source>It's a great advantage to let users inherit mountpoints from membergroups because it makes administration of the same mountpoints for many users extremely easy.
+If you don't check these options, you must make sure the mount points for the page tree and file folder tree is set specifically for the user.</source>
+			<target state="final">Mae'n fantais fawr gadael i ddefnyddwyr etifeddu pwyntiau pwynt gan aelod-grwpiau oherwydd ei bod yn gwneud gweinyddu'r un mowntbwyntiau i lawer o ddefnyddwyr yn hynod o hawdd.
+Os na fyddwch yn gwirio'r opsiynau hyn, rhaid i chi sicrhau bod y pwyntiau mowntio ar gyfer y goeden dudalen a'r goeden ffolder ffeiliau wedi'u gosod yn benodol ar gyfer y defnyddiwr.</target></trans-unit>
+      <trans-unit id="_options.seeAlso" resname="_options.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:db_mountpoints,
+be_users:file_mountpoints</source>
+				
+			<target state="final">be_users: db_mountpoints,
+be_users: file_mountpoints</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="file_permissions.description" resname="file_permissions.description" approved="yes">
+        <source>Select file operation permissions for the user.</source>
+        <target state="final">Dewiswch ganiatâd gweithredu ffeil ar gyfer y defnyddiwr.</target>
+      </trans-unit>
+      <trans-unit id="file_permissions.details" resname="file_permissions.details" xml:space="preserve" approved="yes">
+				<source>These settings relate to the functions found in the File&gt;List module as well as general upload of files.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that backend user groups also have file operation permissions which automatically apply to the user if he's member of an accordant group. So if you want a group of users share identical file operation permissions, you should probably define them in a backend user group instead.</source>
+			<target state="final">Mae'r gosodiadau hyn yn ymwneud â'r swyddogaethau a geir yn y&gt;yn ogystal â llwytho ffeiliau i fyny yn gyffredinol.
+
+&lt;strong&gt;Hysbysiad&lt;/strong&gt; bod gan grwpiau defnyddwyr backend hefyd ganiatâd gweithredu ffeiliau sy'n berthnasol yn awtomatig i'r defnyddiwr os yw'n aelod o grŵp cydsynio. Felly os ydych chi am i grŵp o ddefnyddwyr rannu caniatâd gweithredu ffeil union yr un fath, mae'n debyg y dylech eu diffinio mewn grŵp defnyddwyr ôl-benwythnos yn lle.</target></trans-unit>
+      <trans-unit id="file_permissions.seeAlso" resname="file_permissions.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:file_mountpoints,
+be_group:file_permissions</source>
+				
+			<target state="final">be_users: file_mountpoints,
+be_group: file_permissions</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="fileoper_perms.description" resname="fileoper_perms.description" approved="yes">
+        <source>Select file operation permissions for the user.</source>
+        <target state="final">Dewiswch ganiatâd gweithredu ffeil ar gyfer y defnyddiwr.</target>
+      </trans-unit>
+      <trans-unit id="fileoper_perms.details" resname="fileoper_perms.details" xml:space="preserve" approved="yes">
+				<source>These settings relate to the functions found in the File&gt;List module as well as general upload of files.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that backend user groups also have file operation permissions which automatically apply to the user if he's member of an accordant group. So if you want a group of users share identical file operation permissions, you should probably define them in a backend user group instead.</source>
+			<target state="final">Mae'r gosodiadau hyn yn ymwneud â'r swyddogaethau a geir yn y&gt;yn ogystal â llwytho ffeiliau i fyny yn gyffredinol.
+
+&lt;strong&gt;Hysbysiad&lt;/strong&gt; bod gan grwpiau defnyddwyr backend hefyd ganiatâd gweithredu ffeiliau sy'n berthnasol yn awtomatig i'r defnyddiwr os yw'n aelod o grŵp cydsynio. Felly os ydych chi am i grŵp o ddefnyddwyr rannu caniatâd gweithredu ffeil union yr un fath, mae'n debyg y dylech eu diffinio mewn grŵp defnyddwyr ôl-benwythnos yn lle.</target></trans-unit>
+      <trans-unit id="_fileoper_perms.seeAlso" resname="_fileoper_perms.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:file_mountpoints,
+be_group:file_permissions</source>
+				
+			<target state="final">be_users: file_mountpoints,
+be_group: file_permissions</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Enter the date from which the account is active.</source>
+        <target state="final">Nodwch y dyddiad y mae'r cyfrif yn weithredol.</target>
+      </trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:disable,
+be_users:endtime,
+pages:starttime</source>
+				
+			<target state="final">be_users: analluoga,
+be_users: endtime,
+tudalen: amser cychwyn</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>Enter the date from which the account is disabled.</source>
+        <target state="final">Nodwch y dyddiad y mae'r cyfrif yn anabl.</target>
+      </trans-unit>
+      <trans-unit id="_endtime.seeAlso" resname="_endtime.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:disable,
+be_users:starttime,
+pages:starttime</source>
+				
+			<target state="final">be_users: analluoga,
+be_users: amser cychwyn,
+tudalen: amser cychwyn</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="lastlogin.description" resname="lastlogin.description" approved="yes">
+        <source>This field shows the user's last log in date.</source>
+        <target state="final">Mae'r maes hwn yn dangos dyddiad mewngofnodi olaf y defnyddiwr.</target>
+      </trans-unit>
+      <trans-unit id="lang.description" resname="lang.description" approved="yes">
+        <source>Select the &lt;i&gt;default&lt;/i&gt; language.</source>
+        <target state="final">Dewiswch yr iaith &lt;i&gt;ddiofyn&lt;/i&gt;</target>
+      </trans-unit>
+      <trans-unit id="lang.details" resname="lang.details" xml:space="preserve" approved="yes">
+				<source>This determines the language of the backend interface for the user. All mainstream parts available for regular users are available in the system language selected.
+'Admin'-users however will experience that the 'Admin'-only parts of TYPO3 is in english. This includes all submodules in "Tools" and the Web&gt;Template module.
+
+&lt;b&gt;Notice&lt;/b&gt; this is only setting the default language. As soon as the user has logged in the language must be changed through the User&gt;Setup module. Also you will have to install the corresponding language pack which can be found as an extension on TYPO3.org with the prefix "csh_XX" where XX is the TYPO3 language key.</source>
+			<target state="final">Mae hyn yn pennu iaith y rhyngwyneb backend ar gyfer y defnyddiwr. Mae'r holl rannau prif ffrwd sydd ar gael i ddefnyddwyr rheolaidd ar gael yn yr iaith system a ddewiswyd.
+'Fodd bynnag, bydd Admin'-ddefnyddwyr profi fod y' Admin'-unig rannau o TYPO3 yn Saesneg. Mae hyn yn cynnwys yr holl is-fodiwlau yn "Offer" a modiwl Templed&gt;
+
+&lt;b&gt;Rhybudd&lt;/b&gt; dim ond gosod yr iaith ddiofyn y mae hyn. Cyn gynted ag y bydd y defnyddiwr wedi mewngofnodi rhaid newid yr iaith trwy'r modiwl Gosod&gt;Hefyd bydd yn rhaid i chi osod y pecyn iaith cyfatebol y gellir ei ddarganfod fel estyniad ar TYPO3.org gyda'r rhagddodiad "csh_XX" lle XX yw'r allwedd iaith TYPO3.</target></trans-unit>
+      <trans-unit id="_lang.seeAlso" resname="_lang.seeAlso" approved="yes">
+        <source>_MOD_user_setup:language</source>
+        <target state="final">_MOD_user_setup: iaith</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="userMods.description" resname="userMods.description" approved="yes">
+        <source>Select available backend modules for the user.</source>
+        <target state="final">Dewiswch fodiwlau backend sydd ar gael ar gyfer y defnyddiwr.</target>
+      </trans-unit>
+      <trans-unit id="userMods.details" resname="userMods.details" xml:space="preserve" approved="yes">
+				<source>This determines which 'menu items' are available for the user in the backend.
+
+Notice that the same list of modules may be configured for the backend user groups and that these will be inherited by the user in addition to the modules you select here. It's highly likely that you should not set any modules for the user himself but rather select the modules in the backend groups he's a member of. However this list provides a great way to add a single module for specific users.</source>
+			<target state="final">Mae hyn yn penderfynu pa 'eitemau dewislen' sydd ar gael i'r defnyddiwr yn ystod y penwythnos.
+
+Sylwch y gellir ffurfweddu'r un rhestr o fodiwlau ar gyfer y grwpiau defnyddwyr ôl-bac ac y bydd y defnyddiwr yn etifeddu'r rhain yn ychwanegol at y modiwlau a ddewiswch yma. Mae'n debygol iawn na ddylech chi osod unrhyw fodiwlau ar gyfer y defnyddiwr ei hun ond yn hytrach dewis y modiwlau yn y grwpiau ôl-benwythnos y mae'n aelod ohonynt. Fodd bynnag, mae'r rhestr hon yn ffordd wych o ychwanegu modiwl sengl ar gyfer defnyddwyr penodol.</target></trans-unit>
+      <trans-unit id="_userMods.seeAlso" resname="_userMods.seeAlso" approved="yes">
+        <source>be_groups:groupMods</source>
+        <target state="final">be_groups: groupMods</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>Enter additional TSconfig for the user (advanced).</source>
+        <target state="final">Rhowch TSconfig ychwanegol ar gyfer y defnyddiwr (uwch).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details" resname="TSconfig.details" approved="yes">
+        <source>This field allows you to extend the configuration of the user in severe details. A brief summary of the options include a more detailed configuration of the backend modules, setting of user specific default table field values, setting of Rich Text Editor options etc.</source>
+        <target state="final">Mae'r maes hwn yn caniatáu ichi ymestyn cyfluniad y defnyddiwr mewn manylion difrifol. Mae crynodeb byr o'r opsiynau'n cynnwys cyfluniad manylach o'r modiwlau backend, gosod gwerthoedd maes tabl diofyn penodol i'r defnyddiwr, gosod opsiynau Golygydd Testun Cyfoethog ac ati.</target>
+      </trans-unit>
+      <trans-unit id="_TSconfig.seeAlso" resname="_TSconfig.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:TSconfig,
+fe_users:TSconfig,
+be_groups:TSconfig,
+User TSconfig | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/</source>
+				
+			<target state="final">tudalennau: TSconfig,
+fe_users: TSconfig,
+be_groups: TSconfig,
+User TSconfig | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="allowed_languages.description" resname="allowed_languages.description" approved="yes">
+        <source>Select which record languages the group members are limited to edit.</source>
+        <target state="final">Dewiswch pa ieithoedd recordio y mae aelodau'r grŵp yn gyfyngedig i'w golygu.</target>
+      </trans-unit>
+      <trans-unit id="allowed_languages.details" resname="allowed_languages.details" approved="yes">
+        <source>You can also limit users to specific languages with user group settings. Please see the same field for backend user groups for more details.</source>
+        <target state="final">Gallwch hefyd gyfyngu defnyddwyr i ieithoedd penodol gyda gosodiadau grwpiau defnyddwyr. Gweler yr un maes ar gyfer grwpiau defnyddwyr backend i gael mwy o fanylion.</target>
+      </trans-unit>
+      <trans-unit id="_allowed_languages.seeAlso" resname="_allowed_languages.seeAlso" approved="yes">
+        <source>be_groups:allowed_languages</source>
+        <target state="final">be_groups: allow_languages</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_allowed_languages.image" resname="_allowed_languages.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/be_groups_18.png</source>
+        <target state="final">ESTYN: craidd / Adnoddau / Cyhoeddus / Delweddau / cshimages / be_groups_18.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
