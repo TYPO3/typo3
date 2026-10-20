@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/page.xlf" date="2025-03-03T00:00:00Z" product-name="backend" target-language="lo">
+    <header/>
+    <body>
+      <!-- Step: doktype selection -->
+      <trans-unit id="step.doktype.headline" approved="yes">
+        <source>Select page type</source>
+        <target state="final">ເລືອກປະເພດໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="step.doktype.not_allowed_doktype.title" approved="yes">
+        <source>Invalid page type</source>
+        <target state="final">ປະເພດໜ້າບໍ່ຖືກຕ້ອງ</target>
+      </trans-unit>
+      <trans-unit id="step.doktype.not_allowed_doktype.message" approved="yes">
+        <source>The selected page type is not allowed here. Please choose a different type.</source>
+        <target state="final">ປະເພດໜ້າທີ່ເລືອກບໍ່ໄດ້ຮັບອະນຸຍາດຢູ່ບ່ອນນີ້. ກະລຸນາເລືອກປະເພດອື່ນ.</target>
+      </trans-unit>
+      <trans-unit id="step.doktype.filter.noResults" approved="yes">
+        <source>No matching page type found.</source>
+        <target state="final">ບໍ່ພົບປະເພດໜ້າທີ່ກົງກັນ.</target>
+      </trans-unit>
+      <trans-unit id="step.doktype.load_error" approved="yes">
+        <source>Failed to fetch available page types. This is likely due to missing permissions.</source>
+        <target state="final">ບໍ່ສາມາດດຶງຂໍ້ມູນປະເພດໜ້າທີ່ມີຢູ່ໄດ້. ອາດເປັນຍ້ອນຂາດສິດການອະນຸຍາດ.</target>
+      </trans-unit>
+      <trans-unit id="step.setup" approved="yes">
+        <source>Page Setup</source>
+        <target state="final">ການຕັ້ງຄ່າໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="step.link" approved="yes">
+        <source>Link Configuration</source>
+        <target state="final">ການຕັ້ງຄ່າລິ້ງ</target>
+      </trans-unit>
+      <trans-unit id="step.shortcut" approved="yes">
+        <source>Shortcut Configuration</source>
+        <target state="final">ການຕັ້ງຄ່າທາງລັດ</target>
+      </trans-unit>
+      <trans-unit id="step.mounting" approved="yes">
+        <source>Mounting Configuration</source>
+        <target state="final">ການຕັ້ງຄ່າ Mounting</target>
+      </trans-unit>
+      <trans-unit id="page_wizard.success.title" approved="yes">
+        <source>Page created</source>
+        <target state="final">ສ້າງໜ້າແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="page_wizard.success.description" approved="yes">
+        <source>The page has been successfully created. Click "Finish" to be redirected to the newly created page.</source>
+        <target state="final">ສ້າງໜ້າສຳເລັດແລ້ວ. ກົດ "ສຳເລັດ" ເພື່ອໄປຫາໜ້າທີ່ສ້າງຂຶ້ນໃໝ່.</target>
+      </trans-unit>
+      <trans-unit id="page_wizard.button.create_another_page" approved="yes">
+        <source>Create another page</source>
+        <target state="final">ສ້າງໜ້າອື່ນຕື່ມ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
