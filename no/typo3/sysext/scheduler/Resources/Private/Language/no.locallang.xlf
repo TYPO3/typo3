@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814984" source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="button.cancel" resname="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Avbryt</target>
+      </trans-unit>
+      <trans-unit id="function.info" resname="function.info" approved="yes">
+        <source>Information</source>
+        <target state="final">Informasjon</target>
+      </trans-unit>
+      <trans-unit id="label.cron" resname="label.cron" approved="yes">
+        <source>Cron</source>
+        <target state="final">Cron</target>
+      </trans-unit>
+      <trans-unit id="label.defType.interval" resname="label.defType.interval" approved="yes">
+        <source>Interval</source>
+        <target state="final">Intervall</target>
+      </trans-unit>
+      <trans-unit id="label.description" resname="label.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beskrivelse</target>
+      </trans-unit>
+      <trans-unit id="label.email" resname="label.email" approved="yes">
+        <source>Email</source>
+        <target state="final">Epost</target>
+      </trans-unit>
+      <trans-unit id="label.extension" resname="label.extension" approved="yes">
+        <source>Extension</source>
+        <target state="final">Extension</target>
+      </trans-unit>
+      <trans-unit id="label.frequency" resname="label.frequency" approved="yes">
+        <source>Frequency</source>
+        <target state="final">Hyppighet</target>
+      </trans-unit>
+      <trans-unit id="label.id" resname="label.id" approved="yes">
+        <source>ID</source>
+        <target state="final">ID</target>
+      </trans-unit>
+      <trans-unit id="label.manual" resname="label.manual" approved="yes">
+        <source>Manual</source>
+        <target state="final">Håndbok</target>
+      </trans-unit>
+      <trans-unit id="label.name" resname="label.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Navn</target>
+      </trans-unit>
+      <trans-unit id="label.type" resname="label.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Type</target>
+      </trans-unit>
+      <trans-unit id="label.type.recurring" resname="label.type.recurring" approved="yes">
+        <source>Recurring</source>
+        <target state="final">Gjentakende</target>
+      </trans-unit>
+      <trans-unit id="label.addOptionToCommand" resname="label.addOptionToCommand" approved="yes">
+        <source>Add option</source>
+        <target state="final">Legg til alternativ</target>
+      </trans-unit>
+      <trans-unit id="none" resname="none" approved="yes">
+        <source>None</source>
+        <target state="final">Ingen</target>
+      </trans-unit>
+      <trans-unit id="status" resname="status" approved="yes">
+        <source>Status</source>
+        <target state="final">Status</target>
+      </trans-unit>
+      <trans-unit id="status.progress" resname="status.progress" approved="yes">
+        <source>Progress</source>
+        <target state="final">Fremdrift</target>
+      </trans-unit>
+      <trans-unit id="status.disabled" resname="status.disabled" approved="yes">
+        <source>disabled</source>
+        <target state="final">Deaktivert</target>
+      </trans-unit>
+      <trans-unit id="status.scheduled" resname="status.scheduled" approved="yes">
+        <source>scheduled</source>
+        <target state="final">planlagt</target>
+      </trans-unit>
+      <trans-unit id="task" resname="task" approved="yes">
+        <source>Task</source>
+        <target state="final">Oppgave</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
