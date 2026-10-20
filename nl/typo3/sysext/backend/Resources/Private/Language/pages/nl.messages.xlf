@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="nl">
+  <file id="f1">
+    <unit id="link_missing">
+      <segment state="final">
+        <source>The "%1$s" field is required to resolve links for pages of type "%2$s". Please provide a value in the page properties.</source>
+        <target>Het "%1$s" veld is vereist om koppelingen op te lossen voor pagina's van het type "%2$s". Geef een waarde op in de pagina eigenschappen.</target>
+      </segment>
+    </unit>
+    <unit id="link_invalid">
+      <segment state="final">
+        <source>Invalid link in "%1$s": "%2$s" cannot be resolved. Select a valid destination in the page properties.</source>
+        <target>Ongeldige koppeling in "%1$s": "%2$s" kan niet worden opgelost. Selecteer een geldige bestemming in de pagina eigenschappen.</target>
+      </segment>
+    </unit>
+    <unit id="link_destination">
+      <segment state="final">
+        <source>Page of type "%1$s" links to the following %2$s: %3$s.</source>
+        <target>Pagina van type "%1$s" linkt naar het volgende "%2$s": %3$s.</target>
+      </segment>
+    </unit>
+    <unit id="link_current">
+      <segment state="final">
+        <source>Page of type "%1$s" links to current request url, and dynamic value cannot be displayed here.</source>
+        <target>Pagina van type "%1$s" linkt naar de huidige Url en de dynamische waarde kan hier niet worden weergegeven.</target>
+      </segment>
+    </unit>
+    <unit id="link_current_with_added_queryparameters">
+      <segment state="final">
+        <source>Page of type "%1$s" appends %2$s to current request url, and dynamic value cannot be displayed here.</source>
+        <target>Pagina van type "%1$s" voegt %2$s toe aan de huidige URL en de dynamische waarde kan hier niet worden weergegeven.</target>
+      </segment>
+    </unit>
+    <unit id="link_destination_record">
+      <segment state="final">
+        <source>Page of type "%1$s" links to the following record of type "%2$s": %3$s.</source>
+        <target>Pagina van type "%1$s" linkt naar het volgende record van het type "%2$s": %3$s.</target>
+      </segment>
+    </unit>
+    <unit id="link_destination_additional_parameters">
+      <segment state="final">
+        <source>Additional parameters: "%s".</source>
+        <target>Extra parameters: "%s".</target>
+      </segment>
+    </unit>
+    <unit id="link_destination_content_element">
+      <segment state="final">
+        <source>Page of type "%1$s" links to content element %2$s on page %3$s.</source>
+        <target>Pagina van type "%1$s" linkt naar inhoudselement %2$s op pagina %3$s.</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
