@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_mfa.xlf" date="2021-01-26T11:58:45Z" product-name="cms" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="overview.title" approved="yes">
+        <source>Multi-factor Authentication Overview</source>
+        <target state="final">Visão geral de autenticação multifator</target>
+      </trans-unit>
+      <trans-unit id="overview.badge.active" approved="yes">
+        <source>Active</source>
+        <target state="final">Ativo</target>
+      </trans-unit>
+      <trans-unit id="overview.badge.locked" approved="yes">
+        <source>Locked</source>
+        <target state="final">Bloqueado</target>
+      </trans-unit>
+      <trans-unit id="overview.defaultProvider" approved="yes">
+        <source>Default provider</source>
+        <target state="final">Provedor padrão</target>
+      </trans-unit>
+      <trans-unit id="overview.unlockLinkTitle" approved="yes">
+        <source>Unlock %s</source>
+        <target state="final">Desbloquear %s</target>
+      </trans-unit>
+      <trans-unit id="overview.unlockLinkLabel" approved="yes">
+        <source>Unlock</source>
+        <target state="final">Desbloquear</target>
+      </trans-unit>
+      <trans-unit id="overview.editLinkTitle" approved="yes">
+        <source>Edit %s</source>
+        <target state="final">Editar %s</target>
+      </trans-unit>
+      <trans-unit id="overview.editLinkLabel" approved="yes">
+        <source>Edit / Change</source>
+        <target state="final">Editar / Alterar</target>
+      </trans-unit>
+      <trans-unit id="overview.deactivateLinkTitle" approved="yes">
+        <source>Deactivate %s</source>
+        <target state="final">Desativar %s</target>
+      </trans-unit>
+      <trans-unit id="overview.deactivateLinkLabel" approved="yes">
+        <source>Deactivate</source>
+        <target state="final">Desativar</target>
+      </trans-unit>
+      <trans-unit id="overview.setupLinkTitle" approved="yes">
+        <source>Setup %s</source>
+        <target state="final">Configurar %s</target>
+      </trans-unit>
+      <trans-unit id="overview.setupLinkLabel" approved="yes">
+        <source>Setup</source>
+        <target state="final">Configurar</target>
+      </trans-unit>
+      <trans-unit id="overview.setupRequired.title" approved="yes">
+        <source>Multi-factor authentication required</source>
+        <target state="final">A autenticação de dois fatores é necessária</target>
+      </trans-unit>
+      <trans-unit id="overview.noProviders.title" approved="yes">
+        <source>No multi-factor authentication providers</source>
+        <target state="final">Não há provedor de autenticação multifator</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
