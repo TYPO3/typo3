@@ -22,6 +22,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
@@ -29,6 +31,7 @@ use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TypoScript\PageTsConfig;
 use TYPO3\CMS\Core\TypoScript\PageTsConfigFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -81,6 +84,10 @@ readonly class DatabaseRecordLinkBuilder implements TypolinkBuilderInterface
                 $request
             )
         );
+        $queryParameters = [];
+        if (!empty($linkDetails['parameters'])) {
+            parse_str(ltrim((string)$linkDetails['parameters'], '?&'), $queryParameters);
+        }
         $record = $event->record;
         if ($record === null) {
             $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
@@ -88,7 +95,9 @@ readonly class DatabaseRecordLinkBuilder implements TypolinkBuilderInterface
                 $record = $pageRepository->getRawRecord($databaseTable, (int)$linkDetails['uid']);
             } else {
                 $record = $pageRepository->checkRecord($databaseTable, (int)$linkDetails['uid']);
-                $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
+                // Check the availability of the record in the language the link points to
+                $languageAspect = $this->getTargetLanguageAspect($queryParameters, $typoScriptConfiguration, $configuration, $request)
+                    ?? GeneralUtility::makeInstance(Context::class)->getAspect('language');
                 if (is_array($record) && $this->schemaFactory->has($databaseTable)) {
                     $schema = $this->schemaFactory->get($databaseTable);
                     if ($schema->isLanguageAware()) {
@@ -137,12 +146,45 @@ readonly class DatabaseRecordLinkBuilder implements TypolinkBuilderInterface
         if (!empty($linkDetails['fragment'])) {
             $typoScriptConfiguration['section'] = $linkDetails['fragment'];
         }
+        if (!empty($queryParameters)) {
+            $typoScriptConfiguration['queryParameters'] = array_replace_recursive(
+                (array)($typoScriptConfiguration['queryParameters'] ?? []),
+                $queryParameters
+            );
+        }
         // Build the full link to the record by calling LinkFactory again ("inception")
         $localContentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $localContentObjectRenderer->setRequest($request);
         $localContentObjectRenderer->start($record, $databaseTable);
         $localContentObjectRenderer->parameters = $request->getAttribute('currentContentObject')->parameters ?? [];
         return $localContentObjectRenderer->createLink($linkText, $typoScriptConfiguration);
+    }
+
+    /**
+     * Returns the language aspect of the target language, if the link selects one by
+     * "_language" or "L" (in this order of precedence, as done by PageLinkBuilder).
+     * Returns null, if the current language applies.
+     */
+    protected function getTargetLanguageAspect(array $queryParameters, array $typoScriptConfiguration, array $configuration, ServerRequestInterface $request): ?LanguageAspect
+    {
+        // An explicitly configured "language" takes precedence over the link parameters in PageLinkBuilder
+        if (isset($typoScriptConfiguration['language']) || isset($configuration['language'])) {
+            return null;
+        }
+        $targetLanguageId = $queryParameters['_language'] ?? $queryParameters['L'] ?? null;
+        if (!is_scalar($targetLanguageId)) {
+            return null;
+        }
+        $site = $request->getAttribute('site');
+        if (!$site instanceof Site) {
+            return null;
+        }
+        try {
+            $siteLanguage = $site->getLanguageById((int)$targetLanguageId);
+        } catch (\InvalidArgumentException) {
+            return null;
+        }
+        return LanguageAspectFactory::createFromSiteLanguage($siteLanguage);
     }
 
     /**

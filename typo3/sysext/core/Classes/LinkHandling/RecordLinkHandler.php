@@ -41,6 +41,9 @@ class RecordLinkHandler implements LinkHandlingInterface
         }
         $urn = $this->baseUrn;
         $urn .= sprintf('?identifier=%s&uid=%s', $parameters['identifier'], $parameters['uid']);
+        if (!empty($parameters['parameters'])) {
+            $urn .= '&' . ltrim($parameters['parameters'], '?&');
+        }
 
         if (!empty($parameters['fragment'])) {
             $urn .= sprintf('#%s', $parameters['fragment']);
@@ -60,6 +63,11 @@ class RecordLinkHandler implements LinkHandlingInterface
             throw new \InvalidArgumentException('The RecordLinkHandler expects identifier, uid as $data configuration', 1486155151);
         }
 
-        return $data;
+        $result = $data;
+        unset($data['identifier'], $data['uid']);
+        if (!empty($data)) {
+            $result['parameters'] = http_build_query($data, '', '&', PHP_QUERY_RFC3986);
+        }
+        return $result;
     }
 }
