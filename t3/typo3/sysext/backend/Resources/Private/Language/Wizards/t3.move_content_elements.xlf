@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/move_content_elements.xlf" date="2024-03-08T20:22:34Z" product-name="backend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="headline.move">
+        <source>Move element "%s" [%d]</source>
+        <target>crwdns379556:0%scrwdnd379556:0%dcrwdne379556:0</target>
+      </trans-unit>
+      <trans-unit id="headline.copy">
+        <source>Copy element "%s" [%d]</source>
+        <target>crwdns379558:0%scrwdnd379558:0%dcrwdne379558:0</target>
+      </trans-unit>
+      <trans-unit id="currentPath">
+        <source>Current path</source>
+        <target>crwdns379560:0crwdne379560:0</target>
+      </trans-unit>
+      <trans-unit id="makeCopy">
+        <source>Copy element instead of moving</source>
+        <target>crwdns379562:0crwdne379562:0</target>
+      </trans-unit>
+      <trans-unit id="moveElement.notification.elementMoved.title">
+        <source>Element successfully moved</source>
+        <target>crwdns379564:0crwdne379564:0</target>
+      </trans-unit>
+      <trans-unit id="moveElement.notification.elementMoved.message">
+        <source>The element "%s" has been successfully moved.</source>
+        <target>crwdns379566:0%scrwdne379566:0</target>
+      </trans-unit>
+      <trans-unit id="moveElement.notification.elementCopied.title">
+        <source>Element successfully copied</source>
+        <target>crwdns379568:0crwdne379568:0</target>
+      </trans-unit>
+      <trans-unit id="moveElement.notification.elementCopied.message">
+        <source>The element "%s" has been successfully copied.</source>
+        <target>crwdns379570:0%scrwdne379570:0</target>
+      </trans-unit>
+      <trans-unit id="moveElement.notification.elementPasted.action.dismiss">
+        <source>Dismiss</source>
+        <target>crwdns379572:0crwdne379572:0</target>
+      </trans-unit>
+      <trans-unit id="moveElement.notification.elementPasted.action.open">
+        <source>Open "%s"</source>
+        <target>crwdns379574:0%scrwdne379574:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
