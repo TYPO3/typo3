@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814781" source-language="en" datatype="plaintext" original="EXT:belog/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="belog" target-language="lv">
+    <header/>
+    <body>
+      <trans-unit id="adminLog" resname="adminLog" approved="yes">
+        <source>Administration log</source>
+        <target state="final">Administratīvais pārskats</target>
+      </trans-unit>
+      <trans-unit id="allUsers" resname="allUsers" approved="yes">
+        <source>[All users]</source>
+        <target state="final">[Visi lietotāji]</target>
+      </trans-unit>
+      <trans-unit id="any" resname="any" approved="yes">
+        <source>[Any]</source>
+        <target state="final">[Visi]</target>
+      </trans-unit>
+      <trans-unit id="live" resname="live" approved="yes">
+        <source>LIVE</source>
+        <target state="final">LIVE</target>
+      </trans-unit>
+      <trans-unit id="draft" resname="draft" approved="yes">
+        <source>Draft</source>
+        <target state="final">Melnraksts</target>
+      </trans-unit>
+      <trans-unit id="self" resname="self" approved="yes">
+        <source>Self</source>
+        <target state="final">Paša</target>
+      </trans-unit>
+      <trans-unit id="thisWeek" resname="thisWeek" approved="yes">
+        <source>This week</source>
+        <target state="final">Šajā nedēļā</target>
+      </trans-unit>
+      <trans-unit id="lastWeek" resname="lastWeek" approved="yes">
+        <source>Last week</source>
+        <target state="final">Pagājušajā nedēļā</target>
+      </trans-unit>
+      <trans-unit id="last7Days" resname="last7Days" approved="yes">
+        <source>Last 7 days</source>
+        <target state="final">Pēdējās 7 dienas</target>
+      </trans-unit>
+      <trans-unit id="thisMonth" resname="thisMonth" approved="yes">
+        <source>This month</source>
+        <target state="final">Šis mēnesis</target>
+      </trans-unit>
+      <trans-unit id="lastMonth" resname="lastMonth" approved="yes">
+        <source>Last month</source>
+        <target state="final">Pagājušais mēnesis</target>
+      </trans-unit>
+      <trans-unit id="last31Days" resname="last31Days" approved="yes">
+        <source>Last 31 days</source>
+        <target state="final">Pēdējās 31 dienas</target>
+      </trans-unit>
+      <trans-unit id="noLimit" resname="noLimit" approved="yes">
+        <source>No limit</source>
+        <target state="final">Bez ierobežojuma</target>
+      </trans-unit>
+      <trans-unit id="userDefined" resname="userDefined" approved="yes">
+        <source>User defined</source>
+        <target state="final">Lietotāja definēts</target>
+      </trans-unit>
+      <trans-unit id="set" resname="set" approved="yes">
+        <source>Set</source>
+        <target state="final">Uzstādīt</target>
+      </trans-unit>
+      <trans-unit id="chLog_users_-1" resname="chLog_users_-1" approved="yes">
+        <source>Self</source>
+        <target state="final">Paša</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_0" resname="chLog_time_0" approved="yes">
+        <source>This week</source>
+        <target state="final">Šajā nedēļā</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_1" resname="chLog_time_1" approved="yes">
+        <source>Last week</source>
+        <target state="final">Pagājušajā nedēļā</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_2" resname="chLog_time_2" approved="yes">
+        <source>Last 7 days</source>
+        <target state="final">Pēdējās 7 dienas</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_10" resname="chLog_time_10" approved="yes">
+        <source>This month</source>
+        <target state="final">Šis mēnesis</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_11" resname="chLog_time_11" approved="yes">
+        <source>Last month</source>
+        <target state="final">Pagājušais mēnesis</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_12" resname="chLog_time_12" approved="yes">
+        <source>Last 31 days</source>
+        <target state="final">Pēdējās 31 dienas</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_20" resname="chLog_time_20" approved="yes">
+        <source>No limit</source>
+        <target state="final">Bez ierobežojuma</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
