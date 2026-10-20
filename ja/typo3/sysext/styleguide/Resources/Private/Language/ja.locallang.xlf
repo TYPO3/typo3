@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:styleguide/Resources/Private/Language/locallang.xlf" date="2026-11-10T13:37:37Z" product-name="styleguide" target-language="ja">
+    <header/>
+    <body>
+      <!-- Component: Avatar -->
+      <!-- Component: Badge -->
+      <!-- Component: Breadcrumb -->
+      <!-- Component: Button -->
+      <!-- Component: Card -->
+      <!-- Component: Checkbox -->
+      <!-- Component: Combobox -->
+      <!-- Component: Dropdown -->
+      <!-- Component: Developer Tools -->
+      <!-- Component: Exception -->
+      <!-- Component: Flash message -->
+      <!-- Component: Form -->
+      <!-- Component: Infobox -->
+      <!-- Component: Input -->
+      <!-- Component: List groups -->
+      <!-- Component: Modal -->
+      <!-- Component: Navs -->
+      <!-- Component: Notification -->
+      <!-- Component: Pagination -->
+      <!-- Component: Panels -->
+      <!-- Component: Progress indicator -->
+      <!-- Component: Progress trackers -->
+      <!-- Component: Radio -->
+      <!-- Component: Content Navigation -->
+      <!-- Component: Select -->
+      <!-- Component: Status indicator -->
+      <!-- Component: Tabs -->
+      <!-- Component: Table -->
+      <!-- Component: Textarea -->
+      <!-- Component: Tree -->
+      <!-- Styles: Color tokens -->
+      <!-- Styles: Accent and State -->
+      <!-- Styles: Icons -->
+      <!-- Styles: Shadows -->
+      <!-- Styles: Surfaces -->
+      <!-- Styles: Typography -->
+    </body>
+  </file>
+</xliff>
