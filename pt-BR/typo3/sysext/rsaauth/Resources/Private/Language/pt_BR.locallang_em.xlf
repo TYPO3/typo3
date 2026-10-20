@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814912" source-language="en" datatype="plaintext" original="EXT:rsaauth/Resources/Private/Language/locallang_em.xlf" date="2011-10-17T20:22:32Z" product-name="rsaauth" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="rsaauth.config.temporaryDirectory" resname="rsaauth.config.temporaryDirectory" approved="yes">
+        <source>Path to the temporary directory:This directory will contain temporary files for encryption/decrytion. It should be located outside of the web site root and it should not be /tmp. Directory permissions should be 0700 and the owner should be the web server user. If left empty, typo3conf/ will be used and it is INSECURE! Make sure that the directory is included into open_basedir if you use this setting.</source>
+        <target state="final">Caminho para o diretório temporário: Este diretório conterá arquivos temporários para criptografia/decriptografia. Ele deve estar localizado fora da raiz do site e não deve ser o /tmp. As permissões de diretório devem ser 0700 e o dono deve ser o usuário do servidor web. Se deixado vazio, o diretório typo3conf/ será usado e isto é INSEGURO! Certifique-se de que o diretório esteja incluído no parâmetro open_basedir se você usar esta configuração.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
