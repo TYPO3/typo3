@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_wizards.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="table_smallFields" approved="yes">
+        <source>Small fields</source>
+        <target state="final">حقول صغيرة</target>
+      </trans-unit>
+      <trans-unit id="table_addColumn" approved="yes">
+        <source>Add column to the right</source>
+        <target state="final">إضافة عمود إلى اليمين</target>
+      </trans-unit>
+      <trans-unit id="table_removeColumn" approved="yes">
+        <source>Remove column</source>
+        <target state="final">إزالة العمود</target>
+      </trans-unit>
+      <trans-unit id="table_addRow" approved="yes">
+        <source>Add row below</source>
+        <target state="final">إضافة صف أدناه</target>
+      </trans-unit>
+      <trans-unit id="table_removeRow" approved="yes">
+        <source>Remove row</source>
+        <target state="final">إزالة الصف</target>
+      </trans-unit>
+      <trans-unit id="table_left" approved="yes">
+        <source>Move left</source>
+        <target state="final">تحريك لليسار</target>
+      </trans-unit>
+      <trans-unit id="table_right" approved="yes">
+        <source>Move right</source>
+        <target state="final">تحريك لليمين</target>
+      </trans-unit>
+      <trans-unit id="table_up" approved="yes">
+        <source>Move up</source>
+        <target state="final">تحريك للأعلى</target>
+      </trans-unit>
+      <trans-unit id="table_down" approved="yes">
+        <source>Move down</source>
+        <target state="final">تحريك للأسفل</target>
+      </trans-unit>
+      <trans-unit id="table_top" approved="yes">
+        <source>Move to top</source>
+        <target state="final">نقل إلى الأعلى</target>
+      </trans-unit>
+      <trans-unit id="table_bottom" approved="yes">
+        <source>Move to bottom</source>
+        <target state="final">نقل إلى الأسفل</target>
+      </trans-unit>
+      <trans-unit id="table_start" approved="yes">
+        <source>Move to first column</source>
+        <target state="final">نقل إلى العمود الأول</target>
+      </trans-unit>
+      <trans-unit id="table_end" approved="yes">
+        <source>Move to last column</source>
+        <target state="final">نقل إلى العمود الأخير</target>
+      </trans-unit>
+      <trans-unit id="table_setCount" approved="yes">
+        <source>Set row and column count</source>
+        <target state="final">ضبط عدد الصفوف والأعمدة</target>
+      </trans-unit>
+      <trans-unit id="table_colCount" approved="yes">
+        <source>Column count</source>
+        <target state="final">عدد الأعمدة</target>
+      </trans-unit>
+      <trans-unit id="table_rowCount" approved="yes">
+        <source>Row count</source>
+        <target state="final">عدد الصفوف</target>
+      </trans-unit>
+      <trans-unit id="table_setCountHeadline" approved="yes">
+        <source>Change table size</source>
+        <target state="final">تغيير حجم الجدول</target>
+      </trans-unit>
+      <trans-unit id="table_buttonUpdate" approved="yes">
+        <source>Update</source>
+        <target state="final">تحديث</target>
+      </trans-unit>
+      <trans-unit id="table_showCode" approved="yes">
+        <source>Show table code</source>
+        <target state="final">عرض رمز الجدول</target>
+      </trans-unit>
+      <trans-unit id="table_showCodeHeadline" approved="yes">
+        <source>Table code</source>
+        <target state="final">كود الجدول</target>
+      </trans-unit>
+      <trans-unit id="table_showCodeLabel" approved="yes">
+        <source>Raw value</source>
+        <target state="final">القيمة الخام</target>
+      </trans-unit>
+      <trans-unit id="grid_windowTitle" approved="yes">
+        <source>Set cell name and column number</source>
+        <target state="final">ضبط اسم الخلية ورقم العمود</target>
+      </trans-unit>
+      <trans-unit id="grid_addColumn" approved="yes">
+        <source>Add column</source>
+        <target state="final">إضافة عمود</target>
+      </trans-unit>
+      <trans-unit id="grid_removeColumn" approved="yes">
+        <source>Remove column</source>
+        <target state="final">إزالة العمود</target>
+      </trans-unit>
+      <trans-unit id="grid_addRow" approved="yes">
+        <source>Add row</source>
+        <target state="final">اضف الصف</target>
+      </trans-unit>
+      <trans-unit id="grid_removeRow" approved="yes">
+        <source>Remove row</source>
+        <target state="final">إزالة الصف</target>
+      </trans-unit>
+      <trans-unit id="grid_editCell" approved="yes">
+        <source>Edit cell</source>
+        <target state="final">تعديل الخلية</target>
+      </trans-unit>
+      <trans-unit id="grid_cell_merge_right" approved="yes">
+        <source>Merge Right</source>
+        <target state="final">دمج اليمين</target>
+      </trans-unit>
+      <trans-unit id="grid_cell_merge_down" approved="yes">
+        <source>Merge Down</source>
+        <target state="final">دمج للأسفل</target>
+      </trans-unit>
+      <trans-unit id="grid_cell_split_horizontal" approved="yes">
+        <source>Split Horizontally</source>
+        <target state="final">تقسيم أُفُقي</target>
+      </trans-unit>
+      <trans-unit id="grid_cell_split_vertical" approved="yes">
+        <source>Split Vertically</source>
+        <target state="final">تقسيم عمودي</target>
+      </trans-unit>
+      <trans-unit id="grid_name" approved="yes">
+        <source>Name</source>
+        <target state="final">الاسم</target>
+      </trans-unit>
+      <trans-unit id="grid_column" approved="yes">
+        <source>Column number</source>
+        <target state="final">رقم العمود</target>
+      </trans-unit>
+      <trans-unit id="grid_identifier" approved="yes">
+        <source>Identifier</source>
+        <target state="final">المُعَرِّف</target>
+      </trans-unit>
+      <trans-unit id="grid_slideMode" approved="yes">
+        <source>Slide mode</source>
+        <target state="final">وضعية التنقل</target>
+      </trans-unit>
+      <trans-unit id="grid_notSet" approved="yes">
+        <source>not set</source>
+        <target state="final">لم يتم تعيينه</target>
+      </trans-unit>
+      <trans-unit id="grid_nameHelp" approved="yes">
+        <source>Enter a name for the cell.</source>
+        <target state="final">أدخل اسما للخلية.</target>
+      </trans-unit>
+      <trans-unit id="grid_columnHelp" approved="yes">
+        <source>The column position defines in which area the content is rendered in the frontend.</source>
+        <target state="final">يحدد موضع العمود المنطقة التي يتم فيها تقديم المحتوى في الواجهة الأمامية.</target>
+      </trans-unit>
+      <trans-unit id="grid_identifierHelp" approved="yes">
+        <source>The identifier is a human-readable unique label, used to access the items in this column.</source>
+        <target state="final">المُعَرِّف هو تسمية فريدة يمكن قراءتها بشرياً، تُستخدم للوصول إلى العناصر في هذا العمود.</target>
+      </trans-unit>
+      <trans-unit id="grid_slideModeHelp" approved="yes">
+        <source>The slide mode defines which elements should be fetched for the column in the frontend.</source>
+        <target state="final">وضعية التنقّل تُحدد العناصر التي يجب جلبها للعمود في الواجهة الأمامية.</target>
+      </trans-unit>
+      <trans-unit id="imwizard.open-editor" approved="yes">
+        <source>Open Editor</source>
+        <target state="final">افتح المحرّر</target>
+      </trans-unit>
+      <trans-unit id="imwizard.supported-types-message" approved="yes">
+        <source>Image manipulation is only available for supported types</source>
+        <target state="final">معالجة الصور مُتاحة فقط للأنواع المدعومة</target>
+      </trans-unit>
+      <trans-unit id="imwizard.no-image-dimensions" approved="yes">
+        <source>No image dimensions could be determined.</source>
+        <target state="final">لا يمكن تحديد أي أبعاد للصورة.</target>
+      </trans-unit>
+      <trans-unit id="imwizard.no-image-dimensions-message" approved="yes">
+        <source>Unable to provide image manipulation, because original dimensions of the image are unknown.</source>
+        <target state="final">غير قادر على توفير معالجة الصورة، لأن الأبعاد الأصلية للصورة غير معروفة.</target>
+      </trans-unit>
+      <trans-unit id="imwizard.image-manipulation" approved="yes">
+        <source>Image manipulation</source>
+        <target state="final">معالجة الصور</target>
+      </trans-unit>
+      <trans-unit id="imwizard.reset" approved="yes">
+        <source>Reset</source>
+        <target state="final">إعادة تعيين</target>
+      </trans-unit>
+      <trans-unit id="imwizard.accept" approved="yes">
+        <source>Accept</source>
+        <target state="final">قبول</target>
+      </trans-unit>
+      <trans-unit id="imwizard.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">إلغاء</target>
+      </trans-unit>
+      <trans-unit id="imwizard.preview" approved="yes">
+        <source>Preview</source>
+        <target state="final">مُعاينة</target>
+      </trans-unit>
+      <trans-unit id="imwizard.aspect-ratio" approved="yes">
+        <source>Aspect ratio</source>
+        <target state="final">أبعاد مُتزِنة</target>
+      </trans-unit>
+      <trans-unit id="imwizard.set-aspect-ratio" approved="yes">
+        <source>Set Aspect Ratio</source>
+        <target state="final">ضبط الأبعاد المتّزنة</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.free" approved="yes">
+        <source>Free</source>
+        <target state="final">حُرْ</target>
+      </trans-unit>
+      <trans-unit id="imwizard.crop_variant.default" approved="yes">
+        <source>Default</source>
+        <target state="final">افتراضي</target>
+      </trans-unit>
+      <trans-unit id="imwizard.crop_variant.social" approved="yes">
+        <source>Social media</source>
+        <target state="final">وسائل التواصل الإجتماعي</target>
+      </trans-unit>
+      <trans-unit id="imwizard.sync-crop-variants" approved="yes">
+        <source>Apply changes to all crop variants</source>
+        <target state="final">تطبيقُ التغييراتِ على جميعِ متغيراتِ الاقتصاصِ</target>
+      </trans-unit>
+      <trans-unit id="imwizard.selection" approved="yes">
+        <source>Selected Size</source>
+        <target state="final">الحجم المُحدد</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.header" approved="yes">
+        <source>Translation behavior</source>
+        <target state="final">سلوك التَّرْجَمَةً</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.customValue" approved="yes">
+        <source>Custom value</source>
+        <target state="final">تخصيص القيمة</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.defaultLanguageValue" approved="yes">
+        <source>Value of default language</source>
+        <target state="final">قيمة اللغة الافتراضية</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.sourceLanguageValue" approved="yes">
+        <source>Value of %1s language</source>
+        <target state="final">قيمة اللغة %1s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
