@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1522923345" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="site.rootPageId" resname="site.rootPageId" approved="yes">
+        <source>You must create a page with a site root flag.</source>
+        <target state="final">Ви повинні створити сторінку з прапором кореня сайту.</target>
+      </trans-unit>
+      <trans-unit id="site.identifier" resname="site.identifier" approved="yes">
+        <source>This name will be used to create the configuration directory. Mind the recommendations for directory names (only a-z,0-9,_,-) and make it unique.</source>
+        <target state="final">Це ім’я буде використано для створення каталогу конфігурації. Зверніть увагу на рекомендації щодо імен каталогів (лише a-z,0-9,_,-) і зробіть їх унікальними.</target>
+      </trans-unit>
+      <trans-unit id="site.base" resname="site.base" approved="yes">
+        <source>Main URL to call the frontend in default language. Can be https://www.example.com/ or just /, if it is just a / you cannot rely on TYPO3 creating
+					full URLs</source>
+        <target state="final">Основна URL-адреса для виклику інтерфейсу мовою за замовчуванням. Може бути https://www.example.com/ або просто /, якщо це лише /, ви не можете покладатися на TYPO3 для створення повних URL-адрес</target>
+      </trans-unit>
+      <trans-unit id="site.baseVariants" resname="site.baseVariants" approved="yes">
+        <source>This allows you to specify variants of the site's base. Can be used, for example, if you have a different domain for your staging environment.</source>
+        <target state="final">Це дозволяє задавати варіанти бази сайту. Можна використовувати, наприклад, якщо у вас є інший домен для проміжного середовища.</target>
+      </trans-unit>
+      <trans-unit id="site_language.base" resname="site_language.base" approved="yes">
+        <source>Use a full qualified domain "https://www.mydomain.fr/" or "/fr/". Use "/" to keep the main URL for the default language. Add language specific suffixes to use those, or configure complete URLs for independent domains.</source>
+        <target state="final">Використовуйте повний кваліфікований домен "https://www.mydomain.fr/" або "/fr/". Використовуйте "/", щоб зберегти основну URL-адресу мовою за замовчуванням. Додайте мовні суфікси, щоб використовувати їх, або налаштуйте повні URL-адреси для незалежних доменів.</target>
+      </trans-unit>
+      <trans-unit id="site_language.locale" resname="site_language.locale" approved="yes">
+        <source>Used for localized date and currency formats. E.g. "de_DE" or "en_US.UTF-8".</source>
+        <target state="final">Використовується для локалізованих форматів дати та валюти. Наприклад "de_DE" або "en_US.UTF-8".</target>
+      </trans-unit>
+      <trans-unit id="site_language.iso-639-1" resname="site_language.iso-639-1" approved="yes">
+        <source>ISO 639-1 code of the Language</source>
+        <target state="final">Код мови ISO 639-1</target>
+      </trans-unit>
+      <trans-unit id="site_language.hreflang" resname="site_language.hreflang" approved="yes">
+        <source>Used within for "lang" and "hreflang" attributes</source>
+        <target state="final">Використовується для атрибутів "lang" і "hreflang"</target>
+      </trans-unit>
+      <trans-unit id="site_language.navigationTitle" resname="site_language.navigationTitle" approved="yes">
+        <source>Used within language-related menus</source>
+        <target state="final">Використовується в меню, пов’язаних із мовою</target>
+      </trans-unit>
+      <trans-unit id="site_language.direction" resname="site_language.direction" approved="yes">
+        <source>Language direction for "dir" attribute</source>
+        <target state="final">Напрям мови для атрибута "dir"</target>
+      </trans-unit>
+      <trans-unit id="site_language.typo3Language" resname="site_language.typo3Language" approved="yes">
+        <source>Select the language to be used from translation files. Keep default if no translation files are available.</source>
+        <target state="final">Виберіть мову для використання з файлів перекладу. Залиште за замовчуванням, якщо файли перекладу недоступні.</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode" resname="site_errorhandling.errorCode" approved="yes">
+        <source>Make sure to have at least 0 (not defined otherwise) configured in order to serve helpful error messages to your visitors.</source>
+        <target state="final">Переконайтеся, що налаштовано принаймні 0 (інше не визначено), щоб надавати відвідувачам корисні повідомлення про помилки.</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplate" resname="site_errorhandling.errorFluidTemplate" approved="yes">
+        <source>Path to the fluid template file given by absolute, relative path (from site root) or by referring the template file inside an extension with "EXT:" prefix.</source>
+        <target state="final">Шлях до файлу гнучкого шаблону, заданий абсолютним, відносним шляхом (від кореня сайту) або посиланням на файл шаблону всередині розширення з префіксом "EXT:".</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorPhpClassFQCN" resname="site_errorhandling.errorPhpClassFQCN" approved="yes">
+        <source>Fully qualified class name to a class that implements the PageErrorHandlerInterface.</source>
+        <target state="final">Повне ім’я класу для класу, який реалізує PageErrorHandlerInterface.</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.base" resname="site_base_variant.base" approved="yes">
+        <source>For example "https://staging.domain.tld" or "http://www.domain.local"</source>
+        <target state="final">Наприклад, "https://staging.domain.tld" або "http://www.domain.local"</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition" resname="site_base_variant.condition" approved="yes">
+        <source>Expression to match this base variant.</source>
+        <target state="final">Вираз, який відповідає цьому базовому варіанту.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
