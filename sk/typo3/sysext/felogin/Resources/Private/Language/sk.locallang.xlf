@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="sk">
+    <header/>
+    <body>
+      <trans-unit id="welcome_header" approved="yes">
+        <source>User login</source>
+        <target state="final">Prihlásenie</target>
+      </trans-unit>
+      <trans-unit id="logout_header" approved="yes">
+        <source>You have logged out.</source>
+        <target state="final">Boli ste odhlásený</target>
+      </trans-unit>
+      <trans-unit id="error_header" approved="yes">
+        <source>Login failure</source>
+        <target state="final">Chyba prihlásenia</target>
+      </trans-unit>
+      <trans-unit id="success_header" approved="yes">
+        <source>Login successful</source>
+        <target state="final">Prebehlo prihlásenie</target>
+      </trans-unit>
+      <trans-unit id="success_message" approved="yes">
+        <source>You are now logged in as '###USER###'</source>
+        <target state="final">Ste prihlásený ako '###USER###'</target>
+      </trans-unit>
+      <trans-unit id="status_header" approved="yes">
+        <source>Current status</source>
+        <target state="final">Stav prihlásenia</target>
+      </trans-unit>
+      <trans-unit id="login" approved="yes">
+        <source>Login</source>
+        <target state="final">Prihlásiť</target>
+      </trans-unit>
+      <trans-unit id="logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">Odhlásiť</target>
+      </trans-unit>
+      <trans-unit id="send_password" approved="yes">
+        <source>Send password</source>
+        <target state="final">Odoslať heslo</target>
+      </trans-unit>
+      <trans-unit id="reset_password" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">Zmeniť heslo</target>
+      </trans-unit>
+      <trans-unit id="change_password_header" approved="yes">
+        <source>Change your password</source>
+        <target state="final">Zmeňte svoje heslo</target>
+      </trans-unit>
+      <trans-unit id="change_password" approved="yes">
+        <source>Change your password</source>
+        <target state="final">Zmeňte svoje heslo</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label1" approved="yes">
+        <source>Enter new password</source>
+        <target state="final">Napíšte nové heslo</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label2" approved="yes">
+        <source>Repeat new password</source>
+        <target state="final">Zopakujte heslo</target>
+      </trans-unit>
+      <trans-unit id="forgot_header" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">Zabudli ste heslo?</target>
+      </trans-unit>
+      <trans-unit id="forgot_email_password" xml:space="preserve" approved="yes">
+        <source>Your password
+Hi %s
+
+Your username is "%s"
+Your password is "%s"</source>
+      <target state="final">Vaše heslo
+Dobrý deň %s
+
+Vaše užívateľské meno je "%s"
+Vaše heslo je "%s"</target></trans-unit>
+      <trans-unit id="forgot_message_emailSent" approved="yes">
+        <source>Your password has now been sent to the email address %s</source>
+        <target state="final">Vaše heslo bude odoslané na mailovú adresu %s</target>
+      </trans-unit>
+      <trans-unit id="forgot_header_backToLogin" approved="yes">
+        <source>Return to login form</source>
+        <target state="final">Späť na prihlasovací formulár</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
