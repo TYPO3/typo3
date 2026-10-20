@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814781" source-language="en" datatype="plaintext" original="EXT:belog/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="belog" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="adminLog" resname="adminLog" approved="yes">
+        <source>Administration log</source>
+        <target state="final">Administravimo žurnalas</target>
+      </trans-unit>
+      <trans-unit id="allUsers" resname="allUsers" approved="yes">
+        <source>[All users]</source>
+        <target state="final">[Visi naudotojai]</target>
+      </trans-unit>
+      <trans-unit id="any" resname="any" approved="yes">
+        <source>[Any]</source>
+        <target state="final">[Bet kuris]</target>
+      </trans-unit>
+      <trans-unit id="viaUser" resname="viaUser" approved="yes">
+        <source>via</source>
+        <target state="final">per</target>
+      </trans-unit>
+      <trans-unit id="live" resname="live" approved="yes">
+        <source>LIVE</source>
+        <target state="final">TIESIOGINIS</target>
+      </trans-unit>
+      <trans-unit id="draft" resname="draft" approved="yes">
+        <source>Draft</source>
+        <target state="final">Juodraštis</target>
+      </trans-unit>
+      <trans-unit id="self" resname="self" approved="yes">
+        <source>Self</source>
+        <target state="final">Savęs</target>
+      </trans-unit>
+      <trans-unit id="userGroup" resname="userGroup" approved="yes">
+        <source>Group</source>
+        <target state="final">Grupė</target>
+      </trans-unit>
+      <trans-unit id="thisWeek" resname="thisWeek" approved="yes">
+        <source>This week</source>
+        <target state="final">Ši savaitė</target>
+      </trans-unit>
+      <trans-unit id="lastWeek" resname="lastWeek" approved="yes">
+        <source>Last week</source>
+        <target state="final">Praėjusi savaitė</target>
+      </trans-unit>
+      <trans-unit id="last7Days" resname="last7Days" approved="yes">
+        <source>Last 7 days</source>
+        <target state="final">Paskutinės 7 dienos</target>
+      </trans-unit>
+      <trans-unit id="thisMonth" resname="thisMonth" approved="yes">
+        <source>This month</source>
+        <target state="final">Šis mėnuo</target>
+      </trans-unit>
+      <trans-unit id="lastMonth" resname="lastMonth" approved="yes">
+        <source>Last month</source>
+        <target state="final">Praėjęs mėnuo</target>
+      </trans-unit>
+      <trans-unit id="last31Days" resname="last31Days" approved="yes">
+        <source>Last 31 days</source>
+        <target state="final">Paskutinė 31 diena</target>
+      </trans-unit>
+      <trans-unit id="noLimit" resname="noLimit" approved="yes">
+        <source>No limit</source>
+        <target state="final">Be apribojimų</target>
+      </trans-unit>
+      <trans-unit id="actionAll" resname="actionAll" approved="yes">
+        <source>All</source>
+        <target state="final">VISI</target>
+      </trans-unit>
+      <trans-unit id="actionDatabase" resname="actionDatabase" approved="yes">
+        <source>Database</source>
+        <target state="final">Duomenų bazė</target>
+      </trans-unit>
+      <trans-unit id="actionFile" resname="actionFile" approved="yes">
+        <source>File</source>
+        <target state="final">Failas</target>
+      </trans-unit>
+      <trans-unit id="actionCache" resname="actionCache" approved="yes">
+        <source>Cache</source>
+        <target state="final">Spartinančioji atmintinė</target>
+      </trans-unit>
+      <trans-unit id="actionSettings" resname="actionSettings" approved="yes">
+        <source>Settings</source>
+        <target state="final">Nustatymai</target>
+      </trans-unit>
+      <trans-unit id="actionLogin" resname="actionLogin" approved="yes">
+        <source>Login</source>
+        <target state="final">Prisijungimas</target>
+      </trans-unit>
+      <trans-unit id="actionErrors" resname="actionErrors" approved="yes">
+        <source>Errors</source>
+        <target state="final">Klaidos</target>
+      </trans-unit>
+      <trans-unit id="group" resname="group" approved="yes">
+        <source>Group</source>
+        <target state="final">Grupė</target>
+      </trans-unit>
+      <trans-unit id="user" resname="user" approved="yes">
+        <source>User</source>
+        <target state="final">Naudotojas</target>
+      </trans-unit>
+      <trans-unit id="users" resname="users" approved="yes">
+        <source>Users</source>
+        <target state="final">Naudotojai</target>
+      </trans-unit>
+      <trans-unit id="time" resname="time" approved="yes">
+        <source>Time</source>
+        <target state="final">Laikas</target>
+      </trans-unit>
+      <trans-unit id="max" resname="max" approved="yes">
+        <source>Max</source>
+        <target state="final">Maks.</target>
+      </trans-unit>
+      <trans-unit id="showHistory" resname="showHistory" approved="yes">
+        <source>Show History</source>
+        <target state="final">Rodyti istoriją</target>
+      </trans-unit>
+      <trans-unit id="action" resname="action" approved="yes">
+        <source>Action</source>
+        <target state="final">Veiksmas</target>
+      </trans-unit>
+      <trans-unit id="workspace" resname="workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Darbo sritis</target>
+      </trans-unit>
+      <trans-unit id="overview" resname="overview" approved="yes">
+        <source>Overview</source>
+        <target state="final">Apžvalga</target>
+      </trans-unit>
+      <trans-unit id="type_1" resname="type_1" approved="yes">
+        <source>DB</source>
+        <target state="final">DB</target>
+      </trans-unit>
+      <trans-unit id="action_1_1" resname="action_1_1" approved="yes">
+        <source>Insert</source>
+        <target state="final">Įterpti</target>
+      </trans-unit>
+      <trans-unit id="action_1_2" resname="action_1_2" approved="yes">
+        <source>Update</source>
+        <target state="final">Atnaujinti</target>
+      </trans-unit>
+      <trans-unit id="action_1_3" resname="action_1_3" approved="yes">
+        <source>Delete</source>
+        <target state="final">Ištrinti</target>
+      </trans-unit>
+      <trans-unit id="action_1_4" resname="action_1_4" approved="yes">
+        <source>Move</source>
+        <target state="final">Perkelti</target>
+      </trans-unit>
+      <trans-unit id="action_1_5" resname="action_1_5" approved="yes">
+        <source>Check</source>
+        <target state="final">Patikrinti</target>
+      </trans-unit>
+      <trans-unit id="msg_1_0_1" resname="msg_1_0_1" approved="yes">
+        <source>Referer host '%s' and server host '%s' did not match!</source>
+        <target state="final">Nukreipėjo mazgas „%s" ir serverio mazgas „%s" nesutapo!</target>
+      </trans-unit>
+      <trans-unit id="msg_1_1_11" resname="msg_1_1_11" approved="yes">
+        <source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
+        <target state="final">Bandymas įterpti įrašą puslapyje „%s" (%s), kur ši lentelė, %s, neleidžiama</target>
+      </trans-unit>
+      <trans-unit id="msg_1_1_12" resname="msg_1_1_12" approved="yes">
+        <source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
+        <target state="final">Bandymas įterpti įrašą į puslapį „%s“ (%s) iš lentelės „%s“ be teisių arba puslapis neegzistuoja</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_1" resname="msg_1_2_1" approved="yes">
+        <source>Attempt to modify table '%s' without permission</source>
+        <target state="final">Bandymas keisti lentelę „%s“ be leidimo</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_2" resname="msg_1_2_2" approved="yes">
+        <source>Attempt to modify record '%s' (%s) without permission. Or non-existing page.</source>
+        <target state="final">Bandymas keisti įrašą „%s“ (%s) be leidimo arba puslapis neegzistuoja</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_10" resname="msg_1_2_10" approved="yes">
+        <source>Record '%s' (%s) was updated.</source>
+        <target state="final">Įrašas „%s“ (%s) buvo atnaujintas.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_2_12" resname="msg_1_2_12" approved="yes">
+        <source>MySQL error: '%s' (%s)</source>
+        <target state="final">MySQL klaida: „%s“ (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_1" resname="msg_1_4_1" approved="yes">
+        <source>Attempt to move record '%s' (%s) to after a non-existing record (uid=%s)</source>
+        <target state="final">Bandymas perkelti įrašą „%s“ (%s) po neegzistuojančio įrašo (uid=%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_2" resname="msg_1_4_2" approved="yes">
+        <source>Moved record '%s' (%s) to page '%s' (%s)</source>
+        <target state="final">Įrašas „%s“ (%s) perkeltas į puslapį „%s“ (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_3" resname="msg_1_4_3" approved="yes">
+        <source>Moved record '%s' (%s) from page '%s' (%s)</source>
+        <target state="final">Įrašas „%s“ (%s) perkeltas iš puslapio „%s“ (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_4" resname="msg_1_4_4" approved="yes">
+        <source>Moved record '%s' (%s) on page '%s' (%s)</source>
+        <target state="final">Įrašas „%s“ (%s) perkeltas puslapyje „%s“ (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_10" resname="msg_1_4_10" approved="yes">
+        <source>Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))</source>
+        <target state="final">Bandymas perkelti puslapį „%s“ (%s) į jo paties šaknies kelią (puslapyje „%s“ (%s))</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_11" resname="msg_1_4_11" approved="yes">
+        <source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
+        <target state="final">Bandymas įterpti įrašą į puslapį „%s“ (%s), kuriame ši lentelė (%s) neleidžiama</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_12" resname="msg_1_4_12" approved="yes">
+        <source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
+        <target state="final">Bandymas įterpti įrašą į puslapį „%s“ (%s) iš lentelės „%s“ be teisių arba puslapis neegzistuoja</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_13" resname="msg_1_4_13" approved="yes">
+        <source>Attempt to move record '%s' (%s) to after another record, although the table has no sorting row.</source>
+        <target state="final">Bandymas perkelti įrašą „%s“ (%s) po kitu įrašu, nors lentelė neturi rūšiavimo lauko</target>
+      </trans-unit>
+      <trans-unit id="msg_1_4_14" resname="msg_1_4_14" approved="yes">
+        <source>Attempt to move record '%s' (%s) without having permissions to do so</source>
+        <target state="final">Bandymas perkelti įrašą „%s“ (%s) neturint tam teisių</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_1" resname="msg_1_5_1" approved="yes">
+        <source>You cannot change the 'doktype' of page '%s' to the desired value.</source>
+        <target state="final">Negalite pakeisti puslapio „%s“ „doktype“ į norimą reikšmę.</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_2" resname="msg_1_5_2" approved="yes">
+        <source>'doktype' of page '%s' could not be changed because the page contains records from disallowed tables; %s</source>
+        <target state="final">Puslapio „%s“ „doktype“ negalėjo būti pakeistas, nes puslapyje yra įrašų iš neleidžiamų lentelių: %s</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_3" resname="msg_1_5_3" approved="yes">
+        <source>Too few items in the list of values. (%s)</source>
+        <target state="final">Per mažai reikšmių sąraše. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_10" resname="msg_1_5_10" approved="yes">
+        <source>Could not delete file '%s' (does not exist). (%s)</source>
+        <target state="final">Nepavyko ištrinti failo „%s“ (neegzistuoja). (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_11" resname="msg_1_5_11" approved="yes">
+        <source>Copying file '%s' failed!: No destination file (%s) possible!. (%s)</source>
+        <target state="final">Nepavyko nukopijuoti failo „%s“: nėra galimo paskirties failo (%s). (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_12" resname="msg_1_5_12" approved="yes">
+        <source>File extension '%s' is not allowed. (%s)</source>
+        <target state="final">Failo plėtinys „%s“ neleidžiamas. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_13" resname="msg_1_5_13" approved="yes">
+        <source>File size (%s) of file '%s' exceeds limit (%s). (%s)</source>
+        <target state="final">Failo „%s“ dydis (%s) viršija leidžiamą ribą (%s). (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_14" resname="msg_1_5_14" approved="yes">
+        <source>The destination (%s) or the source file (%s) does not exist. (%s)</source>
+        <target state="final">Paskirties vieta (%s) arba šaltinio failas (%s) neegzistuoja. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_15" resname="msg_1_5_15" approved="yes">
+        <source>Copying to file '%s' failed! (%s)</source>
+        <target state="final">Nepavyko kopijuoti į failą „%s“. (%s)</target>
+      </trans-unit>
+      <trans-unit id="msg_1_5_16" resname="msg_1_5_16" approved="yes">
+        <source>Copying file '%s' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)</source>
+        <target state="final">Nepavyko nukopijuoti failo „%s“: paskirties kelias (%s) gali būti apsaugotas nuo rašymo. Įjunkite rašymo leidimą. (%s)</target>
+      </trans-unit>
+      <trans-unit id="type_2" resname="type_2" approved="yes">
+        <source>FILE</source>
+        <target state="final">FAILAS</target>
+      </trans-unit>
+      <trans-unit id="action_2_1" resname="action_2_1" approved="yes">
+        <source>Upload</source>
+        <target state="final">Įkelti</target>
+      </trans-unit>
+      <trans-unit id="action_2_2" resname="action_2_2" approved="yes">
+        <source>Copy</source>
+        <target state="final">Kopijuoti</target>
+      </trans-unit>
+      <trans-unit id="action_2_3" resname="action_2_3" approved="yes">
+        <source>Move</source>
+        <target state="final">Perkelti</target>
+      </trans-unit>
+      <trans-unit id="action_2_4" resname="action_2_4" approved="yes">
+        <source>Delete</source>
+        <target state="final">Ištrinti</target>
+      </trans-unit>
+      <trans-unit id="action_2_5" resname="action_2_5" approved="yes">
+        <source>Rename</source>
+        <target state="final">Pervadinti</target>
+      </trans-unit>
+      <trans-unit id="action_2_6" resname="action_2_6" approved="yes">
+        <source>New</source>
+        <target state="final">Naujas</target>
+      </trans-unit>
+      <trans-unit id="action_2_7" resname="action_2_7" approved="yes">
+        <source>Unzip</source>
+        <target state="final">Išskleisti</target>
+      </trans-unit>
+      <trans-unit id="action_2_8" resname="action_2_8" approved="yes">
+        <source>New file</source>
+        <target state="final">Naujas failas</target>
+      </trans-unit>
+      <trans-unit id="action_2_9" resname="action_2_9" approved="yes">
+        <source>Edit</source>
+        <target state="final">Redaguoti</target>
+      </trans-unit>
+      <trans-unit id="msg_2_9_1" resname="msg_2_9_1" approved="yes">
+        <source>File saved to '%s', bytes: %s, MD5: %s </source>
+        <target state="final">Failas išsaugotas į „%s“, baitai: %s, MD5: %s </target>
+      </trans-unit>
+      <trans-unit id="type_3" resname="type_3" approved="yes">
+        <source>CACHE</source>
+        <target state="final">SPARTINANČIOJI ATMINTINĖ</target>
+      </trans-unit>
+      <trans-unit id="action_3_1" resname="action_3_1" approved="yes">
+        <source>Clear Cache</source>
+        <target state="final">Išvalyti spartinančiąją atmitinę</target>
+      </trans-unit>
+      <trans-unit id="type_4" resname="type_4" approved="yes">
+        <source>EXTENSION</source>
+        <target state="final">PLĖTINYS</target>
+      </trans-unit>
+      <trans-unit id="type_5" resname="type_5" approved="yes">
+        <source>ERROR</source>
+        <target state="final">KLAIDA</target>
+      </trans-unit>
+      <trans-unit id="action_5_0" resname="action_5_0" approved="yes">
+        <source>Error handler</source>
+        <target state="final">Klaidų tvarkyklė</target>
+      </trans-unit>
+      <trans-unit id="type_254" resname="type_254" approved="yes">
+        <source>SETTING</source>
+        <target state="final">NUSTATYMAS</target>
+      </trans-unit>
+      <trans-unit id="action_254_1" resname="action_254_1" approved="yes">
+        <source>Change</source>
+        <target state="final">Pakeisti</target>
+      </trans-unit>
+      <trans-unit id="type_255" resname="type_255" approved="yes">
+        <source>LOGIN</source>
+        <target state="final">PRISIJUNGIMAS</target>
+      </trans-unit>
+      <trans-unit id="action_255_1" resname="action_255_1" approved="yes">
+        <source>LOGIN</source>
+        <target state="final">PRISIJUNGIMAS</target>
+      </trans-unit>
+      <trans-unit id="action_255_2" resname="action_255_2" approved="yes">
+        <source>LOGOUT</source>
+        <target state="final">ATSIJUNGIMAS</target>
+      </trans-unit>
+      <trans-unit id="action_255_3" resname="action_255_3" approved="yes">
+        <source>ATTEMPT</source>
+        <target state="final">BANDYMAS</target>
+      </trans-unit>
+      <trans-unit id="chLog_title" resname="chLog_title" approved="yes">
+        <source>Admin Changelog</source>
+        <target state="final">Administratoriaus pakeitimų žurnalas</target>
+      </trans-unit>
+      <trans-unit id="chLog_users_0" resname="chLog_users_0" approved="yes">
+        <source>All users</source>
+        <target state="final">Visi naudotojai</target>
+      </trans-unit>
+      <trans-unit id="chLog_users_-1" resname="chLog_users_-1" approved="yes">
+        <source>Self</source>
+        <target state="final">Savęs</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_0" resname="chLog_time_0" approved="yes">
+        <source>This week</source>
+        <target state="final">Ši savaitė</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_1" resname="chLog_time_1" approved="yes">
+        <source>Last week</source>
+        <target state="final">Praėjusi savaitė</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_2" resname="chLog_time_2" approved="yes">
+        <source>Last 7 days</source>
+        <target state="final">Paskutinės 7 dienos</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_10" resname="chLog_time_10" approved="yes">
+        <source>This month</source>
+        <target state="final">Šis mėnuo</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_11" resname="chLog_time_11" approved="yes">
+        <source>Last month</source>
+        <target state="final">Praėjęs mėnuo</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_12" resname="chLog_time_12" approved="yes">
+        <source>Last 31 days</source>
+        <target state="final">Paskutinė 31 diena</target>
+      </trans-unit>
+      <trans-unit id="chLog_time_20" resname="chLog_time_20" approved="yes">
+        <source>No limit</source>
+        <target state="final">Be apribojimų</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_time" resname="chLog_l_time" approved="yes">
+        <source>Time</source>
+        <target state="final">Laikas</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_user" resname="chLog_l_user" approved="yes">
+        <source>User</source>
+        <target state="final">Naudotojas</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_action" resname="chLog_l_action" approved="yes">
+        <source>Action</source>
+        <target state="final">Veiksmas</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_types" resname="chLog_l_types" approved="yes">
+        <source>Type</source>
+        <target state="final">Tipas</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_table" resname="chLog_l_table" approved="yes">
+        <source>Table</source>
+        <target state="final">Lentelė</target>
+      </trans-unit>
+      <trans-unit id="chLog_l_details" resname="chLog_l_details" approved="yes">
+        <source>Details</source>
+        <target state="final">Išsami informacija</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuUsers" resname="chLog_menuUsers" approved="yes">
+        <source>Users</source>
+        <target state="final">Naudotojai</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuDepth" resname="chLog_menuDepth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Gylis</target>
+      </trans-unit>
+      <trans-unit id="chLog_menuTime" resname="chLog_menuTime" approved="yes">
+        <source>Time</source>
+        <target state="final">Laikas</target>
+      </trans-unit>
+      <trans-unit id="actions" resname="actions" approved="yes">
+        <source>Actions</source>
+        <target state="final">Veiksmai</target>
+      </trans-unit>
+      <trans-unit id="actions.delete" resname="actions.delete" approved="yes">
+        <source>Delete similar errors</source>
+        <target state="final">Ištrinti panašias klaidas</target>
+      </trans-unit>
+      <trans-unit id="actions.deleteWarnings" resname="actions.deleteWarnings" approved="yes">
+        <source>Delete similar warnings</source>
+        <target state="final">Ištrinti panašius įspėjimus</target>
+      </trans-unit>
+      <trans-unit id="actions.delete.message" resname="actions.delete.message" approved="yes">
+        <source>Total entries deleted: %1$d</source>
+        <target state="final">Iš viso ištrinta įrašų: %1$d</target>
+      </trans-unit>
+      <trans-unit id="actions.delete.noRowFound" resname="actions.delete.noRowFound" approved="yes">
+        <source>Log entry could not be found.</source>
+        <target state="final">Žurnalo įrašo rasti nepavyko.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
