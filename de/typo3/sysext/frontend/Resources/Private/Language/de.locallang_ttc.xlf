@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_ttc.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="layout.I.1" approved="yes">
+        <source>Layout 1</source>
+        <target state="final">Layout 1</target>
+      </trans-unit>
+      <trans-unit id="layout.I.2" approved="yes">
+        <source>Layout 2</source>
+        <target state="final">Layout 2</target>
+      </trans-unit>
+      <trans-unit id="layout.I.3" approved="yes">
+        <source>Layout 3</source>
+        <target state="final">Layout 3</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.0" approved="yes">
+        <source>Left</source>
+        <target state="final">Links</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.1" approved="yes">
+        <source>Normal</source>
+        <target state="final">Normal</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.2" approved="yes">
+        <source>Right</source>
+        <target state="final">Rechts</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.3" approved="yes">
+        <source>Border</source>
+        <target state="final">Rand</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.unused" approved="yes">
+        <source>Unused</source>
+        <target state="final">Unbenutzt</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.shortcut_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">Name (in der Webseite nicht sichtbar)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.div_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">Name (in der Webseite nicht sichtbar)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.html_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">Name (in der Webseite nicht sichtbar)</target>
+      </trans-unit>
+      <trans-unit id="header.description.ALT" approved="yes">
+        <source>The name won't be displayed as header above the element, but will be used as reference in menus.</source>
+        <target state="final">Der Name wird nicht als Überschrift über dem Element angezeigt, sondern als Referenz in Menüs verwendet.</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.1" approved="yes">
+        <source>Center</source>
+        <target state="final">Mitte</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.2" approved="yes">
+        <source>Right</source>
+        <target state="final">Rechts</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.3" approved="yes">
+        <source>Left</source>
+        <target state="final">Links</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.1" approved="yes">
+        <source>Layout 1</source>
+        <target state="final">Layout 1</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.2" approved="yes">
+        <source>Layout 2</source>
+        <target state="final">Layout 2</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.3" approved="yes">
+        <source>Layout 3</source>
+        <target state="final">Layout 3</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.4" approved="yes">
+        <source>Layout 4</source>
+        <target state="final">Layout 4</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.5" approved="yes">
+        <source>Layout 5</source>
+        <target state="final">Layout 5</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.6" approved="yes">
+        <source>Hidden</source>
+        <target state="final">Verborgen</target>
+      </trans-unit>
+      <trans-unit id="bullets_type" approved="yes">
+        <source>Type of bullets</source>
+        <target state="final">Typ der Aufzählungszeichen</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.0" approved="yes">
+        <source>Unordered list (bullets)</source>
+        <target state="final">Unsortierte Liste (Aufzählungspunkte)</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.1" approved="yes">
+        <source>Ordered list (numbers)</source>
+        <target state="final">Sortierte Liste (Zahlen)</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.2" approved="yes">
+        <source>Definition list</source>
+        <target state="final">Definitionsliste</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.0" approved="yes">
+        <source>Above, center</source>
+        <target state="final">Oben mittig</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.1" approved="yes">
+        <source>Above, right</source>
+        <target state="final">Oben rechts</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.2" approved="yes">
+        <source>Above, left</source>
+        <target state="final">Oben links</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.3" approved="yes">
+        <source>Below, center</source>
+        <target state="final">Unten mittig</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.4" approved="yes">
+        <source>Below, right</source>
+        <target state="final">Unten rechts</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.5" approved="yes">
+        <source>Below, left</source>
+        <target state="final">Unten links</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.6" approved="yes">
+        <source>In text, right</source>
+        <target state="final">Im Text rechts</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.7" approved="yes">
+        <source>In text, left</source>
+        <target state="final">Im Text links</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.9" approved="yes">
+        <source>Beside Text, Right</source>
+        <target state="final">Neben dem Text rechts</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.10" approved="yes">
+        <source>Beside Text, Left</source>
+        <target state="final">Neben dem Text links</target>
+      </trans-unit>
+      <trans-unit id="images.addFileReference" approved="yes">
+        <source>Add image</source>
+        <target state="final">Bild hinzufügen</target>
+      </trans-unit>
+      <trans-unit id="cols" approved="yes">
+        <source>Columns</source>
+        <target state="final">Spalten:</target>
+      </trans-unit>
+      <trans-unit id="cols.I.0" approved="yes">
+        <source>Auto</source>
+        <target state="final">Auto</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.0" approved="yes">
+        <source>0 levels (only selected page)</source>
+        <target state="final">0 Ebenen (nur die ausgewählte Seite)</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.1" approved="yes">
+        <source>1 level</source>
+        <target state="final">1 Ebene</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.2" approved="yes">
+        <source>2 levels</source>
+        <target state="final">2 Ebenen</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.3" approved="yes">
+        <source>3 levels</source>
+        <target state="final">3 Ebenen</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.4" approved="yes">
+        <source>4 levels</source>
+        <target state="final">4 Ebenen</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.5" approved="yes">
+        <source>Infinite</source>
+        <target state="final">Unendlich</target>
+      </trans-unit>
+      <trans-unit id="media" approved="yes">
+        <source>Files</source>
+        <target state="final">Dateien</target>
+      </trans-unit>
+      <trans-unit id="media.ALT.uploads_formlabel" approved="yes">
+        <source>Select single files</source>
+        <target state="final">Dateien auswählen</target>
+      </trans-unit>
+      <trans-unit id="media.addFileReference" approved="yes">
+        <source>Add file</source>
+        <target state="final">Datei hinzufügen</target>
+      </trans-unit>
+      <trans-unit id="multimedia" approved="yes">
+        <source>File</source>
+        <target state="final">Datei:</target>
+      </trans-unit>
+      <trans-unit id="multimedia_formlabel" approved="yes">
+        <source>Selected Media File</source>
+        <target state="final">Ausgewählte Mediendateien</target>
+      </trans-unit>
+      <trans-unit id="file_collections" approved="yes">
+        <source>File collections</source>
+        <target state="final">Dateisammlung</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting" approved="yes">
+        <source>Sort file list</source>
+        <target state="final">Dateiliste sortieren:</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.none" approved="yes">
+        <source>no sorting</source>
+        <target state="final">keine Sortierung</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.extension" approved="yes">
+        <source>by file extension</source>
+        <target state="final">nach Dateiendung</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.name" approved="yes">
+        <source>by filename</source>
+        <target state="final">nach Dateiname</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.type" approved="yes">
+        <source>by file type</source>
+        <target state="final">nach Dateityp</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.size" approved="yes">
+        <source>by file size</source>
+        <target state="final">nach Dateigröße</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.creation_date" approved="yes">
+        <source>by file creation date</source>
+        <target state="final">nach Dateierstellungsdatum</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.modification_date" approved="yes">
+        <source>by file modification date</source>
+        <target state="final">nach Dateiänderungsdatum</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.title" approved="yes">
+        <source>by file metadata title</source>
+        <target state="final">nach Datei-Metadaten-Titel</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction" approved="yes">
+        <source>Sorting direction</source>
+        <target state="final">Sortierrichtung</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction.ascending" approved="yes">
+        <source>Ascending (default)</source>
+        <target state="final">Aufsteigend (Standard)</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction.descending" approved="yes">
+        <source>Descending</source>
+        <target state="final">Absteigend</target>
+      </trans-unit>
+      <trans-unit id="target" approved="yes">
+        <source>Target</source>
+        <target state="final">Ziel:</target>
+      </trans-unit>
+      <trans-unit id="target.I.1" approved="yes">
+        <source>New window</source>
+        <target state="final">Neues Fenster</target>
+      </trans-unit>
+      <trans-unit id="records" approved="yes">
+        <source>Items</source>
+        <target state="final">Elemente:</target>
+      </trans-unit>
+      <trans-unit id="records_formlabel" approved="yes">
+        <source>Records</source>
+        <target state="final">Datensätze</target>
+      </trans-unit>
+      <trans-unit id="space_class_none" approved="yes">
+        <source>None</source>
+        <target state="final">keiner</target>
+      </trans-unit>
+      <trans-unit id="space_class_extra_small" approved="yes">
+        <source>Extra Small</source>
+        <target state="final">Extraklein</target>
+      </trans-unit>
+      <trans-unit id="space_class_small" approved="yes">
+        <source>Small</source>
+        <target state="final">Klein</target>
+      </trans-unit>
+      <trans-unit id="space_class_medium" approved="yes">
+        <source>Medium</source>
+        <target state="final">Mittel</target>
+      </trans-unit>
+      <trans-unit id="space_class_large" approved="yes">
+        <source>Large</source>
+        <target state="final">Groß</target>
+      </trans-unit>
+      <trans-unit id="space_class_extra_large" approved="yes">
+        <source>Extra Large</source>
+        <target state="final">Extragroß</target>
+      </trans-unit>
+      <trans-unit id="frame_class.default" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="frame_class.ruler_before" approved="yes">
+        <source>Ruler Before</source>
+        <target state="final">Linie davor</target>
+      </trans-unit>
+      <trans-unit id="frame_class.ruler_after" approved="yes">
+        <source>Ruler After</source>
+        <target state="final">Linie danach</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent" approved="yes">
+        <source>Indent</source>
+        <target state="final">Einrücken</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent_left" approved="yes">
+        <source>Indent, 33/66%</source>
+        <target state="final">Einrücken, 33/66%</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent_right" approved="yes">
+        <source>Indent, 66/33%</source>
+        <target state="final">Einrücken, 66/33%</target>
+      </trans-unit>
+      <trans-unit id="frame_class.none" approved="yes">
+        <source>No Frame</source>
+        <target state="final">Kein Rahmen</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform" approved="yes">
+        <source>Plugin Options</source>
+        <target state="final">Erweiterungsoptionen</target>
+      </trans-unit>
+      <trans-unit id="selected_categories" approved="yes">
+        <source>Selected categories</source>
+        <target state="final">Ausgewählte Kategorien</target>
+      </trans-unit>
+      <trans-unit id="category_field" approved="yes">
+        <source>Category field</source>
+        <target state="final">Kategoriefeld</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.menu_formlabel" approved="yes">
+        <source>Selected Pages</source>
+        <target state="final">Ausgewählte Seiten</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.list_formlabel" approved="yes">
+        <source>Record Storage Page</source>
+        <target state="final">Datensatzsammlung</target>
+      </trans-unit>
+      <trans-unit id="tabs.text" approved="yes">
+        <source>Text</source>
+        <target state="final">Text</target>
+      </trans-unit>
+      <trans-unit id="tabs.media" approved="yes">
+        <source>Media</source>
+        <target state="final">Medien</target>
+      </trans-unit>
+      <trans-unit id="tabs.plugin" approved="yes">
+        <source>Plugin</source>
+        <target state="final">Plugin</target>
+      </trans-unit>
+      <trans-unit id="starttime_formlabel" approved="yes">
+        <source>Publish Date</source>
+        <target state="final">Veröffentlichungsdatum</target>
+      </trans-unit>
+      <trans-unit id="endtime_formlabel" approved="yes">
+        <source>Expiration Date</source>
+        <target state="final">Ablaufdatum</target>
+      </trans-unit>
+      <trans-unit id="fe_group_formlabel" approved="yes">
+        <source>Usergroup Access Rights</source>
+        <target state="final">Zugriffsrechte für Benutzergruppen</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.bulletlist_formlabel" approved="yes">
+        <source>Bullet List</source>
+        <target state="final">Aufzählung</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.html_formlabel" approved="yes">
+        <source>HTML Code</source>
+        <target state="final">HTML-Code</target>
+      </trans-unit>
+      <trans-unit id="field.table.bodytext" approved="yes">
+        <source>Table content</source>
+        <target state="final">Tabelleninhalt</target>
+      </trans-unit>
+      <trans-unit id="tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Zugriff</target>
+      </trans-unit>
+      <trans-unit id="tabs.appearance" approved="yes">
+        <source>Appearance</source>
+        <target state="final">Erscheinungsbild</target>
+      </trans-unit>
+      <trans-unit id="tabs.behaviour" approved="yes">
+        <source>Behavior</source>
+        <target state="final">Verhalten</target>
+      </trans-unit>
+      <trans-unit id="tabs.images" approved="yes">
+        <source>Images</source>
+        <target state="final">Bilder</target>
+      </trans-unit>
+      <trans-unit id="tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Erweitert</target>
+      </trans-unit>
+      <trans-unit id="tabs.accessibility" approved="yes">
+        <source>Accessibility</source>
+        <target state="final">Barrierefreiheit</target>
+      </trans-unit>
+      <trans-unit id="group.default" approved="yes">
+        <source>Typical page content</source>
+        <target state="final">Typischer Seiteninhalt</target>
+      </trans-unit>
+      <trans-unit id="group.lists" approved="yes">
+        <source>Lists</source>
+        <target state="final">Listen</target>
+      </trans-unit>
+      <trans-unit id="group.menu" approved="yes">
+        <source>Menu</source>
+        <target state="final">Menü</target>
+      </trans-unit>
+      <trans-unit id="group.forms" approved="yes">
+        <source>Form elements</source>
+        <target state="final">Formularelemente</target>
+      </trans-unit>
+      <trans-unit id="group.special" approved="yes">
+        <source>Special elements</source>
+        <target state="final">Spezielle Elemente</target>
+      </trans-unit>
+      <trans-unit id="group.plugins" approved="yes">
+        <source>Plugins</source>
+        <target state="final">Plugins</target>
+      </trans-unit>
+      <trans-unit id="CType.header" approved="yes">
+        <source>Header Only</source>
+        <target state="final">Nur Überschrift</target>
+      </trans-unit>
+      <trans-unit id="CType.header.description" approved="yes">
+        <source>Adds a header only.</source>
+        <target state="final">Fügt nur eine Überschrift hinzu.</target>
+      </trans-unit>
+      <trans-unit id="CType.text" approved="yes">
+        <source>Regular Text Element</source>
+        <target state="final">Normales Textelement</target>
+      </trans-unit>
+      <trans-unit id="CType.text.description" approved="yes">
+        <source>A regular text element with header and bodytext fields.</source>
+        <target state="final">Ein normales Textelement mit Überschrift und Fließtext.</target>
+      </trans-unit>
+      <trans-unit id="CType.textpic" approved="yes">
+        <source>Text &amp; Images</source>
+        <target state="final">Text &amp; Bilder</target>
+      </trans-unit>
+      <trans-unit id="CType.textpic.description" approved="yes">
+        <source>Any number of images wrapped right around a regular text element.</source>
+        <target state="final">Eine beliebige Anzahl von Bildern, die direkt um ein reguläres Textelement herum angeordnet sind.</target>
+      </trans-unit>
+      <trans-unit id="CType.textmedia" approved="yes">
+        <source>Text &amp; Media</source>
+        <target state="final">Text &amp; Medien</target>
+      </trans-unit>
+      <trans-unit id="CType.textmedia.description" approved="yes">
+        <source>Any number of media wrapped right around a regular text element.</source>
+        <target state="final">Eine beliebige Anzahl von Medien, die direkt um ein normales Textelement gewickelt sind.</target>
+      </trans-unit>
+      <trans-unit id="CType.image" approved="yes">
+        <source>Images Only</source>
+        <target state="final">Nur Bilder</target>
+      </trans-unit>
+      <trans-unit id="CType.image.description" approved="yes">
+        <source>Any number of images aligned in columns and rows with a caption.</source>
+        <target state="final">Eine beliebige Anzahl von in Zeilen und Spalten angeordneten Bildern mit Beschriftung.</target>
+      </trans-unit>
+      <trans-unit id="CType.bullets" approved="yes">
+        <source>Bullet List</source>
+        <target state="final">Aufzählung</target>
+      </trans-unit>
+      <trans-unit id="CType.bullets.description" approved="yes">
+        <source>A single bullet list.</source>
+        <target state="final">Eine einzelne Aufzählung.</target>
+      </trans-unit>
+      <trans-unit id="CType.table" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabelle</target>
+      </trans-unit>
+      <trans-unit id="CType.table.description" approved="yes">
+        <source>A simple table.</source>
+        <target state="final">Eine einfache Tabelle.</target>
+      </trans-unit>
+      <trans-unit id="CType.uploads" approved="yes">
+        <source>File Links</source>
+        <target state="final">Dateilinks</target>
+      </trans-unit>
+      <trans-unit id="CType.uploads.description" approved="yes">
+        <source>Makes a list of files for download.</source>
+        <target state="final">Erzeugt eine Liste mit Dateien zum Herunterladen.</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_abstract" approved="yes">
+        <source>Abstracts</source>
+        <target state="final">Zusammenfassungen</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_abstract.description" approved="yes">
+        <source>Menu of subpages of selected pages including abstracts</source>
+        <target state="final">Menü der Unterseiten der ausgewählten Seiten inklusive Inhaltsangabe</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_content" approved="yes">
+        <source>Categorized content</source>
+        <target state="final">Kategorisierter Inhalt</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_content.description" approved="yes">
+        <source>Content elements for selected categories</source>
+        <target state="final">Inhaltselemente für die ausgewählten Kategorien</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_pages" approved="yes">
+        <source>Categorized pages</source>
+        <target state="final">Kategorisierte Seiten</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_pages.description" approved="yes">
+        <source>Pages for selected categories</source>
+        <target state="final">Seiten für die ausgewählten Kategorien</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">Seiten</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_pages.description" approved="yes">
+        <source>Menu of selected pages</source>
+        <target state="final">Menü ausgewählter Seiten</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_subpages" approved="yes">
+        <source>Subpages</source>
+        <target state="final">Unterseiten</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_subpages.description" approved="yes">
+        <source>Menu of subpages of selected pages</source>
+        <target state="final">Menü der Unterseiten der ausgewählten Seiten</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_recently_updated" approved="yes">
+        <source>Recently updated pages</source>
+        <target state="final">Kürzlich aktualisierte Seiten</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_recently_updated.description" approved="yes">
+        <source>Menu of recently updated pages</source>
+        <target state="final">Menü der kürzlich aktualisierten Seiten</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_related_pages" approved="yes">
+        <source>Related pages</source>
+        <target state="final">Verwandte Seiten</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_related_pages.description" approved="yes">
+        <source>Menu of related pages based on keywords</source>
+        <target state="final">Menü mit verwandten Seiten auf der Grundlage von Schlüsselwörtern</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section" approved="yes">
+        <source>Section index</source>
+        <target state="final">Sektionsindex</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section.description" approved="yes">
+        <source>Page content marked for section menus</source>
+        <target state="final">Seiteninhalt, der für Abschnittsmenüs markiert ist</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section_pages" approved="yes">
+        <source>Section index of subpages from selected pages</source>
+        <target state="final">Menü der Unterseiten von ausgewählten Seiten</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section_pages.description" approved="yes">
+        <source>Menu of subpages of selected pages including sections</source>
+        <target state="final">Menü der Unterseiten der ausgewählten Seiten inklusive Seiteninhalt</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">Sitemap</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap.description" approved="yes">
+        <source>Expanded menu of all subpages of the current site</source>
+        <target state="final">Erweitertes Menü aller Unterseiten der aktuellen Seite</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap_pages" approved="yes">
+        <source>Sitemaps of selected pages</source>
+        <target state="final">Sitemap der ausgewählten Seiten</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap_pages.description" approved="yes">
+        <source>Expanded menu of all subpages for selected pages</source>
+        <target state="final">Erweitertes Menü aller Unterseiten von ausgewählten Seiten</target>
+      </trans-unit>
+      <trans-unit id="CType.shortcut" approved="yes">
+        <source>Insert records</source>
+        <target state="final">Datensätze einfügen</target>
+      </trans-unit>
+      <trans-unit id="CType.shortcut.description" approved="yes">
+        <source>With this element you can embed other content elements.</source>
+        <target state="final">Mit diesem Element werden andere Inhaltselemente eingebunden.</target>
+      </trans-unit>
+      <trans-unit id="CType.list" approved="yes">
+        <source>General Plugin</source>
+        <target state="final">Allgemeines Plugin</target>
+      </trans-unit>
+      <trans-unit id="CType.list.description" approved="yes">
+        <source>Select this element type to insert a plugin which cannot be found amongst the options below.</source>
+        <target state="final">Wählen Sie diesen Elementtyp, um ein Plugin einzufügen, das nicht unter den unten aufgeführten Optionen zu finden ist.</target>
+      </trans-unit>
+      <trans-unit id="CType.div" approved="yes">
+        <source>Divider</source>
+        <target state="final">Trenner</target>
+      </trans-unit>
+      <trans-unit id="CType.div.description" approved="yes">
+        <source>This element inserts a visual divider, which is by default a horizontal line.</source>
+        <target state="final">Dieses Element fügt eine visuelle Trennlinie ein, die standardmäßig eine horizontale Linie ist.</target>
+      </trans-unit>
+      <trans-unit id="CType.html" approved="yes">
+        <source>Plain HTML</source>
+        <target state="final">Reines HTML</target>
+      </trans-unit>
+      <trans-unit id="CType.html.description" approved="yes">
+        <source>With this element you can insert raw HTML code on the page.</source>
+        <target state="final">Mit diesem Element können Sie reinen HTML-Code auf der Seite einfügen.</target>
+      </trans-unit>
+      <trans-unit id="asset_references" approved="yes">
+        <source>Media elements</source>
+        <target state="final">Medienelemente</target>
+      </trans-unit>
+      <trans-unit id="asset_references.addFileReference" approved="yes">
+        <source>Add media file</source>
+        <target state="final">Mediendatei hinzufügen</target>
+      </trans-unit>
+      <trans-unit id="uploads_description" approved="yes">
+        <source>Display description</source>
+        <target state="final">Beschreibung anzeigen</target>
+      </trans-unit>
+      <trans-unit id="uploads_type" approved="yes">
+        <source>Display file/icon/thumbnail</source>
+        <target state="final">Datei/Symbol/Vorschaubild anzeigen</target>
+      </trans-unit>
+      <trans-unit id="uploads_type.0" approved="yes">
+        <source>Only file name</source>
+        <target state="final">Nur Dateiname</target>
+      </trans-unit>
+      <trans-unit id="uploads_type.1" approved="yes">
+        <source>File name and file extension icon</source>
+        <target state="final">Dateiname und Dateierweiterungssymbol</target>
+      </trans-unit>
+      <trans-unit id="uploads_type.2" approved="yes">
+        <source>File name and thumbnail (if possible)</source>
+        <target state="final">Dateiname und Vorschaubild (falls möglich)</target>
+      </trans-unit>
+      <trans-unit id="table_class" approved="yes">
+        <source>Table style</source>
+        <target state="final">Tabellenstil</target>
+      </trans-unit>
+      <trans-unit id="table_class.default" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="table_class.striped" approved="yes">
+        <source>Striped</source>
+        <target state="final">Gestreift</target>
+      </trans-unit>
+      <trans-unit id="table_class.bordered" approved="yes">
+        <source>Bordered</source>
+        <target state="final">Umrahmt</target>
+      </trans-unit>
+      <trans-unit id="table_caption" approved="yes">
+        <source>Table caption</source>
+        <target state="final">Tabellenbeschriftung</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter" approved="yes">
+        <source>Field Delimiter</source>
+        <target state="final">Feldbegrenzer</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter.124" approved="yes">
+        <source>| (Pipe)</source>
+        <target state="final">| (Pipe)</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter.59" approved="yes">
+        <source>; (Semicolon)</source>
+        <target state="final">; (Semikolon)</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter.58" approved="yes">
+        <source>: (Colon)</source>
+        <target state="final">: (Doppelpunkt)</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter.44" approved="yes">
+        <source>, (Comma)</source>
+        <target state="final">, (Komma)</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter.9" approved="yes">
+        <source>⇥ (Tab)</source>
+        <target state="final">⇥ (Tab)</target>
+      </trans-unit>
+      <trans-unit id="table_enclosure" approved="yes">
+        <source>Text enclosure</source>
+        <target state="final">Texteinfassung</target>
+      </trans-unit>
+      <trans-unit id="table_enclosure.0" approved="yes">
+        <source>None</source>
+        <target state="final">Keine</target>
+      </trans-unit>
+      <trans-unit id="table_enclosure.39" approved="yes">
+        <source>' (Single quotes)</source>
+        <target state="final">' (einfache Anführungszeichen)</target>
+      </trans-unit>
+      <trans-unit id="table_enclosure.34" approved="yes">
+        <source>" (Double quotes)</source>
+        <target state="final">" (doppelte Anführungszeichen)</target>
+      </trans-unit>
+      <trans-unit id="table_header_position" approved="yes">
+        <source>Table header position</source>
+        <target state="final">Position des Tabellenkopfes</target>
+      </trans-unit>
+      <trans-unit id="table_header_position.0" approved="yes">
+        <source>No header</source>
+        <target state="final">Keine Kopfzeile</target>
+      </trans-unit>
+      <trans-unit id="table_header_position.1" approved="yes">
+        <source>Top</source>
+        <target state="final">Oben</target>
+      </trans-unit>
+      <trans-unit id="table_header_position.2" approved="yes">
+        <source>Left</source>
+        <target state="final">Links</target>
+      </trans-unit>
+      <trans-unit id="table_tfoot" approved="yes">
+        <source>Use table footer (wrap last row with &lt;tfoot&gt; tags)</source>
+        <target state="final">Tabellenfuß verwenden (letzte Zeile in &lt;tfoot&gt;-Tags einschließen)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
