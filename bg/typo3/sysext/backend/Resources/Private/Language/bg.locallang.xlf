@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1420197366" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="bg">
+    <header/>
+    <body>
+      <trans-unit id="no_modules_registered" resname="no_modules_registered" approved="yes">
+        <source>No modules have been registered. Please contact your system administrator.</source>
+        <target state="final">Няма регистрирани модули. Моля свържете се с вашия системен администратор.</target>
+      </trans-unit>
+      <trans-unit id="show_references" resname="show_references" approved="yes">
+        <source>Show references</source>
+        <target state="final">Покажи референции</target>
+      </trans-unit>
+      <trans-unit id="login.process" resname="login.process" approved="yes">
+        <source>Verifying Login Data ...</source>
+        <target state="final">Проверка на данни за вход...</target>
+      </trans-unit>
+      <trans-unit id="login.submit" resname="login.submit" approved="yes">
+        <source>Login</source>
+        <target state="final">Вход</target>
+      </trans-unit>
+      <trans-unit id="login.copyrightLink" resname="login.copyrightLink" approved="yes">
+        <source>More about TYPO3</source>
+        <target state="final">Повече за TYPO3</target>
+      </trans-unit>
+      <trans-unit id="login.typo3Logo" resname="login.typo3Logo" approved="yes">
+        <source>TYPO3 logo</source>
+        <target state="final">TYPO3 лого</target>
+      </trans-unit>
+      <trans-unit id="login.donate" resname="login.donate" approved="yes">
+        <source>Donate</source>
+        <target state="final">Дарение</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
