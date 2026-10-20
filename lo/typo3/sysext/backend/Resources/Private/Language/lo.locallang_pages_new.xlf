@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815013" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_new.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Create multiple pages</source>
+        <target state="final">ສ້າງຫຼາຍໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="canNotCreateNew.title" resname="canNotCreateNew.title" approved="yes">
+        <source>Insufficient permissions</source>
+        <target state="final">ສິດທິບໍ່ພຽງພໍ</target>
+      </trans-unit>
+      <trans-unit id="canNotCreateNew.message" resname="canNotCreateNew.message" approved="yes">
+        <source>Sorry, you are not allowed to create new subpages to this page due to access restrictions.</source>
+        <target state="final">ຂໍອະໄພ, ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ສ້າງໜ້າຍ່ອຍໃໝ່ໃນໜ້ານີ້ ເນື່ອງຈາກການຈຳກັດການເຂົ້າເຖິງ.</target>
+      </trans-unit>
+      <trans-unit id="newPage" resname="newPage" approved="yes">
+        <source>Page</source>
+        <target state="final">ໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="addMoreLines" resname="addMoreLines" approved="yes">
+        <source>Add more lines</source>
+        <target state="final">ເພີ່ມແຖວຕື່ມ</target>
+      </trans-unit>
+      <trans-unit id="listEnd" resname="listEnd" approved="yes">
+        <source>Place new pages after the existing subpages</source>
+        <target state="final">ວາງໜ້າໃໝ່ໄວ້ຫຼັງໜ້າຍ່ອຍທີ່ມີຢູ່ແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="hidePages" resname="hidePages" approved="yes">
+        <source>Hide new pages</source>
+        <target state="final">ເຊື່ອງໜ້າໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="hidePagesInMenus" resname="hidePagesInMenus" approved="yes">
+        <source>Hide new pages in menus</source>
+        <target state="final">ເຊື່ອງໜ້າໃໝ່ໃນເມນູ</target>
+      </trans-unit>
+      <trans-unit id="create" resname="create" approved="yes">
+        <source>Create pages</source>
+        <target state="final">ສ້າງໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="reset" resname="reset" approved="yes">
+        <source>Clear fields</source>
+        <target state="final">ລ້າງຂໍ້ມູນໃນຫ້ອງປ້ອນ</target>
+      </trans-unit>
+      <trans-unit id="newSubPages" resname="newSubPages" approved="yes">
+        <source>New page structure</source>
+        <target state="final">ໂຄງສ້າງໜ້າໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="noPagesCreated.title" resname="noPagesCreated.title" approved="yes">
+        <source>No pages added</source>
+        <target state="final">ບໍ່ມີການເພີ່ມໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="noPagesCreated.message" resname="noPagesCreated.message" approved="yes">
+        <source>No pages were created.</source>
+        <target state="final">ບໍ່ມີໜ້າໃດຖືກສ້າງຂຶ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="pagesCreated.title" resname="pagesCreated.title" approved="yes">
+        <source>Pages added</source>
+        <target state="final">ເພີ່ມໜ້າແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="pagesCreated.message" resname="pagesCreated.message" approved="yes">
+        <source>The pages were created successfully.</source>
+        <target state="final">ສ້າງໜ້າສຳເລັດແລ້ວ.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
