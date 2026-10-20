@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="site.ctrl.title" approved="yes">
+        <source>Site Configuration</source>
+        <target state="final">साइट कॉन्फ़िगरेशन</target>
+      </trans-unit>
+      <trans-unit id="site.identifier" approved="yes">
+        <source>Site Identifier</source>
+        <target state="final">साइट पहचानकर्ता</target>
+      </trans-unit>
+      <trans-unit id="site.rootPageId" approved="yes">
+        <source>Root Page ID</source>
+        <target state="final">रूट पेज आईडी</target>
+      </trans-unit>
+      <trans-unit id="site.base" approved="yes">
+        <source>Entry Point</source>
+        <target state="final">प्रवेश बिंदु</target>
+      </trans-unit>
+      <trans-unit id="site.websiteTitle" approved="yes">
+        <source>Website title</source>
+        <target state="final">वेबसाइट का शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="site.baseVariants" approved="yes">
+        <source>Variants for the Entry Point</source>
+        <target state="final">प्रवेश बिंदु के लिए विकल्प</target>
+      </trans-unit>
+      <trans-unit id="site.dependencies" approved="yes">
+        <source>Sets for this Site</source>
+        <target state="final">इस साइट के लिए सेट्स</target>
+      </trans-unit>
+      <trans-unit id="site.languages" approved="yes">
+        <source>Available Languages for this Site</source>
+        <target state="final">इस साइट के लिए उपलब्ध भाषाएँ</target>
+      </trans-unit>
+      <trans-unit id="site.languages.choosePreset" approved="yes">
+        <source>Choose a preset...</source>
+        <target state="final">एक प्रीसेट चुनें...</target>
+        <note>First select option of site language preset single select drop down</note>
+      </trans-unit>
+      <trans-unit id="site.languages.chooseExistingFromOtherSite" approved="yes">
+        <source>Use Language from existing site...</source>
+        <target state="final">मौजूदा साइट से भाषा का उपयोग करें...</target>
+        <note>First select option of site language preset single select drop down</note>
+      </trans-unit>
+      <trans-unit id="site.languages.description" approved="yes">
+        <source>Select an already existing language from another site or create a new one.</source>
+        <target state="final">किसी दूसरी साइट से पहले से मौजूद कोई भाषा चुनें, या कोई नई भाषा बनाएँ।</target>
+      </trans-unit>
+      <trans-unit id="site.languages.new" approved="yes">
+        <source>New language</source>
+        <target state="final">नई भाषा</target>
+      </trans-unit>
+      <trans-unit id="site.languages.createNew" approved="yes">
+        <source>Create new language</source>
+        <target state="final">नई भाषा बनाएँ</target>
+      </trans-unit>
+      <trans-unit id="site.errorHandling" approved="yes">
+        <source>Error Handling</source>
+        <target state="final">त्रुटि प्रबंधन</target>
+      </trans-unit>
+      <trans-unit id="site.routes" approved="yes">
+        <source>Routes</source>
+        <target state="final">रूट्स</target>
+      </trans-unit>
+      <trans-unit id="site.routes.irreHeader.redirectsTo" approved="yes">
+        <source>redirects to</source>
+        <target state="final">रीडायरेक्ट करता है</target>
+      </trans-unit>
+      <trans-unit id="site.tab.languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">भाषाएँ</target>
+      </trans-unit>
+      <trans-unit id="site.tab.errorHandling" approved="yes">
+        <source>Error Handling</source>
+        <target state="final">त्रुटि प्रबंधन</target>
+      </trans-unit>
+      <trans-unit id="site.tab.routes" approved="yes">
+        <source>Static Routes</source>
+        <target state="final">स्टैटिक रूट्स</target>
+      </trans-unit>
+      <trans-unit id="site_language.palette.frontend" approved="yes">
+        <source>Frontend related</source>
+        <target state="final">Frontend से संबंधित</target>
+      </trans-unit>
+      <trans-unit id="site_language.ctrl.title" approved="yes">
+        <source>Language Configuration for a Site</source>
+        <target state="final">किसी साइट के लिए भाषा कॉन्फ़िगरेशन</target>
+      </trans-unit>
+      <trans-unit id="site_language.language" approved="yes">
+        <source>Language</source>
+        <target state="final">भाषा</target>
+      </trans-unit>
+      <trans-unit id="site_language.languageId" approved="yes">
+        <source>Language ID</source>
+        <target state="final">भाषा ID</target>
+      </trans-unit>
+      <trans-unit id="site_language.title" approved="yes">
+        <source>Title</source>
+        <target state="final">शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="site_language.websiteTitle" approved="yes">
+        <source>Website title</source>
+        <target state="final">वेबसाइट शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="site_language.navigationTitle" approved="yes">
+        <source>Navigation Title</source>
+        <target state="final">नेविगेशन शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="site_language.base" approved="yes">
+        <source>Entry Point</source>
+        <target state="final">प्रवेश बिंदु</target>
+      </trans-unit>
+      <trans-unit id="site_language.locale" approved="yes">
+        <source>Locale</source>
+        <target state="final">स्थान</target>
+      </trans-unit>
+      <trans-unit id="site_language.hreflang" approved="yes">
+        <source>Alternative attribute for "hreflang" tags</source>
+        <target state="final">"hreflang" टैग के लिए वैकल्पिक एट्रिब्यूट</target>
+      </trans-unit>
+      <trans-unit id="site_language.enabled" approved="yes">
+        <source>Visible in Frontend</source>
+        <target state="final">Frontend में दिखाई देने वाला</target>
+      </trans-unit>
+      <trans-unit id="site_language.flag" approved="yes">
+        <source>Flag icon</source>
+        <target state="final">झंडा आइकन</target>
+      </trans-unit>
+      <trans-unit id="site_language.flag.group.colors" approved="yes">
+        <source>Colors</source>
+        <target state="final">रंग</target>
+      </trans-unit>
+      <trans-unit id="site_language.flag.group.countries" approved="yes">
+        <source>Countries</source>
+        <target state="final">देशों</target>
+      </trans-unit>
+      <trans-unit id="site_language.flag.group.misc" approved="yes">
+        <source>Miscellaneous</source>
+        <target state="final">विविध</target>
+      </trans-unit>
+      <trans-unit id="site_language.fallbackType" approved="yes">
+        <source>Fallback Type</source>
+        <target state="final">फ़ॉलबैक प्रकार</target>
+      </trans-unit>
+      <trans-unit id="site_language.fallbackType.free" approved="yes">
+        <source>Free mode: Ignore translation and overlay concept, only show data from selected language</source>
+        <target state="final">फ़्री मोड: अनुवाद और ओवरले की अवधारणा को नज़रअंदाज़ करें; केवल चुनी गई भाषा का डेटा दिखाएँ</target>
+      </trans-unit>
+      <trans-unit id="site_language.fallbacks" approved="yes">
+        <source>Fallback to other Language(s) - order is important!</source>
+        <target state="final">अन्य भाषा(s) पर वापस जाएँ - क्रम महत्वपूर्ण है!</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.ctrl.title" approved="yes">
+        <source>Base</source>
+        <target state="final">आधार</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.base" approved="yes">
+        <source>Base</source>
+        <target state="final">आधार</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.base.placeholder" approved="yes">
+        <source>www.domain.local</source>
+        <target state="final">www.domain.local</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition" approved="yes">
+        <source>Condition</source>
+        <target state="final">स्थिति</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition.placeholder" approved="yes">
+        <source>applicationContext == "Production"</source>
+        <target state="final">एप्लिकेशन संदर्भ == "Production"</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition.applicationContext" approved="yes">
+        <source>Application Context</source>
+        <target state="final">एप्लिकेशन संदर्भ</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition.environmentVariable" approved="yes">
+        <source>Environment Variable</source>
+        <target state="final">एनवायरनमेंट वेरिएबल</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.ctrl.title" approved="yes">
+        <source>Error Handling</source>
+        <target state="final">त्रुटि प्रबंधन</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.tab.rootpaths" approved="yes">
+        <source>Root Paths (optional)</source>
+        <target state="final">रूट पाथ (वैकल्पिक)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode" approved="yes">
+        <source>HTTP Error Status Code</source>
+        <target state="final">HTTP त्रुटि स्थिति कोड</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.404" approved="yes">
+        <source>404 (Page not found)</source>
+        <target state="final">404 (पृष्ठ नहीं मिला)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.403" approved="yes">
+        <source>403 (Forbidden)</source>
+        <target state="final">403 (निषिद्ध)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.500" approved="yes">
+        <source>500 (Internal Server Error)</source>
+        <target state="final">500 (आंतरिक सर्वर त्रुटि)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.503" approved="yes">
+        <source>503 (Service Unavailable)</source>
+        <target state="final">503 (सेवा अनुपलब्ध)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.0" approved="yes">
+        <source>any error not defined otherwise</source>
+        <target state="final">कोई भी त्रुटि, जो अन्यथा परिभाषित न हो</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler" approved="yes">
+        <source>How to handle Errors</source>
+        <target state="final">त्रुटियों को कैसे संभालें</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler.fluid" approved="yes">
+        <source>Fluid Template</source>
+        <target state="final">फ़्लूइड टेम्पलेट</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler.page" approved="yes">
+        <source>Show Content from Page</source>
+        <target state="final">पेज से सामग्री दिखाएँ</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler.php" approved="yes">
+        <source>PHP Class (must implement the PageErrorHandlerInterface)</source>
+        <target state="final">PHP क्लास (PageErrorHandlerInterface को इम्प्लीमेंट करना अनिवार्य है)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler.loginRedirect" approved="yes">
+        <source>Redirect to login page</source>
+        <target state="final">लॉगिन पृष्ठ पर रीडायरेक्ट करें</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplate" approved="yes">
+        <source>Fluid Template File</source>
+        <target state="final">फ़्लूइड टेम्पलेट फ़ाइल</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplate.placeholder" approved="yes">
+        <source>EXT:my_sitepackage/Resources/Private/Templates/Sites/Error.html</source>
+        <target state="final">EXT:my_sitepackage/Resources/Private/Templates/Sites/Error.html</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplatesRootPath" approved="yes">
+        <source>Fluid Templates Root Path</source>
+        <target state="final">फ़्लूइड टेम्प्लेट रूट पाथ</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidLayoutsRootPath" approved="yes">
+        <source>Fluid Layouts Root Path</source>
+        <target state="final">फ़्लूइड लेआउट्स का मूल पथ</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidPartialsRootPath" approved="yes">
+        <source>Fluid Partials Root Path</source>
+        <target state="final">फ़्लूइड पार्शियल्स रूट पाथ</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorContentSource" approved="yes">
+        <source>Show Content from Page</source>
+        <target state="final">पेज से सामग्री दिखाएँ</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorPhpClassFQCN" approved="yes">
+        <source>ErrorHandler Class Target (FQCN)</source>
+        <target state="final">ErrorHandler Class का Target (FQCN)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.loginRedirectTarget" approved="yes">
+        <source>Target page where login process is handled</source>
+        <target state="final">वह Target पेज जहाँ लॉगिन प्रक्रिया को संभाला जाता है</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.loginRedirectParameter" approved="yes">
+        <source>URL parameter for redirect</source>
+        <target state="final">Redirect के लिए URL पैरामीटर</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.loginRedirectParameter.return_url" approved="yes">
+        <source>return_url (used by e.g. ext:felogin)</source>
+        <target state="final">return_url (उदाहरण के लिए ext:felogin द्वारा प्रयुक्त)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.loginRedirectParameter.redirect_url" approved="yes">
+        <source>redirect_url (used by e.g. ext:oidc or ext:felogin)</source>
+        <target state="final">redirect_url (उदाहरण के लिए ext:oidc या ext:felogin द्वारा प्रयुक्त)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorPhpClassFQCN.placeholder" approved="yes">
+        <source>Vendor\ExtensionName\ErrorHandlers\GenericErrorhandler</source>
+        <target state="final">Vendor\ExtensionName\ErrorHandlers\GenericErrorhandler</target>
+      </trans-unit>
+      <trans-unit id="site_route.ctrl.title" approved="yes">
+        <source>Routes</source>
+        <target state="final">मार्गों</target>
+      </trans-unit>
+      <trans-unit id="site_route.type" approved="yes">
+        <source>Route Type</source>
+        <target state="final">मार्ग का प्रकार</target>
+      </trans-unit>
+      <trans-unit id="site_route.staticText" approved="yes">
+        <source>Static Text</source>
+        <target state="final">स्थिर पाठ</target>
+      </trans-unit>
+      <trans-unit id="site_route.staticText.example1" approved="yes">
+        <source>robots.txt Example Content</source>
+        <target state="final">robots.txt उदाहरण सामग्री</target>
+      </trans-unit>
+      <trans-unit id="site_route.source" approved="yes">
+        <source>Page, File or URL</source>
+        <target state="final">पृष्ठ, फ़ाइल या URL</target>
+      </trans-unit>
+      <trans-unit id="site_route.asset" approved="yes">
+        <source>Static Asset</source>
+        <target state="final">स्थिर संपत्ति</target>
+      </trans-unit>
+      <trans-unit id="site_route.asset.example" approved="yes">
+        <source>Example asset</source>
+        <target state="final">उदाहरण संपत्ति</target>
+      </trans-unit>
+      <trans-unit id="site_route.route" approved="yes">
+        <source>Static Route Name</source>
+        <target state="final">स्थिर मार्ग का नाम</target>
+      </trans-unit>
+      <trans-unit id="site_route.route.placeholder" approved="yes">
+        <source>my-custom_route</source>
+        <target state="final">मेरा-कस्टम_रूट</target>
+      </trans-unit>
+      <trans-unit id="site_route.route.example1" approved="yes">
+        <source>robots.txt</source>
+        <target state="final">robots.txt</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
