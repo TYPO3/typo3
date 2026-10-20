@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814794" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_ttcontent.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>All visible content on webpages is typically made by "Page Content" records, often referred to as "Content Elements". Content Elements are managed by the "Page" Module which organizes Content Elements in multiple columns and languages.</source>
+        <target state="final">Visą matomą turinį tinklalapiuose paprastai sukuria „Puslapio turinio“ įrašai, dažnai vadinami „Turinio elementais“. Turinio elementus tvarko „Puslapio“ modulis, kuris turinio elementus tvarko keliais stulpeliais ir kalbomis.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>"Page Content" records are sortable and can be rearranged. The "Language" and "Column" selectors of the "Page Content" records determines when and where they appear. If you do not change the value of the "Language" and "Column" selectors the Content Element will appear in the default configuration.</source>
+        <target state="final">„Puslapio turinio“ įrašus galima rūšiuoti ir pertvarkyti. „Puslapio turinio“ įrašų selektoriaus parinktys „Kalba“ ir „Stulpelis“ nustato, kada ir kur jie rodomi. Jei nepakeisite „Kalba“ ir „Stulpelis“ reikšmių, turinio elementas bus rodomas pagal numatytąją konfigūraciją.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>Page Content Principles | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageContent/,
+_MOD_web_layout</source>
+			<target state="final">Puslapio turinio principai | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageContent/,
+_MOD_web_layout</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/ttcontent_1.png,
+EXT:frontend/Resources/Public/Images/cshimages/ttcontent_2.png,
+EXT:frontend/Resources/Public/Images/cshimages/ttcontent_3.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/ttcontent_1.png,
+EXT:frontend/Resources/Public/Images/cshimages/ttcontent_2.png,
+EXT:frontend/Resources/Public/Images/cshimages/ttcontent_3.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The Page Module is used to manage Content Elements arranged in columns and languages.
+A Content Element has an editing form with many options. The "Type" determines which options are visible.
+In the Frontend, a Content Element like the above could look like this.</source>
+			<target state="final">Puslapio modulis naudojamas stulpeliais ir kalbomis išdėstytiems turinio elementams valdyti.
+Turinio elementas turi redagavimo formą su daugybe parinkčių. „Tipas“ nustato, kurios parinktys yra matomos.
+Priekinėje dalyje toks turinio elementas kaip aukščiau pateiktas galėtų atrodyti taip.</target></trans-unit>
+      <trans-unit id="CType.description" resname="CType.description" approved="yes">
+        <source>Select the kind of Page Content this element represents. New options will appear when you save the record.</source>
+        <target state="final">Pasirinkite šio elemento puslapio turinio tipą. Įrašus atsiras naujų parinkčių.</target>
+      </trans-unit>
+      <trans-unit id="_CType.seeAlso" resname="_CType.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:colPos,
+tt_content:sys_language_uid,
+About Content Elements | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/</source>
+				
+			<target state="final">tt_content:colPos,
+tt_content:sys_language_uid,
+Apie turinio elementus | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_CType.image" resname="_CType.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/ttcontent_4.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/ttcontent_4.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:starttime,
+tt_content:endtime,
+tt_content:fe_group,
+tt_content:colPos,
+tt_content:sys_language_uid</source>
+				
+			<target state="final">tt_content:starttime,
+tt_content:endtime,
+tt_content:fe_group,
+tt_content:colPos,
+tt_content:sys_language_uid</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Enter the date when the Content Element should be published and displayed on the website.</source>
+        <target state="final">Įveskite datą, kada turinio elementas turėtų būti paskelbtas ir rodomas svetainėje.</target>
+      </trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:starttime,
+tt_content:endtime,
+tt_content:hidden,
+tt_content:fe_group</source>
+				
+			<target state="final">pages:starttime,
+tt_content:endtime,
+tt_content:hidden,
+tt_content:fe_group</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>Enter the date when the Content Element should expire and disappear from the website.</source>
+        <target state="final">Įveskite datą, kada turinio elementas turėtų baigti galioti ir išnykti iš svetainės.</target>
+      </trans-unit>
+      <trans-unit id="_endtime.seeAlso" resname="_endtime.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:endtime,
+tt_content:starttime,
+tt_content:hidden,
+tt_content:fe_group</source>
+				
+			<target state="final">pages:endtime,
+tt_content:starttime,
+tt_content:hidden,
+tt_content:fe_group</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="fe_group.description" resname="fe_group.description" approved="yes">
+        <source>If Usergroup Access Rights are set to a usergroup name, only website users who are logged in and members of the selected usergroup will be able to view the Content Element. The special option 'Hide at Login' means the Content Element will &lt;em&gt;not&lt;/em&gt; be visible for any website users that are logged in. Likewise "Show at Any Login" will make the Content Element visible for any logged in website user.</source>
+        <target state="final">Jei vartotojų grupės prieigos teisės nustatytos pagal vartotojų grupės pavadinimą, turinio elementą galės matyti tik prisijungę svetainės vartotojai ir pasirinktos vartotojų grupės nariai. Speciali parinktis „Slėpti prisijungiant“ reiškia, kad turinio elementas nebus matomas jokiems prisijungusiems svetainės vartotojams. Taip pat parinktis „Rodyti prisijungiant“ padarys turinio elementą matomą visiems prisijungusiems svetainės vartotojams.</target>
+      </trans-unit>
+      <trans-unit id="fe_group.details" resname="fe_group.details" approved="yes">
+        <source>The 'Hide at Login' option is is useful if you want to present information like "How to Login" that becomes irrelevant when a website user is actually logged in.</source>
+        <target state="final">Parinktis „Slėpti prisijungiant“ yra naudinga, jei norite pateikti tokią informaciją kaip „Kaip prisijungti“, kuri tampa nereikšminga, kai svetainės vartotojas iš tikrųjų yra prisijungęs.</target>
+      </trans-unit>
+      <trans-unit id="_fe_group.seeAlso" resname="_fe_group.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:hidden,
+tt_content:starttime,
+tt_content:endtime,
+pages:fe_group,
+fe_users,
+fe_groups</source>
+				
+			<target state="final">tt_content:hidden,
+tt_content:starttime,
+tt_content:endtime,
+pages:fe_group,
+fe_users,
+fe_groups</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="sys_language_uid.description" resname="sys_language_uid.description" approved="yes">
+        <source>Select the system language of this Content Element. &lt;strong&gt;Notice:&lt;/strong&gt; This will affect the Content Element visibility by limiting it to a certain language.</source>
+        <target state="final">Pasirinkite šio turinio elemento sistemos kalbą. &lt;strong&gt;Pastaba:&lt;/strong&gt; Tai paveiks turinio elemento matomumą, apribodama jį iki tam tikros kalbos.</target>
+      </trans-unit>
+      <trans-unit id="sys_language_uid.details" resname="sys_language_uid.details" xml:space="preserve" approved="yes">
+				<source>This allows you to assign a specific language to the Content Element. If you select anything but the default value, the element will &lt;em&gt;not&lt;/em&gt; be visible unless the language assigned is also configured by the TypoScript template.
+The available system languages are created by the administrator.</source>
+			<target state="final">This allows you to assign a specific language to the Content Element. If you select anything but the default value, the element will &lt;em&gt;not&lt;/em&gt; be visible unless the language assigned is also configured by the TypoScript template.
+The available system languages are created by the administrator.</target></trans-unit>
+      <trans-unit id="_sys_language_uid.seeAlso" resname="_sys_language_uid.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:colPos,
+sys_language,
+Localization concepts [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/,
+_MOD_web_layout:language_list</source>
+				
+			<target state="final">tt_content:colPos,
+sys_language,
+Localization concepts [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/,
+_MOD_web_layout:language_list</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="layout.description" resname="layout.description" approved="yes">
+        <source>Select a Layout.</source>
+        <target state="final">Pasirinkite maketą.</target>
+      </trans-unit>
+      <trans-unit id="layout.details" resname="layout.details" xml:space="preserve" approved="yes">
+				<source>This option does not work by default for all Content Elements but your website may display Content Elements differently depending on the layout.
+
+The File Links Content Element does make use of the Layout field by default:
+"Normal" will provide a list of file links with no thumbnail.
+"Layout 1" adds a file icon to the left of the link
+"Layout 2" adds a thumbnail for image files and an icon for other files. A black border is wrapped around the icon.
+"Layout 3" is similar to Layout 2, but without the black border.</source>
+			<target state="final">Ši parinktis pagal numatytuosius nustatymus neveikia su visais turinio elementais, tačiau jūsų svetainė gali rodyti turinio elementus skirtingai, priklausomai nuo išdėstymo.
+
+Failų nuorodų turinio elementas pagal numatytuosius nustatymus naudoja išdėstymo lauką:
+„Normalus“ pateiks failų nuorodų sąrašą be miniatiūros.
+„1 išdėstymas“ prideda failo piktogramą kairėje nuorodos pusėje.
+„2 išdėstymas“ prideda vaizdo failų miniatiūrą ir kitų failų piktogramą. Aplink piktogramą yra juodas rėmelis.
+„3 išdėstymas“ yra panašus į 2 išdėstymą, bet be juodo rėmelio.</target></trans-unit>
+      <trans-unit id="colPos.description" resname="colPos.description" approved="yes">
+        <source>Select the column position of this element. &lt;strong&gt;Notice:&lt;/strong&gt; This may affect whether the Content Element is visible depending on your website template.</source>
+        <target state="final">Pasirinkite šio elemento stulpelio poziciją. &lt;strong&gt;Pastaba:&lt;/strong&gt; Tai gali turėti įtakos tam, ar turinio elementas bus matomas, priklausomai nuo jūsų svetainės šablono.</target>
+      </trans-unit>
+      <trans-unit id="colPos.details" resname="colPos.details" xml:space="preserve" approved="yes">
+				<source>Many websites only use one column of content. Some templates, however, let you put content in multiple columns using the Column option.
+
+&lt;strong&gt;Notice:&lt;/strong&gt; Selecting a column other than "Normal" may cause the Content Element to disappear if the website template does not use that column. If your Content Element mysteriously disappears make sure the Column and Language selectors are set correctly.</source>
+			<target state="final">Daugelyje svetainių naudojamas tik vienas turinio stulpelis. Tačiau kai kurie šablonai leidžia turinį įdėti į kelis stulpelius naudojant stulpelio parinktį.
+
+&lt;strong&gt;Pastaba:&lt;/strong&gt; Pasirinkus stulpelį, kuris nėra „Įprastas“, turinio elementas gali išnykti, jei svetainės šablonas to stulpelio nenaudoja. Jei jūsų turinio elementas paslaptingai dingsta, įsitikinkite, kad stulpelio ir kalbos parinkikliai yra teisingai nustatyti.</target></trans-unit>
+      <trans-unit id="_colPos.seeAlso" resname="_colPos.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:sys_language_uid,
+_MOD_web_layout:columns_multi,
+_MOD_web_layout:columns_single</source>
+				
+			<target state="final">tt_content:sys_language_uid,
+_MOD_web_layout:columns_multi,
+_MOD_web_layout:columns_single</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="date.description" resname="date.description" approved="yes">
+        <source>Enter a date to be displayed above the header.</source>
+        <target state="final">Įveskite datą, kuri bus rodoma virš antraštės.</target>
+      </trans-unit>
+      <trans-unit id="header.description" resname="header.description" approved="yes">
+        <source>Enter header text for the Content Element.</source>
+        <target state="final">Įveskite turinio elemento antraštės tekstą.</target>
+      </trans-unit>
+      <trans-unit id="_header.seeAlso" resname="_header.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:header_position,
+tt_content:header_link,
+tt_content:header_layout,
+tt_content:date,</source>
+				
+			<target state="final">tt_content:header_position,
+tt_content:header_link,
+tt_content:header_layout,
+tt_content:date,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_header.image" resname="_header.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/ttcontent_6.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/ttcontent_6.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="header_position.description" resname="header_position.description" approved="yes">
+        <source>Aligns the header to the left, center, or right.</source>
+        <target state="final">Sulygiuoja antraštę kairėje, centre arba dešinėje.</target>
+      </trans-unit>
+      <trans-unit id="_header_position.seeAlso" resname="_header_position.seeAlso" approved="yes">
+        <source>tt_content:header</source>
+        <target state="final">tt_content:header</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="header_link.description" resname="header_link.description" approved="yes">
+        <source>Creates a link from the header to a Page ID, email address, or URL.</source>
+        <target state="final">Sukuria nuorodą iš antraštės į puslapio ID, el. pašto adresą arba URL.</target>
+      </trans-unit>
+      <trans-unit id="header_link.syntax" resname="header_link.syntax" xml:space="preserve" approved="yes">
+				<source>If you insert a Page ID (ex. 51), the link will point to the page with id=51 &lt;em&gt;inside&lt;/em&gt; TYPO3.
+If you insert an email address (ex. name@my-domain.test), the link will point to that email address.
+If you insert an URL or domain, (ex. www.typo3.org or http://www.my-domain.org), the link will point to that website.</source>
+			<target state="final">Jei įterpsite puslapio ID (pvz., 51), nuoroda nukreips į puslapį su id=51 &lt;em&gt;/em&gt; TYPO3 viduje.
+
+Jei įterpsite el. pašto adresą (pvz., vardas@mano-domenas.testas), nuoroda nukreips į tą el. pašto adresą.
+Jei įterpsite URL arba domeną (pvz., www.typo3.org arba http://www.mano-domenas.org), nuoroda nukreips į tą svetainę.</target></trans-unit>
+      <trans-unit id="_header_link.seeAlso" resname="_header_link.seeAlso" approved="yes">
+        <source>tt_content:header</source>
+        <target state="final">tt_content:header</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="header_layout.description" resname="header_layout.description" approved="yes">
+        <source>Select a visual design for the header.</source>
+        <target state="final">Pasirinkite antraštės vizualinį dizainą.</target>
+      </trans-unit>
+      <trans-unit id="header_layout.details" resname="header_layout.details" xml:space="preserve" approved="yes">
+				<source>If you select "Default" the standard design (which is one of the layouts 1-5) will be used.
+Alternatively you can select from Layout 1 through 5 which are configured in the website template with individual visual designs.
+If you select "Hidden" the header will simply not appear. This is useful when you don't need a header to display on the website but still want to identify the Content Element in the Backend.</source>
+			<target state="final">Jei pasirinksite „Numatytasis“, bus naudojamas standartinis dizainas (vienas iš 1–5 maketų).
+
+Arba galite pasirinkti iš 1–5 maketų, kurie sukonfigūruoti svetainės šablone su individualiais vizualiniais dizainais.
+
+Jei pasirinksite „Paslėptas“, antraštė tiesiog nebus rodoma. Tai naudinga, kai nereikia rodyti antraštės svetainėje, bet vis tiek norite identifikuoti turinio elementą vidinėje sąsajoje.</target></trans-unit>
+      <trans-unit id="_header_layout.seeAlso" resname="_header_layout.seeAlso" approved="yes">
+        <source>tt_content:header</source>
+        <target state="final">tt_content:header</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="subheader.description" resname="subheader.description" approved="yes">
+        <source>Enter a subheader to be displayed below the main header. If the Content Element is a "Form" this field is instead used as the Recipient Email.</source>
+        <target state="final">Įveskite paantraštę, kuri bus rodoma po pagrindine antrašte. Jei turinio elementas yra „Forma“, šis laukas naudojamas kaip gavėjo el. pašto adresas.</target>
+      </trans-unit>
+      <trans-unit id="subheader.details" resname="subheader.details" approved="yes">
+        <source>A subheader is displayed only with "Header" Content Elements and with "Form" Content Elements (as the Recipient Email).</source>
+        <target state="final">Paantraštė rodoma tik su „Antraštės“ turinio elementais ir „Formos“ turinio elementais (pvz., gavėjo el. pašto adresas).</target>
+      </trans-unit>
+      <trans-unit id="_subheader.seeAlso" resname="_subheader.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:header
+tt_content:bodytext</source>
+				
+			<target state="final">tt_content:header
+tt_content:bodytext</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="bodytext.description" resname="bodytext.description" approved="yes">
+        <source>Enter the main text.</source>
+        <target state="final">Įveskite pagrindinį tekstą.</target>
+      </trans-unit>
+      <trans-unit id="bodytext.details" resname="bodytext.details" xml:space="preserve" approved="yes">
+				<source>The main text of the Content Element is entered here and can be formatted with HTML or a Rich Text Editor.
+The field is reused in other Content Element types so changing the type will cause any text to be reused in that new Content Element type.
+
+When you're using this field with the "Text" and "Text &amp; Images" types, the content is normal body text. Each linebreak signifies a new paragraph, you can use the special TYPO3 tag, &amp;lt;LINK&amp;gt;, for making links. You can use many HTML tags but there are limitations depending on your website configuration.
+A Rich Text Editor is commonly used to add a visual editing interface for 'Text' and 'Text &amp; Images' Content Elements.
+
+&lt;b&gt;Bullet Lists:&lt;/b&gt;
+If the type is "Bullet List" each line in this field is a bullet item.
+
+&lt;b&gt;Tables:&lt;/b&gt;
+If the type is "Table" each line represents a table row. Within each line, columns are divided by a vertical bar ('|'). A table row with 3 columns could look like "This is column 1 | Column 2 here | Third column!". The table wizard can also be used for creating tables and is much easier than hand coding them.</source>
+			<target state="final">Čia įvedamas pagrindinis turinio elemento tekstas, kurį galima formatuoti naudojant HTML arba raiškiojo teksto redaktorių.
+
+Šis laukas pakartotinai naudojamas kituose turinio elementų tipuose, todėl pakeitus tipą, bet koks tekstas bus pakartotinai naudojamas tame naujame turinio elemento tipe.
+
+Kai šį lauką naudojate su tipais „Tekstas“ ir „Tekstas ir vaizdai“, turinys yra įprastas pagrindinis tekstas. Kiekvienas eilutės lūžis žymi naują pastraipą, nuorodoms kurti galite naudoti specialią TYPO3 žymę „LINK“. Galite naudoti daug HTML žymių, tačiau yra apribojimų, priklausomai nuo jūsų svetainės konfigūracijos.
+
+Raiškiojo teksto redaktorius dažniausiai naudojamas norint pridėti vaizdinę redagavimo sąsają turinio elementams „Tekstas“ ir „Tekstas ir vaizdai“.
+
+&lt;b&gt;Ženklelių sąrašai:&lt;/b&gt;
+Jei tipas yra „Ženklelių sąrašas“, kiekviena šio lauko eilutė yra ženklelis.
+
+&lt;b&gt;Lentelės:&lt;/b&gt;
+Jei tipas yra „Lentelė“, kiekviena eilutė žymi lentelės eilutę. Kiekvienoje eilutėje stulpeliai yra atskirti vertikaliu brūkšniu („|“). Lentelės eilutė su 3 stulpeliais gali atrodyti taip: „Tai yra 1 stulpelis | Čia 2 stulpelis | Trečias stulpelis!“. Lentelių vedlį taip pat galima naudoti lentelėms kurti ir tai yra daug paprasčiau nei jas koduoti rankiniu būdu.</target></trans-unit>
+      <trans-unit id="_bodytext.seeAlso" resname="_bodytext.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:CType,
+tt_content:subheader,
+xMOD_csh_corebe:wizard_table_wiz</source>
+				
+			<target state="final">tt_content:CTipe,
+tt_content:subheader,
+xMOD_csh_corebe:wizard_table_wiz</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image.description" resname="image.description" approved="yes">
+        <source>Insert one or more images.</source>
+        <target state="final">Įterpti vieną ar daugiau paveikslėlių.</target>
+      </trans-unit>
+      <trans-unit id="_image.seeAlso" resname="_image.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imagewidth,
+tt_content:imageheight,
+tt_content:imageorient,
+tt_content:imageborder,
+tt_content:image_link,
+tt_content:image_zoom,
+tt_content:imagecols,
+tt_content:imagecaption,
+tt_content:image_frames,
+Using images ("Getting Started") | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/ManagingFilesInTypo3/
+Using images (Animation) | FILE:EXT:welcome/modsub/ani_10.gif</source>
+				
+			<target state="final">tt_content:imagewidth,
+tt_content:imageheight,
+tt_content:imageorient,
+tt_content:imageborder,
+tt_content:image_link,
+tt_content:image_zoom,
+tt_content:imagecols,
+tt_content:imagecaption,
+tt_content:image_frames,
+Vaizdų naudojimas („Darbo pradžia“) | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/ManagingFilesInTypo3/
+Vaizdų naudojimas (animacija) | FILE:EXT:welcome/modsub/ani_10.gif</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_image.image" resname="_image.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/ttcontent_5.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/ttcontent_5.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="image.image_descr" resname="image.image_descr" approved="yes">
+        <source>This shows all the options related to inserting images in Content Elements. Depending on user permissions, you may not be able to use all of them.</source>
+        <target state="final">Čia rodomos visos parinktys, susijusios su vaizdų įterpimu į turinio elementus. Priklausomai nuo naudotojo teisių, gali būti, kad negalėsite naudoti visų jų.</target>
+      </trans-unit>
+      <trans-unit id="imagewidth.description" resname="imagewidth.description" approved="yes">
+        <source>Enter the width (in pixels) for displaying the image in the Frontend of your website.</source>
+        <target state="final">Įveskite paveikslėlio plotį (pikseliais), kuriuo jis bus rodomas jūsų svetainės priekinėje dalyje.</target>
+      </trans-unit>
+      <trans-unit id="imagewidth.details" resname="imagewidth.details" approved="yes">
+        <source>The TypoScript template is normally configured with maximum image width so you shouldn't need to specify a width. In unique cases, this provides additional flexibility though.</source>
+        <target state="final">„TypoScript“ šablonas paprastai sukonfigūruotas su maksimaliu vaizdo pločiu, todėl jums nereikėtų nurodyti pločio. Tačiau išskirtiniais atvejais tai suteikia papildomo lankstumo.</target>
+      </trans-unit>
+      <trans-unit id="_imagewidth.seeAlso" resname="_imagewidth.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imageheight,
+tt_content:image</source>
+				
+			<target state="final">tt_content:imageheight,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="imageheight.description" resname="imageheight.description" approved="yes">
+        <source>Enter the height (in pixels) for displaying the images in the Frontend of your website.</source>
+        <target state="final">Įveskite aukštį (pikseliais), kuriuo vaizdai bus rodomi jūsų svetainės priekinėje dalyje.</target>
+      </trans-unit>
+      <trans-unit id="_imageheight.seeAlso" resname="_imageheight.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imagewidth,
+tt_content:image</source>
+				
+			<target state="final">tt_content:imagewidth,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="imageorient.description" resname="imageorient.description" approved="yes">
+        <source>Select the position and alignment of the images relative to the body text.</source>
+        <target state="final">Pasirinkite vaizdų padėtį ir lygiavimą pagrindinio teksto atžvilgiu.</target>
+      </trans-unit>
+      <trans-unit id="imageorient.details" resname="imageorient.details" xml:space="preserve" approved="yes">
+				<source>The positions above and below the body text are pretty straight forward.
+The options for "In text" mean that images are displayed with text wrapped around them. When you select this option the template will probably force the images into smaller dimensions to accommodate the width of the template and the width of the text. The bodytext will float &lt;em&gt;under&lt;/em&gt; the image block when it reaches the end of the image block. In other words, the body text &lt;em&gt;wraps around&lt;/em&gt; the image block. If you select "In text" below the "No wrap" divider, the body text will not float under the image block, but simply continue in its column.
+Apart from the visual difference there is a technical aspect as well. If you choose to allow the content to wrap the image block you will experience a strange phenomenon when you do not have enough bodytext to make it float around the image: subsequent content elements on the page will appear to be layered on top of the image block. However it's easily solved by changing the "In text" position to the equal value but below the "No wrap" divider.</source>
+			<target state="final">The positions above and below the body text are pretty straight forward.
+The options for "In text" mean that images are displayed with text wrapped around them. When you select this option the template will probably force the images into smaller dimensions to accommodate the width of the template and the width of the text. The bodytext will float &lt;em&gt;under&lt;/em&gt; the image block when it reaches the end of the image block. In other words, the body text &lt;em&gt;wraps around&lt;/em&gt; the image block. If you select "In text" below the "No wrap" divider, the body text will not float under the image block, but simply continue in its column.
+Apart from the visual difference there is a technical aspect as well. If you choose to allow the content to wrap the image block you will experience a strange phenomenon when you do not have enough bodytext to make it float around the image: subsequent content elements on the page will appear to be layered on top of the image block. However it's easily solved by changing the "In text" position to the equal value but below the "No wrap" divider.</target></trans-unit>
+      <trans-unit id="imageborder.description" resname="imageborder.description" approved="yes">
+        <source>Displays a colored border around the images.</source>
+        <target state="final">Aplink vaizdus rodoma spalvota rėmelis.</target>
+      </trans-unit>
+      <trans-unit id="_imageborder.seeAlso" resname="_imageborder.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:imagecols,
+tt_content:image</source>
+				
+			<target state="final">tt_content:imagecols,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image_link.description" resname="image_link.description" approved="yes">
+        <source>Enter a link for the image. For multiple images, separate the links with commas.</source>
+        <target state="final">Įveskite paveikslėlio nuorodą. Jei paveikslėlių yra keli, nuorodas atskirkite kableliais.</target>
+      </trans-unit>
+      <trans-unit id="image_link.details" resname="image_link.details" xml:space="preserve" approved="yes">
+				<source>By default all images share the same link. Your TypoScript template may be configured to allow a separate link for each image. If this is the case, you simply separate the links with a comma.
+
+See Page Content&gt;Link below for details on syntax.</source>
+			<target state="final">Pagal numatytuosius nustatymus visi vaizdai turi tą pačią nuorodą. Jūsų „TypoScript“ šablonas gali būti sukonfigūruotas taip, kad kiekvienam vaizdui būtų leidžiama atskira nuoroda. Tokiu atveju nuorodas tiesiog atskirkite kableliu.
+
+Išsamesnės informacijos apie sintaksę rasite toliau pateiktame skyriuje „Puslapio turinys“ &gt; „Nuoroda“.</target></trans-unit>
+      <trans-unit id="_image_link.seeAlso" resname="_image_link.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:header_link,
+tt_content:image_zoom,
+tt_content:image</source>
+				
+			<target state="final">tt_content:header_link,
+tt_content:image_zoom,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image_zoom.description" resname="image_zoom.description" approved="yes">
+        <source>When enabled, clicking an image will open a larger version in a popup window.</source>
+        <target state="final">Kai ši funkcija įjungta, spustelėjus paveikslėlį, iššokančiajame lange bus atidaryta didesnė jo versija.</target>
+      </trans-unit>
+      <trans-unit id="image_zoom.details" resname="image_zoom.details" approved="yes">
+        <source>This option overrides the value in the Links field.</source>
+        <target state="final">Ši parinktis pakeičia reikšmę lauke „Nuorodos“.</target>
+      </trans-unit>
+      <trans-unit id="_image_zoom.seeAlso" resname="_image_zoom.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:image_link,
+tt_content:image</source>
+				
+			<target state="final">tt_content:image_link,
+tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="image_frames.description" resname="image_frames.description" approved="yes">
+        <source>Select special image framing options.</source>
+        <target state="final">Pasirinkite specialias vaizdo įrėminimo parinktis.</target>
+      </trans-unit>
+      <trans-unit id="_image_frames.seeAlso" resname="_image_frames.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:image</source>
+				
+			<target state="final">tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="imagecols.description" resname="imagecols.description" approved="yes">
+        <source>Set the number of columns when the images are displayed in the Frontend of the website.</source>
+        <target state="final">Nustatykite stulpelių skaičių, kai vaizdai rodomi svetainės priekinėje dalyje.</target>
+      </trans-unit>
+      <trans-unit id="_imagecols.seeAlso" resname="_imagecols.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:image</source>
+				
+			<target state="final">tt_content:image</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="imagecaption.description" resname="imagecaption.description" approved="yes">
+        <source>Enter captions for the images. For multiple images, enter one caption per line.</source>
+        <target state="final">Įveskite paveikslėlių antraštes. Jei yra keli paveikslėliai, įveskite po vieną antraštę kiekvienoje eilutėje.</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.details" resname="imagecaption.details" xml:space="preserve" approved="yes">
+				<source>By default, the caption is positioned below the images. However, your TypoScript template may be configured to allow individual image captions by setting "styles.content.imgtext.captionSplit=1" in your template constants.
+In this case, each line in this field will be the image caption of the corresponding image in the list.
+
+The caption text field is also used by the Content Element type "File Links" where each line represents a description of a file in the list.</source>
+			<target state="final">Pagal numatytuosius nustatymus antraštė pateikiama po paveikslėliais. Tačiau jūsų „TypoScript“ šabloną galima sukonfigūruoti taip, kad būtų leidžiami atskirų paveikslėlių antraštės, šablono konstantose nustatant „styles.content.imgtext.captionSplit=1“.
+
+Tokiu atveju kiekviena šio lauko eilutė bus atitinkamo sąraše esančio paveikslėlio antraštė.
+
+Antraštės teksto lauką taip pat naudoja turinio elemento tipas „Failų nuorodos“, kur kiekviena eilutė nurodo sąraše esančio failo aprašymą.</target></trans-unit>
+      <trans-unit id="cols.description" resname="cols.description" approved="yes">
+        <source>Select a fixed number of table columns</source>
+        <target state="final">Pasirinkite fiksuotą lentelės stulpelių skaičių</target>
+      </trans-unit>
+      <trans-unit id="pages.description" resname="pages.description" approved="yes">
+        <source>Select a target page or multiple target pages.</source>
+        <target state="final">Pasirinkite vieną arba kelis tikslinius puslapius.</target>
+      </trans-unit>
+      <trans-unit id="pages.details" resname="pages.details" xml:space="preserve" approved="yes">
+				<source>This field is used by many of the Content Element types to create a relation to either a single target page or multiple target pages. If no target page is specified, the current page will generally be used.
+
+Using the "Search" Content Element, the target page is where search results will appear. You must make sure that this page has a similar "Search" Content Element to display the results.
+
+The "Login" Content Element (not to be confused with the Login plugin available when the felogin extension is installed) also uses this field to redirect the login to a certain page. That page does not need to contain a "Login" Content Element in order to perform the authentication since any TYPO3 page can handle a login request.
+If you specify a second page in this list, the ID will be passed to the login system as the page inside TYPO3 where website users are found. You should use this only if your template is not already configured to pass this value on.
+In order for the login procedure to work you must make sure that you have created website users and website usergroups, have specified where these website users can be found (typically a SysFolder), a page ID in the page list, and ensured that cookies are enabled for the site.
+
+The "Menu/Sitemap" Content Elements also use this field. In this case the page will determine the starting point for the menu or the actual pages shown in the menu. This behavior depends on the menu type you have selected.
+
+Finally the "Form" element uses this field as the target page to which the form is submitted. A common use is the "Thank you" page after the form is completed.</source>
+			<target state="final">Šį lauką daugelis turinio elementų tipų naudoja ryšiui su vienu arba keliais tiksliniais puslapiais sukurti. Jei nenurodytas tikslinis puslapis, paprastai naudojamas dabartinis puslapis.
+
+Naudojant turinio elementą „Paieška“, tikslinis puslapis yra vieta, kur bus rodomi paieškos rezultatai. Turite įsitikinti, kad šiame puslapyje yra panašus turinio elementas „Paieška“, kad būtų rodomi rezultatai.
+
+Turinio elementas „Prisijungimas“ (nereikia painioti su prisijungimo papildiniu, kuris pasiekiamas įdiegus „felogin“ plėtinį) taip pat naudoja šį lauką, kad nukreiptų prisijungimą į tam tikrą puslapį. Tame puslapyje nebūtina turėti turinio elemento „Prisijungimas“, kad būtų galima atlikti autentifikavimą, nes bet kuris TYPO3 puslapis gali apdoroti prisijungimo užklausą.
+
+Jei šiame sąraše nurodysite antrą puslapį, ID bus perduotas prisijungimo sistemai kaip puslapis TYPO3 viduje, kuriame randami svetainės vartotojai. Turėtumėte tai naudoti tik tuo atveju, jei jūsų šablonas dar nėra sukonfigūruotas perduoti šią reikšmę. Kad prisijungimo procedūra veiktų, turite įsitikinti, kad sukūrėte svetainės naudotojus ir svetainės naudotojų grupes, nurodėte, kur galima rasti šiuos svetainės naudotojus (paprastai tai yra „SysFolder“ aplankas), puslapio ID puslapių sąraše ir užtikrinote, kad svetainėje būtų įjungti slapukai.
+
+Turinio elementai „Meniu / Svetainės planas“ taip pat naudoja šį lauką. Tokiu atveju puslapis nustatys meniu pradžios tašką arba faktinius puslapius, rodomus meniu. Šis elgesys priklauso nuo pasirinkto meniu tipo.
+
+Galiausiai elementas „Forma“ naudoja šį lauką kaip tikslinį puslapį, į kurį pateikiama forma. Dažnai jis naudojamas „Padėkos“ puslapyje, užpildžius formą.</target></trans-unit>
+      <trans-unit id="_pages.seeAlso" resname="_pages.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:CType,
+tt_content:recursive</source>
+				
+			<target state="final">tt_content:CType,
+tt_content:recursive</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="recursive.description" resname="recursive.description" approved="yes">
+        <source>The number of subpage levels that should also be included for each page in the list.</source>
+        <target state="final">Papildomų puslapių lygių, kurie taip pat turėtų būti įtraukti į kiekvieną sąrašo puslapį, skaičius.</target>
+      </trans-unit>
+      <trans-unit id="recursive.details" resname="recursive.details" xml:space="preserve" approved="yes">
+				<source>This feature depends on the TypoScript template configuration and Content Element type. If enabled, each page listed in the "Pages" field will also have its subpages included to the specified depth.
+
+&lt;strong&gt;Warning:&lt;/strong&gt; If there are many subpages, be aware that this option may return a large number of results</source>
+			<target state="final">Ši funkcija priklauso nuo „TypoScript“ šablono konfigūracijos ir turinio elemento tipo. Jei įjungta, kiekviename lauke „Puslapiai“ nurodytame puslapyje bus įtraukti ir subpuslapiai iki nurodyto gylio.
+
+
+Įspėjimas: jei yra daug subpuslapių, atminkite, kad pasirinkus šią parinktį gali būti pateikta daug rezultatų.</target></trans-unit>
+      <trans-unit id="_recursive.seeAlso" resname="_recursive.seeAlso" approved="yes">
+        <source>tt_content:pages</source>
+        <target state="final">tt_content:puslapiai</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="menu_type.description" resname="menu_type.description" approved="yes">
+        <source>Select the type of menu you wish to create.</source>
+        <target state="final">Pasirinkite norimo sukurti meniu tipą.</target>
+      </trans-unit>
+      <trans-unit id="menu_type.details" resname="menu_type.details" xml:space="preserve" approved="yes">
+				<source>This is a short description of each type:
+
+&lt;strong&gt;Menu of selected pages&lt;/strong&gt;
+This will create a menu with links to the pages in the Selected Pages list.
+
+&lt;strong&gt;Menu of subpages of selected pages&lt;/strong&gt;
+This will create in a menu with links to the subpages of the pages in the Selected Pages list. If you do not specify any pages, the subpages to the current page will be used.
+
+&lt;strong&gt;Menu of subpages of selected pages (with abstract)&lt;/strong&gt;
+Like the previous option, but also displays the content of the Abstract field (or the Description field) for each page in the menu. The Abstract field is given priority over the Description field if both are complete.
+
+&lt;strong&gt;Menu of subpages of selected pages + sections&lt;/strong&gt;
+Like the previous option, but includes links to all Content Elements on the page that are marked to Show In Section Menus.
+
+&lt;strong&gt;Sitemap&lt;/strong&gt;
+Generates a classic tree sitemap. Notice that the sitemap will begin from the current page unless you select another page instead.
+
+&lt;strong&gt;Section index (page content marked for section menus)&lt;/strong&gt;
+This makes a menu of Content Elements on the selected pages for all Content Elements marked to Show In Section Menu. This is a great way to make an index at the top of the page.
+If you don't want certain Content Elements to appear in the list, just uncheck the Show in Section Menus checkbox for those elements.
+
+&lt;strong&gt;Recently updated pages&lt;/strong&gt;
+This displays the 10 most recently updated pages.
+&lt;strong&gt;Notice:&lt;/strong&gt; If you update a page and the updated page is not included in this list, clearing the Page Cache will resolve the issue.
+
+&lt;strong&gt;Related pages (based on keywords)&lt;/strong&gt;
+Displays other related pages based on the keywords of the selected pages matched against the keywords of other pages.</source>
+			<target state="final">Trumpas kiekvieno tipo aprašymas:
+
+&lt;strong&gt;Pasirinktų puslapių meniu&lt;/strong&gt;
+
+Tai sukurs meniu su nuorodomis į pasirinktų puslapių sąraše esančius puslapius.
+
+&lt;strong&gt;Pasirinktų puslapių papildomų puslapių meniu&lt;/strong&gt;
+
+Tai sukurs meniu su nuorodomis į pasirinktų puslapių sąraše esančių puslapių papildomus puslapius. Jei nenurodysite jokių puslapių, bus naudojami dabartinio puslapio papildomi puslapiai.
+
+&lt;strong&gt;Pasirinktų puslapių papildomų puslapių meniu (su santrauka)&lt;/strong&gt;
+
+Kaip ir ankstesnė parinktis, bet taip pat rodomas kiekvieno meniu puslapio santraukos lauko (arba aprašymo lauko) turinys. Santraukos laukui suteikiamas prioritetas prieš aprašymo lauką, jei abu užpildyti.
+
+&lt;strong&gt;Pasirinktų puslapių ir skyrių papildomų puslapių meniu&lt;/strong&gt; Kaip ir ankstesnė parinktis, bet įtraukiamos nuorodos į visus puslapio turinio elementus, kurie pažymėti kaip „Rodyti skyrių meniu“.
+
+&lt;strong&gt;Svetainės planas&lt;/strong&gt;
+Sukuria klasikinį medžio svetainės planą. Atkreipkite dėmesį, kad svetainės planas prasidės nuo dabartinio puslapio, nebent pasirinksite kitą puslapį.
+
+&lt;strong&gt;Skyriaus indeksas (puslapio turinys, pažymėtas skyrių meniu)&lt;/strong&gt;
+Tai sukuria turinio elementų meniu pasirinktuose puslapiuose visiems turinio elementams, pažymėtiems kaip „Rodyti skyrių meniu“. Tai puikus būdas sukurti indeksą puslapio viršuje.
+
+Jei nenorite, kad tam tikri turinio elementai būtų rodomi sąraše, tiesiog panaikinkite žymimąjį langelį „Rodyti skyrių meniu“ tiems elementams.
+
+&lt;strong&gt;Neseniai atnaujinti puslapiai&lt;/strong&gt;
+Tai rodo 10 vėliausiai atnaujintų puslapių.
+&lt;strong&gt;Pranešimas:&lt;/strong&gt; Jei atnaujinate puslapį ir atnaujinto puslapio nėra šiame sąraše, puslapio talpyklos išvalymas išspręs problemą.
+
+&lt;strong&gt;Susiję puslapiai (pagal raktinius žodžius)&lt;/strong&gt;
+Rodo kitus susijusius puslapius pagal pasirinktų puslapių raktinius žodžius, sulygintus su kitų puslapių raktiniais žodžiais.</target></trans-unit>
+      <trans-unit id="_menu_type.seeAlso" resname="_menu_type.seeAlso" xml:space="preserve" approved="yes">
+				<source>tt_content:pages,
+tt_content:sectionIndex</source>
+				
+			<target state="final">tt_content:pages,
+tt_content:sectionIndex</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="list_type.description" resname="list_type.description" approved="yes">
+        <source>Select a plugin to insert.</source>
+        <target state="final">Pasirinkite įterpti skirtą papildinį.</target>
+      </trans-unit>
+      <trans-unit id="list_type.details" resname="list_type.details" approved="yes">
+        <source>The list of plugins you can insert on a page. The available plugins depend on which extensions are installed.</source>
+        <target state="final">Į puslapį įterpti galimų papildinių sąrašas. Galimi papildiniai priklauso nuo įdiegtų plėtinių.</target>
+      </trans-unit>
+      <trans-unit id="_list_type.seeAlso" resname="_list_type.seeAlso" approved="yes">
+        <source>_MOD_tools_em</source>
+        <target state="final">_MOD_tools_em</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_list_type.image" resname="_list_type.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/ttcontent_7.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/ttcontent_7.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="media.description" resname="media.description" approved="yes">
+        <source>Files can be added to the list here.</source>
+        <target state="final">Čia galima pridėti failus prie sąrašo.</target>
+      </trans-unit>
+      <trans-unit id="multimedia.description" resname="multimedia.description" approved="yes">
+        <source>Insert a multimedia element here (ex. Flash movie)</source>
+        <target state="final">Įterpkite multimedijos elementą čia (pvz., „Flash“ filmuką)</target>
+      </trans-unit>
+      <trans-unit id="filelink_size.description" resname="filelink_size.description" approved="yes">
+        <source>Enable the display of file sizes.</source>
+        <target state="final">Įgalinti failų dydžių rodymą.</target>
+      </trans-unit>
+      <trans-unit id="records.description" resname="records.description" approved="yes">
+        <source>Insert records to be displayed on this page.</source>
+        <target state="final">Įterpti įrašus, kurie bus rodomi šiame puslapyje.</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex.description" resname="sectionIndex.description" approved="yes">
+        <source>If set, the Content Element will appear in Section Menus.</source>
+        <target state="final">Jei nustatytas, turinio elementas bus rodomas skyrių meniu.</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex.details" resname="sectionIndex.details" approved="yes">
+        <source>See more details about Section Menus by clicking below.</source>
+        <target state="final">Daugiau informacijos apie skyrių meniu rasite spustelėję žemiau.</target>
+      </trans-unit>
+      <trans-unit id="linkToTop.description" resname="linkToTop.description" approved="yes">
+        <source>If checked, a small  "To Top" link will be added after the Content Element, linking back to the top of the page.</source>
+        <target state="final">Jei pažymėta, po turinio elemento bus pridėta maža nuoroda „Į viršų“, nukreipianti atgal į puslapio viršų.</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled.description" resname="rte_enabled.description" approved="yes">
+        <source>If checked, the Rich Text Editor will be disabled for the "Text" and "Text &amp; Image" types (&lt;em&gt;in this Content Element only&lt;/em&gt;).</source>
+        <target state="final">Jei pažymėta, raiškiojo teksto redaktorius bus išjungtas tipams „Tekstas“ ir „Tekstas ir vaizdas“ (tik šiame turinio elemente).</target>
+      </trans-unit>
+      <trans-unit id="_rte_enabled.seeAlso" resname="_rte_enabled.seeAlso" approved="yes">
+        <source>tt_content:bodytext</source>
+        <target state="final">tt_content:bodytext</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pi_flexform.description" resname="pi_flexform.description" approved="yes">
+        <source>Plugin Configuration</source>
+        <target state="final">Papildinio konfigūracija</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.details" resname="pi_flexform.details" approved="yes">
+        <source>Some plugins may provide configuration options, but the actual options vary based on the plugin. Behind the scenes, these are based on FlexForms and stored as XML.</source>
+        <target state="final">Kai kurie papildiniai gali teikti konfigūravimo parinktis, tačiau tikrosios parinktys skiriasi priklausomai nuo papildinio. Iš esmės jos yra pagrįstos „FlexForms“ ir saugomos kaip XML.</target>
+      </trans-unit>
+      <trans-unit id="_pi_flexform.seeAlso" resname="_pi_flexform.seeAlso" approved="yes">
+        <source>tt_content:list_type</source>
+        <target state="final">tt_content:list_type</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
