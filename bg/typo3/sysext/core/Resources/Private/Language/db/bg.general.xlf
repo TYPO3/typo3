@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="bg">
+  <file id="f1">
+    <unit id="description">
+      <segment state="final">
+        <source>Description</source>
+        <target>Описание</target>
+      </segment>
+    </unit>
+    <unit id="editlock">
+      <segment state="final">
+        <source>Editable for Admins Only</source>
+        <target>Редактируем само от администратори</target>
+      </segment>
+    </unit>
+    <unit id="enabled">
+      <segment state="final">
+        <source>Enabled</source>
+        <target>Активиран</target>
+      </segment>
+    </unit>
+    <unit id="endtime">
+      <segment state="final">
+        <source>Expiration Date</source>
+        <target>Дата на изтичане</target>
+      </segment>
+    </unit>
+    <unit id="fe_group">
+      <segment state="final">
+        <source>Frontend User Group Access Rights</source>
+        <target>Права за достъп на групата потребители на фронтенда</target>
+      </segment>
+    </unit>
+    <unit id="fe_group.hide_at_login">
+      <segment state="final">
+        <source>Hide at login</source>
+        <target>Скрий при вход</target>
+      </segment>
+    </unit>
+    <unit id="fe_group.any_login">
+      <segment state="final">
+        <source>Show at any login</source>
+        <target>Покажи при всеки вход</target>
+      </segment>
+    </unit>
+    <unit id="fe_group.usergroups">
+      <segment state="final">
+        <source>__Usergroups:__</source>
+        <target>_Потребителски групи:_</target>
+      </segment>
+    </unit>
+    <unit id="l18n_parent">
+      <segment state="final">
+        <source>Transl.Orig</source>
+        <target>Оригинален превод</target>
+      </segment>
+    </unit>
+    <unit id="language">
+      <segment state="final">
+        <source>Language</source>
+        <target>Език</target>
+      </segment>
+    </unit>
+    <unit id="starttime">
+      <segment state="final">
+        <source>Publish Date</source>
+        <target>Дата на публикуване</target>
+      </segment>
+    </unit>
+    <unit id="depth_0">
+      <segment state="final">
+        <source>This page</source>
+        <target>Тази страница</target>
+      </segment>
+    </unit>
+    <unit id="depth_1">
+      <segment state="final">
+        <source>1 level</source>
+        <target>1 ниво</target>
+      </segment>
+    </unit>
+    <unit id="depth_2">
+      <segment state="final">
+        <source>2 levels</source>
+        <target>2 нива</target>
+      </segment>
+    </unit>
+    <unit id="depth_3">
+      <segment state="final">
+        <source>3 levels</source>
+        <target>3 нива</target>
+      </segment>
+    </unit>
+    <unit id="depth_4">
+      <segment state="final">
+        <source>4 levels</source>
+        <target>4 нива</target>
+      </segment>
+    </unit>
+    <unit id="depth_infi">
+      <segment state="final">
+        <source>Infinite</source>
+        <target>Безкрайно</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
