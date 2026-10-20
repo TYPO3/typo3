@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814894" source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="hooks.db" resname="hooks.db" approved="yes">
+        <source>Internal Links</source>
+        <target state="final">Vidinės nuorodos</target>
+      </trans-unit>
+      <trans-unit id="hooks.file" resname="hooks.file" approved="yes">
+        <source>File Links</source>
+        <target state="final">Failų nuorodos</target>
+      </trans-unit>
+      <trans-unit id="hooks.external" resname="hooks.external" approved="yes">
+        <source>External Links</source>
+        <target state="final">Išorinės nuorodos</target>
+      </trans-unit>
+      <trans-unit id="label_refresh" resname="label_refresh" approved="yes">
+        <source>Refresh display</source>
+        <target state="final">Atnaujinti rodinį</target>
+      </trans-unit>
+      <trans-unit id="label_update" resname="label_update" approved="yes">
+        <source>Check links</source>
+        <target state="final">Tikrinti nuorodas</target>
+      </trans-unit>
+      <trans-unit id="list.header" resname="list.header" approved="yes">
+        <source>Listing of broken links</source>
+        <target state="final">Neveikiančių nuorodų sąrašas</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.linkmessage" resname="list.tableHead.linkmessage" approved="yes">
+        <source>Error message</source>
+        <target state="final">Klaidos pranešimas</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.lastCheck" resname="list.tableHead.lastCheck" approved="yes">
+        <source>Last check</source>
+        <target state="final">Paskutinis patikrinimas</target>
+      </trans-unit>
+      <trans-unit id="list.report.noinformation" resname="list.report.noinformation" approved="yes">
+        <source>No information about the error is available.</source>
+        <target state="final">Nėra informacijos apie klaidą.</target>
+      </trans-unit>
+      <trans-unit id="list.report.redirectloop" resname="list.report.redirectloop" approved="yes">
+        <source>A redirect loop occurred. (%s: %s)</source>
+        <target state="final">Įvyko peradresavimo ciklas. (%s: %s)</target>
+      </trans-unit>
+      <trans-unit id="list.report.pageforbidden403" resname="list.report.pageforbidden403" approved="yes">
+        <source>Accessing this address is not allowed (403).</source>
+        <target state="final">Prieiga prie šio adreso neleidžiama (403).</target>
+      </trans-unit>
+      <trans-unit id="list.report.externalerror" resname="list.report.externalerror" approved="yes">
+        <source>External Link returned HTTP error code (%s).</source>
+        <target state="final">Išorinė nuoroda grąžino HTTP klaidos kodą (%s).</target>
+      </trans-unit>
+      <trans-unit id="list.report.filenotexisting" resname="list.report.filenotexisting" approved="yes">
+        <source>File doesn't exist.</source>
+        <target state="final">Failas neegzistuoja.</target>
+      </trans-unit>
+      <trans-unit id="list.report.internalerror500" resname="list.report.internalerror500" approved="yes">
+        <source>Internal Server Error (500)</source>
+        <target state="final">Vidinė serverio klaida (500)</target>
+      </trans-unit>
+      <trans-unit id="list.report.couldnotresolvehost" resname="list.report.couldnotresolvehost" approved="yes">
+        <source>Could not resolve host. The given remote host was not resolved.</source>
+        <target state="final">Nepavyko nustatyti serverio adreso. Nurodytas nuotolinis serveris nerastas.</target>
+      </trans-unit>
+      <trans-unit id="list.report.errornetworkdata" resname="list.report.errornetworkdata" approved="yes">
+        <source>Failure with receiving network data.</source>
+        <target state="final">Klaida gaunant tinklo duomenis.</target>
+      </trans-unit>
+      <trans-unit id="list.report.otherhttpcode" resname="list.report.otherhttpcode" approved="yes">
+        <source>An error occurred (%s): "%s".</source>
+        <target state="final">Įvyko klaida (%s): „%s“.</target>
+      </trans-unit>
+      <trans-unit id="list.report.httpexception" resname="list.report.httpexception" approved="yes">
+        <source>Exception: %s</source>
+        <target state="final">Išimtis: %s</target>
+      </trans-unit>
+      <trans-unit id="list.report.networkexception" resname="list.report.networkexception" approved="yes">
+        <source>Network error / invalid domain</source>
+        <target state="final">Tinklo klaida / neteisingas domenas</target>
+      </trans-unit>
+      <trans-unit id="list.msg.ok" resname="list.msg.ok" approved="yes">
+        <source>Ok</source>
+        <target state="final">GERAI</target>
+      </trans-unit>
+      <trans-unit id="list.msg.lastRun" resname="list.msg.lastRun" approved="yes">
+        <source>%1$s %2$s</source>
+        <target state="final">%1$s %2$s</target>
+      </trans-unit>
+      <trans-unit id="no.access" resname="no.access" approved="yes">
+        <source>You do not have access to these listings.</source>
+        <target state="final">Neturite prieigos prie šių sąrašų.</target>
+      </trans-unit>
+      <trans-unit id="label_update-link-list" resname="label_update-link-list" approved="yes">
+        <source>Checking links, please stand by.</source>
+        <target state="final">Tikrinamos nuorodos, prašome palaukti.</target>
+      </trans-unit>
+      <trans-unit id="label_refresh-link-list" resname="label_refresh-link-list" approved="yes">
+        <source>Refreshing link list, please stand by.</source>
+        <target state="final">Atnaujinamas nuorodų sąrašas, prašome palaukti.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
