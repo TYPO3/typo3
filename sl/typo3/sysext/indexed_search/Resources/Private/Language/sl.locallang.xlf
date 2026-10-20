@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang.xlf" date="2011-12-18T10:19:20Z" product-name="indexed_search" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="form.freeIndexUid" approved="yes">
+        <source>Category</source>
+        <target state="final">Kategorija</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.0" approved="yes">
+        <source>Pages</source>
+        <target state="final">Strani</target>
+      </trans-unit>
+      <trans-unit id="result.page" approved="yes">
+        <source>page</source>
+        <target state="final">stran</target>
+      </trans-unit>
+      <trans-unit id="result.pages" approved="yes">
+        <source>pages</source>
+        <target state="final">strani</target>
+      </trans-unit>
+      <trans-unit id="displayResults.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Stran</target>
+      </trans-unit>
+      <trans-unit id="field.pageTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Naslov strani</target>
+      </trans-unit>
+      <trans-unit id="field.fileName" approved="yes">
+        <source>Filename</source>
+        <target state="final">Ime datoteke</target>
+      </trans-unit>
+      <trans-unit id="field.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Vrsta</target>
+      </trans-unit>
+      <trans-unit id="field.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Naslov</target>
+      </trans-unit>
+      <trans-unit id="field.language" approved="yes">
+        <source>Language</source>
+        <target state="final">Jezik</target>
+      </trans-unit>
+      <trans-unit id="field.content" approved="yes">
+        <source>Content</source>
+        <target state="final">Vsebina</target>
+      </trans-unit>
+      <trans-unit id="administration.moduleFunctions.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Globina</target>
+      </trans-unit>
+      <trans-unit id="administration.flag.32" approved="yes">
+        <source>description</source>
+        <target state="final">opis</target>
+      </trans-unit>
+      <trans-unit id="administration.flag.64" approved="yes">
+        <source>keyword</source>
+        <target state="final">ključna beseda</target>
+      </trans-unit>
+      <trans-unit id="administration.flag.128" approved="yes">
+        <source>title</source>
+        <target state="final">naslov</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
