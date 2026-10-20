@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815007" source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id="moduleTitle" resname="moduleTitle" approved="yes">
+        <source>Template tools</source>
+        <target state="final">ឧបករណ៍​ម៉ូដ​គំរូ</target>
+      </trans-unit>
+      <trans-unit id="templateAnalyzer" resname="templateAnalyzer" approved="yes">
+        <source>Template Analyzer</source>
+        <target state="final">វិភាគ​ម៉ូដ​គំរូ</target>
+      </trans-unit>
+      <trans-unit id="constantEditor" resname="constantEditor" approved="yes">
+        <source>Constant Editor</source>
+        <target state="final">កន្លែង​កែ​កុងស្តង់</target>
+      </trans-unit>
+      <trans-unit id="infoModify" resname="infoModify" approved="yes">
+        <source>Info/Modify</source>
+        <target state="final">ព័ត៌មាន/កែ</target>
+      </trans-unit>
+      <trans-unit id="objectBrowser" resname="objectBrowser" approved="yes">
+        <source>TypoScript Object Browser</source>
+        <target state="final">ប្រាវសឺ​អុបជិក TypoScript</target>
+      </trans-unit>
+      <trans-unit id="viewTemplates" resname="viewTemplates" approved="yes">
+        <source>Viewing templates of</source>
+        <target state="final">មើល​ម៉ូដ​គំរូ​នៃ</target>
+      </trans-unit>
+      <trans-unit id="pageName" resname="pageName" approved="yes">
+        <source>Page name</source>
+        <target state="final">ឈ្មោះ​ទំព័រ</target>
+      </trans-unit>
+      <trans-unit id="templates" resname="templates" approved="yes">
+        <source>Templates</source>
+        <target state="final"># ម៉ូដ​គំរូ</target>
+      </trans-unit>
+      <trans-unit id="isRoot" resname="isRoot" approved="yes">
+        <source>Is Root?</source>
+        <target state="final">ជា​រូត?</target>
+      </trans-unit>
+      <trans-unit id="isExt" resname="isExt" approved="yes">
+        <source>Is Ext?</source>
+        <target state="final">ជា​អ៊‍ិកស្តិនសិន?</target>
+      </trans-unit>
+      <trans-unit id="overview" resname="overview" approved="yes">
+        <source>This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.</source>
+        <target state="final">នេះ​ជា​សេចក្ដី​សង្ខេប​នៃ​ទំព័រ​ក្នុង​ដេតាបេស ដែល​មាន​ផ្ទុក​ទិន្នន័យ​គំរូ​មួយ ឬ​ច្រើន ។ ចុច​លើ​ចំណងជើង​ទំព័រ​ដើម្បី​ទៅ​ទំព័រ ។</target>
+      </trans-unit>
+      <trans-unit id="areYouSure" resname="areYouSure" approved="yes">
+        <source>Are you sure you want to do this?</source>
+        <target state="final">តើ​អ្នក​ពិត​ជា​ចង់​ធ្វើ​ទេ?</target>
+      </trans-unit>
+      <trans-unit id="noTemplate" resname="noTemplate" approved="yes">
+        <source>No template</source>
+        <target state="final">គ្មាន​ម៉ូដ​គំរូ</target>
+      </trans-unit>
+      <trans-unit id="noTemplateDescription" resname="noTemplateDescription" approved="yes">
+        <source>There was no template on this page!</source>
+        <target state="final">មិន​មាន​ម៉ូដ​គំរូ​សម្រាប់​ទំព័រ​នេះ​ទេ!</target>
+      </trans-unit>
+      <trans-unit id="createTemplate" resname="createTemplate" approved="yes">
+        <source>Create a template record first in order to edit constants!</source>
+        <target state="final">បង្កើត​ទិន្នន័យ​គំរូ​ជា​មុន ដើម្បី​ចូល​ទៅ​កែ​កុងស្តង់!</target>
+      </trans-unit>
+      <trans-unit id="createTemplateToEditConfiguration" resname="createTemplateToEditConfiguration" approved="yes">
+        <source>You need to create a template record below in order to edit your configuration.</source>
+        <target state="final">អ្នក​ចាំបាច់​ត្រូវ​បង្កើត​ទិន្នន័យ​គំរូ​ខាង​ក្រោម ដើម្បី​ចូល​កែ​ការខន់ហ្វីក​របស់​អ្នក ។</target>
+      </trans-unit>
+      <trans-unit id="newWebsite" resname="newWebsite" approved="yes">
+        <source>Create new website</source>
+        <target state="final">បង្កើត​វែបសាយ​ថ្មី</target>
+      </trans-unit>
+      <trans-unit id="newWebsiteAction" resname="newWebsiteAction" approved="yes">
+        <source>Create template for a new site</source>
+        <target state="final">បង្កើត​ម៉ូដ​គំរូ​សម្រាប់​វែបសាយ​ថ្មី</target>
+      </trans-unit>
+      <trans-unit id="extTemplate" resname="extTemplate" approved="yes">
+        <source>Create extension template</source>
+        <target state="final">បង្កើត​អ៊‍ិកស្តិនសិន​គំរូ</target>
+      </trans-unit>
+      <trans-unit id="extTemplateDescription" resname="extTemplateDescription" approved="yes">
+        <source>An extension template allows you to enter TypoScript values that will affect only this page and subpages.</source>
+        <target state="final">អ៊‍ិកស្តិនសិន​គំរូ​អនុញ្ញាតិ​ឱ្យ​អ្នក​សរសេរ​តម្លៃ TypoScript លើ​ទំព័រ​មួយ​នេះ និង​ទំព័រ​កូន ។</target>
+      </trans-unit>
+      <trans-unit id="extTemplateAction" resname="extTemplateAction" approved="yes">
+        <source>Click here to create an extension template.</source>
+        <target state="final">ចុច​ទីនេះ​ដើម្បី​បង្កើត​អ៊‍ិកស្តិនសិន​គំរូ៖</target>
+      </trans-unit>
+      <trans-unit id="goToClosest" resname="goToClosest" approved="yes">
+        <source>Go to closest page with template</source>
+        <target state="final">ទៅ​ទំព័រ​ជិត​បំផុត ជាមួយ​ម៉ូដ​គំរូ</target>
+      </trans-unit>
+      <trans-unit id="goToClosestDescription" resname="goToClosestDescription" approved="yes">
+        <source>Closest template is on page '%s' (uid %s).</source>
+        <target state="final">ម៉ូដ​គំរូ​ជិត​បំផុត​នៅ​ទំព័រ '%s' (uid %s) ។</target>
+      </trans-unit>
+      <trans-unit id="goToClosestAction" resname="goToClosestAction" approved="yes">
+        <source>Click here to go.</source>
+        <target state="final">ចុច​ទីនេះ​ដើម្បី​ទៅ</target>
+      </trans-unit>
+      <trans-unit id="titleNewSiteStandard" resname="titleNewSiteStandard" approved="yes">
+        <source>NEW SITE, based on standard</source>
+        <target state="final">វែបសាយ​ថ្មី ផ្អែក​លើ​ស្តង់ដារ</target>
+      </trans-unit>
+      <trans-unit id="titleNewSite" resname="titleNewSite" approved="yes">
+        <source>NEW SITE</source>
+        <target state="final">វែបសាយ​ថ្មី</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
