@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="hi">
+  <file id="f1">
+    <unit id="link_missing">
+      <segment state="final">
+        <source>The "%1$s" field is required to resolve links for pages of type "%2$s". Please provide a value in the page properties.</source>
+        <target>"%2$s" प्रकार के पृष्ठों के लिए लिंक को हल करने हेतु "%1$s" फ़ील्ड आवश्यक है। कृपया पृष्ठ गुणों में एक मान प्रदान करें।</target>
+      </segment>
+    </unit>
+    <unit id="link_invalid">
+      <segment state="final">
+        <source>Invalid link in "%1$s": "%2$s" cannot be resolved. Select a valid destination in the page properties.</source>
+        <target>"%1$s" में अमान्य लिंक: "%2$s" को हल नहीं किया जा सकता। पृष्ठ गुणों में एक मान्य गंतव्य चुनें।</target>
+      </segment>
+    </unit>
+    <unit id="link_destination">
+      <segment state="final">
+        <source>Page of type "%1$s" links to the following %2$s: %3$s.</source>
+        <target>"%1$s" प्रकार का पृष्ठ निम्नलिखित %2$s से जुड़ता  है: %3$s ।</target>
+      </segment>
+    </unit>
+    <unit id="link_current">
+      <segment state="final">
+        <source>Page of type "%1$s" links to current request url, and dynamic value cannot be displayed here.</source>
+        <target>"%1$s" प्रकार का पृष्ठ वर्तमान अनुरोध URL से लिंक करता है, और डायनामिक मान यहां प्रदर्शित नहीं किया जा सकता।</target>
+      </segment>
+    </unit>
+    <unit id="link_current_with_added_queryparameters">
+      <segment state="final">
+        <source>Page of type "%1$s" appends %2$s to current request url, and dynamic value cannot be displayed here.</source>
+        <target>"%1$s" प्रकार का पेज वर्तमान अनुरोध URL में %2$s जोड़ता है, और डायनामिक मान यहां प्रदर्शित नहीं किया जा सकता।</target>
+      </segment>
+    </unit>
+    <unit id="link_destination_record">
+      <segment state="final">
+        <source>Page of type "%1$s" links to the following record of type "%2$s": %3$s.</source>
+        <target>"%1$s" प्रकार का पृष्ठ, "%2$s" प्रकार के निम्नलिखित रिकॉर्ड से लिंक करता है: %3$s।</target>
+      </segment>
+    </unit>
+    <unit id="link_destination_additional_parameters">
+      <segment state="final">
+        <source>Additional parameters: "%s".</source>
+        <target>अतिरिक्त पैरामीटर: "%s"।</target>
+      </segment>
+    </unit>
+    <unit id="link_destination_content_element">
+      <segment state="final">
+        <source>Page of type "%1$s" links to content element %2$s on page %3$s.</source>
+        <target>"%1$s" प्रकार का पृष्ठ, पृष्ठ %3$s पर स्थित सामग्री तत्व %2$s से लिंक करता है।</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
