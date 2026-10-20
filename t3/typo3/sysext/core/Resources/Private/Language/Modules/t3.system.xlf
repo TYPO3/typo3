@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Modules/system.xlf" date="2026-11-10T13:37:37Z" product-name="system" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="short_description">
+        <source>Observe system status and adapt system parameters</source>
+        <target>crwdns379040:0crwdne379040:0</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>System</source>
+        <target>crwdns379042:0crwdne379042:0</target>
+      </trans-unit>
+      <!-- intentionally left blank, not utilized (for now) -->
+      <trans-unit id="description">
+        <source/>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
