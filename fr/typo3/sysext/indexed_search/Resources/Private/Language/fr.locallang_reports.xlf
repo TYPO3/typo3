@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_reports.xlf" date="2026-09-24T12:00:00Z" product-name="indexed_search" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="statusProvider" approved="yes">
+        <source>Indexed Search</source>
+        <target state="final">Recherche indexée</target>
+      </trans-unit>
+      <trans-unit id="status.minimumWordLength" approved="yes">
+        <source>MySQL fulltext minimum word length</source>
+        <target state="final">Longueur minimale des mots en MySQL fulltext</target>
+      </trans-unit>
+      <trans-unit id="status.minimumWordLength.value" approved="yes">
+        <source>%1$d characters</source>
+        <target state="final">%1$d caractères</target>
+      </trans-unit>
+      <trans-unit id="status.minimumWordLength.message" approved="yes">
+        <source>The MySQL fulltext index ignores words shorter than %1$d characters, so searching for them never returns results. The limit is defined by the database server setting "%2$s". Lower it in the database server configuration and rebuild the fulltext index to make shorter words searchable.</source>
+        <target state="final">L'index MySQL fulltext ignore les mots de moins de %1$d caractères, leur recherche ne retournera donc aucun résultat. Cette limite est définie par le paramètre « %2$s » du serveur de base de données. Diminuez cette valeur dans la configuration du serveur et reconstruisez l'index de recherche fulltext pour que les mots plus courts soient indexés.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
