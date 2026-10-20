@@ -1,0 +1,7 @@
+"tx_blogexample_domain_model_person"
+,"uid","pid","firstname","lastname","email","avatar","tstamp","crdate"
+,1,2,"Jane","Doe","jane@example.com",0,1700000000,1500000000
+,2,2,"John","Roe","john@example.com",1,1700000000,1500000000
+"sys_file_reference"
+,"uid","pid","uid_local","uid_foreign","tablenames","fieldname","sorting_foreign","deleted","tstamp","crdate"
+,1,2,1,2,"tx_blogexample_domain_model_person","avatar",1,0,1700000000,1500000000

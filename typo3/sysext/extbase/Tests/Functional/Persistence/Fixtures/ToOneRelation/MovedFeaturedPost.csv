@@ -1,0 +1,7 @@
+"tx_blogexample_domain_model_blog"
+,"uid","pid","title","description","featured_post","tstamp","crdate"
+,1,2,"Tech blog","About technology",0,1700000000,1500000000
+,2,2,"Travel blog","About travelling",1,1700000000,1500000000
+"tx_blogexample_domain_model_post"
+,"uid","pid","title","date","featured_blog","deleted","sorting","tstamp","crdate"
+,1,2,"Hello world",1768478400,2,0,1,1700000000,1500000000

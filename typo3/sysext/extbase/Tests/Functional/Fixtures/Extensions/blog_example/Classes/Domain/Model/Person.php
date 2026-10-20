@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3Tests\BlogExample\Domain\Model;
 
 use TYPO3\CMS\Core\Country\Country;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -39,6 +40,12 @@ class Person extends AbstractEntity
     protected ?Enum\AgeGroup $ageGroup = null;
 
     protected ?int $age = null;
+
+    protected ?FileReference $avatar = null;
+
+    protected ?Tag $mainTag = null;
+
+    protected ?Tag $pinnedTag = null;
 
     /**
      * @var ObjectStorage<Tag>
@@ -185,5 +192,35 @@ class Person extends AbstractEntity
     public function setCountry(?Country $country): void
     {
         $this->country = $country;
+    }
+
+    public function getAvatar(): ?FileReference
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?FileReference $avatar): void
+    {
+        $this->avatar = $avatar;
+    }
+
+    public function getMainTag(): ?Tag
+    {
+        return $this->mainTag;
+    }
+
+    public function setMainTag(?Tag $mainTag): void
+    {
+        $this->mainTag = $mainTag;
+    }
+
+    public function getPinnedTag(): ?Tag
+    {
+        return $this->pinnedTag;
+    }
+
+    public function setPinnedTag(?Tag $pinnedTag): void
+    {
+        $this->pinnedTag = $pinnedTag;
     }
 }
