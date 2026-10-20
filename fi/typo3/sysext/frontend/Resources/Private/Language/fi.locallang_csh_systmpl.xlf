@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814802" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_systmpl.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="fi">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>TypoScript template record.</source>
+        <target state="final">TypoScript mallinne (template) tietue.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>The 'Template' records are the vital components used to set the design of the webpages. No matter how (almost) you would like to build your website, it must be initiated by a 'Template' record placed in the root of the page tree of the site.
+Basically, create a 'Template' record, enter a title and make sure to check of Clear constants, setup and Rootline. Then enter some TypoScript configuration in the Setup field and you're set.
+It's very important to read how to do all this in the documents listed below! Also make sure you use the Web&gt;Template module to do all the working with templates. It's a specialized tool to help you with this.</source>
+			<target state="final">'Malli' ('Template') tietueet ovat elintärkeitä komponenteja joita käytetään web sivujen suunnittelussa. Kuinka tahansa haluatkin rakentaa websivustosi, on se alustettava 'Malli' tietueella sivuston sivurakenteen juuressa. Periaate: luo 'Malli' tietue, anna sille nimi ja merkkaa varmasti Clear constants, Setup ja Rootlevel valinnat. Tämän jälkeen annat jotain TypoScript konfigurointi tietoja Setup kenttään ja olet valmis. On erittäin tärkeää lukea kuinka kaikki tämä tehdään allaolevista dokumenteista! Varmista myös että käytät Web&gt;TS aliohjelmaa tehdessäsi kaikki mallit. Se on erityinen työkalu helpottamaan Sinua tässä työssä.</target></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>A Template Record with constants and setup code.
+The Web&gt;Template module contains tools which will help you to edit and validate TypoScript structures.</source>
+			<target state="final">'Malli' tietue vakio ja asetus koodeineen. Web&gt;Template moduli sisältää työkalun joka helpottaa TypoScript rakenteiden muokkaamisessa ja oikeellisuuden todentamisessa.</target></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Hiding the template will deactivate the template record.</source>
+        <target state="final">Mallin kätkeminen aiheuttaa mallitietueen aktiivisuuden poistoa.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If the Template Record was the first record on a page hiding it will expose the second record on the page instead.</source>
+        <target state="final">Jos malli tietue oli ensimmäinen tietue sivulla, piilotettaessa sen, poistaa tämä toimenpide toisen tietueen piilosta.</target>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Start time. Use this to enable a template on a certain date.</source>
+        <target state="final">Alkamisaika. Käytä tätä aktivoidaksesi mallin tiettynä ajanhetkenä.</target>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>End time. Use this to disable a template on a certain date.</source>
+        <target state="final">Loppumisaika. Käytä tätä poistaaksesi mallin aktivoinnin tiettynä ajanhetkenä.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>The title of the template record is only an internal label and does not have any effect on the output in the frontend.</source>
+        <target state="final">Malli tietojen otsikko on ainoastaan sisäinen tieto eikä se aiheuta edustalle mitään tulostus toimintoja.</target>
+      </trans-unit>
+      <trans-unit id="sitetitle.description" resname="sitetitle.description" approved="yes">
+        <source>Website title. Typically this will automatically be prefixed all page titles in the &lt;title&gt; tag of the frontend pages.</source>
+        <target state="final">Sivuston otsikko. Tyypillisesti tämä tieto tulee automaattisesti jokaisen sivunimen eteen jokaisessa &lt;title&gt; tagissä edustasivuille.</target>
+      </trans-unit>
+      <trans-unit id="constants.description" resname="constants.description" approved="yes">
+        <source>TypoScript Constants.</source>
+        <target state="final">TypoScript vakiot.</target>
+      </trans-unit>
+      <trans-unit id="config.description" resname="config.description" approved="yes">
+        <source>TypoScript Setup code</source>
+        <target state="final">TypoScript asetus (setup) koodi</target>
+      </trans-unit>
+      <trans-unit id="config.details" resname="config.details" approved="yes">
+        <source>Read more about TypoScript Templates in TSref, TypoScript by Example and Getting Started.</source>
+        <target state="final">Lue lisää TypoScript Malleista julkaisuista TSref, TypoScript by Example ja Getting Started.</target>
+      </trans-unit>
+      <trans-unit id="resources.description" resname="resources.description" approved="yes">
+        <source>Resource files for the template. For example a logo, a TTF-font etc.</source>
+        <target state="final">Resurssitiedosto mallille. Esim. logo, ttf-kirjaisimet jne.</target>
+      </trans-unit>
+      <trans-unit id="resources.details" resname="resources.details" approved="yes">
+        <source>Resource files can be referenced in TypoScript Template code by [filename]*.[ext] and has the advantage that the reference from TypoScript is not broken if you copy or export a Template Record where the resources ends up with new names.</source>
+        <target state="final">Resurssitiedostoihin voidaan viitata TypoScript Malli koodissa käyttäen [tiedostonimi]*.[ext]. Tällä on etuna että viite TypoScriptistä ei riikkoonnu kopioitaessa tai viedessä jossa resurssit päättyvät uusiin nimiin.</target>
+      </trans-unit>
+      <trans-unit id="clear.description" resname="clear.description" approved="yes">
+        <source>Flags that will clear the inheritance of TypoScript code from former templates in the root line. There is a flag for Constants and one for Setup code.</source>
+        <target state="final">Merkinnät jotka poistavat TypoScript koodin periytymisen aiemmista malleista sivustorakenteella. Sekä Vakioille (Constants) että Asetus Koodille (Setup Code) on oma merkintänsä.</target>
+      </trans-unit>
+      <trans-unit id="root.description" resname="root.description" approved="yes">
+        <source>Defines that the template represents a root of a website.</source>
+        <target state="final">Määrittelee maillin olevan sivuston juuressa.</target>
+      </trans-unit>
+      <trans-unit id="includeStaticAfterBasedOn.description" resname="includeStaticAfterBasedOn.description" approved="yes">
+        <source>If set, static templates will be included after "based-on" templates. It basically swaps the order of inclusion of these external TypoScript sources.</source>
+        <target state="final">Jos asetettu, staattiset mallit sisällytetään "based-on" mallien jälkeen. Periaatteessa tämä kääntää näiden ulkoisten TypoScript lähteiden lisäysjärjestyksen.</target>
+      </trans-unit>
+      <trans-unit id="include_static.description" resname="include_static.description" approved="yes">
+        <source>Static Template records to include.</source>
+        <target state="final">Staattinen Malli tietue jotka sisällytetään.</target>
+      </trans-unit>
+      <trans-unit id="include_static_file.description" resname="include_static_file.description" approved="yes">
+        <source>Static Template files to include.</source>
+        <target state="final">Staattiset Malli tiedostot jotka sisällytetään.</target>
+      </trans-unit>
+      <trans-unit id="include_static_file.details" resname="include_static_file.details" approved="yes">
+        <source>Static template files are registered by extensions contrary to Static Template records which come from the static database table, "static_template".</source>
+        <target state="final">Staattiset Malli tiedostot rekisteröidään laajennuksiksi päinvastoin kuin Staattiset Malli Tietueet, jotka tulevat pysyvästä tietokannan taulusta, "static_template".</target>
+      </trans-unit>
+      <trans-unit id="basedOn.description" resname="basedOn.description" approved="yes">
+        <source>Other Template Records that are included like "static templates".</source>
+        <target state="final">Muut Staattiset Malli tietue jotka sisällytetään. kuten "staatiset mallit".</target>
+      </trans-unit>
+      <trans-unit id="static_file_mode.description" resname="static_file_mode.description" approved="yes">
+        <source>Define the mode of inclusion of static template files.</source>
+        <target state="final">Määrittelee staattisten mallitiedostojen lisäystavan.</target>
+      </trans-unit>
+      <trans-unit id="nextLevel.description" resname="nextLevel.description" approved="yes">
+        <source>Defines a template record to make active one level out in the page tree of this branch. This can be used to define another template record for the general website while having a special template for the frontpage.</source>
+        <target state="final">Määrittelee mallitietueen joka on aktiivinen tässä sivustorakenteen osassa. Tätä voidaan hyödyntää määrittelemällä malli yleiselle websivustolle ja erityinen malli etusivulle.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a description of the template if you like.</source>
+        <target state="final">Anna mallille kuvaus, jos haluat.</target>
+      </trans-unit>
+      <trans-unit id="editorcfg.description" resname="editorcfg.description" approved="yes">
+        <source>Editor Configuration for the stylesheet editor extension.</source>
+        <target state="final">Muokkaimen konfiguraatio tyylitiedoston muokkainlaajennukselle.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
