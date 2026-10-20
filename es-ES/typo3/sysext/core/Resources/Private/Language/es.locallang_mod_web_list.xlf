@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814881" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>List of database-records</source>
+        <target state="final">Lista de registros</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>The Web&gt;List module provides low level access to records appearing on a page.</source>
+        <target state="final">El módulo Web&gt;Lista provee del acceso a mas bajo nivel de los registros que forman una página. En tanto que los otros módulos están especializados en cietas operaciones en ciertas tablas, este módulo permite el acceso total a los registros en crudo disponibles para el usuario.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>List</source>
+        <target state="final">Lista</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteAfter" resname="clip_pasteAfter" approved="yes">
+        <source>Paste after: Clipboard content is inserted after this record</source>
+        <target state="final">Pegar después: el contenido del portapapeles es insertado después de este registro</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" resname="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted on this page</source>
+        <target state="final">Pegar en: el contenido del portapapeles es insertado en esta página</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" resname="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">Pegar el contenido del portapapeles</target>
+      </trans-unit>
+      <trans-unit id="clip_markRecords" resname="clip_markRecords" approved="yes">
+        <source>Mark All/Mark none</source>
+        <target state="final">Marcar/Desmarcar todos</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" resname="clip_selectMarked" approved="yes">
+        <source>Transfer the selection of records to clipboard</source>
+        <target state="final">Transferir la selección de registros al portapapeles</target>
+      </trans-unit>
+      <trans-unit id="clip_duplicates" resname="clip_duplicates" approved="yes">
+        <source>Mark duplicates</source>
+        <target state="final">Marcar duplicados</target>
+      </trans-unit>
+      <trans-unit id="clip_editMarked" resname="clip_editMarked" approved="yes">
+        <source>Edit marked</source>
+        <target state="final">Editar marcados</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" resname="clip_deleteMarked" approved="yes">
+        <source>Delete marked</source>
+        <target state="final">Borrar marcados</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarkedWarning" resname="clip_deleteMarkedWarning" approved="yes">
+        <source>Are you sure you want to delete all marked records from the table '%s'?</source>
+        <target state="final">¿Seguro que quiere borrar todos los registros marcados de la tabla '%s'?</target>
+      </trans-unit>
+      <trans-unit id="showInfo" resname="showInfo" approved="yes">
+        <source>Display information</source>
+        <target state="final">Mostrar información</target>
+      </trans-unit>
+      <trans-unit id="edit" resname="edit" approved="yes">
+        <source>Edit record</source>
+        <target state="final">Editar registro</target>
+      </trans-unit>
+      <trans-unit id="editPage" resname="editPage" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">Editar propiedades de la página</target>
+      </trans-unit>
+      <trans-unit id="new" resname="new" approved="yes">
+        <source>New record</source>
+        <target state="final">Nuevo registro</target>
+      </trans-unit>
+      <trans-unit id="newPage" resname="newPage" approved="yes">
+        <source>Create new page after this page</source>
+        <target state="final">Crear página después de esta página</target>
+      </trans-unit>
+      <trans-unit id="newRecord" resname="newRecord" approved="yes">
+        <source>Create new record after this record</source>
+        <target state="final">Crear nuevo registro después de este registro</target>
+      </trans-unit>
+      <trans-unit id="newRecordGeneral" resname="newRecordGeneral" approved="yes">
+        <source>Create new record</source>
+        <target state="final">Crear nuevo registro</target>
+      </trans-unit>
+      <trans-unit id="moveUp" resname="moveUp" approved="yes">
+        <source>Move up in list</source>
+        <target state="final">Subir en la lista</target>
+      </trans-unit>
+      <trans-unit id="moveDown" resname="moveDown" approved="yes">
+        <source>Move down in list</source>
+        <target state="final">Bajar en la lista</target>
+      </trans-unit>
+      <trans-unit id="move_record" resname="move_record" approved="yes">
+        <source>Re-position content element</source>
+        <target state="final">Re-posicionar elemento de contenido</target>
+      </trans-unit>
+      <trans-unit id="move_page" resname="move_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">Mover página</target>
+      </trans-unit>
+      <trans-unit id="hide" resname="hide" approved="yes">
+        <source>Hide record</source>
+        <target state="final">Ocultar registro</target>
+      </trans-unit>
+      <trans-unit id="unHide" resname="unHide" approved="yes">
+        <source>Un-hide record</source>
+        <target state="final">Mostrar registro</target>
+      </trans-unit>
+      <trans-unit id="hidePage" resname="hidePage" approved="yes">
+        <source>Hide page</source>
+        <target state="final">Ocultar página</target>
+      </trans-unit>
+      <trans-unit id="unHidePage" resname="unHidePage" approved="yes">
+        <source>Un-hide page</source>
+        <target state="final">Mostrar página</target>
+      </trans-unit>
+      <trans-unit id="prevLevel" resname="prevLevel" approved="yes">
+        <source>Move this page to the position after the current parent page (Inwards)</source>
+        <target state="final">Mover esta página a la posición después de la página padre actual (hacia dentro)</target>
+      </trans-unit>
+      <trans-unit id="nextLevel" resname="nextLevel" approved="yes">
+        <source>Move this page to be a subpage of the page above (Outwards)</source>
+        <target state="final">Mover esta página a una subpágina de la página superior (hacia afuera)</target>
+      </trans-unit>
+      <trans-unit id="delete" resname="delete" approved="yes">
+        <source>Delete record (!)</source>
+        <target state="final">Eliminar registro (!)</target>
+      </trans-unit>
+      <trans-unit id="restore" resname="restore" approved="yes">
+        <source>Restore record</source>
+        <target state="final">Restaurar registro</target>
+      </trans-unit>
+      <trans-unit id="history" resname="history" approved="yes">
+        <source>Display change history / Un-do</source>
+        <target state="final">Mostrar historial de cambios / Deshacer</target>
+      </trans-unit>
+      <trans-unit id="displayVersions" resname="displayVersions" approved="yes">
+        <source>Display versions</source>
+        <target state="final">Mostrar versiones</target>
+      </trans-unit>
+      <trans-unit id="permissions" resname="permissions" approved="yes">
+        <source>Set permissions for page</source>
+        <target state="final">Establecer permisos para esta página</target>
+      </trans-unit>
+      <trans-unit id="largeControl" resname="largeControl" approved="yes">
+        <source>Extended view</source>
+        <target state="final">Vista extendida</target>
+      </trans-unit>
+      <trans-unit id="contractView" resname="contractView" approved="yes">
+        <source>List all tables</source>
+        <target state="final">Listar todas las tablas</target>
+      </trans-unit>
+      <trans-unit id="expandView" resname="expandView" approved="yes">
+        <source>List only this table</source>
+        <target state="final">Listar solamente esta tabla</target>
+      </trans-unit>
+      <trans-unit id="showClipBoard" resname="showClipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">Mostrar portapapeles</target>
+      </trans-unit>
+      <trans-unit id="editShownColumns" resname="editShownColumns" approved="yes">
+        <source>Edit all shown fields of the listed records</source>
+        <target state="final">Editar los campos mostrados en los registros listados</target>
+      </trans-unit>
+      <trans-unit id="editThisColumn" resname="editThisColumn" approved="yes">
+        <source>Edit the '%s' field of the listed records</source>
+        <target state="final">Editar el campo "%s" en los registros listados</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" resname="deleteWarning" approved="yes">
+        <source>Are you sure you want to delete this record?</source>
+        <target state="final">¿Seguro que desea eliminar este registro?</target>
+      </trans-unit>
+      <trans-unit id="restoreWarning" resname="restoreWarning" approved="yes">
+        <source>Are you sure you want to restore this record by reverting the delete status?</source>
+        <target state="final">¿Estás seguro de que quieres restaurar este registro revirtiendo el estado "Eliminado"?</target>
+      </trans-unit>
+      <trans-unit id="localization" resname="localization" approved="yes">
+        <source>Localization view</source>
+        <target state="final">Vista de traducción</target>
+      </trans-unit>
+      <trans-unit id="defaultLanguage" resname="defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">Predeterminado</target>
+      </trans-unit>
+      <trans-unit id="multipleLanguages" resname="multipleLanguages" approved="yes">
+        <source>All languages</source>
+        <target state="final">Todos los idiomas</target>
+      </trans-unit>
+      <trans-unit id="Localize" resname="Localize" approved="yes">
+        <source>Localize to</source>
+        <target state="final">Localizar a</target>
+      </trans-unit>
+      <trans-unit id="viewRecords" resname="viewRecords" approved="yes">
+        <source>Viewing records of</source>
+        <target state="final">Viendo registros de</target>
+      </trans-unit>
+      <trans-unit id="pageIndicator" resname="pageIndicator" approved="yes">
+        <source>Page %1$s of %2$d</source>
+        <target state="final">Página %1$s de %2$d</target>
+      </trans-unit>
+      <trans-unit id="rangeIndicator" resname="rangeIndicator" approved="yes">
+        <source>Records %1$d - %2$d</source>
+        <target state="final">Registros %1$d - %2$d</target>
+      </trans-unit>
+      <trans-unit id="missingTcaColumnsMessageTitle" resname="missingTcaColumnsMessageTitle" approved="yes">
+        <source>Missing TCA definition</source>
+        <target state="final">Falta la definición TCA</target>
+      </trans-unit>
+      <trans-unit id="missingTcaColumnsMessage" resname="missingTcaColumnsMessage" approved="yes">
+        <source>No fields for table "%s" have been found. $TCA['%s']['columns'] does not contain the necessary definitions.</source>
+        <target state="final">No se han encontrado campos para la tabla "%s". $TCA['%s']['columns'] no contiene las definiciones necesarias.</target>
+      </trans-unit>
+      <trans-unit id="noRecordsOnThisPage" resname="noRecordsOnThisPage" approved="yes">
+        <source>There are no records on this page.</source>
+        <target state="final">No hay registros en esta página.</target>
+      </trans-unit>
+      <trans-unit id="noRecordsOfTypeOnThisPage" resname="noRecordsOfTypeOnThisPage" approved="yes">
+        <source>There are no records of type "%s" on this page.</source>
+        <target state="final">No hay registros de tipo "%s" en esta página.</target>
+      </trans-unit>
+      <trans-unit id="button.cancel" resname="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Cancelar</target>
+      </trans-unit>
+      <trans-unit id="button.close" resname="button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Cerrar</target>
+      </trans-unit>
+      <trans-unit id="button.ok" resname="button.ok" approved="yes">
+        <source>OK</source>
+        <target state="final">Aceptar</target>
+      </trans-unit>
+      <trans-unit id="button.delete" resname="button.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Borrar</target>
+      </trans-unit>
+      <trans-unit id="button.yes" resname="button.yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Sí</target>
+      </trans-unit>
+      <trans-unit id="button.no" resname="button.no" approved="yes">
+        <source>No</source>
+        <target state="final">No</target>
+      </trans-unit>
+      <trans-unit id="notification.request.title" resname="notification.request.title" approved="yes">
+        <source>Allow notifications?</source>
+        <target state="final">¿Permitir notificaciones?</target>
+      </trans-unit>
+      <trans-unit id="notification.request.description" resname="notification.request.description" approved="yes">
+        <source>TYPO3 can send important notifications, e.g. when your login expires. To enable notifications, please click "Yes" and confirm your browser's notification request. If you choose "no", we will not ask again.</source>
+        <target state="final">TYPO3 puede enviar notificaciones importantes, por ejemplo, cuando caduca tu inicio de sesión. Para activar las notificaciones, haz clic en "Sí" y confirma la solicitud de notificación de tu navegador. Si eliges "no", no volveremos a preguntar.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
