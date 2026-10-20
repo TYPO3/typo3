@@ -1,0 +1,1068 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/Database.xlf" date="2016-08-21T20:15:32Z" product-name="form" target-language="sv-SE">
+    <header/>
+    <body>
+      <trans-unit id="module.shortcut_name" approved="yes">
+        <source>Form manager</source>
+        <target state="final">Formulärhanterare</target>
+      </trans-unit>
+      <trans-unit id="default" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="empty" approved="yes">
+        <source>[Empty]</source>
+        <target state="final">[Empty]</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.persistenceIdentifier" approved="yes">
+        <source>Form definition</source>
+        <target state="final">Formulärdefinition</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.sheet_general" approved="yes">
+        <source>General</source>
+        <target state="final">Allmänt</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.selectPersistenceIdentifier" approved="yes">
+        <source>Please select a form definition</source>
+        <target state="final">Vänligen välj en formulärdefinition</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.overrideFinishers" approved="yes">
+        <source>Override finisher settings</source>
+        <target state="final">Överskrid postningsinställningar</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.overrideFinishers.empty" approved="yes">
+        <source>There are no finishers or finisher options in the current form definition.</source>
+        <target state="final">Det finns inga finishers eller finisher alternativ i den aktuella formulärdefinitionen.</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.noPersistenceIdentifier" approved="yes">
+        <source>No form selected.</source>
+        <target state="final">Inget formulär valt.</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.invalidPersistenceIdentifier" approved="yes">
+        <source>Invalid form "%s".</source>
+        <target state="final">Ogiltigt formulär "%s" .</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.inaccessiblePersistenceIdentifier" approved="yes">
+        <source>"%s" (no read access).</source>
+        <target state="final">"%s" (ingen read-access).</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.notExistingdPersistenceIdentifier" approved="yes">
+        <source>The form "%s" does not exist.</source>
+        <target state="final">Formuläret "%s" existerar ej.</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.invalidFrameworkConfiguration" approved="yes">
+        <source>"%s" (Invalid ext:form configuration).</source>
+        <target state="final">"%s" (ogiltig ext:form konfiguration).</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.invalidFrameworkConfiguration.title" approved="yes">
+        <source>Invalid configuration.</source>
+        <target state="final">Ogiltig konfiguration.</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.label" approved="yes">
+        <source>Confirmation</source>
+        <target state="final">Bekräftelse</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.message.label" approved="yes">
+        <source>Text</source>
+        <target state="final">Text</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.contentElementUid.label" approved="yes">
+        <source>Record</source>
+        <target state="final">Post</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.label" approved="yes">
+        <source>Email to sender (form submitter)</source>
+        <target state="final">E-post till avsändare (den som postat formuläret)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.subject.label" approved="yes">
+        <source>Subject of the email</source>
+        <target state="final">Ämnesrad för e-post</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.label" approved="yes">
+        <source>Recipients</source>
+        <target state="final">Mottagare</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.item.label" approved="yes">
+        <source>Recipient</source>
+        <target state="final">Mottagare</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.email.label" approved="yes">
+        <source>Email Address</source>
+        <target state="final">E-postadress</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.name.label" approved="yes">
+        <source>Name</source>
+        <target state="final">Namn</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.senderAddress.label" approved="yes">
+        <source>Email address of the sender</source>
+        <target state="final">Avsändarens E-postadress</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.senderName.label" approved="yes">
+        <source>Human-readable name of the sender</source>
+        <target state="final">Läsbart namn för avsändaren</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.replyToRecipients.label" approved="yes">
+        <source>Reply-To Recipients</source>
+        <target state="final">Svara-till mottagare</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.replyToRecipients.item.label" approved="yes">
+        <source>Reply-To Recipient</source>
+        <target state="final">Svara-till mottagare</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.carbonCopyRecipients.label" approved="yes">
+        <source>CC Recipients</source>
+        <target state="final">CC-mottagare</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.carbonCopyRecipients.item.label" approved="yes">
+        <source>CC Recipient</source>
+        <target state="final">CC-mottagare</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.label" approved="yes">
+        <source>BCC Recipients</source>
+        <target state="final">BCC-mottagare</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.item.label" approved="yes">
+        <source>BCC Recipient</source>
+        <target state="final">BCC-mottagare</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.addHtmlPart.label" approved="yes">
+        <source>Add HTML mail part</source>
+        <target state="final">Lägg till HTML-del</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.language.label" approved="yes">
+        <source>Translation language</source>
+        <target state="final">Översättningsspråk</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.title.label" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.label" approved="yes">
+        <source>Email to receiver (you)</source>
+        <target state="final">E-post till mottagare (du)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.subject.label" approved="yes">
+        <source>Subject of the email</source>
+        <target state="final">Ämnesrad för e-post</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.senderAddress.label" approved="yes">
+        <source>Email address of the sender</source>
+        <target state="final">Avsändarens E-postadress</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.senderName.label" approved="yes">
+        <source>Human-readable name of the sender</source>
+        <target state="final">Läsbart namn för avsändaren</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.language.label" approved="yes">
+        <source>Translation language</source>
+        <target state="final">Översättningsspråk</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.label" approved="yes">
+        <source>Redirect</source>
+        <target state="final">Omdirigering</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.pageUid.label" approved="yes">
+        <source>Page</source>
+        <target state="final">Sida</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.additionalParameters.label" approved="yes">
+        <source>Additional link parameter</source>
+        <target state="final">Ytterligare länkparameter</target>
+      </trans-unit>
+      <trans-unit id="formManagerController.deleteAction.error.title" approved="yes">
+        <source>Delete error</source>
+        <target state="final">Ta bort felmeddelande</target>
+      </trans-unit>
+      <trans-unit id="formManagerController.deleteAction.error.body" approved="yes">
+        <source>The form "%s" could not be deleted.</source>
+        <target state="final">Formuläret "%s" kunde ej tas bort.</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_name" approved="yes">
+        <source>Form name</source>
+        <target state="final">Formulärnamn</target>
+      </trans-unit>
+      <trans-unit id="formManager.location" approved="yes">
+        <source>Location</source>
+        <target state="final">Placering</target>
+      </trans-unit>
+      <trans-unit id="formManager.references" approved="yes">
+        <source>References</source>
+        <target state="final">Referenser</target>
+      </trans-unit>
+      <trans-unit id="formManager.options" approved="yes">
+        <source>Options</source>
+        <target state="final">Alternativ</target>
+      </trans-unit>
+      <trans-unit id="formManager.edit_form" approved="yes">
+        <source>Edit this form</source>
+        <target state="final">Redigera detta formulär</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicate_this_form" approved="yes">
+        <source>Duplicate this form</source>
+        <target state="final">Duplicera detta formulär</target>
+      </trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.label" approved="yes">
+        <source>Standard</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.label" approved="yes">
+        <source>Blank form</source>
+        <target state="final">Tomt formulär</target>
+      </trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.label" approved="yes">
+        <source>Simple contact form (ext:form example)</source>
+        <target state="final">Enkelt kontatktformulär (ext:form exempel)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.header" approved="yes">
+        <source>Form editor</source>
+        <target state="final">Formulärredigerare</target>
+      </trans-unit>
+      <trans-unit id="formEditor.loading" approved="yes">
+        <source>Loading...</source>
+        <target state="final">Laddar...</target>
+      </trans-unit>
+      <trans-unit id="formEditor.spinner" approved="yes">
+        <source>Loading...</source>
+        <target state="final">Laddar...</target>
+      </trans-unit>
+      <trans-unit id="formEditor.save_button" approved="yes">
+        <source>Save</source>
+        <target state="final">Spara</target>
+      </trans-unit>
+      <trans-unit id="formEditor.undo_button" approved="yes">
+        <source>Undo</source>
+        <target state="final">Ångra</target>
+      </trans-unit>
+      <trans-unit id="formEditor.redo_button" approved="yes">
+        <source>Redo</source>
+        <target state="final">Gör om</target>
+      </trans-unit>
+      <trans-unit id="formEditor.new_page_button" approved="yes">
+        <source>Create new step</source>
+        <target state="final">Skapa nytt steg</target>
+      </trans-unit>
+      <trans-unit id="formEditor.structure" approved="yes">
+        <source>Structure</source>
+        <target state="final">Struktur</target>
+      </trans-unit>
+      <trans-unit id="formEditor.insert_elements" approved="yes">
+        <source>Insert elements</source>
+        <target state="final">Infoga element</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.NotEmpty.label" approved="yes">
+        <source>Required</source>
+        <target state="final">Obligatorisk</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.Integer.label" approved="yes">
+        <source>Not a number</source>
+        <target state="final">Ej ett nummer</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.NaiveEmail.label" approved="yes">
+        <source>Invalid email address</source>
+        <target state="final">Ogiltig e-postadress</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.FormElementIdentifierWithinCurlyBraces.label" approved="yes">
+        <source>Invalid form element</source>
+        <target state="final">Ogiltigt formulärelement</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.FileSize.label" approved="yes">
+        <source>Invalid file size format, valid e.g. "10B|K|M|G"</source>
+        <target state="final">Ogiltig filstorleksformat, giltigt är t ex. "10B|K|M|G"</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.input.label" approved="yes">
+        <source>Basic elements</source>
+        <target state="final">Vanliga element</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.html5.label" approved="yes">
+        <source>Special elements</source>
+        <target state="final">Specialelement</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.select.label" approved="yes">
+        <source>Select elements</source>
+        <target state="final">Välj formulärelement</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.custom.label" approved="yes">
+        <source>Advanced elements</source>
+        <target state="final">Avancerat innehåll</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.container.label" approved="yes">
+        <source>Container elements</source>
+        <target state="final">Behållarelement</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.page.label" approved="yes">
+        <source>Step types</source>
+        <target state="final">Stegtyper</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.BaseFormElementMixin.editor.label.label" approved="yes">
+        <source>Form name</source>
+        <target state="final">Formulärnamn</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveSuccessFlashMessageTitle" approved="yes">
+        <source>Save</source>
+        <target state="final">Spara</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveSuccessFlashMessageMessage" approved="yes">
+        <source>The form has been successfully saved.</source>
+        <target state="final">Formuläret har sparats.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveErrorFlashMessageTitle" approved="yes">
+        <source>Save</source>
+        <target state="final">Spara</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveErrorFlashMessageMessage" approved="yes">
+        <source>The form could not be saved:</source>
+        <target state="final">Formuläret sparades ej:</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.insertElements.dialogTitle" approved="yes">
+        <source>New element</source>
+        <target state="final">Nytt element</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.newPages.dialogTitle" approved="yes">
+        <source>New step</source>
+        <target state="final">Nytt steg</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.dialogTitle" approved="yes">
+        <source>Remove element?</source>
+        <target state="final">Ta bort element?</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.confirmButton" approved="yes">
+        <source>Remove</source>
+        <target state="final">Ta bort</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.lastAvailablePageFlashMessageTitle" approved="yes">
+        <source>Error</source>
+        <target state="final">Error</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.lastAvailablePageFlashMessageMessage" approved="yes">
+        <source>There must be at least one step within your form.</source>
+        <target state="final">Det måste finnas minst ett steg i ditt formulär.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.pagination.title" approved="yes">
+        <source>Step {0} of {1}</source>
+        <target state="final">Steg {0} av {1}</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label" approved="yes">
+        <source>Minimum</source>
+        <target state="final">Minimum</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label" approved="yes">
+        <source>Maximum</source>
+        <target state="final">Maximum</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.placeholder.label" approved="yes">
+        <source>Placeholder</source>
+        <target state="final">Platshållare</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.defaultValue.label" approved="yes">
+        <source>Default value</source>
+        <target state="final">Förvalt värde</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.pattern.label" approved="yes">
+        <source>Pattern</source>
+        <target state="final">Mönster</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.pattern.description" approved="yes">
+        <source>Additional client-side validation as JavaScript regular expression</source>
+        <target state="final">Ytterligare validering av klientsidan som javascript regeluttryck</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.step.label" approved="yes">
+        <source>Step</source>
+        <target state="final">Steg</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.label" approved="yes">
+        <source>Validators</source>
+        <target state="final">Validatorer</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.EmptyValue.label" approved="yes">
+        <source>Add validator</source>
+        <target state="final">Lägg till validering</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Alphanumeric.label" approved="yes">
+        <source>Alphanumeric</source>
+        <target state="final">Alfanumerisk</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Text.label" approved="yes">
+        <source>Non-XML text</source>
+        <target state="final">Icke-XML text</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.StringLength.label" approved="yes">
+        <source>String length</source>
+        <target state="final">Stränglängd</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.EmailAddress.label" approved="yes">
+        <source>Email</source>
+        <target state="final">E-post</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Integer.label" approved="yes">
+        <source>Integer number</source>
+        <target state="final">Heltal</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Float.label" approved="yes">
+        <source>Floating-point number</source>
+        <target state="final">Flyttalsnummer</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Number.label" approved="yes">
+        <source>Number</source>
+        <target state="final">Antal</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.NumberRange.label" approved="yes">
+        <source>Number range</source>
+        <target state="final">Nummersekvens</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.RegularExpression.label" approved="yes">
+        <source>Regular expression</source>
+        <target state="final">Vanligt uttryck</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.editor.validators.Count.label" approved="yes">
+        <source>Number of submitted values</source>
+        <target state="final">Antal angivna värden</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.header.label" approved="yes">
+        <source>Alphanumeric</source>
+        <target state="final">Alfanumerisk</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Anpassat varningsmeddelande</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">Varningsmeddelande som visas om validering ej lyckats</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.header.label" approved="yes">
+        <source>Non-XML text</source>
+        <target state="final">Icke-XML text</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Anpassat varningsmeddelande</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">Varningsmeddelande som visas om validering ej lyckats</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.header.label" approved="yes">
+        <source>String length</source>
+        <target state="final">Stränglängd</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Anpassat varningsmeddelande</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">Varningsmeddelande som visas om validering ej lyckats</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.header.label" approved="yes">
+        <source>Email</source>
+        <target state="final">E-post</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Anpassat varningsmeddelande</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">Varningsmeddelande som visas om validering ej lyckats</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.header.label" approved="yes">
+        <source>Integer number</source>
+        <target state="final">Heltal</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Anpassat varningsmeddelande</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">Varningsmeddelande som visas om validering ej lyckats</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.header.label" approved="yes">
+        <source>Floating-point number</source>
+        <target state="final">Flyttalsnummer</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Anpassat varningsmeddelande</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">Varningsmeddelande som visas om validering ej lyckats</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Number.editor.header.label" approved="yes">
+        <source>Number</source>
+        <target state="final">Antal</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.header.label" approved="yes">
+        <source>Number range</source>
+        <target state="final">Nummersekvens</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Anpassat varningsmeddelande</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">Varningsmeddelande som visas om validering ej lyckats</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.header.label" approved="yes">
+        <source>Regular expression</source>
+        <target state="final">Vanligt uttryck</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.label" approved="yes">
+        <source>Regular expression</source>
+        <target state="final">Vanligt uttryck</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.description" approved="yes">
+        <source>Enter a valid PHP PCRE regular expression here.</source>
+        <target state="final">Ange ett giltigt uttryck för PHP PCRE här.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Anpassat varningsmeddelande</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">Varningsmeddelande som visas om validering ej lyckats</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.header.label" approved="yes">
+        <source>Number of submitted values</source>
+        <target state="final">Antal angivna värden</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Anpassat varningsmeddelande</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">Varningsmeddelande som visas om validering ej lyckats</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SelectionMixin.editor.inactiveOption.description" approved="yes">
+        <source>If set, this label will be shown as first option.</source>
+        <target state="final">Om satt, visas denna etikett som förval.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SelectionMixin.editor.options.label" approved="yes">
+        <source>Choices</source>
+        <target state="final">Val</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.editor.validators.label" approved="yes">
+        <source>Validators</source>
+        <target state="final">Validatorer</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.editor.validators.EmptyValue.label" approved="yes">
+        <source>Add validator</source>
+        <target state="final">Lägg till validering</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.saveToFileMount.label" approved="yes">
+        <source>Uploads save path</source>
+        <target state="final">Lokalisering för uppladdningar</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.label" approved="yes">
+        <source>Validators</source>
+        <target state="final">Validatorer</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.EmptyValue.label" approved="yes">
+        <source>Add validator</source>
+        <target state="final">Lägg till validering</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.FileSize.label" approved="yes">
+        <source>File size</source>
+        <target state="final">Filstorlek</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label" approved="yes">
+        <source>File size</source>
+        <target state="final">Filstorlek</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.submitButtonLabel.label" approved="yes">
+        <source>Submit label</source>
+        <target state="final">Etikett på Skicka-knapp</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.submitButtonLabel.value" approved="yes">
+        <source>Submit</source>
+        <target state="final">Skicka</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.label" approved="yes">
+        <source>Finishers</source>
+        <target state="final">Postningsfunktioner</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.EmptyValue.label" approved="yes">
+        <source>Add finisher</source>
+        <target state="final">Lägg till slutprocess</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.EmailToSender.label" approved="yes">
+        <source>Email to sender (form submitter)</source>
+        <target state="final">E-post till avsändare (den som postat formuläret)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.EmailToReceiver.label" approved="yes">
+        <source>Email to receiver (you)</source>
+        <target state="final">E-post till mottagare (du)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.Redirect.label" approved="yes">
+        <source>Redirect to a page</source>
+        <target state="final">Omdirigera till en sida</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.DeleteUploads.label" approved="yes">
+        <source>Delete uploads</source>
+        <target state="final">Ta bort uppladdningar</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.Confirmation.label" approved="yes">
+        <source>Confirmation message</source>
+        <target state="final">Bekräftelsemeddelande</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.header.label" approved="yes">
+        <source>Email to sender (form submitter)</source>
+        <target state="final">E-post till avsändare (den som postat formuläret)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.subject.label" approved="yes">
+        <source>Subject</source>
+        <target state="final">Ämne</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title" approved="yes">
+        <source>Name</source>
+        <target state="final">Namn</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.label" approved="yes">
+        <source>Sender address</source>
+        <target state="final">Avsändaradress</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.description" approved="yes">
+        <source>The email address of the sender (e.g. your company's email address) which appears in the website visitor email client.</source>
+        <target state="final">E-postadress för avsändaren (t ex. ditt företags E-postadress) som visas i webbplatsbesökarens E-postklient.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderName.label" approved="yes">
+        <source>Sender name</source>
+        <target state="final">Avsändarens namn</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderName.description" approved="yes">
+        <source>The name of the sender (e.g. your company's name) which appears in the website visitor email client.</source>
+        <target state="final">Namn för avsändaren (t ex. ditt företagsnamn) som visas i webbplatsbesökarens E-postklient.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.carbonCopyRecipients.label" approved="yes">
+        <source>CC Recipients</source>
+        <target state="final">CC-mottagare</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.blindCarbonCopyRecipients.label" approved="yes">
+        <source>BCC Recipients</source>
+        <target state="final">BCC-mottagare</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.label" approved="yes">
+        <source>Add HTML part</source>
+        <target state="final">Lägg till HTML-del</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.attachUploads.label" approved="yes">
+        <source>Attach uploads</source>
+        <target state="final">Bifoga uppladdningar</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.language.label" approved="yes">
+        <source>Translation language</source>
+        <target state="final">Översättningsspråk</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label" approved="yes">
+        <source>Email to receiver (you)</source>
+        <target state="final">E-post till mottagare (du)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.subject.label" approved="yes">
+        <source>Subject</source>
+        <target state="final">Ämne</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.label" approved="yes">
+        <source>Sender address</source>
+        <target state="final">Avsändaradress</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.label" approved="yes">
+        <source>Sender name</source>
+        <target state="final">Avsändarens namn</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.attachUploads.label" approved="yes">
+        <source>Attach uploads</source>
+        <target state="final">Bifoga uppladdningar</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.label" approved="yes">
+        <source>Translation language</source>
+        <target state="final">Översättningsspråk</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.1" approved="yes">
+        <source>EN</source>
+        <target state="final">EN</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.header.label" approved="yes">
+        <source>Redirect to a page</source>
+        <target state="final">Omdirigera till en sida</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.pageUid.label" approved="yes">
+        <source>Page</source>
+        <target state="final">Sida</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.pageUid.buttonLabel" approved="yes">
+        <source>Page</source>
+        <target state="final">Sida</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.additionalParameters.label" approved="yes">
+        <source>Additional parameters</source>
+        <target state="final">Ytterligare parametrar</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.DeleteUploads.editor.header.label" approved="yes">
+        <source>Delete uploads</source>
+        <target state="final">Ta bort uppladdningar</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.header.label" approved="yes">
+        <source>Confirmation message</source>
+        <target state="final">Bekräftelsemeddelande</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.label" approved="yes">
+        <source>Content element uid</source>
+        <target state="final">Innehållselelement uid</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.buttonLabel" approved="yes">
+        <source>Page Content</source>
+        <target state="final">Sidinnehåll</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.message.label" approved="yes">
+        <source>Text</source>
+        <target state="final">Text</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.message.description" approved="yes">
+        <source>Will be ignored if "Content element" is set</source>
+        <target state="final">Ignoreras om "Innehållselement" är satt</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Closure.editor.header.label" approved="yes">
+        <source>Execute a closure</source>
+        <target state="final">Utför en stängning</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.FlashMessage.editor.header.label" approved="yes">
+        <source>Flash message</source>
+        <target state="final">Flash meddelande</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.SaveToDatabase.editor.header.label" approved="yes">
+        <source>Save the mail to the Database</source>
+        <target state="final">Spara E-post i Databasen</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ReadOnlyFormElement.editor.label.label" approved="yes">
+        <source>Label</source>
+        <target state="final">Etikett</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.label.label" approved="yes">
+        <source>Label</source>
+        <target state="final">Etikett</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.elementDescription.label" approved="yes">
+        <source>Description</source>
+        <target state="final">Beskrivning</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label" approved="yes">
+        <source>Custom error message</source>
+        <target state="final">Anpassat varningsmeddelande</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.description" approved="yes">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target state="final">Varningsmeddelande som visas om validering ej lyckats</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.validators.DateRange.editor.header.label" approved="yes">
+        <source>Date range</source>
+        <target state="final">Datumintervall</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label" approved="yes">
+        <source>Grid viewport configuration</source>
+        <target state="final">Konfiguration för Grid Portview</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label" approved="yes">
+        <source>Extra small</source>
+        <target state="final">Extra liten</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label" approved="yes">
+        <source>Small</source>
+        <target state="final">Liten</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label" approved="yes">
+        <source>Medium</source>
+        <target state="final">Medium</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label" approved="yes">
+        <source>Large</source>
+        <target state="final">Stor</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label" approved="yes">
+        <source>Numbers of columns for viewport "{@viewPortLabel}"</source>
+        <target state="final">Antal kolumner för enhetsvy "{@viewPortLabel}"</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.description" approved="yes">
+        <source>Leave empty for auto calculation</source>
+        <target state="final">Lämna tom för automatisk beräkning</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.label" approved="yes">
+        <source>Step</source>
+        <target state="final">Steg</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.label.label" approved="yes">
+        <source>Step name</source>
+        <target state="final">Stegnamn</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.previousButtonLabel.label" approved="yes">
+        <source>Previous button label</source>
+        <target state="final">Etikett för Föregående-knapp</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.previousButtonLabel.value" approved="yes">
+        <source>Previous step</source>
+        <target state="final">Föregående steg</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.nextButtonLabel.label" approved="yes">
+        <source>Next button label</source>
+        <target state="final">Etikett för Nästa-knapp</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.nextButtonLabel.value" approved="yes">
+        <source>Next step</source>
+        <target state="final">Nytt steg</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.label" approved="yes">
+        <source>Summary step</source>
+        <target state="final">Sammanfattningssteg</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.label.label" approved="yes">
+        <source>Step name</source>
+        <target state="final">Stegnamn</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.previousButtonLabel.label" approved="yes">
+        <source>Previous button label</source>
+        <target state="final">Etikett för Föregående-knapp</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.previousButtonLabel.value" approved="yes">
+        <source>Previous step</source>
+        <target state="final">Föregående steg</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.nextButtonLabel.label" approved="yes">
+        <source>Next button label</source>
+        <target state="final">Etikett för Nästa-knapp</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.nextButtonLabel.value" approved="yes">
+        <source>Next step</source>
+        <target state="final">Nytt steg</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Fieldset.label" approved="yes">
+        <source>Fieldset</source>
+        <target state="final">Fältavgränsare</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Fieldset.editor.label.label" approved="yes">
+        <source>Fieldset name</source>
+        <target state="final">Fältuppsättningsnamn</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.GridRow.label" approved="yes">
+        <source>Grid: Row</source>
+        <target state="final">Grid: Rad</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.GridRow.editor.label.label" approved="yes">
+        <source>Row name (not visible within frontend)</source>
+        <target state="final">Radnamn (ej synligt på framsidan)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Text.label" approved="yes">
+        <source>Text</source>
+        <target state="final">Text</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Email.label" approved="yes">
+        <source>Email address</source>
+        <target state="final">E-postadress</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Telephone.label" approved="yes">
+        <source>Telephone number</source>
+        <target state="final">Telefonnummer</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Url.label" approved="yes">
+        <source>URL</source>
+        <target state="final">URL</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Number.label" approved="yes">
+        <source>Number</source>
+        <target state="final">Antal</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Number.editor.validators.Number.label" approved="yes">
+        <source>Number</source>
+        <target state="final">Antal</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.label" approved="yes">
+        <source>Date</source>
+        <target state="final">Datum</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.defaultValue.placeholder" approved="yes">
+        <source>A date in format Y-m-d (e.g 2018-03-17)</source>
+        <target state="final">Datum i formatet Y-m-d (t ex. 2018-03-17)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.step.description" approved="yes">
+        <source>Specify the number of days between each occurrence of this event.</source>
+        <target state="final">Specificera antal dagar mellan varje förekomst av denna händelse.</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.step.label" approved="yes">
+        <source>Frequency</source>
+        <target state="final">Frekvens</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.validators.DateRange.label" approved="yes">
+        <source>Date range</source>
+        <target state="final">Datumintervall</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.header.label" approved="yes">
+        <source>Date range</source>
+        <target state="final">Datumintervall</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.minimum" approved="yes">
+        <source>Minimum date</source>
+        <target state="final">Minimum datum</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.maximum" approved="yes">
+        <source>Maximum date</source>
+        <target state="final">Maximum datum</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Password.label" approved="yes">
+        <source>Password</source>
+        <target state="final">Lösenord</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.AdvancedPassword.label" approved="yes">
+        <source>Advanced password</source>
+        <target state="final">Avancerat lösenord</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.AdvancedPassword.editor.confirmationLabel.label" approved="yes">
+        <source>Confirmation label</source>
+        <target state="final">Bekräftelseetikett</target>
+      </trans-unit>
+      <trans-unit id="formEditor.element.AdvancedPassword.editor.confirmationLabel.predefinedDefaults" approved="yes">
+        <source>Confirmation</source>
+        <target state="final">Bekräftelse</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Textarea.label" approved="yes">
+        <source>Textarea</source>
+        <target state="final">Textarea</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Checkbox.label" approved="yes">
+        <source>Checkbox</source>
+        <target state="final">Checkbox</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiCheckbox.label" approved="yes">
+        <source>Multi checkbox</source>
+        <target state="final">Multicheckbox</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelect.label" approved="yes">
+        <source>Multi select</source>
+        <target state="final">Flerval</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.RadioButton.label" approved="yes">
+        <source>Radio button</source>
+        <target state="final">Alternativknapp</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SingleSelect.label" approved="yes">
+        <source>Single select</source>
+        <target state="final">Singelval</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateTime.editor.header.label" approved="yes">
+        <source>Date/time</source>
+        <target state="final">Datum/tid</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.label" approved="yes">
+        <source>Static text</source>
+        <target state="final">Statisk text</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.editor.label.label" approved="yes">
+        <source>Header</source>
+        <target state="final">Rubrik</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.editor.staticText.label" approved="yes">
+        <source>Text</source>
+        <target state="final">Text</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Hidden.label" approved="yes">
+        <source>Hidden</source>
+        <target state="final">Dold</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Hidden.editor.defaultValue.label" approved="yes">
+        <source>Value</source>
+        <target state="final">Värde</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.label" approved="yes">
+        <source>Content element</source>
+        <target state="final">Innehållselelement</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.selectContentElement" approved="yes">
+        <source>No content element selected</source>
+        <target state="final">Inget innehållselement markerat</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.editor.contentElement.label" approved="yes">
+        <source>Content element uid</source>
+        <target state="final">Innehållselelement uid</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.editor.contentElement.buttonLabel" approved="yes">
+        <source>Page Content</source>
+        <target state="final">Sidinnehåll</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.label" approved="yes">
+        <source>File upload</source>
+        <target state="final">Filuppladdning</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.label" approved="yes">
+        <source>Allowed file mime types</source>
+        <target state="final">Tillåtna typer av MIME-filer</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.doc" approved="yes">
+        <source>Documents (doc)</source>
+        <target state="final">Dokument (doc)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.docx" approved="yes">
+        <source>Documents (docx)</source>
+        <target state="final">Dokument (docx)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.xls" approved="yes">
+        <source>Documents (xls)</source>
+        <target state="final">Dokument (xls)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.xlsx" approved="yes">
+        <source>Documents (xlsx)</source>
+        <target state="final">Dokument (xlsx)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.pdf" approved="yes">
+        <source>Documents (pdf)</source>
+        <target state="final">Dokument (pdf)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.odt" approved="yes">
+        <source>Documents (odt)</source>
+        <target state="final">Dokument (odt)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.ods" approved="yes">
+        <source>Documents (ods)</source>
+        <target state="final">Dokument (ods)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.label" approved="yes">
+        <source>Image upload</source>
+        <target state="final">Bilduppladdning</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.label" approved="yes">
+        <source>Allowed file mime types</source>
+        <target state="final">Tillåtna typer av MIME-filer</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.jpg" approved="yes">
+        <source>Images (jpg)</source>
+        <target state="final">Bilder (jpg)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.png" approved="yes">
+        <source>Images (png)</source>
+        <target state="final">Bilder (png)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.bmp" approved="yes">
+        <source>Images (bmp)</source>
+        <target state="final">Bilder (bmp)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.UnknownElement" approved="yes">
+        <source>Unknown element</source>
+        <target state="final">Okänt element</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.new_element" approved="yes">
+        <source>Create new element</source>
+        <target state="final">Skapa nytt element</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.remove" approved="yes">
+        <source>Remove</source>
+        <target state="final">Ta bort</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.formelement_selector.title" approved="yes">
+        <source>Insert formelement identifier</source>
+        <target state="final">Infoga formulärelementidentifierare</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
