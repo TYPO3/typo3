@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Render;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Domain\Exception\RecordPropertyNotFoundException;
 use TYPO3\CMS\Core\Domain\RecordFactory;
@@ -28,6 +29,7 @@ use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
+use TYPO3\CMS\Fluid\Event\BeforeRenderTextEvent;
 use TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlViewHelper as FormatHtmlViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\Sanitize\HtmlViewHelper as SanitizeHtmlViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\Transform\HtmlViewHelper as TransformHtmlViewHelper;
@@ -70,6 +72,7 @@ final class TextViewHelper extends AbstractViewHelper
         private readonly TcaSchemaFactory $tcaSchema,
         private readonly RecordFactory $recordFactory,
         private readonly DataMapFactory $dataMapFactory,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {}
 
     public function initializeArguments(): void
@@ -127,6 +130,18 @@ final class TextViewHelper extends AbstractViewHelper
         }
 
         $fieldSchema = $this->tcaSchema->get($fullType)->getField($field);
+        if ($fieldSchema instanceof InputFieldType || $fieldSchema instanceof TextFieldType) {
+            $request = $this->renderingContext->hasAttribute(ServerRequestInterface::class)
+                ? $this->renderingContext->getAttribute(ServerRequestInterface::class)
+                : null;
+            $event = $this->eventDispatcher->dispatch(
+                new BeforeRenderTextEvent($input, $table, $fullType, $fieldSchema, $value, $request)
+            );
+            if (($renderedText = $event->getRenderedText()) !== null) {
+                return $renderedText;
+            }
+        }
+
         if ($fieldSchema instanceof InputFieldType) {
             return new UnsafeHTMLString(htmlspecialchars($value));
         }

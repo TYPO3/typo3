@@ -19,21 +19,27 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Render;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Domain\RawRecord;
 use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
+use TYPO3\CMS\Core\Domain\RecordInterface;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
+use TYPO3\CMS\Fluid\Event\BeforeRenderTextEvent;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\Parser\UnsafeHTML;
+use TYPO3Fluid\Fluid\Core\Parser\UnsafeHTMLString;
 use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 use TYPO3Fluid\Fluid\View\TemplateView;
 use TYPO3Tests\BlogExample\Domain\Model\Blog;
@@ -158,6 +164,78 @@ final class TextViewHelperTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[DataProvider('renderTextEventDataProvider')]
+    public function eventCanTakeOverRendering(
+        RecordInterface|DomainObjectInterface|PageInformation $record,
+        string $field,
+        string $fullType,
+        string $value,
+        string $html,
+        ?int $applicationType = SystemEnvironmentBuilder::REQUESTTYPE_FE,
+    ): void {
+        $request = $applicationType === null ? null : $this->createRequest()->withAttribute('applicationType', $applicationType);
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:render.text record="{record}" field="{field}" />');
+        $result = new UnsafeHTMLString($html);
+        $events = [];
+        $this->addRenderTextListener('inspect', static function (BeforeRenderTextEvent $event) use (&$events): void {
+            self::assertNull($event->getRenderedText());
+            self::assertFalse($event->isPropagationStopped());
+            $events[] = $event;
+        });
+        $this->addRenderTextListener('render', static fn(BeforeRenderTextEvent $event) => $event->setRenderedText($result));
+        $this->addRenderTextListener('skipped', static fn() => self::fail('Propagation must stop after a result is provided.'));
+
+        for ($iteration = 0; $iteration < 2; $iteration++) {
+            $view = new TemplateView($context);
+            $view->assignMultiple(['record' => $record, 'field' => $field]);
+            self::assertSame($result, $view->render());
+        }
+
+        self::assertCount(2, $events);
+        foreach ($events as $event) {
+            if ($record instanceof PageInformation) {
+                self::assertInstanceOf(RecordInterface::class, $event->getRecord());
+                self::assertSame($record->getId(), $event->getRecord()->getUid());
+            } else {
+                self::assertSame($record, $event->getRecord());
+            }
+            self::assertSame(explode('.', $fullType)[0], $event->getTable());
+            self::assertSame($fullType, $event->getFullType());
+            self::assertSame($field, $event->getFieldName());
+            self::assertSame($this->get(TcaSchemaFactory::class)->get($fullType)->getField($field), $event->getFieldSchema());
+            self::assertSame($value, $event->getValue());
+            self::assertSame($request, $event->getRequest());
+            self::assertSame($result, $event->getRenderedText());
+            self::assertTrue($event->isPropagationStopped());
+        }
+    }
+
+    public static function renderTextEventDataProvider(): \Generator
+    {
+        yield 'input' => [self::createRecord(['header' => '<b>Title</b>']), 'header', 'tt_content.text', '<b>Title</b>', '<ve-editable>Title</ve-editable>'];
+        yield 'plain text' => [self::createRecord(['rowDescription' => "Line 1\nLine 2"]), 'rowDescription', 'tt_content.text', "Line 1\nLine 2", '<ve-editable>Lines</ve-editable>'];
+        yield 'rich text' => [self::createRecord(['bodytext' => '<p>Text</p>']), 'bodytext', 'tt_content.text', '<p>Text</p>', '<ve-editable><p>Text</p></ve-editable>'];
+        yield 'backend rich text' => [self::createRecord(['bodytext' => '<p>Text</p>']), 'bodytext', 'tt_content.text', '<p>Text</p>', '<ve-editable>Text</ve-editable>', SystemEnvironmentBuilder::REQUESTTYPE_BE];
+        yield 'without request' => [self::createRecord(['header' => 'Title']), 'header', 'tt_content.text', 'Title', '<ve-editable>Title</ve-editable>', null];
+        yield 'empty result' => [self::createRecord(['header' => 'Title']), 'header', 'tt_content.text', 'Title', ''];
+        yield 'page information' => [self::createPageInformation(['title' => 'Page']), 'title', 'pages.1', 'Page', '<ve-editable>Page</ve-editable>'];
+        yield 'extbase model' => [self::createExtbaseModel('Blog'), 'title', 'tx_blogexample_domain_model_blog', 'Blog', '<ve-editable>Blog</ve-editable>'];
+    }
+
+    #[Test]
+    #[DataProvider('renderingDataProvider')]
+    public function eventWithoutResultPreservesDefaultRendering(mixed $record, string $templateSource, ?string $expected): void
+    {
+        $events = [];
+        $this->addRenderTextListener('observe', static function (BeforeRenderTextEvent $event) use (&$events): void {
+            $events[] = $event;
+        });
+        $this->render($record, $templateSource, $expected);
+        self::assertCount($expected === null ? 0 : 2, $events);
+    }
+
+    #[Test]
     #[DataProvider('backendRichTextRenderingDataProvider')]
     public function richTextIsRenderedInBackendContext(string $value, string $expected): void
     {
@@ -201,6 +279,7 @@ final class TextViewHelperTest extends FunctionalTestCase
     #[DataProvider('exceptionsDataProvider')]
     public function exceptions(mixed $record, string $templateSource, string $exception, int $exceptionCode, string $exceptionMessage): void
     {
+        $this->addRenderTextListener('invalid-input', static fn() => self::fail('Invalid input must not dispatch the event.'));
         $context = $this->get(RenderingContextFactory::class)->create([], $this->createRequest());
         $context->getTemplatePaths()->setTemplateSource($templateSource);
 
@@ -216,6 +295,13 @@ final class TextViewHelperTest extends FunctionalTestCase
 
     public static function exceptionsDataProvider(): \Generator
     {
+        yield 'throws for unsupported field type' => [
+            'record' => self::createRecord(['CType' => 'text']),
+            'templateSource' => '<f:render.text record="{record}" field="CType" />',
+            'exception' => InvalidArgumentValueException::class,
+            'exceptionCode' => 1770618219,
+            'exceptionMessage' => 'The field "tt_content.CType" is not supported.',
+        ];
         yield 'throwsForNonStringField' => [
             'record' => self::createRecord([
                 'bodytext' => ['not-a-string'],
@@ -262,6 +348,14 @@ final class TextViewHelperTest extends FunctionalTestCase
             'exceptionCode' => 1775553111,
             'exceptionMessage' => 'Could not find the field "header" in the given model TYPO3Tests\BlogExample\Domain\Model\Blog.',
         ];
+    }
+
+    private function addRenderTextListener(string $identifier, \Closure $listener): void
+    {
+        /** @var Container $container */
+        $container = $this->get('service_container');
+        $container->set($identifier, $listener);
+        $this->get(ListenerProvider::class)->addListener(BeforeRenderTextEvent::class, $identifier);
     }
 
     private function createRequest(): ServerRequest
