@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="widget.rss.title">
+        <source>RSS Feed</source>
+        <target>crwdns374336:0crwdne374336:0</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.description">
+        <source>Displays the latest entries from a customizable RSS feed.</source>
+        <target>crwdns374338:0crwdne374338:0</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.label.label">
+        <source>Label</source>
+        <target>crwdns374340:0crwdne374340:0</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.label.description">
+        <source>Defines the label of the widget.</source>
+        <target>crwdns374342:0crwdne374342:0</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.fieldUrl.label">
+        <source>RSS Feed</source>
+        <target>crwdns374344:0crwdne374344:0</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.fieldUrl.description">
+        <source>Defines the URL or file providing the RSS Feed. This is read by the widget in order to fetch entries to show.</source>
+        <target>crwdns374346:0crwdne374346:0</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.limit.label">
+        <source>Limit</source>
+        <target>crwdns374348:0crwdne374348:0</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.limit.description">
+        <source>Defines how many RSS items should be shown.</source>
+        <target>crwdns374350:0crwdne374350:0</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.lifetime.label">
+        <source>Lifetime</source>
+        <target>crwdns374352:0crwdne374352:0</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.lifetime.description">
+        <source>Defines how long to wait, in seconds, until fetching RSS Feed again.</source>
+        <target>crwdns374354:0crwdne374354:0</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.missingFeedConfiguration.title">
+        <source>Missing feed configuration</source>
+        <target>crwdns374458:0crwdne374458:0</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.missingFeedConfiguration.message">
+        <source>Please configure a feed URL to retrieve items from.</source>
+        <target>crwdns374460:0crwdne374460:0</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.feedError.title">
+        <source>Feed error</source>
+        <target>crwdns374462:0crwdne374462:0</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.feedError.message">
+        <source>The feed at "%1$s" could not be parsed.</source>
+        <target>crwdns374464:0%1$scrwdne374464:0</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.noItems.title">
+        <source>No items to display</source>
+        <target>crwdns374466:0crwdne374466:0</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.noItems.message">
+        <source>The feed at "%1$s" does not contain any items.</source>
+        <target>crwdns374468:0%1$scrwdne374468:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
