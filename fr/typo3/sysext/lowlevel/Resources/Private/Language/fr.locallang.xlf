@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814900" source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="configuration" resname="configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Configuration</target>
+      </trans-unit>
+      <trans-unit id="typo3ConfVars" resname="typo3ConfVars" approved="yes">
+        <source>$GLOBALS['TYPO3_CONF_VARS'] (Global Configuration)</source>
+        <target state="final">$GLOBALS['TYPO3_CONF_VARS'] (Configuration globale)</target>
+      </trans-unit>
+      <trans-unit id="tca" resname="tca" approved="yes">
+        <source>$GLOBALS['TCA'] (Table configuration array)</source>
+        <target state="final">$GLOBALS['TCA'] (Configuration des tables)</target>
+      </trans-unit>
+      <trans-unit id="tcaDescr" resname="tcaDescr" approved="yes">
+        <source>$GLOBALS['TCA_DESCR'] (Table Help Description)</source>
+        <target state="final">$GLOBALS['TCA_DESCR'] (Aide des tables)</target>
+      </trans-unit>
+      <trans-unit id="loadedExt" resname="loadedExt" approved="yes">
+        <source>$GLOBALS['TYPO3_LOADED_EXT'] (Loaded Extensions)</source>
+        <target state="final">$GLOBALS['TYPO3_LOADED_EXT'] (Extensions chargées)</target>
+      </trans-unit>
+      <trans-unit id="tbeStyles" resname="tbeStyles" approved="yes">
+        <source>$GLOBALS['TBE_STYLES'] (Skinning Styles)</source>
+        <target state="final">$GLOBALS['TBE_STYLES'] (Styles des thèmes)</target>
+      </trans-unit>
+      <trans-unit id="beUserTsConfig" resname="beUserTsConfig" approved="yes">
+        <source>$GLOBALS['BE_USER']-&gt;getTSConfig() (User TSconfig)</source>
+        <target state="final">$GLOBALS['BE_USER']-&gt;getTSConfig() (TSconfig de l'utilisateur)</target>
+      </trans-unit>
+      <trans-unit id="beUser" resname="beUser" approved="yes">
+        <source>$GLOBALS['BE_USER']-&gt;uc (User Settings)</source>
+        <target state="final">$GLOBALS['BE_USER']-&gt;uc (Paramètres de l'utilisateur)</target>
+      </trans-unit>
+      <trans-unit id="usersettings" resname="usersettings" approved="yes">
+        <source>$GLOBALS['TYPO3_USER_SETTINGS'] (User Settings Configuration)</source>
+        <target state="final">$GLOBALS['TYPO3_USER_SETTINGS'] (Configuration des paramètres de l'utilisateur)</target>
+      </trans-unit>
+      <trans-unit id="routes" resname="routes" approved="yes">
+        <source>Backend Routes</source>
+        <target state="final">Routes Back-end</target>
+      </trans-unit>
+      <trans-unit id="httpMiddlewareStacks" resname="httpMiddlewareStacks" approved="yes">
+        <source>HTTP Middlewares (PSR-15)</source>
+        <target state="final">Middlewares HTTP (PSR-15)</target>
+      </trans-unit>
+      <trans-unit id="siteConfiguration" resname="siteConfiguration" approved="yes">
+        <source>Site Configuration</source>
+        <target state="final">Configuration du site</target>
+      </trans-unit>
+      <trans-unit id="t3services" resname="t3services" approved="yes">
+        <source>$GLOBALS['T3_SERVICES'] (Registered Services)</source>
+        <target state="final">$GLOBALS['T3_SERVICES'] (Services enregistrés)</target>
+      </trans-unit>
+      <trans-unit id="tbemodulesext" resname="tbemodulesext" approved="yes">
+        <source>$GLOBALS['TBE_MODULES_EXT'] (BE Modules Extensions)</source>
+        <target state="final">$GLOBALS['TBE_MODULES_EXT'] (Extensions des modules BE)</target>
+      </trans-unit>
+      <trans-unit id="tbemodules" resname="tbemodules" approved="yes">
+        <source>$GLOBALS['TBE_MODULES'] (BE Modules)</source>
+        <target state="final">$GLOBALS['TBE_MODULES'] (Modules BE)</target>
+      </trans-unit>
+      <trans-unit id="pagesTypes" resname="pagesTypes" approved="yes">
+        <source>$GLOBALS['PAGES_TYPES'] (Table permissions by page type)</source>
+        <target state="final">$GLOBALS['PAGES_TYPES'] (Droits sur les tables selon le type de page)</target>
+      </trans-unit>
+      <trans-unit id="cropLines" resname="cropLines" approved="yes">
+        <source>Crop lines</source>
+        <target state="final">Limiter la longueur des lignes</target>
+      </trans-unit>
+      <trans-unit id="variable" resname="variable" approved="yes">
+        <source>Variable</source>
+        <target state="final">Variable :</target>
+      </trans-unit>
+      <trans-unit id="copyPaste" resname="copyPaste" approved="yes">
+        <source>(Now, copy/paste this value into the configuration file where you can set it. This is all you can do from here...)</source>
+        <target state="final">(Maintenant, copier/coller cette valeur dans le fichier de configuration. Cette assistant ne peut pas le faire ici...)</target>
+      </trans-unit>
+      <trans-unit id="enterSearchPhrase" resname="enterSearchPhrase" approved="yes">
+        <source>Enter search phrase</source>
+        <target state="final">Saisissez vos termes de recherche:</target>
+      </trans-unit>
+      <trans-unit id="search" resname="search" approved="yes">
+        <source>Search</source>
+        <target state="final">Rechercher</target>
+      </trans-unit>
+      <trans-unit id="useRegExp" resname="useRegExp" approved="yes">
+        <source>Use regular expression (phrase is surrounded by slashes automatically)</source>
+        <target state="final">Utiliser une expression régulière</target>
+      </trans-unit>
+      <trans-unit id="writeValue" resname="writeValue" approved="yes">
+        <source>Write value to configuration file</source>
+        <target state="final">Ecrire les valeurs dans le fichier de configuration</target>
+      </trans-unit>
+      <trans-unit id="writeMessage" resname="writeMessage" approved="yes">
+        <source>Following line was added to configuration file (%s): %s%s</source>
+        <target state="final">La ligne suivante a été ajoutée au fichier de configuration (%s) : %s%s</target>
+      </trans-unit>
+      <trans-unit id="writeMessageFailed" resname="writeMessageFailed" approved="yes">
+        <source>Write to configuration file failed (%s)!</source>
+        <target state="final">L'écriture du fichier de configuration a échoué (%s) !</target>
+      </trans-unit>
+      <trans-unit id="menuTitle" resname="menuTitle" approved="yes">
+        <source>Overview</source>
+        <target state="final">Vue d'ensemble</target>
+      </trans-unit>
+      <trans-unit id="recordStatistics" resname="recordStatistics" approved="yes">
+        <source>Record Statistics</source>
+        <target state="final">Statistiques sur l'enregistrement</target>
+      </trans-unit>
+      <trans-unit id="totalPageTree" resname="totalPageTree" approved="yes">
+        <source>Total Page Tree</source>
+        <target state="final">Toute l'arborescence des pages</target>
+      </trans-unit>
+      <trans-unit id="databaseRelations" resname="databaseRelations" approved="yes">
+        <source>Database Relations</source>
+        <target state="final">Relations de la base de données</target>
+      </trans-unit>
+      <trans-unit id="fullSearch" resname="fullSearch" approved="yes">
+        <source>Full search</source>
+        <target state="final">Recherche complète</target>
+      </trans-unit>
+      <trans-unit id="findFilename" resname="findFilename" approved="yes">
+        <source>Find filename</source>
+        <target state="final">Chercher par nom de fichier</target>
+      </trans-unit>
+      <trans-unit id="manageRefIndex" resname="manageRefIndex" approved="yes">
+        <source>Manage Reference Index</source>
+        <target state="final">Gérer l'index des références</target>
+      </trans-unit>
+      <trans-unit id="rawSearch" resname="rawSearch" approved="yes">
+        <source>Raw search in all fields</source>
+        <target state="final">Recherche brute dans tous les champs</target>
+      </trans-unit>
+      <trans-unit id="advancedQuery" resname="advancedQuery" approved="yes">
+        <source>Advanced query</source>
+        <target state="final">Requête avancée</target>
+      </trans-unit>
+      <trans-unit id="selectRecords" resname="selectRecords" approved="yes">
+        <source>Select records</source>
+        <target state="final">Sélectionner les enregistrements</target>
+      </trans-unit>
+      <trans-unit id="countResults" resname="countResults" approved="yes">
+        <source>Count results</source>
+        <target state="final">Nombre de résultats</target>
+      </trans-unit>
+      <trans-unit id="explainQuery" resname="explainQuery" approved="yes">
+        <source>Explain query</source>
+        <target state="final">Expliquer la requête</target>
+      </trans-unit>
+      <trans-unit id="csvExport" resname="csvExport" approved="yes">
+        <source>CSV Export</source>
+        <target state="final">Export CSV</target>
+      </trans-unit>
+      <trans-unit id="xmlExport" resname="xmlExport" approved="yes">
+        <source>XML Export</source>
+        <target state="final">Export XML</target>
+      </trans-unit>
+      <trans-unit id="clickToUpdateRefIndex" resname="clickToUpdateRefIndex" approved="yes">
+        <source>Click here to update reference index</source>
+        <target state="final">Cliquez ici pour mettre à jour l'index des références</target>
+      </trans-unit>
+      <trans-unit id="updateNow" resname="updateNow" approved="yes">
+        <source>Update now!</source>
+        <target state="final">Mettre à jour maintenant !</target>
+      </trans-unit>
+      <trans-unit id="clickToTestRefIndex" resname="clickToTestRefIndex" approved="yes">
+        <source>Click here to test reference index</source>
+        <target state="final">Cliquez ici pour vérifier l'index des références</target>
+      </trans-unit>
+      <trans-unit id="referenceIndex_description" resname="referenceIndex_description" approved="yes">
+        <source>TYPO3's reference index keeps track of the relations between records. As it can happen that the reference index contains outdated values, you can check and update it here.</source>
+        <target state="final">L'index des références de TYPO3 garde une trace des relations entre les enregistrements. Comme il peut arriver que l'index des références contienne des données périmées, vous pouvez le vérifier et le mettre à jour ici.</target>
+      </trans-unit>
+      <trans-unit id="referenceIndex_buttonUpdate" resname="referenceIndex_buttonUpdate" approved="yes">
+        <source>Update reference index</source>
+        <target state="final">Mettre à jour l'index des références</target>
+      </trans-unit>
+      <trans-unit id="referenceIndex_buttonCheck" resname="referenceIndex_buttonCheck" approved="yes">
+        <source>Check reference index</source>
+        <target state="final">Vérifier l'index des références</target>
+      </trans-unit>
+      <trans-unit id="checkNow" resname="checkNow" approved="yes">
+        <source>Check now!</source>
+        <target state="final">Vérifier maintenant !</target>
+      </trans-unit>
+      <trans-unit id="checkScript_headline" resname="checkScript_headline" approved="yes">
+        <source>Using the command line interface</source>
+        <target state="final">Utilisation de l'interface en ligne de commande</target>
+      </trans-unit>
+      <trans-unit id="checkScript" resname="checkScript" approved="yes">
+        <source>You can also run the check as a shell script using CLI if the processing takes longer than the PHP max_execution_time allows.</source>
+        <target state="final">Vous pouvez également lancer ces vérifications depuis un script shell en utilisant l'interface en ligne de commande (CLI) si le processus prend plus de temps à s'exécuter que ce que permet la valeur PHP max_execution_time.</target>
+      </trans-unit>
+      <trans-unit id="checkScript_check_description" resname="checkScript_check_description" approved="yes">
+        <source>To check the reference index use</source>
+        <target state="final">Pour vérifier l'index des références, utilisez cette commande :</target>
+      </trans-unit>
+      <trans-unit id="checkScript_update_description" resname="checkScript_update_description" approved="yes">
+        <source>To update the reference index use</source>
+        <target state="final">Pour mettre à jour l'index des références, utilisez cette commande :</target>
+      </trans-unit>
+      <trans-unit id="checkScript_moreDetails" resname="checkScript_moreDetails" approved="yes">
+        <source>For more details see</source>
+        <target state="final">Pour plus de détails, consultez :</target>
+      </trans-unit>
+      <trans-unit id="updateRefIndex" resname="updateRefIndex" approved="yes">
+        <source>Update reference index</source>
+        <target state="final">Mettre à jour l'index des références</target>
+      </trans-unit>
+      <trans-unit id="showSQL" resname="showSQL" approved="yes">
+        <source>Show SQL parts</source>
+        <target state="final">Montrer les parties SQL</target>
+      </trans-unit>
+      <trans-unit id="useFormattedStrings" resname="useFormattedStrings" approved="yes">
+        <source>Use formatted strings, labels and dates instead of original values for results</source>
+        <target state="final">Utiliser des textes, intitulés et dates formatés au lieu des valeurs originales pour les résultats</target>
+      </trans-unit>
+      <trans-unit id="dontUseOrigValues" resname="dontUseOrigValues" approved="yes">
+        <source>Don't use original values in brackets as prefix for labelled results</source>
+        <target state="final">Ne pas utiliser les valeurs originales entre crochets comme préfixe pour les résultats avec libellés.</target>
+      </trans-unit>
+      <trans-unit id="sortOptions" resname="sortOptions" approved="yes">
+        <source>Sort selectbox-options for relations by label and not by value</source>
+        <target state="final">Trier les options des listes déroulantes pour les relations par intitulé et non par valeur</target>
+      </trans-unit>
+      <trans-unit id="showDeleted" resname="showDeleted" approved="yes">
+        <source>Show even deleted entries (with undelete buttons)</source>
+        <target state="final">Montrer également les entrées supprimées (avec des boutons de récupération)</target>
+      </trans-unit>
+      <trans-unit id="searchOptions" resname="searchOptions" approved="yes">
+        <source>Search options</source>
+        <target state="final">Options de recherche</target>
+      </trans-unit>
+      <trans-unit id="result" resname="result" approved="yes">
+        <source>Result</source>
+        <target state="final">Résultat</target>
+      </trans-unit>
+      <trans-unit id="tables" resname="tables" approved="yes">
+        <source>Tables</source>
+        <target state="final">Tables</target>
+      </trans-unit>
+      <trans-unit id="references" resname="references" approved="yes">
+        <source>references</source>
+        <target state="final">références</target>
+      </trans-unit>
+      <trans-unit id="isMissing" resname="isMissing" approved="yes">
+        <source>is missing!</source>
+        <target state="final">manque !</target>
+      </trans-unit>
+      <trans-unit id="referencedFrom" resname="referencedFrom" approved="yes">
+        <source>Referenced from</source>
+        <target state="final">Référencé par</target>
+      </trans-unit>
+      <trans-unit id="enterRegexPattern" resname="enterRegexPattern" approved="yes">
+        <source>Enter regex pattern</source>
+        <target state="final">Entrez le motif d'expression régulière :</target>
+      </trans-unit>
+      <trans-unit id="searchButton" resname="searchButton" approved="yes">
+        <source>Search</source>
+        <target state="final">Rechercher</target>
+      </trans-unit>
+      <trans-unit id="pattern" resname="pattern" approved="yes">
+        <source>Pattern</source>
+        <target state="final">Motif</target>
+      </trans-unit>
+      <trans-unit id="beingChecked" resname="beingChecked" approved="yes">
+        <source>being checked...</source>
+        <target state="final">est vérifié...</target>
+      </trans-unit>
+      <trans-unit id="directories" resname="directories" approved="yes">
+        <source>Dirs</source>
+        <target state="final">Répertoires</target>
+      </trans-unit>
+      <trans-unit id="directoriesTooDeep" resname="directoriesTooDeep" approved="yes">
+        <source>ERROR: Directories deeper than the following number of levels</source>
+        <target state="final">ERREUR : Répertoires plus profonds que le nombre suivant de niveaux :</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files" approved="yes">
+        <source>Files</source>
+        <target state="final">Fichiers</target>
+      </trans-unit>
+      <trans-unit id="matchingFiles" resname="matchingFiles" approved="yes">
+        <source>Matching files</source>
+        <target state="final">Fichiers correspondants</target>
+      </trans-unit>
+      <trans-unit id="notChecked" resname="notChecked" approved="yes">
+        <source>not checked.</source>
+        <target state="final">non vérifié.</target>
+      </trans-unit>
+      <trans-unit id="searchingForFilenames" resname="searchingForFilenames" approved="yes">
+        <source>Searching for filenames</source>
+        <target state="final">Recherche de fichiers</target>
+      </trans-unit>
+      <trans-unit id="fixLostRecord" resname="fixLostRecord" approved="yes">
+        <source>Click to move this lost record to rootlevel (pid=0)</source>
+        <target state="final">Cliquez pour déplacer cet enregistrement orphelin à la racine (pid=0)</target>
+      </trans-unit>
+      <trans-unit id="doktype" resname="doktype" approved="yes">
+        <source>Document types</source>
+        <target state="final">Types de documents</target>
+      </trans-unit>
+      <trans-unit id="doktype_value" resname="doktype_value" approved="yes">
+        <source>Document types (value)</source>
+        <target state="final">Types de documents (valeur)</target>
+      </trans-unit>
+      <trans-unit id="pages" resname="pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">Pages</target>
+      </trans-unit>
+      <trans-unit id="total_pages" resname="total_pages" approved="yes">
+        <source>Total number of default language pages</source>
+        <target state="final">Nombre total de pages dans la langue par défaut</target>
+      </trans-unit>
+      <trans-unit id="translated_pages" resname="translated_pages" approved="yes">
+        <source>Total number of translated pages</source>
+        <target state="final">Nombre total de pages traduites</target>
+      </trans-unit>
+      <trans-unit id="deleted_pages" resname="deleted_pages" approved="yes">
+        <source>Marked-deleted pages</source>
+        <target state="final">Pages marquées comme étant supprimées</target>
+      </trans-unit>
+      <trans-unit id="hidden_pages" resname="hidden_pages" approved="yes">
+        <source>Hidden pages</source>
+        <target state="final">Pages cachées</target>
+      </trans-unit>
+      <trans-unit id="count" resname="count" approved="yes">
+        <source>Count</source>
+        <target state="final">Nombre</target>
+      </trans-unit>
+      <trans-unit id="label" resname="label" approved="yes">
+        <source>Label</source>
+        <target state="final">Intitulé</target>
+      </trans-unit>
+      <trans-unit id="tablename" resname="tablename" approved="yes">
+        <source>Table name</source>
+        <target state="final">Nom de la table</target>
+      </trans-unit>
+      <trans-unit id="total_lost" resname="total_lost" approved="yes">
+        <source>Records total / lost</source>
+        <target state="final">Nombre total d'enregistrements / perdus</target>
+      </trans-unit>
+      <trans-unit id="relations" resname="relations" approved="yes">
+        <source>Relations</source>
+        <target state="final">Relations</target>
+      </trans-unit>
+      <trans-unit id="relations_description" resname="relations_description" approved="yes">
+        <source>This will analyze the content of the tables and check if there are 'empty' relations between records or if files are missing from their expected position.</source>
+        <target state="final">Analyse le contenu des tables et vérifie s'il y a des relations « vides » entre les enregistrements ou si les fichiers sont manquants à leur emplacement attendu.</target>
+      </trans-unit>
+      <trans-unit id="files_many_ref" resname="files_many_ref" approved="yes">
+        <source>Files referenced from more than one record</source>
+        <target state="final">Fichiers référencés par plus d'un enregistrement</target>
+      </trans-unit>
+      <trans-unit id="no_files_found" resname="no_files_found" approved="yes">
+        <source>No files found.</source>
+        <target state="final">Aucun fichier trouvé.</target>
+      </trans-unit>
+      <trans-unit id="files_no_ref" resname="files_no_ref" approved="yes">
+        <source>Files with no references at all (delete them!)</source>
+        <target state="final">Fichiers sans aucune référence (les supprimer !)</target>
+      </trans-unit>
+      <trans-unit id="files_no_file" resname="files_no_file" approved="yes">
+        <source>Missing files</source>
+        <target state="final">Fichiers manquants</target>
+      </trans-unit>
+      <trans-unit id="select_db" resname="select_db" approved="yes">
+        <source>Select fields</source>
+        <target state="final">Sélectionner les champs</target>
+      </trans-unit>
+      <trans-unit id="group_db" resname="group_db" approved="yes">
+        <source>Group fields</source>
+        <target state="final">Champs de groupes</target>
+      </trans-unit>
+      <trans-unit id="tree" resname="tree" approved="yes">
+        <source>The Page Tree</source>
+        <target state="final">Arborescence des pages</target>
+      </trans-unit>
+      <trans-unit id="tree_description" resname="tree_description" approved="yes">
+        <source>This shows all pages in the system in one large tree. Beware that this will probably result in a very long document which will also take some time for the server to compute!</source>
+        <target state="final">Affiche toutes les pages du système dans un seul grand arbre. Prenez garde que le résultat sera probablement un très grand document et que le serveur prendra du temps à le générer.</target>
+      </trans-unit>
+      <trans-unit id="records" resname="records" approved="yes">
+        <source>Records Statistics</source>
+        <target state="final">Statistiques sur les enregistrements</target>
+      </trans-unit>
+      <trans-unit id="records_description" resname="records_description" approved="yes">
+        <source>This shows some statistics for the records in the database. This runs through the entire page-tree and therefore it will also load the server heavily!</source>
+        <target state="final">Montre quelques statistiques sur les enregistrements de la base de données. Cette opération parcourt toute l'arborescence des pages et par conséquent augmente beaucoup la charge sur le serveur !</target>
+      </trans-unit>
+      <trans-unit id="search_whole_database" resname="search_whole_database" approved="yes">
+        <source>Search whole Database</source>
+        <target state="final">Rechercher dans toute la base de données</target>
+      </trans-unit>
+      <trans-unit id="search_description" resname="search_description" approved="yes">
+        <source>This searches through all database tables and records for a text string.</source>
+        <target state="final">Cherche un contenu texte dans toutes les tables et tous les enregistrements.</target>
+      </trans-unit>
+      <trans-unit id="filesearch" resname="filesearch" approved="yes">
+        <source>Search all filenames for pattern</source>
+        <target state="final">Chercher tous les noms de fichiers selon un motif</target>
+      </trans-unit>
+      <trans-unit id="filesearch_description" resname="filesearch_description" approved="yes">
+        <source>Will search recursively for filenames inside sub directories of the public web folder (PublicPath) matching a certain regex pattern.</source>
+        <target state="final">Recherche récursivement les noms de fichiers dans les sous-répertoires du dossier web public (PublicPath) correspondant à un modèle de regex.</target>
+      </trans-unit>
+      <trans-unit id="refindex" resname="refindex" approved="yes">
+        <source>Check and update global reference index</source>
+        <target state="final">Vérifier et mettre à jour l'index global des références</target>
+      </trans-unit>
+      <trans-unit id="refindex_description" resname="refindex_description" approved="yes">
+        <source>Allows you to maintain the reference index kept by TYPO3.</source>
+        <target state="final">Vous permet de maintenir l'index des références de TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Database integrity check</source>
+        <target state="final">Vérification de l'état de la base de données</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
