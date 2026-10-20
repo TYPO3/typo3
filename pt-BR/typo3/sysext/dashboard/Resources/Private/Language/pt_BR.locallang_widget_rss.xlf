@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="widget.rss.title" approved="yes">
+        <source>RSS Feed</source>
+        <target state="final">Feed RSS</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.description" approved="yes">
+        <source>Displays the latest entries from a customizable RSS feed.</source>
+        <target state="final">Exibe as últimas entradas de uma feed customizável</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.label.label" approved="yes">
+        <source>Label</source>
+        <target state="final">Rótulo</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.label.description" approved="yes">
+        <source>Defines the label of the widget.</source>
+        <target state="final">Define o rótulo do widget</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.fieldUrl.label" approved="yes">
+        <source>RSS Feed</source>
+        <target state="final">Feed RSS</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.fieldUrl.description" approved="yes">
+        <source>Defines the URL or file providing the RSS Feed. This is read by the widget in order to fetch entries to show.</source>
+        <target state="final">Define a URL ou arquivo que providencia o Feed RSS. É lido pelo widget para buscar entradas para exibir.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.limit.label" approved="yes">
+        <source>Limit</source>
+        <target state="final">Limite</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.limit.description" approved="yes">
+        <source>Defines how many RSS items should be shown.</source>
+        <target state="final">Define quantos ítens de RSS podem ser mostrados</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.lifetime.label" approved="yes">
+        <source>Lifetime</source>
+        <target state="final">Tempo de vida</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.lifetime.description" approved="yes">
+        <source>Defines how long to wait, in seconds, until fetching RSS Feed again.</source>
+        <target state="final">Define tempo de espera em segundos até buscar o Feed RSS novamente.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
