@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814994" source-language="en" datatype="plaintext" original="EXT:sys_action/Resources/Private/Language/locallang_csh_sysaction.xlf" date="2011-10-17T20:22:37Z" product-name="sys_action" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>An 'Action' is a configuration of a specific task which may be performed by assigned usergroups via the Task Center.</source>
+        <target state="final">المصطلح 'Action' هو تكوين لمهمة محددة يمكن أن تقوم بها مجموعات المستخدمين المعينة عن طريق مركز المهام.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>Currently an Action may be configured to create additional backend usergroups without being and admin-user and by selecting from a limited set of options. Another option is to let an action initiate a SQL SELECT-query in the database and return the result as a CSV file.
+Actions can be assigned to a Backend usergroup and they are activated by a single click in the Task Center.</source>
+			<target state="final">حاليا يمكن تكوين إجراء لإنشاء مجموعات إضافية لمستخدمي الواجهة الخلفية دون أن يكونوا أو مستخدمين مشرفين ومن خلال الإختيار من مجموعة محددة من الخيارات. وهناك خيار آخر هو السماح بإجراء بدء استعلام SQL SELECT-في قاعدة البيانات وإرجاع النتيجة كملف CSV.
+الإجراءات يمكن تعيينها لمجموعة مستخدم في الخلفية ويتم تفعيلها بنقرة واحدة في مركز المهام.</target></trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the title of the action. This is shown in the list of available actions in the Task Center.</source>
+        <target state="final">أدخل عنواناً لهذا النشاط، والذي سيظهر في قائمة االأنشطة المتاحة داخل مركز المهام.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Describe what the action does or allows to do.</source>
+        <target state="final">أوصف ما يفعلُهُ هذا الإجراء أو ما يسمح به.</target>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Check this option if you wish to disable the availability of the action or non-admin users.</source>
+        <target state="final">حدد هذا الخيار إذا كنت ترغب في تعطيل توفر الإجراء أو المستخدمين غير المشرفين.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>This option is a great way to disable an action during changes made to it because it still allows you as an 'Admin'-user to activate it for test purposes.</source>
+        <target state="final">هذا الخيار هو طريقة رائعة لتعطيل إجراء أثناء التغييرات التي أجريت عليه لأنه لا يزال يسمح لك كمستخدم "مشرف" بتنشيطه لأغراض الاختبار.</target>
+      </trans-unit>
+      <trans-unit id="type.description" resname="type.description" approved="yes">
+        <source>Select the action type.</source>
+        <target state="final">حدد نوع الإجراء.</target>
+      </trans-unit>
+      <trans-unit id="type.details" resname="type.details" xml:space="preserve" approved="yes">
+				<source>&lt;strong&gt;"Create Backend User"&lt;/strong&gt; allows to create backend users with a limited set of options. This action type is meant for semi-administrators among your users which is in charge of daily user administration - still without being full fledged 'Admin'-users with 'a License to Kill everything'.
+When you select this option, you get to enter a 'template' user, enter a prefix which the new users will automatically have and whether or not a user home-dir is created in the process. Finally you can select a limited number of usergroups which the can be selected among.
+
+&lt;strong&gt;"SQL-query"&lt;/strong&gt; allows to make a fixed SQL SELECT-query in the database returned as CSV lists. When you have created an action of this type, you need to go to the System &gt; DB check (prior to v7 this can be found on Tools &gt; DB check) module and enter the Advanced Search feature. Here you can design your SQL-query. When you have designed it to select what you want correctly, you can select this action (by it's name) and save the query to the action there. From that point it will be effective from the Task Center. (Notice that the form of output selected in the Advanced Search function is also stored, so make sure to select CSV output there!)</source>
+			<target state="final">&lt;strong&gt;"إنشاء مستخدم للواجهة الخلفية"&lt;/strong&gt; يسمح بإنشاء المستخدمين الخلفية مع مجموعة محدودة من الخيارات. هذا النوع من الإجراءات مخصص لأشباه المسؤولين بين مستخدميك المسؤولين عن الإدارة اليومية للمستخدمين - لا يزال بدون أن يكون مستخدمين 'مشرفين' ممتلئين مع 'ترخيص لإلغاء كل شيء'.
+عند تحديد هذا الخيار، يمكنك إدخال مستخدم 'القالب'. أدخل بداية بحيث تكون للمستخدمين الجدد تلقائياً، وسواء تم إنشاء المستخدم أو لم يتم إنشاؤه في العملية. أخيراً يمكنك تحديد عدد محدود من مجموعات المستخدمين التي يمكن الاختيار من بينها.
+
+&lt;strong&gt;يسمح "SQL-Query"&lt;/strong&gt; بإجراء استعلام SQL ثابت في قاعدة البيانات التي يتم إرجاعها كقوائم CSV. عندما تكون قد أنشأت إجراء من هذا النوع، تحتاج إلى الذهاب إلى النظام &gt; فحص DB (قبل الإصدار 7 يمكن العثور على هذا في الأدوات &gt; فحص DB) وإدخال ميزة البحث المتقدم. هنا يمكنك تصميم استعلام SQL-Query. عندما تكون قد صممت لتحديد ما تريده بشكل صحيح، يمكنك تحديد هذا الإجراء (عن طريق اسمه) وحفظ الاستعلام إلى الإجراء هناك. ومن تلك النقطة، سيكون فعالا من مركز المهام. (لاحظ أن شكل الإخراج المحدد في دالة البحث المتقدم يتم تخزينه، لذا تأكد من إخراج CSV هناك!)</target></trans-unit>
+      <trans-unit id="assign_to_groups.description" resname="assign_to_groups.description" approved="yes">
+        <source>Select the backend users groups allowed to activate the action in the Task Center.</source>
+        <target state="final">حدد مجموعات مستخدمي الواجهة الخلفية المسموح لهم بتفعيل الإجراء في مركز المهام.</target>
+      </trans-unit>
+      <trans-unit id="t1_userprefix.description" resname="t1_userprefix.description" approved="yes">
+        <source>Enter a prefix which is forcibly prepended to new usernames (eg. "news_")</source>
+        <target state="final">أدخل بادئة تم إرجاعها مسبقاً إلى أسماء مستخدمين جديدة (على سبيل المثال. "الأخبار_")</target>
+      </trans-unit>
+      <trans-unit id="t1_allowed_groups.description" resname="t1_allowed_groups.description" approved="yes">
+        <source>Enter the Backend user groups which the user performing the action is able to choose among (if any).</source>
+        <target state="final">أدخل مجموعات المستخدم الخلفية التي يمكن للمستخدم الذي يقوم بالإجراء أن يختار بينها (إن وجدت).</target>
+      </trans-unit>
+      <trans-unit id="t1_create_user_dir.description" resname="t1_create_user_dir.description" approved="yes">
+        <source>If checked, a private home-directory is also created during user creation. </source>
+        <target state="final">إذا تم الإختيار، يتم أيضا إنشاء دليل خاص أثناء إنشاء المستخدم. </target>
+      </trans-unit>
+      <trans-unit id="t1_create_user_dir.details" resname="t1_create_user_dir.details" approved="yes">
+        <source>&lt;strong&gt;Notice:&lt;/strong&gt; $TYPO3_CONF_VARS["BE"]["userHomePath"] must be configured correctly along with $TYPO3_CONF_VARS["BE"]["lockRootPath"] and writable!</source>
+        <target state="final">&lt;strong&gt;إشعار:&lt;/strong&gt; $TYPO3_CONF_VARS["BE"]["userHomePath"] يجب أن يتم تكوينه بشكل صحيح مع $TYPO3_CONF_VARS["BE"]["lockRootPath"] و قابل للكتابة!</target>
+      </trans-unit>
+      <trans-unit id="t1_copy_of_user.description" resname="t1_copy_of_user.description" approved="yes">
+        <source>Insert a current Backend user which will be used as a template for the new users created. </source>
+        <target state="final">أدخل مستخدم الواجهة الخلفية الحالي، الذي سيتم استخدامه كقالب للمستخدمين الجدد الذين تم إنشاؤهم. </target>
+      </trans-unit>
+      <trans-unit id="t1_copy_of_user.details" resname="t1_copy_of_user.details" xml:space="preserve" approved="yes">
+				<source>All values are copied to the new user, except username, password, name and email is of course overridden.
+If the template user is a member of a group which is not defined among the "Groups which may be assigned through the action" that group is still set for the user and cannot be removed by the user carrying out the action.</source>
+			<target state="final">يتم نسخ جميع القيم للمستخدم الجديد، باستثناء اسم المستخدم وكلمة المرور والاسم والبريد الإلكتروني سيتم تجاوزها بالتأكيد.
+إذا كان المستخدم القالب عضواً في مجموعة غير محددة بين "المجموعات التي يمكن تعيينها من خلال الإجراء" فإن هذه المجموعة لا تزال محددة للمستخدم ولا يمكن إزالتها من قبل المستخدم الذي يقوم بتنفيذ الإجراء.</target></trans-unit>
+      <trans-unit id="t4_recordsToEdit.description" resname="t4_recordsToEdit.description" approved="yes">
+        <source>[FILL IN] sys_action-&gt;t4_recordsToEdit</source>
+        <target state="final">[FILL IN] sys_action-&gt;t4_recordsToEdit</target>
+      </trans-unit>
+      <trans-unit id="t3_listPid.description" resname="t3_listPid.description" approved="yes">
+        <source>[FILL IN] sys_action-&gt;t3_listPid</source>
+        <target state="final">[FILL IN] sys_action-&gt;t3_listPid</target>
+      </trans-unit>
+      <trans-unit id="t3_tables.description" resname="t3_tables.description" approved="yes">
+        <source>[FILL IN] sys_action-&gt;t3_tables</source>
+        <target state="final">[FILL IN] sys_action-&gt;t3_tables</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
