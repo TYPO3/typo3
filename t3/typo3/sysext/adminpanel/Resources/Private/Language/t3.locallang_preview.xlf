@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1520838433" source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_preview.xlf" date="2018-03-13T08:08:00Z" product-name="adminpanel" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="module.label" resname="module.label">
+        <source>Preview</source>
+        <target>crwdns67452:0crwdne67452:0</target>
+      </trans-unit>
+      <trans-unit id="showHiddenPages" resname="showHiddenPages">
+        <source>Show hidden pages</source>
+        <target>crwdns67454:0crwdne67454:0</target>
+      </trans-unit>
+      <trans-unit id="showHiddenRecords" resname="showHiddenRecords">
+        <source>Show hidden records</source>
+        <target>crwdns67456:0crwdne67456:0</target>
+      </trans-unit>
+      <trans-unit id="showFluidDebug" resname="showFluidDebug">
+        <source>Show fluid debug output</source>
+        <target>crwdns67458:0crwdne67458:0</target>
+      </trans-unit>
+      <trans-unit id="simulateDate" resname="simulateDate">
+        <source>Simulate time</source>
+        <target>crwdns67460:0crwdne67460:0</target>
+      </trans-unit>
+      <trans-unit id="simulateUserGroup" resname="simulateUserGroup">
+        <source>Simulate user group</source>
+        <target>crwdns67462:0crwdne67462:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
