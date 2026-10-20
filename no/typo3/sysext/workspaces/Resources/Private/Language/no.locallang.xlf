@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815017" source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="legend.label" resname="legend.label" approved="yes">
+        <source>Legend</source>
+        <target state="final">Forklaring</target>
+      </trans-unit>
+      <trans-unit id="legend.deleted" resname="legend.deleted" approved="yes">
+        <source>deleted</source>
+        <target state="final">slettet</target>
+      </trans-unit>
+      <trans-unit id="legend.new" resname="legend.new" approved="yes">
+        <source>created</source>
+        <target state="final">laget</target>
+      </trans-unit>
+      <trans-unit id="legend.hidden" resname="legend.hidden" approved="yes">
+        <source>hidden</source>
+        <target state="final">skjult</target>
+      </trans-unit>
+      <trans-unit id="ok" resname="ok" approved="yes">
+        <source>Ok</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="cancel" resname="cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Avbryt</target>
+      </trans-unit>
+      <trans-unit id="items" resname="items" approved="yes">
+        <source>items</source>
+        <target state="final">saker</target>
+      </trans-unit>
+      <trans-unit id="close" resname="close" approved="yes">
+        <source>Close</source>
+        <target state="final">Lukk</target>
+      </trans-unit>
+      <trans-unit id="previewLink" resname="previewLink" approved="yes">
+        <source>Preview Link</source>
+        <target state="final">Forhåndsvis lenke</target>
+      </trans-unit>
+      <trans-unit id="column.difference" resname="column.difference" approved="yes">
+        <source>Difference</source>
+        <target state="final">Forskjell</target>
+      </trans-unit>
+      <trans-unit id="column.actions" resname="column.actions" approved="yes">
+        <source>Actions</source>
+        <target state="final">Handling</target>
+      </trans-unit>
+      <trans-unit id="column.wsPath" resname="column.wsPath" approved="yes">
+        <source>Path</source>
+        <target state="final">Sti</target>
+      </trans-unit>
+      <trans-unit id="column.workspaceName" resname="column.workspaceName" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Arbeidsflate</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.selectAll" resname="window.sendToNextStageWindow.selectAll" approved="yes">
+        <source>Select all</source>
+        <target state="final">Velg alt</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.deselectAll" resname="window.sendToNextStageWindow.deselectAll" approved="yes">
+        <source>Uncheck all</source>
+        <target state="final">Fravelg alle</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.comments" resname="window.sendToNextStageWindow.comments" approved="yes">
+        <source>Comments</source>
+        <target state="final">Kommentarer</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.comments" resname="window.recordChanges.tabs.comments" approved="yes">
+        <source>Comments</source>
+        <target state="final">Kommentarer</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.history" resname="window.recordChanges.tabs.history" approved="yes">
+        <source>History</source>
+        <target state="final">Historikk</target>
+      </trans-unit>
+      <trans-unit id="preview.listView" resname="preview.listView" approved="yes">
+        <source>List view</source>
+        <target state="final">Listevisning</target>
+      </trans-unit>
+      <trans-unit id="preview.livePreview" resname="preview.livePreview" approved="yes">
+        <source>Live</source>
+        <target state="final">Liveopptreden</target>
+      </trans-unit>
+      <trans-unit id="preview.workspacePreview" resname="preview.workspacePreview" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Arbeidsflate</target>
+      </trans-unit>
+      <trans-unit id="preview.modeVbox" resname="preview.modeVbox" approved="yes">
+        <source>Vertical</source>
+        <target state="final">Loddrett</target>
+      </trans-unit>
+      <trans-unit id="preview.modeHbox" resname="preview.modeHbox" approved="yes">
+        <source>Horizontal</source>
+        <target state="final">Vannrett</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_publish" resname="label_doaction_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">Publiser</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_discard" resname="label_doaction_discard" approved="yes">
+        <source>Discard</source>
+        <target state="final">Forkast</target>
+      </trans-unit>
+      <trans-unit id="integrity.hasIssuesQuestion" resname="integrity.hasIssuesQuestion" approved="yes">
+        <source>Do you want to continue?</source>
+        <target state="final">Vil du fortsette?</target>
+      </trans-unit>
+      <trans-unit id="status.info" resname="status.info" approved="yes">
+        <source>Information</source>
+        <target state="final">Informasjon</target>
+      </trans-unit>
+      <trans-unit id="status.warning" resname="status.warning" approved="yes">
+        <source>Warning</source>
+        <target state="final">Advarsel</target>
+      </trans-unit>
+      <trans-unit id="status.error" resname="status.error" approved="yes">
+        <source>Error</source>
+        <target state="final">Feil</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
