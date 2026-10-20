@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:seo/Resources/Private/Language/db.xlf" date="2018-08-09T16:22:32Z" product-name="seo" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="pages.seo_title">
+        <source>Title for search engines</source>
+        <target>crwdns378270:0crwdne378270:0</target>
+      </trans-unit>
+      <trans-unit id="pages.no_index">
+        <source>No index</source>
+        <target>crwdns378274:0crwdne378274:0</target>
+      </trans-unit>
+      <trans-unit id="pages.no_index_formlabel">
+        <source>Index this page</source>
+        <target>crwdns378276:0crwdne378276:0</target>
+      </trans-unit>
+      <trans-unit id="pages.no_follow">
+        <source>No follow</source>
+        <target>crwdns378278:0crwdne378278:0</target>
+      </trans-unit>
+      <trans-unit id="pages.no_follow_formlabel">
+        <source>Follow this page</source>
+        <target>crwdns378280:0crwdne378280:0</target>
+      </trans-unit>
+      <trans-unit id="pages.og_title">
+        <source>Open Graph Title</source>
+        <target>crwdns378284:0crwdne378284:0</target>
+      </trans-unit>
+      <trans-unit id="pages.og_description">
+        <source>Open Graph Description</source>
+        <target>crwdns378286:0crwdne378286:0</target>
+      </trans-unit>
+      <trans-unit id="pages.og_image">
+        <source>Open Graph Image</source>
+        <target>crwdns378288:0crwdne378288:0</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_title">
+        <source>X / Twitter Title</source>
+        <target>crwdns378292:0crwdne378292:0</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_description">
+        <source>X / Twitter Description</source>
+        <target>crwdns378294:0crwdne378294:0</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_image">
+        <source>X / Twitter Image</source>
+        <target>crwdns378296:0crwdne378296:0</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_card">
+        <source>Type of card to show</source>
+        <target>crwdns378298:0crwdne378298:0</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_card.summary">
+        <source>Summary Card</source>
+        <target>crwdns378300:0crwdne378300:0</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_card.summary_large_image">
+        <source>Summary Card with a large image</source>
+        <target>crwdns378302:0crwdne378302:0</target>
+      </trans-unit>
+      <trans-unit id="pages.canonical_link">
+        <source>Canonical link</source>
+        <target>crwdns378306:0crwdne378306:0</target>
+      </trans-unit>
+      <trans-unit id="pages.canonical_link.description">
+        <source>A canonical URL is the URL of a page that search engines are advised to choose as the most representative from a set of duplicate pages. Often called deduplication, this process helps search engines show only one version of the otherwise duplicate content in its search results. TYPO3 automatically sets this to the most likely URL of the page if not set explicitly - which is most likely the URL of the page itself. If set here, the page will be removed from the XML sitemap.</source>
+        <target>crwdns378308:0crwdne378308:0</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq">
+        <source>Change frequency</source>
+        <target>crwdns378314:0crwdne378314:0</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.none">
+        <source>None</source>
+        <target>crwdns378316:0crwdne378316:0</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.always">
+        <source>Always</source>
+        <target>crwdns378318:0crwdne378318:0</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.hourly">
+        <source>Hourly</source>
+        <target>crwdns378320:0crwdne378320:0</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.daily">
+        <source>Daily</source>
+        <target>crwdns378322:0crwdne378322:0</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.weekly">
+        <source>Weekly</source>
+        <target>crwdns378324:0crwdne378324:0</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.monthly">
+        <source>Monthly</source>
+        <target>crwdns378326:0crwdne378326:0</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.yearly">
+        <source>Yearly</source>
+        <target>crwdns378328:0crwdne378328:0</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.never">
+        <source>Never</source>
+        <target>crwdns378330:0crwdne378330:0</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_priority">
+        <source>Priority</source>
+        <target>crwdns378332:0crwdne378332:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
