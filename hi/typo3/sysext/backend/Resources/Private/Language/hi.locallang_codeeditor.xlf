@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_codeeditor.xlf" date="2023-11-20T10:56:42Z" product-name="backend" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="pageIDInteger" approved="yes">
+        <source>Syntax error: Parameter pageID must be a valid integer.</source>
+        <target state="final">वाक्यविन्यास त्रुटिः पैरामीटर पृष्ठआईडी एक वैध पूर्णांक होना चाहिए।</target>
+      </trans-unit>
+      <trans-unit id="noPermission" approved="yes">
+        <source>Access denied: No permission to template records.</source>
+        <target state="final">पहुँच अस्वीकृत: टेम्पलेट रिकॉर्ड के लिए कोई अनुमति नहीं है।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
