@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="de">
+  <file id="f1">
+    <unit id="destination">
+      <segment state="final">
+        <source>destination</source>
+        <target>Ziel</target>
+      </segment>
+    </unit>
+    <unit id="email">
+      <segment state="final">
+        <source>email</source>
+        <target>E-Mail</target>
+      </segment>
+    </unit>
+    <unit id="file">
+      <segment state="final">
+        <source>file</source>
+        <target>Datei</target>
+      </segment>
+    </unit>
+    <unit id="folder">
+      <segment state="final">
+        <source>folder</source>
+        <target>Ordner</target>
+      </segment>
+    </unit>
+    <unit id="page">
+      <segment state="final">
+        <source>page</source>
+        <target>Seite</target>
+      </segment>
+    </unit>
+    <unit id="url">
+      <segment state="final">
+        <source>external URL</source>
+        <target>externe URL</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
