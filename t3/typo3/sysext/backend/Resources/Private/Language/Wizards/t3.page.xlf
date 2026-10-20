@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/page.xlf" date="2025-03-03T00:00:00Z" product-name="backend" target-language="t3">
+    <header/>
+    <body>
+      <!-- Step: doktype selection -->
+      <trans-unit id="step.doktype.headline">
+        <source>Select page type</source>
+        <target>crwdns393626:0crwdne393626:0</target>
+      </trans-unit>
+      <trans-unit id="step.doktype.not_allowed_doktype.title">
+        <source>Invalid page type</source>
+        <target>crwdns393628:0crwdne393628:0</target>
+      </trans-unit>
+      <trans-unit id="step.doktype.not_allowed_doktype.message">
+        <source>The selected page type is not allowed here. Please choose a different type.</source>
+        <target>crwdns393630:0crwdne393630:0</target>
+      </trans-unit>
+      <trans-unit id="step.doktype.filter.noResults">
+        <source>No matching page type found.</source>
+        <target>crwdns393632:0crwdne393632:0</target>
+      </trans-unit>
+      <trans-unit id="step.doktype.load_error">
+        <source>Failed to fetch available page types. This is likely due to missing permissions.</source>
+        <target>crwdns393634:0crwdne393634:0</target>
+      </trans-unit>
+      <trans-unit id="step.setup">
+        <source>Page Setup</source>
+        <target>crwdns393636:0crwdne393636:0</target>
+      </trans-unit>
+      <trans-unit id="step.link">
+        <source>Link Configuration</source>
+        <target>crwdns393638:0crwdne393638:0</target>
+      </trans-unit>
+      <trans-unit id="step.shortcut">
+        <source>Shortcut Configuration</source>
+        <target>crwdns393640:0crwdne393640:0</target>
+      </trans-unit>
+      <trans-unit id="step.mounting">
+        <source>Mounting Configuration</source>
+        <target>crwdns393642:0crwdne393642:0</target>
+      </trans-unit>
+      <trans-unit id="page_wizard.success.title">
+        <source>Page created</source>
+        <target>crwdns393644:0crwdne393644:0</target>
+      </trans-unit>
+      <trans-unit id="page_wizard.success.description">
+        <source>The page has been successfully created. Click "Finish" to be redirected to the newly created page.</source>
+        <target>crwdns393646:0crwdne393646:0</target>
+      </trans-unit>
+      <trans-unit id="page_wizard.button.create_another_page">
+        <source>Create another page</source>
+        <target>crwdns393648:0crwdne393648:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
