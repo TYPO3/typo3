@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1521629231" source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf" date="2018-03-21T11:47:00Z" product-name="adminpanel" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="submodule.log.label" resname="submodule.log.label" approved="yes">
+        <source>Log</source>
+        <target state="final">Dnevnik</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.level" resname="submodule.log.level" approved="yes">
+        <source>Level</source>
+        <target state="final">Raven</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByLevel" resname="submodule.log.groupByLevel" approved="yes">
+        <source>Group by Level</source>
+        <target state="final">Razvrsti po ravneh</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
