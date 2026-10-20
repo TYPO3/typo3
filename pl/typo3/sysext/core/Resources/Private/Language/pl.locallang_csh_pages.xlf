@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814793" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_pages.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="layout.description" resname="layout.description" approved="yes">
+        <source>The Frontend Layout can change the way a page design appears.</source>
+        <target state="final">Układ Front-end może zmienić sposób wyglądania strony.</target>
+      </trans-unit>
+      <trans-unit id="layout.details" resname="layout.details" approved="yes">
+        <source>This option may not have any impact on the Frontend page design since it depends on whether the Frontend template uses it. Most templates do not use it.</source>
+        <target state="final">Ta opcja może nie mieć żadnego wpływu na wygląd strony we frontendzie, ponieważ zależy to od tego, czy szablon frontendu z niej korzysta. Większość szablonów jej nie używa.</target>
+      </trans-unit>
+      <trans-unit id="doktype.description" resname="doktype.description" approved="yes">
+        <source>Page Type determines whether the page is normal webpage, a shortcut to another webpage, or used in other internal ways.</source>
+        <target state="final">Typ strony określa, czy strona jest zwykłą stroną internetową, skrótem do innej strony, czy jest wykorzystywana w inny wewnętrzny sposób.</target>
+      </trans-unit>
+      <trans-unit id="doktype.details" resname="doktype.details" xml:space="preserve" approved="yes">
+				<source>'Standard' is the most common Page Type and is used for normal webpages.
+'Backend User Section' is an option which creates pages that are only visible in the Frontend for Backend users who are logged in.
+
+&lt;b&gt;Link&lt;/b&gt;
+'Shortcut' pages jump to another page in the Pagetree.
+'Mount Point' pages bring content from another branch of the Pagetree into the current branch.
+'Link to External URL' is similar to 'Shortcut' but points to external URLs instead of TYPO3 pages.
+
+&lt;b&gt;Special&lt;/b&gt;
+'Folder' is a page type which is not shown as a webpage but is instead stores records of your choice.
+'Recycler' is a garbage can. Pages and records in the Recycler are not visible in the Frontend.
+'Menu Separator' is only useful if your Frontend memus are programmed to use it. It does not represent a page with content but is intended to be an unclickable placeholder in the menu.
+
+&lt;b&gt;Notice&lt;/b&gt; Each Page Type is represented by a unique icon. The available page types can be restricted for users so all of the options described above may not be visible. Finally, particuilar record typoes may only be allowed on certain page types, but any record can be placed in a 'Folder.'</source>
+			<target state="final">'Standard' to najczęściej używany typ strony, stosowany dla zwykłych stron internetowych.
+'Sekcja użytkownika backendu' to opcja tworząca strony widoczne we frontendzie tylko dla zalogowanych użytkowników backendu.
+
+&lt;b&gt;Odnośnik&lt;/b&gt;
+Strony typu 'Skrót' przekierowują do innej strony w drzewie stron.
+Strony typu 'Punkt montowania' wprowadzają zawartość z innej gałęzi drzewa stron do bieżącej gałęzi.
+'Odnośnik do zewnętrznego URL' jest podobny do 'Skrótu', ale wskazuje zewnętrzne adresy URL zamiast stron TYPO3.
+
+&lt;b&gt;Specjalne&lt;/b&gt;
+'Folder' to typ strony, który nie jest wyświetlany jako strona internetowa, lecz przechowuje wybrane przez Ciebie rekordy.
+'Kosz' służy do przechowywania usuniętych elementów. Strony i rekordy w koszu nie są widoczne we frontendzie.
+'Separator menu' jest przydatny tylko wtedy, gdy menu we frontendzie zaprogramowano tak, aby go używało. Nie reprezentuje strony z zawartością, lecz ma być nieklikalnym wypełnieniem w menu.
+
+&lt;b&gt;Uwaga&lt;/b&gt; Każdy typ strony jest oznaczony unikalną ikoną. Dostępne typy stron mogą być ograniczone dla użytkowników, więc nie wszystkie opisane powyżej opcje muszą być widoczne. Ponadto określone typy rekordów mogą być dozwolone tylko na niektórych typach stron, ale każdy rekord można umieścić w 'Folderze'.</target></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>If this is checked, the page will be disabled on the website.</source>
+        <target state="final">Jeśli ta opcja jest zaznaczona, strona zostanie wyłączona.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" xml:space="preserve" approved="yes">
+				<source>The 'Disable,' 'Start,' 'Stop,' and 'Access' options are all about limiting access to pages and are thus related in functionality. When a page is not visible due to one of these options, the page will not show up in the site navigation.
+Notice, these options are related &lt;em&gt;only&lt;/em&gt; to the page for which they are set. If you want their effect to cover the subpages as well, you must enable the 'Extend to Subpages' option.
+When you're logged in as a Backend user you can preview disabled pages if you have read access to them.</source>
+			<target state="final">Opcje 'Wyłącz', 'Start', 'Stop' i 'Dostęp' służą do ograniczania dostępu do stron, a więc są ze sobą funkcjonalnie powiązane. Jeśli strona nie jest widoczna z powodu jednej z tych opcji, nie pojawi się w nawigacji witryny.
+Uwaga: te opcje dotyczą &lt;em&gt;wyłącznie&lt;/em&gt; strony, dla której zostały ustawione. Jeśli chcesz, aby obejmowały również podstrony, musisz włączyć opcję 'Rozszerz na podstrony'.
+Gdy jesteś zalogowany jako użytkownik backendu, możesz wyświetlić podgląd wyłączonych stron, jeśli masz do nich uprawnienia odczytu.</target></trans-unit>
+      <trans-unit id="hidden.image_descr" resname="hidden.image_descr" xml:space="preserve" approved="yes">
+				<source>The page icon of a disabled page is dimmed and a red X is added.
+If you view a page that is hidden and you are logged in into the Backend you will still be able to see the page. The red "Preview" box will tell you that this page is visible to you because of this special circumstance.</source>
+			<target state="final">Ikona wyłączonej strony jest przyciemniona i oznaczona czerwonym znakiem X.
+Jeśli wyświetlasz ukrytą stronę i jesteś zalogowany do backendu, nadal będziesz mógł ją zobaczyć. Czerwone pole "Podgląd" poinformuje Cię, że strona jest dla Ciebie widoczna właśnie z tego powodu.</target></trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>The Publish Date determines when the page will be visible online. If the Publish Date is not set, the page will be available immediately.</source>
+        <target state="final">Data publikacji określa, od kiedy strona będzie widoczna online. Jeśli data publikacji nie zostanie ustawiona, strona będzie dostępna natychmiast.</target>
+      </trans-unit>
+      <trans-unit id="starttime.syntax" resname="starttime.syntax" xml:space="preserve" approved="yes">
+				<source>The Publish Date Format is either DD-MM-YYYY or MM-DD-YYYY depending on how TYPO3 is configured. There are also several shortcuts you can use when entering the date.
+If you insert a 'd' the current date will be inserted. You can also append any value in the field with a number such as '+10' which will add 10 days to the current value. For example, entering 'd+10' would result in a date 10 days from now.</source>
+			<target state="final">Format daty publikacji to DD-MM-RRRR lub MM-DD-RRRR, w zależności od konfiguracji TYPO3. Podczas wprowadzania daty można też skorzystać z kilku skrótów.
+Jeśli wpiszesz 'd', zostanie wstawiona bieżąca data. Do dowolnej wartości w polu możesz też dopisać liczbę, np. '+10', co doda 10 dni do bieżącej wartości. Na przykład wpisanie 'd+10' da datę przypadającą za 10 dni.</target></trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>The Expiration Date specifies when the page will no longer be visible online.</source>
+        <target state="final">Data wygaśnięcia określa, kiedy strona nie będzie już widoczna online.</target>
+      </trans-unit>
+      <trans-unit id="endtime.syntax" resname="endtime.syntax" approved="yes">
+        <source>See Page / Publication Date (click below)</source>
+        <target state="final">Zobacz stronę / Datę publikacji (kliknij poniżej)</target>
+      </trans-unit>
+      <trans-unit id="fe_group.description" resname="fe_group.description" approved="yes">
+        <source>If Usergroup Access Rights is set to a usergroup name, only website users who are members of the selected usergroup will be able to view the page. The special option 'Hide at Login' means the page will &lt;em&gt;not&lt;/em&gt; be visible for any website users that are logged in. Likewise "Show at Any Login" will make the page visible for any logged in Frontend user.</source>
+        <target state="final">Jeśli w polu Prawa dostępu grup użytkowników wybrano nazwę grupy, stronę będą mogli zobaczyć tylko użytkownicy witryny należący do tej grupy. Specjalna opcja 'Ukryj po zalogowaniu' oznacza, że strona &lt;em&gt;nie&lt;/em&gt; będzie widoczna dla żadnego zalogowanego użytkownika witryny. Analogicznie opcja "Pokaż po dowolnym zalogowaniu" sprawi, że strona będzie widoczna dla każdego zalogowanego użytkownika frontendu.</target>
+      </trans-unit>
+      <trans-unit id="extendToSubpages.description" resname="extendToSubpages.description" approved="yes">
+        <source>By default the Publication Date, Expiration Date, Usergroup Access Rights, and Page Visibility options &lt;em&gt;only&lt;/em&gt; affect the page where they are set. If the option 'Extend to Subpages' is checked for the page, then all subpages are affected as well.</source>
+        <target state="final">Domyślnie opcje Data publikacji, Data wygaśnięcia, Prawa dostępu grup użytkowników i Widoczność strony dotyczą &lt;em&gt;wyłącznie&lt;/em&gt; strony, na której zostały ustawione. Jeśli dla strony zaznaczono opcję 'Rozszerz na podstrony', dotyczą one również wszystkich podstron.</target>
+      </trans-unit>
+      <trans-unit id="extendToSubpages.details" resname="extendToSubpages.details" xml:space="preserve" approved="yes">
+				<source>Consider a scenario where you want to create a section of subpages that are only visible for logged in users. Setting the Usergroup Access Rights for the top page in the section would remove the page from menus if no user was logged in.
+However, the subpage could still be accessed by guessing the ID number of the page and entering it manually in the URL. Setting the 'Extend to Subpages' option would extend the Usergroup Access Rights from the top page through all subpages as well.</source>
+			<target state="final">Załóżmy, że chcesz utworzyć sekcję podstron widocznych tylko dla zalogowanych użytkowników. Ustawienie praw dostępu grup użytkowników dla strony nadrzędnej tej sekcji usunie ją z menu, gdy żaden użytkownik nie jest zalogowany.
+Jednak do podstrony nadal można by uzyskać dostęp, odgadując numer ID strony i wpisując go ręcznie w adresie URL. Ustawienie opcji 'Rozszerz na podstrony' rozszerzy prawa dostępu grup użytkowników ze strony nadrzędnej na wszystkie podstrony.</target></trans-unit>
+      <trans-unit id="extendToSubpages.image_descr" resname="extendToSubpages.image_descr" approved="yes">
+        <source>This page has access restricted to a certain group and has "Extend to Subpages" set as well. This is reflected in the way the page icon has changed.</source>
+        <target state="final">Dostęp do tej strony jest ograniczony do określonej grupy, a ponadto ustawiono dla niej opcję "Rozszerz na podstrony". Widać to po zmienionej ikonie strony.</target>
+      </trans-unit>
+      <trans-unit id="alias.description" resname="alias.description" approved="yes">
+        <source>A URL Alias is a unique identification string for a page. You can use this string instead of the ID number to refer to the page.</source>
+        <target state="final">Alias URL to unikalny ciąg znaków identyfikujący stronę. Możesz go używać zamiast numeru ID, aby odwołać się do strony.</target>
+      </trans-unit>
+      <trans-unit id="alias.details" resname="alias.details" xml:space="preserve" approved="yes">
+				<source>Ultimately a page is identified by its ID number. For example, you may access a page in TYPO3 at '.../?id=123'. If the page with ID '123' has the URL Alias 'one_two_three', then the URL '.../?id=one_two_three' would display exactly the same page, because 'one_two_three' is a URL Alias for the ID '123'.
+URL Aliases are normally assigned to only the most frequently used pages rather than all pages. In most TYPO3 configurations you would be able to use the syntax '.. &amp;lt;link one_two_three&amp;gt;go to the page&amp;lt;/link&amp;gt; ..' to create a link to the page. This is easier to remember.
+Another use is if you need to change which page a commonly used link points to. In this case you can delete the URL Alias for the original page and re-add it on the new page. All links using the URL Alias would now refer to the new page and its ID number.</source>
+			<target state="final">Ostatecznie strona jest identyfikowana przez swój numer ID. Na przykład w TYPO3 można wyświetlić stronę pod adresem '.../?id=123'. Jeśli strona o ID '123' ma alias URL 'one_two_three', adres '.../?id=one_two_three' wyświetli dokładnie tę samą stronę, ponieważ 'one_two_three' jest aliasem URL dla ID '123'.
+Aliasy URL przypisuje się zwykle tylko najczęściej używanym stronom, a nie wszystkim. W większości konfiguracji TYPO3 do utworzenia odnośnika do strony można użyć składni '.. &amp;lt;link one_two_three&amp;gt;przejdź do strony&amp;lt;/link&amp;gt; ..'. Łatwiej ją zapamiętać.
+Innym zastosowaniem jest sytuacja, gdy trzeba zmienić stronę, na którą wskazuje często używany odnośnik. Wtedy można usunąć alias URL ze starej strony i dodać go ponownie na nowej. Wszystkie odnośniki używające tego aliasu będą wówczas odnosić się do nowej strony i jej numeru ID.</target></trans-unit>
+      <trans-unit id="alias.syntax" resname="alias.syntax" xml:space="preserve" approved="yes">
+				<source>A URL Alias can contain only lowercase alphanumeric characters and must be unique.
+Please note: If the URL Alias already exists in the site, it will have a number added to the end of it.</source>
+			<target state="final">Alias URL może zawierać wyłącznie małe litery i cyfry oraz musi być unikalny.
+Uwaga: jeśli alias URL już istnieje w witrynie, na jego końcu zostanie dodany numer.</target></trans-unit>
+      <trans-unit id="target.description" resname="target.description" approved="yes">
+        <source>This sets the default Link Target for menu items linking to this page. Can also used to open the page as a popup window.</source>
+        <target state="final">Ustawia domyślny cel odnośnika dla elementów menu prowadzących do tej strony. Może także służyć do otwierania strony w oknie wyskakującym.</target>
+      </trans-unit>
+      <trans-unit id="target.details" resname="target.details" xml:space="preserve" approved="yes">
+				<source>The Link Target overrides the default Link Target behavior, which should already be configured correctly for most pages in the website TypoScript template.
+There are additional options available by using the Link Target field
+
+Setting an integer value at the beginning of the field sets it as the default type for the page.
+For example, if an RSS feed is configured in TypoScript as typeNum=100, setting the Link Target to 100 could be used to add an RSS link in the menu.
+
+The following syntax is used to open the page in a popup window:
+400x200 - Opens the page in a 400x200 popup window.
+230x450:resizable=0,location=1 - Opens the page in a 230x450 popup window that is not resizable and has an address bar.
+
+Combined:
+100 600x350 - Opens the page in a 600x350 popup with type=100
+2 _blank - Opens the page with target "_blank" and type=2</source>
+			<target state="final">Cel odnośnika zastępuje domyślne zachowanie celu odnośnika, które dla większości stron powinno już być poprawnie skonfigurowane w szablonie TypoScript witryny.
+Pole Cel odnośnika udostępnia dodatkowe opcje.
+
+Wpisanie liczby całkowitej na początku pola ustawia ją jako domyślny typ (type) strony.
+Na przykład, jeśli kanał RSS jest skonfigurowany w TypoScript jako typeNum=100, ustawienie celu odnośnika na 100 pozwala dodać odnośnik RSS w menu.
+
+Aby otworzyć stronę w oknie wyskakującym, użyj następującej składni:
+400x200 - Otwiera stronę w oknie wyskakującym o wymiarach 400x200.
+230x450:resizable=0,location=1 - Otwiera stronę w oknie wyskakującym o wymiarach 230x450, bez możliwości zmiany rozmiaru i z paskiem adresu.
+
+Połączenie:
+100 600x350 - Otwiera stronę w oknie wyskakującym 600x350 z type=100
+2 _blank - Otwiera stronę z celem "_blank" i type=2</target></trans-unit>
+      <trans-unit id="cache_timeout.description" resname="cache_timeout.description" approved="yes">
+        <source>Sets the Cache Lifetime for the page.</source>
+        <target state="final">Ustawia czas przechowywania strony w pamięci podręcznej.</target>
+      </trans-unit>
+      <trans-unit id="cache_timeout.details" resname="cache_timeout.details" xml:space="preserve" approved="yes">
+				<source>By default, pages are cached for 24 hours. After 24 hours, the page is constructed again and rewritten to the cache. Depending on your configuration, the cache may be cleared at midnight.
+When specific pages need a longer or shorter cache lifetime than the default, this option can be used.</source>
+			<target state="final">Domyślnie strony są przechowywane w pamięci podręcznej przez 24 godziny. Po tym czasie strona jest generowana ponownie i zapisywana w pamięci podręcznej. W zależności od konfiguracji pamięć podręczna może być czyszczona o północy.
+Tej opcji można użyć, gdy określone strony wymagają dłuższego lub krótszego czasu przechowywania w pamięci podręcznej niż domyślny.</target></trans-unit>
+      <trans-unit id="no_search.description" resname="no_search.description" approved="yes">
+        <source>If enabled, this option excludes the page from searching operations on the website.</source>
+        <target state="final">Jeśli ta opcja jest włączona, strona jest wyłączona z wyszukiwania w witrynie.</target>
+      </trans-unit>
+      <trans-unit id="php_tree_stop.description" resname="php_tree_stop.description" approved="yes">
+        <source>If enabled, this option excludes the subtree from rendering in the backend.</source>
+        <target state="final">Jeśli ta opcja jest włączona, poddrzewo nie jest wyświetlane w backendzie.</target>
+      </trans-unit>
+      <trans-unit id="author.description" resname="author.description" approved="yes">
+        <source>Enter the page author's name.</source>
+        <target state="final">Wprowadź dane autora strony.</target>
+      </trans-unit>
+      <trans-unit id="author.details" resname="author.details" xml:space="preserve" approved="yes">
+				<source>Whether the author name is used or not depends on the setup of your TypoScript template.
+
+- You may use it in a meta-tag.
+- If you're using TYPO3 pages as 'articles' then you could use this field to display the name of the page (article) author.</source>
+			<target state="final">To, czy dane autora są wykorzystywane, zależy od konfiguracji szablonu TypoScript.
+
+- Możesz użyć ich w znaczniku meta.
+- Jeśli używasz stron TYPO3 jako 'artykułów', możesz wykorzystać to pole do wyświetlania imienia i nazwiska autora strony (artykułu).</target></trans-unit>
+      <trans-unit id="author_email.description" resname="author_email.description" approved="yes">
+        <source>Enter the page author's email address.</source>
+        <target state="final">Wprowadź adres e-mail autora strony.</target>
+      </trans-unit>
+      <trans-unit id="module.description" resname="module.description" approved="yes">
+        <source>Define the page as containing a Frontend plugin.</source>
+        <target state="final">Oznacz stronę jako zawierającą wtyczkę frontendu.</target>
+      </trans-unit>
+      <trans-unit id="module.details" resname="module.details" xml:space="preserve" approved="yes">
+				<source>Setting this option lets the Backend knows this page contains specific content or has a specific purpose, such as containing a forum or acting as the root page of a shop section on the website. Based on this setting the Backend is able to display a shortcut list as well as relevant functionality in the 'Web&gt;Modules' module. The Frontend display is largely not affected.
+Marking a page as containing a 'Shop' plugin simply means it'll show up in the shortcut list of modules in the backend.
+
+For additional details on this option, refer to the administration documentation.
+
+It's recommended that only admin-users have access to this field!</source>
+			<target state="final">Ustawienie tej opcji informuje backend, że strona zawiera określoną zawartość lub ma określone przeznaczenie, np. zawiera forum lub pełni rolę strony głównej sekcji sklepu w witrynie. Na podstawie tego ustawienia backend może wyświetlić listę skrótów oraz odpowiednie funkcje w module 'Web&gt;Moduły'. Nie ma to większego wpływu na wyświetlanie we frontendzie.
+Oznaczenie strony jako zawierającej wtyczkę 'Sklep' oznacza jedynie, że pojawi się ona na liście skrótów modułów w backendzie.
+
+Więcej informacji na temat tej opcji znajdziesz w dokumentacji dla administratorów.
+
+Zaleca się, aby dostęp do tego pola mieli wyłącznie administratorzy!</target></trans-unit>
+      <trans-unit id="media.description" resname="media.description" approved="yes">
+        <source>Attach media files related to the page.</source>
+        <target state="final">Dołącz pliki multimedialne powiązane ze stroną.</target>
+      </trans-unit>
+      <trans-unit id="media.details" resname="media.details" xml:space="preserve" approved="yes">
+				<source>This field allows you to attach various files to the page, but how these files are used depends on your template.
+As an example the template could be use this field to allow a logo to be attached to the page or it might expect the first file to be an image used as a link in the navigation menu. Remember, this totally depends on how the template is programmed.</source>
+			<target state="final">To pole pozwala dołączyć do strony różne pliki, ale sposób ich wykorzystania zależy od szablonu.
+Na przykład szablon może używać tego pola do dołączenia logo do strony albo oczekiwać, że pierwszy plik będzie obrazem używanym jako odnośnik w menu nawigacji. Pamiętaj, że zależy to całkowicie od tego, jak zaprogramowano szablon.</target></trans-unit>
+      <trans-unit id="subtitle.description" resname="subtitle.description" approved="yes">
+        <source>Enter a subtitle if needed.</source>
+        <target state="final">Podaj podtytuł jeśli jest potrzebny.</target>
+      </trans-unit>
+      <trans-unit id="subtitle.details" resname="subtitle.details" approved="yes">
+        <source>Whether this field is used or not depends on the template. In most cases it's not used.</source>
+        <target state="final">To, czy to pole jest wykorzystywane, zależy od szablonu. W większości przypadków nie jest używane.</target>
+      </trans-unit>
+      <trans-unit id="url.description" resname="url.description" approved="yes">
+        <source>Enter the URL this page redirects to.</source>
+        <target state="final">Wprowadź adres URL, do którego przekierowuje ta strona.</target>
+      </trans-unit>
+      <trans-unit id="url.details" resname="url.details" xml:space="preserve" approved="yes">
+				<source>For example, 'http://www.typo3.org'.
+
+This option is used only if the page 'Type' is set to 'Link to External URL.'</source>
+			<target state="final">Na przykład 'http://www.typo3.org'.
+
+Ta opcja jest używana tylko wtedy, gdy 'Typ' strony jest ustawiony na 'Odnośnik do zewnętrznego URL'.</target></trans-unit>
+      <trans-unit id="shortcut.description" resname="shortcut.description" approved="yes">
+        <source>Select a page to act as the Shortcut Target. When the current page is requested in the Frontend, it will be redirected to the Shortcut Target.</source>
+        <target state="final">Wybierz stronę, która będzie celem skrótu. Gdy bieżąca strona zostanie wywołana we frontendzie, nastąpi przekierowanie do celu skrótu.</target>
+      </trans-unit>
+      <trans-unit id="shortcut.details" resname="shortcut.details" xml:space="preserve" approved="yes">
+				<source>Click the 'Browse for Records' icon and a new window will appear in which you can easily select a page to act as the Shortcut Target.
+
+This option is used only if the page 'Type' is set to 'Shortcut.'</source>
+			<target state="final">Kliknij ikonę 'Przeglądaj rekordy', a pojawi się nowe okno, w którym łatwo wybierzesz stronę pełniącą rolę celu skrótu.
+
+Ta opcja jest używana tylko wtedy, gdy 'Typ' strony jest ustawiony na 'Skrót'.</target></trans-unit>
+      <trans-unit id="shortcut.image_descr" resname="shortcut.image_descr" approved="yes">
+        <source>Select a Shortcut Target page with the Element Browser.</source>
+        <target state="final">Wybierz stronę docelową skrótu za pomocą przeglądarki elementów.</target>
+      </trans-unit>
+      <trans-unit id="keywords.description" resname="keywords.description" approved="yes">
+        <source>Enter keywords for the page separated by commas. You may also use short phrases.</source>
+        <target state="final">Wprowadź słowa kluczowe dla strony, oddzielone przecinkami. Możesz również używać krótkich fraz.</target>
+      </trans-unit>
+      <trans-unit id="keywords.details" resname="keywords.details" xml:space="preserve" approved="yes">
+				<source>Most TYPO3 websites use these keywords in a meta-tag on the page, but you may have to setup the appropriate TypoScript template yourself.
+
+To optimize your page for search engines like Google you should not use more than 3 to 6 keywords. You should also make sure that the keywords are found in the content of the page.
+
+Note that search engine extensions for TYPO3 such as Indexed Search can also be configured to make use of the keywords.
+
+The keywords can also be used to create a menu of related pages. Create a Content Element of type 'Sitemap' and then choose the menu type &lt;i&gt;Related pages (based on keywords)&lt;/i&gt;.</source>
+			<target state="final">Większość witryn TYPO3 umieszcza te słowa kluczowe w znaczniku meta strony, ale może być konieczne samodzielne skonfigurowanie odpowiedniego szablonu TypoScript.
+
+Aby zoptymalizować stronę pod kątem wyszukiwarek, takich jak Google, nie należy używać więcej niż 3–6 słów kluczowych. Upewnij się również, że słowa kluczowe występują w treści strony.
+
+Pamiętaj, że rozszerzenia wyszukiwarki dla TYPO3, takie jak Indexed Search, również można skonfigurować do korzystania ze słów kluczowych.
+
+Słowa kluczowe mogą także posłużyć do utworzenia menu powiązanych stron. Utwórz element treści typu 'Mapa strony', a następnie wybierz typ menu &lt;i&gt;Powiązane strony (na podstawie słów kluczowych)&lt;/i&gt;.</target></trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a short description of the page. It will be displayed in the result lists of most search engines.</source>
+        <target state="final">Wprowadź krótki opis strony. Będzie on wyświetlany na listach wyników większości wyszukiwarek.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" xml:space="preserve" approved="yes">
+				<source>Most websites insert this description in a meta-tag on the page, but you may have to configure this yourself in your TypoScript template.
+
+Most search engines will display the description in their result list. Thus, the text should be short (about 160 characters maximum), and its wording should make sense when it shows up in the result list.
+
+In addition, the description will be displayed if you create a Content Element of type 'Sitemap' and then choose the menu type &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt;. If an abstract exists for the page, it will be used instead of the description.
+
+&lt;b&gt;Note:&lt;/b&gt; Some search engines only use the description if the text is not found elsewhere in the content. So do not just repeat yourself.</source>
+			<target state="final">Większość witryn umieszcza ten opis w znaczniku meta strony, ale może być konieczne samodzielne skonfigurowanie tego w szablonie TypoScript.
+
+Większość wyszukiwarek wyświetla opis na liście wyników. Dlatego tekst powinien być krótki (maksymalnie ok. 160 znaków), a jego treść powinna mieć sens, gdy pojawi się na liście wyników.
+
+Ponadto opis będzie wyświetlany, jeśli utworzysz element treści typu 'Mapa strony' i wybierzesz typ menu &lt;i&gt;Menu podstron wybranych stron (ze streszczeniem)&lt;/i&gt;. Jeśli dla strony istnieje streszczenie, zostanie ono użyte zamiast opisu.
+
+&lt;b&gt;Uwaga:&lt;/b&gt; Niektóre wyszukiwarki używają opisu tylko wtedy, gdy jego tekst nie występuje w innym miejscu treści. Dlatego nie powtarzaj się.</target></trans-unit>
+      <trans-unit id="abstract.description" resname="abstract.description" approved="yes">
+        <source>Enter an abstract of the contents. It may be displayed in an overview of articles.</source>
+        <target state="final">Wprowadź streszczenie zawartości. Może ono być wyświetlane w przeglądzie artykułów.</target>
+      </trans-unit>
+      <trans-unit id="abstract.details" resname="abstract.details" xml:space="preserve" approved="yes">
+				<source>An abstract is a short description of the page content that might be a little longer than the one in the &lt;i&gt;Description&lt;/i&gt; field.
+
+Unlike the description, the abstract is not meant for display in search engine result lists, but is instead intended for you own use.
+
+If you create a Content Element of type &lt;i&gt;Sitemap&lt;/i&gt; and then choose &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt; an overview of pages will be created. If an abstract is available for a page it will be used instead of the description.
+
+&lt;b&gt;Note:&lt;/b&gt; You do not have to enter the text of the description into the &lt;i&gt;Abstract field&lt;/i&gt; again.
+
+Admins can also make custom use of this field via their TypoScript templates.</source>
+			<target state="final">Streszczenie to krótki opis zawartości strony, który może być nieco dłuższy niż ten w polu &lt;i&gt;Opis&lt;/i&gt;.
+
+W przeciwieństwie do opisu, streszczenie nie jest przeznaczone do wyświetlania na listach wyników wyszukiwarek, lecz do Twojego własnego użytku.
+
+Jeśli utworzysz element treści typu &lt;i&gt;Mapa strony&lt;/i&gt; i wybierzesz &lt;i&gt;Menu podstron wybranych stron (ze streszczeniem)&lt;/i&gt;, zostanie utworzony przegląd stron. Jeśli dla strony dostępne jest streszczenie, zostanie ono użyte zamiast opisu.
+
+&lt;b&gt;Uwaga:&lt;/b&gt; Nie musisz ponownie wpisywać tekstu opisu w polu &lt;i&gt;Streszczenie&lt;/i&gt;.
+
+Administratorzy mogą także wykorzystywać to pole na własne potrzeby w szablonach TypoScript.</target></trans-unit>
+      <trans-unit id="newUntil.description" resname="newUntil.description" approved="yes">
+        <source>Enter the date at which this page is no longer considered new.</source>
+        <target state="final">Wprowadź datę, po której ta strona nie będzie już uważana za nową.</target>
+      </trans-unit>
+      <trans-unit id="newUntil.details" resname="newUntil.details" xml:space="preserve" approved="yes">
+				<source>The 'New Until' date of the page has no effect on the display of the webpage. This value is instead for internal use as a reminder of the date when the content of this page should be revised. If the content of the page will become outdated on a certain day, you could set this value to that approximate date.
+To get an overview of when pages will be outdated, use the 'Pagetree overview' in the 'Web&gt;Info' Module.</source>
+			<target state="final">Data 'Nowa do' nie ma wpływu na wyświetlanie strony. Ta wartość służy do użytku wewnętrznego jako przypomnienie o dacie, kiedy zawartość strony powinna zostać zaktualizowana. Jeśli zawartość strony zdezaktualizuje się w określonym dniu, możesz ustawić tę wartość mniej więcej na tę datę.
+Aby sprawdzić, kiedy strony staną się nieaktualne, użyj 'Przeglądu drzewa stron' w module 'Web&gt;Info'.</target></trans-unit>
+      <trans-unit id="newUntil.syntax" resname="newUntil.syntax" approved="yes">
+        <source>See Page / Publication Date (click below)</source>
+        <target state="final">Zobacz stronę / Datę publikacji (kliknij poniżej)</target>
+      </trans-unit>
+      <trans-unit id="lastUpdated.description" resname="lastUpdated.description" approved="yes">
+        <source>Enter the date and time of the most recent update to this page.</source>
+        <target state="final">Wprowadź datę i godzinę ostatniej aktualizacji na tej stronie.</target>
+      </trans-unit>
+      <trans-unit id="lastUpdated.details" resname="lastUpdated.details" xml:space="preserve" approved="yes">
+				<source>How the value of this field is used is determined by the TypoScript template of the website. 'Last Update' content needs to be inserted on the pages and the TypoScript template must be configured to use this value.
+The most common use is to display the date from the automatically updated 'tstamp' field &lt;em&gt;unless&lt;/em&gt; the 'Last Update' field is set. In this case, the date in 'Last Update' is used.</source>
+			<target state="final">Sposób wykorzystania wartości tego pola określa szablon TypoScript witryny. Zawartość 'Ostatnia aktualizacja' musi zostać wstawiona na stronach, a szablon TypoScript musi być skonfigurowany do używania tej wartości.
+Najczęściej wyświetlana jest data z automatycznie aktualizowanego pola 'tstamp', &lt;em&gt;chyba że&lt;/em&gt; ustawiono pole 'Ostatnia aktualizacja'. W takim przypadku używana jest data z pola 'Ostatnia aktualizacja'.</target></trans-unit>
+      <trans-unit id="lastUpdated.syntax" resname="lastUpdated.syntax" xml:space="preserve" approved="yes">
+				<source>The format is HH:MM DD-MM-YYYY or HH:MM MM-DD-YYYY depending on your TYPO3 configuration.
+If you insert a 'd' the current time and date is inserted. You can also append any value in the field with a number lie '+10' which will add 10 days to the current value.</source>
+			<target state="final">Format to GG:MM DD-MM-RRRR lub GG:MM MM-DD-RRRR, w zależności od konfiguracji TYPO3.
+Jeśli wpiszesz 'd', zostanie wstawiona bieżąca data i godzina. Do dowolnej wartości w polu możesz też dopisać liczbę, np. '+10', co doda 10 dni do bieżącej wartości.</target></trans-unit>
+      <trans-unit id="nav_hide.description" resname="nav_hide.description" approved="yes">
+        <source>With this option the page will be not appear in menus in the Frontend. The page can still be viewed if linked by going directly to its URL.</source>
+        <target state="final">Ta opcja sprawia, że strona nie pojawia się w menu we frontendzie. Stronę nadal można wyświetlić, jeśli zostanie podlinkowana lub po przejściu bezpośrednio pod jej adres URL.</target>
+      </trans-unit>
+      <trans-unit id="nav_title.description" resname="nav_title.description" approved="yes">
+        <source>Alternative Navigation Title for menu items in the Frontend. When set, this value is used instead of the Page Title.</source>
+        <target state="final">Alternatywny tytuł nawigacji dla elementów menu we frontendzie. Jeśli jest ustawiony, zostanie użyty zamiast tytułu strony.</target>
+      </trans-unit>
+      <trans-unit id="content_from_pid.description" resname="content_from_pid.description" xml:space="preserve" approved="yes">
+				<source>If set, this is an alternative page to select Content Elements from.
+Whether this field is used depends on the website's TypoScript template.</source>
+			<target state="final">Jeśli ustawiono, jest to alternatywna strona, z której pobierane są elementy treści.
+To, czy to pole jest wykorzystywane, zależy od szablonu TypoScript witryny.</target></trans-unit>
+      <trans-unit id="shortcut_mode.description" resname="shortcut_mode.description" approved="yes">
+        <source>Select a Shortcut Mode. By default the shortcut page must have a Shortcut Target to jump to. Other options are to go to the first subpage, to a random subpage, or back up to the parent page.</source>
+        <target state="final">Wybierz tryb skrótu. Domyślnie strona skrótu musi mieć ustawiony cel skrótu, do którego przekierowuje. Pozostałe opcje to przejście do pierwszej podstrony, do losowej podstrony lub z powrotem do strony nadrzędnej.</target>
+      </trans-unit>
+      <trans-unit id="mount_pid.description" resname="mount_pid.description" approved="yes">
+        <source>Mount this page. If set, subpages of this page come from the Mounted Page instead.</source>
+        <target state="final">Zamontuj tę stronę. Jeśli ustawiono, podstrony tej strony będą pochodzić z zamontowanej strony.</target>
+      </trans-unit>
+      <trans-unit id="mount_pid.details" resname="mount_pid.details" approved="yes">
+        <source>In the Frontend this is done by adding a new variable, &amp;MP, to the URL. This links the mounted branch to the main branch by pairing page ids.</source>
+        <target state="final">We frontendzie odbywa się to przez dodanie do adresu URL nowej zmiennej &amp;MP. Łączy ona zamontowaną gałąź z gałęzią główną poprzez parowanie ID stron.</target>
+      </trans-unit>
+      <trans-unit id="mount_pid_ol.description" resname="mount_pid_ol.description" approved="yes">
+        <source>Show content for the current page or replace it completely with the Mounted Page.</source>
+        <target state="final">Wyświetl zawartość bieżącej strony lub całkowicie zastąp ją zamontowaną stroną.</target>
+      </trans-unit>
+      <trans-unit id="title.description.+" resname="title.description.+" approved="yes">
+        <source>This is normally shown in the website navigation.</source>
+        <target state="final">Jest on zwykle wyświetlany w nawigacji witryny.</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details.+" resname="TSconfig.details.+" xml:space="preserve" approved="yes">
+				<source>&lt;strong&gt;Example:&lt;/strong&gt;
+The 'Web&gt;Page' module lets you create content in four columns, Left, Normal, Right, Border if the template has been configured to use this option. (However, most websites use only one or two columns so some of these content columns are just taking up space and confusing users.)
+If you enter this string in the 'TSConfig' field, the 'Web&gt;Page' Module will only show the 'Normal' and 'Border' column!
+
+&lt;em&gt;mod.web_layout.tt_content.colPos_list = 0,3&lt;/em&gt;
+
+(Must be entered in a single line!)</source>
+			<target state="final">&lt;strong&gt;Przykład:&lt;/strong&gt;
+Moduł 'Web&gt;Strona' pozwala tworzyć zawartość w czterech kolumnach: Lewa, Normalna, Prawa i Ramka, jeśli szablon skonfigurowano do korzystania z tej opcji. (Jednak większość witryn używa tylko jednej lub dwóch kolumn, więc niektóre z tych kolumn jedynie zajmują miejsce i dezorientują użytkowników).
+Jeśli wpiszesz poniższy ciąg w polu 'TSConfig', moduł 'Web&gt;Strona' będzie wyświetlał tylko kolumny 'Normalna' i 'Ramka'!
+
+&lt;em&gt;mod.web_layout.tt_content.colPos_list = 0,3&lt;/em&gt;
+
+(Należy wpisać w jednej linii!)</target></trans-unit>
+      <trans-unit id="l18n_cfg.description" resname="l18n_cfg.description" approved="yes">
+        <source>Affect availability of pages in the various languages.</source>
+        <target state="final">Wpływa na dostępność stron w różnych językach.</target>
+      </trans-unit>
+      <trans-unit id="l18n_cfg.details" resname="l18n_cfg.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Hide default language of page&lt;/b&gt;
+If set, the page is only available in translated versions and not in the default language. Any attempt to access the page in the default language will result in an error message.
+
+&lt;b&gt;Hide page if no translation for current language exists&lt;/b&gt;
+If set, any attempt to access the page in a translation that does not exist will result in an error message. By default, accessing an untranslated page will just show the default language instead.</source>
+			<target state="final">&lt;b&gt;Ukryj domyślny język strony&lt;/b&gt;
+Jeśli ustawiono, strona jest dostępna tylko w wersjach przetłumaczonych, a nie w języku domyślnym. Każda próba wyświetlenia strony w języku domyślnym spowoduje wyświetlenie komunikatu o błędzie.
+
+&lt;b&gt;Ukryj stronę, jeśli nie istnieje tłumaczenie na bieżący język&lt;/b&gt;
+Jeśli ustawiono, każda próba wyświetlenia strony w nieistniejącym tłumaczeniu spowoduje wyświetlenie komunikatu o błędzie. Domyślnie przy próbie wyświetlenia nieprzetłumaczonej strony pokazywana jest po prostu wersja w języku domyślnym.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
