@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="ok" approved="yes">
+        <source>Ok</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Avbryt</target>
+      </trans-unit>
+      <trans-unit id="items" approved="yes">
+        <source>items</source>
+        <target state="final">saker</target>
+      </trans-unit>
+      <trans-unit id="close" approved="yes">
+        <source>Close</source>
+        <target state="final">Lukk</target>
+      </trans-unit>
+      <trans-unit id="previewLink" approved="yes">
+        <source>Preview Link</source>
+        <target state="final">Forhåndsvis lenke</target>
+      </trans-unit>
+      <trans-unit id="column.difference" approved="yes">
+        <source>Difference</source>
+        <target state="final">Forskjell</target>
+      </trans-unit>
+      <trans-unit id="column.actions" approved="yes">
+        <source>Actions</source>
+        <target state="final">Handling</target>
+      </trans-unit>
+      <trans-unit id="column.wsPath" approved="yes">
+        <source>Path</source>
+        <target state="final">Sti</target>
+      </trans-unit>
+      <trans-unit id="column.workspaceName" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Arbeidsflate</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.selectAll" approved="yes">
+        <source>Select all</source>
+        <target state="final">Velg alt</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.deselectAll" approved="yes">
+        <source>Uncheck all</source>
+        <target state="final">Fravelg alle</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.comments" approved="yes">
+        <source>Comments</source>
+        <target state="final">Kommentarer</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.comments" approved="yes">
+        <source>Comments</source>
+        <target state="final">Kommentarer</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.history" approved="yes">
+        <source>History</source>
+        <target state="final">Historikk</target>
+      </trans-unit>
+      <trans-unit id="preview.livePreview" approved="yes">
+        <source>Live</source>
+        <target state="final">Liveopptreden</target>
+      </trans-unit>
+      <trans-unit id="preview.workspacePreview" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Arbeidsflate</target>
+      </trans-unit>
+      <trans-unit id="preview.modeVbox" approved="yes">
+        <source>Vertical</source>
+        <target state="final">Loddrett</target>
+      </trans-unit>
+      <trans-unit id="preview.modeHbox" approved="yes">
+        <source>Horizontal</source>
+        <target state="final">Vannrett</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">Publiser</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_discard" approved="yes">
+        <source>Discard</source>
+        <target state="final">Forkast</target>
+      </trans-unit>
+      <trans-unit id="integrity.hasIssuesQuestion" approved="yes">
+        <source>Do you want to continue?</source>
+        <target state="final">Vil du fortsette?</target>
+      </trans-unit>
+      <trans-unit id="status.info" approved="yes">
+        <source>Information</source>
+        <target state="final">Informasjon</target>
+      </trans-unit>
+      <trans-unit id="status.warning" approved="yes">
+        <source>Warning</source>
+        <target state="final">Advarsel</target>
+      </trans-unit>
+      <trans-unit id="status.error" approved="yes">
+        <source>Error</source>
+        <target state="final">Feil</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
