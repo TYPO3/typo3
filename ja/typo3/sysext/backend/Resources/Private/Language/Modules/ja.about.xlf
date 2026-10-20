@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/about.xlf" date="2011-10-17T20:22:34Z" product-name="typo3-cms-backend" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>About TYPO3 CMS</source>
+        <target state="final">TYPO3について</target>
+      </trans-unit>
+      <trans-unit id="typo3_logo" approved="yes">
+        <source>TYPO3 CMS logo</source>
+        <target state="final">TYPO3 CMS ロゴ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
