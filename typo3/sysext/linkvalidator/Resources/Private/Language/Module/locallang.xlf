@@ -105,6 +105,9 @@
       <trans-unit id="list.report.pagenotvisible">
         <source>Page '###title###' (id=###uid###) is not visible.</source>
       </trans-unit>
+      <trans-unit id="list.report.pagenotvisiblebyparent">
+        <source>Page '###title###' (id=###uid###) is not visible, because the page '###hiddenByTitle###' (id=###hiddenByUid###) hides its subpages.</source>
+      </trans-unit>
       <trans-unit id="list.report.pagenotexisting">
         <source>Page (id=###uid###) does not exist.</source>
       </trans-unit>

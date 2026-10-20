@@ -189,6 +189,12 @@ final class LinkAnalyzerTest extends FunctionalTestCase
                     [1],
                     __DIR__ . '/Fixtures/expected_output_content_with_broken_link_none.csv',
                 ],
+            'Test with links to pages hidden by a parent page that extends to subpages'
+                => [
+                    __DIR__ . '/Fixtures/input_content_with_link_to_page_hidden_by_parent.csv',
+                    [1],
+                    __DIR__ . '/Fixtures/expected_output_content_with_link_to_page_hidden_by_parent.csv',
+                ],
         ];
     }
 

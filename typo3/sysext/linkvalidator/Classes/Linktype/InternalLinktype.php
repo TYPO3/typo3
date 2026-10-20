@@ -171,13 +171,17 @@ class InternalLinktype extends AbstractLinktype
                 $this->errorParams['page']['title'] = $row['title'];
                 $this->errorParams['page']['uid'] = $row['uid'];
                 $this->responsePage = false;
-            } elseif ($row['hidden'] == '1'
-                || $GLOBALS['EXEC_TIME'] < (int)$row['starttime']
-                || $row['endtime'] && (int)$row['endtime'] < $GLOBALS['EXEC_TIME']
-            ) {
+            } elseif ($this->isHidden($row)) {
                 $this->errorParams['errorType']['page'] = self::HIDDEN;
                 $this->errorParams['page']['title'] = $row['title'];
                 $this->errorParams['page']['uid'] = $row['uid'];
+                $this->responsePage = false;
+            } elseif ($hidingPage = $this->getPageHidingSubpages((int)$row['uid'])) {
+                $this->errorParams['errorType']['page'] = self::HIDDEN;
+                $this->errorParams['page']['title'] = $row['title'];
+                $this->errorParams['page']['uid'] = $row['uid'];
+                $this->errorParams['page']['hiddenBy']['title'] = $hidingPage['title'];
+                $this->errorParams['page']['hiddenBy']['uid'] = $hidingPage['uid'];
                 $this->responsePage = false;
             }
         } else {
@@ -186,6 +190,29 @@ class InternalLinktype extends AbstractLinktype
             $this->responsePage = false;
         }
         return $this->responsePage;
+    }
+
+    /**
+     * A page is not visible in the frontend while it is hidden or outside its start and end time
+     */
+    protected function isHidden(array $page): bool
+    {
+        return $page['hidden'] == '1'
+            || $GLOBALS['EXEC_TIME'] < (int)$page['starttime']
+            || $page['endtime'] && (int)$page['endtime'] < $GLOBALS['EXEC_TIME'];
+    }
+
+    /**
+     * A page with "extendToSubpages" also hides all pages below it, the closest one is returned
+     */
+    protected function getPageHidingSubpages(int $pageId): ?array
+    {
+        foreach (BackendUtility::BEgetRootLine($pageId) as $page) {
+            if ((int)$page['uid'] !== $pageId && $page['extendToSubpages'] && $this->isHidden($page)) {
+                return $page;
+            }
+        }
+        return null;
     }
 
     /**
@@ -281,6 +308,24 @@ class InternalLinktype extends AbstractLinktype
                     );
                     break;
                 case self::HIDDEN:
+                    if (is_array($errorParams['page']['hiddenBy'] ?? false)) {
+                        $errorPage = str_replace(
+                            [
+                                '###title###',
+                                '###uid###',
+                                '###hiddenByTitle###',
+                                '###hiddenByUid###',
+                            ],
+                            [
+                                $errorParams['page']['title'],
+                                (string)$errorParams['page']['uid'],
+                                $errorParams['page']['hiddenBy']['title'],
+                                (string)$errorParams['page']['hiddenBy']['uid'],
+                            ],
+                            $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.pagenotvisiblebyparent')
+                        );
+                        break;
+                    }
                     $errorPage = str_replace(
                         [
                             '###title###',
