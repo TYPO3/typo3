@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_reports.xlf" date="2019-09-05T15:20:15Z" product-name="redirects" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="statusProvider" approved="yes">
+        <source>Redirects</source>
+        <target state="final">पुनर्निर्देशन</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects" approved="yes">
+        <source>Conflicting Redirects</source>
+        <target state="final">संघर्ष करने वाले पुनर्निर्देशन</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects.none" approved="yes">
+        <source>None</source>
+        <target state="final">कोई नहीं</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects.count" approved="yes">
+        <source>%1$s conflicting redirects</source>
+        <target state="final">%1$s संघर्ष करने वाले पुनर्निर्देशन</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects.message" approved="yes">
+        <source>These redirects cause a conflict as there are pages that are still accessible with the same URL.</source>
+        <target state="final">ये पुनर्निर्देशन एक संघर्ष का कारण बनते हैं क्योंकि वहाँ पृष्ठ हैं जो अभी भी उसी URL के साथ उपलब्ध हैं।</target>
+      </trans-unit>
+      <trans-unit id="status.checkIntegrityResultState" approved="yes">
+        <source>Redirects integrity check</source>
+        <target state="final">पुनर्निर्देशन सत्यापन जांच</target>
+      </trans-unit>
+      <trans-unit id="status.checkIntegrityResultState.title" approved="yes">
+        <source>List of conflicting redirects may not be up to date</source>
+        <target state="final">परस्पर विरोधी रीडायरेक्ट की सूची अद्यतन नहीं हो सकती है।</target>
+      </trans-unit>
+      <trans-unit id="status.checkIntegrityResultState.message" approved="yes">
+        <source>Regularly run the console command redirects:checkintegrity.</source>
+        <target state="final">नियमित रूप से कंसोल कमांड redirects:checkintegrity को चलाएं।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
