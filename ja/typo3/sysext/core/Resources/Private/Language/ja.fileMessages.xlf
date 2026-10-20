@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1447138381" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/fileMessages.xlf" date="2015-11-10T06:53:10Z" product-name="core" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="FileUtility.DirectoryCreatedIn" resname="FileUtility.DirectoryCreatedIn" approved="yes">
+        <source>Directory "%s" created in "%s".</source>
+        <target state="final">ディレクトリ 「%s」を「%s」に作成しました。</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UploadingFileTo" resname="FileUtility.UploadingFileTo" approved="yes">
+        <source>Uploading file "%s" to "%s".</source>
+        <target state="final">ファイル 「%s」を「%s」にアップロードしています。</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
