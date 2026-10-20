@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="moduleMenu.dropdown.label" approved="yes">
+        <source>Configuration to show</source>
+        <target state="final">Weer te geven configuratie</target>
+      </trans-unit>
+      <trans-unit id="configuration.headline" approved="yes">
+        <source>Configuration of "%1s"</source>
+        <target state="final">Configuratie van "%1s"</target>
+      </trans-unit>
+      <trans-unit id="usersettings" x-unused-since="15.0" approved="yes">
+        <source>$GLOBALS['TYPO3_USER_SETTINGS'] (User Settings Configuration)</source>
+        <target state="final">$GLOBALS['TYPO3_USER_SETTINGS'] (Configuratie van gebruikersinstellingen)</target>
+      </trans-unit>
+      <trans-unit id="routes" approved="yes">
+        <source>Backend Routes</source>
+        <target state="final">Backendroutes</target>
+      </trans-unit>
+      <trans-unit id="httpMiddlewareStacks" approved="yes">
+        <source>HTTP Middlewares (PSR-15)</source>
+        <target state="final">HTTP-middlewares (PSR-15)</target>
+      </trans-unit>
+      <trans-unit id="contentSecurityPolicyMutations" approved="yes">
+        <source>Content Security Policy Mutations</source>
+        <target state="final">Wijzigingen in Content Security Policy</target>
+      </trans-unit>
+      <trans-unit id="eventListeners" approved="yes">
+        <source>Event Listeners (PSR-14)</source>
+        <target state="final">Event Listeners (PSR-14)</target>
+      </trans-unit>
+      <trans-unit id="softReferenceParsers" approved="yes">
+        <source>Soft Reference Parsers</source>
+        <target state="final">Analyses voor zachte verwijzingen</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems" approved="yes">
+        <source>Backend Toolbar Items</source>
+        <target state="final">Items van de backendwerkbalk</target>
+      </trans-unit>
+      <trans-unit id="symfonyExpressionLanguage" approved="yes">
+        <source>Symfony Expression Language Providers</source>
+        <target state="final">Symfony Expression Language Providers</target>
+      </trans-unit>
+      <trans-unit id="translationDomainList" approved="yes">
+        <source>Translation Domain List</source>
+        <target state="final">Lijst vertaaldomeinen</target>
+      </trans-unit>
+      <trans-unit id="doctrineDbalDriverMiddlewares" approved="yes">
+        <source>Doctrine DBAL Driver Middlewares</source>
+        <target state="final">Middlewares van Doctrine DBAL Stuurprogramma</target>
+      </trans-unit>
+      <trans-unit id="formYamlConfiguration" approved="yes">
+        <source>Form: YAML Configuration</source>
+        <target state="final">Formulier: YAML configuratie</target>
+      </trans-unit>
+      <trans-unit id="backendModules" approved="yes">
+        <source>Backend Modules</source>
+        <target state="final">Backend-modules</target>
+      </trans-unit>
+      <trans-unit id="pagesTypes" approved="yes">
+        <source>Table permissions per page type</source>
+        <target state="final">Tabelmachtigingen per paginatype</target>
+      </trans-unit>
+      <trans-unit id="search.submit" approved="yes">
+        <source>Search All Records</source>
+        <target state="final">Alle records doorzoeken</target>
+        <note>Label of submit button to search within the database (raw search in all fields)</note>
+      </trans-unit>
+      <trans-unit id="search" approved="yes">
+        <source>Search</source>
+        <target state="final">Zoeken</target>
+      </trans-unit>
+      <trans-unit id="fullSearch" approved="yes">
+        <source>Full search</source>
+        <target state="final">Volledig zoeken</target>
+      </trans-unit>
+      <trans-unit id="selectRecords" approved="yes">
+        <source>Select records</source>
+        <target state="final">Records kiezen</target>
+      </trans-unit>
+      <trans-unit id="countResults" approved="yes">
+        <source>Count results</source>
+        <target state="final">Aantal resultaten</target>
+      </trans-unit>
+      <trans-unit id="explainQuery" approved="yes">
+        <source>Explain query</source>
+        <target state="final">Query verklaren</target>
+      </trans-unit>
+      <trans-unit id="csvExport" approved="yes">
+        <source>CSV Export</source>
+        <target state="final">CSV-export</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.flashMessage.noResultsFoundMessage" approved="yes">
+        <source>The query returned no results.</source>
+        <target state="final">De zoekopdracht heeft geen resultaten opgeleverd.</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.queryOptions" approved="yes">
+        <source>Query options</source>
+        <target state="final">Query-opties</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.querySQL" approved="yes">
+        <source>Full SQL query</source>
+        <target state="final">Volledige SQL-query</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.querySQL.error" approved="yes">
+        <source>SQL error</source>
+        <target state="final">SQL-fout</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.querySettings" approved="yes">
+        <source>Query compilation</source>
+        <target state="final">Query-compilatie</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.queryStorage" approved="yes">
+        <source>Load/save query</source>
+        <target state="final">Query laden/opslaan</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.section.result" approved="yes">
+        <source>Result</source>
+        <target state="final">Resultaat</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.type.count.resultsFound" approved="yes">
+        <source>records found.</source>
+        <target state="final">gevonden records.</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.type.all.noResultsFound" approved="yes">
+        <source>No records found.</source>
+        <target state="final">Geen records gevonden.</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.btn.delete.label" approved="yes">
+        <source>Delete</source>
+        <target state="final">Verwijderen</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.btn.load.label" approved="yes">
+        <source>Load</source>
+        <target state="final">Laden</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.btn.save.label" approved="yes">
+        <source>Save</source>
+        <target state="final">Opslaan</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.groupBy.label" approved="yes">
+        <source>Group by</source>
+        <target state="final">Groeperen op</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.limit.label" approved="yes">
+        <source>Limit</source>
+        <target state="final">Limiet</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.makeQuery.label" approved="yes">
+        <source>Result type</source>
+        <target state="final">Resultaattype</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.orderBy.label" approved="yes">
+        <source>Order by</source>
+        <target state="final">Sorteren op</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.orderBy.descending" approved="yes">
+        <source>Descending</source>
+        <target state="final">Aflopend</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.searchType.label" approved="yes">
+        <source>Search type</source>
+        <target state="final">Zoektype</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.query.label" approved="yes">
+        <source>Query</source>
+        <target state="final">Query</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryFields.label" approved="yes">
+        <source>Fields</source>
+        <target state="final">Velden</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryTable.label" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabel</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryStore.storage.label" approved="yes">
+        <source>Saved queries</source>
+        <target state="final">Opgeslagen query's</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryStore.storage.0" approved="yes">
+        <source>[New]</source>
+        <target state="final">[Nieuw]</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryStore.title.label" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="fullSearch.form.field.queryConfig.comparison.negate" approved="yes">
+        <source>Negate</source>
+        <target state="final">Omkeren</target>
+      </trans-unit>
+      <trans-unit id="showSQL" approved="yes">
+        <source>Show SQL parts</source>
+        <target state="final">SQL-onderdelen tonen</target>
+      </trans-unit>
+      <trans-unit id="useFormattedStrings" approved="yes">
+        <source>Use formatted strings, labels and dates instead of original values for results</source>
+        <target state="final">Gebruik geformatteerde strings, labels en data in plaats van oorspronkelijke waarden voor resultaten</target>
+      </trans-unit>
+      <trans-unit id="dontUseOrigValues" approved="yes">
+        <source>Don't use original values in brackets as prefix for labeled results</source>
+        <target state="final">Originele waarden in haakjes niet gebruiken als voorvoegsel voor resultaten met label</target>
+      </trans-unit>
+      <trans-unit id="sortOptions" approved="yes">
+        <source>Sort selectbox-options for relations by label and not by value</source>
+        <target state="final">Opties voor relaties van het selectievakje sorteren op label en niet op waarde</target>
+      </trans-unit>
+      <trans-unit id="showDeleted" approved="yes">
+        <source>Show even deleted entries (with undelete buttons)</source>
+        <target state="final">Ook verwijderde items tonen (met knoppen om ze terug te halen)</target>
+      </trans-unit>
+      <trans-unit id="no_results" approved="yes">
+        <source>No results found for "%s".</source>
+        <target state="final">Geen resultaten gevonden voor "%s".</target>
+        <note>Info text in case no results are found for a given search term</note>
+      </trans-unit>
+      <trans-unit id="no_sword" approved="yes">
+        <source>Enter a search term to search for records</source>
+        <target state="final">Voer een zoekterm in om naar records te zoeken</target>
+      </trans-unit>
+      <trans-unit id="count" approved="yes">
+        <source>Count</source>
+        <target state="final">Aantal</target>
+      </trans-unit>
+      <trans-unit id="search_whole_database" approved="yes">
+        <source>Search whole Database</source>
+        <target state="final">De hele database doorzoeken</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
