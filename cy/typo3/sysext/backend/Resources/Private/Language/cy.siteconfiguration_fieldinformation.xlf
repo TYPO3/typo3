@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1522923345" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="cy">
+    <header/>
+    <body>
+      <trans-unit id="site.rootPageId" resname="site.rootPageId" approved="yes">
+        <source>You must create a page with a site root flag.</source>
+        <target state="final">Rhaid i chi greu tudalen gyda baner wraidd safle.</target>
+      </trans-unit>
+      <trans-unit id="site.identifier" resname="site.identifier" approved="yes">
+        <source>This name will be used to create the configuration directory. Mind the recommendations for directory names (only a-z,0-9,_,-) and make it unique.</source>
+        <target state="final">Defnyddir yr enw hwn i greu'r cyfeiriadur cyfluniad. Gwyliwch yr argymhellion ar gyfer enwau cyfeirlyfr (dim ond az, 0-9, _, -) a'u gwneud yn unigryw.</target>
+      </trans-unit>
+      <trans-unit id="site.baseVariants" resname="site.baseVariants" approved="yes">
+        <source>This allows you to specify variants of the site's base. Can be used, for example, if you have a different domain for your staging environment.</source>
+        <target state="final">Mae hyn yn caniatáu ichi nodi amrywiadau o sylfaen y wefan. Gellir ei ddefnyddio, er enghraifft, os oes gennych barth gwahanol ar gyfer eich amgylchedd llwyfannu.</target>
+      </trans-unit>
+      <trans-unit id="site_language.base" resname="site_language.base" approved="yes">
+        <source>Use a full qualified domain "https://www.mydomain.fr/" or "/fr/". Use "/" to keep the main URL for the default language. Add language specific suffixes to use those, or configure complete URLs for independent domains.</source>
+        <target state="final">Defnyddiwch barth cymwys llawn "https://www.mydomain.fr/" neu "/ fr /". Defnyddiwch "/" i gadw'r prif URL ar gyfer yr iaith ddiofyn. Ychwanegwch ôl-ddodiadau iaith-benodol i ddefnyddio'r rheini, neu ffurfweddu URLau cyflawn ar gyfer parthau annibynnol.</target>
+      </trans-unit>
+      <trans-unit id="site_language.locale" resname="site_language.locale" approved="yes">
+        <source>Used for localized date and currency formats. E.g. "de_DE" or "en_US.UTF-8".</source>
+        <target state="final">Defnyddir ar gyfer fformatau dyddiad ac arian cyfred lleol. Ee "de_DE" neu "en_US.UTF-8".</target>
+      </trans-unit>
+      <trans-unit id="site_language.iso-639-1" resname="site_language.iso-639-1" approved="yes">
+        <source>ISO 639-1 code of the Language</source>
+        <target state="final">Cod Iaith ISO 639-1</target>
+      </trans-unit>
+      <trans-unit id="site_language.hreflang" resname="site_language.hreflang" approved="yes">
+        <source>Used within for "lang" and "hreflang" attributes</source>
+        <target state="final">Defnyddir o fewn priodoleddau "lang" a "hreflang"</target>
+      </trans-unit>
+      <trans-unit id="site_language.navigationTitle" resname="site_language.navigationTitle" approved="yes">
+        <source>Used within language-related menus</source>
+        <target state="final">Defnyddir o fewn bwydlenni sy'n gysylltiedig ag iaith</target>
+      </trans-unit>
+      <trans-unit id="site_language.direction" resname="site_language.direction" approved="yes">
+        <source>Language direction for "dir" attribute</source>
+        <target state="final">Cyfeiriad iaith ar gyfer priodoledd "dir"</target>
+      </trans-unit>
+      <trans-unit id="site_language.typo3Language" resname="site_language.typo3Language" approved="yes">
+        <source>Select the language to be used from translation files. Keep default if no translation files are available.</source>
+        <target state="final">Dewiswch yr iaith i'w defnyddio o ffeiliau cyfieithu. Cadwch yn ddiofyn os nad oes ffeiliau cyfieithu ar gael.</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode" resname="site_errorhandling.errorCode" approved="yes">
+        <source>Make sure to have at least 0 (not defined otherwise) configured in order to serve helpful error messages to your visitors.</source>
+        <target state="final">Gwnewch yn siŵr bod o leiaf 0 (heb eu diffinio fel arall) wedi'u ffurfweddu er mwyn cyflwyno negeseuon gwall defnyddiol i'ch ymwelwyr.</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplate" resname="site_errorhandling.errorFluidTemplate" approved="yes">
+        <source>Path to the fluid template file given by absolute, relative path (from site root) or by referring the template file inside an extension with "EXT:" prefix.</source>
+        <target state="final">Llwybr i'r ffeil templed hylif a roddir trwy lwybr cymharol absoliwt (o wraidd y safle) neu trwy gyfeirio'r ffeil templed y tu mewn i estyniad gyda rhagddodiad "EXT:".</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorPhpClassFQCN" resname="site_errorhandling.errorPhpClassFQCN" approved="yes">
+        <source>Fully qualified class name to a class that implements the PageErrorHandlerInterface.</source>
+        <target state="final">Enw dosbarth cwbl gymwys i ddosbarth sy'n gweithredu'r PageErrorHandlerInterface.</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.base" resname="site_base_variant.base" approved="yes">
+        <source>For example "https://staging.domain.tld" or "http://www.domain.local"</source>
+        <target state="final">Er enghraifft "https: //staging.domain.tld" neu "http: //www.domain.local"</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition" resname="site_base_variant.condition" approved="yes">
+        <source>Expression to match this base variant.</source>
+        <target state="final">Mynegiant i gyd-fynd â'r amrywiad sylfaen hwn.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
