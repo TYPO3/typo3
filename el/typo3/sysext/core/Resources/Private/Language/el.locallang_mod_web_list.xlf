@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814881" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="el">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>List of database-records</source>
+        <target state="final">Λίστα των εγγραφών της βάσης δεδομένων</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>The Web&gt;List module provides low level access to records appearing on a page.</source>
+        <target state="final">Η μονάδα Ιστός&gt;Λίστα δίνει τη δυνατότητα χαμηλού επιπέδου πρόσβασης στις εγγραφές που εμφανίζονται σε μία σελίδα</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>List</source>
+        <target state="final">Λίστα</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteAfter" resname="clip_pasteAfter" approved="yes">
+        <source>Paste after: Clipboard content is inserted after this record</source>
+        <target state="final">Επικόληση μετά: Το περιεχόμενο του πρόχειρου εισάγεται μετά από αυτή την εγγραφή</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" resname="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted on this page</source>
+        <target state="final">Επικόληση εντός: Το περιεχόμενο του πρόχειρου εισάγετε μέσα σε αυτή τη σελίδα</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" resname="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">Επικόληση του περιεχομένου του πρόχειρου</target>
+      </trans-unit>
+      <trans-unit id="clip_markRecords" resname="clip_markRecords" approved="yes">
+        <source>Mark All/Mark none</source>
+        <target state="final">Σημείωση Όλων/Σημείωση κανενός</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" resname="clip_selectMarked" approved="yes">
+        <source>Transfer the selection of records to clipboard</source>
+        <target state="final">Μεταφορά των επιλεγμένων εγγραφών στο πρόχειρο</target>
+      </trans-unit>
+      <trans-unit id="clip_duplicates" resname="clip_duplicates" approved="yes">
+        <source>Mark duplicates</source>
+        <target state="final">Σημείωση διπλότυπων</target>
+      </trans-unit>
+      <trans-unit id="clip_editMarked" resname="clip_editMarked" approved="yes">
+        <source>Edit marked</source>
+        <target state="final">Επεξεργασία σημειωμένων</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" resname="clip_deleteMarked" approved="yes">
+        <source>Delete marked</source>
+        <target state="final">Διαγραφή σημειωμένων</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarkedWarning" resname="clip_deleteMarkedWarning" approved="yes">
+        <source>Are you sure you want to delete all marked records from the table '%s'?</source>
+        <target state="final">Είστε σίγουρος ότι θέλετε να διαγράψετε όλες τις σημειωμένες εγγραφές από τον πίνακα '%s';</target>
+      </trans-unit>
+      <trans-unit id="showInfo" resname="showInfo" approved="yes">
+        <source>Display information</source>
+        <target state="final">Εμφάνιση πληροφοριών</target>
+      </trans-unit>
+      <trans-unit id="edit" resname="edit" approved="yes">
+        <source>Edit record</source>
+        <target state="final">Επεξεργασία εγγραφής</target>
+      </trans-unit>
+      <trans-unit id="editPage" resname="editPage" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">Επεξεργασία ιδιοτήτων σελίδας</target>
+      </trans-unit>
+      <trans-unit id="new" resname="new" approved="yes">
+        <source>New record</source>
+        <target state="final">Νέα εγγραφή</target>
+      </trans-unit>
+      <trans-unit id="newPage" resname="newPage" approved="yes">
+        <source>Create new page after this page</source>
+        <target state="final">Δημιουργία νέας σελιδας μετά από αυτή τη σελίδα</target>
+      </trans-unit>
+      <trans-unit id="newRecord" resname="newRecord" approved="yes">
+        <source>Create new record after this record</source>
+        <target state="final">Δημιουργία νέας εγγραφής μετά από αυτή την εγγραφή</target>
+      </trans-unit>
+      <trans-unit id="newRecordGeneral" resname="newRecordGeneral" approved="yes">
+        <source>Create new record</source>
+        <target state="final">Δημιουργία Νέας εγγραφής</target>
+      </trans-unit>
+      <trans-unit id="moveUp" resname="moveUp" approved="yes">
+        <source>Move up in list</source>
+        <target state="final">Μεταφορά προς τα επάνω στη λίστα</target>
+      </trans-unit>
+      <trans-unit id="moveDown" resname="moveDown" approved="yes">
+        <source>Move down in list</source>
+        <target state="final">Μεταφορά προς τα κάτω στη λίστα</target>
+      </trans-unit>
+      <trans-unit id="move_record" resname="move_record" approved="yes">
+        <source>Re-position content element</source>
+        <target state="final">Αλλαγή θέσης στοιχείου περιεχομένου</target>
+      </trans-unit>
+      <trans-unit id="move_page" resname="move_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">Μεταφροά σελίδας</target>
+      </trans-unit>
+      <trans-unit id="hide" resname="hide" approved="yes">
+        <source>Hide record</source>
+        <target state="final">Απόκρυψη εγγραφής</target>
+      </trans-unit>
+      <trans-unit id="unHide" resname="unHide" approved="yes">
+        <source>Un-hide record</source>
+        <target state="final">Μη-απόκρυψη εγγραφής</target>
+      </trans-unit>
+      <trans-unit id="hidePage" resname="hidePage" approved="yes">
+        <source>Hide page</source>
+        <target state="final">Απόκρυψη σελίδας</target>
+      </trans-unit>
+      <trans-unit id="unHidePage" resname="unHidePage" approved="yes">
+        <source>Un-hide page</source>
+        <target state="final">Μη-απόκρυψη σελίδας</target>
+      </trans-unit>
+      <trans-unit id="prevLevel" resname="prevLevel" approved="yes">
+        <source>Move this page to the position after the current parent page (Inwards)</source>
+        <target state="final">Μετακίνηση αυτής της σελίδας στην θέση μετά την τρέxουχα σελίδα-γονέα (Προς τα μέσα)</target>
+      </trans-unit>
+      <trans-unit id="nextLevel" resname="nextLevel" approved="yes">
+        <source>Move this page to be a subpage of the page above (Outwards)</source>
+        <target state="final">Μετακίνηση αυτής της σελίδας έτσι ώστε να είναι υποσελίδα της παραπάνω σελίδας (Προς τα έξω)</target>
+      </trans-unit>
+      <trans-unit id="delete" resname="delete" approved="yes">
+        <source>Delete record (!)</source>
+        <target state="final">Διαγραφή εγγραφής (!)</target>
+      </trans-unit>
+      <trans-unit id="history" resname="history" approved="yes">
+        <source>Display change history / Un-do</source>
+        <target state="final">Εμφάνιση ιστορικού αλλαγών / Αναίρεση</target>
+      </trans-unit>
+      <trans-unit id="displayVersions" resname="displayVersions" approved="yes">
+        <source>Display versions</source>
+        <target state="final">Εμφάνιση εκδόσεων</target>
+      </trans-unit>
+      <trans-unit id="permissions" resname="permissions" approved="yes">
+        <source>Set permissions for page</source>
+        <target state="final">Καθορισμός αδειών για την σελίδα</target>
+      </trans-unit>
+      <trans-unit id="largeControl" resname="largeControl" approved="yes">
+        <source>Extended view</source>
+        <target state="final">Εκτεταμένη προβολή</target>
+      </trans-unit>
+      <trans-unit id="contractView" resname="contractView" approved="yes">
+        <source>List all tables</source>
+        <target state="final">Εμφάνιση περιεχομένων όλων των πινάκων</target>
+      </trans-unit>
+      <trans-unit id="expandView" resname="expandView" approved="yes">
+        <source>List only this table</source>
+        <target state="final">Εμφάνιση περιεχομένων μόνο αυτού του πίνακα</target>
+      </trans-unit>
+      <trans-unit id="showClipBoard" resname="showClipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">Εμφάνιση πρόχειρου</target>
+      </trans-unit>
+      <trans-unit id="editShownColumns" resname="editShownColumns" approved="yes">
+        <source>Edit all shown fields of the listed records</source>
+        <target state="final">Επεξεργασία όλων των εμφανιζόμενων πεδίων των εγγραφών που εμφανίζονται</target>
+      </trans-unit>
+      <trans-unit id="editThisColumn" resname="editThisColumn" approved="yes">
+        <source>Edit the '%s' field of the listed records</source>
+        <target state="final">Επεξεργασία του '%s' πεδίου των εγγραφών που εμφανίζονται</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" resname="deleteWarning" approved="yes">
+        <source>Are you sure you want to delete this record?</source>
+        <target state="final">Είστε σίγουρος ότι θέλετε να διαγράψετε αυτή την εγγραφή;</target>
+      </trans-unit>
+      <trans-unit id="localization" resname="localization" approved="yes">
+        <source>Localization view</source>
+        <target state="final">Προβολή τοπικοποίησης</target>
+      </trans-unit>
+      <trans-unit id="defaultLanguage" resname="defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">Προεπιλεγμένο</target>
+      </trans-unit>
+      <trans-unit id="multipleLanguages" resname="multipleLanguages" approved="yes">
+        <source>All languages</source>
+        <target state="final">Όλες οι γλώσσες</target>
+      </trans-unit>
+      <trans-unit id="viewRecords" resname="viewRecords" approved="yes">
+        <source>Viewing records of</source>
+        <target state="final">Εμφανίζονται εγγραφές από</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
