@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814889" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_view_help.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="he">
+    <header/>
+    <body>
+      <trans-unit id="details" resname="details" approved="yes">
+        <source>Details</source>
+        <target state="final">פרטים</target>
+      </trans-unit>
+      <trans-unit id="syntax" resname="syntax" approved="yes">
+        <source>Syntax</source>
+        <target state="final">תחביר</target>
+      </trans-unit>
+      <trans-unit id="seeAlso" resname="seeAlso" approved="yes">
+        <source>See also</source>
+        <target state="final">ראה גם</target>
+      </trans-unit>
+      <trans-unit id="goBack" resname="goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">עבור חזרה</target>
+      </trans-unit>
+      <trans-unit id="fullDescription" resname="fullDescription" approved="yes">
+        <source>See full description of table</source>
+        <target state="final">ראה תיאור מלא של טבלה</target>
+      </trans-unit>
+      <trans-unit id="fullDescription_module" resname="fullDescription_module" approved="yes">
+        <source>See full description of module</source>
+        <target state="final">ראה תיאור מלא של מודול</target>
+      </trans-unit>
+      <trans-unit id="goToToc" resname="goToToc" approved="yes">
+        <source>&lt;&lt; go to Manual Index</source>
+        <target state="final">עבור לאינדקס עזרה</target>
+      </trans-unit>
+      <trans-unit id="to_top" resname="to_top" approved="yes">
+        <source>To top</source>
+        <target state="final">לראש</target>
+      </trans-unit>
+      <trans-unit id="TOC" resname="TOC" approved="yes">
+        <source>Table Of Contents</source>
+        <target state="final">טבלת התכנים</target>
+      </trans-unit>
+      <trans-unit id="TOC_core" resname="TOC_core" approved="yes">
+        <source>TYPO3 Core Features</source>
+        <target state="final">מאפיינים עיקריים של TYPO3</target>
+      </trans-unit>
+      <trans-unit id="TOC_tables" resname="TOC_tables" approved="yes">
+        <source>Database Tables</source>
+        <target state="final">טבלאות מאגר מידע</target>
+      </trans-unit>
+      <trans-unit id="TOC_extensions" resname="TOC_extensions" approved="yes">
+        <source>Extensions</source>
+        <target state="final">תוספות</target>
+      </trans-unit>
+      <trans-unit id="TOC_other" resname="TOC_other" approved="yes">
+        <source>Other</source>
+        <target state="final">אחר</target>
+      </trans-unit>
+      <trans-unit id="close" resname="close" approved="yes">
+        <source>Close</source>
+        <target state="final">סגור</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>TYPO3 Inline Help</source>
+        <target state="final">עזרה באינטרנט</target>
+      </trans-unit>
+      <trans-unit id="introduction" resname="introduction" approved="yes">
+        <source>Introduction</source>
+        <target state="final">מבוא</target>
+      </trans-unit>
+      <trans-unit id="full_manual" resname="full_manual" approved="yes">
+        <source>Full Manual (in one page)</source>
+        <target state="final">הוראות שימוש המלאות (בדף אחד)</target>
+      </trans-unit>
+      <trans-unit id="full_manual_chapters" resname="full_manual_chapters" approved="yes">
+        <source>Manual Chapters</source>
+        <target state="final">ראשי פרקים של הוראות שימוש</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
