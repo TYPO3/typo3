@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814988" source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="tx_scheduler_task_group" resname="tx_scheduler_task_group">
+        <source>Scheduler task group</source>
+        <target>crwdns78912:0crwdne78912:0</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.groupName" resname="tx_scheduler_task_group.groupName">
+        <source>Group name</source>
+        <target>crwdns78914:0crwdne78914:0</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.description" resname="tx_scheduler_task_group.description">
+        <source>Description</source>
+        <target>crwdns78916:0crwdne78916:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
