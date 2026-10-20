@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf" date="2017-12-29T20:23:34Z" product-name="redirects" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="heading_text" approved="yes">
+        <source>Redirect Management</source>
+        <target state="final">Gerenciamento de Redirecionamento</target>
+      </trans-unit>
+      <trans-unit id="redirect_add_text" approved="yes">
+        <source>Add redirect</source>
+        <target state="final">Adicionar redirecionamento</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found.title" approved="yes">
+        <source>No redirects found</source>
+        <target state="final">Nenhum redirecionamento encontrado</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found.message" approved="yes">
+        <source>There are currently no redirect records found in the database.</source>
+        <target state="final">Não há nenhum registro de redirecionamento encontrado no banco de dados.</target>
+      </trans-unit>
+      <trans-unit id="redirect_create" approved="yes">
+        <source>Create new redirect</source>
+        <target state="final">Criar novo redirecionamento</target>
+      </trans-unit>
+      <trans-unit id="redirect_not_found_with_filter.title" approved="yes">
+        <source>No redirects found</source>
+        <target state="final">Nenhum redirecionamento encontrado</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
