@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:35Z" product-name="reports" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="reports_overview">
+        <source>Reports overview</source>
+        <target>crwdns211322:0crwdne211322:0</target>
+      </trans-unit>
+      <trans-unit id="choose_report">
+        <source>Report</source>
+        <target>crwdns60800:0crwdne60800:0</target>
+      </trans-unit>
+      <trans-unit id="noReportsTitle">
+        <source>No registered reports</source>
+        <target>crwdns211324:0crwdne211324:0</target>
+      </trans-unit>
+      <trans-unit id="noReportsMessage">
+        <source>There are no reports registered in the system and default reports have been disabled.</source>
+        <target>crwdns211326:0crwdne211326:0</target>
+      </trans-unit>
+      <trans-unit id="link.openModule">
+        <source>Open</source>
+        <target>crwdns339812:0crwdne339812:0</target>
+      </trans-unit>
+      <trans-unit id="link.openModuleWithTitle">
+        <source>Open %1s</source>
+        <target>crwdns339814:0%1scrwdne339814:0</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.title">
+        <source>Content Statistics</source>
+        <target>crwdns393906:0crwdne393906:0</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.shortDescription">
+        <source>Shows statistics about used content elements</source>
+        <target>crwdns393908:0crwdne393908:0</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.description">
+        <source>Provides an overview of all content element types, showing how often each appears across the site. Includes summaries per type.</source>
+        <target>crwdns393910:0crwdne393910:0</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic">
+        <source>Statistics</source>
+        <target>crwdns393912:0crwdne393912:0</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.header">
+        <source>Existing Content Element Types</source>
+        <target>crwdns393914:0crwdne393914:0</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.description">
+        <source>The listed content elements include both visible and hidden records.</source>
+        <target>crwdns393916:0crwdne393916:0</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.explanation">
+        <source>Keep in mind that some elements may not appear on any page, and others might be rendered by alternative methods (TypoScript, ViewHelpers, etc.). As a result, it is not technically possible to determine actual usage.</source>
+        <target>crwdns393918:0crwdne393918:0</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.error">
+        <source>The content element database table's schema ("tt_content") could not be analyzed due to a missing or disabled schema type.</source>
+        <target>crwdns393920:0crwdne393920:0</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.unusedElements.header">
+        <source>Unused content elements</source>
+        <target>crwdns393922:0crwdne393922:0</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.unusedElements.description">
+        <source>This list includes content element types that are not used anywhere, or whose existing instances are all flagged as deleted.</source>
+        <target>crwdns393924:0crwdne393924:0</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.fields">
+        <source>%d fields</source>
+        <target>crwdns393926:0%dcrwdne393926:0</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.type">
+        <source>Type</source>
+        <target>crwdns393928:0crwdne393928:0</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.excluded">
+        <source>Excluded</source>
+        <target>crwdns393930:0crwdne393930:0</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.not_excluded">
+        <source>Always visible</source>
+        <target>crwdns394288:0crwdne394288:0</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.required">
+        <source>Required</source>
+        <target>crwdns393932:0crwdne393932:0</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic.active_text">
+        <source>%d active / %d hidden</source>
+        <target>crwdns393934:0%dcrwdnd393934:0%dcrwdne393934:0</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic.deleted_text">
+        <source>%d deleted</source>
+        <target>crwdns393936:0%dcrwdne393936:0</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic.deleted">
+        <source>Deleted</source>
+        <target>crwdns393938:0crwdne393938:0</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.records">
+        <source>Records</source>
+        <target>crwdns393940:0crwdne393940:0</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.noRecords">
+        <source>No records found</source>
+        <target>crwdns393942:0crwdne393942:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
