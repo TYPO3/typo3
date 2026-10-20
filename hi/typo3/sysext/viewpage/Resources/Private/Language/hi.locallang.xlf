@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:viewpage/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="viewpage" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="width" approved="yes">
+        <source>Width</source>
+        <target state="final">चौड़ाई</target>
+      </trans-unit>
+      <trans-unit id="tablet" approved="yes">
+        <source>Tablet</source>
+        <target state="final">टेबलेट</target>
+      </trans-unit>
+      <trans-unit id="tabletLandscape" approved="yes">
+        <source>Tablet landscape</source>
+        <target state="final">टैबलेट लैंडस्केप</target>
+      </trans-unit>
+      <trans-unit id="tabletPortrait" approved="yes">
+        <source>Tablet portrait</source>
+        <target state="final">टैबलेट पोर्ट्रेट</target>
+      </trans-unit>
+      <trans-unit id="mobile" approved="yes">
+        <source>Mobile</source>
+        <target state="final">मोबाइल</target>
+      </trans-unit>
+      <trans-unit id="desktop" approved="yes">
+        <source>Desktop</source>
+        <target state="final">डेस्कटॉप</target>
+      </trans-unit>
+      <trans-unit id="customWidth" approved="yes">
+        <source>Custom Size</source>
+        <target state="final">कस्टम साइज</target>
+      </trans-unit>
+      <trans-unit id="autoSize" approved="yes">
+        <source>Auto Size</source>
+        <target state="final">ऑटो साइज़</target>
+      </trans-unit>
+      <trans-unit id="refreshPage" approved="yes">
+        <source>Refresh page</source>
+        <target state="final">पेज ताज़ा करें</target>
+      </trans-unit>
+      <trans-unit id="language" approved="yes">
+        <source>Language</source>
+        <target state="final">भाषा</target>
+      </trans-unit>
+      <trans-unit id="automatic" approved="yes">
+        <source>Automatic</source>
+        <target state="final">स्वचालित</target>
+      </trans-unit>
+      <trans-unit id="maximized" approved="yes">
+        <source>Maximized</source>
+        <target state="final">अधिकतम</target>
+      </trans-unit>
+      <trans-unit id="custom" approved="yes">
+        <source>Custom</source>
+        <target state="final">कस्टम</target>
+      </trans-unit>
+      <trans-unit id="unidentified" approved="yes">
+        <source>Unidentified</source>
+        <target state="final">अज्ञात</target>
+      </trans-unit>
+      <trans-unit id="noValidPageSelected" approved="yes">
+        <source>Please select a page with a valid page type in the page tree to get a preview of it in different screen resolutions.</source>
+        <target state="final">कृपया पृष्ठ वृक्ष में एक मान्य पृष्ठ प्रकार के साथ एक पृष्ठ चुनें ताकि आपको इसका पूर्वावलोकन विभिन्न स्क्रीन रिज़ॉल्यूशन में मिल सके।</target>
+      </trans-unit>
+      <trans-unit id="noSiteConfiguration" approved="yes">
+        <source>The requested page is missing a valid site configuration.</source>
+        <target state="final">अनुरोधित पृष्ठ में एक मान्य साइट कॉन्फ़िगरेशन की कमी है।</target>
+      </trans-unit>
+      <trans-unit id="iframe.title" approved="yes">
+        <source>View selected page in different screen resolutions</source>
+        <target state="final">चयनित पृष्ठ को विभिन्न स्क्रीन रिज़ॉल्यूशन में देखें</target>
+      </trans-unit>
+      <trans-unit id="moduleMenu.dropdown.label" approved="yes">
+        <source>Page language</source>
+        <target state="final">पृष्ठ भाषा</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
