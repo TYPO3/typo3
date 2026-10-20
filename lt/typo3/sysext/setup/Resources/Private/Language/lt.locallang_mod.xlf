@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814991" source-language="en" datatype="plaintext" original="EXT:setup/Resources/Private/Language/locallang_mod.xlf" date="2011-10-17T20:22:37Z" product-name="setup" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Personal user setup</source>
+        <target state="final">Asmeniniai naudotojo nustatymai</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>This module allows you to customize your backend user profile. Here you can change your active system language, name and email address. You may also configure other general features in the system.</source>
+        <target state="final">Šis modulis leidžia pritaikyti jūsų administravimo sąsajos naudotojo profilį. Čia galite pakeisti aktyvią sistemos kalbą, vardą ir el. pašto adresą. Taip pat galite konfigūruoti kitas bendras sistemos funkcijas.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
