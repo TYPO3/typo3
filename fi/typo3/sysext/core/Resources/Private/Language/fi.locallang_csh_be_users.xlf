@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814853" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_be_users.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="fi">
+    <header/>
+    <body>
+      <trans-unit id="username.details" resname="username.details" approved="yes">
+        <source>A username is required and must be in lowercase without spaces in it. Furthermore the username must be unique. If it is not unique a number will be appended automatically.</source>
+        <target state="final">Käyttäjätunnus on pakollinen, pienin kirjaimin ja ilman välilyöntejä. Käyttäjätunnuksen on oltava lisäksi yksilöllinen. Jos tunnus ei ole yksilöllinen lisätään siihen automaattisesti numero.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.details" resname="lockToDomain.details" approved="yes">
+        <source>A TYPO3 system may have multiple domains pointing to it. Therefore this option secures that users can login only from a certain host name.</source>
+        <target state="final">TYPO3 järjestelmässä voi olla monta domainia. Siksi tämä vaihtoehto varmistaa käyttäjän pääsevän vain hänelle sallittuihin.</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.description" resname="db_mountpoints.description" approved="yes">
+        <source>Assign startpoints for the users page tree.</source>
+        <target state="final">Määrittele puurakenteen aloituskohta käyttäjälle.</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints.description" resname="file_mountpoints.description" approved="yes">
+        <source>Assign startpoints for the file folder tree.</source>
+        <target state="final">Määrittele aloituskohdat tiedostohakemistolle rakenteelle.</target>
+      </trans-unit>
+      <trans-unit id="email.description" resname="email.description" approved="yes">
+        <source>Enter the email address of the user.</source>
+        <target state="final">Anna käyttäjän sähköpostiosoite.</target>
+      </trans-unit>
+      <trans-unit id="email.details" resname="email.details" xml:space="preserve" approved="yes">
+				<source>This address is rather important to enter because this is where messages from the system is sent.
+&lt;strong&gt;Notice&lt;/strong&gt; the user is able to change this value by himself from within the User&gt;Setup module.</source>
+			<target state="final">Tämä osoite on tärkeä koska siihen lähetetään järjestelmän viestit. &lt;strong&gt;Huomaa&lt;/strong&gt; käyttäjä voi muuttaa tätät tietoa itse Käyttäjä&gt;Asetukset (User&gt;Setup) aliohjelmasta.</target></trans-unit>
+      <trans-unit id="realName.description" resname="realName.description" approved="yes">
+        <source>Enter the ordinary name of the user, eg. John Doe.</source>
+        <target state="final">Anna käyttäjän oikea nimi, esim.Matti Meikäläinen.</target>
+      </trans-unit>
+      <trans-unit id="realName.details" resname="realName.details" approved="yes">
+        <source>&lt;strong&gt;Notice&lt;/strong&gt; the user is able to change this value by himself from within the User&gt;Setup module.</source>
+        <target state="final">&lt;strong&gt;Huomaa&lt;/strong&gt; käyttäjä voi itse muuttaa tätä arvoa Käyttäjä&gt;Asetukset (User&gt;Setup) aliohjelmasta.</target>
+      </trans-unit>
+      <trans-unit id="disable.description" resname="disable.description" approved="yes">
+        <source>This option will temporarily disable the user from logging in.</source>
+        <target state="final">Tämä vaihtoehto poistaa käyttäjän sisäänkirjoittautumis oikeuden väliaikaisesti.</target>
+      </trans-unit>
+      <trans-unit id="admin.description" resname="admin.description" approved="yes">
+        <source>'Admin' users have TOTAL access to the system!</source>
+        <target state="final">'Admin' käyttäjillä on TÄYDELLISET oikeudet järjestelmään!</target>
+      </trans-unit>
+      <trans-unit id="options.description" resname="options.description" approved="yes">
+        <source>Select if the user should inherit page tree or folder tree mountpoints from member groups.</source>
+        <target state="final">Valitse periikö käyttäjä sivujen puurakenteen tai hakemistopuun käyttäjäryhmältä.</target>
+      </trans-unit>
+      <trans-unit id="options.details" resname="options.details" xml:space="preserve" approved="yes">
+				<source>It's a great advantage to let users inherit mountpoints from membergroups because it makes administration of the same mountpoints for many users extremely easy.
+If you don't check these options, you must make sure the mount points for the page tree and file folder tree is set specifically for the user.</source>
+			<target state="final">On suuri etu antaa käyttäjien peri asetuskohdat käyttäjäryhmiltä koska se tekee samojen asetuskohtien hallinnan usealle käyttäjälle helpoksi. Jos et käytä näitä vaihtoehtoja, Sinun tulee varmistaa että sivurakenteen ja tiedostovalikoiden astukset ovat asetettu juuri tälle käyttäjälle.</target></trans-unit>
+      <trans-unit id="file_permissions.description" resname="file_permissions.description" approved="yes">
+        <source>Select file operation permissions for the user.</source>
+        <target state="final">Valitse mitkä tiedostotoiminnot ovat sallittuja käyttäjälle.</target>
+      </trans-unit>
+      <trans-unit id="fileoper_perms.description" resname="fileoper_perms.description" approved="yes">
+        <source>Select file operation permissions for the user.</source>
+        <target state="final">Valitse mitkä tiedostotoiminnot ovat sallittuja käyttäjälle.</target>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Enter the date from which the account is active.</source>
+        <target state="final">Valitse päiväys mistä alkaen käyttäjän tili on voimassa.</target>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>Enter the date from which the account is disabled.</source>
+        <target state="final">Valitse päiväys jolloin käyttäjän tili poistetaan (voimassaolo).</target>
+      </trans-unit>
+      <trans-unit id="lang.description" resname="lang.description" approved="yes">
+        <source>Select the &lt;i&gt;default&lt;/i&gt; language.</source>
+        <target state="final">Valitse oletuskieli.</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>Enter additional TSconfig for the user (advanced).</source>
+        <target state="final">Valitse TSconfig lisäykset käyttäjälle (laajennetut).</target>
+      </trans-unit>
+      <trans-unit id="allowed_languages.description" resname="allowed_languages.description" approved="yes">
+        <source>Select which record languages the group members are limited to edit.</source>
+        <target state="final">Valitse minkä kielisä tietueita ryhmän jäsenet voivat muokata.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
