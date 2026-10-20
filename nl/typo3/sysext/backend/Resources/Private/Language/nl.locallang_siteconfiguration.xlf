@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="overview.title" approved="yes">
+        <source>Setup</source>
+        <target state="final">Instellen</target>
+      </trans-unit>
+      <trans-unit id="overview.site" approved="yes">
+        <source>Site</source>
+        <target state="final">Site</target>
+      </trans-unit>
+      <trans-unit id="overview.siteIdentifier" approved="yes">
+        <source>Site identifier</source>
+        <target state="final">Website-identificatie</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.title" approved="yes">
+        <source>No root pages available</source>
+        <target state="final">Geen beginpagina's beschikbaar</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.message" approved="yes">
+        <source>Please create at least one root page in the Layout module. A root page must be a content page at the top level (not a folder or separator) or have the "Root Page" flag enabled (Page Properties → Behavior tab).</source>
+        <target state="final">Maak ten minste één beginpagina aan in de lay-out-module. Een beginpagina moet een pagina met content zijn op het hoogste niveau (niet een map of scheidingspagina) of de vlag "Root Pagina" ingeschakeld hebben (Pagina-eigenschappen → tab Gedrag).</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.link.label" approved="yes">
+        <source>Open the documentation</source>
+        <target state="final">Documentatie openen</target>
+      </trans-unit>
+      <trans-unit id="overview.addSiteConfiguration" approved="yes">
+        <source>Add new site configuration for this site</source>
+        <target state="final">Nieuwe site-configuratie toevoegen voor deze site</target>
+      </trans-unit>
+      <trans-unit id="overview.editSiteConfiguration" approved="yes">
+        <source>Edit site configuration</source>
+        <target state="final">Site-configuratie bewerken</target>
+      </trans-unit>
+      <trans-unit id="overview.editSiteSettings" approved="yes">
+        <source>Edit site settings</source>
+        <target state="final">Site-instellingen bewerken</target>
+      </trans-unit>
+      <trans-unit id="overview.editSiteSettingsUnavailable" approved="yes">
+        <source>This site provides no configurable settings</source>
+        <target state="final">Deze site biedt geen configureerbare instellingen</target>
+      </trans-unit>
+      <trans-unit id="overview.deleteSiteConfiguration" approved="yes">
+        <source>Delete site configuration</source>
+        <target state="final">Site-configuratie verwijderen</target>
+      </trans-unit>
+      <trans-unit id="overview.baseUrl" approved="yes">
+        <source>Base URL</source>
+        <target state="final">Basis URL</target>
+      </trans-unit>
+      <trans-unit id="overview.rootPagesWithoutSiteConfiguration.title" approved="yes">
+        <source>Pages without a site configuration</source>
+        <target state="final">Pagina's zonder site-configuratie</target>
+      </trans-unit>
+      <trans-unit id="overview.rootPagesWithoutSiteConfiguration.description" approved="yes">
+        <source>The following root pages have no site configuration:</source>
+        <target state="final">De volgende hoofdpagina's hebben geen site-configuratie:</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.title" approved="yes">
+        <source>Unassigned site configurations</source>
+        <target state="final">Niet-toegewezen siteconfiguraties</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.description" approved="yes">
+        <source>The following site configurations don't belong to any page anymore and can be removed.</source>
+        <target state="final">De volgende site-configuraties horen niet meer bij een pagina en kunnen verwijderd worden.</target>
+      </trans-unit>
+      <trans-unit id="overview.invalidSets.title" approved="yes">
+        <source>Invalid site set configurations</source>
+        <target state="final">Ongeldige site-set-configuraties</target>
+      </trans-unit>
+      <trans-unit id="overview.invalidSets.description" approved="yes">
+        <source>The following site sets contain errors and therefore could not be loaded.</source>
+        <target state="final">De volgende site-sets bevatten fouten en konden daarom niet worden geladen.</target>
+      </trans-unit>
+      <trans-unit id="overview.invalidSets.set" approved="yes">
+        <source>Set</source>
+        <target state="final">Set</target>
+      </trans-unit>
+      <trans-unit id="overview.invalidSets.error" approved="yes">
+        <source>Error</source>
+        <target state="final">Fout</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedEntryPoints" approved="yes">
+        <source>Duplicated Entrypoints</source>
+        <target state="final">Dubbele beginpunten</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedEntryPoints.listing" approved="yes">
+        <source>The following entry points are used more than once:</source>
+        <target state="final">De volgende startpunten worden meer dan één keer gebruikt:</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedRootPage" approved="yes">
+        <source>Duplicated root pages</source>
+        <target state="final">Gedupliceerde root-pagina's</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedRootPage.message" approved="yes">
+        <source>The page with ID "%1s" is used in the following site configurations:</source>
+        <target state="final">De pagina met ID "%1s" wordt gebruikt in de volgende siteconfiguraties:</target>
+      </trans-unit>
+      <trans-unit id="overview.btn.details" approved="yes">
+        <source>View details</source>
+        <target state="final">Details weergeven</target>
+      </trans-unit>
+      <trans-unit id="overview.entry_point" approved="yes">
+        <source>Entry Point</source>
+        <target state="final">Beginpunt</target>
+      </trans-unit>
+      <trans-unit id="overview.error_handling" approved="yes">
+        <source>Error handling</source>
+        <target state="final">Foutafhandeling</target>
+      </trans-unit>
+      <trans-unit id="overview.status.title" approved="yes">
+        <source>Status</source>
+        <target state="final">Status</target>
+      </trans-unit>
+      <trans-unit id="overview.info.all_sites.multiple" approved="yes">
+        <source><![CDATA[The installation includes <strong>%s configured sites</strong>.]]></source>
+        <target state="final"><![CDATA[De installatie bevat <strong>%s geconfigureerde sites</strong>.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.all_sites.single" approved="yes">
+        <source><![CDATA[The installation includes <strong>%s configured site</strong>.]]></source>
+        <target state="final"><![CDATA[De installatie bevat <strong>%s geconfigureerde site</strong>.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.root_pages_without_site_sonfiguration.multiple" approved="yes">
+        <source><![CDATA[<strong>%s root pages</strong> are lacking a site configuration.]]></source>
+        <target state="final"><![CDATA[<strong>%s beginpagina's</strong> hebben geen site-instellingen.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.root_pages_without_site_sonfiguration.single" approved="yes">
+        <source><![CDATA[<strong>%s page</strong> is lacking a site configuration.]]></source>
+        <target state="final"><![CDATA[<strong>%s pagina</strong> heeft geen site configuratie.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.unassigned_sites.multiple" approved="yes">
+        <source><![CDATA[There are currently <strong>%s site configurations</strong> that are not assigned to any page.]]></source>
+        <target state="final"><![CDATA[Er zijn momenteel <strong>%s site configuraties</strong> die aan geen enkele pagina zijn toegewezen.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.info.unassigned_sites.single" approved="yes">
+        <source><![CDATA[There is currently <strong>%s site configuration</strong> that is not assigned to any page.]]></source>
+        <target state="final"><![CDATA[Er is momenteel <strong>%s site-configuratie</strong> die aan geen enkele pagina is toegewezen.]]></target>
+      </trans-unit>
+      <trans-unit id="overview.languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">Talen</target>
+      </trans-unit>
+      <trans-unit id="overview.languages.amount" approved="yes">
+        <source>and %s more</source>
+        <target state="final">en %s meer</target>
+      </trans-unit>
+      <trans-unit id="overview.root_pages_without_site_configuration.title" approved="yes">
+        <source>Sites</source>
+        <target state="final">Sites</target>
+      </trans-unit>
+      <trans-unit id="overview.site_sets" approved="yes">
+        <source>Dependencies to site sets</source>
+        <target state="final">Afhankelijkheden van sitesets</target>
+      </trans-unit>
+      <trans-unit id="overview.site_sets.yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Ja</target>
+      </trans-unit>
+      <trans-unit id="overview.static_routes" approved="yes">
+        <source>Static routes</source>
+        <target state="final">Statische routes</target>
+      </trans-unit>
+      <trans-unit id="overview.no_sites_with_site_configuration.title" approved="yes">
+        <source>No configured sites available</source>
+        <target state="final">Geen geconfigureerde sites beschikbaar</target>
+      </trans-unit>
+      <trans-unit id="overview.no_sites_with_site_configuration.message" approved="yes">
+        <source>At least one root page must have a site configuration.</source>
+        <target state="final">Ten minste één beginpagina moet een site-configuratie hebben.</target>
+      </trans-unit>
+      <trans-unit id="overview.none" approved="yes">
+        <source>None</source>
+        <target state="final">Geen</target>
+      </trans-unit>
+      <trans-unit id="detail.headline_with_site_identifier" approved="yes">
+        <source>Setup of "%s"</source>
+        <target state="final">Set-up van "%s"</target>
+      </trans-unit>
+      <trans-unit id="detail.headline_with_page_title" approved="yes">
+        <source>Setup of site "%s"</source>
+        <target state="final">Set-up van site "%s"</target>
+      </trans-unit>
+      <trans-unit id="detail.not_configured" approved="yes">
+        <source>Not configured.</source>
+        <target state="final">Niet geconfigureerd.</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.error_handling" approved="yes">
+        <source>Error handling</source>
+        <target state="final">Foutafhandeling</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.headline" approved="yes">
+        <source>Site configuration</source>
+        <target state="final">Siteconfiguratie</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">Talen</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.languages.language" approved="yes">
+        <source>Language</source>
+        <target state="final">Taal</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.languages.language_url" approved="yes">
+        <source>Full URL prefix</source>
+        <target state="final">Volledige URL-voorvoegsel</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.static_routes" approved="yes">
+        <source>Static routes</source>
+        <target state="final">Statische routes</target>
+      </trans-unit>
+      <trans-unit id="detail.site_configuration.route_enhancers" approved="yes">
+        <source>Route enhancers</source>
+        <target state="final">Routing-uitbreidingen</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.active_settings.headline" approved="yes">
+        <source>Active settings</source>
+        <target state="final">Actieve instellingen</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.active_settings.custom_site_settings" approved="yes">
+        <source>Settings within site configuration (e.g. via 'settings.yaml')</source>
+        <target state="final">Instellingen binnen de siteconfiguratie (bijv. via 'settings.yaml')</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.dependencies.headline" approved="yes">
+        <source>Dependencies</source>
+        <target state="final">Afhankelijkheden</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.dependencies.text" approved="yes">
+        <source><![CDATA[Settings can be stored directly via the site configuration, or indirectly by loading them as a dependency of another site set.<br>The following dependencies are stored in the site configuration:]]></source>
+        <target state="final"><![CDATA[Instellingen kunnen direct worden opgeslagen via de siteconfiguratie, of indirect door ze als afhankelijkheid van een andere site te laden.<br>De volgende afhankelijkheden worden opgeslagen in de site configuratie:]]></target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.headline" approved="yes">
+        <source>Site settings</source>
+        <target state="final">Site-instellingen</target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.no_settings_found.message" approved="yes">
+        <source><![CDATA[Settings are listed here as soon as they are either present in a <code>settings.yaml</code> file in the site folder or there is one or more dependencies on site sets in the site configuration.]]></source>
+        <target state="final"><![CDATA[Instellingen worden hier weergegeven zodra ze ofwel aanwezig zijn in een <code>settings.yaml</code> bestand in de sitemap of zodra er een of meer afhankelijkheden van de site-sets in de siteconfiguratie zitten.]]></target>
+      </trans-unit>
+      <trans-unit id="detail.site_settings.no_settings_found.title" approved="yes">
+        <source>No site settings were found for this site</source>
+        <target state="final">Er zijn geen site-instellingen gevonden voor deze site</target>
+      </trans-unit>
+      <trans-unit id="edit.editSiteSettings" approved="yes">
+        <source>Edit site settings</source>
+        <target state="final">Site-instellingen bewerken</target>
+      </trans-unit>
+      <trans-unit id="edit.site_configuration" approved="yes">
+        <source>Edit site configuration</source>
+        <target state="final">Site-configuratie bewerken</target>
+      </trans-unit>
+      <trans-unit id="edit.typeLabel" approved="yes">
+        <source>Site configuration</source>
+        <target state="final">Siteconfiguratie</target>
+      </trans-unit>
+      <trans-unit id="edit.createNewSite" approved="yes">
+        <source>Create new site</source>
+        <target state="final">Nieuwe site aanmaken</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.title" approved="yes">
+        <source>Renamed identifier</source>
+        <target state="final">Identificatie hernoemd</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.message" approved="yes">
+        <source>Given site identifier "%1s" already exists. It has been renamed to "%2s". Maybe you want to edit the site again and give it a better name.</source>
+        <target state="final">De opgegeven site-identificatie "%1s" bestaat al. Het is hernoemd naar "%2s". De site kan opnieuw bewerkt worden en een betere naam krijgen.</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.title" approved="yes">
+        <source>Identifier not changed</source>
+        <target state="final">Identificatie niet gewijzigd</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.message" approved="yes">
+        <source>Given site identifier "%1s" already exists and points to a different site. The existing identifier "%2s" for this site is kept.</source>
+        <target state="final">De opgegeven site-ID "%1s" bestaat al en verwijst naar een andere site. De bestaande ID "%2s" voor deze site wordt aangehouden.</target>
+      </trans-unit>
+      <trans-unit id="validation.required.title" approved="yes">
+        <source>Site configuration not saved</source>
+        <target state="final">Site-configuratie niet opgeslagen</target>
+      </trans-unit>
+      <trans-unit id="validation.required.message" approved="yes">
+        <source>Field "%1s" is a required field, but no value has been provided.</source>
+        <target state="final">Veld "%1s" is een verplicht veld maar was niet ingevuld.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.title" approved="yes">
+        <source>Duplicate error code removed</source>
+        <target state="final">Dubbele foutcode verwijderd</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.message" approved="yes">
+        <source>Two error handler configurations for error code "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">Twee configuraties voor foutafhandeling gevonden voor foutcode "%1s". Dit is een incorrect configuratie, the extra configuratie is verwijderd.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.title" approved="yes">
+        <source>Duplicate language configuration removed</source>
+        <target state="final">Dubbele taalconfiguratie verwijderd</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.message" approved="yes">
+        <source>Two language configurations for language "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">Twee configuraties voor taal "%1s" gevonden. Dit is een ongeldige configuratie, de extra configuratie is verwijderd.</target>
+      </trans-unit>
+      <trans-unit id="labels.detail" approved="yes">
+        <source>View Site Configuration "%s"</source>
+        <target state="final">Siteconfiguratie "%s" bekijken</target>
+      </trans-unit>
+      <trans-unit id="contextMenu.editSiteSettings" approved="yes">
+        <source>Edit Site Settings</source>
+        <target state="final">Site-instellingen bewerken</target>
+      </trans-unit>
+      <trans-unit id="contextMenu.editSiteConfiguration" approved="yes">
+        <source>Edit Site</source>
+        <target state="final">Site bewerken</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
