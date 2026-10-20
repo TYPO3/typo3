@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="close" approved="yes">
+        <source>Close</source>
+        <target state="final">Sluiten</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Dashboard</source>
+        <target state="final">Dashboard</target>
+      </trans-unit>
+      <trans-unit id="widget.add" approved="yes">
+        <source>Add widget</source>
+        <target state="final">Widget toevoegen</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard" approved="yes">
+        <source>Add widget to "%s"</source>
+        <target state="final">Widget toevoegen aan "%s"</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard.searchLabel" approved="yes">
+        <source>Search for dashboard widgets</source>
+        <target state="final">Zoeken naar dashboard widgets</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard.searchNotFound" approved="yes">
+        <source>Unfortunately no dashboard widget matches your query, please try a different one.</source>
+        <target state="final">Helaas is er geen record type dat overeenkomt met de zoekopdracht, probeer een andere.</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard.userNotAllowed" approved="yes">
+        <source>No widgets are available with your current permissions.</source>
+        <target state="final">Er zijn geen widgets beschikbaar met de huidige rechten.</target>
+      </trans-unit>
+      <trans-unit id="widget.add.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Sluiten</target>
+      </trans-unit>
+      <trans-unit id="widget.add.button.ok" approved="yes">
+        <source>Add widget</source>
+        <target state="final">Widget toevoegen</target>
+      </trans-unit>
+      <trans-unit id="widget.refresh" approved="yes">
+        <source>Refresh Widget</source>
+        <target state="final">Widget verversen</target>
+      </trans-unit>
+      <trans-unit id="widget.settings" approved="yes">
+        <source>Widget Settings</source>
+        <target state="final">Widgetinstellingen</target>
+      </trans-unit>
+      <trans-unit id="widget.settings.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Sluiten</target>
+      </trans-unit>
+      <trans-unit id="widget.settings.button.save" approved="yes">
+        <source>Save</source>
+        <target state="final">Opslaan</target>
+      </trans-unit>
+      <trans-unit id="widget.settings.unchanged" approved="yes">
+        <source>Settings unchanged</source>
+        <target state="final">Instellingen ongewijzigd</target>
+      </trans-unit>
+      <trans-unit id="widget.move" approved="yes">
+        <source>Move Widget</source>
+        <target state="final">Widget verplaatsen</target>
+      </trans-unit>
+      <trans-unit id="widget.remove" approved="yes">
+        <source>Remove Widget</source>
+        <target state="final">Widget verwijderen</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Sluiten</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.button.ok" approved="yes">
+        <source>Remove</source>
+        <target state="final">Verwijderen</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.confirm.title" approved="yes">
+        <source>Remove widget</source>
+        <target state="final">Widget verwijderen</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.confirm.message" approved="yes">
+        <source>Are you sure you want to remove this widget?</source>
+        <target state="final">Weet je zeker dat je deze widget wil verwijderen?</target>
+      </trans-unit>
+      <trans-unit id="widget.error" approved="yes">
+        <source>An error occurred while retrieving information for this widget. Please try again, and if the problem persists, contact your administrator.</source>
+        <target state="final">Er is een fout opgetreden tijdens het ophalen van informatie voor deze widget. Probeer het opnieuw. Als het probleem zich blijft voordoen, neem dan contact op met uw beheerder.</target>
+      </trans-unit>
+      <trans-unit id="dashboard.headline" approved="yes">
+        <source>Dashboard "%s"</source>
+        <target state="final">Dashboard "%s"</target>
+      </trans-unit>
+      <trans-unit id="dashboard.default" approved="yes">
+        <source>My dashboard</source>
+        <target state="final">Mijn dashboard</target>
+      </trans-unit>
+      <trans-unit id="dashboard.default.description" approved="yes">
+        <source>Create a new dashboard with some general TYPO3 widgets on it</source>
+        <target state="final">Maak een nieuw dashboard aan met een aantal algemene TYPO3 widgets</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty" approved="yes">
+        <source>Empty dashboard</source>
+        <target state="final">Leeg dashboard</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.description" approved="yes">
+        <source>Your dashboard will be created without any widget on it.</source>
+        <target state="final">Uw dashboard zal worden aangemaakt zonder widgets.</target>
+      </trans-unit>
+      <trans-unit id="dashboard.add" approved="yes">
+        <source>Add dashboard</source>
+        <target state="final">Dashboard toevoegen</target>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.preset.title" approved="yes">
+        <source>Preset</source>
+        <target state="final">Voorinstelling</target>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.preset.headline" approved="yes">
+        <source>Select a preset</source>
+        <target state="final">Kies een voorinstelling</target>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.preset.loadError" approved="yes">
+        <source>The dashboard presets could not be loaded.</source>
+        <target state="final">Het dashboard voorinstellingen konden niet worden geladen.</target>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.title.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.success.title" approved="yes">
+        <source>Dashboard created</source>
+        <target state="final">Dashboard aangemaakt</target>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.success.message" approved="yes">
+        <source>The dashboard has been created and is now being opened.</source>
+        <target state="final">Het dashboard is aangemaakt en wordt nu geopend.</target>
+      </trans-unit>
+      <trans-unit id="dashboard.add.button.close" x-unused-since="14.3" approved="yes">
+        <source>Close</source>
+        <target state="final">Sluiten</target>
+      </trans-unit>
+      <trans-unit id="dashboard.add.button.ok" x-unused-since="14.3" approved="yes">
+        <source>Add Dashboard</source>
+        <target state="final">Dashboard toevoegen</target>
+      </trans-unit>
+      <trans-unit id="dashboard.configure" approved="yes">
+        <source>Configure dashboard</source>
+        <target state="final">Configureer dashboard</target>
+      </trans-unit>
+      <trans-unit id="dashboard.configure.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Sluiten</target>
+      </trans-unit>
+      <trans-unit id="dashboard.configure.button.ok" approved="yes">
+        <source>Save Dashboard</source>
+        <target state="final">Dashboard opslaan</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete" approved="yes">
+        <source>Delete dashboard</source>
+        <target state="final">Dashboard verwijderen</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.sure" approved="yes">
+        <source>Are you sure you want to delete this dashboard?</source>
+        <target state="final">Weet je zeker dat je dit dashboard wilt verwijderen?</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.ok" approved="yes">
+        <source>Yes, delete it</source>
+        <target state="final">Ja, verwijder het</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuleren</target>
+      </trans-unit>
+      <trans-unit id="dashboard.title" approved="yes">
+        <source>Title of dashboard</source>
+        <target state="final">Titel van dashboard</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.title" approved="yes">
+        <source>Getting Started with TYPO3</source>
+        <target state="final">Aan de slag met TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.description" approved="yes">
+        <source>Add a shortcut to the TYPO3 Getting Started Tutorial.</source>
+        <target state="final">Voeg een snelkoppeling toe naar de TYPO3 Aan de slag Handleiding.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.text" approved="yes">
+        <source>New to TYPO3? In our Getting Started Tutorial you will learn the basics how to use TYPO3.</source>
+        <target state="final">Nog niet eerder gewerkt met TYPO3? In onze Aan de slag Handleiding leert u de basis van hoe u TYPO3 kunt gebruiken.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.content.label" approved="yes">
+        <source>Getting Started Tutorial</source>
+        <target state="final">Aan de slag Handleiding</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.title" approved="yes">
+        <source>TypoScript Template Reference</source>
+        <target state="final">TypoScript Template Naslagwerk</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.description" approved="yes">
+        <source>Add a shortcut to the TYPO3 TypoScript Template Reference.</source>
+        <target state="final">Voeg een snelkoppeling toe naar het TypoScript Template naslagwerk.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.text" approved="yes">
+        <source>This document is a reference, used to lookup TypoScript templating.</source>
+        <target state="final">Dit document is een naslagwerk bij het gebruik van TypoScript templating.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.content.label" approved="yes">
+        <source>TypoScript Template Reference</source>
+        <target state="final">TypoScript Template Naslagwerk</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.title" approved="yes">
+        <source>TSconfig Reference</source>
+        <target state="final">TSconfig Naslagwerk</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.description" approved="yes">
+        <source>Add a shortcut to the TYPO3 TSconfig Reference.</source>
+        <target state="final">Voeg een snelkoppeling toe naar het TYPO3 TSconfig naslagwerk.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.text" approved="yes">
+        <source>This document describes TSconfig and its options.</source>
+        <target state="final">Dit document beschrijft TSconfig en haar opties.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.content.label" approved="yes">
+        <source>TSconfig Reference</source>
+        <target state="final">TSconfig Naslagwerk</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.title" approved="yes">
+        <source>TYPO3 news</source>
+        <target state="final">TYPO3 nieuws</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.description" approved="yes">
+        <source>Add a list of news items from the TYPO3 project</source>
+        <target state="final">Voeg een overzicht toe met nieuwsberichten van het TYPO3 project</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.moreItems" approved="yes">
+        <source>More TYPO3 news</source>
+        <target state="final">Meer TYPO3 nieuws</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.title" approved="yes">
+        <source>About TYPO3</source>
+        <target state="final">Over TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.description" approved="yes">
+        <source>Some general information about TYPO3 and the version used</source>
+        <target state="final">Algemene informatie over TYPO3 en de gebruikte versie</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.text" approved="yes">
+        <source><![CDATA[TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.<br /><br />For further information visit <a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer">typo3.org</a>.<br /><br />TYPO3 CMS is <b>freely available</b> under the <a href="https://typo3.org/project/licenses/" target="_blank" rel="noreferrer">TYPO3-license (GNU/GPL)</a>.<br /><br />You are using version %s - Copyright %s %s]]></source>
+        <target state="final"><![CDATA[TYPO3 is een Open Source Content Management Systeem van enterprise niveau. dat wereldwijd gebruikt wordt om alle soorten websites, van kleine sites voor niet-commerciële organisaties tot meertalige enterprise-oplossingen voor grote bedrijven te bouwen en te beheren. <br /><br />Voor meer informatie bezoek <a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer">typo3.org</a><br /><br />TYPO3 is <b>gratis verkrijgbaar</b> onder de <a href="http://typo3.org/project/licenses/" target="_blank" rel="noreferrer">TYPO3-licentie (GNU/GPL)</a><br /><br />Je gebruikt versie %s - Copyright %s %s]]></target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.logo" approved="yes">
+        <source>TYPO3 CMS logo</source>
+        <target state="final">TYPO3 CMS logo</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.title" approved="yes">
+        <source>Number of errors in system log</source>
+        <target state="final">Aantal fouten in het systeemlogboek</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.description" approved="yes">
+        <source>Shows the number of errors in the sys log of the last month, grouped by date</source>
+        <target state="final">Toont het aantal fouten in het systeem logboek van de laatste maand, gegroepeerd op datum</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.buttonText" approved="yes">
+        <source>Show all errors in log</source>
+        <target state="final">Alle fouten in het logboek weergeven</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogUsers.buttonText" approved="yes">
+        <source>Show all user logins</source>
+        <target state="final">Alle gebruikersaanmeldingen tonen</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.chart.dataSet.0" approved="yes">
+        <source>Number of errors</source>
+        <target state="final">Aantal fouten</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.title" approved="yes">
+        <source>Type of backend users</source>
+        <target state="final">Type backend gebruikers</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.description" approved="yes">
+        <source>Shows the amount of normal- and admin-users</source>
+        <target state="final">Toont het aantal normale- en admin-gebruikers</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.normalUsers" approved="yes">
+        <source>Normal users</source>
+        <target state="final">Normale gebruikers</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.adminUsers" approved="yes">
+        <source>Admin users</source>
+        <target state="final">Admin-gebruikers</target>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.title" approved="yes">
+        <source>Failed backend logins</source>
+        <target state="final">Mislukte backend logins</target>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.subtitle" approved="yes">
+        <source>In last 24 hours</source>
+        <target state="final">In de afgelopen 24 uur</target>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.description" approved="yes">
+        <source>Information about the number of failed logins during the last 24 hours.</source>
+        <target state="final">Informatie over het aantal mislukte logins gedurende de afgelopen 24 uur.</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.title" approved="yes">
+        <source>TYPO3 security advisories</source>
+        <target state="final">TYPO3 veiligheidsupdates</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.description" approved="yes">
+        <source>Add a list of security advisories from the TYPO3 project</source>
+        <target state="final">Voeg een lijst toe met veiligheidsupdates van het TYPO3-project</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.moreItems" approved="yes">
+        <source>More TYPO3 security advisories</source>
+        <target state="final">Meer TYPO3 veiligheidsupdates</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.title" approved="yes">
+        <source>Latest changed pages</source>
+        <target state="final">Laatst gewijzigde pagina's</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.title.restrictToCurrentUser" approved="yes">
+        <source>My latest changed pages</source>
+        <target state="final">Mijn laatst gewijzigde pagina's</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.description" approved="yes">
+        <source>Show a list of pages where the latest changes were made</source>
+        <target state="final">Een lijst van pagina's tonen waar de laatste wijzigingen zijn aangebracht</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.empty" approved="yes">
+        <source>No history found</source>
+        <target state="final">Geen historie gevonden</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.settings.restrictToCurrentUser" approved="yes">
+        <source>Only show my changes</source>
+        <target state="final">Alleen mijn wijzigingen tonen</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.change" approved="yes">
+        <source>Change</source>
+        <target state="final">Veranderen</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.user" approved="yes">
+        <source>User</source>
+        <target state="final">Gebruiker</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.user.userNotFound" approved="yes">
+        <source>Not Found</source>
+        <target state="final">Niet gevonden</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Pagina</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.page.workspace" approved="yes">
+        <source>Changes in current selected workspace</source>
+        <target state="final">Wijzigingen in huidige geselecteerde werkruimte</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.page.pagetree" approved="yes">
+        <source>Position in pagetree</source>
+        <target state="final">Positie in paginaboom</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control" approved="yes">
+        <source>Control</source>
+        <target state="final">Bedieningselement</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.recordHistory" approved="yes">
+        <source>Show history</source>
+        <target state="final">Historie tonen</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.viewWebpage" approved="yes">
+        <source>View webpage</source>
+        <target state="final">Webpagina bekijken</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.editPageContent" approved="yes">
+        <source>Edit page content</source>
+        <target state="final">Pagina-inhoud bewerken</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.editPage" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">Pagina-eigenschappen bewerken</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.table.tt_content" approved="yes">
+        <source>Content</source>
+        <target state="final">Inhoud</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.table.pages" approved="yes">
+        <source>Page</source>
+        <target state="final">Pagina</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.title" approved="yes">
+        <source>Latest backend logins</source>
+        <target state="final">Nieuwste aanmeldingen in de backend</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.description" approved="yes">
+        <source>Shows the latest backend user logins.</source>
+        <target state="final">De nieuwste aanmeldingen van backendgebruikers tonen.</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.empty" approved="yes">
+        <source>No backend login history found</source>
+        <target state="final">Geen historie van backendaanmeldingen gevonden</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.time" approved="yes">
+        <source>Time</source>
+        <target state="final">Tijd</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.user" approved="yes">
+        <source>User</source>
+        <target state="final">Gebruiker</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.user.notFound" approved="yes">
+        <source>Not found</source>
+        <target state="final">Niet gevonden</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.user.edit" approved="yes">
+        <source>Edit user</source>
+        <target state="final">Gebruiker bewerken</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.settings.limit" approved="yes">
+        <source>Number of logins to display</source>
+        <target state="final">Aantal weer te geven aanmeldingen</target>
+      </trans-unit>
+      <trans-unit id="widget_group.general" approved="yes">
+        <source>General</source>
+        <target state="final">Algemeen</target>
+      </trans-unit>
+      <trans-unit id="widget_group.typo3" approved="yes">
+        <source>TYPO3 community</source>
+        <target state="final">TYPO3 gemeenschap</target>
+      </trans-unit>
+      <trans-unit id="widget_group.news" approved="yes">
+        <source>News</source>
+        <target state="final">Nieuws</target>
+      </trans-unit>
+      <trans-unit id="widget_group.documentation" approved="yes">
+        <source>Documentation</source>
+        <target state="final">Documentatie</target>
+      </trans-unit>
+      <trans-unit id="widget_group.system" approved="yes">
+        <source>System Information</source>
+        <target state="final">Systeeminformatie</target>
+      </trans-unit>
+      <trans-unit id="widget_group.content" approved="yes">
+        <source>Content</source>
+        <target state="final">Inhoud</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.title" approved="yes">
+        <source>No widgets</source>
+        <target state="final">Geen widgets</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.description" approved="yes">
+        <source>There are no widgets on this dashboard yet. You can add widgets now by clicking on the button below.</source>
+        <target state="final">Er zijn nog geen widgets op dit dashboard. U kunt nu widgets toevoegen door op de knop hieronder te klikken.</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.button" approved="yes">
+        <source>Add a widget</source>
+        <target state="final">Widget toevoegen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
