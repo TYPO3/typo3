@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814890" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_wizards.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="el">
+    <header/>
+    <body>
+      <trans-unit id="rte_undoLastChange" resname="rte_undoLastChange" approved="yes">
+        <source>Undo/Redo last change (%s ago)</source>
+        <target state="final">Αναίρεση/Επανάληψη τελευταίας αλλαγής (%s πρίν)</target>
+      </trans-unit>
+      <trans-unit id="tsprop" resname="tsprop" approved="yes">
+        <source>TypoScript property lookup</source>
+        <target state="final">Αναζήτηση ιδιότητας TypoScript</target>
+      </trans-unit>
+      <trans-unit id="tsprop_TSref" resname="tsprop_TSref" approved="yes">
+        <source>TSref online</source>
+        <target state="final">TSref σε σύνδεση</target>
+      </trans-unit>
+      <trans-unit id="tsprop_tsconfig" resname="tsprop_tsconfig" approved="yes">
+        <source>TSconfig online</source>
+        <target state="final">TSconfig σε σύνδεση</target>
+      </trans-unit>
+      <trans-unit id="tsprop_title" resname="tsprop_title" approved="yes">
+        <source>Object title</source>
+        <target state="final">Τίτλος αντικειμένου</target>
+      </trans-unit>
+      <trans-unit id="tsprop_prefix" resname="tsprop_prefix" approved="yes">
+        <source>Object prefix</source>
+        <target state="final">Πρόθεμα αντικειμένου</target>
+      </trans-unit>
+      <trans-unit id="tsprop_mixer_indent" resname="tsprop_mixer_indent" approved="yes">
+        <source>Indent +2</source>
+        <target state="final">Εσοχή +2</target>
+      </trans-unit>
+      <trans-unit id="tsprop_mixer_outdent" resname="tsprop_mixer_outdent" approved="yes">
+        <source>Outdent -2</source>
+        <target state="final">Προεξοχή -2</target>
+      </trans-unit>
+      <trans-unit id="tsprop_mixer_wrap" resname="tsprop_mixer_wrap" approved="yes">
+        <source>Wrap</source>
+        <target state="final">Αναδίπλωση γραμμής</target>
+      </trans-unit>
+      <trans-unit id="tsprop_mixer_transfer" resname="tsprop_mixer_transfer" approved="yes">
+        <source>Transfer &amp; Close</source>
+        <target state="final">Αλλαγή &amp; κλείσιμο</target>
+      </trans-unit>
+      <trans-unit id="tsprop_addToList" resname="tsprop_addToList" approved="yes">
+        <source>Add to list...</source>
+        <target state="final">Προσθήκη στη λίστα...</target>
+      </trans-unit>
+      <trans-unit id="table_title" resname="table_title" approved="yes">
+        <source>Table wizard</source>
+        <target state="final">Έξυπνος οδηγός κατασκευής πίνακα</target>
+      </trans-unit>
+      <trans-unit id="table_smallFields" resname="table_smallFields" approved="yes">
+        <source>Small fields</source>
+        <target state="final">Μικρά πεδία</target>
+      </trans-unit>
+      <trans-unit id="table_addColumn" resname="table_addColumn" approved="yes">
+        <source>Add column to the right</source>
+        <target state="final">Προσθήκη λίστας στα δεξιά</target>
+      </trans-unit>
+      <trans-unit id="table_removeColumn" resname="table_removeColumn" approved="yes">
+        <source>Remove column</source>
+        <target state="final">Μετακίνηση λίστας</target>
+      </trans-unit>
+      <trans-unit id="table_addRow" resname="table_addRow" approved="yes">
+        <source>Add row below</source>
+        <target state="final">Προσθήκη γραμμής κάτω</target>
+      </trans-unit>
+      <trans-unit id="table_removeRow" resname="table_removeRow" approved="yes">
+        <source>Remove row</source>
+        <target state="final">Αφαίρεση γραμμής</target>
+      </trans-unit>
+      <trans-unit id="table_left" resname="table_left" approved="yes">
+        <source>Move left</source>
+        <target state="final">Μετακίνηση αριστερά</target>
+      </trans-unit>
+      <trans-unit id="table_right" resname="table_right" approved="yes">
+        <source>Move right</source>
+        <target state="final">Μετακίνηση δεξιά</target>
+      </trans-unit>
+      <trans-unit id="table_up" resname="table_up" approved="yes">
+        <source>Move up</source>
+        <target state="final">Μετακίνηση επάνω</target>
+      </trans-unit>
+      <trans-unit id="table_down" resname="table_down" approved="yes">
+        <source>Move down</source>
+        <target state="final">Μετακίνηση κάτω</target>
+      </trans-unit>
+      <trans-unit id="table_top" resname="table_top" approved="yes">
+        <source>Move to top</source>
+        <target state="final">Μετακίνηση στην κορυφή</target>
+      </trans-unit>
+      <trans-unit id="table_bottom" resname="table_bottom" approved="yes">
+        <source>Move to bottom</source>
+        <target state="final">Μετακίνηση στην πρώτη λίστα</target>
+      </trans-unit>
+      <trans-unit id="table_start" resname="table_start" approved="yes">
+        <source>Move to first column</source>
+        <target state="final">Μετακίνηση στην τελευταία λίστα</target>
+      </trans-unit>
+      <trans-unit id="table_end" resname="table_end" approved="yes">
+        <source>Move to last column</source>
+        <target state="final">Μετακίνηση της τελευταίας λίστας</target>
+      </trans-unit>
+      <trans-unit id="table_noData" resname="table_noData" approved="yes">
+        <source>No table,field or uid given</source>
+        <target state="final">Δεν δώθηκε πίνακας, πεδίο ή αναγνωριστικό χρήστη</target>
+      </trans-unit>
+      <trans-unit id="forms_title" resname="forms_title" approved="yes">
+        <source>Forms wizard</source>
+        <target state="final">Έξυπνοι οδηγοί φορμών</target>
+      </trans-unit>
+      <trans-unit id="forms_refresh" resname="forms_refresh" approved="yes">
+        <source>Refresh without saving</source>
+        <target state="final">Ανανέωση χωρίς αποθήκευση</target>
+      </trans-unit>
+      <trans-unit id="forms_label" resname="forms_label" approved="yes">
+        <source>Label</source>
+        <target state="final">Ετικέτα</target>
+      </trans-unit>
+      <trans-unit id="forms_type" resname="forms_type" approved="yes">
+        <source>Type</source>
+        <target state="final">Τύπος</target>
+      </trans-unit>
+      <trans-unit id="forms_type_textarea" resname="forms_type_textarea" approved="yes">
+        <source>Text area</source>
+        <target state="final">Περιοχή κειμένου</target>
+      </trans-unit>
+      <trans-unit id="forms_type_input" resname="forms_type_input" approved="yes">
+        <source>Input field</source>
+        <target state="final">Πεδίο εισαγωγής</target>
+      </trans-unit>
+      <trans-unit id="forms_type_password" resname="forms_type_password" approved="yes">
+        <source>Password field</source>
+        <target state="final">Πεδίο κωδικού πρόσβασης</target>
+      </trans-unit>
+      <trans-unit id="forms_type_file" resname="forms_type_file" approved="yes">
+        <source>File upload</source>
+        <target state="final">Μεταφόρτωση αρχείου</target>
+      </trans-unit>
+      <trans-unit id="forms_type_check" resname="forms_type_check" approved="yes">
+        <source>Check box</source>
+        <target state="final">Πλαίσιο ελέγχου</target>
+      </trans-unit>
+      <trans-unit id="forms_type_select" resname="forms_type_select" approved="yes">
+        <source>Selector box</source>
+        <target state="final">Πλαίσιο επιλογής</target>
+      </trans-unit>
+      <trans-unit id="forms_type_radio" resname="forms_type_radio" approved="yes">
+        <source>Radio buttons</source>
+        <target state="final">Κυκλικά πλήκτρα επιλογής</target>
+      </trans-unit>
+      <trans-unit id="forms_type_hidden" resname="forms_type_hidden" approved="yes">
+        <source>Hidden value</source>
+        <target state="final">Κρυφές τιμές</target>
+      </trans-unit>
+      <trans-unit id="forms_type_submit" resname="forms_type_submit" approved="yes">
+        <source>Submit Button</source>
+        <target state="final">Επιλογή υποβολής</target>
+      </trans-unit>
+      <trans-unit id="forms_type_property" resname="forms_type_property" approved="yes">
+        <source>Property</source>
+        <target state="final">Ιδιότητες</target>
+      </trans-unit>
+      <trans-unit id="forms_type_label" resname="forms_type_label" approved="yes">
+        <source>Label</source>
+        <target state="final">Ετικέτα</target>
+      </trans-unit>
+      <trans-unit id="forms_required" resname="forms_required" approved="yes">
+        <source>Required</source>
+        <target state="final">Προαπαιτείται</target>
+      </trans-unit>
+      <trans-unit id="forms_fieldName" resname="forms_fieldName" approved="yes">
+        <source>Field</source>
+        <target state="final">Πεδία</target>
+      </trans-unit>
+      <trans-unit id="forms_cols" resname="forms_cols" approved="yes">
+        <source>Columns</source>
+        <target state="final">Λίστες</target>
+      </trans-unit>
+      <trans-unit id="forms_rows" resname="forms_rows" approved="yes">
+        <source>Rows</source>
+        <target state="final">Γραμμές</target>
+      </trans-unit>
+      <trans-unit id="forms_size" resname="forms_size" approved="yes">
+        <source>Size</source>
+        <target state="final">Μέγεθος</target>
+      </trans-unit>
+      <trans-unit id="forms_max" resname="forms_max" approved="yes">
+        <source>Max</source>
+        <target state="final">Μέγιστο</target>
+      </trans-unit>
+      <trans-unit id="forms_autosize" resname="forms_autosize" approved="yes">
+        <source>Auto size</source>
+        <target state="final">Αυτόματο μέγεθος</target>
+      </trans-unit>
+      <trans-unit id="forms_extra" resname="forms_extra" approved="yes">
+        <source>No Wrap</source>
+        <target state="final">Χωρίς αναδίπλωση τιμών</target>
+      </trans-unit>
+      <trans-unit id="forms_default" resname="forms_default" approved="yes">
+        <source>Value</source>
+        <target state="final">Tιμή</target>
+      </trans-unit>
+      <trans-unit id="forms_multiple" resname="forms_multiple" approved="yes">
+        <source>Multiple</source>
+        <target state="final">Πολλαπλό</target>
+      </trans-unit>
+      <trans-unit id="forms_options" resname="forms_options" approved="yes">
+        <source>List options</source>
+        <target state="final">Λίστα επιλογών</target>
+      </trans-unit>
+      <trans-unit id="forms_checked" resname="forms_checked" approved="yes">
+        <source>Checked</source>
+        <target state="final">Επιλεγμένο</target>
+      </trans-unit>
+      <trans-unit id="forms_preview" resname="forms_preview" approved="yes">
+        <source>Preview of element</source>
+        <target state="final">Προεπισκόπηση στοιχείων</target>
+      </trans-unit>
+      <trans-unit id="forms_element" resname="forms_element" approved="yes">
+        <source>Element type</source>
+        <target state="final">Τύπος στοιχείων</target>
+      </trans-unit>
+      <trans-unit id="forms_config" resname="forms_config" approved="yes">
+        <source>Detailed configuration</source>
+        <target state="final">Λεπτομερής παραμετροποιήση</target>
+      </trans-unit>
+      <trans-unit id="forms_eform_subject" resname="forms_eform_subject" approved="yes">
+        <source>Subject</source>
+        <target state="final">Θέμα</target>
+      </trans-unit>
+      <trans-unit id="forms_eform_recipient" resname="forms_eform_recipient" approved="yes">
+        <source>Recipient email</source>
+        <target state="final">Διεύθυνση ηλεκτρονικού ταχυδρομείου παραλήπτη</target>
+      </trans-unit>
+      <trans-unit id="forms_eform_html_enabled" resname="forms_eform_html_enabled" approved="yes">
+        <source>HTML mode enabled</source>
+        <target state="final">Ενεργοποίηση HTML μορφής</target>
+      </trans-unit>
+      <trans-unit id="forms_eform_formtype_mail" resname="forms_eform_formtype_mail" approved="yes">
+        <source>Send button label</source>
+        <target state="final">Ετικέτα του πλήκτρου αποστολής</target>
+      </trans-unit>
+      <trans-unit id="forms_special_eform" resname="forms_special_eform" approved="yes">
+        <source>Special configuration for mail forms</source>
+        <target state="final">Ειδική παραμετροποίηση για τισ φόρμες του ταχυδρομείου</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_title" resname="colorpicker_title" approved="yes">
+        <source>Color Picker</source>
+        <target state="final">Επιλογές χρώματος</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_setClose" resname="colorpicker_setClose" approved="yes">
+        <source>Save and Close</source>
+        <target state="final">Αποθήκευση και κλείσιμο</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_black" resname="colorpicker_black" approved="yes">
+        <source>BLACK</source>
+        <target state="final">ΜΑΥΡΟ</target>
+      </trans-unit>
+      <trans-unit id="colorpicker_white" resname="colorpicker_white" approved="yes">
+        <source>WHITE</source>
+        <target state="final">ΛΕΥΚΟ</target>
+      </trans-unit>
+      <trans-unit id="grid_removeColumn" resname="grid_removeColumn" approved="yes">
+        <source>Remove column</source>
+        <target state="final">Μετακίνηση λίστας</target>
+      </trans-unit>
+      <trans-unit id="grid_removeRow" resname="grid_removeRow" approved="yes">
+        <source>Remove row</source>
+        <target state="final">Αφαίρεση γραμμής</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
