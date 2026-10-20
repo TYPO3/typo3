@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814859" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysnews.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="cy">
+    <header/>
+    <body>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the title of the news.</source>
+        <target state="final">Rhowch deitl y newyddion.</target>
+      </trans-unit>
+      <trans-unit id="content.description" resname="content.description" approved="yes">
+        <source>The news content to let editors know what's coming up. HTML is disabled, however, you can use line breaks.</source>
+        <target state="final">Y cynnwys newyddion i adael i olygyddion wybod beth sydd ar y gweill. Mae HTML yn anabl, fodd bynnag, gallwch ddefnyddio seibiannau llinell.</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>System news are shown at the TYPO3 login screen, allowing admins to inform editors about upcoming system maintenance and similar events.</source>
+        <target state="final">Dangosir newyddion system ar sgrin fewngofnodi TYPO3, gan ganiatáu i edmygwyr hysbysu golygyddion am gynnal a chadw systemau a digwyddiadau tebyg sydd ar ddod.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
