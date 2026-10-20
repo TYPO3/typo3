@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814858" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_syslang.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the name of this additional system language.</source>
+        <target state="final">ປ້ອນຊື່ຂອງພາສາລະບົບເພີ່ມເຕີມນີ້.</target>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>This option will hide the system language from being available in the backend.</source>
+        <target state="final">ຕົວເລືອກນີ້ຈະເຊື່ອງພາສາລະບົບ ບໍ່ໃຫ້ມີໃຫ້ໃຊ້ຢູ່ໃນສ່ວນ backend.</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Defines which languages are alternatively available on each webpage.</source>
+        <target state="final">ກຳນົດວ່າພາສາໃດແດ່ທີ່ມີໃຫ້ເລືອກໃຊ້ໃນແຕ່ລະໜ້າເວັບ.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>The Web&gt;Page module has a feature which allows users to edit page content divided into not only columns but also languages. The languages available for translation are determined by the number of Website Language record created.</source>
+			<target state="final">ໂມດູນ ເວັບ&gt;ໜ້າ (Web&gt;Page) ມີຄຸນສົມບັດທີ່ຊ່ວຍໃຫ້ຜູ້ໃຊ້ສາມາດແກ້ໄຂເນື້ອໃນໜ້າເວັບ ເຊິ່ງບໍ່ພຽງແຕ່ແບ່ງຕາມຖັນເທົ່ານັ້ນ ແຕ່ຍັງແບ່ງຕາມພາສາອີກດ້ວຍ. ພາສາທີ່ມີໃຫ້ແປແມ່ນຖືກກຳນົດໂດຍຈຳນວນການບັນທຶກຂໍ້ມູນພາສາເວັບໄຊທີ່ໄດ້ສ້າງຂຶ້ນ.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
