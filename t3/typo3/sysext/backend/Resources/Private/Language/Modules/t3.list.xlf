@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/list.xlf" date="2026-11-10T13:37:37Z" product-name="list" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="short_description">
+        <source>List of database records</source>
+        <target>crwdns378986:0crwdne378986:0</target>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>The records module provides low level access to records appearing on a page.</source>
+        <target>crwdns381268:0crwdne381268:0</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Records</source>
+        <target>crwdns381270:0crwdne381270:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
