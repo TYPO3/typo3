@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814883" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="he">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Show record history</source>
+        <target state="final">הצג היסטוריה של הרשומה</target>
+      </trans-unit>
+      <trans-unit id="time" resname="time" approved="yes">
+        <source>Time</source>
+        <target state="final">שעה</target>
+      </trans-unit>
+      <trans-unit id="age" resname="age" approved="yes">
+        <source>Age</source>
+        <target state="final">גיל</target>
+      </trans-unit>
+      <trans-unit id="user" resname="user" approved="yes">
+        <source>User</source>
+        <target state="final">משתמש</target>
+      </trans-unit>
+      <trans-unit id="differences" resname="differences" approved="yes">
+        <source>Differences</source>
+        <target state="final">הבדלים</target>
+      </trans-unit>
+      <trans-unit id="changes" resname="changes" approved="yes">
+        <source>Changelog</source>
+        <target state="final">שינויים לרשומה</target>
+      </trans-unit>
+      <trans-unit id="return" resname="return" approved="yes">
+        <source>Return</source>
+        <target state="final">חזרה</target>
+      </trans-unit>
+      <trans-unit id="returnLink" resname="returnLink" approved="yes">
+        <source>Click here to go back</source>
+        <target state="final">הקלק כאן כדי לחזור אחורה</target>
+      </trans-unit>
+      <trans-unit id="revertField" resname="revertField" approved="yes">
+        <source>Rollback single field</source>
+        <target state="final">שחזר ערך ישן של שדה זה</target>
+      </trans-unit>
+      <trans-unit id="externalChange" resname="externalChange" approved="yes">
+        <source>Intermediate external change!</source>
+        <target state="final">שינוי ביניים חיצוני!</target>
+      </trans-unit>
+      <trans-unit id="sumUpChanges" resname="sumUpChanges" approved="yes">
+        <source>Rollback (Preview)</source>
+        <target state="final">צבור שינויים עד לנקודה זו</target>
+      </trans-unit>
+      <trans-unit id="differenceMsg" resname="differenceMsg" approved="yes">
+        <source>In the Difference column you can see the changes at every modification of records. New changes are displayed in &lt;span class="diff-g"&gt;green colored text&lt;/span&gt; and the &lt;span class="diff-r"&gt;red colored text&lt;/span&gt; are the old values which were removed.</source>
+        <target state="final">בעמודת ההבדלים &lt;span class="diff-g"&gt;הטקסט בירוק&lt;/span&gt; הוא שינויים חדשים &lt;span class="diff-r"&gt;והטקסט באדום&lt;/span&gt; הוא ערכים ישנים שהוסרו.</target>
+      </trans-unit>
+      <trans-unit id="showDiff_no" resname="showDiff_no" approved="yes">
+        <source>No</source>
+        <target state="final">לא</target>
+      </trans-unit>
+      <trans-unit id="no" resname="no" approved="yes">
+        <source>No</source>
+        <target state="final">לא</target>
+      </trans-unit>
+      <trans-unit id="yes" resname="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">כן</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
