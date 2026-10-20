@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814793" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_pages.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="layout.description" resname="layout.description" approved="yes">
+        <source>The Frontend Layout can change the way a page design appears.</source>
+        <target state="final">ترکیب بندی خروجی به شما امکان می‌دهد تا طراحی ظاهری را تغییر دهید.</target>
+      </trans-unit>
+      <trans-unit id="layout.details" resname="layout.details" approved="yes">
+        <source>This option may not have any impact on the Frontend page design since it depends on whether the Frontend template uses it. Most templates do not use it.</source>
+        <target state="final">معلوم نیست این گزینه هیچ تاثیری روی طراحی صفحات خروجی داشته باشد، چون بسته به آن است قالب صفحات خروجی از آن استفاده کند یا نه. اکثر قالب‌ها از آن استفاده نمی‌کنند.</target>
+      </trans-unit>
+      <trans-unit id="doktype.description" resname="doktype.description" approved="yes">
+        <source>Page Type determines whether the page is normal webpage, a shortcut to another webpage, or used in other internal ways.</source>
+        <target state="final">نوع صفحه تعیین می‌کند که آیا صفحه یک صفحۀ‌وب عادی است، یک میان‌بر به صفحۀ دیگر است یا برای کاربرد داخلی استفاده می‌شود.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
