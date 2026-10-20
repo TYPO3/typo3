@@ -17,6 +17,7 @@
     --typo3-pagination-active-color: var(--typo3-list-item-active-color);
     --typo3-pagination-active-bg: var(--typo3-list-item-active-bg);
     --typo3-pagination-active-border-color: var(--typo3-list-item-active-border-color);
+    --typo3-pagination-focus-border-color: light-dark(var(--token-color-neutral-50), var(--token-color-neutral-50));
     --typo3-pagination-disabled-color: var(--typo3-list-item-disabled-color);
     --typo3-pagination-disabled-bg: var(--typo3-list-item-disabled-bg);
     --typo3-pagination-disabled-border-color: var(--typo3-list-item-disabled-border-color);
@@ -79,7 +80,8 @@
         }
 
         &:focus-visible {
-            outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-pagination-border-color), transparent 25%);
+            outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-pagination-focus-border-color), transparent 5%);
+            outline-offset: var(--typo3-outline-offset);
             z-index: 3 !important;
         }
     }
