@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="submodule.title" approved="yes">
+        <source>Constant Editor</source>
+        <target state="final">कंस्टन्ट एडिटर</target>
+      </trans-unit>
+      <trans-unit id="submodule.titleWithRecord" approved="yes">
+        <source>Constant Editor for TypoScript record "%s"</source>
+        <target state="final">TypoScript record के लिए Constant Editor "%s"</target>
+      </trans-unit>
+      <trans-unit id="submodule.description" approved="yes">
+        <source>Overwrite constants and save them to the selected TypoScript record on the current page. Only options that have been made available for editing in the constant editor are shown below. In addition, more constants can exist in the system.</source>
+        <target state="final">मौजूदा पेज पर चुने गए TypoScript रिकॉर्ड में constants को Overwrite करें और उन्हें save करें। केवल वे विकल्प जो constant editor में editing के लिए उपलब्ध कराए गए हैं, नीचे दिखाए गए हैं। इसके अलावा, सिस्‍टम में अधिक constants मौजूद हो सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="options.selectedCategory" approved="yes">
+        <source>Selected category</source>
+        <target state="final">चुनी गई श्रेणी</target>
+      </trans-unit>
+      <trans-unit id="options.selectedRecord" approved="yes">
+        <source>Selected record</source>
+        <target state="final">चुने गए रिकॉर्ड</target>
+      </trans-unit>
+      <trans-unit id="infobox.message.noConstants" approved="yes">
+        <source>There are no editable constants available for the Constant Editor.</source>
+        <target state="final">Constant Editor के लिए कोई संपादन योग्य constants उपलब्ध नहीं हैं।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
