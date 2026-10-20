@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814881" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="gl">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>List of database-records</source>
+        <target state="final">Lista de rexistros</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>The Web&gt;List module provides low level access to records appearing on a page.</source>
+        <target state="final">O módulo Web&gt;Lista permite o acceso a máis baixo nivel dos rexistros que forman unha páxina. En tanto que os outros módulos están especializados en certas operacións en certas táboas, este módulo permite o acceso total aos rexistros en cru dispoñibles para o usuario.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>List</source>
+        <target state="final">Lista</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteAfter" resname="clip_pasteAfter" approved="yes">
+        <source>Paste after: Clipboard content is inserted after this record</source>
+        <target state="final">Pegar despois: o contido do portaretallos é inserido logo deste rexistro</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" resname="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted on this page</source>
+        <target state="final">Pegar en: o contido do portaretallos é inserido nesta páxina</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" resname="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">Pegar o contido do portaretallos</target>
+      </trans-unit>
+      <trans-unit id="clip_markRecords" resname="clip_markRecords" approved="yes">
+        <source>Mark All/Mark none</source>
+        <target state="final">Marcar/Desmarcar todos</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" resname="clip_selectMarked" approved="yes">
+        <source>Transfer the selection of records to clipboard</source>
+        <target state="final">Transferir a selección de rexistros ao portaretallos</target>
+      </trans-unit>
+      <trans-unit id="clip_duplicates" resname="clip_duplicates" approved="yes">
+        <source>Mark duplicates</source>
+        <target state="final">Marcar duplicados</target>
+      </trans-unit>
+      <trans-unit id="clip_editMarked" resname="clip_editMarked" approved="yes">
+        <source>Edit marked</source>
+        <target state="final">Editar marcados</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" resname="clip_deleteMarked" approved="yes">
+        <source>Delete marked</source>
+        <target state="final">Borrar marcados</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarkedWarning" resname="clip_deleteMarkedWarning" approved="yes">
+        <source>Are you sure you want to delete all marked records from the table '%s'?</source>
+        <target state="final">¿Seguro que quere borrar todos os rexistros marcados da táboa '%s'?</target>
+      </trans-unit>
+      <trans-unit id="showInfo" resname="showInfo" approved="yes">
+        <source>Display information</source>
+        <target state="final">Mostrar información</target>
+      </trans-unit>
+      <trans-unit id="edit" resname="edit" approved="yes">
+        <source>Edit record</source>
+        <target state="final">Editar rexistro</target>
+      </trans-unit>
+      <trans-unit id="editPage" resname="editPage" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">Editar propiedades da páxina</target>
+      </trans-unit>
+      <trans-unit id="new" resname="new" approved="yes">
+        <source>New record</source>
+        <target state="final">Novo rexistro</target>
+      </trans-unit>
+      <trans-unit id="newPage" resname="newPage" approved="yes">
+        <source>Create new page after this page</source>
+        <target state="final">Crear páxina logo desta páxina</target>
+      </trans-unit>
+      <trans-unit id="newRecord" resname="newRecord" approved="yes">
+        <source>Create new record after this record</source>
+        <target state="final">Crear novo rexistro logo deste rexistro</target>
+      </trans-unit>
+      <trans-unit id="newRecordGeneral" resname="newRecordGeneral" approved="yes">
+        <source>Create new record</source>
+        <target state="final">Crear novo rexistro</target>
+      </trans-unit>
+      <trans-unit id="moveUp" resname="moveUp" approved="yes">
+        <source>Move up in list</source>
+        <target state="final">Subir na lista</target>
+      </trans-unit>
+      <trans-unit id="moveDown" resname="moveDown" approved="yes">
+        <source>Move down in list</source>
+        <target state="final">Baixar na lista</target>
+      </trans-unit>
+      <trans-unit id="move_record" resname="move_record" approved="yes">
+        <source>Re-position content element</source>
+        <target state="final">Recolocar elemento de contido</target>
+      </trans-unit>
+      <trans-unit id="move_page" resname="move_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">Mover páxina</target>
+      </trans-unit>
+      <trans-unit id="hide" resname="hide" approved="yes">
+        <source>Hide record</source>
+        <target state="final">Ocultar rexistro</target>
+      </trans-unit>
+      <trans-unit id="unHide" resname="unHide" approved="yes">
+        <source>Un-hide record</source>
+        <target state="final">Mostrar rexistro</target>
+      </trans-unit>
+      <trans-unit id="hidePage" resname="hidePage" approved="yes">
+        <source>Hide page</source>
+        <target state="final">Ocultar páxina</target>
+      </trans-unit>
+      <trans-unit id="unHidePage" resname="unHidePage" approved="yes">
+        <source>Un-hide page</source>
+        <target state="final">Mostrar páxina</target>
+      </trans-unit>
+      <trans-unit id="prevLevel" resname="prevLevel" approved="yes">
+        <source>Move this page to the position after the current parent page (Inwards)</source>
+        <target state="final">Mover esta páxina á posición posterior á páxina pai actual (cara a dentro)</target>
+      </trans-unit>
+      <trans-unit id="nextLevel" resname="nextLevel" approved="yes">
+        <source>Move this page to be a subpage of the page above (Outwards)</source>
+        <target state="final">Mover esta páxina a unha subpáxina da páxina superior (cara a fóra)</target>
+      </trans-unit>
+      <trans-unit id="delete" resname="delete" approved="yes">
+        <source>Delete record (!)</source>
+        <target state="final">Eliminar rexistro (!)</target>
+      </trans-unit>
+      <trans-unit id="history" resname="history" approved="yes">
+        <source>Display change history / Un-do</source>
+        <target state="final">Amosar historial de cambios / Desfacer</target>
+      </trans-unit>
+      <trans-unit id="displayVersions" resname="displayVersions" approved="yes">
+        <source>Display versions</source>
+        <target state="final">Amosar versións</target>
+      </trans-unit>
+      <trans-unit id="permissions" resname="permissions" approved="yes">
+        <source>Set permissions for page</source>
+        <target state="final">Establecer permisos para esta páxina</target>
+      </trans-unit>
+      <trans-unit id="largeControl" resname="largeControl" approved="yes">
+        <source>Extended view</source>
+        <target state="final">Vista estendida</target>
+      </trans-unit>
+      <trans-unit id="contractView" resname="contractView" approved="yes">
+        <source>List all tables</source>
+        <target state="final">Listar todas as táboas</target>
+      </trans-unit>
+      <trans-unit id="expandView" resname="expandView" approved="yes">
+        <source>List only this table</source>
+        <target state="final">Listar soamente esta táboa</target>
+      </trans-unit>
+      <trans-unit id="showClipBoard" resname="showClipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">Mostrar portaretallos</target>
+      </trans-unit>
+      <trans-unit id="editShownColumns" resname="editShownColumns" approved="yes">
+        <source>Edit all shown fields of the listed records</source>
+        <target state="final">Editar os campos mostrados nos rexistros listados</target>
+      </trans-unit>
+      <trans-unit id="editThisColumn" resname="editThisColumn" approved="yes">
+        <source>Edit the '%s' field of the listed records</source>
+        <target state="final">Editar o campo "%s" nos rexistros listados</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" resname="deleteWarning" approved="yes">
+        <source>Are you sure you want to delete this record?</source>
+        <target state="final">¿Seguro que desexa eliminar este rexistro?</target>
+      </trans-unit>
+      <trans-unit id="localization" resname="localization" approved="yes">
+        <source>Localization view</source>
+        <target state="final">Vista de tradución</target>
+      </trans-unit>
+      <trans-unit id="defaultLanguage" resname="defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">Predeterminado</target>
+      </trans-unit>
+      <trans-unit id="multipleLanguages" resname="multipleLanguages" approved="yes">
+        <source>All languages</source>
+        <target state="final">Todos os idiomas</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
