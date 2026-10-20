@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814837" source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_pi.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="default_search_word_entry" resname="default_search_word_entry" approved="yes">
+        <source>Search for</source>
+        <target state="final">Pesquisar por</target>
+      </trans-unit>
+      <trans-unit id="submit_button_label" resname="submit_button_label" approved="yes">
+        <source>Search</source>
+        <target state="final">Pesquisar</target>
+      </trans-unit>
+      <trans-unit id="opt_type_0" resname="opt_type_0" approved="yes">
+        <source>Distinct word</source>
+        <target state="final">Palavra distinta</target>
+      </trans-unit>
+      <trans-unit id="opt_type_1" resname="opt_type_1" approved="yes">
+        <source>Part of word</source>
+        <target state="final">Parte da palavra</target>
+      </trans-unit>
+      <trans-unit id="opt_type_2" resname="opt_type_2" approved="yes">
+        <source>First part of word</source>
+        <target state="final">Primeira parte da palavra</target>
+      </trans-unit>
+      <trans-unit id="opt_type_3" resname="opt_type_3" approved="yes">
+        <source>Last part of word</source>
+        <target state="final">Última parte da palavra</target>
+      </trans-unit>
+      <trans-unit id="opt_type_10" resname="opt_type_10" approved="yes">
+        <source>Sounds like</source>
+        <target state="final">Soa como</target>
+      </trans-unit>
+      <trans-unit id="opt_type_20" resname="opt_type_20" approved="yes">
+        <source>Sentence</source>
+        <target state="final">Frase</target>
+      </trans-unit>
+      <trans-unit id="opt_defOp_0" resname="opt_defOp_0" approved="yes">
+        <source>All words (AND)</source>
+        <target state="final">Todas as palavras (AND)</target>
+      </trans-unit>
+      <trans-unit id="opt_defOp_1" resname="opt_defOp_1" approved="yes">
+        <source>Any words (OR)</source>
+        <target state="final">Qualquer palavra (OR)</target>
+      </trans-unit>
+      <trans-unit id="opt_sections_0" resname="opt_sections_0" approved="yes">
+        <source>Whole site</source>
+        <target state="final">Todo o site</target>
+      </trans-unit>
+      <trans-unit id="opt_sections_-1" resname="opt_sections_-1" approved="yes">
+        <source>Only this page</source>
+        <target state="final">Apenas nesta página</target>
+      </trans-unit>
+      <trans-unit id="opt_sections_-2" resname="opt_sections_-2" approved="yes">
+        <source>Top + level 1</source>
+        <target state="final">Topo + nível 1</target>
+      </trans-unit>
+      <trans-unit id="opt_sections_-3" resname="opt_sections_-3" approved="yes">
+        <source>Level 2 and out</source>
+        <target state="final">Nível 2 pra fora</target>
+      </trans-unit>
+      <trans-unit id="opt_freeIndexUid_-1" resname="opt_freeIndexUid_-1" approved="yes">
+        <source>All, mixed</source>
+        <target state="final">Todos, misturados</target>
+      </trans-unit>
+      <trans-unit id="opt_freeIndexUid_-2" resname="opt_freeIndexUid_-2" approved="yes">
+        <source>All, categorized</source>
+        <target state="final">Todos, categorizados</target>
+      </trans-unit>
+      <trans-unit id="opt_freeIndexUid_0" resname="opt_freeIndexUid_0" approved="yes">
+        <source>Pages</source>
+        <target state="final">Páginas</target>
+      </trans-unit>
+      <trans-unit id="opt_freeIndexUid_header_-1" resname="opt_freeIndexUid_header_-1" approved="yes">
+        <source>Mixed categories</source>
+        <target state="final">Categorias mistas</target>
+      </trans-unit>
+      <trans-unit id="opt_freeIndexUid_header_0" resname="opt_freeIndexUid_header_0" approved="yes">
+        <source>Website Pages</source>
+        <target state="final">Páginas do Site</target>
+      </trans-unit>
+      <trans-unit id="opt_media_-1" resname="opt_media_-1" approved="yes">
+        <source>All media</source>
+        <target state="final">Todas as mídias</target>
+      </trans-unit>
+      <trans-unit id="opt_media_0" resname="opt_media_0" approved="yes">
+        <source>Internal pages</source>
+        <target state="final">Páginas internas</target>
+      </trans-unit>
+      <trans-unit id="opt_media_-2" resname="opt_media_-2" approved="yes">
+        <source>All External</source>
+        <target state="final">Todas externas</target>
+      </trans-unit>
+      <trans-unit id="opt_order_rank_flag" resname="opt_order_rank_flag" approved="yes">
+        <source>Weight/Frequency</source>
+        <target state="final">Peso/Freqüência</target>
+      </trans-unit>
+      <trans-unit id="opt_order_rank_freq" resname="opt_order_rank_freq" approved="yes">
+        <source>Frequency</source>
+        <target state="final">Freqüência</target>
+      </trans-unit>
+      <trans-unit id="opt_order_rank_first" resname="opt_order_rank_first" approved="yes">
+        <source>Close to top</source>
+        <target state="final">Próximo ao topo</target>
+      </trans-unit>
+      <trans-unit id="opt_order_rank_count" resname="opt_order_rank_count" approved="yes">
+        <source>Number of words</source>
+        <target state="final">Número de palavras</target>
+      </trans-unit>
+      <trans-unit id="opt_order_mtime" resname="opt_order_mtime" approved="yes">
+        <source>Date Modified</source>
+        <target state="final">Data modificada</target>
+      </trans-unit>
+      <trans-unit id="opt_order_title" resname="opt_order_title" approved="yes">
+        <source>Document title</source>
+        <target state="final">Título do documento</target>
+      </trans-unit>
+      <trans-unit id="opt_order_crdate" resname="opt_order_crdate" approved="yes">
+        <source>Creation date</source>
+        <target state="final">Data de criação</target>
+      </trans-unit>
+      <trans-unit id="opt_group_sections" resname="opt_group_sections" approved="yes">
+        <source>Section hierarchy</source>
+        <target state="final">Hierarquia de seções</target>
+      </trans-unit>
+      <trans-unit id="opt_group_flat" resname="opt_group_flat" approved="yes">
+        <source>Flat list</source>
+        <target state="final">Lista simples</target>
+      </trans-unit>
+      <trans-unit id="opt_lang_-1" resname="opt_lang_-1" approved="yes">
+        <source>All languages</source>
+        <target state="final">Todas as línguas</target>
+      </trans-unit>
+      <trans-unit id="opt_lang_0" resname="opt_lang_0" approved="yes">
+        <source>Default</source>
+        <target state="final">Padrão</target>
+      </trans-unit>
+      <trans-unit id="opt_desc_0" resname="opt_desc_0" approved="yes">
+        <source>Highest first</source>
+        <target state="final">Mais alto primeiro</target>
+      </trans-unit>
+      <trans-unit id="opt_desc_1" resname="opt_desc_1" approved="yes">
+        <source>Lowest first</source>
+        <target state="final">Mais baixo primeiro</target>
+      </trans-unit>
+      <trans-unit id="opt_RL1ALL" resname="opt_RL1ALL" approved="yes">
+        <source>All pages on level 1</source>
+        <target state="final">Todas as páginas do nível 1</target>
+      </trans-unit>
+      <trans-unit id="opt_RL2ALL" resname="opt_RL2ALL" approved="yes">
+        <source>- All pages on level 2</source>
+        <target state="final">- Todas as páginas do nível 2</target>
+      </trans-unit>
+      <trans-unit id="form_legend" resname="form_legend" approved="yes">
+        <source>Search form</source>
+        <target state="final">Formulário de Pesquisa</target>
+      </trans-unit>
+      <trans-unit id="form_searchFor" resname="form_searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">Pesquisar por</target>
+      </trans-unit>
+      <trans-unit id="form_extResume" resname="form_extResume" approved="yes">
+        <source>Extended resume</source>
+        <target state="final">Resumo extendido</target>
+      </trans-unit>
+      <trans-unit id="form_atATime" resname="form_atATime" approved="yes">
+        <source>at a time</source>
+        <target state="final">no horário</target>
+      </trans-unit>
+      <trans-unit id="rules_text" resname="rules_text" xml:space="preserve" approved="yes">
+				<source>Only words with 2 or more characters are accepted
+Max 200 chars total
+Space is used to split words, "" can be used to search for a whole string (not indexed search then)
+AND, OR and NOT are prefix words, overruling the default operator
++/|/- equals AND, OR and NOT as operators.
+All search words are converted to lowercase.</source>
+			<target state="final">Apenas palavras com 2 ou mais caracteres são aceitos Total máx 200 caract. Espaço é usado para separar palavras, aspas (" ") podem ser usadas para procurar por um campo inteiro (não indexado) AND, OR e NOT são prefixos, substituindo a operação padrão +/|/- são equivalentes a AND, OR e NOT como operadores. Todas as palavras da busca são convertidas para caixa-baixa.</target></trans-unit>
+      <trans-unit id="searchFor" resname="searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">Pesquisar por</target>
+      </trans-unit>
+      <trans-unit id="searchFor_or" resname="searchFor_or" approved="yes">
+        <source>or</source>
+        <target state="final">ou</target>
+      </trans-unit>
+      <trans-unit id="searchFor_and" resname="searchFor_and" approved="yes">
+        <source>and</source>
+        <target state="final">e</target>
+      </trans-unit>
+      <trans-unit id="searchFor_butNot" resname="searchFor_butNot" approved="yes">
+        <source>but not</source>
+        <target state="final">exceto</target>
+      </trans-unit>
+      <trans-unit id="noResults" resname="noResults" approved="yes">
+        <source>NO results found.</source>
+        <target state="final">NADA foi encontrado.</target>
+      </trans-unit>
+      <trans-unit id="inSection" resname="inSection" approved="yes">
+        <source>in the section</source>
+        <target state="final">nesta seção</target>
+      </trans-unit>
+      <trans-unit id="word_page" resname="word_page" approved="yes">
+        <source>page</source>
+        <target state="final">página</target>
+      </trans-unit>
+      <trans-unit id="word_pages" resname="word_pages" approved="yes">
+        <source>pages</source>
+        <target state="final">páginas</target>
+      </trans-unit>
+      <trans-unit id="unnamedSection" resname="unnamedSection" approved="yes">
+        <source>Other</source>
+        <target state="final">Outro</target>
+      </trans-unit>
+      <trans-unit id="link_regularSearch" resname="link_regularSearch" approved="yes">
+        <source>Regular search</source>
+        <target state="final">Pesquisa simples</target>
+      </trans-unit>
+      <trans-unit id="link_advancedSearch" resname="link_advancedSearch" approved="yes">
+        <source>Advanced search</source>
+        <target state="final">Pesquisa avançada</target>
+      </trans-unit>
+      <trans-unit id="res_noResume" resname="res_noResume" approved="yes">
+        <source>Note: This search hit may not accurately match the content on this page. The page resume cannot be shown.</source>
+        <target state="final">Nota: Este resultado de busca pode não conferir com o conteúdo desta página. O resumo desta página não pode ser exibido.</target>
+      </trans-unit>
+      <trans-unit id="res_otherPageAsWell" resname="res_otherPageAsWell" approved="yes">
+        <source>INFO: There was another page indexed as well... Probably indexed with another or no usergroup.</source>
+        <target state="final">INFO: Há outra página indexada também... Provavelmente indexada por outro ou nenhum grupo de usuário.</target>
+      </trans-unit>
+      <trans-unit id="res_memberGroups" resname="res_memberGroups" approved="yes">
+        <source>Require membership of group numbers %s</source>
+        <target state="final">Exigir registro dos grupos de números %s</target>
+      </trans-unit>
+      <trans-unit id="pi_list_browseresults_prev" resname="pi_list_browseresults_prev" approved="yes">
+        <source>&lt; Previous</source>
+        <target state="final">&lt; Anterior</target>
+      </trans-unit>
+      <trans-unit id="pi_list_browseresults_page" resname="pi_list_browseresults_page" approved="yes">
+        <source>Page</source>
+        <target state="final">Página</target>
+      </trans-unit>
+      <trans-unit id="pi_list_browseresults_next" resname="pi_list_browseresults_next" approved="yes">
+        <source>Next &gt;</source>
+        <target state="final">Próximo &gt;</target>
+      </trans-unit>
+      <trans-unit id="local_operator_AND" resname="local_operator_AND" approved="yes">
+        <source>AND</source>
+        <target state="final">E</target>
+      </trans-unit>
+      <trans-unit id="local_operator_OR" resname="local_operator_OR" approved="yes">
+        <source>OR</source>
+        <target state="final">OU</target>
+      </trans-unit>
+      <trans-unit id="local_operator_NOT" resname="local_operator_NOT" approved="yes">
+        <source>NOT</source>
+        <target state="final">NÃO</target>
+      </trans-unit>
+      <trans-unit id="makerating_addToCurrentSearch" resname="makerating_addToCurrentSearch" approved="yes">
+        <source>Add to current search words</source>
+        <target state="final">Incluir nas palavras atuais para busca</target>
+      </trans-unit>
+      <trans-unit id="maketitle_matches" resname="maketitle_matches" approved="yes">
+        <source>matches</source>
+        <target state="final">resultados</target>
+      </trans-unit>
+      <trans-unit id="pi_wizard_title" resname="pi_wizard_title" approved="yes">
+        <source>Indexed Search</source>
+        <target state="final">Busca Indexada</target>
+      </trans-unit>
+      <trans-unit id="pi_wizard_description" resname="pi_wizard_description" approved="yes">
+        <source>Search based on a database stored index.</source>
+        <target state="final">Pesquisar baseado no índice armazenado em banco de dados.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
