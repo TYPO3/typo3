@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815017" source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Workspaces</source>
+        <target state="final">Delovno okolje</target>
+      </trans-unit>
+      <trans-unit id="ok" resname="ok" approved="yes">
+        <source>Ok</source>
+        <target state="final">V redu</target>
+      </trans-unit>
+      <trans-unit id="cancel" resname="cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Prekliči</target>
+      </trans-unit>
+      <trans-unit id="close" resname="close" approved="yes">
+        <source>Close</source>
+        <target state="final">Zapri</target>
+      </trans-unit>
+      <trans-unit id="column.actions" resname="column.actions" approved="yes">
+        <source>Actions</source>
+        <target state="final">Dejanja</target>
+      </trans-unit>
+      <trans-unit id="language.allLanguages" resname="language.allLanguages" approved="yes">
+        <source>all languages</source>
+        <target state="final">vsi jeziki</target>
+      </trans-unit>
+      <trans-unit id="language.selectLanguage" resname="language.selectLanguage" approved="yes">
+        <source>all languages</source>
+        <target state="final">vsi jeziki</target>
+      </trans-unit>
+      <trans-unit id="status.warning" resname="status.warning" approved="yes">
+        <source>Warning</source>
+        <target state="final">Opozorilo</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
