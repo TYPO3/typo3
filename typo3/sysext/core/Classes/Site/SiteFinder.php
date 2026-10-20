@@ -106,9 +106,22 @@ readonly class SiteFinder
         }
         $sites = $this->siteConfiguration->getAllExistingSites();
         $mapping = $this->getRootPageIdToIdentifierMapping();
+        $invalidSites = [];
+        foreach ($this->siteConfiguration->getInvalidSites() as $identifier => $invalidSite) {
+            if ($invalidSite['rootPageId'] !== null) {
+                $invalidSites[$invalidSite['rootPageId']] = $identifier;
+            }
+        }
         foreach ($rootLine as $pageInRootLine) {
             if (isset($mapping[(int)$pageInRootLine['uid']], $sites[$mapping[(int)$pageInRootLine['uid']]])) {
                 return $sites[$mapping[(int)$pageInRootLine['uid']]];
+            }
+            // Pages of an invalid site must not be resolved to a site further up in the root line
+            if (isset($invalidSites[(int)$pageInRootLine['uid']])) {
+                throw new SiteNotFoundException(
+                    'Site "' . $invalidSites[(int)$pageInRootLine['uid']] . '" of page ' . $pageId . ' is invalid',
+                    1792566786
+                );
             }
         }
         throw new SiteNotFoundException('No site found in root line of page ' . $pageId, 1521716622);

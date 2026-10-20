@@ -1,0 +1,7 @@
+rootPageId: 6
+base: 'https://locale.example.com/'
+languages:
+  -
+    languageId: 0
+    title: English
+    base: /

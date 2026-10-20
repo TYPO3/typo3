@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Form\FormDataGroup\SiteConfigurationDataGroup;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -38,6 +39,7 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
     public function __construct(
         private readonly SiteFinder $siteFinder,
         private readonly InlineStackProcessor $inlineStackProcessor,
+        private readonly SiteConfiguration $siteConfiguration,
     ) {}
 
     /**
@@ -127,12 +129,16 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
         $connectedUids = [];
         if ($result['command'] === 'edit') {
             $siteConfigurationForPageUid = (int)$result['databaseRow']['rootPageId'][0];
+            $siteConfiguration = [];
             try {
-                $site = $this->siteFinder->getSiteByRootPageId($siteConfigurationForPageUid);
+                $siteConfiguration = $this->siteFinder->getSiteByRootPageId($siteConfigurationForPageUid)->getConfiguration();
             } catch (SiteNotFoundException $e) {
-                $site = null;
+                // Invalid sites are not available as Site object, but can be edited to fix them
+                $invalidSite = $this->siteConfiguration->getInvalidSiteByRootPageId($siteConfigurationForPageUid);
+                if ($invalidSite !== null) {
+                    $siteConfiguration = $this->siteConfiguration->load($invalidSite['identifier']);
+                }
             }
-            $siteConfiguration = $site ? $site->getConfiguration() : [];
             if (is_array($siteConfiguration[$fieldName] ?? false)) {
                 $connectedUids = array_keys($siteConfiguration[$fieldName]);
             }

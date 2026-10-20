@@ -1,0 +1,18 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<p class="mb-1">{invalidSite.message}</p>
+<f:if condition="{invalidSite.field}">
+    <p class="mb-1">
+        <f:translate key="invalidSite.field" domain="backend.siteconfiguration" />:
+        <f:if condition="{fieldLabel}">{fieldLabel}</f:if>
+        <code>{invalidSite.field}</code>
+    </p>
+</f:if>
+<p class="mb-0 text-variant">
+    <code>{invalidSite.type}</code> (#{invalidSite.code})
+</p>
+
+</html>

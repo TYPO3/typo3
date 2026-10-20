@@ -84,6 +84,8 @@ final class CliCommandTest extends AbstractCommandTestCase
             ['command' => 'site:list', 'args' => [], 'expectedExitCode' => 0],
             ['command' => 'site:show show-me', 'args' => [], 'expectedExitCode' => 0],
             ['command' => 'syslog:list', 'args' => [], 'expectedExitCode' => 0],
+            ['command' => 'site:validate', 'args' => [], 'expectedExitCode' => 0],
+            ['command' => 'site:validate show-me', 'args' => [], 'expectedExitCode' => 0],
             ['command' => 'upgrade:list', 'args' => [], 'expectedExitCode' => 0],
             ['command' => 'install:password:set %s %s', 'args' => ['--no-interaction', '--dry-run'], 'expectedExitCode' => 0],
             // supported shells

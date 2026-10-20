@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Error\PageErrorHandler\InvalidPageErrorHandlerException;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerNotConfiguredException;
+use TYPO3\CMS\Core\Exception\InvalidSiteConfigurationException;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -117,6 +118,45 @@ final class SiteTest extends UnitTestCase
             ],
         ]);
         self::assertEquals(new Uri($expected), $subject->getLanguageById(0)->getBase());
+    }
+
+    public static function invalidConfigurationThrowsExceptionWithConfigurationPathDataProvider(): iterable
+    {
+        yield 'malformed site base' => [
+            ['base' => 'https:///'],
+            'base',
+        ];
+        yield 'malformed language base' => [
+            [
+                'base' => 'https://example.com/',
+                'languages' => [
+                    ['languageId' => 0, 'locale' => 'en_US.UTF-8', 'base' => '/'],
+                    ['languageId' => 1, 'locale' => 'de_DE.UTF-8', 'base' => 'https://'],
+                ],
+            ],
+            'languages.1.base',
+        ];
+        yield 'missing language locale' => [
+            [
+                'base' => 'https://example.com/',
+                'languages' => [
+                    ['languageId' => 0, 'base' => '/'],
+                ],
+            ],
+            'languages.0.locale',
+        ];
+    }
+
+    #[DataProvider('invalidConfigurationThrowsExceptionWithConfigurationPathDataProvider')]
+    #[Test]
+    public function invalidConfigurationThrowsExceptionWithConfigurationPath(array $configuration, string $expectedPath): void
+    {
+        try {
+            new Site('invalid', 1, $configuration);
+            self::fail('Expected ' . InvalidSiteConfigurationException::class . ' was not thrown');
+        } catch (InvalidSiteConfigurationException $e) {
+            self::assertSame($expectedPath, $e->configurationPath);
+        }
     }
 
     #[Test]

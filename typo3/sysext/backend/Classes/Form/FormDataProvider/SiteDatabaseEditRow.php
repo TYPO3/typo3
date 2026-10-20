@@ -90,11 +90,17 @@ readonly class SiteDatabaseEditRow implements FormDataProviderInterface
 
     protected function getRawConfigurationForSiteWithRootPageId(int $rootPageId): array
     {
-        $site = $this->siteFinder->getSiteByRootPageId($rootPageId);
+        $siteConfiguration = GeneralUtility::makeInstance(SiteConfiguration::class);
+        try {
+            $siteIdentifier = $this->siteFinder->getSiteByRootPageId($rootPageId)->getIdentifier();
+        } catch (SiteNotFoundException $e) {
+            // Invalid sites are not available as Site object, but can be edited to fix them
+            $siteIdentifier = $siteConfiguration->getInvalidSiteByRootPageId($rootPageId)['identifier'] ?? throw $e;
+        }
         // load config as it is stored on disk (without replacements)
         $siteTca = $this->siteTcaConfiguration->getTca();
 
-        $configuration = GeneralUtility::makeInstance(SiteConfiguration::class)->load($site->getIdentifier());
+        $configuration = $siteConfiguration->load($siteIdentifier);
 
         foreach ($configuration as $fieldName => $fieldValue) {
             if (is_array($fieldValue) && ($siteTca['site']['columns'][$fieldName]['config']['type'] ?? '') === 'select' && ($siteTca['site']['columns'][$fieldName]['config']['renderType'] ?? '') === 'selectMultipleSideBySide') {

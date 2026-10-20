@@ -13,6 +13,16 @@
 
 <f:render partial="SiteManagement/InvalidSets" arguments="{site: site}"/>
 
+<f:if condition="{invalidSite}">
+    <f:be.infobox
+        state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR')}"
+        title="{f:translate(key: 'edit.invalidSite.title', domain: 'backend.siteconfiguration')}"
+    >
+        <p><f:translate key="edit.invalidSite.description" domain="backend.siteconfiguration" /></p>
+        <f:render partial="SiteManagement/InvalidSite" arguments="{invalidSite: invalidSite, fieldLabel: invalidSiteFieldLabel}" />
+    </f:be.infobox>
+</f:if>
+
 <form
     action="{f:be.uri(route:'site_configuration.save')}"
     method="post"
