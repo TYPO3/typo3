@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814789" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_weblayout.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>Web &gt; Page Module</source>
+        <target state="final">Web &gt; Módulo Página</target>
+      </trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_13.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_14.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_15.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_13.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_14.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_15.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="quickEdit.alttitle" resname="quickEdit.alttitle" approved="yes">
+        <source>Quick Edit</source>
+        <target state="final">Edição Rápida</target>
+      </trans-unit>
+      <trans-unit id="quickEdit.description" resname="quickEdit.description" approved="yes">
+        <source>The Quick Editor gives you direct access to the form fields of the page content.</source>
+        <target state="final">O Editor Rápido dá a você acesso direto aos campos do formulário de conteúdo da página.</target>
+      </trans-unit>
+      <trans-unit id="_quickEdit.seeAlso" resname="_quickEdit.seeAlso" approved="yes">
+        <source>_MOD_web_layout:quickEdit_selElement</source>
+        <target state="final">_MOD_web_layout:quickEdit_selElement</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_quickEdit.image" resname="_quickEdit.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_5.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_5.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="quickEdit_selElement.alttitle" resname="quickEdit_selElement.alttitle" approved="yes">
+        <source>Content Elements</source>
+        <target state="final">Elementos de Conteúdo</target>
+      </trans-unit>
+      <trans-unit id="_quickEdit_selElement.seeAlso" resname="_quickEdit_selElement.seeAlso" xml:space="preserve" approved="yes">
+				<source>_MOD_web_layout:quickEdit,
+xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_ce</source>
+				
+			<target state="final">_MOD_web_layout:quickEdit,
+xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_ce</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_quickEdit_selElement.image" resname="_quickEdit_selElement.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_4.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_4.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="columns_1.alttitle" resname="columns_1.alttitle" approved="yes">
+        <source>Listing by Columns</source>
+        <target state="final">Listando por Coluna</target>
+      </trans-unit>
+      <trans-unit id="columns_2.alttitle" resname="columns_2.alttitle" approved="yes">
+        <source>Listing by Language</source>
+        <target state="final">Listando por Idioma</target>
+      </trans-unit>
+      <trans-unit id="columns_3.alttitle" resname="columns_3.alttitle" approved="yes">
+        <source>Page Information</source>
+        <target state="final">Informações da Página</target>
+      </trans-unit>
+      <trans-unit id="_columns_3.image" resname="_columns_3.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_9.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_9.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="columns_single.alttitle" resname="columns_single.alttitle" approved="yes">
+        <source>Page content elements in a single column</source>
+        <target state="final">Elementos de conteúdo de página em uma única coluna</target>
+      </trans-unit>
+      <trans-unit id="_columns_single.seeAlso" resname="_columns_single.seeAlso" approved="yes">
+        <source>_MOD_web_layout:columns_multi</source>
+        <target state="final">_MOD_web_layout:columns_multi</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_columns_single.image" resname="_columns_single.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_1.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_1.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="button_panel.alttitle" resname="button_panel.alttitle" approved="yes">
+        <source>The "Big Buttons"</source>
+        <target state="final">Os "Grandes Botões"</target>
+      </trans-unit>
+      <trans-unit id="_button_panel.seeAlso" resname="_button_panel.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:TCEforms,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_ce,</source>
+				
+			<target state="final">xMOD_csh_corebe:TCEforms,
+xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_ce,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_button_panel.image" resname="_button_panel.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_2.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagemodule_2.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
