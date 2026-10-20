@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_toolbar.xlf" date="2024-06-17T15:00:00Z" product-name="lang" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="toolbarItems.clearCache" approved="yes">
+        <source>Clear cache</source>
+        <target state="final">Cache leeren</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.help" approved="yes">
+        <source>Help</source>
+        <target state="final">Hilfe</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sidebarCollapse" approved="yes">
+        <source>Collapse sidebar</source>
+        <target state="final">Seitenleiste einklappen</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sidebarExpand" approved="yes">
+        <source>Expand sidebar</source>
+        <target state="final">Seitenleiste ausklappen</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Suchen</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.searchbarOpenClose" approved="yes">
+        <source>Open/Close searchbar</source>
+        <target state="final">Suchleiste öffnen/schließen</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo" approved="yes">
+        <source>System Information</source>
+        <target state="final">System-Information</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.intro.text" approved="yes">
+        <source>This is a short system overview. For advanced information please head to: </source>
+        <target state="final">Dies ist ein kurzer Systemüberblick. Für erweiterte Informationen gehe bitte weiter zu: </target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.intro.link" approved="yes">
+        <source>Environment Module</source>
+        <target state="final">Umgebungsmodul</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.allgood" xml:space="preserve" approved="yes">
+        <source>Your system is fully operational.
+Have a nice day.</source>
+      <target state="final">Dein System ist voll funktionsfähig.
+Hab noch einen schönen Tag.</target></trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.applicationcontext" approved="yes">
+        <source>Application Context</source>
+        <target state="final">Anwendungs-Kontext</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.installationMethod" approved="yes">
+        <source>Installation Method</source>
+        <target state="final">Installationsmethode</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.installationMethod.classic" approved="yes">
+        <source>Classic mode</source>
+        <target state="final">Klassischer Modus</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.installationMethod.composer" approved="yes">
+        <source>Composer mode</source>
+        <target state="final">Composer-Modus</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.database" approved="yes">
+        <source>Database</source>
+        <target state="final">Datenbank</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.database.offline" approved="yes">
+        <source>Offline</source>
+        <target state="final">Offline</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.debugger" approved="yes">
+        <source>Debugger</source>
+        <target state="final">Debugger</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.gitrevision" approved="yes">
+        <source>GIT Revision</source>
+        <target state="final">GIT-Revision</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.operatingsystem" approved="yes">
+        <source>Operating System</source>
+        <target state="final">Betriebssystem</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.phpversion" approved="yes">
+        <source>PHP Version</source>
+        <target state="final">PHP-Version</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.typo3-version" approved="yes">
+        <source>TYPO3 Version</source>
+        <target state="final">TYPO3 Version</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.webserver" approved="yes">
+        <source>Web Server</source>
+        <target state="final">Webserver</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.toolbarOpenClose" approved="yes">
+        <source>Open/Close toolbar</source>
+        <target state="final">Werkzeugleiste öffnen/schließen</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.account.switchToUserMode.tooltip" approved="yes">
+        <source>Switch to User</source>
+        <target state="final">Zum Benutzer wechseln</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.account.switchToUserMode.account.prefix" approved="yes">
+        <source>SU</source>
+        <target state="final">BW</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.recentlySwitchedUsers" approved="yes">
+        <source>Recently switched to</source>
+        <target state="final">Kürzlich gewechselt zu</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.recentlySwitchedUsers.su.tooltip" approved="yes">
+        <source>Switch to user %s</source>
+        <target state="final">Zu Benutzer %s wechseln</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.btn.exitSwitchUser" approved="yes">
+        <source>Exit switch user mode</source>
+        <target state="final">Benutzerwechsel-Modus verlassen</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.btn.logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">Abmelden</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
