@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="form.finisher.error" approved="yes">
+        <source>Your form could not be submitted due to a technical issue. It might be a temporary issue, but can also be related to your input.</source>
+        <target state="final">Seu formulário não pôde ser enviado devido a um problema técnico. Pode ser temporário, mas também pode estar relacionado à sua entrada.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
