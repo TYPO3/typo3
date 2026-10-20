@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815016" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort_csh.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="pages_sort.alttitle" resname="pages_sort.alttitle" approved="yes">
+        <source>Sort Pages</source>
+        <target state="final">ຈັດລຽງໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="pages_sort.description" resname="pages_sort.description" approved="yes">
+        <source>Enables you to sort pages alphabetically by title, sub-title or by creation time etc. You can also reverse the order of pages in the page tree.</source>
+        <target state="final">ຊ່ວຍໃຫ້ທ່ານສາມາດຈັດລຽງໜ້າຕາມລໍາດັບຕົວອັກສອນ ໂດຍອີງຕາມຫົວຂໍ້, ຫົວຂໍ້ຍ່ອຍ ຫຼື ຕາມເວລາການສ້າງ ແລະ ອື່ນໆ. ທ່ານຍັງສາມາດປີ້ນລໍາດັບຂອງໜ້າຕ່າງໆໃນຜັງໂຄງສ້າງໜ້າໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="pages_sort.details" resname="pages_sort.details" xml:space="preserve" approved="yes">
+				<source>Pages in the page tree are always ordered manually. It is possible to move pages up and down etc. But this wizard gives you a quick way to change the manual order of sub-pages.
+
+Simply click one of the links in the bottom of the wizard screen:
+
+&lt;b&gt;Page title&lt;/b&gt;
+Will sort pages by their page title.
+
+&lt;b&gt;Subtitle&lt;/b&gt;
+Will sort page by their Subtitle field.
+
+&lt;b&gt;Change-time&lt;/b&gt;
+Will sort pages by the date they were last changed.
+
+&lt;b&gt;Create-time&lt;/b&gt;
+Will sort pages by their creation date.
+
+&lt;b&gt;Reverse current order&lt;/b&gt;
+Click this to reverse the current order. For example, if you want to sort pages alphabetically but in descending order you simply sort by title first and then reverse the order by clicking this.</source>
+			<target state="final">ໜ້າຕ່າງໆໃນຜັງໂຄງສ້າງໜ້າແມ່ນຖືກຈັດລໍາດັບດ້ວຍຕົນເອງສະເໝີ. ທ່ານສາມາດຍ້າຍໜ້າຂຶ້ນ ແລະ ລົງໄດ້. ແຕ່ເຄື່ອງມືຊ່ວຍຈັດການນີ້ຈະຊ່ວຍໃຫ້ທ່ານປ່ຽນລໍາດັບຂອງໜ້າຍ່ອຍໄດ້ຢ່າງວ່ອງໄວ.
+
+ພຽງແຕ່ຄລິກໃສ່ໜຶ່ງໃນລິ້ງຢູ່ທາງລຸ່ມຂອງໜ້າຈໍເຄື່ອງມືຊ່ວຍຈັດການ:
+
+&lt;b&gt;ຫົວຂໍ້ໜ້າ&lt;/b&gt;
+ຈະຈັດລຽງໜ້າຕາມຫົວຂໍ້ຂອງໜ້າ.
+
+&lt;b&gt;ຫົວຂໍ້ຍ່ອຍ&lt;/b&gt;
+ຈະຈັດລຽງໜ້າຕາມຫ້ອງຫົວຂໍ້ຍ່ອຍ.
+
+&lt;b&gt;ເວລາການປ່ຽນແປງ&lt;/b&gt;
+ຈະຈັດລຽງໜ້າຕາມວັນທີທີ່ມີການປ່ຽນແປງຄັ້ງຫຼ້າສຸດ.
+
+&lt;b&gt;ເວລາການສ້າງ&lt;/b&gt;
+ຈະຈັດລຽງໜ້າຕາມວັນທີສ້າງ.
+
+&lt;b&gt;ປີ້ນລໍາດັບປັດຈຸບັນ&lt;/b&gt;
+ຄລິກທີ່ນີ້ເພື່ອປີ້ນລໍາດັບປັດຈຸບັນ. ຕົວຢ່າງ: ຖ້າທ່ານຕ້ອງການຈັດລຽງໜ້າຕາມລໍາດັບຕົວອັກສອນແຕ່ເປັນການຈັດລຽງແບບຖອຍຫຼັງ, ທ່ານພຽງແຕ່ຈັດລຽງຕາມຫົວຂໍ້ກ່ອນ ແລ້ວຈຶ່ງປີ້ນລໍາດັບໂດຍການຄລິກທີ່ນີ້.</target></trans-unit>
+      <trans-unit id="_pages_sort.image" resname="_pages_sort.image" approved="yes">
+        <source>EXT:backend/Resources/Public/Images/Csh/PagesSort.png</source>
+        <target state="final">EXT:backend/Resources/Public/Images/Csh/PagesSort.png</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
