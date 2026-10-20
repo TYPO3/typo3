@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814795" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_fe_groups.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="sk">
+    <header/>
+    <body>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>This option disables the user group.</source>
+        <target state="final">Táto možnosť zablokuje skupinu užívateľov.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" xml:space="preserve" approved="yes">
+				<source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.
+For instance if a page or content element was assigned access only by this group and you disable the group, no one would gain access to that page or content element.</source>
+			<target state="final">Ak zablokujete používateľskú skupinu, tak všetci užívatelia, ktorí sú členmi skupiny, nezdedia žiadne vlastnosti tejto užívateľskej skupiny.
+Napríklad, ak nejaká stránka alebo obsahový prvok bol prístupný iba členom tejto skupiny a vy ju zablokujete, tak nikto nebude mať k tejto stránke alebo obsahovému prvku prístup.</target></trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" approved="yes">
+        <source>fe_users:disable</source>
+        <target state="final">fe_users:disable</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Name of the group.</source>
+        <target state="final">Názov skupiny.</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>This title will appear as the group name in the 'Access'-list in other records.</source>
+        <target state="final">Tento názov sa zobrazí ako názov skupiny v zozname položky 'Prístup' v iných záznamoch.</target>
+      </trans-unit>
+      <trans-unit id="subgroup.description" resname="subgroup.description" approved="yes">
+        <source>Member of other groups.</source>
+        <target state="final">Člen inej skupiny.</target>
+      </trans-unit>
+      <trans-unit id="subgroup.details" resname="subgroup.details" approved="yes">
+        <source>List of other groups that this group is a member of.</source>
+        <target state="final">Zoznam ďalších skupín, ktorých je táto skupina členom.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a description of the group.</source>
+        <target state="final">Vložte popis skupiny.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
