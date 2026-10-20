@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814895" source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/Module/locallang_csh.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="checkboxes.description" resname="checkboxes.description" approved="yes">
+        <source>Click the following checkboxes to consider or to ignore the corresponding broken links.</source>
+        <target state="final">Klikněte na následující zaškrtávací políčka pro zahrnutí nebo ignorování odpovídajících nefunkčních odkazů.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_path.description" resname="tablehead_path.description" approved="yes">
+        <source>Path to the content element, which contains the broken link.</source>
+        <target state="final">Cesta k obsahovému prvku, který obsahuje poškozený odkaz.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_element.description" resname="tablehead_element.description" approved="yes">
+        <source>Type of the element containing the broken link, its headline and the field in which the broken link is located.</source>
+        <target state="final">Typ prvku obsahujícího nefunkční odkaz, jeho nadpis a pole, ve kterém se nachází nefunkční odkaz.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_headlink.description" resname="tablehead_headlink.description" approved="yes">
+        <source>The linking text.</source>
+        <target state="final">Odkazující text.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_linktarget.description" resname="tablehead_linktarget.description" approved="yes">
+        <source>URL to which the broken link is pointing.</source>
+        <target state="final">URL, na kterou odkazuje nefunkční odkaz.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_linkmessage.description" resname="tablehead_linkmessage.description" approved="yes">
+        <source>Status of that link.</source>
+        <target state="final">Stav tohoto odkazu.</target>
+      </trans-unit>
+      <trans-unit id="tablehead_lastcheck.description" resname="tablehead_lastcheck.description" approved="yes">
+        <source>Date and time of the last update of the information in each table row.</source>
+        <target state="final">Datum a čas poslední aktualizace informací v každém řádku tabulky.</target>
+      </trans-unit>
+      <trans-unit id="task_page.alttitle" resname="task_page.alttitle" approved="yes">
+        <source>Start page of the task</source>
+        <target state="final">Počáteční stránka úkolu</target>
+      </trans-unit>
+      <trans-unit id="task_page.description" resname="task_page.description" approved="yes">
+        <source>UID of the start page for this task.</source>
+        <target state="final">UID úvodní stránky pro tento úkol.</target>
+      </trans-unit>
+      <trans-unit id="task_depth.alttitle" resname="task_depth.alttitle" approved="yes">
+        <source>Depth of the task</source>
+        <target state="final">Hloubka úkolu</target>
+      </trans-unit>
+      <trans-unit id="task_depth.description" resname="task_depth.description" approved="yes">
+        <source>Level of pages the task should check.</source>
+        <target state="final">Úroveň stránek, které má úkol zkontrolovat.</target>
+      </trans-unit>
+      <trans-unit id="task_configuration.alttitle" resname="task_configuration.alttitle" approved="yes">
+        <source>Special TSconfig code</source>
+        <target state="final">Speciální TSconfig kód</target>
+      </trans-unit>
+      <trans-unit id="task_configuration.description" resname="task_configuration.description" approved="yes">
+        <source>TSconfig Code which defines settings for linkvalidator to be used for this task.</source>
+        <target state="final">TSconfig kód, který definuje nastavení pro linkvalidator pro tuto úlohu.</target>
+      </trans-unit>
+      <trans-unit id="task_email.alttitle" resname="task_email.alttitle" approved="yes">
+        <source>Email address</source>
+        <target state="final">E-mailová adresa</target>
+      </trans-unit>
+      <trans-unit id="task_email.description" resname="task_email.description" approved="yes">
+        <source>Email address to which an email report is sent.</source>
+        <target state="final">E-mailová adresa, na kterou je e-mailová zpráva odeslána.</target>
+      </trans-unit>
+      <trans-unit id="task_emailOnBrokenLinkOnly.alttitle" resname="task_emailOnBrokenLinkOnly.alttitle" approved="yes">
+        <source>Mailing option</source>
+        <target state="final">Volba e-mailu</target>
+      </trans-unit>
+      <trans-unit id="task_emailOnBrokenLinkOnly.description" resname="task_emailOnBrokenLinkOnly.description" approved="yes">
+        <source>Only send an email, if new broken links were found.</source>
+        <target state="final">E-mail odeslat pouze v případě, že byly nalezeny nové poškozené odkazy.</target>
+      </trans-unit>
+      <trans-unit id="task_emailTemplateFile.alttitle" resname="task_emailTemplateFile.alttitle" approved="yes">
+        <source>Email template file</source>
+        <target state="final">Šablona e-mailu</target>
+      </trans-unit>
+      <trans-unit id="task_emailTemplateFile.description" resname="task_emailTemplateFile.description" approved="yes">
+        <source>Define a template to be used for the email.</source>
+        <target state="final">Definujte šablonu, která se použije pro email.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
