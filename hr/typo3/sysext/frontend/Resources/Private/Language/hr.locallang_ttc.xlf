@@ -1,0 +1,848 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814791" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_ttc.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id="CType_formlabel" resname="CType_formlabel" approved="yes">
+        <source>Type</source>
+        <target state="final">Vrsta</target>
+      </trans-unit>
+      <trans-unit id="CType.I.0" resname="CType.I.0" approved="yes">
+        <source>Header</source>
+        <target state="final">Naslov</target>
+      </trans-unit>
+      <trans-unit id="CType.I.1" resname="CType.I.1" approved="yes">
+        <source>Text</source>
+        <target state="final">Tekst</target>
+      </trans-unit>
+      <trans-unit id="CType.I.2" resname="CType.I.2" approved="yes">
+        <source>Text &amp; Images</source>
+        <target state="final">Tekst i slike</target>
+      </trans-unit>
+      <trans-unit id="CType.I.3" resname="CType.I.3" approved="yes">
+        <source>Images</source>
+        <target state="final">Slike</target>
+      </trans-unit>
+      <trans-unit id="CType.I.4" resname="CType.I.4" approved="yes">
+        <source>Bullet List</source>
+        <target state="final">Popis s grafičkim oznakama</target>
+      </trans-unit>
+      <trans-unit id="CType.I.5" resname="CType.I.5" approved="yes">
+        <source>Table</source>
+        <target state="final">Tablica</target>
+      </trans-unit>
+      <trans-unit id="CType.I.6" resname="CType.I.6" approved="yes">
+        <source>File Links</source>
+        <target state="final">Datotečne poveznice</target>
+      </trans-unit>
+      <trans-unit id="CType.I.8" resname="CType.I.8" approved="yes">
+        <source>Form</source>
+        <target state="final">Obrazac</target>
+      </trans-unit>
+      <trans-unit id="CType.I.9" resname="CType.I.9" approved="yes">
+        <source>Search</source>
+        <target state="final">Traži</target>
+      </trans-unit>
+      <trans-unit id="CType.I.10" resname="CType.I.10" approved="yes">
+        <source>Login</source>
+        <target state="final">Prijava</target>
+      </trans-unit>
+      <trans-unit id="CType.I.11" resname="CType.I.11" approved="yes">
+        <source>Textbox</source>
+        <target state="final">Tekstualni okvir</target>
+      </trans-unit>
+      <trans-unit id="CType.I.12" resname="CType.I.12" approved="yes">
+        <source>Special Menus</source>
+        <target state="final">Posebni izbornici</target>
+      </trans-unit>
+      <trans-unit id="CType.I.13" resname="CType.I.13" approved="yes">
+        <source>Insert Records</source>
+        <target state="final">Umetni zapise</target>
+      </trans-unit>
+      <trans-unit id="CType.I.14" resname="CType.I.14" approved="yes">
+        <source>Insert Plugin</source>
+        <target state="final">Umetni umetak</target>
+      </trans-unit>
+      <trans-unit id="CType.I.15" resname="CType.I.15" approved="yes">
+        <source>Script</source>
+        <target state="final">Skripta</target>
+      </trans-unit>
+      <trans-unit id="CType.I.16" resname="CType.I.16" approved="yes">
+        <source>Divider</source>
+        <target state="final">Razdjelnik</target>
+      </trans-unit>
+      <trans-unit id="CType.I.17" resname="CType.I.17" approved="yes">
+        <source>HTML</source>
+        <target state="final">HTML</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_recently_updated" resname="CType.menu_recently_updated" approved="yes">
+        <source>Recently updated pages</source>
+        <target state="final">Nedavno ažurirane stranice</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap" resname="CType.menu_sitemap" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">Mapa web lokacije</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap_pages" resname="CType.menu_sitemap_pages" approved="yes">
+        <source>Sitemaps of selected pages</source>
+        <target state="final">Mapa odabranih stranica</target>
+      </trans-unit>
+      <trans-unit id="CType.div.standard" resname="CType.div.standard" approved="yes">
+        <source>Standard</source>
+        <target state="final">Standardno</target>
+      </trans-unit>
+      <trans-unit id="CType.div.lists" resname="CType.div.lists" approved="yes">
+        <source>Lists</source>
+        <target state="final">Popisi</target>
+      </trans-unit>
+      <trans-unit id="CType.div.forms" resname="CType.div.forms" approved="yes">
+        <source>Forms</source>
+        <target state="final">Obrasci</target>
+      </trans-unit>
+      <trans-unit id="CType.div.special" resname="CType.div.special" approved="yes">
+        <source>Special</source>
+        <target state="final">Posebno</target>
+      </trans-unit>
+      <trans-unit id="layout.I.1" resname="layout.I.1" approved="yes">
+        <source>Layout 1</source>
+        <target state="final">Raspored 1</target>
+      </trans-unit>
+      <trans-unit id="layout.I.2" resname="layout.I.2" approved="yes">
+        <source>Layout 2</source>
+        <target state="final">Raspored 2</target>
+      </trans-unit>
+      <trans-unit id="layout.I.3" resname="layout.I.3" approved="yes">
+        <source>Layout 3</source>
+        <target state="final">Raspored 3</target>
+      </trans-unit>
+      <trans-unit id="colPos_formlabel" resname="colPos_formlabel" approved="yes">
+        <source>Column</source>
+        <target state="final">Stupac</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.0" resname="colPos.I.0" approved="yes">
+        <source>Left</source>
+        <target state="final">Lijevo</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.1" resname="colPos.I.1" approved="yes">
+        <source>Normal</source>
+        <target state="final">Normalno</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.2" resname="colPos.I.2" approved="yes">
+        <source>Right</source>
+        <target state="final">Desno</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.3" resname="colPos.I.3" approved="yes">
+        <source>Border</source>
+        <target state="final">Rub</target>
+      </trans-unit>
+      <trans-unit id="date" resname="date" approved="yes">
+        <source>Date</source>
+        <target state="final">Datum</target>
+      </trans-unit>
+      <trans-unit id="date_formlabel" resname="date_formlabel" approved="yes">
+        <source>Date</source>
+        <target state="final">Datum</target>
+      </trans-unit>
+      <trans-unit id="header" resname="header" approved="yes">
+        <source>Header</source>
+        <target state="final">Naslov</target>
+      </trans-unit>
+      <trans-unit id="header_formlabel" resname="header_formlabel" approved="yes">
+        <source>Header</source>
+        <target state="final">Naslov</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.shortcut_formlabel" resname="header.ALT.shortcut_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">Naziv (nije vidljivo na prednjem sučelju)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.script_formlabel" resname="header.ALT.script_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">Naziv (nije vidljivo na prednjem sučelju)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.div_formlabel" resname="header.ALT.div_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">Naziv (nije vidljivo na prednjem sučelju)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.html_formlabel" resname="header.ALT.html_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">Naziv (nije vidljivo na prednjem sučelju)</target>
+      </trans-unit>
+      <trans-unit id="header_position_formlabel" resname="header_position_formlabel" approved="yes">
+        <source>Alignment</source>
+        <target state="final">Poravnanje</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.1" resname="header_position.I.1" approved="yes">
+        <source>Center</source>
+        <target state="final">Sredina</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.2" resname="header_position.I.2" approved="yes">
+        <source>Right</source>
+        <target state="final">Desno</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.3" resname="header_position.I.3" approved="yes">
+        <source>Left</source>
+        <target state="final">Lijevo</target>
+      </trans-unit>
+      <trans-unit id="header_layout_formlabel" resname="header_layout_formlabel" approved="yes">
+        <source>Type</source>
+        <target state="final">Vrsta</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.1" resname="header_layout.I.1" approved="yes">
+        <source>Layout 1</source>
+        <target state="final">Raspored 1</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.2" resname="header_layout.I.2" approved="yes">
+        <source>Layout 2</source>
+        <target state="final">Raspored 2</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.3" resname="header_layout.I.3" approved="yes">
+        <source>Layout 3</source>
+        <target state="final">Raspored 3</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.4" resname="header_layout.I.4" approved="yes">
+        <source>Layout 4</source>
+        <target state="final">Raspored 4</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.5" resname="header_layout.I.5" approved="yes">
+        <source>Layout 5</source>
+        <target state="final">Raspored 5</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.6" resname="header_layout.I.6" approved="yes">
+        <source>Hidden</source>
+        <target state="final">Skriveno</target>
+      </trans-unit>
+      <trans-unit id="bodytext.W.forms" resname="bodytext.W.forms" approved="yes">
+        <source>Forms wizard</source>
+        <target state="final">Čarobnjak za obrasce</target>
+      </trans-unit>
+      <trans-unit id="imagewidth_formlabel" resname="imagewidth_formlabel" approved="yes">
+        <source>Width (px)</source>
+        <target state="final">Širina (pikseli)</target>
+      </trans-unit>
+      <trans-unit id="imageheight_formlabel" resname="imageheight_formlabel" approved="yes">
+        <source>Height (px)</source>
+        <target state="final">Visina (pikseli)</target>
+      </trans-unit>
+      <trans-unit id="imageorient_formlabel" resname="imageorient_formlabel" approved="yes">
+        <source>Position and Alignment</source>
+        <target state="final">Položaj i poravnanje</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.0" resname="imageorient.I.0" approved="yes">
+        <source>Above, center</source>
+        <target state="final">Iznad, sredina</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.1" resname="imageorient.I.1" approved="yes">
+        <source>Above, right</source>
+        <target state="final">Iznad, desno</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.2" resname="imageorient.I.2" approved="yes">
+        <source>Above, left</source>
+        <target state="final">Iznad, lijevo</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.3" resname="imageorient.I.3" approved="yes">
+        <source>Below, center</source>
+        <target state="final">Ispod, srednia</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.4" resname="imageorient.I.4" approved="yes">
+        <source>Below, right</source>
+        <target state="final">Ispod, desno</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.5" resname="imageorient.I.5" approved="yes">
+        <source>Below, left</source>
+        <target state="final">Ispod, lijevo</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.6" resname="imageorient.I.6" approved="yes">
+        <source>In text, right</source>
+        <target state="final">U tekstu, desno</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.7" resname="imageorient.I.7" approved="yes">
+        <source>In text, left</source>
+        <target state="final">U tekstu, lijevo</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.8" resname="imageorient.I.8" approved="yes">
+        <source>__No wrap:__</source>
+        <target state="final">__Bez omatanja:__</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.9" resname="imageorient.I.9" approved="yes">
+        <source>Beside Text, Right</source>
+        <target state="final">Pored teksta, desno</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.10" resname="imageorient.I.10" approved="yes">
+        <source>Beside Text, Left</source>
+        <target state="final">Pored teksta, lijevo</target>
+      </trans-unit>
+      <trans-unit id="imageborder" resname="imageborder" approved="yes">
+        <source>Border</source>
+        <target state="final">Rub</target>
+      </trans-unit>
+      <trans-unit id="imageborder_formlabel" resname="imageborder_formlabel" approved="yes">
+        <source>Border</source>
+        <target state="final">Rub</target>
+      </trans-unit>
+      <trans-unit id="image_link_formlabel" resname="image_link_formlabel" approved="yes">
+        <source>Links (one per line, one link per image)</source>
+        <target state="final">Poveznice (jedna po retku, jedna poveznica po slici)</target>
+      </trans-unit>
+      <trans-unit id="image_zoom_formlabel" resname="image_zoom_formlabel" approved="yes">
+        <source>Enlarge on Click</source>
+        <target state="final">Povećaj klikom</target>
+      </trans-unit>
+      <trans-unit id="image_frames_formlabel" resname="image_frames_formlabel" approved="yes">
+        <source>Graphical Frames</source>
+        <target state="final">Grafički okviri</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.0" resname="image_frames.I.0" approved="yes">
+        <source>(None)</source>
+        <target state="final">(Niti jedan)</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.1" resname="image_frames.I.1" approved="yes">
+        <source>Frame 1</source>
+        <target state="final">Okvir 1</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.2" resname="image_frames.I.2" approved="yes">
+        <source>Frame 2</source>
+        <target state="final">Okvir 2</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.3" resname="image_frames.I.3" approved="yes">
+        <source>Frame 3</source>
+        <target state="final">Okvir 3</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.4" resname="image_frames.I.4" approved="yes">
+        <source>Frame 4</source>
+        <target state="final">Okvir 4</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.5" resname="image_frames.I.5" approved="yes">
+        <source>Frame 5</source>
+        <target state="final">Okvir 5</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.6" resname="image_frames.I.6" approved="yes">
+        <source>Frame 6</source>
+        <target state="final">Okvir 6</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.7" resname="image_frames.I.7" approved="yes">
+        <source>Frame 7</source>
+        <target state="final">Okvir 7</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.8" resname="image_frames.I.8" approved="yes">
+        <source>Frame 8</source>
+        <target state="final">Okvir 8</target>
+      </trans-unit>
+      <trans-unit id="imagecols_formlabel" resname="imagecols_formlabel" approved="yes">
+        <source>Number of Columns</source>
+        <target state="final">Broj stupaca</target>
+      </trans-unit>
+      <trans-unit id="altText_formlabel" resname="altText_formlabel" approved="yes">
+        <source>Alternative Labels (one per line)</source>
+        <target state="final">Alternativne oznake (jedna po retku)</target>
+      </trans-unit>
+      <trans-unit id="titleText_formlabel" resname="titleText_formlabel" approved="yes">
+        <source>Titles (one per line)</source>
+        <target state="final">Naslovi (jedan po retku)</target>
+      </trans-unit>
+      <trans-unit id="images.addFileReference" resname="images.addFileReference" approved="yes">
+        <source>Add image</source>
+        <target state="final">Dodaj sliku</target>
+      </trans-unit>
+      <trans-unit id="longdescURL_formlabel" resname="longdescURL_formlabel" approved="yes">
+        <source>Long Description URLs (one per line)</source>
+        <target state="final">URL-ovi s dugim opisom (jedan po retku)</target>
+      </trans-unit>
+      <trans-unit id="cols.I.0" resname="cols.I.0" approved="yes">
+        <source>Auto</source>
+        <target state="final">Automatski</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.0" resname="recursive.I.0" approved="yes">
+        <source>0 levels (only selected page)</source>
+        <target state="final">0 razina (samo odabrana stranica)</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.1" resname="recursive.I.1" approved="yes">
+        <source>1 level</source>
+        <target state="final">1 razina</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.2" resname="recursive.I.2" approved="yes">
+        <source>2 levels</source>
+        <target state="final">2 razine</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.3" resname="recursive.I.3" approved="yes">
+        <source>3 levels</source>
+        <target state="final">3 razine</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.4" resname="recursive.I.4" approved="yes">
+        <source>4 levels</source>
+        <target state="final">4 razine</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.5" resname="recursive.I.5" approved="yes">
+        <source>Infinite</source>
+        <target state="final">Beskonačno</target>
+      </trans-unit>
+      <trans-unit id="menu_type" resname="menu_type" approved="yes">
+        <source>Menu Type</source>
+        <target state="final">Tip izbornika</target>
+      </trans-unit>
+      <trans-unit id="menu_type_formlabel" resname="menu_type_formlabel" approved="yes">
+        <source>Menu Type</source>
+        <target state="final">Tip izbornika</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.0" resname="menu_type.I.0" approved="yes">
+        <source>Menu of selected pages</source>
+        <target state="final">Izbornik odabranih stranica</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.1" resname="menu_type.I.1" approved="yes">
+        <source>Menu of subpages of selected pages</source>
+        <target state="final">Izbornik podstranica odabranih stranica</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.2" resname="menu_type.I.2" approved="yes">
+        <source>Menu of subpages of selected pages including abstracts</source>
+        <target state="final">Izbornik podstranica odabranih stranica uključujući sažetke</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.3" resname="menu_type.I.3" approved="yes">
+        <source>Menu of subpages of selected pages including sections</source>
+        <target state="final">Izbornik podstranica odabranih stranica uključujući odjeljke</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.4" resname="menu_type.I.4" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">Mapa web lokacije</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.5" resname="menu_type.I.5" approved="yes">
+        <source>Section index (page content marked for section menus)</source>
+        <target state="final">Indeks odjeljaka (sadržaj stranice označen za izbornike odjeljaka)</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.6" resname="menu_type.I.6" approved="yes">
+        <source>Recently updated pages</source>
+        <target state="final">Nedavno ažurirane stranice</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.7" resname="menu_type.I.7" approved="yes">
+        <source>Related pages (based on keywords)</source>
+        <target state="final">Povezane stranice (na temelju ključnih riječi)</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.8" resname="menu_type.I.8" approved="yes">
+        <source>Sitemaps of selected pages</source>
+        <target state="final">Mapa odabranih stranica</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.categorized_pages" resname="menu_type.I.categorized_pages" approved="yes">
+        <source>Pages for selected categories</source>
+        <target state="final">Stranice za odabrane kategorije</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.categorized_content" resname="menu_type.I.categorized_content" approved="yes">
+        <source>Content elements for selected categories</source>
+        <target state="final">Elementi sadržaja za odabrane kategorije</target>
+      </trans-unit>
+      <trans-unit id="list_type_formlabel" resname="list_type_formlabel" approved="yes">
+        <source>Selected Plugin</source>
+        <target state="final">Odabrani umetak</target>
+      </trans-unit>
+      <trans-unit id="media" resname="media" approved="yes">
+        <source>Files</source>
+        <target state="final">Datoteke</target>
+      </trans-unit>
+      <trans-unit id="media.dataAttributes" resname="media.dataAttributes" approved="yes">
+        <source>Additional data-* Attributes for HTML5 video tag</source>
+        <target state="final">Dodatni podaci-* Atributi za HTML5 video tag</target>
+      </trans-unit>
+      <trans-unit id="media.dataAttributes.attributeName" resname="media.dataAttributes.attributeName" approved="yes">
+        <source>Name of attribute (without data-)</source>
+        <target state="final">Naziv atributa (bez data-)</target>
+      </trans-unit>
+      <trans-unit id="media.dataAttributes.content" resname="media.dataAttributes.content" approved="yes">
+        <source>Content</source>
+        <target state="final">Sadržaj</target>
+      </trans-unit>
+      <trans-unit id="media.ALT.uploads_formlabel" resname="media.ALT.uploads_formlabel" approved="yes">
+        <source>Select single files</source>
+        <target state="final">Odaberite pojedine datoteke</target>
+      </trans-unit>
+      <trans-unit id="media.addFileReference" resname="media.addFileReference" approved="yes">
+        <source>Add file</source>
+        <target state="final">Dodaj datoteku</target>
+      </trans-unit>
+      <trans-unit id="multimedia_formlabel" resname="multimedia_formlabel" approved="yes">
+        <source>Selected Media File</source>
+        <target state="final">Odabrana medijska datoteka</target>
+      </trans-unit>
+      <trans-unit id="file_collections" resname="file_collections" approved="yes">
+        <source>File collections</source>
+        <target state="final">Zbirke datoteka</target>
+      </trans-unit>
+      <trans-unit id="file_collections.ALT.uploads_formlabel" resname="file_collections.ALT.uploads_formlabel" approved="yes">
+        <source>Select file collections</source>
+        <target state="final">Odaberite zbirke datoteka</target>
+      </trans-unit>
+      <trans-unit id="filelink_size_formlabel" resname="filelink_size_formlabel" approved="yes">
+        <source>Display File Size Information</source>
+        <target state="final">Prikaži informacije o veličini datoteke</target>
+      </trans-unit>
+      <trans-unit id="target.I.1" resname="target.I.1" approved="yes">
+        <source>New window</source>
+        <target state="final">Novi prozor</target>
+      </trans-unit>
+      <trans-unit id="records_formlabel" resname="records_formlabel" approved="yes">
+        <source>Records</source>
+        <target state="final">Zapisi</target>
+      </trans-unit>
+      <trans-unit id="space_class_none" resname="space_class_none" approved="yes">
+        <source>None</source>
+        <target state="final">Niti jedan</target>
+      </trans-unit>
+      <trans-unit id="frame_class.ruler_before" resname="frame_class.ruler_before" approved="yes">
+        <source>Ruler Before</source>
+        <target state="final">Ravnalo ispred</target>
+      </trans-unit>
+      <trans-unit id="frame_class.ruler_after" resname="frame_class.ruler_after" approved="yes">
+        <source>Ruler After</source>
+        <target state="final">Ravnalo nakon</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent" resname="frame_class.indent" approved="yes">
+        <source>Indent</source>
+        <target state="final">Uvlaka</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent_left" resname="frame_class.indent_left" approved="yes">
+        <source>Indent, 33/66%</source>
+        <target state="final">Uvlaka, 33/66%</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent_right" resname="frame_class.indent_right" approved="yes">
+        <source>Indent, 66/33%</source>
+        <target state="final">Uvlaka, 66/33%</target>
+      </trans-unit>
+      <trans-unit id="splash_layout_formlabel" resname="splash_layout_formlabel" approved="yes">
+        <source>Type</source>
+        <target state="final">Vrsta</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.1" resname="splash_layout.I.1" approved="yes">
+        <source>Image Shadow</source>
+        <target state="final">Sjena slike</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.2" resname="splash_layout.I.2" approved="yes">
+        <source>Image Frame 1</source>
+        <target state="final">Okvir slike 1</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.3" resname="splash_layout.I.3" approved="yes">
+        <source>Image Frame 2</source>
+        <target state="final">Okvir slike 2</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.4" resname="splash_layout.I.4" approved="yes">
+        <source>__Graphical:__</source>
+        <target state="final">__Grafičko:__</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.5" resname="splash_layout.I.5" approved="yes">
+        <source>Postit 1</source>
+        <target state="final">Postit 1</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex_formlabel" resname="sectionIndex_formlabel" approved="yes">
+        <source>Show in Section Menus</source>
+        <target state="final">Prikaži u izbornicima odjeljaka</target>
+      </trans-unit>
+      <trans-unit id="linkToTop_formlabel" resname="linkToTop_formlabel" approved="yes">
+        <source>Append with Link to Top of Page</source>
+        <target state="final">Dodaj poveznicu na vrh stranice</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled_formlabel" resname="rte_enabled_formlabel" approved="yes">
+        <source>Rich Text Editor</source>
+        <target state="final">Urednik bogatog teksta</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled.I.0" resname="rte_enabled.I.0" approved="yes">
+        <source>Disable</source>
+        <target state="final">Onemogući</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform" resname="pi_flexform" approved="yes">
+        <source>Plugin Options</source>
+        <target state="final">Opcije umetka</target>
+      </trans-unit>
+      <trans-unit id="accessibility_title" resname="accessibility_title" approved="yes">
+        <source>Block title</source>
+        <target state="final">Naslov bloka</target>
+      </trans-unit>
+      <trans-unit id="accessibility_bypass" resname="accessibility_bypass" approved="yes">
+        <source>Add link to bypass block</source>
+        <target state="final">Dodaj poveznicu za preskakanje bloka</target>
+      </trans-unit>
+      <trans-unit id="accessibility_bypass_text" resname="accessibility_bypass_text" approved="yes">
+        <source>Link text to bypass block</source>
+        <target state="final">Tekst poveznice za preskakanje bloka</target>
+      </trans-unit>
+      <trans-unit id="selected_categories" resname="selected_categories" approved="yes">
+        <source>Selected categories</source>
+        <target state="final">Odabrane kategorije</target>
+      </trans-unit>
+      <trans-unit id="category_field" resname="category_field" approved="yes">
+        <source>Category field</source>
+        <target state="final">Polje kategorije</target>
+      </trans-unit>
+      <trans-unit id="ALT.imgOptions" resname="ALT.imgOptions" approved="yes">
+        <source>Image Options</source>
+        <target state="final">Opcije slike</target>
+      </trans-unit>
+      <trans-unit id="ALT.imgLinks" resname="ALT.imgLinks" approved="yes">
+        <source>Image Links</source>
+        <target state="final">Poveznice slike</target>
+      </trans-unit>
+      <trans-unit id="ALT.imgDimensions" resname="ALT.imgDimensions" approved="yes">
+        <source>Image Dimensions</source>
+        <target state="final">Dimenzije slike</target>
+      </trans-unit>
+      <trans-unit id="select_key_formlabel" resname="select_key_formlabel" approved="yes">
+        <source>Plugin Mode</source>
+        <target state="final">Način umetka</target>
+      </trans-unit>
+      <trans-unit id="select_key.ALT.uploads_formlabel" resname="select_key.ALT.uploads_formlabel" approved="yes">
+        <source>Path</source>
+        <target state="final">Putanja</target>
+      </trans-unit>
+      <trans-unit id="select_key.ALT.script_formlabel" resname="select_key.ALT.script_formlabel" approved="yes">
+        <source>PHP Code</source>
+        <target state="final">PHP kod</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.ALT.uploads_formlabel" resname="imagecaption.ALT.uploads_formlabel" approved="yes">
+        <source>File Descriptions (one per line)</source>
+        <target state="final">Opisi datoteka (jedan po retku)</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.mailform_formlabel" resname="bodytext.ALT.mailform_formlabel" approved="yes">
+        <source>Form Structure</source>
+        <target state="final">Struktura obrasca</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.mailform" resname="pages.ALT.mailform" approved="yes">
+        <source>Target Page</source>
+        <target state="final">Ciljna stranica</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.searchform" resname="pages.ALT.searchform" approved="yes">
+        <source>Target page</source>
+        <target state="final">Ciljna stranica</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.loginform" resname="pages.ALT.loginform" approved="yes">
+        <source>Selected pages: Target (1st), Frontend user container (2nd)</source>
+        <target state="final">Odabrane stranice: Cilja (prvi), Spremnik korisnika prednjeg sučelja (drugi)</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.menu_formlabel" resname="pages.ALT.menu_formlabel" approved="yes">
+        <source>Selected Pages</source>
+        <target state="final">Odabrane stranice</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.list_formlabel" resname="pages.ALT.list_formlabel" approved="yes">
+        <source>Record Storage Page</source>
+        <target state="final">Stranica za pohranu zapisa</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.script_formlabel" resname="pages.ALT.script_formlabel" approved="yes">
+        <source>Starting Point for This Script</source>
+        <target state="final">Početna točka za ovu skriptu</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.html" resname="bodytext.ALT.html" approved="yes">
+        <source>HTML</source>
+        <target state="final">HTML</target>
+      </trans-unit>
+      <trans-unit id="menu.ALT.accessibility_title_formlabel" resname="menu.ALT.accessibility_title_formlabel" approved="yes">
+        <source>Menu block title</source>
+        <target state="final">Naslov bloka izbornika</target>
+      </trans-unit>
+      <trans-unit id="menu.ALT.accessibility_bypass_formlabel" resname="menu.ALT.accessibility_bypass_formlabel" approved="yes">
+        <source>Add link to bypass navigation block</source>
+        <target state="final">Dodaj poveznicu za preskakanje navigacijskog bloka</target>
+      </trans-unit>
+      <trans-unit id="menu.ALT.accessibility_bypass_text_formlabel" resname="menu.ALT.accessibility_bypass_text_formlabel" approved="yes">
+        <source>Link text to bypass navigation block</source>
+        <target state="final">Tekst poveznice za preskakanje navigacijskog bloka</target>
+      </trans-unit>
+      <trans-unit id="tabs.text" resname="tabs.text" approved="yes">
+        <source>Text</source>
+        <target state="final">Tekst</target>
+      </trans-unit>
+      <trans-unit id="tabs.media" resname="tabs.media" approved="yes">
+        <source>Media</source>
+        <target state="final">Multimedija</target>
+      </trans-unit>
+      <trans-unit id="sys_language_uid_formlabel" resname="sys_language_uid_formlabel" approved="yes">
+        <source>Language</source>
+        <target state="final">Jezik</target>
+      </trans-unit>
+      <trans-unit id="subheader_formlabel" resname="subheader_formlabel" approved="yes">
+        <source>Subheader</source>
+        <target state="final">Podnaslov</target>
+      </trans-unit>
+      <trans-unit id="hidden_formlabel" resname="hidden_formlabel" approved="yes">
+        <source>Content Element</source>
+        <target state="final">Element sadržaja</target>
+      </trans-unit>
+      <trans-unit id="hidden.I.0" resname="hidden.I.0" approved="yes">
+        <source>Disable</source>
+        <target state="final">Onemogući</target>
+      </trans-unit>
+      <trans-unit id="starttime_formlabel" resname="starttime_formlabel" approved="yes">
+        <source>Publish Date</source>
+        <target state="final">Datum objave</target>
+      </trans-unit>
+      <trans-unit id="endtime_formlabel" resname="endtime_formlabel" approved="yes">
+        <source>Expiration Date</source>
+        <target state="final">Datum zastare</target>
+      </trans-unit>
+      <trans-unit id="fe_group_formlabel" resname="fe_group_formlabel" approved="yes">
+        <source>Usergroup Access Rights</source>
+        <target state="final">Prava pristupa korisničkih grupa</target>
+      </trans-unit>
+      <trans-unit id="layout_formlabel" resname="layout_formlabel" approved="yes">
+        <source>Layout</source>
+        <target state="final">Raspored</target>
+      </trans-unit>
+      <trans-unit id="bodytext_formlabel" resname="bodytext_formlabel" approved="yes">
+        <source>Text</source>
+        <target state="final">Tekst</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.bulletlist_formlabel" resname="bodytext.ALT.bulletlist_formlabel" approved="yes">
+        <source>Bullet List</source>
+        <target state="final">Popis s grafičkim oznakama</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.table_formlabel" resname="bodytext.ALT.table_formlabel" approved="yes">
+        <source>Table Structure</source>
+        <target state="final">Struktura tablice</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.media_formlabel" resname="bodytext.ALT.media_formlabel" approved="yes">
+        <source>Alternative Content</source>
+        <target state="final">Alternativni tekst</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.textbox_formlabel" resname="bodytext.ALT.textbox_formlabel" approved="yes">
+        <source>Text</source>
+        <target state="final">Tekst</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.script_formlabel" resname="bodytext.ALT.script_formlabel" approved="yes">
+        <source>Parameters to pass to the script</source>
+        <target state="final">Parametri skripte</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.html_formlabel" resname="bodytext.ALT.html_formlabel" approved="yes">
+        <source>HTML Code</source>
+        <target state="final">HTML kod</target>
+      </trans-unit>
+      <trans-unit id="image_formlabel" resname="image_formlabel" approved="yes">
+        <source>Images</source>
+        <target state="final">Slike</target>
+      </trans-unit>
+      <trans-unit id="image.ALT.textbox_formlabel" resname="image.ALT.textbox_formlabel" approved="yes">
+        <source>Image Files</source>
+        <target state="final">Datoteke slika</target>
+      </trans-unit>
+      <trans-unit id="imagecaption_formlabel" resname="imagecaption_formlabel" approved="yes">
+        <source>Captions (one per line)</source>
+        <target state="final">Naslovi (jedan po retku)</target>
+      </trans-unit>
+      <trans-unit id="field.default.hidden" resname="field.default.hidden" approved="yes">
+        <source>Visibility of content element</source>
+        <target state="final">Vidljivost elementa sadržaja</target>
+      </trans-unit>
+      <trans-unit id="field.table.bodytext" resname="field.table.bodytext" approved="yes">
+        <source>Table content</source>
+        <target state="final">Sadržaj tablice</target>
+      </trans-unit>
+      <trans-unit id="palette.general" resname="palette.general" approved="yes">
+        <source>Content Element</source>
+        <target state="final">Element sadržaja</target>
+      </trans-unit>
+      <trans-unit id="palette.headers" resname="palette.headers" approved="yes">
+        <source>Headlines</source>
+        <target state="final">Naslovi</target>
+      </trans-unit>
+      <trans-unit id="palette.header" resname="palette.header" approved="yes">
+        <source>Header</source>
+        <target state="final">Naslov</target>
+      </trans-unit>
+      <trans-unit id="palette.visibility" resname="palette.visibility" approved="yes">
+        <source>Visibility</source>
+        <target state="final">Vidljivost</target>
+      </trans-unit>
+      <trans-unit id="palette.access" resname="palette.access" approved="yes">
+        <source>Publish Dates and Access Rights</source>
+        <target state="final">Datumi objave i prava pristupa</target>
+      </trans-unit>
+      <trans-unit id="palette.frames" resname="palette.frames" approved="yes">
+        <source>Content Element Layout</source>
+        <target state="final">Raspored elemenata sadržaja</target>
+      </trans-unit>
+      <trans-unit id="palette.textlayout" resname="palette.textlayout" approved="yes">
+        <source>Text Layout</source>
+        <target state="final">Raspored teksta</target>
+      </trans-unit>
+      <trans-unit id="palette.imagefiles" resname="palette.imagefiles" approved="yes">
+        <source>Images and Captions</source>
+        <target state="final">Slike i naslovi</target>
+      </trans-unit>
+      <trans-unit id="palette.imagelinks" resname="palette.imagelinks" approved="yes">
+        <source>Behavior</source>
+        <target state="final">Ponašanje</target>
+      </trans-unit>
+      <trans-unit id="palette.image_accessibility" resname="palette.image_accessibility" approved="yes">
+        <source>Accessibility</source>
+        <target state="final">Pristupačnost</target>
+      </trans-unit>
+      <trans-unit id="palette.image_settings" resname="palette.image_settings" approved="yes">
+        <source>Image Adjustments</source>
+        <target state="final">Prilagodbe slike</target>
+      </trans-unit>
+      <trans-unit id="palette.imageblock" resname="palette.imageblock" approved="yes">
+        <source>Image Alignment</source>
+        <target state="final">Poravnanje slike</target>
+      </trans-unit>
+      <trans-unit id="palette.mailform" resname="palette.mailform" approved="yes">
+        <source>Target and Recipient</source>
+        <target state="final">Cilj i primatelj</target>
+      </trans-unit>
+      <trans-unit id="palette.searchform" resname="palette.searchform" approved="yes">
+        <source>Search Results</source>
+        <target state="final">Rezultati pretraživanja</target>
+      </trans-unit>
+      <trans-unit id="palette.loginform" resname="palette.loginform" approved="yes">
+        <source>Redirect Target and Frontend User Container</source>
+        <target state="final">Meta za preusmjerenje i spremnik korisnika prednjeg sučelja</target>
+      </trans-unit>
+      <trans-unit id="palette.multimediafiles" resname="palette.multimediafiles" approved="yes">
+        <source>Media Files and Parameters</source>
+        <target state="final">Multimedijske datoteke i parametri</target>
+      </trans-unit>
+      <trans-unit id="palette.textbox" resname="palette.textbox" approved="yes">
+        <source>Render Text into Images</source>
+        <target state="final">Renderiraj tekst u slike</target>
+      </trans-unit>
+      <trans-unit id="palette.menu" resname="palette.menu" approved="yes">
+        <source>Menu and Sitemap</source>
+        <target state="final">Izbornik i mapa web lokacije</target>
+      </trans-unit>
+      <trans-unit id="palette.menu_accessibility" resname="palette.menu_accessibility" approved="yes">
+        <source>Accessibility</source>
+        <target state="final">Pristupačnost</target>
+      </trans-unit>
+      <trans-unit id="palette.uploads_layout" resname="palette.uploads_layout" approved="yes">
+        <source>Filelinks Layout</source>
+        <target state="final">Raspored datotečnih poveznica</target>
+      </trans-unit>
+      <trans-unit id="palette.table_layout" resname="palette.table_layout" approved="yes">
+        <source>Table Layout</source>
+        <target state="final">Raspored tablica</target>
+      </trans-unit>
+      <trans-unit id="palette.appearanceLinks" resname="palette.appearanceLinks" approved="yes">
+        <source>Links</source>
+        <target state="final">Poveznice</target>
+      </trans-unit>
+      <trans-unit id="tabs.access" resname="tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Pristup</target>
+      </trans-unit>
+      <trans-unit id="tabs.appearance" resname="tabs.appearance" approved="yes">
+        <source>Appearance</source>
+        <target state="final">Izgled</target>
+      </trans-unit>
+      <trans-unit id="tabs.behaviour" resname="tabs.behaviour" approved="yes">
+        <source>Behaviour</source>
+        <target state="final">Ponašanje</target>
+      </trans-unit>
+      <trans-unit id="tabs.script" resname="tabs.script" approved="yes">
+        <source>Script</source>
+        <target state="final">Skripta</target>
+      </trans-unit>
+      <trans-unit id="tabs.images" resname="tabs.images" approved="yes">
+        <source>Images</source>
+        <target state="final">Slike</target>
+      </trans-unit>
+      <trans-unit id="tabs.extended" resname="tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Prošireno</target>
+      </trans-unit>
+      <trans-unit id="tabs.accessibility" resname="tabs.accessibility" approved="yes">
+        <source>Accessibility</source>
+        <target state="final">Pristupačnost</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
