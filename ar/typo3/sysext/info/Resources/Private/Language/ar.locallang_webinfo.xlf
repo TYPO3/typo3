@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814792" source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_webinfo.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="page_title" resname="page_title" approved="yes">
+        <source>Pagetree overview</source>
+        <target state="final">نظرة عامة على شجرة الصفحة</target>
+      </trans-unit>
+      <trans-unit id="page_sysnote" resname="page_sysnote" approved="yes">
+        <source>Internal notes</source>
+        <target state="final">مُلاحظات داخلية</target>
+      </trans-unit>
+      <trans-unit id="pageInformation" resname="pageInformation" approved="yes">
+        <source>Page information</source>
+        <target state="final">معلومات الصفحة</target>
+      </trans-unit>
+      <trans-unit id="pages_0" resname="pages_0" approved="yes">
+        <source>Basic settings</source>
+        <target state="final">الإعدادات الأساسيّة</target>
+      </trans-unit>
+      <trans-unit id="pages_2" resname="pages_2" approved="yes">
+        <source>Cache and Age</source>
+        <target state="final">ذاكرة التخزين المؤقت والمدة الزمنية</target>
+      </trans-unit>
+      <trans-unit id="pages_1" resname="pages_1" approved="yes">
+        <source>Record overview</source>
+        <target state="final">نَظْرَة عامّة على السجل</target>
+      </trans-unit>
+      <trans-unit id="stat_type_0" resname="stat_type_0" approved="yes">
+        <source>Page hits</source>
+        <target state="final">عدد زيارات الصفحة</target>
+      </trans-unit>
+      <trans-unit id="stat_type_1" resname="stat_type_1" approved="yes">
+        <source>Total hits</source>
+        <target state="final">إجمالي عدد الزيارات</target>
+      </trans-unit>
+      <trans-unit id="stat_type_2" resname="stat_type_2" approved="yes">
+        <source>Hits in main sections</source>
+        <target state="final">الزيارات في الأقسام الرئيسية</target>
+      </trans-unit>
+      <trans-unit id="stat_period" resname="stat_period" approved="yes">
+        <source>Statistics in the period %s back to %s</source>
+        <target state="final">الإحصائيات في الفترة %s عودةً إلى %s</target>
+      </trans-unit>
+      <trans-unit id="pI_crUser" resname="pI_crUser" approved="yes">
+        <source>Created by</source>
+        <target state="final">أُنشِئ بواسطة</target>
+      </trans-unit>
+      <trans-unit id="pI_crDate" resname="pI_crDate" approved="yes">
+        <source>Created date</source>
+        <target state="final">تاريخ الإنشاء</target>
+      </trans-unit>
+      <trans-unit id="pI_lastChange" resname="pI_lastChange" approved="yes">
+        <source>Last change</source>
+        <target state="final">آخر تعديل</target>
+      </trans-unit>
+      <trans-unit id="pI_lastChangeContent" resname="pI_lastChangeContent" approved="yes">
+        <source>Last change, content</source>
+        <target state="final">آخر تعديل، المحتوى</target>
+      </trans-unit>
+      <trans-unit id="hits_title" resname="hits_title" approved="yes">
+        <source>Hit Statistics</source>
+        <target state="final">إحصائيات الزيارات</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_viewPage" resname="lang_renderl10n_viewPage" approved="yes">
+        <source>View page</source>
+        <target state="final">عرض الصفحة</target>
+      </trans-unit>
+      <trans-unit id="lang_title" resname="lang_title" approved="yes">
+        <source>Localization overview</source>
+        <target state="final">نَظْرَة عامّة على الترجمة</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editDefaultLanguagePage" resname="lang_renderl10n_editDefaultLanguagePage" approved="yes">
+        <source>Edit default language page properties</source>
+        <target state="final">تعديل خصائص صفحة اللغة الافتراضية</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editLangOverlays" resname="lang_renderl10n_editLangOverlays" approved="yes">
+        <source>Edit all language overlay records</source>
+        <target state="final">تعديل جميع سجلات تراكب اللغة</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editPageProperties" resname="lang_renderl10n_editPageProperties" approved="yes">
+        <source>Edit all page properties</source>
+        <target state="final">تعديل جميع خصائص الصفحة</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editPage" resname="lang_renderl10n_editPage" approved="yes">
+        <source>Edit page</source>
+        <target state="final">تعديل الصفحة</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editPageLang" resname="lang_renderl10n_editPageLang" approved="yes">
+        <source>Edit page translation</source>
+        <target state="final">تعديل تَرْجَمَة الصفحة</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_badThingThereAre" resname="lang_renderl10n_badThingThereAre" approved="yes">
+        <source>ERROR: there are two or more page overlay records for this language! Only one is allowed!</source>
+        <target state="final">خطأ: هناك اثنين أو أكثر من سجلات تراكب الصفحة لهذه اللغة! مسموح بواحدة فقط!</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editLanguageOverlayRecord" resname="lang_renderl10n_editLanguageOverlayRecord" approved="yes">
+        <source>Edit language overlay record</source>
+        <target state="final">تعديل سجلات تراكب اللغة</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_page" resname="lang_renderl10n_page" approved="yes">
+        <source>Page</source>
+        <target state="final">الصفحة</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_default" resname="lang_renderl10n_default" approved="yes">
+        <source>Default</source>
+        <target state="final">افتراضي</target>
+      </trans-unit>
+      <trans-unit id="lang_getlangsta_createNewTranslationHeaders" resname="lang_getlangsta_createNewTranslationHeaders" approved="yes">
+        <source>Create new translation headers</source>
+        <target state="final">إنشاء ترويسات جديدة للترجمة</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_CEcount" resname="lang_renderl10n_CEcount" approved="yes">
+        <source>Content Element Count</source>
+        <target state="final">عدد عناصر المحتوى</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
