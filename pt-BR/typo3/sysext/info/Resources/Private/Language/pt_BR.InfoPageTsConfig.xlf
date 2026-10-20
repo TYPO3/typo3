@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814840" source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf" date="2011-10-17T20:22:33Z" product-name="info_pagetsconfig" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="tsconf_title" resname="tsconf_title" approved="yes">
+        <source>Page TSconfig</source>
+        <target state="final">TSConfig da Página</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_0" resname="tsconf_parts_0" approved="yes">
+        <source>All</source>
+        <target state="final">Todos</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1" resname="tsconf_parts_1" approved="yes">
+        <source>Module key ('mod') with overruling user settings</source>
+        <target state="final">Chave de módulo ('mod') com configurações de usuário sobrepostas</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1a" resname="tsconf_parts_1a" approved="yes">
+        <source>Module: Web&gt;Page</source>
+        <target state="final">Módulo: Web&gt;Página</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1b" resname="tsconf_parts_1b" approved="yes">
+        <source>Module: Web&gt;View</source>
+        <target state="final">Módulo: Web&gt;Visualizar</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1c" resname="tsconf_parts_1c" approved="yes">
+        <source>Module: Web&gt;Modules</source>
+        <target state="final">Módulo: Web&gt;Módulos</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1d" resname="tsconf_parts_1d" approved="yes">
+        <source>Module: Web&gt;List</source>
+        <target state="final">Módulo: Web&gt;Lista</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1e" resname="tsconf_parts_1e" approved="yes">
+        <source>Module: Web&gt;Info</source>
+        <target state="final">Módulo: Web&gt;Info</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1f" resname="tsconf_parts_1f" approved="yes">
+        <source>Module: Web&gt;Func</source>
+        <target state="final">Módulo: Web&gt;Func</target>
+      </trans-unit>
+      <trans-unit id="tsconf_parts_1g" resname="tsconf_parts_1g" approved="yes">
+        <source>Module: Web&gt;Template</source>
+        <target state="final">Módulo: Web&gt;Template</target>
+      </trans-unit>
+      <trans-unit id="tsconf_configFields" resname="tsconf_configFields" approved="yes">
+        <source>View TSconfig fields content</source>
+        <target state="final">Visualizar conteúdo dos campos TSconfig</target>
+      </trans-unit>
+      <trans-unit id="editThisColumn" resname="editThisColumn" approved="yes">
+        <source>Edit the field '%s' for all listed pages</source>
+        <target state="final">Editar o campo '%s' para todas as páginas listadas</target>
+      </trans-unit>
+      <trans-unit id="editTSconfig" resname="editTSconfig" approved="yes">
+        <source>Edit TSconfig for this page</source>
+        <target state="final">Editar TSconfig para esta página</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
