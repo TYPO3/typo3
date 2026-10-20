@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814884" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="query_loaded" resname="query_loaded">
+        <source>Query "%s" loaded!</source>
+        <target>crwdns72050:0%scrwdne72050:0</target>
+      </trans-unit>
+      <trans-unit id="query_from_action_loaded" resname="query_from_action_loaded">
+        <source>Query from action "%s" loaded!</source>
+        <target>crwdns72052:0%scrwdne72052:0</target>
+      </trans-unit>
+      <trans-unit id="query_saved" resname="query_saved">
+        <source>Query saved!</source>
+        <target>crwdns72054:0crwdne72054:0</target>
+      </trans-unit>
+      <trans-unit id="query_notsaved" resname="query_notsaved">
+        <source>No query saved!</source>
+        <target>crwdns72056:0crwdne72056:0</target>
+      </trans-unit>
+      <trans-unit id="query_removed" resname="query_removed">
+        <source>"%s" query entry removed!</source>
+        <target>crwdns72058:0%scrwdne72058:0</target>
+      </trans-unit>
+      <trans-unit id="undelete_only" resname="undelete_only">
+        <source>undelete only</source>
+        <target>crwdns72060:0crwdne72060:0</target>
+      </trans-unit>
+      <trans-unit id="undelete_and_edit" resname="undelete_and_edit">
+        <source>undelete and edit</source>
+        <target>crwdns72062:0crwdne72062:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
