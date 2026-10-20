@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815001" source-language="en" datatype="plaintext" original="EXT:taskcenter/Resources/Private/Language/locallang_task.xlf" date="2011-10-17T20:22:37Z" product-name="taskcenter" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Tasks</source>
+        <target state="final">Oppgaver</target>
+      </trans-unit>
+      <trans-unit id="task_overview" resname="task_overview" approved="yes">
+        <source>Overview</source>
+        <target state="final">Oversikt</target>
+      </trans-unit>
+      <trans-unit id="error_header" resname="error_header" approved="yes">
+        <source>Error</source>
+        <target state="final">Feil</target>
+      </trans-unit>
+      <trans-unit id="lSelf" resname="lSelf" approved="yes">
+        <source>Self</source>
+        <target state="final">Meg selv</target>
+      </trans-unit>
+      <trans-unit id="lSendNew" resname="lSendNew" approved="yes">
+        <source>Send message</source>
+        <target state="final">Send en melding</target>
+      </trans-unit>
+      <trans-unit id="lNone" resname="lNone" approved="yes">
+        <source>[none]</source>
+        <target state="final">[ingen]</target>
+      </trans-unit>
+      <trans-unit id="lCreate" resname="lCreate" approved="yes">
+        <source>Create</source>
+        <target state="final">Lag</target>
+      </trans-unit>
+      <trans-unit id="lCancel" resname="lCancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Avbryt</target>
+      </trans-unit>
+      <trans-unit id="lDelete_warning_title" resname="lDelete_warning_title" approved="yes">
+        <source>Please confirm</source>
+        <target state="final">Vennligst bekreft</target>
+      </trans-unit>
+      <trans-unit id="lDelete" resname="lDelete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Slett</target>
+      </trans-unit>
+      <trans-unit id="lUpdate" resname="lUpdate" approved="yes">
+        <source>Update</source>
+        <target state="final">Oppdater</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
