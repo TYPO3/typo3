@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:webhooks/Resources/Private/Language/locallang_db.xlf" date="2023-01-11T20:22:32Z" product-name="webhooks" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="webhooks" approved="yes">
+        <source>Webhooks</source>
+        <target state="final">Webhooks</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook" approved="yes">
+        <source>System webhooks</source>
+        <target state="final">Webhooks fournis par le système</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Nom</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.name.description" approved="yes">
+        <source>Meaningful name of the webhook</source>
+        <target state="final">Nom significatif du webhook</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.url" approved="yes">
+        <source>URL</source>
+        <target state="final">URL</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.url.description" approved="yes">
+        <source>Target URL that should be called.</source>
+        <target state="final">URL cible qui doit être appelée.</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.method" approved="yes">
+        <source>HTTP Method</source>
+        <target state="final">Méthode HTTP</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.verify_ssl" approved="yes">
+        <source>Verify SSL</source>
+        <target state="final">Vérifier SSL</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.verify_ssl.description" approved="yes">
+        <source>Verify that the connection is secure and valid, this setting should only be disabled in case a verification is not possible.</source>
+        <target state="final">Vérifiez que la connexion est sécurisée et valide, ce paramètre ne devrait être désactivé que si la vérification n'est pas possible.</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.additional_headers" approved="yes">
+        <source>Additional Headers</source>
+        <target state="final">En-têtes supplémentaires</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.additional_headers.description" approved="yes">
+        <source>Additional headers that should be added to the HTTP request. Data must be provided as valid JSON string.</source>
+        <target state="final">En-têtes supplémentaires à ajouter à la requête HTTP. Les données doivent être fournies sous forme de chaîne JSON valide.</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.identifier" approved="yes">
+        <source>Identifier</source>
+        <target state="final">Identifiant</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.identifier.description" approved="yes">
+        <source>This is your unique webhook identifier</source>
+        <target state="final">Ceci est l'identifiant unique de votre webhook</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type" approved="yes">
+        <source>Webhook Trigger</source>
+        <target state="final">Déclencheur du webhook</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.secret" approved="yes">
+        <source>Secret</source>
+        <target state="final">Secret</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.secret.description" approved="yes">
+        <source>The secret is mandatory to create a hash that is sent with the request. The secret can be used to verify the payload has not been modified, see the documentation for more details.</source>
+        <target state="final">Le secret est obligatoire pour créer un hachage qui est envoyé avec la requête. Le secret peut être utilisé pour vérifier que les données reçues n'ont pas été modifiées, consultez la documentation pour plus de détails.</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.secret.passwordGenerator" approved="yes">
+        <source>Generate secret</source>
+        <target state="final">Générer un secret</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.description" approved="yes">
+        <source>Trigger the webhook, ...</source>
+        <target state="final">Déclencher le webhook, ...</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.select" approved="yes">
+        <source>Select a trigger</source>
+        <target state="final">Sélectionnez un déclencheur</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-content-page-modification" approved="yes">
+        <source>... when a page is added or changed</source>
+        <target state="final">... lorsqu'une page est ajoutée ou modifiée</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-login-error" approved="yes">
+        <source>... when an error occurs on log in</source>
+        <target state="final">... lorsqu'une erreur se produit lors de la connexion</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-mfa-error" approved="yes">
+        <source>... when an error occurs on multi-factor authentication</source>
+        <target state="final">... lorsqu'une erreur survient sur l'authentification multi-facteurs</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-file-added" approved="yes">
+        <source>... when a file is added</source>
+        <target state="final">... lorsqu'un fichier est ajouté</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-file-removed" approved="yes">
+        <source>... when a file is removed</source>
+        <target state="final">... lorsqu'un fichier est supprimé</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.webhook_type.typo3-file-updated" approved="yes">
+        <source>... when a file is updated</source>
+        <target state="final">... lorsqu'un fichier est mis à jour</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.storage_pid" approved="yes">
+        <source>Storage PID</source>
+        <target state="final">PID de stockage</target>
+      </trans-unit>
+      <trans-unit id="sys_webhook.storage_pid.description" approved="yes">
+        <source>Select the page on which a new record is created on.</source>
+        <target state="final">Sélectionnez la page sur laquelle un nouvel enregistrement est créé.</target>
+      </trans-unit>
+      <trans-unit id="palette.config" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Configuration</target>
+      </trans-unit>
+      <trans-unit id="palette.config.description" approved="yes">
+        <source>General configuration of the webhook.</source>
+        <target state="final">Configuration générale du webhook.</target>
+      </trans-unit>
+      <trans-unit id="palette.http_settings" approved="yes">
+        <source>HTTP Settings</source>
+        <target state="final">Paramètres HTTP</target>
+      </trans-unit>
+      <trans-unit id="palette.http_settings.description" approved="yes">
+        <source>Advanced HTTP request settings.</source>
+        <target state="final">Paramètres avancés de requête HTTP.</target>
+      </trans-unit>
+      <trans-unit id="palette.additional" approved="yes">
+        <source>Additional configuration</source>
+        <target state="final">Configuration additionnelle</target>
+      </trans-unit>
+      <trans-unit id="palette.additional.description" approved="yes">
+        <source>Specific configuration for the selected webhook type</source>
+        <target state="final">Configuration spécifique pour le type de webhook sélectionné</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
