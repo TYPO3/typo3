@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_ttc.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="layout.I.1">
+        <source>Layout 1</source>
+        <target>crwdns58020:0crwdne58020:0</target>
+      </trans-unit>
+      <trans-unit id="layout.I.2">
+        <source>Layout 2</source>
+        <target>crwdns58022:0crwdne58022:0</target>
+      </trans-unit>
+      <trans-unit id="layout.I.3">
+        <source>Layout 3</source>
+        <target>crwdns58024:0crwdne58024:0</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.0">
+        <source>Left</source>
+        <target>crwdns58030:0crwdne58030:0</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.1">
+        <source>Normal</source>
+        <target>crwdns58032:0crwdne58032:0</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.2">
+        <source>Right</source>
+        <target>crwdns58034:0crwdne58034:0</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.3">
+        <source>Border</source>
+        <target>crwdns58036:0crwdne58036:0</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.unused">
+        <source>Unused</source>
+        <target>crwdns58038:0crwdne58038:0</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.shortcut_formlabel">
+        <source>Name (not visible in frontend)</source>
+        <target>crwdns58048:0crwdne58048:0</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.div_formlabel">
+        <source>Name (not visible in frontend)</source>
+        <target>crwdns58052:0crwdne58052:0</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.html_formlabel">
+        <source>Name (not visible in frontend)</source>
+        <target>crwdns58054:0crwdne58054:0</target>
+      </trans-unit>
+      <trans-unit id="header.description.ALT">
+        <source>The name won't be displayed as header above the element, but will be used as reference in menus.</source>
+        <target>crwdns141791:0crwdne141791:0</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.1">
+        <source>Center</source>
+        <target>crwdns58060:0crwdne58060:0</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.2">
+        <source>Right</source>
+        <target>crwdns58062:0crwdne58062:0</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.3">
+        <source>Left</source>
+        <target>crwdns58064:0crwdne58064:0</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.1">
+        <source>Layout 1</source>
+        <target>crwdns58072:0crwdne58072:0</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.2">
+        <source>Layout 2</source>
+        <target>crwdns58074:0crwdne58074:0</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.3">
+        <source>Layout 3</source>
+        <target>crwdns58076:0crwdne58076:0</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.4">
+        <source>Layout 4</source>
+        <target>crwdns58078:0crwdne58078:0</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.5">
+        <source>Layout 5</source>
+        <target>crwdns58080:0crwdne58080:0</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.h6">
+        <source>Layout 6</source>
+        <target>crwdns415555:0crwdne415555:0</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.6">
+        <source>Hidden</source>
+        <target>crwdns58082:0crwdne58082:0</target>
+      </trans-unit>
+      <trans-unit id="bullets_type">
+        <source>Type of bullets</source>
+        <target>crwdns58084:0crwdne58084:0</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.0">
+        <source>Unordered list (bullets)</source>
+        <target>crwdns58086:0crwdne58086:0</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.1">
+        <source>Ordered list (numbers)</source>
+        <target>crwdns58088:0crwdne58088:0</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.2">
+        <source>Definition list</source>
+        <target>crwdns58090:0crwdne58090:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.0">
+        <source>Above, center</source>
+        <target>crwdns58106:0crwdne58106:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.1">
+        <source>Above, right</source>
+        <target>crwdns58108:0crwdne58108:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.2">
+        <source>Above, left</source>
+        <target>crwdns58110:0crwdne58110:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.3">
+        <source>Below, center</source>
+        <target>crwdns58112:0crwdne58112:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.4">
+        <source>Below, right</source>
+        <target>crwdns58114:0crwdne58114:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.5">
+        <source>Below, left</source>
+        <target>crwdns58116:0crwdne58116:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.6">
+        <source>In text, right</source>
+        <target>crwdns58118:0crwdne58118:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.7">
+        <source>In text, left</source>
+        <target>crwdns58120:0crwdne58120:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.9">
+        <source>Beside Text, Right</source>
+        <target>crwdns58124:0crwdne58124:0</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.10">
+        <source>Beside Text, Left</source>
+        <target>crwdns58126:0crwdne58126:0</target>
+      </trans-unit>
+      <trans-unit id="images.addFileReference">
+        <source>Add image</source>
+        <target>crwdns58176:0crwdne58176:0</target>
+      </trans-unit>
+      <trans-unit id="cols">
+        <source>Columns</source>
+        <target>crwdns58180:0crwdne58180:0</target>
+      </trans-unit>
+      <trans-unit id="cols.I.0">
+        <source>Auto</source>
+        <target>crwdns58182:0crwdne58182:0</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.0">
+        <source>0 levels (only selected page)</source>
+        <target>crwdns58184:0crwdne58184:0</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.1">
+        <source>1 level</source>
+        <target>crwdns58186:0crwdne58186:0</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.2">
+        <source>2 levels</source>
+        <target>crwdns58188:0crwdne58188:0</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.3">
+        <source>3 levels</source>
+        <target>crwdns58190:0crwdne58190:0</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.4">
+        <source>4 levels</source>
+        <target>crwdns58192:0crwdne58192:0</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.5">
+        <source>Infinite</source>
+        <target>crwdns58194:0crwdne58194:0</target>
+      </trans-unit>
+      <trans-unit id="media">
+        <source>Files</source>
+        <target>crwdns58226:0crwdne58226:0</target>
+      </trans-unit>
+      <trans-unit id="media.ALT.uploads_formlabel">
+        <source>Select single files</source>
+        <target>crwdns58234:0crwdne58234:0</target>
+      </trans-unit>
+      <trans-unit id="media.addFileReference">
+        <source>Add file</source>
+        <target>crwdns58236:0crwdne58236:0</target>
+      </trans-unit>
+      <trans-unit id="multimedia">
+        <source>File</source>
+        <target>crwdns58238:0crwdne58238:0</target>
+      </trans-unit>
+      <trans-unit id="multimedia_formlabel">
+        <source>Selected Media File</source>
+        <target>crwdns58240:0crwdne58240:0</target>
+      </trans-unit>
+      <trans-unit id="file_collections">
+        <source>File collections</source>
+        <target>crwdns58242:0crwdne58242:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting">
+        <source>Sort file list</source>
+        <target>crwdns58248:0crwdne58248:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.none">
+        <source>no sorting</source>
+        <target>crwdns58250:0crwdne58250:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.extension">
+        <source>by file extension</source>
+        <target>crwdns58252:0crwdne58252:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.name">
+        <source>by filename</source>
+        <target>crwdns58254:0crwdne58254:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.type">
+        <source>by file type</source>
+        <target>crwdns58256:0crwdne58256:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.size">
+        <source>by file size</source>
+        <target>crwdns58258:0crwdne58258:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.creation_date">
+        <source>by file creation date</source>
+        <target>crwdns58260:0crwdne58260:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.modification_date">
+        <source>by file modification date</source>
+        <target>crwdns58262:0crwdne58262:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.title">
+        <source>by file metadata title</source>
+        <target>crwdns58264:0crwdne58264:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction">
+        <source>Sorting direction</source>
+        <target>crwdns58266:0crwdne58266:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction.ascending">
+        <source>Ascending (default)</source>
+        <target>crwdns58268:0crwdne58268:0</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction.descending">
+        <source>Descending</source>
+        <target>crwdns58270:0crwdne58270:0</target>
+      </trans-unit>
+      <trans-unit id="target">
+        <source>Target</source>
+        <target>crwdns58274:0crwdne58274:0</target>
+      </trans-unit>
+      <trans-unit id="target.I.1">
+        <source>New window</source>
+        <target>crwdns58276:0crwdne58276:0</target>
+      </trans-unit>
+      <trans-unit id="records">
+        <source>Items</source>
+        <target>crwdns58278:0crwdne58278:0</target>
+      </trans-unit>
+      <trans-unit id="records_formlabel">
+        <source>Records</source>
+        <target>crwdns58280:0crwdne58280:0</target>
+      </trans-unit>
+      <trans-unit id="space_class_none">
+        <source>None</source>
+        <target>crwdns58290:0crwdne58290:0</target>
+      </trans-unit>
+      <trans-unit id="space_class_extra_small">
+        <source>Extra Small</source>
+        <target>crwdns58292:0crwdne58292:0</target>
+      </trans-unit>
+      <trans-unit id="space_class_small">
+        <source>Small</source>
+        <target>crwdns58294:0crwdne58294:0</target>
+      </trans-unit>
+      <trans-unit id="space_class_medium">
+        <source>Medium</source>
+        <target>crwdns58296:0crwdne58296:0</target>
+      </trans-unit>
+      <trans-unit id="space_class_large">
+        <source>Large</source>
+        <target>crwdns58298:0crwdne58298:0</target>
+      </trans-unit>
+      <trans-unit id="space_class_extra_large">
+        <source>Extra Large</source>
+        <target>crwdns58300:0crwdne58300:0</target>
+      </trans-unit>
+      <trans-unit id="frame_class.default">
+        <source>Default</source>
+        <target>crwdns58306:0crwdne58306:0</target>
+      </trans-unit>
+      <trans-unit id="frame_class.ruler_before">
+        <source>Ruler Before</source>
+        <target>crwdns58308:0crwdne58308:0</target>
+      </trans-unit>
+      <trans-unit id="frame_class.ruler_after">
+        <source>Ruler After</source>
+        <target>crwdns58310:0crwdne58310:0</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent">
+        <source>Indent</source>
+        <target>crwdns58312:0crwdne58312:0</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent_left">
+        <source>Indent, 33/66%</source>
+        <target>crwdns58314:0crwdne58314:0</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent_right">
+        <source>Indent, 66/33%</source>
+        <target>crwdns58316:0crwdne58316:0</target>
+      </trans-unit>
+      <trans-unit id="frame_class.none">
+        <source>No Frame</source>
+        <target>crwdns58318:0crwdne58318:0</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform">
+        <source>Plugin Options</source>
+        <target>crwdns58348:0crwdne58348:0</target>
+      </trans-unit>
+      <trans-unit id="selected_categories">
+        <source>Selected categories</source>
+        <target>crwdns58356:0crwdne58356:0</target>
+      </trans-unit>
+      <trans-unit id="category_field">
+        <source>Category field</source>
+        <target>crwdns58358:0crwdne58358:0</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.menu_formlabel">
+        <source>Selected Pages</source>
+        <target>crwdns58394:0crwdne58394:0</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.list_formlabel">
+        <source>Record Storage Page</source>
+        <target>crwdns58396:0crwdne58396:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.text">
+        <source>Text</source>
+        <target>crwdns58412:0crwdne58412:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.media">
+        <source>Media</source>
+        <target>crwdns58414:0crwdne58414:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.plugin">
+        <source>Plugin</source>
+        <target>crwdns58416:0crwdne58416:0</target>
+      </trans-unit>
+      <trans-unit id="starttime_formlabel">
+        <source>Publish Date</source>
+        <target>crwdns58426:0crwdne58426:0</target>
+      </trans-unit>
+      <trans-unit id="endtime_formlabel">
+        <source>Expiration Date</source>
+        <target>crwdns58428:0crwdne58428:0</target>
+      </trans-unit>
+      <trans-unit id="fe_group_formlabel">
+        <source>Usergroup Access Rights</source>
+        <target>crwdns58430:0crwdne58430:0</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.bulletlist_formlabel">
+        <source>Bullet List</source>
+        <target>crwdns58436:0crwdne58436:0</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.html_formlabel">
+        <source>HTML Code</source>
+        <target>crwdns58446:0crwdne58446:0</target>
+      </trans-unit>
+      <trans-unit id="field.table.bodytext">
+        <source>Table content</source>
+        <target>crwdns58458:0crwdne58458:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.access">
+        <source>Access</source>
+        <target>crwdns58504:0crwdne58504:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.appearance">
+        <source>Appearance</source>
+        <target>crwdns58506:0crwdne58506:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.behaviour">
+        <source>Behavior</source>
+        <target>crwdns355548:0crwdne355548:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.images">
+        <source>Images</source>
+        <target>crwdns58512:0crwdne58512:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.extended">
+        <source>Extended</source>
+        <target>crwdns58514:0crwdne58514:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.accessibility">
+        <source>Accessibility</source>
+        <target>crwdns58516:0crwdne58516:0</target>
+      </trans-unit>
+      <trans-unit id="group.default">
+        <source>Typical page content</source>
+        <target>crwdns304774:0crwdne304774:0</target>
+      </trans-unit>
+      <trans-unit id="group.lists">
+        <source>Lists</source>
+        <target>crwdns304776:0crwdne304776:0</target>
+      </trans-unit>
+      <trans-unit id="group.menu">
+        <source>Menu</source>
+        <target>crwdns304778:0crwdne304778:0</target>
+      </trans-unit>
+      <trans-unit id="group.forms">
+        <source>Form elements</source>
+        <target>crwdns304780:0crwdne304780:0</target>
+      </trans-unit>
+      <trans-unit id="group.special">
+        <source>Special elements</source>
+        <target>crwdns304782:0crwdne304782:0</target>
+      </trans-unit>
+      <trans-unit id="group.plugins">
+        <source>Plugins</source>
+        <target>crwdns304784:0crwdne304784:0</target>
+      </trans-unit>
+      <trans-unit id="CType.header">
+        <source>Header Only</source>
+        <target>crwdns304786:0crwdne304786:0</target>
+      </trans-unit>
+      <trans-unit id="CType.header.description">
+        <source>Adds a header only.</source>
+        <target>crwdns304788:0crwdne304788:0</target>
+      </trans-unit>
+      <trans-unit id="CType.text">
+        <source>Regular Text Element</source>
+        <target>crwdns304790:0crwdne304790:0</target>
+      </trans-unit>
+      <trans-unit id="CType.text.description">
+        <source>A regular text element with header and bodytext fields.</source>
+        <target>crwdns304792:0crwdne304792:0</target>
+      </trans-unit>
+      <trans-unit id="CType.textpic">
+        <source>Text &amp; Images</source>
+        <target>crwdns304794:0crwdne304794:0</target>
+      </trans-unit>
+      <trans-unit id="CType.textpic.description">
+        <source>Any number of images wrapped right around a regular text element.</source>
+        <target>crwdns304796:0crwdne304796:0</target>
+      </trans-unit>
+      <trans-unit id="CType.textmedia">
+        <source>Text &amp; Media</source>
+        <target>crwdns57986:0crwdne57986:0</target>
+      </trans-unit>
+      <trans-unit id="CType.textmedia.description">
+        <source>Any number of media wrapped right around a regular text element.</source>
+        <target>crwdns304798:0crwdne304798:0</target>
+      </trans-unit>
+      <trans-unit id="CType.image">
+        <source>Images Only</source>
+        <target>crwdns304800:0crwdne304800:0</target>
+      </trans-unit>
+      <trans-unit id="CType.image.description">
+        <source>Any number of images aligned in columns and rows with a caption.</source>
+        <target>crwdns304802:0crwdne304802:0</target>
+      </trans-unit>
+      <trans-unit id="CType.bullets">
+        <source>Bullet List</source>
+        <target>crwdns304804:0crwdne304804:0</target>
+      </trans-unit>
+      <trans-unit id="CType.bullets.description">
+        <source>A single bullet list.</source>
+        <target>crwdns304806:0crwdne304806:0</target>
+      </trans-unit>
+      <trans-unit id="CType.table">
+        <source>Table</source>
+        <target>crwdns304808:0crwdne304808:0</target>
+      </trans-unit>
+      <trans-unit id="CType.table.description">
+        <source>A simple table.</source>
+        <target>crwdns304810:0crwdne304810:0</target>
+      </trans-unit>
+      <trans-unit id="CType.uploads">
+        <source>File Links</source>
+        <target>crwdns304812:0crwdne304812:0</target>
+      </trans-unit>
+      <trans-unit id="CType.uploads.description">
+        <source>Makes a list of files for download.</source>
+        <target>crwdns304814:0crwdne304814:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_abstract">
+        <source>Abstracts</source>
+        <target>crwdns57988:0crwdne57988:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_abstract.description">
+        <source>Menu of subpages of selected pages including abstracts</source>
+        <target>crwdns304816:0crwdne304816:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_content">
+        <source>Categorized content</source>
+        <target>crwdns57992:0crwdne57992:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_content.description">
+        <source>Content elements for selected categories</source>
+        <target>crwdns304818:0crwdne304818:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_pages">
+        <source>Categorized pages</source>
+        <target>crwdns57990:0crwdne57990:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_pages.description">
+        <source>Pages for selected categories</source>
+        <target>crwdns304820:0crwdne304820:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_pages">
+        <source>Pages</source>
+        <target>crwdns57994:0crwdne57994:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_pages.description">
+        <source>Menu of selected pages</source>
+        <target>crwdns304822:0crwdne304822:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_subpages">
+        <source>Subpages</source>
+        <target>crwdns57996:0crwdne57996:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_subpages.description">
+        <source>Menu of subpages of selected pages</source>
+        <target>crwdns304824:0crwdne304824:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_recently_updated">
+        <source>Recently updated pages</source>
+        <target>crwdns57998:0crwdne57998:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_recently_updated.description">
+        <source>Menu of recently updated pages</source>
+        <target>crwdns304826:0crwdne304826:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_related_pages">
+        <source>Related pages</source>
+        <target>crwdns58000:0crwdne58000:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_related_pages.description">
+        <source>Menu of related pages based on keywords</source>
+        <target>crwdns304828:0crwdne304828:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section">
+        <source>Section index</source>
+        <target>crwdns58002:0crwdne58002:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section.description">
+        <source>Page content marked for section menus</source>
+        <target>crwdns304830:0crwdne304830:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section_pages">
+        <source>Section index of subpages from selected pages</source>
+        <target>crwdns58004:0crwdne58004:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section_pages.description">
+        <source>Menu of subpages of selected pages including sections</source>
+        <target>crwdns304832:0crwdne304832:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap">
+        <source>Sitemap</source>
+        <target>crwdns58006:0crwdne58006:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap.description">
+        <source>Expanded menu of all subpages of the current site</source>
+        <target>crwdns304834:0crwdne304834:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap_pages">
+        <source>Sitemaps of selected pages</source>
+        <target>crwdns58008:0crwdne58008:0</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap_pages.description">
+        <source>Expanded menu of all subpages for selected pages</source>
+        <target>crwdns304836:0crwdne304836:0</target>
+      </trans-unit>
+      <trans-unit id="CType.shortcut">
+        <source>Insert records</source>
+        <target>crwdns304838:0crwdne304838:0</target>
+      </trans-unit>
+      <trans-unit id="CType.shortcut.description">
+        <source>With this element you can embed other content elements.</source>
+        <target>crwdns304840:0crwdne304840:0</target>
+      </trans-unit>
+      <trans-unit id="CType.list">
+        <source>General Plugin</source>
+        <target>crwdns304842:0crwdne304842:0</target>
+      </trans-unit>
+      <trans-unit id="CType.list.description">
+        <source>Select this element type to insert a plugin which cannot be found amongst the options below.</source>
+        <target>crwdns304844:0crwdne304844:0</target>
+      </trans-unit>
+      <trans-unit id="CType.div">
+        <source>Divider</source>
+        <target>crwdns304846:0crwdne304846:0</target>
+      </trans-unit>
+      <trans-unit id="CType.div.description">
+        <source>This element inserts a visual divider, which is by default a horizontal line.</source>
+        <target>crwdns304848:0crwdne304848:0</target>
+      </trans-unit>
+      <trans-unit id="CType.html">
+        <source>Plain HTML</source>
+        <target>crwdns304850:0crwdne304850:0</target>
+      </trans-unit>
+      <trans-unit id="CType.html.description">
+        <source>With this element you can insert raw HTML code on the page.</source>
+        <target>crwdns304852:0crwdne304852:0</target>
+      </trans-unit>
+      <trans-unit id="asset_references">
+        <source>Media elements</source>
+        <target>crwdns304854:0crwdne304854:0</target>
+      </trans-unit>
+      <trans-unit id="asset_references.addFileReference">
+        <source>Add media file</source>
+        <target>crwdns304856:0crwdne304856:0</target>
+      </trans-unit>
+      <trans-unit id="uploads_description">
+        <source>Display description</source>
+        <target>crwdns304868:0crwdne304868:0</target>
+      </trans-unit>
+      <trans-unit id="uploads_type">
+        <source>Display file/icon/thumbnail</source>
+        <target>crwdns304870:0crwdne304870:0</target>
+      </trans-unit>
+      <trans-unit id="uploads_type.0">
+        <source>Only file name</source>
+        <target>crwdns304872:0crwdne304872:0</target>
+      </trans-unit>
+      <trans-unit id="uploads_type.1">
+        <source>File name and file extension icon</source>
+        <target>crwdns304874:0crwdne304874:0</target>
+      </trans-unit>
+      <trans-unit id="uploads_type.2">
+        <source>File name and thumbnail (if possible)</source>
+        <target>crwdns304876:0crwdne304876:0</target>
+      </trans-unit>
+      <trans-unit id="table_class">
+        <source>Table style</source>
+        <target>crwdns304878:0crwdne304878:0</target>
+      </trans-unit>
+      <trans-unit id="table_class.default">
+        <source>Default</source>
+        <target>crwdns304880:0crwdne304880:0</target>
+      </trans-unit>
+      <trans-unit id="table_class.striped">
+        <source>Striped</source>
+        <target>crwdns304882:0crwdne304882:0</target>
+      </trans-unit>
+      <trans-unit id="table_class.bordered">
+        <source>Bordered</source>
+        <target>crwdns304884:0crwdne304884:0</target>
+      </trans-unit>
+      <trans-unit id="table_caption">
+        <source>Table caption</source>
+        <target>crwdns304886:0crwdne304886:0</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter">
+        <source>Field Delimiter</source>
+        <target>crwdns304888:0crwdne304888:0</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter.124">
+        <source>| (Pipe)</source>
+        <target>crwdns304890:0crwdne304890:0</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter.59">
+        <source>; (Semicolon)</source>
+        <target>crwdns304892:0crwdne304892:0</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter.58">
+        <source>: (Colon)</source>
+        <target>crwdns304894:0crwdne304894:0</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter.44">
+        <source>, (Comma)</source>
+        <target>crwdns304896:0crwdne304896:0</target>
+      </trans-unit>
+      <trans-unit id="table_delimiter.9">
+        <source>⇥ (Tab)</source>
+        <target>crwdns304898:0crwdne304898:0</target>
+      </trans-unit>
+      <trans-unit id="table_enclosure">
+        <source>Text enclosure</source>
+        <target>crwdns304900:0crwdne304900:0</target>
+      </trans-unit>
+      <trans-unit id="table_enclosure.0">
+        <source>None</source>
+        <target>crwdns304902:0crwdne304902:0</target>
+      </trans-unit>
+      <trans-unit id="table_enclosure.39">
+        <source>' (Single quotes)</source>
+        <target>crwdns304904:0crwdne304904:0</target>
+      </trans-unit>
+      <trans-unit id="table_enclosure.34">
+        <source>" (Double quotes)</source>
+        <target>crwdns304906:0crwdne304906:0</target>
+      </trans-unit>
+      <trans-unit id="table_header_position">
+        <source>Table header position</source>
+        <target>crwdns304908:0crwdne304908:0</target>
+      </trans-unit>
+      <trans-unit id="table_header_position.0">
+        <source>No header</source>
+        <target>crwdns304910:0crwdne304910:0</target>
+      </trans-unit>
+      <trans-unit id="table_header_position.1">
+        <source>Top</source>
+        <target>crwdns304912:0crwdne304912:0</target>
+      </trans-unit>
+      <trans-unit id="table_header_position.2">
+        <source>Left</source>
+        <target>crwdns304914:0crwdne304914:0</target>
+      </trans-unit>
+      <trans-unit id="table_tfoot">
+        <source>Use table footer (wrap last row with &lt;tfoot&gt; tags)</source>
+        <target>crwdns304916:0crwdne304916:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
