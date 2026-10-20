@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="submodule.title" approved="yes">
+        <source>Constant Editor</source>
+        <target state="final">ຕົວແກ້ໄຂຄ່າຄົງທີ່</target>
+      </trans-unit>
+      <trans-unit id="submodule.titleWithRecord" approved="yes">
+        <source>Constant Editor for TypoScript record "%s"</source>
+        <target state="final">ຕົວແກ້ໄຂຄ່າຄົງທີ່ສຳລັບຂໍ້ມູນ TypoScript "%s"</target>
+      </trans-unit>
+      <trans-unit id="submodule.description" approved="yes">
+        <source>Overwrite constants and save them to the selected TypoScript record on the current page. Only options that have been made available for editing in the constant editor are shown below. In addition, more constants can exist in the system.</source>
+        <target state="final">ຂຽນທັບຄ່າຄົງທີ່ ແລະ ບັນທຶກພວກມັນລົງໃນຂໍ້ມູນ TypoScript ທີ່ເລືອກໃນໜ້າປັດຈຸບັນ. ສະເພາະຕົວເລືອກທີ່ເປີດໃຫ້ແກ້ໄຂໃນຕົວແກ້ໄຂຄ່າຄົງທີ່ເທົ່ານັ້ນທີ່ຈະສະແດງຢູ່ດ້ານລຸ່ມນີ້. ນອກຈາກນັ້ນ, ອາດຈະມີຄ່າຄົງທີ່ອື່ນໆອີກທີ່ມີຢູ່ໃນລະບົບ.</target>
+      </trans-unit>
+      <trans-unit id="options.selectedCategory" approved="yes">
+        <source>Selected category</source>
+        <target state="final">ໝວດໝູ່ທີ່ເລືອກ</target>
+      </trans-unit>
+      <trans-unit id="options.selectedRecord" approved="yes">
+        <source>Selected record</source>
+        <target state="final">ຂໍ້ມູນທີ່ເລືອກ</target>
+      </trans-unit>
+      <trans-unit id="infobox.message.noConstants" approved="yes">
+        <source>There are no editable constants available for the Constant Editor.</source>
+        <target state="final">ບໍ່ມີຄ່າຄົງທີ່ທີ່ສາມາດແກ້ໄຂໄດ້ສຳລັບຕົວແກ້ໄຂຄ່າຄົງທີ່.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
