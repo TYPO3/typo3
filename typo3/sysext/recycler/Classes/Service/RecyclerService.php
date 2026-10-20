@@ -64,7 +64,7 @@ final readonly class RecyclerService
      *
      * @param int $startUid UID of the selected page
      * @param int $depth How many levels to recurse
-     * @param int|null $languageId Restrict counts to this (site) language. Null yields all records, regardless of language awareness.
+     * @param int|null $languageId Restrict counts to this (site) language, see DeletedRecords::loadData(). Null yields all records.
      * @return list<array{0: string, 1: int, 2: string}>
      */
     public function getAvailableTables(int $startUid, int $depth, ?int $languageId = null): array

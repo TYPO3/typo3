@@ -34,6 +34,8 @@ final class ElementHistoryControllerTest extends FunctionalTestCase
 
     protected const array LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+        'FR' => ['id' => 1, 'title' => 'French', 'locale' => 'fr_FR.UTF8'],
+        'DE' => ['id' => 2, 'title' => 'German', 'locale' => 'de_DE.UTF8'],
     ];
 
     protected function setUp(): void
@@ -99,6 +101,29 @@ final class ElementHistoryControllerTest extends FunctionalTestCase
             ? $request->withParsedBody(['rollbackScope' => $scope])
             : $request->withQueryParams(['element' => 'pages:1', 'rollbackScope' => $scope]);
         $this->get(ElementHistoryController::class)->mainAction($request);
+    }
+
+    #[Test]
+    public function languageSelectorOffersLanguagesOfExistingTranslations(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ElementHistoryTranslations.csv');
+        $this->writeSiteConfiguration(
+            'main',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('FR', '/fr/', ['EN']),
+                $this->buildLanguageConfiguration('DE', '/de/', ['EN']),
+            ]
+        );
+
+        $body = $this->renderHistoryOf('pages:11');
+
+        self::assertMatchesRegularExpression('/<button[^>]*>.*German.*<\/button>/s', $body);
+        self::assertMatchesRegularExpression('/<a[^>]*href="[^"]*element=pages(?::|%3A)10[&"][^>]*>(?:(?!<\/a>).)*English<\/a>/s', $body);
+        self::assertMatchesRegularExpression('/<a[^>]*aria-selected="true"[^>]*href="[^"]*element=pages(?::|%3A)11[&"][^>]*>(?:(?!<\/a>).)*German<\/a>/s', $body);
+        self::assertDoesNotMatchRegularExpression('/<a[^>]*>(?:(?!<\/a>).)*French<\/a>/s', $body);
+        self::assertStringNotContainsString('All languages', $body);
     }
 
     #[Test]

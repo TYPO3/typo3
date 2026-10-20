@@ -21,13 +21,13 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\Buttons\LanguageSelectorBuilder;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -50,7 +50,7 @@ readonly class RecyclerModuleController
         protected ComponentFactory $componentFactory,
         protected RecyclerService $recyclerService,
         protected SiteFinder $siteFinder,
-        protected IconFactory $iconFactory,
+        protected LanguageSelectorBuilder $languageSelectorBuilder,
         protected UriBuilder $uriBuilder,
     ) {}
 
@@ -123,9 +123,10 @@ readonly class RecyclerModuleController
     }
 
     /**
-     * Add a translation selection dropdown if the record is language aware.
-     * (Inspired by ElementHistoryController->addLanguageSwitcher, carrying similar logic)
-     * @todo Can this be unified? Code differs a bit for now.
+     * Adds the language selector to the doc header, offering all site languages
+     * available to the user, whether or not the page has a translation in them.
+     *
+     * @return int|null The selected language ID, null if records are not restricted by language
      */
     protected function addLanguageSwitcher(
         ServerRequestInterface $request,
@@ -133,10 +134,6 @@ readonly class RecyclerModuleController
         ModuleTemplate $view,
         ?int $pageId,
     ): ?int {
-        $languageDropDownButton = $this->componentFactory->createDropDownButton()
-            ->setLabel($this->getLanguageService()->sL('core.core:labels.language'))
-            ->setShowLabelText(true);
-
         try {
             $site = $this->siteFinder->getSiteByPageId($pageId);
         } catch (SiteNotFoundException) {
@@ -151,53 +148,28 @@ readonly class RecyclerModuleController
             return null;
         }
 
-        $parsedBody = $request->getParsedBody();
-        $queryParams = $request->getQueryParams();
         // empty string -> "all languages".
         $persistedLanguage = (string)$request->getAttribute('moduleData')->get('language', '');
         $languageId = $persistedLanguage === '' ? null : (int)$persistedLanguage;
-        $returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '', $request);
+        if ($languageId !== null && !isset($availableLanguages[$languageId])) {
+            // If no selected language was found we revert to "show all entries"
+            $languageId = null;
+        }
 
-        $allLanguagesLabel = $this->getLanguageService()->sL('core.general:LGL.allLanguages');
-        $allLanguagesItem = $this->componentFactory->createDropDownRadio()
-            ->setActive($languageId === null)
-            ->setIcon($this->iconFactory->getIcon('flags-multiple'))
-            ->setHref((string)$this->uriBuilder->buildUriFromRoute('recycler', [
-                'id' => $pageId,
-                'language' => '',
-                'returnUrl' => $returnUrl,
-            ]))
-            ->setLabel($allLanguagesLabel);
-        $languageDropDownButton->addItem($allLanguagesItem);
-        // Set "all languages" as default entry, in case the next check may
-        // not yield any valid language.
-        $languageDropDownButton->setLabel($allLanguagesLabel);
-        $languageDropDownButton->setIcon($this->iconFactory->getIcon('flags-multiple'));
-        $selectedLanguageWasFound = false;
-        foreach ($availableLanguages as $siteLanguage) {
-            $languageItem = $this->componentFactory->createDropDownRadio()
-                ->setActive($siteLanguage->getLanguageId() === $languageId)
-                ->setIcon($this->iconFactory->getIcon($siteLanguage->getFlagIdentifier()))
-                ->setHref((string)$this->uriBuilder->buildUriFromRoute('recycler', [
+        $returnUrl = GeneralUtility::sanitizeLocalUrl($request->getParsedBody()['returnUrl'] ?? $request->getQueryParams()['returnUrl'] ?? '', $request);
+        $view->getDocHeaderComponent()->setLanguageSelector(
+            $this->languageSelectorBuilder->buildForSiteLanguages(
+                $availableLanguages,
+                $languageId,
+                fn(?int $languageId): string => (string)$this->uriBuilder->buildUriFromRoute('recycler', [
                     'id' => $pageId,
-                    'language' => $siteLanguage->getLanguageId(),
+                    'language' => $languageId ?? '',
                     'returnUrl' => $returnUrl,
-                ]))
-                ->setLabel($siteLanguage->getTitle());
-            $languageDropDownButton->addItem($languageItem);
+                ])
+            )
+        );
 
-            if ($languageItem->isActive()) {
-                $languageDropDownButton->setLabel($siteLanguage->getTitle());
-                $selectedLanguageWasFound = true;
-            }
-        }
-
-        $view->getDocHeaderComponent()->setLanguageSelector($languageDropDownButton);
-        if ($selectedLanguageWasFound) {
-            return $languageId;
-        }
-        // If no selected language was found we revert to "show all entries"
-        return null;
+        return $languageId;
     }
 
     protected function getBackendUser(): BackendUserAuthentication

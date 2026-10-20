@@ -55,9 +55,10 @@ the module header shows a language drop-down. The drop-down shows the selected
 language:
 
 *   Select a language to list only the deleted records in this language.
-    Records of tables without language support are not listed.
-*   Select :guilabel:`[All]` to list all deleted records, independent of their
-    language.
+    Records for all languages and records of tables without language support
+    are always listed.
+*   Select :guilabel:`All languages` to list all deleted records, independent
+    of their language.
 
 The module remembers the selected language for your next visit.
 

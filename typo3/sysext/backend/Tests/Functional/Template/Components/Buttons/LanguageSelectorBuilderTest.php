@@ -269,6 +269,51 @@ final class LanguageSelectorBuilderTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/<a[^>]*>.*German.*<\/a>/s', $html);
     }
 
+    #[Test]
+    public function siteLanguagesSelectorOffersAllLanguagesAndEveryGivenLanguage(): void
+    {
+        $siteLanguages = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site')->getLanguages();
+        $urlBuilder = fn(?int $languageId): string => '/test?lang=' . $languageId;
+
+        $button = $this->subject->buildForSiteLanguages($siteLanguages, null, $urlBuilder);
+
+        self::assertTrue($button->isValid());
+        $html = $button->render();
+
+        self::assertMatchesRegularExpression('/<button[^>]*>.*All languages.*<\/button>/s', $html);
+        self::assertMatchesRegularExpression('/<a[^>]*href="\/test\?lang="[^>]*>(?:(?!<\/a>).)*All languages<\/a>/s', $html);
+        self::assertMatchesRegularExpression('/<a[^>]*href="\/test\?lang=0"[^>]*>(?:(?!<\/a>).)*English<\/a>/s', $html);
+        self::assertMatchesRegularExpression('/<a[^>]*href="\/test\?lang=1"[^>]*>(?:(?!<\/a>).)*French<\/a>/s', $html);
+        self::assertMatchesRegularExpression('/<a[^>]*href="\/test\?lang=2"[^>]*>(?:(?!<\/a>).)*German<\/a>/s', $html);
+        self::assertStringNotContainsString('typo3-backend-localization-button', $html);
+    }
+
+    #[Test]
+    public function siteLanguagesSelectorShowsSelectedLanguage(): void
+    {
+        $siteLanguages = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site')->getLanguages();
+        $urlBuilder = fn(?int $languageId): string => '/test?lang=' . $languageId;
+
+        $html = $this->subject->buildForSiteLanguages($siteLanguages, 2, $urlBuilder)->render();
+
+        self::assertMatchesRegularExpression('/<button[^>]*>.*German.*<\/button>/s', $html);
+        self::assertMatchesRegularExpression('/<a[^>]*aria-selected="true"[^>]*href="\/test\?lang=2"[^>]*>(?:(?!<\/a>).)*German<\/a>/s', $html);
+    }
+
+    #[Test]
+    public function siteLanguagesSelectorOmitsAllLanguagesIfDisabled(): void
+    {
+        $siteLanguages = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site')->getLanguages();
+        $urlBuilder = fn(?int $languageId): string => '/test?lang=' . $languageId;
+
+        $html = $this->subject->buildForSiteLanguages($siteLanguages, 0, $urlBuilder, false)->render();
+
+        self::assertStringNotContainsString('All languages', $html);
+        self::assertStringNotContainsString('href="/test?lang="', $html);
+        self::assertStringNotContainsString('dropdown-divider', $html);
+        self::assertMatchesRegularExpression('/<button[^>]*>.*English.*<\/button>/s', $html);
+    }
+
     private function createPageContext(int $pageId, array $selectedLanguageIds): PageContext
     {
         $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test-site');

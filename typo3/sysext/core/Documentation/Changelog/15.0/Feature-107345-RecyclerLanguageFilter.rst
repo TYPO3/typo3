@@ -19,9 +19,9 @@ language. The relevant language field is resolved per table through the TCA
 schema :php:`Language` capability, so tables that use a custom language field
 name are handled correctly.
 
-Tables that are not language aware are omitted from the result while a language
-is selected. Choosing the *[All]* entry shows all deleted records,
-independent of their language or language awareness.
+Records valid in all languages and records of tables that are not language
+aware are always shown. Choosing the *All languages* entry shows all deleted records,
+independent of their language.
 
 The selected language is persisted as module data for the backend user, so the
 chosen language context is remembered across requests, just like the depth and

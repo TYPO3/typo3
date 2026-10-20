@@ -1,0 +1,14 @@
+"pages"
+,"uid","pid","title","doktype","deleted","sys_language_uid","l10n_parent","perms_everybody"
+,1,0,"Root",1,0,0,0,15
+,2,0,"Root FR",1,0,1,1,15
+,3,0,"Root DE (deleted)",1,1,2,1,15
+"tt_content"
+,"uid","pid","CType","header","deleted","sys_language_uid","tstamp"
+,1,1,"text","Deleted content EN",1,0,1700000001
+,2,1,"text","Deleted content FR",1,1,1700000002
+,3,1,"text","Deleted content DE",1,2,1700000003
+,4,1,"text","Deleted content all languages",1,-1,1700000004
+"sys_template"
+,"uid","pid","title","deleted","tstamp"
+,1,1,"Deleted template without language",1,1700000005

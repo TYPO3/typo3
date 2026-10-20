@@ -516,6 +516,9 @@
       <trans-unit id="labels.uncheckAll">
         <source>Uncheck all</source>
       </trans-unit>
+      <trans-unit id="labels.allLanguages">
+        <source>All languages</source>
+      </trans-unit>
       <trans-unit id="labels.selectAllLanguages">
         <source>Select all available languages</source>
       </trans-unit>

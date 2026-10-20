@@ -21,9 +21,10 @@ use TYPO3\CMS\Backend\Context\PageContext;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 /**
- * Builds the language selector dropdown for backend modules (Page, List).
+ * Builds the language selector dropdown for backend modules (Layout, Records, Recycler, record history).
  *
  * This centralizes the language selection UI logic to ensure consistent behavior
  * across all modules. It handles both single-select (radio buttons) and multi-select
@@ -220,6 +221,46 @@ final readonly class LanguageSelectorBuilder
             foreach ($newLanguageItems as $item) {
                 $languageDropDownButton->addItem($item);
             }
+        }
+
+        return $languageDropDownButton;
+    }
+
+    /**
+     * Builds a single-select language selector for the given site languages, independent
+     * of the translations existing on a page, optionally with an entry for all languages.
+     * Used by modules filtering or switching records by language.
+     *
+     * @param SiteLanguage[] $siteLanguages
+     * @param int|null $selectedLanguageId Null for all languages
+     * @param \Closure(int|null): string $urlBuilder
+     */
+    public function buildForSiteLanguages(array $siteLanguages, ?int $selectedLanguageId, \Closure $urlBuilder, bool $showAllLanguages = true): ButtonInterface
+    {
+        $languageService = $this->getLanguageService();
+        $languageDropDownButton = $this->componentFactory->createDropDownButton()
+            ->setLabel($languageService->sL('core.core:labels.language'))
+            ->setShowActiveLabelText(true)
+            ->setShowLabelText(true);
+
+        if ($showAllLanguages) {
+            $languageDropDownButton->addItem(
+                $this->componentFactory->createDropDownRadio()
+                    ->setActive($selectedLanguageId === null)
+                    ->setIcon($this->iconFactory->getIcon('flags-multiple'))
+                    ->setHref($urlBuilder(null))
+                    ->setLabel($languageService->sL('core.core:labels.allLanguages'))
+            );
+            $languageDropDownButton->addItem($this->componentFactory->createDropDownDivider());
+        }
+        foreach ($siteLanguages as $siteLanguage) {
+            $languageDropDownButton->addItem(
+                $this->componentFactory->createDropDownRadio()
+                    ->setActive($siteLanguage->getLanguageId() === $selectedLanguageId)
+                    ->setIcon($this->iconFactory->getIcon($siteLanguage->getFlagIdentifier()))
+                    ->setHref($urlBuilder($siteLanguage->getLanguageId()))
+                    ->setLabel($siteLanguage->getTitle())
+            );
         }
 
         return $languageDropDownButton;

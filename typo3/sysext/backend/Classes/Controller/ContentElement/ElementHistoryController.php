@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\History\RecordHistory;
 use TYPO3\CMS\Backend\History\RecordHistoryRollback;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\Buttons\LanguageSelectorBuilder;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -82,6 +83,7 @@ class ElementHistoryController
         private readonly TcaSchemaFactory $tcaSchemaFactory,
         private readonly ComponentFactory $componentFactory,
         private readonly SiteFinder $siteFinder,
+        private readonly LanguageSelectorBuilder $languageSelectorBuilder,
     ) {}
 
     /**
@@ -248,10 +250,6 @@ class ElementHistoryController
             return;
         }
 
-        $languageDropDownButton = $this->componentFactory->createDropDownButton()
-            ->setLabel($this->getLanguageService()->sL('core.core:labels.language'))
-            ->setShowLabelText(true);
-
         try {
             $site = $this->siteFinder->getSiteByPageId($translations['page']);
         } catch (SiteNotFoundException) {
@@ -260,28 +258,32 @@ class ElementHistoryController
 
         $availableLanguages = $site->getAvailableLanguages($backendUser, false, $translations['page']);
 
+        $translatedLanguages = [];
+        $translatedElements = [];
+        $selectedLanguageId = null;
         foreach ($translations['elements'] as $translation) {
             $siteLanguage = $availableLanguages[$translation['language']] ?? null;
             if (!$siteLanguage instanceof SiteLanguage) {
                 continue;
             }
-
-            $languageItem = $this->componentFactory->createDropDownRadio()
-                ->setActive($translation['element'] === $element)
-                ->setIcon($this->iconFactory->getIcon($siteLanguage->getFlagIdentifier()))
-                ->setHref((string)$this->uriBuilder->buildUriFromRoute('record_history', [
-                    'element' => $translation['element'],
-                    'returnUrl' => $this->returnUrl,
-                ]))
-                ->setLabel($siteLanguage->getTitle());
-            $languageDropDownButton->addItem($languageItem);
-
-            if ($languageItem->isActive()) {
-                $languageDropDownButton->setLabel($siteLanguage->getTitle());
+            $translatedLanguages[] = $siteLanguage;
+            $translatedElements[$siteLanguage->getLanguageId()] = $translation['element'];
+            if ($translation['element'] === $element) {
+                $selectedLanguageId = $siteLanguage->getLanguageId();
             }
         }
 
-        $this->view->getDocHeaderComponent()->setLanguageSelector($languageDropDownButton);
+        $this->view->getDocHeaderComponent()->setLanguageSelector(
+            $this->languageSelectorBuilder->buildForSiteLanguages(
+                $translatedLanguages,
+                $selectedLanguageId,
+                fn(?int $languageId): string => (string)$this->uriBuilder->buildUriFromRoute('record_history', [
+                    'element' => $translatedElements[$languageId],
+                    'returnUrl' => $this->returnUrl,
+                ]),
+                false
+            )
+        );
     }
 
     /**
