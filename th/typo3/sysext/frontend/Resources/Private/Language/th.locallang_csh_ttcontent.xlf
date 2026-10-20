@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814794" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_ttcontent.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="th">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>All visible content on webpages is typically made by "Page Content" records, often referred to as "Content Elements". Content Elements are managed by the "Page" Module which organizes Content Elements in multiple columns and languages.</source>
+        <target state="final">เนื้อหาทั้งหมดที่ปรากฏบนหน้าเว็บมักจะทำโดย"หน้าเนื้อหา"ระเบียนมักจะเรียกว่า"องค์ประกอบเนื้อหา" องค์ประกอบของเนื้อหาที่มีการจัดการโดยโมดูล"หน้าที่"ซึ่งจัดองค์ประกอบของเนื้อหาในหลายคอลัมน์และภาษา</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>"Page Content" records are sortable and can be rearranged. The "Language" and "Column" selectors of the "Page Content" records determines when and where they appear. If you do not change the value of the "Language" and "Column" selectors the Content Element will appear in the default configuration.</source>
+        <target state="final">"เนื้อหา Page"ระเบียนที่จะถูกจัดเรียงและสามารถจัดใหม่ "ภาษา"และ selectors"คอลัมน์"ของ"หน้าเนื้อหา"บันทึกกำหนดเวลาและสถานที่ที่ปรากฏ หากคุณไม่ได้เปลี่ยนค่าของ"ภาษา"และ"คอลัมน์"selectors Element เนื้อหาจะปรากฏขึ้นในการกำหนดค่าเริ่มต้น</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The Page Module is used to manage Content Elements arranged in columns and languages.
+A Content Element has an editing form with many options. The "Type" determines which options are visible.
+In the Frontend, a Content Element like the above could look like this.</source>
+			<target state="final">Page Module จะใช้ในการจัดการกับองค์ประกอบของเนื้อหาที่จัดเรียงในคอลัมน์และภาษา องค์ประกอบของเนื้อหาที่มีรูปแบบการแก้ไขด้วยตัวเลือกมากมาย "พิมพ์"กำหนดตัวเลือกที่จะมองเห็น ในส่วนหน้า, องค์ประกอบของเนื้อหาเหมือนข้างต้นอาจมีลักษณะเช่นนี้</target></trans-unit>
+      <trans-unit id="CType.description" resname="CType.description" approved="yes">
+        <source>Select the kind of Page Content this element represents. New options will appear when you save the record.</source>
+        <target state="final">เลือกประเภทของเนื้อหาที่แสดงถึงองค์ประกอบของหน้านี้ ตัวเลือกใหม่จะปรากฏขึ้นเมื่อคุณบันทึกบันทึก</target>
+      </trans-unit>
+      <trans-unit id="CType.details" resname="CType.details" xml:space="preserve" approved="yes">
+				<source>The 'Type' of content you select determines which options are available in the editing form so be sure to save the record before making other changes.
+
+This is a description of the various types:
+
+&lt;strong&gt;Header&lt;/strong&gt;
+This type allows you to insert a standard Content Element header and nothing more.
+Almost all the other types described below also include the Header and its options. The Header type provides a way to insert a header without any other content.
+
+&lt;strong&gt;Text&lt;/strong&gt;
+The Text type allows you to insert regular page content. It is generally used for text only content.
+
+&lt;strong&gt;Text &amp; Images&lt;/strong&gt;
+This is the same as the Text type (regular page content) but with the option of attaching images.
+
+&lt;strong&gt;Image&lt;/strong&gt;
+The Image type allows you to insert image only page content.
+
+&lt;strong&gt;Bullet List&lt;/strong&gt;
+Lets you create a bullet list. Each line in the text field will appear as a single bullet.
+
+&lt;strong&gt;Table&lt;/strong&gt;
+Lets you create &lt;em&gt;simple&lt;/em&gt; tables. Each line represents a row in the table and vertical bars ('|') separate each column. A popup wizard is also available.
+
+&lt;strong&gt;File Links&lt;/strong&gt;
+Allows you to present a list of files for download. Thumbnails can be attached to the list and you can also display the file size.
+
+&lt;strong&gt;Form&lt;/strong&gt;
+Lets you create mail forms using a special syntax or a popup wizard.
+
+&lt;strong&gt;Search&lt;/strong&gt;
+This inserts a search box and also shows the search results when a search is performed on the page.
+
+&lt;strong&gt;Login&lt;/strong&gt;
+Displays a login box for website users. This is only useful if you have already created website users and usergroups.
+
+&lt;strong&gt;Menu/Sitemap&lt;/strong&gt;
+Offers a selection of menus and a sitemap you can insert on a page.
+
+&lt;strong&gt;Insert records&lt;/strong&gt;
+This acts as placeholder for other records. With this Content Element, you can resuse multiple content elements from other pages.
+
+&lt;strong&gt;Insert plugin&lt;/strong&gt;
+This will allows you to insert news, forums, guestbooks, lists of addresses, and other functionality. Plugins are typically provided by TYPO3 extensions. The available fields and required configuration depend on the extension.
+
+&lt;strong&gt;Divider&lt;/strong&gt;
+This inserts a simple horizontal rule on a page.
+
+&lt;strong&gt;HTML&lt;/strong&gt;
+This is plain HTML content. Anything added in the HTML Code of this Content Element will be displayed directly on the page without any preprocessing.</source>
+			<target state="final">'พิมพ์'ของเนื้อหาที่คุณเลือกจะกำหนดตัวเลือกที่มีอยู่ในแบบฟอร์มการแก้ไขเพื่อให้แน่ใจว่าได้บันทึกบันทึกก่อนการเปลี่ยนแปลงอื่น ๆ นี่คือคำอธิบายของประเภทต่างๆ : &lt;strong&gt; หัว &lt;/ strong&gt; ชนิดนี้จะช่วยให้คุณสามารถแทรกเนื้อหาส่วนหัวมาตรฐานองค์ประกอบและไม่มีอะไรเพิ่มเติม เกือบทุกชนิดอื่น ๆ ที่อธิบายไว้ด้านล่างนี้ยังรวมถึงส่วนหัวและตัวเลือกของมัน ชนิดหัวมีวิธีที่จะแทรกส่วนหัวไม่มีเนื้อหาอื่น ๆ &lt;strong&gt; ข้อความ &lt;/ strong&gt; พิมพ์ข้อความที่ช่วยให้คุณสามารถแทรกเนื้อหาของหน้าเว็บปกติ มันถูกใช้โดยทั่วไปสำหรับข้อความเนื้อหาเท่านั้น &lt;strong&gt; ข้อความและภาพ &lt;/ strong&gt; นี้จะเหมือนกับการพิมพ์ข้อความ (เนื้อหาของหน้าเว็บปกติ) แต่มีตัวเลือกในการติดภาพ &lt;strong&gt; Image &lt;/ strong&gt; ประเภทของภาพที่ช่วยให้คุณสามารถแทรกเนื้อหาของหน้าเว็บเท่านั้น Bullet &lt;strong&gt; รายการ &lt;/ strong&gt; ช่วยให้คุณสร้างรายการสัญลักษณ์แสดงหัวข้อย่อย บรรทัดในเขตข้อมูลข้อความแต่ละท่านจะปรากฏเป็นสัญลักษณ์แสดงหัวข้อย่อยเดียว &lt;strong&gt; ตารางที่ &lt;/ strong&gt; ช่วยให้คุณสร้าง &lt;em&gt; ง่าย &lt;/ em&gt; ตาราง แต่ละบรรทัดเป็นแถวในตารางและแถบแนวตั้ง ('|') แยกแต่ละคอลัมน์ ตัวช่วยสร้างป๊อปอัพนอกจากนี้ยังมี &lt;strong&gt; ไฟล์ Links &lt;/ strong&gt; ช่วยให้คุณสามารถนำเสนอรายชื่อของไฟล์สำหรับการดาวน์โหลด Thumbnails สามารถแนบรายชื่อและคุณยังสามารถแสดงผลขนาดไฟล์ &lt;strong&gt; แบบ &lt;/ strong&gt; ช่วยให้คุณสร้างรูปแบบอีเมลโดยใช้ไวยากรณ์พิเศษหรือตัวช่วยสร้างป๊อปอัพ &lt;strong&gt; การค้นหา &lt;/ strong&gt; แทรกช่องค้นหานี้และยังแสดงผลการค้นหาเมื่อค้นหาจะทำในหน้า &lt;strong&gt; เข้าสู่ระบบ &lt;/ strong&gt; จะแสดงกล่องเข้าสู่ระบบสำหรับผู้ใช้เว็บไซต์ ซึ่งจะเป็นประโยชน์เฉพาะในกรณีที่คุณได้สร้างเว็บไซต์และรายชื่อผู้ใช้ เมนู &lt;strong&gt; / Sitemap &lt;/ strong&gt; ข้อเสนอการเลือกของเมนูและแผนผังเว็ปไซต์ที่คุณสามารถแทรกในหน้า &lt;strong&gt; แทรกระเบียน &lt;/ strong&gt; การกระทำนี้เป็นตัวยึดตำแหน่งสำหรับบันทึกอื่น ๆ ด้วยองค์ประกอบของเนื้อหานี้คุณสามารถ resuse องค์ประกอบหลายเนื้อหาจากหน้าอื่น ๆ &lt;strong&gt; แทรกปลั๊กอิน &lt;/ strong&gt; จะช่วยให้คุณสามารถแทรกข่าวฟอรั่ม, guestbooks, รายการของที่อยู่และการทำงานอื่น ๆ โปรแกรมเสริมการให้บริการตามปกติโดยส่วนขยาย TYPO3 และการกำหนดค่าฟิลด์ที่จำเป็นต้องขึ้นอยู่กับส่วนขยาย &lt;strong&gt; Divider &lt;/ strong&gt; แทรกนี้กฎง่ายๆแนวนอนในหน้า &lt;strong&gt; HTML &lt;/ strong&gt; นี่คือเนื้อหาของ HTM​​L ธรรมดา สิ่งเพิ่มใน HTML Code of Element เนื้อหานี้จะปรากฏในเพจโดยตรงโดยไม่ต้อง preprocessing ใด ๆ NEW ซ่อนเร้น</target></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Check this box if you wish to disable the Content Element and keep it from being displayed on the website.</source>
+        <target state="final">เลือกช่องนี้หากคุณต้องการปิดการใช้งานและองค์ประกอบของเนื้อหาให้มันจากที่แสดงอยู่บนเว็บไซต์</target>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Enter the date when the Content Element should be published and displayed on the website.</source>
+        <target state="final">ป้อนวันที่เมื่อองค์ประกอบของเนื้อหาที่ควรได้รับการเผยแพร่และแสดงบนเว็บไซต์</target>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>Enter the date when the Content Element should expire and disappear from the website.</source>
+        <target state="final">ป้อนวันที่เมื่อองค์ประกอบของเนื้อหาที่ควรจะหมดอายุและหายไปจากเว็บไซต์</target>
+      </trans-unit>
+      <trans-unit id="fe_group.description" resname="fe_group.description" approved="yes">
+        <source>If Usergroup Access Rights are set to a usergroup name, only website users who are logged in and members of the selected usergroup will be able to view the Content Element. The special option 'Hide at Login' means the Content Element will &lt;em&gt;not&lt;/em&gt; be visible for any website users that are logged in. Likewise "Show at Any Login" will make the Content Element visible for any logged in website user.</source>
+        <target state="final">หากกลุ่มผู้สิทธิ์การเข้าถึงถูกตั้งค่าให้ชื่อกลุ่มผู้, ผู้ใช้เว็บไซต์ของเราเท่านั้นที่ได้เข้าสู่ระบบและสมาชิกของกลุ่มผู้ที่เลือกจะสามารถดูเนื้อหาองค์ประกอบ ตัวเลือกพิเศษ'ซ่อนที่เข้าสู่ระบบ'หมายถึงองค์ประกอบของเนื้อหาจะ &lt;em&gt; ไม่ &lt;/ em&gt; สามารถมองเห็นได้สำหรับผู้ใช้งานเว็บไซต์ใด ๆ ที่เข้าสู่ระบบค่ะเช่นกัน"แสดงที่เข้าสู่ระบบใด ๆ ที่อาจจะทำให้มีองค์ประกอบของเนื้อหาที่เห็นได้สำหรับใด ๆ ที่เข้าสู่ระบบในเว็บไซต์ ของผู้ใช้</target>
+      </trans-unit>
+      <trans-unit id="fe_group.details" resname="fe_group.details" approved="yes">
+        <source>The 'Hide at Login' option is is useful if you want to present information like "How to Login" that becomes irrelevant when a website user is actually logged in.</source>
+        <target state="final">'ซ่อนที่เข้าสู่ระบบ'ตัวเลือกนี้จะมีประโยชน์หากคุณต้องการนำเสนอข้อมูลเช่น"วิธีการเข้าสู่ระบบ"ที่จะกลายเป็นเว็บไซต์ที่ไม่เกี่ยวข้องเมื่อผู้ใช้สามารถเข้าสู่ระบบจริงแล้วสิ่งต่อไปนี้</target>
+      </trans-unit>
+      <trans-unit id="sys_language_uid.description" resname="sys_language_uid.description" approved="yes">
+        <source>Select the system language of this Content Element. &lt;strong&gt;Notice:&lt;/strong&gt; This will affect the Content Element visibility by limiting it to a certain language.</source>
+        <target state="final">เลือกภาษาที่ระบบของเนื้อหานี้ Element &lt;strong&gt; หมายเหตุ : &lt;/ strong&gt; นี้จะส่งผลกระทบต่อการมองเห็นองค์ประกอบของเนื้อหาโดย จำกัด การให้ภาษาบางอย่าง</target>
+      </trans-unit>
+      <trans-unit id="sys_language_uid.details" resname="sys_language_uid.details" xml:space="preserve" approved="yes">
+				<source>This allows you to assign a specific language to the Content Element. If you select anything but the default value, the element will &lt;em&gt;not&lt;/em&gt; be visible unless the language assigned is also configured by the TypoScript template.
+The available system languages are created by the administrator.</source>
+			<target state="final">นี้จะช่วยให้คุณสามารถกำหนดภาษาที่ระบุไปยังเนื้อหา Element หากคุณเลือกอะไร แต่ค่าเริ่มต้นองค์ประกอบจะ &lt;em&gt; ไม่ &lt;/ em&gt; สามารถมองเห็นได้นอกจากภาษาที่กำหนดโดยมีการกำหนดค่าแม่แบบ TypoScript ภาษาที่สามารถใช้ได้กับระบบจะถูกสร้างโดยผู้ดูแลระบบ</target></trans-unit>
+      <trans-unit id="layout.description" resname="layout.description" approved="yes">
+        <source>Select a Layout.</source>
+        <target state="final">เลือกเค้าโครง</target>
+      </trans-unit>
+      <trans-unit id="layout.details" resname="layout.details" xml:space="preserve" approved="yes">
+				<source>This option does not work by default for all Content Elements but your website may display Content Elements differently depending on the layout.
+
+The File Links Content Element does make use of the Layout field by default:
+"Normal" will provide a list of file links with no thumbnail.
+"Layout 1" adds a file icon to the left of the link
+"Layout 2" adds a thumbnail for image files and an icon for other files. A black border is wrapped around the icon.
+"Layout 3" is similar to Layout 2, but without the black border.</source>
+			<target state="final">ตัวเลือกนี้ไม่สามารถใช้งานตามค่าเริ่มต้นสำหรับทุกองค์ประกอบของเนื้อหา แต่เว็บไซต์ของคุณอาจแสดงองค์ประกอบเนื้อหาแตกต่างกันขึ้นอยู่กับรูปแบบ ไฟล์ลิงค์เนื้อหา Element จะทำให้การใช้งานของเขตข้อมูลเลย์เอาต์โดยค่าเริ่มต้น : "ปกติ"จะให้รายชื่อของการเชื่อมโยงกับรูปขนาดย่อของไฟล์ไม่ "1 เลย์เอาต์"เพิ่มไอคอนของไฟล์ที่ด้านซ้ายของการเชื่อมโยง "2 เลย์เอาต์"เพิ่มรูปขนาดย่อของไฟล์ภาพและไอคอนสำหรับไฟล์อื่น ๆ เส้นขอบสีดำห่อรอบไอคอน "เลย์เอาต์ 3"จะคล้ายกับ 2 เลย์เอาต์ แต่ไม่มีขอบดำ</target></trans-unit>
+      <trans-unit id="colPos.description" resname="colPos.description" approved="yes">
+        <source>Select the column position of this element. &lt;strong&gt;Notice:&lt;/strong&gt; This may affect whether the Content Element is visible depending on your website template.</source>
+        <target state="final">เลือกตำแหน่งคอลัมน์ขององค์ประกอบนี้ &lt;strong&gt; หมายเหตุ : &lt;/ strong&gt; นี้อาจส่งผลกระทบต่อว่าองค์ประกอบเนื้อหาจะมองเห็นได้ขึ้นอยู่กับแม่แบบเว็บไซต์ของคุณ</target>
+      </trans-unit>
+      <trans-unit id="colPos.details" resname="colPos.details" xml:space="preserve" approved="yes">
+				<source>Many websites only use one column of content. Some templates, however, let you put content in multiple columns using the Column option.
+
+&lt;strong&gt;Notice:&lt;/strong&gt; Selecting a column other than "Normal" may cause the Content Element to disappear if the website template does not use that column. If your Content Element mysteriously disappears make sure the Column and Language selectors are set correctly.</source>
+			<target state="final">เว็บไซต์จำนวนมากจะใช้คอลัมน์หนึ่งของเนื้อหา แม่แบบบาง แต่ช่วยให้คุณสามารถนำเนื้อหาในคอลัมน์ต่างๆโดยใช้ตัวเลือกคอลัมน์ &lt;strong&gt; หมายเหตุ : &lt;/ strong&gt; การเลือกคอลัมน์อื่น ๆ กว่า"Normal"อาจทำให้เกิดองค์ประกอบของเนื้อหาที่จะหายไปหากแม่แบบเว็บไซต์ที่ไม่ได้ใช้คอลัมน์ที่ ถ้าองค์ประกอบของเนื้อหาของคุณจะหายไปอย่างลึกลับตรวจสอบให้แน่ใจ selectors คอลัมน์และภาษามีการตั้งค่าอย่างถูกต้อง</target></trans-unit>
+      <trans-unit id="date.description" resname="date.description" approved="yes">
+        <source>Enter a date to be displayed above the header.</source>
+        <target state="final">ป้อนวันที่ที่จะแสดงบนหัว</target>
+      </trans-unit>
+      <trans-unit id="header.description" resname="header.description" approved="yes">
+        <source>Enter header text for the Content Element.</source>
+        <target state="final">ใส่ข้อความส่วนหัวสำหรับเนื้อหา Element</target>
+      </trans-unit>
+      <trans-unit id="header.details" resname="header.details" xml:space="preserve" approved="yes">
+				<source>Almost all Content Elements will display this header above the content. If you don't want the header displayed, set the header Layout to "Hidden". You can also choose not to enter any content in this field.
+
+Some content element types do not display the header by default. In those cases the Header field is typically labeled "Name" instead. One example is the HTML Content Element.</source>
+			<target state="final">เกือบทุกองค์ประกอบของเนื้อหาจะแสดงส่วนหัวด้านบนเนื้อหานี้ หากคุณไม่ต้องการให้ส่วนหัวที่แสดงให้ตั้งค่าเค้าโครงส่วนหัวไปที่"ซ่อน" คุณยังสามารถเลือกที่จะไม่ใส่เนื้อหาใด ๆ ในสาขานี้ องค์ประกอบเนื้อหาบางชนิดจะไม่แสดงส่วนหัวโดยค่าเริ่มต้น ในกรณีดังกล่าวเกี่ยวกับฟิลด์เป็นข้อความปกติ"ชื่อ"แทน ตัวอย่างหนึ่งคือเนื้อหาของ HTML Element</target></trans-unit>
+      <trans-unit id="header_position.description" resname="header_position.description" approved="yes">
+        <source>Aligns the header to the left, center, or right.</source>
+        <target state="final">จัดตำแหน่งส่วนหัวไปทางซ้ายกึ่งกลางหรือขวา</target>
+      </trans-unit>
+      <trans-unit id="header_link.description" resname="header_link.description" approved="yes">
+        <source>Creates a link from the header to a Page ID, email address, or URL.</source>
+        <target state="final">สร้างการเชื่อมโยงจากส่วนหัวไปยังที่อยู่อีเมลหน้า ID หรือ URL</target>
+      </trans-unit>
+      <trans-unit id="header_layout.description" resname="header_layout.description" approved="yes">
+        <source>Select a visual design for the header.</source>
+        <target state="final">เลือกการออกแบบภาพส่วนหัว</target>
+      </trans-unit>
+      <trans-unit id="header_layout.details" resname="header_layout.details" xml:space="preserve" approved="yes">
+				<source>If you select "Default" the standard design (which is one of the layouts 1-5) will be used.
+Alternatively you can select from Layout 1 through 5 which are configured in the website template with individual visual designs.
+If you select "Hidden" the header will simply not appear. This is useful when you don't need a header to display on the website but still want to identify the Content Element in the Backend.</source>
+			<target state="final">หากคุณเลือก"Default"การออกแบบมาตรฐาน (ซึ่งเป็นหนึ่งในเลย์เอาต์ 1-5) จะนำไปใช้ หรือคุณสามารถเลือกจากเค้าโครงที่ 1 ถึง 5 ซึ่งมีการกำหนดค่าในแม่แบบเว็บไซต์ที่มีการออกแบบภาพบุคคล หากคุณเลือก"ซ่อน"ส่วนหัวจะก็ไม่ปรากฏ ซึ่งจะเป็นประโยชน์เมื่อคุณไม่ต้องการที่จะแสดงในส่วนหัวของเว็บไซต์ แต่ยังต้องการการระบุองค์ประกอบเนื้อหาในแบ็กเอนด์</target></trans-unit>
+      <trans-unit id="subheader.description" resname="subheader.description" approved="yes">
+        <source>Enter a subheader to be displayed below the main header. If the Content Element is a "Form" this field is instead used as the Recipient Email.</source>
+        <target state="final">ใส่ส่วนหัวย่อยที่จะแสดงด้านล่างส่วนหัวหลัก หากเนื้อหา Element เป็น"แบบฟอร์ม"ฟิลด์นี้ใช้แทนเป็นอีเมล์ผู้รับ</target>
+      </trans-unit>
+      <trans-unit id="subheader.details" resname="subheader.details" approved="yes">
+        <source>A subheader is displayed only with "Header" Content Elements and with "Form" Content Elements (as the Recipient Email).</source>
+        <target state="final">ส่วนหัวย่อยจะปรากฏเฉพาะกับ"หัว"องค์ประกอบของเนื้อหาและกับ"แบบฟอร์ม"องค์ประกอบเนื้อหา (เป็นอีเมล์ผู้รับ)</target>
+      </trans-unit>
+      <trans-unit id="bodytext.description" resname="bodytext.description" approved="yes">
+        <source>Enter the main text.</source>
+        <target state="final">ใส่ข้อความหลัก</target>
+      </trans-unit>
+      <trans-unit id="image.description" resname="image.description" approved="yes">
+        <source>Insert one or more images.</source>
+        <target state="final">ใส่อย่างน้อยหนึ่งภาพ</target>
+      </trans-unit>
+      <trans-unit id="image.details" resname="image.details" xml:space="preserve" approved="yes">
+				<source>You can attach multiple images to the Content Element.
+Depending on the configuration of TYPO3, you can attach images in many formats without worrying about size and compression. TYPO3's graphics processing handles these details for you.
+
+When you use the "Text &amp; Images" type, it's important to select a proper position for images. For this purpose, use the Position and Aligment selector. See link to "Page Content / Position" below.
+You can also display images in multiple columns and even enable an option that opens full size images when thumbnails are clicked.</source>
+			<target state="final">คุณสามารถแนบภาพหลาย ๆ องค์ประกอบของเนื้อหา ทั้งนี้ขึ้นอยู่กับการกำหนดค่าของ TYPO3, คุณสามารถแนบภาพในหลายรูปแบบโดยไม่ต้องกังวลเกี่ยวกับขนาดและการบีบอัด การประมวลผลกราฟิกของ TYPO3 จับรายละเอียดเหล่านี้ให้คุณ เมื่อคุณใช้"ข้อความและภาพ"ชนิดจึงเป็นสิ่งสำคัญเพื่อเลือกตำแหน่งที่เหมาะสมสำหรับภาพ ในการนี้ให้ใช้ตำแหน่งและเลือก Aligment เห็นการเชื่อมโยงกับ"เนื้อหา Page / ตำแหน่ง"ด้านล่าง คุณยังสามารถแสดงภาพในหลายคอลัมน์และยังช่วยให้ตัวเลือกที่จะเปิดภาพขนาดเต็มจำนวนเมื่อมีการคลิกรูปขนาดย่อ</target></trans-unit>
+      <trans-unit id="image.image_descr" resname="image.image_descr" approved="yes">
+        <source>This shows all the options related to inserting images in Content Elements. Depending on user permissions, you may not be able to use all of them.</source>
+        <target state="final">นี้จะแสดงตัวเลือกทั้งหมดที่เกี่ยวข้องกับการแทรกภาพในองค์ประกอบของเนื้อหา ทั้งนี้ขึ้นอยู่กับสิทธิ์ของผู้ใช้คุณอาจไม่สามารถใช้ทั้งหมดของพวกเขา</target>
+      </trans-unit>
+      <trans-unit id="imagewidth.description" resname="imagewidth.description" approved="yes">
+        <source>Enter the width (in pixels) for displaying the image in the Frontend of your website.</source>
+        <target state="final">ป้อนความกว้าง (เป็นพิกเซล) สำหรับการแสดงรูปภาพในส่วนหน้าของเว็บไซต์ของคุณ</target>
+      </trans-unit>
+      <trans-unit id="imagewidth.details" resname="imagewidth.details" approved="yes">
+        <source>The TypoScript template is normally configured with maximum image width so you shouldn't need to specify a width. In unique cases, this provides additional flexibility though.</source>
+        <target state="final">แม่แบบ TypoScript มีการกำหนดค่าปกติที่มีความกว้างภาพสูงสุดดังนั้นคุณจึงไม่จำเป็นต้องระบุความกว้าง ในกรณีที่ไม่ซ้ำกันนี้ให้ความยืดหยุ่นเพิ่มเติมว่า</target>
+      </trans-unit>
+      <trans-unit id="imageheight.description" resname="imageheight.description" approved="yes">
+        <source>Enter the height (in pixels) for displaying the images in the Frontend of your website.</source>
+        <target state="final">ป้อนความสูง (เป็นพิกเซล) สำหรับการแสดงรูปภาพในส่วนหน้าของเว็บไซต์ของคุณ</target>
+      </trans-unit>
+      <trans-unit id="imageorient.description" resname="imageorient.description" approved="yes">
+        <source>Select the position and alignment of the images relative to the body text.</source>
+        <target state="final">เลือกตำแหน่งและการจัดตำแหน่งของภาพเมื่อเทียบกับข้อความเนื้อหา</target>
+      </trans-unit>
+      <trans-unit id="imageborder.description" resname="imageborder.description" approved="yes">
+        <source>Displays a colored border around the images.</source>
+        <target state="final">แสดงเส้นขอบรอบรูปภาพสี</target>
+      </trans-unit>
+      <trans-unit id="image_link.description" resname="image_link.description" approved="yes">
+        <source>Enter a link for the image. For multiple images, separate the links with commas.</source>
+        <target state="final">ใส่ลิงค์ของภาพ สำหรับรูปภาพหลายแยกการเชื่อมโยงด้วยเครื่องหมายจุลภาค</target>
+      </trans-unit>
+      <trans-unit id="image_link.details" resname="image_link.details" xml:space="preserve" approved="yes">
+				<source>By default all images share the same link. Your TypoScript template may be configured to allow a separate link for each image. If this is the case, you simply separate the links with a comma.
+
+See Page Content&gt;Link below for details on syntax.</source>
+			<target state="final">โดยค่าเริ่มต้นภาพทั้งหมดร่วมกันเชื่อมโยงกัน แม่แบบ TypoScript ของคุณอาจจะตั้งค่าให้อนุญาตให้มีการเชื่อมโยงที่แยกต่างหากสำหรับแต่ละภาพ ถ้าเป็นกรณีนี้คุณก็แยกการเชื่อมโยงด้วยเครื่องหมายจุลภาค Link ดูหน้า&gt; เนื้อหาด้านล่างเพื่อดูรายละเอียดเกี่ยวกับไวยากรณ์</target></trans-unit>
+      <trans-unit id="image_zoom.description" resname="image_zoom.description" approved="yes">
+        <source>When enabled, clicking an image will open a larger version in a popup window.</source>
+        <target state="final">เมื่อเปิดใช้งานคลิกที่ภาพจะเปิดรุ่นใหญ่ในหน้าต่างป๊อปอัพ</target>
+      </trans-unit>
+      <trans-unit id="image_zoom.details" resname="image_zoom.details" approved="yes">
+        <source>This option overrides the value in the Links field.</source>
+        <target state="final">ตัวเลือกนี้จะแทนที่ค่าในเขตข้อมูลเชื่อมโยง</target>
+      </trans-unit>
+      <trans-unit id="image_frames.description" resname="image_frames.description" approved="yes">
+        <source>Select special image framing options.</source>
+        <target state="final">กรอบภาพเลือกตัวเลือกพิเศษ</target>
+      </trans-unit>
+      <trans-unit id="imagecols.description" resname="imagecols.description" approved="yes">
+        <source>Set the number of columns when the images are displayed in the Frontend of the website.</source>
+        <target state="final">ตั้งค่าจำนวนคอลัมน์เมื่อรูปภาพจะปรากฏขึ้นในส่วนหน้าของเว็บไซต์</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.description" resname="imagecaption.description" approved="yes">
+        <source>Enter captions for the images. For multiple images, enter one caption per line.</source>
+        <target state="final">ป้อนคำอธิบายสำหรับรูปภาพ สำหรับรูปภาพหลายป้อนหนึ่งคำอธิบายภาพต่อบรรทัด</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.details" resname="imagecaption.details" xml:space="preserve" approved="yes">
+				<source>By default, the caption is positioned below the images. However, your TypoScript template may be configured to allow individual image captions by setting "styles.content.imgtext.captionSplit=1" in your template constants.
+In this case, each line in this field will be the image caption of the corresponding image in the list.
+
+The caption text field is also used by the Content Element type "File Links" where each line represents a description of a file in the list.</source>
+			<target state="final">โดยค่าเริ่มต้นคำอธิบายภาพอยู่ในตำแหน่งด้านล่างรูปภาพ แต่แม่ TypoScript ของคุณอาจจะตั้งค่าให้อนุญาตให้มีคำอธิบายแต่ละภาพด้วยการตั้งค่า"= 1 styles.content.imgtext.captionSplit"ในค่าคงที่แม่แบบของคุณ ในกรณีนี้สายในแต่ละด้านนี้จะมีคำอธิบายภาพของภาพที่สอดคล้องกันในรายการ เขตข้อมูลข้อความคำอธิบายภาพจะใช้โดยชนิด Element เนื้อหา"ไฟล์ Links"ที่แต่ละบรรทัดแสดงคำอธิบายของแฟ้มในรายการ</target></trans-unit>
+      <trans-unit id="cols.description" resname="cols.description" approved="yes">
+        <source>Select a fixed number of table columns</source>
+        <target state="final">เลือกจำนวนคงที่ของคอลัมน์ของตาราง</target>
+      </trans-unit>
+      <trans-unit id="pages.description" resname="pages.description" approved="yes">
+        <source>Select a target page or multiple target pages.</source>
+        <target state="final">เลือกหน้าเป้าหมายหรือหน้าที่กำหนดเป้าหมายหลาย</target>
+      </trans-unit>
+      <trans-unit id="pages.details" resname="pages.details" xml:space="preserve" approved="yes">
+				<source>This field is used by many of the Content Element types to create a relation to either a single target page or multiple target pages. If no target page is specified, the current page will generally be used.
+
+Using the "Search" Content Element, the target page is where search results will appear. You must make sure that this page has a similar "Search" Content Element to display the results.
+
+The "Login" Content Element (not to be confused with the Login plugin available when the felogin extension is installed) also uses this field to redirect the login to a certain page. That page does not need to contain a "Login" Content Element in order to perform the authentication since any TYPO3 page can handle a login request.
+If you specify a second page in this list, the ID will be passed to the login system as the page inside TYPO3 where website users are found. You should use this only if your template is not already configured to pass this value on.
+In order for the login procedure to work you must make sure that you have created website users and website usergroups, have specified where these website users can be found (typically a SysFolder), a page ID in the page list, and ensured that cookies are enabled for the site.
+
+The "Menu/Sitemap" Content Elements also use this field. In this case the page will determine the starting point for the menu or the actual pages shown in the menu. This behavior depends on the menu type you have selected.
+
+Finally the "Form" element uses this field as the target page to which the form is submitted. A common use is the "Thank you" page after the form is completed.</source>
+			<target state="final">ฟิลด์นี้จะถูกใช้โดยหลายชนิด Element เนื้อหาที่ต้องการสร้างความสัมพันธ์กับเป้าหมายทั้งหน้าเดียวหรือหน้าเว็บที่กำหนดเป้าหมายหลาย ถ้าหน้าเว็บเป้าหมายไม่ได้ระบุหน้าปัจจุบันจะถูกใช้โดยทั่วไป การใช้เนื้อหา"ค้นหา"Element, เพจเป้าหมายเป็นที่ที่ผลการค้นหาจะปรากฏขึ้น คุณต้องตรวจสอบให้แน่ใจว่าหน้านี้มีที่คล้ายกัน"ค้นหา"องค์ประกอบของเนื้อหาที่จะแสดงผล "Login"เนื้อหา Element (ไม่ต้องสับสนกับการเข้าสู่ระบบปลั๊กอินใช้ได้เมื่อมีส่วนขยาย felogin มีการติดตั้ง) นอกจากนี้ยังใช้ฟิลด์นี้เพื่อเปลี่ยนเส้นทางการเข้าสู่ระบบไปยังหน้าบาง หน้านั้นไม่จำเป็นต้องมี"Login"องค์ประกอบของเนื้อหาเพื่อที่จะดำเนินการตรวจสอบตั้งแต่หน้า TYPO3 ใดสามารถจัดการคำขอเข้าสู่ระบบ ถ้าคุณระบุหน้าที่สองในรายการนี้ ID จะถูกส่งไปยังระบบเข้าสู่ระบบเป็นหน้าภายใน TYPO3 ที่ผู้ใช้จะพบเว็บไซต์ คุณควรใช้แม่แบบนี้เฉพาะในกรณีของคุณไม่ได้กำหนดค่าไว้แล้วเพื่อส่งผ่านค่านี้ใน เพื่อให้ขั้นตอนการเข้าสู่ระบบในการทำงานคุณจะต้องตรวจสอบให้แน่ใจว่าคุณได้สร้างเว็บไซต์และรายชื่อผู้ใช้เว็บไซต์ได้ระบุที่ผู้ใช้เว็บไซต์เหล่านี้สามารถพบได้ (โดยทั่วไปจะ SysFolder), ID หน้าในหน้ารายการและมั่นใจว่าคุกกี้ เปิดการใช้งานสำหรับเว็บไซต์ "เมนู / แผนผังเว็ปไซต์"องค์ประกอบของเนื้อหายังใช้ฟิลด์นี้ ในกรณีนี้หน้าจะเป็นตัวกำหนดจุดเริ่มต้นของเมนูหรือหน้าจริงที่แสดงในเมนู ลักษณะการทำงานนี้ขึ้นอยู่กับชนิดเมนูที่คุณเลือก ในที่สุด"แบบฟอร์ม"องค์ประกอบด้านนี้จะใช้เป็นหน้าเป้าไปที่รูปแบบที่มีการส่ง ใช้ร่วมกันคือ"ขอบคุณ"หน้าหลังจากแบบฟอร์มจะเสร็จสมบูรณ์</target></trans-unit>
+      <trans-unit id="recursive.description" resname="recursive.description" approved="yes">
+        <source>The number of subpage levels that should also be included for each page in the list.</source>
+        <target state="final">จำนวนของระดับย่อยว่าควรที่จะรวมสำหรับหน้าเว็บในแต่ละรายการ</target>
+      </trans-unit>
+      <trans-unit id="recursive.details" resname="recursive.details" xml:space="preserve" approved="yes">
+				<source>This feature depends on the TypoScript template configuration and Content Element type. If enabled, each page listed in the "Pages" field will also have its subpages included to the specified depth.
+
+&lt;strong&gt;Warning:&lt;/strong&gt; If there are many subpages, be aware that this option may return a large number of results</source>
+			<target state="final">คุณลักษณะนี้จะขึ้นอยู่กับการกำหนดค่าแม่แบบ TypoScript และพิมพ์องค์ประกอบของเนื้อหา ถ้าเปิดหน้าการระบุไว้ในช่อง"หน้าที่"นอกจากนี้ยังจะมีหน้าย่อยของแต่ละคนรวมถึงความลึกที่ระบุไว้ &lt;strong&gt; คำเตือน : &lt;/ strong&gt; ถ้ามีหน้าย่อยจำนวนมากทราบว่าตัวเลือกนี้อาจกลับมาเป็นจำนวนมากผล</target></trans-unit>
+      <trans-unit id="menu_type.description" resname="menu_type.description" approved="yes">
+        <source>Select the type of menu you wish to create.</source>
+        <target state="final">เลือกประเภทของเมนูที่คุณต้องการสร้าง</target>
+      </trans-unit>
+      <trans-unit id="menu_type.details" resname="menu_type.details" xml:space="preserve" approved="yes">
+				<source>This is a short description of each type:
+
+&lt;strong&gt;Menu of selected pages&lt;/strong&gt;
+This will create a menu with links to the pages in the Selected Pages list.
+
+&lt;strong&gt;Menu of subpages of selected pages&lt;/strong&gt;
+This will create in a menu with links to the subpages of the pages in the Selected Pages list. If you do not specify any pages, the subpages to the current page will be used.
+
+&lt;strong&gt;Menu of subpages of selected pages (with abstract)&lt;/strong&gt;
+Like the previous option, but also displays the content of the Abstract field (or the Description field) for each page in the menu. The Abstract field is given priority over the Description field if both are complete.
+
+&lt;strong&gt;Menu of subpages of selected pages + sections&lt;/strong&gt;
+Like the previous option, but includes links to all Content Elements on the page that are marked to Show In Section Menus.
+
+&lt;strong&gt;Sitemap&lt;/strong&gt;
+Generates a classic tree sitemap. Notice that the sitemap will begin from the current page unless you select another page instead.
+
+&lt;strong&gt;Section index (page content marked for section menus)&lt;/strong&gt;
+This makes a menu of Content Elements on the selected pages for all Content Elements marked to Show In Section Menu. This is a great way to make an index at the top of the page.
+If you don't want certain Content Elements to appear in the list, just uncheck the Show in Section Menus checkbox for those elements.
+
+&lt;strong&gt;Recently updated pages&lt;/strong&gt;
+This displays the 10 most recently updated pages.
+&lt;strong&gt;Notice:&lt;/strong&gt; If you update a page and the updated page is not included in this list, clearing the Page Cache will resolve the issue.
+
+&lt;strong&gt;Related pages (based on keywords)&lt;/strong&gt;
+Displays other related pages based on the keywords of the selected pages matched against the keywords of other pages.</source>
+			<target state="final">นี่คือคำอธิบายสั้น ๆ ของแต่ละประเภท : &lt;strong&gt; เมนูของเพจที่เลือก &lt;/ strong&gt; นี้จะสร้างเมนูด้วยการเชื่อมโยงไปยังหน้าเว็บในรายการที่เลือกหน้า &lt;strong&gt; เมนูของหน้าย่อยของเพจที่เลือก &lt;/ strong&gt; นี้จะสร้างในเมนูมีการเชื่อมโยงไปยังหน้าย่อยของหน้าเว็บในรายการที่เลือกหน้า ถ้าคุณไม่ระบุหน้าเว็บใด ๆ , หน้าย่อยไปยังเพจปัจจุบันจะใช้ &lt;strong&gt; เมนูของหน้าย่อยของเพจที่เลือก (กับนามธรรม) &lt;/ strong&gt; เช่นเดียวกับตัวเลือกก่อนหน้านี้ แต่ยังแสดงเนื้อหาของข้อมูลบทคัดย่อ (หรือเขตข้อมูลรายละเอียด) สำหรับหน้าเว็บในแต่ละเมนู เขตข้อมูลบทคัดย่อคือให้ความสำคัญมากกว่าเขตข้อมูลรายละเอียดถ้าทั้งสองสมบูรณ์ &lt;strong&gt; เมนูของหน้าย่อยของเพจที่เลือก + ส่วน &lt;/ strong&gt; เช่นเดียวกับตัวเลือกก่อนหน้านี้ แต่รวมถึงการเชื่อมโยงไปยังองค์ประกอบทั้งหมดของเนื้อหาในหน้านั้นมีการทำเครื่องหมายที่จะแสดงในส่วนเมนู &lt;strong&gt; Sitemap &lt;/ strong&gt; สร้าง Sitemap โครงสร้างคลาสสิก โปรดสังเกตว่าแผนผังเว็บไซต์จะเริ่มต้นจากหน้าปัจจุบันถ้าคุณไม่เลือกหน้าอื่นแทน ดัชนี &lt;strong&gt; มาตรา (เนื้อหาของหน้าเว็บที่ทำเครื่องหมายสำหรับเมนูส่วน) &lt;/ strong&gt; นี้ทำให้เมนูของธาตุเนื้อหาบนหน้าเว็บที่เลือกสำหรับองค์ประกอบทั้งหมด Content ทำเครื่องหมายที่จะแสดงในส่วนเมนู นี่เป็นวิธีที่ดีในการทำดัชนีที่ด้านบนของหน้า หากคุณไม่ต้องการองค์ประกอบของเนื้อหาบางอย่างที่จะปรากฏในรายชื่อเพียงแค่ยกเลิกการเลือกแสดงในช่องทำเครื่องหมายมาตราเมนูสำหรับองค์ประกอบเหล่านั้น อัปเดตเมื่อเร็ว ๆ นี้ &lt;strong&gt; หน้า &lt;/ strong&gt; นี้จะแสดง 10 หน้าการปรับปรุงล่าสุด &lt;strong&gt; หมายเหตุ : &lt;/ strong&gt; ถ้าคุณอัปเดตหน้าและหน้าการปรับปรุงไม่รวมอยู่ในรายการนี้การล้างหน้า Cache จะแก้ไขปัญหา หน้า &lt;strong&gt; ที่เกี่ยวข้องกัน (ตามคำสำคัญ) &lt;/ strong&gt; การแสดงผลหน้าเว็บที่เกี่ยวข้องอื่น ๆ ตามคำหลักของเพจที่เลือกจับคู่กับคำหลักของหน้าเว็บอื่น ๆ</target></trans-unit>
+      <trans-unit id="list_type.description" resname="list_type.description" approved="yes">
+        <source>Select a plugin to insert.</source>
+        <target state="final">เลือกปลั๊กอินที่จะแทรก</target>
+      </trans-unit>
+      <trans-unit id="list_type.details" resname="list_type.details" approved="yes">
+        <source>The list of plugins you can insert on a page. The available plugins depend on which extensions are installed.</source>
+        <target state="final">รายการของปลั๊กอินที่คุณสามารถแทรกในหน้า ปลั๊กอินที่สามารถใช้ได้จะขึ้นอยู่กับที่มีการติดตั้งส่วนขยาย</target>
+      </trans-unit>
+      <trans-unit id="media.description" resname="media.description" approved="yes">
+        <source>Files can be added to the list here.</source>
+        <target state="final">ไฟล์สามารถถูกเพิ่มในรายการที่นี่</target>
+      </trans-unit>
+      <trans-unit id="multimedia.description" resname="multimedia.description" approved="yes">
+        <source>Insert a multimedia element here (ex. Flash movie)</source>
+        <target state="final">แทรกองค์ประกอบมัลติมีเดียที่นี่ (เช่นภาพยนตร์ Flash)</target>
+      </trans-unit>
+      <trans-unit id="filelink_size.description" resname="filelink_size.description" approved="yes">
+        <source>Enable the display of file sizes.</source>
+        <target state="final">เปิดใช้งานการแสดงของขนาดไฟล์</target>
+      </trans-unit>
+      <trans-unit id="records.description" resname="records.description" approved="yes">
+        <source>Insert records to be displayed on this page.</source>
+        <target state="final">ระเบียนใส่จะปรากฏในหน้านี้</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex.description" resname="sectionIndex.description" approved="yes">
+        <source>If set, the Content Element will appear in Section Menus.</source>
+        <target state="final">หากตั้งองค์ประกอบของเนื้อหาที่จะปรากฏในส่วนเมนู</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex.details" resname="sectionIndex.details" approved="yes">
+        <source>See more details about Section Menus by clicking below.</source>
+        <target state="final">ดูรายละเอียดเพิ่มเติมเกี่ยวกับมาตราโดยคลิกที่เมนูด้านล่าง</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled.description" resname="rte_enabled.description" approved="yes">
+        <source>If checked, the Rich Text Editor will be disabled for the "Text" and "Text &amp; Image" types (&lt;em&gt;in this Content Element only&lt;/em&gt;).</source>
+        <target state="final">ถ้าเลือก Rich Text Editor จะปิดการใช้งานสำหรับ"ข้อความ"และ"ข้อความและรูปภาพ"ชนิด (&lt;em&gt; ในเนื้อหานี้องค์ประกอบเท่านั้น &lt;/ em&gt;)</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.description" resname="pi_flexform.description" approved="yes">
+        <source>Plugin Configuration</source>
+        <target state="final">การกำหนดค่าปลั๊กอิน</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.details" resname="pi_flexform.details" approved="yes">
+        <source>Some plugins may provide configuration options, but the actual options vary based on the plugin. Behind the scenes, these are based on FlexForms and stored as XML.</source>
+        <target state="final">ปลั๊กอินบางชนิดอาจจัดให้มีการกำหนดค่าตัวเลือก แต่ตัวเลือกที่เกิดขึ้นจริงแตกต่างกันไปขึ้นอยู่กับปลั๊กอิน เบื้องหลังฉากเหล่านี้จะขึ้นอยู่กับ FlexForms และเก็บไว้เป็น XML</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
