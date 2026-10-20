@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814801" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilestorage.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>File storage, which acts as an entry root point to a file-based structure. See it like a drive or a hard drive volume in your local machine.</source>
+        <target state="final">Datotečni spremnik, služi kao ulazna točka za datotečne strukture. Smatrajte ga sličnim tvrdom disku ili particijama na Vašem lokalnom računalu.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details">
+        <source/>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Disabling the storage will result in removing it from any listings in the backend. Existing file relations will still exist.</source>
+        <target state="final">Onemogućivanje spremnika uklonit će ga iz svih popisa u pozadinskom sučelju. Postojeće veze datoteka će i dalje postojati.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If you set up a file storage, it will show up on any folder lists, thus allowing to basically browse through the files in this file repository. If you set this checkbox, this storage will be excluded from any listings in the backend. Any existing file references will still exist further.</source>
+        <target state="final">Ukoliko podesite spremnik datoteka, isti će se prikazivati na svakom ispisu direktorija, čime ćete u osnovi moći pregledavati datoteke u spremniku. Ukoliko postavite kvačicu u ovaj okvir, spremnik će biti isključen iz popisa u pozadinskom sučelju. No sve postojeće datotečne reference će i dalje postojati.</target>
+      </trans-unit>
+      <trans-unit id="name.description" resname="name.description" approved="yes">
+        <source>The visible identifier for this file storage.</source>
+        <target state="final">Vidljivi identifikator za ovaj datotečni spremnik.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>A description of this storage.</source>
+        <target state="final">Opis ovog spremnika.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" approved="yes">
+        <source>This description field is used to explain e.g. the location of the storage, also what this storage is meant for or what it contains.</source>
+        <target state="final">Ovo opisno polje koristi se, primjerice, za opis lokacije spremnika, kao i čemu služi ovaj spremnik ili što sadrži.</target>
+      </trans-unit>
+      <trans-unit id="driver.description" resname="driver.description" approved="yes">
+        <source>Choose the driver as the technical backbone of the storage. Once you've chosen a driver, and saved it, additional configuration will show up.</source>
+        <target state="final">Odaberite upravljački program kao tehničku pozadinu spremnika. Kada odaberete upravljački program i spremite postavke prikazat će se dodatne konfiguracijske opcije.</target>
+      </trans-unit>
+      <trans-unit id="driver.details" resname="driver.details" approved="yes">
+        <source>The driver is the technical background of a storage, and thus also defines whether the location of the storage is local (= on the same machine as this TYPO3 installation) or remote like a WebDAV server connection. Search for extensions in the TYPO3 Extension Repository that extend this driver list.</source>
+        <target state="final">Upravljački program je tehnička pozadina spremnika te kao takav određuje je li lokacija spremnika lokalna (na istom računalu kao i instalacija TYPO3 sustava) ili udaljena poput veze sa WebDAV poslužiteljem. Potražite proširenja u TYPO3 repozitoriju proširenja koja nadopunjuju ovaj popis upravljačkih programa.</target>
+      </trans-unit>
+      <trans-unit id="processingfolder.description" resname="processingfolder.description" approved="yes">
+        <source>Defines the directory on this storage to be used to save temporary files like resized images.</source>
+        <target state="final">Određuje direktorij na ovom spremniku koji će se koristiti za spremanje privremenih datoteka poput smanjenih ili uvećanih slika.</target>
+      </trans-unit>
+      <trans-unit id="is_browsable.description" resname="is_browsable.description" approved="yes">
+        <source>If set, backend users can browse through this storage. Otherwise it will show up as a unselectable item in the list.</source>
+        <target state="final">Ukoliko je ova opcija postavljena korisnici pozadinskog sučelja mogu pregledavati ovaj spremnik. U suprotnom će se spremnik prikazati kao stavka popisa koju nije moguće odabrati.</target>
+      </trans-unit>
+      <trans-unit id="is_public.description" resname="is_public.description" approved="yes">
+        <source>If set, then the files in this storage can be linked directly from the outside world. If this is not set, make sure to provide additional possibilities to access the files in this storage.</source>
+        <target state="final">Ukoliko je ova opcija postavljena datoteke u ovom spremniku mogu se povezivati direktno iz vanjskog svijeta. U suprotnom ćete morati osigurati da postoji način pristupa datotekama u ovom spremniku.</target>
+      </trans-unit>
+      <trans-unit id="is_writable.description" resname="is_writable.description" approved="yes">
+        <source>If set, then users are allowed to modify, add, delete files/folders on this storage.</source>
+        <target state="final">Ukoliko je ova opcija postavljena korisnicima je dopušteno mijenjati, dodavati i uklanjati datoteke/direktorije iz/u ovaj spremnik.</target>
+      </trans-unit>
+      <trans-unit id="is_online.description" resname="is_online.description" approved="yes">
+        <source>This flag is usually set. If TYPO3 cannot connect to this storage (because it maybe temporary down), then the flag will be checked, and the storage will behave like it is non-browsable in the TYPO3 backend. The admin needs to manually activate it again if it was offline.</source>
+        <target state="final">Ova opcija obično je aktivna. Ukoliko se TYPO3 ne može spojiti na ovaj spremnik (možda zato što je spremnik privremeno nedostupan), tada će ova zastavica biti postavljena a spremnik će se ponašati kao da ga se ne može pregledati u TYPO3 pozadinskom sučelju. Ukoliko je spremnik bio nedostupan, administrator će ga morati ručno aktivirati.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
