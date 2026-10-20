@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814989" source-language="en" datatype="plaintext" original="EXT:setup/Resources/Private/Language/locallang_csh_mod.xlf" date="2011-10-17T20:22:37Z" product-name="setup" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>User &gt; Setup module</source>
+        <target state="final">Gebruikerswerkset &gt; Gebruikersinstellingen module</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The Setup module allows the backend user to customize TYPO3 for his own login sessions. This includes the backend language and various other interface features.</source>
+        <target state="final">De instellingen module geeft de backendgebruiker de mogelijkheid om TYPO3 aan te passen naar zijn/haar specifieke wensen. Dit omvat de taal van het backend en andere interface eigenschappen.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>&lt;b&gt;Notice [For Admins]:&lt;/b&gt; These settings can all be overridden or have their default values changed by "User TSconfig". To read more about this concept, see the link below!</source>
+        <target state="final">&lt;b&gt;Opmerking [Voor Admins]:&lt;/b&gt; Alle waarden kunnen overschreven worden of gevuld worden met standaard waarden middels de "Gebruikers TSconfig (User TSconfig). Om meer over dit concept te lezen, klikt u op de link hieronder!</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" approved="yes">
+        <source>User TSconfig SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Setup/Index.html</source>
+        <target state="final">Gebruiker-TSconfig SETUP | http://typo3.org/documentation/document-library/doc_core_tsconfig/SETUP/</target>
+      </trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:setup/Resources/Public/Images/cshimages/setup8.png,
+EXT:setup/Resources/Public/Images/cshimages/setup7.png</source>
+				
+			<target state="final">EXT:setup/Resources/Public/Images/cshimages/setup8.png,
+EXT:setup/Resources/Public/Images/cshimages/setup7.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The Setup module is selected in the left menu.
+This is how the Setup module interface looks like - a list of options to configure.</source>
+			<target state="final">De Setup module wordt gekozen in het linker (hoofd) menu. Zo ziet de Setup module eruit - een lijst met opties om te configureren.</target></trans-unit>
+      <trans-unit id="language.alttitle" resname="language.alttitle" approved="yes">
+        <source>Backend Language selection</source>
+        <target state="final">Taalkeuze voor het backend</target>
+      </trans-unit>
+      <trans-unit id="language.description" resname="language.description" approved="yes">
+        <source>Select the backend language you prefer. Most parts of TYPO3s backend (for regular users) are translated into other languages.</source>
+        <target state="final">Kies de backendtaal van uw voorkeur. De meeste onderdelen van het backend van TYPO3 (voor normale gebruikers) zijn vertaald naar andere talen.</target>
+      </trans-unit>
+      <trans-unit id="language.details" resname="language.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Warning [technical]:&lt;/b&gt; If TYPO3 is not configured to use a single character set (through $TYPO3_CONF_VARS[BE][forceCharset]) then all data entered in the backend is submitted in the character set of the selected backend language. This leads to inconsistent data storage if some users are using the backend in Russian and others in English which uses different character sets.
+The solution clearly is to set the configuration option mentioned above to a value like "utf-8". This must be done by the developers responsible for the whole system configuration.</source>
+			<target state="final">&lt;b&gt;Waarschuwing [technisch]:&lt;/b&gt; Als TYPO3 niet geconfigureerd is om gebruik te maken van één enkele karakterset (middels $TYPO3_CONF_VARS[BE][forceCharset]) dan zal alle ingevoerde data in het backend opgeslagen worden in de karakterset van de geselecteerde backend taal. Dit kan leiden tot inconsistente data-opslag als sommige gebruikers andere taalinstellingen gebruiken dan anderen. Russisch gebruikt een andere karakterset dan Engels. De oplossing is om bovenstaande instelling te gebruiken met een waarde als "utf-8". Dit moet gedaan worden door uw systeembeheerder, verantwoordelijk voor de gehele systeemconfiguratie.</target></trans-unit>
+      <trans-unit id="_language.image" resname="_language.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/lang.png</source>
+        <target state="final">EXT:setup/Resources/Public/Images/cshimages/lang.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="language.image_descr" resname="language.image_descr" approved="yes">
+        <source>TYPO3 is translated into around 40 languages. English is the default language and all labels must be available in English first and foremost. This screenshot shows translations for Hebrew, Arabic, Russian and Chinese.</source>
+        <target state="final">TYPO3 is vertaald in ongeveer 40 talen. Engels is de standaard taal. Alle labels moeten vooral het eerst beschikbaar zijn in het Engels. Deze schermafbeelding toont vertalingen voor Hebreeuws, Arabisch, Russisch en Chinees.</target>
+      </trans-unit>
+      <trans-unit id="option_startModule.alttitle" resname="option_startModule.alttitle" approved="yes">
+        <source>Start module</source>
+        <target state="final">Start module</target>
+      </trans-unit>
+      <trans-unit id="option_startModule.description" resname="option_startModule.description" xml:space="preserve" approved="yes">
+				<source>Let you select the module that is called when you login in the Backend
+The default module is "About Modules".</source>
+			<target state="final">Hier kiest u de module waarmee u start als u inlogt in de Backend De standaaard module is "Over modules"</target></trans-unit>
+      <trans-unit id="option_showThumbs.alttitle" resname="option_showThumbs.alttitle" approved="yes">
+        <source>Show Thumbnails by default</source>
+        <target state="final">Laat standaard wel of niet mini-afbeeldingen zien in de bestandenlijst.</target>
+      </trans-unit>
+      <trans-unit id="option_showThumbs.description" resname="option_showThumbs.description" approved="yes">
+        <source>In modules like the "Web &gt; List" and "File &gt; Filelist" you can enable the display of thumbnails of files (images/fonts) and records (if images are attached) with a checkbox. Setting this option will enable the display by default.</source>
+        <target state="final">In modules als "Web &gt; Lijst" en "Bestand &gt; Bestandlijst" kunt u instellen dat mini-afbeeldingen getoond worden van bestanden (afbeeldingen/lettertypen) en records (als hier afbeeldingen aan gekoppeld zijn) middels een markeerveld. Door deze optie te kiezen zal deze mogelijkheid standaard geboden worden.</target>
+      </trans-unit>
+      <trans-unit id="_option_showThumbs.image" resname="_option_showThumbs.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/setup5.png</source>
+        <target state="final">EXT:setup/Resources/Public/Images/cshimages/setup5.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="option_showThumbs.image_descr" resname="option_showThumbs.image_descr" approved="yes">
+        <source>When thumbnails display is enabled, files attached to records will be shown in the "Web &gt; List" module like this.</source>
+        <target state="final">Als mini-afbeeldingen aan staan, zullen bestanden gekoppeld aan records op deze manier getoond worden in de "Web &gt; Lijst" module.</target>
+      </trans-unit>
+      <trans-unit id="option_helpText.alttitle" resname="option_helpText.alttitle" approved="yes">
+        <source>Show help text when applicable</source>
+        <target state="final">Toon helptekst wanneer van toepassing</target>
+      </trans-unit>
+      <trans-unit id="option_helpText.description" resname="option_helpText.description" approved="yes">
+        <source>If set, some help texts will appear by default. Applies to the "Legend" text in the Web&gt;Access module for instance.</source>
+        <target state="final">Als dit is aangevinkt zullen sommige helpteksten standaard worden getoond. Dit gebeurt bijvoorbeeld bij de "Legenda" tekst van de Web &gt; Toegang module.</target>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.alttitle" resname="option_maxTitleLen.alttitle" approved="yes">
+        <source>Maximum title length</source>
+        <target state="final">Maximum titellengte</target>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.description" resname="option_maxTitleLen.description" approved="yes">
+        <source>TYPO3 will often crop long titles of records etc. so only the first X characters are shown. Often the number of shown characters depends on this variable. For instance the length of page titles in the page tree is determined by this value.</source>
+        <target state="final">TYPO3 zal vaak lange titels van records afkorten in het backend, zodat alleen de eerste X karakters getoond worden. Vaak is het aantal karakters afhankelijk van deze instelling. Bijvoorbeeld de lengte van de paginatitels in de paginaboom worden vastgesteld door deze waarde.</target>
+      </trans-unit>
+      <trans-unit id="_option_maxTitleLen.image" resname="_option_maxTitleLen.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/setup6.png</source>
+        <target state="final">EXT:setup/Resources/Public/Images/cshimages/setup6.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.image_descr" resname="option_maxTitleLen.image_descr" approved="yes">
+        <source>In this case the Maximum Title length is set to 10 - and the result is that titles in the page tree - as well as other places in the backend - will be cropped after 10 characters, then suffixed by "...". The default value is "30".</source>
+        <target state="final">In dit geval is de maximum titellengte op 10 gezet. Het resultaat is dat de titels in de paginaboom - alsmede op andere plaatsen in het backend - afgekort worden tot 10 karakters, gevolgd door "...". De standaardwaarde is "30".</target>
+      </trans-unit>
+      <trans-unit id="option_copyLevels.alttitle" resname="option_copyLevels.alttitle" approved="yes">
+        <source>Recursive Copy</source>
+        <target state="final">Recursief Kopiëren</target>
+      </trans-unit>
+      <trans-unit id="option_copyLevels.description" resname="option_copyLevels.description" approved="yes">
+        <source>When you copy a page, subpages can also be copied along if you set this option. The number you set here defines the number of levels under a page to include in a copy operation.</source>
+        <target state="final">Als u een pagina kopieert, kunnen subpagina's meegekopieerd worden, als u hier een aantal niveau's invult. De waarde bepaalt het aantal subniveau's dat meegenomen moet worden tijdens het kopiëren</target>
+      </trans-unit>
+      <trans-unit id="option_recursiveDelete.alttitle" resname="option_recursiveDelete.alttitle" approved="yes">
+        <source>Recursive Delete</source>
+        <target state="final">Recusief Verwijderen</target>
+      </trans-unit>
+      <trans-unit id="option_recursiveDelete.description" resname="option_recursiveDelete.description" approved="yes">
+        <source>You cannot delete a page with subpages unless this flag is set. Be careful - setting this option means that TYPO3 will allow a whole tree of pages to be deleted in one go!</source>
+        <target state="final">U kunt geen pagina's verwijderen met onderliggende subpagina's als deze optie niet aangezet is. Ga hier voorzichtig mee om - binnen TYPO3 kan een hele boom met pagina's in één keer verwijderd worden!</target>
+      </trans-unit>
+      <trans-unit id="option_recursiveDelete.details" resname="option_recursiveDelete.details" approved="yes">
+        <source>You should also consider the performance issues involved when deleting a large page tree. It might take a considerable amount of time to do that and if PHP times out before the operation is finished the results might be unpredictable.</source>
+        <target state="final">U moet de performance overzien als u een grote paginaboom verwijderd. Dit kan veel tijd in beslag nemen waardoor er een time out kan ontstaan binnen PHP. Als dit gebeurt tijdens het verwijderingsproces kunnen de resultaten onvoorspelbaar zijn.</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.alttitle" resname="option_edit_RTE.alttitle" approved="yes">
+        <source>Enable Rich Text Editor</source>
+        <target state="final">Activeer Rich Text Editor</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.description" resname="option_edit_RTE.description" approved="yes">
+        <source>If set, the Rich Text Editor in TYPO3 will be enabled for you. Normally you wouldn't want to disable this option.</source>
+        <target state="final">Door deze optie aan te vinken zal de Rich Text Editor in TYPO3 voor u geactiveerd worden. In normale omstandigheden wilt u deze optie niet uitzetten.</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.details" resname="option_edit_RTE.details" approved="yes">
+        <source>A Rich Text Editor (RTE) means that a text editing field has buttons for making selected text bold, italic etc. Whether a RTE is available also depends on factors like the browser you are using and which extensions are installed. Finally RTEs are applied to only a few record fields. The most well known example would be the Text field of a Content Element.</source>
+        <target state="final">Met een Rich Text Editor (RTE) bedoelen we een bewerkingsveld voor tekst met knoppen om geselecteerde tekst vet, cursief etc. te maken. De beschikbaarheid van een RTE is tevens afhankelijk van de door u gebruikte browser en de geinstalleerde extensies. RTE's worden maar bij een aantal record velden toegepast. Het meest bekende voorbeeld zal het tekstveld van een inhoudselement zijn.</target>
+      </trans-unit>
+      <trans-unit id="_option_edit_RTE.image" resname="_option_edit_RTE.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/rte.png</source>
+        <target state="final">EXT:setup/Resources/Public/Images/cshimages/rte.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.alttitle" resname="option_edit_docModuleUpload.alttitle" approved="yes">
+        <source>Enable File Uploads in editing forms</source>
+        <target state="final">Sta bestandsupload toe in bewerkingsformulieren</target>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.description" resname="option_edit_docModuleUpload.description" approved="yes">
+        <source>This option will enable an "Upload" box for each field in TYPO3 records where you can attach a file or image. Most likely you don't want to disable this since it is usually just a nice thing to have.</source>
+        <target state="final">Deze optie geeft u de mogelijkheid tot een "upload" veld voor elk veld in TYPO3 records waar u bestanden of afbeeldingen aan kunt koppelen. Meestal wilt u deze optie niet uit zetten omdat het makkelijk is.</target>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.details" resname="option_edit_docModuleUpload.details" approved="yes">
+        <source>If you disable the Upload box there is still the TYPO3 Element Browser left for attaching files and images.</source>
+        <target state="final">Als deze optie wordt uitgezet is het altijd nog mogelijk om met de TYPO3 Element Verkenner afbeeldingen en bestanden te koppelen.</target>
+      </trans-unit>
+      <trans-unit id="_option_edit_docModuleUpload.image" resname="_option_edit_docModuleUpload.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/setup12.png</source>
+        <target state="final">EXT:setup/Resources/Public/Images/cshimages/setup12.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas.alttitle" resname="option_resizeTextareas.alttitle" approved="yes">
+        <source>Make Textareas Resizable</source>
+        <target state="final">De grootte van tekstvlakken aanpasbaar maken</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas.description" resname="option_resizeTextareas.description" approved="yes">
+        <source>This option will make textareas resizable. You will see the resize mouse cursor if you move mouse to the outer border of textarea.</source>
+        <target state="final">Deze optie maakt tekstvlakken aanpasbaar qua grootte. De muiscursor verandert als deze op de rand van een tekstvlak wordt geplaatst.</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas_MaxHeight.alttitle" resname="option_resizeTextareas_MaxHeight.alttitle" approved="yes">
+        <source>Maximal Height of Textarea</source>
+        <target state="final">Maximale hoogte van tekstveld</target>
+      </trans-unit>
+      <trans-unit id="option_flexibleTextareas_MaxHeight.alttitle" resname="option_flexibleTextareas_MaxHeight.alttitle" approved="yes">
+        <source>Maximal Height of flexible textareas</source>
+        <target state="final">Maximale hoogte van flexibele tekstvlakken</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas_MaxHeight.description" resname="option_resizeTextareas_MaxHeight.description" approved="yes">
+        <source>Define the maximal height of textarea (in Pixel).</source>
+        <target state="final">Definieer de de maximale hoogte van het tekstveld (in pixels).</target>
+      </trans-unit>
+      <trans-unit id="option_flexibleTextareas_MaxHeight.description" resname="option_flexibleTextareas_MaxHeight.description" approved="yes">
+        <source>Define the maximal height of flexible textareas (in Pixel).</source>
+        <target state="final">De maximale hoogte van flexibele tekstvlakken (in pixels)</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas_Flexible.alttitle" resname="option_resizeTextareas_Flexible.alttitle" approved="yes">
+        <source>Make Textareas Flexible</source>
+        <target state="final">Tekstvlak flexibel maken</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas_Flexible.description" resname="option_resizeTextareas_Flexible.description" approved="yes">
+        <source>This option will make textareas flexible. The height will grow automatically while typing. Limit is the maximal height set (default 600).</source>
+        <target state="final">Deze optie maakt het tekstvlak flexibel. De hoogte wordt aangepast tijdens het typen. Het ingestelde limiet is de maximale hoogte (standaard 600).</target>
+      </trans-unit>
+      <trans-unit id="option_showHiddenFilesAndFolders.description" resname="option_showHiddenFilesAndFolders.description" approved="yes">
+        <source>Defines whether you want to list all the hidden files and folders (beginning with a .) in the filelist and element browser.</source>
+        <target state="final">Definieert of verborgen bestanden en mappen (beginnend met een .) moeten worden getoond in de lijst en element browser.</target>
+      </trans-unit>
+      <trans-unit id="option_showHiddenFilesAndFolders.details" resname="option_showHiddenFilesAndFolders.details" approved="yes">
+        <source>By default all hidden files are not displayed in filelists and element browsers and link pickers. This option enables to additionally show the hidden files.</source>
+        <target state="final">Standaard worden verborgen bestanden niet weergegeven in de bestandslijst, element browser en het link toevoegscherm. Deze optie maakt weergave van deze bestanden mogelijk.</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_realName.alttitle" resname="option_beUser_realName.alttitle" approved="yes">
+        <source>Your real name</source>
+        <target state="final">Uw echte naam</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_realName.description" resname="option_beUser_realName.description" approved="yes">
+        <source>Enter your real name here.</source>
+        <target state="final">Voer hier uw echte naam in.</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_email.alttitle" resname="option_beUser_email.alttitle" approved="yes">
+        <source>Your email address</source>
+        <target state="final">Uw e-mailadres</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_email.description" resname="option_beUser_email.description" approved="yes">
+        <source>Make sure this is a valid email address for you. This is the contact address that the backend administrator will use if he needs to contact you. Also, the TYPO3 system might need to send you messages at various times and this will be the recipient address.</source>
+        <target state="final">Ben er zeker van dat dit een bestaand e-mailadres is van uzelf. De backendbeheerder zal deze namelijk gebruiken als hij contact met u op wil nemen. Daarnaast kan het TYPO3 systeem dit adres gebruiken om berichten naar te versturen, indien nodig, en dit zal het adres van de ontvanger zijn.</target>
+      </trans-unit>
+      <trans-unit id="option_emailMeAtLogin.alttitle" resname="option_emailMeAtLogin.alttitle" approved="yes">
+        <source>Notify by login</source>
+        <target state="final">Bericht mij bij inloggen</target>
+      </trans-unit>
+      <trans-unit id="option_emailMeAtLogin.description" resname="option_emailMeAtLogin.description" approved="yes">
+        <source>If you set this option you will receive an email from TYPO3 each time you (or "someone") logs in using your username. You might like to receive such a "warning" as a security measure so you will know if someone else picks up your password and uses your account.</source>
+        <target state="final">Indien aangevinkt zult u een e-mail van TYPO3 ontvangen voor elke login die er gedaan wordt met uw gebruikersnaam. Het is mogelijk dat u een "waarschuwing" wilt ontvangen als beveiliging zodat u weet of iemand uw wachtwoord weet en uw account misbruikt.</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.alttitle" resname="option_newPassword.alttitle" approved="yes">
+        <source>Change password</source>
+        <target state="final">Nieuw wachtwoord</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.description" resname="option_newPassword.description" approved="yes">
+        <source>Enter a new password for your backend account</source>
+        <target state="final">Voer een nieuw wachtwoord in voor uw backend-account</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.details" resname="option_newPassword.details" approved="yes">
+        <source>The passwords are encrypted to an MD5 hash when you leave the field so no plain text password is sent over the wire.</source>
+        <target state="final">Wachtwoorden worden direct gecodeerd met een MD5 hash wanneer u het wachtwoordveld verlaat. Wachtwoorden, verzonden naar de server, zijn hierdoor niet leesbaar</target>
+      </trans-unit>
+      <trans-unit id="option_newPasswordAgain.alttitle" resname="option_newPasswordAgain.alttitle" approved="yes">
+        <source>Change password, confirm</source>
+        <target state="final">Nieuw wachtwoord, nogmaals</target>
+      </trans-unit>
+      <trans-unit id="option_newPasswordAgain.description" resname="option_newPasswordAgain.description" approved="yes">
+        <source>Confirm the new password by entering it again, exactly like above. If the two new passwords do not match, the password will not be changed.</source>
+        <target state="final">Voer het wachtwoord nogmaals in om het te bevestigen. Als de twee wachtwoorden niet overeenkomen, zal het wachtwoord niet gewijzigd worden.</target>
+      </trans-unit>
+      <trans-unit id="reset.alttitle" resname="reset.alttitle" approved="yes">
+        <source>Reset all Values to default</source>
+        <target state="final">Reset alle waardes naar standaard</target>
+      </trans-unit>
+      <trans-unit id="reset.description" resname="reset.description" approved="yes">
+        <source>If you select this option all settings in this module will be reset to the default settings of the system.</source>
+        <target state="final">Deze optie zet alle waarden in deze module terug naar de standaard waarden.</target>
+      </trans-unit>
+      <trans-unit id="reset.details" resname="reset.details" approved="yes">
+        <source>This does not apply to user name, email and password settings of course.</source>
+        <target state="final">Dit gaat niet op voor de gebruikersnaam, e-mailadres en wachtwoordinstellingen.</target>
+      </trans-unit>
+      <trans-unit id="simuser.alttitle" resname="simuser.alttitle" approved="yes">
+        <source>Simulate backend user</source>
+        <target state="final">Simuleer Backend Gebruiker</target>
+      </trans-unit>
+      <trans-unit id="simuser.description" resname="simuser.description" approved="yes">
+        <source>This option allows "admin"-users to change settings for another backend user in the system.</source>
+        <target state="final">Hiermee kan een "admin"-gebruiker instellingen voor andere backendgebruikers wijzigen in het systeem.</target>
+      </trans-unit>
+      <trans-unit id="option_enableInstallTool.alttitle" resname="option_enableInstallTool.alttitle" approved="yes">
+        <source>Admin control for re-enabling Install Tool access</source>
+        <target state="final">Beheerdersgereedschap om de toegang tot de Install Tool wederom in te schakelen</target>
+      </trans-unit>
+      <trans-unit id="option_enableInstallTool.description" resname="option_enableInstallTool.description" approved="yes">
+        <source>By clicking this button, a file typo3conf/ENABLE_INSTALL_TOOL is created (or removed if it already exists). It unlocks the access to the Install Tool (password is still needed!) and will be removed automatically after 1 hour.</source>
+        <target state="final">Door op deze knop te klikken wordt een bestand typo3conf/ENABLE_INSTALL_TOOL aangemaakt (of verwijderd als deze al bestaat). Het maakt de Install Tool toegankelijk (wachtwoord is nog steeds nodig!) en zal automatisch verwijderd worden na 1 uur.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
