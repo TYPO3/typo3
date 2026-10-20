@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_wizards.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="table_smallFields" approved="yes">
+        <source>Small fields</source>
+        <target state="final">Små felter</target>
+      </trans-unit>
+      <trans-unit id="table_addColumn" approved="yes">
+        <source>Add column to the right</source>
+        <target state="final">Sett inn kolonne til høyre</target>
+      </trans-unit>
+      <trans-unit id="table_removeColumn" approved="yes">
+        <source>Remove column</source>
+        <target state="final">Fjern kolonne</target>
+      </trans-unit>
+      <trans-unit id="table_addRow" approved="yes">
+        <source>Add row below</source>
+        <target state="final">Sett inn rad under</target>
+      </trans-unit>
+      <trans-unit id="table_removeRow" approved="yes">
+        <source>Remove row</source>
+        <target state="final">Slett rad</target>
+      </trans-unit>
+      <trans-unit id="table_left" approved="yes">
+        <source>Move left</source>
+        <target state="final">Flytt til venstre</target>
+      </trans-unit>
+      <trans-unit id="table_right" approved="yes">
+        <source>Move right</source>
+        <target state="final">Flytt til høyre</target>
+      </trans-unit>
+      <trans-unit id="table_up" approved="yes">
+        <source>Move up</source>
+        <target state="final">Flytt opp</target>
+      </trans-unit>
+      <trans-unit id="table_down" approved="yes">
+        <source>Move down</source>
+        <target state="final">Flytt ned</target>
+      </trans-unit>
+      <trans-unit id="table_top" approved="yes">
+        <source>Move to top</source>
+        <target state="final">Flytt til toppen</target>
+      </trans-unit>
+      <trans-unit id="table_bottom" approved="yes">
+        <source>Move to bottom</source>
+        <target state="final">Flytt til bunnen</target>
+      </trans-unit>
+      <trans-unit id="table_start" approved="yes">
+        <source>Move to first column</source>
+        <target state="final">Flytt til første kolonne</target>
+      </trans-unit>
+      <trans-unit id="table_end" approved="yes">
+        <source>Move to last column</source>
+        <target state="final">Flytt til siste kolonne</target>
+      </trans-unit>
+      <trans-unit id="grid_windowTitle" approved="yes">
+        <source>Set cell name and column number</source>
+        <target state="final">Sett cellenavn og kolonnenummer</target>
+      </trans-unit>
+      <trans-unit id="grid_addColumn" approved="yes">
+        <source>Add column</source>
+        <target state="final">Legg til kolonne</target>
+      </trans-unit>
+      <trans-unit id="grid_removeColumn" approved="yes">
+        <source>Remove column</source>
+        <target state="final">Fjern kolonne</target>
+      </trans-unit>
+      <trans-unit id="grid_addRow" approved="yes">
+        <source>Add row</source>
+        <target state="final">Fjern kolonne</target>
+      </trans-unit>
+      <trans-unit id="grid_removeRow" approved="yes">
+        <source>Remove row</source>
+        <target state="final">Slett rad</target>
+      </trans-unit>
+      <trans-unit id="grid_editCell" approved="yes">
+        <source>Edit cell</source>
+        <target state="final">Fjern rekke</target>
+      </trans-unit>
+      <trans-unit id="grid_name" approved="yes">
+        <source>Name</source>
+        <target state="final">Navn</target>
+      </trans-unit>
+      <trans-unit id="grid_column" approved="yes">
+        <source>Column number</source>
+        <target state="final">Kolonnenummer</target>
+      </trans-unit>
+      <trans-unit id="grid_notSet" approved="yes">
+        <source>not set</source>
+        <target state="final">ikke satt</target>
+      </trans-unit>
+      <trans-unit id="grid_nameHelp" approved="yes">
+        <source>Enter a name for the cell.</source>
+        <target state="final">Skriv inn navn på cellen</target>
+      </trans-unit>
+      <trans-unit id="grid_columnHelp" approved="yes">
+        <source>The column position defines in which area the content is rendered in the frontend.</source>
+        <target state="final">Kolonneposisjonen definerer i hvilket område innholdet gjengis på nettsiden.</target>
+      </trans-unit>
+      <trans-unit id="imwizard.open-editor" approved="yes">
+        <source>Open Editor</source>
+        <target state="final">Åpne editor</target>
+      </trans-unit>
+      <trans-unit id="imwizard.supported-types-message" approved="yes">
+        <source>Image manipulation is only available for supported types</source>
+        <target state="final">Bildemanipulering er kun tilgjengelig for støttede typer</target>
+      </trans-unit>
+      <trans-unit id="imwizard.no-image-dimensions" approved="yes">
+        <source>No image dimensions could be determined.</source>
+        <target state="final">Ingen bildedimensjon ble funnet.</target>
+      </trans-unit>
+      <trans-unit id="imwizard.no-image-dimensions-message" approved="yes">
+        <source>Unable to provide image manipulation, because original dimensions of the image are unknown.</source>
+        <target state="final">Kan ikke gi mulighet for bildemanipulering, fordi originale dimensjoner av bildet er ukjente.</target>
+      </trans-unit>
+      <trans-unit id="imwizard.image-manipulation" approved="yes">
+        <source>Image manipulation</source>
+        <target state="final">Bildemanipulering</target>
+      </trans-unit>
+      <trans-unit id="imwizard.reset" approved="yes">
+        <source>Reset</source>
+        <target state="final">Nullstill</target>
+      </trans-unit>
+      <trans-unit id="imwizard.accept" approved="yes">
+        <source>Accept</source>
+        <target state="final">Godta</target>
+      </trans-unit>
+      <trans-unit id="imwizard.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Avbryt</target>
+      </trans-unit>
+      <trans-unit id="imwizard.preview" approved="yes">
+        <source>Preview</source>
+        <target state="final">Forhåndsvisning</target>
+      </trans-unit>
+      <trans-unit id="imwizard.aspect-ratio" approved="yes">
+        <source>Aspect ratio</source>
+        <target state="final">Høyde- og breddeforhold</target>
+      </trans-unit>
+      <trans-unit id="imwizard.set-aspect-ratio" approved="yes">
+        <source>Set Aspect Ratio</source>
+        <target state="final">Angi høyde- og breddeforhold</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.16_9" translate="no" approved="yes">
+        <source>16:9</source>
+        <target state="final">16:9</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.3_2" translate="no" approved="yes">
+        <source>3:2</source>
+        <target state="final">3:2</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.4_3" translate="no" approved="yes">
+        <source>4:3</source>
+        <target state="final">4:3</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.1_1" translate="no" approved="yes">
+        <source>1:1</source>
+        <target state="final">1:1</target>
+      </trans-unit>
+      <trans-unit id="imwizard.ratio.free" approved="yes">
+        <source>Free</source>
+        <target state="final">Fritt</target>
+      </trans-unit>
+      <trans-unit id="imwizard.crop_variant.default" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="imwizard.crop_variant.social" approved="yes">
+        <source>Social media</source>
+        <target state="final">Sosiale medier</target>
+      </trans-unit>
+      <trans-unit id="imwizard.selection" approved="yes">
+        <source>Selected Size</source>
+        <target state="final">Valgt størrelse</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.header" approved="yes">
+        <source>Translation behavior</source>
+        <target state="final">Oversettelsesadferd</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.customValue" approved="yes">
+        <source>Custom value</source>
+        <target state="final">Tilpasset verdi</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.defaultLanguageValue" approved="yes">
+        <source>Value of default language</source>
+        <target state="final">Verdi på standard språk</target>
+      </trans-unit>
+      <trans-unit id="localizationStateSelector.sourceLanguageValue" approved="yes">
+        <source>Value of %1s language</source>
+        <target state="final">Verdi av %1s språk</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
