@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814783" source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang.xlf" date="2012-07-16T10:11:32Z" product-name="beuser" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="userName" resname="userName" approved="yes">
+        <source>Username</source>
+        <target state="final">ユーザ名</target>
+      </trans-unit>
+      <trans-unit id="realName" resname="realName" approved="yes">
+        <source>Real Name</source>
+        <target state="final">実名</target>
+      </trans-unit>
+      <trans-unit id="ipAddress" resname="ipAddress" approved="yes">
+        <source>IP address</source>
+        <target state="final">IPアドレス</target>
+      </trans-unit>
+      <trans-unit id="users" resname="users" approved="yes">
+        <source>Users</source>
+        <target state="final">ユーザ</target>
+      </trans-unit>
+      <trans-unit id="never" resname="never" approved="yes">
+        <source>Never</source>
+        <target state="final">一切なし</target>
+      </trans-unit>
+      <trans-unit id="lastLogin" resname="lastLogin" approved="yes">
+        <source>Last login</source>
+        <target state="final">最終ログイン</target>
+      </trans-unit>
+      <trans-unit id="fileMounts" resname="fileMounts" approved="yes">
+        <source>File mountpoints</source>
+        <target state="final">ファイルマウントポイント</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup" resname="backendUserGroup" approved="yes">
+        <source>User group</source>
+        <target state="final">ユーザグループ</target>
+      </trans-unit>
+      <trans-unit id="switchBackMode" resname="switchBackMode" approved="yes">
+        <source>Switch to user</source>
+        <target state="final">ユーザー切替</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
