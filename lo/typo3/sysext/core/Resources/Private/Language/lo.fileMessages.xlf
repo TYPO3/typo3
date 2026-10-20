@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/fileMessages.xlf" date="2015-11-10T06:53:10Z" product-name="core" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="FileUtility.CannotCopyFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeCopied" approved="yes">
+        <source>Folder "%s" cannot be copied because the destination already contains a folder or file named "%s".</source>
+        <target state="final">ບໍ່ສາມາດສຳເນົາໂຟນເດີ "%s" ໄດ້ ເພາະວ່າປາຍທາງມີໂຟນເດີ ຫຼື ໄຟລ໌ທີ່ຊື່ "%s" ຢູ່ແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CannotMoveFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeMoved" approved="yes">
+        <source>Folder "%s" cannot be moved to "%s" because source and destination are identical.</source>
+        <target state="final">ບໍ່ສາມາດຍ້າຍໂຟນເດີ "%s" ໄປຫາ "%s" ໄດ້ ເພາະວ່າຕົ້ນທາງ ແລະ ປາຍທາງແມ່ນອັນດຽວກັນ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotAccessAllNecessaryResources" approved="yes">
+        <source>The operation could not be completed because one or more required resources are not accessible (source "%s" or destination "%s").</source>
+        <target state="final">ບໍ່ສາມາດດຳເນີນການໃຫ້ສຳເລັດໄດ້ ເພາະວ່າບໍ່ສາມາດເຂົ້າເຖິງໜຶ່ງ ຫຼື ຫຼາຍຊັບພະຍາກອນທີ່ຈຳເປັນ (ຕົ້ນທາງ "%s" ຫຼື ປາຍທາງ "%s").</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteDirectory" approved="yes">
+        <source>Folder "%s" could not be deleted. It must be empty, as recursive deletion is not enabled.</source>
+        <target state="final">ບໍ່ສາມາດລຶບໂຟນເດີ "%s" ໄດ້. ມັນຕ້ອງເປັນໂຟນເດີຫວ່າງເປົ່າ ເພາະວ່າບໍ່ໄດ້ເປີດໃຊ້ການລຶບແບບຕໍ່ເນື່ອງ (recursive).</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteFile" approved="yes">
+        <source>File "%s" cannot not be deleted due to insufficent write permissions.</source>
+        <target state="final">ບໍ່ສາມາດລຶບໄຟລ໌ "%s" ໄດ້ ເພາະວ່າສິດທິໃນການຂຽນບໍ່ພຽງພໍ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationExistedAlready" approved="yes">
+        <source>The name "%s" is already in use.</source>
+        <target state="final">ຊື່ "%s" ຖືກນຳໃຊ້ແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationPathWasNotWithinYourMountpoints" approved="yes">
+        <source>Destination path "%s" is not accessible</source>
+        <target state="final">ບໍ່ສາມາດເຂົ້າເຖິງເສັ້ນທາງປາຍທາງ "%s" ໄດ້</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationWasNotADirectory" approved="yes">
+        <source>Destination "%s" is not a folder.</source>
+        <target state="final">ປາຍທາງ "%s" ບໍ່ແມ່ນໂຟນເດີ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryCopiedTo" approved="yes">
+        <source>Folder "%s" copied to "%s".</source>
+        <target state="final">ສຳເນົາໂຟນເດີ "%s" ໄປທີ່ "%s" ແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryCreatedIn" approved="yes">
+        <source>Folder "%s" created in "%s".</source>
+        <target state="final">ສ້າງໂຟນເດີ "%s" ໃນ "%s" ແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryMovedTo" approved="yes">
+        <source>Folder "%s" moved to "%s".</source>
+        <target state="final">ຍ້າຍໂຟນເດີ "%s" ໄປທີ່ "%s" ແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryNotCreated" approved="yes">
+        <source>Folder "%s" cannot be created in "%s" due to insufficent write permissions.</source>
+        <target state="final">ບໍ່ສາມາດສ້າງໂຟນເດີ "%s" ໃນ "%s" ໄດ້ ເພາະວ່າສິດທິໃນການຂຽນບໍ່ພຽງພໍ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedFromTo" approved="yes">
+        <source>Folder renamed from "%s" to "%s".</source>
+        <target state="final">ປ່ຽນຊື່ໂຟນເດີຈາກ "%s" ເປັນ "%s" ແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedFromToCharReplaced" approved="yes">
+        <source>Folder renamed from "%s" to "%s", with unsupported characters replaced.</source>
+        <target state="final">ປ່ຽນຊື່ໂຟນເດີຈາກ "%s" ເປັນ "%s" ແລ້ວ, ໂດຍມີການປ່ຽນແທນຕົວອັກສອນທີ່ບໍ່ຮອງຮັບ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedSameName" approved="yes">
+        <source>Folder "%s" already has this name. No changes were made.</source>
+        <target state="final">ໂຟນເດີ "%s" ມີຊື່ນີ້ຢູ່ແລ້ວ. ບໍ່ມີການປ່ຽນແປງໃດໆ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotCopiedTo" approved="yes">
+        <source>Folder "%s" cannot be copied to "%s" due to insufficent write permissions.</source>
+        <target state="final">ບໍ່ສາມາດສຳເນົາໂຟນເດີ "%s" ໄປທີ່ "%s" ໄດ້ ເພາະວ່າສິດທິໃນການຂຽນບໍ່ພຽງພໍ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotMovedTo" approved="yes">
+        <source>Folder "%s" cannot be moved to "%s" due to insufficent write permissions.</source>
+        <target state="final">ບໍ່ສາມາດຍ້າຍໂຟນເດີ "%s" ໄປທີ່ "%s" ໄດ້ ເພາະວ່າສິດທິໃນການຂຽນບໍ່ພຽງພໍ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotRenamed" approved="yes">
+        <source>Folder "%s" cannot be renamed in "%s" due to insufficent write permissions.</source>
+        <target state="final">ບໍ່ສາມາດປ່ຽນຊື່ໂຟນເດີ "%s" ໃນ "%s" ໄດ້ ເພາະວ່າສິດທິໃນການຂຽນບໍ່ພຽງພໍ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileNameIsNotAllowedIn" approved="yes">
+        <source>The file extension of "%s" is not permitted in "%s".</source>
+        <target state="final">ນາມສະກຸນໄຟລ໌ຂອງ "%s" ບໍ່ໄດ້ຮັບອະນຸຍາດໃນ "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileNameOrWasNotAllowed" approved="yes">
+        <source>The file name %s or the extension %s is not allowed.</source>
+        <target state="final">ບໍ່ອະນຸຍາດໃຫ້ນຳໃຊ້ຊື່ໄຟລ໌ %s ຫຼື ນາມສະກຸນ %s.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileWasNotAllowed" approved="yes">
+        <source>The file extension of "%s" is not permitted.</source>
+        <target state="final">ນາມສະກຸນໄຟລ໌ຂອງ "%s" ບໍ່ໄດ້ຮັບອະນຸຍາດ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileAlreadyExistsInFolder" approved="yes">
+        <source>A file with the same name "%s" already exists in "%s".</source>
+        <target state="final">ມີໄຟລ໌ທີ່ມີຊື່ "%s" ຄືກັນຢູ່ແລ້ວໃນ "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileCopiedTo" approved="yes">
+        <source>File "%s" copied to "%s".</source>
+        <target state="final">ໄຟລ໌ "%s" ຖືກສຳເນົາໄປທີ່ "%s" ແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileCreated" approved="yes">
+        <source>File "%s" created.</source>
+        <target state="final">ສ້າງໄຟລ໌ "%s" ແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileNameSanitized" approved="yes">
+        <source>File renamed from "%s" to "%s", with unsupported characters replaced.</source>
+        <target state="final">ປ່ຽນຊື່ໄຟລ໌ຈາກ "%s" ເປັນ "%s" ແລ້ວ, ໂດຍມີການປ່ຽນແທນຕົວອັກສອນທີ່ບໍ່ຮອງຮັບ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExistedAlreadyIn" approved="yes">
+        <source>A file with the same name already exists in "%s"</source>
+        <target state="final">ມີໄຟລ໌ທີ່ມີຊື່ຄືກັນຢູ່ແລ້ວໃນ "%s"</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExtensionIsNotATextfileFormat" approved="yes">
+        <source>File extension "%s" is not a supported text file format. Supported formats: %s.</source>
+        <target state="final">ນາມສະກຸນໄຟລ໌ "%s" ບໍ່ແມ່ນຮູບແບບໄຟລ໌ຂໍ້ຄວາມທີ່ຮອງຮັບ. ຮູບແບບທີ່ຮອງຮັບແມ່ນ: %s.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileMovedTo" approved="yes">
+        <source>File "%s" moved to "%s".</source>
+        <target state="final">ໄຟລ໌ "%s" ຖືກຍ້າຍໄປທີ່ "%s" ແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileNameWasNotAllowed" approved="yes">
+        <source>The file name %s is not allowed.</source>
+        <target state="final">ບໍ່ອະນຸຍາດໃຫ້ນຳໃຊ້ຊື່ໄຟລ໌ %s.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileOrDirectoryExistedAlready" approved="yes">
+        <source>File or directory "%s" already exists.</source>
+        <target state="final">ໄຟລ໌ ຫຼື ໄດເຣັກທໍຣີ "%s" ມີຢູ່ແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileRenamedFromTo" approved="yes">
+        <source>File renamed from "%s" to "%s".</source>
+        <target state="final">ໄຟລ໌ຖືກປ່ຽນຊື່ຈາກ "%s" ເປັນ "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileRenamedSameName" approved="yes">
+        <source>File "%s" already has this name. No changes were made.</source>
+        <target state="final">ໄຟລ໌ "%s" ມີຊື່ນີ້ຢູ່ແລ້ວ. ບໍ່ມີການປ່ຽນແປງໃດໆ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileSavedTo" approved="yes">
+        <source>File saved to "%s".</source>
+        <target state="final">ບັນທຶກໄຟລ໌ໄປທີ່ "%s" ແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotCopiedTo" approved="yes">
+        <source>File "%s" cannot be copied to "%s" due to insufficent write permissions.</source>
+        <target state="final">ບໍ່ສາມາດສຳເນົາໄຟລ໌ "%s" ໄປທີ່ "%s" ໄດ້ ເພາະວ່າສິດທິໃນການຂຽນບໍ່ພຽງພໍ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotCreated" approved="yes">
+        <source>File "%s" cannot be created in "%s" due to insufficent write permissions.</source>
+        <target state="final">ບໍ່ສາມາດສ້າງໄຟລ໌ "%s" ໃນ "%s" ໄດ້ ເພາະວ່າສິດທິໃນການຂຽນບໍ່ພຽງພໍ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotRenamed" approved="yes">
+        <source>File "%s" cannot be renamed in "%s" due to insufficent write permissions.</source>
+        <target state="final">ບໍ່ສາມາດປ່ຽນຊື່ໄຟລ໌ "%s" ໃນ "%s" ໄດ້ ເພາະວ່າສິດທິໃນການຂຽນບໍ່ພຽງພໍ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotSaved" approved="yes">
+        <source>File "%s" cannot be saved due to insufficent write permissions.</source>
+        <target state="final">ບໍ່ສາມາດບັນທຶກໄຟລ໌ "%s" ໄດ້ ເພາະວ່າສິດທິໃນການຂຽນບໍ່ພຽງພໍ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoFileWasUploaded" approved="yes">
+        <source>No file was uploaded.</source>
+        <target state="final">ບໍ່ມີໄຟລ໌ຖືກອັບໂຫລດ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoFileWasUploadedForReplacing" approved="yes">
+        <source>No file was uploaded for replacement.</source>
+        <target state="final">ບໍ່ມີໄຟລ໌ຖືກອັບໂຫລດເພື່ອປ່ຽນແທນ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoNameForNewFolderGiven" approved="yes">
+        <source>No name was provided for the new folder.</source>
+        <target state="final">ບໍ່ມີການລະບຸຊື່ສຳລັບໂຟນເດີໃໝ່.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoUniqueFilenameAvailableIn" approved="yes">
+        <source>No unique filename could be generated in "%s".</source>
+        <target state="final">ບໍ່ສາມາດສ້າງຊື່ໄຟລ໌ທີ່ບໍ່ຊ້ຳກັນໄດ້ໃນ "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ReplacingFileTo" approved="yes">
+        <source>File "%s" was replaced with "%s".</source>
+        <target state="final">ໄຟລ໌ "%s" ຖືກປ່ຽນແທນດ້ວຍ "%s" ແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetAlreadyExists" approved="yes">
+        <source>Target "%s" already exists.</source>
+        <target state="final">ເປົ້າໝາຍ "%s" ມີຢູ່ແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetWasNotAFile" approved="yes">
+        <source>Target "%s" was not a file.</source>
+        <target state="final">ເປົ້າໝາຍ "%s" ບໍ່ແມ່ນໄຟລ໌.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetWasNotWithinYourMountpoints" approved="yes">
+        <source>Destination file or folder "%s" was not accessible.</source>
+        <target state="final">ບໍ່ສາມາດເຂົ້າເຖິງໄຟລ໌ ຫຼື ໂຟນເດີປາຍທາງ "%s" ໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFileDidNotExist" approved="yes">
+        <source>The file "%s" did not exist or is no longer available.</source>
+        <target state="final">ບໍ່ມີໄຟລ໌ "%s" ຫຼື ບໍ່ສາມາດໃຊ້ງານໄດ້ອີກຕໍ່ໄປ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToCopyAFileBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>Copying files between storages is not yet available.</source>
+        <target state="final">ຍັງບໍ່ສາມາດສຳເນົາໄຟລ໌ລະຫວ່າງບ່ອນຈັດເກັບຂໍ້ມູນໄດ້ເທື່ອ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToCopyAFolderBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>Copying folders between storages is not yet available.</source>
+        <target state="final">ຍັງບໍ່ສາມາດສຳເນົາໂຟນເດີລະຫວ່າງບ່ອນຈັດເກັບຂໍ້ມູນໄດ້ເທື່ອ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToMoveAFileBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>Moving files between storages is not yet available.</source>
+        <target state="final">ຍັງບໍ່ສາມາດຍ້າຍໄຟລ໌ລະຫວ່າງບ່ອນຈັດເກັບຂໍ້ມູນໄດ້ເທື່ອ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToMoveAFolderBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>Moving folders between storages is not yet available.</source>
+        <target state="final">ຍັງບໍ່ສາມາດຍ້າຍໂຟນເດີລະຫວ່າງບ່ອນຈັດເກັບຂໍ້ມູນໄດ້ເທື່ອ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheUploadHasFailedNoUploadedFileFound" approved="yes">
+        <source>No file was found for the upload.</source>
+        <target state="final">ບໍ່ພົບໄຟລ໌ສຳລັບການອັບໂຫລດ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheUploadedFileExceedsTheSize-limit" approved="yes">
+        <source>The uploaded file "%s" exceeds the maximum allowed file size.</source>
+        <target state="final">ໄຟລ໌ "%s" ທີ່ອັບໂຫລດມີຂະໜາດເກີນກຳນົດສູງສຸດ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UploadedFileCouldNotBeMoved" approved="yes">
+        <source>Uploaded file could not be moved in "%s" due to insufficent write permissions.</source>
+        <target state="final">ບໍ່ສາມາດຍ້າຍໄຟລ໌ທີ່ອັບໂຫລດເຂົ້າໄປໃນ "%s" ໄດ້ ເພາະວ່າສິດທິໃນການຂຽນບໍ່ພຽງພໍ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UploadingFileTo" approved="yes">
+        <source>File "%s" uploaded to "%s".</source>
+        <target state="final">ອັບໂຫລດໄຟລ໌ "%s" ໄປທີ່ "%s" ແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToAccessTheDirectory" approved="yes">
+        <source>Access to this folder is not permitted.</source>
+        <target state="final">ບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ເຂົ້າເຖິງໂຟນເດີນີ້.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToAccessTheFile" approved="yes">
+        <source>Access to this file is not permitted.</source>
+        <target state="final">ບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ເຂົ້າເຖິງໄຟລ໌ນີ້.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCopyDirectories" approved="yes">
+        <source>Copying directories is not permitted.</source>
+        <target state="final">ບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ສຳເນົາໄດເຣັກທໍຣີ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCopyFiles" approved="yes">
+        <source>Copying files is not permitted.</source>
+        <target state="final">ບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ສຳເນົາໄຟລ໌.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.InvalidFolderName" approved="yes">
+        <source>The folder name "%s" is not valid.</source>
+        <target state="final">ຊື່ໂຟນເດີ "%s" ບໍ່ຖືກຕ້ອງ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCreateDirectories" approved="yes">
+        <source>Creating folders is not permitted.</source>
+        <target state="final">ບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ສ້າງໂຟນເດີ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCreateFiles" approved="yes">
+        <source>Creating files is not permitted.</source>
+        <target state="final">ບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ສ້າງໄຟລ໌.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToEditFiles" approved="yes">
+        <source>Editing files is not permitted.</source>
+        <target state="final">ບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ແກ້ໄຂໄຟລ໌.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToMoveDirectories" approved="yes">
+        <source>Moving folders is not permitted.</source>
+        <target state="final">ບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ຍ້າຍໂຟນເດີ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToMoveFiles" approved="yes">
+        <source>Moving files is not permitted.</source>
+        <target state="final">ບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ຍ້າຍໄຟລ໌.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToOverride" approved="yes">
+        <source>Overwriting "%s" is not permitted.</source>
+        <target state="final">ບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ຂຽນທັບ "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToRenameDirectories" approved="yes">
+        <source>Renaming folders is not permitted.</source>
+        <target state="final">ບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ປ່ຽນຊື່ໂຟນເດີ.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToRenameFiles" approved="yes">
+        <source>Renaming files is not permitted.</source>
+        <target state="final">ບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ປ່ຽນຊື່ໄຟລ໌.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToUploadFiles" approved="yes">
+        <source>Uploading files is not permitted.</source>
+        <target state="final">ບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ອັບໂຫລດໄຟລ໌.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouDontHaveFullAccessToTheDestinationDirectory" approved="yes">
+        <source>Full access to the destination folder "%s" is not available.</source>
+        <target state="final">ບໍ່ສາມາດເຂົ້າເຖິງໂຟນເດີປາຍທາງ "%s" ແບບເຕັມຮູບແບບໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.MimeTypeNotAllowedForFileExtensionWithExpectation" approved="yes">
+        <source>The MIME type "%s" is not allowed for files with the extension "%s". Expected: %s.</source>
+        <target state="final">ບໍ່ອະນຸຍາດໃຫ້ນຳໃຊ້ປະເພດ MIME "%s" ສຳລັບໄຟລ໌ທີ່ມີນາມສະກຸນ "%s". ສິ່ງທີ່ຕ້ອງການແມ່ນ: %s.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExtensionIsNotAllowed" approved="yes">
+        <source>File extension "%s" is not allowed here.</source>
+        <target state="final">ບໍ່ອະນຸຍາດໃຫ້ນຳໃຊ້ນາມສະກຸນໄຟລ໌ "%s" ຢູ່ບ່ອນນີ້.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
