@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814829" source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang_csh.xlf" date="2011-10-17T20:22:33Z" product-name="impexp" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>Import/Export</source>
+        <target state="final">استيراد/تصدير</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Native Import/Export module for TYPO3 data. Can export single records, content of tables, single pages or whole branches of the page tree. Includes attached media like image and preserves relations between records. Exports only to TYPO3 specific format, either a binary format (.T3D) or XML. The format is meant for exchange between TYPO3 systems.</source>
+        <target state="final">النموذج الاستيراد/تصدير الأصلي الخاص ببيانات تيبو3.يقوم هذا النموذج بإستيراد السجلات المفردة،محتويات الجداول،والصفحات المفردة او جميع فروع الصفحة الشجرية.بما تتضمنه من الوسائط المرفقة بها مثل الصور و تللك الوسائط المسئولة عن حفظ الصلة بين السجلات.ويستورد النموذج نسقا خاصا بنظام تيبو3 سواء كان ذلك النسق ثنائيي مثل(.T3D) أو XML.وهذا التنسيق معد من أجل التبادل بين أنظمة تيبو3.</target>
+      </trans-unit>
+      <trans-unit id="_.image" resname="_.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/impexp.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" approved="yes">
+        <source>Example of the preview display during export configuration of a page. Notice how records on the page are include plus how references inside the record is found and included as well (bottom of screen).</source>
+        <target state="final">مثال للعرض الأولي أثناء ضبط تصدير الصفحة.لاحظ كيف يتم إدراج سجلات الصفحة وكذلك لاحظ كيف تنشئ المراجع داخل السجل الواحد والمدرجة أيضا(أسفل الصفحة).</target>
+      </trans-unit>
+      <trans-unit id="export.alttitle" resname="export.alttitle" approved="yes">
+        <source>Exporting records from TYPO3</source>
+        <target state="final">عملية استيراد السجلات من تيبو3.</target>
+      </trans-unit>
+      <trans-unit id="export.description" resname="export.description" approved="yes">
+        <source>To export TYPO3 T3D/XML files you click any record icon or page in the page tree (including the root page!), select "More options" and then "Export". This will bring up the export interface where you can configure options for your export session.</source>
+        <target state="final">لتصدير ملفات TYPO3 T3D/XML يمكنك النقر فوق أي أيقونة تسجيل أو صفحة في شجرة الصفحة (بما في ذلك صفحة الجذر)! ، حدد "المزيد من الخيارات" ثم "التصدير". سيؤدي هذا إلى جلب واجهة التصدير حيث يمكنك تكوين خيارات لجلسة التصدير الخاصة بك.</target>
+      </trans-unit>
+      <trans-unit id="export.details" resname="export.details" xml:space="preserve" approved="yes">
+				<source>There are a number of methods by which you can export data from TYPO3:
+- Export a single page or branch of the page tree (use page icon context menu)
+- Export a single record from any page (use record icon context menu)
+- Export all records from a specific table on a specific page (using the Web&gt;List module)
+- Export an arbitrary selection of records from the clipboard (using the Web&gt;List module)
+
+The export format observes all TYPO3s methods for relations between the records in the export file. But you will have to configure how these relations are maintained, at least to some degree. Sometimes you would want to include records referred to, at other times you surely want to keep the original mapping. That depends on your objectives with the export.
+
+Regardless of your configuration for export you will always see a complete reflection of all chosen records and their internal relations in the preview display found in the bottom of the export module page.
+
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before exporting if there are any error messages there!</source>
+			<target state="final">هناك عددا من النماذج التي تمكنك من تصدير البيانات من تيبو3 و منها: -تصدير صفحة مفردة أو فرع من فروع صفحة الشجرة(استخدم في ذلك أيقونة الصفحة الخاصة بقائمة السياق) -تصدير سجل مفرد من اي صفحة من الصفحات (استخدم لذلك أيقونة السجل الخاصة بقائمة السياق) -تصدير جميع السجلات من داخل جدول خاص داخل صفحة خاصة(استخدم لذلك نموذج وب&lt;قائمة) -تصدير إختيارعشوائي للسجلات من ذاكرة التخزين المؤقتة (استخدم لذلك نموذج وب&lt;قائمة) ويراقب نسق التصدير جميع الطرق التي يستخدمها تيبو3 لعمل الروابط بين السجلات داخل ملف التصدير. ولكنه عليك القيام بضبط الكيفية التي تعالج بها هذه الروابط، على الأقل لدرجة معينة. وفي بعض الحالات قد تكون في حاجة لإدراج سجلات كي يتم الإشارة إليها، وفي حالات أخرى تكون في حالة أكيدة للحفاظ على عملية المقابلة الأصلية.والتي تعتمد على اهدافك أثناء عملية التصدير. وبصرف النظر عن ضبطتك لعملية التصدير فإنك سترى دائما إنعكاس تام لجميع السجلات المختارة والروابط الداخلية الخاصة بها في العرض الأولي والمتواجد في قاع صفحة نموذج التصدير. &lt;b&gt;رسائل خطأ:&lt;/b&gt; تذكر إستشارة جدولة الرسالة قبل عملية التصدير عند ظهور أي رسائل خطأ.</target></trans-unit>
+      <trans-unit id="_export.seeAlso" resname="_export.seeAlso" approved="yes">
+        <source>xMOD_tx_impexp:import</source>
+        <target state="final">xMOD_tx_impexp:import</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_export.image" resname="_export.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/export.png,
+EXT:impexp/Resources/Public/Images/cshimages/export1.png,
+EXT:impexp/Resources/Public/Images/cshimages/export2.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/export.png,
+EXT:impexp/Resources/Public/Images/cshimages/export1.png,
+EXT:impexp/Resources/Public/Images/cshimages/export2.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="export.image_descr" resname="export.image_descr" xml:space="preserve" approved="yes">
+				<source>To export a page or record, simply click the icon and select "Export" from the context menu.
+With the Web&gt;List module you can also export all records from a table by first clicking the table title to see only this table, then next to the CSV export you will find the export button for a T3D export of the table.
+You can export the contents of the clipboard as well by simply selecting "Export" in the menu.</source>
+			<target state="final">لتصدير صفحة أو سجل فقط عليك بالنقر على الأيقونة ثم قم بإختيار خاصية"تصدير"من قائمة السياق. وباستخدام نموذج وب&lt;قائمة يمكنك أيضا تصدير جميع اسجلات من من جدول ما ويكون ذلك أولا بالضغط على عنوان الجدول فقط لرؤية الجدول وبالقرب من زر تصدير CSV ستجد زر تصدير لتصدير T3Dالخاص باجدول. ويمكنك تصدير محتويات ذاكرة التخزين المؤقتة أيضا و ذلك ببساطة عند النقر على خاصية "تصدير"في القائمة.</target></trans-unit>
+      <trans-unit id="pageTreeCfg.alttitle" resname="pageTreeCfg.alttitle" approved="yes">
+        <source>Configuration of page tree export</source>
+        <target state="final">ضبط تصدير صفحة الشجرة.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeCfg.description" resname="pageTreeCfg.description" xml:space="preserve" approved="yes">
+				<source>Here you configure how a page or a branch of the page tree should be exported. Using the selector box you can set the number of levels of subpages to include in the export.
+By default all records belonging to a page is included when a page is exported.</source>
+			<target state="final">من هنا يمكنك ضبط كيف يتم تصدير صفحة أو فرع من صفحة الشجرة.وباستخدام صندوق الإختيار يمكنك ضبط عدد مستويات الصفحات الفرعية الداخلة في عملية التصدير.وبصورة أساسية يتم تصدير جميع السجلات المنتمية لهذه الصفحة.</target></trans-unit>
+      <trans-unit id="_pageTreeCfg.image" resname="_pageTreeCfg.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/pagetreecfg.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/pagetreecfg.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pageTreeDisplay.alttitle" resname="pageTreeDisplay.alttitle" approved="yes">
+        <source>Page Tree</source>
+        <target state="final">صفحة الشجرة</target>
+      </trans-unit>
+      <trans-unit id="pageTreeDisplay.description" resname="pageTreeDisplay.description" approved="yes">
+        <source>Based on the levels selected for page tree export this will show the structure that is about to be exported. If any pages are specifically excluded by the exclude option they are not shown either.</source>
+        <target state="final">وبتحديد المستويات التي سيتم تصديرها إلى صفحة الشجرة يقوم هذا الملف بعرض البنية المقرر تصديرها إلى صفحة الشجرة أيضا.وإذا ما تم استبعاد صفحات بعينها بواسطة خاصية الاستبعاد فلا يقوم الملف بعرضها.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.alttitle" resname="pageTreeMode.alttitle" approved="yes">
+        <source>Levels</source>
+        <target state="final">المستويات</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.description" resname="pageTreeMode.description" approved="yes">
+        <source>Here you select how deeply in the page tree from the current starting point to go for this export.</source>
+        <target state="final">من هنا يمكنك تحديد كيف سيكون عمق صفحة الشجرة وذلك من خلال نقطة البداية الحالية للتوجه إلى هذا التصدير.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeMode.details" resname="pageTreeMode.details" approved="yes">
+        <source>If you select "Expanded tree" it will base the export on the currently expanded levels of the page tree. Another special option is "Tables on this page" which will not include the page record itself but only include records from tables on the page, depending on the table configuration of course.</source>
+        <target state="final">وإذا ما إخترت خاصية"الشجرة الممتدة"فستتم عملية التصدير بناء على المستويات الممتدة الحالية لصفحة الشجرة.وهناك إختيار خاص أخر "الجداول المدرجة داخل الصفحة"والذي لا يدرج صفحة السجل نفسها و لكنه فقط يدرج سجلات الجداول الموجودة بالصفحة ،و هذا بالطبع يعتمد على ضبط الجداول نفسها.</target>
+      </trans-unit>
+      <trans-unit id="_pageTreeMode.image" resname="_pageTreeMode.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/impexp_misc.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp_misc.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.alttitle" resname="pageTreeRecordLimit.alttitle" approved="yes">
+        <source>Include tables</source>
+        <target state="final">إدجرج جداول</target>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.description" resname="pageTreeRecordLimit.description" approved="yes">
+        <source>When you export a page all records on the page is included by default. By this selector you can pick which tables to include exclusively if there are certain records you are not interested in seeing included.</source>
+        <target state="final">عند تصدير صفحة ما فإن عملية التصدير تشمل جميع السجلات بصورة إفتراضية.وبهذا المنتقي يمكن إلتقاط أي الجداول يمكن إدراجها على وجه الحصر إذا أردت ألا تدرج سجلات بعينها.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeRecordLimit.details" resname="pageTreeRecordLimit.details" approved="yes">
+        <source>In the box "Max number of records" you can set a limit to how many records are selected from a single table. This is a runaway brake in case you have an unusual large amount of records from a table.</source>
+        <target state="final">وفي صندوق"العدد الأقصى للسجلات"يمكنك ضبط حدا لعدد السجلات المختارة من الجدول المفرد.ويعمل ذلك كفاصل استبعاد في حالة ما إذا كان الجدول محتوي على عدد هائل غير معتاد من السجلات.</target>
+      </trans-unit>
+      <trans-unit id="singleRecord.alttitle" resname="singleRecord.alttitle" approved="yes">
+        <source>Export single record</source>
+        <target state="final">تصدير سجل مفرد</target>
+      </trans-unit>
+      <trans-unit id="singleRecord.description" resname="singleRecord.description" approved="yes">
+        <source>This overview tells you which independent records has been independently selected for export.</source>
+        <target state="final">يخبرك هذا العرض العام أي من السجلات المستقلة يمكن إختيارها للتصدير بصورة مستقلة.</target>
+      </trans-unit>
+      <trans-unit id="_singleRecord.image" resname="_singleRecord.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/singlerecord.png,
+EXT:impexp/Resources/Public/Images/cshimages/export2.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/singlerecord.png,
+EXT:impexp/Resources/Public/Images/cshimages/export2.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="singleRecord.image_descr" resname="singleRecord.image_descr" approved="yes">
+        <source>The way to export multiple records like this is using the clipboard like shown below.</source>
+        <target state="final">وتكون طريقة تصدير سجلات متعددة مثل هذه هي استخدام ذاكرة التخزين المؤقتة المعروضة بالأسفل.</target>
+      </trans-unit>
+      <trans-unit id="tableList.alttitle" resname="tableList.alttitle" approved="yes">
+        <source>Table export</source>
+        <target state="final">تصدير الجدول.</target>
+      </trans-unit>
+      <trans-unit id="tableList.description" resname="tableList.description" approved="yes">
+        <source>Export of all records on a page from a specific table. This is configured from the Web&gt;List module where you will have to select table-only view and click a button in the top of the page.</source>
+        <target state="final">تصدير جميع سجلات صفحة ما من خلال جدول خاص.ويتم ضبط هذه الخاصية من خلال نموذج وب&lt;قائمة حيث يجب عليك إختيار عرض جدول واحد فقط و النقر على زر أعلى الصفحة.</target>
+      </trans-unit>
+      <trans-unit id="tableList.details" resname="tableList.details" approved="yes">
+        <source>Tip: You can select multiple table lists by simply saving each selecting as a preset and finally load/merge the selections together.</source>
+        <target state="final">نصيحة:يمكن إختيار القوائم المتعدة للجدول وذلك بتخزين كل إختيار لك على أنه ضبط مسبق و في النهاية يتم تحميل /دمج جميع الإختيارات معا.</target>
+      </trans-unit>
+      <trans-unit id="_tableList.image" resname="_tableList.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/tablelist.png,
+EXT:impexp/Resources/Public/Images/cshimages/export1.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/tablelist.png,
+EXT:impexp/Resources/Public/Images/cshimages/export1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="tableList.image_descr" resname="tableList.image_descr" xml:space="preserve" approved="yes">
+				<source>Here two tables from different pages are selected. This is done by first selecting the one, saving it as a preset, then select the other and merge with the saved preset.
+Here you see how to use the Web&gt;List module to export all records from a table on a page.</source>
+			<target state="final">هنا يتم إختيار جداول من صفحات مختلفة.ويتم ذلك أولا بإختيار الجدول ،المخزن سابقا على أنه صبط مسبق،ثم قم بإختيار جدول آخر وإدمجه مع الجدول السابق تخزينه.وهنا يمكنك التعرف كيف يقوم نموذج وب&lt;قائمة بتصدير جميع السجلات من جدول الصفحة.</target></trans-unit>
+      <trans-unit id="inclRelations.alttitle" resname="inclRelations.alttitle" approved="yes">
+        <source>Include relations</source>
+        <target state="final">إدراج الربط بين السجلات.</target>
+      </trans-unit>
+      <trans-unit id="inclRelations.description" resname="inclRelations.description" approved="yes">
+        <source>Configure the tables from which you want to include records that are found as relations in the main export configuration.</source>
+        <target state="final">يقوم هذا الملف بضبط الجداول اللآزمة لك لإدراج السجلات المنشأة في ضبط التصدير الأساسي كسجلات ربط.</target>
+      </trans-unit>
+      <trans-unit id="inclRelations.details" resname="inclRelations.details" xml:space="preserve" approved="yes">
+				<source>Background: When you export a record in TYPO3 it might contain relations to other records in the system. You have to tell the export interface what to do with these relations. Basically there are three scenarios:
+- If relations are found between records that are all in the export configuration, there is no problem: The relations are automatically mapped to the new id's of those records when imported.
+- If the records related to are not included the relation will be lost (indicated with an error message in the preview) unless you a) either select that table in this selector box in which case all relations to that table will be included or b) if you set the table as a static table (in which case the relation is untouched and imported as-is - but which will of course break if no record with that UID is found in the import system).
+
+&lt;b&gt;Soft References:&lt;/b&gt; Soft references are when a record contains pointers to external files or records but in fields where there are no formal relation configured. Examples of this is when a content element contains a "&amp;lt;link 123&amp;gt;" tag that represents a link to the page 123. This is not picked up formally as a reference, but is found anyhow as a "soft reference". The same goes for &amp;lt;img&amp;gt; tags with images from eg. "fileadmin/".
+By default soft references pointing to records or files will act as normal references; either including the referenced item or showing an error. However you can also choose to exclude the handling of individual soft references or maybe set the value as "editable" upon import. This is done with a selector box in the export preview.</source>
+			<target state="final">خلفية:عندما تقوم بتصدير سجلا ما داخل تيبو3 فقد يكون مرتبطا بسجلات أخرى داخل النظام.وعليك بإخبار واجهة التصدير كيف يجب أن تتعامل مع هذه الإرتباطاط.وبصورة أساسية يوجد ثلالثة سيناريوهات: إذا ما إنشأت هذه الروابط بين السجلات الواقعة جميعها داخل ظبط التصدير، وهذا لا مشكلة فيه:حيث تحول هذه الروابط إلى إمتدادات عند استيرادها إلى إمتدادات جديدة id لهذه السجلات. -وإذا لم يتم تضمين السجلات المرتطة فإنه ستفقد الروابط بين السجلات(ويشار إلى ذلك برسالة خطاء في العرض) إلا إذا a) لم تختار هذا الجدول في صندوق الإختيار في أي تكون جميع الروابط متضمنة داخل هذا الجدول. أو b)إذا ما تم ضبط الجدول كجدول إستاتيكي( في أي حالة لم يتم التعرض فيها للرابطة و لم يتم تصديرها كإمتداد -is و التي ستكسر بالطبع إذا لم يتم العثور على سجل بهذا UID داخل نظام التصدير). &lt;b&gt;المراجع المرنة:&lt;/b&gt;تستخدم المراجع المرنة إذا ما إحتوى السجل على مؤشرات لملفات خارجية أو لسجلات ولكنها لا تستخدم إذا لم ضبط أي روابط صورية بين الحقول. ومثال على ذلك إذا ما إشتمل عنصر المحتوى على الملف الواصف "&amp;lt;link 123&amp;gt;" الذي يعرض رابطا للصفحة 123. ولا يعتد بذلك كمرجع بصورة رسمية،ولكنه يوجد بصورة ما "كمرجع مرن". و نفس الشئ بالنسبة للملفات الواصفة &amp;lt;img&amp;gt و المرفق بها صورا من "fileadmin/". وتشير الملفات المرنة بصورة إفتراضية إلى كل من الملفات و السجلات التي تعمل كمراجع عادية؛ سواء سواء كانت مشتملة على عناصر مرجعية أم أظهرت رسالة خطء.وبالرغم من ذلك فلك أن تستثنى عملية تناول المراجع المرنة الشخصية أو من الجائز ضبط القيمة على أنها قيمة "قابلة للتحرير"على إستيراد.ويم ذلك من خلال صندوق الإختيار داخل عرض التوريد.</target></trans-unit>
+      <trans-unit id="_inclRelations.image" resname="_inclRelations.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/references.png,
+EXT:impexp/Resources/Public/Images/cshimages/references1.png,
+EXT:impexp/Resources/Public/Images/cshimages/references2.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/references.png,
+EXT:impexp/Resources/Public/Images/cshimages/references1.png,
+EXT:impexp/Resources/Public/Images/cshimages/references2.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="inclRelations.image_descr" resname="inclRelations.image_descr" xml:space="preserve" approved="yes">
+				<source>This example shows tree examples of references; a) an image attached to a content element, b) a relation to a frontend usergroup UID, and c) a soft reference found in the bodytext field of a record, here it is the link-tag pointing to the page with UID 1.
+Notice in the previous image how the relation to the frontend user group was lost. This has been corrected in this screenshot where the fe_group table has been selected in the list of table for which to include relations. The result is that the frontend usergroup is included as a record outside the exported pagetree. If you wanted to keep the relation but not include the usergroup you have to set "fe_groups" as a static table instead. See below.
+This example shows a TypoScript Template Record where multiple soft references has been found. The first one is an email address. Here it is configured to be editable. This means that upon import the user will have a chance to edit the value before the import is actually done. This is very useful when exported files are used as templates. Another example includes a PHP script which we don't want to include in the export and therefore we have selected the exclude option for the soft reference.</source>
+			<target state="final">يعرض هذا المثال ثلاثة أمثلة للمراجع؛ a) الصور المرفقة بعنصر المحتوى، b) علاقة لـUID لمجموعة المستخدم الأمامية، و (C مرجع مرن يوجد داخل حقل جسد النص الخاص بالسجل، وإليك نمط - الرابط الذي يشير إلى الصفحة بـ UID1. لاحظ كيف أن مجموعة الصورة السابقة فقدت العلاقة بمجموعة مستخدم الواجهة الأمامية. وقد تم تصليح ذلك داخل هذا الاختصار؛ حيث تم انتقاء جدول fe_group داخل قائمة الجدول تدرج قائمة الجدول بها.وستكون النتيجة هي إدراج مجموعة مستخدمي الواجهة الأمامية كسجل خارج صفحة الشجرة المستوردة. وإذا أردت، عوضا عن ذلك‘ الحفاظ على العلاقة دون إدراج مجموعة المستخدم فعليك ضبط "fe_group " كجدول ثابت عوضا عن ذلك. انظر بالأسفل يعرض هذا المثال سجل إحدى سجلات مخطوطة تيبو، حيث يوجد العديد من المراجع المرنة. ويعبر الجزء الأول عن عنوان البريد الإلكتروني. وقد تمت عملية ضبطه هنا كي يتم تحريره. وهذا يعني أنه وفقا للتصدير سيكون للمستخدم الفرصة لتحرير القيمة قبل أن تتم عملية التصدير بالفعل. ويكون ذلك مفيدا جدا عند استخدام الملفات المستوردة كنماذج.مثال آخر يتضمن مخطوطة والذي لا نريد إدراجه في عملية الاستيراد، ولذلك قمنا بانتقاء الخيار المحظور للمرجع المرن.</target></trans-unit>
+      <trans-unit id="staticRelations.alttitle" resname="staticRelations.alttitle" approved="yes">
+        <source>Set static tables</source>
+        <target state="final">ضبط الجداول الإستاتيكية</target>
+      </trans-unit>
+      <trans-unit id="staticRelations.description" resname="staticRelations.description" approved="yes">
+        <source>Select which tables in addition to the static TYPO3 tables to keep relations untouched for. Takes precedence over "Include relations" configured tables.</source>
+        <target state="final">حدد أي الجداول بالإضافة إلى الجداول الإستاتيكية يجب الإبقاء عليها كما هي.وتكون لها الأولوية على الجداول المعدة بخيار"إدراج الروابط".</target>
+      </trans-unit>
+      <trans-unit id="staticRelations.details" resname="staticRelations.details" approved="yes">
+        <source>By default all relations to static tables in TYPO3 are kept untouched. Of course those static tables should be present in the import system in order for this to work correctly. However there might be circumstances where you move information between two systems where theoretically non-static tables should just keep relations untouched. Examples could be "sys_languages" or TemplaVoila data structures / template objects where two systems might contain the same set of records in those tables while you are importing pages and content elements freely.</source>
+        <target state="final">وبصورة إفتراضية يجب الإبقاء على جميع روابط الجداول الإستاتيكية الخاصة بتيبو3.وبالطبع لابد و أن تعرض هذه الجداول الإستاتيكية داخل نظام الإستيراد لضمان صحة عملها.وعلى الرغم من ذلك فقد تحتاج بعض الظروف إلى نقل المعلومات بين نظامين وفي هذه الحالة يجب الإبقاء على روابط الجداول الغير إستاتيكية نظريا.وقد يكون مثال ذلك "لغات النظام"أو عناصر نموذج /بنية البيانات الخاصة بالنموذجTemplaVoila حيث من الممكن لنظامين أن يشتملا على سجلات هذه الجداول و المضبوطة بنفس الكيفية و ذلك أثناء إستيراد الصفحات و عناصر المحتوى.</target>
+      </trans-unit>
+      <trans-unit id="_staticRelations.image" resname="_staticRelations.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/static.png,
+EXT:impexp/Resources/Public/Images/cshimages/static1.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/static.png,
+EXT:impexp/Resources/Public/Images/cshimages/static1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="staticRelations.image_descr" resname="staticRelations.image_descr" xml:space="preserve" approved="yes">
+				<source>In this example you see how a number of records are pointing to a System Language record which will become lost relations when imported because the record is not included in the export. However; in the target system the System Languages are exactly the same and therefore you just want a static mapping of the relations.
+The static mapping is obtained by selecting the "sys_language" table as a static template meaning that the relations are kept at their current values assuming that they will be exactly the same in the target system when imported.</source>
+			<target state="final">وفي هذا المثال يمكن ان ترى كيف يمكن لعدد من السجلات أن تشير إلى سجل لغة النظام والذي يقفد ما به من روابط أثناء عملية التصدير نظرا لعدم إدراجح السجل في ملفات التصدير.وبالرغم من ذلك؛ فبداخل النظام الهدف تتشابه جميع لغات النظام وعليه فإنك تكون في حاجة فقط إلى عمل مقابلة إستاتيكية للروابط. وتتم المقابلة الإستاتيكية بإختيار الجدول"لغة النظام"كنموذج إستاتيكي يعني أنه تم الإبقاء على الروابط كما هي عند قيمها الحالية بفرض أنها ستظل كما هي داخل النظام الهدف أثناء عملية الإستيراد.</target></trans-unit>
+      <trans-unit id="excludedElements.alttitle" resname="excludedElements.alttitle" approved="yes">
+        <source>Excluded elements</source>
+        <target state="final">عناصر مستثناه</target>
+      </trans-unit>
+      <trans-unit id="excludedElements.description" resname="excludedElements.description" approved="yes">
+        <source>By the "Exclude" checkbox you can exclude specific records from the preview display of the export. Which records has been picked for specific exclusion is listed here. You can also clear the exclusion configuration.</source>
+        <target state="final">بإختيار خاصية "مستثنى" من صندوق الإختيار يتم إستثناء سجلات خاصة من العرض الخاص بالتصدير.أي السجلات قد تم تحديدها كي تستثنى من القائمة.كما أيضا إلغاء عملية الإستثناء.</target>
+      </trans-unit>
+      <trans-unit id="_excludedElements.image" resname="_excludedElements.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/excludebox.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/excludebox.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.alttitle" resname="htmlCssResources.alttitle" approved="yes">
+        <source>Exclude resources from HTML and CSS files</source>
+        <target state="final">إستثناء المصادر من ملفات HTMLوCSS.</target>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.description" resname="htmlCssResources.description" approved="yes">
+        <source>When an HTML or CSS file is found as a soft reference the files are parsed for references to external media (such as images) and if any are found they are also exported. If you don't want this behaviour, click this option.</source>
+        <target state="final">وإذا ما تواجد أي من الملفين HTML or CSS كمرجع مرن فإن هذه الملفات تقطع لتعمل كمراجع لوسائط الخارجية(كالصور مثلا)و إذا ما تواجد أي من هذه الملفات فإنه يتم تصديرها مباشرة.وإذا لا كنت ترغب في حدوث ذلك ، يمكنك النقر على هذا الخيار.</target>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.details" resname="htmlCssResources.details" approved="yes">
+        <source>Notice: Resources found inside an HTML or CSS file are not analyzed further. For instance it means that any CSS files referred to from within an HTML will not be traversed - but CSS files referred to inside the Setup or Constant field of a TypoScript template record will be!</source>
+        <target state="final">ملاحظة: الموارد التي تم العثور عليها داخل مِلَفّ HTML أو CSS لم يتم تحليلها أكثر. على سبيل المثال، هذا يعني أن أي ملفات CSS المشار إليها من داخل HTML لن يتم تجاوزها - ولكن ملفات CSS المشار إليها داخل الإعداد أو الحقل الثابت لسجل قالب TypoScript سوف تكون!</target>
+      </trans-unit>
+      <trans-unit id="_htmlCssResources.image" resname="_htmlCssResources.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/htmlcss.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/htmlcss.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="htmlCssResources.image_descr" resname="htmlCssResources.image_descr" approved="yes">
+        <source>In this example you can see that a soft reference has been found pointing to an HTML file inside fileadmin/ Since it was an HTML file it was parsed and further a number of files were found referenced inside it and now included with the export. This feature is specifically created to support export of template configurations where external HTML files play a role.</source>
+        <target state="final">وفي هذا المثال يمكن أن نرى ان المرجع المرن قد وجدت تشير إلى إحدى ملفات HTML مجلد المدرج داخل fileadmin/وبإعتبار أنه ملف HTMLفقد تم تحلييله إلى حيث وجد بداخل عدد x من الملفات محالا إليها و التي قد تم تضمينها الآن مع ملفات التصدير.</target>
+      </trans-unit>
+      <trans-unit id="extensionDependencies.alttitle" resname="extensionDependencies.alttitle" approved="yes">
+        <source>Extension Dependencies</source>
+        <target state="final">الأمتدادت المستقلة.</target>
+      </trans-unit>
+      <trans-unit id="extensionDependencies.description" resname="extensionDependencies.description" approved="yes">
+        <source>Select which extensions should be installed in the import system in order for your exported content to work correctly. Examples could be "templavoila" for templating, "fluid_styled_content" for the template, "tt_news" for a news archive etc.</source>
+        <target state="final">حدد أي من الإضافات يجب تثبيتها في نظام الاستيراد لكي يعمل المحتوى الذي تم تصديره بشكل صحيح. يمكن أن تكون الأمثلة "templavoila" للقالب، "fluid_styled_content" للقالب، "tt_news" لأرشيف الأخبار، إلخ.</target>
+      </trans-unit>
+      <trans-unit id="extensionDependencies.details" resname="extensionDependencies.details" approved="yes">
+        <source>During import warnings will appear for all selected extensions from this list which were not installed.</source>
+        <target state="final">وسيظهر أثناء عملية الإستيراد تحذيرات لجميع إمتدادات هذه القائمة الغير محملة في القائمة.</target>
+      </trans-unit>
+      <trans-unit id="_extensionDependencies.image" resname="_extensionDependencies.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/extdep.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/extdep.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="presets.alttitle" resname="presets.alttitle" approved="yes">
+        <source>Configuration presets</source>
+        <target state="final">التجهيزات الأولية لعملية الضبط.</target>
+      </trans-unit>
+      <trans-unit id="presets.description" resname="presets.description" approved="yes">
+        <source>Enables you to save an export configuration for later re-use. Useful if you need to export the same configuration with regular intervals.</source>
+        <target state="final">وتيح لك هذه الخاصية تخزين ضبطا لعملية التصدير لإعادة إستخدامه مرة أخرى.وقد يكون ذلك مفيدا إذا ما أردت تصدير نفس عملية الضبط على فترات منتظمة.</target>
+      </trans-unit>
+      <trans-unit id="presets.details" resname="presets.details" xml:space="preserve" approved="yes">
+				<source>In the "Select preset" box you can select any previously saved preset to load. If you are exporting a page the presets listed will be those found for the start page ID. For records, any preset can be loaded.
+To load a preset, select it in the selector and press "Load". If you press "Merge" instead the settings from the preset will be merged with the current configuration. This is meaningful in cases where you select multiple individual tables or records.
+To save a preset, simply enter a title in the title box and press "Save". This will create a new preset. If you press save while having selected an existing preset you will overwrite it.
+To delete old presets, simply select it and press "Delete".
+
+The checkbox "Public" can be set if you want to share your preset with other users of the system. Otherwise they are personal to you.
+
+In the Taskcenter you can see a list of your presets and jump directly to them.</source>
+			<target state="final">في مربع "تحديد الإعداد السابق"، يمكنك تحديد أي إعداد تم حفظه مسبقاً ليتم تحميله مجدداً. إذا كنت تقوم بتصدير صفحة، فستكون الإعدادات السابقة المدرجة هي تلك الموجودة لمعرف صفحة البداية. أما بالنسبة للسجلات، فيمكن تحميل أي إعداد سابق.
+لتحميل إعداد سابق، حدده في المحدد واضغط على "تحميل". إذا ضغطت على زر الدمج "Merge" بدلاً من ذلك، فسيتم دمج الإعدادات السابقة مع التكوين الحالي. سيكون هذا مفيداً في الحالات التي تحدد فيها جداول أو سجلات فردية متعددة.
+لحفظ إعداد سابق، ما عليك سوى إدخال عنوان في مربع العنوان واضغط على "حفظ". سيؤدي ذلك إلى إنشاء إعداد سابق مجدداً. إذا ضغطت على "حفظ" أثناء تحديد إعداد مسبق موجود، فسيتم استبداله.
+لحذف الإعدادات السابقة القديمة، ما عليك سوى تحديدها والضغط على "حذف".
+
+يمكنك تعيين مربع الاختيار "عام" إذا كنت تريد مشاركة إعدادك المسبق مع مستخدمين آخرين للنظام. خلاف ذلك، فهي خاصة بك فقط.
+
+في مركز المهام ، يمكنك رؤية قائمة بالإعدادات المسبقة والإنتقال إليها مباشرةً.</target></trans-unit>
+      <trans-unit id="_presets.image" resname="_presets.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/impexp_misc1.png,
+EXT:impexp/Resources/Public/Images/cshimages/impexp_misc2.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp_misc1.png,
+EXT:impexp/Resources/Public/Images/cshimages/impexp_misc2.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="presets.image_descr" resname="presets.image_descr" xml:space="preserve" approved="yes">
+				<source>The preset selector in the export interface.
+Presets from the task center.</source>
+			<target state="final">محدد الإعداد المسبق في واجهة التصدير.
+الإعدادات المسبقة من مركز المهام.</target></trans-unit>
+      <trans-unit id="metadata.alttitle" resname="metadata.alttitle" approved="yes">
+        <source>Meta data setting</source>
+        <target state="final">ضبط البيانات الواصفة.</target>
+      </trans-unit>
+      <trans-unit id="metadata.description" resname="metadata.description" approved="yes">
+        <source>Set meta data for the export. This is highly encouraged if your exported content goes into eg. a template collection of sorts.</source>
+        <target state="final">يعمل هذا الملف على تجهيز البيانات الواصفة للتصدير.وتفعل هذهالعملية بشدة إذا ما مر محتوى التصدير خلال نموذج مجمع من الأنواع.</target>
+      </trans-unit>
+      <trans-unit id="metadata.details" resname="metadata.details" xml:space="preserve" approved="yes">
+				<source>The meta data will help users of your exported files to know what they can expect to be inside and what things they should be aware of and take into account during import.
+The "Title" and "Description" should contain the basic information about the export.
+The "Notes" field can be used for additional details, especially remarks about intensions or requirements that apply.</source>
+			<target state="final">ستساعد البيانات الوصفية مستخدمي الملفات المصدرة الخاصة بك على معرفة ما يمكن أن يتوقعوا أن يكونوا داخلها وما هي الأشياء التي يجب أن يكونوا على علم بها وأخذها في الاعتبار أثناء الاستيراد.
+يجب أن يحتوي "العنوان" و "الوصف" على المعلومات الأساسية حول التصدير.
+يمكن استخدام حقل "الملاحظات" للحصول على تفاصيل إضافية، وخاصة الملاحظات حول النوايا أو المتطلبات التي تنطبق.</target></trans-unit>
+      <trans-unit id="_metadata.image" resname="_metadata.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/metadata.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/metadata.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="fileFormat.alttitle" resname="fileFormat.alttitle" approved="yes">
+        <source>File format options</source>
+        <target state="final">خصائص تنسيق الملف.</target>
+      </trans-unit>
+      <trans-unit id="fileFormat.description" resname="fileFormat.description" approved="yes">
+        <source>You can export your records to a generic XML format which potentially can be imported by other applications. However, the schema of the XML is TYPO3 specific. Alternatively, you can select a TYPO3 specific binary format called "T3D".</source>
+        <target state="final">يمكنك تصدير السجلات الخاصة بك إلى تنسيق XML العام الذي يمكن استيراده بواسطة تطبيقات أخرى. ومع ذلك، فإن مخطط XML محدد TYPO3. بدلاً من ذلك، يمكنك اختيار صيغة ثنائية محددة TYPO3 تسمى "T3D".</target>
+      </trans-unit>
+      <trans-unit id="fileFormat.details" resname="fileFormat.details" xml:space="preserve" approved="yes">
+				<source>Generally you should use the XML format. The T3D compressed format is usually smaller, but much harder to read and process.
+
+Entering a file name to save makes it possible to write your export directly to a file (pressing "Save to filename") instead of downloading it (pressing "Download export"). The correct file extensions depending on file format is automatically applied. Files are saved in a proper file mount in "fileadmin/". This is shown to you upon saving. Existing files are overwritten.</source>
+			<target state="final">عموماً، يجب عليك استخدام تنسيق XML. التنسيق المضغوط T3D هو عادة أصغر، ولكنه أصعب بكثير من القراءة والمعالجة.
+
+إدخال اسم مِلَفّ للحفظ، يجعل من المُمكن كتابة التصدير الخاص بك مباشرة إلى مِلَفّ (اضغط على "حفظ إلى اسم المِلَفّ") بدلاً من تحميله (اضغط على "تنزيل التصدير"). يتم تطبيق إضافات المِلَفّ الصحيحة اعتماداً على تنسيق المِلَفّ تلقائياً. يتم حفظ الملفات في مِلَفّ مناسب في "fileadmin/". هذا يظهر لك عند الحفظ. يتم الكتابة فوق الملفات الموجودة.</target></trans-unit>
+      <trans-unit id="_fileFormat.image" resname="_fileFormat.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/fileformat.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/fileformat.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="import.alttitle" resname="import.alttitle" approved="yes">
+        <source>Importing TYPO3 records</source>
+        <target state="final">تصدير سجلات تيبو3.</target>
+      </trans-unit>
+      <trans-unit id="import.description" resname="import.description" approved="yes">
+        <source>To import TYPO3 T3D/XML files into the page tree you click any page in the page tree (including the root page!), select "More options" and then "Import". This will bring up the import interface where you can select a file to import or upload a new one.</source>
+        <target state="final">لاستيراد ملفات TYPO3 T3D/XML إلى شجرة الصفحة، انقر فوق أي صفحة في شجرة الصفحة (بما في ذلك صفحة الجذر)! ، حدد "خيارات إضافية" ثم "استيراد". سيؤدي هذا إلى جلب واجهة الاستيراد حيث يمكنك تحديد ملف لاستيراد أو تحميل ملف جديد.</target>
+      </trans-unit>
+      <trans-unit id="import.details" resname="import.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Tip: Import into a Folder&lt;/b&gt;
+To make sure that no records are lost during the import, you can make yourself safe by importing into a Folder you create first. After the import you can move all records to the final destinations. An example of such a scenario is if you configured the export to include relations; In that case a number of records may follow the export outside the page tree structure you are exporting. To make sure that all of these external records are written to the database, importing into a Folder is a good idea.
+
+&lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before/after importing to see if there are any error messages there!</source>
+			<target state="final">&lt;b&gt;تلميح: استيراد إلى مجلد&lt;/b&gt;
+للتأكد من عدم فقدان أي سجلات في أثناء الاستيراد، يمكنك أن تخطو بأمان عن طريق الاستيراد إلى مجلد قمت بإنشائه أولاً. بعد الاستيراد، يمكنك نقل جميع السجلات إلى الوجهات النهائية. مثال على هذا السيناريو: إذا قمت بتكوين التصدير بحيث يشمل العلاقات؛ في هذه الحالة قد يتبع عدد من السجلات التصدير خارج بنية شجرة الصفحات التي تصدرها. والتأكد من أن جميع هذه السجلات الخارجية مكتوبة إلى قاعدة البيانات، فإن الاستيراد إلى مجلد فكرة جيدة.
+
+&lt;b&gt;رسائل الخطأ:&lt;/b&gt; تذكر أن تستشير رسالة التبويب قبل / بعد الاستيراد لمعرفة ما إذا كانت هناك أي رسائل خطأ هناك!</target></trans-unit>
+      <trans-unit id="_import.seeAlso" resname="_import.seeAlso" approved="yes">
+        <source>xMOD_tx_impexp:export</source>
+        <target state="final">xMOD_tx_impexp:تصدير</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_import.image" resname="_import.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/import.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/import.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="importFile.alttitle" resname="importFile.alttitle" approved="yes">
+        <source>Select file to import</source>
+        <target state="final">إختيار الملف المقرر تصديره.</target>
+      </trans-unit>
+      <trans-unit id="importFile.description" resname="importFile.description" approved="yes">
+        <source>The files displayed are those with an extension T3D or XML from fileadmin/, fileadmin/export/ and your "TEMP" folder (if any).</source>
+        <target state="final">وتكون الملفات المعروضة هي ذات الإمتداد T3D أو XML والتي تم تصديرها من fileadmin/, fileadmin/export/وككذلك من مجلدك "TEMP"(إن وجد بداخله أي منها).</target>
+      </trans-unit>
+      <trans-unit id="_importFile.seeAlso" resname="_importFile.seeAlso" approved="yes">
+        <source>xMOD_tx_impexp:fileFormat</source>
+        <target state="final">xMOD_tx_impexp:fileFormat</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_importFile.image" resname="_importFile.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/import_selectfile.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/import_selectfile.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="update.alttitle" resname="update.alttitle" approved="yes">
+        <source>Update instead of Insert</source>
+        <target state="final">التصدير عوضا عن الإدراج.</target>
+      </trans-unit>
+      <trans-unit id="update.description" resname="update.description" approved="yes">
+        <source>By default the import operation inserts new records in the system. Using this option will update existing records.</source>
+        <target state="final">وبصفة إفتراضية فإن عملية التصدير تعمل على إدراج سجلات جديدة في النظام.واستخدام هذه الخاصية يعمل على تحديث سجلات الخرج</target>
+      </trans-unit>
+      <trans-unit id="update.details" resname="update.details" xml:space="preserve" approved="yes">
+				<source>There are certain requirements you have to meet if you want the "Update" process to work. The main thing is that the records updated are those with the SAME uid as the uid in the export file. Thus an update operation only makes real sense if the export and import systems are somehow related and the same UIDs can be expected in both ends. Otherwise it will be a mess!
+
+When you update page structures the import operation will automatically try to rearrange records so they also appear in the same hierarchy and order as in the export file. This can be disabled by checking the option "Ignore PID differences globally". In any case you can set individual records to Ignore/Respect the PID with a selectorbox in the preview.
+
+In the preview display you can also select if individual records should be flatly ignored during import or if you want them created as new records instead of being updates.
+As a help for managing updates the preview display will inform you about the path where the existing element with that UID is found. Use this to verify that you get what you expect!
+
+&lt;b&gt;Forcing the UID:&lt;/b&gt;
+If you intend to update a system and some elements from the import are not mappable to a UID already (ei. does not exist) you can choose in the preview display to force the UID during creation. This is an unorthodox thing to do since UIDs are normally created automatically by the database. The option makes most sense if you are trying to "synchronize" a copy of another system. The option may mess up certain database internals and the feature is therefore only available for admins.</source>
+			<target state="final">هناك بعض المتطلبات التي عليك استيفاؤها إذا كنت تريد أن تعمل عملية "التحديث". والشيء الرئيس هو أن السجلات التي تم تحديثها هي السجلات التي يكون فيها معرف SAME هو المستعمل في مِلَفّ التصدير. ومن ثم فإن عملية التحديث لا معنى لها إلا إذا كانت نظم التصدير والاستيراد مرتبطة بشكل ما وكان من الممكن توقع نفس أجهزة التحديث المستعملة في كلا الحالتين. وإلا فسيكون الأمر فوضى!
+
+عند تحديث هياكل الصفحات، ستحاول عملية الاستيراد تلقائياً إعادة ترتيب السجلات بحيث تظهر أيضاً في نفس التسلسل الهرمي والترتيب كما في مِلَفّ التصدير. يمكن تعطيل هذا عن طريق التحقق من الخِيار "تجاهل اختلافات PID عموماً". في أي حال يمكنك تعيين السجلات الفردية إلى تجاهل / الأخذ بالاعتبار PID مع خانة الانتقاء في المعاينة.
+
+في عرض المعاينة يمكنك أيضاً تحديد ما إذا كان يجب تجاهل السجلات الفردية بشكل واضح في أثناء الاستيراد أو إذا كنت تريد إنشاءها كسجلات جديدة بدلاً من أن تكون تحديثات.
+كمساعدة في إدارة التحديثات، سوف يخبرك عرض المعاينة عن المسار الذي يوجد فيه العنصر الموجود مع ذلك UID. استخدم هذا للتحقق من أنك تحصل على ما تتوقع!
+
+&lt;b&gt;إجبار UID:&lt;/b&gt;
+إذا كنت ترغب في تحديث نظام وبعض العناصر من الاستيراد غير قابلة لربط UID مسبقاً (إذا كان غير موجود) يمكنك الاختيار في عرض المعاينة لإجبار UID في أثناء الإنشاء. هذا شيء غير تقليدي يجب القيام به لأن UIDs عادة ما يتم إنشاؤها تلقائياً بواسطة قاعدة البيانات. الخِيار الأكثر منطقية إذا كنت تحاول "المزامنة" نسخة من نظام آخر. وقد يؤدي هذا الخِيار إلى إفساد بعض الداخليين في قاعدة البيانات وبالتالي فإن هذه المِيزة متاحة للمشرفين فقط.</target></trans-unit>
+      <trans-unit id="_update.image" resname="_update.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/impexp_misc4.png,
+EXT:impexp/Resources/Public/Images/cshimages/update.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp_misc4.png,
+EXT:impexp/Resources/Public/Images/cshimages/update.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="update.image_descr" resname="update.image_descr" approved="yes">
+        <source>In Update mode you can select various settings for each record. You will also be able to see a diff-view where the differences between the existing record and the one from the import is shown.</source>
+        <target state="final">وعند و ضع التحديث يمكنك إختيار تضبيطات متنوعة لكل سجل.ويمكنك أيضا رؤية عرض مختلف حيث يوجد إختلافات بين سجل الخروج والسجل المعرض أثناء التصدير.</target>
+      </trans-unit>
+      <trans-unit id="options.alttitle" resname="options.alttitle" approved="yes">
+        <source>Import options</source>
+        <target state="final">خصائص عملية التصدير</target>
+      </trans-unit>
+      <trans-unit id="options.description" resname="options.description" approved="yes">
+        <source>Various options for import.</source>
+        <target state="final">خصائص عديدة لعملية التصدير</target>
+      </trans-unit>
+      <trans-unit id="options.details" resname="options.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Do not show differences in records&lt;/b&gt;
+When a structure has been imported you will see a difference view of all records which tells you whether the written content matched the import data or if not, what changed. In many cases content &lt;i&gt;should&lt;/i&gt; change (eg. relations and file references) so it is not an error if you see red and green values. Basically the difference view is a feature you can use for visual validation of the import success. It brings piece-of-mind to those who is enlightened to understand what it tells... :-)
+Green strings represent the actual written data while red represents the original value from the import file and black represents data that is the same.
+
+&lt;b&gt;Allow to write banned file extensions (eg. PHP scripts), if any&lt;/b&gt;
+Also an option for admins-only; Allows PHP-files (for example from soft references in TypoScript templates) to be written to the system. This is normally not allowed behavior for security reasons.</source>
+			<target state="final">&lt;b&gt;لا تُظهر التغييرات في السجلات&lt;/b&gt;
+عند استيراد هيكلية ما، سترى عرضاً مختلفاً لجميع السجلات يخبرك ما إذا كان المحتوى المكتوب يتطابق مع بيانات الإستيراد أم لا ، وما الذي تغيّر. في كثير من الحالات يجب على  &lt;i&gt;أن يتغيّر&lt;/i&gt; المحتوى (على سبيل المثال: العلاقات ومراجع الملفات). هذا يعني عدم وجود أي خطأ في حال ظهرت قِيَم حمراء أو خضراء.
+في الواقع، يُعد عرض مقارنة السجلات ميزة يمكنك استخدامها للتحقق البصري من نجاح الإستيراد. إنه يحفّز أولئك المُنتبهون "المُصحصِحُون" لِفهم كُل ما يَتم عَمله... :-)
+تمثل السلاسل الخضراء البيانات المكتوبة بالفعل بينما يمثل اللون الأحمر القيمة الأصلية من ملف الاستيراد ويمثل الأسود البيانات نفسها.
+&lt;b&gt;يسمح بكتابة إضافات الملفات المحظورة (مثل أكواد PHP) ، إن وُجدت&lt;/b&gt;
+وأيضاً خيار للمشرفين فقط، بحيث يسمح لملفات PHP (على سبيل المثال من المراجع الخفيفة في قوالب TypoScript) بأن تتم كتابتها إلى النظام. عادة لا يُسمح بهذا السلوك لأسباب أمنية.
+</target></trans-unit>
+      <trans-unit id="_options.image" resname="_options.image" xml:space="preserve" approved="yes">
+				<source>EXT:impexp/Resources/Public/Images/cshimages/impexp_misc3.png,
+EXT:impexp/Resources/Public/Images/cshimages/phpext.png</source>
+				
+			<target state="final">EXT:impexp/Resources/Public/Images/cshimages/impexp_misc3.png,
+EXT:impexp/Resources/Public/Images/cshimages/phpext.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="options.image_descr" resname="options.image_descr" xml:space="preserve" approved="yes">
+				<source>Options for import.
+Here you are told that this PHP file cannot be allowed - because you didn't select the option "Allow to write banned file extensions (eg. PHP scripts), if any"</source>
+			<target state="final">خيارات الإستيراد.
+هنا يُقال لك أن ملف PHP هذه لا يمكن السماح بها - لأنك لم تقم بتحديد الخيار "السماح بكتابة إضافات الملفات المحظورة (على سبيل المثال). برامج PHP)، إن وُجدت"</target></trans-unit>
+      <trans-unit id="action.alttitle" resname="action.alttitle" approved="yes">
+        <source>Import Action</source>
+        <target state="final">عملية التصدير.</target>
+      </trans-unit>
+      <trans-unit id="action.description" resname="action.description" xml:space="preserve" approved="yes">
+				<source>Press "Preview" to see the content of the import file or update the preview display according to changed configurations.
+Press "Import"/"Update" if you want to perform the actual import.
+
+Before importing make sure you change any editable soft references that are shown in the preview data.</source>
+			<target state="final">إضغط على "عرض أولي"لترى متحويات ملف التصدير أو لتحديث عملية العرض الأولي.إضغط "تصدير/تحديث"لأداء عملية التصدير الفعلية. قبل أداء عملية التصدير تأكد من أنك قمت بتغير أي مراجع مرنة يمكن تحريرها والمعروضة في العرض الأولي للبيانات.</target></trans-unit>
+      <trans-unit id="_action.image" resname="_action.image" approved="yes">
+        <source>EXT:impexp/Resources/Public/Images/cshimages/diffview.png</source>
+        <target state="final">EXT:impexp/Resources/Public/Images/cshimages/diffview.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="action.image_descr" resname="action.image_descr" approved="yes">
+        <source>Example of the result view after importing. As you can see the RTE attached images (soft references) has been written to new file names and the difference view tells you that the names changed in the bodytext content.</source>
+        <target state="final">مثال لعرض النتيجة بعد عملية التصدير.كما يمكن ان ترى أنه تم كتابة ملفات</target>
+      </trans-unit>
+      <trans-unit id="enableLogging.alttitle" resname="enableLogging.alttitle" approved="yes">
+        <source>Enable System Logging</source>
+        <target state="final">إتاحة الدخول إلى النظام.</target>
+      </trans-unit>
+      <trans-unit id="enableLogging.description" resname="enableLogging.description" approved="yes">
+        <source>If you set this the system backend log will be filled with entries for all the actions that the import actually performs. By default this is left out for the sake of clarity.</source>
+        <target state="final">عند إتاحة هذه الخاصية فإن سجل النظام الخاص بالواجهة الخلفية سيمتلئ بالمداخل اللآزمة لجميع العمليات التي تقوم بالفعل عملية التصدير بأداءها.وبصورة إفتراضية فإنه يتك إستثناء هذه الخاصية من الوضوح.</target>
+      </trans-unit>
+      <trans-unit id="upload.alttitle" resname="upload.alttitle" approved="yes">
+        <source>Upload import file</source>
+        <target state="final">تحديث ملف التصدير.</target>
+      </trans-unit>
+      <trans-unit id="upload.description" resname="upload.description" approved="yes">
+        <source>Select a file to import from your local computer and upload it here. If the upload completes successfully you can immediately see its content displayed in the preview display.</source>
+        <target state="final">حدد مِلَفّ لاستيراده من جهاز الحاسوب المحلي الخاص بك وتحميله هنا. إذا اكتمل التحميل بنجاح، يمكنك على الفور مشاهدة محتواه المعروض في العرض المسبق.</target>
+      </trans-unit>
+      <trans-unit id="upload.details" resname="upload.details" approved="yes">
+        <source>Notice that there are usually limits set by the server (PHP) to the size of uploaded files. If hit, upload fails and an error message is shown.</source>
+        <target state="final">لاحظ أن هناك عادة حدود يحددها الخادم (PHP) لحجم الملفات التي تم تحميلها. في حالة الضغط، فشل التحميل ويتم عرض رسالة خطأ.</target>
+      </trans-unit>
+      <trans-unit id="task.title" resname="task.title" approved="yes">
+        <source>Preset title</source>
+        <target state="final">العنوان المسبق</target>
+      </trans-unit>
+      <trans-unit id="task.icon" resname="task.icon" approved="yes">
+        <source>Icon</source>
+        <target state="final">الأيقونة</target>
+      </trans-unit>
+      <trans-unit id="task.public" resname="task.public" approved="yes">
+        <source>Public</source>
+        <target state="final">عام</target>
+      </trans-unit>
+      <trans-unit id="task.owner" resname="task.owner" approved="yes">
+        <source>Owner</source>
+        <target state="final">المالك</target>
+      </trans-unit>
+      <trans-unit id="task.page" resname="task.page" approved="yes">
+        <source>Page</source>
+        <target state="final">الصفحة</target>
+      </trans-unit>
+      <trans-unit id="task.path" resname="task.path" approved="yes">
+        <source>Path</source>
+        <target state="final">المسار</target>
+      </trans-unit>
+      <trans-unit id="task.meta" resname="task.meta" approved="yes">
+        <source>Meta data</source>
+        <target state="final">البيانات الوصفية</target>
+      </trans-unit>
+      <trans-unit id="task.own" resname="task.own" approved="yes">
+        <source>Own</source>
+        <target state="final">خاص</target>
+      </trans-unit>
+      <trans-unit id="notes" resname="notes" approved="yes">
+        <source>Notes</source>
+        <target state="final">ملاحظات </target>
+      </trans-unit>
+      <trans-unit id="single-record" resname="single-record" approved="yes">
+        <source>Single record</source>
+        <target state="final">سجل واحد</target>
+      </trans-unit>
+      <trans-unit id="no-presets" resname="no-presets" approved="yes">
+        <source>No presets found!</source>
+        <target state="final">لم يتم العثور على إعدادات مسبقة</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
