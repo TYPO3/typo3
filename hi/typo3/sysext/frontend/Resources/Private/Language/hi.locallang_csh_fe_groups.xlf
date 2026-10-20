@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814795" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_fe_groups.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="hidden.details" resname="hidden.details" xml:space="preserve" approved="yes">
+				<source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.
+For instance if a page or content element was assigned access only by this group and you disable the group, no one would gain access to that page or content element.</source>
+			<target state="final">यदि आप किसी यूज़र ग्रुप को डिसेबल कर देते हैं, तो उस ग्रुप के सभी सदस्य असल में उस ग्रुप द्वारा दी गई कोई भी प्रॉपर्टी इनहेरिट नहीं कर पाएँगे।
+उदाहरण के लिए, यदि किसी पेज या कंटेंट एलिमेंट का एक्सेस केवल इसी ग्रुप को दिया गया था और आप उस ग्रुप को डिसेबल कर देते हैं, तो उस पेज या कंटेंट एलिमेंट का एक्सेस किसी को भी नहीं मिल पाएगा।</target></trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" approved="yes">
+        <source>fe_users:disable</source>
+        <target state="final">fe_users:disable</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Name of the group.</source>
+        <target state="final">समूह का नाम।</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>This title will appear as the group name in the 'Access'-list in other records.</source>
+        <target state="final">यह शीर्षक अन्य रिकॉर्ड्स में 'Access' सूची में समूह नाम के रूप में दिखाई देगा।</target>
+      </trans-unit>
+      <trans-unit id="subgroup.description" resname="subgroup.description" approved="yes">
+        <source>Member of other groups.</source>
+        <target state="final">अन्य समूहों का सदस्य।</target>
+      </trans-unit>
+      <trans-unit id="subgroup.details" resname="subgroup.details" approved="yes">
+        <source>List of other groups that this group is a member of.</source>
+        <target state="final">उन अन्य समूहों की सूची जिनका यह समूह सदस्य है।</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a description of the group.</source>
+        <target state="final">समूह का विवरण दर्ज करें।</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" xml:space="preserve" approved="yes">
+				<source>This is for internal use and is just a way to put a note on what the group is for, why you created it and who should be members.
+Use it as you like.</source>
+			<target state="final">यह केवल आंतरिक उपयोग के लिए है, और यह बस एक नोट लिखने का तरीका है कि यह ग्रुप किसलिए है, आपने इसे क्यों बनाया है, और इसमें कौन-कौन सदस्य होने चाहिए।
+आप इसे अपनी मर्ज़ी के अनुसार इस्तेमाल कर सकते हैं।</target></trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>TSconfig for the group (advanced).</source>
+        <target state="final">ग्रुप के लिए TSconfig (एडवांस्ड)।</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details" resname="TSconfig.details" xml:space="preserve" approved="yes">
+				<source>This is the user TSconfig for the group. The values are inherited by any Website user who is a member of this group.
+The configuration is subject to being overridden in other groups and by the TSconfig of the user himself.</source>
+			<target state="final">यह ग्रुप के लिए यूज़र TSconfig है। इस ग्रुप के सदस्य किसी भी वेबसाइट यूज़र को ये वैल्यूज़ इनहेरिट होती हैं। यह कॉन्फ़िगरेशन अन्य ग्रुप्स में और स्वयं यूज़र के TSconfig द्वारा ओवरराइड की जा सकती है।</target></trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax, without conditions and constants.</source>
+        <target state="final">TypoScript सिंटैक्स, बिना शर्तों और स्थिरांकों के।</target>
+      </trans-unit>
+      <trans-unit id="_TSconfig.seeAlso" resname="_TSconfig.seeAlso" approved="yes">
+        <source>fe_users:TSconfig</source>
+        <target state="final">fe_users:TSconfig</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Usergroups for Website users.</source>
+        <target state="final">वेबसाइट यूज़र्स के लिए यूज़रग्रुप्स</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>The access restriction in TYPO3 is assigned to these usergroups. When a page or other element is access restricted to a group, only Website users which are members of that group will be able to view the element on the website.</source>
+        <target state="final">TYPO3 में एक्सेस प्रतिबंध इन यूज़र ग्रुप्स को असाइन किया जाता है। जब किसी पृष्ठ या अन्य एलिमेंट का एक्सेस किसी ग्रुप के लिए प्रतिबंधित किया जाता है, तो केवल वही वेबसाइट यूज़र जो उस ग्रुप के सदस्य हैं, वेबसाइट पर उस एलिमेंट को देख पाएँगे।</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>fe_users,
+About access restricting pages | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/PasswordProtectedPages/</source>
+			<target state="final">fe_users,
+पृष्ठ तक पहुँच को सीमित करने के बारे में | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/PasswordProtectedPages/</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:frontend/Resources/Public/Images/cshimages/fegroups_3.png,
+EXT:frontend/Resources/Public/Images/cshimages/fegroups_4.png</source>
+				
+			<target state="final">EXT:frontend/Resources/Public/Images/cshimages/fegroups_3.png,
+EXT:frontend/Resources/Public/Images/cshimages/fegroups_4.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The form for editing frontend users groups.
+Pages, Content Elements and other records for frontend display often have a selector box where you can define access restriction by selecting access for a certain group only.</source>
+			<target state="final">फ्रंटएंड यूज़र ग्रुप्स को एडिट करने का फ़ॉर्म।
+फ्रंटएंड पर दिखाने के लिए पेज, कंटेंट एलिमेंट और दूसरे रिकॉर्ड्स में अक्सर एक सेलेक्टर बॉक्स होता है, जहाँ आप किसी खास ग्रुप के लिए ही एक्सेस चुनकर एक्सेस पर रोक लगा सकते हैं।</target></trans-unit>
+    </body>
+  </file>
+</xliff>
