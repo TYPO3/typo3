@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814857" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilem.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Filemounts describe a filepath on the server, relative or absolute.</source>
+        <target state="final">Failų prijungimo taškai apibūdina failo kelią serveryje, santykinį arba absoliutų.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>By creating a file mount record and placing a reference to it in a Backend usergroup you can allow a user access to the file mount in the File&gt;List module.
+Filemounts may also configure access to a path on the server to which the user has FTP-access. Just remember to set file-permissions on the server correctly so the webserver user (which PHP is running as) has at least read access to the FTP-dir.
+You can only mount absolute paths if they are within the base path set in $TYPO3_CONF_VARS[BE][lockRootPath]</source>
+			<target state="final">Sukūrus failų prijungimo taško įrašą ir įdėjus nuorodą į jį valdymo sąsajos vartotojų grupėje, galite suteikti vartotojui prieigą prie failų prijungimo taško modulyje Failai&gt;Sąrašas. Failų prijungimo taškai taip pat gali konfigūruoti prieigą prie kelio serveryje, prie kurio vartotojas turi FTP prieigą. Tiesiog nepamirškite teisingai nustatyti failų teises serveryje, kad žiniatinklio serverio vartotojas (kaip kuris veikia PHP) turėtų bent jau skaitymo prieigą prie FTP katalogo. Galite prijungti tik absoliučius kelius, jei jie yra baziniame kelyje, nustatytame $TYPO3_CONF_VARS[BE][lockRootPath]</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:file_mountpoints,
+be_users:file_mountpoints,
+More about File mounts | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/</source>
+				
+			<target state="final">be_groups:file_mountpoints, be_users:file_mountpoints, Daugiau apie failų prijungimo taškus | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_.image" resname="_.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/filemount_1.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/filemount_1.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter a title for the filemount. The title will appear as the name of the file mount when it is applied to users and groups.</source>
+        <target state="final">Įveskite failų prijungimo taško pavadinimą. Pavadinimas bus rodomas kaip failų prijungimo taško pavadinimas, kai jis bus pritaikytas vartotojams ir grupėms.</target>
+      </trans-unit>
+      <trans-unit id="_title.image" resname="_title.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/be_groups_5.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_5.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="path.description" resname="path.description" approved="yes">
+        <source>Enter the path of the filemount, relative or absolute depending on the settings of BASE.</source>
+        <target state="final">Įveskite failų prijungimo taško kelią, santykinį arba absoliutų, priklausomai nuo BASE nustatymų.</target>
+      </trans-unit>
+      <trans-unit id="path.details" resname="path.details" xml:space="preserve" approved="yes">
+				<source>If BASE is set to relative, the path mounted is found in the subfolder "fileadmin/" of the website. Then you should enter the subfolder in "fileadmin/" as path. For instance if you want to mount access to "fileadmin/user_uploads/all/" then enter the value "user_uploads/all" as the value of PATH.
+If BASE is absolute you should enter the absolute path on the server, eg. "/home/ftp_upload" or "C:/home/ftp_upload". Further you must make sure the configuration variable $TYPO3_CONF_VARS[BE][lockRootPath] contains the first part of the path you want to mount.
+
+&lt;strong&gt;Notice:&lt;/strong&gt; In any case, make sure the webserver user which PHP is running as has &lt;em&gt;at least&lt;/em&gt; read-access to the path. If not, the mount will simply not appear without any warnings.
+If you have problems - especially with absolute mounts - try to mount something "simple" like a relative path in fileadmin. If that is working well, try the absolute path.
+
+Your PHP-configuration may also impose other restrictions on you if open_basedir is enabled. Then use relative paths.</source>
+			<target state="final">Jei BASE nustatyta kaip santykinė, prijungiamas kelias randamas aplanke „fileadmin/" svetainėje. Tuomet turėtumėte įvesti poaplankį „fileadmin/" kaip kelią. Pavyzdžiui, jei norite prijungti prieigą prie „fileadmin/user_uploads/all/", įveskite reikšmę „user_uploads/all" kaip KELIO reikšmę. Jei BASE yra absoliuti, turėtumėte įvesti absoliutų kelią serveryje, pvz., „/home/ftp_upload" arba „C:/home/ftp_upload". Be to, turite įsitikinti, kad konfigūracijos kintamasis $TYPO3_CONF_VARS[BE][lockRootPath] apima pirmąją kelio, kurį norite prijungti, dalį. &lt;strong&gt;Pastaba:&lt;/strong&gt; Bet kuriuo atveju įsitikinkite, kad žiniatinklio serverio vartotojas, kaip kuris veikia PHP, turi &lt;em&gt;bent jau&lt;/em&gt; skaitymo prieigą prie kelio. Jei ne, prijungimo taškas tiesiog nepasirodys be jokių įspėjimų. Jei kyla problemų – ypač su absoliučiais prijungimo taškais – pabandykite prijungti ką nors „paprastą", pavyzdžiui, santykinį kelią fileadmin kataloge. Jei tai veikia gerai, išbandykite absoliutų kelią. Jūsų PHP konfigūracija taip pat gali nustatyti papildomus apribojimus, jei įjungtas open_basedir. Tokiu atveju naudokite santykinius kelius.</target></trans-unit>
+      <trans-unit id="_path.seeAlso" resname="_path.seeAlso" xml:space="preserve" approved="yes">
+				<source>sys_filemounts:base,
+be_groups:file_mountpoints,
+sys_filemounts</source>
+				
+			<target state="final">sys_filemounts:base,
+be_groups:file_mountpoints,
+sys_filemounts</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_path.image" resname="_path.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/be_groups_6.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_7.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_6.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_7.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="path.image_descr" resname="path.image_descr" xml:space="preserve" approved="yes">
+				<source>This is a filemount relative to "fileadmin/". The mounted folder is "fileadmin/user_upload/" since "user_upload" is the value of the "Path" field.
+The directory structure of "fileadmin/" where you can see the "user_upload" folder in the bottom of the list.</source>
+			<target state="final">Tai yra failų prijungimo taškas, santykinis „fileadmin/" atžvilgiu. Prijungtas aplankas yra „fileadmin/user_upload/", nes „user_upload" yra lauko „Kelias" reikšmė. „fileadmin/" katalogo struktūra, kurioje galite matyti „user_upload" aplanką sąrašo apačioje.</target></trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>All backend users using the mount will not have access anymore. This includes 'Admin'-users.</source>
+        <target state="final">Visi valdymo sąsajos vartotojai, naudojantys šį prijungimo tašką, nebegalės jo pasiekti. Tai apima ir „Admin" vartotojus.</target>
+      </trans-unit>
+      <trans-unit id="base.description" resname="base.description" approved="yes">
+        <source>Determines whether the value of the PATH field is to be recognized as an absolute path on the server or a path relative to the fileadmin/ subfolder to the website.</source>
+        <target state="final">Nustato, ar lauko KELIAS reikšmė turi būti atpažįstama kaip absoliutus kelias serveryje, ar kaip kelias, santykinis svetainės fileadmin/ poaplankio atžvilgiu.</target>
+      </trans-unit>
+      <trans-unit id="_base.seeAlso" resname="_base.seeAlso" approved="yes">
+        <source>sys_filemounts:path</source>
+        <target state="final">sys_filemounts:path</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="read_only.description" resname="read_only.description" approved="yes">
+        <source>Display this file mount as read-only.</source>
+        <target state="final">Rodyti šį failų prijungimo tašką tik skaitymui.</target>
+      </trans-unit>
+      <trans-unit id="read_only.details" resname="read_only.details" approved="yes">
+        <source>Read-only file mounts are displayed in the Filelist and the Element Browser. They allow displaying of files and folders which are neither writable nor editable for the user.</source>
+        <target state="final">Tik skaitymui skirti failų prijungimo taškai rodomi failų sąraše ir elementų naršyklėje. Jie leidžia rodyti failus ir aplankus, kurių vartotojas negali nei rašyti, nei redaguoti.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
