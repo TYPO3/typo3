@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="it">
+  <file id="f1">
+    <unit id="title">
+      <segment state="final">
+        <source>Status</source>
+        <target>Stato</target>
+      </segment>
+    </unit>
+    <unit id="short_description">
+      <segment state="final">
+        <source>Overview of site and page status information</source>
+        <target>Panoramica delle informazioni sullo stato del sito e della pagina</target>
+      </segment>
+    </unit>
+    <unit id="description">
+      <segment state="final">
+        <source>Review site and page information to assess the state and structure of your installation. Additional sections may be available depending on installed extensions and user permissions.</source>
+        <target>Esamina le informazioni del sito e della pagina per valutare lo stato e la struttura della tua installazione. Ulteriori sezioni possono essere disponibili a seconda delle estensioni installate e dei permessi dell'utente.</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
