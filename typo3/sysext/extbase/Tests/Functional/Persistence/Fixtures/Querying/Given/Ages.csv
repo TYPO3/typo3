@@ -1,0 +1,6 @@
+"tx_blogexample_domain_model_person"
+,"uid","pid","firstname","lastname","age"
+,1,2,"Alice","Adams",20
+,2,2,"Bert","Baker",30
+,3,2,"Cora","Clark","\NULL"
+,4,2,"Dana","Davis",0

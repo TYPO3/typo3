@@ -1,0 +1,6 @@
+"tx_blogexample_domain_model_post"
+,"uid","pid","title","date"
+,1,2,"Early",1600000000
+,2,2,"Boundary",1700000000
+,3,2,"Late",1800000000
+,4,2,"Unset",0

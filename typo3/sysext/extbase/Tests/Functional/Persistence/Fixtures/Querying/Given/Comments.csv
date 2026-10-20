@@ -1,0 +1,10 @@
+"tx_blogexample_domain_model_post"
+,"uid","pid","title","comments"
+,1,2,"Alpha",2
+,2,2,"Beta",1
+,3,2,"Gamma",0
+"tx_blogexample_domain_model_comment"
+,"uid","pid","post","author","email","content","date"
+,1,2,1,"Max","max@example.com","Praise","2026-01-26 10:00:00"
+,2,2,1,"Max","max@example.com","Question","2026-01-26 11:00:00"
+,3,2,2,"Max","max@example.com","Objection","2026-01-26 12:00:00"

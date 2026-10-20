@@ -1,0 +1,10 @@
+"tx_blogexample_domain_model_person"
+,"uid","pid","firstname","lastname"
+,1,2,"Mia","Meier"
+,2,2,"Anna","Albrecht"
+,3,2,"Zoe","Zimmermann"
+"tx_blogexample_domain_model_post"
+,"uid","pid","title","author"
+,1,2,"First",3
+,2,2,"Second",2
+,3,2,"Third",1

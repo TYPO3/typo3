@@ -1,0 +1,6 @@
+"pages"
+,"uid","pid","title","doktype","sorting","perms_everybody"
+,1,0,"Site",1,128,15
+,2,1,"Storage",254,128,15
+,3,2,"Storage subpage",254,128,15
+,4,3,"Storage sub-subpage",254,128,15
