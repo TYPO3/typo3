@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814989" source-language="en" datatype="plaintext" original="EXT:setup/Resources/Private/Language/locallang_csh_mod.xlf" date="2011-10-17T20:22:37Z" product-name="setup" target-language="ro">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>User &gt; Setup module</source>
+        <target state="final">Utilizator &gt; Modul Setări</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The Setup module allows the backend user to customize TYPO3 for his own login sessions. This includes the backend language and various other interface features.</source>
+        <target state="final">Modulul de Setări permite utilizatorului backend să customizeze TYPO3 aşa cum doreşte. Aceasta include limba de backend şi numeroase alte interfeţe şi dotări.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>&lt;b&gt;Notice [For Admins]:&lt;/b&gt; These settings can all be overridden or have their default values changed by "User TSconfig". To read more about this concept, see the link below!</source>
+        <target state="final">&lt;b&gt;Notă [Pentru administratori]:&lt;/b&gt; Aceste setări pot fi suprascrise sau pot avea valorile lor implicite modificate de către "TSconfig Utilizator". Pentru a afla mai multe, consultați linkul de mai jos!</target>
+      </trans-unit>
+      <trans-unit id="language.alttitle" resname="language.alttitle" approved="yes">
+        <source>Backend Language selection</source>
+        <target state="final">Selecţie limbă Backend</target>
+      </trans-unit>
+      <trans-unit id="language.description" resname="language.description" approved="yes">
+        <source>Select the backend language you prefer. Most parts of TYPO3s backend (for regular users) are translated into other languages.</source>
+        <target state="final">Selectaţi limba pe care doriţi să o folosiţi în Backend. Majoritatea părţilor din backendul TYPO3 sunt traduse şi în alte limbi (pentru utilizatori standard).</target>
+      </trans-unit>
+      <trans-unit id="language.image_descr" resname="language.image_descr" approved="yes">
+        <source>TYPO3 is translated into around 40 languages. English is the default language and all labels must be available in English first and foremost. This screenshot shows translations for Hebrew, Arabic, Russian and Chinese.</source>
+        <target state="final">TYPO3 este tradus în aproape 40 de limbi. Engleza este limba implicită și toate etichetele trebuie să fie mai întâi disponibile în Engleză. Această captură ecran vă afișează traduceri pentru Ebraică, Arabă, Rusă și Chineză.</target>
+      </trans-unit>
+      <trans-unit id="option_startModule.alttitle" resname="option_startModule.alttitle" approved="yes">
+        <source>Start module</source>
+        <target state="final">Modul start</target>
+      </trans-unit>
+      <trans-unit id="option_startModule.description" resname="option_startModule.description" xml:space="preserve" approved="yes">
+				<source>Let you select the module that is called when you login in the Backend
+The default module is "About Modules".</source>
+			<target state="final">Vă permite selectarea modulului care să fie apelat când vă logaţi în partea de Backend. Modulul implicit este "Despre module".</target></trans-unit>
+      <trans-unit id="option_showThumbs.alttitle" resname="option_showThumbs.alttitle" approved="yes">
+        <source>Show Thumbnails by default</source>
+        <target state="final">Arată thumbnailuri implicit</target>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.alttitle" resname="option_maxTitleLen.alttitle" approved="yes">
+        <source>Maximum title length</source>
+        <target state="final">Lungime maximă text</target>
+      </trans-unit>
+      <trans-unit id="option_copyLevels.alttitle" resname="option_copyLevels.alttitle" approved="yes">
+        <source>Recursive Copy</source>
+        <target state="final">Copiere recursivă</target>
+      </trans-unit>
+      <trans-unit id="option_copyLevels.description" resname="option_copyLevels.description" approved="yes">
+        <source>When you copy a page, subpages can also be copied along if you set this option. The number you set here defines the number of levels under a page to include in a copy operation.</source>
+        <target state="final">Când copiaţi o pagină, subpaginile pot fi şi ele copiate dacă selectaţi această opţiune. Numărul setat aici defineşte numărul de nivele aflate sub pagină care să fie incluse în operaţia de copiere.</target>
+      </trans-unit>
+      <trans-unit id="option_recursiveDelete.alttitle" resname="option_recursiveDelete.alttitle" approved="yes">
+        <source>Recursive Delete</source>
+        <target state="final">Ştergere recursivă</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.alttitle" resname="option_edit_RTE.alttitle" approved="yes">
+        <source>Enable Rich Text Editor</source>
+        <target state="final">Permite Editorul Rich Text</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.description" resname="option_edit_RTE.description" approved="yes">
+        <source>If set, the Rich Text Editor in TYPO3 will be enabled for you. Normally you wouldn't want to disable this option.</source>
+        <target state="final">Dacă e setat, Editorul Rich Text din TYPO3 va fi disponibil. În mod normal această opţiune ar trebui setată.</target>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.alttitle" resname="option_edit_docModuleUpload.alttitle" approved="yes">
+        <source>Enable File Uploads in editing forms</source>
+        <target state="final">Permite upload fişiere în formularele de editare</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas.alttitle" resname="option_resizeTextareas.alttitle" approved="yes">
+        <source>Make Textareas Resizable</source>
+        <target state="final">Permite redimensionarea zonelor de text</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas.description" resname="option_resizeTextareas.description" approved="yes">
+        <source>This option will make textareas resizable. You will see the resize mouse cursor if you move mouse to the outer border of textarea.</source>
+        <target state="final">Această opțiune vă permite redimensionarea zonelor de text. Veți vedea cursorul de redimensionare de îndată ce îl deplasați la marginile zonei de text.</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas_MaxHeight.alttitle" resname="option_resizeTextareas_MaxHeight.alttitle" approved="yes">
+        <source>Maximal Height of Textarea</source>
+        <target state="final">Înălțimea maximă a zonelor de text</target>
+      </trans-unit>
+      <trans-unit id="option_flexibleTextareas_MaxHeight.alttitle" resname="option_flexibleTextareas_MaxHeight.alttitle" approved="yes">
+        <source>Maximal Height of flexible textareas</source>
+        <target state="final">Înălțimea maximă a zonelor de text flexibile</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas_MaxHeight.description" resname="option_resizeTextareas_MaxHeight.description" approved="yes">
+        <source>Define the maximal height of textarea (in Pixel).</source>
+        <target state="final">Definire înălțime maximă a zonelor de text (în pixeli).</target>
+      </trans-unit>
+      <trans-unit id="option_flexibleTextareas_MaxHeight.description" resname="option_flexibleTextareas_MaxHeight.description" approved="yes">
+        <source>Define the maximal height of flexible textareas (in Pixel).</source>
+        <target state="final">Definire înălțime maximă a zonelor de text flexibile (în pixeli).</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas_Flexible.alttitle" resname="option_resizeTextareas_Flexible.alttitle" approved="yes">
+        <source>Make Textareas Flexible</source>
+        <target state="final">Zonele de text sunt flexibile</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas_Flexible.description" resname="option_resizeTextareas_Flexible.description" approved="yes">
+        <source>This option will make textareas flexible. The height will grow automatically while typing. Limit is the maximal height set (default 600).</source>
+        <target state="final">Această opțiune va face ca zonele de text să fie flexibile. Înălțimea lor va crește automat în timp ce scrieți text. Limita este valoarea maximă setată (implicit are valoarea 600).</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_realName.alttitle" resname="option_beUser_realName.alttitle" approved="yes">
+        <source>Your real name</source>
+        <target state="final">Numele real</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_realName.description" resname="option_beUser_realName.description" approved="yes">
+        <source>Enter your real name here.</source>
+        <target state="final">Introduceţi numele dumneavoastră aici.</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_email.alttitle" resname="option_beUser_email.alttitle" approved="yes">
+        <source>Your email address</source>
+        <target state="final">Adresa dumneavoastră de email</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_email.description" resname="option_beUser_email.description" approved="yes">
+        <source>Make sure this is a valid email address for you. This is the contact address that the backend administrator will use if he needs to contact you. Also, the TYPO3 system might need to send you messages at various times and this will be the recipient address.</source>
+        <target state="final">Asigurați-vă că această adresă de email este validă. Aceasta este adresa email de contact ce va fi folosită de administrator pentru a vă contacta. De asemenea, e posibil ca sistemul TYPO3 să aibă nevoie să vă trimită mesaje la anumite intervalede timp iar această adresă va fi folosită pentru comunicare.</target>
+      </trans-unit>
+      <trans-unit id="option_emailMeAtLogin.alttitle" resname="option_emailMeAtLogin.alttitle" approved="yes">
+        <source>Notify by login</source>
+        <target state="final">Notificare la conectare</target>
+      </trans-unit>
+      <trans-unit id="option_emailMeAtLogin.description" resname="option_emailMeAtLogin.description" approved="yes">
+        <source>If you set this option you will receive an email from TYPO3 each time you (or "someone") logs in using your username. You might like to receive such a "warning" as a security measure so you will know if someone else picks up your password and uses your account.</source>
+        <target state="final">Dacă setați această opțiune atunci veți primi un email de la TYPO3 de fiecare dată cînd dumneavoastră (sau altcineva) se va conecta folosind utilizatorul dumneavoastră. Veți dori probabil să primiți astfel de "notificări" ca și măsură de securitate pentru a vedea dacă altcineva vă știe parola și vă folosește contul.</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.alttitle" resname="option_newPassword.alttitle" approved="yes">
+        <source>Change password</source>
+        <target state="final">Schimbă parola</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.details" resname="option_newPassword.details" approved="yes">
+        <source>The passwords are encrypted to an MD5 hash when you leave the field so no plain text password is sent over the wire.</source>
+        <target state="final">Parolele sunt criptate la un hash MD5 când părăsiţi câmpul, astfel că parola nu e trimisă ca şi text.</target>
+      </trans-unit>
+      <trans-unit id="option_newPasswordAgain.alttitle" resname="option_newPasswordAgain.alttitle" approved="yes">
+        <source>Change password, confirm</source>
+        <target state="final">Schimbare parolă, confirmaţi</target>
+      </trans-unit>
+      <trans-unit id="option_newPasswordAgain.description" resname="option_newPasswordAgain.description" approved="yes">
+        <source>Confirm the new password by entering it again, exactly like above. If the two new passwords do not match, the password will not be changed.</source>
+        <target state="final">Confirmaţi noua parolă reintroducând-o, exact ca mai sus. Dacă cele două parole nu se potrivesc, parola nu va fi schimbată.</target>
+      </trans-unit>
+      <trans-unit id="reset.alttitle" resname="reset.alttitle" approved="yes">
+        <source>Reset all Values to default</source>
+        <target state="final">Resetare toate valorile la cele implicite</target>
+      </trans-unit>
+      <trans-unit id="reset.description" resname="reset.description" approved="yes">
+        <source>If you select this option all settings in this module will be reset to the default settings of the system.</source>
+        <target state="final">Dacă selectaţi această opţiune toate setările din acest modul vor fi resetate la cele implicite.</target>
+      </trans-unit>
+      <trans-unit id="reset.details" resname="reset.details" approved="yes">
+        <source>This does not apply to user name, email and password settings of course.</source>
+        <target state="final">Aceasta nu se aplică numelui de utilizator, adresei de email şi parolei.</target>
+      </trans-unit>
+      <trans-unit id="simuser.alttitle" resname="simuser.alttitle" approved="yes">
+        <source>Simulate backend user</source>
+        <target state="final">Simulare utilizator backend</target>
+      </trans-unit>
+      <trans-unit id="simuser.description" resname="simuser.description" approved="yes">
+        <source>This option allows "admin"-users to change settings for another backend user in the system.</source>
+        <target state="final">Această opțiune permite utilizatorilor "admin" să modifice setările pentru un alt utilizator backend din sistem.</target>
+      </trans-unit>
+      <trans-unit id="option_enableInstallTool.alttitle" resname="option_enableInstallTool.alttitle" approved="yes">
+        <source>Admin control for re-enabling Install Tool access</source>
+        <target state="final">Control administrator pentru reactivarea accesului la Unealta de Instalare</target>
+      </trans-unit>
+      <trans-unit id="option_enableInstallTool.description" resname="option_enableInstallTool.description" approved="yes">
+        <source>By clicking this button, a file typo3conf/ENABLE_INSTALL_TOOL is created (or removed if it already exists). It unlocks the access to the Install Tool (password is still needed!) and will be removed automatically after 1 hour.</source>
+        <target state="final">Apăsând pe acest buton, un fișier typo3conf/ENABLE_INSTALL_TOOL va fi creat (sau șters dacă există deja). Fișierul va debloca accesul la Unealta de Instalare (o parolă este încă necesară pentru acces!) și va fi șters automat peste 1 oră.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
