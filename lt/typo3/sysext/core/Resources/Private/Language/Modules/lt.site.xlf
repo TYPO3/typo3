@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Modules/site.xlf" date="2025-11-10T13:37:37Z" product-name="site" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Sites</source>
+        <target state="final">Svetainės</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Configuration and management tools for sites</source>
+        <target state="final">Svetainių konfigūravimo ir valdymo įrankiai</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>This module provides access to all configured sites within the installation. It offers an overview of domains, routing behavior, language setups, and site-related settings. From here, you can quickly navigate to the configuration of individual sites and manage multi-site environments.</source>
+        <target state="final">Šis modulis suteikia prieigą prie visų sistemoje sukonfigūruotų svetainių. Jame pateikiama domenų, maršrutizavimo veikimo, kalbų nustatymų ir su svetainėmis susijusių parametrų apžvalga. Iš čia galite greitai pereiti prie atskirų svetainių konfigūracijos ir valdyti kelių svetainių aplinkas.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
