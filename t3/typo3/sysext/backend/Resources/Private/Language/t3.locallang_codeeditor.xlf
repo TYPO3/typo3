@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_codeeditor.xlf" date="2023-11-20T10:56:42Z" product-name="backend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="pageIDInteger">
+        <source>Syntax error: Parameter pageID must be a valid integer.</source>
+        <target>crwdns297842:0crwdne297842:0</target>
+      </trans-unit>
+      <trans-unit id="noPermission">
+        <source>Access denied: No permission to template records.</source>
+        <target>crwdns297844:0crwdne297844:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
