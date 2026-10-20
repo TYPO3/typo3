@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="de">
+  <file id="f1">
+    <unit id="title">
+      <segment state="final">
+        <source>Administration</source>
+        <target>Verwaltung</target>
+      </segment>
+    </unit>
+    <unit id="short_description">
+      <segment state="final">
+        <source>Manage users, permissions, integrations, and other administrative functions.</source>
+        <target>Verwalten Sie Benutzer, Berechtigungen, Integrationen und andere Verwaltungsfunktionen.</target>
+      </segment>
+    </unit>
+    <!-- intentionally left blank, not utilized (for now) -->
+    <unit id="description">
+      <segment state="final">
+        <source/>
+        <target>&lt;source/&gt;</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
