@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_bookmarks.xlf" date="2025-01-08T00:00:00Z" product-name="lang" target-language="ro">
+    <header/>
+    <body>
+      <!-- Group labels -->
+      <!-- UI labels -->
+      <!-- Success notifications for bookmarks -->
+      <!-- Success notifications for groups -->
+      <!-- Error notifications for bookmarks -->
+      <!-- Error notifications for groups -->
+      <!-- Button labels -->
+      <!-- Edit view labels -->
+      <!-- Confirmation dialogs -->
+      <!-- Manager view labels -->
+    </body>
+  </file>
+</xliff>
