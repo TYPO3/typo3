@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814894" source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="linkvalidator" resname="linkvalidator">
+        <source>Link validator</source>
+        <target>crwdns77500:0crwdne77500:0</target>
+      </trans-unit>
+      <trans-unit id="menu.introduction" resname="menu.introduction">
+        <source>Introduction</source>
+        <target>crwdns77502:0crwdne77502:0</target>
+      </trans-unit>
+      <trans-unit id="menu.checkLinks" resname="menu.checkLinks">
+        <source>Check Links for validity</source>
+        <target>crwdns77504:0crwdne77504:0</target>
+      </trans-unit>
+      <trans-unit id="menu.overview" resname="menu.overview">
+        <source>Overview of links on website</source>
+        <target>crwdns77506:0crwdne77506:0</target>
+      </trans-unit>
+      <trans-unit id="overview.header" resname="overview.header">
+        <source>Overview - choose options to check the links</source>
+        <target>crwdns77508:0crwdne77508:0</target>
+      </trans-unit>
+      <trans-unit id="overview.all.header" resname="overview.all.header">
+        <source>Total amounts in tt_content</source>
+        <target>crwdns77510:0crwdne77510:0</target>
+      </trans-unit>
+      <trans-unit id="overview.all.records" resname="overview.all.records">
+        <source>Records with ext. links</source>
+        <target>crwdns77512:0crwdne77512:0</target>
+      </trans-unit>
+      <trans-unit id="overview.all.links" resname="overview.all.links">
+        <source>External links</source>
+        <target>crwdns77514:0crwdne77514:0</target>
+      </trans-unit>
+      <trans-unit id="overview.branch.header" resname="overview.branch.header">
+        <source>Amounts from actual branch in tt_content</source>
+        <target>crwdns77516:0crwdne77516:0</target>
+      </trans-unit>
+      <trans-unit id="overview.branch.records" resname="overview.branch.records">
+        <source>Records with ext. links</source>
+        <target>crwdns77518:0crwdne77518:0</target>
+      </trans-unit>
+      <trans-unit id="overview.branch.links" resname="overview.branch.links">
+        <source>External links</source>
+        <target>crwdns77520:0crwdne77520:0</target>
+      </trans-unit>
+      <trans-unit id="overview.attention.header" resname="overview.attention.header">
+        <source>Attention</source>
+        <target>crwdns77522:0crwdne77522:0</target>
+      </trans-unit>
+      <trans-unit id="overview.attention.text" resname="overview.attention.text">
+        <source>Checking links may take up to several minutes. Checking ONE link can last up to 3 seconds.</source>
+        <target>crwdns77524:0crwdne77524:0</target>
+      </trans-unit>
+      <trans-unit id="Report" resname="Report">
+        <source>Report</source>
+        <target>crwdns77526:0crwdne77526:0</target>
+      </trans-unit>
+      <trans-unit id="CheckLink" resname="CheckLink">
+        <source>Check Links</source>
+        <target>crwdns77528:0crwdne77528:0</target>
+      </trans-unit>
+      <trans-unit id="report.statistics.header" resname="report.statistics.header">
+        <source>Show these types of broken links</source>
+        <target>crwdns77530:0crwdne77530:0</target>
+      </trans-unit>
+      <trans-unit id="checklinks.statistics.header" resname="checklinks.statistics.header">
+        <source>Check these types of broken links</source>
+        <target>crwdns77532:0crwdne77532:0</target>
+      </trans-unit>
+      <trans-unit id="report.func.title" resname="report.func.title">
+        <source>Show this level</source>
+        <target>crwdns77534:0crwdne77534:0</target>
+      </trans-unit>
+      <trans-unit id="checklinks.func.title" resname="checklinks.func.title">
+        <source>Check this level</source>
+        <target>crwdns77536:0crwdne77536:0</target>
+      </trans-unit>
+      <trans-unit id="overviews.nbtotal" resname="overviews.nbtotal">
+        <source>Broken links total</source>
+        <target>crwdns77538:0crwdne77538:0</target>
+      </trans-unit>
+      <trans-unit id="hooks.db" resname="hooks.db">
+        <source>Internal Links</source>
+        <target>crwdns77540:0crwdne77540:0</target>
+      </trans-unit>
+      <trans-unit id="hooks.file" resname="hooks.file">
+        <source>File Links</source>
+        <target>crwdns77542:0crwdne77542:0</target>
+      </trans-unit>
+      <trans-unit id="hooks.external" resname="hooks.external">
+        <source>External Links</source>
+        <target>crwdns77544:0crwdne77544:0</target>
+      </trans-unit>
+      <trans-unit id="hooks.linkhandler" resname="hooks.linkhandler">
+        <source>Linkhandler Links</source>
+        <target>crwdns77546:0crwdne77546:0</target>
+      </trans-unit>
+      <trans-unit id="label_refresh" resname="label_refresh">
+        <source>Refresh display</source>
+        <target>crwdns77548:0crwdne77548:0</target>
+      </trans-unit>
+      <trans-unit id="label_update" resname="label_update">
+        <source>Check links</source>
+        <target>crwdns77550:0crwdne77550:0</target>
+      </trans-unit>
+      <trans-unit id="list.header" resname="list.header">
+        <source>Listing of broken links</source>
+        <target>crwdns77552:0crwdne77552:0</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.path" resname="list.tableHead.path">
+        <source>Path</source>
+        <target>crwdns77554:0crwdne77554:0</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.element" resname="list.tableHead.element">
+        <source>Element</source>
+        <target>crwdns77556:0crwdne77556:0</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.headlink" resname="list.tableHead.headlink">
+        <source>Link</source>
+        <target>crwdns77558:0crwdne77558:0</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.linktarget" resname="list.tableHead.linktarget">
+        <source>URL / Link Target</source>
+        <target>crwdns77560:0crwdne77560:0</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.linkmessage" resname="list.tableHead.linkmessage">
+        <source>Error message</source>
+        <target>crwdns77562:0crwdne77562:0</target>
+      </trans-unit>
+      <trans-unit id="list.tableHead.lastCheck" resname="list.tableHead.lastCheck">
+        <source>Last check</source>
+        <target>crwdns77564:0crwdne77564:0</target>
+      </trans-unit>
+      <trans-unit id="list.edit" resname="list.edit">
+        <source>Edit element containing this broken link</source>
+        <target>crwdns77566:0crwdne77566:0</target>
+      </trans-unit>
+      <trans-unit id="list.field" resname="list.field">
+        <source>(Field: %s)</source>
+        <target>crwdns77568:0%scrwdne77568:0</target>
+      </trans-unit>
+      <trans-unit id="list.no.headline" resname="list.no.headline">
+        <source>no headline</source>
+        <target>crwdns77570:0crwdne77570:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagedeleted" resname="list.report.pagedeleted">
+        <source>Page '###title###' (###uid###) is deleted.</source>
+        <target>crwdns77572:0crwdne77572:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagenotvisible" resname="list.report.pagenotvisible">
+        <source>Page '###title###' (###uid###) is not visible.</source>
+        <target>crwdns77574:0crwdne77574:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagenotexisting" resname="list.report.pagenotexisting">
+        <source>Page (###uid###) does not exist.</source>
+        <target>crwdns77576:0crwdne77576:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentmoved" resname="list.report.contentmoved">
+        <source>Element '###title###' (###uid###) is not located on page ###wrongpage###, but on page ###rightpage###.</source>
+        <target>crwdns77578:0crwdne77578:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentdeleted" resname="list.report.contentdeleted">
+        <source>Element '###title###' (###uid###) is deleted.</source>
+        <target>crwdns77580:0crwdne77580:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentnotvisible" resname="list.report.contentnotvisible">
+        <source>Element '###title###' (###uid###) is not visible.</source>
+        <target>crwdns77582:0crwdne77582:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.contentnotexisting" resname="list.report.contentnotexisting">
+        <source>Element (###uid###) does not exist.</source>
+        <target>crwdns77584:0crwdne77584:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.rownotvisible" resname="list.report.rownotvisible">
+        <source>###title### row (###uid###) is not visible.</source>
+        <target>crwdns77586:0crwdne77586:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.rowdeleted" resname="list.report.rowdeleted">
+        <source>###title### row (###uid###) is deleted.</source>
+        <target>crwdns77588:0crwdne77588:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.rowdeleted.default.title" resname="list.report.rowdeleted.default.title">
+        <source>Linked</source>
+        <target>crwdns77590:0crwdne77590:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.rownotexisting" resname="list.report.rownotexisting">
+        <source>Row (###uid###) does not exist.</source>
+        <target>crwdns77592:0crwdne77592:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.noinformation" resname="list.report.noinformation">
+        <source>No information about the error is available.</source>
+        <target>crwdns77594:0crwdne77594:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.noresponse" resname="list.report.noresponse">
+        <source>External Link not reachable.</source>
+        <target>crwdns77596:0crwdne77596:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.redirectloop" resname="list.report.redirectloop">
+        <source>A redirect loop occurred. (%s: %s)</source>
+        <target>crwdns77598:0%scrwdnd77598:0%scrwdne77598:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.pageforbidden403" resname="list.report.pageforbidden403">
+        <source>Accessing this address is not allowed (403).</source>
+        <target>crwdns77600:0crwdne77600:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.pagenotfound404" resname="list.report.pagenotfound404">
+        <source>The requested url was not found (404).</source>
+        <target>crwdns77602:0crwdne77602:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.externalerror" resname="list.report.externalerror">
+        <source>External Link returned HTTP error code (%s).</source>
+        <target>crwdns77604:0%scrwdne77604:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.filenotexisting" resname="list.report.filenotexisting">
+        <source>File doesn't exist.</source>
+        <target>crwdns77606:0crwdne77606:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.timeout" resname="list.report.timeout">
+        <source>Operation timeout. The specified time-out period was reached according to the conditions.</source>
+        <target>crwdns77608:0crwdne77608:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.internalerror500" resname="list.report.internalerror500">
+        <source>Internal Server Error (500)</source>
+        <target>crwdns77610:0crwdne77610:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.couldnotresolvehost" resname="list.report.couldnotresolvehost">
+        <source>Could not resolve host. The given remote host was not resolved.</source>
+        <target>crwdns77612:0crwdne77612:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.errornetworkdata" resname="list.report.errornetworkdata">
+        <source>Failure with receiving network data.</source>
+        <target>crwdns77614:0crwdne77614:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.otherhttpcode" resname="list.report.otherhttpcode">
+        <source>An error occurred (%s): "%s".</source>
+        <target>crwdns77616:0%scrwdnd77616:0%scrwdne77616:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.httpexception" resname="list.report.httpexception">
+        <source>Exception: %s</source>
+        <target>crwdns77618:0%scrwdne77618:0</target>
+      </trans-unit>
+      <trans-unit id="list.report.networkexception" resname="list.report.networkexception">
+        <source>Network error / invalid domain</source>
+        <target>crwdns77620:0crwdne77620:0</target>
+      </trans-unit>
+      <trans-unit id="list.msg.ok" resname="list.msg.ok">
+        <source>Ok</source>
+        <target>crwdns77622:0crwdne77622:0</target>
+      </trans-unit>
+      <trans-unit id="list.msg.lastRun" resname="list.msg.lastRun">
+        <source>%1$s %2$s</source>
+        <target>crwdns77624:0%1$scrwdnd77624:0%2$scrwdne77624:0</target>
+      </trans-unit>
+      <trans-unit id="list.no.broken.links.title" resname="list.no.broken.links.title">
+        <source>No broken links to show!</source>
+        <target>crwdns77626:0crwdne77626:0</target>
+      </trans-unit>
+      <trans-unit id="list.no.broken.links" resname="list.no.broken.links">
+        <source>There are no broken links to be displayed.</source>
+        <target>crwdns77628:0crwdne77628:0</target>
+      </trans-unit>
+      <trans-unit id="no.access.title" resname="no.access.title">
+        <source>No access!</source>
+        <target>crwdns77630:0crwdne77630:0</target>
+      </trans-unit>
+      <trans-unit id="no.access" resname="no.access">
+        <source>You do not have access to these listings.</source>
+        <target>crwdns77632:0crwdne77632:0</target>
+      </trans-unit>
+      <trans-unit id="label_update-link-list" resname="label_update-link-list">
+        <source>Checking links, please stand by.</source>
+        <target>crwdns77634:0crwdne77634:0</target>
+      </trans-unit>
+      <trans-unit id="label_refresh-link-list" resname="label_refresh-link-list">
+        <source>Refreshing link list, please stand by.</source>
+        <target>crwdns77636:0crwdne77636:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
