@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:belog/Resources/Private/Language/module.xlf" date="2025-11-10T13:37:37Z" product-name="belog" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Log</source>
+        <target state="final">Protokoll</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Viewing log</source>
+        <target state="final">Protokoll anzeigen</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Allows you access to the full backend changelog in TYPO3.</source>
+        <target state="final">Ermöglicht dir den Zugriff auf das vollständige Backend-Änderungsprotokoll in TYPO3.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
