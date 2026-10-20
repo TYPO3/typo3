@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1521629231" source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf" date="2018-03-21T11:47:00Z" product-name="adminpanel" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="module.label" resname="module.label" approved="yes">
+        <source>Debug</source>
+        <target state="final">डिबग</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.label" resname="submodule.log.label" approved="yes">
+        <source>Log</source>
+        <target state="final">लॉग</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.message" resname="submodule.log.message" approved="yes">
+        <source>Log Message</source>
+        <target state="final">लॉग संदेश</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.component" resname="submodule.log.component" approved="yes">
+        <source>Component</source>
+        <target state="final">कंपोनेंन्‍ट</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.level" resname="submodule.log.level" approved="yes">
+        <source>Level</source>
+        <target state="final">स्तर</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByComponent" resname="submodule.log.groupByComponent" approved="yes">
+        <source>Group by Component</source>
+        <target state="final">कम्पोनेंट द्वारा समूह</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByLevel" resname="submodule.log.groupByLevel" approved="yes">
+        <source>Group by Level</source>
+        <target state="final">स्तर द्वारा समूह</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.startLevel" resname="submodule.log.startLevel" approved="yes">
+        <source>Display only levels equal or higher to</source>
+        <target state="final">केवल समान या उच्च स्तर प्रदर्शित करें</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.noEntries" resname="submodule.log.noEntries" approved="yes">
+        <source>No log entries.</source>
+        <target state="final">कोई लॉग एंट्री नहीं।</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.label" resname="submodule.queryInformation.label" approved="yes">
+        <source>Query Information</source>
+        <target state="final">सवालकी जानकारी</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.query" resname="submodule.queryInformation.query" approved="yes">
+        <source>Query</source>
+        <target state="final">क्वेरी</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queries" resname="submodule.queryInformation.queries" approved="yes">
+        <source>Queries</source>
+        <target state="final">प्रश्न</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.backtrace" resname="submodule.queryInformation.backtrace" approved="yes">
+        <source>Backtrace</source>
+        <target state="final">बैक्ट्रिस</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.doctrineDebug" resname="submodule.queryInformation.doctrineDebug" approved="yes">
+        <source>SQL Debug</source>
+        <target state="final">SQL डीबग</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.sqlQuery" resname="submodule.queryInformation.sqlQuery" approved="yes">
+        <source>SQL Query</source>
+        <target state="final">SQL क्वेरी</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryCount" resname="submodule.queryInformation.queryCount" approved="yes">
+        <source>Count</source>
+        <target state="final">गिनती</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryTime" resname="submodule.queryInformation.queryTime" approved="yes">
+        <source>Total Time [ms]</source>
+        <target state="final">कुल समय [ms]</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
