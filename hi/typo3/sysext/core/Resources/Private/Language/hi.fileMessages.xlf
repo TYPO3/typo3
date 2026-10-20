@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1447138381" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/fileMessages.xlf" date="2015-11-10T06:53:10Z" product-name="core" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="FileUtility.CannotCopyFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeCopied" resname="FileUtility.CannotCopyFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeCopied" approved="yes">
+        <source>Cannot copy folder "%s" into target folder "%s", because the target folder is already within the folder to be copied!</source>
+        <target state="final">फ़ोल्डर "%s" को लक्ष्य फ़ोल्डर "%s" में कॉपी नहीं कर सकते, क्योकि लक्ष्य फ़ोल्डर पहले से ही उस फोल्डर में हे जो कॉपी किया जा रहा है!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CannotMoveFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeMoved" resname="FileUtility.CannotMoveFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeMoved" approved="yes">
+        <source>Cannot move folder "%s" into target folder "%s", because the target folder is already within the folder to be moved!</source>
+        <target state="final">फ़ोल्डर "%s" को लक्ष्य फ़ोल्डर "%s" में नहीं भेज सकते, क्योकि लक्ष्य फ़ोल्डर पहले से ही उस फोल्डर में हे जहा फोल्डर को भेज रहे है!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotAccessAllNecessaryResources" resname="FileUtility.CouldNotAccessAllNecessaryResources" approved="yes">
+        <source>Could not access all necessary resources. Source file or destination maybe was not within your mountpoints? T="%s", D="%s"</source>
+        <target state="final">सभी आवश्यक संसाधनों का उपयोग नहीं कर सकते। हो सकता है डेस्टिनेशन या सोर्स फ़ाइल आपके माउंट-पॉइंट्स के भीतर नहीं हो? T="%s", D="%s"</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteDirectory" resname="FileUtility.CouldNotDeleteDirectory" approved="yes">
+        <source>Could not delete directory! Is directory "%s" empty? (You are not allowed to delete directories recursively).</source>
+        <target state="final">डायरेक्टरी को डिलीट नहीं किया जा सका! क्या डायरेक्टरी "%s" खाली है? (आपको बारी बारी से डायरेक्टरी को डिलीट करने की अनुमति नहीं हैं)।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteDirectory1" resname="FileUtility.CouldNotDeleteDirectory1" approved="yes">
+        <source>Could not delete directory "%s"! There might be a problem with write permissions.</source>
+        <target state="final">डायरेक्टरी "%s" को डिलीट नहीं किया जा सका! वहाँ लिखने की अनुमति के साथ एक समस्या हो सकती है।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteFile" resname="FileUtility.CouldNotDeleteFile" approved="yes">
+        <source>Could not delete file "%s". There might be a problem with write permissions.</source>
+        <target state="final">फाइल "%s" को डिलीट नहीं किया जा सका! वहाँ लिखने की अनुमति के साथ एक समस्या हो सकती है।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationExistedAlready" resname="FileUtility.DestinationExistedAlready" approved="yes">
+        <source>Destination "%s" already exists!</source>
+        <target state="final">डेस्टिनेशन "%s" पहले से ही मौजूद है!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationPathWasNotWithinYourMountpoints" resname="FileUtility.DestinationPathWasNotWithinYourMountpoints" approved="yes">
+        <source>Destination path "%s" was not within your mountpoints!</source>
+        <target state="final">डेस्टिनेशन पाथ"%s" आपके माउंट-पॉइंट्स के भीतर नहीं था!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationWasNotADirectory" resname="FileUtility.DestinationWasNotADirectory" approved="yes">
+        <source>Destination "%s" was not a directory.</source>
+        <target state="final">डेस्टिनेशन "%s" एक डायरेक्टरी नहीं थीा।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryCopiedTo" resname="FileUtility.DirectoryCopiedTo" approved="yes">
+        <source>Directory "%s" copied to "%s".</source>
+        <target state="final">डायरेक्टरी "%s", को "%s" में कॉपी की।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryCreatedIn" resname="FileUtility.DirectoryCreatedIn" approved="yes">
+        <source>Directory "%s" created in "%s".</source>
+        <target state="final">डायरेक्टरी "%s", को "%s" में बनाया।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryMovedTo" resname="FileUtility.DirectoryMovedTo" approved="yes">
+        <source>Directory "%s" moved to "%s".</source>
+        <target state="final">डायरेक्टरी "%s",को "%s" में भेजी।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryNotCreated" resname="FileUtility.DirectoryNotCreated" approved="yes">
+        <source>Directory "%s" not created. There might be a problem with write permissions in "%s"?</source>
+        <target state="final">डायरेक्टरी "%s" को बनाया नहीं जा सका। "%s" में लिखने की अनुमति के साथ एक समस्या हो सकती है।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedFromTo" resname="FileUtility.DirectoryRenamedFromTo" approved="yes">
+        <source>Directory renamed from "%s" to "%s".</source>
+        <target state="final">डायरेक्टरी का नाम बदल के "%s" से "%s" किया गयाा।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedSameName" resname="FileUtility.DirectoryRenamedSameName" approved="yes">
+        <source>Directory "%s" was not renamed. (Same name as before)</source>
+        <target state="final">डायरेक्टरी "%s" का नाम बदला नहीं गया हैं|</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotCopiedTo" resname="FileUtility.DirectoryWasNotCopiedTo" approved="yes">
+        <source>Directory "%s" WAS NOT copied to "%s"! There might be a problem with write permissions</source>
+        <target state="final">डायरेक्टरी "%s" को "%s" में कॉपी नहीं किया जा सका! वहाँ लिखने की अनुमति के साथ एक समस्या हो सकती है।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotMovedTo" resname="FileUtility.DirectoryWasNotMovedTo" approved="yes">
+        <source>Directory "%s" WAS NOT moved to "%s"! There might be a problem with write permissions</source>
+        <target state="final">डायरेक्टरी "%s" को "%s" में नहीं भेजा जा सका! वहाँ लिखने की अनुमति के साथ एक समस्या हो सकती है।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotRenamed" resname="FileUtility.DirectoryWasNotRenamed" approved="yes">
+        <source>Directory "%s" was not renamed! There might be a problem with write permissions in "%s"?</source>
+        <target state="final">डायरेक्टरी "%s" का नाम नहीं बदला जा सका! "%s" में लिखने की अनुमति के साथ एक समस्या हो सकती है।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileNameIsNotAllowedIn" resname="FileUtility.ExtensionOfFileNameIsNotAllowedIn" approved="yes">
+        <source>Extension of file name "%s" is not allowed in "%s"!</source>
+        <target state="final">फ़ाइल नाम "%s" के एक्सटेंशन, की "%s" में अनुमति नहीं है!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileNameOrWasNotAllowed" resname="FileUtility.ExtensionOfFileNameOrWasNotAllowed" approved="yes">
+        <source>Extension of file name "%s" or "%s" was not allowed!</source>
+        <target state="final">फ़ाइल नाम "%s" या "%s" के एक्सटेंशन की अनुमति नहीं थी!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileWasNotAllowed" resname="FileUtility.ExtensionOfFileWasNotAllowed" approved="yes">
+        <source>Extension of file "%s" was not allowed!</source>
+        <target state="final">फ़ाइल "%s" के एक्सटेंशन की अनुमति नहीं थी!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileAlreadyExistsInFolder" resname="FileUtility.FileAlreadyExistsInFolder" approved="yes">
+        <source>File "%s" already exists in folder "%s"!</source>
+        <target state="final">फ़ाइल "%s" पहले से ही फ़ोल्डर "%s" में मौजूद है!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileCopiedTo" resname="FileUtility.FileCopiedTo" approved="yes">
+        <source>File "%s" copied to "%s".</source>
+        <target state="final">फ़ाइल "%s", को "%s" में कॉपी की।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileCreated" resname="FileUtility.FileCreated" approved="yes">
+        <source>File created: "%s".</source>
+        <target state="final">बनाई गई फ़ाइल: "%s"।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExistedAlreadyIn" resname="FileUtility.FileExistedAlreadyIn" approved="yes">
+        <source>File existed already in "%s"!</source>
+        <target state="final">फ़ाइल, "%s" में पहले से ही मौजूद है!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExtensionIsNotATextfileFormat" resname="FileUtility.FileExtensionIsNotATextfileFormat" approved="yes">
+        <source>File extension "%s" is not a textfile format! (%s).</source>
+        <target state="final">फाइल एक्सटेंशन "%s" टेक्स्ट फ़ाइल स्वरूप नहीं है! (%s)।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExtensionIsNotzip" resname="FileUtility.FileExtensionIsNotzip" approved="yes">
+        <source>File extension is not "zip".</source>
+        <target state="final">फाइल एक्सटेंशन "zip" नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileMovedTo" resname="FileUtility.FileMovedTo" approved="yes">
+        <source>File "%s" moved to "%s".</source>
+        <target state="final">फाइल "%s", को "%s" में ले जाया गया है "।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileNameWasNotAllowed" resname="FileUtility.FileNameWasNotAllowed" approved="yes">
+        <source>File name "%s" was not allowed!</source>
+        <target state="final">फ़ाइल नाम "%s" की अनुमति नहीं थी!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileOrDestinationWasNotWithinYourMountpoints" resname="FileUtility.FileOrDestinationWasNotWithinYourMountpoints" approved="yes">
+        <source>File "%s" or destination "%s" was not within your mountpoints!</source>
+        <target state="final">फाइल "%s" या डेस्टिनेशन "%s" आपके माउंट-पॉइंट्स के भीतर नहीं था!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileOrDirectoryExistedAlready" resname="FileUtility.FileOrDirectoryExistedAlready" approved="yes">
+        <source>File or directory "%s" already exists!</source>
+        <target state="final">फ़ाइल या डायरेक्टरी "%s" पहले से मौजूद है!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileRenamedFromTo" resname="FileUtility.FileRenamedFromTo" approved="yes">
+        <source>File renamed from "%s" to "%s".</source>
+        <target state="final">फ़ाइल का नाम बदल कर "%s" से "%s" किया गया।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileRenamedSameName" resname="FileUtility.FileRenamedSameName" approved="yes">
+        <source>File "%s" was not renamed. (Same name as before)</source>
+        <target state="final">फाइल "%s" का नाम बदला नहीं गया हैं| (पुराना नाम हि है )</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileSavedToBytesMd5" resname="FileUtility.FileSavedToBytesMd5" approved="yes">
+        <source>File saved to "%s", bytes: %s, MD5: %s.</source>
+        <target state="final">फाइल को, "%s" में सेव किया गया, बीट्स:"%s" MD5:"%s"।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotCopiedTo" resname="FileUtility.FileWasNotCopiedTo" approved="yes">
+        <source>File "%s" WAS NOT copied to "%s"! There might be a problem with write permissions.</source>
+        <target state="final">फाइल "%s" को "%s" में कॉपी नहीं की गई थी! वहाँ में लिखने की अनुमति के साथ एक समस्या हो सकती है।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotCreated" resname="FileUtility.FileWasNotCreated" approved="yes">
+        <source>File "%s" was not created! There might be a problem with write permissions in "%s"?</source>
+        <target state="final">फाइल "%s" नहीं बनाई गई थी! "%s" में लिखने की अनुमति के साथ एक समस्या हो सकती है?</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotRenamed" resname="FileUtility.FileWasNotRenamed" approved="yes">
+        <source>File "%s" was not renamed! There might be a problem with write permissions in "%s"?</source>
+        <target state="final">फाइल "%s" का नाम नहीं बदला गया था! "%s" में लिखने की अनुमति के साथ एक समस्या हो सकती है?</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotSaved" resname="FileUtility.FileWasNotSaved" approved="yes">
+        <source>File "%s" was not saved! There might be a problem with write permissions.</source>
+        <target state="final">फाइल "%s" को सेव नहीं की गई थी! वहाँ लिखने की अनुमति के साथ एक समस्या हो सकती हैैं।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotSaved2" resname="FileUtility.FileWasNotSaved2" approved="yes">
+        <source>File "%s" was not saved! File extension rejected!</source>
+        <target state="final">फाइल "%s" को सेव नहीं की गई थी! फाइल एक्सटेंशन रद्द कर दिया!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoFileWasUploaded" resname="FileUtility.NoFileWasUploaded" approved="yes">
+        <source>No file was uploaded!</source>
+        <target state="final">कोई फाइल अपलोड नहीं की गई थी!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoFileWasUploadedForReplacing" resname="FileUtility.NoFileWasUploadedForReplacing" approved="yes">
+        <source>No file was uploaded for replacing!</source>
+        <target state="final">रिप्लेसिंग के लिए कोई फाइल अपलोड नहीं की गई थी!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoNameForNewFolderGiven" resname="FileUtility.NoNameForNewFolderGiven" approved="yes">
+        <source>No name for new folder given!</source>
+        <target state="final">नए फ़ोल्डर के लिए कोई नाम नहीं दिया गया था!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoUniqueFilenameAvailableIn" resname="FileUtility.NoUniqueFilenameAvailableIn" approved="yes">
+        <source>No unique filename available in "%s"!</source>
+        <target state="final">"%s" में कोई यूनिक फ़ाइल नाम उपलब्ध नहीं है!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ReplacingFileTo" resname="FileUtility.ReplacingFileTo" approved="yes">
+        <source>Replacing file "%s" to "%s".</source>
+        <target state="final">फाइल "%s" को "%s" से बदले।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetAlreadyExists" resname="FileUtility.TargetAlreadyExists" approved="yes">
+        <source>Target "%s" already exists!</source>
+        <target state="final">लक्ष्य "%s" पहले से ही मौजूद है!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetWasNotAFile" resname="FileUtility.TargetWasNotAFile" approved="yes">
+        <source>Target "%s" was not a file!</source>
+        <target state="final">लक्ष्य "%s" फ़ाइल नहीं थी!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetWasNotWithinYourMountpoints" resname="FileUtility.TargetWasNotWithinYourMountpoints" approved="yes">
+        <source>Target was not within your mountpoints! T="%s".</source>
+        <target state="final">लक्ष्य अापके माउंट-पॉइंट्स के भीतर नहीं था! T="%s"।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFileDidNotExist" resname="FileUtility.TheFileDidNotExist" approved="yes">
+        <source>The file "%s" did not exist!</source>
+        <target state="final">फ़ाइल "%s" मौजूद नहीं थी!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToCopyAFileBetweenStoragesIsNotYetImplemented" resname="FileUtility.TheFunctionToCopyAFileBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>The function to copy a file between storages is not yet implemented.</source>
+        <target state="final">स्टोरेज के बीच में फाइल कॉपी करने के लिए फंक्शन अभी लागू नहीं किया गया।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToCopyAFolderBetweenStoragesIsNotYetImplemented" resname="FileUtility.TheFunctionToCopyAFolderBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>The function to copy a folder between storages is not yet implemented.</source>
+        <target state="final">स्टोरेज के बीच में फोल्डर कॉपी करने के लिए फंक्शन अभी लागू नहीं किया गया।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToMoveAFileBetweenStoragesIsNotYetImplemented" resname="FileUtility.TheFunctionToMoveAFileBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>The function to move a file between storages is not yet implemented.</source>
+        <target state="final">स्टोरेज के बीच में फाइल को स्थानांतरित करने के लिए फंक्शन अभी लागू नहीं किया गया।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToMoveAFolderBetweenStoragesIsNotYetImplemented" resname="FileUtility.TheFunctionToMoveAFolderBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>The function to move a folder between storages is not yet implemented.</source>
+        <target state="final">स्टोरेज के बीच में फोल्डर को स्थानांतरित करने के लिए फंक्शन अभी लागू नहीं किया गया।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheUploadHasFailedNoUploadedFileFound" resname="FileUtility.TheUploadHasFailedNoUploadedFileFound" approved="yes">
+        <source>The upload has failed, no uploaded file found!</source>
+        <target state="final">अपलोड नाकाम रहा है, कोई अपलोड की गई फाईल नहीं मिली!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheUploadedFileExceedsTheSize-limit" resname="FileUtility.TheUploadedFileExceedsTheSize-limit" approved="yes">
+        <source>The uploaded file "%s" exceeds the size-limit</source>
+        <target state="final">अपलोड की गई फ़ाइल "%s" साइज-लिमिट से अधिक है</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UnzippingFileIn" resname="FileUtility.UnzippingFileIn" approved="yes">
+        <source>Unzipping file "%s" in "%s".</source>
+        <target state="final">फाइल "%s" को "%s" में खोले।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UploadedFileCouldNotBeMoved" resname="FileUtility.UploadedFileCouldNotBeMoved" approved="yes">
+        <source>Uploaded file could not be moved! There might be a problem with write permissions in "%s"?</source>
+        <target state="final">अपलोड की गई फ़ाइल स्थानांतरित नहीं की जा सकी! "%s" में लिखने की अनुमति के साथ एक समस्या हो सकती है।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UploadingFileTo" resname="FileUtility.UploadingFileTo" approved="yes">
+        <source>Uploading file "%s" to "%s".</source>
+        <target state="final">फाइल "%s" को "%s" में अपलोड कर रहे है।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToAccessTheDirectory" resname="FileUtility.YouAreNotAllowedToAccessTheDirectory" approved="yes">
+        <source>You are not allowed to access the directory.</source>
+        <target state="final">आपको डायरेक्टरी को एक्सेस करने की अनुमति नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToAccessTheFile" resname="FileUtility.YouAreNotAllowedToAccessTheFile" approved="yes">
+        <source>You are not allowed to access the file.</source>
+        <target state="final">आपको फ़ाइल को एक्सेस करने की अनुमति नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCopyDirectories" resname="FileUtility.YouAreNotAllowedToCopyDirectories" approved="yes">
+        <source>You are not allowed to copy directories.</source>
+        <target state="final">आपको डायरेक्ट्रीज को कॉपी करने की अनुमति नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCopyFiles" resname="FileUtility.YouAreNotAllowedToCopyFiles" approved="yes">
+        <source>You are not allowed to copy files.</source>
+        <target state="final">आपको फ़ाइलें को कॉपी करने की अनुमति नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.InvalidFolderName" resname="FileUtility.InvalidFolderName" approved="yes">
+        <source>Invalid folder name "%s"!</source>
+        <target state="final">अमान्य फ़ोल्डर का नाम "%s"!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCreateDirectories" resname="FileUtility.YouAreNotAllowedToCreateDirectories" approved="yes">
+        <source>You are not allowed to create directories!</source>
+        <target state="final">आपको डायरेक्ट्रीज बनाने की अनुमति नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCreateFiles" resname="FileUtility.YouAreNotAllowedToCreateFiles" approved="yes">
+        <source>You are not allowed to create files!</source>
+        <target state="final">आपको फ़ाइलें बनाने की अनुमति नहीं है!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToEditFiles" resname="FileUtility.YouAreNotAllowedToEditFiles" approved="yes">
+        <source>You are not allowed to edit files!</source>
+        <target state="final">आपको फ़ाइलें एडिट करने की अनुमति नहीं है!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToMoveDirectories" resname="FileUtility.YouAreNotAllowedToMoveDirectories" approved="yes">
+        <source>You are not allowed to move directories.</source>
+        <target state="final">आपको डायरेक्ट्रीज स्थानांतरित करने की अनुमति नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToMoveFiles" resname="FileUtility.YouAreNotAllowedToMoveFiles" approved="yes">
+        <source>You are not allowed to move files.</source>
+        <target state="final">आपको फ़ाइलें स्थानांतरित करने की अनुमति नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToOverride" resname="FileUtility.YouAreNotAllowedToOverride" approved="yes">
+        <source>You are not allowed to override "%s"!</source>
+        <target state="final">आपको "%s" ओवर-राइड करने की अनुमति नहीं है!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToRenameDirectories" resname="FileUtility.YouAreNotAllowedToRenameDirectories" approved="yes">
+        <source>You are not allowed to rename directories!</source>
+        <target state="final">आपको डायरेक्ट्रीज का नाम बदलने की अनुमति नहीं है!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToRenameFiles" resname="FileUtility.YouAreNotAllowedToRenameFiles" approved="yes">
+        <source>You are not allowed to rename files!</source>
+        <target state="final">आपको फ़ाइलों के नाम बदलने की अनुमति नहीं है!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToUnzipFiles" resname="FileUtility.YouAreNotAllowedToUnzipFiles" approved="yes">
+        <source>You are not allowed to unzip files.</source>
+        <target state="final">आपको फ़ाइलों को खोलने की अनुमति नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToUploadFiles" resname="FileUtility.YouAreNotAllowedToUploadFiles" approved="yes">
+        <source>You are not allowed to upload files!</source>
+        <target state="final">आपको फ़ाइलों को अपलोड करने की अनुमति नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouDontHaveFullAccessToTheDestinationDirectory" resname="FileUtility.YouDontHaveFullAccessToTheDestinationDirectory" approved="yes">
+        <source>You don't have full access to the destination directory "%s"!</source>
+        <target state="final">आपको डेस्टिनेशन डायरेक्टरी "%s" के लिए पूरा एक्सेस नहीं है!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
