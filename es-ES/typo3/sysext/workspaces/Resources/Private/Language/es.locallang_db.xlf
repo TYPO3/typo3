@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815019" source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_db.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="sys_workspace_stage.parenttable" resname="sys_workspace_stage.parenttable" approved="yes">
+        <source>Parent table</source>
+        <target state="final">Tabla padre</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.reviewers" resname="sys_workspace.reviewers" approved="yes">
+        <source>Reviewers</source>
+        <target state="final">Revisores</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.swap_modes" resname="sys_workspace.swap_modes" approved="yes">
+        <source>Swap modes</source>
+        <target state="final">Modos de intercambio</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.swap_modes.0" resname="sys_workspace.swap_modes.0" approved="yes">
+        <source>Enable Swap-Into-Workspace</source>
+        <target state="final">Habilitar Swap-en-Elespaciodetrabajo</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.swap_modes.1" resname="sys_workspace.swap_modes.1" approved="yes">
+        <source>Swap-Into-Workspace on Auto-publish</source>
+        <target state="final">Intercambiar en el espacio de trabajo al publicar automáticamente</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.swap_modes.2" resname="sys_workspace.swap_modes.2" approved="yes">
+        <source>Disable Swap-Into-Workspace</source>
+        <target state="final">Deshabilitar Swap-en-Elespaciodetrabajo</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
