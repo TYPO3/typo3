@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_settingseditor.xlf" date="2024-09-10T12:13:00Z" product-name="backend" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="settingseditor.mode.minimal" approved="yes">
+        <source>Minimal</source>
+        <target state="final">Minimalus</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.mode.basic" approved="yes">
+        <source>Basic</source>
+        <target state="final">Pagrindinis</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.mode.advanced" approved="yes">
+        <source>Advanced</source>
+        <target state="final">Išplėstinis</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.edit.resetSetting" approved="yes">
+        <source>Reset setting</source>
+        <target state="final">Atstatyti nustatymą</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.edit.copySettingsIdentifier" approved="yes">
+        <source>Copy identifier</source>
+        <target state="final">Kopijuoti identifikatorių</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.edit.copyAsYaml" approved="yes">
+        <source>Copy as YAML</source>
+        <target state="final">Kopijuoti kaip YAML</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.search.searchTermVisuallyHiddenLabel" approved="yes">
+        <source>Search settings</source>
+        <target state="final">Ieškoti nustatymų</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.search.searchTermPlaceholder" approved="yes">
+        <source>Search settings</source>
+        <target state="final">Ieškoti nustatymų</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.search.noResultsTitle" approved="yes">
+        <source>No settings were found.</source>
+        <target state="final">Nustatymų nerasta.</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.search.noResultsMessage" approved="yes">
+        <source>The search filters by setting value, label, description or identifier.</source>
+        <target state="final">Paieška filtruoja pagal nustatymo reikšmę, pavadinimą, aprašą arba identifikatorių.</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.search.noResultsResetButtonLabel" approved="yes">
+        <source>Reset filter</source>
+        <target state="final">Atstatyti filtrą</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.type.page.button" approved="yes">
+        <source>Select page</source>
+        <target state="final">Pasirinkti puslapį</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
