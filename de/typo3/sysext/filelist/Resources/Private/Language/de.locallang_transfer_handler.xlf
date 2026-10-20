@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_transfer_handler.xlf" date="2023-02-24T00:00:00Z" product-name="cms" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="message.transfer_resource.title" approved="yes">
+        <source>Transfer Resource</source>
+        <target state="final">Ressource bewegen</target>
+      </trans-unit>
+      <trans-unit id="message.transfer_resource.text" approved="yes">
+        <source>Transfer "%s" to "%s"?</source>
+        <target state="final">Transferiere "%s" zu "%s"?</target>
+      </trans-unit>
+      <trans-unit id="message.transfer_resources.title" approved="yes">
+        <source>Transfer Resources</source>
+        <target state="final">Ressourcen bewegen</target>
+      </trans-unit>
+      <trans-unit id="message.transfer_resources.text" approved="yes">
+        <source>Transfer %d resources to "%s"?</source>
+        <target state="final">Transferiere %d Ressourcen nach "%s"?</target>
+      </trans-unit>
+      <trans-unit id="message.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Abbrechen</target>
+      </trans-unit>
+      <trans-unit id="message.button.copy" approved="yes">
+        <source>Copy</source>
+        <target state="final">Kopieren</target>
+      </trans-unit>
+      <trans-unit id="message.button.move" approved="yes">
+        <source>Move</source>
+        <target state="final">Verschieben</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
