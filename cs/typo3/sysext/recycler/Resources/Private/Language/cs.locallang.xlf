@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:35Z" product-name="recycler" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Recyklátor</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>The recycler allows you to select any deleted data and undelete it. You can undelete recursive if the parent of the element is deleted too.</source>
+        <target state="final">Recyklátor umožňuje vybrat a obnovit jakákoliv vymazaná data. Můžete je také obnovit rekurzivně, pokud byl nadřízený prvek vymazán.</target>
+      </trans-unit>
+      <trans-unit id="label_allrecordtypes" approved="yes">
+        <source>All Record Types</source>
+        <target state="final">Všechny typy záznamů</target>
+      </trans-unit>
+      <trans-unit id="filter.search" approved="yes">
+        <source>Search term</source>
+        <target state="final">Hledaný výraz</target>
+      </trans-unit>
+      <trans-unit id="filter.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Hloubka</target>
+      </trans-unit>
+      <trans-unit id="filter.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Typ</target>
+      </trans-unit>
+      <trans-unit id="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Zrušit</target>
+      </trans-unit>
+      <trans-unit id="button.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Vymazat</target>
+      </trans-unit>
+      <trans-unit id="button.deleteselected" approved="yes">
+        <source>Delete {0} records</source>
+        <target state="final">Odstranit {0} záznamů</target>
+      </trans-unit>
+      <trans-unit id="button.undo" approved="yes">
+        <source>Restore</source>
+        <target state="final">Obnovit</target>
+      </trans-unit>
+      <trans-unit id="button.expand" approved="yes">
+        <source>Expand record</source>
+        <target state="final">Rozbalit záznam</target>
+      </trans-unit>
+      <trans-unit id="button.dropdown.multiselect" approved="yes">
+        <source>Open context menu for multiselect options</source>
+        <target state="final">Otevřít kontextové menu pro možnosti vícenásobného výběru</target>
+      </trans-unit>
+      <trans-unit id="button.undoselected" approved="yes">
+        <source>Restore {0} records</source>
+        <target state="final">Obnovit {0} záznamů</target>
+      </trans-unit>
+      <trans-unit id="button.reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">Znovu načíst</target>
+      </trans-unit>
+      <trans-unit id="modal.delete.header" approved="yes">
+        <source>Confirm deletion</source>
+        <target state="final">Potvrdit odstranění</target>
+      </trans-unit>
+      <trans-unit id="modal.undo.header" approved="yes">
+        <source>Restore records</source>
+        <target state="final">Obnovit záznamy</target>
+      </trans-unit>
+      <trans-unit id="modal.undo.recursive" approved="yes">
+        <source>Restore content and subpages recursively</source>
+        <target state="final">Obnovit obsah a podstránky rekurzivně</target>
+      </trans-unit>
+      <trans-unit id="modal.deletecontent.text" approved="yes">
+        <source>Permanently delete record "{0}" {1}? You cannot undo this action.</source>
+        <target state="final">Trvale smazat záznam "{0}" {1}? Tuto akci nelze vrátit zpět.</target>
+      </trans-unit>
+      <trans-unit id="modal.massdelete.text" approved="yes">
+        <source>Permanently delete all the selected records (and any subpages)? You cannot undo this action.</source>
+        <target state="final">Trvale smazat všechny vybrané záznamy (a všechny podstránky)? Tuto akci nelze vrátit zpět.</target>
+      </trans-unit>
+      <trans-unit id="modal.deletepage.text" approved="yes">
+        <source>Permanently delete page "{0}" {1} and all of its contents (records and pages)? You cannot undo this action.</source>
+        <target state="final">Trvale smazat stránku "{0}" {1} a veškerý její obsah (záznamy a stránky)? Tuto akci nelze vrátit zpět.</target>
+      </trans-unit>
+      <trans-unit id="modal.undocontent.text" approved="yes">
+        <source>Restore record "{0}" {1}? The record will be restored in its initial position and may become immediately active.</source>
+        <target state="final">Obnovit záznam "{0}" {1}? Záznam bude obnoven ve své původní pozici a může být okamžitě aktivní.</target>
+      </trans-unit>
+      <trans-unit id="modal.undopage.text" approved="yes">
+        <source>Restore page "{0}" {1}, its contents (and any subpages)? The pages and their content are restored to their original location and may become immediately visible online.</source>
+        <target state="final">Obnovit stránku "{0}" {1}, její obsah (a jakékoliv podstránky)? Stránky a jejich obsah jsou obnoveny na své původní místo a mohou být okamžitě viditelné online.</target>
+      </trans-unit>
+      <trans-unit id="modal.undo.parentpages" approved="yes">
+        <source>All parent pages have been restored to ensure a valid rootline.</source>
+        <target state="final">Všechny nadřazené stránky byly obnoveny, aby byl zajištěn platný rootline.</target>
+      </trans-unit>
+      <trans-unit id="modal.massundo.text" approved="yes">
+        <source>Restore all selected records and any subpages? All records are restored to their original position and may take effect immediately, including the pages and their content that may become visible online. Undoing this requires deleting each record individually.</source>
+        <target state="final">Obnovit všechny vybrané záznamy a všechny podstránky? Všechny záznamy budou obnoveny do původní polohy a mohou nabýt účinnosti okamžitě, včetně stránek a jejich obsahu, které se mohou stát viditelnými online. Zrušení této akce vyžaduje smazání každého záznamu jednotlivě.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.unauthorized" approved="yes">
+        <source>Insufficient permissions to delete records.</source>
+        <target state="final">Nedostatečná oprávnění k mazání záznamů.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.norecordsselected" approved="yes">
+        <source>No records set to delete.</source>
+        <target state="final">Nejsou vybrány žádné záznamy k odstranění.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.success.singular" approved="yes">
+        <source>One record was deleted.</source>
+        <target state="final">Jeden záznam byl odstraněn.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.success.plural" approved="yes">
+        <source>%d records were deleted.</source>
+        <target state="final">%d záznamů bylo odstraněno.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.failure.singular" approved="yes">
+        <source>Could not delete one record.</source>
+        <target state="final">Nelze odstranit jeden záznam.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.delete.failure.plural" approved="yes">
+        <source>Could not delete %d records.</source>
+        <target state="final">Nelze odstranit %d záznamů.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.norecordsselected" approved="yes">
+        <source>No records set to restore.</source>
+        <target state="final">Nejsou vybrány žádné záznamy k obnovení.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.success.singular" approved="yes">
+        <source>One record was restored.</source>
+        <target state="final">Byl obnoven jeden záznam.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.success.plural" approved="yes">
+        <source>%d records were restored.</source>
+        <target state="final">Bylo obnoveno %d záznamů.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.failure.singular" approved="yes">
+        <source>Could not restore one record.</source>
+        <target state="final">Jeden záznam nelze obnovit.</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.undo.failure.plural" approved="yes">
+        <source>Could not restore %d records.</source>
+        <target state="final">Nelze obnovit %d záznamů.</target>
+      </trans-unit>
+      <trans-unit id="alert.noDeletedRecords" approved="yes">
+        <source>No deleted records have been found.</source>
+        <target state="final">Nebyly nalezeny žádné odstraněné záznamy.</target>
+      </trans-unit>
+      <trans-unit id="table.caption.recently_deleted_records" approved="yes">
+        <source>Recently deleted records</source>
+        <target state="final">Nedávno smazané záznamy</target>
+      </trans-unit>
+      <trans-unit id="table.header.uid" approved="yes">
+        <source>UID</source>
+        <target state="final">UID</target>
+      </trans-unit>
+      <trans-unit id="table.header.pageTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Název stránky</target>
+      </trans-unit>
+      <trans-unit id="table.header.pid" approved="yes">
+        <source>Page ID</source>
+        <target state="final">ID stránky</target>
+      </trans-unit>
+      <trans-unit id="table.header.record" approved="yes">
+        <source>Record</source>
+        <target state="final">Záznam</target>
+      </trans-unit>
+      <trans-unit id="table.header.tstamp" approved="yes">
+        <source>Last edit</source>
+        <target state="final">Poslední úprava</target>
+      </trans-unit>
+      <trans-unit id="table.header.crdate" approved="yes">
+        <source>Created at</source>
+        <target state="final">Vytvořeno</target>
+      </trans-unit>
+      <trans-unit id="table.header.createdBy" approved="yes">
+        <source>Created by</source>
+        <target state="final">Vytvořil</target>
+      </trans-unit>
+      <trans-unit id="table.header.deletedBy" approved="yes">
+        <source>Deleted by</source>
+        <target state="final">Odstranil</target>
+      </trans-unit>
+      <trans-unit id="table.header.path" approved="yes">
+        <source>Path</source>
+        <target state="final">Cesta</target>
+      </trans-unit>
+      <trans-unit id="record.userDeleted" approved="yes">
+        <source>[Deleted user] (id=%s)</source>
+        <target state="final">[Smazaný uživatel] (id=%s)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
