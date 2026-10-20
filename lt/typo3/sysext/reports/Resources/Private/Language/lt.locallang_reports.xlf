@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_reports.xlf" date="2011-10-17T20:22:35Z" product-name="reports" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="status_ok" approved="yes">
+        <source>OK</source>
+        <target state="final">GERAI</target>
+      </trans-unit>
+      <trans-unit id="status_wrongValue" approved="yes">
+        <source>Wrong value detected</source>
+        <target state="final">Aptikta neteisinga reikšmė</target>
+      </trans-unit>
+      <trans-unit id="status_info" approved="yes">
+        <source>Information</source>
+        <target state="final">Informacija</target>
+      </trans-unit>
+      <trans-unit id="status_insecure" approved="yes">
+        <source>Insecure</source>
+        <target state="final">Nesaugu</target>
+      </trans-unit>
+      <trans-unit id="status_disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Išjungta</target>
+      </trans-unit>
+      <trans-unit id="status_enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Įjungta</target>
+      </trans-unit>
+      <trans-unit id="status_enabledPermanently" approved="yes">
+        <source>Enabled permanently</source>
+        <target state="final">Įjungta visam laikui</target>
+      </trans-unit>
+      <trans-unit id="status_enabledTemporarily" approved="yes">
+        <source>Enabled temporarily</source>
+        <target state="final">Įjungta laikinai</target>
+      </trans-unit>
+      <trans-unit id="status_empty" approved="yes">
+        <source>Empty</source>
+        <target state="final">Tuščia</target>
+      </trans-unit>
+      <trans-unit id="status_none" approved="yes">
+        <source>None</source>
+        <target state="final">Nėra</target>
+      </trans-unit>
+      <trans-unit id="status_connectionFailed" approved="yes">
+        <source>Connection Failed</source>
+        <target state="final">Ryšys nepavyko</target>
+      </trans-unit>
+      <trans-unit id="status_checkFailed" approved="yes">
+        <source>Check Failed</source>
+        <target state="final">Patikrinimas nepavyko</target>
+      </trans-unit>
+      <trans-unit id="status_updateComplete" approved="yes">
+        <source>Update Complete</source>
+        <target state="final">Atnaujinimas baigtas</target>
+      </trans-unit>
+      <trans-unit id="status_updateIncomplete" approved="yes">
+        <source>Update Incomplete</source>
+        <target state="final">Atnaujinimas nebaigtas</target>
+      </trans-unit>
+      <trans-unit id="status_problemNotification" approved="yes">
+        <source>One or more problems were detected with your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
+        <target state="final">Aptikta viena ar daugiau problemų jūsų TYPO3 diegime. Daugiau informacijos rasite %sbūsenos ataskaitoje%s.</target>
+      </trans-unit>
+      <trans-unit id="status_allNotification" approved="yes">
+        <source>This report contains all System Status Notifications from your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
+        <target state="final">Šioje ataskaitoje pateikiami visi sistemos būsenos pranešimai iš jūsų TYPO3 diegimo. Daugiau informacijos rasite %sbūsenos ataskaitoje%s.</target>
+      </trans-unit>
+      <trans-unit id="status_typo3" approved="yes">
+        <source>TYPO3 System</source>
+        <target state="final">TYPO3 sistema</target>
+      </trans-unit>
+      <trans-unit id="status_system" approved="yes">
+        <source>System</source>
+        <target state="final">Sistema</target>
+      </trans-unit>
+      <trans-unit id="status_security" approved="yes">
+        <source>Security</source>
+        <target state="final">Saugumas</target>
+      </trans-unit>
+      <trans-unit id="status_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Konfigūracija</target>
+      </trans-unit>
+      <trans-unit id="status_referenceIndex" approved="yes">
+        <source>Reference Index</source>
+        <target state="final">Nuorodų indeksas</target>
+      </trans-unit>
+      <trans-unit id="status_fal" approved="yes">
+        <source>File Abstraction Layer</source>
+        <target state="final">Failų abstrakcijos sluoksnis</target>
+      </trans-unit>
+      <trans-unit id="status_missingFiles" approved="yes">
+        <source>Files flagged as missing</source>
+        <target state="final">Failai pažymėti kaip trūkstami</target>
+      </trans-unit>
+      <trans-unit id="status_missingFilesCount" approved="yes">
+        <source>%1$s files</source>
+        <target state="final">%1$s failai</target>
+      </trans-unit>
+      <trans-unit id="status_missingFilesMessage" approved="yes">
+        <source>These files are flagged as missing. Restore the files and run the indexer to reset the missing flag.</source>
+        <target state="final">Šie failai pažymėti kaip trūkstami. Atkurkite failus ir paleiskite indeksavimą, kad būtų pašalinta trūkstamo failo žyma.</target>
+      </trans-unit>
+      <trans-unit id="status_memcachedConfiguration" approved="yes">
+        <source>Memcached Configuration</source>
+        <target state="final">Memcached konfigūracija</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedFilePermissions" approved="yes">
+        <source>Permissions of created files</source>
+        <target state="final">Sukurtų failų teisės</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedFilePermissions.writable" approved="yes">
+        <source>Files created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to files by "others". A sane default is often '0660' for $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']. This can be set in the install tool.</source>
+        <target state="final">TYPO3 sukurti failai yra sukonfigūruoti kaip rašomi visiems. Priklausomai nuo jūsų serverio konfigūracijos tai gali kelti saugumo riziką. Paprastai geriau nustatyti kūrimo kaukę taip, kad „kiti“ neturėtų teisės rašyti į failus. Dažnai tinkama numatytoji reikšmė yra „0660“ parametrui $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']. Tai galima nustatyti diegimo įrankyje.</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedDirectoryPermissions" approved="yes">
+        <source>Permissions of created directories</source>
+        <target state="final">Sukurtų katalogų teisės</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedDirectoryPermissions.writable" approved="yes">
+        <source>Directories created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to directories by "others". A sane default is often '2770' for $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']. This can be set in the install tool.</source>
+        <target state="final">TYPO3 sukurti katalogai yra sukonfigūruoti kaip rašomi visiems. Priklausomai nuo jūsų serverio konfigūracijos tai gali kelti saugumo riziką. Paprastai geriau nustatyti kūrimo kaukę taip, kad „kiti“ neturėtų teisės rašyti į katalogus. Dažnai tinkama numatytoji reikšmė yra „2770“ parametrui $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']. Tai galima nustatyti diegimo įrankyje.</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet" approved="yes">
+        <source>MySQL Database Character Set</source>
+        <target state="final">MySQL duomenų bazės simbolių koduotė</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_CheckFailed" approved="yes">
+        <source>Checking database character set failed, got key "%1$s" instead of "character_set_database"</source>
+        <target state="final">Nepavyko patikrinti duomenų bazės simbolių koduotės – gautas raktas „%1$s“ vietoje „character_set_database“.</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Unsupported" approved="yes">
+        <source>Your default database uses character set "%1$s", but only "utf8", "utf8mb3" or "utf8mb4" is supported with TYPO3.</source>
+        <target state="final">Jūsų numatytoji duomenų bazė naudoja simbolių koduotę „%1$s“, tačiau su TYPO3 palaikoma tik „utf8“, „utf8mb3“ arba „utf8mb4“.</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Ok" approved="yes">
+        <source>Your default database uses utf-8. All good.</source>
+        <target state="final">Jūsų numatytoji duomenų bazė naudoja utf-8. Viskas gerai.</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Info" approved="yes">
+        <source>Your default database uses a different charset, but all tables uses utf-8. All good. But consider fixing your database collation and check the table creation settings.</source>
+        <target state="final">Jūsų numatytoji duomenų bazė naudoja kitą simbolių koduotę, tačiau visos lentelės naudoja utf-8. Viskas gerai, tačiau rekomenduojama pataisyti duomenų bazės collation nustatymus ir patikrinti lentelių kūrimo nustatymus.</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_MixedCollations" approved="yes">
+        <source>Your default database is set to create tables with character set "%1$s", but contains tables or columns with different collations. Please fix these tables to avoid "illegal mix of collations" errors.</source>
+        <target state="final">Jūsų numatytoji duomenų bazė nustatyta kurti lenteles su simbolių koduote „%1$s“, tačiau joje yra lentelių arba stulpelių su kitais collation nustatymais. Pataisykite šias lenteles, kad išvengtumėte „illegal mix of collations“ klaidų.</target>
+      </trans-unit>
+      <trans-unit id="status_encryptedConnectionStatus" approved="yes">
+        <source>Encrypted backend connection (HTTPS)</source>
+        <target state="final">Šifruotas administravimo sąsajos ryšys (HTTPS)</target>
+      </trans-unit>
+      <trans-unit id="status_encryptedConnectionStatus_insecure" approved="yes">
+        <source>Your backend access is not secured using HTTPS but relies on HTTP which sends all your data (including login passwords) over an insecure connection. All modern web sites should rely on HTTPS and only sites secured differently, for instance some intranet installations may use HTTP only.</source>
+        <target state="final">Jūsų administravimo sąsajos prieiga nėra apsaugota naudojant HTTPS ir naudoja HTTP, kuris siunčia visus jūsų duomenis (įskaitant prisijungimo slaptažodžius) nesaugiu ryšiu. Visos šiuolaikinės svetainės turėtų naudoti HTTPS. Tik kai kurios sistemos, pavyzdžiui intraneto diegimai, gali naudoti tik HTTP.</target>
+      </trans-unit>
+      <trans-unit id="status_lockSslStatus" approved="yes">
+        <source>Backend only accessible through HTTPS</source>
+        <target state="final">Administravimo sąsaja pasiekiama tik per HTTPS</target>
+      </trans-unit>
+      <trans-unit id="status_lockSslStatus_insecure" approved="yes">
+        <source><![CDATA[It is highly recommended to activate the option (<code>$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']</code>).]]></source>
+        <target state="final"><![CDATA[Labai rekomenduojama įjungti šią parinktį (<code>$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']</code>).]]></target>
+      </trans-unit>
+      <trans-unit id="status_trustedHostsPattern" approved="yes">
+        <source>Trusted Hosts Pattern</source>
+        <target state="final">Patikimų hostų šablonas</target>
+      </trans-unit>
+      <trans-unit id="status_encryptionKey" approved="yes">
+        <source>Encryption Key</source>
+        <target state="final">Šifravimo raktas</target>
+      </trans-unit>
+      <trans-unit id="status_fileDenyPattern" approved="yes">
+        <source>File Deny Pattern</source>
+        <target state="final">Draudžiamų failų šablonas</target>
+      </trans-unit>
+      <trans-unit id="status_htaccessUploadProtection" approved="yes">
+        <source>.htaccess Upload Protection</source>
+        <target state="final">.htaccess įkėlimo apsauga</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler" approved="yes">
+        <source>Exception Handler / Error Reporting</source>
+        <target state="final">Išimčių tvarkytuvas / klaidų pranešimai</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler_warningMessage" approved="yes">
+        <source>Display Errors is set to 1 - errors will be displayed with the DebugExceptionHandler including stack traces.</source>
+        <target state="final">„Display Errors“ nustatyta į 1 – klaidos bus rodomos naudojant DebugExceptionHandler su steko pėdsakais.</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler_errorMessage" approved="yes">
+        <source>Debug Exception Handler enabled in Production Context - will show full error messages including stack traces.</source>
+        <target state="final">Gamybinėje aplinkoje įjungtas Debug Exception Handler – bus rodomi pilni klaidų pranešimai su steko pėdsakais.</target>
+      </trans-unit>
+      <trans-unit id="status_exportedFiles_warningMessage" approved="yes">
+        <source>The following exported files were found:</source>
+        <target state="final">Rasti šie eksportuoti failai:</target>
+      </trans-unit>
+      <trans-unit id="status_installTool" approved="yes">
+        <source>Install Tool</source>
+        <target state="final">Diegimo įrankis</target>
+      </trans-unit>
+      <trans-unit id="status_phpModules" approved="yes">
+        <source>PHP Modules</source>
+        <target state="final">PHP moduliai</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesMissing" approved="yes">
+        <source>One or more modules are missing.</source>
+        <target state="final">Trūksta vieno ar daugiau modulių.</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesList" approved="yes">
+        <source>The following PHP module(s) is/are missing: %s.</source>
+        <target state="final">Trūksta šių PHP modulių: %s.</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesInfo" approved="yes">
+        <source>You need to install and enable these modules to let TYPO3 function correctly.</source>
+        <target state="final">Norint, kad TYPO3 veiktų tinkamai, reikia įdiegti ir įjungti šiuos modulius.</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesGroup" approved="yes">
+        <source>one of: %s</source>
+        <target state="final">vienas iš: %s</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesPresent" approved="yes">
+        <source>All required modules are installed.</source>
+        <target state="final">Visi reikalingi moduliai įdiegti.</target>
+      </trans-unit>
+      <trans-unit id="status_installEnabledTemporarily" approved="yes">
+        <source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
+        <target state="final">Diegimo įrankis laikinai įjungtas. Baigę konfigūruoti TYPO3, ištrinkite failą „%s“. Jei nebus naudojamas, diegimo įrankis bus automatiškai išjungtas po %s minučių.</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskTitle" approved="yes">
+        <source>System Status Update</source>
+        <target state="final">Sistemos būsenos atnaujinimas</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskDescription" approved="yes">
+        <source>Runs a system status check and sends notifications if problems have been found.</source>
+        <target state="final">Atlieka sistemos būsenos patikrą ir siunčia pranešimus, jei aptinkamos problemos.</target>
+      </trans-unit>
+      <trans-unit id="status_updateAdditionalInformation" approved="yes">
+        <source>Send notification to: %s</source>
+        <target state="final">Siųsti pranešimą adresu: %s</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmails" approved="yes">
+        <source>Notification Email Addresses (one per line)</source>
+        <target state="final">Pranešimų el. pašto adresai (po vieną eilutėje)</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmails_invalid" approved="yes">
+        <source>Empty or invalid notification email addresses.</source>
+        <target state="final">Tušti arba neteisingi pranešimų el. pašto adresai.</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationAll" approved="yes">
+        <source>Always send notification mail (not only on errors or warnings)</source>
+        <target state="final">Visada siųsti pranešimo el. laišką (ne tik klaidų ar įspėjimų atveju)</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_subject" approved="yes">
+        <source>System Status Notification for site %s</source>
+        <target state="final">Sistemos būsenos pranešimas svetainei %s</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_site" approved="yes">
+        <source>Site</source>
+        <target state="final">Svetainė</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_issues" approved="yes">
+        <source>Issues</source>
+        <target state="final">Problemos</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsage" approved="yes">
+        <source>XCLASS used</source>
+        <target state="final">Naudojamas XCLASS</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound" approved="yes">
+        <source>Your system registers XCLASS</source>
+        <target state="final">Jūsų sistema registruoja XCLASS</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound_message" approved="yes">
+        <source>XCLASS can overwrite methods or classes of the core or other extensions. This is not necessarily a bad thing, but those XCLASS might break during extension or core upgrades. You should keep an eye on extension compatibility and make sure the intended functionality is still given after updates.</source>
+        <target state="final">XCLASS gali perrašyti branduolio ar kitų plėtinių metodus arba klases. Tai nebūtinai yra blogai, tačiau tokie XCLASS gali nustoti veikti atnaujinus plėtinius ar branduolį. Reikėtų stebėti plėtinių suderinamumą ir įsitikinti, kad po atnaujinimų funkcionalumas veikia kaip numatyta.</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound_message_detail" approved="yes">
+        <source>%2$s registers an XCLASS of %1$s</source>
+        <target state="final">%2$s registruoja XCLASS klasę %1$s</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing" approved="yes">
+        <source>Image Processing</source>
+        <target state="final">Vaizdų apdorojimas</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp" approved="yes">
+        <source>WebP support and availability</source>
+        <target state="final">WebP palaikymas ir prieinamumas</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_disabled" approved="yes">
+        <source>Image processing via ImageMagick/GraphicsMagick is disabled</source>
+        <target state="final">Vaizdų apdorojimas per ImageMagick/GraphicsMagick yra išjungtas</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp_not_configured" approved="yes">
+        <source>WebP image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext]. No WebP image files will be generated.</source>
+        <target state="final">WebP vaizdų generavimas nėra įjungtas $TYPO3_CONF_VARS[GFX][imagefile_ext]. WebP vaizdai nebus generuojami.</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp_available" approved="yes">
+        <source>WebP image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is supported by ImageMagick/GraphicsMagick.</source>
+        <target state="final">WebP vaizdų generavimas nėra įjungtas $TYPO3_CONF_VARS[GFX][imagefile_ext], tačiau jį palaiko ImageMagick/GraphicsMagick.</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp_not_available" approved="yes">
+        <source>WebP image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is NOT supported by ImageMagick/GraphicsMagick. Please update your system environment or disable webp support in TYPO3 Configuration.</source>
+        <target state="final">WebP vaizdų generavimas įjungtas $TYPO3_CONF_VARS[GFX][imagefile_ext], tačiau jo nepalaiko ImageMagick/GraphicsMagick. Atnaujinkite sistemos aplinką arba išjunkite WebP palaikymą TYPO3 konfigūracijoje.</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp_available_and_configured" approved="yes">
+        <source>WebP image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext] and supported by ImageMagick/GraphicsMagick — Everything is configured correctly.</source>
+        <target state="final">WebP vaizdų generavimas įjungtas $TYPO3_CONF_VARS[GFX][imagefile_ext] ir palaikomas ImageMagick/GraphicsMagick — viskas sukonfigūruota teisingai.</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif" approved="yes">
+        <source>AVIF support and availability</source>
+        <target state="final">AVIF palaikymas ir prieinamumas</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif_not_configured" approved="yes">
+        <source>AVIF image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext]. No AVIF image files will be generated.</source>
+        <target state="final">AVIF vaizdų generavimas nėra įjungtas $TYPO3_CONF_VARS[GFX][imagefile_ext]. AVIF vaizdai nebus generuojami.</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif_available" approved="yes">
+        <source>AVIF image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is supported by ImageMagick/GraphicsMagick.</source>
+        <target state="final">AVIF vaizdų generavimas nėra įjungtas $TYPO3_CONF_VARS[GFX][imagefile_ext], tačiau jį palaiko ImageMagick/GraphicsMagick.</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif_not_available" approved="yes">
+        <source>AVIF image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is NOT supported by ImageMagick/GraphicsMagick. Please update your system environment or disable AVIF support in TYPO3 Configuration.</source>
+        <target state="final">AVIF vaizdų generavimas įjungtas $TYPO3_CONF_VARS[GFX][imagefile_ext], tačiau jo nepalaiko ImageMagick/GraphicsMagick. Atnaujinkite sistemos aplinką arba išjunkite AVIF palaikymą TYPO3 konfigūracijoje.</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif_available_and_configured" approved="yes">
+        <source>AVIF image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext] and supported by ImageMagick/GraphicsMagick — Everything is configured correctly.</source>
+        <target state="final">AVIF vaizdų generavimas įjungtas $TYPO3_CONF_VARS[GFX][imagefile_ext] ir palaikomas ImageMagick/GraphicsMagick — viskas sukonfigūruota teisingai.</target>
+      </trans-unit>
+      <trans-unit id="status_problem_notification_cli_disclaimer" approved="yes">
+        <source>This report was generated from the Command Line Interface (CLI) context. The PHP settings and modules might differ from the ones defined for the webserver process, for example when using a different php.ini file. In case of problems, always compare the report with the one generated via the backend report module.</source>
+        <target state="final">Ši ataskaita buvo sugeneruota iš komandinės eilutės sąsajos (CLI) konteksto. PHP nustatymai ir moduliai gali skirtis nuo nustatytų žiniatinklio serverio procese, pavyzdžiui, naudojant skirtingą php.ini failą. Iškilus problemų, visada palyginkite ataskaitą su ta, kuri sugeneruota per administravimo ataskaitų modulį.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
