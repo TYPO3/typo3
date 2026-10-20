@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1475977066" source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="element.ImageUpload.properties.SummaryPage.altText" resname="element.ImageUpload.properties.SummaryPage.altText" xml:space="preserve" approved="yes">
+                <source>Uploaded image</source>
+            <target state="final">Image téléchargée</target></trans-unit>
+      <trans-unit id="element.DatePicker.properties.timeSelectorHourLabel" resname="element.DatePicker.properties.timeSelectorHourLabel" xml:space="preserve" approved="yes">
+                <source>Hour</source>
+            <target state="final">Heure</target></trans-unit>
+      <trans-unit id="element.DatePicker.properties.timeSelectorMinuteLabel" resname="element.DatePicker.properties.timeSelectorMinuteLabel" xml:space="preserve" approved="yes">
+                <source>Minute</source>
+            <target state="final">Minute</target></trans-unit>
+      <trans-unit id="validation.error.1221560910" resname="validation.error.1221560910" xml:space="preserve" approved="yes">
+                <source>This field is mandatory.</source>
+            <target state="final">Ce champ est requis.</target></trans-unit>
+      <trans-unit id="validation.error.1221560718" resname="validation.error.1221560718" xml:space="preserve" approved="yes">
+                <source>This field is mandatory.</source>
+            <target state="final">Ce champ est requis.</target></trans-unit>
+      <trans-unit id="validation.error.1347992400" resname="validation.error.1347992400" xml:space="preserve" approved="yes">
+                <source>This field is mandatory.</source>
+            <target state="final">Ce champ est requis.</target></trans-unit>
+      <trans-unit id="validation.error.1347992453" resname="validation.error.1347992453" xml:space="preserve" approved="yes">
+                <source>This field is mandatory.</source>
+            <target state="final">Ce champ est requis.</target></trans-unit>
+      <trans-unit id="validation.error.1238087674" resname="validation.error.1238087674" xml:space="preserve" approved="yes">
+                <source>You must enter a valid date.</source>
+            <target state="final">Vous devez saisir une date valide.</target></trans-unit>
+      <trans-unit id="validation.error.1221551320" resname="validation.error.1221551320" xml:space="preserve" approved="yes">
+                <source>You can only enter letters or digits.</source>
+            <target state="final">Vous ne pouvez saisir que des lettres ou des chiffres.</target></trans-unit>
+      <trans-unit id="validation.error.1221565786" resname="validation.error.1221565786" xml:space="preserve" approved="yes">
+                <source>You can only enter non formatted text without any markup (e.g without XML tags).</source>
+            <target state="final">Vous ne pouvez entrer que du texte non formaté sans aucune balise (par exemple sans balise XML).</target></trans-unit>
+      <trans-unit id="validation.error.1238110957" resname="validation.error.1238110957" xml:space="preserve" approved="yes">
+                <source>You can only enter non formatted text without any markup (e.g without XML tags).</source>
+            <target state="final">Vous ne pouvez entrer que du texte non formaté sans aucune balise (par exemple sans balise XML).</target></trans-unit>
+      <trans-unit id="validation.error.1269883975" resname="validation.error.1269883975" xml:space="preserve" approved="yes">
+                <source>You can only enter non formatted text without any markup (e.g without XML tags).</source>
+            <target state="final">Vous ne pouvez entrer que du texte non formaté sans aucune balise (par exemple sans balise XML).</target></trans-unit>
+      <trans-unit id="validation.error.1428504122" resname="validation.error.1428504122" xml:space="preserve" approved="yes">
+                <source>Your text must be a minimum of %s characters in length and no longer than %s.</source>
+            <target state="final">Votre texte doit contenir au moins %s caractères et pas plus de %s.</target></trans-unit>
+      <trans-unit id="validation.error.1238108068" resname="validation.error.1238108068" xml:space="preserve" approved="yes">
+                <source>You must enter text which is longer than %s characters.</source>
+            <target state="final">Vous devez entrer un texte qui fait plus de %s caractères.</target></trans-unit>
+      <trans-unit id="validation.error.1238108069" resname="validation.error.1238108069" xml:space="preserve" approved="yes">
+                <source>You must enter text which is no longer than %s characters.</source>
+            <target state="final">Vous devez entrer un texte qui ne fait pas plus de %s caractères.</target></trans-unit>
+      <trans-unit id="validation.error.1221559976" resname="validation.error.1221559976" xml:space="preserve" approved="yes">
+                <source>You must enter a valid email address.</source>
+            <target state="final">Vous devez entrer une adresse E-mail valide.</target></trans-unit>
+      <trans-unit id="validation.error.1221560494" resname="validation.error.1221560494" xml:space="preserve" approved="yes">
+                <source>You must enter a valid number.</source>
+            <target state="final">Vous devez saisir un nombre valide.</target></trans-unit>
+      <trans-unit id="validation.error.1221560288" resname="validation.error.1221560288" xml:space="preserve" approved="yes">
+                <source>You must enter a valid floating point number.</source>
+            <target state="final">Vous devez entrer un nombre à virgule flottante valide.</target></trans-unit>
+      <trans-unit id="validation.error.1221563685" resname="validation.error.1221563685" xml:space="preserve" approved="yes">
+                <source>You must enter a valid number.</source>
+            <target state="final">Vous devez saisir un nombre valide.</target></trans-unit>
+      <trans-unit id="validation.error.1221561046" resname="validation.error.1221561046" xml:space="preserve" approved="yes">
+                <source>You must enter a valid number between %s and %s.</source>
+            <target state="final">Vous devez entrer un nombre valide entre %s et %s.</target></trans-unit>
+      <trans-unit id="validation.error.1221565130" resname="validation.error.1221565130" xml:space="preserve" approved="yes">
+                <source>You must enter a valid value. Please refer to the description of this field.</source>
+            <target state="final">Vous devez entrer une valeur valide. Veuillez vous référer à la description de ce champ.</target></trans-unit>
+      <trans-unit id="validation.error.1475002976" resname="validation.error.1475002976" xml:space="preserve" approved="yes">
+                <source>You must enter a countable subject.</source>
+            <target state="final">Vous devez saisir un sujet denombrable.</target></trans-unit>
+      <trans-unit id="validation.error.1475002994" resname="validation.error.1475002994" xml:space="preserve" approved="yes">
+                <source>You must select between %s to %s elements.</source>
+            <target state="final">Merci de sélectionner %s à %s éléments.</target></trans-unit>
+      <trans-unit id="validation.error.1471708997" resname="validation.error.1471708997" xml:space="preserve" approved="yes">
+                <source>You must enter an instance of \TYPO3\CMS\Extbase\Domain\Model\FileReference or \TYPO3\CMS\Core\Resource\File.</source>
+            <target state="final">Vous devez entrer une instance de \TYPO3\CMS\Extbase\Domain\Model\FileReference ou \TYPO3\CMS\Core\Resource\File.</target></trans-unit>
+      <trans-unit id="validation.error.1471708998" resname="validation.error.1471708998" xml:space="preserve" approved="yes">
+                <source>You entered an incorrect media type, "%s" is not allowed for this file. Please refer to the description of this field.</source>
+            <target state="final">Vous avez entré un type de média incorrect, «%s» n'est pas autorisé pour ce fichier. Veuillez vous référer à la description de ce champ.</target></trans-unit>
+      <trans-unit id="validation.error.1613126216" resname="validation.error.1613126216" xml:space="preserve" approved="yes">
+                <source>The file extension provided "%s" does not match to expected media types. Please refer to the description of this field.</source>
+            <target state="final">L'extension de fichier fournie « %s » ne correspond pas aux types de média attendus. Veuillez vous référer à la description de ce champ.</target></trans-unit>
+      <trans-unit id="validation.error.1476396435" resname="validation.error.1476396435" xml:space="preserve" approved="yes">
+                <source>You must NOT fill this field.</source>
+            <target state="final">Vous ne devez PAS remplir ce champ.</target></trans-unit>
+      <trans-unit id="validation.error.1505303626" resname="validation.error.1505303626" xml:space="preserve" approved="yes">
+                <source>You must enter an instance of \TYPO3\CMS\Extbase\Domain\Model\FileReference or \TYPO3\CMS\Core\Resource\File.</source>
+            <target state="final">Vous devez entrer une instance de \TYPO3\CMS\Extbase\Domain\Model\FileReference ou \TYPO3\CMS\Core\Resource\File.</target></trans-unit>
+      <trans-unit id="validation.error.1505305752" resname="validation.error.1505305752" xml:space="preserve" approved="yes">
+                <source>You must select a file that is larger than %s in size.</source>
+            <target state="final">Vous devez sélectionner un fichier de taille supérieure à %s.</target></trans-unit>
+      <trans-unit id="validation.error.1505305753" resname="validation.error.1505305753" xml:space="preserve" approved="yes">
+                <source>You must select a file that is no larger than %s.</source>
+            <target state="final">Vous devez sélectionner un fichier qui n'a pas plus de %s.</target></trans-unit>
+      <trans-unit id="validation.error.1521293686" resname="validation.error.1521293686" xml:space="preserve" approved="yes">
+                <source>You must select a date before %s.</source>
+            <target state="final">Vous devez sélectionner une date avant le %s.</target></trans-unit>
+      <trans-unit id="validation.error.1521293687" resname="validation.error.1521293687" xml:space="preserve" approved="yes">
+                <source>You must select a date after %s.</source>
+            <target state="final">Vous devez sélectionner une date après le %s.</target></trans-unit>
+      <trans-unit id="validation.error.1556283177" resname="validation.error.1556283177" xml:space="preserve" approved="yes">
+                <source>Password does not match confirmation</source>
+            <target state="final">Le mot de passe ne correspond pas à la confirmation</target></trans-unit>
+      <trans-unit id="form_new_wizard_title" resname="form_new_wizard_title" xml:space="preserve" approved="yes">
+                <source>Form</source>
+            <target state="final">Formulaire</target></trans-unit>
+      <trans-unit id="form_new_wizard_description" resname="form_new_wizard_description" xml:space="preserve" approved="yes">
+                <source>A form that allows website users to submit messages.</source>
+            <target state="final">Un formulaire qui permet aux utilisateurs du site Web d'envoyer des messages.</target></trans-unit>
+      <trans-unit id="upload.error.150530345" resname="upload.error.150530345" xml:space="preserve" approved="yes">
+                <source>Maximum file size exceeded.</source>
+            <target state="final">Taille maximale dépassée.</target></trans-unit>
+      <trans-unit id="upload.error.150530346" resname="upload.error.150530346" xml:space="preserve" approved="yes">
+                <source>Upload failed. The file was only partially uploaded, please try again.</source>
+            <target state="final">Échec du téléchargement. Le fichier n'a été que partiellement téléchargé, veuillez réessayer.</target></trans-unit>
+      <trans-unit id="upload.error.150530347" resname="upload.error.150530347" xml:space="preserve" approved="yes">
+                <source>No file was uploaded.</source>
+            <target state="final">Aucun fichier n'a été téléchargé .</target></trans-unit>
+      <trans-unit id="upload.error.150530348" resname="upload.error.150530348" xml:space="preserve" approved="yes">
+                <source>Upload failed.</source>
+            <target state="final">Le téléchargement a échoué.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
