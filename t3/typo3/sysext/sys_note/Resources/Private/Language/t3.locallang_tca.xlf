@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:sys_note/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:37Z" product-name="sys_note" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="sys_note">
+        <source>Internal note</source>
+        <target>crwdns61922:0crwdne61922:0</target>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.0">
+        <source>Default</source>
+        <target>crwdns374404:0crwdne374404:0</target>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.1">
+        <source>Instructions</source>
+        <target>crwdns61924:0crwdne61924:0</target>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.2">
+        <source>Template</source>
+        <target>crwdns61926:0crwdne61926:0</target>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.3">
+        <source>Notes</source>
+        <target>crwdns61928:0crwdne61928:0</target>
+      </trans-unit>
+      <trans-unit id="sys_note.category.I.4">
+        <source>To-do</source>
+        <target>crwdns61930:0crwdne61930:0</target>
+      </trans-unit>
+      <trans-unit id="sys_note.subject">
+        <source>Subject</source>
+        <target>crwdns61932:0crwdne61932:0</target>
+      </trans-unit>
+      <trans-unit id="sys_note.message">
+        <source>Message</source>
+        <target>crwdns61934:0crwdne61934:0</target>
+      </trans-unit>
+      <trans-unit id="sys_note.personal">
+        <source>Personal</source>
+        <target>crwdns61936:0crwdne61936:0</target>
+      </trans-unit>
+      <trans-unit id="sys_note.position">
+        <source>Position</source>
+        <target>crwdns61938:0crwdne61938:0</target>
+      </trans-unit>
+      <trans-unit id="sys_note.position.top">
+        <source>Top</source>
+        <target>crwdns61940:0crwdne61940:0</target>
+      </trans-unit>
+      <trans-unit id="sys_note.position.bottom">
+        <source>Bottom</source>
+        <target>crwdns61942:0crwdne61942:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
