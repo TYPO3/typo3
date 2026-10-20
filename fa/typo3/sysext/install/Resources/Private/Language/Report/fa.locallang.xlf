@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814843" source-language="en" datatype="plaintext" original="EXT:install/Resources/Private/Language/Report/locallang.xlf" date="2011-10-17T20:22:33Z" product-name="install" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="environment.status.title" resname="environment.status.title" approved="yes">
+        <source>System environment check</source>
+        <target state="final">بررسی محیط سامانه</target>
+      </trans-unit>
+      <trans-unit id="environment.status.value" resname="environment.status.value" approved="yes">
+        <source>%1$s Test(s)</source>
+        <target state="final">%1$آزمایش s</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.error" resname="environment.status.message.error" approved="yes">
+        <source>The system environment check returned errors. Those errors will affect the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target state="final">بررسی محیط سامانه با خطا مواجه شده. این خطاها ممکن است عملکرد و استحکام سامانۀ TYPO3 شما را تحت تاثیر قرار دهند. لطفا برای دریافت همۀ جزئیات به بخش "محیط سامانه" از ابزار نصب مراجعه نمائید.</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.warning" resname="environment.status.message.warning" approved="yes">
+        <source>The system environment check returned warnings. Those warnings might have a negative effect on the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target state="final">بررسی محیط سامانه با هشدار مواجه شد. این هشدارها ممکن است تاثیر منفی بر کارکرد و استحکام سامانۀ کنترل محتوای TYPO3 شما داشته باشد. لطفا برای دریافت همۀ جزئیات به بخش "محیط سامانه" از ابزار نصب مراجعه نمائید.</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.notice" resname="environment.status.message.notice" approved="yes">
+        <source>The system environment check returned notices. Those should not affect the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+        <target state="final">بررسی محیط سامانه توضیحاتی ارائه می‌دهد. این توضیحات نباید اثر خاصی بر کارکرد و استحکام سامانۀ کنترل محتوای TYPO3 نصب شدۀ شما داشته باشند. لطفا برای دریافت همۀ جزئیات به بخش "محیط سامانه" از ابزار نصب مراجعه نمائید.</target>
+      </trans-unit>
+      <trans-unit id="environment.status.message.ok" resname="environment.status.message.ok" xml:space="preserve">
+				<source/>
+			</trans-unit>
+      <trans-unit id="environment.status.message.info" resname="environment.status.message.info" xml:space="preserve">
+				<source/>
+			</trans-unit>
+      <trans-unit id="status_fileSystem" resname="status_fileSystem" approved="yes">
+        <source>File System</source>
+        <target state="final">سامانۀ فایل‌ها</target>
+      </trans-unit>
+      <trans-unit id="status_writable" resname="status_writable" approved="yes">
+        <source>Writable</source>
+        <target state="final">قابل نوشتن</target>
+      </trans-unit>
+      <trans-unit id="status_missingDirectory" resname="status_missingDirectory" approved="yes">
+        <source>Required directory missing</source>
+        <target state="final">پوشۀ موردنیاز وجود ندارد</target>
+      </trans-unit>
+      <trans-unit id="status_nonExistingDirectory" resname="status_nonExistingDirectory" approved="yes">
+        <source>Directory not existing</source>
+        <target state="final">پوشۀ موردنظر وجود ندارد</target>
+      </trans-unit>
+      <trans-unit id="status_recommendedWritableDirectory" resname="status_recommendedWritableDirectory" approved="yes">
+        <source>Directory should be writable</source>
+        <target state="final">لازم است پوشۀ مورد نظر قابل‌نوشتن باشد</target>
+      </trans-unit>
+      <trans-unit id="status_requiredWritableDirectory" resname="status_requiredWritableDirectory" approved="yes">
+        <source>Directory not writable</source>
+        <target state="final">پوشۀ مورد نظر قابل نوشتن نیست</target>
+      </trans-unit>
+      <trans-unit id="status_directoryDoesNotExist" resname="status_directoryDoesNotExist" approved="yes">
+        <source>%s does not exist.</source>
+        <target state="final">%s وجود ندارد.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryDoesNotExistCouldNotCreate" resname="status_directoryDoesNotExistCouldNotCreate" approved="yes">
+        <source>%s does not exist and could not be created.</source>
+        <target state="final">%s وجود ندارد و امکان ساخت آن نیست.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryShouldAlsoBeWritable" resname="status_directoryShouldAlsoBeWritable" approved="yes">
+        <source>Also note that it should be writable, if it did exist.</source>
+        <target state="final">همچنین توجه داشته باشید که در صورتی که وجود دارد، باید قابل‌نوشتن باشد.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryShouldBeWritable" resname="status_directoryShouldBeWritable" approved="yes">
+        <source>%s should be writable.</source>
+        <target state="final">%s باید قابل نوشتن باشد.</target>
+      </trans-unit>
+      <trans-unit id="status_directoryMustBeWritable" resname="status_directoryMustBeWritable" approved="yes">
+        <source>%s must be writable.</source>
+        <target state="final">%s باید قابل نوشتن باشد.</target>
+      </trans-unit>
+      <trans-unit id="status_remainingUpdates" resname="status_remainingUpdates" approved="yes">
+        <source>Remaining updates</source>
+        <target state="final">به‌روز‌رسانی‌های باقی مانده</target>
+      </trans-unit>
+      <trans-unit id="status_remoteFetchException" resname="status_remoteFetchException" approved="yes">
+        <source>Could not fetch version matrix of TYPO3. Maybe this instance is blocked by a firewall?</source>
+        <target state="final">امکان دریافت ماتریس نسخه‌های TYPO3 وجود دارد. شاید این نمونه با یک دیوارۀآتشین محصور شده باشد.</target>
+      </trans-unit>
+      <trans-unit id="status_isDevelopmentVersion" resname="status_isDevelopmentVersion" approved="yes">
+        <source>This version of TYPO3 seems to be a development version. Thus no update information exists.</source>
+        <target state="final">به نظر می‌رسد این نسخه از TYPO3 یک نسخۀ توسعه باشد. لذا هیچ اطلاعاتی برای به‌هنگام‌سازی وجود ندارد.</target>
+      </trans-unit>
+      <trans-unit id="status_patchLevelNotFoundInReleaseMatrix" resname="status_patchLevelNotFoundInReleaseMatrix" approved="yes">
+        <source>It seems that this TYPO3 version has never been released. Thus no update information exists.</source>
+        <target state="final">به نظر می‌رسد این نسخه از TYPO3 هرگز توزیع نشده است. لذا اطلاعات به هنگام‌سازی وجود ندارد.</target>
+      </trans-unit>
+      <trans-unit id="status_versionOutdated" resname="status_versionOutdated" approved="yes">
+        <source>The TYPO3 version you're using is not supported anymore. You should update to a supported version.</source>
+        <target state="final">نسخۀ TYPO3 مورد استفادۀ شما دیگر پشتیبانی نمی‌شود. شما باید به یک نسخۀ پشتیبانی شده ارتقا دهید.</target>
+      </trans-unit>
+      <trans-unit id="status_installToolPassword" resname="status_installToolPassword" approved="yes">
+        <source>Install Tool Password</source>
+        <target state="final">گذرواژۀ ابزار نصب</target>
+      </trans-unit>
+      <trans-unit id="status_installTool" resname="status_installTool" approved="yes">
+        <source>Install Tool</source>
+        <target state="final">ابزار نصب</target>
+      </trans-unit>
+      <trans-unit id="status_enabledPermanently" resname="status_enabledPermanently" approved="yes">
+        <source>Enabled permanently</source>
+        <target state="final">فعال همیشگی</target>
+      </trans-unit>
+      <trans-unit id="status_enabledTemporarily" resname="status_enabledTemporarily" approved="yes">
+        <source>Enabled temporarily</source>
+        <target state="final">موقتا فعال</target>
+      </trans-unit>
+      <trans-unit id="status_installEnabledTemporarily" resname="status_installEnabledTemporarily" approved="yes">
+        <source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
+        <target state="final">ابزار نصب موقتا فعال است. پس از برپاسازی و تثبیت TYPO3 فایل "%s" را حذف کنید. اگر ابزار نصب برای %s دقیقه استفاده نشود به طور خودکار غیرفعال خواهد شد.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
