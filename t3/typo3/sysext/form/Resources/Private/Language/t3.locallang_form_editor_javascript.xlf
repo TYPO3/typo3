@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_form_editor_javascript.xlf" date="2026-01-26T11:12:56Z" product-name="form" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="formEditor.insert_elements">
+        <source>Insert elements</source>
+        <target>crwdns392462:0crwdne392462:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.new_element">
+        <source>Create new element</source>
+        <target>crwdns392464:0crwdne392464:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.new_element.after">
+        <source>Create new element after</source>
+        <target>crwdns394008:0crwdne394008:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.new_element.before">
+        <source>Create new element before</source>
+        <target>crwdns394010:0crwdne394010:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.remove">
+        <source>Remove</source>
+        <target>crwdns392470:0crwdne392470:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.step.name.empty">
+        <source>Step name is not set</source>
+        <target>crwdns392472:0crwdne392472:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.validation.hasError">
+        <source>Has validation errors</source>
+        <target>crwdns393998:0crwdne393998:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.validation.childHasError">
+        <source>Contains elements with validation errors</source>
+        <target>crwdns394000:0crwdne394000:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
