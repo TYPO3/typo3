@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="nl">
+  <file id="f1">
+    <unit id="enabled">
+      <segment state="final">
+        <source>Login enabled</source>
+        <target>Aanmelden ingeschakeld</target>
+      </segment>
+    </unit>
+    <unit id="endtime">
+      <segment state="final">
+        <source>Account active until</source>
+        <target>Account actief tot</target>
+      </segment>
+    </unit>
+    <unit id="group.enabled">
+      <segment state="final">
+        <source>Group enabled</source>
+        <target>Groep ingeschakeld</target>
+      </segment>
+    </unit>
+    <unit id="starttime">
+      <segment state="final">
+        <source>Account active from</source>
+        <target>Account actief vanaf</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
