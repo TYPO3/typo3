@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="widget.rss.title" approved="yes">
+        <source>RSS Feed</source>
+        <target state="final">RSS feed</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.description" approved="yes">
+        <source>Displays the latest entries from a customizable RSS feed.</source>
+        <target state="final">Viser de seneste indlæg fra et tilpasseligt RSS-feed.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.label.label" approved="yes">
+        <source>Label</source>
+        <target state="final">Etiket</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.label.description" approved="yes">
+        <source>Defines the label of the widget.</source>
+        <target state="final">Definerer widget-etiketten.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.fieldUrl.label" approved="yes">
+        <source>RSS Feed</source>
+        <target state="final">RSS feed</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.fieldUrl.description" approved="yes">
+        <source>Defines the URL or file providing the RSS Feed. This is read by the widget in order to fetch entries to show.</source>
+        <target state="final">Definerer URL eller fil som sørger for RSS feed. Dette læses af widget for at hente de indlæg der skal vises.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.limit.label" approved="yes">
+        <source>Limit</source>
+        <target state="final">Grænse</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.limit.description" approved="yes">
+        <source>Defines how many RSS items should be shown.</source>
+        <target state="final">Definerer hvor mange RSS-elementer der skal vises.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.lifetime.label" approved="yes">
+        <source>Lifetime</source>
+        <target state="final">Levetid</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.setting.lifetime.description" approved="yes">
+        <source>Defines how long to wait, in seconds, until fetching RSS Feed again.</source>
+        <target state="final">Definerer hvor lang ventetid i sekunder, indtil RSS-feed hentes igen.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.missingFeedConfiguration.title" approved="yes">
+        <source>Missing feed configuration</source>
+        <target state="final">Manglende feed-konfiguration</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.missingFeedConfiguration.message" approved="yes">
+        <source>Please configure a feed URL to retrieve items from.</source>
+        <target state="final">Konfigurér venligst en feed-URL for at modtage indlæg fra.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.feedError.title" approved="yes">
+        <source>Feed error</source>
+        <target state="final">Feed fejl</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.feedError.message" approved="yes">
+        <source>The feed at "%1$s" could not be parsed.</source>
+        <target state="final">Feedet på "%1$s" kunne ikke fortolkes.</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.noItems.title" approved="yes">
+        <source>No items to display</source>
+        <target state="final">Ingen indlæg at vise</target>
+      </trans-unit>
+      <trans-unit id="widget.rss.noItems.message" approved="yes">
+        <source>The feed at "%1$s" does not contain any items.</source>
+        <target state="final">Feedet på "%1$s" indeholder ikke nogen indlæg.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
