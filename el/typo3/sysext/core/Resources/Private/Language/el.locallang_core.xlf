@@ -1,0 +1,689 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814851" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_core.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="el">
+    <header/>
+    <body>
+      <trans-unit id="labels.openInNewWindow" resname="labels.openInNewWindow" approved="yes">
+        <source>Open in new window</source>
+        <target state="final">Άνοιγμα σε νέο παράθυρο</target>
+      </trans-unit>
+      <trans-unit id="labels.goBack" resname="labels.goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Επιστροφή</target>
+      </trans-unit>
+      <trans-unit id="labels.makeShortcut" resname="labels.makeShortcut" approved="yes">
+        <source>Create a shortcut to this page?</source>
+        <target state="final">Δημιουργία συντόμευσης για αυτή τη σελίδα;</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord" resname="labels.lockedRecord" approved="yes">
+        <source>The user '%s' began to edit this record %s ago.</source>
+        <target state="final">Ο χρήστης '%s' ξεκίνησε να επεξεργάζεται αυτή την εγγραφή πριν από %s.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord_content" resname="labels.lockedRecord_content" approved="yes">
+        <source>The user '%s' began to edit content on this page %s ago.</source>
+        <target state="final">Ο χρήστης '%s' ξεκίνησε να επεξεργάζεται το περιεχόμενο αυτής της σελίδας πριν από %s.</target>
+      </trans-unit>
+      <trans-unit id="labels.showRecords" resname="labels.showRecords" approved="yes">
+        <source>Show records</source>
+        <target state="final">Προβολή εγγραφών</target>
+      </trans-unit>
+      <trans-unit id="labels.path" resname="labels.path" approved="yes">
+        <source>Path</source>
+        <target state="final">Διαδρομή</target>
+      </trans-unit>
+      <trans-unit id="labels.table" resname="labels.table" approved="yes">
+        <source>Table</source>
+        <target state="final">Πίνακας</target>
+      </trans-unit>
+      <trans-unit id="labels.upOneLevel" resname="labels.upOneLevel" approved="yes">
+        <source>Up one level</source>
+        <target state="final">Ένα επίπεδο επάνω</target>
+      </trans-unit>
+      <trans-unit id="labels.enterSearchLevels" resname="labels.enterSearchLevels" approved="yes">
+        <source>This page|1 level down|2 levels down|3 levels down|4 levels down</source>
+        <target state="final">Σε αυτή τη σελίδα|Ένα επίπεδο κάτω|Δύο επίπεδα κάτω|Τρία επίπεδα κάτω|Τέσσερα επίπεδα κάτω</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.0" resname="labels.searchLevel.0" approved="yes">
+        <source>This page</source>
+        <target state="final">Αυτή την σελίδα</target>
+      </trans-unit>
+      <trans-unit id="labels.noEditPermission" resname="labels.noEditPermission" approved="yes">
+        <source>Sorry, you didn't have proper permissions to perform this change.</source>
+        <target state="final">Λυπάμαι, αλλά δεν έχετε τα απαραίτητα δικαιώματα για να εκτελέσετε αυτή την αλλαγή.</target>
+      </trans-unit>
+      <trans-unit id="labels.fieldsChanged" resname="labels.fieldsChanged" xml:space="preserve" approved="yes">
+				<source>There are unsaved changes in the form!
+Do you want to continue WITHOUT saving?</source>
+			<target state="final">Κάνατε αλλαγές στην φόρμα, που δεν έχουν αποθηκευθεί! Θέλετε να συνεχίσετε ΧΩΡΙΣ να αποθηκεύσετε τις αλλαγές;</target></trans-unit>
+      <trans-unit id="labels.noRTEfound" resname="labels.noRTEfound" approved="yes">
+        <source>Notice: This field can only be edited with a Rich Text Editor. No editor is currently available or enabled.</source>
+        <target state="final">Σημείωση: Αυτό το πεδίο μπορεί να επεξεργασθεί μόνο σε κειμενογράφο εμπλουτισμένου κειμένου. Δεν υπάρχουν όμως διαθέσιμοι ή ενεργοί κειμενογράφοι αυτή την στιγμή.</target>
+      </trans-unit>
+      <trans-unit id="labels.disableRTE" resname="labels.disableRTE" approved="yes">
+        <source>Disable Rich Text Editor (RTE)</source>
+        <target state="final">Απενεργοποίηση του κειμενογράφου εμπλουτισμένου κειμένου.</target>
+      </trans-unit>
+      <trans-unit id="labels._CONTROL_" resname="labels._CONTROL_" approved="yes">
+        <source>Control</source>
+        <target state="final">'Ελεγχος</target>
+      </trans-unit>
+      <trans-unit id="labels._PATH_" resname="labels._PATH_" approved="yes">
+        <source>Path</source>
+        <target state="final">Διαδρομή</target>
+      </trans-unit>
+      <trans-unit id="labels._LOCALIZATION_" resname="labels._LOCALIZATION_" approved="yes">
+        <source>Localization</source>
+        <target state="final">Μεταγλώττιση</target>
+      </trans-unit>
+      <trans-unit id="labels.setFields" resname="labels.setFields" approved="yes">
+        <source>Set fields</source>
+        <target state="final">Ορισμός πεδίων</target>
+      </trans-unit>
+      <trans-unit id="labels.search" resname="labels.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Αναζήτηση</target>
+      </trans-unit>
+      <trans-unit id="labels.reload" resname="labels.reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">Ανανέωση</target>
+      </trans-unit>
+      <trans-unit id="labels.csv" resname="labels.csv" approved="yes">
+        <source>Download CSV file</source>
+        <target state="final">Λήψη αρχείου CSV</target>
+      </trans-unit>
+      <trans-unit id="labels.clear_cache" resname="labels.clear_cache" approved="yes">
+        <source>Clear cache for this page</source>
+        <target state="final">Καθαρισμός του λανθάνουσας μνήμης σελίδας</target>
+      </trans-unit>
+      <trans-unit id="labels.no_title" resname="labels.no_title" approved="yes">
+        <source>No title</source>
+        <target state="final">Χωρίς τίτλο</target>
+      </trans-unit>
+      <trans-unit id="labels.cancel" resname="labels.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Ακύρωση</target>
+      </trans-unit>
+      <trans-unit id="labels.hidden" resname="labels.hidden" approved="yes">
+        <source>Hidden</source>
+        <target state="final">Κρυφό</target>
+      </trans-unit>
+      <trans-unit id="labels.starttime" resname="labels.starttime" approved="yes">
+        <source>Start</source>
+        <target state="final">Έναρξη</target>
+      </trans-unit>
+      <trans-unit id="labels.endtime" resname="labels.endtime" approved="yes">
+        <source>End</source>
+        <target state="final">Λήξη</target>
+      </trans-unit>
+      <trans-unit id="labels.showPage" resname="labels.showPage" approved="yes">
+        <source>View webpage</source>
+        <target state="final">Προβολή ιστοσελίδων</target>
+      </trans-unit>
+      <trans-unit id="labels.showList" resname="labels.showList" approved="yes">
+        <source>Show record list</source>
+        <target state="final">Προβολή της λίστας εγγραφών</target>
+      </trans-unit>
+      <trans-unit id="labels.days" resname="labels.days" approved="yes">
+        <source>days</source>
+        <target state="final">ημέρες</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_0" resname="labels.depth_0" approved="yes">
+        <source>This page</source>
+        <target state="final">Αυτή την σελίδα</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_1" resname="labels.depth_1" approved="yes">
+        <source>1 level</source>
+        <target state="final">Ένα επίπεδο</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_2" resname="labels.depth_2" approved="yes">
+        <source>2 levels</source>
+        <target state="final">Δύο επίπεδα</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_3" resname="labels.depth_3" approved="yes">
+        <source>3 levels</source>
+        <target state="final">Τρία επίπεδα</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_4" resname="labels.depth_4" approved="yes">
+        <source>4 levels</source>
+        <target state="final">Τέσσερα επίπεδα</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_infi" resname="labels.depth_infi" approved="yes">
+        <source>Infinite</source>
+        <target state="final">Άπειρα</target>
+      </trans-unit>
+      <trans-unit id="labels.allow" resname="labels.allow" approved="yes">
+        <source>Allow</source>
+        <target state="final">Αποδοχή</target>
+      </trans-unit>
+      <trans-unit id="labels.deny" resname="labels.deny" approved="yes">
+        <source>Deny</source>
+        <target state="final">Άρνηση</target>
+      </trans-unit>
+      <trans-unit id="labels.show" resname="labels.show" approved="yes">
+        <source>Show</source>
+        <target state="final">Προβολή</target>
+      </trans-unit>
+      <trans-unit id="labels.generalTab" resname="labels.generalTab" approved="yes">
+        <source>General</source>
+        <target state="final">Γενικά</target>
+      </trans-unit>
+      <trans-unit id="labels.refresh" resname="labels.refresh" approved="yes">
+        <source>Reload the tree from server</source>
+        <target state="final">Ανανέωση του δένδρου από τον εξυπηρετητή</target>
+      </trans-unit>
+      <trans-unit id="labels.temporaryDBmount" resname="labels.temporaryDBmount" approved="yes">
+        <source>Cancel temporary DB mount</source>
+        <target state="final">Ακύρωση του προσωρινού σημείου σύνδεσης με την βάση δεδομένων</target>
+      </trans-unit>
+      <trans-unit id="labels.refreshList" resname="labels.refreshList" approved="yes">
+        <source>Reload list from server</source>
+        <target state="final">Ανανέωση της λίστας από τον εξυπηρετητή</target>
+      </trans-unit>
+      <trans-unit id="labels.close" resname="labels.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Κλείσιμο</target>
+      </trans-unit>
+      <trans-unit id="labels.new" resname="labels.new" approved="yes">
+        <source>NEW</source>
+        <target state="final">ΝΕΟ</target>
+      </trans-unit>
+      <trans-unit id="labels.edit" resname="labels.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Επεξεργασία</target>
+      </trans-unit>
+      <trans-unit id="labels.createNew" resname="labels.createNew" approved="yes">
+        <source>Create new</source>
+        <target state="final">Δημιουργία νέου</target>
+      </trans-unit>
+      <trans-unit id="labels.selected" resname="labels.selected" approved="yes">
+        <source>Selected Items</source>
+        <target state="final">Επιλεγμένο(α)</target>
+      </trans-unit>
+      <trans-unit id="labels.items" resname="labels.items" approved="yes">
+        <source>Available Items</source>
+        <target state="final">Αντικείμενα</target>
+      </trans-unit>
+      <trans-unit id="labels.remove_selected" resname="labels.remove_selected" approved="yes">
+        <source>Remove selected items</source>
+        <target state="final">Αφαίρεση επιλεγμένων αντικειμένων</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_top" resname="labels.move_to_top" approved="yes">
+        <source>Move selected items to top</source>
+        <target state="final">Μετακίνηση των επιλεγμένων αντικειμένων στο ανώτατο σημείο</target>
+      </trans-unit>
+      <trans-unit id="labels.move_up" resname="labels.move_up" approved="yes">
+        <source>Move selected items upwards</source>
+        <target state="final">Μετακίνηση των επιλεγμένων αντικειμένων προς τα πάνω</target>
+      </trans-unit>
+      <trans-unit id="labels.move_down" resname="labels.move_down" approved="yes">
+        <source>Move selected items downwards</source>
+        <target state="final">Μετακίνηση των επιλεγμένων αντικειμένων προς τα κάτω</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_bottom" resname="labels.move_to_bottom" approved="yes">
+        <source>Move selected items to bottom</source>
+        <target state="final">Μετακίνηση των επιλεγμένων αντικειμένων στο κατώτατο σημείο</target>
+      </trans-unit>
+      <trans-unit id="labels.move" resname="labels.move" approved="yes">
+        <source>Move this item</source>
+        <target state="final">Μετακίνηση αυτού του στοιχείου</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_file" resname="labels.browse_file" approved="yes">
+        <source>Browse for files</source>
+        <target state="final">Πλοήγηση για αρχεία</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_db" resname="labels.browse_db" approved="yes">
+        <source>Browse for records</source>
+        <target state="final">Πλοήγηση για εγγραφές</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_file" resname="labels.clipInsert_file" approved="yes">
+        <source>Insert %s file(s) from the clipboard</source>
+        <target state="final">Εισαγωγή %s αρχείου(ων) από το πρόχειρο</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_db" resname="labels.clipInsert_db" approved="yes">
+        <source>Insert %s record(s) from the clipboard</source>
+        <target state="final">Εισαγωγή %s εγγραφής(ών) από το πρόχειρο</target>
+      </trans-unit>
+      <trans-unit id="labels.allTables" resname="labels.allTables" approved="yes">
+        <source>[All tables]</source>
+        <target state="final">[Όλοι οι πίνακες]</target>
+      </trans-unit>
+      <trans-unit id="labels.noMatchingValue" resname="labels.noMatchingValue" approved="yes">
+        <source>INVALID VALUE ("%s")</source>
+        <target state="final">ΜΗ ΕΓΚΥΡΗ ΤΙΜΗ ("%s")</target>
+      </trans-unit>
+      <trans-unit id="labels.thumbmode_clip" resname="labels.thumbmode_clip" approved="yes">
+        <source>Show Thumbnails on ClipBoard</source>
+        <target state="final">Προβολή μικρογραφιών στο Πρόχειρο</target>
+      </trans-unit>
+      <trans-unit id="labels.copymode" resname="labels.copymode" approved="yes">
+        <source>Copy items instead of moving them</source>
+        <target state="final">Αντιγραφή, αντί για μετακίνηση των αντικειμένων</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs" resname="labels.cliptabs" approved="yes">
+        <source>Clipboard #</source>
+        <target state="final">Πρόχειρο #</target>
+      </trans-unit>
+      <trans-unit id="labels.removeItem" resname="labels.removeItem" approved="yes">
+        <source>Remove item</source>
+        <target state="final">Αφαίρεση αντικειμένου</target>
+      </trans-unit>
+      <trans-unit id="labels.holdDownCTRL" resname="labels.holdDownCTRL" approved="yes">
+        <source>Important: Hold down the CTRL key while toggling elements in this list!</source>
+        <target state="final">Σημαντικό: Κρατήστε πατημένο το πλήκτρο CTRL καθώς επιλέγετε στοιχεία της λίστας!</target>
+      </trans-unit>
+      <trans-unit id="labels.revertSelection" resname="labels.revertSelection" approved="yes">
+        <source>Revert selection</source>
+        <target state="final">Αντιστροφή επιλογής</target>
+      </trans-unit>
+      <trans-unit id="labels.setAllCheckboxes" resname="labels.setAllCheckboxes" approved="yes">
+        <source>Select All Checkboxes</source>
+        <target state="final">Επιλογή όλων των πλαισίου επιλογής</target>
+      </trans-unit>
+      <trans-unit id="labels.changeInOrig" resname="labels.changeInOrig" approved="yes">
+        <source>Changed in original translation</source>
+        <target state="final">Αλλαγμένο στην αρχική μετάφραση</target>
+      </trans-unit>
+      <trans-unit id="labels.expandAll" resname="labels.expandAll" approved="yes">
+        <source>Expand all</source>
+        <target state="final">Ανάπτυξη όλων</target>
+      </trans-unit>
+      <trans-unit id="labels.new_section" resname="labels.new_section" approved="yes">
+        <source>Create new</source>
+        <target state="final">Δημιουργία νέου</target>
+      </trans-unit>
+      <trans-unit id="labels.title.search" resname="labels.title.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Αναζήτηση</target>
+      </trans-unit>
+      <trans-unit id="ver.online" resname="ver.online" approved="yes">
+        <source>ONLINE</source>
+        <target state="final">ΣΥΝΔΕΔΕΜΕΝΟΣ</target>
+      </trans-unit>
+      <trans-unit id="ver.mgm" resname="ver.mgm" approved="yes">
+        <source>Version Management</source>
+        <target state="final">Διαχείριση Εκδόσεων</target>
+      </trans-unit>
+      <trans-unit id="ver.swap" resname="ver.swap" approved="yes">
+        <source>Swap/Publish</source>
+        <target state="final">Εναλλαγή/Δημοσίευση</target>
+      </trans-unit>
+      <trans-unit id="ver.swapPage" resname="ver.swapPage" approved="yes">
+        <source>Publish this version of the page including content</source>
+        <target state="final">Δημισίευση αυτής της έκδοσης της σελίδας περιλαμβανομένου και του περιεχομένου της</target>
+      </trans-unit>
+      <trans-unit id="TYPO3_Element_Browser" resname="TYPO3_Element_Browser" approved="yes">
+        <source>TYPO3 Element Browser</source>
+        <target state="final">Πλοηγός στοιχείων του TYPO3</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.viewItem" resname="show_item.php.viewItem" approved="yes">
+        <source>View Item</source>
+        <target state="final">Προβολή αντικειμένου</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.file" resname="show_item.php.file" approved="yes">
+        <source>File</source>
+        <target state="final">Αρχείο</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.dimensions" resname="show_item.php.dimensions" approved="yes">
+        <source>Dimensions</source>
+        <target state="final">Διαστάσεις</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.filesize" resname="show_item.php.filesize" approved="yes">
+        <source>Size</source>
+        <target state="final">Μέγεθος</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.files" resname="show_item.php.files" approved="yes">
+        <source>files</source>
+        <target state="final">αρχεία</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.table" resname="show_item.php.table" approved="yes">
+        <source>Table</source>
+        <target state="final">Πίνακας</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.ftp_area" resname="show_item.php.ftp_area" approved="yes">
+        <source>FTP AREA</source>
+        <target state="final">Περιοχή FTP</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.pagetitle" resname="db_new.php.pagetitle" approved="yes">
+        <source>New record</source>
+        <target state="final">Νέα εγγραφή</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.after" resname="db_new.php.after" approved="yes">
+        <source>after</source>
+        <target state="final">μετά</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.inside" resname="db_new.php.inside" approved="yes">
+        <source>inside</source>
+        <target state="final">μέσα</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.pagetitle" resname="file_upload.php.pagetitle" approved="yes">
+        <source>Upload files</source>
+        <target state="final">Μεταφόρτωση αρχείων</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.submit" resname="file_upload.php.submit" approved="yes">
+        <source>Upload files</source>
+        <target state="final">Μεταφόρτωση αρχείων</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.files" resname="file_upload.php.files" approved="yes">
+        <source>files</source>
+        <target state="final">αρχεία</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.rename" resname="file_upload.actions.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">Μετονομασία</target>
+      </trans-unit>
+      <trans-unit id="file_upload.button.cancel" resname="file_upload.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Ακύρωση</target>
+      </trans-unit>
+      <trans-unit id="file_rename.actions.cancel" resname="file_rename.actions.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Ακύρωση</target>
+      </trans-unit>
+      <trans-unit id="file_rename.php.pagetitle" resname="file_rename.php.pagetitle" approved="yes">
+        <source>Rename</source>
+        <target state="final">Μετονομασία</target>
+      </trans-unit>
+      <trans-unit id="file_rename.php.submit" resname="file_rename.php.submit" approved="yes">
+        <source>Rename</source>
+        <target state="final">Μετονομασία</target>
+        <note>This label is not used since TYPO3 v9.</note>
+      </trans-unit>
+      <trans-unit id="file_edit.php.pagetitle" resname="file_edit.php.pagetitle" approved="yes">
+        <source>Edit</source>
+        <target state="final">Επεξεργασία</target>
+      </trans-unit>
+      <trans-unit id="file_clipupload.php.warning_head" resname="file_clipupload.php.warning_head" approved="yes">
+        <source>Upload path error</source>
+        <target state="final">Σφάλμα διαδρομής μεταφόρτωσης</target>
+      </trans-unit>
+      <trans-unit id="file_clipupload.php.warning" resname="file_clipupload.php.warning" approved="yes">
+        <source>No upload-folder is found. You should create a TEMP-folder ("_temp_") in the root of one of your mounts first!</source>
+        <target state="final">Δέν βρέθηκε ο φάκελος προορισμού της μεταφόρτωσης. Πρέπει πρώτα, να δημιουργήσετε ένα προσωρινό φάκελο ("_temp_") στη ρίζα ενός εκ των σημείων σύνδεσης που έχετε!</target>
+      </trans-unit>
+      <trans-unit id="mess.redraw" resname="mess.redraw" approved="yes">
+        <source>Redrawing the page will discard the current data. Do you want to continue?</source>
+        <target state="final">Ανανεώνοντας τη σελίδα θα απορριφθούν όλα τα τρέχοντα δεδομένα. Θέλετε να συνεχίσετε;</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login" resname="mess.refresh_login" xml:space="preserve" approved="yes">
+				<source>Your login has probably expired.
+Do you want to refresh it now?</source>
+			<target state="final">Πιθανόν η περίοδος σύνδεσης σας έληξε. Θέλετε να την ανανεώσετε τώρα;</target></trans-unit>
+      <trans-unit id="mess.refresh_exit_button" resname="mess.refresh_exit_button" approved="yes">
+        <source>Exit</source>
+        <target state="final">Έξοδος</target>
+      </trans-unit>
+      <trans-unit id="mess.noSelItemForEdit" resname="mess.noSelItemForEdit" approved="yes">
+        <source>Please select one or more items in the list before you can edit.</source>
+        <target state="final">Παρακαλώ επιλέξτε ένα ή περισσότερα αντικείμενα της λίστας, για να εκκινήσει η επεξεργασία.</target>
+      </trans-unit>
+      <trans-unit id="mess.move_into" resname="mess.move_into" approved="yes">
+        <source>Move "%s" into "%s"?</source>
+        <target state="final">Μετακίνηση του "%s"εντός του "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.move_after" resname="mess.move_after" approved="yes">
+        <source>Move "%s" to after "%s"?</source>
+        <target state="final">Μετακίνηση του "%s" μετά από το "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_into" resname="mess.copy_into" approved="yes">
+        <source>Copy "%s" into "%s"?</source>
+        <target state="final">Αντιγραφή του "%s" εντός του "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_after" resname="mess.copy_after" approved="yes">
+        <source>Copy "%s" to after "%s"?</source>
+        <target state="final">Αντιγραφή του "%s" μετά από το "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_into" resname="mess.copycb_into" approved="yes">
+        <source>Copy all elements (%s) from the clipboard into "%s"?</source>
+        <target state="final">Αντιγραφή όλων των στοιχείων (%s) από το πρόχειρο εντός του "%s";</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_after" resname="mess.copycb_after" approved="yes">
+        <source>Copy all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target state="final">Αντιγραφή όλων των στοιχείων (%s) από το πρόχειρο στην θέση μετά από "%s";</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_into" resname="mess.movecb_into" approved="yes">
+        <source>Move all elements (%s) from the clipboard into "%s"?</source>
+        <target state="final">Μετακίνηση όλων των στοιχείων (%s) από το πρόχειρο εντός του "%s";</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_after" resname="mess.movecb_after" approved="yes">
+        <source>Move all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target state="final">Μετακίνηση όλων των στοιχείων (%s) από το πρόχειρο στην θέση μετά από "%s";</target>
+      </trans-unit>
+      <trans-unit id="rm.menu" resname="rm.menu" approved="yes">
+        <source>[menu]</source>
+        <target state="final">[μενού]</target>
+      </trans-unit>
+      <trans-unit id="rm.newDoc" resname="rm.newDoc" approved="yes">
+        <source>New</source>
+        <target state="final">Νέα</target>
+      </trans-unit>
+      <trans-unit id="rm.closeDoc" resname="rm.closeDoc" approved="yes">
+        <source>Close</source>
+        <target state="final">Κλείσιμο</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_clearCache" resname="rm.clearCache_clearCache" approved="yes">
+        <source>Clear cache</source>
+        <target state="final">Καθαρισμός λανθάνουσας μνήμης</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_thisPage" resname="rm.clearCache_thisPage" approved="yes">
+        <source>This page</source>
+        <target state="final">Αυτή την σελίδα</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_all" resname="rm.clearCache_all" approved="yes">
+        <source>Clear FE cache</source>
+        <target state="final">Καθαρισμός λανθάνουσας μνήμης FE</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_pages" resname="rm.clearCache_pages" approved="yes">
+        <source>Clear Page Cache</source>
+        <target state="final">Καθαρισμός λανθάνουσας μνήμης σελίδας</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_allTypo3Conf" resname="rm.clearCache_allTypo3Conf" approved="yes">
+        <source>Clear cache in typo3conf/</source>
+        <target state="final">Καθαρισμός λανθάνουσας μνήμης στο typo3conf/</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCacheMenu_all" resname="rm.clearCacheMenu_all" approved="yes">
+        <source>Clear all caches</source>
+        <target state="final">Εκκαθάριση όλων των λανθάνουσων μνημών</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCacheMenu_pages" resname="rm.clearCacheMenu_pages" approved="yes">
+        <source>Clear page content cache</source>
+        <target state="final">Εκκαθάριση λανθάνουσας μνήμης σελίδας</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCacheMenu_allTypo3Conf" resname="rm.clearCacheMenu_allTypo3Conf" approved="yes">
+        <source>Clear configuration cache</source>
+        <target state="final">Εκκαθάριση λανθάνουσας μνήμης ρυθμίσεων</target>
+      </trans-unit>
+      <trans-unit id="rm.adminFunctions" resname="rm.adminFunctions" approved="yes">
+        <source>Admin functions</source>
+        <target state="final">Λειτουργίες διαχείρισης</target>
+      </trans-unit>
+      <trans-unit id="rm.edit" resname="rm.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Επεξεργασία</target>
+      </trans-unit>
+      <trans-unit id="rm.export" resname="rm.export" approved="yes">
+        <source>Export</source>
+        <target state="final">Εξαγωγή</target>
+      </trans-unit>
+      <trans-unit id="rm.delete" resname="rm.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Διαγραφή</target>
+      </trans-unit>
+      <trans-unit id="buttons.logout" resname="buttons.logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">Αποσύνδεση</target>
+      </trans-unit>
+      <trans-unit id="buttons.exit" resname="buttons.exit" approved="yes">
+        <source>Exit</source>
+        <target state="final">Έξοδος</target>
+      </trans-unit>
+      <trans-unit id="buttons.selMenu_modules" resname="buttons.selMenu_modules" approved="yes">
+        <source>MODULES</source>
+        <target state="final">ΜΟΝΑΔΕΣ</target>
+      </trans-unit>
+      <trans-unit id="buttons.clear" resname="buttons.clear" approved="yes">
+        <source>Clear</source>
+        <target state="final">Καθαρισμός</target>
+      </trans-unit>
+      <trans-unit id="buttons.clipboard" resname="buttons.clipboard" approved="yes">
+        <source>Clipboard</source>
+        <target state="final">Πρόχειρο</target>
+      </trans-unit>
+      <trans-unit id="cm.copy" resname="cm.copy" approved="yes">
+        <source>Copy</source>
+        <target state="final">Αντιγραφή</target>
+      </trans-unit>
+      <trans-unit id="cm.cut" resname="cm.cut" approved="yes">
+        <source>Cut</source>
+        <target state="final">Αποκοπή</target>
+      </trans-unit>
+      <trans-unit id="cm.view" resname="cm.view" approved="yes">
+        <source>Show</source>
+        <target state="final">Προβολή</target>
+      </trans-unit>
+      <trans-unit id="cm.edit" resname="cm.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Επεξεργασία</target>
+      </trans-unit>
+      <trans-unit id="cm.new" resname="cm.new" approved="yes">
+        <source>New</source>
+        <target state="final">Νέα</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteinto" resname="cm.pasteinto" approved="yes">
+        <source>Paste into</source>
+        <target state="final">Επικόλληση εντός</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteafter" resname="cm.pasteafter" approved="yes">
+        <source>Paste after</source>
+        <target state="final">Επικόλληση μετά</target>
+      </trans-unit>
+      <trans-unit id="cm.select" resname="cm.select" approved="yes">
+        <source>Select</source>
+        <target state="final">Επιλογή</target>
+      </trans-unit>
+      <trans-unit id="cm.deselect" resname="cm.deselect" approved="yes">
+        <source>Deselect</source>
+        <target state="final">Αποεπιλογή</target>
+      </trans-unit>
+      <trans-unit id="cm.selectto" resname="cm.selectto" approved="yes">
+        <source>Select to</source>
+        <target state="final">Επιλογή στο</target>
+      </trans-unit>
+      <trans-unit id="cm.deselectto" resname="cm.deselectto" approved="yes">
+        <source>Deselect to</source>
+        <target state="final">Αποεπιλογή στο</target>
+      </trans-unit>
+      <trans-unit id="cm.delete" resname="cm.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Διαγραφή</target>
+      </trans-unit>
+      <trans-unit id="cm.hide" resname="cm.hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">Απόκρυψη</target>
+      </trans-unit>
+      <trans-unit id="cm.unhide" resname="cm.unhide" approved="yes">
+        <source>Unhide</source>
+        <target state="final">Ακύρωση Απόκρυψης</target>
+      </trans-unit>
+      <trans-unit id="cm.upload" resname="cm.upload" approved="yes">
+        <source>Upload Files</source>
+        <target state="final">Μεταφόρτωση αρχείων</target>
+      </trans-unit>
+      <trans-unit id="cm.rename" resname="cm.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">Μετονομασία</target>
+      </trans-unit>
+      <trans-unit id="cm.open" resname="cm.open" approved="yes">
+        <source>Open</source>
+        <target state="final">Άνοιγμα</target>
+      </trans-unit>
+      <trans-unit id="cm.unzip" resname="cm.unzip" approved="yes">
+        <source>Unzip</source>
+        <target state="final">Αποσυμπίεση (zip αρχείου)</target>
+      </trans-unit>
+      <trans-unit id="cm.info" resname="cm.info" approved="yes">
+        <source>Info</source>
+        <target state="final">Πληροφορίες</target>
+      </trans-unit>
+      <trans-unit id="cm.createnew" resname="cm.createnew" approved="yes">
+        <source>Create new</source>
+        <target state="final">Δημιουργία νέου</target>
+      </trans-unit>
+      <trans-unit id="cm.tempMountPoint" resname="cm.tempMountPoint" approved="yes">
+        <source>Mount as treeroot</source>
+        <target state="final">Σύνδεση ώς ρίζα δέντρου</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_into" resname="cm.copyPage_into" approved="yes">
+        <source>Copy page into</source>
+        <target state="final">Αντιγραφή σελίδας εντός</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_after" resname="cm.copyPage_after" approved="yes">
+        <source>Copy page after</source>
+        <target state="final">Αντιγραφή σελίδας μετά</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_into" resname="cm.movePage_into" approved="yes">
+        <source>Move page into</source>
+        <target state="final">Μετακίνηση σελίδας εντός</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_after" resname="cm.movePage_after" approved="yes">
+        <source>Move page after</source>
+        <target state="final">Μετακίνηση σελίδας μετά</target>
+      </trans-unit>
+      <trans-unit id="cm.copyFolder_into" resname="cm.copyFolder_into" approved="yes">
+        <source>Copy folder into</source>
+        <target state="final">Αντιγραφή φακέλου εντός</target>
+      </trans-unit>
+      <trans-unit id="cm.moveFolder_into" resname="cm.moveFolder_into" approved="yes">
+        <source>Move folder into</source>
+        <target state="final">Μετακίνηση φακέλου εντός</target>
+      </trans-unit>
+      <trans-unit id="cm.createNewRelation" resname="cm.createNewRelation" approved="yes">
+        <source>Create new relation</source>
+        <target state="final">Δημιουργία νέας συσχέτισης</target>
+      </trans-unit>
+      <trans-unit id="cm.more" resname="cm.more" approved="yes">
+        <source>More options...</source>
+        <target state="final">Περισσότερες επιλογές...</target>
+      </trans-unit>
+      <trans-unit id="warning.install_password" resname="warning.install_password" approved="yes">
+        <source>The Install Tool is still using the default password "joh316". Update this within the %sAbout section%s of the Install Tool.</source>
+        <target state="final">Το εργαλείο εγκατάστασης χρησιμοποιεί ακόμη τον προεπιλεγμένο κωδικό "joh316". Ενημερώστε το μέσα στην %s Ενότητα "Πληροφορίες"%s του εργαλείου εγκατάστασης</target>
+      </trans-unit>
+      <trans-unit id="warning.backend_admin" resname="warning.backend_admin" approved="yes">
+        <source>The default backend user "admin" with password "password" is still present. %sEdit this account%s, either deleting it completely or changing the username and password.</source>
+        <target state="final">Ο προεπιλεγμένος backend χρήστης "admin" με κωδικό "password" ακόμη υπάρχει. %s Επεξεργαστείτε τον λογαριασμό αυτό%s, είτε διαγράφοντας τον εντελώς είτε αλλάζοντας το όνομα χρήστη και τον κωδικό.</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_pattern" resname="warning.file_deny_pattern" approved="yes">
+        <source>The value of fileDenyPattern is not set to its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</source>
+        <target state="final">Η τιμή του fileDenyPattern δεν έχει οριστεί στην προεπιλεγμένη: %s. Αν το TYPO3 τρέχει σε apache, μία εξατομικευμένη τιμή μπορεί να επιτρέψει τους backend ή τους frontend χρήστες να εκτελέσουν κακόβουλα php προγράμματα.</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_htaccess" resname="warning.file_deny_htaccess" approved="yes">
+        <source>The current value of fileDenyPattern allows to upload/create files with the name ".htaccess". If TYPO3 is running on Apache, this enables backend or frontend users to create and execute php scripts. Please reset the value of fileDenyPattern to its default.</source>
+        <target state="final">Η τρέχουσα τιμή του fileDenyPattern επιτρέπει τη μεταφόρτωση/δημιουργία αρχείων με το όνομα ".htaccess". Εάν το TYPO3 τρέχει σε Apache, αυτό ενεργοποιεί χρήστες backend ή frontend να δημιουργούν και να εκτελούν php προγράμματα. Παρακαλώ επαναφέρετε την τιμή του fileDenyPattern στην προεπιλεγμένη.</target>
+      </trans-unit>
+      <trans-unit id="warning.install_enabled" resname="warning.install_enabled" approved="yes">
+        <source>The Install Tool is permanently enabled. Delete the file "%s" when you have finished setting up TYPO3.</source>
+        <target state="final">Το εργαλείο εγκατάστασης είναι ενεργοποιημένο. Διαγράψτε το αρχείο "%s" όταν θα έχετε τελειώσει την ρύθμιση του TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="warning.install_enabled_cmd" resname="warning.install_enabled_cmd" approved="yes">
+        <source>Click to remove the file now!</source>
+        <target state="final">Κάντε κλικ για να διαγράψετε το αρχείο τώρα!</target>
+      </trans-unit>
+      <trans-unit id="warning.install_update" resname="warning.install_update" approved="yes">
+        <source>This installation is not configured for the TYPO3 version it is running. If you did so intentionally, this message can be safely ignored. If you are unsure, visit the Update Wizard section of the %sInstall Tool%s to see how TYPO3 would change.</source>
+        <target state="final">Η εγκατάσταση δεν είναι διαμορφωμένη για την έκδοση του TYPO3 που τρέχει. Αν αυτό το κάνατε σκοπίμως, αυτό το μήνυμα μπορεί ασφαλώς να αγνοηθεί. Αν δεν είστε σίγουρος, επισκεφθείτε τον %sΟδηγό Ενημέρωσης%s του εργαλείου εγκατάστασης για να δείτε πως πρέπει να αλλαχθεί το TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="warning.header" resname="warning.header" approved="yes">
+        <source>Important Notice!</source>
+        <target state="final">Σημαντική Σημείωση!</target>
+      </trans-unit>
+      <trans-unit id="warning.backend_reference" resname="warning.backend_reference" approved="yes">
+        <source>The Reference Index table is empty which is likely the result of a recent TYPO3 upgrade. Please go to %sTools&gt;DB Check%s and update the reference index.</source>
+        <target state="final">Ο πίνακας ευρετηρίου αναφοράς είναι άδειος το οποίο μάλλον συνέβη λόγω πρόσφατης ενημέρωσης του TYPO3. Παρακαλώ πηγαίνετε στη μονάδα %sΕργαλεία-&gt;Έλεγχος ΒΔ%s και ενημερώστε το ευρετήριο αναφορών.</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.search" resname="toolbarItems.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Αναζήτηση</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
