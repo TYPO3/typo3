@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814900" source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="configuration" resname="configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Konfigūracija</target>
+      </trans-unit>
+      <trans-unit id="typo3ConfVars" resname="typo3ConfVars" approved="yes">
+        <source>$GLOBALS['TYPO3_CONF_VARS'] (Global Configuration)</source>
+        <target state="final">$GLOBALS['TYPO3_CONF_VARS'] (globali konfigūracija)</target>
+      </trans-unit>
+      <trans-unit id="tca" resname="tca" approved="yes">
+        <source>$GLOBALS['TCA'] (Table configuration array)</source>
+        <target state="final">$GLOBALS['TCA'] (lentelių konfigūracijos masyvas)</target>
+      </trans-unit>
+      <trans-unit id="beUserTsConfig" resname="beUserTsConfig" approved="yes">
+        <source>$GLOBALS['BE_USER']-&gt;getTSConfig() (User TSconfig)</source>
+        <target state="final">$GLOBALS['BE_USER']-&gt;getTSConfig() (naudotojo TSconfig)</target>
+      </trans-unit>
+      <trans-unit id="beUser" resname="beUser" approved="yes">
+        <source>$GLOBALS['BE_USER']-&gt;uc (User Settings)</source>
+        <target state="final">$GLOBALS['BE_USER']-&gt;uc (naudotojo nustatymai)</target>
+      </trans-unit>
+      <trans-unit id="usersettings" resname="usersettings" approved="yes">
+        <source>$GLOBALS['TYPO3_USER_SETTINGS'] (User Settings Configuration)</source>
+        <target state="final">$GLOBALS['TYPO3_USER_SETTINGS'] (naudotojo nustatymų konfigūracija)</target>
+      </trans-unit>
+      <trans-unit id="routes" resname="routes" approved="yes">
+        <source>Backend Routes</source>
+        <target state="final">Backend maršrutai</target>
+      </trans-unit>
+      <trans-unit id="httpMiddlewareStacks" resname="httpMiddlewareStacks" approved="yes">
+        <source>HTTP Middlewares (PSR-15)</source>
+        <target state="final">HTTP tarpinės programos (PSR-15)</target>
+      </trans-unit>
+      <trans-unit id="t3services" resname="t3services" approved="yes">
+        <source>$GLOBALS['T3_SERVICES'] (Registered Services)</source>
+        <target state="final">$GLOBALS['T3_SERVICES'] (užregistruotos paslaugos)</target>
+      </trans-unit>
+      <trans-unit id="search" resname="search" approved="yes">
+        <source>Search</source>
+        <target state="final">Paieška</target>
+      </trans-unit>
+      <trans-unit id="totalPageTree" resname="totalPageTree" approved="yes">
+        <source>Total Page Tree</source>
+        <target state="final">Visas puslapių medis</target>
+      </trans-unit>
+      <trans-unit id="fullSearch" resname="fullSearch" approved="yes">
+        <source>Full search</source>
+        <target state="final">Pilna paieška</target>
+      </trans-unit>
+      <trans-unit id="findFilename" resname="findFilename" approved="yes">
+        <source>Find filename</source>
+        <target state="final">Rasti failo pavadinimą</target>
+      </trans-unit>
+      <trans-unit id="rawSearch" resname="rawSearch" approved="yes">
+        <source>Raw search in all fields</source>
+        <target state="final">Tiesioginė paieška visuose laukuose</target>
+      </trans-unit>
+      <trans-unit id="advancedQuery" resname="advancedQuery" approved="yes">
+        <source>Advanced query</source>
+        <target state="final">Išplėstinė užklausa</target>
+      </trans-unit>
+      <trans-unit id="selectRecords" resname="selectRecords" approved="yes">
+        <source>Select records</source>
+        <target state="final">Pasirinkti įrašus</target>
+      </trans-unit>
+      <trans-unit id="countResults" resname="countResults" approved="yes">
+        <source>Count results</source>
+        <target state="final">Skaičiuoti rezultatus</target>
+      </trans-unit>
+      <trans-unit id="explainQuery" resname="explainQuery" approved="yes">
+        <source>Explain query</source>
+        <target state="final">Paaiškinti užklausą</target>
+      </trans-unit>
+      <trans-unit id="csvExport" resname="csvExport" approved="yes">
+        <source>CSV Export</source>
+        <target state="final">CSV eksportas</target>
+      </trans-unit>
+      <trans-unit id="xmlExport" resname="xmlExport" approved="yes">
+        <source>XML Export</source>
+        <target state="final">XML eksportas</target>
+      </trans-unit>
+      <trans-unit id="showSQL" resname="showSQL" approved="yes">
+        <source>Show SQL parts</source>
+        <target state="final">Rodyti SQL dalis</target>
+      </trans-unit>
+      <trans-unit id="useFormattedStrings" resname="useFormattedStrings" approved="yes">
+        <source>Use formatted strings, labels and dates instead of original values for results</source>
+        <target state="final">Rezultatams naudoti suformatuotas eilutes, žymas ir datas vietoje originalių reikšmių</target>
+      </trans-unit>
+      <trans-unit id="sortOptions" resname="sortOptions" approved="yes">
+        <source>Sort selectbox-options for relations by label and not by value</source>
+        <target state="final">Rikiuoti pasirinkimo laukų parinktis ryšiams pagal žymą, o ne pagal reikšmę</target>
+      </trans-unit>
+      <trans-unit id="showDeleted" resname="showDeleted" approved="yes">
+        <source>Show even deleted entries (with undelete buttons)</source>
+        <target state="final">Rodyti net ištrintus įrašus (su atkūrimo mygtukais)</target>
+      </trans-unit>
+      <trans-unit id="result" resname="result" approved="yes">
+        <source>Result</source>
+        <target state="final">Rezultatas</target>
+      </trans-unit>
+      <trans-unit id="tables" resname="tables" approved="yes">
+        <source>Tables</source>
+        <target state="final">Lentelės</target>
+      </trans-unit>
+      <trans-unit id="references" resname="references" approved="yes">
+        <source>references</source>
+        <target state="final">nuorodos</target>
+      </trans-unit>
+      <trans-unit id="isMissing" resname="isMissing" approved="yes">
+        <source>is missing!</source>
+        <target state="final">trūksta!</target>
+      </trans-unit>
+      <trans-unit id="referencedFrom" resname="referencedFrom" approved="yes">
+        <source>Referenced from</source>
+        <target state="final">Nuoroda iš</target>
+      </trans-unit>
+      <trans-unit id="enterRegexPattern" resname="enterRegexPattern" approved="yes">
+        <source>Enter regex pattern</source>
+        <target state="final">Įveskite regex šabloną</target>
+      </trans-unit>
+      <trans-unit id="searchButton" resname="searchButton" approved="yes">
+        <source>Search</source>
+        <target state="final">Paieška</target>
+      </trans-unit>
+      <trans-unit id="pattern" resname="pattern" approved="yes">
+        <source>Pattern</source>
+        <target state="final">Šablonas</target>
+      </trans-unit>
+      <trans-unit id="beingChecked" resname="beingChecked" approved="yes">
+        <source>being checked...</source>
+        <target state="final">tikrinama...</target>
+      </trans-unit>
+      <trans-unit id="directories" resname="directories" approved="yes">
+        <source>Dirs</source>
+        <target state="final">Katalogai</target>
+      </trans-unit>
+      <trans-unit id="directoriesTooDeep" resname="directoriesTooDeep" approved="yes">
+        <source>ERROR: Directories deeper than the following number of levels</source>
+        <target state="final">KLAIDA: katalogai gilesni nei nurodytas lygių skaičius</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files" approved="yes">
+        <source>Files</source>
+        <target state="final">Failai</target>
+      </trans-unit>
+      <trans-unit id="matchingFiles" resname="matchingFiles" approved="yes">
+        <source>Matching files</source>
+        <target state="final">Atitinkantys failai</target>
+      </trans-unit>
+      <trans-unit id="notChecked" resname="notChecked" approved="yes">
+        <source>not checked.</source>
+        <target state="final">netikrinta.</target>
+      </trans-unit>
+      <trans-unit id="searchingForFilenames" resname="searchingForFilenames" approved="yes">
+        <source>Searching for filenames</source>
+        <target state="final">Ieškoma failų pavadinimų</target>
+      </trans-unit>
+      <trans-unit id="fixLostRecord" resname="fixLostRecord" approved="yes">
+        <source>Click to move this lost record to rootlevel (pid=0)</source>
+        <target state="final">Spustelėkite, kad perkeltumėte šį prarastą įrašą į šakninį lygį (pid=0)</target>
+      </trans-unit>
+      <trans-unit id="doktype" resname="doktype" approved="yes">
+        <source>Document types</source>
+        <target state="final">Dokumentų tipai</target>
+      </trans-unit>
+      <trans-unit id="doktype_value" resname="doktype_value" approved="yes">
+        <source>Document types (value)</source>
+        <target state="final">Dokumentų tipai (reikšmė)</target>
+      </trans-unit>
+      <trans-unit id="pages" resname="pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">Puslapiai</target>
+      </trans-unit>
+      <trans-unit id="total_pages" resname="total_pages" approved="yes">
+        <source>Total number of default language pages</source>
+        <target state="final">Bendras numatytosios kalbos puslapių skaičius</target>
+      </trans-unit>
+      <trans-unit id="translated_pages" resname="translated_pages" approved="yes">
+        <source>Total number of translated pages</source>
+        <target state="final">Bendras išverstų puslapių skaičius</target>
+      </trans-unit>
+      <trans-unit id="deleted_pages" resname="deleted_pages" approved="yes">
+        <source>Marked-deleted pages</source>
+        <target state="final">Pažymėti kaip ištrinti puslapiai</target>
+      </trans-unit>
+      <trans-unit id="hidden_pages" resname="hidden_pages" approved="yes">
+        <source>Hidden pages</source>
+        <target state="final">Paslėpti puslapiai</target>
+      </trans-unit>
+      <trans-unit id="count" resname="count" approved="yes">
+        <source>Count</source>
+        <target state="final">Skaičius</target>
+      </trans-unit>
+      <trans-unit id="label" resname="label" approved="yes">
+        <source>Label</source>
+        <target state="final">Žyma</target>
+      </trans-unit>
+      <trans-unit id="tablename" resname="tablename" approved="yes">
+        <source>Table name</source>
+        <target state="final">Lentelės pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="total_lost" resname="total_lost" approved="yes">
+        <source>Records total / lost</source>
+        <target state="final">Įrašai iš viso / prarasti</target>
+      </trans-unit>
+      <trans-unit id="tree" resname="tree" approved="yes">
+        <source>The Page Tree</source>
+        <target state="final">Puslapių medis</target>
+      </trans-unit>
+      <trans-unit id="tree_description" resname="tree_description" approved="yes">
+        <source>This shows all pages in the system in one large tree. Beware that this will probably result in a very long document which will also take some time for the server to compute!</source>
+        <target state="final">Čia rodomi visi sistemos puslapiai viename dideliame medyje. Atkreipkite dėmesį, kad tai gali sukurti labai ilgą dokumentą, kurio paruošimas serveriui gali užtrukti!</target>
+      </trans-unit>
+      <trans-unit id="search_whole_database" resname="search_whole_database" approved="yes">
+        <source>Search whole Database</source>
+        <target state="final">Ieškoti visoje duomenų bazėje</target>
+      </trans-unit>
+      <trans-unit id="search_description" resname="search_description" approved="yes">
+        <source>This searches through all database tables and records for a text string.</source>
+        <target state="final">Ši funkcija ieško teksto eilutės visose duomenų bazės lentelėse ir įrašuose.</target>
+      </trans-unit>
+      <trans-unit id="refindex" resname="refindex" approved="yes">
+        <source>Check and update global reference index</source>
+        <target state="final">Patikrinti ir atnaujinti globalų nuorodų indeksą</target>
+      </trans-unit>
+      <trans-unit id="refindex_description" resname="refindex_description" approved="yes">
+        <source>Allows you to maintain the reference index kept by TYPO3.</source>
+        <target state="final">Leidžia tvarkyti TYPO3 naudojamą nuorodų indeksą.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
