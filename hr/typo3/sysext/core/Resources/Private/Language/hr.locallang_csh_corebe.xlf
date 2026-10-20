@@ -1,0 +1,980 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814854" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>TYPO3 Core</source>
+        <target state="final">TYPO3 jezgra</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>TYPO3 is a Content Management Framework which consists of a central program core with only limited functionality. To extend this core system there are hundreds of extensions which in combination will provide a very capable system.</source>
+        <target state="final">TYPO3 je sustav za upravljanje sadržajem koji se sastoji od centralne jezgre sa ograničenom funkcionalnošću. Za nadogradnju mogućnosti centralne jezgre postoje stotine proširenja koja zajedno pružaju vrlo sposoban sustav.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>For most people TYPO3 is equivalent to a CMS providing a backend for management of the content and a frontend engine for website display. However TYPO3s core is natively designed to be a general purpose framework for management of database content. The core of TYPO3 delivers a set of principles for storage of this content, user access management, editing of the content, uploading and managing files etc. Many of these principles are expressed as an API (Application Programmers Interface) for use in the &lt;em&gt;extensions&lt;/em&gt; which ultimately adds most of the real functionality.</source>
+        <target state="final">Za većinu korisnika TYPO3 je CMS sa pozadinskim sučeljem za upravljanje sadržajem i sustavom za prikaz istog u prednjem sučelju. No jezgra TYPO3 sustava dizajnirana je za općenito upravljanje sadržajem baza podataka. Jezgra TYPO3 sustava nudi skup principa za spremanje sadržaja, upravljanje pravima pristupa korinika, uređivanje sadržaja, upravljanje datotekama i slično. Mnogi od ovih principa izraženi su kroz API (programsko sučelje aplikacije) za uporabu u &lt;em&gt;proširenjima&lt;/em&gt; što u konačnici dodaje najveći dio stvarne funkcionalnosti.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" approved="yes">
+        <source>Inside TYPO3 | https://docs.typo3.org/typo3cms/InsideTypo3Reference/</source>
+        <target state="final">TYPO3 iznutra | https://docs.typo3.org/typo3cms/InsideTypo3Reference/</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" approved="yes">
+        <source>TYPO3 backend login screen.</source>
+        <target state="final">TYPO3 prijava u pozadinsko sučelje.</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.alttitle" resname="menu_modules.alttitle" approved="yes">
+        <source>Backend modules</source>
+        <target state="final">Pozadinski moduli</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.description" resname="menu_modules.description" approved="yes">
+        <source>The Backend menu reflects the hierarchy of main- and sub-modules in TYPO3. Click a menu item to access the corresponding module.</source>
+        <target state="final">Izbornik u pozadinskom sučelju oslikava hijerarhiju glavnih i podmodula u TYPO3 sustavu. Kliknite na stavku izbornika kako bi pristupili danom modulu.</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.details" resname="menu_modules.details" xml:space="preserve" approved="yes">
+				<source>Backend Users might see different menu items depending on their access permissions. The "Admin" user on a system will always see all modules available.
+
+You can configure the backend to display the menu in two alternative versions (useful on smaller screens); As a selector box or list of icons in the top frame of the backend.
+
+When you click the little "+" or "-" icons next to the main modules, you can collapse (-) or expand (+) all the sub modules. By selecting the "Expand all" check box, all items are expanded. When the checkbox is unselected again, the menu changes back to the previous folding state. If you click "Expand all" and collapse a main module afterwards, the previous folding state is discarded and "Expand all" is unselected again.</source>
+			<target state="final">Korisnici pozadinskog sučelja mogu vidjeti različite stavke izbornika ovisno o njihovim dopuštenjima. "Admin" korisnik će uvijek vidjeti sve dostupne module.
+
+Pozadinsko sučelje možete podesiti tako da izbornik prikazuje na dva alternativna načina (korisno na manjim zaslonima); Kao kućicu sa stavkama ili kao popis ikona u gornjem okviru pozadinskog sučelja.
+
+Kada kliknete na male "+" ili "-" ikone do glavnih modula možete sažeti (-) ili proširiti (+) sve podmodule. Odabirom stavke "Proširi sve", proširit će se sve stavke. Kada maknete odabir iste stavke izbornik će se vratiti na prethodno stanje proširenosti. Ukoliko kliknete "Proširi sve" a zatim sažmete glavni modul, prethodno stanje proširenosti će biti odbačeno a stavka "Proširi sve" će biti neoznačena.</target></trans-unit>
+      <trans-unit id="_menu_modules.seeAlso" resname="_menu_modules.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:groupMods,
+be_users:userMods,
+More about Modules | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/Index.html</source>
+				
+			<target state="final">be_groups:groupMods,
+be_users:userMods,
+Više o modulima | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/Index.html</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="menu_modules.image_descr" resname="menu_modules.image_descr" xml:space="preserve" approved="yes">
+				<source>This is the range of menu options for a typical backend user.
+For another backend user it might be different. This screenshot shows how another user has different permissions set and therefore access to other modules only. Also the backend language has been set different for this user.</source>
+			<target state="final">Ovo je raspon opcija izbornika za tipičnog korisnika pozadinskog sučelja.
+Za drugog korisnika raspon može biti različit. Ova slika zaslona prikazuje kako za drugog korisnika, sa drugačijim dopuštenjima, pristup modulima može biti različit. Također, za ovog korisnika, jezik pozadinskog sučelja je različit.</target></trans-unit>
+      <trans-unit id="menu_adminFunction.alttitle" resname="menu_adminFunction.alttitle" approved="yes">
+        <source>Admin Functions</source>
+        <target state="final">Administratorske funkcije</target>
+      </trans-unit>
+      <trans-unit id="menu_adminFunction.description" resname="menu_adminFunction.description" approved="yes">
+        <source>The Admin Functions allow administrators to clear caches etc.</source>
+        <target state="final">Administrativne funkcije omogućuju administratorima čišćenje međuspremnika i slično.</target>
+      </trans-unit>
+      <trans-unit id="menu_adminFunction.details" resname="menu_adminFunction.details" xml:space="preserve" approved="yes">
+				<source>TYPO3 has multiple caching systems:
+
+&lt;b&gt;Database Cache&lt;/b&gt;
+A very central cache is the database cache table, "cache_hash", which needs to be flushed after certain major changes in the system. You "clear all cache" by clicking the link with the blue icon. After this operation any website content should be re-generated from the sources rather than be delivered from caches. This operation clears &lt;i&gt;all&lt;/i&gt; database tables registered as flushable cache tables.
+
+&lt;b&gt;Cached PHP configuration files from Extensions&lt;/b&gt;
+TYPO3 also caches small configuration scripts from extensions, "ext_localconf.php" and "ext_tables.php". These files are simply read from all installed extensions and concatenated into temporary PHP scripts found in the typo3temp/Cache/Code/cache_core/ folder. Sometimes you need to remove these files so TYPO3 re-writes them from the originals. This is done by the "Clear temp_CACHED" link.
+
+&lt;b&gt;Notice:&lt;/b&gt; You should not clear these caches without a second thought. Clearing caches may affect performance on your server negatively for a while. Obviously the cached content has to be regenerated which takes time and under heavy load it might make your server un-available for a while.</source>
+			<target state="final">U TYPO3 sustavu postoji više sustava međuspremnika:
+
+&lt;b&gt;Međuspremnik baze podataka&lt;/b&gt;
+Međuspremnik baze podataka je ključan, "cache_hash", te se mora očistiti nakon određenih većih izmjena u sustavu. Ovaj međuspremnik možete očistiti klikom na poveznicu sa plavom ikonom "očisti sve međuspremnike". Nakon čišćenja međuspremnika sav sadržaj Vaše web stranice mora se ponovno generirati iz izvora umjesto uobičajenog dostavljanja iz međuspremnika. Ova operacija će očistiti &lt;i&gt;sve&lt;/i&gt; tablice baze podataka koje su označene kao tablice međuspremnika koje se mogu čistiti.
+
+&lt;b&gt;Međuspremnik PHP konfiguracijski datoteka iz proširenja&lt;/b&gt;
+TYPO3 u međuspremnike sprema i male konfiguracijske skripte iz proširenja, primjerice "ext_localconf.php" i "ext_tables.php". Ove datoteke se jednostavno čitaju iz svih instaliranih proširenja te se združuju u privremene PHP skripte u mapi typo3temp/Cache/Code/cache_core/. Ponekad je potrebno izbrisati ove datoteke kako bi ih TYPO3 stvorio iznova, iz izvornika. Ovo čišćenje pokreće se klikom na poveznicu "Očisti temp_CACHED".
+
+&lt;b&gt;Napomena:&lt;/b&gt; ne biste trebali čistiti međuspremnike bez razmišljanja. Čišćenje međuspremnika može dulje vremena negativno utjecati na učinkovitost Vašeg poslužitelja. Očito, sadržaj koji je uklonjen iz međuspremnika mora se ponovno stvoriti što zahtijeva vrijeme te pod težim opterećenjem može učiniti Vaš poslužitelj nedostupnim na neko vrijeme.</target></trans-unit>
+      <trans-unit id="_menu_adminFunction.seeAlso" resname="_menu_adminFunction.seeAlso" approved="yes">
+        <source>be_users:admin</source>
+        <target state="final">be_users:admin</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pagetree.alttitle" resname="pagetree.alttitle" approved="yes">
+        <source>The Page Tree</source>
+        <target state="final">Stablo stranica</target>
+      </trans-unit>
+      <trans-unit id="pagetree.description" resname="pagetree.description" approved="yes">
+        <source>This is the hierarchical organization of pages in TYPO3. Typically websites are build so they reflect the page structure in the page tree directly in the website navigation.</source>
+        <target state="final">Ovo je hijerarhijska organizacija stranica u sustavu TYPO3. Web stranica se pretežno rade tako da odražavaju strukturu stranica iz stabla stranica direktno u navigaciji.</target>
+      </trans-unit>
+      <trans-unit id="pagetree.details" resname="pagetree.details" xml:space="preserve" approved="yes">
+				<source>The page tree works like a file system. Each page is like a directory where you can store files. In TYPO3 you store database records inside of each page. Some of these records, typically called "Content Elements", contains the website content of pages. Other records can be from plugins like a glossary or a guestbook and they are only displayed indirectly by a plugin inserted as a Content Element.
+Some backend users will see only a part of the page tree for a website. This feature allows the administrator to configure backend users with different responsibilities for maintaining branches of the page tree.
+
+&lt;b&gt;Navigating the tree&lt;/b&gt;
+Simply click the +/- buttons to expand and contract the branches of the tree.
+If you click the page icons you should see a context menu pop up. It will contain options specifically for that page.
+Clicking the title of a page is another option. It will load the right frame of the Web main module with the selected sub-module. The content shown in the right frame will be related to the page clicked.</source>
+			<target state="final">Stablo stranica funkcionira poputa datotečnog sustava. Svaka stranica je poput mape u koju možete spremati datoteke. U TYPO3 sustavu zapise spremate u stranicama. Neki od ovih zapisa, tipično nazvani "Elementi sadržaja", sadrže sadržaj stranica. Drugi zapisi mogu biti umeci poput riječnika ili knjige gostiju te se prikazuju indirektno od strance umetka koji je dodan kao Element sadržaja.
+Neki korisnici pozadinskog sučelja će vidjeti samo dio stabla stranica pojedine web lokacije. Ovom funkcionalnošću omogućuje se administratoru da podesi korisnike pozadinskog sučelja sa različitim odgovornostima za održavanje pojedinih grana stabla stranica.
+
+&lt;b&gt;Navigiranje stablom&lt;/b&gt;
+Jednostavno kliknite na +/- gumbe kako bi proširili ili saželi pojedine grane stabla.
+Ukoliko kliknete na ikonu stranice vidjet ćete kontekstualni skočni izbornik. Na istom će biti opcije koje se odnose samo na tu stranicu.
+Klikom na naslov stranice dobit ćete nešto drugo. U desnom okviru glavnog Web modula učitat će se odabrani podmodul. Sadržaj prikazan u desnom okviru bit će sadržaj kliknute stranice.</target></trans-unit>
+      <trans-unit id="pagetree.image_descr" resname="pagetree.image_descr" xml:space="preserve" approved="yes">
+				<source>An example of a Page Tree in TYPO3. The page tree is available under any of the Web sub-modules in the menu.
+Clicking the icon of a page displays a context sensitive menu with options for that particular page.
+Clicking the title of a page in the page tree will load the right frame with the current submodule. The page id is passed to the module so it displays content related to the page you clicked.
+Holding the mouse pointer over a page icon for a few seconds will display tool-tip information telling you details about the state of the page. Here a page is access restricted and you will be told which group the access is set for by the tool-tip.</source>
+			<target state="final">Primjer stabla stranica u sustavu TYPO3. Stablo stranica je dostupno unutar bilo kojeg od Web podmodula u izborniku.
+Klikom na ikonu stranice prikazat će se kontekstualni skočni izbornik sa opcijama za danu stranicu.
+Klikom na naslov stranice u stablu stranica učitat će se trenutni podmodul u desnom okviru.ID stranice bit će proslijeđen modulu tako da će se prikazati sadržaj stranice koju ste kliknuli.
+Lebdenjem pokazivača miša iznad ikone stranice na par sekundi prikazat će se oblačić s informacijama o statusu stranice. U danom primjeru ograničen je pristup stranici a oblačić Vam daje informaciju koja grupa korisnika ima pristup stranici.</target></trans-unit>
+      <trans-unit id="filetree.alttitle" resname="filetree.alttitle" approved="yes">
+        <source>The Folder Tree</source>
+        <target state="final">Stablo mapa</target>
+      </trans-unit>
+      <trans-unit id="filetree.description" resname="filetree.description" approved="yes">
+        <source>Shows the directory structure of a mounted path on the webserver. You can browse the folder tree like you are used to browse the file system on your own computer.</source>
+        <target state="final">Prikaz strukture mapa putanje montirane na serveru. Možete pregledati stablo mapa jednako kako ste navikli pregledavati sustav datoteka na Vašem osobnom računalu.</target>
+      </trans-unit>
+      <trans-unit id="filetree.details" resname="filetree.details" xml:space="preserve" approved="yes">
+				<source>The Folder Tree is available for any sub-module of the File main module in TYPO3. The File module is like a little web-based FTP-client inside of TYPO3 which allows you to upload, rename, copy, move, delete and edit files inside TYPO3.
+Most users of TYPO3 doesn't need access to the File module and sub-modules in order to upload images on web-pages. They can do this directly when editing Content Elements. But the File module is useful for maintaining collections of files on the server, for example an image archive or files for download.
+
+&lt;b&gt;Navigating the Folder Tree&lt;/b&gt;
+You can expand and contract the folder tree by the +/- icons.
+Clicking a folder icon will display a pop-up menu with options related to that particular folder. Options include copy/cut/paste, rename, upload etc.
+Clicking the folder title will load the currently active sub-module in the right frame of the backend. The sub-module will typically show files and folders inside the folder you clicked.
+
+&lt;b&gt;Granting access to the Folder Tree&lt;/b&gt;
+The administrator needs to allow backend users to access the File modules and in addition make a file mount available to them before they can use the Folder Tree.</source>
+			<target state="final">Stablo mapa je dostupno za svaki podmodul glavnog modula za datoteke u TYPO3 sustavu. Module za datoteke je poput web baziranog FTP klijenta unutar TYPO3 sustava koji Vam omogućuje slanje, preimenovanje, kopiranje, premještanje, brisanje i uređivanje datoteka unutar TYPO3 sustava.
+Većina korisnika TYPO3 sustava ne treba pristup modulu za datoteke niti podmodulima istog kako bi postavljali slike na web stranice. To mogu činiti direktno kod uređivanja elemenata sadržaja. No modul za datoteke je koristan kod održavanja zbirki datoteka na poslužitelju, primjerice za arhivu slika ili datoteka za preuzimanje.
+
+&lt;b&gt;Navigacija u stablu mapa&lt;/b&gt;
+Stablo mapa možete proširiti ili sažeti pomoću +/- ikona.
+Klikom na ikonu mape prikazat će se skočni izbornik sa opcijama koje se odnose na danu mapu. Opcije uključuju kopiranje/isjecanje/lijepljenje, preimenovanje, slanje i slično.
+Klikom na naslov mape učitat će se trenutno aktivni podmodul u desnom okviru pozadinskog sučelja. Podmodul će najčešće prikazati datoteke i mape unutar mape na koju ste kliknuli.
+&lt;b&gt;Davanje prava pristupa Stablu mapa&lt;/b&gt;
+Administrator mora dopustiti korisnicima pristup modulu datoteka te im uz to omogućiti pristup točki montiranja datoteka prije nego mogu koristiti stablo mapa.</target></trans-unit>
+      <trans-unit id="_filetree.seeAlso" resname="_filetree.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:groupMods,
+be_groups:file_mountpoints,
+be_users:file_mountpoints,
+Managing files in TYPO3 | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/ManagingFilesInTypo3/
+Uploading Files | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/UploadingImagesToTheArchive/,
+Details about file mounts | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/,
+sys_filemounts,
+xMOD_csh_corebe:filelist_module</source>
+				
+			<target state="final">be_groups:groupMods,
+be_groups:file_mountpoints,
+be_users:file_mountpoints,
+Upravljanje datotekama u TYPO3 CMS-u | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/ManagingFilesInTypo3/
+Slanje datoteka | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/UploadingImagesToTheArchive/,
+Detalji o datotečnim točkama montiranja | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/,
+sys_filemounts,
+xMOD_csh_corebe:filelist_module</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="filetree.image_descr" resname="filetree.image_descr" xml:space="preserve" approved="yes">
+				<source>The Folder Tree of the "fileadmin/" folder. This is mounted by default for "Admin"-users. Other users will have to have a file mount configured for them first.
+Clicking the icon of a folder displays the context menu of the folder.
+If you click the folder title in the Folder Tree you will see the sub-module loaded in the right frame. Here it is the File &gt; Filelist module that will display files and folders inside. Clicking the icon of a file will display a context menu for the file.</source>
+			<target state="final">Stablo mapa mape "fileadmin/". Ova mapa je montirana za sve "Admin" korisnike. Za ostale korisnike je prvo potrebno podesiti točku montiranja datoteka.
+Klikom na ikonu mape prikazuje se kontekstualni izbornik mape.
+Ukoliko kliknente na naslov mape u stablu mapa učitat će se podmodul u desnom okviru. U istom okviru modul Datoteka&gt;Popis datoteka prikazat će datoteke i mape u danoj mapi. Klikom na ikonu datoteke prikazuje se kontekstualni izbornik datoteke.</target></trans-unit>
+      <trans-unit id="tcatree.collapseAll" resname="tcatree.collapseAll" approved="yes">
+        <source>Collapse All</source>
+        <target state="final">Sažmi sve</target>
+      </trans-unit>
+      <trans-unit id="tcatree.expandAll" resname="tcatree.expandAll" approved="yes">
+        <source>Expand All</source>
+        <target state="final">Proširi sve</target>
+      </trans-unit>
+      <trans-unit id="tcatree.toggleHideUnchecked" resname="tcatree.toggleHideUnchecked" approved="yes">
+        <source>hide/show unchecked items</source>
+        <target state="final">prikaži/sakrij stavke koje nisu označene</target>
+      </trans-unit>
+      <trans-unit id="tcatree.findItem" resname="tcatree.findItem" approved="yes">
+        <source>Find Item</source>
+        <target state="final">Pronađi stavku</target>
+      </trans-unit>
+      <trans-unit id="list_module.alttitle" resname="list_module.alttitle" approved="yes">
+        <source>The Web&gt;List module</source>
+        <target state="final">Web&gt;Popis modul</target>
+      </trans-unit>
+      <trans-unit id="list_module.description" resname="list_module.description" approved="yes">
+        <source>Listing records located on a page. From here you can copy/cut/paste records around in the system. You can edit records, access the change history of elements etc.</source>
+        <target state="final">Popis zapisa na stranici. Odavde možete kopirati/izrezivati/lijepiti zapise diljem sustava. Možete uređivati zapise, pristupiti povijesti izmjena elemenata i slično.</target>
+      </trans-unit>
+      <trans-unit id="list_module.details" resname="list_module.details" xml:space="preserve" approved="yes">
+				<source>The list module is like the file manager in an Operating System; it provides basic access to all "elements" available in the system. In TYPO3 almost all information is stored in the database and managed after the same principles internally. For instance Content Elements representing page content are database records just like backend users are. The Web&gt;List module allows us to create, modify and delete both kinds of records after the same principles.
+
+The Web&gt;List module might not be the best "view" of the content on a page for any situation. For instance if you want to manage website content on a page (Content Elements) you should rather use the "Web&gt;Page" module which is designed to display content elements more optimized. But the List module will always give you access to whatever is on the page in a basic way if no better module is available for management.
+
+&lt;b&gt;Single-table mode&lt;/b&gt;
+If you click the tabel title in the listing you will enter single-table mode. In this mode you can select additional fields from the table to show in the listing. Also you will get additional editing facilities, for instance you will be able to edit multiple records at a time and even only certain fields from those records. See the screenshot for more details.</source>
+			<target state="final">Modul Popis je poput upravitelja datotekama u operativnom sustava; omogućuje osnovni pristup svim elementima dostupnim u sustavu. U TYPO3 sustavu gotovo sve informacije spremljene su u bazi podataka te se njima interno upravlja po istom principu. Primjerice, elementi sadržaja koji predstavljaju sadržaj stranica su zapisi u bazi podataka baš kao i korisnici pozadinskog sučelja. Module Web&gt;Popis omogućuje stvaranje, izmjenu i brisanje obje vrste zapisa prema istom principu.
+
+Modul Web&gt;Popis možda nije najbolji "pregled" sadržaja stranice za sve situacije. Primjerice za upravljanje sadržajem stranice (elementima sadržaja) bolje je koristiti modul "Web&gt;Stranica" koji je bolje dizajniran za prikaz elemenata sadržaja. No modul Popis uvijek će Vam omogućiti pristup kompletnom sadržaju stranice na jednostavan, osnovni način ukoliko nije dostupan bolji modul za upravljanje.
+
+&lt;b&gt;Načine jedne tablice&lt;/b&gt;
+Ukoliko kliknete na naslov tablice u popisu ući ćete u način "jedna tablica". U ovom načinu možete odabrati dodatna polja iz tablice za prikaz u popisu. Također će Vam biti ponuđene dodatne mogućnosti uređivanja, primjerice bit će Vam omogućeno uređivanje više zapisa odjednom te čak samo pojedinačna polja iz tih zapisa. Pogledajte snimku zaslona za vizualno pojašnjenje.</target></trans-unit>
+      <trans-unit id="_list_module.seeAlso" resname="_list_module.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:pagetree,
+xMOD_csh_corebe:list_module_root,
+xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:TCEforms
+Selective Editing | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/SelectiveEditing/
+The List module ("Inside TYPO3") | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/CoreModules/ListModule/,</source>
+				
+			<target state="final">xMOD_csh_corebe:pagetree,
+xMOD_csh_corebe:list_module_root,
+xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:TCEforms
+Selektivno uređivanje | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/SelectiveEditing/
+Modul Popis ("TYPO3 iznutra") | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/CoreModules/ListModule/,</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="list_module.image_descr" resname="list_module.image_descr" xml:space="preserve" approved="yes">
+				<source>Here the page "Cameras" has been clicked in the page tree and in the right frame the Web&gt;List module shows the contents of the page. Here a single content element (Shop Plugin) is inserted in order to display the other items on the page which are three product records in this case.
+If you enable "Extended mode" and the "Clipboard" you will get additional buttons in the interface to operate on the records shown here. Also notice how you can click any record icon to get a "Clickmenu" for the element.
+Here you see the single-table mode active for the "Page content" table (Content Elements). In the fieldbox the "Hide" field is selected to be included in the listing. If you click any of the edit icons (marked with red border) you will be able to edit [from left to right] a) all listed fields (here "Header" and "Hide"), b) full record or c) a single field (eg. "Hide") for &lt;u&gt;only&lt;/u&gt; the selected records (defined by the checkboxes seen).</source>
+			<target state="final">Ovdje se kliknulo na stranicu "Kamere" u stablu stranica te u desnom okviru Web&gt;Popis modul prikazuje sadržaj stranice. Ovdje se pojedinačni element sadržaja (umetak za kupovinu) ubacuje kako bi se prikazale ostale stavke na stranici, koje su u ovom slučaju tri zapisa proizvoda.
+Ako omogućite "Prošireni način" i "Međuspremnik" dobit ćete dodatne gumbe u sučelju kako bi mogli raditi na zapisima koji su ovdje prikazani. Također primjetite kako možete kliknuti na bilo koju ikonu zapisa kako bi dobili "Klik izbornik" za element.
+Ovdje možete vidjeti metodu pojedinačne kartice koja je aktivna za tablicu "Sadržaj stranice" (elementi sadržaja). U okvirnom polju, polje "Sakrij" je odabrano kako bi bilo uključeno u popis. Ako pritisnete bilo koju ikonu za izmjenu (označenu crvenim rubom), moći ćete izmjeniti [od lijeva na desno] sva navedena polja (ovdje "Zaglavlje" i "Naslov"), b) cijeli zapis ili c) pojedinačno polje (npr. "Sakrij") &lt;u&gt;samo za&lt;/u&gt; odabrane zapise (koje definiraju okviri za odabir koji su viđeni).</target></trans-unit>
+      <trans-unit id="list_module_noId.alttitle" resname="list_module_noId.alttitle" approved="yes">
+        <source>Web&gt;List module with no ID given</source>
+        <target state="final">Web&gt;Popis modul bez ID broja</target>
+      </trans-unit>
+      <trans-unit id="list_module_noId.description" resname="list_module_noId.description" approved="yes">
+        <source>The Web&gt;List module must have a page ID passed to it before it can display any content. Please click a page title in the Page Tree.</source>
+        <target state="final">ID stranice treba biti poslan Web&gt;Popis modulu prije nego što se može prikazati bilo kakav sadržaj. Molimo Vas da kliknete na naslov stranice u stablu stranice.</target>
+      </trans-unit>
+      <trans-unit id="_list_module_noId.seeAlso" resname="_list_module_noId.seeAlso" approved="yes">
+        <source>xMOD_csh_corebe:list_module</source>
+        <target state="final">xMOD_csh_corebe:list_module</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="list_module_root.alttitle" resname="list_module_root.alttitle" approved="yes">
+        <source>Root of the Page Tree</source>
+        <target state="final">Korjen stabla stranica</target>
+      </trans-unit>
+      <trans-unit id="list_module_root.description" resname="list_module_root.description" approved="yes">
+        <source>The root of the Page Tree is having id 0 (zero = no page) and the special circumstance is that records in the page tree root can be accessed and edited &lt;i&gt;only&lt;/i&gt; by "Admin" users.</source>
+        <target state="final">Korijen stabla stranica ima id broj 0 (nula = nije stranica) što povlači da zapisima u korijenu stabla stranica mogu u pristupiti te ih uređivati &lt;i&gt;jedino&lt;/i&gt; "Administrativni" korisnici.</target>
+      </trans-unit>
+      <trans-unit id="list_module_root.details" resname="list_module_root.details" xml:space="preserve" approved="yes">
+				<source>Only records from certain database tables are allowed to be created in the page tree root. This includes Backend Users, Backend Groups, File Mount records, Language records etc., and you cannot create Content Elements or Frontend Users in the root of the Page Tree. It also works the other way around; For example you cannot create Backend Users anywhere in the page tree.
+Usually records that are located in the page tree root are somehow "global" for the whole TYPO3 installation and doesn't make sense inside a specific branch of the page tree.</source>
+			<target state="final">Samo zapisi iz određenih tablica baza podataka se mogu stvarati u korijenu stabla stranica. To uključuje pozadinske korisnike, pozadinske skupine, zapisi datoteka s pristupljenih uređaja, zapisi jezika itd., te ne možete stvarati elemente sadržaja ili krajnje korisnike u korijenu stabla stranica. To također funkcionira obrnuto; ne možete na primjer stvarati krajnje korisnike nigdje u stablu stranica.
+Zapisi koji se nalaze u korijenu stabla stranica su obično nekako "globalni" za cijelu instalaciju TYPO3 te nemaju smisla u određenoj grani stabla stranica.</target></trans-unit>
+      <trans-unit id="_list_module_root.seeAlso" resname="_list_module_root.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module
+The List module ("Inside TYPO3") | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/CoreModules/ListModule/</source>
+				
+			<target state="final">xMOD_csh_corebe:list_module
+Modul popis ("TYPO3 iznutra") | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/CoreModules/ListModule/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="list_module_root.image_descr" resname="list_module_root.image_descr" xml:space="preserve" approved="yes">
+				<source>Example of records in the page tree root; Backend users, groups, filemounts and website languages.
+When "Admin"-users wants to create a new record in the page tree root they will see a limited number of record types to create. This reflects which tables are configured to be created in the page tree root.</source>
+			<target state="final">Primjer zapisa u korijenu stabla stranica; pozadinski korisnici, grupe, točke montiranja datoteka i jezici web lokacije.
+Kada "Admin"-korisnici žele stvoriti nove zapise u korijenu stabla stranice vidjet će ograničen broj vrsta zapisa koji se mogu stvoriti. Ovo je posljedica postavki koje određuju koji zapisi i iz kojih tablica se mogu stvarati u korijenu stabla stranica.</target></trans-unit>
+      <trans-unit id="list_clipboard.alttitle" resname="list_clipboard.alttitle" approved="yes">
+        <source>TYPO3 Clipboard</source>
+        <target state="final">TYPO3 međuspremnik</target>
+      </trans-unit>
+      <trans-unit id="list_clipboard.description" resname="list_clipboard.description" approved="yes">
+        <source>The clipboard is an internal registry where records and files can be "stored" temporarily. Usually the clipboard is used for copy/cut/paste operations internally of one or more elements.</source>
+        <target state="final">Međuspremnik je unutarnji registar gdje se zapisi i datoteke mogu privremeno "pohraniti". Obično se međuspremnik koristi za aktivnosti unutarnjeg kopiranja/rezanja/lijepljenja jednog ili više elemenata.</target>
+      </trans-unit>
+      <trans-unit id="_list_clipboard.seeAlso" resname="_list_clipboard.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:filelist_clipboard,
+Using the clipboard | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/UsingTheListModuleEffectively/
+Numeric Clipboard pads | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/TheNumericClipboardPads-ManagingManyElements/
+Clipboard details [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/GeneralInterfaceFeatures/Clipboard/,
+Accessing clipboard in scripts [Technical] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/Clipboard/</source>
+				
+			<target state="final">xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:filelist_clipboard,
+Korištenje međuspremnika | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/UsingTheListModuleEffectively/
+Numerički međuspremnici | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/TheNumericClipboardPads-ManagingManyElements/
+Detalji o međuspremniku [Tehnički zahtjevno] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/GeneralInterfaceFeatures/Clipboard/,
+Pristup međuspremniku iz skripti [Tehnički zahtjevno] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/Clipboard/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="list_clipboard.image_descr" resname="list_clipboard.image_descr" xml:space="preserve" approved="yes">
+				<source>Whenever you use the copy/cut/paste functions in the clickmenus you will actually use the clipboard to store the element internally in TYPO3.
+If you select one of the numeric clipboard pads you will be able to store more than a single element on the clipboard at a time. In the record listings you will then see checkboxes next to the elements by which you can select/deselect elements for the clipboard.</source>
+			<target state="final">Kad god koristite funkcije kopiraj/izreži/zalijepi u skočnim izbornicima koristit ćete međuspremnik za spremanje elementa interno u sustavu TYPO3.
+Ukoliko odaberete jedan od numeriranih međuspremnika moći ćete spremiti više od jednog elementa u međuspremnik odjednom. U popisu zapisa zatim ćete moći vidjeti kvačice pomoću kojih ćete moći odabrati/odbaciti elemente iz međuspremnika.</target></trans-unit>
+      <trans-unit id="list_searchbox.alttitle" resname="list_searchbox.alttitle" approved="yes">
+        <source>Search Box</source>
+        <target state="final">Polje za pretragu</target>
+      </trans-unit>
+      <trans-unit id="list_searchbox.description" resname="list_searchbox.description" approved="yes">
+        <source>By this search box you can do a free text search in all the listed records. You can also search recursively in sub-pages by selecting a number of levels to search in the selector box to the right of the search field.</source>
+        <target state="final">Putem ove tražilice možete slobodno pretraživati sve navedene zapise. Također možete rekurzivno pretraživati u podstranicama odabirom nekolicine razina koje se mogu pretražiti u izbornom okviru desno od polja za pretraživanje.</target>
+      </trans-unit>
+      <trans-unit id="_list_searchbox.seeAlso" resname="_list_searchbox.seeAlso" approved="yes">
+        <source>xMOD_csh_corebe:list_module</source>
+        <target state="final">xMOD_csh_corebe:list_module</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="list_options.alttitle" resname="list_options.alttitle" approved="yes">
+        <source>List module options</source>
+        <target state="final">Opcije modula Popis</target>
+      </trans-unit>
+      <trans-unit id="list_options.description" resname="list_options.description" approved="yes">
+        <source>Enable additional options like the "Extended view" mode to see additional control buttons for each record in the listing or the "Clipboard" to see the clipboard and its content.</source>
+        <target state="final">Omogući dodatne opcije kao što su način "Produženi pregled" kako bi vidjeli dodatne kontrolne tipke za svaki zapis u popisu ili "Međuspremnik" kako bi vidjeli međuspremnik i njegov sadržaj.</target>
+      </trans-unit>
+      <trans-unit id="_list_options.seeAlso" resname="_list_options.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:list_clipboard,
+xMOD_csh_corebe:filelist_options</source>
+				
+			<target state="final">xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:list_clipboard,
+xMOD_csh_corebe:filelist_options</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="list_options.image_descr" resname="list_options.image_descr" xml:space="preserve" approved="yes">
+				<source>The options checkboxes.
+Selecting "Extended view" will enable the control buttons in the record lists.</source>
+			<target state="final">Kvadratići za odabir.
+Odabir "Produženi pregled" omogućit će kontrolne tipke u popisu zapisa.</target></trans-unit>
+      <trans-unit id="new_regular.alttitle" resname="new_regular.alttitle" approved="yes">
+        <source>Create new record</source>
+        <target state="final">Stvori novi zapis</target>
+      </trans-unit>
+      <trans-unit id="new_regular.description" resname="new_regular.description" approved="yes">
+        <source>This list shows the types of records (database tables) you can create on the page. Click a table name to select the type.</source>
+        <target state="final">Ovaj popis prikazuje vrste zapisa (tablice baza podataka) koje možete stvoriti na stranici. Kliknite na ime tablice kako bi odabrali vrstu.</target>
+      </trans-unit>
+      <trans-unit id="_new_regular.seeAlso" resname="_new_regular.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:new_pages</source>
+				
+			<target state="final">xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:new_pages</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="new_regular.image_descr" resname="new_regular.image_descr" approved="yes">
+        <source>The selection of records a user can create on this particular page. The selection depends on the user's permissions and the page type. For example a Folder page type can contain any kind of record while regular pages can contain only some types (like Content Elements).</source>
+        <target state="final">Izbor zapisa koje korisnik može stvoriti na ovoj stranici. Izbor ovisi o dopuštenjima korisnika i o vrsti stranice. Na primjer, tip stranice Mapa može sadržavati bilo kakav zapis dok obične stranice mogu sadržavati samo neke vrste zapisa (kao Elementi sadržaja).</target>
+      </trans-unit>
+      <trans-unit id="new_pages.alttitle" resname="new_pages.alttitle" approved="yes">
+        <source>Create new page wizard</source>
+        <target state="final">Čarobnjak Stvori novu stranicu</target>
+      </trans-unit>
+      <trans-unit id="new_pages.description" resname="new_pages.description" approved="yes">
+        <source>Creating a new page means you have to find a position for it in the page tree. This wizard helps you find this position easily by clicking the flashing arrow pointing to the position you want.</source>
+        <target state="final">Izrada nove stranice povlači da trebate naći položaj za nju u stablu stranica. Ovaj čarobnjak Vam pomaže naći ovaj položaj jednostavnim klikom na trepereću strelicu koja pokazuje na položaj koji želite.</target>
+      </trans-unit>
+      <trans-unit id="_new_pages.seeAlso" resname="_new_pages.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:new_regular,
+xMOD_csh_corebe:new_ce,
+How to create a new page | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/</source>
+				
+			<target state="final">xMOD_csh_corebe:new_regular,
+xMOD_csh_corebe:new_ce,
+Kako stvoriti novu stranicu | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="new_pages.image_descr" resname="new_pages.image_descr" xml:space="preserve" approved="yes">
+				<source>Between each page in the tree you find small icons that point out a place for a new page. Select a position by clicking one of these icons.
+To access the "Create new page wizard" in the first place, just click the link in the Create new record dialog.</source>
+			<target state="final">Između svake stranice u stablu nailazite na male ikone koje pokazuju mjesto za novu stranicu. Odaberite položaj klikom na jednu od ovih ikona.
+Kako bi uopće pristupili "Čarobnjaku za stvaranje nove stranice", kliknite na link u dijaloškom okviru Stvori novi zapis.</target></trans-unit>
+      <trans-unit id="new_ce.alttitle" resname="new_ce.alttitle" approved="yes">
+        <source>Create new Content Element Wizard</source>
+        <target state="final">Stvorite novi Čarobnjak Elementa Sadržaja</target>
+      </trans-unit>
+      <trans-unit id="new_ce.description" resname="new_ce.description" approved="yes">
+        <source>Content Elements come in many flavors and inserting new content on a page means you have to select the right element type. This wizard helps you to pick a main type of element before you actually begin to enter content.</source>
+        <target state="final">Postoje različite vrste elemenata sadržaja te ubacivanje novog sadržaja na stranicu znači da trebate odabrati ispravnu vrstu elementa. Ovaj čarobnjak pomaže Vam odabrati glavnu vrstu elementa prije nego što zapravo započnete ubacivati sadržaj.</target>
+      </trans-unit>
+      <trans-unit id="new_ce.details" resname="new_ce.details" approved="yes">
+        <source>Selecting an element type here will just preset the content element with certain values. You can always change the values later and if you cannot find exactly the type you need you can just pick the one that comes closest to your need, then adjust the details later.</source>
+        <target state="final">Odabirom vrste elementa će samo podesiti postavke elementa sa određenim vrijednostima. Uvijek možete vrijednosti promijeniti kasnije i ako ne možete pronaći točnu vrstu elementa koja Vam je potrebna, jednostavno možete izabrati onu koja najbolje zadovoljava Vaše potrebe, a zatim podesiti detalje poslije.</target>
+      </trans-unit>
+      <trans-unit id="_new_ce.seeAlso" resname="_new_ce.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_regular,
+How to create new page content | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/
+More about Content Element types | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageContent/
+Adding Custom elements [Technical] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/ContentElementWizard/</source>
+				
+			<target state="final">xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_regular,
+Kako stvoriti novi element sadržaja | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/
+Više o tipovima elemenata sadržaja | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageContent/
+Dodavanje prilagođenih elemenata [Tehnički zahtjevno] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/ContentElementWizard/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="new_ce.image_descr" resname="new_ce.image_descr" xml:space="preserve" approved="yes">
+				<source>The Content Element wizard presents a set of preset types. Just select one by clicking its title.
+After selecting the type you will (often) have to select a position of the element among the other existing Content Elements on the page.
+You can access the Content Element wizard from the Create new record dialog.</source>
+			<target state="final">Čarobnjak elementa sadržaja predstavlja skup unaprijed postavljenih vrsta. Jednostavno odaberite jedan klikom na njegov naslov.
+Nakon što odaberte vrstu, trebat ćete (često) odabrati položaj elementa među ostalim postojećim elementima sadržaja na stranici.
+Možete pristupiti Čarobnjaku elementa sadržaja iz dijaloga Stvorite novi zapis.</target></trans-unit>
+      <trans-unit id="move_el_pages.alttitle" resname="move_el_pages.alttitle" approved="yes">
+        <source>Move page wizard</source>
+        <target state="final">Čarobnjak za premještanje stranica</target>
+      </trans-unit>
+      <trans-unit id="move_el_pages.description" resname="move_el_pages.description" approved="yes">
+        <source>By this wizard you can visually re-position (or copy) a page inside TYPO3. The element you move is shown in the top.</source>
+        <target state="final">Pomoću ovog čarobnjaka možete vizualno pomaknuti (ili kopirati) stranicu unutar sustava TYPO3. Element koji pomičete se prikazuje na vrhu.</target>
+      </trans-unit>
+      <trans-unit id="move_el_pages.details" resname="move_el_pages.details" approved="yes">
+        <source>As an alternative to using the regular Copy/Cut/Paste functions in the clickmenus of records you can also use the move-page wizard. It lets you re-position a page by a visual view of the page tree rather than using the concept of "Paste into" and "Paste after".</source>
+        <target state="final">Umjesto da koristite uobičajene funkcije Kopiraj/Izreži/Zalijepi u izbornicima zapisa, možete koristiti čarobnjak za premještanje stranice. Isti Vam omogućuje da pomaknete stranicu po vizualnom pregledu stabla stranica umjesto korištenja koncepta "Zalijepi u" te "Zalijepi nakon".</target>
+      </trans-unit>
+      <trans-unit id="_move_el_pages.seeAlso" resname="_move_el_pages.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_pages,
+Moving pages | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/</source>
+				
+			<target state="final">xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_pages,
+Micanje stranica | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="move_el_pages.image_descr" resname="move_el_pages.image_descr" xml:space="preserve" approved="yes">
+				<source>The wizard works like when you create new pages with the wizard; You position the element by the grey arrows.
+To access the "Move page wizard" you open the clickmenu of the page, select "More options..." and then "Move page". Alternatively you can click the "Move page" icon in the "Extended view" of the Web&gt;List module.</source>
+			<target state="final">Čarobnjak radi kao kada stvarate nove stranice sa čarobnjakom; element pozicionirate pomoću sivih strelica.
+Kako bi pristupili "Čarobnjaku za premještanje stranice", otvorite izbornik stranice, odaberite "Više opcija..." te potom "Pomakni stranicu". Također možete pritisnuti ikonu "Pomakni stranicu" u "Produženom pregledu" Web&gt;Popis modula.</target></trans-unit>
+      <trans-unit id="move_el_cs.alttitle" resname="move_el_cs.alttitle" approved="yes">
+        <source>Move Content Element Wizard</source>
+        <target state="final">Čarobnjak za premještanje elemenata sadržaja</target>
+      </trans-unit>
+      <trans-unit id="move_el_cs.description" resname="move_el_cs.description" approved="yes">
+        <source>By this wizard you can visually re-position (or copy) a Content Element inside TYPO3. The element you move is shown in the top.</source>
+        <target state="final">Po ovom čarobnjaku možete vizualno pomaknuti (ili kopirati) element sadržaja unutar sustava TYPO3. Element koji pomičete se prikazuje na vrhu.</target>
+      </trans-unit>
+      <trans-unit id="move_el_cs.details" resname="move_el_cs.details" approved="yes">
+        <source>By the grey icons in the content element list you can point out the new position of the content element. If you need to move the element to another page, simply browse the page tree in the bottom of the wizard.</source>
+        <target state="final">Na popisu elementa sadržaja možete ukazati na novi položaj elementa sadržaja pomoću sivih ikona. Ako trebate pomaknuti element na drugu stranicu, jednostavno pregledajte stablo stranica na dnu čarobnjaka.</target>
+      </trans-unit>
+      <trans-unit id="_move_el_cs.seeAlso" resname="_move_el_cs.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_regular</source>
+				
+			<target state="final">xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_regular</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="move_el_cs.image_descr" resname="move_el_cs.image_descr" xml:space="preserve" approved="yes">
+				<source>The wizard works like when you create new Content Elements with the wizard; You position the element by the grey arrows.
+To access the "Move Content Element Wizard" you click the "Move element" icon in the "Extended view" of the Web&gt;List module.</source>
+			<target state="final">Čarobnjak radi kao kada stvarate nove Elemente sadržaja sa čarobnjakom; element pozicionirate pomoću sivih strelica.
+Kako bi pristupili "Čarobnjaku za premještanje sadržaja elementa", kliknite ikonu "Pomakni element" u "Produženom pregledu" Web&gt;Popis modula.</target></trans-unit>
+      <trans-unit id="history_log.alttitle" resname="history_log.alttitle" approved="yes">
+        <source>History log</source>
+        <target state="final">Zapisnik povjesti</target>
+      </trans-unit>
+      <trans-unit id="history_log.description" resname="history_log.description" approved="yes">
+        <source>The History log gives you a visual overview of the changes that has happened to the element over the last editing operations. You can roll back changes to any state by using the icons in the interface.</source>
+        <target state="final">Zapisnik povijesti Vam daje vizualni pregled promjena koje su se dogodile elementu tijekom zadnjih aktivnosti izmjena. Možete poništiti promjene te vratiti bilo koje prethodno stanje koristeći ikone u sučelju.</target>
+      </trans-unit>
+      <trans-unit id="history_log.details" resname="history_log.details" xml:space="preserve" approved="yes">
+				<source>By default 20 states of history data is preserved in TYPO3 and after a week it expires. The history is very useful for tracking changes to a record since you can see which user did what at which point in time - and roll back any changes you didn't like.
+If you click the roll-back pencil you will revert the element to the state it had at that particular time.
+If you click the Info icon you will see in detail what the difference is from current time to this state of the element.
+
+&lt;b&gt;Configuring levels and expire times [for admins]&lt;/b&gt;
+If you want to extend the number of history states to above the default 20 you can easily do so using Page TSconfig - meaning that it can even depend on the branch of the page tree where the record is stored! See link below.
+
+&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</source>
+			<target state="final">Prema zadanim postavkama 20 stanja povijesti podataka čuva se u TYPO3 sustavu te zastarjevaju nakon tjedan dana. Povijest je vrlo zgodna za praćenje promjena na zapisu jer možete vidjeti koji je korisnik i što promijenio te kada - te vratiti promjene koje Vam se ne sviđaju.
+Ukoliko kliknete na olovku za povrat starog stanja element će biti vraćen u stanje u kojem je bio u određenom vremenu.
+Ukoliko kliknete na ikonu za informacije vidjet ćete detaljan popis razlika između stanja elementa u određenom vremenu i trenutnog stanja elementa.
+
+&lt;b&gt;Podešavanje razina i vremena zastarjevanja [za administratore]&lt;/b&gt;
+Ukoliko želite povećati broj stavki povijesti na više od 20 možete to jednostavno učiniti pomoću TSconfig postavki stranice - što znači da ta postavka čak može ovisiti o grani stabla stranica gdje se nalazi zapis! Pogledajte niže navedenu poveznicu.
+
+&lt;b&gt;Napomena:&lt;/b&gt; Ukoliko ne vidite crvene/zelene vrijednosti razlika tada poslužitelj na kojem se izvršava TYPO3 sustav ne podržava stvaranje pregleda razlika ili je nije ispravno podešen kako bi omogućio ovu funkcionalnost.</target></trans-unit>
+      <trans-unit id="_history_log.seeAlso" resname="_history_log.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:history_sum,
+Configuring History using Page TSconfig | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Mod/
+Undo/History article | http://typo3.org/documentation/tips-tricks/the-undohistory-feature/</source>
+				
+			<target state="final">xMOD_csh_corebe:history_sum,
+Podešavanje povijesti pomoću TSconfiga stranice | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Mod/
+Članak o povijesti/poništavanju promjena | http://typo3.org/documentation/tips-tricks/the-undohistory-feature/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="history_log.image_descr" resname="history_log.image_descr" xml:space="preserve" approved="yes">
+				<source>You can access the History/Undo log from the Web&gt;List module when in "Extended view" mode. Alternatively you can access it under "More options..." in the clickmenu of an element.
+The History log shows visually the changes between each step of editing.</source>
+			<target state="final">Možete pristupiti zapisniku Povijest/Poništi iz modula Web&gt;Popis kada ste u načinu rada "Produženi pregled". Istom zapisniku možete pristupiti i preko "Više opcija..." u izborniku elementa.
+Zapisnik Povijesti vizualno prikazuje promjene tijekom svakog koraka izmjene.</target></trans-unit>
+      <trans-unit id="history_sum.alttitle" resname="history_sum.alttitle" approved="yes">
+        <source>History Summary</source>
+        <target state="final">Sažetak povjesti</target>
+      </trans-unit>
+      <trans-unit id="history_sum.description" resname="history_sum.description" approved="yes">
+        <source>This shows the total difference between the selected state in history to the current state of this element.</source>
+        <target state="final">Ovo pokazuje ukupnu razliku između odabranog stanja u povijesti i trenutnog stanja ovog elementa.</target>
+      </trans-unit>
+      <trans-unit id="history_sum.details" resname="history_sum.details" xml:space="preserve" approved="yes">
+				<source>You can browse forth and back in the history using the arrow buttons in the upper left corner. You can also save a state in history by the little "disk-icon".
+Finally you can revert either the whole record to this state in history by the revert icon in the top &lt;em&gt;or&lt;/em&gt; you can revert only a single field if you like to by clicking the revert icon displayed for each field.
+
+&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</source>
+			<target state="final">Povijest možete pregledati prema naprijed ili prema nazad koristeći strelice u gornjem lijevom kutu. Također možete spremiti stanje u povijesti koristeći malu "disk-ikou".
+Na kraju možete vratiti stanje ili cijelog zapisa na stanje u povijesti koristeći ikonu za povrat stanja pri vrhu &lt;em&gt;ili&lt;/em&gt; možete vratiti stanje pojedinačnog polja ukoliko to želite klikom na ikonu za povrat stanja za svako pojedinačno polje.
+
+&lt;b&gt;Napomena:&lt;/b&gt; Ukoliko ne vidite crvene/zelene vrijednosti razlike, poslužitelj koji poslužuje Vaš TYPO3 sustav ne podržava stvaranje pregleda razlika ili nije ispravno podešen kako bi ponudio tu funkcionalnost.</target></trans-unit>
+      <trans-unit id="_history_sum.seeAlso" resname="_history_sum.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:history_entry,
+Undo/History article | http://typo3.org/documentation/tips-tricks/the-undohistory-feature/</source>
+				
+			<target state="final">xMOD_csh_corebe:history_entry,
+Članak o funkciji vrati/povijest | http://typo3.org/documentation/tips-tricks/the-undohistory-feature/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="history_sum.image_descr" resname="history_sum.image_descr" approved="yes">
+        <source>The Info view of a state in history shows the "sum" of changes from current time to that point in history for the element.</source>
+        <target state="final">Info pregled stanja u povijesti prikazuje "zbroj" izmjena od trenutnog vremena do dane točke u povijesti danog elementa.</target>
+      </trans-unit>
+      <trans-unit id="history_entry.alttitle" resname="history_entry.alttitle" approved="yes">
+        <source>Log entry history</source>
+        <target state="final">Povijet unosa u zapisnik</target>
+      </trans-unit>
+      <trans-unit id="history_entry.description" resname="history_entry.description" approved="yes">
+        <source>This view displays the changes made to the content element for the log entry you clicked. The red and green values in the text shows the previous/new values of the record.</source>
+        <target state="final">Ovaj pregled prikazuje izmjene elementa sadržaja za unos u zapisniku na koji ste kliknuli. Crvene i zelene vrijednosti u tekstu prikazuju stare/nove vrijednosti zapisa.</target>
+      </trans-unit>
+      <trans-unit id="history_entry.details" resname="history_entry.details" approved="yes">
+        <source>&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</source>
+        <target state="final">&lt;b&gt;Napomena:&lt;/b&gt; ukoliko ne vidite crvene/zelene vrijednosti razlika tada poslužitelj na kojem je instaliran TYPO3 sustav ne podržava prikaz istih ili je neispravno podešen za pružanje te značajke.</target>
+      </trans-unit>
+      <trans-unit id="TCEforms.alttitle" resname="TCEforms.alttitle" approved="yes">
+        <source>TYPO3 Editing Forms</source>
+        <target state="final">TYPO3 obrasci za uređivanje</target>
+      </trans-unit>
+      <trans-unit id="TCEforms.description" resname="TCEforms.description" approved="yes">
+        <source>All records in TYPO3 is edited through a standardized form interface like the one you see here. No matter if you edit pages, content elements, guestbook items or user records you will use the same familiar interface.</source>
+        <target state="final">Svi zapisi u TYPO3 se uređuju putem standardiziranog oblika sučelja poput ovog kojeg vidite ovdje. Bez obzira da li uređujete stranice, sadržaj elemenata, stavke knjige gostiju ili zapise korisnika, koristit ćete isto poznato sučelje.</target>
+      </trans-unit>
+      <trans-unit id="TCEforms.details" resname="TCEforms.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Saving content&lt;/b&gt;
+Just press one of the save-buttons in the top of bottom of the form. There are some variants allowing you to "Save and close document" or "Save document and View page". The latter will save the document and open a new window where the affected page is shown (be sure to disable pop-up blockers for this function!)
+
+&lt;b&gt;Editing multiple records at a time&lt;/b&gt;
+From the Web&gt;List module you can activate editing of multiple records at a time. This is done when you list a single table and enable multiple columns for display (see Web&gt;List module for details) - then icons will link you to a form with multiple records displayed, possibly with only certain fields available for editing.
+
+&lt;b&gt;Frontend Editing&lt;/b&gt;
+Another way of editing records in TYPO3 is using the website frontend. Depending on your user credentials you will see small pencil icons in the frontend. When you click these you will be guided to a form where you can also change the content.
+
+&lt;b&gt;Customize the forms [for Admins]&lt;/b&gt;
+You can customize the TCEforms in many ways using User TSconfig and Page TSconfig. See links below.</source>
+			<target state="final">&lt;b&gt;Spremanje sadržaja&lt;/b&gt;
+Samo pritisnite jedan od gumba za pohranu na vrhu dna obrasca. Postoje neke varijante koje Vam omogućuju da "Spremite i zatvorite dokument" ili "Spremite dokument i pregledate stranicu". Kasnija opcija će pohraniti dokument te će otvoriti novi prozor gdje će biti prikazana stranica na kojoj se radilo (pobrinite se da onemogućite blokadu pop-up prozora za ovu funkciju!)
+
+&lt;b&gt;Uređivanje više zapisa u isto vrijeme&lt;/b&gt;
+Iz Web&gt;Popis modula možete aktivirati uređivanje višestrukih zapisa istovremeno. To se obavlja kada navedete pojedinačnu tablicu te omogućite višestruke stupce za prikaz (vidite Web&gt;Popis modul za detalje) - tada će Vas ikone povezati sa obrascem koji prikazuje višestruke zapise, vjerojatno sa samo određenim poljima dostupnim za uređivanje.
+
+&lt;b&gt;Uređivanje prednjeg sučelja&lt;/b&gt;
+Drugi način uređivanja zapisa u TYPO3 je pomoću prednjeg sučelja web stranice. Ovisno o Vašim korisničkim vjerodajnicama, vidjet ćete male ikone olovke u prednjem sučelju. Nakon što kliknete na njih, doći ćete do obrasca gdje također možete promijeniti sadržaj.
+
+&lt;b&gt;Prilagođavanje obrasca [za Admine]&lt;/b&gt;
+Možete prilagoditi TCEforms na mnogo načina koristeći Korisnički TSconfig te TSconfig Stranice. Pogledajte linkove ispod.</target></trans-unit>
+      <trans-unit id="_TCEforms.seeAlso" resname="_TCEforms.seeAlso" xml:space="preserve" approved="yes">
+				<source>Editing pages | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/
+Frontend Editing | http://typo3.org/documentation/document-library/doc_tut_quickstart/Frontend_editing/,
+xMOD_csh_corebe:list_module
+User TSconfig related to forms | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/
+Page TSconfig related to forms | https://docs.typo3.org/typo3cms/CoreApiReference/Rte/Transformations/Tsconfig/
+Linking to the edit forms [Technical] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/EditLinks/</source>
+			<target state="final">Uređivanje stranica | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/
+Uređivanje prednjeg sučelja | http://typo3.org/documentation/document-library/doc_tut_quickstart/Frontend_editing/,
+xMOD_csh_corebe:list_module
+Korisnički TSconfig obrazaca | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/
+TSconfig stranice za obrasce | https://docs.typo3.org/typo3cms/CoreApiReference/Rte/Transformations/Tsconfig/
+Povezivanje obrazaca za uređivanje [Tehnička razina] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/EditLinks/</target></trans-unit>
+      <trans-unit id="TCEforms.image_descr" resname="TCEforms.image_descr" xml:space="preserve" approved="yes">
+				<source>This is how a typical record is edited in TYPO3. The form display is standardized for all types of records. You will always see the same buttons in the top for saving or closing. In the blue bar you will see the type of record (table name) and the ID number that each record has (uid). Here the record is a page with ID "2" and the title "Content Elements".
+The "additional fields" from the example above is located in a so called "palette". This is an example of three content elements being edited at the same time. You can edit multiple records by using the links from the Web&gt;List module in single-table mode. Notice that not only are three records shown at the same time - it is also a limited number of fields shown for editing, here "Header" and "Hide". You can combine this almost any way you like. This is of course very useful if you need to edit only the header of multiple records.</source>
+			<target state="final">Ovako se tipičan zapis uređuje u TYPO3. Oblik prikaza je standardiziran za sve vrste zapisa. Uvijek ćete vidjeti iste gumbe za pohranjivanje ili zatvaranje na vrhu. U plavoj traci ćete vidjeti vrstu zapisa (naziv tablice) te identifikacijski broj svakog zapisa (uid). Ovdje je zapis stranica sa identifikacijskim brojem "2" i naslovom "Elementi sadržaja".
+"Dodatna polja" iz gornjeg primjera se nalaze u takozvanoj "paleti". To je primjer troje elemenata sadržaja koji se uređuju istovremeno. Možete urediti više zapisa korištenjem linkova sa Web&gt;Popis modula u načinu rada pojedinačne tablice. Primjetite da su samo tri zapisa prikazana istovremeno - te da je samo ograničeni broj polja za uređivanje prikazan, "Zaglavlje" i "Sakrij". To možete kombinirati kako god želite. To je naravno vrlo korisno ako trebate urediti samo zaglavlje višestrukih zapisa.</target></trans-unit>
+      <trans-unit id="TCEforms_cacheSelector.alttitle" resname="TCEforms_cacheSelector.alttitle" approved="yes">
+        <source>Forms Menu</source>
+        <target state="final">Izbornik obrazaca</target>
+      </trans-unit>
+      <trans-unit id="TCEforms_cacheSelector.description" resname="TCEforms_cacheSelector.description" approved="yes">
+        <source>This is alternative ways to select "Save"/"Close" operations for records. You can also select "clear-cache" operations if you are allowed access to them.</source>
+        <target state="final">Ovo je drugi način odabira aktivnosti "Pohrani"/"Zatvori" za zapise. Također, ako imate pravo pristupa, možete odabrati radnju "očisti-međuspremnik".</target>
+      </trans-unit>
+      <trans-unit id="TCEforms_cacheSelector.details" resname="TCEforms_cacheSelector.details" xml:space="preserve" approved="yes">
+				<source>Clearing the cache for pages and clearing all cache can be done from this menu as well. If you wonder why content on the frontend webpage seems to be different from what is in the database you might need to clear the page cache by using one of these options.
+If cache options are not available for you, you should ask your administrator to enable it for you. (Admins: See link below to TSconfig.)</source>
+			<target state="final">Čišćenje međuspremnika stranica te čišćenje svih međuspremnika se također može obaviti u ovom izborniku. Ako se pitate zašto sadržaj na krajnjoj web stranici djeluje drugačije od onoga što je u bazi podataka, možda bi trebali očistiti međuspremnik stranice koristeći jednu od ovih opcija.
+Ako Vam opcije međuspremnika nisu dostupne, trebate pitati Vašeg administratora da ih omogući. (Administratori: Pogledajte link ispod za TSconfig.)</target></trans-unit>
+      <trans-unit id="_TCEforms_cacheSelector.seeAlso" resname="_TCEforms_cacheSelector.seeAlso" approved="yes">
+        <source>User TSconfig (See "clearCache.pages/.all") | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Options/</source>
+        <target state="final">Korisnički TSconfig (See "clearCache.pages/.all") | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Options/</target>
+      </trans-unit>
+      <trans-unit id="perm_module.alttitle" resname="perm_module.alttitle" approved="yes">
+        <source>Viewing page permissions</source>
+        <target state="final">Pregled dopuštenja stranice</target>
+      </trans-unit>
+      <trans-unit id="perm_module.description" resname="perm_module.description" approved="yes">
+        <source>This view will tell you about the page permissions in the page tree.</source>
+        <target state="final">Ovaj prikaz će Vam dati informacije o dozvolama stranice u stablu stranica.</target>
+      </trans-unit>
+      <trans-unit id="perm_module.details" resname="perm_module.details" xml:space="preserve" approved="yes">
+				<source>There are two modes you can select:
+
+&lt;b&gt;User overview:&lt;/b&gt;
+This will show you the permissions for &lt;em&gt;your&lt;/em&gt; login. So the green/red indicators will reflect the combined user/group/everyone permissions that apply to your login!
+If there is a grey background behind the indicators it tells you that you are the owner of the page.
+
+&lt;b&gt;Permissions&lt;/b&gt;
+Shows the permissions settings for owner / group / everybody. You will be able to edit these settings by clicking the edit icon next to the page title. Only an owner of a page (or the "Admin"-user) can change permissions for the page.</source>
+			<target state="final">Postoje dva načina rada koje možete odabrati:
+
+&lt;b&gt;Pregled korisnika:&lt;/b&gt;
+Ovo će Vam pokazati dozvole za &lt;em&gt;Vašu&lt;/em&gt; prijavu. Dakle, zeleni/crveni pokazatelji će odražavati kombinaciju dozvola korisnika/skupine/svih koje se odnose na Vašu prijavu!
+Ako postoji siva pozadina iza indikatora, to znači da ste Vi vlasnik stranice.
+
+&lt;b&gt;Dozvole&lt;/b&gt;
+Prikazuje postavke dozvola za vlasnika / skupinu / sve. Moći ćete urediti ove postavke klikom na ikonu za uređivanje pokraj naslova stranice. Samo vlasnik stranice (ili "Admin"-korisnik) može promijeniti dopuštenja za stranicu.</target></trans-unit>
+      <trans-unit id="_perm_module.seeAlso" resname="_perm_module.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:perm_module_setting,
+User Management How-to | https://docs.typo3.org/typo3cms/GettingStartedTutorial/UserManagement/SettingUpUserPermissions/
+Permission system in TYPO3 [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/AccessControlOptions/,
+_MOD_user_setup:option_helpText</source>
+				
+			<target state="final">xMOD_csh_corebe:perm_module_setting,
+Priručnik o upravljanju korisnicima | https://docs.typo3.org/typo3cms/GettingStartedTutorial/UserManagement/SettingUpUserPermissions/
+Sustav dopuštenja u sustavu TYPO3 [Tehnička razina] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/AccessControlOptions/,
+_MOD_user_setup:option_helpText</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="perm_module_setting.alttitle" resname="perm_module_setting.alttitle" approved="yes">
+        <source>Setting permissions for a page</source>
+        <target state="final">Postavljanje dopuštenja za stranicu</target>
+      </trans-unit>
+      <trans-unit id="perm_module_setting.description" resname="perm_module_setting.description" approved="yes">
+        <source>Select the owner user and group plus the permissions for each in the matrix. Only an owner of a page (or the "Admin"-user) can change permissions for the page.</source>
+        <target state="final">Odaberite korisnika vlasnika i skupinu te dopuštenja za svakog u matrici. Samo vlasnik stranice (ili "Admin"-korisnik) može promijeniti dopuštenja za stranicu.</target>
+      </trans-unit>
+      <trans-unit id="perm_module_setting.details" resname="perm_module_setting.details" xml:space="preserve" approved="yes">
+				<source>Setting permissions is done in five categories for owner / group / everybody so it works much like permissions for files and folders in many operating systems.
+
+&lt;b&gt;Show page&lt;/b&gt;
+If set, a user can see the page and its content in the backend. The user can also copy the content but not move, delete or edit.
+
+&lt;b&gt;Edit content&lt;/b&gt;
+Allows users to add, delete, change and move records (other than page records) on this page. This permission must be given if users should be allowed to create Content Elements etc. on the page.
+
+&lt;b&gt;Edit page&lt;/b&gt;
+Allows a user to edit the page record itself. This could be changing the page title or moving the page to another location.
+
+&lt;b&gt;Delete page&lt;/b&gt;
+If set, a user is allowed to delete the page and the content on the page.
+
+&lt;b&gt;New pages&lt;/b&gt;
+Allows users to create sub-pages to this page.</source>
+			<target state="final">Postavljanje dopuštenja se obavlja u pet kategorija za vlasnika / skupinu / sve tako da funkcionira slično kao dopuštenja za datoteke i mape u mnogim operativnim sustavima.
+
+&lt;b&gt;Prikaži stranicu&lt;/b&gt;
+Ako je postavljeno, korisnik može vidjeti stranicu i njen sadržaj u pozadinskom sučelju. Kosinik također može kopirati sadržaj no bez premještanja, brisanja ili uređivanja.
+
+&lt;b&gt;Uredi sadržaj&lt;/b&gt;
+Dopušta korisnicima da dodaju, obrišu, promjene te premještaju zapise (osim zapisa stranice) na ovoj stranici. Ovo dopuštenje se treba omogućiti ako će korisnici moći stvarati elemente sadržaja itd. na stranici.
+
+&lt;b&gt;Uredi stranicu&lt;/b&gt;
+Dopušta korisniku da uredi sami zapis stranice. Ovo bi moglo promijeniti naslov stranice ili premjestiti stranicu na drugu lokaciju.
+
+&lt;b&gt;Obriši stranicu&lt;/b&gt;
+Ako je postavljeno, korisnik ima dopuštenje obrisati stranicu i sadržaj na stranici.
+
+&lt;b&gt;Nove stranice&lt;/b&gt;
+Dopušta korisnicima da stvore pod-stranice na ovoj stranici.</target></trans-unit>
+      <trans-unit id="_perm_module_setting.seeAlso" resname="_perm_module_setting.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:perm_module,
+User Management Howto | https://docs.typo3.org/typo3cms/GettingStartedTutorial/UserManagement/SettingUpUserPermissions/</source>
+				
+			<target state="final">xMOD_csh_corebe:perm_module,
+Upute za upravljanje korisnicima | https://docs.typo3.org/typo3cms/GettingStartedTutorial/UserManagement/SettingUpUserPermissions/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="perm_module_setting.image_descr" resname="perm_module_setting.image_descr" approved="yes">
+        <source>In this matrix you can set permissions for owner, group and everybody in the five categories available.</source>
+        <target state="final">U ovoj matrici možete postaviti dozvole za vlasnika, skupinu i svakoga u pet kategorija koje su na raspolaganju.</target>
+      </trans-unit>
+      <trans-unit id="filelist_module.alttitle" resname="filelist_module.alttitle" approved="yes">
+        <source>File &gt; Filelist module</source>
+        <target state="final">Datoteka &gt; Modul popisa datoteka</target>
+      </trans-unit>
+      <trans-unit id="filelist_module.description" resname="filelist_module.description" approved="yes">
+        <source>Shows the files and folders from the folder title you have clicked in the folder tree. Click the icons of the files and folders to perform various actions on the elements.</source>
+        <target state="final">Prikazuje datoteke i mape iz mape na čiji ste naslov kliknuli u stablu stranica. Kliknite ikone datoteka i mapa kako bi izvodili različite aktivnosti na elementima.</target>
+      </trans-unit>
+      <trans-unit id="filelist_module.details" resname="filelist_module.details" xml:space="preserve" approved="yes">
+				<source>The File &gt; Filelist module provides the main interface to the web-based "FTP-features" in TYPO3. Clicking a folder in the navigation frame will display the files in that folder in the list frame to the right.
+
+If you click the icon of a file you will see a menu pop up with menu items related to the file or folder. This enables you to edit, rename and copy files to name a few.
+
+&lt;b&gt;The "TEMP" folder&lt;/b&gt;
+There is a special folder, the "TEMP" folder. This is meant to be used for temporary uploads of files that are going to be attached to TYPO3 records later. Content in the TEMP folder should be possible to flush once in a while when the folder becomes too crowded with files. So don't store persistent data in there!
+The actual folder name is actually "_temp_". The interface will just interprete this with "TEMP" in bold.
+The same applies to folders named "_recycler_" - they will be trash cans in the folder tree.</source>
+			<target state="final">Modul Datoteka &gt; Popis datoteka pruža osnovno sučelje "FTP-obilježjima" u TYPO3 sustavu koje se temelje na web-u. Klikom na mapu u navigacijskom okviru prikazat će se datoteke u toj mapi u okviru s popisom na desnoj strani.
+
+Ako kliknete na ikonu datoteke, iskočit će Vam izbornik sa stavkama izbornika koje su povezane sa datotekom ili mapom. To Vam, između ostalog, omogućuje da uredite, preimenujete i kopirate datoteke.
+
+&lt;b&gt;"TEMP" mapa&lt;/b&gt;
+Postoji posebna mapa, "TEMP" mapa. Ista se koristiti za privremeno spremanje datoteka koje će se kasnije pridružiti TYPO3 zapisima. Sadržaj u TEMP mapi se treba moći izbaciti s vremena na vrijeme kada mapa postane prenatrpana datotekama. Dakle nemojte pohranjivati trajne podatke unutra!
+Stvarni naziv mape je zapravo "_temp_". Sučelje će ovo samo interpretirati sa podebljanim "TEMP".
+Isto se odnosi na mape zvane "_čistač_" - one će biti kante za smeće u stablu stranica.</target></trans-unit>
+      <trans-unit id="_filelist_module.seeAlso" resname="_filelist_module.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:filetree,
+be_groups:file_mountpoints,
+sys_filemounts</source>
+				
+			<target state="final">xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:filetree,
+be_groups:file_mountpoints,
+sys_filemounts</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="filelist_module.image_descr" resname="filelist_module.image_descr" xml:space="preserve" approved="yes">
+				<source>Here the content of the TEMP folder is shown in the list frame. You can see the filetype, the modification time, size of the file. If you click the filename you will open the file in the browser (if the path is in the web-root).
+When you click a file icon you see a context menu appear over it. Here you can perform file operations on the item.</source>
+			<target state="final">Ovdje se sadržaj TEMP mape prikazuje u okviru popisa. Možete vidjeti vrstu datoteke, vrijeme promjene i veličinu datoteke. Ako kliknete na naziv datoteke, otvorit ćete datoteku u pregledniku (ako je putanja u web-korijenu).
+Kada kliknete ikonu datoteke, pojavit će se kontekstualni izbornik. Ovdje možete raditi s datotekom stavke.</target></trans-unit>
+      <trans-unit id="filelist_clipboard.alttitle" resname="filelist_clipboard.alttitle" approved="yes">
+        <source>Filelist Clipboard</source>
+        <target state="final">Međumemorija popisa datoteka</target>
+      </trans-unit>
+      <trans-unit id="filelist_clipboard.description" resname="filelist_clipboard.description" approved="yes">
+        <source>The TYPO3 clipboard works for files as well as for database records (see the Web&gt;List module). You only need to enable the clipboard if you want to use the numeric clipboard pads.</source>
+        <target state="final">TYPO3 međumemorija funkcionira za datoteke kao i za zapise baze podataka (vidite Web&gt;Popis modul). Ako želite koristiti obrojčane međumemorije, trebate samo omogućiti međumemoriju.</target>
+      </trans-unit>
+      <trans-unit id="_filelist_clipboard.seeAlso" resname="_filelist_clipboard.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_clipboard,
+About the Clipboard [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/GeneralInterfaceFeatures/Clipboard/</source>
+				
+			<target state="final">xMOD_csh_corebe:list_clipboard,
+O međuspremniku [Tehnički zahtjevno] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/GeneralInterfaceFeatures/Clipboard/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="filelist_clipboard.image_descr" resname="filelist_clipboard.image_descr" xml:space="preserve" approved="yes">
+				<source>This shows the "Normal" pad on the clipboard. Here an image is now stored. The "Thumbnails" button of the clipboard is enabled so you will see the image icon.
+When the numeric clipboard pads are enabled you will be able to place multiple items on the clipboard at one time. If the items selected are found in the current folder you can also see the selection reflected in the checkboxes of the items. To paste the contents into a file folder you use the paste icons available in the Filelist module.</source>
+			<target state="final">To prikazuje "Normalni" spremnik međumemorije. Ovdje je sada pohranjena slika. Međumemorijski gumb za "Sličice" je omogućen kako bi vidjeli ikonu slike.
+Kada su obrojčane međumemorije omogućene, omogućeno Vam je staviti više stavki istovremeno u međumemoriju. Ako se odabrane stavke nađu u trenutnoj mapi, također možete vidjeti odraz odabira u kvadratićima stavki. Kako bi zalijepili sadržaj u mapu datoteke, upotrijebite ikone za lijepljenje koje su dostupne u modulu popisa datoteka.</target></trans-unit>
+      <trans-unit id="filelist_options.alttitle" resname="filelist_options.alttitle" approved="yes">
+        <source>File &gt; Filelist options</source>
+        <target state="final">Datoteka &gt; Opcije popisa datoteka</target>
+      </trans-unit>
+      <trans-unit id="filelist_options.description" resname="filelist_options.description" approved="yes">
+        <source>You can enable the display of image thumbnails and show the clipboard if you need to copy/cut/paste multiple files or folders at a time.</source>
+        <target state="final">Možete omogućiti prikaz sličica te prikazati međumemoriju ako trebate kopirati/izrezati/zalijepiti više datoteka ili mapa istovremeno.</target>
+      </trans-unit>
+      <trans-unit id="_filelist_options.seeAlso" resname="_filelist_options.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_options,
+_MOD_user_setup:option_showThumbs,
+xMOD_csh_corebe:filelist_clipboard</source>
+				
+			<target state="final">xMOD_csh_corebe:list_options,
+_MOD_user_setup:option_showThumbs,
+xMOD_csh_corebe:filelist_clipboard</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="filelist_options.image_descr" resname="filelist_options.image_descr" approved="yes">
+        <source>Enabling thumbnails means that all image file types will be displayed with their thumbnails. This makes it easy to browse an archive of files.</source>
+        <target state="final">Omogućavanje sličica znači da će sve vrste datoteka slika biti prikazane sa svojim sličicama. To olakšava pregled arhiva datoteka.</target>
+      </trans-unit>
+      <trans-unit id="file_edit.alttitle" resname="file_edit.alttitle" approved="yes">
+        <source>Editing a file</source>
+        <target state="final">Uređivanje datoteke</target>
+      </trans-unit>
+      <trans-unit id="file_edit.description" resname="file_edit.description" approved="yes">
+        <source>You can edit the contents of a text file with this dialog.</source>
+        <target state="final">Ovim dijalogom možete urediti sadržaj tekstualne datoteke.</target>
+      </trans-unit>
+      <trans-unit id="_file_edit.seeAlso" resname="_file_edit.seeAlso" approved="yes">
+        <source>xMOD_csh_corebe:filelist_module</source>
+        <target state="final">xMOD_csh_corebe:filelist_module</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="file_edit.image_descr" resname="file_edit.image_descr" approved="yes">
+        <source>The editing form for a file is this simple textarea field. It's nothing fancy and experienced coders will miss such as TAB-functionality, but it can edit a stylesheet if badly needed...</source>
+        <target state="final">Obrazac za uređivanje datoteke je ovo jednostavno polje za tekst. Nije ništa posebno, iskusni programeri će čeznuti za TAB-funkcionalnošću, no može urediti css oblikovanje ako je zbilja potrebno...</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.alttitle" resname="file_newfolder.alttitle" approved="yes">
+        <source>Creating a new folder</source>
+        <target state="final">Stvaranje nove mape</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.description" resname="file_newfolder.description" approved="yes">
+        <source>Enter a name for a new file folder in the tree here. If you want to create multiple folders, please select the number of new folders before entering folder names.</source>
+        <target state="final">Unesite naziv za novu mapu datoteke ovdje u stablu. Ako želite stvoriti više mapa, molimo Vas da odaberete određen broj novih mapa prije unosa imena mapa.</target>
+      </trans-unit>
+      <trans-unit id="_file_newfolder.seeAlso" resname="_file_newfolder.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:file_newfile,
+xMOD_csh_corebe:file_rename</source>
+				
+			<target state="final">xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:file_newfile,
+xMOD_csh_corebe:file_rename</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="file_newfolder.image_descr" resname="file_newfolder.image_descr" xml:space="preserve" approved="yes">
+				<source>To create a new folder you first click the parent folder icon in the folder tree.
+As the next step you select the number of folders to create and then you enter the new folder names.
+After pressing the "Create folders" button the folders will appear in the folder tree when you reload it.</source>
+			<target state="final">Kako bi stvorili novu mapu, prvo kliknite na ikonu roditeljske mape u stablu mapa.
+Sljedeći korak je odabir broja mapa koje treba stvoriti te tada unosite nova imena mapa.
+Nakon pritiska na gumb "Stvori mape" mape će se pojaviti u stablu mapa nakon što ih ponovo učitate.</target></trans-unit>
+      <trans-unit id="file_newfile.alttitle" resname="file_newfile.alttitle" approved="yes">
+        <source>Creating a new file</source>
+        <target state="final">Stvaranje nove datoteke</target>
+      </trans-unit>
+      <trans-unit id="file_newfile.description" resname="file_newfile.description" approved="yes">
+        <source>Enter a filename here if you want to create a new text-based file. Notice that it must have one of the endings in the list of text-endings shown below (except "php" endings).</source>
+        <target state="final">Ovdje unesite ime datoteke ako želite stvoriti novu tekstualnu datoteku. Primjetite da treba imati jedan od završetaka iz popisa tekstualnih završetaka koji su prikazani ispod (osim "php" završetaka).</target>
+      </trans-unit>
+      <trans-unit id="file_newfile.details" resname="file_newfile.details" approved="yes">
+        <source>Newly created files will have the size of 0 (zero). After creating a new file it would be natural that you wanted to edit the file to put content into it. This is done simply by clicking the icon of the file and select "Edit" from the clickmenu.</source>
+        <target state="final">Novo stvorene datoteke će biti veličine 0 (nula). Nakon stvaranja nove datoteke, bilo bi prirodno da želite urediti datoteku kako bi unijeli sadržaj unutra. Ovo se jednostavno postiže tako da se klikne ikona datoteke te odabere "Uredi" iz izbornika.</target>
+      </trans-unit>
+      <trans-unit id="_file_newfile.seeAlso" resname="_file_newfile.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:file_edit,
+xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:file_newfolder,
+xMOD_csh_corebe:file_rename</source>
+				
+			<target state="final">xMOD_csh_corebe:file_edit,
+xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:file_newfolder,
+xMOD_csh_corebe:file_rename</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="file_newfile.image_descr" resname="file_newfile.image_descr" xml:space="preserve" approved="yes">
+				<source>To create a new file, first click the folder icon where you want to create the file. Select "New".
+Then enter the filename in the dialog in the right frame.
+After pressing "Create file" you will see a new, empty file in the folder you selected.</source>
+			<target state="final">Kako bi stvorili novu datoteku, prvo kliknite ikonu mape u kojoj želite stvoriti datoteku. Odaberite "Novo".
+Potom unesite ime datoteke u dijalog u desnom okviru.
+Nakon što pritisnete "Stvori datoteku", vidjet ćete novu praznu datoteku u mapi koju ste odabrali.</target></trans-unit>
+      <trans-unit id="file_newMedia.alttitle" resname="file_newMedia.alttitle" approved="yes">
+        <source>Adding a new media asset</source>
+        <target state="final">Dodajem novi multimedijski resurs</target>
+      </trans-unit>
+      <trans-unit id="file_newMedia.description" resname="file_newMedia.description" approved="yes">
+        <source>Enter an URL to a media asset here. Notice that it must be from one of the allowed providers listed below.</source>
+        <target state="final">Unesite URL poveznicu multimedijskog resursa. Obratite pozornost na činjenicu da URL mora biti prema jednom od dopuštenih distributera na niže navedenom popisu.</target>
+      </trans-unit>
+      <trans-unit id="file_rename.alttitle" resname="file_rename.alttitle" approved="yes">
+        <source>Rename a file or folder</source>
+        <target state="final">Preimenujte datoteku ili mapu</target>
+      </trans-unit>
+      <trans-unit id="file_rename.description" resname="file_rename.description" approved="yes">
+        <source>You can rename files or folders in TYPO3 quite easily. Just notice that certain characters are not allowed. So use a-z, numbers, underscores and don't make the names too long. If you enter invalid characters it will be automatically corrected.</source>
+        <target state="final">Datoteke ili mape u sustavu TYPO3 možete preimenovati vrlo lako. Samo primjetite da određeni znakovi nisu dopušteni. Dakle, koristite a-z, brojeve, podvlake te nemojte stvarati preduga imena. Ako unesete znakove koji nisu valjani, isti će automatski biti ispravljeni.</target>
+      </trans-unit>
+      <trans-unit id="_file_rename.seeAlso" resname="_file_rename.seeAlso" approved="yes">
+        <source>xMOD_csh_corebe:filelist_module</source>
+        <target state="final">xMOD_csh_corebe:filelist_module</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="file_rename.image_descr" resname="file_rename.image_descr" xml:space="preserve" approved="yes">
+				<source>To rename a file (or folder for that sake) just click the icon of it, select "Rename" and enter the new name.
+Notice that restrictions may apply on filenaming, for instance ".php" is usually not a valid extension of a filename for security reasons.</source>
+			<target state="final">Kako bi preimenovali datoteku (ili mapu) samo kliknite na njenu ikonu, odaberite "Preimenovanje" te unesite novo ime.
+Primjetite da se ograničenja mogu odnositi na imenovanje datoteka; ".php" uobičajeno nije valjan produžetak imena datoteke radi sigurnosnih razloga.</target></trans-unit>
+      <trans-unit id="file_upload.alttitle" resname="file_upload.alttitle" approved="yes">
+        <source>Uploading files.</source>
+        <target state="final">Prijenos datoteka.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.description" resname="file_upload.description" approved="yes">
+        <source>Here you can upload one or more files to the server. Start by selecting the number of files to upload, then you begin to select files from your local computer to upload.</source>
+        <target state="final">Ovdje možete prenijeti jednu ili više datoteka na server. Započnite odabirom nekoliko datoteka za prenošenje, pa potom odaberite datoteke za prenošenje sa Vašeg lokalnog računala.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.details" resname="file_upload.details" xml:space="preserve" approved="yes">
+				<source>If the filenames you upload exist already they will be renamed with a numeric suffix, eg. "file_01.jpg". However you can avoid this behaviour if you select "Overwrite existing files" before pressing the "Upload" button.
+
+Normally there is a limit to the size of files you can upload. By default PHP will allow you to upload around 2MB. TYPO3 is configured to allow 10MB internally by default. These settings can be changed by your server administrator if you need them changed.
+
+Notice that file uploads may take a significant amount of time, even if you have fast internet access via DSL etc. If you have large amount of files you want to upload - or if the files are very large - you should consider using an FTP client instead. It depends not on TYPO3 but on the webserver whether this is an options for you.</source>
+			<target state="final">Ako nazivi datoteka koje učitavate već postoje, preimenovat će se na numerički sufiks, na primjer "file_01.jpg". No ovakvo ponašanje možete izbjeći ako odaberete "Pišite preko postojećih datoteka" prije nego što pritisnete gumb "Učitaj".
+
+Obično postoji ograničenje na veličinu datoteka koje možete učitati. PHP će Vam po zadanom omogućiti učitavanje oko 2MB. TYPO3 je konfiguriran kako bi omogućio unutarnjih 10MB po zadanom. Ako ih trebate mijenjati, ove postavke može mijenjati Vaš administrator poslužitelja.
+
+Primjetite da prijenos datoteka može dosta potrajati čak i ako imate brzi internet putem DSL-a itd. Ako imate veliki broj datoteka koje želite učitati - ili ako su datoteke vrlo velike - trebate razmisliti o korištenju FTP klijenta.</target></trans-unit>
+      <trans-unit id="_file_upload.seeAlso" resname="_file_upload.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:filelist_module,
+How-to upload files | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/UploadingImagesToTheArchive/</source>
+				
+			<target state="final">xMOD_csh_corebe:filelist_module,
+Kako poslati datoteke | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/UploadingImagesToTheArchive/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="file_upload.image_descr" resname="file_upload.image_descr" xml:space="preserve" approved="yes">
+				<source>To upload files, first click the folder icon where you want to upload to. From the clickmenu you select "Upload files".
+In the next screen you select the number of files and click the "Browse..." buttons to select files from your computer. Finally you click the "Upload files" button to start the upload process (which might take some minutes with large files!)</source>
+			<target state="final">Kako bi prenijeli datoteke, prvo kliknite ikonu mape na koju želite prenijeti datoteke. Odaberite "Prenesite datoteke" iz izbornika.
+Na sljedećem ekranu odaberite broj datoteka te kliknite na gumbe "Pregledaj..." kako bi odabrali datoteke s Vašeg računala. Na kraju kliknite gumb "Prenesite datoteke" kako bi započeli postupak prenošenja (koji bi mogao trajati nekoliko minuta u slučaju velikih datoteka!)</target></trans-unit>
+      <trans-unit id="wizard_table_wiz.alttitle" resname="wizard_table_wiz.alttitle" approved="yes">
+        <source>Table wizard</source>
+        <target state="final">Čarobnjak za tablice</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz.description" resname="wizard_table_wiz.description" approved="yes">
+        <source>The table wizard helps you create tables that are normally stored in the database by XML or a syntax where each line represents a row and each cell is divided by a vertical line sign, "|". This wizard makes it transparent for you.</source>
+        <target state="final">Čarobnjak za tablice Vam pomaže stvoriti tablice koje se obično pohranjuju u bazu podataka kao XML ili u sintaksu gdje svaka linija predstavlja redak te je svaka ćelija podijeljena vertikalnim znakom linije, "|". Ovaj čarobnjak daje Vam transparentni uvid u to.</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz.details" resname="wizard_table_wiz.details" xml:space="preserve" approved="yes">
+				<source>The wizard is quite simple. By the buttons to the left and in the bottom you can add, delete and move columns and rows in the table.
+You can also disable the setting "Small fields" below the wizard if you want larger textarea fields for the editing.</source>
+			<target state="final">Čarobnjak je prilično jednostavan. Pomoću gumba na lijevoj strani i na dnu, možete dodati, obrisati te premještati stupce i retke u tablici.
+Također možete onemogućiti postavku "Mala polja" ispod čarobnjaka ako želite veća polja teksta za uređivanje.</target></trans-unit>
+      <trans-unit id="_wizard_table_wiz.seeAlso" resname="_wizard_table_wiz.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:wizard_forms_wiz,
+Table Wizard details [Technical]| https://docs.typo3.org/typo3cms/TCAReference/AdditionalFeatures/CoreWizardScripts/</source>
+				
+			<target state="final">xMOD_csh_corebe:wizard_forms_wiz,
+Detalji o čarobnjaku za tablice [Tehnički zahtjevno]| https://docs.typo3.org/typo3cms/TCAReference/AdditionalFeatures/CoreWizardScripts/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="wizard_table_wiz_buttons.alttitle" resname="wizard_table_wiz_buttons.alttitle" approved="yes">
+        <source>Table wizard buttons</source>
+        <target state="final">Gumbi čarobnjaka za tablice</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz_buttons.description" resname="wizard_table_wiz_buttons.description" approved="yes">
+        <source>Use the refresh button to update the form without saving it. When you are done you should click one of the real save buttons to save and return to the form from which you entered the wizard. The information from this wizard should then be saved into the field the wizard was associated with.</source>
+        <target state="final">Koristite gumb za osvježavanje kako bi ažurirali obrazac bez pohranjivanja. Nakon što završite, kliknite jedan od pravih gumba za pohranjivanje kako bi pohranili te se vratili obrascu putem kojeg ste pristupili čarobnjaku. Podaci ovog čarobnjaka se potom trebaju pohraniti u obrascu koji je bio povezan sa čarobnjakom.</target>
+      </trans-unit>
+      <trans-unit id="shortcuts.alttitle" resname="shortcuts.alttitle" approved="yes">
+        <source>Backend Shortcuts</source>
+        <target state="final">Kratice pozadinskog sučelja</target>
+      </trans-unit>
+      <trans-unit id="shortcuts.description" resname="shortcuts.description" approved="yes">
+        <source>You can create shortcuts to modules in TYPO3 quite easily. The treat is that you can jump between screens in TYPO3 in &lt;em&gt;one&lt;/em&gt; click rather than multiple clicks through backend modules etc. The frame also contains a field for entering a page or record id to edit or just search records.</source>
+        <target state="final">U TYPO3 sustavu možete sasvim jednostavno stvoriti kratice modula. Stvar je u tome da se u TYPO3 sustavu možete prebaciti između ekrana u &lt;em&gt;jednom&lt;/em&gt; kliku umjesto sa više klikova putem modula pozadinskog sučelja itd. Okvir također sadrži polja za unos stranice ili identifikacije zapisa kako bi se uredili ili pretražili zapisi.</target>
+      </trans-unit>
+      <trans-unit id="shortcuts.details" resname="shortcuts.details" xml:space="preserve" approved="yes">
+				<source>In order to create a shortcut it must be supported by the module you want to create the shortcut to. Whether shortcuts are supported can be seen in the bottom of a module. If there is a small "shortcut" icon you can click it to create the shortcut.
+
+In the shortcut frame you can also enter a page id to edit in the "Edit Page ID" box. This will load the current page module with the id provided in the box.
+
+Only "Admin"-users can access the shortcut frame in TYPO3 by default. Other users must have it enabled by the User TSconfig option, "options.shortcutFrame = 1". See link below for details (Admins).
+
+Editing pages from an id is easy with the shortcut frame. Simply enter an integer number and that page will be loaded for editing. If you enter "[table]:[id]" then it will try to edit a record from the [table] table, for example "tt_content:123" will look for content element 123 (for admins only). Finally, if you enter a string that doesn't match a page or other record the Web&gt;List module will be invoked doing a search in the first database mount you have.</source>
+			<target state="final">Kako bi stvorili kraticu, modul za kojeg želite stvoriti kraticu treba podržavati tu kraticu. Na dnu modula možete vidjeti da li su kratice podržane. Ako postoji mala ikona "kratice", možete je kliknuti kako bi stvorili kraticu.
+
+U okviru kratice možete unijeti identifikaciju stranice kako bi uredili kutiju "Uredi identifikaciju stranice". To će učitati trenutni modul stranice sa identifikacijom priloženom u kutiji.
+
+Samo "Admin"-korisnici mogu pristupiti okviru kratice u TYPO3 po zadanom. Ostalim korisnicima se to treba omogućiti putem TSconfig korisničke opcije, "options.shortcutFrame = 1". Za detalje vidite donji link (Admins).
+
+Uređivanje stranica sa identifikacije je lako uz pomoć okvira kratice. Jednostavno unesite cijeli broj i ta će se stranica učitati za uređivanje. Ako unesete "[table]:[id]", tada će to pokušati urediti zapis sa [table] tablice, "tt_content:123" će na primjer tražiti element sadržaja 123 (samo za admine). Na kraju, ako unesete niz koji se ne podudara sa stranicom ili ostalim zapisom, Web&gt;popis modul će biti pozvan u pretraživanju Vašeg prvog montiranja baze podataka.</target></trans-unit>
+      <trans-unit id="_shortcuts.seeAlso" resname="_shortcuts.seeAlso" approved="yes">
+        <source>User TSconfig -&gt;SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/</source>
+        <target state="final">Korisnički TSconfig -&gt;SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/</target>
+      </trans-unit>
+      <trans-unit id="shortcuts.image_descr" resname="shortcuts.image_descr" xml:space="preserve" approved="yes">
+				<source>To create a shortcut to a page, just click the short cut icon usually found in the bottom of pages.
+You will have to confirm the creation of the shortcut. It is nothing dangerous - only annoying to clean up if you happen to create shortcuts against your own will. Just answer "OK" here.
+When you answer "OK" you should immediately see the shortcut frame reload and a new icon (the module icon) appear. If you click this icon you will now jump to the page you created the shortcut from!
+You can name shortcuts, you can even group them and share them. If you want to edit or delete a shortcut you select the "Edit" checkbox and then click the shortcut icon. This will reload the shortcut frame so you get a field for entering a title. You can also delete all shortcuts in a "group" - here, just click the "0" (zero) to the left of the icons and you will remove all shortcuts in the group.</source>
+			<target state="final">Kako bi stvorili kraticu stranice, samo kliknite na ikonu kratice koja se najčešće nalazi na dnu stranica.
+Trebat ćete potvrditi stvaranje kratice. To nije ništa opasno - samo je neugodno za čišćenje u slučaju da stvorite kratice protiv svoje volje. Ovdje samo odgovorite sa "OK".
+Nakon što odgovorite sa "OK", odmah biste trebali vidjeti ponovno učitanje okvira kratice te novu ikonu (ikonu modula). Ako kliknete na ovu ikonu, skočit ćete na stranicu sa koje ste stvorili kraticu!
+Možete imenovati kratice, čak ih možete staviti u skupine te ih dijeliti. Ako želite urediti ili obrisati kraticu, odaberite kvadratić "Uredi" te potom kliknite na ikonu kratice. Time ćete ponovno učitati okvir kratice pa ćete dobiti polje za unos naslova. Također možete obrisati sve kratice u "skupini" - ovdje, samo kliknite "0" (nula) lijevo od ikona te ćete ukloniti sve kratice u skupini.</target></trans-unit>
+      <trans-unit id="bookmarks.alttitle" resname="bookmarks.alttitle" approved="yes">
+        <source>Backend Bookmarks</source>
+        <target state="final">Oznake pozadinskog sučelja</target>
+      </trans-unit>
+      <trans-unit id="bookmarks.description" resname="bookmarks.description" approved="yes">
+        <source>You can create bookmarks to modules in TYPO3 quite easily. The treat is that you can jump between screens in TYPO3 in &lt;em&gt;one&lt;/em&gt; click rather than multiple clicks through backend modules etc. The frame also contains a field for entering a page or record id to edit or just search records.</source>
+        <target state="final">Unutar sustava TYPO3 možete vrlo jednostavno stvoriti oznake modula. Stvar je u tome što se možete prebaciti između ekrana u TYPO3 sustavu u &lt;em&gt;jednom&lt;/em&gt; kliku umjesto da kliknete više puta preko modula pozadinskog sučelja. Okvir također sadrži polje za unos stranice ili identifikacijskog broja zapisa kako bi se moglo uređivati ili samo pretraživati zapise.</target>
+      </trans-unit>
+      <trans-unit id="bookmarks.details" resname="bookmarks.details" approved="yes">
+        <source>In order to create a bookmark it must be supported by the module you want to create the bookmark to. Whether bookmarks are supported can be seen in the top of a module. If there is a small star icon you can click it to create the bookmark.</source>
+        <target state="final">Kako bi stvorili oznaku, važno je da je može podržavati modul na kojem želite stvoriti oznaku. Jesu li oznake podržane možete vidjeti na vrhu modula. Ako postoji mala ikona zvijezde, možete je kliknuti kako bi stvorili oznaku.</target>
+      </trans-unit>
+      <trans-unit id="_bookmarks.seeAlso" resname="_bookmarks.seeAlso" approved="yes">
+        <source>User TSconfig -&gt;SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/</source>
+        <target state="final">Korisnički TSconfig -&gt;SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/</target>
+      </trans-unit>
+      <trans-unit id="bookmarks.image_descr" resname="bookmarks.image_descr" xml:space="preserve" approved="yes">
+				<source>To create a bookmark to a page, just click the star icon usually found in the top of pages.
+You will have to confirm the creation of the bookmark. It is nothing dangerous - only annoying to clean up if you happen to create bookmarks against your own will. Just answer "OK" here.
+When you answer "OK" you should immediately see the bookmark icon in the toolbar reloading and, after opening the menu, the new entry appear. If you click this entry, you will now jump to the page you created the bookmark from!
+You can name bookmarks, you can even group them and share them. If you want to edit or delete a bookmark you select the "Edit" checkbox and then click the bookmark icon.</source>
+			<target state="final">Kako bi stvorili oznaku stranice, samo kliknite ikonu zvijezde koja se najčešće nalazi na vrhu stranica.
+Trebat ćete potvrditi stvaranje oznake. To nije ništa opasno - samo je gnjavaža za čišćenje ako slučajno stvorite oznaku. Ovdje samo odgovorite "OK".
+Nakon što odgovorite "OK", odmah biste trebali vidjeti ikonu oznake kako se ponovno učitava u alatnoj traci te, nakon što otvorite izbornik, pojavit će se novi unos. Ako kliknete na ovaj unos, doći ćete do stranice na koju oznaka pokazuje!
+Možete imenovati oznake, staviti ih u skupine te ih dijeliti. Ako želite urediti ili izbrisati oznaku, odaberite okvir za izbor "Uredi" te kliknite na ikonu oznake.</target></trans-unit>
+      <trans-unit id="workspaceSelector.alttitle" resname="workspaceSelector.alttitle" approved="yes">
+        <source>Workspace Selector</source>
+        <target state="final">Izbornik radnog prostora</target>
+      </trans-unit>
+      <trans-unit id="workspaceSelector.description" resname="workspaceSelector.description" approved="yes">
+        <source>By this selectorbox you can switch between the workspaces available to you. When you switch workspace the whole backend will reload.</source>
+        <target state="final">Putem ovog izbornog okvira možete mijenjati radne prostore koji su Vam dostupni. Kada promijenite radni prostor, cijela pozadina će se ponovo učitati.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
