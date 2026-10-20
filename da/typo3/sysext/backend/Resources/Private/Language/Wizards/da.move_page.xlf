@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/move_page.xlf" date="2024-03-08T20:22:34Z" product-name="backend" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="headline" approved="yes">
+        <source>Move page "%1$s" [%2$d]</source>
+        <target state="final">Flyt side "%1$s" [%2$d]</target>
+      </trans-unit>
+      <trans-unit id="currentPath" approved="yes">
+        <source>Current path</source>
+        <target state="final">Nuværende sti</target>
+      </trans-unit>
+      <trans-unit id="makeCopy" approved="yes">
+        <source>Copy page instead of moving page</source>
+        <target state="final">Kopiér side i stedet for at flytte side</target>
+      </trans-unit>
+      <trans-unit id="samePageConflict" approved="yes">
+        <source>The page "%1$s" [%2$d] cannot get moved into itself.</source>
+        <target state="final">Siden "%1$s" [%2$d] kan ikke flyttes ind i sig selv.</target>
+      </trans-unit>
+      <trans-unit id="action.pasteAbove" approved="yes">
+        <source>Paste above</source>
+        <target state="final">Indsæt ovenfor</target>
+      </trans-unit>
+      <trans-unit id="action.pasteBelow" approved="yes">
+        <source>Paste below</source>
+        <target state="final">Indsæt nedenfor</target>
+      </trans-unit>
+      <trans-unit id="action.pasteInto" approved="yes">
+        <source>Paste into</source>
+        <target state="final">Indsæt i</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pageMoved.title" approved="yes">
+        <source>Page successfully moved</source>
+        <target state="final">Siden blev flyttet</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pageMoved.message" approved="yes">
+        <source>The page "%s" has been successfully moved.</source>
+        <target state="final">Siden "%s" er blevet flyttet.</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pageCopied.title" approved="yes">
+        <source>Page successfully copied</source>
+        <target state="final">Siden kopieret</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pageCopied.message" approved="yes">
+        <source>The page "%s" has been successfully copied.</source>
+        <target state="final">Siden "%s" er blevet kopieret.</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pagePasted.action.dismiss" approved="yes">
+        <source>Dismiss</source>
+        <target state="final">Afvis</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pagePasted.action.open" approved="yes">
+        <source>Open "%s"</source>
+        <target state="final">Åbn "%s"</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
