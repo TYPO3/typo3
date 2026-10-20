@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814832" source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_csh_indexcfg.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The Indexed Search configuration allows you to set up indexing of resources which are external to the TYPO3 page tree. This could be a library of records (like news), a directory structure of files (like PDFs) or an external URL to be crawled to some depth - or third-party content provided from other extensions via hooks.</source>
+        <target state="final">Indeksuotos paieškos konfigūracija leidžia nustatyti išorinių išteklių, nepriklausančių TYPO3 puslapių medžiui, indeksavimą. Tai gali būti įrašų biblioteka (pvz., naujienos), failų katalogų struktūra (pvz., PDF failai) arba išorinis URL adresas, kuris turi būti nuskaitytas tam tikru gilumu, arba trečiųjų šalių turinys, teikiamas iš kitų plėtinių per kabliukus.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>The Indexing Configuration records are used to set up how the indexing occurs, at which time and related to which part of the page tree. An important requirement to keep in mind is that the "crawler" extension must be installed since the indexing engine uses the "crawler" extensions queue as a timing device - and using the "crawler" extension means using a cron-job to activate it from the shell.</source>
+        <target state="final">Indeksavimo konfigūracijos įrašai naudojami norint nustatyti, kaip vyksta indeksavimas, kada ir kokioje puslapio medžio dalyje. Svarbu nepamiršti, kad turi būti įdiegta „crawler“ plėtinys, nes indeksavimo variklis naudoja „crawler“ plėtinio eilę kaip laiko nustatymo įrenginį, o „crawler“ plėtinio naudojimas reiškia, kad jį aktyvuoti iš apvalkalo reikia naudoti cron-job.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Provide a title for the configuration.</source>
+        <target state="final">Nurodykite konfigūracijos pavadinimą.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>If needed, give it a description or put other important notes in this field.</source>
+        <target state="final">Jei reikia, įrašykite aprašymą arba kitas svarbias pastabas į šį lauką.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>Notice; Disabling the indexing process will not hide already indexed content in search results!</source>
+        <target state="final">Pastaba: išjungus indeksavimo procesą, jau indeksuotas turinys paieškos rezultatuose nebus paslėptas!</target>
+      </trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" approved="yes">
+        <source>index_config:starttime</source>
+        <target state="final">index_config:starttime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Set a start time for the configuration. If set, the configuration will be bypassed by the crawlers cron job until this time is reached.</source>
+        <target state="final">Nustatykite konfigūracijos pradžios laiką. Jei nustatytas, konfigūracija bus apeita paieškos robotų cron užduoties, kol bus pasiektas šis laikas.</target>
+      </trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" approved="yes">
+        <source>index_config:hidden</source>
+        <target state="final">index_config:hidden</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="timer_frequency.description" resname="timer_frequency.description" approved="yes">
+        <source>Use this setting to adjust how often you would like a re-indexing process to run for the configuration.</source>
+        <target state="final">Naudokite šį nustatymą, kad nustatytumėte, kaip dažnai norite, kad būtų vykdomas konfigūracijos indeksavimo procesas.</target>
+      </trans-unit>
+      <trans-unit id="_timer_frequency.seeAlso" resname="_timer_frequency.seeAlso" xml:space="preserve" approved="yes">
+				<source>index_config:timer_next_indexing,
+index_config:timer_offset</source>
+				
+			<target state="final">index_config:timer_next_indexing,
+index_config:timer_offset</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="timer_offset.description" resname="timer_offset.description" approved="yes">
+        <source>The offset adjusts at what time of day you want the indexing process to run.</source>
+        <target state="final">Nukrypimas nustato, kuriuo paros metu norite, kad būtų vykdomas indeksavimo procesas.</target>
+      </trans-unit>
+      <trans-unit id="_timer_offset.seeAlso" resname="_timer_offset.seeAlso" approved="yes">
+        <source>index_config:timer_frequency</source>
+        <target state="final">index_config:timer_frequency</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="timer_next_indexing.description" resname="timer_next_indexing.description" approved="yes">
+        <source>This field contains the date and time of the next occurring indexing session. If left blank the next indexing will occur as soon as the cron-script is run again (typically within the next minute) and afterwards set to the next time according to frequency and offset.</source>
+        <target state="final">Šiame laukelyje nurodoma kitos indeksavimo sesijos data ir laikas. Jei laukelis paliekamas tuščias, kitas indeksavimas bus atliktas, kai tik vėl bus paleistas cron-script (paprastai per kitą minutę), o po to nustatytas kitas laikas pagal dažnumą ir nuokrypį.</target>
+      </trans-unit>
+      <trans-unit id="_timer_next_indexing.seeAlso" resname="_timer_next_indexing.seeAlso" xml:space="preserve" approved="yes">
+				<source>index_config:timer_offset,
+index_config:timer_frequency</source>
+				
+			<target state="final">index_config:timer_offset,
+index_config:timer_frequency</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="type.description" resname="type.description" approved="yes">
+        <source>Select the type of Indexing Configuration here.</source>
+        <target state="final">Čia pasirinkite indeksavimo konfigūracijos tipą.</target>
+      </trans-unit>
+      <trans-unit id="type.details" resname="type.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Records&lt;/b&gt; - You will be able to index records on a specified page from a specified database table. You can determine which fields from that record you want to index and how additional GET parameters should look like when linking to the search result.
+&lt;b&gt;Files&lt;/b&gt; - Allows you to index a whole directory of files from the fileadmin/ folder. You can optionally specify how many levels of recursion you want.
+&lt;b&gt;External URL&lt;/b&gt; - Allows you to index an external site and search it from your TYPO3 installation! You can specify how deep the crawler should go on that external URL.
+&lt;b&gt;Page tree&lt;/b&gt; - Allows you to index the page tree using the cron script. This type will not be useful as a category for searching like the other types.
+&lt;b&gt;Meta configuration&lt;/b&gt; - Points to a collection of other indexing configurations in which the search will be done. Cannot be used for cron-job based indexing.
+&lt;b&gt;Custom&lt;/b&gt; - Other extensions might register custom types of configurations.</source>
+			<target state="final">&lt;b&gt;Įrašai&lt;/b&gt; - Galėsite indeksuoti įrašus nurodytame puslapyje iš nurodytos duomenų bazės lentelės. Galite nustatyti, kuriuos laukus iš to įrašo norite indeksuoti ir kaip turėtų atrodyti papildomi GET parametrai, kai susiejate su paieškos rezultatu.
+&lt;b&gt;Failai&lt;/b&gt; - Leidžia indeksuoti visą failų katalogą iš failų administravimo aplanko. Pasirinkite, kiek rekursijos lygių norite.
+&lt;b&gt;Išorinis URL&lt;/b&gt; - Leidžia indeksuoti išorinę svetainę ir ieškoti joje iš savo TYPO3 įdiegimo! Galite nurodyti, kaip giliai paieškos robotas turėtų eiti toje išorinėje URL.
+&lt;b&gt;Puslapių medis&lt;/b&gt; - Leidžia indeksuoti puslapių medį naudojant cron skriptą. Šis tipas nebus naudingas kaip kategorija paieškai, kaip kiti tipai.
+&lt;b&gt;Meta konfigūracija&lt;/b&gt; - Nurodo kitų indeksavimo konfigūracijų, kuriose bus atliekama paieška, rinkinį. Negali būti naudojama cron-job pagrįstam indeksavimui.
+&lt;b&gt;Pasirinktinis&lt;/b&gt; - Kiti plėtiniai gali registruoti pasirinktinius konfigūracijų tipus.</target></trans-unit>
+      <trans-unit id="table2index.description" resname="table2index.description" approved="yes">
+        <source>Specify the database table to index records from.</source>
+        <target state="final">Nurodykite duomenų bazės lentelę, iš kurios bus indeksuojami įrašai.</target>
+      </trans-unit>
+      <trans-unit id="alternative_source_pid.description" resname="alternative_source_pid.description" approved="yes">
+        <source>By default the indexer will select records from the page id where the Indexing Configuration is stored. If you want an alternative page as the source of your records you can enter it here.</source>
+        <target state="final">Pagal numatytuosius nustatymus indeksavimo programa atrinks įrašus iš puslapio, kuriame saugoma indeksavimo konfigūracija. Jei norite, kad įrašų šaltiniu būtų kitas puslapis, jį galite įvesti čia.</target>
+      </trans-unit>
+      <trans-unit id="_alternative_source_pid.seeAlso" resname="_alternative_source_pid.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="get_params.description" resname="get_params.description" approved="yes">
+        <source>Enter the GET parameters necessary to display the search results. You can use ###UID### as a marker in the parameter template.</source>
+        <target state="final">Įveskite GET parametrus, reikalingus paieškos rezultatams rodyti. Parametro šablone kaip žymeklį galite naudoti ###UID###.</target>
+      </trans-unit>
+      <trans-unit id="get_params.details" resname="get_params.details" xml:space="preserve" approved="yes">
+				<source>Notice: The GET parameters are appended to the URL of the page where the Indexing Configuration is stored (which must be the page where a plugin exists that can display the records with the given parameters!).
+Example value: "&amp;showUid=###UID###"</source>
+			<target state="final">Pastaba: GET parametrai pridedami prie puslapio, kuriame saugoma indeksavimo konfigūracija, URL (tai turi būti puslapis, kuriame yra įskiepis, galintis rodyti įrašus su nurodytais parametrais!
+Pavyzdinė reikšmė: „&amp;showUid=###UID###“</target></trans-unit>
+      <trans-unit id="_get_params.seeAlso" resname="_get_params.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="fieldlist.description" resname="fieldlist.description" approved="yes">
+        <source>Enter a comma-list of fields to be indexed. The first field name will be used for the search result title.</source>
+        <target state="final">Įveskite indeksuotinų laukų sąrašą, atskirdami juos kableliais. Pirmasis lauko pavadinimas bus naudojamas paieškos rezultatų pavadinimui.</target>
+      </trans-unit>
+      <trans-unit id="fieldlist.details" resname="fieldlist.details" approved="yes">
+        <source>&lt;b&gt;Example:&lt;/b&gt; "header,bodytext,image_caption" would index the Header, Bodytext and Image Caption fields from "tt_content". Notice that you must use the real database field names, don't spell them wrong!</source>
+        <target state="final">&lt;b&gt;Pavyzdys:&lt;/b&gt; „header,bodytext,image_caption“ indeksuotų laukus „Header“, „Bodytext“ ir „Image Caption“ iš „tt_content“. Atkreipkite dėmesį, kad turite naudoti tikruosius duomenų bazės laukų pavadinimus, jų nerašykite klaidingai!</target>
+      </trans-unit>
+      <trans-unit id="_fieldlist.seeAlso" resname="_fieldlist.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_chashcalc.seeAlso" resname="_chashcalc.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="recordsbatch.description" resname="recordsbatch.description" approved="yes">
+        <source>Enter how many records to index for each instance of the indexing process (how many per minute). Default is 100 records.</source>
+        <target state="final">Įveskite, kiek įrašų indeksuoti kiekvienam indeksavimo proceso atvejui (kiek per minutę). Numatytasis skaičius yra 100 įrašų.</target>
+      </trans-unit>
+      <trans-unit id="_recordsbatch.seeAlso" resname="_recordsbatch.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="records_indexonchange.description" resname="records_indexonchange.description" approved="yes">
+        <source>If set, new and changed records from this table will be indexed through a hook in the core (Datahandler) meaning that they will be searchable immediately after addition to the system.</source>
+        <target state="final">Jei nustatoma, nauji ir pakeisti įrašai iš šios lentelės bus indeksuojami per pagrindinį kabliuką (Datahandler), o tai reiškia, kad juos bus galima ieškoti iškart po įtraukimo į sistemą.</target>
+      </trans-unit>
+      <trans-unit id="_records_indexonchange.seeAlso" resname="_records_indexonchange.seeAlso" approved="yes">
+        <source>index_config:table2index</source>
+        <target state="final">index_config:table2index</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="externalUrl.description" resname="externalUrl.description" approved="yes">
+        <source>Enter the URL of the external website you want to index.</source>
+        <target state="final">Įveskite išorinės svetainės, kurią norite indeksuoti, URL adresą.</target>
+      </trans-unit>
+      <trans-unit id="url_deny.description" resname="url_deny.description" approved="yes">
+        <source>Enter a URL on each line inside of which the crawler should not decend.</source>
+        <target state="final">Įveskite URL adresą kiekvienoje eilutėje, kurioje paieškos robotas neturėtų nusileisti.</target>
+      </trans-unit>
+      <trans-unit id="url_deny.details" resname="url_deny.details" xml:space="preserve" approved="yes">
+				<source>Example:
+If you wish to index "https://typo3.org/" but not "https://typo3.org/extensions/" and "https://typo3.org/downloads/" then you simply enter those two URLs into the box like this:
+
+https://typo3.org/downloads/
+https://typo3.org/extensions/</source>
+			<target state="final">Pavyzdys:
+Jei norite indeksuoti „https://typo3.org/“, bet ne „https://typo3.org/extensions/“ ir „https://typo3.org/downloads/“, tiesiog įveskite šiuos du URL adresus į laukelį taip:
+
+https://typo3.org/downloads/
+https://typo3.org/extensions/</target></trans-unit>
+      <trans-unit id="_url_deny.seeAlso" resname="_url_deny.seeAlso" approved="yes">
+        <source>index_config:externalUrl</source>
+        <target state="final">index_config:externalUrl</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="filepath.description" resname="filepath.description" approved="yes">
+        <source>Enter a filepath inside fileadmin/ where you want the files to be indexed.</source>
+        <target state="final">Įveskite failų indeksavimo vietą fileadmin/ kataloge.</target>
+      </trans-unit>
+      <trans-unit id="filepath.details" resname="filepath.details" approved="yes">
+        <source>Example: "fileadmin/newsletters/"</source>
+        <target state="final">Pavyzdys: „fileadmin/newsletters/“</target>
+      </trans-unit>
+      <trans-unit id="extensions.description" resname="extensions.description" approved="yes">
+        <source>If you want to index only specific files in the directory, enter a list of file extensions here. For example: "html,pdf,doc"</source>
+        <target state="final">Jei norite indeksuoti tik tam tikrus katalogą esančius failus, čia įveskite failų plėtinių sąrašą. Pavyzdžiui: „html,pdf,doc“</target>
+      </trans-unit>
+      <trans-unit id="_extensions.seeAlso" resname="_extensions.seeAlso" approved="yes">
+        <source>index_config:filepath</source>
+        <target state="final">index_config:filepath</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="depth.description" resname="depth.description" approved="yes">
+        <source>Levels of recursion.</source>
+        <target state="final">Rekursijos lygiai.</target>
+      </trans-unit>
+      <trans-unit id="depth.details" resname="depth.details" approved="yes">
+        <source>For file indexing it is the level of directories to decend. For External URLs it's the depth to which the crawler will go with links.</source>
+        <target state="final">Failų indeksavimui tai yra katalogų lygis, kurį reikia nusileisti. Išoriniams URL tai yra gylis, kurį nusileis paieškos robotas su nuorodomis.</target>
+      </trans-unit>
+      <trans-unit id="_depth.seeAlso" resname="_depth.seeAlso" xml:space="preserve" approved="yes">
+				<source>index_config:externalUrl,
+index_config:filepath</source>
+				
+			<target state="final">index_config:externalUrl,
+index_config:filepath</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="indexcfgs.description" resname="indexcfgs.description" approved="yes">
+        <source>When a search is conducted in this indexing configuration the actual search will take place in the indexed content from the configurations listed here. You can also enter pages and if you do so the search will take place in indexing configurations found on those pages.</source>
+        <target state="final">Kai paieška atliekama pagal šią indeksavimo konfigūraciją, faktinė paieška bus atliekama indeksuotame turinyje pagal čia išvardytas konfigūracijas. Taip pat galite įvesti puslapius, ir jei tai padarysite, paieška bus atliekama pagal tų puslapių indeksavimo konfigūracijas.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
