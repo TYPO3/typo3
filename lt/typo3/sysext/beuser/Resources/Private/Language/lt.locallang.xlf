@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814783" source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang.xlf" date="2012-07-16T10:11:32Z" product-name="beuser" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="userName" resname="userName" approved="yes">
+        <source>Username</source>
+        <target state="final">Naudotojo vardas</target>
+      </trans-unit>
+      <trans-unit id="lastAccess" resname="lastAccess" approved="yes">
+        <source>Last access</source>
+        <target state="final">Paskutinė prieiga</target>
+      </trans-unit>
+      <trans-unit id="ipAddress" resname="ipAddress" approved="yes">
+        <source>IP address</source>
+        <target state="final">IP adresas</target>
+      </trans-unit>
+      <trans-unit id="email" resname="email" approved="yes">
+        <source>Email</source>
+        <target state="final">El. paštas</target>
+      </trans-unit>
+      <trans-unit id="admin" resname="admin" approved="yes">
+        <source>Admin</source>
+        <target state="final">Administratorius</target>
+      </trans-unit>
+      <trans-unit id="users" resname="users" approved="yes">
+        <source>Users</source>
+        <target state="final">Naudotojai</target>
+      </trans-unit>
+      <trans-unit id="yes" resname="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Taip</target>
+      </trans-unit>
+      <trans-unit id="no" resname="no" approved="yes">
+        <source>No</source>
+        <target state="final">Ne</target>
+      </trans-unit>
+      <trans-unit id="never" resname="never" approved="yes">
+        <source>Never</source>
+        <target state="final">Niekada</target>
+      </trans-unit>
+      <trans-unit id="disable" resname="disable" approved="yes">
+        <source>Disable</source>
+        <target state="final">Išjungti</target>
+      </trans-unit>
+      <trans-unit id="startDateAndTime" resname="startDateAndTime" approved="yes">
+        <source>Start</source>
+        <target state="final">Pradžia</target>
+      </trans-unit>
+      <trans-unit id="endDateAndTime" resname="endDateAndTime" approved="yes">
+        <source>Stop</source>
+        <target state="final">Pabaiga</target>
+      </trans-unit>
+      <trans-unit id="lastLogin" resname="lastLogin" approved="yes">
+        <source>Last login</source>
+        <target state="final">Paskutinis prisijungimas</target>
+      </trans-unit>
+      <trans-unit id="allowedLanguages" resname="allowedLanguages" approved="yes">
+        <source>Limit to languages</source>
+        <target state="final">Apriboti kalbas</target>
+      </trans-unit>
+      <trans-unit id="fileMounts" resname="fileMounts" approved="yes">
+        <source>File mountpoints</source>
+        <target state="final">Failų prijungimo taškai</target>
+      </trans-unit>
+      <trans-unit id="compareBackendUsers" resname="compareBackendUsers" approved="yes">
+        <source>Compare backend users</source>
+        <target state="final">Palyginti administravimo naudotojus</target>
+      </trans-unit>
+      <trans-unit id="status" resname="status" approved="yes">
+        <source>Status</source>
+        <target state="final">Būsena</target>
+      </trans-unit>
+      <trans-unit id="loginBefore" resname="loginBefore" approved="yes">
+        <source>Logged in before</source>
+        <target state="final">Prisijungė anksčiau</target>
+      </trans-unit>
+      <trans-unit id="neverLoggedIn" resname="neverLoggedIn" approved="yes">
+        <source>Never logged in</source>
+        <target state="final">Niekada neprisijungė</target>
+      </trans-unit>
+      <trans-unit id="filter" resname="filter" approved="yes">
+        <source>Filter</source>
+        <target state="final">Filtruoti</target>
+      </trans-unit>
+      <trans-unit id="reallyLogout" resname="reallyLogout" approved="yes">
+        <source>Really logout</source>
+        <target state="final">Tikrai atsijungti</target>
+      </trans-unit>
+      <trans-unit id="endSession" resname="endSession" approved="yes">
+        <source>End session</source>
+        <target state="final">Nutraukti sesiją</target>
+      </trans-unit>
+      <trans-unit id="backendUsers" resname="backendUsers" approved="yes">
+        <source>Backend users</source>
+        <target state="final">Administravimo naudotojai</target>
+      </trans-unit>
+      <trans-unit id="compareUsers" resname="compareUsers" approved="yes">
+        <source>Compare backend users</source>
+        <target state="final">Palyginti administravimo naudotojus</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroupsMenu" resname="backendUserGroupsMenu" approved="yes">
+        <source>Backend user groups</source>
+        <target state="final">Administravimo naudotojų grupės</target>
+      </trans-unit>
+      <trans-unit id="onlineUsers" resname="onlineUsers" approved="yes">
+        <source>Online users</source>
+        <target state="final">Prisijungę naudotojai</target>
+      </trans-unit>
+      <trans-unit id="switchBackMode" resname="switchBackMode" approved="yes">
+        <source>Switch to user</source>
+        <target state="final">Perjungti į naudotoją</target>
+      </trans-unit>
+      <trans-unit id="section.compare" resname="section.compare" approved="yes">
+        <source>Compare</source>
+        <target state="final">Palyginti</target>
+      </trans-unit>
+      <trans-unit id="compare" resname="compare" approved="yes">
+        <source>Compare</source>
+        <target state="final">Palyginti</target>
+      </trans-unit>
+      <trans-unit id="terminateSessionSuccess" resname="terminateSessionSuccess" approved="yes">
+        <source>Session successfully terminated.</source>
+        <target state="final">Sesija sėkmingai nutraukta.</target>
+      </trans-unit>
+      <trans-unit id="online" resname="online" approved="yes">
+        <source>online</source>
+        <target state="final">prisijungęs</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
