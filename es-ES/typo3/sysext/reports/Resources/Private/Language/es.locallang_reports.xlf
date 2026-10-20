@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_reports.xlf" date="2011-10-17T20:22:35Z" product-name="reports" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="status_ok" approved="yes">
+        <source>OK</source>
+        <target state="final">Aceptar</target>
+      </trans-unit>
+      <trans-unit id="status_wrongValue" approved="yes">
+        <source>Wrong value detected</source>
+        <target state="final">Valor incorrecto detectado</target>
+      </trans-unit>
+      <trans-unit id="status_info" approved="yes">
+        <source>Information</source>
+        <target state="final">Información</target>
+      </trans-unit>
+      <trans-unit id="status_insecure" approved="yes">
+        <source>Insecure</source>
+        <target state="final">Inseguro</target>
+      </trans-unit>
+      <trans-unit id="status_disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Deshabilitado</target>
+      </trans-unit>
+      <trans-unit id="status_enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Activado</target>
+      </trans-unit>
+      <trans-unit id="status_enabledPermanently" approved="yes">
+        <source>Enabled permanently</source>
+        <target state="final">Activado permanentemente</target>
+      </trans-unit>
+      <trans-unit id="status_enabledTemporarily" approved="yes">
+        <source>Enabled temporarily</source>
+        <target state="final">Activado temporalmente</target>
+      </trans-unit>
+      <trans-unit id="status_empty" approved="yes">
+        <source>Empty</source>
+        <target state="final">Vacío</target>
+      </trans-unit>
+      <trans-unit id="status_none" approved="yes">
+        <source>None</source>
+        <target state="final">Ninguno</target>
+      </trans-unit>
+      <trans-unit id="status_connectionFailed" approved="yes">
+        <source>Connection Failed</source>
+        <target state="final">Error de conexión</target>
+      </trans-unit>
+      <trans-unit id="status_checkFailed" approved="yes">
+        <source>Check Failed</source>
+        <target state="final">Comprobación fallida</target>
+      </trans-unit>
+      <trans-unit id="status_updateComplete" approved="yes">
+        <source>Update Complete</source>
+        <target state="final">Actualización completa</target>
+      </trans-unit>
+      <trans-unit id="status_updateIncomplete" approved="yes">
+        <source>Update Incomplete</source>
+        <target state="final">Actualización incompleta</target>
+      </trans-unit>
+      <trans-unit id="status_problemNotification" approved="yes">
+        <source>One or more problems were detected with your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
+        <target state="final">Se detectaron uno o más problemas en tu instalación de TYPO3. Por favor, revisa el informe de estado %s%s para más información.</target>
+      </trans-unit>
+      <trans-unit id="status_allNotification" approved="yes">
+        <source>This report contains all System Status Notifications from your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
+        <target state="final">Este informe contiene todas las Notificaciones de Estado del Sistema de tu instalación TYPO3. Por favor, comprueba el informe de estado para más información.</target>
+      </trans-unit>
+      <trans-unit id="status_typo3" approved="yes">
+        <source>TYPO3 System</source>
+        <target state="final">Sistema TYPO3</target>
+      </trans-unit>
+      <trans-unit id="status_system" approved="yes">
+        <source>System</source>
+        <target state="final">Sistema</target>
+      </trans-unit>
+      <trans-unit id="status_security" approved="yes">
+        <source>Security</source>
+        <target state="final">Seguridad</target>
+      </trans-unit>
+      <trans-unit id="status_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Configuración</target>
+      </trans-unit>
+      <trans-unit id="status_referenceIndex" approved="yes">
+        <source>Reference Index</source>
+        <target state="final">Indice de referencia</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedFilePermissions" approved="yes">
+        <source>Permissions of created files</source>
+        <target state="final">Permisos de archivos creados</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedDirectoryPermissions" approved="yes">
+        <source>Permissions of created directories</source>
+        <target state="final">Permisos de directorios creados</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet" approved="yes">
+        <source>MySQL Database Character Set</source>
+        <target state="final">Conjunto de caracteres de base de datos MySQL</target>
+      </trans-unit>
+      <trans-unit id="status_exportedFiles" approved="yes">
+        <source>XML/T3D export files</source>
+        <target state="final">Exportar archivos XML/T3D</target>
+      </trans-unit>
+      <trans-unit id="status_exportedFiles_warningRecommendation" approved="yes">
+        <source>It is recommended to delete exported files to avoid possible disclosure of exported data to backend users with lower/different access rights than user(s) who originally created the export(s).</source>
+        <target state="final">Se recomienda eliminar los archivos exportados para evitar la posible divulgación de los datos exportados entre los usuarios de backend con derechos de acceso inferior/diferentes que el/los usuario/s que crearon lo exportado.</target>
+      </trans-unit>
+      <trans-unit id="status_phpModules" approved="yes">
+        <source>PHP Modules</source>
+        <target state="final">Módulos PHP</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesMissing" approved="yes">
+        <source>One or more modules are missing.</source>
+        <target state="final">Faltan uno o más módulos.</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesGroup" approved="yes">
+        <source>one of: %s</source>
+        <target state="final">uno de: %s</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesPresent" approved="yes">
+        <source>All required modules are installed.</source>
+        <target state="final">Todos los módulos requeridos están instalados.</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskTitle" approved="yes">
+        <source>System Status Update</source>
+        <target state="final">Actualización del estado del sistema</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
