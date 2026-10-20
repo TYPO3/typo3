@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814865" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="shortcutDescription" resname="shortcutDescription" approved="yes">
+        <source>This is the shortcuts menu. You do not have any shortcuts added yet, you can do so by clicking the shortcut icon %icon%, which you can find on each page in the backend.</source>
+        <target state="final">Это &amp;mdash; меню ссылок. Ссылки еще не добавлялись. Можно это сделать, щелкнув по значку ссылки %icon%, который находится на каждой странице.</target>
+      </trans-unit>
+      <trans-unit id="shortcut_edit" resname="shortcut_edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Редактирование</target>
+      </trans-unit>
+      <trans-unit id="shortcut_create" resname="shortcut_create" approved="yes">
+        <source>Create</source>
+        <target state="final">Создание</target>
+      </trans-unit>
+      <trans-unit id="shortcut_editID" resname="shortcut_editID" approved="yes">
+        <source>Edit/Search</source>
+        <target state="final">Найти/Редактировать</target>
+      </trans-unit>
+      <trans-unit id="shortcut_save" resname="shortcut_save" approved="yes">
+        <source>Update shortcut title</source>
+        <target state="final">Обновить название указателя</target>
+      </trans-unit>
+      <trans-unit id="shortcut_saveClose" resname="shortcut_saveClose" approved="yes">
+        <source>Update and close editor</source>
+        <target state="final">Обновить и закрыть редактор</target>
+      </trans-unit>
+      <trans-unit id="shortcut_close" resname="shortcut_close" approved="yes">
+        <source>Close shortcut editor</source>
+        <target state="final">Закрыть редактор ссылок</target>
+      </trans-unit>
+      <trans-unit id="shortcut_delete" resname="shortcut_delete" approved="yes">
+        <source>Remove shortcut</source>
+        <target state="final">Удалить указатель</target>
+      </trans-unit>
+      <trans-unit id="shortcut_loadEdit" resname="shortcut_loadEdit" approved="yes">
+        <source>Loading page</source>
+        <target state="final">Загрузка страницы</target>
+      </trans-unit>
+      <trans-unit id="shortcut_searchFor" resname="shortcut_searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">Искать выражение</target>
+      </trans-unit>
+      <trans-unit id="shortcut_notEditable" resname="shortcut_notEditable" approved="yes">
+        <source>No editable page found!</source>
+        <target state="final">Страница для редактирования не найдена!</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group" resname="shortcut_group" approved="yes">
+        <source>Group</source>
+        <target state="final">Группа</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_1" resname="shortcut_group_1" approved="yes">
+        <source>Pages</source>
+        <target state="final">Страницы</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_2" resname="shortcut_group_2" approved="yes">
+        <source>Records</source>
+        <target state="final">Записи</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_3" resname="shortcut_group_3" approved="yes">
+        <source>Files</source>
+        <target state="final">Файлы</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_4" resname="shortcut_group_4" approved="yes">
+        <source>Tools</source>
+        <target state="final">Сервис</target>
+      </trans-unit>
+      <trans-unit id="shortcut_group_5" resname="shortcut_group_5" approved="yes">
+        <source>Miscellaneous</source>
+        <target state="final">Прочее</target>
+      </trans-unit>
+      <trans-unit id="shortcut_global" resname="shortcut_global" approved="yes">
+        <source>Global</source>
+        <target state="final">Глобально</target>
+      </trans-unit>
+      <trans-unit id="shortcut_all" resname="shortcut_all" approved="yes">
+        <source>All</source>
+        <target state="final">Все</target>
+      </trans-unit>
+      <trans-unit id="shortcut_onlyAdmin" resname="shortcut_onlyAdmin" approved="yes">
+        <source>You cannot edit a shared shortcut!</source>
+        <target state="final">Невозможно редактировать общедоступную ссылку!</target>
+      </trans-unit>
+      <trans-unit id="shortcut_selSC" resname="shortcut_selSC" approved="yes">
+        <source>Select shortcut</source>
+        <target state="final">Выбрать ссылку</target>
+      </trans-unit>
+      <trans-unit id="shortcut_delAllInCat" resname="shortcut_delAllInCat" approved="yes">
+        <source>Delete all shortcuts in this group?</source>
+        <target state="final">Удалить все ссылки в этой группе?</target>
+      </trans-unit>
+      <trans-unit id="shortcut_onlineWS" resname="shortcut_onlineWS" approved="yes">
+        <source>LIVE workspace</source>
+        <target state="final">ОПЕРАТИВНАЯ рабочая область</target>
+      </trans-unit>
+      <trans-unit id="shortcut_active" resname="shortcut_active" approved="yes">
+        <source>active</source>
+        <target state="final">активна</target>
+      </trans-unit>
+      <trans-unit id="shortcut_inactive" resname="shortcut_inactive" approved="yes">
+        <source>inactive</source>
+        <target state="final">не активна</target>
+      </trans-unit>
+      <trans-unit id="shortcut_noWSfound" resname="shortcut_noWSfound" approved="yes">
+        <source>ERROR: No workspaces found!</source>
+        <target state="final">ОШИБКА: рабочая область не найдена!</target>
+      </trans-unit>
+      <trans-unit id="shortcut_FEPreview" resname="shortcut_FEPreview" approved="yes">
+        <source>Enable Frontend Preview</source>
+        <target state="final">Включить предпросмотр во внешнем интерфейсе</target>
+      </trans-unit>
+      <trans-unit id="shortcut_workspace" resname="shortcut_workspace" approved="yes">
+        <source>Go to Workspace Module</source>
+        <target state="final">Перейти к модулю рабочих областей</target>
+      </trans-unit>
+      <trans-unit id="bookmark_description" resname="bookmark_description" approved="yes">
+        <source>This is the bookmarks menu. You do not have any bookmarks added yet, you can do so by clicking the bookmark icon %s, which you can find on each page in the backend.</source>
+        <target state="final">Это — меню закладок. У вас пока нет закладок, но их можно добавить, щёлкнув по значку закладки %s, находящемуся на каждой странице во внутреннем интерфейсе.</target>
+      </trans-unit>
+      <trans-unit id="bookmark_edit" resname="bookmark_edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Редактирование</target>
+      </trans-unit>
+      <trans-unit id="bookmark_create" resname="bookmark_create" approved="yes">
+        <source>Create</source>
+        <target state="final">Создание</target>
+      </trans-unit>
+      <trans-unit id="bookmark_editID" resname="bookmark_editID" approved="yes">
+        <source>Edit/Search</source>
+        <target state="final">Найти/Редактировать</target>
+      </trans-unit>
+      <trans-unit id="bookmark_save" resname="bookmark_save" approved="yes">
+        <source>Update bookmark title</source>
+        <target state="final">Обновить название закладки</target>
+      </trans-unit>
+      <trans-unit id="bookmark_saveClose" resname="bookmark_saveClose" approved="yes">
+        <source>Update and close editor</source>
+        <target state="final">Обновить и закрыть редактор</target>
+      </trans-unit>
+      <trans-unit id="bookmark_close" resname="bookmark_close" approved="yes">
+        <source>Close bookmark editor</source>
+        <target state="final">Закрыть редактор закладок</target>
+      </trans-unit>
+      <trans-unit id="bookmark_delete" resname="bookmark_delete" approved="yes">
+        <source>Remove bookmark</source>
+        <target state="final">Удалить закладку</target>
+      </trans-unit>
+      <trans-unit id="bookmark_loadEdit" resname="bookmark_loadEdit" approved="yes">
+        <source>Loading page</source>
+        <target state="final">Загрузка страницы</target>
+      </trans-unit>
+      <trans-unit id="bookmark_searchFor" resname="bookmark_searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">Искать выражение</target>
+      </trans-unit>
+      <trans-unit id="bookmark_notEditable" resname="bookmark_notEditable" approved="yes">
+        <source>No editable page found!</source>
+        <target state="final">Страница для редактирования не найдена!</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group" resname="bookmark_group" approved="yes">
+        <source>Group</source>
+        <target state="final">Группа</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_1" resname="bookmark_group_1" approved="yes">
+        <source>Pages</source>
+        <target state="final">Страницы</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_2" resname="bookmark_group_2" approved="yes">
+        <source>Records</source>
+        <target state="final">Записи</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_3" resname="bookmark_group_3" approved="yes">
+        <source>Files</source>
+        <target state="final">Файлы</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_4" resname="bookmark_group_4" approved="yes">
+        <source>Tools</source>
+        <target state="final">Сервис</target>
+      </trans-unit>
+      <trans-unit id="bookmark_group_5" resname="bookmark_group_5" approved="yes">
+        <source>Miscellaneous</source>
+        <target state="final">Прочее</target>
+      </trans-unit>
+      <trans-unit id="bookmark_global" resname="bookmark_global" approved="yes">
+        <source>Global</source>
+        <target state="final">Глобально</target>
+      </trans-unit>
+      <trans-unit id="bookmark_all" resname="bookmark_all" approved="yes">
+        <source>All</source>
+        <target state="final">Все</target>
+      </trans-unit>
+      <trans-unit id="bookmark_onlyAdmin" resname="bookmark_onlyAdmin" approved="yes">
+        <source>You cannot edit a shared bookmark!</source>
+        <target state="final">Невозможно править общедоступные закладки!</target>
+      </trans-unit>
+      <trans-unit id="bookmark_selSC" resname="bookmark_selSC" approved="yes">
+        <source>Select bookmark</source>
+        <target state="final">Выбрать закладку</target>
+      </trans-unit>
+      <trans-unit id="bookmark_delAllInCat" resname="bookmark_delAllInCat" approved="yes">
+        <source>Delete all bookmarks in this group</source>
+        <target state="final">Удалить все закладки из текущей группы</target>
+      </trans-unit>
+      <trans-unit id="bookmark_onlineWS" resname="bookmark_onlineWS" approved="yes">
+        <source>LIVE workspace</source>
+        <target state="final">ОПЕРАТИВНАЯ рабочая область</target>
+      </trans-unit>
+      <trans-unit id="bookmark_active" resname="bookmark_active" approved="yes">
+        <source>active</source>
+        <target state="final">активна</target>
+      </trans-unit>
+      <trans-unit id="bookmark_inactive" resname="bookmark_inactive" approved="yes">
+        <source>inactive</source>
+        <target state="final">не активна</target>
+      </trans-unit>
+      <trans-unit id="bookmark_noWSfound" resname="bookmark_noWSfound" approved="yes">
+        <source>ERROR: No workspaces found!</source>
+        <target state="final">ОШИБКА: рабочая область не найдена!</target>
+      </trans-unit>
+      <trans-unit id="bookmark_FEPreview" resname="bookmark_FEPreview" approved="yes">
+        <source>Enable Frontend Preview</source>
+        <target state="final">Включить предпросмотр во внешнем интерфейсе</target>
+      </trans-unit>
+      <trans-unit id="bookmark_workspaceComparisonView" resname="bookmark_workspaceComparisonView" approved="yes">
+        <source>Enable comparison view</source>
+        <target state="final">Включить режим сравнения</target>
+      </trans-unit>
+      <trans-unit id="bookmark_workspace" resname="bookmark_workspace" approved="yes">
+        <source>Go to Workspace Module</source>
+        <target state="final">Перейти к модулю рабочих областей</target>
+      </trans-unit>
+      <trans-unit id="overwriteExistingFiles" resname="overwriteExistingFiles" approved="yes">
+        <source>Overwrite existing files</source>
+        <target state="final">Перезаписать существующие файлы</target>
+      </trans-unit>
+      <trans-unit id="uploadMultipleFilesInfo" resname="uploadMultipleFilesInfo" approved="yes">
+        <source>Upload multiple files by holding the Shift or CTRL-file pressed while selecting your files (works on modern browsers only).</source>
+        <target state="final">Для того чтобы загрузить несколько файлов зажмите при выделении Shift или Ctrl. (Работает только в современных браузерах)</target>
+      </trans-unit>
+      <trans-unit id="fileMetaDataLocation" resname="fileMetaDataLocation" approved="yes">
+        <source>Location</source>
+        <target state="final">Расположение:</target>
+      </trans-unit>
+      <trans-unit id="fileMetaErrorInvalidRecord" resname="fileMetaErrorInvalidRecord" approved="yes">
+        <source>File meta data not found</source>
+        <target state="final">Мета-данные файла не найдены</target>
+      </trans-unit>
+      <trans-unit id="selectPosition" resname="selectPosition" approved="yes">
+        <source>Select a position for the new page</source>
+        <target state="final">Выбрать позицию для новой страницы</target>
+      </trans-unit>
+      <trans-unit id="pageSelectPosition" resname="pageSelectPosition" approved="yes">
+        <source>Page (select position)</source>
+        <target state="final">Страница (выбор позиции)</target>
+      </trans-unit>
+      <trans-unit id="goBack" resname="goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Вернуться назад</target>
+      </trans-unit>
+      <trans-unit id="createNewPage" resname="createNewPage" approved="yes">
+        <source>Create a new page</source>
+        <target state="final">Создать новую страницу</target>
+      </trans-unit>
+      <trans-unit id="createNewContent" resname="createNewContent" approved="yes">
+        <source>Create a new content element</source>
+        <target state="final">Создать новый элемент содержимого</target>
+      </trans-unit>
+      <trans-unit id="clickForWizard" resname="clickForWizard" approved="yes">
+        <source>Click here for wizard!</source>
+        <target state="final">Нажмите здесь для вызова мастера!</target>
+      </trans-unit>
+      <trans-unit id="insertNewPageHere" resname="insertNewPageHere" approved="yes">
+        <source>Insert the new page here</source>
+        <target state="final">Вставить новую страницу сюда</target>
+      </trans-unit>
+      <trans-unit id="insertNewRecordHere" resname="insertNewRecordHere" approved="yes">
+        <source>Insert new record here</source>
+        <target state="final">Вставить новую запись сюда</target>
+      </trans-unit>
+      <trans-unit id="movePageToHere" resname="movePageToHere" approved="yes">
+        <source>Move page to this position</source>
+        <target state="final">Переместить страницу на эту позицию</target>
+      </trans-unit>
+      <trans-unit id="moveElement" resname="moveElement" approved="yes">
+        <source>Move element</source>
+        <target state="final">Переместить элемент</target>
+      </trans-unit>
+      <trans-unit id="moveElements" resname="moveElements" approved="yes">
+        <source>Move elements</source>
+        <target state="final">Переместить элементы</target>
+      </trans-unit>
+      <trans-unit id="copyElements" resname="copyElements" approved="yes">
+        <source>Copy elements</source>
+        <target state="final">Копировать элементы</target>
+      </trans-unit>
+      <trans-unit id="selectPositionOfElement" resname="selectPositionOfElement" approved="yes">
+        <source>Select position of the element</source>
+        <target state="final">Выбрать позицию для элемента</target>
+      </trans-unit>
+      <trans-unit id="movingElement" resname="movingElement" approved="yes">
+        <source>Move element</source>
+        <target state="final">Переместить элемент</target>
+      </trans-unit>
+      <trans-unit id="makeCopy" resname="makeCopy" approved="yes">
+        <source>Make copy instead of moving element</source>
+        <target state="final">Копирование элементов вместо их перемещения</target>
+      </trans-unit>
+      <trans-unit id="newContentElement" resname="newContentElement" approved="yes">
+        <source>New content element</source>
+        <target state="final">Новый элемент содержимого</target>
+      </trans-unit>
+      <trans-unit id="system_records" resname="system_records" approved="yes">
+        <source>System Records</source>
+        <target state="final">Системные записи</target>
+      </trans-unit>
+      <trans-unit id="1_selectType" resname="1_selectType" approved="yes">
+        <source>First select the type of the new content element</source>
+        <target state="final">Сначала выберите тип нового элемента содержимого</target>
+      </trans-unit>
+      <trans-unit id="2_selectPosition" resname="2_selectPosition" approved="yes">
+        <source>Now click on the position of the new content element</source>
+        <target state="final">Теперь укажите положение нового элемента содержимого</target>
+      </trans-unit>
+      <trans-unit id="CM_history" resname="CM_history" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">История/Отмена</target>
+      </trans-unit>
+      <trans-unit id="CM_perms" resname="CM_perms" approved="yes">
+        <source>Access</source>
+        <target state="final">Доступ</target>
+      </trans-unit>
+      <trans-unit id="CM_moveWizard" resname="CM_moveWizard" approved="yes">
+        <source>Move element</source>
+        <target state="final">Переместить элемент</target>
+      </trans-unit>
+      <trans-unit id="CM_moveWizard_page" resname="CM_moveWizard_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">Переместить страницу</target>
+      </trans-unit>
+      <trans-unit id="CM_newWizard" resname="CM_newWizard" approved="yes">
+        <source>'Create New' wizard</source>
+        <target state="final">Мастер создания нового</target>
+      </trans-unit>
+      <trans-unit id="CM_editPageProperties" resname="CM_editPageProperties" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">Свойства страницы</target>
+      </trans-unit>
+      <trans-unit id="CM_db_list" resname="CM_db_list" approved="yes">
+        <source>Web&gt;List module</source>
+        <target state="final">Модуль Веб&gt;Список</target>
+      </trans-unit>
+      <trans-unit id="noEditPage" resname="noEditPage" approved="yes">
+        <source>You asked to edit page "%s" but you cannot edit this page. Now loading backend as usual.</source>
+        <target state="final">Запрошено редактирование страницы "%s", но вы не можете редактировать эту страницу. Система загружается в обычном режиме.</target>
+      </trans-unit>
+      <trans-unit id="localize" resname="localize" approved="yes">
+        <source>Localize</source>
+        <target state="final">Перевести</target>
+      </trans-unit>
+      <trans-unit id="localize.isLocalizable" resname="localize.isLocalizable" approved="yes">
+        <source>Record can be localized</source>
+        <target state="final">Запись может быть переведена</target>
+      </trans-unit>
+      <trans-unit id="localize.wasRemovedInOriginal" resname="localize.wasRemovedInOriginal" approved="yes">
+        <source>Record was removed in original language</source>
+        <target state="final">Запись на исходном языке была удалена</target>
+      </trans-unit>
+      <trans-unit id="localizeAllRecords" resname="localizeAllRecords" approved="yes">
+        <source>Localize all records</source>
+        <target state="final">Перевести все записи</target>
+      </trans-unit>
+      <trans-unit id="synchronizeWithOriginalLanguage" resname="synchronizeWithOriginalLanguage" approved="yes">
+        <source>Synchronize with original language</source>
+        <target state="final">Синхронизировать с исходным языком</target>
+      </trans-unit>
+      <trans-unit id="pageTree_filter" resname="pageTree_filter" approved="yes">
+        <source>Filter</source>
+        <target state="final">Фильтр</target>
+      </trans-unit>
+      <trans-unit id="switchtouser" resname="switchtouser" approved="yes">
+        <source>Switch to User</source>
+        <target state="final">Переключиться в режим эмуляции этого пользователя</target>
+      </trans-unit>
+      <trans-unit id="switchtousershort" resname="switchtousershort" approved="yes">
+        <source>SU</source>
+        <target state="final">ПП</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_windowTitle" resname="fileUpload_windowTitle" approved="yes">
+        <source>File Upload Progress</source>
+        <target state="final">Прогресс загрузки файла</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_buttonSelectFiles" resname="fileUpload_buttonSelectFiles" approved="yes">
+        <source>Select Files</source>
+        <target state="final">Выбор файлов</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_buttonCancelAll" resname="fileUpload_buttonCancelAll" approved="yes">
+        <source>Cancel All Uploads</source>
+        <target state="final">Отменить все загрузки</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentMaxFileSize" resname="fileUpload_infoComponentMaxFileSize" approved="yes">
+        <source>You can upload files with a maximum size of {0}.</source>
+        <target state="final">Можно загружать файлы с максимальным размером {0}.</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentFileUploadLimit" resname="fileUpload_infoComponentFileUploadLimit" approved="yes">
+        <source>You can upload a total of {0}.</source>
+        <target state="final">Можно загружать всего {0}.</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentFileTypeLimit" resname="fileUpload_infoComponentFileTypeLimit" approved="yes">
+        <source>You can upload the following file types {0}.</source>
+        <target state="final">Можно загружать файлы следующих типов {0}.</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_infoComponentOverrideFiles" resname="fileUpload_infoComponentOverrideFiles" approved="yes">
+        <source>Overwrite existing files</source>
+        <target state="final">Перезаписать существующие файлы</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_processRunning" resname="fileUpload_processRunning" approved="yes">
+        <source>Another process is already uploading</source>
+        <target state="final">Другой процесс в настоящее время загружает файлы.</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadWait" resname="fileUpload_uploadWait" approved="yes">
+        <source>Waiting to start upload of {0}</source>
+        <target state="final">Ожидание начала загрузки {0}.</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadStarting" resname="fileUpload_uploadStarting" approved="yes">
+        <source>Starting upload of {0}</source>
+        <target state="final">Начало загрузки {0}.</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadProgress" resname="fileUpload_uploadProgress" approved="yes">
+        <source>{0}% of {1} uploaded</source>
+        <target state="final">Загружено {0}% из {1}</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_uploadSuccess" resname="fileUpload_uploadSuccess" approved="yes">
+        <source>{0} was successfully uploaded!</source>
+        <target state="final">{0} было успешно загружено!</target>
+      </trans-unit>
+      <trans-unit id="pagetree_networkErrorTitle" resname="pagetree_networkErrorTitle" approved="yes">
+        <source>Page tree error</source>
+        <target state="final">Ошибка дерева страниц</target>
+      </trans-unit>
+      <trans-unit id="pagetree_networkErrorDesc" resname="pagetree_networkErrorDesc" approved="yes">
+        <source>Got unexpected response from the server. Please check logs for details.</source>
+        <target state="final">Получен неожиданный ответ от сервера. Посмотрите детали в журнале.</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueLimitExceeded" resname="fileUpload_errorQueueLimitExceeded" approved="yes">
+        <source>Too many files selected</source>
+        <target state="final">Выбрано слишком много файлов</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueFileSizeLimit" resname="fileUpload_errorQueueFileSizeLimit" approved="yes">
+        <source>{0} is too big</source>
+        <target state="final">{0} слишком большой</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueZeroByteFile" resname="fileUpload_errorQueueZeroByteFile" approved="yes">
+        <source>{0} is empty</source>
+        <target state="final">{0} пустой</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorQueueInvalidFiletype" resname="fileUpload_errorQueueInvalidFiletype" approved="yes">
+        <source>Filetype not allowed for {0}</source>
+        <target state="final">Типы файлов запрещены {0}</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadHttp" resname="fileUpload_errorUploadHttp" approved="yes">
+        <source>Too many files selected</source>
+        <target state="final">Выбрано слишком много файлов</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadHttpError" resname="fileUpload_errorUploadHttpError" approved="yes">
+        <source>A HTTP error occurred: {0}</source>
+        <target state="final">Произошла ошибка HTTP: {0}</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadMissingUrl" resname="fileUpload_errorUploadMissingUrl" approved="yes">
+        <source>Internal error: No Upload URL set</source>
+        <target state="final">Внутренняя ошибка: не установлен URL для загрузки</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadIO" resname="fileUpload_errorUploadIO" approved="yes">
+        <source>Internal error: Problems while reading/writing the file</source>
+        <target state="final">Внутренняя ошибка: проблема чтения/записи файла</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadSecurityError" resname="fileUpload_errorUploadSecurityError" approved="yes">
+        <source>Internal error: {0}</source>
+        <target state="final">Внутренняя ошибка: {0}</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadLimit" resname="fileUpload_errorUploadLimit" approved="yes">
+        <source>Upload limit exceeded</source>
+        <target state="final">Достигнут предел для загрузки</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadFailed" resname="fileUpload_errorUploadFailed" approved="yes">
+        <source>Upload failed</source>
+        <target state="final">Загрузка неудачна</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadFileIDNotFound" resname="fileUpload_errorUploadFileIDNotFound" approved="yes">
+        <source>Internal error: File ID not found</source>
+        <target state="final">Внутренняя ошибка: файл с ID не найден</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadFileValidation" resname="fileUpload_errorUploadFileValidation" approved="yes">
+        <source>Internal error while validating the file</source>
+        <target state="final">Внутренняя ошибка при проверке файла</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadFileCancelled" resname="fileUpload_errorUploadFileCancelled" approved="yes">
+        <source>Upload of {0} canceled</source>
+        <target state="final">Загрузка {0} отменена</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_errorUploadStopped" resname="fileUpload_errorUploadStopped" approved="yes">
+        <source>Upload of {0} stopped</source>
+        <target state="final">Загрузка {0} остановлена</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_allErrorMessageTitle" resname="fileUpload_allErrorMessageTitle" approved="yes">
+        <source>All uploads failed</source>
+        <target state="final">Ошибка для всех загрузок</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_allErrorMessageText" resname="fileUpload_allErrorMessageText" approved="yes">
+        <source>All of your uploads failed.&lt;br /&gt;&lt;br /&gt;If this problem persists, please try another browser, contact your administrator or disable this "Flash Uploader" in your User Settings.&lt;br /&gt;&lt;br /&gt;Detailed problem description:&lt;br /&gt;</source>
+        <target state="final">Ошибка для всех загрузок.&lt;br /&gt;&lt;br /&gt;Если ошибка повторяется, попробуйте использовать другой браузер, сообщите об этом администратору или отключите "Загрузчик Flash" в персональных настройках.&lt;br /&gt;&lt;br /&gt;Детальное описание проблемы:&lt;br /&gt;</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_allError401" resname="fileUpload_allError401" approved="yes">
+        <source>The server returned the status code 401, which is related to a .htaccess file used for password protection on your server. Unfortunately this can not be handled by your browser's Flash plugin.</source>
+        <target state="final">Сервер вернул код состояния 401, относящийся к файлу .htaccess, использующегося для защиты сервера паролем. К сожалению, при этом невозможно использовать flash расширение Вашего браузера.</target>
+      </trans-unit>
+      <trans-unit id="fileUpload_allError2038" resname="fileUpload_allError2038" approved="yes">
+        <source>An input/output error occurred (Error #2038). This i.e. happens with servers using a self-signed SSL certificate, which is a limitation of your browser's Flash plugin.</source>
+        <target state="final">Произошла ошибка ввода/вывода (Ошибка #2038). Это может произойти, например, при использовании на сервере самостоятельно подписанных сертификатов SSL, которые ограничивают использование flash расширение браузера.</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_title" resname="liveSearch_title" approved="yes">
+        <source>Short result list</source>
+        <target state="final">Краткий список результатов</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_emptyText" resname="liveSearch_emptyText" approved="yes">
+        <source>Enter search term</source>
+        <target state="final">Введите искомую фразу</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_loadingText" resname="liveSearch_loadingText" approved="yes">
+        <source>Searching...</source>
+        <target state="final">Поиск...</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_listEmptyText" resname="liveSearch_listEmptyText" approved="yes">
+        <source>No results found.</source>
+        <target state="final">Поиск не дал результатов.</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_showAllResults" resname="liveSearch_showAllResults" approved="yes">
+        <source>Show All</source>
+        <target state="final">Показать все</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpTitle" resname="liveSearch_helpTitle" approved="yes">
+        <source>How to use advanced search tags</source>
+        <target state="final">Как использовать дополнительные теги для поиска</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescription" resname="liveSearch_helpDescription" approved="yes">
+        <source>Search in certain tables</source>
+        <target state="final">Поиск в определенных таблицах</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescriptionPages" resname="liveSearch_helpDescriptionPages" approved="yes">
+        <source>#page:Home will search for all pages with the title "Home"</source>
+        <target state="final">#page:Дом - будет произведен поиск всех страниц с заголовком "Дом"</target>
+      </trans-unit>
+      <trans-unit id="viewPort_tooltipModuleMenuSplit" resname="viewPort_tooltipModuleMenuSplit" approved="yes">
+        <source>Drag to resize the Modules Menu</source>
+        <target state="final">Тяните для изменения размера меню модулей.</target>
+      </trans-unit>
+      <trans-unit id="viewPort_tooltipNavigationContainerSplitDrag" resname="viewPort_tooltipNavigationContainerSplitDrag" approved="yes">
+        <source>Drag to resize or double click to collapse the page tree area</source>
+        <target state="final">Тяните для изменения размера или сделайте двойной щелчок для сворачивания дерева</target>
+      </trans-unit>
+      <trans-unit id="viewPort_tooltipNavigationContainerSplitClick" resname="viewPort_tooltipNavigationContainerSplitClick" approved="yes">
+        <source>Click to toggle the page tree area</source>
+        <target state="final">Щёлкните для переключения области дерева страниц</target>
+      </trans-unit>
+      <trans-unit id="viewPort_tooltipDebugPanelSplitDrag" resname="viewPort_tooltipDebugPanelSplitDrag" approved="yes">
+        <source>Drag to resize or click to collapse the Debug Panel.</source>
+        <target state="final">Тяните для изменения размера или щелкните для сворачивания панели отладки.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
