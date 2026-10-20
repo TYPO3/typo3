@@ -1,0 +1,696 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814885" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="file_mountpoints" resname="file_mountpoints" approved="yes">
+        <source>File Mounts</source>
+        <target state="final">Failų prijungimai</target>
+      </trans-unit>
+      <trans-unit id="allowed_languages" resname="allowed_languages" approved="yes">
+        <source>Limit to languages</source>
+        <target state="final">Apriboti kalbomis</target>
+      </trans-unit>
+      <trans-unit id="category_perms" resname="category_perms" approved="yes">
+        <source>Category Mounts</source>
+        <target state="final">Kategorijų prijungimai</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms" resname="workspace_perms" approved="yes">
+        <source>Workspace permissions</source>
+        <target state="final">Darbo aplinkos leidimai</target>
+      </trans-unit>
+      <trans-unit id="workspace_perms_live" resname="workspace_perms_live" approved="yes">
+        <source>Edit Live (Online)</source>
+        <target state="final">Redaguoti Live (Online)</target>
+      </trans-unit>
+      <trans-unit id="TSconfig" resname="TSconfig" approved="yes">
+        <source>TSconfig</source>
+        <target state="final">TSconfig</target>
+      </trans-unit>
+      <trans-unit id="be_users.username" resname="be_users.username" approved="yes">
+        <source>Username</source>
+        <target state="final">Naudotojo vardas</target>
+      </trans-unit>
+      <trans-unit id="be_users.password" resname="be_users.password" approved="yes">
+        <source>Password</source>
+        <target state="final">Slaptažodis</target>
+      </trans-unit>
+      <trans-unit id="be_users.avatar" resname="be_users.avatar" approved="yes">
+        <source>Avatar</source>
+        <target state="final">Avataras</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup" resname="be_users.usergroup" approved="yes">
+        <source>Group</source>
+        <target state="final">Grupė</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_edit_title" resname="be_users.usergroup_edit_title" approved="yes">
+        <source>Edit usergroup</source>
+        <target state="final">Redaguoti naudotojų grupę</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_add_title" resname="be_users.usergroup_add_title" approved="yes">
+        <source>Create new group</source>
+        <target state="final">Sukurti naują grupę</target>
+      </trans-unit>
+      <trans-unit id="be_users.usergroup_list_title" resname="be_users.usergroup_list_title" approved="yes">
+        <source>List groups</source>
+        <target state="final">Grupių sąrašas</target>
+      </trans-unit>
+      <trans-unit id="be_users.admin" resname="be_users.admin" approved="yes">
+        <source>Admin (!)</source>
+        <target state="final">Administratorius (!)</target>
+      </trans-unit>
+      <trans-unit id="be_users.options" resname="be_users.options" approved="yes">
+        <source>Mount from groups</source>
+        <target state="final">Prijungimai iš grupių</target>
+      </trans-unit>
+      <trans-unit id="be_users.options_file_mounts" resname="be_users.options_file_mounts" approved="yes">
+        <source>File Mounts</source>
+        <target state="final">Failų prijungimai</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms" resname="be_users.fileoper_perms" approved="yes">
+        <source>Fileoperation permissions</source>
+        <target state="final">Failų operacijų leidimai</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files" resname="be_users.file_permissions.files" approved="yes">
+        <source>Files</source>
+        <target state="final">Failai</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_read" resname="be_users.file_permissions.files_read" approved="yes">
+        <source>Files: Read</source>
+        <target state="final">Failai: Skaityti</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_write" resname="be_users.file_permissions.files_write" approved="yes">
+        <source>Files: Write</source>
+        <target state="final">Failai: Rašyti</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_add" resname="be_users.file_permissions.files_add" approved="yes">
+        <source>Files: Add</source>
+        <target state="final">Failai: Pridėti</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_rename" resname="be_users.file_permissions.files_rename" approved="yes">
+        <source>Files: Rename</source>
+        <target state="final">Failai: Pervadinti</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_replace" resname="be_groups.file_permissions.files_replace" approved="yes">
+        <source>Files: Replace</source>
+        <target state="final">Failai: Pakeisti</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_move" resname="be_users.file_permissions.files_move" approved="yes">
+        <source>Files: Move</source>
+        <target state="final">Failai: Perkelti</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.files_copy" resname="be_users.file_permissions.files_copy" approved="yes">
+        <source>Files: Copy</source>
+        <target state="final">Failai: Kopijuoti</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_unzip" resname="be_users.fileoper_perms_unzip" approved="yes">
+        <source>Files: Unzip</source>
+        <target state="final">Failai: Išskleisti (unzip)</target>
+      </trans-unit>
+      <trans-unit id="be_users.file_permissions.file_delete" resname="be_users.file_permissions.file_delete" approved="yes">
+        <source>Files: Delete</source>
+        <target state="final">Failai: Ištrinti</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_general" resname="be_users.fileoper_perms_general" approved="yes">
+        <source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
+        <target state="final">Failai: Įkelti,Kopijuoti,Perkelti,Ištrinti,Pervadinti,Naujas,Redaguoti</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms" resname="be_users.fileoper_perms_diroper_perms" approved="yes">
+        <source>Directory: Move,Delete,Rename,New</source>
+        <target state="final">Aplankas: Perkelti,Ištrinti,Pervadinti,Naujas</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms_copy" resname="be_users.fileoper_perms_diroper_perms_copy" approved="yes">
+        <source>Directory: Copy</source>
+        <target state="final">Aplankas: Kopijuoti</target>
+      </trans-unit>
+      <trans-unit id="be_users.fileoper_perms_diroper_perms_delete" resname="be_users.fileoper_perms_diroper_perms_delete" approved="yes">
+        <source>Directory: Delete recursively (rm -Rf)</source>
+        <target state="final">Aplankas: Ištrinti rekursyviai (rm -Rf)</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.options" resname="be_users.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">Parinktys</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.extended" resname="be_users.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Išplėstiniai</target>
+      </trans-unit>
+      <trans-unit id="be_users.tabs.access" resname="be_users.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Prieiga</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tables_select" resname="be_groups.tables_select" approved="yes">
+        <source>Tables (listing)</source>
+        <target state="final">Lentelės (sąrašas)</target>
+      </trans-unit>
+      <trans-unit id="be_groups.custom_options" resname="be_groups.custom_options" approved="yes">
+        <source>Custom module options</source>
+        <target state="final">Pasirinktinės modulio parinktys</target>
+      </trans-unit>
+      <trans-unit id="be_groups.subgroup" resname="be_groups.subgroup" approved="yes">
+        <source>Inherit settings from groups</source>
+        <target state="final">Paveldėti nustatymus iš grupių</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms" resname="be_groups.fileoper_perms" approved="yes">
+        <source>Fileoperation permissions</source>
+        <target state="final">Failų operacijų leidimai</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder" resname="be_groups.file_permissions.folder" approved="yes">
+        <source>Directory</source>
+        <target state="final">Aplankas</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_read" resname="be_groups.file_permissions.folder_read" approved="yes">
+        <source>Directory: Read</source>
+        <target state="final">Aplankas: Skaityti</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_write" resname="be_groups.file_permissions.folder_write" approved="yes">
+        <source>Directory: Write</source>
+        <target state="final">Aplankas: Rašyti</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_add" resname="be_groups.file_permissions.folder_add" approved="yes">
+        <source>Directory: Add</source>
+        <target state="final">Aplankas: Pridėti</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_rename" resname="be_groups.file_permissions.folder_rename" approved="yes">
+        <source>Directory: Rename</source>
+        <target state="final">Aplankas: Pervadinti</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_move" resname="be_groups.file_permissions.folder_move" approved="yes">
+        <source>Directory: Move</source>
+        <target state="final">Aplankas: Perkelti</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_copy" resname="be_groups.file_permissions.folder_copy" approved="yes">
+        <source>Directory: Copy</source>
+        <target state="final">Aplankas: Kopijuoti</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_delete" resname="be_groups.file_permissions.folder_delete" approved="yes">
+        <source>Directory: Delete</source>
+        <target state="final">Aplankas: Ištrinti</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.folder_recursivedelete" resname="be_groups.file_permissions.folder_recursivedelete" approved="yes">
+        <source>Directory: Delete recursively</source>
+        <target state="final">Aplankas: Ištrinti rekursyviai</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files" resname="be_groups.file_permissions.files" approved="yes">
+        <source>Files</source>
+        <target state="final">Failai</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_read" resname="be_groups.file_permissions.files_read" approved="yes">
+        <source>Files: Read</source>
+        <target state="final">Failai: Skaityti</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_write" resname="be_groups.file_permissions.files_write" approved="yes">
+        <source>Files: Write</source>
+        <target state="final">Failai: Rašyti</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_edit" resname="be_groups.file_permissions.files_edit" approved="yes">
+        <source>Files: Edit</source>
+        <target state="final">Failai: Redaguoti</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_add" resname="be_groups.file_permissions.files_add" approved="yes">
+        <source>Files: Add</source>
+        <target state="final">Failai: Pridėti</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_rename" resname="be_groups.file_permissions.files_rename" approved="yes">
+        <source>Files: Rename</source>
+        <target state="final">Failai: Pervadinti</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_move" resname="be_groups.file_permissions.files_move" approved="yes">
+        <source>Files: Move</source>
+        <target state="final">Failai: Perkelti</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_copy" resname="be_groups.file_permissions.files_copy" approved="yes">
+        <source>Files: Copy</source>
+        <target state="final">Failai: Kopijuoti</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_unzip" resname="be_groups.fileoper_perms_unzip" approved="yes">
+        <source>Files: Unzip</source>
+        <target state="final">Failai: Išpakuoti</target>
+      </trans-unit>
+      <trans-unit id="be_groups.file_permissions.files_delete" resname="be_groups.file_permissions.files_delete" approved="yes">
+        <source>Files: Delete</source>
+        <target state="final">Failai: Ištrinti</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_general" resname="be_groups.fileoper_perms_general" approved="yes">
+        <source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
+        <target state="final">Failai: Įkelti,Kopijuoti,Perkelti,Ištrinti,Pervadinti,Naujas,Redaguoti</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms" resname="be_groups.fileoper_perms_diroper_perms" approved="yes">
+        <source>Directory: Move,Delete,Rename,New</source>
+        <target state="final">Aplankas: Perkelti,Ištrinti,Pervadinti,Naujas</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms_copy" resname="be_groups.fileoper_perms_diroper_perms_copy" approved="yes">
+        <source>Directory: Copy</source>
+        <target state="final">Aplankas: Kopijuoti</target>
+      </trans-unit>
+      <trans-unit id="be_groups.fileoper_perms_diroper_perms_delete" resname="be_groups.fileoper_perms_diroper_perms_delete" approved="yes">
+        <source>Directory: Delete recursively (rm -Rf)</source>
+        <target state="final">Aplankas: Ištrinti rekursyviai (rm -Rf)</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.options" resname="be_groups.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">Parinktys</target>
+      </trans-unit>
+      <trans-unit id="be_groups.tabs.extended" resname="be_groups.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Išplėstiniai</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.users" resname="sys_filemounts.tabs.users" approved="yes">
+        <source>Users</source>
+        <target state="final">Naudotojai</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.mountpoints" resname="sys_filemounts.tabs.mountpoints" approved="yes">
+        <source>Mountpoints</source>
+        <target state="final">Prijungimo taškai</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.publishing" resname="sys_filemounts.tabs.publishing" approved="yes">
+        <source>Publishing</source>
+        <target state="final">Publikavimas</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.tabs.other" resname="sys_filemounts.tabs.other" approved="yes">
+        <source>Other</source>
+        <target state="final">Kita</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.title" resname="sys_filemounts.title" approved="yes">
+        <source>Label</source>
+        <target state="final">Etiketė</target>
+      </trans-unit>
+      <trans-unit id="sys_filemounts.read_only" resname="sys_filemounts.read_only" approved="yes">
+        <source>Read-only</source>
+        <target state="final">Tik skaitymui</target>
+      </trans-unit>
+      <trans-unit id="sys_history" resname="sys_history" approved="yes">
+        <source>System History</source>
+        <target state="final">Sistemos istorija</target>
+      </trans-unit>
+      <trans-unit id="sys_log" resname="sys_log" approved="yes">
+        <source>System Log</source>
+        <target state="final">Sistemos žurnalas</target>
+      </trans-unit>
+      <trans-unit id="sys_news" resname="sys_news" approved="yes">
+        <source>System News</source>
+        <target state="final">Sistemos naujienos</target>
+      </trans-unit>
+      <trans-unit id="sys_news.tabs.access" resname="sys_news.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">Prieiga</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.adminusers" resname="sys_workspace.adminusers" approved="yes">
+        <source>Owners</source>
+        <target state="final">Savininkai</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.members" resname="sys_workspace.members" approved="yes">
+        <source>Members</source>
+        <target state="final">Nariai</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_time" resname="sys_workspace.publish_time" approved="yes">
+        <source>Publish</source>
+        <target state="final">Publikuoti</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.live_edit" resname="sys_workspace.live_edit" approved="yes">
+        <source>Allow "live" editing of records from tables without versioning</source>
+        <target state="final">Leisti „live“ redagavimą įrašams iš lentelių be versijavimo</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.review_stage_edit" resname="sys_workspace.review_stage_edit" approved="yes">
+        <source>Allow members to edit records in "Review" stage</source>
+        <target state="final">Leisti nariams redaguoti įrašus „Peržiūros“ etape</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.disable_autocreate" resname="sys_workspace.disable_autocreate" approved="yes">
+        <source>Disable auto-versioning when editing</source>
+        <target state="final">Išjungti automatinį versijų kūrimą redaguojant</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access" resname="sys_workspace.publish_access" approved="yes">
+        <source>Publish access</source>
+        <target state="final">Publikavimo prieiga</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification" resname="sys_workspace.stagechg_notification" approved="yes">
+        <source>Stage change notification by email</source>
+        <target state="final">Etapo pakeitimo pranešimas el. paštu</target>
+      </trans-unit>
+      <trans-unit id="pages" resname="pages" approved="yes">
+        <source>Page</source>
+        <target state="final">Puslapis</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_toggle" resname="pages.hidden_toggle" approved="yes">
+        <source>Page visible</source>
+        <target state="final">Puslapis matomas</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_toggle_formlabel" resname="pages.hidden_toggle_formlabel" approved="yes">
+        <source>Page visible</source>
+        <target state="final">Puslapis matomas</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide" resname="pages.nav_hide" approved="yes">
+        <source>Page not enabled in menus</source>
+        <target state="final">Puslapis nerodomas meniu</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_toggle" resname="pages.nav_hide_toggle" approved="yes">
+        <source>Page enabled in menus</source>
+        <target state="final">Puslapis rodomas meniu</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_toggle_formlabel" resname="pages.nav_hide_toggle_formlabel" approved="yes">
+        <source>Page enabled in menus</source>
+        <target state="final">Puslapis rodomas meniu</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.0" resname="doktype.I.0" approved="yes">
+        <source>Standard</source>
+        <target state="final">Standartinis</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.1" resname="doktype.I.1" approved="yes">
+        <source>SysFolder</source>
+        <target state="final">SysFolder</target>
+      </trans-unit>
+      <trans-unit id="doktype.I.folder" resname="doktype.I.folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">Aplankas</target>
+      </trans-unit>
+      <trans-unit id="php_tree_stop" resname="php_tree_stop" approved="yes">
+        <source>Hide child pages in page tree</source>
+        <target state="final">Slėpti antrinius puslapius puslapių medyje</target>
+      </trans-unit>
+      <trans-unit id="is_siteroot" resname="is_siteroot" approved="yes">
+        <source>Is root of website</source>
+        <target state="final">Yra svetainės šakninis puslapis</target>
+      </trans-unit>
+      <trans-unit id="pages.slug" resname="pages.slug" approved="yes">
+        <source>URL Segment</source>
+        <target state="final">URL segmentas</target>
+      </trans-unit>
+      <trans-unit id="be_users" resname="be_users" approved="yes">
+        <source>Backend user</source>
+        <target state="final">Administravimo srities naudotojas</target>
+      </trans-unit>
+      <trans-unit id="be_groups" resname="be_groups" approved="yes">
+        <source>Backend usergroup</source>
+        <target state="final">Administravimo srities naudotojų grupė</target>
+      </trans-unit>
+      <trans-unit id="sys_collection.description" resname="sys_collection.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Aprašymas</target>
+      </trans-unit>
+      <trans-unit id="sys_collection.items" resname="sys_collection.items" approved="yes">
+        <source>Items</source>
+        <target state="final">Elementai</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage" resname="sys_file_storage" approved="yes">
+        <source>File Storage</source>
+        <target state="final">Failų saugykla</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.type" resname="sys_file_storage.type" approved="yes">
+        <source>Entry point</source>
+        <target state="final">Įėjimo taškas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.name" resname="sys_file_storage.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.description" resname="sys_file_storage.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Aprašymas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.hidden" resname="sys_file_storage.hidden" approved="yes">
+        <source>Hide from listings</source>
+        <target state="final">Slėpti sąrašuose</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.is_online" resname="sys_file_storage.is_online" approved="yes">
+        <source>Is online?</source>
+        <target state="final">Ar aktyvuota?</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.is_default" resname="sys_file_storage.is_default" approved="yes">
+        <source>Is default storage?</source>
+        <target state="final">Ar numatytoji saugykla?</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.is_browsable" resname="sys_file_storage.is_browsable" approved="yes">
+        <source>Is browsable?</source>
+        <target state="final">Ar naršoma?</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.is_public" resname="sys_file_storage.is_public" approved="yes">
+        <source>Is publicly available?</source>
+        <target state="final">Ar viešai prieinama?</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.is_writable" resname="sys_file_storage.is_writable" approved="yes">
+        <source>Is writable?</source>
+        <target state="final">Ar galima rašyti?</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.auto_extract_metadata" resname="sys_file_storage.auto_extract_metadata" approved="yes">
+        <source>Automatically extract metadata after upload</source>
+        <target state="final">Automatiškai išgauti metaduomenis po įkėlimo</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.capabilities" resname="sys_file_storage.capabilities" approved="yes">
+        <source>Capabilities</source>
+        <target state="final">Galimybės</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.processingfolder" resname="sys_file_storage.processingfolder" approved="yes">
+        <source>Folder for manipulated and temporary images etc.</source>
+        <target state="final">Aplankas apdorotiems ir laikiniems vaizdams ir pan.</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.processingfolder.placeholder" resname="sys_file_storage.processingfolder.placeholder" approved="yes">
+        <source>_processed_ or 1:/processed_files_storage_x</source>
+        <target state="final">processed arba 1:/processed_files_storage_x</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.driver" resname="sys_file_storage.driver" approved="yes">
+        <source>Driver</source>
+        <target state="final">Tvarkyklė</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.driver.local" resname="sys_file_storage.driver.local" approved="yes">
+        <source>Local Filesystem</source>
+        <target state="final">Vietinė failų sistema</target>
+      </trans-unit>
+      <trans-unit id="sys_file_storage.configuration" resname="sys_file_storage.configuration" approved="yes">
+        <source>Driver Configuration</source>
+        <target state="final">Tvarkyklės konfigūracija</target>
+      </trans-unit>
+      <trans-unit id="sys_file" resname="sys_file" approved="yes">
+        <source>File</source>
+        <target state="final">Failas</target>
+      </trans-unit>
+      <trans-unit id="sys_file.storage" resname="sys_file.storage" approved="yes">
+        <source>Storage</source>
+        <target state="final">Saugykla</target>
+      </trans-unit>
+      <trans-unit id="sys_file.identifier" resname="sys_file.identifier" approved="yes">
+        <source>Identifier</source>
+        <target state="final">Identifikatorius</target>
+      </trans-unit>
+      <trans-unit id="sys_file.name" resname="sys_file.name" approved="yes">
+        <source>Filename</source>
+        <target state="final">Failo pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="sys_file.title" resname="sys_file.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type" resname="sys_file.type" approved="yes">
+        <source>File Type</source>
+        <target state="final">Failo tipas</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.unknown" resname="sys_file.type.unknown" approved="yes">
+        <source>Unknown</source>
+        <target state="final">Nežinomas</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.text" resname="sys_file.type.text" approved="yes">
+        <source>Text</source>
+        <target state="final">Tekstas</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.image" resname="sys_file.type.image" approved="yes">
+        <source>Image</source>
+        <target state="final">Vaizdas</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.audio" resname="sys_file.type.audio" approved="yes">
+        <source>Audio</source>
+        <target state="final">Garsas</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.video" resname="sys_file.type.video" approved="yes">
+        <source>Video</source>
+        <target state="final">Vaizdo įrašas</target>
+      </trans-unit>
+      <trans-unit id="sys_file.type.software" resname="sys_file.type.software" approved="yes">
+        <source>Software</source>
+        <target state="final">Programinė įranga</target>
+      </trans-unit>
+      <trans-unit id="sys_file.mime_type" resname="sys_file.mime_type" approved="yes">
+        <source>Mime Type</source>
+        <target state="final">Mime tipas</target>
+      </trans-unit>
+      <trans-unit id="sys_file.sha1" resname="sys_file.sha1" approved="yes">
+        <source>SHA1</source>
+        <target state="final">SHA1</target>
+      </trans-unit>
+      <trans-unit id="sys_file.size" resname="sys_file.size" approved="yes">
+        <source>Size</source>
+        <target state="final">Dydis</target>
+      </trans-unit>
+      <trans-unit id="sys_file.usage_count" resname="sys_file.usage_count" approved="yes">
+        <source>Usage Count</source>
+        <target state="final">Naudojimo skaičius</target>
+      </trans-unit>
+      <trans-unit id="sys_file.description" resname="sys_file.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Aprašymas</target>
+      </trans-unit>
+      <trans-unit id="sys_file.alternative" resname="sys_file.alternative" approved="yes">
+        <source>Alternative Text</source>
+        <target state="final">Alternatyvus tekstas</target>
+      </trans-unit>
+      <trans-unit id="sys_file.missing" resname="sys_file.missing" approved="yes">
+        <source>Marked as missing</source>
+        <target state="final">Pažymėtas kaip trūkstamas</target>
+      </trans-unit>
+      <trans-unit id="sys_file.metadata" resname="sys_file.metadata" approved="yes">
+        <source>Metadata records</source>
+        <target state="final">Metaduomenų įrašai</target>
+      </trans-unit>
+      <trans-unit id="file.width" resname="file.width" approved="yes">
+        <source>Width</source>
+        <target state="final">Plotis</target>
+      </trans-unit>
+      <trans-unit id="file.height" resname="file.height" approved="yes">
+        <source>Height</source>
+        <target state="final">Aukštis</target>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata" resname="sys_file_metadata" approved="yes">
+        <source>File Metadata</source>
+        <target state="final">Failo metaduomenys</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference" resname="sys_file_reference" approved="yes">
+        <source>File Reference</source>
+        <target state="final">Failo nuoroda</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.uid_local" resname="sys_file_reference.uid_local" approved="yes">
+        <source>File</source>
+        <target state="final">Failas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.uid_foreign" resname="sys_file_reference.uid_foreign" approved="yes">
+        <source>Used by content elements</source>
+        <target state="final">Naudojama turinio elementuose</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.tablenames" resname="sys_file_reference.tablenames" approved="yes">
+        <source>Table name</source>
+        <target state="final">Lentelės pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.fieldname" resname="sys_file_reference.fieldname" approved="yes">
+        <source>Foreign Field</source>
+        <target state="final">Išorinis laukas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.sorting_foreign" resname="sys_file_reference.sorting_foreign" approved="yes">
+        <source>Sorting foreign</source>
+        <target state="final">Išorinis rūšiavimas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.basicoverlayPalette" resname="sys_file_reference.basicoverlayPalette" approved="yes">
+        <source>File Metadata</source>
+        <target state="final">Failo metaduomenys</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.imageoverlayPalette" resname="sys_file_reference.imageoverlayPalette" approved="yes">
+        <source>Image Metadata</source>
+        <target state="final">Vaizdo metaduomenys</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.audioOverlayPalette" resname="sys_file_reference.audioOverlayPalette" approved="yes">
+        <source>Audio Metadata</source>
+        <target state="final">Garso metaduomenys</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.videoOverlayPalette" resname="sys_file_reference.videoOverlayPalette" approved="yes">
+        <source>Video Metadata</source>
+        <target state="final">Vaizdo įrašo metaduomenys</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.title" resname="sys_file_reference.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.description" resname="sys_file_reference.description" approved="yes">
+        <source>Description (Caption)</source>
+        <target state="final">Aprašymas (antraštė)</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.downloadname" resname="sys_file_reference.downloadname" approved="yes">
+        <source>Download Name</source>
+        <target state="final">Atsisiuntimo pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.alternative" resname="sys_file_reference.alternative" approved="yes">
+        <source>Alternative Text</source>
+        <target state="final">Alternatyvus tekstas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.link" resname="sys_file_reference.link" approved="yes">
+        <source>Link</source>
+        <target state="final">Nuoroda</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.crop" resname="sys_file_reference.crop" approved="yes">
+        <source>Image manipulation</source>
+        <target state="final">Vaizdo redagavimas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_reference.autoplay" resname="sys_file_reference.autoplay" approved="yes">
+        <source>Autoplay</source>
+        <target state="final">Automatinis paleidimas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection" resname="sys_file_collection" approved="yes">
+        <source>File collection</source>
+        <target state="final">Failų kolekcija</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.files" resname="sys_file_collection.files" approved="yes">
+        <source>Files</source>
+        <target state="final">Failai</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.title" resname="sys_file_collection.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.type" resname="sys_file_collection.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Tipas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.storage" resname="sys_file_collection.storage" approved="yes">
+        <source>File Storage</source>
+        <target state="final">Failų saugykla</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.folder" resname="sys_file_collection.folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">Aplankas</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.recursive" resname="sys_file_collection.recursive" approved="yes">
+        <source>Recursive</source>
+        <target state="final">Rekursyviai</target>
+      </trans-unit>
+      <trans-unit id="sys_file_collection.category" resname="sys_file_collection.category" approved="yes">
+        <source>Category</source>
+        <target state="final">Kategorija</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace" resname="sys_workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Darbo aplinka</target>
+      </trans-unit>
+      <trans-unit id="editlock" resname="editlock" approved="yes">
+        <source>Restrict editing by non-Admins</source>
+        <target state="final">Apriboti redagavimą ne administratoriams</target>
+      </trans-unit>
+      <trans-unit id="sys_category" resname="sys_category" approved="yes">
+        <source>Category</source>
+        <target state="final">Kategorija</target>
+      </trans-unit>
+      <trans-unit id="sys_category.title" resname="sys_category.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Pavadinimas</target>
+      </trans-unit>
+      <trans-unit id="sys_category.description" resname="sys_category.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Aprašymas</target>
+      </trans-unit>
+      <trans-unit id="sys_category.parent" resname="sys_category.parent" approved="yes">
+        <source>Parent</source>
+        <target state="final">Tėvinė kategorija</target>
+      </trans-unit>
+      <trans-unit id="sys_category.items" resname="sys_category.items" approved="yes">
+        <source>Items</source>
+        <target state="final">Elementai</target>
+      </trans-unit>
+      <trans-unit id="sys_category.categories" resname="sys_category.categories" approved="yes">
+        <source>Categories</source>
+        <target state="final">Kategorijos</target>
+      </trans-unit>
+      <trans-unit id="sys_category.tabs.category" resname="sys_category.tabs.category" approved="yes">
+        <source>Categories</source>
+        <target state="final">Kategorijos</target>
+      </trans-unit>
+      <trans-unit id="sys_category.tabs.items" resname="sys_category.tabs.items" approved="yes">
+        <source>Items</source>
+        <target state="final">Elementai</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
