@@ -1,0 +1,1156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814791" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_ttc.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="CType_formlabel" resname="CType_formlabel" approved="yes">
+        <source>Type</source>
+        <target state="final">النوع</target>
+      </trans-unit>
+      <trans-unit id="CType.I.0" resname="CType.I.0" approved="yes">
+        <source>Header</source>
+        <target state="final">الترويسة</target>
+      </trans-unit>
+      <trans-unit id="CType.I.1" resname="CType.I.1" approved="yes">
+        <source>Text</source>
+        <target state="final">النص</target>
+      </trans-unit>
+      <trans-unit id="CType.I.2" resname="CType.I.2" approved="yes">
+        <source>Text &amp; Images</source>
+        <target state="final">نص &amp; وصور</target>
+      </trans-unit>
+      <trans-unit id="CType.I.3" resname="CType.I.3" approved="yes">
+        <source>Images</source>
+        <target state="final">الصُور</target>
+      </trans-unit>
+      <trans-unit id="CType.I.4" resname="CType.I.4" approved="yes">
+        <source>Bullet List</source>
+        <target state="final">قائمة نُقطيّة</target>
+      </trans-unit>
+      <trans-unit id="CType.I.5" resname="CType.I.5" approved="yes">
+        <source>Table</source>
+        <target state="final">الجدول</target>
+      </trans-unit>
+      <trans-unit id="CType.I.6" resname="CType.I.6" approved="yes">
+        <source>File Links</source>
+        <target state="final">ملفات للتحميل "File Links"</target>
+      </trans-unit>
+      <trans-unit id="CType.I.8" resname="CType.I.8" approved="yes">
+        <source>Form</source>
+        <target state="final">النموذج</target>
+      </trans-unit>
+      <trans-unit id="CType.I.9" resname="CType.I.9" approved="yes">
+        <source>Search</source>
+        <target state="final">البحث</target>
+      </trans-unit>
+      <trans-unit id="CType.I.10" resname="CType.I.10" approved="yes">
+        <source>Login</source>
+        <target state="final">تسجيل الدخول</target>
+      </trans-unit>
+      <trans-unit id="CType.I.11" resname="CType.I.11" approved="yes">
+        <source>Textbox</source>
+        <target state="final">مربع الكتابة</target>
+      </trans-unit>
+      <trans-unit id="CType.I.12" resname="CType.I.12" approved="yes">
+        <source>Special Menus</source>
+        <target state="final">قوائم خاصّة</target>
+      </trans-unit>
+      <trans-unit id="CType.I.13" resname="CType.I.13" approved="yes">
+        <source>Insert Records</source>
+        <target state="final">إدراج السجلات</target>
+      </trans-unit>
+      <trans-unit id="CType.I.14" resname="CType.I.14" approved="yes">
+        <source>Insert Plugin</source>
+        <target state="final">إدراج إضافة</target>
+      </trans-unit>
+      <trans-unit id="CType.I.15" resname="CType.I.15" approved="yes">
+        <source>Script</source>
+        <target state="final">Script</target>
+      </trans-unit>
+      <trans-unit id="CType.I.16" resname="CType.I.16" approved="yes">
+        <source>Divider</source>
+        <target state="final">الفاصل</target>
+      </trans-unit>
+      <trans-unit id="CType.I.17" resname="CType.I.17" approved="yes">
+        <source>HTML</source>
+        <target state="final">HTML</target>
+      </trans-unit>
+      <trans-unit id="CType.textmedia" resname="CType.textmedia" approved="yes">
+        <source>Text &amp; Media</source>
+        <target state="final">نص &amp; ووسائط متعددة "Media"</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_abstract" resname="CType.menu_abstract" approved="yes">
+        <source>Abstracts</source>
+        <target state="final">مُلخّص</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_pages" resname="CType.menu_categorized_pages" approved="yes">
+        <source>Categorized pages</source>
+        <target state="final">صفحات مُصنفة</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_categorized_content" resname="CType.menu_categorized_content" approved="yes">
+        <source>Categorized content</source>
+        <target state="final">مُحتوى تم تصنيفه</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_pages" resname="CType.menu_pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">الصفحات</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_subpages" resname="CType.menu_subpages" approved="yes">
+        <source>Subpages</source>
+        <target state="final">الصفحات الفرعية</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_recently_updated" resname="CType.menu_recently_updated" approved="yes">
+        <source>Recently updated pages</source>
+        <target state="final">الصفحات التي تم تحديثها مُؤخرَاً</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_related_pages" resname="CType.menu_related_pages" approved="yes">
+        <source>Related pages</source>
+        <target state="final">الصفحات ذات الصلة</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section" resname="CType.menu_section" approved="yes">
+        <source>Section index</source>
+        <target state="final">فهرس القسم</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_section_pages" resname="CType.menu_section_pages" approved="yes">
+        <source>Section index of subpages from selected pages</source>
+        <target state="final">فهرس القسم للصفحات الفرعية من الصفحات المُحددة</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap" resname="CType.menu_sitemap" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">فهرس الصفحة "Sitemap"</target>
+      </trans-unit>
+      <trans-unit id="CType.menu_sitemap_pages" resname="CType.menu_sitemap_pages" approved="yes">
+        <source>Sitemaps of selected pages</source>
+        <target state="final">فهرس الصفحات المُحددة</target>
+      </trans-unit>
+      <trans-unit id="CType.div.standard" resname="CType.div.standard" approved="yes">
+        <source>Standard</source>
+        <target state="final">افتراضي</target>
+      </trans-unit>
+      <trans-unit id="CType.div.lists" resname="CType.div.lists" approved="yes">
+        <source>Lists</source>
+        <target state="final">القوائم</target>
+      </trans-unit>
+      <trans-unit id="CType.div.menu" resname="CType.div.menu" approved="yes">
+        <source>Menu</source>
+        <target state="final">القائمة</target>
+      </trans-unit>
+      <trans-unit id="CType.div.forms" resname="CType.div.forms" approved="yes">
+        <source>Forms</source>
+        <target state="final">النماذج</target>
+      </trans-unit>
+      <trans-unit id="CType.div.special" resname="CType.div.special" approved="yes">
+        <source>Special</source>
+        <target state="final">مُمَيّز</target>
+      </trans-unit>
+      <trans-unit id="layout.I.1" resname="layout.I.1" approved="yes">
+        <source>Layout 1</source>
+        <target state="final">التصميم 1</target>
+      </trans-unit>
+      <trans-unit id="layout.I.2" resname="layout.I.2" approved="yes">
+        <source>Layout 2</source>
+        <target state="final">التصميم 2</target>
+      </trans-unit>
+      <trans-unit id="layout.I.3" resname="layout.I.3" approved="yes">
+        <source>Layout 3</source>
+        <target state="final">التصميم 3</target>
+      </trans-unit>
+      <trans-unit id="colPos" resname="colPos" approved="yes">
+        <source>Columns</source>
+        <target state="final">الأعمدة</target>
+      </trans-unit>
+      <trans-unit id="colPos_formlabel" resname="colPos_formlabel" approved="yes">
+        <source>Column</source>
+        <target state="final">العمود</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.0" resname="colPos.I.0" approved="yes">
+        <source>Left</source>
+        <target state="final">اليسار</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.1" resname="colPos.I.1" approved="yes">
+        <source>Normal</source>
+        <target state="final">عادي</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.2" resname="colPos.I.2" approved="yes">
+        <source>Right</source>
+        <target state="final">اليمين</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.3" resname="colPos.I.3" approved="yes">
+        <source>Border</source>
+        <target state="final">إطار</target>
+      </trans-unit>
+      <trans-unit id="colPos.I.unused" resname="colPos.I.unused" approved="yes">
+        <source>Unused</source>
+        <target state="final">غير مُستخدم</target>
+      </trans-unit>
+      <trans-unit id="date" resname="date" approved="yes">
+        <source>Date</source>
+        <target state="final">التاريخ</target>
+      </trans-unit>
+      <trans-unit id="date_formlabel" resname="date_formlabel" approved="yes">
+        <source>Date</source>
+        <target state="final">التاريخ</target>
+      </trans-unit>
+      <trans-unit id="header" resname="header" approved="yes">
+        <source>Header</source>
+        <target state="final">الترويسة</target>
+      </trans-unit>
+      <trans-unit id="header_formlabel" resname="header_formlabel" approved="yes">
+        <source>Header</source>
+        <target state="final">الترويسة</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.shortcut_formlabel" resname="header.ALT.shortcut_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">الاسم (غير مرئي داخل الواجهة الأمامية)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.script_formlabel" resname="header.ALT.script_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">الاسم (غير مرئي داخل الواجهة الأمامية)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.div_formlabel" resname="header.ALT.div_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">الاسم (غير مرئي داخل الواجهة الأمامية)</target>
+      </trans-unit>
+      <trans-unit id="header.ALT.html_formlabel" resname="header.ALT.html_formlabel" approved="yes">
+        <source>Name (not visible in frontend)</source>
+        <target state="final">الاسم (غير مرئي داخل الواجهة الأمامية)</target>
+      </trans-unit>
+      <trans-unit id="header_position" resname="header_position" approved="yes">
+        <source>Align</source>
+        <target state="final">محاذاة</target>
+      </trans-unit>
+      <trans-unit id="header_position_formlabel" resname="header_position_formlabel" approved="yes">
+        <source>Alignment</source>
+        <target state="final">المحاذاة</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.1" resname="header_position.I.1" approved="yes">
+        <source>Center</source>
+        <target state="final">الوسط</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.2" resname="header_position.I.2" approved="yes">
+        <source>Right</source>
+        <target state="final">اليمين</target>
+      </trans-unit>
+      <trans-unit id="header_position.I.3" resname="header_position.I.3" approved="yes">
+        <source>Left</source>
+        <target state="final">اليسار</target>
+      </trans-unit>
+      <trans-unit id="header_link" resname="header_link" approved="yes">
+        <source>Link</source>
+        <target state="final">الرابط</target>
+      </trans-unit>
+      <trans-unit id="header_link_formlabel" resname="header_link_formlabel" approved="yes">
+        <source>Link</source>
+        <target state="final">الرابط</target>
+      </trans-unit>
+      <trans-unit id="header_layout_formlabel" resname="header_layout_formlabel" approved="yes">
+        <source>Type</source>
+        <target state="final">النوع</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.1" resname="header_layout.I.1" approved="yes">
+        <source>Layout 1</source>
+        <target state="final">التصميم 1</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.2" resname="header_layout.I.2" approved="yes">
+        <source>Layout 2</source>
+        <target state="final">التصميم 2</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.3" resname="header_layout.I.3" approved="yes">
+        <source>Layout 3</source>
+        <target state="final">التصميم 3</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.4" resname="header_layout.I.4" approved="yes">
+        <source>Layout 4</source>
+        <target state="final">التصميم 4</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.5" resname="header_layout.I.5" approved="yes">
+        <source>Layout 5</source>
+        <target state="final">التصميم 5</target>
+      </trans-unit>
+      <trans-unit id="header_layout.I.6" resname="header_layout.I.6" approved="yes">
+        <source>Hidden</source>
+        <target state="final">مخفيّ</target>
+      </trans-unit>
+      <trans-unit id="bullets_type" resname="bullets_type" approved="yes">
+        <source>Type of bullets</source>
+        <target state="final">نوع القائمة النُقطيّة</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.0" resname="bullets_type.0" approved="yes">
+        <source>Unordered list (bullets)</source>
+        <target state="final">قائمة غير مرتبة (نُقطيّة)</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.1" resname="bullets_type.1" approved="yes">
+        <source>Ordered list (numbers)</source>
+        <target state="final">قائمة مرتبة (الأرقام)</target>
+      </trans-unit>
+      <trans-unit id="bullets_type.2" resname="bullets_type.2" approved="yes">
+        <source>Definition list</source>
+        <target state="final">قائمة التعريف</target>
+      </trans-unit>
+      <trans-unit id="bodytext.W.forms" resname="bodytext.W.forms" approved="yes">
+        <source>Forms wizard</source>
+        <target state="final">معالج النموذج</target>
+      </trans-unit>
+      <trans-unit id="imagewidth" resname="imagewidth" approved="yes">
+        <source>Width (pixels)</source>
+        <target state="final">العرض (بكسل)</target>
+      </trans-unit>
+      <trans-unit id="imagewidth_formlabel" resname="imagewidth_formlabel" approved="yes">
+        <source>Width (px)</source>
+        <target state="final">العرض (px)</target>
+      </trans-unit>
+      <trans-unit id="imageheight" resname="imageheight" approved="yes">
+        <source>Height (pixels)</source>
+        <target state="final">الارتفاع (بكسل)</target>
+      </trans-unit>
+      <trans-unit id="imageheight_formlabel" resname="imageheight_formlabel" approved="yes">
+        <source>Height (px)</source>
+        <target state="final">الطول (px)</target>
+      </trans-unit>
+      <trans-unit id="imageorient" resname="imageorient" approved="yes">
+        <source>Position</source>
+        <target state="final">الموضع</target>
+      </trans-unit>
+      <trans-unit id="imageorient_formlabel" resname="imageorient_formlabel" approved="yes">
+        <source>Position and Alignment</source>
+        <target state="final">الموضع والمحاذاة</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.0" resname="imageorient.I.0" approved="yes">
+        <source>Above, center</source>
+        <target state="final">أعلى، وسط</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.1" resname="imageorient.I.1" approved="yes">
+        <source>Above, right</source>
+        <target state="final">أعلى، يمين</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.2" resname="imageorient.I.2" approved="yes">
+        <source>Above, left</source>
+        <target state="final">أعلى، يسار</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.3" resname="imageorient.I.3" approved="yes">
+        <source>Below, center</source>
+        <target state="final">أسفل، وسط</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.4" resname="imageorient.I.4" approved="yes">
+        <source>Below, right</source>
+        <target state="final">أسفل، يمين</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.5" resname="imageorient.I.5" approved="yes">
+        <source>Below, left</source>
+        <target state="final">أسفل، يسار</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.6" resname="imageorient.I.6" approved="yes">
+        <source>In text, right</source>
+        <target state="final">داخل النص، يمين</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.7" resname="imageorient.I.7" approved="yes">
+        <source>In text, left</source>
+        <target state="final">داخل النص، يسار</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.8" resname="imageorient.I.8" approved="yes">
+        <source>__No wrap:__</source>
+        <target state="final">--يدون إلتفاف:__</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.9" resname="imageorient.I.9" approved="yes">
+        <source>Beside Text, Right</source>
+        <target state="final">بجانب النص، يمين</target>
+      </trans-unit>
+      <trans-unit id="imageorient.I.10" resname="imageorient.I.10" approved="yes">
+        <source>Beside Text, Left</source>
+        <target state="final">بجانب النص، يسار</target>
+      </trans-unit>
+      <trans-unit id="imageborder" resname="imageborder" approved="yes">
+        <source>Border</source>
+        <target state="final">إطار</target>
+      </trans-unit>
+      <trans-unit id="imageborder_formlabel" resname="imageborder_formlabel" approved="yes">
+        <source>Border</source>
+        <target state="final">إطار</target>
+      </trans-unit>
+      <trans-unit id="image_link" resname="image_link" approved="yes">
+        <source>Link</source>
+        <target state="final">الرابط</target>
+      </trans-unit>
+      <trans-unit id="image_link_formlabel" resname="image_link_formlabel" approved="yes">
+        <source>Links (one per line, one link per image)</source>
+        <target state="final">الروابط (واحد لكل سطر، رابط واحد لكل صورة)</target>
+      </trans-unit>
+      <trans-unit id="image_zoom" resname="image_zoom" approved="yes">
+        <source>Click-enlarge</source>
+        <target state="final">انقر للتكبير</target>
+      </trans-unit>
+      <trans-unit id="image_zoom_formlabel" resname="image_zoom_formlabel" approved="yes">
+        <source>Enlarge on Click</source>
+        <target state="final">التكبير عند النقر</target>
+      </trans-unit>
+      <trans-unit id="image_frames" resname="image_frames" approved="yes">
+        <source>Frames</source>
+        <target state="final">الإطارات</target>
+      </trans-unit>
+      <trans-unit id="image_frames_formlabel" resname="image_frames_formlabel" approved="yes">
+        <source>Graphical Frames</source>
+        <target state="final">الأُطر الرسومية</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.0" resname="image_frames.I.0" approved="yes">
+        <source>(None)</source>
+        <target state="final">(لا شَيْء)</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.1" resname="image_frames.I.1" approved="yes">
+        <source>Frame 1</source>
+        <target state="final">الإطار 1</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.2" resname="image_frames.I.2" approved="yes">
+        <source>Frame 2</source>
+        <target state="final">الإطار 2</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.3" resname="image_frames.I.3" approved="yes">
+        <source>Frame 3</source>
+        <target state="final">الإطار 3</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.4" resname="image_frames.I.4" approved="yes">
+        <source>Frame 4</source>
+        <target state="final">الإطار 4</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.5" resname="image_frames.I.5" approved="yes">
+        <source>Frame 5</source>
+        <target state="final">الإطار 5</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.6" resname="image_frames.I.6" approved="yes">
+        <source>Frame 6</source>
+        <target state="final">الإطار 6</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.7" resname="image_frames.I.7" approved="yes">
+        <source>Frame 7</source>
+        <target state="final">الإطار 7</target>
+      </trans-unit>
+      <trans-unit id="image_frames.I.8" resname="image_frames.I.8" approved="yes">
+        <source>Frame 8</source>
+        <target state="final">الإطار 8</target>
+      </trans-unit>
+      <trans-unit id="imagecols" resname="imagecols" approved="yes">
+        <source>Columns</source>
+        <target state="final">الأعمدة</target>
+      </trans-unit>
+      <trans-unit id="imagecols_formlabel" resname="imagecols_formlabel" approved="yes">
+        <source>Number of Columns</source>
+        <target state="final">عدد الأعمدة</target>
+      </trans-unit>
+      <trans-unit id="image_altText" resname="image_altText" approved="yes">
+        <source>Alternative Text</source>
+        <target state="final">النص البديل</target>
+      </trans-unit>
+      <trans-unit id="altText_formlabel" resname="altText_formlabel" approved="yes">
+        <source>Alternative Labels (one per line)</source>
+        <target state="final">تسميات بديلة (واحدة لكل سطر)</target>
+      </trans-unit>
+      <trans-unit id="image_titleText" resname="image_titleText" approved="yes">
+        <source>Title Text</source>
+        <target state="final">نص العنوان</target>
+      </trans-unit>
+      <trans-unit id="titleText_formlabel" resname="titleText_formlabel" approved="yes">
+        <source>Titles (one per line)</source>
+        <target state="final">العناوين (واحد لكل سطر)</target>
+      </trans-unit>
+      <trans-unit id="image_longdescURL" resname="image_longdescURL" approved="yes">
+        <source>Long Description URL</source>
+        <target state="final">رابط الوصف المُطوّل</target>
+      </trans-unit>
+      <trans-unit id="images.addFileReference" resname="images.addFileReference" approved="yes">
+        <source>Add image</source>
+        <target state="final">أضف صورة</target>
+      </trans-unit>
+      <trans-unit id="longdescURL_formlabel" resname="longdescURL_formlabel" approved="yes">
+        <source>Long Description URLs (one per line)</source>
+        <target state="final">روابط الوصف المُطوّل (واحد لكل سطر)</target>
+      </trans-unit>
+      <trans-unit id="cols" resname="cols" approved="yes">
+        <source>Columns</source>
+        <target state="final">الأعمدة</target>
+      </trans-unit>
+      <trans-unit id="cols.I.0" resname="cols.I.0" approved="yes">
+        <source>Auto</source>
+        <target state="final">تلقائي</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.0" resname="recursive.I.0" approved="yes">
+        <source>0 levels (only selected page)</source>
+        <target state="final">0 مستويات (الصفحة المُختارة فقط)</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.1" resname="recursive.I.1" approved="yes">
+        <source>1 level</source>
+        <target state="final">مستوى 1</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.2" resname="recursive.I.2" approved="yes">
+        <source>2 levels</source>
+        <target state="final">مستويان</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.3" resname="recursive.I.3" approved="yes">
+        <source>3 levels</source>
+        <target state="final">3 مستويات</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.4" resname="recursive.I.4" approved="yes">
+        <source>4 levels</source>
+        <target state="final">4 مستويات</target>
+      </trans-unit>
+      <trans-unit id="recursive.I.5" resname="recursive.I.5" approved="yes">
+        <source>Infinite</source>
+        <target state="final">لا نهائي</target>
+      </trans-unit>
+      <trans-unit id="menu_type" resname="menu_type" approved="yes">
+        <source>Menu Type</source>
+        <target state="final">نوع القائمة</target>
+      </trans-unit>
+      <trans-unit id="menu_type_formlabel" resname="menu_type_formlabel" approved="yes">
+        <source>Menu Type</source>
+        <target state="final">نوع القائمة</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.0" resname="menu_type.I.0" approved="yes">
+        <source>Menu of selected pages</source>
+        <target state="final">قائمة الصفحات المحددة</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.1" resname="menu_type.I.1" approved="yes">
+        <source>Menu of subpages of selected pages</source>
+        <target state="final">قائمة الصفحات الفرعية للصفحات المُحددة</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.2" resname="menu_type.I.2" approved="yes">
+        <source>Menu of subpages of selected pages including abstracts</source>
+        <target state="final">قائمة الصفحات الفرعية للصفحات المُحددة بما في ذلك الملخصات</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.3" resname="menu_type.I.3" approved="yes">
+        <source>Menu of subpages of selected pages including sections</source>
+        <target state="final">قائمة الصفحات الفرعية للصفحات المُحددة بما في ذلك الأقسام</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.4" resname="menu_type.I.4" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">فهرس الصفحة "Sitemap"</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.5" resname="menu_type.I.5" approved="yes">
+        <source>Section index (page content marked for section menus)</source>
+        <target state="final">فهرس القسم (تم وضع علامة على محتوى الصفحة لقوائم القسم)</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.6" resname="menu_type.I.6" approved="yes">
+        <source>Recently updated pages</source>
+        <target state="final">الصفحات التي تم تحديثها مُؤخرَاً</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.7" resname="menu_type.I.7" approved="yes">
+        <source>Related pages (based on keywords)</source>
+        <target state="final">الصفحات ذات الصلة (استناداً إلى الكلمات الرئيسية)</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.8" resname="menu_type.I.8" approved="yes">
+        <source>Sitemaps of selected pages</source>
+        <target state="final">فهرس الصفحات المُحددة</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.categorized_pages" resname="menu_type.I.categorized_pages" approved="yes">
+        <source>Pages for selected categories</source>
+        <target state="final">صفحات الفئات المُحددة</target>
+      </trans-unit>
+      <trans-unit id="menu_type.I.categorized_content" resname="menu_type.I.categorized_content" approved="yes">
+        <source>Content elements for selected categories</source>
+        <target state="final">عناصر المحتوى للفئات المحددة</target>
+      </trans-unit>
+      <trans-unit id="list_type" resname="list_type" approved="yes">
+        <source>Plugin</source>
+        <target state="final">إضافة</target>
+      </trans-unit>
+      <trans-unit id="list_type_formlabel" resname="list_type_formlabel" approved="yes">
+        <source>Selected Plugin</source>
+        <target state="final">الإضافة المُحددة</target>
+      </trans-unit>
+      <trans-unit id="media" resname="media" approved="yes">
+        <source>Files</source>
+        <target state="final">الملفات</target>
+      </trans-unit>
+      <trans-unit id="media.dataAttributes" resname="media.dataAttributes" approved="yes">
+        <source>Additional data-* Attributes for HTML5 video tag</source>
+        <target state="final">بيانات إضافية* سِمات لعلامة فيديو HTML5</target>
+      </trans-unit>
+      <trans-unit id="media.dataAttributes.attributeName" resname="media.dataAttributes.attributeName" approved="yes">
+        <source>Name of attribute (without data-)</source>
+        <target state="final">اسم السمة (دون بيانات-)</target>
+      </trans-unit>
+      <trans-unit id="media.dataAttributes.content" resname="media.dataAttributes.content" approved="yes">
+        <source>Content</source>
+        <target state="final">مُحتوى</target>
+      </trans-unit>
+      <trans-unit id="media.ALT.uploads_formlabel" resname="media.ALT.uploads_formlabel" approved="yes">
+        <source>Select single files</source>
+        <target state="final">حدد ملف واحد فقط</target>
+      </trans-unit>
+      <trans-unit id="media.addFileReference" resname="media.addFileReference" approved="yes">
+        <source>Add file</source>
+        <target state="final">إضافة ملف</target>
+      </trans-unit>
+      <trans-unit id="multimedia" resname="multimedia" approved="yes">
+        <source>File</source>
+        <target state="final">الملف</target>
+      </trans-unit>
+      <trans-unit id="multimedia_formlabel" resname="multimedia_formlabel" approved="yes">
+        <source>Selected Media File</source>
+        <target state="final">مِلَفّ الوسائط المُحدد</target>
+      </trans-unit>
+      <trans-unit id="file_collections" resname="file_collections" approved="yes">
+        <source>File collections</source>
+        <target state="final">مجموعات الملفات</target>
+      </trans-unit>
+      <trans-unit id="file_collections.ALT.uploads_formlabel" resname="file_collections.ALT.uploads_formlabel" approved="yes">
+        <source>Select file collections</source>
+        <target state="final">حدد مجموعات الملفات</target>
+      </trans-unit>
+      <trans-unit id="filelink_size" resname="filelink_size" approved="yes">
+        <source>Show File Size</source>
+        <target state="final">إظهار حجم الملف</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting" resname="filelink_sorting" approved="yes">
+        <source>Sort file list</source>
+        <target state="final">تعديل قائمة الملفات</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.none" resname="filelink_sorting.none" approved="yes">
+        <source>no sorting</source>
+        <target state="final">لا يوجد فرز</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.extension" resname="filelink_sorting.extension" approved="yes">
+        <source>by file extension</source>
+        <target state="final">حسب امتداد الملف</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.name" resname="filelink_sorting.name" approved="yes">
+        <source>by filename</source>
+        <target state="final">حسب اسم الملف</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.type" resname="filelink_sorting.type" approved="yes">
+        <source>by file type</source>
+        <target state="final">حسب نوع الملف</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.size" resname="filelink_sorting.size" approved="yes">
+        <source>by file size</source>
+        <target state="final">حسب حجم الملف</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.creation_date" resname="filelink_sorting.creation_date" approved="yes">
+        <source>by file creation date</source>
+        <target state="final">حسب تاريخ إنشاء الملف</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting.modification_date" resname="filelink_sorting.modification_date" approved="yes">
+        <source>by file modification date</source>
+        <target state="final">حسب تاريخ تعديل الملف</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction" resname="filelink_sorting_direction" approved="yes">
+        <source>Sorting direction</source>
+        <target state="final">اتجاه الفرز</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction.ascending" resname="filelink_sorting_direction.ascending" approved="yes">
+        <source>Ascending (default)</source>
+        <target state="final">تصاعدي (افتراضي)</target>
+      </trans-unit>
+      <trans-unit id="filelink_sorting_direction.descending" resname="filelink_sorting_direction.descending" approved="yes">
+        <source>Descending</source>
+        <target state="final">تنازلي</target>
+      </trans-unit>
+      <trans-unit id="filelink_size_formlabel" resname="filelink_size_formlabel" approved="yes">
+        <source>Display File Size Information</source>
+        <target state="final">عرض معلومات حجم الملف</target>
+      </trans-unit>
+      <trans-unit id="target" resname="target" approved="yes">
+        <source>Target</source>
+        <target state="final">الهدف</target>
+      </trans-unit>
+      <trans-unit id="target.I.1" resname="target.I.1" approved="yes">
+        <source>New window</source>
+        <target state="final">نافذة جديدة</target>
+      </trans-unit>
+      <trans-unit id="records" resname="records" approved="yes">
+        <source>Items</source>
+        <target state="final">عناصر</target>
+      </trans-unit>
+      <trans-unit id="records_formlabel" resname="records_formlabel" approved="yes">
+        <source>Records</source>
+        <target state="final">السجلات</target>
+      </trans-unit>
+      <trans-unit id="spaceBefore" resname="spaceBefore" approved="yes">
+        <source>Before</source>
+        <target state="final">قبل</target>
+      </trans-unit>
+      <trans-unit id="spaceBefore_formlabel" resname="spaceBefore_formlabel" approved="yes">
+        <source>Top Margin</source>
+        <target state="final">الهامش العلوي</target>
+      </trans-unit>
+      <trans-unit id="spaceAfter" resname="spaceAfter" approved="yes">
+        <source>After</source>
+        <target state="final">بعد</target>
+      </trans-unit>
+      <trans-unit id="spaceAfter_formlabel" resname="spaceAfter_formlabel" approved="yes">
+        <source>Bottom Margin</source>
+        <target state="final">الهامش السفلي</target>
+      </trans-unit>
+      <trans-unit id="space_before_class" resname="space_before_class" approved="yes">
+        <source>Space Before</source>
+        <target state="final">المسافة قبل</target>
+      </trans-unit>
+      <trans-unit id="space_before_class_formlabel" resname="space_before_class_formlabel" approved="yes">
+        <source>Space Before</source>
+        <target state="final">المسافة قبل</target>
+      </trans-unit>
+      <trans-unit id="space_after_class" resname="space_after_class" approved="yes">
+        <source>Space After</source>
+        <target state="final">المسافة بعد</target>
+      </trans-unit>
+      <trans-unit id="space_after_class_formlabel" resname="space_after_class_formlabel" approved="yes">
+        <source>Space After</source>
+        <target state="final">المسافة بعد</target>
+      </trans-unit>
+      <trans-unit id="space_class_none" resname="space_class_none" approved="yes">
+        <source>None</source>
+        <target state="final">لا شَيْء</target>
+      </trans-unit>
+      <trans-unit id="space_class_extra_small" resname="space_class_extra_small" approved="yes">
+        <source>Extra Small</source>
+        <target state="final">صغير جداً</target>
+      </trans-unit>
+      <trans-unit id="space_class_small" resname="space_class_small" approved="yes">
+        <source>Small</source>
+        <target state="final">صغير</target>
+      </trans-unit>
+      <trans-unit id="space_class_medium" resname="space_class_medium" approved="yes">
+        <source>Medium</source>
+        <target state="final">متوسط</target>
+      </trans-unit>
+      <trans-unit id="space_class_large" resname="space_class_large" approved="yes">
+        <source>Large</source>
+        <target state="final">كبير</target>
+      </trans-unit>
+      <trans-unit id="space_class_extra_large" resname="space_class_extra_large" approved="yes">
+        <source>Extra Large</source>
+        <target state="final">كبير جداً</target>
+      </trans-unit>
+      <trans-unit id="frame_class" resname="frame_class" approved="yes">
+        <source>Frame</source>
+        <target state="final">الإطار</target>
+      </trans-unit>
+      <trans-unit id="frame_class_formlabel" resname="frame_class_formlabel" approved="yes">
+        <source>Frame</source>
+        <target state="final">الإطار</target>
+      </trans-unit>
+      <trans-unit id="frame_class.default" resname="frame_class.default" approved="yes">
+        <source>Default</source>
+        <target state="final">الإفتراضي</target>
+      </trans-unit>
+      <trans-unit id="frame_class.ruler_before" resname="frame_class.ruler_before" approved="yes">
+        <source>Ruler Before</source>
+        <target state="final">خط فاصل قبل</target>
+      </trans-unit>
+      <trans-unit id="frame_class.ruler_after" resname="frame_class.ruler_after" approved="yes">
+        <source>Ruler After</source>
+        <target state="final">خط فاصل بعد</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent" resname="frame_class.indent" approved="yes">
+        <source>Indent</source>
+        <target state="final">المسافة البادئة</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent_left" resname="frame_class.indent_left" approved="yes">
+        <source>Indent, 33/66%</source>
+        <target state="final">الإزاحة، 33/66%</target>
+      </trans-unit>
+      <trans-unit id="frame_class.indent_right" resname="frame_class.indent_right" approved="yes">
+        <source>Indent, 66/33%</source>
+        <target state="final">الإزاحة، 66/33%</target>
+      </trans-unit>
+      <trans-unit id="frame_class.none" resname="frame_class.none" approved="yes">
+        <source>No Frame</source>
+        <target state="final">بدون إطار</target>
+      </trans-unit>
+      <trans-unit id="splash_layout" resname="splash_layout" approved="yes">
+        <source>Textbox Type</source>
+        <target state="final">نوع مربع النص</target>
+      </trans-unit>
+      <trans-unit id="splash_layout_formlabel" resname="splash_layout_formlabel" approved="yes">
+        <source>Type</source>
+        <target state="final">النوع</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.1" resname="splash_layout.I.1" approved="yes">
+        <source>Image Shadow</source>
+        <target state="final">ظل الصورة</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.2" resname="splash_layout.I.2" approved="yes">
+        <source>Image Frame 1</source>
+        <target state="final">إطار الصورة 1</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.3" resname="splash_layout.I.3" approved="yes">
+        <source>Image Frame 2</source>
+        <target state="final">إطار الصورة 2</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.4" resname="splash_layout.I.4" approved="yes">
+        <source>__Graphical:__</source>
+        <target state="final">__الرسم:__</target>
+      </trans-unit>
+      <trans-unit id="splash_layout.I.5" resname="splash_layout.I.5" approved="yes">
+        <source>Postit 1</source>
+        <target state="final">Postit 1</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex" resname="sectionIndex" approved="yes">
+        <source>Index</source>
+        <target state="final">الفهرس</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex_formlabel" resname="sectionIndex_formlabel" approved="yes">
+        <source>Show in Section Menus</source>
+        <target state="final">إظهار في قسم القوائم</target>
+      </trans-unit>
+      <trans-unit id="linkToTop" resname="linkToTop" approved="yes">
+        <source>To top</source>
+        <target state="final">إلى الأعلى</target>
+      </trans-unit>
+      <trans-unit id="linkToTop_formlabel" resname="linkToTop_formlabel" approved="yes">
+        <source>Append with Link to Top of Page</source>
+        <target state="final">إلحاق مع الرابط إلى أعلى الصفحة</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled" resname="rte_enabled" approved="yes">
+        <source>Disable Rich Text Editor</source>
+        <target state="final">تعطيل معالج النصوص</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled_formlabel" resname="rte_enabled_formlabel" approved="yes">
+        <source>Rich Text Editor</source>
+        <target state="final">معالج النصوص</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled.I.0" resname="rte_enabled.I.0" approved="yes">
+        <source>Disable</source>
+        <target state="final">تعطيل</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform" resname="pi_flexform" approved="yes">
+        <source>Plugin Options</source>
+        <target state="final">خيارات الإضافات</target>
+      </trans-unit>
+      <trans-unit id="accessibility_title" resname="accessibility_title" approved="yes">
+        <source>Block title</source>
+        <target state="final">عنوان الكتلة</target>
+      </trans-unit>
+      <trans-unit id="accessibility_bypass" resname="accessibility_bypass" approved="yes">
+        <source>Add link to bypass block</source>
+        <target state="final">إضافة رابط لتجاوز الكتلة</target>
+      </trans-unit>
+      <trans-unit id="accessibility_bypass_text" resname="accessibility_bypass_text" approved="yes">
+        <source>Link text to bypass block</source>
+        <target state="final">نص رابط لتجاوز الكتلة</target>
+      </trans-unit>
+      <trans-unit id="selected_categories" resname="selected_categories" approved="yes">
+        <source>Selected categories</source>
+        <target state="final">الفئات المُحددة</target>
+      </trans-unit>
+      <trans-unit id="category_field" resname="category_field" approved="yes">
+        <source>Category field</source>
+        <target state="final">حقل الفئة</target>
+      </trans-unit>
+      <trans-unit id="ALT.imgOptions" resname="ALT.imgOptions" approved="yes">
+        <source>Image Options</source>
+        <target state="final">خيارات الصورة</target>
+      </trans-unit>
+      <trans-unit id="ALT.imgLinks" resname="ALT.imgLinks" approved="yes">
+        <source>Image Links</source>
+        <target state="final">روابط الصورة</target>
+      </trans-unit>
+      <trans-unit id="ALT.imgDimensions" resname="ALT.imgDimensions" approved="yes">
+        <source>Image Dimensions</source>
+        <target state="final">أبعاد الصورة</target>
+      </trans-unit>
+      <trans-unit id="select_key_formlabel" resname="select_key_formlabel" approved="yes">
+        <source>Plugin Mode</source>
+        <target state="final">وضع الإضافة</target>
+      </trans-unit>
+      <trans-unit id="select_key.ALT.uploads" resname="select_key.ALT.uploads" approved="yes">
+        <source>Read from Path</source>
+        <target state="final">القراءة من المسار</target>
+      </trans-unit>
+      <trans-unit id="select_key.ALT.uploads_formlabel" resname="select_key.ALT.uploads_formlabel" approved="yes">
+        <source>Path</source>
+        <target state="final">مسار</target>
+      </trans-unit>
+      <trans-unit id="select_key.ALT.script_formlabel" resname="select_key.ALT.script_formlabel" approved="yes">
+        <source>PHP Code</source>
+        <target state="final">كود PHP</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.ALT.uploads" resname="imagecaption.ALT.uploads" approved="yes">
+        <source>Descriptions</source>
+        <target state="final">الأوصاف</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.ALT.uploads_formlabel" resname="imagecaption.ALT.uploads_formlabel" approved="yes">
+        <source>File Descriptions (one per line)</source>
+        <target state="final">وَصف المِلَفّ (واحد لكل سطر)</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.ALT.script" resname="imagecaption.ALT.script" approved="yes">
+        <source>Comments</source>
+        <target state="final">التعليقات</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.mailform" resname="bodytext.ALT.mailform" approved="yes">
+        <source>Configuration</source>
+        <target state="final">التكوين</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.mailform_formlabel" resname="bodytext.ALT.mailform_formlabel" approved="yes">
+        <source>Form Structure</source>
+        <target state="final">بُنيِة النموذج</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.mailform" resname="pages.ALT.mailform" approved="yes">
+        <source>Target Page</source>
+        <target state="final">الصفحة المُستهدفة</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.searchform" resname="pages.ALT.searchform" approved="yes">
+        <source>Target page</source>
+        <target state="final">الصفحة المُستهدفة</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.loginform" resname="pages.ALT.loginform" approved="yes">
+        <source>Selected pages: Target (1st), Frontend user container (2nd)</source>
+        <target state="final">الصفحات المُحددة: الهدف (1st)، حاوية مستخدم الواجهة الأمامية (2nd)</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.search" resname="pages.ALT.search" approved="yes">
+        <source>Send to Page</source>
+        <target state="final">إرسال إلى الصفحة</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.login" resname="pages.ALT.login" approved="yes">
+        <source>Send to Page</source>
+        <target state="final">إرسال إلى الصفحة</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.menu_formlabel" resname="pages.ALT.menu_formlabel" approved="yes">
+        <source>Selected Pages</source>
+        <target state="final">الصفحات المُحددة</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.list_formlabel" resname="pages.ALT.list_formlabel" approved="yes">
+        <source>Record Storage Page</source>
+        <target state="final">سجل صفحة التخزين</target>
+      </trans-unit>
+      <trans-unit id="pages.ALT.script_formlabel" resname="pages.ALT.script_formlabel" approved="yes">
+        <source>Starting Point for This Script</source>
+        <target state="final">نقطة البَدْء لهذا الـ Script</target>
+      </trans-unit>
+      <trans-unit id="subheader.ALT.mailform" resname="subheader.ALT.mailform" approved="yes">
+        <source>Recipient Email</source>
+        <target state="final">البريد الإلكتروني للمستلم</target>
+      </trans-unit>
+      <trans-unit id="subheader.ALT.mailform_formlabel" resname="subheader.ALT.mailform_formlabel" approved="yes">
+        <source>Recipient Email</source>
+        <target state="final">البريد الإلكتروني للمستلم</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.html" resname="bodytext.ALT.html" approved="yes">
+        <source>HTML</source>
+        <target state="final">HTML</target>
+      </trans-unit>
+      <trans-unit id="menu.ALT.accessibility_title_formlabel" resname="menu.ALT.accessibility_title_formlabel" approved="yes">
+        <source>Menu block title</source>
+        <target state="final">عنوان كتلة القائمة</target>
+      </trans-unit>
+      <trans-unit id="menu.ALT.accessibility_bypass_formlabel" resname="menu.ALT.accessibility_bypass_formlabel" approved="yes">
+        <source>Add link to bypass navigation block</source>
+        <target state="final">إضافة رابط لتجاوز كتلة التنقل</target>
+      </trans-unit>
+      <trans-unit id="menu.ALT.accessibility_bypass_text_formlabel" resname="menu.ALT.accessibility_bypass_text_formlabel" approved="yes">
+        <source>Link text to bypass navigation block</source>
+        <target state="final">نص الرابط لتجاوز كتلة التنقل</target>
+      </trans-unit>
+      <trans-unit id="tabs.text" resname="tabs.text" approved="yes">
+        <source>Text</source>
+        <target state="final">النص</target>
+      </trans-unit>
+      <trans-unit id="tabs.media" resname="tabs.media" approved="yes">
+        <source>Media</source>
+        <target state="final">الوسائط</target>
+      </trans-unit>
+      <trans-unit id="tabs.plugin" resname="tabs.plugin" approved="yes">
+        <source>Plugin</source>
+        <target state="final">إضافة</target>
+      </trans-unit>
+      <trans-unit id="sys_language_uid_formlabel" resname="sys_language_uid_formlabel" approved="yes">
+        <source>Language</source>
+        <target state="final">اللغة</target>
+      </trans-unit>
+      <trans-unit id="subheader_formlabel" resname="subheader_formlabel" approved="yes">
+        <source>Subheader</source>
+        <target state="final">عنوان فرعي</target>
+      </trans-unit>
+      <trans-unit id="hidden_formlabel" resname="hidden_formlabel" approved="yes">
+        <source>Content Element</source>
+        <target state="final">عنصر المحتوى</target>
+      </trans-unit>
+      <trans-unit id="hidden.I.0" resname="hidden.I.0" approved="yes">
+        <source>Disable</source>
+        <target state="final">تعطيل</target>
+      </trans-unit>
+      <trans-unit id="starttime_formlabel" resname="starttime_formlabel" approved="yes">
+        <source>Publish Date</source>
+        <target state="final">تاريخ النشر</target>
+      </trans-unit>
+      <trans-unit id="endtime_formlabel" resname="endtime_formlabel" approved="yes">
+        <source>Expiration Date</source>
+        <target state="final">تاريخ الإنتهاء</target>
+      </trans-unit>
+      <trans-unit id="fe_group_formlabel" resname="fe_group_formlabel" approved="yes">
+        <source>Usergroup Access Rights</source>
+        <target state="final">حقوق وصول مجموعة المُستخدم</target>
+      </trans-unit>
+      <trans-unit id="layout_formlabel" resname="layout_formlabel" approved="yes">
+        <source>Layout</source>
+        <target state="final">التصميم</target>
+      </trans-unit>
+      <trans-unit id="bodytext_formlabel" resname="bodytext_formlabel" approved="yes">
+        <source>Text</source>
+        <target state="final">النص</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.bulletlist_formlabel" resname="bodytext.ALT.bulletlist_formlabel" approved="yes">
+        <source>Bullet List</source>
+        <target state="final">قائمة نُقطيّة</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.table_formlabel" resname="bodytext.ALT.table_formlabel" approved="yes">
+        <source>Table Structure</source>
+        <target state="final">هيكل الجدول</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.media_formlabel" resname="bodytext.ALT.media_formlabel" approved="yes">
+        <source>Alternative Content</source>
+        <target state="final">المحتوى البَديل</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.textbox_formlabel" resname="bodytext.ALT.textbox_formlabel" approved="yes">
+        <source>Text</source>
+        <target state="final">النص</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.script_formlabel" resname="bodytext.ALT.script_formlabel" approved="yes">
+        <source>Parameters to pass to the script</source>
+        <target state="final">المعلمات للوصول إلى الـ Script</target>
+      </trans-unit>
+      <trans-unit id="bodytext.ALT.html_formlabel" resname="bodytext.ALT.html_formlabel" approved="yes">
+        <source>HTML Code</source>
+        <target state="final">التعليمات البرمجية لـ HTML</target>
+      </trans-unit>
+      <trans-unit id="image_formlabel" resname="image_formlabel" approved="yes">
+        <source>Images</source>
+        <target state="final">الصُور</target>
+      </trans-unit>
+      <trans-unit id="image.ALT.textbox_formlabel" resname="image.ALT.textbox_formlabel" approved="yes">
+        <source>Image Files</source>
+        <target state="final">ملفات الصور</target>
+      </trans-unit>
+      <trans-unit id="imagecaption_formlabel" resname="imagecaption_formlabel" approved="yes">
+        <source>Captions (one per line)</source>
+        <target state="final">التسميات التوضيحية (واحد لكل سطر)</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.ALT.script_formlabel" resname="imagecaption.ALT.script_formlabel" approved="yes">
+        <source>Comments</source>
+        <target state="final">التعليقات</target>
+      </trans-unit>
+      <trans-unit id="field.default.hidden" resname="field.default.hidden" approved="yes">
+        <source>Visibility of content element</source>
+        <target state="final">ظُهور عنصر المحتوى</target>
+      </trans-unit>
+      <trans-unit id="field.table.bodytext" resname="field.table.bodytext" approved="yes">
+        <source>Table content</source>
+        <target state="final">محتوى الجدول</target>
+      </trans-unit>
+      <trans-unit id="palette.general" resname="palette.general" approved="yes">
+        <source>Content Element</source>
+        <target state="final">عنصر المحتوى</target>
+      </trans-unit>
+      <trans-unit id="palette.headers" resname="palette.headers" approved="yes">
+        <source>Headlines</source>
+        <target state="final">العناوين</target>
+      </trans-unit>
+      <trans-unit id="palette.header" resname="palette.header" approved="yes">
+        <source>Header</source>
+        <target state="final">الترويسة</target>
+      </trans-unit>
+      <trans-unit id="palette.visibility" resname="palette.visibility" approved="yes">
+        <source>Visibility</source>
+        <target state="final">الظهور</target>
+      </trans-unit>
+      <trans-unit id="palette.access" resname="palette.access" approved="yes">
+        <source>Publish Dates and Access Rights</source>
+        <target state="final">تواريخ النشر وحقوق الوصول</target>
+      </trans-unit>
+      <trans-unit id="palette.frames" resname="palette.frames" approved="yes">
+        <source>Content Element Layout</source>
+        <target state="final">تصميم عنصر المحتوى</target>
+      </trans-unit>
+      <trans-unit id="palette.textlayout" resname="palette.textlayout" approved="yes">
+        <source>Text Layout</source>
+        <target state="final">تصميم النص</target>
+      </trans-unit>
+      <trans-unit id="palette.imagefiles" resname="palette.imagefiles" approved="yes">
+        <source>Images and Captions</source>
+        <target state="final">الصور والعروض التوضيحية</target>
+      </trans-unit>
+      <trans-unit id="palette.imagelinks" resname="palette.imagelinks" approved="yes">
+        <source>Behavior</source>
+        <target state="final">السلوك</target>
+      </trans-unit>
+      <trans-unit id="palette.image_accessibility" resname="palette.image_accessibility" approved="yes">
+        <source>Accessibility</source>
+        <target state="final">إمكانية الوصول</target>
+      </trans-unit>
+      <trans-unit id="palette.image_settings" resname="palette.image_settings" approved="yes">
+        <source>Image Adjustments</source>
+        <target state="final">تعديلات الصورة</target>
+      </trans-unit>
+      <trans-unit id="palette.imageblock" resname="palette.imageblock" approved="yes">
+        <source>Image Alignment</source>
+        <target state="final">مُحاذاة الصورة</target>
+      </trans-unit>
+      <trans-unit id="palette.mailform" resname="palette.mailform" approved="yes">
+        <source>Target and Recipient</source>
+        <target state="final">الهدف والمُستلم</target>
+      </trans-unit>
+      <trans-unit id="palette.searchform" resname="palette.searchform" approved="yes">
+        <source>Search Results</source>
+        <target state="final">نتائج البحث</target>
+      </trans-unit>
+      <trans-unit id="palette.loginform" resname="palette.loginform" approved="yes">
+        <source>Redirect Target and Frontend User Container</source>
+        <target state="final">إعادة توجيه الهدف وحاوية مستخدم الواجهة الأمامية</target>
+      </trans-unit>
+      <trans-unit id="palette.multimediafiles" resname="palette.multimediafiles" approved="yes">
+        <source>Media Files and Parameters</source>
+        <target state="final">ملفات الوسائط والمُعلِّمات</target>
+      </trans-unit>
+      <trans-unit id="palette.textbox" resname="palette.textbox" approved="yes">
+        <source>Render Text into Images</source>
+        <target state="final">تحويل النص إلى صور</target>
+      </trans-unit>
+      <trans-unit id="palette.menu" resname="palette.menu" approved="yes">
+        <source>Menu and Sitemap</source>
+        <target state="final">القائمة وفهرس الصفحة</target>
+      </trans-unit>
+      <trans-unit id="palette.menu_accessibility" resname="palette.menu_accessibility" approved="yes">
+        <source>Accessibility</source>
+        <target state="final">إمكانية الوصول</target>
+      </trans-unit>
+      <trans-unit id="palette.uploads_layout" resname="palette.uploads_layout" approved="yes">
+        <source>Filelinks Layout</source>
+        <target state="final">تصميم Filelinks</target>
+      </trans-unit>
+      <trans-unit id="palette.table_layout" resname="palette.table_layout" approved="yes">
+        <source>Table Layout</source>
+        <target state="final">تصميم الجدول</target>
+      </trans-unit>
+      <trans-unit id="palette.appearanceLinks" resname="palette.appearanceLinks" approved="yes">
+        <source>Links</source>
+        <target state="final">روابط</target>
+      </trans-unit>
+      <trans-unit id="tabs.access" resname="tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">صَلاحِيَة الدخول</target>
+      </trans-unit>
+      <trans-unit id="tabs.appearance" resname="tabs.appearance" approved="yes">
+        <source>Appearance</source>
+        <target state="final">المظهر</target>
+      </trans-unit>
+      <trans-unit id="tabs.behaviour" resname="tabs.behaviour" approved="yes">
+        <source>Behaviour</source>
+        <target state="final">السُلوك</target>
+      </trans-unit>
+      <trans-unit id="tabs.script" resname="tabs.script" approved="yes">
+        <source>Script</source>
+        <target state="final">Script</target>
+      </trans-unit>
+      <trans-unit id="tabs.images" resname="tabs.images" approved="yes">
+        <source>Images</source>
+        <target state="final">الصُور</target>
+      </trans-unit>
+      <trans-unit id="tabs.extended" resname="tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">مُوَسَّعْ "Extended"</target>
+      </trans-unit>
+      <trans-unit id="tabs.accessibility" resname="tabs.accessibility" approved="yes">
+        <source>Accessibility</source>
+        <target state="final">إمكانية الوصول</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
