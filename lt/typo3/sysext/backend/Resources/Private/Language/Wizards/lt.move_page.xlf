@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/move_page.xlf" date="2024-03-08T20:22:34Z" product-name="backend" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="headline" approved="yes">
+        <source>Move page "%1$s" [%2$d]</source>
+        <target state="final">Perkelti puslapį „%1$s“ [%2$d]</target>
+      </trans-unit>
+      <trans-unit id="currentPath" approved="yes">
+        <source>Current path</source>
+        <target state="final">Dabartinis kelias</target>
+      </trans-unit>
+      <trans-unit id="makeCopy" approved="yes">
+        <source>Copy page instead of moving page</source>
+        <target state="final">Kopijuoti puslapį vietoje perkėlimo</target>
+      </trans-unit>
+      <trans-unit id="samePageConflict" approved="yes">
+        <source>The page "%1$s" [%2$d] cannot get moved into itself.</source>
+        <target state="final">Puslapio „%1$s“ [%2$d] negalima perkelti į jį patį.</target>
+      </trans-unit>
+      <trans-unit id="action.pasteAbove" approved="yes">
+        <source>Paste above</source>
+        <target state="final">Įklijuoti viršuje</target>
+      </trans-unit>
+      <trans-unit id="action.pasteBelow" approved="yes">
+        <source>Paste below</source>
+        <target state="final">Įklijuoti apačioje</target>
+      </trans-unit>
+      <trans-unit id="action.pasteInto" approved="yes">
+        <source>Paste into</source>
+        <target state="final">Įklijuoti į vidų</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pageMoved.title" approved="yes">
+        <source>Page successfully moved</source>
+        <target state="final">Puslapis sėkmingai perkeltas</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pageMoved.message" approved="yes">
+        <source>The page "%s" has been successfully moved.</source>
+        <target state="final">Puslapis „%s“ sėkmingai perkeltas.</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pageCopied.title" approved="yes">
+        <source>Page successfully copied</source>
+        <target state="final">Puslapis sėkmingai nukopijuotas</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pageCopied.message" approved="yes">
+        <source>The page "%s" has been successfully copied.</source>
+        <target state="final">Puslapis „%s“ sėkmingai nukopijuotas.</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pagePasted.action.dismiss" approved="yes">
+        <source>Dismiss</source>
+        <target state="final">Uždaryti</target>
+      </trans-unit>
+      <trans-unit id="movePage.notification.pagePasted.action.open" approved="yes">
+        <source>Open "%s"</source>
+        <target state="final">Atidaryti „%s“</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
