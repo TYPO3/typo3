@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815001" source-language="en" datatype="plaintext" original="EXT:taskcenter/Resources/Private/Language/locallang_task.xlf" date="2011-10-17T20:22:37Z" product-name="taskcenter" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Tasks</source>
+        <target state="final">Taken</target>
+      </trans-unit>
+      <trans-unit id="task_overview" resname="task_overview" approved="yes">
+        <source>Overview</source>
+        <target state="final">Overzicht</target>
+      </trans-unit>
+      <trans-unit id="error_header" resname="error_header" approved="yes">
+        <source>Error</source>
+        <target state="final">Fout</target>
+      </trans-unit>
+      <trans-unit id="error-access" resname="error-access" approved="yes">
+        <source>No access to this module.</source>
+        <target state="final">Geen toegang tot deze module.</target>
+      </trans-unit>
+      <trans-unit id="error_no-instance" resname="error_no-instance" approved="yes">
+        <source>The class "%s" does not implement the task interface "%s" which is necessary to be displayed here.</source>
+        <target state="final">De class "%s" implementeert niet de taakinterface "%s" welke hier getoond moet worden.</target>
+      </trans-unit>
+      <trans-unit id="no-tasks" resname="no-tasks" approved="yes">
+        <source>No tasks have been registered yet.</source>
+        <target state="final">Er zijn nog geen taken geregistreerd.</target>
+      </trans-unit>
+      <trans-unit id="lReplyAddress" resname="lReplyAddress" approved="yes">
+        <source>Reply address is your email</source>
+        <target state="final">Antwoordadres is je e-mailadres</target>
+      </trans-unit>
+      <trans-unit id="lSelf" resname="lSelf" approved="yes">
+        <source>Self</source>
+        <target state="final">Zichzelf</target>
+      </trans-unit>
+      <trans-unit id="lSendNew" resname="lSendNew" approved="yes">
+        <source>Send message</source>
+        <target state="final">Bericht verzenden</target>
+      </trans-unit>
+      <trans-unit id="lSendReply" resname="lSendReply" approved="yes">
+        <source>Reply to message</source>
+        <target state="final">Bericht beantwoorden</target>
+      </trans-unit>
+      <trans-unit id="listSeparator_Groups" resname="listSeparator_Groups" approved="yes">
+        <source>__Groups:__</source>
+        <target state="final">__Groepen:__</target>
+      </trans-unit>
+      <trans-unit id="lHomedir" resname="lHomedir" approved="yes">
+        <source>Home dir</source>
+        <target state="final">Thuismap</target>
+      </trans-unit>
+      <trans-unit id="lNone" resname="lNone" approved="yes">
+        <source>[none]</source>
+        <target state="final">[geen]</target>
+      </trans-unit>
+      <trans-unit id="lCreate" resname="lCreate" approved="yes">
+        <source>Create</source>
+        <target state="final">Aanmaken</target>
+      </trans-unit>
+      <trans-unit id="lCancel" resname="lCancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuleren</target>
+      </trans-unit>
+      <trans-unit id="lDelete_warning_title" resname="lDelete_warning_title" approved="yes">
+        <source>Please confirm</source>
+        <target state="final">Gaarne bevestigen</target>
+      </trans-unit>
+      <trans-unit id="lDelete_warning" resname="lDelete_warning" approved="yes">
+        <source>Are you sure you want to delete this user?</source>
+        <target state="final">Deze gebruiker verwijderen?</target>
+      </trans-unit>
+      <trans-unit id="lDelete" resname="lDelete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Verwijderen</target>
+      </trans-unit>
+      <trans-unit id="lUpdate" resname="lUpdate" approved="yes">
+        <source>Update</source>
+        <target state="final">Bijwerken</target>
+      </trans-unit>
+      <trans-unit id="taskcenter-about" resname="taskcenter-about" xml:space="preserve" approved="yes">
+				<source>
+&lt;p&gt;The menu on the left side shows all allowed tasks and let you allow to complete your tasks in an efficient way.&lt;/p&gt;
+&lt;ul class="withicons"&gt;
+&lt;li&gt;Clicking on the title of a task will open a detailed view of the task itself.&lt;/li&gt;
+&lt;li&gt;Click on the arrow on the right side will open/close the submenu of the task.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br /&gt;
+&lt;strong&gt;Note:&lt;/strong&gt; Set the taskcenter as the default module after your login to be even faster!
+
+</source>
+			<target state="final">
+&lt;p&gt;Het menu links toont alle toegestane taken en zorgt ervoor dat taken efficiënt uitgevoerd kunnen worden.&lt;/p&gt;
+&lt;ul class="withicons"&gt;
+&lt;li&gt;Klik op de titel van een taak om details over de taak te zien.&lt;/li&gt;
+&lt;li&gt;Klik op de pijl rechts om het submenu te openen of te sluiten.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br /&gt;
+&lt;strong&gt;Tip:&lt;/strong&gt; Stel het taakcentrum in als standaard module na het inloggen om nog sneller te werken!
+
+</target></trans-unit>
+      <trans-unit id="taskcenter-adminheader" resname="taskcenter-adminheader" approved="yes">
+        <source>Create a task</source>
+        <target state="final">Taak aanmaken</target>
+      </trans-unit>
+      <trans-unit id="taskcenter-admin" resname="taskcenter-admin" approved="yes">
+        <source>It is simple to extend the taskcenter by a custom task. For more information please look into the manual of the extension 'taskcenter'.</source>
+        <target state="final">Het taakcentrum is eenvoudig uit te breiden met aangepaste taken. Kijk voor meer informatie in de handleiding van de extensie 'taskcenter'.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
