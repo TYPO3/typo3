@@ -1,0 +1,1797 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/Database.xlf" date="2016-08-21T20:15:32Z" product-name="form" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="module.shortcut_name">
+        <source>Form manager</source>
+        <target>crwdns56254:0crwdne56254:0</target>
+      </trans-unit>
+      <trans-unit id="default">
+        <source>Default</source>
+        <target>crwdns56256:0crwdne56256:0</target>
+      </trans-unit>
+      <trans-unit id="empty">
+        <source>[Empty]</source>
+        <target>crwdns56258:0crwdne56258:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.persistenceIdentifier">
+        <source>Form definition</source>
+        <target>crwdns56260:0crwdne56260:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.sheet_general">
+        <source>General</source>
+        <target>crwdns56262:0crwdne56262:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.selectPersistenceIdentifier">
+        <source>Please select a form definition</source>
+        <target>crwdns56264:0crwdne56264:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.overrideFinishers">
+        <source>Override finisher settings</source>
+        <target>crwdns56266:0crwdne56266:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.overrideFinishers.empty">
+        <source>There are no finishers or finisher options in the current form definition.</source>
+        <target>crwdns56268:0crwdne56268:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.noPersistenceIdentifier">
+        <source>No form selected.</source>
+        <target>crwdns56270:0crwdne56270:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.invalidPersistenceIdentifier">
+        <source>Invalid form "%s".</source>
+        <target>crwdns56272:0%scrwdne56272:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.inaccessiblePersistenceIdentifier">
+        <source>"%s" (no read access).</source>
+        <target>crwdns56274:0%scrwdne56274:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.notExistingdPersistenceIdentifier">
+        <source>The form "%s" does not exist.</source>
+        <target>crwdns85632:0%scrwdne85632:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.invalidFrameworkConfiguration">
+        <source>"%s" (Invalid ext:form configuration).</source>
+        <target>crwdns56278:0%scrwdne56278:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.invalidFrameworkConfiguration.text">
+        <source>Invalid ext:form configuration in form "%s": %s</source>
+        <target>crwdns297878:0%scrwdnd297878:0%scrwdne297878:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.preview.invalidFrameworkConfiguration.title">
+        <source>Invalid configuration.</source>
+        <target>crwdns56282:0crwdne56282:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.label">
+        <source>Confirmation</source>
+        <target>crwdns56284:0crwdne56284:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.message.label">
+        <source>Text</source>
+        <target>crwdns56286:0crwdne56286:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.contentElementUid.label">
+        <source>Record</source>
+        <target>crwdns56288:0crwdne56288:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.label">
+        <source>Email to sender (form submitter)</source>
+        <target>crwdns56290:0crwdne56290:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.subject.label">
+        <source>Subject of the email</source>
+        <target>crwdns56292:0crwdne56292:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.label">
+        <source>Recipients</source>
+        <target>crwdns56294:0crwdne56294:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.item.label">
+        <source>Recipient</source>
+        <target>crwdns56296:0crwdne56296:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.email.label">
+        <source>Email Address</source>
+        <target>crwdns56298:0crwdne56298:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.name.label">
+        <source>Name</source>
+        <target>crwdns56300:0crwdne56300:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.senderAddress.label">
+        <source>Email address of the sender</source>
+        <target>crwdns56302:0crwdne56302:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.senderName.label">
+        <source>Human-readable name of the sender</source>
+        <target>crwdns56304:0crwdne56304:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.replyToRecipients.label">
+        <source>Reply-To Recipients</source>
+        <target>crwdns56306:0crwdne56306:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.replyToRecipients.item.label">
+        <source>Reply-To Recipient</source>
+        <target>crwdns56308:0crwdne56308:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.carbonCopyRecipients.label">
+        <source>CC Recipients</source>
+        <target>crwdns56310:0crwdne56310:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.carbonCopyRecipients.item.label">
+        <source>CC Recipient</source>
+        <target>crwdns56312:0crwdne56312:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.label">
+        <source>BCC Recipients</source>
+        <target>crwdns56314:0crwdne56314:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.item.label">
+        <source>BCC Recipient</source>
+        <target>crwdns56316:0crwdne56316:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.addHtmlPart.label">
+        <source>Add HTML mail part</source>
+        <target>crwdns56318:0crwdne56318:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.language.label">
+        <source>Translation language</source>
+        <target>crwdns113448:0crwdne113448:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.language.0">
+        <source>Auto</source>
+        <target>crwdns370599:0crwdne370599:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.language.1">
+        <source>EN</source>
+        <target>crwdns370601:0crwdne370601:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.message.label">
+        <source>Message</source>
+        <target>crwdns393718:0crwdne393718:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.title.label">
+        <source>Title</source>
+        <target>crwdns113530:0crwdne113530:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.label">
+        <source>Email to receiver (you)</source>
+        <target>crwdns56320:0crwdne56320:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.subject.label">
+        <source>Subject of the email</source>
+        <target>crwdns56322:0crwdne56322:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.recipients.label">
+        <source>Email addresses and human-readable names of the recipients</source>
+        <target>crwdns56324:0crwdne56324:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.senderAddress.label">
+        <source>Email address of the sender</source>
+        <target>crwdns56326:0crwdne56326:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.senderName.label">
+        <source>Human-readable name of the sender</source>
+        <target>crwdns56328:0crwdne56328:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.replyToRecipients.label">
+        <source>Reply-To Recipients</source>
+        <target>crwdns56330:0crwdne56330:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.carbonCopyRecipients.label">
+        <source>CC Recipients</source>
+        <target>crwdns56332:0crwdne56332:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.blindCarbonCopyRecipients.label">
+        <source>BCC Recipients</source>
+        <target>crwdns56334:0crwdne56334:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.addHtmlPart.label">
+        <source>Add HTML part</source>
+        <target>crwdns56336:0crwdne56336:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.language.label">
+        <source>Translation language</source>
+        <target>crwdns56338:0crwdne56338:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.language.0">
+        <source>Auto</source>
+        <target>crwdns370603:0crwdne370603:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.language.1">
+        <source>EN</source>
+        <target>crwdns370605:0crwdne370605:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.message.label">
+        <source>Message</source>
+        <target>crwdns393720:0crwdne393720:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.title.label">
+        <source>Title</source>
+        <target>crwdns113532:0crwdne113532:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.label">
+        <source>Redirect</source>
+        <target>crwdns56342:0crwdne56342:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.pageUid.label">
+        <source>Page</source>
+        <target>crwdns56344:0crwdne56344:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.additionalParameters.label">
+        <source>Additional link parameter</source>
+        <target>crwdns56346:0crwdne56346:0</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.fragment.label">
+        <source>Add fragment to the redirect link</source>
+        <target>crwdns211264:0crwdne211264:0</target>
+      </trans-unit>
+      <trans-unit id="formManagerController.deleteAction.error.title">
+        <source>Delete error</source>
+        <target>crwdns56348:0crwdne56348:0</target>
+      </trans-unit>
+      <trans-unit id="formManagerController.deleteAction.error.body">
+        <source>The form "%s" could not be deleted.</source>
+        <target>crwdns56350:0%scrwdne56350:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.headline">
+        <source>Form Management</source>
+        <target>crwdns56352:0crwdne56352:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.create_new_form">
+        <source>Create new form</source>
+        <target>crwdns56354:0crwdne56354:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_name">
+        <source>Form name</source>
+        <target>crwdns56358:0crwdne56358:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.integrity">
+        <source>Integrity</source>
+        <target>crwdns342918:0crwdne342918:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.location">
+        <source>Location</source>
+        <target>crwdns56360:0crwdne56360:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.references">
+        <source>References</source>
+        <target>crwdns372698:0crwdne372698:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.options">
+        <source>Options</source>
+        <target>crwdns56364:0crwdne56364:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.edit_form">
+        <source>Edit this form</source>
+        <target>crwdns56368:0crwdne56368:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicate_this_form">
+        <source>Duplicate this form</source>
+        <target>crwdns56370:0crwdne56370:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.delete_form">
+        <source>Delete this form</source>
+        <target>crwdns141725:0crwdne141725:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.forms_not_found.title">
+        <source>No forms exist</source>
+        <target>crwdns393722:0crwdne393722:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.forms_not_found.message">
+        <source>Once created, forms will be displayed here.</source>
+        <target>crwdns393724:0crwdne393724:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.forms_not_found_by_search_term.message">
+        <source>There are currently no forms found containing the search term "%1s".</source>
+        <target>crwdns342922:0%1scrwdne342922:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.remove_search_term">
+        <source>Remove search term</source>
+        <target>crwdns292599:0crwdne292599:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.invalid">
+        <source>Invalid form definition</source>
+        <target>crwdns393726:0crwdne393726:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.readOnly">
+        <source>Read only</source>
+        <target>crwdns393728:0crwdne393728:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicate_identifier">
+        <source>Duplicate identifier</source>
+        <target>crwdns342926:0crwdne342926:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.table.amount.form">
+        <source>form</source>
+        <target>crwdns342928:0crwdne342928:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.table.amount.forms">
+        <source>forms</source>
+        <target>crwdns342930:0crwdne342930:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.label">
+        <source>Standard</source>
+        <target>crwdns56388:0crwdne56388:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.label">
+        <source>Blank form</source>
+        <target>crwdns56390:0crwdne56390:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.description">
+        <source>Create a new form from scratch</source>
+        <target>crwdns415533:0crwdne415533:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.label">
+        <source>Simple contact form (ext:form example)</source>
+        <target>crwdns56392:0crwdne56392:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.description">
+        <source>A basic contact form with name, email, subject and message fields</source>
+        <target>crwdns415535:0crwdne415535:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.showHistory">
+        <source>Show History</source>
+        <target>crwdns393730:0crwdne393730:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.header">
+        <source>Form editor</source>
+        <target>crwdns56394:0crwdne56394:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.loading">
+        <source>Loading...</source>
+        <target>crwdns56396:0crwdne56396:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.spinner">
+        <source>Loading...</source>
+        <target>crwdns56398:0crwdne56398:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.save_button">
+        <source>Save</source>
+        <target>crwdns56400:0crwdne56400:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.edit_button">
+        <source>Edit form properties</source>
+        <target>crwdns394002:0crwdne394002:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.undo_button">
+        <source>Undo</source>
+        <target>crwdns56404:0crwdne56404:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.redo_button">
+        <source>Redo</source>
+        <target>crwdns56406:0crwdne56406:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.button_toggle_structure">
+        <source>Toggle structure</source>
+        <target>crwdns342934:0crwdne342934:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.button_toggle_inspector">
+        <source>Toggle inspector</source>
+        <target>crwdns342936:0crwdne342936:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.button_expand_inspector">
+        <source>Show inspector</source>
+        <target>crwdns394004:0crwdne394004:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.button_collapse_inspector">
+        <source>Hide inspector</source>
+        <target>crwdns394006:0crwdne394006:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.new_page_button">
+        <source>Create new step</source>
+        <target>crwdns56408:0crwdne56408:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.previous_step_button">
+        <source>Previous step</source>
+        <target>crwdns84703:0crwdne84703:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.next_step_button">
+        <source>Next step</source>
+        <target>crwdns84705:0crwdne84705:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.step.name.empty">
+        <source>Step name is not set</source>
+        <target>crwdns342938:0crwdne342938:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.preview_mode_button">
+        <source>Preview mode</source>
+        <target>crwdns84707:0crwdne84707:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.edit_mode_button">
+        <source>Edit mode</source>
+        <target>crwdns84709:0crwdne84709:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.structure">
+        <source>Structure</source>
+        <target>crwdns56410:0crwdne56410:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.insert_elements">
+        <source>Insert elements</source>
+        <target>crwdns56412:0crwdne56412:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.NotEmpty.label">
+        <source>Required</source>
+        <target>crwdns56414:0crwdne56414:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.Integer.label">
+        <source>Not a number</source>
+        <target>crwdns56416:0crwdne56416:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.NaiveEmail.label">
+        <source>Invalid email address</source>
+        <target>crwdns56418:0crwdne56418:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.FormElementIdentifierWithinCurlyBraces.label">
+        <source>Invalid form element</source>
+        <target>crwdns56420:0crwdne56420:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.FileSize.label">
+        <source>Invalid file size format, valid e.g. "10B|K|M|G"</source>
+        <target>crwdns56422:0crwdne56422:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.RFC3339FullDate.label">
+        <source>Invalid date format. Use Y-m-d (e.g. 2018-03-17) or a relative expression (e.g. today, -18 years)</source>
+        <target>crwdns393732:0crwdne393732:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.RegularExpressionPattern.label">
+        <source>Invalid pattern</source>
+        <target>crwdns211266:0crwdne211266:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.IntegerList.label">
+        <source>Not all items are numbers</source>
+        <target>crwdns415537:0crwdne415537:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.ItemCount.label">
+        <source>Invalid number of items. Minimum is {0}, maximum is {1}</source>
+        <target>crwdns415539:0{0}crwdnd415539:0{1}crwdne415539:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.input.label">
+        <source>Basic elements</source>
+        <target>crwdns56426:0crwdne56426:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.html5.label">
+        <source>Special elements</source>
+        <target>crwdns56428:0crwdne56428:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.select.label">
+        <source>Select elements</source>
+        <target>crwdns56430:0crwdne56430:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.custom.label">
+        <source>Advanced elements</source>
+        <target>crwdns56432:0crwdne56432:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.container.label">
+        <source>Container elements</source>
+        <target>crwdns56434:0crwdne56434:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.page.label">
+        <source>Step types</source>
+        <target>crwdns56436:0crwdne56436:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.BaseFormElementMixin.editor.label.label">
+        <source>Form name</source>
+        <target>crwdns56438:0crwdne56438:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveSuccessFlashMessageTitle">
+        <source>Save</source>
+        <target>crwdns56440:0crwdne56440:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveSuccessFlashMessageMessage">
+        <source>The form has been successfully saved.</source>
+        <target>crwdns56442:0crwdne56442:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveErrorFlashMessageTitle">
+        <source>Save</source>
+        <target>crwdns56444:0crwdne56444:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveErrorFlashMessageMessage">
+        <source>The form could not be saved:</source>
+        <target>crwdns56446:0crwdne56446:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.validationErrors.dialogTitle">
+        <source>Form configuration needs attention</source>
+        <target>crwdns415541:0crwdne415541:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.validationErrors.dialogMessage">
+        <source>The following elements need to be configured. Select an element to open its settings:</source>
+        <target>crwdns415543:0crwdne415543:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.validationErrors.identifier">
+        <source>Identifier</source>
+        <target>crwdns415545:0crwdne415545:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.validationErrors.type">
+        <source>Type</source>
+        <target>crwdns415547:0crwdne415547:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.validationErrors.confirmButton">
+        <source>Close</source>
+        <target>crwdns415549:0crwdne415549:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.insertElements.dialogTitle">
+        <source>New element</source>
+        <target>crwdns56454:0crwdne56454:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.newPages.dialogTitle">
+        <source>New step</source>
+        <target>crwdns56456:0crwdne56456:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.dialogTitle">
+        <source>Remove element?</source>
+        <target>crwdns56458:0crwdne56458:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.dialogMessage">
+        <source>Remove this element?</source>
+        <target>crwdns386152:0crwdne386152:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.confirmButton">
+        <source>Remove</source>
+        <target>crwdns56462:0crwdne56462:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.cancelButton">
+        <source>Cancel</source>
+        <target>crwdns278675:0crwdne278675:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.lastAvailablePageFlashMessageTitle">
+        <source>Error</source>
+        <target>crwdns56466:0crwdne56466:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.lastAvailablePageFlashMessageMessage">
+        <source>There must be at least one step within your form.</source>
+        <target>crwdns56468:0crwdne56468:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.close.dialogMessage">
+        <source>You currently have unsaved changes. Closing the form will discard them. Continue?</source>
+        <target>crwdns386154:0crwdne386154:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.close.dialogTitle">
+        <source>Quit without saving?</source>
+        <target>crwdns386156:0crwdne386156:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.close.confirmButton">
+        <source>Discard changes</source>
+        <target>crwdns367342:0crwdne367342:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.close.cancelButton">
+        <source>Keep editing</source>
+        <target>crwdns367344:0crwdne367344:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.pagination.title">
+        <source>Step {0} of {1}</source>
+        <target>crwdns56478:0{0}crwdnd56478:0{1}crwdne56478:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label">
+        <source>Minimum</source>
+        <target>crwdns56480:0crwdne56480:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label">
+        <source>Maximum</source>
+        <target>crwdns56482:0crwdne56482:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.placeholder.label">
+        <source>Placeholder</source>
+        <target>crwdns56484:0crwdne56484:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.defaultValue.label">
+        <source>Default value</source>
+        <target>crwdns56486:0crwdne56486:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.pattern.label">
+        <source>Pattern</source>
+        <target>crwdns56488:0crwdne56488:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.pattern.description">
+        <source>Additional client-side validation as JavaScript regular expression</source>
+        <target>crwdns391422:0crwdne391422:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.step.label">
+        <source>Step</source>
+        <target>crwdns56492:0crwdne56492:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.label">
+        <source>Validators</source>
+        <target>crwdns56494:0crwdne56494:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.EmptyValue.label">
+        <source>Add validator</source>
+        <target>crwdns56496:0crwdne56496:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Alphanumeric.label">
+        <source>Alphanumeric</source>
+        <target>crwdns56498:0crwdne56498:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Text.label">
+        <source>Non-XML text</source>
+        <target>crwdns56500:0crwdne56500:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.StringLength.label">
+        <source>String length</source>
+        <target>crwdns56502:0crwdne56502:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.EmailAddress.label">
+        <source>Email</source>
+        <target>crwdns56504:0crwdne56504:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Integer.label">
+        <source>Integer number</source>
+        <target>crwdns56506:0crwdne56506:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Float.label">
+        <source>Floating-point number</source>
+        <target>crwdns56508:0crwdne56508:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Number.label">
+        <source>Number</source>
+        <target>crwdns56510:0crwdne56510:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.NumberRange.label">
+        <source>Number range</source>
+        <target>crwdns56512:0crwdne56512:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.RegularExpression.label">
+        <source>Regular expression</source>
+        <target>crwdns56514:0crwdne56514:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.editor.validators.Count.label">
+        <source>Number of submitted values</source>
+        <target>crwdns56516:0crwdne56516:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.header.label">
+        <source>Alphanumeric</source>
+        <target>crwdns56518:0crwdne56518:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.label">
+        <source>Custom error message</source>
+        <target>crwdns56520:0crwdne56520:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.description">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target>crwdns391424:0crwdne391424:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.header.label">
+        <source>Non-XML text</source>
+        <target>crwdns56524:0crwdne56524:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.label">
+        <source>Custom error message</source>
+        <target>crwdns56526:0crwdne56526:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.description">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target>crwdns391426:0crwdne391426:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.header.label">
+        <source>String length</source>
+        <target>crwdns56530:0crwdne56530:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.label">
+        <source>Custom error message</source>
+        <target>crwdns56532:0crwdne56532:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.description">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target>crwdns391428:0crwdne391428:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.header.label">
+        <source>Email</source>
+        <target>crwdns56536:0crwdne56536:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.label">
+        <source>Custom error message</source>
+        <target>crwdns56538:0crwdne56538:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.description">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target>crwdns391430:0crwdne391430:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.header.label">
+        <source>Integer number</source>
+        <target>crwdns56542:0crwdne56542:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.label">
+        <source>Custom error message</source>
+        <target>crwdns56544:0crwdne56544:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.description">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target>crwdns391432:0crwdne391432:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.header.label">
+        <source>Floating-point number</source>
+        <target>crwdns56548:0crwdne56548:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.label">
+        <source>Custom error message</source>
+        <target>crwdns56550:0crwdne56550:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.description">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target>crwdns391434:0crwdne391434:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Number.editor.header.label">
+        <source>Number</source>
+        <target>crwdns56554:0crwdne56554:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.header.label">
+        <source>Number range</source>
+        <target>crwdns56556:0crwdne56556:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.label">
+        <source>Custom error message</source>
+        <target>crwdns56558:0crwdne56558:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.description">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target>crwdns391436:0crwdne391436:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.header.label">
+        <source>Regular expression</source>
+        <target>crwdns56562:0crwdne56562:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.label">
+        <source>Regular expression</source>
+        <target>crwdns56564:0crwdne56564:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.description">
+        <source>Enter a valid PHP PCRE regular expression here.</source>
+        <target>crwdns391438:0crwdne391438:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.label">
+        <source>Custom error message</source>
+        <target>crwdns56568:0crwdne56568:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.description">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target>crwdns391440:0crwdne391440:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.header.label">
+        <source>Number of submitted values</source>
+        <target>crwdns56572:0crwdne56572:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.validationErrorMessage.label">
+        <source>Custom error message</source>
+        <target>crwdns56574:0crwdne56574:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.validationErrorMessage.description">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target>crwdns391442:0crwdne391442:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SelectionMixin.editor.inactiveOption.label">
+        <source>First option (empty value)</source>
+        <target>crwdns56578:0crwdne56578:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SelectionMixin.editor.inactiveOption.description">
+        <source>If set, this label will be shown as first option.</source>
+        <target>crwdns391444:0crwdne391444:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SelectionMixin.editor.options.label">
+        <source>Choices</source>
+        <target>crwdns56582:0crwdne56582:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.editor.validators.label">
+        <source>Validators</source>
+        <target>crwdns56584:0crwdne56584:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.editor.validators.EmptyValue.label">
+        <source>Add validator</source>
+        <target>crwdns56586:0crwdne56586:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.saveToFileMount.label">
+        <source>Uploads save path</source>
+        <target>crwdns56588:0crwdne56588:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.label">
+        <source>Validators</source>
+        <target>crwdns56590:0crwdne56590:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.EmptyValue.label">
+        <source>Add validator</source>
+        <target>crwdns56592:0crwdne56592:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.FileSize.label">
+        <source>File size</source>
+        <target>crwdns56594:0crwdne56594:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.Count.label">
+        <source>Number of files</source>
+        <target>crwdns393012:0crwdne393012:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label">
+        <source>File size</source>
+        <target>crwdns56596:0crwdne56596:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.validators.Count.editor.header.label">
+        <source>Number of uploaded files</source>
+        <target>crwdns393014:0crwdne393014:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.submitButtonLabel.label">
+        <source>Submit label</source>
+        <target>crwdns56598:0crwdne56598:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.submitButtonLabel.value">
+        <source>Submit</source>
+        <target>crwdns56600:0crwdne56600:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.label">
+        <source>Finishers</source>
+        <target>crwdns56602:0crwdne56602:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.EmptyValue.label">
+        <source>Add finisher</source>
+        <target>crwdns56604:0crwdne56604:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.EmailToSender.label">
+        <source>Email to sender (form submitter)</source>
+        <target>crwdns56606:0crwdne56606:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.EmailToReceiver.label">
+        <source>Email to receiver (you)</source>
+        <target>crwdns56608:0crwdne56608:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.Redirect.label">
+        <source>Redirect to a page</source>
+        <target>crwdns56610:0crwdne56610:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.DeleteUploads.label">
+        <source>Delete uploads</source>
+        <target>crwdns56612:0crwdne56612:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.Confirmation.label">
+        <source>Confirmation message</source>
+        <target>crwdns56614:0crwdne56614:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.header.label">
+        <source>Email to sender (form submitter)</source>
+        <target>crwdns56616:0crwdne56616:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.subject.label">
+        <source>Subject</source>
+        <target>crwdns56618:0crwdne56618:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.message.label">
+        <source>Message</source>
+        <target>crwdns393734:0crwdne393734:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.message.description">
+        <source>Optional custom message. Use {formValues} as a placeholder to include the submitted form data at that position. If empty, only the form data table will be shown.</source>
+        <target>crwdns393736:0{formValues}crwdne393736:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.label">
+        <source>Recipients</source>
+        <target>crwdns56620:0crwdne56620:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.description">
+        <source>The email addresses and names of the website visitors to which the email should be sent.</source>
+        <target>crwdns391446:0crwdne391446:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.value.title">
+        <source>Email Address</source>
+        <target>crwdns56624:0crwdne56624:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title">
+        <source>Name</source>
+        <target>crwdns56626:0crwdne56626:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.label">
+        <source>Sender address</source>
+        <target>crwdns56628:0crwdne56628:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.description">
+        <source>The email address of the sender (e.g. your company's email address) which appears in the website visitor email client.</source>
+        <target>crwdns391448:0crwdne391448:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderName.label">
+        <source>Sender name</source>
+        <target>crwdns56632:0crwdne56632:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderName.description">
+        <source>The name of the sender (e.g. your company's name) which appears in the website visitor email client.</source>
+        <target>crwdns391450:0crwdne391450:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.replyToRecipients.label">
+        <source>Reply-To Recipients</source>
+        <target>crwdns56636:0crwdne56636:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.carbonCopyRecipients.label">
+        <source>CC Recipients</source>
+        <target>crwdns56638:0crwdne56638:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.blindCarbonCopyRecipients.label">
+        <source>BCC Recipients</source>
+        <target>crwdns56640:0crwdne56640:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.label">
+        <source>Add HTML part</source>
+        <target>crwdns56642:0crwdne56642:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.addHtmlPart.description">
+        <source>If enabled, the email will contain a plaintext and an HTML part, otherwise only a plaintext part.</source>
+        <target>crwdns391452:0crwdne391452:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.attachUploads.label">
+        <source>Attach uploads</source>
+        <target>crwdns56646:0crwdne56646:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.language.label">
+        <source>Translation language</source>
+        <target>crwdns113452:0crwdne113452:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.language.0">
+        <source>Auto</source>
+        <target>crwdns370607:0crwdne370607:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.language.1">
+        <source>EN</source>
+        <target>crwdns113454:0crwdne113454:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.title.label">
+        <source>Title</source>
+        <target>crwdns113538:0crwdne113538:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.title.description">
+        <source>The title, being shown in the Email. The title is rendered in the header section right above the email body. Do not confuse this field with the subject of your email.</source>
+        <target>crwdns391454:0crwdne391454:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label">
+        <source>Email to receiver (you)</source>
+        <target>crwdns56648:0crwdne56648:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.subject.label">
+        <source>Subject</source>
+        <target>crwdns56650:0crwdne56650:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.message.label">
+        <source>Message</source>
+        <target>crwdns393738:0crwdne393738:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.message.description">
+        <source>Optional custom message. Use {formValues} once as a placeholder to include the submitted form data at that position (only the first occurrence is replaced). If empty, only the form data table will be shown.</source>
+        <target>crwdns393740:0{formValues}crwdne393740:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.recipients.label">
+        <source>Recipients</source>
+        <target>crwdns56652:0crwdne56652:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.recipients.description">
+        <source>The email addresses and names of the recipients to which the email should be sent (e.g. your company's email addresses).</source>
+        <target>crwdns391456:0crwdne391456:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.label">
+        <source>Sender address</source>
+        <target>crwdns56656:0crwdne56656:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.description">
+        <source>The email address of the sender which appears in your email client. Use the "insert formelement identifier" dropdown if you need to select a form element which contains the website visitor's email address instead.</source>
+        <target>crwdns391458:0crwdne391458:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.label">
+        <source>Sender name</source>
+        <target>crwdns56660:0crwdne56660:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.description">
+        <source>The name of the sender which appears in your email client. Use the "insert formelement identifier" dropdown if you need to choose one or more form elements which contain the website visitor's name</source>
+        <target>crwdns391460:0crwdne391460:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.replyToRecipients.label">
+        <source>Reply-To Recipients</source>
+        <target>crwdns56664:0crwdne56664:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.carbonCopyRecipients.label">
+        <source>CC Recipients</source>
+        <target>crwdns56666:0crwdne56666:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.blindCarbonCopyRecipients.label">
+        <source>BCC Recipients</source>
+        <target>crwdns56668:0crwdne56668:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.addHtmlPart.label">
+        <source>Add HTML part</source>
+        <target>crwdns56670:0crwdne56670:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.addHtmlPart.description">
+        <source>If enabled, the email will contain a plaintext and an HTML part, otherwise only a plaintext part.</source>
+        <target>crwdns391462:0crwdne391462:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.attachUploads.label">
+        <source>Attach uploads</source>
+        <target>crwdns56674:0crwdne56674:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.label">
+        <source>Translation language</source>
+        <target>crwdns56676:0crwdne56676:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.0">
+        <source>Auto</source>
+        <target>crwdns370609:0crwdne370609:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.1">
+        <source>EN</source>
+        <target>crwdns56678:0crwdne56678:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.title.label">
+        <source>Title</source>
+        <target>crwdns113546:0crwdne113546:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.title.description">
+        <source>The title, being shown in the Email. The title is rendered in the header section right above the email body. Do not confuse this field with the subject of your email.</source>
+        <target>crwdns391464:0crwdne391464:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.header.label">
+        <source>Redirect to a page</source>
+        <target>crwdns56680:0crwdne56680:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.pageUid.label">
+        <source>Page</source>
+        <target>crwdns56682:0crwdne56682:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.pageUid.buttonLabel">
+        <source>Page</source>
+        <target>crwdns56684:0crwdne56684:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.additionalParameters.label">
+        <source>Additional parameters</source>
+        <target>crwdns56686:0crwdne56686:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.fragment.label">
+        <source>URL fragment</source>
+        <target>crwdns211272:0crwdne211272:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.fragment.buttonLabel">
+        <source>Page Content</source>
+        <target>crwdns211274:0crwdne211274:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.fragment.description">
+        <source>You can use a content element identifier as URL fragment or set a custom fragment identifier.</source>
+        <target>crwdns391466:0crwdne391466:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.DeleteUploads.editor.header.label">
+        <source>Delete uploads</source>
+        <target>crwdns56688:0crwdne56688:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.header.label">
+        <source>Confirmation message</source>
+        <target>crwdns56690:0crwdne56690:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.label">
+        <source>Content element uid</source>
+        <target>crwdns56692:0crwdne56692:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.buttonLabel">
+        <source>Page Content</source>
+        <target>crwdns56694:0crwdne56694:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.message.label">
+        <source>Text</source>
+        <target>crwdns56696:0crwdne56696:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.message.description">
+        <source>Will be ignored if "Content element" is set</source>
+        <target>crwdns391468:0crwdne391468:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Closure.editor.header.label">
+        <source>Execute a closure</source>
+        <target>crwdns56700:0crwdne56700:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.FlashMessage.editor.header.label">
+        <source>Flash message</source>
+        <target>crwdns56702:0crwdne56702:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.SaveToDatabase.editor.header.label">
+        <source>Save the mail to the Database</source>
+        <target>crwdns56704:0crwdne56704:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ReadOnlyFormElement.editor.label.label">
+        <source>Label</source>
+        <target>crwdns56706:0crwdne56706:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.label.label">
+        <source>Label</source>
+        <target>crwdns56708:0crwdne56708:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.elementDescription.label">
+        <source>Description</source>
+        <target>crwdns56710:0crwdne56710:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.enabled.label">
+        <source>Field visible</source>
+        <target>crwdns390248:0crwdne390248:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.label">
+        <source>Autocomplete</source>
+        <target>crwdns292347:0crwdne292347:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.none">
+        <source>None</source>
+        <target>crwdns292349:0crwdne292349:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.off">
+        <source>off - disable the autocomplete functionality</source>
+        <target>crwdns292351:0crwdne292351:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.name">
+        <source>name - Full name</source>
+        <target>crwdns292353:0crwdne292353:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.honorific-prefix">
+        <source>Prefix or title (e.g., "Mr.", "Ms.", "Dr.")</source>
+        <target>crwdns292355:0crwdne292355:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.given-name">
+        <source>given-name - first name</source>
+        <target>crwdns292357:0crwdne292357:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.additional-name">
+        <source>additional-name - middle name</source>
+        <target>crwdns292359:0crwdne292359:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.family-name">
+        <source>family-name - last name</source>
+        <target>crwdns292361:0crwdne292361:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.honorific-suffix">
+        <source>honorific-suffix - Name suffix (e.g., "Jr.", "II")</source>
+        <target>crwdns292363:0crwdne292363:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.nickname">
+        <source>Nickname, screen name</source>
+        <target>crwdns292365:0crwdne292365:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.organization-title">
+        <source>organization-title - Job title</source>
+        <target>crwdns292367:0crwdne292367:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.username">
+        <source>username</source>
+        <target>crwdns292369:0crwdne292369:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.organization">
+        <source>organization - Company name</source>
+        <target>crwdns292371:0crwdne292371:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.address-line1">
+        <source>address-line1 - Street address, line 1</source>
+        <target>crwdns292373:0crwdne292373:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.address-line2">
+        <source>address-line2 - Street address, line 2</source>
+        <target>crwdns370988:0crwdne370988:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.address-level1">
+        <source>address-level1 - State, Canton etc</source>
+        <target>crwdns292377:0crwdne292377:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.address-level2">
+        <source>address-level2 - City</source>
+        <target>crwdns292379:0crwdne292379:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.country-name">
+        <source>country-name</source>
+        <target>crwdns292381:0crwdne292381:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.postal-code">
+        <source>postal-code - ZIP</source>
+        <target>crwdns292383:0crwdne292383:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.tel">
+        <source>tel - Full telephone number</source>
+        <target>crwdns292385:0crwdne292385:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.impp">
+        <source>impp - URL representing an instant messaging protocol endpoint</source>
+        <target>crwdns292387:0crwdne292387:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.sex">
+        <source>sex - Gender identity</source>
+        <target>crwdns292389:0crwdne292389:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.language">
+        <source>language - Preferred language</source>
+        <target>crwdns292391:0crwdne292391:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.street-address">
+        <source>street-address</source>
+        <target>crwdns292393:0crwdne292393:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.tel-country-code">
+        <source>tel-country-code - Country code component of the telephone number</source>
+        <target>crwdns292395:0crwdne292395:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.tel-national">
+        <source>tel-national - Telephone number without the county code</source>
+        <target>crwdns292397:0crwdne292397:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.tel-area-code">
+        <source>tel-area-code - Area code component of the telephone number</source>
+        <target>crwdns292399:0crwdne292399:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.tel-local">
+        <source>tel-local - Telephone number without the country code and area code component</source>
+        <target>crwdns292401:0crwdne292401:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.tel-extension">
+        <source>tel-extension - Telephone number internal extension code</source>
+        <target>crwdns292403:0crwdne292403:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.url">
+        <source>url - Home page</source>
+        <target>crwdns292405:0crwdne292405:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.new-password">
+        <source>new-password - A new password to create / change</source>
+        <target>crwdns292407:0crwdne292407:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.current-password">
+        <source>current-password - Current password for the selected username</source>
+        <target>crwdns292409:0crwdne292409:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.bday-day">
+        <source>bday-day - Day component of birthday</source>
+        <target>crwdns292411:0crwdne292411:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.bday-month">
+        <source>bday-month - Month component of birthday</source>
+        <target>crwdns292413:0crwdne292413:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.bday-year">
+        <source>bday-year - Year component of birthday</source>
+        <target>crwdns292415:0crwdne292415:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.photo">
+        <source>photo</source>
+        <target>crwdns292417:0crwdne292417:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.email">
+        <source>email</source>
+        <target>crwdns292419:0crwdne292419:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.bday">
+        <source>bday - Birthday</source>
+        <target>crwdns292421:0crwdne292421:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.country">
+        <source>country - Country code</source>
+        <target>crwdns292423:0crwdne292423:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.label">
+        <source>Field required</source>
+        <target>crwdns211278:0crwdne211278:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label">
+        <source>Custom error message</source>
+        <target>crwdns56714:0crwdne56714:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.description">
+        <source>Error message which is shown if the validation does not succeed</source>
+        <target>crwdns391470:0crwdne391470:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.validators.DateRange.editor.header.label">
+        <source>Date range</source>
+        <target>crwdns56718:0crwdne56718:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label">
+        <source>Grid viewport configuration</source>
+        <target>crwdns56720:0crwdne56720:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label">
+        <source>Extra small</source>
+        <target>crwdns56722:0crwdne56722:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label">
+        <source>Small</source>
+        <target>crwdns56724:0crwdne56724:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label">
+        <source>Medium</source>
+        <target>crwdns56726:0crwdne56726:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label">
+        <source>Large</source>
+        <target>crwdns56728:0crwdne56728:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xl.label">
+        <source>Extra large</source>
+        <target>crwdns141727:0crwdne141727:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xxl.label">
+        <source>Extra extra large</source>
+        <target>crwdns141729:0crwdne141729:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label">
+        <source>Numbers of columns for viewport "{@viewPortLabel}"</source>
+        <target>crwdns56730:0crwdne56730:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.description">
+        <source>Leave empty for auto calculation</source>
+        <target>crwdns391472:0crwdne391472:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.label">
+        <source>Step</source>
+        <target>crwdns56734:0crwdne56734:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.description">
+        <source>A form step that can be customized with various elements</source>
+        <target>crwdns370682:0crwdne370682:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.label.label">
+        <source>Step name</source>
+        <target>crwdns56736:0crwdne56736:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.previousButtonLabel.label">
+        <source>Previous button label</source>
+        <target>crwdns56738:0crwdne56738:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.previousButtonLabel.value">
+        <source>Previous step</source>
+        <target>crwdns56740:0crwdne56740:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.nextButtonLabel.label">
+        <source>Next button label</source>
+        <target>crwdns56742:0crwdne56742:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.nextButtonLabel.value">
+        <source>Next step</source>
+        <target>crwdns56744:0crwdne56744:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.label">
+        <source>Summary step</source>
+        <target>crwdns56746:0crwdne56746:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.description">
+        <source>A form step that displays all entered values for review before submission</source>
+        <target>crwdns370684:0crwdne370684:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.label.label">
+        <source>Step name</source>
+        <target>crwdns56748:0crwdne56748:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.previousButtonLabel.label">
+        <source>Previous button label</source>
+        <target>crwdns56750:0crwdne56750:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.previousButtonLabel.value">
+        <source>Previous step</source>
+        <target>crwdns56752:0crwdne56752:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.nextButtonLabel.label">
+        <source>Next button label</source>
+        <target>crwdns56754:0crwdne56754:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.nextButtonLabel.value">
+        <source>Next step</source>
+        <target>crwdns56756:0crwdne56756:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Fieldset.label">
+        <source>Fieldset</source>
+        <target>crwdns56758:0crwdne56758:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Fieldset.description">
+        <source>A container used to group related form elements, improving accessibility and providing content-based structure</source>
+        <target>crwdns370686:0crwdne370686:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Fieldset.editor.label.label">
+        <source>Fieldset name</source>
+        <target>crwdns56760:0crwdne56760:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.GridColumn.label">
+        <source>Grid: Column</source>
+        <target>crwdns370806:0crwdne370806:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.GridColumn.description">
+        <source>A container element for arranging fields, providing visual structure</source>
+        <target>crwdns370808:0crwdne370808:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.GridColumn.editor.label.label">
+        <source>Name (not visible within frontend)</source>
+        <target>crwdns370810:0crwdne370810:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.GridRow.label">
+        <source>Grid: Row</source>
+        <target>crwdns56762:0crwdne56762:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.GridRow.description">
+        <source>A container element for arranging fields side by side, providing visual structuring</source>
+        <target>crwdns370688:0crwdne370688:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.GridRow.editor.label.label">
+        <source>Row name (not visible within frontend)</source>
+        <target>crwdns56764:0crwdne56764:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Text.label">
+        <source>Text</source>
+        <target>crwdns56766:0crwdne56766:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Text.description">
+        <source>A single-line text field</source>
+        <target>crwdns370690:0crwdne370690:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Email.label">
+        <source>Email address</source>
+        <target>crwdns56768:0crwdne56768:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Email.description">
+        <source>A text field for inputting an email address</source>
+        <target>crwdns370692:0crwdne370692:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Telephone.label">
+        <source>Telephone number</source>
+        <target>crwdns56770:0crwdne56770:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Telephone.description">
+        <source>A text field for inputting a phone number</source>
+        <target>crwdns370694:0crwdne370694:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Url.label">
+        <source>URL</source>
+        <target>crwdns56772:0crwdne56772:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Url.description">
+        <source>A text field for inputting a URL</source>
+        <target>crwdns370696:0crwdne370696:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Number.label">
+        <source>Number</source>
+        <target>crwdns56774:0crwdne56774:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Number.description">
+        <source>A text field for inputting numbers, with browser controls to adjust the value in predefined steps</source>
+        <target>crwdns370698:0crwdne370698:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Number.editor.validators.Number.label">
+        <source>Number</source>
+        <target>crwdns56776:0crwdne56776:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.label">
+        <source>Date</source>
+        <target>crwdns56778:0crwdne56778:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.description">
+        <source>A text field for inputting a date in a single line</source>
+        <target>crwdns370700:0crwdne370700:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.defaultValue.placeholder">
+        <source>A date in format Y-m-d (e.g 2018-03-17)</source>
+        <target>crwdns56780:0crwdne56780:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.step.description">
+        <source>Specify the number of days between each occurrence of this event.</source>
+        <target>crwdns391474:0crwdne391474:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.step.label">
+        <source>Frequency</source>
+        <target>crwdns56784:0crwdne56784:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.validators.DateRange.label">
+        <source>Date range</source>
+        <target>crwdns56786:0crwdne56786:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.header.label">
+        <source>Date range</source>
+        <target>crwdns56788:0crwdne56788:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.minimum">
+        <source>Minimum date</source>
+        <target>crwdns56790:0crwdne56790:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.maximum">
+        <source>Maximum date</source>
+        <target>crwdns56792:0crwdne56792:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Password.label">
+        <source>Password</source>
+        <target>crwdns56798:0crwdne56798:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Password.description">
+        <source>A text field for entering a password</source>
+        <target>crwdns370702:0crwdne370702:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.AdvancedPassword.label">
+        <source>Advanced password</source>
+        <target>crwdns56800:0crwdne56800:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.AdvancedPassword.description">
+        <source>A text field for entering and confirming a password</source>
+        <target>crwdns370704:0crwdne370704:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.AdvancedPassword.editor.confirmationLabel.label">
+        <source>Confirmation label</source>
+        <target>crwdns56802:0crwdne56802:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.element.AdvancedPassword.editor.confirmationLabel.predefinedDefaults">
+        <source>Confirmation</source>
+        <target>crwdns56804:0crwdne56804:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Textarea.label">
+        <source>Textarea</source>
+        <target>crwdns56806:0crwdne56806:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Textarea.description">
+        <source>A multi-line text field for entering extended or continuous text</source>
+        <target>crwdns370706:0crwdne370706:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Checkbox.label">
+        <source>Checkbox</source>
+        <target>crwdns56808:0crwdne56808:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Checkbox.description">
+        <source>An element for creating a single checkbox</source>
+        <target>crwdns370708:0crwdne370708:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.label">
+        <source>Country select</source>
+        <target>crwdns278699:0crwdne278699:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.description">
+        <source>An element to select a country</source>
+        <target>crwdns370710:0crwdne370710:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiCheckbox.label">
+        <source>Multi checkbox</source>
+        <target>crwdns56810:0crwdne56810:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiCheckbox.description">
+        <source>An element for creating multiple checkboxes</source>
+        <target>crwdns370712:0crwdne370712:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelect.label">
+        <source>Multi select</source>
+        <target>crwdns56812:0crwdne56812:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelect.description">
+        <source>An element for creating a field that allows multiple selections</source>
+        <target>crwdns370714:0crwdne370714:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.RadioButton.label">
+        <source>Radio button</source>
+        <target>crwdns56814:0crwdne56814:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.RadioButton.description">
+        <source>An element for displaying one or more radio buttons</source>
+        <target>crwdns370716:0crwdne370716:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SingleSelect.label">
+        <source>Single select</source>
+        <target>crwdns56816:0crwdne56816:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.SingleSelect.description">
+        <source>An element for creating a dropdown list for selecting a single option</source>
+        <target>crwdns370718:0crwdne370718:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateTime.editor.header.label">
+        <source>Date/time</source>
+        <target>crwdns56832:0crwdne56832:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.label">
+        <source>Static text</source>
+        <target>crwdns56838:0crwdne56838:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.description">
+        <source>A field for displaying text content</source>
+        <target>crwdns392966:0crwdne392966:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.editor.label.label">
+        <source>Header</source>
+        <target>crwdns56840:0crwdne56840:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.editor.staticText.label">
+        <source>Text</source>
+        <target>crwdns56842:0crwdne56842:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Hidden.label">
+        <source>Hidden</source>
+        <target>crwdns56844:0crwdne56844:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Hidden.description">
+        <source>A field that is not displayed in the frontend</source>
+        <target>crwdns370724:0crwdne370724:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Hidden.editor.defaultValue.label">
+        <source>Value</source>
+        <target>crwdns56846:0crwdne56846:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.label">
+        <source>Content element</source>
+        <target>crwdns56848:0crwdne56848:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.description">
+        <source>A field for displaying any content element from your website</source>
+        <target>crwdns370726:0crwdne370726:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.selectContentElement">
+        <source>No content element selected</source>
+        <target>crwdns56850:0crwdne56850:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.editor.contentElement.label">
+        <source>Content element uid</source>
+        <target>crwdns56852:0crwdne56852:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.editor.contentElement.buttonLabel">
+        <source>Page Content</source>
+        <target>crwdns56854:0crwdne56854:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.label">
+        <source>File upload</source>
+        <target>crwdns56856:0crwdne56856:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.description">
+        <source>An element for uploading a file</source>
+        <target>crwdns370728:0crwdne370728:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.label">
+        <source>Allowed file mime types</source>
+        <target>crwdns56858:0crwdne56858:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.maximumFileSize.label">
+        <source>
+Your servers' maximum upload file size is {0}. Be aware setting higher values can result in errors when submitting the form.
+If you need higher values contact your administrator for help.
+        </source>
+        <target>
+crwdns292425:0{0}crwdne292425:0
+        </target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.doc">
+        <source>Documents (doc)</source>
+        <target>crwdns56862:0crwdne56862:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.docx">
+        <source>Documents (docx)</source>
+        <target>crwdns56864:0crwdne56864:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.xls">
+        <source>Documents (xls)</source>
+        <target>crwdns56866:0crwdne56866:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.xlsx">
+        <source>Documents (xlsx)</source>
+        <target>crwdns56868:0crwdne56868:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.pdf">
+        <source>Documents (pdf)</source>
+        <target>crwdns56870:0crwdne56870:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.odt">
+        <source>Documents (odt)</source>
+        <target>crwdns56872:0crwdne56872:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.ods">
+        <source>Documents (ods)</source>
+        <target>crwdns56874:0crwdne56874:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.multiple.label">
+        <source>Allow multiple upload</source>
+        <target>crwdns393016:0crwdne393016:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowRemoval.label">
+        <source>Allow removal of uploaded files</source>
+        <target>crwdns393018:0crwdne393018:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.label">
+        <source>Image upload</source>
+        <target>crwdns56876:0crwdne56876:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.description">
+        <source>An element for uploading an image</source>
+        <target>crwdns370730:0crwdne370730:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.label">
+        <source>Allowed file mime types</source>
+        <target>crwdns56878:0crwdne56878:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.jpg">
+        <source>Images (jpg)</source>
+        <target>crwdns56880:0crwdne56880:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.png">
+        <source>Images (png)</source>
+        <target>crwdns56882:0crwdne56882:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.bmp">
+        <source>Images (bmp)</source>
+        <target>crwdns56884:0crwdne56884:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect">
+        <source>Country Select</source>
+        <target>crwdns278701:0crwdne278701:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.editor.prioritizedCountries.label">
+        <source>Prioritized countries</source>
+        <target>crwdns278703:0crwdne278703:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.editor.onlyCountries.label">
+        <source>Only countries</source>
+        <target>crwdns278705:0crwdne278705:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.editor.excludeCountries.label">
+        <source>Exclude countries</source>
+        <target>crwdns278707:0crwdne278707:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.editor.defaultValue.label">
+        <source>Default value</source>
+        <target>crwdns415551:0crwdne415551:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.editor.defaultValue.description">
+        <source>Ensure the selected country is not excluded by the configured country filters.</source>
+        <target>crwdns415553:0crwdne415553:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.UnknownElement">
+        <source>Unknown element</source>
+        <target>crwdns56886:0crwdne56886:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.new_element">
+        <source>Create new element</source>
+        <target>crwdns56888:0crwdne56888:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.remove">
+        <source>Remove</source>
+        <target>crwdns56890:0crwdne56890:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.formelement_selector.title">
+        <source>Insert formelement identifier</source>
+        <target>crwdns56896:0crwdne56896:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.formelement.remove">
+        <source>Remove this Element</source>
+        <target>crwdns211280:0crwdne211280:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.grid.add">
+        <source>Add a new row</source>
+        <target>crwdns211282:0crwdne211282:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.grid.remove">
+        <source>Remove this row</source>
+        <target>crwdns211284:0crwdne211284:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.grid.move">
+        <source>Move this row</source>
+        <target>crwdns371124:0crwdne371124:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.entry.label">
+        <source>Label</source>
+        <target>crwdns371126:0crwdne371126:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.entry.value">
+        <source>Value</source>
+        <target>crwdns371128:0crwdne371128:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.entry.selected">
+        <source>Selected</source>
+        <target>crwdns371130:0crwdne371130:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.insertElements.filter.noResults">
+        <source>Unfortunately no element type matches your query, please try a different one.</source>
+        <target>crwdns370732:0crwdne370732:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.insertElements.filter.placeholder">
+        <source>Search for any element type</source>
+        <target>crwdns370734:0crwdne370734:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.newPages.filter.noResults">
+        <source>Unfortunately no step type matches your query, please try a different one.</source>
+        <target>crwdns370736:0crwdne370736:0</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.newPages.filter.placeholder">
+        <source>Search for any step type</source>
+        <target>crwdns370738:0crwdne370738:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.storage.database.label">
+        <source>Database</source>
+        <target>crwdns393742:0crwdne393742:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.storage.database.description">
+        <source>Store the form as a record in the database. Recommended for most use cases, because it treats forms as user-generated content and allows integrated versioning.</source>
+        <target>crwdns393744:0crwdne393744:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.storage.extension.label">
+        <source>Extension</source>
+        <target>crwdns393750:0crwdne393750:0</target>
+      </trans-unit>
+      <trans-unit id="formManager.storage.extension.description">
+        <source>Store the form inside an extension. Such forms are then not meant for editing, but provided as-is.</source>
+        <target>crwdns393752:0crwdne393752:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
