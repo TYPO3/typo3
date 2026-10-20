@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_resource.xlf" date="2023-02-21T00:00:00Z" product-name="cms" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="ajax.success" approved="yes">
+        <source>Success</source>
+        <target state="final">Éxito</target>
+      </trans-unit>
+      <trans-unit id="ajax.success.message.renamed" approved="yes">
+        <source>The resource "%s" has been renamed to "%s".</source>
+        <target state="final">El recurso "%s" ha sido renombrado a "%s".</target>
+      </trans-unit>
+      <trans-unit id="ajax.error" approved="yes">
+        <source>An error occurred</source>
+        <target state="final">Se produjo un error</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNotFileOrFolder" approved="yes">
+        <source>The resource must be a file or a folder.</source>
+        <target state="final">El recurso debe ser un archivo o una carpeta.</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNameCannotBeEmpty" approved="yes">
+        <source>The resource name cannot be empty.</source>
+        <target state="final">El nombre del recurso no puede estar vacío.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
