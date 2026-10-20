@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="welcome_header" approved="yes">
+        <source>User login</source>
+        <target state="final">Brukerinnlogging</target>
+      </trans-unit>
+      <trans-unit id="logout_header" approved="yes">
+        <source>You have logged out.</source>
+        <target state="final">Du har nå logget ut.</target>
+      </trans-unit>
+      <trans-unit id="error_header" approved="yes">
+        <source>Login failure</source>
+        <target state="final">Innlogging mislykket</target>
+      </trans-unit>
+      <trans-unit id="success_header" approved="yes">
+        <source>Login successful</source>
+        <target state="final">Innlogging vellykket</target>
+      </trans-unit>
+      <trans-unit id="success_message" approved="yes">
+        <source>You are now logged in as '###USER###'</source>
+        <target state="final">Du er nå logget inn som '###USER###'</target>
+      </trans-unit>
+      <trans-unit id="status_header" approved="yes">
+        <source>Current status</source>
+        <target state="final">Nåværende status</target>
+      </trans-unit>
+      <trans-unit id="username" approved="yes">
+        <source>Username</source>
+        <target state="final">Brukernavn</target>
+      </trans-unit>
+      <trans-unit id="password" approved="yes">
+        <source>Password</source>
+        <target state="final">Passord</target>
+      </trans-unit>
+      <trans-unit id="login" approved="yes">
+        <source>Login</source>
+        <target state="final">Logg inn</target>
+      </trans-unit>
+      <trans-unit id="logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">Logg ut</target>
+      </trans-unit>
+      <trans-unit id="send_password" approved="yes">
+        <source>Send password</source>
+        <target state="final">Send passord</target>
+      </trans-unit>
+      <trans-unit id="reset_password" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">Tilbakestill passord</target>
+      </trans-unit>
+      <trans-unit id="change_password_header" approved="yes">
+        <source>Change your password</source>
+        <target state="final">Endre passord</target>
+      </trans-unit>
+      <trans-unit id="change_password" approved="yes">
+        <source>Change your password</source>
+        <target state="final">Endre passord</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label1" approved="yes">
+        <source>Enter new password</source>
+        <target state="final">Skriv inn nytt passord</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label2" approved="yes">
+        <source>Repeat new password</source>
+        <target state="final">Gjenta passord</target>
+      </trans-unit>
+      <trans-unit id="your_email" approved="yes">
+        <source>Your email</source>
+        <target state="final">Din e-post</target>
+      </trans-unit>
+      <trans-unit id="forgot_header" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">Har du glemt passordet ditt?</target>
+      </trans-unit>
+      <trans-unit id="forgot_email_password" xml:space="preserve" approved="yes">
+        <source>Your password
+Hi %s
+
+Your username is "%s"
+Your password is "%s"</source>
+      <target state="final">Ditt passord
+Hei %s
+Ditt brukernavn er: "%s"
+Ditt passord er: "%s"</target></trans-unit>
+      <trans-unit id="forgot_message_emailSent" approved="yes">
+        <source>Your password has now been sent to the email address %s</source>
+        <target state="final">Passordet ditt har nå blitt sendt til e-post adressen %s</target>
+      </trans-unit>
+      <trans-unit id="forgot_header_backToLogin" approved="yes">
+        <source>Return to login form</source>
+        <target state="final">Tilbake til innloggingsskjemaet</target>
+      </trans-unit>
+      <trans-unit id="enter_your_data" approved="yes">
+        <source>Username or email address</source>
+        <target state="final">Brukernavn eller E-postadresse</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
