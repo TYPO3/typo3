@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Workspaces</source>
+        <target state="final">कार्यक्षेत्र</target>
+      </trans-unit>
+      <trans-unit id="indicator.workspacePrefix" approved="yes">
+        <source>Workspace</source>
+        <target state="final">वर्कस्पेस</target>
+      </trans-unit>
+      <trans-unit id="noResults" approved="yes">
+        <source>No records found.</source>
+        <target state="final">कोई रिकॉर्ड नहीं मिला।</target>
+      </trans-unit>
+      <trans-unit id="ok" approved="yes">
+        <source>Ok</source>
+        <target state="final">ठीक</target>
+      </trans-unit>
+      <trans-unit id="cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">रद्द करना</target>
+      </trans-unit>
+      <trans-unit id="entireWorkspace" approved="yes">
+        <source>Entire workspace:</source>
+        <target state="final">सम्पूर्ण कार्यस्थल:</target>
+      </trans-unit>
+      <trans-unit id="chooseMassAction" approved="yes">
+        <source>Choose mass action</source>
+        <target state="final">बड़े पैमाने पर कार्रवाई चुनें</target>
+      </trans-unit>
+      <trans-unit id="chooseSelectionAction" approved="yes">
+        <source>Choose selection action</source>
+        <target state="final">चयन क्रिया चुनें</target>
+      </trans-unit>
+      <trans-unit id="chooseAction" approved="yes">
+        <source>Choose staging action</source>
+        <target state="final">स्टेजिंग कार्रवाई चुनें</target>
+      </trans-unit>
+      <trans-unit id="item" approved="yes">
+        <source>item</source>
+        <target state="final">आइटम(वस्तु)</target>
+      </trans-unit>
+      <trans-unit id="items" approved="yes">
+        <source>items</source>
+        <target state="final">आइटम्स(वस्तुओं)</target>
+      </trans-unit>
+      <trans-unit id="recordsToDisplay" approved="yes">
+        <source>Records to display</source>
+        <target state="final">रिकॉर्ड्स प्रदर्शित करने के लिए</target>
+      </trans-unit>
+      <trans-unit id="reviewandpublish" approved="yes">
+        <source>review and publish</source>
+        <target state="final">रिव्यु और पब्लिश</target>
+      </trans-unit>
+      <trans-unit id="workspacelist" approved="yes">
+        <source>Workspace List</source>
+        <target state="final">कार्यक्षेत्र की लिस्ट</target>
+      </trans-unit>
+      <trans-unit id="editorInLive" approved="yes">
+        <source>You are in LIVE workspace. Please select a draft workspace from the top bar menu before you can review and publish changes.</source>
+        <target state="final">आप लाइव वर्कस्पेस में हैं। कृपया बदलावों की समीक्षा और प्रकाशन करने से पहले शीर्ष बार मेनू से एक ड्राफ्ट वर्कस्पेस चुनें।</target>
+      </trans-unit>
+      <trans-unit id="moduleOnPageIdZero" approved="yes">
+        <source>Please select a page in the page tree to review and publish changes.</source>
+        <target state="final">कृपया पृष्ठ वृक्ष में एक पृष्ठ चुनें ताकि परिवर्तनों की समीक्षा और प्रकाशन की जा सके।</target>
+      </trans-unit>
+      <trans-unit id="admin.noWorkspaceSetup.title" approved="yes">
+        <source>No workspace set up</source>
+        <target state="final">कोई वर्कस्पेस स्थापित नहीं किया गया</target>
+      </trans-unit>
+      <trans-unit id="admin.noWorkspaceSetup.message" approved="yes">
+        <source>There are currently no workspace records configured in the database. To use the workspace functionality, at least one workspace must be set up on the root page.</source>
+        <target state="final">वर्तमान में डेटाबेस में कोई वर्कस्पेस रिकॉर्ड कॉन्फ़िगर नहीं है। वर्कस्पेस कार्यक्षमता का उपयोग करने के लिए, रूट पेज पर कम से कम एक वर्कस्पेस स्थापित होना आवश्यक है।</target>
+      </trans-unit>
+      <trans-unit id="admin.noWorkspaceSetup.buttonCreate" approved="yes">
+        <source>Create a workspace</source>
+        <target state="final">एक कार्यस्थान बनाएं</target>
+      </trans-unit>
+      <trans-unit id="button.editWorkspaceSettings" approved="yes">
+        <source>Edit workspace settings</source>
+        <target state="final">कार्यस्थान सेटिंग्स संपादित करें</target>
+      </trans-unit>
+      <trans-unit id="actionSendToStage" approved="yes">
+        <source>Send to stage</source>
+        <target state="final">अवस्था पर भेजे</target>
+      </trans-unit>
+      <trans-unit id="publish_execute_action_option" approved="yes">
+        <source>Publish to LIVE</source>
+        <target state="final">LIVE पर पब्लिश करे</target>
+      </trans-unit>
+      <trans-unit id="close" approved="yes">
+        <source>Close</source>
+        <target state="final">बंद करें</target>
+      </trans-unit>
+      <trans-unit id="runMassAction.done" approved="yes">
+        <source>Done processing %d elements</source>
+        <target state="final">प्रोसेसिंग %d एलिमेंट्स किया</target>
+      </trans-unit>
+      <trans-unit id="runMassAction.init" approved="yes">
+        <source>init</source>
+        <target state="final">init</target>
+      </trans-unit>
+      <trans-unit id="tooltip.publish" approved="yes">
+        <source>Publish version of record</source>
+        <target state="final">रिकॉर्ड का संस्करण प्रकाशित करें</target>
+      </trans-unit>
+      <trans-unit id="tooltip.publishAll" approved="yes">
+        <source>Really publish entire workspace?</source>
+        <target state="final">वास्तव में संपूर्ण वर्कस्पेस प्रकाशित करना है?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardAll" approved="yes">
+        <source>Do you really want to discard changes from the whole workspace?</source>
+        <target state="final">आप वास्तव में पुरे वर्कस्पेस में से परिवर्तन त्यागना चाहते हैं?</target>
+      </trans-unit>
+      <trans-unit id="window.publish.title" approved="yes">
+        <source>Publish version</source>
+        <target state="final">संस्करण प्रकाशित करें</target>
+      </trans-unit>
+      <trans-unit id="window.publish.message" approved="yes">
+        <source>Do you really want to publish this version?</source>
+        <target state="final">क्या आप सचमुच इस संस्करण को प्रकाशित करना चाहते हैं?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.publishSelected" approved="yes">
+        <source>Really publish selected elements?</source>
+        <target state="final">वास्तव में सिलेक्टेड एलिमेंट्स को पब्लिश करना है?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardSelected" approved="yes">
+        <source>Really discard changes of the selected elements?</source>
+        <target state="final">वास्तव में सिलेक्टेड तत्वों के परिवर्तन को त्यागना है?</target>
+      </trans-unit>
+      <trans-unit id="tooltip.affectWholeWorkspace" approved="yes">
+        <source>Please note that this will affect all changes in the current workspace, which may be more than you are currently seeing on your screen.</source>
+        <target state="final">कृपया ध्यान दें कि इससे वर्तमान कार्यस्थान में सभी परिवर्तन प्रभावित होंगे, जो आपकी स्क्रीन पर वर्तमान में दिखाई दे रहे परिवर्तनों से अधिक हो सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="tooltip.generatePagePreview" approved="yes">
+        <source>Generate page preview links</source>
+        <target state="final">पेज प्रीव्यू लिंक उत्पन्न करे</target>
+      </trans-unit>
+      <trans-unit id="tooltip.showChanges" approved="yes">
+        <source>Show changes</source>
+        <target state="final">परिवर्तन दिखाए</target>
+      </trans-unit>
+      <trans-unit id="previewLink" approved="yes">
+        <source>Preview Link</source>
+        <target state="final">प्रीव्यू लिंक</target>
+      </trans-unit>
+      <trans-unit id="error.noResponse" approved="yes">
+        <source>The server did not send any response whether the action was successful.</source>
+        <target state="final">यदि यह काम सफल रहा था तो सर्वर ने कोई प्रतिक्रिया नहीं भेजी थी</target>
+      </trans-unit>
+      <trans-unit id="rowDetails" approved="yes">
+        <source>Row details...</source>
+        <target state="final">रो का वर्णन...</target>
+      </trans-unit>
+      <trans-unit id="column.difference" approved="yes">
+        <source>Difference</source>
+        <target state="final">भिन्नता</target>
+      </trans-unit>
+      <trans-unit id="column.changeDate" approved="yes">
+        <source>Modification</source>
+        <target state="final">मॉडिफिकेशन</target>
+      </trans-unit>
+      <trans-unit id="column.stage" approved="yes">
+        <source>Current Stage</source>
+        <target state="final">वर्तमान स्टेज</target>
+      </trans-unit>
+      <trans-unit id="column.last_change" approved="yes">
+        <source>Last changed</source>
+        <target state="final">अंतिम बार बदला गया</target>
+      </trans-unit>
+      <trans-unit id="column.editor.unknown" approved="yes">
+        <source>Unknown</source>
+        <target state="final">अज्ञात</target>
+      </trans-unit>
+      <trans-unit id="column.actions" approved="yes">
+        <source>Actions</source>
+        <target state="final">एक्शन्स</target>
+      </trans-unit>
+      <trans-unit id="column.wsPath" approved="yes">
+        <source>Path</source>
+        <target state="final">पाथ</target>
+      </trans-unit>
+      <trans-unit id="column.wsTitle" approved="yes">
+        <source>Title</source>
+        <target state="final">शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="column.wsStateAction" approved="yes">
+        <source>Action</source>
+        <target state="final">क्रिया</target>
+      </trans-unit>
+      <trans-unit id="column.wsStateAction.deleted" approved="yes">
+        <source>deleted</source>
+        <target state="final">हटाया गया</target>
+      </trans-unit>
+      <trans-unit id="column.wsStateAction.hidden" approved="yes">
+        <source>hidden</source>
+        <target state="final">छुपाया गया</target>
+      </trans-unit>
+      <trans-unit id="column.wsStateAction.modified" approved="yes">
+        <source>modified</source>
+        <target state="final">संशोधित</target>
+      </trans-unit>
+      <trans-unit id="column.wsStateAction.moved" approved="yes">
+        <source>moved</source>
+        <target state="final">हटाया गया</target>
+      </trans-unit>
+      <trans-unit id="column.wsStateAction.new" approved="yes">
+        <source>created</source>
+        <target state="final">बनाया था</target>
+      </trans-unit>
+      <trans-unit id="column.wsStateAction.unchanged" approved="yes">
+        <source>unchanged</source>
+        <target state="final">अपरिवर्तित</target>
+      </trans-unit>
+      <trans-unit id="column.uid" approved="yes">
+        <source>WS ID</source>
+        <target state="final">WS ID</target>
+      </trans-unit>
+      <trans-unit id="column.oid" approved="yes">
+        <source>Live ID</source>
+        <target state="final">लाइव ID</target>
+      </trans-unit>
+      <trans-unit id="column.workspaceName" approved="yes">
+        <source>Workspace</source>
+        <target state="final">कार्यक्षेत्र</target>
+      </trans-unit>
+      <trans-unit id="column.livePath" approved="yes">
+        <source>Live path</source>
+        <target state="final">लाइव पाथ</target>
+      </trans-unit>
+      <trans-unit id="column.integrity" approved="yes">
+        <source>Integrity</source>
+        <target state="final">अखंडता</target>
+      </trans-unit>
+      <trans-unit id="tooltip.viewElementAction" approved="yes">
+        <source>Preview element</source>
+        <target state="final">एलिमेंट प्रीव्यू करे</target>
+      </trans-unit>
+      <trans-unit id="tooltip.qrCode" approved="yes">
+        <source>Preview QR code</source>
+        <target state="final">QR कोड का पूर्वावलोकन करें</target>
+      </trans-unit>
+      <trans-unit id="tooltip.editElementAction" approved="yes">
+        <source>Edit element</source>
+        <target state="final">एलिमेंट एडिट करें</target>
+      </trans-unit>
+      <trans-unit id="tooltip.openPage" approved="yes">
+        <source>Open version of page</source>
+        <target state="final">पेज के ओपन वर्जन</target>
+      </trans-unit>
+      <trans-unit id="tooltip.sendToPrevStage" approved="yes">
+        <source>Send record to previous Stage</source>
+        <target state="final">पिछले स्टेज में रिकॉर्ड भेजें</target>
+      </trans-unit>
+      <trans-unit id="tooltip.sendToNextStage" approved="yes">
+        <source>Send record to next Stage</source>
+        <target state="final">अगले स्टेज में रिकॉर्ड भेजें</target>
+      </trans-unit>
+      <trans-unit id="tooltip.discardVersion" approved="yes">
+        <source>Discard version of record</source>
+        <target state="final">रिकॉर्ड का संस्करण छोड़ें</target>
+      </trans-unit>
+      <trans-unit id="tooltip.expand" approved="yes">
+        <source>Expand element and show relations</source>
+        <target state="final">तत्व को विस्तारित करें और संबंध दिखाएं</target>
+      </trans-unit>
+      <trans-unit id="tooltip.showHistory" approved="yes">
+        <source>Show history of workspace version</source>
+        <target state="final">वर्कस्पेस वर्जन का इतिहास देखिये</target>
+      </trans-unit>
+      <trans-unit id="window.discard.title" approved="yes">
+        <source>Discard version of record</source>
+        <target state="final">रिकॉर्ड का संस्करण छोड़ें</target>
+      </trans-unit>
+      <trans-unit id="window.discardAll.title" approved="yes">
+        <source>Discard all workspace version of current page.</source>
+        <target state="final">वर्तमान पेज के सभी वर्कस्पेस वर्जन को डिस्कार्ड करे.</target>
+      </trans-unit>
+      <trans-unit id="window.discard.message" approved="yes">
+        <source>Do you really want to discard this version from workspace?</source>
+        <target state="final">क्या आप सचमे वर्कस्पेस में से इस वर्जन को डिस्कार्ड करना चाहते है?</target>
+      </trans-unit>
+      <trans-unit id="window.discardAll.message" approved="yes">
+        <source>Do you really want to discard all versions from page?</source>
+        <target state="final">क्या आप सचमे पेज में से सभी वर्जन को डिस्कार्ड करना चाहते है ?</target>
+      </trans-unit>
+      <trans-unit id="window.massAction.title" approved="yes">
+        <source>Prepare to start mass action</source>
+        <target state="final">बड़े पैमाने पर कार्रवाई शुरू करने के लिए तैयार</target>
+      </trans-unit>
+      <trans-unit id="window.version.published" approved="yes">
+        <source>Published version</source>
+        <target state="final">प्रकाशित संस्करण</target>
+      </trans-unit>
+      <trans-unit id="window.version.staged" approved="yes">
+        <source>Staged version</source>
+        <target state="final">स्टेजड संस्करण</target>
+      </trans-unit>
+      <trans-unit id="window.selectionAction.title" approved="yes">
+        <source>Prepare to execute actions on selection</source>
+        <target state="final">सिलेक्शन पर कार्रवाई एक्सीक्यूट करने के लिए तैयार</target>
+      </trans-unit>
+      <trans-unit id="error.stageId.invalid" approved="yes">
+        <source>The stage to be used seems to be invalid and cannot be used. Please consider to use the update wizard in the install tool to fix this.</source>
+        <target state="final">इस्तेमाल होने वाले स्टेज अमान्य प्रतीत होते हैं और इनका उपयोग नहीं किया जा सकता। कृपया इन्हें ठीक करने के लिए इंस्टॉल उपकरण में अद्यतन विज़ार्ड का उपयोग करने पर विचार करें।</target>
+      </trans-unit>
+      <trans-unit id="error.sendToNextStage.noRecordFound" approved="yes">
+        <source>The record element could not be found.</source>
+        <target state="final">रिकॉर्ड एलिमेंट नहीं पाया जा सका।</target>
+      </trans-unit>
+      <trans-unit id="error.sendToPrevStage.noPreviousStage" approved="yes">
+        <source>The record element is already in editing stage, there is no previous stage.</source>
+        <target state="final">वहा पिछली अवस्था नहीं है, रिकॉर्ड एलिमेंट पहले से ही एडिटिंग अवस्था में है।</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.itemsWillBeSentTo" approved="yes">
+        <source>The selected element(s) will be sent to</source>
+        <target state="final">पर चुने हुआ एलिमेंट(ओ) को भेजा जायेगा</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.selectAll" approved="yes">
+        <source>Select all</source>
+        <target state="final">सभी चुनें</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.deselectAll" approved="yes">
+        <source>Uncheck all</source>
+        <target state="final">सभी को अनचेक करें</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.sendMailTo" approved="yes">
+        <source>Send mail to</source>
+        <target state="final">को मेल भेजे</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.additionalRecipients" approved="yes">
+        <source>Additional recipients</source>
+        <target state="final">अतिरिक्त प्राप्तकर्ताओं</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.additionalRecipients.hint" approved="yes">
+        <source>One recipient per line</source>
+        <target state="final">हर एक लाइन में एक पर्याप्त करता</target>
+      </trans-unit>
+      <trans-unit id="window.sendToNextStageWindow.comments" approved="yes">
+        <source>Comments</source>
+        <target state="final">टिप्पणियाँ</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges" approved="yes">
+        <source>Record changes</source>
+        <target state="final">रिकार्ड में परिवर्तन</target>
+      </trans-unit>
+      <trans-unit id="window.recordInformation" approved="yes">
+        <source>Information for "{0}"</source>
+        <target state="final">"{0}" के लिए जानकारी</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.changeSummary" approved="yes">
+        <source>Summary of changes</source>
+        <target state="final">परिवर्तन का सारांश</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.comments" approved="yes">
+        <source>Comments</source>
+        <target state="final">टिप्पणियाँ</target>
+      </trans-unit>
+      <trans-unit id="window.recordChanges.tabs.history" approved="yes">
+        <source>History</source>
+        <target state="final">इतिहास, हिस्ट्री</target>
+      </trans-unit>
+      <trans-unit id="window.recordHistory" approved="yes">
+        <source>History of record "{0}"</source>
+        <target state="final">रिकॉर्ड का इतिहास "{0}"</target>
+      </trans-unit>
+      <trans-unit id="error.getStageTitle.stageNotFound" approved="yes">
+        <source>Stage not found</source>
+        <target state="final">स्टेज नहीं मिला</target>
+      </trans-unit>
+      <trans-unit id="info.newpage" approved="yes">
+        <source>New Page</source>
+        <target state="final">नया पृष्ठ</target>
+      </trans-unit>
+      <trans-unit id="info.newpage.detail" approved="yes">
+        <source>The previewed page has been created in a workspace and has no live counterpart.</source>
+        <target state="final">पूर्वावलोकन पेज कार्यक्षेत्र में बनाया गया है और कोइ लाइव समकक्ष नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="preview.livePreview" approved="yes">
+        <source>Live</source>
+        <target state="final">लाइव</target>
+      </trans-unit>
+      <trans-unit id="preview.livePreviewDetail" approved="yes">
+        <source>Click this element to hide the workspace version and see the live version of the page.</source>
+        <target state="final">कार्यक्षेत्र संस्करण को छिपाने के लिए और पेज के लाइव संस्करण को देखने के लिए इस एलिमेंट पर क्लिक करे।</target>
+      </trans-unit>
+      <trans-unit id="preview.workspacePreview" approved="yes">
+        <source>Workspace</source>
+        <target state="final">कार्यक्षेत्र</target>
+      </trans-unit>
+      <trans-unit id="preview.workspacePreviewDetail" approved="yes">
+        <source>Click this element to hide the live version and see the workspace version of the page.</source>
+        <target state="final">पेज के लाइव संस्करण को छिपाने के लिए और कार्यक्षेत्र संस्करण को दिखने के लिए यहाँ क्लिक करे।</target>
+      </trans-unit>
+      <trans-unit id="preview.modeSlider" approved="yes">
+        <source>Slider</source>
+        <target state="final">स्लाइडर</target>
+      </trans-unit>
+      <trans-unit id="preview.modeVbox" approved="yes">
+        <source>Vertical</source>
+        <target state="final">लम्ब, वर्टीकल</target>
+      </trans-unit>
+      <trans-unit id="preview.modeHbox" approved="yes">
+        <source>Horizontal</source>
+        <target state="final">समतल, हॉरिजॉन्टल</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">प्रकाशित करें</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_discard" approved="yes">
+        <source>Discard</source>
+        <target state="final">त्यागें</target>
+      </trans-unit>
+      <trans-unit id="label_doaction_generatePreviewLinks" approved="yes">
+        <source>Generate Workspace Preview Links</source>
+        <target state="final">कार्यक्षेत्र पूर्वावलोकन लिंक बनाए</target>
+      </trans-unit>
+      <trans-unit id="info.elementAlreadyModified" approved="yes">
+        <source>Element is in workspace stage "%s", modifications will send it back to "%s".</source>
+        <target state="final">एलिमेंट कार्यक्षेत्र अवस्थ में है "%s", मोडिफिकशन्स इसे वापिस "%s" पर भेज देंगे।</target>
+      </trans-unit>
+      <trans-unit id="live_workspace" approved="yes">
+        <source>Live Workspace</source>
+        <target state="final">लाइव कार्यक्षेत्र</target>
+      </trans-unit>
+      <trans-unit id="workspace_version" approved="yes">
+        <source>Workspace version</source>
+        <target state="final">कार्यक्षेत्र संस्करण</target>
+      </trans-unit>
+      <trans-unit id="current_step" approved="yes">
+        <source><![CDATA[<b>Current stage step</b>: {0} (<b>{1}</b>/{2})]]></source>
+        <target state="final"><![CDATA[&lt;b&gt;मौजूदा स्टेज स्टेप&lt;/b&gt;:{0}(&lt;b&gt;{1}&lt;/b&gt;/{2})]]></target>
+      </trans-unit>
+      <trans-unit id="path" approved="yes">
+        <source><![CDATA[<b>Path</b>: {0}]]></source>
+        <target state="final"><![CDATA[&lt;b&gt;पथ&lt;/b&gt;:{0}]]></target>
+      </trans-unit>
+      <trans-unit id="stage" approved="yes">
+        <source>Stage {0}</source>
+        <target state="final">अवस्था{0}</target>
+      </trans-unit>
+      <trans-unit id="comments" approved="yes">
+        <source><![CDATA[User comments for <b>step {0} of stage</b> "{1}"]]></source>
+        <target state="final"><![CDATA[&lt;b&gt;स्टेज के स्टेप {0}&lt;/b&gt; "{1}" के लिए उपयोगकर्ता टिप्पणियां]]></target>
+      </trans-unit>
+      <trans-unit id="language.allLanguages" approved="yes">
+        <source>all languages</source>
+        <target state="final">सभी भाषाएँ</target>
+      </trans-unit>
+      <trans-unit id="language.selectLanguage" approved="yes">
+        <source>all languages</source>
+        <target state="final">सभी भाषाएँ</target>
+      </trans-unit>
+      <trans-unit id="integrity.dependsOnDefaultLanguageRecord" approved="yes">
+        <source><![CDATA[Record "%s" depends on default language record]]></source>
+        <target state="final"><![CDATA[रिकॉर्ड "% s" डिफ़ॉल्ट भाषा के रिकॉर्ड पर निर्भर करता है]]></target>
+      </trans-unit>
+      <trans-unit id="integrity.isDefaultLanguageRecord" approved="yes">
+        <source><![CDATA[Default language record for record "%s"]]></source>
+        <target state="final"><![CDATA["%s" रिकॉर्ड के लिए डिफ़ॉल्ट भाषा रिकॉर्ड]]></target>
+      </trans-unit>
+      <trans-unit id="window.integrity_warning.title" approved="yes">
+        <source>Integrity Warning</source>
+        <target state="final">अखंडता चेतावनी</target>
+      </trans-unit>
+      <trans-unit id="integrity.hasIssuesDescription" approved="yes">
+        <source>The integrity check discovered several issues, see status icons in front of each record for further details.</source>
+        <target state="final">अखंडता जांचने वाला कई मुद्दों को पता लगाता है, स्थिति आइकॉन्स का उपयोग करें हर रिकॉर्ड के सामने अधिक विवरण के लिए।</target>
+      </trans-unit>
+      <trans-unit id="integrity.hasIssuesQuestion" approved="yes">
+        <source>Do you want to continue?</source>
+        <target state="final">क्या आप जारी रखना चाहते हैं?</target>
+      </trans-unit>
+      <trans-unit id="status.info" approved="yes">
+        <source>Information</source>
+        <target state="final">जानकारी</target>
+      </trans-unit>
+      <trans-unit id="status.warning" approved="yes">
+        <source>Warning</source>
+        <target state="final">चेतावनी</target>
+      </trans-unit>
+      <trans-unit id="status.error" approved="yes">
+        <source>Error</source>
+        <target state="final">त्रुटि, गलती, दोष, एरर</target>
+      </trans-unit>
+      <trans-unit id="iframe.livePreview" approved="yes">
+        <source>Preview of the live record</source>
+        <target state="final">लाइव रिकॉर्ड का पूर्वावलोकन</target>
+      </trans-unit>
+      <trans-unit id="iframe.workspacePreview" approved="yes">
+        <source>Preview of the record in workspace %s</source>
+        <target state="final">कामक्षेत्र %s में रिकॉर्ड का पूर्वावलोकन</target>
+      </trans-unit>
+      <trans-unit id="workingTable.depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">गहराई</target>
+      </trans-unit>
+      <trans-unit id="workingTable.languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">भाषाएँ</target>
+      </trans-unit>
+      <trans-unit id="workingTable.stages" approved="yes">
+        <source>Stages</source>
+        <target state="final">स्टेज</target>
+      </trans-unit>
+      <trans-unit id="status.has_changes" approved="yes">
+        <source>Record was changed in this workspace</source>
+        <target state="final">रिकॉर्ड इस कार्यक्षेत्र में बदल गया था</target>
+      </trans-unit>
+      <trans-unit id="status.contains_changes" approved="yes">
+        <source>Record contains version records</source>
+        <target state="final">रिकॉर्ड संस्करण रिकॉर्ड्स शामिल है</target>
+      </trans-unit>
+      <trans-unit id="status.is_new" approved="yes">
+        <source>Record was created in this workspace</source>
+        <target state="final">रिकॉर्ड इस कार्यक्षेत्र में बनाया गया था</target>
+      </trans-unit>
+      <trans-unit id="moduleMenu.dropdown.label" approved="yes">
+        <source>Selected workspace</source>
+        <target state="final">चयनित कार्यक्षेत्र</target>
+      </trans-unit>
+      <trans-unit id="action.switchToWorkspace" approved="yes">
+        <source>Switch to workspace</source>
+        <target state="final">कार्यक्षेत्र पर स्विच करें</target>
+      </trans-unit>
+      <trans-unit id="action.selectWorkspace" approved="yes">
+        <source>Select workspace</source>
+        <target state="final">वर्कस्पेस का चयन करें</target>
+      </trans-unit>
+      <trans-unit id="workspaceInfo.live.title" approved="yes">
+        <source>LIVE</source>
+        <target state="final">लाइव</target>
+      </trans-unit>
+      <trans-unit id="workspaceInfo.live.description" approved="yes">
+        <source>Changes made in this workspace are published immediately and are directly visible on the live website.</source>
+        <target state="final">इस वर्कस्पेस में किए गए परिवर्तन तुरंत प्रकाशित हो जाते हैं और सीधे लाइव वेबसाइट पर दिखाई देते हैं।</target>
+      </trans-unit>
+      <trans-unit id="userSetting.showWorkspaceLiveIndicator" approved="yes">
+        <source>Enable workspace Live indicator</source>
+        <target state="final">वर्कस्पेस लाइव इंडिकेटर सक्षम करें</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
