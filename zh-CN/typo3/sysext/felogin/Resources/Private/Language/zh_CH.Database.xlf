@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814820" source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/Database.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="zh-CN">
+    <header/>
+    <body>
+      <trans-unit id="tt_content.CType_pi1" resname="tt_content.CType_pi1" approved="yes">
+        <source>Website User Login</source>
+        <target state="final">網站使用者登入</target>
+      </trans-unit>
+      <trans-unit id="felogin_redirectPid" resname="felogin_redirectPid" approved="yes">
+        <source>Redirect at Login to Page (felogin)</source>
+        <target state="final">登入至網頁時轉向 (felogin)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.general_header" resname="tt_content.pi_flexform.general_header" approved="yes">
+        <source>General Header</source>
+        <target state="final">一般標題</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.general_message" resname="tt_content.pi_flexform.general_message" approved="yes">
+        <source>General Message</source>
+        <target state="final">一般訊息</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirect_header" resname="tt_content.pi_flexform.redirect_header" approved="yes">
+        <source>Redirect Header</source>
+        <target state="final">轉向標題</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirect_message" resname="tt_content.pi_flexform.redirect_message" approved="yes">
+        <source>Redirect Message</source>
+        <target state="final">轉向訊息</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.welcome_header" resname="tt_content.pi_flexform.welcome_header" approved="yes">
+        <source>Welcome Header</source>
+        <target state="final">歡迎標題</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.welcome_message" resname="tt_content.pi_flexform.welcome_message" approved="yes">
+        <source>Welcome Message</source>
+        <target state="final">薵迎訊息</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.success_header" resname="tt_content.pi_flexform.success_header" approved="yes">
+        <source>Login Success Header</source>
+        <target state="final">成功登入標題</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.success_message" resname="tt_content.pi_flexform.success_message" approved="yes">
+        <source>Login Success Message</source>
+        <target state="final">成功登入訊息</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.error_header" resname="tt_content.pi_flexform.error_header" approved="yes">
+        <source>Login Error Header</source>
+        <target state="final">登入錯誤標題</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.error_message" resname="tt_content.pi_flexform.error_message" approved="yes">
+        <source>Login Error Message</source>
+        <target state="final">登入錯誤訊息</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.status_header" resname="tt_content.pi_flexform.status_header" approved="yes">
+        <source>Status Display Header</source>
+        <target state="final">顯示狀況標題</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.status_message" resname="tt_content.pi_flexform.status_message" approved="yes">
+        <source>Status Display Message</source>
+        <target state="final">顯示狀況訊息</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.logout_header" resname="tt_content.pi_flexform.logout_header" approved="yes">
+        <source>Logout Header</source>
+        <target state="final">登出標題</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.logout_message" resname="tt_content.pi_flexform.logout_message" approved="yes">
+        <source>Logout Message</source>
+        <target state="final">登出訊息</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.forgot_header" resname="tt_content.pi_flexform.forgot_header" approved="yes">
+        <source>Forgot Password Header</source>
+        <target state="final">忘記密碼標題</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.forgot_message" resname="tt_content.pi_flexform.forgot_message" approved="yes">
+        <source>Forgot Password Message</source>
+        <target state="final">忘記密碼訊息</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.sheet_general" resname="tt_content.pi_flexform.sheet_general" approved="yes">
+        <source>General</source>
+        <target state="final">一般</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.sheet_redirect" resname="tt_content.pi_flexform.sheet_redirect" approved="yes">
+        <source>Redirects</source>
+        <target state="final">轉向</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.sheet_messages" resname="tt_content.pi_flexform.sheet_messages" approved="yes">
+        <source>Messages</source>
+        <target state="final">訊息</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.show_forgot_password" resname="tt_content.pi_flexform.show_forgot_password" approved="yes">
+        <source>Display Password Recovery Link</source>
+        <target state="final">顯示回復密碼連結</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.show_permalogin" resname="tt_content.pi_flexform.show_permalogin" approved="yes">
+        <source>Display Remember Login Option</source>
+        <target state="final">顯示保持登入選項</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.groupSelectmode" resname="tt_content.pi_flexform.groupSelectmode" approved="yes">
+        <source>FE group select mode:</source>
+        <target state="final">前台群組選擇模式:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.groupSelectmode_showAll" resname="tt_content.pi_flexform.groupSelectmode_showAll" approved="yes">
+        <source>Show all</source>
+        <target state="final">顯示所有</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.groupSelectmode_showSelected" resname="tt_content.pi_flexform.groupSelectmode_showSelected" approved="yes">
+        <source>Show selected</source>
+        <target state="final">顯示選擇的</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.groupSelectmode_FromTS" resname="tt_content.pi_flexform.groupSelectmode_FromTS" approved="yes">
+        <source>(from Typoscript)</source>
+        <target state="final">(來自Typoscript)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.groupSelection" resname="tt_content.pi_flexform.groupSelection" approved="yes">
+        <source>FE group selection:</source>
+        <target state="final">前台群組選擇:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.groupSelection_noGroup" resname="tt_content.pi_flexform.groupSelection_noGroup" approved="yes">
+        <source>no group</source>
+        <target state="final">沒有群組</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.field_manualOrder" resname="tt_content.pi_flexform.field_manualOrder" approved="yes">
+        <source>Using fieldlists below:</source>
+        <target state="final">使用以下的欄位:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.field_orderList" resname="tt_content.pi_flexform.field_orderList" approved="yes">
+        <source>User Fields/list:</source>
+        <target state="final">使用者欄位/清單:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.field_orderDetails" resname="tt_content.pi_flexform.field_orderDetails" approved="yes">
+        <source>User Fields/details:</source>
+        <target state="final">使用者欄位/詳情:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode" resname="tt_content.pi_flexform.redirectMode" approved="yes">
+        <source>Redirect Mode</source>
+        <target state="final">轉向模式</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.0" resname="tt_content.pi_flexform.redirectMode.I.0" approved="yes">
+        <source>Defined by Usergroup Record</source>
+        <target state="final">以使用者群組的記錄設定</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.1" resname="tt_content.pi_flexform.redirectMode.I.1" approved="yes">
+        <source>Defined by User Record</source>
+        <target state="final">以使用者的記錄設定</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.2" resname="tt_content.pi_flexform.redirectMode.I.2" approved="yes">
+        <source>After Login (TS or Flexform)</source>
+        <target state="final">登入後(TS 或 Flexform)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.3" resname="tt_content.pi_flexform.redirectMode.I.3" approved="yes">
+        <source>After Logout (TS or Flexform)</source>
+        <target state="final">登出後(TS or Flexform)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.4" resname="tt_content.pi_flexform.redirectMode.I.4" approved="yes">
+        <source>After Login Error (TS or Flexform)</source>
+        <target state="final">登入錯誤後(TS or Flexform)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.5" resname="tt_content.pi_flexform.redirectMode.I.5" approved="yes">
+        <source>Defined by GET/POST Parameters</source>
+        <target state="final">以GET/POST 週邊參數設定</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.6" resname="tt_content.pi_flexform.redirectMode.I.6" approved="yes">
+        <source>Defined by Referrer</source>
+        <target state="final">由轉介媒體設定</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.7" resname="tt_content.pi_flexform.redirectMode.I.7" approved="yes">
+        <source>Defined by Domain Entries</source>
+        <target state="final">由網域資料設定</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectFirstMethod" resname="tt_content.pi_flexform.redirectFirstMethod" approved="yes">
+        <source>Use First Supported Mode from Selection</source>
+        <target state="final">使用選取的第一個支援模式</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectDisable" resname="tt_content.pi_flexform.redirectDisable" approved="yes">
+        <source>Disable Redirect</source>
+        <target state="final">關閉轉向</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectPageLogin" resname="tt_content.pi_flexform.redirectPageLogin" approved="yes">
+        <source>After Successful Login Redirect to Page</source>
+        <target state="final">成功登入後轉向至網頁</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectPageLoginError" resname="tt_content.pi_flexform.redirectPageLoginError" approved="yes">
+        <source>After Failed Login Redirect to Page</source>
+        <target state="final">登入失敗後轉向至網頁</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectPageLogout" resname="tt_content.pi_flexform.redirectPageLogout" approved="yes">
+        <source>After Logout Redirect to Page</source>
+        <target state="final">登出後轉向至網頁</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.template_file" resname="tt_content.pi_flexform.template_file" approved="yes">
+        <source>Template File</source>
+        <target state="final">模板檔案</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.user_storage" resname="tt_content.pi_flexform.user_storage" approved="yes">
+        <source>User Storage Page</source>
+        <target state="final">使用者儲存頁</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
