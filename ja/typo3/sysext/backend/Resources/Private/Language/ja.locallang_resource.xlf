@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_resource.xlf" date="2023-02-21T00:00:00Z" product-name="cms" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="ajax.success" approved="yes">
+        <source>Success</source>
+        <target state="final">成功</target>
+      </trans-unit>
+      <trans-unit id="ajax.success.message.renamed" approved="yes">
+        <source>The resource "%s" has been renamed to "%s".</source>
+        <target state="final">リソース 「%s」 は 「%s」 に名前変更されました。</target>
+      </trans-unit>
+      <trans-unit id="ajax.error" approved="yes">
+        <source>An error occurred</source>
+        <target state="final">エラーが発生</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNotFileOrFolder" approved="yes">
+        <source>The resource must be a file or a folder.</source>
+        <target state="final">リソースはファイルまたはフォルダでなければなりません。</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNameCannotBeEmpty" approved="yes">
+        <source>The resource name cannot be empty.</source>
+        <target state="final">リソース名を空にすることはできません。</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNotAvailableToUpload" approved="yes">
+        <source>No resource was selected to be uploaded.</source>
+        <target state="final">アップロードするリソースが選択されていません。</target>
+      </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNotFound" approved="yes">
+        <source>The resource was not found.</source>
+        <target state="final">リソースが存在しません．</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
