@@ -1,0 +1,806 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1471786343" source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/Database.xlf" date="2016-08-21T20:15:32Z" product-name="form" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="module.shortcut_name" resname="module.shortcut_name" xml:space="preserve" approved="yes">
+                <source>Form manager</source>
+            <target state="final">Formų tvarkyklė</target></trans-unit>
+      <trans-unit id="default" resname="default" xml:space="preserve" approved="yes">
+                <source>Default</source>
+            <target state="final">Numatytoji</target></trans-unit>
+      <trans-unit id="empty" resname="empty" xml:space="preserve" approved="yes">
+                <source>[Empty]</source>
+            <target state="final">[Tuščia]</target></trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.persistenceIdentifier" resname="tt_content.pi_flexform.formframework.persistenceIdentifier" xml:space="preserve" approved="yes">
+                <source>Form definition</source>
+            <target state="final">Formos aprašas</target></trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.sheet_general" resname="tt_content.pi_flexform.formframework.sheet_general" xml:space="preserve" approved="yes">
+                <source>General</source>
+            <target state="final">Bendra</target></trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.selectPersistenceIdentifier" resname="tt_content.pi_flexform.formframework.selectPersistenceIdentifier" xml:space="preserve" approved="yes">
+                <source>Please select a form definition</source>
+            <target state="final">Pasirinkite formos aprašą</target></trans-unit>
+      <trans-unit id="tt_content.pi_flexform.formframework.overrideFinishers" resname="tt_content.pi_flexform.formframework.overrideFinishers" xml:space="preserve" approved="yes">
+                <source>Override finisher settings</source>
+            <target state="final">Perrašyti užbaigimo veiksmų nustatymus</target></trans-unit>
+      <trans-unit id="tt_content.preview.noPersistenceIdentifier" resname="tt_content.preview.noPersistenceIdentifier" xml:space="preserve" approved="yes">
+                <source>No form selected.</source>
+            <target state="final">Nepasirinkta jokia forma.</target></trans-unit>
+      <trans-unit id="tt_content.preview.invalidPersistenceIdentifier" resname="tt_content.preview.invalidPersistenceIdentifier" xml:space="preserve" approved="yes">
+                <source>Invalid form "%s".</source>
+            <target state="final">Neteisinga forma „%s“.</target></trans-unit>
+      <trans-unit id="tt_content.preview.inaccessiblePersistenceIdentifier" resname="tt_content.preview.inaccessiblePersistenceIdentifier" xml:space="preserve" approved="yes">
+                <source>"%s" (no read access).</source>
+            <target state="final">„%s“ (nėra skaitymo teisių).</target></trans-unit>
+      <trans-unit id="tt_content.preview.invalidFrameworkConfiguration" resname="tt_content.preview.invalidFrameworkConfiguration" xml:space="preserve" approved="yes">
+                <source>"%s" (Invalid ext:form configuration).</source>
+            <target state="final">„%s“ (neteisinga ext:form konfigūracija).</target></trans-unit>
+      <trans-unit id="tt_content.preview.invalidFrameworkConfiguration.title" resname="tt_content.preview.invalidFrameworkConfiguration.title" xml:space="preserve" approved="yes">
+                <source>Invalid configuration.</source>
+            <target state="final">Neteisinga konfigūracija.</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.label" resname="tt_content.finishersDefinition.Confirmation.label" xml:space="preserve" approved="yes">
+                <source>Confirmation</source>
+            <target state="final">Patvirtinimas</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.message.label" resname="tt_content.finishersDefinition.Confirmation.message.label" xml:space="preserve" approved="yes">
+                <source>Text</source>
+            <target state="final">Tekstas</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.contentElementUid.label" resname="tt_content.finishersDefinition.Confirmation.contentElementUid.label" xml:space="preserve" approved="yes">
+                <source>Record</source>
+            <target state="final">Įrašas</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.label" resname="tt_content.finishersDefinition.EmailToSender.label" xml:space="preserve" approved="yes">
+                <source>Email to sender (form submitter)</source>
+            <target state="final">El. laiškas siuntėjui (formos pateikėjui)</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.subject.label" resname="tt_content.finishersDefinition.EmailToSender.subject.label" xml:space="preserve" approved="yes">
+                <source>Subject of the email</source>
+            <target state="final">El. laiško tema</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.senderAddress.label" resname="tt_content.finishersDefinition.EmailToSender.senderAddress.label" xml:space="preserve" approved="yes">
+                <source>Email address of the sender</source>
+            <target state="final">Siuntėjo el. pašto adresas</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.senderName.label" resname="tt_content.finishersDefinition.EmailToSender.senderName.label" xml:space="preserve" approved="yes">
+                <source>Human-readable name of the sender</source>
+            <target state="final">Žmogiškai suprantamas siuntėjo vardas</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.label" resname="tt_content.finishersDefinition.EmailToReceiver.label" xml:space="preserve" approved="yes">
+                <source>Email to receiver (you)</source>
+            <target state="final">El. laiškas gavėjui (jums)</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.subject.label" resname="tt_content.finishersDefinition.EmailToReceiver.subject.label" xml:space="preserve" approved="yes">
+                <source>Subject of the email</source>
+            <target state="final">El. laiško tema</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.senderAddress.label" resname="tt_content.finishersDefinition.EmailToReceiver.senderAddress.label" xml:space="preserve" approved="yes">
+                <source>Email address of the sender</source>
+            <target state="final">Siuntėjo el. pašto adresas</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.senderName.label" resname="tt_content.finishersDefinition.EmailToReceiver.senderName.label" xml:space="preserve" approved="yes">
+                <source>Human-readable name of the sender</source>
+            <target state="final">Žmogiškai suprantamas siuntėjo vardas</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.language.label" resname="tt_content.finishersDefinition.EmailToReceiver.language.label" xml:space="preserve" approved="yes">
+                <source>Translation language</source>
+            <target state="final">Vertimo kalba</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.language.1" resname="tt_content.finishersDefinition.EmailToReceiver.language.1" xml:space="preserve" approved="yes">
+                <source>Default</source>
+            <target state="final">Numatytoji</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.label" resname="tt_content.finishersDefinition.Redirect.label" xml:space="preserve" approved="yes">
+                <source>Redirect</source>
+            <target state="final">Peradresuoti</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.pageUid.label" resname="tt_content.finishersDefinition.Redirect.pageUid.label" xml:space="preserve" approved="yes">
+                <source>Page</source>
+            <target state="final">Puslapis</target></trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.additionalParameters.label" resname="tt_content.finishersDefinition.Redirect.additionalParameters.label" xml:space="preserve" approved="yes">
+                <source>Additional link parameter</source>
+            <target state="final">Papildomas nuorodos parametras</target></trans-unit>
+      <trans-unit id="formManagerController.deleteAction.error.title" resname="formManagerController.deleteAction.error.title" xml:space="preserve" approved="yes">
+                <source>Delete error</source>
+            <target state="final">Šalinimo klaida</target></trans-unit>
+      <trans-unit id="formManagerController.deleteAction.error.body" resname="formManagerController.deleteAction.error.body" xml:space="preserve" approved="yes">
+                <source>The form "%s" could not be deleted.</source>
+            <target state="final">Nepavyko ištrinti formos „%s“.</target></trans-unit>
+      <trans-unit id="formManager.headline" resname="formManager.headline" xml:space="preserve" approved="yes">
+                <source>Form Management</source>
+            <target state="final">Formų tvarkymas</target></trans-unit>
+      <trans-unit id="formManager.create_new_form" resname="formManager.create_new_form" xml:space="preserve" approved="yes">
+                <source>Create new form</source>
+            <target state="final">Sukurti naują formą</target></trans-unit>
+      <trans-unit id="formManager.form_name" resname="formManager.form_name" xml:space="preserve" approved="yes">
+                <source>Form name</source>
+            <target state="final">Formos pavadinimas</target></trans-unit>
+      <trans-unit id="formManager.location" resname="formManager.location" xml:space="preserve" approved="yes">
+                <source>Location</source>
+            <target state="final">Vieta</target></trans-unit>
+      <trans-unit id="formManager.options" resname="formManager.options" xml:space="preserve" approved="yes">
+                <source>Options</source>
+            <target state="final">Parinktys</target></trans-unit>
+      <trans-unit id="formManager.edit_form" resname="formManager.edit_form" xml:space="preserve" approved="yes">
+                <source>Edit this form</source>
+            <target state="final">Redaguoti šią formą</target></trans-unit>
+      <trans-unit id="formManager.duplicate_this_form" resname="formManager.duplicate_this_form" xml:space="preserve" approved="yes">
+                <source>Duplicate this form</source>
+            <target state="final">Dubliuoti šią formą</target></trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.label" resname="formManager.selectablePrototypesConfiguration.standard.label" xml:space="preserve" approved="yes">
+                <source>Standard</source>
+            <target state="final">Standartinis</target></trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.label" resname="formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.label" xml:space="preserve" approved="yes">
+                <source>Blank form</source>
+            <target state="final">Tuščia forma</target></trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.label" resname="formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.label" xml:space="preserve" approved="yes">
+                <source>Simple contact form (ext:form example)</source>
+            <target state="final">Paprasta kontaktų forma (ext:form pavyzdys)</target></trans-unit>
+      <trans-unit id="formEditor.header" resname="formEditor.header" xml:space="preserve" approved="yes">
+                <source>Form editor</source>
+            <target state="final">Formų redaktorius</target></trans-unit>
+      <trans-unit id="formEditor.loading" resname="formEditor.loading" xml:space="preserve" approved="yes">
+                <source>Loading...</source>
+            <target state="final">Įkeliama...</target></trans-unit>
+      <trans-unit id="formEditor.spinner" resname="formEditor.spinner" xml:space="preserve" approved="yes">
+                <source>Loading...</source>
+            <target state="final">Įkeliama...</target></trans-unit>
+      <trans-unit id="formEditor.save_button" resname="formEditor.save_button" xml:space="preserve" approved="yes">
+                <source>Save</source>
+            <target state="final">Išsaugoti</target></trans-unit>
+      <trans-unit id="formEditor.undo_button" resname="formEditor.undo_button" xml:space="preserve" approved="yes">
+                <source>Undo</source>
+            <target state="final">Atšaukti (undo)</target></trans-unit>
+      <trans-unit id="formEditor.redo_button" resname="formEditor.redo_button" xml:space="preserve" approved="yes">
+                <source>Redo</source>
+            <target state="final">Pakartoti</target></trans-unit>
+      <trans-unit id="formEditor.new_page_button" resname="formEditor.new_page_button" xml:space="preserve" approved="yes">
+                <source>Create new step</source>
+            <target state="final">Sukurti naują žingsnį</target></trans-unit>
+      <trans-unit id="formEditor.structure" resname="formEditor.structure" xml:space="preserve" approved="yes">
+                <source>Structure</source>
+            <target state="final">Struktūra</target></trans-unit>
+      <trans-unit id="formEditor.insert_elements" resname="formEditor.insert_elements" xml:space="preserve" approved="yes">
+                <source>Insert elements</source>
+            <target state="final">Įterpti elementus</target></trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.NotEmpty.label" resname="formEditor.formElementPropertyValidatorsDefinition.NotEmpty.label" xml:space="preserve" approved="yes">
+                <source>Required</source>
+            <target state="final">Privalomas</target></trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.Integer.label" resname="formEditor.formElementPropertyValidatorsDefinition.Integer.label" xml:space="preserve" approved="yes">
+                <source>Not a number</source>
+            <target state="final">Ne skaičius</target></trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.NaiveEmail.label" resname="formEditor.formElementPropertyValidatorsDefinition.NaiveEmail.label" xml:space="preserve" approved="yes">
+                <source>Invalid email address</source>
+            <target state="final">Neteisingas el. pašto adresas</target></trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.FormElementIdentifierWithinCurlyBraces.label" resname="formEditor.formElementPropertyValidatorsDefinition.FormElementIdentifierWithinCurlyBraces.label" xml:space="preserve" approved="yes">
+                <source>Invalid form element</source>
+            <target state="final">Neteisingas formos elementas</target></trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.FileSize.label" resname="formEditor.formElementPropertyValidatorsDefinition.FileSize.label" xml:space="preserve" approved="yes">
+                <source>Invalid file size format, valid e.g. "10B|K|M|G"</source>
+            <target state="final">Neteisingas failo dydžio formatas, teisingas pvz. „10B|K|M|G“</target></trans-unit>
+      <trans-unit id="formEditor.formElementGroups.input.label" resname="formEditor.formElementGroups.input.label" xml:space="preserve" approved="yes">
+                <source>Basic elements</source>
+            <target state="final">Pagrindiniai elementai</target></trans-unit>
+      <trans-unit id="formEditor.formElementGroups.html5.label" resname="formEditor.formElementGroups.html5.label" xml:space="preserve" approved="yes">
+                <source>Special elements</source>
+            <target state="final">Specialūs elementai</target></trans-unit>
+      <trans-unit id="formEditor.formElementGroups.select.label" resname="formEditor.formElementGroups.select.label" xml:space="preserve" approved="yes">
+                <source>Select elements</source>
+            <target state="final">Pasirinkimo elementai</target></trans-unit>
+      <trans-unit id="formEditor.formElementGroups.custom.label" resname="formEditor.formElementGroups.custom.label" xml:space="preserve" approved="yes">
+                <source>Advanced elements</source>
+            <target state="final">Išplėstiniai elementai</target></trans-unit>
+      <trans-unit id="formEditor.formElementGroups.container.label" resname="formEditor.formElementGroups.container.label" xml:space="preserve" approved="yes">
+                <source>Container elements</source>
+            <target state="final">Konteinerio elementai</target></trans-unit>
+      <trans-unit id="formEditor.formElementGroups.page.label" resname="formEditor.formElementGroups.page.label" xml:space="preserve" approved="yes">
+                <source>Step types</source>
+            <target state="final">Žingsnių tipai</target></trans-unit>
+      <trans-unit id="formEditor.elements.BaseFormElementMixin.editor.label.label" resname="formEditor.elements.BaseFormElementMixin.editor.label.label" xml:space="preserve" approved="yes">
+                <source>Form name</source>
+            <target state="final">Formos pavadinimas</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveSuccessFlashMessageTitle" resname="formEditor.elements.Form.saveSuccessFlashMessageTitle" xml:space="preserve" approved="yes">
+                <source>Save</source>
+            <target state="final">Išsaugoti</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveSuccessFlashMessageMessage" resname="formEditor.elements.Form.saveSuccessFlashMessageMessage" xml:space="preserve" approved="yes">
+                <source>The form has been successfully saved.</source>
+            <target state="final">Forma sėkmingai išsaugota.</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveErrorFlashMessageTitle" resname="formEditor.elements.Form.saveErrorFlashMessageTitle" xml:space="preserve" approved="yes">
+                <source>Save</source>
+            <target state="final">Išsaugoti</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveErrorFlashMessageMessage" resname="formEditor.elements.Form.saveErrorFlashMessageMessage" xml:space="preserve" approved="yes">
+                <source>The form could not be saved:</source>
+            <target state="final">Nepavyko išsaugoti formos:</target></trans-unit>
+      <trans-unit id="formEditor.modals.validationErrors.dialogTitle" resname="formEditor.modals.validationErrors.dialogTitle" xml:space="preserve" approved="yes">
+                <source>Alert</source>
+            <target state="final">Įspėjimas</target></trans-unit>
+      <trans-unit id="formEditor.modals.validationErrors.dialogMessage" resname="formEditor.modals.validationErrors.dialogMessage" xml:space="preserve" approved="yes">
+                <source>Some elements are not configured properly. Please check the following elements:</source>
+            <target state="final">Kai kurie elementai sukonfigūruoti neteisingai. Patikrinkite šiuos elementus:</target></trans-unit>
+      <trans-unit id="formEditor.modals.validationErrors.confirmButton" resname="formEditor.modals.validationErrors.confirmButton" xml:space="preserve" approved="yes">
+                <source>OK</source>
+            <target state="final">GERAI</target></trans-unit>
+      <trans-unit id="formEditor.modals.insertElements.dialogTitle" resname="formEditor.modals.insertElements.dialogTitle" xml:space="preserve" approved="yes">
+                <source>New element</source>
+            <target state="final">Naujas elementas</target></trans-unit>
+      <trans-unit id="formEditor.modals.newPages.dialogTitle" resname="formEditor.modals.newPages.dialogTitle" xml:space="preserve" approved="yes">
+                <source>New step</source>
+            <target state="final">Naujas žingsnis</target></trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.dialogTitle" resname="formEditor.modals.removeElement.dialogTitle" xml:space="preserve" approved="yes">
+                <source>Remove element?</source>
+            <target state="final">Pašalinti elementą?</target></trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.confirmButton" resname="formEditor.modals.removeElement.confirmButton" xml:space="preserve" approved="yes">
+                <source>Remove</source>
+            <target state="final">Pašalinti</target></trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.cancleButton" resname="formEditor.modals.removeElement.cancleButton" xml:space="preserve" approved="yes">
+                <source>Cancel</source>
+            <target state="final">Atšaukti</target></trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.lastAvailablePageFlashMessageTitle" resname="formEditor.modals.removeElement.lastAvailablePageFlashMessageTitle" xml:space="preserve" approved="yes">
+                <source>Error</source>
+            <target state="final">Klaida</target></trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.lastAvailablePageFlashMessageMessage" resname="formEditor.modals.removeElement.lastAvailablePageFlashMessageMessage" xml:space="preserve" approved="yes">
+                <source>There must be at least one step within your form.</source>
+            <target state="final">Formoje turi būti bent vienas žingsnis.</target></trans-unit>
+      <trans-unit id="formEditor.pagination.title" resname="formEditor.pagination.title" xml:space="preserve" approved="yes">
+                <source>Step {0} of {1}</source>
+            <target state="final">Žingsnis {0} iš {1}</target></trans-unit>
+      <trans-unit id="formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label" resname="formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label" xml:space="preserve" approved="yes">
+                <source>Minimum</source>
+            <target state="final">Minimalu</target></trans-unit>
+      <trans-unit id="formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label" resname="formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label" xml:space="preserve" approved="yes">
+                <source>Maximum</source>
+            <target state="final">Maksimalu</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.placeholder.label" resname="formEditor.elements.TextMixin.editor.placeholder.label" xml:space="preserve" approved="yes">
+                <source>Placeholder</source>
+            <target state="final">Paaiškinamasis tekstas</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.defaultValue.label" resname="formEditor.elements.TextMixin.editor.defaultValue.label" xml:space="preserve" approved="yes">
+                <source>Default value</source>
+            <target state="final">Numatytoji reikšmė</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.pattern.label" resname="formEditor.elements.TextMixin.editor.pattern.label" xml:space="preserve" approved="yes">
+                <source>Pattern</source>
+            <target state="final">Šablonas</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.pattern.fieldExplanationText" resname="formEditor.elements.TextMixin.editor.pattern.fieldExplanationText" xml:space="preserve" approved="yes">
+                <source>Additional client-side validation as JavaScript regular expression</source>
+            <target state="final">Papildoma kliento pusės validacija kaip JavaScript reguliarioji išraiška</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.step.label" resname="formEditor.elements.TextMixin.editor.step.label" xml:space="preserve" approved="yes">
+                <source>Step</source>
+            <target state="final">Žingsnis</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.label" resname="formEditor.elements.TextMixin.editor.validators.label" xml:space="preserve" approved="yes">
+                <source>Validators</source>
+            <target state="final">Validacijos</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.EmptyValue.label" resname="formEditor.elements.TextMixin.editor.validators.EmptyValue.label" xml:space="preserve" approved="yes">
+                <source>Add validator</source>
+            <target state="final">Pridėti validatorių</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Alphanumeric.label" resname="formEditor.elements.TextMixin.editor.validators.Alphanumeric.label" xml:space="preserve" approved="yes">
+                <source>Alphanumeric</source>
+            <target state="final">Raidinis-skaitmeninis</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Text.label" resname="formEditor.elements.TextMixin.editor.validators.Text.label" xml:space="preserve" approved="yes">
+                <source>Non-XML text</source>
+            <target state="final">Ne XML tekstas</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.StringLength.label" resname="formEditor.elements.TextMixin.editor.validators.StringLength.label" xml:space="preserve" approved="yes">
+                <source>String length</source>
+            <target state="final">Eilutės ilgis</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.EmailAddress.label" resname="formEditor.elements.TextMixin.editor.validators.EmailAddress.label" xml:space="preserve" approved="yes">
+                <source>Email</source>
+            <target state="final">El. paštas</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Integer.label" resname="formEditor.elements.TextMixin.editor.validators.Integer.label" xml:space="preserve" approved="yes">
+                <source>Integer number</source>
+            <target state="final">Sveikasis skaičius</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Float.label" resname="formEditor.elements.TextMixin.editor.validators.Float.label" xml:space="preserve" approved="yes">
+                <source>Floating-point number</source>
+            <target state="final">Slankiojo kablelio skaičius</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.Number.label" resname="formEditor.elements.TextMixin.editor.validators.Number.label" xml:space="preserve" approved="yes">
+                <source>Number</source>
+            <target state="final">Skaičius</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.NumberRange.label" resname="formEditor.elements.TextMixin.editor.validators.NumberRange.label" xml:space="preserve" approved="yes">
+                <source>Number range</source>
+            <target state="final">Skaičių intervalas</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.editor.validators.RegularExpression.label" resname="formEditor.elements.TextMixin.editor.validators.RegularExpression.label" xml:space="preserve" approved="yes">
+                <source>Regular expression</source>
+            <target state="final">Reguliarioji išraiška</target></trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.editor.validators.Count.label" resname="formEditor.elements.MultiSelectionMixin.editor.validators.Count.label" xml:space="preserve" approved="yes">
+                <source>Number of submitted values</source>
+            <target state="final">Pateiktų reikšmių skaičius</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.header.label" resname="formEditor.elements.TextMixin.validators.Alphanumeric.editor.header.label" xml:space="preserve" approved="yes">
+                <source>Alphanumeric</source>
+            <target state="final">Raidinis-skaitmeninis</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.label" resname="formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.label" xml:space="preserve" approved="yes">
+                <source>Custom error message</source>
+            <target state="final">Specialus klaidos pranešimas</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.fieldExplanationText" resname="formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.fieldExplanationText" xml:space="preserve" approved="yes">
+                <source>Error message which is shown if the validation does not succeed</source>
+            <target state="final">Klaidos pranešimas, rodomas, jei validacija nepavyksta</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.header.label" resname="formEditor.elements.TextMixin.validators.Text.editor.header.label" xml:space="preserve" approved="yes">
+                <source>Non-XML text</source>
+            <target state="final">Ne XML tekstas</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.label" resname="formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.label" xml:space="preserve" approved="yes">
+                <source>Custom error message</source>
+            <target state="final">Pasirinktinis klaidos pranešimas</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.fieldExplanationText" resname="formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.fieldExplanationText" xml:space="preserve" approved="yes">
+                <source>Error message which is shown if the validation does not succeed</source>
+            <target state="final">Klaidos pranešimas, rodomas, jei validacija nepavyksta</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.header.label" resname="formEditor.elements.TextMixin.validators.StringLength.editor.header.label" xml:space="preserve" approved="yes">
+                <source>String length</source>
+            <target state="final">Eilutės ilgis</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.label" resname="formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.label" xml:space="preserve" approved="yes">
+                <source>Custom error message</source>
+            <target state="final">Individualizuotas klaidos pranešimas</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.fieldExplanationText" resname="formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.fieldExplanationText" xml:space="preserve" approved="yes">
+                <source>Error message which is shown if the validation does not succeed</source>
+            <target state="final">Klaidos pranešimas, rodomas, jei validacija nepavyksta</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.header.label" resname="formEditor.elements.TextMixin.validators.EmailAddress.editor.header.label" xml:space="preserve" approved="yes">
+                <source>Email</source>
+            <target state="final">El. paštas</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.label" resname="formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.label" xml:space="preserve" approved="yes">
+                <source>Custom error message</source>
+            <target state="final">Individualizuotas klaidos pranešimas</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.fieldExplanationText" resname="formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.fieldExplanationText" xml:space="preserve" approved="yes">
+                <source>Error message which is shown if the validation does not succeed</source>
+            <target state="final">Klaidos pranešimas, rodomas, jei validacija nepavyksta</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.header.label" resname="formEditor.elements.TextMixin.validators.Integer.editor.header.label" xml:space="preserve" approved="yes">
+                <source>Integer number</source>
+            <target state="final">Sveikasis skaičius</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.label" resname="formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.label" xml:space="preserve" approved="yes">
+                <source>Custom error message</source>
+            <target state="final">Pasirinktinis klaidos pranešimas</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.fieldExplanationText" resname="formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.fieldExplanationText" xml:space="preserve" approved="yes">
+                <source>Error message which is shown if the validation does not succeed</source>
+            <target state="final">Klaidos pranešimas, rodomas, jei validacija nepavyksta</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.header.label" resname="formEditor.elements.TextMixin.validators.Float.editor.header.label" xml:space="preserve" approved="yes">
+                <source>Floating-point number</source>
+            <target state="final">Slankiojo kablelio skaičius</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.label" resname="formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.label" xml:space="preserve" approved="yes">
+                <source>Custom error message</source>
+            <target state="final">Pasirinktinis klaidos pranešimas</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.fieldExplanationText" resname="formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.fieldExplanationText" xml:space="preserve" approved="yes">
+                <source>Error message which is shown if the validation does not succeed</source>
+            <target state="final">Klaidos pranešimas, rodomas, jei validacija nepavyksta</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.Number.editor.header.label" resname="formEditor.elements.TextMixin.validators.Number.editor.header.label" xml:space="preserve" approved="yes">
+                <source>Number</source>
+            <target state="final">Skaičius</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.header.label" resname="formEditor.elements.TextMixin.validators.NumberRange.editor.header.label" xml:space="preserve" approved="yes">
+                <source>Number range</source>
+            <target state="final">Skaičių intervalas</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.label" resname="formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.label" xml:space="preserve" approved="yes">
+                <source>Custom error message</source>
+            <target state="final">Pasirinktinis klaidos pranešimas</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.fieldExplanationText" resname="formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.fieldExplanationText" xml:space="preserve" approved="yes">
+                <source>Error message which is shown if the validation does not succeed</source>
+            <target state="final">Klaidos pranešimas, rodomas, jei validacija nepavyksta</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.header.label" resname="formEditor.elements.TextMixin.validators.RegularExpression.editor.header.label" xml:space="preserve" approved="yes">
+                <source>Regular expression</source>
+            <target state="final">Reguliarioji išraiška</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.label" resname="formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.label" xml:space="preserve" approved="yes">
+                <source>Regular expression</source>
+            <target state="final">Reguliarioji išraiška</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.fieldExplanationText" resname="formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.fieldExplanationText" xml:space="preserve" approved="yes">
+                <source>Enter a valid PHP PCRE regular expression here.</source>
+            <target state="final">Įveskite teisingą PHP PCRE reguliariąją išraišką.</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.label" resname="formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.label" xml:space="preserve" approved="yes">
+                <source>Custom error message</source>
+            <target state="final">Pasirinktinis klaidos pranešimas</target></trans-unit>
+      <trans-unit id="formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.fieldExplanationText" resname="formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.fieldExplanationText" xml:space="preserve" approved="yes">
+                <source>Error message which is shown if the validation does not succeed</source>
+            <target state="final">Klaidos pranešimas, rodomas, jei validacija nepavyksta</target></trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.header.label" resname="formEditor.elements.MultiSelectionMixin.validators.Count.editor.header.label" xml:space="preserve" approved="yes">
+                <source>Number of submitted values</source>
+            <target state="final">Pateiktų reikšmių skaičius</target></trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.validationErrorMessage.label" resname="formEditor.elements.MultiSelectionMixin.validators.Count.editor.validationErrorMessage.label" xml:space="preserve" approved="yes">
+                <source>Custom error message</source>
+            <target state="final">Pasirinktinis klaidos pranešimas</target></trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.validators.Count.editor.validationErrorMessage.fieldExplanationText" resname="formEditor.elements.MultiSelectionMixin.validators.Count.editor.validationErrorMessage.fieldExplanationText" xml:space="preserve" approved="yes">
+                <source>Error message which is shown if the validation does not succeed</source>
+            <target state="final">Klaidos pranešimas, rodomas, jei validacija nepavyksta</target></trans-unit>
+      <trans-unit id="formEditor.elements.SelectionMixin.editor.inactiveOption.label" resname="formEditor.elements.SelectionMixin.editor.inactiveOption.label" xml:space="preserve" approved="yes">
+                <source>First option (empty value)</source>
+            <target state="final">Pirmas pasirinkimas (tuščia reikšmė)</target></trans-unit>
+      <trans-unit id="formEditor.elements.SelectionMixin.editor.inactiveOption.fieldExplanationText" resname="formEditor.elements.SelectionMixin.editor.inactiveOption.fieldExplanationText" xml:space="preserve" approved="yes">
+                <source>If set, this label will be shown as first option.</source>
+            <target state="final">Jei nustatyta, ši etiketė bus rodoma kaip pirmasis pasirinkimas.</target></trans-unit>
+      <trans-unit id="formEditor.elements.SelectionMixin.editor.options.label" resname="formEditor.elements.SelectionMixin.editor.options.label" xml:space="preserve" approved="yes">
+                <source>Choices</source>
+            <target state="final">Pasirinkimai</target></trans-unit>
+      <trans-unit id="formEditor.elements.SelectionMixin.editor.options.removeLastAvailableRowFlashMessageTitle" resname="formEditor.elements.SelectionMixin.editor.options.removeLastAvailableRowFlashMessageTitle" xml:space="preserve" approved="yes">
+                <source>Error</source>
+            <target state="final">Klaida</target></trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.editor.validators.label" resname="formEditor.elements.MultiSelectionMixin.editor.validators.label" xml:space="preserve" approved="yes">
+                <source>Validators</source>
+            <target state="final">Validacijos</target></trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelectionMixin.editor.validators.EmptyValue.label" resname="formEditor.elements.MultiSelectionMixin.editor.validators.EmptyValue.label" xml:space="preserve" approved="yes">
+                <source>Add validator</source>
+            <target state="final">Pridėti validatorių</target></trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.saveToFileMount.label" resname="formEditor.elements.FileUploadMixin.editor.saveToFileMount.label" xml:space="preserve" approved="yes">
+                <source>Uploads save path</source>
+            <target state="final">Įkėlimų išsaugojimo kelias</target></trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.label" resname="formEditor.elements.FileUploadMixin.editor.validators.label" xml:space="preserve" approved="yes">
+                <source>Validators</source>
+            <target state="final">Validacijos</target></trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.EmptyValue.label" resname="formEditor.elements.FileUploadMixin.editor.validators.EmptyValue.label" xml:space="preserve" approved="yes">
+                <source>Add validator</source>
+            <target state="final">Pridėti validatorių</target></trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.editor.validators.FileSize.label" resname="formEditor.elements.FileUploadMixin.editor.validators.FileSize.label" xml:space="preserve" approved="yes">
+                <source>File size</source>
+            <target state="final">Failo dydis</target></trans-unit>
+      <trans-unit id="formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label" resname="formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label" xml:space="preserve" approved="yes">
+                <source>File size</source>
+            <target state="final">Failo dydis</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.submitButtonLabel.label" resname="formEditor.elements.Form.editor.submitButtonLabel.label" xml:space="preserve" approved="yes">
+                <source>Submit label</source>
+            <target state="final">Pateikimo mygtuko tekstas</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.submitButtonLabel.value" resname="formEditor.elements.Form.editor.submitButtonLabel.value" xml:space="preserve" approved="yes">
+                <source>Submit</source>
+            <target state="final">Pateikti</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.label" resname="formEditor.elements.Form.editor.finishers.label" xml:space="preserve" approved="yes">
+                <source>Finishers</source>
+            <target state="final">Užbaigimo veiksmai</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.EmptyValue.label" resname="formEditor.elements.Form.editor.finishers.EmptyValue.label" xml:space="preserve" approved="yes">
+                <source>Add finisher</source>
+            <target state="final">Pridėti užbaigimo veiksmą</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.EmailToSender.label" resname="formEditor.elements.Form.editor.finishers.EmailToSender.label" xml:space="preserve" approved="yes">
+                <source>Email to sender (form submitter)</source>
+            <target state="final">El. laiškas siuntėjui (formos pateikėjui)</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.EmailToReceiver.label" resname="formEditor.elements.Form.editor.finishers.EmailToReceiver.label" xml:space="preserve" approved="yes">
+                <source>Email to receiver (you)</source>
+            <target state="final">El. laiškas gavėjui (jums)</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.Redirect.label" resname="formEditor.elements.Form.editor.finishers.Redirect.label" xml:space="preserve" approved="yes">
+                <source>Redirect to a page</source>
+            <target state="final">Peradresuoti į puslapį</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.DeleteUploads.label" resname="formEditor.elements.Form.editor.finishers.DeleteUploads.label" xml:space="preserve" approved="yes">
+                <source>Delete uploads</source>
+            <target state="final">Ištrinti įkėlimus</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.Confirmation.label" resname="formEditor.elements.Form.editor.finishers.Confirmation.label" xml:space="preserve" approved="yes">
+                <source>Confirmation message</source>
+            <target state="final">Patvirtinimo pranešimas</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.header.label" resname="formEditor.elements.Form.finisher.EmailToSender.editor.header.label" xml:space="preserve" approved="yes">
+                <source>Email to sender (form submitter)</source>
+            <target state="final">El. laiškas siuntėjui (formos pateikėjui)</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.subject.label" resname="formEditor.elements.Form.finisher.EmailToSender.editor.subject.label" xml:space="preserve" approved="yes">
+                <source>Subject</source>
+            <target state="final">Tema</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.label" resname="formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.label" xml:space="preserve" approved="yes">
+                <source>Sender address</source>
+            <target state="final">Siuntėjo adresas</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.fieldExplanationText" resname="formEditor.elements.Form.finisher.EmailToSender.editor.senderAddress.fieldExplanationText" xml:space="preserve" approved="yes">
+                <source>The email address of the sender (e.g. your company's email address) which appears in the website visitor email client.</source>
+            <target state="final">Siuntėjo el. pašto adresas (pvz., jūsų įmonės el. paštas), kuris rodomas svetainės lankytojo el. pašto programoje.</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderName.label" resname="formEditor.elements.Form.finisher.EmailToSender.editor.senderName.label" xml:space="preserve" approved="yes">
+                <source>Sender name</source>
+            <target state="final">Siuntėjo vardas</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.senderName.fieldExplanationText" resname="formEditor.elements.Form.finisher.EmailToSender.editor.senderName.fieldExplanationText" xml:space="preserve" approved="yes">
+                <source>The name of the sender (e.g. your company's name) which appears in the website visitor email client.</source>
+            <target state="final">Siuntėjo vardas (pvz., jūsų įmonės pavadinimas), kuris rodomas svetainės lankytojo el. pašto programoje.</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.attachUploads.label" resname="formEditor.elements.Form.finisher.EmailToSender.editor.attachUploads.label" xml:space="preserve" approved="yes">
+                <source>Attach uploads</source>
+            <target state="final">Pridėti įkėlimus kaip priedus</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label" resname="formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label" xml:space="preserve" approved="yes">
+                <source>Email to receiver (you)</source>
+            <target state="final">El. laiškas gavėjui (jums)</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.subject.label" resname="formEditor.elements.Form.finisher.EmailToReceiver.editor.subject.label" xml:space="preserve" approved="yes">
+                <source>Subject</source>
+            <target state="final">Tema</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.label" resname="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderAddress.label" xml:space="preserve" approved="yes">
+                <source>Sender address</source>
+            <target state="final">Siuntėjo adresas</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.label" resname="formEditor.elements.Form.finisher.EmailToReceiver.editor.senderName.label" xml:space="preserve" approved="yes">
+                <source>Sender name</source>
+            <target state="final">Siuntėjo vardas</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.attachUploads.label" resname="formEditor.elements.Form.finisher.EmailToReceiver.editor.attachUploads.label" xml:space="preserve" approved="yes">
+                <source>Attach uploads</source>
+            <target state="final">Pridėti įkėlimus kaip priedus</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.label" resname="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.label" xml:space="preserve" approved="yes">
+                <source>Translation language</source>
+            <target state="final">Vertimo kalba</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.1" resname="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.1" xml:space="preserve" approved="yes">
+                <source>EN</source>
+            <target state="final">EN</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.header.label" resname="formEditor.elements.Form.finisher.Redirect.editor.header.label" xml:space="preserve" approved="yes">
+                <source>Redirect to a page</source>
+            <target state="final">Peradresuoti į puslapį</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.pageUid.label" resname="formEditor.elements.Form.finisher.Redirect.editor.pageUid.label" xml:space="preserve" approved="yes">
+                <source>Page</source>
+            <target state="final">Puslapis</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.pageUid.buttonLabel" resname="formEditor.elements.Form.finisher.Redirect.editor.pageUid.buttonLabel" xml:space="preserve" approved="yes">
+                <source>Page</source>
+            <target state="final">Puslapis</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.additionalParameters.label" resname="formEditor.elements.Form.finisher.Redirect.editor.additionalParameters.label" xml:space="preserve" approved="yes">
+                <source>Additional parameters</source>
+            <target state="final">Papildomi parametrai</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.DeleteUploads.editor.header.label" resname="formEditor.elements.Form.finisher.DeleteUploads.editor.header.label" xml:space="preserve" approved="yes">
+                <source>Delete uploads</source>
+            <target state="final">Ištrinti įkėlimus</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.header.label" resname="formEditor.elements.Form.finisher.Confirmation.editor.header.label" xml:space="preserve" approved="yes">
+                <source>Confirmation message</source>
+            <target state="final">Patvirtinimo pranešimas</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.label" resname="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.label" xml:space="preserve" approved="yes">
+                <source>Content element uid</source>
+            <target state="final">Turinio elemento UID</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.buttonLabel" resname="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.buttonLabel" xml:space="preserve" approved="yes">
+                <source>Page Content</source>
+            <target state="final">Puslapio turinys</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.message.label" resname="formEditor.elements.Form.finisher.Confirmation.editor.message.label" xml:space="preserve" approved="yes">
+                <source>Text</source>
+            <target state="final">Tekstas</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.message.fieldExplanationText" resname="formEditor.elements.Form.finisher.Confirmation.editor.message.fieldExplanationText" xml:space="preserve" approved="yes">
+                <source>Will be ignored if "Content element" is set</source>
+            <target state="final">Bus ignoruojama, jei nustatytas „Turinio elementas“</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Closure.editor.header.label" resname="formEditor.elements.Form.finisher.Closure.editor.header.label" xml:space="preserve" approved="yes">
+                <source>Execute a closure</source>
+            <target state="final">Vykdyti uždarą funkciją (closure)</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.FlashMessage.editor.header.label" resname="formEditor.elements.Form.finisher.FlashMessage.editor.header.label" xml:space="preserve" approved="yes">
+                <source>Flash message</source>
+            <target state="final">Pranešimas (flash)</target></trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.SaveToDatabase.editor.header.label" resname="formEditor.elements.Form.finisher.SaveToDatabase.editor.header.label" xml:space="preserve" approved="yes">
+                <source>Save the mail to the Database</source>
+            <target state="final">Išsaugoti el. laišką duomenų bazėje</target></trans-unit>
+      <trans-unit id="formEditor.elements.ReadOnlyFormElement.editor.label.label" resname="formEditor.elements.ReadOnlyFormElement.editor.label.label" xml:space="preserve" approved="yes">
+                <source>Label</source>
+            <target state="final">Etiketė</target></trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.label.label" resname="formEditor.elements.FormElement.editor.label.label" xml:space="preserve" approved="yes">
+                <source>Label</source>
+            <target state="final">Etiketė</target></trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.elementDescription.label" resname="formEditor.elements.FormElement.editor.elementDescription.label" xml:space="preserve" approved="yes">
+                <source>Description</source>
+            <target state="final">Aprašymas</target></trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label" resname="formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label" xml:space="preserve" approved="yes">
+                <source>Custom error message</source>
+            <target state="final">Pasirinktinis klaidos pranešimas</target></trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.fieldExplanationText" resname="formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.fieldExplanationText" xml:space="preserve" approved="yes">
+                <source>Error message which is shown if the validation does not succeed</source>
+            <target state="final">Klaidos pranešimas, rodomas, jei validacija nepavyksta</target></trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.validators.DateRange.editor.header.label" resname="formEditor.elements.FormElement.validators.DateRange.editor.header.label" xml:space="preserve" approved="yes">
+                <source>Date range</source>
+            <target state="final">Datų intervalas</target></trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label" resname="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label" xml:space="preserve" approved="yes">
+                <source>Grid viewport configuration</source>
+            <target state="final">Tinklelio peržiūros srities konfigūracija</target></trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label" resname="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label" xml:space="preserve" approved="yes">
+                <source>Extra small</source>
+            <target state="final">Ypač mažas</target></trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label" resname="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label" xml:space="preserve" approved="yes">
+                <source>Small</source>
+            <target state="final">Mažas</target></trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label" resname="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label" xml:space="preserve" approved="yes">
+                <source>Medium</source>
+            <target state="final">Vidutinis</target></trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label" resname="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label" xml:space="preserve" approved="yes">
+                <source>Large</source>
+            <target state="final">Didelis</target></trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label" resname="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label" xml:space="preserve" approved="yes">
+                <source>Numbers of columns for viewport "{@viewPortLabel}"</source>
+            <target state="final">Stulpelių skaičius peržiūros sričiai „{@viewPortLabel}“</target></trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText" resname="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText" xml:space="preserve" approved="yes">
+                <source>Leave empty for auto calculation</source>
+            <target state="final">Palikite tuščią automatiniam skaičiavimui</target></trans-unit>
+      <trans-unit id="formEditor.elements.Page.label" resname="formEditor.elements.Page.label" xml:space="preserve" approved="yes">
+                <source>Step</source>
+            <target state="final">Žingsnis</target></trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.label.label" resname="formEditor.elements.Page.editor.label.label" xml:space="preserve" approved="yes">
+                <source>Step name</source>
+            <target state="final">Žingsnio pavadinimas</target></trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.previousButtonLabel.label" resname="formEditor.elements.Page.editor.previousButtonLabel.label" xml:space="preserve" approved="yes">
+                <source>Previous button label</source>
+            <target state="final">Ankstesnio mygtuko tekstas</target></trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.previousButtonLabel.value" resname="formEditor.elements.Page.editor.previousButtonLabel.value" xml:space="preserve" approved="yes">
+                <source>Previous step</source>
+            <target state="final">Ankstesnis žingsnis</target></trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.nextButtonLabel.label" resname="formEditor.elements.Page.editor.nextButtonLabel.label" xml:space="preserve" approved="yes">
+                <source>Next button label</source>
+            <target state="final">Kito mygtuko tekstas</target></trans-unit>
+      <trans-unit id="formEditor.elements.Page.editor.nextButtonLabel.value" resname="formEditor.elements.Page.editor.nextButtonLabel.value" xml:space="preserve" approved="yes">
+                <source>Next step</source>
+            <target state="final">Kitas žingsnis</target></trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.label" resname="formEditor.elements.SummaryPage.label" xml:space="preserve" approved="yes">
+                <source>Summary step</source>
+            <target state="final">Suvestinės žingsnis</target></trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.label.label" resname="formEditor.elements.SummaryPage.editor.label.label" xml:space="preserve" approved="yes">
+                <source>Step name</source>
+            <target state="final">Žingsnio pavadinimas</target></trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.previousButtonLabel.label" resname="formEditor.elements.SummaryPage.editor.previousButtonLabel.label" xml:space="preserve" approved="yes">
+                <source>Previous button label</source>
+            <target state="final">Ankstesnio mygtuko tekstas</target></trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.previousButtonLabel.value" resname="formEditor.elements.SummaryPage.editor.previousButtonLabel.value" xml:space="preserve" approved="yes">
+                <source>Previous step</source>
+            <target state="final">Ankstesnis žingsnis</target></trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.nextButtonLabel.label" resname="formEditor.elements.SummaryPage.editor.nextButtonLabel.label" xml:space="preserve" approved="yes">
+                <source>Next button label</source>
+            <target state="final">Kito mygtuko tekstas</target></trans-unit>
+      <trans-unit id="formEditor.elements.SummaryPage.editor.nextButtonLabel.value" resname="formEditor.elements.SummaryPage.editor.nextButtonLabel.value" xml:space="preserve" approved="yes">
+                <source>Next step</source>
+            <target state="final">Kitas žingsnis</target></trans-unit>
+      <trans-unit id="formEditor.elements.Fieldset.label" resname="formEditor.elements.Fieldset.label" xml:space="preserve" approved="yes">
+                <source>Fieldset</source>
+            <target state="final">Laukų grupė</target></trans-unit>
+      <trans-unit id="formEditor.elements.Fieldset.editor.label.label" resname="formEditor.elements.Fieldset.editor.label.label" xml:space="preserve" approved="yes">
+                <source>Fieldset name</source>
+            <target state="final">Laukų grupės pavadinimas</target></trans-unit>
+      <trans-unit id="formEditor.elements.GridRow.label" resname="formEditor.elements.GridRow.label" xml:space="preserve" approved="yes">
+                <source>Grid: Row</source>
+            <target state="final">Tinklelis: Eilutė</target></trans-unit>
+      <trans-unit id="formEditor.elements.GridRow.editor.label.label" resname="formEditor.elements.GridRow.editor.label.label" xml:space="preserve" approved="yes">
+                <source>Row name (not visible within frontend)</source>
+            <target state="final">Eilutės pavadinimas (nematomas frontende)</target></trans-unit>
+      <trans-unit id="formEditor.elements.Text.label" resname="formEditor.elements.Text.label" xml:space="preserve" approved="yes">
+                <source>Text</source>
+            <target state="final">Tekstas</target></trans-unit>
+      <trans-unit id="formEditor.elements.Email.label" resname="formEditor.elements.Email.label" xml:space="preserve" approved="yes">
+                <source>Email address</source>
+            <target state="final">El. pašto adresas</target></trans-unit>
+      <trans-unit id="formEditor.elements.Telephone.label" resname="formEditor.elements.Telephone.label" xml:space="preserve" approved="yes">
+                <source>Telephone number</source>
+            <target state="final">Telefono numeris</target></trans-unit>
+      <trans-unit id="formEditor.elements.Url.label" resname="formEditor.elements.Url.label" xml:space="preserve" approved="yes">
+                <source>URL</source>
+            <target state="final">URL</target></trans-unit>
+      <trans-unit id="formEditor.elements.Number.label" resname="formEditor.elements.Number.label" xml:space="preserve" approved="yes">
+                <source>Number</source>
+            <target state="final">Skaičius</target></trans-unit>
+      <trans-unit id="formEditor.elements.Number.editor.validators.Number.label" resname="formEditor.elements.Number.editor.validators.Number.label" xml:space="preserve" approved="yes">
+                <source>Number</source>
+            <target state="final">Skaičius</target></trans-unit>
+      <trans-unit id="formEditor.elements.Date.label" resname="formEditor.elements.Date.label" xml:space="preserve" approved="yes">
+                <source>Date</source>
+            <target state="final">Data</target></trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.defaultValue.placeholder" resname="formEditor.elements.Date.editor.defaultValue.placeholder" xml:space="preserve" approved="yes">
+                <source>A date in format Y-m-d (e.g 2018-03-17)</source>
+            <target state="final">Data formatu Y-m-d (pvz. 2018-03-17)</target></trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.step.fieldExplanationText" resname="formEditor.elements.Date.editor.step.fieldExplanationText" xml:space="preserve" approved="yes">
+                <source>Specify the number of days between each occurrence of this event.</source>
+            <target state="final">Nurodykite dienų skaičių tarp kiekvieno šio įvykio pasikartojimo.</target></trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.step.label" resname="formEditor.elements.Date.editor.step.label" xml:space="preserve" approved="yes">
+                <source>Frequency</source>
+            <target state="final">Dažnis</target></trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.validators.DateRange.label" resname="formEditor.elements.Date.editor.validators.DateRange.label" xml:space="preserve" approved="yes">
+                <source>Date range</source>
+            <target state="final">Datų intervalas</target></trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.header.label" resname="formEditor.elements.DatePicker.validators.DateRange.editor.header.label" xml:space="preserve" approved="yes">
+                <source>Date range</source>
+            <target state="final">Datų intervalas</target></trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.minimum" resname="formEditor.elements.DatePicker.validators.DateRange.editor.minimum" xml:space="preserve" approved="yes">
+                <source>Minimum date</source>
+            <target state="final">Minimali data</target></trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.maximum" resname="formEditor.elements.DatePicker.validators.DateRange.editor.maximum" xml:space="preserve" approved="yes">
+                <source>Maximum date</source>
+            <target state="final">Maksimali data</target></trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.minimum.placeholder" resname="formEditor.elements.DatePicker.validators.DateRange.editor.minimum.placeholder" xml:space="preserve" approved="yes">
+                <source>A date in format Y-m-d (e.g 2018-03-17)</source>
+            <target state="final">Data formatu Y-m-d (pvz. 2018-03-17)</target></trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.maximum.placeholder" resname="formEditor.elements.DatePicker.validators.DateRange.editor.maximum.placeholder" xml:space="preserve" approved="yes">
+                <source>A date in format Y-m-d (e.g 2018-03-17)</source>
+            <target state="final">Data formatu Y-m-d (pvz. 2018-03-17)</target></trans-unit>
+      <trans-unit id="formEditor.elements.Password.label" resname="formEditor.elements.Password.label" xml:space="preserve" approved="yes">
+                <source>Password</source>
+            <target state="final">Slaptažodis</target></trans-unit>
+      <trans-unit id="formEditor.elements.AdvancedPassword.label" resname="formEditor.elements.AdvancedPassword.label" xml:space="preserve" approved="yes">
+                <source>Advanced password</source>
+            <target state="final">Išplėstinis slaptažodis</target></trans-unit>
+      <trans-unit id="formEditor.elements.AdvancedPassword.editor.confirmationLabel.label" resname="formEditor.elements.AdvancedPassword.editor.confirmationLabel.label" xml:space="preserve" approved="yes">
+                <source>Confirmation label</source>
+            <target state="final">Patvirtinimo etiketė</target></trans-unit>
+      <trans-unit id="formEditor.element.AdvancedPassword.editor.confirmationLabel.predefinedDefaults" resname="formEditor.element.AdvancedPassword.editor.confirmationLabel.predefinedDefaults" xml:space="preserve" approved="yes">
+                <source>Confirmation</source>
+            <target state="final">Patvirtinimas</target></trans-unit>
+      <trans-unit id="formEditor.elements.Textarea.label" resname="formEditor.elements.Textarea.label" xml:space="preserve" approved="yes">
+                <source>Textarea</source>
+            <target state="final">Teksto sritis</target></trans-unit>
+      <trans-unit id="formEditor.elements.Checkbox.label" resname="formEditor.elements.Checkbox.label" xml:space="preserve" approved="yes">
+                <source>Checkbox</source>
+            <target state="final">Žymimasis langelis</target></trans-unit>
+      <trans-unit id="formEditor.elements.MultiCheckbox.label" resname="formEditor.elements.MultiCheckbox.label" xml:space="preserve" approved="yes">
+                <source>Multi checkbox</source>
+            <target state="final">Keli žymimieji langeliai</target></trans-unit>
+      <trans-unit id="formEditor.elements.MultiSelect.label" resname="formEditor.elements.MultiSelect.label" xml:space="preserve" approved="yes">
+                <source>Multi select</source>
+            <target state="final">Kelių pasirinkimų sąrašas</target></trans-unit>
+      <trans-unit id="formEditor.elements.RadioButton.label" resname="formEditor.elements.RadioButton.label" xml:space="preserve" approved="yes">
+                <source>Radio button</source>
+            <target state="final">Akutė</target></trans-unit>
+      <trans-unit id="formEditor.elements.SingleSelect.label" resname="formEditor.elements.SingleSelect.label" xml:space="preserve" approved="yes">
+                <source>Single select</source>
+            <target state="final">Vieno pasirinkimo sąrašas</target></trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.label" resname="formEditor.elements.DatePicker.label" xml:space="preserve" approved="yes">
+                <source>Date picker (jQuery)</source>
+            <target state="final">Datos parinkiklis (jQuery)</target></trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.editor.dateFormat.label" resname="formEditor.elements.DatePicker.editor.dateFormat.label" xml:space="preserve" approved="yes">
+                <source>Date format</source>
+            <target state="final">Datos formatas</target></trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.editor.enableDatePicker.label" resname="formEditor.elements.DatePicker.editor.enableDatePicker.label" xml:space="preserve" approved="yes">
+                <source>Enable datepicker (needs jQuery UI)</source>
+            <target state="final">Įjungti datos parinkiklį (reikia jQuery UI)</target></trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.editor.displayTimeSelector.label" resname="formEditor.elements.DatePicker.editor.displayTimeSelector.label" xml:space="preserve" approved="yes">
+                <source>Display time selector</source>
+            <target state="final">Rodyti laiko parinkiklį</target></trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.editor.validators.label" resname="formEditor.elements.DatePicker.editor.validators.label" xml:space="preserve" approved="yes">
+                <source>Validators</source>
+            <target state="final">Validacijos</target></trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.editor.validators.EmptyValue.label" resname="formEditor.elements.DatePicker.editor.validators.EmptyValue.label" xml:space="preserve" approved="yes">
+                <source>Add validator</source>
+            <target state="final">Pridėti validatorių</target></trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.editor.validators.DateTime.label" resname="formEditor.elements.DatePicker.editor.validators.DateTime.label" xml:space="preserve" approved="yes">
+                <source>Date/time</source>
+            <target state="final">Data / laikas</target></trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateTime.editor.header.label" resname="formEditor.elements.DatePicker.validators.DateTime.editor.header.label" xml:space="preserve" approved="yes">
+                <source>Date/time</source>
+            <target state="final">Data / laikas</target></trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateTime.editor.validationErrorMessage.label" resname="formEditor.elements.DatePicker.validators.DateTime.editor.validationErrorMessage.label" xml:space="preserve" approved="yes">
+                <source>Custom error message</source>
+            <target state="final">Specialus klaidos pranešimas</target></trans-unit>
+      <trans-unit id="formEditor.elements.DatePicker.validators.DateTime.editor.validationErrorMessage.fieldExplanationText" resname="formEditor.elements.DatePicker.validators.DateTime.editor.validationErrorMessage.fieldExplanationText" xml:space="preserve" approved="yes">
+                <source>Error message which is shown if the validation does not succeed</source>
+            <target state="final">Klaidos pranešimas, rodomas, jei validacija nepavyksta</target></trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.label" resname="formEditor.elements.StaticText.label" xml:space="preserve" approved="yes">
+                <source>Static text</source>
+            <target state="final">Statinis tekstas</target></trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.editor.label.label" resname="formEditor.elements.StaticText.editor.label.label" xml:space="preserve" approved="yes">
+                <source>Header</source>
+            <target state="final">Antraštė</target></trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.editor.staticText.label" resname="formEditor.elements.StaticText.editor.staticText.label" xml:space="preserve" approved="yes">
+                <source>Text</source>
+            <target state="final">Tekstas</target></trans-unit>
+      <trans-unit id="formEditor.elements.Hidden.label" resname="formEditor.elements.Hidden.label" xml:space="preserve" approved="yes">
+                <source>Hidden</source>
+            <target state="final">Paslėptas</target></trans-unit>
+      <trans-unit id="formEditor.elements.Hidden.editor.defaultValue.label" resname="formEditor.elements.Hidden.editor.defaultValue.label" xml:space="preserve" approved="yes">
+                <source>Value</source>
+            <target state="final">Reikšmė</target></trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.label" resname="formEditor.elements.ContentElement.label" xml:space="preserve" approved="yes">
+                <source>Content element</source>
+            <target state="final">Turinio elementas</target></trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.selectContentElement" resname="formEditor.elements.ContentElement.selectContentElement" xml:space="preserve" approved="yes">
+                <source>No content element selected</source>
+            <target state="final">Nepasirinktas joks turinio elementas</target></trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.editor.contentElement.label" resname="formEditor.elements.ContentElement.editor.contentElement.label" xml:space="preserve" approved="yes">
+                <source>Content element uid</source>
+            <target state="final">Turinio elemento UID</target></trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.editor.contentElement.buttonLabel" resname="formEditor.elements.ContentElement.editor.contentElement.buttonLabel" xml:space="preserve" approved="yes">
+                <source>Page Content</source>
+            <target state="final">Puslapio turinys</target></trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.label" resname="formEditor.elements.FileUpload.label" xml:space="preserve" approved="yes">
+                <source>File upload</source>
+            <target state="final">Failo įkėlimas</target></trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.label" resname="formEditor.elements.FileUpload.editor.allowedMimeTypes.label" xml:space="preserve" approved="yes">
+                <source>Allowed file mime types</source>
+            <target state="final">Leidžiami failų MIME tipai</target></trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.doc" resname="formEditor.elements.FileUpload.editor.allowedMimeTypes.doc" xml:space="preserve" approved="yes">
+                <source>Documents (doc)</source>
+            <target state="final">Dokumentai (doc)</target></trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.docx" resname="formEditor.elements.FileUpload.editor.allowedMimeTypes.docx" xml:space="preserve" approved="yes">
+                <source>Documents (docx)</source>
+            <target state="final">Dokumentai (docx)</target></trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.xls" resname="formEditor.elements.FileUpload.editor.allowedMimeTypes.xls" xml:space="preserve" approved="yes">
+                <source>Documents (xls)</source>
+            <target state="final">Dokumentai (xls)</target></trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.xlsx" resname="formEditor.elements.FileUpload.editor.allowedMimeTypes.xlsx" xml:space="preserve" approved="yes">
+                <source>Documents (xlsx)</source>
+            <target state="final">Dokumentai (xlsx)</target></trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.pdf" resname="formEditor.elements.FileUpload.editor.allowedMimeTypes.pdf" xml:space="preserve" approved="yes">
+                <source>Documents (pdf)</source>
+            <target state="final">Dokumentai (pdf)</target></trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.odt" resname="formEditor.elements.FileUpload.editor.allowedMimeTypes.odt" xml:space="preserve" approved="yes">
+                <source>Documents (odt)</source>
+            <target state="final">Dokumentai (odt)</target></trans-unit>
+      <trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.ods" resname="formEditor.elements.FileUpload.editor.allowedMimeTypes.ods" xml:space="preserve" approved="yes">
+                <source>Documents (ods)</source>
+            <target state="final">Dokumentai (ods)</target></trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.label" resname="formEditor.elements.ImageUpload.label" xml:space="preserve" approved="yes">
+                <source>Image upload</source>
+            <target state="final">Paveikslėlio įkėlimas</target></trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.label" resname="formEditor.elements.ImageUpload.editor.allowedMimeTypes.label" xml:space="preserve" approved="yes">
+                <source>Allowed file mime types</source>
+            <target state="final">Leidžiami failų MIME tipai</target></trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.jpg" resname="formEditor.elements.ImageUpload.editor.allowedMimeTypes.jpg" xml:space="preserve" approved="yes">
+                <source>Images (jpg)</source>
+            <target state="final">Paveikslėliai (jpg)</target></trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.png" resname="formEditor.elements.ImageUpload.editor.allowedMimeTypes.png" xml:space="preserve" approved="yes">
+                <source>Images (png)</source>
+            <target state="final">Paveikslėliai (png)</target></trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.bmp" resname="formEditor.elements.ImageUpload.editor.allowedMimeTypes.bmp" xml:space="preserve" approved="yes">
+                <source>Images (bmp)</source>
+            <target state="final">Paveikslėliai (bmp)</target></trans-unit>
+      <trans-unit id="formEditor.elements.UnknownElement" resname="formEditor.elements.UnknownElement" xml:space="preserve" approved="yes">
+                <source>Unknown element</source>
+            <target state="final">Nežinomas elementas</target></trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.new_element" resname="formEditor.stage.toolbar.new_element" xml:space="preserve" approved="yes">
+                <source>Create new element</source>
+            <target state="final">Sukurti naują elementą</target></trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.remove" resname="formEditor.stage.toolbar.remove" xml:space="preserve" approved="yes">
+                <source>Remove</source>
+            <target state="final">Pašalinti</target></trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.new_element.inside" resname="formEditor.stage.toolbar.new_element.inside" xml:space="preserve" approved="yes">
+                <source>Inside</source>
+            <target state="final">Viduje</target></trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.new_element.after" resname="formEditor.stage.toolbar.new_element.after" xml:space="preserve" approved="yes">
+                <source>After</source>
+            <target state="final">Po</target></trans-unit>
+      <trans-unit id="formEditor.inspector.editor.formelement_selector.title" resname="formEditor.inspector.editor.formelement_selector.title" xml:space="preserve" approved="yes">
+                <source>Insert formelement identifier</source>
+            <target state="final">Įterpti formos elemento identifikatorių</target></trans-unit>
+    </body>
+  </file>
+</xliff>
