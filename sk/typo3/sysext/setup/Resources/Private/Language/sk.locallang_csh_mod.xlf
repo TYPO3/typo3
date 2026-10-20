@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814989" source-language="en" datatype="plaintext" original="EXT:setup/Resources/Private/Language/locallang_csh_mod.xlf" date="2011-10-17T20:22:37Z" product-name="setup" target-language="sk">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>User &gt; Setup module</source>
+        <target state="final">Používateľ &gt; Modul nastavení</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The Setup module allows the backend user to customize TYPO3 for his own login sessions. This includes the backend language and various other interface features.</source>
+        <target state="final">Modul nastavení umožňuje používateľovi nastaviť TYPO3 podľa vlastnej potreby. Vrátane voľby jazyka a ďalších možností používateľského rozhrania.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>&lt;b&gt;Notice [For Admins]:&lt;/b&gt; These settings can all be overridden or have their default values changed by "User TSconfig". To read more about this concept, see the link below!</source>
+        <target state="final">&lt;b&gt;Poznámka [Pre Administrátorov]:&lt;/b&gt; Tieto nastavenia môžu byť prepísané alebo nastavené na ich prednastavené hodnoty pomocou "User TSconfig". Pre viac informácií použi odkaz nižšie.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
