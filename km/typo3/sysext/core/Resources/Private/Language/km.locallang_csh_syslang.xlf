@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814858" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_syslang.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the name of this additional system language.</source>
+        <target state="final">បំពេញ​ឈ្មោះ​ភាសា​បន្ថែម​របស់​ប្រព័ន្ធ​នេះ ។</target>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>This option will hide the system language from being available in the backend.</source>
+        <target state="final">ជម្រើស​នេះ​នឹង​លាក់​ភាសា​របស់​ប្រព័ន្ធ​ពី​ការដាក់​ឲ្យ​ដំណើរការ​ក្នុង backend ។</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Defines which languages are alternatively available on each webpage.</source>
+        <target state="final">កំណត់​ភាសា​មួយ​ណា​ដែល​មាន​ការបកប្រែ​នៅ​លើ​ទំព័រ​វែបសាយ​នីមួយៗ ។</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
