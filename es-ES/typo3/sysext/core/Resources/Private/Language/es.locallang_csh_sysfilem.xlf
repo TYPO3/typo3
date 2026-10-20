@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814857" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilem.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Filemounts describe a filepath on the server, relative or absolute.</source>
+        <target state="final">El montaje de archivos describe una ruta de archivos en el servidor, ya sea completa o no.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>By creating a file mount record and placing a reference to it in a Backend usergroup you can allow a user access to the file mount in the File&gt;List module.
+Filemounts may also configure access to a path on the server to which the user has FTP-access. Just remember to set file-permissions on the server correctly so the webserver user (which PHP is running as) has at least read access to the FTP-dir.
+You can only mount absolute paths if they are within the base path set in $TYPO3_CONF_VARS[BE][lockRootPath]</source>
+			<target state="final">Creando un registro de montaje de archivos y colocando una referencia en el grupo de usuarios del backend, le permites a un usuario acceder al montaje de ficheros en el módulo Lista&gt;Archivo. 
+Los montajes de archivos también pueden configurar el acceso a una ruta del servidor a la que un usuario tiene acceso FTP. Solo recuerda configurar correctamente los permisos de archivos en el servidor, así el usuario del servidor web (cuyo PHP se ejecuta) tiene al menos acceso de lectura al directorio FTP. 
+Solo puedes montar rutas completas si están dentro de la ruta base en $TYPO3_CONF_VARS[BE][lockRootPath]</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:file_mountpoints,
+be_users:file_mountpoints,
+More about File mounts | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/</source>
+				
+			<target state="final">be_groups:db_mountpoints,
+be_users:file_mountpoints,
+be_users:options,
+be_users,
+sys_filemounts,
+xMOD_csh_corebe:filelist_module,
+Más sobre las Monturas de Archivos | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArquetture/AccessControl/MoreAboutFileMounts/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_.image" resname="_.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/filemount_1.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/filemount_1.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter a title for the filemount. The title will appear as the name of the file mount when it is applied to users and groups.</source>
+        <target state="final">Introduce un título para la fuente de archivos. El título aparecerá como el nombre del montaje de archivos cuando se aplique a los usuarios y grupos.</target>
+      </trans-unit>
+      <trans-unit id="_title.image" resname="_title.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/be_groups_5.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_5.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="path.description" resname="path.description" approved="yes">
+        <source>Enter the path of the filemount, relative or absolute depending on the settings of BASE.</source>
+        <target state="final">Introduce la ruta de la fuente de archivos, relativa o completa dependiendo de la configuración de BASE.</target>
+      </trans-unit>
+      <trans-unit id="path.details" resname="path.details" xml:space="preserve" approved="yes">
+				<source>If BASE is set to relative, the path mounted is found in the subfolder "fileadmin/" of the website. Then you should enter the subfolder in "fileadmin/" as path. For instance if you want to mount access to "fileadmin/user_uploads/all/" then enter the value "user_uploads/all" as the value of PATH.
+If BASE is absolute you should enter the absolute path on the server, eg. "/home/ftp_upload" or "C:/home/ftp_upload". Further you must make sure the configuration variable $TYPO3_CONF_VARS[BE][lockRootPath] contains the first part of the path you want to mount.
+
+&lt;strong&gt;Notice:&lt;/strong&gt; In any case, make sure the webserver user which PHP is running as has &lt;em&gt;at least&lt;/em&gt; read-access to the path. If not, the mount will simply not appear without any warnings.
+If you have problems - especially with absolute mounts - try to mount something "simple" like a relative path in fileadmin. If that is working well, try the absolute path.
+
+Your PHP-configuration may also impose other restrictions on you if open_basedir is enabled. Then use relative paths.</source>
+			<target state="final">Si la BASE está configurado como relativa, la ruta montada se encuentra en la subcarpeta "fileadmin/" del sitio web. Entonces, debes introducir la subcarpeta en "fileadmin" como ruta. Por ejemplo, si quieres montar el acceso a "fileadmin/ser_uploads/all", ingresa el valor "user_upload/all" como el valor de RUTA.</target></trans-unit>
+      <trans-unit id="_path.seeAlso" resname="_path.seeAlso" xml:space="preserve" approved="yes">
+				<source>sys_filemounts:base,
+be_groups:file_mountpoints,
+sys_filemounts</source>
+				
+			<target state="final">sys_filemounts:base,
+be_groups:file_mountpoints,
+sys_filemounts</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_path.image" resname="_path.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/be_groups_6.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_7.png</source>
+				
+			<target state="final">EXT:core/Recursos/Público/Imágenes/cshimages/be_groups_6.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_7.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="path.image_descr" resname="path.image_descr" xml:space="preserve" approved="yes">
+				<source>This is a filemount relative to "fileadmin/". The mounted folder is "fileadmin/user_upload/" since "user_upload" is the value of the "Path" field.
+The directory structure of "fileadmin/" where you can see the "user_upload" folder in the bottom of the list.</source>
+			<target state="final">Este es el montaje de archivo relativo al "fileadmin/". La carpeta montada es "fileadmin/user_upload/", ya que "user_upload" es el valor del campo "ruta. 
+La estructura del directorio del "fileadmin/" donde puedes ver la carpeta "user_upload" al final de la lista.</target></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Use this option to temporarily disable the filemount.</source>
+        <target state="final">Utiliza esta opción para desactivar temporalmente el sistema de archivos.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>All backend users using the mount will not have access anymore. This includes 'Admin'-users.</source>
+        <target state="final">Todos los usuarios del backend que usen la montura ya no tendrán acceso. Esto incluye usuarios 'Admin'.</target>
+      </trans-unit>
+      <trans-unit id="base.description" resname="base.description" approved="yes">
+        <source>Determines whether the value of the PATH field is to be recognized as an absolute path on the server or a path relative to the fileadmin/ subfolder to the website.</source>
+        <target state="final">Determina si el valor del campo RUTA debe ser reconocido como una ruta completa en el servidor o una ruta relativa a la subcarpeta fileadmin/ del sitio web.</target>
+      </trans-unit>
+      <trans-unit id="_base.seeAlso" resname="_base.seeAlso" approved="yes">
+        <source>sys_filemounts:path</source>
+        <target state="final">sys_filemounts:path</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="read_only.description" resname="read_only.description" approved="yes">
+        <source>Display this file mount as read-only.</source>
+        <target state="final">Mostrar este montaje de archivos como solo lectura.</target>
+      </trans-unit>
+      <trans-unit id="read_only.details" resname="read_only.details" approved="yes">
+        <source>Read-only file mounts are displayed in the Filelist and the Element Browser. They allow displaying of files and folders which are neither writable nor editable for the user.</source>
+        <target state="final">Los montajes de archivos de solo lectura se muestran en la Lista de Archivos y en el Explorador de Elementos. Permiten mostrar archivos y carpetas que no tienen permisos de escritura ni son editables para el usuario.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
