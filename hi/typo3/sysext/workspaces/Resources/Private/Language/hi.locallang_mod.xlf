@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_mod.xlf" date="2011-10-17T20:22:38Z" product-name="workspaces" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="stage_editing" approved="yes">
+        <source>Editing</source>
+        <target state="final">संपादन</target>
+      </trans-unit>
+      <trans-unit id="stage_ready_to_publish" approved="yes">
+        <source>Ready to publish</source>
+        <target state="final">प्रकाशित करने के लिए तैयार</target>
+      </trans-unit>
+      <trans-unit id="stage_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">प्रकाशित करें</target>
+      </trans-unit>
+      <trans-unit id="stage_all" approved="yes">
+        <source>All stages</source>
+        <target state="final">सभी चरण</target>
+      </trans-unit>
+      <trans-unit id="previewText" approved="yes">
+        <source>Preview of workspace %s (%s)</source>
+        <target state="final">कार्यस्थल %s का पूर्वावलोकन (%s)</target>
+      </trans-unit>
+      <trans-unit id="stopPreview" approved="yes">
+        <source>Stop preview</source>
+        <target state="final">पूर्वावलोकन रोकें</target>
+      </trans-unit>
+      <trans-unit id="previewLogoutSuccess" approved="yes">
+        <source>You logged out from Workspace preview mode. Click this link to %1$s go back to the website%2$s</source>
+        <target state="final">आपने कार्यस्थल पूर्वावलोकन मोड से लॉग आउट किया है। वेबसाइट पर वापस जाने के लिए इस लिंक पर क्लिक करें %1$sवेबसाइट पर वापस जाएं%2$s</target>
+      </trans-unit>
+      <trans-unit id="previewLogoutError" approved="yes">
+        <source>%1$sERROR:%2$sTemplate File "%3$s" configured with $TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"] not found. Please contact webmaster about this problem.</source>
+        <target state="final">त्रुटि: टेम्पलेट फ़ाइल "%3$s" $TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"] के साथ कॉन्फ़िगर की गई नहीं मिली। कृपया इस समस्या के बारे में वेबमास्टर से संपर्क करें।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
