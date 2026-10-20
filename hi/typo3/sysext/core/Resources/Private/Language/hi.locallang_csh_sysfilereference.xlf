@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1445000814" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilereference.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="alternative.description" resname="alternative.description" approved="yes">
+        <source>Sets the alternative text of this asset.</source>
+        <target state="final">इस एसेट का वैकल्पिक टेक्स्ट सेट करता है।</target>
+      </trans-unit>
+      <trans-unit id="alternative.details" resname="alternative.details" approved="yes">
+        <source>When using the img element, specify a short text alternative with the alt attribute. Note. The value of this attribute is referred to as "alt text".
+When an image contains words that are important to understanding the content, the alt text should include those words. This will allow the alt text to play the same function on the page as the image. Note that it does not necessarily describe the visual characteristics of the image itself but must convey the same meaning as the image.</source>
+        <target state="final">जब आप 'img' एलिमेंट का इस्तेमाल करते हैं, तो 'alt' एट्रिब्यूट के साथ एक छोटा टेक्स्ट विकल्प ज़रूर दें। ध्यान दें: इस एट्रिब्यूट की वैल्यू को "alt text" कहा जाता है।
+जब किसी इमेज में ऐसे शब्द हों जो कंटेंट को समझने के लिए ज़रूरी हों, तो 'alt text' में वे शब्द शामिल होने चाहिए। इससे 'alt text' पेज पर वही काम कर पाएगा जो इमेज करती है। ध्यान दें कि यह ज़रूरी नहीं है कि यह इमेज की दिखने वाली विशेषताओं का ही वर्णन करे, बल्कि इसे इमेज जैसा ही अर्थ बताना चाहिए।</target>
+      </trans-unit>
+      <trans-unit id="link.description" resname="link.description" approved="yes">
+        <source>Sets a link on this asset.</source>
+        <target state="final">इस एसेट पर एक लिंक सेट करता है।</target>
+      </trans-unit>
+      <trans-unit id="link.details" resname="link.details" approved="yes">
+        <source>Use the wizard next to the field to specify a link that a user can follow by clicking the image.</source>
+        <target state="final">फ़ील्ड के बगल में दिए गए विज़ार्ड का उपयोग करके एक ऐसा लिंक निर्दिष्ट करें, जिसे उपयोगकर्ता छवि पर क्लिक करके फ़ॉलो कर सके।</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Sets the title text of this asset.</source>
+        <target state="final">इस एसेट का शीर्षक टेक्स्ट सेट करता है।</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>The title attribute is used to provide additional information to help clarify or further describe the purpose of a link.
+If the supplementary information provided through the title attribute is something the user should know before following the link, such as a warning, then it should be provided in the link text rather than in the title attribute.</source>
+        <target state="final">title attribute का उपयोग लिंक के उद्देश्य को स्पष्ट करने या उसे और बेहतर तरीके से वर्णित करने के लिए अतिरिक्त जानकारी प्रदान करने में किया जाता है।
+यदि title attribute के माध्यम से दी गई अतिरिक्त जानकारी ऐसी है जिसे उपयोगकर्ता को लिंक पर जाने से पहले जानना आवश्यक है, जैसे कोई चेतावनी, तो उसे title attribute में देने के बजाय लिंक टेक्स्ट में ही शामिल करना चाहिए।</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Sets the image-caption-text of this asset.</source>
+        <target state="final">यह इस एसेट के इमेज-कैप्शन-टेक्स्ट को सेट करता है।</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" approved="yes">
+        <source>This text will be displayed underneath your asset and can be used to supply additional context to the image.
+Depending on local laws you might have to use this to supply proper copyright information on your assets.</source>
+        <target state="final">यह टेक्स्ट आपके एसेट के नीचे प्रदर्शित किया जाएगा और इसका उपयोग इमेज के लिए अतिरिक्त संदर्भ प्रदान करने के लिए किया जा सकता है।
+स्थानीय कानूनों के अनुसार, आपको अपने एसेट्स पर उचित कॉपीराइट जानकारी प्रदान करने के लिए इसका उपयोग करना पड़ सकता है।</target>
+      </trans-unit>
+      <trans-unit id="crop.description" resname="crop.description" approved="yes">
+        <source>Click "Open Editor" to start up the image editor.</source>
+        <target state="final">इमेज एडिटर शुरू करने के लिए "Open Editor" पर क्लिक करें।</target>
+      </trans-unit>
+      <trans-unit id="autoplay.description" resname="autoplay.description" approved="yes">
+        <source>Check to let embedded media play once loaded.</source>
+        <target state="final">एम्बेडेड मीडिया को लोड होने के बाद चलने देने के लिए इसे चुनें।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
