@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="tx_scheduler_task" approved="yes">
+        <source>Scheduler task</source>
+        <target state="final">スケジュール化したタスク</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.tasktype" approved="yes">
+        <source>Task type</source>
+        <target state="final">タスクの種類</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.task_group" approved="yes">
+        <source>Belongs to task group</source>
+        <target state="final">タスクグループに所属する</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.description" approved="yes">
+        <source>Description</source>
+        <target state="final">説明</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.execution_details" approved="yes">
+        <source>Schedule</source>
+        <target state="final">スケジュール</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.nextexecution" approved="yes">
+        <source>Next run planned at</source>
+        <target state="final">次回実行は次の時点で計画されています</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.lastexecution_time" approved="yes">
+        <source>Last run started at</source>
+        <target state="final">最終実行日時</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.lastexecution_failure" approved="yes">
+        <source>Error details from last run</source>
+        <target state="final">最後の実行からのエラーの詳細</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.lastexecution_context" approved="yes">
+        <source>Last run via</source>
+        <target state="final">最終実行経由：</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.number_of_days" approved="yes">
+        <source>Handle entries older than given number of days</source>
+        <target state="final">指定された日数より古い項目を処理する</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.selected_tables" approved="yes">
+        <source>Database tables</source>
+        <target state="final">データベーステーブル</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task.file_storage" approved="yes">
+        <source>File storage</source>
+        <target state="final">ファイル ストレージ</target>
+      </trans-unit>
+      <trans-unit id="tx_scheduler_task_group.groupName" approved="yes">
+        <source>Group name</source>
+        <target state="final">グループ名</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
