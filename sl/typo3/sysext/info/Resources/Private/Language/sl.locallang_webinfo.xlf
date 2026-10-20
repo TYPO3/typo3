@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814792" source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_webinfo.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="page_title" resname="page_title" approved="yes">
+        <source>Pagetree overview</source>
+        <target state="final">Pogled drevesne strukture</target>
+      </trans-unit>
+      <trans-unit id="pages_0" resname="pages_0" approved="yes">
+        <source>Basic settings</source>
+        <target state="final">Osnovne nastavitve</target>
+      </trans-unit>
+      <trans-unit id="pages_2" resname="pages_2" approved="yes">
+        <source>Cache and Age</source>
+        <target state="final">Predpomnilnik in starost</target>
+      </trans-unit>
+      <trans-unit id="pages_1" resname="pages_1" approved="yes">
+        <source>Record overview</source>
+        <target state="final">Pogled zapisov</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_viewPage" resname="lang_renderl10n_viewPage" approved="yes">
+        <source>View page</source>
+        <target state="final">Poglej stran</target>
+      </trans-unit>
+      <trans-unit id="lang_title" resname="lang_title" approved="yes">
+        <source>Localization overview</source>
+        <target state="final">Pogled prevodov</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editLangOverlays" resname="lang_renderl10n_editLangOverlays" approved="yes">
+        <source>Edit all language overlay records</source>
+        <target state="final">Urejanje vseh zapisov jezikovnega prekrivanja</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editPageLang" resname="lang_renderl10n_editPageLang" approved="yes">
+        <source>Edit page translation</source>
+        <target state="final">Uredi prevod strani</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_editLanguageOverlayRecord" resname="lang_renderl10n_editLanguageOverlayRecord" approved="yes">
+        <source>Edit language overlay record</source>
+        <target state="final">Uredi zapis jezikovnega prekrivanja</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_page" resname="lang_renderl10n_page" approved="yes">
+        <source>Page</source>
+        <target state="final">Stran</target>
+      </trans-unit>
+      <trans-unit id="lang_renderl10n_default" resname="lang_renderl10n_default" approved="yes">
+        <source>Default</source>
+        <target state="final">Privzeto</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
