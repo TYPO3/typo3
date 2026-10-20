@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="t3">
+  <file id="f1">
+    <unit id="enabled">
+      <segment state="initial">
+        <source>Login enabled</source>
+        <target>crwdns380576:0crwdne380576:0</target>
+      </segment>
+    </unit>
+    <unit id="endtime">
+      <segment state="initial">
+        <source>Account active until</source>
+        <target>crwdns380578:0crwdne380578:0</target>
+      </segment>
+    </unit>
+    <unit id="group.enabled">
+      <segment state="initial">
+        <source>Group enabled</source>
+        <target>crwdns380580:0crwdne380580:0</target>
+      </segment>
+    </unit>
+    <unit id="starttime">
+      <segment state="initial">
+        <source>Account active from</source>
+        <target>crwdns380582:0crwdne380582:0</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
