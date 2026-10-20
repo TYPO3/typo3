@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814911" source-language="en" datatype="plaintext" original="EXT:rsaauth/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:35Z" product-name="rsaauth" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="hook_empty_directory" resname="hook_empty_directory" approved="yes">
+        <source>RSA temporary directory is empty. This is a security risk. Please, go to the Extension Manager, select the "RSA authentication" extension and set the directory according to instructions there.</source>
+        <target state="final">Das temporäre Verzeichnis für RSA ist leer. Dies ist ein Sicherheitsrisiko. Bitte rufen Sie den Erweiterungs-Manager auf, wählen Sie die Erweiterung "RSA-Authentifizierung" aus und legen Sie das Verzeichnis den dortigen Anweisungen entsprechend fest.</target>
+      </trans-unit>
+      <trans-unit id="hook_directory_not_absolute" resname="hook_directory_not_absolute" approved="yes">
+        <source>RSA temporary directory path is not absolute. This may cause RSA authentication errors and it is a security risk. Please, go to the Extension Manager, select the "RSA authentication" extension and set the directory according to instructions there.</source>
+        <target state="final">Der Pfad des temporären Verzeichnisses für RSA ist nicht absolut. Dies kann zu RSA-Authentifizierungsfehlern führen und stellt ein Sicherheitsrisiko dar. Bitte rufen Sie den Erweiterungs-Manager auf, wählen Sie die Erweiterung "RSA-Authentifizierung" aus und legen Sie das Verzeichnis den dortigen Anweisungen entsprechend fest.</target>
+      </trans-unit>
+      <trans-unit id="hook_directory_not_exist" resname="hook_directory_not_exist" approved="yes">
+        <source>RSA temporary directory does not exist. This is a security risk because an insecure directory will be used for RSA operations. Please, go to the Extension Manager, select the "RSA authentication" extension and set the directory according to instructions there.</source>
+        <target state="final">Das temporäre Verzeichnis für RSA ist nicht vorhanden. Dies stellt ein Sicherheitsrisiko dar, da für RSA-Operationen ein unsicheres Verzeichnis verwendet wird. Bitte rufen Sie den Erweiterungs-Manager auf, wählen Sie die Erweiterung "RSA-Authentifizierung" aus und legen Sie das Verzeichnis den dortigen Anweisungen entsprechend fest.</target>
+      </trans-unit>
+      <trans-unit id="hook_directory_not_writable" resname="hook_directory_not_writable" approved="yes">
+        <source>RSA temporary directory is not writable. This may cause RSA authentication errors and it is a security risk. Please, go to the Extension Manager, select the "RSA authentication" extension and set the directory according to instructions there.</source>
+        <target state="final">In das temporäre Verzeichnis für RSA kann nicht geschrieben werden. Dies kann zu RSA-Authentifizierungsfehlern führen und stellt ein Sicherheitsrisiko dar. Bitte rufen Sie den Erweiterungs-Manager auf, wählen Sie die Erweiterung "RSA-Authentifizierung" aus und legen Sie das Verzeichnis den dortigen Anweisungen entsprechend fest.</target>
+      </trans-unit>
+      <trans-unit id="hook_directory_inside_siteroot" resname="hook_directory_inside_siteroot" approved="yes">
+        <source>RSA temporary directory is inside the web site root directory. This is a security risk. Please, go to the Extension Manager, select the "RSA authentication" extension and set the directory according to instructions there.</source>
+        <target state="final">Das temporäre Verzeichnis für RSA befindet sich innerhalb des Wurzelverzeichnisses der Website. Dies stellt ein Sicherheitsrisiko dar. Bitte rufen Sie den Erweiterungs-Manager auf, wählen Sie die Erweiterung "RSA-Authentifizierung" aus und legen Sie das Verzeichnis den dortigen Anweisungen entsprechend fest.</target>
+      </trans-unit>
+      <trans-unit id="hook_using_cmdline" resname="hook_using_cmdline" approved="yes">
+        <source>RSA authentication could not detect the openssl PHP extension. Currently RSA authentication uses a command line openssl utility. This is slower and less secure. Please, consider installing openssl PHP extension.</source>
+        <target state="final">Die RSA-Authentifizierung konnte das OpenSSL-Modul für PHP nicht finden. Derzeit verwendet die RSA-Authentifizierung daher ein Befehlszeilenprogramm für OpenSSL. Dies ist langsamer und weniger sicher. Bitte ziehen Sie in Betracht, das OpenSSL-Modul für PHP zu installieren.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
