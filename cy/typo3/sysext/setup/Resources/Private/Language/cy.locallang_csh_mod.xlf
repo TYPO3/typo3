@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814989" source-language="en" datatype="plaintext" original="EXT:setup/Resources/Private/Language/locallang_csh_mod.xlf" date="2011-10-17T20:22:37Z" product-name="setup" target-language="cy">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>User &gt; Setup module</source>
+        <target state="final">Modiwl Gosod Defnyddiwr &gt;</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The Setup module allows the backend user to customize TYPO3 for his own login sessions. This includes the backend language and various other interface features.</source>
+        <target state="final">Mae'r modiwl Setup yn caniatáu i'r defnyddiwr backend addasu TYPO3 ar gyfer ei sesiynau mewngofnodi ei hun. Mae hyn yn cynnwys yr iaith backend ac amryw o nodweddion rhyngwyneb eraill.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>&lt;b&gt;Notice [For Admins]:&lt;/b&gt; These settings can all be overridden or have their default values changed by "User TSconfig". To read more about this concept, see the link below!</source>
+        <target state="final">&lt;b&gt;Rhybudd [Ar gyfer Admins]:&lt;/b&gt; Gellir diystyru'r gosodiadau hyn i gyd neu newid eu gwerthoedd diofyn gan "User TSconfig". I ddarllen mwy am y cysyniad hwn, gweler y ddolen isod!</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" approved="yes">
+        <source>User TSconfig SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Setup/Index.html</source>
+        <target state="final">Defnyddiwr TSconfig SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Setup/Index.html</target>
+      </trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:setup/Resources/Public/Images/cshimages/setup8.png,
+EXT:setup/Resources/Public/Images/cshimages/setup7.png</source>
+				
+			<target state="final">EXT: setup / Resources / Public / Images / cshimages / setup8.png,
+EXT: setup / Resources / Public / Images / cshimages / setup7.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The Setup module is selected in the left menu.
+This is how the Setup module interface looks like - a list of options to configure.</source>
+			<target state="final">Dewisir y modiwl Setup yn y ddewislen chwith.
+Dyma sut mae rhyngwyneb y modiwl Setup yn edrych - rhestr o opsiynau i'w ffurfweddu.</target></trans-unit>
+      <trans-unit id="language.alttitle" resname="language.alttitle" approved="yes">
+        <source>Backend Language selection</source>
+        <target state="final">Dewis iaith Backend</target>
+      </trans-unit>
+      <trans-unit id="language.description" resname="language.description" approved="yes">
+        <source>Select the backend language you prefer. Most parts of TYPO3s backend (for regular users) are translated into other languages.</source>
+        <target state="final">Dewiswch yr iaith backend sydd orau gennych. Mae'r rhan fwyaf o rannau ôl-benwythnos TYPO3s (ar gyfer defnyddwyr rheolaidd) yn cael eu cyfieithu i ieithoedd eraill.</target>
+      </trans-unit>
+      <trans-unit id="language.details" resname="language.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Warning [technical]:&lt;/b&gt; If TYPO3 is not configured to use a single character set (through $TYPO3_CONF_VARS[BE][forceCharset]) then all data entered in the backend is submitted in the character set of the selected backend language. This leads to inconsistent data storage if some users are using the backend in Russian and others in English which uses different character sets.
+The solution clearly is to set the configuration option mentioned above to a value like "utf-8". This must be done by the developers responsible for the whole system configuration.</source>
+			<target state="final">&lt;b&gt;Rhybudd [technical]:&lt;/b&gt; Os nad yw TYPO3 wedi'i ffurfweddu i ddefnyddio set nodau sengl (trwy $TYPO3_CONF_VARS[BE][forceCharset]) yna mae'r holl ddata a gofnodir yn y backend yn cael ei gyflwyno yn set nodau'r iaith ôl-bac a ddewiswyd. Mae hyn yn arwain at storio data anghyson os yw rhai defnyddwyr yn defnyddio'r backend yn Rwseg ac eraill yn Saesneg sy'n defnyddio setiau nodau gwahanol.
+Yr ateb yn amlwg yw gosod yr opsiwn cyfluniad a grybwyllir uchod i werth fel "utf-8". Rhaid i'r datblygwyr sy'n gyfrifol am gyfluniad y system gyfan wneud hyn.</target></trans-unit>
+      <trans-unit id="_language.image" resname="_language.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/lang.png</source>
+        <target state="final">ESTYN: setup / Adnoddau / Cyhoeddus / Delweddau / cshimages / lang.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="language.image_descr" resname="language.image_descr" approved="yes">
+        <source>TYPO3 is translated into around 40 languages. English is the default language and all labels must be available in English first and foremost. This screenshot shows translations for Hebrew, Arabic, Russian and Chinese.</source>
+        <target state="final">Cyfieithir TYPO3 i oddeutu 40 iaith. Saesneg yw'r iaith ddiofyn a rhaid i'r holl labeli fod ar gael yn Saesneg yn anad dim. Mae'r screenshot hwn yn dangos cyfieithiadau ar gyfer Hebraeg, Arabeg, Rwseg a Tsieineaidd.</target>
+      </trans-unit>
+      <trans-unit id="option_startModule.alttitle" resname="option_startModule.alttitle" approved="yes">
+        <source>Start module</source>
+        <target state="final">Modiwl cychwyn</target>
+      </trans-unit>
+      <trans-unit id="option_startModule.description" resname="option_startModule.description" xml:space="preserve" approved="yes">
+				<source>Let you select the module that is called when you login in the Backend
+The default module is "About Modules".</source>
+			<target state="final">Gadewch ichi ddewis y modiwl a elwir pan fyddwch yn mewngofnodi yn y Backend
+Y modiwl diofyn yw "About Modiwlau".</target></trans-unit>
+      <trans-unit id="option_helpText.alttitle" resname="option_helpText.alttitle" approved="yes">
+        <source>Show help text when applicable</source>
+        <target state="final">Dangos testun cymorth pan fo hynny'n berthnasol</target>
+      </trans-unit>
+      <trans-unit id="option_helpText.description" resname="option_helpText.description" approved="yes">
+        <source>If set, some help texts will appear by default. Applies to the "Legend" text in the Web&gt;Access module for instance.</source>
+        <target state="final">Os cânt eu gosod, bydd rhai testunau cymorth yn ymddangos yn ddiofyn. Er enghraifft, mae'n berthnasol i'r testun "Chwedl" yn y modiwl Mynediad&gt;</target>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.alttitle" resname="option_maxTitleLen.alttitle" approved="yes">
+        <source>Maximum title length</source>
+        <target state="final">Hyd teitl mwyaf</target>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.description" resname="option_maxTitleLen.description" approved="yes">
+        <source>TYPO3 will often crop long titles of records etc. so only the first X characters are shown. Often the number of shown characters depends on this variable. For instance the length of page titles in the page tree is determined by this value.</source>
+        <target state="final">Yn aml, bydd TYPO3 yn cnydio teitlau hir o gofnodion ac ati, felly dim ond y nodau X cyntaf sy'n cael eu dangos. Yn aml mae nifer y nodau a ddangosir yn dibynnu ar y newidyn hwn. Er enghraifft, mae hyd teitlau tudalennau yn y goeden dudalen yn cael ei bennu gan y gwerth hwn.</target>
+      </trans-unit>
+      <trans-unit id="_option_maxTitleLen.image" resname="_option_maxTitleLen.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/setup6.png</source>
+        <target state="final">ESTYN: setup / Adnoddau / Cyhoeddus / Delweddau / cshimages / setup6.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.image_descr" resname="option_maxTitleLen.image_descr" approved="yes">
+        <source>In this case the Maximum Title length is set to 10 - and the result is that titles in the page tree - as well as other places in the backend - will be cropped after 10 characters, then suffixed by "...". The default value is "30".</source>
+        <target state="final">Yn yr achos hwn mae hyd Uchaf y Teitl wedi'i osod i 10 - a'r canlyniad yw y bydd teitlau yn y goeden dudalen - yn ogystal â lleoedd eraill yn y backend - yn cael eu cnydio ar ôl 10 nod, yna eu hôl-ddodu gan "...". Y gwerth diofyn yw "30".</target>
+      </trans-unit>
+      <trans-unit id="option_copyLevels.alttitle" resname="option_copyLevels.alttitle" approved="yes">
+        <source>Recursive Copy</source>
+        <target state="final">Copi Ailgylchu</target>
+      </trans-unit>
+      <trans-unit id="option_copyLevels.description" resname="option_copyLevels.description" approved="yes">
+        <source>When you copy a page, subpages can also be copied along if you set this option. The number you set here defines the number of levels under a page to include in a copy operation.</source>
+        <target state="final">Pan fyddwch chi'n copïo tudalen, gellir copïo is-dudalennau hefyd os ydych chi'n gosod yr opsiwn hwn. Mae'r rhif a osodwch yma yn diffinio nifer y lefelau o dan dudalen i'w chynnwys mewn gweithrediad copi.</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.alttitle" resname="option_edit_RTE.alttitle" approved="yes">
+        <source>Enable Rich Text Editor</source>
+        <target state="final">Galluogi Golygydd Testun Cyfoethog</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.description" resname="option_edit_RTE.description" approved="yes">
+        <source>If set, the Rich Text Editor in TYPO3 will be enabled for you. Normally you wouldn't want to disable this option.</source>
+        <target state="final">Os yw wedi'i osod, bydd y Golygydd Testun Cyfoethog yn TYPO3 yn cael ei alluogi ar eich cyfer chi. Fel rheol ni fyddech am analluogi'r opsiwn hwn.</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.details" resname="option_edit_RTE.details" approved="yes">
+        <source>A Rich Text Editor (RTE) means that a text editing field has buttons for making selected text bold, italic etc. Whether a RTE is available also depends on factors like the browser you are using and which extensions are installed. Finally RTEs are applied to only a few record fields. The most well known example would be the Text field of a Content Element.</source>
+        <target state="final">Mae Golygydd Testun Cyfoethog (RTE) yn golygu bod gan faes golygu testun fotymau ar gyfer gwneud testun dethol yn feiddgar, italig ac ati. Mae p'un a yw RTE ar gael hefyd yn dibynnu ar ffactorau fel y porwr rydych chi'n ei ddefnyddio a pha estyniadau sy'n cael eu gosod. Yn olaf, dim ond ychydig o feysydd recordio y cymhwysir RTEs. Yr enghraifft fwyaf adnabyddus fyddai maes Testun Elfen Cynnwys.</target>
+      </trans-unit>
+      <trans-unit id="_option_edit_RTE.image" resname="_option_edit_RTE.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/rte.png</source>
+        <target state="final">ESTYN: setup / Adnoddau / Cyhoeddus / Delweddau / cshimages / rte.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.alttitle" resname="option_edit_docModuleUpload.alttitle" approved="yes">
+        <source>Enable File Uploads in editing forms</source>
+        <target state="final">Galluogi Llwythiadau Ffeil ar ffurflenni golygu</target>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.description" resname="option_edit_docModuleUpload.description" approved="yes">
+        <source>This option will enable an "Upload" box for each field in TYPO3 records where you can attach a file or image. Most likely you don't want to disable this since it is usually just a nice thing to have.</source>
+        <target state="final">Bydd yr opsiwn hwn yn galluogi blwch "Llwytho i fyny" ar gyfer pob maes yng nghofnodion TYPO3 lle gallwch atodi ffeil neu ddelwedd. Yn fwyaf tebygol nad ydych chi am analluogi hyn gan ei fod fel arfer yn beth braf i'w gael.</target>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.details" resname="option_edit_docModuleUpload.details" approved="yes">
+        <source>If you disable the Upload box there is still the TYPO3 Element Browser left for attaching files and images.</source>
+        <target state="final">Os ydych chi'n analluogi'r blwch Llwytho i fyny mae Porwr Elfen TYPO3 ar ôl o hyd ar gyfer atodi ffeiliau a delweddau.</target>
+      </trans-unit>
+      <trans-unit id="_option_edit_docModuleUpload.image" resname="_option_edit_docModuleUpload.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/setup12.png</source>
+        <target state="final">ESTYN: setup / Adnoddau / Cyhoeddus / Delweddau / cshimages / setup12.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="option_showHiddenFilesAndFolders.description" resname="option_showHiddenFilesAndFolders.description" approved="yes">
+        <source>Defines whether you want to list all the hidden files and folders (beginning with a .) in the filelist and element browser.</source>
+        <target state="final">Yn diffinio a ydych chi am restru'r holl ffeiliau a ffolderau cudd (gan ddechrau gydag a.) Yn y rhestr ffeiliau a'r porwr elfen.</target>
+      </trans-unit>
+      <trans-unit id="option_showHiddenFilesAndFolders.details" resname="option_showHiddenFilesAndFolders.details" approved="yes">
+        <source>By default all hidden files are not displayed in filelists and element browsers and link pickers. This option enables to additionally show the hidden files.</source>
+        <target state="final">Yn ddiofyn nid yw'r holl ffeiliau cudd yn cael eu harddangos mewn rhestrau ffeiliau a phorwyr elfen a chasglwyr cyswllt. Mae'r opsiwn hwn yn galluogi i ddangos y ffeiliau cudd hefyd.</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_realName.alttitle" resname="option_beUser_realName.alttitle" approved="yes">
+        <source>Your real name</source>
+        <target state="final">Eich enw go iawn</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_realName.description" resname="option_beUser_realName.description" approved="yes">
+        <source>Enter your real name here.</source>
+        <target state="final">Rhowch eich enw go iawn yma.</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_email.alttitle" resname="option_beUser_email.alttitle" approved="yes">
+        <source>Your email address</source>
+        <target state="final">eich cyfeiriad e-bost</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_email.description" resname="option_beUser_email.description" approved="yes">
+        <source>Make sure this is a valid email address for you. This is the contact address that the backend administrator will use if he needs to contact you. Also, the TYPO3 system might need to send you messages at various times and this will be the recipient address.</source>
+        <target state="final">Sicrhewch fod hwn yn gyfeiriad e-bost dilys i chi. Dyma'r cyfeiriad cyswllt y bydd y gweinyddwr backend yn ei ddefnyddio os bydd angen iddo gysylltu â chi. Hefyd, efallai y bydd angen i'r system TYPO3 anfon negeseuon atoch ar wahanol adegau a hwn fydd cyfeiriad y derbynnydd.</target>
+      </trans-unit>
+      <trans-unit id="option_emailMeAtLogin.alttitle" resname="option_emailMeAtLogin.alttitle" approved="yes">
+        <source>Notify by login</source>
+        <target state="final">Hysbysu trwy fewngofnodi</target>
+      </trans-unit>
+      <trans-unit id="option_emailMeAtLogin.description" resname="option_emailMeAtLogin.description" approved="yes">
+        <source>If you set this option you will receive an email from TYPO3 each time you (or "someone") logs in using your username. You might like to receive such a "warning" as a security measure so you will know if someone else picks up your password and uses your account.</source>
+        <target state="final">Os byddwch chi'n gosod yr opsiwn hwn byddwch chi'n derbyn e-bost gan TYPO3 bob tro y byddwch chi (neu "rywun") yn mewngofnodi gan ddefnyddio'ch enw defnyddiwr. Efallai yr hoffech chi dderbyn "rhybudd" o'r fath fel mesur diogelwch felly byddwch chi'n gwybod a yw rhywun arall yn codi'ch cyfrinair ac yn defnyddio'ch cyfrif.</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.alttitle" resname="option_newPassword.alttitle" approved="yes">
+        <source>Change password</source>
+        <target state="final">Newid cyfrinair</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.description" resname="option_newPassword.description" approved="yes">
+        <source>Enter a new password for your backend account</source>
+        <target state="final">Rhowch gyfrinair newydd ar gyfer eich cyfrif backend</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.details" resname="option_newPassword.details" approved="yes">
+        <source>The passwords are encrypted to an MD5 hash when you leave the field so no plain text password is sent over the wire.</source>
+        <target state="final">Mae'r cyfrineiriau wedi'u hamgryptio i hash MD5 pan fyddwch chi'n gadael y cae felly ni anfonir cyfrinair testun plaen dros y wifren.</target>
+      </trans-unit>
+      <trans-unit id="option_newPasswordAgain.alttitle" resname="option_newPasswordAgain.alttitle" approved="yes">
+        <source>Change password, confirm</source>
+        <target state="final">Newid cyfrinair, cadarnhau</target>
+      </trans-unit>
+      <trans-unit id="option_newPasswordAgain.description" resname="option_newPasswordAgain.description" approved="yes">
+        <source>Confirm the new password by entering it again, exactly like above. If the two new passwords do not match, the password will not be changed.</source>
+        <target state="final">Cadarnhewch y cyfrinair newydd trwy ei nodi eto, yn union fel uchod. Os nad yw'r ddau gyfrinair newydd yn cyfateb, ni fydd y cyfrinair yn cael ei newid.</target>
+      </trans-unit>
+      <trans-unit id="reset.alttitle" resname="reset.alttitle" approved="yes">
+        <source>Reset all Values to default</source>
+        <target state="final">Ailosod pob Gwerth yn ddiofyn</target>
+      </trans-unit>
+      <trans-unit id="reset.description" resname="reset.description" approved="yes">
+        <source>If you select this option all settings in this module will be reset to the default settings of the system.</source>
+        <target state="final">Os dewiswch yr opsiwn hwn bydd yr holl leoliadau yn y modiwl hwn yn cael eu hailosod i osodiadau diofyn y system.</target>
+      </trans-unit>
+      <trans-unit id="reset.details" resname="reset.details" approved="yes">
+        <source>This does not apply to user name, email and password settings of course.</source>
+        <target state="final">Nid yw hyn yn berthnasol i osodiadau enw defnyddiwr, e-bost a chyfrinair wrth gwrs.</target>
+      </trans-unit>
+      <trans-unit id="simuser.alttitle" resname="simuser.alttitle" approved="yes">
+        <source>Simulate backend user</source>
+        <target state="final">Efelychu defnyddiwr backend</target>
+      </trans-unit>
+      <trans-unit id="simuser.description" resname="simuser.description" approved="yes">
+        <source>This option allows "admin"-users to change settings for another backend user in the system.</source>
+        <target state="final">Mae'r opsiwn hwn yn caniatáu i "admin" -users newid gosodiadau ar gyfer defnyddiwr backend arall yn y system.</target>
+      </trans-unit>
+      <trans-unit id="option_enableInstallTool.alttitle" resname="option_enableInstallTool.alttitle" approved="yes">
+        <source>Admin control for re-enabling Install Tool access</source>
+        <target state="final">Rheolaeth weinyddol ar gyfer ail-alluogi mynediad Offer Gosod</target>
+      </trans-unit>
+      <trans-unit id="option_enableInstallTool.description" resname="option_enableInstallTool.description" approved="yes">
+        <source>By clicking this button, a file typo3conf/ENABLE_INSTALL_TOOL is created (or removed if it already exists). It unlocks the access to the Install Tool (password is still needed!) and will be removed automatically after 1 hour.</source>
+        <target state="final">Trwy glicio ar y botwm hwn, crëir ffeil typo3conf / ENABLE_INSTALL_TOOL (neu ei dynnu os yw'n bodoli eisoes). Mae'n datgloi'r mynediad i'r Offeryn Gosod (mae angen cyfrinair o hyd!) A bydd yn cael ei symud yn awtomatig ar ôl 1 awr.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
