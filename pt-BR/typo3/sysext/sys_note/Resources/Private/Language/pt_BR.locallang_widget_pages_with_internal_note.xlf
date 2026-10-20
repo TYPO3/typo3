@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="sys_note" target-language="pt-BR">
+    <header/>
+    <body>
+      <trans-unit id="widget.pagesWithInternalNote.title" approved="yes">
+        <source>System Notes</source>
+        <target state="final">Notas de sistema</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.all.title" approved="yes">
+        <source>All System Notes</source>
+        <target state="final">Todas as notas de sistema</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.default.title" approved="yes">
+        <source>Notes in the category "Default"</source>
+        <target state="final">Notas na categoria "Padrão"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.todo.title" approved="yes">
+        <source>Notes in the category "ToDo"</source>
+        <target state="final">Notas na categoria "Fazer"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.template.title" approved="yes">
+        <source>Notes in the category "Template"</source>
+        <target state="final">Notas na categoria "Modelo"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.notes.title" approved="yes">
+        <source>Notes in the category "Notes"</source>
+        <target state="final">Notas na categoria "Notas"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.instructions.title" approved="yes">
+        <source>Notes in the category "Instructions"</source>
+        <target state="final">Notas na categoria "Instruções"</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.setting.category.label" approved="yes">
+        <source>Category</source>
+        <target state="final">Categoria</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.setting.category.description" approved="yes">
+        <source>Category to be displayed.</source>
+        <target state="final">Categoria a ser exibida.</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.setting.category.label.all" approved="yes">
+        <source>All</source>
+        <target state="final">Tudo</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.created" approved="yes">
+        <source>Created</source>
+        <target state="final">Criado</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.subjectmessage" approved="yes">
+        <source>Subject and message</source>
+        <target state="final">Assunto e mensagem</target>
+      </trans-unit>
+      <trans-unit id="widget.pagesWithInternalNote.goto_page" approved="yes">
+        <source>Go to page</source>
+        <target state="final">Ir para página</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
