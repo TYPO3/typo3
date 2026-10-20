@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814869" source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="ro">
+    <header/>
+    <body>
+      <trans-unit id="bigControlPanel" resname="bigControlPanel" approved="yes">
+        <source>Extended view</source>
+        <target state="final">Vedere extinsă</target>
+      </trans-unit>
+      <trans-unit id="clipBoard" resname="clipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">Arata buffer-ul pentru zona ecran</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" resname="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">Copiere in continutul buffer-ului pentru zona ecran</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" resname="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted into this folder</source>
+        <target state="final">Copiere in: Continutul buffer-ului pentru zona ecran a fost inserat in acest fisier</target>
+      </trans-unit>
+      <trans-unit id="clip_markRecords" resname="clip_markRecords" approved="yes">
+        <source>Mark All/Mark none</source>
+        <target state="final">Marcheaza tot/Nu marca nimic</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" resname="clip_selectMarked" approved="yes">
+        <source>Transfer the selection of files to clipboard</source>
+        <target state="final">Sterge fisiere marcate</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" resname="clip_deleteMarked" approved="yes">
+        <source>Delete marked</source>
+        <target state="final">Sterge fisiere marcate</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarkedWarning" resname="clip_deleteMarkedWarning" approved="yes">
+        <source>Are you sure you want to delete all marked files from this folder?</source>
+        <target state="final">Sunteti sigur a vreti sa stergeti toate fisierele marcate din acest fisier?</target>
+      </trans-unit>
+      <trans-unit id="displayThumbs" resname="displayThumbs" approved="yes">
+        <source>Display thumbnails</source>
+        <target state="final">Afiseaza thumbnails</target>
+      </trans-unit>
+      <trans-unit id="c_file" resname="c_file" approved="yes">
+        <source>File Name</source>
+        <target state="final">Nume fisier</target>
+      </trans-unit>
+      <trans-unit id="c_size" resname="c_size" approved="yes">
+        <source>Size</source>
+        <target state="final">Marime</target>
+      </trans-unit>
+      <trans-unit id="c_fileext" resname="c_fileext" approved="yes">
+        <source>Type</source>
+        <target state="final">Tip</target>
+      </trans-unit>
+      <trans-unit id="c_tstamp" resname="c_tstamp" approved="yes">
+        <source>Last Modified</source>
+        <target state="final">Data</target>
+      </trans-unit>
+      <trans-unit id="c_rw" resname="c_rw" approved="yes">
+        <source>RW</source>
+        <target state="final">Citire/Scriere</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files" approved="yes">
+        <source>files</source>
+        <target state="final">Fisiere</target>
+      </trans-unit>
+      <trans-unit id="temp" resname="temp" approved="yes">
+        <source>Temporary files</source>
+        <target state="final">Fișiere temporare</target>
+      </trans-unit>
+      <trans-unit id="role_folder_temporary" resname="role_folder_temporary" approved="yes">
+        <source>Temporary files</source>
+        <target state="final">Fișiere temporare</target>
+      </trans-unit>
+      <trans-unit id="role_folder_recycler" resname="role_folder_recycler" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Restaurator</target>
+      </trans-unit>
+      <trans-unit id="read" resname="read" approved="yes">
+        <source>R</source>
+        <target state="final">R</target>
+      </trans-unit>
+      <trans-unit id="recycler" resname="recycler" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Restaurator</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Listing of files in the directory</source>
+        <target state="final">Listare fișiere în director</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>This is the file administration system in TYPO3. It allows you to access the file mounts of your login. Through this module you can upload, copy, move an delete files on the server.</source>
+        <target state="final">Acesta este sistemul de administrare al fișierelor din TYPO3. Acest modul vă permite accesarea fișierelor disponibile. Folosind acest modul puteți încarca, copia, muta și sterge fișiere de pe server.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Filelist</source>
+        <target state="final">Listă de fișiere</target>
+      </trans-unit>
+      <trans-unit id="write" resname="write" approved="yes">
+        <source>W</source>
+        <target state="final">W</target>
+      </trans-unit>
+      <trans-unit id="targetNoDir" resname="targetNoDir" approved="yes">
+        <source>Target was not a directory!</source>
+        <target state="final">Ținta nu a fost un director!</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableTitle" resname="storageNotBrowsableTitle" approved="yes">
+        <source>Access denied.</source>
+        <target state="final">Acces refuzat.</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableMessage" resname="storageNotBrowsableMessage" approved="yes">
+        <source>You are trying to access a folder in a storage that is not browsable.</source>
+        <target state="final">Încercați să accesați un director dintr-un depozit ce nu este navigabil.</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundTitle" resname="folderNotFoundTitle" approved="yes">
+        <source>Folder not found.</source>
+        <target state="final">Directorul nu a fost găsit.</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundMessage" resname="folderNotFoundMessage" approved="yes">
+        <source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
+        <target state="final">Directorul "%s" nu poate fi accesat. Încercare de folosire a directorului părinte.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
