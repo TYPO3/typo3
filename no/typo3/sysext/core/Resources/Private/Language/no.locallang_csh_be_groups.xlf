@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814852" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_be_groups.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>This is the Backend administration user groups available for the Backend users. These determine the access credentials for the Backend users.</source>
+        <target state="final">Dette er Backend administrasjon av brukergrupper tilgjengelige for Backend brukere. Disse bestemmer tilgangsrettighetene for Backend brukere.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>Groups contain the main permission settings you can set for a backend user. Many users can be members of the same group and thus share permissions.
+When a user is a member of many groups (including sub-groups) then the permission settings are added together so that the more groups a user is a member of, the more access is granted to him.</source>
+			<target state="final">Grupper inneholder tilgangsinnstillingene du kan sette for en Backend bruker. Mange brukere kan være medlem av samme gruppe, og dele rettigheter. Når en bruker er medlem av mange grupper (inkl. undergrupper) vil rettighetene legges sammen slik at desto flere grupper en bruker er medlem av, desto større tilgangsrettigheter har han.</target></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>Backend Usergroups are found in the root of the page tree where only "admin" users can edit them. The usergroups with red icons in this image are the ones with Access Lists enabled. The blue are just plain usergroups.
+This usergroup has Access Lists enabled. In the Access Lists you specify which modules, tables, database fields etc. the group members can access in TYPO3.</source>
+			<target state="final">Backend brukergrupper finnes i roten av sidetreet. Bare administratorer kan redigere dem, Brukergruppene med røde ikon i bildet er de med tilgangsinnstillinger aktivert. De blå er vanlige brukergrupper. Denne brukergruppen har tilgangsinnstillinger (Access List) aktivert. I tilgangsinnstillinger (Access List) setter du opp hvilke moduler, tabeller, databasefelt osv. gruppens medlemmer har tilgang til i TYPO3.</target></trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Name of the Backend usergroup. The name should be descriptive and can always be changed later.</source>
+        <target state="final">Navnet på Backend-brukergruppe. Navnet bør være beskrivende, og kan alltid endres sener.</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>Backend Usergroups are identified by their "uid" field value (integer) and therefore the title can always be changed. The "uid" can never be changed for a user group.</source>
+        <target state="final">Backend-brukergrupper er identifisert ved deres "uid" feltverdi (integer) og derfor kan tittelen (navnet) alltid endres. "Uid" kan aldri endres for en brukergruppe.</target>
+      </trans-unit>
+      <trans-unit id="title.image_descr" resname="title.image_descr" approved="yes">
+        <source>The usergroup title is shown in the record lists.</source>
+        <target state="final">Navnet på brukergruppen vises i elementoversikten.</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.description" resname="db_mountpoints.description" approved="yes">
+        <source>Define page tree root points for the group members.</source>
+        <target state="final">Definere rot i sidetre for gruppemedlemer</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.details" resname="db_mountpoints.details" xml:space="preserve" approved="yes">
+				<source>The page tree in TYPO3 must have some points-of-entry defined. Here you should insert one or more references to a page which will represent a new root page for the page tree. This is called a "Database mount" or "DB mount".
+DB mounts &lt;i&gt;may&lt;/i&gt; be inherited by the users which are members of this group. This depends on whether the user is configured to include the mounts set in the member groups.
+However it's recommended to use backend user groups like this to configure mounts. Especially if they need to be shared among many users.</source>
+			<target state="final">Sidetreet i TYPO3 må ha et startpunkt definert. Her bør du legg til en eller flere referanser til sider som vil representere startpunkt for sidetreet. Dette kalles "Database Mount" eller "DB mount". DB mount &lt;i&gt;kan&lt;/i&gt; arves av brukere som er medlem av gruppen. Dette er avhengig av om brukeren er konfigurert til å inkludere "mounts" satt opp i brukergruppen. Uansett er det anbefalt å bruke Backend brukergrupper til å konfigurere "mounts". Spesielt dersom de trengs å deles mellom mange brukere.</target></trans-unit>
+      <trans-unit id="db_mountpoints.image_descr" resname="db_mountpoints.image_descr" xml:space="preserve" approved="yes">
+				<source>Here a page is added as a "DB mount"...
+... and in the page tree of member users this will become the starting point for the page tree.</source>
+			<target state="final">Her en side lagt til som "DB mount"... ... og i sidetreet til gruppemedlemmer vil dette bli startpunktet for sidetreet.</target></trans-unit>
+      <trans-unit id="file_mountpoints.description" resname="file_mountpoints.description" approved="yes">
+        <source>Define startpoints for the file folder tree.</source>
+        <target state="final">Definer startpunkt for filliste.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
