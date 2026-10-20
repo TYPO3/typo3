@@ -125,7 +125,7 @@ class Notification {
       this.notificationList.setAttribute('class', 'alert-list');
       // Enable focusing for keyboard scrolling (accessibility)
       this.notificationList.setAttribute('tabindex', '0');
-      this.notificationList.setAttribute('aria-live', 'polite');
+      this.notificationList.setAttribute('role', 'alert');
       this.messageContainer.appendChild(this.notificationList);
 
       this.clearAllButton = <ClearNotificationMessages>document.createElement('typo3-notification-clear-all');
