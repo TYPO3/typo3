@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:webhooks/Resources/Private/Language/module.xlf" date="2025-10-20T12:00:00Z" product-name="webhooks" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>Webhooks</source>
+        <target>crwdns379380:0crwdne379380:0</target>
+      </trans-unit>
+      <trans-unit id="short_description">
+        <source>Manage outgoing HTTP webhooks to external system</source>
+        <target>crwdns379382:0crwdne379382:0</target>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>Configure TYPO3 webhooks to notify external systems when defined system events occur. Supports integrations with platforms such as Slack, Discord, payment providers, CRM systems, and more.</source>
+        <target>crwdns392978:0crwdne392978:0</target>
+      </trans-unit>
+      <trans-unit id="heading_text">
+        <source>Webhooks — Manage Outgoing HTTP Webhooks</source>
+        <target>crwdns379388:0crwdne379388:0</target>
+      </trans-unit>
+      <trans-unit id="webhook_not_found.title">
+        <source>No webhooks found</source>
+        <target>crwdns380556:0crwdne380556:0</target>
+      </trans-unit>
+      <trans-unit id="webhook_not_found.message">
+        <source>There are currently no webhooks records found in the database.</source>
+        <target>crwdns379392:0crwdne379392:0</target>
+      </trans-unit>
+      <trans-unit id="webhook_create">
+        <source>Create new webhook</source>
+        <target>crwdns379394:0crwdne379394:0</target>
+      </trans-unit>
+      <trans-unit id="webhook_not_found_with_filter.title">
+        <source>No webhooks found</source>
+        <target>crwdns380558:0crwdne380558:0</target>
+      </trans-unit>
+      <trans-unit id="webhook_not_found_with_filter.message">
+        <source>With the current set of filters applied, no webhooks could be found.</source>
+        <target>crwdns379398:0crwdne379398:0</target>
+      </trans-unit>
+      <trans-unit id="webhook_no_filter">
+        <source>Remove all filter</source>
+        <target>crwdns379400:0crwdne379400:0</target>
+      </trans-unit>
+      <trans-unit id="webhook_no_implementation_class">
+        <source>Implementation class for webhook type "%s" is missing.</source>
+        <target>crwdns379402:0%scrwdne379402:0</target>
+      </trans-unit>
+      <trans-unit id="webhook_example">
+        <source>Example</source>
+        <target>crwdns379404:0crwdne379404:0</target>
+      </trans-unit>
+      <trans-unit id="filter.sendButton">
+        <source>Filter</source>
+        <target>crwdns379406:0crwdne379406:0</target>
+      </trans-unit>
+      <trans-unit id="filter.resetButton">
+        <source>Reset</source>
+        <target>crwdns379408:0crwdne379408:0</target>
+      </trans-unit>
+      <trans-unit id="filter.name">
+        <source>Name</source>
+        <target>crwdns379410:0crwdne379410:0</target>
+      </trans-unit>
+      <trans-unit id="filter.webhook_type">
+        <source>Webhook Trigger</source>
+        <target>crwdns379412:0crwdne379412:0</target>
+      </trans-unit>
+      <trans-unit id="filter.webhook_type.showAll">
+        <source>Show all</source>
+        <target>crwdns379414:0crwdne379414:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.previous">
+        <source>previous</source>
+        <target>crwdns379416:0crwdne379416:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.next">
+        <source>next</source>
+        <target>crwdns379418:0crwdne379418:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.first">
+        <source>first</source>
+        <target>crwdns379420:0crwdne379420:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.last">
+        <source>last</source>
+        <target>crwdns379422:0crwdne379422:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.records">
+        <source>Records</source>
+        <target>crwdns379424:0crwdne379424:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.page">
+        <source>Page</source>
+        <target>crwdns379426:0crwdne379426:0</target>
+      </trans-unit>
+      <trans-unit id="pagination.refresh">
+        <source>Refresh</source>
+        <target>crwdns379428:0crwdne379428:0</target>
+      </trans-unit>
+      <trans-unit id="labels.delete.title">
+        <source>Delete webhooks</source>
+        <target>crwdns379430:0crwdne379430:0</target>
+      </trans-unit>
+      <trans-unit id="labels.delete.message">
+        <source>Delete all marked webhooks? You can restore deleted webhooks from the TYPO3 recycler.</source>
+        <target>crwdns380560:0crwdne380560:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
