@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814900" source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id="configuration" resname="configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Konfiguracija</target>
+      </trans-unit>
+      <trans-unit id="typo3ConfVars" resname="typo3ConfVars" approved="yes">
+        <source>$GLOBALS['TYPO3_CONF_VARS'] (Global Configuration)</source>
+        <target state="final">$GLOBALS['TYPO3_CONF_VARS'] (Globalna konfiguracija)</target>
+      </trans-unit>
+      <trans-unit id="tca" resname="tca" approved="yes">
+        <source>$GLOBALS['TCA'] (Table configuration array)</source>
+        <target state="final">$GLOBALS['TCA'] (Polje konfiguracije tablica)</target>
+      </trans-unit>
+      <trans-unit id="tcaDescr" resname="tcaDescr" approved="yes">
+        <source>$GLOBALS['TCA_DESCR'] (Table Help Description)</source>
+        <target state="final">$GLOBALS['TCA_DESCR'] (Opis tablice pomoći)</target>
+      </trans-unit>
+      <trans-unit id="tbeStyles" resname="tbeStyles" approved="yes">
+        <source>$GLOBALS['TBE_STYLES'] (Skinning Styles)</source>
+        <target state="final">$GLOBALS['TBE_STYLES'] (Stilovi)</target>
+      </trans-unit>
+      <trans-unit id="beUser" resname="beUser" approved="yes">
+        <source>$GLOBALS['BE_USER']-&gt;uc (User Settings)</source>
+        <target state="final">$GLOBALS['BE_USER']-&gt;uc (Korisničke postavke)</target>
+      </trans-unit>
+      <trans-unit id="usersettings" resname="usersettings" approved="yes">
+        <source>$GLOBALS['TYPO3_USER_SETTINGS'] (User Settings Configuration)</source>
+        <target state="final">$GLOBALS['TYPO3_USER_SETTINGS'] (Konfiguracija korisničkih postavki)</target>
+      </trans-unit>
+      <trans-unit id="routes" resname="routes" approved="yes">
+        <source>Backend Routes</source>
+        <target state="final">Rute pozadinskog sučelja</target>
+      </trans-unit>
+      <trans-unit id="t3services" resname="t3services" approved="yes">
+        <source>$GLOBALS['T3_SERVICES'] (Registered Services)</source>
+        <target state="final">$GLOBALS['T3_SERVICES'] (Registrirani servisi)</target>
+      </trans-unit>
+      <trans-unit id="tbemodulesext" resname="tbemodulesext" approved="yes">
+        <source>$GLOBALS['TBE_MODULES_EXT'] (BE Modules Extensions)</source>
+        <target state="final">$GLOBALS['TBE_MODULES_EXT'] (Proširenja modula pozadinskog sučelja)</target>
+      </trans-unit>
+      <trans-unit id="tbemodules" resname="tbemodules" approved="yes">
+        <source>$GLOBALS['TBE_MODULES'] (BE Modules)</source>
+        <target state="final">$GLOBALS['TBE_MODULES'] (Moduli pozadinskog sučelja)</target>
+      </trans-unit>
+      <trans-unit id="cropLines" resname="cropLines" approved="yes">
+        <source>Crop lines</source>
+        <target state="final">Obreži retke</target>
+      </trans-unit>
+      <trans-unit id="variable" resname="variable" approved="yes">
+        <source>Variable</source>
+        <target state="final">Varijabla:</target>
+      </trans-unit>
+      <trans-unit id="copyPaste" resname="copyPaste" approved="yes">
+        <source>(Now, copy/paste this value into the configuration file where you can set it. This is all you can do from here...)</source>
+        <target state="final">(Sada kopirajte i zalijepite ovu vrijednost u konfiguracijsku datoteku gdje se ta vrijednost može postaviti. To je sve što možete učiniti odavde...)</target>
+      </trans-unit>
+      <trans-unit id="enterSearchPhrase" resname="enterSearchPhrase" approved="yes">
+        <source>Enter search phrase</source>
+        <target state="final">Unesite pojam pretraživanja:</target>
+      </trans-unit>
+      <trans-unit id="search" resname="search" approved="yes">
+        <source>Search</source>
+        <target state="final">Traži</target>
+      </trans-unit>
+      <trans-unit id="useRegExp" resname="useRegExp" approved="yes">
+        <source>Use regular expression (phrase is surrounded by slashes automatically)</source>
+        <target state="final">Koristi regularne izraze</target>
+      </trans-unit>
+      <trans-unit id="writeValue" resname="writeValue" approved="yes">
+        <source>Write value to configuration file</source>
+        <target state="final">Zapiši vrijednost u konfiguracijsku datoteku</target>
+      </trans-unit>
+      <trans-unit id="writeMessage" resname="writeMessage" approved="yes">
+        <source>Following line was added to configuration file (%s): %s%s</source>
+        <target state="final">Sljedeći redak dodane je u konfiguracijsku datoteku (%s): %s%s</target>
+      </trans-unit>
+      <trans-unit id="writeMessageFailed" resname="writeMessageFailed" approved="yes">
+        <source>Write to configuration file failed (%s)!</source>
+        <target state="final">Pisanje u konfiguracijsku datoteku nije uspjelo (%s)!</target>
+      </trans-unit>
+      <trans-unit id="menuTitle" resname="menuTitle" approved="yes">
+        <source>Overview</source>
+        <target state="final">Pregled</target>
+      </trans-unit>
+      <trans-unit id="recordStatistics" resname="recordStatistics" approved="yes">
+        <source>Record Statistics</source>
+        <target state="final">Statistike zapisa</target>
+      </trans-unit>
+      <trans-unit id="totalPageTree" resname="totalPageTree" approved="yes">
+        <source>Total Page Tree</source>
+        <target state="final">Kompletno stablo stranica</target>
+      </trans-unit>
+      <trans-unit id="databaseRelations" resname="databaseRelations" approved="yes">
+        <source>Database Relations</source>
+        <target state="final">Relacije baze podataka</target>
+      </trans-unit>
+      <trans-unit id="fullSearch" resname="fullSearch" approved="yes">
+        <source>Full search</source>
+        <target state="final">Potpuna pretraga</target>
+      </trans-unit>
+      <trans-unit id="findFilename" resname="findFilename" approved="yes">
+        <source>Find filename</source>
+        <target state="final">Nađi datoteku</target>
+      </trans-unit>
+      <trans-unit id="manageRefIndex" resname="manageRefIndex" approved="yes">
+        <source>Manage Reference Index</source>
+        <target state="final">Upravljaj indeksom referenci</target>
+      </trans-unit>
+      <trans-unit id="rawSearch" resname="rawSearch" approved="yes">
+        <source>Raw search in all fields</source>
+        <target state="final">Sirova pretraga po svim poljima</target>
+      </trans-unit>
+      <trans-unit id="advancedQuery" resname="advancedQuery" approved="yes">
+        <source>Advanced query</source>
+        <target state="final">Napredni upiti</target>
+      </trans-unit>
+      <trans-unit id="selectRecords" resname="selectRecords" approved="yes">
+        <source>Select records</source>
+        <target state="final">Odaberite zapise</target>
+      </trans-unit>
+      <trans-unit id="countResults" resname="countResults" approved="yes">
+        <source>Count results</source>
+        <target state="final">Rezultati brojanja</target>
+      </trans-unit>
+      <trans-unit id="explainQuery" resname="explainQuery" approved="yes">
+        <source>Explain query</source>
+        <target state="final">Objasni upit</target>
+      </trans-unit>
+      <trans-unit id="csvExport" resname="csvExport" approved="yes">
+        <source>CSV Export</source>
+        <target state="final">Izvoz u CSV</target>
+      </trans-unit>
+      <trans-unit id="xmlExport" resname="xmlExport" approved="yes">
+        <source>XML Export</source>
+        <target state="final">XML izvoz</target>
+      </trans-unit>
+      <trans-unit id="clickToUpdateRefIndex" resname="clickToUpdateRefIndex" approved="yes">
+        <source>Click here to update reference index</source>
+        <target state="final">Kliknite ovdje kako biste ažurirali indeks referenci</target>
+      </trans-unit>
+      <trans-unit id="updateNow" resname="updateNow" approved="yes">
+        <source>Update now!</source>
+        <target state="final">Ažuriraj sada!</target>
+      </trans-unit>
+      <trans-unit id="clickToTestRefIndex" resname="clickToTestRefIndex" approved="yes">
+        <source>Click here to test reference index</source>
+        <target state="final">Kliknite ovdje kako bi testirali indeks referenci</target>
+      </trans-unit>
+      <trans-unit id="referenceIndex_description" resname="referenceIndex_description" approved="yes">
+        <source>TYPO3's reference index keeps track of the relations between records. As it can happen that the reference index contains outdated values, you can check and update it here.</source>
+        <target state="final">Indeks referenci sustava TYPO3 održava informacije o relacijama između zapisa. S obzirom da je moguće da indeks referenci sadrži zastarjele informacija ovdje ga možete provjeriti i ažurirati.</target>
+      </trans-unit>
+      <trans-unit id="referenceIndex_buttonUpdate" resname="referenceIndex_buttonUpdate" approved="yes">
+        <source>Update reference index</source>
+        <target state="final">Ažuriraj indeks referenci</target>
+      </trans-unit>
+      <trans-unit id="referenceIndex_buttonCheck" resname="referenceIndex_buttonCheck" approved="yes">
+        <source>Check reference index</source>
+        <target state="final">Provjeri indeks referenci</target>
+      </trans-unit>
+      <trans-unit id="checkNow" resname="checkNow" approved="yes">
+        <source>Check now!</source>
+        <target state="final">Provjeri sada!</target>
+      </trans-unit>
+      <trans-unit id="checkScript_headline" resname="checkScript_headline" approved="yes">
+        <source>Using the command line interface</source>
+        <target state="final">Uporaba sučelja komandne linije</target>
+      </trans-unit>
+      <trans-unit id="checkScript" resname="checkScript" approved="yes">
+        <source>You can also run the check as a shell script using CLI if the processing takes longer than the PHP max_execution_time allows.</source>
+        <target state="final">Provjeru možete pokrenuti i kao skriptu komandne linije koristeći CLI ukoliko procesiranje traje dulje od PHP-ovog max_execution_time ograničenja.</target>
+      </trans-unit>
+      <trans-unit id="checkScript_check_description" resname="checkScript_check_description" approved="yes">
+        <source>To check the reference index use</source>
+        <target state="final">Kako bi provjerili indeks referenci koristite</target>
+      </trans-unit>
+      <trans-unit id="checkScript_update_description" resname="checkScript_update_description" approved="yes">
+        <source>To update the reference index use</source>
+        <target state="final">Kako biste ažurirali indeks referenci koristite</target>
+      </trans-unit>
+      <trans-unit id="checkScript_moreDetails" resname="checkScript_moreDetails" approved="yes">
+        <source>For more details see</source>
+        <target state="final">Više detalja možete pročitati u</target>
+      </trans-unit>
+      <trans-unit id="updateRefIndex" resname="updateRefIndex" approved="yes">
+        <source>Update reference index</source>
+        <target state="final">Ažuriraj indeks referenci</target>
+      </trans-unit>
+      <trans-unit id="showSQL" resname="showSQL" approved="yes">
+        <source>Show SQL parts</source>
+        <target state="final">Prikaži SQL dijelove</target>
+      </trans-unit>
+      <trans-unit id="useFormattedStrings" resname="useFormattedStrings" approved="yes">
+        <source>Use formatted strings, labels and dates instead of original values for results</source>
+        <target state="final">Koristi formatirane stringove, oznake i datume umjesto originalnih vrijednosti za rezultate</target>
+      </trans-unit>
+      <trans-unit id="dontUseOrigValues" resname="dontUseOrigValues" approved="yes">
+        <source>Don't use original values in brackets as prefix for labelled results</source>
+        <target state="final">Nemojte koristiti originalne vrijednosti u uglatim zagradama kao prefix za označene rezultate</target>
+      </trans-unit>
+      <trans-unit id="sortOptions" resname="sortOptions" approved="yes">
+        <source>Sort selectbox-options for relations by label and not by value</source>
+        <target state="final">Poredaj opcije padajućeg izbornika za relacije po oznaci a ne po vrijednosti</target>
+      </trans-unit>
+      <trans-unit id="showDeleted" resname="showDeleted" approved="yes">
+        <source>Show even deleted entries (with undelete buttons)</source>
+        <target state="final">Prikaži čak i izbrisane zapise (uz gumb za poništavanje brisanja)</target>
+      </trans-unit>
+      <trans-unit id="searchOptions" resname="searchOptions" approved="yes">
+        <source>Search options</source>
+        <target state="final">Pretraži opcije</target>
+      </trans-unit>
+      <trans-unit id="result" resname="result" approved="yes">
+        <source>Result</source>
+        <target state="final">Rezultat</target>
+      </trans-unit>
+      <trans-unit id="tables" resname="tables" approved="yes">
+        <source>Tables</source>
+        <target state="final">Tablice</target>
+      </trans-unit>
+      <trans-unit id="references" resname="references" approved="yes">
+        <source>references</source>
+        <target state="final">reference</target>
+      </trans-unit>
+      <trans-unit id="isMissing" resname="isMissing" approved="yes">
+        <source>is missing!</source>
+        <target state="final">nedostaje!</target>
+      </trans-unit>
+      <trans-unit id="referencedFrom" resname="referencedFrom" approved="yes">
+        <source>Referenced from</source>
+        <target state="final">Referenca iz</target>
+      </trans-unit>
+      <trans-unit id="enterRegexPattern" resname="enterRegexPattern" approved="yes">
+        <source>Enter regex pattern</source>
+        <target state="final">Unesite regex uzorak</target>
+      </trans-unit>
+      <trans-unit id="searchButton" resname="searchButton" approved="yes">
+        <source>Search</source>
+        <target state="final">Traži</target>
+      </trans-unit>
+      <trans-unit id="pattern" resname="pattern" approved="yes">
+        <source>Pattern</source>
+        <target state="final">Uzorak</target>
+      </trans-unit>
+      <trans-unit id="beingChecked" resname="beingChecked" approved="yes">
+        <source>being checked...</source>
+        <target state="final">provjera je u tijeku...</target>
+      </trans-unit>
+      <trans-unit id="directories" resname="directories" approved="yes">
+        <source>Dirs</source>
+        <target state="final">Mape</target>
+      </trans-unit>
+      <trans-unit id="directoriesTooDeep" resname="directoriesTooDeep" approved="yes">
+        <source>ERROR: Directories deeper than the following number of levels</source>
+        <target state="final">GREŠKA: Mape dulje od sljedećeg broja razina</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files" approved="yes">
+        <source>Files</source>
+        <target state="final">Datoteke</target>
+      </trans-unit>
+      <trans-unit id="matchingFiles" resname="matchingFiles" approved="yes">
+        <source>Matching files</source>
+        <target state="final">Datoteke koje odgovaraju</target>
+      </trans-unit>
+      <trans-unit id="notChecked" resname="notChecked" approved="yes">
+        <source>not checked.</source>
+        <target state="final">nije označeno.</target>
+      </trans-unit>
+      <trans-unit id="searchingForFilenames" resname="searchingForFilenames" approved="yes">
+        <source>Searching for filenames</source>
+        <target state="final">Pretraži po nazivima datoteka</target>
+      </trans-unit>
+      <trans-unit id="fixLostRecord" resname="fixLostRecord" approved="yes">
+        <source>Click to move this lost record to rootlevel (pid=0)</source>
+        <target state="final">Kliknite ovdje kako biste premjestili ovaj izgubljeni zapis na korjensku razinu (pid=0)</target>
+      </trans-unit>
+      <trans-unit id="doktype" resname="doktype" approved="yes">
+        <source>Document types</source>
+        <target state="final">Tipovi dokumenata</target>
+      </trans-unit>
+      <trans-unit id="doktype_value" resname="doktype_value" approved="yes">
+        <source>Document types (value)</source>
+        <target state="final">Tipovi dokumenata (vrijednost)</target>
+      </trans-unit>
+      <trans-unit id="pages" resname="pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">Stranice</target>
+      </trans-unit>
+      <trans-unit id="deleted_pages" resname="deleted_pages" approved="yes">
+        <source>Marked-deleted pages</source>
+        <target state="final">Stranice označene za brisanje</target>
+      </trans-unit>
+      <trans-unit id="hidden_pages" resname="hidden_pages" approved="yes">
+        <source>Hidden pages</source>
+        <target state="final">Skrivene stranice</target>
+      </trans-unit>
+      <trans-unit id="count" resname="count" approved="yes">
+        <source>Count</source>
+        <target state="final">Broj</target>
+      </trans-unit>
+      <trans-unit id="label" resname="label" approved="yes">
+        <source>Label</source>
+        <target state="final">Oznaka</target>
+      </trans-unit>
+      <trans-unit id="tablename" resname="tablename" approved="yes">
+        <source>Table name</source>
+        <target state="final">Naziv tablice</target>
+      </trans-unit>
+      <trans-unit id="total_lost" resname="total_lost" approved="yes">
+        <source>Records total / lost</source>
+        <target state="final">Ukupno zapisa / izgubljenih zapisa</target>
+      </trans-unit>
+      <trans-unit id="relations" resname="relations" approved="yes">
+        <source>Relations</source>
+        <target state="final">Relacije</target>
+      </trans-unit>
+      <trans-unit id="files_many_ref" resname="files_many_ref" approved="yes">
+        <source>Files referenced from more than one record</source>
+        <target state="final">Datoteke na koje postoji referenca iz više od jednog zapisa</target>
+      </trans-unit>
+      <trans-unit id="no_files_found" resname="no_files_found" approved="yes">
+        <source>No files found.</source>
+        <target state="final">Nema pronađenih datoteka</target>
+      </trans-unit>
+      <trans-unit id="files_no_ref" resname="files_no_ref" approved="yes">
+        <source>Files with no references at all (delete them!)</source>
+        <target state="final">Datoteke bez ikakvih referenci (obrišite ih!)</target>
+      </trans-unit>
+      <trans-unit id="files_no_file" resname="files_no_file" approved="yes">
+        <source>Missing files</source>
+        <target state="final">Datoteke koje nedostaju</target>
+      </trans-unit>
+      <trans-unit id="select_db" resname="select_db" approved="yes">
+        <source>Select fields</source>
+        <target state="final">Odaberite polja</target>
+      </trans-unit>
+      <trans-unit id="group_db" resname="group_db" approved="yes">
+        <source>Group fields</source>
+        <target state="final">Grupe polja</target>
+      </trans-unit>
+      <trans-unit id="tree" resname="tree" approved="yes">
+        <source>The Page Tree</source>
+        <target state="final">Stablo stranica</target>
+      </trans-unit>
+      <trans-unit id="tree_description" resname="tree_description" approved="yes">
+        <source>This shows all pages in the system in one large tree. Beware that this will probably result in a very long document which will also take some time for the server to compute!</source>
+        <target state="final">Ovdje su prikazane sve stranice u sustavu u jednom velikom stablu. Zapazite također da će rezultat biti vrlo dugačak dokument za koji će poslužitelju trebati više vremena!</target>
+      </trans-unit>
+      <trans-unit id="records" resname="records" approved="yes">
+        <source>Records Statistics</source>
+        <target state="final">Statistike zapisa</target>
+      </trans-unit>
+      <trans-unit id="records_description" resname="records_description" approved="yes">
+        <source>This shows some statistics for the records in the database. This runs through the entire page-tree and therefore it will also load the server heavily!</source>
+        <target state="final">Ovdje su prikazane neke statistike za zapise iz baze podataka. Ova pretraga prolazi kroz cijelo stablo stranice te samim time znatno opterećuje poslužitelja!</target>
+      </trans-unit>
+      <trans-unit id="search_whole_database" resname="search_whole_database" approved="yes">
+        <source>Search whole Database</source>
+        <target state="final">Pretraži cijelu bazu podataka</target>
+      </trans-unit>
+      <trans-unit id="search_description" resname="search_description" approved="yes">
+        <source>This searches through all database tables and records for a text string.</source>
+        <target state="final">Ova funkcija vrši pretragu svih tablica baze podataka i zapisa po zadanom tekstu.</target>
+      </trans-unit>
+      <trans-unit id="filesearch" resname="filesearch" approved="yes">
+        <source>Search all filenames for pattern</source>
+        <target state="final">Traži sve nazive datoteka prema obrascu</target>
+      </trans-unit>
+      <trans-unit id="refindex" resname="refindex" approved="yes">
+        <source>Check and update global reference index</source>
+        <target state="final">Provjeri i ažuriraj globalni indeks referenci</target>
+      </trans-unit>
+      <trans-unit id="refindex_description" resname="refindex_description" approved="yes">
+        <source>Allows you to maintain the reference index kept by TYPO3.</source>
+        <target state="final">Omogućuje Vam održavanje indeksa referenci TYPO3 sustava.</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Database integrity check</source>
+        <target state="final">Provjera integriteta baze podataka</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
