@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814854" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="tcatree.collapseAll" resname="tcatree.collapseAll" approved="yes">
+        <source>Collapse All</source>
+        <target state="final">Strni vse</target>
+      </trans-unit>
+      <trans-unit id="tcatree.expandAll" resname="tcatree.expandAll" approved="yes">
+        <source>Expand All</source>
+        <target state="final">Razširi vse</target>
+      </trans-unit>
+      <trans-unit id="tcatree.toggleHideUnchecked" resname="tcatree.toggleHideUnchecked" approved="yes">
+        <source>hide/show unchecked items</source>
+        <target state="final">skrij/prikaži neoznačene elemente</target>
+      </trans-unit>
+      <trans-unit id="tcatree.findItem" resname="tcatree.findItem" approved="yes">
+        <source>Find Item</source>
+        <target state="final">Poišči element</target>
+      </trans-unit>
+      <trans-unit id="list_module_noId.description" resname="list_module_noId.description" approved="yes">
+        <source>The Web&gt;List module must have a page ID passed to it before it can display any content. Please click a page title in the Page Tree.</source>
+        <target state="final">Modulu Web&gt;List mora biti posredovan ID strani, preden lahko prikaže kakršno koli vsebino. Kliknite naslov strani v drevesu strani.</target>
+      </trans-unit>
+      <trans-unit id="pagetree_overview.alttitle" resname="pagetree_overview.alttitle" approved="yes">
+        <source>Pagetree Overview</source>
+        <target state="final">Pogled drevesne strukture</target>
+      </trans-unit>
+      <trans-unit id="new_regular.alttitle" resname="new_regular.alttitle" approved="yes">
+        <source>Create new record</source>
+        <target state="final">Ustvari nov zapis</target>
+      </trans-unit>
+      <trans-unit id="file_new.alttitle" resname="file_new.alttitle" approved="yes">
+        <source>Creating a new file or folder</source>
+        <target state="final">Ustvarjanje nove datoteke ali mape</target>
+      </trans-unit>
+      <trans-unit id="file_new.description" resname="file_new.description" approved="yes">
+        <source>Create new files and folder inside the folder you have selected.</source>
+        <target state="final">Ustvarite nove datoteke in mape v izbrani mapi.</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.alttitle" resname="file_newfolder.alttitle" approved="yes">
+        <source>Creating a new folder</source>
+        <target state="final">Ustvarjanje nove mape</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.description" resname="file_newfolder.description" approved="yes">
+        <source>Enter a name for a new file folder in the tree here. If you want to create multiple folders, please select the number of new folders before entering folder names.</source>
+        <target state="final">Tukaj vnesite ime za novo datotečno mapo v drevesu. Če želite ustvariti več map, pred vnosom imen map izberite število novih map.</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.image_descr" resname="file_newfolder.image_descr" xml:space="preserve" approved="yes">
+				<source>To create a new folder you first click the parent folder icon in the folder tree.
+As the next step you select the number of folders to create and then you enter the new folder names.
+After pressing the "Create folders" button the folders will appear in the folder tree when you reload it.</source>
+			<target state="final">Tukaj vnesite ime za novo datotečno mapo v drevesu. Če želite ustvariti več map, pred vnosom imen map izberite število novih map.</target></trans-unit>
+      <trans-unit id="file_newMedia.alttitle" resname="file_newMedia.alttitle" approved="yes">
+        <source>Adding a new media asset</source>
+        <target state="final">Dodajanje nove predstavnostne vsebine</target>
+      </trans-unit>
+      <trans-unit id="file_newMedia.description" resname="file_newMedia.description" approved="yes">
+        <source>Enter an URL to a media asset here. Notice that it must be from one of the allowed providers listed below.</source>
+        <target state="final">Tukaj vnesite URL do multimedijske vsebine. Upoštevajte, da mora izvirati iz enega od spodaj navedenih dovoljenih ponudnikov.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.details" resname="file_upload.details" xml:space="preserve" approved="yes">
+				<source>If the filenames you upload exist already they will be renamed with a numeric suffix, eg. "file_01.jpg". However you can avoid this behaviour if you select "Overwrite existing files" before pressing the "Upload" button.
+
+Normally there is a limit to the size of files you can upload. By default PHP will allow you to upload around 2MB. TYPO3 is configured to allow 10MB internally by default. These settings can be changed by your server administrator if you need them changed.
+
+Notice that file uploads may take a significant amount of time, even if you have fast internet access via DSL etc. If you have large amount of files you want to upload - or if the files are very large - you should consider using an FTP client instead. It depends not on TYPO3 but on the webserver whether this is an options for you.</source>
+			<target state="final">Če imena prenesenih datotek že obstajajo, bodo preimenovana s številčno končnico, npr. "file_01.jpg". Vendar se lahko temu vedenju izognete, če pred pritiskom na gumb "Naloži" izberete možnost "Prepiši obstoječe datoteke".
+
+Običajno je velikost datotek, ki jih lahko naložite, omejena. Privzeto PHP omogoča nalaganje približno 2 MB. TYPO3 je privzeto konfiguriran tako, da dovoljuje 10 MB. Te nastavitve lahko spremeni skrbnik strežnika, če jih potrebujete.
+
+Upoštevajte, da lahko nalaganje datotek traja precej časa, tudi če imate hiter dostop do interneta prek DSL itd. Če želite naložiti veliko število datotek ali če so datoteke zelo velike, raje razmislite o uporabi odjemalca FTP. Ali je to možnost za vas, ni odvisno od TYPO3, temveč od spletnega strežnika.</target></trans-unit>
+      <trans-unit id="bookmarks.image_descr" resname="bookmarks.image_descr" xml:space="preserve" approved="yes">
+				<source>To create a bookmark to a page, just click the star icon usually found in the top of pages.
+You will have to confirm the creation of the bookmark. It is nothing dangerous - only annoying to clean up if you happen to create bookmarks against your own will. Just answer "OK" here.
+When you answer "OK" you should immediately see the bookmark icon in the toolbar reloading and, after opening the menu, the new entry appear. If you click this entry, you will now jump to the page you created the bookmark from!
+You can name bookmarks, you can even group them and share them. If you want to edit or delete a bookmark you select the "Edit" checkbox and then click the bookmark icon.</source>
+			<target state="final">Če želite ustvariti zaznamek na strani, kliknite ikono zvezdice, ki jo običajno najdete na vrhu strani.
+Ustvarjanje zaznamka boste morali potrditi. To ni nič nevarnega - le nadležno čiščenje, če se zgodi, da zaznamke ustvarite proti svoji volji. Tu preprosto odgovorite z "V redu".
+Ko odgovorite "V redu", morate takoj videti, kako se ikona zaznamka v orodni vrstici ponovno naloži, po odprtju menija pa se pojavi nov vnos. Če kliknete ta vnos, boste zdaj skočili na stran, na kateri ste ustvarili zaznamek!
+Zaznamke lahko poimenujete, lahko jih celo združite v skupine in delite z drugimi. Če želite zaznamek urediti ali izbrisati, izberete potrditveno polje "Uredi" in nato kliknete ikono zaznamka.
+
+Translated with DeepL.com (free version)</target></trans-unit>
+    </body>
+  </file>
+</xliff>
