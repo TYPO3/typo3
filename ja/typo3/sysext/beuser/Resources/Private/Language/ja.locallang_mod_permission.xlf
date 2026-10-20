@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="Save" approved="yes">
+        <source>Save</source>
+        <target state="final">保存</target>
+      </trans-unit>
+      <trans-unit id="4" approved="yes">
+        <source>Delete page</source>
+        <target state="final">ページを削除</target>
+      </trans-unit>
+      <trans-unit id="deleted" approved="yes">
+        <source>deleted</source>
+        <target state="final">削除済</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
