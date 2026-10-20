@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1447138381" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/fileMessages.xlf" date="2015-11-10T06:53:10Z" product-name="core" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="FileUtility.CouldNotAccessAllNecessaryResources" resname="FileUtility.CouldNotAccessAllNecessaryResources" approved="yes">
+        <source>Could not access all necessary resources. Source file or destination maybe was not within your mountpoints? T="%s", D="%s"</source>
+        <target state="final">Ni mogoče dostopati do vseh potrebnih virov. Izvorna datoteka ali cilj mogoče nista znotraj vaših priklopnih točk. Cilj="%s", vir="%s"</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteDirectory" resname="FileUtility.CouldNotDeleteDirectory" approved="yes">
+        <source>Could not delete directory! Is directory "%s" empty? (You are not allowed to delete directories recursively).</source>
+        <target state="final">Imenika ni mogoče izbrisati. Je imenik "%s" prazen? (Nimate pravic za rekurzivno brisanje imenikov.)</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteDirectory1" resname="FileUtility.CouldNotDeleteDirectory1" approved="yes">
+        <source>Could not delete directory "%s"! There might be a problem with write permissions.</source>
+        <target state="final">Imenika "%s" ni mogoče izbrisati. Mogoče nimate ustreznih dovoljenj za pisanje.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteFile" resname="FileUtility.CouldNotDeleteFile" approved="yes">
+        <source>Could not delete file "%s". There might be a problem with write permissions.</source>
+        <target state="final">Datoteke "%s" ni mogoče izbrisati. Mogoče nimate ustreznih dovoljenj za pisanje.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationExistedAlready" resname="FileUtility.DestinationExistedAlready" approved="yes">
+        <source>Destination "%s" already exists!</source>
+        <target state="final">Cilj "%s" že obstaja.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationWasNotADirectory" resname="FileUtility.DestinationWasNotADirectory" approved="yes">
+        <source>Destination "%s" was not a directory.</source>
+        <target state="final">Cilj "%s" ni imenik.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryCopiedTo" resname="FileUtility.DirectoryCopiedTo" approved="yes">
+        <source>Directory "%s" copied to "%s".</source>
+        <target state="final">Imenik "%s" je kopiran v "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryCreatedIn" resname="FileUtility.DirectoryCreatedIn" approved="yes">
+        <source>Directory "%s" created in "%s".</source>
+        <target state="final">Imenik "%s" je ustvarjen v "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryMovedTo" resname="FileUtility.DirectoryMovedTo" approved="yes">
+        <source>Directory "%s" moved to "%s".</source>
+        <target state="final">Imenik "%s" je premaknjen v "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryNotCreated" resname="FileUtility.DirectoryNotCreated" approved="yes">
+        <source>Directory "%s" not created. There might be a problem with write permissions in "%s"?</source>
+        <target state="final">Imenik "%s" ni bil ustvarjen. Mogoče nimate ustreznih dovoljenj za pisanje za "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedFromTo" resname="FileUtility.DirectoryRenamedFromTo" approved="yes">
+        <source>Directory renamed from "%s" to "%s".</source>
+        <target state="final">Imenik "%s" je preimenovan v "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedSameName" resname="FileUtility.DirectoryRenamedSameName" approved="yes">
+        <source>Directory "%s" was not renamed. (Same name as before)</source>
+        <target state="final">Imenik "%s" ni bil preimenovan (nespremenjeno ime).</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotCopiedTo" resname="FileUtility.DirectoryWasNotCopiedTo" approved="yes">
+        <source>Directory "%s" WAS NOT copied to "%s"! There might be a problem with write permissions</source>
+        <target state="final">Imenik "%s" ni bil kopiran v "%s". Mogoče nimate ustreznih dovoljenj za pisanje.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotMovedTo" resname="FileUtility.DirectoryWasNotMovedTo" approved="yes">
+        <source>Directory "%s" WAS NOT moved to "%s"! There might be a problem with write permissions</source>
+        <target state="final">Imenik "%s" ni bil premaknjen v "%s". Mogoče nimate ustreznih dovoljenj za pisanje.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotRenamed" resname="FileUtility.DirectoryWasNotRenamed" approved="yes">
+        <source>Directory "%s" was not renamed! There might be a problem with write permissions in "%s"?</source>
+        <target state="final">Imenik "%s" ni bil preimenovan. Mogoče nimate ustreznih dovoljenj za pisanje za "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileWasNotAllowed" resname="FileUtility.ExtensionOfFileWasNotAllowed" approved="yes">
+        <source>Extension of file "%s" was not allowed!</source>
+        <target state="final">Pripona datoteke "%s" ni dovoljena.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileAlreadyExistsInFolder" resname="FileUtility.FileAlreadyExistsInFolder" approved="yes">
+        <source>File "%s" already exists in folder "%s"!</source>
+        <target state="final">Datoteka "%s" v mapi "%s" že obstaja.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileCopiedTo" resname="FileUtility.FileCopiedTo" approved="yes">
+        <source>File "%s" copied to "%s".</source>
+        <target state="final">Datoteka "%s" je prekopirana v "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileCreated" resname="FileUtility.FileCreated" approved="yes">
+        <source>File created: "%s".</source>
+        <target state="final">Datoteka ustvarjena: "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExistedAlreadyIn" resname="FileUtility.FileExistedAlreadyIn" approved="yes">
+        <source>File existed already in "%s"!</source>
+        <target state="final">Datoteka že obstaja v "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExtensionIsNotATextfileFormat" resname="FileUtility.FileExtensionIsNotATextfileFormat" approved="yes">
+        <source>File extension "%s" is not a textfile format! (%s).</source>
+        <target state="final">Pripona datoteke "%s" ni tekstovni format (%s).</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExtensionIsNotzip" resname="FileUtility.FileExtensionIsNotzip" approved="yes">
+        <source>File extension is not "zip".</source>
+        <target state="final">Pripona datoteke ni "zip".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileMovedTo" resname="FileUtility.FileMovedTo" approved="yes">
+        <source>File "%s" moved to "%s".</source>
+        <target state="final">Datoteka "%s" je bila premaknjena v "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileNameWasNotAllowed" resname="FileUtility.FileNameWasNotAllowed" approved="yes">
+        <source>File name "%s" was not allowed!</source>
+        <target state="final">Ime datoteke "%s" ni dovoljeno.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileOrDestinationWasNotWithinYourMountpoints" resname="FileUtility.FileOrDestinationWasNotWithinYourMountpoints" approved="yes">
+        <source>File "%s" or destination "%s" was not within your mountpoints!</source>
+        <target state="final">Datoteka "%s" ali cilj "%s" ni znotraj vaših priklopnih točk.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileOrDirectoryExistedAlready" resname="FileUtility.FileOrDirectoryExistedAlready" approved="yes">
+        <source>File or directory "%s" already exists!</source>
+        <target state="final">Datoteka ali imenik "%s" že obstaja.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileRenamedFromTo" resname="FileUtility.FileRenamedFromTo" approved="yes">
+        <source>File renamed from "%s" to "%s".</source>
+        <target state="final">Datoteka je preimenovana iz "%s" v "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileRenamedSameName" resname="FileUtility.FileRenamedSameName" approved="yes">
+        <source>File "%s" was not renamed. (Same name as before)</source>
+        <target state="final">Datoteka "%s" ni bil preimenovana (nespremenjeno ime).</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileSavedToBytesMd5" resname="FileUtility.FileSavedToBytesMd5" approved="yes">
+        <source>File saved to "%s", bytes: %s, MD5: %s.</source>
+        <target state="final">Datoteka shranjena v "%s", bajtov: %s, MD5: %s.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotCopiedTo" resname="FileUtility.FileWasNotCopiedTo" approved="yes">
+        <source>File "%s" WAS NOT copied to "%s"! There might be a problem with write permissions.</source>
+        <target state="final">Datoteka "%s" ni bila kopirana v "%s". Mogoče nimate ustreznih dovoljenj za pisanje.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotCreated" resname="FileUtility.FileWasNotCreated" approved="yes">
+        <source>File "%s" was not created! There might be a problem with write permissions in "%s"?</source>
+        <target state="final">Datoteka "%s" ni bila ustvarjena. Mogoče nimate ustreznih dovoljenj za pisanje za "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotRenamed" resname="FileUtility.FileWasNotRenamed" approved="yes">
+        <source>File "%s" was not renamed! There might be a problem with write permissions in "%s"?</source>
+        <target state="final">Datoteka "%s" ni bila preimenovana. Mogoče nimate ustreznih dovoljenj za pisanje za "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotSaved" resname="FileUtility.FileWasNotSaved" approved="yes">
+        <source>File "%s" was not saved! There might be a problem with write permissions.</source>
+        <target state="final">Datoteka "%s" ni bila shranjena. Mogoče nimate ustreznih dovoljenj za pisanje.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotSaved2" resname="FileUtility.FileWasNotSaved2" approved="yes">
+        <source>File "%s" was not saved! File extension rejected!</source>
+        <target state="final">Datoteka "%s" ni bila shranjena. Pripona datoteke je zavrnjena.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoFileWasUploaded" resname="FileUtility.NoFileWasUploaded" approved="yes">
+        <source>No file was uploaded!</source>
+        <target state="final">Nobena datoteka ni bila naložena.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoFileWasUploadedForReplacing" resname="FileUtility.NoFileWasUploadedForReplacing" approved="yes">
+        <source>No file was uploaded for replacing!</source>
+        <target state="final">Nobena datoteka ni bila naložena kot zamenjava.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoNameForNewFolderGiven" resname="FileUtility.NoNameForNewFolderGiven" approved="yes">
+        <source>No name for new folder given!</source>
+        <target state="final">Vnesite ime nove mape.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ReplacingFileTo" resname="FileUtility.ReplacingFileTo" approved="yes">
+        <source>Replacing file "%s" to "%s".</source>
+        <target state="final">Datoteko "%s" bo zamenjala "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetAlreadyExists" resname="FileUtility.TargetAlreadyExists" approved="yes">
+        <source>Target "%s" already exists!</source>
+        <target state="final">Cilj "%s" že obstaja.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetWasNotAFile" resname="FileUtility.TargetWasNotAFile" approved="yes">
+        <source>Target "%s" was not a file!</source>
+        <target state="final">Cilj "%s" ni datoteka.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetWasNotWithinYourMountpoints" resname="FileUtility.TargetWasNotWithinYourMountpoints" approved="yes">
+        <source>Target was not within your mountpoints! T="%s".</source>
+        <target state="final">Cilj ni znotraj vaših priklopnih točk. C="%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFileDidNotExist" resname="FileUtility.TheFileDidNotExist" approved="yes">
+        <source>The file "%s" did not exist!</source>
+        <target state="final">Datoteka "%s" ni obstajala.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheUploadHasFailedNoUploadedFileFound" resname="FileUtility.TheUploadHasFailedNoUploadedFileFound" approved="yes">
+        <source>The upload has failed, no uploaded file found!</source>
+        <target state="final">Nalaganje ni uspelo, naložene datoteke ni bilo mogoče najti.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheUploadedFileExceedsTheSize-limit" resname="FileUtility.TheUploadedFileExceedsTheSize-limit" approved="yes">
+        <source>The uploaded file "%s" exceeds the size-limit</source>
+        <target state="final">Naložena datoteka "%s" presega največjo dovoljeno velikost datotek.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UnzippingFileIn" resname="FileUtility.UnzippingFileIn" approved="yes">
+        <source>Unzipping file "%s" in "%s".</source>
+        <target state="final">Raztegovanje datoteke "%s" v "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UploadedFileCouldNotBeMoved" resname="FileUtility.UploadedFileCouldNotBeMoved" approved="yes">
+        <source>Uploaded file could not be moved! There might be a problem with write permissions in "%s"?</source>
+        <target state="final">Naložene datoteke ni bilo mogoče premakniti. Mogoče nimate ustreznih dovoljenj za pisanje za "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UploadingFileTo" resname="FileUtility.UploadingFileTo" approved="yes">
+        <source>Uploading file "%s" to "%s".</source>
+        <target state="final">Nalaganje datoteke "%s" v "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToAccessTheDirectory" resname="FileUtility.YouAreNotAllowedToAccessTheDirectory" approved="yes">
+        <source>You are not allowed to access the directory.</source>
+        <target state="final">Nimate pravic za dostop do tega imenika.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToAccessTheFile" resname="FileUtility.YouAreNotAllowedToAccessTheFile" approved="yes">
+        <source>You are not allowed to access the file.</source>
+        <target state="final">Nimate pravic za dostop do te datoteke.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCopyDirectories" resname="FileUtility.YouAreNotAllowedToCopyDirectories" approved="yes">
+        <source>You are not allowed to copy directories.</source>
+        <target state="final">Nimate pravic za kopiranje imenikov.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCopyFiles" resname="FileUtility.YouAreNotAllowedToCopyFiles" approved="yes">
+        <source>You are not allowed to copy files.</source>
+        <target state="final">Nimate pravic za kopiranje datotek.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.InvalidFolderName" resname="FileUtility.InvalidFolderName" approved="yes">
+        <source>Invalid folder name "%s"!</source>
+        <target state="final">Ime mape "%s" ni veljavno.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCreateDirectories" resname="FileUtility.YouAreNotAllowedToCreateDirectories" approved="yes">
+        <source>You are not allowed to create directories!</source>
+        <target state="final">Nimate pravic za ustvarjanje imenikov.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCreateFiles" resname="FileUtility.YouAreNotAllowedToCreateFiles" approved="yes">
+        <source>You are not allowed to create files!</source>
+        <target state="final">Nimate pravic za ustvarjanje datotek.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToEditFiles" resname="FileUtility.YouAreNotAllowedToEditFiles" approved="yes">
+        <source>You are not allowed to edit files!</source>
+        <target state="final">Nimate pravic za urejanje datotek.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToMoveDirectories" resname="FileUtility.YouAreNotAllowedToMoveDirectories" approved="yes">
+        <source>You are not allowed to move directories.</source>
+        <target state="final">Nimate pravic za premikanje imenikov.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToMoveFiles" resname="FileUtility.YouAreNotAllowedToMoveFiles" approved="yes">
+        <source>You are not allowed to move files.</source>
+        <target state="final">Nimate pravic za premikanje datotek.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToOverride" resname="FileUtility.YouAreNotAllowedToOverride" approved="yes">
+        <source>You are not allowed to override "%s"!</source>
+        <target state="final">Nimate pravic za prepisovanje "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToRenameDirectories" resname="FileUtility.YouAreNotAllowedToRenameDirectories" approved="yes">
+        <source>You are not allowed to rename directories!</source>
+        <target state="final">Nimate pravic za preimenovanje imenikov.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToRenameFiles" resname="FileUtility.YouAreNotAllowedToRenameFiles" approved="yes">
+        <source>You are not allowed to rename files!</source>
+        <target state="final">Nimate pravic za preimenovanje datotek.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToUnzipFiles" resname="FileUtility.YouAreNotAllowedToUnzipFiles" approved="yes">
+        <source>You are not allowed to unzip files.</source>
+        <target state="final">Nimate pravic za raztegovanje datotek.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToUploadFiles" resname="FileUtility.YouAreNotAllowedToUploadFiles" approved="yes">
+        <source>You are not allowed to upload files!</source>
+        <target state="final">Nimate pravic za nalaganje datotek.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouDontHaveFullAccessToTheDestinationDirectory" resname="FileUtility.YouDontHaveFullAccessToTheDestinationDirectory" approved="yes">
+        <source>You don't have full access to the destination directory "%s"!</source>
+        <target state="final">Nimate polnega dostopa do ciljnega imenika "%s".</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
