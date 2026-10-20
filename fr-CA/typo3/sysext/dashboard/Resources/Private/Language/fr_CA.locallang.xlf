@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="fr-CA">
+    <header/>
+    <body>
+      <trans-unit id="close" approved="yes">
+        <source>Close</source>
+        <target state="final">Fermer</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Dashboard</source>
+        <target state="final">Tableau de bord</target>
+      </trans-unit>
+      <trans-unit id="widget.add" approved="yes">
+        <source>Add widget</source>
+        <target state="final">Ajouter un widget</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard" approved="yes">
+        <source>Add widget to "%s"</source>
+        <target state="final">Ajouter un widget à "%s"</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard.searchLabel" approved="yes">
+        <source>Search for dashboard widgets</source>
+        <target state="final">Chercher un widget de tableau de bord</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard.searchNotFound" approved="yes">
+        <source>Unfortunately no dashboard widget matches your query, please try a different one.</source>
+        <target state="final">Malheureusement, aucun widget de tableau de bord ne correspond à votre requête, veuillez modifier votre recherche.</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard.userNotAllowed" approved="yes">
+        <source>No widgets are available with your current permissions.</source>
+        <target state="final">Aucun widget n'est disponible avec vos autorisations actuelles.</target>
+      </trans-unit>
+      <trans-unit id="widget.add.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Fermer</target>
+      </trans-unit>
+      <trans-unit id="widget.add.button.ok" approved="yes">
+        <source>Add widget</source>
+        <target state="final">Ajouter un widget</target>
+      </trans-unit>
+      <trans-unit id="widget.refresh" approved="yes">
+        <source>Refresh Widget</source>
+        <target state="final">Actualiser le widget</target>
+      </trans-unit>
+      <trans-unit id="widget.settings" approved="yes">
+        <source>Widget Settings</source>
+        <target state="final">Paramètres du widget</target>
+      </trans-unit>
+      <trans-unit id="widget.settings.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Fermer</target>
+      </trans-unit>
+      <trans-unit id="widget.settings.button.save" approved="yes">
+        <source>Save</source>
+        <target state="final">Enregistrer</target>
+      </trans-unit>
+      <trans-unit id="widget.settings.unchanged" approved="yes">
+        <source>Settings unchanged</source>
+        <target state="final">Paramètres non modifiés</target>
+      </trans-unit>
+      <trans-unit id="widget.move" approved="yes">
+        <source>Move Widget</source>
+        <target state="final">Déplacer le widget</target>
+      </trans-unit>
+      <trans-unit id="widget.remove" approved="yes">
+        <source>Remove Widget</source>
+        <target state="final">Retirer le widget</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Fermer</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.button.ok" approved="yes">
+        <source>Remove</source>
+        <target state="final">Supprimer</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.confirm.title" approved="yes">
+        <source>Remove widget</source>
+        <target state="final">Supprimer le widget</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.confirm.message" approved="yes">
+        <source>Are you sure you want to remove this widget?</source>
+        <target state="final">Êtes-vous sûr de vouloir supprimer ce widget ?</target>
+      </trans-unit>
+      <trans-unit id="widget.error" approved="yes">
+        <source>An error occurred while retrieving information for this widget. Please try again, and if the problem persists, contact your administrator.</source>
+        <target state="final">Une erreur s'est produite lors de la récupération des informations pour ce widget. Veuillez essayer à nouveau, et si le problème persiste, contactez votre administrateur.</target>
+      </trans-unit>
+      <trans-unit id="dashboard.headline" approved="yes">
+        <source>Dashboard "%s"</source>
+        <target state="final">Tableau de bord « %s »</target>
+      </trans-unit>
+      <trans-unit id="dashboard.default" approved="yes">
+        <source>My dashboard</source>
+        <target state="final">Mon tableau de bord</target>
+      </trans-unit>
+      <trans-unit id="dashboard.default.description" approved="yes">
+        <source>Create a new dashboard with some general TYPO3 widgets on it</source>
+        <target state="final">Créer un nouveau tableau de bord avec quelques widgets TYPO3 généraux</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty" approved="yes">
+        <source>Empty dashboard</source>
+        <target state="final">Tableau de bord vide</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.description" approved="yes">
+        <source>Your dashboard will be created without any widget on it.</source>
+        <target state="final">Votre tableau de bord sera créé sans widget.</target>
+      </trans-unit>
+      <trans-unit id="dashboard.add" approved="yes">
+        <source>Add dashboard</source>
+        <target state="final">Ajouter un tableau de bord</target>
+      </trans-unit>
+      <trans-unit id="dashboard.add.button.close" x-unused-since="14.3" approved="yes">
+        <source>Close</source>
+        <target state="final">Fermer</target>
+      </trans-unit>
+      <trans-unit id="dashboard.add.button.ok" x-unused-since="14.3" approved="yes">
+        <source>Add Dashboard</source>
+        <target state="final">Ajouter un tableau de bord</target>
+      </trans-unit>
+      <trans-unit id="dashboard.configure" approved="yes">
+        <source>Configure dashboard</source>
+        <target state="final">Configurer le tableau de bord</target>
+      </trans-unit>
+      <trans-unit id="dashboard.configure.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Fermer</target>
+      </trans-unit>
+      <trans-unit id="dashboard.configure.button.ok" approved="yes">
+        <source>Save Dashboard</source>
+        <target state="final">Enregistrer le tableau de bord</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete" approved="yes">
+        <source>Delete dashboard</source>
+        <target state="final">Supprimer le tableau de bord</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.sure" approved="yes">
+        <source>Are you sure you want to delete this dashboard?</source>
+        <target state="final">Voulez-vous vraiment supprimer ce tableau de bord ?</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.ok" approved="yes">
+        <source>Yes, delete it</source>
+        <target state="final">Oui, le supprimer</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuler</target>
+      </trans-unit>
+      <trans-unit id="dashboard.title" approved="yes">
+        <source>Title of dashboard</source>
+        <target state="final">Titre du tableau de bord</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.title" approved="yes">
+        <source>Getting Started with TYPO3</source>
+        <target state="final">Débuter avec TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.description" approved="yes">
+        <source>Add a shortcut to the TYPO3 Getting Started Tutorial.</source>
+        <target state="final">Ajouter un raccourci au guide de démarrage de TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.text" approved="yes">
+        <source>New to TYPO3? In our Getting Started Tutorial you will learn the basics how to use TYPO3.</source>
+        <target state="final">Nouveau sur TYPO3 ? Dans notre guide de démarrage, vous apprendrez les bases de l'utilisation de TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.content.label" approved="yes">
+        <source>Getting Started Tutorial</source>
+        <target state="final">Guide de démarrage</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.title" approved="yes">
+        <source>TypoScript Template Reference</source>
+        <target state="final">Référence du gabarit TypoScript</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.description" approved="yes">
+        <source>Add a shortcut to the TYPO3 TypoScript Template Reference.</source>
+        <target state="final">Ajouter un raccourci vers la référence du gabarit TypoScript.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.text" approved="yes">
+        <source>This document is a reference, used to lookup TypoScript templating.</source>
+        <target state="final">Ce document est une référence, utilisée pour l'élaboration de gabarits TypoScript.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.content.label" approved="yes">
+        <source>TypoScript Template Reference</source>
+        <target state="final">Référence du gabarit TypoScript</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.title" approved="yes">
+        <source>TSconfig Reference</source>
+        <target state="final">Référence TSConfig</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.description" approved="yes">
+        <source>Add a shortcut to the TYPO3 TSconfig Reference.</source>
+        <target state="final">Ajouter un raccourci à la documentation de référence TSconfig de TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.text" approved="yes">
+        <source>This document describes TSconfig and its options.</source>
+        <target state="final">Ce document décrit le TSconfig et ses options.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.content.label" approved="yes">
+        <source>TSconfig Reference</source>
+        <target state="final">Référence TSconfig</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.title" approved="yes">
+        <source>TYPO3 news</source>
+        <target state="final">TYPO3 news</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.description" approved="yes">
+        <source>Add a list of news items from the TYPO3 project</source>
+        <target state="final">Ajouter une liste d'actualités du projet TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.moreItems" approved="yes">
+        <source>More TYPO3 news</source>
+        <target state="final">Plus d'actualités de TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.title" approved="yes">
+        <source>About TYPO3</source>
+        <target state="final">À propos de TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.description" approved="yes">
+        <source>Some general information about TYPO3 and the version used</source>
+        <target state="final">Quelques informations générales sur TYPO3 et la version utilisée</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.text" approved="yes">
+        <source><![CDATA[TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.<br /><br />For further information visit <a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer">typo3.org</a>.<br /><br />TYPO3 CMS is <b>freely available</b> under the <a href="https://typo3.org/project/licenses/" target="_blank" rel="noreferrer">TYPO3-license (GNU/GPL)</a>.<br /><br />You are using version %s - Copyright %s %s]]></source>
+        <target state="final"><![CDATA[TYPO3 CMS est un système de gestion de contenu Open Source, utilisé internationalement pour construire et gérer des sites web de tous types, des petits sites à but non lucratif aux solutions multilingues complexes pour les grandes entreprises.<br /><br />Pour plus d'informations visitez <a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer">typo3.org</a>.<br /><br />Le CMS TYPO3 est <b>librement disponible</b> sous la <a href="https://typo3.org/project/licenses/" target="_blank" rel="noreferrer">licence TYPO3 (GNU/GPL)</a>.<br /><br />Vous utilisez la version %s - Copyright %s %s]]></target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.logo" approved="yes">
+        <source>TYPO3 CMS logo</source>
+        <target state="final">Logo TYPO3 CMS</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.title" approved="yes">
+        <source>Number of errors in system log</source>
+        <target state="final">Nombre d'erreurs dans le journal système</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.description" approved="yes">
+        <source>Shows the number of errors in the sys log of the last month, grouped by date</source>
+        <target state="final">Affiche le nombre d'erreurs dans le journal système lors du dernier mois, regroupé par date</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.buttonText" approved="yes">
+        <source>Show all errors in log</source>
+        <target state="final">Afficher toutes les erreurs du journal</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogUsers.buttonText" approved="yes">
+        <source>Show all user logins</source>
+        <target state="final">Afficher toutes les connexions d'utilisateurs</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.chart.dataSet.0" approved="yes">
+        <source>Number of errors</source>
+        <target state="final">Nombre d'erreurs</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.title" approved="yes">
+        <source>Type of backend users</source>
+        <target state="final">Type d'utilisateur backend</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.description" approved="yes">
+        <source>Shows the amount of normal- and admin-users</source>
+        <target state="final">Affiche le nombre d'utilisateurs normaux et administrateurs</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.normalUsers" approved="yes">
+        <source>Normal users</source>
+        <target state="final">Utilisateurs normaux</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.adminUsers" approved="yes">
+        <source>Admin users</source>
+        <target state="final">Administrateurs</target>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.title" approved="yes">
+        <source>Failed backend logins</source>
+        <target state="final">Échecs de connexions au backend</target>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.subtitle" approved="yes">
+        <source>In last 24 hours</source>
+        <target state="final">Dernières 24 heures</target>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.description" approved="yes">
+        <source>Information about the number of failed logins during the last 24 hours.</source>
+        <target state="final">Informations sur le nombre de connexions échouées au cours des dernières 24 heures.</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.title" approved="yes">
+        <source>TYPO3 security advisories</source>
+        <target state="final">Alertes de sécurité TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.description" approved="yes">
+        <source>Add a list of security advisories from the TYPO3 project</source>
+        <target state="final">Ajouter une liste des alertes de sécurité du projet TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.moreItems" approved="yes">
+        <source>More TYPO3 security advisories</source>
+        <target state="final">Alertes de sécurité TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.title" approved="yes">
+        <source>Latest changed pages</source>
+        <target state="final">Pages récemment modifiées</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.title.restrictToCurrentUser" approved="yes">
+        <source>My latest changed pages</source>
+        <target state="final">Mes dernières pages modifiées</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.description" approved="yes">
+        <source>Show a list of pages where the latest changes were made</source>
+        <target state="final">Afficher une liste des pages avec les dernières modifications réalisées</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.empty" approved="yes">
+        <source>No history found</source>
+        <target state="final">Aucun historique trouvé</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.settings.restrictToCurrentUser" approved="yes">
+        <source>Only show my changes</source>
+        <target state="final">Voir uniquement mes changements</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.change" approved="yes">
+        <source>Change</source>
+        <target state="final">Modification</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.user" approved="yes">
+        <source>User</source>
+        <target state="final">Utilisateur</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.user.userNotFound" approved="yes">
+        <source>Not Found</source>
+        <target state="final">Non trouvé</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Page</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.page.workspace" approved="yes">
+        <source>Changes in current selected workspace</source>
+        <target state="final">Modifications dans l'espace de travail actuellement sélectionné</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.page.pagetree" approved="yes">
+        <source>Position in pagetree</source>
+        <target state="final">Position dans l'arborescence</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control" approved="yes">
+        <source>Control</source>
+        <target state="final">Contrôle</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.recordHistory" approved="yes">
+        <source>Show history</source>
+        <target state="final">Afficher l'historique</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.viewWebpage" approved="yes">
+        <source>View webpage</source>
+        <target state="final">Visualiser la page</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.editPageContent" approved="yes">
+        <source>Edit page content</source>
+        <target state="final">Modifier le contenu de la page</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.editPage" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">Modifier les propriétés de la page</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.table.tt_content" approved="yes">
+        <source>Content</source>
+        <target state="final">Contenu</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.table.pages" approved="yes">
+        <source>Page</source>
+        <target state="final">Page</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.title" approved="yes">
+        <source>Latest backend logins</source>
+        <target state="final">Dernières connexions au backend</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.description" approved="yes">
+        <source>Shows the latest backend user logins.</source>
+        <target state="final">Affiche les dernières connexions d'utilisateurs au backend.</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.empty" approved="yes">
+        <source>No backend login history found</source>
+        <target state="final">Aucun historique de connexions au backend trouvé</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.time" approved="yes">
+        <source>Time</source>
+        <target state="final">Heure</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.user" approved="yes">
+        <source>User</source>
+        <target state="final">Utilisateur</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.user.notFound" approved="yes">
+        <source>Not found</source>
+        <target state="final">Non trouvé</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.user.edit" approved="yes">
+        <source>Edit user</source>
+        <target state="final">Modifier l’utilisateur</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.settings.limit" approved="yes">
+        <source>Number of logins to display</source>
+        <target state="final">Nombre de connexions à afficher</target>
+      </trans-unit>
+      <trans-unit id="widget_group.general" approved="yes">
+        <source>General</source>
+        <target state="final">Général</target>
+      </trans-unit>
+      <trans-unit id="widget_group.typo3" approved="yes">
+        <source>TYPO3 community</source>
+        <target state="final">Communauté TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widget_group.news" approved="yes">
+        <source>News</source>
+        <target state="final">Actualités</target>
+      </trans-unit>
+      <trans-unit id="widget_group.documentation" approved="yes">
+        <source>Documentation</source>
+        <target state="final">Documentation</target>
+      </trans-unit>
+      <trans-unit id="widget_group.system" approved="yes">
+        <source>System Information</source>
+        <target state="final">Informations système</target>
+      </trans-unit>
+      <trans-unit id="widget_group.content" approved="yes">
+        <source>Content</source>
+        <target state="final">Contenu</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.title" approved="yes">
+        <source>No widgets</source>
+        <target state="final">Aucun Widget</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.description" approved="yes">
+        <source>There are no widgets on this dashboard yet. You can add widgets now by clicking on the button below.</source>
+        <target state="final">Il n'y a pas encore de widgets sur ce tableau de bord. Vous pouvez maintenant ajouter des widgets en cliquant sur le bouton ci-dessous.</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.button" approved="yes">
+        <source>Add a widget</source>
+        <target state="final">Ajouter un widget</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
