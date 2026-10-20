@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814794" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_ttcontent.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>All visible content on webpages is typically made by "Page Content" records, often referred to as "Content Elements". Content Elements are managed by the "Page" Module which organizes Content Elements in multiple columns and languages.</source>
+        <target state="final">Wszystkie widoczne treści na stronach internetowych są zazwyczaj tworzone przez rekordy "Zawartość strony", często określane jako "Elementy treści". Elementy treści są zarządzane przez moduł "Strona", który organizuje elementy treści w wielu kolumnach i językach.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>"Page Content" records are sortable and can be rearranged. The "Language" and "Column" selectors of the "Page Content" records determines when and where they appear. If you do not change the value of the "Language" and "Column" selectors the Content Element will appear in the default configuration.</source>
+        <target state="final">Rekordy "Zawartość strony" są sortowalne i mogą być zmienione. Wybór "Języka" i "Kolumny" rekordów "Zawartość strony" określa kiedy i gdzie się pojawiają. Jeśli nie zmienisz wartości selektorów "Język" i "Kolumna", element treści pojawi się w domyślnej konfiguracji.</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The Page Module is used to manage Content Elements arranged in columns and languages.
+A Content Element has an editing form with many options. The "Type" determines which options are visible.
+In the Frontend, a Content Element like the above could look like this.</source>
+			<target state="final">Moduł Strona służy do zarządzania elementami treści ułożonymi w kolumnach i językach.
+Element treści ma formularz edycji z wieloma opcjami. Pole "Typ" określa, które opcje są widoczne.
+We frontendzie taki element treści mógłby wyglądać jak powyżej.</target></trans-unit>
+      <trans-unit id="CType.description" resname="CType.description" approved="yes">
+        <source>Select the kind of Page Content this element represents. New options will appear when you save the record.</source>
+        <target state="final">Wybierz rodzaj zawartości strony, który reprezentuje ten element. Nowe opcje pojawią się po zapisaniu rekordu.</target>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Enter the date when the Content Element should be published and displayed on the website.</source>
+        <target state="final">Wprowadź datę, kiedy element treści ma zostać opublikowany i wyświetlony w witrynie.</target>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>Enter the date when the Content Element should expire and disappear from the website.</source>
+        <target state="final">Wprowadź datę, kiedy element treści ma wygasnąć i zniknąć z witryny.</target>
+      </trans-unit>
+      <trans-unit id="fe_group.description" resname="fe_group.description" approved="yes">
+        <source>If Usergroup Access Rights are set to a usergroup name, only website users who are logged in and members of the selected usergroup will be able to view the Content Element. The special option 'Hide at Login' means the Content Element will &lt;em&gt;not&lt;/em&gt; be visible for any website users that are logged in. Likewise "Show at Any Login" will make the Content Element visible for any logged in website user.</source>
+        <target state="final">Jeśli w polu Prawa dostępu grup użytkowników wybrano nazwę grupy, element treści będą mogli zobaczyć tylko zalogowani użytkownicy witryny należący do wybranej grupy. Specjalna opcja 'Ukryj po zalogowaniu' oznacza, że element treści &lt;em&gt;nie&lt;/em&gt; będzie widoczny dla żadnego zalogowanego użytkownika witryny. Analogicznie opcja "Pokaż po dowolnym zalogowaniu" sprawi, że element treści będzie widoczny dla każdego zalogowanego użytkownika witryny.</target>
+      </trans-unit>
+      <trans-unit id="fe_group.details" resname="fe_group.details" approved="yes">
+        <source>The 'Hide at Login' option is is useful if you want to present information like "How to Login" that becomes irrelevant when a website user is actually logged in.</source>
+        <target state="final">Opcja 'Ukryj po zalogowaniu' jest przydatna, jeśli chcesz zaprezentować informacje, takie jak "Jak się zalogować", które przestają być istotne, gdy użytkownik witryny jest już zalogowany.</target>
+      </trans-unit>
+      <trans-unit id="sys_language_uid.description" resname="sys_language_uid.description" approved="yes">
+        <source>Select the system language of this Content Element. &lt;strong&gt;Notice:&lt;/strong&gt; This will affect the Content Element visibility by limiting it to a certain language.</source>
+        <target state="final">Wybierz język systemowy tego elementu treści. &lt;strong&gt;Uwaga:&lt;/strong&gt; Wpłynie to na widoczność elementu treści, ograniczając go do określonego języka.</target>
+      </trans-unit>
+      <trans-unit id="sys_language_uid.details" resname="sys_language_uid.details" xml:space="preserve" approved="yes">
+				<source>This allows you to assign a specific language to the Content Element. If you select anything but the default value, the element will &lt;em&gt;not&lt;/em&gt; be visible unless the language assigned is also configured by the TypoScript template.
+The available system languages are created by the administrator.</source>
+			<target state="final">Pozwala przypisać do elementu treści konkretny język. Jeśli wybierzesz cokolwiek poza wartością domyślną, element &lt;em&gt;nie&lt;/em&gt; będzie widoczny, dopóki przypisany język nie zostanie również skonfigurowany w szablonie TypoScript.
+Dostępne języki systemowe tworzy administrator.</target></trans-unit>
+      <trans-unit id="layout.description" resname="layout.description" approved="yes">
+        <source>Select a Layout.</source>
+        <target state="final">Wybierz układ.</target>
+      </trans-unit>
+      <trans-unit id="layout.details" resname="layout.details" xml:space="preserve" approved="yes">
+				<source>This option does not work by default for all Content Elements but your website may display Content Elements differently depending on the layout.
+
+The File Links Content Element does make use of the Layout field by default:
+"Normal" will provide a list of file links with no thumbnail.
+"Layout 1" adds a file icon to the left of the link
+"Layout 2" adds a thumbnail for image files and an icon for other files. A black border is wrapped around the icon.
+"Layout 3" is similar to Layout 2, but without the black border.</source>
+			<target state="final">Ta opcja domyślnie nie działa dla wszystkich elementów treści, ale Twoja witryna może wyświetlać elementy treści inaczej w zależności od układu.
+
+Element treści Odnośniki do plików domyślnie korzysta z pola Układ:
+"Normalny" wyświetli listę odnośników do plików bez miniatur.
+"Układ 1" dodaje ikonę pliku po lewej stronie odnośnika
+"Układ 2" dodaje miniaturę dla plików graficznych i ikonę dla pozostałych plików. Wokół ikony znajduje się czarna ramka.
+"Układ 3" jest podobny do Układu 2, ale bez czarnej ramki.</target></trans-unit>
+      <trans-unit id="colPos.description" resname="colPos.description" approved="yes">
+        <source>Select the column position of this element. &lt;strong&gt;Notice:&lt;/strong&gt; This may affect whether the Content Element is visible depending on your website template.</source>
+        <target state="final">Wybierz pozycję kolumny tego elementu. &lt;strong&gt;Uwaga:&lt;/strong&gt; Może to wpłynąć na widoczność elementu treści w zależności od szablonu witryny.</target>
+      </trans-unit>
+      <trans-unit id="colPos.details" resname="colPos.details" xml:space="preserve" approved="yes">
+				<source>Many websites only use one column of content. Some templates, however, let you put content in multiple columns using the Column option.
+
+&lt;strong&gt;Notice:&lt;/strong&gt; Selecting a column other than "Normal" may cause the Content Element to disappear if the website template does not use that column. If your Content Element mysteriously disappears make sure the Column and Language selectors are set correctly.</source>
+			<target state="final">Wiele witryn używa tylko jednej kolumny treści. Niektóre szablony pozwalają jednak umieszczać treść w wielu kolumnach za pomocą opcji Kolumna.
+
+&lt;strong&gt;Uwaga:&lt;/strong&gt; Wybranie kolumny innej niż "Normalna" może spowodować zniknięcie elementu treści, jeśli szablon witryny nie używa tej kolumny. Jeśli element treści tajemniczo znika, upewnij się, że selektory Kolumna i Język są ustawione poprawnie.</target></trans-unit>
+      <trans-unit id="date.description" resname="date.description" approved="yes">
+        <source>Enter a date to be displayed above the header.</source>
+        <target state="final">Wprowadź datę wyświetlaną nad nagłówkiem.</target>
+      </trans-unit>
+      <trans-unit id="header.description" resname="header.description" approved="yes">
+        <source>Enter header text for the Content Element.</source>
+        <target state="final">Wprowadź tekst nagłówka dla elementu zawartości.</target>
+      </trans-unit>
+      <trans-unit id="header_position.description" resname="header_position.description" approved="yes">
+        <source>Aligns the header to the left, center, or right.</source>
+        <target state="final">Wyrównuje nagłówek do lewej, do środka lub do prawej.</target>
+      </trans-unit>
+      <trans-unit id="header_link.description" resname="header_link.description" approved="yes">
+        <source>Creates a link from the header to a Page ID, email address, or URL.</source>
+        <target state="final">Tworzy odnośnik z nagłówka do ID strony, adresu e-mail lub adresu URL.</target>
+      </trans-unit>
+      <trans-unit id="header_link.syntax" resname="header_link.syntax" xml:space="preserve" approved="yes">
+				<source>If you insert a Page ID (ex. 51), the link will point to the page with id=51 &lt;em&gt;inside&lt;/em&gt; TYPO3.
+If you insert an email address (ex. name@my-domain.test), the link will point to that email address.
+If you insert an URL or domain, (ex. www.typo3.org or http://www.my-domain.org), the link will point to that website.</source>
+			<target state="final">Jeśli wpiszesz ID strony (np. 51), odnośnik poprowadzi do strony o id=51 &lt;em&gt;wewnątrz&lt;/em&gt; TYPO3.
+Jeśli wpiszesz adres e-mail (np. name@my-domain.test), odnośnik poprowadzi na ten adres e-mail.
+Jeśli wpiszesz adres URL lub domenę (np. www.typo3.org lub http://www.my-domain.org), odnośnik poprowadzi do tej witryny.</target></trans-unit>
+      <trans-unit id="header_layout.description" resname="header_layout.description" approved="yes">
+        <source>Select a visual design for the header.</source>
+        <target state="final">Wybierz wygląd nagłówka.</target>
+      </trans-unit>
+      <trans-unit id="header_layout.details" resname="header_layout.details" xml:space="preserve" approved="yes">
+				<source>If you select "Default" the standard design (which is one of the layouts 1-5) will be used.
+Alternatively you can select from Layout 1 through 5 which are configured in the website template with individual visual designs.
+If you select "Hidden" the header will simply not appear. This is useful when you don't need a header to display on the website but still want to identify the Content Element in the Backend.</source>
+			<target state="final">Jeśli wybierzesz "Domyślny", zostanie użyty standardowy wygląd (jeden z układów 1–5).
+Alternatywnie możesz wybrać Układ od 1 do 5, skonfigurowane w szablonie witryny z indywidualnym wyglądem.
+Jeśli wybierzesz "Ukryty", nagłówek po prostu się nie pojawi. Jest to przydatne, gdy nie potrzebujesz nagłówka wyświetlanego w witrynie, ale nadal chcesz identyfikować element treści w backendzie.</target></trans-unit>
+      <trans-unit id="subheader.description" resname="subheader.description" approved="yes">
+        <source>Enter a subheader to be displayed below the main header. If the Content Element is a "Form" this field is instead used as the Recipient Email.</source>
+        <target state="final">Wprowadź podtytuł wyświetlany pod głównym nagłówkiem. Jeśli element treści to "Formularz", pole to jest używane zamiast tego jako adres e-mail odbiorcy.</target>
+      </trans-unit>
+      <trans-unit id="subheader.details" resname="subheader.details" approved="yes">
+        <source>A subheader is displayed only with "Header" Content Elements and with "Form" Content Elements (as the Recipient Email).</source>
+        <target state="final">Podtytuł jest wyświetlany tylko w elementach treści "Nagłówek" oraz w elementach treści "Formularz" (jako adres e-mail odbiorcy).</target>
+      </trans-unit>
+      <trans-unit id="bodytext.description" resname="bodytext.description" approved="yes">
+        <source>Enter the main text.</source>
+        <target state="final">Wprowadź główny tekst.</target>
+      </trans-unit>
+      <trans-unit id="bodytext.details" resname="bodytext.details" xml:space="preserve" approved="yes">
+				<source>The main text of the Content Element is entered here and can be formatted with HTML or a Rich Text Editor.
+The field is reused in other Content Element types so changing the type will cause any text to be reused in that new Content Element type.
+
+When you're using this field with the "Text" and "Text &amp; Images" types, the content is normal body text. Each linebreak signifies a new paragraph, you can use the special TYPO3 tag, &amp;lt;LINK&amp;gt;, for making links. You can use many HTML tags but there are limitations depending on your website configuration.
+A Rich Text Editor is commonly used to add a visual editing interface for 'Text' and 'Text &amp; Images' Content Elements.
+
+&lt;b&gt;Bullet Lists:&lt;/b&gt;
+If the type is "Bullet List" each line in this field is a bullet item.
+
+&lt;b&gt;Tables:&lt;/b&gt;
+If the type is "Table" each line represents a table row. Within each line, columns are divided by a vertical bar ('|'). A table row with 3 columns could look like "This is column 1 | Column 2 here | Third column!". The table wizard can also be used for creating tables and is much easier than hand coding them.</source>
+			<target state="final">Tutaj wprowadza się główny tekst elementu treści, który można formatować za pomocą HTML lub edytora tekstu sformatowanego (Rich Text Editor).
+Pole jest ponownie wykorzystywane w innych typach elementów treści, więc zmiana typu spowoduje, że dotychczasowy tekst zostanie użyty w nowym typie elementu treści.
+
+Gdy używasz tego pola z typami "Tekst" i "Tekst &amp; obrazy", treść jest zwykłym tekstem podstawowym. Każde złamanie linii oznacza nowy akapit, a do tworzenia odnośników możesz użyć specjalnego znacznika TYPO3, &amp;lt;LINK&amp;gt;. Możesz używać wielu znaczników HTML, ale istnieją ograniczenia zależne od konfiguracji witryny.
+Edytor tekstu sformatowanego jest powszechnie używany do dodania wizualnego interfejsu edycji dla elementów treści 'Tekst' i 'Tekst &amp; obrazy'.
+
+&lt;b&gt;Listy punktowane:&lt;/b&gt;
+Jeśli typ to "Lista punktowana", każda linia w tym polu jest punktem listy.
+
+&lt;b&gt;Tabele:&lt;/b&gt;
+Jeśli typ to "Tabela", każda linia reprezentuje wiersz tabeli. W obrębie każdej linii kolumny są oddzielane pionową kreską ('|'). Wiersz tabeli z 3 kolumnami może wyglądać tak: "To jest kolumna 1 | Tu kolumna 2 | Trzecia kolumna!". Do tworzenia tabel można też użyć kreatora tabel, co jest znacznie łatwiejsze niż ręczne kodowanie.</target></trans-unit>
+      <trans-unit id="image.description" resname="image.description" approved="yes">
+        <source>Insert one or more images.</source>
+        <target state="final">Wstaw jeden lub więcej obrazów.</target>
+      </trans-unit>
+      <trans-unit id="image.image_descr" resname="image.image_descr" approved="yes">
+        <source>This shows all the options related to inserting images in Content Elements. Depending on user permissions, you may not be able to use all of them.</source>
+        <target state="final">Tutaj widać wszystkie opcje związane z wstawianiem obrazów w elementach treści. W zależności od uprawnień użytkownika nie wszystkie mogą być dostępne.</target>
+      </trans-unit>
+      <trans-unit id="imagewidth.description" resname="imagewidth.description" approved="yes">
+        <source>Enter the width (in pixels) for displaying the image in the Frontend of your website.</source>
+        <target state="final">Wprowadź szerokość (w pikselach) wyświetlania obrazu we frontendzie witryny.</target>
+      </trans-unit>
+      <trans-unit id="imagewidth.details" resname="imagewidth.details" approved="yes">
+        <source>The TypoScript template is normally configured with maximum image width so you shouldn't need to specify a width. In unique cases, this provides additional flexibility though.</source>
+        <target state="final">Szablon TypoScript jest zwykle skonfigurowany z maksymalną szerokością obrazu, więc nie powinno być potrzeby podawania szerokości. W wyjątkowych przypadkach daje to jednak dodatkową elastyczność.</target>
+      </trans-unit>
+      <trans-unit id="imageheight.description" resname="imageheight.description" approved="yes">
+        <source>Enter the height (in pixels) for displaying the images in the Frontend of your website.</source>
+        <target state="final">Wprowadź wysokość (w pikselach) wyświetlania obrazów we frontendzie witryny.</target>
+      </trans-unit>
+      <trans-unit id="imageorient.description" resname="imageorient.description" approved="yes">
+        <source>Select the position and alignment of the images relative to the body text.</source>
+        <target state="final">Wybierz położenie i wyrównanie obrazów względem tekstu podstawowego.</target>
+      </trans-unit>
+      <trans-unit id="imageorient.details" resname="imageorient.details" xml:space="preserve" approved="yes">
+				<source>The positions above and below the body text are pretty straight forward.
+The options for "In text" mean that images are displayed with text wrapped around them. When you select this option the template will probably force the images into smaller dimensions to accommodate the width of the template and the width of the text. The bodytext will float &lt;em&gt;under&lt;/em&gt; the image block when it reaches the end of the image block. In other words, the body text &lt;em&gt;wraps around&lt;/em&gt; the image block. If you select "In text" below the "No wrap" divider, the body text will not float under the image block, but simply continue in its column.
+Apart from the visual difference there is a technical aspect as well. If you choose to allow the content to wrap the image block you will experience a strange phenomenon when you do not have enough bodytext to make it float around the image: subsequent content elements on the page will appear to be layered on top of the image block. However it's easily solved by changing the "In text" position to the equal value but below the "No wrap" divider.</source>
+			<target state="final">Położenia nad i pod tekstem podstawowym są dość oczywiste.
+Opcje "W tekście" oznaczają, że obrazy są wyświetlane z opływającym je tekstem. Po wybraniu tej opcji szablon prawdopodobnie wymusi mniejsze wymiary obrazów, aby dopasować je do szerokości szablonu i tekstu. Tekst podstawowy będzie opływał &lt;em&gt;pod&lt;/em&gt; blokiem obrazów, gdy dojdzie do jego końca. Innymi słowy, tekst podstawowy &lt;em&gt;opływa&lt;/em&gt; blok obrazów. Jeśli wybierzesz "W tekście" poniżej separatora "Bez opływania", tekst podstawowy nie będzie opływał pod blokiem obrazów, lecz po prostu będzie kontynuowany w swojej kolumnie.
+Oprócz różnicy wizualnej jest też aspekt techniczny. Jeśli zezwolisz, aby treść opływała blok obrazów, możesz zaobserwować dziwne zjawisko, gdy tekstu podstawowego jest za mało, by opływał obraz: kolejne elementy treści na stronie będą wyglądać, jakby były nałożone na blok obrazów. Łatwo to jednak rozwiązać, zmieniając położenie "W tekście" na równoważną wartość poniżej separatora "Bez opływania".</target></trans-unit>
+      <trans-unit id="imageborder.description" resname="imageborder.description" approved="yes">
+        <source>Displays a colored border around the images.</source>
+        <target state="final">Wyświetla kolorową ramkę wokół obrazów.</target>
+      </trans-unit>
+      <trans-unit id="image_link.description" resname="image_link.description" approved="yes">
+        <source>Enter a link for the image. For multiple images, separate the links with commas.</source>
+        <target state="final">Wprowadź odnośnik dla obrazu. W przypadku wielu obrazów rozdziel odnośniki przecinkami.</target>
+      </trans-unit>
+      <trans-unit id="image_link.details" resname="image_link.details" xml:space="preserve" approved="yes">
+				<source>By default all images share the same link. Your TypoScript template may be configured to allow a separate link for each image. If this is the case, you simply separate the links with a comma.
+
+See Page Content&gt;Link below for details on syntax.</source>
+			<target state="final">Domyślnie wszystkie obrazy mają ten sam odnośnik. Szablon TypoScript może być skonfigurowany tak, aby umożliwiał osobny odnośnik dla każdego obrazu. W takim przypadku wystarczy rozdzielić odnośniki przecinkiem.
+
+Szczegóły składni znajdziesz poniżej w sekcji Zawartość strony&gt;Odnośnik.</target></trans-unit>
+      <trans-unit id="image_zoom.description" resname="image_zoom.description" approved="yes">
+        <source>When enabled, clicking an image will open a larger version in a popup window.</source>
+        <target state="final">Po włączeniu kliknięcie obrazu otworzy jego większą wersję w oknie wyskakującym.</target>
+      </trans-unit>
+      <trans-unit id="image_zoom.details" resname="image_zoom.details" approved="yes">
+        <source>This option overrides the value in the Links field.</source>
+        <target state="final">Ta opcja zastępuje wartość w polu Odnośniki.</target>
+      </trans-unit>
+      <trans-unit id="image_frames.description" resname="image_frames.description" approved="yes">
+        <source>Select special image framing options.</source>
+        <target state="final">Wybierz specjalne opcje obramowania obrazów.</target>
+      </trans-unit>
+      <trans-unit id="imagecols.description" resname="imagecols.description" approved="yes">
+        <source>Set the number of columns when the images are displayed in the Frontend of the website.</source>
+        <target state="final">Ustaw liczbę kolumn, w których obrazy są wyświetlane we frontendzie witryny.</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.description" resname="imagecaption.description" approved="yes">
+        <source>Enter captions for the images. For multiple images, enter one caption per line.</source>
+        <target state="final">Wprowadź podpisy do obrazów. W przypadku wielu obrazów wpisz jeden podpis w każdej linii.</target>
+      </trans-unit>
+      <trans-unit id="imagecaption.details" resname="imagecaption.details" xml:space="preserve" approved="yes">
+				<source>By default, the caption is positioned below the images. However, your TypoScript template may be configured to allow individual image captions by setting "styles.content.imgtext.captionSplit=1" in your template constants.
+In this case, each line in this field will be the image caption of the corresponding image in the list.
+
+The caption text field is also used by the Content Element type "File Links" where each line represents a description of a file in the list.</source>
+			<target state="final">Domyślnie podpis jest umieszczany pod obrazami. Szablon TypoScript może jednak być skonfigurowany tak, aby umożliwiał indywidualne podpisy obrazów, przez ustawienie "styles.content.imgtext.captionSplit=1" w stałych szablonu.
+W takim przypadku każda linia w tym polu będzie podpisem odpowiedniego obrazu na liście.
+
+Pole podpisu jest również używane przez typ elementu treści "Odnośniki do plików", gdzie każda linia stanowi opis pliku na liście.</target></trans-unit>
+      <trans-unit id="cols.description" resname="cols.description" approved="yes">
+        <source>Select a fixed number of table columns</source>
+        <target state="final">Wybierz stałą liczbę kolumn tabeli</target>
+      </trans-unit>
+      <trans-unit id="pages.description" resname="pages.description" approved="yes">
+        <source>Select a target page or multiple target pages.</source>
+        <target state="final">Wybierz stronę docelową lub wiele stron docelowych.</target>
+      </trans-unit>
+      <trans-unit id="pages.details" resname="pages.details" xml:space="preserve" approved="yes">
+				<source>This field is used by many of the Content Element types to create a relation to either a single target page or multiple target pages. If no target page is specified, the current page will generally be used.
+
+Using the "Search" Content Element, the target page is where search results will appear. You must make sure that this page has a similar "Search" Content Element to display the results.
+
+The "Login" Content Element (not to be confused with the Login plugin available when the felogin extension is installed) also uses this field to redirect the login to a certain page. That page does not need to contain a "Login" Content Element in order to perform the authentication since any TYPO3 page can handle a login request.
+If you specify a second page in this list, the ID will be passed to the login system as the page inside TYPO3 where website users are found. You should use this only if your template is not already configured to pass this value on.
+In order for the login procedure to work you must make sure that you have created website users and website usergroups, have specified where these website users can be found (typically a SysFolder), a page ID in the page list, and ensured that cookies are enabled for the site.
+
+The "Menu/Sitemap" Content Elements also use this field. In this case the page will determine the starting point for the menu or the actual pages shown in the menu. This behavior depends on the menu type you have selected.
+
+Finally the "Form" element uses this field as the target page to which the form is submitted. A common use is the "Thank you" page after the form is completed.</source>
+			<target state="final">To pole jest używane przez wiele typów elementów treści do utworzenia powiązania z pojedynczą stroną docelową lub wieloma stronami docelowymi. Jeśli nie określono strony docelowej, zazwyczaj używana jest bieżąca strona.
+
+W elemencie treści "Wyszukiwanie" strona docelowa to miejsce, w którym pojawią się wyniki wyszukiwania. Musisz upewnić się, że ta strona ma podobny element treści "Wyszukiwanie" do wyświetlania wyników.
+
+Element treści "Logowanie" (nie należy go mylić z wtyczką Logowanie dostępną po zainstalowaniu rozszerzenia felogin) również używa tego pola do przekierowania logowania na określoną stronę. Ta strona nie musi zawierać elementu treści "Logowanie", aby przeprowadzić uwierzytelnienie, ponieważ każda strona TYPO3 może obsłużyć żądanie logowania.
+Jeśli podasz na tej liście drugą stronę, jej ID zostanie przekazane do systemu logowania jako strona wewnątrz TYPO3, na której znajdują się użytkownicy witryny. Powinieneś używać tego tylko wtedy, gdy Twój szablon nie jest jeszcze skonfigurowany do przekazywania tej wartości.
+Aby procedura logowania działała, musisz upewnić się, że utworzono użytkowników witryny i grupy użytkowników witryny, określono, gdzie można znaleźć tych użytkowników witryny (zazwyczaj SysFolder), podano ID strony na liście stron i włączono obsługę ciasteczek dla witryny.
+
+Elementy treści "Menu/Mapa strony" również używają tego pola. W tym przypadku strona określa punkt początkowy menu lub rzeczywiste strony wyświetlane w menu. To zachowanie zależy od wybranego typu menu.
+
+Wreszcie element "Formularz" używa tego pola jako strony docelowej, na którą jest wysyłany formularz. Typowym zastosowaniem jest strona "Dziękujemy" po wypełnieniu formularza.</target></trans-unit>
+      <trans-unit id="recursive.description" resname="recursive.description" approved="yes">
+        <source>The number of subpage levels that should also be included for each page in the list.</source>
+        <target state="final">Liczba poziomów podstron, które mają być również uwzględnione dla każdej strony z listy.</target>
+      </trans-unit>
+      <trans-unit id="recursive.details" resname="recursive.details" xml:space="preserve" approved="yes">
+				<source>This feature depends on the TypoScript template configuration and Content Element type. If enabled, each page listed in the "Pages" field will also have its subpages included to the specified depth.
+
+&lt;strong&gt;Warning:&lt;/strong&gt; If there are many subpages, be aware that this option may return a large number of results</source>
+			<target state="final">Ta funkcja zależy od konfiguracji szablonu TypoScript i typu elementu treści. Jeśli jest włączona, każda strona wymieniona w polu "Strony" będzie miała również uwzględnione podstrony do określonej głębokości.
+
+&lt;strong&gt;Ostrzeżenie:&lt;/strong&gt; Jeśli jest wiele podstron, pamiętaj, że ta opcja może zwrócić dużą liczbę wyników</target></trans-unit>
+      <trans-unit id="menu_type.description" resname="menu_type.description" approved="yes">
+        <source>Select the type of menu you wish to create.</source>
+        <target state="final">Wybierz typ menu, które chcesz utworzyć.</target>
+      </trans-unit>
+      <trans-unit id="menu_type.details" resname="menu_type.details" xml:space="preserve" approved="yes">
+				<source>This is a short description of each type:
+
+&lt;strong&gt;Menu of selected pages&lt;/strong&gt;
+This will create a menu with links to the pages in the Selected Pages list.
+
+&lt;strong&gt;Menu of subpages of selected pages&lt;/strong&gt;
+This will create in a menu with links to the subpages of the pages in the Selected Pages list. If you do not specify any pages, the subpages to the current page will be used.
+
+&lt;strong&gt;Menu of subpages of selected pages (with abstract)&lt;/strong&gt;
+Like the previous option, but also displays the content of the Abstract field (or the Description field) for each page in the menu. The Abstract field is given priority over the Description field if both are complete.
+
+&lt;strong&gt;Menu of subpages of selected pages + sections&lt;/strong&gt;
+Like the previous option, but includes links to all Content Elements on the page that are marked to Show In Section Menus.
+
+&lt;strong&gt;Sitemap&lt;/strong&gt;
+Generates a classic tree sitemap. Notice that the sitemap will begin from the current page unless you select another page instead.
+
+&lt;strong&gt;Section index (page content marked for section menus)&lt;/strong&gt;
+This makes a menu of Content Elements on the selected pages for all Content Elements marked to Show In Section Menu. This is a great way to make an index at the top of the page.
+If you don't want certain Content Elements to appear in the list, just uncheck the Show in Section Menus checkbox for those elements.
+
+&lt;strong&gt;Recently updated pages&lt;/strong&gt;
+This displays the 10 most recently updated pages.
+&lt;strong&gt;Notice:&lt;/strong&gt; If you update a page and the updated page is not included in this list, clearing the Page Cache will resolve the issue.
+
+&lt;strong&gt;Related pages (based on keywords)&lt;/strong&gt;
+Displays other related pages based on the keywords of the selected pages matched against the keywords of other pages.</source>
+			<target state="final">Oto krótki opis każdego typu:
+
+&lt;strong&gt;Menu wybranych stron&lt;/strong&gt;
+Utworzy menu z odnośnikami do stron z listy Wybrane strony.
+
+&lt;strong&gt;Menu podstron wybranych stron&lt;/strong&gt;
+Utworzy menu z odnośnikami do podstron stron z listy Wybrane strony. Jeśli nie określisz żadnych stron, zostaną użyte podstrony bieżącej strony.
+
+&lt;strong&gt;Menu podstron wybranych stron (ze streszczeniem)&lt;/strong&gt;
+Jak poprzednia opcja, ale dodatkowo wyświetla zawartość pola Streszczenie (lub pola Opis) dla każdej strony w menu. Jeśli oba pola są wypełnione, pole Streszczenie ma pierwszeństwo przed polem Opis.
+
+&lt;strong&gt;Menu podstron wybranych stron + sekcje&lt;/strong&gt;
+Jak poprzednia opcja, ale zawiera odnośniki do wszystkich elementów treści na stronie oznaczonych opcją Pokaż w menu sekcji.
+
+&lt;strong&gt;Mapa strony&lt;/strong&gt;
+Generuje klasyczną drzewiastą mapę strony. Zwróć uwagę, że mapa strony rozpocznie się od bieżącej strony, chyba że wybierzesz zamiast niej inną stronę.
+
+&lt;strong&gt;Indeks sekcji (zawartość strony oznaczona dla menu sekcji)&lt;/strong&gt;
+Tworzy menu elementów treści na wybranych stronach dla wszystkich elementów treści oznaczonych opcją Pokaż w menu sekcji. To świetny sposób na utworzenie indeksu na górze strony.
+Jeśli nie chcesz, aby niektóre elementy treści pojawiały się na liście, odznacz dla nich pole wyboru Pokaż w menu sekcji.
+
+&lt;strong&gt;Ostatnio zaktualizowane strony&lt;/strong&gt;
+Wyświetla 10 ostatnio zaktualizowanych stron.
+&lt;strong&gt;Uwaga:&lt;/strong&gt; Jeśli zaktualizujesz stronę, a zaktualizowanej strony nie ma na tej liście, problem rozwiąże wyczyszczenie pamięci podręcznej stron.
+
+&lt;strong&gt;Powiązane strony (na podstawie słów kluczowych)&lt;/strong&gt;
+Wyświetla inne powiązane strony na podstawie słów kluczowych wybranych stron dopasowanych do słów kluczowych innych stron.</target></trans-unit>
+      <trans-unit id="list_type.description" resname="list_type.description" approved="yes">
+        <source>Select a plugin to insert.</source>
+        <target state="final">Wybierz wtyczkę do wstawienia.</target>
+      </trans-unit>
+      <trans-unit id="list_type.details" resname="list_type.details" approved="yes">
+        <source>The list of plugins you can insert on a page. The available plugins depend on which extensions are installed.</source>
+        <target state="final">Lista wtyczek, które można wstawić na stronie. Dostępne wtyczki zależą od zainstalowanych rozszerzeń.</target>
+      </trans-unit>
+      <trans-unit id="media.description" resname="media.description" approved="yes">
+        <source>Files can be added to the list here.</source>
+        <target state="final">Tutaj można dodać pliki do listy.</target>
+      </trans-unit>
+      <trans-unit id="multimedia.description" resname="multimedia.description" approved="yes">
+        <source>Insert a multimedia element here (ex. Flash movie)</source>
+        <target state="final">Wstaw tutaj element multimedialny (np. film Flash)</target>
+      </trans-unit>
+      <trans-unit id="filelink_size.description" resname="filelink_size.description" approved="yes">
+        <source>Enable the display of file sizes.</source>
+        <target state="final">Włącz wyświetlanie rozmiarów plików.</target>
+      </trans-unit>
+      <trans-unit id="records.description" resname="records.description" approved="yes">
+        <source>Insert records to be displayed on this page.</source>
+        <target state="final">Wstaw rekordy, które mają być wyświetlane na tej stronie.</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex.description" resname="sectionIndex.description" approved="yes">
+        <source>If set, the Content Element will appear in Section Menus.</source>
+        <target state="final">Jeśli ta opcja jest zaznaczona, element treści pojawi się w menu sekcji.</target>
+      </trans-unit>
+      <trans-unit id="sectionIndex.details" resname="sectionIndex.details" approved="yes">
+        <source>See more details about Section Menus by clicking below.</source>
+        <target state="final">Więcej szczegółów o menu sekcji znajdziesz po kliknięciu poniżej.</target>
+      </trans-unit>
+      <trans-unit id="linkToTop.description" resname="linkToTop.description" approved="yes">
+        <source>If checked, a small  "To Top" link will be added after the Content Element, linking back to the top of the page.</source>
+        <target state="final">Jeśli ta opcja jest zaznaczona, po elemencie treści zostanie dodany niewielki odnośnik "Do góry", prowadzący z powrotem na początek strony.</target>
+      </trans-unit>
+      <trans-unit id="rte_enabled.description" resname="rte_enabled.description" approved="yes">
+        <source>If checked, the Rich Text Editor will be disabled for the "Text" and "Text &amp; Image" types (&lt;em&gt;in this Content Element only&lt;/em&gt;).</source>
+        <target state="final">Jeśli ta opcja jest zaznaczona, edytor tekstu sformatowanego zostanie wyłączony dla typów "Tekst" i "Tekst &amp; obrazy" (&lt;em&gt;tylko w tym elemencie treści&lt;/em&gt;).</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.description" resname="pi_flexform.description" approved="yes">
+        <source>Plugin Configuration</source>
+        <target state="final">Konfiguracja wtyczki</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.details" resname="pi_flexform.details" approved="yes">
+        <source>Some plugins may provide configuration options, but the actual options vary based on the plugin. Behind the scenes, these are based on FlexForms and stored as XML.</source>
+        <target state="final">Niektóre wtyczki mogą udostępniać opcje konfiguracji, ale rzeczywiste opcje zależą od wtyczki. W tle opierają się one na FlexForms i są zapisywane jako XML.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
