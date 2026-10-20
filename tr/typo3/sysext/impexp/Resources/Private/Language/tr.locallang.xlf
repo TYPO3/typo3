@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:33Z" product-name="impexp" target-language="tr">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Import / Export</source>
+        <target state="final">İçe al/Dışarı ver</target>
+      </trans-unit>
+      <trans-unit id="tableselec_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Ayar</target>
+      </trans-unit>
+      <trans-unit id="exportdata_savedFile" approved="yes">
+        <source>SAVED FILE</source>
+        <target state="final">DOSYA KAYDEDİLDİ</target>
+      </trans-unit>
+      <trans-unit id="exportdata_savedInSBytes" approved="yes">
+        <source>Saved in "%s", bytes %s</source>
+        <target state="final">"%s" ye, bytes %s kaydedildi</target>
+      </trans-unit>
+      <trans-unit id="exportdata_problemsSavingFile" approved="yes">
+        <source>Problems saving file</source>
+        <target state="final">Dosya kaydetmede hatalar</target>
+      </trans-unit>
+      <trans-unit id="exportdata_badPathS" approved="yes">
+        <source>Bad path: "%s"</source>
+        <target state="final">Hatalı yol: "%s"</target>
+      </trans-unit>
+      <trans-unit id="exportdata_advancedOptions" approved="yes">
+        <source>Advanced Options</source>
+        <target state="final">Gelişmiş Seçenekler</target>
+      </trans-unit>
+      <trans-unit id="exportdata_messages" approved="yes">
+        <source>Messages</source>
+        <target state="final">Mesajlar</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_tablesOnThisPage" approved="yes">
+        <source>Tables on this page</source>
+        <target state="final">Bu sayfadaki tablolar</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Güncelleme</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Güncelleme</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_load" approved="yes">
+        <source>Load</source>
+        <target state="final">Yükle</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_save" approved="yes">
+        <source>Save</source>
+        <target state="final">Kaydet</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_areYouSure" approved="yes">
+        <source>Are you sure?</source>
+        <target state="final">Emin misiniz?</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Sil</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_t3d_compressed" approved="yes">
+        <source>T3D file / compressed</source>
+        <target state="final">T3D dosyası / sıkıştırılmış</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_t3d" approved="yes">
+        <source>T3D file</source>
+        <target state="final">T3D dosyası</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_xml" approved="yes">
+        <source>XML</source>
+        <target state="final">XML</target>
+      </trans-unit>
+      <trans-unit id="importdata_saveToFilename" approved="yes">
+        <source>Save to filename</source>
+        <target state="final">Dosya ismi ile kaydet</target>
+      </trans-unit>
+      <trans-unit id="importdata_noteNoDecompressorAvailable" approved="yes">
+        <source>NOTE: No decompressor available for compressed files!</source>
+        <target state="final">Not: Sıkıştırılmış dosyalar için gerekli açıcı mevcut değil!</target>
+      </trans-unit>
+      <trans-unit id="importdata_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Güncelleme</target>
+      </trans-unit>
+      <trans-unit id="importdata_updateRecords" approved="yes">
+        <source>Update records</source>
+        <target state="final">Kayıtları güncelle</target>
+      </trans-unit>
+      <trans-unit id="importdata_ignorePidDifferencesGlobally" approved="yes">
+        <source>Ignore PID differences globally</source>
+        <target state="final">Global olarak PID farklılıklarını gözardı et</target>
+      </trans-unit>
+      <trans-unit id="importdata_preview" approved="yes">
+        <source>Preview</source>
+        <target state="final">Önizleme</target>
+      </trans-unit>
+      <trans-unit id="importdata_newImport" approved="yes">
+        <source>New import</source>
+        <target state="final">Yeni içeri al</target>
+      </trans-unit>
+      <trans-unit id="importdata_failureNoFileUploaded" approved="yes">
+        <source>Failure: No file uploaded - was it too big? Check system log.</source>
+        <target state="final">Hata: Dosya karşıya yüklenmedi- Dosya çok büyük olabilir. Lütfen sistem günlüklerini kontrol et.</target>
+      </trans-unit>
+      <trans-unit id="importdata_upload" approved="yes">
+        <source>Upload</source>
+        <target state="final">Yükle</target>
+      </trans-unit>
+      <trans-unit id="importdata_messages" approved="yes">
+        <source>Messages</source>
+        <target state="final">Mesajlar</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Güncelleme</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_insert" approved="yes">
+        <source>Insert</source>
+        <target state="final">Ekle</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_importAsNew" approved="yes">
+        <source>Import as new</source>
+        <target state="final">Yeni olarak içeri al</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_ignorePid" approved="yes">
+        <source>Ignore PID</source>
+        <target state="final">PID'i gözardı et</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_respectPid" approved="yes">
+        <source>Respect PID</source>
+        <target state="final">PID'i dikkate al</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_exclude" approved="yes">
+        <source>Exclude</source>
+        <target state="final">Kilitle</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_softrefsel_editable" approved="yes">
+        <source>Editable</source>
+        <target state="final">Değiştirilebilir</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_softrefsel_exclude" approved="yes">
+        <source>Exclude</source>
+        <target state="final">Kilitle</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
