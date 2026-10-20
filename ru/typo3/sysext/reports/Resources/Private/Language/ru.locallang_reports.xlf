@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_reports.xlf" date="2011-10-17T20:22:35Z" product-name="reports" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="status_ok" approved="yes">
+        <source>OK</source>
+        <target state="final">ОК</target>
+      </trans-unit>
+      <trans-unit id="status_wrongValue" approved="yes">
+        <source>Wrong value detected</source>
+        <target state="final">Обнаружено неверное значение</target>
+      </trans-unit>
+      <trans-unit id="status_info" approved="yes">
+        <source>Information</source>
+        <target state="final">Информация</target>
+      </trans-unit>
+      <trans-unit id="status_insecure" approved="yes">
+        <source>Insecure</source>
+        <target state="final">Небезопасно</target>
+      </trans-unit>
+      <trans-unit id="status_disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Отключено</target>
+      </trans-unit>
+      <trans-unit id="status_enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Включено</target>
+      </trans-unit>
+      <trans-unit id="status_enabledPermanently" approved="yes">
+        <source>Enabled permanently</source>
+        <target state="final">Постоянно включено</target>
+      </trans-unit>
+      <trans-unit id="status_enabledTemporarily" approved="yes">
+        <source>Enabled temporarily</source>
+        <target state="final">Временно включено</target>
+      </trans-unit>
+      <trans-unit id="status_empty" approved="yes">
+        <source>Empty</source>
+        <target state="final">Пусто</target>
+      </trans-unit>
+      <trans-unit id="status_none" approved="yes">
+        <source>None</source>
+        <target state="final">Нет</target>
+      </trans-unit>
+      <trans-unit id="status_connectionFailed" approved="yes">
+        <source>Connection Failed</source>
+        <target state="final">Невозможно подключиться</target>
+      </trans-unit>
+      <trans-unit id="status_checkFailed" approved="yes">
+        <source>Check Failed</source>
+        <target state="final">Проверка не удалась</target>
+      </trans-unit>
+      <trans-unit id="status_updateComplete" approved="yes">
+        <source>Update Complete</source>
+        <target state="final">Обновление завершено</target>
+      </trans-unit>
+      <trans-unit id="status_updateIncomplete" approved="yes">
+        <source>Update Incomplete</source>
+        <target state="final">Обновление не закончено</target>
+      </trans-unit>
+      <trans-unit id="status_problemNotification" approved="yes">
+        <source>One or more problems were detected with your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
+        <target state="final">В вашей системе TYPO3 обнаружены проблемы. Дополнительная информация содержится в отчете о состоянии %s%s.</target>
+      </trans-unit>
+      <trans-unit id="status_allNotification" approved="yes">
+        <source>This report contains all System Status Notifications from your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
+        <target state="final">Этот отчет содержит все уведомления о состоянии установленной у вас системы TYPO3. Посмотрите подробности в %sотчете о состоянии%s.</target>
+      </trans-unit>
+      <trans-unit id="status_typo3" approved="yes">
+        <source>TYPO3 System</source>
+        <target state="final">Система TYPO3</target>
+      </trans-unit>
+      <trans-unit id="status_system" approved="yes">
+        <source>System</source>
+        <target state="final">Система</target>
+      </trans-unit>
+      <trans-unit id="status_security" approved="yes">
+        <source>Security</source>
+        <target state="final">Безопасность</target>
+      </trans-unit>
+      <trans-unit id="status_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Настройка</target>
+      </trans-unit>
+      <trans-unit id="status_referenceIndex" approved="yes">
+        <source>Reference Index</source>
+        <target state="final">Индекс ссылок</target>
+      </trans-unit>
+      <trans-unit id="status_fal" approved="yes">
+        <source>File Abstraction Layer</source>
+        <target state="final">Слой абстрагирования файлов</target>
+      </trans-unit>
+      <trans-unit id="status_missingFiles" approved="yes">
+        <source>Files flagged as missing</source>
+        <target state="final">Файлы отмечены как отсутствующие</target>
+      </trans-unit>
+      <trans-unit id="status_missingFilesCount" approved="yes">
+        <source>%1$s files</source>
+        <target state="final">%1$s файлов</target>
+      </trans-unit>
+      <trans-unit id="status_missingFilesMessage" approved="yes">
+        <source>These files are flagged as missing. Restore the files and run the indexer to reset the missing flag.</source>
+        <target state="final">Файлы отмечены как отсутствующие. Восстановите файлы и перезапустите индексацию для сброса флага отсутствия.</target>
+      </trans-unit>
+      <trans-unit id="status_memcachedConfiguration" approved="yes">
+        <source>Memcached Configuration</source>
+        <target state="final">Настройка буферизации памяти</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedFilePermissions" approved="yes">
+        <source>Permissions of created files</source>
+        <target state="final">Разрешения для создаваемых файлов</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedFilePermissions.writable" approved="yes">
+        <source>Files created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to files by "others". A sane default is often '0660' for $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']. This can be set in the install tool.</source>
+        <target state="final">Создаваемые TYPO3 файлы настроены так, что доступны для записи всеми. В зависимости от настроек текущей системы, это может нести риск безопасности. Лучше настроить права так, чтобы запись файлов "всеми" была запрещена. Это по умолчанию задается маской "0660" для параметра $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']. Удобнее для этого воспользоваться Install tool.</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedDirectoryPermissions" approved="yes">
+        <source>Permissions of created directories</source>
+        <target state="final">Разрешения для создаваемых директорий</target>
+      </trans-unit>
+      <trans-unit id="status_CreatedDirectoryPermissions.writable" approved="yes">
+        <source>Directories created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to directories by "others". A sane default is often '2770' for $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']. This can be set in the install tool.</source>
+        <target state="final">Создаваемые TYPO3 директории настроены так, что доступны для записи всеми. В зависимости от настроек текущей системы, это может нести риск безопасности. Лучше настроить права так, чтобы запись файлов "всеми" была запрещена. Это по умолчанию задается маской "2770" для параметра $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']. Удобнее для этого воспользоваться Install tool.</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet" approved="yes">
+        <source>MySQL Database Character Set</source>
+        <target state="final">Кодировка базы данных MySQL</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_CheckFailed" approved="yes">
+        <source>Checking database character set failed, got key "%1$s" instead of "character_set_database"</source>
+        <target state="final">Проверка набора символов базы данных завершилась неудачно, вместо ключа "character_set_database" получен ключ "%1$s"</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Unsupported" approved="yes">
+        <source>Your default database uses character set "%1$s", but only "utf8", "utf8mb3" or "utf8mb4" is supported with TYPO3.</source>
+        <target state="final">Ваша база данных по умолчанию использует кодировку "%1$s", но в TYPO3 поддерживаются только "utf8", "utf8mb3" или "utf8mb4".</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Ok" approved="yes">
+        <source>Your default database uses utf-8. All good.</source>
+        <target state="final">Ваша база данных по умолчанию использует utf-8. Всё хорошо.</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Info" approved="yes">
+        <source>Your default database uses a different charset, but all tables uses utf-8. All good. But consider fixing your database collation and check the table creation settings.</source>
+        <target state="final">В вашей базе данных по умолчанию используется другая кодировка, но во всех таблицах используется utf-8. Все хорошо. Но подумайте над исправлением параметров сопоставления базы данных и проверьте настройки создания таблиц.</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_MixedCollations" approved="yes">
+        <source>Your default database is set to create tables with character set "%1$s", but contains tables or columns with different collations. Please fix these tables to avoid "illegal mix of collations" errors.</source>
+        <target state="final">Ваша база данных по умолчанию настроена на создание таблиц с набором символов "%1$s", но содержит таблицы или столбцы с различным сопоставлением. Исправьте эти таблицы во избежание ошибок "недопустимого сочетания параметров сортировки".</target>
+      </trans-unit>
+      <trans-unit id="status_encryptedConnectionStatus" approved="yes">
+        <source>Encrypted backend connection (HTTPS)</source>
+        <target state="final">Зашифрованное соединение с внутренним интерфейсом (HTTPS)</target>
+      </trans-unit>
+      <trans-unit id="status_encryptedConnectionStatus_insecure" approved="yes">
+        <source>Your backend access is not secured using HTTPS but relies on HTTP which sends all your data (including login passwords) over an insecure connection. All modern web sites should rely on HTTPS and only sites secured differently, for instance some intranet installations may use HTTP only.</source>
+        <target state="final">Доступ к внутреннему интерфейсу не защищен с помощью HTTPS, а использует HTTP, и все ваши данные (включая пароли для входа в систему) переправляются через незащищенное соединение. Все современные веб-сайты должны полагаться на HTTPS, и только сайты защищаемые другим образом, например, некоторые установки в интрасети могут использовать только лишь HTTP.</target>
+      </trans-unit>
+      <trans-unit id="status_lockSslStatus" approved="yes">
+        <source>Backend only accessible through HTTPS</source>
+        <target state="final">Внутренний интерфейс доступен только через HTTPS</target>
+      </trans-unit>
+      <trans-unit id="status_lockSslStatus_insecure" approved="yes">
+        <source><![CDATA[It is highly recommended to activate the option (<code>$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']</code>).]]></source>
+        <target state="final"><![CDATA[Настоятельно рекомендуется активировать опцию (<code>$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']</code>).]]></target>
+      </trans-unit>
+      <trans-unit id="status_trustedHostsPattern" approved="yes">
+        <source>Trusted Hosts Pattern</source>
+        <target state="final">Шаблон надежных узлов</target>
+      </trans-unit>
+      <trans-unit id="status_encryptionKey" approved="yes">
+        <source>Encryption Key</source>
+        <target state="final">Ключ шифрования</target>
+      </trans-unit>
+      <trans-unit id="status_fileDenyPattern" approved="yes">
+        <source>File Deny Pattern</source>
+        <target state="final">Шаблон запрещенных файлов</target>
+      </trans-unit>
+      <trans-unit id="status_htaccessUploadProtection" approved="yes">
+        <source>.htaccess Upload Protection</source>
+        <target state="final">Защита загрузки .htaccess</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler" approved="yes">
+        <source>Exception Handler / Error Reporting</source>
+        <target state="final">Обработчик исключений / Отчет об ошибках</target>
+      </trans-unit>
+      <trans-unit id="status_exportedFiles" approved="yes">
+        <source>XML/T3D export files</source>
+        <target state="final">XML/T3D файлы экспорта</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler_warningMessage" approved="yes">
+        <source>Display Errors is set to 1 - errors will be displayed with the DebugExceptionHandler including stack traces.</source>
+        <target state="final">Отображение ошибок установлено в 1 - ошибки будут выводиться в DebugExceptionHandler, включая записи стека.</target>
+      </trans-unit>
+      <trans-unit id="status_exceptionHandler_errorMessage" approved="yes">
+        <source>Debug Exception Handler enabled in Production Context - will show full error messages including stack traces.</source>
+        <target state="final">Обработчик исключений отладки включен в производственном контексте - выводятся полные сообщения об ошибках, включая трассировки стека.</target>
+      </trans-unit>
+      <trans-unit id="status_exportedFiles_warningMessage" approved="yes">
+        <source>The following exported files were found:</source>
+        <target state="final">Найдены следующие экспортированные файлы:</target>
+      </trans-unit>
+      <trans-unit id="status_exportedFiles_warningRecommendation" approved="yes">
+        <source>It is recommended to delete exported files to avoid possible disclosure of exported data to backend users with lower/different access rights than user(s) who originally created the export(s).</source>
+        <target state="final">Рекомендуется удалить экспортированные файлы, чтобы избежать возможного раскрытия экспортируемых данных внутренним пользователям с более низким/отличными правами доступа от пользователя(ей), создавшим экспорт(ы).</target>
+      </trans-unit>
+      <trans-unit id="status_installTool" approved="yes">
+        <source>Install Tool</source>
+        <target state="final">Инструментарий установки</target>
+      </trans-unit>
+      <trans-unit id="status_phpModules" approved="yes">
+        <source>PHP Modules</source>
+        <target state="final">Модули PHP</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesMissing" approved="yes">
+        <source>One or more modules are missing.</source>
+        <target state="final">Один или несколько модулей с ошибкой.</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesList" approved="yes">
+        <source>The following PHP module(s) is/are missing: %s.</source>
+        <target state="final">Ошибка в следующих модулях(е) PHP: %s.</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesInfo" approved="yes">
+        <source>You need to install and enable these modules to let TYPO3 function correctly.</source>
+        <target state="final">Для корректного функционирования TYPO3 необходимо установить указанные модули.</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesGroup" approved="yes">
+        <source>one of: %s</source>
+        <target state="final">один из: %s</target>
+      </trans-unit>
+      <trans-unit id="status_phpModulesPresent" approved="yes">
+        <source>All required modules are installed.</source>
+        <target state="final">Установлены все требуемые модули.</target>
+      </trans-unit>
+      <trans-unit id="status_installEnabledTemporarily" approved="yes">
+        <source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
+        <target state="final">Инструмент установки временно включен. Удалите файл "%s" по окончании настройки TYPO3. Если инструментом установки не будут пользоваться, то он будет отключен автоматически через %s минут.</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskTitle" approved="yes">
+        <source>System Status Update</source>
+        <target state="final">Обновление статуса системы</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskDescription" approved="yes">
+        <source>Runs a system status check and sends notifications if problems have been found.</source>
+        <target state="final">Запуск проверки состояния системы и отправка уведомлений о найденных проблемах.</target>
+      </trans-unit>
+      <trans-unit id="status_updateAdditionalInformation" approved="yes">
+        <source>Send notification to: %s</source>
+        <target state="final">Отправить уведомление для: %s</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmails" approved="yes">
+        <source>Notification Email Addresses (one per line)</source>
+        <target state="final">E-mail для уведомлений (один на строчку)</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationEmails_invalid" approved="yes">
+        <source>Empty or invalid notification email addresses.</source>
+        <target state="final">Пустой или неверный адрес e-mail уведомления.</target>
+      </trans-unit>
+      <trans-unit id="status_updateTaskField_notificationAll" approved="yes">
+        <source>Always send notification mail (not only on errors or warnings)</source>
+        <target state="final">Всегда отправлять уведомления по почте (не только об ошибках или предупреждениях)</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_subject" approved="yes">
+        <source>System Status Notification for site %s</source>
+        <target state="final">Система уведомлений о состоянии для сайта %s</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_site" approved="yes">
+        <source>Site</source>
+        <target state="final">Сайт</target>
+      </trans-unit>
+      <trans-unit id="status_updateTask_email_issues" approved="yes">
+        <source>Issues</source>
+        <target state="final">Замечания</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsage" approved="yes">
+        <source>XCLASS used</source>
+        <target state="final">Используется XCLASS</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound" approved="yes">
+        <source>Your system registers XCLASS</source>
+        <target state="final">Ваша система регистрирует XCLASS</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound_message" approved="yes">
+        <source>XCLASS can overwrite methods or classes of the core or other extensions. This is not necessarily a bad thing, but those XCLASS might break during extension or core upgrades. You should keep an eye on extension compatibility and make sure the intended functionality is still given after updates.</source>
+        <target state="final">XCLASS может переназначить методы или классы ядра или других расширений. Это необходимость, с которой приходится мириться, при этом XCLASS может прекратить работать после обновления расширения или ядра. Необходимо помнить о совместимых расширениях и убеждаться в функциональности сайта после обновлений.</target>
+      </trans-unit>
+      <trans-unit id="status_xclassUsageFound_message_detail" approved="yes">
+        <source>%2$s registers an XCLASS of %1$s</source>
+        <target state="final">%2$s регистрирует XCLASS для %1$s</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing" approved="yes">
+        <source>Image Processing</source>
+        <target state="final">Обработка изображений</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp" approved="yes">
+        <source>WebP support and availability</source>
+        <target state="final">Поддержка и доступность WebP</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_disabled" approved="yes">
+        <source>Image processing via ImageMagick/GraphicsMagick is disabled</source>
+        <target state="final">Обработка изображения через ImageMagick/GraphicsMagick отключена</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp_not_configured" approved="yes">
+        <source>WebP image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext]. No WebP image files will be generated.</source>
+        <target state="final">Создание WebP изображений не включено в $TYPO3_CONF_VARS[GFX][imagefile_ext]. Файлы изображений не будут сгенерированы.</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp_available" approved="yes">
+        <source>WebP image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is supported by ImageMagick/GraphicsMagick.</source>
+        <target state="final">Создание WebP изображений не включено в $TYPO3_CONF_VARS[GFX][imagefile_ext], но поддерживается ImageMagick/GraphicsMagick.</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp_not_available" approved="yes">
+        <source>WebP image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is NOT supported by ImageMagick/GraphicsMagick. Please update your system environment or disable webp support in TYPO3 Configuration.</source>
+        <target state="final">Создание веб-изображений включено в $TYPO3_CONF_VARS[GFX][imagefile_ext], но оно не поддерживается ImageMagick/GraphicsMagick. Пожалуйста, обновите системное окружение или отключите поддержку webp в Конфигурации TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp_available_and_configured" approved="yes">
+        <source>WebP image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext] and supported by ImageMagick/GraphicsMagick — Everything is configured correctly.</source>
+        <target state="final">WebP генерация изображений включена в $TYPO3_CONF_VARS[GFX][imagefile_ext] и поддерживается ImageMagick/GraphicsMagick — все настроено правильно.</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif" approved="yes">
+        <source>AVIF support and availability</source>
+        <target state="final">Поддержка и доступность AVIF</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif_not_configured" approved="yes">
+        <source>AVIF image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext]. No AVIF image files will be generated.</source>
+        <target state="final">Создание AVIF изображений не включено в $TYPO3_CONF_VARS[GFX][imagefile_ext]. AVIF файлы изображений не будут сгенерированы.</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif_available" approved="yes">
+        <source>AVIF image generation is not enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is supported by ImageMagick/GraphicsMagick.</source>
+        <target state="final">AVIF генерация изображений не включена в $TYPO3_CONF_VARS[GFX][imagefile_ext], но поддерживается ImageMagick/GraphicsMagick.</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif_not_available" approved="yes">
+        <source>AVIF image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext], but it is NOT supported by ImageMagick/GraphicsMagick. Please update your system environment or disable AVIF support in TYPO3 Configuration.</source>
+        <target state="final">AVIF генерация изображений включена в $TYPO3_CONF_VARS[GFX][imagefile_ext], но не поддерживается ImageMagick/GraphicsMagick. Пожалуйста, обновите свою системную среду или отключите поддержку AVIF в Конфигурации TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_avif_available_and_configured" approved="yes">
+        <source>AVIF image generation is enabled in $TYPO3_CONF_VARS[GFX][imagefile_ext] and supported by ImageMagick/GraphicsMagick — Everything is configured correctly.</source>
+        <target state="final">AVIF генерация изображений включена в $TYPO3_CONF_VARS[GFX][imagefile_ext] и поддерживается ImageMagick/GraphicsMagick — Все настроено правильно.</target>
+      </trans-unit>
+      <trans-unit id="status_problem_notification_cli_disclaimer" approved="yes">
+        <source>This report was generated from the Command Line Interface (CLI) context. The PHP settings and modules might differ from the ones defined for the webserver process, for example when using a different php.ini file. In case of problems, always compare the report with the one generated via the backend report module.</source>
+        <target state="final">Этот отчет был создан в контексте интерфейса командной строки (CLI). Настройки и модули PHP могут отличаться от тех, что заданы для процесса веб-сервера, например при использовании другого файла php.ini. В случае возникновения проблем всегда сравнивайте отчет с отчетом, созданным с помощью модуля отчетов внутреннего интерфейса.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
