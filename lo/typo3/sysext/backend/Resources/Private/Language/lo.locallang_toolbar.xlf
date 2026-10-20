@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_toolbar.xlf" date="2024-06-17T15:00:00Z" product-name="lang" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="toolbarItems.clearCache" approved="yes">
+        <source>Clear cache</source>
+        <target state="final">ລ້າງແຄັດ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.help" approved="yes">
+        <source>Help</source>
+        <target state="final">ຊ່ວຍເຫຼືອ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sidebarCollapse" approved="yes">
+        <source>Collapse sidebar</source>
+        <target state="final">ພັບແຖບຂ້າງ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sidebarExpand" approved="yes">
+        <source>Expand sidebar</source>
+        <target state="final">ຂະຫຍາຍແຖບຂ້າງ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.search" approved="yes">
+        <source>Search</source>
+        <target state="final">ຄົ້ນຫາ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.searchbarOpenClose" approved="yes">
+        <source>Open/Close searchbar</source>
+        <target state="final">ເປີດ/ປິດ ແຖບຄົ້ນຫາ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo" approved="yes">
+        <source>System Information</source>
+        <target state="final">ຂໍ້ມູນລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.intro.text" approved="yes">
+        <source>This is a short system overview. For advanced information please head to: </source>
+        <target state="final">ນີ້ແມ່ນພາບລວມຂອງລະບົບແບບຫຍໍ້. ສຳລັບຂໍ້ມູນຂັ້ນສູງ ໃຫ້ໄປທີ່: </target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.intro.link" approved="yes">
+        <source>Environment Module</source>
+        <target state="final">ໂມດູນສະພາບແວດລ້ອມ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.allgood" xml:space="preserve" approved="yes">
+        <source>Your system is fully operational.
+Have a nice day.</source>
+      <target state="final">ລະບົບຂອງທ່ານພ້ອມໃຊ້ງານຢ່າງສົມບູນ.
+ຂໍໃຫ້ເປັນມື້ທີ່ດີ.</target></trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.applicationcontext" approved="yes">
+        <source>Application Context</source>
+        <target state="final">ບໍລິບົດຂອງແອັບພລິເຄຊັນ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.installationMethod" approved="yes">
+        <source>Installation Method</source>
+        <target state="final">ວິທີການຕິດຕັ້ງ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.installationMethod.classic" approved="yes">
+        <source>Classic mode</source>
+        <target state="final">ໂໝດຄລາສສິກ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.installationMethod.composer" approved="yes">
+        <source>Composer mode</source>
+        <target state="final">ໂໝດ Composer</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.database" approved="yes">
+        <source>Database</source>
+        <target state="final">ຖານຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.database.offline" approved="yes">
+        <source>Offline</source>
+        <target state="final">ອອຟລາຍ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.debugger" approved="yes">
+        <source>Debugger</source>
+        <target state="final">ເຄື່ອງມືກວດສອບຂໍ້ຜິດພາດ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.gitrevision" approved="yes">
+        <source>GIT Revision</source>
+        <target state="final">ລຸ້ນການປັບປຸງ GIT</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.operatingsystem" approved="yes">
+        <source>Operating System</source>
+        <target state="final">ລະບົບປະຕິບັດການ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.phpversion" approved="yes">
+        <source>PHP Version</source>
+        <target state="final">ເວີຊັນ PHP</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.typo3-version" approved="yes">
+        <source>TYPO3 Version</source>
+        <target state="final">ເວີຊັນ TYPO3</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.webserver" approved="yes">
+        <source>Web Server</source>
+        <target state="final">ເວັບເຊີບເວີ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.toolbarOpenClose" approved="yes">
+        <source>Open/Close toolbar</source>
+        <target state="final">ເປີດ/ປິດ ແຖບເຄື່ອງມື</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.account.switchToUserMode.tooltip" approved="yes">
+        <source>Switch to User</source>
+        <target state="final">ສະຫຼັບໄປໃຊ້ຜູ້ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.account.switchToUserMode.account.prefix" approved="yes">
+        <source>SU</source>
+        <target state="final">SU</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.recentlySwitchedUsers" approved="yes">
+        <source>Recently switched to</source>
+        <target state="final">ຜູ້ໃຊ້ທີ່ສະຫຼັບໄປຫຼ້າສຸດ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.recentlySwitchedUsers.su.tooltip" approved="yes">
+        <source>Switch to user %s</source>
+        <target state="final">ສະຫຼັບໄປໃຊ້ຜູ້ໃຊ້ %s</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.btn.exitSwitchUser" approved="yes">
+        <source>Exit switch user mode</source>
+        <target state="final">ອອກຈາກໂໝດສະຫຼັບຜູ້ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.user.btn.logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">ອອກຈາກລະບົບ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
