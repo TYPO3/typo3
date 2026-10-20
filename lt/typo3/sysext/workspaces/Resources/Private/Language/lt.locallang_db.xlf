@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815019" source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_db.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="sys_workspace" resname="sys_workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Darbo sritis</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.custom_stages" resname="sys_workspace.custom_stages" approved="yes">
+        <source>Custom stages</source>
+        <target state="final">Pasirinktiniai etapai</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.responsible_persons" resname="sys_workspace_stage.responsible_persons" approved="yes">
+        <source>Responsible persons</source>
+        <target state="final">Atsakingi asmenys</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.default_mailcomment" resname="sys_workspace_stage.default_mailcomment" approved="yes">
+        <source>Default mail comment</source>
+        <target state="final">Numatytasis el. laiško komentaras</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.parentid" resname="sys_workspace_stage.parentid" approved="yes">
+        <source>UID of parent record</source>
+        <target state="final">Tėvinio įrašo UID</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage" resname="sys_workspace_stage" approved="yes">
+        <source>Workspace Stage</source>
+        <target state="final">Darbo srities etapas</target>
+      </trans-unit>
+      <trans-unit id="tabs.notification_settings" resname="tabs.notification_settings" approved="yes">
+        <source>Notification settings</source>
+        <target state="final">Pranešimų nustatymai</target>
+      </trans-unit>
+      <trans-unit id="tabs.general" resname="tabs.general" approved="yes">
+        <source>General</source>
+        <target state="final">Bendrieji</target>
+      </trans-unit>
+      <trans-unit id="tabs.internal_stages" resname="tabs.internal_stages" approved="yes">
+        <source>Internal Stages</source>
+        <target state="final">Vidiniai etapai</target>
+      </trans-unit>
+      <trans-unit id="tabs.custom_stages" resname="tabs.custom_stages" approved="yes">
+        <source>Custom Stages</source>
+        <target state="final">Pasirinktiniai etapai</target>
+      </trans-unit>
+      <trans-unit id="tabs.publish_access" resname="tabs.publish_access" approved="yes">
+        <source>Publishing / Access</source>
+        <target state="final">Publikavimas / Prieiga</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.notification_defaults" resname="sys_workspace_stage.notification_defaults" approved="yes">
+        <source>Default notification recipients</source>
+        <target state="final">Numatytieji pranešimų gavėjai</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.allow_notificaton_settings" resname="sys_workspace_stage.allow_notificaton_settings" approved="yes">
+        <source>Allow notification settings during stage change</source>
+        <target state="final">Leisti keisti pranešimų nustatymus keičiant etapą</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.edit" resname="sys_workspace.palette.stage.edit" approved="yes">
+        <source>Stage "editing"</source>
+        <target state="final">Etapas „redagavimas“</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.publish" resname="sys_workspace.palette.stage.publish" approved="yes">
+        <source>Stage "ready to publish"</source>
+        <target state="final">Etapas „paruošta publikavimui“</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.execute" resname="sys_workspace.palette.stage.execute" approved="yes">
+        <source>Stage "publishing execute"</source>
+        <target state="final">Etapas „publikavimo vykdymas“</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog" resname="sys_workspace.settingsDialog" approved="yes">
+        <source>Notification dialog settings</source>
+        <target state="final">Pranešimų dialogo nustatymai</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog.showDialog" resname="sys_workspace.settingsDialog.showDialog" approved="yes">
+        <source>Show Dialog</source>
+        <target state="final">Rodyti dialogą</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog.changeablePreselection" resname="sys_workspace.settingsDialog.changeablePreselection" approved="yes">
+        <source>Allow to change pre-selection of recipients</source>
+        <target state="final">Leisti keisti iš anksto pasirinktus gavėjus</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection" resname="sys_workspace.preselection" approved="yes">
+        <source>Pre-select recipients</source>
+        <target state="final">Iš anksto pasirinkti gavėjus</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.owners" resname="sys_workspace.preselection.owners" approved="yes">
+        <source>Owners</source>
+        <target state="final">Savininkai</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.members" resname="sys_workspace.preselection.members" approved="yes">
+        <source>Members</source>
+        <target state="final">Nariai</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.responsiblePersons" resname="sys_workspace.preselection.responsiblePersons" approved="yes">
+        <source>Responsible Persons</source>
+        <target state="final">Atsakingi asmenys</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.adminusers" resname="sys_workspace.adminusers" approved="yes">
+        <source>Owners</source>
+        <target state="final">Savininkai</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.members" resname="sys_workspace.members" approved="yes">
+        <source>Members</source>
+        <target state="final">Nariai</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_time" resname="sys_workspace.publish_time" approved="yes">
+        <source>Auto-publish changes on (requires scheduler task)</source>
+        <target state="final">Automatiškai publikuoti pakeitimus (reikalinga planuoklio užduotis)</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.unpublish_time" resname="sys_workspace.unpublish_time" approved="yes">
+        <source>Un-Publish changes on (requires scheduler task)</source>
+        <target state="final">Atšaukti pakeitimų publikavimą (reikalinga planuoklio užduotis)</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.live_edit" resname="sys_workspace.live_edit" approved="yes">
+        <source>Allow "live" editing of records from tables without versioning</source>
+        <target state="final">Leisti „live“ įrašų redagavimą iš lentelių be versijavimo</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access" resname="sys_workspace.publish_access" approved="yes">
+        <source>Publish access</source>
+        <target state="final">Publikavimo prieiga</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access.1" resname="sys_workspace.publish_access.1" approved="yes">
+        <source>Publish only content in publish stage</source>
+        <target state="final">Publikuoti tik turinį, esantį publikavimo etape</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access.2" resname="sys_workspace.publish_access.2" approved="yes">
+        <source>Restrict publishing to workspace owners</source>
+        <target state="final">Apriboti publikavimą tik darbo srities savininkams</target>
+      </trans-unit>
+      <trans-unit id="tabs.users" resname="tabs.users" approved="yes">
+        <source>Users</source>
+        <target state="final">Naudotojai</target>
+      </trans-unit>
+      <trans-unit id="tabs.mountpoints" resname="tabs.mountpoints" approved="yes">
+        <source>Mountpoints</source>
+        <target state="final">Prijungimo taškai</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
