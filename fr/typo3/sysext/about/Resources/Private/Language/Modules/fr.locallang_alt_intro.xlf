@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814848" source-language="en" datatype="plaintext" original="EXT:about/Resources/Private/Language/Modules/locallang_alt_intro.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="introtext" resname="introtext" approved="yes">
+        <source>Web Content Management System</source>
+        <target state="final">Système de Gestion de Contenu Web</target>
+      </trans-unit>
+      <trans-unit id="introtext2" resname="introtext2" approved="yes">
+        <source>This is a brief description of the available modules.</source>
+        <target state="final">Voici une brève description des modules disponibles :</target>
+      </trans-unit>
+      <trans-unit id="endText" resname="endText" approved="yes">
+        <source>Features may vary depending on your website and permissions</source>
+        <target state="final">Les fonctions peuvent varier selon votre site web et selon vos droits d'accès.</target>
+      </trans-unit>
+      <trans-unit id="userInfo" resname="userInfo" approved="yes">
+        <source>You're logged in as user</source>
+        <target state="final">Vous êtes connecté en tant qu'utilisat(eur/rice)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
