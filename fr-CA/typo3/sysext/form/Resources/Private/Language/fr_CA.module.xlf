@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/module.xlf" date="2026-11-10T13:37:37Z" product-name="form" target-language="fr-CA">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Build custom forms</source>
+        <target state="final">Construire des formulaires personnalisés</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>This module ships a flexible and user-friendly form editor. It allows you to build and create versatile forms for your frontend. Your forms can easily be added to any page by using the content element "Form". Within this element, finishers can be overridden.</source>
+        <target state="final">Ce module fournit un éditeur de formulaire flexible et convivial. Il vous permet de construire et de créer des formulaires polyvalents pour votre frontend. Vos formulaires peuvent facilement être ajoutés à n’importe quelle page en utilisant l’élément de contenu « Formulaire ». Dans cet élément, les actions après soumission peuvent être surchargées.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Forms</source>
+        <target state="final">Formulaires</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
