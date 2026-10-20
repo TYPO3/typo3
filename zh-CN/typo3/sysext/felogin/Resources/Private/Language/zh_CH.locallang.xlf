@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814821" source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="zh-CN">
+    <header/>
+    <body>
+      <trans-unit id="ll_welcome_header" resname="ll_welcome_header" approved="yes">
+        <source>User login</source>
+        <target state="final">使用者登入</target>
+      </trans-unit>
+      <trans-unit id="ll_logout_header" resname="ll_logout_header" approved="yes">
+        <source>You have logged out.</source>
+        <target state="final">你已經登出.</target>
+      </trans-unit>
+      <trans-unit id="ll_logout_message" resname="ll_logout_message" approved="yes">
+        <source>You just logged out from your user session on this website. You can login again or as another user by the form below.</source>
+        <target state="final">你剛剛出登出了這個網站. 你可以用下面的表格再登入或以另一個使用者名稱登入.</target>
+      </trans-unit>
+      <trans-unit id="ll_error_header" resname="ll_error_header" approved="yes">
+        <source>Login failure</source>
+        <target state="final">登入失敗</target>
+      </trans-unit>
+      <trans-unit id="ll_error_message" resname="ll_error_message" xml:space="preserve" approved="yes">
+				<source>An error occurred during login. Most likely you didn't enter the username or password correctly.
+Be certain that you enter them precisely as they are, including upper/lower case.
+Another possibility is that cookies might be disabled in your web browser.</source>
+			<target state="final">登入期間發生錯誤. 很有可能你沒有正確地輸入使用者名稱或密碼.
+要肯定你準確地輸入它們, 包括大/小階.
+另一個可能是你的瀏覽器的cookies功能關閉了.</target></trans-unit>
+      <trans-unit id="ll_success_header" resname="ll_success_header" approved="yes">
+        <source>Login successful</source>
+        <target state="final">登入成功</target>
+      </trans-unit>
+      <trans-unit id="ll_success_message" resname="ll_success_message" approved="yes">
+        <source>You are now logged in as '###USER###'</source>
+        <target state="final">你現在登入為'###USER###'</target>
+      </trans-unit>
+      <trans-unit id="ll_status_header" resname="ll_status_header" approved="yes">
+        <source>Current status</source>
+        <target state="final">目前狀況</target>
+      </trans-unit>
+      <trans-unit id="cookie_warning" resname="cookie_warning" approved="yes">
+        <source>Warning: There is a possibility that cookies are not enabled in your web browser! If your login disappears on your next click that is the case and you should enable cookies (or accept cookies from this website) immediately!</source>
+        <target state="final">警告: 有可能你的瀏覽器的cookies功能沒有啟動! 假如你的登入在下一個點擊時不見了, 這是cookies功能沒有啟動的情況, 你應該立即啟動cookies功能 (或接受這個網站的cookies)!</target>
+      </trans-unit>
+      <trans-unit id="login" resname="login" approved="yes">
+        <source>Login</source>
+        <target state="final">登入</target>
+      </trans-unit>
+      <trans-unit id="logout" resname="logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">登出</target>
+      </trans-unit>
+      <trans-unit id="send_password" resname="send_password" approved="yes">
+        <source>Send password</source>
+        <target state="final">傳送密碼</target>
+      </trans-unit>
+      <trans-unit id="reset_password" resname="reset_password" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">重設密碼</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_header" resname="ll_change_password_header" approved="yes">
+        <source>Change your password</source>
+        <target state="final">更改你的密碼</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_message" resname="ll_change_password_message" approved="yes">
+        <source>Please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">請輸入你的密碼兩次. 密碼需要最少%s個字元的長度.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_notequal_message" resname="ll_change_password_notequal_message" approved="yes">
+        <source>The passwords are not equal, please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">密碼不相同. 請輸入你的新密碼兩次. 密碼需要%s字元的長度.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_tooshort_message" resname="ll_change_password_tooshort_message" approved="yes">
+        <source>The password length is too short. Please enter your new password twice. Password needs a minimum length of %s chars.</source>
+        <target state="final">密碼長度太短. 請輸入你的新密碼兩次. 密碼需要%s字元的長度.</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_done_message" resname="ll_change_password_done_message" approved="yes">
+        <source>Your password has been saved. You can now login with your new password.</source>
+        <target state="final">你的密碼已經儲存. 你現在可以用你的新密碼登入.</target>
+      </trans-unit>
+      <trans-unit id="change_password" resname="change_password" approved="yes">
+        <source>Change your password</source>
+        <target state="final">更改你的密碼</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label1" resname="newpassword_label1" approved="yes">
+        <source>Enter new password</source>
+        <target state="final">輸入新密碼</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label2" resname="newpassword_label2" approved="yes">
+        <source>Repeat new password</source>
+        <target state="final">重覆新密碼</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_header" resname="ll_forgot_header" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">忘記了你的密碼?</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_email_password" resname="ll_forgot_email_password" xml:space="preserve" approved="yes">
+				<source>Your password
+Hi %s
+
+Your username is "%s"
+Your password is "%s"</source>
+			<target state="final">你的密碼
+%s你好
+
+你的使用者名稱是"%s"
+你的密碼是"%s"</target></trans-unit>
+      <trans-unit id="ll_forgot_email_nopassword" resname="ll_forgot_email_nopassword" xml:space="preserve" approved="yes">
+				<source>Your password
+Hi %s
+
+We couldn't find a username for this email address and so cannot send the password to you. Probably you misspelled the email address (upper/lower case makes a difference) or maybe you even didn't register yet?</source>
+			<target state="final">你的密碼
+%s你好
+
+我們找不到使用這個電郵的使用者名稱, 因此我們不能發送密碼給你. 也許你輸入錯了電郵地址 (大/小階是有分別的) 或是你甚至還未曾註冊一個帳戶?</target></trans-unit>
+      <trans-unit id="ll_forgot_validate_reset_password" resname="ll_forgot_validate_reset_password" xml:space="preserve" approved="yes">
+				<source>Your new password
+Dear %s,
+
+This email was sent in response to your request to reset your password. Please click on the link below.
+%s
+
+For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.</source>
+			<target state="final">你的新密碼
+%s你好
+
+這個電郵是回應你要求重設密碼而發送給你的. 請點擊下面的連結
+%s
+為了安全的原因, 這條連結的有效期只會直至%s. 假如你在此限期前不到訪這條連結, 你需要再次進行密碼重設步驟.</target></trans-unit>
+      <trans-unit id="ll_forgot_message" resname="ll_forgot_message" approved="yes">
+        <source>Please enter the email address by which you registered your user account. Then press "Send password" and your password will immediately be emailed to you. Make sure to spell your email address correctly.</source>
+        <target state="final">請輸入你用以註冊帳戶的電郵地址. 然後按"發送密碼", 你的密碼會立即以電郵發送給你. 請肯定你輸入的電郵地址正確.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_message_emailSent" resname="ll_forgot_message_emailSent" approved="yes">
+        <source>Your password has now been sent to the email address %s</source>
+        <target state="final">你的密碼現在已經發送到你的電郵地址%s</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_reset_message" resname="ll_forgot_reset_message" approved="yes">
+        <source>Please enter your username or email address. Instructions for resetting the password will be immediately emailed to you.</source>
+        <target state="final">請輸入你的使用者名稱或電郵地址. 重設密碼的指示會立即以電郵發送給你.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_reset_message_emailSent" resname="ll_forgot_reset_message_emailSent" approved="yes">
+        <source>An email has been sent to the address stored in your account and contains a link to reset your password. If you do not receive an email, your account or email address was not found.</source>
+        <target state="final">電郵已經發送至你帳戶中儲存的電郵地址, 並且包括一條重設你的密碼的連結. 假如你沒有收到電郵, 我們找不到你的帳戶或電郵地址.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_header_backToLogin" resname="ll_forgot_header_backToLogin" approved="yes">
+        <source>Return to login form</source>
+        <target state="final">回到登入表格</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
