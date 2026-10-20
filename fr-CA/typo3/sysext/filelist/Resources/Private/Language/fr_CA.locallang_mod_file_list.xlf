@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814869" source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="fr-CA">
+    <header/>
+    <body>
+      <trans-unit id="bigControlPanel" resname="bigControlPanel" approved="yes">
+        <source>Extended view</source>
+        <target state="final">Vue avancée</target>
+      </trans-unit>
+      <trans-unit id="clipBoard" resname="clipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">Afficher le presse-papiers</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" resname="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">Coller le contenu du presse-papiers</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" resname="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted into this folder</source>
+        <target state="final">Coller dans : le contenu du presse-papiers est inséré dans ce dossier</target>
+      </trans-unit>
+      <trans-unit id="clip_markRecords" resname="clip_markRecords" approved="yes">
+        <source>Mark All/Mark none</source>
+        <target state="final">Sélectionner tout/rien</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" resname="clip_selectMarked" approved="yes">
+        <source>Transfer the selection of files to clipboard</source>
+        <target state="final">Transférer les fichiers sélectionnés dans le presse-papiers</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" resname="clip_deleteMarked" approved="yes">
+        <source>Delete marked</source>
+        <target state="final">Supprimer la sélection</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarkedWarning" resname="clip_deleteMarkedWarning" approved="yes">
+        <source>Are you sure you want to delete all marked files from this folder?</source>
+        <target state="final">Êtes-vous sûr de vouloir supprimer tous les fichiers sélectionnés de ce dossier?</target>
+      </trans-unit>
+      <trans-unit id="displayThumbs" resname="displayThumbs" approved="yes">
+        <source>Display thumbnails</source>
+        <target state="final">Afficher les miniatures</target>
+      </trans-unit>
+      <trans-unit id="c_file" resname="c_file" approved="yes">
+        <source>File Name</source>
+        <target state="final">Nom du fichier</target>
+      </trans-unit>
+      <trans-unit id="c_filepath" resname="c_filepath" approved="yes">
+        <source>File Path</source>
+        <target state="final">Chemin du fichier</target>
+      </trans-unit>
+      <trans-unit id="c_size" resname="c_size" approved="yes">
+        <source>Size</source>
+        <target state="final">Taille</target>
+      </trans-unit>
+      <trans-unit id="c_fileext" resname="c_fileext" approved="yes">
+        <source>Type</source>
+        <target state="final">Type</target>
+      </trans-unit>
+      <trans-unit id="c_tstamp" resname="c_tstamp" approved="yes">
+        <source>Last Modified</source>
+        <target state="final">Date</target>
+      </trans-unit>
+      <trans-unit id="c_rw" resname="c_rw" approved="yes">
+        <source>RW</source>
+        <target state="final">RW</target>
+      </trans-unit>
+      <trans-unit id="c__REF_" resname="c__REF_" approved="yes">
+        <source>Ref</source>
+        <target state="final">Réf.</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files" approved="yes">
+        <source>files</source>
+        <target state="final">fichiers</target>
+      </trans-unit>
+      <trans-unit id="temp" resname="temp" approved="yes">
+        <source>Temporary files</source>
+        <target state="final">Fichiers temporaires</target>
+      </trans-unit>
+      <trans-unit id="role_folder_temporary" resname="role_folder_temporary" approved="yes">
+        <source>Temporary files</source>
+        <target state="final">Fichiers temporaires</target>
+      </trans-unit>
+      <trans-unit id="role_folder_recycler" resname="role_folder_recycler" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Corbeille</target>
+      </trans-unit>
+      <trans-unit id="read" resname="read" approved="yes">
+        <source>R</source>
+        <target state="final">R</target>
+      </trans-unit>
+      <trans-unit id="recycler" resname="recycler" approved="yes">
+        <source>Recycler</source>
+        <target state="final">Corbeille</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Listing of files in the directory</source>
+        <target state="final">Liste des fichiers du répertoire</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>This is the file administration system in TYPO3. It allows you to access the file mounts of your login. Through this module you can upload, copy, move an delete files on the server.</source>
+        <target state="final">C'est le système d'administration des fichiers de TYPO3. Il vous permet d'accéder aux points de montage auxquels vous avez droit. Avec ce module, vous pouvez déposer, copier, déplacer et supprimer des fichiers sur le serveur.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Filelist</source>
+        <target state="final">Liste des fichiers</target>
+      </trans-unit>
+      <trans-unit id="write" resname="write" approved="yes">
+        <source>W</source>
+        <target state="final">W</target>
+      </trans-unit>
+      <trans-unit id="paramError" resname="paramError" approved="yes">
+        <source>Parameter Error</source>
+        <target state="final">Erreur de paramètre</target>
+      </trans-unit>
+      <trans-unit id="targetNoDir" resname="targetNoDir" approved="yes">
+        <source>Target was not a directory!</source>
+        <target state="final">La cible n'est pas un répertoire !</target>
+      </trans-unit>
+      <trans-unit id="localDriverFlexform_basePath" resname="localDriverFlexform_basePath" approved="yes">
+        <source>Base path</source>
+        <target state="final">Chemin de base</target>
+      </trans-unit>
+      <trans-unit id="localDriverFlexform_basePath_placeholder" resname="localDriverFlexform_basePath_placeholder" approved="yes">
+        <source>Add storage path here. For example: myPath/folder/</source>
+        <target state="final">Ajouter un chemin de stockage ici. Par exemple: monchemin/dossier/</target>
+      </trans-unit>
+      <trans-unit id="localDriverFlexform_pathType" resname="localDriverFlexform_pathType" approved="yes">
+        <source>Path type</source>
+        <target state="final">Type de chemin</target>
+      </trans-unit>
+      <trans-unit id="localDriverFlexform_pathType_relative" resname="localDriverFlexform_pathType_relative" approved="yes">
+        <source>relative</source>
+        <target state="final">relatif</target>
+      </trans-unit>
+      <trans-unit id="localDriverFlexform_pathType_absolute" resname="localDriverFlexform_pathType_absolute" approved="yes">
+        <source>absolute</source>
+        <target state="final">absolu</target>
+      </trans-unit>
+      <trans-unit id="localDriverFlexform_caseSensitive" resname="localDriverFlexform_caseSensitive" approved="yes">
+        <source>Uses case sensitive identifiers</source>
+        <target state="final">Utilise des identifiants sensibles à la casse</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableTitle" resname="storageNotBrowsableTitle" approved="yes">
+        <source>Access denied.</source>
+        <target state="final">Accès refusé.</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableMessage" resname="storageNotBrowsableMessage" approved="yes">
+        <source>You are trying to access a folder in a storage that is not browsable.</source>
+        <target state="final">Vous essayez d'accéder à un dossier dans un espace de stockage non accessible.</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsTitle" resname="missingFolderPermissionsTitle" approved="yes">
+        <source>Missing folder permissions</source>
+        <target state="final">Autorisations de dossier manquantes</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsMessage" resname="missingFolderPermissionsMessage" approved="yes">
+        <source>You have no access to the folder "%s".</source>
+        <target state="final">Vous n'avez pas d'accès à ce dossier "%s".</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundTitle" resname="folderNotFoundTitle" approved="yes">
+        <source>Folder not found.</source>
+        <target state="final">Dossier non trouvé.</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundMessage" resname="folderNotFoundMessage" approved="yes">
+        <source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
+        <target state="final">Le dossier "%s" n'est pas accessible. Tentative d'utilisation du(des) dossier(s) parent(s).</target>
+      </trans-unit>
+      <trans-unit id="translateMetadata" resname="translateMetadata" approved="yes">
+        <source>Translate metadata</source>
+        <target state="final">Traduire les métadonnées</target>
+      </trans-unit>
+      <trans-unit id="createMetadataForLanguage" resname="createMetadataForLanguage" approved="yes">
+        <source>Create metadata of this file for %s</source>
+        <target state="final">Créer des métadonnées de ce fichier pour %s</target>
+      </trans-unit>
+      <trans-unit id="editMetadataForLanguage" resname="editMetadataForLanguage" approved="yes">
+        <source>Edit metadata of this file for %s</source>
+        <target state="final">Modifier les métadonnées de ce fichier pour %s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
