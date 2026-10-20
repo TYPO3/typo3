@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1420197366" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="no_modules_registered" resname="no_modules_registered" approved="yes">
+        <source>No modules have been registered. Please contact your system administrator.</source>
+        <target state="final">ບໍ່ມີໂມດູນຖືກລົງທະບຽນ. ກະລຸນາຕິດຕໍ່ຜູ້ດູແລລະບົບຂອງທ່ານ.</target>
+      </trans-unit>
+      <trans-unit id="show_references" resname="show_references" approved="yes">
+        <source>Show references</source>
+        <target state="final">ສະແດງການອ້າງອີງ</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.header" resname="systemmessage.header" approved="yes">
+        <source>Application Information</source>
+        <target state="final">ຂໍ້ມູນແອັບພລິເຄຊັນ</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.intro" resname="systemmessage.intro" approved="yes">
+        <source><![CDATA[This is a short system overview. For advanced information please head to the <a href="%s">Environment Module</a>.]]></source>
+        <target state="final"><![CDATA[ນີ້ແມ່ນພາບລວມຫຍໍ້ຂອງລະບົບ. ສຳລັບຂໍ້ມູນຂັ້ນສູງ ກະລຸນາໄປທີ່ <a href="%s">ໂມດູນສະພາບແວດລ້ອມ</a>.]]></target>
+      </trans-unit>
+      <trans-unit id="systemmessage.allgood" resname="systemmessage.allgood" xml:space="preserve" approved="yes">
+				<source>Your system is fully operational.
+Have a nice day.</source>
+			<target state="final">ລະບົບຂອງທ່ານເຮັດວຽກໄດ້ຢ່າງສົມບູນ.
+ຂໍໃຫ້ມີມື້ທີ່ດີ.</target></trans-unit>
+      <trans-unit id="usermodule.su.list" resname="usermodule.su.list" approved="yes">
+        <source>Recently switched to</source>
+        <target state="final">ຫາກໍ່ປ່ຽນໄປເປັນ</target>
+      </trans-unit>
+      <trans-unit id="usermodule.su.tooltip" resname="usermodule.su.tooltip" approved="yes">
+        <source>Switch to user %s</source>
+        <target state="final">ປ່ຽນໄປເປັນຜູ້ໃຊ້ %s</target>
+      </trans-unit>
+      <trans-unit id="config.loginLogo" resname="config.loginLogo" approved="yes">
+        <source>Logo: If set, this logo will be used instead of the TYPO3 logo above the login credential fields (e.g. fileadmin/images/login-logo.png or EXT:my_theme/Resources/Public/Images/login-logo.png or //domain.tld/login-logo.png)</source>
+        <target state="final">ໂລໂກ້: ຫາກຕັ້ງຄ່າໄວ້, ໂລໂກ້ນີ້ຈະຖືກນຳໃຊ້ແທນໂລໂກ້ TYPO3 ຢູ່ເໜືອຊ່ອງປ້ອນຂໍ້ມູນເຂົ້າລະບົບ (ຕົວຢ່າງ: fileadmin/images/login-logo.png ຫຼື EXT:my_theme/Resources/Public/Images/login-logo.png ຫຼື //domain.tld/login-logo.png)</target>
+      </trans-unit>
+      <trans-unit id="config.loginHighlightColor" resname="config.loginHighlightColor" approved="yes">
+        <source>Highlight Color: If set, this color will be used as highlight color in the login screen.</source>
+        <target state="final">ສີເນັ້ນ: ຫາກຕັ້ງຄ່າໄວ້, ສີນີຈະຖືກນຳໃຊ້ເປັນສີເນັ້ນໃນໜ້າຈໍເຂົ້າລະບົບ.</target>
+      </trans-unit>
+      <trans-unit id="config.loginBackgroundImage" resname="config.loginBackgroundImage" approved="yes">
+        <source>Background Image: If set, this image will be used as background image for the login screen (e.g. fileadmin/images/my-background.jpg or EXT:my_theme/Resources/Public/Images/my-background.jpg or //domain.tld/my-background.png)</source>
+        <target state="final">ຮູບພື້ນຫຼັງ: ຫາກຕັ້ງຄ່າໄວ້, ຮູບນີ້ຈະຖືກນຳໃຊ້ເປັນຮູບພື້ນຫຼັງສຳລັບໜ້າຈໍເຂົ້າລະບົບ (ຕົວຢ່າງ: fileadmin/images/my-background.jpg ຫຼື EXT:my_theme/Resources/Public/Images/my-background.jpg ຫຼື //domain.tld/my-background.png)</target>
+      </trans-unit>
+      <trans-unit id="config.loginFootnote" resname="config.loginFootnote" approved="yes">
+        <source>Footnote: If set, this text will be displayed on the login screen to provide copyright information for the background image (e.g. © 2017 by Foo Bar) or a descriptive text</source>
+        <target state="final">ຂໍ້ຄວາມທ້າຍໜ້າ: ຫາກຕັ້ງຄ່າໄວ້, ຂໍ້ຄວາມນີ້ຈະສະແດງຢູ່ໃນໜ້າຈໍເຂົ້າລະບົບເພື່ອໃຫ້ຂໍ້ມູນລິຂະສິດສຳລັບຮູບພື້ນຫຼັງ (ຕົວຢ່າງ: © 2017 ໂດຍ Foo Bar) ຫຼື ຂໍ້ຄວາມອະທິບາຍ</target>
+      </trans-unit>
+      <trans-unit id="config.backendLogo" resname="config.backendLogo" approved="yes">
+        <source>Logo: If set, this logo will be used instead of the TYPO3 logo in the TYPO3 Backend in the left top corner (e.g. fileadmin/images/backend-logo.png or EXT:my_theme/Resources/Public/Images/backend-logo.png)</source>
+        <target state="final">ໂລໂກ້: ຫາກຕັ້ງຄ່າໄວ້, ໂລໂກ້ນີ້ຈະຖືກນຳໃຊ້ແທນໂລໂກ້ TYPO3 ໃນລະບົບຫຼັງບ້ານ TYPO3 ຢູ່ມຸມຊ້າຍດ້ານເທິງ (ຕົວຢ່າງ: fileadmin/images/backend-logo.png ຫຼື EXT:my_theme/Resources/Public/Images/backend-logo.png)</target>
+      </trans-unit>
+      <trans-unit id="config.backendFavicon" resname="config.backendFavicon" approved="yes">
+        <source>Favicon: If set, this favicon will be used instead of the TYPO3 logo (e.g. EXT:my_theme/Resources/Public/Images/favicon.ico)</source>
+        <target state="final">ໄອຄອນເວັບ (Favicon): ຫາກຕັ້ງຄ່າໄວ້, ໄອຄອນນີ້ຈະຖືກນຳໃຊ້ແທນໂລໂກ້ TYPO3 (ຕົວຢ່າງ: EXT:my_theme/Resources/Public/Images/favicon.ico)</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.title" resname="foldertreeview.noFolders.title" approved="yes">
+        <source>No folders available</source>
+        <target state="final">ບໍ່ມີໂຟນເດີ</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.message" resname="foldertreeview.noFolders.message" approved="yes">
+        <source>You do not have access to any folder. Please ask your administrator to fix access permissions for your account.</source>
+        <target state="final">ທ່ານບໍ່ມີສິດເຂົ້າເຖິງໂຟນເດີໃດໆ. ກະລຸນາສອບຖາມຜູ້ດູແລລະບົບຂອງທ່ານເພື່ອແກ້ໄຂສິດການເຂົ້າເຖິງບັນຊີຂອງທ່ານ.</target>
+      </trans-unit>
+      <trans-unit id="login.link" resname="login.link" approved="yes">
+        <source>Login with username and password</source>
+        <target state="final">ເຂົ້າລະບົບດ້ວຍຊື່ຜູ້ໃຊ້ ແລະ ລະຫັດຜ່ານ</target>
+      </trans-unit>
+      <trans-unit id="login.username" resname="login.username" approved="yes">
+        <source>Username</source>
+        <target state="final">ຊື່ຜູ້ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="login.password" resname="login.password" approved="yes">
+        <source>Password</source>
+        <target state="final">ລະຫັດຜ່ານ</target>
+      </trans-unit>
+      <trans-unit id="login.error.capslock" resname="login.error.capslock" approved="yes">
+        <source>Attention: Caps lock enabled!</source>
+        <target state="final">ຂໍ້ຄວນລະວັງ: Caps lock ເປີດຢູ່!</target>
+      </trans-unit>
+      <trans-unit id="login.interface" resname="login.interface" approved="yes">
+        <source>Interface</source>
+        <target state="final">ອິນເຕີເຟດ</target>
+      </trans-unit>
+      <trans-unit id="login.news.previous" resname="login.news.previous" approved="yes">
+        <source>Previous</source>
+        <target state="final">ກ່ອນໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="login.news.next" resname="login.news.next" approved="yes">
+        <source>Next</source>
+        <target state="final">ຖັດໄປ</target>
+      </trans-unit>
+      <trans-unit id="login.error.message" resname="login.error.message" approved="yes">
+        <source>Your login attempt did not succeed</source>
+        <target state="final">ການພະຍາຍາມເຂົ້າລະບົບຂອງທ່ານບໍ່ສຳເລັດ</target>
+      </trans-unit>
+      <trans-unit id="login.error.description" resname="login.error.description" approved="yes">
+        <source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target state="final">ກະລຸນາກວດສອບການພິມຊື່ຜູ້ໃຊ້ ແລະ ລະຫັດຜ່ານຂອງທ່ານໃຫ້ຖືກຕ້ອງ, ລວມທັງຕົວພິມໃຫຍ່/ພິມນ້ອຍ.</target>
+      </trans-unit>
+      <trans-unit id="login.error.javascript" resname="login.error.javascript" approved="yes">
+        <source>Please activate JavaScript!</source>
+        <target state="final">ກະລຸນາເປີດໃຊ້ງານ JavaScript!</target>
+      </trans-unit>
+      <trans-unit id="login.error.cookies" resname="login.error.cookies" approved="yes">
+        <source>Please activate Cookies!</source>
+        <target state="final">ກະລຸນາເປີດໃຊ້ງານ ຄຸກກີ້!</target>
+      </trans-unit>
+      <trans-unit id="login.error.referrer" resname="login.error.referrer" approved="yes">
+        <source>TYPO3 relies on HTTP referrers for security reasons in the backend. It seems your browser refused to send this information.</source>
+        <target state="final">TYPO3 ອາໄສ HTTP referrers ດ້ວຍເຫດຜົນດ້ານຄວາມປອດໄພໃນລະບົບຫຼັງບ້ານ. ເບິ່ງຄືວ່າບຣາວເຊີຂອງທ່ານປະຕິເສດທີ່ຈະສົ່ງຂໍ້ມູນນີ້.</target>
+      </trans-unit>
+      <trans-unit id="login.process" resname="login.process" approved="yes">
+        <source>Verifying Login Data ...</source>
+        <target state="final">ກຳລັງກວດສອບຂໍ້ມູນການເຂົ້າລະບົບ...</target>
+      </trans-unit>
+      <trans-unit id="login.submit" resname="login.submit" approved="yes">
+        <source>Login</source>
+        <target state="final">ເຂົ້າລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="login.copyrightLink" resname="login.copyrightLink" approved="yes">
+        <source>More about TYPO3</source>
+        <target state="final">ເພີ່ມເຕີມກ່ຽວກັບ TYPO3</target>
+      </trans-unit>
+      <trans-unit id="login.typo3Logo" resname="login.typo3Logo" approved="yes">
+        <source>TYPO3 logo</source>
+        <target state="final">ໂລໂກ້ TYPO3</target>
+      </trans-unit>
+      <trans-unit id="login.donate" resname="login.donate" approved="yes">
+        <source>Donate</source>
+        <target state="final">ບໍລິຈາກ</target>
+      </trans-unit>
+      <trans-unit id="button.showPageTsConfig" resname="button.showPageTsConfig" approved="yes">
+        <source>Show PageTS-Config</source>
+        <target state="final">ສະແດງ PageTS-Config</target>
+      </trans-unit>
+      <trans-unit id="button.hidePageTsConfig" resname="button.hidePageTsConfig" approved="yes">
+        <source>Hide PageTS-Config</source>
+        <target state="final">ເຊື່ອງ PageTS-Config</target>
+      </trans-unit>
+      <trans-unit id="formEngine.databaseRecordErrorInlineChildChild" resname="formEngine.databaseRecordErrorInlineChildChild" approved="yes">
+        <source>The record with uid %2$s from table %1$s could not be retrieved from the database. This data incosistency can occur if
+				a base record has been deleted but the intermediate record from table %3$s with uid %4$s still points to it. To fix
+				this situation, either delete the intermediate record, or recover the deleted record using the recycler module.
+				</source>
+        <target state="final">ບໍ່ສາມາດດຶງຂໍ້ມູນບັນທຶກທີ່ມີ uid %2$s ຈາກຕາຕະລາງ %1$s ຈາກຖານຂໍ້ມູນໄດ້. ຄວາມບໍ່ສອດຄ່ອງຂອງຂໍ້ມູນນີ້ສາມາດເກີດຂຶ້ນໄດ້ຫາກບັນທຶກພື້ນຖານຖືກລຶບໄປແລ້ວ ແຕ່ບັນທຶກລະຫວ່າງກາງຈາກຕາຕະລາງ %3$s ທີ່ມີ uid %4$s ຍັງຊີ້ໄປຫາມັນຢູ່. ເພື່ອແກ້ໄຂສະຖານະການນີ້, ໃຫ້ລຶບບັນທຶກລະຫວ່າງກາງ ຫຼື ກູ້ຄືນບັນທຶກທີ່ຖືກລຶບໂດຍໃຊ້ໂມດູນ Recycler.
+				</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
