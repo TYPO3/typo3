@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/Modules/form_editor.xlf" date="2026-01-30T13:37:37Z" product-name="form" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Form Editor</source>
+        <target state="final">फ़ॉर्म एडिटर</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Build and customize forms using the visual form editor. Add fields, configure validations, and set up finishers.</source>
+        <target state="final">विज़ुअल फ़ॉर्म एडिटर का इस्तेमाल करके फ़ॉर्म बनाएं और उन्हें कस्टमाइज़ करें। फ़ील्ड जोड़ें, वैलिडेशन कॉन्फ़िगर करें, और फ़िनिशर सेट अप करें।</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Edit forms</source>
+        <target state="final">फॉर्म्स एडिट करें</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
