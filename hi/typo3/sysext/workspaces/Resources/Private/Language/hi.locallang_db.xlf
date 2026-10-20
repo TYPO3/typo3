@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_db.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="sys_workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">कार्यस्थान</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.custom_stages" approved="yes">
+        <source>Custom stages</source>
+        <target state="final">कस्टम चरण</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.responsible_persons" approved="yes">
+        <source>Responsible persons</source>
+        <target state="final">जिम्मेदार व्यक्ति</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.default_mailcomment" approved="yes">
+        <source>Default mail comment</source>
+        <target state="final">डिफ़ॉल्ट मेल टिप्पणी</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.parentid" approved="yes">
+        <source>UID of parent record</source>
+        <target state="final">माता रेकॉर्ड का यूआईडी</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage" approved="yes">
+        <source>Workspace Stage</source>
+        <target state="final">कार्यक्षेत्र अवस्था</target>
+      </trans-unit>
+      <trans-unit id="tabs.notification_settings" approved="yes">
+        <source>Notification settings</source>
+        <target state="final">नोटिफिकेशन की सेटिंग्स</target>
+      </trans-unit>
+      <trans-unit id="tabs.general" approved="yes">
+        <source>General</source>
+        <target state="final">सामान्य</target>
+      </trans-unit>
+      <trans-unit id="tabs.internal_stages" approved="yes">
+        <source>Internal Stages</source>
+        <target state="final">आंतरिक चरण</target>
+      </trans-unit>
+      <trans-unit id="tabs.custom_stages" approved="yes">
+        <source>Custom Stages</source>
+        <target state="final">कस्टम चरण</target>
+      </trans-unit>
+      <trans-unit id="tabs.publish_access" approved="yes">
+        <source>Publishing / Access</source>
+        <target state="final">प्रकाशन / एक्सेस</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.notification_defaults" approved="yes">
+        <source>Default notification recipients</source>
+        <target state="final">डिफ़ॉल्ट सूचना प्राप्तकर्ता</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.allow_notificaton_settings" approved="yes">
+        <source>Allow notification settings during stage change</source>
+        <target state="final">अवस्थ परिवर्तन के दौरान नोटिफिकेशन सेटिंग्स के लिए अनुमति देता है।</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.edit" approved="yes">
+        <source>Stage "editing"</source>
+        <target state="final">चरण "संपादन"</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.publish" approved="yes">
+        <source>Stage "ready to publish"</source>
+        <target state="final">चरण "प्रकाशित करने के लिए तैयार"</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.execute" approved="yes">
+        <source>Stage "publishing execute"</source>
+        <target state="final">चरण "प्रकाशन कार्यान्वयन"</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog" approved="yes">
+        <source>Notification dialog settings</source>
+        <target state="final">सूचना सेटिंग्स डायलॉग</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog.showDialog" approved="yes">
+        <source>Show Dialog</source>
+        <target state="final">डायलॉग दिखाएं</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog.changeablePreselection" approved="yes">
+        <source>Allow to change pre-selection of recipients</source>
+        <target state="final">प्राप्तकर्ताओं का पूर्व-चयन बदलने की अनुमति दें</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection" approved="yes">
+        <source>Pre-select recipients</source>
+        <target state="final">पूर्व-चयन प्राप्तकर्ताओं</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.owners" approved="yes">
+        <source>Owners</source>
+        <target state="final">मालिक</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.members" approved="yes">
+        <source>Members</source>
+        <target state="final">सदस्य</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.editors" approved="yes">
+        <source>Unused, no functionality attached</source>
+        <target state="final">अनावश्यक, कोई कार्यात्मकता संलग्न नहीं है</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.responsiblePersons" approved="yes">
+        <source>Responsible Persons</source>
+        <target state="final">जिम्मेदार व्यक्ति</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.adminusers" approved="yes">
+        <source>Owners</source>
+        <target state="final">मालिक</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.members" approved="yes">
+        <source>Members</source>
+        <target state="final">सदस्य</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_time" approved="yes">
+        <source>Auto-publish changes on (requires scheduler task)</source>
+        <target state="final">(स्केड्यूलर टास्क आवश्यक है) परिवर्तन स्वचालित प्रकाशित करें</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.unpublish_time" approved="yes">
+        <source>Un-Publish changes on (requires scheduler task)</source>
+        <target state="final">(स्केड्यूलर टास्क आवश्यक है) परिवर्तन अन-पब्लिश करें</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.live_edit" approved="yes">
+        <source>Allow "live" editing of records from tables without versioning</source>
+        <target state="final">सुरक्षित रूप से संपादन की अनुमति दें</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access" approved="yes">
+        <source>Publish access</source>
+        <target state="final">प्रकाशित एक्सेस</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access.1" approved="yes">
+        <source>Publish only content in publish stage</source>
+        <target state="final">केवल प्रकाशन स्थिति में सामग्री प्रकाशित करें</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access.2" approved="yes">
+        <source>Restrict publishing to workspace owners</source>
+        <target state="final">प्रकाशन केवल कार्यस्थान मालिकों को सीमित करें</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access.3" approved="yes">
+        <source>Hide "Entire workspace" action drop down</source>
+        <target state="final">"संपूर्ण कार्यस्थान" क्रियान्वयन ड्रॉप डाउन छिपाएं</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification" approved="yes">
+        <source>Send notifications upon state changes</source>
+        <target state="final">रिकॉर्ड की स्थिति पर परिवर्तन होने पर सूचना भेजें</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification.description" approved="yes">
+        <source>This workspace-level setting determines if notifications are triggered when records transition to other stages or are published. Individual stages can have their own notification preferences.</source>
+        <target state="final">यह कार्यस्थान स्तर की सेटिंग प्रस्थापित करती है कि क्या सूचनाएँ किसी अन्य चरण में स्थिति को में अंतरिक्ष या प्रकाशित किया जाता है. व्यक्तिगत चरणों की अपनी सूचना प्राथमिकताएं हो सकती हैं.</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.previewlink_lifetime" approved="yes">
+        <source>Lifetime in hours on how long a preview link will be valid</source>
+        <target state="final">पूर्वावलोकन लिंक की कितनी घंटों तक मान्यता रहेगी जीवन</target>
+      </trans-unit>
+      <trans-unit id="tabs.users" approved="yes">
+        <source>Users</source>
+        <target state="final">उपयोगकर्ता</target>
+      </trans-unit>
+      <trans-unit id="tabs.mountpoints" approved="yes">
+        <source>Mountpoints</source>
+        <target state="final">माउंट पोइंट्स</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
