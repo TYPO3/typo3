@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_download.xlf" date="2012-06-17T10:22:33Z" product-name="recordlist" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="downloadRecord">
+        <source>Download %d record</source>
+        <target>crwdns225608:0%dcrwdne225608:0</target>
+      </trans-unit>
+      <trans-unit id="downloadRecords">
+        <source>Download %d records</source>
+        <target>crwdns225610:0%dcrwdne225610:0</target>
+      </trans-unit>
+      <trans-unit id="download">
+        <source>Download</source>
+        <target>crwdns225612:0crwdne225612:0</target>
+      </trans-unit>
+      <trans-unit id="downloadRecordSettings">
+        <source>Download %s: %d Record</source>
+        <target>crwdns225614:0%scrwdnd225614:0%dcrwdne225614:0</target>
+      </trans-unit>
+      <trans-unit id="downloadRecordsSettings">
+        <source>Download %s: %d Records</source>
+        <target>crwdns225616:0%scrwdnd225616:0%dcrwdne225616:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.generalSettings">
+        <source>General settings</source>
+        <target>crwdns225618:0crwdne225618:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.columnsToDownload">
+        <source>Columns to download</source>
+        <target>crwdns225620:0crwdne225620:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.selectedColumns">
+        <source>Selected columns</source>
+        <target>crwdns225622:0crwdne225622:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.allColumns">
+        <source>All columns</source>
+        <target>crwdns225624:0crwdne225624:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.valueFormat">
+        <source>Format of values</source>
+        <target>crwdns225626:0crwdne225626:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.rawValues">
+        <source>Raw values</source>
+        <target>crwdns225628:0crwdne225628:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.processedValues">
+        <source>Processed values</source>
+        <target>crwdns225630:0crwdne225630:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.default">
+        <source>Default: %s</source>
+        <target>crwdns225632:0%scrwdne225632:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.filename">
+        <source>Filename</source>
+        <target>crwdns225634:0crwdne225634:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.filename.placeholder">
+        <source>e.g. %s_ddmmyy-hhmm</source>
+        <target>crwdns225636:0%scrwdne225636:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.format">
+        <source>Format</source>
+        <target>crwdns225638:0crwdne225638:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.format.csv">
+        <source>CSV</source>
+        <target>crwdns225640:0crwdne225640:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.format.json">
+        <source>JSON</source>
+        <target>crwdns225642:0crwdne225642:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv">
+        <source>CSV options</source>
+        <target>crwdns225644:0crwdne225644:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.delimiter">
+        <source>Delimiter</source>
+        <target>crwdns225646:0crwdne225646:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.delimiter.comma">
+        <source>comma</source>
+        <target>crwdns225648:0crwdne225648:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.delimiter.semicolon">
+        <source>semicolon</source>
+        <target>crwdns225650:0crwdne225650:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.delimiter.pipe">
+        <source>pipe</source>
+        <target>crwdns225652:0crwdne225652:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.delimiter.custom">
+        <source>user defined</source>
+        <target>crwdns225654:0crwdne225654:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.quote">
+        <source>Quote character</source>
+        <target>crwdns225656:0crwdne225656:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.quote.doublequote">
+        <source>double quote</source>
+        <target>crwdns225658:0crwdne225658:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.quote.singlequote">
+        <source>single quote</source>
+        <target>crwdns342600:0crwdne342600:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.quote.space">
+        <source>space</source>
+        <target>crwdns225662:0crwdne225662:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.csv.quote.custom">
+        <source>user defined</source>
+        <target>crwdns225664:0crwdne225664:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.json">
+        <source>JSON options</source>
+        <target>crwdns225666:0crwdne225666:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.json.meta">
+        <source>Meta information</source>
+        <target>crwdns225668:0crwdne225668:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.json.meta.full">
+        <source>Add all relevant information to the download</source>
+        <target>crwdns225670:0crwdne225670:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.json.meta.prefix">
+        <source>Prefix the download with table name and page id</source>
+        <target>crwdns225672:0crwdne225672:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.formatOptions.json.meta.none">
+        <source>No information, only download records</source>
+        <target>crwdns225674:0crwdne225674:0</target>
+      </trans-unit>
+      <trans-unit id="downloadSettings.preset">
+        <source>Preset</source>
+        <target>crwdns338122:0crwdne338122:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
