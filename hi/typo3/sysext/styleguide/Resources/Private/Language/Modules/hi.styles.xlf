@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:styleguide/Resources/Private/Language/Modules/styles.xlf" date="2026-11-10T13:37:37Z" product-name="styles" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Design Tokens and Styles</source>
+        <target state="final">डिज़ाइन टोकन्स और स्टाइल्स</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Explore design tokens, color schemes, typography, shadows, and other styling elements used in the TYPO3 backend.</source>
+        <target state="final">TYPO3 बैकएंड में उपयोग किए गए डिज़ाइन टोकन्स, कलर स्कीम्स, टाइपोग्राफी, शैडोज़ और अन्य स्टाइलिंग एलिमेंट्स को एक्सप्लोर करें।</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Component Library: Styles</source>
+        <target state="final">कंपोनेंट लाइब्रेरी: स्टाइल्स</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
