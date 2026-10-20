@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/general.xlf" date="2026-02-17T00:00:00Z" product-name="backend" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="wizard.loading" approved="yes">
+        <source>Loading...</source>
+        <target state="final">جارٍ التحميل...</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">إلغاء</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.next" approved="yes">
+        <source>Next</source>
+        <target state="final">التّالي</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.previous" approved="yes">
+        <source>Previous</source>
+        <target state="final">السّابق</target>
+      </trans-unit>
+      <trans-unit id="wizard.buttons.finish" approved="yes">
+        <source>Finish</source>
+        <target state="final">انتهى</target>
+      </trans-unit>
+      <trans-unit id="wizard.loading_configuration" approved="yes">
+        <source>Loading wizard configuration...</source>
+        <target state="final">تحميل تكوين المعالج...</target>
+      </trans-unit>
+      <trans-unit id="wizard.loading_steps" approved="yes">
+        <source>Loading step modules...</source>
+        <target state="final">تحميل وحدات الخطوات...</target>
+      </trans-unit>
+      <trans-unit id="wizard.loading_finisher" approved="yes">
+        <source>Loading finisher...</source>
+        <target state="final">جارٍ تحميل النهائي...</target>
+      </trans-unit>
+      <trans-unit id="wizard.status.pending.message" approved="yes">
+        <source>Processing data...</source>
+        <target state="final">جاري معالجة البيانات...</target>
+      </trans-unit>
+      <trans-unit id="wizard.status.error.title" approved="yes">
+        <source>Error</source>
+        <target state="final">خطأ</target>
+      </trans-unit>
+      <trans-unit id="wizard.status.error.message" approved="yes">
+        <source>Failed to process data:</source>
+        <target state="final">فشل في معالجة البيانات:</target>
+      </trans-unit>
+      <trans-unit id="wizard.finisher.load_error.message" approved="yes">
+        <source>Failed to load finisher module:</source>
+        <target state="final">فشل في تحميل الوحدة النمطية النهائية:</target>
+      </trans-unit>
+      <trans-unit id="wizard.step.error.title" approved="yes">
+        <source>Error</source>
+        <target state="final">خطأ</target>
+      </trans-unit>
+      <!-- Step: Confirmation -->
+      <trans-unit id="step.confirmation.title" approved="yes">
+        <source>Confirmation</source>
+        <target state="final">التأكيد</target>
+      </trans-unit>
+      <trans-unit id="step.confirmation.headline" approved="yes">
+        <source>Confirm</source>
+        <target state="final">تأكيد</target>
+      </trans-unit>
+      <trans-unit id="step.confirmation.description" approved="yes">
+        <source>Please review the following settings before proceeding:</source>
+        <target state="final">يرجى مراجعة الإعدادات التالية قبل المتابعة:</target>
+      </trans-unit>
+      <!-- Step: Finisher -->
+      <trans-unit id="step.finisher.title" approved="yes">
+        <source>Finish</source>
+        <target state="final">اكتمل</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
