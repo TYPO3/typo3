@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/locallang_tasks.xlf" date="2011-10-17T20:22:35Z" product-name="recycler" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="cleanerTaskTitle" approved="yes">
+        <source>Remove deleted records</source>
+        <target state="final">از بین بردن ردیف‌های حذف شده</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskPeriod" approved="yes">
+        <source>Delete entries older than (in days)</source>
+        <target state="final">حذف ورودی‌های قدیمی تر از (بر حسب روز)</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskTCA" approved="yes">
+        <source>Tables</source>
+        <target state="final">جداول</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskDescriptionTables" approved="yes">
+        <source>Tables: %s</source>
+        <target state="final">جداول: %s</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskErrorPeriod" approved="yes">
+        <source>The period has to be an integer and greater than zero.</source>
+        <target state="final">بازۀ زمانی باید عدد صحیح بوده و بزرگتر از صفر باشد.</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskErrorTCAempty" approved="yes">
+        <source>You have to select at least one table.</source>
+        <target state="final">شما حداقل باید یک جدول انتخاب کنید.</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskErrorTCANotSet" approved="yes">
+        <source>The table "%s" is not in the TCA.</source>
+        <target state="final">جدول "%s" در TCA وجود ندارد.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
