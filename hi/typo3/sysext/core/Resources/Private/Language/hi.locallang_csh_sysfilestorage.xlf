@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814801" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilestorage.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>File storage, which acts as an entry root point to a file-based structure. See it like a drive or a hard drive volume in your local machine.</source>
+        <target state="final">फ़ाइल स्टोरेज, जो फ़ाइल-आधारित संरचना के लिए एक एंट्री रूट पॉइंट के रूप में काम करता है। इसे अपने लोकल मशीन में किसी ड्राइव या हार्ड ड्राइव वॉल्यूम की तरह समझें।</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details">
+        <source/>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If you set up a file storage, it will show up on any folder lists, thus allowing to basically browse through the files in this file repository. If you set this checkbox, this storage will be excluded from any listings in the backend. Any existing file references will still exist further.</source>
+        <target state="final">अगर आप कोई फ़ाइल स्टोरेज सेट अप करते हैं, तो वह किसी भी फ़ोल्डर लिस्ट में दिखाई देगा, जिससे आप इस फ़ाइल रिपॉजिटरी में मौजूद फ़ाइलों को आसानी से ब्राउज़ कर पाएँगे। अगर आप इस चेकबॉक्स को चुनते हैं, तो यह स्टोरेज बैकएंड की किसी भी लिस्टिंग में शामिल नहीं होगा। फ़ाइलों के जो भी मौजूदा रेफ़रेंस हैं, वे वैसे ही बने रहेंगे।</target>
+      </trans-unit>
+      <trans-unit id="name.description" resname="name.description" approved="yes">
+        <source>The visible identifier for this file storage.</source>
+        <target state="final">इस फ़ाइल स्टोरेज के लिए दृश्य पहचानकर्ता।</target>
+      </trans-unit>
+      <trans-unit id="name.details" resname="name.details" approved="yes">
+        <source>The label entered here will be shown as the name for the entry point in the TYPO3 Backend. Be sure to make it descriptive and logical for your editors.</source>
+        <target state="final">यहाँ दर्ज किया गया लेबल, TYPO3 Backend में एंट्री पॉइंट के नाम के रूप में दिखाई देगा। सुनिश्चित करें कि यह आपके एडिटर्स के लिए वर्णनात्मक और तार्किक हो।</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>A description of this storage.</source>
+        <target state="final">इस स्टोरेज का विवरण</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" approved="yes">
+        <source>This description field is used to explain e.g. the location of the storage, also what this storage is meant for or what it contains.</source>
+        <target state="final">इस विवरण फ़ील्ड का उपयोग, उदाहरण के लिए, स्टोरेज के स्थान को समझाने के लिए किया जाता है; साथ ही यह बताने के लिए भी कि यह स्टोरेज किस उद्देश्य के लिए है या इसमें क्या रखा है।</target>
+      </trans-unit>
+      <trans-unit id="driver.description" resname="driver.description" approved="yes">
+        <source>Choose the driver as the technical backbone of the storage. Once you've chosen a driver, and saved it, additional configuration will show up.</source>
+        <target state="final">ड्राइवर को स्टोरेज के तकनीकी आधार के रूप में चुनें। एक बार जब आप ड्राइवर चुन लेते हैं और उसे सेव कर लेते हैं, तो अतिरिक्त कॉन्फ़िगरेशन दिखाई देगा।</target>
+      </trans-unit>
+      <trans-unit id="driver.details" resname="driver.details" approved="yes">
+        <source>The driver is the technical background of a storage, and thus also defines whether the location of the storage is local (= on the same machine as this TYPO3 installation) or remote like a WebDAV server connection. Search for extensions in the TYPO3 Extension Repository that extend this driver list.</source>
+        <target state="final">ड्राइवर किसी स्टोरेज का तकनीकी आधार होता है, और इस प्रकार यह भी निर्धारित करता है कि स्टोरेज का स्थान लोकल है (= उसी मशीन पर जहाँ यह TYPO3 इंस्टॉलेशन है) या रिमोट, जैसे कि WebDAV सर्वर कनेक्शन। TYPO3 एक्सटेंशन रिपॉजिटरी में ऐसे एक्सटेंशन खोजें जो इस ड्राइवर सूची का विस्तार करते हों।</target>
+      </trans-unit>
+      <trans-unit id="processingfolder.description" resname="processingfolder.description" approved="yes">
+        <source>Defines the directory on this storage to be used to save temporary files like resized images.</source>
+        <target state="final">इस स्टोरेज पर उस डायरेक्टरी को परिभाषित करता है, जिसका उपयोग रीसाइज़ की गई छवियों जैसी अस्थायी फ़ाइलों को सहेजने के लिए किया जाएगा।</target>
+      </trans-unit>
+      <trans-unit id="is_browsable.description" resname="is_browsable.description" approved="yes">
+        <source>If set, backend users can browse through this storage. Otherwise it will show up as a unselectable item in the list.</source>
+        <target state="final">यदि इसे सेट किया जाता है, तो बैकएंड उपयोगकर्ता इस स्टोरेज को ब्राउज़ कर सकते हैं। अन्यथा, यह सूची में एक अ-चयन योग्य आइटम के रूप में दिखाई देगा।</target>
+      </trans-unit>
+      <trans-unit id="is_public.description" resname="is_public.description" approved="yes">
+        <source>If set, then the files in this storage can be linked directly from the outside world. If this is not set, make sure to provide additional possibilities to access the files in this storage.</source>
+        <target state="final">यदि इसे सेट किया जाता है, तो इस स्टोरेज में मौजूद फ़ाइलों को बाहरी दुनिया से सीधे लिंक किया जा सकता है। यदि इसे सेट नहीं किया जाता है, तो यह सुनिश्चित करें कि इस स्टोरेज में मौजूद फ़ाइलों तक पहुँचने के लिए अतिरिक्त विकल्प उपलब्ध कराए जाएँ।</target>
+      </trans-unit>
+      <trans-unit id="is_writable.description" resname="is_writable.description" approved="yes">
+        <source>If set, then users are allowed to modify, add, delete files/folders on this storage.</source>
+        <target state="final">यदि यह सेट है, तो उपयोगकर्ताओं को इस स्टोरेज पर फ़ाइलों/फ़ोल्डरों को संशोधित करने, जोड़ने या हटाने की अनुमति होती है।</target>
+      </trans-unit>
+      <trans-unit id="is_online.description" resname="is_online.description" approved="yes">
+        <source>This flag is usually set. If TYPO3 cannot connect to this storage (because it maybe temporary down), then the flag will be checked, and the storage will behave like it is non-browsable in the TYPO3 backend. The admin needs to manually activate it again if it was offline.</source>
+        <target state="final">यह फ़्लैग आमतौर पर सेट रहता है। अगर TYPO3 इस स्टोरेज से कनेक्ट नहीं हो पाता है (क्योंकि हो सकता है कि यह कुछ समय के लिए डाउन हो), तो इस फ़्लैग को चेक किया जाएगा, और स्टोरेज TYPO3 बैकएंड में ऐसा व्यवहार करेगा जैसे कि वह ब्राउज़ करने लायक नहीं है। अगर यह ऑफ़लाइन हो गया था, तो एडमिन को इसे मैन्युअली फिर से एक्टिवेट करना होगा।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
