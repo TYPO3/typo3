@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1520838123" source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang.xlf" date="2018-03-31T08:08:00Z" product-name="adminpanel" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="deprecatedModuleLabel" resname="deprecatedModuleLabel">
+        <source>General</source>
+        <target>crwdns67350:0crwdne67350:0</target>
+      </trans-unit>
+      <trans-unit id="settings.label" resname="settings.label">
+        <source>Settings</source>
+        <target>crwdns67352:0crwdne67352:0</target>
+      </trans-unit>
+      <trans-unit id="settings.updateButtonLabel" resname="settings.updateButtonLabel">
+        <source>Update Settings</source>
+        <target>crwdns67354:0crwdne67354:0</target>
+      </trans-unit>
+      <trans-unit id="button.close" resname="button.close">
+        <source>Close</source>
+        <target>crwdns67356:0crwdne67356:0</target>
+      </trans-unit>
+      <trans-unit id="button.view" resname="button.view">
+        <source>View</source>
+        <target>crwdns67358:0crwdne67358:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
