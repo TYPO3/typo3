@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814984" source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="action.add" resname="action.add" approved="yes">
+        <source>Add task</source>
+        <target state="final">Agregar tarea</target>
+      </trans-unit>
+      <trans-unit id="action.edit" resname="action.edit" approved="yes">
+        <source>Edit task</source>
+        <target state="final">Editar tarea</target>
+      </trans-unit>
+      <trans-unit id="function.check" resname="function.check" approved="yes">
+        <source>Setup check</source>
+        <target state="final">Comprobar configuración</target>
+      </trans-unit>
+      <trans-unit id="function.info" resname="function.info" approved="yes">
+        <source>Information</source>
+        <target state="final">Información</target>
+      </trans-unit>
+      <trans-unit id="label.class" resname="label.class" approved="yes">
+        <source>Class</source>
+        <target state="final">Clase</target>
+      </trans-unit>
+      <trans-unit id="label.executeSelected" resname="label.executeSelected" approved="yes">
+        <source>Execute selected tasks</source>
+        <target state="final">Ejecuta las tareas seleccionadas</target>
+      </trans-unit>
+      <trans-unit id="label.cronjobSelected" resname="label.cronjobSelected" approved="yes">
+        <source>Execute selected tasks on next cron job</source>
+        <target state="final">Ejecutar tareas seleccionadas en el siguiente trabajo programado</target>
+      </trans-unit>
+      <trans-unit id="label.noGroup" resname="label.noGroup" approved="yes">
+        <source>(no task group defined)</source>
+        <target state="final">(no hay grupo de tareas definido)</target>
+      </trans-unit>
+      <trans-unit id="label.noClass" resname="label.noClass" approved="yes">
+        <source>Tasks without registered classes</source>
+        <target state="final">Tareas sin clases registradas</target>
+      </trans-unit>
+      <trans-unit id="label.noClass.taskCount" resname="label.noClass.taskCount" approved="yes">
+        <source>Amount of tasks without found class</source>
+        <target state="final">Cantidad de tareas sin clase encontrada</target>
+      </trans-unit>
+      <trans-unit id="label.schedulableCommandName" resname="label.schedulableCommandName" approved="yes">
+        <source><![CDATA[Schedulable Command. <em>Save and reopen to define command arguments</em>]]></source>
+        <target state="final"><![CDATA[Comando programable. <em>Guardar y reabrir para definir los argumentos de comando</em>]]></target>
+      </trans-unit>
+      <trans-unit id="msg.addError" resname="msg.addError" approved="yes">
+        <source>The task could not be added.</source>
+        <target state="final">La tarea no pudo ser añadida.</target>
+      </trans-unit>
+      <trans-unit id="msg.executed" resname="msg.executed" approved="yes">
+        <source>Executed: %s</source>
+        <target state="final">Ejecutado: %s</target>
+      </trans-unit>
+      <trans-unit id="msg.infoScreenIntro" resname="msg.infoScreenIntro" approved="yes">
+        <source>This is the list of all available tasks in this TYPO3 installation. Click on the icon at the far right to directly create a new scheduled task of the chosen type.</source>
+        <target state="final">Esta es la lista de todas las tareas disponibles en esta instalación de TYPO3. Haz clic en el icono de la derecha para crear directamente una nueva tarea programada del tipo elegido.</target>
+      </trans-unit>
+      <trans-unit id="msg.maynotDeleteRunningTask" resname="msg.maynotDeleteRunningTask" approved="yes">
+        <source>A running task may not be deleted.</source>
+        <target state="final">Una tarea en ejecución no puede ser eliminada.</target>
+      </trans-unit>
+      <trans-unit id="msg.notExecuted" resname="msg.notExecuted" approved="yes">
+        <source>Not executed: %s</source>
+        <target state="final">No ejecutado: %s</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskClass" resname="msg.invalidTaskClass" approved="yes">
+        <source><![CDATA[<strong>The following tasks can not be executed. No related class could be found for none of the following listed tasks.</strong> You should consider reinstalling the extension that provided them or simply deleting the tasks. Please check also if any of the listed tasks have to be recreated manually (which can be necessary after an extension update due to breaking changes or missing migration scripts).]]></source>
+        <target state="final"><![CDATA[<strong>Las siguientes tareas no pueden ser ejecutadas. No se pudo encontrar ninguna clase relacionada con ninguna de las siguientes tareas enumeradas.</strong> Podrías considerar reinstalar la extensión que las proporcionó o, simplemente, borrar las tareas. Por favor, revisa, también, si alguna de las tareas listadas tienen que ser recreadas manualmente (lo cual puede ser necesario después de la actualización de una extensión debido a que se cambien o se pierdan los scripts de migración).]]></target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskClass.infobox.message" resname="msg.invalidTaskClass.infobox.message" approved="yes">
+        <source><![CDATA[<a href="#recordlist-task-group-missing">Please check the erroneous tasks!</a>]]></source>
+        <target state="final"><![CDATA[<a href="#recordlist-task-group-missing">¡Por favor, comprueba las tareas erróneas!</a>]]></target>
+      </trans-unit>
+      <trans-unit id="msg.mandatoryArgumentMissing" resname="msg.mandatoryArgumentMissing" approved="yes">
+        <source>Argument "%s" is mandatory</source>
+        <target state="final">El argumento "%s" es obligatorio</target>
+      </trans-unit>
+      <trans-unit id="testTask.name" resname="testTask.name" approved="yes">
+        <source>Scheduler test task</source>
+        <target state="final">Tarea de prueba del planificador</target>
+      </trans-unit>
+      <trans-unit id="testTask.description" resname="testTask.description" approved="yes">
+        <source>The Scheduler test task just sends a mail to a given email address. It is designed to be used for testing purposes.</source>
+        <target state="final">La tarea de prueba del planificador solo envía un correo a una dirección de correo electrónico determinada. Está diseñada para ser utilizada con fines de prueba.</target>
+      </trans-unit>
+      <trans-unit id="sleepTask.name" resname="sleepTask.name" approved="yes">
+        <source>Scheduler sleep task</source>
+        <target state="final">Tarea de suspensión del planificador</target>
+      </trans-unit>
+      <trans-unit id="sleepTask.description" resname="sleepTask.description" approved="yes">
+        <source>This task does nothing but put PHP to sleep for a number of seconds. It is designed to test multiple executions.</source>
+        <target state="final">Esta tarea no hace más que poner PHP en pausa durante varios segundos. Está diseñada para probar múltiples ejecuciones.</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.table" resname="label.ipAnonymization.table" approved="yes">
+        <source>Table to anoymize</source>
+        <target state="final">Tabla para anonimizar</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
