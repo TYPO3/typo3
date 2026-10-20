@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814854" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="hu">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>TYPO3 Core</source>
+        <target state="final">TYPO3 mag</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.alttitle" resname="menu_modules.alttitle" approved="yes">
+        <source>Backend modules</source>
+        <target state="final">Backend modulok</target>
+      </trans-unit>
+      <trans-unit id="menu_adminFunction.alttitle" resname="menu_adminFunction.alttitle" approved="yes">
+        <source>Admin Functions</source>
+        <target state="final">Admin műveletek</target>
+      </trans-unit>
+      <trans-unit id="pagetree.alttitle" resname="pagetree.alttitle" approved="yes">
+        <source>The Page Tree</source>
+        <target state="final">Az oldalfa</target>
+      </trans-unit>
+      <trans-unit id="filetree.alttitle" resname="filetree.alttitle" approved="yes">
+        <source>The Folder Tree</source>
+        <target state="final">A könyvtárfa</target>
+      </trans-unit>
+      <trans-unit id="list_module.alttitle" resname="list_module.alttitle" approved="yes">
+        <source>The Web&gt;List module</source>
+        <target state="final">A Web &gt; Lista modul</target>
+      </trans-unit>
+      <trans-unit id="list_module_noId.alttitle" resname="list_module_noId.alttitle" approved="yes">
+        <source>Web&gt;List module with no ID given</source>
+        <target state="final">Web &gt; Lista modul ID megadása nélkül</target>
+      </trans-unit>
+      <trans-unit id="list_module_root.alttitle" resname="list_module_root.alttitle" approved="yes">
+        <source>Root of the Page Tree</source>
+        <target state="final">Az Oldalfa gyökere</target>
+      </trans-unit>
+      <trans-unit id="list_clipboard.alttitle" resname="list_clipboard.alttitle" approved="yes">
+        <source>TYPO3 Clipboard</source>
+        <target state="final">TYPO3 Vágólap</target>
+      </trans-unit>
+      <trans-unit id="list_searchbox.alttitle" resname="list_searchbox.alttitle" approved="yes">
+        <source>Search Box</source>
+        <target state="final">Keresőablak</target>
+      </trans-unit>
+      <trans-unit id="list_options.alttitle" resname="list_options.alttitle" approved="yes">
+        <source>List module options</source>
+        <target state="final">Lista modul beállításai</target>
+      </trans-unit>
+      <trans-unit id="new_regular.alttitle" resname="new_regular.alttitle" approved="yes">
+        <source>Create new record</source>
+        <target state="final">Új rekord létrehozása</target>
+      </trans-unit>
+      <trans-unit id="new_pages.alttitle" resname="new_pages.alttitle" approved="yes">
+        <source>Create new page wizard</source>
+        <target state="final">Új oldal varázsló létrehozása</target>
+      </trans-unit>
+      <trans-unit id="new_ce.alttitle" resname="new_ce.alttitle" approved="yes">
+        <source>Create new Content Element Wizard</source>
+        <target state="final">Új Tartalmi elem varázsló létrehozása</target>
+      </trans-unit>
+      <trans-unit id="move_el_pages.alttitle" resname="move_el_pages.alttitle" approved="yes">
+        <source>Move page wizard</source>
+        <target state="final">Oldal mozgatása varázsló</target>
+      </trans-unit>
+      <trans-unit id="move_el_cs.alttitle" resname="move_el_cs.alttitle" approved="yes">
+        <source>Move Content Element Wizard</source>
+        <target state="final">Tartalmi elem mozgatása varázsló</target>
+      </trans-unit>
+      <trans-unit id="history_log.alttitle" resname="history_log.alttitle" approved="yes">
+        <source>History log</source>
+        <target state="final">Napló</target>
+      </trans-unit>
+      <trans-unit id="history_sum.alttitle" resname="history_sum.alttitle" approved="yes">
+        <source>History Summary</source>
+        <target state="final">Napló összegzés</target>
+      </trans-unit>
+      <trans-unit id="history_entry.alttitle" resname="history_entry.alttitle" approved="yes">
+        <source>Log entry history</source>
+        <target state="final">Belépési napló</target>
+      </trans-unit>
+      <trans-unit id="TCEforms.alttitle" resname="TCEforms.alttitle" approved="yes">
+        <source>TYPO3 Editing Forms</source>
+        <target state="final">TYPO3 szerkesztő űrlapok</target>
+      </trans-unit>
+      <trans-unit id="TCEforms_cacheSelector.alttitle" resname="TCEforms_cacheSelector.alttitle" approved="yes">
+        <source>Forms Menu</source>
+        <target state="final">Űrlap menü</target>
+      </trans-unit>
+      <trans-unit id="perm_module.alttitle" resname="perm_module.alttitle" approved="yes">
+        <source>Viewing page permissions</source>
+        <target state="final">Oldal hozzáférések mutatása</target>
+      </trans-unit>
+      <trans-unit id="perm_module_setting.alttitle" resname="perm_module_setting.alttitle" approved="yes">
+        <source>Setting permissions for a page</source>
+        <target state="final">Hozzáférések beállítása az oldalhoz</target>
+      </trans-unit>
+      <trans-unit id="filelist_module.alttitle" resname="filelist_module.alttitle" approved="yes">
+        <source>File &gt; Filelist module</source>
+        <target state="final">File &gt; Filelista modul</target>
+      </trans-unit>
+      <trans-unit id="filelist_clipboard.alttitle" resname="filelist_clipboard.alttitle" approved="yes">
+        <source>Filelist Clipboard</source>
+        <target state="final">Filelista vágólap</target>
+      </trans-unit>
+      <trans-unit id="filelist_options.alttitle" resname="filelist_options.alttitle" approved="yes">
+        <source>File &gt; Filelist options</source>
+        <target state="final">File &gt; Filelista beállításai</target>
+      </trans-unit>
+      <trans-unit id="file_edit.alttitle" resname="file_edit.alttitle" approved="yes">
+        <source>Editing a file</source>
+        <target state="final">File szerkesztése</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.alttitle" resname="file_newfolder.alttitle" approved="yes">
+        <source>Creating a new folder</source>
+        <target state="final">Könyvtár létrehozása</target>
+      </trans-unit>
+      <trans-unit id="file_newfile.alttitle" resname="file_newfile.alttitle" approved="yes">
+        <source>Creating a new file</source>
+        <target state="final">File létrehozása</target>
+      </trans-unit>
+      <trans-unit id="file_rename.alttitle" resname="file_rename.alttitle" approved="yes">
+        <source>Rename a file or folder</source>
+        <target state="final">File vagy könyvtár átnevezése</target>
+      </trans-unit>
+      <trans-unit id="file_upload.alttitle" resname="file_upload.alttitle" approved="yes">
+        <source>Uploading files.</source>
+        <target state="final">File-ok feltöltése</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz.alttitle" resname="wizard_table_wiz.alttitle" approved="yes">
+        <source>Table wizard</source>
+        <target state="final">Táblázat varázsló</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz_buttons.alttitle" resname="wizard_table_wiz_buttons.alttitle" approved="yes">
+        <source>Table wizard buttons</source>
+        <target state="final">Táblázat varázsló gombok</target>
+      </trans-unit>
+      <trans-unit id="shortcuts.alttitle" resname="shortcuts.alttitle" approved="yes">
+        <source>Backend Shortcuts</source>
+        <target state="final">Backend parancsikonok</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
