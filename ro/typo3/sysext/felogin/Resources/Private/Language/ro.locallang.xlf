@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814821" source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="ro">
+    <header/>
+    <body>
+      <trans-unit id="ll_welcome_header" resname="ll_welcome_header" approved="yes">
+        <source>User login</source>
+        <target state="final">Nume de utilizator</target>
+      </trans-unit>
+      <trans-unit id="ll_logout_header" resname="ll_logout_header" approved="yes">
+        <source>You have logged out.</source>
+        <target state="final">V-aţi deconectat.</target>
+      </trans-unit>
+      <trans-unit id="ll_error_header" resname="ll_error_header" approved="yes">
+        <source>Login failure</source>
+        <target state="final">Eroare conectare</target>
+      </trans-unit>
+      <trans-unit id="ll_success_header" resname="ll_success_header" approved="yes">
+        <source>Login successful</source>
+        <target state="final">Conectare efectuată</target>
+      </trans-unit>
+      <trans-unit id="ll_success_message" resname="ll_success_message" approved="yes">
+        <source>You are now logged in as '###USER###'</source>
+        <target state="final">Sunteți conectat cu utilizatorul '###USER###'</target>
+      </trans-unit>
+      <trans-unit id="ll_status_header" resname="ll_status_header" approved="yes">
+        <source>Current status</source>
+        <target state="final">Stare curentă</target>
+      </trans-unit>
+      <trans-unit id="cookie_warning" resname="cookie_warning" approved="yes">
+        <source>Warning: There is a possibility that cookies are not enabled in your web browser! If your login disappears on your next click that is the case and you should enable cookies (or accept cookies from this website) immediately!</source>
+        <target state="final">Atenție: E posibil să nu aveți cookie-urile activate în navigator! Dacă sunteți deconectați de îndată ce apăsați pe următorul link atunci înseamnă că trebuie să activați cookie-urile (sau să acceptați cookie-urile primite de la acest site)!</target>
+      </trans-unit>
+      <trans-unit id="login" resname="login" approved="yes">
+        <source>Login</source>
+        <target state="final">Conectare</target>
+      </trans-unit>
+      <trans-unit id="logout" resname="logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">Deconectare</target>
+      </trans-unit>
+      <trans-unit id="send_password" resname="send_password" approved="yes">
+        <source>Send password</source>
+        <target state="final">Trimite parola</target>
+      </trans-unit>
+      <trans-unit id="reset_password" resname="reset_password" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">Resetare parolă</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_header" resname="ll_change_password_header" approved="yes">
+        <source>Change your password</source>
+        <target state="final">Modificare parolă</target>
+      </trans-unit>
+      <trans-unit id="change_password" resname="change_password" approved="yes">
+        <source>Change your password</source>
+        <target state="final">Modificare parolă</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label1" resname="newpassword_label1" approved="yes">
+        <source>Enter new password</source>
+        <target state="final">Introduceți noua parolă</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label2" resname="newpassword_label2" approved="yes">
+        <source>Repeat new password</source>
+        <target state="final">Reintroduceți noua parolă</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_header" resname="ll_forgot_header" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">V-aţi uitat parola?</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_email_password" resname="ll_forgot_email_password" xml:space="preserve" approved="yes">
+				<source>Your password
+Hi %s
+
+Your username is "%s"
+Your password is "%s"</source>
+			<target state="final">Parola dumneavoastră
+Bună %s
+
+Numele dumneavoastră de utilizator este: "%s"
+Parola dumneavoastră este: "%s"</target></trans-unit>
+      <trans-unit id="ll_forgot_message_emailSent" resname="ll_forgot_message_emailSent" approved="yes">
+        <source>Your password has now been sent to the email address %s</source>
+        <target state="final">Parola v-a fost trimisă la adresa de email %s</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_reset_message_error" resname="ll_forgot_reset_message_error" approved="yes">
+        <source>Your account or email address does not exist.</source>
+        <target state="final">Contul sau adresa dumneavoastră de email nu există.</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_header_backToLogin" resname="ll_forgot_header_backToLogin" approved="yes">
+        <source>Return to login form</source>
+        <target state="final">Retur la formularul de conectare</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
