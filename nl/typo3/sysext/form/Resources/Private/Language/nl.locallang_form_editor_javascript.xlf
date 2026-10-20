@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_form_editor_javascript.xlf" date="2026-01-26T11:12:56Z" product-name="form" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="formEditor.insert_elements" approved="yes">
+        <source>Insert elements</source>
+        <target state="final">Elementen invoegen</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.new_element" approved="yes">
+        <source>Create new element</source>
+        <target state="final">Nieuw element aanmaken</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.new_element.after" approved="yes">
+        <source>Create new element after</source>
+        <target state="final">Nieuw element aanmaken na</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.new_element.before" approved="yes">
+        <source>Create new element before</source>
+        <target state="final">Nieuw element aanmaken voor</target>
+      </trans-unit>
+      <trans-unit id="formEditor.stage.toolbar.remove" approved="yes">
+        <source>Remove</source>
+        <target state="final">Verwijderen</target>
+      </trans-unit>
+      <trans-unit id="formEditor.step.name.empty" approved="yes">
+        <source>Step name is not set</source>
+        <target state="final">Stapnaam is niet ingesteld</target>
+      </trans-unit>
+      <trans-unit id="formEditor.validation.hasError" approved="yes">
+        <source>Has validation errors</source>
+        <target state="final">Heeft validatiefouten</target>
+      </trans-unit>
+      <trans-unit id="formEditor.validation.childHasError" approved="yes">
+        <source>Contains elements with validation errors</source>
+        <target state="final">Bevat elementen met validatiefouten</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
