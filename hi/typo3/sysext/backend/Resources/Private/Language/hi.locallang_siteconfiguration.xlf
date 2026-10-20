@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1522780424" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="overview.site" resname="overview.site" approved="yes">
+        <source>Site</source>
+        <target state="final">साइट</target>
+      </trans-unit>
+      <trans-unit id="overview.noSiteConfiguration" resname="overview.noSiteConfiguration" approved="yes">
+        <source>This site does not have a configuration, yet.</source>
+        <target state="final">इस साइट के लिए अभी तक कोई कॉन्फ़िगरेशन नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="overview.addSiteConfiguration" resname="overview.addSiteConfiguration" approved="yes">
+        <source>Add new site configuration for this site</source>
+        <target state="final">इस साइट के लिए नया साइट कॉन्फ़िगरेशन जोड़ें</target>
+      </trans-unit>
+      <trans-unit id="overview.deleteSiteConfiguration" resname="overview.deleteSiteConfiguration" approved="yes">
+        <source>Delete site configuration</source>
+        <target state="final">साइट कॉन्फ़िगरेशन हटाएं</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.title" resname="overview.unassignedSites.title" approved="yes">
+        <source>Unassigned site configurations</source>
+        <target state="final">अनिर्धारित साइट कॉन्फ़िगरेशन</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.title" resname="validation.identifierRenamed.title" approved="yes">
+        <source>Renamed identifier</source>
+        <target state="final">पुनःनामित पहचानकर्ता</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.message" resname="validation.identifierRenamed.message" approved="yes">
+        <source>Given site identifier "%1s" already exists. It has been renamed to "%2s". Maybe you want to edit the site again and give it a better name.</source>
+        <target state="final">दिया गया साइट Identifier "%1s" पहले से मौजूद है। इसका नाम बदलकर "%2s" कर दिया गया है। हो सकता है कि आप साइट को फिर से संपादित करके उसे कोई बेहतर नाम देना चाहें।</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.title" resname="validation.identifierExists.title" approved="yes">
+        <source>Identifier not changed</source>
+        <target state="final">Identifier नहीं बदला गया</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.message" resname="validation.identifierExists.message" approved="yes">
+        <source>Given site identifier "%1s" already exists and points to a different site. The existing identifier "%2s" for this site is kept.</source>
+        <target state="final">दिया गया साइट पहचानकर्ता "%1s" पहले से मौजूद है और किसी भिन्न साइट की ओर इंगित करता है। इस साइट के लिए मौजूदा पहचानकर्ता "%2s" रखा गया है।</target>
+      </trans-unit>
+      <trans-unit id="validation.required.title" resname="validation.required.title" approved="yes">
+        <source>Site configuration not saved</source>
+        <target state="final">साइट कॉन्फ़िगरेशन सहेजा नहीं गया</target>
+      </trans-unit>
+      <trans-unit id="validation.required.message" resname="validation.required.message" approved="yes">
+        <source>Field "%1s" is a required field, but no value has been provided.</source>
+        <target state="final">फ़ील्ड "%1s" एक आवश्यक फ़ील्ड है, लेकिन कोई मान प्रदान नहीं किया गया है.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.title" resname="validation.duplicateErrorCode.title" approved="yes">
+        <source>Duplicate error code removed</source>
+        <target state="final">डुप्लिकेट त्रुटि कोड हटाया गया</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.message" resname="validation.duplicateErrorCode.message" approved="yes">
+        <source>Two error handler configurations for error code "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">त्रुटि कोड "%1s" के लिए दो त्रुटि हैंडलर कॉन्फ़िगरेशन मिले। यह एक अमान्य कॉन्फ़िगरेशन होगा, लटकने वाला कॉन्फ़िगरेशन हटा दिया गया है।</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.title" resname="validation.duplicateLanguageId.title" approved="yes">
+        <source>Duplicate language configuration removed</source>
+        <target state="final">डुप्लिकेट भाषा कॉन्फ़िगरेशन हटाया गया</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.message" resname="validation.duplicateLanguageId.message" approved="yes">
+        <source>Two language configurations for language "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">भाषा "%1s" के लिए दो भाषा कॉन्फ़िगरेशन मिले। यह एक अमान्य कॉन्फ़िगरेशन होगा, लटकता हुआ कॉन्फ़िगरेशन हटा दिया गया है।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
