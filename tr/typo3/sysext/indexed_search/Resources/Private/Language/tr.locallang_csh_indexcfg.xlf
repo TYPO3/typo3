@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814832" source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_csh_indexcfg.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="tr">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The Indexed Search configuration allows you to set up indexing of resources which are external to the TYPO3 page tree. This could be a library of records (like news), a directory structure of files (like PDFs) or an external URL to be crawled to some depth - or third-party content provided from other extensions via hooks.</source>
+        <target state="final">İndekslenmiş Arama ayarları, TYPO3 sayfa ağacının dışındaki kaynakların indekslemenize olanak sağlar. Bu bir kayıt kütüphanesi olabileceği gibi ( haberler gibi) , PDF dosyaları içeren bir dizin yapısı, harici bir URL adresinin belirli bir seviyesine kadar taranan bazı içerikler ya da üçüncü parti bir eklenti tarafından sağlanan içerikler olabilir.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>The Indexing Configuration records are used to set up how the indexing occurs, at which time and related to which part of the page tree. An important requirement to keep in mind is that the "crawler" extension must be installed since the indexing engine uses the "crawler" extensions queue as a timing device - and using the "crawler" extension means using a cron-job to activate it from the shell.</source>
+        <target state="final">İndeksleme Genel Ayarları ile , indekslemenin ne kadar sık yapılacağı, ne zaman ve sayfa ağaç yapısının hangi bölümünü kapsayacağı gibi ayarları yapmanız mümkündür. İndekslemeyi kullanabilmek için en önemli gereksinim ise “crawler “ eklentisinin sistemde yüklenmiş olmasıdır. Bu eklenti zaman ayarlayıcı olarak indeksleme motoru tarafından kullanılır. Crawler cron-job benzeri bir işleve sahiptir.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Provide a title for the configuration.</source>
+        <target state="final">Ayarlar için bir başlık girin</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>If needed, give it a description or put other important notes in this field.</source>
+        <target state="final">Eğer ihtiyaç duyarsanız bu alana bir tanımlama ya da önemli botları girebilirsiniz.</target>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Disable the configuration by this checkbox. If disabled, the configuration will be bypassed by the crawlers cron job.</source>
+        <target state="final">Bu kontrol kutusunu kullanarak ayarları etkisizleştirebilirsiniz. Etkisizleştirilen bu ayar , crawler'ın cron-job'u tarafından dikkate alınmaz.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>Notice; Disabling the indexing process will not hide already indexed content in search results!</source>
+        <target state="final">Not: İndeksleme işleminin etkisizleştirilmesi, arama sonuçlarında şimdiye kadar indekslenmiş içeriklerin gizleneceği anlamına gelmez.</target>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Set a start time for the configuration. If set, the configuration will be bypassed by the crawlers cron job until this time is reached.</source>
+        <target state="final">Genel Ayar için bir başlangıç zamanı belirleyin. Eğer belirtilmişse, söz konusu zaman kadar crawler cron-job'u tarafından gözardı edilir.</target>
+      </trans-unit>
+      <trans-unit id="timer_frequency.description" resname="timer_frequency.description" approved="yes">
+        <source>Use this setting to adjust how often you would like a re-indexing process to run for the configuration.</source>
+        <target state="final">Bununla tekrar indeksleme işleminin ne kadar sık çalışacağını ayarlayabilirsiniz.</target>
+      </trans-unit>
+      <trans-unit id="timer_offset.description" resname="timer_offset.description" approved="yes">
+        <source>The offset adjusts at what time of day you want the indexing process to run.</source>
+        <target state="final">Ofset ile her gün indeksleme işleminin günün hangi saatinde çalışacağını ayarlayabilirsiniz.</target>
+      </trans-unit>
+      <trans-unit id="type.description" resname="type.description" approved="yes">
+        <source>Select the type of Indexing Configuration here.</source>
+        <target state="final">İndeksleme ayar tipini burada belirleyin</target>
+      </trans-unit>
+      <trans-unit id="type.details" resname="type.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Records&lt;/b&gt; - You will be able to index records on a specified page from a specified database table. You can determine which fields from that record you want to index and how additional GET parameters should look like when linking to the search result.
+&lt;b&gt;Files&lt;/b&gt; - Allows you to index a whole directory of files from the fileadmin/ folder. You can optionally specify how many levels of recursion you want.
+&lt;b&gt;External URL&lt;/b&gt; - Allows you to index an external site and search it from your TYPO3 installation! You can specify how deep the crawler should go on that external URL.
+&lt;b&gt;Page tree&lt;/b&gt; - Allows you to index the page tree using the cron script. This type will not be useful as a category for searching like the other types.
+&lt;b&gt;Meta configuration&lt;/b&gt; - Points to a collection of other indexing configurations in which the search will be done. Cannot be used for cron-job based indexing.
+&lt;b&gt;Custom&lt;/b&gt; - Other extensions might register custom types of configurations.</source>
+			<target state="final">&lt;b&gt;Kayıtlar&lt;/b&gt; - İstediğiniz bir veritabanı tablosundan, belli bir sayfadaki kayıtları indekslemeniz mümkündür. Kayıttan hangi alanların indeksleneceğine kendiniz karar verebilirsiniz ve arama sonuçlarının bağlantılarına istediğiniz gibi ek parametreleri ekleyebilirsiniz. &lt;b&gt;Dosyalar&lt;/b&gt; - fileadmin/dizinindeki dosyaları indekslemenize olanak sağlar. Dileğinize göre, indeksleme işleminin ne kadar seviye derine ineceğini belirtebilirsiniz. &lt;b&gt;Harici URL&lt;/b&gt; - Harici bir siteyi indekslemenize olanak sağlar ve TYPO3 ile kurulumunuzdan bu sitede arama yapamabilirsiniz! Crawler'ın harici URL adresinde ne kadar derine gideceğini kendiniz belirleyebilirsiniz. &lt;b&gt;Sayfa Ağacı&lt;/b&gt; Cron betiği kullanarak sayfa ağaç yapısını indeksleyebilirsiniz. Bir kategori olarak bu tip diğer arama tipleri gibi faydalı olmayacaktır. &lt;b&gt;Meta Ayar&lt;/b&gt; - Genel indeksleme ayarlarını içerir. Cron-job tabanlı indeksleme için kullanılamaz. &lt;b&gt;Custom&lt;/b&gt; -diğer eklentiler</target></trans-unit>
+      <trans-unit id="table2index.description" resname="table2index.description" approved="yes">
+        <source>Specify the database table to index records from.</source>
+        <target state="final">Kayıtları indekslenecek bir veritabanı tablosunu belirtin</target>
+      </trans-unit>
+      <trans-unit id="alternative_source_pid.description" resname="alternative_source_pid.description" approved="yes">
+        <source>By default the indexer will select records from the page id where the Indexing Configuration is stored. If you want an alternative page as the source of your records you can enter it here.</source>
+        <target state="final">Varsayılan olarak indeksleyici, indexleme ayarlarında ki sayfa nosundan kayıtları seçecektir. Eğer kayıtlarınız için alternatif bir sayfa girmek istiyorsanız, burada girebilirsiniz.</target>
+      </trans-unit>
+      <trans-unit id="get_params.description" resname="get_params.description" approved="yes">
+        <source>Enter the GET parameters necessary to display the search results. You can use ###UID### as a marker in the parameter template.</source>
+        <target state="final">Arama sonuçlarını göstermek için GET parametrelei girmek gereklidir. Parametre şablonunda işaretleyici olarak ###UID### kullanabilirsiniz.</target>
+      </trans-unit>
+      <trans-unit id="get_params.details" resname="get_params.details" xml:space="preserve" approved="yes">
+				<source>Notice: The GET parameters are appended to the URL of the page where the Indexing Configuration is stored (which must be the page where a plugin exists that can display the records with the given parameters!).
+Example value: "&amp;showUid=###UID###"</source>
+			<target state="final">Not: GET parametreleri, İndeks Ayarlarında tanımlanmıştır ve sayfaların URL adreslerine eklenirler. Örnek değer: “&amp;showUid=###UID###”</target></trans-unit>
+      <trans-unit id="fieldlist.description" resname="fieldlist.description" approved="yes">
+        <source>Enter a comma-list of fields to be indexed. The first field name will be used for the search result title.</source>
+        <target state="final">İndekslenecek alanların , virgüllerle ayrılmış bir listesini girin. İlk alan adı arama sonuç başlığı için kullanılacaktır.</target>
+      </trans-unit>
+      <trans-unit id="fieldlist.details" resname="fieldlist.details" approved="yes">
+        <source>&lt;b&gt;Example:&lt;/b&gt; "header,bodytext,image_caption" would index the Header, Bodytext and Image Caption fields from "tt_content". Notice that you must use the real database field names, don't spell them wrong!</source>
+        <target state="final">&lt;b&gt;Örnek:&lt;/b&gt; “header,bodytext, image_caption” “tt_content” eklentisindeki Header, Bodytext ve Image Caption alanlarını indeksleyebilir. Veritabanı tablosundaki alanların birebir tanımlanmış olduğuna dikkat edin ve yanlış yazmamaya özen gösterin!</target>
+      </trans-unit>
+      <trans-unit id="recordsbatch.description" resname="recordsbatch.description" approved="yes">
+        <source>Enter how many records to index for each instance of the indexing process (how many per minute). Default is 100 records.</source>
+        <target state="final">Her bir indeksleme işlemi için ne kadar kaydın indekslemeye tabi tutulacağını belirtin (dakikada kaç adet ) . Varsayılan değer 100 kayıttır.</target>
+      </trans-unit>
+      <trans-unit id="externalUrl.description" resname="externalUrl.description" approved="yes">
+        <source>Enter the URL of the external website you want to index.</source>
+        <target state="final">İndekslemek istediğiniz harici bir web sitesinin URL adresini girin.</target>
+      </trans-unit>
+      <trans-unit id="url_deny.description" resname="url_deny.description" approved="yes">
+        <source>Enter a URL on each line inside of which the crawler should not decend.</source>
+        <target state="final">Her bir satıra crawler tarafından dikkate alınmayacak bir URL adresi girin.</target>
+      </trans-unit>
+      <trans-unit id="filepath.description" resname="filepath.description" approved="yes">
+        <source>Enter a filepath inside fileadmin/ where you want the files to be indexed.</source>
+        <target state="final">Fileadmin/ dizini altında, içindeki dosyaların indekslenmesini istediğiniz bir dosya yolu girin.</target>
+      </trans-unit>
+      <trans-unit id="filepath.details" resname="filepath.details" approved="yes">
+        <source>Example: "fileadmin/newsletters/"</source>
+        <target state="final">Örnek: “fileadmin/newsletters/”</target>
+      </trans-unit>
+      <trans-unit id="extensions.description" resname="extensions.description" approved="yes">
+        <source>If you want to index only specific files in the directory, enter a list of file extensions here. For example: "html,pdf,doc"</source>
+        <target state="final">Eğer dizindeki belli dosya tiplerini indekslemek istiyorsanız, dosya uzantılarının bir listesini girin. Örneğin: “html,pdf,doc”</target>
+      </trans-unit>
+      <trans-unit id="depth.description" resname="depth.description" approved="yes">
+        <source>Levels of recursion.</source>
+        <target state="final">Tekrarlama seviyesi</target>
+      </trans-unit>
+      <trans-unit id="depth.details" resname="depth.details" approved="yes">
+        <source>For file indexing it is the level of directories to decend. For External URLs it's the depth to which the crawler will go with links.</source>
+        <target state="final">Dosya indekslemesi için hangi seviyeye kadar alt dizinlerin dikkate alınacağını belirtir. Harici URL'ler için ise, crawler'ın bağlantılarda ne kadar seviyeye kadar gideceğini belirtir.</target>
+      </trans-unit>
+      <trans-unit id="indexcfgs.description" resname="indexcfgs.description" approved="yes">
+        <source>When a search is conducted in this indexing configuration the actual search will take place in the indexed content from the configurations listed here. You can also enter pages and if you do so the search will take place in indexing configurations found on those pages.</source>
+        <target state="final">Bir arama bu indeksleme ayarına göre gerçekleştiği zaman, aktüel arama işlemi burada listelenen genel ayarlara göre gerçekleşecektir. Kendiniz de sayfalar girebilir ve eğer böyle arama yaparsanız, bu arama sizin belirtmiş olduğunuz sayfalarda bulunana indeksleme ayarlarına göre yapılacaktır.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
