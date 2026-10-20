@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang.xlf" date="2023-02-15T18:03:32Z" product-name="beuser" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="userName" approved="yes">
+        <source>Username</source>
+        <target state="final">Nome utente</target>
+      </trans-unit>
+      <trans-unit id="avatar" approved="yes">
+        <source>Avatar</source>
+        <target state="final">Avatar</target>
+      </trans-unit>
+      <trans-unit id="realName" approved="yes">
+        <source>Real name</source>
+        <target state="final">Nome reale</target>
+      </trans-unit>
+      <trans-unit id="name" approved="yes">
+        <source>Name</source>
+        <target state="final">Nome</target>
+      </trans-unit>
+      <trans-unit id="email" approved="yes">
+        <source>Email</source>
+        <target state="final">Email</target>
+      </trans-unit>
+      <trans-unit id="admin" approved="yes">
+        <source>Admin</source>
+        <target state="final">Admin</target>
+      </trans-unit>
+      <trans-unit id="users" approved="yes">
+        <source>Users</source>
+        <target state="final">Utenti</target>
+      </trans-unit>
+      <trans-unit id="user" approved="yes">
+        <source>User</source>
+        <target state="final">Utente</target>
+      </trans-unit>
+      <trans-unit id="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Sì</target>
+      </trans-unit>
+      <trans-unit id="no" approved="yes">
+        <source>No</source>
+        <target state="final">No</target>
+      </trans-unit>
+      <trans-unit id="never" approved="yes">
+        <source>Never</source>
+        <target state="final">Mai</target>
+      </trans-unit>
+      <trans-unit id="disable" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Abilitato</target>
+      </trans-unit>
+      <trans-unit id="startDateAndTime" approved="yes">
+        <source>Start</source>
+        <target state="final">Avvia</target>
+      </trans-unit>
+      <trans-unit id="endDateAndTime" approved="yes">
+        <source>Stop</source>
+        <target state="final">Ferma</target>
+      </trans-unit>
+      <trans-unit id="lastLogin" approved="yes">
+        <source>Last login</source>
+        <target state="final">Ultimo accesso</target>
+      </trans-unit>
+      <trans-unit id="allowedLanguages" approved="yes">
+        <source>Limit to languages</source>
+        <target state="final">Limita alle lingue</target>
+      </trans-unit>
+      <trans-unit id="pageTreeEntryPoints" approved="yes">
+        <source>Page Tree Entry Points</source>
+        <target state="final">Punti di ingresso per l'Albero delle Pagine</target>
+      </trans-unit>
+      <trans-unit id="fileMounts" approved="yes">
+        <source>File mountpoints</source>
+        <target state="final">File Mounts - Nodi Albero delle Cartelle</target>
+      </trans-unit>
+      <trans-unit id="groups" approved="yes">
+        <source>Groups</source>
+        <target state="final">Gruppi</target>
+      </trans-unit>
+      <trans-unit id="inheritance" approved="yes">
+        <source>Inheritance</source>
+        <target state="final">Ereditarietà</target>
+      </trans-unit>
+      <trans-unit id="group" approved="yes">
+        <source>Group</source>
+        <target state="final">Gruppo</target>
+      </trans-unit>
+      <trans-unit id="languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">Lingue</target>
+      </trans-unit>
+      <trans-unit id="categories" approved="yes">
+        <source>Categories</source>
+        <target state="final">Categorie</target>
+      </trans-unit>
+      <trans-unit id="permissions" approved="yes">
+        <source>Permissions</source>
+        <target state="final">Permessi</target>
+      </trans-unit>
+      <trans-unit id="modules" approved="yes">
+        <source>Modules</source>
+        <target state="final">Moduli</target>
+      </trans-unit>
+      <trans-unit id="tableModes.read" approved="yes">
+        <source>Read</source>
+        <target state="final">Lettura</target>
+      </trans-unit>
+      <trans-unit id="tableModes.write" approved="yes">
+        <source>Read &amp; Write</source>
+        <target state="final">Lettura &amp; Scrittura</target>
+      </trans-unit>
+      <trans-unit id="mountsWorkspaces" approved="yes">
+        <source>Mounts and workspaces</source>
+        <target state="final">Montaggi e Workspace</target>
+      </trans-unit>
+      <trans-unit id="options" approved="yes">
+        <source>Options</source>
+        <target state="final">Opzioni</target>
+      </trans-unit>
+      <trans-unit id="allowedPageContentTypes" approved="yes">
+        <source>Allowed page content types</source>
+        <target state="final">Tipi di contenuto pagina consentiti</target>
+      </trans-unit>
+      <trans-unit id="generalPermissions" approved="yes">
+        <source>General permissions</source>
+        <target state="final">Permessi generali</target>
+      </trans-unit>
+      <trans-unit id="compare.tables" approved="yes">
+        <source>Table permissions</source>
+        <target state="final">Permessi tabella</target>
+      </trans-unit>
+      <trans-unit id="compare.direct.inherit" approved="yes">
+        <source>Inherit</source>
+        <target state="final">Eredita</target>
+      </trans-unit>
+      <trans-unit id="compare.direct.direct" approved="yes">
+        <source>Direct</source>
+        <target state="final">Diretto</target>
+      </trans-unit>
+      <trans-unit id="information.defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="information.defaultWorkspace" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="information.groups.table.column.groupTitle" approved="yes">
+        <source>Group title</source>
+        <target state="final">Titolo del gruppo</target>
+      </trans-unit>
+      <!-- Docheader menu / Shortcut button title -->
+      <trans-unit id="backendUser" approved="yes">
+        <source>Backend User</source>
+        <target state="final">Utente di Backend</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup" approved="yes">
+        <source>Backend User Group</source>
+        <target state="final">Gruppo Utenti di Backend</target>
+      </trans-unit>
+      <trans-unit id="backendUsers" approved="yes">
+        <source>Backend users</source>
+        <target state="final">Utenti del backend</target>
+      </trans-unit>
+      <trans-unit id="backendUserDetails" approved="yes">
+        <source>Backend user details</source>
+        <target state="final">Dettagli utente di backend</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroupsMenu" approved="yes">
+        <source>Backend user groups</source>
+        <target state="final">Gruppi di utenti di Backend</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroupDetails" approved="yes">
+        <source>Backend user group details</source>
+        <target state="final">Dettagli gruppo utenti di backend</target>
+      </trans-unit>
+      <trans-unit id="compareBackendUsers" approved="yes">
+        <source>Compare backend users</source>
+        <target state="final">Confronta gli utenti di backend</target>
+      </trans-unit>
+      <trans-unit id="compareBackendUsersGroups" approved="yes">
+        <source>Compare backend user groups</source>
+        <target state="final">Confronta i gruppi di utenti di backend</target>
+      </trans-unit>
+      <trans-unit id="onlineUsers" approved="yes">
+        <source>Online users</source>
+        <target state="final">Utenti online</target>
+      </trans-unit>
+      <!-- Button / Links -->
+      <trans-unit id="btn.addToCompareList" approved="yes">
+        <source>Add to compare list</source>
+        <target state="final">Aggiungi alla lista di confronto</target>
+      </trans-unit>
+      <trans-unit id="btn.backendUser.create" approved="yes">
+        <source>Create new backend user</source>
+        <target state="final">Crea un nuovo utente di backend</target>
+      </trans-unit>
+      <trans-unit id="btn.editor.create" approved="yes">
+        <source>Create editor</source>
+        <target state="final">Crea editore</target>
+      </trans-unit>
+      <trans-unit id="btn.admin.create" approved="yes">
+        <source>Create admin</source>
+        <target state="final">Crea admin</target>
+      </trans-unit>
+      <trans-unit id="btn.backendUserGroup.create" approved="yes">
+        <source>Create new backend user group</source>
+        <target state="final">Crea un nuovo gruppo utenti di backend</target>
+      </trans-unit>
+      <trans-unit id="btn.clearCompareList" approved="yes">
+        <source>Clear compare list</source>
+        <target state="final">Cancella elenco di confronto</target>
+      </trans-unit>
+      <trans-unit id="btn.compare" approved="yes">
+        <source>Compare</source>
+        <target state="final">Confronta</target>
+      </trans-unit>
+      <trans-unit id="btn.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Elimina</target>
+      </trans-unit>
+      <trans-unit id="btn.details" approved="yes">
+        <source>Show details</source>
+        <target state="final">Mostra dettagli</target>
+      </trans-unit>
+      <trans-unit id="btn.disable" approved="yes">
+        <source>Disable</source>
+        <target state="final">Disabilita</target>
+      </trans-unit>
+      <trans-unit id="btn.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Modifica</target>
+      </trans-unit>
+      <trans-unit id="btn.enable" approved="yes">
+        <source>Enable</source>
+        <target state="final">Abilita</target>
+      </trans-unit>
+      <trans-unit id="btn.info" approved="yes">
+        <source>Info</source>
+        <target state="final">Informazioni</target>
+      </trans-unit>
+      <trans-unit id="btn.removeFromCompareList" approved="yes">
+        <source>Remove from compare list</source>
+        <target state="final">Rimuovi dalla lista di confronto</target>
+      </trans-unit>
+      <!-- Filter -->
+      <trans-unit id="filter" approved="yes">
+        <source>Filter</source>
+        <target state="final">Filtro</target>
+      </trans-unit>
+      <trans-unit id="reset" approved="yes">
+        <source>Reset</source>
+        <target state="final">Ripristina</target>
+      </trans-unit>
+      <!-- Pagination -->
+      <trans-unit id="pagination.previous" approved="yes">
+        <source>previous</source>
+        <target state="final">precedente</target>
+      </trans-unit>
+      <trans-unit id="pagination.next" approved="yes">
+        <source>next</source>
+        <target state="final">successivo</target>
+      </trans-unit>
+      <trans-unit id="pagination.first" approved="yes">
+        <source>first</source>
+        <target state="final">primo</target>
+      </trans-unit>
+      <trans-unit id="pagination.last" approved="yes">
+        <source>last</source>
+        <target state="final">ultimo</target>
+      </trans-unit>
+      <trans-unit id="pagination.records" approved="yes">
+        <source>Records</source>
+        <target state="final">Record</target>
+      </trans-unit>
+      <trans-unit id="pagination.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Pagina</target>
+      </trans-unit>
+      <trans-unit id="pagination.refresh" approved="yes">
+        <source>Refresh</source>
+        <target state="final">Aggiorna</target>
+      </trans-unit>
+      <!-- Backend users: General (ViewHelper labels, etc.) -->
+      <trans-unit id="switchBackMode" approved="yes">
+        <source>Switch to user</source>
+        <target state="final">Simula utente</target>
+      </trans-unit>
+      <trans-unit id="lockedMfaProviders" approved="yes">
+        <source>Locked MFA providers</source>
+        <target state="final">Provider MFA bloccati</target>
+      </trans-unit>
+      <trans-unit id="mfaEnabled" approved="yes">
+        <source>MFA enabled</source>
+        <target state="final">MFA abilitato</target>
+      </trans-unit>
+      <!-- Backend users: List -->
+      <trans-unit id="backendUser.list.title" approved="yes">
+        <source>Backend users</source>
+        <target state="final">Utenti di backend</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.section.compare" approved="yes">
+        <source>Backend users to compare</source>
+        <target state="final">Utenti di backend da confrontare</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.section.allUsers" approved="yes">
+        <source>Backend users in the system</source>
+        <target state="final">Utenti di backend nel sistema</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.btn.compareList" approved="yes">
+        <source>Compare selected backend users</source>
+        <target state="final">Confronta gli utenti di backend selezionati</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.table.column.group" approved="yes">
+        <source>Group</source>
+        <target state="final">Gruppo</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.group" approved="yes">
+        <source>Group</source>
+        <target state="final">Gruppo</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.loginState" approved="yes">
+        <source>Login state</source>
+        <target state="final">Stato login</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.loginState.all" approved="yes">
+        <source>All</source>
+        <target state="final">Tutti</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.loginState.loginBefore" approved="yes">
+        <source>Logged in before</source>
+        <target state="final">Ha fatto login in precedenza</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.loginState.never" approved="yes">
+        <source>Never logged in</source>
+        <target state="final">Non ha mai fatto login</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.loginState.loggedIn" approved="yes">
+        <source>Currently logged in</source>
+        <target state="final">Attualmente connesso</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.status" approved="yes">
+        <source>Status</source>
+        <target state="final">Stato</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.status.all" approved="yes">
+        <source>All</source>
+        <target state="final">Tutti</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.status.enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Abilitato</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.status.disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Disabilitato</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.userType" approved="yes">
+        <source>Type</source>
+        <target state="final">Tipo</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.userType.all" approved="yes">
+        <source>All</source>
+        <target state="final">Tutti</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.userType.admin" approved="yes">
+        <source>Admin</source>
+        <target state="final">Amministratore</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.userType.normalUser" approved="yes">
+        <source>Normal user</source>
+        <target state="final">Utente normale</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.label.online" approved="yes">
+        <source>online</source>
+        <target state="final">online</target>
+      </trans-unit>
+      <trans-unit id="backendUser.confirmDelete" approved="yes">
+        <source>Are you sure you want to delete the backend user '%s'?</source>
+        <target state="final">Sei sicuro di voler eliminare l'utente di backend %s'?</target>
+      </trans-unit>
+      <!-- Backend users: Show -->
+      <trans-unit id="backendUser.show.title" approved="yes">
+        <source>Configuration of backend user "%s"</source>
+        <target state="final">Configurazione dell'utente di backend "%s"</target>
+      </trans-unit>
+      <trans-unit id="backendUser.show.notConfigured" approved="yes">
+        <source>Not configured.</source>
+        <target state="final">Non configurato.</target>
+      </trans-unit>
+      <trans-unit id="backendUser.show.infobox.title" approved="yes">
+        <source>Compiled rights and settings</source>
+        <target state="final">Permessi e impostazioni</target>
+      </trans-unit>
+      <trans-unit id="backendUser.show.infobox.message" approved="yes">
+        <source>This view displays all compiled rights and settings of the selected backend user. These can come from settings in the backend user record itself, as well as from settings that have been stored in backend user groups assigned to this backend user.</source>
+        <target state="final">Qui sono visualizzi tutti i permessi e le impostazioni dell'utente di backend selezionato. Questi possono provenire da impostazioni nel record utente backend, così come dalle impostazioni che sono state memorizzate in gruppi di utenti backend assegnati a questo utente backend.</target>
+      </trans-unit>
+      <!-- Backend users: Compare -->
+      <trans-unit id="backendUser.compare.title" approved="yes">
+        <source>Compare backend users</source>
+        <target state="final">Confronta gli utenti di backend</target>
+      </trans-unit>
+      <!-- Backend users: Online -->
+      <trans-unit id="backendUser.online.title" approved="yes">
+        <source>Online users</source>
+        <target state="final">Utenti online</target>
+      </trans-unit>
+      <trans-unit id="backendUser.online.table.column.ipAddress" approved="yes">
+        <source>IP address</source>
+        <target state="final">Indirizzo IP</target>
+      </trans-unit>
+      <trans-unit id="backendUser.online.table.column.lastAccess" approved="yes">
+        <source>Last access</source>
+        <target state="final">Ultimo accesso</target>
+      </trans-unit>
+      <trans-unit id="backendUser.online.activeSession" approved="yes">
+        <source>Active session</source>
+        <target state="final">Sessione attiva</target>
+      </trans-unit>
+      <trans-unit id="backendUser.online.flashMessage.terminateSessionSuccess" approved="yes">
+        <source>Session successfully terminated.</source>
+        <target state="final">Sessione terminata con successo.</target>
+      </trans-unit>
+      <trans-unit id="backendUser.online.reallyLogout" approved="yes">
+        <source>Really logout</source>
+        <target state="final">Effettua il logout</target>
+      </trans-unit>
+      <trans-unit id="backendUser.online.endSession" approved="yes">
+        <source>End session</source>
+        <target state="final">Termina sessione</target>
+      </trans-unit>
+      <!-- Backend user groups: List -->
+      <trans-unit id="backendUserGroup.list.title" approved="yes">
+        <source>Backend user groups</source>
+        <target state="final">Gruppi utente di backend</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.noGroupsFound.title" approved="yes">
+        <source>No backend user groups found</source>
+        <target state="final">Nessun gruppo utente di backend trovato</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.noGroupsFound.message" approved="yes">
+        <source>There are currently no backend user groups found in the database.</source>
+        <target state="final">Al momento non ci sono gruppi utenti di backend nel database.</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.list.section.compare" approved="yes">
+        <source>Backend user groups to compare</source>
+        <target state="final">Gruppi di utenti di backend da confrontare</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.list.section.allUserGroups" approved="yes">
+        <source>Backend user groups in the system</source>
+        <target state="final">Gruppi di utenti di backend nel sistema</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.list.btn.compareList" approved="yes">
+        <source>Compare selected backend user groups</source>
+        <target state="final">Confronta i gruppi di utenti di backend selezionati</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.list.filter.groupTitle" approved="yes">
+        <source>Group title or group ID</source>
+        <target state="final">Titolo del gruppo o ID del gruppo</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.list.table.column.groupTitle" approved="yes">
+        <source>Group title</source>
+        <target state="final">Titolo del gruppo</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.list.table.column.subgroup" approved="yes">
+        <source>Inherit settings from groups</source>
+        <target state="final">Eredita le impostazioni dai gruppi</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.confirmDelete" approved="yes">
+        <source>Are you sure you want to delete the backend user group '%s'?</source>
+        <target state="final">Sei sicuro di voler eliminare il gruppo utenti di backend '%s'?</target>
+      </trans-unit>
+      <!-- Backend user groups: Show -->
+      <trans-unit id="backendUserGroup.show.title" approved="yes">
+        <source>Configuration of backend user group "%s"</source>
+        <target state="final">Configurazione del gruppo utenti di backend "%s"</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.show.notConfigured" approved="yes">
+        <source>Not configured.</source>
+        <target state="final">Non configurato.</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.show.infobox.title" approved="yes">
+        <source>Compiled rights and settings</source>
+        <target state="final">Permessi ed impostazioni compilate</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.show.infobox.message" approved="yes">
+        <source>This view displays all compiled rights and settings of the selected backend user group. These can come from settings in the backend user group record itself, as well as from settings that have been stored in backend user groups assigned to this backend user group.</source>
+        <target state="final">Qui sono visualizzati tutti i permessi e le impostazioni compilate relative al gruppo utenti di backend selezionato. Questi possono provenire da impostazioni all'interno dello stesso gruppo utenti backend, così come dalle impostazioni che sono state impostate inaltri gruppi di utenti backend, e assegnati a questo gruppo utenti di backend.</target>
+      </trans-unit>
+      <!-- Backend user groups: Compare -->
+      <trans-unit id="backendUserGroup.compare.title" approved="yes">
+        <source>Compare backend user groups</source>
+        <target state="final">Confronta i gruppi di utenti di backend</target>
+      </trans-unit>
+      <!-- File mounts -->
+      <trans-unit id="filemounts" approved="yes">
+        <source>File mounts</source>
+        <target state="final">Filemount</target>
+      </trans-unit>
+      <trans-unit id="filemount.list.title" approved="yes">
+        <source>File Mounts</source>
+        <target state="final">Filemount</target>
+      </trans-unit>
+      <trans-unit id="filemount.confirm.deletion" approved="yes">
+        <source>Are you sure, that you want to delete the file mount "%s"?</source>
+        <target state="final">Sei sicuro, di voler eliminare il filemount "%s"?</target>
+      </trans-unit>
+      <trans-unit id="filemount.create" approved="yes">
+        <source>Create new file mount</source>
+        <target state="final">Crea un nuovo filemount</target>
+      </trans-unit>
+      <trans-unit id="filemount.infobox.noFilemountFound.title" approved="yes">
+        <source>No file mount found</source>
+        <target state="final">Nessun filemount trovato</target>
+      </trans-unit>
+      <trans-unit id="filemount.infobox.noFilemountFound.message" approved="yes">
+        <source>Please create a file mount and select its entry point.</source>
+        <target state="final">Crea un filemount e seleziona il suo punto di ingresso.</target>
+      </trans-unit>
+      <trans-unit id="filemount.link.openInFilelist" approved="yes">
+        <source>Open in file list</source>
+        <target state="final">Apri in lista file</target>
+      </trans-unit>
+      <trans-unit id="filemount.amount.multiple" approved="yes">
+        <source>File mounts</source>
+        <target state="final">Filemount</target>
+      </trans-unit>
+      <trans-unit id="filemount.amount.singular" approved="yes">
+        <source>File mount</source>
+        <target state="final">Filemount</target>
+      </trans-unit>
+      <!-- Password reset -->
+      <trans-unit id="flashMessage.resetPassword.error.title" approved="yes">
+        <source>Password reset not triggered</source>
+        <target state="final">Ripristino della password non avviato</target>
+      </trans-unit>
+      <trans-unit id="flashMessage.resetPassword.error.text" approved="yes">
+        <source>Sorry, the password of this user cannot be reset.</source>
+        <target state="final">Spiacenti, la password di questo utente non può essere ripristinata.</target>
+      </trans-unit>
+      <trans-unit id="flashMessage.resetPassword.success.title" approved="yes">
+        <source>Password reset triggered</source>
+        <target state="final">Ripristino password avviato</target>
+      </trans-unit>
+      <trans-unit id="flashMessage.resetPassword.success.text" approved="yes">
+        <source>Password reset for email address %s initiated.</source>
+        <target state="final">Ripristino della password per l'indirizzo email %s iniziato.</target>
+      </trans-unit>
+      <trans-unit id="resetPassword.label" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">Ripristina Password</target>
+      </trans-unit>
+      <trans-unit id="resetPassword.confirmation.header" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">Ripristina Password</target>
+      </trans-unit>
+      <trans-unit id="resetPassword.confirmation.text" approved="yes">
+        <source>Are you sure you want to reset the password for %s?</source>
+        <target state="final">Sei sicuro di voler ripristinare la password per %s?</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
