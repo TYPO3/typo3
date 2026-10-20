@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="bs">
+    <header/>
+    <body>
+      <trans-unit id="clip_pasteAfter" approved="yes">
+        <source>Paste after: Clipboard content is inserted after this record</source>
+        <target state="final">Zalijepi nakon: Sadržaj memorije je ubačen nakon ovog zapisa</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted on this page</source>
+        <target state="final">Zalijepi u: Sadržaj memorije je ubačen na stranicu</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">Zalijepi sadržaj memorije</target>
+      </trans-unit>
+      <trans-unit id="clip_markRecords" approved="yes">
+        <source>Mark All/Mark none</source>
+        <target state="final">Označi sve/označi ništa</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" approved="yes">
+        <source>Transfer the selection of records to clipboard</source>
+        <target state="final">Prenesi odabrane zapise u memoriju</target>
+      </trans-unit>
+      <trans-unit id="clip_duplicates" approved="yes">
+        <source>Mark duplicates</source>
+        <target state="final">Označi duplikate</target>
+      </trans-unit>
+      <trans-unit id="clip_editMarked" approved="yes">
+        <source>Edit marked</source>
+        <target state="final">Uredi označeno</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" approved="yes">
+        <source>Delete marked</source>
+        <target state="final">Obriši označeno</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarkedWarning" approved="yes">
+        <source>Are you sure you want to delete all marked records from the table '%s'?</source>
+        <target state="final">Sigurno želite pobrisati sve odbrane zapise iz tabele '%s'?</target>
+      </trans-unit>
+      <trans-unit id="edit" approved="yes">
+        <source>Edit record</source>
+        <target state="final">Uređuj zapise</target>
+      </trans-unit>
+      <trans-unit id="editPage" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">Uređuj header stranice</target>
+      </trans-unit>
+      <trans-unit id="new" approved="yes">
+        <source>New record</source>
+        <target state="final">Novi zapis</target>
+      </trans-unit>
+      <trans-unit id="newPage" approved="yes">
+        <source>Create new page after this page</source>
+        <target state="final">Napravi novu stranicu nakon ove stranice</target>
+      </trans-unit>
+      <trans-unit id="newRecord" approved="yes">
+        <source>Create new record after this record</source>
+        <target state="final">Napravi novi zapis iza ovog zapisa</target>
+      </trans-unit>
+      <trans-unit id="newRecordGeneral" approved="yes">
+        <source>Create new record</source>
+        <target state="final">Napravi novi zapis</target>
+      </trans-unit>
+      <trans-unit id="moveUp" approved="yes">
+        <source>Move up in list</source>
+        <target state="final">Pomakni prema gore u popisu</target>
+      </trans-unit>
+      <trans-unit id="moveDown" approved="yes">
+        <source>Move down in list</source>
+        <target state="final">Pomakni prema dolje u popisu</target>
+      </trans-unit>
+      <trans-unit id="move_record" approved="yes">
+        <source>Re-position content element</source>
+        <target state="final">Repozicioniraj element sadržaja</target>
+      </trans-unit>
+      <trans-unit id="move_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">Premjesti stranicu</target>
+      </trans-unit>
+      <trans-unit id="hide" approved="yes">
+        <source>Hide record</source>
+        <target state="final">Sakri zapis</target>
+      </trans-unit>
+      <trans-unit id="unHide" approved="yes">
+        <source>Un-hide record</source>
+        <target state="final">Otkri zapis</target>
+      </trans-unit>
+      <trans-unit id="hidePage" approved="yes">
+        <source>Hide page</source>
+        <target state="final">Sakri stranicu</target>
+      </trans-unit>
+      <trans-unit id="unHidePage" approved="yes">
+        <source>Un-hide page</source>
+        <target state="final">Otkri stranicu</target>
+      </trans-unit>
+      <trans-unit id="prevLevel" approved="yes">
+        <source>Move this page to the position after the current parent page (Inwards)</source>
+        <target state="final">Premjesti ovu stranicu na poziciju iza trenutne "parent" stranice (Unutra)</target>
+      </trans-unit>
+      <trans-unit id="nextLevel" approved="yes">
+        <source>Move this page to be a subpage of the page above (Outwards)</source>
+        <target state="final">Premjesti ovu stranicu da bude podstranica stranice iznad (Van)</target>
+      </trans-unit>
+      <trans-unit id="permissions" approved="yes">
+        <source>Set permissions for page</source>
+        <target state="final">Postavi dozvole za stranicu</target>
+      </trans-unit>
+      <trans-unit id="largeControl" approved="yes">
+        <source>Extended view</source>
+        <target state="final">Prošireni pogled</target>
+      </trans-unit>
+      <trans-unit id="contractView" approved="yes">
+        <source>List all tables</source>
+        <target state="final">Izlistaj sve tabele</target>
+      </trans-unit>
+      <trans-unit id="expandView" approved="yes">
+        <source>List only this table</source>
+        <target state="final">Izlistaj samo ovu stranicu</target>
+      </trans-unit>
+      <trans-unit id="showClipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">Prikaži memoriju</target>
+      </trans-unit>
+      <trans-unit id="editShownColumns" approved="yes">
+        <source>Edit all shown fields of the listed records</source>
+        <target state="final">Uređuj sva prikazana polja izlistanih zapisa</target>
+      </trans-unit>
+      <trans-unit id="editThisColumn" approved="yes">
+        <source>Edit the '%s' field of the listed records</source>
+        <target state="final">Edituj '%s' polje izlistanih zapisa</target>
+      </trans-unit>
+      <trans-unit id="localization" approved="yes">
+        <source>Localization view</source>
+        <target state="final">Lokalizacijski pogled</target>
+      </trans-unit>
+      <trans-unit id="defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">Standardno</target>
+      </trans-unit>
+      <trans-unit id="multipleLanguages" approved="yes">
+        <source>All languages</source>
+        <target state="final">Svi jezici</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
