@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1520862805" source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_info.xlf" date="2018-03-12T13:52:01Z" product-name="adminpanel" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="module.label" resname="module.label">
+        <source>Info</source>
+        <target>crwdns67412:0crwdne67412:0</target>
+      </trans-unit>
+      <trans-unit id="module.shortinfo" resname="module.shortinfo">
+        <source>(Load Time: %s ms)</source>
+        <target>crwdns67414:0%scrwdne67414:0</target>
+      </trans-unit>
+      <trans-unit id="imagesOnPage" resname="imagesOnPage">
+        <source>Images on this page</source>
+        <target>crwdns67416:0crwdne67416:0</target>
+      </trans-unit>
+      <trans-unit id="imagesSize" resname="imagesSize">
+        <source>Total image file sizes</source>
+        <target>crwdns67418:0crwdne67418:0</target>
+      </trans-unit>
+      <trans-unit id="DocumentSize" resname="DocumentSize">
+        <source>Document size</source>
+        <target>crwdns67420:0crwdne67420:0</target>
+      </trans-unit>
+      <trans-unit id="pageUid" resname="pageUid">
+        <source>Page Uid</source>
+        <target>crwdns67422:0crwdne67422:0</target>
+      </trans-unit>
+      <trans-unit id="pageType" resname="pageType">
+        <source>Page type</source>
+        <target>crwdns67424:0crwdne67424:0</target>
+      </trans-unit>
+      <trans-unit id="groupList" resname="groupList">
+        <source>Frontenduser group combination</source>
+        <target>crwdns67426:0crwdne67426:0</target>
+      </trans-unit>
+      <trans-unit id="noCache" resname="noCache">
+        <source>Page cached</source>
+        <target>crwdns67428:0crwdne67428:0</target>
+      </trans-unit>
+      <trans-unit id="noCache_yes" resname="noCache_yes">
+        <source>Yes</source>
+        <target>crwdns67430:0crwdne67430:0</target>
+      </trans-unit>
+      <trans-unit id="noCache_no" resname="noCache_no">
+        <source>No</source>
+        <target>crwdns67432:0crwdne67432:0</target>
+      </trans-unit>
+      <trans-unit id="countUserInt" resname="countUserInt">
+        <source>Count of USER_INT objects</source>
+        <target>crwdns67434:0crwdne67434:0</target>
+      </trans-unit>
+      <trans-unit id="feuserName" resname="feuserName">
+        <source>Name of logged in FE-User</source>
+        <target>crwdns67436:0crwdne67436:0</target>
+      </trans-unit>
+      <trans-unit id="feuserId" resname="feuserId">
+        <source>Id of logged in FE-User</source>
+        <target>crwdns67438:0crwdne67438:0</target>
+      </trans-unit>
+      <trans-unit id="totalParsetime" resname="totalParsetime">
+        <source>Total parsetime</source>
+        <target>crwdns67440:0crwdne67440:0</target>
+      </trans-unit>
+      <trans-unit id="key" resname="key">
+        <source>Key</source>
+        <target>crwdns67442:0crwdne67442:0</target>
+      </trans-unit>
+      <trans-unit id="value" resname="value">
+        <source>Value</source>
+        <target>crwdns67444:0crwdne67444:0</target>
+      </trans-unit>
+      <trans-unit id="sub.general.label" resname="sub.general.label">
+        <source>General</source>
+        <target>crwdns67446:0crwdne67446:0</target>
+      </trans-unit>
+      <trans-unit id="sub.php.label" resname="sub.php.label">
+        <source>PHP</source>
+        <target>crwdns67448:0crwdne67448:0</target>
+      </trans-unit>
+      <trans-unit id="sub.request.label" resname="sub.request.label">
+        <source>REQUEST</source>
+        <target>crwdns67450:0crwdne67450:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
