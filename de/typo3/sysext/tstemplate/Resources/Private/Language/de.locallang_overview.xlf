@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_overview.xlf" date="2023-01-22T19:53:00Z" product-name="tstemplate" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="typoscriptRecords.title" approved="yes">
+        <source>TypoScript Overview</source>
+        <target state="final">TypoScript Übersicht</target>
+      </trans-unit>
+      <trans-unit id="typoscriptRecords.description" approved="yes">
+        <source>Global overview of all pages with active TypoScript definitions (database records and site sets).</source>
+        <target state="final">Globale Übersicht aller Seiten mit aktiven TypoScript-Definitionen (Datensätze und Site-Sets).</target>
+      </trans-unit>
+      <trans-unit id="typoscriptRecords.noRecordsFound" approved="yes">
+        <source>No TypoScript definitions found.</source>
+        <target state="final">Keine TypoScript Definitionen gefunden.</target>
+      </trans-unit>
+      <trans-unit id="typoscriptRecords.table.column.pageTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Seitentitel</target>
+      </trans-unit>
+      <trans-unit id="typoscriptRecords.table.column.typoscriptRecords" approved="yes">
+        <source>TypoScript definitions</source>
+        <target state="final">TypoScript Definitionen</target>
+      </trans-unit>
+      <trans-unit id="typoscriptRecords.table.column.site" approved="yes">
+        <source>Site set</source>
+        <target state="final">Site-Set</target>
+      </trans-unit>
+      <trans-unit id="typoscriptRecords.table.column.root" approved="yes">
+        <source>Marked as root</source>
+        <target state="final">Als Anfang der Website markiert</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
