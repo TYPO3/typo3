@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="el">
+    <header/>
+    <body>
+      <trans-unit id="overwriteExistingFiles" approved="yes">
+        <source>Overwrite existing files</source>
+        <target state="final">Αντικατάσταση υπαρχόντων αρχείων</target>
+      </trans-unit>
+      <trans-unit id="selectPosition" approved="yes">
+        <source>Select a position for the new page</source>
+        <target state="final">Επιλέξτε θέση για την νέα σελίδα</target>
+      </trans-unit>
+      <trans-unit id="goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Πήγαινε πίσω</target>
+      </trans-unit>
+      <trans-unit id="createNewPage" approved="yes">
+        <source>Create a new page</source>
+        <target state="final">Δημιουργία μιάς νέας σελίδας</target>
+      </trans-unit>
+      <trans-unit id="insertNewPageHere" x-unused-since="15.0" approved="yes">
+        <source>Insert the new page here</source>
+        <target state="final">Εισαγωγή νέας σελίδας εδώ</target>
+      </trans-unit>
+      <trans-unit id="insertNewRecordHere" approved="yes">
+        <source>Insert new record here</source>
+        <target state="final">Εισαγωγή νέας εγγραφής εδώ</target>
+      </trans-unit>
+      <trans-unit id="moveElements" approved="yes">
+        <source>Move elements</source>
+        <target state="final">Μετακίνηση στοιχείων</target>
+      </trans-unit>
+      <trans-unit id="copyElements" approved="yes">
+        <source>Copy elements</source>
+        <target state="final">Αντιγραφή στοιχείων</target>
+      </trans-unit>
+      <trans-unit id="makeCopy" approved="yes">
+        <source>Make copy instead of moving element</source>
+        <target state="final">Δημιουργία αντίγραφου αντί για μετακίνηση στοιχείου</target>
+      </trans-unit>
+      <trans-unit id="CM_history" approved="yes">
+        <source>History/Undo</source>
+        <target state="final">Ιστορικό/Αναίρεση της ακύρωσης</target>
+      </trans-unit>
+      <trans-unit id="CM_newWizard" approved="yes">
+        <source>'Create New' wizard</source>
+        <target state="final">'Δημιουργία Νέου' έξυπνου οδηγού</target>
+      </trans-unit>
+      <trans-unit id="localize" approved="yes">
+        <source>Localize</source>
+        <target state="final">Μετάφραση</target>
+      </trans-unit>
+      <trans-unit id="localize.isLocalizable" approved="yes">
+        <source>Record can be localized</source>
+        <target state="final">Η εγγραφή μπορεί να μεταφρασθεί</target>
+      </trans-unit>
+      <trans-unit id="localizeAllRecords" approved="yes">
+        <source>Localize all records</source>
+        <target state="final">Μετάφραση όλων των εγγραφών</target>
+      </trans-unit>
+      <trans-unit id="synchronizeWithOriginalLanguage" approved="yes">
+        <source>Synchronize with original language</source>
+        <target state="final">Συχρονισμός με την πρωτότυπη γλώσσα</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
