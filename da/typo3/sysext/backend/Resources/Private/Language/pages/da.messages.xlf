@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="da">
+  <file id="f1">
+    <unit id="link_missing">
+      <segment state="final">
+        <source>The "%1$s" field is required to resolve links for pages of type "%2$s". Please provide a value in the page properties.</source>
+        <target>Feltet "%1$s" er påkrævet for at løse links for sider af typen "%2$s". Angiv venligst en værdi i sideegenskaberne.</target>
+      </segment>
+    </unit>
+    <unit id="link_invalid">
+      <segment state="final">
+        <source>Invalid link in "%1$s": "%2$s" cannot be resolved. Select a valid destination in the page properties.</source>
+        <target>Ugyldigt link i "%1$s": "%2$s" kan ikke blive løst. Vælg en gyldig destination i sideegenskaberne.</target>
+      </segment>
+    </unit>
+    <unit id="link_destination">
+      <segment state="final">
+        <source>Page of type "%1$s" links to the following %2$s: %3$s.</source>
+        <target>Side af typen "%1$s" links til følgende %2$s: %3$s.</target>
+      </segment>
+    </unit>
+    <unit id="link_current">
+      <segment state="final">
+        <source>Page of type "%1$s" links to current request url, and dynamic value cannot be displayed here.</source>
+        <target>Side af typen "%1$s" links til den aktuelle forespørgsels-url, og dynamiske værdi kan ikke vises her.</target>
+      </segment>
+    </unit>
+    <unit id="link_current_with_added_queryparameters">
+      <segment state="final">
+        <source>Page of type "%1$s" appends %2$s to current request url, and dynamic value cannot be displayed here.</source>
+        <target>Side af typen "%1$s" tilføjer %2$s til den aktuelle anmodnings-url, og dynamiske værdi kan ikke vises her.</target>
+      </segment>
+    </unit>
+    <unit id="link_destination_record">
+      <segment state="final">
+        <source>Page of type "%1$s" links to the following record of type "%2$s": %3$s.</source>
+        <target>Side af typen "%1$s" linker til følgende element af typen "%2$s": %3$s.</target>
+      </segment>
+    </unit>
+    <unit id="link_destination_additional_parameters">
+      <segment state="final">
+        <source>Additional parameters: "%s".</source>
+        <target>Yderligere parametre: "%s".</target>
+      </segment>
+    </unit>
+    <unit id="link_destination_content_element">
+      <segment state="final">
+        <source>Page of type "%1$s" links to content element %2$s on page %3$s.</source>
+        <target>Side af typen "%1$s" linker til indholdselement %2$s på side %3$s.</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
