@@ -63,6 +63,9 @@
       <trans-unit id="sitesYamlConfiguration">
         <source>Sites: YAML Configuration</source>
       </trans-unit>
+      <trans-unit id="siteSets">
+        <source>Sites: Sets</source>
+      </trans-unit>
       <trans-unit id="eventListeners">
         <source>Event Listeners (PSR-14)</source>
       </trans-unit>

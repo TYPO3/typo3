@@ -126,8 +126,18 @@ services:
         identifier: 'sitesYamlConfiguration'
         group: 'sites'
         label: 'lowlevel.messages:sitesYamlConfiguration'
-        before: 'eventListeners'
+        before: 'siteSets'
         after: 'sitesTcaConfiguration'
+
+  lowlevel.configuration.module.provider.sitesets:
+    class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\SiteSetsProvider'
+    tags:
+      - name: 'lowlevel.configuration.module.provider'
+        identifier: 'siteSets'
+        group: 'sites'
+        label: 'lowlevel.messages:siteSets'
+        before: 'eventListeners'
+        after: 'sitesYamlConfiguration'
 
   lowlevel.configuration.module.provider.eventlisteners:
     class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\EventListenersProvider'
@@ -137,7 +147,7 @@ services:
         group: 'events'
         label: 'lowlevel.messages:eventListeners'
         before: 'mfaProviders'
-        after: 'sitesYamlConfiguration'
+        after: 'siteSets'
 
   lowlevel.configuration.module.provider.mfaproviders:
     class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\MfaProvidersProvider'

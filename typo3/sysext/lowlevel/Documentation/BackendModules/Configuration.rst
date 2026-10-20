@@ -52,6 +52,7 @@ The Configuration module displays various configuration settings:
 - :ref:`HTTP Middlewares (PSR-15) <t3coreapi:request-handling>`
 - :ref:`Sites: TCA configuration <t3coreapi:sitehandling>`
 - :ref:`Sites: YAML configuration <t3coreapi:sitehandling>`
+- :ref:`Sites: Sets <module-configuration-site-sets>`
 - :ref:`Event listeners (PSR-14) <t3coreapi:EventDispatcher>`
 - :ref:`MFA providers <t3coreapi:multi-factor-authentication>`
 - :ref:`Soft Reference Parsers <t3coreapi:soft-references>`
@@ -69,6 +70,30 @@ The Configuration module displays various configuration settings:
     :changelog: feature-108975-1770984757
 
     The entry *Extbase: Class Configuration* was added.
+
+..  _module-configuration-site-sets:
+
+Inspecting site sets
+====================
+
+..  versionadded:: 15.0
+    :changelog: feature-111183-1792519211
+
+Select :guilabel:`Sites: Sets` in the :guilabel:`Sites` group to
+inspect the available site sets. The configuration tree contains two entries:
+
+*   `sites` groups the resolved sets by site identifier, in their actual
+    loading order. Required and available optional dependencies are included,
+    and shared dependencies appear only once per site.
+*   `siteSets` lists all available sets in the registry's dependency order,
+    with dependencies before the sets that use them. This includes hidden
+    sets and sets that are not used by any site. The effective loading order
+    for each site is shown under `sites`.
+
+Expand a set to inspect its metadata, such as its label, settings, definitions
+and configuration sources. The `dependencies` and `optionalDependencies`
+entries contain the referenced sets and their metadata recursively.
+Unavailable optional dependencies are listed with an empty value.
 
 ..  _module-configuration-extending:
 

@@ -40,6 +40,7 @@ test.describe('Configuration Module Provider', () => {
       'HTTP Middlewares (PSR-15)',
       'Sites: TCA Configuration',
       'Sites: YAML Configuration',
+      'Sites: Sets',
       'Event Listeners (PSR-14)',
       'MFA Providers',
     ];
@@ -49,5 +50,50 @@ test.describe('Configuration Module Provider', () => {
 
       await expect(contentFrame.locator('h1')).toContainText(`Configuration of "${item}"`);
     }
+  });
+
+  test('Display resolved site sets grouped by site', async ({ backend }) => {
+    const contentFrame = backend.contentFrame;
+    await backend.docHeader.selectInDropDown('Configuration to show', 'Sites: Sets');
+
+    const roots = contentFrame.locator('.t3js-collapse-states-search-tree > ul > li');
+    await expect(roots.locator(':scope > .treelist-group > .treelist-label')).toHaveText(['sites', 'siteSets']);
+    await roots.first().locator(':scope > typo3-backend-tree-node-toggle').click();
+
+    const site = roots.first().locator(':scope > .treelist-collapse > ul > li').filter({
+      has: contentFrame.locator('.treelist-label').filter({ hasText: /^typo3\/styleguide$/ }),
+    });
+    await expect(site.locator(':scope > .treelist-group > .treelist-label')).toHaveText(/^styleguide-demo-/);
+    await site.locator(':scope > typo3-backend-tree-node-toggle').click();
+
+    const sets = site.locator(':scope > .treelist-collapse > ul > li');
+    await expect(sets.locator(':scope > .treelist-group > .treelist-label')).toContainText([
+      'typo3/fluid-styled-content',
+      'typo3/styleguide',
+    ]);
+    await expect(sets.last().locator(':scope > .treelist-group > .treelist-label')).toHaveText('typo3/styleguide');
+    await sets.last().locator(':scope > typo3-backend-tree-node-toggle').click();
+    await expect(sets.last().getByText('Styleguide Theme', { exact: true })).toBeVisible();
+
+    await roots.last().locator(':scope > typo3-backend-tree-node-toggle').click();
+    const allSets = roots.last().locator(':scope > .treelist-collapse > ul > li');
+    await expect(allSets.locator(':scope > .treelist-group > .treelist-label')).toContainText([
+      'typo3/fluid-styled-content',
+      'typo3/styleguide',
+    ]);
+    const styleguide = allSets.filter({
+      has: contentFrame.locator(':scope > .treelist-group > .treelist-label').filter({ hasText: /^typo3\/styleguide$/ }),
+    });
+    await styleguide.locator(':scope > typo3-backend-tree-node-toggle').click();
+    await expect(styleguide.getByText('Styleguide Theme', { exact: true })).toBeVisible();
+
+    const optionalDependencies = styleguide.locator(':scope > .treelist-collapse > ul > li').filter({
+      has: contentFrame.locator(':scope > .treelist-group > .treelist-label').filter({ hasText: /^optionalDependencies$/ }),
+    });
+    await optionalDependencies.locator(':scope > typo3-backend-tree-node-toggle').click();
+    await expect(optionalDependencies.locator(':scope > .treelist-collapse > ul > li > .treelist-group > .treelist-label')).toContainText([
+      'typo3/fluid-styled-content',
+      'typo3/form',
+    ]);
   });
 });
