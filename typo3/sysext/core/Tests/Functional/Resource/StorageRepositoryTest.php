@@ -19,7 +19,13 @@ namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Resource\Capabilities;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
@@ -27,6 +33,7 @@ use TYPO3\CMS\Core\Resource\Exception\InvalidTargetFolderException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\FolderInterface;
+use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
@@ -623,6 +630,65 @@ final class StorageRepositoryTest extends FunctionalTestCase
         self::assertNotEquals($fileToCopy->getMetaData()->get()['uid'], $newFile->getMetaData()->get()['uid']);
         self::assertEquals($fileToCopyMetaData['title'], $newFile->getMetaData()->get()['title']);
         self::assertEquals($fileToCopyMetaData['description'], $newFile->getMetaData()->get()['description']);
+    }
+
+    public static function copyFileKeepsMetadataRecordOfCopyLiveInDefaultLanguageDataProvider(): array
+    {
+        return [
+            'workspace version of the metadata' => [
+                ['title' => 'Title in workspace', 't3ver_wsid' => 1],
+                't3ver_oid',
+                1,
+                0,
+            ],
+            'translation of the metadata' => [
+                ['title' => 'Translated title', 'sys_language_uid' => 1],
+                'l10n_parent',
+                0,
+                1,
+            ],
+        ];
+    }
+
+    /**
+     * In frontend context, the metadata of the source file resolves to its version for the workspace
+     * and the language of the current context, which carries the versioning and language fields of that version.
+     * The metadata record of the copy is created live in the default language and has to stay so.
+     */
+    #[Test]
+    #[DataProvider('copyFileKeepsMetadataRecordOfCopyLiveInDefaultLanguageDataProvider')]
+    public function copyFileKeepsMetadataRecordOfCopyLiveInDefaultLanguage(array $versionOfMetaData, string $pointerField, int $workspaceId, int $languageId): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
+        mkdir(Environment::getPublicPath() . '/fileadmin/foo');
+        file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'Temp file');
+        $subject = $this->get(StorageRepository::class)->findByUid(1);
+        $indexedFile = $this->get(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('sys_file_metadata');
+        $connection->insert('sys_file_metadata', array_merge($versionOfMetaData, [
+            'file' => $indexedFile->getUid(),
+            $pointerField => (int)$indexedFile->getMetaData()->get()['uid'],
+        ]));
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect($workspaceId));
+        $this->get(Context::class)->setAspect('language', new LanguageAspect($languageId, $languageId, LanguageAspect::OVERLAYS_MIXED, [0]));
+        // The workspace and language overlay of file metadata is only applied in frontend context
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://example.com/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        // A file object of a later request, which has not loaded its metadata yet
+        $fileToCopy = new File(GeneralUtility::makeInstance(FileIndexRepository::class)->findOneByUid($indexedFile->getUid()), $subject);
+
+        $newFile = $subject->copyFile($fileToCopy, $this->get(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/'));
+
+        $metaDataRecordsOfCopy = $connection->select(
+            ['sys_language_uid', 'l10n_parent', 't3ver_wsid', 't3ver_oid', 't3ver_state'],
+            'sys_file_metadata',
+            ['file' => $newFile->getUid()]
+        )->fetchAllAssociative();
+        self::assertSame(
+            [['sys_language_uid' => 0, 'l10n_parent' => 0, 't3ver_wsid' => 0, 't3ver_oid' => 0, 't3ver_state' => 0]],
+            array_map(static fn(array $record): array => array_map(intval(...), $record), $metaDataRecordsOfCopy)
+        );
     }
 
     #[Test]
