@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/Database.xlf" date="2016-08-21T20:15:32Z" product-name="form" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="tt_content.preview.invalidFrameworkConfiguration.text" approved="yes">
+        <source>Invalid ext:form configuration in form "%s": %s</source>
+        <target state="final">フォーム「%s」に不正なext:form設定があります： %s</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Confirmation.contentElementUid.label" approved="yes">
+        <source>Record</source>
+        <target state="final">レコード</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.label" approved="yes">
+        <source>Email to sender (form submitter)</source>
+        <target state="final">送信者へのメール(フォーム送信者)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToSender.recipients.name.label" approved="yes">
+        <source>Name</source>
+        <target state="final">名前</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.label" approved="yes">
+        <source>Email to receiver (you)</source>
+        <target state="final">受信者へのメール(あなた)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.finishersDefinition.Redirect.pageUid.label" approved="yes">
+        <source>Page</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="formManager.options" approved="yes">
+        <source>Options</source>
+        <target state="final">オプション</target>
+      </trans-unit>
+      <trans-unit id="formManager.remove_search_term" approved="yes">
+        <source>Remove search term</source>
+        <target state="final">検索語を削除</target>
+      </trans-unit>
+      <trans-unit id="formEditor.save_button" approved="yes">
+        <source>Save</source>
+        <target state="final">保存</target>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementGroups.html5.label" approved="yes">
+        <source>Special elements</source>
+        <target state="final">特別なエレメント</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveSuccessFlashMessageTitle" approved="yes">
+        <source>Save</source>
+        <target state="final">保存</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.saveErrorFlashMessageTitle" approved="yes">
+        <source>Save</source>
+        <target state="final">保存:</target>
+      </trans-unit>
+      <trans-unit id="formEditor.modals.removeElement.cancelButton" approved="yes">
+        <source>Cancel</source>
+        <target state="final">キャンセル</target>
+      </trans-unit>
+      <trans-unit id="formEditor.pagination.title" approved="yes">
+        <source>Step {0} of {1}</source>
+        <target state="final">ステップ {0}/{1}</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.EmailToSender.label" approved="yes">
+        <source>Email to sender (form submitter)</source>
+        <target state="final">送信者へのメール(フォーム送信者)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.editor.finishers.EmailToReceiver.label" approved="yes">
+        <source>Email to receiver (you)</source>
+        <target state="final">受信者へのメール(あなた)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.header.label" approved="yes">
+        <source>Email to sender (form submitter)</source>
+        <target state="final">送信者へのメール(フォーム送信者)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.recipients.gridColumns.label.title" approved="yes">
+        <source>Name</source>
+        <target state="final">名前</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label" approved="yes">
+        <source>Email to receiver (you)</source>
+        <target state="final">受信者へのメール(あなた)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.pageUid.label" approved="yes">
+        <source>Page</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.pageUid.buttonLabel" approved="yes">
+        <source>Page</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Form.finisher.Confirmation.editor.contentElement.buttonLabel" approved="yes">
+        <source>Page Content</source>
+        <target state="final">ページコンテンツ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.label" approved="yes">
+        <source>Autocomplete</source>
+        <target state="final">オートコンプリート</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.none" approved="yes">
+        <source>None</source>
+        <target state="final">なし</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.off" approved="yes">
+        <source>off - disable the autocomplete functionality</source>
+        <target state="final">OFF - オートコンプリート機能を無効にする</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.name" approved="yes">
+        <source>name - Full name</source>
+        <target state="final">name - フルネーム</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.honorific-prefix" approved="yes">
+        <source>Prefix or title (e.g., "Mr.", "Ms.", "Dr.")</source>
+        <target state="final">プレフィックスまたはタイトル (例: "Mr.", "Ms", "Dr.")</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.nickname" approved="yes">
+        <source>Nickname, screen name</source>
+        <target state="final">ニックネーム、スクリーンネーム</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.organization-title" approved="yes">
+        <source>organization-title - Job title</source>
+        <target state="final">organization-title - 役職名</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.username" approved="yes">
+        <source>username</source>
+        <target state="final">ユーザ名</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.photo" approved="yes">
+        <source>photo</source>
+        <target state="final">写真</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.email" approved="yes">
+        <source>email</source>
+        <target state="final">メールアドレス</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.bday" approved="yes">
+        <source>bday - Birthday</source>
+        <target state="final">bday - 誕生日</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.Date.editor.step.label" approved="yes">
+        <source>Frequency</source>
+        <target state="final">頻度</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.label" approved="yes">
+        <source>Country select</source>
+        <target state="final">国を選択</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.StaticText.editor.label.label" approved="yes">
+        <source>Header</source>
+        <target state="final">ヘッダー</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.label" approved="yes">
+        <source>Content element</source>
+        <target state="final">コンテンツエレメント</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ContentElement.editor.contentElement.buttonLabel" approved="yes">
+        <source>Page Content</source>
+        <target state="final">ページコンテンツ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.label" approved="yes">
+        <source>Image upload</source>
+        <target state="final">画像アップロード</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.label" approved="yes">
+        <source>Allowed file mime types</source>
+        <target state="final">許可されているファイル種別</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.jpg" approved="yes">
+        <source>Images (jpg)</source>
+        <target state="final">画像 (jpg)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.png" approved="yes">
+        <source>Images (png)</source>
+        <target state="final">画像 (png)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.bmp" approved="yes">
+        <source>Images (bmp)</source>
+        <target state="final">画像 (bmp)</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect" approved="yes">
+        <source>Country Select</source>
+        <target state="final">国を選択</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.editor.prioritizedCountries.label" approved="yes">
+        <source>Prioritized countries</source>
+        <target state="final">優先度の高い国</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.editor.onlyCountries.label" approved="yes">
+        <source>Only countries</source>
+        <target state="final">国のみ</target>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.editor.excludeCountries.label" approved="yes">
+        <source>Exclude countries</source>
+        <target state="final">除外する国</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.grid.move" approved="yes">
+        <source>Move this row</source>
+        <target state="final">この行を移動</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.entry.label" approved="yes">
+        <source>Label</source>
+        <target state="final">ラベル</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.entry.value" approved="yes">
+        <source>Value</source>
+        <target state="final">値</target>
+      </trans-unit>
+      <trans-unit id="formEditor.inspector.editor.entry.selected" approved="yes">
+        <source>Selected</source>
+        <target state="final">選択済み</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
