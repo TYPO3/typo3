@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814821" source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id="ll_welcome_header" resname="ll_welcome_header" approved="yes">
+        <source>User login</source>
+        <target state="final">ការកត់ត្រា​អ្នក​ប្រើប្រាស់​ចូល</target>
+      </trans-unit>
+      <trans-unit id="ll_logout_header" resname="ll_logout_header" approved="yes">
+        <source>You have logged out.</source>
+        <target state="final">អ្នក​បាន​កត់ត្រា​ចេញ ។</target>
+      </trans-unit>
+      <trans-unit id="ll_error_header" resname="ll_error_header" approved="yes">
+        <source>Login failure</source>
+        <target state="final">ការ​កត់ត្រា​ចូល​មិន​បាន​សម្រេច</target>
+      </trans-unit>
+      <trans-unit id="ll_success_header" resname="ll_success_header" approved="yes">
+        <source>Login successful</source>
+        <target state="final">ការកត់ត្រា​ចូល​ជោគជ័យ</target>
+      </trans-unit>
+      <trans-unit id="ll_success_message" resname="ll_success_message" approved="yes">
+        <source>You are now logged in as '###USER###'</source>
+        <target state="final">ឥឡូវ​អ្នក​​ត្រូវ​បាន​កត់ត្រា​ចូល​​ដោយ​ប្រើ​ឈ្មោះ '###USER###'</target>
+      </trans-unit>
+      <trans-unit id="ll_status_header" resname="ll_status_header" approved="yes">
+        <source>Current status</source>
+        <target state="final">ស្ថានភាព​បច្ចុប្បន្ន</target>
+      </trans-unit>
+      <trans-unit id="cookie_warning" resname="cookie_warning" approved="yes">
+        <source>Warning: There is a possibility that cookies are not enabled in your web browser! If your login disappears on your next click that is the case and you should enable cookies (or accept cookies from this website) immediately!</source>
+        <target state="final">សេចក្ដី​ ព្រមាន៖ ឃុកឃី ក្នុង​កុំព្យូទ័រ​របស់​អ្នក​ប្រហែល​មិន​ដំណើរការ​ក្នុង​កម្មវិធី​រុករក! ប្រសិន​បើ​ការ​កត់ត្រា​ចូល​របស់​លោកអ្នក​មើល​មិន​ឃើញ​ពេល​ចុច​​បន្ទាប់​​ទៀត ប្រាកដ​ជា​មក​ពី​បញ្ហា​នេះ ដូច្នេះ​អ្នក​ត្រូវ​ដំណើរការ ឃុកឃី (ឬ​យល់​ព្រម​បើក​ដំណើរការ ឃុកឃី ពី​វែបសាយ​នេះ)!</target>
+      </trans-unit>
+      <trans-unit id="login" resname="login" approved="yes">
+        <source>Login</source>
+        <target state="final">កត់ត្រា​ចូល</target>
+      </trans-unit>
+      <trans-unit id="logout" resname="logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">កត់ត្រា​ចេញ</target>
+      </trans-unit>
+      <trans-unit id="send_password" resname="send_password" approved="yes">
+        <source>Send password</source>
+        <target state="final">ផ្ញើ​ពាក្យ​សម្ងាត់</target>
+      </trans-unit>
+      <trans-unit id="reset_password" resname="reset_password" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">ដាក់​ពាក្យ​សម្ងាត់​ម្ដង​ទៀត</target>
+      </trans-unit>
+      <trans-unit id="ll_change_password_header" resname="ll_change_password_header" approved="yes">
+        <source>Change your password</source>
+        <target state="final">ប្ដូរ​ពាក្យ​សម្ងាត់</target>
+      </trans-unit>
+      <trans-unit id="change_password" resname="change_password" approved="yes">
+        <source>Change your password</source>
+        <target state="final">ប្ដូរ​ពាក្យ​សម្ងាត់</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label1" resname="newpassword_label1" approved="yes">
+        <source>Enter new password</source>
+        <target state="final">ដាក់​ពាក្យ​​សម្តាត់​ថ្មី</target>
+      </trans-unit>
+      <trans-unit id="newpassword_label2" resname="newpassword_label2" approved="yes">
+        <source>Repeat new password</source>
+        <target state="final">ដាក់​ពាក្យ​​សម្ងាត់​ម្ដង​ទៀត</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_header" resname="ll_forgot_header" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">លោក​អ្នក​ភ្លេច​​ពាក្យ​សម្ងាត់?</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_email_password" resname="ll_forgot_email_password" xml:space="preserve" approved="yes">
+				<source>Your password
+Hi %s
+
+Your username is "%s"
+Your password is "%s"</source>
+			<target state="final">លេខ​សម្ងាត់​របស់​អ្នក សួស្ដី %s ឈ្មោះ​របស់​អ្នក "%s" ពាក្យ​សម្ងាត់​របស់​អ្នក "%s"</target></trans-unit>
+      <trans-unit id="ll_forgot_message_emailSent" resname="ll_forgot_message_emailSent" approved="yes">
+        <source>Your password has now been sent to the email address %s</source>
+        <target state="final">ពាក្យ​​សម្ងាត់​របស់​អ្នក​បាន​ផ្ញើ​ទៅ​អ៊ីម៉ែល %s</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_reset_message_error" resname="ll_forgot_reset_message_error" approved="yes">
+        <source>Your account or email address does not exist.</source>
+        <target state="final">គណនី​និងអុីម៉ែលរបស់លោកអ្នក​ពុំមាននៅក្នុងប្រព័ន្ធយើងខ្ញុំទេ</target>
+      </trans-unit>
+      <trans-unit id="ll_forgot_header_backToLogin" resname="ll_forgot_header_backToLogin" approved="yes">
+        <source>Return to login form</source>
+        <target state="final">ត្រឡប់​ទៅ​​កាន់​ទម្រង់​កត់ត្រា​ចូល​វិញ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
