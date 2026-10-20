@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1528554340" source-language="en" datatype="plaintext" original="EXT:seo/Resources/Private/Language/locallang_tca.xlf" date="2018-08-09T16:22:32Z" product-name="seo" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="pages.tabs.seo" resname="pages.tabs.seo" approved="yes">
+        <source>SEO</source>
+        <target state="final">SEO</target>
+      </trans-unit>
+      <trans-unit id="pages.no_index" resname="pages.no_index" approved="yes">
+        <source>No index</source>
+        <target state="final">Ingen indeks</target>
+      </trans-unit>
+      <trans-unit id="pages.og_title" resname="pages.og_title" approved="yes">
+        <source>Title</source>
+        <target state="final">Tittel</target>
+      </trans-unit>
+      <trans-unit id="pages.og_description" resname="pages.og_description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beskrivelse</target>
+      </trans-unit>
+      <trans-unit id="pages.og_image" resname="pages.og_image" approved="yes">
+        <source>Image</source>
+        <target state="final">Bilde</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_title" resname="pages.twitter_title" approved="yes">
+        <source>Title</source>
+        <target state="final">Tittel</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_description" resname="pages.twitter_description" approved="yes">
+        <source>Description</source>
+        <target state="final">Beskrivelse</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_image" resname="pages.twitter_image" approved="yes">
+        <source>Image</source>
+        <target state="final">Bilde</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.socialmedia" resname="pages.tabs.socialmedia" approved="yes">
+        <source>Social media</source>
+        <target state="final">Sosiale medier</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
