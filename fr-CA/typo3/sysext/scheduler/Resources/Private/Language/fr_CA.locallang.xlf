@@ -1,0 +1,771 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler" target-language="fr-CA">
+    <header/>
+    <body>
+      <trans-unit id="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuler</target>
+      </trans-unit>
+      <trans-unit id="button.group.modalOk" approved="yes">
+        <source>Create group</source>
+        <target state="final">Créer un groupe</target>
+      </trans-unit>
+      <trans-unit id="function.scheduler" approved="yes">
+        <source>Scheduled tasks</source>
+        <target state="final">Tâches planifiées</target>
+      </trans-unit>
+      <trans-unit id="function.check" approved="yes">
+        <source>Setup check</source>
+        <target state="final">Vérifier le paramétrage</target>
+      </trans-unit>
+      <trans-unit id="function.add" approved="yes">
+        <source>New task</source>
+        <target state="final">Nouvelle tâche</target>
+      </trans-unit>
+      <trans-unit id="function.group.add" approved="yes">
+        <source>New group</source>
+        <target state="final">Nouveau groupe</target>
+      </trans-unit>
+      <trans-unit id="function.group.label" approved="yes">
+        <source>Group name</source>
+        <target state="final">Nom du groupe</target>
+      </trans-unit>
+      <trans-unit id="hdg.cliScript" approved="yes">
+        <source>CLI script</source>
+        <target state="final">Script CLI</target>
+      </trans-unit>
+      <trans-unit id="hdg.composerMode" approved="yes">
+        <source>System is running in Composer Mode</source>
+        <target state="final">Le système fonctionne en mode Composer</target>
+      </trans-unit>
+      <trans-unit id="msg.composerMode" approved="yes">
+        <source>
+					The system is running in composer mode, the path to the `typo3` executable could not be reliably determined.
+					By default, the command to run in composer mode is `vendor/bin/typo3 scheduler:run`.
+                </source>
+        <target state="final">
+					Le système fonctionne en mode Composer, le chemin vers l'exécutable `typo3` n'a pas pu être déterminé de manière fiable.
+					Par défaut, la commande à exécuter en mode composer est `vendor/bin/typo3 scheduler:run`.
+                </target>
+      </trans-unit>
+      <trans-unit id="hdg.lastRun" approved="yes">
+        <source>Last run</source>
+        <target state="final">Dernier lancement</target>
+      </trans-unit>
+      <trans-unit id="label.automatically" approved="yes">
+        <source>automatically</source>
+        <target state="final">automatiquement</target>
+      </trans-unit>
+      <trans-unit id="label.cachingFrameworkGarbageCollection.selectBackends" approved="yes">
+        <source>Backend types</source>
+        <target state="final">Type de backend</target>
+      </trans-unit>
+      <trans-unit id="label.recyclerGarbageCollection.numberOfDays" approved="yes">
+        <source>Number of days until removing files</source>
+        <target state="final">Nombre de jours avant la suppression des fichiers</target>
+      </trans-unit>
+      <trans-unit id="label.checkAll" approved="yes">
+        <source>Check/uncheck all</source>
+        <target state="final">Cocher/décocher tout</target>
+      </trans-unit>
+      <trans-unit id="label.class" approved="yes">
+        <source>Task</source>
+        <target state="final">Tâche</target>
+      </trans-unit>
+      <trans-unit id="label.cron" approved="yes">
+        <source>Cron</source>
+        <target state="final">Cron</target>
+      </trans-unit>
+      <trans-unit id="label.defType" approved="yes">
+        <source>Definition type</source>
+        <target state="final">Définition du type</target>
+      </trans-unit>
+      <trans-unit id="label.defType.interval" approved="yes">
+        <source>Interval</source>
+        <target state="final">Intervalle</target>
+      </trans-unit>
+      <trans-unit id="label.defType.cron" approved="yes">
+        <source>Cron command</source>
+        <target state="final">Commande Cron</target>
+      </trans-unit>
+      <trans-unit id="label.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Description</target>
+      </trans-unit>
+      <trans-unit id="label.email" approved="yes">
+        <source>Email</source>
+        <target state="final">Email</target>
+      </trans-unit>
+      <trans-unit id="label.end" approved="yes">
+        <source>End (HH:MM DD-MM-YYYY)</source>
+        <target state="final">Fin (HH:MM DD-MM-YYYY)</target>
+      </trans-unit>
+      <trans-unit id="scheduledFrom" approved="yes">
+        <source>Start at</source>
+        <target state="final">Commencer à</target>
+      </trans-unit>
+      <trans-unit id="scheduledUntil" approved="yes">
+        <source>Run periodically until</source>
+        <target state="final">Exécuter périodiquement jusqu'au</target>
+      </trans-unit>
+      <trans-unit id="label.executeSelected" approved="yes">
+        <source>Execute</source>
+        <target state="final">Exécuter</target>
+      </trans-unit>
+      <trans-unit id="label.cronjobSelected" approved="yes">
+        <source>Execute on next cron job</source>
+        <target state="final">Exécuter avec la prochaine tâche cron</target>
+      </trans-unit>
+      <trans-unit id="label.frequency" approved="yes">
+        <source>Frequency</source>
+        <target state="final">Fréquence</target>
+      </trans-unit>
+      <trans-unit id="label.frequency.long" approved="yes">
+        <source>Frequency (seconds or cron command)</source>
+        <target state="final">Fréquence (en secondes ou syntaxe cron)</target>
+      </trans-unit>
+      <trans-unit id="label.id" approved="yes">
+        <source>ID</source>
+        <target state="final">ID</target>
+      </trans-unit>
+      <trans-unit id="label.lastExecution" approved="yes">
+        <source>Last Execution</source>
+        <target state="final">Dernière exécution</target>
+      </trans-unit>
+      <trans-unit id="label.manual" approved="yes">
+        <source>Manual</source>
+        <target state="final">Manuel</target>
+      </trans-unit>
+      <trans-unit id="label.manually" approved="yes">
+        <source>manually</source>
+        <target state="final">Manuellement</target>
+      </trans-unit>
+      <trans-unit id="label.nextExecution" approved="yes">
+        <source>Next Execution</source>
+        <target state="final">Prochaine exécution</target>
+      </trans-unit>
+      <trans-unit id="label.parallel" approved="yes">
+        <source>Parallel Execution</source>
+        <target state="final">Exécution parallèle</target>
+      </trans-unit>
+      <trans-unit id="label.parallel.long" approved="yes">
+        <source>Allow Parallel Execution</source>
+        <target state="final">Autoriser les exécutions en parallèle</target>
+      </trans-unit>
+      <trans-unit id="label.serverTime" approved="yes">
+        <source>Server time</source>
+        <target state="final">Date du serveur</target>
+      </trans-unit>
+      <trans-unit id="label.sleepTime" approved="yes">
+        <source>Sleep time</source>
+        <target state="final">Durée du sommeil</target>
+      </trans-unit>
+      <trans-unit id="label.start" approved="yes">
+        <source>Start (HH:MM DD-MM-YYYY)</source>
+        <target state="final">Début (HH:MM DD-MM-YYYY)</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageIndexing.storage" approved="yes">
+        <source>Storage to index</source>
+        <target state="final">Stockage à indexer</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.fileCount" approved="yes">
+        <source>Number of files per run</source>
+        <target state="final">Nombre de fichiers par exécution</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.registeredExtractors" approved="yes">
+        <source>Registered extractors</source>
+        <target state="final">Extracteurs enregistrés</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.registeredExtractors.extractor" approved="yes">
+        <source>%1$s with priority %2$d</source>
+        <target state="final">%1$s avec une priorité de %2$d</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.registeredExtractors.with_extractors" approved="yes">
+        <source>Following extractors have been registered and will be used when running this task</source>
+        <target state="final">Les extracteurs suivants ont été enregistrés et seront utilisés lors de l'exécution de cette tâche</target>
+      </trans-unit>
+      <trans-unit id="label.fileStorageExtraction.registeredExtractors.without_extractors" approved="yes">
+        <source>There currently is no extractor registered. This task will have no effect.</source>
+        <target state="final">Il n'y a actuellement aucun extracteur enregistré. Cette tâche n'aura aucun effet.</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.allTables" approved="yes">
+        <source>Clean all available tables</source>
+        <target state="final">Nettoyer toutes les tables disponibles</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.allTables.description" approved="yes">
+        <source>Note: Entries from all available tables are deleted based on the table-specific "expirePeriod" option.</source>
+        <target state="final">Note : Les entrées de toutes les tables disponibles sont supprimées en fonction de l'option « expirePeriod » spécifique à la table.</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.table" approved="yes">
+        <source>Table to clean up</source>
+        <target state="final">Table à nettoyer</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.additionalInformationTable" approved="yes">
+        <source>Table: %s</source>
+        <target state="final">Table : %s</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.additionalInformationAllTables" approved="yes">
+        <source>All tables</source>
+        <target state="final">Toutes les tables</target>
+      </trans-unit>
+      <trans-unit id="label.tableGarbageCollection.numberOfDays" approved="yes">
+        <source>Delete entries older than given number of days</source>
+        <target state="final">Supprimer les entrées plus anciennes que le nombre de jours donné</target>
+      </trans-unit>
+      <trans-unit id="label.optimizeDatabaseTables.selectTables" approved="yes">
+        <source>Database tables</source>
+        <target state="final">Tables de la base de données</target>
+      </trans-unit>
+      <trans-unit id="label.status" approved="yes">
+        <source>Status</source>
+        <target state="final">Statut</target>
+      </trans-unit>
+      <trans-unit id="label.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Type</target>
+      </trans-unit>
+      <trans-unit id="runningType" approved="yes">
+        <source>Run task multiple times?</source>
+        <target state="final">Exécuter la tâche plusieurs fois ?</target>
+      </trans-unit>
+      <trans-unit id="label.type.recurring" approved="yes">
+        <source>Recurring</source>
+        <target state="final">Récurrent</target>
+      </trans-unit>
+      <trans-unit id="label.type.single" approved="yes">
+        <source>Single</source>
+        <target state="final">Unique</target>
+      </trans-unit>
+      <trans-unit id="label.group" approved="yes">
+        <source>Task group</source>
+        <target state="final">Groupe de tâches</target>
+      </trans-unit>
+      <trans-unit id="label.noGroup" approved="yes">
+        <source>Not assigned to any task group</source>
+        <target state="final">Assignée à aucun groupe de tâches</target>
+      </trans-unit>
+      <trans-unit id="label.group.isDisabled" approved="yes">
+        <source>disabled</source>
+        <target state="final">désactivé</target>
+      </trans-unit>
+      <trans-unit id="label.group.unused" approved="yes">
+        <source>Unused task groups</source>
+        <target state="final">Groupes de tâches inutilisés</target>
+      </trans-unit>
+      <trans-unit id="label.group.tableColumn" approved="yes">
+        <source>Group</source>
+        <target state="final">Groupe</target>
+      </trans-unit>
+      <trans-unit id="label.group.enable" approved="yes">
+        <source>Enable group</source>
+        <target state="final">Activer le groupe</target>
+      </trans-unit>
+      <trans-unit id="label.group.disable" approved="yes">
+        <source>Disable group</source>
+        <target state="final">Désactiver le groupe</target>
+      </trans-unit>
+      <trans-unit id="label.group.edit" approved="yes">
+        <source>Edit group</source>
+        <target state="final">Modifier le groupe</target>
+      </trans-unit>
+      <trans-unit id="label.errorClass" approved="yes">
+        <source>Broken tasks</source>
+        <target state="final">Tâches erronées</target>
+      </trans-unit>
+      <trans-unit id="label.saveAndCreateNewTask" approved="yes">
+        <source>Save and create new task</source>
+        <target state="final">Enregistrer et créer une nouvelle tâche</target>
+      </trans-unit>
+      <trans-unit id="label.addOptionToCommand" approved="yes">
+        <source>Add option</source>
+        <target state="final">Nouvelle option</target>
+      </trans-unit>
+      <trans-unit id="label.setOptionForCommand" approved="yes">
+        <source>Set option</source>
+        <target state="final">Définir l'option</target>
+      </trans-unit>
+      <trans-unit id="label.runOnCli" approved="yes">
+        <source>Run on CLI</source>
+        <target state="final">Exécuter en CLI</target>
+      </trans-unit>
+      <trans-unit id="msg.cliScript" approved="yes">
+        <source>The script to execute the Scheduler from the command line is: &lt;strong&gt;"%s scheduler:run"&lt;/strong&gt;.</source>
+        <target state="final">Le script pour exécuter le planificateur en ligne de commande est : &lt;strong&gt;"%s scheduler:run"&lt;/strong&gt;.</target>
+      </trans-unit>
+      <trans-unit id="msg.cliScriptExecutable" approved="yes">
+        <source>The web server user is allowed execute this script.</source>
+        <target state="final">L'utilisateur du serveur web est autorisé à exécuter ce script.</target>
+      </trans-unit>
+      <trans-unit id="msg.cliScriptNotExecutable" approved="yes">
+        <source>The web server user is not allowed to execute this script.</source>
+        <target state="final">L'utilisateur du serveur web n'est pas autorisé à exécuter ce script.</target>
+      </trans-unit>
+      <trans-unit id="msg.delete" approved="yes">
+        <source>Are you sure you want to delete this task?</source>
+        <target state="final">Êtes-vous certain de vouloir supprimer cette tâche ?</target>
+      </trans-unit>
+      <trans-unit id="msg.deleteError" approved="yes">
+        <source>The task could not be deleted.</source>
+        <target state="final">La tâche n'a pas pu être supprimée.</target>
+      </trans-unit>
+      <trans-unit id="msg.deleteSuccess" approved="yes">
+        <source>The task was successfully deleted.</source>
+        <target state="final">La tâche a été supprimée avec succès.</target>
+      </trans-unit>
+      <trans-unit id="msg.endDateSmallerThanStartDate" approved="yes">
+        <source>The end date is before the start date.</source>
+        <target state="final">La date de fin est avant la date de début.</target>
+      </trans-unit>
+      <trans-unit id="msg.executed" approved="yes">
+        <source>Task "%s" with uid "%s" has been executed.</source>
+        <target state="final">La tâche "%s" avec l'uid "%s" a été exécutée.</target>
+      </trans-unit>
+      <trans-unit id="msg.frequencyError" approved="yes">
+        <source>Invalid frequency. Please enter either a number of seconds or a valid cron command. The cron parser said: %1$s [code: %2$d].</source>
+        <target state="final">Fréquence invalide. Veuillez entrer soit un nombre de secondes soit une commande cron valide. L'analyseur cron a dit: %1$s [code: %2$d].</target>
+      </trans-unit>
+      <trans-unit id="msg.incompleteLastRun" approved="yes">
+        <source>The information about the last execution of the Scheduler is incomplete.</source>
+        <target state="final">L'information à propos de la dernière exécution du planificateur est incomplète.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidFrequency" approved="yes">
+        <source>Invalid frequency. Please enter either a number of seconds or a valid cron command.</source>
+        <target state="final">Fréquence invalide. Veuillez entrer un nombre de secondes ou une commande cron valide.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidSleepTime" approved="yes">
+        <source>Please enter a sleep time greater or equal to 0 (zero).</source>
+        <target state="final">Veuillez entrer une durée de sommeil supérieure ou égale à 0 (zéro).</target>
+      </trans-unit>
+      <trans-unit id="msg.lastRun" approved="yes">
+        <source>The Scheduler was last started (%1$s) on %2$s at %3$s and ended on %4$s at %5$s.</source>
+        <target state="final">Le planificateur a été démarré pour la dernière fois (%1$s) le %2$s à %3$s et s'est terminé le %4$s à %5$s.</target>
+      </trans-unit>
+      <trans-unit id="msg.canNotDeleteRunningTask" approved="yes">
+        <source>A running task may not be deleted.</source>
+        <target state="final">Une tâche en cours d'exécution ne peut pas être supprimée.</target>
+      </trans-unit>
+      <trans-unit id="msg.maynotEditRunningTask" approved="yes">
+        <source>A running task may not be edited.</source>
+        <target state="final">Une tâche en cours d'exécution ne peut pas être éditée.</target>
+      </trans-unit>
+      <trans-unit id="msg.maynotStopNonRunningTask" approved="yes">
+        <source>The task is not running. There are no executions to unmark.</source>
+        <target state="final">La tâche n'est pas en cours d'exécution. Il n'y a aucune exécution à marquer.</target>
+      </trans-unit>
+      <trans-unit id="msg.noEmail" approved="yes">
+        <source>Please enter an email address.</source>
+        <target state="final">Veuillez entrer une adresse e-mail.</target>
+      </trans-unit>
+      <trans-unit id="msg.noFrequency" approved="yes">
+        <source>No frequency was defined, either as an interval or as a cron command.</source>
+        <target state="final">La fréquence n'a pas été définie, ni en nombre de secondes, ni comme commande cron.</target>
+      </trans-unit>
+      <trans-unit id="msg.noLastRun" approved="yes">
+        <source>The Scheduler has never yet run or the information about the last run has been lost.</source>
+        <target state="final">Le planificateur n'a jamais été exécuté ou l'information concernant la dernière exécution a été perdue.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidRunningType" approved="yes">
+        <source>The selected task type must be either "single execution" or "recurring execution".</source>
+        <target state="final">Le type de tâche sélectionné doit être soit "unique", soit "récurrent".</target>
+      </trans-unit>
+      <trans-unit id="msg.noTasks" approved="yes">
+        <source>No tasks found</source>
+        <target state="final">Aucune tâche trouvée</target>
+      </trans-unit>
+      <trans-unit id="msg.noTasks.createNew" approved="yes">
+        <source>There are currently no configured tasks found. You can create a new one.</source>
+        <target state="final">Il n'y a actuellement aucune tâche configurée. Vous pouvez en créer une nouvelle.</target>
+      </trans-unit>
+      <trans-unit id="msg.noTasks.nonAvailable" approved="yes">
+        <source>There are currently no tasks available in the system to be configured.</source>
+        <target state="final">Il n'y a actuellement aucune tâche à configurer disponible dans le système.</target>
+      </trans-unit>
+      <trans-unit id="msg.notExecuted" approved="yes">
+        <source>Task "%s" with uid "%s" has not been executed.</source>
+        <target state="final">La tâche "%s" avec l'uid "%s" n'a pas été exécutée.</target>
+      </trans-unit>
+      <trans-unit id="msg.executionFailed" approved="yes">
+        <source>Execution of task "%1$s" failed with the following message: %2$s</source>
+        <target state="final">L'exécution de la tâche "%1$s" a échoué avec le message suivant : %2$s</target>
+      </trans-unit>
+      <trans-unit id="msg.schedulingFailed" approved="yes">
+        <source>Scheduling of task "%1$s" failed with the following message: %2$s</source>
+        <target state="final">La planification de la tâche "%1$s" a échoué avec le message suivant : %2$s</target>
+      </trans-unit>
+      <trans-unit id="msg.toggleDisableFailed" approved="yes">
+        <source>Toggling disabled state of task "%1$s" failed with the following message: %2$s</source>
+        <target state="final">La désactivation de la tâche "%1$s" a échoué avec le message suivant : %2$s</target>
+      </trans-unit>
+      <trans-unit id="msg.stopTaskFailed" approved="yes">
+        <source>Stopping task "%1$s" failed with the following message: %2$s</source>
+        <target state="final">L'arrêt de la tâche "%1$s" a échoué avec le message suivant : %2$s</target>
+      </trans-unit>
+      <trans-unit id="msg.executionFailureDefault" approved="yes">
+        <source>The execution failed, but the error message could not be retrieved (it was probably too large). Sorry.</source>
+        <target state="final">L'exécution a échoué, mais le message d'erreur ne peut pas être récupéré (il était probablement trop grand). Désolé.</target>
+      </trans-unit>
+      <trans-unit id="msg.executionFailureReport" approved="yes">
+        <source>Execution failed: %1$d, %2$s</source>
+        <target state="final">L'exécution a échoué : %1$d, %2$s</target>
+      </trans-unit>
+      <trans-unit id="msg.noStartDate" approved="yes">
+        <source>Please define a start date.</source>
+        <target state="final">Veuillez définir une date de lancement.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidStartDate" approved="yes">
+        <source>Start date is invalid.</source>
+        <target state="final">La date de lancement est invalide</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidEndDate" approved="yes">
+        <source>End date is invalid.</source>
+        <target state="final">La date d'arrêt est invalide</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidNumberOfDays" approved="yes">
+        <source>Number of days is invalid.</source>
+        <target state="final">Nombre de jours invalide</target>
+      </trans-unit>
+      <trans-unit id="msg.selectionOfNonExistingCacheBackends" approved="yes">
+        <source>Some of the selected cache backends do not exist. Please select valid backends only.</source>
+        <target state="final">Certains des caches backend sélectionnés n’existent pas. Sélectionnez un backend valide.</target>
+      </trans-unit>
+      <trans-unit id="msg.noCacheBackendSelected" approved="yes">
+        <source>Please select at least one cache backend.</source>
+        <target state="final">Sélectionner au moins un cache backend.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskClass" approved="yes">
+        <source><![CDATA[<strong>The following tasks are broken.</strong> If your task doesn't have a registered class, you should consider reinstalling the extension that provided them or simply deleting the task. In case the error is "Cannot unserialize [class]", the announced class must be removed from your task class, as it is not allowed to be used due to security reasons. Please check also if any of the listed tasks have to be recreated manually (which can be necessary after an extension update due to breaking changes or missing migration scripts).]]></source>
+        <target state="final"><![CDATA[<strong>Les tâches suivantes sont erronées.</strong> Si votre tâche n'a pas de classe enregistrée, vous devriez envisager de réinstaller l'extension qui les a fournies ou simplement de supprimer la tâche. Dans le cas où l'erreur est "Cannot unserialize [class]", la classe annoncée doit être retirée de votre classe de tâche, car elle n'est pas autorisée à être utilisée pour des raisons de sécurité. Veuillez vérifier également si l'une des tâches listées doit être recréée manuellement (ce qui peut être nécessaire après une mise à jour de l'extension en raison de modifications impactantes ou de scripts de migration manquants).]]></target>
+      </trans-unit>
+      <trans-unit id="msg.errorMessage" approved="yes">
+        <source>Error message</source>
+        <target state="final">Message d'erreur</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskClass.infobox.title" approved="yes">
+        <source>%s registered scheduler tasks can not be executed</source>
+        <target state="final">%s tâches du planificateur enregistrées ne peuvent pas être exécutées</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskClass.infobox.message" approved="yes">
+        <source><![CDATA[<a href="#scheduler-task-group-missing">Please check the erroneous tasks.</a>]]></source>
+        <target state="final"><![CDATA[<a href="#scheduler-task-group-missing">Veuillez vérifier les tâches erronnées.</a>]]></target>
+      </trans-unit>
+      <trans-unit id="msg.schedulerSetupCheck" approved="yes">
+        <source>This screen checks if the requisites for running the Scheduler as a cron job are fulfilled. It also displays information about the last run of the Scheduler.</source>
+        <target state="final">Cet écran vérifie si les pré-requis du planificateur sont remplis. Il montre également des informations concernant la dernière exécution du planificateur.</target>
+      </trans-unit>
+      <trans-unit id="msg.serverTime" approved="yes">
+        <source>Current server time is %s.</source>
+        <target state="final">L'heure courante du serveur est : %s</target>
+      </trans-unit>
+      <trans-unit id="msg.serverTimeHelp" approved="yes">
+        <source>All dates and times in the Scheduler are measured according to the server's time, as the Scheduler is run purely on the server-side.</source>
+        <target state="final">Toutes les dates et les heures du planificateur sont mesurées selon l'heure du serveur, étant donné que le planificateur est exécuté uniquement du côté serveur.</target>
+      </trans-unit>
+      <trans-unit id="msg.stop" approved="yes">
+        <source>Are you sure you want to mark this task as not running? Note that this will not stop the actual script (if unsure please refer to the manual).</source>
+        <target state="final">Êtes-vous certain de vouloir marquer cette tâche comme n'étant pas en cours d'exécution ? Veuillez noter que cela ne va pas arrêter l'exécution réelle (veuillez vous référer au manuel si besoin).</target>
+      </trans-unit>
+      <trans-unit id="msg.stopError" approved="yes">
+        <source>The task could not be marked as non-running.</source>
+        <target state="final">La tâche n'a pas pu être marquée comme n'étant pas en cours d'exécution.</target>
+      </trans-unit>
+      <trans-unit id="msg.stopSuccess" approved="yes">
+        <source>The task was successfully marked as non-running.</source>
+        <target state="final">La tâche a été marquée avec succès comme n'étant pas en cours d'exécution.</target>
+      </trans-unit>
+      <trans-unit id="msg.taskNotFound" approved="yes">
+        <source>The requested task (UID: %d) was not found.</source>
+        <target state="final">La tâche demandée (UID : %d) n'a pas été trouvée.</target>
+      </trans-unit>
+      <trans-unit id="msg.updateError" approved="yes">
+        <source>The task could not be updated.</source>
+        <target state="final">La tâche n'a pas pu être mise à jour.</target>
+      </trans-unit>
+      <trans-unit id="msg.selectionOfNonExistingDatabaseTables" approved="yes">
+        <source>Some of the selected database tables do not exist. Please select only valid tables.</source>
+        <target state="final">Certaines tables de la base de données sélectionnées n'existent pas. Veuillez sélectionner uniquement des tables valides.</target>
+      </trans-unit>
+      <trans-unit id="msg.noDatabaseTablesSelected" approved="yes">
+        <source>Please select at least one database table.</source>
+        <target state="final">Veuillez sélectionner au moins une table de la base de données.</target>
+      </trans-unit>
+      <trans-unit id="msg.unregisteredCommand" approved="yes">
+        <source>Command with identifier "%s" has not been registered.</source>
+        <target state="final">La commande avec l'identifiant "%s" n'a pas été enregistrée.</target>
+      </trans-unit>
+      <trans-unit id="msg.errorParsingArguments" approved="yes">
+        <source>Error parsing current set of arguments: "%s".</source>
+        <target state="final">Erreur dans l'analyse du jeu d'arguments: "%s".</target>
+      </trans-unit>
+      <trans-unit id="msg.errorParsingOptions" approved="yes">
+        <source>Error parsing current set of options: "%s".</source>
+        <target state="final">Erreur lors de l'analyse des options : "%s".</target>
+      </trans-unit>
+      <trans-unit id="msg.mandatoryArgumentMissing" approved="yes">
+        <source>Argument "%s" is mandatory.</source>
+        <target state="final">L'argument "%s" est obligatoire.</target>
+      </trans-unit>
+      <trans-unit id="msg.taskEnabled" approved="yes">
+        <source>Task "%s" with uid "%s" has been enabled.</source>
+        <target state="final">La tâche "%s" avec l'uid "%s" a été activée.</target>
+      </trans-unit>
+      <trans-unit id="msg.taskDisabled" approved="yes">
+        <source>Task "%s" with uid "%s" has been disabled.</source>
+        <target state="final">La tâche "%s" avec l'uid "%s" a été désactivée.</target>
+      </trans-unit>
+      <trans-unit id="msg.taskEnabledAndQueuedForExecution" approved="yes">
+        <source>Task "%s" with uid "%s" has been enabled and queued for execution at next scheduler CLI run.</source>
+        <target state="final">La tâche "%s" avec l'uid "%s" a été activée et mise en file d'attente pour être exécutée lors du prochain lancement du planificateur via CLI.</target>
+      </trans-unit>
+      <trans-unit id="msg.taskQueuedForExecution" approved="yes">
+        <source>Task "%s" with uid "%s" has been queued for execution at next scheduler CLI run.</source>
+        <target state="final">La tâche "%s" avec l'uid "%s" a été mise en file d'attente pour être exécutée lors du prochain lancement du planificateur via CLI.</target>
+      </trans-unit>
+      <trans-unit id="msg.group.deleted" approved="yes">
+        <source>Successfully deleted scheduler group.</source>
+        <target state="final">Le groupe a été supprimé avec succès.</target>
+      </trans-unit>
+      <trans-unit id="msg.group.delete.failed" approved="yes">
+        <source>Failed to delete scheduler group.</source>
+        <target state="final">Impossible de supprimer le groupe.</target>
+      </trans-unit>
+      <trans-unit id="msg.invalidTaskType" approved="yes">
+        <source>Invalid Task type</source>
+        <target state="final">Type de tâche invalide</target>
+      </trans-unit>
+      <trans-unit id="msg.defaultExpirePeriod" approved="yes">
+        <source>Default expire period of %d days, configured for selected table "%s", will be used.</source>
+        <target state="final">La période d'expiration par défaut de %d jours, configurée pour la table sélectionnée « %s », sera utilisée.</target>
+      </trans-unit>
+      <trans-unit id="none" approved="yes">
+        <source>None</source>
+        <target state="final">Aucun</target>
+      </trans-unit>
+      <trans-unit id="status" approved="yes">
+        <source>Status</source>
+        <target state="final">Statut</target>
+      </trans-unit>
+      <trans-unit id="status.progress" approved="yes">
+        <source>Progress</source>
+        <target state="final">Avancement</target>
+      </trans-unit>
+      <trans-unit id="status.disabled" approved="yes">
+        <source>disabled</source>
+        <target state="final">désactivée</target>
+      </trans-unit>
+      <trans-unit id="status.disabledByGroup" approved="yes">
+        <source>disabled by group</source>
+        <target state="final">désactivé par le groupe</target>
+      </trans-unit>
+      <trans-unit id="status.failure" approved="yes">
+        <source>failure</source>
+        <target state="final">échec</target>
+      </trans-unit>
+      <trans-unit id="status.late" approved="yes">
+        <source>late</source>
+        <target state="final">en retard</target>
+      </trans-unit>
+      <trans-unit id="status.running" approved="yes">
+        <source>running</source>
+        <target state="final">en cours d'exécution</target>
+      </trans-unit>
+      <trans-unit id="status.scheduled" approved="yes">
+        <source>scheduled</source>
+        <target state="final">planifiée</target>
+      </trans-unit>
+      <trans-unit id="task" approved="yes">
+        <source>Task</source>
+        <target state="final">Tâche</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>TYPO3 Scheduler administration module</source>
+        <target state="final">Module d'administration du planificateur de TYPO3</target>
+      </trans-unit>
+      <trans-unit id="action.run_task" approved="yes">
+        <source>Run task</source>
+        <target state="final">Exécuter la tâche</target>
+      </trans-unit>
+      <trans-unit id="action.run_task_cron" approved="yes">
+        <source>Run task on next cron job</source>
+        <target state="final">Exécuter la tâche lors de la prochaine tâche cron</target>
+      </trans-unit>
+      <trans-unit id="cachingFrameworkGarbageCollection.name" approved="yes">
+        <source>Caching framework garbage collection</source>
+        <target state="final">Ramasse-miette du gestionnaire de cache</target>
+      </trans-unit>
+      <trans-unit id="cachingFrameworkGarbageCollection.description" approved="yes">
+        <source>Calls garbage collection of caching framework caches which use one of the selected backends. This will free up space in cache backends which do not have internal garbage collection. For the default database backend, this task should be run once a day when the database is most likely to be idle.</source>
+        <target state="final">Lance le nettoyage de la mémoire du framework de mise en cache pour les Backends sélectionnés. Cela libérera de l'espace dans les caches Backend qui ne disposent pas de nettoyage intégré. Pour le Backend de base de données par défaut, cette tâche devrait être exécutée une fois par jour, lorsque la base de données est la plus susceptible d'être inactive.</target>
+      </trans-unit>
+      <trans-unit id="fileIndexing.name" approved="yes">
+        <source>[OBSOLETE] File Abstraction Layer: Indexing job</source>
+        <target state="final">[OBSOLETE] File Abstraction Layer : tâche d'indexation</target>
+      </trans-unit>
+      <trans-unit id="fileIndexing.description" approved="yes">
+        <source>Runs indexing tasks based on an indexing configuration and a storage/folder information.</source>
+        <target state="final">Exécute des tâches d'indexation basées sur une configuration d'indexation et une information de stockage/dossier.</target>
+      </trans-unit>
+      <trans-unit id="fileStorageIndexing.name" approved="yes">
+        <source>File Abstraction Layer: Update storage index</source>
+        <target state="final">File Abstraction Layer : Mise à jour de l'index du dossier de stockage</target>
+      </trans-unit>
+      <trans-unit id="fileStorageIndexing.description" approved="yes">
+        <source>Updates the Index/Cache Data of a Storage; only needed if changes to the storage are possible outside the backend (FTP, RemoteStorages).</source>
+        <target state="final">Met à jour l'index/le cache des données d'un dossier de stockage ; uniquement nécessaire si des modifications du dossier de stockage peuvent survenir en dehors du backend (FTP, dossiers de stockage distants).</target>
+      </trans-unit>
+      <trans-unit id="fileStorageExtraction.name" approved="yes">
+        <source>File Abstraction Layer: Extract metadata in storage</source>
+        <target state="final">File Abstraction Layer : Extraction des metadonnées du dossier de stockage</target>
+      </trans-unit>
+      <trans-unit id="fileStorageExtraction.description" approved="yes">
+        <source>Extracts metadata for all files in storage which have been changed since last run.</source>
+        <target state="final">Extrait les métadonnées de tous les fichiers stockés qui ont été modifiés depuis la dernière exécution.</target>
+      </trans-unit>
+      <trans-unit id="tableGarbageCollection.name" approved="yes">
+        <source>Table garbage collection</source>
+        <target state="final">Ramasse-miette des tables</target>
+      </trans-unit>
+      <trans-unit id="tableGarbageCollection.description" approved="yes">
+        <source>Deletes old entries from specific tables like sys_log.</source>
+        <target state="final">Supprime les anciennes données de tables spécifiques comme sys_log.</target>
+      </trans-unit>
+      <trans-unit id="recyclerGarbageCollection.name" approved="yes">
+        <source>Fileadmin garbage collection</source>
+        <target state="final">Ramasse-miette du fileadmin</target>
+      </trans-unit>
+      <trans-unit id="recyclerGarbageCollection.description" approved="yes">
+        <source>Empties all "_recycler_" folders under fileadmin. This helps free up space in the file system.</source>
+        <target state="final">Vide tous les dossiers « _recycler_ » dans fileadmin. Cela permet de libérer de l'espace sur le système de fichiers.</target>
+      </trans-unit>
+      <trans-unit id="executeSchedulableCommandTask.name" approved="yes">
+        <source>Execute console commands</source>
+        <target state="final">Exécuter les commandes de console</target>
+      </trans-unit>
+      <trans-unit id="executeSchedulableCommandTask.description" approved="yes">
+        <source>Allows regular console commands to be configured and executed through the scheduler framework.</source>
+        <target state="final">Autorise les commandes CommandController Extbase à être configurées et exécutées via le planificateur de tâche.</target>
+      </trans-unit>
+      <trans-unit id="optimizeDatabaseTable.name" approved="yes">
+        <source>Optimize MySQL database tables</source>
+        <target state="final">Optimiser les tables de la base de données MySQL</target>
+      </trans-unit>
+      <trans-unit id="optimizeDatabaseTable.description" approved="yes">
+        <source>Executes "OPTIMIZE TABLE" statements on the selected database tables. This helps to reduce storage space and improve I/O efficiency. Please be aware that tables will be locked during the optimization process.</source>
+        <target state="final">Exécute les instructions "OPTIMIZE TABLE" sur les tables de la base de données sélectionnées. Cela permet de réduire l'espace de stockage et d'améliorer l'efficacité des E/S. Veuillez noter que les tables seront verrouillées pendant le processus d'optimisation.</target>
+      </trans-unit>
+      <trans-unit id="ipAnonymization.name" approved="yes">
+        <source>Anonymize IP addresses in database tables</source>
+        <target state="final">Anonymiser les adresses IP dans les tables de base de données</target>
+      </trans-unit>
+      <trans-unit id="ipAnonymization.description" approved="yes">
+        <source>Anonymizes the IP addresses from specific tables like sys_log to enforce the privacy of the persisted data.</source>
+        <target state="final">Anonymise les adresses IP contenues dans des tables spécifiques comme sys_log pour assurer la confidentialité des données enregistrées.</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.table" approved="yes">
+        <source>Table to anonymize</source>
+        <target state="final">Table à anonymiser</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.additionalInformationTable" approved="yes">
+        <source>Table: %s after %s days</source>
+        <target state="final">Table : %s après %s jours</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.additionalInformationAllTables" approved="yes">
+        <source>All tables</source>
+        <target state="final">Toutes les tables</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.numberOfDays" approved="yes">
+        <source>Handle entries older than given number of days</source>
+        <target state="final">Traiter les entrées plus anciennes que le nombre de jours donné</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.mask" approved="yes">
+        <source>Mask level</source>
+        <target state="final">Niveau du masque</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.mask.1" approved="yes">
+        <source>Last byte for IPv4 / Interface ID for IPv6</source>
+        <target state="final">Dernier octet pour IPv4 / Interface ID pour IPv6</target>
+      </trans-unit>
+      <trans-unit id="label.ipAnonymization.mask.2" approved="yes">
+        <source>Last 2 bytes for IPv4 / Interface &amp; SLA ID for IPv6</source>
+        <target state="final">Les 2 derniers octets pour IPv4 / Interface &amp; ID SLA pour IPv6</target>
+      </trans-unit>
+      <trans-unit id="label.schedulableCommand.command_configuration" approved="yes">
+        <source>Command configuration</source>
+        <target state="final">Configuration de la commande</target>
+      </trans-unit>
+      <trans-unit id="label.schedulableCommand.command_configuration.description" approved="yes">
+        <source>Configure available arguments and options for the command.</source>
+        <target state="final">Configurer les arguments et options disponibles de la commande.</target>
+      </trans-unit>
+      <trans-unit id="command.example1" approved="yes">
+        <source>Every day-of-week from Monday through Friday at 09:00 and 15:00</source>
+        <target state="final">Chaque jour de la semaine du lundi au vendredi, à 09h00 et 15h00</target>
+      </trans-unit>
+      <trans-unit id="command.example2" approved="yes">
+        <source>Every 2 hours</source>
+        <target state="final">Toutes les 2 heures</target>
+      </trans-unit>
+      <trans-unit id="command.example3" approved="yes">
+        <source>Every 20 minutes</source>
+        <target state="final">Toutes les 20 minutes</target>
+      </trans-unit>
+      <trans-unit id="command.example4" approved="yes">
+        <source>Every Tuesday at 07:00</source>
+        <target state="final">Tous les mardis à 07h00</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.noLastRun" approved="yes">
+        <source><![CDATA[It seems the Scheduler has never yet run. Please check your <a href="%1$s">configuration</a>.]]></source>
+        <target state="final"><![CDATA[Il semble que le planificateur n'a jamais encore fonctionné. Veuillez vérifier votre <a href="%1$s">configuration</a>.]]></target>
+      </trans-unit>
+      <trans-unit id="systeminformation.lastRunLabel" approved="yes">
+        <source>Last Scheduler run</source>
+        <target state="final">Dernière exécution du planificateur</target>
+      </trans-unit>
+      <trans-unit id="systeminformation.lastRunValue" approved="yes">
+        <source>%1$s at %2$s, Duration %3$s, (started %4$s)</source>
+        <target state="final">%1$s à %2$s, Durée %3$s, (commencé %4$s)</target>
+      </trans-unit>
+      <trans-unit id="msg.group.notification.error.title" approved="yes">
+        <source>Error</source>
+        <target state="final">Erreur</target>
+      </trans-unit>
+      <trans-unit id="msg.group.notification.error.message" approved="yes">
+        <source>Could not create group</source>
+        <target state="final">Impossible de créer le groupe</target>
+      </trans-unit>
+      <trans-unit id="editableGroupName.input.field.label" approved="yes">
+        <source>Enter a group name</source>
+        <target state="final">Saisissez un nom de groupe</target>
+      </trans-unit>
+      <trans-unit id="editableGroupName.button.edit.label" approved="yes">
+        <source>Edit group name</source>
+        <target state="final">Modifier le nom du groupe</target>
+      </trans-unit>
+      <trans-unit id="newSchedulerTask.filter.placeholder" approved="yes">
+        <source>Search for any kind of tasks</source>
+        <target state="final">Rechercher tout type de tâches</target>
+      </trans-unit>
+      <trans-unit id="newSchedulerTask.filter.noResults" approved="yes">
+        <source>Unfortunately no scheduler task matches your query, please try a different one.</source>
+        <target state="final">Malheureusement aucune tâche de planificateur ne correspond à votre requête, veuillez en essayer une autre.</target>
+      </trans-unit>
+      <!-- Moved from messages.xlf to solve https://forge.typo3.org/issues/108902-->
+      <trans-unit id="delete_group" approved="yes">
+        <source>Delete this task group? You can restore it in the module "Recycler".</source>
+        <target state="final">Supprimer ce groupe de tâches ? Vous pourrez le restaurer depuis le module "Corbeille".</target>
+      </trans-unit>
+      <trans-unit id="delete_task" approved="yes">
+        <source>Delete this task? You can restore it in the module "Recycler".</source>
+        <target state="final">Supprimer cette tâche ? Vous pourrez la restaurer depuis le module "Corbeille".</target>
+      </trans-unit>
+      <trans-unit id="task.count" approved="yes">
+        <source>{count, plural, one {# task} other {# tasks}}</source>
+        <target state="final">{count, plural, one {# tâche} other {# tâches}}</target>
+      </trans-unit>
+      <trans-unit id="unusedGroups.count" approved="yes">
+        <source>{count, plural, one {# unused task group} other {# unused task groups}}</source>
+        <target state="final">{count, plural, one {# groupe de tâches inutilisé} other {# groupes de tâches inutilisés}}</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
