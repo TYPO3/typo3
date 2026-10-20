@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814801" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilestorage.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>File storage, which acts as an entry root point to a file-based structure. See it like a drive or a hard drive volume in your local machine.</source>
+        <target state="final">Fil-lagring, som opfører sig som et root adgangspunkt til en filbaseret struktur. Se det som en harddisk eller et drev på din lokale computer.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details">
+        <source/>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Disabling the storage will result in removing it from any listings in the backend. Existing file relations will still exist.</source>
+        <target state="final">Deaktivering af lagring vil resultere i at det fjernes fra alle visninger i backend. Eksisterende filrelationer vil stadig eksistere.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If you set up a file storage, it will show up on any folder lists, thus allowing to basically browse through the files in this file repository. If you set this checkbox, this storage will be excluded from any listings in the backend. Any existing file references will still exist further.</source>
+        <target state="final">Hvis du indretter en fil-lagring, vil den dukke op under alle mappe-visninger, sådan at man kan browse igennem filerne i fil-lageret. Hvis du angiver denne checkboks, vil dette lager blive udelukket fra alle visninger i backend. Eksisterende filrelationer vil stadig eksistere.</target>
+      </trans-unit>
+      <trans-unit id="name.description" resname="name.description" approved="yes">
+        <source>The visible identifier for this file storage.</source>
+        <target state="final">Den synlige identifikator for dette fil-lager.</target>
+      </trans-unit>
+      <trans-unit id="name.details" resname="name.details" approved="yes">
+        <source>The label entered here will be shown as the name for the entry point in the TYPO3 Backend. Be sure to make it descriptive and logical for your editors.</source>
+        <target state="final">Mærkatet der indtastes her, vil blive vist som navnet på adgangspunktet i TYPO3 Backend. Vær opmærksom på at det er beskrivende og logisk for dine redaktører.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>A description of this storage.</source>
+        <target state="final">En beskrivelse til dette lager.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" approved="yes">
+        <source>This description field is used to explain e.g. the location of the storage, also what this storage is meant for or what it contains.</source>
+        <target state="final">Dette beskrivelsesfelt bruges til at forklare for eksempel lokationen på lageret, men også hvad lageret er tænkt til eller hvad det indeholder.</target>
+      </trans-unit>
+      <trans-unit id="driver.description" resname="driver.description" approved="yes">
+        <source>Choose the driver as the technical backbone of the storage. Once you've chosen a driver, and saved it, additional configuration will show up.</source>
+        <target state="final">Vælg den driver der er den tekniske rygrad bag lageret. Når du har valgt en driver og gemt, vil yderligere konfigurering blive vist.</target>
+      </trans-unit>
+      <trans-unit id="driver.details" resname="driver.details" approved="yes">
+        <source>The driver is the technical background of a storage, and thus also defines whether the location of the storage is local (= on the same machine as this TYPO3 installation) or remote like a WebDAV server connection. Search for extensions in the TYPO3 Extension Repository that extend this driver list.</source>
+        <target state="final">Driveren er den tekniske baggrund for lageret, og den definerer derfor også om lokationen af lageret er lokalt (= på den samme maskine som TYPO3 installationen), eller remote, som for eksempel en WebDAV serverforbindelse. Søg efter udvidelser i TYPO3s udvidelseslager for at udvide driverlisten.</target>
+      </trans-unit>
+      <trans-unit id="processingfolder.description" resname="processingfolder.description" approved="yes">
+        <source>Defines the directory on this storage to be used to save temporary files like resized images.</source>
+        <target state="final">Definerer mappen på lageret, som skal bruges til at gemme midlertidige filer, som for eksempel ændrede billeders størrelser.</target>
+      </trans-unit>
+      <trans-unit id="is_browsable.description" resname="is_browsable.description" approved="yes">
+        <source>If set, backend users can browse through this storage. Otherwise it will show up as a unselectable item in the list.</source>
+        <target state="final">Hvis angivet, backend brugere kan browse i lageret. Ellers vil den dukke op som et fravalgt emne i listen.</target>
+      </trans-unit>
+      <trans-unit id="is_public.description" resname="is_public.description" approved="yes">
+        <source>If set, then the files in this storage can be linked directly from the outside world. If this is not set, make sure to provide additional possibilities to access the files in this storage.</source>
+        <target state="final">Hvis angivet, kan filerne i lageret linkes direkte udefra. Hvis det ikke er angivet, skal du tilføje ekstra muligheder for at få adgang til filerne.</target>
+      </trans-unit>
+      <trans-unit id="is_writable.description" resname="is_writable.description" approved="yes">
+        <source>If set, then users are allowed to modify, add, delete files/folders on this storage.</source>
+        <target state="final">Hvis angivet, kan brugerne rette, tilføje og slette filer/mapper på lageret.</target>
+      </trans-unit>
+      <trans-unit id="is_online.description" resname="is_online.description" approved="yes">
+        <source>This flag is usually set. If TYPO3 cannot connect to this storage (because it maybe temporary down), then the flag will be checked, and the storage will behave like it is non-browsable in the TYPO3 backend. The admin needs to manually activate it again if it was offline.</source>
+        <target state="final">Dette flag er normalt sat. Hvis TYPO3 ikke kan forbinde til lageret (fordi det måske midlertidigt er nede), vil dette flag blive tjekket og lageret vil opføre sig som ikke navigérbart i TYPO3 backend. Admin vil være nødsaget at aktivere det igen, hvis det var offline.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
