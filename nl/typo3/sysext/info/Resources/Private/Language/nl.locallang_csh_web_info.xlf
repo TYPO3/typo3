@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814862" source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_csh_web_info.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>Web &gt; Info module</source>
+        <target state="final">Web &gt; Info module</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The idea of the Web&gt;Info module is to be a host module for backend applications that wish to present information / analysis of pages or branches of the page tree. This could be website statistics, caching status information etc.</source>
+        <target state="final">Het idee van de Web&gt;Info module is om een gastheer-module te zijn voor backend applicaties die informatie / analyse willen geven van pagina's of delen van de paginaboom. Dit kunnen website statistieken zijn, informatie over caching status, etc.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>The Web&gt;Info module shows information rather than offering functionality. It is up to extension programmers to decide in which of these two modules they want to insert functionality.</source>
+        <target state="final">De Web&gt;Info module toont informatie in plaats van functionaliteit te bieden. Het is aan de extensieprogrammeurs om te bepalen aan welke van deze twee modules ze functionaliteit willen toevoegen.</target>
+      </trans-unit>
+      <trans-unit id="_.image" resname="_.image" approved="yes">
+        <source>EXT:info/Resources/Public/Images/cshimages/pagetree_overview_10.png</source>
+        <target state="final">EXT:info/Resources/Public/Images/cshimages/pagetree_overview_10.png</target>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" approved="yes">
+        <source>The Web&gt;Info module as provided by the core is an empty shell. It provides an API that extensions can use to attach function menu items to the Info module. Here you see the "Page TSconfig" overview from the extension "info_pagetsconfig".</source>
+        <target state="final">De Web&gt;Info module zoals beschikbaar in de core is een lege schil. Het biedt een API die extensies kunnen gebruiken om items toe te voegen aan het functiemen n de info-module. Hier zie je het overzicht "Page TSconfig" van de extensie "info_pagetsconfig".</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
