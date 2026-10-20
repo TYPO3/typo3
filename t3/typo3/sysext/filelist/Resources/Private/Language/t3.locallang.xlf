@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang.xlf" date="2015-08-21T11:45:35Z" product-name="filelist" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="search">
+        <source>Search "%s" in %s</source>
+        <target>crwdns141703:0%scrwdnd141703:0%scrwdne141703:0</target>
+      </trans-unit>
+      <trans-unit id="live_search.file_provider.filter_label">
+        <source>Files</source>
+        <target>crwdns415519:0crwdne415519:0</target>
+      </trans-unit>
+      <trans-unit id="live_search.file_provider.type_label">
+        <source>File</source>
+        <target>crwdns415521:0crwdne415521:0</target>
+      </trans-unit>
+      <trans-unit id="live_search.file_provider.show_in_list">
+        <source>Show in file list</source>
+        <target>crwdns415523:0crwdne415523:0</target>
+      </trans-unit>
+      <trans-unit id="live_search.file_provider.property.location">
+        <source>Location</source>
+        <target>crwdns415525:0crwdne415525:0</target>
+      </trans-unit>
+      <trans-unit id="live_search.file_provider.property.size">
+        <source>Size</source>
+        <target>crwdns415527:0crwdne415527:0</target>
+      </trans-unit>
+      <trans-unit id="live_search.file_provider.property.modified">
+        <source>Last modified</source>
+        <target>crwdns415529:0crwdne415529:0</target>
+      </trans-unit>
+      <trans-unit id="search.reset">
+        <source>Reset search</source>
+        <target>crwdns141705:0crwdne141705:0</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.no_results">
+        <source>No results found</source>
+        <target>crwdns55968:0crwdne55968:0</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.no_results.message">
+        <source>This folder does not contain any files for "%s"</source>
+        <target>crwdns141707:0%scrwdne141707:0</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.no_items">
+        <source>This folder is empty</source>
+        <target>crwdns141709:0crwdne141709:0</target>
+      </trans-unit>
+      <trans-unit id="flashmessage.no_items.message">
+        <source>Drag files here or paste them from the clipboard to upload them</source>
+        <target>crwdns415531:0crwdne415531:0</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.pagetitle">
+        <source>Upload files</source>
+        <target>crwdns55970:0crwdne55970:0</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.submit">
+        <source>Upload files</source>
+        <target>crwdns55972:0crwdne55972:0</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.files">
+        <source>files</source>
+        <target>crwdns55974:0crwdne55974:0</target>
+      </trans-unit>
+      <trans-unit id="file_rename.exists.title">
+        <source>File exists already</source>
+        <target>crwdns55976:0crwdne55976:0</target>
+      </trans-unit>
+      <trans-unit id="file_rename.exists.description">
+        <source>You want to rename the file "{0}" to "{1}", but the file "{1}" already exists. How do you want to proceed?</source>
+        <target>crwdns95880:0{0}crwdnd95880:0{1}crwdnd95880:0{1}crwdne95880:0</target>
+      </trans-unit>
+      <trans-unit id="file_rename.actions.cancel">
+        <source>Cancel</source>
+        <target>crwdns55980:0crwdne55980:0</target>
+      </trans-unit>
+      <trans-unit id="file_rename.actions.rename">
+        <source>Rename with unique name</source>
+        <target>crwdns55982:0crwdne55982:0</target>
+      </trans-unit>
+      <trans-unit id="file_rename.actions.override">
+        <source>Overwrite</source>
+        <target>crwdns55984:0crwdne55984:0</target>
+      </trans-unit>
+      <trans-unit id="file_rename.php.pagetitle">
+        <source>Rename</source>
+        <target>crwdns55986:0crwdne55986:0</target>
+      </trans-unit>
+      <trans-unit id="file_rename.php.submit">
+        <source>Rename</source>
+        <target>crwdns55988:0crwdne55988:0</target>
+        <note>This label is not used since TYPO3 v9.</note>
+      </trans-unit>
+      <trans-unit id="file_rename.php.label.target.file">
+        <source>New file name</source>
+        <target>crwdns55990:0crwdne55990:0</target>
+      </trans-unit>
+      <trans-unit id="file_rename.php.label.target.folder">
+        <source>New folder name</source>
+        <target>crwdns55992:0crwdne55992:0</target>
+      </trans-unit>
+      <trans-unit id="file_replace.title">
+        <source>Replace file "%s"</source>
+        <target>crwdns376686:0%scrwdne376686:0</target>
+      </trans-unit>
+      <trans-unit id="file_replace.intro">
+        <source>You're about to replace the file "%s".</source>
+        <target>crwdns376688:0%scrwdne376688:0</target>
+      </trans-unit>
+      <trans-unit id="file_replace.new_file.label">
+        <source>Select new file</source>
+        <target>crwdns376690:0crwdne376690:0</target>
+      </trans-unit>
+      <trans-unit id="file_replace.keepFilename.label">
+        <source>Keep current filename "%s"?</source>
+        <target>crwdns376692:0%scrwdne376692:0</target>
+      </trans-unit>
+      <trans-unit id="file_replace.button.replace">
+        <source>Replace</source>
+        <target>crwdns376694:0crwdne376694:0</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.pagetitle">
+        <source>Edit</source>
+        <target>crwdns56004:0crwdne56004:0</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.submit">
+        <source>Save</source>
+        <target>crwdns56006:0crwdne56006:0</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.saveAndClose">
+        <source>Save and Close</source>
+        <target>crwdns56008:0crwdne56008:0</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.coundNot">
+        <source>This filetype cannot be edited.&lt;br /&gt;The file must have an extension like:&lt;br /&gt;&lt;br
+					/&gt; &lt;b&gt;%s&lt;/b&gt;
+                </source>
+        <target>crwdns56010:0%scrwdne56010:0
+                </target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.pagetitle">
+        <source>New file or folder</source>
+        <target>crwdns56012:0crwdne56012:0</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.label_newfolder">
+        <source>Folder</source>
+        <target>crwdns56016:0crwdne56016:0</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.submit">
+        <source>Create folders</source>
+        <target>crwdns56018:0crwdne56018:0</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.folders">
+        <source>folders</source>
+        <target>crwdns56024:0crwdne56024:0</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.newfile_submit">
+        <source>Create file</source>
+        <target>crwdns56026:0crwdne56026:0</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.newfile">
+        <source>Create new textfile</source>
+        <target>crwdns56028:0crwdne56028:0</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.label_newfile">
+        <source>File name</source>
+        <target>crwdns56030:0crwdne56030:0</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.number_of_folders">
+        <source>Number of folders</source>
+        <target>crwdns56032:0crwdne56032:0</target>
+      </trans-unit>
+      <trans-unit id="download">
+        <source>Download</source>
+        <target>crwdns141713:0crwdne141713:0</target>
+      </trans-unit>
+      <trans-unit id="actions.new_folder">
+        <source>New Folder</source>
+        <target>crwdns377914:0crwdne377914:0</target>
+      </trans-unit>
+      <trans-unit id="actions.new_file">
+        <source>New File</source>
+        <target>crwdns377916:0crwdne377916:0</target>
+      </trans-unit>
+      <trans-unit id="translations">
+        <source>Translations</source>
+        <target>crwdns311006:0crwdne311006:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
