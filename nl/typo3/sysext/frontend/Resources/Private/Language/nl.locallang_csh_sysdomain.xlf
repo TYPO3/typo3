@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814800" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_sysdomain.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Determines the entrypoint of a certain host name.</source>
+        <target state="final">Legt het beginpunt van een bepaalde hostnaam vast.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>When a TYPO3 database contains more than a single website, you'll typically have to assign a domain name to each new websites "root-page". In practice you point all the domains to the same TYPO3 database on the server, but then you insert these Domain records at the positions in the page tree where you want to direct requests to the domain. And thus pages 'outside' that point will not be accessible from that domain.
+This is like "Virtual hosts" in Apache servers.
+
+(Should probably be available for admin only.)</source>
+			<target state="final">Wanneer een TYPO3 database meer dan één website bevat, moet je voor elke website rootpagina een domeinnaam opgeven. In de praktijk verwijzen alle domeinen naar dezelfde TYPO3 database op de server, maar je voegt deze domein-records in op de positie in de pagina boom waar je aanroepen voor dit domein wil laten uitkomen. Pagina's buiten deze positie zijn dus niet bereikbaar vanuit dit domein.
+Dit is vergelijkbaar met de "Virtual hosts" bij Apache servers.
+
+(Moet waarschijnlijk alleen voor de admin-gebruiker beschikbaar zijn)</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>sys_language
+sys_template</source>
+			<target state="final">sys_language
+sys_template</target></trans-unit>
+      <trans-unit id="domainName.description" resname="domainName.description" approved="yes">
+        <source>Enter the host name, eg. "www.my-domain.com".</source>
+        <target state="final">Voer de hostnaam in, bijv. "www.mijn-domein.nl".</target>
+      </trans-unit>
+      <trans-unit id="domainName.details" resname="domainName.details" xml:space="preserve" approved="yes">
+				<source>Before a domain record will have any effect you must make sure that the domains A-record is pointed towards the server and that your server is setup to direct requests to this TYPO3 database. So basically before entering anything here, make sure a request to the domain you wish to enter arrives at the root of the current page tree.
+When you create a domain record and the host name in it (be it a real domain name or an IP address) matches the hostname of the URL, the TypoScript based front end will limit the available page to only those in the page tree from this point and outwards. In effect you will 'arrive' at the page where this record is and furthermore users cannot see pages with ids outside this branch.
+
+&lt;strong&gt;Notice, &lt;/strong&gt;if you run TYPO3 from a subdirectory of the domain name, you must include the subdirectory as well, eg. "www.my-domain.org/typo3_subdir/"</source>
+			<target state="final">Voordat een domein record enig effect heeft, moet je ervoor zorgen dat het domein A-record naar de server verwijst en dat uw server is ingesteld op directe toegang tot deze TYPO3 database. Dus eigenlijk voor je hier iets invoert, zorg ervoor dat een aanroep van het domein dat u wilt invoeren uitkomt bij de root van de huidige paginaboom.
+Wanneer u een domein record aanmaakt en de hostnaam erin (of een echte domeinnaam, of een IP-adres) komt overeen met de hostnaam van de URL, het op TypoScript gebaseerde frontend zal de beschikbare pagina beperken tot alleen de pagina's in de paginaboom vanaf dit punt en daarbuiten. In feite zul je 'arriveeren' op de pagina waar dit record staat en verder kunnen gebruikers pagina's met id's buiten deze tak niet zien.
+
+&lt;strong&gt;Let op, &lt;/strong&gt;als je TYPO3 gebruikt in een submap van de domeinnaam, moet je ook de submap toevoegen. "www.my-domain.org/typo3_subdir/"</target></trans-unit>
+      <trans-unit id="redirectTo.description" resname="redirectTo.description" approved="yes">
+        <source>All requests to the domain will be redirected to this URL, if any value is entered.</source>
+        <target state="final">Alle aanroepen naar het domein worden doorverwezen naar deze URL, als een waarde is ingevoerd.</target>
+      </trans-unit>
+      <trans-unit id="redirectTo.details" resname="redirectTo.details" xml:space="preserve" approved="yes">
+				<source>Make sure to prepend "http://" or equally to the value! Basically a "Location: " header is just issued to this value!
+&lt;strong&gt;Warning:&lt;/strong&gt; You cannot use this to 'redirect' to a specific page id within the same domain as the record has! If you do that it'll just go into an endless loop because the redirect is redirecting to itself!
+
+Good Example:
+Domain: "my-domain.org"
+Redirect: "www.my-domain.org"
+
+This redirects requests to what is infact another domain name, namely "www.my-domain.org"
+
+Bad Example:
+Domain: "www.my-domain.org"
+Redirect: "www.my-domain.org/?id=10"
+
+This will go into an eternal loop because the domain name has in fact not changed!
+
+
+Virtual directories:
+If you're using TYPO3 on a unix computer you can make 'virtual subdirectories' to a website, still within the same database. See document list for more information. In that case you should enter the hostname with the subdirectory appended, like this: "my-domain.org/subdir/". If the combination of host name and current subdirectory matches the value, the domain record will be correctly detected and limit page access to the page tree below the Domain record.</source>
+			<target state="final">Zorg ervoor "http://" of gelijkwaardig voor de waarde te zetten! Deze waarde wordt in feite geplaatst in een "Location:" header! &lt;strong&gt;Waarschuwing&lt;/strong&gt; Dit is niet te gebruiken om door te sturen naar een specifieke pagina ID binnen hetzelfde domein als die van het record! Als je dat doet zal het in een eindeloze lus komen om het naar zichzelf doorstuurt!
+
+Goed voorbeeld:
+Domein: "mijn-domein.org"
+Redirect: "www.mijn-domein.org"
+
+Dit stuurt door naar wat in feite een andere domeinnaam is, namelijk "www.mijn-domein.org"
+
+Fout voorbeeld:
+Domein: "www.mijn-domein.org"
+Redirect: "www.mijn-domein.org/?id=10"
+
+Dit belandt in een eindeloze lus omdat de domeinnaam niet gewijzigd is!
+
+Virtuele mappen:
+Als TYPO3 gebruikt wordt op een Unix computer dan kunnen 'virtuele submappen' in een website gemaakt worden, nog steeds in dezelfde database. Zie de documentlijst voor meer informatie. In dat geval moet de hostnaam met de submap erachter ingevoerd worden zoals: "mijn-domein.org/submap/". Als de combinatie van hostnaam en de huidige submap overeenkomen met de waarde zal het domeinrecord correct herkend worden en de paginatoegang beperkt worden tot de paginaboom onder het domeinrecord.</target></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Use this option to temporarily disable the Domain record.</source>
+        <target state="final">Gebruik deze optie om het domeinrecord tijdelijk uit te schakelen.</target>
+      </trans-unit>
+      <trans-unit id="prepend_params.description" resname="prepend_params.description" approved="yes">
+        <source>If set, any GET parameters in the calling URL will be transferred to the redirect URL.</source>
+        <target state="final">Indien ingesteld, zullen alle GET parameters in de aangeroepen URL worden overgedragen naar de doorverwijzings-URL.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
