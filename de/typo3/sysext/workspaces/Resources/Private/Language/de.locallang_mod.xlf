@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815020" source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_mod.xlf" date="2011-10-17T20:22:38Z" product-name="workspaces" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Workspaces</source>
+        <target state="final">Arbeitsumgebungen</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>This module contains the overview of all elements within the current workspace and it enables to continue the review and publishing workflow for them.</source>
+        <target state="final">Dieses Modul stellt eine Übersicht aller Elemente der aktuellen Arbeitsumgebung dar. Es ermöglicht darüber hinaus Arbeitsschritte zur Überprüfung und Veröffentlichung der Elemente durchzuführen.</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Create and handle versioning workflows</source>
+        <target state="final">Arbeitsumgebungen erstellen und verwalten</target>
+      </trans-unit>
+      <trans-unit id="autopublishTask.name" resname="autopublishTask.name" approved="yes">
+        <source>Workspaces auto-publication (outdated, use the Symfony Command)</source>
+        <target state="final">Arbeitsumgebungen: automatische Veröffentlichung (veraltet: benutzen Sie den Symfony Befehl)</target>
+      </trans-unit>
+      <trans-unit id="autopublishTask.description" resname="autopublishTask.description" approved="yes">
+        <source>This tasks checks any workspace that has a publication date set in the past and automatically publishes it.</source>
+        <target state="final">Dieser Task sucht in jeder Arbeitsumgebung Elemente mit einem Veröffentlichungsdatum in der Vergangenheit und veröffentlicht diese.</target>
+      </trans-unit>
+      <trans-unit id="cleanupPreviewLinkTask.name" resname="cleanupPreviewLinkTask.name" approved="yes">
+        <source>Workspaces cleanup preview links (outdated, use the Symfony Command)</source>
+        <target state="final">Arbeitsumgebungen: Vorschau-Links aufräumen (veraltet, benutzen Sie den Symfony Befehl)</target>
+      </trans-unit>
+      <trans-unit id="cleanupPreviewLinkTask.description" resname="cleanupPreviewLinkTask.description" approved="yes">
+        <source>This task delete old preview links</source>
+        <target state="final">Dieser Task löscht alte Vorschaulinks</target>
+      </trans-unit>
+      <trans-unit id="stage_ready_to_publish" resname="stage_ready_to_publish" approved="yes">
+        <source>Ready to publish</source>
+        <target state="final">Bereit zum Veröffentlichen</target>
+      </trans-unit>
+      <trans-unit id="previewText" resname="previewText" approved="yes">
+        <source>Preview of workspace %s (%s)</source>
+        <target state="final">Vorschau von Arbeitsumgebung %s (%s)</target>
+      </trans-unit>
+      <trans-unit id="stopPreview" resname="stopPreview" approved="yes">
+        <source>Stop preview</source>
+        <target state="final">Vorschau stoppen</target>
+      </trans-unit>
+      <trans-unit id="previewLogoutSuccess" resname="previewLogoutSuccess" approved="yes">
+        <source>You logged out from Workspace preview mode. Click this link to %1$s go back to the website%2$s</source>
+        <target state="final">Sie haben den Arbeitsumgebungsvorschaumodus verlassen. Folgen Sie diesem Link um %1$s zur Website zurückzugehen%2$s</target>
+      </trans-unit>
+      <trans-unit id="previewLogoutError" resname="previewLogoutError" approved="yes">
+        <source>%1$sERROR!%2$sTemplate File "%3$s" configured with $TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"] not found. Please contact webmaster about this problem.</source>
+        <target state="final">%1$sFEHLER!%2$sTemplatedatei "%3$s" konfiguriert mit $TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"] nicht gefunden. Bitte kontaktieren Sie Ihren Webmaster wegen dieses Problems.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
