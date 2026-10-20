@@ -1,0 +1,1254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814854" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>TYPO3 Core</source>
+        <target state="final">ລະບົບຫຼັກ TYPO3</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>TYPO3 is a Content Management Framework which consists of a central program core with only limited functionality. To extend this core system there are hundreds of extensions which in combination will provide a very capable system.</source>
+        <target state="final">TYPO3 ແມ່ນໂຄງຮ່າງການຈັດການເນື້ອຫາ (Content Management Framework) ເຊິ່ງປະກອບດ້ວຍລະບົບຫຼັກຂອງໂປຣແກຣມທີ່ມີການເຮັດວຽກທີ່ຈຳກັດ. ເພື່ອຂະຫຍາຍຄວາມສາມາດຂອງລະບົບຫຼັກນີ້, ມັນມີສ່ວນເສີມ (extensions) ຫຼາຍຮ້ອຍອັນ ເຊິ່ງເມື່ອນຳມາໃຊ້ຮ່ວມກັນຈະເຮັດໃຫ້ລະບົບມີປະສິດທິພາບສູງຫຼາຍ.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>For most people TYPO3 is equivalent to a CMS providing a backend for management of the content and a frontend engine for website display. However TYPO3s core is natively designed to be a general purpose framework for management of database content. The core of TYPO3 delivers a set of principles for storage of this content, user access management, editing of the content, uploading and managing files etc. Many of these principles are expressed as an API (Application Programmers Interface) for use in the &lt;em&gt;extensions&lt;/em&gt; which ultimately adds most of the real functionality.</source>
+        <target state="final">ສຳລັບຄົນສ່ວນໃຫຍ່ TYPO3 ແມ່ນທຽບເທົ່າກັບ CMS ທີ່ໃຫ້ລະບົບຈັດການສ່ວນຫຼັງ (backend) ເພື່ອຈັດການເນື້ອຫາ ແລະ ເຄື່ອງຈັກສ່ວນໜ້າ (frontend) ສຳລັບການສະແດງຜົນເວັບໄຊ. ເຖິງຢ່າງໃດກໍຕາມ, ລະບົບຫຼັກຂອງ TYPO3 ຖືກອອກແບບມາເພື່ອເປັນໂຄງຮ່າງອະເນກປະສົງໃນການຈັດການເນື້ອຫາຖານຂໍ້ມູນ. ລະບົບຫຼັກຂອງ TYPO3 ໃຫ້ຊຸດຫຼັກການສຳລັບການຈັດເກັບເນື້ອຫາ, ການຈັດການການເຂົ້າເຖິງຂອງຜູ້ໃຊ້, ການແກ້ໄຂເນື້ອຫາ, ການອັບໂຫຼດ ແລະ ການຈັດການໄຟລ໌ ແລະ ອື່ນໆ. ຫຼັກການເຫຼົ່ານີ້ຫຼາຍຢ່າງຖືກສະແດງອອກໃນຮູບແບບ API (Application Programmers Interface) ເພື່ອໃຊ້ໃນ &lt;em&gt;ສ່ວນເສີມ&lt;/em&gt; ເຊິ່ງເປັນຕົວເພີ່ມຄວາມສາມາດໃນການເຮັດວຽກຕົວຈິງສ່ວນໃຫຍ່.</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" approved="yes">
+        <source>Inside TYPO3 | https://docs.typo3.org/typo3cms/InsideTypo3Reference/</source>
+        <target state="final">Inside TYPO3 | https://docs.typo3.org/typo3cms/InsideTypo3Reference/</target>
+      </trans-unit>
+      <trans-unit id="_.image" resname="_.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/login.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/login.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" approved="yes">
+        <source>TYPO3 backend login screen.</source>
+        <target state="final">ໜ້າຈໍເຂົ້າສູ່ລະບົບສ່ວນຫຼັງ (backend login) ຂອງ TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.alttitle" resname="menu_modules.alttitle" approved="yes">
+        <source>Backend modules</source>
+        <target state="final">ໂມດູນສ່ວນຫຼັງ (Backend modules)</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.description" resname="menu_modules.description" approved="yes">
+        <source>The Backend menu reflects the hierarchy of main- and sub-modules in TYPO3. Click a menu item to access the corresponding module.</source>
+        <target state="final">ເມນູສ່ວນຫຼັງສະແດງເຖິງລຳດັບຊັ້ນຂອງໂມດູນຫຼັກ ແລະ ໂມດູນຍ່ອຍໃນ TYPO3. ຄລິກທີ່ລາຍການເມນູເພື່ອເຂົ້າຫາໂມດູນທີ່ຕ້ອງການ.</target>
+      </trans-unit>
+      <trans-unit id="menu_modules.details" resname="menu_modules.details" xml:space="preserve" approved="yes">
+				<source>Backend Users might see different menu items depending on their access permissions. The "Admin" user on a system will always see all modules available.
+
+You can configure the backend to display the menu in two alternative versions (useful on smaller screens); As a selector box or list of icons in the top frame of the backend.
+
+When you click the little "+" or "-" icons next to the main modules, you can collapse (-) or expand (+) all the sub modules. By selecting the "Expand all" check box, all items are expanded. When the checkbox is unselected again, the menu changes back to the previous folding state. If you click "Expand all" and collapse a main module afterwards, the previous folding state is discarded and "Expand all" is unselected again.</source>
+			<target state="final">ຜູ້ໃຊ້ສ່ວນຫຼັງອາດຈະເຫັນລາຍການເມນູທີ່ແຕກຕ່າງກັນ ຂຶ້ນກັບສິດການເຂົ້າເຖິງຂອງພວກເຂົາ. ຜູ້ໃຊ້ "Admin" ໃນລະບົບຈະເຫັນທຸກໂມດູນທີ່ມີຢູ່ສະເໝີ.
+
+ທ່ານສາມາດຕັ້ງຄ່າສ່ວນຫຼັງໃຫ້ສະແດງເມນູໃນສອງຮູບແບບ (ມີປະໂຫຍດໃນໜ້າຈໍຂະໜາດນ້ອຍ); ເປັນກ່ອງເລືອກ ຫຼື ລາຍການໄອຄອນໃນເຟຣມດ້ານເທິງຂອງສ່ວນຫຼັງ.
+
+ເມື່ອທ່ານຄລິກໄອຄອນ "+" ຫຼື "-" ຂ້າງໂມດູນຫຼັກ, ທ່ານສາມາດຍຸບ (-) ຫຼື ຂະຫຍາຍ (+) ໂມດູນຍ່ອຍທັງໝົດໄດ້. ໂດຍການເລືອກກ່ອງ "Expand all", ທຸກລາຍການຈະຖືກຂະຫຍາຍອອກ. ເມື່ອຍົກເລີກການເລືອກກ່ອງຄືນ, ເມນູຈະກັບໄປສູ່ສະຖານະການຍຸບກ່ອນໜ້ານີ້. ຫາກທ່ານຄລິກ "Expand all" ແລ້ວຍຸບໂມດູນຫຼັກຫຼັງຈາກນັ້ນ, ສະຖານະການຍຸບກ່ອນໜ້າຈະຖືກຍົກເລີກ ແລະ "Expand all" ຈະຖືກຍົກເລີກການເລືອກອີກຄັ້ງ.</target></trans-unit>
+      <trans-unit id="_menu_modules.seeAlso" resname="_menu_modules.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:groupMods,
+be_users:userMods,
+More about Modules | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/Index.html</source>
+				
+			<target state="final">be_groups:groupMods,
+be_users:userMods,
+More about Modules | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/Index.html</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_menu_modules.image" resname="_menu_modules.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_2.png,
+EXT:core/Resources/Public/Images/cshimages/core_3.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_2.png,
+EXT:core/Resources/Public/Images/cshimages/core_3.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="menu_modules.image_descr" resname="menu_modules.image_descr" xml:space="preserve" approved="yes">
+				<source>This is the range of menu options for a typical backend user.
+For another backend user it might be different. This screenshot shows how another user has different permissions set and therefore access to other modules only. Also the backend language has been set different for this user.</source>
+			<target state="final">ນີ້ແມ່ນຂອບເຂດຂອງຕົວເລືອກເມນູສຳລັບຜູ້ໃຊ້ສ່ວນຫຼັງທົ່ວໄປ.
+ສຳລັບຜູ້ໃຊ້ສ່ວນຫຼັງຄົນອື່ນອາດຈະແຕກຕ່າງກັນ. ພາບໜ້າຈໍນີ້ສະແດງໃຫ້ເຫັນວ່າຜູ້ໃຊ້ຄົນອື່ນມີການຕັ້ງສິດການເຂົ້າເຖິງທີ່ແຕກຕ່າງກັນ ຈຶ່ງສາມາດເຂົ້າຫາໄດ້ສະເພາະບາງໂມດູນເທົ່ານັ້ນ. ນອກຈາກນີ້, ພາສາຂອງສ່ວນຫຼັງກໍໄດ້ຖືກຕັ້ງຄ່າໃຫ້ແຕກຕ່າງກັນສຳລັບຜູ້ໃຊ້ຄົນນີ້.</target></trans-unit>
+      <trans-unit id="menu_adminFunction.alttitle" resname="menu_adminFunction.alttitle" approved="yes">
+        <source>Admin Functions</source>
+        <target state="final">ຟັງຊັນຜູ້ດູແລລະບົບ (Admin Functions)</target>
+      </trans-unit>
+      <trans-unit id="menu_adminFunction.description" resname="menu_adminFunction.description" approved="yes">
+        <source>The Admin Functions allow administrators to clear caches etc.</source>
+        <target state="final">ຟັງຊັນຜູ້ດູແລລະບົບ ຊ່ວຍໃຫ້ຜູ້ດູແລລະບົບສາມາດລຶບແຄຊ໌ (clear caches) ແລະ ອື່ນໆ.</target>
+      </trans-unit>
+      <trans-unit id="menu_adminFunction.details" resname="menu_adminFunction.details" xml:space="preserve" approved="yes">
+				<source>TYPO3 has multiple caching systems:
+
+&lt;b&gt;Database Cache&lt;/b&gt;
+A very central cache is the database cache table, "cache_hash", which needs to be flushed after certain major changes in the system. You "clear all cache" by clicking the link with the blue icon. After this operation any website content should be re-generated from the sources rather than be delivered from caches. This operation clears &lt;i&gt;all&lt;/i&gt; database tables registered as flushable cache tables.
+
+&lt;b&gt;Cached PHP configuration files from Extensions&lt;/b&gt;
+TYPO3 also caches small configuration scripts from extensions, "ext_localconf.php" and "ext_tables.php". These files are simply read from all installed extensions and concatenated into temporary PHP scripts found in the typo3temp/Cache/Code/cache_core/ folder. Sometimes you need to remove these files so TYPO3 re-writes them from the originals. This is done by the "Clear temp_CACHED" link.
+
+&lt;b&gt;Notice:&lt;/b&gt; You should not clear these caches without a second thought. Clearing caches may affect performance on your server negatively for a while. Obviously the cached content has to be regenerated which takes time and under heavy load it might make your server un-available for a while.</source>
+			<target state="final">TYPO3 ມີລະບົບການຈັດເກັບແຄຊ໌ (caching) ຫຼາຍຮູບແບບ:
+
+&lt;b&gt;Database Cache&lt;/b&gt;
+ແຄຊ໌ທີ່ສຳຄັນຫຼາຍແມ່ນຕາຕະລາງແຄຊ໌ຖານຂໍ້ມູນ "cache_hash" ເຊິ່ງຈຳເປັນຕ້ອງໄດ້ລ້າງອອກຫຼັງຈາກມີການປ່ຽນແປງຄັ້ງໃຫຍ່ໃນລະບົບ. ທ່ານສາມາດ "ລ້າງແຄຊ໌ທັງໝົດ" (clear all cache) ໂດຍການຄລິກທີ່ລິ້ງທີ່ມີໄອຄອນສີຟ້າ. ຫຼັງຈາກການເຮັດວຽກນີ້, ເນື້ອຫາເວັບໄຊຈະຖືກສ້າງຂຶ້ນໃໝ່ຈາກແຫຼ່ງຂໍ້ມູນແທນທີ່ຈະຖືກດຶງມາຈາກແຄຊ໌. ການເຮັດວຽກນີ້ຈະລ້າງຕາຕະລາງຖານຂໍ້ມູນ &lt;i&gt;ທັງໝົດ&lt;/i&gt; ທີ່ລົງທະບຽນເປັນຕາຕະລາງແຄຊ໌ທີ່ລ້າງໄດ້.
+
+&lt;b&gt;ໄຟລ໌ການຕັ້ງຄ່າ PHP ທີ່ຖືກແຄຊ໌ຈາກສ່ວນເສີມ&lt;/b&gt;
+TYPO3 ຍັງໄດ້ແຄຊ໌ສະຄຣິບການຕັ້ງຄ່າຂະໜາດນ້ອຍຈາກສ່ວນເສີມເຊັ່ນ "ext_localconf.php" ແລະ "ext_tables.php". ໄຟລ໌ເຫຼົ່ານີ້ຖືກອ່ານຈາກທຸກສ່ວນເສີມທີ່ຕິດຕັ້ງໄວ້ ແລະ ຮວມເຂົ້າເປັນສະຄຣິບ PHP ຊົ່ວຄາວໃນໂຟນເດີ typo3temp/Cache/Code/cache_core/. ບາງຄັ້ງທ່ານຈຳເປັນຕ້ອງລຶບໄຟລ໌ເຫຼົ່ານີ້ເພື່ອໃຫ້ TYPO3 ຂຽນພວກມັນຄືນໃໝ່ຈາກຕົ້ນສະບັບ. ນີ້ສາມາດເຮັດໄດ້ຜ່ານລິ້ງ "Clear temp_CACHED".
+
+&lt;b&gt;ໝາຍເຫດ:&lt;/b&gt; ທ່ານບໍ່ຄວນລ້າງແຄຊ໌ເຫຼົ່ານີ້ໂດຍບໍ່ໄດ້ໄຕ່ຕອງ. ການລ້າງແຄຊ໌ອາດສົ່ງຜົນກະທົບຕໍ່ປະສິດທິພາບຂອງເຊີບເວີໃນທາງລົບຊົ່ວຄາວ. ເນື່ອງຈາກເນື້ອຫາທີ່ຖືກແຄຊ໌ຕ້ອງໄດ້ຖືກສ້າງຂຶ້ນໃໝ່ເຊິ່ງຕ້ອງໃຊ້ເວລາ ແລະ ຫາກມີການໃຊ້ງານໜັກ ອາດເຮັດໃຫ້ເຊີບເວີຂອງທ່ານບໍ່ສາມາດໃຊ້ງານໄດ້ຊົ່ວຄາວ.</target></trans-unit>
+      <trans-unit id="_menu_adminFunction.seeAlso" resname="_menu_adminFunction.seeAlso" approved="yes">
+        <source>be_users:admin</source>
+        <target state="final">be_users:admin</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_menu_adminFunction.image" resname="_menu_adminFunction.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_1.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/core_1.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pagetree.alttitle" resname="pagetree.alttitle" approved="yes">
+        <source>The Page Tree</source>
+        <target state="final">ຜັງຕົ້ນໄມ້ຂອງໜ້າເວັບ (The Page Tree)</target>
+      </trans-unit>
+      <trans-unit id="pagetree.description" resname="pagetree.description" approved="yes">
+        <source>This is the hierarchical organization of pages in TYPO3. Typically websites are build so they reflect the page structure in the page tree directly in the website navigation.</source>
+        <target state="final">ນີ້ແມ່ນການຈັດລຽງລຳດັບຊັ້ນຂອງໜ້າເວັບໃນ TYPO3. ໂດຍທົ່ວໄປແລ້ວ ເວັບໄຊຈະຖືກສ້າງຂຶ້ນເພື່ອໃຫ້ສະທ້ອນໂຄງສ້າງຂອງໜ້າເວັບໃນຜັງຕົ້ນໄມ້ໂດຍກົງໃນເມນູນຳທາງຂອງເວັບໄຊ.</target>
+      </trans-unit>
+      <trans-unit id="pagetree.details" resname="pagetree.details" xml:space="preserve" approved="yes">
+				<source>The page tree works like a file system. Each page is like a directory where you can store files. In TYPO3 you store database records inside of each page. Some of these records, typically called "Content Elements", contains the website content of pages. Other records can be from plugins like a glossary or a guestbook and they are only displayed indirectly by a plugin inserted as a Content Element.
+Some backend users will see only a part of the page tree for a website. This feature allows the administrator to configure backend users with different responsibilities for maintaining branches of the page tree.
+
+&lt;b&gt;Navigating the tree&lt;/b&gt;
+Simply click the +/- buttons to expand and contract the branches of the tree.
+If you click the page icons you should see a context menu pop up. It will contain options specifically for that page.
+Clicking the title of a page is another option. It will load the right frame of the Web main module with the selected sub-module. The content shown in the right frame will be related to the page clicked.</source>
+			<target state="final">ຜັງຕົ້ນໄມ້ຂອງໜ້າເວັບເຮັດວຽກຄືກັບລະບົບໄຟລ໌. ແຕ່ລະໜ້າປຽບຄືກັບໄດເຣັກທໍຣີທີ່ທ່ານສາມາດເກັບໄຟລ໌ໄດ້. ໃນ TYPO3 ທ່ານຈະເກັບບັນທຶກຖານຂໍ້ມູນໄວ້ໃນແຕ່ລະໜ້າ. ບາງບັນທຶກເຫຼົ່ານີ້, ໂດຍທົ່ວໄປເອີ້ນວ່າ "Content Elements" (ອົງປະກອບເນື້ອຫາ), ເຊິ່ງປະກອບດ້ວຍເນື້ອຫາເວັບໄຊຂອງໜ້ານັ້ນໆ. ບັນທຶກອື່ນໆອາດຈະມາຈາກປລັກອິນ (plugins) ເຊັ່ນ glossary ຫຼື guestbook ແລະ ພວກມັນຈະຖືກສະແດງຜົນທາງອ້ອມໂດຍປລັກອິນທີ່ຖືກແຊກເປັນອົງປະກອບເນື້ອຫາ.
+ຜູ້ໃຊ້ສ່ວນຫຼັງບາງຄົນຈະເຫັນພຽງແຕ່ບາງສ່ວນຂອງຜັງຕົ້ນໄມ້ເທົ່ານັ້ນ. ຄຸນສົມບັດນີ້ຊ່ວຍໃຫ້ຜູ້ດູແລລະບົບສາມາດກຳນົດຄ່າຜູ້ໃຊ້ສ່ວນຫຼັງໃຫ້ມີຄວາມຮັບຜິດຊອບແຕກຕ່າງກັນໃນການເບິ່ງແຍງສາຂາຂອງຜັງຕົ້ນໄມ້.
+
+&lt;b&gt;ການທ່ອງຜັງຕົ້ນໄມ້&lt;/b&gt;
+ພຽງແຕ່ຄລິກປຸ່ມ +/- ເພື່ອຂະຫຍາຍ ຫຼື ຍຸບສາຂາຂອງຕົ້ນໄມ້.
+ຫາກທ່ານຄລິກທີ່ໄອຄອນໜ້າເວັບ ທ່ານຈະເຫັນເມນູສະເພາະ (context menu) ສະແດງຂຶ້ນມາ. ມັນຈະມີຕົວເລືອກສະເພາະສຳລັບໜ້ານັ້ນ.
+ການຄລິກທີ່ຊື່ຂອງໜ້າເວັບແມ່ນອີກຕົວເລືອກໜຶ່ງ. ມັນຈະໂຫຼດເຟຣມດ້ານຂວາຂອງໂມດູນຫຼັກ Web ພ້ອມກັບໂມດູນຍ່ອຍທີ່ເລືອກ. ເນື້ອຫາທີ່ສະແດງໃນເຟຣມດ້ານຂວາຈະກ່ຽວຂ້ອງກັບໜ້າທີ່ຖືກຄລິກ.</target></trans-unit>
+      <trans-unit id="_pagetree.seeAlso" resname="_pagetree.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module,
+More about the Page Tree | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageTree/
+Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_01.gif
+Clicking Icons or Titles? (Animation) | FILE:EXT:welcome/modsub/ani_06.gif
+Creating pages (Animation) | FILE:EXT:welcome/modsub/ani_07.gif
+Moving pages (Animation) | FILE:EXT:welcome/modsub/ani_08.gif</source>
+				
+			<target state="final">xMOD_csh_corebe:list_module,
+More about the Page Tree | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageTree/
+Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_01.gif
+Clicking Icons or Titles? (Animation) | FILE:EXT:welcome/modsub/ani_06.gif
+Creating pages (Animation) | FILE:EXT:welcome/modsub/ani_07.gif
+Moving pages (Animation) | FILE:EXT:welcome/modsub/ani_08.gif</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_pagetree.image" resname="_pagetree.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_4.png,
+EXT:core/Resources/Public/Images/cshimages/core_5.png,
+EXT:core/Resources/Public/Images/cshimages/core_6.png,
+EXT:core/Resources/Public/Images/cshimages/core_7.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_4.png,
+EXT:core/Resources/Public/Images/cshimages/core_5.png,
+EXT:core/Resources/Public/Images/cshimages/core_6.png,
+EXT:core/Resources/Public/Images/cshimages/core_7.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="pagetree.image_descr" resname="pagetree.image_descr" xml:space="preserve" approved="yes">
+				<source>An example of a Page Tree in TYPO3. The page tree is available under any of the Web sub-modules in the menu.
+Clicking the icon of a page displays a context sensitive menu with options for that particular page.
+Clicking the title of a page in the page tree will load the right frame with the current submodule. The page id is passed to the module so it displays content related to the page you clicked.
+Holding the mouse pointer over a page icon for a few seconds will display tool-tip information telling you details about the state of the page. Here a page is access restricted and you will be told which group the access is set for by the tool-tip.</source>
+			<target state="final">ຕົວຢ່າງຂອງຜັງຕົ້ນໄມ້ໜ້າເວັບໃນ TYPO3. ຜັງຕົ້ນໄມ້ນີ້ມີໃຫ້ໃຊ້ໃນທຸກໂມດູນຍ່ອຍຂອງ Web ໃນເມນູ.
+ການຄລິກທີ່ໄອຄອນຂອງໜ້າເວັບຈະສະແດງເມນູພິເສດພ້ອມຕົວເລືອກສຳລັບໜ້ານັ້ນໂດຍສະເພາະ.
+ການຄລິກທີ່ຊື່ຂອງໜ້າເວັບໃນຜັງຕົ້ນໄມ້ຈະໂຫຼດເຟຣມດ້ານຂວາດ້ວຍໂມດູນຍ່ອຍປະຈຸບັນ. ID ຂອງໜ້າຈະຖືກສົ່ງໄປຫາໂມດູນເພື່ອໃຫ້ມັນສະແດງເນື້ອຫາທີ່ກ່ຽວຂ້ອງກັບໜ້າທີ່ທ່ານຄລິກ.
+ການວາງຕົວຊີ້ເມົາສ໌ໄວ້ເທິງໄອຄອນໜ້າເວັບສັກສອງສາມວິນາທີຈະສະແດງຂໍ້ມູນ tool-tip ເຊິ່ງບອກລາຍລະອຽດກ່ຽວກັບສະຖານະຂອງໜ້ານັ້ນ. ໃນນີ້ ໜ້າເວັບຖືກຈຳກັດການເຂົ້າເຖິງ ແລະ tool-tip ຈະບອກທ່ານວ່າກຸ່ມໃດທີ່ມີສິດເຂົ້າເຖິງ.</target></trans-unit>
+      <trans-unit id="filetree.alttitle" resname="filetree.alttitle" approved="yes">
+        <source>The Folder Tree</source>
+        <target state="final">ຜັງຕົ້ນໄມ້ຂອງໂຟນເດີ (The Folder Tree)</target>
+      </trans-unit>
+      <trans-unit id="filetree.description" resname="filetree.description" approved="yes">
+        <source>Shows the directory structure of a mounted path on the webserver. You can browse the folder tree like you are used to browse the file system on your own computer.</source>
+        <target state="final">ສະແດງໂຄງສ້າງໄດເຣັກທໍຣີຂອງເສັ້ນທາງ (path) ທີ່ຖືກເຊື່ອມຕໍ່ໃນເວັບເຊີບເວີ. ທ່ານສາມາດທ່ອງຜັງຕົ້ນໄມ້ຂອງໂຟນເດີໄດ້ຄືກັບການທ່ອງລະບົບໄຟລ໌ໃນຄອມພິວເຕີຂອງທ່ານເອງ.</target>
+      </trans-unit>
+      <trans-unit id="filetree.details" resname="filetree.details" xml:space="preserve" approved="yes">
+				<source>The Folder Tree is available for any sub-module of the File main module in TYPO3. The File module is like a little web-based FTP-client inside of TYPO3 which allows you to upload, rename, copy, move, delete and edit files inside TYPO3.
+Most users of TYPO3 doesn't need access to the File module and sub-modules in order to upload images on web-pages. They can do this directly when editing Content Elements. But the File module is useful for maintaining collections of files on the server, for example an image archive or files for download.
+
+&lt;b&gt;Navigating the Folder Tree&lt;/b&gt;
+You can expand and contract the folder tree by the +/- icons.
+Clicking a folder icon will display a pop-up menu with options related to that particular folder. Options include copy/cut/paste, rename, upload etc.
+Clicking the folder title will load the currently active sub-module in the right frame of the backend. The sub-module will typically show files and folders inside the folder you clicked.
+
+&lt;b&gt;Granting access to the Folder Tree&lt;/b&gt;
+The administrator needs to allow backend users to access the File modules and in addition make a file mount available to them before they can use the Folder Tree.</source>
+			<target state="final">ຜັງຕົ້ນໄມ້ຂອງໂຟນເດີມີໃຫ້ໃຊ້ໃນທຸກໂມດູນຍ່ອຍຂອງໂມດູນຫຼັກ File ໃນ TYPO3. ໂມດູນ File ປຽບຄືກັບ FTP-client ຂະໜາດນ້ອຍເທິງເວັບພາຍໃນ TYPO3 ເຊິ່ງຊ່ວຍໃຫ້ທ່ານສາມາດອັບໂຫຼດ, ປ່ຽນຊື່, ກັອບປີ້, ຍ້າຍ, ລຶບ ແລະ ແກ້ໄຂໄຟລ໌ພາຍໃນ TYPO3 ໄດ້.
+ຜູ້ໃຊ້ TYPO3 ສ່ວນໃຫຍ່ບໍ່ຈຳເປັນຕ້ອງເຂົ້າຫາໂມດູນ File ເພື່ອອັບໂຫຼດຮູບພາບລົງໃນໜ້າເວັບ. ພວກເຂົາສາມາດເຮັດສິ່ງນີ້ໄດ້ໂດຍກົງເມື່ອແກ້ໄຂອົງປະກອບເນື້ອຫາ. ແຕ່ໂມດູນ File ມີປະໂຫຍດໃນການຈັດການຊຸດໄຟລ໌ໃນເຊີບເວີ ເຊັ່ນ ຄັງຮູບພາບ ຫຼື ໄຟລ໌ສຳລັບດາວໂຫຼດ.
+
+&lt;b&gt;ການທ່ອງຜັງຕົ້ນໄມ້ຂອງໂຟນເດີ&lt;/b&gt;
+ທ່ານສາມາດຂະຫຍາຍ ແລະ ຍຸບຜັງຕົ້ນໄມ້ຂອງໂຟນເດີໄດ້ດ້ວຍໄອຄອນ +/-.
+ການຄລິກທີ່ໄອຄອນໂຟນເດີຈະສະແດງເມນູປ໊ອບອັບພ້ອມຕົວເລືອກທີ່ກ່ຽວຂ້ອງກັບໂຟນເດີນັ້ນ ເຊັ່ນ ກັອບປີ້/ຕັດ/ວາງ, ປ່ຽນຊື່, ອັບໂຫຼດ ແລະ ອື່ນໆ.
+ການຄລິກທີ່ຊື່ໂຟນເດີຈະໂຫຼດໂມດູນຍ່ອຍທີ່ກຳລັງໃຊ້ງານຢູ່ເຂົ້າໃນເຟຣມດ້ານຂວາ. ໂດຍທົ່ວໄປໂມດູນຍ່ອຍຈະສະແດງໄຟລ໌ ແລະ ໂຟນເດີທີ່ຢູ່ພາຍໃນໂຟນເດີທີ່ທ່ານຄລິກ.
+
+&lt;b&gt;ການໃຫ້ສິດເຂົ້າເຖິງຜັງຕົ້ນໄມ້ຂອງໂຟນເດີ&lt;/b&gt;
+ຜູ້ດູແລລະບົບຈຳເປັນຕ້ອງອະນຸຍາດໃຫ້ຜູ້ໃຊ້ສ່ວນຫຼັງເຂົ້າຫາໂມດູນ File ແລະ ຕ້ອງຕັ້ງຄ່າຈຸດເຊື່ອມຕໍ່ໄຟລ໌ (file mount) ໃຫ້ພວກເຂົາກ່ອນຈຶ່ງຈະສາມາດໃຊ້ຜັງຕົ້ນໄມ້ຂອງໂຟນເດີໄດ້.</target></trans-unit>
+      <trans-unit id="_filetree.seeAlso" resname="_filetree.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:groupMods,
+be_groups:file_mountpoints,
+be_users:file_mountpoints,
+Managing files in TYPO3 | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/ManagingFilesInTypo3/
+Uploading Files | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/UploadingImagesToTheArchive/,
+Details about file mounts | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/,
+sys_filemounts,
+xMOD_csh_corebe:filelist_module</source>
+				
+			<target state="final">be_groups:groupMods,
+be_groups:file_mountpoints,
+be_users:file_mountpoints,
+Managing files in TYPO3 | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/ManagingFilesInTypo3/
+Uploading Files | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/UploadingImagesToTheArchive/,
+Details about file mounts | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/,
+sys_filemounts,
+xMOD_csh_corebe:filelist_module</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_filetree.image" resname="_filetree.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_8.png,
+EXT:core/Resources/Public/Images/cshimages/core_9.png,
+EXT:core/Resources/Public/Images/cshimages/core_10.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_8.png,
+EXT:core/Resources/Public/Images/cshimages/core_9.png,
+EXT:core/Resources/Public/Images/cshimages/core_10.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="filetree.image_descr" resname="filetree.image_descr" xml:space="preserve" approved="yes">
+				<source>The Folder Tree of the "fileadmin/" folder. This is mounted by default for "Admin"-users. Other users will have to have a file mount configured for them first.
+Clicking the icon of a folder displays the context menu of the folder.
+If you click the folder title in the Folder Tree you will see the sub-module loaded in the right frame. Here it is the File &gt; Filelist module that will display files and folders inside. Clicking the icon of a file will display a context menu for the file.</source>
+			<target state="final">ຜັງຕົ້ນໄມ້ໂຟນເດີຂອງໂຟນເດີ "fileadmin/". ນີ້ຖືກເຊື່ອມຕໍ່ໄວ້ເປັນຄ່າເລີ່ມຕົ້ນສຳລັບຜູ້ໃຊ້ "Admin". ສຳລັບຜູ້ໃຊ້ອື່ນໆ ຕ້ອງໄດ້ຮັບການຕັ້ງຄ່າຈຸດເຊື່ອມຕໍ່ໄຟລ໌ກ່ອນ.
+ການຄລິກໄອຄອນໂຟນເດີຈະສະແດງເມນູສະເພາະຂອງໂຟນເດີນັ້ນ.
+ຫາກທ່ານຄລິກຊື່ໂຟນເດີໃນຜັງຕົ້ນໄມ້ ທ່ານຈະເຫັນໂມດູນຍ່ອຍຖືກໂຫຼດໃນເຟຣມດ້ານຂວາ. ໃນທີ່ນີ້ແມ່ນໂມດູນ File &gt; Filelist ເຊິ່ງຈະສະແດງໄຟລ໌ ແລະ ໂຟນເດີທີ່ຢູ່ພາຍໃນ. ການຄລິກໄອຄອນໄຟລ໌ຈະສະແດງເມນູສະເພາະສຳລັບໄຟລ໌ນັ້ນ.</target></trans-unit>
+      <trans-unit id="tcatree.collapseAll" resname="tcatree.collapseAll" approved="yes">
+        <source>Collapse All</source>
+        <target state="final">ຍຸບທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="tcatree.expandAll" resname="tcatree.expandAll" approved="yes">
+        <source>Expand All</source>
+        <target state="final">ຂະຫຍາຍທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="tcatree.toggleHideUnchecked" resname="tcatree.toggleHideUnchecked" approved="yes">
+        <source>hide/show unchecked items</source>
+        <target state="final">ເຊື່ອງ/ສະແດງ ລາຍການທີ່ບໍ່ໄດ້ເລືອກ</target>
+      </trans-unit>
+      <trans-unit id="tcatree.findItem" resname="tcatree.findItem" approved="yes">
+        <source>Find Item</source>
+        <target state="final">ຄົ້ນຫາລາຍການ</target>
+      </trans-unit>
+      <trans-unit id="list_module.alttitle" resname="list_module.alttitle" approved="yes">
+        <source>The Web&gt;List module</source>
+        <target state="final">ໂມດູນ Web &gt; List</target>
+      </trans-unit>
+      <trans-unit id="list_module.description" resname="list_module.description" approved="yes">
+        <source>Listing records located on a page. From here you can copy/cut/paste records around in the system. You can edit records, access the change history of elements etc.</source>
+        <target state="final">ສະແດງລາຍການບັນທຶກທີ່ຢູ່ໃນໜ້າເວັບ. ຈາກບ່ອນນີ້ທ່ານສາມາດ ກັອບປີ້/ຕັດ/ວາງ ບັນທຶກຕ່າງໆໃນລະບົບໄດ້. ທ່ານສາມາດແກ້ໄຂບັນທຶກ, ເຂົ້າເບິ່ງປະຫວັດການປ່ຽນແປງຂອງອົງປະກອບ ແລະ ອື່ນໆ.</target>
+      </trans-unit>
+      <trans-unit id="list_module.details" resname="list_module.details" xml:space="preserve" approved="yes">
+				<source>The list module is like the file manager in an Operating System; it provides basic access to all "elements" available in the system. In TYPO3 almost all information is stored in the database and managed after the same principles internally. For instance Content Elements representing page content are database records just like backend users are. The Web&gt;List module allows us to create, modify and delete both kinds of records after the same principles.
+
+The Web&gt;List module might not be the best "view" of the content on a page for any situation. For instance if you want to manage website content on a page (Content Elements) you should rather use the "Web&gt;Page" module which is designed to display content elements more optimized. But the List module will always give you access to whatever is on the page in a basic way if no better module is available for management.
+
+&lt;b&gt;Single-table mode&lt;/b&gt;
+If you click the tabel title in the listing you will enter single-table mode. In this mode you can select additional fields from the table to show in the listing. Also you will get additional editing facilities, for instance you will be able to edit multiple records at a time and even only certain fields from those records. See the screenshot for more details.</source>
+			<target state="final">ໂມດູນລາຍການ (list module) ປຽບຄືກັບຕົວຈັດການໄຟລ໌ໃນລະບົບປະຕິບັດການ; ມັນໃຫ້ການເຂົ້າເຖິງພື້ນຖານແກ່ທຸກ "ອົງປະກອບ" ທີ່ມີຢູ່ໃນລະບົບ. ໃນ TYPO3 ຂໍ້ມູນເກືອບທັງໝົດຖືກເກັບໄວ້ໃນຖານຂໍ້ມູນ ແລະ ຖືກຈັດການຕາມຫຼັກການດຽວກັນພາຍໃນ. ຕົວຢ່າງ: ອົງປະກອບເນື້ອຫາ (Content Elements) ທີ່ສະແດງເນື້ອຫາຂອງໜ້າເວັບແມ່ນບັນທຶກຖານຂໍ້ມູນ ເຊັ່ນດຽວກັນກັບຜູ້ໃຊ້ສ່ວນຫຼັງ. ໂມດູນ Web&gt;List ຊ່ວຍໃຫ້ພວກເຮົາສາມາດສ້າງ, ແກ້ໄຂ ແລະ ລຶບບັນທຶກທັງສອງປະເພດຕາມຫຼັກການດຽວກັນ.
+
+ໂມດູນ Web&gt;List ອາດຈະບໍ່ແມ່ນ "ມຸມມອງ" ທີ່ດີທີ່ສຸດຂອງເນື້ອຫາໃນໜ້າເວັບສຳລັບທຸກສະຖານະການ. ຕົວຢ່າງ: ຫາກທ່ານຕ້ອງການຈັດການເນື້ອຫາເວັບໄຊໃນໜ້າໃດໜຶ່ງ (Content Elements) ທ່ານຄວນໃຊ້ໂມດູນ "Web&gt;Page" ເຊິ່ງຖືກອອກແບບມາເພື່ອສະແດງອົງປະກອບເນື້ອຫາໃຫ້ມີປະສິດທິພາບກວ່າ. ແຕ່ໂມດູນ List ຈະໃຫ້ທ່ານເຂົ້າເຖິງສິ່ງຕ່າງໆໃນໜ້າເວັບດ້ວຍວິທີພື້ນຖານສະເໝີ ຫາກບໍ່ມີໂມດູນອື່ນທີ່ດີກວ່າໃນການຈັດການ.
+
+&lt;b&gt;ໂໝດຕາຕະລາງດ່ຽວ (Single-table mode)&lt;/b&gt;
+ຫາກທ່ານຄລິກທີ່ຊື່ຕາຕະລາງໃນລາຍການ ທ່ານຈະເຂົ້າສູ່ໂໝດຕາຕະລາງດ່ຽວ. ໃນໂໝດນີ້ ທ່ານສາມາດເລືອກຟີລເພີ່ມເຕີມຈາກຕາຕະລາງເພື່ອສະແດງໃນລາຍການ. ນອກຈາກນີ້ ທ່ານຍັງຈະໄດ້ຮັບສິ່ງອຳນວຍຄວາມສະດວກໃນການແກ້ໄຂເພີ່ມເຕີມ, ຕົວຢ່າງ: ທ່ານຈະສາມາດແກ້ໄຂຫຼາຍບັນທຶກພ້ອມກັນ ແລະ ແມ່ນແຕ່ແກ້ໄຂສະເພາະບາງຟີລຈາກບັນທຶກເຫຼົ່ານັ້ນ. ເບິ່ງພາບໜ້າຈໍສຳລັບລາຍລະອຽດເພີ່ມເຕີມ.</target></trans-unit>
+      <trans-unit id="_list_module.seeAlso" resname="_list_module.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:pagetree,
+xMOD_csh_corebe:list_module_root,
+xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:TCEforms
+Selective Editing | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/SelectiveEditing/
+The List module ("Inside TYPO3") | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/CoreModules/ListModule/,</source>
+				
+			<target state="final">xMOD_csh_corebe:pagetree,
+xMOD_csh_corebe:list_module_root,
+xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:TCEforms
+Selective Editing | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/SelectiveEditing/
+The List module ("Inside TYPO3") | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/CoreModules/ListModule/,</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_list_module.image" resname="_list_module.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_11.png,
+EXT:core/Resources/Public/Images/cshimages/core_12.png,
+EXT:core/Resources/Public/Images/cshimages/core_34.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_11.png,
+EXT:core/Resources/Public/Images/cshimages/core_12.png,
+EXT:core/Resources/Public/Images/cshimages/core_34.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="list_module.image_descr" resname="list_module.image_descr" xml:space="preserve" approved="yes">
+				<source>Here the page "Cameras" has been clicked in the page tree and in the right frame the Web&gt;List module shows the contents of the page. Here a single content element (Shop Plugin) is inserted in order to display the other items on the page which are three product records in this case.
+If you enable "Extended mode" and the "Clipboard" you will get additional buttons in the interface to operate on the records shown here. Also notice how you can click any record icon to get a "Clickmenu" for the element.
+Here you see the single-table mode active for the "Page content" table (Content Elements). In the fieldbox the "Hide" field is selected to be included in the listing. If you click any of the edit icons (marked with red border) you will be able to edit [from left to right] a) all listed fields (here "Header" and "Hide"), b) full record or c) a single field (eg. "Hide") for &lt;u&gt;only&lt;/u&gt; the selected records (defined by the checkboxes seen).</source>
+			<target state="final">ໃນທີ່ນີ້ ໜ້າ "Cameras" ຖືກຄລິກໃນຜັງຕົ້ນໄມ້ ແລະ ໃນເຟຣມດ້ານຂວາ ໂມດູນ Web &gt; List ສະແດງເນື້ອຫາຂອງໜ້າ. ມີອົງປະກອບເນື້ອຫາດຽວ (Shop Plugin) ທີ່ຖືກແຊກໄວ້ເພື່ອສະແດງລາຍການອື່ນໆໃນໜ້າ ເຊິ່ງໃນກໍລະນີນີ້ແມ່ນບັນທຶກສິນຄ້າສາມລາຍການ.
+ຫາກທ່ານເປີດໃຊ້ "Extended mode" ແລະ "Clipboard" ທ່ານຈະເຫັນປຸ່ມເພີ່ມເຕີມໃນອິນເຕີເຟດເພື່ອຈັດການບັນທຶກທີ່ສະແດງຢູ່ນີ້. ນອກຈາກນີ້ ສັງເກດວ່າທ່ານສາມາດຄລິກໄອຄອນບັນທຶກໃດກໍໄດ້ເພື່ອເປີດ "Clickmenu" ສຳລັບອົງປະກອບນັ້ນ.
+ຢູ່ນີ້ທ່ານຈະເຫັນໂໝດຕາຕະລາງດ່ຽວທີ່ກຳລັງເຮັດວຽກສຳລັບຕາຕະລາງ "Page content" (ອົງປະກອບເນື້ອຫາ). ໃນກ່ອງຟີລ ຟີລ "Hide" ຖືກເລືອກໃຫ້ລວມຢູ່ໃນລາຍການ. ຫາກທ່ານຄລິກໄອຄອນແກ້ໄຂ (ທີ່ໝາຍດ້ວຍຂອບສີແດງ) ທ່ານຈະສາມາດແກ້ໄຂ [ຈາກຊ້າຍໄປຂວາ] ກ) ທຸກຟີລທີ່ສະແດງ (ໃນນີ້ແມ່ນ "Header" ແລະ "Hide"), ຂ) ທັງໝົດບັນທຶກ ຫຼື ຄ) ຟີລດ່ຽວ (ເຊັ່ນ "Hide") ສຳລັບ &lt;u&gt;ສະເພາະ&lt;/u&gt; ບັນທຶກທີ່ຖືກເລືອກ (ຕາມທີ່ກຳນົດດ້ວຍກ່ອງເລືອກ).</target></trans-unit>
+      <trans-unit id="list_module_noId.alttitle" resname="list_module_noId.alttitle" approved="yes">
+        <source>Web&gt;List module with no ID given</source>
+        <target state="final">ໂມດູນ Web &gt; List ໂດຍບໍ່ມີການລະບຸ ID</target>
+      </trans-unit>
+      <trans-unit id="list_module_noId.description" resname="list_module_noId.description" approved="yes">
+        <source>The Web&gt;List module must have a page ID passed to it before it can display any content. Please click a page title in the Page Tree.</source>
+        <target state="final">ໂມດູນ Web &gt; List ຕ້ອງມີການສົ່ງ ID ຂອງໜ້າໃຫ້ກ່ອນຈຶ່ງຈະສາມາດສະແດງເນື້ອຫາໃດໆໄດ້. ກະລຸນາຄລິກທີ່ຊື່ໜ້າເວັບໃນຜັງຕົ້ນໄມ້.</target>
+      </trans-unit>
+      <trans-unit id="_list_module_noId.seeAlso" resname="_list_module_noId.seeAlso" approved="yes">
+        <source>xMOD_csh_corebe:list_module</source>
+        <target state="final">xMOD_csh_corebe:list_module</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="list_module_root.alttitle" resname="list_module_root.alttitle" approved="yes">
+        <source>Root of the Page Tree</source>
+        <target state="final">ຮາກຂອງຜັງຕົ້ນໄມ້ໜ້າເວັບ (Root)</target>
+      </trans-unit>
+      <trans-unit id="list_module_root.description" resname="list_module_root.description" approved="yes">
+        <source>The root of the Page Tree is having id 0 (zero = no page) and the special circumstance is that records in the page tree root can be accessed and edited &lt;i&gt;only&lt;/i&gt; by "Admin" users.</source>
+        <target state="final">ຮາກຂອງຜັງຕົ້ນໄມ້ໜ້າເວັບມີ ID ເປັນ 0 (ສູນ = ບໍ່ມີໜ້າ) ແລະ ກໍລະນີພິເສດແມ່ນບັນທຶກທີ່ຢູ່ໃນຮາກຂອງຜັງຕົ້ນໄມ້ສາມາດເຂົ້າເຖິງ ແລະ ແກ້ໄຂໄດ້ &lt;i&gt;ສະເພາະ&lt;/i&gt; ໂດຍຜູ້ໃຊ້ "Admin" ເທົ່ານັ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="list_module_root.details" resname="list_module_root.details" xml:space="preserve" approved="yes">
+				<source>Only records from certain database tables are allowed to be created in the page tree root. This includes Backend Users, Backend Groups, File Mount records, Language records etc., and you cannot create Content Elements or Frontend Users in the root of the Page Tree. It also works the other way around; For example you cannot create Backend Users anywhere in the page tree.
+Usually records that are located in the page tree root are somehow "global" for the whole TYPO3 installation and doesn't make sense inside a specific branch of the page tree.</source>
+			<target state="final">ສະເພາະບັນທຶກຈາກບາງຕາຕະລາງຖານຂໍ້ມູນເທົ່ານັ້ນທີ່ໄດ້ຮັບອະນຸຍາດໃຫ້ສ້າງໃນຮາກຂອງຜັງຕົ້ນໄມ້. ເຊິ່ງລວມມີ ຜູ້ໃຊ້ສ່ວນຫຼັງ (Backend Users), ກຸ່ມຜູ້ໃຊ້ສ່ວນຫຼັງ, ບັນທຶກຈຸດເຊື່ອມຕໍ່ໄຟລ໌, ບັນທຶກພາສາ ແລະ ອື່ນໆ, ແລະ ທ່ານບໍ່ສາມາດສ້າງອົງປະກອບເນື້ອຫາ ຫຼື ຜູ້ໃຊ້ສ່ວນໜ້າໃນຮາກຂອງຜັງຕົ້ນໄມ້ໄດ້. ມັນຍັງເຮັດວຽກໃນທາງກັບກັນຄື: ຕົວຢ່າງ ທ່ານບໍ່ສາມາດສ້າງຜູ້ໃຊ້ສ່ວນຫຼັງໄວ້ບ່ອນໃດກໍໄດ້ໃນຜັງຕົ້ນໄມ້ (ຕ້ອງສ້າງໃນຮາກເທົ່ານັ້ນ).
+ໂດຍປົກກະຕິ ບັນທຶກທີ່ຢູ່ໃນຮາກຂອງຜັງຕົ້ນໄມ້ຈະມີລັກສະນະເປັນ "global" (ທົ່ວລະບົບ) ສຳລັບການຕິດຕັ້ງ TYPO3 ທັງໝົດ ແລະ ບໍ່ມີຄວາມໝາຍຫາກໄປຢູ່ໃນສາຂາໃດໜຶ່ງຂອງຜັງຕົ້ນໄມ້.</target></trans-unit>
+      <trans-unit id="_list_module_root.seeAlso" resname="_list_module_root.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module
+The List module ("Inside TYPO3") | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/CoreModules/ListModule/</source>
+				
+			<target state="final">xMOD_csh_corebe:list_module
+The List module ("Inside TYPO3") | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/CoreModules/ListModule/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_list_module_root.image" resname="_list_module_root.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_13.png,
+EXT:core/Resources/Public/Images/cshimages/core_14.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_13.png,
+EXT:core/Resources/Public/Images/cshimages/core_14.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="list_module_root.image_descr" resname="list_module_root.image_descr" xml:space="preserve" approved="yes">
+				<source>Example of records in the page tree root; Backend users, groups, filemounts and website languages.
+When "Admin"-users wants to create a new record in the page tree root they will see a limited number of record types to create. This reflects which tables are configured to be created in the page tree root.</source>
+			<target state="final">ຕົວຢ່າງຂອງບັນທຶກໃນຮາກຂອງຜັງຕົ້ນໄມ້; ຜູ້ໃຊ້ສ່ວນຫຼັງ, ກຸ່ມ, ຈຸດເຊື່ອມຕໍ່ໄຟລ໌ ແລະ ພາສາເວັບໄຊ.
+ເມື່ອຜູ້ໃຊ້ "Admin" ຕ້ອງການສ້າງບັນທຶກໃໝ່ໃນຮາກຂອງຜັງຕົ້ນໄມ້ ພວກເຂົາຈະເຫັນປະເພດບັນທຶກທີ່ຈຳກັດໃຫ້ສ້າງໄດ້. ນີ້ສະທ້ອນໃຫ້ເຫັນວ່າຕາຕະລາງໃດຖືກຕັ້ງຄ່າໃຫ້ສ້າງໄດ້ໃນຮາກຂອງຜັງຕົ້ນໄມ້.</target></trans-unit>
+      <trans-unit id="list_clipboard.alttitle" resname="list_clipboard.alttitle" approved="yes">
+        <source>TYPO3 Clipboard</source>
+        <target state="final">ຄລິບບອດ TYPO3</target>
+      </trans-unit>
+      <trans-unit id="list_clipboard.description" resname="list_clipboard.description" approved="yes">
+        <source>The clipboard is an internal registry where records and files can be "stored" temporarily. Usually the clipboard is used for copy/cut/paste operations internally of one or more elements.</source>
+        <target state="final">ຄລິບບອດແມ່ນບ່ອນເກັບຂໍ້ມູນພາຍໃນທີ່ບັນທຶກ ແລະ ໄຟລ໌ສາມາດຖືກ "ຈັດເກັບ" ໄວ້ຊົ່ວຄາວ. ໂດຍປົກກະຕິຄລິບບອດຈະຖືກໃຊ້ສຳລັບການ ກັອບປີ້/ຕັດ/ວາງ ອົງປະກອບໜຶ່ງ ຫຼື ຫຼາຍອັນພາຍໃນລະບົບ.</target>
+      </trans-unit>
+      <trans-unit id="_list_clipboard.seeAlso" resname="_list_clipboard.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:filelist_clipboard,
+Using the clipboard | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/UsingTheListModuleEffectively/
+Numeric Clipboard pads | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/TheNumericClipboardPads-ManagingManyElements/
+Clipboard details [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/GeneralInterfaceFeatures/Clipboard/,
+Accessing clipboard in scripts [Technical] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/Clipboard/</source>
+				
+			<target state="final">xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:filelist_clipboard,
+Using the clipboard | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/UsingTheListModuleEffectively/
+Numeric Clipboard pads | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/TheNumericClipboardPads-ManagingManyElements/
+Clipboard details [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/GeneralInterfaceFeatures/Clipboard/,
+Accessing clipboard in scripts [Technical] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/Clipboard/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_list_clipboard.image" resname="_list_clipboard.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_16.png,
+EXT:core/Resources/Public/Images/cshimages/core_17.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_16.png,
+EXT:core/Resources/Public/Images/cshimages/core_17.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="list_clipboard.image_descr" resname="list_clipboard.image_descr" xml:space="preserve" approved="yes">
+				<source>Whenever you use the copy/cut/paste functions in the clickmenus you will actually use the clipboard to store the element internally in TYPO3.
+If you select one of the numeric clipboard pads you will be able to store more than a single element on the clipboard at a time. In the record listings you will then see checkboxes next to the elements by which you can select/deselect elements for the clipboard.</source>
+			<target state="final">ເມື່ອໃດກໍຕາມທີ່ທ່ານໃຊ້ຟັງຊັນ ກັອບປີ້/ຕັດ/ວາງ ໃນ clickmenu ທ່ານກຳລັງໃຊ້ຄລິບບອດເພື່ອເກັບອົງປະກອບນັ້ນໄວ້ພາຍໃນ TYPO3.
+ຫາກທ່ານເລືອກໃຊ້ແຖບຄລິບບອດແບບຕົວເລກ (numeric clipboard pads) ທ່ານຈະສາມາດເກັບອົງປະກອບໄດ້ຫຼາຍກວ່າໜຶ່ງອັນໃນຄລິບບອດພ້ອມກັນ. ໃນລາຍການບັນທຶກ ທ່ານຈະເຫັນກ່ອງເລືອກຂ້າງອົງປະກອບ ເຊິ່ງທ່ານສາມາດໃຊ້ເລືອກ ຫຼື ຍົກເລີກການເລືອກອົງປະກອບລົງໃນຄລິບບອດໄດ້.</target></trans-unit>
+      <trans-unit id="list_searchbox.alttitle" resname="list_searchbox.alttitle" approved="yes">
+        <source>Search Box</source>
+        <target state="final">ກ່ອງຄົ້ນຫາ</target>
+      </trans-unit>
+      <trans-unit id="list_searchbox.description" resname="list_searchbox.description" approved="yes">
+        <source>By this search box you can do a free text search in all the listed records. You can also search recursively in sub-pages by selecting a number of levels to search in the selector box to the right of the search field.</source>
+        <target state="final">ດ້ວຍກ່ອງຄົ້ນຫານີ້ ທ່ານສາມາດຄົ້ນຫາຂໍ້ຄວາມໄດ້ໃນທຸກບັນທຶກທີ່ສະແດງ. ທ່ານຍັງສາມາດຄົ້ນຫາແບບລົງເລິກໃນໜ້າຍ່ອຍໄດ້ ໂດຍການເລືອກຈຳນວນລະດັບທີ່ຈະຄົ້ນຫາໃນກ່ອງເລືອກທາງດ້ານຂວາຂອງຊ່ອງຄົ້ນຫາ.</target>
+      </trans-unit>
+      <trans-unit id="_list_searchbox.seeAlso" resname="_list_searchbox.seeAlso" approved="yes">
+        <source>xMOD_csh_corebe:list_module</source>
+        <target state="final">xMOD_csh_corebe:list_module</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_list_searchbox.image" resname="_list_searchbox.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_15.png,</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/core_15.png,</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="list_options.alttitle" resname="list_options.alttitle" approved="yes">
+        <source>List module options</source>
+        <target state="final">ຕົວເລືອກຂອງໂມດູນ List</target>
+      </trans-unit>
+      <trans-unit id="list_options.description" resname="list_options.description" approved="yes">
+        <source>Enable additional options like the "Extended view" mode to see additional control buttons for each record in the listing or the "Clipboard" to see the clipboard and its content.</source>
+        <target state="final">ເປີດໃຊ້ຕົວເລືອກເພີ່ມເຕີມເຊັ່ນ ໂໝດ "Extended view" ເພື່ອເບິ່ງປຸ່ມຄວບຄຸມເພີ່ມເຕີມສຳລັບແຕ່ລະບັນທຶກໃນລາຍການ ຫຼື "Clipboard" ເພື່ອເບິ່ງຄລິບບອດ ແລະ ເນື້ອຫາພາຍໃນ.</target>
+      </trans-unit>
+      <trans-unit id="_list_options.seeAlso" resname="_list_options.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:list_clipboard,
+xMOD_csh_corebe:filelist_options</source>
+				
+			<target state="final">xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:list_clipboard,
+xMOD_csh_corebe:filelist_options</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_list_options.image" resname="_list_options.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_18.png,
+EXT:core/Resources/Public/Images/cshimages/core_19.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_18.png,
+EXT:core/Resources/Public/Images/cshimages/core_19.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="list_options.image_descr" resname="list_options.image_descr" xml:space="preserve" approved="yes">
+				<source>The options checkboxes.
+Selecting "Extended view" will enable the control buttons in the record lists.</source>
+			<target state="final">ກ່ອງເລືອກຕົວເລືອກຕ່າງໆ.
+ການເລືອກ "Extended view" ຈະເປີດໃຊ້ປຸ່ມຄວບຄຸມໃນລາຍການບັນທຶກ.</target></trans-unit>
+      <trans-unit id="pagetree_overview.alttitle" resname="pagetree_overview.alttitle" approved="yes">
+        <source>Pagetree Overview</source>
+        <target state="final">ພາບລວມຜັງຕົ້ນໄມ້ໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="pagetree_overview.description" resname="pagetree_overview.description" approved="yes">
+        <source>The Pagetree Overview shows information related to pages for a branch of the page tree. This includes start- and stop-times, cache settings etc.</source>
+        <target state="final">ພາບລວມຜັງຕົ້ນໄມ້ໜ້າເວັບສະແດງຂໍ້ມູນທີ່ກ່ຽວຂ້ອງກັບໜ້າຕ່າງໆໃນສາຂາຂອງຜັງຕົ້ນໄມ້. ເຊິ່ງລວມມີ ເວລາເລີ່ມຕົ້ນ ແລະ ສິ້ນສຸດການສະແດງຜົນ, ການຕັ້ງຄ່າແຄຊ໌ ແລະ ອື່ນໆ.</target>
+      </trans-unit>
+      <trans-unit id="_pagetree_overview.seeAlso" resname="_pagetree_overview.seeAlso" xml:space="preserve" approved="yes">
+				<source>_MOD_web_info:func_0,
+_MOD_web_info:func_1,
+_MOD_web_info:func_2,
+_MOD_web_info:stat</source>
+				
+			<target state="final">_MOD_web_info:func_0,
+_MOD_web_info:func_1,
+_MOD_web_info:func_2,
+_MOD_web_info:stat</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_pagetree_overview.image" resname="_pagetree_overview.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_1.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_1.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pagetree_overview.image_descr" resname="pagetree_overview.image_descr" approved="yes">
+        <source>One of the features of the Pagetree Overview module is that you can see what types of records are found on pages in a branch. Here record counts are shown for a page tree branch 2 levels down.</source>
+        <target state="final">ໜຶ່ງໃນຄຸນສົມບັດຂອງໂມດູນພາບລວມຜັງຕົ້ນໄມ້ແມ່ນທ່ານສາມາດເບິ່ງໄດ້ວ່າ ພົບປະເພດບັນທຶກໃດແດ່ໃນໜ້າຕ່າງໆຂອງສາຂານັ້ນ. ໃນທີ່ນີ້ ສະແດງຈຳນວນບັນທຶກສຳລັບສາຂາຂອງຜັງຕົ້ນໄມ້ລົງໄປ 2 ລະດັບ.</target>
+      </trans-unit>
+      <trans-unit id="new_regular.alttitle" resname="new_regular.alttitle" approved="yes">
+        <source>Create new record</source>
+        <target state="final">ສ້າງບັນທຶກໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="new_regular.description" resname="new_regular.description" approved="yes">
+        <source>This list shows the types of records (database tables) you can create on the page. Click a table name to select the type.</source>
+        <target state="final">ລາຍການນີ້ສະແດງປະເພດຂອງບັນທຶກ (ຕາຕະລາງຖານຂໍ້ມູນ) ທີ່ທ່ານສາມາດສ້າງໄດ້ໃນໜ້ານີ້. ຄລິກທີ່ຊື່ຕາຕະລາງເພື່ອເລືອກປະເພດ.</target>
+      </trans-unit>
+      <trans-unit id="_new_regular.seeAlso" resname="_new_regular.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:new_pages</source>
+				
+			<target state="final">xMOD_csh_corebe:new_ce,
+xMOD_csh_corebe:new_pages</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_new_regular.image" resname="_new_regular.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_70.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/core_70.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="new_regular.image_descr" resname="new_regular.image_descr" approved="yes">
+        <source>The selection of records a user can create on this particular page. The selection depends on the user's permissions and the page type. For example a Folder page type can contain any kind of record while regular pages can contain only some types (like Content Elements).</source>
+        <target state="final">ການເລືອກບັນທຶກທີ່ຜູ້ໃຊ້ສາມາດສ້າງໄດ້ໃນໜ້າສະເພາະນີ້. ຕົວເລືອກຈະຂຶ້ນກັບສິດຂອງຜູ້ໃຊ້ ແລະ ປະເພດຂອງໜ້າ. ຕົວຢ່າງ ໜ້າປະເພດ Folder ສາມາດບັນຈຸບັນທຶກໄດ້ທຸກປະເພດ ໃນຂະນະທີ່ໜ້າປົກກະຕິອາດບັນຈຸໄດ້ພຽງບາງປະເພດ (ເຊັ່ນ ອົງປະກອບເນື້ອຫາ).</target>
+      </trans-unit>
+      <trans-unit id="new_pages.alttitle" resname="new_pages.alttitle" approved="yes">
+        <source>Create new page wizard</source>
+        <target state="final">ຕົວຊ່ວຍສ້າງໜ້າໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="new_pages.description" resname="new_pages.description" approved="yes">
+        <source>Creating a new page means you have to find a position for it in the page tree. This wizard helps you find this position easily by clicking the flashing arrow pointing to the position you want.</source>
+        <target state="final">ການສ້າງໜ້າໃໝ່ໝາຍຄວາມວ່າທ່ານຕ້ອງຫາຕຳແໜ່ງໃຫ້ມັນໃນຜັງຕົ້ນໄມ້. ຕົວຊ່ວຍສ້າງນີ້ຈະຊ່ວຍໃຫ້ທ່ານຫາຕຳແໜ່ງໄດ້ງ່າຍໆ ໂດຍການຄລິກທີ່ລູກສອນທີ່ກຳລັງກະພິບເຊິ່ງຊີ້ໄປຍັງຕຳແໜ່ງທີ່ທ່ານຕ້ອງການ.</target>
+      </trans-unit>
+      <trans-unit id="_new_pages.seeAlso" resname="_new_pages.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:new_regular,
+xMOD_csh_corebe:new_ce,
+How to create a new page | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/</source>
+				
+			<target state="final">xMOD_csh_corebe:new_regular,
+xMOD_csh_corebe:new_ce,
+How to create a new page | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_new_pages.image" resname="_new_pages.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_20.png,
+EXT:core/Resources/Public/Images/cshimages/core_21.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_20.png,
+EXT:core/Resources/Public/Images/cshimages/core_21.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="new_pages.image_descr" resname="new_pages.image_descr" xml:space="preserve" approved="yes">
+				<source>Between each page in the tree you find small icons that point out a place for a new page. Select a position by clicking one of these icons.
+To access the "Create new page wizard" in the first place, just click the link in the Create new record dialog.</source>
+			<target state="final">ລະຫວ່າງແຕ່ລະໜ້າໃນຜັງຕົ້ນໄມ້ ທ່ານຈະເຫັນໄອຄອນນ້ອຍໆທີ່ຊີ້ບອກຕຳແໜ່ງສຳລັບໜ້າໃໝ່. ເລືອກຕຳແໜ່ງໂດຍການຄລິກທີ່ໄອຄອນເຫຼົ່ານີ້.
+ເພື່ອເຂົ້າຫາ "ຕົວຊ່ວຍສ້າງໜ້າໃໝ່" ໃນຂັ້ນຕົ້ນ, ພຽງແຕ່ຄລິກທີ່ລິ້ງໃນໄດອາລັອກ "ສ້າງບັນທຶກໃໝ່".</target></trans-unit>
+      <trans-unit id="new_ce.alttitle" resname="new_ce.alttitle" approved="yes">
+        <source>Create new Content Element Wizard</source>
+        <target state="final">ຕົວຊ່ວຍສ້າງອົງປະກອບເນື້ອຫາໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="new_ce.description" resname="new_ce.description" approved="yes">
+        <source>Content Elements come in many flavors and inserting new content on a page means you have to select the right element type. This wizard helps you to pick a main type of element before you actually begin to enter content.</source>
+        <target state="final">ອົງປະກອບເນື້ອຫາ (Content Elements) ມີຫຼາຍຮູບແບບ ແລະ ການແຊກເນື້ອຫາໃໝ່ລົງໃນໜ້າເວັບໝາຍຄວາມວ່າທ່ານຕ້ອງເລືອກປະເພດອົງປະກອບທີ່ຖືກຕ້ອງ. ຕົວຊ່ວຍສ້າງນີ້ຊ່ວຍໃຫ້ທ່ານເລືອກປະເພດຫຼັກຂອງອົງປະກອບກ່ອນທີ່ທ່ານຈະເລີ່ມປ້ອນເນື້ອຫາຕົວຈິງ.</target>
+      </trans-unit>
+      <trans-unit id="new_ce.details" resname="new_ce.details" approved="yes">
+        <source>Selecting an element type here will just preset the content element with certain values. You can always change the values later and if you cannot find exactly the type you need you can just pick the one that comes closest to your need, then adjust the details later.</source>
+        <target state="final">ການເລືອກປະເພດອົງປະກອບຢູ່ນີ້ຈະເປັນການຕັ້ງຄ່າລ່ວງໜ້າໃຫ້ກັບອົງປະກອບເນື້ອຫາດ້ວຍຄ່າບາງຢ່າງ. ທ່ານສາມາດປ່ຽນຄ່າເຫຼົ່ານັ້ນໄດ້ໃນພາຍຫຼັງ ແລະ ຫາກທ່ານບໍ່ພົບປະເພດທີ່ທ່ານຕ້ອງການແທ້ໆ ທ່ານສາມາດເລືອກອັນທີ່ໃກ້ຄຽງທີ່ສຸດ ແລ້ວມາປັບລາຍລະອຽດທີຫຼັງໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="_new_ce.seeAlso" resname="_new_ce.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_regular,
+How to create new page content | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/
+More about Content Element types | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageContent/
+Adding Custom elements [Technical] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/ContentElementWizard/</source>
+				
+			<target state="final">xMOD_csh_corebe:new_pages,
+xMOD_csh_corebe:new_regular,
+How to create new page content | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/
+More about Content Element types | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageContent/
+Adding Custom elements [Technical] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/ContentElementWizard/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_new_ce.image" resname="_new_ce.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_22.png,
+EXT:core/Resources/Public/Images/cshimages/core_23.png,
+EXT:core/Resources/Public/Images/cshimages/core_24.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_22.png,
+EXT:core/Resources/Public/Images/cshimages/core_23.png,
+EXT:core/Resources/Public/Images/cshimages/core_24.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="new_ce.image_descr" resname="new_ce.image_descr" xml:space="preserve" approved="yes">
+				<source>The Content Element wizard presents a set of preset types. Just select one by clicking its title.
+After selecting the type you will (often) have to select a position of the element among the other existing Content Elements on the page.
+You can access the Content Element wizard from the Create new record dialog.</source>
+			<target state="final">ຕົວຊ່ວຍສ້າງອົງປະກອບເນື້ອຫາສະແດງຊຸດຂອງປະເພດທີ່ຕັ້ງໄວ້ແລ້ວ. ພຽງແຕ່ເລືອກອັນໜຶ່ງໂດຍການຄລິກທີ່ຊື່.
+ຫຼັງຈາກເລືອກປະເພດແລ້ວ (ສ່ວນຫຼາຍ) ທ່ານຈະຕ້ອງເລືອກຕຳແໜ່ງຂອງອົງປະກອບທ່າມກາງອົງປະກອບເນື້ອຫາອື່ນໆທີ່ມີຢູ່ໃນໜ້ານັ້ນ.
+ທ່ານສາມາດເຂົ້າຫາຕົວຊ່ວຍສ້າງອົງປະກອບເນື້ອຫາໄດ້ຈາກໄດອາລັອກ "ສ້າງບັນທຶກໃໝ່".</target></trans-unit>
+      <trans-unit id="move_el_pages.alttitle" resname="move_el_pages.alttitle" approved="yes">
+        <source>Move page wizard</source>
+        <target state="final">ຕົວຊ່ວຍສ້າງການຍ້າຍໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="move_el_pages.description" resname="move_el_pages.description" approved="yes">
+        <source>By this wizard you can visually re-position (or copy) a page inside TYPO3. The element you move is shown in the top.</source>
+        <target state="final">ດ້ວຍຕົວຊ່ວຍສ້າງນີ້ ທ່ານສາມາດປ່ຽນຕຳແໜ່ງ (ຫຼື ກັອບປີ້) ໜ້າເວັບພາຍໃນ TYPO3 ໄດ້ດ້ວຍຕາ. ອົງປະກອບທີ່ທ່ານກຳລັງຍ້າຍຈະສະແດງຢູ່ດ້ານເທິງ.</target>
+      </trans-unit>
+      <trans-unit id="move_el_pages.details" resname="move_el_pages.details" approved="yes">
+        <source>As an alternative to using the regular Copy/Cut/Paste functions in the clickmenus of records you can also use the move-page wizard. It lets you re-position a page by a visual view of the page tree rather than using the concept of "Paste into" and "Paste after".</source>
+        <target state="final">ນອກຈາກການໃຊ້ຟັງຊັນ ກັອບປີ້/ຕັດ/ວາງ ປົກກະຕິໃນ clickmenu ແລ້ວ ທ່ານຍັງສາມາດໃຊ້ຕົວຊ່ວຍສ້າງການຍ້າຍໜ້າເວັບໄດ້. ມັນຊ່ວຍໃຫ້ທ່ານປ່ຽນຕຳແໜ່ງໜ້າເວັບຜ່ານມຸມມອງຜັງຕົ້ນໄມ້ ແທນທີ່ຈະໃຊ້ແນວຄິດຂອງ "ວາງລົງໃນ" (Paste into) ແລະ "ວາງຫຼັງຈາກ" (Paste after).</target>
+      </trans-unit>
+      <trans-unit id="_move_el_pages.seeAlso" resname="_move_el_pages.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_pages,
+Moving pages | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/</source>
+				
+			<target state="final">xMOD_csh_corebe:move_el_cs,
+xMOD_csh_corebe:new_pages,
+Moving pages | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_move_el_pages.image" resname="_move_el_pages.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_27.png,
+EXT:core/Resources/Public/Images/cshimages/core_28.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_27.png,
+EXT:core/Resources/Public/Images/cshimages/core_28.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="move_el_pages.image_descr" resname="move_el_pages.image_descr" xml:space="preserve" approved="yes">
+				<source>The wizard works like when you create new pages with the wizard; You position the element by the grey arrows.
+To access the "Move page wizard" you open the clickmenu of the page, select "More options..." and then "Move page". Alternatively you can click the "Move page" icon in the "Extended view" of the Web&gt;List module.</source>
+			<target state="final">ຕົວຊ່ວຍສ້າງນີ້ເຮັດວຽກຄືກັບຕອນທ່ານສ້າງໜ້າໃໝ່ດ້ວຍຕົວຊ່ວຍສ້າງ; ທ່ານວາງຕຳແໜ່ງອົງປະກອບດ້ວຍລູກສອນສີເທົາ.
+ເພື່ອເຂົ້າຫາ "ຕົວຊ່ວຍສ້າງການຍ້າຍໜ້າເວັບ", ໃຫ້ເປີດ clickmenu ຂອງໜ້າ, ເລືອກ "More options..." ແລ້ວເລືອກ "Move page". ຫຼື ທ່ານສາມາດຄລິກໄອຄອນ "Move page" ໃນ "Extended view" ຂອງໂມດູນ Web &gt; List ກໍໄດ້.</target></trans-unit>
+      <trans-unit id="move_el_cs.alttitle" resname="move_el_cs.alttitle" approved="yes">
+        <source>Move Content Element Wizard</source>
+        <target state="final">ຕົວຊ່ວຍສ້າງການຍ້າຍອົງປະກອບເນື້ອຫາ</target>
+      </trans-unit>
+      <trans-unit id="move_el_cs.description" resname="move_el_cs.description" approved="yes">
+        <source>By this wizard you can visually re-position (or copy) a Content Element inside TYPO3. The element you move is shown in the top.</source>
+        <target state="final">ດ້ວຍຕົວຊ່ວຍສ້າງນີ້ ທ່ານສາມາດປ່ຽນຕຳແໜ່ງ (ຫຼື ກັອບປີ້) ອົງປະກອບເນື້ອຫາພາຍໃນ TYPO3 ໄດ້ດ້ວຍຕາ. ອົງປະກອບທີ່ທ່ານກຳລັງຍ້າຍຈະສະແດງຢູ່ດ້ານເທິງ.</target>
+      </trans-unit>
+      <trans-unit id="move_el_cs.details" resname="move_el_cs.details" approved="yes">
+        <source>By the grey icons in the content element list you can point out the new position of the content element. If you need to move the element to another page, simply browse the page tree in the bottom of the wizard.</source>
+        <target state="final">ດ້ວຍໄອຄອນສີເທົາໃນລາຍການອົງປະກອບເນື້ອຫາ ທ່ານສາມາດຊີ້ບອກຕຳແໜ່ງໃໝ່ຂອງອົງປະກອບເນື້ອຫາໄດ້. ຫາກທ່ານຕ້ອງການຍ້າຍອົງປະກອບໄປໜ້າອື່ນ, ພຽງແຕ່ທ່ອງເບິ່ງຜັງຕົ້ນໄມ້ໜ້າເວັບຢູ່ດ້ານລຸ່ມຂອງຕົວຊ່ວຍສ້າງ.</target>
+      </trans-unit>
+      <trans-unit id="_move_el_cs.seeAlso" resname="_move_el_cs.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_regular</source>
+				
+			<target state="final">xMOD_csh_corebe:move_el_pages,
+xMOD_csh_corebe:new_regular</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_move_el_cs.image" resname="_move_el_cs.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_25.png,
+EXT:core/Resources/Public/Images/cshimages/core_26.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_25.png,
+EXT:core/Resources/Public/Images/cshimages/core_26.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="move_el_cs.image_descr" resname="move_el_cs.image_descr" xml:space="preserve" approved="yes">
+				<source>The wizard works like when you create new Content Elements with the wizard; You position the element by the grey arrows.
+To access the "Move Content Element Wizard" you click the "Move element" icon in the "Extended view" of the Web&gt;List module.</source>
+			<target state="final">ຕົວຊ່ວຍສ້າງນີ້ເຮັດວຽກຄືກັບຕອນທ່ານສ້າງອົງປະກອບເນື້ອຫາໃໝ່ດ້ວຍຕົວຊ່ວຍສ້າງ; ທ່ານວາງຕຳແໜ່ງອົງປະກອບດ້ວຍລູກສອນສີເທົາ.
+ເພື່ອເຂົ້າຫາ "ຕົວຊ່ວຍສ້າງການຍ້າຍອົງປະກອບເນື້ອຫາ", ໃຫ້ຄລິກໄອຄອນ "Move element" ໃນ "Extended view" ຂອງໂມດູນ Web &gt; List.</target></trans-unit>
+      <trans-unit id="history_log.alttitle" resname="history_log.alttitle" approved="yes">
+        <source>History log</source>
+        <target state="final">ລັອກປະຫວັດການປ່ຽນແປງ</target>
+      </trans-unit>
+      <trans-unit id="history_log.description" resname="history_log.description" approved="yes">
+        <source>The History log gives you a visual overview of the changes that has happened to the element over the last editing operations. You can roll back changes to any state by using the icons in the interface.</source>
+        <target state="final">ລັອກປະຫວັດການປ່ຽນແປງຊ່ວຍໃຫ້ທ່ານເຫັນພາບລວມຂອງການປ່ຽນແປງທີ່ເກີດຂຶ້ນກັບອົງປະກອບໃນການແກ້ໄຂຄັ້ງຫຼ້າສຸດ. ທ່ານສາມາດຍ້ອນກັບການປ່ຽນແປງ (roll back) ໄປຫາສະຖານະໃດກໍໄດ້ໂດຍການໃຊ້ໄອຄອນໃນອິນເຕີເຟດ.</target>
+      </trans-unit>
+      <trans-unit id="history_log.details" resname="history_log.details" xml:space="preserve" approved="yes">
+				<source>By default 20 states of history data is preserved in TYPO3 and after a week it expires. The history is very useful for tracking changes to a record since you can see which user did what at which point in time - and roll back any changes you didn't like.
+If you click the roll-back pencil you will revert the element to the state it had at that particular time.
+If you click the Info icon you will see in detail what the difference is from current time to this state of the element.
+
+&lt;b&gt;Configuring levels and expire times [for admins]&lt;/b&gt;
+If you want to extend the number of history states to above the default 20 you can easily do so using Page TSconfig - meaning that it can even depend on the branch of the page tree where the record is stored! See link below.
+
+&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</source>
+			<target state="final">ໂດຍຄ່າເລີ່ມຕົ້ນ, ຂໍ້ມູນປະຫວັດ 20 ລາຍການຈະຖືກເກັບໄວ້ໃນ TYPO3 ແລະ ຈະໝົດອາຍຸຫຼັງຈາກໜຶ່ງອາທິດ. ປະຫວັດມີປະໂຫຍດຫຼາຍໃນການຕິດຕາມການປ່ຽນແປງຂອງບັນທຶກ ເພາະທ່ານສາມາດເຫັນໄດ້ວ່າຜູ້ໃຊ້ຄົນໃດເຮັດຫຍັງໃນເວລາໃດ - ແລະ ຍ້ອນກັບການປ່ຽນແປງທີ່ທ່ານບໍ່ຕ້ອງການໄດ້.
+ຫາກທ່ານຄລິກທີ່ດິນສໍຍ້ອນກັບ (roll-back pencil), ທ່ານຈະຄືນຄ່າອົງປະກອບໄປສູ່ສະຖານະໃນເວລານັ້ນ.
+ຫາກທ່ານຄລິກໄອຄອນ Info, ທ່ານຈະເຫັນລາຍລະອຽດຄວາມແຕກຕ່າງລະຫວ່າງເວລາປະຈຸບັນກັບສະຖານະນັ້ນຂອງອົງປະກອບ.
+
+&lt;b&gt;ການຕັ້ງຄ່າລະດັບ ແລະ ເວລາໝົດອາຍຸ [ສຳລັບຜູ້ດູແລລະບົບ]&lt;/b&gt;
+ຫາກທ່ານຕ້ອງການຂະຫຍາຍຈຳນວນລາຍການປະຫວັດໃຫ້ຫຼາຍກວ່າ 20, ທ່ານສາມາດເຮັດໄດ້ງ່າຍໆໂດຍໃຊ້ Page TSconfig - ເຊິ່ງໝາຍຄວາມວ່າມັນສາມາດກຳນົດຕາມສາຂາຂອງຜັງຕົ້ນໄມ້ທີ່ບັນທຶກນັ້ນຖືກເກັບໄວ້ໄດ້! ເບິ່ງລິ້ງດ້ານລຸ່ມ.
+
+&lt;b&gt;ໝາຍເຫດ:&lt;/b&gt; ຫາກທ່ານບໍ່ເຫັນຄ່າຄວາມແຕກຕ່າງສີແດງ/ສີຂຽວ, ສະແດງວ່າເຊີບເວີທີ່ TYPO3 ກຳລັງເຮັດວຽກຢູ່ບໍ່ຮອງຮັບການສ້າງມຸມມອງຄວາມແຕກຕ່າງ (difference views) ຫຼື ຖືກຕັ້ງຄ່າບໍ່ຖືກຕ້ອງ.</target></trans-unit>
+      <trans-unit id="_history_log.seeAlso" resname="_history_log.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:history_sum,
+Configuring History using Page TSconfig | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Mod/
+Undo/History article | http://typo3.org/documentation/tips-tricks/the-undohistory-feature/</source>
+				
+			<target state="final">xMOD_csh_corebe:history_sum,
+ການຕັ້ງຄ່າປະຫວັດໂດຍໃຊ້ Page TSconfig | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Mod/
+ບົດຄວາມກ່ຽວກັບການຍົກເລີກ/ປະຫວັດ (Undo/History) | http://typo3.org/documentation/tips-tricks/the-undohistory-feature/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_history_log.image" resname="_history_log.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_37.png,
+EXT:core/Resources/Public/Images/cshimages/core_38.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_37.png,
+EXT:core/Resources/Public/Images/cshimages/core_38.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="history_log.image_descr" resname="history_log.image_descr" xml:space="preserve" approved="yes">
+				<source>You can access the History/Undo log from the Web&gt;List module when in "Extended view" mode. Alternatively you can access it under "More options..." in the clickmenu of an element.
+The History log shows visually the changes between each step of editing.</source>
+			<target state="final">ທ່ານສາມາດເຂົ້າຫາລັອກ ປະຫວັດ/ຍົກເລີກ (History/Undo) ໄດ້ຈາກໂມດູນ Web &gt; List ເມື່ອຢູ່ໃນໂໝດ "Extended view". ຫຼື ທ່ານສາມາດເຂົ້າຫາໄດ້ພາຍໃຕ້ "More options..." ໃນ clickmenu ຂອງອົງປະກອບ.
+ລັອກປະຫວັດຈະສະແດງການປ່ຽນແປງລະຫວ່າງແຕ່ລະຂັ້ນຕອນການແກ້ໄຂໃຫ້ເຫັນດ້ວຍຕາ.</target></trans-unit>
+      <trans-unit id="history_sum.alttitle" resname="history_sum.alttitle" approved="yes">
+        <source>History Summary</source>
+        <target state="final">ສະຫຼຸບປະຫວັດ</target>
+      </trans-unit>
+      <trans-unit id="history_sum.description" resname="history_sum.description" approved="yes">
+        <source>This shows the total difference between the selected state in history to the current state of this element.</source>
+        <target state="final">ນີ້ສະແດງໃຫ້ເຫັນຄວາມແຕກຕ່າງທັງໝົດລະຫວ່າງສະຖານະທີ່ເລືອກໃນປະຫວັດກັບສະຖານະປະຈຸບັນຂອງອົງປະກອບນີ້.</target>
+      </trans-unit>
+      <trans-unit id="history_sum.details" resname="history_sum.details" xml:space="preserve" approved="yes">
+				<source>You can browse forth and back in the history using the arrow buttons in the upper left corner. You can also save a state in history by the little "disk-icon".
+Finally you can revert either the whole record to this state in history by the revert icon in the top &lt;em&gt;or&lt;/em&gt; you can revert only a single field if you like to by clicking the revert icon displayed for each field.
+
+&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</source>
+			<target state="final">ທ່ານສາມາດທ່ອງໄປໜ້າ ແລະ ຖອຍຫຼັງໃນປະຫວັດໄດ້ໂດຍໃຊ້ປຸ່ມລູກສອນຢູ່ມຸມຊ້າຍເທິງ. ທ່ານຍັງສາມາດບັນທຶກສະຖານະໃນປະຫວັດໄດ້ດ້ວຍ "ໄອຄອນແຜ່ນດິດ" ນ້ອຍໆ.
+ສຸດທ້າຍ, ທ່ານສາມາດຍ້ອນກັບທັງໝົດບັນທຶກໄປສູ່ສະຖານະນັ້ນດ້ວຍໄອຄອນຍ້ອນກັບ (revert icon) ຢູ່ດ້ານເທິງ &lt;em&gt;ຫຼື&lt;/em&gt; ທ່ານສາມາດຍ້ອນກັບສະເພາະຟີລດ່ຽວໄດ້ຫາກຕ້ອງການ ໂດຍການຄລິກໄອຄອນຍ້ອນກັບທີ່ສະແດງຢູ່ໃນແຕ່ລະຟີລ.
+
+&lt;b&gt;ໝາຍເຫດ:&lt;/b&gt; ຫາກທ່ານບໍ່ເຫັນຄ່າຄວາມແຕກຕ່າງສີແດງ/ສີຂຽວ, ສະແດງວ່າເຊີບເວີທີ່ TYPO3 ກຳລັງເຮັດວຽກຢູ່ບໍ່ຮອງຮັບການສ້າງມຸມມອງຄວາມແຕກຕ່າງ ຫຼື ຖືກຕັ້ງຄ່າບໍ່ຖືກຕ້ອງ.</target></trans-unit>
+      <trans-unit id="_history_sum.seeAlso" resname="_history_sum.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:history_entry,
+Undo/History article | http://typo3.org/documentation/tips-tricks/the-undohistory-feature/</source>
+				
+			<target state="final">xMOD_csh_corebe:history_entry, ບົດຄວາມກ່ຽວກັບການຍົກເລີກ/ປະຫວັດ (Undo/History) | http://typo3.org/documentation/tips-tricks/the-undohistory-feature/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_history_sum.image" resname="_history_sum.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_39.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/core_39.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="history_sum.image_descr" resname="history_sum.image_descr" approved="yes">
+        <source>The Info view of a state in history shows the "sum" of changes from current time to that point in history for the element.</source>
+        <target state="final">ມຸມມອງ Info ຂອງສະຖານະໃນປະຫວັດສະແດງ "ຜົນຮວມ" ຂອງການປ່ຽນແປງຈາກເວລາປະຈຸບັນໄປຫາຈຸດນັ້ນໃນປະຫວັດສຳລັບອົງປະກອບ.</target>
+      </trans-unit>
+      <trans-unit id="history_entry.alttitle" resname="history_entry.alttitle" approved="yes">
+        <source>Log entry history</source>
+        <target state="final">ປະຫວັດລາຍການລັອກ</target>
+      </trans-unit>
+      <trans-unit id="history_entry.description" resname="history_entry.description" approved="yes">
+        <source>This view displays the changes made to the content element for the log entry you clicked. The red and green values in the text shows the previous/new values of the record.</source>
+        <target state="final">ມຸມມອງນີ້ສະແດງການປ່ຽນແປງທີ່ເກີດຂຶ້ນກັບອົງປະກອບເນື້ອຫາສຳລັບລາຍການລັອກທີ່ທ່ານຄລິກ. ຄ່າສີແດງ ແລະ ສີຂຽວໃນຂໍ້ຄວາມສະແດງຄ່າເກົ່າ/ຄ່າໃໝ່ຂອງບັນທຶກ.</target>
+      </trans-unit>
+      <trans-unit id="history_entry.details" resname="history_entry.details" approved="yes">
+        <source>&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</source>
+        <target state="final">&lt;b&gt;ໝາຍເຫດ:&lt;/b&gt; ຫາກທ່ານບໍ່ເຫັນຄ່າຄວາມແຕກຕ່າງສີແດງ/ສີຂຽວ, ສະແດງວ່າເຊີບເວີທີ່ TYPO3 ກຳລັງເຮັດວຽກຢູ່ບໍ່ຮອງຮັບການສ້າງມຸມມອງຄວາມແຕກຕ່າງ ຫຼື ຖືກຕັ້ງຄ່າບໍ່ຖືກຕ້ອງ.</target>
+      </trans-unit>
+      <trans-unit id="_history_entry.image" resname="_history_entry.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_40.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/core_40.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="TCEforms.alttitle" resname="TCEforms.alttitle" approved="yes">
+        <source>TYPO3 Editing Forms</source>
+        <target state="final">ແບບຟອມການແກ້ໄຂຂອງ TYPO3</target>
+      </trans-unit>
+      <trans-unit id="TCEforms.description" resname="TCEforms.description" approved="yes">
+        <source>All records in TYPO3 is edited through a standardized form interface like the one you see here. No matter if you edit pages, content elements, guestbook items or user records you will use the same familiar interface.</source>
+        <target state="final">ທຸກບັນທຶກໃນ TYPO3 ແມ່ນຖືກແກ້ໄຂຜ່ານອິນເຕີເຟດແບບຟອມມາດຕະຖານຄືກັບທີ່ທ່ານເຫັນຢູ່ນີ້. ບໍ່ວ່າທ່ານຈະແກ້ໄຂໜ້າເວັບ, ອົງປະກອບເນື້ອຫາ, ລາຍການ guestbook ຫຼື ບັນທຶກຜູ້ໃຊ້ ທ່ານຈະໄດ້ໃຊ້ອິນເຕີເຟດທີ່ຄຸ້ນເຄີຍແບບດຽວກັນນີ້.</target>
+      </trans-unit>
+      <trans-unit id="TCEforms.details" resname="TCEforms.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Saving content&lt;/b&gt;
+Just press one of the save-buttons in the top of bottom of the form. There are some variants allowing you to "Save and close document" or "Save document and View page". The latter will save the document and open a new window where the affected page is shown (be sure to disable pop-up blockers for this function!)
+
+&lt;b&gt;Editing multiple records at a time&lt;/b&gt;
+From the Web&gt;List module you can activate editing of multiple records at a time. This is done when you list a single table and enable multiple columns for display (see Web&gt;List module for details) - then icons will link you to a form with multiple records displayed, possibly with only certain fields available for editing.
+
+&lt;b&gt;Frontend Editing&lt;/b&gt;
+Another way of editing records in TYPO3 is using the website frontend. Depending on your user credentials you will see small pencil icons in the frontend. When you click these you will be guided to a form where you can also change the content.
+
+&lt;b&gt;Customize the forms [for Admins]&lt;/b&gt;
+You can customize the TCEforms in many ways using User TSconfig and Page TSconfig. See links below.</source>
+			<target state="final">&lt;b&gt;ການບັນທຶກເນື້ອຫາ&lt;/b&gt;
+ພຽງແຕ່ກົດປຸ່ມບັນທຶກປຸ່ມໃດໜຶ່ງຢູ່ດ້ານເທິງ ຫຼື ດ້ານລຸ່ມຂອງແບບຟອມ. ມັນມີຫຼາຍຕົວເລືອກເຊັ່ນ "Save and close document" (ບັນທຶກ ແລະ ປິດ) ຫຼື "Save document and View page" (ບັນທຶກ ແລະ ເບິ່ງໜ້າເວັບ). ຕົວເລືອກຫຼັງຈະບັນທຶກເອກະສານ ແລະ ເປີດໜ້າຕ່າງໃໝ່ເພື່ອສະແດງໜ້າເວັບທີ່ກ່ຽວຂ້ອງ (ໃຫ້ແນ່ໃຈວ່າໄດ້ປິດລະບົບປິດປ໊ອບອັບສຳລັບຟັງຊັນນີ້!)
+
+&lt;b&gt;ການແກ້ໄຂຫຼາຍບັນທຶກພ້ອມກັນ&lt;/b&gt;
+ຈາກໂມດູນ Web &gt; List ທ່ານສາມາດເປີດໃຊ້ການແກ້ໄຂຫຼາຍບັນທຶກພ້ອມກັນໄດ້. ສິ່ງນີ້ເຮັດໄດ້ເມື່ອທ່ານສະແດງລາຍການຕາຕະລາງດຽວ ແລະ ເປີດໃຊ້ຫຼາຍຄໍລຳເພື່ອສະແດງຜົນ (ເບິ່ງໂມດູນ Web &gt; List ສຳລັບລາຍລະອຽດ) - ຈາກນັ້ນໄອຄອນຈະລິ້ງທ່ານໄປຫາແບບຟອມທີ່ມີຫຼາຍບັນທຶກສະແດງຢູ່, ເຊິ່ງອາດຈະມີພຽງບາງຟີລທີ່ສາມາດແກ້ໄຂໄດ້.
+
+&lt;b&gt;ການແກ້ໄຂສ່ວນໜ້າ (Frontend Editing)&lt;/b&gt;
+ອີກວິທີໜຶ່ງໃນການແກ້ໄຂບັນທຶກໃນ TYPO3 ແມ່ນການໃຊ້ສ່ວນໜ້າເວັບໄຊ. ຂຶ້ນກັບສິດການໃຊ້ງານຂອງທ່ານ ທ່ານຈະເຫັນໄອຄອນດິນສໍນ້ອຍໆຢູ່ສ່ວນໜ້າເວັບ. ເມື່ອທ່ານຄລິກໃສ່ພວກມັນ ທ່ານຈະຖືກນຳໄປຫາແບບຟອມທີ່ທ່ານສາມາດປ່ຽນແປງເນື້ອຫາໄດ້.
+
+&lt;b&gt;ປັບແຕ່ງແບບຟອມ [ສຳລັບຜູ້ດູແລລະບົບ]&lt;/b&gt;
+ທ່ານສາມາດປັບແຕ່ງ TCEforms ໄດ້ຫຼາຍວິທີໂດຍໃຊ້ User TSconfig ແລະ Page TSconfig. ເບິ່ງລິ້ງດ້ານລຸ່ມ.</target></trans-unit>
+      <trans-unit id="_TCEforms.seeAlso" resname="_TCEforms.seeAlso" xml:space="preserve" approved="yes">
+				<source>Editing pages | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/
+Frontend Editing | http://typo3.org/documentation/document-library/doc_tut_quickstart/Frontend_editing/,
+xMOD_csh_corebe:list_module
+User TSconfig related to forms | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/
+Page TSconfig related to forms | https://docs.typo3.org/typo3cms/CoreApiReference/Rte/Transformations/Tsconfig/
+Linking to the edit forms [Technical] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/EditLinks/</source>
+			<target state="final">Editing pages | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/
+Frontend Editing | http://typo3.org/documentation/document-library/doc_tut_quickstart/Frontend_editing/,
+xMOD_csh_corebe:list_module
+User TSconfig related to forms | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/
+Page TSconfig related to forms | https://docs.typo3.org/typo3cms/CoreApiReference/Rte/Transformations/Tsconfig/
+Linking to the edit forms [Technical] | https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/EditLinks/</target></trans-unit>
+      <trans-unit id="_TCEforms.image" resname="_TCEforms.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_30.png,
+EXT:core/Resources/Public/Images/cshimages/core_29.png,
+EXT:core/Resources/Public/Images/cshimages/core_32.png,
+EXT:core/Resources/Public/Images/cshimages/core_33.png,
+EXT:core/Resources/Public/Images/cshimages/core_31.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_30.png,
+EXT:core/Resources/Public/Images/cshimages/core_29.png,
+EXT:core/Resources/Public/Images/cshimages/core_32.png,
+EXT:core/Resources/Public/Images/cshimages/core_33.png,
+EXT:core/Resources/Public/Images/cshimages/core_31.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="TCEforms.image_descr" resname="TCEforms.image_descr" xml:space="preserve" approved="yes">
+				<source>This is how a typical record is edited in TYPO3. The form display is standardized for all types of records. You will always see the same buttons in the top for saving or closing. In the blue bar you will see the type of record (table name) and the ID number that each record has (uid). Here the record is a page with ID "2" and the title "Content Elements".
+The "additional fields" from the example above is located in a so called "palette". This is an example of three content elements being edited at the same time. You can edit multiple records by using the links from the Web&gt;List module in single-table mode. Notice that not only are three records shown at the same time - it is also a limited number of fields shown for editing, here "Header" and "Hide". You can combine this almost any way you like. This is of course very useful if you need to edit only the header of multiple records.</source>
+			<target state="final">ນີ້ແມ່ນຮູບແບບການແກ້ໄຂບັນທຶກທົ່ວໄປໃນ TYPO3. ການສະແດງຜົນແບບຟອມແມ່ນໄດ້ມາດຕະຖານສຳລັບບັນທຶກທຸກປະເພດ. ທ່ານຈະເຫັນປຸ່ມເດີມໆຢູ່ດ້ານເທິງສຳລັບການບັນທຶກ ຫຼື ການປິດ. ໃນແຖບສີຟ້າ ທ່ານຈະເຫັນປະເພດຂອງບັນທຶກ (ຊື່ຕາຕະລາງ) ແລະ ໝາຍເລກ ID ທີ່ແຕ່ລະບັນທຶກມີ (uid). ໃນທີ່ນີ້ ບັນທຶກແມ່ນໜ້າເວັບທີ່ມີ ID "2" ແລະ ຊື່ "Content Elements".
+"ຟີລເພີ່ມເຕີມ" ຈາກຕົວຢ່າງຂ້າງເທິງແມ່ນຢູ່ໃນສິ່ງທີ່ເອີ້ນວ່າ "palette". ນີ້ແມ່ນຕົວຢ່າງຂອງອົງປະກອບເນື້ອຫາສາມອັນທີ່ຖືກແກ້ໄຂພ້ອມກັນ. ທ່ານສາມາດແກ້ໄຂຫຼາຍບັນທຶກໄດ້ໂດຍໃຊ້ລິ້ງຈາກໂມດູນ Web &gt; List ໃນໂໝດຕາຕະລາງດ່ຽວ. ສັງເກດວ່າບໍ່ພຽງແຕ່ສາມບັນທຶກທີ່ສະແດງພ້ອມກັນເທົ່ານັ້ນ - ແຕ່ມັນຍັງມີຈຳນວນຟີລທີ່ຈຳກັດໃຫ້ແກ້ໄຂນຳອີກ ເຊັ່ນ "Header" ແລະ "Hide". ທ່ານສາມາດຮວມກັນໄດ້ເກືອບທຸກວິທີທີ່ທ່ານຕ້ອງການ. ສິ່ງນີ້ມີປະໂຫຍດຫຼາຍຫາກທ່ານຕ້ອງການແກ້ໄຂສະເພາະຫົວຂໍ້ (header) ຂອງຫຼາຍໆບັນທຶກ.</target></trans-unit>
+      <trans-unit id="TCEforms_cacheSelector.alttitle" resname="TCEforms_cacheSelector.alttitle" approved="yes">
+        <source>Forms Menu</source>
+        <target state="final">ເມນູແບບຟອມ</target>
+      </trans-unit>
+      <trans-unit id="TCEforms_cacheSelector.description" resname="TCEforms_cacheSelector.description" approved="yes">
+        <source>This is alternative ways to select "Save"/"Close" operations for records. You can also select "clear-cache" operations if you are allowed access to them.</source>
+        <target state="final">ນີ້ແມ່ນທາງເລືອກອື່ນໃນການເລືອກການເຮັດວຽກ "Save" (ບັນທຶກ) / "Close" (ປິດ) ສຳລັບບັນທຶກ. ທ່ານຍັງສາມາດເລືອກການເຮັດວຽກ "clear-cache" (ລ້າງແຄຊ໌) ໄດ້ ຫາກທ່ານໄດ້ຮັບສິດເຂົ້າເຖິງ.</target>
+      </trans-unit>
+      <trans-unit id="TCEforms_cacheSelector.details" resname="TCEforms_cacheSelector.details" xml:space="preserve" approved="yes">
+				<source>Clearing the cache for pages and clearing all cache can be done from this menu as well. If you wonder why content on the frontend webpage seems to be different from what is in the database you might need to clear the page cache by using one of these options.
+If cache options are not available for you, you should ask your administrator to enable it for you. (Admins: See link below to TSconfig.)</source>
+			<target state="final">ການລ້າງແຄຊ໌ສຳລັບໜ້າເວັບ ແລະ ການລ້າງແຄຊ໌ທັງໝົດສາມາດເຮັດໄດ້ຈາກເມນູນີ້ເຊັ່ນກັນ. ຫາກທ່ານສົງໄສວ່າເປັນຫຍັງເນື້ອຫາໃນສ່ວນໜ້າເວັບຄືເບິ່ງແຕກຕ່າງຈາກຂໍ້ມູນໃນຖານຂໍ້ມູນ ທ່ານອາດຈະຕ້ອງລ້າງແຄຊ໌ຂອງໜ້າໂດຍໃຊ້ຕົວເລືອກເຫຼົ່ານີ້.
+ຫາກຕົວເລືອກແຄຊ໌ບໍ່ມີໃຫ້ທ່ານໃຊ້, ທ່ານຄວນບອກຜູ້ດູແລລະບົບໃຫ້ເປີດໃຊ້ງານໃຫ້ທ່ານ. (ຜູ້ດູແລລະບົບ: ເບິ່ງລິ້ງດ້ານລຸ່ມສຳລັບ TSconfig.)</target></trans-unit>
+      <trans-unit id="_TCEforms_cacheSelector.seeAlso" resname="_TCEforms_cacheSelector.seeAlso" approved="yes">
+        <source>User TSconfig (See "clearCache.pages/.all") | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Options/</source>
+        <target state="final">User TSconfig (See "clearCache.pages/.all") | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Options/</target>
+      </trans-unit>
+      <trans-unit id="_TCEforms_cacheSelector.image" resname="_TCEforms_cacheSelector.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_36.png,</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/core_36.png,</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="perm_module.alttitle" resname="perm_module.alttitle" approved="yes">
+        <source>Viewing page permissions</source>
+        <target state="final">ການເບິ່ງການອະນຸຍາດຂອງໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="perm_module.description" resname="perm_module.description" approved="yes">
+        <source>This view will tell you about the page permissions in the page tree.</source>
+        <target state="final">ມຸມມອງນີ້ຈະບອກທ່ານກ່ຽວກັບການອະນຸຍາດຂອງໜ້າໃນຜັງລຳດັບຂອງໜ້າ.</target>
+      </trans-unit>
+      <trans-unit id="perm_module.details" resname="perm_module.details" xml:space="preserve" approved="yes">
+				<source>There are two modes you can select:
+
+&lt;b&gt;User overview:&lt;/b&gt;
+This will show you the permissions for &lt;em&gt;your&lt;/em&gt; login. So the green/red indicators will reflect the combined user/group/everyone permissions that apply to your login!
+If there is a grey background behind the indicators it tells you that you are the owner of the page.
+
+&lt;b&gt;Permissions&lt;/b&gt;
+Shows the permissions settings for owner / group / everybody. You will be able to edit these settings by clicking the edit icon next to the page title. Only an owner of a page (or the "Admin"-user) can change permissions for the page.</source>
+			<target state="final">ມີສອງໂໝດທີ່ທ່ານສາມາດເລືອກໄດ້:
+
+&lt;b&gt;ພາບລວມຜູ້ໃຊ້:&lt;/b&gt;
+ສິ່ງນີ້ຈະສະແດງໃຫ້ທ່ານເຫັນການອະນຸຍາດສຳລັບການເຂົ້າສູ່ລະບົບຂອງ &lt;em&gt;ທ່ານ&lt;/em&gt;. ດັ່ງນັ້ນ ຕົວບົ່ງຊີ້ສີຂຽວ/ສີແດງ ຈະສະທ້ອນເຖິງການອະນຸຍາດແບບລວມຂອງ ຜູ້ໃຊ້/ກຸ່ມ/ທຸກຄົນ ທີ່ມີຜົນກັບການເຂົ້າສູ່ລະບົບຂອງທ່ານ!
+ຖ້າຫາກມີພື້ນຫຼັງສີເທົາຢູ່ທາງຫຼັງຕົວບົ່ງຊີ້ ມັນບອກໃຫ້ຮູ້ວ່າທ່ານເປັນເຈົ້າຂອງໜ້ານີ້.
+
+&lt;b&gt;ການອະນຸຍາດ&lt;/b&gt;
+ສະແດງການຕັ້ງຄ່າການອະນຸຍາດສຳລັບ ເຈົ້າຂອງ / ກຸ່ມ / ທຸກຄົນ. ທ່ານຈະສາມາດແກ້ໄຂການຕັ້ງຄ່າເຫຼົ່ານີ້ໄດ້ໂດຍການຄລິກໄອຄອນແກ້ໄຂທີ່ຢູ່ຂ້າງຊື່ໜ້າ. ມີພຽງແຕ່ເຈົ້າຂອງໜ້າ (ຫຼື ຜູ້ໃຊ້ "Admin") ເທົ່ານັ້ນທີ່ສາມາດປ່ຽນແປງການອະນຸຍາດຂອງໜ້າໄດ້.</target></trans-unit>
+      <trans-unit id="_perm_module.seeAlso" resname="_perm_module.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:perm_module_setting,
+User Management How-to | https://docs.typo3.org/typo3cms/GettingStartedTutorial/UserManagement/SettingUpUserPermissions/
+Permission system in TYPO3 [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/AccessControlOptions/,
+_MOD_user_setup:option_helpText</source>
+				
+			<target state="final">xMOD_csh_corebe:perm_module_setting,
+User Management How-to | https://docs.typo3.org/typo3cms/GettingStartedTutorial/UserManagement/SettingUpUserPermissions/
+Permission system in TYPO3 [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/AccessControlOptions/,
+_MOD_user_setup:option_helpText</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_perm_module.image" resname="_perm_module.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_43.png,
+EXT:core/Resources/Public/Images/cshimages/core_41.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_43.png,
+EXT:core/Resources/Public/Images/cshimages/core_41.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="perm_module_setting.alttitle" resname="perm_module_setting.alttitle" approved="yes">
+        <source>Setting permissions for a page</source>
+        <target state="final">ການຕັ້ງຄ່າການອະນຸຍາດສຳລັບໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="perm_module_setting.description" resname="perm_module_setting.description" approved="yes">
+        <source>Select the owner user and group plus the permissions for each in the matrix. Only an owner of a page (or the "Admin"-user) can change permissions for the page.</source>
+        <target state="final">ເລືອກຜູ້ໃຊ້ທີ່ເປັນເຈົ້າຂອງ ແລະ ກຸ່ມ ພ້ອມທັງການອະນຸຍາດສຳລັບແຕ່ລະຄົນໃນຕາຕະລາງ. ມີພຽງແຕ່ເຈົ້າຂອງໜ້າ (ຫຼື ຜູ້ໃຊ້ "Admin") ເທົ່ານັ້ນທີ່ສາມາດປ່ຽນແປງການອະນຸຍາດຂອງໜ້າໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="perm_module_setting.details" resname="perm_module_setting.details" xml:space="preserve" approved="yes">
+				<source>Setting permissions is done in five categories for owner / group / everybody so it works much like permissions for files and folders in many operating systems.
+
+&lt;b&gt;Show page&lt;/b&gt;
+If set, a user can see the page and its content in the backend. The user can also copy the content but not move, delete or edit.
+
+&lt;b&gt;Edit content&lt;/b&gt;
+Allows users to add, delete, change and move records (other than page records) on this page. This permission must be given if users should be allowed to create Content Elements etc. on the page.
+
+&lt;b&gt;Edit page&lt;/b&gt;
+Allows a user to edit the page record itself. This could be changing the page title or moving the page to another location.
+
+&lt;b&gt;Delete page&lt;/b&gt;
+If set, a user is allowed to delete the page and the content on the page.
+
+&lt;b&gt;New pages&lt;/b&gt;
+Allows users to create sub-pages to this page.</source>
+			<target state="final">ການຕັ້ງຄ່າການອະນຸຍາດແບ່ງອອກເປັນຫ້າໝວດໝູ່ສຳລັບ ເຈົ້າຂອງ / ກຸ່ມ / ທຸກຄົນ ເຊິ່ງມັນເຮັດວຽກຄືກັນກັບການອະນຸຍາດສຳລັບໄຟລ໌ ແລະ ໂຟນເດີໃນລະບົບປະຕິບັດການສ່ວນໃຫຍ່.
+
+&lt;b&gt;ສະແດງໜ້າ&lt;/b&gt;
+ຖ້າຕັ້ງຄ່າໄວ້, ຜູ້ໃຊ້ສາມາດເຫັນໜ້າ ແລະ ເນື້ອໃນຂອງມັນໃນລະບົບຫຼັງບ້ານ. ຜູ້ໃຊ້ຍັງສາມາດຄັດລອກເນື້ອໃນໄດ້ ແຕ່ບໍ່ສາມາດຍ້າຍ, ລຶບ ຫຼື ແກ້ໄຂໄດ້.
+
+&lt;b&gt;ແກ້ໄຂເນື້ອໃນ&lt;/b&gt;
+ອະນຸຍາດໃຫ້ຜູ້ໃຊ້ເພີ່ມ, ລຶບ, ປ່ຽນແປງ ແລະ ຍ້າຍຂໍ້ມູນ (ທີ່ບໍ່ແມ່ນຂໍ້ມູນຂອງໜ້າ) ໃນໜ້ານີ້. ການອະນຸຍາດນີ້ຕ້ອງໄດ້ຮັບການອະນຸຍາດກ່ອນ ຫາກຕ້ອງການໃຫ້ຜູ້ໃຊ້ສ້າງອົງປະກອບເນື້ອໃນ (Content Elements) ແລະ ອື່ນໆ ໃນໜ້ານີ້.
+
+&lt;b&gt;ແກ້ໄຂໜ້າ&lt;/b&gt;
+ອະນຸຍາດໃຫ້ຜູ້ໃຊ້ແກ້ໄຂຂໍ້ມູນຂອງໜ້ານັ້ນເອງ. ເຊັ່ນ: ການປ່ຽນຊື່ໜ້າ ຫຼື ການຍ້າຍໜ້າໄປຍັງບ່ອນອື່ນ.
+
+&lt;b&gt;ລຶບໜ້າ&lt;/b&gt;
+ຖ້າຕັ້ງຄ່າໄວ້, ຜູ້ໃຊ້ຈະຖືກອະນຸຍາດໃຫ້ລຶບໜ້າ ແລະ ເນື້ອໃນໃນໜ້ານັ້ນໄດ້.
+
+&lt;b&gt;ໜ້າໃໝ່&lt;/b&gt;
+ອະນຸຍາດໃຫ້ຜູ້ໃຊ້ສ້າງໜ້າຍ່ອຍພາຍໃຕ້ໜ້ານີ້.</target></trans-unit>
+      <trans-unit id="_perm_module_setting.seeAlso" resname="_perm_module_setting.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:perm_module,
+User Management Howto | https://docs.typo3.org/typo3cms/GettingStartedTutorial/UserManagement/SettingUpUserPermissions/</source>
+				
+			<target state="final">xMOD_csh_corebe:perm_module,
+User Management Howto | https://docs.typo3.org/typo3cms/GettingStartedTutorial/UserManagement/SettingUpUserPermissions/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_perm_module_setting.image" resname="_perm_module_setting.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_42.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/core_42.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="perm_module_setting.image_descr" resname="perm_module_setting.image_descr" approved="yes">
+        <source>In this matrix you can set permissions for owner, group and everybody in the five categories available.</source>
+        <target state="final">ໃນຕາຕະລາງນີ້ ທ່ານສາມາດຕັ້ງຄ່າການອະນຸຍາດສຳລັບ ເຈົ້າຂອງ, ກຸ່ມ ແລະ ທຸກຄົນ ໃນຫ້າໝວດໝູ່ທີ່ມີໃຫ້.</target>
+      </trans-unit>
+      <trans-unit id="filelist_module.alttitle" resname="filelist_module.alttitle" approved="yes">
+        <source>File &gt; Filelist module</source>
+        <target state="final">ໄຟລ໌ &gt; ໂມດູນລາຍການໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="filelist_module.description" resname="filelist_module.description" approved="yes">
+        <source>Shows the files and folders from the folder title you have clicked in the folder tree. Click the icons of the files and folders to perform various actions on the elements.</source>
+        <target state="final">ສະແດງໄຟລ໌ ແລະ ໂຟນເດີຈາກຊື່ໂຟນເດີທີ່ທ່ານຄລິກໃນຜັງລຳດັບໂຟນເດີ. ຄລິກໄອຄອນຂອງໄຟລ໌ ແລະ ໂຟນເດີເພື່ອດຳເນີນການຕ່າງໆກັບອົງປະກອບເຫຼົ່ານັ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="filelist_module.details" resname="filelist_module.details" xml:space="preserve" approved="yes">
+				<source>The File &gt; Filelist module provides the main interface to the web-based "FTP-features" in TYPO3. Clicking a folder in the navigation frame will display the files in that folder in the list frame to the right.
+
+If you click the icon of a file you will see a menu pop up with menu items related to the file or folder. This enables you to edit, rename and copy files to name a few.
+
+&lt;b&gt;The "TEMP" folder&lt;/b&gt;
+There is a special folder, the "TEMP" folder. This is meant to be used for temporary uploads of files that are going to be attached to TYPO3 records later. Content in the TEMP folder should be possible to flush once in a while when the folder becomes too crowded with files. So don't store persistent data in there!
+The actual folder name is actually "_temp_". The interface will just interprete this with "TEMP" in bold.
+The same applies to folders named "_recycler_" - they will be trash cans in the folder tree.</source>
+			<target state="final">ໂມດູນ File &gt; Filelist ໃຫ້ອິນເຕີເຟດຫຼັກສຳລັບ "ຄຸນສົມບັດ FTP" ເທິງເວັບໃນ TYPO3. ການຄລິກທີ່ໂຟນເດີໃນສ່ວນການນຳທາງຈະສະແດງໄຟລ໌ໃນໂຟນເດີນັ້ນໃນແຖບລາຍການທາງດ້ານຂວາ.
+
+ຫາກທ່ານຄລິກໄອຄອນຂອງໄຟລ໌ ທ່ານຈະເຫັນເມນູປ໊ອບອັບພ້ອມລາຍການເມນູທີ່ກ່ຽວຂ້ອງກັບໄຟລ໌ ຫຼື ໂຟນເດີ. ສິ່ງນີ້ຊ່ວຍໃຫ້ທ່ານສາມາດແກ້ໄຂ, ປ່ຽນຊື່ ແລະ ກັອບປີ້ໄຟລ໌ໄດ້.
+
+&lt;b&gt;ໂຟນເດີ "TEMP"&lt;/b&gt;
+ມັນມີໂຟນເດີພິເສດຄື ໂຟນເດີ "TEMP". ໂຟນເດີນີ້ມີໄວ້ສຳລັບການອັບໂຫຼດໄຟລ໌ຊົ່ວຄາວທີ່ຈະນຳໄປແນບກັບບັນທຶກຂອງ TYPO3 ໃນພາຍຫຼັງ. ເນື້ອຫາໃນໂຟນເດີ TEMP ຄວນຈະສາມາດລ້າງອອກໄດ້ເປັນໄລຍະເມື່ອມີໄຟລ໌ຫຼາຍເກີນໄປ. ດັ່ງນັ້ນ ຢ່າເກັບຂໍ້ມູນຖາວອນໄວ້ໃນນັ້ນ!
+ຊື່ໂຟນເດີຕົວຈິງແມ່ນ "_temp_". ອິນເຕີເຟດຈະສະແດງຜົນເປັນ "TEMP" ຕົວເຂັ້ມ.
+ເຊັ່ນດຽວກັນກັບໂຟນເດີທີ່ຊື່ວ່າ "_recycler_" - ພວກມັນຈະເປັນຖັງຂີ້ເຫຍື້ອໃນຜັງຕົ້ນໄມ້ຂອງໂຟນເດີ.</target></trans-unit>
+      <trans-unit id="_filelist_module.seeAlso" resname="_filelist_module.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:filetree,
+be_groups:file_mountpoints,
+sys_filemounts</source>
+				
+			<target state="final">xMOD_csh_corebe:list_module,
+xMOD_csh_corebe:filetree,
+be_groups:file_mountpoints,
+sys_filemounts</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_filelist_module.image" resname="_filelist_module.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_47.png,
+EXT:core/Resources/Public/Images/cshimages/core_49.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_47.png,
+EXT:core/Resources/Public/Images/cshimages/core_49.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="filelist_module.image_descr" resname="filelist_module.image_descr" xml:space="preserve" approved="yes">
+				<source>Here the content of the TEMP folder is shown in the list frame. You can see the filetype, the modification time, size of the file. If you click the filename you will open the file in the browser (if the path is in the web-root).
+When you click a file icon you see a context menu appear over it. Here you can perform file operations on the item.</source>
+			<target state="final">ນີ້ແມ່ນເນື້ອໃນຂອງໂຟນເດີ TEMP ທີ່ສະແດງໃນແຖບລາຍການ. ທ່ານສາມາດເຫັນປະເພດໄຟລ໌, ເວລາທີ່ມີການແກ້ໄຂ, ຂະໜາດຂອງໄຟລ໌. ຖ້າທ່ານຄລິກຊື່ໄຟລ໌ ມັນຈະເປີດໄຟລ໌ໃນບຣາວເຊີ (ຖ້າເສັ້ນທາງຢູ່ໃນເວັບຣູດ).
+ເມື່ອທ່ານຄລິກໄອຄອນໄຟລ໌ ທ່ານຈະເຫັນເມນູຄຳສັ່ງ (context menu) ປາກົດຂຶ້ນມາ. ທ່ານສາມາດດຳເນີນການຕ່າງໆກັບໄຟລ໌ໄດ້ຢູ່ບ່ອນນີ້.</target></trans-unit>
+      <trans-unit id="filelist_clipboard.alttitle" resname="filelist_clipboard.alttitle" approved="yes">
+        <source>Filelist Clipboard</source>
+        <target state="final">ຄລິບບອດລາຍການໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="filelist_clipboard.description" resname="filelist_clipboard.description" approved="yes">
+        <source>The TYPO3 clipboard works for files as well as for database records (see the Web&gt;List module). You only need to enable the clipboard if you want to use the numeric clipboard pads.</source>
+        <target state="final">ຄລິບບອດຂອງ TYPO3 ເຮັດວຽກໄດ້ທັງໄຟລ໌ ແລະ ຂໍ້ມູນໃນຖານຂໍ້ມູນ (ເບິ່ງໂມດູນ ເວັບ&gt;ລາຍການ). ທ່ານພຽງແຕ່ຕ້ອງເປີດໃຊ້ຄລິບບອດ ຫາກທ່ານຕ້ອງການໃຊ້ແຖບຄລິບບອດແບບຕົວເລກ.</target>
+      </trans-unit>
+      <trans-unit id="_filelist_clipboard.seeAlso" resname="_filelist_clipboard.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_clipboard,
+About the Clipboard [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/GeneralInterfaceFeatures/Clipboard/</source>
+				
+			<target state="final">xMOD_csh_corebe:list_clipboard,
+About the Clipboard [Technical] | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/GeneralInterfaceFeatures/Clipboard/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_filelist_clipboard.image" resname="_filelist_clipboard.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_44.png,
+EXT:core/Resources/Public/Images/cshimages/core_46.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_44.png,
+EXT:core/Resources/Public/Images/cshimages/core_46.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="filelist_clipboard.image_descr" resname="filelist_clipboard.image_descr" xml:space="preserve" approved="yes">
+				<source>This shows the "Normal" pad on the clipboard. Here an image is now stored. The "Thumbnails" button of the clipboard is enabled so you will see the image icon.
+When the numeric clipboard pads are enabled you will be able to place multiple items on the clipboard at one time. If the items selected are found in the current folder you can also see the selection reflected in the checkboxes of the items. To paste the contents into a file folder you use the paste icons available in the Filelist module.</source>
+			<target state="final">ນີ້ສະແດງແຖບ "ປົກກະຕິ" ໃນຄລິບບອດ. ຕອນນີ້ມີຮູບພາບຖືກເກັບໄວ້ຢູ່ບ່ອນນີ້. ປຸ່ມ "ຮູບຕົວຢ່າງ" (Thumbnails) ຂອງຄລິບບອດຖືກເປີດໃຊ້ ດັ່ງນັ້ນທ່ານຈະເຫັນໄອຄອນຮູບພາບ.
+ເມື່ອເປີດໃຊ້ແຖບຄລິບບອດແບບຕົວເລກ ທ່ານຈະສາມາດວາງລາຍການຫຼາຍຢ່າງໄວ້ໃນຄລິບບອດພ້ອມກັນໄດ້. ຫາກລາຍການທີ່ເລືອກຢູ່ໃນໂຟນເດີປັດຈຸບັນ ທ່ານຈະເຫັນການເລືອກສະທ້ອນຢູ່ໃນຊ່ອງໝາຍ (checkbox) ຂອງລາຍການນັ້ນ. ເພື່ອວາງເນື້ອໃນລົງໃນໂຟນເດີໄຟລ໌ ໃຫ້ທ່ານໃຊ້ໄອຄອນວາງ (paste) ທີ່ມີຢູ່ໃນໂມດູນລາຍການໄຟລ໌.</target></trans-unit>
+      <trans-unit id="filelist_options.alttitle" resname="filelist_options.alttitle" approved="yes">
+        <source>File &gt; Filelist options</source>
+        <target state="final">ໄຟລ໌ &gt; ຕົວເລືອກລາຍການໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="filelist_options.description" resname="filelist_options.description" approved="yes">
+        <source>You can enable the display of image thumbnails and show the clipboard if you need to copy/cut/paste multiple files or folders at a time.</source>
+        <target state="final">ທ່ານສາມາດເປີດການສະແດງຮູບຕົວຢ່າງ ແລະ ສະແດງຄລິບບອດໄດ້ ຫາກທ່ານຕ້ອງການ ຄັດລອກ/ຕັດ/ວາງ ໄຟລ໌ ຫຼື ໂຟນເດີຫຼາຍອັນພ້ອມກັນ.</target>
+      </trans-unit>
+      <trans-unit id="_filelist_options.seeAlso" resname="_filelist_options.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:list_options,
+_MOD_user_setup:option_showThumbs,
+xMOD_csh_corebe:filelist_clipboard</source>
+				
+			<target state="final">xMOD_csh_corebe:list_options, _MOD_user_setup:option_showThumbs, xMOD_csh_corebe:filelist_clipboard</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_filelist_options.image" resname="_filelist_options.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_48.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/core_48.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="filelist_options.image_descr" resname="filelist_options.image_descr" approved="yes">
+        <source>Enabling thumbnails means that all image file types will be displayed with their thumbnails. This makes it easy to browse an archive of files.</source>
+        <target state="final">ການເປີດໃຊ້ຮູບຕົວຢ່າງໝາຍຄວາມວ່າ ໄຟລ໌ຮູບພາບທຸກປະເພດຈະຖືກສະແດງດ້ວຍຮູບຕົວຢ່າງຂອງພວກມັນ. ສິ່ງນີ້ຊ່ວຍໃຫ້ການເລືອກເບິ່ງຄັງໄຟລ໌ເຮັດໄດ້ງ່າຍຂຶ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="file_edit.alttitle" resname="file_edit.alttitle" approved="yes">
+        <source>Editing a file</source>
+        <target state="final">ການແກ້ໄຂໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="file_edit.description" resname="file_edit.description" approved="yes">
+        <source>You can edit the contents of a text file with this dialog.</source>
+        <target state="final">ທ່ານສາມາດແກ້ໄຂເນື້ອໃນຂອງໄຟລ໌ຂໍ້ຄວາມໄດ້ດ້ວຍກ່ອງໂຕ້ຕອບນີ້.</target>
+      </trans-unit>
+      <trans-unit id="_file_edit.seeAlso" resname="_file_edit.seeAlso" approved="yes">
+        <source>xMOD_csh_corebe:filelist_module</source>
+        <target state="final">xMOD_csh_corebe:filelist_module</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_file_edit.image" resname="_file_edit.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_50.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/core_50.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="file_edit.image_descr" resname="file_edit.image_descr" approved="yes">
+        <source>The editing form for a file is this simple textarea field. It's nothing fancy and experienced coders will miss such as TAB-functionality, but it can edit a stylesheet if badly needed...</source>
+        <target state="final">ແບບຟອມການແກ້ໄຂໄຟລ໌ແມ່ນຊ່ອງໃສ່ຂໍ້ຄວາມແບບງ່າຍໆນີ້. ມັນບໍ່ມີຫຍັງຊັບຊ້ອນ ແລະ ຜູ້ຂຽນໂຄ້ດທີ່ມີປະສົບການອາດຈະຂາດຟັງຊັນຕ່າງໆເຊັ່ນ TAB, ແຕ່ມັນສາມາດໃຊ້ແກ້ໄຂ stylesheet ໄດ້ຫາກຈຳເປັນແທ້ໆ...</target>
+      </trans-unit>
+      <trans-unit id="file_new.alttitle" resname="file_new.alttitle" approved="yes">
+        <source>Creating a new file or folder</source>
+        <target state="final">ການສ້າງໄຟລ໌ ຫຼື ໂຟນເດີໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="file_new.description" resname="file_new.description" approved="yes">
+        <source>Create new files and folder inside the folder you have selected.</source>
+        <target state="final">ສ້າງໄຟລ໌ ແລະ ໂຟນເດີໃໝ່ພາຍໃນໂຟນເດີທີ່ທ່ານເລືອກ.</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.alttitle" resname="file_newfolder.alttitle" approved="yes">
+        <source>Creating a new folder</source>
+        <target state="final">ການສ້າງໂຟນເດີໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.description" resname="file_newfolder.description" approved="yes">
+        <source>Enter a name for a new file folder in the tree here. If you want to create multiple folders, please select the number of new folders before entering folder names.</source>
+        <target state="final">ໃສ່ຊື່ສຳລັບໂຟນເດີໄຟລ໌ໃໝ່ໃນຜັງລຳດັບຢູ່ນີ້. ຫາກທ່ານຕ້ອງການສ້າງຫຼາຍໂຟນເດີ, ກະລຸນາເລືອກຈຳນວນໂຟນເດີໃໝ່ກ່ອນທີ່ຈະໃສ່ຊື່ໂຟນເດີ.</target>
+      </trans-unit>
+      <trans-unit id="_file_newfolder.seeAlso" resname="_file_newfolder.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:file_newfile,
+xMOD_csh_corebe:file_rename</source>
+				
+			<target state="final">xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:file_newfile,
+xMOD_csh_corebe:file_rename</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_file_newfolder.image" resname="_file_newfolder.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_51.png,
+EXT:core/Resources/Public/Images/cshimages/core_52.png,
+EXT:core/Resources/Public/Images/cshimages/core_53.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_51.png,
+EXT:core/Resources/Public/Images/cshimages/core_52.png,
+EXT:core/Resources/Public/Images/cshimages/core_53.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="file_newfolder.image_descr" resname="file_newfolder.image_descr" xml:space="preserve" approved="yes">
+				<source>To create a new folder you first click the parent folder icon in the folder tree.
+As the next step you select the number of folders to create and then you enter the new folder names.
+After pressing the "Create folders" button the folders will appear in the folder tree when you reload it.</source>
+			<target state="final">ເພື່ອສ້າງໂຟນເດີໃໝ່ ທຳອິດໃຫ້ຄລິກໄອຄອນໂຟນເດີຫຼັກໃນຜັງລຳດັບໂຟນເດີ.
+ຂັ້ນຕອນຕໍ່ໄປແມ່ນເລືອກຈຳນວນໂຟນເດີທີ່ຈະສ້າງ ແລ້ວໃສ່ຊື່ໂຟນເດີໃໝ່.
+ຫຼັງຈາກກົດປຸ່ມ "ສ້າງໂຟນເດີ", ໂຟນເດີຈະປາກົດຢູ່ໃນຜັງລຳດັບເມື່ອທ່ານໂຫຼດມັນໃໝ່.</target></trans-unit>
+      <trans-unit id="file_newfile.alttitle" resname="file_newfile.alttitle" approved="yes">
+        <source>Creating a new file</source>
+        <target state="final">ການສ້າງໄຟລ໌ໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="file_newfile.description" resname="file_newfile.description" approved="yes">
+        <source>Enter a filename here if you want to create a new text-based file. Notice that it must have one of the endings in the list of text-endings shown below (except "php" endings).</source>
+        <target state="final">ໃສ່ຊື່ໄຟລ໌ຢູ່ນີ້ ຫາກທ່ານຕ້ອງການສ້າງໄຟລ໌ຂໍ້ຄວາມໃໝ່. ໝາຍເຫດວ່າ ມັນຕ້ອງມີນາມສະກຸນໄຟລ໌ອັນໃດອັນໜຶ່ງໃນລາຍການນາມສະກຸນຂໍ້ຄວາມທີ່ສະແດງຢູ່ລຸ່ມນີ້ (ຍົກເວັ້ນນາມສະກຸນ "php").</target>
+      </trans-unit>
+      <trans-unit id="file_newfile.details" resname="file_newfile.details" approved="yes">
+        <source>Newly created files will have the size of 0 (zero). After creating a new file it would be natural that you wanted to edit the file to put content into it. This is done simply by clicking the icon of the file and select "Edit" from the clickmenu.</source>
+        <target state="final">ໄຟລ໌ທີ່ສ້າງໃໝ່ຈະມີຂະໜາດເປັນ 0 (ສູນ). ຫຼັງຈາກສ້າງໄຟລ໌ໃໝ່ແລ້ວ ມັນເປັນເລື່ອງປົກກະຕິທີ່ທ່ານຈະຕ້ອງການແກ້ໄຂໄຟລ໌ເພື່ອໃສ່ເນື້ອໃນລົງໄປ. ສາມາດເຮັດໄດ້ງ່າຍໆໂດຍການຄລິກໄອຄອນຂອງໄຟລ໌ ແລ້ວເລືອກ "ແກ້ໄຂ" ຈາກເມນູ.</target>
+      </trans-unit>
+      <trans-unit id="_file_newfile.seeAlso" resname="_file_newfile.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:file_edit,
+xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:file_newfolder,
+xMOD_csh_corebe:file_rename</source>
+				
+			<target state="final">xMOD_csh_corebe:file_edit,
+xMOD_csh_corebe:filelist_module,
+xMOD_csh_corebe:file_newfolder,
+xMOD_csh_corebe:file_rename</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_file_newfile.image" resname="_file_newfile.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_51.png,
+EXT:core/Resources/Public/Images/cshimages/core_54.png,
+EXT:core/Resources/Public/Images/cshimages/core_55.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_51.png,
+EXT:core/Resources/Public/Images/cshimages/core_54.png,
+EXT:core/Resources/Public/Images/cshimages/core_55.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="file_newfile.image_descr" resname="file_newfile.image_descr" xml:space="preserve" approved="yes">
+				<source>To create a new file, first click the folder icon where you want to create the file. Select "New".
+Then enter the filename in the dialog in the right frame.
+After pressing "Create file" you will see a new, empty file in the folder you selected.</source>
+			<target state="final">ເພື່ອສ້າງໄຟລ໌ໃໝ່, ທຳອິດໃຫ້ຄລິກໄອຄອນໂຟນເດີທີ່ທ່ານຕ້ອງການສ້າງໄຟລ໌. ເລືອກ "ໃໝ່".
+ຈາກນັ້ນໃສ່ຊື່ໄຟລ໌ໃນກ່ອງໂຕ້ຕອບໃນແຖບທາງຂວາ.
+ຫຼັງຈາກກົດປຸ່ມ "ສ້າງໄຟລ໌", ທ່ານຈະເຫັນໄຟລ໌ໃໝ່ທີ່ວ່າງເປົ່າຢູ່ໃນໂຟນເດີທີ່ທ່ານເລືອກ.</target></trans-unit>
+      <trans-unit id="file_newMedia.alttitle" resname="file_newMedia.alttitle" approved="yes">
+        <source>Adding a new media asset</source>
+        <target state="final">ການເພີ່ມສື່ໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="file_newMedia.description" resname="file_newMedia.description" approved="yes">
+        <source>Enter an URL to a media asset here. Notice that it must be from one of the allowed providers listed below.</source>
+        <target state="final">ໃສ່ URL ຂອງສື່ຢູ່ນີ້. ໝາຍເຫດວ່າ ມັນຕ້ອງມາຈາກຜູ້ໃຫ້ບໍລິການທີ່ໄດ້ຮັບອະນຸຍາດຕາມລາຍການຂ້າງລຸ່ມນີ້.</target>
+      </trans-unit>
+      <trans-unit id="file_rename.alttitle" resname="file_rename.alttitle" approved="yes">
+        <source>Rename a file or folder</source>
+        <target state="final">ປ່ຽນຊື່ໄຟລ໌ ຫຼື ໂຟນເດີ</target>
+      </trans-unit>
+      <trans-unit id="file_rename.description" resname="file_rename.description" approved="yes">
+        <source>You can rename files or folders in TYPO3 quite easily. Just notice that certain characters are not allowed. So use a-z, numbers, underscores and don't make the names too long. If you enter invalid characters it will be automatically corrected.</source>
+        <target state="final">ທ່ານສາມາດປ່ຽນຊື່ໄຟລ໌ ຫຼື ໂຟນເດີໃນ TYPO3 ໄດ້ງ່າຍດາຍຫຼາຍ. ພຽງແຕ່ໝາຍເຫດວ່າ ຕົວອັກສອນບາງຕົວບໍ່ໄດ້ຮັບອະນຸຍາດ. ດັ່ງນັ້ນ ໃຫ້ໃຊ້ a-z, ຕົວເລກ, ຂີດກ້ອງ (underscores) ແລະ ຢ່າຕັ້ງຊື່ຍາວເກີນໄປ. ຫາກທ່ານໃສ່ຕົວອັກສອນທີ່ບໍ່ຖືກຕ້ອງ ມັນຈະຖືກແກ້ໄຂໃຫ້ໂດຍອັດຕະໂນມັດ.</target>
+      </trans-unit>
+      <trans-unit id="_file_rename.seeAlso" resname="_file_rename.seeAlso" approved="yes">
+        <source>xMOD_csh_corebe:filelist_module</source>
+        <target state="final">xMOD_csh_corebe:filelist_module</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_file_rename.image" resname="_file_rename.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_56.png,
+EXT:core/Resources/Public/Images/cshimages/core_57.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_56.png,
+EXT:core/Resources/Public/Images/cshimages/core_57.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="file_rename.image_descr" resname="file_rename.image_descr" xml:space="preserve" approved="yes">
+				<source>To rename a file (or folder for that sake) just click the icon of it, select "Rename" and enter the new name.
+Notice that restrictions may apply on filenaming, for instance ".php" is usually not a valid extension of a filename for security reasons.</source>
+			<target state="final">ເພື່ອປ່ຽນຊື່ໄຟລ໌ (ຫຼື ໂຟນເດີ) ພຽງແຕ່ຄລິກທີ່ໄອຄອນຂອງມັນ, ເລືອກ "ປ່ຽນຊື່" ແລ້ວໃສ່ຊື່ໃໝ່.
+ໝາຍເຫດວ່າ ອາດມີຂໍ້ຈຳກັດໃນການຕັ້ງຊື່ໄຟລ໌ ເຊັ່ນ ".php" ປົກກະຕິແລ້ວຈະບໍ່ແມ່ນນາມສະກຸນໄຟລ໌ທີ່ຖືກຕ້ອງດ້ວຍເຫດຜົນດ້ານຄວາມປອດໄພ.</target></trans-unit>
+      <trans-unit id="file_upload.alttitle" resname="file_upload.alttitle" approved="yes">
+        <source>Uploading files.</source>
+        <target state="final">ການອັບໂຫຼດໄຟລ໌.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.description" resname="file_upload.description" approved="yes">
+        <source>Here you can upload one or more files to the server. Start by selecting the number of files to upload, then you begin to select files from your local computer to upload.</source>
+        <target state="final">ຢູ່ນີ້ທ່ານສາມາດອັບໂຫຼດໄຟລ໌ໜຶ່ງ ຫຼື ຫຼາຍໄຟລ໌ໄປຍັງເຊີບເວີໄດ້. ເລີ່ມຕົ້ນໂດຍການເລືອກຈຳນວນໄຟລ໌ທີ່ຈະອັບໂຫຼດ, ຈາກນັ້ນເລີ່ມເລືອກໄຟລ໌ຈາກຄອມພິວເຕີຂອງທ່ານເພື່ອອັບໂຫຼດ.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.details" resname="file_upload.details" xml:space="preserve" approved="yes">
+				<source>If the filenames you upload exist already they will be renamed with a numeric suffix, eg. "file_01.jpg". However you can avoid this behaviour if you select "Overwrite existing files" before pressing the "Upload" button.
+
+Normally there is a limit to the size of files you can upload. By default PHP will allow you to upload around 2MB. TYPO3 is configured to allow 10MB internally by default. These settings can be changed by your server administrator if you need them changed.
+
+Notice that file uploads may take a significant amount of time, even if you have fast internet access via DSL etc. If you have large amount of files you want to upload - or if the files are very large - you should consider using an FTP client instead. It depends not on TYPO3 but on the webserver whether this is an options for you.</source>
+			<target state="final">ຫາກຊື່ໄຟລ໌ທີ່ທ່ານອັບໂຫຼດມີຢູ່ແລ້ວ ພວກມັນຈະຖືກປ່ຽນຊື່ດ້ວຍຕົວເລກຕໍ່ທ້າຍ ເຊັ່ນ "file_01.jpg". ແນວໃດກໍຕາມ ທ່ານສາມາດຫຼີກເວັ້ນສິ່ງນີ້ໄດ້ ຫາກທ່ານເລືອກ "ຂຽນທັບໄຟລ໌ທີ່ມີຢູ່" ກ່ອນທີ່ຈະກົດປຸ່ມ "ອັບໂຫຼດ".
+
+ໂດຍປົກກະຕິແລ້ວ ຈະມີການຈຳກັດຂະໜາດຂອງໄຟລ໌ທີ່ທ່ານສາມາດອັບໂຫຼດໄດ້. ຕາມຄ່າເລີ່ມຕົ້ນ PHP ຈະອະນຸຍາດໃຫ້ອັບໂຫຼດປະມານ 2MB. TYPO3 ຖືກກຳນົດຄ່າໃຫ້ອະນຸຍາດ 10MB ພາຍໃນຕາມຄ່າເລີ່ມຕົ້ນ. ການຕັ້ງຄ່າເຫຼົ່ານີ້ສາມາດປ່ຽນແປງໄດ້ໂດຍຜູ້ດູແລລະບົບເຊີບເວີຂອງທ່ານ ຫາກທ່ານຕ້ອງການປ່ຽນແປງ.
+
+ໝາຍເຫດວ່າ ການອັບໂຫຼດໄຟລ໌ອາດໃຊ້ເວລາດົນພໍສົມຄວນ ເຖິງແມ່ນວ່າທ່ານຈະມີອິນເຕີເນັດຄວາມໄວສູງກໍຕາມ. ຫາກທ່ານມີໄຟລ໌ຈຳນວນຫຼາຍ ຫຼື ໄຟລ໌ມີຂະໜາດໃຫຍ່ຫຼາຍ ທ່ານຄວນພິຈາລະນາໃຊ້ໂປຣແກຣມ FTP ແທນ. ສິ່ງນີ້ບໍ່ໄດ້ຂຶ້ນຢູ່ກັບ TYPO3 ແຕ່ຂຶ້ນຢູ່ກັບເວັບເຊີບເວີວ່າຈະເປັນທາງເລືອກໃຫ້ທ່ານຫຼືບໍ່.</target></trans-unit>
+      <trans-unit id="_file_upload.seeAlso" resname="_file_upload.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:filelist_module,
+How-to upload files | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/UploadingImagesToTheArchive/</source>
+				
+			<target state="final">xMOD_csh_corebe:filelist_module,
+How-to upload files | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/UploadingImagesToTheArchive/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_file_upload.image" resname="_file_upload.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_58.png,
+EXT:core/Resources/Public/Images/cshimages/core_59.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_58.png,
+EXT:core/Resources/Public/Images/cshimages/core_59.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="file_upload.image_descr" resname="file_upload.image_descr" xml:space="preserve" approved="yes">
+				<source>To upload files, first click the folder icon where you want to upload to. From the clickmenu you select "Upload files".
+In the next screen you select the number of files and click the "Browse..." buttons to select files from your computer. Finally you click the "Upload files" button to start the upload process (which might take some minutes with large files!)</source>
+			<target state="final">ເພື່ອອັບໂຫຼດໄຟລ໌, ທຳອິດໃຫ້ຄລິກໄອຄອນໂຟນເດີທີ່ທ່ານຕ້ອງການອັບໂຫຼດໃສ່. ຈາກເມນູໃຫ້ເລືອກ "ອັບໂຫຼດໄຟລ໌".
+ໃນໜ້າຈໍຖັດໄປ ໃຫ້ເລືອກຈຳນວນໄຟລ໌ ແລະ ຄລິກປຸ່ມ "Browse..." ເພື່ອເລືອກໄຟລ໌ຈາກຄອມພິວເຕີຂອງທ່ານ. ສຸດທ້າຍໃຫ້ຄລິກປຸ່ມ "ອັບໂຫຼດໄຟລ໌" ເພື່ອເລີ່ມຕົ້ນຂະບວນການອັບໂຫຼດ (ເຊິ່ງອາດໃຊ້ເວລາສອງສາມນາທີສຳລັບໄຟລ໌ຂະໜາດໃຫຍ່!)</target></trans-unit>
+      <trans-unit id="wizard_table_wiz.alttitle" resname="wizard_table_wiz.alttitle" approved="yes">
+        <source>Table wizard</source>
+        <target state="final">ຕົວຊ່ວຍສ້າງຕາຕະລາງ</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz.description" resname="wizard_table_wiz.description" approved="yes">
+        <source>The table wizard helps you create tables that are normally stored in the database by XML or a syntax where each line represents a row and each cell is divided by a vertical line sign, "|". This wizard makes it transparent for you.</source>
+        <target state="final">ຕົວຊ່ວຍສ້າງຕາຕະລາງຊ່ວຍໃຫ້ທ່ານສ້າງຕາຕະລາງທີ່ປົກກະຕິເກັບໄວ້ໃນຖານຂໍ້ມູນດ້ວຍ XML ຫຼື ຮູບແບບທີ່ແຕ່ລະແຖວແທນດ້ວຍໜຶ່ງບັນທັດ ແລະ ແຕ່ລະຫ້ອງຖືກແບ່ງດ້ວຍເຄື່ອງໝາຍຂີດຕັ້ງ "|". ຕົວຊ່ວຍສ້າງນີ້ເຮັດໃຫ້ມັນເຫັນພາບໄດ້ງ່າຍຂຶ້ນສຳລັບທ່ານ.</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz.details" resname="wizard_table_wiz.details" xml:space="preserve" approved="yes">
+				<source>The wizard is quite simple. By the buttons to the left and in the bottom you can add, delete and move columns and rows in the table.
+You can also disable the setting "Small fields" below the wizard if you want larger textarea fields for the editing.</source>
+			<target state="final">ຕົວຊ່ວຍສ້າງນີ້ແມ່ນງ່າຍດາຍຫຼາຍ. ດ້ວຍປຸ່ມຕ່າງໆທາງດ້ານຊ້າຍ ແລະ ດ້ານລຸ່ມ ທ່ານສາມາດເພີ່ມ, ລຶບ ແລະ ຍ້າຍຖັນ ຫຼື ແຖວໃນຕາຕະລາງໄດ້.
+ທ່ານຍັງສາມາດປິດການຕັ້ງຄ່າ "Small fields" ຢູ່ລຸ່ມຕົວຊ່ວຍສ້າງ ຫາກທ່ານຕ້ອງການຊ່ອງໃສ່ຂໍ້ຄວາມທີ່ໃຫຍ່ຂຶ້ນສຳລັບການແກ້ໄຂ.</target></trans-unit>
+      <trans-unit id="_wizard_table_wiz.seeAlso" resname="_wizard_table_wiz.seeAlso" xml:space="preserve" approved="yes">
+				<source>xMOD_csh_corebe:wizard_forms_wiz,
+Table Wizard details [Technical]| https://docs.typo3.org/typo3cms/TCAReference/AdditionalFeatures/CoreWizardScripts/</source>
+				
+			<target state="final">xMOD_csh_corebe:wizard_forms_wiz,
+Table Wizard details [Technical]| https://docs.typo3.org/typo3cms/TCAReference/AdditionalFeatures/CoreWizardScripts/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_wizard_table_wiz.image" resname="_wizard_table_wiz.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_63.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/core_63.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz_buttons.alttitle" resname="wizard_table_wiz_buttons.alttitle" approved="yes">
+        <source>Table wizard buttons</source>
+        <target state="final">ປຸ່ມຕົວຊ່ວຍສ້າງຕາຕະລາງ</target>
+      </trans-unit>
+      <trans-unit id="wizard_table_wiz_buttons.description" resname="wizard_table_wiz_buttons.description" approved="yes">
+        <source>Use the refresh button to update the form without saving it. When you are done you should click one of the real save buttons to save and return to the form from which you entered the wizard. The information from this wizard should then be saved into the field the wizard was associated with.</source>
+        <target state="final">ໃຊ້ປຸ່ມຣີເຟຣຊ (refresh) ເພື່ອອັບເດດແບບຟອມໂດຍບໍ່ຕ້ອງບັນທຶກ. ເມື່ອທ່ານເຮັດສຳເລັດແລ້ວ ທ່ານຄວນຄລິກປຸ່ມບັນທຶກອັນໃດອັນໜຶ່ງເພື່ອບັນທຶກ ແລະ ກັບຄືນໄປຍັງແບບຟອມທີ່ທ່ານເຂົ້າມາ. ຂໍ້ມູນຈາກຕົວຊ່ວຍສ້າງນີ້ຈະຖືກບັນທຶກລົງໃນຊ່ອງຂໍ້ມູນທີ່ຕົວຊ່ວຍສ້າງກ່ຽວຂ້ອງນຳ.</target>
+      </trans-unit>
+      <trans-unit id="_wizard_table_wiz_buttons.image" resname="_wizard_table_wiz_buttons.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/core_62.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/core_62.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="shortcuts.alttitle" resname="shortcuts.alttitle" approved="yes">
+        <source>Backend Shortcuts</source>
+        <target state="final">ທາງລັດລະບົບຫຼັງບ້ານ</target>
+      </trans-unit>
+      <trans-unit id="shortcuts.description" resname="shortcuts.description" approved="yes">
+        <source>You can create shortcuts to modules in TYPO3 quite easily. The treat is that you can jump between screens in TYPO3 in &lt;em&gt;one&lt;/em&gt; click rather than multiple clicks through backend modules etc. The frame also contains a field for entering a page or record id to edit or just search records.</source>
+        <target state="final">ທ່ານສາມາດສ້າງທາງລັດໄປຍັງໂມດູນຕ່າງໆໃນ TYPO3 ໄດ້ງ່າຍດາຍຫຼາຍ. ຂໍ້ດີຄືທ່ານສາມາດກະໂດດໄປມາລະຫວ່າງໜ້າຈໍໃນ TYPO3 ໄດ້ໃນການຄລິກ &lt;em&gt;ຄັ້ງດຽວ&lt;/em&gt; ແທນທີ່ຈະຕ້ອງຄລິກຫຼາຍຄັ້ງຜ່ານໂມດູນຫຼັງບ້ານຕ່າງໆ. ນອກຈາກນີ້ຍັງມີຊ່ອງສຳລັບໃສ່ ID ຂອງໜ້າ ຫຼື ຂໍ້ມູນເພື່ອແກ້ໄຂ ຫຼື ຄົ້ນຫາຂໍ້ມູນໄດ້ອີກດ້ວຍ.</target>
+      </trans-unit>
+      <trans-unit id="shortcuts.details" resname="shortcuts.details" xml:space="preserve" approved="yes">
+				<source>In order to create a shortcut it must be supported by the module you want to create the shortcut to. Whether shortcuts are supported can be seen in the bottom of a module. If there is a small "shortcut" icon you can click it to create the shortcut.
+
+In the shortcut frame you can also enter a page id to edit in the "Edit Page ID" box. This will load the current page module with the id provided in the box.
+
+Only "Admin"-users can access the shortcut frame in TYPO3 by default. Other users must have it enabled by the User TSconfig option, "options.shortcutFrame = 1". See link below for details (Admins).
+
+Editing pages from an id is easy with the shortcut frame. Simply enter an integer number and that page will be loaded for editing. If you enter "[table]:[id]" then it will try to edit a record from the [table] table, for example "tt_content:123" will look for content element 123 (for admins only). Finally, if you enter a string that doesn't match a page or other record the Web&gt;List module will be invoked doing a search in the first database mount you have.</source>
+			<target state="final">ການສ້າງທາງລັດຕ້ອງໄດ້ຮັບການຮອງຮັບໂດຍໂມດູນທີ່ທ່ານຕ້ອງການສ້າງທາງລັດໄປຫາ. ທ່ານສາມາດເບິ່ງໄດ້ວ່າໂມດູນນັ້ນຮອງຮັບທາງລັດຫຼືບໍ່ໄດ້ຢູ່ທີ່ສ່ວນລຸ່ມຂອງໂມດູນ. ຫາກມີໄອຄອນ "ທາງລັດ" ຂະໜາດນ້ອຍ ທ່ານສາມາດຄລິກມັນເພື່ອສ້າງທາງລັດໄດ້.
+
+ໃນແຖບທາງລັດ ທ່ານຍັງສາມາດໃສ່ ID ຂອງໜ້າເພື່ອແກ້ໄຂໃນຊ່ອງ "Edit Page ID". ສິ່ງນີ້ຈະໂຫຼດໂມດູນໜ້າປັດຈຸບັນດ້ວຍ ID ທີ່ລະບຸໄວ້ໃນຊ່ອງນັ້ນ.
+
+ຕາມຄ່າເລີ່ມຕົ້ນ ມີພຽງແຕ່ຜູ້ໃຊ້ "Admin" ເທົ່ານັ້ນທີ່ສາມາດເຂົ້າເຖິງແຖບທາງລັດໃນ TYPO3 ໄດ້. ຜູ້ໃຊ້ອື່ນໆຕ້ອງໄດ້ຮັບການເປີດໃຊ້ຜ່ານຕົວເລືອກ User TSconfig "options.shortcutFrame = 1". ເບິ່ງລາຍລະອຽດໄດ້ຈາກລິ້ງຂ້າງລຸ່ມນີ້ (ສຳລັບ Admin).
+
+ການແກ້ໄຂໜ້າຈາກ ID ແມ່ນເຮັດໄດ້ງ່າຍດ້ວຍແຖບທາງລັດ. ພຽງແຕ່ໃສ່ຕົວເລກຈຳນວນຖ້ວນ ແລ້ວໜ້ານັ້ນຈະຖືກໂຫຼດຂຶ້ນມາເພື່ອແກ້ໄຂ. ຫາກທ່ານໃສ່ "[table]:[id]" ມັນຈະພະຍາຍາມແກ້ໄຂຂໍ້ມູນຈາກຕາຕະລາງ [table], ຕົວຢ່າງ "tt_content:123" ຈະຄົ້ນຫາອົງປະກອບເນື້ອໃນ 123 (ສຳລັບ Admin ເທົ່ານັ້ນ). ສຸດທ້າຍ, ຫາກທ່ານໃສ່ຂໍ້ຄວາມທີ່ບໍ່ກົງກັບໜ້າ ຫຼື ຂໍ້ມູນໃດໆ ໂມດູນ ເວັບ&gt;ລາຍການ ຈະຖືກເອີ້ນໃຊ້ເພື່ອຄົ້ນຫາໃນຖານຂໍ້ມູນອັນທຳອິດທີ່ທ່ານມີ.</target></trans-unit>
+      <trans-unit id="_shortcuts.seeAlso" resname="_shortcuts.seeAlso" approved="yes">
+        <source>User TSconfig -&gt;SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/</source>
+        <target state="final">User TSconfig -&gt;SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/</target>
+      </trans-unit>
+      <trans-unit id="_shortcuts.image" resname="_shortcuts.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_64.png,
+EXT:core/Resources/Public/Images/cshimages/core_65.png,
+EXT:core/Resources/Public/Images/cshimages/core_67.png,
+EXT:core/Resources/Public/Images/cshimages/core_68.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_64.png,
+EXT:core/Resources/Public/Images/cshimages/core_65.png,
+EXT:core/Resources/Public/Images/cshimages/core_67.png,
+EXT:core/Resources/Public/Images/cshimages/core_68.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="shortcuts.image_descr" resname="shortcuts.image_descr" xml:space="preserve" approved="yes">
+				<source>To create a shortcut to a page, just click the short cut icon usually found in the bottom of pages.
+You will have to confirm the creation of the shortcut. It is nothing dangerous - only annoying to clean up if you happen to create shortcuts against your own will. Just answer "OK" here.
+When you answer "OK" you should immediately see the shortcut frame reload and a new icon (the module icon) appear. If you click this icon you will now jump to the page you created the shortcut from!
+You can name shortcuts, you can even group them and share them. If you want to edit or delete a shortcut you select the "Edit" checkbox and then click the shortcut icon. This will reload the shortcut frame so you get a field for entering a title. You can also delete all shortcuts in a "group" - here, just click the "0" (zero) to the left of the icons and you will remove all shortcuts in the group.</source>
+			<target state="final">ເພື່ອສ້າງທາງລັດໄປຍັງໜ້າໃດໜຶ່ງ, ພຽງແຕ່ຄລິກໄອຄອນທາງລັດເຊິ່ງປົກກະຕິແລ້ວຈະຢູ່ສ່ວນລຸ່ມຂອງໜ້າ.
+ທ່ານຈະຕ້ອງຢືນຢັນການສ້າງທາງລັດ. ມັນບໍ່ມີອັນຕະລາຍໃດໆ - ພຽງແຕ່ອາດຈະໜ້າລຳຄານໃນການລຶບອອກຫາກທ່ານສ້າງທາງລັດໂດຍບໍ່ໄດ້ຕັ້ງໃຈ. ໃຫ້ຕອບ "ຕົກລົງ" ຢູ່ບ່ອນນີ້.
+ເມື່ອທ່ານຕອບ "ຕົກລົງ", ທ່ານຈະເຫັນແຖບທາງລັດໂຫຼດໃໝ່ທັນທີ ແລະ ມີໄອຄອນໃໝ່ (ໄອຄອນໂມດູນ) ປາກົດຂຶ້ນ. ຫາກທ່ານຄລິກໄອຄອນນີ້ ທ່ານຈະກະໂດດໄປຫາໜ້າທີ່ທ່ານສ້າງທາງລັດໄວ້!
+ທ່ານສາມາດຕັ້ງຊື່ທາງລັດ, ຈັດກຸ່ມ ຫຼື ແບ່ງປັນພວກມັນໄດ້. ຫາກທ່ານຕ້ອງການແກ້ໄຂ ຫຼື ລຶບທາງລັດ ໃຫ້ເລືອກຊ່ອງໝາຍ "ແກ້ໄຂ" ແລ້ວຄລິກໄອຄອນທາງລັດ. ສິ່ງນີ້ຈະໂຫຼດແຖບທາງລັດໃໝ່ເພື່ອໃຫ້ທ່ານໃສ່ຊື່. ທ່ານຍັງສາມາດລຶບທາງລັດທັງໝົດໃນ "ກຸ່ມ" ໄດ້ - ພຽງແຕ່ຄລິກທີ່ເລກ "0" (ສູນ) ທາງຊ້າຍຂອງໄອຄອນ ແລ້ວທາງລັດທັງໝົດໃນກຸ່ມນັ້ນຈະຖືກລຶບອອກ.</target></trans-unit>
+      <trans-unit id="bookmarks.alttitle" resname="bookmarks.alttitle" approved="yes">
+        <source>Backend Bookmarks</source>
+        <target state="final">ບຸກມາກລະບົບຫຼັງບ້ານ</target>
+      </trans-unit>
+      <trans-unit id="bookmarks.description" resname="bookmarks.description" approved="yes">
+        <source>You can create bookmarks to modules in TYPO3 quite easily. The treat is that you can jump between screens in TYPO3 in &lt;em&gt;one&lt;/em&gt; click rather than multiple clicks through backend modules etc. The frame also contains a field for entering a page or record id to edit or just search records.</source>
+        <target state="final">ທ່ານສາມາດສ້າງບຸກມາກໄປຫາໂມດູນຕ່າງໆໃນ TYPO3 ໄດ້ງ່າຍດາຍຫຼາຍ. ຂໍ້ດີຄືທ່ານສາມາດກະໂດດໄປມາລະຫວ່າງໜ້າຈໍໃນ TYPO3 ໄດ້ໃນການຄລິກ &lt;em&gt;ຄັ້ງດຽວ&lt;/em&gt; ແທນທີ່ຈະຕ້ອງຄລິກຫຼາຍຄັ້ງຜ່ານໂມດູນຫຼັງບ້ານຕ່າງໆ. ນອກຈາກນີ້ຍັງມີຊ່ອງສຳລັບໃສ່ ID ຂອງໜ້າ ຫຼື ຂໍ້ມູນເພື່ອແກ້ໄຂ ຫຼື ຄົ້ນຫາຂໍ້ມູນໄດ້ອີກດ້ວຍ.</target>
+      </trans-unit>
+      <trans-unit id="bookmarks.details" resname="bookmarks.details" approved="yes">
+        <source>In order to create a bookmark it must be supported by the module you want to create the bookmark to. Whether bookmarks are supported can be seen in the top of a module. If there is a small star icon you can click it to create the bookmark.</source>
+        <target state="final">ການສ້າງບຸກມາກຕ້ອງໄດ້ຮັບການຮອງຮັບໂດຍໂມດູນທີ່ທ່ານຕ້ອງການສ້າງບຸກມາກໄປຫາ. ທ່ານສາມາດເບິ່ງໄດ້ວ່າໂມດູນນັ້ນຮອງຮັບບຸກມາກຫຼືບໍ່ໄດ້ຢູ່ທີ່ສ່ວນເທິງຂອງໂມດູນ. ຫາກມີໄອຄອນຮູບດາວຂະໜາດນ້ອຍ ທ່ານສາມາດຄລິກມັນເພື່ອສ້າງບຸກມາກໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="_bookmarks.seeAlso" resname="_bookmarks.seeAlso" approved="yes">
+        <source>User TSconfig -&gt;SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/</source>
+        <target state="final">User TSconfig -&gt;SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/</target>
+      </trans-unit>
+      <trans-unit id="_bookmarks.image" resname="_bookmarks.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/core_64.png,
+EXT:core/Resources/Public/Images/cshimages/core_65.png,
+EXT:core/Resources/Public/Images/cshimages/core_67.png,
+EXT:core/Resources/Public/Images/cshimages/core_68.png,</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/core_64.png,
+EXT:core/Resources/Public/Images/cshimages/core_65.png,
+EXT:core/Resources/Public/Images/cshimages/core_67.png,
+EXT:core/Resources/Public/Images/cshimages/core_68.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="bookmarks.image_descr" resname="bookmarks.image_descr" xml:space="preserve" approved="yes">
+				<source>To create a bookmark to a page, just click the star icon usually found in the top of pages.
+You will have to confirm the creation of the bookmark. It is nothing dangerous - only annoying to clean up if you happen to create bookmarks against your own will. Just answer "OK" here.
+When you answer "OK" you should immediately see the bookmark icon in the toolbar reloading and, after opening the menu, the new entry appear. If you click this entry, you will now jump to the page you created the bookmark from!
+You can name bookmarks, you can even group them and share them. If you want to edit or delete a bookmark you select the "Edit" checkbox and then click the bookmark icon.</source>
+			<target state="final">ເພື່ອສ້າງບຸກມາກໄປຫາໜ້າໃດໜຶ່ງ, ພຽງແຕ່ຄລິກໄອຄອນຮູບດາວເຊິ່ງປົກກະຕິແລ້ວຈະຢູ່ສ່ວນເທິງຂອງໜ້າ.
+ທ່ານຈະຕ້ອງຢືນຢັນການສ້າງບຸກມາກ. ມັນບໍ່ມີອັນຕະລາຍໃດໆ - ພຽງແຕ່ອາດຈະໜ້າລຳຄານໃນການລຶບອອກຫາກທ່ານສ້າງບຸກມາກໂດຍບໍ່ໄດ້ຕັ້ງໃຈ. ໃຫ້ຕອບ "ຕົກລົງ" ຢູ່ບ່ອນນີ້.
+ເມື່ອທ່ານຕອບ "ຕົກລົງ", ທ່ານຈະເຫັນໄອຄອນບຸກມາກໃນແຖບເຄື່ອງມືໂຫຼດໃໝ່ ແລະ ເມື່ອເປີດເມນູຂຶ້ນມາ ຈະມີລາຍການໃໝ່ປາກົດຂຶ້ນ. ຫາກທ່ານຄລິກລາຍການນີ້ ທ່ານຈະກະໂດດໄປຫາໜ້າທີ່ທ່ານສ້າງບຸກມາກໄວ້!
+ທ່ານສາມາດຕັ້ງຊື່ບຸກມາກ, ຈັດກຸ່ມ ຫຼື ແບ່ງປັນພວກມັນໄດ້. ຫາກທ່ານຕ້ອງການແກ້ໄຂ ຫຼື ລຶບບຸກມາກ ໃຫ້ເລືອກຊ່ອງໝາຍ "ແກ້ໄຂ" ແລ້ວຄລິກໄອຄອນບຸກມາກ.</target></trans-unit>
+      <trans-unit id="workspaceSelector.alttitle" resname="workspaceSelector.alttitle" approved="yes">
+        <source>Workspace Selector</source>
+        <target state="final">ຕົວເລືອກພື້ນທີ່ເຮັດວຽກ</target>
+      </trans-unit>
+      <trans-unit id="workspaceSelector.description" resname="workspaceSelector.description" approved="yes">
+        <source>By this selectorbox you can switch between the workspaces available to you. When you switch workspace the whole backend will reload.</source>
+        <target state="final">ດ້ວຍກ່ອງຕົວເລືອກນີ້ ທ່ານສາມາດສະຫຼັບໄປມາລະຫວ່າງພື້ນທີ່ເຮັດວຽກທີ່ມີໃຫ້ທ່ານໄດ້. ເມື່ອທ່ານສະຫຼັບພື້ນທີ່ເຮັດວຽກ ລະບົບຫຼັງບ້ານທັງໝົດຈະຖືກໂຫຼດໃໝ່.</target>
+      </trans-unit>
+      <trans-unit id="workspaceSelector.details" resname="workspaceSelector.details" xml:space="preserve" approved="yes">
+				<source>There are two basic workspace types in TYPO3: The "Live" workspace and a number of "Draft" workspaces.
+When working in the Live workspace all changes you make will take immediate effect. This is the default and traditional state of operation in TYPO3.
+When working in a customly created workspaces changes are not applied to the live website but rather made through new versions of any element editable. Since versioning doesn't apply to all elements in TYPO3 there are limitations to what can be done in draft workspaces; Only elements with versioning support can be edited and everything else is read-only. Draft workspaces allow preview in the frontend. When changes are final in a draft workspace they can be published into the live workspace.</source>
+			<target state="final">ໃນ TYPO3 ມີພື້ນທີ່ເຮັດວຽກສອງປະເພດຫຼັກຄື: ພື້ນທີ່ເຮັດວຽກ "Live" (ສົດ) ແລະ ພື້ນທີ່ເຮັດວຽກ "Draft" (ຮ່າງ) ຈຳນວນໜຶ່ງ.
+ເມື່ອເຮັດວຽກໃນພື້ນທີ່ເຮັດວຽກ Live, ການປ່ຽນແປງທັງໝົດທີ່ທ່ານເຮັດຈະມີຜົນທັນທີ. ນີ້ແມ່ນສະຖານະການເຮັດວຽກແບບເລີ່ມຕົ້ນ ແລະ ແບບດັ້ງເດີມໃນ TYPO3.
+ເມື່ອເຮັດວຽກໃນພື້ນທີ່ເຮັດວຽກທີ່ສ້າງຂຶ້ນເອງ, ການປ່ຽນແປງຈະບໍ່ມີຜົນກັບເວັບໄຊຕົວຈິງ ແຕ່ຈະຖືກສ້າງຂຶ້ນຜ່ານເວີຊັນໃໝ່ຂອງອົງປະກອບທີ່ສາມາດແກ້ໄຂໄດ້. ເນື່ອງຈາກການກຳນົດເວີຊັນ (versioning) ບໍ່ໄດ້ໃຊ້ກັບທຸກອົງປະກອບໃນ TYPO3 ຈຶ່ງມີຂໍ້ຈຳກັດບາງຢ່າງໃນພື້ນທີ່ເຮັດວຽກແບບຮ່າງ; ມີພຽງແຕ່ອົງປະກອບທີ່ຮອງຮັບການກຳນົດເວີຊັນເທົ່ານັ້ນທີ່ສາມາດແກ້ໄຂໄດ້ ແລະ ສ່ວນອື່ນໆຈະເປັນແບບອ່ານຢ່າງດຽວ. ພື້ນທີ່ເຮັດວຽກແບບຮ່າງຊ່ວຍໃຫ້ສາມາດເບິ່ງຕົວຢ່າງໃນສ່ວນໜ້າເວັບ (frontend) ໄດ້. ເມື່ອການປ່ຽນແປງໃນພື້ນທີ່ເຮັດວຽກແບບຮ່າງສຳເລັດແລ້ວ ພວກມັນສາມາດຖືກເຜີຍແຜ່ (publish) ເຂົ້າສູ່ພື້ນທີ່ເຮັດວຽກ Live ໄດ້.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
