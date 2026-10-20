@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/localization.xlf" date="2025-10-28T00:00:00Z" product-name="backend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="localization_wizard.modal.title">
+        <source>Localization</source>
+        <target>crwdns380216:0crwdne380216:0</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.modal.title.record_prefix">
+        <source>Localize:</source>
+        <target>crwdns380218:0crwdne380218:0</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.buttons.localize">
+        <source>Localize</source>
+        <target>crwdns380228:0crwdne380228:0</target>
+      </trans-unit>
+      <trans-unit id="wizard.error.message">
+        <source>Failed to load wizard configuration. Please try again.</source>
+        <target>crwdns392816:0crwdne392816:0</target>
+      </trans-unit>
+      <trans-unit id="wizard.error.title">
+        <source>Configuration error</source>
+        <target>crwdns392818:0crwdne392818:0</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.no_steps_available.message">
+        <source>No localization steps are available for this record type.</source>
+        <target>crwdns380242:0crwdne380242:0</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.no_steps_available.title">
+        <source>Warning</source>
+        <target>crwdns380244:0crwdne380244:0</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.no_data.message">
+        <source>No finisher data available. Cannot complete the localization process.</source>
+        <target>crwdns380252:0crwdne380252:0</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.redirect.success.title">
+        <source>Localization completed</source>
+        <target>crwdns380256:0crwdne380256:0</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.redirect.success.description">
+        <source>The content has been successfully localized. Click "Finish" to be redirected to the new language version.</source>
+        <target>crwdns393620:0crwdne393620:0</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.reload.success.title">
+        <source>Localization completed</source>
+        <target>crwdns380260:0crwdne380260:0</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.reload.success.description">
+        <source>The content has been successfully localized. Click "Finish" to reload the page and view the updated content.</source>
+        <target>crwdns393622:0crwdne393622:0</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.noop.success.title">
+        <source>No operation required</source>
+        <target>crwdns380264:0crwdne380264:0</target>
+      </trans-unit>
+      <trans-unit id="localization_wizard.finisher.noop.success.description">
+        <source>No records were selected that need processing. Click "Finish" to reload the page.</source>
+        <target>crwdns393624:0crwdne393624:0</target>
+      </trans-unit>
+      <!-- Step: Content selection -->
+      <trans-unit id="step.content_selection.title">
+        <source>Content selection</source>
+        <target>crwdns380276:0crwdne380276:0</target>
+      </trans-unit>
+      <trans-unit id="step.content_selection.headline">
+        <source>Select records to localize</source>
+        <target>crwdns380278:0crwdne380278:0</target>
+      </trans-unit>
+      <trans-unit id="step.content_selection.description">
+        <source>Choose which content elements you would like to translate:</source>
+        <target>crwdns380280:0crwdne380280:0</target>
+      </trans-unit>
+      <trans-unit id="step.content_selection.summary.title">
+        <source>Content Element(s)</source>
+        <target>crwdns380282:0crwdne380282:0</target>
+      </trans-unit>
+      <trans-unit id="step.content_selection.summary.amount">
+        <source>%s Element(s)</source>
+        <target>crwdns380284:0%scrwdne380284:0</target>
+      </trans-unit>
+      <trans-unit id="step.content_selection.error.message">
+        <source>Failed to load records for selection</source>
+        <target>crwdns380286:0crwdne380286:0</target>
+      </trans-unit>
+      <trans-unit id="step.content_selection.button.select_all">
+        <source>Select all</source>
+        <target>crwdns380288:0crwdne380288:0</target>
+      </trans-unit>
+      <trans-unit id="step.content_selection.button.deselect_all">
+        <source>Deselect all</source>
+        <target>crwdns380290:0crwdne380290:0</target>
+      </trans-unit>
+      <trans-unit id="step.content_selection.no_content.message">
+        <source>This page does not contain any content elements.</source>
+        <target>crwdns380292:0crwdne380292:0</target>
+      </trans-unit>
+      <!-- Step: Handler selection -->
+      <trans-unit id="step.handler_selection.title">
+        <source>Handler</source>
+        <target>crwdns380294:0crwdne380294:0</target>
+      </trans-unit>
+      <trans-unit id="step.handler_selection.headline">
+        <source>Select localization handler</source>
+        <target>crwdns380296:0crwdne380296:0</target>
+      </trans-unit>
+      <trans-unit id="step.handler_selection.description">
+        <source>Choose how you would like to localize this record:</source>
+        <target>crwdns380298:0crwdne380298:0</target>
+      </trans-unit>
+      <trans-unit id="step.handler_selection.summary_label">
+        <source>Handler</source>
+        <target>crwdns380300:0crwdne380300:0</target>
+      </trans-unit>
+      <trans-unit id="step.handler_selection.error">
+        <source>Failed to load localization handlers.</source>
+        <target>crwdns380302:0crwdne380302:0</target>
+      </trans-unit>
+      <trans-unit id="step.handler_selection.no_handlers">
+        <source>No localization handlers available.</source>
+        <target>crwdns380304:0crwdne380304:0</target>
+      </trans-unit>
+      <!-- Step: Mode -->
+      <trans-unit id="step.modes.title">
+        <source>Mode</source>
+        <target>crwdns380306:0crwdne380306:0</target>
+      </trans-unit>
+      <trans-unit id="step.modes.headline">
+        <source>Select localization mode</source>
+        <target>crwdns380308:0crwdne380308:0</target>
+      </trans-unit>
+      <trans-unit id="step.modes.description">
+        <source>Choose how content should be localized:</source>
+        <target>crwdns380310:0crwdne380310:0</target>
+      </trans-unit>
+      <trans-unit id="step.modes.summary.title">
+        <source>Mode</source>
+        <target>crwdns380312:0crwdne380312:0</target>
+      </trans-unit>
+      <trans-unit id="step.modes.error.message">
+        <source>Failed to load localization modes.</source>
+        <target>crwdns380314:0crwdne380314:0</target>
+      </trans-unit>
+      <trans-unit id="step.modes.none_available">
+        <source>No localization modes available.</source>
+        <target>crwdns380316:0crwdne380316:0</target>
+      </trans-unit>
+      <!-- Step: Source language -->
+      <trans-unit id="step.source_language.title">
+        <source>Source language</source>
+        <target>crwdns380318:0crwdne380318:0</target>
+      </trans-unit>
+      <trans-unit id="step.source_language.headline">
+        <source>Select source language</source>
+        <target>crwdns380320:0crwdne380320:0</target>
+      </trans-unit>
+      <trans-unit id="step.source_language.description">
+        <source>Choose the language from which you would like to translate content:</source>
+        <target>crwdns380322:0crwdne380322:0</target>
+      </trans-unit>
+      <trans-unit id="step.source_language.summary.title">
+        <source>Source language</source>
+        <target>crwdns380324:0crwdne380324:0</target>
+      </trans-unit>
+      <trans-unit id="step.source_language.error.message">
+        <source>Failed to load source languages.</source>
+        <target>crwdns380326:0crwdne380326:0</target>
+      </trans-unit>
+      <trans-unit id="step.source_language.none_available">
+        <source>No source languages available.</source>
+        <target>crwdns380328:0crwdne380328:0</target>
+      </trans-unit>
+      <!-- Step: Target language -->
+      <trans-unit id="step.target_language.title">
+        <source>Target language</source>
+        <target>crwdns380332:0crwdne380332:0</target>
+      </trans-unit>
+      <trans-unit id="step.target_language.headline">
+        <source>Select target language</source>
+        <target>crwdns380334:0crwdne380334:0</target>
+      </trans-unit>
+      <trans-unit id="step.target_language.description">
+        <source>Select the language into which you would like to translate the content:</source>
+        <target>crwdns380336:0crwdne380336:0</target>
+      </trans-unit>
+      <trans-unit id="step.target_language.summary.title">
+        <source>Target language</source>
+        <target>crwdns380338:0crwdne380338:0</target>
+      </trans-unit>
+      <trans-unit id="step.target_language.error.message">
+        <source>Failed to load target languages.</source>
+        <target>crwdns380340:0crwdne380340:0</target>
+      </trans-unit>
+      <trans-unit id="step.target_language.none_available">
+        <source>No target languages available.</source>
+        <target>crwdns380342:0crwdne380342:0</target>
+      </trans-unit>
+      <!-- Handlers -->
+      <trans-unit id="handler.manual.label">
+        <source>Manual Translation</source>
+        <target>crwdns380344:0crwdne380344:0</target>
+      </trans-unit>
+      <trans-unit id="handler.manual.description">
+        <source>Prepares the language version. Edit and translate the content yourself afterwards.</source>
+        <target>crwdns380346:0crwdne380346:0</target>
+      </trans-unit>
+      <!-- Error Messages -->
+      <trans-unit id="error.recordNotFound">
+        <source>Record with uid "%s" of type "%s" does not exist or is not accessible.</source>
+        <target>crwdns380348:0%scrwdnd380348:0%scrwdne380348:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
