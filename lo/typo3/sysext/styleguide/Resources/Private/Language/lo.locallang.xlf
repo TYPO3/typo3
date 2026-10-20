@@ -1,0 +1,2128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:styleguide/Resources/Private/Language/locallang.xlf" date="2026-11-10T13:37:37Z" product-name="styleguide" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="componentsOverview.headline" approved="yes">
+        <source>Components</source>
+        <target state="final">ອົງປະກອບ</target>
+      </trans-unit>
+      <trans-unit id="componentsOverview.link.title" approved="yes">
+        <source>Open %1s component</source>
+        <target state="final">ເປີດອົງປະກອບ %1s</target>
+      </trans-unit>
+      <trans-unit id="managePageTrees.headline" approved="yes">
+        <source>Manage example page trees</source>
+        <target state="final">ຈັດການຕົວຢ່າງຜັງໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="stylesOverview.headline" approved="yes">
+        <source>Styles</source>
+        <target state="final">ຮູບແບບ</target>
+      </trans-unit>
+      <trans-unit id="stylesOverview.link.title" approved="yes">
+        <source>Open %1s style</source>
+        <target state="final">ເປີດຮູບແບບ %1s</target>
+      </trans-unit>
+      <trans-unit id="styleguide" approved="yes">
+        <source>Styleguide</source>
+        <target state="final">ຄູ່ມືຮູບແບບ</target>
+      </trans-unit>
+      <trans-unit id="action.accordion" approved="yes">
+        <source>Accordion</source>
+        <target state="final">ແຖບພັບເປີດ-ປິດ (Accordion)</target>
+      </trans-unit>
+      <trans-unit id="action.accordion.description" approved="yes">
+        <source>Collapsible content sections that expand and collapse to show or hide information.</source>
+        <target state="final">ສ່ວນເນື້ອໃນທີ່ສາມາດພັບໄດ້ ເຊິ່ງສາມາດຂະຫຍາຍ ແລະ ຫຍໍ້ເຂົ້າ ເພື່ອສະແດງ ຫຼື ຊ່ອນຂໍ້ມູນ.</target>
+      </trans-unit>
+      <trans-unit id="action.avatar" approved="yes">
+        <source>Avatar</source>
+        <target state="final">ຮູບແທນຕົວ</target>
+      </trans-unit>
+      <trans-unit id="action.avatar.description" approved="yes">
+        <source>Display images representing backend users with optional status indicators.</source>
+        <target state="final">ສະແດງຮູບພາບແທນຕົວຜູ້ໃຊ້ລະບົບຫຼັງບ້ານ ພ້ອມຕົວບົ່ງບອກສະຖານະ.</target>
+      </trans-unit>
+      <trans-unit id="action.badges" approved="yes">
+        <source>Badges</source>
+        <target state="final">ປ້າຍສັນຍະລັກ (Badges)</target>
+      </trans-unit>
+      <trans-unit id="action.badges.description" approved="yes">
+        <source>Small labels for displaying status, counts, or categorization information.</source>
+        <target state="final">ປ້າຍຂະໜາດນ້ອຍສຳລັບສະແດງສະຖານະ, ຈຳນວນ ຫຼື ຂໍ້ມູນການຈັດໝວດໝູ່.</target>
+      </trans-unit>
+      <trans-unit id="action.breadcrumbs" approved="yes">
+        <source>Breadcrumbs</source>
+        <target state="final">ເສັ້ນທາງນຳທາງ (Breadcrumbs)</target>
+      </trans-unit>
+      <trans-unit id="action.breadcrumbs.description" approved="yes">
+        <source>Navigation trail showing the current location in the backend hierarchy, including modules and records.</source>
+        <target state="final">ແຖບນຳທາງທີ່ສະແດງຕຳແໜ່ງປັດຈຸບັນໃນລຳດັບຊັ້ນຂອງລະບົບຫຼັງບ້ານ ລວມມີໂມດູນ ແລະ ຂໍ້ມູນຕ່າງໆ.</target>
+      </trans-unit>
+      <trans-unit id="action.buttons" approved="yes">
+        <source>Buttons</source>
+        <target state="final">ປຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="action.buttons.description" approved="yes">
+        <source>Interactive elements for triggering actions with various styles, sizes, and states.</source>
+        <target state="final">ອົງປະກອບສຳລັບຕອບສະໜອງການຄລິກເພື່ອເຮັດວຽກໃດໜຶ່ງ ເຊິ່ງມີຫຼາຍຮູບແບບ, ຂະໜາດ ແລະ ສະຖານະ.</target>
+      </trans-unit>
+      <trans-unit id="action.cards" approved="yes">
+        <source>Cards</source>
+        <target state="final">ກາດ (Cards)</target>
+      </trans-unit>
+      <trans-unit id="action.cards.description" approved="yes">
+        <source>Flexible containers for grouping related content, displayed individually or in groups.</source>
+        <target state="final">ກ່ອງບັນຈຸເນື້ອໃນທີ່ຍືດຫຍຸ່ນສຳລັບຈັດກຸ່ມເນື້ອໃນທີ່ກ່ຽວຂ້ອງກັນ ສະແດງຜົນແບບດ່ຽວ ຫຼື ແບບກຸ່ມ.</target>
+      </trans-unit>
+      <trans-unit id="action.checkboxes" approved="yes">
+        <source>Checkboxes</source>
+        <target state="final">ຊ່ອງໝາຍເລືອກ (Checkboxes)</target>
+      </trans-unit>
+      <trans-unit id="action.checkboxes.description" approved="yes">
+        <source>Form controls for selecting one or more options, including toggles and switches.</source>
+        <target state="final">ຕົວຄວບຄຸມຟອມສຳລັບເລືອກໜຶ່ງ ຫຼື ຫຼາຍຕົວເລືອກ ລວມມີປຸ່ມເປີດ-ປິດ ແລະ ສະວິດ.</target>
+      </trans-unit>
+      <trans-unit id="action.comboboxes" approved="yes">
+        <source>Comboboxes</source>
+        <target state="final">ກ່ອງລາຍການແບບເລືອກ ແລະ ປ້ອນຂໍ້ມູນ (Comboboxes)</target>
+      </trans-unit>
+      <trans-unit id="action.comboboxes.description" approved="yes">
+        <source>Input fields with dropdown suggestions for selecting or entering values.</source>
+        <target state="final">ຊ່ອງປ້ອນຂໍ້ມູນທີ່ມີລາຍການແນະນຳໃຫ້ເລືອກ ຫຼື ສາມາດພິມຄ່າໃສ່ເອງໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="action.contentNavigation" approved="yes">
+        <source>Content Navigation</source>
+        <target state="final">ການນຳທາງເນື້ອໃນ</target>
+      </trans-unit>
+      <trans-unit id="action.contentNavigation.description" approved="yes">
+        <source>A two-panel container with a resizable navigation area and a flexible content area.</source>
+        <target state="final">ກ່ອງບັນຈຸແບບສອງສ່ວນ ທີ່ມີພື້ນທີ່ນຳທາງທີ່ປັບຂະໜາດໄດ້ ແລະ ພື້ນທີ່ເນື້ອໃນທີ່ຍືດຫຍຸ່ນ.</target>
+      </trans-unit>
+      <trans-unit id="action.datetime" approved="yes">
+        <source>Datetime / Relative Time</source>
+        <target state="final">ວັນທີ ແລະ ເວລາ / ເວລາສຳພັດ</target>
+      </trans-unit>
+      <trans-unit id="action.datetime.description" approved="yes">
+        <source>Web component for displaying timestamps in relative format with localization support.</source>
+        <target state="final">ສ່ວນປະກອບເວັບສຳລັບສະແດງຂໍ້ມູນເວລາໃນຮູບແບບສຳພັດ ພ້ອມຮອງຮັບການປັບໃຫ້ເຂົ້າກັບທ້ອງຖິ່ນ.</target>
+      </trans-unit>
+      <trans-unit id="action.exception" approved="yes">
+        <source>Exception</source>
+        <target state="final">ຂໍ້ຍົກເວັ້ນ</target>
+      </trans-unit>
+      <trans-unit id="action.colorTokens" approved="yes">
+        <source>Color Tokens</source>
+        <target state="final">ໂທເຄັນສີ (Color Tokens)</target>
+      </trans-unit>
+      <trans-unit id="action.colorTokens.description" approved="yes">
+        <source>Predefined color values and design tokens used throughout the TYPO3 backend interface.</source>
+        <target state="final">ຄ່າສີທີ່ກຳນົດໄວ້ລ່ວງໜ້າ ແລະ ໂທເຄັນດີໄຊທ໌ທີ່ໃຊ້ໃນສ່ວນຕິດຕໍ່ຜູ້ໃຊ້ຫຼັງບ້ານຂອງ TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="action.accentAndState" approved="yes">
+        <source>Accent and State</source>
+        <target state="final">ສີເນັ້ນ ແລະ ສະຖານະ</target>
+      </trans-unit>
+      <trans-unit id="action.accentAndState.description" approved="yes">
+        <source>Stateful color variants for interactive elements including accent colors and semantic states.</source>
+        <target state="final">ຮູບແບບສີຕາມສະຖານະສຳລັບອົງປະກອບຕອບໂຕ້ ລວມມີສີເນັ້ນ ແລະ ສີຕາມຄວາມໝາຍຂອງສະຖານະ.</target>
+      </trans-unit>
+      <trans-unit id="action.componentsOverview" approved="yes">
+        <source>Components overview</source>
+        <target state="final">ພາບລວມອົງປະກອບ</target>
+      </trans-unit>
+      <trans-unit id="action.componentsOverview.description" approved="yes">
+        <source>Browse all available UI components in the TYPO3 backend component library.</source>
+        <target state="final">ເບິ່ງອົງປະກອບ UI ທັງໝົດທີ່ມີຢູ່ໃນຄັງອົງປະກອບຫຼັງບ້ານຂອງ TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="action.developerTools" approved="yes">
+        <source>Developer Tools</source>
+        <target state="final">ເຄື່ອງມືນັກພັດທະນາ</target>
+      </trans-unit>
+      <trans-unit id="action.developerTools.description" approved="yes">
+        <source>Specialized components and utilities for development and debugging purposes.</source>
+        <target state="final">ອົງປະກອບພິເສດ ແລະ ເຄື່ອງມືອຳນວຍຄວາມສະດວກສຳລັບການພັດທະນາ ແລະ ການແກ້ໄຂຈຸດບົກຜ່ອງ (debug).</target>
+      </trans-unit>
+      <trans-unit id="action.dropdown" approved="yes">
+        <source>Dropdown</source>
+        <target state="final">ລາຍການເລືອກແບບດຶງລົງ (Dropdown)</target>
+      </trans-unit>
+      <trans-unit id="action.dropdown.description" approved="yes">
+        <source>Toggleable overlays for displaying lists, menus, and contextual actions.</source>
+        <target state="final">ແຖບສະແດງຜົນທັບຊ້ອນທີ່ສາມາດເປີດ-ປິດໄດ້ ສຳລັບສະແດງລາຍການ, ເມນູ ແລະ ຄຳສັ່ງຕ່າງໆ.</target>
+      </trans-unit>
+      <trans-unit id="action.flashMessages" approved="yes">
+        <source>Flash messages</source>
+        <target state="final">ຂໍ້ຄວາມແຈ້ງເຕືອນຊົ່ວຄາວ</target>
+      </trans-unit>
+      <trans-unit id="action.flashMessages.description" approved="yes">
+        <source>Temporary notifications for displaying feedback about user actions and system events.</source>
+        <target state="final">ການແຈ້ງເຕືອນຊົ່ວຄາວເພື່ອສະແດງການຕອບສະໜອງຕໍ່ການກະທຳຂອງຜູ້ໃຊ້ ແລະ ເຫດການຂອງລະບົບ.</target>
+      </trans-unit>
+      <trans-unit id="action.form" approved="yes">
+        <source>Form</source>
+        <target state="final">ຟອມ</target>
+      </trans-unit>
+      <trans-unit id="action.form.description" approved="yes">
+        <source>Complete form layouts combining various input fields and controls.</source>
+        <target state="final">ຮູບແບບຟອມທີ່ສົມບູນ ໂດຍການລວມເອົາຊ່ອງປ້ອນຂໍ້ມູນ ແລະ ຕົວຄວບຄຸມຕ່າງໆເຂົ້າກັນ.</target>
+      </trans-unit>
+      <trans-unit id="action.icons" approved="yes">
+        <source>Icons</source>
+        <target state="final">ໄອຄອນ</target>
+      </trans-unit>
+      <trans-unit id="action.icons.description" approved="yes">
+        <source>Complete library of icons available for use in the TYPO3 backend interface.</source>
+        <target state="final">ຄັງໄອຄອນທັງໝົດທີ່ມີໃຫ້ໃຊ້ໃນສ່ວນຕິດຕໍ່ຜູ້ໃຊ້ຫຼັງບ້ານຂອງ TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="action.infobox" approved="yes">
+        <source>Infobox</source>
+        <target state="final">ກ່ອງຂໍ້ມູນ (Infobox)</target>
+      </trans-unit>
+      <trans-unit id="action.infobox.description" approved="yes">
+        <source>Highlighted containers for displaying important information and contextual help.</source>
+        <target state="final">ກ່ອງເນັ້ນຂໍ້ຄວາມສຳລັບສະແດງຂໍ້ມູນທີ່ສຳຄັນ ແລະ ຄຳແນະນຳການຊ່ວຍເຫຼືອ.</target>
+      </trans-unit>
+      <trans-unit id="action.input" approved="yes">
+        <source>Input</source>
+        <target state="final">ຊ່ອງປ້ອນຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="action.input.description" approved="yes">
+        <source>Text input fields with support for various types, states, and sizes.</source>
+        <target state="final">ຊ່ອງປ້ອນຂໍ້ຄວາມທີ່ຮອງຮັບຫຼາຍປະເພດ, ສະຖານະ ແລະ ຂະໜາດ.</target>
+      </trans-unit>
+      <trans-unit id="action.listGroups" approved="yes">
+        <source>List groups</source>
+        <target state="final">ກຸ່ມລາຍການ</target>
+      </trans-unit>
+      <trans-unit id="action.listGroups.description" approved="yes">
+        <source>Lists for displaying a series of content.</source>
+        <target state="final">ລາຍການສຳລັບສະແດງເນື້ອໃນແບບຕໍ່ເນື່ອງ.</target>
+      </trans-unit>
+      <trans-unit id="action.managePageTrees" approved="yes">
+        <source>Manage example page trees</source>
+        <target state="final">ຈັດການຕົວຢ່າງຜັງໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="action.managePageTrees.description" approved="yes">
+        <source>Create and manage example page trees with TCA demo records or content elements for testing purposes.</source>
+        <target state="final">ສ້າງ ແລະ ຈັດການຕົວຢ່າງຜັງໜ້າເວັບດ້ວຍຂໍ້ມູນຕົວຢ່າງ TCA ຫຼື ອົງປະກອບເນື້ອໃນ ເພື່ອຈຸດປະສົງໃນການທົດສອບ.</target>
+      </trans-unit>
+      <trans-unit id="action.modal" approved="yes">
+        <source>Modal</source>
+        <target state="final">ໂມດໍ (Modal)</target>
+      </trans-unit>
+      <trans-unit id="action.modal.description" approved="yes">
+        <source>Dialog windows that appear on top of page content for focused interactions.</source>
+        <target state="final">ໜ້າຕ່າງໂຕ້ຕອບທີ່ປາກົດຂຶ້ນເທິງເນື້ອໃນໜ້າເວັບ ເພື່ອໃຫ້ຜູ້ໃຊ້ສຸມໃສ່ການເຮັດວຽກໃດໜຶ່ງ.</target>
+      </trans-unit>
+      <trans-unit id="action.navs" approved="yes">
+        <source>Navs</source>
+        <target state="final">ແຖບນຳທາງ</target>
+      </trans-unit>
+      <trans-unit id="action.navs.description" approved="yes">
+        <source>Navigation components including tabs, pills, and flat navigation styles.</source>
+        <target state="final">ອົງປະກອບນຳທາງ ລວມມີຮູບແບບແຖບ (tabs), ຮູບແບບເມັດຢາ (pills) ແລະ ແຖບນຳທາງແບບຮາບພຽງ.</target>
+      </trans-unit>
+      <trans-unit id="action.notifications" approved="yes">
+        <source>Notifications</source>
+        <target state="final">ການແຈ້ງເຕືອນ</target>
+      </trans-unit>
+      <trans-unit id="action.notifications.description" approved="yes">
+        <source>Temporary messages for informing users about events with optional action buttons.</source>
+        <target state="final">ຂໍ້ຄວາມແຈ້ງເຕືອນຊົ່ວຄາວເພື່ອບອກໃຫ້ຜູ້ໃຊ້ຮູ້ກ່ຽວກັບເຫດການຕ່າງໆ ພ້ອມປຸ່ມຄຳສັ່ງ (ຖ້າມີ).</target>
+      </trans-unit>
+      <trans-unit id="action.pagination" approved="yes">
+        <source>Pagination</source>
+        <target state="final">ການແບ່ງໜ້າ (Pagination)</target>
+      </trans-unit>
+      <trans-unit id="action.pagination.description" approved="yes">
+        <source>Controls for navigating through multi-page content and data sets.</source>
+        <target state="final">ຕົວຄວບຄຸມສຳລັບການນຳທາງຜ່ານເນື້ອໃນທີ່ມີຫຼາຍໜ້າ ແລະ ຊຸດຂໍ້ມູນ.</target>
+      </trans-unit>
+      <trans-unit id="action.panels" approved="yes">
+        <source>Panels</source>
+        <target state="final">ແຜງຄວບຄຸມ (Panels)</target>
+      </trans-unit>
+      <trans-unit id="action.panels.description" approved="yes">
+        <source>Collapsible content containers for organizing information into sections.</source>
+        <target state="final">ກ່ອງບັນຈຸເນື້ອໃນທີ່ພັບໄດ້ ສຳລັບການຈັດລະບຽບຂໍ້ມູນເປັນສ່ວນໆ.</target>
+      </trans-unit>
+      <trans-unit id="action.progressIndicators" approved="yes">
+        <source>Progress indicators</source>
+        <target state="final">ຕົວບົ່ງບອກຄວາມຄືບໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="action.progressIndicators.description" approved="yes">
+        <source>Visual indicators showing completion status of tasks and processes.</source>
+        <target state="final">ຕົວສະແດງຜົນທາງສາຍຕາເພື່ອບົ່ງບອກສະຖານະຄວາມສຳເລັດຂອງວຽກ ແລະ ຂະບວນການຕ່າງໆ.</target>
+      </trans-unit>
+      <trans-unit id="action.progressTrackers" approved="yes">
+        <source>Progress trackers</source>
+        <target state="final">ຕົວຕິດຕາມຄວາມຄືບໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="action.progressTrackers.description" approved="yes">
+        <source>Segmented progress displays for multi-step processes like wizards.</source>
+        <target state="final">ການສະແດງຄວາມຄືບໜ້າແບບແບ່ງເປັນສ່ວນ ສຳລັບຂະບວນການທີ່ມີຫຼາຍຂັ້ນຕອນ ເຊັ່ນ ຕົວຊ່ວຍຕັ້ງຄ່າ.</target>
+      </trans-unit>
+      <trans-unit id="action.radio" approved="yes">
+        <source>Radio</source>
+        <target state="final">ປຸ່ມເລືອກແບບດ່ຽວ (Radio)</target>
+      </trans-unit>
+      <trans-unit id="action.radio.description" approved="yes">
+        <source>Form controls for selecting a single option from multiple choices.</source>
+        <target state="final">ຕົວຄວບຄຸມຟອມສຳລັບເລືອກພຽງຕົວເລືອກດຽວຈາກຫຼາຍຕົວເລືອກ.</target>
+      </trans-unit>
+      <trans-unit id="action.select" approved="yes">
+        <source>Select</source>
+        <target state="final">ລາຍການເລືອກ (Select)</target>
+      </trans-unit>
+      <trans-unit id="action.select.description" approved="yes">
+        <source>Dropdown menus for choosing one or more options from a list.</source>
+        <target state="final">ເມນູແບບດຶງລົງສຳລັບເລືອກໜຶ່ງ ຫຼື ຫຼາຍຕົວເລືອກຈາກລາຍການ.</target>
+      </trans-unit>
+      <trans-unit id="action.shadows" approved="yes">
+        <source>Shadows</source>
+        <target state="final">ເງົາ</target>
+      </trans-unit>
+      <trans-unit id="action.shadows.description" approved="yes">
+        <source>Shadow effects and elevation styles used to create depth in the interface.</source>
+        <target state="final">ເອັບເຟັກເງົາ ແລະ ຮູບແບບການຍົກລະດັບ ເພື່ອສ້າງມິຕິຄວາມເລິກໃນສ່ວນຕິດຕໍ່ຜູ້ໃຊ້.</target>
+      </trans-unit>
+      <trans-unit id="action.statusIndicators" approved="yes">
+        <source>Status indicators</source>
+        <target state="final">ຕົວບົ່ງບອກສະຖານະ</target>
+      </trans-unit>
+      <trans-unit id="action.statusIndicators.description" approved="yes">
+        <source>Small colored dots that communicate the state of records, tasks, and interface elements, including animated live and loading variants.</source>
+        <target state="final">ຈຸດສີຂະໜາດນ້ອຍທີ່ສື່ສານສະຖານະຂອງຂໍ້ມູນ, ວຽກ ແລະ ອົງປະກອບຂອງສ່ວນຕິດຕໍ່ຜູ້ໃຊ້ ລວມມີຮູບແບບເຄື່ອນໄຫວແບບເຮັດວຽກຢູ່ ແລະ ແບບກຳນົດໂຫຼດ.</target>
+      </trans-unit>
+      <trans-unit id="action.stylesOverview" approved="yes">
+        <source>Styles overview</source>
+        <target state="final">ພາບລວມຮູບແບບ</target>
+      </trans-unit>
+      <trans-unit id="action.stylesOverview.description" approved="yes">
+        <source>Browse all available design styles including colors, typography, and visual tokens.</source>
+        <target state="final">ເບິ່ງຮູບແບບດີໄຊທ໌ທັງໝົດທີ່ມີ ລວມມີ ສີ, ຮູບແບບຕົວອັກສອນ ແລະ ໂທເຄັນທາງສາຍຕາ.</target>
+      </trans-unit>
+      <trans-unit id="action.surfaces" approved="yes">
+        <source>Surfaces</source>
+        <target state="final">ພື້ນຜິວ (Surfaces)</target>
+      </trans-unit>
+      <trans-unit id="action.surfaces.description" approved="yes">
+        <source>Background surfaces and container styles that define the visual hierarchy.</source>
+        <target state="final">ພື້ນຜິວພື້ນຫຼັງ ແລະ ຮູບແບບກ່ອງບັນຈຸ ທີ່ກຳນົດລຳດັບຊັ້ນທາງສາຍຕາ.</target>
+      </trans-unit>
+      <trans-unit id="action.tab" approved="yes">
+        <source>Tabs</source>
+        <target state="final">ແຖບ (Tabs)</target>
+      </trans-unit>
+      <trans-unit id="action.tab.description" approved="yes">
+        <source>Organized content sections with clickable headers for switching between views.</source>
+        <target state="final">ສ່ວນເນື້ອໃນທີ່ຈັດລະບຽບດ້ວຍແຖບຫົວຂໍ້ທີ່ຄລິກໄດ້ ເພື່ອສະຫຼັບລະຫວ່າງມຸມມອງຕ່າງໆ.</target>
+      </trans-unit>
+      <trans-unit id="action.tables" approved="yes">
+        <source>Tables</source>
+        <target state="final">ຕາຕະລາງ</target>
+      </trans-unit>
+      <trans-unit id="action.tables.description" approved="yes">
+        <source>Structured layouts for displaying tabular data with optional action icons.</source>
+        <target state="final">ຮູບແບບການຈັດວາງສຳລັບສະແດງຂໍ້ມູນໃນຕາຕະລາງ ພ້ອມໄອຄອນຄຳສັ່ງ (ຖ້າມີ).</target>
+      </trans-unit>
+      <trans-unit id="action.textarea" approved="yes">
+        <source>Textarea</source>
+        <target state="final">ຊ່ອງປ້ອນຂໍ້ຄວາມແບບຫຼາຍແຖວ</target>
+      </trans-unit>
+      <trans-unit id="action.textarea.description" approved="yes">
+        <source>Multi-line text input fields for entering longer content.</source>
+        <target state="final">ຊ່ອງປ້ອນຂໍ້ຄວາມແບບຫຼາຍແຖວ ສຳລັບປ້ອນເນື້ອໃນທີ່ຍາວ.</target>
+      </trans-unit>
+      <trans-unit id="action.trees" approved="yes">
+        <source>Trees</source>
+        <target state="final">ຜັງໂຄງສ້າງແບບຕົ້ນໄມ້ (Trees)</target>
+      </trans-unit>
+      <trans-unit id="action.trees.description" approved="yes">
+        <source>Hierarchical tree structures for displaying nested data and navigation.</source>
+        <target state="final">ໂຄງສ້າງແບບລຳດັບຊັ້ນສຳລັບສະແດງຂໍ້ມູນທີ່ຊ້ອນກັນ ແລະ ການນຳທາງ.</target>
+      </trans-unit>
+      <trans-unit id="action.typography" approved="yes">
+        <source>Typography</source>
+        <target state="final">ການຈັດຮູບແບບຕົວອັກສອນ (Typography)</target>
+      </trans-unit>
+      <trans-unit id="action.typography.description" approved="yes">
+        <source>Font styles, sizes, weights, and text formatting used throughout the backend.</source>
+        <target state="final">ຮູບແບບຕົວອັກສອນ, ຂະໜາດ, ຄວາມໜາ ແລະ ການຈັດຮູບແບບຂໍ້ຄວາມ ທີ່ໃຊ້ໃນລະບົບຫຼັງບ້ານ.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeProcessingError" approved="yes">
+        <source>An error occured while processing the page tree</source>
+        <target state="final">ເກີດຂໍ້ຜິດພາດຂຶ້ນໃນຂະນະທີ່ກຳລັງປະມວນຜົນຜັງໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateButton" approved="yes">
+        <source>Create page tree</source>
+        <target state="final">ສ້າງຜັງໜ້າເວັບ</target>
+      </trans-unit>
+      <trans-unit id="tcaDeleteButton" approved="yes">
+        <source>Delete page tree and all related records</source>
+        <target state="final">ລຶບຜັງໜ້າເວັບ ແລະ ຂໍ້ມູນທີ່ກ່ຽວຂ້ອງທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionOkTitle" approved="yes">
+        <source>Data created</source>
+        <target state="final">ສ້າງຂໍ້ມູນແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionOkBody" approved="yes">
+        <source>A page tree with TCA demo records was created.</source>
+        <target state="final">ສ້າງຜັງໜ້າເວັບດ້ວຍຂໍ້ມູນຕົວຢ່າງ TCA ແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionFailedTitle" approved="yes">
+        <source>No data created</source>
+        <target state="final">ບໍ່ມີການສ້າງຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionFailedBody" approved="yes">
+        <source>A page tree with TCA demo records exists already. Please delete that first.</source>
+        <target state="final">ມີຜັງໜ້າເວັບດ້ວຍຂໍ້ມູນຕົວຢ່າງ TCA ຢູ່ແລ້ວ. ກະລຸນາລຶບອັນນັ້ນອອກກ່ອນ.</target>
+      </trans-unit>
+      <trans-unit id="tcaDeleteActionOkTitle" approved="yes">
+        <source>Data deleted</source>
+        <target state="final">ລຶບຂໍ້ມູນແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="tcaDeleteActionOkBody" approved="yes">
+        <source>The page tree and all related records were deleted.</source>
+        <target state="final">ຜັງໜ້າເວັບ ແລະ ຂໍ້ມູນທີ່ກ່ຽວຂ້ອງທັງໝົດຖືກລຶບແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="extConfTemplateLocalizedLabel" approved="yes">
+        <source>A localized label</source>
+        <target state="final">ປ້າຍກຳກັບທີ່ຖືກແປແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="translatedHelpTextForSelectCheckBox3" approved="yes">
+        <source>A localized help text</source>
+        <target state="final">ຂໍ້ຄວາມຊ່ວຍເຫຼືອທີ່ຖືກແປແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="minimalTableTitle" approved="yes">
+        <source>Form engine - Minimal table configuration</source>
+        <target state="final">ລະບົບຟອມ - ການຕັ້ງຄ່າຕາຕະລາງແບບຂັ້ນຕ່ຳ</target>
+      </trans-unit>
+      <trans-unit id="minimalTableTitleField" approved="yes">
+        <source>Title field</source>
+        <target state="final">ຊ່ອງຫົວຂໍ້</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateButtonWithSets" approved="yes">
+        <source>Create page tree with site sets</source>
+        <target state="final">ສ້າງຜັງໜ້າເວັບດ້ວຍ site sets</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateButtonWithSysTemplate" approved="yes">
+        <source>Create page tree with sys_template</source>
+        <target state="final">ສ້າງຜັງໜ້າເວັບດ້ວຍ sys_template</target>
+      </trans-unit>
+      <trans-unit id="frontendDeleteButton" approved="yes">
+        <source>Delete page tree and all related records</source>
+        <target state="final">ລຶບຜັງໜ້າເວັບ ແລະ ຂໍ້ມູນທີ່ກ່ຽວຂ້ອງທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionOkTitle" approved="yes">
+        <source>Data created</source>
+        <target state="final">ສ້າງຂໍ້ມູນແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionOkBody" approved="yes">
+        <source>A page tree with content elements was created.</source>
+        <target state="final">ສ້າງຜັງໜ້າເວັບດ້ວຍອົງປະກອບເນື້ອໃນແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionFailedTitle" approved="yes">
+        <source>No data created</source>
+        <target state="final">ບໍ່ມີການສ້າງຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionFailedBody" approved="yes">
+        <source>A page tree with content elements exists already. Please delete that first.</source>
+        <target state="final">ມີຜັງໜ້າເວັບດ້ວຍອົງປະກອບເນື້ອໃນຢູ່ແລ້ວ. ກະລຸນາລຶບອັນນັ້ນອອກກ່ອນ.</target>
+      </trans-unit>
+      <trans-unit id="frontendDeleteActionOkTitle" approved="yes">
+        <source>Data deleted</source>
+        <target state="final">ລຶບຂໍ້ມູນແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="frontendDeleteActionOkBody" approved="yes">
+        <source>The page tree and all related records were deleted.</source>
+        <target state="final">ຜັງໜ້າເວັບ ແລະ ຂໍ້ມູນທີ່ກ່ຽວຂ້ອງທັງໝົດຖືກລຶບແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="itemGroupLabel" approved="yes">
+        <source>Item group from locallang</source>
+        <target state="final">ກຸ່ມລາຍການຈາກ locallang</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideFrontend.title" approved="yes">
+        <source>Styleguide Frontend</source>
+        <target state="final">ຄູ່ມືຮູບແບບໜ້າເວັບ (Frontend Styleguide)</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideFrontend.colpos.0" approved="yes">
+        <source>Main content</source>
+        <target state="final">ເນື້ອໃນຫຼັກ</target>
+      </trans-unit>
+      <trans-unit id="colorScheme.selector.label" approved="yes">
+        <source>Color scheme:</source>
+        <target state="final">ຊຸດສີ:</target>
+      </trans-unit>
+      <trans-unit id="section.colorScheme.headline" approved="yes">
+        <source>Color scheme</source>
+        <target state="final">ຊຸດສີ</target>
+      </trans-unit>
+      <trans-unit id="section.frontend.headline" approved="yes">
+        <source>Frontend Styleguide</source>
+        <target state="final">ຄູ່ມືຮູບແບບໜ້າເວັບ (Frontend Styleguide)</target>
+      </trans-unit>
+      <!-- Component: Avatar -->
+      <trans-unit id="component.avatar.headline" approved="yes">
+        <source>Avatar</source>
+        <target state="final">ຮູບແທນຕົວ</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.introtext" approved="yes">
+        <source><![CDATA[An avatar displays an image that represents a backend user and can provide additional information such as their status.<br>Avatars can be displayed with an own ViewHelper. If an avatar image is stored in the user settings, this will be used instead of the standard image.]]></source>
+        <target state="final"><![CDATA[ຮູບແທນຕົວ (Avatar) ຈະສະແດງຮູບພາບຂອງຜູ້ໃຊ້ລະບົບຫຼັງບ້ານ ແລະ ສາມາດບອກຂໍ້ມູນເພີ່ມເຕີມ ເຊັ່ນ ສະຖານະຂອງເຂົາເຈົ້າ.<br>ຮູບແທນຕົວສາມາດສະແດງຜົນຜ່ານ ViewHelper ຂອງມັນເອງ. ຫາກມີການບັນທຶກຮູບແທນຕົວໄວ້ໃນການຕັ້ງຄ່າຜູ້ໃຊ້, ລະບົບຈະນຳໃຊ້ຮູບນັ້ນແທນຮູບພາບມາດຕະຖານ.]]></target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.default.text" approved="yes">
+        <source>Display the backend user's avatar image or a static fallback image for users without avatar images.</source>
+        <target state="final">ສະແດງຮູບແທນຕົວຂອງຜູ້ໃຊ້ລະບົບຫຼັງບ້ານ ຫຼື ຮູບພາບສຳຮອງສຳລັບຜູ້ໃຊ້ທີ່ບໍ່ມີຮູບແທນຕົວ.</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.withStatus.headline" approved="yes">
+        <source>Status</source>
+        <target state="final">ສະຖານະ</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.withStatus.text" approved="yes">
+        <source>If set, the backend user type (normal user or admin user) and its status (disabled or not) will be displayed next to the avatar. </source>
+        <target state="final">ຫາກກຳນົດໄວ້, ປະເພດຜູ້ໃຊ້ລະບົບຫຼັງບ້ານ (ຜູ້ໃຊ້ທົ່ວໄປ ຫຼື ຜູ້ດູແລລະບົບ) ແລະ ສະຖານະ (ຖືກປິດການໃຊ້ງານ ຫຼື ບໍ່) ຈະສະແດງຢູ່ຂ້າງຮູບແທນຕົວ.</target>
+      </trans-unit>
+      <!-- Component: Badge -->
+      <trans-unit id="component.badge.headline" approved="yes">
+        <source>Badges</source>
+        <target state="final">ປ້າຍສັນຍະລັກ</target>
+      </trans-unit>
+      <trans-unit id="component.badge.introtext" approved="yes">
+        <source>Small labels for displaying status, counts, or categorization information in a compact format.</source>
+        <target state="final">ປ້າຍຂະໜາດນ້ອຍສຳລັບສະແດງສະຖານະ, ຈຳນວນ ຫຼື ຂໍ້ມູນການຈັດໝວດໝູ່ ໃນຮູບແບບທີ່ກະທັດຮັດ.</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">ສີ</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.shape.headline" approved="yes">
+        <source>Shape</source>
+        <target state="final">ຮູບຊົງ</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.withinHeadlines.headline" approved="yes">
+        <source>Usage within headings</source>
+        <target state="final">ການນຳໃຊ້ພາຍໃນຫົວຂໍ້</target>
+      </trans-unit>
+      <!-- Component: Breadcrumb -->
+      <trans-unit id="component.breadcrumb.headline" approved="yes">
+        <source>Breadcrumb</source>
+        <target state="final">ເສັ້ນທາງນຳທາງ</target>
+      </trans-unit>
+      <trans-unit id="component.breadcrumb.introtext" approved="yes">
+        <source>Navigation trail showing the current location in the backend hierarchy, including modules and pages.</source>
+        <target state="final">ແຖບນຳທາງທີ່ສະແດງຕຳແໜ່ງປັດຈຸບັນໃນລຳດັບຊັ້ນຂອງລະບົບຫຼັງບ້ານ ລວມມີໂມດູນ ແລະ ໜ້າຕ່າງໆ.</target>
+      </trans-unit>
+      <!-- Component: Button -->
+      <trans-unit id="component.button.headline" approved="yes">
+        <source>Buttons</source>
+        <target state="final">ປຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="component.button.introtext" approved="yes">
+        <source>Interactive elements for triggering actions, available in various colors, sizes, and states.</source>
+        <target state="final">ອົງປະກອບສຳລັບຕອບສະໜອງການຄລິກເພື່ອເຮັດວຽກໃດໜຶ່ງ ເຊິ່ງມີໃຫ້ເລືອກຫຼາຍສີ, ຂະໜາດ ແລະ ສະຖານະ.</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">ສີ</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.stateActive.headline" approved="yes">
+        <source>Active state</source>
+        <target state="final">ສະຖານະກຳລັງເຮັດວຽກ</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.stateDisabled.headline" approved="yes">
+        <source>Disabled state</source>
+        <target state="final">ສະຖານະປິດການໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.types.headline" approved="yes">
+        <source>Types</source>
+        <target state="final">ປະເພດ</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.withIcon.headline" approved="yes">
+        <source>Additional icon</source>
+        <target state="final">ໄອຄອນເພີ່ມເຕີມ</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">ຂະໜາດ</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.size.default.headline" approved="yes">
+        <source>Default size</source>
+        <target state="final">ຂະໜາດມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.size.small.headline" approved="yes">
+        <source>Small size</source>
+        <target state="final">ຂະໜາດນ້ອຍ</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.headline" approved="yes">
+        <source>Button groups</source>
+        <target state="final">ກຸ່ມປຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.basic.headline" approved="yes">
+        <source>Basic button group</source>
+        <target state="final">ກຸ່ມປຸ່ມພື້ນຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.toolbar.headline" approved="yes">
+        <source>Button toolbar</source>
+        <target state="final">ແຖບເຄື່ອງມືປຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.sizes.headline" approved="yes">
+        <source>Button group sizing</source>
+        <target state="final">ຂະໜາດກຸ່ມປຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.dropdown.headline" approved="yes">
+        <source>Button group with dropdown</source>
+        <target state="final">ກຸ່ມປຸ່ມພ້ອມລາຍການແບບເລື່ອນລົງ</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.vertical.headline" approved="yes">
+        <source>Vertical button group</source>
+        <target state="final">ກຸ່ມປຸ່ມແນວຕັ້ງ</target>
+      </trans-unit>
+      <!-- Component: Card -->
+      <trans-unit id="component.card.headline" approved="yes">
+        <source>Cards</source>
+        <target state="final">ກາດ (Cards)</target>
+      </trans-unit>
+      <trans-unit id="component.card.introtext" approved="yes">
+        <source>Cards can be displayed individually or in groups.</source>
+        <target state="final">ກາດສາມາດສະແດງຜົນແບບດ່ຽວ ຫຼື ແບບກຸ່ມກໍໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.alignment.headline" approved="yes">
+        <source>Alignment</source>
+        <target state="final">ການຈັດວາງຕຳແໜ່ງ</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.alignment.text" approved="yes">
+        <source><![CDATA[If you have multiple cards and each have a link or button, they may not align properly depending on the length of the previously placed headings or description text. To ensure they align regardless of previous content, place the link or button inside <code>div.card-footer</code> and not inside <code>div.card-body</code>. This way the links will always be aligned at the bottom of the card.]]></source>
+        <target state="final"><![CDATA[ຫາກທ່ານມີກາດຫຼາຍອັນ ແລະ ແຕ່ລະອັນມີລິ້ງ ຫຼື ປຸ່ມ, ພວກມັນອາດຈະຈັດວາງບໍ່ຊື່ກັນ ຂຶ້ນຢູ່ກັບຄວາມຍາວຂອງຫົວຂໍ້ ຫຼື ຄຳອະທິບາຍກ່ອນໜ້ານັ້ນ. ເພື່ອຮັບປະກັນວ່າພວກມັນຈະຊື່ກັນບໍ່ວ່າເນື້ອໃນຈະຍາວສ່ຳໃດ, ໃຫ້ວາງລິ້ງ ຫຼື ປຸ່ມໄວ້ໃນ <code>div.card-footer</code> ແທນທີ່ຈະເປັນ <code>div.card-body</code>. ດ້ວຍວິທີນີ້ ລິ້ງຈະຖືກຈັດວາງໄວ້ຢູ່ສ່ວນລຸ່ມຂອງກາດສະເໝີ.]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">ສີ</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.color.text" approved="yes">
+        <source><![CDATA[It is possible to color cards. However, this option is rarely used - so please use this option sparingly. All available options are listed below. If needed assign one of the following classes to the <code>div.card</code>.<br> If you want to display the card in its default state, it is not necessary to add <code>.card-default</code> to the <code>div.card</code> - just omit the extra class.]]></source>
+        <target state="final"><![CDATA[ທ່ານສາມາດກຳນົດສີໃຫ້ກາດໄດ້. ແນວໃດກໍຕາມ, ຕົວເລືອກນີ້ບໍ່ຄ່ອຍໄດ້ໃຊ້ປານໃດ - ດັ່ງນັ້ນກະລຸນາໃຊ້ເມື່ອຈຳເປັນແທ້ໆ. ຕົວເລືອກທັງໝົດທີ່ມີແມ່ນລາຍຊື່ຢູ່ລຸ່ມນີ້. ຫາກຕ້ອງການ ໃຫ້ກຳນົດຄລາສ (class) ໃດໜຶ່ງຕໍ່ໄປນີ້ໃຫ້ກັບ <code>div.card</code>.<br> ຫາກທ່ານຕ້ອງການສະແດງກາດໃນສະຖານະມາດຕະຖານ, ບໍ່ຈຳເປັນຕ້ອງໃສ່ <code>.card-default</code> - ພຽງແຕ່ປະຄລາສນັ້ນໄວ້ກໍພໍ.]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.default.text" approved="yes">
+        <source>This is an example of a single card with its possible content. Unless further defined via CSS, a single card takes on the full width of the place it has been put into.</source>
+        <target state="final">ນີ້ແມ່ນຕົວຢ່າງຂອງກາດດ່ຽວພ້ອມເນື້ອໃນ. ຫາກບໍ່ໄດ້ກຳນົດຜ່ານ CSS ເພີ່ມເຕີມ, ກາດດ່ຽວຈະມີຄວາມກວ້າງເຕັມພື້ນທີ່ທີ່ມັນຖືກວາງໄວ້.</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.extensionManangerModule.headline" approved="yes">
+        <source>"Extension Manager" module</source>
+        <target state="final">ໂມດູນ "ຕົວຈັດການສ່ວນເສີມ" (Extension Manager)</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.extensionManangerModule.text" approved="yes">
+        <source>In the extension manager it is possible to get pre-configured distributions. For this view, the cards have been enhanced with an image and some badges.</source>
+        <target state="final">ໃນຕົວຈັດການສ່ວນເສີມ, ທ່ານສາມາດເລືອກໃຊ້ຊຸດຕິດຕັ້ງທີ່ກຳນົດຄ່າໄວ້ລ່ວງໜ້າໄດ້. ສຳລັບມຸມມອງນີ້, ກາດໄດ້ຖືກປັບປຸງໂດຍການເພີ່ມຮູບພາບ ແລະ ປ້າຍສັນຍະລັກບາງຢ່າງ.</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.formFieldsInCards.headline" approved="yes">
+        <source>Form fields in cards</source>
+        <target state="final">ຊ່ອງປ້ອນຂໍ້ມູນຟອມໃນກາດ</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.formFieldsInCards.text" approved="yes">
+        <source><![CDATA[It is also possible to display forms and form fields in cards. This is done, for example, in the "Upload Extension" section of the <a href="%1s">"Extensions" module</a>, in the "Feature Toggles" overlay in the <a href="%2s">"Settings" module</a> and in the "Raw search" submodule of the <a href="%3s">"Database" module</a>.]]></source>
+        <target state="final"><![CDATA[ນອກຈາກນີ້ ຍັງສາມາດສະແດງຟອມ ແລະ ຊ່ອງປ້ອນຂໍ້ມູນໃນກາດໄດ້. ຕົວຢ່າງເຊັ່ນ ໃນສ່ວນ "Upload Extension" ຂອງ <a href="%1s">ໂມດູນ "Extensions"</a>, ໃນແຖບ "Feature Toggles" ຂອງ <a href="%2s">ໂມດູນ "Settings"</a> ແລະ ໃນໂມດູນຍ່ອຍ "Raw search" ຂອງ <a href="%3s">ໂມດູນ "Database"</a>.]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.listsInCards.headline" approved="yes">
+        <source>Lists in cards</source>
+        <target state="final">ລາຍການໃນກາດ</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.multipleCards.headline" approved="yes">
+        <source>Multiple cards</source>
+        <target state="final">ກາດແບບຫຼາຍອັນ</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.multipleCards.text" approved="yes">
+        <source><![CDATA[To display multiple cards, group them by wrapping them with <code>div.card-container</code>.]]></source>
+        <target state="final"><![CDATA[ຫາກຕ້ອງການສະແດງກາດຫຼາຍອັນ, ໃຫ້ຈັດກຸ່ມພວກມັນໂດຍການຫຸ້ມດ້ວຍ <code>div.card-container</code>.]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.rowsInCards.headline" approved="yes">
+        <source>Rows in cards</source>
+        <target state="final">ແຖວໃນກາດ</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.rowsInCards.text" approved="yes">
+        <source>On top of the element information overlay, rows are included within the card component.</source>
+        <target state="final">ຢູ່ເທິງສ່ວນສະແດງຂໍ້ມູນອົງປະກອບ, ຈະມີແຖບແຖວລວມຢູ່ໃນອົງປະກອບກາດ.</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">ຂະໜາດ</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.size.text" approved="yes">
+        <source><![CDATA[To give the card the desired size, assign one of the following classes to the <code>div.card</code>. If only a single card is used, it must be wrapped with <code>div.card-container</code> as with multiple cards.]]></source>
+        <target state="final"><![CDATA[ເພື່ອໃຫ້ກາດມີຂະໜາດຕາມທີ່ຕ້ອງການ, ໃຫ້ກຳນົດຄລາສໃດໜຶ່ງຕໍ່ໄປນີ້ໃຫ້ກັບ <code>div.card</code>. ຫາກໃຊ້ກາດພຽງອັນດຽວ, ມັນຈະຕ້ອງຖືກຫຸ້ມດ້ວຍ <code>div.card-container</code> ຄືກັນກັບການໃຊ້ກາດຫຼາຍອັນ.]]></target>
+      </trans-unit>
+      <!-- Component: Checkbox -->
+      <trans-unit id="component.checkbox.headline" approved="yes">
+        <source>Checkboxes</source>
+        <target state="final">ຊ່ອງໝາຍເລືອກ (Checkboxes)</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.introtext" approved="yes">
+        <source>Form controls for selecting one or more options, including standard checkboxes, toggles, and switches.</source>
+        <target state="final">ຕົວຄວບຄຸມຟອມສຳລັບເລືອກໜຶ່ງ ຫຼື ຫຼາຍຕົວເລືອກ ລວມມີ ຊ່ອງໝາຍເລືອກມາດຕະຖານ, ປຸ່ມສະຫຼັບ ແລະ ສະວິດ.</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.card.headline" approved="yes">
+        <source>Card-Layout</source>
+        <target state="final">ຮູບແບບກາດ</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.checkBoxToggleButton.headline" approved="yes">
+        <source>Checkbox toggle button</source>
+        <target state="final">ປຸ່ມໝາຍເລືອກແບບສະຫຼັບ</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.iconToggle.headline" approved="yes">
+        <source>Icon Toggle</source>
+        <target state="final">ປຸ່ມສະຫຼັບແບບໄອຄອນ</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.labeledToggle.headline" approved="yes">
+        <source>Labeled Toggle</source>
+        <target state="final">ປຸ່ມສະຫຼັບແບບມີປ້າຍກຳກັບ</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.switch.headline" approved="yes">
+        <source>Switch</source>
+        <target state="final">ສະວິດ</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.toggle.headline" approved="yes">
+        <source>Toggle</source>
+        <target state="final">ປຸ່ມສະຫຼັບ (Toggle)</target>
+      </trans-unit>
+      <!-- Component: Combobox -->
+      <trans-unit id="component.combobox.headline" approved="yes">
+        <source>Comboboxes</source>
+        <target state="final">ກ່ອງລາຍການແບບເລືອກ ແລະ ປ້ອນຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.introtext" approved="yes">
+        <source>Input fields with dropdown suggestions for selecting or entering values, combining text input with selection capabilities.</source>
+        <target state="final">ຊ່ອງປ້ອນຂໍ້ມູນທີ່ມີລາຍການແນະນຳໃຫ້ເລືອກ ຫຼື ສາມາດປ້ອນຄ່າເອງໄດ້ ໂດຍການລວມເອົາການພິມຂໍ້ຄວາມ ແລະ ການເລືອກເຂົ້າກັນ.</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.placeholder.headline" approved="yes">
+        <source>Placeholder</source>
+        <target state="final">ຂໍ້ຄວາມແນະນຳໃນຊ່ອງປ້ອນ</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.disabled.headline" approved="yes">
+        <source>Disabled</source>
+        <target state="final">ປິດການໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.readonly.headline" approved="yes">
+        <source>Readonly</source>
+        <target state="final">ອ່ານໄດ້ຢ່າງດຽວ</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.additionalText.headline" approved="yes">
+        <source>Additional text</source>
+        <target state="final">ຂໍ້ຄວາມເພີ່ມເຕີມ</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">ສະຖານະ</target>
+      </trans-unit>
+      <!-- Component: Dropdown -->
+      <trans-unit id="component.dropdown.headline" approved="yes">
+        <source>Dropdown</source>
+        <target state="final">ລາຍການເລືອກແບບດຶງລົງ</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.introtext" approved="yes">
+        <source>Toggleable overlays for displaying lists, menus, and contextual actions in a compact dropdown format.</source>
+        <target state="final">ແຖບສະແດງຜົນທັບຊ້ອນທີ່ສາມາດເປີດ-ປິດໄດ້ ສຳລັບສະແດງລາຍການ, ເມນູ ແລະ ຄຳສັ່ງຕ່າງໆ ໃນຮູບແບບດຶງລົງທີ່ກະທັດຮັດ.</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.toggles.headline" approved="yes">
+        <source>Toggles</source>
+        <target state="final">ປຸ່ມສະຫຼັບ</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.basic.headline" approved="yes">
+        <source>Basic</source>
+        <target state="final">ຂັ້ນພື້ນຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.states.headline" approved="yes">
+        <source>States</source>
+        <target state="final">ສະຖານະ</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.header.headline" approved="yes">
+        <source>Header</source>
+        <target state="final">ສ່ວນຫົວ</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.advancedbuttons.headline" approved="yes">
+        <source>Advanced Buttons</source>
+        <target state="final">ປຸ່ມຂັ້ນສູງ</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.text.headline" approved="yes">
+        <source>Text</source>
+        <target state="final">ຂໍ້ຄວາມ</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.rows.headline" approved="yes">
+        <source>Rows</source>
+        <target state="final">ແຖວ</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.divider.headline" approved="yes">
+        <source>Divider</source>
+        <target state="final">ເສັ້ນແບ່ງ</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.table.headline" approved="yes">
+        <source>Table</source>
+        <target state="final">ຕາຕະລາງ</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.listitemswithactions.headline" approved="yes">
+        <source>List items with actions</source>
+        <target state="final">ລາຍການພ້ອມຄຳສັ່ງ</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.positions.headline" approved="yes">
+        <source>Positions</source>
+        <target state="final">ຕຳແໜ່ງ</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.nestedsubmenu.headline" approved="yes">
+        <source>Nested Submenu</source>
+        <target state="final">ເມນູຍ່ອຍທີ່ຊ້ອນກັນ</target>
+      </trans-unit>
+      <!-- Component: Developer Tools -->
+      <trans-unit id="component.developerTools.headline" approved="yes">
+        <source>Developer Tools</source>
+        <target state="final">ເຄື່ອງມືນັກພັດທະນາ</target>
+      </trans-unit>
+      <trans-unit id="component.developerTools.introtext" approved="yes">
+        <source>Specialized components and utilities designed for development, debugging, and testing purposes.</source>
+        <target state="final">ອົງປະກອບພິເສດ ແລະ ເຄື່ອງມືອຳນວຍຄວາມສະດວກທີ່ຖືກອອກແບບມາເພື່ອການພັດທະນາ, ການແກ້ໄຂຈຸດບົກຜ່ອງ ແລະ ການທົດສອບ.</target>
+      </trans-unit>
+      <trans-unit id="component.developerTools.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <!-- Component: Exception -->
+      <!-- Component: Flash message -->
+      <trans-unit id="component.flashMessage.headline" approved="yes">
+        <source>Flash messages</source>
+        <target state="final">ຂໍ້ຄວາມແຈ້ງເຕືອນຊົ່ວຄາວ</target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.introtext" approved="yes">
+        <source>Temporary notifications for displaying feedback about user actions and system events in various severity levels.</source>
+        <target state="final">ການແຈ້ງເຕືອນຊົ່ວຄາວເພື່ອສະແດງການຕອບສະໜອງຕໍ່ການກະທຳຂອງຜູ້ໃຊ້ ແລະ ເຫດການຂອງລະບົບ ໃນລະດັບຄວາມສຳຄັນຕ່າງໆ.</target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">ສີ</target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.section.color.text" approved="yes">
+        <source><![CDATA[The color is decided by setting the corresponding <code>TYPO3\CMS\Core\Type\ContextualFeedbackSeverity</code>. The following options are available:]]></source>
+        <target state="final"><![CDATA[ສີຈະຖືກກຳນົດໂດຍການຕັ້ງຄ່າ <code>TYPO3\CMS\Core\Type\ContextualFeedbackSeverity</code> ທີ່ກ່ຽວຂ້ອງ. ຕົວເລືອກທີ່ມີແມ່ນດັ່ງນີ້:]]></target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <!-- Component: Form -->
+      <trans-unit id="component.form.headline" approved="yes">
+        <source>Form</source>
+        <target state="final">ຟອມ</target>
+      </trans-unit>
+      <trans-unit id="component.form.introtext" approved="yes">
+        <source>Complete form layouts combining various input fields, controls, and validation patterns.</source>
+        <target state="final">ຮູບແບບຟອມທີ່ສົມບູນ ເຊິ່ງລວມເອົາຊ່ອງປ້ອນຂໍ້ມູນ, ຕົວຄວບຄຸມ ແລະ ຮູບແບບການກວດສອບຄວາມຖືກຕ້ອງຕ່າງໆເຂົ້າກັນ.</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.allFields.headline" approved="yes">
+        <source>Form with all fields and labels</source>
+        <target state="final">ຟອມທີ່ມີຊ່ອງປ້ອນຂໍ້ມູນ ແລະ ປ້າຍກຳກັບທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.allFieldsRtlDirection.headline" approved="yes">
+        <source>Form with all fields and labels (right-to-left direction)</source>
+        <target state="final">ຟອມທີ່ມີຊ່ອງປ້ອນຂໍ້ມູນ ແລະ ປ້າຍກຳກັບທັງໝົດ (ທິດທາງຂວາໄປຊ້າຍ)</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.formFieldsInRows.headline" approved="yes">
+        <source>Form fields in rows</source>
+        <target state="final">ຊ່ອງປ້ອນຂໍ້ມູນຟອມແບບລຽງເປັນແຖວ</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.loginFormExample.headline" approved="yes">
+        <source>Login form example</source>
+        <target state="final">ຕົວຢ່າງຟອມເຂົ້າສູ່ລະບົບ</target>
+      </trans-unit>
+      <!-- Component: Infobox -->
+      <trans-unit id="component.infobox.headline" approved="yes">
+        <source>Infobox</source>
+        <target state="final">ກ່ອງຂໍ້ມູນ (Infobox)</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.introtext" approved="yes">
+        <source>This is a fluid based widget for the backend that can be inserted as view helper.</source>
+        <target state="final">ນີ້ແມ່ນວິດເຈັດ (widget) ແບບ Fluid ສຳລັບລະບົບຫຼັງບ້ານ ເຊິ່ງສາມາດໃສ່ເປັນ view helper ໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">ສີ</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.customIcon.headline" approved="yes">
+        <source>Custom icon</source>
+        <target state="final">ໄອຄອນກຳນົດເອງ</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.customIcon.text" approved="yes">
+        <source><![CDATA[It is also possible to use a custom icon. Just pass the icon identifier as <code>iconName</code> to the view helper. The identifier must be registered in your TYPO3 installation.]]></source>
+        <target state="final"><![CDATA[ທ່ານສາມາດໃຊ້ໄອຄອນທີ່ກຳນົດເອງໄດ້. ພຽງແຕ່ສົ່ງຊື່ໄອຄອນ (icon identifier) ເປັນ <code>iconName</code> ໃຫ້ກັບ view helper. ຊື່ໄອຄອນດັ່ງກ່າວຈະຕ້ອງຖືກລົງທະບຽນໄວ້ໃນ TYPO3 ຂອງທ່ານແລ້ວ.]]></target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.withoutIcon.headline" approved="yes">
+        <source>Without icon</source>
+        <target state="final">ແບບບໍ່ມີໄອຄອນ</target>
+      </trans-unit>
+      <!-- Component: Input -->
+      <trans-unit id="component.input.headline" approved="yes">
+        <source>Input</source>
+        <target state="final">ຊ່ອງປ້ອນຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="component.input.introtext" approved="yes">
+        <source>Text input fields supporting various types, states, and sizes for single-line data entry.</source>
+        <target state="final">ຊ່ອງປ້ອນຂໍ້ຄວາມທີ່ຮອງຮັບຫຼາຍປະເພດ, ສະຖານະ ແລະ ຂະໜາດ ສຳລັບການປ້ອນຂໍ້ມູນແບບແຖວດຽວ.</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.disabled.headline" approved="yes">
+        <source>Disabled</source>
+        <target state="final">ປິດການໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.fileUpload.headline" approved="yes">
+        <source>File upload</source>
+        <target state="final">ອັບໂຫຼດໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.email.headline" approved="yes">
+        <source>Email</source>
+        <target state="final">ອີເມວ</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.placeholder.headline" approved="yes">
+        <source>Placeholder</source>
+        <target state="final">ຂໍ້ຄວາມແນະນຳໃນຊ່ອງປ້ອນ</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.additionalText.headline" approved="yes">
+        <source>Additional text</source>
+        <target state="final">ຂໍ້ຄວາມເພີ່ມເຕີມ</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.password.headline" approved="yes">
+        <source>Password</source>
+        <target state="final">ລະຫັດຜ່ານ</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.search.headline" approved="yes">
+        <source>Search</source>
+        <target state="final">ຄົ້ນຫາ</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">ສະຖານະ</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">ຂະໜາດ</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.size.default.headline" approved="yes">
+        <source>Default size</source>
+        <target state="final">ຂະໜາດມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.size.small.headline" approved="yes">
+        <source>Small size</source>
+        <target state="final">ຂະໜາດນ້ອຍ</target>
+      </trans-unit>
+      <!-- Component: List groups -->
+      <trans-unit id="component.listGroups.headline" approved="yes">
+        <source>List groups</source>
+        <target state="final">ກຸ່ມລາຍການ</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.introtext" approved="yes">
+        <source>Lists for displaying a series of content.</source>
+        <target state="final">ລາຍການສຳລັບສະແດງເນື້ອໃນແບບຕໍ່ເນື່ອງ.</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.borderless.headline" approved="yes">
+        <source>Borderless</source>
+        <target state="final">ແບບບໍ່ມີຂອບ</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.borderless.text" approved="yes">
+        <source><![CDATA[Add <code>.list-group-flush</code> to remove the surrounding border and display the list group borderless in a parent container (e.g., cards)]]></source>
+        <target state="final"><![CDATA[ເພີ່ມ <code>.list-group-flush</code> ເພື່ອລຶບຂອບທີ່ຢູ່ອ້ອມຂ້າງອອກ ແລະ ສະແດງກຸ່ມລາຍການແບບບໍ່ມີຂອບໃນກ່ອງບັນຈຸຫຼັກ (ເຊັ່ນ ກາດ)]]></target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.links.headline" approved="yes">
+        <source>Links and buttons</source>
+        <target state="final">ລິ້ງ ແລະ ປຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">ສະຖານະ</target>
+      </trans-unit>
+      <!-- Component: Modal -->
+      <trans-unit id="component.modal.headline" approved="yes">
+        <source>Modal</source>
+        <target state="final">ໂມດໍ (Modal)</target>
+      </trans-unit>
+      <trans-unit id="component.modal.introtext" approved="yes">
+        <source>Modals on buttons can be triggered using the t3js-modal-trigger class. There are various data attributes to customize text and behavior. Not all of them are shown here.</source>
+        <target state="final">ໂມດໍເທິງປຸ່ມສາມາດຖືກເອີ້ນໃຊ້ໂດຍຄລາສ t3js-modal-trigger. ມີແອດທຣິບິວ (data attributes) ຫຼາຍຢ່າງສຳລັບປັບແຕ່ງຂໍ້ຄວາມ ແລະ ພຶດຕິກຳ. ຂໍ້ມູນບາງສ່ວນເທົ່ານັ້ນທີ່ສະແດງຢູ່ທີ່ນີ້.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.customTitleContent.headline" approved="yes">
+        <source>Custom title and content within the modal</source>
+        <target state="final">ຫົວຂໍ້ ແລະ ເນື້ອໃນທີ່ກຳນົດເອງພາຍໃນໂມດໍ</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.severity.headline" approved="yes">
+        <source>Severity</source>
+        <target state="final">ລະດັບຄວາມສຳຄັນ</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.severity.description" approved="yes">
+        <source>Set the visual style of the modal using severity levels to indicate the nature of the content or action.</source>
+        <target state="final">ກຳນົດຮູບແບບຂອງໂມດໍໂດຍໃຊ້ລະດັບຄວາມສຳຄັນ ເພື່ອບົ່ງບອກລັກສະນະຂອງເນື້ອໃນ ຫຼື ຄຳສັ່ງ.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">ຂະໜາດ</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.size.description" approved="yes">
+        <source>Control the width of the modal. The default size grows based on content, while other sizes have fixed widths.</source>
+        <target state="final">ຄວບຄຸມຄວາມກວ້າງຂອງໂມດໍ. ຂະໜາດມາດຕະຖານຈະຂະຫຍາຍຕາມເນື້ອໃນ, ໃນຂະນະທີ່ຂະໜາດອື່ນໆຈະມີຄວາມກວ້າງທີ່ຄົງທີ່.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.sizeConfig.headline" approved="yes">
+        <source>Size configuration</source>
+        <target state="final">ການຕັ້ງຄ່າຂະໜາດ</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.sizeConfig.description" approved="yes">
+        <source>Compose width and height independently using size tokens, override only one axis, or define breakpoint-specific overrides for responsive behaviour.</source>
+        <target state="final">ປະກອບຄວາມກວ້າງ ແລະ ຄວາມສູງແຍກກັນໂດຍໃຊ້ size tokens, ແທນທີ່ພຽງແກນດຽວ, ຫຼື ກຳນົດການແທນທີ່ສະເພາະຈຸດຢຸດ (breakpoint) ສຳລັບການສະແດງຜົນແບບຕອບສະໜອງ (responsive).</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.sizeConfig.compose" approved="yes">
+        <source>Compose width and height</source>
+        <target state="final">ປະກອບຄວາມກວ້າງ ແລະ ຄວາມສູງ</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.sizeConfig.axis" approved="yes">
+        <source>Single-axis override</source>
+        <target state="final">ການແທນທີ່ແກນດຽວ</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.position.headline" approved="yes">
+        <source>Position</source>
+        <target state="final">ຕຳແໜ່ງ</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.position.description" approved="yes">
+        <source>Position the modal at different locations on the screen. Top-positioned modals slide down from the top, end-positioned modals slide in from the right. Sheet-positioned modals can also be resized, see the example below.</source>
+        <target state="final">ຈັດວາງຕຳແໜ່ງໂມດໍ (modal) ໄວ້ໃນຈຸດຕ່າງໆຂອງໜ້າຈໍ. ໂມດໍທີ່ວາງຕຳແໜ່ງໄວ້ດ້ານເທິງຈະເລື່ອນລົງມາຈາກທາງເທິງ, ໂມດໍທີ່ວາງຕຳແໜ່ງໄວ້ສ່ວນທ້າຍຈະເລື່ອນເຂົ້າມາຈາກທາງຂວາ. ໂມດໍແບບແຜ່ນ (Sheet) ຍັງສາມາດປ່ຽນຂະໜາດໄດ້, ເບິ່ງຕົວຢ່າງດ້ານລຸ່ມ.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.resizableSheet.headline" approved="yes">
+        <source>Resizable sheet</source>
+        <target state="final">ແຜ່ນທີ່ສາມາດປ່ຽນຂະໜາດໄດ້</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.resizableSheet.description" approved="yes">
+        <source>Sheet-positioned modals show a drag handle on their free edge. The width is stored per "resizeIdentifier" in the user's configuration, so it is remembered the next time a modal with the same identifier is opened.</source>
+        <target state="final">ໂມດໍແບບແຜ່ນຈະສະແດງປຸ່ມສຳລັບລາກຢູ່ຂອບທີ່ຫວ່າງ. ຄວາມກວ້າງຈະຖືກບັນທຶກໄວ້ຕາມ 'resizeIdentifier' ໃນການຕັ້ງຄ່າຂອງຜູ້ໃຊ້, ເພື່ອໃຫ້ລະບົບຈື່ຈຳໃນຄັ້ງຕໍ່ໄປເມື່ອເປີດໂມດໍທີ່ມີຕົວລະບຸອັນດຽວກັນ.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.resizableSheet.openModal" approved="yes">
+        <source>Open resizable sheet</source>
+        <target state="final">ເປີດແຜ່ນທີ່ສາມາດປ່ຽນຂະໜາດໄດ້</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.headline" approved="yes">
+        <source>Playground</source>
+        <target state="final">ພື້ນທີ່ທົດລອງ</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.description" approved="yes">
+        <source>Interactively test different modal configurations by selecting options below.</source>
+        <target state="final">ທົດສອບການຕັ້ງຄ່າໂມດໍແບບຕ່າງໆ ໂດຍການເລືອກຕົວເລືອກລຸ່ມນີ້.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.position" approved="yes">
+        <source>Position</source>
+        <target state="final">ຕຳແໜ່ງ</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.size" approved="yes">
+        <source>Size</source>
+        <target state="final">ຂະໜາດ</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.severity" approved="yes">
+        <source>Severity</source>
+        <target state="final">ລະດັບຄວາມສຳຄັນ</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.hideHeader" approved="yes">
+        <source>Hide header</source>
+        <target state="final">ຊ່ອນສ່ວນຫົວ</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.staticBackdrop" approved="yes">
+        <source>Static backdrop</source>
+        <target state="final">ພື້ນຫຼັງແບບຄົງທີ່</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.openModal" approved="yes">
+        <source>Open modal</source>
+        <target state="final">ເປີດໂມດໍ</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">ແມ່ນ</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.no" approved="yes">
+        <source>No</source>
+        <target state="final">ບໍ່</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.hideHeader.headline" approved="yes">
+        <source>Hide header</source>
+        <target state="final">ຊ່ອນສ່ວນຫົວ</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.hideHeader.description" approved="yes">
+        <source>Hide the modal header for a cleaner look. The title is still used for accessibility purposes.</source>
+        <target state="final">ຊ່ອນສ່ວນຫົວຂອງໂມດໍເພື່ອໃຫ້ເບິ່ງສະອາດຕາຂຶ້ນ. ຫົວຂໍ້ຍັງຄົງຖືກໃຊ້ເພື່ອຈຸດປະສົງໃນການເຂົ້າເຖິງຂໍ້ມູນ (accessibility).</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.staticBackdrop.headline" approved="yes">
+        <source>Static backdrop</source>
+        <target state="final">ພື້ນຫຼັງແບບຄົງທີ່</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.staticBackdrop.description" approved="yes">
+        <source>Prevent the modal from closing when clicking outside of it. Users must use the buttons or close icon to dismiss.</source>
+        <target state="final">ປ້ອງກັນບໍ່ໃຫ້ໂມດໍປິດລົງເມື່ອຄລິກໃສ່ພື້ນທີ່ຂ້າງນອກ. ຜູ້ໃຊ້ຈະຕ້ອງໃຊ້ປຸ່ມ ຫຼື ໄອຄອນປິດ ເພື່ອອອກຈາກໂມດໍ.</target>
+      </trans-unit>
+      <!-- Component: Navs -->
+      <trans-unit id="component.navs.headline" approved="yes">
+        <source>Navs</source>
+        <target state="final">ແຖບນຳທາງ</target>
+      </trans-unit>
+      <trans-unit id="component.navs.introtext" approved="yes">
+        <source>Navigation components including tabs, pills, and flat navigation styles for organizing content.</source>
+        <target state="final">ອົງປະກອບນຳທາງ ລວມມີຮູບແບບແຖບ (tabs), ຮູບແບບເມັດຢາ (pills) ແລະ ແຖບນຳທາງແບບຮາບພຽງ ສຳລັບຈັດລະບຽບເນື້ອໃນ.</target>
+      </trans-unit>
+      <trans-unit id="component.navs.basic.headline" approved="yes">
+        <source>Basic</source>
+        <target state="final">ຂັ້ນພື້ນຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.navs.flat.headline" approved="yes">
+        <source>Flat</source>
+        <target state="final">ແບບຮາບພຽງ</target>
+      </trans-unit>
+      <trans-unit id="component.navs.pills.headline" approved="yes">
+        <source>Pills</source>
+        <target state="final">ແບບເມັດຢາ (Pills)</target>
+      </trans-unit>
+      <trans-unit id="component.navs.tabs.headline" approved="yes">
+        <source>Tabs</source>
+        <target state="final">ແບບແຖບ (Tabs)</target>
+      </trans-unit>
+      <!-- Component: Notification -->
+      <trans-unit id="component.notification.headline" approved="yes">
+        <source>Notifications</source>
+        <target state="final">ການແຈ້ງເຕືອນ</target>
+      </trans-unit>
+      <trans-unit id="component.notification.introtext" approved="yes">
+        <source>Temporary messages for informing users about events with optional action buttons and different severity levels. Error notifications persist until dismissed.</source>
+        <target state="final">ຂໍ້ຄວາມແຈ້ງເຕືອນຊົ່ວຄາວເພື່ອບອກຜູ້ໃຊ້ກ່ຽວກັບເຫດການຕ່າງໆ ພ້ອມປຸ່ມຄຳສັ່ງ ແລະ ລະດັບຄວາມສຳຄັນທີ່ຕ່າງກັນ. ການແຈ້ງເຕືອນຂໍ້ຜິດພາດຈະຄ້າງຢູ່ຈົນກວ່າຈະຖືກປິດອອກ.</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.headline" approved="yes">
+        <source>Action Buttons</source>
+        <target state="final">ປຸ່ມຄຳສັ່ງ</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.text" approved="yes">
+        <source>Notification can be enriched with action buttons to trigger two kinds of actions: immediate action and deferred actions.</source>
+        <target state="final">ການແຈ້ງເຕືອນສາມາດເພີ່ມປຸ່ມຄຳສັ່ງເພື່ອເອີ້ນໃຊ້ວຽກໄດ້ສອງແບບຄື: ຄຳສັ່ງທັນທີ (immediate action) ແລະ ຄຳສັ່ງແບບມີກຳນົດເວລາ (deferred actions).</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.immediateAction.headline" approved="yes">
+        <source>Immediate Action</source>
+        <target state="final">ຄຳສັ່ງທັນທີ</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.immediateAction.text" approved="yes">
+        <source>Immediate actions are executed directly when the action button is triggered. The notification will dismiss immediately. This action type is suitable for action that don't need any processing time, e.g. calling a backend module.</source>
+        <target state="final">ຄຳສັ່ງທັນທີຈະຖືກເຮັດວຽກທັນທີເມື່ອມີການກົດປຸ່ມ. ການແຈ້ງເຕືອນຈະຫາຍໄປທັນທີ. ຄຳສັ່ງປະເພດນີ້ເໝາະສຳລັບວຽກທີ່ບໍ່ຕ້ອງໃຊ້ເວລາປະມວນຜົນ ເຊັ່ນ ການເອີ້ນໃຊ້ໂມດູນຫຼັງບ້ານ.</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.deferredAction.headline" approved="yes">
+        <source>Deferred Action</source>
+        <target state="final">ຄຳສັ່ງແບບມີກຳນົດເວລາ</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.deferredAction.text" approved="yes">
+        <source>Deferred actions are suitable for actions that need a period of time until they finish, e.g. AJAX calls. The notifications will close as soon the action has ended successfully. When invoked, the button will show a spinner icon to indicate some activity.</source>
+        <target state="final">ຄຳສັ່ງແບບມີກຳນົດເວລາ ເໝາະສຳລັບວຽກທີ່ຕ້ອງໃຊ້ເວລາໄລຍະໜຶ່ງຈົນກວ່າຈະສຳເລັດ ເຊັ່ນ ການເອີ້ນໃຊ້ AJAX. ການແຈ້ງເຕືອນຈະປິດລົງເມື່ອວຽກນັ້ນສຳເລັດ. ເມື່ອຖືກເອີ້ນໃຊ້, ປຸ່ມຈະສະແດງໄອຄອນໝູນເພື່ອບົ່ງບອກວ່າກຳລັງເຮັດວຽກຢູ່.</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.notification.implementation.html" approved="yes">
+        <source>Implementation via HTML:</source>
+        <target state="final">ການນຳໃຊ້ຜ່ານ HTML:</target>
+      </trans-unit>
+      <trans-unit id="component.notification.implementation.script" approved="yes">
+        <source>Implementation via script:</source>
+        <target state="final">ການນຳໃຊ້ຜ່ານ Script:</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.severity.headline" approved="yes">
+        <source>Severity</source>
+        <target state="final">ລະດັບຄວາມສຳຄັນ</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.severity.text" approved="yes">
+        <source>All notifications disappear after 5 seconds by default, except for the error message, which will remain stuck unless reconfigured.</source>
+        <target state="final">ການແຈ້ງເຕືອນທັງໝົດຈະຫາຍໄປຫຼັງຈາກ 5 ວິນາທີໂດຍອັດຕະໂນມັດ, ຍົກເວັ້ນຂໍ້ຄວາມຜິດພາດ ເຊິ່ງຈະຄ້າງຢູ່ຈົນກວ່າຈະມີການຕັ້ງຄ່າໃໝ່.</target>
+      </trans-unit>
+      <!-- Component: Pagination -->
+      <trans-unit id="component.pagination.headline" approved="yes">
+        <source>Pagination</source>
+        <target state="final">ການແບ່ງໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="component.pagination.introtext" approved="yes">
+        <source>Controls for navigating through multi-page content and data sets with page numbers and navigation arrows.</source>
+        <target state="final">ຕົວຄວບຄຸມສຳລັບການນຳທາງຜ່ານເນື້ອໃນທີ່ມີຫຼາຍໜ້າ ແລະ ຊຸດຂໍ້ມູນ ໂດຍໃຊ້ເລກໜ້າ ແລະ ລູກສອນນຳທາງ.</target>
+      </trans-unit>
+      <trans-unit id="component.pagination.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <!-- Component: Panels -->
+      <trans-unit id="component.panels.headline" approved="yes">
+        <source>Panels</source>
+        <target state="final">ແຜງຄວບຄຸມ (Panels)</target>
+      </trans-unit>
+      <trans-unit id="component.panels.introtext" approved="yes">
+        <source>Collapsible content containers for organizing information into expandable and collapsible sections.</source>
+        <target state="final">ກ່ອງບັນຈຸເນື້ອໃນທີ່ພັບໄດ້ ສຳລັບຈັດລະບຽບຂໍ້ມູນເປັນສ່ວນໆ ທີ່ສາມາດຂະຫຍາຍ ແລະ ຫຍໍ້ໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="component.panels.collapsible.headline" approved="yes">
+        <source>Collapsible</source>
+        <target state="final">ສາມາດພັບໄດ້</target>
+      </trans-unit>
+      <trans-unit id="component.panels.nesting.headline" approved="yes">
+        <source>Nesting</source>
+        <target state="final">ການຊ້ອນກັນ</target>
+      </trans-unit>
+      <trans-unit id="component.panels.variants.headline" approved="yes">
+        <source>Variants</source>
+        <target state="final">ຮູບແບບຕ່າງໆ</target>
+      </trans-unit>
+      <trans-unit id="component.panels.loader.headline" approved="yes">
+        <source>Loader</source>
+        <target state="final">ຕົວໂຫຼດ</target>
+      </trans-unit>
+      <trans-unit id="component.panels.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">ຂະໜາດ</target>
+      </trans-unit>
+      <trans-unit id="component.panels.progress.headline" approved="yes">
+        <source>Progress</source>
+        <target state="final">ຄວາມຄືບໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="component.panels.progressComponent.headline" approved="yes">
+        <source>Progress Component</source>
+        <target state="final">ອົງປະກອບຄວາມຄືບໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="component.panels.header.headline" approved="yes">
+        <source>Header</source>
+        <target state="final">ສ່ວນຫົວ</target>
+      </trans-unit>
+      <trans-unit id="component.panels.headerRecord.headline" approved="yes">
+        <source>Header with icon and actions</source>
+        <target state="final">ສ່ວນຫົວພ້ອມກັບໄອຄອນ ແລະ ການດຳເນີນການ</target>
+      </trans-unit>
+      <trans-unit id="component.panels.headerFile.headline" approved="yes">
+        <source>Header with thumbnail and actions</source>
+        <target state="final">ສ່ວນຫົວພ້ອມກັບຮູບຕົວຢ່າງ ແລະ ການດຳເນີນການ</target>
+      </trans-unit>
+      <trans-unit id="component.panels.headerSection.headline" approved="yes">
+        <source>Header with section controls</source>
+        <target state="final">ສ່ວນຫົວພ້ອມກັບຕົວຄວບຄຸມພາກສ່ວນ</target>
+      </trans-unit>
+      <trans-unit id="component.panels.body.headline" approved="yes">
+        <source>Body</source>
+        <target state="final">ສ່ວນເນື້ອໃນ</target>
+      </trans-unit>
+      <trans-unit id="component.panels.footer.headline" approved="yes">
+        <source>Footer</source>
+        <target state="final">ສ່ວນທ້າຍ</target>
+      </trans-unit>
+      <trans-unit id="component.panels.list.headline" approved="yes">
+        <source>List</source>
+        <target state="final">ລາຍການ</target>
+      </trans-unit>
+      <trans-unit id="component.panels.table.headline" approved="yes">
+        <source>Table</source>
+        <target state="final">ຕາຕະລາງ</target>
+      </trans-unit>
+      <trans-unit id="component.panels.alerts.headline" approved="yes">
+        <source>Alerts</source>
+        <target state="final">ການແຈ້ງເຕືອນ</target>
+      </trans-unit>
+      <trans-unit id="component.panels.formSections.headline" approved="yes">
+        <source>Form Sections</source>
+        <target state="final">ສ່ວນຂອງແບບຟອມ</target>
+      </trans-unit>
+      <trans-unit id="component.panels.tabs.headline" approved="yes">
+        <source>Tabs</source>
+        <target state="final">ແທັບ</target>
+      </trans-unit>
+      <!-- Component: Progress indicator -->
+      <trans-unit id="component.progressIndicator.headline" approved="yes">
+        <source>Progress indicators</source>
+        <target state="final">ຕົວບົ່ງບອກຄວາມຄືບໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.introtext" approved="yes">
+        <source><![CDATA[Progress bars represent a specific state that can be displayed in a percental fashion, e.g. amount of uploaded files, executed Upgrade Wizards or disk space usage.<br>If the exact amount of data being loaded is not known, progress bars may be rendered in an indeterminate state.<br>If applicable, use clear wording that describes the progress bar.]]></source>
+        <target state="final"><![CDATA[ແຖບຄວາມຄືບໜ້າ (Progress bars) ສະແດງສະຖານະທີ່ສາມາດບອກເປັນເປີເຊັນໄດ້ ເຊັ່ນ ຈຳນວນໄຟລ໌ທີ່ອັບໂຫຼດ, ການເຮັດວຽກຂອງ Upgrade Wizards ຫຼື ການໃຊ້ພື້ນທີ່ຈັດເກັບ.<br>ຫາກບໍ່ຮູ້ຈຳນວນຂໍ້ມູນທີ່ແນ່ນອນ, ແຖບຄວາມຄືບໜ້າອາດຈະສະແດງໃນສະຖານະທີ່ບໍ່ກຳນົດຄ່າ (indeterminate).<br>ຫາກເປັນໄປໄດ້, ໃຫ້ໃຊ້ຂໍ້ຄວາມທີ່ຊັດເຈນເພື່ອອະທິບາຍແຖບຄວາມຄືບໜ້ານັ້ນ.]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.interactiveDemos.headline" approved="yes">
+        <source>Interactive Demos</source>
+        <target state="final">ຕົວຢ່າງສາທິດແບບໂຕ້ຕອບ</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.headline" approved="yes">
+        <source>Indeterminate Progress Bar</source>
+        <target state="final">ແຖບຄວາມຄືບໜ້າແບບບໍ່ກຳນົດຄ່າ</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.text" approved="yes">
+        <source><![CDATA[Creates a progress bar in indeterminate state, then calls done() to trigger the transition to 100% and removal.]]></source>
+        <target state="final"><![CDATA[ສ້າງແຖບຄວາມຄືບໜ້າໃນສະຖານະທີ່ບໍ່ກຳນົດຄ່າ, ຈາກນັ້ນເອີ້ນໃຊ້ done() ເພື່ອປ່ຽນເປັນ 100% ແລະ ລຶບອອກ.]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.button" approved="yes">
+        <source>Start Indeterminate Progress</source>
+        <target state="final">ເລີ່ມຄວາມຄືບໜ້າແບບບໍ່ກຳນົດຄ່າ</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.buttonDelayed" approved="yes">
+        <source>Start Indeterminate Progress (with delay)</source>
+        <target state="final">ເລີ່ມຄວາມຄືບໜ້າແບບບໍ່ກຳນົດຄ່າ (ແບບມີການໜ່ວງເວລາ)</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.headline" approved="yes">
+        <source>Determinate Progress Bar</source>
+        <target state="final">ແຖບຄວາມຄືບໜ້າແບບກຳນົດຄ່າ</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.text" approved="yes">
+        <source><![CDATA[Creates a progress bar with an initial value, then calls done() to trigger the transition to 100% and removal.]]></source>
+        <target state="final"><![CDATA[ສ້າງແຖບຄວາມຄືບໜ້າດ້ວຍຄ່າເລີ່ມຕົ້ນ, ຈາກນັ້ນເອີ້ນໃຊ້ done() ເພື່ອປ່ຽນເປັນ 100% ແລະ ລຶບອອກ.]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.button" approved="yes">
+        <source>Start Determinate Progress</source>
+        <target state="final">ເລີ່ມຄວາມຄືບໜ້າແບບກຳນົດຄ່າ</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.buttonDelayed" approved="yes">
+        <source>Start Determinate Progress (with delay)</source>
+        <target state="final">ເລີ່ມຄວາມຄືບໜ້າແບບກຳນົດຄ່າ (ແບບມີການໜ່ວງເວລາ)</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.reusable.headline" approved="yes">
+        <source>Reusable Progress Bar</source>
+        <target state="final">ແຖບຄວາມຄືບໜ້າທີ່ໃຊ້ຊ້ຳໄດ້</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.reusable.text" approved="yes">
+        <source>Demonstrates how calling start() cancels a done() operation that is already in progress. The progress bar below calls done() after 1 second, but start() is called 100ms later to cancel the removal.</source>
+        <target state="final">ສະແດງໃຫ້ເຫັນວ່າການເອີ້ນໃຊ້ start() ຈະຍົກເລີກການເຮັດວຽກຂອງ done() ທີ່ກຳລັງດຳເນີນຢູ່ໄດ້ແນວໃດ. ແຖບຄວາມຄືບໜ້າລຸ່ມນີ້ຈະເອີ້ນໃຊ້ done() ຫຼັງຈາກ 1 ວິນາທີ, ແຕ່ start() ຈະຖືກເອີ້ນໃຊ້ໃນອີກ 100ms ຕໍ່ມາເພື່ອຍົກເລີກການລຶບອອກ.</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.reusable.button" approved="yes">
+        <source>Run Demo</source>
+        <target state="final">ລັນຕົວຢ່າງສາທິດ</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.customLabel.headline" approved="yes">
+        <source>Custom label</source>
+        <target state="final">ປ້າຍກຳກັບກຳນົດເອງ</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.customLabel.text" approved="yes">
+        <source>Optionally, a label can be displayed below the progress bar.</source>
+        <target state="final">ທ່ານສາມາດເລືອກໃຫ້ສະແດງປ້າຍກຳກັບຢູ່ລຸ່ມແຖບຄວາມຄືບໜ້າໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.default.text" approved="yes">
+        <source>By default, an indefinite progress is displayed.</source>
+        <target state="final">ໂດຍມາດຕະຖານ, ຄວາມຄືບໜ້າແບບບໍ່ມີກຳນົດຈະຖືກສະແດງ.</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.maxValue.headline" approved="yes">
+        <source>Max value</source>
+        <target state="final">ຄ່າສູງສຸດ</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.ridiculousMaxValue.headline" approved="yes">
+        <source>Ridiculous max value</source>
+        <target state="final">ຄ່າສູງສຸດທີ່ເກີນຈິງ</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.severity.headline" approved="yes">
+        <source>Severity</source>
+        <target state="final">ລະດັບຄວາມສຳຄັນ</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.value.headline" approved="yes">
+        <source>Value</source>
+        <target state="final">ຄ່າ</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.table.headline" approved="yes">
+        <source>Progress Bar with Table</source>
+        <target state="final">ແຖບຄວາມຄືບໜ້າພ້ອມຕາຕະລາງ</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.table.text" approved="yes">
+        <source>Demonstrates using a progress bar as the first child of a table wrapper to indicate loading state.</source>
+        <target state="final">ສະແດງການໃຊ້ແຖບຄວາມຄືບໜ້າເປັນສ່ວນທຳອິດຂອງຕາຕະລາງ ເພື່ອບົ່ງບອກສະຖານະການໂຫຼດ.</target>
+      </trans-unit>
+      <!-- Component: Progress trackers -->
+      <trans-unit id="component.progressTrackers.headline" approved="yes">
+        <source>Progress trackers</source>
+        <target state="final">ຕົວຕິດຕາມຄວາມຄືບໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.introtext" approved="yes">
+        <source><![CDATA[Progress trackers are a segmented variant of progress bars, dividing the progress bar into equal chunks.<br>The primary usage is in wizard components.]]></source>
+        <target state="final"><![CDATA[ຕົວຕິດຕາມຄວາມຄືບໜ້າ ແມ່ນຮູບແບບໜຶ່ງຂອງແຖບຄວາມຄືບໜ້າທີ່ແບ່ງອອກເປັນສ່ວນໆ ເທົ່າໆກັນ.<br>ສ່ວນຫຼາຍແມ່ນໃຊ້ໃນອົງປະກອບຕົວຊ່ວຍຕັ້ງຄ່າ (wizard).]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.section.activeStage.headline" approved="yes">
+        <source>Active stage</source>
+        <target state="final">ຂັ້ນຕອນທີ່ກຳລັງເຮັດວຽກ</target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.section.demo.headline" approved="yes">
+        <source>Demo</source>
+        <target state="final">ຕົວຢ່າງສາທິດ</target>
+      </trans-unit>
+      <!-- Component: Radio -->
+      <trans-unit id="component.radio.headline" approved="yes">
+        <source>Radio buttons</source>
+        <target state="final">ປຸ່ມເລືອກແບບດ່ຽວ (Radio)</target>
+      </trans-unit>
+      <trans-unit id="component.radio.introtext" approved="yes">
+        <source>Form controls for selecting a single exclusive option from multiple mutually exclusive choices.</source>
+        <target state="final">ຕົວຄວບຄຸມຟອມສຳລັບເລືອກພຽງຕົວເລືອກດຽວຈາກຫຼາຍຕົວເລືອກທີ່ແຕກຕ່າງກັນ.</target>
+      </trans-unit>
+      <trans-unit id="component.radio.section.card.headline" approved="yes">
+        <source>Card-Layout</source>
+        <target state="final">ຮູບແບບກາດ</target>
+      </trans-unit>
+      <trans-unit id="component.radio.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <!-- Component: Content Navigation -->
+      <trans-unit id="component.contentNavigation.headline" approved="yes">
+        <source>Content Navigation</source>
+        <target state="final">ການນຳທາງເນື້ອໃນ</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.introtext" approved="yes">
+        <source><![CDATA[A two-panel container with a resizable navigation area and a flexible content area. The navigation panel is optional, resizable, and can be collapsed to the left. The content panel is required and fills the remaining space.]]></source>
+        <target state="final"><![CDATA[ກ່ອງບັນຈຸແບບສອງສ່ວນ ທີ່ມີພື້ນທີ່ນຳທາງທີ່ປັບຂະໜາດໄດ້ ແລະ ພື້ນທີ່ເນື້ອໃນທີ່ຍືດຫຍຸ່ນ. ແຜງນຳທາງແມ່ນຈະມີຫຼືບໍ່ມີກໍໄດ້, ສາມາດປັບຂະໜາດ ແລະ ພັບໄປທາງຊ້າຍໄດ້. ແຜງເນື້ອໃນແມ່ນຈຳເປັນຕ້ອງມີ ແລະ ຈະກວມເອົາພື້ນທີ່ສ່ວນທີ່ເຫຼືອທັງໝົດ.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.basic.headline" approved="yes">
+        <source>Basic usage</source>
+        <target state="final">ການນຳໃຊ້ຂັ້ນພື້ນຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.basic.text" approved="yes">
+        <source><![CDATA[The content navigation uses named slots: <code>navigation</code> and <code>content</code>. The <code>content</code> slot is required. The navigation panel can be collapsed by dragging below half of its minimum width. When collapsed, an expand button with the panel title is displayed.]]></source>
+        <target state="final"><![CDATA[ການນຳທາງເນື້ອໃນໃຊ້ຊ່ອງ (slots) ທີ່ກຳນົດຊື່ໄວ້ຄື: <code>navigation</code> ແລະ <code>content</code>. ຊ່ອງ <code>content</code> ແມ່ນຈຳເປັນຕ້ອງມີ. ແຜງນຳທາງສາມາດພັບໄດ້ໂດຍການລາກໃຫ້ມີຄວາມກວ້າງໜ້ອຍກວ່າເຄິ່ງໜຶ່ງຂອງຂະໜາດຕ່ຳສຸດ. ເມື່ອພັບແລ້ວ, ປຸ່ມຂະຫຍາຍພ້ອມຊື່ແຜງຈະຖືກສະແດງອອກມາ.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.controls.headline" approved="yes">
+        <source>External controls</source>
+        <target state="final">ຕົວຄວບຄຸມຈາກພາຍນອກ</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.controls.text" approved="yes">
+        <source><![CDATA[The navigation panel can be expanded or collapsed programmatically using <code>expand()</code>, <code>collapse()</code>, and <code>isCollapsed()</code> methods.]]></source>
+        <target state="final"><![CDATA[ແຜງນຳທາງສາມາດຂະຫຍາຍ ຫຼື ພັບໄດ້ຜ່ານການຂຽນໂປຣແກຣມ ໂດຍໃຊ້ເມທອດ <code>expand()</code>, <code>collapse()</code>, ແລະ <code>isCollapsed()</code>.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.toggleButton.headline" approved="yes">
+        <source>Toggle button</source>
+        <target state="final">ປຸ່ມສະຫຼັບເປີດ-ປິດ</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.toggleButton.text" approved="yes">
+        <source><![CDATA[The <code>&lt;typo3-backend-content-navigation-toggle&gt;</code> component provides a button to expand or collapse the navigation. Place it anywhere within the content-navigation component. Use <code>action="collapse"</code> for a collapse button (visible when expanded) or <code>action="expand"</code> for an expand button (visible when collapsed). The component automatically shows/hides based on the navigation state and reads labels from the parent content-navigation's <code>navigation-label-collapse</code> and <code>navigation-label-expand</code> attributes.]]></source>
+        <target state="final"><![CDATA[ອົງປະກອບ <code>&lt;typo3-backend-content-navigation-toggle&gt;</code> ມີປຸ່ມສຳລັບຂະຫຍາຍ ຫຼື ພັບແຖບນຳທາງ. ທ່ານສາມາດວາງມັນໄວ້ບ່ອນໃດກໍໄດ້ພາຍໃນອົງປະກອບ content-navigation. ໃຊ້ <code>action="collapse"</code> ສຳລັບປຸ່ມພັບ (ສະແດງເມື່ອຂະຫຍາຍຢູ່) ຫຼື <code>action="expand"</code> ສຳລັບປຸ່ມຂະຫຍາຍ (ສະແດງເມື່ອພັບຢູ່). ອົງປະກອບນີ້ຈະສະແດງ/ຊ່ອນໂດຍອັດຕະໂນມັດຕາມສະຖານະຂອງການນຳທາງ ແລະ ອ່ານປ້າຍກຳກັບຈາກແອດທຣິບິວ <code>navigation-label-collapse</code> ແລະ <code>navigation-label-expand</code> ຂອງອົງປະກອບຫຼັກ.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.hidingPanels.headline" approved="yes">
+        <source>Hiding navigation</source>
+        <target state="final">ການຊ່ອນແຖບນຳທາງ</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.hidingPanels.text" approved="yes">
+        <source><![CDATA[The navigation panel can be hidden by adding the <code>hidden</code> attribute to the slotted element. Use the component's <code>showNavigation()</code>, <code>hideNavigation()</code>, and <code>isNavigationHidden()</code> methods for programmatic control.]]></source>
+        <target state="final"><![CDATA[ແຜງນຳທາງສາມາດຊ່ອນໄດ້ໂດຍການເພີ່ມແອດທຣິບິວ <code>hidden</code> ໃຫ້ກັບອົງປະກອບໃນ slot. ໃຊ້ເມທອດ <code>showNavigation()</code>, <code>hideNavigation()</code>, ແລະ <code>isNavigationHidden()</code> ເພື່ອຄວບຄຸມຜ່ານການຂຽນໂປຣແກຣມ.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.persistence.headline" approved="yes">
+        <source>Width persistence</source>
+        <target state="final">ການບັນທຶກຄວາມກວ້າງຄົງທີ່</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.persistence.text" approved="yes">
+        <source><![CDATA[The navigation width is automatically persisted to <code>localStorage</code> using the container's <code>identifier</code> attribute. Resize the panel below, then reload the page to see the width restored.]]></source>
+        <target state="final"><![CDATA[ຄວາມກວ້າງຂອງແຖບນຳທາງຈະຖືກບັນທຶກໄວ້ໃນ <code>localStorage</code> ໂດຍອັດຕະໂນມັດ ໂດຍໃຊ້ແອດທຣິບິວ <code>identifier</code> ຂອງກ່ອງບັນຈຸ. ລອງປັບຂະໜາດແຜງລຸ່ມນີ້, ແລ້ວໂຫຼດໜ້າໃໝ່ ທ່ານຈະເຫັນວ່າຄວາມກວ້າງຖືກກັບຄືນມາຄືເກົ່າ.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.rtl.headline" approved="yes">
+        <source>Right-to-left support</source>
+        <target state="final">ຮອງຮັບການສະແດງຜົນຈາກຂວາໄປຊ້າຍ (RTL)</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.rtl.text" approved="yes">
+        <source><![CDATA[The container automatically adapts to right-to-left layouts. The navigation panel appears on the right and drag directions are mirrored.]]></source>
+        <target state="final"><![CDATA[ກ່ອງບັນຈຸຈະປັບປ່ຽນຕາມຮູບແບບຈາກຂວາໄປຊ້າຍໂດຍອັດຕະໂນມັດ. ແຜງນຳທາງຈະປາກົດຢູ່ເບື້ອງຂວາ ແລະ ທິດທາງການລາກຈະຖືກປ່ຽນເປັນແບບສະທ້ອນເງົາ.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.flyout.headline" approved="yes">
+        <source>Flyout mode</source>
+        <target state="final">ໂໝດແຖບເລືອກລອຍ (Flyout mode)</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.flyout.text" approved="yes">
+        <source><![CDATA[When the container becomes too narrow (below 750px), the navigation automatically switches to flyout mode using CSS container queries. In flyout mode, the navigation overlays the content instead of sitting beside it, and resizing is disabled.]]></source>
+        <target state="final"><![CDATA[ເມື່ອກ່ອງບັນຈຸແຄບເກີນໄປ (ຕ່ຳກວ່າ 750px), ແຖບນຳທາງຈະປ່ຽນເປັນໂໝດລອຍ (flyout) ໂດຍອັດຕະໂນມັດໂດຍໃຊ້ CSS container queries. ໃນໂໝດນີ້, ແຖບນຳທາງຈະສະແດງທັບຊ້ອນເທິງເນື້ອໃນແທນທີ່ຈະຢູ່ຂ້າງກັນ ແລະ ຈະບໍ່ສາມາດປັບຂະໜາດໄດ້.]]></target>
+      </trans-unit>
+      <!-- Component: Select -->
+      <trans-unit id="component.select.headline" approved="yes">
+        <source>Select</source>
+        <target state="final">ລາຍການເລືອກ</target>
+      </trans-unit>
+      <trans-unit id="component.select.introtext" approved="yes">
+        <source>Dropdown menus for choosing one or more options from a predefined list of values.</source>
+        <target state="final">ເມນູແບບດຶງລົງສຳລັບເລືອກໜຶ່ງ ຫຼື ຫຼາຍຕົວເລືອກຈາກລາຍການຄ່າທີ່ກຳນົດໄວ້.</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.multiple.headline" approved="yes">
+        <source>Multiple selection</source>
+        <target state="final">ເລືອກໄດ້ຫຼາຍລາຍການ</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.optgroup.headline" approved="yes">
+        <source>Option groups</source>
+        <target state="final">ກຸ່ມຕົວເລືອກ</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.optgroup.single.headline" approved="yes">
+        <source>Single selection with option groups</source>
+        <target state="final">ເລືອກໄດ້ລາຍການດຽວແບບແບ່ງກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.optgroup.multiple.headline" approved="yes">
+        <source>Multiple selection with option groups</source>
+        <target state="final">ເລືອກໄດ້ຫຼາຍລາຍການແບບແບ່ງກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">ສະຖານະ</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">ຂະໜາດ</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.size.default.headline" approved="yes">
+        <source>Default size</source>
+        <target state="final">ຂະໜາດມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.size.small.headline" approved="yes">
+        <source>Small size</source>
+        <target state="final">ຂະໜາດນ້ອຍ</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.colorScheme.optgroup.single.headline" approved="yes">
+        <source>Single selection with option groups</source>
+        <target state="final">ເລືອກໄດ້ລາຍການດຽວແບບແບ່ງກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.colorScheme.optgroup.multiple.headline" approved="yes">
+        <source>Multiple selection with option groups</source>
+        <target state="final">ເລືອກໄດ້ຫຼາຍລາຍການແບບແບ່ງກຸ່ມ</target>
+      </trans-unit>
+      <!-- Component: Status indicator -->
+      <trans-unit id="component.statusIndicator.headline" approved="yes">
+        <source>Status indicators</source>
+        <target state="final">ຕົວບົ່ງບອກສະຖານະ</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.introtext" approved="yes">
+        <source>Indicators communicate the state of records, tasks, and interface elements with small colored dots, including animated variants for ongoing activity. Toggle the color scheme to preview light and dark.</source>
+        <target state="final">ຕົວບົ່ງບອກຈະສື່ສານສະຖານະຂອງຂໍ້ມູນ, ວຽກ ແລະ ອົງປະກອບຂອງສ່ວນຕິດຕໍ່ຜູ້ໃຊ້ດ້ວຍຈຸດສີຂະໜາດນ້ອຍ ລວມມີຮູບແບບເຄື່ອນໄຫວສຳລັບກິດຈະກຳທີ່ກຳລັງດຳເນີນຢູ່. ສາມາດສະຫຼັບຊຸດສີເພື່ອເບິ່ງຕົວຢ່າງໃນໂໝດແຈ້ງ ແລະ ໂໝດມືດ.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.dots.headline" approved="yes">
+        <source>Dots</source>
+        <target state="final">ຈຸດ</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.dots.introtext" approved="yes">
+        <source>Small colored dots flag the state of an element without occupying much space, for example on navigation items or list rows. Each state uses a brighter, fill-tuned shade of its hue so the small filled shape stays vibrant across light and dark.</source>
+        <target state="final">ຈຸດສີຂະໜາດນ້ອຍຈະໝາຍສະຖານະຂອງອົງປະກອບໂດຍບໍ່ໃຊ້ພື້ນທີ່ຫຼາຍ, ຕົວຢ່າງເຊັ່ນ ໃນລາຍການນຳທາງ ຫຼື ແຖວຂອງລາຍການ. ແຕ່ລະສະຖານະຈະໃຊ້ໂທນສີທີ່ແຈ້ງ ແລະ ປັບແຕ່ງໃຫ້ເໝາະສົມ ເພື່ອໃຫ້ຮູບຊົງຂະໜາດນ້ອຍນັ້ນເບິ່ງຊັດເຈນທັງໃນໂໝດແຈ້ງ ແລະ ໂໝດມືດ.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.semantic.headline" approved="yes">
+        <source>Semantic states</source>
+        <target state="final">ສະຖານະຕາມຄວາມໝາຍ (Semantic states)</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.semantic.introtext" approved="yes">
+        <source>Beside the base colours, a small set of semantic states name a recurring domain concept and map to one of those colours – and, where it fits, to a motion – in the stylesheet. Use them so the same concept looks identical wherever it appears in the backend, instead of each module picking its own colour: active is a plain green, online a pulsing green, running a loading blue, and disabled a red.</source>
+        <target state="final">ນອກຈາກສີພື້ນຖານແລ້ວ, ຍັງມີຊຸດສະຖານະຕາມຄວາມໝາຍທີ່ກຳນົດແນວຄິດທີ່ໃຊ້ເລື້ອຍໆ ແລະ ເຊື່ອມໂຍງກັບສີເຫຼົ່ານັ້ນ – ແລະ ບ່ອນທີ່ເໝາະສົມ ກໍຈະມີການເຄື່ອນໄຫວ – ໃນ stylesheet. ການໃຊ້ສິ່ງເຫຼົ່ານີ້ຈະເຮັດໃຫ້ແນວຄິດດຽວກັນເບິ່ງຄືກັນໃນທຸກບ່ອນຂອງລະບົບຫຼັງບ້ານ ແທນທີ່ຈະໃຫ້ແຕ່ລະໂມດູນເລືອກສີເອງ: active ແມ່ນສີຂຽວທຳມະດາ, online ແມ່ນສີຂຽວແບບກະພິບ, running ແມ່ນສີຟ້າແບບກຳລັງໂຫຼດ ແລະ disabled ແມ່ນສີແດງ.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.headline" approved="yes">
+        <source>Animated</source>
+        <target state="final">ແບບເຄື່ອນໄຫວ</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.introtext" approved="yes">
+        <source>Motion adds an activity state on top of the colour. Each animation composes with any state colour; all are shown below so they can be verified in every state.</source>
+        <target state="final">ການເຄື່ອນໄຫວຈະຊ່ວຍເພີ່ມສະຖານະການເຮັດວຽກໃຫ້ກັບສີ. ແຕ່ລະການເຄື່ອນໄຫວສາມາດໃຊ້ຮ່ວມກັບສີສະຖານະໃດກໍໄດ້; ທັງໝົດແມ່ນສະແດງຢູ່ລຸ່ມນີ້ເພື່ອໃຫ້ສາມາດກວດສອບໄດ້ໃນທຸກສະຖານະ.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.live.headline" approved="yes">
+        <source>Live</source>
+        <target state="final">ແບບສົດ (Live)</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.live.introtext" approved="yes">
+        <source>Signals that an element is active or live. A halo gently breathes in and out around the dot. Apply it with the live attribute.</source>
+        <target state="final">ສັນຍານທີ່ບົ່ງບອກວ່າອົງປະກອບໃດໜຶ່ງກຳລັງເຮັດວຽກ ຫຼື ເຮັດວຽກແບບສົດ. ຈະມີແສງອໍຣ່າອ້ອມຮອບຈຸດແບບກະພິບຊ້າໆ. ນຳໃຊ້ໂດຍການໃສ່ແອດທຣິບິວ live.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.loading.headline" approved="yes">
+        <source>Loading</source>
+        <target state="final">ກຳລັງໂຫຼດ</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.loading.introtext" approved="yes">
+        <source>Signals that an operation is in progress. A fading trail rotates around the dot like a spinner. Apply it with the loading attribute.</source>
+        <target state="final">ສັນຍານທີ່ບົ່ງບອກວ່າການດຳເນີນການກຳລັງດຳເນີນຢູ່. ຈະມີຫາງສີຈາງໆໝູນອ້ອມຈຸດຄືກັບຕົວໝູນໂຫຼດ. ນຳໃຊ້ໂດຍການໃສ່ແອດທຣິບິວ loading.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.reduced.headline" approved="yes">
+        <source>Reduced motion</source>
+        <target state="final">ການເຄື່ອນໄຫວແບບຜ່ອນຜັນ (Reduced motion)</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.reduced.introtext" approved="yes">
+        <source>When the operating system requests reduced motion (prefers-reduced-motion: reduce), the live and loading animations are switched off and the indicators render statically. The examples below force that fallback so it can be previewed regardless of your current system setting.</source>
+        <target state="final">ເມື່ອລະບົບປະຕິບັດການຮ້ອງຂໍການເຄື່ອນໄຫວແບບຜ່ອນຜັນ (prefers-reduced-motion: reduce), ການເຄື່ອນໄຫວແບບ live ແລະ loading ຈະຖືກປິດ ແລະ ຕົວບົ່ງບອກຈະສະແດງຜົນແບບຄົງທີ່. ຕົວຢ່າງລຸ່ມນີ້ຈະບັງຄັບໃຫ້ສະແດງຜົນແບບສຳຮອງ ເພື່ອໃຫ້ສາມາດເບິ່ງຕົວຢ່າງໄດ້ ໂດຍບໍ່ຄຳນຶງເຖິງການຕັ້ງຄ່າລະບົບປັດຈຸບັນຂອງທ່ານ.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.headline" approved="yes">
+        <source>In context</source>
+        <target state="final">ໃນບໍລິບົດ</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.introtext" approved="yes">
+        <source>Indicators are inline elements, so they compose naturally next to text inside other components. When the indicator is the only cue, give it a label; when adjacent text already states the status, leave it decorative without a label.</source>
+        <target state="final">ຕົວບົ່ງບອກແມ່ນອົງປະກອບແບບ inline, ດັ່ງນັ້ນພວກມັນຈຶ່ງສາມາດວາງຂ້າງຂໍ້ຄວາມພາຍໃນອົງປະກອບອື່ນໆໄດ້ຢ່າງເປັນທຳມະຊາດ. ເມື່ອຕົວບົ່ງບອກເປັນສິ່ງດຽວທີ່ບອກສະຖານະ, ໃຫ້ໃສ່ປ້າຍກຳກັບ; ແຕ່ຫາກຂໍ້ຄວາມຂ້າງໆໄດ້ບອກສະຖານະຢູ່ແລ້ວ, ໃຫ້ປະໄວ້ເປັນພຽງການປະດັບໂດຍບໍ່ຕ້ອງມີປ້າຍກຳກັບ.</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.badges.headline" approved="yes">
+        <source>Badges</source>
+        <target state="final">ປ້າຍສັນຍະລັກ (Badges)</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.lists.headline" approved="yes">
+        <source>Lists</source>
+        <target state="final">ລາຍການ</target>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.tables.headline" approved="yes">
+        <source>Tables</source>
+        <target state="final">ຕາຕະລາງ</target>
+      </trans-unit>
+      <!-- Component: Tabs -->
+      <trans-unit id="component.tabs.headline" approved="yes">
+        <source>Tab</source>
+        <target state="final">ແຖບ (Tab)</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.introtext" approved="yes">
+        <source>Organized content sections with clickable headers for switching between different views and panels.</source>
+        <target state="final">ສ່ວນເນື້ອໃນທີ່ຈັດລະບຽບດ້ວຍແຖບຫົວຂໍ້ທີ່ຄລິກໄດ້ ເພື່ອສະຫຼັບລະຫວ່າງມຸມມອງ ແລະ ແຜງຕ່າງໆ.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.default.text" approved="yes">
+        <source>Basic tab navigation with two tabs.</source>
+        <target state="final">ການນຳທາງແຖບພື້ນຖານແບບສອງແຖບ.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.persistence.headline" approved="yes">
+        <source>Persistence</source>
+        <target state="final">ການຄົງຢູ່ຂອງຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.persistence.text" approved="yes">
+        <source>Adding data-store-last-tab to the tab list stores the last selected tab in the browser session. This requires a stable id on the tab list element.</source>
+        <target state="final">ການເພີ່ມ data-store-last-tab ເຂົ້າໃນລາຍການແຖບ ຈະຊ່ວຍບັນທຶກແຖບຫຼ້າສຸດທີ່ຖືກເລືອກໄວ້ໃນເຊດຊັນຂອງບຣາວເຊີ. ສິ່ງນີ້ຈຳເປັນຕ້ອງມີ id ທີ່ຄົງທີ່ຢູ່ໃນອົງປະກອບລາຍການແຖບ.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.validation.headline" approved="yes">
+        <source>Validation State</source>
+        <target state="final">ສະຖານະການກວດສອບຄວາມຖືກຕ້ອງ</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.validation.text" approved="yes">
+        <source>Tabs containing validation errors are highlighted with a danger indicator. The &lt;code&gt;has-validation-error&lt;/code&gt; class is added to the &lt;code&gt;nav-item&lt;/code&gt; element.</source>
+        <target state="final">ແຖບທີ່ມີຂໍ້ຜິດພາດໃນການກວດສອບຈະຖືກເນັ້ນດ້ວຍຕົວບົ່ງຊີ້ອັນຕະລາຍ. ຄລາດ &lt;code&gt;has-validation-error&lt;/code&gt; ຈະຖືກເພີ່ມເຂົ້າໃນອົງປະກອບ &lt;code&gt;nav-item&lt;/code&gt;.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.overflow.headline" approved="yes">
+        <source>Scrollable</source>
+        <target state="final">ສາມາດເລື່ອນໄດ້</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.overflow.text" approved="yes">
+        <source>When tabs do not fit in one line, scroll arrows appear at the edges. Resize the container to see the effect.</source>
+        <target state="final">ເມື່ອແຖບຕ່າງໆບໍ່ພໍດີໃນແຖວດຽວ, ລູກສອນເລື່ອນຈະປາກົດຂຶ້ນຢູ່ແຄມ. ປ່ຽນຂະໜາດຂອງຕົວບັນຈຸເພື່ອເບິ່ງຜົນທີ່ເກີດຂຶ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.migration.headline" approved="yes">
+        <source>Bootstrap Migration</source>
+        <target state="final">ການຍ້າຍມາຈາກ Bootstrap</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.migration.text" approved="yes">
+        <source>Tabs using Bootstrap data-bs-toggle attributes are automatically migrated to data-typo3-tab at runtime. Anchor elements are replaced with buttons.</source>
+        <target state="final">ແຖບທີ່ໃຊ້ຄຸນລັກສະນະ data-bs-toggle ຂອງ Bootstrap ຈະຖືກຍ້າຍໄປເປັນ data-typo3-tab ໂດຍອັດຕະໂນມັດໃນເວລາເຮັດວຽກ. ອົງປະກອບແອງເຄີ (Anchor elements) ຈະຖືກແທນທີ່ດ້ວຍປຸ່ມ.</target>
+      </trans-unit>
+      <!-- Component: Table -->
+      <trans-unit id="component.table.headline" approved="yes">
+        <source>Tables</source>
+        <target state="final">ຕາຕະລາງ</target>
+      </trans-unit>
+      <trans-unit id="component.table.introtext" approved="yes">
+        <source>Use tables to show tabular data. The action icons should always be in the last table row cell.</source>
+        <target state="final">ໃຊ້ຕາຕະລາງເພື່ອສະແດງຂໍ້ມູນ. ໄອຄອນຄຳສັ່ງຄວນຈະຢູ່ໃນຫ້ອງ (cell) ສຸດທ້າຍຂອງແຖວຕາຕະລາງສະເໝີ.</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">ສີ</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.color.text" approved="yes">
+        <source><![CDATA[To color table rows, a class can be added to the <code>tr</code> element.]]></source>
+        <target state="final"><![CDATA[ເພື່ອໃສ່ສີໃຫ້ກັບແຖວຕາຕະລາງ, ທ່ານສາມາດເພີ່ມຄລາສໃຫ້ກັບອົງປະກອບ <code>tr</code> ໄດ້.]]></target>
+      </trans-unit>
+      <trans-unit id="component.table.section.colorScheme.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.colorScheme.colorFullExample.headline" approved="yes">
+        <source>Color (full example)</source>
+        <target state="final">ສີ (ຕົວຢ່າງແບບເຕັມ)</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.wideTables.headline" approved="yes">
+        <source>Wide tables</source>
+        <target state="final">ຕາຕະລາງແບບກວ້າງ</target>
+      </trans-unit>
+      <!-- Component: Textarea -->
+      <trans-unit id="component.textarea.headline" approved="yes">
+        <source>Textarea</source>
+        <target state="final">ຊ່ອງປ້ອນຂໍ້ຄວາມແບບຫຼາຍແຖວ</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.introtext" approved="yes">
+        <source>Multi-line text input fields for entering and editing longer content and formatted text.</source>
+        <target state="final">ຊ່ອງປ້ອນຂໍ້ຄວາມແບບຫຼາຍແຖວ ສຳລັບປ້ອນ ແລະ ແກ້ໄຂເນື້ອໃນທີ່ຍາວ ຫຼື ຂໍ້ຄວາມທີ່ມີຮູບແບບ.</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.disabled.headline" approved="yes">
+        <source>Disabled</source>
+        <target state="final">ປິດການໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.placeholder.headline" approved="yes">
+        <source>Placeholder</source>
+        <target state="final">ຂໍ້ຄວາມແນະນຳໃນຊ່ອງປ້ອນ</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">ສະຖານະ</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">ຂະໜາດ</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.size.default.headline" approved="yes">
+        <source>Default size</source>
+        <target state="final">ຂະໜາດມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.size.small.headline" approved="yes">
+        <source>Small size</source>
+        <target state="final">ຂະໜາດນ້ອຍ</target>
+      </trans-unit>
+      <!-- Component: Tree -->
+      <trans-unit id="component.tree.headline" approved="yes">
+        <source>Trees</source>
+        <target state="final">ຜັງໂຄງສ້າງແບບຕົ້ນໄມ້</target>
+      </trans-unit>
+      <trans-unit id="component.tree.introtext" approved="yes">
+        <source>Hierarchical tree structures for displaying and navigating nested data with expandable and collapsible nodes.</source>
+        <target state="final">ໂຄງສ້າງແບບລຳດັບຊັ້ນສຳລັບສະແດງ ແລະ ນຳທາງຂໍ້ມູນທີ່ຊ້ອນກັນ ໂດຍມີຈຸດເຊື່ອມຕໍ່ (nodes) ທີ່ສາມາດຂະຫຍາຍ ແລະ ພັບໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.collapsibleTree.headline" approved="yes">
+        <source>Collapsible tree</source>
+        <target state="final">ຜັງຕົ້ນໄມ້ທີ່ພັບໄດ້</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.collapsibleTree.text" approved="yes">
+        <source><![CDATA[Collapsible trees are used to show the configuration in a more structured way. Lower levels can be opened and closed, while the entries are collapsed by default. If a user opens entries, this state is saved in the session. There are additional data attributes that can be added to <code>div.treelist-collapse</code> to configure the collapse state.]]></source>
+        <target state="final"><![CDATA[ຜັງຕົ້ນໄມ້ທີ່ພັບໄດ້ ຖືກໃຊ້ເພື່ອສະແດງການຕັ້ງຄ່າໃຫ້ເປັນລະບຽບຂຶ້ນ. ຂັ້ນຕອນຍ່ອຍສາມາດເປີດ ແລະ ປິດໄດ້, ໂດຍປົກກະຕິລາຍການຈະຖືກພັບໄວ້. ຫາກຜູ້ໃຊ້ເປີດລາຍການໃດໜຶ່ງ, ສະຖານະນັ້ນຈະຖືກບັນທຶກໄວ້ໃນເຊດຊັນ (session). ທ່ານສາມາດເພີ່ມແອດທຣິບິວຂໍ້ມູນໃຫ້ກັບ <code>div.treelist-collapse</code> ເພື່ອຕັ້ງຄ່າການພັບໄດ້.]]></target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.fileTree.headline" approved="yes">
+        <source>File tree</source>
+        <target state="final">ຜັງໂຄງສ້າງໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.fileTree.text" approved="yes">
+        <source>File trees are initialized via TypeScript like the page trees.</source>
+        <target state="final">ຜັງໂຄງສ້າງໄຟລ໌ຖືກເລີ່ມຕົ້ນການເຮັດວຽກຜ່ານ TypeScript ຄືກັນກັບຜັງໜ້າເວັບ.</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.pageTree.headline" approved="yes">
+        <source>Page tree</source>
+        <target state="final">ຜັງໜ້າເວັບ (Page tree)</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.pageTree.text" approved="yes">
+        <source>Initialization of a page tree is done via TypeScript as in the code example below.</source>
+        <target state="final">ການເລີ່ມຕົ້ນການເຮັດວຽກຂອງຜັງໜ້າເວັບແມ່ນເຮັດຜ່ານ TypeScript ດັ່ງຕົວຢ່າງໂຄ້ດລຸ່ມນີ້.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.headline" approved="yes">
+        <source>Datetime Component</source>
+        <target state="final">ສ່ວນປະກອບວັນທີ ແລະ ເວລາ</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.introtext" approved="yes">
+        <source>Web component for displaying timestamps in absolute format (default) or relative format (e.g., "2 minutes ago"). Uses Luxon for localized formatting and respects the user's backend language setting and TYPO3's configured date formats. Supports custom Luxon format strings for complete control over the display format. When using relative mode, hover over the time to see the full datetime in a tooltip.</source>
+        <target state="final">ສ່ວນປະກອບເວັບສຳລັບສະແດງຂໍ້ມູນເວລາໃນຮູບແບບສົມບູນ (ຄ່າເລີ່ມຕົ້ນ) ຫຼື ຮູບແບບສຳພັດ (ຕົວຢ່າງ: "2 ນາທີກ່ອນ"). ໃຊ້ Luxon ສຳລັບການຈັດຮູບແບບຕາມທ້ອງຖິ່ນ ແລະ ອ້າງອີງຕາມການຕັ້ງຄ່າພາສາຫຼັງບ້ານຂອງຜູ້ໃຊ້ ແລະ ຮູບແບບວັນທີທີ່ກຳນົດໄວ້ໃນ TYPO3. ຮອງຮັບຂໍ້ຄວາມຮູບແບບ Luxon ແບບກຳນົດເອງເພື່ອຄວບຄຸມຮູບແບບການສະແດງຜົນຢ່າງເຕັມສ່ວນ. ເມື່ອໃຊ້ໂໝດສຳພັດ, ໃຫ້ຊີ້ເມົາສ໌ໃສ່ເວລາເພື່ອເບິ່ງວັນທີ ແລະ ເວລາເຕັມໃນຄຳແນະນຳເຄື່ອງມື.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.basicUsage.headline" approved="yes">
+        <source>Basic Usage (Absolute Display)</source>
+        <target state="final">ການໃຊ້ງານພື້ນຖານ (ການສະແດງຜົນແບບສົມບູນ)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.basicUsage.absoluteDisplay" approved="yes">
+        <source>Absolute Display (default)</source>
+        <target state="final">ການສະແດງຜົນແບບສົມບູນ (ຄ່າເລີ່ມຕົ້ນ)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.basicUsage.isoTimestamp" approved="yes">
+        <source>ISO Timestamp</source>
+        <target state="final">ຂໍ້ມູນເວລາ ISO</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeTime.headline" approved="yes">
+        <source>Relative Time Display</source>
+        <target state="final">ການສະແດງຜົນເວລາສຳພັດ</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeTime.text" approved="yes">
+        <source>Using mode="relative", the component displays timestamps in relative format (e.g., "2 hours ago"). Hover to see the absolute datetime.</source>
+        <target state="final">ໂດຍການໃຊ້ mode="relative", ສ່ວນປະກອບຈະສະແດງຂໍ້ມູນເວລາໃນຮູບແບບສຳພັດ (ຕົວຢ່າງ: "2 ຊົ່ວໂມງກ່ອນ"). ຊີ້ເມົາສ໌ໃສ່ເພື່ອເບິ່ງວັນທີ ແລະ ເວລາແບບສົມບູນ.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeTime.relativeDisplay" approved="yes">
+        <source>Relative Display</source>
+        <target state="final">ການສະແດງຜົນແບບສຳພັດ</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.autoUpdate.headline" approved="yes">
+        <source>Automatic Updates in Relative Mode</source>
+        <target state="final">ການອັບເດດອັດຕະໂນມັດໃນໂໝດສຳພັດ</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.autoUpdate.text" approved="yes">
+        <source>In relative mode, the component automatically updates itself with adaptive frequency based on elapsed time: &lt;1 minute updates every second, &lt;1 hour updates every minute, &lt;1 day every 5 minutes, and &gt;1 day every 30 minutes. No configuration needed.</source>
+        <target state="final">ໃນໂໝດສຳພັດ, ສ່ວນປະກອບຈະອັບເດດຕົວມັນເອງໂດຍອັດຕະໂນມັດດ້ວຍຄວາມຖີ່ທີ່ປັບຕາມເວລາທີ່ຜ່ານໄປ: &lt; 1 ນາທີ ອັບເດດທຸກໆວິນາທີ, &lt; 1 ຊົ່ວໂມງ ອັບເດດທຸກໆນາທີ, &lt; 1 ວັນ ທຸກໆ 5 ນາທີ, ແລະ &gt; 1 ວັນ ທຸກໆ 30 ນາທີ. ບໍ່ຈຳເປັນຕ້ອງມີການກຳນົດຄ່າ.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.autoUpdate.lastUpdated" approved="yes">
+        <source>Last updated:</source>
+        <target state="final">ອັບເດດຫຼ້າສຸດ:</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.headline" approved="yes">
+        <source>Unix Timestamp Support</source>
+        <target state="final">ການຮອງຮັບຂໍ້ມູນເວລາ Unix</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.text" approved="yes">
+        <source>The component automatically detects and handles Unix timestamps (in seconds).</source>
+        <target state="final">ສ່ວນປະກອບຈະກວດຫາ ແລະ ຈັດການຂໍ້ມູນເວລາ Unix (ເປັນວິນາທີ) ໂດຍອັດຕະໂນມັດ.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.format" approved="yes">
+        <source>Format</source>
+        <target state="final">ຮູບແບບ</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.value" approved="yes">
+        <source>Value</source>
+        <target state="final">ຄ່າ</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.absoluteDisplay" approved="yes">
+        <source>Absolute Display</source>
+        <target state="final">ການສະແດງຜົນແບບສົມບູນ</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.isoReference" approved="yes">
+        <source>ISO Reference</source>
+        <target state="final">ການອ້າງອີງ ISO</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.fluidViewHelper" approved="yes">
+        <source>Fluid ViewHelper</source>
+        <target state="final">Fluid ViewHelper</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.modeComparison.headline" approved="yes">
+        <source>Mode Comparison</source>
+        <target state="final">ການປຽບທຽບໂໝດ</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.modeComparison.text" approved="yes">
+        <source>Side-by-side comparison of absolute (default) and relative display modes.</source>
+        <target state="final">ການປຽບທຽບແບບຄຽງຄູ່ກັນຂອງໂໝດສະແດງຜົນແບບສົມບູນ (ຄ່າເລີ່ມຕົ້ນ) ແລະ ແບບສຳພັດ.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.headline" approved="yes">
+        <source>Absolute Display Formats</source>
+        <target state="final">ຮູບແບບການສະແດງຜົນແບບສົມບູນ</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.text" approved="yes">
+        <source>The format attribute is optional and uses TYPO3's configured date format by default. Available values: date (default), datetime, or custom Luxon format strings. The TYPO3 configured formats are defined in $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] and $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'].</source>
+        <target state="final">ຄຸນລັກສະນະ format ແມ່ນທາງເລືອກ ແລະ ໃຊ້ຮູບແບບວັນທີທີ່ກຳນົດໄວ້ຂອງ TYPO3 ໂດຍຄ່າເລີ່ມຕົ້ນ. ຄ່າທີ່ສາມາດໃຊ້ໄດ້: date (ຄ່າເລີ່ມຕົ້ນ), datetime, ຫຼື ຂໍ້ຄວາມຮູບແບບ Luxon ແບບກຳນົດເອງ. ຮູບແບບທີ່ກຳນົດໄວ້ຂອງ TYPO3 ແມ່ນຖືກກຳນົດໃນ $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ແລະ $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'].</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.display" approved="yes">
+        <source>Display</source>
+        <target state="final">ການສະແດງຜົນ</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.dateDefault" approved="yes">
+        <source>date (default - TYPO3 configured date)</source>
+        <target state="final">date (ຄ່າເລີ່ມຕົ້ນ - ວັນທີທີ່ກຳນົດໄວ້ໃນ TYPO3)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.datetimeConfigured" approved="yes">
+        <source>datetime (TYPO3 configured datetime)</source>
+        <target state="final">datetime (ວັນທີ ແລະ ເວລາທີ່ກຳນົດໄວ້ໃນ TYPO3)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.customFormats.headline" approved="yes">
+        <source>Custom Format Strings</source>
+        <target state="final">ຂໍ້ຄວາມຮູບແບບແບບກຳນົດເອງ</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.customFormats.text" approved="yes">
+        <source>The format attribute also accepts custom Luxon format strings for complete control over the display format.</source>
+        <target state="final">ຄຸນລັກສະນະ format ຍັງຮອງຮັບຂໍ້ຄວາມຮູບແບບ Luxon ແບບກຳນົດເອງ ເພື່ອຄວບຄຸມຮູບແບບການສະແດງຜົນຢ່າງສົມບູນ.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.customFormats.customFormatString" approved="yes">
+        <source>Custom Format String</source>
+        <target state="final">ຂໍ້ຄວາມຮູບແບບແບບກຳນົດເອງ</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.headline" approved="yes">
+        <source>Relative Time Without Seconds</source>
+        <target state="final">ເວລາສຳພັດແບບບໍ່ມີວິນາທີ</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.text" approved="yes">
+        <source>By default, relative mode rounds up to the nearest minute. Use the relative-show-seconds attribute to display exact seconds instead.</source>
+        <target state="final">ໂດຍຄ່າເລີ່ມຕົ້ນ, ໂໝດສຳພັດຈະປັດຂຶ້ນເປັນນາທີທີ່ໃກ້ທີ່ສຸດ. ໃຊ້ຄຸນລັກສະນະ relative-show-seconds ເພື່ອສະແດງວິນາທີທີ່ແນ່ນອນແທນ.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.withoutSeconds" approved="yes">
+        <source>Without Seconds (Default)</source>
+        <target state="final">ບໍ່ມີວິນາທີ (ຄ່າເລີ່ມຕົ້ນ)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.withSeconds" approved="yes">
+        <source>With Seconds</source>
+        <target state="final">ມີວິນາທີ</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.headline" approved="yes">
+        <source>With Threshold (Show Absolute Date for Old Timestamps)</source>
+        <target state="final">ພ້ອມກຳນົດເກນ (ສະແດງວັນທີແບບສົມບູນສຳລັບຂໍ້ມູນເວລາເກົ່າ)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.text" approved="yes">
+        <source>In relative mode, using the threshold-days attribute switches to absolute date format for timestamps older than a specified number of days.</source>
+        <target state="final">ນໂໝດສຳພັດ, ການໃຊ້ຄຸນລັກສະນະ threshold-days ຈະປ່ຽນເປັນຮູບແບບວັນທີແບບສົມບູນສຳລັບຂໍ້ມູນເວລາທີ່ເກົ່າກວ່າຈຳນວນມື້ທີ່ກຳນົດໄວ້.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.withoutThreshold" approved="yes">
+        <source>Without Threshold</source>
+        <target state="final">ບໍ່ມີເກນ</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.withThreshold" approved="yes">
+        <source>With Threshold (90 days)</source>
+        <target state="final">ພ້ອມກຳນົດເກນ (90 ວັນ)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.headline" approved="yes">
+        <source>Attributes</source>
+        <target state="final">ຄຸນລັກສະນະ</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.attribute" approved="yes">
+        <source>Attribute</source>
+        <target state="final">ຄຸນລັກສະນະ</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.type" approved="yes">
+        <source>Type</source>
+        <target state="final">ປະເພດ</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.description" approved="yes">
+        <source>Description</source>
+        <target state="final">ຄຳອະທິບາຍ</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.datetime.type" approved="yes">
+        <source>string (required)</source>
+        <target state="final">ຂໍ້ຄວາມ (ຈຳເປັນ)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.datetime.description" approved="yes">
+        <source>ISO 8601 timestamp (e.g., "2024-01-15T10:30:00+01:00") or Unix timestamp</source>
+        <target state="final">ຂໍ້ມູນເວລາ ISO 8601 (ຕົວຢ່າງ: "2024-01-15T10:30:00+01:00") ຫຼື ຂໍ້ມູນເວລາ Unix</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.mode.type" approved="yes">
+        <source>string (optional)</source>
+        <target state="final">ຂໍ້ຄວາມ (ທາງເລືອກ)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.mode.description" approved="yes">
+        <source>Display mode: "absolute" (default) or "relative"</source>
+        <target state="final">ໂໝດສະແດງຜົນ: "absolute" (ຄ່າເລີ່ມຕົ້ນ) ຫຼື "relative"</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.format.type" approved="yes">
+        <source>string (optional)</source>
+        <target state="final">ຂໍ້ຄວາມ (ທາງເລືອກ)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.format.description" approved="yes">
+        <source>Format for absolute mode: "date" (default - uses $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']), "datetime" (uses ddmmyy + hhmm), or custom Luxon format string (e.g., "dd.MM.yyyy HH:mm")</source>
+        <target state="final">ຮູບແບບສຳລັບໂໝດສົມບູນ: "date" (ຄ່າເລີ່ມຕົ້ນ - ໃຊ້ $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']), "datetime" (ໃຊ້ ddmmyy + hhmm), ຫຼື ຂໍ້ຄວາມຮູບແບບ Luxon ແບບກຳນົດເອງ (ຕົວຢ່າງ: "dd.MM.yyyy HH:mm")</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.thresholdDays.type" approved="yes">
+        <source>number (optional)</source>
+        <target state="final">ຕົວເລກ (ທາງເລືອກ)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.thresholdDays.description" approved="yes">
+        <source>Switch to absolute date format for timestamps older than N days (only for relative mode). Default: 0 (always relative)</source>
+        <target state="final">ປ່ຽນເປັນຮູບແບບວັນທີແບບສົມບູນສຳລັບຂໍ້ມູນເວລາທີ່ເກົ່າກວ່າ N ວັນ (ສະເພາະໂໝດສຳພັດເທົ່ານັ້ນ). ຄ່າເລີ່ມຕົ້ນ: 0 (ເປັນແບບສຳພັດສະເໝີ)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.relativeShowSeconds.type" approved="yes">
+        <source>boolean (optional)</source>
+        <target state="final">ບູລີນ (ທາງເລືອກ)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.relativeShowSeconds.description" approved="yes">
+        <source>Show exact seconds in relative mode. When absent (default), times within the last minute display as "1 minute ago". When present, displays "X seconds ago".</source>
+        <target state="final">ສະແດງວິນາທີທີ່ແນ່ນອນໃນໂໝດສຳພັດ. ເມື່ອບໍ່ມີ (ຄ່າເລີ່ມຕົ້ນ), ເວລາພາຍໃນນາທີຫຼ້າສຸດຈະສະແດງເປັນ "1 ນາທີກ່ອນ". ເມື່ອມີ, ຈະສະແດງເປັນ "X ວິນາທີກ່ອນ".</target>
+      </trans-unit>
+      <!-- Styles: Color tokens -->
+      <trans-unit id="styles.colorTokens.headline" approved="yes">
+        <source>Color Tokens</source>
+        <target state="final">ໂທເຄັນສີ (Color Tokens)</target>
+      </trans-unit>
+      <trans-unit id="styles.colorTokens.introtext" approved="yes">
+        <source><![CDATA[Surfaces used in the TYPO3 Backend, for <strong>internal usage only</strong>.]]></source>
+        <target state="final"><![CDATA[ພື້ນຜິວທີ່ໃຊ້ໃນລະບົບຫຼັງບ້ານຂອງ TYPO3, ສຳລັບ <strong>ໃຊ້ພາຍໃນເທົ່ານັ້ນ</strong>.]]></target>
+      </trans-unit>
+      <!-- Styles: Accent and State -->
+      <trans-unit id="styles.accentAndState.headline" approved="yes">
+        <source>Accent and State</source>
+        <target state="final">ສີເນັ້ນ ແລະ ສະຖານະ</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.introtext" approved="yes">
+        <source><![CDATA[Stateful color variants used for interactive elements in the TYPO3 Backend, for <strong>internal usage only</strong>. These include accent colors (primary, secondary) and semantic state colors (info, success, warning, danger, notice) with their respective default, hover, focus, and disabled variants.]]></source>
+        <target state="final"><![CDATA[ຮູບແບບສີຕາມສະຖານະທີ່ໃຊ້ສຳລັບອົງປະກອບຕອບໂຕ້ໃນລະບົບຫຼັງບ້ານຂອງ TYPO3, ສຳລັບ <strong>ໃຊ້ພາຍໃນເທົ່ານັ້ນ</strong>. ເຊິ່ງລວມມີ ສີເນັ້ນ (ຫຼັກ, ຮອງ) ແລະ ສີຕາມຄວາມໝາຍຂອງສະຖານະ (ຂໍ້ມູນ, ສຳເລັດ, ເຕືອນ, ອັນຕະລາຍ, ແຈ້ງໃຫ້ຊາບ) ພ້ອມກັບຮູບແບບຕ່າງໆ ເຊັ່ນ ມາດຕະຖານ, ເມື່ອວາງເມົາສ໌ເທິງ, ເມື່ອຖືກໂຟກັດ ແລະ ເມື່ອປິດການໃຊ້ງານ.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.accentColors.headline" approved="yes">
+        <source>Accent Colors</source>
+        <target state="final">ສີເນັ້ນ</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.stateColors.headline" approved="yes">
+        <source>State Colors</source>
+        <target state="final">ສີສະຖານະ</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.decorativeColors.headline" approved="yes">
+        <source>Decorative Colors</source>
+        <target state="final">ສີປະດັບ</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.decorativeColors.text" approved="yes">
+        <source>Plain color variants without semantic meaning. Use these for visual distinction only, such as workspace indicators, category tags, or user-assigned labels where colors are decorative rather than communicating status.</source>
+        <target state="final">ຮູບແບບສີທຳມະດາທີ່ບໍ່ມີຄວາມໝາຍທາງດ້ານເນື້ອຫາ. ໃຊ້ສິ່ງເຫຼົ່ານີ້ເພື່ອການຈຳແນກທາງສາຍຕາເທົ່ານັ້ນ, ເຊັ່ນ ຕົວບົ່ງຊີ້ພື້ນທີ່ເຮັດວຽກ, ແທັກໝວດໝູ່, ຫຼື ປ້າຍກຳກັບທີ່ຜູ້ໃຊ້ກຳນົດເອງ ເຊິ່ງສີແມ່ນເພື່ອການປະດັບ ຫຼາຍກວ່າການສື່ສານສະຖານະ.</target>
+      </trans-unit>
+      <!-- Styles: Icons -->
+      <trans-unit id="styles.icons.headline" approved="yes">
+        <source>Icons</source>
+        <target state="final">ໄອຄອນ</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.introtext" approved="yes">
+        <source>Icons can be used in backend modules. TYPO3 automatically sends the corresponding HTML output code.</source>
+        <target state="final">ໄອຄອນສາມາດນຳໃຊ້ໃນໂມດູນຫຼັງບ້ານໄດ້. TYPO3 ຈະສົ່ງໂຄ້ດ HTML ທີ່ກ່ຽວຂ້ອງອອກມາໃຫ້ໂດຍອັດຕະໂນມັດ.</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າມາດຕະຖານ</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.overlay.headline" approved="yes">
+        <source>Overlay</source>
+        <target state="final">ໄອຄອນທັບຊ້ອນ</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.overview.headline" approved="yes">
+        <source>Overview</source>
+        <target state="final">ພາບລວມ</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">ຂະໜາດ</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.headline" approved="yes">
+        <source>Usage</source>
+        <target state="final">ການນຳໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.bitmap.headline" approved="yes">
+        <source>Bitmap</source>
+        <target state="final">ບິດແມັບ (Bitmap)</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.implementation" approved="yes">
+        <source>Implementation in Fluid via ViewHelper:</source>
+        <target state="final">ການນຳໃຊ້ໃນ Fluid ຜ່ານ ViewHelper:</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.registration" approved="yes">
+        <source>Registration:</source>
+        <target state="final">ການລົງທະບຽນ:</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.svg.headline" approved="yes">
+        <source>SVG</source>
+        <target state="final">SVG</target>
+      </trans-unit>
+      <!-- Styles: Shadows -->
+      <trans-unit id="styles.shadows.headline" approved="yes">
+        <source>Shadows</source>
+        <target state="final">ເງົາ</target>
+      </trans-unit>
+      <trans-unit id="styles.shadows.introtext" approved="yes">
+        <source><![CDATA[Shadows used in the TYPO3 Backend, for <strong>internal usage only</strong>.]]></source>
+        <target state="final"><![CDATA[ເງົາທີ່ໃຊ້ໃນລະບົບຫຼັງບ້ານຂອງ TYPO3, ສຳລັບ <strong>ໃຊ້ພາຍໃນເທົ່ານັ້ນ</strong>.]]></target>
+      </trans-unit>
+      <!-- Styles: Surfaces -->
+      <trans-unit id="styles.surfaces.headline" approved="yes">
+        <source>Surfaces</source>
+        <target state="final">ພື້ນຜິວ (Surfaces)</target>
+      </trans-unit>
+      <trans-unit id="styles.surfaces.introtext" approved="yes">
+        <source><![CDATA[Surfaces used in the TYPO3 Backend, for <strong>internal usage only</strong>.]]></source>
+        <target state="final"><![CDATA[ພື້ນຜິວທີ່ໃຊ້ໃນລະບົບຫຼັງບ້ານຂອງ TYPO3, ສຳລັບ <strong>ໃຊ້ພາຍໃນເທົ່ານັ້ນ</strong>.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">ສີ</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.natural.headline" approved="yes">
+        <source>Natural</source>
+        <target state="final">ແບບທຳມະຊາດ</target>
+      </trans-unit>
+      <!-- Styles: Typography -->
+      <trans-unit id="styles.typography.headline" approved="yes">
+        <source>Typography</source>
+        <target state="final">ການຈັດຮູບແບບຕົວອັກສອນ</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.introtext" approved="yes">
+        <source>Font styles, sizes, weights, and text formatting guidelines used throughout the TYPO3 backend.</source>
+        <target state="final">ຮູບແບບຕົວອັກສອນ, ຂະໜາດ, ຄວາມໜາ ແລະ ແນວທາງການຈັດຮູບແບບຂໍ້ຄວາມ ທີ່ໃຊ້ໃນລະບົບຫຼັງບ້ານຂອງ TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.headings.headline" approved="yes">
+        <source>Headings</source>
+        <target state="final">ຫົວຂໍ້</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.headings.text" approved="yes">
+        <source><![CDATA[Headline "H1" is the main headline within each backend module. Only added once to every backend page.<br>Headline "H2" is the headline for every section in backend modules. Place above each section and use several times.<br>Headline "H3" can be used to split section content into logical units. Place in between paragraphs within section.<br>Headline "H4" might be used to split off meta / footer information.]]></source>
+        <target state="final"><![CDATA[ຫົວຂໍ້ "H1" ແມ່ນຫົວຂໍ້ຫຼັກພາຍໃນແຕ່ລະໂມດູນຫຼັງບ້ານ. ໃຊ້ພຽງຄັ້ງດຽວໃນແຕ່ລະໜ້າ.<br>ຫົວຂໍ້ "H2" ແມ່ນຫົວຂໍ້ສຳລັບແຕ່ລະສ່ວນໃນໂມດູນ. ວາງໄວ້ເທິງແຕ່ລະສ່ວນ ແລະ ໃຊ້ໄດ້ຫຼາຍຄັ້ງ.<br>ຫົວຂໍ້ "H3" ໃຊ້ເພື່ອແບ່ງເນື້ອໃນໃນສ່ວນນັ້ນອອກເປັນກຸ່ມທີ່ຊັດເຈນ. ວາງໄວ້ລະຫວ່າງຫຍໍ້ໜ້າ.<br>ຫົວຂໍ້ "H4" ອາດຈະໃຊ້ສຳລັບການແບ່ງຂໍ້ມູນ meta ຫຼື ຂໍ້ມູນສ່ວນທ້າຍ.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.kbd.headline" approved="yes">
+        <source>Keyboard input</source>
+        <target state="final">ການປ້ອນຂໍ້ມູນຜ່ານຄີບອດ</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.kbd.text" approved="yes">
+        <source><![CDATA[Use the <code>kbd</code> element to mark up keyboard input or shortcuts. Nest <code>kbd</code> elements to compose key combinations.]]></source>
+        <target state="final"><![CDATA[ໃຊ້ແທັກ <code>kbd</code> ເພື່ອໝາຍເຖິງການປ້ອນຂໍ້ມູນຜ່ານຄີບອດ ຫຼື ຄີລັດ. ຊ້ອນແທັກ <code>kbd</code> ເພື່ອປະກອບເປັນປຸ່ມກົດປະສົມ.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.kbd.sizing.text" approved="yes">
+        <source><![CDATA[Keys scale with the surrounding font size — sized in <code>em</code>, so they fit naturally inside headings, body text and small text without per-context overrides.]]></source>
+        <target state="final"><![CDATA[ຂະໜາດຂອງປຸ່ມຈະປັບຕາມຂະໜາດຕົວອັກສອນທີ່ຢູ່ອ້ອມຂ້າງ — ໂດຍກຳນົດຂະໜາດເປັນ <code>em</code>, ເພື່ອໃຫ້ມັນເຂົ້າກັນໄດ້ຢ່າງກົມກືນພາຍໃນຫົວຂໍ້, ເນື້ອໃນ ແລະ ຂໍ້ຄວາມຂະໜາດນ້ອຍ ໂດຍບໍ່ຕ້ອງຕັ້ງຄ່າແທນທີ່ຕາມສະພາບແວດລ້ອມ.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.links.headline" approved="yes">
+        <source>Links</source>
+        <target state="final">ລິ້ງ</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.headline" approved="yes">
+        <source>Lists</source>
+        <target state="final">ລາຍການ</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.text" approved="yes">
+        <source><![CDATA[By default, ordered and unordered lists are formatted with bullets and decimals. By adding <code>class="list-unstyled"</code> to the ol or ul tag, it is possible to structure content in list form without the typical list styling.]]></source>
+        <target state="final"><![CDATA[ໂດຍມາດຕະຖານ, ລາຍການແບບມີລຳດັບ ແລະ ບໍ່ມີລຳດັບຈະຖືກຈັດຮູບແບບດ້ວຍຈຸດ ຫຼື ຕົວເລກ. ໂດຍການເພີ່ມ <code>class="list-unstyled"</code> ໃຫ້ກັບແທັກ ol ຫຼື ul, ທ່ານສາມາດຈັດໂຄງສ້າງເນື້ອໃນເປັນແບບລາຍການ ໂດຍທີ່ບໍ່ມີຮູບແບບລາຍການມາດຕະຖານໄດ້.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.ordered.headline" approved="yes">
+        <source>Ordered list</source>
+        <target state="final">ລາຍການແບບມີລຳດັບ</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.unordered.headline" approved="yes">
+        <source>Unordered list</source>
+        <target state="final">ລາຍການແບບບໍ່ມີລຳດັບ</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.paragraph.headline" approved="yes">
+        <source>Paragraph</source>
+        <target state="final">ຫຍໍ້ໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.smallText.headline" approved="yes">
+        <source>Small text</source>
+        <target state="final">ຂໍ້ຄວາມຂະໜາດນ້ອຍ</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.smallText.text" approved="yes">
+        <source>Footer information, small notices can be wrapped in small text tag.</source>
+        <target state="final">ຂໍ້ມູນສ່ວນທ້າຍ ຫຼື ຂໍ້ຄວາມແຈ້ງເຕືອນນ້ອຍໆ ສາມາດໃຊ້ແທັກ small text ຫຸ້ມໄວ້ໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.textColor.headline" approved="yes">
+        <source>Text color</source>
+        <target state="final">ສີຂໍ້ຄວາມ</target>
+      </trans-unit>
+      <trans-unit id="elements.color.valid" approved="yes">
+        <source>Valid (LLL)</source>
+        <target state="final">ຖືກຕ້ອງ (LLL)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
