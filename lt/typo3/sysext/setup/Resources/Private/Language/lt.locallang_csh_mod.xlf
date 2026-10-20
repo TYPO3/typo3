@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814989" source-language="en" datatype="plaintext" original="EXT:setup/Resources/Private/Language/locallang_csh_mod.xlf" date="2011-10-17T20:22:37Z" product-name="setup" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>User &gt; Setup module</source>
+        <target state="final">Vartotojas &gt;  Nustatymų modulis</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>The Setup module allows the backend user to customize TYPO3 for his own login sessions. This includes the backend language and various other interface features.</source>
+        <target state="final">Nustatymų modulis leidžia galutiniam vartotojui pritaikyti TYPO3 savo prisijungimo sesijoms. Tai apima galutinio vartotojo kalbą ir įvairias kitas sąsajos funkcijas.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>&lt;b&gt;Notice [For Admins]:&lt;/b&gt; These settings can all be overridden or have their default values changed by "User TSconfig". To read more about this concept, see the link below!</source>
+        <target state="final">&lt;b&gt;Pranešimas [administratoriams]:&lt;/b&gt; Šiuos nustatymus galima pakeisti arba pakeisti jų numatytuosius vertes naudodami „User TSconfig“. Norėdami sužinoti daugiau apie šią koncepciją, spustelėkite žemiau esančią nuorodą!</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" approved="yes">
+        <source>User TSconfig SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Setup/Index.html</source>
+        <target state="final">Vartotojo TSconfig SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Setup/Index.html</target>
+      </trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:setup/Resources/Public/Images/cshimages/setup8.png,
+EXT:setup/Resources/Public/Images/cshimages/setup7.png</source>
+				
+			<target state="final">EXT:setup/Resources/Public/Images/cshimages/setup8.png,
+EXT:setup/Resources/Public/Images/cshimages/setup7.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>The Setup module is selected in the left menu.
+This is how the Setup module interface looks like - a list of options to configure.</source>
+			<target state="final">Kairiajame meniu pasirinkite modulį „Setup“ (Nustatymai).
+Taip atrodo modulio „Setup“ (Nustatymai) sąsaja – konfigūruotinų parinkčių sąrašas.</target></trans-unit>
+      <trans-unit id="language.alttitle" resname="language.alttitle" approved="yes">
+        <source>Backend Language selection</source>
+        <target state="final">Backend Kalbos pasirinkimas</target>
+      </trans-unit>
+      <trans-unit id="language.description" resname="language.description" approved="yes">
+        <source>Select the backend language you prefer. Most parts of TYPO3s backend (for regular users) are translated into other languages.</source>
+        <target state="final">Pasirinkite pageidaujamą backend kalbą. Didžioji dalis TYPO3 backend (įprastiems vartotojams) yra išversta į kitas kalbas.</target>
+      </trans-unit>
+      <trans-unit id="language.details" resname="language.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Warning [technical]:&lt;/b&gt; If TYPO3 is not configured to use a single character set (through $TYPO3_CONF_VARS[BE][forceCharset]) then all data entered in the backend is submitted in the character set of the selected backend language. This leads to inconsistent data storage if some users are using the backend in Russian and others in English which uses different character sets.
+The solution clearly is to set the configuration option mentioned above to a value like "utf-8". This must be done by the developers responsible for the whole system configuration.</source>
+			<target state="final">&lt;b&gt;Įspėjimas [techninis]:&lt;/b&gt; Jei TYPO3 nėra sukonfigūruotas naudoti vieną simbolių rinkinį (per $TYPO3_CONF_VARS[BE][forceCharset]), tada visi įvesti duomenys yra pateikiami pasirinktos backend kalbos simbolių rinkiniu. Tai veda prie nenuoseklaus duomenų saugojimo, jei kai kurie vartotojai naudoja backend rusų kalba, o kiti – anglų kalba, kurios naudoja skirtingus simbolių rinkinius.
+Sprendimas aiškiai yra nustatyti minėtą konfigūracijos parinktį į vertę, pavyzdžiui, „utf-8“. Tai turi padaryti už visą sistemos konfigūraciją atsakingi kūrėjai.</target></trans-unit>
+      <trans-unit id="_language.image" resname="_language.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/lang.png</source>
+        <target state="final">EXT:setup/Resources/Public/Images/cshimages/lang.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="language.image_descr" resname="language.image_descr" approved="yes">
+        <source>TYPO3 is translated into around 40 languages. English is the default language and all labels must be available in English first and foremost. This screenshot shows translations for Hebrew, Arabic, Russian and Chinese.</source>
+        <target state="final">TYPO3 yra išverstas į maždaug 40 kalbų. Anglų kalba yra numatytoji kalba, todėl visos etiketės pirmiausia turi būti prieinamos anglų kalba. Šiame ekrano vaizde matomi vertimai į hebrajų, arabų, rusų ir kinų kalbas.</target>
+      </trans-unit>
+      <trans-unit id="option_startModule.alttitle" resname="option_startModule.alttitle" approved="yes">
+        <source>Start module</source>
+        <target state="final">Pradėti modulį</target>
+      </trans-unit>
+      <trans-unit id="option_startModule.description" resname="option_startModule.description" xml:space="preserve" approved="yes">
+				<source>Let you select the module that is called when you login in the Backend
+The default module is "About Modules".</source>
+			<target state="final">Leidžia pasirinkti modulį, kuris yra iškviečiamas prisijungus prie Backend.
+Numatytasis modulis yra „Apie modulius“.</target></trans-unit>
+      <trans-unit id="option_helpText.alttitle" resname="option_helpText.alttitle" approved="yes">
+        <source>Show help text when applicable</source>
+        <target state="final">Rodyti pagalbos tekstą, kai taikoma</target>
+      </trans-unit>
+      <trans-unit id="option_helpText.description" resname="option_helpText.description" approved="yes">
+        <source>If set, some help texts will appear by default. Applies to the "Legend" text in the Web&gt;Access module for instance.</source>
+        <target state="final">Jei nustatoma, kai kurie pagalbiniai tekstai bus rodomi pagal numatytuosius nustatymus. Pavyzdžiui, tai taikoma „Legend“ tekstui modulyje „Web&gt;Access“.</target>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.alttitle" resname="option_maxTitleLen.alttitle" approved="yes">
+        <source>Maximum title length</source>
+        <target state="final">Maksimalus pavadinimo ilgis</target>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.description" resname="option_maxTitleLen.description" approved="yes">
+        <source>TYPO3 will often crop long titles of records etc. so only the first X characters are shown. Often the number of shown characters depends on this variable. For instance the length of page titles in the page tree is determined by this value.</source>
+        <target state="final">TYPO3 dažnai sutrumpina ilgus įrašų pavadinimus ir pan., todėl rodomi tik pirmieji X simboliai. Dažnai rodomų simbolių skaičius priklauso nuo šio kintamojo. Pavyzdžiui, puslapių medžio puslapių pavadinimų ilgis nustatomas pagal šią vertę.</target>
+      </trans-unit>
+      <trans-unit id="_option_maxTitleLen.image" resname="_option_maxTitleLen.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/setup6.png</source>
+        <target state="final">EXT:setup/Resources/Public/Images/cshimages/setup6.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.image_descr" resname="option_maxTitleLen.image_descr" approved="yes">
+        <source>In this case the Maximum Title length is set to 10 - and the result is that titles in the page tree - as well as other places in the backend - will be cropped after 10 characters, then suffixed by "...". The default value is "30".</source>
+        <target state="final">Šiuo atveju maksimalus pavadinimo ilgis nustatytas kaip 10 – ir rezultatas yra toks, kad pavadinimai puslapio medyje, taip pat kitose vietose užkulisiuose, bus sutrumpinti po 10 simbolių, o po to bus pridėtas priesaga „...“. Numatytasis vertė yra „30“.</target>
+      </trans-unit>
+      <trans-unit id="option_copyLevels.alttitle" resname="option_copyLevels.alttitle" approved="yes">
+        <source>Recursive Copy</source>
+        <target state="final">Rekursyvus kopijavimas</target>
+      </trans-unit>
+      <trans-unit id="option_copyLevels.description" resname="option_copyLevels.description" approved="yes">
+        <source>When you copy a page, subpages can also be copied along if you set this option. The number you set here defines the number of levels under a page to include in a copy operation.</source>
+        <target state="final">Kai kopijuojate puslapį, subpuslapiai taip pat gali būti kopijuojami, jei nustatysite šią parinktį. Čia nustatytas skaičius apibrėžia puslapio lygių skaičių, kuris bus įtrauktas į kopijavimo operaciją.</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.alttitle" resname="option_edit_RTE.alttitle" approved="yes">
+        <source>Enable Rich Text Editor</source>
+        <target state="final">Įjungti išplėstinį teksto redaktorių</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.description" resname="option_edit_RTE.description" approved="yes">
+        <source>If set, the Rich Text Editor in TYPO3 will be enabled for you. Normally you wouldn't want to disable this option.</source>
+        <target state="final">Jei ši parinktis bus įjungta, TYPO3 sistemoje bus įjungtas išplėstinis teksto redaktorius. Paprastai šios parinkties nereikėtų išjungti.</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.details" resname="option_edit_RTE.details" approved="yes">
+        <source>A Rich Text Editor (RTE) means that a text editing field has buttons for making selected text bold, italic etc. Whether a RTE is available also depends on factors like the browser you are using and which extensions are installed. Finally RTEs are applied to only a few record fields. The most well known example would be the Text field of a Content Element.</source>
+        <target state="final">Turtingas teksto redaktorius (RTE) reiškia, kad teksto redagavimo lauke yra mygtukai, kuriais galima paryškinti, pasukti kursyvu ir pan. RTE prieinamumas taip pat priklauso nuo tokių veiksnių kaip naudojama naršyklė ir įdiegtos plėtinės. Galiausiai RTE taikomi tik keliems įrašų laukams. Geriausiai žinomas pavyzdys būtų turinio elemento teksto laukas.</target>
+      </trans-unit>
+      <trans-unit id="_option_edit_RTE.image" resname="_option_edit_RTE.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/rte.png</source>
+        <target state="final">EXT:setup/Resources/Public/Images/cshimages/rte.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.alttitle" resname="option_edit_docModuleUpload.alttitle" approved="yes">
+        <source>Enable File Uploads in editing forms</source>
+        <target state="final">Įjunkite failų įkėlimą redagavimo formose</target>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.description" resname="option_edit_docModuleUpload.description" approved="yes">
+        <source>This option will enable an "Upload" box for each field in TYPO3 records where you can attach a file or image. Most likely you don't want to disable this since it is usually just a nice thing to have.</source>
+        <target state="final">Ši parinktis įjungs „Įkelti“ langelį kiekvienam TYPO3 įrašų laukui, kuriame galėsite pridėti failą ar paveikslėlį. Greičiausiai nenorėsite išjungti šios parinkties, nes ji paprastai yra naudinga.</target>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.details" resname="option_edit_docModuleUpload.details" approved="yes">
+        <source>If you disable the Upload box there is still the TYPO3 Element Browser left for attaching files and images.</source>
+        <target state="final">Jei išjungiate įkėlimo langelį, vis dar galite naudoti TYPO3 elementų naršyklę, kad pridėtumėte failus ir vaizdus.</target>
+      </trans-unit>
+      <trans-unit id="_option_edit_docModuleUpload.image" resname="_option_edit_docModuleUpload.image" approved="yes">
+        <source>EXT:setup/Resources/Public/Images/cshimages/setup12.png</source>
+        <target state="final">EXT:setup/Resources/Public/Images/cshimages/setup12.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="option_showHiddenFilesAndFolders.description" resname="option_showHiddenFilesAndFolders.description" approved="yes">
+        <source>Defines whether you want to list all the hidden files and folders (beginning with a .) in the filelist and element browser.</source>
+        <target state="final">Nustato, ar norite, kad failų sąraše ir elementų naršyklėje būtų rodomi visi paslėpti failai ir aplankai (pradedant simboliu .).</target>
+      </trans-unit>
+      <trans-unit id="option_showHiddenFilesAndFolders.details" resname="option_showHiddenFilesAndFolders.details" approved="yes">
+        <source>By default all hidden files are not displayed in filelists and element browsers and link pickers. This option enables to additionally show the hidden files.</source>
+        <target state="final">Pagal numatytuosius nustatymus visi paslėpti failai nerodomi failų sąrašuose, elementų naršyklėse ir nuorodų pasirinkimo priemonėse. Ši parinktis leidžia papildomai rodyti paslėptus failus.</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_realName.alttitle" resname="option_beUser_realName.alttitle" approved="yes">
+        <source>Your real name</source>
+        <target state="final">Jūsų tikrasis vardas</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_realName.description" resname="option_beUser_realName.description" approved="yes">
+        <source>Enter your real name here.</source>
+        <target state="final">Įveskite čia savo tikrą vardą.</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_email.alttitle" resname="option_beUser_email.alttitle" approved="yes">
+        <source>Your email address</source>
+        <target state="final">Jūsų el. pašto adresas</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_email.description" resname="option_beUser_email.description" approved="yes">
+        <source>Make sure this is a valid email address for you. This is the contact address that the backend administrator will use if he needs to contact you. Also, the TYPO3 system might need to send you messages at various times and this will be the recipient address.</source>
+        <target state="final">Įsitikinkite, kad tai yra jūsų galiojantis el. pašto adresas. Tai yra kontaktinis adresas, kurį backend administratorius naudos, jei jam reikės su jumis susisiekti. Be to, TYPO3 sistema gali prireikti jums siųsti pranešimus įvairiais atvejais, ir tai bus gavėjo adresas.</target>
+      </trans-unit>
+      <trans-unit id="option_emailMeAtLogin.alttitle" resname="option_emailMeAtLogin.alttitle" approved="yes">
+        <source>Notify by login</source>
+        <target state="final">Pranešti prisijungus</target>
+      </trans-unit>
+      <trans-unit id="option_emailMeAtLogin.description" resname="option_emailMeAtLogin.description" approved="yes">
+        <source>If you set this option you will receive an email from TYPO3 each time you (or "someone") logs in using your username. You might like to receive such a "warning" as a security measure so you will know if someone else picks up your password and uses your account.</source>
+        <target state="final">Jei nustatysite šią parinktį, kiekvieną kartą, kai jūs (arba „kas nors“) prisijungsite naudodami savo vartotojo vardą, gausite el. laišką iš TYPO3. Galbūt norėsite gauti tokį „įspėjimą“ kaip saugumo priemonę, kad žinotumėte, jei kas nors kitas pasisavins jūsų slaptažodį ir naudosis jūsų paskyra.</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.alttitle" resname="option_newPassword.alttitle" approved="yes">
+        <source>Change password</source>
+        <target state="final">Keisti slaptažodį</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.description" resname="option_newPassword.description" approved="yes">
+        <source>Enter a new password for your backend account</source>
+        <target state="final">Įveskite naują slaptažodį savo backend paskyrai</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.details" resname="option_newPassword.details" approved="yes">
+        <source>The passwords are encrypted to an MD5 hash when you leave the field so no plain text password is sent over the wire.</source>
+        <target state="final">Kai paliekate lauką, slaptažodžiai yra šifruojami į MD5 hash, todėl per laidą nesiunčiami paprasto teksto slaptažodžiai.</target>
+      </trans-unit>
+      <trans-unit id="option_newPasswordAgain.alttitle" resname="option_newPasswordAgain.alttitle" approved="yes">
+        <source>Change password, confirm</source>
+        <target state="final">Keisti slaptažodį, patvirtinti</target>
+      </trans-unit>
+      <trans-unit id="option_newPasswordAgain.description" resname="option_newPasswordAgain.description" approved="yes">
+        <source>Confirm the new password by entering it again, exactly like above. If the two new passwords do not match, the password will not be changed.</source>
+        <target state="final">Patvirtinkite naują slaptažodį, įvesdami jį dar kartą, kaip nurodyta aukščiau. Jei du nauji slaptažodžiai nesutampa, slaptažodis nebus pakeistas.</target>
+      </trans-unit>
+      <trans-unit id="reset.alttitle" resname="reset.alttitle" approved="yes">
+        <source>Reset all Values to default</source>
+        <target state="final">Atstatyti visas reikšmes į numatytąsias</target>
+      </trans-unit>
+      <trans-unit id="reset.description" resname="reset.description" approved="yes">
+        <source>If you select this option all settings in this module will be reset to the default settings of the system.</source>
+        <target state="final">Jei pasirinksite šią parinktį, visi šio modulio nustatymai bus atkurti į sistemos numatytuosius nustatymus.</target>
+      </trans-unit>
+      <trans-unit id="reset.details" resname="reset.details" approved="yes">
+        <source>This does not apply to user name, email and password settings of course.</source>
+        <target state="final">Tai, žinoma, netaikoma vartotojo vardui, el. pašto adresui ir slaptažodžiui.</target>
+      </trans-unit>
+      <trans-unit id="simuser.alttitle" resname="simuser.alttitle" approved="yes">
+        <source>Simulate backend user</source>
+        <target state="final">Simuliuoti galutinį vartotoją</target>
+      </trans-unit>
+      <trans-unit id="simuser.description" resname="simuser.description" approved="yes">
+        <source>This option allows "admin"-users to change settings for another backend user in the system.</source>
+        <target state="final">Ši parinktis leidžia „admin“ vartotojams keisti kito sistemos vartotojo nustatymus.</target>
+      </trans-unit>
+      <trans-unit id="option_enableInstallTool.alttitle" resname="option_enableInstallTool.alttitle" approved="yes">
+        <source>Admin control for re-enabling Install Tool access</source>
+        <target state="final">Administratoriaus kontrolė, skirta vėl įjungti prieigą prie įdiegimo įrankio</target>
+      </trans-unit>
+      <trans-unit id="option_enableInstallTool.description" resname="option_enableInstallTool.description" approved="yes">
+        <source>By clicking this button, a file typo3conf/ENABLE_INSTALL_TOOL is created (or removed if it already exists). It unlocks the access to the Install Tool (password is still needed!) and will be removed automatically after 1 hour.</source>
+        <target state="final">Paspaudus šį mygtuką, bus sukurtas failas typo3conf/ENABLE_INSTALL_TOOL (arba pašalintas, jei jis jau egzistuoja). Jis atrakina prieigą prie įdiegimo įrankio (vis dar reikalingas slaptažodis!) ir bus automatiškai pašalintas po 1 valandos.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
