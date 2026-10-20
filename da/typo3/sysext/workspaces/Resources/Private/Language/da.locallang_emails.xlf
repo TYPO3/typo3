@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815010" source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_emails.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="subject" resname="subject" approved="yes">
+        <source>TYPO3 Workspace Note: Stage Change for ###ELEMENT_NAME###</source>
+        <target state="final">TYPO3 Arbejdsrums note: Stadieændring for ###ELEMENT_NAME###</target>
+      </trans-unit>
+      <trans-unit id="message" resname="message" xml:space="preserve" approved="yes">
+				<source>At the TYPO3 site "###SITE_NAME###" (###SITE_URL###)
+in workspace "###WORKSPACE_TITLE###" (###WORKSPACE_UID###)
+the stage has changed for the element(s) "###RECORD_TITLE###" (###ELEMENT_NAME###) at location "###RECORD_PATH###" in the page tree:
+
+=&gt; ###NEXT_STAGE###
+
+User Comment:
+"###COMMENT###"
+
+State was changed by ###USER_FULLNAME### (username: ###USER_USERNAME###)</source>
+			<target state="final">For TYPO3 sitet "###SITE_NAME###" (###SITE_URL###)
+i arbejdsrum "###WORKSPACE_TITLE###" (###WORKSPACE_UID###)
+er stadiet ændret for element(erne) "###RECORD_TITLE###" (###ELEMENT_NAME###) som befinder sig under "###RECORD_PATH###" i sidetræet:
+
+=&gt; ###NEXT_STAGE###
+
+Bemærkning fra bruger:
+"###COMMENT###"
+
+Status blev ændret af ###USER_FULLNAME### (brugernavn: ###USER_USERNAME###)</target></trans-unit>
+    </body>
+  </file>
+</xliff>
