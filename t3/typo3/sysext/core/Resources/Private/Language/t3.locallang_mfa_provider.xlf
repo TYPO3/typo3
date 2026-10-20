@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf" date="2021-01-29T00:14:02Z" product-name="cms" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="totp.title">
+        <source>Time-based one-time password</source>
+        <target>crwdns132654:0crwdne132654:0</target>
+      </trans-unit>
+      <trans-unit id="totp.description">
+        <source>This provider allows to authenticate with a single-use passcode which is based on the current time.
+					Each code is only valid for 30 seconds. You need an OTP application or device, supporting such tokens.</source>
+        <target>crwdns297518:0crwdne297518:0</target>
+      </trans-unit>
+      <trans-unit id="totp.setupInstructions">
+        <source>The time-based one-time password provider enables you to strengthen your accounts' security by requiring a six-digit code on every login.
+					This provider is based on a shared secret, which will be exchanged between your OTP application (or device) and TYPO3. Each code takes the current time into account and is only valid for 30 seconds.
+
+					Setting up:
+					1. Scan the QR-code or directly enter the shared secret in your application or device
+					2. Add a specific name for this provider (optional)
+					3. Enter the generated six-digit code in the corresponding field
+					4. Submit the form to activate the provider
+
+					Note: In case your application supports otpauth:// URLs, you can retrieve the URL by clicking on the info button next to the shared secret.</source>
+        <target>crwdns378624:0crwdne378624:0</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.title">
+        <source>Recovery codes</source>
+        <target>crwdns132660:0crwdne132660:0</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.description">
+        <source>This provider allows to authenticate with a set of single-use passcodes, in case you lost your
+					primary MFA credentials, or just have no access to them temporarily.</source>
+        <target>crwdns134042:0crwdne134042:0</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.setupInstructions">
+        <source>Recovery codes are random eight-digit codes which can be used to authenticate, in case your lost your main authentication credentials. Each code is only valid once.
+					As soon as all recovery codes are exhausted, you're required to generate a new set. Therefore, periodically check the amount of remaining codes in the Edit / Change view of the provider.
+
+					Setting up:
+					1. Copy the recovery codes and store them at a safe place
+					2. Add a specific name for this provider (optional)
+					3. Submit the form to activate the provider - see below note
+
+					Note: Since the recovery codes are being encrypted and stored securely, this process can take some time.</source>
+        <target>crwdns132664:0crwdne132664:0</target>
+      </trans-unit>
+      <trans-unit id="totpInputLabel">
+        <source>Enter the generated six-digit code</source>
+        <target>crwdns134044:0crwdne134044:0</target>
+      </trans-unit>
+      <trans-unit id="totpInputHelp">
+        <source>This code should now be displayed on your device or in your application.</source>
+        <target>crwdns132668:0crwdne132668:0</target>
+      </trans-unit>
+      <trans-unit id="locked">
+        <source>The maximum attempts for this provider are exceeded. Please use another provider or contact your administrator.</source>
+        <target>crwdns390226:0crwdne390226:0</target>
+      </trans-unit>
+      <trans-unit id="edit.table.head">
+        <source>Provider information</source>
+        <target>crwdns132672:0crwdne132672:0</target>
+      </trans-unit>
+      <trans-unit id="edit.table.name">
+        <source>Name</source>
+        <target>crwdns132674:0crwdne132674:0</target>
+      </trans-unit>
+      <trans-unit id="edit.table.nameInputPlaceholder">
+        <source>Enter a name</source>
+        <target>crwdns132676:0crwdne132676:0</target>
+      </trans-unit>
+      <trans-unit id="edit.table.recoveryCodesLeft">
+        <source>Recovery codes left</source>
+        <target>crwdns132678:0crwdne132678:0</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUsed">
+        <source>Last used</source>
+        <target>crwdns132680:0crwdne132680:0</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUsed.default">
+        <source>Never</source>
+        <target>crwdns132682:0crwdne132682:0</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUpdated">
+        <source>Last updated</source>
+        <target>crwdns132684:0crwdne132684:0</target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate">
+        <source>Regenerate recovery codes</source>
+        <target>crwdns132686:0crwdne132686:0</target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate.description">
+        <source>
+					If you lost your recovery codes or just want to get fresh ones, you can
+					regenerate them by selecting the checkbox below. You've currently %d codes left.
+                </source>
+        <target>crwdns384242:0%dcrwdne384242:0</target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate.inputLabel">
+        <source>Regenerate recovery codes</source>
+        <target>crwdns132690:0crwdne132690:0</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1">
+        <source>Step 1</source>
+        <target>crwdns132692:0crwdne132692:0</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1a">
+        <source>Step 1a</source>
+        <target>crwdns132694:0crwdne132694:0</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1b">
+        <source>Step 1b</source>
+        <target>crwdns132696:0crwdne132696:0</target>
+      </trans-unit>
+      <trans-unit id="setup.step.2">
+        <source>Step 2</source>
+        <target>crwdns132698:0crwdne132698:0</target>
+      </trans-unit>
+      <trans-unit id="setup.step.3">
+        <source>Step 3</source>
+        <target>crwdns132700:0crwdne132700:0</target>
+      </trans-unit>
+      <trans-unit id="setup.qrCode.label">
+        <source>Scan the displayed QR code</source>
+        <target>crwdns132702:0crwdne132702:0</target>
+      </trans-unit>
+      <trans-unit id="setup.qrCode.help">
+        <source>Scan this code with your OTP application (e.g. Google Authenticator).</source>
+        <target>crwdns133476:0crwdne133476:0</target>
+      </trans-unit>
+      <trans-unit id="setup.secret.label">
+        <source>Copy the shared secret</source>
+        <target>crwdns132706:0crwdne132706:0</target>
+      </trans-unit>
+      <trans-unit id="setup.secret.help">
+        <source>You can also enter the shared secret manually in your OTP application or device.</source>
+        <target>crwdns134046:0crwdne134046:0</target>
+      </trans-unit>
+      <trans-unit id="setup.name.label">
+        <source>Enter a name (optional)</source>
+        <target>crwdns132710:0crwdne132710:0</target>
+      </trans-unit>
+      <trans-unit id="setup.name.help">
+        <source>Specify a custom name for this provider.</source>
+        <target>crwdns132712:0crwdne132712:0</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.InputLabel">
+        <source>Recovery codes</source>
+        <target>crwdns132714:0crwdne132714:0</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.InputHelp">
+        <source>Copy these codes and store them at a safe place.</source>
+        <target>crwdns132716:0crwdne132716:0</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.reloadTitle">
+        <source>Reload recovery codes</source>
+        <target>crwdns132718:0crwdne132718:0</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.reloadLabel">
+        <source>Reload</source>
+        <target>crwdns132720:0crwdne132720:0</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.noActiveProviders.title">
+        <source>Setup not possible</source>
+        <target>crwdns132722:0crwdne132722:0</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.noActiveProviders.message">
+        <source>Recovery codes are only meant as a fallback if you lose access to your main multi-factor authentication credentials. Therefore, please activate a comprehensive MFA provider first.</source>
+        <target>crwdns380838:0crwdne380838:0</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlButton.title">
+        <source>Show authentication URL</source>
+        <target>crwdns134158:0crwdne134158:0</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.title">
+        <source>Authentication URL</source>
+        <target>crwdns134160:0crwdne134160:0</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.description">
+        <source>In case you are not able to scan the QR code, but your OTP application supports
+					authentication URLs next to, or instead of plain shared secrets, you can copy and
+					paste the URL shown below. The URL contains some information like the issuer (this site)
+					and your email address or username. Most OTP applications will display this information
+					next to the generated codes.
+                </source>
+        <target>crwdns384244:0crwdne384244:0</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.ok">
+        <source>OK</source>
+        <target>crwdns134164:0crwdne134164:0</target>
+      </trans-unit>
+      <trans-unit id="auth.totp.inputLabel">
+        <source>Enter the six-digit code</source>
+        <target>crwdns134050:0crwdne134050:0</target>
+      </trans-unit>
+      <trans-unit id="auth.recoveryCodes.inputLabel">
+        <source>Enter an eight-digit recovery code</source>
+        <target>crwdns132726:0crwdne132726:0</target>
+      </trans-unit>
+      <trans-unit id="unlock.recoveryCodes.title">
+        <source>Your recovery codes were automatically updated!</source>
+        <target>crwdns132728:0crwdne132728:0</target>
+      </trans-unit>
+      <trans-unit id="unlock.recoveryCodes.message">
+        <source>Please copy and store them at a safe place: %s</source>
+        <target>crwdns132730:0%scrwdne132730:0</target>
+      </trans-unit>
+      <trans-unit id="update.recoveryCodes.title">
+        <source>Recovery codes successfully regenerated</source>
+        <target>crwdns132732:0crwdne132732:0</target>
+      </trans-unit>
+      <trans-unit id="update.recoveryCodes.message">
+        <source>Please copy and store them at a safe place: %s</source>
+        <target>crwdns132734:0%scrwdne132734:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
