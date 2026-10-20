@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815020" source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_mod.xlf" date="2011-10-17T20:22:38Z" product-name="workspaces" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="autopublishTask.name" resname="autopublishTask.name" approved="yes">
+        <source>Workspaces auto-publication (outdated, use the Symfony Command)</source>
+        <target state="final">Auto-publicación de espacios de trabajo (desactualizado, utiliza el comando Symfony)</target>
+      </trans-unit>
+      <trans-unit id="autopublishTask.description" resname="autopublishTask.description" approved="yes">
+        <source>This tasks checks any workspace that has a publication date set in the past and automatically publishes it.</source>
+        <target state="final">Estas tareas comprueban cualquier área de trabajo que tenga una fecha de publicación configurada en el pasado y la publica automáticamente.</target>
+      </trans-unit>
+      <trans-unit id="cleanupPreviewLinkTask.name" resname="cleanupPreviewLinkTask.name" approved="yes">
+        <source>Workspaces cleanup preview links (outdated, use the Symfony Command)</source>
+        <target state="final">Enlaces de previsualización del espacio de trabajo (desactualizados, usar el comando Symfony)</target>
+      </trans-unit>
+      <trans-unit id="cleanupPreviewLinkTask.description" resname="cleanupPreviewLinkTask.description" approved="yes">
+        <source>This task delete old preview links</source>
+        <target state="final">Esta tarea eliminar antiguos enlaces de vista previa</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
