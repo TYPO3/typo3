@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reactions/Resources/Private/Language/locallang_db.xlf" date="2022-08-15T20:22:32Z" product-name="reactions" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="reactions">
+        <source>Reactions</source>
+        <target>crwdns228473:0crwdne228473:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction">
+        <source>System Reactions</source>
+        <target>crwdns227507:0crwdne227507:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.name">
+        <source>Name</source>
+        <target>crwdns227509:0crwdne227509:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.name.description">
+        <source>Meaningful name of the reaction</source>
+        <target>crwdns227511:0crwdne227511:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.identifier">
+        <source>Identifier</source>
+        <target>crwdns227517:0crwdne227517:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.identifier.description">
+        <source>This is your unique reaction identifier within the TYPO3 URL</source>
+        <target>crwdns227519:0crwdne227519:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.secret">
+        <source>Secret</source>
+        <target>crwdns227521:0crwdne227521:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.secret.description">
+        <source>The secret is required to call the reaction from the outside. The secret can be re-created anytime, but will only be visible once (until the record got saved).</source>
+        <target>crwdns230901:0crwdne230901:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.secret.passwordGenerator">
+        <source>Generate secret token</source>
+        <target>crwdns227525:0crwdne227525:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.reaction_type">
+        <source>Reaction Type</source>
+        <target>crwdns227607:0crwdne227607:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reactions.reaction_type.description">
+        <source>Select the reaction type to be configured.</source>
+        <target>crwdns227609:0crwdne227609:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.reaction_type.select">
+        <source>Select a reaction</source>
+        <target>crwdns227611:0crwdne227611:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.reaction_type.create_record">
+        <source>Create database record</source>
+        <target>crwdns227613:0crwdne227613:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.impersonate_user">
+        <source>Impersonate User</source>
+        <target>crwdns227535:0crwdne227535:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.impersonate_user.description">
+        <source>Select the user with the appropriate access rights that is allowed to add a record of this type. If in doubt, use the CLI user.</source>
+        <target>crwdns227537:0crwdne227537:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.last_called">
+        <source>Last called</source>
+        <target>crwdns415611:0crwdne415611:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.last_status">
+        <source>Status of the last call</source>
+        <target>crwdns415613:0crwdne415613:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.last_failure">
+        <source>Reason the last call failed</source>
+        <target>crwdns415615:0crwdne415615:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.table_name">
+        <source>Table</source>
+        <target>crwdns227539:0crwdne227539:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.table_name.description">
+        <source>Select one tables to display the corresponding fields.</source>
+        <target>crwdns227541:0crwdne227541:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.table_name.select">
+        <source>Select a table</source>
+        <target>crwdns227543:0crwdne227543:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.storage_pid">
+        <source>Storage PID</source>
+        <target>crwdns227545:0crwdne227545:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.storage_pid.description">
+        <source>Select the page on which a new record is created on.</source>
+        <target>crwdns227547:0crwdne227547:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.fields">
+        <source>Fields</source>
+        <target>crwdns227549:0crwdne227549:0</target>
+      </trans-unit>
+      <trans-unit id="sys_reaction.fields.description">
+        <source>Which fields are offered depends on the selected table. Each field is either fixed to a value, filled from the request with a placeholder such as ${foo.bar} addressing a key of the payload the caller sends, or not set at all. A field that is not set, and one whose placeholder the request does not carry, keeps the default of the table.</source>
+        <target>crwdns415617:0${foo.bar}crwdne415617:0</target>
+      </trans-unit>
+      <trans-unit id="palette.config">
+        <source>Configuration</source>
+        <target>crwdns227553:0crwdne227553:0</target>
+      </trans-unit>
+      <trans-unit id="palette.config.description">
+        <source>General configuration of the reaction.</source>
+        <target>crwdns227771:0crwdne227771:0</target>
+      </trans-unit>
+      <trans-unit id="palette.additional">
+        <source>Additional configuration</source>
+        <target>crwdns227557:0crwdne227557:0</target>
+      </trans-unit>
+      <trans-unit id="palette.additional.description">
+        <source>Specific configuration for the selected reaction type</source>
+        <target>crwdns227559:0crwdne227559:0</target>
+      </trans-unit>
+      <trans-unit id="fieldMapElement.noFields">
+        <source>The selected table '%s' does not define any valid fields to be configured.</source>
+        <target>crwdns227561:0%scrwdne227561:0</target>
+      </trans-unit>
+      <trans-unit id="fieldMapElement.valueSource">
+        <source>Value source</source>
+        <target>crwdns415619:0crwdne415619:0</target>
+      </trans-unit>
+      <trans-unit id="fieldMapElement.valueSource.unset">
+        <source>Do not set</source>
+        <target>crwdns415621:0crwdne415621:0</target>
+      </trans-unit>
+      <trans-unit id="fieldMapElement.valueSource.fixed">
+        <source>Fixed value</source>
+        <target>crwdns415623:0crwdne415623:0</target>
+      </trans-unit>
+      <trans-unit id="fieldMapElement.valueSource.payload">
+        <source>Payload value</source>
+        <target>crwdns415625:0crwdne415625:0</target>
+      </trans-unit>
+      <trans-unit id="fieldMapElement.valueSource.payload.inverted">
+        <source>This field is displayed inverted, so the value 1 means the opposite of the label above.</source>
+        <target>crwdns415627:0crwdne415627:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
