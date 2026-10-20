@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/layout.xlf" date="2026-11-10T13:37:37Z" product-name="layout" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Manage page layout and structured content editing</source>
+        <target state="final">Gérer la mise en page et l'édition de contenu structuré</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>The Layout module provides a structured space for editing page content. It allows you to manage the visual layout of a page, arrange content elements in the correct columns, and maintain the overall structure of your site.</source>
+        <target state="final">Le module de mise en page fournit un espace structuré pour l'édition du contenu de page. Il vous permet de gérer la mise en page visuelle d'une page, de positionner les éléments de contenu dans les colonnes adéquates et de maintenir la structure globale de votre site.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Layout</source>
+        <target state="final">Mise en page</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
