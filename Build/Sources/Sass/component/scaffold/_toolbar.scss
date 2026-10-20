@@ -112,7 +112,11 @@
     --toolbar-item-link-hover-border-color: color-mix(in srgb, var(--toolbar-item-link-bg), var(--toolbar-item-link-color) 20%);
     --toolbar-item-link-focus-color: var(--toolbar-item-link-color);
     --toolbar-item-link-focus-bg: color-mix(in srgb, var(--toolbar-item-link-bg), var(--toolbar-item-link-color) 15%);
-    --toolbar-item-link-focus-border-color: color-mix(in srgb, var(--toolbar-item-link-bg), var(--toolbar-item-link-color) 25%);
+    --toolbar-item-link-focus-border-color:
+        light-dark(
+            color-mix(in srgb, var(--toolbar-item-link-bg), var(--toolbar-item-link-color) 85%),
+            color-mix(in srgb, var(--toolbar-item-link-bg), var(--toolbar-item-link-color) 55%)
+        );
 
     @include media-breakpoint-up('lg') {
         --toolbar-item-link-color-state: inherit;

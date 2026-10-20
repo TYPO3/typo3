@@ -30,7 +30,11 @@
     --modulemenu-action-hover-border-color: color-mix(in srgb, var(--modulemenu-bg), var(--modulemenu-color) 20%);
     --modulemenu-action-focus-color: var(--modulemenu-color);
     --modulemenu-action-focus-bg: color-mix(in srgb, var(--modulemenu-bg), var(--modulemenu-color) 10%);
-    --modulemenu-action-focus-border-color: color-mix(in srgb, var(--modulemenu-bg), var(--modulemenu-color) 25%);
+    --modulemenu-action-focus-border-color:
+        light-dark(
+            color-mix(in srgb, var(--modulemenu-bg), var(--modulemenu-color) 90%),
+            color-mix(in srgb, var(--modulemenu-bg), var(--modulemenu-color) 55%)
+        );
     --modulemenu-action-active-color: var(--modulemenu-color);
     --modulemenu-action-active-bg: color-mix(in srgb, var(--modulemenu-bg), var(--modulemenu-color) 10%);
     --modulemenu-action-active-border-color: color-mix(in srgb, var(--modulemenu-bg), var(--modulemenu-color) 25%);
@@ -98,7 +102,7 @@
     }
 
     &:focus-visible {
-        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--modulemenu-action-border-color-state, var(--modulemenu-action-border-color)), transparent var(--typo3-outline-transparent-mix));
+        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--modulemenu-action-focus-border-color), transparent var(--typo3-outline-transparent-mix));
     }
 
     &.modulemenu-action-active:not(:has(~ ul.collapse.show)) {
