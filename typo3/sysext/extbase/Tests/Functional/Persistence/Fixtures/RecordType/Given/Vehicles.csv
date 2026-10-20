@@ -1,0 +1,5 @@
+"tx_blogexample_domain_model_vehicle"
+,"uid","pid","title","type","tstamp","crdate"
+,1,2,"Untyped",,1500000000,1500000000
+,2,2,"Typed zero","0",1500000000,1500000000
+,3,2,"Sports car","car",1500000000,1500000000

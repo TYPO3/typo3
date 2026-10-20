@@ -1,0 +1,6 @@
+"tx_blogexample_domain_model_machine"
+,"uid","pid","title","type","battery","tstamp","crdate"
+,1,2,"Plain machine","machine","",1500000000,1500000000
+,2,2,"Lithium robot","robot","lithium",1500000000,1500000000
+,3,2,"Nickel robot","robot","nickel",1500000000,1500000000
+,4,2,"Drone","drone","",1500000000,1500000000
