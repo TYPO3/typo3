@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814992" source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_servicereport.xlf" date="2011-10-17T20:22:37Z" product-name="sv" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="report_title" resname="report_title" approved="yes">
+        <source>Installed Services</source>
+        <target state="final">Установленные сервисы</target>
+      </trans-unit>
+      <trans-unit id="report_description" resname="report_description" approved="yes">
+        <source>List of all installed services with information and status for each of them.</source>
+        <target state="final">Список всех установленных сервисов с информацией и статусом по каждому из них.</target>
+      </trans-unit>
+      <trans-unit id="report_explanation" resname="report_explanation" approved="yes">
+        <source>This report displays a list of installed services, with detailed information about each of them. The services are ordered by type, priority and quality. Unavailable services are highlighted with an error status.</source>
+        <target state="final">В этом отчете отображается список установленных служб с подробной информацией о каждой из них. Службы упорядочены по типу, приоритету и качеству. Недоступные сервисы подсвечиваются со статусом ошибки.</target>
+      </trans-unit>
+      <trans-unit id="externals_explanation" resname="externals_explanation" approved="yes">
+        <source>The "Externals" column shows which external programs a given service relies on. If such program is missing or not executable, the service will be unavailable. Search paths for executables are listed at the bottom of this report.</source>
+        <target state="final">Столбец «Внешние» показывает, на какие внешние программы полагается данный сервис. Если такая программа отсутствует или не выполняется, служба будет недоступна. Пути поиска исполняемых файлов перечислены в нижней части этого отчета.</target>
+      </trans-unit>
+      <trans-unit id="service_type" resname="service_type" approved="yes">
+        <source>Service type: %s</source>
+        <target state="final">Тип службы: %s</target>
+      </trans-unit>
+      <trans-unit id="service" resname="service" approved="yes">
+        <source>Service</source>
+        <target state="final">Служба</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description" approved="yes">
+        <source>Description</source>
+        <target state="final">Описание</target>
+      </trans-unit>
+      <trans-unit id="priority" resname="priority" approved="yes">
+        <source>Priority</source>
+        <target state="final">Приоритет</target>
+      </trans-unit>
+      <trans-unit id="quality" resname="quality" approved="yes">
+        <source>Quality</source>
+        <target state="final">Качество</target>
+      </trans-unit>
+      <trans-unit id="subtypes" resname="subtypes" approved="yes">
+        <source>Subtypes</source>
+        <target state="final">Подтипы</target>
+      </trans-unit>
+      <trans-unit id="os" resname="os" approved="yes">
+        <source>OS</source>
+        <target state="final">ОС</target>
+      </trans-unit>
+      <trans-unit id="externals" resname="externals" approved="yes">
+        <source>Externals</source>
+        <target state="final">Внешние инструменты</target>
+      </trans-unit>
+      <trans-unit id="available" resname="available" approved="yes">
+        <source>Available</source>
+        <target state="final">Доступно</target>
+      </trans-unit>
+      <trans-unit id="any" resname="any" approved="yes">
+        <source>Any</source>
+        <target state="final">Любой</target>
+      </trans-unit>
+      <trans-unit id="search_paths" resname="search_paths" approved="yes">
+        <source>Configured search paths for external programs</source>
+        <target state="final">Настроенные пути поиска для внешних программ</target>
+      </trans-unit>
+      <trans-unit id="path" resname="path" approved="yes">
+        <source>Path</source>
+        <target state="final">Путь</target>
+      </trans-unit>
+      <trans-unit id="valid" resname="valid" approved="yes">
+        <source>Valid</source>
+        <target state="final">Допустимо</target>
+      </trans-unit>
+      <trans-unit id="no_search_paths" resname="no_search_paths" approved="yes">
+        <source>No search paths configured.</source>
+        <target state="final">Пути поиска не настроены.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
