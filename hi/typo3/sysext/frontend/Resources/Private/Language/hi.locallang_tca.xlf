@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="pages.title_formlabel" approved="yes">
+        <source>Page Title</source>
+        <target state="final">पेज शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="pages.starttime_formlabel" approved="yes">
+        <source>Publish Date</source>
+        <target state="final">पब्लिश तारीख</target>
+      </trans-unit>
+      <trans-unit id="pages.endtime_formlabel" approved="yes">
+        <source>Expiration Date</source>
+        <target state="final">समाप्ति तारीख</target>
+      </trans-unit>
+      <trans-unit id="pages.fe_group_formlabel" approved="yes">
+        <source>Usergroup Access Rights</source>
+        <target state="final">यूजरग्रुप एक्सेस राइट्स</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden" approved="yes">
+        <source>Hide page</source>
+        <target state="final">पेज छुपाएँ</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_formlabel" approved="yes">
+        <source>Page</source>
+        <target state="final">पेज</target>
+      </trans-unit>
+      <trans-unit id="pages.hidden_checkbox_1_formlabel" approved="yes">
+        <source>Disable</source>
+        <target state="final">डिसएबल</target>
+      </trans-unit>
+      <trans-unit id="pages.layout.I.1" approved="yes">
+        <source>Layout 1</source>
+        <target state="final">लेआउट 1</target>
+      </trans-unit>
+      <trans-unit id="pages.layout.I.2" approved="yes">
+        <source>Layout 2</source>
+        <target state="final">लेआउट 2</target>
+      </trans-unit>
+      <trans-unit id="pages.layout.I.3" approved="yes">
+        <source>Layout 3</source>
+        <target state="final">लेआउट 3</target>
+      </trans-unit>
+      <trans-unit id="pages.extendToSubpages" approved="yes">
+        <source>Include Subpages</source>
+        <target state="final">उपपृष्ठों को शामिल करें</target>
+      </trans-unit>
+      <trans-unit id="pages.extendToSubpages_formlabel" approved="yes">
+        <source>Extend to Subpages</source>
+        <target state="final">एक्सटेंडस तो सब पेजिस</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_title" approved="yes">
+        <source>Navigation Title</source>
+        <target state="final">नेविगेशन शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_title_formlabel" approved="yes">
+        <source>Alternative Navigation Title</source>
+        <target state="final">वैकल्पिक नेविगेशन शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide" approved="yes">
+        <source>Hide in Menu</source>
+        <target state="final">मेनू में छुपाएं</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_formlabel" approved="yes">
+        <source>In Menus</source>
+        <target state="final">मेनुस में</target>
+      </trans-unit>
+      <trans-unit id="pages.nav_hide_checkbox_1_formlabel" approved="yes">
+        <source>Hide</source>
+        <target state="final">छुपाएँ</target>
+      </trans-unit>
+      <trans-unit id="pages.subtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">उपशीर्षक</target>
+      </trans-unit>
+      <trans-unit id="pages.subtitle_formlabel" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">उपशीर्षक</target>
+      </trans-unit>
+      <trans-unit id="pages.target" approved="yes">
+        <source>Target</source>
+        <target state="final">लक्ष्य</target>
+      </trans-unit>
+      <trans-unit id="pages.target_formlabel" approved="yes">
+        <source>Link Target</source>
+        <target state="final">लिंक टारगेट</target>
+      </trans-unit>
+      <trans-unit id="pages.url" approved="yes">
+        <source>URL</source>
+        <target state="final">URL</target>
+      </trans-unit>
+      <trans-unit id="pages.lastUpdated" approved="yes">
+        <source>Last Updated</source>
+        <target state="final">अंतिम अपडेट</target>
+      </trans-unit>
+      <trans-unit id="pages.lastUpdated_formlabel" approved="yes">
+        <source>Last Update</source>
+        <target state="final">अंतिम अपडेट</target>
+      </trans-unit>
+      <trans-unit id="pages.newUntil" approved="yes">
+        <source>'New' Until</source>
+        <target state="final">'नया' तक</target>
+      </trans-unit>
+      <trans-unit id="pages.newUntil_formlabel" approved="yes">
+        <source>Mark as 'New' Until</source>
+        <target state="final">मार्क एस 'न्यू' अंटिल</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout" approved="yes">
+        <source>Cache Expires</source>
+        <target state="final">कैश समाप्त होता है</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout_formlabel" approved="yes">
+        <source>Cache Lifetime</source>
+        <target state="final">कैश लाइफटाइम</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.1" approved="yes">
+        <source>1 min</source>
+        <target state="final">1 मिन</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.2" approved="yes">
+        <source>5 min</source>
+        <target state="final">5 मिन</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.3" approved="yes">
+        <source>15 min</source>
+        <target state="final">15 मिन</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.4" approved="yes">
+        <source>30 min</source>
+        <target state="final">30 मिन.</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.5" approved="yes">
+        <source>1 hour</source>
+        <target state="final">1 घंटा</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.6" approved="yes">
+        <source>4 hours</source>
+        <target state="final">4 घंटे</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.7" approved="yes">
+        <source>1 day</source>
+        <target state="final">1 दिन</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.8" approved="yes">
+        <source>2 days</source>
+        <target state="final">2 दिन</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.9" approved="yes">
+        <source>7 days</source>
+        <target state="final">7 दिन</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_timeout.I.10" approved="yes">
+        <source>1 month</source>
+        <target state="final">1 महिना</target>
+      </trans-unit>
+      <trans-unit id="pages.cache_tags" approved="yes">
+        <source>Cache Tags</source>
+        <target state="final">कैश टैग</target>
+      </trans-unit>
+      <trans-unit id="pages.editlock_formlabel" approved="yes">
+        <source>Editable for Admins Only</source>
+        <target state="final">सिर्फ एडमिन के लिए एडिटेबले</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.metadata" approved="yes">
+        <source>Metadata</source>
+        <target state="final">मेटाडेटा</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.files" approved="yes">
+        <source>Resources</source>
+        <target state="final">रिसोर्सिस</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.resources" approved="yes">
+        <source>Resources</source>
+        <target state="final">रिसोर्सिस</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">एक्सेस</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.options" approved="yes">
+        <source>Options</source>
+        <target state="final">ऑप्शंस</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.mount" approved="yes">
+        <source>Mount</source>
+        <target state="final">माउन्ट</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.shortcut" approved="yes">
+        <source>Shortcut</source>
+        <target state="final">शॉर्टकट</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.url" approved="yes">
+        <source>URL</source>
+        <target state="final">URL</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">एक्सटेंडेड</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.appearance" approved="yes">
+        <source>Appearance</source>
+        <target state="final">अपीयरेंस</target>
+      </trans-unit>
+      <trans-unit id="pages.tabs.behaviour" approved="yes">
+        <source>Behavior</source>
+        <target state="final">व्यवहार</target>
+      </trans-unit>
+      <trans-unit id="pages.no_search" approved="yes">
+        <source>Include in Search</source>
+        <target state="final">खोज में शामिल करें</target>
+      </trans-unit>
+      <trans-unit id="pages.no_search_formlabel" approved="yes">
+        <source>Include in Search</source>
+        <target state="final">सर्च में इंकलूड करे</target>
+      </trans-unit>
+      <trans-unit id="pages.no_search_checkbox_1_formlabel" approved="yes">
+        <source>Disable</source>
+        <target state="final">डिसएबल</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode" approved="yes">
+        <source>Shortcut Mode</source>
+        <target state="final">शॉर्टकट मोड</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode_formlabel" approved="yes">
+        <source>Shortcut Mode</source>
+        <target state="final">शॉर्टकट मोड</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode.I.0" approved="yes">
+        <source>Selected page</source>
+        <target state="final">सिलेक्टेड पेज</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode.I.1" approved="yes">
+        <source>First subpage of selected/current page</source>
+        <target state="final">सिलेक्टेड/करंट पेज का पहला सब पेज</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_mode.I.3" approved="yes">
+        <source>Parent page of selected/current page</source>
+        <target state="final">सिलेक्टेड/करंट पेज का पेरेन्ट पेज</target>
+      </trans-unit>
+      <trans-unit id="pages.shortcut_formlabel" approved="yes">
+        <source>Shortcut Target</source>
+        <target state="final">शॉर्टकट टारगेट</target>
+      </trans-unit>
+      <trans-unit id="pages.content_from_pid" approved="yes">
+        <source>Show content from this page instead</source>
+        <target state="final">इस पृष्ठ से सामग्री दिखाएं बजाय</target>
+      </trans-unit>
+      <trans-unit id="pages.content_from_pid_formlabel" approved="yes">
+        <source>Show Content from Page</source>
+        <target state="final">पृष्ठ से कंटेंट दिखाएँ</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid" approved="yes">
+        <source>Mount Point of</source>
+        <target state="final">माउंट पॉइंट ऑफ</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_formlabel" approved="yes">
+        <source>Mounted page</source>
+        <target state="final">माउन्टेड पेज</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol" approved="yes">
+        <source>Mount Point redirects to mounted page</source>
+        <target state="final">माउंट पॉइंट माउंटेड पेज को रीडायरेक्ट करता है</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol_formlabel" approved="yes">
+        <source>Mount Point Display Option</source>
+        <target state="final">माउंटिड पृष्ठ दिखाने का विकल्प</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol.I.0" approved="yes">
+        <source>Show this page</source>
+        <target state="final">इस पेज को दिखाएं</target>
+      </trans-unit>
+      <trans-unit id="pages.mount_pid_ol.I.1" approved="yes">
+        <source>Show the mounted page</source>
+        <target state="final">माउंटेड पेज को दिखाएं</target>
+      </trans-unit>
+      <trans-unit id="pages.abstract" approved="yes">
+        <source>Abstract</source>
+        <target state="final">एब्स्ट्रेक्ट</target>
+      </trans-unit>
+      <trans-unit id="pages.abstract_formlabel" approved="yes">
+        <source>Abstract</source>
+        <target state="final">एब्स्ट्रेक्ट</target>
+      </trans-unit>
+      <trans-unit id="pages.keywords_formlabel" approved="yes">
+        <source>Keywords</source>
+        <target state="final">की-वर्डस</target>
+      </trans-unit>
+      <trans-unit id="pages.author_formlabel" approved="yes">
+        <source>Author Name</source>
+        <target state="final">लेखक नाम:</target>
+      </trans-unit>
+      <trans-unit id="pages.author_email_formlabel" approved="yes">
+        <source>Author Email</source>
+        <target state="final">लेखक ई-मेल</target>
+      </trans-unit>
+      <trans-unit id="pages.media" approved="yes">
+        <source>Files</source>
+        <target state="final">फाइल्स</target>
+      </trans-unit>
+      <trans-unit id="pages.media_formlabel" approved="yes">
+        <source>Media</source>
+        <target state="final">मीडिया</target>
+      </trans-unit>
+      <trans-unit id="pages.php_tree_stop_formlabel" approved="yes">
+        <source>Hide child pages in page tree</source>
+        <target state="final">पृष्ठ ट्री में चाइल्ड पेजेज़ छिपाएँ</target>
+      </trans-unit>
+      <trans-unit id="pages.is_siteroot" approved="yes">
+        <source>Is Root of Website</source>
+        <target state="final">वेबसाइट का रूट है</target>
+      </trans-unit>
+      <trans-unit id="pages.is_siteroot_formlabel" approved="yes">
+        <source>Use as Root Page</source>
+        <target state="final">एस रुट पेज उपयोग करे</target>
+      </trans-unit>
+      <trans-unit id="pages.module" approved="yes">
+        <source>Contains Plugin</source>
+        <target state="final">प्लगइन शामिल है</target>
+      </trans-unit>
+      <trans-unit id="pages.module_formlabel" approved="yes">
+        <source>Contains Plugin</source>
+        <target state="final">प्लगइन शामिल है</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.1" approved="yes">
+        <source>Shop</source>
+        <target state="final">शॉप</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.2" approved="yes">
+        <source>Board</source>
+        <target state="final">बोर्ड</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.3" approved="yes">
+        <source>News</source>
+        <target state="final">न्यूज़</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.4" approved="yes">
+        <source>Website Users</source>
+        <target state="final">वेब साइट यूज़र्स</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.5" approved="yes">
+        <source>Direct Mail</source>
+        <target state="final">डायरेक्ट मेल</target>
+      </trans-unit>
+      <trans-unit id="pages.module.I.6" approved="yes">
+        <source>Approvals</source>
+        <target state="final">अप्प्रोवल्स</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg" approved="yes">
+        <source>Localization Settings</source>
+        <target state="final">लोकलाइज़ेशन सेटिंग्स</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg_formlabel" approved="yes">
+        <source>Localization</source>
+        <target state="final">लोकलाइजेशन</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg.I.1" approved="yes">
+        <source>Hide default language of page</source>
+        <target state="final">पेज की डिफ़ॉल्ट भाषा छुपाएं</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg.I.2" approved="yes">
+        <source>Hide page if no translation for current language exists</source>
+        <target state="final">पेज छुपाये अगर करंट भाषा के लिए कोई ट्रांसलेशन मौजूद नहीं</target>
+      </trans-unit>
+      <trans-unit id="pages.l18n_cfg.I.2a" approved="yes">
+        <source>Show page even if no translation exists</source>
+        <target state="final">शो पेज भले ही कोई अनुवाद मौजूद ना हो</target>
+      </trans-unit>
+      <trans-unit id="pages.storage_pid_formlabel" approved="yes">
+        <source>Page</source>
+        <target state="final">पेज</target>
+      </trans-unit>
+      <trans-unit id="pages.TSconfig_formlabel" approved="yes">
+        <source>Page TSconfig</source>
+        <target state="final">Page TSconfig</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout_formlabel" approved="yes">
+        <source>Backend Layout (this page only)</source>
+        <target state="final">बैकेंड लेआउट (सिर्फ इस पेज)</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout_next_level_formlabel" approved="yes">
+        <source>Backend Layout (subpages of this page)</source>
+        <target state="final">बैकेंड लेआउट (इस पेज के सब पेज)</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout.none" approved="yes">
+        <source>None</source>
+        <target state="final">नॉन</target>
+      </trans-unit>
+      <trans-unit id="pages.backend_layout.default" approved="yes">
+        <source>Default</source>
+        <target state="final">डिफ़ॉल्ट</target>
+      </trans-unit>
+      <trans-unit id="pages.tsconfig_includes" approved="yes">
+        <source>Include static Page TSconfig (from extensions)</source>
+        <target state="final">स्थिर पेज TSconfig (एक्सटेंशन से) शामिल करें</target>
+      </trans-unit>
+      <trans-unit id="tt_content" approved="yes">
+        <source>Page Content</source>
+        <target state="final">पेज कंटेंट</target>
+      </trans-unit>
+      <trans-unit id="fe_users" approved="yes">
+        <source>Website User</source>
+        <target state="final">वेबसाइट यूजर</target>
+      </trans-unit>
+      <trans-unit id="fe_users.username" approved="yes">
+        <source>Username</source>
+        <target state="final">यूज़रनेम</target>
+      </trans-unit>
+      <trans-unit id="fe_users.password" approved="yes">
+        <source>Password</source>
+        <target state="final">पासवर्ड</target>
+      </trans-unit>
+      <trans-unit id="fe_users.usergroup" approved="yes">
+        <source>Groups</source>
+        <target state="final">समूह</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">एक्सेस</target>
+      </trans-unit>
+      <trans-unit id="fe_users.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">एक्सटेंडेड</target>
+      </trans-unit>
+      <trans-unit id="fe_groups" approved="yes">
+        <source>Website Usergroup</source>
+        <target state="final">वेब साइट यूजर ग्रुप</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.title" approved="yes">
+        <source>Group Title</source>
+        <target state="final">समूह शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.subgroup" approved="yes">
+        <source>Subgroups</source>
+        <target state="final">उपसमूहों</target>
+      </trans-unit>
+      <trans-unit id="fe_groups.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">एक्सटेंडेड</target>
+      </trans-unit>
+      <trans-unit id="sys_template" approved="yes">
+        <source>TypoScript record</source>
+        <target state="final">TypoScript रिकॉर्ड</target>
+      </trans-unit>
+      <trans-unit id="sys_template.title" approved="yes">
+        <source>Title</source>
+        <target state="final"> शीर्षक </target>
+      </trans-unit>
+      <trans-unit id="sys_template.root" approved="yes">
+        <source>Rootlevel</source>
+        <target state="final">Rootlevel</target>
+      </trans-unit>
+      <trans-unit id="sys_template.rootDescription" approved="yes">
+        <source>When enabled, the page is marked as "Rootline Root". This is most often set only once for the uppermost TypoScript record.
+				This can be used in frontend to stop at this page when creating for example "breadcrumb" menus, even if there are further parent pages. The flag especially
+				affects these TypoScript "getText" properties: "level", "levelmedia", "leveltitle", "levelfield" and "leveluid".</source>
+        <target state="final">सक्षम होने पर, पृष्ठ को "रूटलाइन रूट" के रूप में चिह्नित किया जाता है। यह अक्सर सबसे ऊपरी TypoScript रिकॉर्ड के लिए केवल एक बार सेट किया जाता है।
+इसका उपयोग फ़्रंटएंड में, उदाहरण के लिए, "ब्रेडक्रम्ब" मेनू बनाते समय, इस पेज पर रुकने के लिए किया जा सकता है, भले ही अन्य पैरेंट पेज मौजूद हों। यह फ़्लैग विशेष रूप से
+इन TypoScript "getText" गुणों को प्रभावित करता है: "level", "levelmedia", "leveltitle", "levelfield" और "leveluid"।</target>
+      </trans-unit>
+      <trans-unit id="sys_template.clear" approved="yes">
+        <source>Clear</source>
+        <target state="final">साफ़ करें</target>
+      </trans-unit>
+      <trans-unit id="sys_template.clearDescription" approved="yes">
+        <source>Remove TypoScript settings from TypoScript records up in rootline. This is most often set only once for the uppermost TypoScript record that is most often
+			 	located on the same page that has "Use as Root Page" flag set and the "Site" configuration attached in the site module.</source>
+        <target state="final">रूटलाइन में ऊपर दिए गए टाइपोस्क्रिप्ट रिकॉर्ड से टाइपोस्क्रिप्ट सेटिंग्स हटाएँ। यह अक्सर सबसे ऊपरी टाइपोस्क्रिप्ट रिकॉर्ड के लिए केवल एक बार सेट किया जाता है, जो अक्सर
+उसी पेज पर स्थित होता है जिस पर "रूट पेज के रूप में उपयोग करें" फ़्लैग सेट होता है और साइट मॉड्यूल में "साइट" कॉन्फ़िगरेशन संलग्न होता है।</target>
+      </trans-unit>
+      <trans-unit id="sys_template.constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">कॉन्स्टेंट</target>
+      </trans-unit>
+      <trans-unit id="sys_template.resources" approved="yes">
+        <source>Resources</source>
+        <target state="final">रिसोर्सिस</target>
+      </trans-unit>
+      <trans-unit id="sys_template.include_static_file" approved="yes">
+        <source>Include TypoScript sets</source>
+        <target state="final">सम्मिलित TypoScript sets</target>
+      </trans-unit>
+      <trans-unit id="sys_template.include_static_fileDescription" approved="yes">
+        <source>Extensions often deliver default TypoScript to set up basic frontend rendering. These can be loaded here.
+				To keep TypoScript structures clean and tidy, this is often set only for the main TypoScript record located on the same page that has "Use as Root Page" flag set,
+				has a "Site" configuration attached in the site module, and has the above "Clear" and "Rootlevel" flags set.</source>
+        <target state="final">एक्सटेंशन अक्सर बुनियादी फ़्रंटएंड रेंडरिंग सेट अप करने के लिए डिफ़ॉल्ट TypoScript प्रदान करते हैं। इन्हें यहाँ लोड किया जा सकता है।
+TypoScript संरचनाओं को साफ़ और सुव्यवस्थित रखने के लिए, इसे अक्सर केवल उसी पेज पर स्थित मुख्य TypoScript  रिकॉर्ड के लिए सेट किया जाता है जिस पर "रूट पेज के रूप में उपयोग करें" फ़्लैग सेट होता है,
+साइट मॉड्यूल में "साइट" कॉन्फ़िगरेशन संलग्न होता है, और ऊपर दिए गए "साफ़ करें" और "मूल स्तर" फ़्लैग सेट होते हैं।पृष्ठ</target>
+      </trans-unit>
+      <trans-unit id="sys_template.basedOn" approved="yes">
+        <source>Include TypoScript records</source>
+        <target state="final">TypoScript रिकॉर्ड शामिल करें</target>
+      </trans-unit>
+      <trans-unit id="sys_template.basedOnDescription" approved="yes">
+        <source>Include additional TypoScript records located elsewhere in the page tree. This can be used to load the same TypoScript records at multiple places in a page tree.
+			 	This isn't used very often nowadays and it's often easier to understand and maintain the site by extracting TypoScript configuration to files
+				and to load the full set in a single main TypoScript record.
+            </source>
+        <target state="final">पेज ट्री में कहीं और स्थित अतिरिक्त TypoScript रिकॉर्ड शामिल करें। इसका उपयोग पेज ट्री में एक ही TypoScript रिकॉर्ड को कई जगहों पर लोड करने के लिए किया जा सकता है।
+आजकल इसका उपयोग बहुत कम होता है और TypoScript कॉन्फ़िगरेशन को फ़ाइलों में निकालकर साइट को समझना और बनाए रखना अक्सर आसान होता है।
+और पूरे सेट को एक ही मुख्य TypoScript रिकॉर्ड में लोड करना।
+            </target>
+      </trans-unit>
+      <trans-unit id="sys_template.includeStaticAfterBasedOn" approved="yes">
+        <source>Load TypoScript sets after included TypoScript records</source>
+        <target state="final">शामिल किए गए TypoScript रिकॉर्ड के बाद TypoScript सेट लोड करें</target>
+      </trans-unit>
+      <trans-unit id="sys_template.includeStaticAfterBasedOnDescription" approved="yes">
+        <source>When using both fields "Include TypoScript sets" and "Include TypoScript records" in a TypoScript record, this flag allows swapping their load order.</source>
+        <target state="final">जब किसी TypoScript रिकॉर्ड में "TypoScript सेट शामिल करें" और "TypoScript रिकॉर्ड शामिल करें" दोनों फ़ील्ड का उपयोग किया जाता है, तो यह फ़्लैग उनके लोड क्रम को बदलने की अनुमति देता है।</target>
+      </trans-unit>
+      <trans-unit id="sys_template.config" approved="yes">
+        <source>Setup</source>
+        <target state="final">सेटअप</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode" approved="yes">
+        <source>Loading order of TypoScript sets</source>
+        <target state="final">टाइपोस्क्रिप्ट सेट का लोडिंग क्रम</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_modeDescription" approved="yes">
+        <source>This seldom used feature affects if and when TypoScript sets from extensions (ext_typoscript_setup.typoscript and ext_typoscript_constants.typoscript)
+				are loaded. There are very few cases where setting this to a different value than the default value "0" is useful.</source>
+        <target state="final">यह कम इस्तेमाल होने वाली सुविधा इस बात को प्रभावित करती है कि एक्सटेंशन (ext_typoscript_setup.typoscript और ext_typoscript_constants.typoscript) से TypoScript सेट कब और कैसे लोड किए जाते हैं।
+ऐसे बहुत कम मामले होते हैं जहाँ इसे डिफ़ॉल्ट मान "0" से अलग मान पर सेट करना उपयोगी होता है।</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.0" approved="yes">
+        <source>Default (include before if root flag is set)</source>
+        <target state="final">डिफ़ॉल्ट (पहले यदि रूट ध्वज सेट है शामिल हैं)</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.1" approved="yes">
+        <source>Always include before this typoscript record</source>
+        <target state="final">हमेशा इस टेम्पलेट रेकॉर्ड से पहले इंन्कलूड करे</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.2" approved="yes">
+        <source>Never include before this typoscript record</source>
+        <target state="final">इस टेम्पलेट रेकॉर्ड से पहले कभी इंन्कलूड ना करे</target>
+      </trans-unit>
+      <trans-unit id="sys_template.static_file_mode.3" approved="yes">
+        <source>Include before all static typoscript if root flag is set</source>
+        <target state="final">अगर रूट फ्लैग सेट हुआ है तो सभी स्टेटिक टेम्पलेट से पहले इंन्कलूड करे</target>
+      </trans-unit>
+      <trans-unit id="sys_template.basedOn_add" approved="yes">
+        <source>Add new TypoScript record</source>
+        <target state="final">नया TypoScript रेकॉर्ड जोड़ें</target>
+      </trans-unit>
+      <trans-unit id="sys_template.basedOn_edit" approved="yes">
+        <source>Edit template</source>
+        <target state="final">टेम्पलेट संपादित करें</target>
+      </trans-unit>
+      <trans-unit id="sys_template.tabs.files" approved="yes">
+        <source>Resources</source>
+        <target state="final">रिसोर्सिस</target>
+      </trans-unit>
+      <trans-unit id="sys_template.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">एक्सेस</target>
+      </trans-unit>
+      <trans-unit id="backend_layout" approved="yes">
+        <source>Backend Layout</source>
+        <target state="final">बैकेंड लेआउट</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.title" approved="yes">
+        <source>Title</source>
+        <target state="final">शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.config" approved="yes">
+        <source>Config</source>
+        <target state="final">कॉन्फिग</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.wizard" approved="yes">
+        <source>Wizard</source>
+        <target state="final">विजार्ड</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.icon" approved="yes">
+        <source>Icon</source>
+        <target state="final">आइकन</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.tabs.access" approved="yes">
+        <source>Access</source>
+        <target state="final">एक्सेस</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.tabs.extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">एक्सटेंडेड</target>
+      </trans-unit>
+      <trans-unit id="no_mount_pid" approved="yes">
+        <source>No Mount Point is set</source>
+        <target state="final">कोई माउंट पॉइंट सेट नहीं है</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
