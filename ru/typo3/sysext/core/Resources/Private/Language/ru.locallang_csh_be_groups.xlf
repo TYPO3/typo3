@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814852" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_be_groups.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>This is the Backend administration user groups available for the Backend users. These determine the access credentials for the Backend users.</source>
+        <target state="final">Группы внутренних пользователей, доступные для пользователей внутреннего интерфейса. Членство в группах определяет права пользователей внутреннего интерфейса.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>Groups contain the main permission settings you can set for a backend user. Many users can be members of the same group and thus share permissions.
+When a user is a member of many groups (including sub-groups) then the permission settings are added together so that the more groups a user is a member of, the more access is granted to him.</source>
+			<target state="final">Группы содержат основные настройки доступа, которые возможно установить для внутреннего пользователя. В одну группу может входить множество пользователей, которые будут иметь одинаковые права. Когда пользователь входит в несколько групп (включая подгруппы), настройки доступа складываются, таким образом, чем в большее количество групп входит пользователь, тем больше прав он получает.</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users,
+"Inside TYPO3" about users / groups | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/UsersAndGroups/,
+How to set up a backend user | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/SettingUpANewUser/,
+Setting up groups (from "Getting Started") | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</source>
+			<target state="final">be_users,
+"TYPO3 изнутри" о пользователях / группах |https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/UsersAndGroups/,
+Настройка внутренних пользователей | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/SettingUpANewUser/,
+Настройка групп (из "Getting Started") |https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</target></trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/be_groups_2.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_1.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_2.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>Backend Usergroups are found in the root of the page tree where only "admin" users can edit them. The usergroups with red icons in this image are the ones with Access Lists enabled. The blue are just plain usergroups.
+This usergroup has Access Lists enabled. In the Access Lists you specify which modules, tables, database fields etc. the group members can access in TYPO3.</source>
+			<target state="final">Группы пользователей внутреннего интерфейса находятся в корне дерева страниц, который могут редактировать лишь пользователи-администраторы. Для групп пользователей с красным значком включены списки доступа. Группы пользователей с синими значками - обычные группы пользователей. У этих групп пользователей включены списки доступа. В списках доступа можно определить, к каким модулям, таблицам, полям баз данных и т.п. имеют доступ члены данной группы в TYPO3.</target></trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Name of the Backend usergroup. The name should be descriptive and can always be changed later.</source>
+        <target state="final">Название группы пользователей. Название должно говорить за себя и всегда может быть изменено позже.</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>Backend Usergroups are identified by their "uid" field value (integer) and therefore the title can always be changed. The "uid" can never be changed for a user group.</source>
+        <target state="final">Группы внутренних пользователей определяются по значению поля "uid" (целое число) и, поэтому, название ее всегда может быть изменено. Но "uid" для группы пользователей всегда остается неизменным .</target>
+      </trans-unit>
+      <trans-unit id="_title.image" resname="_title.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/be_groups_2.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_2.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="title.image_descr" resname="title.image_descr" approved="yes">
+        <source>The usergroup title is shown in the record lists.</source>
+        <target state="final">Название группы пользователей отображается в списке записей.</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.description" resname="db_mountpoints.description" approved="yes">
+        <source>Define page tree root points for the group members.</source>
+        <target state="final">Выбрать исходную точку для дерева страниц, видимого пользователями.</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.details" resname="db_mountpoints.details" xml:space="preserve" approved="yes">
+				<source>The page tree in TYPO3 must have some points-of-entry defined. Here you should insert one or more references to a page which will represent a new root page for the page tree. This is called a "Database mount" or "DB mount".
+DB mounts &lt;i&gt;may&lt;/i&gt; be inherited by the users which are members of this group. This depends on whether the user is configured to include the mounts set in the member groups.
+However it's recommended to use backend user groups like this to configure mounts. Especially if they need to be shared among many users.</source>
+			<target state="final">В TYPO3, дерево страниц должно иметь определенную точку доступа. Здесь можно вставить одну или несколько ссылок на страницы, представляющие новые корневые страницы для дерева страниц. Это называется "Точка доступа к базе данных" или "Доступ к БД". Точки доступа к БД &lt;i&gt;могут&lt;/i&gt;наследоваться пользователями группы. Это зависит от настройки наследования прав из групп для конкретного пользователя. В любом случае, рекомендуется использовать группы внутренних пользователей для распределения прав доступа. Это особенно необходимо, при большом количестве пользователей.</target></trans-unit>
+      <trans-unit id="_db_mountpoints.seeAlso" resname="_db_mountpoints.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:file_mountpoints,
+be_users:db_mountpoints,
+be_users:options,
+xMOD_csh_corebe:list_module</source>
+				
+			<target state="final">be_groups:file_mountpoints, be_users:db_mountpoints, be_users:options, xMOD_csh_corebe:list_module</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_db_mountpoints.image" resname="_db_mountpoints.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/be_groups_3.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_4.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_3.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_4.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="db_mountpoints.image_descr" resname="db_mountpoints.image_descr" xml:space="preserve" approved="yes">
+				<source>Here a page is added as a "DB mount"...
+... and in the page tree of member users this will become the starting point for the page tree.</source>
+			<target state="final">Вот страница, добавленная как "Доступ к БД"... ....и дерево страниц для пользователя из этой группы, в котором эта страница стала его корнем.</target></trans-unit>
+      <trans-unit id="file_mountpoints.description" resname="file_mountpoints.description" approved="yes">
+        <source>Define startpoints for the file folder tree.</source>
+        <target state="final">Выбрать исходную паку, начиная с которой пользователям будет доступно дерево файловой системы.</target>
+      </trans-unit>
+      <trans-unit id="file_mountpoints.details" resname="file_mountpoints.details" xml:space="preserve" approved="yes">
+				<source>The file folder tree is used by all File-submodules to navigate the file folders on the webserver. If you want users to access the servers file system through TYPO3 they need at least one File Mount (and access to eg. File &gt; Filelist module).
+You can mount a path in "fileadmin/" relative to the TYPO3 installation or you can mount an absolute path somewhere else on the server (outside webroot!). The last requires that $TYPO3_CONF_VARS[BE][lockRootPath] is defined. The path you mount is defined by the Filemount record you refer to by this field. So a File Mount just points to another record inside of which the details are configured. See screenshots below.
+"admin" users always have the "fileadmin/" folder mounted by default.
+Notice; as with 'DB mounts' the file folder mounts may be inherited by the users which are members of this group.</source>
+			<target state="final">Дерево файловой системы используется всеми подмодулями, работающими с файлами на сайте. Если нужно дать пользователям возможность доступа к файловой системе на сервере через TYPO3, нужна хотя бы одна точка доступа к файлам (и доступ к, например, модулю Файл &gt; Список фалов).
+Точка доступа может быть сделана в "fileadmin/", относительно к установке TYPO3 или же она может находиться по абсолютному пути где-нибудь на сервере (вне корня сайта!). Последнее требует определения переменной $TYPO3_CONF_VARS[BE][lockRootPath]. Установленный путь определяется записью точки доступа к файлам, на которую ссылается это поле. Так, точка доступа к файлам — просто ссылка на другую, содержащую настройки, запись. Смотрите приведенный снимок экрана.
+Пользователи "администраторы" всегда по умолчанию имеют доступ к папке "fileadmin/".
+Помните, как и "Доступ к БД", точки доступа к файлам могут наследоваться пользователями из групп, в которых они состоят.</target></trans-unit>
+      <trans-unit id="_file_mountpoints.seeAlso" resname="_file_mountpoints.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:db_mountpoints,
+be_users:file_mountpoints,
+be_users:options,
+be_users,
+sys_filemounts,
+xMOD_csh_corebe:filelist_module,
+More about File Mounts | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/</source>
+				
+			<target state="final">be_groups:db_mountpoints,
+be_users:file_mountpoints,
+be_users:options,
+be_users,
+sys_filemounts,
+xMOD_csh_corebe:filelist_module,
+Подробнее о монтировании файлов
+ | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_file_mountpoints.image" resname="_file_mountpoints.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/be_groups_5.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_6.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_7.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_8.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_5.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_6.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_7.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_8.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="file_mountpoints.image_descr" resname="file_mountpoints.image_descr" xml:space="preserve" approved="yes">
+				<source>The File Mounts are references to records from the "Filemounts" table.
+In the Filemount record you define whether the path should be absolute (must be within $TYPO3_CONF_VARS[BE][lockRootPath]) or relative to "fileadmin/". In this case the Filemount points to "fileadmin/user_upload/"
+This is the page tree of the "admin" user. Notice the folder "user_upload" which is the folder referred to by the File Mount record.
+This shows the mounted folder as seen by a user who was member of the group.
+Filemount records are also created in the page tree root.</source>
+			<target state="final">Точка доступа к файлам — ссылка на запись из таблицы "Доступ к файлам".
+В записи точки доступа к файлам определяется, должен ли путь быть абсолютным (должен находиться в $TYPO3_CONF_VARS[BE][lockRootPath]) или относительным к "fileadmin/". В этом случае точка доступа ссылается на "fileadmin/user_upload/"
+Это дерево страниц пользователя "администратора". Обратите внимание на папку "user_upload", которая используется в записи доступа к файлам.
+Так выглядит доступ к файлам для пользователя из данной группы.
+Записи доступа к файлам создаются в корне дерева страниц.</target></trans-unit>
+      <trans-unit id="file_permissions.description" resname="file_permissions.description" approved="yes">
+        <source>Select file operation permissions for the group members.</source>
+        <target state="final">Выберете разрешения для операция с файлами для членов данной группы.</target>
+      </trans-unit>
+      <trans-unit id="file_permissions.details" resname="file_permissions.details" xml:space="preserve" approved="yes">
+				<source>These settings relate to the functions found in the File&gt;Filelist module as well as general upload of files.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that these settings apply to all members of this group and extend the users permissions accordingly.</source>
+			<target state="final">Эти настройки относятся как к функциям модуля Файл&gt;Список файлов, так и к общей загрузке файлов.
+
+&lt;strong&gt;Внимание&lt;/strong&gt; настройки применяются ко всем членам этой группы и дополняют соответствующие разрешения пользователей.</target></trans-unit>
+      <trans-unit id="file_permissions.seeAlso" resname="file_permissions.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:file_mountpoints,
+be_users:file_mountpoints,
+be_users:file_permissions</source>
+				
+			<target state="final">be_groups:file_mountpoints,
+be_users:file_mountpoints,
+be_users:file_permissions</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="fileoper_perms.description" resname="fileoper_perms.description" approved="yes">
+        <source>Select file operation permissions for the group members.</source>
+        <target state="final">Выберете разрешения для операция с файлами для членов данной группы.</target>
+      </trans-unit>
+      <trans-unit id="fileoper_perms.details" resname="fileoper_perms.details" xml:space="preserve" approved="yes">
+				<source>These settings relate to the functions found in the File&gt;Filelist module as well as general upload of files.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that these settings apply to all members of this group and extend the users permissions accordingly.</source>
+			<target state="final">Эти настройки относятся как к функциям модуля Файл&gt;Список файлов, так и к общей загрузке файлов.
+
+&lt;strong&gt;Внимание&lt;/strong&gt; настройки применяются ко всем членам этой группы и дополняют соответствующие разрешения пользователей.</target></trans-unit>
+      <trans-unit id="_fileoper_perms.seeAlso" resname="_fileoper_perms.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:file_mountpoints,
+be_users:file_mountpoints,
+be_users:file_permissions</source>
+				
+			<target state="final">be_groups:file_mountpoints,
+be_users:file_mountpoints,
+be_users:file_permissions</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="pagetypes_select.description" resname="pagetypes_select.description" approved="yes">
+        <source>Select which 'Types' of Pages the members may set.</source>
+        <target state="final">Выберете "Типы" страниц, которые могут устанавливать члены группы.</target>
+      </trans-unit>
+      <trans-unit id="pagetypes_select.details" resname="pagetypes_select.details" xml:space="preserve" approved="yes">
+				<source>This option limits the number of valid choices for the user when he is about to select a page type.
+Choice of Page types (doktype) for a page is associated with a) a special icon for the page, b) permitted tables on the page (see $PAGES_TYPES global variable) and c) if the page is a web page or "system folder" type.</source>
+			<target state="final">Этот параметр ограничивает количество доступных для выбора пользователя типов страниц.
+Выбор типа страницы (doktype) означает а) определенный значок страницы, б) доступные для страницы таблицы (смотрите глобальную переменную $PAGES_TYPES) и в) обычная ли это страница или "системная директория".</target></trans-unit>
+      <trans-unit id="_pagetypes_select.seeAlso" resname="_pagetypes_select.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:doktype,
+be_groups:inc_access_lists</source>
+				
+			<target state="final">pages:doktype, be_groups:inc_access_lists</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_pagetypes_select.image" resname="_pagetypes_select.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/be_groups_9.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_9.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="pagetypes_select.image_descr" resname="pagetypes_select.image_descr" approved="yes">
+        <source>The list of typical page types available in a CMS context. Selecting Page types for a usergroup defines which of these options can be selected by member users.</source>
+        <target state="final">Список типичных в контексте CMS типов страниц. Выбор типа страниц для группы, определяет, какие параметры могут быть выбраны пользователями из этой группы.</target>
+      </trans-unit>
+      <trans-unit id="tables_modify.description" resname="tables_modify.description" approved="yes">
+        <source>Select which tables the members may modify.</source>
+        <target state="final">Выберете какие таблицы могут изменять члены группы.</target>
+      </trans-unit>
+      <trans-unit id="tables_modify.details" resname="tables_modify.details" xml:space="preserve" approved="yes">
+				<source>An important part of setting permissions is to define which database tables a user is allowed to modify.
+Tables allowed for modification is automatically also allowed for selection and thus you don't need to set tables entered here in the "Tables (listing)" box.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that this list adds to the fields selected in other member groups of a user.</source>
+			<target state="final">Очень важно, при настройке доступа, определить, какие таблицы сможет редактировать пользователь. Доступные для редактирования таблицы автоматически становятся доступными для просмотра, так что не нужно заботиться о внесении их в соответствующий список — "Таблицы (просматривать)". &lt;strong&gt;Помните&lt;/strong&gt;, что этот список дополнит аналогичные поля из групп, в которые входит пользователь.</target></trans-unit>
+      <trans-unit id="_tables_modify.seeAlso" resname="_tables_modify.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:tables_select,
+be_groups:inc_access_lists,
+xMOD_csh_corebe:new_ce</source>
+				
+			<target state="final">be_groups:tables_select, be_groups:inc_access_lists, xMOD_csh_corebe:new_ce</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_tables_modify.image" resname="_tables_modify.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/be_groups_10.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_15.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_11.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_10.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_15.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_11.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="tables_modify.image_descr" resname="tables_modify.image_descr" xml:space="preserve" approved="yes">
+				<source>The screenshot above shows how the "Create new record" dialog looks for a user limited to editing only "Page" and "Page content" elements.
+The two tables are simply added to the list of "Tables (modify)" in the group Access Lists.
+This is (an example of) the full amount of elements that can be created on the page by the "admin" user for whom there are no restrictions.</source>
+			<target state="final">Приведенный ниже снимок экрана демонстрирует, как выглядит диалог "Создать новую запись" для пользователя, ограниченного редактированием лишь элементов "Страница" и "Содержимое страницы". Эти две таблицы просто добавлены в список "Таблицы (редактировать)" из группы Списки доступа. Это (из примера) полный список элементов, доступных для создания на странице для пользователя "администратора", ничем не ограниченного.</target></trans-unit>
+      <trans-unit id="tables_select.description" resname="tables_select.description" approved="yes">
+        <source>Select which tables the members may see in record lists ('modify' tables does not need to be re-entered here!).</source>
+        <target state="final">Выберете какие таблицы могут просматривать члены группы (не нужно вносить доступные для "редактирования" таблицы!)</target>
+      </trans-unit>
+      <trans-unit id="tables_select.details" resname="tables_select.details" xml:space="preserve" approved="yes">
+				<source>This determines which tables - in addition to those selected in the "Tables (modify)" box - may be viewed and listed for the member users. He is not able to &lt;em&gt;edit&lt;/em&gt; the table - only select the records and view the content.
+This list is not very important. It's a pretty rare situation that a user may select tables but not modify them.</source>
+			<target state="final">Здесь определяется, какие таблицы (в добавок к выбранным в списке "Таблицы (редактировать)") могут просматривать члены группы. Эти таблицы будет невозможно &lt;em&gt;редактировать&lt;/em&gt;, но можно будет выбрать запись и просмотреть ее содержимое. Это не очень важный список. Трудно представить ситуацию, в которой понадобится просматривать таблицы без возможности их редактирования.</target></trans-unit>
+      <trans-unit id="_tables_select.seeAlso" resname="_tables_select.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:tables_modify,
+be_groups:inc_access_lists</source>
+				
+			<target state="final">be_groups:tables_modify, be_groups:inc_access_lists</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="non_exclude_fields.description" resname="non_exclude_fields.description" approved="yes">
+        <source>Certain table fields are not available by default. Those fields can be explicitly enabled for the group members here.</source>
+        <target state="final">Определенные поля таблицы не доступны по умолчанию. Доступ для членов группы к этим полям можно явно дать в этом списке.</target>
+      </trans-unit>
+      <trans-unit id="non_exclude_fields.details" resname="non_exclude_fields.details" xml:space="preserve" approved="yes">
+				<source>"Allowed excludefields" allows you to detail the permissions granted to tables. By default all these fields are not available to users but must be specifically enabled by being selected here.
+One application of this is that pages are usually hidden by default and that the hidden field is not available for a user unless he has been granted access by this list of "Allowed excludefields". So the user may create a new page, but cannot un-hide the page - unless of course he has been assigned the "Page: Hide page" exclude field through one of his member groups.
+Of course it does not make any sense to add fields from tables which are not included in the list of tables allowed to be modified.</source>
+			<target state="final">"Разрешённые поля-исключения" позволяют детализировать права, предоставляемые таблицами. По умолчанию все эти поля не доступны для пользователей, но могут быть явно включены, если выбранным здесь. Одно из применений этой возможности состоит в том, что по умолчанию новые страницы обычно скрываются, а поле для скрытия недоступно для пользователя, если только его специально не сделать доступным в это списке "доступных полей исключений". Поэтому, пользователь может создавать новые страницы, но не сможет их показать, если, конечно же, ему не разрешен доступ к полю "Страница: скрыть страницу" посредством прав для одной из групп пользователей, в которых он состоит. Конечно же, не имеет смысла добавлять здесь поля из таблиц, не включенных в список доступа для изменения.</target></trans-unit>
+      <trans-unit id="_non_exclude_fields.seeAlso" resname="_non_exclude_fields.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:inc_access_lists,
+Examples from "Getting Started" | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</source>
+				
+			<target state="final">be_groups:inc_access_lists,
+Примеры из "Getting Started" | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_non_exclude_fields.image" resname="_non_exclude_fields.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/be_groups_14.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_14.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Disables a user group.</source>
+        <target state="final">Отключение группы пользователей.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.</source>
+        <target state="final">При отключении группы пользователей, все ее члены перестанут наследовать все свойства, которые давала эта группа (доступ к файлам, страницам и т.п.).</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.description" resname="lockToDomain.description" approved="yes">
+        <source>Enter the host name from which the user is forced to login. NOTICE: this is not a security feature and can be circumvented by faking HTTP_HOST.</source>
+        <target state="final">Введите название хоста, с которого должен будет входить пользователь. ВНИМАНИЕ: это не функция безопасности, и ее можно обойти, подделав HTTP_HOST.</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.details" resname="lockToDomain.details" xml:space="preserve" approved="yes">
+				<source>A TYPO3 system may host multiple websites on multiple domains. Therefore this option secures that users can login only from a certain host name.
+Setting this to for example "www.my-domain.com" will require a user to be logged in from that domain if membership of this group should be gained. Otherwise the group will be ignored for the user.</source>
+			<target state="final">В системе TYPO3 может быть несколько сайтов в нескольких доменах. Этот параметр ограничивает регистрацию пользователей заданным хостом. Установка, например "www.my-domain.com", потребует регистрации пользователей, входящих в эту группу, регистрировать лишь с этого домена. Иначе права, предоставляемые группой не будут даваться пользователю.</target></trans-unit>
+      <trans-unit id="_lockToDomain.seeAlso" resname="_lockToDomain.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:lockToDomain,
+fe_users:lockToDomain,
+fe_groups:lockToDomain</source>
+				
+			<target state="final">be_users:lockToDomain, fe_users:lockToDomain, fe_groups:lockToDomain</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="groupMods.description" resname="groupMods.description" approved="yes">
+        <source>Select available backend modules for the group members.</source>
+        <target state="final">Выберете доступные для членов группы внутренние модули.</target>
+      </trans-unit>
+      <trans-unit id="groupMods.details" resname="groupMods.details" xml:space="preserve" approved="yes">
+				<source>This determines which 'menu items' are available for the group members.
+This list of modules is added to any modules selected in other member groups of a user as well as the corresponding field of the user himself.</source>
+			<target state="final">Определяет, какие "элементы меню" будут доступны для членов этой группы. Этот список модулей добавляется к модулям, выбранным в других группах пользователей для конкретного пользователя, также как и в соответствующие поля.</target></trans-unit>
+      <trans-unit id="_groupMods.seeAlso" resname="_groupMods.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:userMods,
+be_groups:inc_access_lists,
+Backend Interface | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/Backend/</source>
+				
+			<target state="final">be_users:userMods,
+be_groups:inc_access_lists,
+Backend интерфейс | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/Backend/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_groupMods.image" resname="_groupMods.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/be_groups_12.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_13.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_12.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_13.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="groupMods.image_descr" resname="groupMods.image_descr" xml:space="preserve" approved="yes">
+				<source>The Backend Modules available for a user is reflected in the menu items of the backend. For most regular users only modules in the Web and File main modules are enabled. Typically "Web &gt; Page" is used for editing of page content.
+This is the assignment of Backend Modules to the user from the screenshot above. All four Web sub-modules and the two User sub-modules are configured here. However the File &gt; Filelist module must have been configured for another member group of this user (or inside the user profile itself which is also possible). The Help modules are all accessible by default and does not require explicit access.</source>
+			<target state="final">Модули внутреннего интерфейса, доступные для пользователя, отражаются на элементах меню внутреннего интерфейса. Для обычных пользователей, доступны лишь модули из основных разделов Веб и Файл. Обычно "Веб &gt; Страница" используется для редактирования содержимого страниц. Это модули внутреннего интерфейса, доступные для пользователя из приведенного рисунка. Все четыре подмодуля Веб и два подмодуля Пользователь. Но модуль Файл &gt; Список файлов, очевидно был настроен в другой группе пользователей, в членом которой является данный пользователь (или непосредственно в профиле пользователя). Модуль Справка по умолчанию всегда доступен и не требует никаких дополнительных разрешений.</target></trans-unit>
+      <trans-unit id="inc_access_lists.description" resname="inc_access_lists.description" approved="yes">
+        <source>Select whether the Access Lists for Page type, Tables, Module and Allowed excludefield are enabled for this group.</source>
+        <target state="final">Выберете, нужно ли включать списки доступа к типам страниц, таблицам, модулям и поля исключения для этой группы.</target>
+      </trans-unit>
+      <trans-unit id="inc_access_lists.details" resname="inc_access_lists.details" xml:space="preserve" approved="yes">
+				<source>If this option is disabled the Access Lists cannot be configured for the group.
+When Access Lists are disabled the icon for the group is blue while it is red when Access Lists are enabled.</source>
+			<target state="final">Если этот параметр выключен, для группы невозможно будет настроить списки доступа. При отключении списков доступа, значок группы синий, а когда списки доступа включены - красный.</target></trans-unit>
+      <trans-unit id="_inc_access_lists.seeAlso" resname="_inc_access_lists.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:pagetypes_select,
+be_groups:tables_modify,
+be_groups:tables_select,
+be_groups:groupMods,
+be_groups:non_exclude_fields</source>
+				
+			<target state="final">be_groups:pagetypes_select,
+be_groups:tables_modify,
+be_groups:tables_select,
+be_groups:groupMods,
+be_groups:non_exclude_fields</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a short description of the user group, what it is for and who should be members. This is for internal use only.</source>
+        <target state="final">Введите краткое описание группы пользователей, для чего она предназначена, кто должен в нее входить. Нужно лишь для внутреннего пользования.</target>
+      </trans-unit>
+      <trans-unit id="_description.seeAlso" resname="_description.seeAlso" approved="yes">
+        <source>fe_groups:description</source>
+        <target state="final">fe_groups:description</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>User TSconfig: Additional configuration through TypoScript style values (Advanced).</source>
+        <target state="final">TSconfig пользователя: дополнительная настройка через значения на TypoScript (дополнительная настройка).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details" resname="TSconfig.details" approved="yes">
+        <source>User TSconfig can be set for each backend user and group. Configuration set for backend groups is inherited by the user who is a member of those groups. The available options typically cover user settings like those found in the User&gt;Setup module (in fact options from that module can be forcibly overridden from User TSconfig!), configuration of the "Admin Panel" (frontend), various backend tweaks (lock user to IP, may user clear all cache?, width of the navigation frame etc.) and backend module configuration (overriding any configuration set for backend modules in Page TSconfig).</source>
+        <target state="final">TSconfig пользователя может быть установлена для каждого внутреннего пользователя и их группы. Настройки для группы внутренних пользователей наследуются ее членами. Доступные параметры обычно затрагивают настройки, находящиеся в модуле Сервис пользователя &gt; Персональные настройки (фактически, параметры этого модуля могут быть переписаны настойками TSconfig пользователя!), настройки "Панели управления" (во внешнем интерфейсе), различные тонкие настройки внутреннего интерфейса (блокировка пользователей по IP, возможность очистки всех кешей пользователем, ширина окна навигации и т.п.) и настройку внутренних модулей (перезаписывая любые настройки, установленные для модулей внутреннего интерфейса в TSconfig страницы).</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax without conditions and constants.</source>
+        <target state="final">Синтаксис TypoScript без использования условий и констант.</target>
+      </trans-unit>
+      <trans-unit id="_TSconfig.seeAlso" resname="_TSconfig.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:TSconfig
+fe_users:TSconfig
+fe_groups:TSconfig
+pages:TSconfig,
+TSconfig Reference| https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/,
+TypoScript Syntax | https://docs.typo3.org/typo3cms/TyposcriptSyntaxReference/</source>
+				
+			<target state="final">be_users:TSconfig
+fe_users:TSconfig
+fe_groups:TSconfig
+pages:TSconfig,
+TSconfig Reference Справка | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/,
+TypoScript Syntax Синтаксис | https://docs.typo3.org/typo3cms/TyposcriptSyntaxReference/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_TSconfig.image" resname="_TSconfig.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/be_groups_16.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_17.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_16.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_17.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="TSconfig.image_descr" resname="TSconfig.image_descr" xml:space="preserve" approved="yes">
+				<source>In the TSconfig field help is right at hand - just click the TS wizard icon, then a window will pop up.
+In the pop-up window you will see a tree of possible configuration values. These are extracted from the TSconfig manual. You can click around to find the options you need to set through this wizard.</source>
+			<target state="final">В поле TSconfig, помощь всегда под рукой - просто щелкните по значку мастера TS для вызова всплывающего окна. Во всплывающем окне будет дерево всех возможных значений для настройки. Они взяты из руководства по TSconfig. Здесь можно найти все необходимые настраиваемые свойства.</target></trans-unit>
+      <trans-unit id="subgroup.description" resname="subgroup.description" approved="yes">
+        <source>All settings from the selected groups will be merged with the properties from this group, for example DB mounts, permissions, TSconfig, etc.</source>
+        <target state="final">Все настройки из выбранных групп будут объеденены со свойствами этих групп, то есть, монтирования БД, разрешения, TSconfig и т. д.</target>
+      </trans-unit>
+      <trans-unit id="subgroup.details" resname="subgroup.details" xml:space="preserve" approved="yes">
+				<source>The properties of subgroups are added to the properties of this group and basically they will simply be added to the list of member groups of any user which is a member of this group.
+This feature provides a great way to create 'Supervisor' user groups.</source>
+			<target state="final">Свойства подгрупп будут добавлены к свойствам текущей группы и члены этой группы станут также членами подгрупп. Этот параметр предоставляет отличную возможность для создания пользовательской группы "Инспектор".</target></trans-unit>
+      <trans-unit id="explicit_allowdeny.description" resname="explicit_allowdeny.description" approved="yes">
+        <source>Select field values to explicitly deny or allow for user group members.</source>
+        <target state="final">Выберете явно разрешенные или запрещенные для пользователей группы значения полей.</target>
+      </trans-unit>
+      <trans-unit id="explicit_allowdeny.details" resname="explicit_allowdeny.details" xml:space="preserve" approved="yes">
+				<source>Selector box fields can be configured for access control on value level. This list represents all values that are configured for access control.
+Each value can be configured to require either explicit access (Allow) or explicit denial (Deny). If a value has the prefix "Allow" (green icon) it means that by default users &lt;em&gt;cannot&lt;/em&gt; set this value unless they are member of a user group which explicitly allows it (by setting this checkbox).
+If a value has the prefix "Deny" (red icon) it means that by default users can set this value unless they are member of a user group which explicitly denies it (by setting this checkbox).
+The list is organized so values from the same selector box is listed together. If values from a selectorbox is not present in the allow/deny list it simply means they are not evaluated and hence they can be set by anyone having access to the field in general.</source>
+			<target state="final">Выбирая поля, можно настроить контроль доступа на уровне значений. В этом списке представлены все значения, которые можно настроить для контроля доступа. Каждое значение может быть настроено, требуя либо явный доступ (Разрешить), либо либо явный запрет (Запретить). Если у значения имеется префикс "Разрешить" (зеленый значок), это значит, что обычные пользователи &lt;em&gt;не могут&lt;/em&gt; установить это значение, только если они не члены группы, которой явно позволено его устанавливать (установкой этого флажка).
+Если же значение имеет префикс "Запрещено" (красный значок), это значит, что обычные пользователи могут установить это значение, не зависимо от того, входят ли они в группу, которой позволено его устанавливать (установкой этого флажка).
+Список сгруппирован по блокам выбора. Если значения какого-то блока не представлены, это просто значит, что они не представляют ценности и могут быть установлены любым, имеющим доступ к этому блоку выбора значений.</target></trans-unit>
+      <trans-unit id="_explicit_allowdeny.image" resname="_explicit_allowdeny.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/be_groups_19.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_19.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="allowed_languages.description" resname="allowed_languages.description" approved="yes">
+        <source>Select which record languages the group members are limited to edit.</source>
+        <target state="final">Выберете, какие из записей для языков могут редактировать члены этой группы.</target>
+      </trans-unit>
+      <trans-unit id="allowed_languages.details" resname="allowed_languages.details" xml:space="preserve" approved="yes">
+				<source>Records in TYPO3 can be configured to carry information about their language. If that is the case access to these elements will also be evaluated based on whether the user has the language in question included from this list.
+If a user has no languages listed all together it simply means that he can edit &lt;em&gt;all&lt;/em&gt; languages!</source>
+			<target state="final">Записи в TYPO3 могут быть настроены так, чтобы представлять информацию на определенном языке. Если это так, то доступ к этим элементам также может быть ограничен по этому признаку. Если же языки не представлены, то это означает, что пользователь может редактировать записи на &lt;em&gt;всех&lt;/em&gt; языках!</target></trans-unit>
+      <trans-unit id="_allowed_languages.seeAlso" resname="_allowed_languages.seeAlso" approved="yes">
+        <source>be_users:allowed_languages</source>
+        <target state="final">be_users:allowed_languages</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_allowed_languages.image" resname="_allowed_languages.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/be_groups_18.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_18.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="allowed_languages.image_descr" resname="allowed_languages.image_descr" approved="yes">
+        <source>This example shows a situation where two languages, Danish and German, are created in addition to the default language.</source>
+        <target state="final">В этом примере представлена ситуация, когда в дополнение к основному языку, созданы еще два языка, датский и немецкий.</target>
+      </trans-unit>
+      <trans-unit id="custom_options.description" resname="custom_options.description" approved="yes">
+        <source>Select custom permission options.</source>
+        <target state="final">Выберете дополнительные параметры доступа.</target>
+      </trans-unit>
+      <trans-unit id="custom_options.details" resname="custom_options.details" approved="yes">
+        <source>This list represents custom permissions introduced by various backend modules (from extensions). The significance of each option depends on the backend module that evaluates it.</source>
+        <target state="final">В этом списке представлены дополнительные параметры доступа из различных модулей внутреннего интерфейса (из расширений). Описание каждого параметра должно предоставляться соответствующим внутренним модулем.</target>
+      </trans-unit>
+      <trans-unit id="_custom_options.image" resname="_custom_options.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/be_groups_20.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_20.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="custom_options.image_descr" resname="custom_options.image_descr" approved="yes">
+        <source>This is just an example from an internal test application. It shows how checkboxes are added by a custom module under its own header. You can also show a description text with each checkbox to explain its function.</source>
+        <target state="final">Это просто пример из внутреннего тестового приложения. Здесь показано, как могут быть добавлены флажки под определенным заголовком. Также может быть показан текст, описывающий каждый параметр.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
