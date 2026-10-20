@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/module.xlf" date="2025-11-10T13:37:37Z" product-name="indexed_search" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Indexing</source>
+        <target state="final">सूचीकरण</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Search indexing control panel</source>
+        <target state="final">खोज अनुक्रमण नियंत्रण पैनल</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Manage settings for the frontend search indexing engine and monitor statistics of indexed pages. Indexing must be enabled in TypoScript Setup.</source>
+        <target state="final">फ्रंटएंड सर्च इंडेक्सिंग इंजन की सेटिंग्स प्रबंधित करें और इंडेक्स किए गए पृष्ठों के आँकड़ों की निगरानी करें। टाइपोस्क्रिप्ट सेटअप में इंडेक्सिंग सक्षम होनी चाहिए।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
