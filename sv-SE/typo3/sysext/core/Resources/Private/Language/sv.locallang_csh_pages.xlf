@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814793" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_pages.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="sv-SE">
+    <header/>
+    <body>
+      <trans-unit id="layout.description" resname="layout.description" approved="yes">
+        <source>The Frontend Layout can change the way a page design appears.</source>
+        <target state="final">Frontend Layout kan förändra hur en siddesign visas.</target>
+      </trans-unit>
+      <trans-unit id="layout.details" resname="layout.details" approved="yes">
+        <source>This option may not have any impact on the Frontend page design since it depends on whether the Frontend template uses it. Most templates do not use it.</source>
+        <target state="final">Det här alternativet kanske inte ha någon inverkan på Frontend layout eftersom det beror på om Frontend mallen använder den. De flesta mallar använder inte den.</target>
+      </trans-unit>
+      <trans-unit id="doktype.description" resname="doktype.description" approved="yes">
+        <source>Page Type determines whether the page is normal webpage, a shortcut to another webpage, or used in other internal ways.</source>
+        <target state="final">Sidtyp avgör om sidan är normal webbsida, en genväg till en annan webbsida, eller användas i andra interna sätt.</target>
+      </trans-unit>
+      <trans-unit id="doktype.details" resname="doktype.details" xml:space="preserve" approved="yes">
+				<source>'Standard' is the most common Page Type and is used for normal webpages.
+'Backend User Section' is an option which creates pages that are only visible in the Frontend for Backend users who are logged in.
+
+&lt;b&gt;Link&lt;/b&gt;
+'Shortcut' pages jump to another page in the Pagetree.
+'Mount Point' pages bring content from another branch of the Pagetree into the current branch.
+'Link to External URL' is similar to 'Shortcut' but points to external URLs instead of TYPO3 pages.
+
+&lt;b&gt;Special&lt;/b&gt;
+'Folder' is a page type which is not shown as a webpage but is instead stores records of your choice.
+'Recycler' is a garbage can. Pages and records in the Recycler are not visible in the Frontend.
+'Menu Separator' is only useful if your Frontend memus are programmed to use it. It does not represent a page with content but is intended to be an unclickable placeholder in the menu.
+
+&lt;b&gt;Notice&lt;/b&gt; Each Page Type is represented by a unique icon. The available page types can be restricted for users so all of the options described above may not be visible. Finally, particuilar record typoes may only be allowed on certain page types, but any record can be placed in a 'Folder.'</source>
+			<target state="final">'Standard' är den vanligaste sidtyp och används för normala webbsidor.
+'Backend Användare Sektion' är ett alternativ som skapar sidor som bara är synliga i frontend för Backend-användare som är inloggade.
+
+&lt;b&gt;Link&lt;/b&gt;
+'Genväg' sidor hoppar till en annan sida i Sidträdet.
+'Mount Point' pages bring content from another branch of the Pagetree into the current branch.
+'Link to External URL' is similar to 'Shortcut' but points to external URLs instead of TYPO3 pages.
+
+&lt;b&gt;Special&lt;/b&gt;
+'Mapp'är en sidtyp som inte visas som en webbsida men lagrar istället databaselement.
+'Recycler' är en soptunna. Sidor och poster i Recycler syns inte i Frontend.
+'Menyavskiljare' är endast användbart om din Frontend-meny är programmerad för att använda den. Det utgör inte en sida med innehåll, utan är avsedd att vara en oklickbar platshållare i menyn.
+
+&lt;b&gt;Notera&lt;/b&gt; Varje Sidtyp representeras av en unik ikon. De tillgängliga sidtyperna kan begränsas för användarna, så alla alternativ som beskrivs ovan kanske inte syns. Slutligen kan särskilda dokumenttyper endast tillåtas på vissa sidtyper, men varje post kan placeras i en 'Mapp'.</target></trans-unit>
+      <trans-unit id="_doktype.seeAlso" resname="_doktype.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:shortcut,
+pages:url</source>
+				
+			<target state="final">pages:shortcut,
+pages:url</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>If this is checked, the page will be disabled on the website.</source>
+        <target state="final">Om det här är markerat, kommer sidan inaktiveras på webbplatsen.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" xml:space="preserve" approved="yes">
+				<source>The 'Disable,' 'Start,' 'Stop,' and 'Access' options are all about limiting access to pages and are thus related in functionality. When a page is not visible due to one of these options, the page will not show up in the site navigation.
+Notice, these options are related &lt;em&gt;only&lt;/em&gt; to the page for which they are set. If you want their effect to cover the subpages as well, you must enable the 'Extend to Subpages' option.
+When you're logged in as a Backend user you can preview disabled pages if you have read access to them.</source>
+			<target state="final">Alternativen 'Inaktivera', 'Börja visa', 'Sluta visa' och 'Behörighet' handlar om att begränsa tillgången till sidor och är därmed relaterade till funktionalitet. När en sida inte är synlig, på grund av att ett av dessa alternativ är valt, kommer sidan inte att visas i navigeringen på webbplatsen.
+Lägg märke till, dessa alternativ &lt;em&gt;endast&lt;/em&gt; är relaterade till den sida som de är inställda på. Om du vill att deras effekt även ska sträcka sig till undersidor, måste du aktivera 'Utöka till Undersidor' alternativet.
+När du är inloggad som en Backend användare, kan du förhandsgranska inaktiverade sidor om du har läsrättigheter till dem.</target></trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" approved="yes">
+        <source>pages:starttime,pages:endtime,pages:fe_group,pages:extendToSubpages</source>
+        <target state="final">pages:starttime,pages:endtime,pages:fe_group,pages:extendToSubpages</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="hidden.image_descr" resname="hidden.image_descr" xml:space="preserve" approved="yes">
+				<source>The page icon of a disabled page is dimmed and a red X is added.
+If you view a page that is hidden and you are logged in into the Backend you will still be able to see the page. The red "Preview" box will tell you that this page is visible to you because of this special circumstance.</source>
+			<target state="final">Sidikonen av en inaktiverad sida är nedtonad och ett rött kryss läggs till.
+Om du visar en sida som är dold och du är inloggad i Backend du kommer fortfarande att kunna se sidan på Frontend. Den röda "Preview"-rutan kommer att säga att den här sidan är synlig för dig på grund av denna speciella omständighet.</target></trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>The Publish Date determines when the page will be visible online. If the Publish Date is not set, the page will be available immediately.</source>
+        <target state="final">Publiceringsdatum anger när sidan kommer att vara synlig på nätet. Om Publiceringsdatum är inte inställt, kommer sidan att finnas tillgänglig omedelbart.</target>
+      </trans-unit>
+      <trans-unit id="starttime.syntax" resname="starttime.syntax" xml:space="preserve" approved="yes">
+				<source>The Publish Date Format is either DD-MM-YYYY or MM-DD-YYYY depending on how TYPO3 is configured. There are also several shortcuts you can use when entering the date.
+If you insert a 'd' the current date will be inserted. You can also append any value in the field with a number such as '+10' which will add 10 days to the current value. For example, entering 'd+10' would result in a date 10 days from now.</source>
+			<target state="final">Formatet för publiceringsdatum är antingen DD-MM-ÅÅÅÅ eller MM-DD-ÅÅÅÅ beroende på hur TYPO3 är konfigurerat. Det finns också flera kortkommandon som du kan använda när du anger datum.
+Om du sätter in ett 'd' infogas aktuellt datum. Du kan också lägga till något värde i fält med ett nummer som '+10' som kommer att lägga till 10 dagar till det aktuella värdet. Om du t.ex. anger 'd+10' skulle resultera i ett datum 10 dagar från och med nu.</target></trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" approved="yes">
+        <source>pages:endtime,pages:hidden</source>
+        <target state="final">pages:endtime,pages:hidden</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" approved="yes">
+        <source>tt_content</source>
+        <target state="final">tt_content</target>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>The Expiration Date specifies when the page will no longer be visible online.</source>
+        <target state="final">Sluta visa-datum anger när sidan inte längre kommer att vara synlig på nätet.</target>
+      </trans-unit>
+      <trans-unit id="endtime.syntax" resname="endtime.syntax" approved="yes">
+        <source>See Page / Publication Date (click below)</source>
+        <target state="final">Visa sidan / Publiceringsdatum (klicka nedan)</target>
+      </trans-unit>
+      <trans-unit id="_endtime.seeAlso" resname="_endtime.seeAlso" approved="yes">
+        <source>pages:starttime</source>
+        <target state="final">pages:starttime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="fe_group.description" resname="fe_group.description" approved="yes">
+        <source>If Usergroup Access Rights is set to a usergroup name, only website users who are members of the selected usergroup will be able to view the page. The special option 'Hide at Login' means the page will &lt;em&gt;not&lt;/em&gt; be visible for any website users that are logged in. Likewise "Show at Any Login" will make the page visible for any logged in Frontend user.</source>
+        <target state="final">Om Gruppbehörighet är satt till en användargrupps namn, kommer endast webbanvändare som är medlemmar i den valda användargruppen, att kunna se sidan. Det speciella alternativet 'Dölj vid inloggning' innebär att sidan &lt;em&gt;inte&lt;/em&gt; kommer att vara synlig för webbplatsens användare som är inloggade. Likaså 'Visa för alla inloggade' kommer att göra sidan synlig för alla inloggade Frontend-användare.</target>
+      </trans-unit>
+      <trans-unit id="_fe_group.seeAlso" resname="_fe_group.seeAlso" approved="yes">
+        <source>fe_groups</source>
+        <target state="final">fe_groups</target>
+      </trans-unit>
+      <trans-unit id="extendToSubpages.description" resname="extendToSubpages.description" approved="yes">
+        <source>By default the Publication Date, Expiration Date, Usergroup Access Rights, and Page Visibility options &lt;em&gt;only&lt;/em&gt; affect the page where they are set. If the option 'Extend to Subpages' is checked for the page, then all subpages are affected as well.</source>
+        <target state="final">Som standard påverkar Publiceringsdatum, Sluta visa-datum, Användargrupp behörighet och Sidvisningsalternativ &lt;em&gt;endast&lt;/em&gt; den sida där de är inställda. Om alternativet 'Utöka till Undersidor' är markerad för sidan, påverkas även undersidorna.</target>
+      </trans-unit>
+      <trans-unit id="extendToSubpages.details" resname="extendToSubpages.details" xml:space="preserve" approved="yes">
+				<source>Consider a scenario where you want to create a section of subpages that are only visible for logged in users. Setting the Usergroup Access Rights for the top page in the section would remove the page from menus if no user was logged in.
+However, the subpage could still be accessed by guessing the ID number of the page and entering it manually in the URL. Setting the 'Extend to Subpages' option would extend the Usergroup Access Rights from the top page through all subpages as well.</source>
+			<target state="final">Tänk ett scenario där du vill skapa en sektion av undersidor som visas endast för inloggade användare. Inställning av användargrupp rättigheter för den översta sidan i avsnittet skulle ta bort sidan från menyerna, om ingen användare var inloggad.
+Undersidan skulle dock fortfarande kunna nås genom att gissa ID-nummer på sidan och skriva in det manuellt i webbadressen. Inställning av 'Utöka till Undersidor' alternativ skulle förlänga användargrupp behörighet från topsida och ner till alla undersidor också.</target></trans-unit>
+      <trans-unit id="_extendToSubpages.seeAlso" resname="_extendToSubpages.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:hidden,
+pages:starttime,
+pages:endtime,
+pages:fe_group</source>
+				
+			<target state="final">pages:hidden,
+pages:starttime,
+pages:endtime,
+pages:fe_group</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="extendToSubpages.image_descr" resname="extendToSubpages.image_descr" approved="yes">
+        <source>This page has access restricted to a certain group and has "Extend to Subpages" set as well. This is reflected in the way the page icon has changed.</source>
+        <target state="final">Denna sida har tillgång begränsad till en viss grupp och har "Utöka till Undersidor" set också. Detta återspeglas i det sätt sidikonen har förändrats.</target>
+      </trans-unit>
+      <trans-unit id="target.description" resname="target.description" approved="yes">
+        <source>This sets the default Link Target for menu items linking to this page. Can also used to open the page as a popup window.</source>
+        <target state="final">Detta anger standard Länk Mål för menyposter som länkar till denna sida. Kan också användas för att öppna sidan som ett popup-fönster.</target>
+      </trans-unit>
+      <trans-unit id="target.details" resname="target.details" xml:space="preserve" approved="yes">
+				<source>The Link Target overrides the default Link Target behavior, which should already be configured correctly for most pages in the website TypoScript template.
+There are additional options available by using the Link Target field
+
+Setting an integer value at the beginning of the field sets it as the default type for the page.
+For example, if an RSS feed is configured in TypoScript as typeNum=100, setting the Link Target to 100 could be used to add an RSS link in the menu.
+
+The following syntax is used to open the page in a popup window:
+400x200 - Opens the page in a 400x200 popup window.
+230x450:resizable=0,location=1 - Opens the page in a 230x450 popup window that is not resizable and has an address bar.
+
+Combined:
+100 600x350 - Opens the page in a 600x350 popup with type=100
+2 _blank - Opens the page with target "_blank" and type=2</source>
+			<target state="final">Länk Mål åsidosätter standard Länk Mål beteende, som redan bör ha konfigurerats korrekt för de flesta sidor på webbplatsen i TypoScript mallen.
+Det finns ytterligare alternativ tillgängliga med hjälp av fältet Länk Mål
+
+Inställning av ett heltalsvärde i början av fältet anger den som standardtypen för den sidan.
+Till exempel, om ett RSS-flöde är konfigurerat i TypoScript som typeNum=100, kan inställning av länkmålet till 100, användas för att lägga till en RSS-länk i menyn.
+
+Följande syntax används för att öppna sidan i ett popup-fönster:
+400x200 - Öppnar sidan i ett 400x200 popup fönster.
+230x450:resizable=0,location=1 - Öppnar sidan i ett 230x450 popup fönster, som inte är skalbart och har ett adressfält.
+
+Kombierat:
+100 600x350 - Öppnar sidan i en 600x350 popup med type=100
+2 _blank - Öppnad sidan med länkmål "_blank" och type=2</target></trans-unit>
+      <trans-unit id="cache_timeout.description" resname="cache_timeout.description" approved="yes">
+        <source>Sets the Cache Lifetime for the page.</source>
+        <target state="final">Anger Cache Livstid för sidan.</target>
+      </trans-unit>
+      <trans-unit id="cache_timeout.details" resname="cache_timeout.details" xml:space="preserve" approved="yes">
+				<source>By default, pages are cached for 24 hours. After 24 hours, the page is constructed again and rewritten to the cache. Depending on your configuration, the cache may be cleared at midnight.
+When specific pages need a longer or shorter cache lifetime than the default, this option can be used.</source>
+			<target state="final">Som standard cachas sidor i 24 timmar. Efter 24 timmar är sidan uppbyggd igen och skrivs till cachen. Beroende på din konfiguration kan cachen rensas vid midnatt.
+När specifika sidor behöver en längre eller kortare cache-livslängd än standard, kan det här alternativet användas.</target></trans-unit>
+      <trans-unit id="no_search.description" resname="no_search.description" approved="yes">
+        <source>If enabled, this option excludes the page from searching operations on the website.</source>
+        <target state="final">Om aktiverad, utesluter detta alternativet sidan från sökoperationer på webbplatsen.</target>
+      </trans-unit>
+      <trans-unit id="author.description" resname="author.description" approved="yes">
+        <source>Enter the page author's name.</source>
+        <target state="final">Ange sidans författare.</target>
+      </trans-unit>
+      <trans-unit id="author.details" resname="author.details" xml:space="preserve" approved="yes">
+				<source>Whether the author name is used or not depends on the setup of your TypoScript template.
+
+- You may use it in a meta-tag.
+- If you're using TYPO3 pages as 'articles' then you could use this field to display the name of the page (article) author.</source>
+			<target state="final">Huruvida författaren namn används eller inte beror på hur installationen är uppsatt i TypoScript-mallen.
+
+- Du kan använda den i en metatagg.
+- Om du använder TYPO3 sidor som 'artiklar' så kan du använda det här fältet för att visa namnet på sidans (artikelns) författare.</target></trans-unit>
+      <trans-unit id="_author.seeAlso" resname="_author.seeAlso" approved="yes">
+        <source>pages:author_email</source>
+        <target state="final">pages:author_email</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="author_email.description" resname="author_email.description" approved="yes">
+        <source>Enter the page author's email address.</source>
+        <target state="final">Ange sidan författarens e-postadress.</target>
+      </trans-unit>
+      <trans-unit id="_author_email.seeAlso" resname="_author_email.seeAlso" approved="yes">
+        <source>pages:author</source>
+        <target state="final">pages:author</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="module.description" resname="module.description" approved="yes">
+        <source>Define the page as containing a Frontend plugin.</source>
+        <target state="final">Definiera sida som innehållande ett Frontend plugin.</target>
+      </trans-unit>
+      <trans-unit id="module.details" resname="module.details" xml:space="preserve" approved="yes">
+				<source>Setting this option lets the Backend knows this page contains specific content or has a specific purpose, such as containing a forum or acting as the root page of a shop section on the website. Based on this setting the Backend is able to display a shortcut list as well as relevant functionality in the 'Web&gt;Modules' module. The Frontend display is largely not affected.
+Marking a page as containing a 'Shop' plugin simply means it'll show up in the shortcut list of modules in the backend.
+
+For additional details on this option, refer to the administration documentation.
+
+It's recommended that only admin-users have access to this field!</source>
+			<target state="final">Genom att ställa in det här alternativet känner Backend av att den här sidan innehåller specifikt innehåll eller har ett specifikt syfte, till exempel innehåller ett forum eller agerar som roten sidan i en butik sektion på webbplatsen. Baserat på denna inställning kan Backend visa en genvägslista samt relevant funktionalitet i 'Web&gt;Moduler' modulen. Frontend-visningen påverkas i stort sett inte.
+Genom att markera en sida som innehåller ett 'butik'-plugin betyder helt enkelt att det ska visas upp i genvägslistan för moduler i backend.
+
+För ytterligare information om detta alternativ, se i administrationsdokumentationen.
+
+Vi rekommenderar att endast admin-användare har tillgång till detta fält!</target></trans-unit>
+      <trans-unit id="media.description" resname="media.description" approved="yes">
+        <source>Attach media files related to the page.</source>
+        <target state="final">Bifoga mediefiler relaterade till sidan.</target>
+      </trans-unit>
+      <trans-unit id="media.details" resname="media.details" xml:space="preserve" approved="yes">
+				<source>This field allows you to attach various files to the page, but how these files are used depends on your template.
+As an example the template could be use this field to allow a logo to be attached to the page or it might expect the first file to be an image used as a link in the navigation menu. Remember, this totally depends on how the template is programmed.</source>
+			<target state="final">Detta fält tillåter dig att bifoga olika filer till sidan, men hur dessa filer används beror på din mall.
+Som ett exempel kan mallen använda detta fält för att låta en logotyp knytas till sidan eller förutsätta att den första filen är en bild som används som en länk i navigeringsmenyn. Kom ihåg, detta beror helt på hur mallen är programmerad.</target></trans-unit>
+      <trans-unit id="subtitle.description" resname="subtitle.description" approved="yes">
+        <source>Enter a subtitle if needed.</source>
+        <target state="final">Skriv en underrubrik om det behövs.</target>
+      </trans-unit>
+      <trans-unit id="subtitle.details" resname="subtitle.details" approved="yes">
+        <source>Whether this field is used or not depends on the template. In most cases it's not used.</source>
+        <target state="final">Huruvida detta fält används eller inte beror på mallen. I de flesta fall används det inte.</target>
+      </trans-unit>
+      <trans-unit id="url.description" resname="url.description" approved="yes">
+        <source>Enter the URL this page redirects to.</source>
+        <target state="final">Skriv in webbadressen som sidan omdirigeras till.</target>
+      </trans-unit>
+      <trans-unit id="shortcut.description" resname="shortcut.description" approved="yes">
+        <source>Select a page to act as the Shortcut Target. When the current page is requested in the Frontend, it will be redirected to the Shortcut Target.</source>
+        <target state="final">Välj en sida att fungera som Genvägsmål. När den aktuella sidan begärs i Frontend, kommer den att omdirigeras till Genvägsmålet.</target>
+      </trans-unit>
+      <trans-unit id="shortcut.details" resname="shortcut.details" xml:space="preserve" approved="yes">
+				<source>Click the 'Browse for Records' icon and a new window will appear in which you can easily select a page to act as the Shortcut Target.
+
+This option is used only if the page 'Type' is set to 'Shortcut.'</source>
+			<target state="final">Klicka på 'Bläddra efter dokument'-ikonen och ett nytt fönster öppnas där du enkelt kan välja en sida att fungera som Genvägsmål.
+
+Det här alternativet används endast om sidan 'Typ' är satt till 'Genväg'.</target></trans-unit>
+      <trans-unit id="_shortcut.seeAlso" resname="_shortcut.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:doktype,
+pages:shortcut_mode</source>
+				
+			<target state="final">pages:doktype,
+pages:shortcut_mode</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="shortcut.image_descr" resname="shortcut.image_descr" approved="yes">
+        <source>Select a Shortcut Target page with the Element Browser.</source>
+        <target state="final">Välj en sida som Genvägsmål med elementbläddraren.</target>
+      </trans-unit>
+      <trans-unit id="keywords.description" resname="keywords.description" approved="yes">
+        <source>Enter keywords for the page separated by commas. You may also use short phrases.</source>
+        <target state="final">Ange nyckelord för sidan separerade med kommatecken. Du kan också använda korta fraser.</target>
+      </trans-unit>
+      <trans-unit id="keywords.details" resname="keywords.details" xml:space="preserve" approved="yes">
+				<source>Most TYPO3 websites use these keywords in a meta-tag on the page, but you may have to setup the appropriate TypoScript template yourself.
+
+To optimize your page for search engines like Google you should not use more than 3 to 6 keywords. You should also make sure that the keywords are found in the content of the page.
+
+Note that search engine extensions for TYPO3 such as Indexed Search can also be configured to make use of the keywords.
+
+The keywords can also be used to create a menu of related pages. Create a Content Element of type 'Sitemap' and then choose the menu type &lt;i&gt;Related pages (based on keywords)&lt;/i&gt;.</source>
+			<target state="final">De flesta TYPO3-webbplatser använder dessa sökord i en meta-tagg på sidan, men du kanske måste ställa in rätt i TypoScript mallen själv.
+
+För att optimera din sida för sökmotorer som Google ska du inte använda mer än 3 till 6 sökord. Du bör också se till att dessa sökord även finns i innehållet på sidan.
+
+Observera att sökmotor-plugin för TYPO3 t.ex. Indexerad sökning, även kan konfigureras att använda sökorden.
+
+Nyckelorden kan också användas för att skapa en meny av relaterade sidor. Skapa ett innehållselement av typen "Sitemap" och sedan välja menyntyp  &lt;i&gt;Relaterade sidor (baserat på sökord)&lt;/i&gt;.</target></trans-unit>
+      <trans-unit id="_keywords.seeAlso" resname="_keywords.seeAlso" approved="yes">
+        <source>pages:description</source>
+        <target state="final">pages:description</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a short description of the page. It will be displayed in the result lists of most search engines.</source>
+        <target state="final">Skriv en kort beskrivning av sidan. Den kommer att visas i resultatlistorna i de flesta sökmotorer.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" xml:space="preserve" approved="yes">
+				<source>Most websites insert this description in a meta-tag on the page, but you may have to configure this yourself in your TypoScript template.
+
+Most search engines will display the description in their result list. Thus, the text should be short (about 160 characters maximum), and its wording should make sense when it shows up in the result list.
+
+In addition, the description will be displayed if you create a Content Element of type 'Sitemap' and then choose the menu type &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt;. If an abstract exists for the page, it will be used instead of the description.
+
+&lt;b&gt;Note:&lt;/b&gt; Some search engines only use the description if the text is not found elsewhere in the content. So do not just repeat yourself.</source>
+			<target state="final">De flesta webbplatser för in denna beskrivning i en meta-taggen på sidan, men du kan behöva konfigurera detta själv i din TypoScript mall.
+
+De flesta sökmotorer kommer att visa beskrivningen i sin resultatlista. Därför bör texten vara kort (max ca 160 tecken), och dess ordalydelse bör vara meningsfullt när det dyker upp i resultatlistan.
+
+Dessutom kommer en beskrivning att visas om du skapar ett innehållselement av typen 'Sitemap' och sedan väljer menytypen &lt;i&gt;Meny av undersidor till dessa sidor (med abstrakt) &lt;/i&gt;. Om ett abstrakt existerar för sidan, kommer det att användas i stället för beskrivningen.
+
+&lt;b&gt;Notera:&lt;/b&gt; Vissa sökmotorer använder endast beskrivningen om texten inte hittas någon annanstans i innehållet. Så upprepa inte dig själv.</target></trans-unit>
+      <trans-unit id="_description.seeAlso" resname="_description.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:keywords
+pages:abstract</source>
+			<target state="final">pages:keywords
+pages:abstract</target></trans-unit>
+      <trans-unit id="abstract.description" resname="abstract.description" approved="yes">
+        <source>Enter an abstract of the contents. It may be displayed in an overview of articles.</source>
+        <target state="final">Skriv in ett abstrakt av innehållet. Det kan visas i en översikt av artiklar.</target>
+      </trans-unit>
+      <trans-unit id="abstract.details" resname="abstract.details" xml:space="preserve" approved="yes">
+				<source>An abstract is a short description of the page content that might be a little longer than the one in the &lt;i&gt;Description&lt;/i&gt; field.
+
+Unlike the description, the abstract is not meant for display in search engine result lists, but is instead intended for you own use.
+
+If you create a Content Element of type &lt;i&gt;Sitemap&lt;/i&gt; and then choose &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt; an overview of pages will be created. If an abstract is available for a page it will be used instead of the description.
+
+&lt;b&gt;Note:&lt;/b&gt; You do not have to enter the text of the description into the &lt;i&gt;Abstract field&lt;/i&gt; again.
+
+Admins can also make custom use of this field via their TypoScript templates.</source>
+			<target state="final">Ett abstrakt är en kort beskrivning av sidans innehåll som kan vara lite längre än den i fältet &lt;i&gt;Beskrivning&lt;/i&gt;.
+
+Till skillnad från beskrivningen, är abstraktet inte avsett för visning i sökmotorernas listor, utan är istället avsett för eget bruk.
+
+Om du skapar ett innehållselement av typen &lt;i&gt;Sitemap&lt;/i&gt; och välj sedan &lt;i&gt;Meny för undersidor till dessa sidor (med abstrakt) &lt;/i&gt; kommer en överblick av sidorna att skapas. Om ett abstrakt är tillgängligt för en sida kommer det att användas i stället för beskrivningen.
+
+&lt;b&gt;Notera:&lt;/b&gt; Du behöver inte skriva in text i beskrivningen i fältet &lt;i&gt;Abstrakt&lt;/i&gt; igen.
+
+Administratörer kan också använda fältet för annat syfte via TypoScript mallar.</target></trans-unit>
+      <trans-unit id="_abstract.seeAlso" resname="_abstract.seeAlso" approved="yes">
+        <source>pages:description</source>
+        <target state="final">pages:description</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="newUntil.description" resname="newUntil.description" approved="yes">
+        <source>Enter the date at which this page is no longer considered new.</source>
+        <target state="final">Skriv in det datum då denna sida är inte längre anses som ny.</target>
+      </trans-unit>
+      <trans-unit id="newUntil.details" resname="newUntil.details" xml:space="preserve" approved="yes">
+				<source>The 'New Until' date of the page has no effect on the display of the webpage. This value is instead for internal use as a reminder of the date when the content of this page should be revised. If the content of the page will become outdated on a certain day, you could set this value to that approximate date.
+To get an overview of when pages will be outdated, use the 'Pagetree overview' in the 'Web&gt;Info' Module.</source>
+			<target state="final">'Ny t.o.m.' datumet på sidan påverkar inte visningen av webbsidan. Detta värde är i stället för internt bruk som en påminnelse om den dag då innehållet på denna sida måste ses över. Om innehållet på sidan kommer att bli inaktuellt på en viss dag, kan du ställa in detta värde till det ungefärligt datum.
+För att få en överblick över när sidor kommer vara föråldrade, använd 'Sidträdsöversikt' i 'Web&gt;Info'-modulen.</target></trans-unit>
+      <trans-unit id="newUntil.syntax" resname="newUntil.syntax" approved="yes">
+        <source>See Page / Publication Date (click below)</source>
+        <target state="final">Visa sidan / Publiceringsdatum (klicka nedan)</target>
+      </trans-unit>
+      <trans-unit id="_newUntil.seeAlso" resname="_newUntil.seeAlso" approved="yes">
+        <source>pages:starttime</source>
+        <target state="final">pages:starttime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="lastUpdated.description" resname="lastUpdated.description" approved="yes">
+        <source>Enter the date and time of the most recent update to this page.</source>
+        <target state="final">Ange datum och tid för den senaste uppdateringen till den här sidan.</target>
+      </trans-unit>
+      <trans-unit id="lastUpdated.details" resname="lastUpdated.details" xml:space="preserve" approved="yes">
+				<source>How the value of this field is used is determined by the TypoScript template of the website. 'Last Update' content needs to be inserted on the pages and the TypoScript template must be configured to use this value.
+The most common use is to display the date from the automatically updated 'tstamp' field &lt;em&gt;unless&lt;/em&gt; the 'Last Update' field is set. In this case, the date in 'Last Update' is used.</source>
+			<target state="final">Hur värdet i detta fält används bestäms av TypoScript mallen för webbplatsen. 'Senast uppdaterad'-innehåll måste läggas på sidorna och TypoScript mallen måste konfigureras för att använda detta värde.
+Den vanligaste användningen är att visa datum från den uppdaterade sidan automatiskt från 'tstamp' fältet &lt;em&gt;om inte&lt;/em&gt;  'Senast uppdaterad'-fältet är satt. I detta fall är det datumet i 'Senast uppdaterad' som används.</target></trans-unit>
+      <trans-unit id="lastUpdated.syntax" resname="lastUpdated.syntax" xml:space="preserve" approved="yes">
+				<source>The format is HH:MM DD-MM-YYYY or HH:MM MM-DD-YYYY depending on your TYPO3 configuration.
+If you insert a 'd' the current time and date is inserted. You can also append any value in the field with a number lie '+10' which will add 10 days to the current value.</source>
+			<target state="final">Formatet är HH:MM DD-MM-ÅÅÅÅ eller TT:MM MM-DD-ÅÅÅÅ beroende på TYPO3 konfigurationen.
+Om du skriver in ett "d" kommer aktuell tid och datum att visas. Du kan också lägga till något värde i fält med en nummerlögn '+10', som kommer att lägga till 10 dagar till det aktuella värdet.</target></trans-unit>
+      <trans-unit id="nav_hide.description" resname="nav_hide.description" approved="yes">
+        <source>With this option the page will be not appear in menus in the Frontend. The page can still be viewed if linked by going directly to its URL.</source>
+        <target state="final">Med det här alternativet på sidan, kommer den inte att visas i menyer i Frontend. Sidan kan fortfarande ses om de är länkade genom att gå direkt till webbadressen.</target>
+      </trans-unit>
+      <trans-unit id="_nav_hide.seeAlso" resname="_nav_hide.seeAlso" approved="yes">
+        <source>pages:nav_title</source>
+        <target state="final">pages:nav_title</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="nav_title.description" resname="nav_title.description" approved="yes">
+        <source>Alternative Navigation Title for menu items in the Frontend. When set, this value is used instead of the Page Title.</source>
+        <target state="final">Alternativ Navigationstitel för menyalternativ i Frontend. När denna är inställd, visas detta värde i stället för det i fältet Sidtitel.</target>
+      </trans-unit>
+      <trans-unit id="content_from_pid.description" resname="content_from_pid.description" xml:space="preserve" approved="yes">
+				<source>If set, this is an alternative page to select Content Elements from.
+Whether this field is used depends on the website's TypoScript template.</source>
+			<target state="final">Om satt, är detta en alternativ sida för att välja innehållselement från.
+Huruvida detta fält används beror på webbplatsens TypoScript mall.</target></trans-unit>
+      <trans-unit id="shortcut_mode.description" resname="shortcut_mode.description" approved="yes">
+        <source>Select a Shortcut Mode. By default the shortcut page must have a Shortcut Target to jump to. Other options are to go to the first subpage, to a random subpage, or back up to the parent page.</source>
+        <target state="final">Välj ett genvägsläge. Som standard måste genvägssidan ha ett genvägsmål att hoppa till. Andra alternativ är att gå till den första undersidan, till en slumpmässig undersida, eller till den överordnade sidan.</target>
+      </trans-unit>
+      <trans-unit id="mount_pid.description" resname="mount_pid.description" approved="yes">
+        <source>Mount this page. If set, subpages of this page come from the Mounted Page instead.</source>
+        <target state="final">Montera denna sida. Om inställt, kommer undersidor för denna sida från Monterad sida istället.</target>
+      </trans-unit>
+      <trans-unit id="mount_pid.details" resname="mount_pid.details" approved="yes">
+        <source>In the Frontend this is done by adding a new variable, &amp;MP, to the URL. This links the mounted branch to the main branch by pairing page ids.</source>
+        <target state="final">I Frontend görs detta genom att lägga till en ny variabel, &amp;MP, till URL:en. Detta kopplar den monterade grenen till huvudgrenen genom att para ihop sidID.</target>
+      </trans-unit>
+      <trans-unit id="_mount_pid.seeAlso" resname="_mount_pid.seeAlso" approved="yes">
+        <source>pages:mount_pid_ol</source>
+        <target state="final">pages:mount_pid_ol</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="mount_pid_ol.description" resname="mount_pid_ol.description" approved="yes">
+        <source>Show content for the current page or replace it completely with the Mounted Page.</source>
+        <target state="final">Visa innehåll för den aktuella sidan eller ersätt det helt med den monterade sidan.</target>
+      </trans-unit>
+      <trans-unit id="_mount_pid_ol.seeAlso" resname="_mount_pid_ol.seeAlso" approved="yes">
+        <source>pages:mount_pid</source>
+        <target state="final">pages:mount_pid</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="title.description.+" resname="title.description.+" approved="yes">
+        <source>This is normally shown in the website navigation.</source>
+        <target state="final">Detta visas normalt i webbplatsens navigation.</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details.+" resname="TSconfig.details.+" xml:space="preserve" approved="yes">
+				<source>&lt;strong&gt;Example:&lt;/strong&gt;
+The 'Web&gt;Page' module lets you create content in four columns, Left, Normal, Right, Border if the template has been configured to use this option. (However, most websites use only one or two columns so some of these content columns are just taking up space and confusing users.)
+If you enter this string in the 'TSConfig' field, the 'Web&gt;Page' Module will only show the 'Normal' and 'Border' column!
+
+&lt;em&gt;mod.web_layout.tt_content.colPos_list = 0,3&lt;/em&gt;
+
+(Must be entered in a single line!)</source>
+			<target state="final">&lt;strong&gt;Exempel:&lt;/strong&gt;
+'Webb&gt;Sida'-modulen låter dig skapa innehåll i fyra kolumner, Vänster, Normal, Höger, Border om mallen har konfigurerats för att använda detta alternativet. (Men de flesta webbplatser använder endast en eller två kolumner, så en del av dessa innehållskolumner tar bara upp plats och förvirrar användaren.)
+Om du skriver in denna sträng i 'TSConfig'-fältet, kommer 'Web&gt;Sida'-modulen endast att visa 'Normal' och 'Border'-kolumnen!
+
+&lt;em&gt;mod.web_layout.tt_content.colPos_list = 0,3&lt;/em&gt;
+
+(Måste anges på en enda rad!)</target></trans-unit>
+      <trans-unit id="l18n_cfg.description" resname="l18n_cfg.description" approved="yes">
+        <source>Affect availability of pages in the various languages.</source>
+        <target state="final">Påverka tillgängligheten för sidor på de olika språken.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
