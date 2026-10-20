@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815007" source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="th">
+    <header/>
+    <body>
+      <trans-unit id="moduleTitle" resname="moduleTitle" approved="yes">
+        <source>Template tools</source>
+        <target state="final">เครื่องมือแม่แบบ</target>
+      </trans-unit>
+      <trans-unit id="templateAnalyzer" resname="templateAnalyzer" approved="yes">
+        <source>Template Analyzer</source>
+        <target state="final">วิเคราะห์แม่แบบ</target>
+      </trans-unit>
+      <trans-unit id="constantEditor" resname="constantEditor" approved="yes">
+        <source>Constant Editor</source>
+        <target state="final">ผู้แก้ไขค่าคงที่</target>
+      </trans-unit>
+      <trans-unit id="infoModify" resname="infoModify" approved="yes">
+        <source>Info/Modify</source>
+        <target state="final">ข้อมูล / แก้ไข</target>
+      </trans-unit>
+      <trans-unit id="objectBrowser" resname="objectBrowser" approved="yes">
+        <source>TypoScript Object Browser</source>
+        <target state="final">TypoScript Object Browser</target>
+      </trans-unit>
+      <trans-unit id="viewTemplates" resname="viewTemplates" approved="yes">
+        <source>Viewing templates of</source>
+        <target state="final">ดูแม่แบบของ</target>
+      </trans-unit>
+      <trans-unit id="pageName" resname="pageName" approved="yes">
+        <source>Page name</source>
+        <target state="final">ชื่อหน้า</target>
+      </trans-unit>
+      <trans-unit id="templates" resname="templates" approved="yes">
+        <source>Templates</source>
+        <target state="final"># แม่แบบ</target>
+      </trans-unit>
+      <trans-unit id="isRoot" resname="isRoot" approved="yes">
+        <source>Is Root?</source>
+        <target state="final">เป็นรากหรือไม่</target>
+      </trans-unit>
+      <trans-unit id="isExt" resname="isExt" approved="yes">
+        <source>Is Ext?</source>
+        <target state="final">เป็น extension หรือไม่</target>
+      </trans-unit>
+      <trans-unit id="overview" resname="overview" approved="yes">
+        <source>This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.</source>
+        <target state="final">นี้เป็นภาพรวมของหน้าในฐานข้อมูลที่มีมากกว่าหนึ่งแม่แบบ record คลิกที่ชื่อเพจเพื่อไปที่หน้า</target>
+      </trans-unit>
+      <trans-unit id="areYouSure" resname="areYouSure" approved="yes">
+        <source>Are you sure you want to do this?</source>
+        <target state="final">คุณแน่ใจหรือว่าต้องการทำเช่นนี้?</target>
+      </trans-unit>
+      <trans-unit id="noTemplate" resname="noTemplate" approved="yes">
+        <source>No template</source>
+        <target state="final">ไม่มีแม่แบบ</target>
+      </trans-unit>
+      <trans-unit id="noTemplateDescription" resname="noTemplateDescription" approved="yes">
+        <source>There was no template on this page!</source>
+        <target state="final">ไม่มีแม่แบบในหน้านี้</target>
+      </trans-unit>
+      <trans-unit id="createTemplate" resname="createTemplate" approved="yes">
+        <source>Create a template record first in order to edit constants!</source>
+        <target state="final">สร้างแม่แบบ record ก่อนเพื่อแก้ไขค่าคงที่</target>
+      </trans-unit>
+      <trans-unit id="createTemplateToEditConfiguration" resname="createTemplateToEditConfiguration" approved="yes">
+        <source>You need to create a template record below in order to edit your configuration.</source>
+        <target state="final">คุณต้องสร้างแม่แบบ record ด้านล่างเพื่อแก้ไขการตั้งค่าของคุณ</target>
+      </trans-unit>
+      <trans-unit id="newWebsite" resname="newWebsite" approved="yes">
+        <source>Create new website</source>
+        <target state="final">สร้างเว็บไซต์ใหม่</target>
+      </trans-unit>
+      <trans-unit id="newWebsiteAction" resname="newWebsiteAction" approved="yes">
+        <source>Create template for a new site</source>
+        <target state="final">สร้างแม่แบบสำหรับเว็บไซต์ใหม่</target>
+      </trans-unit>
+      <trans-unit id="extTemplate" resname="extTemplate" approved="yes">
+        <source>Create extension template</source>
+        <target state="final">สร้างแม่แบบของ extension</target>
+      </trans-unit>
+      <trans-unit id="extTemplateDescription" resname="extTemplateDescription" approved="yes">
+        <source>An extension template allows you to enter TypoScript values that will affect only this page and subpages.</source>
+        <target state="final">แม่แบบของ extension อนุญาตให้คุณสามารถป้อนค่า TypoScript ที่จะมีผลเฉพาะในหน้านี้และ หน้าย่อย</target>
+      </trans-unit>
+      <trans-unit id="extTemplateAction" resname="extTemplateAction" approved="yes">
+        <source>Click here to create an extension template.</source>
+        <target state="final">คลิกที่นี่เพื่อสร้างแม่แบบของ extension</target>
+      </trans-unit>
+      <trans-unit id="goToClosest" resname="goToClosest" approved="yes">
+        <source>Go to closest page with template</source>
+        <target state="final">ไปที่หน้าใกล้เคียงกับแม่แบบมากทีสุด</target>
+      </trans-unit>
+      <trans-unit id="goToClosestDescription" resname="goToClosestDescription" approved="yes">
+        <source>Closest template is on page '%s' (uid %s).</source>
+        <target state="final">แม่แบบที่ใกล้เคียงมากที่สุดอยู่ในหน้า'% s'(% s uid)</target>
+      </trans-unit>
+      <trans-unit id="goToClosestAction" resname="goToClosestAction" approved="yes">
+        <source>Click here to go.</source>
+        <target state="final">คลิกที่นี่เพื่อไปยังหน้านั้น</target>
+      </trans-unit>
+      <trans-unit id="titleNewSiteStandard" resname="titleNewSiteStandard" approved="yes">
+        <source>NEW SITE, based on standard</source>
+        <target state="final">ไซต์ใหม่ ตามมาตรฐาน</target>
+      </trans-unit>
+      <trans-unit id="titleNewSite" resname="titleNewSite" approved="yes">
+        <source>NEW SITE</source>
+        <target state="final">ไซต์ใหม่</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
