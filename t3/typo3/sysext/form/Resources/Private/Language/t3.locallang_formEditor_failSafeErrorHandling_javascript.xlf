@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1877653884" source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_formEditor_failSafeErrorHandling_javascript.xlf" date="2019-04-27T03:38:32Z" product-name="form" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="formEditor.error.headline" resname="formEditor.error.headline" xml:space="preserve">
+                <source>Oops! Something went wrong.</source>
+            <target>crwdns74420:0crwdne74420:0</target></trans-unit>
+      <trans-unit id="formEditor.error.message" resname="formEditor.error.message" xml:space="preserve">
+                <source>Please contact your administrator.</source>
+            <target>crwdns74422:0crwdne74422:0</target></trans-unit>
+      <trans-unit id="formEditor.error.technicalReason" resname="formEditor.error.technicalReason" xml:space="preserve">
+                <source>Technical Reason:</source>
+            <target>crwdns74424:0crwdne74424:0</target></trans-unit>
+    </body>
+  </file>
+</xliff>
