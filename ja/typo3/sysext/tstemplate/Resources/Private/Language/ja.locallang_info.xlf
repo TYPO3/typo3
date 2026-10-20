@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_info.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="submodule.title" approved="yes">
+        <source>Edit TypoScript record</source>
+        <target state="final">TypoScript レコードを編集</target>
+      </trans-unit>
+      <trans-unit id="submodule.titleWithRecord" approved="yes">
+        <source>Edit TypoScript record "%s"</source>
+        <target state="final">TypoScript レコード 「%s」 を編集</target>
+      </trans-unit>
+      <trans-unit id="submodule.description" approved="yes">
+        <source>Modify the content of the selected TypoScript record of the current page. Modifications can be made either for configurations like TypoScript constants and setup or basics like the title and description of the TypoScript record itself.</source>
+        <target state="final">現在のページの選択したTypoScriptレコードの内容を変更します。 TypoScript定数のような構成やセットアップ、TypoScriptレコードのタイトルや説明などの基本的な構成に変更を加えることができます。</target>
+      </trans-unit>
+      <trans-unit id="options.selectedRecord" approved="yes">
+        <source>Selected record</source>
+        <target state="final">選択済レコード</target>
+      </trans-unit>
+      <trans-unit id="table.column.constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">定数</target>
+      </trans-unit>
+      <trans-unit id="table.column.description" approved="yes">
+        <source>Description</source>
+        <target state="final">説明</target>
+      </trans-unit>
+      <trans-unit id="table.column.lines" approved="yes">
+        <source>%s lines</source>
+        <target state="final">%s 行</target>
+      </trans-unit>
+      <trans-unit id="table.column.setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">設定</target>
+      </trans-unit>
+      <trans-unit id="table.column.title" approved="yes">
+        <source>Title</source>
+        <target state="final">タイトル</target>
+      </trans-unit>
+      <trans-unit id="btn.editTypoScriptRecord" approved="yes">
+        <source>Edit the whole TypoScript record</source>
+        <target state="final">TypoScriptレコード全体を編集</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
