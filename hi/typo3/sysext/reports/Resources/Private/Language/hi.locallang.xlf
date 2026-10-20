@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:35Z" product-name="reports" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="reports_overview" approved="yes">
+        <source>Reports overview</source>
+        <target state="final">रिपोर्ट का अवलोकन</target>
+      </trans-unit>
+      <trans-unit id="choose_report" approved="yes">
+        <source>Report</source>
+        <target state="final">रिपोर्ट</target>
+      </trans-unit>
+      <trans-unit id="noReportsTitle" approved="yes">
+        <source>No registered reports</source>
+        <target state="final">कोई पंजीकृत रिपोर्ट नहीं</target>
+      </trans-unit>
+      <trans-unit id="noReportsMessage" approved="yes">
+        <source>There are no reports registered in the system and default reports have been disabled.</source>
+        <target state="final">सिस्टम में कोई रिपोर्ट पंजीकृत नहीं है और डिफ़ॉल्ट रिपोर्ट अक्षम कर दी गई हैं।</target>
+      </trans-unit>
+      <trans-unit id="link.openModule" approved="yes">
+        <source>Open</source>
+        <target state="final">खोलें</target>
+      </trans-unit>
+      <trans-unit id="link.openModuleWithTitle" approved="yes">
+        <source>Open %1s</source>
+        <target state="final">खोलें %1s</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.title" approved="yes">
+        <source>Content Statistics</source>
+        <target state="final">सामग्री सांख्यिकी</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.shortDescription" approved="yes">
+        <source>Shows statistics about used content elements</source>
+        <target state="final">उपयोग किए गए सामग्री तत्वों के बारे में आंकड़े दिखाता है</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.description" approved="yes">
+        <source>Provides an overview of all content element types, showing how often each appears across the site. Includes summaries per type.</source>
+        <target state="final">यह साइट पर प्रत्येक प्रकार के कंटेंट एलिमेंट की उपस्थिति को दर्शाते हुए, सभी प्रकार के कंटेंट एलिमेंट का एक संक्षिप्त विवरण प्रदान करता है। इसमें प्रत्येक प्रकार के लिए सारांश भी शामिल हैं।</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic" approved="yes">
+        <source>Statistics</source>
+        <target state="final">आंकड़े</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.header" approved="yes">
+        <source>Existing Content Element Types</source>
+        <target state="final">मौजूदा सामग्री तत्व प्रकार</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.description" approved="yes">
+        <source>The listed content elements include both visible and hidden records.</source>
+        <target state="final">सूचीबद्ध सामग्री तत्वों में दृश्य और छिपे हुए दोनों प्रकार के रिकॉर्ड शामिल हैं।</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.explanation" approved="yes">
+        <source>Keep in mind that some elements may not appear on any page, and others might be rendered by alternative methods (TypoScript, ViewHelpers, etc.). As a result, it is not technically possible to determine actual usage.</source>
+        <target state="final">ध्यान रखें कि कुछ तत्व किसी भी पृष्ठ पर दिखाई नहीं दे सकते हैं, और अन्य को वैकल्पिक विधियों (टाइपोस्क्रिप्ट, व्यूहेल्पर्स, आदि) द्वारा प्रस्तुत किया जा सकता है। परिणामस्वरूप, तकनीकी रूप से वास्तविक उपयोग का निर्धारण करना संभव नहीं है।</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.error" approved="yes">
+        <source>The content element database table's schema ("tt_content") could not be analyzed due to a missing or disabled schema type.</source>
+        <target state="final">कंटेंट एलिमेंट डेटाबेस टेबल ("tt_content") के स्कीमा का विश्लेषण नहीं किया जा सका क्योंकि स्कीमा प्रकार अनुपस्थित या अक्षम था।</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.unusedElements.header" approved="yes">
+        <source>Unused content elements</source>
+        <target state="final">अप्रयुक्त सामग्री तत्व</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.unusedElements.description" approved="yes">
+        <source>This list includes content element types that are not used anywhere, or whose existing instances are all flagged as deleted.</source>
+        <target state="final">इस सूची में उन सामग्री तत्व प्रकारों को शामिल किया गया है जिनका कहीं भी उपयोग नहीं किया जाता है, या जिनके सभी मौजूदा उदाहरणों को हटाए गए के रूप में चिह्नित किया गया है।</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.fields" approved="yes">
+        <source>%d fields</source>
+        <target state="final">%d फ़ील्ड</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.type" approved="yes">
+        <source>Type</source>
+        <target state="final">प्रकार</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.excluded" approved="yes">
+        <source>Excluded</source>
+        <target state="final">छोड़ा गया</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.not_excluded" approved="yes">
+        <source>Always visible</source>
+        <target state="final">हमेशा दिखाई देने वाला</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.required" approved="yes">
+        <source>Required</source>
+        <target state="final">आवश्यक</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic.active_text" approved="yes">
+        <source>%d active / %d hidden</source>
+        <target state="final">%d सक्रिय / %d छिपे हुए</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic.deleted_text" approved="yes">
+        <source>%d deleted</source>
+        <target state="final">%d हटा दिया गया</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic.deleted" approved="yes">
+        <source>Deleted</source>
+        <target state="final">हटाए गए</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.records" approved="yes">
+        <source>Records</source>
+        <target state="final">रिकॉर्ड्स</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.noRecords" approved="yes">
+        <source>No records found</source>
+        <target state="final">कोई रिकॉर्ड नहीं मिला</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
