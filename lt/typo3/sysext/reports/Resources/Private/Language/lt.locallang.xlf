@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:35Z" product-name="reports" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="reports_overview" approved="yes">
+        <source>Reports overview</source>
+        <target state="final">Ataskaitų apžvalga</target>
+      </trans-unit>
+      <trans-unit id="choose_report" approved="yes">
+        <source>Report</source>
+        <target state="final">Ataskaita</target>
+      </trans-unit>
+      <trans-unit id="noReportsTitle" approved="yes">
+        <source>No registered reports</source>
+        <target state="final">Nėra registruotų ataskaitų</target>
+      </trans-unit>
+      <trans-unit id="noReportsMessage" approved="yes">
+        <source>There are no reports registered in the system and default reports have been disabled.</source>
+        <target state="final">Sistemoje nėra registruotų ataskaitų, o numatytosios ataskaitos yra išjungtos.</target>
+      </trans-unit>
+      <trans-unit id="link.openModule" approved="yes">
+        <source>Open</source>
+        <target state="final">Atidaryti</target>
+      </trans-unit>
+      <trans-unit id="link.openModuleWithTitle" approved="yes">
+        <source>Open %1s</source>
+        <target state="final">Atidaryti %1s</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.title" approved="yes">
+        <source>Content Statistics</source>
+        <target state="final">Turinio statistika</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.shortDescription" approved="yes">
+        <source>Shows statistics about used content elements</source>
+        <target state="final">Rodo statistiką apie naudojamus turinio elementus</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.description" approved="yes">
+        <source>Provides an overview of all content element types, showing how often each appears across the site. Includes summaries per type.</source>
+        <target state="final">Pateikia visų turinio elementų tipų apžvalgą, rodydama, kiek kartų kiekvienas pasirodo svetainėje. Apima kiekvieno tipo suvestines.</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic" approved="yes">
+        <source>Statistics</source>
+        <target state="final">Statistika</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.header" approved="yes">
+        <source>Existing Content Element Types</source>
+        <target state="final">Esami turinio elementų tipai</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.description" approved="yes">
+        <source>The listed content elements include both visible and hidden records.</source>
+        <target state="final">Išvardyti turinio elementai apima tiek matomus, tiek paslėptus įrašus.</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.explanation" approved="yes">
+        <source>Keep in mind that some elements may not appear on any page, and others might be rendered by alternative methods (TypoScript, ViewHelpers, etc.). As a result, it is not technically possible to determine actual usage.</source>
+        <target state="final">Atminkite, kad kai kurie elementai gali nepasirodyti jokiame puslapyje, o kiti gali būti atvaizduojami alternatyviais metodais (TypoScript, ViewHelpers ir kt.). Dėl šios priežasties techniškai neįmanoma nustatyti tikrojo naudojimo.</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.error" approved="yes">
+        <source>The content element database table's schema ("tt_content") could not be analyzed due to a missing or disabled schema type.</source>
+        <target state="final">Turinio elementų duomenų bazės lentelės schema („tt_content") negalėjo būti išanalizuota dėl trūkstamo arba išjungto schemos tipo.</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.unusedElements.header" approved="yes">
+        <source>Unused content elements</source>
+        <target state="final">Nenaudojami turinio elementai</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.unusedElements.description" approved="yes">
+        <source>This list includes content element types that are not used anywhere, or whose existing instances are all flagged as deleted.</source>
+        <target state="final">Šiame sąraše pateikiami turinio elementų tipai, kurie niekur nenaudojami arba kurių visi esami egzemplioriai pažymėti kaip ištrinti.</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.fields" approved="yes">
+        <source>%d fields</source>
+        <target state="final">%d laukai</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Tipas</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.excluded" approved="yes">
+        <source>Excluded</source>
+        <target state="final">Neįtrauktas</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.required" approved="yes">
+        <source>Required</source>
+        <target state="final">Privalomas</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic.active_text" approved="yes">
+        <source>%d active / %d hidden</source>
+        <target state="final">%d aktyvūs / %d paslėpti</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic.deleted_text" approved="yes">
+        <source>%d deleted</source>
+        <target state="final">%d ištrinti</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic.deleted" approved="yes">
+        <source>Deleted</source>
+        <target state="final">Ištrinta</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.records" approved="yes">
+        <source>Records</source>
+        <target state="final">Įrašai</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.noRecords" approved="yes">
+        <source>No records found</source>
+        <target state="final">Įrašų nerasta</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
