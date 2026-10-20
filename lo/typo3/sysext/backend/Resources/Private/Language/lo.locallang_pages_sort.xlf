@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Sort sub pages</source>
+        <target state="final">ຈັດລຽງໜ້າຍ່ອຍ</target>
+      </trans-unit>
+      <trans-unit id="currentPageOrder" approved="yes">
+        <source>Current page order</source>
+        <target state="final">ລຳດັບໜ້າປັດຈຸບັນ</target>
+      </trans-unit>
+      <trans-unit id="changeOrder" approved="yes">
+        <source>Sort these pages by</source>
+        <target state="final">ຈັດລຽງໜ້າເຫຼົ່ານີ້ຕາມ</target>
+      </trans-unit>
+      <trans-unit id="changeOrderConfirm" x-unused-since="15.0" approved="yes">
+        <source>You're about to change the order of the above pages. Are you sure you want to continue?</source>
+        <target state="final">ທ່ານກຳລັງຈະປ່ຽນລຳດັບຂອງໜ້າຂ້າງເທິງນີ້. ທ່ານແນ່ໃຈບໍວ່າຕ້ອງການສືບຕໍ່?</target>
+      </trans-unit>
+      <trans-unit id="fieldTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">ຫົວຂໍ້ໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="fieldSubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">ຫົວຂໍ້ຍ່ອຍ</target>
+      </trans-unit>
+      <trans-unit id="fieldCrdate" approved="yes">
+        <source>Create-time</source>
+        <target state="final">ເວລາສ້າງ</target>
+      </trans-unit>
+      <trans-unit id="fieldTstamp" approved="yes">
+        <source>Change-time</source>
+        <target state="final">ເວລາປ່ຽນແປງ</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">ຫົວຂໍ້ໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="changeOrderBySubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">ຫົວຂໍ້ຍ່ອຍ</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByNavtitle" approved="yes">
+        <source>Navigation title</source>
+        <target state="final">ຫົວຂໍ້ການນຳທາງ</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTstamp" approved="yes">
+        <source>Change-time</source>
+        <target state="final">ເວລາປ່ຽນແປງ</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByCreate" approved="yes">
+        <source>Create-time</source>
+        <target state="final">ເວລາສ້າງ</target>
+      </trans-unit>
+      <trans-unit id="changeOrderReverse" approved="yes">
+        <source>Reverse current order</source>
+        <target state="final">ປີ້ນລຳດັບປັດຈຸບັນ</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.title" approved="yes">
+        <source>Invisible subpages</source>
+        <target state="final">ໜ້າຍ່ອຍທີ່ບໍ່ສະແດງຜົນ</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.message" approved="yes">
+        <source>Some subpages are not visible because of access restrictions. These hidden pages are excluded from sorting.</source>
+        <target state="final">ບາງໜ້າຍ່ອຍບໍ່ສາມາດເຫັນໄດ້ເນື່ອງຈາກການຈຳກັດສິດການເຂົ້າເຖິງ. ໜ້າທີ່ຖືກເຊື່ອງເຫຼົ່ານີ້ຈະບໍ່ຖືກລວມເຂົ້າໃນການຈັດລຽງ.</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.title" approved="yes">
+        <source>No subpages</source>
+        <target state="final">ບໍ່ມີໜ້າຍ່ອຍ</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.message" approved="yes">
+        <source>Please select a page with subpages.</source>
+        <target state="final">ກະລຸນາເລືອກໜ້າທີ່ມີໜ້າຍ່ອຍ.</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.title" approved="yes">
+        <source>Not implemented</source>
+        <target state="final">ຍັງບໍ່ທັນຮອງຮັບ</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.message" approved="yes">
+        <source>This function is not available in the current draft workspace; please switch back to the LIVE workspace.</source>
+        <target state="final">ຟັງຊັນນີ້ບໍ່ມີໃຫ້ໃຊ້ໃນພື້ນທີ່ເຮັດວຽກສະບັບຮ່າງປັດຈຸບັນ; ກະລຸນາສະຫຼັບກັບໄປທີ່ພື້ນທີ່ເຮັດວຽກແບບ LIVE.</target>
+      </trans-unit>
+      <trans-unit id="noEditPermissions" approved="yes">
+        <source>No edit permissions on this sub page. This page can not be re-sorted among others.</source>
+        <target state="final">ບໍ່ມີສິດແກ້ໄຂໃນໜ້າຍ່ອຍນີ້. ໜ້ານີ້ບໍ່ສາມາດຈັດລຽງຄືນໃໝ່ຮ່ວມກັບໜ້າອື່ນໆໄດ້.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
