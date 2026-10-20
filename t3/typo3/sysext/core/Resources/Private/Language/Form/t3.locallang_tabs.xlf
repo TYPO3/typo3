@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf" date="2016-10-23T20:22:33Z" product-name="tabs" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="general">
+        <source>General</source>
+        <target>crwdns51562:0crwdne51562:0</target>
+      </trans-unit>
+      <trans-unit id="access">
+        <source>Access</source>
+        <target>crwdns51564:0crwdne51564:0</target>
+      </trans-unit>
+      <trans-unit id="accesscapabilities">
+        <source>Access capabilities</source>
+        <target>crwdns51566:0crwdne51566:0</target>
+      </trans-unit>
+      <trans-unit id="account_security">
+        <source>Account security</source>
+        <target>crwdns378628:0crwdne378628:0</target>
+      </trans-unit>
+      <trans-unit id="backend_appearance">
+        <source>Backend appearance</source>
+        <target>crwdns378630:0crwdne378630:0</target>
+      </trans-unit>
+      <trans-unit id="categories">
+        <source>Categories</source>
+        <target>crwdns51568:0crwdne51568:0</target>
+      </trans-unit>
+      <trans-unit id="capabilities">
+        <source>Capabilities</source>
+        <target>crwdns378632:0crwdne378632:0</target>
+      </trans-unit>
+      <trans-unit id="notes">
+        <source>Notes</source>
+        <target>crwdns51570:0crwdne51570:0</target>
+      </trans-unit>
+      <trans-unit id="language">
+        <source>Language</source>
+        <target>crwdns51572:0crwdne51572:0</target>
+      </trans-unit>
+      <trans-unit id="extended">
+        <source>Extended</source>
+        <target>crwdns51574:0crwdne51574:0</target>
+      </trans-unit>
+      <trans-unit id="appearance">
+        <source>Appearance</source>
+        <target>crwdns304752:0crwdne304752:0</target>
+      </trans-unit>
+      <trans-unit id="behaviour">
+        <source>Behavior</source>
+        <target>crwdns355542:0crwdne355542:0</target>
+      </trans-unit>
+      <trans-unit id="images">
+        <source>Images</source>
+        <target>crwdns304756:0crwdne304756:0</target>
+      </trans-unit>
+      <trans-unit id="accessibility">
+        <source>Accessibility</source>
+        <target>crwdns304758:0crwdne304758:0</target>
+      </trans-unit>
+      <trans-unit id="text">
+        <source>Text</source>
+        <target>crwdns304760:0crwdne304760:0</target>
+      </trans-unit>
+      <trans-unit id="media">
+        <source>Media</source>
+        <target>crwdns304762:0crwdne304762:0</target>
+      </trans-unit>
+      <trans-unit id="plugin">
+        <source>Plugin</source>
+        <target>crwdns304764:0crwdne304764:0</target>
+      </trans-unit>
+      <trans-unit id="personalization">
+        <source>Personalization</source>
+        <target>crwdns378634:0crwdne378634:0</target>
+      </trans-unit>
+      <trans-unit id="metadata">
+        <source>Metadata</source>
+        <target>crwdns378066:0crwdne378066:0</target>
+      </trans-unit>
+      <trans-unit id="reset_configuration">
+        <source>Reset configuration</source>
+        <target>crwdns378636:0crwdne378636:0</target>
+      </trans-unit>
+      <trans-unit id="resources">
+        <source>Resources</source>
+        <target>crwdns378068:0crwdne378068:0</target>
+      </trans-unit>
+      <trans-unit id="seo">
+        <source>SEO</source>
+        <target>crwdns378070:0crwdne378070:0</target>
+      </trans-unit>
+      <trans-unit id="socialmedia">
+        <source>Social Media</source>
+        <target>crwdns378072:0crwdne378072:0</target>
+      </trans-unit>
+      <trans-unit id="options">
+        <source>Options</source>
+        <target>crwdns378074:0crwdne378074:0</target>
+      </trans-unit>
+      <trans-unit id="audio">
+        <source>Audio</source>
+        <target>crwdns378076:0crwdne378076:0</target>
+      </trans-unit>
+      <trans-unit id="video">
+        <source>Video</source>
+        <target>crwdns378078:0crwdne378078:0</target>
+      </trans-unit>
+      <trans-unit id="camera">
+        <source>Camera</source>
+        <target>crwdns378080:0crwdne378080:0</target>
+      </trans-unit>
+      <trans-unit id="permissions">
+        <source>Permissions</source>
+        <target>crwdns378082:0crwdne378082:0</target>
+      </trans-unit>
+      <trans-unit id="mounts">
+        <source>Mounts</source>
+        <target>crwdns378084:0crwdne378084:0</target>
+      </trans-unit>
+      <trans-unit id="personaldata">
+        <source>Personal Data</source>
+        <target>crwdns378086:0crwdne378086:0</target>
+      </trans-unit>
+      <trans-unit id="items">
+        <source>Items</source>
+        <target>crwdns378088:0crwdne378088:0</target>
+      </trans-unit>
+      <trans-unit id="recordpermissions">
+        <source>Record Permissions</source>
+        <target>crwdns378090:0crwdne378090:0</target>
+      </trans-unit>
+      <trans-unit id="modulepermissions">
+        <source>Module Permissions</source>
+        <target>crwdns378092:0crwdne378092:0</target>
+      </trans-unit>
+      <trans-unit id="advancedoptions">
+        <source>Advanced Options</source>
+        <target>crwdns378094:0crwdne378094:0</target>
+      </trans-unit>
+      <trans-unit id="timing">
+        <source>Timing</source>
+        <target>crwdns380550:0crwdne380550:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
