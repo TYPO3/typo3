@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf" date="2023-01-19T14:41:00Z" product-name="cms" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="module.pagetsconfig.noAccess" approved="yes">
+        <source>Access to this module denied.</source>
+        <target state="final">Toegang tot deze module geweigerd.</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.headline" approved="yes">
+        <source>Pages containing page TSconfig</source>
+        <target state="final">Pagina's met PageTsConfig</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.description" approved="yes">
+        <source>Global overview of all pages in the database containing page TSconfig.</source>
+        <target state="final">Globaal overzicht van alle pagina's in de database met Page TSconfig.</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.noRecords" approved="yes">
+        <source>There are no pages containing page TSconfig settings in the page configuration.</source>
+        <target state="final">Er zijn geen pagina's die Page TSconfig instellingen bevatten in de paginaconfiguratie.</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.pagetitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Paginatitel</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_pages.written_tsconfig_lines" approved="yes">
+        <source>Number of lines of code in field "TSconfig"</source>
+        <target state="final">Aantal regels code in het veld "TSconfig"</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.headline" approved="yes">
+        <source>Active page TSconfig of page "%s"</source>
+        <target state="final">Actieve Page TSconfig van pagina "%s"</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.description" approved="yes">
+        <source>Overview of the current page TSconfig of the system. A targeted search for values and names is possible. The list of results can also be filtered according to conditions.</source>
+        <target state="final">Overzicht van de huidige Page TSconfig van het systeem. Gericht zoeken naar waarden en namen is mogelijk. De lijst met resultaten kan ook worden gefilterd aan de hand van de voorwaarden.</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.displayConstantSubstitutions" approved="yes">
+        <source>Substitute constants in page TSconfig</source>
+        <target state="final">Constanten in Page TSconfig vervangen</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.displayComments" approved="yes">
+        <source>Display comments</source>
+        <target state="final">Commentaar weergeven</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.sortAlphabetically" approved="yes">
+        <source>Sort keys alphabetically</source>
+        <target state="final">Alfabetisch sorteren</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.header.conditions" approved="yes">
+        <source>Conditions</source>
+        <target state="final">Voorwaarden</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.info.conditionActiveCount.multiple" approved="yes">
+        <source>%s active conditions</source>
+        <target state="final">%s actieve voorwaarden</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.info.conditionActiveCount.single" approved="yes">
+        <source>%s active condition</source>
+        <target state="final">%s actieve voorwaarde</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.info.conditionWithConstant" approved="yes">
+        <source>Site settings usage: [%s]</source>
+        <target state="final">Gebruik in website instellingen: [%s]</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.panel.header.configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Configuratie</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.siteSettings" approved="yes">
+        <source>Constants from site settings</source>
+        <target state="final">Constanten uit website-instellingen</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.activePageTsConfig" approved="yes">
+        <source>Page TSconfig</source>
+        <target state="final">Pagina TSconfig</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.noPageTSconfigAvailable" approved="yes">
+        <source>No suitable page TSconfig available.</source>
+        <target state="final">Geen geschikte Page TSconfig beschikbaar.</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_active.tree.valueWithConstant" approved="yes">
+        <source>Constant usage: [%s]</source>
+        <target state="final">Constantengebruik: [%s]</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.headline" approved="yes">
+        <source>Included page TSconfig of page "%s"</source>
+        <target state="final">Ingevoegde Page TSconfig van pagina "%s"</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.description" approved="yes">
+        <source>Overview of the included TypoScript and include order for the current page.</source>
+        <target state="final">Overzicht van het ingevoegde TypoScript en volgorde van invoegen voor de huidige pagina.</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.siteSettings" approved="yes">
+        <source>Constants from site settings</source>
+        <target state="final">Constanten van site instellingen</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.pagetsconfig" approved="yes">
+        <source>Page TSconfig</source>
+        <target state="final">Pagina TSconfig</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.panel.header.configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Configuratie</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.panel.header.syntaxErrors" approved="yes">
+        <source>Syntax scanner warnings</source>
+        <target state="final">Syntaxisscannerwaarschuwingen</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.panel.info.syntaxErrorCount.single" approved="yes">
+        <source>%s syntax warning</source>
+        <target state="final">%s syntaxiswaarschuwing</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.panel.info.syntaxErrorCount.multiple" approved="yes">
+        <source>%s syntax warnings</source>
+        <target state="final">%s syntaxiswaarschuwingen</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.sourceCode" approved="yes">
+        <source>Show affected code snippet</source>
+        <target state="final">Getroffen codefragment tonen</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.type.line.invalid" approved="yes">
+        <source>Invalid line in "%1$s", line number "%2$s"</source>
+        <target state="final">Ongeldige regel in "%1$s", regelnummer "%2$s"</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.type.brace.excess" approved="yes">
+        <source>Brace in excess in "%1$s", line number "%2$s"</source>
+        <target state="final">Haakje te veel in "%1$s", regelnummer "%2$s"</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.type.brace.missing" approved="yes">
+        <source>Brace missing in "%1$s", line number "%2$s"</source>
+        <target state="final">Haakje ontbreekt in "%1$s", regelnummer "%2$s"</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.syntaxError.type.import.empty" approved="yes">
+        <source>Import does not find a file in "%1$s", line number "%2$s"</source>
+        <target state="final">Import vindt geen bestand in "%1$s", regelnummer "%2$s"</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.Segment" approved="yes">
+        <source>Code segment</source>
+        <target state="final">Codesegment</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.AtImport" approved="yes">
+        <source>Included via "@import"</source>
+        <target state="final">Ingevoegd via "@import"</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.Condition" approved="yes">
+        <source>Condition (then)</source>
+        <target state="final">Voorwaarde (dan)</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.ConditionElse" approved="yes">
+        <source>Condition (else)</source>
+        <target state="final">Voorwaarde (anders)</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.ConditionStop" approved="yes">
+        <source>Condition (end)</source>
+        <target state="final">Voorwaarde (einde)</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.TsConfig" approved="yes">
+        <source>TSconfig</source>
+        <target state="final">TSconfig</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.type.Site" approved="yes">
+        <source>Site</source>
+        <target state="final">Website</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.btn.sourceCode" approved="yes">
+        <source>Show code</source>
+        <target state="final">Code tonen</target>
+      </trans-unit>
+      <trans-unit id="module.pagetsconfig_includes.tree.child.btn.sourceCodeWithResolvedIncludes" approved="yes">
+        <source>Show code including possible includes/imports</source>
+        <target state="final">Code tonen inclusief mogelijke includes/import</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
