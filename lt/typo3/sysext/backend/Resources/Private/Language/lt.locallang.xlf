@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1420197366" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="no_modules_registered" resname="no_modules_registered" approved="yes">
+        <source>No modules have been registered. Please contact your system administrator.</source>
+        <target state="final">Nėra užregistruotų modulių. Susisiekite su sistemos administratoriumi.</target>
+      </trans-unit>
+      <trans-unit id="show_references" resname="show_references" approved="yes">
+        <source>Show references</source>
+        <target state="final">Rodyti nuorodas</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.title" resname="foldertreeview.noFolders.title" approved="yes">
+        <source>No folders available</source>
+        <target state="final">Nėra aplankų</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.message" resname="foldertreeview.noFolders.message" approved="yes">
+        <source>You do not have access to any folder. Please ask your administrator to fix access permissions for your account.</source>
+        <target state="final">Neturite prieigos prie jokio aplanko. Paprašykite administratoriaus suteikti jūsų paskyrai tinkamas prieigos teises.</target>
+      </trans-unit>
+      <trans-unit id="login.link" resname="login.link" approved="yes">
+        <source>Login with username and password</source>
+        <target state="final">Prisijungti su naudotojo vardu ir slaptažodžiu</target>
+      </trans-unit>
+      <trans-unit id="login.username" resname="login.username" approved="yes">
+        <source>Username</source>
+        <target state="final">Naudotojo vardas</target>
+      </trans-unit>
+      <trans-unit id="login.password" resname="login.password" approved="yes">
+        <source>Password</source>
+        <target state="final">Slaptažodis</target>
+      </trans-unit>
+      <trans-unit id="login.news.previous" resname="login.news.previous" approved="yes">
+        <source>Previous</source>
+        <target state="final">Ankstesnis</target>
+      </trans-unit>
+      <trans-unit id="login.news.next" resname="login.news.next" approved="yes">
+        <source>Next</source>
+        <target state="final">Kitas</target>
+      </trans-unit>
+      <trans-unit id="login.error.message" resname="login.error.message" approved="yes">
+        <source>Your login attempt did not succeed</source>
+        <target state="final">Prisijungti nepavyko</target>
+      </trans-unit>
+      <trans-unit id="login.error.description" resname="login.error.description" approved="yes">
+        <source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target state="final">Įsitikinkite, kad teisingai įvedėte naudotojo vardą ir slaptažodį, įskaitant didžiąsias ir mažąsias raides.</target>
+      </trans-unit>
+      <trans-unit id="login.process" resname="login.process" approved="yes">
+        <source>Verifying Login Data ...</source>
+        <target state="final">Tikrinami prisijungimo duomenys...</target>
+      </trans-unit>
+      <trans-unit id="login.submit" resname="login.submit" approved="yes">
+        <source>Login</source>
+        <target state="final">Prisijungti</target>
+      </trans-unit>
+      <trans-unit id="login.copyrightLink" resname="login.copyrightLink" approved="yes">
+        <source>More about TYPO3</source>
+        <target state="final">Daugiau apie TYPO3</target>
+      </trans-unit>
+      <trans-unit id="login.typo3Logo" resname="login.typo3Logo" approved="yes">
+        <source>TYPO3 logo</source>
+        <target state="final">TYPO3 logotipas</target>
+      </trans-unit>
+      <trans-unit id="login.donate" resname="login.donate" approved="yes">
+        <source>Donate</source>
+        <target state="final">Paaukoti</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
