@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang.xlf" date="2023-02-15T18:03:32Z" product-name="beuser" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="userName" approved="yes">
+        <source>Username</source>
+        <target state="final">ຊື່ຜູ້ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="avatar" approved="yes">
+        <source>Avatar</source>
+        <target state="final">ຮູບແທນໂຕ</target>
+      </trans-unit>
+      <trans-unit id="realName" approved="yes">
+        <source>Real name</source>
+        <target state="final">ຊື່ແທ້</target>
+      </trans-unit>
+      <trans-unit id="name" approved="yes">
+        <source>Name</source>
+        <target state="final">ຊື່</target>
+      </trans-unit>
+      <trans-unit id="email" approved="yes">
+        <source>Email</source>
+        <target state="final">ອີເມວ</target>
+      </trans-unit>
+      <trans-unit id="admin" approved="yes">
+        <source>Admin</source>
+        <target state="final">ຜູ້ດູແລລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="users" approved="yes">
+        <source>Users</source>
+        <target state="final">ຜູ້ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="user" approved="yes">
+        <source>User</source>
+        <target state="final">ຜູ້ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">ແມ່ນ</target>
+      </trans-unit>
+      <trans-unit id="no" approved="yes">
+        <source>No</source>
+        <target state="final">ບໍ່</target>
+      </trans-unit>
+      <trans-unit id="never" approved="yes">
+        <source>Never</source>
+        <target state="final">ບໍ່ເຄີຍ</target>
+      </trans-unit>
+      <trans-unit id="disable" approved="yes">
+        <source>Enabled</source>
+        <target state="final">ເປີດໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="startDateAndTime" approved="yes">
+        <source>Start</source>
+        <target state="final">ເລີ່ມ</target>
+      </trans-unit>
+      <trans-unit id="endDateAndTime" approved="yes">
+        <source>Stop</source>
+        <target state="final">ຢຸດ</target>
+      </trans-unit>
+      <trans-unit id="lastLogin" approved="yes">
+        <source>Last login</source>
+        <target state="final">ເຂົ້າລະບົບຫຼ້າສຸດ</target>
+      </trans-unit>
+      <trans-unit id="allowedLanguages" approved="yes">
+        <source>Limit to languages</source>
+        <target state="final">ຈຳກັດສະເພາະພາສາ</target>
+      </trans-unit>
+      <trans-unit id="pageTreeEntryPoints" approved="yes">
+        <source>Page Tree Entry Points</source>
+        <target state="final">ຈຸດເລີ່ມຕົ້ນຂອງໂຄງສ້າງໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="fileMounts" approved="yes">
+        <source>File mountpoints</source>
+        <target state="final">ຈຸດເຊື່ອມຕໍ່ໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="groups" approved="yes">
+        <source>Groups</source>
+        <target state="final">ກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="inheritance" approved="yes">
+        <source>Inheritance</source>
+        <target state="final">ການສືບທອດ</target>
+      </trans-unit>
+      <trans-unit id="group" approved="yes">
+        <source>Group</source>
+        <target state="final">ກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">ພາສາ</target>
+      </trans-unit>
+      <trans-unit id="categories" approved="yes">
+        <source>Categories</source>
+        <target state="final">ໝວດໝູ່</target>
+      </trans-unit>
+      <trans-unit id="permissions" approved="yes">
+        <source>Permissions</source>
+        <target state="final">ການອະນຸຍາດ</target>
+      </trans-unit>
+      <trans-unit id="modules" approved="yes">
+        <source>Modules</source>
+        <target state="final">ໂມດູນ</target>
+      </trans-unit>
+      <trans-unit id="tableModes.read" approved="yes">
+        <source>Read</source>
+        <target state="final">ອ່ານ</target>
+      </trans-unit>
+      <trans-unit id="tableModes.write" approved="yes">
+        <source>Read &amp; Write</source>
+        <target state="final">ອ່ານ ແລະ ຂຽນ</target>
+      </trans-unit>
+      <trans-unit id="mountsWorkspaces" approved="yes">
+        <source>Mounts and workspaces</source>
+        <target state="final">ຈຸດເຊື່ອມຕໍ່ ແລະ ພື້ນທີ່ເຮັດວຽກ</target>
+      </trans-unit>
+      <trans-unit id="options" approved="yes">
+        <source>Options</source>
+        <target state="final">ຕົວເລືອກ</target>
+      </trans-unit>
+      <trans-unit id="allowedPageContentTypes" approved="yes">
+        <source>Allowed page content types</source>
+        <target state="final">ປະເພດເນື້ອໃນໜ້າທີ່ອະນຸຍາດ</target>
+      </trans-unit>
+      <trans-unit id="generalPermissions" approved="yes">
+        <source>General permissions</source>
+        <target state="final">ການອະນຸຍາດທົ່ວໄປ</target>
+      </trans-unit>
+      <trans-unit id="compare.tables" approved="yes">
+        <source>Table permissions</source>
+        <target state="final">ການອະນຸຍາດຕາຕະລາງ</target>
+      </trans-unit>
+      <trans-unit id="compare.direct.inherit" approved="yes">
+        <source>Inherit</source>
+        <target state="final">ສືບທອດ</target>
+      </trans-unit>
+      <trans-unit id="compare.direct.direct" approved="yes">
+        <source>Direct</source>
+        <target state="final">ໂດຍກົງ</target>
+      </trans-unit>
+      <trans-unit id="information.defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າເລີ່ມຕົ້ນ</target>
+      </trans-unit>
+      <trans-unit id="information.defaultWorkspace" approved="yes">
+        <source>Default</source>
+        <target state="final">ຄ່າເລີ່ມຕົ້ນ</target>
+      </trans-unit>
+      <trans-unit id="information.groups.table.column.groupTitle" approved="yes">
+        <source>Group title</source>
+        <target state="final">ຊື່ກຸ່ມ</target>
+      </trans-unit>
+      <!-- Docheader menu / Shortcut button title -->
+      <trans-unit id="backendUser" approved="yes">
+        <source>Backend User</source>
+        <target state="final">ຜູ້ໃຊ້ສ່ວນຫຼັງ</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup" approved="yes">
+        <source>Backend User Group</source>
+        <target state="final">ກຸ່ມຜູ້ໃຊ້ສ່ວນຫຼັງ</target>
+      </trans-unit>
+      <trans-unit id="backendUsers" approved="yes">
+        <source>Backend users</source>
+        <target state="final">ຜູ້ໃຊ້ສ່ວນຫຼັງ</target>
+      </trans-unit>
+      <trans-unit id="backendUserDetails" approved="yes">
+        <source>Backend user details</source>
+        <target state="final">ລາຍລະອຽດຜູ້ໃຊ້ສ່ວນຫຼັງ</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroupsMenu" approved="yes">
+        <source>Backend user groups</source>
+        <target state="final">ກຸ່ມຜູ້ໃຊ້ສ່ວນຫຼັງ</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroupDetails" approved="yes">
+        <source>Backend user group details</source>
+        <target state="final">ລາຍລະອຽດກຸ່ມຜູ້ໃຊ້ສ່ວນຫຼັງ</target>
+      </trans-unit>
+      <trans-unit id="compareBackendUsers" approved="yes">
+        <source>Compare backend users</source>
+        <target state="final">ປຽບທຽບຜູ້ໃຊ້ສ່ວນຫຼັງ</target>
+      </trans-unit>
+      <trans-unit id="compareBackendUsersGroups" approved="yes">
+        <source>Compare backend user groups</source>
+        <target state="final">ປຽບທຽບກຸ່ມຜູ້ໃຊ້ສ່ວນຫຼັງ</target>
+      </trans-unit>
+      <trans-unit id="onlineUsers" approved="yes">
+        <source>Online users</source>
+        <target state="final">ຜູ້ໃຊ້ທີ່ກຳລັງອອນລາຍ</target>
+      </trans-unit>
+      <!-- Button / Links -->
+      <trans-unit id="btn.addToCompareList" approved="yes">
+        <source>Add to compare list</source>
+        <target state="final">ເພີ່ມເຂົ້າໃນລາຍການປຽບທຽບ</target>
+      </trans-unit>
+      <trans-unit id="btn.backendUser.create" approved="yes">
+        <source>Create new backend user</source>
+        <target state="final">ສ້າງຜູ້ໃຊ້ສ່ວນຫຼັງໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="btn.editor.create" approved="yes">
+        <source>Create editor</source>
+        <target state="final">ສ້າງຜູ້ກວດແກ້</target>
+      </trans-unit>
+      <trans-unit id="btn.admin.create" approved="yes">
+        <source>Create admin</source>
+        <target state="final">ສ້າງຜູ້ດູແລລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="btn.backendUserGroup.create" approved="yes">
+        <source>Create new backend user group</source>
+        <target state="final">ສ້າງກຸ່ມຜູ້ໃຊ້ສ່ວນຫຼັງໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="btn.clearCompareList" approved="yes">
+        <source>Clear compare list</source>
+        <target state="final">ລ້າງລາຍການປຽບທຽບ</target>
+      </trans-unit>
+      <trans-unit id="btn.compare" approved="yes">
+        <source>Compare</source>
+        <target state="final">ປຽບທຽບ</target>
+      </trans-unit>
+      <trans-unit id="btn.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">ລຶບ</target>
+      </trans-unit>
+      <trans-unit id="btn.details" approved="yes">
+        <source>Show details</source>
+        <target state="final">ສະແດງລາຍລະອຽດ</target>
+      </trans-unit>
+      <trans-unit id="btn.disable" approved="yes">
+        <source>Disable</source>
+        <target state="final">ປິດໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="btn.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">ແກ້ໄຂ</target>
+      </trans-unit>
+      <trans-unit id="btn.enable" approved="yes">
+        <source>Enable</source>
+        <target state="final">ເປີດໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="btn.info" approved="yes">
+        <source>Info</source>
+        <target state="final">ຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="btn.removeFromCompareList" approved="yes">
+        <source>Remove from compare list</source>
+        <target state="final">ເອົາອອກຈາກລາຍການປຽບທຽບ</target>
+      </trans-unit>
+      <!-- Filter -->
+      <trans-unit id="filter" approved="yes">
+        <source>Filter</source>
+        <target state="final">ຕົວຕອງ</target>
+      </trans-unit>
+      <trans-unit id="reset" approved="yes">
+        <source>Reset</source>
+        <target state="final">ຕັ້ງຄ່າໃໝ່</target>
+      </trans-unit>
+      <!-- Pagination -->
+      <trans-unit id="pagination.previous" approved="yes">
+        <source>previous</source>
+        <target state="final">ກ່ອນໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="pagination.next" approved="yes">
+        <source>next</source>
+        <target state="final">ຖັດໄປ</target>
+      </trans-unit>
+      <trans-unit id="pagination.first" approved="yes">
+        <source>first</source>
+        <target state="final">ທຳອິດ</target>
+      </trans-unit>
+      <trans-unit id="pagination.last" approved="yes">
+        <source>last</source>
+        <target state="final">ສຸດທ້າຍ</target>
+      </trans-unit>
+      <trans-unit id="pagination.records" approved="yes">
+        <source>Records</source>
+        <target state="final">ຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="pagination.page" approved="yes">
+        <source>Page</source>
+        <target state="final">ໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="pagination.refresh" approved="yes">
+        <source>Refresh</source>
+        <target state="final">ໂຫຼດໃໝ່</target>
+      </trans-unit>
+      <!-- Backend users: General (ViewHelper labels, etc.) -->
+      <trans-unit id="switchBackMode" approved="yes">
+        <source>Switch to user</source>
+        <target state="final">ສະລັບໄປໃຊ້ຜູ້ໃຊ້ອື່ນ</target>
+      </trans-unit>
+      <trans-unit id="lockedMfaProviders" approved="yes">
+        <source>Locked MFA providers</source>
+        <target state="final">ຜູ້ໃຫ້ບໍລິການ MFA ທີ່ຖືກລັອກ</target>
+      </trans-unit>
+      <trans-unit id="mfaEnabled" approved="yes">
+        <source>MFA enabled</source>
+        <target state="final">ເປີດໃຊ້ MFA ແລ້ວ</target>
+      </trans-unit>
+      <!-- Backend users: List -->
+      <trans-unit id="backendUser.list.title" approved="yes">
+        <source>Backend users</source>
+        <target state="final">ຜູ້ໃຊ້ສ່ວນຫຼັງ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.section.compare" approved="yes">
+        <source>Backend users to compare</source>
+        <target state="final">ຜູ້ໃຊ້ສ່ວນຫຼັງທີ່ຈະປຽບທຽບ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.section.allUsers" approved="yes">
+        <source>Backend users in the system</source>
+        <target state="final">ຜູ້ໃຊ້ສ່ວນຫຼັງໃນລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.btn.compareList" approved="yes">
+        <source>Compare selected backend users</source>
+        <target state="final">ປຽບທຽບຜູ້ໃຊ້ສ່ວນຫຼັງທີ່ເລືອກ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.table.column.group" approved="yes">
+        <source>Group</source>
+        <target state="final">ກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.group" approved="yes">
+        <source>Group</source>
+        <target state="final">ກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.loginState" approved="yes">
+        <source>Login state</source>
+        <target state="final">ສະຖານະການເຂົ້າລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.loginState.all" approved="yes">
+        <source>All</source>
+        <target state="final">ທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.loginState.loginBefore" approved="yes">
+        <source>Logged in before</source>
+        <target state="final">ເຄີຍເຂົ້າລະບົບມາກ່ອນ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.loginState.never" approved="yes">
+        <source>Never logged in</source>
+        <target state="final">ບໍ່ເຄີຍເຂົ້າລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.loginState.loggedIn" approved="yes">
+        <source>Currently logged in</source>
+        <target state="final">ກຳລັງຢູ່ໃນລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.status" approved="yes">
+        <source>Status</source>
+        <target state="final">ສະຖານະ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.status.all" approved="yes">
+        <source>All</source>
+        <target state="final">ທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.status.enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">ເປີດໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.status.disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">ປິດໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.userType" approved="yes">
+        <source>Type</source>
+        <target state="final">ປະເພດ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.userType.all" approved="yes">
+        <source>All</source>
+        <target state="final">ທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.userType.admin" approved="yes">
+        <source>Admin</source>
+        <target state="final">ຜູ້ດູແລລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.filter.userType.normalUser" approved="yes">
+        <source>Normal user</source>
+        <target state="final">ຜູ້ໃຊ້ທົ່ວໄປ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.list.label.online" approved="yes">
+        <source>online</source>
+        <target state="final">ອອນລາຍ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.confirmDelete" approved="yes">
+        <source>Are you sure you want to delete the backend user '%s'?</source>
+        <target state="final">ເຈົ້າແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບຜູ້ໃຊ້ສ່ວນຫຼັງ '%s'?</target>
+      </trans-unit>
+      <!-- Backend users: Show -->
+      <trans-unit id="backendUser.show.title" approved="yes">
+        <source>Configuration of backend user "%s"</source>
+        <target state="final">ການຕັ້ງຄ່າຂອງຜູ້ໃຊ້ສ່ວນຫຼັງ "%s"</target>
+      </trans-unit>
+      <trans-unit id="backendUser.show.notConfigured" approved="yes">
+        <source>Not configured.</source>
+        <target state="final">ຍັງບໍ່ໄດ້ຕັ້ງຄ່າ.</target>
+      </trans-unit>
+      <trans-unit id="backendUser.show.infobox.title" approved="yes">
+        <source>Compiled rights and settings</source>
+        <target state="final">ສິດທິ ແລະ ການຕັ້ງຄ່າທີ່ຖືກລວບລວມ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.show.infobox.message" approved="yes">
+        <source>This view displays all compiled rights and settings of the selected backend user. These can come from settings in the backend user record itself, as well as from settings that have been stored in backend user groups assigned to this backend user.</source>
+        <target state="final">ມຸມມອງນີ້ສະແດງສິດທິ ແລະ ການຕັ້ງຄ່າທັງໝົດຂອງຜູ້ໃຊ້ສ່ວນຫຼັງທີ່ເລືອກ. ເຊິ່ງອາດມາຈາກການຕັ້ງຄ່າໃນບັນທຶກຜູ້ໃຊ້ເອງ ຫຼື ຈາກກຸ່ມຜູ້ໃຊ້ທີ່ຖືກກຳນົດໃຫ້ຜູ້ໃຊ້ນີ້.</target>
+      </trans-unit>
+      <!-- Backend users: Compare -->
+      <trans-unit id="backendUser.compare.title" approved="yes">
+        <source>Compare backend users</source>
+        <target state="final">ປຽບທຽບຜູ້ໃຊ້ສ່ວນຫຼັງ</target>
+      </trans-unit>
+      <!-- Backend users: Online -->
+      <trans-unit id="backendUser.online.title" approved="yes">
+        <source>Online users</source>
+        <target state="final">ຜູ້ໃຊ້ທີ່ກຳລັງອອນລາຍ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.online.table.column.ipAddress" approved="yes">
+        <source>IP address</source>
+        <target state="final">ທີ່ຢູ່ໄອພີ (IP)</target>
+      </trans-unit>
+      <trans-unit id="backendUser.online.table.column.lastAccess" approved="yes">
+        <source>Last access</source>
+        <target state="final">ການເຂົ້າເຖິງຫຼ້າສຸດ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.online.activeSession" approved="yes">
+        <source>Active session</source>
+        <target state="final">ເຊດຊັນທີ່ກຳລັງໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="backendUser.online.flashMessage.terminateSessionSuccess" approved="yes">
+        <source>Session successfully terminated.</source>
+        <target state="final">ສິ້ນສຸດເຊດຊັນສຳເລັດແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="backendUser.online.reallyLogout" approved="yes">
+        <source>Really logout</source>
+        <target state="final">ຕ້ອງການອອກຈາກລະບົບແທ້ບໍ່</target>
+      </trans-unit>
+      <trans-unit id="backendUser.online.endSession" approved="yes">
+        <source>End session</source>
+        <target state="final">ສິ້ນສຸດເຊດຊັນ</target>
+      </trans-unit>
+      <!-- Backend user groups: List -->
+      <trans-unit id="backendUserGroup.list.title" approved="yes">
+        <source>Backend user groups</source>
+        <target state="final">ກຸ່ມຜູ້ໃຊ້ສ່ວນຫຼັງ</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.noGroupsFound.title" approved="yes">
+        <source>No backend user groups found</source>
+        <target state="final">ບໍ່ພົບກຸ່ມຜູ້ໃຊ້ສ່ວນຫຼັງ</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.noGroupsFound.message" approved="yes">
+        <source>There are currently no backend user groups found in the database.</source>
+        <target state="final">ໃນຂະນະນີ້ບໍ່ພົບກຸ່ມຜູ້ໃຊ້ສ່ວນຫຼັງໃນຖານຂໍ້ມູນ.</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.list.section.compare" approved="yes">
+        <source>Backend user groups to compare</source>
+        <target state="final">ກຸ່ມຜູ້ໃຊ້ສ່ວນຫຼັງທີ່ຈະປຽບທຽບ</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.list.section.allUserGroups" approved="yes">
+        <source>Backend user groups in the system</source>
+        <target state="final">ກຸ່ມຜູ້ໃຊ້ສ່ວນຫຼັງໃນລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.list.btn.compareList" approved="yes">
+        <source>Compare selected backend user groups</source>
+        <target state="final">ປຽບທຽບກຸ່ມຜູ້ໃຊ້ສ່ວນຫຼັງທີ່ເລືອກ</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.list.filter.groupTitle" approved="yes">
+        <source>Group title or group ID</source>
+        <target state="final">ຊື່ກຸ່ມ ຫຼື ໄອດີກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.list.table.column.groupTitle" approved="yes">
+        <source>Group title</source>
+        <target state="final">ຊື່ກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.list.table.column.subgroup" approved="yes">
+        <source>Inherit settings from groups</source>
+        <target state="final">ສືບທອດການຕັ້ງຄ່າຈາກກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.confirmDelete" approved="yes">
+        <source>Are you sure you want to delete the backend user group '%s'?</source>
+        <target state="final">ເຈົ້າແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບກຸ່ມຜູ້ໃຊ້ສ່ວນຫຼັງ '%s'?</target>
+      </trans-unit>
+      <!-- Backend user groups: Show -->
+      <trans-unit id="backendUserGroup.show.title" approved="yes">
+        <source>Configuration of backend user group "%s"</source>
+        <target state="final">ການຕັ້ງຄ່າຂອງກຸ່ມຜູ້ໃຊ້ສ່ວນຫຼັງ "%s"</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.show.notConfigured" approved="yes">
+        <source>Not configured.</source>
+        <target state="final">ຍັງບໍ່ໄດ້ຕັ້ງຄ່າ.</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.show.infobox.title" approved="yes">
+        <source>Compiled rights and settings</source>
+        <target state="final">ສິດທິ ແລະ ການຕັ້ງຄ່າທີ່ຖືກລວບລມ</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup.show.infobox.message" approved="yes">
+        <source>This view displays all compiled rights and settings of the selected backend user group. These can come from settings in the backend user group record itself, as well as from settings that have been stored in backend user groups assigned to this backend user group.</source>
+        <target state="final">ມຸມມອງນີ້ສະແດງສິດທິ ແລະ ການຕັ້ງຄ່າທັງໝົດຂອງກຸ່ມຜູ້ໃຊ້ສ່ວນຫຼັງທີ່ເລືອກ. ເຊິ່ງອາດມາຈາກການຕັ້ງຄ່າໃນບັນທຶກກຸ່ມຜູ້ໃຊ້ເອງ ຫຼື ຈາກກຸ່ມອື່ນໆທີ່ກຸ່ມນີ້ສືບທອດມາ.</target>
+      </trans-unit>
+      <!-- Backend user groups: Compare -->
+      <trans-unit id="backendUserGroup.compare.title" approved="yes">
+        <source>Compare backend user groups</source>
+        <target state="final">ປຽບທຽບກຸ່ມຜູ້ໃຊ້ສ່ວນຫຼັງ</target>
+      </trans-unit>
+      <!-- File mounts -->
+      <trans-unit id="filemounts" approved="yes">
+        <source>File mounts</source>
+        <target state="final">ຈຸດເຊື່ອມຕໍ່ໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="filemount.list.title" approved="yes">
+        <source>File Mounts</source>
+        <target state="final">ຈຸດເຊື່ອມຕໍ່ໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="filemount.confirm.deletion" approved="yes">
+        <source>Are you sure, that you want to delete the file mount "%s"?</source>
+        <target state="final">ເຈົ້າແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບຈຸດເຊື່ອມຕໍ່ໄຟລ໌ "%s"?</target>
+      </trans-unit>
+      <trans-unit id="filemount.create" approved="yes">
+        <source>Create new file mount</source>
+        <target state="final">ສ້າງຈຸດເຊື່ອມຕໍ່ໄຟລ໌ໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="filemount.infobox.noFilemountFound.title" approved="yes">
+        <source>No file mount found</source>
+        <target state="final">ບໍ່ພົບຈຸດເຊື່ອມຕໍ່ໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="filemount.infobox.noFilemountFound.message" approved="yes">
+        <source>Please create a file mount and select its entry point.</source>
+        <target state="final">ກະລຸນາສ້າງຈຸດເຊື່ອມຕໍ່ໄຟລ໌ ແລະ ເລືອກຈຸດເລີ່ມຕົ້ນຂອງມັນ.</target>
+      </trans-unit>
+      <trans-unit id="filemount.link.openInFilelist" approved="yes">
+        <source>Open in file list</source>
+        <target state="final">ເປີດໃນລາຍການໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="filemount.amount.multiple" approved="yes">
+        <source>File mounts</source>
+        <target state="final">ຈຸດເຊື່ອມຕໍ່ໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="filemount.amount.singular" approved="yes">
+        <source>File mount</source>
+        <target state="final">ຈຸດເຊື່ອມຕໍ່ໄຟລ໌</target>
+      </trans-unit>
+      <!-- Password reset -->
+      <trans-unit id="flashMessage.resetPassword.error.title" approved="yes">
+        <source>Password reset not triggered</source>
+        <target state="final">ບໍ່ໄດ້ກະຕຸ້ນການຕັ້ງລະຫັດຜ່ານໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="flashMessage.resetPassword.error.text" approved="yes">
+        <source>Sorry, the password of this user cannot be reset.</source>
+        <target state="final">ຂໍອະໄພ, ລະຫັດຜ່ານຂອງຜູ້ໃຊ້ນີ້ບໍ່ສາມາດຕັ້ງຄ່າໃໝ່ໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="flashMessage.resetPassword.success.title" approved="yes">
+        <source>Password reset triggered</source>
+        <target state="final">ກະຕຸ້ນການຕັ້ງລະຫັດຜ່ານໃໝ່ແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="flashMessage.resetPassword.success.text" approved="yes">
+        <source>Password reset for email address %s initiated.</source>
+        <target state="final">ເລີ່ມຕົ້ນການຕັ້ງລະຫັດຜ່ານໃໝ່ສຳລັບອີເມວ %s ແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="resetPassword.label" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">ຕັ້ງລະຫັດຜ່ານໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="resetPassword.confirmation.header" approved="yes">
+        <source>Reset Password</source>
+        <target state="final">ຕັ້ງລະຫັດຜ່ານໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="resetPassword.confirmation.text" approved="yes">
+        <source>Are you sure you want to reset the password for %s?</source>
+        <target state="final">ເຈົ້າແນ່ໃຈບໍ່ວ່າຕ້ອງການຕັ້ງລະຫັດຜ່ານໃໝ່ສຳລັບ %s?</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
