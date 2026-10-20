@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:fluid/Resources/Private/Language/locallang.xlf" date="2012-03-30T23:43:57Z" product-name="fluid" target-language="bg">
+    <header/>
+    <body>
+      <trans-unit id="widget.pagination.previous" approved="yes">
+        <source>previous</source>
+        <target state="final">предишна</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.next" approved="yes">
+        <source>next</source>
+        <target state="final">следваща</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.first" approved="yes">
+        <source>first</source>
+        <target state="final">първа</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.last" approved="yes">
+        <source>last</source>
+        <target state="final">последна</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.records" approved="yes">
+        <source>Records</source>
+        <target state="final">Записи</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Страница</target>
+      </trans-unit>
+      <trans-unit id="widget.pagination.refresh" approved="yes">
+        <source>Refresh</source>
+        <target state="final">Опресни</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
