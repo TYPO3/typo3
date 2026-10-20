@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:theme_camino/Resources/Private/Language/backend_layouts.xlf" date="2026-01-14T12:00:00Z" product-name="theme_camino" target-language="it">
+    <header/>
+    <body>
+      <!-- Backend layouts -->
+      <trans-unit id="backend_layout.colPos.0.name" approved="yes">
+        <source>Content area</source>
+        <target state="final">Area del contenuto</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.1.name" approved="yes">
+        <source>Sidebar</source>
+        <target state="final">Barra Laterale</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.2.name" approved="yes">
+        <source>Hero area</source>
+        <target state="final">Area Hero</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.10.name" approved="yes">
+        <source>Footer: Meta navigation</source>
+        <target state="final">Pié di pagina: navigazione di servizio (meta-navigazione)</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.11.name" approved="yes">
+        <source>Footer: Column 1 (Logo)</source>
+        <target state="final">Pié di Pagina: colonna 1 (Logo)</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.12.name" approved="yes">
+        <source>Footer: Column 2 (Menu)</source>
+        <target state="final">Pié di Pagina: colonna 2 (Menù)</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.13.name" approved="yes">
+        <source>Footer: Column 3 (Menu)</source>
+        <target state="final">Pié di Pagina: colonna 3 (Menù)</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.14.name" approved="yes">
+        <source>Footer: Column 4 (Menu)</source>
+        <target state="final">Pié di Pagina: colonna 4 (Menù)</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.camino_startpage.title" approved="yes">
+        <source>Camino: Start page</source>
+        <target state="final">Camino: pagina iniziale</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.camino_contentpage.title" approved="yes">
+        <source>Camino: Content page (full-width)</source>
+        <target state="final">Camino: pagina contenuto (larghezza intera)</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.camino_contentpage_sidebar.title" approved="yes">
+        <source>Camino: Content page (with sidebar)</source>
+        <target state="final">Camino: pagina contenuto (con barra laterale)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
