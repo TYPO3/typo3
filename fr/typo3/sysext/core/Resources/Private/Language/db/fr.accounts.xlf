@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="fr">
+  <file id="f1">
+    <unit id="enabled">
+      <segment state="final">
+        <source>Login enabled</source>
+        <target>Authentification activée</target>
+      </segment>
+    </unit>
+    <unit id="endtime">
+      <segment state="final">
+        <source>Account active until</source>
+        <target>Compte actif jusqu'au</target>
+      </segment>
+    </unit>
+    <unit id="group.enabled">
+      <segment state="final">
+        <source>Group enabled</source>
+        <target>Groupe activé</target>
+      </segment>
+    </unit>
+    <unit id="starttime">
+      <segment state="final">
+        <source>Account active from</source>
+        <target>Compte actif à partir du</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
