@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815018" source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_csh_sysws_stage.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Defines custom workspace stages in TYPO3 which allows for groups of people to work together in a defined process. More information about workspaces can be found in the document "Inside TYPO3".</source>
+        <target state="final">व्याख्याहित प्रोसेस में जो लोगों के समूहों को एक साथ काम करने के लिए अनुमति दे टाइपो 3 में ऐसे कस्टम कार्यक्षेत्र अवस्था को व्याख्याहितकरे करे। कार्यस्थानों के बारे में अधिक जानकारी "टाइपो के अंदर" डॉक्यूमेंट में पायी जा सकता है।</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the name of the workspace stage.</source>
+        <target state="final">कार्यक्षेत्र की अवस्था का नाम दर्ज करें।</target>
+      </trans-unit>
+      <trans-unit id="responsible_persons.description" resname="responsible_persons.description" approved="yes">
+        <source>Define which BE users are responsible for this workspace stage. This selected BE users are possible recipients for the stage change emails.</source>
+        <target state="final">जो BE उपयोगकर्ता इस कार्यक्षेत्र अवस्था के लिए जिम्मेदार है उसे व्याख्याहित करे। यह चुने हुए उपयोगकर्ता अवस्था परिवर्तन इमेल्स के लिए संभवित प्राप्तकर्ता हैं।</target>
+      </trans-unit>
+      <trans-unit id="default_mailcomment.description" resname="default_mailcomment.description" approved="yes">
+        <source>Here its possible to define a standard mail comment which will be inserted into the stage change mail. When no standard mail comment was defined here its possible to write a comment for the mail on every stage change.</source>
+        <target state="final">जो अवस्था परिवर्तन मेल में डाली जाएगी वैसी स्टान्डर्ड मेल टिपण्णी यहाँ व्याख्याहित करना संभव है। जब कोई स्टान्डर्ड मेल टिपण्णी व्याख्याहित न हो तो यहाँ हर एक स्थिति पर टिपण्णी लिखना संभव है।</target>
+      </trans-unit>
+      <trans-unit id="notification_defaults.description" resname="notification_defaults.description" approved="yes">
+        <source>Select these backend users or backend groups that should be selected per default to receive a notification mail. Select only users/groups that are also selected as responsible for this stage.</source>
+        <target state="final">हर एक डिफ़ॉल्ट में नोटिफिकेशन मेल प्राप्त कर सके ऐसे बैकेंड उपयोगकर्ता या बैकेंड समूह चुने। जो इस अवस्था के लिए जिम्मेदार के रूप में चुना गया हो सिर्फ उसी उपयोगकर्ता/समूह को चुनें।</target>
+      </trans-unit>
+      <trans-unit id="allow_notificaton_settings.description" resname="allow_notificaton_settings.description" approved="yes">
+        <source>Disable this checkbox to hide the recipient and additional recipient fields from the stage change popup window. Notifications are sent in the background nevertheless but based on configuration in workspace stage setting.</source>
+        <target state="final">अवस्था परिवर्तन पॉपअप विंडो में से पर्याप्तकर्ता की अतिरिक्त फील्ड और पर्याप्तकर्ता को छिपाने के लिए इस चेक-बॉक्स को अक्षम करें। नोटिफिकेशन्स फिर भी बैक-ग्राउंड में भेजी जात है लेकिन कार्यक्षेत्र अवस्था सेटिंग में कॉन्फ़िगरेशन के आधार पर।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
