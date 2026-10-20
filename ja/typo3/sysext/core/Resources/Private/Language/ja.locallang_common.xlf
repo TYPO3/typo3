@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814850" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_common.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="ascending" resname="ascending" approved="yes">
+        <source>Ascending</source>
+        <target state="final">昇順</target>
+      </trans-unit>
+      <trans-unit id="back" resname="back" approved="yes">
+        <source>Back</source>
+        <target state="final">戻る</target>
+      </trans-unit>
+      <trans-unit id="cancel" resname="cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">キャンセル</target>
+      </trans-unit>
+      <trans-unit id="category" resname="category" approved="yes">
+        <source>Category</source>
+        <target state="final">カテゴリ</target>
+      </trans-unit>
+      <trans-unit id="close" resname="close" approved="yes">
+        <source>Close</source>
+        <target state="final">終了</target>
+      </trans-unit>
+      <trans-unit id="delete" resname="delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">削除</target>
+      </trans-unit>
+      <trans-unit id="descending" resname="descending" approved="yes">
+        <source>Descending</source>
+        <target state="final">降順</target>
+      </trans-unit>
+      <trans-unit id="details" resname="details" approved="yes">
+        <source>Details</source>
+        <target state="final">詳細</target>
+      </trans-unit>
+      <trans-unit id="disable" resname="disable" approved="yes">
+        <source>Disable</source>
+        <target state="final">無効</target>
+      </trans-unit>
+      <trans-unit id="disabled" resname="disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">無効化済み</target>
+      </trans-unit>
+      <trans-unit id="down" resname="down" approved="yes">
+        <source>Down</source>
+        <target state="final">下へ</target>
+      </trans-unit>
+      <trans-unit id="download" resname="download" approved="yes">
+        <source>Download</source>
+        <target state="final">ダウンロード</target>
+      </trans-unit>
+      <trans-unit id="edit" resname="edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">編集</target>
+      </trans-unit>
+      <trans-unit id="editField" resname="editField" approved="yes">
+        <source>Edit field</source>
+        <target state="final">フィールドを編集</target>
+      </trans-unit>
+      <trans-unit id="editFile" resname="editFile" approved="yes">
+        <source>Edit file</source>
+        <target state="final">ファイルを編集</target>
+      </trans-unit>
+      <trans-unit id="enable" resname="enable" approved="yes">
+        <source>Enable</source>
+        <target state="final">有効</target>
+      </trans-unit>
+      <trans-unit id="enabled" resname="enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">有効化済み</target>
+      </trans-unit>
+      <trans-unit id="file" resname="file" approved="yes">
+        <source>File</source>
+        <target state="final">ファイル</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files" approved="yes">
+        <source>Files</source>
+        <target state="final">ファイル</target>
+      </trans-unit>
+      <trans-unit id="folder" resname="folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">フォルダ</target>
+      </trans-unit>
+      <trans-unit id="first" resname="first" approved="yes">
+        <source>First</source>
+        <target state="final">最初</target>
+      </trans-unit>
+      <trans-unit id="help" resname="help" approved="yes">
+        <source>Help</source>
+        <target state="final">ヘルプ</target>
+      </trans-unit>
+      <trans-unit id="item" resname="item" approved="yes">
+        <source>Item</source>
+        <target state="final">アイテム</target>
+      </trans-unit>
+      <trans-unit id="items" resname="items" approved="yes">
+        <source>Items</source>
+        <target state="final">アイテム</target>
+      </trans-unit>
+      <trans-unit id="last" resname="last" approved="yes">
+        <source>Last</source>
+        <target state="final">最後</target>
+      </trans-unit>
+      <trans-unit id="left" resname="left" approved="yes">
+        <source>Left</source>
+        <target state="final">左</target>
+      </trans-unit>
+      <trans-unit id="login" resname="login" approved="yes">
+        <source>Login</source>
+        <target state="final">ログイン</target>
+      </trans-unit>
+      <trans-unit id="logout" resname="logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">ログアウト</target>
+      </trans-unit>
+      <trans-unit id="more" resname="more" approved="yes">
+        <source>More</source>
+        <target state="final">もっと見る</target>
+      </trans-unit>
+      <trans-unit id="move" resname="move" approved="yes">
+        <source>Move</source>
+        <target state="final">移動</target>
+      </trans-unit>
+      <trans-unit id="new" resname="new" approved="yes">
+        <source>New</source>
+        <target state="final">新規</target>
+      </trans-unit>
+      <trans-unit id="next" resname="next" approved="yes">
+        <source>Next</source>
+        <target state="final">次</target>
+      </trans-unit>
+      <trans-unit id="no" resname="no" approved="yes">
+        <source>No</source>
+        <target state="final">いいえ</target>
+      </trans-unit>
+      <trans-unit id="ok" resname="ok" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="open" resname="open" approved="yes">
+        <source>Open</source>
+        <target state="final">開く</target>
+      </trans-unit>
+      <trans-unit id="page" resname="page" approved="yes">
+        <source>Page</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="pages" resname="pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="previous" resname="previous" approved="yes">
+        <source>Previous</source>
+        <target state="final">前</target>
+      </trans-unit>
+      <trans-unit id="print" resname="print" approved="yes">
+        <source>Print</source>
+        <target state="final">印刷</target>
+      </trans-unit>
+      <trans-unit id="reload" resname="reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">再読込</target>
+      </trans-unit>
+      <trans-unit id="right" resname="right" approved="yes">
+        <source>Right</source>
+        <target state="final">右</target>
+      </trans-unit>
+      <trans-unit id="save" resname="save" approved="yes">
+        <source>Save</source>
+        <target state="final">保存</target>
+      </trans-unit>
+      <trans-unit id="saveAndClose" resname="saveAndClose" approved="yes">
+        <source>Save and close</source>
+        <target state="final">保存して終了</target>
+      </trans-unit>
+      <trans-unit id="saveAndCloseDoc" resname="saveAndCloseDoc" approved="yes">
+        <source>Save and close document</source>
+        <target state="final">ドキュメントを保存して終了</target>
+      </trans-unit>
+      <trans-unit id="saveAndCreateNewDoc" resname="saveAndCreateNewDoc" approved="yes">
+        <source>Save and create new document</source>
+        <target state="final">保存して新規作成</target>
+      </trans-unit>
+      <trans-unit id="saveAndViewPage" resname="saveAndViewPage" approved="yes">
+        <source>Save and view page</source>
+        <target state="final">保存してページを表示</target>
+      </trans-unit>
+      <trans-unit id="search" resname="search" approved="yes">
+        <source>Search</source>
+        <target state="final">検索</target>
+      </trans-unit>
+      <trans-unit id="send" resname="send" approved="yes">
+        <source>Send</source>
+        <target state="final">送信</target>
+      </trans-unit>
+      <trans-unit id="start" resname="start" approved="yes">
+        <source>Start</source>
+        <target state="final">開始</target>
+      </trans-unit>
+      <trans-unit id="stop" resname="stop" approved="yes">
+        <source>Stop</source>
+        <target state="final">停止</target>
+      </trans-unit>
+      <trans-unit id="submit" resname="submit" approved="yes">
+        <source>Submit</source>
+        <target state="final">登録</target>
+      </trans-unit>
+      <trans-unit id="tsRef" resname="tsRef" approved="yes">
+        <source>TSref reference</source>
+        <target state="final">TSrefを参照</target>
+      </trans-unit>
+      <trans-unit id="undefined" resname="undefined" approved="yes">
+        <source>Undefined</source>
+        <target state="final">未定義</target>
+      </trans-unit>
+      <trans-unit id="up" resname="up" approved="yes">
+        <source>Up</source>
+        <target state="final">上</target>
+      </trans-unit>
+      <trans-unit id="upload" resname="upload" approved="yes">
+        <source>Upload</source>
+        <target state="final">アップロード</target>
+      </trans-unit>
+      <trans-unit id="user" resname="user" approved="yes">
+        <source>User</source>
+        <target state="final">ユーザ</target>
+      </trans-unit>
+      <trans-unit id="users" resname="users" approved="yes">
+        <source>Users</source>
+        <target state="final">ユーザ</target>
+      </trans-unit>
+      <trans-unit id="view" resname="view" approved="yes">
+        <source>View</source>
+        <target state="final">参照</target>
+      </trans-unit>
+      <trans-unit id="yes" resname="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">はい</target>
+      </trans-unit>
+      <trans-unit id="pleaseConfirm" resname="pleaseConfirm" approved="yes">
+        <source>Please confirm</source>
+        <target state="final">確認して下さい</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
