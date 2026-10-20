@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/user_profile.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="user_settings" approved="yes">
+        <source>User Settings</source>
+        <target state="final">Impostazioni Utente</target>
+      </trans-unit>
+      <trans-unit id="language" approved="yes">
+        <source>Language</source>
+        <target state="final">Lingua</target>
+      </trans-unit>
+      <trans-unit id="language_unavailable" approved="yes">
+        <source>The selected language "%s" is not available before the language files are installed.</source>
+        <target state="final">La lingua selezionata "%s" non è disponibile prima che i file di lingua siano installati.</target>
+      </trans-unit>
+      <trans-unit id="language_unavailable.admin" approved="yes">
+        <source>You can use "Manage Language Packs" in the Maintenance module to easily download new language files.</source>
+        <target state="final">Puoi utilizzare "Manage Language Packs" nel modulo Manutenzione per scaricare facilmente nuovi file di lingua.</target>
+      </trans-unit>
+      <trans-unit id="language_unavailable.user" approved="yes">
+        <source>Please ask your system administrator to do this.</source>
+        <target state="final">Per favore chiedi al tuo amministratore di sistema di farlo.</target>
+      </trans-unit>
+      <trans-unit id="simulate" approved="yes">
+        <source>Simulate backend user</source>
+        <target state="final">Simula utente backend</target>
+      </trans-unit>
+      <trans-unit id="start_module" approved="yes">
+        <source>Start up in the following module</source>
+        <target state="final">Avvia con il seguente modulo</target>
+      </trans-unit>
+      <trans-unit id="email_me_at_login" approved="yes">
+        <source>Notify me by email when somebody logs in from my account</source>
+        <target state="final">Avvisami via email quando qualcuno accede dal mio account</target>
+      </trans-unit>
+      <trans-unit id="help_text" approved="yes">
+        <source>Show help text when applicable</source>
+        <target state="final">Mostra il testo di aiuto quando disponibile</target>
+      </trans-unit>
+      <trans-unit id="max_title_len" approved="yes">
+        <source>Maximum length of displayed labels / record titles</source>
+        <target state="final">Lunghezza massima delle etichette visualizzate / titoli record</target>
+      </trans-unit>
+      <trans-unit id="edit_doc_module_upload" approved="yes">
+        <source>Allow to directly upload files when editing or creating records</source>
+        <target state="final">Consenti di caricare direttamente i file durante la modifica o la creazione di record</target>
+      </trans-unit>
+      <trans-unit id="contextual_record_edit" approved="yes">
+        <source>Use quick editing for records in the Layout module</source>
+        <target state="final">Usa la modifica rapida per i record nel modulo Layout</target>
+      </trans-unit>
+      <trans-unit id="show_hidden_files_and_folders" approved="yes">
+        <source>Show hidden files and folders in the Media module</source>
+        <target state="final">Mostra i file e le cartelle nascoste nel modulo Contenuti Multimediali</target>
+      </trans-unit>
+      <trans-unit id="display_recently_used" approved="yes">
+        <source>Enable dynamic "recently used" category in wizards</source>
+        <target state="final">Abilita la categoria dinamica "usati di recente" nelle procedure guidate</target>
+      </trans-unit>
+      <trans-unit id="edit_functions_tab" approved="yes">
+        <source>Edit and advanced functions</source>
+        <target state="final">Modifica e funzioni avanzate</target>
+      </trans-unit>
+      <trans-unit id="set_to_standard" approved="yes">
+        <source>Reset all values to default</source>
+        <target state="final">Reimposta tutti i valori predefiniti</target>
+      </trans-unit>
+      <trans-unit id="reset_tab" approved="yes">
+        <source>Reset configuration</source>
+        <target state="final">Ripristina la configurazione</target>
+      </trans-unit>
+      <trans-unit id="reset_configuration" approved="yes">
+        <source>Reset configuration and clear temporary data</source>
+        <target state="final">Ripristina la configurazione e cancella i dati temporanei</target>
+      </trans-unit>
+      <trans-unit id="reset_configuration_button" approved="yes">
+        <source>Reset profile settings to default state</source>
+        <target state="final">Ripristina le impostazioni del profilo allo stato predefinito</target>
+      </trans-unit>
+      <trans-unit id="set_to_standard_question" approved="yes">
+        <source>Are you sure you want to reset all values to default?</source>
+        <target state="final">Sei sicuro di voler ripristinare tutti i valori predefiniti?</target>
+      </trans-unit>
+      <trans-unit id="functions" approved="yes">
+        <source>Advanced functions</source>
+        <target state="final">Funzioni avanzate</target>
+      </trans-unit>
+      <trans-unit id="copy_levels" approved="yes">
+        <source>Recursive copy: Enter the number of page sublevels to include, when a page is copied</source>
+        <target state="final">Copia ricorsiva: inserisci il numero di sottolivelli di pagina da includere, quando una pagina viene copiata</target>
+      </trans-unit>
+      <trans-unit id="levels" approved="yes">
+        <source>levels</source>
+        <target state="final">livelli</target>
+      </trans-unit>
+      <trans-unit id="be_user_real_name" approved="yes">
+        <source>Your name</source>
+        <target state="final">Il tuo nome</target>
+      </trans-unit>
+      <trans-unit id="be_user_avatar" approved="yes">
+        <source>Avatar</source>
+        <target state="final">Avatar</target>
+      </trans-unit>
+      <trans-unit id="be_user_email" approved="yes">
+        <source>Your email address</source>
+        <target state="final">Il tuo indirizzo email</target>
+      </trans-unit>
+      <trans-unit id="save" approved="yes">
+        <source>Save configuration</source>
+        <target state="final">Salva configurazione</target>
+      </trans-unit>
+      <trans-unit id="new_password" approved="yes">
+        <source>New password</source>
+        <target state="final">Nuova password</target>
+      </trans-unit>
+      <trans-unit id="new_password_again" approved="yes">
+        <source>New password (repetition)</source>
+        <target state="final">Nuova password (ripeti)</target>
+      </trans-unit>
+      <trans-unit id="new_password_ok" approved="yes">
+        <source>Password was updated.</source>
+        <target state="final">Password aggiornata.</target>
+      </trans-unit>
+      <trans-unit id="password_policy_failed" approved="yes">
+        <source>The password was not updated, since it does not meet the password policy requirements.</source>
+        <target state="final">La password non è stata aggiornata, poiché non soddisfa i requisiti di politica per le password.</target>
+      </trans-unit>
+      <trans-unit id="account_security" approved="yes">
+        <source>Account security</source>
+        <target state="final">Sicurezza account</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers" approved="yes">
+        <source>Multi-factor authentication</source>
+        <target state="final">Autenticazione a più fattori</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers.not_available" approved="yes">
+        <source>Multi-factor authentication is currently not available.</source>
+        <target state="final">L'autenticazione a più fattori non è attualmente disponibile.</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers.description" approved="yes">
+        <source>Use multi-factor authentication to secure your account by providing another factor next to your password.</source>
+        <target state="final">Usa l'autenticazione a più fattori per proteggere il tuo account fornendo un altro fattore oltre alla password.</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers.locked_mfa_providers" approved="yes">
+        <source>Some providers are currently locked</source>
+        <target state="final">Alcuni provider sono attualmente bloccati</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers.enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Abilitato</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers.setup_link_title" approved="yes">
+        <source>Setup multi-factor authentication</source>
+        <target state="final">Imposta autenticazione a più fattori</target>
+      </trans-unit>
+      <trans-unit id="mfa_providers.manage_link_title" approved="yes">
+        <source>Manage multi-factor authentication</source>
+        <target state="final">Gestisci autenticazione a più fattori</target>
+      </trans-unit>
+      <trans-unit id="setup_was_updated" approved="yes">
+        <source>Profile settings were updated.</source>
+        <target state="final">Le impostazioni del profilo sono state aggiornate.</target>
+      </trans-unit>
+      <trans-unit id="new_password_failed" approved="yes">
+        <source>Password was not updated because the entered passwords do not match.</source>
+        <target state="final">La password non è stata aggiornata perché le password inserite non corrispondono.</target>
+      </trans-unit>
+      <trans-unit id="old_password_failed" approved="yes">
+        <source>Password was not updated because the current password entered is incorrect.</source>
+        <target state="final">La password non è stata aggiornata perché la password inserita non è corretta.</target>
+      </trans-unit>
+      <trans-unit id="settings_are_reset" approved="yes">
+        <source>The profile settings have been reset to default values and temporary data has been cleared.</source>
+        <target state="final">Le impostazioni del profilo sono state reimpostate ai valori predefiniti e i dati temporanei sono stati cancellati.</target>
+      </trans-unit>
+      <trans-unit id="start_module.first_in_menu" approved="yes">
+        <source>- First module in menu -</source>
+        <target state="final">- Primo modulo nel menù -</target>
+      </trans-unit>
+      <trans-unit id="avatar.clear" approved="yes">
+        <source>Remove selected avatar image</source>
+        <target state="final">Rimuovi l'immagine avatar selezionata</target>
+      </trans-unit>
+      <trans-unit id="avatar.open_file_browser" approved="yes">
+        <source>Open file browser to select avatar image</source>
+        <target state="final">Sfoglia e seleziona l'immagine dell'avatar</target>
+      </trans-unit>
+      <trans-unit id="backend_title_format" approved="yes">
+        <source>Format of window title in backend</source>
+        <target state="final">Formato del titolo della finestra nel backend</target>
+      </trans-unit>
+      <trans-unit id="backend_title_format.sitename_first" approved="yes">
+        <source>[sitename] · [title]</source>
+        <target state="final">[sitename] · [title]</target>
+      </trans-unit>
+      <trans-unit id="backend_title_format.title_first" approved="yes">
+        <source>[title] · [sitename]</source>
+        <target state="final">[title] · [sitename]</target>
+      </trans-unit>
+      <trans-unit id="warning.chinese_simplified" approved="yes">
+        <source>Chinese Simplified (legacy) - Warning: Choose Chinese Simplified below, as this is wrong due to older versions of TYPO3 and might be removed soon.</source>
+        <target state="final">Cinese semplificato (legacy) - Attenzione: Scegli Cinese Semplificato sotto, in quanto questo è sbagliato a causa delle versioni più vecchie di TYPO3 e potrebbe essere rimosso presto.</target>
+      </trans-unit>
+      <trans-unit id="datetime_first_day_of_week" approved="yes">
+        <source>First day of week in calendar popups</source>
+        <target state="final">Primo giorno della settimana nei popup del calendario</target>
+      </trans-unit>
+      <trans-unit id="datetime_first_day_of_week.inherit" approved="yes">
+        <source>Use default based on personal backend language setting</source>
+        <target state="final">Usa l'impostazione predefinita basata sull'impostazione personale della lingua del backend</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
