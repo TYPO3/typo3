@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="close" approved="yes">
+        <source>Close</source>
+        <target state="final">Zavřít</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Dashboard</source>
+        <target state="final">Nástěnka</target>
+      </trans-unit>
+      <trans-unit id="widget.add" approved="yes">
+        <source>Add widget</source>
+        <target state="final">Přidat widget</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard" approved="yes">
+        <source>Add widget to "%s"</source>
+        <target state="final">Přidat widget do "%s"</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard.searchLabel" approved="yes">
+        <source>Search for dashboard widgets</source>
+        <target state="final">Hledat widgety</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard.searchNotFound" approved="yes">
+        <source>Unfortunately no dashboard widget matches your query, please try a different one.</source>
+        <target state="final">Bohužel žádný widget neodpovídá vašemu dotazu, zkuste prosím jiný dotaz.</target>
+      </trans-unit>
+      <trans-unit id="widget.addToDashboard.userNotAllowed" approved="yes">
+        <source>No widgets are available with your current permissions.</source>
+        <target state="final">S vašimi aktuálními oprávněními nejsou k dispozici žádné widgety.</target>
+      </trans-unit>
+      <trans-unit id="widget.add.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Zavřít</target>
+      </trans-unit>
+      <trans-unit id="widget.add.button.ok" approved="yes">
+        <source>Add widget</source>
+        <target state="final">Přidat widget</target>
+      </trans-unit>
+      <trans-unit id="widget.refresh" approved="yes">
+        <source>Refresh Widget</source>
+        <target state="final">Obnovit widget</target>
+      </trans-unit>
+      <trans-unit id="widget.settings" approved="yes">
+        <source>Widget Settings</source>
+        <target state="final">Nastavení widgetů</target>
+      </trans-unit>
+      <trans-unit id="widget.settings.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Zavřít</target>
+      </trans-unit>
+      <trans-unit id="widget.settings.button.save" approved="yes">
+        <source>Save</source>
+        <target state="final">Uložit</target>
+      </trans-unit>
+      <trans-unit id="widget.settings.unchanged" approved="yes">
+        <source>Settings unchanged</source>
+        <target state="final">Nastavení nezměněno</target>
+      </trans-unit>
+      <trans-unit id="widget.move" approved="yes">
+        <source>Move Widget</source>
+        <target state="final">Přesunout widget</target>
+      </trans-unit>
+      <trans-unit id="widget.remove" approved="yes">
+        <source>Remove Widget</source>
+        <target state="final">Odstranit widget</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Zavřít</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.button.ok" approved="yes">
+        <source>Remove</source>
+        <target state="final">Odstranit</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.confirm.title" approved="yes">
+        <source>Remove widget</source>
+        <target state="final">Odstranit widget</target>
+      </trans-unit>
+      <trans-unit id="widget.remove.confirm.message" approved="yes">
+        <source>Are you sure you want to remove this widget?</source>
+        <target state="final">Určitě chcete odstranit tento widget?</target>
+      </trans-unit>
+      <trans-unit id="widget.error" approved="yes">
+        <source>An error occurred while retrieving information for this widget. Please try again, and if the problem persists, contact your administrator.</source>
+        <target state="final">Při načítání informací o tomto widgetu došlo k chybě. Zkuste to prosím znovu a pokud problém přetrvává, obraťte se na správce.</target>
+      </trans-unit>
+      <trans-unit id="dashboard.headline" approved="yes">
+        <source>Dashboard "%s"</source>
+        <target state="final">Nástěnka "%s"</target>
+      </trans-unit>
+      <trans-unit id="dashboard.default" approved="yes">
+        <source>My dashboard</source>
+        <target state="final">Moje nástěnka</target>
+      </trans-unit>
+      <trans-unit id="dashboard.default.description" approved="yes">
+        <source>Create a new dashboard with some general TYPO3 widgets on it</source>
+        <target state="final">Vytvořit novou nástěnku s obecným TYPO3 widgetem</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty" approved="yes">
+        <source>Empty dashboard</source>
+        <target state="final">Prázdná nástěnka</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.description" approved="yes">
+        <source>Your dashboard will be created without any widget on it.</source>
+        <target state="final">Vaše nástěnka bude vytvořena bez jakéhokoliv widgetu.</target>
+      </trans-unit>
+      <trans-unit id="dashboard.add" approved="yes">
+        <source>Add dashboard</source>
+        <target state="final">Přidat nástěnku</target>
+      </trans-unit>
+      <trans-unit id="dashboard.add.button.close" x-unused-since="14.3" approved="yes">
+        <source>Close</source>
+        <target state="final">Zavřít</target>
+      </trans-unit>
+      <trans-unit id="dashboard.add.button.ok" x-unused-since="14.3" approved="yes">
+        <source>Add Dashboard</source>
+        <target state="final">Přidat nástěnku</target>
+      </trans-unit>
+      <trans-unit id="dashboard.configure" approved="yes">
+        <source>Configure dashboard</source>
+        <target state="final">Nastavit nástěnku</target>
+      </trans-unit>
+      <trans-unit id="dashboard.configure.button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Zavřít</target>
+      </trans-unit>
+      <trans-unit id="dashboard.configure.button.ok" approved="yes">
+        <source>Save Dashboard</source>
+        <target state="final">Uložit nástěnku</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete" approved="yes">
+        <source>Delete dashboard</source>
+        <target state="final">Odstranit nástěnku</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.sure" approved="yes">
+        <source>Are you sure you want to delete this dashboard?</source>
+        <target state="final">Jste si jisti, že chcete smazat tuto nástěnku?</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.ok" approved="yes">
+        <source>Yes, delete it</source>
+        <target state="final">Ano, odstranit</target>
+      </trans-unit>
+      <trans-unit id="dashboard.delete.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Zrušit</target>
+      </trans-unit>
+      <trans-unit id="dashboard.title" approved="yes">
+        <source>Title of dashboard</source>
+        <target state="final">Název nástěnky</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.title" approved="yes">
+        <source>Getting Started with TYPO3</source>
+        <target state="final">Začínáme s TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.description" approved="yes">
+        <source>Add a shortcut to the TYPO3 Getting Started Tutorial.</source>
+        <target state="final">Přidejte zástupce na TYPO3 tutoriál pro začátečníky.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.text" approved="yes">
+        <source>New to TYPO3? In our Getting Started Tutorial you will learn the basics how to use TYPO3.</source>
+        <target state="final">Novinky v TYPO3? V našem průvodci Tutoriál pro začátečníky se naučíte základy, jak používat TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.gettingStarted.content.label" approved="yes">
+        <source>Getting Started Tutorial</source>
+        <target state="final">Tutoriál pro začátečníky</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.title" approved="yes">
+        <source>TypoScript Template Reference</source>
+        <target state="final">Reference šablony TypoScriptu</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.description" approved="yes">
+        <source>Add a shortcut to the TYPO3 TypoScript Template Reference.</source>
+        <target state="final">Přidejte zkratku na šablony TYPO3 TypoScriptu.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.text" approved="yes">
+        <source>This document is a reference, used to lookup TypoScript templating.</source>
+        <target state="final">Tento dokument je odkazem, který se používá pro vyhledávání šablony TypoScriptu.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.typoscriptReference.content.label" approved="yes">
+        <source>TypoScript Template Reference</source>
+        <target state="final">Reference šablony TypoScriptu</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.title" approved="yes">
+        <source>TSconfig Reference</source>
+        <target state="final">TSconfig Reference</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.description" approved="yes">
+        <source>Add a shortcut to the TYPO3 TSconfig Reference.</source>
+        <target state="final">Přidejte zkratku na TYPO3 TSconfig.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.text" approved="yes">
+        <source>This document describes TSconfig and its options.</source>
+        <target state="final">Tento dokument popisuje TSconfig a jeho možnosti.</target>
+      </trans-unit>
+      <trans-unit id="widgets.documentation.TSconfigReference.content.label" approved="yes">
+        <source>TSconfig Reference</source>
+        <target state="final">TSconfig Reference</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.title" approved="yes">
+        <source>TYPO3 news</source>
+        <target state="final">Novinky z TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.description" approved="yes">
+        <source>Add a list of news items from the TYPO3 project</source>
+        <target state="final">Přidat seznam novinek z TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3news.moreItems" approved="yes">
+        <source>More TYPO3 news</source>
+        <target state="final">Další novinky TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.title" approved="yes">
+        <source>About TYPO3</source>
+        <target state="final">O TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.description" approved="yes">
+        <source>Some general information about TYPO3 and the version used</source>
+        <target state="final">Některé obecné informace o TYPO3 a použité verzi</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.text" approved="yes">
+        <source><![CDATA[TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.<br /><br />For further information visit <a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer">typo3.org</a>.<br /><br />TYPO3 CMS is <b>freely available</b> under the <a href="https://typo3.org/project/licenses/" target="_blank" rel="noreferrer">TYPO3-license (GNU/GPL)</a>.<br /><br />You are using version %s - Copyright %s %s]]></source>
+        <target state="final"><![CDATA[TYPO3 CMS je podnikový systém pro správu obsahu s otevřeným zdrojovým kódem, který se používá mezinárodně pro vytváření a správu webových stránek všech typů, od malých pracovišť pro neziskové podniky až po vícejazyčná řešení pro velké korporace.<br /><br />Další informace naleznete na <a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer">typo3.org</a>.<br /><br />TYPO3 CMS je <b>volně k dispozici</b> pod licencí <a href="https://typo3.org/project/licenses/" target="_blank" rel="noreferrer">TYPO3 (GNU/GPL)</a>.<br /><br />Používáte verzi %s - Copyright %s %s]]></target>
+      </trans-unit>
+      <trans-unit id="widgets.t3information.logo" approved="yes">
+        <source>TYPO3 CMS logo</source>
+        <target state="final">TYPO3 CMS logo</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.title" approved="yes">
+        <source>Number of errors in system log</source>
+        <target state="final">Počet chyb v systémovém protokolu</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.description" approved="yes">
+        <source>Shows the number of errors in the sys log of the last month, grouped by date</source>
+        <target state="final">Zobrazí počet chyb v systémovém protokolu za poslední měsíc, seskupených podle data</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.buttonText" approved="yes">
+        <source>Show all errors in log</source>
+        <target state="final">Zobrazit všechny chyby v logu</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogUsers.buttonText" approved="yes">
+        <source>Show all user logins</source>
+        <target state="final">Zobrazit všechna přihlášení uživatelů</target>
+      </trans-unit>
+      <trans-unit id="widgets.sysLogErrors.chart.dataSet.0" approved="yes">
+        <source>Number of errors</source>
+        <target state="final">Počet chyb</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.title" approved="yes">
+        <source>Type of backend users</source>
+        <target state="final">Typ BE-uživatelů</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.description" approved="yes">
+        <source>Shows the amount of normal- and admin-users</source>
+        <target state="final">Zobrazuje počet běžných a správcovských uživatelů</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.normalUsers" approved="yes">
+        <source>Normal users</source>
+        <target state="final">Běžný uživatel</target>
+      </trans-unit>
+      <trans-unit id="widgets.typeOfUsers.adminUsers" approved="yes">
+        <source>Admin users</source>
+        <target state="final">Správce</target>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.title" approved="yes">
+        <source>Failed backend logins</source>
+        <target state="final">Neúspěšné přihlášení do backendu</target>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.subtitle" approved="yes">
+        <source>In last 24 hours</source>
+        <target state="final">Za posledních 24 hodin</target>
+      </trans-unit>
+      <trans-unit id="widgets.failedLogins.description" approved="yes">
+        <source>Information about the number of failed logins during the last 24 hours.</source>
+        <target state="final">Informace o počtu neúspěšných přihlášení za posledních 24 hodin.</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.title" approved="yes">
+        <source>TYPO3 security advisories</source>
+        <target state="final">Bezpečnostní poradenství TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.description" approved="yes">
+        <source>Add a list of security advisories from the TYPO3 project</source>
+        <target state="final">Přidat seznam bezpečnostních rad TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.t3securityAdvisories.moreItems" approved="yes">
+        <source>More TYPO3 security advisories</source>
+        <target state="final">Další bezpečnostní rady TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.title" approved="yes">
+        <source>Latest changed pages</source>
+        <target state="final">Poslední změněné stránky</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.title.restrictToCurrentUser" approved="yes">
+        <source>My latest changed pages</source>
+        <target state="final">Moje poslední změněné stránky</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.description" approved="yes">
+        <source>Show a list of pages where the latest changes were made</source>
+        <target state="final">Zobrazit seznam stránek, kde byly provedeny poslední změny</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.empty" approved="yes">
+        <source>No history found</source>
+        <target state="final">Nebyla nalezena žádná historie</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.settings.restrictToCurrentUser" approved="yes">
+        <source>Only show my changes</source>
+        <target state="final">Zobrazit pouze mé změny</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.change" approved="yes">
+        <source>Change</source>
+        <target state="final">Změna</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.user" approved="yes">
+        <source>User</source>
+        <target state="final">Uživatel</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.user.userNotFound" approved="yes">
+        <source>Not Found</source>
+        <target state="final">Nenalezeno</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Stránka</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.page.workspace" approved="yes">
+        <source>Changes in current selected workspace</source>
+        <target state="final">Změny v aktuálně vybrané pracovní ploše</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.page.pagetree" approved="yes">
+        <source>Position in pagetree</source>
+        <target state="final">Pozice ve stromě stránek</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control" approved="yes">
+        <source>Control</source>
+        <target state="final">Kontrola</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.recordHistory" approved="yes">
+        <source>Show history</source>
+        <target state="final">Zobrazit historii</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.viewWebpage" approved="yes">
+        <source>View webpage</source>
+        <target state="final">Zobrazit webovou stránku</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.editPageContent" approved="yes">
+        <source>Edit page content</source>
+        <target state="final">Upravit obsah stránky</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.column.control.editPage" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">Upravit vlastnosti stránky</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.table.tt_content" approved="yes">
+        <source>Content</source>
+        <target state="final">Obsah</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestChangedPages.table.pages" approved="yes">
+        <source>Page</source>
+        <target state="final">Stránka</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.title" approved="yes">
+        <source>Latest backend logins</source>
+        <target state="final">Poslední přihlášení do backendu</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.description" approved="yes">
+        <source>Shows the latest backend user logins.</source>
+        <target state="final">Zobrazuje poslední přihlášení BE-uživatelů.</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.empty" approved="yes">
+        <source>No backend login history found</source>
+        <target state="final">Nebyly nalezeny žádné záznamy o přihlášení do backendu</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.time" approved="yes">
+        <source>Time</source>
+        <target state="final">Čas</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.user" approved="yes">
+        <source>User</source>
+        <target state="final">Uživatel</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.user.notFound" approved="yes">
+        <source>Not found</source>
+        <target state="final">Nenalezen</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.column.user.edit" approved="yes">
+        <source>Edit user</source>
+        <target state="final">Upravit uživatele</target>
+      </trans-unit>
+      <trans-unit id="widgets.latestBeLogins.settings.limit" approved="yes">
+        <source>Number of logins to display</source>
+        <target state="final">Počet zobrazených přihlášení</target>
+      </trans-unit>
+      <trans-unit id="widget_group.general" approved="yes">
+        <source>General</source>
+        <target state="final">Obecné</target>
+      </trans-unit>
+      <trans-unit id="widget_group.typo3" approved="yes">
+        <source>TYPO3 community</source>
+        <target state="final">Komunita TYPO3</target>
+      </trans-unit>
+      <trans-unit id="widget_group.news" approved="yes">
+        <source>News</source>
+        <target state="final">Novinky</target>
+      </trans-unit>
+      <trans-unit id="widget_group.documentation" approved="yes">
+        <source>Documentation</source>
+        <target state="final">Dokumentace</target>
+      </trans-unit>
+      <trans-unit id="widget_group.system" approved="yes">
+        <source>System Information</source>
+        <target state="final">Informace o systému</target>
+      </trans-unit>
+      <trans-unit id="widget_group.content" approved="yes">
+        <source>Content</source>
+        <target state="final">Obsah</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.title" approved="yes">
+        <source>No widgets</source>
+        <target state="final">Žádný widget</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.description" approved="yes">
+        <source>There are no widgets on this dashboard yet. You can add widgets now by clicking on the button below.</source>
+        <target state="final">Na této nástěnce zatím nejsou žádné widgety. Widget můžete přidat klepnutím na tlačítko níže.</target>
+      </trans-unit>
+      <trans-unit id="dashboard.empty.content.button" approved="yes">
+        <source>Add a widget</source>
+        <target state="final">Přidat widget</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
