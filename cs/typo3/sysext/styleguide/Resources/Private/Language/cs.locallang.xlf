@@ -1,0 +1,1968 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:styleguide/Resources/Private/Language/locallang.xlf" date="2026-11-10T13:37:37Z" product-name="styleguide" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="componentsOverview.headline" approved="yes">
+        <source>Components</source>
+        <target state="final">Komponenty</target>
+      </trans-unit>
+      <trans-unit id="componentsOverview.link.title" approved="yes">
+        <source>Open %1s component</source>
+        <target state="final">Otevřít komponentu %1s</target>
+      </trans-unit>
+      <trans-unit id="managePageTrees.headline" approved="yes">
+        <source>Manage example page trees</source>
+        <target state="final">Spravovat ukázkové stromy stránek</target>
+      </trans-unit>
+      <trans-unit id="stylesOverview.headline" approved="yes">
+        <source>Styles</source>
+        <target state="final">Styly</target>
+      </trans-unit>
+      <trans-unit id="stylesOverview.link.title" approved="yes">
+        <source>Open %1s style</source>
+        <target state="final">Otevřít styl %1s</target>
+      </trans-unit>
+      <trans-unit id="styleguide" approved="yes">
+        <source>Styleguide</source>
+        <target state="final">Styleguide</target>
+      </trans-unit>
+      <trans-unit id="action.accordion" approved="yes">
+        <source>Accordion</source>
+        <target state="final">Akordeon</target>
+      </trans-unit>
+      <trans-unit id="action.accordion.description" approved="yes">
+        <source>Collapsible content sections that expand and collapse to show or hide information.</source>
+        <target state="final">Sbalitelné sekce obsahu, které se rozbalují a sbalí, aby zobrazily nebo skryly informace.</target>
+      </trans-unit>
+      <trans-unit id="action.avatar" approved="yes">
+        <source>Avatar</source>
+        <target state="final">Avatar</target>
+      </trans-unit>
+      <trans-unit id="action.avatar.description" approved="yes">
+        <source>Display images representing backend users with optional status indicators.</source>
+        <target state="final">Zobrazit obrázky představující uživatele backendu s volitelnými indikátory stavu.</target>
+      </trans-unit>
+      <trans-unit id="action.badges" approved="yes">
+        <source>Badges</source>
+        <target state="final">Odznaky</target>
+      </trans-unit>
+      <trans-unit id="action.badges.description" approved="yes">
+        <source>Small labels for displaying status, counts, or categorization information.</source>
+        <target state="final">Malé štítky pro zobrazení stavu, počtů nebo informací o kategorizaci.</target>
+      </trans-unit>
+      <trans-unit id="action.breadcrumbs" approved="yes">
+        <source>Breadcrumbs</source>
+        <target state="final">Drobečková navigace</target>
+      </trans-unit>
+      <trans-unit id="action.breadcrumbs.description" approved="yes">
+        <source>Navigation trail showing the current location in the backend hierarchy, including modules and records.</source>
+        <target state="final">Navigační stezka zobrazující aktuální polohu v hierarchii backendu, včetně modulů a záznamů.</target>
+      </trans-unit>
+      <trans-unit id="action.buttons" approved="yes">
+        <source>Buttons</source>
+        <target state="final">Tlačítka</target>
+      </trans-unit>
+      <trans-unit id="action.buttons.description" approved="yes">
+        <source>Interactive elements for triggering actions with various styles, sizes, and states.</source>
+        <target state="final">Interaktivní prvky pro spouštění akcí s různými styly, velikostmi a stavy.</target>
+      </trans-unit>
+      <trans-unit id="action.cards" approved="yes">
+        <source>Cards</source>
+        <target state="final">Karty</target>
+      </trans-unit>
+      <trans-unit id="action.cards.description" approved="yes">
+        <source>Flexible containers for grouping related content, displayed individually or in groups.</source>
+        <target state="final">Flexibilní kontejnery pro seskupování souvisejícího obsahu, zobrazované jednotlivě nebo ve skupinách.</target>
+      </trans-unit>
+      <trans-unit id="action.checkboxes" approved="yes">
+        <source>Checkboxes</source>
+        <target state="final">Zaškrtávací pole</target>
+      </trans-unit>
+      <trans-unit id="action.checkboxes.description" approved="yes">
+        <source>Form controls for selecting one or more options, including toggles and switches.</source>
+        <target state="final">Formulářové ovládací prvky pro výběr jedné nebo více možností, včetně přepínačů a spínačů.</target>
+      </trans-unit>
+      <trans-unit id="action.comboboxes" approved="yes">
+        <source>Comboboxes</source>
+        <target state="final">Rozbalovací seznamy</target>
+      </trans-unit>
+      <trans-unit id="action.comboboxes.description" approved="yes">
+        <source>Input fields with dropdown suggestions for selecting or entering values.</source>
+        <target state="final">Vstupní pole s rozevíracími nabídkami pro výběr nebo zadávání hodnot.</target>
+      </trans-unit>
+      <trans-unit id="action.contentNavigation" approved="yes">
+        <source>Content Navigation</source>
+        <target state="final">Navigace obsahu</target>
+      </trans-unit>
+      <trans-unit id="action.contentNavigation.description" approved="yes">
+        <source>A two-panel container with a resizable navigation area and a flexible content area.</source>
+        <target state="final">Dvoupanelový kontejner s přizpůsobitelnou navigační oblastí a flexibilní oblastí obsahu.</target>
+      </trans-unit>
+      <trans-unit id="action.datetime" approved="yes">
+        <source>Datetime / Relative Time</source>
+        <target state="final">Datum / Relativní čas</target>
+      </trans-unit>
+      <trans-unit id="action.datetime.description" approved="yes">
+        <source>Web component for displaying timestamps in relative format with localization support.</source>
+        <target state="final">Webová komponenta pro zobrazení časových značek v relativním formátu s podporou lokalizace.</target>
+      </trans-unit>
+      <trans-unit id="action.colorTokens" approved="yes">
+        <source>Color Tokens</source>
+        <target state="final">Barevné tokeny</target>
+      </trans-unit>
+      <trans-unit id="action.colorTokens.description" approved="yes">
+        <source>Predefined color values and design tokens used throughout the TYPO3 backend interface.</source>
+        <target state="final">Předdefinované hodnoty barev a designové tokeny používané v celém rozhraní TYPO3 Backendu.</target>
+      </trans-unit>
+      <trans-unit id="action.accentAndState" approved="yes">
+        <source>Accent and State</source>
+        <target state="final">Zvýraznění a stav</target>
+      </trans-unit>
+      <trans-unit id="action.accentAndState.description" approved="yes">
+        <source>Stateful color variants for interactive elements including accent colors and semantic states.</source>
+        <target state="final">Stavové barevné varianty pro interaktivní prvky, včetně akcentních barev a sémantických stavů.</target>
+      </trans-unit>
+      <trans-unit id="action.componentsOverview" approved="yes">
+        <source>Components overview</source>
+        <target state="final">Přehled komponent</target>
+      </trans-unit>
+      <trans-unit id="action.componentsOverview.description" approved="yes">
+        <source>Browse all available UI components in the TYPO3 backend component library.</source>
+        <target state="final">Prohlédněte si všechny dostupné komponenty uživatelského rozhraní v knihovně komponent TYPO3 Backendu.</target>
+      </trans-unit>
+      <trans-unit id="action.developerTools" approved="yes">
+        <source>Developer Tools</source>
+        <target state="final">Vývojářské nástroje</target>
+      </trans-unit>
+      <trans-unit id="action.developerTools.description" approved="yes">
+        <source>Specialized components and utilities for development and debugging purposes.</source>
+        <target state="final">Specializované komponenty a nástroje pro vývoj a ladění.</target>
+      </trans-unit>
+      <trans-unit id="action.dropdown" approved="yes">
+        <source>Dropdown</source>
+        <target state="final">Rozbalovací nabídka</target>
+      </trans-unit>
+      <trans-unit id="action.dropdown.description" approved="yes">
+        <source>Toggleable overlays for displaying lists, menus, and contextual actions.</source>
+        <target state="final">Přepínatelné překryvy pro zobrazení seznamů, nabídek a kontextových akcí.</target>
+      </trans-unit>
+      <trans-unit id="action.flashMessages" approved="yes">
+        <source>Flash messages</source>
+        <target state="final">Flash zprávy</target>
+      </trans-unit>
+      <trans-unit id="action.flashMessages.description" approved="yes">
+        <source>Temporary notifications for displaying feedback about user actions and system events.</source>
+        <target state="final">Dočasná oznámení pro zobrazení zpětné vazby o akcích uživatelů a událostech systému.</target>
+      </trans-unit>
+      <trans-unit id="action.form" approved="yes">
+        <source>Form</source>
+        <target state="final">Formulář</target>
+      </trans-unit>
+      <trans-unit id="action.form.description" approved="yes">
+        <source>Complete form layouts combining various input fields and controls.</source>
+        <target state="final">Kompletní rozvržení formulářů kombinující různá vstupní pole a ovládací prvky.</target>
+      </trans-unit>
+      <trans-unit id="action.icons" approved="yes">
+        <source>Icons</source>
+        <target state="final">Ikony</target>
+      </trans-unit>
+      <trans-unit id="action.icons.description" approved="yes">
+        <source>Complete library of icons available for use in the TYPO3 backend interface.</source>
+        <target state="final">Kompletní knihovna ikon dostupných pro použití v rozhraní TYPO3 backendu.</target>
+      </trans-unit>
+      <trans-unit id="action.infobox" approved="yes">
+        <source>Infobox</source>
+        <target state="final">Infobox</target>
+      </trans-unit>
+      <trans-unit id="action.infobox.description" approved="yes">
+        <source>Highlighted containers for displaying important information and contextual help.</source>
+        <target state="final">Zvýrazněné kontejnery pro zobrazení důležitých informací a kontextové nápovědy.</target>
+      </trans-unit>
+      <trans-unit id="action.input" approved="yes">
+        <source>Input</source>
+        <target state="final">Input</target>
+      </trans-unit>
+      <trans-unit id="action.input.description" approved="yes">
+        <source>Text input fields with support for various types, states, and sizes.</source>
+        <target state="final">Pole pro zadávání textu s podporou různých typů, stavů a velikostí.</target>
+      </trans-unit>
+      <trans-unit id="action.listGroups" approved="yes">
+        <source>List groups</source>
+        <target state="final">Seznam skupin</target>
+      </trans-unit>
+      <trans-unit id="action.listGroups.description" approved="yes">
+        <source>Lists for displaying a series of content.</source>
+        <target state="final">Seznamy pro zobrazení skupin obsahu.</target>
+      </trans-unit>
+      <trans-unit id="action.managePageTrees" approved="yes">
+        <source>Manage example page trees</source>
+        <target state="final">Spravovat ukázkové stromy stránek</target>
+      </trans-unit>
+      <trans-unit id="action.managePageTrees.description" approved="yes">
+        <source>Create and manage example page trees with TCA demo records or content elements for testing purposes.</source>
+        <target state="final">Vytvářejte a spravujte ukázkové stromy stránek s demo záznamy TCA nebo obsahovými prvky pro testovací účely.</target>
+      </trans-unit>
+      <trans-unit id="action.modal" approved="yes">
+        <source>Modal</source>
+        <target state="final">Modál</target>
+      </trans-unit>
+      <trans-unit id="action.modal.description" approved="yes">
+        <source>Dialog windows that appear on top of page content for focused interactions.</source>
+        <target state="final">Dialogová okna, která se zobrazují nad obsahem stránky pro zaměřené interakce.</target>
+      </trans-unit>
+      <trans-unit id="action.navs" approved="yes">
+        <source>Navs</source>
+        <target state="final">Navigace</target>
+      </trans-unit>
+      <trans-unit id="action.navs.description" approved="yes">
+        <source>Navigation components including tabs, pills, and flat navigation styles.</source>
+        <target state="final">Navigační komponenty včetně záložek, sloupků a prostých navigačních stylů.</target>
+      </trans-unit>
+      <trans-unit id="action.notifications" approved="yes">
+        <source>Notifications</source>
+        <target state="final">Notifikace</target>
+      </trans-unit>
+      <trans-unit id="action.notifications.description" approved="yes">
+        <source>Temporary messages for informing users about events with optional action buttons.</source>
+        <target state="final">Dočasné zprávy pro informování uživatelů o událostech s volitelnými akčními tlačítky.</target>
+      </trans-unit>
+      <trans-unit id="action.pagination" approved="yes">
+        <source>Pagination</source>
+        <target state="final">Stránkování</target>
+      </trans-unit>
+      <trans-unit id="action.pagination.description" approved="yes">
+        <source>Controls for navigating through multi-page content and data sets.</source>
+        <target state="final">Ovládací prvky pro procházení vícestránkovým obsahem a datovými sadami.</target>
+      </trans-unit>
+      <trans-unit id="action.panels" approved="yes">
+        <source>Panels</source>
+        <target state="final">Panely</target>
+      </trans-unit>
+      <trans-unit id="action.panels.description" approved="yes">
+        <source>Collapsible content containers for organizing information into sections.</source>
+        <target state="final">Skládací kontejnery obsahu pro uspořádání informací do sekcí.</target>
+      </trans-unit>
+      <trans-unit id="action.progressIndicators" approved="yes">
+        <source>Progress indicators</source>
+        <target state="final">Ukazatelé pokroku</target>
+      </trans-unit>
+      <trans-unit id="action.progressIndicators.description" approved="yes">
+        <source>Visual indicators showing completion status of tasks and processes.</source>
+        <target state="final">Vizuální indikátory zobrazující stav dokončení úkolů a procesů.</target>
+      </trans-unit>
+      <trans-unit id="action.progressTrackers" approved="yes">
+        <source>Progress trackers</source>
+        <target state="final">Sledovače progresu</target>
+      </trans-unit>
+      <trans-unit id="action.progressTrackers.description" approved="yes">
+        <source>Segmented progress displays for multi-step processes like wizards.</source>
+        <target state="final">Segmentované zobrazení postupu pro vícestupňové procesy, jako jsou průvodci.</target>
+      </trans-unit>
+      <trans-unit id="action.radio" approved="yes">
+        <source>Radio</source>
+        <target state="final">Rádio</target>
+      </trans-unit>
+      <trans-unit id="action.radio.description" approved="yes">
+        <source>Form controls for selecting a single option from multiple choices.</source>
+        <target state="final">Formulářové ovládací prvky pro výběr jedné možnosti z více možností.</target>
+      </trans-unit>
+      <trans-unit id="action.select" approved="yes">
+        <source>Select</source>
+        <target state="final">Výběr</target>
+      </trans-unit>
+      <trans-unit id="action.select.description" approved="yes">
+        <source>Dropdown menus for choosing one or more options from a list.</source>
+        <target state="final">Rozbalovací nabídky pro výběr jedné nebo více možností ze seznamu.</target>
+      </trans-unit>
+      <trans-unit id="action.shadows" approved="yes">
+        <source>Shadows</source>
+        <target state="final">Stíny</target>
+      </trans-unit>
+      <trans-unit id="action.shadows.description" approved="yes">
+        <source>Shadow effects and elevation styles used to create depth in the interface.</source>
+        <target state="final">Stínové efekty a výškové styly používané k vytvoření hloubky v rozhraní.</target>
+      </trans-unit>
+      <trans-unit id="action.stylesOverview" approved="yes">
+        <source>Styles overview</source>
+        <target state="final">Přehled stylů</target>
+      </trans-unit>
+      <trans-unit id="action.stylesOverview.description" approved="yes">
+        <source>Browse all available design styles including colors, typography, and visual tokens.</source>
+        <target state="final">Prohlédněte si všechny dostupné styly designu, včetně barev, typografie a vizuálních symbolů.</target>
+      </trans-unit>
+      <trans-unit id="action.surfaces" approved="yes">
+        <source>Surfaces</source>
+        <target state="final">Povrchy</target>
+      </trans-unit>
+      <trans-unit id="action.surfaces.description" approved="yes">
+        <source>Background surfaces and container styles that define the visual hierarchy.</source>
+        <target state="final">Povrchy pozadí a styl kontejneru, které definují vizuální hierarchii.</target>
+      </trans-unit>
+      <trans-unit id="action.tab" approved="yes">
+        <source>Tabs</source>
+        <target state="final">Záložky</target>
+      </trans-unit>
+      <trans-unit id="action.tab.description" approved="yes">
+        <source>Organized content sections with clickable headers for switching between views.</source>
+        <target state="final">Organizovaný obsah sekce s klikatelnými záhlavími pro přepínání mezi zobrazeními.</target>
+      </trans-unit>
+      <trans-unit id="action.tables" approved="yes">
+        <source>Tables</source>
+        <target state="final">Tabulky</target>
+      </trans-unit>
+      <trans-unit id="action.tables.description" approved="yes">
+        <source>Structured layouts for displaying tabular data with optional action icons.</source>
+        <target state="final">Strukturované rozložení pro zobrazení tabulkových dat s volitelnými aknčními ikonami.</target>
+      </trans-unit>
+      <trans-unit id="action.textarea" approved="yes">
+        <source>Textarea</source>
+        <target state="final">Textarea</target>
+      </trans-unit>
+      <trans-unit id="action.textarea.description" approved="yes">
+        <source>Multi-line text input fields for entering longer content.</source>
+        <target state="final">Vstupní pole s víceřádkovým vstupem pro zadání delšího obsahu.</target>
+      </trans-unit>
+      <trans-unit id="action.trees" approved="yes">
+        <source>Trees</source>
+        <target state="final">Stromy</target>
+      </trans-unit>
+      <trans-unit id="action.trees.description" approved="yes">
+        <source>Hierarchical tree structures for displaying nested data and navigation.</source>
+        <target state="final">Hierarchické stromové struktury pro zobrazení vnořených dat a navigace.</target>
+      </trans-unit>
+      <trans-unit id="action.typography" approved="yes">
+        <source>Typography</source>
+        <target state="final">Typografie</target>
+      </trans-unit>
+      <trans-unit id="action.typography.description" approved="yes">
+        <source>Font styles, sizes, weights, and text formatting used throughout the backend.</source>
+        <target state="final">Styly písma, velikosti, váhy a textové formátování, které se používají po celou dobu backend.</target>
+      </trans-unit>
+      <trans-unit id="pageTreeProcessingError" approved="yes">
+        <source>An error occured while processing the page tree</source>
+        <target state="final">Při zpracování stromu stránek došlo k chybě</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateButton" approved="yes">
+        <source>Create page tree</source>
+        <target state="final">Vytvořit strom stránek</target>
+      </trans-unit>
+      <trans-unit id="tcaDeleteButton" approved="yes">
+        <source>Delete page tree and all related records</source>
+        <target state="final">Odstranit strom stránek a všechny související záznamy</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionOkTitle" approved="yes">
+        <source>Data created</source>
+        <target state="final">Data vytvořena</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionOkBody" approved="yes">
+        <source>A page tree with TCA demo records was created.</source>
+        <target state="final">Byl vytvořen strom stránek s ukázkovými záznamy TCA.</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionFailedTitle" approved="yes">
+        <source>No data created</source>
+        <target state="final">Nebyla vytvořena žádná data</target>
+      </trans-unit>
+      <trans-unit id="tcaCreateActionFailedBody" approved="yes">
+        <source>A page tree with TCA demo records exists already. Please delete that first.</source>
+        <target state="final">Strom stránek s ukázkovými záznamy TCA již existuje. Nejprve jej prosím smažte.</target>
+      </trans-unit>
+      <trans-unit id="tcaDeleteActionOkTitle" approved="yes">
+        <source>Data deleted</source>
+        <target state="final">Data odstraněna</target>
+      </trans-unit>
+      <trans-unit id="tcaDeleteActionOkBody" approved="yes">
+        <source>The page tree and all related records were deleted.</source>
+        <target state="final">Strom stránek a všechny související záznamy byly odstraněny.</target>
+      </trans-unit>
+      <trans-unit id="extConfTemplateLocalizedLabel" approved="yes">
+        <source>A localized label</source>
+        <target state="final">Přeložený popisek</target>
+      </trans-unit>
+      <trans-unit id="translatedHelpTextForSelectCheckBox3" approved="yes">
+        <source>A localized help text</source>
+        <target state="final">Přeložený text nápovědy</target>
+      </trans-unit>
+      <trans-unit id="minimalTableTitle" approved="yes">
+        <source>Form engine - Minimal table configuration</source>
+        <target state="final">Modul formuláře - minimální konfigurace tabulky</target>
+      </trans-unit>
+      <trans-unit id="minimalTableTitleField" approved="yes">
+        <source>Title field</source>
+        <target state="final">Pole pro název</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateButtonWithSets" approved="yes">
+        <source>Create page tree with site sets</source>
+        <target state="final">Vytvořit strom stránek podle webových sad</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateButtonWithSysTemplate" approved="yes">
+        <source>Create page tree with sys_template</source>
+        <target state="final">Vytvořit strom stránek pomocí sys_template</target>
+      </trans-unit>
+      <trans-unit id="frontendDeleteButton" approved="yes">
+        <source>Delete page tree and all related records</source>
+        <target state="final">Odstranit strom stránek a všechny související záznamy</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionOkTitle" approved="yes">
+        <source>Data created</source>
+        <target state="final">Data vytvořena</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionOkBody" approved="yes">
+        <source>A page tree with content elements was created.</source>
+        <target state="final">Byl vytvořen strom stránek s prvky obsahu.</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionFailedTitle" approved="yes">
+        <source>No data created</source>
+        <target state="final">Nebyla vytvořena žádná data</target>
+      </trans-unit>
+      <trans-unit id="frontendCreateActionFailedBody" approved="yes">
+        <source>A page tree with content elements exists already. Please delete that first.</source>
+        <target state="final">Strom stránek s prvky obsahu již existuje. Nejprve jej odstraňte.</target>
+      </trans-unit>
+      <trans-unit id="frontendDeleteActionOkTitle" approved="yes">
+        <source>Data deleted</source>
+        <target state="final">Data odstraněna</target>
+      </trans-unit>
+      <trans-unit id="frontendDeleteActionOkBody" approved="yes">
+        <source>The page tree and all related records were deleted.</source>
+        <target state="final">Strom stránek a všechny související záznamy byly odstraněny.</target>
+      </trans-unit>
+      <trans-unit id="itemGroupLabel" approved="yes">
+        <source>Item group from locallang</source>
+        <target state="final">Skupina položek z locallangu</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideFrontend.title" approved="yes">
+        <source>Styleguide Frontend</source>
+        <target state="final">Styleguide Frontend</target>
+      </trans-unit>
+      <trans-unit id="backendLayouts.styleguideFrontend.colpos.0" approved="yes">
+        <source>Main content</source>
+        <target state="final">Hlavní obsah</target>
+      </trans-unit>
+      <trans-unit id="colorScheme.selector.label" approved="yes">
+        <source>Color scheme:</source>
+        <target state="final">Barevné schéma:</target>
+      </trans-unit>
+      <trans-unit id="section.colorScheme.headline" approved="yes">
+        <source>Color scheme</source>
+        <target state="final">Barevné schéma</target>
+      </trans-unit>
+      <trans-unit id="section.frontend.headline" approved="yes">
+        <source>Frontend Styleguide</source>
+        <target state="final">Frontend Styleguide</target>
+      </trans-unit>
+      <!-- Component: Avatar -->
+      <trans-unit id="component.avatar.headline" approved="yes">
+        <source>Avatar</source>
+        <target state="final">Avatar</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.introtext" approved="yes">
+        <source><![CDATA[An avatar displays an image that represents a backend user and can provide additional information such as their status.<br>Avatars can be displayed with an own ViewHelper. If an avatar image is stored in the user settings, this will be used instead of the standard image.]]></source>
+        <target state="final"><![CDATA[Avatar zobrazuje obrázek, který představuje uživatele backendu a může poskytovat další informace, jako je například jeho stav. <br>Avatary lze zobrazit pomocí vlastního ViewHelperu. Pokud je obrázek avatara uložen v nastavení uživatele, bude použit namísto standardního obrázku.]]></target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.default.text" approved="yes">
+        <source>Display the backend user's avatar image or a static fallback image for users without avatar images.</source>
+        <target state="final">Zobrazit avatar BE-uživatele nebo statický náhradní obrázek pro uživatele bez avatarů.</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.withStatus.headline" approved="yes">
+        <source>Status</source>
+        <target state="final">Status</target>
+      </trans-unit>
+      <trans-unit id="component.avatar.section.withStatus.text" approved="yes">
+        <source>If set, the backend user type (normal user or admin user) and its status (disabled or not) will be displayed next to the avatar. </source>
+        <target state="final">Pokud je nastaveno, bude vedle avatara zobrazen typ uživatele backendu (běžný uživatel nebo správce) a jeho stav (deaktivován nebo ne). </target>
+      </trans-unit>
+      <!-- Component: Badge -->
+      <trans-unit id="component.badge.headline" approved="yes">
+        <source>Badges</source>
+        <target state="final">Štítky</target>
+      </trans-unit>
+      <trans-unit id="component.badge.introtext" approved="yes">
+        <source>Small labels for displaying status, counts, or categorization information in a compact format.</source>
+        <target state="final">Malé štítky pro zobrazení stavu, počtů nebo kategorizačních informací v kompaktním formátu.</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Barva</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.shape.headline" approved="yes">
+        <source>Shape</source>
+        <target state="final">Tvar</target>
+      </trans-unit>
+      <trans-unit id="component.badge.section.withinHeadlines.headline" approved="yes">
+        <source>Usage within headings</source>
+        <target state="final">Použití v nadpisech</target>
+      </trans-unit>
+      <!-- Component: Breadcrumb -->
+      <trans-unit id="component.breadcrumb.headline" approved="yes">
+        <source>Breadcrumb</source>
+        <target state="final">Drobečková navigace</target>
+      </trans-unit>
+      <trans-unit id="component.breadcrumb.introtext" approved="yes">
+        <source>Navigation trail showing the current location in the backend hierarchy, including modules and pages.</source>
+        <target state="final">Navigační stezka zobrazující aktuální polohu v hierarchii backendu, včetně modulů a stránek.</target>
+      </trans-unit>
+      <!-- Component: Button -->
+      <trans-unit id="component.button.headline" approved="yes">
+        <source>Buttons</source>
+        <target state="final">Tlačítka</target>
+      </trans-unit>
+      <trans-unit id="component.button.introtext" approved="yes">
+        <source>Interactive elements for triggering actions, available in various colors, sizes, and states.</source>
+        <target state="final">Interaktivní prvky pro spouštění akcí, dostupné v různých barvách, velikostech a stavech.</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Barva</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.stateActive.headline" approved="yes">
+        <source>Active state</source>
+        <target state="final">Aktivní stav</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.stateDisabled.headline" approved="yes">
+        <source>Disabled state</source>
+        <target state="final">Zakázaný stav</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.types.headline" approved="yes">
+        <source>Types</source>
+        <target state="final">Typy</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.withIcon.headline" approved="yes">
+        <source>Additional icon</source>
+        <target state="final">Další ikona</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Velikost</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.size.default.headline" approved="yes">
+        <source>Default size</source>
+        <target state="final">Vychozí velikost</target>
+      </trans-unit>
+      <trans-unit id="component.button.section.size.small.headline" approved="yes">
+        <source>Small size</source>
+        <target state="final">Malá velikost</target>
+      </trans-unit>
+      <!-- Component: Card -->
+      <trans-unit id="component.card.headline" approved="yes">
+        <source>Cards</source>
+        <target state="final">Karty</target>
+      </trans-unit>
+      <trans-unit id="component.card.introtext" approved="yes">
+        <source>Cards can be displayed individually or in groups.</source>
+        <target state="final">Karty mohou být zobrazeny jednotlivě nebo ve skupinách.</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.alignment.headline" approved="yes">
+        <source>Alignment</source>
+        <target state="final">Zarovnání</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.alignment.text" approved="yes">
+        <source><![CDATA[If you have multiple cards and each have a link or button, they may not align properly depending on the length of the previously placed headings or description text. To ensure they align regardless of previous content, place the link or button inside <code>div.card-footer</code> and not inside <code>div.card-body</code>. This way the links will always be aligned at the bottom of the card.]]></source>
+        <target state="final"><![CDATA[Pokud máte více karet a každá z nich obsahuje odkaz nebo tlačítko, nemusí být správně zarovnány v závislosti na délce předchozích nadpisů nebo popisného textu. Abyste zajistili jejich zarovnání bez ohledu na předchozí obsah, umístěte odkaz nebo tlačítko do <code>div.card-footer</code> a ne do <code>div.card-body</code>. Tímto způsobem budou odkazy vždy zarovnány ve spodní části karty.]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Barva</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.color.text" approved="yes">
+        <source><![CDATA[It is possible to color cards. However, this option is rarely used - so please use this option sparingly. All available options are listed below. If needed assign one of the following classes to the <code>div.card</code>.<br> If you want to display the card in its default state, it is not necessary to add <code>.card-default</code> to the <code>div.card</code> - just omit the extra class.]]></source>
+        <target state="final"><![CDATA[Je možné karty obarvit. Tato možnost se však používá jen zřídka, proto ji používejte s rozvahou. Všechny dostupné možnosti jsou uvedeny níže. V případě potřeby přiřaďte jednu z následujících tříd k <code>div.card</code>.<br> Pokud chcete kartu zobrazit v jejím výchozím stavu, není nutné přidávat <code>.card-default</code> k <code>div.card</code> – stačí vynechat další třídu.]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.default.text" approved="yes">
+        <source>This is an example of a single card with its possible content. Unless further defined via CSS, a single card takes on the full width of the place it has been put into.</source>
+        <target state="final">Toto je příklad jedné karty s možným obsahem. Pokud není dále definováno pomocí CSS, jedna karta zabírá celou šířku místa, do kterého byla vložena.</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.extensionManangerModule.headline" approved="yes">
+        <source>"Extension Manager" module</source>
+        <target state="final">Modul "Správce rozšíření"</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.extensionManangerModule.text" approved="yes">
+        <source>In the extension manager it is possible to get pre-configured distributions. For this view, the cards have been enhanced with an image and some badges.</source>
+        <target state="final">Ve správci rozšíření je možné získat předem nakonfigurované distribuce. Pro tento pohled byly karty vylepšeny obrázkem a několika odznaky.</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.formFieldsInCards.headline" approved="yes">
+        <source>Form fields in cards</source>
+        <target state="final">Pole formuláře v kartách</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.formFieldsInCards.text" approved="yes">
+        <source><![CDATA[It is also possible to display forms and form fields in cards. This is done, for example, in the "Upload Extension" section of the <a href="%1s">"Extensions" module</a>, in the "Feature Toggles" overlay in the <a href="%2s">"Settings" module</a> and in the "Raw search" submodule of the <a href="%3s">"Database" module</a>.]]></source>
+        <target state="final"><![CDATA[Je také možné zobrazit formuláře a pole formulářů v kartách. To se provádí například v sekci „Rozšíření pro nahrávání“ modulu <a href="%1s">„Rozšíření“</a>, v překryvném okně „Přepínání funkcí“ modulu <a href="%2s">„Nastavení“</a> a v podmodulu „Surové vyhledávání“ modulu <a href="%3s">„Databáze“</a>.]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.listsInCards.headline" approved="yes">
+        <source>Lists in cards</source>
+        <target state="final">Seznamy v kartách</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.multipleCards.headline" approved="yes">
+        <source>Multiple cards</source>
+        <target state="final">Více karet</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.multipleCards.text" approved="yes">
+        <source><![CDATA[To display multiple cards, group them by wrapping them with <code>div.card-container</code>.]]></source>
+        <target state="final"><![CDATA[Chcete-li zobrazit více karet, seskupte je pomocí tagu <code>div.card-container</code>.]]></target>
+      </trans-unit>
+      <trans-unit id="component.card.section.rowsInCards.headline" approved="yes">
+        <source>Rows in cards</source>
+        <target state="final">Řádky v kartách</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.rowsInCards.text" approved="yes">
+        <source>On top of the element information overlay, rows are included within the card component.</source>
+        <target state="final">Kromě překryvu informací o prvku jsou v komponentu karty zahrnuty také řádky.</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Velikost</target>
+      </trans-unit>
+      <trans-unit id="component.card.section.size.text" approved="yes">
+        <source><![CDATA[To give the card the desired size, assign one of the following classes to the <code>div.card</code>. If only a single card is used, it must be wrapped with <code>div.card-container</code> as with multiple cards.]]></source>
+        <target state="final"><![CDATA[Chcete-li kartě přiřadit požadovanou velikost, přiřaďte k <code>div.card</code> jednu z následujících tříd. Pokud se používá pouze jedna karta, musí být obalena <code>div.card-container</code>, stejně jako v případě více karet.]]></target>
+      </trans-unit>
+      <!-- Component: Checkbox -->
+      <trans-unit id="component.checkbox.headline" approved="yes">
+        <source>Checkboxes</source>
+        <target state="final">Zaškrtávací pole</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.introtext" approved="yes">
+        <source>Form controls for selecting one or more options, including standard checkboxes, toggles, and switches.</source>
+        <target state="final">Formulářové ovládací prvky pro výběr jedné nebo více možností, včetně standardních zaškrtávacích políček, přepínačů a přepínačů.</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.card.headline" approved="yes">
+        <source>Card-Layout</source>
+        <target state="final">Rozložení karet</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.checkBoxToggleButton.headline" approved="yes">
+        <source>Checkbox toggle button</source>
+        <target state="final">Tlačítko pro přepínače</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.iconToggle.headline" approved="yes">
+        <source>Icon Toggle</source>
+        <target state="final">Přepínač s ikonou</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.labeledToggle.headline" approved="yes">
+        <source>Labeled Toggle</source>
+        <target state="final">Přepínač s popiskem</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.switch.headline" approved="yes">
+        <source>Switch</source>
+        <target state="final">Přepínač</target>
+      </trans-unit>
+      <trans-unit id="component.checkbox.section.toggle.headline" approved="yes">
+        <source>Toggle</source>
+        <target state="final">Přepnout</target>
+      </trans-unit>
+      <!-- Component: Combobox -->
+      <trans-unit id="component.combobox.headline" approved="yes">
+        <source>Comboboxes</source>
+        <target state="final">Kombo boxy</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.introtext" approved="yes">
+        <source>Input fields with dropdown suggestions for selecting or entering values, combining text input with selection capabilities.</source>
+        <target state="final">Vstupní pole s rozevíracími nabídkami pro výběr nebo zadávání hodnot, kombinující zadávání textu s možnostmi výběru.</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.placeholder.headline" approved="yes">
+        <source>Placeholder</source>
+        <target state="final">Placeholder</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.disabled.headline" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Deaktivováno</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.readonly.headline" approved="yes">
+        <source>Readonly</source>
+        <target state="final">Jen pro čtení</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.additionalText.headline" approved="yes">
+        <source>Additional text</source>
+        <target state="final">Dodatečný text</target>
+      </trans-unit>
+      <trans-unit id="component.combobox.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">Stav</target>
+      </trans-unit>
+      <!-- Component: Dropdown -->
+      <trans-unit id="component.dropdown.headline" approved="yes">
+        <source>Dropdown</source>
+        <target state="final">Rozbalovací nabídka</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.introtext" approved="yes">
+        <source>Toggleable overlays for displaying lists, menus, and contextual actions in a compact dropdown format.</source>
+        <target state="final">Přepínatelné překryvy pro zobrazení seznamů, nabídek a kontextových akcí v kompaktním rozbalovacím formátu.</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.toggles.headline" approved="yes">
+        <source>Toggles</source>
+        <target state="final">Přepínače</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.basic.headline" approved="yes">
+        <source>Basic</source>
+        <target state="final">Základní</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.states.headline" approved="yes">
+        <source>States</source>
+        <target state="final">Stavy</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.header.headline" approved="yes">
+        <source>Header</source>
+        <target state="final">Záhlaví</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.advancedbuttons.headline" approved="yes">
+        <source>Advanced Buttons</source>
+        <target state="final">Pokročilá tlačítka</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.text.headline" approved="yes">
+        <source>Text</source>
+        <target state="final">Text</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.rows.headline" approved="yes">
+        <source>Rows</source>
+        <target state="final">Řádky</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.divider.headline" approved="yes">
+        <source>Divider</source>
+        <target state="final">Oddělovač</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.table.headline" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabulka</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.listitemswithactions.headline" approved="yes">
+        <source>List items with actions</source>
+        <target state="final">Seznam položek s akcemi</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.positions.headline" approved="yes">
+        <source>Positions</source>
+        <target state="final">Pozice</target>
+      </trans-unit>
+      <trans-unit id="component.dropdown.section.nestedsubmenu.headline" approved="yes">
+        <source>Nested Submenu</source>
+        <target state="final">Vnořené submenu</target>
+      </trans-unit>
+      <!-- Component: Developer Tools -->
+      <trans-unit id="component.developerTools.headline" approved="yes">
+        <source>Developer Tools</source>
+        <target state="final">Vývojářské nástroje</target>
+      </trans-unit>
+      <trans-unit id="component.developerTools.introtext" approved="yes">
+        <source>Specialized components and utilities designed for development, debugging, and testing purposes.</source>
+        <target state="final">Specializované komponenty a nástroje určené pro vývoj, ladění a testování.</target>
+      </trans-unit>
+      <trans-unit id="component.developerTools.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <!-- Component: Exception -->
+      <!-- Component: Flash message -->
+      <trans-unit id="component.flashMessage.headline" approved="yes">
+        <source>Flash messages</source>
+        <target state="final">Flash zprávy</target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.introtext" approved="yes">
+        <source>Temporary notifications for displaying feedback about user actions and system events in various severity levels.</source>
+        <target state="final">Dočasná oznámení pro zobrazení zpětné vazby o akcích uživatelů a systémových událostech v různých úrovních závažnosti.</target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Barva</target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.section.color.text" approved="yes">
+        <source><![CDATA[The color is decided by setting the corresponding <code>TYPO3\CMS\Core\Type\ContextualFeedbackSeverity</code>. The following options are available:]]></source>
+        <target state="final"><![CDATA[Barva se určuje nastavením odpovídajícího <code>TYPO3\CMS\Core\Type\ContextualFeedbackSeverity</code>. K dispozici jsou následující možnosti:]]></target>
+      </trans-unit>
+      <trans-unit id="component.flashMessage.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <!-- Component: Form -->
+      <trans-unit id="component.form.headline" approved="yes">
+        <source>Form</source>
+        <target state="final">Formulář</target>
+      </trans-unit>
+      <trans-unit id="component.form.introtext" approved="yes">
+        <source>Complete form layouts combining various input fields, controls, and validation patterns.</source>
+        <target state="final">Kompletní rozvržení formulářů kombinující různá vstupní pole, ovládací prvky a vzory ověřování.</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.allFields.headline" approved="yes">
+        <source>Form with all fields and labels</source>
+        <target state="final">Formulář se všemi poli a popisky</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.allFieldsRtlDirection.headline" approved="yes">
+        <source>Form with all fields and labels (right-to-left direction)</source>
+        <target state="final">Formulář se všemi poli a popisky (směr zprava doleva)</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.formFieldsInRows.headline" approved="yes">
+        <source>Form fields in rows</source>
+        <target state="final">Formulářová pole v řádcích</target>
+      </trans-unit>
+      <trans-unit id="component.form.section.loginFormExample.headline" approved="yes">
+        <source>Login form example</source>
+        <target state="final">Příklad přihlašovacího formuláře</target>
+      </trans-unit>
+      <!-- Component: Infobox -->
+      <trans-unit id="component.infobox.headline" approved="yes">
+        <source>Infobox</source>
+        <target state="final">Infobox</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.introtext" approved="yes">
+        <source>This is a fluid based widget for the backend that can be inserted as view helper.</source>
+        <target state="final">Jedná se o widget, postavený na fluidu, pro backend, který lze vložit jako pomocný prvek zobrazení.</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Barva</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.customIcon.headline" approved="yes">
+        <source>Custom icon</source>
+        <target state="final">Vlastní ikona</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.customIcon.text" approved="yes">
+        <source><![CDATA[It is also possible to use a custom icon. Just pass the icon identifier as <code>iconName</code> to the view helper. The identifier must be registered in your TYPO3 installation.]]></source>
+        <target state="final"><![CDATA[Je také možné použít vlastní ikonu. Stačí předat identifikátor ikony jako <code>iconName</code> do pomocného programu zobrazení. Identifikátor musí být zaregistrován ve vaší instalaci TYPO3.]]></target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.withoutIcon.headline" approved="yes">
+        <source>Without icon</source>
+        <target state="final">Bez ikony</target>
+      </trans-unit>
+      <!-- Component: Input -->
+      <trans-unit id="component.input.headline" approved="yes">
+        <source>Input</source>
+        <target state="final">Vstup</target>
+      </trans-unit>
+      <trans-unit id="component.input.introtext" approved="yes">
+        <source>Text input fields supporting various types, states, and sizes for single-line data entry.</source>
+        <target state="final">Textová pole podporující různé typy, statusy a velikosti pro jednořádkový zápis dat.</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.disabled.headline" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Deaktivováno</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.fileUpload.headline" approved="yes">
+        <source>File upload</source>
+        <target state="final">Nahrávání souboru</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.email.headline" approved="yes">
+        <source>Email</source>
+        <target state="final">Email</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.placeholder.headline" approved="yes">
+        <source>Placeholder</source>
+        <target state="final">Placeholder</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.additionalText.headline" approved="yes">
+        <source>Additional text</source>
+        <target state="final">Dodatečný text</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.password.headline" approved="yes">
+        <source>Password</source>
+        <target state="final">Heslo</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.search.headline" approved="yes">
+        <source>Search</source>
+        <target state="final">Vyhledávání</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">Status</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Velikost</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.size.default.headline" approved="yes">
+        <source>Default size</source>
+        <target state="final">Vychozí velikost</target>
+      </trans-unit>
+      <trans-unit id="component.input.section.size.small.headline" approved="yes">
+        <source>Small size</source>
+        <target state="final">Malá velikost</target>
+      </trans-unit>
+      <!-- Component: List groups -->
+      <trans-unit id="component.listGroups.headline" approved="yes">
+        <source>List groups</source>
+        <target state="final">Seznam ve skupinách</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.introtext" approved="yes">
+        <source>Lists for displaying a series of content.</source>
+        <target state="final">Seznamy pro zobrazení skupin obsahu.</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.borderless.headline" approved="yes">
+        <source>Borderless</source>
+        <target state="final">Bez okrajů</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.borderless.text" approved="yes">
+        <source><![CDATA[Add <code>.list-group-flush</code> to remove the surrounding border and display the list group borderless in a parent container (e.g., cards)]]></source>
+        <target state="final"><![CDATA[Přidejte <code>.list-group-flush</code>, abyste odstranili okolní ohraničení a zobrazili skupinu seznamů bez ohraničení v nadřazeném kontejneru (např. karty)]]></target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.links.headline" approved="yes">
+        <source>Links and buttons</source>
+        <target state="final">Odkazy a tlačítka</target>
+      </trans-unit>
+      <trans-unit id="component.listGroups.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">Status</target>
+      </trans-unit>
+      <!-- Component: Modal -->
+      <trans-unit id="component.modal.headline" approved="yes">
+        <source>Modal</source>
+        <target state="final">Modál</target>
+      </trans-unit>
+      <trans-unit id="component.modal.introtext" approved="yes">
+        <source>Modals on buttons can be triggered using the t3js-modal-trigger class. There are various data attributes to customize text and behavior. Not all of them are shown here.</source>
+        <target state="final">Modální okna na tlačítkách lze spustit pomocí třídy t3js-modal-trigger. K dispozici jsou různé datové atributy pro přizpůsobení textu a chování. Ne všechny jsou zde zobrazeny.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.customTitleContent.headline" approved="yes">
+        <source>Custom title and content within the modal</source>
+        <target state="final">Vlastní titulek a obsah v modálu</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.severity.headline" approved="yes">
+        <source>Severity</source>
+        <target state="final">Závažnost</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.severity.description" approved="yes">
+        <source>Set the visual style of the modal using severity levels to indicate the nature of the content or action.</source>
+        <target state="final">Nastavte vizuální styl modálního okna pomocí úrovní závažnosti, které označují povahu obsahu nebo akce.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Velikost</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.size.description" approved="yes">
+        <source>Control the width of the modal. The default size grows based on content, while other sizes have fixed widths.</source>
+        <target state="final">Ovládejte šířku modálního okna. Výchozí velikost se zvětšuje podle obsahu, zatímco ostatní velikosti mají pevnou šířku.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.position.headline" approved="yes">
+        <source>Position</source>
+        <target state="final">Pozice</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.headline" approved="yes">
+        <source>Playground</source>
+        <target state="final">Playground</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.description" approved="yes">
+        <source>Interactively test different modal configurations by selecting options below.</source>
+        <target state="final">Interaktivně vyzkoušejte různé konfigurace modálů výběrem níže uvedených možností.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.position" approved="yes">
+        <source>Position</source>
+        <target state="final">Pozice</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.size" approved="yes">
+        <source>Size</source>
+        <target state="final">Velikost</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.severity" approved="yes">
+        <source>Severity</source>
+        <target state="final">Závažnost</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.hideHeader" approved="yes">
+        <source>Hide header</source>
+        <target state="final">Skrýt záhlaví</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.staticBackdrop" approved="yes">
+        <source>Static backdrop</source>
+        <target state="final">Statické pozadí</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.openModal" approved="yes">
+        <source>Open modal</source>
+        <target state="final">Otevřít modal</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Ano</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.playground.no" approved="yes">
+        <source>No</source>
+        <target state="final">Ne</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.hideHeader.headline" approved="yes">
+        <source>Hide header</source>
+        <target state="final">Skrýt záhlaví</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.hideHeader.description" approved="yes">
+        <source>Hide the modal header for a cleaner look. The title is still used for accessibility purposes.</source>
+        <target state="final">Skrýt záhlaví modálního okna pro přehlednější vzhled. Název se stále používá pro účely přístupnosti.</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.staticBackdrop.headline" approved="yes">
+        <source>Static backdrop</source>
+        <target state="final">Statické pozadí</target>
+      </trans-unit>
+      <trans-unit id="component.modal.section.staticBackdrop.description" approved="yes">
+        <source>Prevent the modal from closing when clicking outside of it. Users must use the buttons or close icon to dismiss.</source>
+        <target state="final">Zabraňte zavření modálního okna kliknutím mimo něj. Uživatelé musí k zavření použít tlačítka nebo ikonu zavření.</target>
+      </trans-unit>
+      <!-- Component: Navs -->
+      <trans-unit id="component.navs.headline" approved="yes">
+        <source>Navs</source>
+        <target state="final">Navigace</target>
+      </trans-unit>
+      <trans-unit id="component.navs.introtext" approved="yes">
+        <source>Navigation components including tabs, pills, and flat navigation styles for organizing content.</source>
+        <target state="final">Navigační komponenty včetně záložek, pilulek a plochých navigačních stylů pro organizaci obsahu.</target>
+      </trans-unit>
+      <trans-unit id="component.navs.basic.headline" approved="yes">
+        <source>Basic</source>
+        <target state="final">Základní</target>
+      </trans-unit>
+      <trans-unit id="component.navs.flat.headline" approved="yes">
+        <source>Flat</source>
+        <target state="final">Ploché</target>
+      </trans-unit>
+      <trans-unit id="component.navs.pills.headline" approved="yes">
+        <source>Pills</source>
+        <target state="final">Pilulky</target>
+      </trans-unit>
+      <trans-unit id="component.navs.tabs.headline" approved="yes">
+        <source>Tabs</source>
+        <target state="final">Záložky</target>
+      </trans-unit>
+      <!-- Component: Notification -->
+      <trans-unit id="component.notification.headline" approved="yes">
+        <source>Notifications</source>
+        <target state="final">Notifikace</target>
+      </trans-unit>
+      <trans-unit id="component.notification.introtext" approved="yes">
+        <source>Temporary messages for informing users about events with optional action buttons and different severity levels. Error notifications persist until dismissed.</source>
+        <target state="final">Dočasné zprávy informující uživatele o událostech s volitelnými akčními tlačítky a různými úrovněmi závažnosti. Oznámení o chybách zůstávají zobrazena, dokud nejsou potvrzena.</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.headline" approved="yes">
+        <source>Action Buttons</source>
+        <target state="final">Tlačítka akcí</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.text" approved="yes">
+        <source>Notification can be enriched with action buttons to trigger two kinds of actions: immediate action and deferred actions.</source>
+        <target state="final">Notifikace lze obohatit o akční tlačítka pro spuštění dvou druhů akcí: okamžité akce a odložené akce.</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.immediateAction.headline" approved="yes">
+        <source>Immediate Action</source>
+        <target state="final">Okamžitá akce</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.immediateAction.text" approved="yes">
+        <source>Immediate actions are executed directly when the action button is triggered. The notification will dismiss immediately. This action type is suitable for action that don't need any processing time, e.g. calling a backend module.</source>
+        <target state="final">Okamžité akce se spustí ihned po stisknutí akčního tlačítka. Oznámení se okamžitě skryje. Tento typ akce je vhodný pro akce, které nevyžadují žádný čas na zpracování, např. volání backendového modulu.</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.deferredAction.headline" approved="yes">
+        <source>Deferred Action</source>
+        <target state="final">Odložená akce</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.actionButtons.deferredAction.text" approved="yes">
+        <source>Deferred actions are suitable for actions that need a period of time until they finish, e.g. AJAX calls. The notifications will close as soon the action has ended successfully. When invoked, the button will show a spinner icon to indicate some activity.</source>
+        <target state="final">Odložené akce jsou vhodné pro operace, jejichž dokončení vyžaduje určitý čas, např. volání AJAXu. Oznámení se zavře, jakmile bude akce úspěšně dokončena. Po stisknutí tlačítka se zobrazí ikona točícího se kruhu, která signalizuje probíhající činnost.</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <trans-unit id="component.notification.implementation.html" approved="yes">
+        <source>Implementation via HTML:</source>
+        <target state="final">Implementace prostřednictvím HTML:</target>
+      </trans-unit>
+      <trans-unit id="component.notification.implementation.script" approved="yes">
+        <source>Implementation via script:</source>
+        <target state="final">Implementace prostřednictvím skriptu:</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.severity.headline" approved="yes">
+        <source>Severity</source>
+        <target state="final">Důležitost</target>
+      </trans-unit>
+      <trans-unit id="component.notification.section.severity.text" approved="yes">
+        <source>All notifications disappear after 5 seconds by default, except for the error message, which will remain stuck unless reconfigured.</source>
+        <target state="final">Ve výchozím nastavení se všechna oznámení po 5 sekundách skryjí, s výjimkou chybové zprávy, která zůstane zobrazena, dokud nedojde k změně nastavení.</target>
+      </trans-unit>
+      <!-- Component: Pagination -->
+      <trans-unit id="component.pagination.headline" approved="yes">
+        <source>Pagination</source>
+        <target state="final">Stránkování</target>
+      </trans-unit>
+      <trans-unit id="component.pagination.introtext" approved="yes">
+        <source>Controls for navigating through multi-page content and data sets with page numbers and navigation arrows.</source>
+        <target state="final">Ovládací prvky pro procházení vícestránkového obsahu a datových sad pomocí čísel stránek a navigačních šipek.</target>
+      </trans-unit>
+      <trans-unit id="component.pagination.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <!-- Component: Panels -->
+      <trans-unit id="component.panels.headline" approved="yes">
+        <source>Panels</source>
+        <target state="final">Panely</target>
+      </trans-unit>
+      <trans-unit id="component.panels.introtext" approved="yes">
+        <source>Collapsible content containers for organizing information into expandable and collapsible sections.</source>
+        <target state="final">Skládací kontejnery pro uspořádání informací do rozbalitelných a sbalitelných sekcí.</target>
+      </trans-unit>
+      <trans-unit id="component.panels.collapsible.headline" approved="yes">
+        <source>Collapsible</source>
+        <target state="final">Sbalitelné</target>
+      </trans-unit>
+      <trans-unit id="component.panels.nesting.headline" approved="yes">
+        <source>Nesting</source>
+        <target state="final">Vnořené</target>
+      </trans-unit>
+      <trans-unit id="component.panels.variants.headline" approved="yes">
+        <source>Variants</source>
+        <target state="final">Varianty</target>
+      </trans-unit>
+      <trans-unit id="component.panels.loader.headline" approved="yes">
+        <source>Loader</source>
+        <target state="final">Nahrávání</target>
+      </trans-unit>
+      <trans-unit id="component.panels.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Velikost</target>
+      </trans-unit>
+      <trans-unit id="component.panels.progress.headline" approved="yes">
+        <source>Progress</source>
+        <target state="final">Průběh</target>
+      </trans-unit>
+      <trans-unit id="component.panels.progressComponent.headline" approved="yes">
+        <source>Progress Component</source>
+        <target state="final">Komponenta postupu</target>
+      </trans-unit>
+      <trans-unit id="component.panels.header.headline" approved="yes">
+        <source>Header</source>
+        <target state="final">Záhlaví</target>
+      </trans-unit>
+      <trans-unit id="component.panels.headerRecord.headline" approved="yes">
+        <source>Header with icon and actions</source>
+        <target state="final">Záhlaví s ikonou a akcí</target>
+      </trans-unit>
+      <trans-unit id="component.panels.headerFile.headline" approved="yes">
+        <source>Header with thumbnail and actions</source>
+        <target state="final">Záhlaví s náhledy a akcemi</target>
+      </trans-unit>
+      <trans-unit id="component.panels.headerSection.headline" approved="yes">
+        <source>Header with section controls</source>
+        <target state="final">Záhlaví s ovládáním sekcí</target>
+      </trans-unit>
+      <trans-unit id="component.panels.body.headline" approved="yes">
+        <source>Body</source>
+        <target state="final">Tělo</target>
+      </trans-unit>
+      <trans-unit id="component.panels.footer.headline" approved="yes">
+        <source>Footer</source>
+        <target state="final">Patička</target>
+      </trans-unit>
+      <trans-unit id="component.panels.list.headline" approved="yes">
+        <source>List</source>
+        <target state="final">Seznam</target>
+      </trans-unit>
+      <trans-unit id="component.panels.table.headline" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabulka</target>
+      </trans-unit>
+      <trans-unit id="component.panels.alerts.headline" approved="yes">
+        <source>Alerts</source>
+        <target state="final">Upozornění</target>
+      </trans-unit>
+      <trans-unit id="component.panels.formSections.headline" approved="yes">
+        <source>Form Sections</source>
+        <target state="final">Sekce formuláře</target>
+      </trans-unit>
+      <trans-unit id="component.panels.tabs.headline" approved="yes">
+        <source>Tabs</source>
+        <target state="final">Záložky</target>
+      </trans-unit>
+      <!-- Component: Progress indicator -->
+      <trans-unit id="component.progressIndicator.headline" approved="yes">
+        <source>Progress indicators</source>
+        <target state="final">Ukazatelé pokroku</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.introtext" approved="yes">
+        <source><![CDATA[Progress bars represent a specific state that can be displayed in a percental fashion, e.g. amount of uploaded files, executed Upgrade Wizards or disk space usage.<br>If the exact amount of data being loaded is not known, progress bars may be rendered in an indeterminate state.<br>If applicable, use clear wording that describes the progress bar.]]></source>
+        <target state="final"><![CDATA[Indikátory průběhu znázorňují konkrétní stav, který lze zobrazit v procentech, např. počet nahraných souborů, počet spuštěných průvodců aktualizací nebo využití místa na disku. Pokud není znám přesný objem načítaných dat, mohou být indikátory průběhu zobrazeny v neurčitém stavu. V případě potřeby použijte jasné formulace, které indikátor průběhu popisují.]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.interactiveDemos.headline" approved="yes">
+        <source>Interactive Demos</source>
+        <target state="final">Interaktivní demo</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.headline" approved="yes">
+        <source>Indeterminate Progress Bar</source>
+        <target state="final">Neurčitý ukazatel průběhu</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.text" approved="yes">
+        <source><![CDATA[Creates a progress bar in indeterminate state, then calls done() to trigger the transition to 100% and removal.]]></source>
+        <target state="final"><![CDATA[Vytvoří ukazatel průběhu ve stavu neurčitém a pak zavolá done() pro spuštění přechodu na 100% a odstranění.]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.button" approved="yes">
+        <source>Start Indeterminate Progress</source>
+        <target state="final">Zahájit neurčitý průběh</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.indeterminate.buttonDelayed" approved="yes">
+        <source>Start Indeterminate Progress (with delay)</source>
+        <target state="final">Spustit neurčitý průběh (s zpožděním)</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.headline" approved="yes">
+        <source>Determinate Progress Bar</source>
+        <target state="final">Zrušit ukazatel průběhu</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.text" approved="yes">
+        <source><![CDATA[Creates a progress bar with an initial value, then calls done() to trigger the transition to 100% and removal.]]></source>
+        <target state="final"><![CDATA[Vytvoří ukazatel průběhu s počáteční hodnotou, pak volá hotovo() pro spuštění přechodu na 100% a odstranění.]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.button" approved="yes">
+        <source>Start Determinate Progress</source>
+        <target state="final">Začněte s měřitelným pokrokem</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.determinate.buttonDelayed" approved="yes">
+        <source>Start Determinate Progress (with delay)</source>
+        <target state="final">Začněte s měřitelným pokrokem (s zpožděním)</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.reusable.headline" approved="yes">
+        <source>Reusable Progress Bar</source>
+        <target state="final">Znovu použitelný ukazatel průběhu</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.reusable.text" approved="yes">
+        <source>Demonstrates how calling start() cancels a done() operation that is already in progress. The progress bar below calls done() after 1 second, but start() is called 100ms later to cancel the removal.</source>
+        <target state="final">Ukazuje, jak volání funkce start() zruší operaci done(), která již probíhá. Ukazatel průběhu níže volá funkci done() po 1 sekundě, ale o 100ms později je volána funkce start(), která odstranění zruší.</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.reusable.button" approved="yes">
+        <source>Run Demo</source>
+        <target state="final">Spustit demo</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.customLabel.headline" approved="yes">
+        <source>Custom label</source>
+        <target state="final">Vlastní popisek</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.customLabel.text" approved="yes">
+        <source>Optionally, a label can be displayed below the progress bar.</source>
+        <target state="final">Volitelně lze zobrazit popisek pod stavovým řádkem.</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.default.text" approved="yes">
+        <source>By default, an indefinite progress is displayed.</source>
+        <target state="final">Ve výchozím nastavení je zobrazen nekonečný progres.</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.maxValue.headline" approved="yes">
+        <source>Max value</source>
+        <target state="final">Maximální hodnota</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.ridiculousMaxValue.headline" approved="yes">
+        <source>Ridiculous max value</source>
+        <target state="final">Přesná maximální hodnota</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.severity.headline" approved="yes">
+        <source>Severity</source>
+        <target state="final">Důležitost</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.value.headline" approved="yes">
+        <source>Value</source>
+        <target state="final">Hodnota</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.table.headline" approved="yes">
+        <source>Progress Bar with Table</source>
+        <target state="final">Lišta pokroku s tabulkou</target>
+      </trans-unit>
+      <trans-unit id="component.progressIndicator.section.table.text" approved="yes">
+        <source>Demonstrates using a progress bar as the first child of a table wrapper to indicate loading state.</source>
+        <target state="final">Ukazuje použití ukazatele průběhu jako prvního dítěte v tabulce obalů pro indikaci stavu načítání.</target>
+      </trans-unit>
+      <!-- Component: Progress trackers -->
+      <trans-unit id="component.progressTrackers.headline" approved="yes">
+        <source>Progress trackers</source>
+        <target state="final">Sledovače progresu</target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.introtext" approved="yes">
+        <source><![CDATA[Progress trackers are a segmented variant of progress bars, dividing the progress bar into equal chunks.<br>The primary usage is in wizard components.]]></source>
+        <target state="final"><![CDATA[Ukazatele průběhu jsou segmentovanou variantou ukazatelů průběhu, která rozděluje ukazatel průběhu na stejné části.<br>Především se používají v komponentách průvodce.]]></target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.section.activeStage.headline" approved="yes">
+        <source>Active stage</source>
+        <target state="final">Aktivní fáze</target>
+      </trans-unit>
+      <trans-unit id="component.progressTrackers.section.demo.headline" approved="yes">
+        <source>Demo</source>
+        <target state="final">Demo</target>
+      </trans-unit>
+      <!-- Component: Radio -->
+      <trans-unit id="component.radio.headline" approved="yes">
+        <source>Radio buttons</source>
+        <target state="final">Radio tlačítka</target>
+      </trans-unit>
+      <trans-unit id="component.radio.introtext" approved="yes">
+        <source>Form controls for selecting a single exclusive option from multiple mutually exclusive choices.</source>
+        <target state="final">Ovládací prvky formuláře pro výběr jedné jediné možnosti z více vzájemně se vylučujících možností.</target>
+      </trans-unit>
+      <trans-unit id="component.radio.section.card.headline" approved="yes">
+        <source>Card-Layout</source>
+        <target state="final">Vzhled karet</target>
+      </trans-unit>
+      <trans-unit id="component.radio.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <!-- Component: Content Navigation -->
+      <trans-unit id="component.contentNavigation.headline" approved="yes">
+        <source>Content Navigation</source>
+        <target state="final">Navigace obsahu</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.introtext" approved="yes">
+        <source><![CDATA[A two-panel container with a resizable navigation area and a flexible content area. The navigation panel is optional, resizable, and can be collapsed to the left. The content panel is required and fills the remaining space.]]></source>
+        <target state="final"><![CDATA[Dvoupanelový kontejner s navigační oblastí, jejíž velikost lze měnit, a flexibilní oblastí pro obsah. Navigační panel je volitelný, jeho velikost lze měnit a lze jej sbalit do levé části. Panel s obsahem je povinný a vyplňuje zbývající prostor.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.basic.headline" approved="yes">
+        <source>Basic usage</source>
+        <target state="final">Základní použití</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.basic.text" approved="yes">
+        <source><![CDATA[The content navigation uses named slots: <code>navigation</code> and <code>content</code>. The <code>content</code> slot is required. The navigation panel can be collapsed by dragging below half of its minimum width. When collapsed, an expand button with the panel title is displayed.]]></source>
+        <target state="final"><![CDATA[Navigace v obsahu využívá pojmenované sloty: <code>navigace</code> a <code>obsah</code>. Slot <code>obsah</code> je povinný. Navigační panel lze sbalit přetažením pod polovinu jeho minimální šířky. Ve sbaleném stavu se zobrazí tlačítko pro rozbalení s názvem panelu.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.controls.headline" approved="yes">
+        <source>External controls</source>
+        <target state="final">Vnější ovládací prvky</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.controls.text" approved="yes">
+        <source><![CDATA[The navigation panel can be expanded or collapsed programmatically using <code>expand()</code>, <code>collapse()</code>, and <code>isCollapsed()</code> methods.]]></source>
+        <target state="final"><![CDATA[Navigační panel lze programově rozbalit nebo sbalit pomocí metod <code>expand()</code>, <code>collapse()</code> a <code>isCollapsed()</code>.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.toggleButton.headline" approved="yes">
+        <source>Toggle button</source>
+        <target state="final">Přepínací tlačítko</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.toggleButton.text" approved="yes">
+        <source><![CDATA[The <code>&lt;typo3-backend-content-navigation-toggle&gt;</code> component provides a button to expand or collapse the navigation. Place it anywhere within the content-navigation component. Use <code>action="collapse"</code> for a collapse button (visible when expanded) or <code>action="expand"</code> for an expand button (visible when collapsed). The component automatically shows/hides based on the navigation state and reads labels from the parent content-navigation's <code>navigation-label-collapse</code> and <code>navigation-label-expand</code> attributes.]]></source>
+        <target state="final"><![CDATA[Komponenta <code>&lt;typo3-backend-content-navigation-toggle&gt;</code> obsahuje tlačítko pro rozbalení nebo sbalení navigace. Umístěte ji na libovolné místo v rámci komponenty content-navigation. Pro tlačítko sbalení (viditelné při rozbalení) použijte <code>action=„collapse“</code> a pro tlačítko rozbalení (viditelné při sbalení) <code>action=„expand“</code>. Komponenta se automaticky zobrazuje/skrývá na základě stavu navigace a čte popisky z atributů <code>navigation-label-collapse</code> a <code>navigation-label-expand</code> nadřazené komponenty content-navigation.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.hidingPanels.headline" approved="yes">
+        <source>Hiding navigation</source>
+        <target state="final">Skrytí navigace</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.hidingPanels.text" approved="yes">
+        <source><![CDATA[The navigation panel can be hidden by adding the <code>hidden</code> attribute to the slotted element. Use the component's <code>showNavigation()</code>, <code>hideNavigation()</code>, and <code>isNavigationHidden()</code> methods for programmatic control.]]></source>
+        <target state="final"><![CDATA[Navigační panel lze skrýt přidáním atributu <code>hidden</code> k prvku slotted. Pro programové ovládání použijte metody komponenty <code>showNavigation()</code>, <code>hideNavigation()</code> a <code>isNavigationHidden()</code>.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.persistence.headline" approved="yes">
+        <source>Width persistence</source>
+        <target state="final">Zachování šířky</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.persistence.text" approved="yes">
+        <source><![CDATA[The navigation width is automatically persisted to <code>localStorage</code> using the container's <code>identifier</code> attribute. Resize the panel below, then reload the page to see the width restored.]]></source>
+        <target state="final"><![CDATA[Šířka navigačního panelu se automaticky ukládá do <code>localStorage</code> pomocí atributu <code>identifier</code> kontejneru. Změňte velikost panelu níže a poté stránku znovu načtěte, abyste viděli, jak se šířka obnoví.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.rtl.headline" approved="yes">
+        <source>Right-to-left support</source>
+        <target state="final">Podpora zprava doleva</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.rtl.text" approved="yes">
+        <source><![CDATA[The container automatically adapts to right-to-left layouts. The navigation panel appears on the right and drag directions are mirrored.]]></source>
+        <target state="final"><![CDATA[Kontejner se automaticky přizpůsobí rozložení zprava doleva. Navigační panel se zobrazí vpravo a směr přetahování se zrcadlí.]]></target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.flyout.headline" approved="yes">
+        <source>Flyout mode</source>
+        <target state="final">Režim Flyout</target>
+      </trans-unit>
+      <trans-unit id="component.contentNavigation.section.flyout.text" approved="yes">
+        <source><![CDATA[When the container becomes too narrow (below 750px), the navigation automatically switches to flyout mode using CSS container queries. In flyout mode, the navigation overlays the content instead of sitting beside it, and resizing is disabled.]]></source>
+        <target state="final"><![CDATA[Jakmile se šířka kontejneru zmenší pod 750 pixelů, navigace se pomocí CSS dotazů na kontejner automaticky přepne do rozbalovacího režimu. V tomto režimu se navigace zobrazí jako překryv nad obsahem namísto toho, aby byla umístěna vedle něj, a změna velikosti je zakázána.]]></target>
+      </trans-unit>
+      <!-- Component: Select -->
+      <trans-unit id="component.select.headline" approved="yes">
+        <source>Select</source>
+        <target state="final">Výběr</target>
+      </trans-unit>
+      <trans-unit id="component.select.introtext" approved="yes">
+        <source>Dropdown menus for choosing one or more options from a predefined list of values.</source>
+        <target state="final">Rozbalovací nabídky pro výběr jedné nebo více možností z předdefinovaného seznamu hodnot.</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.multiple.headline" approved="yes">
+        <source>Multiple selection</source>
+        <target state="final">Vícenásobný výběr</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.optgroup.headline" approved="yes">
+        <source>Option groups</source>
+        <target state="final">Skupiny možností</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.optgroup.single.headline" approved="yes">
+        <source>Single selection with option groups</source>
+        <target state="final">Jednoduchý výběr se skupinami možností</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.optgroup.multiple.headline" approved="yes">
+        <source>Multiple selection with option groups</source>
+        <target state="final">Vícenásobný výběr se skupinami možností</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">Status</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Velikost</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.size.default.headline" approved="yes">
+        <source>Default size</source>
+        <target state="final">Vychozí velikost</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.size.small.headline" approved="yes">
+        <source>Small size</source>
+        <target state="final">Malá velikost</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.colorScheme.optgroup.single.headline" approved="yes">
+        <source>Single selection with option groups</source>
+        <target state="final">Jednoduchý výběr se skupinami možností</target>
+      </trans-unit>
+      <trans-unit id="component.select.section.colorScheme.optgroup.multiple.headline" approved="yes">
+        <source>Multiple selection with option groups</source>
+        <target state="final">Vícenásobný výběr se skupinami možností</target>
+      </trans-unit>
+      <!-- Component: Status indicator -->
+      <!-- Component: Tabs -->
+      <trans-unit id="component.tabs.headline" approved="yes">
+        <source>Tab</source>
+        <target state="final">Záložka</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.introtext" approved="yes">
+        <source>Organized content sections with clickable headers for switching between different views and panels.</source>
+        <target state="final">Přehledně uspořádané sekce obsahu s klikatelnými záhlavími pro přepínání mezi různými zobrazeními a panely.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.default.text" approved="yes">
+        <source>Basic tab navigation with two tabs.</source>
+        <target state="final">Základní panel navigace se dvěma kartami.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.persistence.headline" approved="yes">
+        <source>Persistence</source>
+        <target state="final">Trvanlivost</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.persistence.text" approved="yes">
+        <source>Adding data-store-last-tab to the tab list stores the last selected tab in the browser session. This requires a stable id on the tab list element.</source>
+        <target state="final">Přidáním atributu `data-store-last-tab` do seznamu záložek se uloží poslední vybraná záložka v relaci prohlížeče. K tomu je zapotřebí stabilní identifikátor prvku seznamu záložek.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.validation.headline" approved="yes">
+        <source>Validation State</source>
+        <target state="final">Stav ověření</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.validation.text" approved="yes">
+        <source>Tabs containing validation errors are highlighted with a danger indicator. The &lt;code&gt;has-validation-error&lt;/code&gt; class is added to the &lt;code&gt;nav-item&lt;/code&gt; element.</source>
+        <target state="final">Záložky obsahující chyby při ověřování jsou zvýrazněny výstražným indikátorem. K prvku &lt;code&gt;nav-item&lt;/code&gt; je přidána třída &lt;code&gt;has-validation-error&lt;/code&gt;.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.overflow.headline" approved="yes">
+        <source>Scrollable</source>
+        <target state="final">Posouvatelné</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.overflow.text" approved="yes">
+        <source>When tabs do not fit in one line, scroll arrows appear at the edges. Resize the container to see the effect.</source>
+        <target state="final">Pokud se záložky nevejdou na jeden řádek, objeví se na okrajích šipky pro posun. Změňte velikost okna a podívejte se, jak to funguje.</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.migration.headline" approved="yes">
+        <source>Bootstrap Migration</source>
+        <target state="final">Bootstrap Migrace</target>
+      </trans-unit>
+      <trans-unit id="component.tabs.section.migration.text" approved="yes">
+        <source>Tabs using Bootstrap data-bs-toggle attributes are automatically migrated to data-typo3-tab at runtime. Anchor elements are replaced with buttons.</source>
+        <target state="final">Záložky využívající atributy Bootstrap data-bs-toggle jsou za běhu automaticky převedeny na data-typo3-tab. Prvky kotev jsou nahrazeny tlačítky.</target>
+      </trans-unit>
+      <!-- Component: Table -->
+      <trans-unit id="component.table.headline" approved="yes">
+        <source>Tables</source>
+        <target state="final">Tabulky</target>
+      </trans-unit>
+      <trans-unit id="component.table.introtext" approved="yes">
+        <source>Use tables to show tabular data. The action icons should always be in the last table row cell.</source>
+        <target state="final">Používejte tabulky pro zobrazení tabulkových dat. Ikony akcí by měly být vždy v poslední buňce tabulky.</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Barva</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.color.text" approved="yes">
+        <source><![CDATA[To color table rows, a class can be added to the <code>tr</code> element.]]></source>
+        <target state="final"><![CDATA[Pro barevné řádky tabulky lze do prvku <code>tr</code> přidat třídu.]]></target>
+      </trans-unit>
+      <trans-unit id="component.table.section.colorScheme.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.colorScheme.colorFullExample.headline" approved="yes">
+        <source>Color (full example)</source>
+        <target state="final">Barva (kompletní příklad)</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <trans-unit id="component.table.section.wideTables.headline" approved="yes">
+        <source>Wide tables</source>
+        <target state="final">Široké tabulky</target>
+      </trans-unit>
+      <!-- Component: Textarea -->
+      <trans-unit id="component.textarea.headline" approved="yes">
+        <source>Textarea</source>
+        <target state="final">Textarea</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.introtext" approved="yes">
+        <source>Multi-line text input fields for entering and editing longer content and formatted text.</source>
+        <target state="final">Víceřádková textová pole pro zadávání a úpravy delších textů a formátovaného textu.</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.disabled.headline" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Deaktivováno</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.placeholder.headline" approved="yes">
+        <source>Placeholder</source>
+        <target state="final">Placeholder</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.state.headline" approved="yes">
+        <source>State</source>
+        <target state="final">Status</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Velikost</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.size.default.headline" approved="yes">
+        <source>Default size</source>
+        <target state="final">Vychozí velikost</target>
+      </trans-unit>
+      <trans-unit id="component.textarea.section.size.small.headline" approved="yes">
+        <source>Small size</source>
+        <target state="final">Malá velikost</target>
+      </trans-unit>
+      <!-- Component: Tree -->
+      <trans-unit id="component.tree.headline" approved="yes">
+        <source>Trees</source>
+        <target state="final">Stromy</target>
+      </trans-unit>
+      <trans-unit id="component.tree.introtext" approved="yes">
+        <source>Hierarchical tree structures for displaying and navigating nested data with expandable and collapsible nodes.</source>
+        <target state="final">Hierarchické stromové struktury pro zobrazení a procházení vnořených dat s uzly, které lze rozbalit a sbalit.</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.collapsibleTree.headline" approved="yes">
+        <source>Collapsible tree</source>
+        <target state="final">Sbalitelný strom</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.collapsibleTree.text" approved="yes">
+        <source><![CDATA[Collapsible trees are used to show the configuration in a more structured way. Lower levels can be opened and closed, while the entries are collapsed by default. If a user opens entries, this state is saved in the session. There are additional data attributes that can be added to <code>div.treelist-collapse</code> to configure the collapse state.]]></source>
+        <target state="final"><![CDATA[Skládací stromy slouží k přehlednějšímu zobrazení struktury. Nižší úrovně lze rozbalit a sbalit, přičemž položky jsou ve výchozím nastavení sbalené. Pokud uživatel položky rozbalí, tento stav se uloží do relace. K prvku <code>div.treelist-collapse</code> lze přidat další datové atributy, které slouží k nastavení stavu sbalení.]]></target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.fileTree.headline" approved="yes">
+        <source>File tree</source>
+        <target state="final">Strom souborů</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.fileTree.text" approved="yes">
+        <source>File trees are initialized via TypeScript like the page trees.</source>
+        <target state="final">Stromové struktury souborů se inicializují prostřednictvím TypeScriptu stejně jako stromové struktury stránek.</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.pageTree.headline" approved="yes">
+        <source>Page tree</source>
+        <target state="final">Strom stránek</target>
+      </trans-unit>
+      <trans-unit id="component.tree.section.pageTree.text" approved="yes">
+        <source>Initialization of a page tree is done via TypeScript as in the code example below.</source>
+        <target state="final">Inicializace stromu stránek se provádí pomocí TypeScriptu, jak ukazuje následující ukázkový kód.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.headline" approved="yes">
+        <source>Datetime Component</source>
+        <target state="final">Komponenta Datetime</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.introtext" approved="yes">
+        <source>Web component for displaying timestamps in absolute format (default) or relative format (e.g., "2 minutes ago"). Uses Luxon for localized formatting and respects the user's backend language setting and TYPO3's configured date formats. Supports custom Luxon format strings for complete control over the display format. When using relative mode, hover over the time to see the full datetime in a tooltip.</source>
+        <target state="final">Webová komponenta pro zobrazení časových značek v absolutním formátu (výchozí) nebo relativním formátu (např. „před 2 minutami“). Využívá knihovnu Luxon pro lokalizované formátování a respektuje nastavení jazyka v backendu uživatele i konfigurované formáty data v systému TYPO3. Podporuje vlastní formátovací řetězce Luxon, které umožňují úplnou kontrolu nad formátem zobrazení. V relativním režimu stačí najet myší na čas, aby se v popisku zobrazil úplný časový údaj.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.basicUsage.headline" approved="yes">
+        <source>Basic Usage (Absolute Display)</source>
+        <target state="final">Základní použití (absolutní zobrazení)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.basicUsage.absoluteDisplay" approved="yes">
+        <source>Absolute Display (default)</source>
+        <target state="final">Absolutní zobrazení (výchozí)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.basicUsage.isoTimestamp" approved="yes">
+        <source>ISO Timestamp</source>
+        <target state="final">ISO Časová značka</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeTime.headline" approved="yes">
+        <source>Relative Time Display</source>
+        <target state="final">Relativní zobrazení času</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeTime.text" approved="yes">
+        <source>Using mode="relative", the component displays timestamps in relative format (e.g., "2 hours ago"). Hover to see the absolute datetime.</source>
+        <target state="final">Při použití atributu mode="relative" komponenta zobrazuje časové údaje v relativním formátu (např. „před 2 hodinami“). Po najetí myší se zobrazí absolutní datum a čas.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeTime.relativeDisplay" approved="yes">
+        <source>Relative Display</source>
+        <target state="final">Relativní zobrazení</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.autoUpdate.headline" approved="yes">
+        <source>Automatic Updates in Relative Mode</source>
+        <target state="final">Automatické aktualizace v relativním režimu</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.autoUpdate.text" approved="yes">
+        <source>In relative mode, the component automatically updates itself with adaptive frequency based on elapsed time: &lt;1 minute updates every second, &lt;1 hour updates every minute, &lt;1 day every 5 minutes, and &gt;1 day every 30 minutes. No configuration needed.</source>
+        <target state="final">V relativním režimu se komponenta automaticky aktualizuje s frekvencí přizpůsobenou uplynulému času: při době kratší než 1 minuta se aktualizuje každou sekundu, při době kratší než 1 hodina každou minutu, při době kratší než 1 den každých 5 minut a při době delší než 1 den každých 30 minut. Není třeba žádné nastavení.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.autoUpdate.lastUpdated" approved="yes">
+        <source>Last updated:</source>
+        <target state="final">Poslední aktualizace:</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.headline" approved="yes">
+        <source>Unix Timestamp Support</source>
+        <target state="final">Podpora Unix Timestamp</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.text" approved="yes">
+        <source>The component automatically detects and handles Unix timestamps (in seconds).</source>
+        <target state="final">Tato komponenta automaticky rozpoznává a zpracovává časová razítka systému Unix (v sekundách).</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.format" approved="yes">
+        <source>Format</source>
+        <target state="final">Formát</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.value" approved="yes">
+        <source>Value</source>
+        <target state="final">Hodnota</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.absoluteDisplay" approved="yes">
+        <source>Absolute Display</source>
+        <target state="final">Absolutní zobrazení</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.isoReference" approved="yes">
+        <source>ISO Reference</source>
+        <target state="final">ISO Reference</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.fluidViewHelper" approved="yes">
+        <source>Fluid ViewHelper</source>
+        <target state="final">Fluid ViewHelper</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.modeComparison.headline" approved="yes">
+        <source>Mode Comparison</source>
+        <target state="final">Režim porovnávání</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.modeComparison.text" approved="yes">
+        <source>Side-by-side comparison of absolute (default) and relative display modes.</source>
+        <target state="final">Porovnání absolutního (výchozího) a relativního režimu zobrazení.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.headline" approved="yes">
+        <source>Absolute Display Formats</source>
+        <target state="final">Absolutní formáty zobrazení</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.text" approved="yes">
+        <source>The format attribute is optional and uses TYPO3's configured date format by default. Available values: date (default), datetime, or custom Luxon format strings. The TYPO3 configured formats are defined in $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] and $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'].</source>
+        <target state="final">Atribut formátu je volitelný a ve výchozím nastavení používá formát data nakonfigurovaný v TYPO3. Dostupné hodnoty: date (výchozí), datetime nebo vlastní řetězce formátu Luxon. Formáty nakonfigurované v TYPO3 jsou definovány v $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] a $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'].</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.display" approved="yes">
+        <source>Display</source>
+        <target state="final">Zobrazit</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.dateDefault" approved="yes">
+        <source>date (default - TYPO3 configured date)</source>
+        <target state="final">datum (výchozí - TYPO3 nastavené datum)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.datetimeConfigured" approved="yes">
+        <source>datetime (TYPO3 configured datetime)</source>
+        <target state="final">datum a čas (výchozí - TYPO3 nastavené datum a čas)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.customFormats.headline" approved="yes">
+        <source>Custom Format Strings</source>
+        <target state="final">Vlastní formát řetězce</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.customFormats.text" approved="yes">
+        <source>The format attribute also accepts custom Luxon format strings for complete control over the display format.</source>
+        <target state="final">Atribut „format“ také podporuje vlastní řetězce formátu Luxon, které umožňují úplnou kontrolu nad formátem zobrazení.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.customFormats.customFormatString" approved="yes">
+        <source>Custom Format String</source>
+        <target state="final">Vlastní formát řetězce</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.headline" approved="yes">
+        <source>Relative Time Without Seconds</source>
+        <target state="final">Relativní čas bez sekund</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.text" approved="yes">
+        <source>By default, relative mode rounds up to the nearest minute. Use the relative-show-seconds attribute to display exact seconds instead.</source>
+        <target state="final">Ve výchozím nastavení se v relativním režimu zaokrouhluje nahoru na nejbližší minutu. Chcete-li místo toho zobrazit přesné sekundy, použijte atribut relative-show-seconds.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.withoutSeconds" approved="yes">
+        <source>Without Seconds (Default)</source>
+        <target state="final">Bez sekund (výchozí)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeShowSeconds.withSeconds" approved="yes">
+        <source>With Seconds</source>
+        <target state="final">Se sekundami</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.headline" approved="yes">
+        <source>With Threshold (Show Absolute Date for Old Timestamps)</source>
+        <target state="final">S nastavením „Threshold“ (Zobrazit absolutní datum u starých časových značek)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.text" approved="yes">
+        <source>In relative mode, using the threshold-days attribute switches to absolute date format for timestamps older than a specified number of days.</source>
+        <target state="final">V relativním režimu se pomocí atributu threshold-days přepne na absolutní formát data u časových značek starších než zadaný počet dní.</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.withoutThreshold" approved="yes">
+        <source>Without Threshold</source>
+        <target state="final">Bez prahu</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.withThreshold" approved="yes">
+        <source>With Threshold (90 days)</source>
+        <target state="final">S prahem (90 dní)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.headline" approved="yes">
+        <source>Attributes</source>
+        <target state="final">Atributy</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.attribute" approved="yes">
+        <source>Attribute</source>
+        <target state="final">Atribut</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Typ</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Popis</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.datetime.type" approved="yes">
+        <source>string (required)</source>
+        <target state="final">řetězec (povinný)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.datetime.description" approved="yes">
+        <source>ISO 8601 timestamp (e.g., "2024-01-15T10:30:00+01:00") or Unix timestamp</source>
+        <target state="final">ISO 8601 timestamp (např. 2024-01-15T10:30:00+01:00) nebo Unix timestamp</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.mode.type" approved="yes">
+        <source>string (optional)</source>
+        <target state="final">řetězec (nepovinné)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.mode.description" approved="yes">
+        <source>Display mode: "absolute" (default) or "relative"</source>
+        <target state="final">Režim zobrazení: „absolutní“ (výchozí) nebo „relativní“</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.format.type" approved="yes">
+        <source>string (optional)</source>
+        <target state="final">řetězec (nepovinné)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.format.description" approved="yes">
+        <source>Format for absolute mode: "date" (default - uses $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']), "datetime" (uses ddmmyy + hhmm), or custom Luxon format string (e.g., "dd.MM.yyyy HH:mm")</source>
+        <target state="final">Formát pro absolutní režim: „date“ (výchozí – používá $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']), „datetime“ (používá ddmmyy + hhmm) nebo vlastní řetězec formátu Luxon (např. "dd.MM.yyyy HH:mm")</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.thresholdDays.type" approved="yes">
+        <source>number (optional)</source>
+        <target state="final">číslo (volitelné)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.thresholdDays.description" approved="yes">
+        <source>Switch to absolute date format for timestamps older than N days (only for relative mode). Default: 0 (always relative)</source>
+        <target state="final">Přepnout na absolutní formát data u časových značek starších než N dní (pouze v relativním režimu). Výchozí hodnota: 0 (vždy relativní)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.relativeShowSeconds.type" approved="yes">
+        <source>boolean (optional)</source>
+        <target state="final">boolean (volitelné)</target>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.relativeShowSeconds.description" approved="yes">
+        <source>Show exact seconds in relative mode. When absent (default), times within the last minute display as "1 minute ago". When present, displays "X seconds ago".</source>
+        <target state="final">V relativním režimu zobrazovat přesný počet sekund. Pokud není tato možnost zaškrtnuta (výchozí nastavení), časy v rámci poslední minuty se zobrazují jako „před 1 minutou“. Pokud je zaškrtnuta, zobrazuje se „před X sekundami“.</target>
+      </trans-unit>
+      <!-- Styles: Color tokens -->
+      <trans-unit id="styles.colorTokens.headline" approved="yes">
+        <source>Color Tokens</source>
+        <target state="final">Barevné tokeny</target>
+      </trans-unit>
+      <trans-unit id="styles.colorTokens.introtext" approved="yes">
+        <source><![CDATA[Surfaces used in the TYPO3 Backend, for <strong>internal usage only</strong>.]]></source>
+        <target state="final"><![CDATA[Rozhraní používaná v backendu TYPO3, určená <strong>pouze pro interní použití</strong>.]]></target>
+      </trans-unit>
+      <!-- Styles: Accent and State -->
+      <trans-unit id="styles.accentAndState.headline" approved="yes">
+        <source>Accent and State</source>
+        <target state="final">Zvýraznění a stav</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.introtext" approved="yes">
+        <source><![CDATA[Stateful color variants used for interactive elements in the TYPO3 Backend, for <strong>internal usage only</strong>. These include accent colors (primary, secondary) and semantic state colors (info, success, warning, danger, notice) with their respective default, hover, focus, and disabled variants.]]></source>
+        <target state="final"><![CDATA[Varianty barev s rozlišením stavů používané pro interaktivní prvky v backendu TYPO3, určené <strong>pouze pro interní použití</strong>. Patří mezi ně akcentní barvy (primární, sekundární) a barvy pro sémantické stavy (info, úspěch, varování, nebezpečí, upozornění) s příslušnými variantami pro výchozí stav, stav při najetí myší, stav zaostření a deaktivovaný stav.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.accentColors.headline" approved="yes">
+        <source>Accent Colors</source>
+        <target state="final">Akcentní barvy</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.stateColors.headline" approved="yes">
+        <source>State Colors</source>
+        <target state="final">Stavové barvy</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.decorativeColors.headline" approved="yes">
+        <source>Decorative Colors</source>
+        <target state="final">Dekorativní barvy</target>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.decorativeColors.text" approved="yes">
+        <source>Plain color variants without semantic meaning. Use these for visual distinction only, such as workspace indicators, category tags, or user-assigned labels where colors are decorative rather than communicating status.</source>
+        <target state="final">Jednobarevné varianty bez sémantického významu. Tyto varianty používejte pouze k vizuálnímu odlišení, například jako označení pracovních ploch, štítky kategorií nebo uživatelské popisky, kde barvy slouží spíše jako dekorativní prvek než k vyjádření stavu.</target>
+      </trans-unit>
+      <!-- Styles: Icons -->
+      <trans-unit id="styles.icons.headline" approved="yes">
+        <source>Icons</source>
+        <target state="final">Ikony</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.introtext" approved="yes">
+        <source>Icons can be used in backend modules. TYPO3 automatically sends the corresponding HTML output code.</source>
+        <target state="final">Ikony lze použít v backendových modulech. TYPO3 automaticky generuje odpovídající HTML kód.</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.default.headline" approved="yes">
+        <source>Default</source>
+        <target state="final">Výchozí</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.overlay.headline" approved="yes">
+        <source>Overlay</source>
+        <target state="final">Překrytí</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.overview.headline" approved="yes">
+        <source>Overview</source>
+        <target state="final">Přehled</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.size.headline" approved="yes">
+        <source>Size</source>
+        <target state="final">Velikost</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.headline" approved="yes">
+        <source>Usage</source>
+        <target state="final">Použití</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.bitmap.headline" approved="yes">
+        <source>Bitmap</source>
+        <target state="final">Bitmapa</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.implementation" approved="yes">
+        <source>Implementation in Fluid via ViewHelper:</source>
+        <target state="final">Implementace ve Fluidu pomocí ViewHelperu:</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.registration" approved="yes">
+        <source>Registration:</source>
+        <target state="final">Registrace:</target>
+      </trans-unit>
+      <trans-unit id="styles.icons.section.usage.svg.headline" approved="yes">
+        <source>SVG</source>
+        <target state="final">SVG</target>
+      </trans-unit>
+      <!-- Styles: Shadows -->
+      <trans-unit id="styles.shadows.headline" approved="yes">
+        <source>Shadows</source>
+        <target state="final">Stíny</target>
+      </trans-unit>
+      <trans-unit id="styles.shadows.introtext" approved="yes">
+        <source><![CDATA[Shadows used in the TYPO3 Backend, for <strong>internal usage only</strong>.]]></source>
+        <target state="final"><![CDATA[Stíny používané v backendu TYPO3, určené <strong>pouze pro interní použití</strong>.]]></target>
+      </trans-unit>
+      <!-- Styles: Surfaces -->
+      <trans-unit id="styles.surfaces.headline" approved="yes">
+        <source>Surfaces</source>
+        <target state="final">Plochy</target>
+      </trans-unit>
+      <trans-unit id="styles.surfaces.introtext" approved="yes">
+        <source><![CDATA[Surfaces used in the TYPO3 Backend, for <strong>internal usage only</strong>.]]></source>
+        <target state="final"><![CDATA[Rozhraní používaná v backendu TYPO3, určená <strong>pouze pro interní použití</strong>.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.color.headline" approved="yes">
+        <source>Color</source>
+        <target state="final">Barva</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.natural.headline" approved="yes">
+        <source>Natural</source>
+        <target state="final">Přírodní</target>
+      </trans-unit>
+      <!-- Styles: Typography -->
+      <trans-unit id="styles.typography.headline" approved="yes">
+        <source>Typography</source>
+        <target state="final">Typografie</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.introtext" approved="yes">
+        <source>Font styles, sizes, weights, and text formatting guidelines used throughout the TYPO3 backend.</source>
+        <target state="final">Styly, velikosti a tloušťky písma a pokyny pro formátování textu používané v celém backendu TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.headings.headline" approved="yes">
+        <source>Headings</source>
+        <target state="final">Nadpisy</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.headings.text" approved="yes">
+        <source><![CDATA[Headline "H1" is the main headline within each backend module. Only added once to every backend page.<br>Headline "H2" is the headline for every section in backend modules. Place above each section and use several times.<br>Headline "H3" can be used to split section content into logical units. Place in between paragraphs within section.<br>Headline "H4" might be used to split off meta / footer information.]]></source>
+        <target state="final"><![CDATA[Nadpis „H1“ je hlavním nadpisem v rámci každého modulu backendu. Na každé stránce backendu se uvádí pouze jednou.<br>Nadpis „H2“ je nadpisem pro každou sekci v modulech backendu. Umístěte jej nad každou sekci a použijte jej několikrát.<br>Nadpis „H3“ lze použít k rozdělení obsahu sekce na logické celky. Umístěte jej mezi odstavce v rámci sekce.<br>Nadpis „H4“ lze použít k oddělení meta informací a informací v zápatí.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.links.headline" approved="yes">
+        <source>Links</source>
+        <target state="final">Odkazy</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.headline" approved="yes">
+        <source>Lists</source>
+        <target state="final">Seznamy</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.text" approved="yes">
+        <source><![CDATA[By default, ordered and unordered lists are formatted with bullets and decimals. By adding <code>class="list-unstyled"</code> to the ol or ul tag, it is possible to structure content in list form without the typical list styling.]]></source>
+        <target state="final"><![CDATA[Ve výchozím nastavení jsou číslované a nečíslované seznamy formátovány pomocí odrážek a čísel. Přidáním <code>class=„list-unstyled“</code> do značky ol nebo ul lze strukturovat obsah ve formě seznamu bez typického stylování seznamu.]]></target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.ordered.headline" approved="yes">
+        <source>Ordered list</source>
+        <target state="final">Číslovaný seznam</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.lists.unordered.headline" approved="yes">
+        <source>Unordered list</source>
+        <target state="final">Nečíslovaný seznam</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.paragraph.headline" approved="yes">
+        <source>Paragraph</source>
+        <target state="final">Odstavec</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.smallText.headline" approved="yes">
+        <source>Small text</source>
+        <target state="final">Malý text</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.smallText.text" approved="yes">
+        <source>Footer information, small notices can be wrapped in small text tag.</source>
+        <target state="final">Informace v zápatí a krátká upozornění lze uvést v tagu pro malý text.</target>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.textColor.headline" approved="yes">
+        <source>Text color</source>
+        <target state="final">Barva textu</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
