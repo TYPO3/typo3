@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814795" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_fe_groups.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="ro">
+    <header/>
+    <body>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>This option disables the user group.</source>
+        <target state="final">Această opţiune dezactivează grupul de utilizatori.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" xml:space="preserve" approved="yes">
+				<source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.
+For instance if a page or content element was assigned access only by this group and you disable the group, no one would gain access to that page or content element.</source>
+			<target state="final">Dacă dezactivaţi un grup de utilizatori, membrii grupului respectiv vor pierde proprietăţile moştenite de la grup. De exemplu, dacă accesul  la o pagină sau la un element de conţinut din pagină s-a dat doar prin intermediul grupului pe care-l veţi dezactiva, niciun membru al grupului nu va mai avea acces la pagina sau elementul de conţinut respectiv.</target></trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Name of the group.</source>
+        <target state="final">Numele grupului.</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>This title will appear as the group name in the 'Access'-list in other records.</source>
+        <target state="final">Acest titlu va apărea ca nume al grupului pentru alte înregistrări, în secţiunea 'Lista Permisiunilor'</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
