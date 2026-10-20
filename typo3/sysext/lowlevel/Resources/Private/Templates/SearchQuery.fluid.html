@@ -78,18 +78,20 @@
                         </div>
                     </div>
                     <div class="card-text">
-                        <f:if condition="{queryMaker.storeMessage}">
-                            <div class="typo3-messages">
-                                <div class="alert alert-{queryMaker.storeMessage.severity.cssClass}">
-                                    <div class="alert-inner">
-                                        <div class="alert-icon">
-                                            <span class="icon-emphasized"><core:icon identifier="{queryMaker.storeMessage.severity.iconIdentifier}" size="small" /></span>
+                        <div class="typo3-messages-container" role="alert">
+                            <f:if condition="{queryMaker.storeMessage}">
+                                <div class="typo3-messages" role="alert">
+                                    <div class="alert alert-{queryMaker.storeMessage.severity.cssClass}">
+                                        <div class="alert-inner">
+                                            <div class="alert-icon">
+                                                <span class="icon-emphasized"><core:icon identifier="{queryMaker.storeMessage.severity.iconIdentifier}" size="small" /></span>
+                                            </div>
+                                            <div class="alert-content"><p class="alert-message">{queryMaker.storeMessage.message}</p></div>
                                         </div>
-                                        <div class="alert-content"><p class="alert-message">{queryMaker.storeMessage.message}</p></div>
                                     </div>
                                 </div>
-                            </div>
-                        </f:if>
+                            </f:if>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -34,7 +34,7 @@ final class ListRendererTest extends UnitTestCase
             'messageTitle',
             ContextualFeedbackSeverity::NOTICE
         );
-        self::assertSame('<ul class="typo3-messages"><li class="alert alert-notice"><h4 class="alert-title">messageTitle</h4><p class="alert-message">messageBody</p></li></ul>', $subject->render([$flashMessage]));
+        self::assertSame('<ul class="typo3-messages" role="alert"><li class="alert alert-notice"><h4 class="alert-title">messageTitle</h4><p class="alert-message">messageBody</p></li></ul>', $subject->render([$flashMessage]));
     }
 
     #[Test]
@@ -46,6 +46,6 @@ final class ListRendererTest extends UnitTestCase
             '',
             ContextualFeedbackSeverity::NOTICE
         );
-        self::assertSame('<ul class="typo3-messages"><li class="alert alert-notice"><p class="alert-message">messageBody</p></li></ul>', $subject->render([$flashMessage]));
+        self::assertSame('<ul class="typo3-messages" role="alert"><li class="alert alert-notice"><p class="alert-message">messageBody</p></li></ul>', $subject->render([$flashMessage]));
     }
 }

@@ -1,20 +1,22 @@
 <div class="form-errors">
     <f:flashMessages />
-    <f:form.validationResults>
-        <f:if condition="{validationResults.flattenedErrors}">
-            <div class="errors" id="form-feedback">
-                <ul class="typo3-messages">
-                    <f:for each="{validationResults.flattenedErrors}" key="propertyName" as="errors">
-                        <f:for each="{errors}" as="propertyError">
-                            <li class="alert alert-danger" data-error="{propertyError.code}">
-                                {propertyName}: {propertyError.message}
-                            </li>
+    <div class="typo3-messages-container" role="alert">
+        <f:form.validationResults>
+            <f:if condition="{validationResults.flattenedErrors}">
+                <div class="errors" id="form-feedback">
+                    <ul class="typo3-messages" role="alert">
+                        <f:for each="{validationResults.flattenedErrors}" key="propertyName" as="errors">
+                            <f:for each="{errors}" as="propertyError">
+                                <li class="alert alert-danger" data-error="{propertyError.code}">
+                                    {propertyName}: {propertyError.message}
+                                </li>
+                            </f:for>
                         </f:for>
-                    </f:for>
-                </ul>
-            </div>
-        </f:if>
-    </f:form.validationResults>
+                    </ul>
+                </div>
+            </f:if>
+        </f:form.validationResults>
+    </div>
 </div>
 
 <f:form action="create" name="blog" object="{blog}">

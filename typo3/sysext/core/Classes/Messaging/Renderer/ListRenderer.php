@@ -38,7 +38,7 @@ readonly class ListRenderer implements FlashMessageRendererInterface
     public function render(array $flashMessages): string
     {
         $markup = [];
-        $markup[] = '<ul class="typo3-messages">';
+        $markup[] = '<ul class="typo3-messages" role="alert">';
         foreach ($flashMessages as $flashMessage) {
             $messageTitle = $flashMessage->getTitle();
             $markup[] = '<li class="alert alert-' . htmlspecialchars($flashMessage->getSeverity()->getCssClass()) . '">';
