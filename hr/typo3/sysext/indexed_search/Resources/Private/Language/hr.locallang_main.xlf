@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_main.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id="mod_indexed_search" approved="yes">
+        <source>Indexed search</source>
+        <target state="final">Indeksno pretraživanje</target>
+      </trans-unit>
+      <trans-unit id="mod2_indexed_search" approved="yes">
+        <source>Indexed search statistics</source>
+        <target state="final">Statistika indeksnog pretraživanja</target>
+      </trans-unit>
+      <trans-unit id="ignoreExtensions" approved="yes">
+        <source>Extension %s was set to be ignored.</source>
+        <target state="final">Odabrano je ignoriranje proširenja %s.</target>
+      </trans-unit>
+      <trans-unit id="pdfToolsDisabled" approved="yes">
+        <source>PDF tools disabled</source>
+        <target state="final">PDF alati su onemogućeni</target>
+      </trans-unit>
+      <trans-unit id="pdfToolsFailed" approved="yes">
+        <source>PDFtoText Failed on this document: '%s'. Maybe the PDF file is locked for printing or encrypted.</source>
+        <target state="final">PDFtoText nije uspio na sljedećem dokumentu: '%s'. Možda je PDF datoteka zaključana za ispis ili kriptirana.</target>
+      </trans-unit>
+      <trans-unit id="catdocNotFound" approved="yes">
+        <source>'catdoc' tool for reading Word-files was not found in path '%scatdoc'</source>
+        <target state="final">'catdoc' alat za čitanje Word datoteka nije pronađen u putanji '%scatdoc'</target>
+      </trans-unit>
+      <trans-unit id="catdocDisabled" approved="yes">
+        <source>catdoc tools (Word-files) disabled</source>
+        <target state="final">catdoc alati (Word datoteke) su onemogućeni</target>
+      </trans-unit>
+      <trans-unit id="ppthtmlNotFound" approved="yes">
+        <source>'ppthtml' tool for reading Powerpoint-files was not found in path '%sppthtml'</source>
+        <target state="final">Alat za čitanje Powerpoint datoteka - 'pphtml' nije pronađen u putanji '%spphtml'</target>
+      </trans-unit>
+      <trans-unit id="ppthtmlDisabled" approved="yes">
+        <source>ppthtml tools (Powerpoint-files) disabled</source>
+        <target state="final">pphtml alati (za Powerpoint datoteke) su onemogućeni</target>
+      </trans-unit>
+      <trans-unit id="xlhtmlNotFound" approved="yes">
+        <source>'xlhtml' tool for reading Excel-files was not found in path '%sxlhtml'</source>
+        <target state="final">Alat za čitanje Excel datoteka 'xlhtml' nije pronađen u putanji '%sxlhtml'</target>
+      </trans-unit>
+      <trans-unit id="xlhtmlDisabled" approved="yes">
+        <source>xlhtml tools (Excel-files) disabled</source>
+        <target state="final">xlhtml alati (za Excel datoteke) su onemogućeni</target>
+      </trans-unit>
+      <trans-unit id="unzipNotFound" approved="yes">
+        <source>'unzip' tool for reading OpenOffice.org-files was not found in path '%sunzip'</source>
+        <target state="final">Alat za čitanje OpenOffice.org datoteke - 'unzip' nije pronađen u putanji '%sunzip'</target>
+      </trans-unit>
+      <trans-unit id="unzipDisabled" approved="yes">
+        <source>unzip tool (OpenOffice.org-files) disabled</source>
+        <target state="final">unzip alat (za OpenOffice.org datoteke) je onemogućen</target>
+      </trans-unit>
+      <trans-unit id="unrtfNotFound" approved="yes">
+        <source>'unrtf' tool for reading RTF-files was not found in path '%sunrtf'</source>
+        <target state="final">Alat za čitanje RTF datoteka - 'unrtf' nije pronađen u putanji '%sunrtf'</target>
+      </trans-unit>
+      <trans-unit id="unrtfDisabled" approved="yes">
+        <source>unrtf tool (RTF-files) disabled</source>
+        <target state="final">unrtf alat (za RTF datoteke) je onemogućen</target>
+      </trans-unit>
+      <trans-unit id="extension.PDF" approved="yes">
+        <source>PDF (*.%s)</source>
+        <target state="final">PDF (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.DOC" approved="yes">
+        <source>MS Word (*.%s)</source>
+        <target state="final">MS Word (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.PP" approved="yes">
+        <source>MS Powerpoint (*.%s)</source>
+        <target state="final">MS Powerpoint (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.XLS" approved="yes">
+        <source>MS Excel (*.%s)</source>
+        <target state="final">MS Excel (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.SXC" approved="yes">
+        <source>OpenOffice.org Calc (*.%s)</source>
+        <target state="final">OpenOffice.org Calc (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.SXI" approved="yes">
+        <source>OpenOffice.org Impress (*.%s)</source>
+        <target state="final">OpenOffice.org Impress (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.SXW" approved="yes">
+        <source>OpenOffice.org Writer (*.%s)</source>
+        <target state="final">OpenOffice.org Writer (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.ODS" approved="yes">
+        <source>ODF Spreadsheet (*.%s)</source>
+        <target state="final">ODF Proračunska tablica (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.ODP" approved="yes">
+        <source>ODF Presentation (*.%s)</source>
+        <target state="final">ODF Prezentacija (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.ODT" approved="yes">
+        <source>ODF Text (*.%s)</source>
+        <target state="final">ODF Tekst (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.RTF" approved="yes">
+        <source>Rich Text Format (*.%s)</source>
+        <target state="final">Format bogatog teksta (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.images" approved="yes">
+        <source>Images (*.%s)</source>
+        <target state="final">Slike (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.HTML" approved="yes">
+        <source>Webpages (*.%s)</source>
+        <target state="final">Internet stranice (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.TXT" approved="yes">
+        <source>Textfiles (*.%s)</source>
+        <target state="final">Tekstualne datoteke (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.CSV" approved="yes">
+        <source>Comma-Separated Values (*.%s)</source>
+        <target state="final">Vrijednosti odvojene zarezima (*.%s)</target>
+      </trans-unit>
+      <trans-unit id="extension.XML" approved="yes">
+        <source>Extensible Markup Language (*.%s)</source>
+        <target state="final">Proširivi jezik za označavanje (*.%s)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
