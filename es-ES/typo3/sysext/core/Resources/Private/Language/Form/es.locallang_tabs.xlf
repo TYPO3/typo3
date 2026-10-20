@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf" date="2016-10-23T20:22:33Z" product-name="tabs" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="general" approved="yes">
+        <source>General</source>
+        <target state="final">General</target>
+      </trans-unit>
+      <trans-unit id="access" approved="yes">
+        <source>Access</source>
+        <target state="final">Acceso</target>
+      </trans-unit>
+      <trans-unit id="accesscapabilities" approved="yes">
+        <source>Access capabilities</source>
+        <target state="final">Capacidades de acceso</target>
+      </trans-unit>
+      <trans-unit id="categories" approved="yes">
+        <source>Categories</source>
+        <target state="final">Categorías</target>
+      </trans-unit>
+      <trans-unit id="notes" approved="yes">
+        <source>Notes</source>
+        <target state="final">Notas</target>
+      </trans-unit>
+      <trans-unit id="language" approved="yes">
+        <source>Language</source>
+        <target state="final">Idioma</target>
+      </trans-unit>
+      <trans-unit id="extended" approved="yes">
+        <source>Extended</source>
+        <target state="final">Extendido</target>
+      </trans-unit>
+      <trans-unit id="appearance" approved="yes">
+        <source>Appearance</source>
+        <target state="final">Apariencia</target>
+      </trans-unit>
+      <trans-unit id="behaviour" approved="yes">
+        <source>Behavior</source>
+        <target state="final">Comportamiento</target>
+      </trans-unit>
+      <trans-unit id="images" approved="yes">
+        <source>Images</source>
+        <target state="final">Imágenes</target>
+      </trans-unit>
+      <trans-unit id="accessibility" approved="yes">
+        <source>Accessibility</source>
+        <target state="final">Accesibilidad</target>
+      </trans-unit>
+      <trans-unit id="text" approved="yes">
+        <source>Text</source>
+        <target state="final">Texto</target>
+      </trans-unit>
+      <trans-unit id="media" approved="yes">
+        <source>Media</source>
+        <target state="final">Multimedia</target>
+      </trans-unit>
+      <trans-unit id="plugin" approved="yes">
+        <source>Plugin</source>
+        <target state="final">Plugin</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
