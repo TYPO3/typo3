@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814838" source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang.xlf" date="2011-12-18T10:19:20Z" product-name="indexed_search" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="localizedOperandAnd" resname="localizedOperandAnd" approved="yes">
+        <source>AND</source>
+        <target state="final">AND</target>
+      </trans-unit>
+      <trans-unit id="localizedOperandOr" resname="localizedOperandOr" approved="yes">
+        <source>OR</source>
+        <target state="final">OR</target>
+      </trans-unit>
+      <trans-unit id="localizedOperandNot" resname="localizedOperandNot" approved="yes">
+        <source>NOT</source>
+        <target state="final">NOT</target>
+      </trans-unit>
+      <trans-unit id="rules.headline" resname="rules.headline" approved="yes">
+        <source>Rules</source>
+        <target state="final">Regole</target>
+      </trans-unit>
+      <trans-unit id="rules.text" resname="rules.text" xml:space="preserve" approved="yes">
+				<source><![CDATA[Only words with 2 or more characters are accepted<br />
+Max 200 chars total<br />
+Space is used to split words, "" can be used to search for a whole string (not indexed search then)<br />
+AND, OR and NOT are prefix words, overruling the default operator<br />
++/|/- equals AND, OR and NOT as operators.<br />
+All search words are converted to lowercase.
+]]></source>
+			<target state="final"><![CDATA[Sono accettate solo parole con 2 o più caratteri<br />
+Max 200 caratteri totali<br />
+Lo spazio è utilizzato per dividere le parole; "" può essere usato per cercare un'intera stringa (non la ricerca indicizzata)<br />
+AND, OR e NOT sono da utilizzare come prefisso alle parole di ricerca; prevalgono sull'operatore di default<br />
++/|/- uguagliano AND, OR and NOT come operatori.<br />
+Tutte le parole di ricerca sono convertite in minuscolo.
+]]></target></trans-unit>
+      <trans-unit id="form.legend" resname="form.legend" approved="yes">
+        <source>Search form</source>
+        <target state="final">Form per la ricerca</target>
+      </trans-unit>
+      <trans-unit id="form.searchFor" resname="form.searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">Cerca</target>
+      </trans-unit>
+      <trans-unit id="form.extResume" resname="form.extResume" approved="yes">
+        <source>Extended resume</source>
+        <target state="final">Anteprima estesa</target>
+      </trans-unit>
+      <trans-unit id="form.atATime" resname="form.atATime" approved="yes">
+        <source>at a time</source>
+        <target state="final">alla volta</target>
+      </trans-unit>
+      <trans-unit id="form.orderBy" resname="form.orderBy" approved="yes">
+        <source>Order by</source>
+        <target state="final">Ordina per</target>
+      </trans-unit>
+      <trans-unit id="form.fromSection" resname="form.fromSection" approved="yes">
+        <source>From section</source>
+        <target state="final">Dalla sezione</target>
+      </trans-unit>
+      <trans-unit id="form.freeIndexUid" resname="form.freeIndexUid" approved="yes">
+        <source>Category</source>
+        <target state="final">Categoria</target>
+      </trans-unit>
+      <trans-unit id="form.searchIn" resname="form.searchIn" approved="yes">
+        <source>Search in</source>
+        <target state="final">Cerca in</target>
+      </trans-unit>
+      <trans-unit id="form.match" resname="form.match" approved="yes">
+        <source>Match</source>
+        <target state="final">Corrisponde</target>
+      </trans-unit>
+      <trans-unit id="form.style" resname="form.style" approved="yes">
+        <source>Style</source>
+        <target state="final">Stile</target>
+      </trans-unit>
+      <trans-unit id="form.submit" resname="form.submit" approved="yes">
+        <source>Search</source>
+        <target state="final">Cerca</target>
+      </trans-unit>
+      <trans-unit id="form.addToSearch" resname="form.addToSearch" approved="yes">
+        <source>Add to current search words</source>
+        <target state="final">Aggiungi alle parole di ricerca correnti</target>
+      </trans-unit>
+      <trans-unit id="form.linkToRegularSearch" resname="form.linkToRegularSearch" approved="yes">
+        <source>Regular search</source>
+        <target state="final">Ricerca regolare</target>
+      </trans-unit>
+      <trans-unit id="form.linkToAdvancedSearch" resname="form.linkToAdvancedSearch" approved="yes">
+        <source>Advanced search</source>
+        <target state="final">Ricerca avanzata</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.0" resname="searchTypes.0" approved="yes">
+        <source>Distinct word</source>
+        <target state="final">Parola distinta</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.1" resname="searchTypes.1" approved="yes">
+        <source>Part of word</source>
+        <target state="final">Parte di una parola</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.2" resname="searchTypes.2" approved="yes">
+        <source>First part of word</source>
+        <target state="final">Prima parte di una parola</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.3" resname="searchTypes.3" approved="yes">
+        <source>Last part of word</source>
+        <target state="final">Ultima parte di una parola</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.10" resname="searchTypes.10" approved="yes">
+        <source>Sounds like</source>
+        <target state="final">Sembra</target>
+      </trans-unit>
+      <trans-unit id="searchTypes.20" resname="searchTypes.20" approved="yes">
+        <source>Sentence</source>
+        <target state="final">Frase</target>
+      </trans-unit>
+      <trans-unit id="defaultOperands.0" resname="defaultOperands.0" approved="yes">
+        <source>All words (AND)</source>
+        <target state="final">Tutte le parole (AND)</target>
+      </trans-unit>
+      <trans-unit id="defaultOperands.1" resname="defaultOperands.1" approved="yes">
+        <source>Any words (OR)</source>
+        <target state="final">Almeno una parola (OR)</target>
+      </trans-unit>
+      <trans-unit id="languageUids.-1" resname="languageUids.-1" approved="yes">
+        <source>All languages</source>
+        <target state="final">Tutte le lingue</target>
+      </trans-unit>
+      <trans-unit id="languageUids.0" resname="languageUids.0" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="sections.0" resname="sections.0" approved="yes">
+        <source>Whole site</source>
+        <target state="final">Intero sito</target>
+      </trans-unit>
+      <trans-unit id="sections.-1" resname="sections.-1" approved="yes">
+        <source>Only this page</source>
+        <target state="final">Solo questa pagina</target>
+      </trans-unit>
+      <trans-unit id="sections.-2" resname="sections.-2" approved="yes">
+        <source>Top + level 1</source>
+        <target state="final">Iniziale + livello 1</target>
+      </trans-unit>
+      <trans-unit id="sections.-3" resname="sections.-3" approved="yes">
+        <source>Level 2 and out</source>
+        <target state="final">Livello 2 e successivi</target>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel1" resname="sections.rootLevel1" approved="yes">
+        <source>Level 1</source>
+        <target state="final">Livello 1</target>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel1All" resname="sections.rootLevel1All" approved="yes">
+        <source>All pages on level 1</source>
+        <target state="final">Tutte le pagine al livello 1</target>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel2" resname="sections.rootLevel2" approved="yes">
+        <source>- Level 2</source>
+        <target state="final">- Livello 2</target>
+      </trans-unit>
+      <trans-unit id="sections.rootLevel2All" resname="sections.rootLevel2All" approved="yes">
+        <source>- All pages on level 2</source>
+        <target state="final">- Tutte le pagine al livello 2</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.0" resname="mediaTypes.0" approved="yes">
+        <source>Internal pages</source>
+        <target state="final">Pagine interne</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.-1" resname="mediaTypes.-1" approved="yes">
+        <source>All media</source>
+        <target state="final">Tutti i file multimediali</target>
+      </trans-unit>
+      <trans-unit id="mediaTypes.-2" resname="mediaTypes.-2" approved="yes">
+        <source>All External</source>
+        <target state="final">Tutto all''Esterno</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.-1" resname="indexingConfigurations.-1" approved="yes">
+        <source>All, mixed</source>
+        <target state="final">Tutto, misto</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.-2" resname="indexingConfigurations.-2" approved="yes">
+        <source>All, categorized</source>
+        <target state="final">Tutto, categorizzato</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurations.0" resname="indexingConfigurations.0" approved="yes">
+        <source>Pages</source>
+        <target state="final">Pagine</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurationHeader.-1" resname="indexingConfigurationHeader.-1" approved="yes">
+        <source>Mixed categories</source>
+        <target state="final">Categorie miste</target>
+      </trans-unit>
+      <trans-unit id="indexingConfigurationHeader.0" resname="indexingConfigurationHeader.0" approved="yes">
+        <source>Website Pages</source>
+        <target state="final">Pagine del Sito Web</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_flag" resname="sortOrders.rank_flag" approved="yes">
+        <source>Weight/Frequency</source>
+        <target state="final">Peso/Frequenza</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_freq" resname="sortOrders.rank_freq" approved="yes">
+        <source>Frequency</source>
+        <target state="final">Frequenza</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_first" resname="sortOrders.rank_first" approved="yes">
+        <source>Close to top</source>
+        <target state="final">Prossimo all'inizio</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.rank_count" resname="sortOrders.rank_count" approved="yes">
+        <source>Number of words</source>
+        <target state="final">Numero di parole</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.mtime" resname="sortOrders.mtime" approved="yes">
+        <source>Date Modified</source>
+        <target state="final">Data di Modifica</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.title" resname="sortOrders.title" approved="yes">
+        <source>Document title</source>
+        <target state="final">Titolo del documento</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.crdate" resname="sortOrders.crdate" approved="yes">
+        <source>Creation date</source>
+        <target state="final">Data di creazione</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.descending" resname="sortOrders.descending" approved="yes">
+        <source>Highest first</source>
+        <target state="final">Prima il più alto</target>
+      </trans-unit>
+      <trans-unit id="sortOrders.ascending" resname="sortOrders.ascending" approved="yes">
+        <source>Lowest first</source>
+        <target state="final">Prima il più basso</target>
+      </trans-unit>
+      <trans-unit id="groupBy.sections" resname="groupBy.sections" approved="yes">
+        <source>Section hierarchy</source>
+        <target state="final">Gerarchia della sezione</target>
+      </trans-unit>
+      <trans-unit id="groupBy.flat" resname="groupBy.flat" approved="yes">
+        <source>Flat list</source>
+        <target state="final">Nessun raggruppamento</target>
+      </trans-unit>
+      <trans-unit id="result.page" resname="result.page" approved="yes">
+        <source>page</source>
+        <target state="final">pagina</target>
+      </trans-unit>
+      <trans-unit id="result.pages" resname="result.pages" approved="yes">
+        <source>pages</source>
+        <target state="final">pagine</target>
+      </trans-unit>
+      <trans-unit id="result.unnamedSection" resname="result.unnamedSection" approved="yes">
+        <source>Other</source>
+        <target state="final">Altro</target>
+      </trans-unit>
+      <trans-unit id="result.otherMatching" resname="result.otherMatching" approved="yes">
+        <source>Other matching pages in the same document</source>
+        <target state="final">Altre pagine corrispondenti nello stesso documento</target>
+      </trans-unit>
+      <trans-unit id="result.otherPageAsWell" resname="result.otherPageAsWell" approved="yes">
+        <source>INFO: There was another page indexed as well. Probably indexed with another or no usergroup.</source>
+        <target state="final">INFO: c'era anche un'altra pagina indicizzata. Probabilmente indicizzata con un altro o nessun gruppo utenti.</target>
+      </trans-unit>
+      <trans-unit id="result.path" resname="result.path" approved="yes">
+        <source>Path</source>
+        <target state="final">Percorso</target>
+      </trans-unit>
+      <trans-unit id="result.modified" resname="result.modified" approved="yes">
+        <source>Modified</source>
+        <target state="final">Modificato</target>
+      </trans-unit>
+      <trans-unit id="result.created" resname="result.created" approved="yes">
+        <source>Created</source>
+        <target state="final">Creato</target>
+      </trans-unit>
+      <trans-unit id="result.size" resname="result.size" approved="yes">
+        <source>Size</source>
+        <target state="final">Dimensione</target>
+      </trans-unit>
+      <trans-unit id="result.noResume" resname="result.noResume" approved="yes">
+        <source>Note: This search hit may not accurately match the content on this page. The page resume cannot be shown.</source>
+        <target state="final">Nota: questo risultato ricerca potrebbe non corrispondere esattamente al contenuto di questa pagina. L'anteprima della pagina non può essere mostrata.</target>
+      </trans-unit>
+      <trans-unit id="result.memberGroups" resname="result.memberGroups" approved="yes">
+        <source>Require membership of group numbers %s</source>
+        <target state="final">Richiede l'appartenenza al gruppo(i) numero %s</target>
+      </trans-unit>
+      <trans-unit id="result.ratingMatches" resname="result.ratingMatches" approved="yes">
+        <source>matches</source>
+        <target state="final">corrispondenze</target>
+      </trans-unit>
+      <trans-unit id="result.noResult" resname="result.noResult" approved="yes">
+        <source>No results found.</source>
+        <target state="final">Nessun risultato trovato.</target>
+      </trans-unit>
+      <trans-unit id="result.inSection" resname="result.inSection" approved="yes">
+        <source>in the section</source>
+        <target state="final">nella sezione</target>
+      </trans-unit>
+      <trans-unit id="result.inNsection" resname="result.inNsection" approved="yes">
+        <source>in %s section</source>
+        <target state="final">in %s sezione</target>
+      </trans-unit>
+      <trans-unit id="result.inNsections" resname="result.inNsections" approved="yes">
+        <source>in %s sections</source>
+        <target state="final">in %s sezioni</target>
+      </trans-unit>
+      <trans-unit id="searchFor" resname="searchFor" approved="yes">
+        <source>Search for</source>
+        <target state="final">Cerca</target>
+      </trans-unit>
+      <trans-unit id="searchFor.or" resname="searchFor.or" approved="yes">
+        <source>or</source>
+        <target state="final">o</target>
+      </trans-unit>
+      <trans-unit id="searchFor.and" resname="searchFor.and" approved="yes">
+        <source>and</source>
+        <target state="final">e</target>
+      </trans-unit>
+      <trans-unit id="searchFor.andnot" resname="searchFor.andnot" approved="yes">
+        <source>but not</source>
+        <target state="final">ma non</target>
+      </trans-unit>
+      <trans-unit id="displayResults.previous" resname="displayResults.previous" approved="yes">
+        <source>&lt; Previous</source>
+        <target state="final">&lt; Precedente</target>
+      </trans-unit>
+      <trans-unit id="displayResults.page" resname="displayResults.page" approved="yes">
+        <source>Page</source>
+        <target state="final">Pagina</target>
+      </trans-unit>
+      <trans-unit id="displayResults.next" resname="displayResults.next" approved="yes">
+        <source>Next &gt;</source>
+        <target state="final">Successiva &gt;</target>
+      </trans-unit>
+      <trans-unit id="displayResults" resname="displayResults" approved="yes">
+        <source><![CDATA[Displaying results <strong>%1$s to %2$s</strong> out of <strong>%3$s</strong>]]></source>
+        <target state="final"><![CDATA[Mostra risultati <strong>da %1$s a %2$s</strong> di <strong>%3$s</strong>]]></target>
+      </trans-unit>
+      <trans-unit id="administration.menu.general" resname="administration.menu.general" approved="yes">
+        <source>General statistics</source>
+        <target state="final">Statistiche generali</target>
+      </trans-unit>
+      <trans-unit id="administration.menu.pages" resname="administration.menu.pages" approved="yes">
+        <source>List: Pages</source>
+        <target state="final">Lista: Pagine</target>
+      </trans-unit>
+      <trans-unit id="administration.menu.externalDocuments" resname="administration.menu.externalDocuments" approved="yes">
+        <source>List: External documents</source>
+        <target state="final">Lista: Documenti esterni</target>
+      </trans-unit>
+      <trans-unit id="administration.menu.searchStatistic" resname="administration.menu.searchStatistic" approved="yes">
+        <source>Search statistics</source>
+        <target state="final">Statistiche di ricerca</target>
+      </trans-unit>
+      <trans-unit id="administration.menu.statistic" resname="administration.menu.statistic" approved="yes">
+        <source>Detailed statistics</source>
+        <target state="final">Statistiche dettagliate</target>
+      </trans-unit>
+      <trans-unit id="administration.index.description" resname="administration.index.description" approved="yes">
+        <source>General statistics</source>
+        <target state="final">Statistiche generali</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics" resname="administration.statistics" approved="yes">
+        <source>Indexing Engine Statistics</source>
+        <target state="final">Statistiche del Motore di Indicizzazione</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.header" resname="administration.statistics.header" approved="yes">
+        <source>Row count by database table</source>
+        <target state="final">Conteggio righe per singola tabella</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.name" resname="administration.statistics.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Nome</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.count" resname="administration.statistics.count" approved="yes">
+        <source>Count</source>
+        <target state="final">Conteggio</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.headerTypes" resname="administration.statistics.headerTypes" approved="yes">
+        <source>Hash Header Types</source>
+        <target state="final">Tipi Intestazione Hash</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.headerTypes.count" resname="administration.statistics.headerTypes.count" approved="yes">
+        <source>Count / Unique count</source>
+        <target state="final">Conteggio / Conteggio unico</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.word" resname="administration.statistics.word" approved="yes">
+        <source>Word</source>
+        <target state="final">Parola</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.title" resname="administration.statistics.mostSearched.title" approved="yes">
+        <source>List of most searched words</source>
+        <target state="final">Lista della parole più cercate</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.description" resname="administration.statistics.mostSearched.description" approved="yes">
+        <source>Statistics for all pages. Select a page with indexed search form to see several statistics.</source>
+        <target state="final">Statistiche per tutte le pagine. Per vedere diverse statistiche, seleziona una pagina con la form di ricerca indicizzata.</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.all" resname="administration.statistics.mostSearched.all" approved="yes">
+        <source>All</source>
+        <target state="final">Tutti</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.last30days" resname="administration.statistics.mostSearched.last30days" approved="yes">
+        <source>Last 30 days</source>
+        <target state="final">Ultimi 30 giorni</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.mostSearched.last24hours" resname="administration.statistics.mostSearched.last24hours" approved="yes">
+        <source>Last 24 hours</source>
+        <target state="final">Ultime 24 ore</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.noResult" resname="administration.statistics.noResult" approved="yes">
+        <source>No result found</source>
+        <target state="final">Nessun risultato trovato</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.noResultForPage" resname="administration.statistics.noResultForPage" approved="yes">
+        <source>No result for the selected page found.</source>
+        <target state="final">Nessun risultato per la pagina selezionata.</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.selectPage" resname="administration.statistics.selectPage" approved="yes">
+        <source>Please select a page in the page tree.</source>
+        <target state="final">Seleziona una pagina dall'albero delle pagine.</target>
+      </trans-unit>
+      <trans-unit id="administration.external.title" resname="administration.external.title" approved="yes">
+        <source>External documents</source>
+        <target state="final">Documenti esterni</target>
+      </trans-unit>
+      <trans-unit id="field.fileName" resname="field.fileName" approved="yes">
+        <source>Filename</source>
+        <target state="final">Nome del file</target>
+      </trans-unit>
+      <trans-unit id="field.fileSize" resname="field.fileSize" approved="yes">
+        <source>Filesize</source>
+        <target state="final">Dimensione del file</target>
+      </trans-unit>
+      <trans-unit id="field.wordCount" resname="field.wordCount" approved="yes">
+        <source>Word count</source>
+        <target state="final">Conteggio parole</target>
+      </trans-unit>
+      <trans-unit id="field.words" resname="field.words" approved="yes">
+        <source>Words</source>
+        <target state="final">Parole</target>
+      </trans-unit>
+      <trans-unit id="field.mtime" resname="field.mtime" approved="yes">
+        <source>Modification time</source>
+        <target state="final">Tempo di modifica</target>
+      </trans-unit>
+      <trans-unit id="field.indexed" resname="field.indexed" approved="yes">
+        <source>Indexed</source>
+        <target state="final">Indicizzato</target>
+      </trans-unit>
+      <trans-unit id="field.updated" resname="field.updated" approved="yes">
+        <source>Updated</source>
+        <target state="final">Aggiornato</target>
+      </trans-unit>
+      <trans-unit id="field.parseTime" resname="field.parseTime" approved="yes">
+        <source>Parsetime [ms]</source>
+        <target state="final">Tempo di analisi [ms]</target>
+      </trans-unit>
+      <trans-unit id="field.groups" resname="field.groups" approved="yes">
+        <source>#sec/gr/full</source>
+        <target state="final">#sec/gr/totale</target>
+      </trans-unit>
+      <trans-unit id="field.sub" resname="field.sub" approved="yes">
+        <source>Sub</source>
+        <target state="final">Sotto</target>
+      </trans-unit>
+      <trans-unit id="field.cHash" resname="field.cHash" approved="yes">
+        <source>Chash</source>
+        <target state="final">cHash</target>
+      </trans-unit>
+      <trans-unit id="field.staticPageArguments" resname="field.staticPageArguments" approved="yes">
+        <source>Static Page Arguments</source>
+        <target state="final">Argomenti della Pagina Statica</target>
+      </trans-unit>
+      <trans-unit id="field.count" resname="field.count" approved="yes">
+        <source>Count</source>
+        <target state="final">Conteggio</target>
+      </trans-unit>
+      <trans-unit id="field.first" resname="field.first" approved="yes">
+        <source>First</source>
+        <target state="final">Primo</target>
+      </trans-unit>
+      <trans-unit id="field.pHash" resname="field.pHash" approved="yes">
+        <source>PageHash</source>
+        <target state="final">Hash di Pagina</target>
+      </trans-unit>
+      <trans-unit id="field.path" resname="field.path" approved="yes">
+        <source>Path</source>
+        <target state="final">Percorso</target>
+      </trans-unit>
+      <trans-unit id="field.id" resname="field.id" approved="yes">
+        <source>Page Id</source>
+        <target state="final">ID pagina</target>
+      </trans-unit>
+      <trans-unit id="field.uniqueId" resname="field.uniqueId" approved="yes">
+        <source>Unique Id</source>
+        <target state="final">ID unico</target>
+      </trans-unit>
+      <trans-unit id="field.type" resname="field.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Tipo</target>
+      </trans-unit>
+      <trans-unit id="field.title" resname="field.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titolo</target>
+      </trans-unit>
+      <trans-unit id="field.language" resname="field.language" approved="yes">
+        <source>Language</source>
+        <target state="final">Lingua</target>
+      </trans-unit>
+      <trans-unit id="field.frequency" resname="field.frequency" approved="yes">
+        <source>Frequency</source>
+        <target state="final">Frequenza</target>
+      </trans-unit>
+      <trans-unit id="field.flag" resname="field.flag" approved="yes">
+        <source>Flag</source>
+        <target state="final">Spunta</target>
+      </trans-unit>
+      <trans-unit id="field.metaphone" resname="field.metaphone" approved="yes">
+        <source>Metaphone</source>
+        <target state="final">Metafonia</target>
+      </trans-unit>
+      <trans-unit id="field.content" resname="field.content" approved="yes">
+        <source>Content</source>
+        <target state="final">Contenuto</target>
+      </trans-unit>
+      <trans-unit id="administration.notIndexed" resname="administration.notIndexed" approved="yes">
+        <source>Not indexed?</source>
+        <target state="final">Non indicizzato?</target>
+      </trans-unit>
+      <trans-unit id="administration.document.description" resname="administration.document.description" approved="yes">
+        <source>Details for a single result row</source>
+        <target state="final">Dettagli per una singola riga di risultato</target>
+      </trans-unit>
+      <trans-unit id="administration.document.words" resname="administration.document.words" approved="yes">
+        <source>All words found on page</source>
+        <target state="final">Tutte le parole trovate nella pagina</target>
+      </trans-unit>
+      <trans-unit id="administration.document.topCount" resname="administration.document.topCount" approved="yes">
+        <source>Words by top count</source>
+        <target state="final">Parole per conteggio</target>
+      </trans-unit>
+      <trans-unit id="administration.document.topFrequency" resname="administration.document.topFrequency" approved="yes">
+        <source>Words by frequency</source>
+        <target state="final">Parole per frequenza</target>
+      </trans-unit>
+      <trans-unit id="administration.stopWords" resname="administration.stopWords" approved="yes">
+        <source>Stopwords</source>
+        <target state="final">Parole escluse</target>
+      </trans-unit>
+      <trans-unit id="administration.stopWords.save" resname="administration.stopWords.save" approved="yes">
+        <source>Save stopwords</source>
+        <target state="final">Salva parole escluse</target>
+      </trans-unit>
+      <trans-unit id="administration.keywords" resname="administration.keywords" approved="yes">
+        <source>Page keywords</source>
+        <target state="final">Parole chiave della pagina</target>
+      </trans-unit>
+      <trans-unit id="administration.keywords.current" resname="administration.keywords.current" approved="yes">
+        <source>Current page keywords</source>
+        <target state="final">Parole chiave della pagina corrente</target>
+      </trans-unit>
+      <trans-unit id="administration.stopWordsKeywords.save" resname="administration.stopWordsKeywords.save" approved="yes">
+        <source>Save keywords and stop words</source>
+        <target state="final">Salva parole chiave e parole escluse</target>
+      </trans-unit>
+      <trans-unit id="administration.word.description" resname="administration.word.description" approved="yes">
+        <source>Detail view of a single word</source>
+        <target state="final">Visualizzazione dettagliata di una singola parola</target>
+      </trans-unit>
+      <trans-unit id="administration.linkBack" resname="administration.linkBack" approved="yes">
+        <source>Back</source>
+        <target state="final">Indietro</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.sectionRecords" resname="administration.statistics.sectionRecords" approved="yes">
+        <source>Section records for this phash</source>
+        <target state="final">Record di sezione per questo phash</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.debug" resname="administration.statistics.debug" approved="yes">
+        <source>Debug</source>
+        <target state="final">Debug</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.lexer" resname="administration.statistics.lexer" approved="yes">
+        <source>Lexer</source>
+        <target state="final">Analizzatore lessicale</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.metaphone" resname="administration.statistics.metaphone" approved="yes">
+        <source>Metaphone</source>
+        <target state="final">Metafonia</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.view.overview" resname="administration.statistics.view.overview" approved="yes">
+        <source>Overview</source>
+        <target state="final">Panoramica</target>
+      </trans-unit>
+      <trans-unit id="administration.statistics.view.content" resname="administration.statistics.view.content" approved="yes">
+        <source>Words and content</source>
+        <target state="final">Parole e contenuto</target>
+      </trans-unit>
+      <trans-unit id="administration.phash.tableHeader" resname="administration.phash.tableHeader" approved="yes">
+        <source>Phash row content</source>
+        <target state="final">Contenuto della riga phash</target>
+      </trans-unit>
+      <trans-unit id="administration.removeEntry" resname="administration.removeEntry" approved="yes">
+        <source>Remove entry</source>
+        <target state="final">Rimuovi voce</target>
+      </trans-unit>
+      <trans-unit id="administration.removeAllEntries" resname="administration.removeAllEntries" approved="yes">
+        <source>Remove all listed entries</source>
+        <target state="final">Rimuovi tutti gli elementi elencati</target>
+      </trans-unit>
+      <trans-unit id="administration.back" resname="administration.back" approved="yes">
+        <source>Back</source>
+        <target state="final">Indietro</target>
+      </trans-unit>
+      <trans-unit id="administration.noPageSelected" resname="administration.noPageSelected" approved="yes">
+        <source>Please select a page from the page tree.</source>
+        <target state="final">Per favore seleziona una pagina nell'albero delle pagine.</target>
+      </trans-unit>
+      <trans-unit id="error.noTypoScript" resname="error.noTypoScript" approved="yes">
+        <source>Error: Please check that TypoScript for the Indexed Search plugin is included.</source>
+        <target state="final">Errore: verifica che sia incluso TypoScript per il plugin della Ricerca Indicizzata.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
