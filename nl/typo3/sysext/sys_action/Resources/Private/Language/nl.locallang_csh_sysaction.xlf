@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814994" source-language="en" datatype="plaintext" original="EXT:sys_action/Resources/Private/Language/locallang_csh_sysaction.xlf" date="2011-10-17T20:22:37Z" product-name="sys_action" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>An 'Action' is a configuration of a specific task which may be performed by assigned usergroups via the Task Center.</source>
+        <target state="final">Een 'Actie' is een configuratie van een specifieke taak die kan worden uitgevoerd door toegewezen gebruikersgroepen via het Taakcentrum.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>Currently an Action may be configured to create additional backend usergroups without being and admin-user and by selecting from a limited set of options. Another option is to let an action initiate a SQL SELECT-query in the database and return the result as a CSV file.
+Actions can be assigned to a Backend usergroup and they are activated by a single click in the Task Center.</source>
+			<target state="final">Momenteel kan een Actie worden geconfigureerd om extra backendgebruikersgroepen te maken zonder een admin-gebruiker te zijn en door uit een beperkte set opties te selecteren. Een andere optie is om een SQL SELECT-query in de database te laten initiëren en het resultaat als een CSV-bestand terug te geven.
+Acties kunnen worden toegewezen aan een backendgebruikersgroep en ze worden geactiveerd door een enkele klik in het Taakcentrum.</target></trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the title of the action. This is shown in the list of available actions in the Task Center.</source>
+        <target state="final">Vul de titel van de actie in. Deze wordt weergegeven in de lijst met beschikbare acties in het Taakcentrum.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Describe what the action does or allows to do.</source>
+        <target state="final">Beschrijf wat de actie doet of toestaat te doen.</target>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Check this option if you wish to disable the availability of the action or non-admin users.</source>
+        <target state="final">Klik deze optie aan als je wilt dat deze actie alleen beschikbaar is voor admin-gebruikers.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>This option is a great way to disable an action during changes made to it because it still allows you as an 'Admin'-user to activate it for test purposes.</source>
+        <target state="final">Deze optie is een geweldige manier om een actie uit te schakelen tijdens het aanbrengen van wijzigingen, omdat het als 'Admin'-gebruiker nog steeds mogelijk is om deze te activeren voor testdoeleinden.</target>
+      </trans-unit>
+      <trans-unit id="type.description" resname="type.description" approved="yes">
+        <source>Select the action type.</source>
+        <target state="final">Kies een actietype.</target>
+      </trans-unit>
+      <trans-unit id="type.details" resname="type.details" xml:space="preserve" approved="yes">
+				<source>&lt;strong&gt;"Create Backend User"&lt;/strong&gt; allows to create backend users with a limited set of options. This action type is meant for semi-administrators among your users which is in charge of daily user administration - still without being full fledged 'Admin'-users with 'a License to Kill everything'.
+When you select this option, you get to enter a 'template' user, enter a prefix which the new users will automatically have and whether or not a user home-dir is created in the process. Finally you can select a limited number of usergroups which the can be selected among.
+
+&lt;strong&gt;"SQL-query"&lt;/strong&gt; allows to make a fixed SQL SELECT-query in the database returned as CSV lists. When you have created an action of this type, you need to go to the System &gt; DB check (prior to v7 this can be found on Tools &gt; DB check) module and enter the Advanced Search feature. Here you can design your SQL-query. When you have designed it to select what you want correctly, you can select this action (by it's name) and save the query to the action there. From that point it will be effective from the Task Center. (Notice that the form of output selected in the Advanced Search function is also stored, so make sure to select CSV output there!)</source>
+			<target state="final">&lt;strong&gt;"Backend-gebruiker aanmaken"&lt;/strong&gt; maakt het mogelijk om backendgebruikers met een beperkte set van opties te maken. Dit type actie is bedoeld voor semi-beheerders onder de gebruikers die verantwoordelijk zijn voor het dagelijkse beheer van gebruikers - nog steeds zonder volledige 'Admin'-gebruikers te zijn.
+Wanneer deze optie gekozen wordt kan de 'sjabloon'-gebruiker ingevoerd worden, een prefix die nieuwe gebruikers automatisch krijgen en of een thuismap wordt aangemaakt in het proces. Tenslotte kan een beperkt aantal gebruikersgroepen gekozen worden.
+
+&lt;strong&gt;"SQL-query"&lt;/strong&gt; maakt het mogelijk om een vaste SQL SELECT-query te maken in de database en terug te geven als CSV-lijsten. Wanneer je een actie van dit type hebt gemaakt, moet je naar Systeem &gt; DB controle (voorafgaand aan v7 kan dit worden gevonden onder Gereedschap &gt; DB controle) module gaan en de functie Geavanceerd Zoeken uitvoeren. Hier kan de SQL-query ontworpen worden. Na het ontwerpen kan de actie gekozen worden (op naam) en de query opgeslagen worden in de betreffende actie. Vanaf dat moment zal het bruikbaar zijn vanuit het Taakcentrum. (Merk op dat de geselecteerde vorm van uitvoer in de geavanceerde zoekfunctie ook is opgeslagen, dus zorg ervoor dat je hier CSV-uitvoer selecteert!)</target></trans-unit>
+      <trans-unit id="assign_to_groups.description" resname="assign_to_groups.description" approved="yes">
+        <source>Select the backend users groups allowed to activate the action in the Task Center.</source>
+        <target state="final">Kies de backend gebruikersgroepen die de actie in het Taakcentrum mogen gebruiken.</target>
+      </trans-unit>
+      <trans-unit id="t1_userprefix.description" resname="t1_userprefix.description" approved="yes">
+        <source>Enter a prefix which is forcibly prepended to new usernames (eg. "news_")</source>
+        <target state="final">Voer een prefix in welke toegevoegd zal worden aan nieuwe gebruikersnamen (bijv. "news_")</target>
+      </trans-unit>
+      <trans-unit id="t1_allowed_groups.description" resname="t1_allowed_groups.description" approved="yes">
+        <source>Enter the Backend user groups which the user performing the action is able to choose among (if any).</source>
+        <target state="final">Voer de backend gebruikersgroepen in waaruit de gebruiker, die de actie uitvoert, een keuze kan maken (indien aanwezig of nodig).</target>
+      </trans-unit>
+      <trans-unit id="t1_create_user_dir.description" resname="t1_create_user_dir.description" approved="yes">
+        <source>If checked, a private home-directory is also created during user creation. </source>
+        <target state="final">Als dit is aangevinkt zal een privé thuismap gemaakt worden tijdens de aanmaak van een gebruiker. </target>
+      </trans-unit>
+      <trans-unit id="t1_create_user_dir.details" resname="t1_create_user_dir.details" approved="yes">
+        <source>&lt;strong&gt;Notice:&lt;/strong&gt; $TYPO3_CONF_VARS["BE"]["userHomePath"] must be configured correctly along with $TYPO3_CONF_VARS["BE"]["lockRootPath"] and writable!</source>
+        <target state="final">&lt;strong&gt;Opmerking:&lt;/strong&gt; $TYPO3_CONF_VARS["BE"]["userHomePath"] moet samen met $TYPO3_CONF_VARS["BE"]["lockRootPath"] geconfigureerd en beschrijfbaar zijn!</target>
+      </trans-unit>
+      <trans-unit id="t1_copy_of_user.description" resname="t1_copy_of_user.description" approved="yes">
+        <source>Insert a current Backend user which will be used as a template for the new users created. </source>
+        <target state="final">Voeg een huidige backend gebruiker toe die zal worden gebruikt als sjabloon voor de nieuw gemaakte gebruikers. </target>
+      </trans-unit>
+      <trans-unit id="t1_copy_of_user.details" resname="t1_copy_of_user.details" xml:space="preserve" approved="yes">
+				<source>All values are copied to the new user, except username, password, name and email is of course overridden.
+If the template user is a member of a group which is not defined among the "Groups which may be assigned through the action" that group is still set for the user and cannot be removed by the user carrying out the action.</source>
+			<target state="final">Alle waarden worden gekopieerd naar de nieuwe gebruiker, behalve gebruikersnaam, wachtwoord, naam en e-mail die worden natuurlijk overschreven.
+Als de sjabloongebruiker lid is van een groep die niet gedefinieerd is onder de "Groepen die toegewezen kunnen worden via de actie" is die groep nog steeds ingesteld voor de gebruiker en kan deze niet verwijderd worden door de gebruiker die de actie uitvoert.</target></trans-unit>
+      <trans-unit id="t4_recordsToEdit.description" resname="t4_recordsToEdit.description" approved="yes">
+        <source>[FILL IN] sys_action-&gt;t4_recordsToEdit</source>
+        <target state="final">[FILL IN] sys_action-&gt;t4_recordsToEdit</target>
+      </trans-unit>
+      <trans-unit id="t3_listPid.description" resname="t3_listPid.description" approved="yes">
+        <source>[FILL IN] sys_action-&gt;t3_listPid</source>
+        <target state="final">[FILL IN] sys_action-&gt;t3_listPid</target>
+      </trans-unit>
+      <trans-unit id="t3_tables.description" resname="t3_tables.description" approved="yes">
+        <source>[FILL IN] sys_action-&gt;t3_tables</source>
+        <target state="final">[FILL IN] sys_action-&gt;t3_tables</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
