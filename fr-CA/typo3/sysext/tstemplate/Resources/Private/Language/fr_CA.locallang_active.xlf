@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_active.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="fr-CA">
+    <header/>
+    <body>
+      <trans-unit id="submodule.title" approved="yes">
+        <source>Active TypoScript</source>
+        <target state="final">TypoScript actif</target>
+      </trans-unit>
+      <trans-unit id="submodule.titleWithRecord" approved="yes">
+        <source>Active TypoScript for record "%s"</source>
+        <target state="final">TypoScript inclus pour l'enregistrement "%s"</target>
+      </trans-unit>
+      <trans-unit id="submodule.description" approved="yes">
+        <source>Overview of the current TypoScript configuration of the system, divided into constants and setup parts. Optionally, the constant values can be displayed directly in the setup. A targeted search for values and TypoScript names is possible. The list of results can also be filtered according to TypoScript conditions.</source>
+        <target state="final">Vue d'ensemble de la configuration TypoScript actuelle du système, divisée en constantes et configurations. Optionnellement, les valeurs des constantes peuvent être affichées directement dans la configuration. Il est possible d'effectuer une recherche ciblée pour les valeurs et les noms TypoScript. La liste des résultats peut également être filtrée selon les conditions TypoScript.</target>
+      </trans-unit>
+      <trans-unit id="infobox.message.noTypoScriptFound" approved="yes">
+        <source>No TypoScript found.</source>
+        <target state="final">Aucun TypoScript trouvé.</target>
+      </trans-unit>
+      <trans-unit id="options.displayComments" approved="yes">
+        <source>Display comments</source>
+        <target state="final">Afficher les commentaires</target>
+      </trans-unit>
+      <trans-unit id="options.displayConstantSubstitutions" approved="yes">
+        <source>Substitute constants in setup</source>
+        <target state="final">Substituer les constantes dans la configuration</target>
+      </trans-unit>
+      <trans-unit id="options.selectedRecord" approved="yes">
+        <source>Selected record</source>
+        <target state="final">Gabarit sélectionné</target>
+      </trans-unit>
+      <trans-unit id="options.sortAlphabetically" approved="yes">
+        <source>Sort keys alphabetically</source>
+        <target state="final">Trier les clés par ordre alphabétique</target>
+      </trans-unit>
+      <trans-unit id="sectionHeadline.constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">Constantes</target>
+      </trans-unit>
+      <trans-unit id="sectionHeadline.setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">Configuration</target>
+      </trans-unit>
+      <trans-unit id="panel.header.conditions" approved="yes">
+        <source>Conditions</source>
+        <target state="final">Conditions</target>
+      </trans-unit>
+      <trans-unit id="panel.header.configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Configuration</target>
+      </trans-unit>
+      <trans-unit id="panel.info.conditionActiveCount.multiple" approved="yes">
+        <source>%s active conditions</source>
+        <target state="final">%s conditions activées</target>
+      </trans-unit>
+      <trans-unit id="panel.info.conditionActiveCount.single" approved="yes">
+        <source>%s active condition</source>
+        <target state="final">%s condition activée</target>
+      </trans-unit>
+      <trans-unit id="panel.info.conditionWithConstant" approved="yes">
+        <source>Constant usage: [%s]</source>
+        <target state="final">Utilisation de la constante : [%s]</target>
+      </trans-unit>
+      <trans-unit id="tree.valueWithConstant" approved="yes">
+        <source>Constant usage: %s</source>
+        <target state="final">Utilisation de la constante : %s</target>
+      </trans-unit>
+      <!-- Edit action -->
+      <trans-unit id="editAction.submodule.title" approved="yes">
+        <source>Edit single property</source>
+        <target state="final">Modifier une propriété</target>
+      </trans-unit>
+      <trans-unit id="editAction.submodule.titleWithTemplate" approved="yes">
+        <source>Edit single property in TypoScript record "%s"</source>
+        <target state="final">Modifier les propriétés dans le gabarit TypoScript "%s"</target>
+      </trans-unit>
+      <trans-unit id="editAction.infobox.title.noTypoScriptTemplateOnCurrentPage" approved="yes">
+        <source>No TypoScript record on the current page</source>
+        <target state="final">Aucun gabarit TypoScript sur la page actuelle</target>
+      </trans-unit>
+      <trans-unit id="editAction.infobox.message.noTypoScriptTemplateOnCurrentPage" approved="yes">
+        <source>You cannot edit properties and values if there is no current TypoScript record in which the configuration can be stored. Please create an extension TypoScript record in "Edit TypoScript Record" first.</source>
+        <target state="final">Vous ne pouvez pas modifier les propriétés et les valeurs s'il n'y a pas de gabarit TypoScript actif dans lequel la configuration peut être sauvegardée. Veuillez d'abord créer un gabarit TypoScript d'extension dans "Modifier l'enregistrement TypoScript" .</target>
+      </trans-unit>
+      <trans-unit id="editAction.addProperty.headline" approved="yes">
+        <source>Add or override child property</source>
+        <target state="final">Ajouter ou surcharger la propriété enfant</target>
+      </trans-unit>
+      <trans-unit id="editAction.addProperty.btn" approved="yes">
+        <source>Add</source>
+        <target state="final">Ajouter</target>
+      </trans-unit>
+      <trans-unit id="editAction.editProperty.headline" approved="yes">
+        <source>Edit current value</source>
+        <target state="final">Modifier la valeur courante</target>
+      </trans-unit>
+      <trans-unit id="editAction.editProperty.btn" approved="yes">
+        <source>Update</source>
+        <target state="final">Actualiser</target>
+      </trans-unit>
+      <trans-unit id="editAction.clearObject.headline" approved="yes">
+        <source>Clear the object</source>
+        <target state="final">Effacer l'objet</target>
+      </trans-unit>
+      <trans-unit id="editAction.clearObject.infotextWithProperty" approved="yes">
+        <source>The object will be cleared via the statement:</source>
+        <target state="final">L'objet sera effacé via l'instruction :</target>
+      </trans-unit>
+      <trans-unit id="editAction.clearObject.btn" approved="yes">
+        <source>Clear now</source>
+        <target state="final">Effacer maintenant</target>
+      </trans-unit>
+      <!-- Update action -->
+      <trans-unit id="updateAction.lineAdded" approved="yes">
+        <source>Line added to current TypoScript record</source>
+        <target state="final">Ligne ajoutée au gabarit TypoScript actuel</target>
+      </trans-unit>
+      <trans-unit id="updateAction.lineNotAdded" approved="yes">
+        <source>No line added to current TypoScript record</source>
+        <target state="final">Aucune ligne ajoutée au gabarit TypoScript actuel</target>
+      </trans-unit>
+      <trans-unit id="updateAction.noSpaces" approved="yes">
+        <source>You must enter a property with characters "a-z", "A-Z", "0-9", or ".". Dots will be quoted. No spaces or special chars.</source>
+        <target state="final">Vous devez entrer une propriété avec les caractères "a-z", "A-Z", "0-9", ou ".". Les points seront mis entre guillemets. Aucun espace ou caractère spécial.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
