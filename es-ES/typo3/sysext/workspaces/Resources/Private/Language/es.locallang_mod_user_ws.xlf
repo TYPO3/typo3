@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814876" source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="workspace_list_label_reviewers" resname="workspace_list_label_reviewers" approved="yes">
+        <source>Reviewers</source>
+        <target state="final">Revisores</target>
+      </trans-unit>
+      <trans-unit id="workspace_list_access_reviewer" resname="workspace_list_access_reviewer" approved="yes">
+        <source>Reviewer</source>
+        <target state="final">Revisor</target>
+      </trans-unit>
+      <trans-unit id="label_commentforreviewer" resname="label_commentforreviewer" approved="yes">
+        <source>Comment for Reviewer</source>
+        <target state="final">Comentario para el revisor</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
