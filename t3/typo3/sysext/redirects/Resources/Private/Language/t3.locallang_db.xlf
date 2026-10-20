@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_db.xlf" date="2017-12-29T20:22:14Z" product-name="redirects" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="sys_redirect">
+        <source>Redirect</source>
+        <target>crwdns60642:0crwdne60642:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.redirect_type.qr_code">
+        <source>QR Code</source>
+        <target>crwdns384082:0crwdne384082:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.redirect_type.short_url">
+        <source>Short URL</source>
+        <target>crwdns393890:0crwdne393890:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.source_host">
+        <source>Source Domain</source>
+        <target>crwdns60644:0crwdne60644:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.source_path">
+        <source>Source Path</source>
+        <target>crwdns60646:0crwdne60646:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.force_https">
+        <source>SSL Redirect</source>
+        <target>crwdns60648:0crwdne60648:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.force_https.0">
+        <source>Force SSL Redirect</source>
+        <target>crwdns60650:0crwdne60650:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.keep_query_parameters">
+        <source>GET Parameters</source>
+        <target>crwdns60652:0crwdne60652:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.keep_query_parameters.0">
+        <source>Keep GET Parameters</source>
+        <target>crwdns60654:0crwdne60654:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.respect_query_parameters">
+        <source>GET Parameters (source)</source>
+        <target>crwdns60656:0crwdne60656:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.respect_query_parameters.0">
+        <source>Respect GET Parameters</source>
+        <target>crwdns60658:0crwdne60658:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target">
+        <source>Target</source>
+        <target>crwdns60660:0crwdne60660:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode">
+        <source>Status Code HTTP Header</source>
+        <target>crwdns60662:0crwdne60662:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.301">
+        <source>301 Moved Permanently</source>
+        <target>crwdns60664:0crwdne60664:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.302">
+        <source>302 Found</source>
+        <target>crwdns60666:0crwdne60666:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.303">
+        <source>303 See Other</source>
+        <target>crwdns60668:0crwdne60668:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.307">
+        <source>307 Temporary Redirect</source>
+        <target>crwdns60670:0crwdne60670:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.308">
+        <source>308 Permanent Redirect</source>
+        <target>crwdns141967:0crwdne141967:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.keep">
+        <source>Keep HTTP method</source>
+        <target>crwdns141969:0crwdne141969:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.target_statuscode.change">
+        <source>Change HTTP method to GET</source>
+        <target>crwdns141971:0crwdne141971:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.hitcount">
+        <source>Hit count</source>
+        <target>crwdns339092:0crwdne339092:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.lasthiton">
+        <source>Last Hit on</source>
+        <target>crwdns145039:0crwdne145039:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.hitcountState">
+        <source>Hit Counter</source>
+        <target>crwdns60676:0crwdne60676:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disable_hitcount">
+        <source>Disable Hit Counter</source>
+        <target>crwdns60678:0crwdne60678:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disable_hitcount.0">
+        <source>Disable</source>
+        <target>crwdns60680:0crwdne60680:0</target>
+      </trans-unit>
+      <trans-unit id="tabs.redirectCount">
+        <source>Statistics</source>
+        <target>crwdns60682:0crwdne60682:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.protected">
+        <source>Protected</source>
+        <target>crwdns110644:0crwdne110644:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.protected.description">
+        <source>When enabled, this redirect will be skipped by scheduled cleanup tasks that might delete redirects under certain conditions.</source>
+        <target>crwdns110646:0crwdne110646:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.is_regexp">
+        <source>Is regular expression?</source>
+        <target>crwdns60684:0crwdne60684:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.is_regexp.0">
+        <source>Yes</source>
+        <target>crwdns60686:0crwdne60686:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disabled">
+        <source>Disable</source>
+        <target>crwdns60688:0crwdne60688:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.disabled.0">
+        <source>Deactivate redirect</source>
+        <target>crwdns60690:0crwdne60690:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.creation_type">
+        <source>Creation Type</source>
+        <target>crwdns226483:0crwdne226483:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.creation_type.description">
+        <source>Defines how the redirect was created.</source>
+        <target>crwdns342948:0crwdne342948:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.creation_type.1">
+        <source>manually created</source>
+        <target>crwdns226485:0crwdne226485:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.creation_type.0">
+        <source>automatically created</source>
+        <target>crwdns226487:0crwdne226487:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.webhook_type.typo3-redirect-was-hit">
+        <source>... when a redirect has been hit</source>
+        <target>crwdns279143:0crwdne279143:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.integrity_status">
+        <source>Integrity status</source>
+        <target>crwdns304922:0crwdne304922:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.integrity_status.description">
+        <source>Redirects can be checked via the command redirects:checkintegrity.</source>
+        <target>crwdns304924:0crwdne304924:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.integrity_status.no_conflict">
+        <source>No conflict</source>
+        <target>crwdns304926:0crwdne304926:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.integrity_status.self_reference">
+        <source>Self reference</source>
+        <target>crwdns304928:0crwdne304928:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.integrity_status.invalid_target">
+        <source>Invalid target</source>
+        <target>crwdns394014:0crwdne394014:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.integrity_status.shadowed">
+        <source>Shadowed by another redirect</source>
+        <target>crwdns415739:0crwdne415739:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.uid">
+        <source>UID</source>
+        <target>crwdns304930:0crwdne304930:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.createdby">
+        <source>Created by</source>
+        <target>crwdns378500:0crwdne378500:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.createdon">
+        <source>Created</source>
+        <target>crwdns415741:0crwdne415741:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.short_url">
+        <source>Short URL</source>
+        <target>crwdns393892:0crwdne393892:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.short_url.description">
+        <source>Enter a Short URL or generate a random one automatically. Once saved, the Short URL cannot be changed.</source>
+        <target>crwdns394066:0crwdne394066:0</target>
+      </trans-unit>
+      <trans-unit id="sys_redirect.short_url.shortUrlGenerator">
+        <source>Generate Short URL</source>
+        <target>crwdns393896:0crwdne393896:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
