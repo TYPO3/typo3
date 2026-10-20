@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815007" source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="moduleTitle" resname="moduleTitle" approved="yes">
+        <source>Template tools</source>
+        <target state="final">ابزار قالب</target>
+      </trans-unit>
+      <trans-unit id="templateAnalyzer" resname="templateAnalyzer" approved="yes">
+        <source>Template Analyzer</source>
+        <target state="final">تحلیلگر قالب</target>
+      </trans-unit>
+      <trans-unit id="constantEditor" resname="constantEditor" approved="yes">
+        <source>Constant Editor</source>
+        <target state="final">ویرایشگر مقادیر ثابت</target>
+      </trans-unit>
+      <trans-unit id="infoModify" resname="infoModify" approved="yes">
+        <source>Info/Modify</source>
+        <target state="final">اطلاعات/ویرایش</target>
+      </trans-unit>
+      <trans-unit id="objectBrowser" resname="objectBrowser" approved="yes">
+        <source>TypoScript Object Browser</source>
+        <target state="final">مرورگر اشیاء تایپواسکریپت</target>
+      </trans-unit>
+      <trans-unit id="viewTemplates" resname="viewTemplates" approved="yes">
+        <source>Viewing templates of</source>
+        <target state="final">نمایش قالب‌های</target>
+      </trans-unit>
+      <trans-unit id="pageName" resname="pageName" approved="yes">
+        <source>Page name</source>
+        <target state="final">نام صفحه</target>
+      </trans-unit>
+      <trans-unit id="templates" resname="templates" approved="yes">
+        <source>Templates</source>
+        <target state="final">قالب‌ها</target>
+      </trans-unit>
+      <trans-unit id="isRoot" resname="isRoot" approved="yes">
+        <source>Is Root?</source>
+        <target state="final">ریشه است؟</target>
+      </trans-unit>
+      <trans-unit id="isExt" resname="isExt" approved="yes">
+        <source>Is Ext?</source>
+        <target state="final">افزونه است؟</target>
+      </trans-unit>
+      <trans-unit id="overview" resname="overview" approved="yes">
+        <source>This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.</source>
+        <target state="final">این نمائی کلی از صفحات موجود در بانک داده است که یک یا چند ردیف قالب در خود دارند. بر عنوان صفحه کلیک کنید تا به صفحه بروید.</target>
+      </trans-unit>
+      <trans-unit id="areYouSure" resname="areYouSure" approved="yes">
+        <source>Are you sure you want to do this?</source>
+        <target state="final">آیا مطمئن به انجام این کار هستید؟</target>
+      </trans-unit>
+      <trans-unit id="noTemplate" resname="noTemplate" approved="yes">
+        <source>No template</source>
+        <target state="final">قالبی وجود ندارد</target>
+      </trans-unit>
+      <trans-unit id="noTemplateDescription" resname="noTemplateDescription" approved="yes">
+        <source>There was no template on this page!</source>
+        <target state="final">قالبی برای این صفحه وجود ندارد!</target>
+      </trans-unit>
+      <trans-unit id="createTemplate" resname="createTemplate" approved="yes">
+        <source>Create a template record first in order to edit constants!</source>
+        <target state="final">برای ویرایش مقادیر ثابت ابتدا باید یک ردیف قالب ایجاد کنید!</target>
+      </trans-unit>
+      <trans-unit id="createTemplateToEditConfiguration" resname="createTemplateToEditConfiguration" approved="yes">
+        <source>You need to create a template record below in order to edit your configuration.</source>
+        <target state="final">شما باید یک ردیف قالب در این صفحه بسازید تا بتوانید پیکربندی مورد نظر خود را انجام دهید.</target>
+      </trans-unit>
+      <trans-unit id="newWebsite" resname="newWebsite" approved="yes">
+        <source>Create new website</source>
+        <target state="final">ایجاد یک پایگاه جدید</target>
+      </trans-unit>
+      <trans-unit id="newWebsiteAction" resname="newWebsiteAction" approved="yes">
+        <source>Create template for a new site</source>
+        <target state="final">ساخت یک قالب برای سایت جدید</target>
+      </trans-unit>
+      <trans-unit id="extTemplate" resname="extTemplate" approved="yes">
+        <source>Create extension template</source>
+        <target state="final">ایجاد یک قالب افزونه</target>
+      </trans-unit>
+      <trans-unit id="extTemplateDescription" resname="extTemplateDescription" approved="yes">
+        <source>An extension template allows you to enter TypoScript values that will affect only this page and subpages.</source>
+        <target state="final">یک قالب افزونه به شما امکان می‌دهد که از تایپواسکریپتهائی استفاده نمائید که فقط برای این صفحه و صفحات زیرین تاثیر داشته باشند.</target>
+      </trans-unit>
+      <trans-unit id="extTemplateAction" resname="extTemplateAction" approved="yes">
+        <source>Click here to create an extension template.</source>
+        <target state="final">برای ویرایش یک قالب افزونه اینجا کلیک نمائید.</target>
+      </trans-unit>
+      <trans-unit id="goToClosest" resname="goToClosest" approved="yes">
+        <source>Go to closest page with template</source>
+        <target state="final">رفتن به نزدیک‌ترین صفحۀ دارای قالب</target>
+      </trans-unit>
+      <trans-unit id="goToClosestDescription" resname="goToClosestDescription" approved="yes">
+        <source>Closest template is on page '%s' (uid %s).</source>
+        <target state="final">نزدیک‌ترین صفحۀ دارای قالب بر روی صفحۀ '%s' (uid %s) است.</target>
+      </trans-unit>
+      <trans-unit id="goToClosestAction" resname="goToClosestAction" approved="yes">
+        <source>Click here to go.</source>
+        <target state="final">برای مراجعه اینجا کلیک کنید.</target>
+      </trans-unit>
+      <trans-unit id="titleNewSiteStandard" resname="titleNewSiteStandard" approved="yes">
+        <source>NEW SITE, based on standard</source>
+        <target state="final">سایت جدید، مبتنی بر استاندارد</target>
+      </trans-unit>
+      <trans-unit id="titleNewSite" resname="titleNewSite" approved="yes">
+        <source>NEW SITE</source>
+        <target state="final">سایت جدید</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
