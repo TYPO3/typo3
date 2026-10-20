@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1522923345" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="site.rootPageId" resname="site.rootPageId" approved="yes">
+        <source>You must create a page with a site root flag.</source>
+        <target state="final">Musíte vytvořit kořenovou stránku.</target>
+      </trans-unit>
+      <trans-unit id="site.identifier" resname="site.identifier" approved="yes">
+        <source>This name will be used to create the configuration directory. Mind the recommendations for directory names (only a-z,0-9,_,-) and make it unique.</source>
+        <target state="final">Tento název bude použit k vytvoření adresáře s konfiguracemi. Mějte v patrnosti doporučení pro názvy adresářů (pouze a-z,0-9,_-) a učiňte jej jedinečným.</target>
+      </trans-unit>
+      <trans-unit id="site.base" resname="site.base" approved="yes">
+        <source>Main URL to call the frontend in default language. Can be https://www.example.com/ or just /, if it is just a / you cannot rely on TYPO3 creating
+					full URLs</source>
+        <target state="final">Hlavní adresa URL pro volání frontendu ve výchozím jazyce. Může to být https://www.example.com/ nebo jen /, pokud je to jen /, nemůžete se spolehnout na to, že TYPO3 vytvoří
+plné adresy URL</target>
+      </trans-unit>
+      <trans-unit id="site.baseVariants" resname="site.baseVariants" approved="yes">
+        <source>This allows you to specify variants of the site's base. Can be used, for example, if you have a different domain for your staging environment.</source>
+        <target state="final">To umožňuje určit varianty základu URL. Lze použít například v případě, že máte jinou doménu pro pracovní prostředí.</target>
+      </trans-unit>
+      <trans-unit id="site_language.base" resname="site_language.base" approved="yes">
+        <source>Use a full qualified domain "https://www.mydomain.fr/" or "/fr/". Use "/" to keep the main URL for the default language. Add language specific suffixes to use those, or configure complete URLs for independent domains.</source>
+        <target state="final">Použijte úplnou kvalifikovanou doménu "https://www.mojedomena.cz/" nebo "/cz/". Použijte "/" pro zachování hlavní adresy URL pro výchozí jazyk. Přidejte specifické jazykové přípony pro jejich použití nebo nastavte kompletní URL pro nezávislé domény.</target>
+      </trans-unit>
+      <trans-unit id="site_language.locale" resname="site_language.locale" approved="yes">
+        <source>Used for localized date and currency formats. E.g. "de_DE" or "en_US.UTF-8".</source>
+        <target state="final">Používá se pro lokalizovaná data a měnové formáty. Např. "cs_CZ" nebo "cs_CZ.UTF-8".</target>
+      </trans-unit>
+      <trans-unit id="site_language.iso-639-1" resname="site_language.iso-639-1" approved="yes">
+        <source>ISO 639-1 code of the Language</source>
+        <target state="final">ISO 639-1 kód jazyka</target>
+      </trans-unit>
+      <trans-unit id="site_language.hreflang" resname="site_language.hreflang" approved="yes">
+        <source>Used within for "lang" and "hreflang" attributes</source>
+        <target state="final">Používá se pro atributy "lang" a "hreflang"</target>
+      </trans-unit>
+      <trans-unit id="site_language.navigationTitle" resname="site_language.navigationTitle" approved="yes">
+        <source>Used within language-related menus</source>
+        <target state="final">Používá se v jazykovém menu</target>
+      </trans-unit>
+      <trans-unit id="site_language.direction" resname="site_language.direction" approved="yes">
+        <source>Language direction for "dir" attribute</source>
+        <target state="final">Směr jazyka atributu "dir"</target>
+      </trans-unit>
+      <trans-unit id="site_language.typo3Language" resname="site_language.typo3Language" approved="yes">
+        <source>Select the language to be used from translation files. Keep default if no translation files are available.</source>
+        <target state="final">Vyberte jazyk, který má být použit z překladových souborů. Ponechte výchozí, pokud nejsou k dispozici žádné překladové soubory.</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode" resname="site_errorhandling.errorCode" approved="yes">
+        <source>Make sure to have at least 0 (not defined otherwise) configured in order to serve helpful error messages to your visitors.</source>
+        <target state="final">Ujistěte se, že máte alespoň 0 (není definováno jinak) nakonfigurováno tak, aby bylo vašim návštěvníkům poskytnuto užitečné chybové zprávy.</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplate" resname="site_errorhandling.errorFluidTemplate" approved="yes">
+        <source>Path to the fluid template file given by absolute, relative path (from site root) or by referring the template file inside an extension with "EXT:" prefix.</source>
+        <target state="final">Absolutní cesta k souboru fluid template, relativní cesta (z kořenového adresáře webu) nebo cesta na fluid template soubor v rozšíření s prefixem "EXT:".</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorPhpClassFQCN" resname="site_errorhandling.errorPhpClassFQCN" approved="yes">
+        <source>Fully qualified class name to a class that implements the PageErrorHandlerInterface.</source>
+        <target state="final">Plně kvalifikovaný název třídy, která implementuje PageErrorHandlerInterface.</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.base" resname="site_base_variant.base" approved="yes">
+        <source>For example "https://staging.domain.tld" or "http://www.domain.local"</source>
+        <target state="final">Například "https://staging.mojedomena.cz" nebo "http://www.mojedomena.local"</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition" resname="site_base_variant.condition" approved="yes">
+        <source>Expression to match this base variant.</source>
+        <target state="final">Výraz odpovídající této základní variantě.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
