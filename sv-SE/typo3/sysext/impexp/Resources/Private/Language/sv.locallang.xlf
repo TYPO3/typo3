@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814828" source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:33Z" product-name="impexp" target-language="sv-SE">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Import / Export</source>
+        <target state="final">Importera / Exportera</target>
+      </trans-unit>
+      <trans-unit id="tableselec_configuration" resname="tableselec_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="exportdata_savedFile" resname="exportdata_savedFile" approved="yes">
+        <source>SAVED FILE</source>
+        <target state="final">SPARAD FIL</target>
+      </trans-unit>
+      <trans-unit id="exportdata_savedInSBytes" resname="exportdata_savedInSBytes" approved="yes">
+        <source>Saved in "%s", bytes %s</source>
+        <target state="final">Sparad i "%s", %s byte</target>
+      </trans-unit>
+      <trans-unit id="exportdata_problemsSavingFile" resname="exportdata_problemsSavingFile" approved="yes">
+        <source>Problems saving file</source>
+        <target state="final">Problem med att spara filen</target>
+      </trans-unit>
+      <trans-unit id="exportdata_badPathS" resname="exportdata_badPathS" approved="yes">
+        <source>Bad path: "%s"</source>
+        <target state="final">Felaktig sökväg: "%s"</target>
+      </trans-unit>
+      <trans-unit id="exportdata_filePreset" resname="exportdata_filePreset" approved="yes">
+        <source>File &amp; Preset</source>
+        <target state="final">Fil &amp; förinställning</target>
+      </trans-unit>
+      <trans-unit id="exportdata_advancedOptions" resname="exportdata_advancedOptions" approved="yes">
+        <source>Advanced Options</source>
+        <target state="final">Avancerade alternativ</target>
+      </trans-unit>
+      <trans-unit id="exportdata_messages" resname="exportdata_messages" approved="yes">
+        <source>Messages</source>
+        <target state="final">Meddelanden</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_noTreeExportedOnly" resname="makeconfig_noTreeExportedOnly" approved="yes">
+        <source>No tree exported - only tables on the page.</source>
+        <target state="final">Inget träd exporterat - sidan innehållar endast tabeller.</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_tablesOnThisPage" resname="makeconfig_tablesOnThisPage" approved="yes">
+        <source>Tables on this page</source>
+        <target state="final">Tabeller på denna sida</target>
+      </trans-unit>
+      <trans-unit id="makeconfig_expandedTree" resname="makeconfig_expandedTree" approved="yes">
+        <source>Expanded tree</source>
+        <target state="final">Utökat träd</target>
+      </trans-unit>
+      <trans-unit id="makeadvanc_update" resname="makeadvanc_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Uppdatera</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_update" resname="makesavefo_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Uppdatera</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_load" resname="makesavefo_load" approved="yes">
+        <source>Load</source>
+        <target state="final">Ladda</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_save" resname="makesavefo_save" approved="yes">
+        <source>Save</source>
+        <target state="final">Spara</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_areYouSure" resname="makesavefo_areYouSure" approved="yes">
+        <source>Are you sure?</source>
+        <target state="final">Är du säker?</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_delete" resname="makesavefo_delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Ta bort</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_merge" resname="makesavefo_merge" approved="yes">
+        <source>Merge</source>
+        <target state="final">Sammanfoga</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_t3dFileCompressed" resname="makesavefo_t3dFileCompressed" approved="yes">
+        <source>T3D file / compressed</source>
+        <target state="final">T3D-fil / packad</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_t3dFile" resname="makesavefo_t3dFile" approved="yes">
+        <source>T3D file</source>
+        <target state="final">T3D-fil</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_xml" resname="makesavefo_xml" approved="yes">
+        <source>XML</source>
+        <target state="final">XML</target>
+      </trans-unit>
+      <trans-unit id="makesavefo_downloadExport" resname="makesavefo_downloadExport" approved="yes">
+        <source>Download export</source>
+        <target state="final">Export av nedladdning</target>
+      </trans-unit>
+      <trans-unit id="importdata_saveToFilename" resname="importdata_saveToFilename" approved="yes">
+        <source>Save to filename</source>
+        <target state="final">Spara till filnamn</target>
+      </trans-unit>
+      <trans-unit id="importdata_fromPathS" resname="importdata_fromPathS" approved="yes">
+        <source>(From path: %s)</source>
+        <target state="final">(Från sökväg: %s)</target>
+      </trans-unit>
+      <trans-unit id="importdata_noteNoDecompressorAvailable" resname="importdata_noteNoDecompressorAvailable" approved="yes">
+        <source>NOTE: No decompressor available for compressed files!</source>
+        <target state="final">Obs! Det finns inget uppackningsprogram för den packade filen.</target>
+      </trans-unit>
+      <trans-unit id="importdata_update" resname="importdata_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Uppdatera</target>
+      </trans-unit>
+      <trans-unit id="importdata_updateRecords" resname="importdata_updateRecords" approved="yes">
+        <source>Update records</source>
+        <target state="final">Uppdatera element</target>
+      </trans-unit>
+      <trans-unit id="importdata_thisOptionRequiresThat" resname="importdata_thisOptionRequiresThat" approved="yes">
+        <source>This option requires that the structure you import already exists on this server and only needs to be updated with new content!</source>
+        <target state="final">Detta alternativ kräver att strukturen som du importerar redan finns på servern och endast behöver bli uppdaterad med det nya innehållet!</target>
+      </trans-unit>
+      <trans-unit id="importdata_ignorePidDifferencesGlobally" resname="importdata_ignorePidDifferencesGlobally" approved="yes">
+        <source>Ignore PID differences globally</source>
+        <target state="final">Ignorera PID-olikheter globalt</target>
+      </trans-unit>
+      <trans-unit id="importdata_ifYouSetThis" resname="importdata_ifYouSetThis" approved="yes">
+        <source>If you set this option, the position of updated elements will not be updated to match the structure of the input file.</source>
+        <target state="final">Om du väljer detta alternativ kommer platsen för uppdaterade element inte att uppdateras så att de överensstämmer med strukturen hos input-filen.</target>
+      </trans-unit>
+      <trans-unit id="importdata_force_all_UIDS" resname="importdata_force_all_UIDS" approved="yes">
+        <source>Force ALL UIDs values</source>
+        <target state="final">Tvinga ALLA UID-värden</target>
+      </trans-unit>
+      <trans-unit id="importdata_force_all_UIDS_descr" resname="importdata_force_all_UIDS_descr" approved="yes">
+        <source>With this option the original UID value of all imported records are forced to be the same. BE VERY CAREFUL WITH THIS! (Admin Only).</source>
+        <target state="final">Med detta alternativ tvingas alla ursprungliga UID-värden för importerade element att bli oförändrade. VAR MYCKET FÖRSIKTIG MED DETTA! (Endast för admin)</target>
+      </trans-unit>
+      <trans-unit id="importdata_doNotShowDifferences" resname="importdata_doNotShowDifferences" approved="yes">
+        <source>Do not show differences in records</source>
+        <target state="final">Visa inte olikheter i element</target>
+      </trans-unit>
+      <trans-unit id="importdata_greenValuesAreFrom" resname="importdata_greenValuesAreFrom" approved="yes">
+        <source>Green values are from the import file, red values from the current database record and black values are similar in both versions.</source>
+        <target state="final">Gröna värden är från den importerade filen, röda från den nuvarande databasen och svarta värden är lika i bägge versionerna.</target>
+      </trans-unit>
+      <trans-unit id="importdata_allowToWriteBanned" resname="importdata_allowToWriteBanned" approved="yes">
+        <source>Allow to write banned file extensions (eg. PHP scripts), if any</source>
+        <target state="final">Tillåtelse att skriva förbjudna filtyper (ex. PHP-skript), om sådana finns</target>
+      </trans-unit>
+      <trans-unit id="importdata_preview" resname="importdata_preview" approved="yes">
+        <source>Preview</source>
+        <target state="final">Förhandsgranska</target>
+      </trans-unit>
+      <trans-unit id="importdata_update_299e" resname="importdata_update_299e" approved="yes">
+        <source>Update</source>
+        <target state="final">Uppdatera</target>
+      </trans-unit>
+      <trans-unit id="importdata_areYouSure" resname="importdata_areYouSure" approved="yes">
+        <source>Are you sure?</source>
+        <target state="final">Är du säker?</target>
+      </trans-unit>
+      <trans-unit id="importdata_newImport" resname="importdata_newImport" approved="yes">
+        <source>New import</source>
+        <target state="final">Ny import</target>
+      </trans-unit>
+      <trans-unit id="importdata_writeIndividualDbActions" resname="importdata_writeIndividualDbActions" approved="yes">
+        <source>Write individual DB actions during import to the log</source>
+        <target state="final">Skriv individuella DB-händelser under importen till loggen</target>
+      </trans-unit>
+      <trans-unit id="importdata_thisIsDisabledBy" resname="importdata_thisIsDisabledBy" approved="yes">
+        <source>This is disabled by default since there may be hundred of entries generated.</source>
+        <target state="final">Detta är som standard ej aktiverat eftersom det kan genereras hundratals med händelser.</target>
+      </trans-unit>
+      <trans-unit id="importdata_failureNoFileUploaded" resname="importdata_failureNoFileUploaded" approved="yes">
+        <source>Failure: No file uploaded - was it too big? Check system log.</source>
+        <target state="final">Fel: Ingen fil laddades - var den för stor? Kontrollera systemloggen.</target>
+      </trans-unit>
+      <trans-unit id="importdata_upload" resname="importdata_upload" approved="yes">
+        <source>Upload</source>
+        <target state="final">Ladda upp</target>
+      </trans-unit>
+      <trans-unit id="importdata_messages" resname="importdata_messages" approved="yes">
+        <source>Messages</source>
+        <target state="final">Meddelanden</target>
+      </trans-unit>
+      <trans-unit id="ALL_tables" resname="ALL_tables" approved="yes">
+        <source>ALL tables</source>
+        <target state="final">ALLA tabeller</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_update" resname="impexpcore_singlereco_update" approved="yes">
+        <source>Update</source>
+        <target state="final">Uppdatera</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_insert" resname="impexpcore_singlereco_insert" approved="yes">
+        <source>Insert</source>
+        <target state="final">Lägg till</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_importAsNew" resname="impexpcore_singlereco_importAsNew" approved="yes">
+        <source>Import as new</source>
+        <target state="final">Importera som ny</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_ignorePid" resname="impexpcore_singlereco_ignorePid" approved="yes">
+        <source>Ignore PID</source>
+        <target state="final">Ignorera sid-ID</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_respectPid" resname="impexpcore_singlereco_respectPid" approved="yes">
+        <source>Respect PID</source>
+        <target state="final">Respektera sid-ID</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_forceUidSAdmin" resname="impexpcore_singlereco_forceUidSAdmin" approved="yes">
+        <source>Force UID [%s] (Admin)</source>
+        <target state="final">Tvinga UID [%s] (Admin)</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_singlereco_exclude" resname="impexpcore_singlereco_exclude" approved="yes">
+        <source>Exclude</source>
+        <target state="final">Uteslut</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_softrefsel_editable" resname="impexpcore_softrefsel_editable" approved="yes">
+        <source>Editable</source>
+        <target state="final">Går att ändra</target>
+      </trans-unit>
+      <trans-unit id="impexpcore_softrefsel_exclude" resname="impexpcore_softrefsel_exclude" approved="yes">
+        <source>Exclude</source>
+        <target state="final">Uteslut</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
