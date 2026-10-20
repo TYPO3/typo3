@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Form\FormDataGroup\SiteConfigurationDataGroup;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Core\Configuration\Processor\Placeholder\EnvPlaceholderProcessor;
+use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -44,6 +45,7 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
         private readonly SiteFinder $siteFinder,
         private readonly InlineStackProcessor $inlineStackProcessor,
         private readonly EnvPlaceholderProcessor $envPlaceholderProcessor,
+        private readonly SiteConfiguration $siteConfiguration,
     ) {}
 
     public function addData(array $result): array
@@ -171,6 +173,11 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
                 $site = $this->siteFinder->getSiteByRootPageId($processedRootPageId);
                 $siteConfiguration = $site->getConfiguration();
             } catch (SiteNotFoundException $e) {
+                // Invalid sites are not available as Site object, but can be edited to fix them
+                $invalidSite = $this->siteConfiguration->getInvalidSiteByRootPageId($processedRootPageId);
+                if ($invalidSite !== null) {
+                    $siteConfiguration = $this->siteConfiguration->load($invalidSite['identifier']);
+                }
             }
             if (is_array($siteConfiguration[$fieldName] ?? false)) {
                 // Add uids of existing site languages

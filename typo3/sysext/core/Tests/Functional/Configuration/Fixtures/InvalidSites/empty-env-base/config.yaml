@@ -1,0 +1,2 @@
+rootPageId: 3
+base: 'https://%env(TYPO3_TESTING_INVALID_SITES_EMPTY_HOST)%/'

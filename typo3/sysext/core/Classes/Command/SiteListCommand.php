@@ -24,6 +24,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
+use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Site\SiteFinder;
 
 /**
@@ -33,8 +34,10 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 #[AsNonSchedulableCommand]
 class SiteListCommand extends Command
 {
-    public function __construct(protected readonly SiteFinder $siteFinder)
-    {
+    public function __construct(
+        protected readonly SiteFinder $siteFinder,
+        protected readonly SiteConfiguration $siteConfiguration,
+    ) {
         parent::__construct();
     }
 
@@ -45,14 +48,24 @@ class SiteListCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $sites = $this->siteFinder->getAllSites();
+        $invalidSites = $this->siteConfiguration->getInvalidSites();
 
-        if (empty($sites)) {
+        if (empty($sites) && empty($invalidSites)) {
             $io->title('No sites configured');
             $io->note('Configure new sites in the "Sites" module.');
             return Command::SUCCESS;
         }
 
         $io->title('All configured sites');
+        if ($invalidSites !== []) {
+            $io->warning([
+                'The following site configurations contain errors and are unavailable: ' . implode(', ', array_keys($invalidSites)),
+                'Run "site:validate" for details.',
+            ]);
+        }
+        if (empty($sites)) {
+            return Command::SUCCESS;
+        }
         $table = new Table($output);
         $table->setHeaders([
             'Identifier',

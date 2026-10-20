@@ -15,7 +15,7 @@
 <f:section name="Content">
     <h1><f:translate key="overview.title" domain="backend.siteconfiguration" /></h1>
 
-    <f:if condition="{rootPagesWithSiteConfiguration -> f:count()} || {rootPagesWithoutSiteConfiguration -> f:count()} || {unassignedSites -> f:count()}">
+    <f:if condition="{rootPagesWithSiteConfiguration -> f:count()} || {rootPagesWithoutSiteConfiguration -> f:count()} || {unassignedSites -> f:count()} || {invalidSites -> f:count()}">
         <f:be.infobox
             title="{f:translate(key:'overview.status.title', domain:'backend.siteconfiguration')}"
             state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::NOTICE')}"
@@ -55,6 +55,19 @@
                                 domain="backend.siteconfiguration"
                                 arguments="{
                                     0: '{unassignedSites -> f:count()}'
+                                }"
+                            />
+                        </f:sanitize.html>
+                    </li>
+                </f:if>
+                <f:if condition="{invalidSites -> f:count()}">
+                    <li>
+                        <f:sanitize.html>
+                            <f:translate
+                                key="overview.info.invalid_sites.{f:if(condition: '{invalidSites -> f:count()} === 1', then: 'single', else: 'multiple')}"
+                                domain="backend.siteconfiguration"
+                                arguments="{
+                                    0: '{invalidSites -> f:count()}'
                                 }"
                             />
                         </f:sanitize.html>
@@ -231,6 +244,71 @@
                 </tbody>
             </table>
         </div>
+    </f:if>
+
+    <f:if condition="{invalidSites}">
+        <f:be.infobox
+            state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR')}"
+            title="{f:translate(key: 'overview.invalidSites.title', domain: 'backend.siteconfiguration')}"
+        >
+            <p><f:translate key="overview.invalidSites.description" domain="backend.siteconfiguration" /></p>
+
+            <div class="table-fit">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="nowrap"><f:translate key="overview.siteIdentifier" domain="backend.siteconfiguration" /></th>
+                            <th class="nowrap"><f:translate key="overview.invalidSites.rootPage" domain="backend.siteconfiguration" /></th>
+                            <th><f:translate key="overview.invalidSites.error" domain="backend.siteconfiguration" /></th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <f:for each="{invalidSites}" as="invalidSite">
+                            <tr>
+                                <td class="align-top"><code>{invalidSite.identifier}</code></td>
+                                <td class="align-top">
+                                    <f:if condition="{invalidSite.rootPageId}">
+                                        {invalidSite.rootPage.title} <code>[{invalidSite.rootPageId}]</code>
+                                    </f:if>
+                                </td>
+                                <td class="align-top">
+                                    <f:render partial="SiteManagement/InvalidSite" arguments="{invalidSite: invalidSite}" />
+                                </td>
+                                <td class="align-top col-control">
+                                    <div class="btn-group">
+                                        <f:if condition="{invalidSite.rootPageId}">
+                                            <f:be.link
+                                                route="site_configuration.edit"
+                                                parameters="{site: invalidSite.identifier}"
+                                                title="{f:translate(key:'overview.editSiteConfiguration', domain:'backend.siteconfiguration')}"
+                                                class="btn btn-default"
+                                            >
+                                                <core:icon identifier="actions-open" />
+                                            </f:be.link>
+                                        </f:if>
+                                        <button
+                                            type="submit"
+                                            class="btn btn-default t3js-modal-trigger"
+                                            form="form-site-configuration-delete"
+                                            name="site"
+                                            value="{invalidSite.identifier}"
+                                            title="{f:translate(key:'overview.deleteSiteConfiguration', domain:'backend.siteconfiguration')}"
+                                            data-severity="error"
+                                            data-title="{f:translate(key:'overview.deleteSiteConfiguration', domain:'backend.siteconfiguration')}"
+                                            data-button-close-text="{f:translate(key:'cancel', domain: 'core.common')}"
+                                            data-button-ok-text="{f:translate(key:'delete', domain: 'core.common')}"
+                                        >
+                                            <core:icon identifier="actions-delete" />
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </f:for>
+                    </tbody>
+                </table>
+            </div>
+        </f:be.infobox>
     </f:if>
 
     <f:if condition="{invalidSets}">

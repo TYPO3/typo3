@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Error\PageErrorHandler\PageContentErrorHandler;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerNotConfiguredException;
 use TYPO3\CMS\Core\Error\PageErrorHandler\RedirectLoginErrorHandler;
+use TYPO3\CMS\Core\Exception\InvalidSiteConfigurationException;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -132,27 +133,35 @@ class Site implements SiteInterface
             $configuration['base'] ?? '',
             $configuration['baseVariants'] ?? null
         );
-        $this->base = new Uri($this->sanitizeBaseUrl($baseUrl));
+        $this->base = $this->createBaseUri($baseUrl, $configuration);
 
         $this->sets = $configuration['dependencies'] ?? [];
-        foreach ($configuration['languages'] as $languageConfiguration) {
+        foreach ($configuration['languages'] as $languageIndex => $languageConfiguration) {
             $languageUid = (int)$languageConfiguration['languageId'];
+            $languageConfigurationPath = 'languages.' . $languageIndex . '.';
             // site language has defined its own base, this is the case most of the time.
             if (!empty($languageConfiguration['base'])) {
                 $base = $this->resolveBaseWithVariants(
                     $languageConfiguration['base'],
                     $languageConfiguration['baseVariants'] ?? null
                 );
-                $base = new Uri($this->sanitizeBaseUrl($base));
+                $base = $this->createBaseUri($base, $languageConfiguration, $languageConfigurationPath);
                 // no host given by the language-specific base, so lets prefix the main site base
                 if ($base->getScheme() === '' && $base->getHost() === '') {
                     $base = rtrim((string)$this->base, '/') . '/' . ltrim((string)$base, '/');
-                    $base = new Uri($this->sanitizeBaseUrl($base));
+                    $base = $this->createBaseUri($base, $languageConfiguration, $languageConfigurationPath);
                 }
             } else {
                 // Language configuration does not have a base defined
                 // So the main site base is used (usually done for default languages)
                 $base = new Uri($this->sanitizeBaseUrl(rtrim((string)$this->base, '/') . '/'));
+            }
+            if (!is_string($languageConfiguration['locale'] ?? null)) {
+                throw new InvalidSiteConfigurationException(
+                    'Language ' . $languageUid . ' of site "' . $identifier . '" has no locale configured.',
+                    1792506653,
+                    $languageConfigurationPath . 'locale'
+                );
             }
             if (!empty($languageConfiguration['flag'])) {
                 if ($languageConfiguration['flag'] === 'global') {
@@ -199,6 +208,39 @@ class Site implements SiteInterface
             }
         }
         return $baseUrl;
+    }
+
+    /**
+     * @throws InvalidSiteConfigurationException
+     */
+    private function createBaseUri(string $base, array $configuration, string $configurationPathPrefix = ''): Uri
+    {
+        try {
+            return new Uri($this->sanitizeBaseUrl($base));
+        } catch (\InvalidArgumentException $e) {
+            throw new InvalidSiteConfigurationException(
+                $e->getMessage(),
+                1792506652,
+                $configurationPathPrefix . $this->resolveBaseConfigurationPath($base, $configuration),
+                $e
+            );
+        }
+    }
+
+    /**
+     * Find the configuration option a resolved base originates from, which is
+     * either "base" or the "base" of one of the "baseVariants".
+     */
+    private function resolveBaseConfigurationPath(string $base, array $configuration): string
+    {
+        if (($configuration['base'] ?? '') !== $base) {
+            foreach ($configuration['baseVariants'] ?? [] as $index => $baseVariant) {
+                if (($baseVariant['base'] ?? null) === $base) {
+                    return 'baseVariants.' . $index . '.base';
+                }
+            }
+        }
+        return 'base';
     }
 
     /**

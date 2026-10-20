@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Configuration;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Finder\Finder;
@@ -28,7 +29,11 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\Event\SiteConfigurationChangedEvent;
 use TYPO3\CMS\Core\Configuration\Event\SiteConfigurationLoadedEvent;
+use TYPO3\CMS\Core\Configuration\Loader\Exception\YamlFileLoadingException;
+use TYPO3\CMS\Core\Configuration\Loader\Exception\YamlParseException;
+use TYPO3\CMS\Core\Configuration\Loader\Exception\YamlPlaceholderException;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
+use TYPO3\CMS\Core\Exception\InvalidSiteConfigurationException;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteSettings;
 use TYPO3\CMS\Core\Site\Entity\SiteTSconfig;
@@ -44,6 +49,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Reads all available site configuration options, and puts them into Site objects.
  *
+ * Site configurations that cannot be loaded or turned into a Site object are skipped
+ * and collected as invalid sites instead, so a single broken site does not render the
+ * whole installation inaccessible. Only errors of the configuration itself are collected,
+ * as invalid sites found while loading are persisted in the core cache. Any other
+ * exception, for example of an event listener, is not caught.
+ *
+ * @phpstan-type InvalidSite array{identifier: string, rootPageId: int|null, type: class-string<\Throwable>, code: int, message: string, field: string|null}
  * @internal
  */
 #[Autoconfigure(public: true)]
@@ -79,6 +91,11 @@ readonly class SiteConfiguration
      */
     private const string CACHE_IDENTIFIER = 'sites-configuration';
 
+    /**
+     * Identifier to store invalid sites in the runtime cache.
+     */
+    private const string INVALID_SITES_CACHE_IDENTIFIER = 'sites-configuration-invalid';
+
     public function __construct(
         #[Autowire('%env(TYPO3:configPath)%/sites')]
         protected string $configPath,
@@ -90,6 +107,7 @@ readonly class SiteConfiguration
         private readonly YamlFileLoader $yamlFileLoader,
         #[Autowire(service: 'cache.runtime')]
         protected readonly FrontendInterface $runtimeCache,
+        private readonly LoggerInterface $logger,
     ) {}
 
     /**
@@ -112,25 +130,111 @@ readonly class SiteConfiguration
      */
     public function resolveAllExistingSites(bool $useCache = true): array
     {
+        return $this->resolveSites($useCache)['sites'];
+    }
+
+    /**
+     * Read fresh site configurations for validation without reading or writing the site caches.
+     *
+     * @return array{sites: array<string, Site>, invalidSites: array<string, InvalidSite>}
+     */
+    public function getSitesForValidation(): array
+    {
+        return $this->resolveSites(false, false);
+    }
+
+    /**
+     * Return all sites which could not be resolved, indexed by site identifier.
+     *
+     * Invalid sites of the most recent resolution in this request are returned.
+     * Call getAllExistingSites(false) beforehand, or pass $useCache = false, to
+     * evaluate the current state of the configuration files.
+     *
+     * @return array<string, InvalidSite>
+     */
+    public function getInvalidSites(bool $useCache = true): array
+    {
+        if ($useCache && $this->runtimeCache->has(self::INVALID_SITES_CACHE_IDENTIFIER)) {
+            return $this->runtimeCache->get(self::INVALID_SITES_CACHE_IDENTIFIER);
+        }
+        return $this->resolveSites($useCache)['invalidSites'];
+    }
+
+    /**
+     * @return InvalidSite|null
+     */
+    public function getInvalidSiteByRootPageId(int $rootPageId): ?array
+    {
+        foreach ($this->getInvalidSites() as $invalidSite) {
+            if ($invalidSite['rootPageId'] === $rootPageId) {
+                return $invalidSite;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @return array{sites: array<string, Site>, invalidSites: array<string, InvalidSite>}
+     */
+    private function resolveSites(bool $useCache, bool $writeCache = true): array
+    {
         $sites = [];
-        foreach ($this->getAllResolvedSiteData($useCache) as $identifier => $data) {
+        $resolvedSiteData = $writeCache
+            ? $this->getAllResolvedSiteData($useCache)
+            : $this->loadAllResolvedSiteData($useCache, false);
+        $invalidSites = $resolvedSiteData['invalidSites'];
+        foreach ($resolvedSiteData['sites'] as $identifier => $data) {
             // cast $identifier to string, as the identifier can potentially only consist of (int) digit numbers
             $identifier = (string)$identifier;
             // The Site object is always created at runtime, as the constructor evaluates
             // base variant expressions, which must not be cached persistently.
-            $site = new Site(
-                $identifier,
-                $data['rootPageId'],
-                $data['configuration'],
-                $data['settings'],
-                $data['typoscript'],
-                $data['tsConfig'],
-            );
+            try {
+                $site = new Site(
+                    $identifier,
+                    $data['rootPageId'],
+                    $data['configuration'],
+                    $data['settings'],
+                    $data['typoscript'],
+                    $data['tsConfig'],
+                );
+            } catch (\Throwable $e) {
+                $invalidSites[$identifier] = $this->createInvalidSite($identifier, $data['rootPageId'], $e);
+                continue;
+            }
             $site->invalidSets = $data['invalidSets'];
             $sites[$identifier] = $site;
         }
-        $this->runtimeCache->set(self::CACHE_IDENTIFIER, $sites);
-        return $sites;
+        if ($writeCache) {
+            $this->runtimeCache->set(self::CACHE_IDENTIFIER, $sites);
+            $this->runtimeCache->set(self::INVALID_SITES_CACHE_IDENTIFIER, $invalidSites);
+        }
+        return ['sites' => $sites, 'invalidSites' => $invalidSites];
+    }
+
+    /**
+     * @return InvalidSite
+     */
+    private function createInvalidSite(string $identifier, ?int $rootPageId, \Throwable $exception): array
+    {
+        $this->logger->warning('Site configuration "{identifier}" is invalid and has been skipped: {message}', [
+            'identifier' => $identifier,
+            'message' => $exception->getMessage(),
+            'exception' => $exception,
+        ]);
+        $cause = $exception;
+        $field = null;
+        if ($exception instanceof InvalidSiteConfigurationException) {
+            $cause = $exception->getPrevious() ?? $exception;
+            $field = $exception->configurationPath;
+        }
+        return [
+            'identifier' => $identifier,
+            'rootPageId' => $rootPageId,
+            'type' => $cause::class,
+            'code' => (int)$cause->getCode(),
+            'message' => $cause->getMessage(),
+            'field' => $field,
+        ];
     }
 
     /**
@@ -138,41 +242,64 @@ readonly class SiteConfiguration
      * with route enhancers and settings from site sets, settings objects, TypoScript
      * and TSconfig read from the file system. This data is cached in the core cache,
      * to avoid set resolution, settings composition and file system access per request.
+     * Sites failing to load or resolve are cached as invalid sites.
+     *
+     * @return array{sites: array, invalidSites: array<string, InvalidSite>}
      */
     protected function getAllResolvedSiteData(bool $useCache): array
+    {
+        return $this->loadAllResolvedSiteData($useCache, true);
+    }
+
+    /**
+     * @return array{sites: array, invalidSites: array<string, InvalidSite>}
+     */
+    private function loadAllResolvedSiteData(bool $useCache, bool $writeCache): array
     {
         if ($useCache) {
             $cacheEntry = $this->cache->require(self::CACHE_IDENTIFIER);
             if (is_array($cacheEntry['resolvedData'] ?? null)) {
-                return $cacheEntry['resolvedData'];
+                return ['sites' => $cacheEntry['resolvedData'], 'invalidSites' => $cacheEntry['invalidSites'] ?? []];
             }
         }
         $resolvedData = [];
-        $siteConfiguration = $this->getAllSiteConfigurationFromFiles($useCache);
+        ['siteConfiguration' => $siteConfiguration, 'invalidSites' => $invalidSites] = $this->loadAllSiteConfigurationFromFiles($useCache, $writeCache);
         foreach ($siteConfiguration as $identifier => $configuration) {
             // cast $identifier to string, as the identifier can potentially only consist of (int) digit numbers
             $identifier = (string)$identifier;
             $rootPageId = (int)($configuration['rootPageId'] ?? 0);
-            if ($rootPageId <= 0) {
-                continue;
+            try {
+                if ($rootPageId <= 0) {
+                    throw new InvalidSiteConfigurationException(
+                        'Site "' . $identifier . '" has no valid root page id configured.',
+                        1792506654,
+                        'rootPageId'
+                    );
+                }
+                $siteSettings = $useCache
+                    ? $this->siteSettingsFactory->getSettings($identifier, $configuration)
+                    : $this->siteSettingsFactory->createSettings($configuration['dependencies'] ?? [], $identifier, $configuration['settings'] ?? []);
+                $configuration['contentSecurityPolicies'] = $this->getContentSecurityPolicies($identifier);
+                $configuration['routeEnhancers'] = ArrayUtility::replaceAndAppendScalarValuesRecursive(
+                    $this->getRouteEnhancersFromSets($configuration['dependencies'] ?? []),
+                    $configuration['routeEnhancers'] ?? []
+                );
+                $resolvedData[$identifier] = [
+                    'rootPageId' => $rootPageId,
+                    'configuration' => $configuration,
+                    'settings' => $siteSettings,
+                    'typoscript' => $this->getSiteTypoScript($identifier),
+                    'tsConfig' => $this->getSiteTSconfig($identifier),
+                    'invalidSets' => $this->determineInvalidSets($identifier, $configuration['dependencies'] ?? []),
+                ];
+            } catch (YamlParseException|YamlFileLoadingException|YamlPlaceholderException|InvalidSiteConfigurationException|\UnexpectedValueException $e) {
+                $invalidSites[$identifier] = $this->createInvalidSite($identifier, $rootPageId > 0 ? $rootPageId : null, $e);
             }
-            $siteSettings = $this->siteSettingsFactory->getSettings($identifier, $configuration);
-            $configuration['contentSecurityPolicies'] = $this->getContentSecurityPolicies($identifier);
-            $configuration['routeEnhancers'] = ArrayUtility::replaceAndAppendScalarValuesRecursive(
-                $this->getRouteEnhancersFromSets($configuration['dependencies'] ?? []),
-                $configuration['routeEnhancers'] ?? []
-            );
-            $resolvedData[$identifier] = [
-                'rootPageId' => $rootPageId,
-                'configuration' => $configuration,
-                'settings' => $siteSettings,
-                'typoscript' => $this->getSiteTypoScript($identifier),
-                'tsConfig' => $this->getSiteTSconfig($identifier),
-                'invalidSets' => $this->determineInvalidSets($identifier, $configuration['dependencies'] ?? []),
-            ];
         }
-        $this->writeCache($siteConfiguration, $resolvedData);
-        return $resolvedData;
+        if ($writeCache) {
+            $this->writeCache($siteConfiguration, $resolvedData, $invalidSites);
+        }
+        return ['sites' => $resolvedData, 'invalidSites' => $invalidSites];
     }
 
     /**
@@ -195,7 +322,12 @@ readonly class SiteConfiguration
 
             $rootPageId = (int)($configuration['rootPageId'] ?? 0);
             if ($rootPageId > 0) {
-                $site = new Site($identifier, $rootPageId, $configuration, $siteSettings, $siteTypoScript);
+                try {
+                    $site = new Site($identifier, $rootPageId, $configuration, $siteSettings, $siteTypoScript);
+                } catch (\Throwable) {
+                    // Invalid sites are reported by getInvalidSites()
+                    continue;
+                }
                 $site->invalidSets = $this->determineInvalidSets($identifier, $configuration['dependencies'] ?? []);
                 $sites[$identifier] = $site;
             }
@@ -232,11 +364,21 @@ readonly class SiteConfiguration
      */
     protected function getAllSiteConfigurationFromFiles(bool $useCache = true): array
     {
+        return $this->loadAllSiteConfigurationFromFiles($useCache)['siteConfiguration'];
+    }
+
+    /**
+     * Read the site configuration from config files, collecting files which cannot be loaded as invalid sites.
+     *
+     * @return array{siteConfiguration: array, invalidSites: array<string, InvalidSite>}
+     */
+    private function loadAllSiteConfigurationFromFiles(bool $useCache, bool $writeCache = true): array
+    {
         // Check if the data is already cached
         if ($useCache) {
             $cacheEntry = $this->cache->require(self::CACHE_IDENTIFIER);
             if (is_array($cacheEntry['siteConfiguration'] ?? null)) {
-                return $cacheEntry['siteConfiguration'];
+                return ['siteConfiguration' => $cacheEntry['siteConfiguration'], 'invalidSites' => $cacheEntry['invalidSites'] ?? []];
             }
         }
         $finder = new Finder();
@@ -247,28 +389,43 @@ readonly class SiteConfiguration
             $finder = [];
         }
         $siteConfiguration = [];
+        $invalidSites = [];
         foreach ($finder as $fileInfo) {
-            $configuration = $this->yamlFileLoader->load(GeneralUtility::fixWindowsFilePath((string)$fileInfo));
             $identifier = basename($fileInfo->getPath());
+            try {
+                $configuration = $this->yamlFileLoader->load(
+                    GeneralUtility::fixWindowsFilePath((string)$fileInfo),
+                    YamlFileLoader::PROCESS_PLACEHOLDERS | YamlFileLoader::PROCESS_IMPORTS | YamlFileLoader::RETHROW_IMPORT_EXCEPTIONS
+                );
+            } catch (YamlParseException|YamlFileLoadingException|YamlPlaceholderException|\UnexpectedValueException $e) {
+                $invalidSites[$identifier] = $this->createInvalidSite($identifier, null, $e);
+                continue;
+            }
             $event = $this->eventDispatcher->dispatch(new SiteConfigurationLoadedEvent($identifier, $configuration));
             $siteConfiguration[$identifier] = $event->getConfiguration();
         }
-        $this->writeCache($siteConfiguration, null);
+        if ($writeCache) {
+            $this->writeCache($siteConfiguration, null, $invalidSites);
+        }
 
-        return $siteConfiguration;
+        return ['siteConfiguration' => $siteConfiguration, 'invalidSites' => $invalidSites];
     }
 
     /**
      * Persist the raw site configuration and - if available - the resolved site data
-     * in one core cache entry, to keep both in sync at all times.
+     * in one core cache entry, to keep both in sync at all times. Invalid sites
+     * belong to the latest stage that has been written.
+     *
+     * @param array<string, InvalidSite> $invalidSites
      */
-    protected function writeCache(array $siteConfiguration, ?array $resolvedData): void
+    protected function writeCache(array $siteConfiguration, ?array $resolvedData, array $invalidSites = []): void
     {
         $this->cache->set(
             self::CACHE_IDENTIFIER,
             'return ['
             . '\'siteConfiguration\' => ' . var_export($siteConfiguration, true) . ', '
-            . '\'resolvedData\' => ' . var_export($resolvedData, true)
+            . '\'resolvedData\' => ' . var_export($resolvedData, true) . ', '
+            . '\'invalidSites\' => ' . var_export($invalidSites, true)
             . '];'
         );
     }
@@ -334,7 +491,10 @@ readonly class SiteConfiguration
     {
         $fileName = $this->configPath . '/' . $siteIdentifier . '/' . self::CONTENT_SECURITY_FILE_NAME;
         if (file_exists($fileName)) {
-            return $this->yamlFileLoader->load(GeneralUtility::fixWindowsFilePath($fileName));
+            return $this->yamlFileLoader->load(
+                GeneralUtility::fixWindowsFilePath($fileName),
+                YamlFileLoader::PROCESS_PLACEHOLDERS | YamlFileLoader::PROCESS_IMPORTS | YamlFileLoader::RETHROW_IMPORT_EXCEPTIONS
+            );
         }
         return [];
     }
@@ -379,6 +539,7 @@ readonly class SiteConfiguration
     {
         $this->cache->remove(self::CACHE_IDENTIFIER);
         $this->runtimeCache->remove(self::CACHE_IDENTIFIER);
+        $this->runtimeCache->remove(self::INVALID_SITES_CACHE_IDENTIFIER);
     }
 
     #[AsEventListener('typo3-core/site-configuration')]

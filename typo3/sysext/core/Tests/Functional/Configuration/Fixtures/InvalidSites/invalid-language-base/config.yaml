@@ -1,0 +1,13 @@
+rootPageId: 5
+base: 'https://language.example.com/'
+languages:
+  -
+    languageId: 0
+    title: English
+    locale: en_US.UTF-8
+    base: /
+  -
+    languageId: 1
+    title: German
+    locale: de_DE.UTF-8
+    base: 'https://'

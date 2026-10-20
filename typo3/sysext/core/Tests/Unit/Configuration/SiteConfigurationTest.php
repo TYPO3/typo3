@@ -18,7 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
 use PHPUnit\Framework\Attributes\Test;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
@@ -59,18 +62,32 @@ final class SiteConfigurationTest extends UnitTestCase
             GeneralUtility::mkdir_deep($this->fixturePath);
         }
         $this->testFilesToDelete[] = $basePath;
+        $this->siteConfiguration = $this->createSiteConfiguration();
+    }
+
+    private function createSiteConfiguration(
+        LoggerInterface $logger = new NullLogger(),
+        EventDispatcherInterface $eventDispatcher = new NoopEventDispatcher(),
+    ): SiteConfiguration {
         $setRegistry = self::createStub(SetRegistry::class);
         $settingsTypeRegistry = new SettingsTypeRegistry(self::createStub(ServiceLocator::class));
         $settingsFactory = new SettingsFactory($settingsTypeRegistry);
-        $this->siteConfiguration = new SiteConfiguration(
+        return new SiteConfiguration(
             $this->fixturePath,
             new SiteSettingsFactory($this->fixturePath, $setRegistry, $settingsTypeRegistry, $settingsFactory, self::createStub(YamlFileLoader::class), new NullFrontend('test'), self::createStub(PackageDependentCacheIdentifier::class)),
             $setRegistry,
-            new NoopEventDispatcher(),
+            $eventDispatcher,
             new NullFrontend('test'),
             new YamlFileLoader(self::createStub(LoggerInterface::class)),
-            new NullFrontend('test')
+            new NullFrontend('test'),
+            $logger,
         );
+    }
+
+    private function writeSiteConfigurationFile(string $identifier, string $contents): void
+    {
+        GeneralUtility::mkdir($this->fixturePath . '/' . $identifier);
+        GeneralUtility::writeFile($this->fixturePath . '/' . $identifier . '/config.yaml', $contents, true);
     }
 
     #[Test]
@@ -126,5 +143,45 @@ final class SiteConfigurationTest extends UnitTestCase
         self::assertCount(1, $sites);
         $currentSite = current($sites);
         self::assertSame('123', $currentSite->getIdentifier());
+    }
+
+    #[Test]
+    public function invalidSitesAreLoggedWhenResolvedForTheCache(): void
+    {
+        $logger = new class extends AbstractLogger {
+            public array $records = [];
+            public function log($level, string|\Stringable $message, array $context = []): void
+            {
+                $this->records[] = ['level' => $level, 'identifier' => $context['identifier'] ?? null];
+            }
+        };
+        $this->writeSiteConfigurationFile('malformed-base', Yaml::dump(['rootPageId' => 42, 'base' => 'https:///'], 99, 2));
+        $this->writeSiteConfigurationFile('broken-yaml', "rootPageId: [\n");
+
+        $this->createSiteConfiguration($logger)->resolveAllExistingSites();
+
+        self::assertEqualsCanonicalizing(
+            [
+                ['level' => 'warning', 'identifier' => 'malformed-base'],
+                ['level' => 'warning', 'identifier' => 'broken-yaml'],
+            ],
+            $logger->records
+        );
+    }
+
+    #[Test]
+    public function exceptionOfSiteConfigurationLoadedEventListenerIsNotCollectedAsInvalidSite(): void
+    {
+        $this->writeSiteConfigurationFile('home', Yaml::dump(['rootPageId' => 42, 'base' => 'https://example.com/'], 99, 2));
+        $eventDispatcher = new class implements EventDispatcherInterface {
+            public function dispatch(object $event): object
+            {
+                throw new \RuntimeException('Listener failed', 1792566677);
+            }
+        };
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1792566677);
+        $this->createSiteConfiguration(eventDispatcher: $eventDispatcher)->resolveAllExistingSites();
     }
 }

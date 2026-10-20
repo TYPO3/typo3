@@ -1,0 +1,9 @@
+rootPageId: 4
+base: 'https://base-variant.example.com/'
+baseVariants:
+  -
+    base: 'https://base-variant.example.com/'
+    condition: 'false'
+  -
+    base: 'https:///'
+    condition: 'true'

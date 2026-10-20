@@ -51,6 +51,21 @@
       <trans-unit id="overview.unassignedSites.description">
         <source>The following site configurations don't belong to any page anymore and can be removed.</source>
       </trans-unit>
+      <trans-unit id="overview.invalidSites.title">
+        <source>Failing site configurations</source>
+      </trans-unit>
+      <trans-unit id="overview.invalidSites.description">
+        <source>The following site configurations contain errors and could not be loaded. These sites are unavailable in frontend and backend until the errors are fixed. Please note that a failing site may cause another existing site to be resolved for an overlapping configured base.</source>
+      </trans-unit>
+      <trans-unit id="overview.invalidSites.rootPage">
+        <source>Root page</source>
+      </trans-unit>
+      <trans-unit id="overview.invalidSites.error">
+        <source>Error</source>
+      </trans-unit>
+      <trans-unit id="invalidSite.field">
+        <source>Configuration option</source>
+      </trans-unit>
       <trans-unit id="overview.invalidSets.title">
         <source>Invalid site set configurations</source>
       </trans-unit>
@@ -104,6 +119,12 @@
       </trans-unit>
       <trans-unit id="overview.info.unassigned_sites.single">
         <source><![CDATA[There is currently <strong>%s site configuration</strong> that is not assigned to any page.]]></source>
+      </trans-unit>
+      <trans-unit id="overview.info.invalid_sites.multiple">
+        <source><![CDATA[<strong>%s site configurations</strong> contain errors and are currently unavailable.]]></source>
+      </trans-unit>
+      <trans-unit id="overview.info.invalid_sites.single">
+        <source><![CDATA[<strong>%s site configuration</strong> contains errors and is currently unavailable.]]></source>
       </trans-unit>
       <trans-unit id="overview.languages">
         <source>Languages</source>
@@ -194,6 +215,12 @@
       </trans-unit>
       <trans-unit id="edit.createNewSite">
         <source>Create new site</source>
+      </trans-unit>
+      <trans-unit id="edit.invalidSite.title">
+        <source>This site configuration contains errors</source>
+      </trans-unit>
+      <trans-unit id="edit.invalidSite.description">
+        <source>The site is unavailable in frontend and backend until the error is fixed. Placeholders for environment variables are shown unresolved in the form, while the error refers to their resolved value.</source>
       </trans-unit>
       <trans-unit id="validation.identifierRenamed.title">
         <source>Renamed identifier</source>

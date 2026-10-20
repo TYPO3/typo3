@@ -49,6 +49,7 @@ readonly class YamlFileLoader
     public const PROCESS_PLACEHOLDERS = 0x01;
     public const PROCESS_IMPORTS = 0x02;
     public const ALLOW_EMPTY_FILE = 0x04;
+    public const RETHROW_IMPORT_EXCEPTIONS = 0x08;
 
     public function __construct(
         private LoggerInterface $logger,
@@ -76,6 +77,9 @@ readonly class YamlFileLoader
     protected function loadAndParse(string $fileName, int $flags, ?string $currentFileName): array
     {
         $sanitizedFileName = $this->getStreamlinedFileName($fileName, $currentFileName);
+        if ($this->hasFlag($flags, self::RETHROW_IMPORT_EXCEPTIONS) && !is_readable($sanitizedFileName)) {
+            throw new YamlFileLoadingException('YAML file "' . $fileName . '" could not be loaded', 1792579693);
+        }
         $content = $this->getFileContents($sanitizedFileName);
         try {
             $content = Yaml::parse($content);
@@ -177,6 +181,9 @@ readonly class YamlFileLoader
                         $content = ArrayUtility::replaceAndAppendScalarValuesRecursive($importedContent, $content);
                     }
                 } catch (ParseException|YamlParseException|YamlFileLoadingException $exception) {
+                    if ($this->hasFlag($flags, self::RETHROW_IMPORT_EXCEPTIONS)) {
+                        throw $exception;
+                    }
                     $this->logger->error($exception->getMessage(), ['exception' => $exception]);
                 }
             }

@@ -115,6 +115,7 @@ readonly class SiteConfigurationController
         // forcing uncached sites will re-initialize `SiteFinder`
         // which is used later by FormEngine (implicit behavior)
         $allSites = $this->siteFinder->getAllSites(false);
+        $invalidSites = $this->siteConfiguration->getInvalidSites();
         $pages = $this->getAllSitePages();
         $unassignedSites = [];
         $duplicatedRootPages = [];
@@ -134,9 +135,21 @@ readonly class SiteConfigurationController
             }
         }
 
+        foreach ($invalidSites as $identifier => $invalidSite) {
+            $rootPageId = $invalidSite['rootPageId'] ?? 0;
+            if (isset($pages[$rootPageId])) {
+                $pages[$rootPageId]['invalidSiteIdentifier'] = $identifier;
+                $invalidSites[$identifier]['rootPage'] = $pages[$rootPageId];
+            }
+        }
+
         $rootPagesWithSiteConfiguration = [];
         $rootPagesWithoutSiteConfiguration = [];
         foreach ($pages as $page) {
+            if (isset($page['invalidSiteIdentifier']) && !isset($page['siteConfiguration'])) {
+                // Listed with the invalid sites, a new site configuration must not be offered
+                continue;
+            }
             if (!isset($page['siteConfiguration'])) {
                 $rootPagesWithoutSiteConfiguration[] = $page;
             } else {
@@ -156,6 +169,7 @@ readonly class SiteConfigurationController
             'pages' => $pages,
             'viewMode' => $viewMode,
             'unassignedSites' => $unassignedSites,
+            'invalidSites' => $invalidSites,
             'duplicatedRootPages' => $duplicatedRootPages,
             'duplicatedEntryPoints' => $this->getDuplicatedEntryPoints($allSites, $pages),
             'invalidSets' => $this->setRegistry->getInvalidSets(),
@@ -176,6 +190,14 @@ readonly class SiteConfigurationController
         $siteIdentifier = $request->getQueryParams()['site'] ?? null;
         if (empty($siteIdentifier)) {
             throw new \RuntimeException('Site identifier to show details must be set', 1763919655);
+        }
+        $invalidSite = $this->siteConfiguration->getInvalidSites()[$siteIdentifier] ?? null;
+        if ($invalidSite !== null) {
+            // Invalid sites provide no details, but are shown with their error in the edit view or the overview
+            return new RedirectResponse((string)$this->uriBuilder->buildUriFromRoute(
+                $invalidSite['rootPageId'] !== null ? 'site_configuration.edit' : 'site_configuration',
+                $invalidSite['rootPageId'] !== null ? ['site' => $siteIdentifier] : []
+            ));
         }
         $site = $this->siteFinder->getSiteByIdentifier($siteIdentifier);
         $pageRecord = BackendUtility::getRecord('pages', $site->getRootPageId()) ?? [];
@@ -241,16 +263,26 @@ readonly class SiteConfigurationController
         $isNewConfig = empty($siteIdentifier);
 
         $defaultValues = [];
+        $invalidSite = null;
+        $invalidSiteFieldLabel = '';
         if ($isNewConfig) {
+            $rootPageId = $pageUid;
             $defaultValues['site']['rootPageId'] = $pageUid;
             $pageRecord = BackendUtility::getRecord('pages', $pageUid) ?? [];
         } else {
-            $site = $this->siteFinder->getSiteByIdentifier($siteIdentifier);
-            $pageRecord = BackendUtility::getRecord('pages', $site->getRootPageId()) ?? [];
-        }
-
-        if (!$isNewConfig && !isset($allSites[$siteIdentifier])) {
-            throw new \RuntimeException('Existing config for site ' . $siteIdentifier . ' not found', 1521561226);
+            // Invalid sites are not available as Site object, but can be edited to fix them
+            $invalidSite = $this->siteConfiguration->getInvalidSites()[$siteIdentifier] ?? null;
+            $rootPageId = isset($allSites[$siteIdentifier]) ? $allSites[$siteIdentifier]->getRootPageId() : ($invalidSite['rootPageId'] ?? null);
+            if ($rootPageId === null) {
+                throw new \RuntimeException('Existing config for site ' . $siteIdentifier . ' not found', 1521561226);
+            }
+            $pageRecord = BackendUtility::getRecord('pages', $rootPageId) ?? [];
+            if ($invalidSite['field'] ?? null) {
+                $invalidSiteFieldLabel = $this->resolveConfigurationPathLabel(
+                    $invalidSite['field'],
+                    $this->siteConfiguration->load($siteIdentifier)
+                );
+            }
         }
 
         $returnUrl = $this->resolveReturnUrl($request);
@@ -258,7 +290,7 @@ readonly class SiteConfigurationController
         $formDataCompilerInput = [
             'request' => $request,
             'tableName' => 'site',
-            'vanillaUid' => $isNewConfig ? $pageUid : $allSites[$siteIdentifier]->getRootPageId(),
+            'vanillaUid' => $rootPageId,
             'command' => $isNewConfig ? 'new' : 'edit',
             'returnUrl' => $returnUrl,
             'customData' => [
@@ -280,9 +312,11 @@ readonly class SiteConfigurationController
         $view = $this->moduleTemplateFactory->create($request);
         $view->assignMultiple([
             // Always add rootPageId as additional field to have a reference for new records
-            'rootPageId' => $isNewConfig ? $pageUid : $allSites[$siteIdentifier]->getRootPageId(),
+            'rootPageId' => $rootPageId,
             'returnUrl' => $returnUrl,
             'formEngineHtml' => $formResult->html,
+            'invalidSite' => $invalidSite,
+            'invalidSiteFieldLabel' => $invalidSiteFieldLabel,
         ]);
         $this->configureEditViewDocHeader($view, $siteIdentifier, $documentTitle);
         $this->addDocHeaderBreadcrumb(
@@ -313,6 +347,7 @@ readonly class SiteConfigurationController
         foreach ($allSites as $site) {
             $mappingRootPageToSite[$site->getRootPageId()] = $site;
         }
+        $invalidSites = $this->siteConfiguration->getInvalidSites();
 
         $parsedBody = $request->getParsedBody();
         $returnUrl = $this->resolveReturnUrl($request);
@@ -348,6 +383,9 @@ readonly class SiteConfigurationController
             $currentSite = $mappingRootPageToSite[$pageId];
             $currentSiteConfiguration = $currentSite->getConfiguration();
             $currentIdentifier = $currentSite->getIdentifier();
+        } elseif (($invalidSite = $this->siteConfiguration->getInvalidSiteByRootPageId($pageId)) !== null) {
+            $currentIdentifier = $invalidSite['identifier'];
+            $currentSiteConfiguration = $this->siteConfiguration->load($currentIdentifier);
         } else {
             $currentSiteConfiguration = [];
             $isNewConfiguration = true;
@@ -360,7 +398,7 @@ readonly class SiteConfigurationController
 
         $siteTca = $this->siteTcaConfiguration->getTca();
         // Validate site identifier and do not store or further process it
-        $siteIdentifier = $this->validateAndProcessIdentifier($isNewConfiguration, $siteIdentifier, $pageId, $allSites, $mappingRootPageToSite, $siteTca);
+        $siteIdentifier = $this->validateAndProcessIdentifier($isNewConfiguration, $siteIdentifier, $pageId, $allSites, $mappingRootPageToSite, $siteTca, $invalidSites);
         unset($sysSiteRow['identifier']);
 
         try {
@@ -441,7 +479,7 @@ readonly class SiteConfigurationController
                             );
                         }
                         $newSysSiteData[$fieldName] = [];
-                        $lastLanguageId = $this->getLastLanguageId();
+                        $lastLanguageId = (int)max([$this->getLastLanguageId(), ...array_column($currentSiteConfiguration[$fieldName] ?? [], 'languageId')]);
                         foreach (GeneralUtility::trimExplode(',', $fieldValue, true) as $childRowId) {
                             if (!isset($data['site_language'][$childRowId])) {
                                 if (!empty($currentSiteConfiguration[$fieldName][$childRowId])) {
@@ -558,9 +596,10 @@ readonly class SiteConfigurationController
      * @param array<non-empty-string, Site> $allSites All sites loaded without `settings.yaml`.
      * @param array<int, Site> $mappingRootPageToSite Identifier site mapping as lookup. Not loaded `settings.yaml`.
      * @param array $siteTca TCA for site
+     * @param array<string, array> $invalidSites Sites which could not be resolved, indexed by identifier
      * @return mixed Verified / modified value
      */
-    protected function validateAndProcessIdentifier(bool $isNew, string $identifier, int $rootPageId, array $allSites, array $mappingRootPageToSite, array $siteTca)
+    protected function validateAndProcessIdentifier(bool $isNew, string $identifier, int $rootPageId, array $allSites, array $mappingRootPageToSite, array $siteTca, array $invalidSites = [])
     {
         $languageService = $this->getLanguageService();
         // Normal "eval" processing of field first
@@ -568,7 +607,7 @@ readonly class SiteConfigurationController
         if ($isNew) {
             // Verify no other site with this identifier exists. If so, find a new unique name as
             // identifier and show a flash message the identifier has been adapted
-            if (($allSites[$identifier] ?? null) instanceof Site) {
+            if (($allSites[$identifier] ?? null) instanceof Site || isset($invalidSites[$identifier])) {
                 // Force this identifier to be unique
                 $originalIdentifier = $identifier;
                 $identifier = StringUtility::getUniqueId($identifier . '-');
@@ -876,7 +915,7 @@ readonly class SiteConfigurationController
         $saveButton = $this->componentFactory->createSaveButton('siteConfigurationController');
         $view->addButtonToButtonBar($closeButton);
         $view->addButtonToButtonBar($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
-        if ($siteIdentifier) {
+        if ($siteIdentifier && isset($this->siteFinder->getAllSites()[$siteIdentifier])) {
             $editSiteSettingsButton = $this->componentFactory->createLinkButton()
                 ->setTitle($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:edit.editSiteSettings'))
                 ->setIcon($this->iconFactory->getIcon('actions-open', IconSize::SMALL))
@@ -1022,6 +1061,37 @@ readonly class SiteConfigurationController
         return array_filter($duplicatedEntryPoints, static function (array $variants): bool {
             return count($variants) > 1 || reset($variants) > 1;
         }, ARRAY_FILTER_USE_BOTH);
+    }
+
+    /**
+     * Resolve a configuration path like "languages.1.base" to the labels of the site configuration form,
+     * for example "Languages › German › Entry Point".
+     */
+    protected function resolveConfigurationPathLabel(string $configurationPath, array $configuration): string
+    {
+        $siteTca = $this->siteTcaConfiguration->getTca();
+        $table = 'site';
+        $labels = [];
+        $segments = explode('.', $configurationPath);
+        while (($segment = array_shift($segments)) !== null) {
+            $columnConfiguration = $siteTca[$table]['columns'][$segment] ?? null;
+            if ($columnConfiguration === null) {
+                // Options not managed by the form are shown as they are
+                $labels[] = implode('.', [$segment, ...$segments]);
+                break;
+            }
+            $labels[] = $this->getLanguageService()->sL($columnConfiguration['label'] ?? $segment);
+            $childTable = ($columnConfiguration['config']['type'] ?? '') === 'siteLanguage'
+                ? 'site_language'
+                : ($columnConfiguration['config']['foreign_table'] ?? null);
+            if ($childTable !== null && $segments !== []) {
+                $index = array_shift($segments);
+                $configuration = $configuration[$segment][$index] ?? [];
+                $labels[] = (string)($configuration['title'] ?? $configuration['condition'] ?? $index);
+                $table = $childTable;
+            }
+        }
+        return implode(' › ', $labels);
     }
 
     /**

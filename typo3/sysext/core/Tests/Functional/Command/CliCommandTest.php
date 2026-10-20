@@ -50,6 +50,8 @@ final class CliCommandTest extends AbstractCommandTestCase
             ['command' => 'mailer:spool:send', 'args' => [], 'expectedExitCode' => 1],
             ['command' => 'site:list', 'args' => [], 'expectedExitCode' => 0],
             ['command' => 'site:show show-me', 'args' => [], 'expectedExitCode' => 0],
+            ['command' => 'site:validate', 'args' => [], 'expectedExitCode' => 0],
+            ['command' => 'site:validate show-me', 'args' => [], 'expectedExitCode' => 0],
             ['command' => 'upgrade:list', 'args' => [], 'expectedExitCode' => 0],
             ['command' => 'completion bash', 'args' => [], 'expectedExitCode' => 0],
             ['command' => 'completion fish', 'args' => [], 'expectedExitCode' => 0],

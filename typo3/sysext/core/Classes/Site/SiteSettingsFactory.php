@@ -83,7 +83,7 @@ readonly class SiteSettingsFactory
 
         return $this->yamlFileLoader->load(
             GeneralUtility::fixWindowsFilePath($fileName),
-            YamlFileLoader::PROCESS_PLACEHOLDERS | YamlFileLoader::PROCESS_IMPORTS | YamlFileLoader::ALLOW_EMPTY_FILE
+            YamlFileLoader::PROCESS_PLACEHOLDERS | YamlFileLoader::PROCESS_IMPORTS | YamlFileLoader::ALLOW_EMPTY_FILE | YamlFileLoader::RETHROW_IMPORT_EXCEPTIONS
         );
     }
 
