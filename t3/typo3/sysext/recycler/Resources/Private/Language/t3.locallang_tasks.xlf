@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1424776442" source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/locallang_tasks.xlf" date="2011-10-17T20:22:35Z" product-name="recycler" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="cleanerTaskTitle" resname="cleanerTaskTitle">
+        <source>Remove deleted records</source>
+        <target>crwdns78116:0crwdne78116:0</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskDescription" resname="cleanerTaskDescription">
+        <source>Deletes rows from the database which are flagged "deleted"</source>
+        <target>crwdns78118:0crwdne78118:0</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskPeriod" resname="cleanerTaskPeriod">
+        <source>Delete entries older than (in days)</source>
+        <target>crwdns78120:0crwdne78120:0</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskTCA" resname="cleanerTaskTCA">
+        <source>Tables</source>
+        <target>crwdns78122:0crwdne78122:0</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskDescriptionTables" resname="cleanerTaskDescriptionTables">
+        <source>Tables: %s</source>
+        <target>crwdns78124:0%scrwdne78124:0</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskDescriptionDays" resname="cleanerTaskDescriptionDays">
+        <source>Older than %d days(s)</source>
+        <target>crwdns78126:0%dcrwdne78126:0</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskErrorPeriod" resname="cleanerTaskErrorPeriod">
+        <source>The period has to be an integer and greater than zero.</source>
+        <target>crwdns78128:0crwdne78128:0</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskErrorTCAempty" resname="cleanerTaskErrorTCAempty">
+        <source>You have to select at least one table.</source>
+        <target>crwdns78130:0crwdne78130:0</target>
+      </trans-unit>
+      <trans-unit id="cleanerTaskErrorTCANotSet" resname="cleanerTaskErrorTCANotSet">
+        <source>The table "%s" is not in the TCA.</source>
+        <target>crwdns78132:0%scrwdne78132:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
