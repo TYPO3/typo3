@@ -1,0 +1,10 @@
+"tx_blogexample_domain_model_blog"
+,"uid","pid","sys_language_uid","l18n_parent","title","description","posts","deleted","tstamp","crdate"
+,1,2,0,0,"Tech blog","News about TYPO3",1,1,1700000000,1500000000
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","blog","title","comments","deleted","tstamp","crdate"
+,1,2,0,0,1,"Hello world",2,1,1700000000,1500000000
+"tx_blogexample_domain_model_comment"
+,"uid","pid","post","author","content","deleted","tstamp","crdate"
+,1,2,1,"Max","Nice read",1,1700000000,1500000000
+,2,2,1,"Max","Well written",1,1700000000,1500000000

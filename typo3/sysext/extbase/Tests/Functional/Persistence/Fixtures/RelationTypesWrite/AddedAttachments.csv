@@ -1,0 +1,7 @@
+"tx_blogexample_domain_model_collection"
+,"uid","pid","title","gallery_attachments","document_attachments","tstamp","crdate"
+,1,2,"First collection",1,1,1700000000,1500000000
+"tx_blogexample_domain_model_attachment"
+,"uid","pid","title","parent","parent_table","parent_field","sorting","tstamp","crdate"
+,1,2,"Gallery attachment",1,"tx_blogexample_domain_model_collection","gallery_attachments",1,1700000000,1700000000
+,2,2,"Document attachment",1,"tx_blogexample_domain_model_collection","document_attachments",1,1700000000,1700000000

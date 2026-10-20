@@ -1,0 +1,7 @@
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","additional_comments","tstamp","crdate"
+,1,2,0,0,"Hello world","1,2",1700000000,1500000000
+"tx_blogexample_domain_model_comment"
+,"uid","pid","post","author","email","content","tstamp","crdate"
+,1,2,0,"Max","max@example.com","Nice read",1500000000,1500000000
+,2,2,0,"Ben","ben@example.com","Well written",1700000000,1700000000

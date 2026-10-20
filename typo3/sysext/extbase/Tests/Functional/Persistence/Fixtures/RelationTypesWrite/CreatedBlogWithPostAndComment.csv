@@ -1,0 +1,9 @@
+"tx_blogexample_domain_model_blog"
+,"uid","pid","sys_language_uid","l18n_parent","title","description","posts","tstamp","crdate"
+,1,2,0,0,"New blog","New blog description",1,1700000000,1700000000
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","blog","title","comments","tstamp","crdate"
+,1,2,0,0,1,"New post",1,1700000000,1700000000
+"tx_blogexample_domain_model_comment"
+,"uid","pid","post","author","email","content","tstamp","crdate"
+,1,2,1,"Max","max@example.com","First comment",1700000000,1700000000
