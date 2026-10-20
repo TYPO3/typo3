@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814889" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_view_help.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="details" resname="details">
+        <source>Details</source>
+        <target>crwdns68416:0crwdne68416:0</target>
+      </trans-unit>
+      <trans-unit id="syntax" resname="syntax">
+        <source>Syntax</source>
+        <target>crwdns68418:0crwdne68418:0</target>
+      </trans-unit>
+      <trans-unit id="seeAlso" resname="seeAlso">
+        <source>See also</source>
+        <target>crwdns68420:0crwdne68420:0</target>
+      </trans-unit>
+      <trans-unit id="goBack" resname="goBack">
+        <source>Go back</source>
+        <target>crwdns68422:0crwdne68422:0</target>
+      </trans-unit>
+      <trans-unit id="fullDescription" resname="fullDescription">
+        <source>See full description of table</source>
+        <target>crwdns68424:0crwdne68424:0</target>
+      </trans-unit>
+      <trans-unit id="fullDescription_module" resname="fullDescription_module">
+        <source>See full description of module</source>
+        <target>crwdns68426:0crwdne68426:0</target>
+      </trans-unit>
+      <trans-unit id="goToToc" resname="goToToc">
+        <source>&lt;&lt; go to Manual Index</source>
+        <target>crwdns68428:0crwdne68428:0</target>
+      </trans-unit>
+      <trans-unit id="to_top" resname="to_top">
+        <source>To top</source>
+        <target>crwdns68430:0crwdne68430:0</target>
+      </trans-unit>
+      <trans-unit id="TOC" resname="TOC">
+        <source>Table Of Contents</source>
+        <target>crwdns68432:0crwdne68432:0</target>
+      </trans-unit>
+      <trans-unit id="TOC_core" resname="TOC_core">
+        <source>TYPO3 Core Features</source>
+        <target>crwdns68434:0crwdne68434:0</target>
+      </trans-unit>
+      <trans-unit id="TOC_modules" resname="TOC_modules">
+        <source>Backend Modules</source>
+        <target>crwdns68436:0crwdne68436:0</target>
+      </trans-unit>
+      <trans-unit id="TOC_tables" resname="TOC_tables">
+        <source>Database Tables</source>
+        <target>crwdns68438:0crwdne68438:0</target>
+      </trans-unit>
+      <trans-unit id="TOC_extensions" resname="TOC_extensions">
+        <source>Extensions</source>
+        <target>crwdns68440:0crwdne68440:0</target>
+      </trans-unit>
+      <trans-unit id="TOC_glossary" resname="TOC_glossary">
+        <source>Glossary</source>
+        <target>crwdns68442:0crwdne68442:0</target>
+      </trans-unit>
+      <trans-unit id="TOC_other" resname="TOC_other">
+        <source>Other</source>
+        <target>crwdns68444:0crwdne68444:0</target>
+      </trans-unit>
+      <trans-unit id="close" resname="close">
+        <source>Close</source>
+        <target>crwdns68446:0crwdne68446:0</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title">
+        <source>TYPO3 Inline Help</source>
+        <target>crwdns68448:0crwdne68448:0</target>
+      </trans-unit>
+      <trans-unit id="manual_title" resname="manual_title">
+        <source>TYPO3 Inline User Manual</source>
+        <target>crwdns68450:0crwdne68450:0</target>
+      </trans-unit>
+      <trans-unit id="introduction" resname="introduction">
+        <source>Introduction</source>
+        <target>crwdns68452:0crwdne68452:0</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description">
+        <source>The TYPO3 Inline User Manual is composed from the available help in this TYPO3 Installation (Context Sensitive Help). Here you will find a general description of the TYPO3 Core modules, installation specific Backend Modules and Database Tables that are available based on your login credentials.</source>
+        <target>crwdns68454:0crwdne68454:0</target>
+      </trans-unit>
+      <trans-unit id="full_manual" resname="full_manual">
+        <source>Full Manual (in one page)</source>
+        <target>crwdns68456:0crwdne68456:0</target>
+      </trans-unit>
+      <trans-unit id="full_manual_chapters" resname="full_manual_chapters">
+        <source>Manual Chapters</source>
+        <target>crwdns68458:0crwdne68458:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
