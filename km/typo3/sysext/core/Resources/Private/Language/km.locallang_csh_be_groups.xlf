@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814852" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_be_groups.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>This is the Backend administration user groups available for the Backend users. These determine the access credentials for the Backend users.</source>
+        <target state="final">នេះ​ជា​ក្រុម​អ្នក​គ្រប់គ្រង Backend សម្រាប់​អ្នក​ប្រើ Backend ។ ទាំងអស់​នេះ​កំណត់​សិទ្ធិ​ប្រើប្រាស់​ដល់​អ្នក​ប្រើ Backend ។</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>Groups contain the main permission settings you can set for a backend user. Many users can be members of the same group and thus share permissions.
+When a user is a member of many groups (including sub-groups) then the permission settings are added together so that the more groups a user is a member of, the more access is granted to him.</source>
+			<target state="final">ក្រុម​មាន​ការកំណត់​សិទ្ធិ​ធំ​ដែល​អ្នក​អាច​កំណត់​លើ​អ្នក​ប្រើ backend ។ អ្នក​ប្រើ​មួយ​ចំនួន​អាច​ជា​សមាជិក​ក្នុង​ក្រុម​ដូច​គ្នា ដូច្នេះ​ហើយ​វា​ផ្លាស់ប្ដូរ​សិទ្ធិ​គ្នា ។ ពេល​អ្នក​ប្រើ​ម្នាក់​ជា​សមាជិក​ក្រុម​ច្រើន (រួម​ទាំង​ក្រុម​រង) ការកំណត់​សិទ្ធិ​ត្រូវ​បាន​បន្ថែម​ទាំងអស់​គ្នា ដូច្នេះ​ ក្រុម​អ្នក​ដែល​​មាន​អ្នក​ប្រើ​ជា​សមាជិក​ច្រើន ការទទួល​ការប្រើប្រាស់​កាន់តែ​ច្រើន​លើ​ក្រុម​នោះ ។</target></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>Backend Usergroups are found in the root of the page tree where only "admin" users can edit them. The usergroups with red icons in this image are the ones with Access Lists enabled. The blue are just plain usergroups.
+This usergroup has Access Lists enabled. In the Access Lists you specify which modules, tables, database fields etc. the group members can access in TYPO3.</source>
+			<target state="final">ក្រុម​អ្នក​ប្រើ backend មាន​នៅ​ក្នុង​គោល​ឋានានុក្រម​ទំព័រ​ដេល​មាន​តែ​អ្នក "គ្រប់គ្រង" អាច​កែប្រែ​បាន ។ ក្រុម​អ្នក​ប្រើ​ដែល​មាន​រូបសញ្ញា​ពណ៌​ក្រហម​ក្នុង​រូបភាព​នេះ ជា​អ្នក​ដែល​បាន​ផ្ដល់​សិទ្ធិ ។ ពណ៌​ខៀវ​ជា​ក្រុម​អ្នក​ប្រើ​ធម្មតា ។ ក្រុម​នេះ​ត្រូវ​បាន​ផ្ដល់​សិទ្ធិ​ឲ្យ ។ ក្នុង​បញ្ជី​សិទ្ធិ អ្នក​កំណត់​លើ​ម៉ូឌុល, តារាង, ឃ្លាំង​ទិន្នន័យ ។ល។ សមាជិក​ក្រុម​មានសិទ្ធិ​ក្នុង TYPO3 ។</target></trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Name of the Backend usergroup. The name should be descriptive and can always be changed later.</source>
+        <target state="final">ឈ្មោះ​ក្រុម​អ្នក​ប្រើ Backend ។ ឈ្មោះ​គួរតែ​ពណ៌នា និង អាច​ប្ដូរ​បាន​នៅ​ពេល​ក្រោយ ។</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>Backend Usergroups are identified by their "uid" field value (integer) and therefore the title can always be changed. The "uid" can never be changed for a user group.</source>
+        <target state="final">ក្រុមអ្នក​ប្រើប្រាស់ Backend ត្រូវ​បាន​សម្គាល់​ដោយ​តម្លៃ "uid" (លេខ) ដូច្នេះ ចំណងជើង​អាច​កែប្រែ ឬ ផ្លាស់ប្ដូរ​បាន ។ "uid" មិន​អាច​ផ្លាស់ប្ដូរ​បាន​ទេ ។</target>
+      </trans-unit>
+      <trans-unit id="title.image_descr" resname="title.image_descr" approved="yes">
+        <source>The usergroup title is shown in the record lists.</source>
+        <target state="final">ចំណងជើង​ក្រុម​បង្ហាញ​ក្នុង​បញ្ជី​ទិន្នន័យ ។</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.description" resname="db_mountpoints.description" approved="yes">
+        <source>Define page tree root points for the group members.</source>
+        <target state="final">កំណត់​ចំណុច​ចាប់ផ្ដើម​ឋានានុក្រម​ទំព័រ​គោល​សម្រាប់​សមាជិក​ក្រុម ។</target>
+      </trans-unit>
+      <trans-unit id="db_mountpoints.details" resname="db_mountpoints.details" xml:space="preserve" approved="yes">
+				<source>The page tree in TYPO3 must have some points-of-entry defined. Here you should insert one or more references to a page which will represent a new root page for the page tree. This is called a "Database mount" or "DB mount".
+DB mounts &lt;i&gt;may&lt;/i&gt; be inherited by the users which are members of this group. This depends on whether the user is configured to include the mounts set in the member groups.
+However it's recommended to use backend user groups like this to configure mounts. Especially if they need to be shared among many users.</source>
+			<target state="final">ឋានានុក្រម​ក្នុង TYPO3 ត្រូវ​មាន​​ការកំណត់​លើ​ចំណុច​ទិន្នន័យ​មួយ​ចំនួន ។ ទីនេះ​អ្នក​គួរ​បញ្ចូល​តំណ​មួយ ឬ ច្រើន​ទៅ​កាន់​ទំព័រ​ដែល​នឹង​បង្ហាញ​អំពី​ទំព័រ​គោល​ថ្មី​ក្នុង​ឋានានុក្រម​ទំព័រ ។ វា​ត្រូវបាន​គេ​ហៅ​ថា "ឃ្លាំងទិន្នន័យ​ម៉ោនថ៍" ឬ "DB ម៉ោនថ៍" ។ DB ម៉ោនថ៍&lt;i&gt;អាច​&lt;/i&gt;ទទួល​មរត៌ក​ដោយ​អ្នក​ប្រើ​ដែល​ជា​សមាជិក​របស់​ក្រុម ។ វា​អាស្រ័យ​លើ​អ្នក​ប្រើ​ដែល​ត្រូវ​បាន​កំណត់​ឲ្យ​បញ្ចូល​បណ្ដុំ​ម៉ោនថ៍​ក្នុង​សមាជិក​ក្រុម ។ ទោះជា​យ៉ាង​ណា វា​ត្រូវ​បាន​តម្រូវ​ឲ្យ​ប្រើ​ក្រុម​អ្នក​ប្រើ backend ដូច្នេះ ដើម្បី​កំណត់​ម៉ោនថ៍ ។ ជាពិសេស ប្រសិន​បើ​ពួក​វា​ត្រូវការ​ចែករំលែក​ក្នុង​ចំណោម​អ្នក​ប្រើប្រាស់​ជា​ច្រើន ។</target></trans-unit>
+      <trans-unit id="_db_mountpoints.seeAlso" resname="_db_mountpoints.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:file_mountpoints,
+be_users:db_mountpoints,
+be_users:options,
+xMOD_csh_corebe:list_module</source>
+				
+			<target state="final">be_groups:file_mountpoints,
+be_users:db_mountpoints,
+be_users:options,
+xMOD_csh_corebe:list_module</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="db_mountpoints.image_descr" resname="db_mountpoints.image_descr" xml:space="preserve" approved="yes">
+				<source>Here a page is added as a "DB mount"...
+... and in the page tree of member users this will become the starting point for the page tree.</source>
+			<target state="final">ទីនេះ ទំព័រ​ត្រូវ​បាន​បន្ថែម​ជា "DB ម៉ោនថ៍"... ...ហើយ​ក្នុង​ឋានានុក្រម​ទំព័រ​នៃ​សមាជិក​អ្នក​ប្រើ វា​នឹង​ក្លាយ​ជា​ចំណុច​ចាប់ផ្ដើម​សម្រាប់​ឋានានុក្រម​ទំព័រ ។</target></trans-unit>
+      <trans-unit id="file_mountpoints.description" resname="file_mountpoints.description" approved="yes">
+        <source>Define startpoints for the file folder tree.</source>
+        <target state="final">កំណត់​ចំណុច​ចាប់ផ្ដើម​សម្រាប់​ឋានានុក្រម​សឺមី​ឯកសារ ។</target>
+      </trans-unit>
+      <trans-unit id="file_permissions.description" resname="file_permissions.description" approved="yes">
+        <source>Select file operation permissions for the group members.</source>
+        <target state="final">រើស​សិទ្ធិ​លើ​ឯកសារ​សម្រាប់​សមាជិក​ក្រុម ។</target>
+      </trans-unit>
+      <trans-unit id="fileoper_perms.description" resname="fileoper_perms.description" approved="yes">
+        <source>Select file operation permissions for the group members.</source>
+        <target state="final">រើស​សិទ្ធិ​លើ​ឯកសារ​សម្រាប់​សមាជិក​ក្រុម ។</target>
+      </trans-unit>
+      <trans-unit id="pagetypes_select.description" resname="pagetypes_select.description" approved="yes">
+        <source>Select which 'Types' of Pages the members may set.</source>
+        <target state="final">រើស​ 'ប្រភេទ' ទំព័រ​ដែល​សមាជិក​អាច​រើស ។</target>
+      </trans-unit>
+      <trans-unit id="_pagetypes_select.seeAlso" resname="_pagetypes_select.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:doktype,
+be_groups:inc_access_lists</source>
+				
+			<target state="final">pages:doktype,
+be_groups:inc_access_lists</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="pagetypes_select.image_descr" resname="pagetypes_select.image_descr" approved="yes">
+        <source>The list of typical page types available in a CMS context. Selecting Page types for a usergroup defines which of these options can be selected by member users.</source>
+        <target state="final">បញ្ជី​នៃ​ប្រភេទ​ទំព័រ​ធម្មតា​មាន​ក្នុង​​ឯកសារ​ជំនួយ CMS ។ រើស​ប្រភេទ​ទំព័រ​សម្រាប់​ក្រុម​អ្នក​ប្រើ បញ្ជាក់​ជម្រើស​មួយ​ណា​នៃ​ជម្រើស​ទាំងនេះ អាច​ជ្រើសរើស​បាន​ដោយ​សមាជិក​ក្រុម ។</target>
+      </trans-unit>
+      <trans-unit id="tables_modify.description" resname="tables_modify.description" approved="yes">
+        <source>Select which tables the members may modify.</source>
+        <target state="final">រើស​តារាង​ដែល​សមាជិក​អាច​កែ ។</target>
+      </trans-unit>
+      <trans-unit id="tables_modify.details" resname="tables_modify.details" xml:space="preserve" approved="yes">
+				<source>An important part of setting permissions is to define which database tables a user is allowed to modify.
+Tables allowed for modification is automatically also allowed for selection and thus you don't need to set tables entered here in the "Tables (listing)" box.
+
+&lt;strong&gt;Notice&lt;/strong&gt; that this list adds to the fields selected in other member groups of a user.</source>
+			<target state="final">ផ្នែក​សំខាន់​នៃ​ការកំណត់​សិទ្ធិ គឺ​កំណត់​តារាង​ទិន្នន័យ​មួយ​ណា​ត្រូវបាន​អនុញ្ញាត​ឲ្យ​អ្នក​ប្រើ​កែប្រែ ។ តារាង​ដែល​បាន​អនុញ្ញាត​ឲ្យ​កែប្រែ ក៏​ត្រូវ​បាន​អនុញ្ញាត​ឲ្យ​ជ្រើសរើស​ដោយ​ស្វ័យប្រវត្តិ​ផង​ដែរ ដូច្នេះ​អ្នក​មិន​ចាំបាច់​កំណត់​តារាង​ដែល​បាន​បញ្ចូល​នៅ​ទីនេះ​ក្នុងប្រអប់ "(បញ្ជី)​តារាង" ទេ ។ &lt;strong&gt;ចំណាំ&lt;/strong&gt;​ថា បញ្ជី​នេះ ថែម​ទៅ​លើ​ប្រអប់​ជ្រើសរើស​ក្នុង​សមាជិក​ក្រុម​នៃ​អ្នក​ប្រើប្រាស់ ។</target></trans-unit>
+      <trans-unit id="_tables_modify.seeAlso" resname="_tables_modify.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:tables_select,
+be_groups:inc_access_lists,
+xMOD_csh_corebe:new_ce</source>
+				
+			<target state="final">be_groups:tables_select,
+be_groups:inc_access_lists,
+xMOD_csh_corebe:new_ce</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="tables_modify.image_descr" resname="tables_modify.image_descr" xml:space="preserve" approved="yes">
+				<source>The screenshot above shows how the "Create new record" dialog looks for a user limited to editing only "Page" and "Page content" elements.
+The two tables are simply added to the list of "Tables (modify)" in the group Access Lists.
+This is (an example of) the full amount of elements that can be created on the page by the "admin" user for whom there are no restrictions.</source>
+			<target state="final">រូបភាព​ខាង​លើ បង្ហាញ​ពី​​រូបរាង​ផ្ទាំង​សារ "បង្កើត​ទិន្នន័យ​ថ្មី" សម្រាប់​អ្នក​ប្រើ កម្រិត​លើ​ការកែប្រែ​លើ​ "ទំព័រ" និង ធាតុ "មាតិកា​ទំព័រ" ។ តារាង​ពីរ​ត្រូវ​បាន​បន្ថែម​ទៅ​ក្នុង​បញ្ជី "តារាង​(កែប្រែ)" ក្នុង​បញ្ជី​សិទ្ធិ​របស់​ក្រុម ។ នេះ​ជា (ឧទាហរណ៍​មួយ​នៃ) ចំនួន​ធាតុ​ទាំងអស់​ដែល​អាច​ត្រូវ​បាន​បង្កើត​លើ​ទំព័រ​ដោយ​អ្នក "គ្រប់គ្រង" សម្រាប់​អ្នក​ដែល​មិន​មាន​កម្រិត​កំណត់​ខ្ពស់ ។</target></trans-unit>
+      <trans-unit id="tables_select.description" resname="tables_select.description" approved="yes">
+        <source>Select which tables the members may see in record lists ('modify' tables does not need to be re-entered here!).</source>
+        <target state="final">រើស​តារាង​ណា​ដែល​សមាជិក​អាច​ឃើញ​ក្នុង​បញ្ជី​ទិន្នន័យ (តារាង 'កែប្រែ' មិន​ចាំបាច់​ក្នុង​ការបញ្ចូល​ជា​ថ្មី​នៅ​ទីនេះ​ទេ!) ។</target>
+      </trans-unit>
+      <trans-unit id="tables_select.details" resname="tables_select.details" xml:space="preserve" approved="yes">
+				<source>This determines which tables - in addition to those selected in the "Tables (modify)" box - may be viewed and listed for the member users. He is not able to &lt;em&gt;edit&lt;/em&gt; the table - only select the records and view the content.
+This list is not very important. It's a pretty rare situation that a user may select tables but not modify them.</source>
+			<target state="final">ទីនេះ​បញ្ជាក់​អំពី​តារាង​មួយ​ណា - ក្នុង​ការបន្ថែម​ទៅ​លើ​អ្វី​ដែល​បាន​ជ្រើសរើស​ក្នុង​ប្រអប់ "តារាង (កែប្រែ)" - អាច​ត្រូវ​បាន​បង្ហាញ​សម្រាប់​អ្នកប្រើ​ជា​សមាជិក ។ គាត់​មិន​អាច &lt;em&gt;កែប្រែ&lt;/em&gt; លើ​តារាង - បាន​ត្រឹមតែ​ជ្រើសរើស​ទិន្នន័យ និង មើល​មាតិកា ។ នេះ​ជា​បញ្ជី​ដែល​មិន​សូវ​សំខាន់​ខ្លាំង ។ វា​កម្រ​កើត​មាន​ក្នុង​ករណី​អ្នក​ប្រើ​ជ្រើសរើស​តារាង ប៉ុន្តែ​មិន​កែប្រែ​តារាង​នោះ ។</target></trans-unit>
+      <trans-unit id="_tables_select.seeAlso" resname="_tables_select.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:tables_modify,
+be_groups:inc_access_lists</source>
+				
+			<target state="final">be_groups:tables_modify,
+be_groups:inc_access_lists</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="non_exclude_fields.description" resname="non_exclude_fields.description" approved="yes">
+        <source>Certain table fields are not available by default. Those fields can be explicitly enabled for the group members here.</source>
+        <target state="final">មិនមាន​ប្លុក​ទិន្នន័យ​របស់​តារាង​មក​ជាមួយ​ស្រាប់​ទេ ។ ប្លុក​ទាំងនោះ​អាច​បើក​ដំណើរការ​សម្រាប់​សមាជិក​ក្រុម​នៅ​ទីនេះ ។</target>
+      </trans-unit>
+      <trans-unit id="non_exclude_fields.details" resname="non_exclude_fields.details" xml:space="preserve" approved="yes">
+				<source>"Allowed excludefields" allows you to detail the permissions granted to tables. By default all these fields are not available to users but must be specifically enabled by being selected here.
+One application of this is that pages are usually hidden by default and that the hidden field is not available for a user unless he has been granted access by this list of "Allowed excludefields". So the user may create a new page, but cannot un-hide the page - unless of course he has been assigned the "Page: Hide page" exclude field through one of his member groups.
+Of course it does not make any sense to add fields from tables which are not included in the list of tables allowed to be modified.</source>
+			<target state="final">"បាន​អនុញ្ញាត​ប្រអប់​អនុវត្ត" អាច​ឲ្យ​អ្នក​លម្អិត​លើ​​សិទ្ធិ​ដែល​បាន​ផ្ដល់​ទៅ​លើ​តារាង ។ ជាទូទៅ​ប្រអប់​ទាំងនេះ​មិន​ដំណើរការ​ឲ្យ​អ្នក​ប្រើ ប៉ុន្តែ​ត្រូវ​តែ​បញ្ជាក់​ដំណើរការ​ដោយ​​ត្រូវ​បាន​ជ្រើសរើស​ទីនេះ ។ កម្មវិធី​មួយ​​ក្នុង​នេះ​គឺ​ទំព័រ​នោះ​​ត្រូវ​បាន​លាក់ ហើយ​​ប្រអប់​ដែល​លាក់​មិន​ដំណើរការ​ចំពោះ​អ្នក​ប្រើ ដរាប​ណា​គាត់​ត្រូវ​បាន​ផ្ដល់​សិទ្ធិ​ដោយ​ "បាន​អនុញ្ញាត​ប្រអប់​អនុវត្ត" នេះ ។ ដូច្នេះ​អ្នក​ប្រើ​អាច​បង្កើត​ទំព័រ​ថ្មី ប៉ុន្តែ​មិន​អាច​ដោះ​ការលាក់​ទំព័រ - លុះត្រាតែ​គាត់​ត្រូវ​បាន​ផ្ដល់​ការអនុវត្ត​លើ​ប្រអប់ "ទំព័រ៖ លាក់​ទំព័រ" តាមរយៈ​នរណា​ម្នាក់​ក្នុង​ក្រុម​របស់​គាត់ ។ ប្រាកដ​ណាស់​ថា​វា​មិន​មាន​ការយល់ច្រឡំ​ក្នុង​ការ​ថែម​ប្រអប់​ពី​តារាង​ដែល​មិន​បាន​បញ្ចូល​ក្នុង​បញ្ជី​តារាង​ដែល​អនុញ្ញាត​ឲ្យ​កែ​នោះ​ទេ ។</target></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Disables a user group.</source>
+        <target state="final">បិទ​ក្រុម​អ្នក​ប្រើ ។</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.</source>
+        <target state="final">ប្រសិន​បើ​អ្នក​បិទ​ដំណើរការ​ក្រុមអ្នក​ប្រើ អ្នក​ប្រើ​ទាំងអស់​ដែល​ជា​សមាជិកក្រុម​នឹង​មាន​ផល​ប៉ះពាល់​ មិន​ទទួល​មរត៌ក​ដែល​ក្រុម​នេះ​បាន​ផ្ដល់​ឲ្យ ។</target>
+      </trans-unit>
+      <trans-unit id="lockToDomain.details" resname="lockToDomain.details" xml:space="preserve" approved="yes">
+				<source>A TYPO3 system may host multiple websites on multiple domains. Therefore this option secures that users can login only from a certain host name.
+Setting this to for example "www.my-domain.com" will require a user to be logged in from that domain if membership of this group should be gained. Otherwise the group will be ignored for the user.</source>
+			<target state="final">ប្រព័ន្ធ TYPO3 អាច​បង្ហោះ​វែបសាយ​ច្រើន​លើ​ដូមេន​ច្រើន ។ ដូច្នេះ ជម្រើស​នេះ​មាន​សុវត្ថិភាព ដែល​អ្នក​ប្រើ​អាច​កត់ត្រា​ចូល​តែ​ពី​ម៉ាស៊ីន​បង្ហោះ​ជាក់លាក់ ។ ការកំណត់​ដូច្នេះ ឧទាហរណ៍ "www.my-domain.com" នឹង​តម្រូវ​ឲ្យ​អ្នក​ប្រើ​កត់ត្រា​ចូល​ពី​ដូមេន​នោះ ប្រសិន​បើ​គាត់​ជា​សមាជិក​ក្រុម​នេះ ។ ម្យ៉ាង​ទៀត ក្រុម​នេះ​នឹង​លើកលែង​ដល់​អ្នក​ប្រើ ។</target></trans-unit>
+      <trans-unit id="_lockToDomain.seeAlso" resname="_lockToDomain.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_users:lockToDomain,
+fe_users:lockToDomain,
+fe_groups:lockToDomain</source>
+				
+			<target state="final">be_users:lockToDomain,
+fe_users:lockToDomain,
+fe_groups:lockToDomain</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="groupMods.description" resname="groupMods.description" approved="yes">
+        <source>Select available backend modules for the group members.</source>
+        <target state="final">ជ្រើសរើស​ម៉ូឌុល backend ដែល​មាន​សម្រាប់​សមាជិក​ក្រុម ។</target>
+      </trans-unit>
+      <trans-unit id="groupMods.details" resname="groupMods.details" xml:space="preserve" approved="yes">
+				<source>This determines which 'menu items' are available for the group members.
+This list of modules is added to any modules selected in other member groups of a user as well as the corresponding field of the user himself.</source>
+			<target state="final">នេះ​បញ្ជាក់​អំពី​ "ធាតុ​មឺនុយ​" ដែល​មាន​សម្រាប់​សមាជិក​ក្រុម ។ បញ្ជី​ម៉ូឌុល​នេះ​ត្រូវ​បាន​បន្ថែម​ទៅ​ម៉ូឌុល​មួយ​ចំនួន​ដែល​បាន​ជ្រើសរើស​ក្នុង​សមាជិក​ក្រុម​ផ្សេង​តៀត​នៃ​អ្នក​ប្រើ​ម្នាក់ ក៏​ដូច​ជា​ទំនាក់ទំនង​នៃ​អ្នក​ប្រើ​ខ្លួនឯង ។</target></trans-unit>
+      <trans-unit id="groupMods.image_descr" resname="groupMods.image_descr" xml:space="preserve" approved="yes">
+				<source>The Backend Modules available for a user is reflected in the menu items of the backend. For most regular users only modules in the Web and File main modules are enabled. Typically "Web &gt; Page" is used for editing of page content.
+This is the assignment of Backend Modules to the user from the screenshot above. All four Web sub-modules and the two User sub-modules are configured here. However the File &gt; Filelist module must have been configured for another member group of this user (or inside the user profile itself which is also possible). The Help modules are all accessible by default and does not require explicit access.</source>
+			<target state="final">ម៉ូឌុល backend សម្រាប់​អ្នក​ប្រើ​មាន​ឥទ្ធិពល​ក្នុង​ធាតុ​មឺនុយ​របស់ backend ។ សម្រាប់​អ្នក​ប្រើ​ទូទៅ​ភាគច្រើន មានតែ​ម៉ូឌុល​ក្នុង​វែប និង ម៉ូឌុល​ឯកសារ​មេ​ត្រូវបាន​បើក​ដំណើរការ ។ ជា​ធម្មតា "វែប &gt; ទំព័រ" ត្រូវ​បាន​ប្រើ​ដើម្បី​កែ​មាតិកា​ទំព័រ​ ។ នវ​ជា​កិច្ចការ​របស់​ម៉ូឌុល backend ទៅ​លើ​អ្នក​ប្រើ​ពី​រូបភាព​ខាង​លើ ។ ម៉ូឌុល​រង​របស់​វែប​ទាំងបួន និង ម៉ូឌុល​រង​របស់​អ្នក​ប្រើ​ទាំងពីរ ត្រូវ​បាន​កំណត់​នៅ​ទីនេះ ។ យ៉ាង​ណា​ម៉ិញ ឯកសារ &gt; បញ្ជី​ឯកសារ ត្រូវ​បាន​កំណត់​សម្រាប់​សមាជិក​ក្រុម​របស់​អ្នក​ប្រើ​នេះ (ឬ​ក្នុង​ប្រវត្តិរូប​អ្នក​ប្រើ​ខ្លួនឯង ក៏​អាច​ទៅ​រួច​ដែរ) ។ ម៉ូឌុល​ជំនួយ​ត្រូវ​បាន​ផ្ដល់​សិទ្ធិ​តាំង​ពី​ដំបូង និង មិន​ត្រូវការ​ការកំណត់​ច្បាស់លាស់​ណា​មួយ​ឡើយ ។</target></trans-unit>
+      <trans-unit id="inc_access_lists.description" resname="inc_access_lists.description" approved="yes">
+        <source>Select whether the Access Lists for Page type, Tables, Module and Allowed excludefield are enabled for this group.</source>
+        <target state="final">ជ្រើសរើស​ថា​តើ​បញ្ជី​សិទ្ធិ​ប្រើប្រាស់​លើ​ប្រភេទ​ទំព័រ, តារាង, ម៉ូឌុល និង ប្រអប់​អនុវត្ត​ដែល​អនុញ្ញាត ត្រូវ​បាន​បើក​ដំណើរការ​សម្រាប់​ក្រុម​នេះ​ឬ​នៅ ។</target>
+      </trans-unit>
+      <trans-unit id="inc_access_lists.details" resname="inc_access_lists.details" xml:space="preserve" approved="yes">
+				<source>If this option is disabled the Access Lists cannot be configured for the group.
+When Access Lists are disabled the icon for the group is blue while it is red when Access Lists are enabled.</source>
+			<target state="final">ក្នុង​ជម្រើស​នេះ​ត្រូវ​បាន​បិទ​ដំណើរការ​បញ្ជី​សិទ្ធិ​ប្រើប្រាស់ មិន​អាច​​ត្រូវបាន​កំណត់​លើ​ក្រុម ។ ពេល​បញ្ជី​សិទ្ធិ​ត្រូវបាន​បិទ​ដំណើរការ រូប​តំណាង​លើ​ក្រុម​មាន​ពណ៌​ខៀវ ពេល​​បញ្ជី​សិទ្ធិប្រើ​បើក​ដំណើរការ វា​មាន​ពណ៌​ក្រហម ។</target></trans-unit>
+      <trans-unit id="_inc_access_lists.seeAlso" resname="_inc_access_lists.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:pagetypes_select,
+be_groups:tables_modify,
+be_groups:tables_select,
+be_groups:groupMods,
+be_groups:non_exclude_fields</source>
+				
+			<target state="final">be_groups:pagetypes_select,
+be_groups:tables_modify,
+be_groups:tables_select,
+be_groups:groupMods,
+be_groups:non_exclude_fields</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a short description of the user group, what it is for and who should be members. This is for internal use only.</source>
+        <target state="final">បំពេញ​ការពណនា​ខ្លី​ឲ្យ​ក្រុម​អ្នក​ប្រើ, វា​សម្រាប់​ធ្វើ​អ្វី និង នរណា​គួរ​ជា​សមាជិក​ក្រុម​នេះ ។ វា​សម្រាប់​ប្រើ​ផ្ទាល់​ខ្លួន​ប៉ុណ្ណោះ ។</target>
+      </trans-unit>
+      <trans-unit id="_description.seeAlso" resname="_description.seeAlso" approved="yes">
+        <source>fe_groups:description</source>
+        <target state="final">fe_groups:description</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="TSconfig.description" resname="TSconfig.description" approved="yes">
+        <source>User TSconfig: Additional configuration through TypoScript style values (Advanced).</source>
+        <target state="final">TSconfig អ្នក​ប្រើ៖ ការកំណត់​បន្ថែម​តាមរយៈ​​តម្លៃ​រចនាបថ TypoScript (កម្រិត​ខ្ពស់) ។</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details" resname="TSconfig.details" approved="yes">
+        <source>User TSconfig can be set for each backend user and group. Configuration set for backend groups is inherited by the user who is a member of those groups. The available options typically cover user settings like those found in the User&gt;Setup module (in fact options from that module can be forcibly overridden from User TSconfig!), configuration of the "Admin Panel" (frontend), various backend tweaks (lock user to IP, may user clear all cache?, width of the navigation frame etc.) and backend module configuration (overriding any configuration set for backend modules in Page TSconfig).</source>
+        <target state="final">TSconfig អ្នក​ប្រើ អាច​កំណត់​លើ​អ្នកប្រើ និង ក្រុម​អ្នក​ប្រើ ។ ការកំណត់​​លើ​ក្រុម​ត្រូវ​បាន​ផ្ទេរ​ទៅ​ឲ្យ​អ្នក​ប្រើ​ដែល​ជា​សមាជិក​របស់​ក្រុម​នោះ ។ ជម្រើស​ដែល​មាន ជាទូទៅ​ក្ដោប​លើ​ការកំណត់​លើ​អ្នក​ប្រើ​ដូច​ម៉ូឌុល អ្នក​ប្រើ &gt; ដំឡើង (ក្នុង​ជម្រើស​ពី​ម៉ូឌុល​នោះ អាច​ត្រូវ​បាន​បង្ខំ​បញ្ជាន់​ពី TSconfig អ្នក​ប្រើ) ការកំណត់​នៃ "ផ្ទាំង​គ្រប់គ្រង" (frontend), backend ចាស់ (បិទ​អ្នក​ប្រើ​លើ​អាយភី, អ្នក​ប្រើ​អាច​សម្អាត​ខែស្ហ​ទេ?, ប្រវែង​ស៊ុម​មឺនុយ ។ល។) និង ម៉ូឌុល​កំណត់​លើ (បញ្ជាន់​លើ​ការកំណត់​មួយ​ចំនួន​លើ​ម៉ូឌុល backend ក្នុង​ទំព័រ TSconfig) ។</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.syntax" resname="TSconfig.syntax" approved="yes">
+        <source>TypoScript syntax without conditions and constants.</source>
+        <target state="final">រូបមន្ត TypoScript មិន​មាន​លក្ខខ័ណ្ឌ និង កុងស្ដង់​ទេ ។</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.image_descr" resname="TSconfig.image_descr" xml:space="preserve" approved="yes">
+				<source>In the TSconfig field help is right at hand - just click the TS wizard icon, then a window will pop up.
+In the pop-up window you will see a tree of possible configuration values. These are extracted from the TSconfig manual. You can click around to find the options you need to set through this wizard.</source>
+			<target state="final">ក្នុង​ប្រអប់​ជំនួយ TSconfig ស្ថិត​នៅ​ខាង​ស្ដាំ​ដៃ - ចុច​លើ​រូបតំណាង វេទមន្ត TS ផ្ទាំង​មួយ​នឹង​លោត​ឡើង។
+ក្នុង​ផ្ទាំង​លោត​ឡើង អ្នក​នឹង​ឃើញ​ឋានានុក្រម​ដែល​អាច​ដាក់​តម្លៃ​កំណត់​បាន។ មាន​អត្ថបទ​ដកស្រង់​ពី​ក្បួន​នៃ​ការណែនាំ TSconfig។ អ្នក​​អាច​ចុច​​មើល​ជុំវិញ​ដើម្បី​ស្វែងរក​ជម្រើស​ដែល​អ្នក​ត្រូវការ​ដើម្បី​កំណត់​តាម​វេទមន្ត។</target></trans-unit>
+      <trans-unit id="subgroup.details" resname="subgroup.details" xml:space="preserve" approved="yes">
+				<source>The properties of subgroups are added to the properties of this group and basically they will simply be added to the list of member groups of any user which is a member of this group.
+This feature provides a great way to create 'Supervisor' user groups.</source>
+			<target state="final">លក្ខណៈសម្បត្តិ​របស់​ក្រុម​រង​ត្រូវ​បាន​បន្ថែម​ទៅ​លក្ខណៈ​សម្បត្តិ​របស់​ក្រុម​នេះ និង ជា​មូលដ្ឋាន​ពួក​គេ​នឹង​ត្រូវ​បាន​បន្ថែម​ទៅ​ក្នុង​បញ្ជី​សមាជិក​ក្រុម​នៃ​​អ្នក​ប្រើ​ខ្លះ​ដែល​ជា​សមាជិក​ក្រុម​នេះ។
+លក្ខណៈ​នេះ​ផ្ដល់​នូវ​វិធីសាស្ត្រ​អស្ចារ្យ​ដើម្បី​បង្កើត 'អ្នក​ត្រួតត្រា' ក្រុម​អ្នក​ប្រើ។</target></trans-unit>
+      <trans-unit id="explicit_allowdeny.description" resname="explicit_allowdeny.description" approved="yes">
+        <source>Select field values to explicitly deny or allow for user group members.</source>
+        <target state="final">រើស​តម្លៃ​ក្នុង​ប្រអប់​ដើម្បី​បែងចែក​ការបដិសេធ ឬ អនុញ្ញាត​លើ​សមាជិក​ក្រុម​អ្នក​ប្រើ។</target>
+      </trans-unit>
+      <trans-unit id="explicit_allowdeny.details" resname="explicit_allowdeny.details" xml:space="preserve" approved="yes">
+				<source>Selector box fields can be configured for access control on value level. This list represents all values that are configured for access control.
+Each value can be configured to require either explicit access (Allow) or explicit denial (Deny). If a value has the prefix "Allow" (green icon) it means that by default users &lt;em&gt;cannot&lt;/em&gt; set this value unless they are member of a user group which explicitly allows it (by setting this checkbox).
+If a value has the prefix "Deny" (red icon) it means that by default users can set this value unless they are member of a user group which explicitly denies it (by setting this checkbox).
+The list is organized so values from the same selector box is listed together. If values from a selectorbox is not present in the allow/deny list it simply means they are not evaluated and hence they can be set by anyone having access to the field in general.</source>
+			<target state="final">ប្រអប់​ជ្រើសរើស​អាច​ត្រូវ​បាន​កំណត់​សម្រាប់​ប្រើ​ឧបករណ៍​គ្រប់គ្រង​លើ​កម្រិត​នៃ​តម្លៃ ។ បញ្ជី​នេះ​បង្ហាញ​រាល់​តម្លៃ​ដែល​ត្រូវ​បាន​កំណត់​សម្រាប់​ការ​ប្រើប្រាស់​ការគ្រប់គ្រង ។ តម្លៃ​នីមួយៗ​អាច​ត្រូវ​បាន​កំណត់​​ឲ្យ​ត្រូវការ​សិទ្ធិ​យ៉ាង​ចាំបាច់ (អនុញ្ញាត) ឬ ការ​ច្រាន​ចោល (បដិសេធ) ។ ប្រសិន​បើ​តម្លៃ​មាន​បុព្វបទ "អនុញ្ញាត" (រូបតំណាង​ពណ៌​ខៀវ) មានន័យ​ថា តាម​ធម្មតា អ្នក​ប្រើ​&lt;em&gt;​មិន​អាច&lt;/em&gt;​កំណត់​តម្លៃ​នេះ លុះ​ណា​តែ​គេ​ជា​សមាជិក​របស់​ក្រុម ដែល​​អនុញ្ញាត​ដល់​វា (តាម​រយៈ​ការកំណត់​ប្រអប់​ធីក​នេះ) ។ ប្រសិន​បើ​តម្លៃ​មួយ​មាន​ពាក្យ​នាំ​មុខ "បដិសេធ" (រូបតំណាង​ពណ៌​ក្រហម) មានន័យ​ថា តាម​ធម្មតា អ្នក​ប្រើ​អាច​កំណត់​តម្លៃ​នេះ លុះ​ត្រា​តែ​ពួក​គេ​ជា​សមាជិក​របស់​ក្រុម ដែល​កំណត់​បដិសេធ​ចំពោះ​វា (តាមរយៈ​ការកំណត់​លើ​ប្រអប់​ធីក​នេះ) ។ បញ្ជី​ត្រូវ​បាន​រៀបចំ ដូច្នេះ​តម្លៃ​ពី​ប្រអប់​ជ្រើសរើស​ដូច​គ្នា ត្រូវ​បាន​រាយ​ក្នុង​បញ្ជី​ជាមួយ​គ្នា ។ ប្រសិន​បើ​តម្លៃ​ពី​ប្រអប់​ជ្រើសរើស​មិន​មាន​ក្នុង​បញ្ជី​អនុញ្ញាត/បដិសេធ​ទេ បញ្ជាក់​ថា ពួក​វា​មិន​ត្រូវ​បាន​ផ្ដល់​តម្លៃ ដូច្នេះ​ពួក​វា​អាច​ត្រូវ​បាន​កំណត់​ដោយ​នរណា​ម្នាក់​ដែល​មាន​សិទ្ធិ​លើ​ប្រអប់​​ជា​ទូទៅ ។</target></trans-unit>
+      <trans-unit id="allowed_languages.description" resname="allowed_languages.description" approved="yes">
+        <source>Select which record languages the group members are limited to edit.</source>
+        <target state="final">រើស​ទិន្នន័យ​ភាសា​​ដែល​សមាជិក​ក្រុម​ត្រូវ​បាន​កម្រិត​ក្នុង​ការ​កែប្រែ ។</target>
+      </trans-unit>
+      <trans-unit id="allowed_languages.details" resname="allowed_languages.details" xml:space="preserve" approved="yes">
+				<source>Records in TYPO3 can be configured to carry information about their language. If that is the case access to these elements will also be evaluated based on whether the user has the language in question included from this list.
+If a user has no languages listed all together it simply means that he can edit &lt;em&gt;all&lt;/em&gt; languages!</source>
+			<target state="final">ទិន្នន័យ​ក្នុង TYPO3 អាច​ត្រូវ​បាន​កំណត់​ដើម្បី​ផ្ទុក​ព័ត៌មាន​អំពី​ភាសា​របស់​ពួក​វា ។ ប្រសិន​បើ​​វា​មិនមែន​​ចាំបាច់​ក្នុង​ការប្រើ​ធាតុ​ទាំងនេះ នឹង​ក៏​ត្រូវ​បាន​វាយ​តម្លៃ​ផ្អែក​លើ​អ្នក​ប្រើ​មាន​ភាសា​​ដែល​មិន​ច្បាស់លាស់ ដែល​បាន​មក​ពី​បញ្ជី ។ ប្រសិន​បើ​អ្នក​ប្រើ​ណា​មួយ​មិន​មាន​ភាសា​រាយ​​ក្នុង​បញ្ជី​​ទាំងអស់​ជាមួយ​គ្នា បានន័យ​ថា គាត់​អាច​កែ​ភាសា​&lt;em&gt;ទាំងអស់&lt;/em&gt; ។</target></trans-unit>
+      <trans-unit id="_allowed_languages.seeAlso" resname="_allowed_languages.seeAlso" approved="yes">
+        <source>be_users:allowed_languages</source>
+        <target state="final">be_users:allowed_languages</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="allowed_languages.image_descr" resname="allowed_languages.image_descr" approved="yes">
+        <source>This example shows a situation where two languages, Danish and German, are created in addition to the default language.</source>
+        <target state="final">ឧទាហរណ៍​នេះ​បង្ហាញ​អំពី​ស្ថានភាព​នៃ​ភាសា​ពីរ, ភាសា​ដាណឺម៉ាក និង ភាសា​អាល្លឺម៉ង់ ត្រូវ​បាន​បង្កើត​​បន្ថែម​ទៅ​លើ​ភាសា​ដើម។</target>
+      </trans-unit>
+      <trans-unit id="custom_options.description" resname="custom_options.description" approved="yes">
+        <source>Select custom permission options.</source>
+        <target state="final">រើស​ជម្រើស​នៃ​សិទ្ធិ​ប្រើប្រាស់​តាម​ការកំណត់។</target>
+      </trans-unit>
+      <trans-unit id="custom_options.details" resname="custom_options.details" approved="yes">
+        <source>This list represents custom permissions introduced by various backend modules (from extensions). The significance of each option depends on the backend module that evaluates it.</source>
+        <target state="final">បញ្ជី​នេះ​​ណែនាំ​​អំពី​សិទ្ធិ​កំណត់​ដោយ​ខ្លួនឯង​តាម​ម៉ូឌុល backend (ពី​សមាសភាគ) ។ សារសំខាន់​របស់​ជម្រើស​នីមួយៗ​ផ្អែក​លើ​ម៉ូឌុល backend ដែល​ផ្ដល់​តម្លៃ​ដល់​វា។</target>
+      </trans-unit>
+      <trans-unit id="custom_options.image_descr" resname="custom_options.image_descr" approved="yes">
+        <source>This is just an example from an internal test application. It shows how checkboxes are added by a custom module under its own header. You can also show a description text with each checkbox to explain its function.</source>
+        <target state="final">នេះ​គ្រាន់តែ​ជា​ឧទាហរណ៍​ពី​ការសាក​កម្មវិធី​។ វា​បង្ហាញ​អំពី​របៀប​នៃ​ការថែម​ប្រអប់​ធីក​ដោយ​ម៉ូឌុល​​នៅ​ខាង​ក្រោម​ក្បាល​របស់​វា​ផ្ទាល់។ អ្នក​ក៏​អាច​បង្ហាញ​ព័ត៌មាន​លម្អិត​ជាមួយ​ប្រអប់​ធីក​នីមួយៗ​ដើម្បី​ពន្យល់​មុខងារ​របស់​វា។</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
