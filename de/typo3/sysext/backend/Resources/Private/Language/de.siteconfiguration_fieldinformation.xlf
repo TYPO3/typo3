@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1522923345" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="site.rootPageId" resname="site.rootPageId" approved="yes">
+        <source>You must create a page with a site root flag.</source>
+        <target state="final">Sie müssen eine Seite erstellen, wo das Wurzelseiten-Merkmal gesetzt ist.</target>
+      </trans-unit>
+      <trans-unit id="site.identifier" resname="site.identifier" approved="yes">
+        <source>This name will be used to create the configuration directory. Mind the recommendations for directory names (only a-z,0-9,_,-) and make it unique.</source>
+        <target state="final">Dieser Name wird für die Erzeugung des Konfigurationsverzeichnisses verwendet. Beachten Sie die Empfehlungen für Verzeichnisnamen (nur a-z,0-9,_,-), und wählen Sie sie eindeutig.</target>
+      </trans-unit>
+      <trans-unit id="site.base" resname="site.base" approved="yes">
+        <source>Main URL to call the frontend in default language. Can be https://www.example.com/ or just /, if it is just a / you cannot rely on TYPO3 creating
+					full URLs</source>
+        <target state="final">Haupt-URL zum Aufruf des Frontends in der Standardsprache. Kann https://www.example.com/ sein oder nur /. Wenn es nur ein / ist, können Sie sich nicht darauf verlassen, dass TYPO3 die vollen URLs erzeugt</target>
+      </trans-unit>
+      <trans-unit id="site.baseVariants" resname="site.baseVariants" approved="yes">
+        <source>This allows you to specify variants of the site's base. Can be used, for example, if you have a different domain for your staging environment.</source>
+        <target state="final">Hier können Varianten der Site-Basis definiert werden. Kann z.B. verwendet werden, wenn es eine abweichende Domain für die Arbeitsumgebung gibt.</target>
+      </trans-unit>
+      <trans-unit id="site_language.base" resname="site_language.base" approved="yes">
+        <source>Use a full qualified domain "https://www.mydomain.fr/" or "/fr/". Use "/" to keep the main URL for the default language. Add language specific suffixes to use those, or configure complete URLs for independent domains.</source>
+        <target state="final">Vollqualifizierten Domainnamen "https://www.mydomain.de/" oder "/de/" verwenden bzw. "/" zum Behalten der Haupt-URL für die Standardsprache.  Weitere sprachspezifische Endungen hinzufügen, um jene zu verwenden, oder komplette URLs für unabhängige Domains nehmen.</target>
+      </trans-unit>
+      <trans-unit id="site_language.locale" resname="site_language.locale" approved="yes">
+        <source>Used for localized date and currency formats. E.g. "de_DE" or "en_US.UTF-8".</source>
+        <target state="final">Wird für lokalisierte Datums- und Währungsformate verwendet, z. B. "de_DE" oder "en_US.UTF-8"</target>
+      </trans-unit>
+      <trans-unit id="site_language.iso-639-1" resname="site_language.iso-639-1" approved="yes">
+        <source>ISO 639-1 code of the Language</source>
+        <target state="final">ISO 639-1 Code für die Sprache</target>
+      </trans-unit>
+      <trans-unit id="site_language.hreflang" resname="site_language.hreflang" approved="yes">
+        <source>Used within for "lang" and "hreflang" attributes</source>
+        <target state="final">Wird für Attribute "lang" und "hreflang" verwendet</target>
+      </trans-unit>
+      <trans-unit id="site_language.navigationTitle" resname="site_language.navigationTitle" approved="yes">
+        <source>Used within language-related menus</source>
+        <target state="final">Wird in sprachbezogenen Menüs verwendet</target>
+      </trans-unit>
+      <trans-unit id="site_language.direction" resname="site_language.direction" approved="yes">
+        <source>Language direction for "dir" attribute</source>
+        <target state="final">Sprachrichtung für das "dir"-Attribut</target>
+      </trans-unit>
+      <trans-unit id="site_language.typo3Language" resname="site_language.typo3Language" approved="yes">
+        <source>Select the language to be used from translation files. Keep default if no translation files are available.</source>
+        <target state="final">Die von den Übersetzungsdateien zu verwendende Sprache auswählen. Standard behalten, falls keine Übersetzungsdateien verfügbar sind.</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode" resname="site_errorhandling.errorCode" approved="yes">
+        <source>Make sure to have at least 0 (not defined otherwise) configured in order to serve helpful error messages to your visitors.</source>
+        <target state="final">Bitte sicherstellen, dass wenigstens 0 (nicht anderweitig definiert) eingestellt wird, damit den Besuchern hilfreiche Fehlermeldungen angezeigt werden.</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplate" resname="site_errorhandling.errorFluidTemplate" approved="yes">
+        <source>Path to the fluid template file given by absolute, relative path (from site root) or by referring the template file inside an extension with "EXT:" prefix.</source>
+        <target state="final">Pfad zur Fluid-Vorlagendatei, entweder als absoluter oder relativer (zur Homepage) Pfad oder durch Verweis auf die Vorlagendatei innerhalb einer Erweiterung mit "EXT:"</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorPhpClassFQCN" resname="site_errorhandling.errorPhpClassFQCN" approved="yes">
+        <source>Fully qualified class name to a class that implements the PageErrorHandlerInterface.</source>
+        <target state="final">Vollqualifizierter Klassenname zu einer Klasse, die PageErrorHandlerInterface implementiert.</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.base" resname="site_base_variant.base" approved="yes">
+        <source>For example "https://staging.domain.tld" or "http://www.domain.local"</source>
+        <target state="final">Zum Beispiel "https://staging.domain.tld" oder "http://www.domain.local"</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition" resname="site_base_variant.condition" approved="yes">
+        <source>Expression to match this base variant.</source>
+        <target state="final">Ausdruck, der auf diese Basisvariante zutrifft.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
