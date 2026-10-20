@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="t3">
+  <file id="f1">
+    <unit id="title">
+      <segment state="initial">
+        <source>Raw search</source>
+        <target>crwdns381104:0crwdne381104:0</target>
+      </segment>
+    </unit>
+    <unit id="short_description">
+      <segment state="initial">
+        <source>Raw search in all fields</source>
+        <target>crwdns381106:0crwdne381106:0</target>
+      </segment>
+    </unit>
+    <unit id="description">
+      <segment state="initial">
+        <source>Searches all database tables and fields for a given value.</source>
+        <target>crwdns381108:0crwdne381108:0</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
