@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1522780424" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="overview.title" resname="overview.title" approved="yes">
+        <source>Site Configuration</source>
+        <target state="final">Налаштування сайту</target>
+      </trans-unit>
+      <trans-unit id="overview.site" resname="overview.site" approved="yes">
+        <source>Site</source>
+        <target state="final">Сайт</target>
+      </trans-unit>
+      <trans-unit id="overview.configuration" resname="overview.configuration" approved="yes">
+        <source>Configuration Folder</source>
+        <target state="final">Папка конфігурації</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.title" resname="overview.noPages.title" approved="yes">
+        <source>No pages found!</source>
+        <target state="final">Жодної сторінки не знайдено!</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.message" resname="overview.noPages.message" approved="yes">
+        <source>Please add at least one page through the Page module.</source>
+        <target state="final">Будь ласка, додайте принаймні одну сторінку через модуль Сторінка.</target>
+      </trans-unit>
+      <trans-unit id="overview.noSiteConfiguration" resname="overview.noSiteConfiguration" approved="yes">
+        <source>This site does not have a configuration, yet.</source>
+        <target state="final">Цей сайт ще не має конфігурації.</target>
+      </trans-unit>
+      <trans-unit id="overview.addSiteConfiguration" resname="overview.addSiteConfiguration" approved="yes">
+        <source>Add new site configuration for this site</source>
+        <target state="final">Додайте нову конфігурацію сайту для цього сайту</target>
+      </trans-unit>
+      <trans-unit id="overview.deleteSiteConfiguration" resname="overview.deleteSiteConfiguration" approved="yes">
+        <source>Delete site configuration</source>
+        <target state="final">Видалити конфігурацію сайту</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.title" resname="overview.unassignedSites.title" approved="yes">
+        <source>Unassigned site configurations</source>
+        <target state="final">Невикористані конфігурації сайту</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.title" resname="validation.identifierRenamed.title" approved="yes">
+        <source>Renamed identifier</source>
+        <target state="final">Перейменований ідентифікатор</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.message" resname="validation.identifierRenamed.message" approved="yes">
+        <source>Given site identifier "%1s" already exists. It has been renamed to "%2s". Maybe you want to edit the site again and give it a better name.</source>
+        <target state="final">Даний ідентифікатор сайту "%1s" уже існує. Її було перейменовано на "%2s". Можливо, ви захочете знову відредагувати сайт і дати йому кращу назву.</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.title" resname="validation.identifierExists.title" approved="yes">
+        <source>Identifier not changed</source>
+        <target state="final">Ідентифікатор не змінено</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.message" resname="validation.identifierExists.message" approved="yes">
+        <source>Given site identifier "%1s" already exists and points to a different site. The existing identifier "%2s" for this site is kept.</source>
+        <target state="final">Даний ідентифікатор сайту "%1s" уже існує та вказує на інший сайт. Існуючий ідентифікатор "%2s" для цього сайту збережено.</target>
+      </trans-unit>
+      <trans-unit id="validation.required.title" resname="validation.required.title" approved="yes">
+        <source>Site configuration not saved</source>
+        <target state="final">Конфігурацію сайту не збережено</target>
+      </trans-unit>
+      <trans-unit id="validation.required.message" resname="validation.required.message" approved="yes">
+        <source>Field "%1s" is a required field, but no value has been provided.</source>
+        <target state="final">Поле "%1s" - це обов'язкове поле, але значення не було вказано.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.title" resname="validation.duplicateErrorCode.title" approved="yes">
+        <source>Duplicate error code removed</source>
+        <target state="final">Дубльований код помилки видалено</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.message" resname="validation.duplicateErrorCode.message" approved="yes">
+        <source>Two error handler configurations for error code "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">Знайдено дві конфігурації обробника помилок для коду помилки "%1s". Це була б недійсна конфігурація, висячу конфігурацію видалено.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.title" resname="validation.duplicateLanguageId.title" approved="yes">
+        <source>Duplicate language configuration removed</source>
+        <target state="final">Видалено дублікат налаштувань мови</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.message" resname="validation.duplicateLanguageId.message" approved="yes">
+        <source>Two language configurations for language "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">Знайдено дві мовні конфігурації для мови"%1s. Це може бути недійсна конфігурація, незадіяна була видалена.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
