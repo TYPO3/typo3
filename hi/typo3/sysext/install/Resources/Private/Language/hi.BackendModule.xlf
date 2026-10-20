@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814842" source-language="en" datatype="plaintext" original="EXT:install/Resources/Private/Language/BackendModule.xlf" date="2011-10-17T20:22:33Z" product-name="install" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Install Tool</source>
+        <target state="final">इनस्टॉल टूल</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>Provides a simple link to the Install Tool. Notice the Install Tool (in typo3/install/) must be enabled.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</source>
+        <target state="final">इनस्टॉल टूल के लिए एक सरल लिंक प्रदान करता है। सूचना इनस्टॉल टूल (typo3/install/ में ) समर्थ होना जरूरी है।&lt;br/&gt;&lt;em&gt; केवल 'एडमिन' उपयोगकर्ताओं के लिए एक्सेस!&lt;/em&gt;</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Install</source>
+        <target state="final">इनस्टॉल</target>
+      </trans-unit>
+      <trans-unit id="confirmUnlockInstallToolTitle" resname="confirmUnlockInstallToolTitle" approved="yes">
+        <source>The Install Tool is locked</source>
+        <target state="final">इनस्टॉल टूल बंद कर दिया है</target>
+      </trans-unit>
+      <trans-unit id="confirmUnlockInstallToolMessage" resname="confirmUnlockInstallToolMessage" xml:space="preserve" approved="yes">
+				<source>&lt;p&gt;For security reasons the Install Tool is locked by default.&lt;/p&gt;
+&lt;p&gt;To enable the Install Tool, the file &lt;strong&gt;ENABLE_INSTALL_TOOL&lt;/strong&gt; must be created in the directory &lt;strong&gt;typo3conf/&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Just click the button below, the file will be created for you and the Install Tool will be unlocked.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Security note: &lt;/strong&gt;When you are finished with your work, please log out of the Install Tool. Otherwise TYPO3 will automatically lock the Install Tool after one hour.&lt;/p&gt;
+				</source>
+			<target state="final">&lt;P&gt; सुरक्षा कारणों के लिए स्थापित उपकरण डिफ़ॉल्ट रूप से बंद कर दिया है। &lt;/ P&gt; 
+ &lt;p&gt;इनस्टॉल टूल को समर्थ करने के लिए फाइल &lt;strong&gt;ENABLE_INSTALL_TOOL&lt;/strong&gt; को बनाया ही जाना चाहिए।&lt;strong&gt;typo3conf/&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;केवल नीचे दिए गए बटन पर क्लिक करें, और फ़ैल आप के लिए बनायी जाएगा और इनस्टॉल टूल अनलॉक हो जाएगा।&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;सुरक्षा नोट&lt;/strong&gt; जब आप आपका काम खत्म करले तो कृपिया इनस्टॉल टूल से लॉगआउट हो जाये नाहीतर अन्यथा टाइपो3 ऑटोमेटिकली एक घंटे के बाद इनस्टॉल टूल बंद कर दूंगा।&lt;/p&gt;
+				</target></trans-unit>
+      <trans-unit id="confirmUnlockInstallToolButton" resname="confirmUnlockInstallToolButton" approved="yes">
+        <source>Unlock the Install&amp;#160;Tool</source>
+        <target state="final">अनलॉक इनस्टॉल&amp;#160 टूल</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
