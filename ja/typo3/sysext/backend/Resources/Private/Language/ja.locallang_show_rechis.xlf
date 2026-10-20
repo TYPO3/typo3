@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="time" approved="yes">
+        <source>Time</source>
+        <target state="final">時間</target>
+      </trans-unit>
+      <trans-unit id="user" approved="yes">
+        <source>User</source>
+        <target state="final">ユーザ</target>
+      </trans-unit>
+      <trans-unit id="differences" approved="yes">
+        <source>Differences</source>
+        <target state="final">違い</target>
+      </trans-unit>
+      <trans-unit id="changes" approved="yes">
+        <source>Changelog</source>
+        <target state="final">変更履歴</target>
+      </trans-unit>
+      <trans-unit id="return" approved="yes">
+        <source>Return</source>
+        <target state="final">戻る</target>
+      </trans-unit>
+      <trans-unit id="returnLink" approved="yes">
+        <source>Click here to go back</source>
+        <target state="final">戻るにはここをクリック</target>
+      </trans-unit>
+      <trans-unit id="revertAll" approved="yes">
+        <source>Rollback all changes shown</source>
+        <target state="final">すべての変更を元に戻す</target>
+      </trans-unit>
+      <trans-unit id="revertRecord" approved="yes">
+        <source>Rollback single record</source>
+        <target state="final">このレコードを元に戻す</target>
+      </trans-unit>
+      <trans-unit id="revertField" approved="yes">
+        <source>Rollback single field</source>
+        <target state="final">このフィールドを元に戻す</target>
+      </trans-unit>
+      <trans-unit id="markState" approved="yes">
+        <source>mark this change</source>
+        <target state="final">この変更をマークする</target>
+      </trans-unit>
+      <trans-unit id="unmarkState" approved="yes">
+        <source>unMark this change</source>
+        <target state="final">この変更のマークを解除する</target>
+      </trans-unit>
+      <trans-unit id="linkRecordHistory" approved="yes">
+        <source>Limit history to this record</source>
+        <target state="final">このレコードの履歴を制限してください</target>
+      </trans-unit>
+      <trans-unit id="differenceMsg" approved="yes">
+        <source>In the Difference column you can see the changes at every modification of records. New changes are displayed in green colored text and the red colored text are the old values which were removed.</source>
+        <target state="final">差の列では、レコードが変更されるたびに変更点を見ることができます。新しい変更は緑色のテキストで表示され、赤色のテキストは削除された古い値です。</target>
+      </trans-unit>
+      <trans-unit id="fullView" approved="yes">
+        <source>Return to full view</source>
+        <target state="final">すべて表示に戻る</target>
+      </trans-unit>
+      <trans-unit id="historyRow.actiontype.1" approved="yes">
+        <source>created</source>
+        <target state="final">作成済み</target>
+      </trans-unit>
+      <trans-unit id="historyRow.actiontype.7" approved="yes">
+        <source>published</source>
+        <target state="final">公開済み</target>
+      </trans-unit>
+      <trans-unit id="settings" approved="yes">
+        <source>Settings</source>
+        <target state="final">設定</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_all" approved="yes">
+        <source>ALL</source>
+        <target state="final">すべて</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_marked" approved="yes">
+        <source>marked</source>
+        <target state="final">マーク</target>
+      </trans-unit>
+      <trans-unit id="no" approved="yes">
+        <source>No</source>
+        <target state="final">いいえ</target>
+      </trans-unit>
+      <trans-unit id="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">はい</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
