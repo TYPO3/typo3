@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_new.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Create multiple pages</source>
+        <target state="final">Maak meerdere pagina's</target>
+      </trans-unit>
+      <trans-unit id="canNotCreateNew.title" approved="yes">
+        <source>Insufficient permissions</source>
+        <target state="final">Onvoldoende rechten</target>
+      </trans-unit>
+      <trans-unit id="canNotCreateNew.message" approved="yes">
+        <source>Sorry, you are not allowed to create new subpages to this page due to access restrictions.</source>
+        <target state="final">Sorry, het is niet toegestaan om pagina's onder deze pagina aan te maken door toegangsbeperkingen.</target>
+      </trans-unit>
+      <trans-unit id="newPage" approved="yes">
+        <source>Page</source>
+        <target state="final">Pagina</target>
+      </trans-unit>
+      <trans-unit id="addMoreLines" approved="yes">
+        <source>Add more lines</source>
+        <target state="final">Meer regels toevoegen</target>
+      </trans-unit>
+      <trans-unit id="listEnd" approved="yes">
+        <source>Place new pages after the existing subpages</source>
+        <target state="final">Plaats nieuwe pagina's na de bestaande subpagina's</target>
+      </trans-unit>
+      <trans-unit id="hidePages" approved="yes">
+        <source>Hide new pages</source>
+        <target state="final">Verberg nieuwe pagina's</target>
+      </trans-unit>
+      <trans-unit id="hidePagesInMenus" approved="yes">
+        <source>Hide new pages in menus</source>
+        <target state="final">Nieuwe pagina's in menu's verbergen</target>
+      </trans-unit>
+      <trans-unit id="create" approved="yes">
+        <source>Create pages</source>
+        <target state="final">Maak nieuwe pagina's</target>
+      </trans-unit>
+      <trans-unit id="reset" approved="yes">
+        <source>Clear fields</source>
+        <target state="final">Velden wissen</target>
+      </trans-unit>
+      <trans-unit id="newSubPages" approved="yes">
+        <source>New page structure</source>
+        <target state="final">Nieuwe paginastructuur</target>
+      </trans-unit>
+      <trans-unit id="newSubPages.pageTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Paginatitel</target>
+      </trans-unit>
+      <trans-unit id="noPagesCreated.title" approved="yes">
+        <source>No pages added</source>
+        <target state="final">Geen pagina's toegevoegd</target>
+      </trans-unit>
+      <trans-unit id="noPagesCreated.message" approved="yes">
+        <source>No pages were created.</source>
+        <target state="final">Er zijn geen pagina's aangemaakt.</target>
+      </trans-unit>
+      <trans-unit id="pagesCreated.title" approved="yes">
+        <source>Pages added</source>
+        <target state="final">Pagina's toegevoegd</target>
+      </trans-unit>
+      <trans-unit id="pagesCreated.message" approved="yes">
+        <source>The pages were created successfully.</source>
+        <target state="final">De pagina's zijn met succes aangemaakt.</target>
+      </trans-unit>
+      <trans-unit id="multiplePagesCanNotBeCreated.title" approved="yes">
+        <source>Creation of multiple is disabled because of field requirements</source>
+        <target state="final">Aanmaken van meerdere is uitgeschakeld vanwege veldvereisten</target>
+      </trans-unit>
+      <trans-unit id="multiplePagesCanNotBeCreated.message" approved="yes">
+        <source>Please use the page creation wizard instead.</source>
+        <target state="final">Gebruik in plaats hiervan de assisten pagina's aanmaken</target>
+      </trans-unit>
+      <trans-unit id="multiplePagesCanNotBeCreated.buttonLabel" approved="yes">
+        <source>Create single page</source>
+        <target state="final">Eén pagina aanmaken</target>
+      </trans-unit>
+      <trans-unit id="availablePageTypesHaveBeenFiltered.title" approved="yes">
+        <source>Some page types have been filtered because of field requirements</source>
+        <target state="final">Sommige paginatypes zijn gefilterd vanwege veldvereisten</target>
+      </trans-unit>
+      <trans-unit id="availablePageTypesHaveBeenFiltered.message" approved="yes">
+        <source>The following page types need to be created using the page creation wizard:</source>
+        <target state="final">De volgende paginatypes moeten worden gemaakt met behulp van de assistent voor het aanmaken van pagina's:</target>
+      </trans-unit>
+      <trans-unit id="availablePageTypesHaveBeenFiltered.buttonLabel" approved="yes">
+        <source>Create single page</source>
+        <target state="final">Eén pagina aanmaken</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
