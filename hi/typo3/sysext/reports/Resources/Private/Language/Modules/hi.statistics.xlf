@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/Modules/statistics.xlf" date="2026-11-10T13:37:37Z" product-name="statistics" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Shows database record statistics</source>
+        <target state="final">डेटाबेस रिकॉर्ड के आँकड़े दिखाता है</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Get statistics for database records, including total, translated, hidden, and deleted pages, page type distribution, and and detailed table records with lost record detection. The report analyzes the entire page tree.</source>
+        <target state="final">डेटाबेस रिकॉर्ड के आंकड़े प्राप्त करें, जिनमें कुल, अनुवादित, छिपे हुए और हटाए गए पृष्ठ, पृष्ठ प्रकार वितरण और खोए हुए रिकॉर्ड का पता लगाने सहित विस्तृत तालिका रिकॉर्ड शामिल हैं। रिपोर्ट संपूर्ण पृष्ठ ट्री का विश्लेषण करती है।</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Record Statistics</source>
+        <target state="final">सांख्यिकी रिकार्ड</target>
+      </trans-unit>
+      <trans-unit id="doktype" approved="yes">
+        <source>Document types</source>
+        <target state="final">डॉक्यूमेंट का प्रकार</target>
+      </trans-unit>
+      <trans-unit id="doktype_value" approved="yes">
+        <source>Document types (value)</source>
+        <target state="final">डॉक्यूमेंट का प्रकार (मूल्य)</target>
+      </trans-unit>
+      <trans-unit id="count" approved="yes">
+        <source>Count</source>
+        <target state="final">गिनती</target>
+      </trans-unit>
+      <trans-unit id="pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">पृष्ठ</target>
+      </trans-unit>
+      <trans-unit id="total_pages" approved="yes">
+        <source>Total number of default language pages</source>
+        <target state="final">डिफ़ॉल्ट भाषा पृष्ठों की कुल संख्या</target>
+      </trans-unit>
+      <trans-unit id="translated_pages" approved="yes">
+        <source>Total number of translated pages</source>
+        <target state="final">अनुवादित पृष्ठों की कुल संख्या</target>
+      </trans-unit>
+      <trans-unit id="deleted_pages" approved="yes">
+        <source>Marked-deleted pages</source>
+        <target state="final">हटाए गए पृष्ठों को चिह्नित करें</target>
+      </trans-unit>
+      <trans-unit id="hidden_pages" approved="yes">
+        <source>Hidden pages</source>
+        <target state="final">छिपे हुए पृष्ठ</target>
+      </trans-unit>
+      <trans-unit id="tables" approved="yes">
+        <source>Tables</source>
+        <target state="final">टेबल्स</target>
+      </trans-unit>
+      <trans-unit id="label" approved="yes">
+        <source>Label</source>
+        <target state="final">लेबल</target>
+      </trans-unit>
+      <trans-unit id="tablename" approved="yes">
+        <source>Table name</source>
+        <target state="final">टेबल का नाम</target>
+      </trans-unit>
+      <trans-unit id="total_lost" approved="yes">
+        <source>Records total / lost</source>
+        <target state="final">कुल/लॉस्ट रिकॉर्ड</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
