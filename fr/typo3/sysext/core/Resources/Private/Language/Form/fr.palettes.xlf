@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Form/palettes.xlf" date="2025-01-22T20:22:33Z" product-name="palettes" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="general" approved="yes">
+        <source>General</source>
+        <target state="final">Général</target>
+      </trans-unit>
+      <trans-unit id="account" approved="yes">
+        <source>Account</source>
+        <target state="final">Compte</target>
+      </trans-unit>
+      <trans-unit id="authentication" approved="yes">
+        <source>Authentication</source>
+        <target state="final">Authentification</target>
+      </trans-unit>
+      <trans-unit id="permission_languages" approved="yes">
+        <source>Language Permissions</source>
+        <target state="final">Langues autorisées</target>
+      </trans-unit>
+      <trans-unit id="permission_general" approved="yes">
+        <source>General Permissions</source>
+        <target state="final">Permissions générales</target>
+      </trans-unit>
+      <trans-unit id="permission_specific" approved="yes">
+        <source>Specific Permissions</source>
+        <target state="final">Autorisations spécifiques</target>
+      </trans-unit>
+      <trans-unit id="standard" approved="yes">
+        <source>Page</source>
+        <target state="final">Page</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titre</target>
+      </trans-unit>
+      <trans-unit id="visibility" approved="yes">
+        <source>Visibility</source>
+        <target state="final">Visibilité</target>
+      </trans-unit>
+      <trans-unit id="access" approved="yes">
+        <source>Publish Dates and Access Rights</source>
+        <target state="final">Dates de publication et droits d’accès</target>
+      </trans-unit>
+      <trans-unit id="abstract" approved="yes">
+        <source>Abstract</source>
+        <target state="final">Résumé</target>
+      </trans-unit>
+      <trans-unit id="metatags" approved="yes">
+        <source>Meta Tags</source>
+        <target state="final">Métadonnées</target>
+      </trans-unit>
+      <trans-unit id="editorial" approved="yes">
+        <source>Editorial</source>
+        <target state="final">Éditorial</target>
+      </trans-unit>
+      <trans-unit id="layout" approved="yes">
+        <source>Layout</source>
+        <target state="final">Mise en page</target>
+      </trans-unit>
+      <trans-unit id="page_layout" approved="yes">
+        <source>Page Layout</source>
+        <target state="final">Disposition de la page</target>
+      </trans-unit>
+      <trans-unit id="use_as_container" approved="yes">
+        <source>Use as Container</source>
+        <target state="final">Utiliser comme conteneur</target>
+      </trans-unit>
+      <trans-unit id="replace" approved="yes">
+        <source>Replace Content</source>
+        <target state="final">Remplacement du contenu</target>
+      </trans-unit>
+      <trans-unit id="links" approved="yes">
+        <source>Links to this Page</source>
+        <target state="final">Liens vers la page</target>
+      </trans-unit>
+      <trans-unit id="caching" approved="yes">
+        <source>Caching</source>
+        <target state="final">Mise en cache</target>
+      </trans-unit>
+      <trans-unit id="language" approved="yes">
+        <source>Language</source>
+        <target state="final">Langue</target>
+      </trans-unit>
+      <trans-unit id="miscellaneous" approved="yes">
+        <source>Miscellaneous</source>
+        <target state="final">Divers</target>
+      </trans-unit>
+      <trans-unit id="media" approved="yes">
+        <source>Files</source>
+        <target state="final">Fichiers</target>
+      </trans-unit>
+      <trans-unit id="storage" approved="yes">
+        <source>Storage Page</source>
+        <target state="final">Page de stockage</target>
+      </trans-unit>
+      <trans-unit id="config" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Configuration</target>
+      </trans-unit>
+      <trans-unit id="headers" approved="yes">
+        <source>Headlines</source>
+        <target state="final">Lignes d'en-tête</target>
+      </trans-unit>
+      <trans-unit id="header" approved="yes">
+        <source>Header</source>
+        <target state="final">En-tête</target>
+      </trans-unit>
+      <trans-unit id="content_layout" approved="yes">
+        <source>Content Element Layout</source>
+        <target state="final">Mise en page des éléments de contenu</target>
+      </trans-unit>
+      <trans-unit id="media_behaviour" approved="yes">
+        <source>Media Behavior</source>
+        <target state="final">Comportement des médias</target>
+      </trans-unit>
+      <trans-unit id="accessibility" approved="yes">
+        <source>Accessibility</source>
+        <target state="final">Accessibilité</target>
+      </trans-unit>
+      <trans-unit id="downloads_layout" approved="yes">
+        <source>Downloads Layout</source>
+        <target state="final">Mise en page des téléchargements</target>
+      </trans-unit>
+      <trans-unit id="table_layout" approved="yes">
+        <source>Table Layout</source>
+        <target state="final">Mise en page du tableau</target>
+      </trans-unit>
+      <trans-unit id="links_appearance" approved="yes">
+        <source>Links</source>
+        <target state="final">Liens</target>
+      </trans-unit>
+      <trans-unit id="settings_gallery" approved="yes">
+        <source>Gallery Settings</source>
+        <target state="final">Paramètres de la galerie</target>
+      </trans-unit>
+      <trans-unit id="media_adjustments" approved="yes">
+        <source>Media Adjustments</source>
+        <target state="final">Ajustement des médias</target>
+      </trans-unit>
+      <trans-unit id="metrics" approved="yes">
+        <source>Metrics</source>
+        <target state="final">Métriques</target>
+      </trans-unit>
+      <trans-unit id="geolocation" approved="yes">
+        <source>Geo Location</source>
+        <target state="final">Position géographique</target>
+      </trans-unit>
+      <trans-unit id="contentdate" approved="yes">
+        <source>Content Date</source>
+        <target state="final">Date du contenu</target>
+      </trans-unit>
+      <trans-unit id="gps" approved="yes">
+        <source>GPS</source>
+        <target state="final">GPS</target>
+      </trans-unit>
+      <trans-unit id="seo" approved="yes">
+        <source>General SEO Settings</source>
+        <target state="final">Paramètres SEO généraux</target>
+      </trans-unit>
+      <trans-unit id="robots" approved="yes">
+        <source>Robot instructions</source>
+        <target state="final">Instructions pour les robots</target>
+      </trans-unit>
+      <trans-unit id="opengraph" approved="yes">
+        <source>Open Graph (Facebook)</source>
+        <target state="final">Open Graph (Facebook)</target>
+      </trans-unit>
+      <trans-unit id="twittercards" approved="yes">
+        <source>X / Twitter Cards</source>
+        <target state="final">Cartes X / Twitter</target>
+      </trans-unit>
+      <trans-unit id="canonical" approved="yes">
+        <source>Canonical</source>
+        <target state="final">Canonique</target>
+      </trans-unit>
+      <trans-unit id="sitemap" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">Plan du site</target>
+      </trans-unit>
+      <trans-unit id="additional" approved="yes">
+        <source>Additional Configuration</source>
+        <target state="final">Configuration supplémentaire</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
