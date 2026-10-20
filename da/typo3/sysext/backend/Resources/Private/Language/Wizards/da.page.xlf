@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/page.xlf" date="2025-03-03T00:00:00Z" product-name="backend" target-language="da">
+    <header/>
+    <body>
+      <!-- Step: doktype selection -->
+      <trans-unit id="step.doktype.headline" approved="yes">
+        <source>Select page type</source>
+        <target state="final">Vælg sidetype</target>
+      </trans-unit>
+      <trans-unit id="step.doktype.not_allowed_doktype.title" approved="yes">
+        <source>Invalid page type</source>
+        <target state="final">Ugyldig sidetype</target>
+      </trans-unit>
+      <trans-unit id="step.doktype.not_allowed_doktype.message" approved="yes">
+        <source>The selected page type is not allowed here. Please choose a different type.</source>
+        <target state="final">Den valgte sidetype er ikke tilladt her. Vælg venligst en anden type.</target>
+      </trans-unit>
+      <trans-unit id="step.doktype.filter.noResults" approved="yes">
+        <source>No matching page type found.</source>
+        <target state="final">Ingen matchende sidetype fundet.</target>
+      </trans-unit>
+      <trans-unit id="step.doktype.load_error" approved="yes">
+        <source>Failed to fetch available page types. This is likely due to missing permissions.</source>
+        <target state="final">Mislykkedes at hente tilgængelige sidetyper. Dette skyldes sandsynligvis manglende tilladelser.</target>
+      </trans-unit>
+      <trans-unit id="step.setup" approved="yes">
+        <source>Page Setup</source>
+        <target state="final">Sideopsætning</target>
+      </trans-unit>
+      <trans-unit id="step.link" approved="yes">
+        <source>Link Configuration</source>
+        <target state="final">Linkkonfiguration</target>
+      </trans-unit>
+      <trans-unit id="step.shortcut" approved="yes">
+        <source>Shortcut Configuration</source>
+        <target state="final">Genvejskonfiguration</target>
+      </trans-unit>
+      <trans-unit id="step.mounting" approved="yes">
+        <source>Mounting Configuration</source>
+        <target state="final">Monteringskonfiguration</target>
+      </trans-unit>
+      <trans-unit id="page_wizard.success.title" approved="yes">
+        <source>Page created</source>
+        <target state="final">Side oprettet</target>
+      </trans-unit>
+      <trans-unit id="page_wizard.success.description" approved="yes">
+        <source>The page has been successfully created. Click "Finish" to be redirected to the newly created page.</source>
+        <target state="final">Siden er blevet oprettet. Klik på "Afslut" for at blive omdirigeret til den nyoprettede side.</target>
+      </trans-unit>
+      <trans-unit id="page_wizard.button.create_another_page" approved="yes">
+        <source>Create another page</source>
+        <target state="final">Opret en anden side</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
