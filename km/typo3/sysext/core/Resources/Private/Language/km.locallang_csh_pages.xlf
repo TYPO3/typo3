@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814793" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_pages.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id="layout.description" resname="layout.description" approved="yes">
+        <source>The Frontend Layout can change the way a page design appears.</source>
+        <target state="final">ទម្រង់​ប្លង់​រចនា Frontend អាច​ប្ដូរ​លក្ខណៈ​ ឬ ទម្រង់​នៃ​ការរចនា​របស់​ទំព័រ​បង្ហាញ ។</target>
+      </trans-unit>
+      <trans-unit id="layout.details" resname="layout.details" approved="yes">
+        <source>This option may not have any impact on the Frontend page design since it depends on whether the Frontend template uses it. Most templates do not use it.</source>
+        <target state="final">ជម្រើស​នេះ អាច​មិន​មាន​ការពាក់ព័ន្ធ​ជាមួយ​រចនាបទ​ទំព័រ Frontend ចាប់​ពី​ពេល​វា​ពឹងផ្អែក​ទៅ​លើ ថាតើ template Frontend ប្រើ​វា​ឬ​អត់ ។ template ភាគច្រើន​មិន​ប្រើ​វា ។</target>
+      </trans-unit>
+      <trans-unit id="doktype.description" resname="doktype.description" approved="yes">
+        <source>Page Type determines whether the page is normal webpage, a shortcut to another webpage, or used in other internal ways.</source>
+        <target state="final">ប្រភេទ​ទំព័រ​កំណត់​ទោះបី​ជា​ទំព័រ​ជា​ទំព័រ​វែបសាយ​ធម្មតា, ជា​សតខាត់​ទៅ​ទំព័រ​វែបសាយ​ផ្សេង​ទៀត ឬ​ត្រូវ​បាន​ប្រើ​ក្នុង​វិធី​ផ្សេង​ទៀត​ក៏​ដោយ ។</target>
+      </trans-unit>
+      <trans-unit id="doktype.details" resname="doktype.details" xml:space="preserve" approved="yes">
+				<source>'Standard' is the most common Page Type and is used for normal webpages.
+'Backend User Section' is an option which creates pages that are only visible in the Frontend for Backend users who are logged in.
+
+&lt;b&gt;Link&lt;/b&gt;
+'Shortcut' pages jump to another page in the Pagetree.
+'Mount Point' pages bring content from another branch of the Pagetree into the current branch.
+'Link to External URL' is similar to 'Shortcut' but points to external URLs instead of TYPO3 pages.
+
+&lt;b&gt;Special&lt;/b&gt;
+'Folder' is a page type which is not shown as a webpage but is instead stores records of your choice.
+'Recycler' is a garbage can. Pages and records in the Recycler are not visible in the Frontend.
+'Menu Separator' is only useful if your Frontend memus are programmed to use it. It does not represent a page with content but is intended to be an unclickable placeholder in the menu.
+
+&lt;b&gt;Notice&lt;/b&gt; Each Page Type is represented by a unique icon. The available page types can be restricted for users so all of the options described above may not be visible. Finally, particuilar record typoes may only be allowed on certain page types, but any record can be placed in a 'Folder.'</source>
+			<target state="final">'ស្ដង់ដារ' ជា​ប្រពភេទ​ទំព័រ​ដែល​ប្រើ​ច្រើន​បំផុត ហើយ​ត្រូវ​បាន​ប្រើ​លើ​ទំព័រ​វែបសាយ​ធម្មតា ។ 'ផ្នែក​អ្នក​ប្រើ Backend' ជា​ជម្រើស​​បង្កើត​ទំព័រ​ដែល​​បង្ហាញ​ក្នុង Frontend សម្រាប់​តែ​អ្នកគ្រប់គ្រង​ដែល​បាន​កត់ត្រាចូល ។ &lt;b&gt;តំណ&lt;/b&gt; ទំព័រ 'សតខាត់' ដំណើរការ​ទៅ​​ទំព័រ​ផ្សេង​ទៀត​ក្នុង​ឋានានុក្រម​ទំព័រ ។ 'ចំណុចម៉ោនថ៍' ទំព័រ​នាំ​យក​មាតិកា​ពី​សាខា​ផ្សេង​នៃ​ឋានានុក្រម​ទំព័រ​ទៅ​ក្នុង​សាខា​បច្ចុប្បន្ន ។ 'តំណ​ទៅ​ URL ខាងក្រៅ' ស្រដៀង​ទៅ​នឹង 'សតខាត់' ប៉ុន្តែ​ត​ទៅ URL ក្រៅ​ជំនួស​ទំព័រ TYPO3 ។ &lt;b&gt;ពិសេស&lt;/b&gt; 'សឺមី' ជា​ប្រភេទ​ទំព័រ​ដែល​មិន​បង្ហាញ​ជា​ទំព័រ​វែបសាយ ប៉ុន្តែ​​ប្រើ​សម្រាប់​ផ្ទុក​ទិន្នន័យ​ជំនួស​វិញ ។ 'ធុង​សំរាម' ជា​ធុង​សម្រាប់​ដាក់​ធាតុ​ដែល​បាន​លុង ។ ទំព័រ​ និង ទិន្នន័យ​ក្នុង​ធុង​សំរាម​មិន​ត្រូវ​បាន​បង្ហាញ​ទៅ​ Frontend ​ទេ ។ 'បន្ទាត់​កាត់​មឺនុយ' មាន​ប្រយោជន៍​ ប្រសិន​បើ​មឺនុយ​នៅ Frontend របស់​អ្នក​សរសេរ​ប្រើ​បន្ទាត់​កាត់ ។ វា​មិន​មែន​ជា​ទំព័រ និង មាតិកា ប៉ុន្តែ​វា​មិន​​អាច​ចុច​បាន​នៅ​លើ​មឺនុយ ។ &lt;b&gt;ចំណាំ&lt;/b&gt; ប្រភេទ​ទំព័រ​នីមួយៗ​សម្គាល់​ដោយ​រូបតំណាង​​ខុស​ពី​គេ ។ ប្រភេទ​ទំព័រ​ដែល​​មាន អាច​ត្រូវ​បាន​កម្រិត​លើ​អ្នកប្រើ ដូច្នេះ​ជម្រើស​ទាំងស់​ដែល​បង្ហាញ​ខាង​លើ អាច​មិន​មាន​បង្ហាញ ។ ចុងក្រោយ ប្រភេទ​ទិន្នន័យ​អាច​អនុញ្ញាត​លើ​ប្រភេទ​ទំព័រ​ជាក់លាក់ ប៉ុន្តែ​ទិន្នន័យ​ខ្លះ​អាច​ត្រូវ​បាន​ដាក់​នៅ​ក្នុង 'សឺមី' ។</target></trans-unit>
+      <trans-unit id="_doktype.seeAlso" resname="_doktype.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:shortcut,
+pages:url</source>
+				
+			<target state="final">pages:shortcut,
+pages:url</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>If this is checked, the page will be disabled on the website.</source>
+        <target state="final">ប្រសិន​បើ​ចុច​លើ​ជម្រើស​នេះ ទំព័រ​នឹង​បិទ​ដំណើរការ​លើ​វែបសាយ ។</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" xml:space="preserve" approved="yes">
+				<source>The 'Disable,' 'Start,' 'Stop,' and 'Access' options are all about limiting access to pages and are thus related in functionality. When a page is not visible due to one of these options, the page will not show up in the site navigation.
+Notice, these options are related &lt;em&gt;only&lt;/em&gt; to the page for which they are set. If you want their effect to cover the subpages as well, you must enable the 'Extend to Subpages' option.
+When you're logged in as a Backend user you can preview disabled pages if you have read access to them.</source>
+			<target state="final">ជម្រើស 'មិន​ដំណើរការ,' 'ចាប់ផ្ដើម,' និង 'សិទ្ធិ' ទាំងអស់​នេះ​អំពី​​ការកំណត់​សិទ្ធិ​លើ​ទំព័រ ដូច្នេះ​ទាក់ទង​នឹង​​ការងារ ។ ពេល​ទំព័រ​មួយ​មិន​បង្ហាញ​ដោយសារ​ជម្រើស​ណា​មួយ​ក្នុង​នេះ ទំព័រ​នឹង​មិន​បង្ហាញ​ក្នុង​មឺនុយ​វែបសាយ​ ។ ចំណាំ, ជម្រើស​នេះ​ទាក់ទង​​ទៅ​&lt;em&gt;តែ&lt;/em&gt;​ទំព័រ​ដែល​បាន​កំណត់​ប៉ុណ្ណោះ ។ ប្រសិន​បើ​អ្នក​ចង់​ឲ្យ​វា​មាន​ឥទ្ធិពល​ទៅ​ដល់​ទំព័រ​រង អ្នក​ត្រូវ​បើក​ជម្រើស 'ពង្រីក​ទៅ​ទំព័រ​រង' ។ ពេល​អ្នក​កត់ត្រា​ចូល​​ជា​អ្នក​ប្រើ Backend អ្នក​អាច​មើល​ទំព័រ​ដែល​បាន​បិទ បើ​អ្នក​មាន​សិទ្ធិ​អាន​ទំព័រ​ទាំងនោះ ។</target></trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" approved="yes">
+        <source>pages:starttime,pages:endtime,pages:fe_group,pages:extendToSubpages</source>
+        <target state="final">pages:starttime,pages:endtime,pages:fe_group,pages:extendToSubpages</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="hidden.image_descr" resname="hidden.image_descr" xml:space="preserve" approved="yes">
+				<source>The page icon of a disabled page is dimmed and a red X is added.
+If you view a page that is hidden and you are logged in into the Backend you will still be able to see the page. The red "Preview" box will tell you that this page is visible to you because of this special circumstance.</source>
+			<target state="final">រូបតំណាង​ទំព័រ​នៃ​ទំព័រ​ដែល​បាន​បិទ​មាន​ពណ៌​ស្រអាប់ និង ថែម​សញ្ញា X ពណ៌​ក្រហម ។ ប្រសិន​បើ​ង្នក​មើល​ទំព័រ​ដែល​ត្រូវ​បាន​លាក់ និង អ្នក​កត់ត្រា​ចូល​ Backend អ្នក​នឹង​នៅ​តែ​អាច​ឃើញ​ទំព័រ ។ ប្រអប់​ "មើល​ជាមុន" ពណ៌​ក្រហម នឹង​ប្រាប់​អ្នក​ថា ទំព័រ​នេះ​បើក​ឲ្យ​អ្នក ព្រោះ​​ជា​ករណី​ពិសេស ។</target></trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>The Publish Date determines when the page will be visible online. If the Publish Date is not set, the page will be available immediately.</source>
+        <target state="final">កាលបរិច្ឆេទ​សាធារណៈ​បញ្ជាក់​​ពេល​ទំព័រ​នឹង​បើក​បង្ហាញ ។ ប្រសិន​បើ​កាលបរិច្ឆេទ​សាធារណៈ​មិន​ត្រូវ​បាន​កំណត់ ទំព័រ​នឹង​ដំណើរការ​ភ្លាមៗ ។</target>
+      </trans-unit>
+      <trans-unit id="starttime.syntax" resname="starttime.syntax" xml:space="preserve" approved="yes">
+				<source>The Publish Date Format is either DD-MM-YYYY or MM-DD-YYYY depending on how TYPO3 is configured. There are also several shortcuts you can use when entering the date.
+If you insert a 'd' the current date will be inserted. You can also append any value in the field with a number such as '+10' which will add 10 days to the current value. For example, entering 'd+10' would result in a date 10 days from now.</source>
+			<target state="final">ទម្រង់​កាលបរិច្ឆេទ​អាច​ប្រើ DD-MM-YYYY ឬ MM-DD-YYYY អាស្រ័យ​លើ​ការកំណត់​លើ TYPO3 ។ វា​ក៏​មាន​សតខាត់​មួយ​ចំនួន​ អ្នក​អាច​យក​មក​ប្រើ​ពេល​បំពេញ​កាលបរិច្ឆេទ ។ ប្រសិន​បើ​អ្នក​បំពេញ 'd' មួយ កាលបរិច្ឆេទ​នឹង​ត្រូវ​បាន​បញ្ចូល ។ អ្នក​ក៏​អាច​​បន្ថែម​តម្លៃ​ណា​មួយ​ក្នុង​ប្រអប់​ជាមួយ​លេខ ដូចជា '+10' ដែល​នឹង​ថែម ១០ ថ្ងៃ​ទៅ​លើ​តម្លៃ​ដើម ។ ឧទាហរណ៍ បំពេញ 'd+10' លទ្ធផល​នឹង​បាន​កាលបរិច្ឆេទ​លើស ១០ ថ្ងៃ​នៃ​​បច្ចុប្បន្នភាព ។</target></trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" approved="yes">
+        <source>pages:endtime,pages:hidden</source>
+        <target state="final">pages:endtime,pages:hidden</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" approved="yes">
+        <source>tt_content</source>
+        <target state="final">tt_content</target>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>The Expiration Date specifies when the page will no longer be visible online.</source>
+        <target state="final">កាលបរិច្ឆេទ​ផុត​កំណត់ កំណត់​ពេល​ទំព័រ​លែង​បើក​ឲ្យ​មើល​លើ​បណ្ដាញ ។</target>
+      </trans-unit>
+      <trans-unit id="endtime.syntax" resname="endtime.syntax" approved="yes">
+        <source>See Page / Publication Date (click below)</source>
+        <target state="final">មើល​ទំព័រ / កាលបរិច្ឆេទ (ចុច​ខាង​ក្រោម)</target>
+      </trans-unit>
+      <trans-unit id="_endtime.seeAlso" resname="_endtime.seeAlso" approved="yes">
+        <source>pages:starttime</source>
+        <target state="final">pages:starttime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="fe_group.description" resname="fe_group.description" approved="yes">
+        <source>If Usergroup Access Rights is set to a usergroup name, only website users who are members of the selected usergroup will be able to view the page. The special option 'Hide at Login' means the page will &lt;em&gt;not&lt;/em&gt; be visible for any website users that are logged in. Likewise "Show at Any Login" will make the page visible for any logged in Frontend user.</source>
+        <target state="final">ប្រសិន​បើ​សិទ្ធិ​របស់​ក្រុម​អ្នក​ប្រើ​កំណត់​ទៅ​ឈ្មោះ​ក្រុម មានតែ​អ្នក​ប្រើ​វែបសាយ​ដែល​ជា​សមាជិក​របស់​ក្រុម​នោះ​នឹង​អាច​មើល​ទំព័រ​បាន ។ ជម្រើស​ពិសេស 'លាក់​ពេល​កត់ត្រា​ចូល' មានន័យ​ថា ទំព័រ​នឹង​&lt;em&gt;​មិន&lt;/em&gt;​បង្ហាញ​ទៅ​អ្នក​ប្រើ​វែបសាយ​ដែល​កត់ត្រា​ចូល ។ ដូច​គ្នា​នេះ​ដែរ 'បង្ហាញ​ពេល​កត់ត្រាចូល' នឹង​បង្ហាញ​ទំព័រ​រាល់​ពេល​កត់ត្រា​ចូល​ក្នុង Frontend ។</target>
+      </trans-unit>
+      <trans-unit id="_fe_group.seeAlso" resname="_fe_group.seeAlso" approved="yes">
+        <source>fe_groups</source>
+        <target state="final">fe_groups</target>
+      </trans-unit>
+      <trans-unit id="extendToSubpages.description" resname="extendToSubpages.description" approved="yes">
+        <source>By default the Publication Date, Expiration Date, Usergroup Access Rights, and Page Visibility options &lt;em&gt;only&lt;/em&gt; affect the page where they are set. If the option 'Extend to Subpages' is checked for the page, then all subpages are affected as well.</source>
+        <target state="final">ជាទូទៅ កាលបរិច្ឆេទ​បើក, កាលបរិច្ឆេទ​ផុត​កំណត់, សិទ្ធិ​របស់​ក្រុម និង ជម្រើស​បង្ហាញ​ទំព័រ មាន​ឥទ្ធិពល​&lt;em&gt;តែ​&lt;/em&gt;ទៅ​លើ​ទំព័រ​ដែល​បាន​កំណត់​ប៉ុណ្ណោះ ។ ប្រសិន​បើ​ជម្រើស 'ពង្រីក​ទៅ​ទំព័រ​រង' ត្រូវ​បាន​ជ្រើសរើស​សម្រាប់​ទំព័រ ពេល​នោះ​ទំព័រ​រង​ទាំងអស់​នឹង​ទទួល​ឥទ្ធិល​ទាំងនេះ​ដែរ ។</target>
+      </trans-unit>
+      <trans-unit id="extendToSubpages.details" resname="extendToSubpages.details" xml:space="preserve" approved="yes">
+				<source>Consider a scenario where you want to create a section of subpages that are only visible for logged in users. Setting the Usergroup Access Rights for the top page in the section would remove the page from menus if no user was logged in.
+However, the subpage could still be accessed by guessing the ID number of the page and entering it manually in the URL. Setting the 'Extend to Subpages' option would extend the Usergroup Access Rights from the top page through all subpages as well.</source>
+			<target state="final">កំណត់​កន្លែង​ដែល​អ្នក​ចង់​បង្កើត​ទំព័រ​រង​ដែល​បើក​សម្រាប់​អ្នក​ប្រើ​ដែល​បាន​កត់ត្រា​ចូល ។ កំណត់​សិទ្ធិ​សម្រាប់​ក្រុម​អ្នក​ប្រើ​លើ​ទំព័រ​លើ​គេ​ក្នុង​ផ្នែក​នឹង​ដក​ទំព័រ​ពី​មឺនុយ​ប្រសិន​បើ​មិន​មាន​អ្នក​ប្រើ​កត់ត្រា​ចូល ។ តែ​យ៉ាង​ណា​ក៏​ទំព័រ​រង​នៅ​អាច​ចូល​ប្រើ​ដោយ​ទាយ​លេខ​សម្គាល់​របស់​វា និង ដាក់​វា​ដោយ​ខ្លួនឯង​ក្នុង URL ។ ការកំណត់ 'ពង្រីក​ទៅ​ទំព័រ​រង' នឹង​ពង្រីក​សិទ្ធិ​របស់​ក្រុម​ពី​ទំព័រ​លើ​គេ​ទៅ​ទំព័រ​រង​ទាំងអស់ ។</target></trans-unit>
+      <trans-unit id="_extendToSubpages.seeAlso" resname="_extendToSubpages.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:hidden,
+pages:starttime,
+pages:endtime,
+pages:fe_group</source>
+				
+			<target state="final">pages:hidden,
+pages:starttime,
+pages:endtime,
+pages:fe_group</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="extendToSubpages.image_descr" resname="extendToSubpages.image_descr" approved="yes">
+        <source>This page has access restricted to a certain group and has "Extend to Subpages" set as well. This is reflected in the way the page icon has changed.</source>
+        <target state="final">ទំព័រ​នេះ​បាន​កំណត់​សិទ្ធិ​​ទៅ​ក្រុម និង បាន​កំណត់ 'ពង្រីក​ទំព័រ​រង' ផង​ដែរ ។ វា​មាន​ឥទ្ធិពល​លើ​ការ​ផ្លាស់ប្ដូរ​រូបតំណាង​ទំព័រ ។</target>
+      </trans-unit>
+      <trans-unit id="target.description" resname="target.description" approved="yes">
+        <source>This sets the default Link Target for menu items linking to this page. Can also used to open the page as a popup window.</source>
+        <target state="final">ទីនេះ​កំណត់​គោលដៅ​តំណ​លំនាំ​ដើម​លើ​ធាតុ​មឺនុយ​ត​ទៅ​ទំព័រ​នេះ ។ អាច​ត្រូវ​បាន​ប្រើ​ដើម្បី​បើក​ទំព័រ​ក្នុង​ផ្ទាំង​លោត​ថ្មី​ផង​ដែរ ។</target>
+      </trans-unit>
+      <trans-unit id="target.details" resname="target.details" xml:space="preserve" approved="yes">
+				<source>The Link Target overrides the default Link Target behavior, which should already be configured correctly for most pages in the website TypoScript template.
+There are additional options available by using the Link Target field
+
+Setting an integer value at the beginning of the field sets it as the default type for the page.
+For example, if an RSS feed is configured in TypoScript as typeNum=100, setting the Link Target to 100 could be used to add an RSS link in the menu.
+
+The following syntax is used to open the page in a popup window:
+400x200 - Opens the page in a 400x200 popup window.
+230x450:resizable=0,location=1 - Opens the page in a 230x450 popup window that is not resizable and has an address bar.
+
+Combined:
+100 600x350 - Opens the page in a 600x350 popup with type=100
+2 _blank - Opens the page with target "_blank" and type=2</source>
+			<target state="final">គោលដៅ​របស់​តំណ​បញ្ជាន់​លើ​គោលដៅ​របស់​តំណ​ដើម ដែល​គួរ​ត្រូវ​បាន​កំណត់​ឲ្យ​បាន​ត្រឹមត្រូវ​ជា​ស្រេច​សម្រាប់​ទំព័រ​មួយ​ចំនួន​ធំ​លើ​ទំព័រ​វែបសាយ ក្នុង template របស់ TypoScript ។ មាន​ជម្រើស​បន្ថែម​ជា​ច្រើន​ដោយ​ប្រើ​ប្រអប់​​គោលដៅ​តំណ ។ កំណត់​តម្លៃ​លេខ​នៅ​ដើម​ដំបូង​នៃ​ប្រអប់​ ប្រៀប​ដូច​ជា​ប្រភេទ​ដើម​នៃ​ទំព័រ ។ ឧទហរណ៍ បើ RSS feed ត្រូវ​បាន​កំណត់​ក្នុង TypoScript ជា​ typeNum=100, ការកំណត់​គោលដៅ​តំណ​ទៅ 100 អាច​ត្រូវ​បាន​ប្រើ​ដើម្បី​បន្ថែម​តំណ RSS ក្នុង​មឺនុយ ។ រូបមន្ត​ខាង​ក្រោម​ត្រូវ​បាន​ប្រើ​ដើម្បី​បើក​ទំព័រ​ក្នុង​ផ្ទាំង​លោត៖ ៤០០x២០០ - បើក​ទំព័រ​ក្នុង​ផ្ទាំង​លោត ៤០០x២០០ ។ ២៣០x៤៥០៖resizable=0,locaction=១ - បើក​ទំព័រ​ក្នុង​ផ្ទាំង​លោត ២៣០x៤៥០ ដែល​មិន​អាច​ពង្រីក​បង្រួម​បាន និង មាន​ប្រអប់​អាសយដ្ឋាន ។ ការបញ្ចូល​គ្នា៖ ១០០ ៦០០x៣៥០ - បើក​ទំព័រ​ក្នុង​ផ្ទាំង​លោត ៦០០x៣៥០ ប្រភេទ ១០០ 2_blank - បើក​ទំព័រ​ជាមួយ​នឹង​គោលដៅ "_blank" និង ប្រភេទ​=២</target></trans-unit>
+      <trans-unit id="cache_timeout.description" resname="cache_timeout.description" approved="yes">
+        <source>Sets the Cache Lifetime for the page.</source>
+        <target state="final">កំណត់​ខែស្ហ​​លើ​ទំព័រ​នេះ​រហូត ។</target>
+      </trans-unit>
+      <trans-unit id="cache_timeout.details" resname="cache_timeout.details" xml:space="preserve" approved="yes">
+				<source>By default, pages are cached for 24 hours. After 24 hours, the page is constructed again and rewritten to the cache. Depending on your configuration, the cache may be cleared at midnight.
+When specific pages need a longer or shorter cache lifetime than the default, this option can be used.</source>
+			<target state="final">តាម​ធម្មតា ទំព័រ​ត្រូវ​បាន​ខែស្ហ​ ២៤ ម៉ោង ។ បន្ទាប់​ពី ២៤ ម៉ោង ទំព័រ​នឹង​រៀបចំ​ឡើង​វិញ និង បញ្ជូន​ទៅ​ខែស្ហ ។ អាស្រ័យ​លើ​ការកំណត់​របស់​អ្នក ខែស្ហ​អាច​សម្អាត​នៅ​ពាក់​កណ្ដាល​យប់ ។ ជម្រើស​មួយ​នេះ​ត្រូវ​បាន​ប្រើ​ពេល​កំណត់​ទំព័រ ដែល​ត្រូវការ​កំណត់​​ពេល​វែង​ជាង ឬ ខ្លី​ជាង​ការកំណត់​ដើម ។</target></trans-unit>
+      <trans-unit id="no_search.description" resname="no_search.description" approved="yes">
+        <source>If enabled, this option excludes the page from searching operations on the website.</source>
+        <target state="final">ប្រសិន​បើ​បើក​ជម្រើស​នេះ លើកលែង​ទំព័រ​ពី​ការស្វែងរក​លើ​វែបសាយ ។</target>
+      </trans-unit>
+      <trans-unit id="author.description" resname="author.description" approved="yes">
+        <source>Enter the page author's name.</source>
+        <target state="final">បំពេញ​ឈ្មោះ​អ្នក​បង្កើត​ទំព័រ ។</target>
+      </trans-unit>
+      <trans-unit id="author.details" resname="author.details" xml:space="preserve" approved="yes">
+				<source>Whether the author name is used or not depends on the setup of your TypoScript template.
+
+- You may use it in a meta-tag.
+- If you're using TYPO3 pages as 'articles' then you could use this field to display the name of the page (article) author.</source>
+			<target state="final">ទោះ​បី​ជា​ឈ្មោះ​អ្នក​បង្កើត​ត្រូវ​បាន​ប្រើ ឬ មិន​ត្រូវ​បាន​ប្រើ អាស្រ័យ​លើ​ការដំឡើង​លើ template TypoScript ។ - អ្នក​អាច​ប្រើ​វា​ក្នុង ថាក​ meta - បើ​អ្នក​កំពុង​ប្រើ​ទទំព័រ TYPO3 ជា​ 'អត្ថបទ' អ្នក​អាច​ប្រើ​ប្រអប់​នេះ​ដើម្បី​បង្ហាញ​ឈ្មោះ​អ្នក​បង្កើត​ទំព័រ (អត្ថបទ) ។</target></trans-unit>
+      <trans-unit id="_author.seeAlso" resname="_author.seeAlso" approved="yes">
+        <source>pages:author_email</source>
+        <target state="final">pages:author_email</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="author_email.description" resname="author_email.description" approved="yes">
+        <source>Enter the page author's email address.</source>
+        <target state="final">បំពេញ​អាសយដ្ឋាន​អ៊‍ីមេល​របស់​អ្នក​បង្កើត​ទំព័រ ។</target>
+      </trans-unit>
+      <trans-unit id="_author_email.seeAlso" resname="_author_email.seeAlso" approved="yes">
+        <source>pages:author</source>
+        <target state="final">pages:author</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="module.description" resname="module.description" approved="yes">
+        <source>Define the page as containing a Frontend plugin.</source>
+        <target state="final">កំណត់​ទំព័រ​ឲ្យ​ផ្ទុក​កម្មវិធី​បន្ថែម​សម្រាប់ Frontend ។</target>
+      </trans-unit>
+      <trans-unit id="module.details" resname="module.details" xml:space="preserve" approved="yes">
+				<source>Setting this option lets the Backend knows this page contains specific content or has a specific purpose, such as containing a forum or acting as the root page of a shop section on the website. Based on this setting the Backend is able to display a shortcut list as well as relevant functionality in the 'Web&gt;Modules' module. The Frontend display is largely not affected.
+Marking a page as containing a 'Shop' plugin simply means it'll show up in the shortcut list of modules in the backend.
+
+For additional details on this option, refer to the administration documentation.
+
+It's recommended that only admin-users have access to this field!</source>
+			<target state="final">យក​ជម្រើស​នេះ​អនុញ្ញាត​ឲ្យ​ Backend ដឹង​ទំព័រ​នេះ​មាន​មាតិកា​ជាក់លាក់ ឬ មាន​បំណង​ជាក់លាក់ ដូច​ជា​មាន​​វេទិការ​ពិភាក្សា ឬ ដើរតួ​ជា​ទំព័រ​គោល​នៃ​ការលក់​ទំនិញ​លើ​វែបសាយ ។ ផ្អែក​លើ​ការកំណត់​នេះ Backend ត្រូវ​បាន​បើក​ដំណើរការ​បង្ហាញ​បញ្ជី​សតខាត់​ក៏​ដូច​ជា​មុខងារ​ក្នុង​ម៉ូឌុល 'វែប&gt;ម៉ូឌុល' ។ ការបង្ហាញ​លើ Frontend មិន​មាន​ផល​ប៉ះពាល់​ទេ ។ សម្គាល់​ទំព័រ​មួយ​មាន​កម្មវិធី​បន្ថែម 'លក់​ទំនិញ' មានន័យ​ថា វា​នឹង​បង្ហាញ​ក្នុង​បញ្ជី​សតខាត់​របស់​ម៉ូឌុល​ក្នុង Backend ។ សម្រាប់​ព័តមាន​បន្ថែម​លើ​ជម្រើស​នេះ សូម​មើល​ឯកសារ​គ្រប់គ្រង ។ សិទ្ធិ​ប្រើ​ប្រាស់​ប្រអប់​នេះ តម្រូវ​ឲ្យ​តែ​អ្នក​គ្រប់គ្រង​ប៉ុណ្ណោះ ។</target></trans-unit>
+      <trans-unit id="media.description" resname="media.description" approved="yes">
+        <source>Attach media files related to the page.</source>
+        <target state="final">ភ្ជាប់​ឯកសារ​​សោតទស្សន៍​ទាក់ទង​នឹង​ទំព័រ ។</target>
+      </trans-unit>
+      <trans-unit id="media.details" resname="media.details" xml:space="preserve" approved="yes">
+				<source>This field allows you to attach various files to the page, but how these files are used depends on your template.
+As an example the template could be use this field to allow a logo to be attached to the page or it might expect the first file to be an image used as a link in the navigation menu. Remember, this totally depends on how the template is programmed.</source>
+			<target state="final">ប្រអប់​​នេះ​អនុញ្ញាត​ឲ្យ​អ្នក​ភ្ជាប់​ឯកសារ​ចាស់ៗ​ទៅ​កាន់​ទំព័រ ប៉ុន្តែ​របៀប​ប្រើ​ឯកសារ​ទាំងនេះ​ផ្អែក​លើ​​គំរូ​របស់​អ្នក​ ។ ដូច​ក្នុង​ឧទាហរណ៍ template អាច​ប្រើ​ប្រអប់​នេះ​ដើម្បី​អនុញ្ញាត​ឲ្យ​ភ្ជាប់​ស្លាកសញ្ញា​ទៅ​កាន់​ទំព័រ ឬ វា​អាច​​ដាក់​ឯកសារ​ដំបូង​ជា​រូបភាព​ប្រើ​ជា​តំណ​ក្នុង​មឺនុយ ។ ចង់ចាំ​ថា ទាំងនេះ​ផ្អែក​លើ​ការសរសេរ​កូដ​លើ template ទាំងស្រុង ។</target></trans-unit>
+      <trans-unit id="subtitle.description" resname="subtitle.description" approved="yes">
+        <source>Enter a subtitle if needed.</source>
+        <target state="final">បំពេញ​ចំណងជើង​រង ប្រសិន​បើ​ចាំបាច់ ។</target>
+      </trans-unit>
+      <trans-unit id="subtitle.details" resname="subtitle.details" approved="yes">
+        <source>Whether this field is used or not depends on the template. In most cases it's not used.</source>
+        <target state="final">ប្រអប់​នេះ​ត្រូវ​បាន​ប្រើ​ឬ​អត់​អាស្រ័យ​លើ template ។ ក្នុង​ករណី​ជា​ច្រើន​វា​មិន​ត្រូវ​បាន​ប្រើ ។</target>
+      </trans-unit>
+      <trans-unit id="url.description" resname="url.description" approved="yes">
+        <source>Enter the URL this page redirects to.</source>
+        <target state="final">បំពេញ URL ដែល​ទំព័រ​បញ្ជូន​បន្ត​ទៅ ។</target>
+      </trans-unit>
+      <trans-unit id="shortcut.description" resname="shortcut.description" approved="yes">
+        <source>Select a page to act as the Shortcut Target. When the current page is requested in the Frontend, it will be redirected to the Shortcut Target.</source>
+        <target state="final">រើស​ទំព័រ​ដើម្បី​ដាក់​ជី​គោលដៅ​របស់​សតខាត់ ។ ពេល​ទំព័រ​កំពុង​បើក​ស្នើ​លើ Frontend វា​នឹង​បញ្ចូន​បន្ត​ទៅ​គោលដៅ​របស់​សតខាត់ ។</target>
+      </trans-unit>
+      <trans-unit id="shortcut.details" resname="shortcut.details" xml:space="preserve" approved="yes">
+				<source>Click the 'Browse for Records' icon and a new window will appear in which you can easily select a page to act as the Shortcut Target.
+
+This option is used only if the page 'Type' is set to 'Shortcut.'</source>
+			<target state="final">ចុច​លើ​រូប​តំណាង "បើក​រក​ទិន្នន័យ" ពេល​នោះ​ផ្ទាំង​ថ្មី​មួយ​នឹង​លោត​ឡើង​ដែល​អ្នក​អាច​រើស​ទំព័រ​ជា​គោលដៅ​សតខាត់​បាន​យ៉ាង​ងាយស្រួល ។ ជម្រើស​នេះ​ត្រូវ​បាន​ប្រើ​តែ​លើ​ 'ប្រភេទ​' ទំព័រ​ដែល​បា​ន​កំណត់​ជា 'សតខាត់' ។</target></trans-unit>
+      <trans-unit id="_shortcut.seeAlso" resname="_shortcut.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:doktype,
+pages:shortcut_mode</source>
+				
+			<target state="final">pages:doktype,
+pages:shortcut_mode</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="shortcut.image_descr" resname="shortcut.image_descr" approved="yes">
+        <source>Select a Shortcut Target page with the Element Browser.</source>
+        <target state="final">រើស​ទំព័រ​សតខាត់​គោលដៅ ជាមួយ​ធាតុ​កម្មវិធី​រុករក ។</target>
+      </trans-unit>
+      <trans-unit id="keywords.description" resname="keywords.description" approved="yes">
+        <source>Enter keywords for the page separated by commas. You may also use short phrases.</source>
+        <target state="final">បំពេញ​ពាក្យ​គន្លឹះ​ឲ្យ​ទំព័រ កាត់​ដោយ​ប្រើ​ក្បៀស ។ អ្នក​អាច​ប្រើ​ឃ្លា​ខ្លីៗ ។</target>
+      </trans-unit>
+      <trans-unit id="keywords.details" resname="keywords.details" xml:space="preserve" approved="yes">
+				<source>Most TYPO3 websites use these keywords in a meta-tag on the page, but you may have to setup the appropriate TypoScript template yourself.
+
+To optimize your page for search engines like Google you should not use more than 3 to 6 keywords. You should also make sure that the keywords are found in the content of the page.
+
+Note that search engine extensions for TYPO3 such as Indexed Search can also be configured to make use of the keywords.
+
+The keywords can also be used to create a menu of related pages. Create a Content Element of type 'Sitemap' and then choose the menu type &lt;i&gt;Related pages (based on keywords)&lt;/i&gt;.</source>
+			<target state="final">វែបសាយ TYPO3 ភាគ​ច្រើន ប្រើ​ពាក្យ​គន្លឹះ​ទាំងនេះ​ក្នុង​ស្លាក meta លើ​ទំព័រ ប៉ុន្តែ​អ្នក​អាច​កំណត់​លើ គំរូ TypoScript ដោយ​ខ្លួនឯង ។ ដើម្បី​បង្រួម​ទំព័រ​របស់​អ្នក​សម្រាប់​​ម៉ាស៊ីន​ស្វែងរក​ដូច​ជា Google អ្នក​គួរ​មិន​ត្រូវ​ប្រើ​ច្រើន​ជាង ៣ ទៅ ៦ ពាក្យ​នោះ​ទេ ។ អ្នក​គួរ​ប្រាកដ​ផង​ដែរ​ថា ពាក្យ​ទាំង​នោះ​មាន​នៅ​ក្នុង​មាតិកា​របស់​ទំព័រ ។ ចំណាំ​ថា​សមាសភាគ​​ម៉ាស៊ីន​ស្វែងរក​សម្រាប់ TYPO3 ដូច​ជា​លិបិក្រម​ស្វែងរក ក៏​អាច​ត្រូវ​បាន​កំណត់​ឲ្យ​ប្រើ​ពាក្យ​ទាំង​នោះ​ដែរ ។ ពាក្យ​គន្លឹះ​អាច​ត្រូវ​បាន​ប្រើ​ដើម្បី​បង្កើត​មឺនុយ​ទាក់ទង​ទៅ​នឹង​ទំព័រ ។ បង្កើត​ធាតុ​មាតិកា​ប្រភេទ​ជា 'ប្លង់​វែបសាយ' និង រើស​យក​ប្រភេទ​មឺនុយ &lt;i&gt;ទាក់ទង​នឹង​ទំព័រ (អាស្រ័យ​ដោយ​ពាក្យ​គន្លឹះ)&lt;/i&gt; ។</target></trans-unit>
+      <trans-unit id="_keywords.seeAlso" resname="_keywords.seeAlso" approved="yes">
+        <source>pages:description</source>
+        <target state="final">pages:description</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a short description of the page. It will be displayed in the result lists of most search engines.</source>
+        <target state="final">បំពេញ​សេចក្ដី​អធិប្បាយ​លើ​ទំព័រ ។ វា​នឹង​បង្ហាញ​​ក្នុង​បញ្ជី​លទ្ធផល​នៃ​ម៉ាស៊ីន​ស្វែងរក​ភាគច្រើន ។</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" xml:space="preserve" approved="yes">
+				<source>Most websites insert this description in a meta-tag on the page, but you may have to configure this yourself in your TypoScript template.
+
+Most search engines will display the description in their result list. Thus, the text should be short (about 160 characters maximum), and its wording should make sense when it shows up in the result list.
+
+In addition, the description will be displayed if you create a Content Element of type 'Sitemap' and then choose the menu type &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt;. If an abstract exists for the page, it will be used instead of the description.
+
+&lt;b&gt;Note:&lt;/b&gt; Some search engines only use the description if the text is not found elsewhere in the content. So do not just repeat yourself.</source>
+			<target state="final">វែបសាយ​ភាគច្រើន​បញ្ចូល​ព័ត៌មាន​លម្អិត​នេះ​ក្នុង​ស្លាក meta លើ​ទំព័រ ប៉ុន្តែ​អ្នក​ក៏​អាច​កំណត់​ដោយ​ខ្លួនឯង​នៅ​លើ template TypoScript ផងដែរ ។ ម៉ាស៊ីន​ស្វែងរក​ភាគ​ច្រើន​បង្ហាញ​សេចក្ដី​ពណនា​ក្នុង​បញ្ជី​លទ្ធផល​របស់​គេ ។ ដូច្នេះ​សេចក្ដី​នេះ​គួរ​ឲ្យ​ខ្លី (ប្រហែល ១៦០ តួអក្សរ​ ច្រើន​បំផុត) និង មានន័យ​អាច​ស្ដាប់​បាន​ពេល​បង្ហាញ​​នៅ​ក្នុង​បញ្ជី​លទ្ធផល ។ លើស​ពី​នេះ សេចក្ដី​អធិប្បាយ​នឹង​ត្រូវ​បាន​បង្ហាញ​ប្រសិន​​អ្នក​បង្កើត​ធាតុ​​មាតិកា​ប្រភេទ 'ផែនទី​ប្លង់​វែបសាយ' និង​រើស​យក​ប្រភេទ​&lt;i&gt;មឺនុយ​របស់​ទំព័រ​រង​ទៅ​កាន់ទំព័រ​ទាំងនេះ (ជាមួយ​សេចក្ដី​សង្ខេប)&lt;/i&gt; ។ បើ​សេចក្ដី​សង្ខេប​មាន​សម្រាប់​ទំព័រ វា​នឹង​ត្រូវ​បាន​ប្រើ​ជំនួស​សេចក្ដី​អធិប្បាយ ។ &lt;b&gt;ចំណាំ៖&lt;/b&gt; ម៉ាស៊ីន​ស្វែងរក​មួយ​ចំនួន ប្រើ​តែ​សេចក្ដី​អធិប្បាយ​ប្រសិន​បើ​អក្សរ​​រក​មិន​ឃើញ​នៅ​ត្រង់​ណា​មួយ​ក្នុង​មាតិកា ។ ដូច្នេះ​អ្នក​ពុំ​ចាំបាច់​ធ្វើ​វា​ដដែល​ៗ​ដោយ​ខ្លួនឯង​ទេ ។</target></trans-unit>
+      <trans-unit id="_description.seeAlso" resname="_description.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:keywords
+pages:abstract</source>
+			<target state="final">pages:keywords
+pages:abstract</target></trans-unit>
+      <trans-unit id="abstract.description" resname="abstract.description" approved="yes">
+        <source>Enter an abstract of the contents. It may be displayed in an overview of articles.</source>
+        <target state="final">បំពេញ​សេចក្ដី​សង្ខេប​របស់​មាតិកា ។ វា​អាច​ត្រូវ​បាន​បង្ហាញ​ក្នុង​ពេល​បង្ហាញ​​មើល​សង្ខេប​នៃ​អត្ថបទ ។</target>
+      </trans-unit>
+      <trans-unit id="abstract.details" resname="abstract.details" xml:space="preserve" approved="yes">
+				<source>An abstract is a short description of the page content that might be a little longer than the one in the &lt;i&gt;Description&lt;/i&gt; field.
+
+Unlike the description, the abstract is not meant for display in search engine result lists, but is instead intended for you own use.
+
+If you create a Content Element of type &lt;i&gt;Sitemap&lt;/i&gt; and then choose &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt; an overview of pages will be created. If an abstract is available for a page it will be used instead of the description.
+
+&lt;b&gt;Note:&lt;/b&gt; You do not have to enter the text of the description into the &lt;i&gt;Abstract field&lt;/i&gt; again.
+
+Admins can also make custom use of this field via their TypoScript templates.</source>
+			<target state="final">សេចក្ដី​សង្ខេប​ជា​សេចក្ដី​ពន្យល់​មាតិកា​ទំព័រ​ខ្លី​មួយ ដែល​អាច​វែង​ជា​សេចក្ដី​​ក្នុង​បទ​&lt;i&gt;ពន្យល់&lt;/i&gt; ។ មិន​ដូច​គ្នា​ទៅ​នឹង​សេចក្ដី​អធិប្បាយ សេចក្ដី​សង្ខេប​មិនមានន័យ​​សម្រាប់​បង្ហាញ​ក្នុង​លទ្ធផល​ស្វែងរក​ទេ ប៉ុន្តែ​សម្រាប់​ការប្រើប្រាស់​របស់​អ្នក​ខ្លួនឯង ។ ប្រសិន​បើ​អ្នក​បង្កើត​ធាតុ​មាតិកា​ប្រភេទ &lt;i&gt;ផែនទី​ប្លង់​វែបសាយ&lt;/i&gt; និង រើស​យក&lt;i&gt;មឺនុយ​របស់​ទំព័រ​រង​ទៅកាន់​ទំព័រ​ទាំងនេះ (ជាមួយ​សេចក្ដី​សង្ខេប)&lt;/i&gt; ការ​បង្ហាញ​ទព័រ​នឹង​ត្រូវ​បាន​បង្កើត ។ បើ​សេចក្ដី​សង្ខេប​មាន​សម្រាប់​ទំព័រ វា​នឹង​ត្រូវ​បាន​ប្រើ​ជំនួស​សេចក្ដី​ពន្យល់ ។ &lt;b&gt;ចំណាំ៖&lt;/b&gt; អ្នក​មិន​ចាំបាច់​បញ្ចូល​​សេចក្ដី​ពន្យល់​ទៅ​ក្នុង​&lt;i&gt;​ប្រអប់​សេចក្ដី​សង្ខេប​&lt;/i&gt;​ម្ដង​ទៀត​ទេ ។ អ្នក​គ្រប់គ្រង​ក៏​អាច​ធ្វើការ​កំណត់​កែប្រែ​ប្រអប់​នេះ​តាមរយៈ Template TypoScript ផង​ដែរ ។</target></trans-unit>
+      <trans-unit id="_abstract.seeAlso" resname="_abstract.seeAlso" approved="yes">
+        <source>pages:description</source>
+        <target state="final">pages:description</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="newUntil.description" resname="newUntil.description" approved="yes">
+        <source>Enter the date at which this page is no longer considered new.</source>
+        <target state="final">បំពេញ​កាលបរិច្ឆេទ​ដែល​ទំព័រ​នេះ​លែង​ចាត់ទុក​ថា​ថ្មី ។</target>
+      </trans-unit>
+      <trans-unit id="newUntil.details" resname="newUntil.details" xml:space="preserve" approved="yes">
+				<source>The 'New Until' date of the page has no effect on the display of the webpage. This value is instead for internal use as a reminder of the date when the content of this page should be revised. If the content of the page will become outdated on a certain day, you could set this value to that approximate date.
+To get an overview of when pages will be outdated, use the 'Pagetree overview' in the 'Web&gt;Info' Module.</source>
+			<target state="final">កាលបរិច្ឆេទ 'ថ្មី​រហូត​ដល់' របស់​ទំព័រ មាន​មាន​ឥទ្ធិពល​លើ​ការបង្ហាញ​របស់​វែបសាយ​ទេ ។ តម្លៃ​នេះ​សម្រាប់​ប្រើ​​​សម្រាប់​ជា​ការរំឭក​កាលបរិច្ឆេទ​ពេល​មាតិកា​របស់​ទំព័រ​នេះ​គួរ​ធ្វើការ​កែប្រែ ។ ប្រសិន​បើ​មាតិកា​របស់​ទំព័រ​នឹង​​ហួស​កាលកំណត់​ក្នុង​ថ្ងៃ​ណា​មួយ​​ជាក់លាក់ អ្នក​គួរ​កំណត់​តម្លៃ​នេះ​ទៅ​កាលបរិច្ឆេទ​ជាក់លាក់​នោះ ។ ដើម្បី​មើល​កាលបរិច្ឆេទ​​ទំព័រ​ហួស​កាល​កំណត់​នេះ ប្រើ 'ទិដ្ឋភាព​ទូទៅ​នៃ​ឋានានុក្រម' ក្នុង​ម៉ូឌុល 'វែប&gt;ព័ត៌មាន' ។</target></trans-unit>
+      <trans-unit id="newUntil.syntax" resname="newUntil.syntax" approved="yes">
+        <source>See Page / Publication Date (click below)</source>
+        <target state="final">មើល​ទំព័រ / កាលបរិច្ឆេទ (ចុច​ខាង​ក្រោម)</target>
+      </trans-unit>
+      <trans-unit id="_newUntil.seeAlso" resname="_newUntil.seeAlso" approved="yes">
+        <source>pages:starttime</source>
+        <target state="final">pages:starttime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="lastUpdated.description" resname="lastUpdated.description" approved="yes">
+        <source>Enter the date and time of the most recent update to this page.</source>
+        <target state="final">បំពេញ​កាលបរិច្ឆេទ និង ពេលវេលា​នៃ​ការធ្វើ​បច្ចុប្បន្នកម្ម​ទៅ​លើ​ទំព័រ​នេះ ។</target>
+      </trans-unit>
+      <trans-unit id="lastUpdated.details" resname="lastUpdated.details" xml:space="preserve" approved="yes">
+				<source>How the value of this field is used is determined by the TypoScript template of the website. 'Last Update' content needs to be inserted on the pages and the TypoScript template must be configured to use this value.
+The most common use is to display the date from the automatically updated 'tstamp' field &lt;em&gt;unless&lt;/em&gt; the 'Last Update' field is set. In this case, the date in 'Last Update' is used.</source>
+			<target state="final">ការប្រើប្រាស់​តម្លៃ​នេះ​យ៉ាង​ណា ត្រូវ​បាន​កំណត់​ក្នុង template TypoScript នៃ​វែបសាយ ។ មាតិកា 'Last Update' ត្រូវ​ការ​បញ្ចូល​លើ​ទំព័រ និង template TypoScript ត្រូវ​បាន​កំណត់​​ឲ្យ​ប្រើ​តម្លៃ​នេះ ។ ការប្រើ​ជា​ទូទៅ​គឺ​បង្ហាញ​កាលបរិច្ឆេទ​ពី​ការធ្វើ​ទំនើបកម្ម​ដោយ​ស្វ័យប្រវត្តិ​លើ​ប្រអប់ 'tstamp' ដោយ​កំណត់​លើ 'ទំនើបកម្ម​ចុងក្រោយ' ។ ក្នុង​ករណី​នេះ កាលបរិច្ឆេទ 'ទំនើបកម្ម​ចុងក្រោយ' ត្រូវ​បាន​ប្រើ ។</target></trans-unit>
+      <trans-unit id="lastUpdated.syntax" resname="lastUpdated.syntax" xml:space="preserve" approved="yes">
+				<source>The format is HH:MM DD-MM-YYYY or HH:MM MM-DD-YYYY depending on your TYPO3 configuration.
+If you insert a 'd' the current time and date is inserted. You can also append any value in the field with a number lie '+10' which will add 10 days to the current value.</source>
+			<target state="final">ទម្រង់ HH:MM DD-MM-YYYY ឬ HH:MM MM-DD-YYYY អាស្រ័យ​​លើ​ការកំណត់​លើ TYPO3 របស់​អ្នក ។ ប្រសិន​បើ​អ្នក​បំពេញ 'd' ពេលវេលា​បច្ចុប្បន្ន និង កាលបរិច្ឆេទ​​នឹង​ត្រូវ​បាន​បញ្ចូល ។ អ្នក​ក៏​អាច​ថែម​តម្លៃ​មួយ​ចំនួន​ក្នុង​ប្រអប់​ជាមួយ​លេខ​ផង​ដែរ ដូចជា '+10' ដែល​នឹង​ថែម ១០ ថ្ងៃ​ទៅ​លើ​​តម្លៃ​បច្ចុប្បន្ន ។</target></trans-unit>
+      <trans-unit id="nav_hide.description" resname="nav_hide.description" approved="yes">
+        <source>With this option the page will be not appear in menus in the Frontend. The page can still be viewed if linked by going directly to its URL.</source>
+        <target state="final">ជម្រើស​នេះ​ដើម្បៅ​លាក់​ទំព័រ​ពី​មឺនុយ​លើ Frontend ។ ទំព័រ​នៅ​អាច​មើល​បាន​ប្រសិន​បើ​វាយ​តំណ​ដោយ​ផ្ទាល់​ទៅ​កាន់ URL របស់​វា ។</target>
+      </trans-unit>
+      <trans-unit id="_nav_hide.seeAlso" resname="_nav_hide.seeAlso" approved="yes">
+        <source>pages:nav_title</source>
+        <target state="final">pages:nav_title</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="nav_title.description" resname="nav_title.description" approved="yes">
+        <source>Alternative Navigation Title for menu items in the Frontend. When set, this value is used instead of the Page Title.</source>
+        <target state="final">ចំណងជើង​ជំនួស​លើ​មឺនុយ​នៅ Frontend ។ ពេល​កំណត់ តម្លៃ​នេះ​នឹង​ត្រូវ​ប្រើ​ជំនួស​ចំណងជើង​ទំព័រ ។</target>
+      </trans-unit>
+      <trans-unit id="content_from_pid.description" resname="content_from_pid.description" xml:space="preserve" approved="yes">
+				<source>If set, this is an alternative page to select Content Elements from.
+Whether this field is used depends on the website's TypoScript template.</source>
+			<target state="final">បើ​កំណត់ នេះ​ជា​ទំព័រ​​ដែល​ស្រង់​ធាតុ​មាតិកា​ ។ ប្រអប់​នេះ​ត្រូវ​បាន​ប្រើ​អាស្រ័យ​លើ Template TypoScript របស់​វែបសាយ ។</target></trans-unit>
+      <trans-unit id="shortcut_mode.description" resname="shortcut_mode.description" approved="yes">
+        <source>Select a Shortcut Mode. By default the shortcut page must have a Shortcut Target to jump to. Other options are to go to the first subpage, to a random subpage, or back up to the parent page.</source>
+        <target state="final">រើស​ម៉ូដ​សតខាត់ ។ តាម​ធម្មតា​ទំព័រ​សតខាត់ ត្រូវ​មាន​ទីដៅ​សតខាត់​ត​ទៅ ។ ជម្រើស​ផ្សេង​ទៀត​គឺ ទៅ​កាន់​ទំព័រ​រង​ទី​មួយ ទៅ​ទំព័រ​រង​មិន​ចំពោះ ឬ ត្រឡប់​ទៅ​ទំព័រ​មេ​វិញ ។</target>
+      </trans-unit>
+      <trans-unit id="mount_pid.description" resname="mount_pid.description" approved="yes">
+        <source>Mount this page. If set, subpages of this page come from the Mounted Page instead.</source>
+        <target state="final">ម៉ោនថ៍​ទំព័រ​នេះ ។ បើ​កំណត់, ទំព័រ​រង​របស់​ទំព័រ​នេះ​ទាញយក​មក​ពី​ទំព័រ​ម៉ោនថ៍​ជំនួស​វិញ ។</target>
+      </trans-unit>
+      <trans-unit id="mount_pid.details" resname="mount_pid.details" approved="yes">
+        <source>In the Frontend this is done by adding a new variable, &amp;MP, to the URL. This links the mounted branch to the main branch by pairing page ids.</source>
+        <target state="final">នៅ​លើ Frontend អាច​ធ្វើ​ទៅ​បាន​ដោយ​បន្ថែម​តម្លៃ​ថ្មី &amp;MP ទៅ URL ។ តំណ​នេះ​ម៉ោនថ៍​ឋានានុក្រម ទៅ ឋានានុក្រម​មេ​ដោយ​ផ្គូរផ្គង​ជាមួយ​លេខ​សម្គាល់ ។</target>
+      </trans-unit>
+      <trans-unit id="_mount_pid.seeAlso" resname="_mount_pid.seeAlso" approved="yes">
+        <source>pages:mount_pid_ol</source>
+        <target state="final">pages:mount_pid_ol</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="mount_pid_ol.description" resname="mount_pid_ol.description" approved="yes">
+        <source>Show content for the current page or replace it completely with the Mounted Page.</source>
+        <target state="final">បង្ហាញ​មាតិកា​របស់​ទំព័រ ឬ ជំនួស​ទាំងស្រុង​ជាមួយ​ទំព័រ​ដែល​បាន​ម៉ោនថ៍ ។</target>
+      </trans-unit>
+      <trans-unit id="_mount_pid_ol.seeAlso" resname="_mount_pid_ol.seeAlso" approved="yes">
+        <source>pages:mount_pid</source>
+        <target state="final">pages:mount_pid</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="title.description.+" resname="title.description.+" approved="yes">
+        <source>This is normally shown in the website navigation.</source>
+        <target state="final">ជាធម្មតា​បង្ហាញ​ក្នុង​មឺនុយ​វែបសាយ</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details.+" resname="TSconfig.details.+" xml:space="preserve" approved="yes">
+				<source>&lt;strong&gt;Example:&lt;/strong&gt;
+The 'Web&gt;Page' module lets you create content in four columns, Left, Normal, Right, Border if the template has been configured to use this option. (However, most websites use only one or two columns so some of these content columns are just taking up space and confusing users.)
+If you enter this string in the 'TSConfig' field, the 'Web&gt;Page' Module will only show the 'Normal' and 'Border' column!
+
+&lt;em&gt;mod.web_layout.tt_content.colPos_list = 0,3&lt;/em&gt;
+
+(Must be entered in a single line!)</source>
+			<target state="final">&lt;strong&gt;ឧទាហរណ៍៖&lt;/strong&gt; ម៉ូឌុល 'វែប&gt;ទំព័រ' អនុញ្ញាត​ឲ្យ​អ្នក​បង្កើត​មាតិកា​ក្នុង​កូឡោន​បួន, ឆ្វេង, ធម្មតា, ស្ដាំ, ស៊ុម ប្រសិន​បើ template ត្រូវ​បាន​កំណត់​ឲ្យ​ប្រើ​ជម្រើស​នេះ ។ (ទោះ​បី​ជា វែបសាយ​ភាគច្រើន​ប្រើ​តែ​គូឡោន​មួយ ឬ ពីរ ដូច្នេះ​មាតិកាគូឡោន​ទាំងនេះ​​គ្រាន់តែ​ស៊ី​កន្លែង​ខ្លះ និង ច្រឡំ​ចំពោះ​អ្នក​ប្រើ ។) ប្រសិន​បើ​អ្នក​បំពគ​អក្សរ​នេះ​ក្នុង​ប្រអប់ 'TSConfig' ម៉ូឌុល 'វែប&gt;ទំព័រ' នឹង​បង្ហាញ​​គូឡោន 'ធម្មតា' និង 'ស៊ុម' ។ &lt;em&gt;mod.web_layout.tt_content.colPos_list = 0,3&lt;/em&gt; (ត្រូវ​បញ្ចូល​ក្នុង​បន្ទាត់​តែ​មួយ!)</target></trans-unit>
+      <trans-unit id="l18n_cfg.description" resname="l18n_cfg.description" approved="yes">
+        <source>Affect availability of pages in the various languages.</source>
+        <target state="final">មាន​ឥទ្ធិពល​លើ​ទំព័រ​ដែល​បើក​ក្នុង​ភាសា​ចាស់ៗ ។</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
