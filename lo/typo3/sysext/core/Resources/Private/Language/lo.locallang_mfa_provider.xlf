@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf" date="2021-01-29T00:14:02Z" product-name="cms" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="totp.title" approved="yes">
+        <source>Time-based one-time password</source>
+        <target state="final">ລະຫັດຜ່ານໃຊ້ຄັ້ງດຽວແບບອີງຕາມເວລາ</target>
+      </trans-unit>
+      <trans-unit id="totp.description" approved="yes">
+        <source>This provider allows to authenticate with a single-use passcode which is based on the current time.
+					Each code is only valid for 30 seconds. You need an OTP application or device, supporting such tokens.</source>
+        <target state="final">ຜູ້ບໍລິການນີ້ອະນຸຍາດໃຫ້ຢືນຢັນຕົວຕົນດ້ວຍລະຫັດຜ່ານແບບໃຊ້ຄັ້ງດຽວເຊິ່ງອີງຕາມເວລາປະຈຸບັນ.
+				ແຕ່ລະລະຫັດຈະມີຜົນສັກສິດພຽງແຕ່ 30 ວິນາທີ. ທ່ານຈຳເປັນຕ້ອງມີແອັບພລິເຄຊັນ OTP ຫຼື ອຸປະກອນທີ່ຮອງຮັບໂຕເຄັນດັ່ງກ່າວ.</target>
+      </trans-unit>
+      <trans-unit id="totp.setupInstructions" approved="yes">
+        <source>The time-based one-time password provider enables you to strengthen your accounts' security by requiring a six-digit code on every login.
+					This provider is based on a shared secret, which will be exchanged between your OTP application (or device) and TYPO3. Each code takes the current time into account and is only valid for 30 seconds.
+
+					Setting up:
+					1. Scan the QR-code or directly enter the shared secret in your application or device
+					2. Add a specific name for this provider (optional)
+					3. Enter the generated six-digit code in the corresponding field
+					4. Submit the form to activate the provider
+
+					Note: In case your application supports otpauth:// URLs, you can retrieve the URL by clicking on the info button next to the shared secret.</source>
+        <target state="final">ຜູ້ບໍລິການລະຫັດຜ່ານໃຊ້ຄັ້ງດຽວແບບອີງຕາມເວລາ ຊ່ວຍໃຫ້ທ່ານເພີ່ມຄວາມປອດໄພໃຫ້ກັບບັນຊີຂອງທ່ານ ໂດຍການຮຽກຮ້ອງໃຫ້ໃສ່ລະຫັດຫົກໂຕຫຼັກໃນທຸກໆການເຂົ້າສູ່ລະບົບ.
+				ຜູ້ບໍລິການນີ້ແມ່ນອີງໃສ່ຄວາມລັບທີ່ໃຊ້ຮ່ວມກັນ, ເຊິ່ງຈະມີການແລກປ່ຽນລະຫວ່າງແອັບພລິເຄຊັນ OTP (ຫຼື ອຸປະກອນ) ຂອງທ່ານ ແລະ TYPO3. ແຕ່ລະລະຫັດຈະຄຳນວນຈາກເວລາປະຈຸບັນ ແລະ ມີຜົນສັກສິດພຽງແຕ່ 30 ວິນາທີ.
+
+				ການຕັ້ງຄ່າ:
+				1. ສະແກນລະຫັດ QR ຫຼື ປ້ອນຄວາມລັບທີ່ໃຊ້ຮ່ວມກັນໂດຍກົງໃສ່ໃນແອັບພລິເຄຊັນ ຫຼື ອຸປະກອນຂອງທ່ານ
+				2. ເພີ່ມຊື່ສະເພາະໃຫ້ກັບຜູ້ບໍລິການນີ້ (ບໍ່ບັງຄັບ)
+				3. ປ້ອນລະຫັດຫົກໂຕຫຼັກທີ່ສ້າງຂຶ້ນໃນຊ່ອງທີ່ກ່ຽວຂ້ອງ
+				4. ສົ່ງຟອມເພື່ອເປີດໃຊ້ງານຜູ້ບໍລິການ
+
+				ໝາຍເຫດ: ໃນກໍລະນີທີ່ແອັບພລິເຄຊັນຂອງທ່ານຮອງຮັບ URL ແບບ otpauth://, ທ່ານສາມາດເອົາ URL ໄດ້ໂດຍການຄລິກທີ່ປຸ່ມຂໍ້ມູນຢູ່ຂ້າງຄວາມລັບທີ່ໃຊ້ຮ່ວມກັນ.</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.title" approved="yes">
+        <source>Recovery codes</source>
+        <target state="final">ລະຫັດກູ້ຄືນ</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.description" approved="yes">
+        <source>This provider allows to authenticate with a set of single-use passcodes, in case you lost your
+					primary MFA credentials, or just have no access to them temporarily.</source>
+        <target state="final">ຜູ້ບໍລິການນີ້ອະນຸຍາດໃຫ້ຢືນຢັນຕົວຕົນດ້ວຍຊຸດລະຫັດຜ່ານແບບໃຊ້ຄັ້ງດຽວ, ໃນກໍລະນີທີ່ທ່ານເສຍຂໍ້ມູນການຢືນຢັນຕົວຕົນ MFA ຫຼັກ ຫຼື ບໍ່ສາມາດເຂົ້າເຖິງພວກມັນໄດ້ຊົ່ວຄາວ.</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.setupInstructions" approved="yes">
+        <source>Recovery codes are random eight-digit codes which can be used to authenticate, in case your lost your main authentication credentials. Each code is only valid once.
+					As soon as all recovery codes are exhausted, you're required to generate a new set. Therefore, periodically check the amount of remaining codes in the Edit / Change view of the provider.
+
+					Setting up:
+					1. Copy the recovery codes and store them at a safe place
+					2. Add a specific name for this provider (optional)
+					3. Submit the form to activate the provider - see below note
+
+					Note: Since the recovery codes are being encrypted and stored securely, this process can take some time.</source>
+        <target state="final">ລະຫັດກູ້ຄືນແມ່ນລະຫັດແປດໂຕຫຼັກແບບສຸ່ມ ເຊິ່ງສາມາດໃຊ້ເພື່ອຢືນຢັນຕົວຕົນໄດ້ ໃນກໍລະນີທີ່ທ່ານເສຍຂໍ້ມູນການຢືນຢັນຕົວຕົນຫຼັກ. ແຕ່ລະລະຫັດແມ່ນໃຊ້ໄດ້ພຽງຄັ້ງດຽວ.
+				ເມື່ອລະຫັດກູ້ຄືນທັງໝົດຖືກໃຊ້ໝົດແລ້ວ, ທ່ານຈຳເປັນຕ້ອງສ້າງຊຸດໃໝ່. ດັ່ງນັ້ນ, ຄວນກວດສອບຈຳນວນລະຫັດທີ່ຍັງເຫຼືອເປັນໄລຍະໃນໜ້າ ແກ້ໄຂ / ປ່ຽນແປງ ຂອງຜູ້ບໍລິການ.
+
+				ການຕັ້ງຄ່າ:
+				1. ສຳເນົາລະຫັດກູ້ຄືນ ແລະ ເກັບຮັກສາໄວ້ໃນບ່ອນທີ່ປອດໄພ
+				2. ເພີ່ມຊື່ສະເພາະໃຫ້ກັບຜູ້ບໍລິການນີ້ (ບໍ່ບັງຄັບ)
+				3. ສົ່ງຟອມເພື່ອເປີດໃຊ້ງານຜູ້ບໍລິການ - ເບິ່ງໝາຍເຫດຂ້າງລຸ່ມ
+
+				ໝາຍເຫດ: ເນື່ອງຈາກລະຫັດກູ້ຄືນຈະຖືກເຂົ້າລະຫັດ ແລະ ເກັບຮັກສາໄວ້ຢ່າງປອດໄພ, ຂັ້ນຕອນນີ້ອາດຈະໃຊ້ເວລາໄລຍະໜຶ່ງ.</target>
+      </trans-unit>
+      <trans-unit id="totpInputLabel" approved="yes">
+        <source>Enter the generated six-digit code</source>
+        <target state="final">ປ້ອນລະຫັດຫົກໂຕຫຼັກທີ່ສ້າງຂຶ້ນ</target>
+      </trans-unit>
+      <trans-unit id="totpInputHelp" approved="yes">
+        <source>This code should now be displayed on your device or in your application.</source>
+        <target state="final">ລະຫັດນີ້ຄວນຈະສະແດງຢູ່ໃນອຸປະກອນ ຫຼື ໃນແອັບພລິເຄຊັນຂອງທ່ານແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="locked" approved="yes">
+        <source>The maximum attempts for this provider are exceeded. Please use another provider or contact your administrator.</source>
+        <target state="final">ຈຳນວນຄັ້ງທີ່ລອງປ້ອນສຳລັບຜູ້ບໍລິການນີ້ເກີນກຳນົດແລ້ວ. ກະລຸນາໃຊ້ຜູ້ບໍລິການອື່ນ ຫຼື ຕິດຕໍ່ຜູ້ດູແລລະບົບຂອງທ່ານ.</target>
+      </trans-unit>
+      <trans-unit id="edit.table.head" approved="yes">
+        <source>Provider information</source>
+        <target state="final">ຂໍ້ມູນຜູ້ບໍລິການ</target>
+      </trans-unit>
+      <trans-unit id="edit.table.name" approved="yes">
+        <source>Name</source>
+        <target state="final">ຊື່</target>
+      </trans-unit>
+      <trans-unit id="edit.table.nameInputPlaceholder" approved="yes">
+        <source>Enter a name</source>
+        <target state="final">ປ້ອນຊື່</target>
+      </trans-unit>
+      <trans-unit id="edit.table.recoveryCodesLeft" approved="yes">
+        <source>Recovery codes left</source>
+        <target state="final">ລະຫັດກູ້ຄືນທີ່ຍັງເຫຼືອ</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUsed" approved="yes">
+        <source>Last used</source>
+        <target state="final">ໃຊ້ຄັ້ງລ່າສຸດ</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUsed.default" approved="yes">
+        <source>Never</source>
+        <target state="final">ບໍ່ເຄີຍ</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUpdated" approved="yes">
+        <source>Last updated</source>
+        <target state="final">ອັບເດດລ່າສຸດ</target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate" approved="yes">
+        <source>Regenerate recovery codes</source>
+        <target state="final">ສ້າງລະຫັດກູ້ຄືນໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate.description" approved="yes">
+        <source>
+					If you lost your recovery codes or just want to get fresh ones, you can
+					regenerate them by selecting the checkbox below. You've currently %d codes left.
+                </source>
+        <target state="final">
+				ຖ້າທ່ານເສຍລະຫັດກູ້ຄືນ ຫຼື ພຽງແຕ່ຕ້ອງການລະຫັດໃໝ່, ທ່ານສາມາດສ້າງພວກມັນຄືນໃໝ່ໄດ້ໂດຍການເລືອກກ່ອງໝາຍຂ້າງລຸ່ມນີ້. ປະຈຸບັນທ່ານມີລະຫັດເຫຼືອ %d ລະຫັດ.
+            </target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate.inputLabel" approved="yes">
+        <source>Regenerate recovery codes</source>
+        <target state="final">ສ້າງລະຫັດກູ້ຄືນໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1" approved="yes">
+        <source>Step 1</source>
+        <target state="final">ຂັ້ນຕອນທີ 1</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1a" approved="yes">
+        <source>Step 1a</source>
+        <target state="final">ຂັ້ນຕອນທີ 1a</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1b" approved="yes">
+        <source>Step 1b</source>
+        <target state="final">ຂັ້ນຕອນທີ 1b</target>
+      </trans-unit>
+      <trans-unit id="setup.step.2" approved="yes">
+        <source>Step 2</source>
+        <target state="final">ຂັ້ນຕອນທີ 2</target>
+      </trans-unit>
+      <trans-unit id="setup.step.3" approved="yes">
+        <source>Step 3</source>
+        <target state="final">ຂັ້ນຕອນທີ 3</target>
+      </trans-unit>
+      <trans-unit id="setup.qrCode.label" approved="yes">
+        <source>Scan the displayed QR code</source>
+        <target state="final">ສະແກນລະຫັດ QR ທີ່ສະແດງ</target>
+      </trans-unit>
+      <trans-unit id="setup.qrCode.help" approved="yes">
+        <source>Scan this code with your OTP application (e.g. Google Authenticator).</source>
+        <target state="final">ສະແກນລະຫັດນີ້ດ້ວຍແອັບພລິເຄຊັນ OTP ຂອງທ່ານ (ຕົວຢ່າງ: Google Authenticator).</target>
+      </trans-unit>
+      <trans-unit id="setup.secret.label" approved="yes">
+        <source>Copy the shared secret</source>
+        <target state="final">ສຳເນົາຄວາມລັບທີ່ໃຊ້ຮ່ວມກັນ</target>
+      </trans-unit>
+      <trans-unit id="setup.secret.help" approved="yes">
+        <source>You can also enter the shared secret manually in your OTP application or device.</source>
+        <target state="final">ທ່ານຍັງສາມາດປ້ອນຄວາມລັບທີ່ໃຊ້ຮ່ວມກັນດ້ວຍຕົນເອງໃນແອັບພລິເຄຊັນ ຫຼື ອຸປະກອນ OTP ຂອງທ່ານ.</target>
+      </trans-unit>
+      <trans-unit id="setup.name.label" approved="yes">
+        <source>Enter a name (optional)</source>
+        <target state="final">ປ້ອນຊື່ (ບໍ່ບັງຄັບ)</target>
+      </trans-unit>
+      <trans-unit id="setup.name.help" approved="yes">
+        <source>Specify a custom name for this provider.</source>
+        <target state="final">ລະບຸຊື່ຕາມໃຈສຳລັບຜູ້ບໍລິການນີ້.</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.InputLabel" approved="yes">
+        <source>Recovery codes</source>
+        <target state="final">ລະຫັດກູ້ຄືນ</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.InputHelp" approved="yes">
+        <source>Copy these codes and store them at a safe place.</source>
+        <target state="final">ສຳເນົາລະຫັດເຫຼົ່ານີ້ ແລະ ເກັບຮັກສາໄວ້ໃນບ່ອນທີ່ປອດໄພ.</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.reloadTitle" approved="yes">
+        <source>Reload recovery codes</source>
+        <target state="final">ໂຫຼດລະຫັດກູ້ຄືນໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.reloadLabel" approved="yes">
+        <source>Reload</source>
+        <target state="final">ໂຫຼດໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.noActiveProviders.title" approved="yes">
+        <source>Setup not possible</source>
+        <target state="final">ບໍ່ສາມາດຕັ້ງຄ່າໄດ້</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.noActiveProviders.message" approved="yes">
+        <source>Recovery codes are only meant as a fallback if you lose access to your main multi-factor authentication credentials. Therefore, please activate a comprehensive MFA provider first.</source>
+        <target state="final">ລະຫັດກູ້ຄືນມີໄວ້ເພື່ອເປັນທາງເລືອກສຳຮອງເທົ່ານັ້ນ ຫາກທ່ານເສຍການເຂົ້າເຖິງຂໍ້ມູນການຢືນຢັນຕົວຕົນແບບຫຼາຍປັດໄຈ (MFA) ຫຼັກຂອງທ່ານ. ດັ່ງນັ້ນ, ກະລຸນາເປີດໃຊ້ງານຜູ້ບໍລິການ MFA ໃຫ້ຮຽບຮ້ອຍກ່ອນ.</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlButton.title" approved="yes">
+        <source>Show authentication URL</source>
+        <target state="final">ສະແດງ URL ການຢືນຢັນຕົວຕົນ</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.title" approved="yes">
+        <source>Authentication URL</source>
+        <target state="final">URL ການຢືນຢັນຕົວຕົນ</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.description" approved="yes">
+        <source>In case you are not able to scan the QR code, but your OTP application supports
+					authentication URLs next to, or instead of plain shared secrets, you can copy and
+					paste the URL shown below. The URL contains some information like the issuer (this site)
+					and your email address or username. Most OTP applications will display this information
+					next to the generated codes.
+                </source>
+        <target state="final">ໃນກໍລະນີທີ່ທ່ານບໍ່ສາມາດສະແກນລະຫັດ QR ໄດ້, ແຕ່ແອັບພລິເຄຊັນ OTP ຂອງທ່ານຮອງຮັບ URL ການຢືນຢັນຕົວຕົນ ຄຽງຄູ່ກັບ ຫຼື ແທນທີ່ຄວາມລັບທີ່ໃຊ້ຮ່ວມກັນແບບທຳມະດາ, ທ່ານສາມາດສຳເນົາ ແລະ ວາງ URL ທີ່ສະແດງຂ້າງລຸ່ມນີ້. URL ປະກອບດ້ວຍຂໍ້ມູນບາງຢ່າງເຊັ່ນ: ຜູ້ອອກໃຫ້ (ເວັບໄຊນີ້) ແລະ ທີ່ຢູ່ອີເມວ ຫຼື ຊື່ຜູ້ໃຊ້ຂອງທ່ານ. ແອັບພລິເຄຊັນ OTP ສ່ວນໃຫຍ່ຈະສະແດງຂໍ້ມູນນີ້ຢູ່ຂ້າງໆລະຫັດທີ່ສ້າງຂຶ້ນ.
+            </target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.ok" approved="yes">
+        <source>OK</source>
+        <target state="final">ຕົກລົງ</target>
+      </trans-unit>
+      <trans-unit id="auth.totp.inputLabel" approved="yes">
+        <source>Enter the six-digit code</source>
+        <target state="final">ປ້ອນລະຫັດຫົກໂຕຫຼັກ</target>
+      </trans-unit>
+      <trans-unit id="auth.recoveryCodes.inputLabel" approved="yes">
+        <source>Enter an eight-digit recovery code</source>
+        <target state="final">ປ້ອນລະຫັດກູ້ຄືນແປດໂຕຫຼັກ</target>
+      </trans-unit>
+      <trans-unit id="unlock.recoveryCodes.title" approved="yes">
+        <source>Your recovery codes were automatically updated!</source>
+        <target state="final">ລະຫັດກູ້ຄືນຂອງທ່ານຖືກອັບເດດໂດຍອັດຕະໂນມັດແລ້ວ!</target>
+      </trans-unit>
+      <trans-unit id="unlock.recoveryCodes.message" approved="yes">
+        <source>Please copy and store them at a safe place: %s</source>
+        <target state="final">ກະລຸນາສຳເນົາ ແລະ ເກັບຮັກສາໄວ້ໃນບ່ອນທີ່ປອດໄພ: %s</target>
+      </trans-unit>
+      <trans-unit id="update.recoveryCodes.title" approved="yes">
+        <source>Recovery codes successfully regenerated</source>
+        <target state="final">ສ້າງລະຫັດກູ້ຄືນໃໝ່ສຳເລັດແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="update.recoveryCodes.message" approved="yes">
+        <source>Please copy and store them at a safe place: %s</source>
+        <target state="final">ກະລຸນາສຳເນົາ ແລະ ເກັບຮັກສາໄວ້ໃນບ່ອນທີ່ປອດໄພ: %s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
