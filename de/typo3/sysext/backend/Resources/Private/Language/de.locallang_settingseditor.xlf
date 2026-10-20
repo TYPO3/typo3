@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_settingseditor.xlf" date="2024-09-10T12:13:00Z" product-name="backend" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="settingseditor.mode.minimal" approved="yes">
+        <source>Minimal</source>
+        <target state="final">Minimal</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.mode.basic" approved="yes">
+        <source>Basic</source>
+        <target state="final">Basis</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.mode.advanced" approved="yes">
+        <source>Advanced</source>
+        <target state="final">Erweitert</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.edit.resetSetting" approved="yes">
+        <source>Reset setting</source>
+        <target state="final">Einstellung zurücksetzen</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.edit.copySettingsIdentifier" approved="yes">
+        <source>Copy identifier</source>
+        <target state="final">Bezeichner kopieren</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.edit.copyAsYaml" approved="yes">
+        <source>Copy as YAML</source>
+        <target state="final">Als YAML kopieren</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.search.searchTermVisuallyHiddenLabel" approved="yes">
+        <source>Search settings</source>
+        <target state="final">Sucheinstellungen</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.search.searchTermPlaceholder" approved="yes">
+        <source>Search settings</source>
+        <target state="final">Einstellungen durchsuchen</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.search.noResultsTitle" approved="yes">
+        <source>No settings were found.</source>
+        <target state="final">Es wurden keine Einstellungen gefunden.</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.search.noResultsMessage" approved="yes">
+        <source>The search filters by setting value, label, description or identifier.</source>
+        <target state="final">Die Suche filtert nach Einstellungswert, Bezeichnung, Beschreibung oder Bezeichner.</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.search.noResultsResetButtonLabel" approved="yes">
+        <source>Reset filter</source>
+        <target state="final">Filter zurücksetzen</target>
+      </trans-unit>
+      <trans-unit id="settingseditor.type.page.button" approved="yes">
+        <source>Select page</source>
+        <target state="final">Seite auswählen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
