@@ -1,0 +1,14 @@
+"pages"
+,"uid","pid","title","doktype","sorting","perms_everybody"
+,1,0,"Site",1,128,15
+,2,1,"Storage",254,128,15
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","tstamp","crdate"
+,1,2,0,0,"Only in English",1500000000,1500000000
+,2,2,0,0,"First post",1500000000,1500000000
+,3,2,1,2,"Erster Beitrag",1500000000,1500000000
+,4,2,2,2,"Premier billet",1500000000,1500000000
+,5,2,0,0,"Second post",1500000000,1500000000
+,6,2,1,5,"Zweiter Beitrag",1500000000,1500000000
+,7,2,-1,0,"All languages",1500000000,1500000000
+,8,2,1,0,"Freie Übersetzung",1500000000,1500000000

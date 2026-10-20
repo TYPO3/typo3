@@ -1,0 +1,12 @@
+"pages"
+,"uid","pid","title","doktype","sorting","perms_everybody"
+,3,1,"Sorted storage",254,256,15
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","sorting","tstamp","crdate"
+,11,3,0,0,"Alpha",256,1500000000,1500000000
+,12,3,0,0,"Beta",512,1500000000,1500000000
+,13,3,0,0,"Gamma",768,1500000000,1500000000
+,14,3,1,11,"Alpha DE",768,1500000000,1500000000
+,15,3,1,12,"Beta DE",256,1500000000,1500000000
+,16,3,1,13,"Gamma DE",512,1500000000,1500000000
+,17,3,0,0,"Delta",600,1500000000,1500000000
