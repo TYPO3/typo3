@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1522780424" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="overview.title" resname="overview.title" approved="yes">
+        <source>Site Configuration</source>
+        <target state="final">ການກຳນົດຄ່າເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="overview.site" resname="overview.site" approved="yes">
+        <source>Site</source>
+        <target state="final">ເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="overview.configuration" resname="overview.configuration" approved="yes">
+        <source>Configuration Folder</source>
+        <target state="final">ໂຟນເດີການກຳນົດຄ່າ</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.title" resname="overview.noPages.title" approved="yes">
+        <source>No pages found!</source>
+        <target state="final">ບໍ່ພົບໜ້າໃດໆ!</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.message" resname="overview.noPages.message" approved="yes">
+        <source>Please add at least one page through the Page module.</source>
+        <target state="final">ກະລຸນາເພີ່ມຢ່າງໜ້ອຍໜຶ່ງໜ້າຜ່ານໂມດູນໜ້າ (Page module).</target>
+      </trans-unit>
+      <trans-unit id="overview.noSiteConfiguration" resname="overview.noSiteConfiguration" approved="yes">
+        <source>This site does not have a configuration, yet.</source>
+        <target state="final">ເວັບໄຊນີ້ຍັງບໍ່ທັນມີການກຳນົດຄ່າເທື່ອ.</target>
+      </trans-unit>
+      <trans-unit id="overview.addSiteConfiguration" resname="overview.addSiteConfiguration" approved="yes">
+        <source>Add new site configuration for this site</source>
+        <target state="final">ເພີ່ມການກຳນົດຄ່າໃໝ່ສຳລັບເວັບໄຊນີ້</target>
+      </trans-unit>
+      <trans-unit id="overview.deleteSiteConfiguration" resname="overview.deleteSiteConfiguration" approved="yes">
+        <source>Delete site configuration</source>
+        <target state="final">ລຶບການກຳນົດຄ່າເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="overview.fullUrlPrefix" resname="overview.fullUrlPrefix" approved="yes">
+        <source>Full URL prefix</source>
+        <target state="final">ຄຳນຳໜ້າ URL ແບບເຕັມ</target>
+      </trans-unit>
+      <trans-unit id="overview.baseUrl" resname="overview.baseUrl" approved="yes">
+        <source>Base URLs</source>
+        <target state="final">URL ຫຼັກ</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.title" resname="overview.unassignedSites.title" approved="yes">
+        <source>Unassigned site configurations</source>
+        <target state="final">ການກຳນົດຄ່າເວັບໄຊທີ່ບໍ່ໄດ້ຖືກມອບໝາຍ</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.description" resname="overview.unassignedSites.description" approved="yes">
+        <source>The following sites don't belong to any page anymore and can be removed.</source>
+        <target state="final">ເວັບໄຊຕໍ່ໄປນີ້ບໍ່ໄດ້ຂຶ້ນກັບໜ້າໃດອີກຕໍ່ໄປ ແລະ ສາມາດລຶບອອກໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.title" resname="validation.identifierRenamed.title" approved="yes">
+        <source>Renamed identifier</source>
+        <target state="final">ປ່ຽນຊື່ຕົວລະບຸແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.message" resname="validation.identifierRenamed.message" approved="yes">
+        <source>Given site identifier "%1s" already exists. It has been renamed to "%2s". Maybe you want to edit the site again and give it a better name.</source>
+        <target state="final">ຕົວລະບຸເວັບໄຊ "%1s" ທີ່ລະບຸມາມີຢູ່ແລ້ວ. ມັນໄດ້ຖືກປ່ຽນຊື່ເປັນ "%2s". ບາງທີເຈົ້າອາດຕ້ອງການແກ້ໄຂເວັບໄຊອີກຄັ້ງ ແລະ ຕັ້ງຊື່ໃຫ້ດີກວ່າເກົ່າ.</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.title" resname="validation.identifierExists.title" approved="yes">
+        <source>Identifier not changed</source>
+        <target state="final">ຕົວລະບຸບໍ່ໄດ້ຖືກປ່ຽນແປງ</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.message" resname="validation.identifierExists.message" approved="yes">
+        <source>Given site identifier "%1s" already exists and points to a different site. The existing identifier "%2s" for this site is kept.</source>
+        <target state="final">ຕົວລະບຸເວັບໄຊ "%1s" ທີ່ລະບຸມາມີຢູ່ແລ້ວ ແລະ ຊີ້ໄປຫາເວັບໄຊອື່ນ. ຕົວລະບຸ "%2s" ທີ່ມີຢູ່ສຳລັບເວັບໄຊນີ້ຈະຖືກຮັກສາໄວ້ຄືເກົ່າ.</target>
+      </trans-unit>
+      <trans-unit id="validation.required.title" resname="validation.required.title" approved="yes">
+        <source>Site configuration not saved</source>
+        <target state="final">ບໍ່ໄດ້ບັນທຶກການກຳນົດຄ່າເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="validation.required.message" resname="validation.required.message" approved="yes">
+        <source>Field "%1s" is a required field, but no value has been provided.</source>
+        <target state="final">ຫ້ອງຂໍ້ມູນ "%1s" ແມ່ນຈຳເປັນຕ້ອງປ້ອນ, ແຕ່ຍັງບໍ່ທັນມີການລະບຸຂໍ້ມູນ.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.title" resname="validation.duplicateErrorCode.title" approved="yes">
+        <source>Duplicate error code removed</source>
+        <target state="final">ລຶບລະຫັດຂໍ້ຜິດພາດທີ່ຊ້ຳກັນອອກແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.message" resname="validation.duplicateErrorCode.message" approved="yes">
+        <source>Two error handler configurations for error code "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">ພົບການກຳນົດຄ່າການຈັດການຂໍ້ຜິດພາດສອງອັນສຳລັບລະຫັດ "%1s". ນີ້ຈະເປັນການກຳນົດຄ່າທີ່ບໍ່ຖືກຕ້ອງ, ອັນທີ່ເກີນມາໄດ້ຖືກລຶບອອກແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.title" resname="validation.duplicateLanguageId.title" approved="yes">
+        <source>Duplicate language configuration removed</source>
+        <target state="final">ລຶບການກຳນົດຄ່າພາສາທີ່ຊ້ຳກັນອອກແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.message" resname="validation.duplicateLanguageId.message" approved="yes">
+        <source>Two language configurations for language "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">ພົບການກຳນົດຄ່າພາສາສອງອັນສຳລັບພາສາ "%1s". ນີ້ຈະເປັນການກຳນົດຄ່າທີ່ບໍ່ຖືກຕ້ອງ, ອັນທີ່ເກີນມາໄດ້ຖືກລຶບອອກແລ້ວ.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
