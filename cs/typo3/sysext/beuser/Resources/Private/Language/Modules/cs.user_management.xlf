@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/Modules/user_management.xlf" date="2026-11-10T13:37:37Z" product-name="user_management" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Users</source>
+        <target state="final">Uživatelé</target>
+      </trans-unit>
+      <trans-unit id="short_description" approved="yes">
+        <source>Backend users management</source>
+        <target state="final">Správa BE-uživatelů</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>Administers backend user accounts and groups, and defines access permissions on records, files, and modules. Page-level read and write permissions can be managed separately in the Permissions module.</source>
+        <target state="final">Spravuje uživatelské účty a backendové skupiny a nastavuje přístupová oprávnění k záznamům, souborům a modulům. Oprávnění pro čtení a zápis na úrovni stránek lze spravovat samostatně v modulu Oprávnění.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
