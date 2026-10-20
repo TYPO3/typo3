@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814909" source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_reports.xlf" date="2011-10-17T20:22:35Z" product-name="reports" target-language="bg">
+    <header/>
+    <body>
+      <trans-unit id="status_report_title" resname="status_report_title" approved="yes">
+        <source>Status Report</source>
+        <target state="final">Статус на отчета</target>
+      </trans-unit>
+      <trans-unit id="status_report_description" resname="status_report_description" approved="yes">
+        <source>Get a status report about your site's operation and any detected problems.</source>
+        <target state="final">Вземи статусен отчет за оперативността на вашия сайт и всякакви засечени проблеми.</target>
+      </trans-unit>
+      <trans-unit id="status_report_explanation" resname="status_report_explanation" approved="yes">
+        <source>Here you can find a short overview of your site's parameters as well as any problems detected with your installation. It may be useful to copy and paste this information into support requests filed on TYPO3's support mailinglists and project issue trackers.</source>
+        <target state="final">Тук вие можете да намерите кратък преглед на параметрите на вашия сайт, както и всякакви проблеми, отчетени във вашата инсталация. Полезно е да копирате и поставите тази информация в заявки за поддръжка в TYPO3 мейлинглистите и системата за отчет на проблемите (тракър).</target>
+      </trans-unit>
+      <trans-unit id="status_ok" resname="status_ok" approved="yes">
+        <source>OK</source>
+        <target state="final">ОК</target>
+      </trans-unit>
+      <trans-unit id="status_insecure" resname="status_insecure" approved="yes">
+        <source>Insecure</source>
+        <target state="final">Несигурен</target>
+      </trans-unit>
+      <trans-unit id="status_disabled" resname="status_disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Непозволен</target>
+      </trans-unit>
+      <trans-unit id="status_enabled" resname="status_enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Позволен</target>
+      </trans-unit>
+      <trans-unit id="status_empty" resname="status_empty" approved="yes">
+        <source>Empty</source>
+        <target state="final">Празен</target>
+      </trans-unit>
+      <trans-unit id="status_connectionFailed" resname="status_connectionFailed" approved="yes">
+        <source>Connection Failed</source>
+        <target state="final">Връзката се провали</target>
+      </trans-unit>
+      <trans-unit id="status_updateComplete" resname="status_updateComplete" approved="yes">
+        <source>Update Complete</source>
+        <target state="final">Обновяване завършено</target>
+      </trans-unit>
+      <trans-unit id="status_updateIncomplete" resname="status_updateIncomplete" approved="yes">
+        <source>Update Incomplete</source>
+        <target state="final">Обновяване незавършено</target>
+      </trans-unit>
+      <trans-unit id="status_typo3" resname="status_typo3" approved="yes">
+        <source>TYPO3 System</source>
+        <target state="final">TYPO3 система</target>
+      </trans-unit>
+      <trans-unit id="status_system" resname="status_system" approved="yes">
+        <source>System</source>
+        <target state="final">Система</target>
+      </trans-unit>
+      <trans-unit id="status_security" resname="status_security" approved="yes">
+        <source>Security</source>
+        <target state="final">Защита</target>
+      </trans-unit>
+      <trans-unit id="status_configuration" resname="status_configuration" approved="yes">
+        <source>Configuration</source>
+        <target state="final">Конфигурация</target>
+      </trans-unit>
+      <trans-unit id="status_referenceIndex" resname="status_referenceIndex" approved="yes">
+        <source>Reference Index</source>
+        <target state="final">Референтен индекс</target>
+      </trans-unit>
+      <trans-unit id="status_memcachedConfiguration" resname="status_memcachedConfiguration" approved="yes">
+        <source>Memcached Configuration</source>
+        <target state="final">Конфигурация на memcache</target>
+      </trans-unit>
+      <trans-unit id="status_adminUserAccount" resname="status_adminUserAccount" approved="yes">
+        <source>Admin User Account</source>
+        <target state="final">Администраторски потребителски акаунт</target>
+      </trans-unit>
+      <trans-unit id="status_encryptionKey" resname="status_encryptionKey" approved="yes">
+        <source>Encryption Key</source>
+        <target state="final">Криптиращ ключ</target>
+      </trans-unit>
+      <trans-unit id="status_fileDenyPattern" resname="status_fileDenyPattern" approved="yes">
+        <source>File Deny Pattern</source>
+        <target state="final">Забраняваш шаблон за файлове</target>
+      </trans-unit>
+      <trans-unit id="status_htaccessUploadProtection" resname="status_htaccessUploadProtection" approved="yes">
+        <source>.htaccess Upload Protection</source>
+        <target state="final">.htaccess защита при качване</target>
+      </trans-unit>
+      <trans-unit id="status_installToolPassword" resname="status_installToolPassword" approved="yes">
+        <source>Install Tool Password</source>
+        <target state="final">Парола за инсталиращия инструмент</target>
+      </trans-unit>
+      <trans-unit id="status_installTool" resname="status_installTool" approved="yes">
+        <source>Install Tool</source>
+        <target state="final">Инсталиращ инструмент</target>
+      </trans-unit>
+      <trans-unit id="status_phpVersion" resname="status_phpVersion" approved="yes">
+        <source>PHP Version</source>
+        <target state="final">PHP версия</target>
+      </trans-unit>
+      <trans-unit id="status_phpTooOld" resname="status_phpTooOld" approved="yes">
+        <source>Your PHP installation is too old.</source>
+        <target state="final">Вашата PHP версия е твърде стара.</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemory" resname="status_phpMemory" approved="yes">
+        <source>PHP Memory Limit</source>
+        <target state="final">PHP ограничение на паметта</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemoryEditLimit" resname="status_phpMemoryEditLimit" approved="yes">
+        <source>Increase the memory limit by editing the memory_limit parameter in the file %s and then restart your web server (or contact your system administrator or hosting provider for assistance).</source>
+        <target state="final">Повишете ограничението на паметта чрез редактиране на параметъра memory_limit във файла %s и последващо рестартиране на вашия сървър (или се свържете с вашия системен администратор или хостинг провайдър за допълнителна помощ).</target>
+      </trans-unit>
+      <trans-unit id="status_phpMemoryContactAdmin" resname="status_phpMemoryContactAdmin" approved="yes">
+        <source>Contact your system administrator or hosting provider for assistance with increasing your PHP memory limit.</source>
+        <target state="final">Свържете се с вашия системен администратор или хостинг провайдър за помощ при повишаване на ограничението на PHP паметта.</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobals" resname="status_phpRegisterGlobals" approved="yes">
+        <source>PHP Register Globals</source>
+        <target state="final">PHP Register Globals</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobalsEnabled" resname="status_phpRegisterGlobalsEnabled" approved="yes">
+        <source>%s is enabled. TYPO3 requires this configuration directive to be disabled.</source>
+        <target state="final">%s е позволен. TYPO3 изисква тази конфигурационна директива да бъде забранена.</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobalsSecurity" resname="status_phpRegisterGlobalsSecurity" approved="yes">
+        <source>Your site may not be secure when %s is enabled.</source>
+        <target state="final">Вашият сайт може да бъде застрашен, когато %s е разрешен.</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobalsHowToChange" resname="status_phpRegisterGlobalsHowToChange" approved="yes">
+        <source>how to change configuration settings</source>
+        <target state="final">как да промените конфигурационните настройки</target>
+      </trans-unit>
+      <trans-unit id="status_phpRegisterGlobalsPHPManual" resname="status_phpRegisterGlobalsPHPManual" approved="yes">
+        <source>The PHP manual has instructions for %s.</source>
+        <target state="final">PHP ръководството съдържа инструкции за %s.</target>
+      </trans-unit>
+      <trans-unit id="status_webServer" resname="status_webServer" approved="yes">
+        <source>Web Server</source>
+        <target state="final">Уеб сървър</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
