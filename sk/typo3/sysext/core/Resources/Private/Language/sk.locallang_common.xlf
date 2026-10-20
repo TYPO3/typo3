@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_common.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="sk">
+    <header/>
+    <body>
+      <trans-unit id="about" approved="yes">
+        <source>About</source>
+        <target state="final">O</target>
+      </trans-unit>
+      <trans-unit id="and" approved="yes">
+        <source>and</source>
+        <target state="final">a</target>
+      </trans-unit>
+      <trans-unit id="ascending" approved="yes">
+        <source>Ascending</source>
+        <target state="final">Vzostupne</target>
+      </trans-unit>
+      <trans-unit id="back" approved="yes">
+        <source>Back</source>
+        <target state="final">Späť</target>
+      </trans-unit>
+      <trans-unit id="cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Zrušiť</target>
+      </trans-unit>
+      <trans-unit id="category" approved="yes">
+        <source>Category</source>
+        <target state="final">Kategória</target>
+      </trans-unit>
+      <trans-unit id="close" approved="yes">
+        <source>Close</source>
+        <target state="final">Zatvoriť</target>
+      </trans-unit>
+      <trans-unit id="delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Odstrániť</target>
+      </trans-unit>
+      <trans-unit id="descending" approved="yes">
+        <source>Descending</source>
+        <target state="final">Zostupne</target>
+      </trans-unit>
+      <trans-unit id="details" approved="yes">
+        <source>Details</source>
+        <target state="final">Podrobnosti</target>
+      </trans-unit>
+      <trans-unit id="disable" approved="yes">
+        <source>Disable</source>
+        <target state="final">Zakázať</target>
+      </trans-unit>
+      <trans-unit id="disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">Zakázané</target>
+      </trans-unit>
+      <trans-unit id="down" approved="yes">
+        <source>Down</source>
+        <target state="final">Dole</target>
+      </trans-unit>
+      <trans-unit id="download" approved="yes">
+        <source>Download</source>
+        <target state="final">Stiahnuť</target>
+      </trans-unit>
+      <trans-unit id="edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Upraviť</target>
+      </trans-unit>
+      <trans-unit id="editField" approved="yes">
+        <source>Edit field</source>
+        <target state="final">Upraviť pole</target>
+      </trans-unit>
+      <trans-unit id="editFile" approved="yes">
+        <source>Edit file</source>
+        <target state="final">Upraviť súbor</target>
+      </trans-unit>
+      <trans-unit id="enable" approved="yes">
+        <source>Enable</source>
+        <target state="final">Povoliť</target>
+      </trans-unit>
+      <trans-unit id="enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">Povolené</target>
+      </trans-unit>
+      <trans-unit id="file" approved="yes">
+        <source>File</source>
+        <target state="final">Súbor</target>
+      </trans-unit>
+      <trans-unit id="files" approved="yes">
+        <source>Files</source>
+        <target state="final">Súbory</target>
+      </trans-unit>
+      <trans-unit id="first" approved="yes">
+        <source>First</source>
+        <target state="final">Prvý</target>
+      </trans-unit>
+      <trans-unit id="from" approved="yes">
+        <source>From</source>
+        <target state="final">Od</target>
+      </trans-unit>
+      <trans-unit id="go" approved="yes">
+        <source>Go</source>
+        <target state="final">Choď</target>
+      </trans-unit>
+      <trans-unit id="goTo" approved="yes">
+        <source>Go to</source>
+        <target state="final">Choď na</target>
+      </trans-unit>
+      <trans-unit id="help" approved="yes">
+        <source>Help</source>
+        <target state="final">Nápoveda</target>
+      </trans-unit>
+      <trans-unit id="item" approved="yes">
+        <source>Item</source>
+        <target state="final">Položka</target>
+      </trans-unit>
+      <trans-unit id="items" approved="yes">
+        <source>Items</source>
+        <target state="final">Položky</target>
+      </trans-unit>
+      <trans-unit id="last" approved="yes">
+        <source>Last</source>
+        <target state="final">Posledný</target>
+      </trans-unit>
+      <trans-unit id="login" approved="yes">
+        <source>Login</source>
+        <target state="final">Prihlásiť</target>
+      </trans-unit>
+      <trans-unit id="logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">Odhlásiť</target>
+      </trans-unit>
+      <trans-unit id="more" approved="yes">
+        <source>More</source>
+        <target state="final">Viac</target>
+      </trans-unit>
+      <trans-unit id="no" approved="yes">
+        <source>No</source>
+        <target state="final">Nie</target>
+      </trans-unit>
+      <trans-unit id="ok" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="open" approved="yes">
+        <source>Open</source>
+        <target state="final">Otvoriť</target>
+      </trans-unit>
+      <trans-unit id="page" approved="yes">
+        <source>Page</source>
+        <target state="final">Stránka</target>
+      </trans-unit>
+      <trans-unit id="pages" approved="yes">
+        <source>Pages</source>
+        <target state="final">Stránky</target>
+      </trans-unit>
+      <trans-unit id="print" approved="yes">
+        <source>Print</source>
+        <target state="final">Tlač</target>
+      </trans-unit>
+      <trans-unit id="reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">Obnoviť</target>
+      </trans-unit>
+      <trans-unit id="save" approved="yes">
+        <source>Save</source>
+        <target state="final">Uložiť</target>
+      </trans-unit>
+      <trans-unit id="saveAndClose" approved="yes">
+        <source>Save and close</source>
+        <target state="final">Uložiť a zavrieť</target>
+      </trans-unit>
+      <trans-unit id="saveAndCloseDoc" approved="yes">
+        <source>Save and close document</source>
+        <target state="final">Uložiť a zavrieť dokument</target>
+      </trans-unit>
+      <trans-unit id="saveAndCreateNewDoc" approved="yes">
+        <source>Save and create new document</source>
+        <target state="final">Uložiť a vytvoriť nový dokument</target>
+      </trans-unit>
+      <trans-unit id="saveAndViewPage" approved="yes">
+        <source>Save and view page</source>
+        <target state="final">Uložiť a ukázať stránku</target>
+      </trans-unit>
+      <trans-unit id="search" approved="yes">
+        <source>Search</source>
+        <target state="final">Hľadať</target>
+      </trans-unit>
+      <trans-unit id="send" approved="yes">
+        <source>Send</source>
+        <target state="final">Odoslať</target>
+      </trans-unit>
+      <trans-unit id="start" approved="yes">
+        <source>Start</source>
+        <target state="final">Štart</target>
+      </trans-unit>
+      <trans-unit id="stop" approved="yes">
+        <source>Stop</source>
+        <target state="final">Stop</target>
+      </trans-unit>
+      <trans-unit id="submit" approved="yes">
+        <source>Submit</source>
+        <target state="final">Odoslať</target>
+      </trans-unit>
+      <trans-unit id="to" approved="yes">
+        <source>To</source>
+        <target state="final">Do</target>
+      </trans-unit>
+      <trans-unit id="tsRef" approved="yes">
+        <source>TSref reference</source>
+        <target state="final">TSref reference</target>
+      </trans-unit>
+      <trans-unit id="up" approved="yes">
+        <source>Up</source>
+        <target state="final">Hore</target>
+      </trans-unit>
+      <trans-unit id="upload" approved="yes">
+        <source>Upload</source>
+        <target state="final">Upload</target>
+      </trans-unit>
+      <trans-unit id="user" approved="yes">
+        <source>User</source>
+        <target state="final">Užívateľ</target>
+      </trans-unit>
+      <trans-unit id="users" approved="yes">
+        <source>Users</source>
+        <target state="final">Užívatelia</target>
+      </trans-unit>
+      <trans-unit id="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Áno</target>
+      </trans-unit>
+      <!-- Colors -->
+    </body>
+  </file>
+</xliff>
