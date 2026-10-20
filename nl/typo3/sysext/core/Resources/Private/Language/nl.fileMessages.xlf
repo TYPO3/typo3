@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1447138381" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/fileMessages.xlf" date="2015-11-10T06:53:10Z" product-name="core" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="FileUtility.CannotCopyFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeCopied" resname="FileUtility.CannotCopyFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeCopied" approved="yes">
+        <source>Cannot copy folder "%s" into target folder "%s", because the target folder is already within the folder to be copied!</source>
+        <target state="final">Map "%s" kan niet in doelmap "%s" gekopieerd worden omdat de doelmap zich al in de te kopiëren map bevindt!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CannotMoveFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeMoved" resname="FileUtility.CannotMoveFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeMoved" approved="yes">
+        <source>Cannot move folder "%s" into target folder "%s", because the target folder is already within the folder to be moved!</source>
+        <target state="final">De map "%s" kan niet in de doelmap "%s" verplaatst worden omdat de doelmap zich al in de te verplaatsen map bevindt!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotAccessAllNecessaryResources" resname="FileUtility.CouldNotAccessAllNecessaryResources" approved="yes">
+        <source>Could not access all necessary resources. Source file or destination maybe was not within your mountpoints? T="%s", D="%s"</source>
+        <target state="final">Geen toegang tot alle nodige bronnen. Bronbestand of doel liggen wellicht niet binnen uw beginpunten? D="%s", B="%s"</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteDirectory" resname="FileUtility.CouldNotDeleteDirectory" approved="yes">
+        <source>Could not delete directory! Is directory "%s" empty? (You are not allowed to delete directories recursively).</source>
+        <target state="final">Map kon niet verwijderd worden! Is map "%s" leeg? (U heeft geen rechten om een map met onderliggende mappen te verwijderen).</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteDirectory1" resname="FileUtility.CouldNotDeleteDirectory1" approved="yes">
+        <source>Could not delete directory "%s"! There might be a problem with write permissions.</source>
+        <target state="final">Map "%s" kon niet verwijderd worden! Er kunnen problemen met schrijfrechten zijn.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteFile" resname="FileUtility.CouldNotDeleteFile" approved="yes">
+        <source>Could not delete file "%s". There might be a problem with write permissions.</source>
+        <target state="final">Bestand "%s" kon niet verwijderd worden. Er zijn wellicht problemen met schrijfrechten.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationExistedAlready" resname="FileUtility.DestinationExistedAlready" approved="yes">
+        <source>Destination "%s" already exists!</source>
+        <target state="final">Doel "%s" bestaat al!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationPathWasNotWithinYourMountpoints" resname="FileUtility.DestinationPathWasNotWithinYourMountpoints" approved="yes">
+        <source>Destination path "%s" was not within your mountpoints!</source>
+        <target state="final">Doelpad "%s" ligt niet binnen uw beginpunten!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationWasNotADirectory" resname="FileUtility.DestinationWasNotADirectory" approved="yes">
+        <source>Destination "%s" was not a directory.</source>
+        <target state="final">Doel "%s" was geen map.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryCopiedTo" resname="FileUtility.DirectoryCopiedTo" approved="yes">
+        <source>Directory "%s" copied to "%s".</source>
+        <target state="final">Map "%s" is naar "%s" gekopieerd.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryCreatedIn" resname="FileUtility.DirectoryCreatedIn" approved="yes">
+        <source>Directory "%s" created in "%s".</source>
+        <target state="final">Map "%s" is aangemaakt in "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryMovedTo" resname="FileUtility.DirectoryMovedTo" approved="yes">
+        <source>Directory "%s" moved to "%s".</source>
+        <target state="final">Map "%s" is verplaatst naar "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryNotCreated" resname="FileUtility.DirectoryNotCreated" approved="yes">
+        <source>Directory "%s" not created. There might be a problem with write permissions in "%s"?</source>
+        <target state="final">Map "%s" is niet aangemaakt. Wellicht is er een probleem met schrijfrechten in "%s"?</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedFromTo" resname="FileUtility.DirectoryRenamedFromTo" approved="yes">
+        <source>Directory renamed from "%s" to "%s".</source>
+        <target state="final">Map hernoemd van "%s" naar "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedFromToCharReplaced" resname="FileUtility.DirectoryRenamedFromToCharReplaced" approved="yes">
+        <source>Directory renamed from "%s" to "%s". Characters in the new directory name have been replaced.</source>
+        <target state="final">Map hernoemd van "%s" naar "%s". Enkele tekens in de nieuwe mapnaam zijn vervangen.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedSameName" resname="FileUtility.DirectoryRenamedSameName" approved="yes">
+        <source>Directory "%s" was not renamed. (Same name as before)</source>
+        <target state="final">De map "%s" is niet hernoemd. (Zelfde naam als voorheen)</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotCopiedTo" resname="FileUtility.DirectoryWasNotCopiedTo" approved="yes">
+        <source>Directory "%s" WAS NOT copied to "%s"! There might be a problem with write permissions</source>
+        <target state="final">Map "%s" is NIET gekopieerd naar "%s"! Wellicht is er een probleem met schrijfrechten</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotMovedTo" resname="FileUtility.DirectoryWasNotMovedTo" approved="yes">
+        <source>Directory "%s" WAS NOT moved to "%s"! There might be a problem with write permissions</source>
+        <target state="final">Map "%s" IS NIET verplaatst naar "%s"! Wellicht is er een probleem met schrijfrechten</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotRenamed" resname="FileUtility.DirectoryWasNotRenamed" approved="yes">
+        <source>Directory "%s" was not renamed! There might be a problem with write permissions in "%s"?</source>
+        <target state="final">Map "%s" is niet hernoemd! Wellicht is er een probleem met schrijfrechten in "%s"?</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileNameIsNotAllowedIn" resname="FileUtility.ExtensionOfFileNameIsNotAllowedIn" approved="yes">
+        <source>Extension of file name "%s" is not allowed in "%s"!</source>
+        <target state="final">Extensie van bestand "%s" is in "%s" niet toegestaan!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileNameOrWasNotAllowed" resname="FileUtility.ExtensionOfFileNameOrWasNotAllowed" approved="yes">
+        <source>Extension of file name "%s" or "%s" was not allowed!</source>
+        <target state="final">Extensie van bestand "%s" of "%s" is niet toegestaan!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileWasNotAllowed" resname="FileUtility.ExtensionOfFileWasNotAllowed" approved="yes">
+        <source>Extension of file "%s" was not allowed!</source>
+        <target state="final">Extensie van bestand "%s" is niet toegestaan!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileAlreadyExistsInFolder" resname="FileUtility.FileAlreadyExistsInFolder" approved="yes">
+        <source>File "%s" already exists in folder "%s"!</source>
+        <target state="final">Bestand "%s" bestaat al in map "%s"!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileCopiedTo" resname="FileUtility.FileCopiedTo" approved="yes">
+        <source>File "%s" copied to "%s".</source>
+        <target state="final">Bestand "%s" is gekopieerd naar "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileCreated" resname="FileUtility.FileCreated" approved="yes">
+        <source>File created: "%s".</source>
+        <target state="final">Bestand aangemaakt: "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileNameSanitized" resname="FileUtility.FileNameSanitized" approved="yes">
+        <source>The file name "%s" is invalid, the file was automatically renamed to "%s".</source>
+        <target state="final">De bestandsnaam "%s" is ongeldig, het bestand is automatisch hernoemd naar "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExistedAlreadyIn" resname="FileUtility.FileExistedAlreadyIn" approved="yes">
+        <source>File existed already in "%s"!</source>
+        <target state="final">Bestand bestaat al in "%s"!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExtensionIsNotATextfileFormat" resname="FileUtility.FileExtensionIsNotATextfileFormat" approved="yes">
+        <source>File extension "%s" is not a textfile format! (%s).</source>
+        <target state="final">Bestands-extensie "%s" is geen tekstformaat! (%s).</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExtensionIsNotzip" resname="FileUtility.FileExtensionIsNotzip" approved="yes">
+        <source>File extension is not "zip".</source>
+        <target state="final">Bestandsextensie is niet "zip".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileMovedTo" resname="FileUtility.FileMovedTo" approved="yes">
+        <source>File "%s" moved to "%s".</source>
+        <target state="final">Bestand "%s" is verplaatst naar "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileNameWasNotAllowed" resname="FileUtility.FileNameWasNotAllowed" approved="yes">
+        <source>File name "%s" was not allowed!</source>
+        <target state="final">Bestandsnaam "%s" is niet toegestaan!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileOrDestinationWasNotWithinYourMountpoints" resname="FileUtility.FileOrDestinationWasNotWithinYourMountpoints" approved="yes">
+        <source>File "%s" or destination "%s" was not within your mountpoints!</source>
+        <target state="final">Bestand "%s" of bestemming "%s" bevindt zich niet binnen uw beginpunten!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileOrDirectoryExistedAlready" resname="FileUtility.FileOrDirectoryExistedAlready" approved="yes">
+        <source>File or directory "%s" already exists!</source>
+        <target state="final">Bestand of directory "%s" bestaat reeds!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileRenamedFromTo" resname="FileUtility.FileRenamedFromTo" approved="yes">
+        <source>File renamed from "%s" to "%s".</source>
+        <target state="final">Bestand hernoemd van "%s" naar "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileRenamedSameName" resname="FileUtility.FileRenamedSameName" approved="yes">
+        <source>File "%s" was not renamed. (Same name as before)</source>
+        <target state="final">Bestand "%s" niet hernoemd. (Zelfde naam als voorheen)</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileSavedToBytesMd5" resname="FileUtility.FileSavedToBytesMd5" approved="yes">
+        <source>File saved to "%s", bytes: %s, MD5: %s.</source>
+        <target state="final">Bestand opgeslagen als "%s", bytes: %s, MD5: %s.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotCopiedTo" resname="FileUtility.FileWasNotCopiedTo" approved="yes">
+        <source>File "%s" WAS NOT copied to "%s"! There might be a problem with write permissions.</source>
+        <target state="final">Bestand "%s" is NIET gekopieerd naar "%s"! Er is mogelijk een probleem met schrijfrechten.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotCreated" resname="FileUtility.FileWasNotCreated" approved="yes">
+        <source>File "%s" was not created! There might be a problem with write permissions in "%s"?</source>
+        <target state="final">Bestand "%s" is niet aangemaakt! Er is mogelijk een probleem met schrijfrechten in "%s"?</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotRenamed" resname="FileUtility.FileWasNotRenamed" approved="yes">
+        <source>File "%s" was not renamed! There might be a problem with write permissions in "%s"?</source>
+        <target state="final">Bestand "%s" is niet hernoemd! Er is mogelijk een probleem met schrijfrechten in "%s"?</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotSaved" resname="FileUtility.FileWasNotSaved" approved="yes">
+        <source>File "%s" was not saved! There might be a problem with write permissions.</source>
+        <target state="final">Bestand "%s" is niet opgeslagen! Er is mogelijk een probleem met schrijfrechten.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotSaved2" resname="FileUtility.FileWasNotSaved2" approved="yes">
+        <source>File "%s" was not saved! File extension rejected!</source>
+        <target state="final">Bestand "%s" is niet opgeslagen! Bestandsextensie geweigerd!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoFileWasUploaded" resname="FileUtility.NoFileWasUploaded" approved="yes">
+        <source>No file was uploaded!</source>
+        <target state="final">Er is geen bestand geupload!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoFileWasUploadedForReplacing" resname="FileUtility.NoFileWasUploadedForReplacing" approved="yes">
+        <source>No file was uploaded for replacing!</source>
+        <target state="final">Er werd geen vervangend bestand geupload!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoNameForNewFolderGiven" resname="FileUtility.NoNameForNewFolderGiven" approved="yes">
+        <source>No name for new folder given!</source>
+        <target state="final">Geen naam opgegeven voor nieuwe map!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoUniqueFilenameAvailableIn" resname="FileUtility.NoUniqueFilenameAvailableIn" approved="yes">
+        <source>No unique filename available in "%s"!</source>
+        <target state="final">Geen unieke bestandsnaam beschikbaar in "%s"!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ReplacingFileTo" resname="FileUtility.ReplacingFileTo" approved="yes">
+        <source>Replacing file "%s" to "%s".</source>
+        <target state="final">Bestand "%s" word vervangen door "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetAlreadyExists" resname="FileUtility.TargetAlreadyExists" approved="yes">
+        <source>Target "%s" already exists!</source>
+        <target state="final">Doel "%s" bestaat reeds!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetWasNotAFile" resname="FileUtility.TargetWasNotAFile" approved="yes">
+        <source>Target "%s" was not a file!</source>
+        <target state="final">Doel "%s" was geen bestand!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetWasNotWithinYourMountpoints" resname="FileUtility.TargetWasNotWithinYourMountpoints" approved="yes">
+        <source>Target was not within your mountpoints! T="%s".</source>
+        <target state="final">Bestemming bevindt zich niet binnen uw beginpunten! T="%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFileDidNotExist" resname="FileUtility.TheFileDidNotExist" approved="yes">
+        <source>The file "%s" did not exist!</source>
+        <target state="final">Het bestand "%s" bestaat niet!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToCopyAFileBetweenStoragesIsNotYetImplemented" resname="FileUtility.TheFunctionToCopyAFileBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>The function to copy a file between storages is not yet implemented.</source>
+        <target state="final">De functie om bestanden tussen Storages te kopiëren is nog niet geïmplementeerd.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToCopyAFolderBetweenStoragesIsNotYetImplemented" resname="FileUtility.TheFunctionToCopyAFolderBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>The function to copy a folder between storages is not yet implemented.</source>
+        <target state="final">De functie om mappen tussen Storages te kopiëren, is nog niet geïmplementeerd.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToMoveAFileBetweenStoragesIsNotYetImplemented" resname="FileUtility.TheFunctionToMoveAFileBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>The function to move a file between storages is not yet implemented.</source>
+        <target state="final">De functie om bestanden te verplaatsen tussen Storages is nog niet geïmplementeerd.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToMoveAFolderBetweenStoragesIsNotYetImplemented" resname="FileUtility.TheFunctionToMoveAFolderBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>The function to move a folder between storages is not yet implemented.</source>
+        <target state="final">De functie om mappen te verplaatsen tussen Storages is nog niet geïmplementeerd.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheUploadHasFailedNoUploadedFileFound" resname="FileUtility.TheUploadHasFailedNoUploadedFileFound" approved="yes">
+        <source>The upload has failed, no uploaded file found!</source>
+        <target state="final">Het uploaden is mislukt. Geen geupload bestand gevonden.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheUploadedFileExceedsTheSize-limit" resname="FileUtility.TheUploadedFileExceedsTheSize-limit" approved="yes">
+        <source>The uploaded file "%s" exceeds the size-limit</source>
+        <target state="final">De grootte van het geüploade bestand "%s" overschrijdt de limiet.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UnzippingFileIn" resname="FileUtility.UnzippingFileIn" approved="yes">
+        <source>Unzipping file "%s" in "%s".</source>
+        <target state="final">Bestand "%s" aan het uitpakken in "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UploadedFileCouldNotBeMoved" resname="FileUtility.UploadedFileCouldNotBeMoved" approved="yes">
+        <source>Uploaded file could not be moved! There might be a problem with write permissions in "%s"?</source>
+        <target state="final">Het geüploade bestand kon niet worden verplaatst! Er is mogelijk een probleem met schrijfrechten in "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UploadingFileTo" resname="FileUtility.UploadingFileTo" approved="yes">
+        <source>Uploading file "%s" to "%s".</source>
+        <target state="final">Bestand "%s" aan het uploaden naar "%s".</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToAccessTheDirectory" resname="FileUtility.YouAreNotAllowedToAccessTheDirectory" approved="yes">
+        <source>You are not allowed to access the directory.</source>
+        <target state="final">U hebt geen toegang tot deze map.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToAccessTheFile" resname="FileUtility.YouAreNotAllowedToAccessTheFile" approved="yes">
+        <source>You are not allowed to access the file.</source>
+        <target state="final">U hebt geen toegang tot dit bestand.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCopyDirectories" resname="FileUtility.YouAreNotAllowedToCopyDirectories" approved="yes">
+        <source>You are not allowed to copy directories.</source>
+        <target state="final">U hebt geen toestemming om directory's te kopiëren.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCopyFiles" resname="FileUtility.YouAreNotAllowedToCopyFiles" approved="yes">
+        <source>You are not allowed to copy files.</source>
+        <target state="final">U hebt geen toestemming om bestanden te kopiëren.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.InvalidFolderName" resname="FileUtility.InvalidFolderName" approved="yes">
+        <source>Invalid folder name "%s"!</source>
+        <target state="final">Ongeldige mapnaam "%s"!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCreateDirectories" resname="FileUtility.YouAreNotAllowedToCreateDirectories" approved="yes">
+        <source>You are not allowed to create directories!</source>
+        <target state="final">U hebt geen toestemming om mappen aan te maken!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCreateFiles" resname="FileUtility.YouAreNotAllowedToCreateFiles" approved="yes">
+        <source>You are not allowed to create files!</source>
+        <target state="final">U hebt geen toestemming om bestanden aan te maken!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToEditFiles" resname="FileUtility.YouAreNotAllowedToEditFiles" approved="yes">
+        <source>You are not allowed to edit files!</source>
+        <target state="final">U hebt geen toestemming om bestanden te bewerken!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToMoveDirectories" resname="FileUtility.YouAreNotAllowedToMoveDirectories" approved="yes">
+        <source>You are not allowed to move directories.</source>
+        <target state="final">U hebt geen toestemming om mappen te verplaatsen.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToMoveFiles" resname="FileUtility.YouAreNotAllowedToMoveFiles" approved="yes">
+        <source>You are not allowed to move files.</source>
+        <target state="final">U hebt geen toestemming om bestanden te verplaatsen.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToOverride" resname="FileUtility.YouAreNotAllowedToOverride" approved="yes">
+        <source>You are not allowed to override "%s"!</source>
+        <target state="final">U hebt geen toestemming om "%s" te overschrijven!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToRenameDirectories" resname="FileUtility.YouAreNotAllowedToRenameDirectories" approved="yes">
+        <source>You are not allowed to rename directories!</source>
+        <target state="final">U hebt geen toestemming om mappen te hernoemen!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToRenameFiles" resname="FileUtility.YouAreNotAllowedToRenameFiles" approved="yes">
+        <source>You are not allowed to rename files!</source>
+        <target state="final">U hebt geen toestemming om bestanden te hernoemen!</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToUnzipFiles" resname="FileUtility.YouAreNotAllowedToUnzipFiles" approved="yes">
+        <source>You are not allowed to unzip files.</source>
+        <target state="final">U hebt geen toestemming om zip-bestanden uit te pakken.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToUploadFiles" resname="FileUtility.YouAreNotAllowedToUploadFiles" approved="yes">
+        <source>You are not allowed to upload files!</source>
+        <target state="final">U hebt geen toestemming om bestanden te uploaden.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouDontHaveFullAccessToTheDestinationDirectory" resname="FileUtility.YouDontHaveFullAccessToTheDestinationDirectory" approved="yes">
+        <source>You don't have full access to the destination directory "%s"!</source>
+        <target state="final">U hebt geen volledige toegang tot het bestemmingspad "%s"!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
