@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1435679883" source-language="en" datatype="plaintext" original="EXT:extensionmanager/Resources/Private/Language/locallang_db.xlf" date="2015-06-30T15:55:11Z" product-name="" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.title" resname="tx_extensionmanager_domain_model_extension.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Naslov</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.description" resname="tx_extensionmanager_domain_model_extension.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Opis</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.category" resname="tx_extensionmanager_domain_model_extension.category" approved="yes">
+        <source>Category</source>
+        <target state="final">Kategorija</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.authorname" resname="tx_extensionmanager_domain_model_extension.authorname" approved="yes">
+        <source>Author Name</source>
+        <target state="final">Ime avtorja</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_extension.authoremail" resname="tx_extensionmanager_domain_model_extension.authoremail" approved="yes">
+        <source>Author Email</source>
+        <target state="final">E-pošta avtorja</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_repository.title" resname="tx_extensionmanager_domain_model_repository.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Naslov</target>
+      </trans-unit>
+      <trans-unit id="tx_extensionmanager_domain_model_repository.description" resname="tx_extensionmanager_domain_model_repository.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Opis</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
