@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="site.rootPageId" approved="yes">
+        <source>You must create a page with a site root flag.</source>
+        <target state="final">يجب عليك إنشاء صفحة بعلامة جذر الموقع.</target>
+      </trans-unit>
+      <trans-unit id="site.identifier" approved="yes">
+        <source>This name will be used to create the configuration directory. Mind the recommendations for directory names (only a-z,0-9,_,-) and make it unique.</source>
+        <target state="final">سيتم استخدام هذا الاسم لإنشاء دليل التكوين. ضع في الاعتبار التوصيات الخاصة بأسماء الدليل (أ-z0-9,_,-) واجعلها فريدة.</target>
+      </trans-unit>
+      <trans-unit id="site.base" approved="yes">
+        <source>Main URL to call the frontend in default language. Can be https://www.example.com/ or just /, if it is just a / you cannot rely on TYPO3 creating full URLs</source>
+        <target state="final">عنوان URL الرئيسي للوصول إلى الواجهة الأمامية في اللغة الافتراضية. يمكن أن يكون https://www.example. om/ أو فقط /، إذا كان مجرد A / لا يمكنك الإعتماد على TYPO3 لإنشاء عناوين URLs كاملة</target>
+      </trans-unit>
+      <trans-unit id="site.websiteTitle" approved="yes">
+        <source>The title of the website is used for the title tag in the frontend</source>
+        <target state="final">يتم استخدام عنوان الموقع كـ علامة العنوان في الواجهة الأمامية</target>
+      </trans-unit>
+      <trans-unit id="site.baseVariants" approved="yes">
+        <source>This allows you to specify variants of the site's base. Can be used, for example, if you have a different domain for your staging environment.</source>
+        <target state="final">هذا يسمح لك بتحديد مُتغيرات قاعدة الموقع. يمكن استخدامها، على سبيل المثال: إذا كان لديك نطاق مُختلف لبيئة المنصّة الخاصة بك.</target>
+      </trans-unit>
+      <trans-unit id="site.dependencies" approved="yes">
+        <source>Site sets ship parts of site configuration as composable pieces. Sets deliver Settings, TypoScript, and Page TSConfig for the scope of this site.</source>
+        <target state="final">يُعيّن الموقع أجزاء من تكوين الموقع كقطع قابلة للتكوين. هذه المجموعات تُقدم الإعدادات، TypoScript، وصفحة TSConfig لنطاق هذا الموقع.</target>
+      </trans-unit>
+      <trans-unit id="site_language.base" approved="yes">
+        <source>Use a full qualified domain "https://www.mydomain.fr/" or "/fr/". Use "/" to keep the main URL for the default language. Add language specific suffixes to use those, or configure complete URLs for independent domains.</source>
+        <target state="final">استخدم نطاق كامل ومؤهل "https://www.mydomain.fr/" أو "/fr/". استخدم "/" للحفاظ على عنوان URL الرئيسي للغة الافتراضية. أضف مُلحقات خاصة بلغة معينة لاستخدام تلك العناوين أو تكوين عناوين URL كاملة لنطاقات مستقلة.</target>
+      </trans-unit>
+      <trans-unit id="site_language.locale" approved="yes">
+        <source>Used for localized date and currency formats. E.g. "de_DE" or "en_US.UTF-8".</source>
+        <target state="final">تُستخدم لتنسيق التاريخ والعملة. على سبيل المثال: "de_DE" أو "en_US.UTF-8".</target>
+      </trans-unit>
+      <trans-unit id="site_language.hreflang" approved="yes">
+        <source>Optional, used for "hreflang" attributes - if empty, the information is retrieved from the locale</source>
+        <target state="final">اختياري، يستخدم لِسِمات "hreflang" - إذا كانت فارغة، يتم استرداد المعلومات من الموقع</target>
+      </trans-unit>
+      <trans-unit id="site_language.websiteTitle" approved="yes">
+        <source>With this language based Website title, you can override the Website title for this language</source>
+        <target state="final">باستخدام عنوان موقع الويب المُستند إلى اللغة، يمكنك تجاوز عنوان موقع الويب لهذه اللغة</target>
+      </trans-unit>
+      <trans-unit id="site_language.navigationTitle" approved="yes">
+        <source>Used within language-related menus</source>
+        <target state="final">تُستخدم ضمن القوائم المرتبطة باللغة</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode" approved="yes">
+        <source>Make sure to have at least 0 (not defined otherwise) configured in order to serve helpful error messages to your visitors.</source>
+        <target state="final">تأكد من تكوين على الأقل 0 (غير مُعرّف) لتقديم رسائل خطأ مفيدة للزائرين.</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplate" approved="yes">
+        <source>Path to the fluid template file given by absolute, relative path (from site root) or by referring the template file inside an extension with "EXT:" prefix.</source>
+        <target state="final">المسار إلى ملف قالب Fluid المُقدم من خلال المسار الحتمي النسبي (من جذر الموقع) أو عن طريق إحالة ملف القالب داخل الإضافات بالبادئة "EXT:".</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorPhpClassFQCN" approved="yes">
+        <source>Fully qualified class name to a class that implements the PageErrorHandlerInterface.</source>
+        <target state="final">اسم مؤهل بالكامل لفئة تقوم بتنفيذ PageErrorHandlerInterface.</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.base" approved="yes">
+        <source>For example "https://staging.domain.tld" or "http://www.domain.local"</source>
+        <target state="final">على سبيل المثال: "https://staging.domain.tld" أو "http://www.domain.local"</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition" approved="yes">
+        <source>Expression to match this base variant.</source>
+        <target state="final">تعبير يُطابق هذا المُتغير الأساسي.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
