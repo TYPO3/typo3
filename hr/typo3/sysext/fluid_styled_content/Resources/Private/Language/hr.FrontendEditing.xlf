@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1428662501" source-language="en" datatype="plaintext" original="EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf" date="2014-02-07T20:22:32Z" product-name="fluid_styled_content" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id="editIcon.bullets" resname="editIcon.bullets" approved="yes">
+        <source>Edit bullet list</source>
+        <target state="final">Uredi označeni popis</target>
+      </trans-unit>
+      <trans-unit id="editIcon.header" resname="editIcon.header" approved="yes">
+        <source>Edit header</source>
+        <target state="final">Uredi zaglavlje</target>
+      </trans-unit>
+      <trans-unit id="editIcon.html" resname="editIcon.html" approved="yes">
+        <source>Edit pure HTML content</source>
+        <target state="final">Uredi element s čistim HTML sadržajem</target>
+      </trans-unit>
+      <trans-unit id="editIcon.list" resname="editIcon.list" approved="yes">
+        <source>Change/configure plugin</source>
+        <target state="final">Izmijeni/podesi umetak</target>
+      </trans-unit>
+      <trans-unit id="editIcon.menu" resname="editIcon.menu" approved="yes">
+        <source>Edit menu/sitemap</source>
+        <target state="final">Uredi izbornik/mapu stranice</target>
+      </trans-unit>
+      <trans-unit id="editIcon.shortcut" resname="editIcon.shortcut" approved="yes">
+        <source>Edit record list</source>
+        <target state="final">Uredi popis zapisa</target>
+      </trans-unit>
+      <trans-unit id="editIcon.table" resname="editIcon.table" approved="yes">
+        <source>Edit table</source>
+        <target state="final">Uredi tablicu</target>
+      </trans-unit>
+      <trans-unit id="editIcon.textmedia" resname="editIcon.textmedia" approved="yes">
+        <source>Edit text &amp; media</source>
+        <target state="final">Uredi tekst i mediju</target>
+      </trans-unit>
+      <trans-unit id="editIcon.uploads" resname="editIcon.uploads" approved="yes">
+        <source>Edit file list</source>
+        <target state="final">Uredi popis datoteka</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
