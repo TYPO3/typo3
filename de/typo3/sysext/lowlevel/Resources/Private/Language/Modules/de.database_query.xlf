@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="de">
+  <file id="f1">
+    <unit id="title">
+      <segment state="final">
+        <source>Advanced query</source>
+        <target>Erweiterte Abfrage</target>
+      </segment>
+    </unit>
+    <unit id="short_description">
+      <segment state="final">
+        <source>Database queries, allowing filtering and sorting</source>
+        <target>Erweiterte Datenbankabfragen, die Filterung und Sortierung ermöglichen</target>
+      </segment>
+    </unit>
+    <unit id="description">
+      <segment state="final">
+        <source>Build custom database queries using a configurable interface that supports filtering, sorting, and limiting results without requiring direct SQL.</source>
+        <target>Erstelle benutzerdefinierte Datenbankabfragen über eine konfigurierbare Oberfläche, die das Filtern, Sortieren und Einschränken von Ergebnissen ermöglicht, ohne dass direkte SQL-Befehle erforderlich sind.</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
