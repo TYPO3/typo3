@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:viewpage/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="viewpage" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="width" approved="yes">
+        <source>Width</source>
+        <target state="final">Širina</target>
+      </trans-unit>
+      <trans-unit id="customWidth" approved="yes">
+        <source>Custom Size</source>
+        <target state="final">Velikost po meri</target>
+      </trans-unit>
+      <trans-unit id="language" approved="yes">
+        <source>Language</source>
+        <target state="final">Jezik</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
