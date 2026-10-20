@@ -1,0 +1,8 @@
+"pages"
+,"uid","pid","title","doktype","sorting","perms_everybody"
+,17,1,"Workspace only",254,2048,15
+"tx_blogexample_domain_model_blog"
+,"uid","pid","sys_language_uid","l18n_parent","title","hidden","posts","categories","t3ver_oid","t3ver_wsid","t3ver_state"
+,50,17,0,0,"Live blog",0,0,0,0,0,0
+,51,17,0,0,"Hidden live blog",1,0,0,0,0,0
+,52,17,0,0,"Blog only in the workspace",0,0,0,0,1,1

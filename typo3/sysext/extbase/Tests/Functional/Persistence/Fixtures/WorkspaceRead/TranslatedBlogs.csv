@@ -1,0 +1,10 @@
+"pages"
+,"uid","pid","title","doktype","sorting","perms_everybody"
+,15,1,"Translated blogs",254,1792,15
+"tx_blogexample_domain_model_blog"
+,"uid","pid","sys_language_uid","l18n_parent","title","hidden","posts","categories","t3ver_oid","t3ver_wsid","t3ver_state"
+,40,15,0,0,"Blog in English",0,0,0,0,0,0
+,41,15,1,40,"Blog auf Deutsch",0,0,0,0,0,0
+,42,15,1,40,"Blog auf Deutsch im Workspace",0,0,0,41,1,0
+,43,15,-1,0,"Blog for all languages",0,0,0,0,0,0
+,44,15,0,0,"Blog new in workspace",0,0,0,0,1,1

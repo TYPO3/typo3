@@ -1,0 +1,4 @@
+"tx_blogexample_domain_model_blog"
+,"uid","pid","title","t3ver_oid","t3ver_wsid","t3ver_state","tstamp","crdate"
+,1,2,"Live blog",0,0,0,1500000000,1500000000
+,2,2,"Blog version",1,1,0,1500000000,1500000000

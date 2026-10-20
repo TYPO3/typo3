@@ -1,0 +1,12 @@
+"pages"
+,"uid","pid","title","doktype","sorting","perms_everybody"
+,14,1,"Translated post deleted",254,1664,15
+"tx_blogexample_domain_model_blog"
+,"uid","pid","sys_language_uid","l18n_parent","title","hidden","posts","categories","t3ver_oid","t3ver_wsid","t3ver_state"
+,37,14,0,0,"Blog with a post translated and deleted",0,1,0,0,0,0
+,38,14,1,37,"Blog mit übersetztem und gelöschtem Beitrag",0,1,0,0,0,0
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","hidden","sorting","blog","t3ver_oid","t3ver_wsid","t3ver_state"
+,9,14,0,0,"English post of a deleted translation",0,600,37,0,0,0
+,10,14,1,9,"Beitrag mit gelöschter Übersetzung",0,601,38,0,0,0
+,11,14,1,9,"Beitrag mit gelöschter Übersetzung",0,602,38,10,1,2

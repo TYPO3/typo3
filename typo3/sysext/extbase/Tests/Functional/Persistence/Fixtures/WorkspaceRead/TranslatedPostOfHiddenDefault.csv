@@ -1,0 +1,13 @@
+"pages"
+,"uid","pid","title","doktype","sorting","perms_everybody"
+,16,1,"Translated post of a hidden default",254,1920,15
+"tx_blogexample_domain_model_blog"
+,"uid","pid","sys_language_uid","l18n_parent","title","hidden","posts","categories","t3ver_oid","t3ver_wsid","t3ver_state"
+,45,16,0,0,"Blog with a hidden post",0,2,0,0,0,0
+,46,16,1,45,"Blog mit verstecktem Beitrag",0,2,0,0,0,0
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","hidden","sorting","blog","t3ver_oid","t3ver_wsid","t3ver_state"
+,12,16,0,0,"Visible post",0,100,45,0,0,0
+,13,16,1,12,"Sichtbarer Beitrag",0,101,46,0,0,0
+,14,16,0,0,"Hidden post",1,200,45,0,0,0
+,15,16,1,14,"Versteckter Beitrag",0,201,46,0,0,0
