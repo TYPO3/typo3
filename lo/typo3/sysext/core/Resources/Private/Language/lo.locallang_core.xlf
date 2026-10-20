@@ -1,0 +1,1811 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814851" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_core.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="labels.openInNewWindow" resname="labels.openInNewWindow" approved="yes">
+        <source>Open in new window</source>
+        <target state="final">ເປີດໃນໜ້າຕ່າງໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="labels.goBack" resname="labels.goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">ກັບຄືນ</target>
+      </trans-unit>
+      <trans-unit id="labels.makeShortcut" resname="labels.makeShortcut" approved="yes">
+        <source>Create a shortcut to this page?</source>
+        <target state="final">ສ້າງທາງລັດມາຍັງໜ້ານີ້ບໍ?</target>
+      </trans-unit>
+      <trans-unit id="labels.makeBookmark" resname="labels.makeBookmark" approved="yes">
+        <source>Create a bookmark to this page</source>
+        <target state="final">ສ້າງເຄື່ອງໝາຍຂັ້ນມາຍັງໜ້ານີ້</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord" resname="labels.lockedRecord" approved="yes">
+        <source>The user '%s' began to edit this record %s ago.</source>
+        <target state="final">ຜູ້ໃຊ້ '%s' ເລີ່ມແກ້ໄຂບັນທຶກນີ້ເມື່ອ %s ກ່ອນ.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord_content" resname="labels.lockedRecord_content" approved="yes">
+        <source>The user '%s' began to edit content on this page %s ago.</source>
+        <target state="final">ຜູ້ໃຊ້ '%s' ເລີ່ມແກ້ໄຂເນື້ອໃນໃນໜ້ານີ້ເມື່ອ %s ກ່ອນ.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecordUser" resname="labels.lockedRecordUser" approved="yes">
+        <source>The %s '%s' began to edit this record %s ago.</source>
+        <target state="final">%s '%s' ເລີ່ມແກ້ໄຂບັນທຶກນີ້ເມື່ອ %s ກ່ອນ.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecordUser_content" resname="labels.lockedRecordUser_content" approved="yes">
+        <source>The %s '%s' began to edit content on this page %s ago.</source>
+        <target state="final">%s '%s' ເລີ່ມແກ້ໄຂເນື້ອໃນໃນໜ້ານີ້ເມື່ອ %s ກ່ອນ.</target>
+      </trans-unit>
+      <trans-unit id="labels.user" resname="labels.user" approved="yes">
+        <source>User</source>
+        <target state="final">ຜູ້ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="labels.beUser" resname="labels.beUser" approved="yes">
+        <source>BE-User</source>
+        <target state="final">ຜູ້ໃຊ້ BE</target>
+      </trans-unit>
+      <trans-unit id="labels.feUser" resname="labels.feUser" approved="yes">
+        <source>FE-User</source>
+        <target state="final">ຜູ້ໃຊ້ FE</target>
+      </trans-unit>
+      <trans-unit id="labels.unknownUser" resname="labels.unknownUser" approved="yes">
+        <source>-Unknown-</source>
+        <target state="final">-ບໍ່ລະບຸ-</target>
+      </trans-unit>
+      <trans-unit id="labels.showRecords" resname="labels.showRecords" approved="yes">
+        <source>Show records</source>
+        <target state="final">ສະແດງບັນທຶກ</target>
+      </trans-unit>
+      <trans-unit id="labels.path" resname="labels.path" approved="yes">
+        <source>Path</source>
+        <target state="final">ເສັ້ນທາງ</target>
+      </trans-unit>
+      <trans-unit id="labels.resetFilter" resname="labels.resetFilter" approved="yes">
+        <source>Reset Filter</source>
+        <target state="final">ລ້າງຕົວຕອງ</target>
+      </trans-unit>
+      <trans-unit id="labels.table" resname="labels.table" approved="yes">
+        <source>Table</source>
+        <target state="final">ຕາຕະລາງ</target>
+      </trans-unit>
+      <trans-unit id="labels.upOneLevel" resname="labels.upOneLevel" approved="yes">
+        <source>Up one level</source>
+        <target state="final">ຂຶ້ນໄປໜຶ່ງລະດັບ</target>
+      </trans-unit>
+      <trans-unit id="labels.expandTable" resname="labels.expandTable" approved="yes">
+        <source>Expand table</source>
+        <target state="final">ຂະຫຍາຍຕາຕະລາງ</target>
+      </trans-unit>
+      <trans-unit id="labels.collapseTable" resname="labels.collapseTable" approved="yes">
+        <source>Collapse table</source>
+        <target state="final">ຫຍໍ້ຕາຕະລາງ</target>
+      </trans-unit>
+      <trans-unit id="labels.enterSearchString" resname="labels.enterSearchString" approved="yes">
+        <source>Enter search term</source>
+        <target state="final">ປ້ອນຄຳຄົ້ນຫາ</target>
+      </trans-unit>
+      <trans-unit id="labels.enterSearchLevels" resname="labels.enterSearchLevels" approved="yes">
+        <source>This page|1 level down|2 levels down|3 levels down|4 levels down</source>
+        <target state="final">ໜ້ານີ້|ລົງໄປ 1 ລະດັບ|ລົງໄປ 2 ລະດັບ|ລົງໄປ 3 ລະດັບ|ລົງໄປ 4 ລະດັບ</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.0" resname="labels.searchLevel.0" approved="yes">
+        <source>This page</source>
+        <target state="final">ໜ້ານີ້</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.1" resname="labels.searchLevel.1" approved="yes">
+        <source>1 level down</source>
+        <target state="final">ລົງໄປ 1 ລະດັບ</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.2" resname="labels.searchLevel.2" approved="yes">
+        <source>2 levels down</source>
+        <target state="final">ລົງໄປ 2 ລະດັບ</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.3" resname="labels.searchLevel.3" approved="yes">
+        <source>3 levels down</source>
+        <target state="final">ລົງໄປ 3 ລະດັບ</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.4" resname="labels.searchLevel.4" approved="yes">
+        <source>4 levels down</source>
+        <target state="final">ລົງໄປ 4 ລະດັບ</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.infinite" resname="labels.searchLevel.infinite" approved="yes">
+        <source>Infinite levels</source>
+        <target state="final">ບໍ່ຈຳກັດລະດັບ</target>
+      </trans-unit>
+      <trans-unit id="labels.noEditPermission" resname="labels.noEditPermission" approved="yes">
+        <source>Sorry, you didn't have proper permissions to perform this change.</source>
+        <target state="final">ຂໍອະໄພ, ເຈົ້າບໍ່ມີສິດໃນການປ່ຽນແປງນີ້.</target>
+      </trans-unit>
+      <trans-unit id="labels.fieldsMissing" resname="labels.fieldsMissing" approved="yes">
+        <source>The fields marked with an exclamation mark are not yet correctly filled in. Please complete them properly.</source>
+        <target state="final">ຊ່ອງຂໍ້ມູນທີ່ມີເຄື່ອງໝາຍທ້ວງຍັງບໍ່ທັນໄດ້ປ້ອນຂໍ້ມູນຖືກຕ້ອງ. ກະລຸນາຕື່ມໃຫ້ຄົບຖ້ວນ.</target>
+      </trans-unit>
+      <trans-unit id="labels.fieldsChanged" resname="labels.fieldsChanged" xml:space="preserve" approved="yes">
+				<source>There are unsaved changes in the form!
+Do you want to continue WITHOUT saving?</source>
+			<target state="final">ມີການປ່ຽນແປງທີ່ຍັງບໍ່ທັນໄດ້ບັນທຶກໃນແບບຟອມ!
+ເຈົ້າຕ້ອງການດຳເນີນການຕໍ່ໂດຍບໍ່ບັນທຶກບໍ?</target></trans-unit>
+      <trans-unit id="labels.remainingCharacters" resname="labels.remainingCharacters" approved="yes">
+        <source>Remaining characters: {0}</source>
+        <target state="final">ຈຳນວນຕົວອັກສອນທີ່ເຫຼືອ: {0}</target>
+      </trans-unit>
+      <trans-unit id="labels.maxItemsAllowed" resname="labels.maxItemsAllowed" approved="yes">
+        <source>A maximum of {0} child records are allowed.</source>
+        <target state="final">ອະນຸຍາດໃຫ້ມີບັນທຶກຍ່ອຍສູງສຸດ {0} ບັນທຶກ.</target>
+      </trans-unit>
+      <trans-unit id="labels.noRTEfound" resname="labels.noRTEfound" approved="yes">
+        <source>Notice: This field can only be edited with a Rich Text Editor. No editor is currently available or enabled.</source>
+        <target state="final">ແຈ້ງເຕືອນ: ຊ່ອງຂໍ້ມູນນີ້ສາມາດແກ້ໄຂໄດ້ດ້ວຍ Rich Text Editor ເທົ່ານັ້ນ. ໃນຂະນະນີ້ບໍ່ມີຕົວແກ້ໄຂທີ່ພ້ອມໃຊ້ງານ.</target>
+      </trans-unit>
+      <trans-unit id="labels.recordInformation" resname="labels.recordInformation" approved="yes">
+        <source>Record information</source>
+        <target state="final">ຂໍ້ມູນບັນທຶກ</target>
+      </trans-unit>
+      <trans-unit id="labels.disableRTE" resname="labels.disableRTE" approved="yes">
+        <source>Disable Rich Text Editor (RTE)</source>
+        <target state="final">ປິດການໃຊ້ງານ Rich Text Editor (RTE)</target>
+      </trans-unit>
+      <trans-unit id="labels._CONTROL_" resname="labels._CONTROL_" approved="yes">
+        <source>Control</source>
+        <target state="final">ຄວບຄຸມ</target>
+      </trans-unit>
+      <trans-unit id="labels._PATH_" resname="labels._PATH_" approved="yes">
+        <source>Path</source>
+        <target state="final">ເສັ້ນທາງ</target>
+      </trans-unit>
+      <trans-unit id="labels._LOCALIZATION_" resname="labels._LOCALIZATION_" approved="yes">
+        <source>Localization</source>
+        <target state="final">ການກຳນົດພາສາທ້ອງຖິ່ນ</target>
+      </trans-unit>
+      <trans-unit id="labels.setFields" resname="labels.setFields" approved="yes">
+        <source>Set fields</source>
+        <target state="final">ກຳນົດຊ່ອງຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="labels.search" resname="labels.search" approved="yes">
+        <source>Search</source>
+        <target state="final">ຄົ້ນຫາ</target>
+      </trans-unit>
+      <trans-unit id="labels.author" resname="labels.author" approved="yes">
+        <source>Author</source>
+        <target state="final">ຜູ້ຂຽນ</target>
+      </trans-unit>
+      <trans-unit id="labels.note" resname="labels.note" approved="yes">
+        <source>Note</source>
+        <target state="final">ໝາຍເຫດ</target>
+      </trans-unit>
+      <trans-unit id="labels.category" resname="labels.category" approved="yes">
+        <source>Category</source>
+        <target state="final">ໝວດໝູ່</target>
+      </trans-unit>
+      <trans-unit id="labels.reload" resname="labels.reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">ໂຫຼດໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="labels.csv" resname="labels.csv" approved="yes">
+        <source>Download CSV file</source>
+        <target state="final">ດາວໂຫຼດໄຟລ໌ CSV</target>
+      </trans-unit>
+      <trans-unit id="labels.clear_cache" resname="labels.clear_cache" approved="yes">
+        <source>Clear cache for this page</source>
+        <target state="final">ລ້າງແຄຊ໌ສຳລັບໜ້ານີ້</target>
+      </trans-unit>
+      <trans-unit id="labels.no_title" resname="labels.no_title" approved="yes">
+        <source>No title</source>
+        <target state="final">ບໍ່ມີຫົວຂໍ້</target>
+      </trans-unit>
+      <trans-unit id="labels.cancel" resname="labels.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">ຍົກເລີກ</target>
+      </trans-unit>
+      <trans-unit id="labels.hidden" resname="labels.hidden" approved="yes">
+        <source>Hidden</source>
+        <target state="final">ເຊື່ອງໄວ້</target>
+      </trans-unit>
+      <trans-unit id="labels.starttime" resname="labels.starttime" approved="yes">
+        <source>Start</source>
+        <target state="final">ເລີ່ມ</target>
+      </trans-unit>
+      <trans-unit id="labels.endtime" resname="labels.endtime" approved="yes">
+        <source>End</source>
+        <target state="final">ສິ້ນສຸດ</target>
+      </trans-unit>
+      <trans-unit id="labels.minutesHoursDaysYears" resname="labels.minutesHoursDaysYears" approved="yes">
+        <source>min|hrs|days|yrs|min|hour|day|year</source>
+        <target state="final">ນາທີ|ຊົ່ວໂມງ|ມື້|ປີ|ນາທີ|ຊົ່ວໂມງ|ມື້|ປີ</target>
+      </trans-unit>
+      <trans-unit id="labels.menu" resname="labels.menu" approved="yes">
+        <source>Menu</source>
+        <target state="final">ເມນູ</target>
+      </trans-unit>
+      <trans-unit id="labels.showPage" resname="labels.showPage" approved="yes">
+        <source>View webpage</source>
+        <target state="final">ເບິ່ງເວັບໄຊ</target>
+      </trans-unit>
+      <trans-unit id="labels.showList" resname="labels.showList" approved="yes">
+        <source>Show record list</source>
+        <target state="final">ສະແດງລາຍການບັນທຶກ</target>
+      </trans-unit>
+      <trans-unit id="labels.days" resname="labels.days" approved="yes">
+        <source>days</source>
+        <target state="final">ມື້</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_0" resname="labels.depth_0" approved="yes">
+        <source>This page</source>
+        <target state="final">ໜ້ານີ້</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_1" resname="labels.depth_1" approved="yes">
+        <source>1 level</source>
+        <target state="final">1 ລະດັບ</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_2" resname="labels.depth_2" approved="yes">
+        <source>2 levels</source>
+        <target state="final">2 ລະດັບ</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_3" resname="labels.depth_3" approved="yes">
+        <source>3 levels</source>
+        <target state="final">3 ລະດັບ</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_4" resname="labels.depth_4" approved="yes">
+        <source>4 levels</source>
+        <target state="final">4 ລະດັບ</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_infi" resname="labels.depth_infi" approved="yes">
+        <source>Infinite</source>
+        <target state="final">ບໍ່ຈຳກັດ</target>
+      </trans-unit>
+      <trans-unit id="labels.allow" resname="labels.allow" approved="yes">
+        <source>Allow</source>
+        <target state="final">ອະນຸຍາດ</target>
+      </trans-unit>
+      <trans-unit id="labels.deny" resname="labels.deny" approved="yes">
+        <source>Deny</source>
+        <target state="final">ປະຕິເສດ</target>
+      </trans-unit>
+      <trans-unit id="labels.automatic" resname="labels.automatic" approved="yes">
+        <source>Auto</source>
+        <target state="final">ອັດຕະໂນມັດ</target>
+      </trans-unit>
+      <trans-unit id="labels.enabled" resname="labels.enabled" approved="yes">
+        <source>Enabled</source>
+        <target state="final">ເປີດໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="labels.show" resname="labels.show" approved="yes">
+        <source>Show</source>
+        <target state="final">ສະແດງ</target>
+      </trans-unit>
+      <trans-unit id="labels.generalTab" resname="labels.generalTab" approved="yes">
+        <source>General</source>
+        <target state="final">ທົ່ວໄປ</target>
+      </trans-unit>
+      <trans-unit id="labels.refresh" resname="labels.refresh" approved="yes">
+        <source>Reload the tree from server</source>
+        <target state="final">ໂຫຼດໂຄງສ້າງໃໝ່ຈາກເຊີບເວີ</target>
+      </trans-unit>
+      <trans-unit id="labels.temporaryDBmount" resname="labels.temporaryDBmount" approved="yes">
+        <source>Cancel temporary DB mount</source>
+        <target state="final">ຍົກເລີກການເຊື່ອມຕໍ່ຖານຂໍ້ມູນຊົ່ວຄາວ</target>
+      </trans-unit>
+      <trans-unit id="labels.refreshList" resname="labels.refreshList" approved="yes">
+        <source>Reload list from server</source>
+        <target state="final">ໂຫຼດລາຍການໃໝ່ຈາກເຊີບເວີ</target>
+      </trans-unit>
+      <trans-unit id="labels.close" resname="labels.close" approved="yes">
+        <source>Close</source>
+        <target state="final">ປິດ</target>
+      </trans-unit>
+      <trans-unit id="labels.tableWizard" resname="labels.tableWizard" approved="yes">
+        <source>Table Wizard</source>
+        <target state="final">ຕົວຊ່ວຍສ້າງຕາຕະລາງ</target>
+      </trans-unit>
+      <trans-unit id="labels.new" resname="labels.new" approved="yes">
+        <source>NEW</source>
+        <target state="final">ໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="labels.list" resname="labels.list" approved="yes">
+        <source>List</source>
+        <target state="final">ລາຍການ</target>
+      </trans-unit>
+      <trans-unit id="labels.link" resname="labels.link" approved="yes">
+        <source>Link</source>
+        <target state="final">ລິງກ໌</target>
+      </trans-unit>
+      <trans-unit id="labels.edit" resname="labels.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">ແກ້ໄຂ</target>
+      </trans-unit>
+      <trans-unit id="labels.createNew" resname="labels.createNew" approved="yes">
+        <source>Create new</source>
+        <target state="final">ສ້າງໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewPage" resname="labels.createNewPage" approved="yes">
+        <source>Create new %s</source>
+        <target state="final">ສ້າງ %s ໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewRecord" resname="labels.createNewRecord" approved="yes">
+        <source>Create new %s on page "%s"</source>
+        <target state="final">ສ້າງ %s ໃໝ່ ໃນໜ້າ "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.createNewRecordRootLevel" resname="labels.createNewRecordRootLevel" approved="yes">
+        <source>Create new %s on root level</source>
+        <target state="final">ສ້າງ %s ໃໝ່ ໃນລະດັບຮາກ</target>
+      </trans-unit>
+      <trans-unit id="labels.editPage" resname="labels.editPage" approved="yes">
+        <source>Edit %s "%s"</source>
+        <target state="final">ແກ້ໄຂ %s "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecord" resname="labels.editRecord" approved="yes">
+        <source>Edit %s "%s" on page "%s"</source>
+        <target state="final">ແກ້ໄຂ %s "%s" ໃນໜ້າ "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecordNoTitle" resname="labels.editRecordNoTitle" approved="yes">
+        <source>Edit %s on page "%s"</source>
+        <target state="final">ແກ້ໄຂ %s ໃນໜ້າ "%s"</target>
+      </trans-unit>
+      <trans-unit id="labels.editRecordRootLevel" resname="labels.editRecordRootLevel" approved="yes">
+        <source>Edit %s "%s" on root level</source>
+        <target state="final">ແກ້ໄຂ %s "%s" ໃນລະດັບຮາກ</target>
+      </trans-unit>
+      <trans-unit id="labels.rootLevel" resname="labels.rootLevel" approved="yes">
+        <source>root level</source>
+        <target state="final">ລະດັບຮາກ</target>
+      </trans-unit>
+      <trans-unit id="labels.addnew" resname="labels.addnew" approved="yes">
+        <source>Add new</source>
+        <target state="final">ເພີ່ມໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="labels.toggleall" resname="labels.toggleall" approved="yes">
+        <source>Toggle all</source>
+        <target state="final">ສະຫຼັບທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="labels.selected" resname="labels.selected" approved="yes">
+        <source>Selected Items</source>
+        <target state="final">ລາຍການທີ່ເລືອກ</target>
+      </trans-unit>
+      <trans-unit id="labels.items" resname="labels.items" approved="yes">
+        <source>Available Items</source>
+        <target state="final">ລາຍການທີ່ມີ</target>
+      </trans-unit>
+      <trans-unit id="labels.remove_selected" resname="labels.remove_selected" approved="yes">
+        <source>Remove selected items</source>
+        <target state="final">ເອົາລາຍການທີ່ເລືອກອອກ</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_top" resname="labels.move_to_top" approved="yes">
+        <source>Move selected items to top</source>
+        <target state="final">ຍ້າຍລາຍການທີ່ເລືອກໄປເທິງສຸດ</target>
+      </trans-unit>
+      <trans-unit id="labels.move_up" resname="labels.move_up" approved="yes">
+        <source>Move selected items upwards</source>
+        <target state="final">ຍ້າຍລາຍການທີ່ເລືອກຂຶ້ນເທິງ</target>
+      </trans-unit>
+      <trans-unit id="labels.move_down" resname="labels.move_down" approved="yes">
+        <source>Move selected items downwards</source>
+        <target state="final">ຍ້າຍລາຍການທີ່ເລືອກລົງລຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_bottom" resname="labels.move_to_bottom" approved="yes">
+        <source>Move selected items to bottom</source>
+        <target state="final">ຍ້າຍລາຍການທີ່ເລືອກໄປລຸ່ມສຸດ</target>
+      </trans-unit>
+      <trans-unit id="labels.move" resname="labels.move" approved="yes">
+        <source>Move this item</source>
+        <target state="final">ຍ້າຍລາຍການນີ້</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_file" resname="labels.browse_file" approved="yes">
+        <source>Browse for files</source>
+        <target state="final">ເລືອກເບິ່ງໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_db" resname="labels.browse_db" approved="yes">
+        <source>Browse for records</source>
+        <target state="final">ຄົ້ນຫາບັນທຶກ</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_file" resname="labels.clipInsert_file" approved="yes">
+        <source>Insert %s file(s) from the clipboard</source>
+        <target state="final">ແຊກໄຟລ໌ %s ຈາກຄລິບບອດ</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_db" resname="labels.clipInsert_db" approved="yes">
+        <source>Insert %s record(s) from the clipboard</source>
+        <target state="final">ແຊກບັນທຶກ %s ຈາກຄລິບບອດ</target>
+      </trans-unit>
+      <trans-unit id="labels.generalOptions" resname="labels.generalOptions" approved="yes">
+        <source>General options</source>
+        <target state="final">ຕົວເລືອກທົ່ວໄປ</target>
+      </trans-unit>
+      <trans-unit id="labels.generalOptions_more" resname="labels.generalOptions_more" approved="yes">
+        <source>General options (continued)</source>
+        <target state="final">ຕົວເລືອກທົ່ວໄປ (ຕໍ່)</target>
+      </trans-unit>
+      <trans-unit id="labels.allTables" resname="labels.allTables" approved="yes">
+        <source>[All tables]</source>
+        <target state="final">[ທຸກຕາຕະລາງ]</target>
+      </trans-unit>
+      <trans-unit id="labels.noMatchingValue" resname="labels.noMatchingValue" approved="yes">
+        <source>INVALID VALUE ("%s")</source>
+        <target state="final">ຄ່າບໍ່ຖືກຕ້ອງ ("%s")</target>
+      </trans-unit>
+      <trans-unit id="labels.thumbmode_clip" resname="labels.thumbmode_clip" approved="yes">
+        <source>Show Thumbnails on ClipBoard</source>
+        <target state="final">ສະແດງຮູບຂະໜາດນ້ອຍໃນຄລິບບອດ</target>
+      </trans-unit>
+      <trans-unit id="labels.copymode" resname="labels.copymode" approved="yes">
+        <source>Copy items instead of moving them</source>
+        <target state="final">ຄັດລອກລາຍການແທນການຍ້າຍ</target>
+      </trans-unit>
+      <trans-unit id="labels.normal" resname="labels.normal" approved="yes">
+        <source>Normal (single record mode)</source>
+        <target state="final">ປົກກະຕິ (ໂໝດບັນທຶກດຽວ)</target>
+      </trans-unit>
+      <trans-unit id="labels.normal-description" resname="labels.normal-description" approved="yes">
+        <source>"Normal" clipboard allows to copy/move one record at time.</source>
+        <target state="final">ຄລິບບອດແບບ "ປົກກະຕິ" ອະນຸຍາດໃຫ້ຄັດລອກ/ຍ້າຍໄດ້ເທື່ອລະໜຶ່ງບັນທຶກ.</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs" resname="labels.cliptabs" approved="yes">
+        <source>Clipboard #</source>
+        <target state="final">ຄລິບບອດ #</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs-name" resname="labels.cliptabs-name" approved="yes">
+        <source>Clipboard #%s (multi-selection mode)</source>
+        <target state="final">ຄລິບບອດ #%s (ໂໝດເລືອກຫຼາຍລາຍການ)</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs-description" resname="labels.cliptabs-description" approved="yes">
+        <source>This clipboard allows to select and edit/copy/move multiple records at once. Choose it to show a checkbox by each record.</source>
+        <target state="final">ຄລິບບອດນີ້ອະນຸຍາດໃຫ້ເລືອກ ແລະ ແກ້ໄຂ/ຄັດລອກ/ຍ້າຍຫຼາຍບັນທຶກພ້ອມກັນ.</target>
+      </trans-unit>
+      <trans-unit id="labels.clipboard.delete_elements" resname="labels.clipboard.delete_elements" approved="yes">
+        <source>Delete elements</source>
+        <target state="final">ລຶບອົງປະກອບ</target>
+      </trans-unit>
+      <trans-unit id="labels.clipboard.clear_clipboard" resname="labels.clipboard.clear_clipboard" approved="yes">
+        <source>Clear clipboard</source>
+        <target state="final">ລ້າງຄລິບບອດ</target>
+      </trans-unit>
+      <trans-unit id="labels.removeItem" resname="labels.removeItem" approved="yes">
+        <source>Remove item</source>
+        <target state="final">ເອົາລາຍການອອກ</target>
+      </trans-unit>
+      <trans-unit id="labels.holdDownCTRL" resname="labels.holdDownCTRL" approved="yes">
+        <source>Important: Hold down the CTRL key while toggling elements in this list!</source>
+        <target state="final">ສຳຄັນ: ກົດປຸ່ມ CTRL ຄ້າງໄວ້ໃນຂະນະທີ່ເລືອກອົງປະກອບໃນລາຍການນີ້!</target>
+      </trans-unit>
+      <trans-unit id="labels.revertSelection" resname="labels.revertSelection" approved="yes">
+        <source>Revert selection</source>
+        <target state="final">ຄືນຄ່າການເລືອກ</target>
+      </trans-unit>
+      <trans-unit id="labels.setAllCheckboxes" resname="labels.setAllCheckboxes" approved="yes">
+        <source>Select All Checkboxes</source>
+        <target state="final">ເລືອກທຸກຊ່ອງໝາຍຕິກ</target>
+      </trans-unit>
+      <trans-unit id="labels.checkAll" resname="labels.checkAll" approved="yes">
+        <source>Check all</source>
+        <target state="final">ໝາຍທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="labels.uncheckAll" resname="labels.uncheckAll" approved="yes">
+        <source>Uncheck all</source>
+        <target state="final">ຍົກເລີກການໝາຍທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="labels.placeholder.override" resname="labels.placeholder.override" approved="yes">
+        <source>Set element specific value (Default: "%s")</source>
+        <target state="final">ກຳນົດຄ່າສະເພາະອົງປະກອບ (ເລີ່ມຕົ້ນ: "%s")</target>
+      </trans-unit>
+      <trans-unit id="labels.placeholder.override_not_available" resname="labels.placeholder.override_not_available" approved="yes">
+        <source>Set element specific value (No default)</source>
+        <target state="final">ກຳນົດຄ່າສະເພາະອົງປະກອບ (ບໍ່ມີຄ່າເລີ່ມຕົ້ນ)</target>
+      </trans-unit>
+      <trans-unit id="labels.nullCheckbox" resname="labels.nullCheckbox" approved="yes">
+        <source>Set value</source>
+        <target state="final">ກຳນົດຄ່າ</target>
+      </trans-unit>
+      <trans-unit id="labels.changeInOrig" resname="labels.changeInOrig" approved="yes">
+        <source>Changed in original translation</source>
+        <target state="final">ມີການປ່ຽນແປງໃນການແປຕົ້ນສະບັບ</target>
+      </trans-unit>
+      <trans-unit id="labels.expandAll" resname="labels.expandAll" approved="yes">
+        <source>Expand all</source>
+        <target state="final">ຂະຫຍາຍທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="labels.new_section" resname="labels.new_section" approved="yes">
+        <source>Create new</source>
+        <target state="final">ສ້າງໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="labels.count" resname="labels.count" approved="yes">
+        <source>Quantity</source>
+        <target state="final">ຈຳນວນ</target>
+      </trans-unit>
+      <trans-unit id="labels.findRecord" resname="labels.findRecord" approved="yes">
+        <source>Find records</source>
+        <target state="final">ຄົ້ນຫາບັນທຶກ</target>
+      </trans-unit>
+      <trans-unit id="labels.noRecordFound" resname="labels.noRecordFound" approved="yes">
+        <source>No record found</source>
+        <target state="final">ບໍ່ພົບບັນທຶກ</target>
+      </trans-unit>
+      <trans-unit id="labels.title.searchIcon" resname="labels.title.searchIcon" approved="yes">
+        <source>Toggle search toolbar</source>
+        <target state="final">ສະຫຼັບແຖບເຄື່ອງມືຄົ້ນຫາ</target>
+      </trans-unit>
+      <trans-unit id="labels.title.searchString" resname="labels.title.searchString" approved="yes">
+        <source>Search term</source>
+        <target state="final">ຄຳຄົ້ນຫາ</target>
+      </trans-unit>
+      <trans-unit id="labels.title.limit" resname="labels.title.limit" approved="yes">
+        <source>Limit</source>
+        <target state="final">ຂີດຈຳກັດ</target>
+      </trans-unit>
+      <trans-unit id="labels.title.search" resname="labels.title.search" approved="yes">
+        <source>Search</source>
+        <target state="final">ຄົ້ນຫາ</target>
+      </trans-unit>
+      <trans-unit id="labels.title.search_levels" resname="labels.title.search_levels" approved="yes">
+        <source>Search levels</source>
+        <target state="final">ລະດັບການຄົ້ນຫາ</target>
+      </trans-unit>
+      <trans-unit id="labels.label.searchString" resname="labels.label.searchString" approved="yes">
+        <source>Search term</source>
+        <target state="final">ຄຳຄົ້ນຫາ</target>
+      </trans-unit>
+      <trans-unit id="labels.label.limit" resname="labels.label.limit" approved="yes">
+        <source>Limit</source>
+        <target state="final">ຂີດຈຳກັດ</target>
+      </trans-unit>
+      <trans-unit id="labels.label.search_levels" resname="labels.label.search_levels" approved="yes">
+        <source>Search levels</source>
+        <target state="final">ລະດັບການຄົ້ນຫາ</target>
+      </trans-unit>
+      <trans-unit id="labels.recordReadonly" resname="labels.recordReadonly" approved="yes">
+        <source>The table is defined as readonly and can't be edited.</source>
+        <target state="final">ຕາຕະລາງນີ້ຖືກກຳນົດໃຫ້ເບິ່ງໄດ້ຢ່າງດຽວ ແລະ ບໍ່ສາມາດແກ້ໄຂໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="alttext.suggestSearching" resname="alttext.suggestSearching" approved="yes">
+        <source>Searching...</source>
+        <target state="final">ກຳລັງຄົ້ນຫາ...</target>
+      </trans-unit>
+      <trans-unit id="ver.online" resname="ver.online" approved="yes">
+        <source>ONLINE</source>
+        <target state="final">ອອນລາຍ</target>
+      </trans-unit>
+      <trans-unit id="ver.mgm" resname="ver.mgm" approved="yes">
+        <source>Version Management</source>
+        <target state="final">ການຈັດການເວີຊັນ</target>
+      </trans-unit>
+      <trans-unit id="ver.selVer" resname="ver.selVer" approved="yes">
+        <source>Select version</source>
+        <target state="final">ເລືອກເວີຊັນ</target>
+      </trans-unit>
+      <trans-unit id="ver.swap" resname="ver.swap" approved="yes">
+        <source>Swap/Publish</source>
+        <target state="final">ສະຫຼັບ/ເຜີຍແຜ່</target>
+      </trans-unit>
+      <trans-unit id="ver.swapPage" resname="ver.swapPage" approved="yes">
+        <source>Publish this version of the page including content</source>
+        <target state="final">ເຜີຍແຜ່ເວີຊັນນີ້ຂອງໜ້າລວມທັງເນື້ອໃນ</target>
+      </trans-unit>
+      <trans-unit id="TYPO3_Element_Browser" resname="TYPO3_Element_Browser" approved="yes">
+        <source>TYPO3 Element Browser</source>
+        <target state="final">ຕົວທ່ອງເວັບອົງປະກອບ TYPO3</target>
+      </trans-unit>
+      <trans-unit id="labels.referencesToRecord" resname="labels.referencesToRecord" approved="yes">
+        <source>(There are %s reference(s) to this record!)</source>
+        <target state="final">(ມີ %s ການອ້າງອີງເຖິງບັນທຶກນີ້!)</target>
+      </trans-unit>
+      <trans-unit id="labels.referencesToFolder" resname="labels.referencesToFolder" approved="yes">
+        <source>(There are %s reference(s) to this folder!)</source>
+        <target state="final">(ມີ %s ການອ້າງອີງເຖິງໂຟນເດີນີ້!)</target>
+      </trans-unit>
+      <trans-unit id="labels.referencesToFile" resname="labels.referencesToFile" approved="yes">
+        <source>(There are %s reference(s) to this file!)</source>
+        <target state="final">(ມີ %s ການອ້າງອີງເຖິງໄຟລ໌ນີ້!)</target>
+      </trans-unit>
+      <trans-unit id="labels.translationsOfRecord" resname="labels.translationsOfRecord" approved="yes">
+        <source>(This record has %s translation(s) which will be deleted, too!)</source>
+        <target state="final">(ບັນທຶກນີ້ມີ %s ການແປທີ່ຈະຖືກລຶບໄປນຳ!)</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.viewItem" resname="show_item.php.viewItem" approved="yes">
+        <source>View Item</source>
+        <target state="final">ເບິ່ງລາຍການ</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.referencesToThisItem" resname="show_item.php.referencesToThisItem" approved="yes">
+        <source>References to this item</source>
+        <target state="final">ການອ້າງອີງເຖິງລາຍການນີ້</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.referencesFromThisItem" resname="show_item.php.referencesFromThisItem" approved="yes">
+        <source>References from this item</source>
+        <target state="final">ການອ້າງອີງຈາກລາຍການນີ້</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.file" resname="show_item.php.file" approved="yes">
+        <source>File</source>
+        <target state="final">ໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.dimensions" resname="show_item.php.dimensions" approved="yes">
+        <source>Dimensions</source>
+        <target state="final">ຂະໜາດ</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.filesize" resname="show_item.php.filesize" approved="yes">
+        <source>Size</source>
+        <target state="final">ຂະໜາດ</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.pixels" resname="show_item.php.pixels" approved="yes">
+        <source>Pixels</source>
+        <target state="final">ພິກເຊວ</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.files" resname="show_item.php.files" approved="yes">
+        <source>files</source>
+        <target state="final">ໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.cannotDisplayArchive" resname="show_item.php.cannotDisplayArchive" approved="yes">
+        <source>Sorry, TYPO3_CONF_VARS[BE][disable_exec_function] was set, so cannot display content of archive file.</source>
+        <target state="final">ຂໍອະໄພ, ຍ້ອນມີການຕັ້ງຄ່າ TYPO3_CONF_VARS[BE][disable_exec_function], ຈຶ່ງບໍ່ສາມາດສະແດງເນື້ອໃນຂອງໄຟລ໌ຈັດເກັບ (archive) ໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.table" resname="show_item.php.table" approved="yes">
+        <source>Table</source>
+        <target state="final">ຕາຕະລາງ</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.uid" resname="show_item.php.uid" approved="yes">
+        <source>Uid</source>
+        <target state="final">Uid</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.title" resname="show_item.php.title" approved="yes">
+        <source>Title</source>
+        <target state="final">ຫົວຂໍ້</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.field" resname="show_item.php.field" approved="yes">
+        <source>Field</source>
+        <target state="final">ຊ່ອງຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.flexpointer" resname="show_item.php.flexpointer" approved="yes">
+        <source>Flexpointer</source>
+        <target state="final">Flexpointer</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.softrefKey" resname="show_item.php.softrefKey" approved="yes">
+        <source>Softref Key</source>
+        <target state="final">Softref Key</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.sorting" resname="show_item.php.sorting" approved="yes">
+        <source>Sorting</source>
+        <target state="final">ການຈັດລຽງ</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.refTable" resname="show_item.php.refTable" approved="yes">
+        <source>Ref Table</source>
+        <target state="final">ຕາຕະລາງອ້າງອີງ</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.refUid" resname="show_item.php.refUid" approved="yes">
+        <source>Ref Uid</source>
+        <target state="final">Uid ອ້າງອີງ</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.refString" resname="show_item.php.refString" approved="yes">
+        <source>Ref String</source>
+        <target state="final">ຂໍ້ຄວາມອ້າງອີງ</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.ftp_area" resname="show_item.php.ftp_area" approved="yes">
+        <source>FTP AREA</source>
+        <target state="final">ພື້ນທີ່ FTP</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.missing_record" resname="show_item.php.missing_record" approved="yes">
+        <source>Missing</source>
+        <target state="final">ຫາຍໄປ</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.pagetitle" resname="db_new.php.pagetitle" approved="yes">
+        <source>New record</source>
+        <target state="final">ບັນທຶກໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.after" resname="db_new.php.after" approved="yes">
+        <source>after</source>
+        <target state="final">ຫຼັງຈາກ</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.inside" resname="db_new.php.inside" approved="yes">
+        <source>inside</source>
+        <target state="final">ພາຍໃນ</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.pagetitle" resname="file_upload.php.pagetitle" approved="yes">
+        <source>Upload files</source>
+        <target state="final">ອັບໂຫຼດໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.submit" resname="file_upload.php.submit" approved="yes">
+        <source>Upload files</source>
+        <target state="final">ອັບໂຫຼດໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.files" resname="file_upload.php.files" approved="yes">
+        <source>files</source>
+        <target state="final">ໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="file_upload.dropzonehint.title" resname="file_upload.dropzonehint.title" approved="yes">
+        <source>Drag &amp; drop to upload files</source>
+        <target state="final">ລາກ ແລະ ວາງ ເພື່ອອັບໂຫຼດໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="file_upload.dropzonehint.message" resname="file_upload.dropzonehint.message" approved="yes">
+        <source>Drop your files here, or &lt;u&gt;click, browse &amp; choose files&lt;/u&gt;</source>
+        <target state="final">ວາງໄຟລ໌ຂອງເຈົ້າຢູ່ບ່ອນນີ້, ຫຼື &lt;u&gt;ຄລິກ, ເບິ່ງ ແລະ ເລືອກໄຟລ໌&lt;/u&gt;</target>
+      </trans-unit>
+      <trans-unit id="file_upload.select-and-submit" resname="file_upload.select-and-submit" approved="yes">
+        <source>Select &amp; upload files</source>
+        <target state="final">ເລືອກ ແລະ ອັບໂຫຼດໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="file_upload.maxFileSizeExceeded" resname="file_upload.maxFileSizeExceeded" approved="yes">
+        <source>File &quot;{0}&quot; exceeds maximum file size of {1}!</source>
+        <target state="final">ໄຟລ໌ "{0}" ມີຂະໜາດເກີນກຳນົດສູງສຸດ {1}!</target>
+      </trans-unit>
+      <trans-unit id="file_upload.fileNotAllowed" resname="file_upload.fileNotAllowed" approved="yes">
+        <source>Filename &quot;{0}&quot; is not allowed!</source>
+        <target state="final">ຊື່ໄຟລ໌ "{0}" ບໍ່ໄດ້ຮັບອະນຸຍາດ!</target>
+      </trans-unit>
+      <trans-unit id="file_upload.fileExtensionExpected" resname="file_upload.fileExtensionExpected" approved="yes">
+        <source>Upload failed! A file with &quot;{0}&quot; extension is expected!</source>
+        <target state="final">ການອັບໂຫຼດລົ້ມເຫຼວ! ຕ້ອງການໄຟລ໌ທີ່ມີນາມສະກຸນ "{0}"!</target>
+      </trans-unit>
+      <trans-unit id="file_upload.uploadFailed" resname="file_upload.uploadFailed" approved="yes">
+        <source>Upload of file &quot;{0}&quot; failed!</source>
+        <target state="final">ການອັບໂຫຼດໄຟລ໌ "{0}" ລົ້ມເຫຼວ!</target>
+      </trans-unit>
+      <trans-unit id="file_upload.upload-in-progress" resname="file_upload.upload-in-progress" approved="yes">
+        <source>File upload in progress...</source>
+        <target state="final">ກຳລັງອັບໂຫຼດໄຟລ໌...</target>
+      </trans-unit>
+      <trans-unit id="file_upload.upload-progress-info" resname="file_upload.upload-progress-info" approved="yes">
+        <source>Uploading file {0} out of {1} files.</source>
+        <target state="final">ກຳລັງອັບໂຫຼດໄຟລ໌ທີ {0} ຈາກທັງໝົດ {1} ໄຟລ໌.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.upload-finished" resname="file_upload.upload-finished" approved="yes">
+        <source>Upload complete! Filelist reloading...</source>
+        <target state="final">ການອັບໂຫຼດສຳເລັດ! ກຳລັງໂຫຼດລາຍການໄຟລ໌ໃໝ່...</target>
+      </trans-unit>
+      <trans-unit id="file_upload.overwriteExistingFiles" resname="file_upload.overwriteExistingFiles" approved="yes">
+        <source>Shall existing files be overwritten?</source>
+        <target state="final">ຕ້ອງການຂຽນທັບໄຟລ໌ທີ່ມີຢູ່ແລ້ວບໍ?</target>
+      </trans-unit>
+      <trans-unit id="file_upload.header.originalFile" resname="file_upload.header.originalFile" approved="yes">
+        <source>Original file</source>
+        <target state="final">ໄຟລ໌ຕົ້ນສະບັບ</target>
+      </trans-unit>
+      <trans-unit id="file_upload.header.uploadedFile" resname="file_upload.header.uploadedFile" approved="yes">
+        <source>Uploaded file</source>
+        <target state="final">ໄຟລ໌ທີ່ອັບໂຫຼດ</target>
+      </trans-unit>
+      <trans-unit id="file_upload.header.action" resname="file_upload.header.action" approved="yes">
+        <source>Action</source>
+        <target state="final">ການດຳເນີນການ</target>
+      </trans-unit>
+      <trans-unit id="file_upload.existingfiles.title" resname="file_upload.existingfiles.title" approved="yes">
+        <source>Some files exist already</source>
+        <target state="final">ມີບາງໄຟລ໌ມີຢູ່ແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="file_upload.existingfiles.description" resname="file_upload.existingfiles.description" approved="yes">
+        <source>Some files you wanted to upload exist already on the system. Please select what you want to do with each file.</source>
+        <target state="final">ບາງໄຟລ໌ທີ່ເຈົ້າຕ້ອງການອັບໂຫຼດມີຢູ່ໃນລະບົບແລ້ວ. ກະລຸນາເລືອກສິ່ງທີ່ເຈົ້າຕ້ອງການເຮັດກັບແຕ່ລະໄຟລ໌.</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.skip" resname="file_upload.actions.skip" approved="yes">
+        <source>Skip the file</source>
+        <target state="final">ຂ້າມໄຟລ໌ນີ້</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.rename" resname="file_upload.actions.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">ປ່ຽນຊື່</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.override" resname="file_upload.actions.override" approved="yes">
+        <source>Overwrite</source>
+        <target state="final">ຂຽນທັບ</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.use_existing" resname="file_upload.actions.use_existing" approved="yes">
+        <source>Use existing file</source>
+        <target state="final">ໃຊ້ໄຟລ໌ທີ່ມີຢູ່</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.label" resname="file_upload.actions.all.label" approved="yes">
+        <source>Alternatively, choose a mass action</source>
+        <target state="final">ຫຼື ເລືອກການດຳເນີນການແບບກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.empty" resname="file_upload.actions.all.empty" approved="yes">
+        <source>Please choose</source>
+        <target state="final">ກະລຸນາເລືອກ</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.skip" resname="file_upload.actions.all.skip" approved="yes">
+        <source>Skip all files</source>
+        <target state="final">ຂ້າມທຸກໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.rename" resname="file_upload.actions.all.rename" approved="yes">
+        <source>Rename all files</source>
+        <target state="final">ປ່ຽນຊື່ທຸກໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.override" resname="file_upload.actions.all.override" approved="yes">
+        <source>Overwrite all files</source>
+        <target state="final">ຂຽນທັບທຸກໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.all.use_existing" resname="file_upload.actions.all.use_existing" approved="yes">
+        <source>Use existing files</source>
+        <target state="final">ໃຊ້ໄຟລ໌ທີ່ມີຢູ່ທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="file_upload.button.cancel" resname="file_upload.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">ຍົກເລີກ</target>
+      </trans-unit>
+      <trans-unit id="file_upload.button.continue" resname="file_upload.button.continue" approved="yes">
+        <source>Continue with selected actions</source>
+        <target state="final">ດຳເນີນການຕໍ່ດ້ວຍການເລືອກທີ່ກຳນົດໄວ້</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.number_of_files" resname="file_upload.php.number_of_files" approved="yes">
+        <source>Number of files</source>
+        <target state="final">ຈຳນວນໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="file_rename.exists.title" resname="file_rename.exists.title" approved="yes">
+        <source>File exists already</source>
+        <target state="final">ມີໄຟລ໌ນີ້ຢູ່ແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="file_rename.exists.description" resname="file_rename.exists.description" approved="yes">
+        <source>You want to rename the file "{0}" to "{1}", but such a file already exists. How do you want to proceed?</source>
+        <target state="final">ເຈົ້າຕ້ອງການປ່ຽນຊື່ໄຟລ໌ "{0}" ເປັນ "{1}", ແຕ່ມີໄຟລ໌ຊື່ນີ້ຢູ່ແລ້ວ. ເຈົ້າຕ້ອງການດຳເນີນການແນວໃດ?</target>
+      </trans-unit>
+      <trans-unit id="file_rename.actions.cancel" resname="file_rename.actions.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">ຍົກເລີກ</target>
+      </trans-unit>
+      <trans-unit id="file_rename.actions.rename" resname="file_rename.actions.rename" approved="yes">
+        <source>Rename with unique name</source>
+        <target state="final">ປ່ຽນຊື່ໃໝ່ໃຫ້ບໍ່ຊ້ຳກັນ</target>
+      </trans-unit>
+      <trans-unit id="file_rename.actions.override" resname="file_rename.actions.override" approved="yes">
+        <source>Overwrite</source>
+        <target state="final">ຂຽນທັບ</target>
+      </trans-unit>
+      <trans-unit id="file_rename.php.pagetitle" resname="file_rename.php.pagetitle" approved="yes">
+        <source>Rename</source>
+        <target state="final">ປ່ຽນຊື່</target>
+      </trans-unit>
+      <trans-unit id="file_rename.php.submit" resname="file_rename.php.submit" approved="yes">
+        <source>Rename</source>
+        <target state="final">ປ່ຽນຊື່</target>
+        <note>This label is not used since TYPO3 v9.</note>
+      </trans-unit>
+      <trans-unit id="file_rename.php.label.target.file" resname="file_rename.php.label.target.file" approved="yes">
+        <source>New file name</source>
+        <target state="final">ຊື່ໄຟລ໌ໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="file_rename.php.label.target.folder" resname="file_rename.php.label.target.folder" approved="yes">
+        <source>New folder name</source>
+        <target state="final">ຊື່ໂຟນເດີໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="file_replace.php.pagetitle" resname="file_replace.php.pagetitle" approved="yes">
+        <source>Replace</source>
+        <target state="final">ແທນທີ່</target>
+      </trans-unit>
+      <trans-unit id="file_replace.php.selectfile" resname="file_replace.php.selectfile" approved="yes">
+        <source>Select new file</source>
+        <target state="final">ເລືອກໄຟລ໌ໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="file_replace.php.keepfiletitle" resname="file_replace.php.keepfiletitle" approved="yes">
+        <source>Keep the current filename?</source>
+        <target state="final">ຮັກສາຊື່ໄຟລ໌ປັດຈຸບັນໄວ້ບໍ?</target>
+      </trans-unit>
+      <trans-unit id="file_replace.php.browse" resname="file_replace.php.browse" approved="yes">
+        <source>Browse</source>
+        <target state="final">ເລືອກເບິ່ງ</target>
+      </trans-unit>
+      <trans-unit id="file_replace.php.submit" resname="file_replace.php.submit" approved="yes">
+        <source>Replace</source>
+        <target state="final">ແທນທີ່</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.pagetitle" resname="file_edit.php.pagetitle" approved="yes">
+        <source>Edit</source>
+        <target state="final">ແກ້ໄຂ</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.submit" resname="file_edit.php.submit" approved="yes">
+        <source>Save</source>
+        <target state="final">ບັນທຶກ</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.saveAndClose" resname="file_edit.php.saveAndClose" approved="yes">
+        <source>Save and Close</source>
+        <target state="final">ບັນທຶກ ແລະ ປິດ</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.coundNot" resname="file_edit.php.coundNot" approved="yes">
+        <source>This filetype cannot be edited.&lt;br /&gt;The file must have an extension like:&lt;br /&gt;&lt;br /&gt; &lt;b&gt;%s&lt;/b&gt;</source>
+        <target state="final">ໄຟລ໌ປະເພດນີ້ບໍ່ສາມາດແກ້ໄຂໄດ້.&lt;br /&gt;ໄຟລ໌ຕ້ອງມີນາມສະກຸນຄື:&lt;br /&gt;&lt;br /&gt; &lt;b&gt;%s&lt;/b&gt;</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.pagetitle" resname="file_newfolder.php.pagetitle" approved="yes">
+        <source>New file or folder</source>
+        <target state="final">ໄຟລ໌ ຫຼື ໂຟນເດີໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.newfolders" resname="file_newfolder.php.newfolders" approved="yes">
+        <source>Create new folders</source>
+        <target state="final">ສ້າງໂຟນເດີໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.label_newfolder" resname="file_newfolder.php.label_newfolder" approved="yes">
+        <source>Folder</source>
+        <target state="final">ໂຟນເດີ</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.submit" resname="file_newfolder.php.submit" approved="yes">
+        <source>Create folders</source>
+        <target state="final">ສ້າງໂຟນເດີ</target>
+      </trans-unit>
+      <trans-unit id="create_folder.title" resname="create_folder.title" approved="yes">
+        <source>Create new folder</source>
+        <target state="final">ສ້າງໂຟນເດີໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="create_folder.submit" resname="create_folder.submit" approved="yes">
+        <source>Create folder</source>
+        <target state="final">ສ້າງໂຟນເດີ</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.folders" resname="file_newfolder.php.folders" approved="yes">
+        <source>folders</source>
+        <target state="final">ໂຟນເດີ</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.newfile_submit" resname="file_newfolder.php.newfile_submit" approved="yes">
+        <source>Create file</source>
+        <target state="final">ສ້າງໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.newfile" resname="file_newfolder.php.newfile" approved="yes">
+        <source>Create new textfile</source>
+        <target state="final">ສ້າງໄຟລ໌ຂໍ້ຄວາມໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.label_newfile" resname="file_newfolder.php.label_newfile" approved="yes">
+        <source>File name</source>
+        <target state="final">ຊື່ໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="file_newfolder.php.number_of_folders" resname="file_newfolder.php.number_of_folders" approved="yes">
+        <source>Number of folders</source>
+        <target state="final">ຈຳນວນໂຟນເດີ</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media" resname="online_media.new_media" approved="yes">
+        <source>Add new media asset</source>
+        <target state="final">ເພີ່ມຊັບສິນມີເດຍໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.label" resname="online_media.new_media.label" approved="yes">
+        <source>Url of remote source</source>
+        <target state="final">URL ຂອງແຫຼ່ງຂໍ້ມູນພາຍນອກ</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.allowedProviders" resname="online_media.new_media.allowedProviders" approved="yes">
+        <source>Allowed media providers</source>
+        <target state="final">ຜູ້ໃຫ້ບໍລິການມີເດຍທີ່ໄດ້ຮັບອະນຸຍາດ</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.button" resname="online_media.new_media.button" approved="yes">
+        <source>Add media by URL</source>
+        <target state="final">ເພີ່ມມີເດຍຜ່ານ URL</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.submit" resname="online_media.new_media.submit" approved="yes">
+        <source>Add media</source>
+        <target state="final">ເພີ່ມມີເດຍ</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.added" resname="online_media.new_media.added" approved="yes">
+        <source>Added media</source>
+        <target state="final">ເພີ່ມມີເດຍແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="online_media.new_media.placeholder" resname="online_media.new_media.placeholder" approved="yes">
+        <source>Paste media url here...</source>
+        <target state="final">ວາງ URL ຂອງມີເດຍຢູ່ນີ້...</target>
+      </trans-unit>
+      <trans-unit id="online_media.error.new_media.failed" resname="online_media.error.new_media.failed" approved="yes">
+        <source>Adding media failed</source>
+        <target state="final">ການເພີ່ມມີເດຍລົ້ມເຫຼວ</target>
+      </trans-unit>
+      <trans-unit id="online_media.error.invalid_url" resname="online_media.error.invalid_url" approved="yes">
+        <source>Unknown/not allowed URL</source>
+        <target state="final">URL ບໍ່ຮູ້ຈັກ ຫຼື ບໍ່ໄດ້ຮັບອະນຸຍາດ</target>
+      </trans-unit>
+      <trans-unit id="file_clipupload.php.warning_head" resname="file_clipupload.php.warning_head" approved="yes">
+        <source>Upload path error</source>
+        <target state="final">ຂໍ້ຜິດພາດຂອງເສັ້ນທາງອັບໂຫຼດ</target>
+      </trans-unit>
+      <trans-unit id="file_clipupload.php.warning" resname="file_clipupload.php.warning" approved="yes">
+        <source>No upload-folder is found. You should create a TEMP-folder ("_temp_") in the root of one of your mounts first!</source>
+        <target state="final">ບໍ່ພົບໂຟນເດີສຳລັບອັບໂຫຼດ. ເຈົ້າຄວນສ້າງໂຟນເດີຊົ່ວຄາວ ("_temp_") ໄວ້ໃນລະດັບຮາກກ່ອນ!</target>
+      </trans-unit>
+      <trans-unit id="mess.redraw" resname="mess.redraw" approved="yes">
+        <source>Redrawing the page will discard the current data. Do you want to continue?</source>
+        <target state="final">ການສ້າງໜ້າໃໝ່ຈະເຮັດໃຫ້ຂໍ້ມູນປັດຈຸບັນເສຍໄປ. ເຈົ້າຕ້ອງການດຳເນີນການຕໍ່ບໍ?</target>
+      </trans-unit>
+      <trans-unit id="mess.delete" resname="mess.delete" approved="yes">
+        <source>Are you sure you want to delete '%s'?</source>
+        <target state="final">ເຈົ້າແນ່ໃຈບໍວ່າຕ້ອງການລຶບ '%s'?</target>
+      </trans-unit>
+      <trans-unit id="mess.deleteClip" resname="mess.deleteClip" approved="yes">
+        <source>Are you sure you want to delete ALL referenced elements (%s) on the clipboard?</source>
+        <target state="final">ເຈົ້າແນ່ໃຈບໍວ່າຕ້ອງການລຶບອົງປະກອບທີ່ອ້າງອີງທັງໝົດ (%s) ໃນຄລິບບອດ?</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login" resname="mess.refresh_login" xml:space="preserve" approved="yes">
+				<source>Your login has probably expired.
+Do you want to refresh it now?</source>
+			<target state="final">ການເຂົ້າສູ່ລະບົບຂອງເຈົ້າອາດຈະໝົດອາຍຸແລ້ວ.
+ເຈົ້າຕ້ອງການໂຫຼດໃໝ່ດຽວນີ້ບໍ?</target></trans-unit>
+      <trans-unit id="mess.refresh_login_refresh_button" resname="mess.refresh_login_refresh_button" approved="yes">
+        <source>Stay logged in!</source>
+        <target state="final">ຢູ່ໃນລະບົບຕໍ່!</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_direct_logout_button" resname="mess.refresh_direct_logout_button" approved="yes">
+        <source>No, log out.</source>
+        <target state="final">ບໍ່, ອອກຈາກລະບົບ.</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_logging_in" resname="mess.refresh_login_logging_in" approved="yes">
+        <source>Logging in...</source>
+        <target state="final">ກຳລັງເຂົ້າສູ່ລະບົບ...</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_failed" resname="mess.refresh_login_failed" approved="yes">
+        <source>Login failed</source>
+        <target state="final">ການເຂົ້າສູ່ລະບົບລົ້ມເຫຼວ</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_failed_message" resname="mess.refresh_login_failed_message" approved="yes">
+        <source>Password not correct.</source>
+        <target state="final">ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ.</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_title" resname="mess.refresh_login_title" approved="yes">
+        <source>Refresh Login to TYPO3 (User: %s)</source>
+        <target state="final">ໂຫຼດການເຂົ້າສູ່ລະບົບ TYPO3 ໃໝ່ (ຜູ້ໃຊ້: %s)</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_username" resname="mess.refresh_login_username" approved="yes">
+        <source>Username</source>
+        <target state="final">ຊື່ຜູ້ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_password" resname="mess.refresh_login_password" approved="yes">
+        <source>Password</source>
+        <target state="final">ລະຫັດຜ່ານ</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_button" resname="mess.refresh_login_button" approved="yes">
+        <source>Login</source>
+        <target state="final">ເຂົ້າສູ່ລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_exit_button" resname="mess.refresh_exit_button" approved="yes">
+        <source>Exit</source>
+        <target state="final">ອອກ</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_emptyPassword" resname="mess.refresh_login_emptyPassword" approved="yes">
+        <source>Empty password is not allowed!</source>
+        <target state="final">ບໍ່ອະນຸຍາດໃຫ້ຫວ່າງລະຫັດຜ່ານໄວ້!</target>
+      </trans-unit>
+      <trans-unit id="mess.please_wait" resname="mess.please_wait" approved="yes">
+        <source>Please wait ...</source>
+        <target state="final">ກະລຸນາລໍຖ້າ ...</target>
+      </trans-unit>
+      <trans-unit id="mess.be_locked" resname="mess.be_locked" approved="yes">
+        <source>The TYPO3 backend is currently locked for maintenance. Leave this browser window open and the backend will automatically become available again once maintenance is complete.</source>
+        <target state="final">Backend ຂອງ TYPO3 ຖືກລັອກເພື່ອບຳລຸງຮັກສາ. ກະລຸນາເປີດໜ້າຕ່າງນີ້ໄວ້.</target>
+      </trans-unit>
+      <trans-unit id="mess.login_about_to_expire" resname="mess.login_about_to_expire" approved="yes">
+        <source>Your TYPO3 login is about to expire. Please confirm that you want to stay logged in.</source>
+        <target state="final">ການເຂົ້າສູ່ລະບົບ TYPO3 ຂອງທ່ານກຳລັງຈະໝົດອາຍຸ. ກະລຸນາຢືນຢັນເພື່ອຢູ່ໃນລະບົບຕໍ່.</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login_logout_button" resname="mess.refresh_login_logout_button" approved="yes">
+        <source>Log me out</source>
+        <target state="final">ອອກຈາກລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="mess.login_refresh_about_to_expire" resname="mess.login_refresh_about_to_expire" approved="yes">
+        <source>Your TYPO3 login is about to expire. Please confirm that you want to be logged out.</source>
+        <target state="final">ການເຂົ້າສູ່ລະບົບ TYPO3 ຂອງທ່ານກຳລັງຈະໝົດອາຍຸ. ກະລຸນາຢືນຢັນເພື່ອອອກຈາກລະບົບ.</target>
+      </trans-unit>
+      <trans-unit id="mess.login_about_to_expire_title" resname="mess.login_about_to_expire_title" approved="yes">
+        <source>TYPO3 login expiration notice</source>
+        <target state="final">ແຈ້ງເຕືອນການໝົດອາຍຸການເຂົ້າສູ່ລະບົບ TYPO3</target>
+      </trans-unit>
+      <trans-unit id="mess.login_expired" resname="mess.login_expired" approved="yes">
+        <source>Your TYPO3 login has expired. You need to login again if you want to continue. Otherwise you can close the current browser window.</source>
+        <target state="final">ການເຂົ້າສູ່ລະບົບ TYPO3 ໝົດອາຍຸແລ້ວ. ກະລຸນາເຂົ້າສູ່ລະບົບຄືນໃໝ່.</target>
+      </trans-unit>
+      <trans-unit id="mess.noSelItemForEdit" resname="mess.noSelItemForEdit" approved="yes">
+        <source>Please select one or more items in the list before you can edit.</source>
+        <target state="final">ກະລຸນາເລືອກລາຍການໃນລາຍຊື່ກ່ອນຈະແກ້ໄຂ.</target>
+      </trans-unit>
+      <trans-unit id="mess.refreshRequired.title" resname="mess.refreshRequired.title" approved="yes">
+        <source>Refresh required</source>
+        <target state="final">ຕ້ອງມີການໂຫຼດໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="mess.refreshRequired.content" resname="mess.refreshRequired.content" approved="yes">
+        <source>This change will affect which fields are available in the form. Would you like to save now in order to refresh the display?</source>
+        <target state="final">ການປ່ຽນແປງນີ້ມີຜົນຕໍ່ຊ່ອງຂໍ້ມູນ. ຕ້ອງການບັນທຶກດຽວນີ້ເພື່ອໂຫຼດໃໝ່ບໍ?</target>
+      </trans-unit>
+      <trans-unit id="mess.move_into" resname="mess.move_into" approved="yes">
+        <source>Move "%s" into "%s"?</source>
+        <target state="final">ຍ້າຍ "%s" ເຂົ້າໄປໃນ "%s" ບໍ?</target>
+      </trans-unit>
+      <trans-unit id="mess.move_into_colPos" resname="mess.move_into_colPos" approved="yes">
+        <source>Move "%1$s" into column "%3$s" on page "%2$s"?</source>
+        <target state="final">ຍ້າຍ "%1$s" ເຂົ້າໄປໃນຄໍລຳ "%3$s" ໃນໜ້າ "%2$s" ບໍ?</target>
+      </trans-unit>
+      <trans-unit id="mess.move_after" resname="mess.move_after" approved="yes">
+        <source>Move "%s" to after "%s"?</source>
+        <target state="final">ຍ້າຍ "%s" ໄປໄວ້ຫຼັງຈາກ "%s" ບໍ?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_into" resname="mess.copy_into" approved="yes">
+        <source>Copy "%s" into "%s"?</source>
+        <target state="final">ຄັດລອກ "%s" ເຂົ້າໄປໃນ "%s" ບໍ?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_into_colPos" resname="mess.copy_into_colPos" approved="yes">
+        <source>Copy "%1$s" into column "%3$s" on page "%2$s"?</source>
+        <target state="final">ຄັດລອກ "%1$s" ເຂົ້າໄປໃນຄໍລຳ "%3$s" ໃນໜ້າ "%2$s" ບໍ?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_after" resname="mess.copy_after" approved="yes">
+        <source>Copy "%s" to after "%s"?</source>
+        <target state="final">ຄັດລອກ "%s" ໄປໄວ້ຫຼັງຈາກ "%s" ບໍ?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_into" resname="mess.copycb_into" approved="yes">
+        <source>Copy all elements (%s) from the clipboard into "%s"?</source>
+        <target state="final">ຄັດລອກທຸກອົງປະກອບ (%s) ຈາກຄລິບບອດເຂົ້າໄປໃນ "%s" ບໍ?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_after" resname="mess.copycb_after" approved="yes">
+        <source>Copy all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target state="final">ຄັດລອກທຸກອົງປະກອບ (%s) ຈາກຄລິບບອດໄປໄວ້ຫຼັງຈາກ "%s" ບໍ?</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_into" resname="mess.movecb_into" approved="yes">
+        <source>Move all elements (%s) from the clipboard into "%s"?</source>
+        <target state="final">ຍ້າຍທຸກອົງປະກອບ (%s) ຈາກຄລິບບອດເຂົ້າໄປໃນ "%s" ບໍ?</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_after" resname="mess.movecb_after" approved="yes">
+        <source>Move all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target state="final">ຍ້າຍທຸກອົງປະກອບ (%s) ຈາກຄລິບບອດໄປໄວ້ຫຼັງຈາກ "%s" ບໍ?</target>
+      </trans-unit>
+      <trans-unit id="rm.menu" resname="rm.menu" approved="yes">
+        <source>[menu]</source>
+        <target state="final">[ເມນູ]</target>
+      </trans-unit>
+      <trans-unit id="rm.saveDoc" resname="rm.saveDoc" approved="yes">
+        <source>Save</source>
+        <target state="final">ບັນທຶກ</target>
+      </trans-unit>
+      <trans-unit id="rm.viewDoc" resname="rm.viewDoc" approved="yes">
+        <source>View</source>
+        <target state="final">ເບິ່ງ</target>
+      </trans-unit>
+      <trans-unit id="rm.saveDocShow" resname="rm.saveDocShow" approved="yes">
+        <source>Save and view page</source>
+        <target state="final">ບັນທຶກ ແລະ ເບິ່ງໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="rm.saveCloseDoc" resname="rm.saveCloseDoc" approved="yes">
+        <source>Save and close</source>
+        <target state="final">ບັນທຶກ ແລະ ປິດ</target>
+      </trans-unit>
+      <trans-unit id="rm.saveCloseAllDocs" resname="rm.saveCloseAllDocs" approved="yes">
+        <source>Save and close all</source>
+        <target state="final">ບັນທຶກ ແລະ ປິດທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="rm.saveNewDoc" resname="rm.saveNewDoc" approved="yes">
+        <source>Save and create a new one</source>
+        <target state="final">ບັນທຶກ ແລະ ສ້າງໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="rm.newDoc" resname="rm.newDoc" approved="yes">
+        <source>New</source>
+        <target state="final">ໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="rm.duplicateDoc" resname="rm.duplicateDoc" approved="yes">
+        <source>Duplicate</source>
+        <target state="final">ເຮັດສຳເນົາ</target>
+      </trans-unit>
+      <trans-unit id="labels.recordDuplicated" resname="labels.recordDuplicated" approved="yes">
+        <source>The record has been duplicated.</source>
+        <target state="final">ບັນທຶກຖືກເຮັດສຳເນົາແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="rm.closeDoc" resname="rm.closeDoc" approved="yes">
+        <source>Close</source>
+        <target state="final">ປິດ</target>
+      </trans-unit>
+      <trans-unit id="rm.closeAllDocs" resname="rm.closeAllDocs" approved="yes">
+        <source>Close all</source>
+        <target state="final">ປິດທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_clearCache" resname="rm.clearCache_clearCache" approved="yes">
+        <source>Clear cache</source>
+        <target state="final">ລ້າງແຄຊ໌</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_thisPage" resname="rm.clearCache_thisPage" approved="yes">
+        <source>This page</source>
+        <target state="final">ໜ້ານີ້</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_all" resname="rm.clearCache_all" approved="yes">
+        <source>Clear FE cache</source>
+        <target state="final">ລ້າງແຄຊ໌ FE</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_pages" resname="rm.clearCache_pages" approved="yes">
+        <source>Clear Page Cache</source>
+        <target state="final">ລ້າງແຄຊ໌ຂອງໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_allTypo3Conf" resname="rm.clearCache_allTypo3Conf" approved="yes">
+        <source>Clear cache in typo3conf/</source>
+        <target state="final">ລ້າງແຄຊ໌ໃນ typo3conf/</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCacheMenu_all" resname="rm.clearCacheMenu_all" approved="yes">
+        <source>Clear all caches</source>
+        <target state="final">ລ້າງແຄຊ໌ທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCacheMenu_pages" resname="rm.clearCacheMenu_pages" approved="yes">
+        <source>Clear page content cache</source>
+        <target state="final">ລ້າງແຄຊ໌ເນື້ອໃນຂອງໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCacheMenu_allTypo3Conf" resname="rm.clearCacheMenu_allTypo3Conf" approved="yes">
+        <source>Clear configuration cache</source>
+        <target state="final">ລ້າງແຄຊ໌ການຕັ້ງຄ່າ</target>
+      </trans-unit>
+      <trans-unit id="flushPageCachesTitle" resname="flushPageCachesTitle" approved="yes">
+        <source>Flush frontend caches</source>
+        <target state="final">ລ້າງແຄຊ໌ສ່ວນໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="flushPageCachesDescription" resname="flushPageCachesDescription" approved="yes">
+        <source>Clear frontend and page-related caches.</source>
+        <target state="final">ລ້າງແຄຊ໌ສ່ວນໜ້າ ແລະ ແຄຊ໌ທີ່ກ່ຽວຂ້ອງກັບໜ້າ.</target>
+      </trans-unit>
+      <trans-unit id="flushAllCachesTitle2" resname="flushAllCachesTitle2" approved="yes">
+        <source>Flush all caches</source>
+        <target state="final">ລ້າງແຄຊ໌ທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="flushAllCachesDescription2" resname="flushAllCachesDescription2" approved="yes">
+        <source>Clear all system-related caches, including localization, extension configuration, file caches and opcode caches. Rebuilding this cache may take some time.</source>
+        <target state="final">ລ້າງແຄຊ໌ທັງໝົດທີ່ກ່ຽວຂ້ອງກັບລະບົບ, ລວມທັງການກຳນົດພາສາທ້ອງຖິ່ນ, ການຕັ້ງຄ່າສ່ວນເສີມ, ແຄຊ໌ໄຟລ໌ ແລະ ແຄຊ໌ opcode. ການສ້າງແຄຊ໌ເຫຼົ່ານີ້ໃໝ່ອາດຈະໃຊ້ເວລາໄລຍະໜຶ່ງ.</target>
+      </trans-unit>
+      <trans-unit id="rm.adminFunctions" resname="rm.adminFunctions" approved="yes">
+        <source>Admin functions</source>
+        <target state="final">ຟັງຊັນຜູ້ເບິ່ງແຍງລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="rm.edit" resname="rm.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">ແກ້ໄຂ</target>
+      </trans-unit>
+      <trans-unit id="rm.export" resname="rm.export" approved="yes">
+        <source>Export</source>
+        <target state="final">ສົ່ງອອກ</target>
+      </trans-unit>
+      <trans-unit id="rm.delete" resname="rm.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">ລຶບ</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileNotDeletedHasReferences" resname="message.header.fileNotDeletedHasReferences" approved="yes">
+        <source>File not deleted</source>
+        <target state="final">ໄຟລ໌ບໍ່ໄດ້ຖືກລຶບ</target>
+      </trans-unit>
+      <trans-unit id="message.description.fileNotDeletedHasReferences" resname="message.description.fileNotDeletedHasReferences" approved="yes">
+        <source>The file cannot be deleted since it is still used at the following places</source>
+        <target state="final">ບໍ່ສາມາດລຶບໄຟລ໌ໄດ້ ເນື່ອງຈາກຍັງຖືກໃຊ້ງານຢູ່ໃນບ່ອນດັ່ງຕໍ່ໄປນີ້</target>
+      </trans-unit>
+      <trans-unit id="message.header.folderNotDeletedHasFilesWithReferences" resname="message.header.folderNotDeletedHasFilesWithReferences" approved="yes">
+        <source>Folder not deleted</source>
+        <target state="final">ໂຟນເດີບໍ່ໄດ້ຖືກລຶບ</target>
+      </trans-unit>
+      <trans-unit id="message.description.folderNotDeletedHasFilesWithReferences" resname="message.description.folderNotDeletedHasFilesWithReferences" approved="yes">
+        <source>The folder cannot be deleted since it still contains files in use.</source>
+        <target state="final">ບໍ່ສາມາດລຶບໂຟນເດີໄດ້ ເນື່ອງຈາກຍັງມີໄຟລ໌ທີ່ຖືກໃຊ້ງານຢູ່ພາຍໃນ.</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileHasBrokenReferences" resname="message.header.fileHasBrokenReferences" approved="yes">
+        <source>File has broken references</source>
+        <target state="final">ໄຟລ໌ມີການອ້າງອີງທີ່ເສຍ</target>
+      </trans-unit>
+      <trans-unit id="message.description.fileHasBrokenReferences" resname="message.description.fileHasBrokenReferences" approved="yes">
+        <source>The file has %s broken reference(s) but it will be deleted regardless.</source>
+        <target state="final">ໄຟລ໌ນີ້ມີ %s ການອ້າງອີງທີ່ເສຍ ແຕ່ມັນຈະຖືກລຶບຖິ້ມຢ່າງໃດກໍຕາມ.</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileNotFound" resname="message.header.fileNotFound" approved="yes">
+        <source>File not found</source>
+        <target state="final">ບໍ່ພົບໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="message.description.fileNotFound" resname="message.description.fileNotFound" approved="yes">
+        <source>The file %s is not found, possible already removed.</source>
+        <target state="final">ບໍ່ພົບໄຟລ໌ %s, ອາດຈະຖືກເອົາອອກໄປແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="message.header.fileDeleted" resname="message.header.fileDeleted" approved="yes">
+        <source>File deleted</source>
+        <target state="final">ລຶບໄຟລ໌ແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="message.description.fileDeleted" resname="message.description.fileDeleted" approved="yes">
+        <source>The file "%s" was successfully deleted.</source>
+        <target state="final">ລຶບໄຟລ໌ "%s" ສຳເລັດແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="message.header.folderDeleted" resname="message.header.folderDeleted" approved="yes">
+        <source>Folder deleted</source>
+        <target state="final">ລຶບໂຟນເດີແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="message.description.folderDeleted" resname="message.description.folderDeleted" approved="yes">
+        <source>The folder "%s" was successfully deleted.</source>
+        <target state="final">ລຶບໂຟນເດີ "%s" ສຳເລັດແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="message.header.folderNotDeletedHasFiles" resname="message.header.folderNotDeletedHasFiles" approved="yes">
+        <source>Folder not deleted</source>
+        <target state="final">ໂຟນເດີບໍ່ໄດ້ຖືກລຶບ</target>
+      </trans-unit>
+      <trans-unit id="message.description.folderNotDeletedHasFiles" resname="message.description.folderNotDeletedHasFiles" approved="yes">
+        <source>The folder cannot be deleted since it still contains files.</source>
+        <target state="final">ບໍ່ສາມາດລຶບໂຟນເດີໄດ້ ເນື່ອງຈາກຍັງມີໄຟລ໌ຢູ່ພາຍໃນ.</target>
+      </trans-unit>
+      <trans-unit id="buttons.logout" resname="buttons.logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">ອອກຈາກລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="buttons.exit" resname="buttons.exit" approved="yes">
+        <source>Exit</source>
+        <target state="final">ອອກ</target>
+      </trans-unit>
+      <trans-unit id="buttons.selMenu_modules" resname="buttons.selMenu_modules" approved="yes">
+        <source>MODULES</source>
+        <target state="final">ໂມດູນ</target>
+      </trans-unit>
+      <trans-unit id="buttons.clear" resname="buttons.clear" approved="yes">
+        <source>Clear</source>
+        <target state="final">ລ້າງ</target>
+      </trans-unit>
+      <trans-unit id="buttons.clipboard" resname="buttons.clipboard" approved="yes">
+        <source>Clipboard</source>
+        <target state="final">ຄລິບບອດ</target>
+      </trans-unit>
+      <trans-unit id="buttons.toggleLinkExplanation" resname="buttons.toggleLinkExplanation" approved="yes">
+        <source>Toggle link explanation</source>
+        <target state="final">ສະຫຼັບຄຳອະທິບາຍລິງກ໌</target>
+      </trans-unit>
+      <trans-unit id="buttons.toggleSlugExplanation" resname="buttons.toggleSlugExplanation" approved="yes">
+        <source>Toggle manual URL segment</source>
+        <target state="final">ສະຫຼັບສ່ວນຂອງ URL ແບບກຳນົດເອງ</target>
+      </trans-unit>
+      <trans-unit id="buttons.recreateSlugExplanation" resname="buttons.recreateSlugExplanation" approved="yes">
+        <source>Recalculate URL segment from page title</source>
+        <target state="final">ຄຳນວນສ່ວນຂອງ URL ໃໝ່ຈາກຫົວຂໍ້ໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="slugCreation.success.page" resname="slugCreation.success.page" approved="yes">
+        <source>This page will be reachable via %s</source>
+        <target state="final">ໜ້ານີ້ຈະສາມາດເຂົ້າເຖິງໄດ້ຜ່ານ %s</target>
+      </trans-unit>
+      <trans-unit id="slugCreation.success.record" resname="slugCreation.success.record" approved="yes">
+        <source>The URL part of this record will be %s</source>
+        <target state="final">ສ່ວນຂອງ URL ຂອງບັນທຶກນີ້ຈະແມ່ນ %s</target>
+      </trans-unit>
+      <trans-unit id="slugCreation.error" resname="slugCreation.error" approved="yes">
+        <source>The requested URL is already in use, but %s will be used instead</source>
+        <target state="final">URL ນີ້ຖືກໃຊ້ແລ້ວ, ຈະໃຊ້ %s ແທນ</target>
+      </trans-unit>
+      <trans-unit id="cm.copy" resname="cm.copy" approved="yes">
+        <source>Copy</source>
+        <target state="final">ຄັດລອກ</target>
+      </trans-unit>
+      <trans-unit id="cm.cut" resname="cm.cut" approved="yes">
+        <source>Cut</source>
+        <target state="final">ຕັດ</target>
+      </trans-unit>
+      <trans-unit id="cm.cutrelease" resname="cm.cutrelease" approved="yes">
+        <source>Cut release</source>
+        <target state="final">ຕັດ ແລະ ປ່ອຍ</target>
+      </trans-unit>
+      <trans-unit id="cm.view" resname="cm.view" approved="yes">
+        <source>Show</source>
+        <target state="final">ສະແດງ</target>
+      </trans-unit>
+      <trans-unit id="cm.edit" resname="cm.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">ແກ້ໄຂ</target>
+      </trans-unit>
+      <trans-unit id="cm.editcontent" resname="cm.editcontent" approved="yes">
+        <source>Edit content</source>
+        <target state="final">ແກ້ໄຂເນື້ອໃນ</target>
+      </trans-unit>
+      <trans-unit id="cm.editMetadata" resname="cm.editMetadata" approved="yes">
+        <source>Edit Metadata of this file</source>
+        <target state="final">ແກ້ໄຂຂໍ້ມູນເມຕາຂອງໄຟລ໌ນີ້</target>
+      </trans-unit>
+      <trans-unit id="cm.new" resname="cm.new" approved="yes">
+        <source>New</source>
+        <target state="final">ໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteinto" resname="cm.pasteinto" approved="yes">
+        <source>Paste into</source>
+        <target state="final">ວາງໃສ່ໃນ</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteafter" resname="cm.pasteafter" approved="yes">
+        <source>Paste after</source>
+        <target state="final">ວາງໄວ້ຫຼັງຈາກ</target>
+      </trans-unit>
+      <trans-unit id="cm.select" resname="cm.select" approved="yes">
+        <source>Select</source>
+        <target state="final">ເລືອກ</target>
+      </trans-unit>
+      <trans-unit id="cm.deselect" resname="cm.deselect" approved="yes">
+        <source>Deselect</source>
+        <target state="final">ຍົກເລີກການເລືອກ</target>
+      </trans-unit>
+      <trans-unit id="cm.selectto" resname="cm.selectto" approved="yes">
+        <source>Select to</source>
+        <target state="final">ເລືອກໄປທີ່</target>
+      </trans-unit>
+      <trans-unit id="cm.deselectto" resname="cm.deselectto" approved="yes">
+        <source>Deselect to</source>
+        <target state="final">ຍົກເລີກການເລືອກໄປທີ່</target>
+      </trans-unit>
+      <trans-unit id="cm.delete" resname="cm.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">ລຶບ</target>
+      </trans-unit>
+      <trans-unit id="cm.hide" resname="cm.hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">ເຊື່ອງ</target>
+      </trans-unit>
+      <trans-unit id="cm.unhide" resname="cm.unhide" approved="yes">
+        <source>Unhide</source>
+        <target state="final">ເລີກເຊື່ອງ</target>
+      </trans-unit>
+      <trans-unit id="cm.online" resname="cm.online" approved="yes">
+        <source>Turn online</source>
+        <target state="final">ປ່ຽນເປັນອອນລາຍ</target>
+      </trans-unit>
+      <trans-unit id="cm.offline" resname="cm.offline" approved="yes">
+        <source>Turn offline</source>
+        <target state="final">ປ່ຽນເປັນອອຟລາຍ</target>
+      </trans-unit>
+      <trans-unit id="cm.upload" resname="cm.upload" approved="yes">
+        <source>Upload Files</source>
+        <target state="final">ອັບໂຫຼດໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="cm.rename" resname="cm.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">ປ່ຽນຊື່</target>
+      </trans-unit>
+      <trans-unit id="cm.replace" resname="cm.replace" approved="yes">
+        <source>Replace</source>
+        <target state="final">ແທນທີ່</target>
+      </trans-unit>
+      <trans-unit id="cm.open" resname="cm.open" approved="yes">
+        <source>Open</source>
+        <target state="final">ເປີດ</target>
+      </trans-unit>
+      <trans-unit id="cm.save" resname="cm.save" approved="yes">
+        <source>Save</source>
+        <target state="final">ບັນທຶກ</target>
+      </trans-unit>
+      <trans-unit id="cm.unzip" resname="cm.unzip" approved="yes">
+        <source>Unzip</source>
+        <target state="final">ແຕກໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="cm.info" resname="cm.info" approved="yes">
+        <source>Info</source>
+        <target state="final">ຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="cm.createnew" resname="cm.createnew" approved="yes">
+        <source>Create new</source>
+        <target state="final">ສ້າງໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="cm.createnew.link" resname="cm.createnew.link" approved="yes">
+        <source>Create new %s</source>
+        <target state="final">ສ້າງ %s ໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="cm.tempMountPoint" resname="cm.tempMountPoint" approved="yes">
+        <source>Mount as treeroot</source>
+        <target state="final">ເຊື່ອມຕໍ່ເປັນຮາກຂອງໂຄງສ້າງ</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_into" resname="cm.copyPage_into" approved="yes">
+        <source>Copy page into</source>
+        <target state="final">ຄັດລອກໜ້າໃສ່ໃນ</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_after" resname="cm.copyPage_after" approved="yes">
+        <source>Copy page after</source>
+        <target state="final">ຄັດລອກໜ້າໄວ້ຫຼັງຈາກ</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_into" resname="cm.movePage_into" approved="yes">
+        <source>Move page into</source>
+        <target state="final">ຍ້າຍໜ້າໃສ່ໃນ</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_after" resname="cm.movePage_after" approved="yes">
+        <source>Move page after</source>
+        <target state="final">ຍ້າຍໜ້າໄວ້ຫຼັງຈາກ</target>
+      </trans-unit>
+      <trans-unit id="cm.copyFolder_into" resname="cm.copyFolder_into" approved="yes">
+        <source>Copy folder into</source>
+        <target state="final">ຄັດລອກໂຟນເດີໃສ່ໃນ</target>
+      </trans-unit>
+      <trans-unit id="cm.moveFolder_into" resname="cm.moveFolder_into" approved="yes">
+        <source>Move folder into</source>
+        <target state="final">ຍ້າຍໂຟນເດີໃສ່ໃນ</target>
+      </trans-unit>
+      <trans-unit id="cm.createNewRelation" resname="cm.createNewRelation" approved="yes">
+        <source>Create new relation</source>
+        <target state="final">ສ້າງການເຊື່ອມໂຍງໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="cm.branchActions" resname="cm.branchActions" approved="yes">
+        <source>Branch Actions</source>
+        <target state="final">ການດຳເນີນການຂອງສາຂາ</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPasteActions" resname="cm.copyPasteActions" approved="yes">
+        <source>Page Actions</source>
+        <target state="final">ການດຳເນີນການຂອງໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="cm.collapseBranch" resname="cm.collapseBranch" approved="yes">
+        <source>Collapse Branch</source>
+        <target state="final">ຫຍໍ້ສາຂາ</target>
+      </trans-unit>
+      <trans-unit id="cm.expandBranch" resname="cm.expandBranch" approved="yes">
+        <source>Expand Branch</source>
+        <target state="final">ຂະຫຍາຍສາຂາ</target>
+      </trans-unit>
+      <trans-unit id="cm.more" resname="cm.more" approved="yes">
+        <source>More options...</source>
+        <target state="final">ຕົວເລືອກເພີ່ມເຕີມ...</target>
+      </trans-unit>
+      <trans-unit id="cm.allowedFileExtensions" resname="cm.allowedFileExtensions" approved="yes">
+        <source>Allowed file extensions</source>
+        <target state="final">ນາມສະກຸນໄຟລ໌ທີ່ອະນຸຍາດ</target>
+      </trans-unit>
+      <trans-unit id="cm.allowedEditableTextFileExtensions" resname="cm.allowedEditableTextFileExtensions" approved="yes">
+        <source>Allowed editable text file extensions</source>
+        <target state="final">ນາມສະກຸນໄຟລ໌ຂໍ້ຄວາມທີ່ແກ້ໄຂໄດ້</target>
+      </trans-unit>
+      <trans-unit id="cm.allowEmbedSources" resname="cm.allowEmbedSources" approved="yes">
+        <source>Allowed media sources</source>
+        <target state="final">ແຫຼ່ງຂໍ້ມູນມີເດຍທີ່ອະນຸຍາດ</target>
+      </trans-unit>
+      <trans-unit id="cm.allowedRelations" resname="cm.allowedRelations" approved="yes">
+        <source>Allowed relations</source>
+        <target state="final">ການເຊື່ອມໂຍງທີ່ອະນຸຍາດ</target>
+      </trans-unit>
+      <trans-unit id="sortable.dragmove" resname="sortable.dragmove" approved="yes">
+        <source>Drag to move</source>
+        <target state="final">ລາກເພື່ອຍ້າຍ</target>
+      </trans-unit>
+      <trans-unit id="tree.defaultPageTitle" resname="tree.defaultPageTitle" approved="yes">
+        <source>[Default Title]</source>
+        <target state="final">[ຫົວຂໍ້ເລີ່ມຕົ້ນ]</target>
+      </trans-unit>
+      <trans-unit id="tree.activeFilterMode" resname="tree.activeFilterMode" approved="yes">
+        <source>Active Filtering Mode</source>
+        <target state="final">ໂໝດການຕອງທີ່ກຳລັງເຮັດວຽກ</target>
+      </trans-unit>
+      <trans-unit id="tree.buttonNewNode" resname="tree.buttonNewNode" approved="yes">
+        <source>Create new pages</source>
+        <target state="final">ສ້າງໜ້າໃໝ່</target>
+      </trans-unit>
+      <trans-unit id="tree.buttonFilter" resname="tree.buttonFilter" approved="yes">
+        <source>Filter tree</source>
+        <target state="final">ຕອງໂຄງສ້າງ</target>
+      </trans-unit>
+      <trans-unit id="tree.searchTermInfo" resname="tree.searchTermInfo" approved="yes">
+        <source>Enter search term</source>
+        <target state="final">ປ້ອນຄຳຄົ້ນຫາ</target>
+      </trans-unit>
+      <trans-unit id="warning.install_password" resname="warning.install_password" approved="yes">
+        <source>The Install Tool is still using the default password "joh316". Update this within the %sAbout section%s of the Install Tool.</source>
+        <target state="final">ເຄື່ອງມືຕິດຕັ້ງຍັງໃຊ້ລະຫັດຜ່ານເລີ່ມຕົ້ນ "joh316". ກະລຸນາອັບເດດໃນສ່ວນ %sກ່ຽັບ%s ຂອງເຄື່ອງມືຕິດຕັ້ງ.</target>
+      </trans-unit>
+      <trans-unit id="warning.installtool_default_password" resname="warning.installtool_default_password" approved="yes">
+        <source>The Install Tool is still using the default password "joh316". Update this within the %sImportant actions section%s of the Install Tool.</source>
+        <target state="final">ເຄື່ອງມືຕິດຕັ້ງຍັງໃຊ້ລະຫັດຜ່ານເລີ່ມຕົ້ນ "joh316". ກະລຸນາອັບເດດໃນສ່ວນ %sການດຳເນີນການທີ່ສຳຄັນ%s ຂອງເຄື່ອງມືຕິດຕັ້ງ.</target>
+      </trans-unit>
+      <trans-unit id="warning.backend_admin" resname="warning.backend_admin" approved="yes">
+        <source>The default backend user "admin" with password "password" is still present. %sEdit this account%s, either deleting it completely or changing the username and password.</source>
+        <target state="final">ຍັງມີຜູ້ໃຊ້ "admin" ທີ່ມີລະຫັດຜ່ານ "password" ຢູ່ໃນລະບົບ. %sແກ້ໄຂບັນຊີນີ້%s, ໂດຍການລຶບຖິ້ມ ຫຼື ປ່ຽນຊື່ຜູ້ໃຊ້ ແລະ ລະຫັດຜ່ານໃໝ່.</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_pattern" resname="warning.file_deny_pattern" approved="yes">
+        <source>The value of fileDenyPattern is not set to its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</source>
+        <target state="final">ຄ່າ fileDenyPattern ບໍ່ແມ່ນຄ່າເລີ່ມຕົ້ນ:%s ອາດມີຄວາມສ່ຽງດ້ານຄວາມປອດໄພ.</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_pattern_partsNotPresent" resname="warning.file_deny_pattern_partsNotPresent" approved="yes">
+        <source>Security Risk! The new value of fileDenyPattern misses parts of its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</source>
+        <target state="final">ຄວາມສ່ຽງດ້ານຄວາມປອດໄພ! ຄ່າໃໝ່ຂອງ fileDenyPattern ຂາດບາງສ່ວນຂອງຄ່າເລີ່ມຕົ້ນ:%s ອາດເຮັດໃຫ້ຜູ້ໃຊ້ສາມາດຣັນສະຄຣິບ php ທີ່ເປັນອັນຕະລາຍໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="warning.file_deny_htaccess" resname="warning.file_deny_htaccess" approved="yes">
+        <source>The current value of fileDenyPattern allows to upload/create files with the name ".htaccess". If TYPO3 is running on Apache, this enables backend or frontend users to create and execute php scripts. Please reset the value of fileDenyPattern to its default.</source>
+        <target state="final">ຄ່າ fileDenyPattern ອະນຸຍາດໃຫ້ສ້າງ ".htaccess" ເຊິ່ງມີຄວາມສ່ຽງ. ກະລຸນາຕັ້ງຄ່າໃໝ່.</target>
+      </trans-unit>
+      <trans-unit id="warning.install_enabled" resname="warning.install_enabled" approved="yes">
+        <source>The Install Tool is permanently enabled. Delete the file "%s" when you have finished setting up TYPO3.</source>
+        <target state="final">ເຄື່ອງມືຕິດຕັ້ງຖືກເປີດໃຊ້ງານຖາວອນ. ກະລຸນາລຶບໄຟລ໌ "%s" ເມື່ອສຳເລັດ.</target>
+      </trans-unit>
+      <trans-unit id="warning.install_enabled_cmd" resname="warning.install_enabled_cmd" approved="yes">
+        <source>Click to remove the file now!</source>
+        <target state="final">ຄລິກເພື່ອລຶບໄຟລ໌ດຽວນີ້!</target>
+      </trans-unit>
+      <trans-unit id="warning.install_trustedhosts" resname="warning.install_trustedhosts" approved="yes">
+        <source>The trusted hosts pattern check is disabled. Please define the allowed hosts in the [SYS][trustedHostsPattern] section of the Install Tool.</source>
+        <target state="final">ການກວດສອບໂຮສທີ່ເຊື່ອຖືໄດ້ຖືກປິດ. ກະລຸນາກຳນົດໃນເຄື່ອງມືຕິດຕັ້ງ.</target>
+      </trans-unit>
+      <trans-unit id="warning.install_update" resname="warning.install_update" approved="yes">
+        <source>This installation is not configured for the TYPO3 version it is running. If you did so intentionally, this message can be safely ignored. If you are unsure, visit the Update Wizard section of the %sInstall Tool%s to see how TYPO3 would change.</source>
+        <target state="final">ການຕິດຕັ້ງນີ້ຍັງບໍ່ໄດ້ກຳນົດຄ່າໃຫ້ເຂົ້າກັບເວີຊັນ TYPO3 ທີ່ກຳລັງໃຊ້ງານ. ຖ້າເຈົ້າຕັ້ງໃຈ, ສາມາດຂ້າມຂໍ້ຄວາມນີ້ໄດ້. ຖ້າບໍ່ແນ່ໃຈ, ໃຫ້ໄປທີ່ສ່ວນ Update Wizard ຂອງ %sເຄື່ອງມືຕິດຕັ້ງ%s.</target>
+      </trans-unit>
+      <trans-unit id="warning.header" resname="warning.header" approved="yes">
+        <source>Important Notice!</source>
+        <target state="final">ແຈ້ງເຕືອນສຳຄັນ!</target>
+      </trans-unit>
+      <trans-unit id="warning.backend_reference" resname="warning.backend_reference" approved="yes">
+        <source>The Reference Index table is empty which is likely the result of a recent TYPO3 upgrade. Please go to %sTools&gt;DB Check%s and update the reference index.</source>
+        <target state="final">ຕາຕະລາງດັດສະນີການອ້າງອີງຫວ່າງເປົ່າ. ກະລຸນາໄປທີ່ %sTools&gt;DB Check%s ເພື່ອອັບເດດດັດສະນີການອ້າງອີງ.</target>
+      </trans-unit>
+      <trans-unit id="warning.backend_reference_index" resname="warning.backend_reference_index" approved="yes">
+        <source>The Reference Index table is empty which is likely the result of a recent TYPO3 upgrade. The Reference Index was last updated on %3$s. Please go to %sTools&gt;DB Check%s and update the reference index.</source>
+        <target state="final">ຕາຕະລາງດັດສະນີການອ້າງອີງຫວ່າງເປົ່າ. ອັບເດດຄັ້ງຫຼ້າສຸດເມື່ອ %3$s. ກະລຸນາໄປທີ່ %sTools&gt;DB Check%s ເພື່ອອັບເດດດັດສະນີການອ້າງອີງ.</target>
+      </trans-unit>
+      <trans-unit id="warning.memcache_not_usable" resname="warning.memcache_not_usable" approved="yes">
+        <source>Memcache is configured, but connection to memcached failed with these configuration(s)</source>
+        <target state="final">ມີການຕັ້ງຄ່າ Memcache ແຕ່ການເຊື່ອມຕໍ່ລົ້ມເຫຼວ</target>
+      </trans-unit>
+      <trans-unit id="warning.file_missing" resname="warning.file_missing" approved="yes">
+        <source>File is missing!</source>
+        <target state="final">ໄຟລ໌ຫາຍໄປ!</target>
+      </trans-unit>
+      <trans-unit id="warning.file_missing_text" resname="warning.file_missing_text" approved="yes">
+        <source>This file is marked as missing</source>
+        <target state="final">ໄຟລ໌ນີ້ຖືກໝາຍວ່າຫາຍໄປ</target>
+      </trans-unit>
+      <trans-unit id="warning.header.storage_is_no_public" resname="warning.header.storage_is_no_public" approved="yes">
+        <source>Storage is not public</source>
+        <target state="final">ບ່ອນເກັບຂໍ້ມູນບໍ່ແມ່ນສາທາລະນະ</target>
+      </trans-unit>
+      <trans-unit id="warning.message.storage_is_no_public" resname="warning.message.storage_is_no_public" approved="yes">
+        <source>The storage has been marked to be "publicly available" but is not detected as such by the driver. The setting has been reverted.</source>
+        <target state="final">ບ່ອນເກັບຂໍ້ມູນບໍ່ແມ່ນສາທາລະນະຕາມທີ່ໝາຍໄວ້. ການຕັ້ງຄ່າໄດ້ຖືກປ່ຽນກັບຄືນ.</target>
+      </trans-unit>
+      <trans-unit id="warning.inline_use_combination" resname="warning.inline_use_combination" approved="yes">
+        <source>This record will be modified globally.</source>
+        <target state="final">ບັນທຶກນີ້ຈະຖືກແກ້ໄຂໃນລະດັບສາກົນ.</target>
+      </trans-unit>
+      <trans-unit id="error.formProtection.tokenInvalid" resname="error.formProtection.tokenInvalid" approved="yes">
+        <source>Validating the security token of this form has failed. Please reload the form and submit it again.</source>
+        <target state="final">ການກວດສອບໂທເຄນຄວາມປອດໄພລົ້ມເຫຼວ. ກະລຸນາໂຫຼດແບບຟອມໃໝ່.</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.shortcuts" resname="toolbarItems.shortcuts" approved="yes">
+        <source>Shortcuts</source>
+        <target state="final">ທາງລັດ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.shortcut" resname="toolbarItems.shortcut" approved="yes">
+        <source>Shortcut</source>
+        <target state="final">ທາງລັດ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.shortcutsGroup" resname="toolbarItems.shortcutsGroup" approved="yes">
+        <source>Shortcut Group</source>
+        <target state="final">ກຸ່ມທາງລັດ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.shortcutsEdit" resname="toolbarItems.shortcutsEdit" approved="yes">
+        <source>Edit Shortcut</source>
+        <target state="final">ແກ້ໄຂທາງລັດ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.shortcutsDelete" resname="toolbarItems.shortcutsDelete" approved="yes">
+        <source>Delete Shortcut</source>
+        <target state="final">ລຶບທາງລັດ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.bookmarks" resname="toolbarItems.bookmarks" approved="yes">
+        <source>Bookmarks</source>
+        <target state="final">ເຄື່ອງໝາຍຂັ້ນໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.bookmark" resname="toolbarItems.bookmark" approved="yes">
+        <source>Bookmark</source>
+        <target state="final">ເຄື່ອງໝາຍຂັ້ນໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.bookmarksGroup" resname="toolbarItems.bookmarksGroup" approved="yes">
+        <source>Bookmark group</source>
+        <target state="final">ກຸ່ມເຄື່ອງໝາຍຂັ້ນໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.bookmarksEdit" resname="toolbarItems.bookmarksEdit" approved="yes">
+        <source>Edit bookmark</source>
+        <target state="final">ແກ້ໄຂເຄື່ອງໝາຍຂັ້ນໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.bookmarksDelete" resname="toolbarItems.bookmarksDelete" approved="yes">
+        <source>Delete bookmark</source>
+        <target state="final">ລຶບເຄື່ອງໝາຍຂັ້ນໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.collapsePageTree" resname="toolbarItems.collapsePageTree" approved="yes">
+        <source>Collapse page tree</source>
+        <target state="final">ຫຍໍ້ໂຄງສ້າງໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.confirmBookmarksDelete" resname="toolbarItems.confirmBookmarksDelete" approved="yes">
+        <source>Do you really want to remove this bookmark?</source>
+        <target state="final">ເຈົ້າຕ້ອງການເອົາເຄື່ອງໝາຍຂັ້ນໜ້ານີ້ອອກແທ້ບໍ?</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.createBookmark" resname="toolbarItems.createBookmark" approved="yes">
+        <source>Create bookmark</source>
+        <target state="final">ສ້າງເຄື່ອງໝາຍຂັ້ນໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.bookmarkSavedTitle" resname="toolbarItems.bookmarkSavedTitle" approved="yes">
+        <source>Bookmark saved</source>
+        <target state="final">ບັນທຶກເຄື່ອງໝາຍຂັ້ນໜ້າແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.bookmarkSavedMessage" resname="toolbarItems.bookmarkSavedMessage" approved="yes">
+        <source>The bookmark was saved.</source>
+        <target state="final">ເຄື່ອງໝາຍຂັ້ນໜ້າຖືກບັນທຶກແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.help" resname="toolbarItems.help" approved="yes">
+        <source>Help</source>
+        <target state="final">ຊ່ວຍເຫຼືອ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.minMaxModuleMenu" resname="toolbarItems.minMaxModuleMenu" approved="yes">
+        <source>Minimize/maximize module menu</source>
+        <target state="final">ຫຍໍ້/ຂະຫຍາຍ ເມນູໂມດູນ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.search" resname="toolbarItems.search" approved="yes">
+        <source>Search</source>
+        <target state="final">ຄົ້ນຫາ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.workspace" resname="toolbarItems.workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">ພື້ນທີ່ເຮັດວຽກ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo" resname="toolbarItems.sysinfo" approved="yes">
+        <source>System Information</source>
+        <target state="final">ຂໍ້ມູນລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.phpversion" resname="toolbarItems.sysinfo.phpversion" approved="yes">
+        <source>PHP Version</source>
+        <target state="final">ເວີຊັນ PHP</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.database" resname="toolbarItems.sysinfo.database" approved="yes">
+        <source>Database</source>
+        <target state="final">ຖານຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.applicationcontext" resname="toolbarItems.sysinfo.applicationcontext" approved="yes">
+        <source>Application Context</source>
+        <target state="final">ສະພາບແວດລ້ອມແອັບພລິເຄຊັນ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.composerMode" resname="toolbarItems.sysinfo.composerMode" approved="yes">
+        <source>Composer mode</source>
+        <target state="final">ໂໝດ Composer</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.gitrevision" resname="toolbarItems.sysinfo.gitrevision" approved="yes">
+        <source>GIT Revision</source>
+        <target state="final">ເວີຊັນ GIT</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.operatingsystem" resname="toolbarItems.sysinfo.operatingsystem" approved="yes">
+        <source>Operating System</source>
+        <target state="final">ລະບົບປະຕິບັດການ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.webserver" resname="toolbarItems.sysinfo.webserver" approved="yes">
+        <source>Webserver</source>
+        <target state="final">ເວັບເຊີບເວີ</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.sysinfo.typo3-version" resname="toolbarItems.sysinfo.typo3-version" approved="yes">
+        <source>TYPO3 Version</source>
+        <target state="final">ເວີຊັນ TYPO3</target>
+      </trans-unit>
+      <trans-unit id="extension.not.installed" resname="extension.not.installed" approved="yes">
+        <source>Extension "%s" is not installed.</source>
+        <target state="final">ສ່ວນເສີມ "%s" ບໍ່ໄດ້ຕິດຕັ້ງ.</target>
+      </trans-unit>
+      <trans-unit id="link.to.filefile.correctly" resname="link.to.filefile.correctly" approved="yes">
+        <source>Please, do not link to this page.</source>
+        <target state="final">ກະລຸນາຢ່າສ້າງລິງກ໌ມາຍັງໜ້ານີ້.</target>
+      </trans-unit>
+      <trans-unit id="csh_tooltip_loading" resname="csh_tooltip_loading" approved="yes">
+        <source>Loading help...</source>
+        <target state="final">ກຳລັງໂຫຼດຕົວຊ່ວຍເຫຼືອ...</target>
+      </trans-unit>
+      <trans-unit id="error.database_schema_mismatch" resname="error.database_schema_mismatch" approved="yes">
+        <source>A SQL error occurred. This may indicate a schema mismatch between TCA and the database. Try running database compare in the Install Tool.</source>
+        <target state="final">ເກີດຂໍ້ຜິດພາດ SQL. ກະລຸນາຣັນ database compare ໃນເຄື່ອງມືຕິດຕັ້ງ.</target>
+      </trans-unit>
+      <trans-unit id="error.database_schema_mismatch_title" resname="error.database_schema_mismatch_title" approved="yes">
+        <source>Database Error</source>
+        <target state="final">ຂໍ້ຜິດພາດຂອງຖານຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="error.items_proc_func_error" resname="error.items_proc_func_error" approved="yes">
+        <source>An error occurred trying to process items for field "%1$s" (%2$s).</source>
+        <target state="final">ເກີດຂໍ້ຜິດພາດໃນການປະມວນຜົນລາຍການສຳລັບຊ່ອງຂໍ້ມູນ "%1$s".</target>
+      </trans-unit>
+      <trans-unit id="error.invalidEmail" resname="error.invalidEmail" approved="yes">
+        <source>"%s" is not a valid e-mail address.</source>
+        <target state="final">"%s" ບໍ່ແມ່ນທີ່ຢູ່ອີເມວທີ່ຖືກຕ້ອງ.</target>
+      </trans-unit>
+      <trans-unit id="error.adminCanNotChangeSystemMaintainer" resname="error.adminCanNotChangeSystemMaintainer" approved="yes">
+        <source>Only system maintainers can change the admin flag and password of other system maintainers. The value has not been updated.</source>
+        <target state="final">ສະເພາະຜູ້ເບິ່ງແຍງລະບົບ (system maintainers) ເທົ່ານັ້ນທີ່ສາມາດປ່ຽນສິດ admin ແລະ ລະຫັດຜ່ານຂອງຜູ້ເບິ່ງແຍງລະບົບຄົນອື່ນໄດ້. ຄ່າບໍ່ໄດ້ຖືກອັບເດດ.</target>
+      </trans-unit>
+      <trans-unit id="formEngine.beUser.admin.information.userIsSystemMaintainer" resname="formEngine.beUser.admin.information.userIsSystemMaintainer" approved="yes">
+        <source>This user is a system maintainer</source>
+        <target state="final">ຜູ້ໃຊ້ນີ້ແມ່ນຜູ້ເບິ່ງແຍງລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="formEngine.beUser.admin.information.userWillBecomeSystemMaintainer" resname="formEngine.beUser.admin.information.userWillBecomeSystemMaintainer" approved="yes">
+        <source>This user is in the list of allowed system maintainers and will gain system level access if enabling admin access.</source>
+        <target state="final">ຜູ້ໃຊ້ນີ້ຈະໄດ້ຮັບສິດຜູ້ເບິ່ງແຍງລະບົບຖ້າເປີດໃຊ້ admin.</target>
+      </trans-unit>
+      <trans-unit id="formEngine.beUser.admin.information.userAdminAndPasswordChangeNotAllowed" resname="formEngine.beUser.admin.information.userAdminAndPasswordChangeNotAllowed" approved="yes">
+        <source>This user is a system maintainer. Changing the admin flag and changing password is denied.</source>
+        <target state="final">ຜູ້ໃຊ້ນີ້ແມ່ນຜູ້ເບິ່ງແຍງລະບົບ. ການປ່ຽນສິດ admin ແລະ ການປ່ຽນລະຫັດຜ່ານແມ່ນຖືກປະຕິເສດ.</target>
+      </trans-unit>
+      <trans-unit id="error.backendUserGroupListTypeError.header" resname="error.backendUserGroupListTypeError.header" approved="yes">
+        <source>Possible misconfiguration detected</source>
+        <target state="final">ກວດພົບການຕັ້ງຄ່າທີ່ອາດຜິດພາດ</target>
+      </trans-unit>
+      <trans-unit id="error.backendUserGroupListTypeError.message" resname="error.backendUserGroupListTypeError.message" approved="yes">
+        <source>Editing of at least one plugin was enabled but editing the page content type "Insert Plugin" is still disallowed. Group members won't be able to edit plugins unless you activate editing for the content type.</source>
+        <target state="final">ການແກ້ໄຂປລັກອິນຍັງບໍ່ໄດ້ຖືກອະນຸຍາດຢ່າງເຕັມທີ່.</target>
+      </trans-unit>
+      <trans-unit id="error.missingLanguageIsocode" resname="error.missingLanguageIsocode" approved="yes">
+        <source>Missing ISO code for language "%s" (UID %d), please edit the language record and set it.</source>
+        <target state="final">ຂາດລະຫັດ ISO ສຳລັບພາສາ "%s", ກະລຸນາກຳນົດມັນ.</target>
+      </trans-unit>
+      <trans-unit id="labels.deleteTitle" resname="labels.deleteTitle" approved="yes">
+        <source>Revert to default Constant</source>
+        <target state="final">ກັບຄືນສູ່ຄ່າຄົງທີ່ເລີ່ມຕົ້ນ</target>
+      </trans-unit>
+      <trans-unit id="labels.editTitle" resname="labels.editTitle" approved="yes">
+        <source>Edit this Constant</source>
+        <target state="final">ແກ້ໄຂຄ່າຄົງທີ່ນີ້</target>
+      </trans-unit>
+      <trans-unit id="pageTranslation" resname="pageTranslation" approved="yes">
+        <source>Page Translation</source>
+        <target state="final">ການແປໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="filestorage.invalidpathexception.title" resname="filestorage.invalidpathexception.title" approved="yes">
+        <source>Error in Path</source>
+        <target state="final">ຂໍ້ຜິດພາດໃນເສັ້ນທາງ</target>
+      </trans-unit>
+      <trans-unit id="filestorage.invalidpathexception.message" resname="filestorage.invalidpathexception.message" approved="yes">
+        <source>You entered an invalid path for this File Storage. Note that "../" and "//" are not allowed when using an absolute path.</source>
+        <target state="final">ເສັ້ນທາງບ່ອນເກັບໄຟລ໌ບໍ່ຖືກຕ້ອງ.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
