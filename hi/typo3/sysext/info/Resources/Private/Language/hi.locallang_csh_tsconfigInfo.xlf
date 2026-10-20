@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814841" source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_csh_tsconfigInfo.xlf" date="2011-10-17T20:22:33Z" product-name="info_pagetsconfig" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="tsconfig_hierarchy.alttitle" resname="tsconfig_hierarchy.alttitle" approved="yes">
+        <source>Page TSconfig hierarchy viewer</source>
+        <target state="final">पृष्ठ TSconfig पदानुक्रम दर्शक</target>
+      </trans-unit>
+      <trans-unit id="tsconfig_hierarchy.description" resname="tsconfig_hierarchy.description" approved="yes">
+        <source>Allows the user to view the compiled Page TSconfig structure for a branch of the pagetree.</source>
+        <target state="final">उपयोगकर्ता को पेजट्री की एक शाखा के लिए संकलित पेज TSconfig संरचना को देखने की अनुमति देता है।</target>
+      </trans-unit>
+      <trans-unit id="tsconfig_hierarchy.details" resname="tsconfig_hierarchy.details" xml:space="preserve" approved="yes">
+				<source>This viewer is indispensable for getting an overview of Page TSconfig settings as they apply to various branches in the page tree. You can see the configuration structure of any page where all inherited Page TSconfig is parsed and the result shown. This helps you to evaluate that the settings you have applied are actually found at the correct position in the configuration tree.
+You can also see the Page TSconfig TypoScript code for each page in the root line with the viewer.
+
+See the links for more information about what Page TSconfig is.</source>
+			<target state="final">यह व्यूअर पेज ट्री की विभिन्न शाखाओं पर लागू होने वाले Page TSconfig सेटिंग्स का अवलोकन प्राप्त करने के लिए अत्यंत आवश्यक है। आप किसी भी पेज की कॉन्फ़िगरेशन संरचना देख सकते हैं, जहाँ सभी इनहेरिटेड Page TSconfig को पार्स करके उसका परिणाम प्रदर्शित किया जाता है। इससे आपको यह सुनिश्चित करने में मदद मिलती है कि आपने जो सेटिंग्स लागू की हैं, वे कॉन्फ़िगरेशन ट्री में सही स्थान पर मौजूद हैं।
+आप व्यूअर के साथ रूट लाइन में प्रत्येक पेज के लिए पेज TSconfig टाइपोस्क्रिप्ट कोड भी देख सकते हैं।
+
+Page TSconfig क्या है, इस बारे में ज़्यादा जानकारी के लिए लिंक देखें।</target></trans-unit>
+      <trans-unit id="_tsconfig_hierarchy.seeAlso" resname="_tsconfig_hierarchy.seeAlso" xml:space="preserve" approved="yes">
+				<source>_MOD_web_info:tsconfig_edit,
+pages:TSconfig,
+Page TSconfig objects | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Index.html</source>
+				
+			<target state="final">_MOD_web_info:tsconfig_edit,
+pages:TSconfig,
+Page TSconfig objects | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Index.html</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_tsconfig_hierarchy.image" resname="_tsconfig_hierarchy.image" xml:space="preserve" approved="yes">
+				<source>EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_1.png,
+EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_2.png,</source>
+				
+			<target state="final">EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_1.png,
+EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_2.png,</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="tsconfig_hierarchy.image_descr" resname="tsconfig_hierarchy.image_descr" xml:space="preserve" approved="yes">
+				<source>This is how the parsed Page TSconfig tree can look. It contains the "sum" of all the configuration code from the root line and any default settings. This shows the whole tree but you can also select other top level objects (TLO) in the selector box in the top if you want to limit the view to a single branch
+One of the branches in Page TSconfig has the special property that it is overridden with any User TSconfig in the same object path given for the current backend user. When you view only the "mod" TLO any user settings for the current backend user are applied as well. Here it is evident that some additional settings must apply for the user since only "mod.SHARED.colPos_list" was actually found in Page TSconfig (according to the "All" view in the first image).</source>
+			<target state="final">पार्स किया गया Page TSconfig ट्री कुछ इस तरह दिख सकता है। इसमें रूट लाइन से सभी कॉन्फ़िगरेशन कोड और सभी डिफ़ॉल्ट सेटिंग्स का "योग" होता है। यह पूरा ट्री दिखाता है, लेकिन अगर आप दृश्य को किसी एक शाखा तक सीमित रखना चाहते हैं, तो आप ऊपर दिए गए सेलेक्टर बॉक्स में अन्य शीर्ष स्तरीय ऑब्जेक्ट (TLO) भी चुन सकते हैं।
+Page TSconfig की एक शाखा की एक विशेष विशेषता यह है कि यह वर्तमान बैकएंड उपयोगकर्ता के लिए दिए गए समान ऑब्जेक्ट पथ में किसी भी उपयोगकर्ता TSconfig के साथ ओवरराइड हो जाती है। जब आप केवल "mod" TLO देखते हैं, तो वर्तमान बैकएंड उपयोगकर्ता के लिए सभी उपयोगकर्ता सेटिंग्स भी लागू हो जाती हैं। यहाँ यह स्पष्ट है कि उपयोगकर्ता के लिए कुछ अतिरिक्त सेटिंग्स लागू होनी चाहिए क्योंकि Page TSconfig में वास्तव में केवल "mod.SHARED.colPos_list" ही पाया गया था (पहली छवि में "सभी" दृश्य के अनुसार)।</target></trans-unit>
+      <trans-unit id="tsconfig_edit.alttitle" resname="tsconfig_edit.alttitle" approved="yes">
+        <source>Page TSconfig content viewer</source>
+        <target state="final">पृष्ठ TSconfig कॉन्टेंट दर्शक</target>
+      </trans-unit>
+      <trans-unit id="tsconfig_edit.description" resname="tsconfig_edit.description" approved="yes">
+        <source>Displays the raw TSconfig code of all pages in the current root line including any default code.</source>
+        <target state="final">यह किसी भी डिफ़ॉल्ट कोड सहित वर्तमान रूट लाइन में सभी पृष्ठों का raw Page TSconfig कोड प्रदर्शित करता है।</target>
+      </trans-unit>
+      <trans-unit id="tsconfig_edit.details" resname="tsconfig_edit.details" xml:space="preserve" approved="yes">
+				<source>The parsed Page TSconfig tree you see in the default view is actually compiled from this TSconfig code in the order it appears here. This view lets you see how the parsed version came to be.
+You can also click the edit-icons of the various pages to go directly to the TSconfig fields of the pages.</source>
+			<target state="final">डिफ़ॉल्ट दृश्य में दिखाई देने वाला पार्स किया गया Page TSconfig ट्री वास्तव में इसी TSconfig कोड से उसी क्रम में संकलित किया गया है जिस क्रम में यह यहाँ दिखाई देता है। यह दृश्य आपको यह देखने देता है कि पार्स किया गया संस्करण कैसे बना।
+आप विभिन्न पृष्ठों के संपादन-चिह्नों पर क्लिक करके सीधे पृष्ठों के TSconfig फ़ील्ड पर भी जा सकते हैं।</target></trans-unit>
+      <trans-unit id="_tsconfig_edit.seeAlso" resname="_tsconfig_edit.seeAlso" approved="yes">
+        <source>_MOD_web_info:tsconfig_hierarchy</source>
+        <target state="final">_MOD_web_info:tsconfig_hierarchy</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_tsconfig_edit.image" resname="_tsconfig_edit.image" xml:space="preserve" approved="yes">
+				<source>EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_3.png,
+EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_4.png,
+EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_5.png</source>
+				
+			<target state="final">EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_3.png,
+EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_4.png,
+EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_5.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="tsconfig_edit.image_descr" resname="tsconfig_edit.image_descr" xml:space="preserve" approved="yes">
+				<source>Shows the raw Page TSconfig code. First you see the default content from TYPO3_CONF_VARS (probably added by extensions), then the content from the "TSconfig" field of the first page in the root line ("Intro") and then for each root line page up to the current page (not shown in screenshot).
+In the bottom of the page you will see a link which will open editing forms for all of the TSconfig fields shown in the list!
+Here you see specifically the TSconfig fields of the first and second page in the rootline being edited. Notice the "TS" icon next to the first field - this will bring up a wizard that helps you to select among available Page TSconfig properties.</source>
+			<target state="final">यह रॉ (raw) Page TSconfig कोड दिखाता है। सबसे पहले आपको TYPO3_CONF_VARS का डिफ़ॉल्ट कंटेंट दिखाई देता है (जो संभवतः एक्सटेंशन्स द्वारा जोड़ा गया होता है), उसके बाद रूट लाइन के पहले पेज ("Intro") के "TSconfig" फ़ील्ड का कंटेंट, और फिर रूट लाइन के प्रत्येक पेज का कंटेंट वर्तमान पेज तक (स्क्रीनशॉट में नहीं दिखाया गया) प्रदर्शित होता है।
+
+पेज के नीचे आपको एक लिंक दिखाई देगा, जो सूची में दिखाए गए सभी TSconfig फ़ील्ड्स के एडिटिंग फ़ॉर्म खोलता है।
+
+यहाँ आप विशेष रूप से रूटलाइन के पहले और दूसरे पेज के TSconfig फ़ील्ड्स को एडिट करते हुए देख सकते हैं। पहले फ़ील्ड के पास मौजूद "TS" आइकन पर ध्यान दें — यह एक विज़ार्ड खोलता है, जो आपको उपलब्ध Page TSconfig प्रॉपर्टीज़ में से चयन करने में सहायता करता है।</target></trans-unit>
+    </body>
+  </file>
+</xliff>
