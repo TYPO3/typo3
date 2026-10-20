@@ -1,0 +1,645 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814818" source-language="en" datatype="plaintext" original="EXT:extensionmanager/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id="extensionManager" resname="extensionManager" approved="yes">
+        <source>Extension Manager</source>
+        <target state="final">Upravitelj proširenja</target>
+      </trans-unit>
+      <trans-unit id="manageExtensions" resname="manageExtensions" approved="yes">
+        <source>Manage Extensions</source>
+        <target state="final">Upravljaj proširenjima</target>
+      </trans-unit>
+      <trans-unit id="installExtension" resname="installExtension" approved="yes">
+        <source>Install Extension</source>
+        <target state="final">Instaliraj proširenje</target>
+      </trans-unit>
+      <trans-unit id="composerMode.title" resname="composerMode.title" approved="yes">
+        <source>Composer mode</source>
+        <target state="final">Način "composer"</target>
+      </trans-unit>
+      <trans-unit id="composerMode.message" resname="composerMode.message" approved="yes">
+        <source>The system is set to composer mode. Please notice that it is not possible to add an extension with the Extension Manager. You have to use composer to add further extensions to your system.</source>
+        <target state="final">Sustav je u načinu "composer". U ovom načinu nije moguće dodavati proširenja putem Upravitelja proširenja. Kako bi dodali proširenja u sustav morate koristiti alat "composer".</target>
+      </trans-unit>
+      <trans-unit id="installedExtensions" resname="installedExtensions" approved="yes">
+        <source>Installed Extensions</source>
+        <target state="final">Instalirana proširenja</target>
+      </trans-unit>
+      <trans-unit id="getExtensions" resname="getExtensions" approved="yes">
+        <source>Get Extensions</source>
+        <target state="final">Nabavi nova proširenja</target>
+      </trans-unit>
+      <trans-unit id="showAllVersions" resname="showAllVersions" approved="yes">
+        <source>Show all versions of</source>
+        <target state="final">Prikaži sve verzije proširenja</target>
+      </trans-unit>
+      <trans-unit id="extConfTemplate.backToList" resname="extConfTemplate.backToList" approved="yes">
+        <source>Back to list</source>
+        <target state="final">Nazad na popis</target>
+      </trans-unit>
+      <trans-unit id="updateScript.headline" resname="updateScript.headline" approved="yes">
+        <source>Update script for %s</source>
+        <target state="final">Osvježi skriptu za %s</target>
+      </trans-unit>
+      <trans-unit id="updateScript.none" resname="updateScript.none" approved="yes">
+        <source>No update necessary.</source>
+        <target state="final">Nije potrebno osvježenje.</target>
+      </trans-unit>
+      <trans-unit id="button.cancel" resname="button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Odustani</target>
+      </trans-unit>
+      <trans-unit id="button.remove" resname="button.remove" approved="yes">
+        <source>Remove extension</source>
+        <target state="final">Ukloni proširenje</target>
+      </trans-unit>
+      <trans-unit id="button.updateExtension" resname="button.updateExtension" approved="yes">
+        <source>Update extension</source>
+        <target state="final">Ažuriraj proširenje</target>
+      </trans-unit>
+      <trans-unit id="button.resolveDependencies" resname="button.resolveDependencies" approved="yes">
+        <source>Resolve dependencies</source>
+        <target state="final">Razriješi zavisnosti</target>
+      </trans-unit>
+      <trans-unit id="label.resolveDependenciesEnableButton" resname="label.resolveDependenciesEnableButton" approved="yes">
+        <source>I understand what this means and I'm able to investigate on possibly occurring issues by myself.</source>
+        <target state="final">Razumije što to znači i sposoban sam sam istražiti moguće probleme.</target>
+      </trans-unit>
+      <trans-unit id="button.resolveDependenciesIgnore" resname="button.resolveDependenciesIgnore" approved="yes">
+        <source>I know what I'm doing, continue anyway</source>
+        <target state="final">Znam što činim, nastavi unatoč svemu</target>
+      </trans-unit>
+      <trans-unit id="extensionList.update.script" resname="extensionList.update.script" approved="yes">
+        <source>Execute the update script</source>
+        <target state="final">Izvrši skriptu za osvježavanje</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadsql" resname="extensionList.downloadsql" approved="yes">
+        <source>Download SQL Dump</source>
+        <target state="final">Preuzmi SQL ispis</target>
+      </trans-unit>
+      <trans-unit id="extensionList.remove" resname="extensionList.remove" approved="yes">
+        <source>Remove</source>
+        <target state="final">Ukloni</target>
+      </trans-unit>
+      <trans-unit id="extensionList.update" resname="extensionList.update" approved="yes">
+        <source>Update</source>
+        <target state="final">Osvježi</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateToVersion" resname="extensionList.updateToVersion" approved="yes">
+        <source>Update to version %s</source>
+        <target state="final">Osvježi na verziju %s</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateDisabled" resname="extensionList.updateDisabled" approved="yes">
+        <source>An update is available but this operation is currently disabled</source>
+        <target state="final">Osvježenje je dostupno no ova operacija je trenutno onemogućena</target>
+      </trans-unit>
+      <trans-unit id="extensionList.deactivate" resname="extensionList.deactivate" approved="yes">
+        <source>Deactivate</source>
+        <target state="final">Onemogući</target>
+      </trans-unit>
+      <trans-unit id="extensionList.activate" resname="extensionList.activate" approved="yes">
+        <source>Activate</source>
+        <target state="final">Omogući</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadzip" resname="extensionList.downloadzip" approved="yes">
+        <source>Download as zip</source>
+        <target state="final">Preuzmi kao zip</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uploadExtension" resname="extensionList.uploadExtension" approved="yes">
+        <source>Upload Extension .t3x/.zip</source>
+        <target state="final">Pošalji proširenje .t3x/.zip</target>
+      </trans-unit>
+      <trans-unit id="extensionList.overwriteExtension" resname="extensionList.overwriteExtension" approved="yes">
+        <source>Overwrite</source>
+        <target state="final">Pregazi</target>
+      </trans-unit>
+      <trans-unit id="extensionList.overwritingDisabled" resname="extensionList.overwritingDisabled" approved="yes">
+        <source>Extension is already available and overwriting was not enabled</source>
+        <target state="final">Proširenje je već dostupno a niste omogućili zamjenu novom verzijom</target>
+      </trans-unit>
+      <trans-unit id="extensionList.loading" resname="extensionList.loading" approved="yes">
+        <source>Loading form...</source>
+        <target state="final">Učitavam obrazac...</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.update" resname="extensionList.header.update" approved="yes">
+        <source>Upd.</source>
+        <target state="final">Osvj.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.title.update" resname="extensionList.header.title.update" approved="yes">
+        <source>Update</source>
+        <target state="final">Osvježi</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.activate" resname="extensionList.header.activate" approved="yes">
+        <source>A/D</source>
+        <target state="final">U/I</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.title.activate" resname="extensionList.header.title.activate" approved="yes">
+        <source>Activate / Deactivate</source>
+        <target state="final">Uključi / Isključi</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionName" resname="extensionList.header.extensionName" approved="yes">
+        <source>Extension</source>
+        <target state="final">Proširenje</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.version" resname="extensionList.header.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Verzija</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionKey" resname="extensionList.header.extensionKey" approved="yes">
+        <source>Key</source>
+        <target state="final">Ključ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionVersion" resname="extensionList.header.extensionVersion" approved="yes">
+        <source>Version</source>
+        <target state="final">Verzija</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionActions" resname="extensionList.header.extensionActions" approved="yes">
+        <source>Actions</source>
+        <target state="final">Akcije</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionState" resname="extensionList.header.extensionState" approved="yes">
+        <source>State</source>
+        <target state="final">Stanje</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.extensionType" resname="extensionList.header.extensionType" approved="yes">
+        <source>Type</source>
+        <target state="final">Tip</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.uploadComment" resname="extensionList.header.uploadComment" approved="yes">
+        <source>Upload Comment</source>
+        <target state="final">Komentar za slanje</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.lastUpdate" resname="extensionList.header.lastUpdate" approved="yes">
+        <source>Last Updated</source>
+        <target state="final">Zadnje osvježenje</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.description" resname="extensionList.header.description" approved="yes">
+        <source>Description</source>
+        <target state="final">Opis</target>
+      </trans-unit>
+      <trans-unit id="extensionList.header.author" resname="extensionList.header.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Autor</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.searchExtensions" resname="searchTemplate.searchExtensions" approved="yes">
+        <source>Search extensions</source>
+        <target state="final">Pretraži proširenja</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.submitButton" resname="searchTemplate.submitButton" approved="yes">
+        <source>Go</source>
+        <target state="final">Idi</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.resetSearchButton" resname="searchTemplate.resetSearchButton" approved="yes">
+        <source>Reset Search</source>
+        <target state="final">Resetiraj pretragu</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.yourSearch" resname="searchTemplate.yourSearch" approved="yes">
+        <source>Your search</source>
+        <target state="final">Vaša pretraga</target>
+      </trans-unit>
+      <trans-unit id="searchTemplate.searchAgain" resname="searchTemplate.searchAgain" approved="yes">
+        <source>Search again</source>
+        <target state="final">Traži ponovo</target>
+      </trans-unit>
+      <trans-unit id="uploadTemplate.uploadButton" resname="uploadTemplate.uploadButton" approved="yes">
+        <source>Upload!</source>
+        <target state="final">Pošalji!</target>
+      </trans-unit>
+      <trans-unit id="uploadTemplate.extensionLabel" resname="uploadTemplate.extensionLabel" approved="yes">
+        <source>Extension</source>
+        <target state="final">Proširenje</target>
+      </trans-unit>
+      <trans-unit id="extensionList.removalConfirmation.title" resname="extensionList.removalConfirmation.title" approved="yes">
+        <source>Extension Removal</source>
+        <target state="final">Uklanjanje proširenja</target>
+      </trans-unit>
+      <trans-unit id="extensionList.removalConfirmation.message" resname="extensionList.removalConfirmation.message" approved="yes">
+        <source>The extension is currently installed. Uninstall extension?</source>
+        <target state="final">Proširenje je trenutno instalirano. Deinstalirati proširenje?</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateConfirmation.title" resname="extensionList.updateConfirmation.title" approved="yes">
+        <source>Update?</source>
+        <target state="final">Osvježiti?</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateConfirmation.questionVersionComments" resname="extensionList.updateConfirmation.questionVersionComments" approved="yes">
+        <source>Version Comments</source>
+        <target state="final">Komentari verzije</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFlashMessage.title" resname="extensionList.updateFlashMessage.title" approved="yes">
+        <source>Extension Update</source>
+        <target state="final">Osvježenje proširenja</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFlashMessage.body" resname="extensionList.updateFlashMessage.body" approved="yes">
+        <source>%s was updated!</source>
+        <target state="final">%s je ažuriran!</target>
+      </trans-unit>
+      <trans-unit id="extensionList.removalConfirmation.question" resname="extensionList.removalConfirmation.question" approved="yes">
+        <source>Are you sure you want to remove the extension?</source>
+        <target state="final">Sigurni ste da želite ukloniti proširenje?</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.unresolvedDependencies.title" resname="dependencyCheck.unresolvedDependencies.title" approved="yes">
+        <source>Please read this carefully</source>
+        <target state="final">Molimo Vas, pročitajte ovo pažljivo</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.unresolvedDependencies.message" resname="dependencyCheck.unresolvedDependencies.message" approved="yes">
+        <source><![CDATA[
+					If you continue installing the extension, all dependency checks will be turned off.
+					<ul>
+						<li>Required extensions are tried to be fetched from TER (if they do not yet exist in the system)</li>
+						<li>Version dependency checks are skipped</li>
+					</ul>
+					<strong>
+						Be aware that an installation without dependency checks may turn your installation unusable.<br />
+						In such a case manual intervention is required.
+					</strong>
+				]]></source>
+        <target state="final"><![CDATA[
+					Ukoliko nastavite s instalacijom proširenja, sve provjere ovisnosti bit će isključene. &lt;ul&gt; &lt;li&gt;Zahtjevana proširenja pokušavaju se dohvatiti iz TER-a (ukoliko nisu već instalirane)&lt;/li&gt; &lt;li&gt;Provjere verzija se preskaču&lt;/li&gt; &lt;/ul&gt; &lt;strong&gt; Trebate znati da instaliranje proširenja bez provjera ovisnosti može onesposobiti instalaciju.&lt;br /&gt; U takvim slučajevima potrebna je ručna intervencija. &lt;/strong&gt;
+				]]></target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.unresolvedDependencies.question" resname="dependencyCheck.unresolvedDependencies.question" approved="yes">
+        <source>Are you sure you want to proceed?</source>
+        <target state="final">Zaista želite nastaviti?</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.unresolvedDependencies.proceed" resname="dependencyCheck.unresolvedDependencies.proceed" approved="yes">
+        <source>I know what I'm doing, install the extension!</source>
+        <target state="final">Znam što radim, instaliraj proširenje!</target>
+      </trans-unit>
+      <trans-unit id="dependencyCheck.headline" resname="dependencyCheck.headline" approved="yes">
+        <source>The following errors were found while trying to install "%s"</source>
+        <target state="final">Tijekom instalacije proširenja "%s" došlo je do sljedećih grešaka</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.headline" resname="downloadExtension.dependencies.headline" approved="yes">
+        <source>The following dependencies have to be resolved before installation:
+
+
+				</source>
+        <target state="final">Sljedeće ovisnosti moraju biti riješene prije instalacije:
+
+
+				</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.extensionWithVersion" resname="downloadExtension.dependencies.extensionWithVersion" approved="yes">
+        <source>%1$s (new version %2$s)</source>
+        <target state="final">%1$s (nova inačica %2$s)</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.typeHeadline" resname="downloadExtension.dependencies.typeHeadline" xml:space="preserve" approved="yes">
+				<source>&lt;h3&gt;Extensions marked for %s:&lt;/h3&gt;
+%s
+
+
+				</source>
+			<target state="final">&lt;h3&gt;Proširenja označena za %s:&lt;/h3&gt;
+%s
+
+
+				</target></trans-unit>
+      <trans-unit id="downloadExtension.dependencies.resolveAutomatically" resname="downloadExtension.dependencies.resolveAutomatically" approved="yes">
+        <source>Shall these dependencies be resolved automatically?</source>
+        <target state="final">Riješiti ove ovisnosti automatski?</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencies.errorTitle" resname="downloadExtension.dependencies.errorTitle" approved="yes">
+        <source>Dependencies could not be resolved</source>
+        <target state="final">Ovisnosti nije bilo moguće riješiti</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencyType.download" resname="downloadExtension.dependencyType.download" approved="yes">
+        <source>download</source>
+        <target state="final">preuzmi</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencyType.install" resname="downloadExtension.dependencyType.install" approved="yes">
+        <source>install</source>
+        <target state="final">instaliraj</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.dependencyType.update" resname="downloadExtension.dependencyType.update" approved="yes">
+        <source>update</source>
+        <target state="final">osvježi</target>
+      </trans-unit>
+      <trans-unit id="downloadExtension.updateExtension.error" resname="downloadExtension.updateExtension.error" approved="yes">
+        <source>Error while updating extension</source>
+        <target state="final">Greška prilikom ažuriranja proširenja</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadError.title" resname="extensionList.dependenciesResolveDownloadError.title" approved="yes">
+        <source>Download Error</source>
+        <target state="final">Greška preuzimanja</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.message" resname="extensionList.dependenciesResolveDownloadSuccess.message" approved="yes">
+        <source>Your installation of {0} was successful.</source>
+        <target state="final">Vaša instalacija proširenja {0} je uspjela.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.message.downloadOnly" resname="extensionList.dependenciesResolveDownloadSuccess.message.downloadOnly" approved="yes">
+        <source>Your download of {0} was successful.</source>
+        <target state="final">Preuzimanje proširenja {0} je uspjelo.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.header" resname="extensionList.dependenciesResolveDownloadSuccess.header" approved="yes">
+        <source>Log</source>
+        <target state="final">Zapisnik</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveDownloadSuccess.item" resname="extensionList.dependenciesResolveDownloadSuccess.item" approved="yes">
+        <source>Extensions</source>
+        <target state="final">Proširenja</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveFlashMessage.title" resname="extensionList.dependenciesResolveFlashMessage.title" approved="yes">
+        <source>{0} installed.</source>
+        <target state="final">{0} je instaliran.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.dependenciesResolveFlashMessage.title.downloadOnly" resname="extensionList.dependenciesResolveFlashMessage.title.downloadOnly" approved="yes">
+        <source>{0} downloaded.</source>
+        <target state="final">{0} je preuzeto.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uploadFlashMessage.title" resname="extensionList.uploadFlashMessage.title" approved="yes">
+        <source>Extension Upload</source>
+        <target state="final">Slanje proširenja</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uploadFlashMessage.message" resname="extensionList.uploadFlashMessage.message" approved="yes">
+        <source>%s was uploaded!</source>
+        <target state="final">{0} poslano!</target>
+      </trans-unit>
+      <trans-unit id="extensionList.installedFlashMessage.message" resname="extensionList.installedFlashMessage.message" approved="yes">
+        <source>%s was installed!</source>
+        <target state="final">%s je instalirano!</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTerFlashMessage.title" resname="extensionList.updateFromTerFlashMessage.title" approved="yes">
+        <source>Update Extension List</source>
+        <target state="final">Osvježi popis proširenja</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadViewHelper.submit" resname="extensionList.downloadViewHelper.submit" approved="yes">
+        <source>Import and Install</source>
+        <target state="final">Uvezi i instaliraj</target>
+      </trans-unit>
+      <trans-unit id="extensionList.downloadViewHelper.submit.downloadOnly" resname="extensionList.downloadViewHelper.submit.downloadOnly" approved="yes">
+        <source>Import</source>
+        <target state="final">Uvoz</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.label" resname="extensionList.showAllVersions.label" approved="yes">
+        <source>Show all versions</source>
+        <target state="final">Prikaži sve verzije</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.extensionKey" resname="extensionList.showAllVersions.extensionKey" approved="yes">
+        <source>Extension key</source>
+        <target state="final">Ključ proširenja</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.version" resname="extensionList.showAllVersions.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Verzija</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.lastUploaded" resname="extensionList.showAllVersions.lastUploaded" approved="yes">
+        <source>Last uploaded</source>
+        <target state="final">Zadnje osvježenje</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.downloads" resname="extensionList.showAllVersions.downloads" approved="yes">
+        <source>Downloads</source>
+        <target state="final">Preuzimanja</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.category" resname="extensionList.showAllVersions.category" approved="yes">
+        <source>Category</source>
+        <target state="final">Kategorija</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.manual" resname="extensionList.showAllVersions.manual" approved="yes">
+        <source>Manual</source>
+        <target state="final">Priručnik</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.author" resname="extensionList.showAllVersions.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Autor</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showAllVersions.readOnline" resname="extensionList.showAllVersions.readOnline" approved="yes">
+        <source>Read online</source>
+        <target state="final">Pročitaj na mreži</target>
+      </trans-unit>
+      <trans-unit id="extensionList.remove.message" resname="extensionList.remove.message" approved="yes">
+        <source>Extension "%s" was removed successfully!</source>
+        <target state="final">Proširenje "%s" je uklonjeno!</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.key" resname="extensionList.distribution.key" approved="yes">
+        <source>Key</source>
+        <target state="final">Ključ</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.author" resname="extensionList.distribution.author" approved="yes">
+        <source>Author</source>
+        <target state="final">Autor</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.version" resname="extensionList.distribution.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Verzija</target>
+      </trans-unit>
+      <trans-unit id="extensionList.distribution.downloads" resname="extensionList.distribution.downloads" approved="yes">
+        <source>Downloads</source>
+        <target state="final">Preuzimanja</target>
+      </trans-unit>
+      <trans-unit id="extensionList.showUnsuitableDistributions" resname="extensionList.showUnsuitableDistributions" approved="yes">
+        <source>Show also distributions that are not suitable for this TYPO3 version</source>
+        <target state="final">Prikaži i distribucije koje nisu pogodne za ovu inačicu TYPO3 sustava.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.officialDistribution" resname="extensionList.officialDistribution" approved="yes">
+        <source>Official distribution</source>
+        <target state="final">Službena distribucija</target>
+      </trans-unit>
+      <trans-unit id="distributions" resname="distributions" approved="yes">
+        <source>Get preconfigured distribution</source>
+        <target state="final">Dohvati predpodešenu distribuciju</target>
+      </trans-unit>
+      <trans-unit id="extensionList.installDistribution" resname="extensionList.installDistribution" approved="yes">
+        <source>Install</source>
+        <target state="final">Instaliraj distribuciju</target>
+      </trans-unit>
+      <trans-unit id="extensionList.installImpexp" resname="extensionList.installImpexp" approved="yes">
+        <source>Please install the Import/Export (impexp) extension to enable distribution support.</source>
+        <target state="final">Molimo Vas da instalirate proširenje Uvoz/Izvoz /impexp) kako bi omogućili podršku za distribuciju.</target>
+      </trans-unit>
+      <trans-unit id="distribution.installImpexp" resname="distribution.installImpexp" approved="yes">
+        <source>Install impexp</source>
+        <target state="final">Instaliraj impexp</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.label" resname="extensionList.updateFromTer.label" approved="yes">
+        <source>Retrieving extension list from TYPO3 Extension Repository (TER)...</source>
+        <target state="final">Dohvaćam popis proširenja iz TYPO3 repozitorija za proširenja (TER)...</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.buttonLabel" resname="extensionList.updateFromTer.buttonLabel" approved="yes">
+        <source>Update now</source>
+        <target state="final">Osvježi sada</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.noInfo" resname="extensionList.updateFromTer.lastUpdate.noInfo" approved="yes">
+        <source>unknown</source>
+        <target state="final">nepoznato</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.fullTimeFormat" resname="extensionList.updateFromTer.lastUpdate.fullTimeFormat" approved="yes">
+        <source>Y-m-d H:i:s</source>
+        <target state="final">Y-m-d H:i:s</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.timeOfLastUpdate" resname="extensionList.updateFromTer.lastUpdate.timeOfLastUpdate" approved="yes">
+        <source>Time of last update: </source>
+        <target state="final">Vrijeme posljednjeg ažuriranja: </target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.lastUpdate.noTimeOfLastUpdate" resname="extensionList.updateFromTer.lastUpdate.noTimeOfLastUpdate" approved="yes">
+        <source>No last update time known.</source>
+        <target state="final">Nije poznato vrijeme zadnjeg osvježavanja.</target>
+      </trans-unit>
+      <trans-unit id="extensionList.updateFromTer.never" resname="extensionList.updateFromTer.never" approved="yes">
+        <source>Never</source>
+        <target state="final">Nikada</target>
+      </trans-unit>
+      <trans-unit id="extensionList.uninstall.dependencyError" resname="extensionList.uninstall.dependencyError" approved="yes">
+        <source>Cannot deactivate extension '%s' - The extension(s) '%s' depend on it.</source>
+        <target state="final">Ne mogu isključiti proširenje '%s' - Proširenje(proširenja) '%s' ovise o njemu.</target>
+      </trans-unit>
+      <trans-unit id="distribution.error.headline" resname="distribution.error.headline" approved="yes">
+        <source>Could not install distribution '%s'</source>
+        <target state="final">Nije moguće instalirati distribuciju '%s'</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.headline" resname="distribution.welcome.headline" approved="yes">
+        <source>Congratulations...</source>
+        <target state="final">Čestitamo...</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.openViewModule" resname="distribution.welcome.openViewModule" approved="yes">
+        <source>View your website</source>
+        <target state="final">Pregledajte Vašu internet stranicu:</target>
+      </trans-unit>
+      <trans-unit id="distribution.welcome.openPageModule" resname="distribution.welcome.openPageModule" approved="yes">
+        <source>Start editing your website</source>
+        <target state="final">Počnite uređivati Vašu internet stranicu</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.identifier" resname="distribution.dependency.identifier" approved="yes">
+        <source>Identifier</source>
+        <target state="final">Identifikator</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.type" resname="distribution.dependency.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Tip</target>
+      </trans-unit>
+      <trans-unit id="distribution.dependency.version" resname="distribution.dependency.version" approved="yes">
+        <source>Version</source>
+        <target state="final">Verzija</target>
+      </trans-unit>
+      <trans-unit id="task.updateExtensionListTask.name" resname="task.updateExtensionListTask.name" approved="yes">
+        <source>Update extension list</source>
+        <target state="final">Osvježi popis proširenja</target>
+      </trans-unit>
+      <trans-unit id="task.updateExtensionListTask.description" resname="task.updateExtensionListTask.description" approved="yes">
+        <source>Update TER extension list on a regular basis. Once a day is a good interval.</source>
+        <target state="final">Redovito osvježavaj TER popis proširenja. Jednom dnevno je dobar interval.</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.title" resname="report.status.mainRepository.title" approved="yes">
+        <source>Update status of typo3.org main repository extension list</source>
+        <target state="final">Osvježi status typo3.org glavnog repozitorija proširenja</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notFound.value" resname="report.status.mainRepository.notFound.value" approved="yes">
+        <source>Error</source>
+        <target state="final">Greška</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notFound.message" resname="report.status.mainRepository.notFound.message" approved="yes">
+        <source>The typo3.org extension repository was not found. Please import the main typo3.org extension repository in the install tool wizard.</source>
+        <target state="final">Repozitorij proširenja typo3.org nije pronađen. Molimo Vas da uvezete glavni typo3.org repozitorij proširenja u čarobnjaku instalacijskog alata.</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notUpToDate.value" resname="report.status.mainRepository.notUpToDate.value" approved="yes">
+        <source>Extension list is not up to date!</source>
+        <target state="final">Popis proširenja nije ažuran!</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.notUpToDate.message" resname="report.status.mainRepository.notUpToDate.message" approved="yes">
+        <source>The Main Repository extension list is older than 7 days. Please update it in the Extension manager or Scheduler.</source>
+        <target state="final">Popis proširenja glavnog repozitorija stariji je od 7 dana. Molimo Vas da popis osvježite u upravitelju proširenja ili alatu za raspored.</target>
+      </trans-unit>
+      <trans-unit id="report.status.mainRepository.upToDate.value" resname="report.status.mainRepository.upToDate.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.title" resname="report.status.loadedExtensions.title" approved="yes">
+        <source>Security status of loaded extensions</source>
+        <target state="final">Sigurnosni status učitanih proširenja</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.noInsecureExtensionLoaded.value" resname="report.status.loadedExtensions.noInsecureExtensionLoaded.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.value" resname="report.status.loadedExtensions.insecureExtensionLoaded.value" approved="yes">
+        <source>%s insecure extension(s) found</source>
+        <target state="final">Pronađeno je %s nesigurnih proširenja</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.message" resname="report.status.loadedExtensions.insecureExtensionLoaded.message" approved="yes">
+        <source>The following extensions are insecure and usage might damage your system. Please update these extensions as soon as possible or remove them from your system:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">Sljedeća proširenja nisu sigurna i mogu oštetiti Vaš sustav. Molimo Vas da osvježite ova proširenja što prije ili ih uklonite iz Vašeg sustava:&lt;br&gt;&lt;br&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.message.extension" resname="report.status.loadedExtensions.insecureExtensionLoaded.message.extension" approved="yes">
+        <source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
+        <target state="final">&lt;strong&gt;%1$s&lt;/strong&gt; (inačica %2$s)&lt;br&gt;</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.title" resname="report.status.existingExtensions.title" approved="yes">
+        <source>Security status of existing, but not loaded extensions</source>
+        <target state="final">Sigurnosni status postojeći proširenja koja nisu učitana</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.noInsecureExtensionExists.value" resname="report.status.existingExtensions.noInsecureExtensionExists.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.insecureExtensionExists.value" resname="report.status.existingExtensions.insecureExtensionExists.value" approved="yes">
+        <source>%s insecure extension(s) found</source>
+        <target state="final">Pronađeno je %s nesigurnih proširenja</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.insecureExtensionExists.message" resname="report.status.existingExtensions.insecureExtensionExists.message" approved="yes">
+        <source>The following extensions were found on your system, but are currently not installed. Please delete the extensions using the extension manager:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">Sljedeća proširenja postoje na Vašem sustavu ali trenutno nisu instalirana. Molimo Vas da obrišete navedena proširenja koristeći upravitelj proširenja:&lt;br&gt;&lt;br&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingExtensions.insecureExtensionExists.message.extension" resname="report.status.existingExtensions.insecureExtensionExists.message.extension" approved="yes">
+        <source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
+        <target state="final">&lt;strong&gt;%1$s&lt;/strong&gt; (inačica %2$s)&lt;br&gt;</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.title" resname="report.status.loadedOutdatedExtensions.title" approved="yes">
+        <source>Outdated status of loaded extensions</source>
+        <target state="final">Status zastarjelih učitanih proširenja</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.noOutdatedExtensionLoaded.value" resname="report.status.loadedOutdatedExtensions.noOutdatedExtensionLoaded.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.value" resname="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.value" approved="yes">
+        <source>%s outdated extension(s) found</source>
+        <target state="final">Pronađeno je %s zastarjelih proširenja</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message" resname="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message" approved="yes">
+        <source>The following extensions are outdated and may not be compatible with your installation. Please make sure these extensions are compatible and ask the extension author to publish updates:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">Sljedeća proširenja su zastarjela te možda nisu kompatibilna sa Vašom instalacijom. Provjerite jesu li navedena proširenja kompatibilna i zamolite autore da objave osvježene verzije:&lt;br&gt;&lt;br&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message.extension" resname="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message.extension" approved="yes">
+        <source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
+        <target state="final">&lt;strong&gt;%1$s&lt;/strong&gt; (inačica %2$s)&lt;br&gt;</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.title" resname="report.status.existingOutdatedExtensions.title" approved="yes">
+        <source>Outdated status of existing, but not loaded extensions</source>
+        <target state="final">Status zastarjelih proširenja koja nisu učitana</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.noOutdatedExtensionExists.value" resname="report.status.existingOutdatedExtensions.noOutdatedExtensionExists.value" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.value" resname="report.status.existingOutdatedExtensions.outdatedExtensionExists.value" approved="yes">
+        <source>%s outdated extension(s) found</source>
+        <target state="final">Pronađeno je %s zastarjelih proširenja</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.message" resname="report.status.existingOutdatedExtensions.outdatedExtensionExists.message" approved="yes">
+        <source>The following extensions were found on your system, but are currently not installed. Please make sure they are compatible with your system before installing them:&lt;br&gt;&lt;br&gt;%s</source>
+        <target state="final">Sljedeća proširenja postoje na Vašem sustavu ali nisu trenutno instalirana. Provjerite jesu li navedena proširenja kompatibilna sa Vašim sustavom prije nego li ih instalirate:&lt;br&gt;&lt;br&gt;%s</target>
+      </trans-unit>
+      <trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.message.extension" resname="report.status.existingOutdatedExtensions.outdatedExtensionExists.message.extension" approved="yes">
+        <source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
+        <target state="final">&lt;strong&gt;%1$s&lt;/strong&gt; (inačica %2$s)&lt;br&gt;</target>
+      </trans-unit>
+      <trans-unit id="fileHandling.couldNotCreateDirectory" resname="fileHandling.couldNotCreateDirectory" approved="yes">
+        <source>ERROR: Could not create extension directory "%s"!</source>
+        <target state="final">GRAŠKA: Nisam uspio stvoriti mapu za proširenje "%s"!</target>
+      </trans-unit>
+      <trans-unit id="fileHandling.installPathWasNoDirectory" resname="fileHandling.installPathWasNoDirectory" approved="yes">
+        <source>ERROR: The extension install path "%s" was no directory!</source>
+        <target state="final">GREŠKA: Instalacijska putanja proširenja "%s" nije mapa!</target>
+      </trans-unit>
+      <trans-unit id="config.automaticInstallation" resname="config.automaticInstallation" approved="yes">
+        <source>Install extensions automatically after download from TER or file upload</source>
+        <target state="final">Instaliraj proširenja automatski nakon preuzimanja iz TER-a ili slanja datoteke</target>
+      </trans-unit>
+      <trans-unit id="config.offlineMode" resname="config.offlineMode" approved="yes">
+        <source>Disable TER connection and hide menu items</source>
+        <target state="final">Onemogući vezu prema TER-u i sakrij stavke izbornika</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
