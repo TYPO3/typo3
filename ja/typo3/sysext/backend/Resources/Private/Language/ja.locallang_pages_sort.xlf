@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1498839785" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Sort sub pages</source>
+        <target state="final">サブページを並べ替え</target>
+      </trans-unit>
+      <trans-unit id="fieldTitle" resname="fieldTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">ページタイトル</target>
+      </trans-unit>
+      <trans-unit id="fieldSubtitle" resname="fieldSubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">サブタイトル</target>
+      </trans-unit>
+      <trans-unit id="fieldNavitle" resname="fieldNavitle" approved="yes">
+        <source>Navigation title</source>
+        <target state="final">ナビゲーションタイトル</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTitle" resname="changeOrderByTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">ページタイトル</target>
+      </trans-unit>
+      <trans-unit id="changeOrderBySubtitle" resname="changeOrderBySubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">サブタイトル</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByNavtitle" resname="changeOrderByNavtitle" approved="yes">
+        <source>Navigation title</source>
+        <target state="final">ナビゲーションタイトル</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.title" resname="noSubpages.title" approved="yes">
+        <source>No subpages</source>
+        <target state="final">サブページがありません</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
