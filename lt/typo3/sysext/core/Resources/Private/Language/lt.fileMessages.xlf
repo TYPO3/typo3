@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/fileMessages.xlf" date="2015-11-10T06:53:10Z" product-name="core" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="FileUtility.CannotCopyFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeCopied" approved="yes">
+        <source>Folder "%s" cannot be copied because the destination already contains a folder or file named "%s".</source>
+        <target state="final">Aplanko „%s“ negalima nukopijuoti, nes paskirties vietoje jau yra aplankas arba failas pavadinimu „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CannotMoveFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeMoved" approved="yes">
+        <source>Folder "%s" cannot be moved to "%s" because source and destination are identical.</source>
+        <target state="final">Aplanko „%s“ negalima perkelti į „%s“, nes šaltinis ir paskirties vieta yra identiški.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotAccessAllNecessaryResources" approved="yes">
+        <source>The operation could not be completed because one or more required resources are not accessible (source "%s" or destination "%s").</source>
+        <target state="final">Operacijos nepavyko užbaigti, nes vienas ar daugiau reikalingų išteklių nėra pasiekiami (šaltinis „%s“ arba paskirties vieta „%s“).</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteDirectory" approved="yes">
+        <source>Folder "%s" could not be deleted. It must be empty, as recursive deletion is not enabled.</source>
+        <target state="final">Aplanko „%s“ nepavyko ištrinti. Jis turi būti tuščias, nes rekursinis trynimas nėra įjungtas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.CouldNotDeleteFile" approved="yes">
+        <source>File "%s" cannot not be deleted due to insufficent write permissions.</source>
+        <target state="final">Failo „%s“ negalima ištrinti dėl nepakankamų rašymo teisių.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationExistedAlready" approved="yes">
+        <source>The name "%s" is already in use.</source>
+        <target state="final">Pavadinimas „%s“ jau naudojamas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationPathWasNotWithinYourMountpoints" approved="yes">
+        <source>Destination path "%s" is not accessible</source>
+        <target state="final">Paskirties kelias „%s“ nepasiekiamas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DestinationWasNotADirectory" approved="yes">
+        <source>Destination "%s" is not a folder.</source>
+        <target state="final">Paskirties vieta „%s“ nėra aplankas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryCopiedTo" approved="yes">
+        <source>Folder "%s" copied to "%s".</source>
+        <target state="final">Aplankas „%s“ nukopijuotas į „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryCreatedIn" approved="yes">
+        <source>Folder "%s" created in "%s".</source>
+        <target state="final">Aplankas „%s“ sukurtas vietoje „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryMovedTo" approved="yes">
+        <source>Folder "%s" moved to "%s".</source>
+        <target state="final">Aplankas „%s“ perkeltas į „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryNotCreated" approved="yes">
+        <source>Folder "%s" cannot be created in "%s" due to insufficent write permissions.</source>
+        <target state="final">Aplanko „%s“ negalima sukurti vietoje „%s“ dėl nepakankamų rašymo teisių.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedFromTo" approved="yes">
+        <source>Folder renamed from "%s" to "%s".</source>
+        <target state="final">Aplankas pervadintas iš „%s“ į „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedFromToCharReplaced" approved="yes">
+        <source>Folder renamed from "%s" to "%s", with unsupported characters replaced.</source>
+        <target state="final">Aplankas pervadintas iš „%s“ į „%s“, pakeičiant nepalaikomus simbolius.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryRenamedSameName" approved="yes">
+        <source>Folder "%s" already has this name. No changes were made.</source>
+        <target state="final">Aplankas „%s“ jau turi tokį pavadinimą. Pakeitimų nebuvo atlikta.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotCopiedTo" approved="yes">
+        <source>Folder "%s" cannot be copied to "%s" due to insufficent write permissions.</source>
+        <target state="final">Aplanko „%s“ negalima nukopijuoti į „%s“ dėl nepakankamų rašymo teisių.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotMovedTo" approved="yes">
+        <source>Folder "%s" cannot be moved to "%s" due to insufficent write permissions.</source>
+        <target state="final">Aplanko „%s“ negalima perkelti į „%s“ dėl nepakankamų rašymo teisių.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.DirectoryWasNotRenamed" approved="yes">
+        <source>Folder "%s" cannot be renamed in "%s" due to insufficent write permissions.</source>
+        <target state="final">Aplanko „%s“ negalima pervadinti vietoje „%s“ dėl nepakankamų rašymo teisių.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileNameIsNotAllowedIn" approved="yes">
+        <source>The file extension of "%s" is not permitted in "%s".</source>
+        <target state="final">Failo „%s“ plėtinys nėra leidžiamas vietoje „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileNameOrWasNotAllowed" approved="yes">
+        <source>The file name %s or the extension %s is not allowed.</source>
+        <target state="final">Failo pavadinimas %s arba plėtinys %s nėra leidžiamas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ExtensionOfFileWasNotAllowed" approved="yes">
+        <source>The file extension of "%s" is not permitted.</source>
+        <target state="final">Failo „%s“ plėtinys nėra leidžiamas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileAlreadyExistsInFolder" approved="yes">
+        <source>A file with the same name "%s" already exists in "%s".</source>
+        <target state="final">Failas tuo pačiu pavadinimu „%s“ jau yra aplanke „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileCopiedTo" approved="yes">
+        <source>File "%s" copied to "%s".</source>
+        <target state="final">Failas „%s“ nukopijuotas į „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileCreated" approved="yes">
+        <source>File "%s" created.</source>
+        <target state="final">Failas „%s“ sukurtas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileNameSanitized" approved="yes">
+        <source>File renamed from "%s" to "%s", with unsupported characters replaced.</source>
+        <target state="final">Failas pervadintas iš „%s“ į „%s“, pakeičiant nepalaikomus simbolius.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExistedAlreadyIn" approved="yes">
+        <source>A file with the same name already exists in "%s"</source>
+        <target state="final">Failas tuo pačiu pavadinimu jau egzistuoja aplanke „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExtensionIsNotATextfileFormat" approved="yes">
+        <source>File extension "%s" is not a supported text file format. Supported formats: %s.</source>
+        <target state="final">Failo plėtinys „%s“ nėra palaikomas tekstinio failo formatas. Palaikomi formatai: %s.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileMovedTo" approved="yes">
+        <source>File "%s" moved to "%s".</source>
+        <target state="final">Failas „%s“ perkeltas į „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileNameWasNotAllowed" approved="yes">
+        <source>The file name %s is not allowed.</source>
+        <target state="final">Failo pavadinimas %s nėra leidžiamas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileOrDirectoryExistedAlready" approved="yes">
+        <source>File or directory "%s" already exists.</source>
+        <target state="final">Failas arba katalogas „%s“ jau egzistuoja.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileRenamedFromTo" approved="yes">
+        <source>File renamed from "%s" to "%s".</source>
+        <target state="final">Failas pervadintas iš „%s“ į „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileRenamedSameName" approved="yes">
+        <source>File "%s" already has this name. No changes were made.</source>
+        <target state="final">Failas „%s“ jau turi tokį pavadinimą. Pakeitimų nebuvo atlikta.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileSavedTo" approved="yes">
+        <source>File saved to "%s".</source>
+        <target state="final">Failas išsaugotas į „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotCopiedTo" approved="yes">
+        <source>File "%s" cannot be copied to "%s" due to insufficent write permissions.</source>
+        <target state="final">Failo „%s“ negalima nukopijuoti į „%s“ dėl nepakankamų rašymo teisių.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotCreated" approved="yes">
+        <source>File "%s" cannot be created in "%s" due to insufficent write permissions.</source>
+        <target state="final">Failo „%s“ negalima sukurti vietoje „%s“ dėl nepakankamų rašymo teisių.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotRenamed" approved="yes">
+        <source>File "%s" cannot be renamed in "%s" due to insufficent write permissions.</source>
+        <target state="final">Failo „%s“ negalima pervadinti vietoje „%s“ dėl nepakankamų rašymo teisių.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileWasNotSaved" approved="yes">
+        <source>File "%s" cannot be saved due to insufficent write permissions.</source>
+        <target state="final">Failo „%s“ negalima išsaugoti dėl nepakankamų rašymo teisių.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoFileWasUploaded" approved="yes">
+        <source>No file was uploaded.</source>
+        <target state="final">Nebuvo įkeltas joks failas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoFileWasUploadedForReplacing" approved="yes">
+        <source>No file was uploaded for replacement.</source>
+        <target state="final">Nepateiktas joks failas pakeitimui.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoNameForNewFolderGiven" approved="yes">
+        <source>No name was provided for the new folder.</source>
+        <target state="final">Nepateiktas naujo aplanko pavadinimas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.NoUniqueFilenameAvailableIn" approved="yes">
+        <source>No unique filename could be generated in "%s".</source>
+        <target state="final">Nepavyko sugeneruoti unikalaus failo pavadinimo aplanke „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.ReplacingFileTo" approved="yes">
+        <source>File "%s" was replaced with "%s".</source>
+        <target state="final">Failas „%s“ buvo pakeistas failu „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetAlreadyExists" approved="yes">
+        <source>Target "%s" already exists.</source>
+        <target state="final">Paskirties objektas „%s“ jau egzistuoja.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetWasNotAFile" approved="yes">
+        <source>Target "%s" was not a file.</source>
+        <target state="final">Paskirties objektas „%s“ nėra failas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TargetWasNotWithinYourMountpoints" approved="yes">
+        <source>Destination file or folder "%s" was not accessible.</source>
+        <target state="final">Paskirties failas arba aplankas „%s“ nepasiekiamas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFileDidNotExist" approved="yes">
+        <source>The file "%s" did not exist or is no longer available.</source>
+        <target state="final">Failas „%s“ neegzistuoja arba nebėra prieinamas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToCopyAFileBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>Copying files between storages is not yet available.</source>
+        <target state="final">Failų kopijavimas tarp saugyklų dar nėra galimas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToCopyAFolderBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>Copying folders between storages is not yet available.</source>
+        <target state="final">Aplankų kopijavimas tarp saugyklų dar nėra galimas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToMoveAFileBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>Moving files between storages is not yet available.</source>
+        <target state="final">Failų perkėlimas tarp saugyklų dar nėra galimas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheFunctionToMoveAFolderBetweenStoragesIsNotYetImplemented" approved="yes">
+        <source>Moving folders between storages is not yet available.</source>
+        <target state="final">Aplankų perkėlimas tarp saugyklų dar nėra galimas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheUploadHasFailedNoUploadedFileFound" approved="yes">
+        <source>No file was found for the upload.</source>
+        <target state="final">Įkėlimui nebuvo rastas joks failas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.TheUploadedFileExceedsTheSize-limit" approved="yes">
+        <source>The uploaded file "%s" exceeds the maximum allowed file size.</source>
+        <target state="final">Įkeltas failas „%s“ viršija maksimalų leidžiamą failo dydį.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UploadedFileCouldNotBeMoved" approved="yes">
+        <source>Uploaded file could not be moved in "%s" due to insufficent write permissions.</source>
+        <target state="final">Įkelto failo nepavyko perkelti į „%s“ dėl nepakankamų rašymo teisių.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.UploadingFileTo" approved="yes">
+        <source>File "%s" uploaded to "%s".</source>
+        <target state="final">Failas „%s“ įkeltas į „%s“.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToAccessTheDirectory" approved="yes">
+        <source>Access to this folder is not permitted.</source>
+        <target state="final">Prieiga prie šio aplanko neleidžiama.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToAccessTheFile" approved="yes">
+        <source>Access to this file is not permitted.</source>
+        <target state="final">Prieiga prie šio failo neleidžiama.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCopyDirectories" approved="yes">
+        <source>Copying directories is not permitted.</source>
+        <target state="final">Aplankų kopijavimas neleidžiamas</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCopyFiles" approved="yes">
+        <source>Copying files is not permitted.</source>
+        <target state="final">Failų kopijavimas neleidžiamas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.InvalidFolderName" approved="yes">
+        <source>The folder name "%s" is not valid.</source>
+        <target state="final">Aplanko pavadinimas „%s“ nėra galiojantis.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCreateDirectories" approved="yes">
+        <source>Creating folders is not permitted.</source>
+        <target state="final">Aplankų kūrimas neleidžiamas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToCreateFiles" approved="yes">
+        <source>Creating files is not permitted.</source>
+        <target state="final">Failų kūrimas neleidžiamas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToEditFiles" approved="yes">
+        <source>Editing files is not permitted.</source>
+        <target state="final">Failų redagavimas neleidžiamas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToMoveDirectories" approved="yes">
+        <source>Moving folders is not permitted.</source>
+        <target state="final">Aplankų perkėlimas neleidžiamas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToMoveFiles" approved="yes">
+        <source>Moving files is not permitted.</source>
+        <target state="final">Failų perkėlimas neleidžiamas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToOverride" approved="yes">
+        <source>Overwriting "%s" is not permitted.</source>
+        <target state="final">Perrašyti „%s“ neleidžiama.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToRenameDirectories" approved="yes">
+        <source>Renaming folders is not permitted.</source>
+        <target state="final">Aplankų pervadinimas neleidžiamas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToRenameFiles" approved="yes">
+        <source>Renaming files is not permitted.</source>
+        <target state="final">Failų pervadinimas neleidžiamas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouAreNotAllowedToUploadFiles" approved="yes">
+        <source>Uploading files is not permitted.</source>
+        <target state="final">Failų įkėlimas neleidžiamas.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.YouDontHaveFullAccessToTheDestinationDirectory" approved="yes">
+        <source>Full access to the destination folder "%s" is not available.</source>
+        <target state="final">Pilna prieiga prie paskirties aplanko „%s“ nepasiekiama.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.MimeTypeNotAllowedForFileExtensionWithExpectation" approved="yes">
+        <source>The MIME type "%s" is not allowed for files with the extension "%s". Expected: %s.</source>
+        <target state="final">MIME tipas „%s“ nėra leidžiamas failams su plėtiniu „%s“. Tikėtasi: %s.</target>
+      </trans-unit>
+      <trans-unit id="FileUtility.FileExtensionIsNotAllowed" approved="yes">
+        <source>File extension "%s" is not allowed here.</source>
+        <target state="final">Failo plėtinys „%s“ čia nėra leidžiamas.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
