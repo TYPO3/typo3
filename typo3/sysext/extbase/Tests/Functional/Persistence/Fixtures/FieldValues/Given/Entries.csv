@@ -1,0 +1,4 @@
+"tx_blogexample_domain_model_fieldvalue"
+,"uid","pid","title","trimmed","limited","serial","quantity","mandatory","code","reference","contact","published","tstamp","crdate"
+,1,2,"First value","","",0,0,"First","taken","taken","first@example.com",0,1500000000,1500000000
+,2,2,"Second value","","",5,5,"Existing","other","other","old@example.com",0,1500000000,1500000000
