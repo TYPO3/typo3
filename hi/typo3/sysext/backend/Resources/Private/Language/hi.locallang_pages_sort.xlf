@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1498839785" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Sort sub pages</source>
+        <target state="final">उपपृष्ठों को क्रमबद्ध करें</target>
+      </trans-unit>
+      <trans-unit id="currentPageOrder" resname="currentPageOrder" approved="yes">
+        <source>Current page order</source>
+        <target state="final">वर्तमान पृष्ठ क्रम</target>
+      </trans-unit>
+      <trans-unit id="changeOrder" resname="changeOrder" approved="yes">
+        <source>Sort these pages by</source>
+        <target state="final">इन पृष्ठों को इस आधार पर क्रमबद्ध करें</target>
+      </trans-unit>
+      <trans-unit id="changeOrderConfirm" resname="changeOrderConfirm" approved="yes">
+        <source>You're about to change the order of the above pages. Are you sure you want to continue?</source>
+        <target state="final">आप ऊपर दिए गए पृष्ठों का क्रम बदलने वाले हैं। क्या आप जारी रखना चाहते हैं?</target>
+      </trans-unit>
+      <trans-unit id="fieldTitle" resname="fieldTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">पृष्ठ शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="fieldSubtitle" resname="fieldSubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">उपशीर्षक</target>
+      </trans-unit>
+      <trans-unit id="fieldNavitle" resname="fieldNavitle" approved="yes">
+        <source>Navigation title</source>
+        <target state="final">नेविगेशन शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="fieldCrdate" resname="fieldCrdate" approved="yes">
+        <source>Create-time</source>
+        <target state="final">निर्माण समय</target>
+      </trans-unit>
+      <trans-unit id="fieldTstamp" resname="fieldTstamp" approved="yes">
+        <source>Change-time</source>
+        <target state="final">परिवर्तन समय</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTitle" resname="changeOrderByTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">पृष्ठ शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="changeOrderBySubtitle" resname="changeOrderBySubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">उपशीर्षक</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByNavtitle" resname="changeOrderByNavtitle" approved="yes">
+        <source>Navigation title</source>
+        <target state="final">नेविगेशन शीर्षक</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTstamp" resname="changeOrderByTstamp" approved="yes">
+        <source>Change-time</source>
+        <target state="final">परिवर्तन समय</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByCreate" resname="changeOrderByCreate" approved="yes">
+        <source>Create-time</source>
+        <target state="final">निर्माण समय</target>
+      </trans-unit>
+      <trans-unit id="changeOrderReverse" resname="changeOrderReverse" approved="yes">
+        <source>Reverse current order</source>
+        <target state="final">वर्तमान क्रम उलटें</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.title" resname="hasInvisiblePage.title" approved="yes">
+        <source>Invisible subpages</source>
+        <target state="final">अदृश्य उपपृष्ठ</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.title" resname="noSubpages.title" approved="yes">
+        <source>No subpages</source>
+        <target state="final">कोई उपपृष्ठ नहीं</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.message" resname="noSubpages.message" approved="yes">
+        <source>Please select a page with subpages.</source>
+        <target state="final">कृपया उपपृष्ठों वाले किसी पृष्ठ का चयन करें।</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.title" resname="notAvailableInWorkspace.title" approved="yes">
+        <source>Not implemented</source>
+        <target state="final">कार्यान्वित नहीं किया गया</target>
+      </trans-unit>
+      <trans-unit id="noEditPermissions" resname="noEditPermissions" approved="yes">
+        <source>No edit permissions on this sub page. This page can not be re-sorted among others.</source>
+        <target state="final">इस उपपृष्ठ पर संपादन की अनुमति नहीं है। यह पृष्ठ अन्य के साथ पुनः क्रमबद्ध नहीं किया जा सकता।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
