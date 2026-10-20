@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814859" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysnews.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="ro">
+    <header/>
+    <body>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>This option will hide the news from showing up at the login screen.</source>
+        <target state="final">Această opțiune va ascunde știrile ce sunt afișate pe ecranul de conectare.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the title of the news.</source>
+        <target state="final">Introduceți titlul unei știri.</target>
+      </trans-unit>
+      <trans-unit id="content.description" resname="content.description" approved="yes">
+        <source>The news content to let editors know what's coming up. HTML is disabled, however, you can use line breaks.</source>
+        <target state="final">Zona de știri dedicată editorilor. HTML este dezactivat, însă, puteți folosi linii noi.</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>System news are shown at the TYPO3 login screen, allowing admins to inform editors about upcoming system maintenance and similar events.</source>
+        <target state="final">Știrile de sistem sunt afișate pe pagina de conectare TYPO3, permițând administratorilor să informeze editorii despre evenimente și mentenanțe viitoare.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
