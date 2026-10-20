@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815020" source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_mod.xlf" date="2011-10-17T20:22:38Z" product-name="workspaces" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+        <source>Workspaces</source>
+        <target>crwdns80250:0crwdne80250:0</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+        <source>This module contains the overview of all elements within the current workspace and it enables to continue the review and publishing workflow for them.</source>
+        <target>crwdns80252:0crwdne80252:0</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
+        <source>Create and handle versioning workflows</source>
+        <target>crwdns80254:0crwdne80254:0</target>
+      </trans-unit>
+      <trans-unit id="autopublishTask.name" resname="autopublishTask.name">
+        <source>Workspaces auto-publication (outdated, use the Symfony Command)</source>
+        <target>crwdns80256:0crwdne80256:0</target>
+      </trans-unit>
+      <trans-unit id="autopublishTask.description" resname="autopublishTask.description">
+        <source>This tasks checks any workspace that has a publication date set in the past and automatically publishes it.</source>
+        <target>crwdns80258:0crwdne80258:0</target>
+      </trans-unit>
+      <trans-unit id="cleanupPreviewLinkTask.name" resname="cleanupPreviewLinkTask.name">
+        <source>Workspaces cleanup preview links (outdated, use the Symfony Command)</source>
+        <target>crwdns80260:0crwdne80260:0</target>
+      </trans-unit>
+      <trans-unit id="cleanupPreviewLinkTask.description" resname="cleanupPreviewLinkTask.description">
+        <source>This task delete old preview links</source>
+        <target>crwdns80262:0crwdne80262:0</target>
+      </trans-unit>
+      <trans-unit id="stage_ready_to_publish" resname="stage_ready_to_publish">
+        <source>Ready to publish</source>
+        <target>crwdns80264:0crwdne80264:0</target>
+      </trans-unit>
+      <trans-unit id="previewText" resname="previewText">
+        <source>Preview of workspace %s (%s)</source>
+        <target>crwdns80266:0%scrwdnd80266:0%scrwdne80266:0</target>
+      </trans-unit>
+      <trans-unit id="stopPreview" resname="stopPreview">
+        <source>Stop preview</source>
+        <target>crwdns80268:0crwdne80268:0</target>
+      </trans-unit>
+      <trans-unit id="previewLogoutSuccess" resname="previewLogoutSuccess">
+        <source>You logged out from Workspace preview mode. Click this link to %1$s go back to the website%2$s</source>
+        <target>crwdns80270:0%1$scrwdnd80270:0%2$scrwdne80270:0</target>
+      </trans-unit>
+      <trans-unit id="previewLogoutError" resname="previewLogoutError">
+        <source>%1$sERROR!%2$sTemplate File "%3$s" configured with $TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"] not found. Please contact webmaster about this problem.</source>
+        <target>crwdns80272:0%1$scrwdnd80272:0%2$scrwdnd80272:0%3$scrwdnd80272:0$TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"]crwdne80272:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
