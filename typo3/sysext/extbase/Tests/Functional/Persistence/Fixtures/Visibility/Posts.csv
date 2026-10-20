@@ -1,0 +1,57 @@
+"pages"
+,"uid","pid","title","doktype","sorting","perms_everybody"
+,1,0,"Site",1,128,15
+,2,1,"Hidden",254,128,15
+,3,1,"Starttime",254,256,15
+,4,1,"Endtime",254,384,15
+,5,1,"User groups",254,512,15
+,6,1,"Translations",254,640,15
+,7,1,"Relations",254,768,15
+,8,1,"Ignored enable fields",254,896,15
+,12,1,"Ignored user groups",254,1280,15
+,13,1,"Deleted",254,1408,15
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","hidden","starttime","endtime","fe_group","deleted","tags","comments"
+,1,2,0,0,"Visible post",0,0,0,"",0,0,0
+,2,2,0,0,"Hidden post",1,0,0,"",0,0,0
+,3,3,0,0,"Started post",0,1600000000,0,"",0,0,0
+,4,3,0,0,"Scheduled post",0,1800000000,0,"",0,0,0
+,5,3,0,0,"Post without starttime",0,0,0,"",0,0,0
+,6,4,0,0,"Running post",0,0,1800000000,"",0,0,0
+,7,4,0,0,"Ended post",0,0,1600000000,"",0,0,0
+,8,4,0,0,"Post without endtime",0,0,0,"",0,0,0
+,9,5,0,0,"Public post",0,0,0,"",0,0,0
+,10,5,0,0,"Group one post",0,0,0,"1",0,0,0
+,11,5,0,0,"Group two post",0,0,0,"2",0,0,0
+,12,5,0,0,"Group one and two post",0,0,0,"1,2",0,0,0
+,13,6,0,0,"Post with hidden translation",0,0,0,"",0,0,0
+,14,6,1,13,"Versteckte Übersetzung",1,0,0,"",0,0,0
+,15,6,0,0,"Post with visible translation",0,0,0,"",0,0,0
+,16,6,1,15,"Sichtbare Übersetzung",0,0,0,"",0,0,0
+,17,7,0,0,"Post with tags and comments",0,0,0,"",0,2,2
+,18,8,0,0,"Public post",0,0,0,"",0,0,0
+,19,8,0,0,"Hidden public post",1,0,0,"",0,0,0
+,20,8,0,0,"Hidden post for group one",1,0,0,"1",0,0,0
+,21,8,0,0,"Post for group one",0,0,0,"1",0,0,0
+,25,12,0,0,"Public post",0,0,0,"",0,0,0
+,26,12,0,0,"Hidden public post",1,0,0,"",0,0,0
+,27,12,0,0,"Post for group one",0,0,0,"1",0,0,0
+,28,12,0,0,"Post for group two",0,0,0,"2",0,0,0
+,29,12,0,0,"Hidden post for group two",1,0,0,"2",0,0,0
+,33,12,0,0,"Post hidden at login",0,0,0,"-1",0,0,0
+,34,12,0,0,"Post shown at any login",0,0,0,"-2",0,0,0
+,30,13,0,0,"Visible post",0,0,0,"",0,0,0
+,31,13,0,0,"Deleted post",0,0,0,"",1,0,0
+,32,13,0,0,"Hidden deleted post",1,0,0,"",1,0,0
+"tx_blogexample_domain_model_tag"
+,"uid","pid","name","hidden"
+,1,7,"Visible tag",0
+,2,7,"Hidden tag",1
+"tx_blogexample_domain_model_tag_mm"
+,"uid_local","uid_foreign","tablenames","fieldname","sorting","sorting_foreign"
+,1,17,"tx_blogexample_domain_model_post","tags",1,1
+,2,17,"tx_blogexample_domain_model_post","tags",2,2
+"tx_blogexample_domain_model_comment"
+,"uid","pid","content","post","hidden","date"
+,1,7,"Visible comment",17,0,"2026-01-26 10:00:00"
+,2,7,"Hidden comment",17,1,"2026-01-26 11:00:00"

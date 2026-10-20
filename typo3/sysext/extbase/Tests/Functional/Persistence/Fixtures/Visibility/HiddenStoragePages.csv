@@ -1,0 +1,10 @@
+"pages"
+,"uid","pid","title","doktype","sorting","hidden","extendToSubpages","perms_everybody"
+,9,1,"Hidden storage",254,1024,1,0,15
+,10,1,"Hidden parent",254,1152,1,1,15
+,11,10,"Visible child of hidden parent",254,128,0,0,15
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","hidden","starttime","endtime","fe_group","tags","comments"
+,22,9,0,0,"Post on hidden page",0,0,0,"",0,0
+,23,10,0,0,"Post on hidden parent",0,0,0,"",0,0
+,24,11,0,0,"Post below hidden parent",0,0,0,"",0,0
