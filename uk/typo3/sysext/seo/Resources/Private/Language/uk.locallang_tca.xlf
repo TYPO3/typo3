@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1528554340" source-language="en" datatype="plaintext" original="EXT:seo/Resources/Private/Language/locallang_tca.xlf" date="2018-08-09T16:22:32Z" product-name="seo" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="pages.og_title" resname="pages.og_title" approved="yes">
+        <source>Title</source>
+        <target state="final">Назва</target>
+      </trans-unit>
+      <trans-unit id="pages.og_description" resname="pages.og_description" approved="yes">
+        <source>Description</source>
+        <target state="final">Опис</target>
+      </trans-unit>
+      <trans-unit id="pages.og_image" resname="pages.og_image" approved="yes">
+        <source>Image</source>
+        <target state="final">Зображення</target>
+      </trans-unit>
+      <trans-unit id="pages.palettes.twittercards" resname="pages.palettes.twittercards" approved="yes">
+        <source>Twitter Cards</source>
+        <target state="final">Карти Twitter</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_title" resname="pages.twitter_title" approved="yes">
+        <source>Title</source>
+        <target state="final">Назва</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_description" resname="pages.twitter_description" approved="yes">
+        <source>Description</source>
+        <target state="final">Опис</target>
+      </trans-unit>
+      <trans-unit id="pages.twitter_image" resname="pages.twitter_image" approved="yes">
+        <source>Image</source>
+        <target state="final">Зображення</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
