@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814863" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_general.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="LGL.endtime" resname="LGL.endtime">
+        <source>Stop</source>
+        <target>crwdns71498:0crwdne71498:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.hidden" resname="LGL.hidden">
+        <source>Hide</source>
+        <target>crwdns71500:0crwdne71500:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.timestamp" resname="LGL.timestamp">
+        <source>Last Modified</source>
+        <target>crwdns71502:0crwdne71502:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.creationDate" resname="LGL.creationDate">
+        <source>Created At</source>
+        <target>crwdns71504:0crwdne71504:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.creationUserId" resname="LGL.creationUserId">
+        <source>Created By</source>
+        <target>crwdns71506:0crwdne71506:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.starttime" resname="LGL.starttime">
+        <source>Start</source>
+        <target>crwdns71508:0crwdne71508:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.fe_group" resname="LGL.fe_group">
+        <source>Access</source>
+        <target>crwdns71510:0crwdne71510:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.hide_at_login" resname="LGL.hide_at_login">
+        <source>Hide at login</source>
+        <target>crwdns71512:0crwdne71512:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.any_login" resname="LGL.any_login">
+        <source>Show at any login</source>
+        <target>crwdns71514:0crwdne71514:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.usergroups" resname="LGL.usergroups">
+        <source>__Usergroups:__</source>
+        <target>crwdns71516:0crwdne71516:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.type" resname="LGL.type">
+        <source>Type</source>
+        <target>crwdns71518:0crwdne71518:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.description" resname="LGL.description">
+        <source>Description</source>
+        <target>crwdns71520:0crwdne71520:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.prependAtCopy" resname="LGL.prependAtCopy">
+        <source>(copy %s)</source>
+        <target>crwdns71522:0%scrwdne71522:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.layout" resname="LGL.layout">
+        <source>Layout</source>
+        <target>crwdns71524:0crwdne71524:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.default_value" resname="LGL.default_value">
+        <source>Default</source>
+        <target>crwdns71526:0crwdne71526:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.normal" resname="LGL.normal">
+        <source>Normal</source>
+        <target>crwdns71528:0crwdne71528:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.images" resname="LGL.images">
+        <source>Images</source>
+        <target>crwdns71530:0crwdne71530:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.image" resname="LGL.image">
+        <source>Image</source>
+        <target>crwdns71532:0crwdne71532:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.width" resname="LGL.width">
+        <source>Width</source>
+        <target>crwdns71534:0crwdne71534:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.height" resname="LGL.height">
+        <source>Height</source>
+        <target>crwdns71536:0crwdne71536:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.caption" resname="LGL.caption">
+        <source>Caption</source>
+        <target>crwdns71538:0crwdne71538:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.subheader" resname="LGL.subheader">
+        <source>Subheader</source>
+        <target>crwdns71540:0crwdne71540:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.text" resname="LGL.text">
+        <source>Text</source>
+        <target>crwdns71542:0crwdne71542:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.name" resname="LGL.name">
+        <source>Name</source>
+        <target>crwdns71544:0crwdne71544:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.first_name" resname="LGL.first_name">
+        <source>First name</source>
+        <target>crwdns71546:0crwdne71546:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.middle_name" resname="LGL.middle_name">
+        <source>Middle name</source>
+        <target>crwdns71548:0crwdne71548:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.last_name" resname="LGL.last_name">
+        <source>Last name</source>
+        <target>crwdns71550:0crwdne71550:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.title" resname="LGL.title">
+        <source>Title</source>
+        <target>crwdns71552:0crwdne71552:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.title_person" resname="LGL.title_person">
+        <source>Title</source>
+        <target>crwdns71554:0crwdne71554:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.address" resname="LGL.address">
+        <source>Address</source>
+        <target>crwdns71556:0crwdne71556:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.phone" resname="LGL.phone">
+        <source>Phone</source>
+        <target>crwdns71558:0crwdne71558:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.fax" resname="LGL.fax">
+        <source>Fax</source>
+        <target>crwdns71560:0crwdne71560:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.author" resname="LGL.author">
+        <source>Author</source>
+        <target>crwdns71562:0crwdne71562:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.email" resname="LGL.email">
+        <source>Email</source>
+        <target>crwdns71564:0crwdne71564:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.company" resname="LGL.company">
+        <source>Company</source>
+        <target>crwdns71566:0crwdne71566:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.city" resname="LGL.city">
+        <source>City</source>
+        <target>crwdns71568:0crwdne71568:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.zip" resname="LGL.zip">
+        <source>Zipcode</source>
+        <target>crwdns71570:0crwdne71570:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.country" resname="LGL.country">
+        <source>Country</source>
+        <target>crwdns71572:0crwdne71572:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.www" resname="LGL.www">
+        <source>www</source>
+        <target>crwdns71574:0crwdne71574:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.lastlogin" resname="LGL.lastlogin">
+        <source>Last login</source>
+        <target>crwdns71576:0crwdne71576:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.note" resname="LGL.note">
+        <source>Note</source>
+        <target>crwdns71578:0crwdne71578:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.parameters" resname="LGL.parameters">
+        <source>Parameters</source>
+        <target>crwdns71580:0crwdne71580:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.code" resname="LGL.code">
+        <source>CODE</source>
+        <target>crwdns71582:0crwdne71582:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.links" resname="LGL.links">
+        <source>Links</source>
+        <target>crwdns71584:0crwdne71584:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.language" resname="LGL.language">
+        <source>Language</source>
+        <target>crwdns71586:0crwdne71586:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.category" resname="LGL.category">
+        <source>Category</source>
+        <target>crwdns71588:0crwdne71588:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.shortcut_page" resname="LGL.shortcut_page">
+        <source>Shortcut to page</source>
+        <target>crwdns71590:0crwdne71590:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.keywords" resname="LGL.keywords">
+        <source>Keywords (,)</source>
+        <target>crwdns71592:0crwdne71592:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.disable" resname="LGL.disable">
+        <source>Disable</source>
+        <target>crwdns71594:0crwdne71594:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.baseStorage" resname="LGL.baseStorage">
+        <source>Storage</source>
+        <target>crwdns71596:0crwdne71596:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.folder" resname="LGL.folder">
+        <source>Folder</source>
+        <target>crwdns71598:0crwdne71598:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.startingpoint" resname="LGL.startingpoint">
+        <source>Startingpoint</source>
+        <target>crwdns71600:0crwdne71600:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.disableRTE" resname="LGL.disableRTE">
+        <source>Disable Rich Text Editor</source>
+        <target>crwdns71602:0crwdne71602:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.external" resname="LGL.external">
+        <source>External URL</source>
+        <target>crwdns71604:0crwdne71604:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.recursive" resname="LGL.recursive">
+        <source>Recursive</source>
+        <target>crwdns71606:0crwdne71606:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.l18n_parent" resname="LGL.l18n_parent">
+        <source>Transl.Orig</source>
+        <target>crwdns71608:0crwdne71608:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.allLanguages" resname="LGL.allLanguages">
+        <source>[All]</source>
+        <target>crwdns71610:0crwdne71610:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.versionLabel" resname="LGL.versionLabel">
+        <source>Versioning Label</source>
+        <target>crwdns71612:0crwdne71612:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.error" resname="LGL.error">
+        <source>Error!</source>
+        <target>crwdns71614:0crwdne71614:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.visible" resname="LGL.visible">
+        <source>Visible</source>
+        <target>crwdns71616:0crwdne71616:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.enabled" resname="LGL.enabled">
+        <source>Enabled</source>
+        <target>crwdns71618:0crwdne71618:0</target>
+      </trans-unit>
+      <trans-unit id="LGL.disabled" resname="LGL.disabled">
+        <source>Disabled</source>
+        <target>crwdns71620:0crwdne71620:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
