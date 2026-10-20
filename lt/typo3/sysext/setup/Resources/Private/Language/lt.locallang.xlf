@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814990" source-language="en" datatype="plaintext" original="EXT:setup/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="setup" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="personal_data" resname="personal_data" approved="yes">
+        <source>Personal data</source>
+        <target state="final">Asmens duomenys</target>
+      </trans-unit>
+      <trans-unit id="resetConfigurationButton" resname="resetConfigurationButton" approved="yes">
+        <source>Reset user settings to default state</source>
+        <target state="final">Atstatyti naudotojo nustatymus į numatytąją būseną</target>
+      </trans-unit>
+      <trans-unit id="setupWasUpdated" resname="setupWasUpdated" approved="yes">
+        <source>User settings were updated.</source>
+        <target state="final">Naudotojo nustatymai atnaujinti.</target>
+      </trans-unit>
+      <trans-unit id="settingsAreReset" resname="settingsAreReset" approved="yes">
+        <source>The user settings have been reset to default values and temporary data has been cleared.</source>
+        <target state="final">Naudotojo nustatymai atstatyti į numatytąsias reikšmes ir laikini duomenys išvalyti.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
