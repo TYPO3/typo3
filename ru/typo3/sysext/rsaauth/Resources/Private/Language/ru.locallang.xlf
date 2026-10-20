@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814911" source-language="en" datatype="plaintext" original="EXT:rsaauth/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:35Z" product-name="rsaauth" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="hook_empty_directory" resname="hook_empty_directory" approved="yes">
+        <source>RSA temporary directory is empty. This is a security risk. Please, go to the Extension Manager, select the "RSA authentication" extension and set the directory according to instructions there.</source>
+        <target state="final">Временный каталог RSA пуст. Это угроза безопасности. Перейдите в модуль Управления расширениями, выберете расширение "RSA authentication" и настройте каталоги в соответствие с инструкцией.</target>
+      </trans-unit>
+      <trans-unit id="hook_directory_not_absolute" resname="hook_directory_not_absolute" approved="yes">
+        <source>RSA temporary directory path is not absolute. This may cause RSA authentication errors and it is a security risk. Please, go to the Extension Manager, select the "RSA authentication" extension and set the directory according to instructions there.</source>
+        <target state="final">Путь временного каталога RSA не является абсолютным. Это может повлечь ошибки аутентификации RSA и является риском для безопасности. Перейдите в Менеджер расширений, выберите расширение "RSA authentication" и установите каталог в соответствии с инструкциями.</target>
+      </trans-unit>
+      <trans-unit id="hook_directory_not_exist" resname="hook_directory_not_exist" approved="yes">
+        <source>RSA temporary directory does not exist. This is a security risk because an insecure directory will be used for RSA operations. Please, go to the Extension Manager, select the "RSA authentication" extension and set the directory according to instructions there.</source>
+        <target state="final">Временный каталог RSA не существует. Это риск безопасности, потому что небезопасный каталог будет использоваться для операций RSA. Перейдите в модуль Управления расширениями, выберете расширение "RSA authentication" и настройте каталоги в соответствие с инструкцией.</target>
+      </trans-unit>
+      <trans-unit id="hook_directory_not_writable" resname="hook_directory_not_writable" approved="yes">
+        <source>RSA temporary directory is not writable. This may cause RSA authentication errors and it is a security risk. Please, go to the Extension Manager, select the "RSA authentication" extension and set the directory according to instructions there.</source>
+        <target state="final">Временный каталог RSA недоступен для записи. Это может привести к ошибкам при аутентификации RSA и представляет угрозу безопасности. Пожалуйста, откройте диспетчер расширений, выберите расширение «Аутентификация RSA» и настройте каталог в соответствии с приведенными там инструкциями.</target>
+      </trans-unit>
+      <trans-unit id="hook_directory_inside_siteroot" resname="hook_directory_inside_siteroot" approved="yes">
+        <source>RSA temporary directory is inside the web site root directory. This is a security risk. Please, go to the Extension Manager, select the "RSA authentication" extension and set the directory according to instructions there.</source>
+        <target state="final">Временный каталог RSA находится внутри корневого каталога веб-сайта. Это риск для безопасности. Перейдите в Менеджер расширений, выберите расширение "RSA authentication" и установите каталог в соответствии с инструкциями.</target>
+      </trans-unit>
+      <trans-unit id="hook_using_cmdline" resname="hook_using_cmdline" approved="yes">
+        <source>RSA authentication could not detect the openssl PHP extension. Currently RSA authentication uses a command line openssl utility. This is slower and less secure. Please, consider installing openssl PHP extension.</source>
+        <target state="final">При аутентификации RSA не удалось обнаружить расширение openssl для PHP. В настоящее время при аутентификации RSA используется утилита openssl для командной строки. Это медленнее и менее безопасно. Пожалуйста, установите расширение openssl для PHP.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
