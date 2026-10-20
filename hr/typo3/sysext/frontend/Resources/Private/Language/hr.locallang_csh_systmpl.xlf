@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814802" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_csh_systmpl.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="hr">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>TypoScript template record.</source>
+        <target state="final">Zapis TypoScript predloška.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>The 'Template' records are the vital components used to set the design of the webpages. No matter how (almost) you would like to build your website, it must be initiated by a 'Template' record placed in the root of the page tree of the site.
+Basically, create a 'Template' record, enter a title and make sure to check of Clear constants, setup and Rootline. Then enter some TypoScript configuration in the Setup field and you're set.
+It's very important to read how to do all this in the documents listed below! Also make sure you use the Web&gt;Template module to do all the working with templates. It's a specialized tool to help you with this.</source>
+			<target state="final">Zapisi 'Predložak' su ključne komponente koje određuju dizajn Vaše web stranice. Kako god (skoro) da želite podesiti Vašu web stranicu, morate započeti sa 'Predložak' zapisom u korjenu stabla stranica.
+U osnovi, stvorite zapis 'Predložak', unesite naslov i provjerite da su označene stavke 'Očisti konstante', 'Postavke' i 'Korjenska linija'. Nakon toga unesite TypoScript postavke u polje 'Postavke' i spremni ste.
+Bitno je da pročitate, u niže navedenim dokumentima, kako odraditi ove procedure!  Također, pobrinite se da za sve Vaše radnje sa predlošcima koristite modul Web&gt;Predložak. To je specijalizirani alat za rad s predlošcima.</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>static_template
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+TypoScript in 45 min| https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/</source>
+			<target state="final">static_template
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+TypoScript za 45 minuta | https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/</target></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve" approved="yes">
+				<source>A Template Record with constants and setup code.
+The Web&gt;Template module contains tools which will help you to edit and validate TypoScript structures.</source>
+			<target state="final">Zapis predloška sa konstantama i kodom postavki.
+Modul Web&gt;Predložak sadrži alate koji će Vam pomoći u uređivanju i validiranju TypoScript struktura.</target></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Hiding the template will deactivate the template record.</source>
+        <target state="final">Ukoliko sakrijete predložak isti će biti i deaktiviran.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If the Template Record was the first record on a page hiding it will expose the second record on the page instead.</source>
+        <target state="final">Ukoliko je zapis predloška bio prvi na stranici, nakon što ga sakrijete, aktivan će postati drugi zapis na istoj stranici.</target>
+      </trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>Start time. Use this to enable a template on a certain date.</source>
+        <target state="final">Vrijeme početka. Koristite ovo polje kako bi automatski omogućili predložak na dani datum.</target>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>End time. Use this to disable a template on a certain date.</source>
+        <target state="final">Vrijeme kraja. Koristite ovo polje kako bi automatski onemogućili predložak na dani datum.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>The title of the template record is only an internal label and does not have any effect on the output in the frontend.</source>
+        <target state="final">Naslov zapisa predloška služi jedino kao interna oznaka te nema nikakvog utjecaja na izgled prednjeg dijela sučelja.</target>
+      </trans-unit>
+      <trans-unit id="sitetitle.description" resname="sitetitle.description" approved="yes">
+        <source>Website title. Typically this will automatically be prefixed all page titles in the &lt;title&gt; tag of the frontend pages.</source>
+        <target state="final">Naslov web stranice. Ova vrijednost najčešće će biti predmetnuta naslovima u &lt;title&gt; tagu stranica prednjeg sučelja.</target>
+      </trans-unit>
+      <trans-unit id="constants.description" resname="constants.description" approved="yes">
+        <source>TypoScript Constants.</source>
+        <target state="final">TypoScript konstante.</target>
+      </trans-unit>
+      <trans-unit id="_constants.seeAlso" resname="_constants.seeAlso" approved="yes">
+        <source>static_template:constants</source>
+        <target state="final">static_template:constants</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="config.description" resname="config.description" approved="yes">
+        <source>TypoScript Setup code</source>
+        <target state="final">TypoScript kod postavki</target>
+      </trans-unit>
+      <trans-unit id="config.details" resname="config.details" approved="yes">
+        <source>Read more about TypoScript Templates in TSref, TypoScript by Example and Getting Started.</source>
+        <target state="final">Pročitajte više o TypoScript predlošcima u TSref dokumentu, TypoScript s primjerima i Počnite.</target>
+      </trans-unit>
+      <trans-unit id="_config.seeAlso" resname="_config.seeAlso" xml:space="preserve" approved="yes">
+				<source>static_template:config,
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+Getting Started | https://docs.typo3.org/typo3cms/GettingStartedTutorial/
+TypoScript in 45 min| https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/
+TypoScript Syntax | https://docs.typo3.org/typo3cms/TyposcriptSyntaxReference/</source>
+				
+			<target state="final">static_template:config,
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+Prvi koraci | https://docs.typo3.org/typo3cms/GettingStartedTutorial/
+TypoScript u 45 minuta | https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/
+TypoScript sintaksa | https://docs.typo3.org/typo3cms/TyposcriptSyntaxReference/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="resources.description" resname="resources.description" approved="yes">
+        <source>Resource files for the template. For example a logo, a TTF-font etc.</source>
+        <target state="final">Datoteke resursi za predložak. Primjerice logo, TTF fontovi i slično.</target>
+      </trans-unit>
+      <trans-unit id="resources.details" resname="resources.details" approved="yes">
+        <source>Resource files can be referenced in TypoScript Template code by [filename]*.[ext] and has the advantage that the reference from TypoScript is not broken if you copy or export a Template Record where the resources ends up with new names.</source>
+        <target state="final">Datoteke resursi mogu se koristiti u kodu TypoScript predložaka primjerice pomoću poziva [filename]*.[ext] a imaju prednost da pozivi iz TypoScripta neće biti uništeni ako kopirate ili izvezete zapis predloška kada resursi dobiju nova imena.</target>
+      </trans-unit>
+      <trans-unit id="clear.description" resname="clear.description" approved="yes">
+        <source>Flags that will clear the inheritance of TypoScript code from former templates in the root line. There is a flag for Constants and one for Setup code.</source>
+        <target state="final">Ova zastavica će poništiti nasljeđivanje TypoScript koda iz ranijih predložaka u korjenskoj liniji. Postoji zastavica za konstante i zastavica za postavke.</target>
+      </trans-unit>
+      <trans-unit id="_clear.seeAlso" resname="_clear.seeAlso" approved="yes">
+        <source>sys_template:root</source>
+        <target state="final">sys_template:root</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="root.description" resname="root.description" approved="yes">
+        <source>Defines that the template represents a root of a website.</source>
+        <target state="final">Naznačuje da predložak predstavlja korijen web stranice.</target>
+      </trans-unit>
+      <trans-unit id="_root.seeAlso" resname="_root.seeAlso" approved="yes">
+        <source>sys_template:clear</source>
+        <target state="final">sys_template:clear</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="includeStaticAfterBasedOn.description" resname="includeStaticAfterBasedOn.description" approved="yes">
+        <source>If set, static templates will be included after "based-on" templates. It basically swaps the order of inclusion of these external TypoScript sources.</source>
+        <target state="final">Ukoliko je ova opcija aktivna, statični predlošci bit će uključeni nakon "osnovnih" predložaka. U osnovi, ova postavka preokreće poredak uključivanja ovih vanjskih TypoScript resursa.</target>
+      </trans-unit>
+      <trans-unit id="include_static.description" resname="include_static.description" approved="yes">
+        <source>Static Template records to include.</source>
+        <target state="final">Zapisi statičnih predložaka koji će biti uključeni.</target>
+      </trans-unit>
+      <trans-unit id="_include_static.seeAlso" resname="_include_static.seeAlso" approved="yes">
+        <source>static_template</source>
+        <target state="final">static_template</target>
+      </trans-unit>
+      <trans-unit id="include_static_file.description" resname="include_static_file.description" approved="yes">
+        <source>Static Template files to include.</source>
+        <target state="final">Datoteke statičnih predložaka koje će biti uključene.</target>
+      </trans-unit>
+      <trans-unit id="include_static_file.details" resname="include_static_file.details" approved="yes">
+        <source>Static template files are registered by extensions contrary to Static Template records which come from the static database table, "static_template".</source>
+        <target state="final">Datoteke statičnih predložaka registriraju proširenja za razliku od zapisa statičnih predložaka koji dolaze iz tablice podataka statičnih predložaka, "static_template".</target>
+      </trans-unit>
+      <trans-unit id="_include_static_file.seeAlso" resname="_include_static_file.seeAlso" approved="yes">
+        <source>sys_template:include_static</source>
+        <target state="final">sys_template:include_static</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="basedOn.description" resname="basedOn.description" approved="yes">
+        <source>Other Template Records that are included like "static templates".</source>
+        <target state="final">Drugi zapisi predložaka koji će biti uključeni poput "statičnih predložaka".</target>
+      </trans-unit>
+      <trans-unit id="static_file_mode.description" resname="static_file_mode.description" approved="yes">
+        <source>Define the mode of inclusion of static template files.</source>
+        <target state="final">Odredite način uključivanja datoteka statičnih predložaka.</target>
+      </trans-unit>
+      <trans-unit id="nextLevel.description" resname="nextLevel.description" approved="yes">
+        <source>Defines a template record to make active one level out in the page tree of this branch. This can be used to define another template record for the general website while having a special template for the frontpage.</source>
+        <target state="final">Određuje zapis predloška koji će biti aktivan na jednoj razini niže u stablu stranica na trenutnoj grani. Ova postavka može se koristiti za postavljanje zapisa predložka za cijeli web dok u isto vrijeme imamo i poseban predložak za početnu stranicu.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a description of the template if you like.</source>
+        <target state="final">Unesite opis predloška ukoliko želite.</target>
+      </trans-unit>
+      <trans-unit id="editorcfg.description" resname="editorcfg.description" approved="yes">
+        <source>Editor Configuration for the stylesheet editor extension.</source>
+        <target state="final">Postavke editora za proširenje editora stilova.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
