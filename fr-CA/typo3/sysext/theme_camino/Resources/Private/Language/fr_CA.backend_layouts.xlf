@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:theme_camino/Resources/Private/Language/backend_layouts.xlf" date="2026-01-14T12:00:00Z" product-name="theme_camino" target-language="fr-CA">
+    <header/>
+    <body>
+      <!-- Backend layouts -->
+      <trans-unit id="backend_layout.colPos.0.name" approved="yes">
+        <source>Content area</source>
+        <target state="final">Zone de contenu</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.1.name" approved="yes">
+        <source>Sidebar</source>
+        <target state="final">Barre latérale</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.2.name" approved="yes">
+        <source>Hero area</source>
+        <target state="final">Zone Hero</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.10.name" approved="yes">
+        <source>Footer: Meta navigation</source>
+        <target state="final">Pied de page : méta de navigation</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.11.name" approved="yes">
+        <source>Footer: Column 1 (Logo)</source>
+        <target state="final">Pied de page : colonne 1 (Logo)</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.12.name" approved="yes">
+        <source>Footer: Column 2 (Menu)</source>
+        <target state="final">Pied de page : colonne 2 (Menu)</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.13.name" approved="yes">
+        <source>Footer: Column 3 (Menu)</source>
+        <target state="final">Pied de page : colonne 3 (Menu)</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.14.name" approved="yes">
+        <source>Footer: Column 4 (Menu)</source>
+        <target state="final">Pied de page : colonne 4 (Menu)</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.camino_startpage.title" approved="yes">
+        <source>Camino: Start page</source>
+        <target state="final">Camino : page d’accueil</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.camino_contentpage.title" approved="yes">
+        <source>Camino: Content page (full-width)</source>
+        <target state="final">Camino : page de contenu (pleine largeur)</target>
+      </trans-unit>
+      <trans-unit id="backend_layout.camino_contentpage_sidebar.title" approved="yes">
+        <source>Camino: Content page (with sidebar)</source>
+        <target state="final">Camino : page de contenu (avec barre latérale)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
