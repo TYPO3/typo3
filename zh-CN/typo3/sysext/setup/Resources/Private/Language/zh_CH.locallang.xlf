@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814990" source-language="en" datatype="plaintext" original="EXT:setup/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="setup" target-language="zh-CN">
+    <header/>
+    <body>
+      <trans-unit id="UserSettings" resname="UserSettings" approved="yes">
+        <source>User Settings</source>
+        <target state="final">使用者設定</target>
+      </trans-unit>
+      <trans-unit id="language" resname="language" approved="yes">
+        <source>Language</source>
+        <target state="final">語言</target>
+      </trans-unit>
+      <trans-unit id="lang_default" resname="lang_default" approved="yes">
+        <source>English</source>
+        <target state="final">英文</target>
+      </trans-unit>
+      <trans-unit id="lang_ar" resname="lang_ar" approved="yes">
+        <source>Arabic</source>
+        <target state="final">亞拉伯文</target>
+      </trans-unit>
+      <trans-unit id="lang_ba" resname="lang_ba" approved="yes">
+        <source>Bosnian</source>
+        <target state="final">波斯尼亞文</target>
+      </trans-unit>
+      <trans-unit id="lang_bs" resname="lang_bs" approved="yes">
+        <source>Bosnian</source>
+        <target state="final">波斯尼亞文</target>
+      </trans-unit>
+      <trans-unit id="lang_bg" resname="lang_bg" approved="yes">
+        <source>Bulgarian</source>
+        <target state="final">保加利亞文</target>
+      </trans-unit>
+      <trans-unit id="lang_ca" resname="lang_ca" approved="yes">
+        <source>Catalan</source>
+        <target state="final">西班牙文</target>
+      </trans-unit>
+      <trans-unit id="lang_ch" resname="lang_ch" approved="yes">
+        <source>Chinese (Simple)</source>
+        <target state="final">中文（簡體）</target>
+      </trans-unit>
+      <trans-unit id="lang_cs" resname="lang_cs" approved="yes">
+        <source>Czech</source>
+        <target state="final">捷克文</target>
+      </trans-unit>
+      <trans-unit id="lang_cz" resname="lang_cz" approved="yes">
+        <source>Czech</source>
+        <target state="final">捷克文</target>
+      </trans-unit>
+      <trans-unit id="lang_da" resname="lang_da" approved="yes">
+        <source>Danish</source>
+        <target state="final">丹麥文</target>
+      </trans-unit>
+      <trans-unit id="lang_dk" resname="lang_dk" approved="yes">
+        <source>Danish</source>
+        <target state="final">丹麥文</target>
+      </trans-unit>
+      <trans-unit id="lang_de" resname="lang_de" approved="yes">
+        <source>German</source>
+        <target state="final">德文</target>
+      </trans-unit>
+      <trans-unit id="lang_el" resname="lang_el" approved="yes">
+        <source>Greek</source>
+        <target state="final">希臘文</target>
+      </trans-unit>
+      <trans-unit id="lang_gr" resname="lang_gr" approved="yes">
+        <source>Greek</source>
+        <target state="final">希臘文</target>
+      </trans-unit>
+      <trans-unit id="lang_eo" resname="lang_eo" approved="yes">
+        <source>Esperanto</source>
+        <target state="final">世界語</target>
+      </trans-unit>
+      <trans-unit id="lang_es" resname="lang_es" approved="yes">
+        <source>Spanish</source>
+        <target state="final">西班牙文</target>
+      </trans-unit>
+      <trans-unit id="lang_et" resname="lang_et" approved="yes">
+        <source>Estonian</source>
+        <target state="final">愛沙尼亞文</target>
+      </trans-unit>
+      <trans-unit id="lang_eu" resname="lang_eu" approved="yes">
+        <source>Basque</source>
+        <target state="final">巴斯克文</target>
+      </trans-unit>
+      <trans-unit id="lang_fi" resname="lang_fi" approved="yes">
+        <source>Finnish</source>
+        <target state="final">芬蘭文</target>
+      </trans-unit>
+      <trans-unit id="lang_fr" resname="lang_fr" approved="yes">
+        <source>French</source>
+        <target state="final">法文</target>
+      </trans-unit>
+      <trans-unit id="lang_ga" resname="lang_ga" approved="yes">
+        <source>Galician</source>
+        <target state="final">格陵蘭文</target>
+      </trans-unit>
+      <trans-unit id="lang_gl" resname="lang_gl" approved="yes">
+        <source>Galician</source>
+        <target state="final">格陵蘭文</target>
+      </trans-unit>
+      <trans-unit id="lang_he" resname="lang_he" approved="yes">
+        <source>Hebrew</source>
+        <target state="final">希伯來文</target>
+      </trans-unit>
+      <trans-unit id="lang_hi" resname="lang_hi" approved="yes">
+        <source>Hindi</source>
+        <target state="final">印度</target>
+      </trans-unit>
+      <trans-unit id="lang_hr" resname="lang_hr" approved="yes">
+        <source>Croatian</source>
+        <target state="final">克羅地亞文</target>
+      </trans-unit>
+      <trans-unit id="lang_hu" resname="lang_hu" approved="yes">
+        <source>Hungarian</source>
+        <target state="final">匈牙利文</target>
+      </trans-unit>
+      <trans-unit id="lang_is" resname="lang_is" approved="yes">
+        <source>Icelandic</source>
+        <target state="final">冰島文</target>
+      </trans-unit>
+      <trans-unit id="lang_it" resname="lang_it" approved="yes">
+        <source>Italian</source>
+        <target state="final">意大利文</target>
+      </trans-unit>
+      <trans-unit id="lang_ja" resname="lang_ja" approved="yes">
+        <source>Japanese</source>
+        <target state="final">日文</target>
+      </trans-unit>
+      <trans-unit id="lang_jp" resname="lang_jp" approved="yes">
+        <source>Japanese</source>
+        <target state="final">日文</target>
+      </trans-unit>
+      <trans-unit id="lang_kl" resname="lang_kl" approved="yes">
+        <source>Greenlandic</source>
+        <target state="final">格陵蘭文</target>
+      </trans-unit>
+      <trans-unit id="lang_ko" resname="lang_ko" approved="yes">
+        <source>Korean</source>
+        <target state="final">韓文</target>
+      </trans-unit>
+      <trans-unit id="lang_kr" resname="lang_kr" approved="yes">
+        <source>Korean</source>
+        <target state="final">韓文</target>
+      </trans-unit>
+      <trans-unit id="lang_lt" resname="lang_lt" approved="yes">
+        <source>Lithuanian</source>
+        <target state="final">立陶宛文</target>
+      </trans-unit>
+      <trans-unit id="lang_lv" resname="lang_lv" approved="yes">
+        <source>Latvian</source>
+        <target state="final">拉脱維亞文</target>
+      </trans-unit>
+      <trans-unit id="lang_ms" resname="lang_ms" approved="yes">
+        <source>Bahasa Malaysia</source>
+        <target state="final">馬來西亞</target>
+      </trans-unit>
+      <trans-unit id="lang_my" resname="lang_my" approved="yes">
+        <source>Bahasa Malaysia</source>
+        <target state="final">馬來西亞</target>
+      </trans-unit>
+      <trans-unit id="lang_nl" resname="lang_nl" approved="yes">
+        <source>Dutch</source>
+        <target state="final">荷蘭文</target>
+      </trans-unit>
+      <trans-unit id="lang_no" resname="lang_no" approved="yes">
+        <source>Norwegian</source>
+        <target state="final">挪威文</target>
+      </trans-unit>
+      <trans-unit id="lang_pl" resname="lang_pl" approved="yes">
+        <source>Polish</source>
+        <target state="final">波蘭文</target>
+      </trans-unit>
+      <trans-unit id="lang_pt" resname="lang_pt" approved="yes">
+        <source>Portuguese</source>
+        <target state="final">葡萄牙文</target>
+      </trans-unit>
+      <trans-unit id="lang_br" resname="lang_br" approved="yes">
+        <source>Brazilian Portuguese</source>
+        <target state="final">巴西葡萄牙文</target>
+      </trans-unit>
+      <trans-unit id="lang_pt_BR" resname="lang_pt_BR" approved="yes">
+        <source>Brazilian Portuguese</source>
+        <target state="final">巴西葡萄牙文</target>
+      </trans-unit>
+      <trans-unit id="lang_ro" resname="lang_ro" approved="yes">
+        <source>Romanian</source>
+        <target state="final">羅馬尼亞文</target>
+      </trans-unit>
+      <trans-unit id="lang_ru" resname="lang_ru" approved="yes">
+        <source>Russian</source>
+        <target state="final">俄羅斯文</target>
+      </trans-unit>
+      <trans-unit id="lang_sk" resname="lang_sk" approved="yes">
+        <source>Slovak</source>
+        <target state="final">斯洛伐克文</target>
+      </trans-unit>
+      <trans-unit id="lang_si" resname="lang_si" approved="yes">
+        <source>Slovenian</source>
+        <target state="final">斯洛文尼亞文</target>
+      </trans-unit>
+      <trans-unit id="lang_sl" resname="lang_sl" approved="yes">
+        <source>Slovenian</source>
+        <target state="final">斯洛文尼亞文</target>
+      </trans-unit>
+      <trans-unit id="lang_se" resname="lang_se" approved="yes">
+        <source>Swedish</source>
+        <target state="final">瑞典文</target>
+      </trans-unit>
+      <trans-unit id="lang_sv" resname="lang_sv" approved="yes">
+        <source>Swedish</source>
+        <target state="final">瑞典文</target>
+      </trans-unit>
+      <trans-unit id="lang_th" resname="lang_th" approved="yes">
+        <source>Thai</source>
+        <target state="final">泰文</target>
+      </trans-unit>
+      <trans-unit id="lang_tr" resname="lang_tr" approved="yes">
+        <source>Turkish</source>
+        <target state="final">土耳其文</target>
+      </trans-unit>
+      <trans-unit id="lang_ua" resname="lang_ua" approved="yes">
+        <source>Ukrainian</source>
+        <target state="final">鳥克蘭文</target>
+      </trans-unit>
+      <trans-unit id="lang_uk" resname="lang_uk" approved="yes">
+        <source>Ukrainian</source>
+        <target state="final">鳥克蘭文</target>
+      </trans-unit>
+      <trans-unit id="lang_vi" resname="lang_vi" approved="yes">
+        <source>Vietnamese</source>
+        <target state="final">越南文</target>
+      </trans-unit>
+      <trans-unit id="lang_vn" resname="lang_vn" approved="yes">
+        <source>Vietnamese</source>
+        <target state="final">越南文</target>
+      </trans-unit>
+      <trans-unit id="lang_hk" resname="lang_hk" approved="yes">
+        <source>Chinese (Trad)</source>
+        <target state="final">中文（繁體）</target>
+      </trans-unit>
+      <trans-unit id="lang_zh" resname="lang_zh" approved="yes">
+        <source>Chinese (Trad)</source>
+        <target state="final">中文（繁體）</target>
+      </trans-unit>
+      <trans-unit id="default" resname="default" approved="yes">
+        <source>Default</source>
+        <target state="final">預設</target>
+      </trans-unit>
+      <trans-unit id="simulate" resname="simulate" approved="yes">
+        <source>Simulate backend user</source>
+        <target state="final">模擬後勤使用者</target>
+      </trans-unit>
+      <trans-unit id="opening" resname="opening" approved="yes">
+        <source>Startup</source>
+        <target state="final">開始</target>
+      </trans-unit>
+      <trans-unit id="personal_data" resname="personal_data" approved="yes">
+        <source>Personal data</source>
+        <target state="final">個人資料</target>
+      </trans-unit>
+      <trans-unit id="showThumbs" resname="showThumbs" approved="yes">
+        <source>Show Thumbnails by default</source>
+        <target state="final">預設顯示小圖示</target>
+      </trans-unit>
+      <trans-unit id="helpText" resname="helpText" approved="yes">
+        <source>Show help text when applicable</source>
+        <target state="final">適用時顯示支援內容</target>
+      </trans-unit>
+      <trans-unit id="maxTitleLen" resname="maxTitleLen" approved="yes">
+        <source>Max. Title Length</source>
+        <target state="final">標題的最大長度</target>
+      </trans-unit>
+      <trans-unit id="edit_RTE" resname="edit_RTE" approved="yes">
+        <source>Enable Rich Text Editor (if available)</source>
+        <target state="final">啟動多功能文字編輯器（如可用）</target>
+      </trans-unit>
+      <trans-unit id="edit_docModuleUpload" resname="edit_docModuleUpload" approved="yes">
+        <source>File upload directly in Doc-module</source>
+        <target state="final">直接從「文件」模組中上載檔案</target>
+      </trans-unit>
+      <trans-unit id="edit_functions" resname="edit_functions" approved="yes">
+        <source>Edit</source>
+        <target state="final">編輯</target>
+      </trans-unit>
+      <trans-unit id="setToStandard" resname="setToStandard" approved="yes">
+        <source>Reset all Values to default</source>
+        <target state="final">重設所有數值為預設值</target>
+      </trans-unit>
+      <trans-unit id="functions" resname="functions" approved="yes">
+        <source>Advanced functions</source>
+        <target state="final">進階功能</target>
+      </trans-unit>
+      <trans-unit id="activateChanges" resname="activateChanges" approved="yes">
+        <source>Notice! In order to activate most of these changes, please reload the backend (eg. logout and login again).</source>
+        <target state="final">留意！為了啟動大部分的改變，請重載後勤（登出後再登入）</target>
+      </trans-unit>
+      <trans-unit id="levels" resname="levels" approved="yes">
+        <source>levels</source>
+        <target state="final">層次</target>
+      </trans-unit>
+      <trans-unit id="beUser_realName" resname="beUser_realName" approved="yes">
+        <source>Your name</source>
+        <target state="final">你的名字</target>
+      </trans-unit>
+      <trans-unit id="beUser_email" resname="beUser_email" approved="yes">
+        <source>Your email address</source>
+        <target state="final">你的電郵地址</target>
+      </trans-unit>
+      <trans-unit id="save" resname="save" approved="yes">
+        <source>Save Configuration</source>
+        <target state="final">儲存設定</target>
+      </trans-unit>
+      <trans-unit id="newPassword" resname="newPassword" approved="yes">
+        <source>New password</source>
+        <target state="final">新密碼</target>
+      </trans-unit>
+      <trans-unit id="newPasswordAgain" resname="newPasswordAgain" approved="yes">
+        <source>New password, again</source>
+        <target state="final">新密碼，再輸入</target>
+      </trans-unit>
+      <trans-unit id="newPassword_ok" resname="newPassword_ok" approved="yes">
+        <source>Password was updated.</source>
+        <target state="final">密碼已被更新</target>
+      </trans-unit>
+      <trans-unit id="newPassword_failed" resname="newPassword_failed" approved="yes">
+        <source>Password was NOT updated because you didn't enter the same password twice.</source>
+        <target state="final">密碼沒有被更新，因為你沒有重覆輸入密碼</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
