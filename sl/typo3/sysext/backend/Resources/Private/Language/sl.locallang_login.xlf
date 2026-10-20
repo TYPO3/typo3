@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814864" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_login.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="labels.submitLogout" resname="labels.submitLogout" approved="yes">
+        <source>Log Out</source>
+        <target state="final">Odjava</target>
+      </trans-unit>
+      <trans-unit id="newsheadline" resname="newsheadline" approved="yes">
+        <source>Important Messages</source>
+        <target state="final">Pomembna sporočila</target>
+      </trans-unit>
+      <trans-unit id="copyright" resname="copyright" approved="yes">
+        <source>Copyright</source>
+        <target state="final">Avtorske pravice</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
