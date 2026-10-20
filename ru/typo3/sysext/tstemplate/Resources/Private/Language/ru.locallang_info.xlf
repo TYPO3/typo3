@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815005" source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_info.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="delete" resname="delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Удалить</target>
+      </trans-unit>
+      <trans-unit id="toTop" resname="toTop" approved="yes">
+        <source>To top</source>
+        <target state="final">Вверх</target>
+      </trans-unit>
+      <trans-unit id="fileChanged" resname="fileChanged" approved="yes">
+        <source>File changed</source>
+        <target state="final">Файл изменён</target>
+      </trans-unit>
+      <trans-unit id="resourceUpdated" resname="resourceUpdated" approved="yes">
+        <source>Resource '%s' has been updated.</source>
+        <target state="final">Обновлён ресурс '%s'.</target>
+      </trans-unit>
+      <trans-unit id="templateInformation" resname="templateInformation" approved="yes">
+        <source>Template information</source>
+        <target state="final">Информация по шаблону</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Title</source>
+        <target state="final">Название</target>
+      </trans-unit>
+      <trans-unit id="sitetitle" resname="sitetitle" approved="yes">
+        <source>Sitetitle</source>
+        <target state="final">Название сайта</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description" approved="yes">
+        <source>Description</source>
+        <target state="final">Описание</target>
+      </trans-unit>
+      <trans-unit id="allowedExtensions" resname="allowedExtensions" approved="yes">
+        <source>Allowed extensions</source>
+        <target state="final">Разрешенные расширения</target>
+      </trans-unit>
+      <trans-unit id="maxFilesize" resname="maxFilesize" approved="yes">
+        <source>Max filesize</source>
+        <target state="final">Максимальный размер файла</target>
+      </trans-unit>
+      <trans-unit id="uploadResource" resname="uploadResource" approved="yes">
+        <source>Upload resource</source>
+        <target state="final">Загрузка ресурсов</target>
+      </trans-unit>
+      <trans-unit id="newTextResource" resname="newTextResource" approved="yes">
+        <source>New text resource (enter name)</source>
+        <target state="final">Новый текстовый ресурс (введите название)</target>
+      </trans-unit>
+      <trans-unit id="copyResource" resname="copyResource" approved="yes">
+        <source>Make a copy of resource</source>
+        <target state="final">Сделать копию ресурса</target>
+      </trans-unit>
+      <trans-unit id="updateResourceList" resname="updateResourceList" approved="yes">
+        <source>Update resource list</source>
+        <target state="final">Обновить список ресурсов</target>
+      </trans-unit>
+      <trans-unit id="constants" resname="constants" approved="yes">
+        <source>Constants</source>
+        <target state="final">Константы</target>
+      </trans-unit>
+      <trans-unit id="file" resname="file" approved="yes">
+        <source>File</source>
+        <target state="final">Файл</target>
+      </trans-unit>
+      <trans-unit id="editResource" resname="editResource" approved="yes">
+        <source>Edit Resource</source>
+        <target state="final">Править ресурс</target>
+      </trans-unit>
+      <trans-unit id="filesizeExceeded" resname="filesizeExceeded" approved="yes">
+        <source>Filesize exceeded %s KBytes</source>
+        <target state="final">Размер файла превышает %s Кбайт</target>
+      </trans-unit>
+      <trans-unit id="notAllowed" resname="notAllowed" approved="yes">
+        <source>Files larger than %s KBytes are not allowed to be edited.</source>
+        <target state="final">Недопустимо редактировать файлы, размером более %s Кбайт.</target>
+      </trans-unit>
+      <trans-unit id="setup" resname="setup" approved="yes">
+        <source>Setup</source>
+        <target state="final">Настройка</target>
+      </trans-unit>
+      <trans-unit id="resources" resname="resources" approved="yes">
+        <source>Resources</source>
+        <target state="final">Ресурсы</target>
+      </trans-unit>
+      <trans-unit id="editToView" resname="editToView" approved="yes">
+        <source>(edit to view, %s lines)</source>
+        <target state="final">(правка, %s строк)</target>
+      </trans-unit>
+      <trans-unit id="editTemplateRecord" resname="editTemplateRecord" approved="yes">
+        <source>Edit the whole template record</source>
+        <target state="final">Править шаблон целиком</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
