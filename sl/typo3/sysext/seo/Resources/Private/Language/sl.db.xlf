@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:seo/Resources/Private/Language/db.xlf" date="2018-08-09T16:22:32Z" product-name="seo" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="pages.seo_title" approved="yes">
+        <source>Title for search engines</source>
+        <target state="final">Naslov za iskalnike</target>
+      </trans-unit>
+      <trans-unit id="pages.no_index" approved="yes">
+        <source>No index</source>
+        <target state="final">Brez indeksa</target>
+      </trans-unit>
+      <trans-unit id="pages.no_index_formlabel" approved="yes">
+        <source>Index this page</source>
+        <target state="final">Indeksiraj to stran</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq" approved="yes">
+        <source>Change frequency</source>
+        <target state="final">Zamenjaj frekvenco</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.none" approved="yes">
+        <source>None</source>
+        <target state="final">Brez</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.always" approved="yes">
+        <source>Always</source>
+        <target state="final">Vedno</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.hourly" approved="yes">
+        <source>Hourly</source>
+        <target state="final">Vsako uro</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.daily" approved="yes">
+        <source>Daily</source>
+        <target state="final">Dnevno</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.weekly" approved="yes">
+        <source>Weekly</source>
+        <target state="final">Tedensko</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.monthly" approved="yes">
+        <source>Monthly</source>
+        <target state="final">Mesečno</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.yearly" approved="yes">
+        <source>Yearly</source>
+        <target state="final">Letno</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_changefreq.never" approved="yes">
+        <source>Never</source>
+        <target state="final">Nikoli</target>
+      </trans-unit>
+      <trans-unit id="pages.sitemap_priority" approved="yes">
+        <source>Priority</source>
+        <target state="final">Prioriteta</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
