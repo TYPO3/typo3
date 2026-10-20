@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1498839785" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Sort sub pages</source>
+        <target state="final">Razvrsti podstrani</target>
+      </trans-unit>
+      <trans-unit id="fieldTitle" resname="fieldTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Naslov strani</target>
+      </trans-unit>
+      <trans-unit id="fieldSubtitle" resname="fieldSubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Podnaslov</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTitle" resname="changeOrderByTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Naslov strani</target>
+      </trans-unit>
+      <trans-unit id="changeOrderBySubtitle" resname="changeOrderBySubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Podnaslov</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
