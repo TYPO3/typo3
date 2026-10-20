@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:sys_note/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:37Z" product-name="sys_note" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="sys_note.category.I.3" approved="yes">
+        <source>Notes</source>
+        <target state="final">Opombe</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
