@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415815018" source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_csh_sysws_stage.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Defines custom workspace stages in TYPO3 which allows for groups of people to work together in a defined process. More information about workspaces can be found in the document "Inside TYPO3".</source>
+        <target state="final">ກຳນົດຂັ້ນຕອນການເຮັດວຽກ (workspace stages) ແບບກຳນົດເອງໃນ TYPO3 ເຊິ່ງຊ່ວຍໃຫ້ກຸ່ມຄົນສາມາດເຮັດວຽກຮ່ວມກັນໃນຂະບວນການທີ່ກຳນົດໄວ້. ຂໍ້ມູນເພີ່ມເຕີມກ່ຽວກັບ workspaces ສາມາດຊອກຫາໄດ້ໃນເອກະສານ "Inside TYPO3".</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the name of the workspace stage.</source>
+        <target state="final">ປ້ອນຊື່ຂອງຂັ້ນຕອນການເຮັດວຽກ (workspace stage).</target>
+      </trans-unit>
+      <trans-unit id="responsible_persons.description" resname="responsible_persons.description" approved="yes">
+        <source>Define which BE users are responsible for this workspace stage. This selected BE users are possible recipients for the stage change emails.</source>
+        <target state="final">ກຳນົດຜູ້ໃຊ້ backend (BE users) ທີ່ຮັບຜິດຊອບສຳລັບຂັ້ນຕອນການເຮັດວຽກນີ້. ຜູ້ໃຊ້ backend ທີ່ຖືກເລືອກເຫຼົ່ານີ້ແມ່ນຜູ້ທີ່ມີໂອກາດໄດ້ຮັບອີເມວແຈ້ງເຕືອນການປ່ຽນແປງຂັ້ນຕອນ.</target>
+      </trans-unit>
+      <trans-unit id="default_mailcomment.description" resname="default_mailcomment.description" approved="yes">
+        <source>Here its possible to define a standard mail comment which will be inserted into the stage change mail. When no standard mail comment was defined here its possible to write a comment for the mail on every stage change.</source>
+        <target state="final">ໃນສ່ວນນີ້ສາມາດກຳນົດຄຳເຫັນມາດຕະຖານໃນອີເມວ ເຊິ່ງຈະຖືກໃສ່ລົງໃນອີເມວແຈ້ງເຕືອນການປ່ຽນແປງຂັ້ນຕອນ. ຫາກບໍ່ໄດ້ກຳນົດຄຳເຫັນມາດຕະຖານໄວ້ຢູ່ບ່ອນນີ້, ທ່ານສາມາດຂຽນຄຳເຫັນໃສ່ໃນອີເມວໄດ້ໃນທຸກໆຄັ້ງທີ່ມີການປ່ຽນແປງຂັ້ນຕອນ.</target>
+      </trans-unit>
+      <trans-unit id="notification_defaults.description" resname="notification_defaults.description" approved="yes">
+        <source>Select these backend users or backend groups that should be selected per default to receive a notification mail. Select only users/groups that are also selected as responsible for this stage.</source>
+        <target state="final">ເລືອກຜູ້ໃຊ້ backend ຫຼື ກຸ່ມຜູ້ໃຊ້ backend ທີ່ຄວນຈະຖືກເລືອກໄວ້ເປັນຄ່າເລີ່ມຕົ້ນເພື່ອຮັບອີເມວແຈ້ງເຕືອນ. ເລືອກສະເພາະຜູ້ໃຊ້/ກຸ່ມທີ່ຖືກເລືອກໃຫ້ເປັນຜູ້ຮັບຜິດຊອບຂັ້ນຕອນນີ້ເທົ່ານັ້ນ.</target>
+      </trans-unit>
+      <trans-unit id="allow_notificaton_settings.description" resname="allow_notificaton_settings.description" approved="yes">
+        <source>Disable this checkbox to hide the recipient and additional recipient fields from the stage change popup window. Notifications are sent in the background nevertheless but based on configuration in workspace stage setting.</source>
+        <target state="final">ປິດເຄື່ອງໝາຍໃນຊ່ອງນີ້ເພື່ອເຊື່ອງຊ່ອງຂໍ້ມູນຜູ້ຮັບ ແລະ ຜູ້ຮັບເພີ່ມເຕີມຈາກປັອບອັບການປ່ຽນແປງຂັ້ນຕອນ. ເຖິງຢ່າງໃດກໍຕາມ, ການແຈ້ງເຕືອນຈະຍັງຖືກສົ່ງໄປໃນເບື້ອງຫຼັງໂດຍອີງຕາມການຕັ້ງຄ່າໃນຂັ້ນຕອນການເຮັດວຽກ (workspace stage).</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
