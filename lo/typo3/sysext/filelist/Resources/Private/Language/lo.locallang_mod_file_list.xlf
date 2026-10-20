@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814869" source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="bigControlPanel" resname="bigControlPanel" approved="yes">
+        <source>Extended view</source>
+        <target state="final">ມຸມມອງຂະຫຍາຍ</target>
+      </trans-unit>
+      <trans-unit id="clipBoard" resname="clipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">ສະແດງຄລິບບອດ</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" resname="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">ວາງເນື້ອຫາໃນຄລິບບອດ</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" resname="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted into this folder</source>
+        <target state="final">ວາງໃສ່: ເນື້ອຫາໃນຄລິບບອດຈະຖືກແຊກລົງໃນໂຟນເດີນີ້</target>
+      </trans-unit>
+      <trans-unit id="clip_markRecords" resname="clip_markRecords" approved="yes">
+        <source>Mark All/Mark none</source>
+        <target state="final">ໝາຍທັງໝົດ/ບໍ່ໝາຍເລີຍ</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" resname="clip_selectMarked" approved="yes">
+        <source>Transfer the selection of files to clipboard</source>
+        <target state="final">ສົ່ງໄຟລ໌ທີ່ເລືອກໄປຍັງຄລິບບອດ (clipboard)</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" resname="clip_deleteMarked" approved="yes">
+        <source>Delete marked</source>
+        <target state="final">ລຶບລາຍການທີ່ໝາຍໄວ້</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarkedWarning" resname="clip_deleteMarkedWarning" approved="yes">
+        <source>Are you sure you want to delete all marked files from this folder?</source>
+        <target state="final">ເຈົ້າແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບໄຟລ໌ທັງໝົດທີ່ໝາຍໄວ້ອອກຈາກໂຟນເດີນີ້?</target>
+      </trans-unit>
+      <trans-unit id="displayThumbs" resname="displayThumbs" approved="yes">
+        <source>Display thumbnails</source>
+        <target state="final">ສະແດງຮູບຕົວຢ່າງ</target>
+      </trans-unit>
+      <trans-unit id="c_file" resname="c_file" approved="yes">
+        <source>File Name</source>
+        <target state="final">ຊື່ໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="c_filepath" resname="c_filepath" approved="yes">
+        <source>File Path</source>
+        <target state="final">ເສັ້ນທາງໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="c_size" resname="c_size" approved="yes">
+        <source>Size</source>
+        <target state="final">ຂະໜາດ</target>
+      </trans-unit>
+      <trans-unit id="c_fileext" resname="c_fileext" approved="yes">
+        <source>Type</source>
+        <target state="final">ປະເພດ</target>
+      </trans-unit>
+      <trans-unit id="c_tstamp" resname="c_tstamp" approved="yes">
+        <source>Last Modified</source>
+        <target state="final">ແກ້ໄຂຫຼ້າສຸດ</target>
+      </trans-unit>
+      <trans-unit id="c_rw" resname="c_rw" approved="yes">
+        <source>RW</source>
+        <target state="final">RW</target>
+      </trans-unit>
+      <trans-unit id="c__REF_" resname="c__REF_" approved="yes">
+        <source>Ref</source>
+        <target state="final">ອ້າງອີງ</target>
+      </trans-unit>
+      <trans-unit id="files" resname="files" approved="yes">
+        <source>files</source>
+        <target state="final">ໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="temp" resname="temp" approved="yes">
+        <source>Temporary files</source>
+        <target state="final">ໄຟລ໌ຊົ່ວຄາວ</target>
+      </trans-unit>
+      <trans-unit id="role_folder_temporary" resname="role_folder_temporary" approved="yes">
+        <source>Temporary files</source>
+        <target state="final">ໄຟລ໌ຊົ່ວຄາວ</target>
+      </trans-unit>
+      <trans-unit id="role_folder_recycler" resname="role_folder_recycler" approved="yes">
+        <source>Recycler</source>
+        <target state="final">ຖັງຂີ້ເຫຍື້ອ</target>
+      </trans-unit>
+      <trans-unit id="read" resname="read" approved="yes">
+        <source>R</source>
+        <target state="final">R</target>
+      </trans-unit>
+      <trans-unit id="recycler" resname="recycler" approved="yes">
+        <source>Recycler</source>
+        <target state="final">ຖັງຂີ້ເຫຍື້ອ</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Listing of files in the directory</source>
+        <target state="final">ລາຍຊື່ໄຟລ໌ໃນໄດເຣັກທໍຣີ</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>This is the file administration system in TYPO3. It allows you to access the file mounts of your login. Through this module you can upload, copy, move an delete files on the server.</source>
+        <target state="final">ນີ້ແມ່ນລະບົບຈັດການໄຟລ໌ໃນ TYPO3. ມັນຊ່ວຍໃຫ້ເຈົ້າເຂົ້າເຖິງບ່ອນເກັບໄຟລ໌ທີ່ເຊື່ອມຕໍ່ກັບການເຂົ້າລະບົບຂອງເຈົ້າ. ຜ່ານໂມດູນນີ້ ເຈົ້າສາມາດອັບໂຫລດ, ສຳເນົາ, ຍ້າຍ ແລະ ລຶບໄຟລ໌ຢູ່ໃນເຊີເວີໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Filelist</source>
+        <target state="final">ລາຍຊື່ໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="write" resname="write" approved="yes">
+        <source>W</source>
+        <target state="final">W</target>
+      </trans-unit>
+      <trans-unit id="paramError" resname="paramError" approved="yes">
+        <source>Parameter Error</source>
+        <target state="final">ພາຣາມິເຕີຜິດພາດ</target>
+      </trans-unit>
+      <trans-unit id="targetNoDir" resname="targetNoDir" approved="yes">
+        <source>Target was not a directory!</source>
+        <target state="final">ເປົ້າໝາຍບໍ່ແມ່ນໄດເຣັກທໍຣີ!</target>
+      </trans-unit>
+      <trans-unit id="localDriverFlexform_basePath" resname="localDriverFlexform_basePath" approved="yes">
+        <source>Base path</source>
+        <target state="final">ເສັ້ນທາງຫຼັກ</target>
+      </trans-unit>
+      <trans-unit id="localDriverFlexform_basePath_placeholder" resname="localDriverFlexform_basePath_placeholder" approved="yes">
+        <source>Add storage path here. For example: myPath/folder/</source>
+        <target state="final">ເພີ່ມເສັ້ນທາງບ່ອນເກັບຂໍ້ມູນຢູ່ບ່ອນນີ້. ຕົວຢ່າງ: myPath/folder/</target>
+      </trans-unit>
+      <trans-unit id="localDriverFlexform_pathType" resname="localDriverFlexform_pathType" approved="yes">
+        <source>Path type</source>
+        <target state="final">ປະເພດເສັ້ນທາງ</target>
+      </trans-unit>
+      <trans-unit id="localDriverFlexform_pathType_relative" resname="localDriverFlexform_pathType_relative" approved="yes">
+        <source>relative</source>
+        <target state="final">ແບບທຽບຖານ (relative)</target>
+      </trans-unit>
+      <trans-unit id="localDriverFlexform_pathType_absolute" resname="localDriverFlexform_pathType_absolute" approved="yes">
+        <source>absolute</source>
+        <target state="final">ແບບເຕັມ (absolute)</target>
+      </trans-unit>
+      <trans-unit id="localDriverFlexform_caseSensitive" resname="localDriverFlexform_caseSensitive" approved="yes">
+        <source>Uses case sensitive identifiers</source>
+        <target state="final">ໃຊ້ຕົວລະບຸທີ່ຈຳແນກຕົວອັກສອນພິມໃຫຍ່-ນ້ອຍ (case sensitive)</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableTitle" resname="storageNotBrowsableTitle" approved="yes">
+        <source>Access denied.</source>
+        <target state="final">ປະຕິເສດການເຂົ້າເຖິງ.</target>
+      </trans-unit>
+      <trans-unit id="storageNotBrowsableMessage" resname="storageNotBrowsableMessage" approved="yes">
+        <source>You are trying to access a folder in a storage that is not browsable.</source>
+        <target state="final">ເຈົ້າກຳລັງພະຍາຍາມເຂົ້າເຖິງໂຟນເດີໃນບ່ອນເກັບຂໍ້ມູນທີ່ບໍ່ສາມາດເບິ່ງໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsTitle" resname="missingFolderPermissionsTitle" approved="yes">
+        <source>Missing folder permissions</source>
+        <target state="final">ຂາດການອະນຸຍາດເຂົ້າເຖິງໂຟນເດີ</target>
+      </trans-unit>
+      <trans-unit id="missingFolderPermissionsMessage" resname="missingFolderPermissionsMessage" approved="yes">
+        <source>You have no access to the folder "%s".</source>
+        <target state="final">ເຈົ້າບໍ່ມີສິດເຂົ້າເຖິງໂຟນເດີ "%s".</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundTitle" resname="folderNotFoundTitle" approved="yes">
+        <source>Folder not found.</source>
+        <target state="final">ບໍ່ພົບໂຟນເດີ.</target>
+      </trans-unit>
+      <trans-unit id="folderNotFoundMessage" resname="folderNotFoundMessage" approved="yes">
+        <source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
+        <target state="final">ບໍ່ສາມາດເຂົ້າເຖິງໂຟນເດີ "%s" ໄດ້. ກຳລັງພະຍາຍາມໃຊ້ໂຟນເດີຫຼັກ.</target>
+      </trans-unit>
+      <trans-unit id="translateMetadata" resname="translateMetadata" approved="yes">
+        <source>Translate metadata</source>
+        <target state="final">ແປຂໍ້ມູນກຳກັບ</target>
+      </trans-unit>
+      <trans-unit id="createMetadataForLanguage" resname="createMetadataForLanguage" approved="yes">
+        <source>Create metadata of this file for %s</source>
+        <target state="final">ສ້າງຂໍ້ມູນກຳກັບຂອງໄຟລ໌ນີ້ສຳລັບ %s</target>
+      </trans-unit>
+      <trans-unit id="editMetadataForLanguage" resname="editMetadataForLanguage" approved="yes">
+        <source>Edit metadata of this file for %s</source>
+        <target state="final">ແກ້ໄຂຂໍ້ມູນກຳກັບຂອງໄຟລ໌ນີ້ສຳລັບ %s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
