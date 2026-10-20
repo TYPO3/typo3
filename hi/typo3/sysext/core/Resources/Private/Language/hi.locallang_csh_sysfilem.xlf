@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814857" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilem.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>Filemounts describe a filepath on the server, relative or absolute.</source>
+        <target state="final">फिलेमोउन्ट्स सर्वर, रिलेटिव या निरपेक्ष पर एक फ़ाइल पथ का वर्णन है।</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>By creating a file mount record and placing a reference to it in a Backend usergroup you can allow a user access to the file mount in the File&gt;List module.
+Filemounts may also configure access to a path on the server to which the user has FTP-access. Just remember to set file-permissions on the server correctly so the webserver user (which PHP is running as) has at least read access to the FTP-dir.
+You can only mount absolute paths if they are within the base path set in $TYPO3_CONF_VARS[BE][lockRootPath]</source>
+			<target state="final">एक फ़ाइल रिकॉर्ड माउंट बनाने और एक बैकएंड उपयोगकर्ता समूह में इसे करने के लिए एक संदर्भ रखकर आप फाइल करने के लिए एक उपयोगकर्ता पहुँच फ़ाइल&gt; लिस्ट मॉड्यूल में माउंट अनुमति दे सकते हैं। 
+फिलेमोउन्ट्स भी सर्वर है जो करने के लिए उपयोगकर्ता FTP उपयोग किया है पर एक पथ के लिए उपयोग विन्यस्त कर सकते हैं। सिर्फ सही ढंग से इतने वेबसर्वर उपयोगकर्ता (जो PHP के रूप में चल रहा है) कम से कम FTP-निर्देशिका के लिए उपयोग पढ़ा है सर्वर पर फ़ाइल अनुमतियाँ सेट करने के लिए याद है। 
+आप केवल निरपेक्ष पथ माउंट कर सकते हैं अगर वे आधार पथ $TYPO3_CONF_VARS[be][lockRootPath] में सेट के भीतर हैं</target></trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve" approved="yes">
+				<source>be_groups:file_mountpoints,
+be_users:file_mountpoints,
+More about File mounts | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/</source>
+				
+			<target state="final">be_groups:file_mountpoints,
+be_users:file_mountpoints,
+फ़ाइल माउंट्स के बारे में अधिक | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/</target><note>A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_.image" resname="_.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/filemount_1.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/filemount_1.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter a title for the filemount. The title will appear as the name of the file mount when it is applied to users and groups.</source>
+        <target state="final">फ़ाइल माउंट के लिए एक शीर्षक दर्ज करें। के रूप में फ़ाइल का नाम माउंट जब यह उपयोगकर्ताओं और समूहों के लिए लागू किया जाता है शीर्षक दिखाई देगा।</target>
+      </trans-unit>
+      <trans-unit id="_title.image" resname="_title.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/be_groups_5.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_5.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="path.description" resname="path.description" approved="yes">
+        <source>Enter the path of the filemount, relative or absolute depending on the settings of BASE.</source>
+        <target state="final">फ़ाइल माउंट, रिलेटिव या निरपेक्ष आधार के सेटिंग्स के आधार पर की राह दर्ज करें।</target>
+      </trans-unit>
+      <trans-unit id="path.details" resname="path.details" xml:space="preserve" approved="yes">
+				<source>If BASE is set to relative, the path mounted is found in the subfolder "fileadmin/" of the website. Then you should enter the subfolder in "fileadmin/" as path. For instance if you want to mount access to "fileadmin/user_uploads/all/" then enter the value "user_uploads/all" as the value of PATH.
+If BASE is absolute you should enter the absolute path on the server, eg. "/home/ftp_upload" or "C:/home/ftp_upload". Further you must make sure the configuration variable $TYPO3_CONF_VARS[BE][lockRootPath] contains the first part of the path you want to mount.
+
+&lt;strong&gt;Notice:&lt;/strong&gt; In any case, make sure the webserver user which PHP is running as has &lt;em&gt;at least&lt;/em&gt; read-access to the path. If not, the mount will simply not appear without any warnings.
+If you have problems - especially with absolute mounts - try to mount something "simple" like a relative path in fileadmin. If that is working well, try the absolute path.
+
+Your PHP-configuration may also impose other restrictions on you if open_basedir is enabled. Then use relative paths.</source>
+			<target state="final">आधार रिलेटिव को सेट है, तो पथ मुहिम शुरू की वेबसाइट के सबफ़ोल्डर में पाया "fileadmin /" है। तो फिर तुम पथ के रूप में सबफ़ोल्डर में प्रवेश करना चाहिए "fileadmin /"। उदाहरण के लिए आप "fileadmin / user_uploads / सब /" तो मान दर्ज "user_uploads / सभी" पथ के मूल्य के रूप में करने के लिए उपयोग करने के लिए माउंट चाहते हैं। 
+अगर आधार निरपेक्ष है आप, सर्वर पर पूर्ण पथ में प्रवेश करना चाहिए जैसे। "/home/ftp_upload" or "C:/home/ftp_upload"। इसके अलावा आप यकीन है कि विन्यास चर $TYPO3_CONF_VARS[be][lockRootPath] पथ आप माउंट करने के लिए चाहते हैं के पहले भाग में शामिल करना चाहिए। 
+
+&lt;Strong&gt; सूचना: &lt;/ strong&gt; किसी भी मामले में, सुनिश्चित करें वेबसर्वर उपयोगकर्ता जो PHP के रूप में चल रहा है बनाने के &lt;em&gt; कम से कम &lt;/ em&gt;-पढ़ने के लिए पहुँच पथ के लिए। यदि नहीं, माउंट बस किसी चेतावनी के बिना दिखाई नहीं देगा। 
+विशेष रूप से पूर्ण mounts के साथ - - आप समस्या है, तो कुछ "सरल" fileadmin में एक रिलेटिव रास्ते की तरह माउंट करने के लिए प्रयास करें। कि अच्छी तरह से काम कर रहा है, तो निरपेक्ष पथ की कोशिश। 
+\ nआपका PHP-configuration भी आप पर अन्य प्रतिबंध लगाया जा सकता है कि अगर open_basedir सक्षम है। तब संबंधित पथ का उपयोग करें।</target></trans-unit>
+      <trans-unit id="_path.seeAlso" resname="_path.seeAlso" xml:space="preserve" approved="yes">
+				<source>sys_filemounts:base,
+be_groups:file_mountpoints,
+sys_filemounts</source>
+				
+			<target state="final">sys_filemounts:base,
+be_groups:file_mountpoints,
+sys_filemounts</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_path.image" resname="_path.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/be_groups_6.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_7.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/be_groups_6.png,
+EXT:core/Resources/Public/Images/cshimages/be_groups_7.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="path.image_descr" resname="path.image_descr" xml:space="preserve" approved="yes">
+				<source>This is a filemount relative to "fileadmin/". The mounted folder is "fileadmin/user_upload/" since "user_upload" is the value of the "Path" field.
+The directory structure of "fileadmin/" where you can see the "user_upload" folder in the bottom of the list.</source>
+			<target state="final">यह करने के लिए एक filemount रिलेटिव है "fileadmin /"। माउंटेड फ़ोल्डर है "fileadmin / user_upload /" के बाद "user_upload" "पथ" फ़ेल्ड का मूल्य है। 
+सूची के तल में "fileadmin /" आप "उपयोगकर्ता अपलोड 'देख सकते हैं, जहां फ़ोल्डर की निर्देशिका संरचना।</target></trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Use this option to temporarily disable the filemount.</source>
+        <target state="final">इस विकल्प का उपयोग अस्थायी रूप से फ़ाइल माउंट निष्क्रिय करने के लिए।</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>All backend users using the mount will not have access anymore. This includes 'Admin'-users.</source>
+        <target state="final">माउंट का उपयोग कर सभी बैकेंड उपयोगकर्ताओं को अब और उपयोग नहीं होगा। यह 'Admin' उपयोगकर्ताओं भी शामिल है।</target>
+      </trans-unit>
+      <trans-unit id="base.description" resname="base.description" approved="yes">
+        <source>Determines whether the value of the PATH field is to be recognized as an absolute path on the server or a path relative to the fileadmin/ subfolder to the website.</source>
+        <target state="final">निर्धारित करता है कि उस पथ क्षेत्र के मूल्य सर्वर या वेबसाइट करने के fileadmin / सबफ़ोल्डर के लिए एक मार्ग रिलेटिव पर एक पूर्ण पथ के रूप में पहचाना जा रहा है।</target>
+      </trans-unit>
+      <trans-unit id="_base.seeAlso" resname="_base.seeAlso" approved="yes">
+        <source>sys_filemounts:path</source>
+        <target state="final">sys_filemounts:path</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="read_only.description" resname="read_only.description" approved="yes">
+        <source>Display this file mount as read-only.</source>
+        <target state="final">इस फ़ाइल माउंट के रूप में केवल पढ़ने के लिए प्रदर्शित करें।</target>
+      </trans-unit>
+      <trans-unit id="read_only.details" resname="read_only.details" approved="yes">
+        <source>Read-only file mounts are displayed in the Filelist and the Element Browser. They allow displaying of files and folders which are neither writable nor editable for the user.</source>
+        <target state="final">केवल पढ़ने के लिए फ़ाइल mounts Filelist और तत्व ब्राउज़र में प्रदर्शित कर रहे हैं। वे फ़ाइलों और फ़ोल्डरों जो न लिखने योग्य है और न ही संपादन योग्य उपयोगकर्ता के लिए कर रहे हैं की प्रदर्शित करने की अनुमति है।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
