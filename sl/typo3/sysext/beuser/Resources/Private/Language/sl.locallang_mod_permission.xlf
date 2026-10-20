@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814882" source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="Edit" resname="Edit" approved="yes">
+        <source>EDIT</source>
+        <target state="final">UREDI</target>
+      </trans-unit>
+      <trans-unit id="recursive" resname="recursive" approved="yes">
+        <source>Set recursively</source>
+        <target state="final">Nastavi rekurzivno</target>
+      </trans-unit>
+      <trans-unit id="Depth" resname="Depth" approved="yes">
+        <source>Depth</source>
+        <target state="final">Globina</target>
+      </trans-unit>
+      <trans-unit id="levels" resname="levels" approved="yes">
+        <source>levels</source>
+        <target state="final">ravni</target>
+      </trans-unit>
+      <trans-unit id="User" resname="User" approved="yes">
+        <source>User</source>
+        <target state="final">Uporabnik</target>
+      </trans-unit>
+      <trans-unit id="4" resname="4" approved="yes">
+        <source>Delete page</source>
+        <target state="final">Izbriši stran</target>
+      </trans-unit>
+      <trans-unit id="8_t" resname="8_t" approved="yes">
+        <source>Create new pages under this page.</source>
+        <target state="final">Ustvari nove strani pod to stranjo.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Access</source>
+        <target state="final">Dostop</target>
+      </trans-unit>
+      <trans-unit id="selectNone" resname="selectNone" approved="yes">
+        <source>   - none -   </source>
+        <target state="final">   - brez -   </target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
