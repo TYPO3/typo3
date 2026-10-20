@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814881" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="ro">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>List of database-records</source>
+        <target state="final">Lista înregistrărilor din baza de date</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>The Web&gt;List module provides low level access to records appearing on a page.</source>
+        <target state="final">Modulul Web&gt;List oferă accesul detaliat la datele salvate pe pagină.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>List</source>
+        <target state="final">Listă</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteAfter" resname="clip_pasteAfter" approved="yes">
+        <source>Paste after: Clipboard content is inserted after this record</source>
+        <target state="final">Adaugă copie după: Conținutul clipboard-ului este inserat după această înregistrare</target>
+      </trans-unit>
+      <trans-unit id="clip_pasteInto" resname="clip_pasteInto" approved="yes">
+        <source>Paste into: Clipboard content is inserted on this page</source>
+        <target state="final">Copie in: Continutul clipboard-ului este inserat in aceasta pagina</target>
+      </trans-unit>
+      <trans-unit id="clip_paste" resname="clip_paste" approved="yes">
+        <source>Paste in clipboard content</source>
+        <target state="final">Copie in continutul clipboard-ului</target>
+      </trans-unit>
+      <trans-unit id="clip_markRecords" resname="clip_markRecords" approved="yes">
+        <source>Mark All/Mark none</source>
+        <target state="final">Marcheaza tot/Nu marcheaza</target>
+      </trans-unit>
+      <trans-unit id="clip_selectMarked" resname="clip_selectMarked" approved="yes">
+        <source>Transfer the selection of records to clipboard</source>
+        <target state="final">Transfera toate inregistrarile selectate in clipboard</target>
+      </trans-unit>
+      <trans-unit id="clip_duplicates" resname="clip_duplicates" approved="yes">
+        <source>Mark duplicates</source>
+        <target state="final">Marcheaza dublurile</target>
+      </trans-unit>
+      <trans-unit id="clip_editMarked" resname="clip_editMarked" approved="yes">
+        <source>Edit marked</source>
+        <target state="final">Editeaza elementele marcate</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarked" resname="clip_deleteMarked" approved="yes">
+        <source>Delete marked</source>
+        <target state="final">Sterge elementele marcate</target>
+      </trans-unit>
+      <trans-unit id="clip_deleteMarkedWarning" resname="clip_deleteMarkedWarning" approved="yes">
+        <source>Are you sure you want to delete all marked records from the table '%s'?</source>
+        <target state="final">Sunteti sigur ca vreti sa stergeti toate inregistrarile marcate din tabel '%s'?</target>
+      </trans-unit>
+      <trans-unit id="showInfo" resname="showInfo" approved="yes">
+        <source>Display information</source>
+        <target state="final">Afiseaza informatii</target>
+      </trans-unit>
+      <trans-unit id="edit" resname="edit" approved="yes">
+        <source>Edit record</source>
+        <target state="final">Editeaza inregistrare</target>
+      </trans-unit>
+      <trans-unit id="editPage" resname="editPage" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">Editeaza pagina</target>
+      </trans-unit>
+      <trans-unit id="new" resname="new" approved="yes">
+        <source>New record</source>
+        <target state="final">Inregistrare noua</target>
+      </trans-unit>
+      <trans-unit id="newPage" resname="newPage" approved="yes">
+        <source>Create new page after this page</source>
+        <target state="final">Creeaza pagina noua dupa aceasta pagina</target>
+      </trans-unit>
+      <trans-unit id="newRecord" resname="newRecord" approved="yes">
+        <source>Create new record after this record</source>
+        <target state="final">Creeaza inregistrare noua dupa aceasta inregistrare</target>
+      </trans-unit>
+      <trans-unit id="newRecordGeneral" resname="newRecordGeneral" approved="yes">
+        <source>Create new record</source>
+        <target state="final">Creeaza inregistrare noua</target>
+      </trans-unit>
+      <trans-unit id="moveUp" resname="moveUp" approved="yes">
+        <source>Move up in list</source>
+        <target state="final">Muta mai sus in lista</target>
+      </trans-unit>
+      <trans-unit id="moveDown" resname="moveDown" approved="yes">
+        <source>Move down in list</source>
+        <target state="final">Muta mai jos in lista</target>
+      </trans-unit>
+      <trans-unit id="move_record" resname="move_record" approved="yes">
+        <source>Re-position content element</source>
+        <target state="final">Repozitioneaza elementul de continut</target>
+      </trans-unit>
+      <trans-unit id="move_page" resname="move_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">Muta pagina</target>
+      </trans-unit>
+      <trans-unit id="hide" resname="hide" approved="yes">
+        <source>Hide record</source>
+        <target state="final">Ascunde inregistrarea</target>
+      </trans-unit>
+      <trans-unit id="unHide" resname="unHide" approved="yes">
+        <source>Un-hide record</source>
+        <target state="final">Arata inregistrarea</target>
+      </trans-unit>
+      <trans-unit id="hidePage" resname="hidePage" approved="yes">
+        <source>Hide page</source>
+        <target state="final">Ascunde pagina</target>
+      </trans-unit>
+      <trans-unit id="unHidePage" resname="unHidePage" approved="yes">
+        <source>Un-hide page</source>
+        <target state="final">Arata pagina</target>
+      </trans-unit>
+      <trans-unit id="prevLevel" resname="prevLevel" approved="yes">
+        <source>Move this page to the position after the current parent page (Inwards)</source>
+        <target state="final">Muta aceasta pagina dupa pagina curenta</target>
+      </trans-unit>
+      <trans-unit id="nextLevel" resname="nextLevel" approved="yes">
+        <source>Move this page to be a subpage of the page above (Outwards)</source>
+        <target state="final">Muta aceasta pagina pentru a fi o subpagina a celei de mai sus</target>
+      </trans-unit>
+      <trans-unit id="delete" resname="delete" approved="yes">
+        <source>Delete record (!)</source>
+        <target state="final">Sterge inregistrarea</target>
+      </trans-unit>
+      <trans-unit id="restore" resname="restore" approved="yes">
+        <source>Restore record</source>
+        <target state="final">Restaurare înregistrare</target>
+      </trans-unit>
+      <trans-unit id="history" resname="history" approved="yes">
+        <source>Display change history / Un-do</source>
+        <target state="final">Afiseaza istoria schimbarilor / Anuleaza</target>
+      </trans-unit>
+      <trans-unit id="displayVersions" resname="displayVersions" approved="yes">
+        <source>Display versions</source>
+        <target state="final">Afișează versiunile</target>
+      </trans-unit>
+      <trans-unit id="permissions" resname="permissions" approved="yes">
+        <source>Set permissions for page</source>
+        <target state="final">Stabilește permisiuni pentru pagina</target>
+      </trans-unit>
+      <trans-unit id="largeControl" resname="largeControl" approved="yes">
+        <source>Extended view</source>
+        <target state="final">Vedere de ansamblu</target>
+      </trans-unit>
+      <trans-unit id="contractView" resname="contractView" approved="yes">
+        <source>List all tables</source>
+        <target state="final">Listează toate tabelele</target>
+      </trans-unit>
+      <trans-unit id="expandView" resname="expandView" approved="yes">
+        <source>List only this table</source>
+        <target state="final">Listează numai acest tabel</target>
+      </trans-unit>
+      <trans-unit id="showClipBoard" resname="showClipBoard" approved="yes">
+        <source>Show clipboard</source>
+        <target state="final">Arată clipboard-ul</target>
+      </trans-unit>
+      <trans-unit id="editShownColumns" resname="editShownColumns" approved="yes">
+        <source>Edit all shown fields of the listed records</source>
+        <target state="final">Editează toate câmpurile înregistrărilor</target>
+      </trans-unit>
+      <trans-unit id="editThisColumn" resname="editThisColumn" approved="yes">
+        <source>Edit the '%s' field of the listed records</source>
+        <target state="final">Editează câmpul '%s' înregistrării</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" resname="deleteWarning" approved="yes">
+        <source>Are you sure you want to delete this record?</source>
+        <target state="final">Sunteți sigur că vreți să ștergeți această înregistrare?</target>
+      </trans-unit>
+      <trans-unit id="restoreWarning" resname="restoreWarning" approved="yes">
+        <source>Are you sure you want to restore this record by reverting the delete status?</source>
+        <target state="final">Sunteți sigur că doriți să restaurați această înregistrare ștearsă?</target>
+      </trans-unit>
+      <trans-unit id="localization" resname="localization" approved="yes">
+        <source>Localization view</source>
+        <target state="final">Vedere localizare</target>
+      </trans-unit>
+      <trans-unit id="defaultLanguage" resname="defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">Implicit</target>
+      </trans-unit>
+      <trans-unit id="multipleLanguages" resname="multipleLanguages" approved="yes">
+        <source>All languages</source>
+        <target state="final">Toate limbile</target>
+      </trans-unit>
+      <trans-unit id="viewRecords" resname="viewRecords" approved="yes">
+        <source>Viewing records of</source>
+        <target state="final">Afișare înregistrări pentru</target>
+      </trans-unit>
+      <trans-unit id="missingTcaColumnsMessageTitle" resname="missingTcaColumnsMessageTitle" approved="yes">
+        <source>Missing TCA definition</source>
+        <target state="final">Definiția TCA lipsește</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
