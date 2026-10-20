@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814842" source-language="en" datatype="plaintext" original="EXT:install/Resources/Private/Language/BackendModule.xlf" date="2011-10-17T20:22:33Z" product-name="install" target-language="km">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>Install Tool</source>
+        <target state="final">ឧបករណ៍​តម្លើង</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>Provides a simple link to the Install Tool. Notice the Install Tool (in typo3/install/) must be enabled.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</source>
+        <target state="final">ផ្ដល់នូវ​តំណភ្ជាប់​ធម្មតា​ទៅកាន់​ឧបករណ៍ការ​តម្លើង។សម្គាល់​ឧបករណ៍​តម្លើង(នៅក្នុង typo3/install/)ត្រូវតែបើកដំណើរការ។&lt;br /&gt;&lt;em&gt;សម្រាប់តែ​អ្នកគ្រប់គ្រង!&lt;/em&gt;</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>Install</source>
+        <target state="final">តម្លើង</target>
+      </trans-unit>
+      <trans-unit id="confirmUnlockInstallToolTitle" resname="confirmUnlockInstallToolTitle" approved="yes">
+        <source>The Install Tool is locked</source>
+        <target state="final">ឧបករណ៍​តម្លើង​ត្រូវបាន​ចាក់សោ</target>
+      </trans-unit>
+      <trans-unit id="confirmUnlockInstallToolMessage" resname="confirmUnlockInstallToolMessage" xml:space="preserve" approved="yes">
+				<source>&lt;p&gt;For security reasons the Install Tool is locked by default.&lt;/p&gt;
+&lt;p&gt;To enable the Install Tool, the file &lt;strong&gt;ENABLE_INSTALL_TOOL&lt;/strong&gt; must be created in the directory &lt;strong&gt;typo3conf/&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Just click the button below, the file will be created for you and the Install Tool will be unlocked.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Security note: &lt;/strong&gt;When you are finished with your work, please log out of the Install Tool. Otherwise TYPO3 will automatically lock the Install Tool after one hour.&lt;/p&gt;
+				</source>
+			<target state="final">&lt;p&gt;ដើម្បី​សុវត្ថិភាព​ឧបករណ៍​តម្លើង​ត្រូវបានចាក់សោដោយលំនាំដើម។&lt;/p&gt;
+&lt;p&gt;ដើម្បី​ដោះសោ​ឧបករណ៍​តម្លើង​ត្រូវ​បង្កើត​ឯកសារ​ទទេ​មួយ​ឈ្មោះ ENABLE_INSTALL_TOOL នៅក្នុង typo3conf/។&lt;/p&gt;
+&lt;p&gt;ដោយគ្រាន់តែ​ចុច​ប៊ូតុង​ខាងក្រោម ឯកសារ​នេះ​ត្រូវបានបង្កើត​សម្រាប់​អ្នកហើយ​​ឧបករណ៍​តម្លើង​នឹង​ត្រូវបាន​ដោះសោ។&lt;/p&gt;
+&lt;p&gt;ជា​អនុសាសន៍​​អ្នក​គួរតែ​ស៊ីញ៉េចេញ​ពី​ឧបករណ៍​តម្លើង​បន្ទាប់​ពី​បានបញ្ចប់​ការងារ។​បើមិនដូច្នេះទេ
+TYPO3 នឹង​ស៊ីញ៉េចេញ​ពីឧបករណ៍​តម្លើង​​ដោយស្វ័យប្រវត្តិ​ក្នុងរយៈពេល​មួយ​ម៉ោង។&lt;/p&gt;
+				</target></trans-unit>
+      <trans-unit id="confirmUnlockInstallToolButton" resname="confirmUnlockInstallToolButton" approved="yes">
+        <source>Unlock the Install&amp;#160;Tool</source>
+        <target state="final">ដោះសោ​ឧបករណ៍​តម្លើង</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
