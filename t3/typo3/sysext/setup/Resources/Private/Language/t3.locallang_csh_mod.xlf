@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814989" source-language="en" datatype="plaintext" original="EXT:setup/Resources/Private/Language/locallang_csh_mod.xlf" date="2011-10-17T20:22:37Z" product-name="setup" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle">
+        <source>User &gt; Setup module</source>
+        <target>crwdns79198:0crwdne79198:0</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description">
+        <source>The Setup module allows the backend user to customize TYPO3 for his own login sessions. This includes the backend language and various other interface features.</source>
+        <target>crwdns79200:0crwdne79200:0</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details">
+        <source>&lt;b&gt;Notice [For Admins]:&lt;/b&gt; These settings can all be overridden or have their default values changed by "User TSconfig". To read more about this concept, see the link below!</source>
+        <target>crwdns79202:0crwdne79202:0</target>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso">
+        <source>User TSconfig SETUP | https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Setup/Index.html</source>
+        <target>crwdns79204:0crwdne79204:0</target>
+      </trans-unit>
+      <trans-unit id="_.image" resname="_.image" xml:space="preserve">
+				<source>EXT:setup/Resources/Public/Images/cshimages/setup8.png,
+EXT:setup/Resources/Public/Images/cshimages/setup7.png</source>
+				
+			<target>crwdns79206:0crwdne79206:0</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve">
+				<source>The Setup module is selected in the left menu.
+This is how the Setup module interface looks like - a list of options to configure.</source>
+			<target>crwdns79208:0crwdne79208:0</target></trans-unit>
+      <trans-unit id="language.alttitle" resname="language.alttitle">
+        <source>Backend Language selection</source>
+        <target>crwdns79210:0crwdne79210:0</target>
+      </trans-unit>
+      <trans-unit id="language.description" resname="language.description">
+        <source>Select the backend language you prefer. Most parts of TYPO3s backend (for regular users) are translated into other languages.</source>
+        <target>crwdns79212:0crwdne79212:0</target>
+      </trans-unit>
+      <trans-unit id="language.details" resname="language.details" xml:space="preserve">
+				<source>&lt;b&gt;Warning [technical]:&lt;/b&gt; If TYPO3 is not configured to use a single character set (through $TYPO3_CONF_VARS[BE][forceCharset]) then all data entered in the backend is submitted in the character set of the selected backend language. This leads to inconsistent data storage if some users are using the backend in Russian and others in English which uses different character sets.
+The solution clearly is to set the configuration option mentioned above to a value like "utf-8". This must be done by the developers responsible for the whole system configuration.</source>
+			<target>crwdns79214:0$TYPO3_CONF_VARS[BE][forceCharset]crwdne79214:0</target></trans-unit>
+      <trans-unit id="_language.image" resname="_language.image">
+        <source>EXT:setup/Resources/Public/Images/cshimages/lang.png</source>
+        <target>crwdns79216:0crwdne79216:0</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="language.image_descr" resname="language.image_descr">
+        <source>TYPO3 is translated into around 40 languages. English is the default language and all labels must be available in English first and foremost. This screenshot shows translations for Hebrew, Arabic, Russian and Chinese.</source>
+        <target>crwdns79218:0crwdne79218:0</target>
+      </trans-unit>
+      <trans-unit id="option_startModule.alttitle" resname="option_startModule.alttitle">
+        <source>Start module</source>
+        <target>crwdns79220:0crwdne79220:0</target>
+      </trans-unit>
+      <trans-unit id="option_startModule.description" resname="option_startModule.description" xml:space="preserve">
+				<source>Let you select the module that is called when you login in the Backend
+The default module is "About Modules".</source>
+			<target>crwdns79222:0crwdne79222:0</target></trans-unit>
+      <trans-unit id="option_showThumbs.alttitle" resname="option_showThumbs.alttitle">
+        <source>Show Thumbnails by default</source>
+        <target>crwdns79224:0crwdne79224:0</target>
+      </trans-unit>
+      <trans-unit id="option_showThumbs.description" resname="option_showThumbs.description">
+        <source>In modules like the "Web &gt; List" and "File &gt; Filelist" you can enable the display of thumbnails of files (images/fonts) and records (if images are attached) with a checkbox. Setting this option will enable the display by default.</source>
+        <target>crwdns79226:0crwdne79226:0</target>
+      </trans-unit>
+      <trans-unit id="_option_showThumbs.image" resname="_option_showThumbs.image">
+        <source>EXT:setup/Resources/Public/Images/cshimages/setup5.png</source>
+        <target>crwdns79228:0crwdne79228:0</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="option_showThumbs.image_descr" resname="option_showThumbs.image_descr">
+        <source>When thumbnails display is enabled, files attached to records will be shown in the "Web &gt; List" module like this.</source>
+        <target>crwdns79230:0crwdne79230:0</target>
+      </trans-unit>
+      <trans-unit id="option_helpText.alttitle" resname="option_helpText.alttitle">
+        <source>Show help text when applicable</source>
+        <target>crwdns79232:0crwdne79232:0</target>
+      </trans-unit>
+      <trans-unit id="option_helpText.description" resname="option_helpText.description">
+        <source>If set, some help texts will appear by default. Applies to the "Legend" text in the Web&gt;Access module for instance.</source>
+        <target>crwdns79234:0crwdne79234:0</target>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.alttitle" resname="option_maxTitleLen.alttitle">
+        <source>Maximum title length</source>
+        <target>crwdns79236:0crwdne79236:0</target>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.description" resname="option_maxTitleLen.description">
+        <source>TYPO3 will often crop long titles of records etc. so only the first X characters are shown. Often the number of shown characters depends on this variable. For instance the length of page titles in the page tree is determined by this value.</source>
+        <target>crwdns79238:0crwdne79238:0</target>
+      </trans-unit>
+      <trans-unit id="_option_maxTitleLen.image" resname="_option_maxTitleLen.image">
+        <source>EXT:setup/Resources/Public/Images/cshimages/setup6.png</source>
+        <target>crwdns79240:0crwdne79240:0</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="option_maxTitleLen.image_descr" resname="option_maxTitleLen.image_descr">
+        <source>In this case the Maximum Title length is set to 10 - and the result is that titles in the page tree - as well as other places in the backend - will be cropped after 10 characters, then suffixed by "...". The default value is "30".</source>
+        <target>crwdns79242:0crwdne79242:0</target>
+      </trans-unit>
+      <trans-unit id="option_copyLevels.alttitle" resname="option_copyLevels.alttitle">
+        <source>Recursive Copy</source>
+        <target>crwdns79244:0crwdne79244:0</target>
+      </trans-unit>
+      <trans-unit id="option_copyLevels.description" resname="option_copyLevels.description">
+        <source>When you copy a page, subpages can also be copied along if you set this option. The number you set here defines the number of levels under a page to include in a copy operation.</source>
+        <target>crwdns79246:0crwdne79246:0</target>
+      </trans-unit>
+      <trans-unit id="option_recursiveDelete.alttitle" resname="option_recursiveDelete.alttitle">
+        <source>Recursive Delete</source>
+        <target>crwdns79248:0crwdne79248:0</target>
+      </trans-unit>
+      <trans-unit id="option_recursiveDelete.description" resname="option_recursiveDelete.description">
+        <source>You cannot delete a page with subpages unless this flag is set. Be careful - setting this option means that TYPO3 will allow a whole tree of pages to be deleted in one go!</source>
+        <target>crwdns79250:0crwdne79250:0</target>
+      </trans-unit>
+      <trans-unit id="option_recursiveDelete.details" resname="option_recursiveDelete.details">
+        <source>You should also consider the performance issues involved when deleting a large page tree. It might take a considerable amount of time to do that and if PHP times out before the operation is finished the results might be unpredictable.</source>
+        <target>crwdns79252:0crwdne79252:0</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.alttitle" resname="option_edit_RTE.alttitle">
+        <source>Enable Rich Text Editor</source>
+        <target>crwdns79254:0crwdne79254:0</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.description" resname="option_edit_RTE.description">
+        <source>If set, the Rich Text Editor in TYPO3 will be enabled for you. Normally you wouldn't want to disable this option.</source>
+        <target>crwdns79256:0crwdne79256:0</target>
+      </trans-unit>
+      <trans-unit id="option_edit_RTE.details" resname="option_edit_RTE.details">
+        <source>A Rich Text Editor (RTE) means that a text editing field has buttons for making selected text bold, italic etc. Whether a RTE is available also depends on factors like the browser you are using and which extensions are installed. Finally RTEs are applied to only a few record fields. The most well known example would be the Text field of a Content Element.</source>
+        <target>crwdns79258:0crwdne79258:0</target>
+      </trans-unit>
+      <trans-unit id="_option_edit_RTE.image" resname="_option_edit_RTE.image">
+        <source>EXT:setup/Resources/Public/Images/cshimages/rte.png</source>
+        <target>crwdns79260:0crwdne79260:0</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.alttitle" resname="option_edit_docModuleUpload.alttitle">
+        <source>Enable File Uploads in editing forms</source>
+        <target>crwdns79262:0crwdne79262:0</target>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.description" resname="option_edit_docModuleUpload.description">
+        <source>This option will enable an "Upload" box for each field in TYPO3 records where you can attach a file or image. Most likely you don't want to disable this since it is usually just a nice thing to have.</source>
+        <target>crwdns79264:0crwdne79264:0</target>
+      </trans-unit>
+      <trans-unit id="option_edit_docModuleUpload.details" resname="option_edit_docModuleUpload.details">
+        <source>If you disable the Upload box there is still the TYPO3 Element Browser left for attaching files and images.</source>
+        <target>crwdns79266:0crwdne79266:0</target>
+      </trans-unit>
+      <trans-unit id="_option_edit_docModuleUpload.image" resname="_option_edit_docModuleUpload.image">
+        <source>EXT:setup/Resources/Public/Images/cshimages/setup12.png</source>
+        <target>crwdns79268:0crwdne79268:0</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas.alttitle" resname="option_resizeTextareas.alttitle">
+        <source>Make Textareas Resizable</source>
+        <target>crwdns79270:0crwdne79270:0</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas.description" resname="option_resizeTextareas.description">
+        <source>This option will make textareas resizable. You will see the resize mouse cursor if you move mouse to the outer border of textarea.</source>
+        <target>crwdns79272:0crwdne79272:0</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas_MaxHeight.alttitle" resname="option_resizeTextareas_MaxHeight.alttitle">
+        <source>Maximal Height of Textarea</source>
+        <target>crwdns79274:0crwdne79274:0</target>
+      </trans-unit>
+      <trans-unit id="option_flexibleTextareas_MaxHeight.alttitle" resname="option_flexibleTextareas_MaxHeight.alttitle">
+        <source>Maximal Height of flexible textareas</source>
+        <target>crwdns79276:0crwdne79276:0</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas_MaxHeight.description" resname="option_resizeTextareas_MaxHeight.description">
+        <source>Define the maximal height of textarea (in Pixel).</source>
+        <target>crwdns79278:0crwdne79278:0</target>
+      </trans-unit>
+      <trans-unit id="option_flexibleTextareas_MaxHeight.description" resname="option_flexibleTextareas_MaxHeight.description">
+        <source>Define the maximal height of flexible textareas (in Pixel).</source>
+        <target>crwdns79280:0crwdne79280:0</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas_Flexible.alttitle" resname="option_resizeTextareas_Flexible.alttitle">
+        <source>Make Textareas Flexible</source>
+        <target>crwdns79282:0crwdne79282:0</target>
+      </trans-unit>
+      <trans-unit id="option_resizeTextareas_Flexible.description" resname="option_resizeTextareas_Flexible.description">
+        <source>This option will make textareas flexible. The height will grow automatically while typing. Limit is the maximal height set (default 600).</source>
+        <target>crwdns79284:0crwdne79284:0</target>
+      </trans-unit>
+      <trans-unit id="option_showHiddenFilesAndFolders.description" resname="option_showHiddenFilesAndFolders.description">
+        <source>Defines whether you want to list all the hidden files and folders (beginning with a .) in the filelist and element browser.</source>
+        <target>crwdns79286:0crwdne79286:0</target>
+      </trans-unit>
+      <trans-unit id="option_showHiddenFilesAndFolders.details" resname="option_showHiddenFilesAndFolders.details">
+        <source>By default all hidden files are not displayed in filelists and element browsers and link pickers. This option enables to additionally show the hidden files.</source>
+        <target>crwdns79288:0crwdne79288:0</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_realName.alttitle" resname="option_beUser_realName.alttitle">
+        <source>Your real name</source>
+        <target>crwdns79290:0crwdne79290:0</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_realName.description" resname="option_beUser_realName.description">
+        <source>Enter your real name here.</source>
+        <target>crwdns79292:0crwdne79292:0</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_email.alttitle" resname="option_beUser_email.alttitle">
+        <source>Your email address</source>
+        <target>crwdns79294:0crwdne79294:0</target>
+      </trans-unit>
+      <trans-unit id="option_beUser_email.description" resname="option_beUser_email.description">
+        <source>Make sure this is a valid email address for you. This is the contact address that the backend administrator will use if he needs to contact you. Also, the TYPO3 system might need to send you messages at various times and this will be the recipient address.</source>
+        <target>crwdns79296:0crwdne79296:0</target>
+      </trans-unit>
+      <trans-unit id="option_emailMeAtLogin.alttitle" resname="option_emailMeAtLogin.alttitle">
+        <source>Notify by login</source>
+        <target>crwdns79298:0crwdne79298:0</target>
+      </trans-unit>
+      <trans-unit id="option_emailMeAtLogin.description" resname="option_emailMeAtLogin.description">
+        <source>If you set this option you will receive an email from TYPO3 each time you (or "someone") logs in using your username. You might like to receive such a "warning" as a security measure so you will know if someone else picks up your password and uses your account.</source>
+        <target>crwdns79300:0crwdne79300:0</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.alttitle" resname="option_newPassword.alttitle">
+        <source>Change password</source>
+        <target>crwdns79302:0crwdne79302:0</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.description" resname="option_newPassword.description">
+        <source>Enter a new password for your backend account</source>
+        <target>crwdns79304:0crwdne79304:0</target>
+      </trans-unit>
+      <trans-unit id="option_newPassword.details" resname="option_newPassword.details">
+        <source>The passwords are encrypted to an MD5 hash when you leave the field so no plain text password is sent over the wire.</source>
+        <target>crwdns79306:0crwdne79306:0</target>
+      </trans-unit>
+      <trans-unit id="option_newPasswordAgain.alttitle" resname="option_newPasswordAgain.alttitle">
+        <source>Change password, confirm</source>
+        <target>crwdns79308:0crwdne79308:0</target>
+      </trans-unit>
+      <trans-unit id="option_newPasswordAgain.description" resname="option_newPasswordAgain.description">
+        <source>Confirm the new password by entering it again, exactly like above. If the two new passwords do not match, the password will not be changed.</source>
+        <target>crwdns79310:0crwdne79310:0</target>
+      </trans-unit>
+      <trans-unit id="reset.alttitle" resname="reset.alttitle">
+        <source>Reset all Values to default</source>
+        <target>crwdns79312:0crwdne79312:0</target>
+      </trans-unit>
+      <trans-unit id="reset.description" resname="reset.description">
+        <source>If you select this option all settings in this module will be reset to the default settings of the system.</source>
+        <target>crwdns79314:0crwdne79314:0</target>
+      </trans-unit>
+      <trans-unit id="reset.details" resname="reset.details">
+        <source>This does not apply to user name, email and password settings of course.</source>
+        <target>crwdns79316:0crwdne79316:0</target>
+      </trans-unit>
+      <trans-unit id="simuser.alttitle" resname="simuser.alttitle">
+        <source>Simulate backend user</source>
+        <target>crwdns79318:0crwdne79318:0</target>
+      </trans-unit>
+      <trans-unit id="simuser.description" resname="simuser.description">
+        <source>This option allows "admin"-users to change settings for another backend user in the system.</source>
+        <target>crwdns79320:0crwdne79320:0</target>
+      </trans-unit>
+      <trans-unit id="option_enableInstallTool.alttitle" resname="option_enableInstallTool.alttitle">
+        <source>Admin control for re-enabling Install Tool access</source>
+        <target>crwdns79322:0crwdne79322:0</target>
+      </trans-unit>
+      <trans-unit id="option_enableInstallTool.description" resname="option_enableInstallTool.description">
+        <source>By clicking this button, a file typo3conf/ENABLE_INSTALL_TOOL is created (or removed if it already exists). It unlocks the access to the Install Tool (password is still needed!) and will be removed automatically after 1 hour.</source>
+        <target>crwdns79324:0crwdne79324:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
