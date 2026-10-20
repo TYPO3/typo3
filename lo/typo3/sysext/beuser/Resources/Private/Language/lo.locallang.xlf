@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814783" source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang.xlf" date="2012-07-16T10:11:32Z" product-name="beuser" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="activeSessions" resname="activeSessions" approved="yes">
+        <source>Active Sessions</source>
+        <target state="final">ເຊດຊັນທີ່ໃຊ້ງານຢູ່</target>
+      </trans-unit>
+      <trans-unit id="userName" resname="userName" approved="yes">
+        <source>Username</source>
+        <target state="final">ຊື່ຜູ້ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="realName" resname="realName" approved="yes">
+        <source>Real Name</source>
+        <target state="final">ຊື່ແທ້</target>
+      </trans-unit>
+      <trans-unit id="lastAccess" resname="lastAccess" approved="yes">
+        <source>Last access</source>
+        <target state="final">ການເຂົ້າເຖິງຫຼ້າສຸດ</target>
+      </trans-unit>
+      <trans-unit id="ipAddress" resname="ipAddress" approved="yes">
+        <source>IP address</source>
+        <target state="final">ທີ່ຢູ່ໄອພີ (IP)</target>
+      </trans-unit>
+      <trans-unit id="backendUserListing" resname="backendUserListing" approved="yes">
+        <source>Backend User Listing</source>
+        <target state="final">ລາຍຊື່ຜູ້ໃຊ້ສ່ວນຫຼັງ</target>
+      </trans-unit>
+      <trans-unit id="subGroups" resname="subGroups" approved="yes">
+        <source>Sub Groups</source>
+        <target state="final">ກຸ່ມຍ່ອຍ</target>
+      </trans-unit>
+      <trans-unit id="email" resname="email" approved="yes">
+        <source>Email</source>
+        <target state="final">ອີເມວ</target>
+      </trans-unit>
+      <trans-unit id="admin" resname="admin" approved="yes">
+        <source>Admin</source>
+        <target state="final">ຜູ້ດູແລລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="users" resname="users" approved="yes">
+        <source>Users</source>
+        <target state="final">ຜູ້ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="yes" resname="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">ແມ່ນ</target>
+      </trans-unit>
+      <trans-unit id="no" resname="no" approved="yes">
+        <source>No</source>
+        <target state="final">ບໍ່</target>
+      </trans-unit>
+      <trans-unit id="never" resname="never" approved="yes">
+        <source>Never</source>
+        <target state="final">ບໍ່ເຄີຍ</target>
+      </trans-unit>
+      <trans-unit id="delete" resname="delete" approved="yes">
+        <source>Delete backend user (!)</source>
+        <target state="final">ລຶບຜູ້ໃຊ້ສ່ວນຫຼັງ (!)</target>
+      </trans-unit>
+      <trans-unit id="disable" resname="disable" approved="yes">
+        <source>Disable</source>
+        <target state="final">ປິດໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="disable_compare" resname="disable_compare" approved="yes">
+        <source>Is active?</source>
+        <target state="final">ເປີດໃຊ້ງານຢູ່ບໍ?</target>
+      </trans-unit>
+      <trans-unit id="startDateAndTime" resname="startDateAndTime" approved="yes">
+        <source>Start</source>
+        <target state="final">ເລີ່ມ</target>
+      </trans-unit>
+      <trans-unit id="endDateAndTime" resname="endDateAndTime" approved="yes">
+        <source>Stop</source>
+        <target state="final">ຢຸດ</target>
+      </trans-unit>
+      <trans-unit id="lastLogin" resname="lastLogin" approved="yes">
+        <source>Last login</source>
+        <target state="final">ເຂົ້າລະບົບຫຼ້າສຸດ</target>
+      </trans-unit>
+      <trans-unit id="allowedLanguages" resname="allowedLanguages" approved="yes">
+        <source>Limit to languages</source>
+        <target state="final">ຈຳກັດສະເພາະພາສາ</target>
+      </trans-unit>
+      <trans-unit id="dbMountPoints" resname="dbMountPoints" approved="yes">
+        <source>DB mountpoints</source>
+        <target state="final">ຈຸດເຊື່ອມຕໍ່ຖານຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="fileMounts" resname="fileMounts" approved="yes">
+        <source>File mountpoints</source>
+        <target state="final">ຈຸດເຊື່ອມຕໍ່ໄຟລ໌</target>
+      </trans-unit>
+      <trans-unit id="disableIpLock" resname="disableIpLock" approved="yes">
+        <source>Disable IP lock</source>
+        <target state="final">ປິດການລັອກໄອພີ (IP)</target>
+      </trans-unit>
+      <trans-unit id="compareBackendUsers" resname="compareBackendUsers" approved="yes">
+        <source>Compare backend users</source>
+        <target state="final">ປຽບທຽບຜູ້ໃຊ້ສ່ວນຫຼັງ</target>
+      </trans-unit>
+      <trans-unit id="compareUserList" resname="compareUserList" approved="yes">
+        <source>Compare user list</source>
+        <target state="final">ປຽບທຽບລາຍຊື່ຜູ້ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="status" resname="status" approved="yes">
+        <source>Status</source>
+        <target state="final">ສະຖານະ</target>
+      </trans-unit>
+      <trans-unit id="both" resname="both" approved="yes">
+        <source>Both</source>
+        <target state="final">ທັງສອງ</target>
+      </trans-unit>
+      <trans-unit id="any" resname="any" approved="yes">
+        <source>Any</source>
+        <target state="final">ອັນໃດກໍໄດ້</target>
+      </trans-unit>
+      <trans-unit id="adminOnly" resname="adminOnly" approved="yes">
+        <source>Admin only</source>
+        <target state="final">ສະເພາະຜູ້ດູແລລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="normalUserOnly" resname="normalUserOnly" approved="yes">
+        <source>Normal users only</source>
+        <target state="final">ສະເພາະຜູ້ໃຊ້ທົ່ວໄປ</target>
+      </trans-unit>
+      <trans-unit id="activeOnly" resname="activeOnly" approved="yes">
+        <source>Active only</source>
+        <target state="final">ສະເພາະທີ່ກຳລັງໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="inactiveOnly" resname="inactiveOnly" approved="yes">
+        <source>Inactive only</source>
+        <target state="final">ສະເພາະທີ່ປິດໃຊ້ງານ</target>
+      </trans-unit>
+      <trans-unit id="loginBefore" resname="loginBefore" approved="yes">
+        <source>Logged in before</source>
+        <target state="final">ເຄີຍເຂົ້າລະບົບມາກ່ອນ</target>
+      </trans-unit>
+      <trans-unit id="neverLoggedIn" resname="neverLoggedIn" approved="yes">
+        <source>Never logged in</source>
+        <target state="final">ບໍ່ເຄີຍເຂົ້າລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="filter" resname="filter" approved="yes">
+        <source>Filter</source>
+        <target state="final">ຕົວຕອງ</target>
+      </trans-unit>
+      <trans-unit id="reallyLogout" resname="reallyLogout" approved="yes">
+        <source>Really logout</source>
+        <target state="final">ຕ້ອງການອອກຈາກລະບົບແທ້ບໍ່</target>
+      </trans-unit>
+      <trans-unit id="endSession" resname="endSession" approved="yes">
+        <source>End session</source>
+        <target state="final">ສິ້ນສຸດເຊດຊັນ</target>
+      </trans-unit>
+      <trans-unit id="backendUsers" resname="backendUsers" approved="yes">
+        <source>Backend users</source>
+        <target state="final">ຜູ້ໃຊ້ສ່ວນຫຼັງ</target>
+      </trans-unit>
+      <trans-unit id="compareUsers" resname="compareUsers" approved="yes">
+        <source>Compare backend users</source>
+        <target state="final">ປຽບທຽບຜູ້ໃຊ້ສ່ວນຫຼັງ</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroupsMenu" resname="backendUserGroupsMenu" approved="yes">
+        <source>Backend user groups</source>
+        <target state="final">ກຸ່ມຜູ້ໃຊ້ສ່ວນຫຼັງ</target>
+      </trans-unit>
+      <trans-unit id="onlineUsers" resname="onlineUsers" approved="yes">
+        <source>Online users</source>
+        <target state="final">ຜູ້ໃຊ້ທີ່ກຳລັງອອນລາຍ</target>
+      </trans-unit>
+      <trans-unit id="backendUserAdministration" resname="backendUserAdministration" approved="yes">
+        <source>Backend User Administration</source>
+        <target state="final">ການຈັດການຜູ້ໃຊ້ສ່ວນຫຼັງ</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroup" resname="backendUserGroup" approved="yes">
+        <source>User group</source>
+        <target state="final">ກຸ່ມຜູ້ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroups" resname="backendUserGroups" approved="yes">
+        <source>Member of groups</source>
+        <target state="final">ສະມາຊິກຂອງກຸ່ມ</target>
+      </trans-unit>
+      <trans-unit id="changeToMode" resname="changeToMode" approved="yes">
+        <source>[change-to mode]</source>
+        <target state="final">[ໂໝດປ່ຽນເປັນ]</target>
+      </trans-unit>
+      <trans-unit id="switchBackMode" resname="switchBackMode" approved="yes">
+        <source>Switch to user</source>
+        <target state="final">ສະລັບໄປໃຊ້ຜູ້ໃຊ້ອື່ນ</target>
+      </trans-unit>
+      <trans-unit id="confirm" resname="confirm" approved="yes">
+        <source>Are you sure you want to delete this backend user %s?</source>
+        <target state="final">ເຈົ້າແນ່ໃຈບໍວ່າຕ້ອງການລຶບຜູ້ໃຊ້ສ່ວນຫຼັງ %s ນີ້?</target>
+      </trans-unit>
+      <trans-unit id="section.compare" resname="section.compare" approved="yes">
+        <source>Compare</source>
+        <target state="final">ປຽບທຽບ</target>
+      </trans-unit>
+      <trans-unit id="compare" resname="compare" approved="yes">
+        <source>Compare</source>
+        <target state="final">ປຽບທຽບ</target>
+      </trans-unit>
+      <trans-unit id="terminateSessionSuccess" resname="terminateSessionSuccess" approved="yes">
+        <source>Session successfully terminated.</source>
+        <target state="final">ສິ້ນສຸດເຊດຊັນສຳເລັດແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="backendUserGroupListing" resname="backendUserGroupListing" approved="yes">
+        <source>Backend User Group Listing</source>
+        <target state="final">ລາຍຊື່ກຸ່ມຜູ້ໃຊ້ສ່ວນຫຼັງ</target>
+      </trans-unit>
+      <trans-unit id="online" resname="online" approved="yes">
+        <source>online</source>
+        <target state="final">ອອນລາຍ</target>
+      </trans-unit>
+      <trans-unit id="visibility.hide" resname="visibility.hide" approved="yes">
+        <source>hide</source>
+        <target state="final">ເຊື່ອງ</target>
+      </trans-unit>
+      <trans-unit id="visibility.unhide" resname="visibility.unhide" approved="yes">
+        <source>unhide</source>
+        <target state="final">ສະແດງ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
