@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf" date="2016-10-09T03:38:32Z" product-name="form" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="formManager.form_name" approved="yes">
+        <source>Name</source>
+        <target state="final">Název</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_name_description" approved="yes">
+        <source>Enter a meaningful and descriptive name for the form. The name is displayed only in the TYPO3 backend.</source>
+        <target state="final">Zadejte smysluplný a popisný název formuláře. Název je zobrazen pouze v backendu TYPO3.</target>
+      </trans-unit>
+      <trans-unit id="formManager.new_form_name" approved="yes">
+        <source>New form name</source>
+        <target state="final">Název nového formuláře</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_storageLocation" approved="yes">
+        <source>Location</source>
+        <target state="final">Umístění</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_storageLocation_description" approved="yes">
+        <source>Select the location where the form will be saved.</source>
+        <target state="final">Vyberte místo, kde bude formulář uložen.</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_prototype" approved="yes">
+        <source>Form prototype</source>
+        <target state="final">Prototyp formuláře</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_template" approved="yes">
+        <source>Template</source>
+        <target state="final">Šablona</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_template_description" approved="yes">
+        <source>Select a template for building your new form.</source>
+        <target state="final">Vyberte šablonu pro vytvoření nového formuláře.</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_headline_general" approved="yes">
+        <source>General</source>
+        <target state="final">Obecné</target>
+      </trans-unit>
+      <trans-unit id="formManager.form_copied" approved="yes">
+        <source>Copied form</source>
+        <target state="final">Zkopírovaný formulář</target>
+      </trans-unit>
+      <trans-unit id="formManager.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Zrušit</target>
+      </trans-unit>
+      <trans-unit id="formManager.remove_form" approved="yes">
+        <source>Delete</source>
+        <target state="final">Smazat</target>
+      </trans-unit>
+      <trans-unit id="formManager.remove_form_title" approved="yes">
+        <source>Confirm deletion</source>
+        <target state="final">Potvrdit smazání</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.title" approved="yes">
+        <source>Create new form</source>
+        <target state="final">Vytvořit nový formulář</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step.modes.summary.title" approved="yes">
+        <source>Mode</source>
+        <target state="final">Režim</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.progressLabel" approved="yes">
+        <source>Choose</source>
+        <target state="final">Zvolit</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step1.noStorages" approved="yes">
+        <source>You do not have permission to create forms. Please contact your administrator.</source>
+        <target state="final">Nemáte oprávnění k vytváření formulářů. Obraťte se na správce.</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step2.title" approved="yes">
+        <source>Settings</source>
+        <target state="final">Nastavení</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.title" approved="yes">
+        <source>Ready?</source>
+        <target state="final">Připraven?</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.progressLabel" approved="yes">
+        <source>Check</source>
+        <target state="final">Kontrola</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.message" approved="yes">
+        <source>Just check and confirm the settings you have entered. Done? Then you are ready to go.</source>
+        <target state="final">Stačí zkontrolovat a potvrdit nastavení, které jste zadali. Hotovo? Pak jste připraveni jít.</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step3.check" approved="yes">
+        <source>Check and confirm</source>
+        <target state="final">Zkontrolovat a potvrdit</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step4.errorTitle" approved="yes">
+        <source>Create</source>
+        <target state="final">Vytvořit</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step4.errorMessage" approved="yes">
+        <source>The form could not be saved</source>
+        <target state="final">Formulář nemohl být uložen</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step.storages.title" approved="yes">
+        <source>Storage location</source>
+        <target state="final">Umístění úložiště</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step.storages.description" approved="yes">
+        <source>Choose how the form should be saved:</source>
+        <target state="final">Zvolte, jak by měl být formulář uložen:</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step.storages.progressLabel" approved="yes">
+        <source>Storage</source>
+        <target state="final">Úložiště</target>
+      </trans-unit>
+      <trans-unit id="formManager.newFormWizard.step.storages.summary.title" approved="yes">
+        <source>Storage</source>
+        <target state="final">Úložiště</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step1.title" approved="yes">
+        <source>Duplicate form "{0}"</source>
+        <target state="final">Duplikovat formulář "{0}"</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.title" approved="yes">
+        <source>Ready?</source>
+        <target state="final">Připraven?</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.progressLabel" approved="yes">
+        <source>Check</source>
+        <target state="final">Kontrola</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.check" approved="yes">
+        <source>Check and confirm</source>
+        <target state="final">Zkontrolovat a potvrdit</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step2.message" approved="yes">
+        <source>Just check and confirm the settings you have entered. Done? Then you are ready to go.</source>
+        <target state="final">Stačí zkontrolovat a potvrdit nastavení, které jste zadali. Hotovo? Pak jste připraveni jít.</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step3.errorTitle" approved="yes">
+        <source>Duplicate</source>
+        <target state="final">Duplikovat</target>
+      </trans-unit>
+      <trans-unit id="formManager.duplicateFormWizard.step3.errorMessage" approved="yes">
+        <source>The form could not be saved</source>
+        <target state="final">Formulář nemohl být uložen</target>
+      </trans-unit>
+      <trans-unit id="formManager.no_references" approved="yes">
+        <source>There are no references yet.</source>
+        <target state="final">Zatím nejsou žádné reference.</target>
+      </trans-unit>
+      <trans-unit id="formManager.table.field.control" approved="yes">
+        <source>Control</source>
+        <target state="final">Ovládání</target>
+      </trans-unit>
+      <trans-unit id="formManager.table.field.uid" approved="yes">
+        <source>Uid</source>
+        <target state="final">Uid</target>
+      </trans-unit>
+      <trans-unit id="formManager.table.field.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Název</target>
+      </trans-unit>
+      <trans-unit id="formManager.btn.edit.title" approved="yes">
+        <source>Edit</source>
+        <target state="final">Upravit</target>
+      </trans-unit>
+      <trans-unit id="formManager.references.title" approved="yes">
+        <source>Form: {0}</source>
+        <target state="final">Formulář: {0}</target>
+      </trans-unit>
+      <trans-unit id="formManager.references.headline" approved="yes">
+        <source>References to this item</source>
+        <target state="final">Reference od tuto položku</target>
+      </trans-unit>
+      <trans-unit id="formManager.blankForm.label" x-unused-since="15.0" approved="yes">
+        <source>Blank form</source>
+        <target state="final">Prázdný formulář</target>
+      </trans-unit>
+      <trans-unit id="formManager.blankForm.subtitle" x-unused-since="15.0" approved="yes">
+        <source>Start fresh</source>
+        <target state="final">Začít znovu</target>
+      </trans-unit>
+      <trans-unit id="formManager.blankForm.description" x-unused-since="15.0" approved="yes">
+        <source>Create a new form from scratch.</source>
+        <target state="final">Vytvořit nový formulář od začátku.</target>
+      </trans-unit>
+      <trans-unit id="formManager.predefinedForm.label" x-unused-since="15.0" approved="yes">
+        <source>Predefined form</source>
+        <target state="final">Předdefinovaný formulář</target>
+      </trans-unit>
+      <trans-unit id="formManager.predefinedForm.subtitle" x-unused-since="15.0" approved="yes">
+        <source>Use a form template</source>
+        <target state="final">Použít šablonu formuláře</target>
+      </trans-unit>
+      <trans-unit id="formManager.predefinedForm.description" x-unused-since="15.0" approved="yes">
+        <source>Create a new form and use an existing form template for it.</source>
+        <target state="final">Vytvořte nový formulář a použijte pro něj existující formulářovou šablonu.</target>
+      </trans-unit>
+      <trans-unit id="formManager.finisher.redirect.success.title" approved="yes">
+        <source>Form created</source>
+        <target state="final">Formulář vytvořen</target>
+      </trans-unit>
+      <trans-unit id="formManager.finisher.redirect.success.description" approved="yes">
+        <source>The form has been successfully created. Click "Finish" to be redirected to the newly created form.</source>
+        <target state="final">Formulář byl úspěšně vytvořen. Kliknutím na tlačítko „Dokončit“ budete přesměrováni na nově vytvořený formulář.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
