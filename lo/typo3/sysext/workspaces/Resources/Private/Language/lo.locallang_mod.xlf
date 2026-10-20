@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_mod.xlf" date="2011-10-17T20:22:38Z" product-name="workspaces" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="stage_editing" approved="yes">
+        <source>Editing</source>
+        <target state="final">ການແກ້ໄຂ</target>
+      </trans-unit>
+      <trans-unit id="stage_ready_to_publish" approved="yes">
+        <source>Ready to publish</source>
+        <target state="final">ກຽມພ້ອມທີ່ຈະເຜີຍແຜ່</target>
+      </trans-unit>
+      <trans-unit id="stage_publish" approved="yes">
+        <source>Publish</source>
+        <target state="final">ເຜີຍແຜ່</target>
+      </trans-unit>
+      <trans-unit id="stage_all" approved="yes">
+        <source>All stages</source>
+        <target state="final">ທຸກຂັ້ນຕອນ</target>
+      </trans-unit>
+      <trans-unit id="previewText" approved="yes">
+        <source>Preview of workspace %s (%s)</source>
+        <target state="final">ເບິ່ງຕົວຢ່າງຂອງພື້ນທີ່ເຮັດວຽກ %s (%s)</target>
+      </trans-unit>
+      <trans-unit id="stopPreview" approved="yes">
+        <source>Stop preview</source>
+        <target state="final">ຢຸດການເບິ່ງຕົວຢ່າງ</target>
+      </trans-unit>
+      <trans-unit id="previewLogoutSuccess" approved="yes">
+        <source>You logged out from Workspace preview mode. Click this link to %1$s go back to the website%2$s</source>
+        <target state="final">ເຈົ້າໄດ້ອອກຈາກລະບົບໂໝດເບິ່ງຕົວຢ່າງພື້ນທີ່ເຮັດວຽກແລ້ວ. ຄລິກທີ່ລິ້ງນີ້ເພື່ອ %1$s ກັບຄືນໄປທີ່ເວັບໄຊ%2$s</target>
+      </trans-unit>
+      <trans-unit id="previewLogoutError" approved="yes">
+        <source>%1$sERROR:%2$sTemplate File "%3$s" configured with $TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"] not found. Please contact webmaster about this problem.</source>
+        <target state="final">%1$sຂໍ້ຜິດພາດ:%2$sບໍ່ພົບໄຟລ໌ແມ່ແບບ (Template) "%3$s" ທີ່ກຳນົດໄວ້ໃນ $TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"]. ກະລຸນາຕິດຕໍ່ຜູ້ເບິ່ງແຍງເວັບໄຊກ່ຽວກັບບັນຫານີ້.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
