@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/site_configuration.xlf" date="2026-11-10T13:37:37Z" product-name="site_configuration" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Configure sites and routing behavior</source>
+        <target state="final">Configurer le comportement des sites et du routage</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>This module contains the full configuration interface for individual sites. You can define languages, error handling, routes, entry points, and domain behavior. It is the central place for setting up and maintaining the technical foundation of each site.</source>
+        <target state="final">Ce module contient l'interface de configuration complète pour chaque site. Vous pouvez définir les langues, la gestion des erreurs, les routes, les points d'entrée et le comportement du domaine. C'est le lieu central pour la mise en place et l'entretien des données techniques de chaque site.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Setup</source>
+        <target state="final">Configuration</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
