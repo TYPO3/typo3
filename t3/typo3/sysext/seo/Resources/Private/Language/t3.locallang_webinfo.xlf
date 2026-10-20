@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:seo/Resources/Private/Language/locallang_webinfo.xlf" date="2020-02-18T22:02:42Z" product-name="cms" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="seo">
+        <source>SEO</source>
+        <target>crwdns85522:0crwdne85522:0</target>
+      </trans-unit>
+      <trans-unit id="social_media">
+        <source>Social Media</source>
+        <target>crwdns85524:0crwdne85524:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
