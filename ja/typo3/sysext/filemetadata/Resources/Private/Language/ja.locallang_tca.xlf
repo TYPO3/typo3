@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814822" source-language="en" datatype="plaintext" original="EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf" date="2012-10-17T17:55:17Z" product-name="local lang" target-language="ja">
+    <header/>
+    <body>
+      <!-- sys_file_metadata fields -->
+      <!-- sys_file_metadata tabs -->
+      <trans-unit id="tabs.metadata" resname="tabs.metadata" approved="yes">
+        <source>Metadata</source>
+        <target state="final">メタデータ</target>
+      </trans-unit>
+      <!-- sys_file_metadata placeholder -->
+      <!-- sys_file_metadata palette -->
+      <!-- fe_groups fields -->
+    </body>
+  </file>
+</xliff>
