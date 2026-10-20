@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814793" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_pages.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="layout.description" resname="layout.description" approved="yes">
+        <source>The Frontend Layout can change the way a page design appears.</source>
+        <target state="final">फ्रंटएंड लेआउट एक पृष्ठ के डिज़ाइन के दिखने के तरीके को बदल सकता है।</target>
+      </trans-unit>
+      <trans-unit id="layout.details" resname="layout.details" approved="yes">
+        <source>This option may not have any impact on the Frontend page design since it depends on whether the Frontend template uses it. Most templates do not use it.</source>
+        <target state="final">यह विकल्प फ्रंटएंड पेज डिज़ाइन पर कोई प्रभाव नहीं डाल सकता, क्योंकि यह इस बात पर निर्भर करता है कि फ्रंटएंड टेम्पलेट इसका उपयोग करता है या नहीं। अधिकांश टेम्पलेट इसका उपयोग नहीं करते हैं।</target>
+      </trans-unit>
+      <trans-unit id="doktype.description" resname="doktype.description" approved="yes">
+        <source>Page Type determines whether the page is normal webpage, a shortcut to another webpage, or used in other internal ways.</source>
+        <target state="final">पृष्ठ का प्रकार यह निर्धारित करता है कि वह पृष्ठ एक सामान्य वेबपेज है, किसी अन्य वेबपेज का शॉर्टकट है, या किसी अन्य आंतरिक तरीके से उपयोग किया जाता है।</target>
+      </trans-unit>
+      <trans-unit id="_doktype.seeAlso" resname="_doktype.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:shortcut,
+pages:url</source>
+				
+			<target state="final">pages:shortcut,
+pages:url</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" xml:space="preserve" approved="yes">
+				<source>The 'Disable,' 'Start,' 'Stop,' and 'Access' options are all about limiting access to pages and are thus related in functionality. When a page is not visible due to one of these options, the page will not show up in the site navigation.
+Notice, these options are related &lt;em&gt;only&lt;/em&gt; to the page for which they are set. If you want their effect to cover the subpages as well, you must enable the 'Extend to Subpages' option.
+When you're logged in as a Backend user you can preview disabled pages if you have read access to them.</source>
+			<target state="final">'Disable,' 'Start,' 'Stop,' और 'Access' विकल्प सभी पेजों की पहुँच को सीमित करने से संबंधित हैं और कार्यक्षमता में एक-दूसरे से जुड़े हुए हैं। जब इनमें से किसी विकल्प के कारण कोई पेज दिखाई नहीं देता, तो वह साइट नेविगेशन में भी दिखाई नहीं देगा।
+ध्यान दें, ये विकल्प &lt;em&gt;only&lt;/em&gt; उसी पेज पर लागू होते हैं जिसके लिए इन्हें सेट किया गया है। यदि आप चाहते हैं कि इनका प्रभाव सबपेजों पर भी लागू हो, तो आपको 'Extend to Subpages' विकल्प को सक्षम करना होगा।
+जब आप बैकएंड उपयोगकर्ता के रूप में लॉग-इन होते हैं, तो यदि आपके पास पढ़ने की अनुमति है, तो आप निष्क्रिय (disabled) पेजों का प्रीव्यू देख सकते हैं।</target></trans-unit>
+      <trans-unit id="_hidden.seeAlso" resname="_hidden.seeAlso" approved="yes">
+        <source>pages:starttime,pages:endtime,pages:fe_group,pages:extendToSubpages</source>
+        <target state="final">pages:starttime,pages:endtime,pages:fe_group,pages:extendToSubpages</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_hidden.image" resname="_hidden.image" xml:space="preserve" approved="yes">
+				<source>EXT:core/Resources/Public/Images/cshimages/hidden_page.gif,
+EXT:core/Resources/Public/Images/cshimages/pages_1.png</source>
+				
+			<target state="final">EXT:core/Resources/Public/Images/cshimages/hidden_page.gif,
+EXT:core/Resources/Public/Images/cshimages/pages_1.png</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="hidden.image_descr" resname="hidden.image_descr" xml:space="preserve" approved="yes">
+				<source>The page icon of a disabled page is dimmed and a red X is added.
+If you view a page that is hidden and you are logged in into the Backend you will still be able to see the page. The red "Preview" box will tell you that this page is visible to you because of this special circumstance.</source>
+			<target state="final">एक डिसेबल्ड पेज का पेज आइकन धुंधला हो जाता है और उस पर एक लाल 'X' का निशान लग जाता है।
+अगर आप कोई ऐसा पेज देखते हैं जो छिपा हुआ है, और आप Backend में लॉग-इन हैं, तो भी आप उस पेज को देख पाएँगे। लाल रंग का "Preview" बॉक्स आपको यह बताएगा कि यह पेज आपको इस खास वजह से दिखाई दे रहा है।</target></trans-unit>
+      <trans-unit id="starttime.description" resname="starttime.description" approved="yes">
+        <source>The Publish Date determines when the page will be visible online. If the Publish Date is not set, the page will be available immediately.</source>
+        <target state="final">पब्लिश डेट यह तय करती है कि पेज ऑनलाइन कब दिखाई देगा। अगर पब्लिश डेट सेट नहीं की गई है, तो पेज तुरंत उपलब्ध हो जाएगा।</target>
+      </trans-unit>
+      <trans-unit id="starttime.syntax" resname="starttime.syntax" xml:space="preserve" approved="yes">
+				<source>The Publish Date Format is either DD-MM-YYYY or MM-DD-YYYY depending on how TYPO3 is configured. There are also several shortcuts you can use when entering the date.
+If you insert a 'd' the current date will be inserted. You can also append any value in the field with a number such as '+10' which will add 10 days to the current value. For example, entering 'd+10' would result in a date 10 days from now.</source>
+			<target state="final">Publish Date Format TYPO3 की कॉन्फ़िगरेशन के अनुसार DD-MM-YYYY या MM-DD-YYYY हो सकता है। तारीख दर्ज करते समय आप कुछ शॉर्टकट भी उपयोग कर सकते हैं।
+यदि आप 'd' दर्ज करते हैं, तो वर्तमान तारीख स्वतः भर दी जाएगी। आप किसी भी मान के साथ '+10' जैसे नंबर जोड़ सकते हैं, जिससे वर्तमान मान में 10 दिन जुड़ जाएंगे। उदाहरण के लिए, 'd+10' दर्ज करने पर आज से 10 दिन बाद की तारीख सेट होगी।</target></trans-unit>
+      <trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso" approved="yes">
+        <source>pages:endtime,pages:hidden</source>
+        <target state="final">pages:endtime,pages:hidden</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="_.seeAlso" resname="_.seeAlso" approved="yes">
+        <source>tt_content</source>
+        <target state="final">tt_content</target>
+      </trans-unit>
+      <trans-unit id="endtime.description" resname="endtime.description" approved="yes">
+        <source>The Expiration Date specifies when the page will no longer be visible online.</source>
+        <target state="final">समाप्ति तिथि यह बताती है कि पृष्ठ ऑनलाइन कब दिखाई देना बंद हो जाएगा।</target>
+      </trans-unit>
+      <trans-unit id="endtime.syntax" resname="endtime.syntax" approved="yes">
+        <source>See Page / Publication Date (click below)</source>
+        <target state="final">पेज देखें / प्रकाशन तिथि (नीचे क्लिक करें)</target>
+      </trans-unit>
+      <trans-unit id="_endtime.seeAlso" resname="_endtime.seeAlso" approved="yes">
+        <source>pages:starttime</source>
+        <target state="final">pages:starttime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="fe_group.description" resname="fe_group.description" approved="yes">
+        <source>If Usergroup Access Rights is set to a usergroup name, only website users who are members of the selected usergroup will be able to view the page. The special option 'Hide at Login' means the page will &lt;em&gt;not&lt;/em&gt; be visible for any website users that are logged in. Likewise "Show at Any Login" will make the page visible for any logged in Frontend user.</source>
+        <target state="final">यदि Usergroup Access Rights को किसी यूज़रग्रुप नाम पर सेट किया गया है, तो केवल वही वेबसाइट उपयोगकर्ता पेज देख पाएंगे जो उस चयनित यूज़रग्रुप के सदस्य हैं।
+विशेष विकल्प 'Hide at Login' का अर्थ है कि लॉग-इन किए हुए किसी भी वेबसाइट उपयोगकर्ता को यह पेज &lt;em&gt;&lt;/em&gt;नहीं&lt;/em&gt; दिखाई देगा। इसी तरह "Show at Any Login" विकल्प पेज को किसी भी लॉग-इन किए हुए फ्रंटएंड उपयोगकर्ता के लिए दृश्यमान बना देता है।</target>
+      </trans-unit>
+      <trans-unit id="_fe_group.seeAlso" resname="_fe_group.seeAlso" approved="yes">
+        <source>fe_groups</source>
+        <target state="final">fe_groups</target>
+      </trans-unit>
+      <trans-unit id="_fe_group.image" resname="_fe_group.image" approved="yes">
+        <source>EXT:frontend/Resources/Public/Images/cshimages/fegroups_4.png</source>
+        <target state="final">EXT:frontend/Resources/Public/Images/cshimages/fegroups_4.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="extendToSubpages.description" resname="extendToSubpages.description" approved="yes">
+        <source>By default the Publication Date, Expiration Date, Usergroup Access Rights, and Page Visibility options &lt;em&gt;only&lt;/em&gt; affect the page where they are set. If the option 'Extend to Subpages' is checked for the page, then all subpages are affected as well.</source>
+        <target state="final">डिफ़ॉल्ट रूप से प्रकाशन तिथि, समाप्ति तिथि, उपयोगकर्ता समूह पहुँच अधिकार, और पृष्ठ दृश्यता विकल्प &lt;em&gt;केवल&lt;/em&gt; उसी पेज को प्रभावित करते हैं जिस पर वे सेट किए गए हैं। यदि पृष्ठ के लिए 'उप-पृष्ठों तक विस्तारित करें' विकल्प चुना गया है, तो सभी सबपेज भी प्रभावित होंगे।</target>
+      </trans-unit>
+      <trans-unit id="extendToSubpages.details" resname="extendToSubpages.details" xml:space="preserve" approved="yes">
+				<source>Consider a scenario where you want to create a section of subpages that are only visible for logged in users. Setting the Usergroup Access Rights for the top page in the section would remove the page from menus if no user was logged in.
+However, the subpage could still be accessed by guessing the ID number of the page and entering it manually in the URL. Setting the 'Extend to Subpages' option would extend the Usergroup Access Rights from the top page through all subpages as well.</source>
+			<target state="final">मान लें कि आप ऐसे उप-पृष्ठों का एक सेक्शन बनाना चाहते हैं जो केवल लॉग-इन किए गए यूज़र्स के लिए ही दिखाई दें। यदि आप इस सेक्शन के शीर्ष पेज पर यूज़रग्रुप एक्सेस राइट्स सेट करते हैं, तो बिना लॉग-इन यूज़र के लिए यह पेज मेनू से हटा दिया जाएगा।
+हालाँकि, उप-पृष्ठ को अभी भी उसके पेज आईडी का अनुमान लगाकर और उसे URL में मैन्युअली दर्ज करके एक्सेस किया जा सकता है। 'उपपृष्ठों तक विस्तारित करें' विकल्प सेट करने पर, शीर्ष पेज के यूज़रग्रुप एक्सेस राइट्स सभी उप-पृष्ठों पर भी लागू हो जाते हैं।</target></trans-unit>
+      <trans-unit id="_extendToSubpages.seeAlso" resname="_extendToSubpages.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:hidden,
+pages:starttime,
+pages:endtime,
+pages:fe_group</source>
+				
+			<target state="final">pages:hidden,
+pages:starttime,
+pages:endtime,
+pages:fe_group</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_extendToSubpages.image" resname="_extendToSubpages.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/pages_2.png</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/pages_2.png</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="extendToSubpages.image_descr" resname="extendToSubpages.image_descr" approved="yes">
+        <source>This page has access restricted to a certain group and has "Extend to Subpages" set as well. This is reflected in the way the page icon has changed.</source>
+        <target state="final">इस पेज तक पहुँच केवल एक विशिष्ट समूह तक सीमित है, और इसमें "Extend to Subpages" सेटिंग भी लागू है। यह बात पेज के आइकन में आए बदलाव से स्पष्ट होती है।</target>
+      </trans-unit>
+      <trans-unit id="target.description" resname="target.description" approved="yes">
+        <source>This sets the default Link Target for menu items linking to this page. Can also used to open the page as a popup window.</source>
+        <target state="final">यह इस पेज से लिंक होने वाले मेनू आइटम के लिए डिफ़ॉल्ट लिंक टारगेट सेट करता है। इसका इस्तेमाल पेज को पॉपअप विंडो के रूप में खोलने के लिए भी किया जा सकता है।</target>
+      </trans-unit>
+      <trans-unit id="target.details" resname="target.details" xml:space="preserve" approved="yes">
+				<source>The Link Target overrides the default Link Target behavior, which should already be configured correctly for most pages in the website TypoScript template.
+There are additional options available by using the Link Target field
+
+Setting an integer value at the beginning of the field sets it as the default type for the page.
+For example, if an RSS feed is configured in TypoScript as typeNum=100, setting the Link Target to 100 could be used to add an RSS link in the menu.
+
+The following syntax is used to open the page in a popup window:
+400x200 - Opens the page in a 400x200 popup window.
+230x450:resizable=0,location=1 - Opens the page in a 230x450 popup window that is not resizable and has an address bar.
+
+Combined:
+100 600x350 - Opens the page in a 600x350 popup with type=100
+2 _blank - Opens the page with target "_blank" and type=2</source>
+			<target state="final">लिंक लक्ष्य डिफ़ॉल्ट लिंक टार्गेट व्यवहार को ओवरराइड करता है, जो आमतौर पर वेबसाइट के अधिकांश पेजों के लिए TypoScript टेम्पलेट में पहले से सही तरीके से कॉन्फ़िगर होता है।
+लिंक लक्ष्य फ़ील्ड का उपयोग करके अतिरिक्त विकल्प भी उपलब्ध होते हैं।
+
+फ़ील्ड की शुरुआत में एक पूर्णांक (integer) मान सेट करने से वह पेज के लिए डिफ़ॉल्ट टाइप के रूप में सेट हो जाता है।
+उदाहरण के लिए, यदि TypoScript में RSS फ़ीड को typeNum=100 के रूप में कॉन्फ़िगर किया गया है, तो Link Target में 100 सेट करके मेनू में RSS लिंक जोड़ा जा सकता है।
+
+पेज को पॉपअप विंडो में खोलने के लिए निम्न सिंटैक्स का उपयोग किया जाता है:
+400x200 - पेज को 400x200 पॉपअप विंडो में खोलता है।
+230x450:resizable=0,location=1 -  पेज को 230x450 पॉपअप में खोलता है, जो रिसाइज़ नहीं किया जा सकता और जिसमें एड्रेस बार होता है।
+
+Combined:
+100 600x350 - पेज को 600x350 पॉपअप में type=100 के साथ खोलता है।
+2 _blank - पेज को target "_blank" और type=2 के साथ खोलता है।</target></trans-unit>
+      <trans-unit id="cache_timeout.description" resname="cache_timeout.description" approved="yes">
+        <source>Sets the Cache Lifetime for the page.</source>
+        <target state="final">पेज के लिए कैश लाइफ़टाइम सेट करता है।</target>
+      </trans-unit>
+      <trans-unit id="cache_timeout.details" resname="cache_timeout.details" xml:space="preserve" approved="yes">
+				<source>By default, pages are cached for 24 hours. After 24 hours, the page is constructed again and rewritten to the cache. Depending on your configuration, the cache may be cleared at midnight.
+When specific pages need a longer or shorter cache lifetime than the default, this option can be used.</source>
+			<target state="final">डिफ़ॉल्ट रूप से, पेज 24 घंटों के लिए कैश किए जाते हैं। 24 घंटों के बाद, पेज को फिर से बनाया जाता है और कैश में दोबारा लिखा जाता है। आपकी कॉन्फ़िगरेशन के आधार पर, कैश को आधी रात को साफ़ किया जा सकता है।
+जब कुछ खास पेजों के लिए डिफ़ॉल्ट से ज़्यादा या कम कैश लाइफ़टाइम की ज़रूरत होती है, तो इस विकल्प का इस्तेमाल किया जा सकता है।</target></trans-unit>
+      <trans-unit id="php_tree_stop.description" resname="php_tree_stop.description" approved="yes">
+        <source>If enabled, this option excludes the subtree from rendering in the backend.</source>
+        <target state="final">यदि यह विकल्प सक्षम है, तो यह सब-ट्री को बैकएंड में रेंडर होने से बाहर कर देता है।</target>
+      </trans-unit>
+      <trans-unit id="author.description" resname="author.description" approved="yes">
+        <source>Enter the page author's name.</source>
+        <target state="final">पेज के ऑथर का नाम दर्ज करें।</target>
+      </trans-unit>
+      <trans-unit id="author.details" resname="author.details" xml:space="preserve" approved="yes">
+				<source>Whether the author name is used or not depends on the setup of your TypoScript template.
+
+- You may use it in a meta-tag.
+- If you're using TYPO3 pages as 'articles' then you could use this field to display the name of the page (article) author.</source>
+			<target state="final">ऑथर नाम का उपयोग किया जाएगा या नहीं, यह आपके TypoScript टेम्पलेट की सेटिंग पर निर्भर करता है।
+
+- आप इसे meta-tag में उपयोग कर सकते हैं।
+- यदि आप TYPO3 पेजों को 'articles' के रूप में उपयोग कर रहे हैं, तो आप इस फ़ील्ड का उपयोग पेज (आर्टिकल) के ऑथर का नाम प्रदर्शित करने के लिए कर सकते हैं।</target></trans-unit>
+      <trans-unit id="_author.seeAlso" resname="_author.seeAlso" approved="yes">
+        <source>pages:author_email</source>
+        <target state="final">pages:author_email</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="author_email.description" resname="author_email.description" approved="yes">
+        <source>Enter the page author's email address.</source>
+        <target state="final">पृष्ठ ऑथर का ईमेल पता दर्ज करें।</target>
+      </trans-unit>
+      <trans-unit id="_author_email.seeAlso" resname="_author_email.seeAlso" approved="yes">
+        <source>pages:author</source>
+        <target state="final">pages:author</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="module.description" resname="module.description" approved="yes">
+        <source>Define the page as containing a Frontend plugin.</source>
+        <target state="final">पृष्ठ को फ्रंटएंड प्लगइन युक्त के रूप में परिभाषित करें।</target>
+      </trans-unit>
+      <trans-unit id="module.details" resname="module.details" xml:space="preserve" approved="yes">
+				<source>Setting this option lets the Backend knows this page contains specific content or has a specific purpose, such as containing a forum or acting as the root page of a shop section on the website. Based on this setting the Backend is able to display a shortcut list as well as relevant functionality in the 'Web&gt;Modules' module. The Frontend display is largely not affected.
+Marking a page as containing a 'Shop' plugin simply means it'll show up in the shortcut list of modules in the backend.
+
+For additional details on this option, refer to the administration documentation.
+
+It's recommended that only admin-users have access to this field!</source>
+			<target state="final">इस विकल्प को सेट करने से बैकएंड को यह पता चलता है कि इस पृष्ठ में विशिष्ट सामग्री है या इसका कोई विशेष उद्देश्य है, जैसे कि इसमें कोई फ़ोरम शामिल है या यह वेबसाइट के शॉप सेक्शन का रूट पेज है। इस सेटिंग के आधार पर बैकएंड शॉर्टकट सूची के साथ-साथ 'Web&gt;Modules' मॉड्यूल में संबंधित कार्यक्षमता प्रदर्शित कर सकता है। फ्रंटएंड डिस्प्ले पर इसका सामान्यतः कोई विशेष प्रभाव नहीं पड़ता।
+किसी पृष्ठ को 'Shop' प्लगइन युक्त के रूप में चिह्नित करने का अर्थ केवल इतना है कि वह बैकएंड में मॉड्यूल्स की शॉर्टकट सूची में दिखाई देगा।
+
+इस विकल्प के अतिरिक्त विवरण के लिए, Administration Documentation देखें।
+
+यह सुझाव दिया जाता है कि केवल एडमिन-यूज़र्स को ही इस फ़ील्ड का एक्सेस हो!</target></trans-unit>
+      <trans-unit id="media.description" resname="media.description" approved="yes">
+        <source>Attach media files related to the page.</source>
+        <target state="final">पेज से संबंधित मीडिया फ़ाइलें अटैच करें।</target>
+      </trans-unit>
+      <trans-unit id="media.details" resname="media.details" xml:space="preserve" approved="yes">
+				<source>This field allows you to attach various files to the page, but how these files are used depends on your template.
+As an example the template could be use this field to allow a logo to be attached to the page or it might expect the first file to be an image used as a link in the navigation menu. Remember, this totally depends on how the template is programmed.</source>
+			<target state="final">यह फ़ील्ड आपको पेज के साथ अलग-अलग फ़ाइलें अटैच करने की सुविधा देता है, लेकिन इन फ़ाइलों का इस्तेमाल कैसे होगा, यह आपके टेम्प्लेट पर निर्भर करता है।
+उदाहरण के लिए, टेम्प्लेट इस फ़ील्ड का इस्तेमाल करके पेज के साथ कोई लोगो अटैच करने की सुविधा दे सकता है, या हो सकता है कि वह यह उम्मीद करे कि पहली फ़ाइल कोई ऐसी इमेज हो जिसका इस्तेमाल नेविगेशन मेन्यू में लिंक के तौर पर किया जाए। याद रखें, यह पूरी तरह से इस बात पर निर्भर करता है कि टेम्प्लेट को कैसे प्रोग्राम किया गया है।</target></trans-unit>
+      <trans-unit id="subtitle.description" resname="subtitle.description" approved="yes">
+        <source>Enter a subtitle if needed.</source>
+        <target state="final">यदि आवश्यक हो, तो एक सबटाइटल डालें।</target>
+      </trans-unit>
+      <trans-unit id="subtitle.details" resname="subtitle.details" approved="yes">
+        <source>Whether this field is used or not depends on the template. In most cases it's not used.</source>
+        <target state="final">इस फ़ील्ड का उपयोग होता है या नहीं, यह टेम्पलेट पर निर्भर करता है। ज़्यादातर मामलों में, इसका उपयोग नहीं होता है।</target>
+      </trans-unit>
+      <trans-unit id="url.description" resname="url.description" approved="yes">
+        <source>Enter the URL this page redirects to.</source>
+        <target state="final">वह URL डालें जिस पर यह पृष्ठ रीडायरेक्ट होता है।</target>
+      </trans-unit>
+      <trans-unit id="url.details" resname="url.details" xml:space="preserve" approved="yes">
+				<source>For example, 'http://www.typo3.org'.
+
+This option is used only if the page 'Type' is set to 'Link to External URL.'</source>
+			<target state="final">उदाहरण के लिए, 'http://www.typo3.org'.
+
+इस विकल्प का उपयोग केवल तभी किया जाता है, जब पेज का 'Type' 'Link to External URL' पर सेट हो।</target></trans-unit>
+      <trans-unit id="shortcut.description" resname="shortcut.description" approved="yes">
+        <source>Select a page to act as the Shortcut Target. When the current page is requested in the Frontend, it will be redirected to the Shortcut Target.</source>
+        <target state="final">शॉर्टकट टारगेट के तौर पर इस्तेमाल करने के लिए एक पेज चुनें। जब फ्रंटएंड में मौजूदा पेज का अनुरोध किया जाएगा, तो उसे शॉर्टकट टारगेट पर रीडायरेक्ट कर दिया जाएगा।</target>
+      </trans-unit>
+      <trans-unit id="shortcut.details" resname="shortcut.details" xml:space="preserve" approved="yes">
+				<source>Click the 'Browse for Records' icon and a new window will appear in which you can easily select a page to act as the Shortcut Target.
+
+This option is used only if the page 'Type' is set to 'Shortcut.'</source>
+			<target state="final">'Browse for Records' आइकन पर क्लिक करें; ऐसा करने पर एक नई विंडो खुलेगी, जिसमें आप आसानी से उस पेज को चुन सकते हैं जिसे आप 'Shortcut Target' के तौर पर इस्तेमाल करना चाहते हैं।
+
+इस विकल्प का इस्तेमाल केवल तभी किया जाता है, जब पेज का 'Type' 'Shortcut' पर सेट हो।</target></trans-unit>
+      <trans-unit id="_shortcut.seeAlso" resname="_shortcut.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:doktype,
+pages:shortcut_mode</source>
+				
+			<target state="final">pages:doktype,
+pages:shortcut_mode</target><note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note></trans-unit>
+      <trans-unit id="_shortcut.image" resname="_shortcut.image" approved="yes">
+        <source>EXT:core/Resources/Public/Images/cshimages/page_shortcut.gif</source>
+        <target state="final">EXT:core/Resources/Public/Images/cshimages/page_shortcut.gif</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="shortcut.image_descr" resname="shortcut.image_descr" approved="yes">
+        <source>Select a Shortcut Target page with the Element Browser.</source>
+        <target state="final">एलिमेंट ब्राउज़र का उपयोग करके, शॉर्टकट लक्ष्य पृष्ठ का चयन करें।</target>
+      </trans-unit>
+      <trans-unit id="keywords.description" resname="keywords.description" approved="yes">
+        <source>Enter keywords for the page separated by commas. You may also use short phrases.</source>
+        <target state="final">पेज के लिए कीवर्ड्स कॉमा लगाकर डालें। आप छोटे वाक्यांशों का भी उपयोग कर सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="keywords.details" resname="keywords.details" xml:space="preserve" approved="yes">
+				<source>Most TYPO3 websites use these keywords in a meta-tag on the page, but you may have to setup the appropriate TypoScript template yourself.
+
+To optimize your page for search engines like Google you should not use more than 3 to 6 keywords. You should also make sure that the keywords are found in the content of the page.
+
+Note that search engine extensions for TYPO3 such as Indexed Search can also be configured to make use of the keywords.
+
+The keywords can also be used to create a menu of related pages. Create a Content Element of type 'Sitemap' and then choose the menu type &lt;i&gt;Related pages (based on keywords)&lt;/i&gt;.</source>
+			<target state="final">अधिकांश TYPO3 वेबसाइटें इन कीवर्ड्स का उपयोग पृष्ठ पर मेटा-टैग में करती हैं, लेकिन आपको स्वयं उपयुक्त TypoScript टेम्पलेट सेट करना पड़ सकता है।
+
+गूगल जैसे सर्च इंजन के लिए अपने पृष्ठ को ऑप्टिमाइज़ करने हेतु आपको 3 से 6 से अधिक कीवर्ड्स का उपयोग नहीं करना चाहिए। साथ ही यह भी सुनिश्चित करें कि ये कीवर्ड्स पेज की सामग्री में मौजूद हों।
+
+ध्यान दें कि TYPO3 के सर्च इंजन एक्सटेंशन, जैसे सूचीबद्ध खोज, को भी इस तरह कॉन्फ़िगर किया जा सकता है कि वे इन कीवर्ड्स का उपयोग करें।
+
+इन कीवर्ड्स का उपयोग संबंधित पृष्ठों का मेनू बनाने के लिए भी किया जा सकता है। इसके लिए 'Sitemap' प्रकार का एक कंटेंट एलिमेंट बनाएं और फिर मेनू टाइप में &lt;i&gt;संबंधित पृष्ठ (कीवर्ड के आधार पर)&lt;/i&gt; चुनें:।</target></trans-unit>
+      <trans-unit id="_keywords.seeAlso" resname="_keywords.seeAlso" approved="yes">
+        <source>pages:description</source>
+        <target state="final">pages:description</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Enter a short description of the page. It will be displayed in the result lists of most search engines.</source>
+        <target state="final">पृष्ठ का एक छोटा विवरण दर्ज करें। यह अधिकांश सर्च इंजनों की परिणाम सूचियों में प्रदर्शित होगा।</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" xml:space="preserve" approved="yes">
+				<source>Most websites insert this description in a meta-tag on the page, but you may have to configure this yourself in your TypoScript template.
+
+Most search engines will display the description in their result list. Thus, the text should be short (about 160 characters maximum), and its wording should make sense when it shows up in the result list.
+
+In addition, the description will be displayed if you create a Content Element of type 'Sitemap' and then choose the menu type &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt;. If an abstract exists for the page, it will be used instead of the description.
+
+&lt;b&gt;Note:&lt;/b&gt; Some search engines only use the description if the text is not found elsewhere in the content. So do not just repeat yourself.</source>
+			<target state="final">ज़्यादातर वेबसाइट इस डिस्क्रिप्शन को पृष्ठ पर मेटा-टैग में डालती हैं, लेकिन आपको इसे अपने TypoScript टेम्पलेट में खुद कॉन्फ़िगर करना पड़ सकता है।
+
+ज़्यादातर सर्च इंजन अपनी रिजल्ट लिस्ट में डिस्क्रिप्शन दिखाएंगे। इसलिए, टेक्स्ट छोटा होना चाहिए (ज़्यादा से ज़्यादा लगभग 160 कैरेक्टर), और रिजल्ट लिस्ट में दिखने पर उसके शब्दों का मतलब समझ में आना चाहिए।
+
+इसके अलावा, अगर आप 'साइटमैप' टाइप का कंटेंट एलिमेंट बनाते हैं और फिर मेनू टाइप &lt;i&gt;इन पेजों के सबपेजों का मेनू (एब्स्ट्रैक्ट के साथ)&lt;/i&gt; चुनते हैं, तो डिस्क्रिप्शन दिखेगा। अगर पेज के लिए कोई एब्स्ट्रैक्ट मौजूद है, तो डिस्क्रिप्शन की जगह उसका इस्तेमाल किया जाएगा।
+
+&lt;b&gt;ध्यान दें:&lt;/b&gt; कुछ सर्च इंजन डिस्क्रिप्शन का इस्तेमाल तभी करते हैं जब टेक्स्ट कंटेंट में कहीं और न मिले। इसलिए बस अपनी बात न दोहराएं।</target></trans-unit>
+      <trans-unit id="_description.seeAlso" resname="_description.seeAlso" xml:space="preserve" approved="yes">
+				<source>pages:keywords
+pages:abstract</source>
+			<target state="final">pages:keywords
+pages:abstract</target></trans-unit>
+      <trans-unit id="abstract.description" resname="abstract.description" approved="yes">
+        <source>Enter an abstract of the contents. It may be displayed in an overview of articles.</source>
+        <target state="final">कंटेंट का सारांश दर्ज करें। इसे लेखों के अवलोकन में प्रदर्शित किया जा सकता है।</target>
+      </trans-unit>
+      <trans-unit id="abstract.details" resname="abstract.details" xml:space="preserve" approved="yes">
+				<source>An abstract is a short description of the page content that might be a little longer than the one in the &lt;i&gt;Description&lt;/i&gt; field.
+
+Unlike the description, the abstract is not meant for display in search engine result lists, but is instead intended for you own use.
+
+If you create a Content Element of type &lt;i&gt;Sitemap&lt;/i&gt; and then choose &lt;i&gt;Menu of subpages to these pages (with abstract)&lt;/i&gt; an overview of pages will be created. If an abstract is available for a page it will be used instead of the description.
+
+&lt;b&gt;Note:&lt;/b&gt; You do not have to enter the text of the description into the &lt;i&gt;Abstract field&lt;/i&gt; again.
+
+Admins can also make custom use of this field via their TypoScript templates.</source>
+			<target state="final">एब्स्ट्रैक्ट, पृष्ठ कंटेंट का एक छोटा डिस्क्रिप्शन होता है जो &lt;i&gt;डिस्क्रिप्शन&lt;/i&gt; फ़ील्ड में दिए गए डिस्क्रिप्शन से थोड़ा लंबा हो सकता है।
+
+डिस्क्रिप्शन के उलट, एब्स्ट्रैक्ट सर्च इंजन रिजल्ट लिस्ट में दिखाने के लिए नहीं होता, बल्कि आपके अपने इस्तेमाल के लिए होता है।
+
+अगर आप &lt;i&gt;साइटमैप&lt;/i&gt; टाइप का कंटेंट एलिमेंट बनाते हैं और फिर &lt;i&gt;इन पृष्ठ के सबपेज का मेन्यू (एब्स्ट्रैक्ट के साथ)&lt;/i&gt; चुनते हैं, तो पेजों का एक ओवरव्यू बन जाएगा। अगर किसी पेज के लिए एब्स्ट्रैक्ट उपलब्ध है, तो उसका इस्तेमाल डिस्क्रिप्शन की जगह किया जाएगा।
+
+&lt;b&gt;नोट:&lt;/b&gt; आपको डिस्क्रिप्शन का टेक्स्ट &lt;i&gt;एब्स्ट्रैक्ट फ़ील्ड&lt;/i&gt; में दोबारा डालने की ज़रूरत नहीं है।
+
+एडमिन अपने TypoScript टेम्प्लेट के ज़रिए इस फ़ील्ड का कस्टम इस्तेमाल भी कर सकते हैं।</target></trans-unit>
+      <trans-unit id="_abstract.seeAlso" resname="_abstract.seeAlso" approved="yes">
+        <source>pages:description</source>
+        <target state="final">pages:description</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="newUntil.description" resname="newUntil.description" approved="yes">
+        <source>Enter the date at which this page is no longer considered new.</source>
+        <target state="final">वह तारीख दर्ज करें, जिसके बाद इस पृष्ठ को नया नहीं माना जाएगा।</target>
+      </trans-unit>
+      <trans-unit id="newUntil.details" resname="newUntil.details" xml:space="preserve" approved="yes">
+				<source>The 'New Until' date of the page has no effect on the display of the webpage. This value is instead for internal use as a reminder of the date when the content of this page should be revised. If the content of the page will become outdated on a certain day, you could set this value to that approximate date.
+To get an overview of when pages will be outdated, use the 'Pagetree overview' in the 'Web&gt;Info' Module.</source>
+			<target state="final">पृष्ठ की 'न्यू अनटिल' तारीख का वेबपेज के प्रदर्शन पर कोई प्रभाव नहीं पड़ता है। यह मान इसके बजाय आंतरिक उपयोग के लिए है, जो इस बात की याद दिलाता है कि इस पृष्ठ की सामग्री को किस तारीख को संशोधित किया जाना चाहिए। यदि पृष्ठ की सामग्री किसी निश्चित दिन अप्रचलित हो जाएगी, तो आप इस मान को उस अनुमानित तारीख पर सेट कर सकते हैं।
+यह पता लगाने के लिए कि पृष्ठ कब अप्रचलित होंगे, 'वेब&gt;इन्फो' मॉड्यूल में 'पेजट्री ओवरव्यू' का उपयोग करें।</target></trans-unit>
+      <trans-unit id="newUntil.syntax" resname="newUntil.syntax" approved="yes">
+        <source>See Page / Publication Date (click below)</source>
+        <target state="final">पृष्ठ देखें / प्रकाशन तिथि (नीचे क्लिक करें)</target>
+      </trans-unit>
+      <trans-unit id="_newUntil.seeAlso" resname="_newUntil.seeAlso" approved="yes">
+        <source>pages:starttime</source>
+        <target state="final">pages:starttime</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="lastUpdated.description" resname="lastUpdated.description" approved="yes">
+        <source>Enter the date and time of the most recent update to this page.</source>
+        <target state="final">इस पेज के सबसे हालिय अपडेट की तिथि और समय दर्ज करें।</target>
+      </trans-unit>
+      <trans-unit id="lastUpdated.details" resname="lastUpdated.details" xml:space="preserve" approved="yes">
+				<source>How the value of this field is used is determined by the TypoScript template of the website. 'Last Update' content needs to be inserted on the pages and the TypoScript template must be configured to use this value.
+The most common use is to display the date from the automatically updated 'tstamp' field &lt;em&gt;unless&lt;/em&gt; the 'Last Update' field is set. In this case, the date in 'Last Update' is used.</source>
+			<target state="final">इस फ़ील्ड के मान का उपयोग कैसे किया जाएगा, यह वेबसाइट के TypoScript टेम्पलेट द्वारा निर्धारित होता है। पृष्ठों पर 'Last Update' सामग्री डाली जानी चाहिए, और इस मान का उपयोग करने के लिए TypoScript टेम्पलेट को कॉन्फ़िगर किया जाना चाहिए।
+इसका सबसे आम उपयोग, स्वचालित रूप से अपडेट होने वाले 'tstamp' फ़ील्ड से दिनांक प्रदर्शित करना है — &lt;em&gt;बशर्ते&lt;/em&gt; 'अंतिम अपडेट' फ़ील्ड सेट न किया गया हो। इस स्थिति में, 'अंतिम अपडेट' में दी गई दिनांक का उपयोग किया जाता है।</target></trans-unit>
+      <trans-unit id="lastUpdated.syntax" resname="lastUpdated.syntax" xml:space="preserve" approved="yes">
+				<source>The format is HH:MM DD-MM-YYYY or HH:MM MM-DD-YYYY depending on your TYPO3 configuration.
+If you insert a 'd' the current time and date is inserted. You can also append any value in the field with a number lie '+10' which will add 10 days to the current value.</source>
+			<target state="final">इसका फ़ॉर्मेट HH:MM DD-MM-YYYY या HH:MM MM-DD-YYYY होता है, जो आपके TYPO3 कॉन्फ़िगरेशन पर निर्भर करता है।
+अगर आप 'd' डालते हैं, तो मौजूदा समय और तारीख डाल दी जाती है। आप फ़ील्ड में कोई भी वैल्यू, जैसे '+10' भी जोड़ सकते हैं, जिससे मौजूदा वैल्यू में 10 दिन और जुड़ जाएँगे।</target></trans-unit>
+      <trans-unit id="_nav_hide.seeAlso" resname="_nav_hide.seeAlso" approved="yes">
+        <source>pages:nav_title</source>
+        <target state="final">pages:nav_title</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="nav_title.description" resname="nav_title.description" approved="yes">
+        <source>Alternative Navigation Title for menu items in the Frontend. When set, this value is used instead of the Page Title.</source>
+        <target state="final">फ़्रंट एंड में मेनू आइटम के लिए वैकल्पिक नेविगेशन शीर्षक। जब इसे सेट किया जाता है, तो इस मान का उपयोग पृष्ठ शीर्षक के स्थान पर किया जाता है।</target>
+      </trans-unit>
+      <trans-unit id="content_from_pid.description" resname="content_from_pid.description" xml:space="preserve" approved="yes">
+				<source>If set, this is an alternative page to select Content Elements from.
+Whether this field is used depends on the website's TypoScript template.</source>
+			<target state="final">अगर सेट किया गया है, तो यह कंटेंट एलिमेंट्स चुनने के लिए एक दूसरा पेज है।
+इस फ़ील्ड का इस्तेमाल किया जाएगा या नहीं, यह वेबसाइट के TypoScript टेम्पलेट पर निर्भर करता है।</target></trans-unit>
+      <trans-unit id="shortcut_mode.description" resname="shortcut_mode.description" approved="yes">
+        <source>Select a Shortcut Mode. By default the shortcut page must have a Shortcut Target to jump to. Other options are to go to the first subpage, to a random subpage, or back up to the parent page.</source>
+        <target state="final">एक शॉर्टकट मोड चुनें। डिफ़ॉल्ट रूप से, शॉर्टकट पेज पर जाने के लिए एक 'शॉर्टकट टारगेट' होना ज़रूरी है। अन्य विकल्पों में पहली सब-पेज पर जाना, किसी रैंडम सब-पेज पर जाना, या वापस पैरेंट पृष्ठ पर जाना शामिल है।</target>
+      </trans-unit>
+      <trans-unit id="mount_pid.description" resname="mount_pid.description" approved="yes">
+        <source>Mount this page. If set, subpages of this page come from the Mounted Page instead.</source>
+        <target state="final">इस पृष्ठ को माउंट करें। यदि यह सेट है, तो इस पृष्ठ के उप-पृष्ठ इसके बजाय माउंट किए गए पृष्ठ से लिए जाएँगे।</target>
+      </trans-unit>
+      <trans-unit id="mount_pid.details" resname="mount_pid.details" approved="yes">
+        <source>In the Frontend this is done by adding a new variable, &amp;MP, to the URL. This links the mounted branch to the main branch by pairing page ids.</source>
+        <target state="final">फ़्रंट एंड  में, यह URL में एक नया वेरिएबल, &amp;MP, जोड़कर किया जाता है। यह पेज IDs को आपस में जोड़कर माउंटेड ब्रांच को मुख्य ब्रांच से लिंक करता है।</target>
+      </trans-unit>
+      <trans-unit id="_mount_pid.seeAlso" resname="_mount_pid.seeAlso" approved="yes">
+        <source>pages:mount_pid_ol</source>
+        <target state="final">pages:mount_pid_ol</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="mount_pid_ol.description" resname="mount_pid_ol.description" approved="yes">
+        <source>Show content for the current page or replace it completely with the Mounted Page.</source>
+        <target state="final">मौजूदा पृष्ठ की सामग्री दिखाएँ या उसे पूरी तरह से Mounted Page से बदल दें।</target>
+      </trans-unit>
+      <trans-unit id="_mount_pid_ol.seeAlso" resname="_mount_pid_ol.seeAlso" approved="yes">
+        <source>pages:mount_pid</source>
+        <target state="final">pages:mount_pid</target>
+        <note>This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+      </trans-unit>
+      <trans-unit id="title.description.+" resname="title.description.+" approved="yes">
+        <source>This is normally shown in the website navigation.</source>
+        <target state="final">यह आमतौर पर वेबसाइट नेविगेशन में दिखाया जाता है।</target>
+      </trans-unit>
+      <trans-unit id="TSconfig.details.+" resname="TSconfig.details.+" xml:space="preserve" approved="yes">
+				<source>&lt;strong&gt;Example:&lt;/strong&gt;
+The 'Web&gt;Page' module lets you create content in four columns, Left, Normal, Right, Border if the template has been configured to use this option. (However, most websites use only one or two columns so some of these content columns are just taking up space and confusing users.)
+If you enter this string in the 'TSConfig' field, the 'Web&gt;Page' Module will only show the 'Normal' and 'Border' column!
+
+&lt;em&gt;mod.web_layout.tt_content.colPos_list = 0,3&lt;/em&gt;
+
+(Must be entered in a single line!)</source>
+			<target state="final">&lt;strong&gt;उदाहरण:&lt;/strong&gt;
+'वेब&gt;पृष्ठ' मॉड्यूल आपको चार कॉलम में कंटेंट बनाने देता है, लेफ्ट, नॉर्मल, राइट, बॉर्डर, अगर टेम्पलेट को इस ऑप्शन का इस्तेमाल करने के लिए कॉन्फ़िगर किया गया है। (हालांकि, ज़्यादातर वेबसाइट सिर्फ़ एक या दो कॉलम का इस्तेमाल करती हैं, इसलिए इनमें से कुछ कंटेंट कॉलम सिर्फ़ जगह घेरते हैं और यूज़र्स को कन्फ्यूज़ करते हैं।)
+अगर आप 'TSConfig' फ़ील्ड में यह स्ट्रिंग डालते हैं, तो 'वेब&gt;पृष्ठ' मॉड्यूल सिर्फ़ 'नॉर्मल' और 'बॉर्डर' कॉलम दिखाएगा!
+
+&lt;em&gt;mod.web_layout.tt_content.colPos_list = 0,3&lt;/em&gt;
+
+(एक ही लाइन में डालना होगा!)</target></trans-unit>
+      <trans-unit id="l18n_cfg.description" resname="l18n_cfg.description" approved="yes">
+        <source>Affect availability of pages in the various languages.</source>
+        <target state="final">विभिन्न भाषाओं में पृष्ठों की उपलब्धता को प्रभावित करता है।</target>
+      </trans-unit>
+      <trans-unit id="l18n_cfg.details" resname="l18n_cfg.details" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;Hide default language of page&lt;/b&gt;
+If set, the page is only available in translated versions and not in the default language. Any attempt to access the page in the default language will result in an error message.
+
+&lt;b&gt;Hide page if no translation for current language exists&lt;/b&gt;
+If set, any attempt to access the page in a translation that does not exist will result in an error message. By default, accessing an untranslated page will just show the default language instead.</source>
+			<target state="final">&lt;b&gt;पेज की डिफ़ॉल्ट भाषा छिपाएँ&lt;/b&gt;
+अगर इसे सेट किया जाता है, तो पेज सिर्फ़ अनुवादित वर्शन में उपलब्ध होगा, डिफ़ॉल्ट भाषा में नहीं। डिफ़ॉल्ट भाषा में पेज को एक्सेस करने की कोई भी कोशिश करने पर एक एरर मैसेज मिलेगा।
+
+&lt;b&gt;अगर मौजूदा भाषा के लिए कोई अनुवाद मौजूद न हो, तो पेज छिपाएँ&lt;/b&gt;
+अगर इसे सेट किया जाता है, तो किसी ऐसे अनुवाद में पेज को एक्सेस करने की कोई भी कोशिश करने पर एक एरर मैसेज मिलेगा जो मौजूद नहीं है। डिफ़ॉल्ट रूप से, बिना अनुवाद वाले पेज को एक्सेस करने पर उसकी जगह सिर्फ़ डिफ़ॉल्ट भाषा दिखाई देगी।</target></trans-unit>
+    </body>
+  </file>
+</xliff>
