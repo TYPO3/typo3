@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_browse_links.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="openLinkWizard" approved="yes">
+        <source>Open link wizard</source>
+        <target state="final">リンクウィザードを開く</target>
+      </trans-unit>
+      <trans-unit id="uploadImage" approved="yes">
+        <source>Upload Image</source>
+        <target state="final">画像をアップロード</target>
+      </trans-unit>
+      <trans-unit id="email.subject" approved="yes">
+        <source>Subject</source>
+        <target state="final">件名</target>
+      </trans-unit>
+      <trans-unit id="email.cc" approved="yes">
+        <source>CC</source>
+        <target state="final">CC</target>
+      </trans-unit>
+      <trans-unit id="email.bcc" approved="yes">
+        <source>BCC</source>
+        <target state="final">BCC</target>
+      </trans-unit>
+      <trans-unit id="email.body" approved="yes">
+        <source>Body</source>
+        <target state="final">本文</target>
+      </trans-unit>
+      <trans-unit id="contentElements" approved="yes">
+        <source>Content elements</source>
+        <target state="final">コンテンツエレメント</target>
+      </trans-unit>
+      <trans-unit id="createFolder" approved="yes">
+        <source>Create new folder</source>
+        <target state="final">新規フォルダを作成</target>
+      </trans-unit>
+      <trans-unit id="no_files_search" approved="yes">
+        <source>No files found in %s for "%s"</source>
+        <target state="final">%s の 「%s」 にファイルが見つかりません</target>
+      </trans-unit>
+      <trans-unit id="recordNotFound" approved="yes">
+        <source>Record not found</source>
+        <target state="final">レコードが見つかりません</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
