@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/module.xlf" date="2026-11-10T13:37:37Z" product-name="form" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="short_description" approved="yes">
+        <source>Build custom forms</source>
+        <target state="final">Tvorba vlastních formulářů</target>
+      </trans-unit>
+      <trans-unit id="description" approved="yes">
+        <source>This module ships a flexible and user-friendly form editor. It allows you to build and create versatile forms for your frontend. Your forms can easily be added to any page by using the content element "Form". Within this element, finishers can be overridden.</source>
+        <target state="final">Tento modul obsahuje flexibilní a uživatelsky přívětivý editor formulářů. Umožňuje vám vytvářet a sestavovat univerzální formuláře pro vaše uživatelské rozhraní. Formuláře lze snadno přidat na jakoukoli stránku pomocí obsahového prvku „Formulář“. V rámci tohoto prvku lze přepsat funkce pro dokončení.</target>
+      </trans-unit>
+      <trans-unit id="title" approved="yes">
+        <source>Forms</source>
+        <target state="final">Formuláře</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
