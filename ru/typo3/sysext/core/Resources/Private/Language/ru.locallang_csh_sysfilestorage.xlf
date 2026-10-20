@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814801" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilestorage.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>File storage, which acts as an entry root point to a file-based structure. See it like a drive or a hard drive volume in your local machine.</source>
+        <target state="final">Файловое хранилище, выполняющее роль отправной точки для файловой структуры. Рассматривайте его как носитель или раздел жёсткого диска на вашем компьютере.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details">
+        <source/>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Disabling the storage will result in removing it from any listings in the backend. Existing file relations will still exist.</source>
+        <target state="final">Отключение хранилища приведёт к исчезновению его из всех списков в панели управления. Существующие файловые связи останутся прежними.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>If you set up a file storage, it will show up on any folder lists, thus allowing to basically browse through the files in this file repository. If you set this checkbox, this storage will be excluded from any listings in the backend. Any existing file references will still exist further.</source>
+        <target state="final">Если вы создаёте хранилище, оно отображается во всех списках папок, тем самым позволяя просматривать файлы в этом репозитории. Если вы установите этот флаг, данное хранилище будет исключено изо всех списков панели управления. Все существующие файловые связи останутся прежними.</target>
+      </trans-unit>
+      <trans-unit id="name.description" resname="name.description" approved="yes">
+        <source>The visible identifier for this file storage.</source>
+        <target state="final">Отображаемый идентификатор данного файлового хранилища.</target>
+      </trans-unit>
+      <trans-unit id="name.details" resname="name.details" approved="yes">
+        <source>The label entered here will be shown as the name for the entry point in the TYPO3 Backend. Be sure to make it descriptive and logical for your editors.</source>
+        <target state="final">Введённая здесь метка будет отображаться как имя точки входа в панели управления TYPO3. Постарайтесь сделать её логичной и понятной для редакторов.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>A description of this storage.</source>
+        <target state="final">Описание данного хранилища.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" approved="yes">
+        <source>This description field is used to explain e.g. the location of the storage, also what this storage is meant for or what it contains.</source>
+        <target state="final">Поле описания используется, например, чтобы пояснить расположение хранилища, для чего оно нужно или что содержит.</target>
+      </trans-unit>
+      <trans-unit id="driver.description" resname="driver.description" approved="yes">
+        <source>Choose the driver as the technical backbone of the storage. Once you've chosen a driver, and saved it, additional configuration will show up.</source>
+        <target state="final">Выберите драйвер, на котором будет основано хранилище. После выбора драйвера и сохранения изменений появятся дополнительные настройки.</target>
+      </trans-unit>
+      <trans-unit id="driver.details" resname="driver.details" approved="yes">
+        <source>The driver is the technical background of a storage, and thus also defines whether the location of the storage is local (= on the same machine as this TYPO3 installation) or remote like a WebDAV server connection. Search for extensions in the TYPO3 Extension Repository that extend this driver list.</source>
+        <target state="final">Драйвер - технологическая суть хранилища, помимо прочего определяющая, является ли хранилище локальным (читай - находится на той же машине, что и сама установленная система TYPO3), либо удалённым, вроде соединения с сервером WebDAV. Ищите в репозитории расширения TYPO3, дополняющие список драйверов.</target>
+      </trans-unit>
+      <trans-unit id="processingfolder.description" resname="processingfolder.description" approved="yes">
+        <source>Defines the directory on this storage to be used to save temporary files like resized images.</source>
+        <target state="final">Определение папки в этом хранилище для временных файлов, вроде изменённых изображений.</target>
+      </trans-unit>
+      <trans-unit id="is_browsable.description" resname="is_browsable.description" approved="yes">
+        <source>If set, backend users can browse through this storage. Otherwise it will show up as a unselectable item in the list.</source>
+        <target state="final">Если установлено, внутренние пользователи смогут использовать это хранилище. Иначе оно будет видно, как недоступный элемент в блоке выбора.</target>
+      </trans-unit>
+      <trans-unit id="is_public.description" resname="is_public.description" approved="yes">
+        <source>If set, then the files in this storage can be linked directly from the outside world. If this is not set, make sure to provide additional possibilities to access the files in this storage.</source>
+        <target state="final">Если установлено, то файлы в этом хранилище могут быть доступны извне напрямую. Если не установлено, то убедитесь, что возможен доступ к файлам этого хранилища.</target>
+      </trans-unit>
+      <trans-unit id="is_writable.description" resname="is_writable.description" approved="yes">
+        <source>If set, then users are allowed to modify, add, delete files/folders on this storage.</source>
+        <target state="final">Если установлено, то пользователям разрешено изменять, добавлять, удалять файлы/папки этого хранилища.</target>
+      </trans-unit>
+      <trans-unit id="is_online.description" resname="is_online.description" approved="yes">
+        <source>This flag is usually set. If TYPO3 cannot connect to this storage (because it maybe temporary down), then the flag will be checked, and the storage will behave like it is non-browsable in the TYPO3 backend. The admin needs to manually activate it again if it was offline.</source>
+        <target state="final">Этот флаг обычно установлен. Если TYPO3 не может получить доступ к этому хранилищу (возможно, из-за временных неполадок), то это проверяется и хранилище будет рассматриваться как недоступное из интерфейса управления TYPO3. Администратору необходимо будет вручную снова его подключить.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
