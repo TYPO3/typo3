@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814854" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id=".alttitle" resname=".alttitle" approved="yes">
+        <source>TYPO3 Core</source>
+        <target state="final">هستۀ تایپوتری</target>
+      </trans-unit>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>TYPO3 is a Content Management Framework which consists of a central program core with only limited functionality. To extend this core system there are hundreds of extensions which in combination will provide a very capable system.</source>
+        <target state="final">تایپوتری یک چارچوب مدیریت محتواست که از برنامۀ هسته با کارکرد محدود تشکیل شده است. برای گسترش این سامانۀ سته صدها افزونه وجود دارند که در ترکیب با هسته یک سامانۀ بسیار قدرتمند را تشکیل می‌دهند.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" approved="yes">
+        <source>For most people TYPO3 is equivalent to a CMS providing a backend for management of the content and a frontend engine for website display. However TYPO3s core is natively designed to be a general purpose framework for management of database content. The core of TYPO3 delivers a set of principles for storage of this content, user access management, editing of the content, uploading and managing files etc. Many of these principles are expressed as an API (Application Programmers Interface) for use in the &lt;em&gt;extensions&lt;/em&gt; which ultimately adds most of the real functionality.</source>
+        <target state="final">برای بسیاری از مردم TYPO3 یک سامانۀ مدیریت محتواست که برابر با یک صفحۀ مدیریت برای ادارۀ محتواست به‌همراه یک موتور خروجی برای نمایش وبگاه. با این‌حال هستۀ تایپوتری به شکل بومی و محلی برای کارکرد عمومی به‌عنوان یک چارچوب مدیریت محتوای بانک‌داده طراحی شده است. هستۀ تایپوتری تعدادی از مفاهیم برای ذخیرۀ محتوا و دسترسی کاربر و ویرایش محتوا و مدیریت و ارسال فایل‌ها و غیره را ارائه می‌دهد. بسیاری از این مفاهیم با استفاده از API (رابط کاربردی برنامه‌نویسان) و برای استفاده در &lt;em&gt;افزونه‌هائی‌&lt;/em&gt; است که در نهایت اکثر کاربردهای واقعی را برای استفاده آماده‌کند.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
