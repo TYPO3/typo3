@@ -1,0 +1,645 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814851" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_core.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="et">
+    <header/>
+    <body>
+      <trans-unit id="labels.openInNewWindow" resname="labels.openInNewWindow" approved="yes">
+        <source>Open in new window</source>
+        <target state="final">Ava uues aknas</target>
+      </trans-unit>
+      <trans-unit id="labels.goBack" resname="labels.goBack" approved="yes">
+        <source>Go back</source>
+        <target state="final">Tagasi</target>
+      </trans-unit>
+      <trans-unit id="labels.makeShortcut" resname="labels.makeShortcut" approved="yes">
+        <source>Create a shortcut to this page?</source>
+        <target state="final">Luua otsetee sellele leheküljele?</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord" resname="labels.lockedRecord" approved="yes">
+        <source>The user '%s' began to edit this record %s ago.</source>
+        <target state="final">Kasutaja '%s' alustas selle kirje redigeerimist %s tagasi.</target>
+      </trans-unit>
+      <trans-unit id="labels.lockedRecord_content" resname="labels.lockedRecord_content" approved="yes">
+        <source>The user '%s' began to edit content on this page %s ago.</source>
+        <target state="final">Kasutaja '%s' alustas selle lehekülje sisu redigeerimist %s tagasi.</target>
+      </trans-unit>
+      <trans-unit id="labels.showRecords" resname="labels.showRecords" approved="yes">
+        <source>Show records</source>
+        <target state="final">Näita kirjeid</target>
+      </trans-unit>
+      <trans-unit id="labels.path" resname="labels.path" approved="yes">
+        <source>Path</source>
+        <target state="final">Tee</target>
+      </trans-unit>
+      <trans-unit id="labels.table" resname="labels.table" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabel</target>
+      </trans-unit>
+      <trans-unit id="labels.upOneLevel" resname="labels.upOneLevel" approved="yes">
+        <source>Up one level</source>
+        <target state="final">Üks tase üles</target>
+      </trans-unit>
+      <trans-unit id="labels.enterSearchLevels" resname="labels.enterSearchLevels" approved="yes">
+        <source>This page|1 level down|2 levels down|3 levels down|4 levels down</source>
+        <target state="final">See lehekülg|1 tase alla|2 taset alla|3 taset alla|4 taset alla</target>
+      </trans-unit>
+      <trans-unit id="labels.searchLevel.0" resname="labels.searchLevel.0" approved="yes">
+        <source>This page</source>
+        <target state="final">See lehekülg</target>
+      </trans-unit>
+      <trans-unit id="labels.noEditPermission" resname="labels.noEditPermission" approved="yes">
+        <source>Sorry, you didn't have proper permissions to perform this change.</source>
+        <target state="final">Vabandage, teil puuduvad õigused selle muudatuse tegemiseks.</target>
+      </trans-unit>
+      <trans-unit id="labels.fieldsChanged" resname="labels.fieldsChanged" xml:space="preserve" approved="yes">
+				<source>There are unsaved changes in the form!
+Do you want to continue WITHOUT saving?</source>
+			<target state="final">Vormis on salvestamata muudatusi! Kas soovite jätkata ILMA salvestamata?</target></trans-unit>
+      <trans-unit id="labels.noRTEfound" resname="labels.noRTEfound" approved="yes">
+        <source>Notice: This field can only be edited with a Rich Text Editor. No editor is currently available or enabled.</source>
+        <target state="final">Pane tähele: Seda välja ei saa redigeerida, sest seda on võimalik redigeerida vaid Tekstiredaktoris, kuid redaktor pole kättesaadav või on blokeeritud.</target>
+      </trans-unit>
+      <trans-unit id="labels.disableRTE" resname="labels.disableRTE" approved="yes">
+        <source>Disable Rich Text Editor (RTE)</source>
+        <target state="final">Blokeeri tekstieditor</target>
+      </trans-unit>
+      <trans-unit id="labels._CONTROL_" resname="labels._CONTROL_" approved="yes">
+        <source>Control</source>
+        <target state="final">Juhtimine</target>
+      </trans-unit>
+      <trans-unit id="labels._PATH_" resname="labels._PATH_" approved="yes">
+        <source>Path</source>
+        <target state="final">Tee</target>
+      </trans-unit>
+      <trans-unit id="labels._LOCALIZATION_" resname="labels._LOCALIZATION_" approved="yes">
+        <source>Localization</source>
+        <target state="final">Lokaliseerimine</target>
+      </trans-unit>
+      <trans-unit id="labels.setFields" resname="labels.setFields" approved="yes">
+        <source>Set fields</source>
+        <target state="final">Määra väljad</target>
+      </trans-unit>
+      <trans-unit id="labels.search" resname="labels.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Otsi</target>
+      </trans-unit>
+      <trans-unit id="labels.reload" resname="labels.reload" approved="yes">
+        <source>Reload</source>
+        <target state="final">Laadi uuesti</target>
+      </trans-unit>
+      <trans-unit id="labels.csv" resname="labels.csv" approved="yes">
+        <source>Download CSV file</source>
+        <target state="final">Laadi CSV fail alla</target>
+      </trans-unit>
+      <trans-unit id="labels.clear_cache" resname="labels.clear_cache" approved="yes">
+        <source>Clear cache for this page</source>
+        <target state="final">Puhasta selle lehekülje mälupuhver</target>
+      </trans-unit>
+      <trans-unit id="labels.no_title" resname="labels.no_title" approved="yes">
+        <source>No title</source>
+        <target state="final">Pealikir puudub</target>
+      </trans-unit>
+      <trans-unit id="labels.cancel" resname="labels.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Katkesta</target>
+      </trans-unit>
+      <trans-unit id="labels.hidden" resname="labels.hidden" approved="yes">
+        <source>Hidden</source>
+        <target state="final">Peidetud</target>
+      </trans-unit>
+      <trans-unit id="labels.starttime" resname="labels.starttime" approved="yes">
+        <source>Start</source>
+        <target state="final">Algus</target>
+      </trans-unit>
+      <trans-unit id="labels.endtime" resname="labels.endtime" approved="yes">
+        <source>End</source>
+        <target state="final">Lõpp</target>
+      </trans-unit>
+      <trans-unit id="labels.showPage" resname="labels.showPage" approved="yes">
+        <source>View webpage</source>
+        <target state="final">Vaata lehekülge</target>
+      </trans-unit>
+      <trans-unit id="labels.showList" resname="labels.showList" approved="yes">
+        <source>Show record list</source>
+        <target state="final">näita kirjete listi</target>
+      </trans-unit>
+      <trans-unit id="labels.days" resname="labels.days" approved="yes">
+        <source>days</source>
+        <target state="final">päeva</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_0" resname="labels.depth_0" approved="yes">
+        <source>This page</source>
+        <target state="final">See lehekülg</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_1" resname="labels.depth_1" approved="yes">
+        <source>1 level</source>
+        <target state="final">1 tase</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_2" resname="labels.depth_2" approved="yes">
+        <source>2 levels</source>
+        <target state="final">2 taset</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_3" resname="labels.depth_3" approved="yes">
+        <source>3 levels</source>
+        <target state="final">3 taset</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_4" resname="labels.depth_4" approved="yes">
+        <source>4 levels</source>
+        <target state="final">4 taset</target>
+      </trans-unit>
+      <trans-unit id="labels.depth_infi" resname="labels.depth_infi" approved="yes">
+        <source>Infinite</source>
+        <target state="final">Lõputu</target>
+      </trans-unit>
+      <trans-unit id="labels.allow" resname="labels.allow" approved="yes">
+        <source>Allow</source>
+        <target state="final">Luba</target>
+      </trans-unit>
+      <trans-unit id="labels.deny" resname="labels.deny" approved="yes">
+        <source>Deny</source>
+        <target state="final">Keela</target>
+      </trans-unit>
+      <trans-unit id="labels.show" resname="labels.show" approved="yes">
+        <source>Show</source>
+        <target state="final">Näita</target>
+      </trans-unit>
+      <trans-unit id="labels.generalTab" resname="labels.generalTab" approved="yes">
+        <source>General</source>
+        <target state="final">Üldine</target>
+      </trans-unit>
+      <trans-unit id="labels.refresh" resname="labels.refresh" approved="yes">
+        <source>Reload the tree from server</source>
+        <target state="final">Laadi puu serverist uuesti</target>
+      </trans-unit>
+      <trans-unit id="labels.temporaryDBmount" resname="labels.temporaryDBmount" approved="yes">
+        <source>Cancel temporary DB mount</source>
+        <target state="final">Tühista ajutine DB ühendus</target>
+      </trans-unit>
+      <trans-unit id="labels.refreshList" resname="labels.refreshList" approved="yes">
+        <source>Reload list from server</source>
+        <target state="final">Laadi list serverist uuesti</target>
+      </trans-unit>
+      <trans-unit id="labels.close" resname="labels.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Sulge</target>
+      </trans-unit>
+      <trans-unit id="labels.new" resname="labels.new" approved="yes">
+        <source>NEW</source>
+        <target state="final">UUS</target>
+      </trans-unit>
+      <trans-unit id="labels.edit" resname="labels.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Redigeeri</target>
+      </trans-unit>
+      <trans-unit id="labels.createNew" resname="labels.createNew" approved="yes">
+        <source>Create new</source>
+        <target state="final">Loo uus</target>
+      </trans-unit>
+      <trans-unit id="labels.selected" resname="labels.selected" approved="yes">
+        <source>Selected Items</source>
+        <target state="final">Valitud</target>
+      </trans-unit>
+      <trans-unit id="labels.items" resname="labels.items" approved="yes">
+        <source>Available Items</source>
+        <target state="final">Elemendid</target>
+      </trans-unit>
+      <trans-unit id="labels.remove_selected" resname="labels.remove_selected" approved="yes">
+        <source>Remove selected items</source>
+        <target state="final">Kõrvalda valitud elemendid</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_top" resname="labels.move_to_top" approved="yes">
+        <source>Move selected items to top</source>
+        <target state="final">Teisalda vaitud elemendid algusesse</target>
+      </trans-unit>
+      <trans-unit id="labels.move_up" resname="labels.move_up" approved="yes">
+        <source>Move selected items upwards</source>
+        <target state="final">Teisalda valitud elemendid ülespoole</target>
+      </trans-unit>
+      <trans-unit id="labels.move_down" resname="labels.move_down" approved="yes">
+        <source>Move selected items downwards</source>
+        <target state="final">Teisalda valitud elemendid allapoole</target>
+      </trans-unit>
+      <trans-unit id="labels.move_to_bottom" resname="labels.move_to_bottom" approved="yes">
+        <source>Move selected items to bottom</source>
+        <target state="final">Teisalda valitud elemendid lõppu</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_file" resname="labels.browse_file" approved="yes">
+        <source>Browse for files</source>
+        <target state="final">Sirvi faile</target>
+      </trans-unit>
+      <trans-unit id="labels.browse_db" resname="labels.browse_db" approved="yes">
+        <source>Browse for records</source>
+        <target state="final">Sirvi kirjeid</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_file" resname="labels.clipInsert_file" approved="yes">
+        <source>Insert %s file(s) from the clipboard</source>
+        <target state="final">Lisa %s fail(id) lõikelaualt</target>
+      </trans-unit>
+      <trans-unit id="labels.clipInsert_db" resname="labels.clipInsert_db" approved="yes">
+        <source>Insert %s record(s) from the clipboard</source>
+        <target state="final">Lisa %s kirje(d) lõikelaualt</target>
+      </trans-unit>
+      <trans-unit id="labels.allTables" resname="labels.allTables" approved="yes">
+        <source>[All tables]</source>
+        <target state="final">[kõik tabelid]</target>
+      </trans-unit>
+      <trans-unit id="labels.noMatchingValue" resname="labels.noMatchingValue" approved="yes">
+        <source>INVALID VALUE ("%s")</source>
+        <target state="final">KÄESOLEV VÄÄRUTS POLE KASUTATAV ("s")</target>
+      </trans-unit>
+      <trans-unit id="labels.thumbmode_clip" resname="labels.thumbmode_clip" approved="yes">
+        <source>Show Thumbnails on ClipBoard</source>
+        <target state="final">Näita pisipilte lõikelaual</target>
+      </trans-unit>
+      <trans-unit id="labels.copymode" resname="labels.copymode" approved="yes">
+        <source>Copy items instead of moving them</source>
+        <target state="final">Kopeeri elemendid teisaldamise asemel</target>
+      </trans-unit>
+      <trans-unit id="labels.cliptabs" resname="labels.cliptabs" approved="yes">
+        <source>Clipboard #</source>
+        <target state="final">Lõikelaud #</target>
+      </trans-unit>
+      <trans-unit id="labels.removeItem" resname="labels.removeItem" approved="yes">
+        <source>Remove item</source>
+        <target state="final">Eemalda element</target>
+      </trans-unit>
+      <trans-unit id="labels.holdDownCTRL" resname="labels.holdDownCTRL" approved="yes">
+        <source>Important: Hold down the CTRL key while toggling elements in this list!</source>
+        <target state="final">NB!: Hoia CTRL klahvi all kui valid elemente nimekirjas!</target>
+      </trans-unit>
+      <trans-unit id="labels.revertSelection" resname="labels.revertSelection" approved="yes">
+        <source>Revert selection</source>
+        <target state="final">Muuda valikud vastupidi</target>
+      </trans-unit>
+      <trans-unit id="labels.setAllCheckboxes" resname="labels.setAllCheckboxes" approved="yes">
+        <source>Select All Checkboxes</source>
+        <target state="final">Märgi kõik märkmekastid</target>
+      </trans-unit>
+      <trans-unit id="labels.changeInOrig" resname="labels.changeInOrig" approved="yes">
+        <source>Changed in original translation</source>
+        <target state="final">Muudatus originaalis</target>
+      </trans-unit>
+      <trans-unit id="labels.expandAll" resname="labels.expandAll" approved="yes">
+        <source>Expand all</source>
+        <target state="final">Rulli lahti</target>
+      </trans-unit>
+      <trans-unit id="labels.new_section" resname="labels.new_section" approved="yes">
+        <source>Create new</source>
+        <target state="final">Loo uus</target>
+      </trans-unit>
+      <trans-unit id="labels.title.search" resname="labels.title.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Otsi</target>
+      </trans-unit>
+      <trans-unit id="ver.online" resname="ver.online" approved="yes">
+        <source>ONLINE</source>
+        <target state="final">ONLINE</target>
+      </trans-unit>
+      <trans-unit id="ver.mgm" resname="ver.mgm" approved="yes">
+        <source>Version Management</source>
+        <target state="final">Versioonihaldus</target>
+      </trans-unit>
+      <trans-unit id="ver.swap" resname="ver.swap" approved="yes">
+        <source>Swap/Publish</source>
+        <target state="final">Vaheta/Avalda</target>
+      </trans-unit>
+      <trans-unit id="ver.swapPage" resname="ver.swapPage" approved="yes">
+        <source>Publish this version of the page including content</source>
+        <target state="final">Avalda see lehe verisoon, sisu kaasaarvatud</target>
+      </trans-unit>
+      <trans-unit id="TYPO3_Element_Browser" resname="TYPO3_Element_Browser" approved="yes">
+        <source>TYPO3 Element Browser</source>
+        <target state="final">TYPO3 Elemendibrauser</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.viewItem" resname="show_item.php.viewItem" approved="yes">
+        <source>View Item</source>
+        <target state="final">Vaata elementi</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.file" resname="show_item.php.file" approved="yes">
+        <source>File</source>
+        <target state="final">Fail</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.dimensions" resname="show_item.php.dimensions" approved="yes">
+        <source>Dimensions</source>
+        <target state="final">Mõõtmed</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.filesize" resname="show_item.php.filesize" approved="yes">
+        <source>Size</source>
+        <target state="final">Suurus</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.files" resname="show_item.php.files" approved="yes">
+        <source>files</source>
+        <target state="final">failid</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.table" resname="show_item.php.table" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabel</target>
+      </trans-unit>
+      <trans-unit id="show_item.php.ftp_area" resname="show_item.php.ftp_area" approved="yes">
+        <source>FTP AREA</source>
+        <target state="final">FTP ALA</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.pagetitle" resname="db_new.php.pagetitle" approved="yes">
+        <source>New record</source>
+        <target state="final">Uus kirje</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.after" resname="db_new.php.after" approved="yes">
+        <source>after</source>
+        <target state="final">järele</target>
+      </trans-unit>
+      <trans-unit id="db_new.php.inside" resname="db_new.php.inside" approved="yes">
+        <source>inside</source>
+        <target state="final">sisse</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.pagetitle" resname="file_upload.php.pagetitle" approved="yes">
+        <source>Upload files</source>
+        <target state="final">Laadi failid üles</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.submit" resname="file_upload.php.submit" approved="yes">
+        <source>Upload files</source>
+        <target state="final">Laadi failid üles</target>
+      </trans-unit>
+      <trans-unit id="file_upload.php.files" resname="file_upload.php.files" approved="yes">
+        <source>files</source>
+        <target state="final">failid</target>
+      </trans-unit>
+      <trans-unit id="file_upload.actions.rename" resname="file_upload.actions.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">Nimeta ümber</target>
+      </trans-unit>
+      <trans-unit id="file_upload.button.cancel" resname="file_upload.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Katkesta</target>
+      </trans-unit>
+      <trans-unit id="file_rename.actions.cancel" resname="file_rename.actions.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Katkesta</target>
+      </trans-unit>
+      <trans-unit id="file_rename.php.pagetitle" resname="file_rename.php.pagetitle" approved="yes">
+        <source>Rename</source>
+        <target state="final">Nimeta ümber</target>
+      </trans-unit>
+      <trans-unit id="file_rename.php.submit" resname="file_rename.php.submit" approved="yes">
+        <source>Rename</source>
+        <target state="final">Nimeta ümber</target>
+        <note>This label is not used since TYPO3 v9.</note>
+      </trans-unit>
+      <trans-unit id="file_edit.php.pagetitle" resname="file_edit.php.pagetitle" approved="yes">
+        <source>Edit</source>
+        <target state="final">Redigeeri</target>
+      </trans-unit>
+      <trans-unit id="file_edit.php.submit" resname="file_edit.php.submit" approved="yes">
+        <source>Save</source>
+        <target state="final">Salvesta</target>
+      </trans-unit>
+      <trans-unit id="file_clipupload.php.warning_head" resname="file_clipupload.php.warning_head" approved="yes">
+        <source>Upload path error</source>
+        <target state="final">Üleslaadimise failitee viga</target>
+      </trans-unit>
+      <trans-unit id="file_clipupload.php.warning" resname="file_clipupload.php.warning" approved="yes">
+        <source>No upload-folder is found. You should create a TEMP-folder ("_temp_") in the root of one of your mounts first!</source>
+        <target state="final">Üleslaadimise kausta ei leitud. Peaksite looma TEMP-kausta ("_temp_") mõne osa juurkataloogi!</target>
+      </trans-unit>
+      <trans-unit id="mess.redraw" resname="mess.redraw" approved="yes">
+        <source>Redrawing the page will discard the current data. Do you want to continue?</source>
+        <target state="final">Lehe ümberjoonistamine ei võta arvesse praegusi andmeid. Kas soovite jätkata?</target>
+      </trans-unit>
+      <trans-unit id="mess.refresh_login" resname="mess.refresh_login" xml:space="preserve" approved="yes">
+				<source>Your login has probably expired.
+Do you want to refresh it now?</source>
+			<target state="final">Teie sisselogimine on tõenäoliselt aegunud. Kas soovite uuesti sisse logida?</target></trans-unit>
+      <trans-unit id="mess.refresh_exit_button" resname="mess.refresh_exit_button" approved="yes">
+        <source>Exit</source>
+        <target state="final">Välju</target>
+      </trans-unit>
+      <trans-unit id="mess.noSelItemForEdit" resname="mess.noSelItemForEdit" approved="yes">
+        <source>Please select one or more items in the list before you can edit.</source>
+        <target state="final">Palun valige loetelust üks või mitu elementi, enne kui saate neid redigeerida?</target>
+      </trans-unit>
+      <trans-unit id="mess.move_into" resname="mess.move_into" approved="yes">
+        <source>Move "%s" into "%s"?</source>
+        <target state="final">Teisaldada "%s" elemendi "%s" alamelemendiks?</target>
+      </trans-unit>
+      <trans-unit id="mess.move_after" resname="mess.move_after" approved="yes">
+        <source>Move "%s" to after "%s"?</source>
+        <target state="final">Teisaldada "%s" positsioonile peale "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_into" resname="mess.copy_into" approved="yes">
+        <source>Copy "%s" into "%s"?</source>
+        <target state="final">Kopeerida "%s" elemendi "%s" alamelemendiks?</target>
+      </trans-unit>
+      <trans-unit id="mess.copy_after" resname="mess.copy_after" approved="yes">
+        <source>Copy "%s" to after "%s"?</source>
+        <target state="final">Kopeerida "%s" positsioonile peale "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_into" resname="mess.copycb_into" approved="yes">
+        <source>Copy all elements (%s) from the clipboard into "%s"?</source>
+        <target state="final">Kopeerida kõik elemendid (%s) lõikelaualt "%s" alamelementideks?</target>
+      </trans-unit>
+      <trans-unit id="mess.copycb_after" resname="mess.copycb_after" approved="yes">
+        <source>Copy all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target state="final">Kopeerida kõik elemendid (%s) lõikelaualt positsioonile peale "%s"?</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_into" resname="mess.movecb_into" approved="yes">
+        <source>Move all elements (%s) from the clipboard into "%s"?</source>
+        <target state="final">Teisaldada kõik elemendid (%s) lõikelaualt "%s" alamelementideks?</target>
+      </trans-unit>
+      <trans-unit id="mess.movecb_after" resname="mess.movecb_after" approved="yes">
+        <source>Move all elements (%s) from the clipboard to the position after "%s"?</source>
+        <target state="final">Teisaldada kõik elemendid (%s) lõikelaualt positsioonile peale "%s"?</target>
+      </trans-unit>
+      <trans-unit id="rm.menu" resname="rm.menu" approved="yes">
+        <source>[menu]</source>
+        <target state="final">[menüü]</target>
+      </trans-unit>
+      <trans-unit id="rm.saveDoc" resname="rm.saveDoc" approved="yes">
+        <source>Save</source>
+        <target state="final">Salvesta</target>
+      </trans-unit>
+      <trans-unit id="rm.newDoc" resname="rm.newDoc" approved="yes">
+        <source>New</source>
+        <target state="final">Uus</target>
+      </trans-unit>
+      <trans-unit id="rm.closeDoc" resname="rm.closeDoc" approved="yes">
+        <source>Close</source>
+        <target state="final">Sulge</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_clearCache" resname="rm.clearCache_clearCache" approved="yes">
+        <source>Clear cache</source>
+        <target state="final">Puhasta mälupuhver</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_thisPage" resname="rm.clearCache_thisPage" approved="yes">
+        <source>This page</source>
+        <target state="final">See lehekülg</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_all" resname="rm.clearCache_all" approved="yes">
+        <source>Clear FE cache</source>
+        <target state="final">Puhasta kogu mälupuhver</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_pages" resname="rm.clearCache_pages" approved="yes">
+        <source>Clear Page Cache</source>
+        <target state="final">Puhasta lehekülje mälupuhver</target>
+      </trans-unit>
+      <trans-unit id="rm.clearCache_allTypo3Conf" resname="rm.clearCache_allTypo3Conf" approved="yes">
+        <source>Clear cache in typo3conf/</source>
+        <target state="final">Puhasta temp_CACHED</target>
+      </trans-unit>
+      <trans-unit id="rm.adminFunctions" resname="rm.adminFunctions" approved="yes">
+        <source>Admin functions</source>
+        <target state="final">Admin funktsioonid</target>
+      </trans-unit>
+      <trans-unit id="rm.edit" resname="rm.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Redigeeri</target>
+      </trans-unit>
+      <trans-unit id="rm.export" resname="rm.export" approved="yes">
+        <source>Export</source>
+        <target state="final">Eksport</target>
+      </trans-unit>
+      <trans-unit id="rm.delete" resname="rm.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Kustuta</target>
+      </trans-unit>
+      <trans-unit id="buttons.logout" resname="buttons.logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">Logi välja</target>
+      </trans-unit>
+      <trans-unit id="buttons.exit" resname="buttons.exit" approved="yes">
+        <source>Exit</source>
+        <target state="final">Välju</target>
+      </trans-unit>
+      <trans-unit id="buttons.selMenu_modules" resname="buttons.selMenu_modules" approved="yes">
+        <source>MODULES</source>
+        <target state="final">MOODULID</target>
+      </trans-unit>
+      <trans-unit id="buttons.clear" resname="buttons.clear" approved="yes">
+        <source>Clear</source>
+        <target state="final">Puhasta</target>
+      </trans-unit>
+      <trans-unit id="buttons.clipboard" resname="buttons.clipboard" approved="yes">
+        <source>Clipboard</source>
+        <target state="final">Lõikelaud</target>
+      </trans-unit>
+      <trans-unit id="cm.copy" resname="cm.copy" approved="yes">
+        <source>Copy</source>
+        <target state="final">Kopeeri</target>
+      </trans-unit>
+      <trans-unit id="cm.cut" resname="cm.cut" approved="yes">
+        <source>Cut</source>
+        <target state="final">Lõika</target>
+      </trans-unit>
+      <trans-unit id="cm.view" resname="cm.view" approved="yes">
+        <source>Show</source>
+        <target state="final">Näita</target>
+      </trans-unit>
+      <trans-unit id="cm.edit" resname="cm.edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Redigeeri</target>
+      </trans-unit>
+      <trans-unit id="cm.new" resname="cm.new" approved="yes">
+        <source>New</source>
+        <target state="final">Uus</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteinto" resname="cm.pasteinto" approved="yes">
+        <source>Paste into</source>
+        <target state="final">Kleebi (alla)</target>
+      </trans-unit>
+      <trans-unit id="cm.pasteafter" resname="cm.pasteafter" approved="yes">
+        <source>Paste after</source>
+        <target state="final">Kleebi (järele)</target>
+      </trans-unit>
+      <trans-unit id="cm.select" resname="cm.select" approved="yes">
+        <source>Select</source>
+        <target state="final">Vali</target>
+      </trans-unit>
+      <trans-unit id="cm.deselect" resname="cm.deselect" approved="yes">
+        <source>Deselect</source>
+        <target state="final">Ära vali</target>
+      </trans-unit>
+      <trans-unit id="cm.selectto" resname="cm.selectto" approved="yes">
+        <source>Select to</source>
+        <target state="final">Vali (kuhu)</target>
+      </trans-unit>
+      <trans-unit id="cm.deselectto" resname="cm.deselectto" approved="yes">
+        <source>Deselect to</source>
+        <target state="final">Ära vali (kuhu)</target>
+      </trans-unit>
+      <trans-unit id="cm.delete" resname="cm.delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Kustuta</target>
+      </trans-unit>
+      <trans-unit id="cm.hide" resname="cm.hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">Peida</target>
+      </trans-unit>
+      <trans-unit id="cm.unhide" resname="cm.unhide" approved="yes">
+        <source>Unhide</source>
+        <target state="final">Too peidust välja</target>
+      </trans-unit>
+      <trans-unit id="cm.upload" resname="cm.upload" approved="yes">
+        <source>Upload Files</source>
+        <target state="final">Laadi failid üles</target>
+      </trans-unit>
+      <trans-unit id="cm.rename" resname="cm.rename" approved="yes">
+        <source>Rename</source>
+        <target state="final">Nimeta ümber</target>
+      </trans-unit>
+      <trans-unit id="cm.open" resname="cm.open" approved="yes">
+        <source>Open</source>
+        <target state="final">Ava</target>
+      </trans-unit>
+      <trans-unit id="cm.save" resname="cm.save" approved="yes">
+        <source>Save</source>
+        <target state="final">Salvesta</target>
+      </trans-unit>
+      <trans-unit id="cm.unzip" resname="cm.unzip" approved="yes">
+        <source>Unzip</source>
+        <target state="final">Paki lahti</target>
+      </trans-unit>
+      <trans-unit id="cm.info" resname="cm.info" approved="yes">
+        <source>Info</source>
+        <target state="final">Info</target>
+      </trans-unit>
+      <trans-unit id="cm.createnew" resname="cm.createnew" approved="yes">
+        <source>Create new</source>
+        <target state="final">Loo uus</target>
+      </trans-unit>
+      <trans-unit id="cm.tempMountPoint" resname="cm.tempMountPoint" approved="yes">
+        <source>Mount as treeroot</source>
+        <target state="final">Ühenda külge kui lehepuu juur</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_into" resname="cm.copyPage_into" approved="yes">
+        <source>Copy page into</source>
+        <target state="final">Kopeeri leht alla</target>
+      </trans-unit>
+      <trans-unit id="cm.copyPage_after" resname="cm.copyPage_after" approved="yes">
+        <source>Copy page after</source>
+        <target state="final">Kopeeri leht järele</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_into" resname="cm.movePage_into" approved="yes">
+        <source>Move page into</source>
+        <target state="final">Liiguta leht alla</target>
+      </trans-unit>
+      <trans-unit id="cm.movePage_after" resname="cm.movePage_after" approved="yes">
+        <source>Move page after</source>
+        <target state="final">Liiguta leht järele</target>
+      </trans-unit>
+      <trans-unit id="cm.copyFolder_into" resname="cm.copyFolder_into" approved="yes">
+        <source>Copy folder into</source>
+        <target state="final">Kopeeri kaust alla</target>
+      </trans-unit>
+      <trans-unit id="cm.moveFolder_into" resname="cm.moveFolder_into" approved="yes">
+        <source>Move folder into</source>
+        <target state="final">Liiguta kaust alla</target>
+      </trans-unit>
+      <trans-unit id="cm.more" resname="cm.more" approved="yes">
+        <source>More options...</source>
+        <target state="final">Veel valikuid...</target>
+      </trans-unit>
+      <trans-unit id="toolbarItems.search" resname="toolbarItems.search" approved="yes">
+        <source>Search</source>
+        <target state="final">Otsi</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
