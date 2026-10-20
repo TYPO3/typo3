@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_reports.xlf" date="2019-09-05T15:20:15Z" product-name="redirects" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="statusProvider">
+        <source>Redirects</source>
+        <target>crwdns60756:0crwdne60756:0</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects">
+        <source>Conflicting Redirects</source>
+        <target>crwdns60758:0crwdne60758:0</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects.none">
+        <source>None</source>
+        <target>crwdns60760:0crwdne60760:0</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects.count">
+        <source>%1$s conflicting redirects</source>
+        <target>crwdns60762:0%1$scrwdne60762:0</target>
+      </trans-unit>
+      <trans-unit id="status.conflictingRedirects.message">
+        <source>These redirects cause a conflict as there are pages that are still accessible with the same URL.</source>
+        <target>crwdns60764:0crwdne60764:0</target>
+      </trans-unit>
+      <trans-unit id="status.checkIntegrityResultState">
+        <source>Redirects integrity check</source>
+        <target>crwdns292583:0crwdne292583:0</target>
+      </trans-unit>
+      <trans-unit id="status.checkIntegrityResultState.title">
+        <source>List of conflicting redirects may not be up to date</source>
+        <target>crwdns378662:0crwdne378662:0</target>
+      </trans-unit>
+      <trans-unit id="status.checkIntegrityResultState.message">
+        <source>Regularly run the console command redirects:checkintegrity.</source>
+        <target>crwdns292587:0crwdne292587:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
