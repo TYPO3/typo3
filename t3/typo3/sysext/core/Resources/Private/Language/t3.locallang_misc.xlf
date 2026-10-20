@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="overwriteExistingFiles">
+        <source>Overwrite existing files</source>
+        <target>crwdns54254:0crwdne54254:0</target>
+      </trans-unit>
+      <trans-unit id="uploadMultipleFilesInfo">
+        <source>Upload multiple files by holding the Shift or CTRL-file pressed while selecting your files (works on modern browsers only).</source>
+        <target>crwdns54256:0crwdne54256:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaDataLocation">
+        <source>Location</source>
+        <target>crwdns54258:0crwdne54258:0</target>
+      </trans-unit>
+      <trans-unit id="fileMetaErrorInvalidRecord">
+        <source>File meta data not found</source>
+        <target>crwdns54260:0crwdne54260:0</target>
+      </trans-unit>
+      <trans-unit id="selectPosition">
+        <source>Select a position for the new page</source>
+        <target>crwdns54262:0crwdne54262:0</target>
+      </trans-unit>
+      <trans-unit id="pageSelectPosition">
+        <source>Page (select position)</source>
+        <target>crwdns54264:0crwdne54264:0</target>
+      </trans-unit>
+      <trans-unit id="pageSelectPositionError">
+        <source>Failed to fetch page details. This is likely due to missing permissions.</source>
+        <target>crwdns393710:0crwdne393710:0</target>
+      </trans-unit>
+      <trans-unit id="goBack">
+        <source>Go back</source>
+        <target>crwdns54266:0crwdne54266:0</target>
+      </trans-unit>
+      <trans-unit id="createNewPage">
+        <source>Create a new page</source>
+        <target>crwdns54268:0crwdne54268:0</target>
+      </trans-unit>
+      <trans-unit id="insertNewPageHere" x-unused-since="15.0">
+        <source>Insert the new page here</source>
+        <target>crwdns54274:0crwdne54274:0</target>
+      </trans-unit>
+      <trans-unit id="insertNewRecordHere">
+        <source>Insert new record here</source>
+        <target>crwdns54276:0crwdne54276:0</target>
+      </trans-unit>
+      <trans-unit id="moveElementToHere">
+        <source>Move element to this position</source>
+        <target>crwdns278693:0crwdne278693:0</target>
+      </trans-unit>
+      <trans-unit id="moveElements">
+        <source>Move elements</source>
+        <target>crwdns54282:0crwdne54282:0</target>
+      </trans-unit>
+      <trans-unit id="copyElements">
+        <source>Copy elements</source>
+        <target>crwdns54284:0crwdne54284:0</target>
+      </trans-unit>
+      <trans-unit id="copyElementToHere">
+        <source>Copy element to this position</source>
+        <target>crwdns342822:0crwdne342822:0</target>
+      </trans-unit>
+      <trans-unit id="makeCopy">
+        <source>Make copy instead of moving element</source>
+        <target>crwdns54290:0crwdne54290:0</target>
+      </trans-unit>
+      <trans-unit id="newRecordWizard.filter.placeholder">
+        <source>Search for any record type</source>
+        <target>crwdns333326:0crwdne333326:0</target>
+      </trans-unit>
+      <trans-unit id="newRecordWizard.filter.noResults">
+        <source>Unfortunately, no record type matches your query, please try a different one.</source>
+        <target>crwdns391340:0crwdne391340:0</target>
+      </trans-unit>
+      <trans-unit id="newRecordWizard.recentlyUsed">
+        <source>Recently used</source>
+        <target>crwdns372728:0crwdne372728:0</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.placeholder">
+        <source>Search for any content type</source>
+        <target>crwdns85898:0crwdne85898:0</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.noResults">
+        <source>Unfortunately, no content type matches your query, please try a different one.</source>
+        <target>crwdns391342:0crwdne391342:0</target>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.userNotAllowed">
+        <source>No content elements are available with your current permissions.</source>
+        <target>crwdns391344:0crwdne391344:0</target>
+      </trans-unit>
+      <trans-unit id="system_records">
+        <source>System Records</source>
+        <target>crwdns54294:0crwdne54294:0</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.content">
+        <source>Content</source>
+        <target>crwdns141619:0crwdne141619:0</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.backendaccess">
+        <source>Backend Access</source>
+        <target>crwdns141621:0crwdne141621:0</target>
+      </trans-unit>
+      <trans-unit id="recordgroup.frontendaccess">
+        <source>Frontend Access</source>
+        <target>crwdns141623:0crwdne141623:0</target>
+      </trans-unit>
+      <trans-unit id="1_selectType">
+        <source>First select the type of the new content element</source>
+        <target>crwdns54296:0crwdne54296:0</target>
+      </trans-unit>
+      <trans-unit id="2_selectPosition">
+        <source>Now click on the position of the new content element</source>
+        <target>crwdns54298:0crwdne54298:0</target>
+      </trans-unit>
+      <trans-unit id="CM_history">
+        <source>History/Undo</source>
+        <target>crwdns54300:0crwdne54300:0</target>
+      </trans-unit>
+      <trans-unit id="CM_hideInMenus">
+        <source>Hide in menu</source>
+        <target>crwdns54302:0crwdne54302:0</target>
+      </trans-unit>
+      <trans-unit id="CM_showInMenus">
+        <source>Show in menu</source>
+        <target>crwdns54304:0crwdne54304:0</target>
+      </trans-unit>
+      <trans-unit id="CM_newWizard">
+        <source>'Create New' wizard</source>
+        <target>crwdns54312:0crwdne54312:0</target>
+      </trans-unit>
+      <trans-unit id="localize">
+        <source>Localize</source>
+        <target>crwdns54320:0crwdne54320:0</target>
+      </trans-unit>
+      <trans-unit id="localize.isLocalizable">
+        <source>Record can be localized</source>
+        <target>crwdns54322:0crwdne54322:0</target>
+      </trans-unit>
+      <trans-unit id="localizeAllRecords">
+        <source>Localize all records</source>
+        <target>crwdns54326:0crwdne54326:0</target>
+      </trans-unit>
+      <trans-unit id="synchronizeWithOriginalLanguage">
+        <source>Synchronize with original language</source>
+        <target>crwdns54328:0crwdne54328:0</target>
+      </trans-unit>
+      <trans-unit id="tree_networkError">
+        <source>Navigation loading error</source>
+        <target>crwdns132542:0crwdne132542:0</target>
+      </trans-unit>
+      <trans-unit id="tree_networkErrorDescription">
+        <source>Got unexpected response from the server. Please check logs for details.</source>
+        <target>crwdns132544:0crwdne132544:0</target>
+      </trans-unit>
+      <trans-unit id="synchronizeFolderRelations.afterFolderRenamed">
+        <source>%d %s records referencing the renamed directory were updated.</source>
+        <target>crwdns132266:0%dcrwdnd132266:0%scrwdne132266:0</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_listEmptyText">
+        <source>No results found.</source>
+        <target>crwdns54408:0crwdne54408:0</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_hasErrors">
+        <source>Something went wrong.</source>
+        <target>crwdns390254:0crwdne390254:0</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.versionizedRecord">
+        <source>Versionized record</source>
+        <target>crwdns374426:0crwdne374426:0</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescriptionPages">
+        <source>`#page:Home` will search for all pages with the title "Home"</source>
+        <target>crwdns372684:0crwdne372684:0</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_helpDescriptionContent">
+        <source>`#content:Professional` will search for all content elements containing the term "Professional"</source>
+        <target>crwdns372686:0crwdne372686:0</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_help.shortcutOpen">
+        <source><![CDATA[You can open the live search by pressing the <kbd><kbd>Ctrl</kbd> + <kbd>K</kbd></kbd> or <kbd><kbd>Cmd</kbd> + <kbd>K</kbd></kbd> keystroke]]></source>
+        <target><![CDATA[crwdns372688:0crwdne372688:0]]></target>
+      </trans-unit>
+      <trans-unit id="liveSearch_search">
+        <source>Search</source>
+        <target>crwdns342824:0crwdne342824:0</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_searchIn">
+        <source>Search records in</source>
+        <target>crwdns342826:0crwdne342826:0</target>
+      </trans-unit>
+      <trans-unit id="liveSearch_activeFilters">
+        <source>active filters</source>
+        <target>crwdns342828:0crwdne342828:0</target>
+      </trans-unit>
+      <trans-unit id="viewport_navigation_show">
+        <source>Show Navigation</source>
+        <target>crwdns132312:0crwdne132312:0</target>
+      </trans-unit>
+      <trans-unit id="viewport_navigation_hide">
+        <source>Hide Navigation</source>
+        <target>crwdns132314:0crwdne132314:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
