@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1445000814" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_csh_sysfilereference.xlf" date="2011-10-17T20:22:32Z" product-name="context_help" target-language="lt">
+    <header/>
+    <body>
+      <trans-unit id="alternative.description" resname="alternative.description" approved="yes">
+        <source>Sets the alternative text of this asset.</source>
+        <target state="final">Nustato šio ištekliaus alternatyvų tekstą.</target>
+      </trans-unit>
+      <trans-unit id="alternative.details" resname="alternative.details" approved="yes">
+        <source>When using the img element, specify a short text alternative with the alt attribute. Note. The value of this attribute is referred to as "alt text".
+When an image contains words that are important to understanding the content, the alt text should include those words. This will allow the alt text to play the same function on the page as the image. Note that it does not necessarily describe the visual characteristics of the image itself but must convey the same meaning as the image.</source>
+        <target state="final">Naudojant img elementą, nurodykite trumpą teksto alternatyvą su alt atributu. Pastaba. Šio atributo reikšmė vadinama „alternatyviu tekstu". Kai vaizdas turi žodžių, kurie yra svarbūs turinio supratimui, alternatyviame tekste turėtų būti tie žodžiai. Tai leis alternatyviam tekstui atlikti tą pačią funkciją puslapyje kaip ir vaizdas. Atkreipkite dėmesį, kad jis nebūtinai apibūdina paties vaizdo vizualines charakteristikas, tačiau turi perteikti tą pačią reikšmę kaip ir vaizdas.</target>
+      </trans-unit>
+      <trans-unit id="link.description" resname="link.description" approved="yes">
+        <source>Sets a link on this asset.</source>
+        <target state="final">Nustato nuorodą šiam ištekliui.</target>
+      </trans-unit>
+      <trans-unit id="link.details" resname="link.details" approved="yes">
+        <source>Use the wizard next to the field to specify a link that a user can follow by clicking the image.</source>
+        <target state="final">Naudokite vedlį šalia lauko, kad nurodytumėte nuorodą, kurią vartotojas gali sekti paspaudęs ant vaizdo.</target>
+      </trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Sets the title text of this asset.</source>
+        <target state="final">Nustato šio ištekliaus pavadinimo tekstą.</target>
+      </trans-unit>
+      <trans-unit id="title.details" resname="title.details" approved="yes">
+        <source>The title attribute is used to provide additional information to help clarify or further describe the purpose of a link.
+If the supplementary information provided through the title attribute is something the user should know before following the link, such as a warning, then it should be provided in the link text rather than in the title attribute.</source>
+        <target state="final">Pavadinimo atributas naudojamas papildomai informacijai pateikti, kad būtų galima patikslinti arba išsamiau apibūdinti nuorodos paskirtį. Jei papildoma informacija, pateikiama per pavadinimo atributą, yra tai, ką vartotojas turėtų žinoti prieš sekdamas nuorodą, pavyzdžiui, įspėjimas, ji turėtų būti pateikiama nuorodos tekste, o ne pavadinimo atribute.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Sets the image-caption-text of this asset.</source>
+        <target state="final">Nustato šio ištekliaus vaizdo antraštės tekstą.</target>
+      </trans-unit>
+      <trans-unit id="description.details" resname="description.details" approved="yes">
+        <source>This text will be displayed underneath your asset and can be used to supply additional context to the image.
+Depending on local laws you might have to use this to supply proper copyright information on your assets.</source>
+        <target state="final">Šis tekstas bus rodomas po jūsų ištekliumi ir gali būti naudojamas papildomam vaizdo kontekstui pateikti. Priklausomai nuo vietos įstatymų, gali tekti naudoti šį lauką tinkamam autorių teisių informacijos pateikimui apie jūsų išteklius.</target>
+      </trans-unit>
+      <trans-unit id="crop.description" resname="crop.description" approved="yes">
+        <source>Click "Open Editor" to start up the image editor.</source>
+        <target state="final">Spustelėkite „Atidaryti redaktorių", kad paleistumėte vaizdo redaktorių.</target>
+      </trans-unit>
+      <trans-unit id="autoplay.description" resname="autoplay.description" approved="yes">
+        <source>Check to let embedded media play once loaded.</source>
+        <target state="final">Pažymėkite, kad įterptos medijos būtų paleidžiamos iš karto po įkėlimo.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
