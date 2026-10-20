@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf" date="2018-03-21T11:47:00Z" product-name="adminpanel" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="module.label" approved="yes">
+        <source>Debug</source>
+        <target state="final">ດີບັກ</target>
+      </trans-unit>
+      <trans-unit id="module.shortinfoErrorsAndSQL" approved="yes">
+        <source>(%1$u Errors/Warnings, SQL: %2$ux / %3$u ms)</source>
+        <target state="final">(%1$u ຂໍ້ຜິດພາດ/ຄຳເຕືອນ, SQL: %2$ux / %3$u ms)</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.label" approved="yes">
+        <source>Log</source>
+        <target state="final">ບັນທຶກເຫດການ</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.message" approved="yes">
+        <source>Log Message</source>
+        <target state="final">ຂໍ້ຄວາມບັນທຶກ</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.component" approved="yes">
+        <source>Component</source>
+        <target state="final">ສ່ວນປະກອບ</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.level" approved="yes">
+        <source>Level</source>
+        <target state="final">ລະດັບ</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByComponent" approved="yes">
+        <source>Group by Component</source>
+        <target state="final">ຈັດກຸ່ມຕາມສ່ວນປະກອບ</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByLevel" approved="yes">
+        <source>Group by Level</source>
+        <target state="final">ຈັດກຸ່ມຕາມລະດັບ</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.startLevel" approved="yes">
+        <source>Display only levels equal or higher to</source>
+        <target state="final">ສະແດງສະເພາະລະດັບທີ່ເທົ່າກັບ ຫຼື ສູງກວ່າ</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.noEntries" approved="yes">
+        <source>No log entries.</source>
+        <target state="final">ບໍ່ມີລາຍການບັນທຶກ.</target>
+      </trans-unit>
+      <trans-unit id="submodule.events.label" approved="yes">
+        <source>Events</source>
+        <target state="final">ເຫດການ</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.label" approved="yes">
+        <source>Query Information</source>
+        <target state="final">ຂໍ້ມູນການສອບຖາມ</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.query" approved="yes">
+        <source>Query</source>
+        <target state="final">ການສອບຖາມ</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queries" approved="yes">
+        <source>Queries</source>
+        <target state="final">ການສອບຖາມຕ່າງໆ</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.backtrace" approved="yes">
+        <source>Backtrace</source>
+        <target state="final">ການໄລ່ລຽງຄືນ (Backtrace)</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.doctrineDebug" approved="yes">
+        <source>SQL Debug</source>
+        <target state="final">ດີບັກ SQL</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.sqlQuery" approved="yes">
+        <source>SQL Query</source>
+        <target state="final">ການສອບຖາມ SQL</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryCount" approved="yes">
+        <source>Count</source>
+        <target state="final">ຈຳນວນ</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryTime" approved="yes">
+        <source>Total Time [ms]</source>
+        <target state="final">ເວລາກວດສອບທັງໝົດ [ms]</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.total" approved="yes">
+        <source>Total</source>
+        <target state="final">ທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.label" approved="yes">
+        <source>Page title</source>
+        <target state="final">ຫົວຂໍ້ໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.usedProvider" approved="yes">
+        <source>Used provider</source>
+        <target state="final">ຜູ້ໃຫ້ບໍລິການທີ່ໃຊ້</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.title" approved="yes">
+        <source>Title</source>
+        <target state="final">ຫົວຂໍ້</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.provider" approved="yes">
+        <source>Provider</source>
+        <target state="final">ຜູ້ໃຫ້ບໍລິການ</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.skippedProviders" approved="yes">
+        <source>Skipped providers (provided no title)</source>
+        <target state="final">ຜູ້ໃຫ້ບໍລິການທີ່ຂ້າມໄປ (ບໍ່ມີຫົວຂໍ້)</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.name" approved="yes">
+        <source>Name</source>
+        <target state="final">ຊື່</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.allProviders" approved="yes">
+        <source>All providers checked in order</source>
+        <target state="final">ຜູ້ໃຫ້ບໍລິການທັງໝົດທີ່ກວດສອບຕາມລຳດັບ</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.cacheEnabled" approved="yes">
+        <source>It's not possible to retrieve the page title (providers) information when the page is cached.</source>
+        <target state="final">ບໍ່ສາມາດດຶງຂໍ້ມູນຫົວຂໍ້ໜ້າ (ຜູ້ໃຫ້ບໍລິການ) ໄດ້ໃນຂະນະທີ່ໜ້າເວັບຖືກເກັບໃນແຄຊ (cache).</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.cacheEnabled.extraInfo" approved="yes">
+        <source>Visit this page uncached, or disable the cache through this admin panel.</source>
+        <target state="final">ເຂົ້າເບິ່ງໜ້ານີ້ແບບບໍ່ຜ່ານແຄຊ, ຫຼື ປິດການໃຊ້ງານແຄຊຜ່ານແຜງຄວບຄຸມລະບົບນີ້.</target>
+      </trans-unit>
+      <trans-unit id="submodule.events.eventClassName" approved="yes">
+        <source>Event class name</source>
+        <target state="final">ຊື່ຄລາສເຫດການ (Event class name)</target>
+      </trans-unit>
+      <trans-unit id="submodule.events.count" approved="yes">
+        <source>Dispatch count (%1d)</source>
+        <target state="final">ຈຳນວນການສົ່ງ (%1d)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
