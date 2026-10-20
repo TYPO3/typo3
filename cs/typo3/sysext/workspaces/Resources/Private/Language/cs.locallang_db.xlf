@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_db.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="sys_workspace" approved="yes">
+        <source>Workspace</source>
+        <target state="final">Pracovní plocha</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.custom_stages" approved="yes">
+        <source>Custom stages</source>
+        <target state="final">Vlastní fáze</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.responsible_persons" approved="yes">
+        <source>Responsible persons</source>
+        <target state="final">Odpovědná osoba</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.default_mailcomment" approved="yes">
+        <source>Default mail comment</source>
+        <target state="final">Výchozí komentář e-mailu</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.parentid" approved="yes">
+        <source>UID of parent record</source>
+        <target state="final">UID rodičovského záznamu</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage" approved="yes">
+        <source>Workspace Stage</source>
+        <target state="final">Fáze pracovní plochy</target>
+      </trans-unit>
+      <trans-unit id="tabs.notification_settings" approved="yes">
+        <source>Notification settings</source>
+        <target state="final">Nastavení oznámení</target>
+      </trans-unit>
+      <trans-unit id="tabs.general" approved="yes">
+        <source>General</source>
+        <target state="final">Obecné</target>
+      </trans-unit>
+      <trans-unit id="tabs.internal_stages" approved="yes">
+        <source>Internal Stages</source>
+        <target state="final">Interní fáze</target>
+      </trans-unit>
+      <trans-unit id="tabs.custom_stages" approved="yes">
+        <source>Custom Stages</source>
+        <target state="final">Vlastní fáze</target>
+      </trans-unit>
+      <trans-unit id="tabs.publish_access" approved="yes">
+        <source>Publishing / Access</source>
+        <target state="final">Publikování / Přístup</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.notification_defaults" approved="yes">
+        <source>Default notification recipients</source>
+        <target state="final">Výchozí příjemci</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace_stage.allow_notificaton_settings" approved="yes">
+        <source>Allow notification settings during stage change</source>
+        <target state="final">Povolit nastavení oznámení při změně fáze</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.edit" approved="yes">
+        <source>Stage "editing"</source>
+        <target state="final">Fáze "úpravy"</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.publish" approved="yes">
+        <source>Stage "ready to publish"</source>
+        <target state="final">Fáze "Připraveno k publikování"</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.palette.stage.execute" approved="yes">
+        <source>Stage "publishing execute"</source>
+        <target state="final">Fáze "publikování"</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog" approved="yes">
+        <source>Notification dialog settings</source>
+        <target state="final">Nastavení dialogového okna oznámení</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog.showDialog" approved="yes">
+        <source>Show Dialog</source>
+        <target state="final">Zobrazit dialogové okno</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.settingsDialog.changeablePreselection" approved="yes">
+        <source>Allow to change pre-selection of recipients</source>
+        <target state="final">Umožnit změnit předběžný výběr příjemců</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection" approved="yes">
+        <source>Pre-select recipients</source>
+        <target state="final">Předběžný výběr příjemců</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.owners" approved="yes">
+        <source>Owners</source>
+        <target state="final">Vlastníci</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.members" approved="yes">
+        <source>Members</source>
+        <target state="final">Členové</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.editors" approved="yes">
+        <source>Unused, no functionality attached</source>
+        <target state="final">Nevyužito, žádná funkce není připojena</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.preselection.responsiblePersons" approved="yes">
+        <source>Responsible Persons</source>
+        <target state="final">Zodpovědné osoby</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.adminusers" approved="yes">
+        <source>Owners</source>
+        <target state="final">Vlastníci</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.members" approved="yes">
+        <source>Members</source>
+        <target state="final">Členové</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_time" approved="yes">
+        <source>Auto-publish changes on (requires scheduler task)</source>
+        <target state="final">Automaticky publikovat změny na (vyžaduje úkol v plánovači)</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.unpublish_time" approved="yes">
+        <source>Un-Publish changes on (requires scheduler task)</source>
+        <target state="final">Zrušit publikování změn na (vyžaduje úkol v plánovači)</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.live_edit" approved="yes">
+        <source>Allow "live" editing of records from tables without versioning</source>
+        <target state="final">Povolit přímé úpravy "produkčních" záznamů tabulek, bez verzování</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access" approved="yes">
+        <source>Publish access</source>
+        <target state="final">Publikovat přístup</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access.1" approved="yes">
+        <source>Publish only content in publish stage</source>
+        <target state="final">Publikovat pouze obsah ve fázi publikování</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access.2" approved="yes">
+        <source>Restrict publishing to workspace owners</source>
+        <target state="final">Omezit publikování na vlastníky pracovní plochy</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.publish_access.3" approved="yes">
+        <source>Hide "Entire workspace" action drop down</source>
+        <target state="final">Skrýt z nabídky celou pracovní plochu</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification" approved="yes">
+        <source>Send notifications upon state changes</source>
+        <target state="final">Odeslat oznámení při změnách stavu</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.stagechg_notification.description" approved="yes">
+        <source>This workspace-level setting determines if notifications are triggered when records transition to other stages or are published. Individual stages can have their own notification preferences.</source>
+        <target state="final">Toto nastavení na úrovni pracovní plochy určuje, zda se spustí oznámení, když se záznamy přesunou do jiných fází nebo jsou zveřejněny. Jednotlivé fáze mohou mít vlastní předvolby oznámení.</target>
+      </trans-unit>
+      <trans-unit id="sys_workspace.previewlink_lifetime" approved="yes">
+        <source>Lifetime in hours on how long a preview link will be valid</source>
+        <target state="final">Životnost v hodinách na tom, jak dlouho bude platný odkaz na náhled</target>
+      </trans-unit>
+      <trans-unit id="tabs.users" approved="yes">
+        <source>Users</source>
+        <target state="final">Uživatelé</target>
+      </trans-unit>
+      <trans-unit id="tabs.mountpoints" approved="yes">
+        <source>Mountpoints</source>
+        <target state="final">Napojovací body</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
