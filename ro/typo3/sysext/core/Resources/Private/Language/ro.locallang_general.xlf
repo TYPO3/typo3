@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_general.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="ro">
+    <header/>
+    <body>
+      <trans-unit id="LGL.prependAtCopy" approved="yes">
+        <source>(copy %s)</source>
+        <target state="final">(copie %s)</target>
+      </trans-unit>
+      <trans-unit id="LGL.default_value" approved="yes">
+        <source>Default</source>
+        <target state="final">Implicit</target>
+      </trans-unit>
+      <trans-unit id="LGL.normal" approved="yes">
+        <source>Normal</source>
+        <target state="final">Normal</target>
+      </trans-unit>
+      <trans-unit id="LGL.links" approved="yes">
+        <source>Links</source>
+        <target state="final">Link-uri</target>
+      </trans-unit>
+      <trans-unit id="LGL.allLanguages" approved="yes">
+        <source>[All]</source>
+        <target state="final">[Tot]</target>
+      </trans-unit>
+      <trans-unit id="LGL.error" approved="yes">
+        <source>Error!</source>
+        <target state="final">Eroare!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
