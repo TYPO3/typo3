@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814994" source-language="en" datatype="plaintext" original="EXT:sys_action/Resources/Private/Language/locallang_csh_sysaction.xlf" date="2011-10-17T20:22:37Z" product-name="sys_action" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id=".description" resname=".description" approved="yes">
+        <source>An 'Action' is a configuration of a specific task which may be performed by assigned usergroups via the Task Center.</source>
+        <target state="final">„Akce“ je konfigurace konkrétní úlohy, kterou mohou provádět přiřazené skupiny uživatelů prostřednictvím Střediska úloh.</target>
+      </trans-unit>
+      <trans-unit id=".details" resname=".details" xml:space="preserve" approved="yes">
+				<source>Currently an Action may be configured to create additional backend usergroups without being and admin-user and by selecting from a limited set of options. Another option is to let an action initiate a SQL SELECT-query in the database and return the result as a CSV file.
+Actions can be assigned to a Backend usergroup and they are activated by a single click in the Task Center.</source>
+			<target state="final">V současné době lze akci nakonfigurovat tak, aby vytvářela další backendové uživatelské skupiny, aniž by byla administrátorem a uživatelem, a to výběrem z omezené sady možností. Další možností je nechat akci iniciovat SQL dotaz SELECT v databázi a vrátit výsledek jako soubor CSV.
+Akce lze přiřadit skupině backendových uživatelů a aktivují se jediným kliknutím ve Středisku úloh.</target></trans-unit>
+      <trans-unit id="title.description" resname="title.description" approved="yes">
+        <source>Enter the title of the action. This is shown in the list of available actions in the Task Center.</source>
+        <target state="final">Zadejte název akce. Ten se zobrazí v seznamu dostupných akcí v Centru úloh.</target>
+      </trans-unit>
+      <trans-unit id="description.description" resname="description.description" approved="yes">
+        <source>Describe what the action does or allows to do.</source>
+        <target state="final">Popište, co akce dělá nebo umožňuje dělat.</target>
+      </trans-unit>
+      <trans-unit id="hidden.description" resname="hidden.description" approved="yes">
+        <source>Check this option if you wish to disable the availability of the action or non-admin users.</source>
+        <target state="final">Tuto možnost zaškrtněte, pokud chcete zakázat dostupnost akce nebo uživatelům, kteří nejsou správci.</target>
+      </trans-unit>
+      <trans-unit id="hidden.details" resname="hidden.details" approved="yes">
+        <source>This option is a great way to disable an action during changes made to it because it still allows you as an 'Admin'-user to activate it for test purposes.</source>
+        <target state="final">Tato možnost je skvělým způsobem, jak zakázat akci během změn, které v ní byly provedeny, protože vám jako uživateli s oprávněním „Admin“ stále umožňuje aktivovat ji pro testovací účely.</target>
+      </trans-unit>
+      <trans-unit id="type.description" resname="type.description" approved="yes">
+        <source>Select the action type.</source>
+        <target state="final">Vyberte typ akce.</target>
+      </trans-unit>
+      <trans-unit id="type.details" resname="type.details" xml:space="preserve" approved="yes">
+				<source>&lt;strong&gt;"Create Backend User"&lt;/strong&gt; allows to create backend users with a limited set of options. This action type is meant for semi-administrators among your users which is in charge of daily user administration - still without being full fledged 'Admin'-users with 'a License to Kill everything'.
+When you select this option, you get to enter a 'template' user, enter a prefix which the new users will automatically have and whether or not a user home-dir is created in the process. Finally you can select a limited number of usergroups which the can be selected among.
+
+&lt;strong&gt;"SQL-query"&lt;/strong&gt; allows to make a fixed SQL SELECT-query in the database returned as CSV lists. When you have created an action of this type, you need to go to the System &gt; DB check (prior to v7 this can be found on Tools &gt; DB check) module and enter the Advanced Search feature. Here you can design your SQL-query. When you have designed it to select what you want correctly, you can select this action (by it's name) and save the query to the action there. From that point it will be effective from the Task Center. (Notice that the form of output selected in the Advanced Search function is also stored, so make sure to select CSV output there!)</source>
+			<target state="final">&lt;strong&gt; „Vytvořit BE-uživatele“&lt;/strong&gt; umožňuje vytvořit uživatele backendu s omezenou sadou možností. Tento typ akce je určen pro poloadministrátory mezi vašimi uživateli, kteří mají na starosti každodenní správu uživatelů - stále však bez toho, aby byli plnohodnotnými „administrátory“ - uživateli s „licencí na obhospodaření všeho“.
+Když vyberete tuto možnost, dostanete možnost zadat ‚šablonu‘ uživatele, zadat předponu, kterou budou noví uživatelé automaticky mít, a zda se při tom vytvoří domovský adresář uživatele. Nakonec můžete vybrat omezený počet uživatelských skupin, mezi kterými lze vybírat.
+
+&lt;strong&gt; „SQL-dotaz“&lt;/strong&gt; umožňuje provést pevný SQL SELECT-dotaz v databázi vrácený jako CSV seznam. Po vytvoření akce tohoto typu je třeba přejít do modulu Systém &gt; Kontrola DB (před verzí v7 se nachází v nabídce Nástroje &gt; Kontrola DB) a zadat funkci Pokročilé vyhledávání. Zde můžete navrhnout svůj SQL-dotaz. Až jej navrhnete tak, aby správně vybral to, co chcete, můžete tuto akci vybrat (podle jejího názvu) a dotaz do ní uložit. Od tohoto okamžiku bude účinný z Centra úloh. (Všimněte si, že se ukládá i forma výstupu zvolená ve funkci Rozšířené hledání, takže nezapomeňte tam vybrat výstup CSV!)</target></trans-unit>
+      <trans-unit id="assign_to_groups.description" resname="assign_to_groups.description" approved="yes">
+        <source>Select the backend users groups allowed to activate the action in the Task Center.</source>
+        <target state="final">Vyberte skupiny BE-uživatelů, které mají povoleno aktivovat akci v centru úkolů.</target>
+      </trans-unit>
+      <trans-unit id="t1_userprefix.description" resname="t1_userprefix.description" approved="yes">
+        <source>Enter a prefix which is forcibly prepended to new usernames (eg. "news_")</source>
+        <target state="final">Zadejte předponu, která se nuceně přidává k novým uživatelským jménům (např. „news_“)</target>
+      </trans-unit>
+      <trans-unit id="t1_allowed_groups.description" resname="t1_allowed_groups.description" approved="yes">
+        <source>Enter the Backend user groups which the user performing the action is able to choose among (if any).</source>
+        <target state="final">Zadejte skupiny BE-uživatelů, ze kterých si uživatel provádějící akci může vybrat mezi (pokud existuje).</target>
+      </trans-unit>
+      <trans-unit id="t1_create_user_dir.description" resname="t1_create_user_dir.description" approved="yes">
+        <source>If checked, a private home-directory is also created during user creation. </source>
+        <target state="final">Je-li zaškrtnuto, při vytváření uživatele je také vytvořen soukromý domovský adresář. </target>
+      </trans-unit>
+      <trans-unit id="t1_create_user_dir.details" resname="t1_create_user_dir.details" approved="yes">
+        <source>&lt;strong&gt;Notice:&lt;/strong&gt; $TYPO3_CONF_VARS["BE"]["userHomePath"] must be configured correctly along with $TYPO3_CONF_VARS["BE"]["lockRootPath"] and writable!</source>
+        <target state="final">&lt;strong&gt;Upozornění:&lt;/strong&gt; $TYPO3_CONF_VARS["BE"]["userHomePath"] musí být správně nakonfigurovány spolu s $TYPO3_CONF_VARS["BE"]["lockRootPath"] a zapisovatelné!</target>
+      </trans-unit>
+      <trans-unit id="t1_copy_of_user.description" resname="t1_copy_of_user.description" approved="yes">
+        <source>Insert a current Backend user which will be used as a template for the new users created. </source>
+        <target state="final">Vložte aktuálního BE-uživatele, který bude použit jako šablona pro nově vytvořené uživatele. </target>
+      </trans-unit>
+      <trans-unit id="t1_copy_of_user.details" resname="t1_copy_of_user.details" xml:space="preserve" approved="yes">
+				<source>All values are copied to the new user, except username, password, name and email is of course overridden.
+If the template user is a member of a group which is not defined among the "Groups which may be assigned through the action" that group is still set for the user and cannot be removed by the user carrying out the action.</source>
+			<target state="final">Všechny hodnoty se zkopírují do nového uživatele, kromě uživatelského jména, hesla, jména a e-mailu, které jsou samozřejmě přepsány.
+Pokud je uživatel šablony členem skupiny, která není definována mezi „Skupinami, které lze přiřadit prostřednictvím akce“, je tato skupina uživateli stále nastavena a uživatel provádějící akci ji nemůže odebrat.</target></trans-unit>
+      <trans-unit id="t4_recordsToEdit.description" resname="t4_recordsToEdit.description" approved="yes">
+        <source>[FILL IN] sys_action-&gt;t4_recordsToEdit</source>
+        <target state="final">[FILL IN] sys_action-&gt;t4_recordsToEdit</target>
+      </trans-unit>
+      <trans-unit id="t3_listPid.description" resname="t3_listPid.description" approved="yes">
+        <source>[FILL IN] sys_action-&gt;t3_listPid</source>
+        <target state="final">[FILL IN] sys_action-&gt;t3_listPid</target>
+      </trans-unit>
+      <trans-unit id="t3_tables.description" resname="t3_tables.description" approved="yes">
+        <source>[FILL IN] sys_action-&gt;t3_tables</source>
+        <target state="final">[FILL IN] sys_action-&gt;t3_tables</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
