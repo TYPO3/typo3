@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:35Z" product-name="reports" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="reports_overview" approved="yes">
+        <source>Reports overview</source>
+        <target state="final">Reports overview</target>
+      </trans-unit>
+      <trans-unit id="choose_report" approved="yes">
+        <source>Report</source>
+        <target state="final">Отчёт</target>
+      </trans-unit>
+      <trans-unit id="noReportsTitle" approved="yes">
+        <source>No registered reports</source>
+        <target state="final">Нет зарегистрированных отчетов</target>
+      </trans-unit>
+      <trans-unit id="noReportsMessage" approved="yes">
+        <source>There are no reports registered in the system and default reports have been disabled.</source>
+        <target state="final">В системе не зарегистрировано ни одного отчета, а отчеты по умолчанию отключены.</target>
+      </trans-unit>
+      <trans-unit id="link.openModule" approved="yes">
+        <source>Open</source>
+        <target state="final">Открыть</target>
+      </trans-unit>
+      <trans-unit id="link.openModuleWithTitle" approved="yes">
+        <source>Open %1s</source>
+        <target state="final">Открыть %1s</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.title" approved="yes">
+        <source>Content Statistics</source>
+        <target state="final">Статистика материалов</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.shortDescription" approved="yes">
+        <source>Shows statistics about used content elements</source>
+        <target state="final">Отображает статистику по использованным элементам материалов</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.description" approved="yes">
+        <source>Provides an overview of all content element types, showing how often each appears across the site. Includes summaries per type.</source>
+        <target state="final">Здесь представлен обзор всех типов элементов материалов с указанием частоты их появления на сайте. По каждому типу приведены краткие сведения.</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic" approved="yes">
+        <source>Statistics</source>
+        <target state="final">Статистика</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.header" approved="yes">
+        <source>Existing Content Element Types</source>
+        <target state="final">Существующие типы элементов материалов</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.description" approved="yes">
+        <source>The listed content elements include both visible and hidden records.</source>
+        <target state="final">Перечисленные элементы материалов включают как видимые, так и скрытые записи.</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.explanation" approved="yes">
+        <source>Keep in mind that some elements may not appear on any page, and others might be rendered by alternative methods (TypoScript, ViewHelpers, etc.). As a result, it is not technically possible to determine actual usage.</source>
+        <target state="final">Имейте ввиду, что некоторые элементы могут не отображаться ни на одной странице, а другие могут отображаться с помощью альтернативных методов (TypoScript, ViewHelpers и т. д.). Поэтому технически невозможно определить фактическое использование.</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.existingElements.error" approved="yes">
+        <source>The content element database table's schema ("tt_content") could not be analyzed due to a missing or disabled schema type.</source>
+        <target state="final">Схему таблицы базы данных элементов материалов («tt_content») не удалось проанализировать из-за отсутствия или отключения типа схемы.</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.unusedElements.header" approved="yes">
+        <source>Unused content elements</source>
+        <target state="final">Неиспользуемые элементы материалов</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.unusedElements.description" approved="yes">
+        <source>This list includes content element types that are not used anywhere, or whose existing instances are all flagged as deleted.</source>
+        <target state="final">В этот список включены типы элементов материалов, которые нигде не используются или все существующие экземпляры которых помечены как удаленные.</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.fields" approved="yes">
+        <source>%d fields</source>
+        <target state="final">%d поле(ей)</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.type" approved="yes">
+        <source>Type</source>
+        <target state="final">Тип</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.excluded" approved="yes">
+        <source>Excluded</source>
+        <target state="final">Исключенные</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.not_excluded" approved="yes">
+        <source>Always visible</source>
+        <target state="final">Всегда видно</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.field.required" approved="yes">
+        <source>Required</source>
+        <target state="final">Обязательно</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic.active_text" approved="yes">
+        <source>%d active / %d hidden</source>
+        <target state="final">%d активен / %d скрыт</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic.deleted_text" approved="yes">
+        <source>%d deleted</source>
+        <target state="final">%d удалено</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.statistic.deleted" approved="yes">
+        <source>Deleted</source>
+        <target state="final">Удалено</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.records" approved="yes">
+        <source>Records</source>
+        <target state="final">Записей</target>
+      </trans-unit>
+      <trans-unit id="contentStatistics.noRecords" approved="yes">
+        <source>No records found</source>
+        <target state="final">Записей не найдено</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
