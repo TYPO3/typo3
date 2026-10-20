@@ -1,0 +1,11 @@
+"tx_blogexample_domain_model_blog"
+,"uid","pid","sys_language_uid","l18n_parent","title","hidden","posts"
+,1,2,0,0,"Blog EN",0,2
+,2,2,1,1,"Blog DE",0,3
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","hidden","sorting","blog"
+,10,2,0,0,"Post EN",0,10,1
+,11,2,0,0,"Post EN with translation",0,11,1
+,12,2,1,11,"Post DE translation",0,12,2
+,13,2,1,0,"Post DE free mode",0,13,2
+,14,2,1,0,"Post DE free mode hidden",1,14,2

@@ -1,0 +1,12 @@
+"tx_blogexample_domain_model_folder"
+,"uid","pid","sys_language_uid","l18n_parent","title","children","parent","sorting"
+,1,2,0,0,"Root EN",3,0,1
+,2,2,1,1,"Root DE",1,0,2
+,3,2,0,0,"Root EN only",1,0,3
+,10,2,0,0,"Child only EN",0,1,10
+,11,2,0,0,"Child EN and DE",1,1,11
+,12,2,1,11,"Child DE",1,2,12
+,13,2,-1,0,"Child all languages",0,1,13
+,20,2,0,0,"Grandchild EN",0,11,20
+,21,2,1,20,"Grandchild DE",0,12,21
+,30,2,0,0,"Only child EN",0,3,30

@@ -1,0 +1,23 @@
+"tx_blogexample_domain_model_blog"
+,"uid","pid","sys_language_uid","l18n_parent","title"
+,2,2,0,0,"First blog"
+,3,2,1,2,"Erster Blog"
+,4,2,2,2,"Premier blog"
+,5,2,0,0,"Second blog"
+,6,2,1,5,"Zweiter Blog"
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","blog","related_posts"
+,1,2,0,0,"Only in English",0,0
+,2,2,0,0,"First article",0,0
+,3,2,1,2,"Erster Artikel",0,0
+,4,2,2,2,"Premier article",0,0
+,5,2,0,0,"Second article",0,0
+,6,2,1,5,"Zweiter Artikel",0,0
+,11,2,0,0,"First review",2,1
+,12,2,1,11,"Erste Rezension",2,1
+,13,2,0,0,"Review of the second article",5,1
+"tx_blogexample_post_post_mm"
+,"uid_local","uid_foreign","sorting","sorting_foreign"
+,11,2,1,0
+,12,2,1,0
+,13,5,1,0

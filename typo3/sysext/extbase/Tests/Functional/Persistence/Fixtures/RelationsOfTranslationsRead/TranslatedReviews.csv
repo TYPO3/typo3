@@ -1,0 +1,15 @@
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","blog","related_posts"
+,14,2,0,0,"Review of three articles",5,3
+,15,2,1,14,"Rezension von drei Artikeln",5,3
+,16,2,-1,0,"Review for all languages",2,2
+"tx_blogexample_post_post_mm"
+,"uid_local","uid_foreign","sorting","sorting_foreign"
+,14,2,1,0
+,14,5,2,0
+,14,1,3,0
+,15,2,1,0
+,15,5,2,0
+,15,1,3,0
+,16,2,1,0
+,16,5,2,0

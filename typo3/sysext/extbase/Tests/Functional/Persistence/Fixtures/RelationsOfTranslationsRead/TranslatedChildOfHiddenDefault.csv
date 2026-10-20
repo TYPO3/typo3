@@ -1,0 +1,11 @@
+"tx_blogexample_domain_model_blog"
+,"uid","pid","sys_language_uid","l18n_parent","title","hidden","posts"
+,6,2,0,0,"Blog with a hidden post",0,4
+,7,2,1,6,"Blog mit verstecktem Beitrag",0,4
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","hidden","sorting","blog"
+,30,2,0,0,"Visible post",0,30,6
+,31,2,1,30,"Sichtbarer Beitrag",0,31,7
+,32,2,0,0,"Hidden post",1,32,6
+,33,2,1,32,"Versteckter Beitrag",0,33,7
+,34,2,1,0,"Beitrag im freien Modus",0,34,7
