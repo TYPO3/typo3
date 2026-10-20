@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814820" source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/Database.xlf" date="2011-10-17T20:22:32Z" product-name="felogin" target-language="hu">
+    <header/>
+    <body>
+      <trans-unit id="tt_content.CType_pi1" resname="tt_content.CType_pi1" approved="yes">
+        <source>Website User Login</source>
+        <target state="final">FE-bejelentkezés</target>
+      </trans-unit>
+      <trans-unit id="felogin_redirectPid" resname="felogin_redirectPid" approved="yes">
+        <source>Redirect at Login to Page (felogin)</source>
+        <target state="final">Bejelentkezésnél átirányítás a következő oldalra (felogin)</target>
+      </trans-unit>
+      <trans-unit id="felogin_forgotHash" resname="felogin_forgotHash" approved="yes">
+        <source>Forgot hash</source>
+        <target state="final">Elfelejtett jelszó Hash</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.general_header" resname="tt_content.pi_flexform.general_header" approved="yes">
+        <source>General Header</source>
+        <target state="final">Általános fejléc</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.general_message" resname="tt_content.pi_flexform.general_message" approved="yes">
+        <source>General Message</source>
+        <target state="final">Általános üzenet</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirect_header" resname="tt_content.pi_flexform.redirect_header" approved="yes">
+        <source>Redirect Header</source>
+        <target state="final">Átirányítás fejléc</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirect_message" resname="tt_content.pi_flexform.redirect_message" approved="yes">
+        <source>Redirect Message</source>
+        <target state="final">Átirányítás üzenet</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.welcome_header" resname="tt_content.pi_flexform.welcome_header" approved="yes">
+        <source>Welcome Header</source>
+        <target state="final">Üdvözlés fejléc</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.welcome_message" resname="tt_content.pi_flexform.welcome_message" approved="yes">
+        <source>Welcome Message</source>
+        <target state="final">Üdvözlés üzenet</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.success_header" resname="tt_content.pi_flexform.success_header" approved="yes">
+        <source>Login Success Header</source>
+        <target state="final">Sikeres bejelentkezés fejléc</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.success_message" resname="tt_content.pi_flexform.success_message" approved="yes">
+        <source>Login Success Message</source>
+        <target state="final">Sikeres bejelentkezés üzenet</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.error_header" resname="tt_content.pi_flexform.error_header" approved="yes">
+        <source>Login Error Header</source>
+        <target state="final">Sikertelen bejelentkezés fejléc</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.error_message" resname="tt_content.pi_flexform.error_message" approved="yes">
+        <source>Login Error Message</source>
+        <target state="final">Sikertelen bejelentkezés üzenet</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.status_header" resname="tt_content.pi_flexform.status_header" approved="yes">
+        <source>Status Display Header</source>
+        <target state="final">Státusz fejléc</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.status_message" resname="tt_content.pi_flexform.status_message" approved="yes">
+        <source>Status Display Message</source>
+        <target state="final">Státusz üzenet</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.logout_header" resname="tt_content.pi_flexform.logout_header" approved="yes">
+        <source>Logout Header</source>
+        <target state="final">Kijelentkezés fejléc</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.logout_message" resname="tt_content.pi_flexform.logout_message" approved="yes">
+        <source>Logout Message</source>
+        <target state="final">Kijelentkezés üzenet</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.forgot_header" resname="tt_content.pi_flexform.forgot_header" approved="yes">
+        <source>Forgot Password Header</source>
+        <target state="final">Elfelejtett jelszó fejléc</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.forgot_message" resname="tt_content.pi_flexform.forgot_message" approved="yes">
+        <source>Forgot Password Message</source>
+        <target state="final">Elfelejtett jelszó üzenet</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.sheet_general" resname="tt_content.pi_flexform.sheet_general" approved="yes">
+        <source>General</source>
+        <target state="final">Általános</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.sheet_redirect" resname="tt_content.pi_flexform.sheet_redirect" approved="yes">
+        <source>Redirects</source>
+        <target state="final">Átirányítások</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.sheet_messages" resname="tt_content.pi_flexform.sheet_messages" approved="yes">
+        <source>Messages</source>
+        <target state="final">Üzenetek</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.show_forgot_password" resname="tt_content.pi_flexform.show_forgot_password" approved="yes">
+        <source>Display Password Recovery Link</source>
+        <target state="final">Elfelejtett jelszó visszaállítási link megjelenítése</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.show_permalogin" resname="tt_content.pi_flexform.show_permalogin" approved="yes">
+        <source>Display Remember Login Option</source>
+        <target state="final">Emlékezz rám opció megjelenítése (ha elérhető)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.show_logoutFormAfterLogin" resname="tt_content.pi_flexform.show_logoutFormAfterLogin" approved="yes">
+        <source>Disable redirect after successful login, but display logout-form</source>
+        <target state="final">Átirányítás letiltása, de a kijelentkezési űrlap megjelenítése sikeres bejelentkezés után</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.groupSelectmode" resname="tt_content.pi_flexform.groupSelectmode" approved="yes">
+        <source>FE group select mode:</source>
+        <target state="final">FE csoport kiválasztási mód:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.groupSelectmode_showAll" resname="tt_content.pi_flexform.groupSelectmode_showAll" approved="yes">
+        <source>Show all</source>
+        <target state="final">Mind megjelenítése</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.groupSelectmode_showSelected" resname="tt_content.pi_flexform.groupSelectmode_showSelected" approved="yes">
+        <source>Show selected</source>
+        <target state="final">Csak a kiválasztottak megjelenítése</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.groupSelectmode_FromTS" resname="tt_content.pi_flexform.groupSelectmode_FromTS" approved="yes">
+        <source>(from Typoscript)</source>
+        <target state="final">(Typoscript alapján)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.groupSelection" resname="tt_content.pi_flexform.groupSelection" approved="yes">
+        <source>FE group selection:</source>
+        <target state="final">FE csoport kiválasztás:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.groupSelection_noGroup" resname="tt_content.pi_flexform.groupSelection_noGroup" approved="yes">
+        <source>no group</source>
+        <target state="final">nincs csoportba sorolva</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.field_manualOrder" resname="tt_content.pi_flexform.field_manualOrder" approved="yes">
+        <source>Using fieldlists below:</source>
+        <target state="final">Az alábbi mezők használata:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.field_orderList" resname="tt_content.pi_flexform.field_orderList" approved="yes">
+        <source>User Fields/list:</source>
+        <target state="final">Listanézet:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.field_orderDetails" resname="tt_content.pi_flexform.field_orderDetails" approved="yes">
+        <source>User Fields/details:</source>
+        <target state="final">Részletes nézet:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode" resname="tt_content.pi_flexform.redirectMode" approved="yes">
+        <source>Redirect Mode</source>
+        <target state="final">Átirányítás mód</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.0" resname="tt_content.pi_flexform.redirectMode.I.0" approved="yes">
+        <source>Defined by Usergroup Record</source>
+        <target state="final">A csoport rekord alapján definiálva</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.1" resname="tt_content.pi_flexform.redirectMode.I.1" approved="yes">
+        <source>Defined by User Record</source>
+        <target state="final">A felhasználói rekord által definiálva</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.2" resname="tt_content.pi_flexform.redirectMode.I.2" approved="yes">
+        <source>After Login (TS or Flexform)</source>
+        <target state="final">Bejelentkezés után (TS vagy Flexform)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.3" resname="tt_content.pi_flexform.redirectMode.I.3" approved="yes">
+        <source>After Logout (TS or Flexform)</source>
+        <target state="final">Kijelentkezés után (TS vagy Flexform)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.4" resname="tt_content.pi_flexform.redirectMode.I.4" approved="yes">
+        <source>After Login Error (TS or Flexform)</source>
+        <target state="final">Bejelentkezési hiba után (TS vagy Flexform)</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.5" resname="tt_content.pi_flexform.redirectMode.I.5" approved="yes">
+        <source>Defined by GET/POST Parameters</source>
+        <target state="final">GET/POST paraméterek alapján definiálva</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.6" resname="tt_content.pi_flexform.redirectMode.I.6" approved="yes">
+        <source>Defined by Referrer</source>
+        <target state="final">Referrer alapján definiálva</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectMode.I.7" resname="tt_content.pi_flexform.redirectMode.I.7" approved="yes">
+        <source>Defined by Domain Entries</source>
+        <target state="final">Domain bejegyzés alapján definiálva</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectFirstMethod" resname="tt_content.pi_flexform.redirectFirstMethod" approved="yes">
+        <source>Use First Supported Mode from Selection</source>
+        <target state="final">Használja az első teljesülőt a listából</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectDisable" resname="tt_content.pi_flexform.redirectDisable" approved="yes">
+        <source>Disable Redirect</source>
+        <target state="final">Átirányítás letiltása</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectPageLogin" resname="tt_content.pi_flexform.redirectPageLogin" approved="yes">
+        <source>After Successful Login Redirect to Page</source>
+        <target state="final">Sikeres bejelentkezés után átirányítás az alábbi oldalra</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectPageLoginError" resname="tt_content.pi_flexform.redirectPageLoginError" approved="yes">
+        <source>After Failed Login Redirect to Page</source>
+        <target state="final">Sikertelen bejelentkezés után átirányítás az alábbi oldalra</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.redirectPageLogout" resname="tt_content.pi_flexform.redirectPageLogout" approved="yes">
+        <source>After Logout Redirect to Page</source>
+        <target state="final">Kijelentkezés után átirányítás az alábbi oldalra</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.template_file" resname="tt_content.pi_flexform.template_file" approved="yes">
+        <source>Template File</source>
+        <target state="final">Sablonfájl</target>
+      </trans-unit>
+      <trans-unit id="tt_content.pi_flexform.user_storage" resname="tt_content.pi_flexform.user_storage" approved="yes">
+        <source>User Storage Page</source>
+        <target state="final">Falhasználókat tároló mappa</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
