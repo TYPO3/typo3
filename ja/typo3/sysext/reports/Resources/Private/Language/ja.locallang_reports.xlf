@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_reports.xlf" date="2011-10-17T20:22:35Z" product-name="reports" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="status_disabled" approved="yes">
+        <source>Disabled</source>
+        <target state="final">無効化済み</target>
+      </trans-unit>
+      <trans-unit id="status_MysqlDatabaseCharacterSet_Unsupported" approved="yes">
+        <source>Your default database uses character set "%1$s", but only "utf8", "utf8mb3" or "utf8mb4" is supported with TYPO3.</source>
+        <target state="final">デフォルトのデータベースは文字セット 「%1$s」 を使用しますが、TYPO3では"utf8", "utf8mb3" または "utf8mb4" のみサポートされています。</target>
+      </trans-unit>
+      <trans-unit id="status_updateAdditionalInformation" approved="yes">
+        <source>Send notification to: %s</source>
+        <target state="final">%s に通知を送信</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing" approved="yes">
+        <source>Image Processing</source>
+        <target state="final">画像処理中</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_webp" approved="yes">
+        <source>WebP support and availability</source>
+        <target state="final">WebP のサポートと可用性</target>
+      </trans-unit>
+      <trans-unit id="status_imageprocessing_disabled" approved="yes">
+        <source>Image processing via ImageMagick/GraphicsMagick is disabled</source>
+        <target state="final">ImageMagick/GraphicsMagickによる画像処理は無効です</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
