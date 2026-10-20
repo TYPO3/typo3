@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf" date="2021-01-29T00:14:02Z" product-name="cms" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="totp.title" approved="yes">
+        <source>Time-based one-time password</source>
+        <target state="final">समय-आधारित वन-टाइम पासवर्ड</target>
+      </trans-unit>
+      <trans-unit id="totp.description" approved="yes">
+        <source>This provider allows to authenticate with a single-use passcode which is based on the current time.
+					Each code is only valid for 30 seconds. You need an OTP application or device, supporting such tokens.</source>
+        <target state="final">यह प्रदाता एक सिंगल-यूस पासकोड के साथ प्रमाणित करने की अनुमति देता है जो वर्तमान समय पर आधारित है।					प्रत्येक कोड केवल 30 सेकंड के लिए मान्य है। इसके लिए आपको एक OTP एप्लिकेशन या डिवाइस की आवश्यकता होगी, जो ऐसे टोकन का समर्थन करता हो।</target>
+      </trans-unit>
+      <trans-unit id="totp.setupInstructions" approved="yes">
+        <source>The time-based one-time password provider enables you to strengthen your accounts' security by requiring a six-digit code on every login.
+					This provider is based on a shared secret, which will be exchanged between your OTP application (or device) and TYPO3. Each code takes the current time into account and is only valid for 30 seconds.
+
+					Setting up:
+					1. Scan the QR-code or directly enter the shared secret in your application or device
+					2. Add a specific name for this provider (optional)
+					3. Enter the generated six-digit code in the corresponding field
+					4. Submit the form to activate the provider
+
+					Note: In case your application supports otpauth:// URLs, you can retrieve the URL by clicking on the info button next to the shared secret.</source>
+        <target state="final">समय-आधारित एक-समय पासवर्ड प्रदाता आपको हर लॉगिन पर छह अंकों का कोड मांगने के द्वारा अपने खातों की सुरक्षा को मजबूत करने में सक्षम करता है।					यह प्रदाता एक साझा गुप्ती पर आधारित होता है, जिसे आपके OTP एप्लिकेशन (या उपकरण) और TYPO3 के बीच आदान-प्रदान किया जाएगा। प्रत्येक कोड वर्तमान समय को ध्यान में रखता है और केवल 30 सेकंड के लिए मान्य है।					सेट अप करना:					1. QR-कोड स्कैन करें या अपने एप्लिकेशन या उपकरण में साझा रहस्य सीधे दर्ज करें					2. इस प्रदाता के लिए एक विशिष्ट नाम जोड़ें (वैकल्पिक)					3. उत्पन्न किए गए छह अंकों का कोड संबंधित फ़ील्ड में दर्ज करें					4. प्रदाता को सक्रिय करने के लिए फॉर्म सबमिट करें					नोट: यदि आपका एप्लिकेशन otpauth:// urls का समर्थन करता है, तो आप साझा रहस्य के बगल वाले इन्फो बटन पर क्लिक करके url प्राप्त कर सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.title" approved="yes">
+        <source>Recovery codes</source>
+        <target state="final">रिकवरी कोड्स</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.description" approved="yes">
+        <source>This provider allows to authenticate with a set of single-use passcodes, in case you lost your
+					primary MFA credentials, or just have no access to them temporarily.</source>
+        <target state="final">यह प्रदाता एक सेट के सिंगल-यूस पासकोड्स के साथ प्रमाणित होने की अनुमति देता है, यदि आपने अपने					प्राथमिक MFA क्रेडेंशियल्स खो दिए हैं, या केवल उन्हें अस्थायी रूप से प्राप्त नहीं कर सके।</target>
+      </trans-unit>
+      <trans-unit id="recoveryCodes.setupInstructions" approved="yes">
+        <source>Recovery codes are random eight-digit codes which can be used to authenticate, in case your lost your main authentication credentials. Each code is only valid once.
+					As soon as all recovery codes are exhausted, you're required to generate a new set. Therefore, periodically check the amount of remaining codes in the Edit / Change view of the provider.
+
+					Setting up:
+					1. Copy the recovery codes and store them at a safe place
+					2. Add a specific name for this provider (optional)
+					3. Submit the form to activate the provider - see below note
+
+					Note: Since the recovery codes are being encrypted and stored securely, this process can take some time.</source>
+        <target state="final">वसूली कोड अस्तित्व हीन हो जाने की स्थिति में प्रमाणित होने के लिए इस्तेमाल किए जा सकते हैं, ये आठ अंकों के बेतरतीब कोड होते हैं। प्रत्येक कोड केवल एक बार ही मान्य होता है।					जैसे ही सभी वसूली कोड समाप्त हो जाते हैं, आपको एक नया सेट उत्पन्न करने की आवश्यकता होती है। इसलिए, समय-समय पर प्रदाता के संपादित / परिवर्तित दृश्य में बचे हुए कोडों की मात्रा की जांच करें।					सेट अप करना:					1. वसूली कोड कॉपी करें और उन्हें सुरक्षित स्थान पर संग्रहित करें					2. इस प्रदाता के लिए एक विशिष्ट नाम जोड़ें (वैकल्पिक)					3. प्रदाता को सक्रिय करने के लिए फॉर्म सबमिट करें - नीचे नोट देखें					नोट: चूंकि वसूली कोड को एन्क्रिप्ट किया जाता है और सुरक्षित रूप से संग्रहित किया जाता है, इसलिए यह प्रक्रिया कुछ समय ले सकती है।</target>
+      </trans-unit>
+      <trans-unit id="totpInputLabel" approved="yes">
+        <source>Enter the generated six-digit code</source>
+        <target state="final">उत्पन्न किए गए छह अंकों का कोड दर्ज करें</target>
+      </trans-unit>
+      <trans-unit id="totpInputHelp" approved="yes">
+        <source>This code should now be displayed on your device or in your application.</source>
+        <target state="final">यह कोड अब आपके उपकरण पर या आपके एप्लिकेशन में प्रदर्शित होना चाहिए।</target>
+      </trans-unit>
+      <trans-unit id="locked" approved="yes">
+        <source>The maximum attempts for this provider are exceeded. Please use another provider or contact your administrator.</source>
+        <target state="final">इस प्रदाता के लिए अधिकतम प्रयास पार हो गए हैं। कृपया एक और प्रदाता का उपयोग करें या अपने व्यवस्थापक से संपर्क करें।</target>
+      </trans-unit>
+      <trans-unit id="edit.table.head" approved="yes">
+        <source>Provider information</source>
+        <target state="final">प्रदाता की जानकारी</target>
+      </trans-unit>
+      <trans-unit id="edit.table.name" approved="yes">
+        <source>Name</source>
+        <target state="final">नाम</target>
+      </trans-unit>
+      <trans-unit id="edit.table.nameInputPlaceholder" approved="yes">
+        <source>Enter a name</source>
+        <target state="final">एक नाम दर्ज करें</target>
+      </trans-unit>
+      <trans-unit id="edit.table.recoveryCodesLeft" approved="yes">
+        <source>Recovery codes left</source>
+        <target state="final">शेष रिकवरी कोड</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUsed" approved="yes">
+        <source>Last used</source>
+        <target state="final">अंतिम बार उपयोग किया गया</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUsed.default" approved="yes">
+        <source>Never</source>
+        <target state="final">कभी नहीं</target>
+      </trans-unit>
+      <trans-unit id="edit.table.lastUpdated" approved="yes">
+        <source>Last updated</source>
+        <target state="final">अंतिम अद्यतन</target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate" approved="yes">
+        <source>Regenerate recovery codes</source>
+        <target state="final">वसूली कोड पुनः उत्पन्न करें</target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate.description" approved="yes">
+        <source>
+					If you lost your recovery codes or just want to get fresh ones, you can
+					regenerate them by selecting the checkbox below. You've currently %d codes left.
+                </source>
+        <target state="final">यदि आपने अपने वसूली कोड खो दिए हैं या केवल नए वाले पाना चाहते हैं, तो आप नीचे रखी चेकबॉक्स का चयन करके उन्हें पुनः उत्पन्न कर सकते हैं। आपके पास वर्तमान में %d कोड शेष हैं।</target>
+      </trans-unit>
+      <trans-unit id="edit.regenerate.inputLabel" approved="yes">
+        <source>Regenerate recovery codes</source>
+        <target state="final">वसूली कोड पुनः उत्पन्न करें</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1" approved="yes">
+        <source>Step 1</source>
+        <target state="final">चरण 1</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1a" approved="yes">
+        <source>Step 1a</source>
+        <target state="final">चरण 1a</target>
+      </trans-unit>
+      <trans-unit id="setup.step.1b" approved="yes">
+        <source>Step 1b</source>
+        <target state="final">चरण 1b</target>
+      </trans-unit>
+      <trans-unit id="setup.step.2" approved="yes">
+        <source>Step 2</source>
+        <target state="final">चरण 2</target>
+      </trans-unit>
+      <trans-unit id="setup.step.3" approved="yes">
+        <source>Step 3</source>
+        <target state="final">चरण 3</target>
+      </trans-unit>
+      <trans-unit id="setup.qrCode.label" approved="yes">
+        <source>Scan the displayed QR code</source>
+        <target state="final">दिखाए गए QR कोड को स्कैन करें</target>
+      </trans-unit>
+      <trans-unit id="setup.qrCode.help" approved="yes">
+        <source>Scan this code with your OTP application (e.g. Google Authenticator).</source>
+        <target state="final">इस कोड को अपने OTP एप्लिकेशन (जैसे कि Google Authenticator) के साथ स्कैन करें।</target>
+      </trans-unit>
+      <trans-unit id="setup.secret.label" approved="yes">
+        <source>Copy the shared secret</source>
+        <target state="final">शेयर्ड सीक्रेट कॉपी करें</target>
+      </trans-unit>
+      <trans-unit id="setup.secret.help" approved="yes">
+        <source>You can also enter the shared secret manually in your OTP application or device.</source>
+        <target state="final">आप अपने OTP एप्लिकेशन या डिवाइस में शेयर्ड सीक्रेट को मैन्युअल रूप से भी दर्ज कर सकते हैं।</target>
+      </trans-unit>
+      <trans-unit id="setup.name.label" approved="yes">
+        <source>Enter a name (optional)</source>
+        <target state="final">एक नाम दर्ज करें (वैकल्पिक)</target>
+      </trans-unit>
+      <trans-unit id="setup.name.help" approved="yes">
+        <source>Specify a custom name for this provider.</source>
+        <target state="final">इस प्रदाता के लिए एक कस्टम नाम निर्दिष्ट करें।</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.InputLabel" approved="yes">
+        <source>Recovery codes</source>
+        <target state="final">वसूली कोड</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.InputHelp" approved="yes">
+        <source>Copy these codes and store them at a safe place.</source>
+        <target state="final">इन कोडों की प्रतिलिपि बनाएं और उन्हें सुरक्षित स्थान पर संग्रहित करें।</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.reloadTitle" approved="yes">
+        <source>Reload recovery codes</source>
+        <target state="final">वसूली कोड पुनः लोड करें</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.reloadLabel" approved="yes">
+        <source>Reload</source>
+        <target state="final">पुनः लोड</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.noActiveProviders.title" approved="yes">
+        <source>Setup not possible</source>
+        <target state="final">सेटअप संभव नहीं</target>
+      </trans-unit>
+      <trans-unit id="setup.recoveryCodes.noActiveProviders.message" approved="yes">
+        <source>Recovery codes are only meant as a fallback if you lose access to your main multi-factor authentication credentials. Therefore, please activate a comprehensive MFA provider first.</source>
+        <target state="final">वसूली कोड केवल तभी काम में आते हैं जब आप अपने मुख्य बहु-कारक प्रमाणीकरण क्रेडेंशियल्स को खो देते हैं। इसलिए, कृपया पहले एक व्यापक MFA प्रदाता सक्रिय करें।</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlButton.title" approved="yes">
+        <source>Show authentication URL</source>
+        <target state="final">प्रमाणीकरण URL दिखाएं</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.title" approved="yes">
+        <source>Authentication URL</source>
+        <target state="final">प्रमाणीकरण URL</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.description" approved="yes">
+        <source>In case you are not able to scan the QR code, but your OTP application supports
+					authentication URLs next to, or instead of plain shared secrets, you can copy and
+					paste the URL shown below. The URL contains some information like the issuer (this site)
+					and your email address or username. Most OTP applications will display this information
+					next to the generated codes.
+                </source>
+        <target state="final">यदि आप QR कोड को स्कैन करने में सक्षम नहीं हैं, लेकिन आपका OTP एप्लिकेशन साझा गुप्तियों के अलावा, या किसी अन्य परिस्थिति में प्रमाणीकरण URL का समर्थन करता है, तो आप नीचे दिखाए गए URL की प्रतिलिपि बना सकते हैं और वह पेस्ट कर सकते हैं। URL में कुछ जानकारी सम्मिलित होती है जैसे कि जारी करने वाला (यह साइट)					और आपका ईमेल पता या उपयोगकर्ता नाम। अधिकांश OTP एप्लिकेशन उत्पन्न कोडों के बगल में इस जानकारी को प्रदर्शित करेंगे।</target>
+      </trans-unit>
+      <trans-unit id="setup.totpAuthUrlModal.ok" approved="yes">
+        <source>OK</source>
+        <target state="final">ठिक है</target>
+      </trans-unit>
+      <trans-unit id="auth.totp.inputLabel" approved="yes">
+        <source>Enter the six-digit code</source>
+        <target state="final">छह अंकों का कोड दर्ज करें</target>
+      </trans-unit>
+      <trans-unit id="auth.recoveryCodes.inputLabel" approved="yes">
+        <source>Enter an eight-digit recovery code</source>
+        <target state="final">आठ अंकों का रिकवरी कोड दर्ज करें</target>
+      </trans-unit>
+      <trans-unit id="unlock.recoveryCodes.title" approved="yes">
+        <source>Your recovery codes were automatically updated!</source>
+        <target state="final">आपके रिकवरी कोड्स स्वचालित रूप से अपडेट कर दिए गए हैं!</target>
+      </trans-unit>
+      <trans-unit id="unlock.recoveryCodes.message" approved="yes">
+        <source>Please copy and store them at a safe place: %s</source>
+        <target state="final">कृपया उन्हें कॉपी करें और उन्हें सुरक्षित स्थान पर संग्रहित करें: %s</target>
+      </trans-unit>
+      <trans-unit id="update.recoveryCodes.title" approved="yes">
+        <source>Recovery codes successfully regenerated</source>
+        <target state="final">रिकवरी कोड्स सफलतापूर्वक पुनः उत्पन्न किए गए</target>
+      </trans-unit>
+      <trans-unit id="update.recoveryCodes.message" approved="yes">
+        <source>Please copy and store them at a safe place: %s</source>
+        <target state="final">कृपया उन्हें कॉपी करें और उन्हें सुरक्षित स्थान पर संग्रहित करें: %s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
