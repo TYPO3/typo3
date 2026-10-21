@@ -625,7 +625,6 @@ export default class DragUploader {
     modal.addEventListener('button.clicked', (e: Event): void => {
       const button = e.target as HTMLButtonElement;
       if (button.name === 'cancel') {
-        this.askForOverride = [];
         Modal.dismiss();
       } else if (button.name === 'continue') {
         for (const fileInfo of this.askForOverride) {
@@ -634,7 +633,10 @@ export default class DragUploader {
               this.irreObjectUid,
               fileInfo.original,
             );
-          } else if (fileInfo.action !== Action.SKIP) {
+            this.decrementQueueLength();
+          } else if (fileInfo.action === Action.SKIP) {
+            this.decrementQueueLength();
+          } else {
             new FileQueueItem(this, fileInfo.uploaded, fileInfo.action, this.fileList.dataset.mode === Mode.BROWSE ? Mode.BROWSE : Mode.MANAGE);
           }
         }
@@ -644,9 +646,11 @@ export default class DragUploader {
     });
 
     modal.addEventListener('typo3-modal-hidden', () => {
+      // None of the files left, e.g. after cancelling the modal, is uploaded
+      for (let i = 0; i < this.askForOverride.length; i++) {
+        this.decrementQueueLength();
+      }
       this.askForOverride = [];
-
-      document.dispatchEvent(new CustomEvent(uploadFinishedEventName));
     });
   }
 
