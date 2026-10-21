@@ -15,6 +15,9 @@
 
 namespace TYPO3\CMS\Frontend\Imaging;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\FileProcessingAspect;
@@ -67,8 +70,10 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * $imageCreator->start($fileArray, $this->data);
  * $theImage = $imageCreator->gifBuild();
  */
-class GifBuilder
+class GifBuilder implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * Contains all text strings used on this image
      *
@@ -566,17 +571,17 @@ class GifBuilder
                         }
                         break;
                     case 'OUTLINE':
-                        if ($this->setup[$conf['textObjNum']] === 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
+                        if ($this->setup[$conf['textObjNum']] === 'TEXT' && is_array($this->setup[$conf['textObjNum'] . '.'] ?? null) && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
                             $this->makeOutline($im, $conf, $this->workArea, $txtConf);
                         }
                         break;
                     case 'EMBOSS':
-                        if ($this->setup[$conf['textObjNum']] === 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
+                        if ($this->setup[$conf['textObjNum']] === 'TEXT' && is_array($this->setup[$conf['textObjNum'] . '.'] ?? null) && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
                             $this->makeEmboss($im, $conf, $this->workArea, $txtConf);
                         }
                         break;
                     case 'SHADOW':
-                        if ($this->setup[$conf['textObjNum']] === 'TEXT' && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
+                        if ($this->setup[$conf['textObjNum']] === 'TEXT' && is_array($this->setup[$conf['textObjNum'] . '.'] ?? null) && ($txtConf = $this->checkTextObj($this->setup[$conf['textObjNum'] . '.']))) {
                             $this->makeShadow($im, $conf, $this->workArea, $txtConf);
                         }
                         break;
@@ -1114,7 +1119,7 @@ class GifBuilder
      * Performs caseshift if any.
      *
      * @param array $conf GIFBUILDER object TypoScript properties
-     * @return array|null Modified $conf array IF the "text" property is not blank
+     * @return array|null Modified $conf array IF the "text" property is not blank and GD can render text
      */
     protected function checkTextObj(array $conf): ?array
     {
@@ -1155,6 +1160,15 @@ class GifBuilder
         if (!isset($conf['breakWidth']) || !$conf['breakWidth']) {
             $tlen = (int)($conf['textMaxLength'] ?? 0) ?: 100;
             $conf['text'] = mb_substr($conf['text'], 0, $tlen, 'utf-8');
+        }
+        if ((string)$conf['text'] !== '' && !GraphicsCanvas::canRenderText()) {
+            // Every image is built by its own GifBuilder, on every page that renders it
+            $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
+            if ($this->logger !== null && !$runtimeCache->has('gifbuilder-text-left-out')) {
+                $this->logger->warning('GIFBUILDER leaves out its TEXT objects because the GD library of this system cannot render text without FreeType support.');
+                $runtimeCache->set('gifbuilder-text-left-out', true);
+            }
+            return null;
         }
         if ((string)$conf['text'] != '') {
             // Char range map thingie:

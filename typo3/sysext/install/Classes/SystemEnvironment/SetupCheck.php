@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Install\SystemEnvironment;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Imaging\GraphicsCanvas;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Middleware\VerifyHostHeader;
@@ -170,7 +171,7 @@ class SetupCheck implements CheckInterface
      */
     protected function isTrueTypeFontWorking()
     {
-        if (function_exists('imageftbbox')) {
+        if (GraphicsCanvas::canRenderText()) {
             // 20 Pixels at 96 DPI
             $fontSize = (20 / 96 * 72);
             $textDimensions = @imageftbbox(

@@ -49,6 +49,13 @@ final class GraphicsCanvas
      */
     private const SHARPEN_FACTOR_PER_STEP = 0.0625;
 
+    private const FREETYPE_PROBE_FONT = __DIR__ . '/../../Resources/Private/Font/nimbus.ttf';
+
+    /**
+     * Whether GD rendered text when it was first asked to.
+     */
+    private static ?bool $freeTypeSupport = null;
+
     private function __construct(private \GdImage $image) {}
 
     /**
@@ -58,6 +65,19 @@ final class GraphicsCanvas
     public static function isAvailable(): bool
     {
         return extension_loaded('gd');
+    }
+
+    /**
+     * Whether the GD build can render TrueType text. PHP built with FreeType
+     * support but linked against a libgd without it, as PHP compiled to
+     * WebAssembly, has imagettftext() and imagettfbbox() and reports FreeType
+     * support in gd_info(), yet every call fails with a warning. So this
+     * measures a text once instead of reading what the build declares.
+     */
+    public static function canRenderText(): bool
+    {
+        return self::$freeTypeSupport ??= function_exists('imagettfbbox')
+            && @imagettfbbox(12, 0, self::FREETYPE_PROBE_FONT, 'x') !== false;
     }
 
     // ---------------------------------------------------------------
@@ -459,11 +479,14 @@ final class GraphicsCanvas
     // ---------------------------------------------------------------
 
     /**
-     * Render a TrueType text string. ($x, $y) is the baseline start.
+     * Render a TrueType text string. ($x, $y) is the baseline start. Without
+     * FreeType support nothing is rendered.
      */
     public function renderText(float $size, float $angle, int $x, int $y, int $color, string $fontFile, string $text): self
     {
-        imagettftext($this->image, $size, $angle, $x, $y, $color, $fontFile, $text);
+        if (self::canRenderText()) {
+            imagettftext($this->image, $size, $angle, $x, $y, $color, $fontFile, $text);
+        }
         return $this;
     }
 
@@ -481,10 +504,14 @@ final class GraphicsCanvas
 
     /**
      * Measure a TrueType text string without drawing it. Returns the
-     * 8-element bounding box from imagettfbbox(), or null on failure.
+     * 8-element bounding box from imagettfbbox(), or null on failure and
+     * without FreeType support.
      */
     public static function measureText(float $size, float $angle, string $fontFile, string $text): ?array
     {
+        if (!self::canRenderText()) {
+            return null;
+        }
         $bbox = imagettfbbox($size, $angle, $fontFile, $text);
         return $bbox === false ? null : $bbox;
     }

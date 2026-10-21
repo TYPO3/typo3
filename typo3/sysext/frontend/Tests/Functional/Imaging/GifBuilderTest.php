@@ -19,9 +19,11 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Imaging;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Imaging\GraphicsCanvas;
 use TYPO3\CMS\Core\Imaging\ImageResource;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\StorageRepository;
@@ -69,6 +71,38 @@ final class GifBuilderTest extends FunctionalTestCase
         $imageResource = $gifBuilder->gifBuild();
         self::assertNotNull($imageResource);
         return $imageResource;
+    }
+
+    /**
+     * Renders a GIFBUILDER configuration as a GD build without FreeType does.
+     * Without FreeType, the text metrics are empty, and code that still read
+     * them would warn about undefined array keys: such a warning fails the
+     * test, any other error is left to PHPUnit.
+     */
+    private function renderPngWithoutFreeType(array $conf, ?LoggerInterface $logger = null): \GdImage
+    {
+        new \ReflectionProperty(GraphicsCanvas::class, 'freeTypeSupport')->setValue(null, false);
+        $previousErrorHandler = set_error_handler(static function (int $level, string $message, string $file, int $line) use (&$previousErrorHandler): bool {
+            if ($level === E_WARNING && in_array(basename($file), ['GifBuilder.php', 'GraphicsCanvas.php'], true)) {
+                throw new \ErrorException($message, 1792589542, $level, $file, $line);
+            }
+            return $previousErrorHandler !== null && (bool)$previousErrorHandler($level, $message, $file, $line);
+        });
+        try {
+            $gifBuilder = new GifBuilder();
+            if ($logger !== null) {
+                $gifBuilder->setLogger($logger);
+            }
+            $gifBuilder->start($conf, []);
+            $imageResource = $gifBuilder->gifBuild();
+            self::assertNotNull($imageResource);
+        } finally {
+            restore_error_handler();
+            new \ReflectionProperty(GraphicsCanvas::class, 'freeTypeSupport')->setValue(null, null);
+        }
+        $image = imagecreatefrompng(Environment::getPublicPath() . '/' . $imageResource->getPublicUrl());
+        self::assertInstanceOf(\GdImage::class, $image);
+        return $image;
     }
 
     /**
@@ -584,6 +618,116 @@ final class GifBuilderTest extends FunctionalTestCase
 
         // The corner is far away from the glyphs and has to stay fully transparent.
         self::assertSame(127, (imagecolorat($image, 59, 0) >> 24) & 0x7f);
+    }
+
+    /**
+     * A GD build without FreeType cannot render text, the image is built
+     * without it instead of failing with a warning.
+     */
+    #[Test]
+    public function textIsLeftOutWithoutFreeTypeSupport(): void
+    {
+        $image = $this->renderPngWithoutFreeType([
+            'XY' => '60,30',
+            'backColor' => '#ffffff',
+            'format' => 'png',
+            '10' => 'TEXT',
+            '10.' => [
+                'text' => 'Hi',
+                'fontColor' => '#000000',
+                'fontSize' => '18',
+                'fontFile' => 'EXT:core/Resources/Private/Font/nimbus.ttf',
+                'offset' => '2,22',
+            ],
+        ]);
+
+        self::assertSame(60, imagesx($image));
+        self::assertImageIsWhite($image);
+    }
+
+    /**
+     * Every GIFBUILDER image of a page is built by its own GifBuilder, also
+     * when the image file exists already. One built without a logger does
+     * not keep the next one from logging.
+     */
+    #[Test]
+    public function leavingTextOutIsLoggedOncePerRequest(): void
+    {
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())->method('warning');
+        $conf = [
+            'XY' => '60,60',
+            'backColor' => '#ffffff',
+            'format' => 'png',
+            '10' => 'TEXT',
+            '10.' => ['text' => 'Hi', 'offset' => '2,22'],
+            '20' => 'TEXT',
+            '20.' => ['text' => 'Ho', 'offset' => '2,44'],
+        ];
+
+        $this->renderPngWithoutFreeType($conf);
+        $this->renderPngWithoutFreeType($conf, $logger);
+        $this->renderPngWithoutFreeType($conf, $logger);
+    }
+
+    public static function textEffectObjectsDataProvider(): array
+    {
+        return [
+            'SHADOW' => ['SHADOW', ['offset' => '2,2', 'blur' => '20', 'opacity' => '80', 'color' => '#000000']],
+            'EMBOSS' => ['EMBOSS', ['offset' => '2,2', 'blur' => '20', 'opacity' => '80', 'highColor' => '#000000', 'lowColor' => '#000000']],
+            'OUTLINE' => ['OUTLINE', ['thickness' => '2', 'color' => '#000000']],
+        ];
+    }
+
+    /**
+     * SHADOW, EMBOSS and OUTLINE render the TEXT object they refer to, which
+     * does not exist when GD cannot render text. Rendering them anyway reads
+     * the missing text metrics, which fails the test with a warning.
+     */
+    #[DataProvider('textEffectObjectsDataProvider')]
+    #[Test]
+    public function textEffectObjectIsLeftOutWithoutFreeTypeSupport(string $effect, array $effectConf): void
+    {
+        $image = $this->renderPngWithoutFreeType([
+            'XY' => '60,30',
+            'backColor' => '#ffffff',
+            'format' => 'png',
+            '10' => 'TEXT',
+            '10.' => ['text' => 'Hi', 'fontColor' => '#000000', 'fontSize' => '18', 'offset' => '2,22'],
+            '20' => $effect,
+            '20.' => ['textObjNum' => '10', ...$effectConf],
+        ]);
+
+        self::assertImageIsWhite($image);
+    }
+
+    /**
+     * An empty TEXT object is left out the same way, also when GD can render text.
+     */
+    #[DataProvider('textEffectObjectsDataProvider')]
+    #[Test]
+    public function textEffectObjectOfEmptyTextIsLeftOut(string $effect, array $effectConf): void
+    {
+        $image = $this->renderPng([
+            'XY' => '60,30',
+            'backColor' => '#ffffff',
+            'format' => 'png',
+            '10' => 'TEXT',
+            '10.' => ['text' => '', 'fontColor' => '#000000', 'fontSize' => '18', 'offset' => '2,22'],
+            '20' => $effect,
+            '20.' => ['textObjNum' => '10', ...$effectConf],
+        ]);
+
+        self::assertImageIsWhite($image);
+    }
+
+    private static function assertImageIsWhite(\GdImage $image): void
+    {
+        for ($x = 0; $x < imagesx($image); $x++) {
+            for ($y = 0; $y < imagesy($image); $y++) {
+                self::assertSame([255, 255, 255], self::rgb($image, $x, $y));
+            }
+        }
     }
 
     #[Test]

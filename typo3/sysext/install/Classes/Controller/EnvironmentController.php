@@ -353,6 +353,9 @@ class EnvironmentController extends AbstractController
      */
     public function imageProcessingTrueTypeAction(): ResponseInterface
     {
+        if (!GraphicsCanvas::canRenderText()) {
+            return $this->getImageTestResponse(['status' => [$this->freeTypeMissingMessage()]]);
+        }
         $image = @imagecreate(200, 50);
         imagecolorallocate($image, 255, 255, 55);
         $textColor = imagecolorallocate($image, 233, 14, 91);
@@ -1005,6 +1008,9 @@ class EnvironmentController extends AbstractController
      */
     public function imageProcessingGdlibRenderTextAction(): ResponseInterface
     {
+        if (!GraphicsCanvas::canRenderText()) {
+            return $this->getImageTestResponse(['status' => [$this->freeTypeMissingMessage()]]);
+        }
         $canvas = $this->createTextTestCanvas();
         $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('gdText') . '.png';
         $canvas->saveToFile($outputFile, 'png');
@@ -1021,6 +1027,9 @@ class EnvironmentController extends AbstractController
      */
     public function imageProcessingGdlibNiceTextAction(): ResponseInterface
     {
+        if (!GraphicsCanvas::canRenderText()) {
+            return $this->getImageTestResponse(['status' => [$this->freeTypeMissingMessage()]]);
+        }
         $canvas = $this->createTextTestCanvas();
         $this->drawNiceTextLine($canvas, 120);
         $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('gdNiceText') . '.png';
@@ -1037,6 +1046,9 @@ class EnvironmentController extends AbstractController
      */
     public function imageProcessingGdlibNiceTextShadowAction(): ResponseInterface
     {
+        if (!GraphicsCanvas::canRenderText()) {
+            return $this->getImageTestResponse(['status' => [$this->freeTypeMissingMessage()]]);
+        }
         $canvas = $this->createTextTestCanvas();
         $this->drawNiceTextLine($canvas, 120);
 
@@ -1315,6 +1327,15 @@ class EnvironmentController extends AbstractController
         return new FlashMessage(
             'GD could not read ' . basename($inputFile) . '. The GD build of this system does not '
             . 'support that format, or the file cannot be decoded.',
+            'Skipped test',
+            ContextualFeedbackSeverity::INFO
+        );
+    }
+
+    protected function freeTypeMissingMessage(): FlashMessage
+    {
+        return new FlashMessage(
+            'The GD build of this system has no FreeType support, so it cannot render text.',
             'Skipped test',
             ContextualFeedbackSeverity::INFO
         );

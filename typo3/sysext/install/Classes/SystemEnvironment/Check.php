@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\SystemEnvironment;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Imaging\GraphicsCanvas;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
@@ -806,7 +807,7 @@ class Check implements CheckInterface
      */
     protected function checkGdLibFreeTypeSupport()
     {
-        if (function_exists('imagettftext')) {
+        if (GraphicsCanvas::canRenderText()) {
             $this->messageQueue->enqueue(new FlashMessage(
                 'There is a difference between the font size setting which the GD'
                     . ' library should be supplied  with. If installation is completed'

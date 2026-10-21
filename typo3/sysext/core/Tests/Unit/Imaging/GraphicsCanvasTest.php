@@ -33,6 +33,12 @@ final class GraphicsCanvasTest extends UnitTestCase
         }
     }
 
+    protected function tearDown(): void
+    {
+        new \ReflectionProperty(GraphicsCanvas::class, 'freeTypeSupport')->setValue(null, null);
+        parent::tearDown();
+    }
+
     /**
      * @return array{0: int, 1: int, 2: int}
      */
@@ -470,5 +476,71 @@ final class GraphicsCanvasTest extends UnitTestCase
             $canvas->fillRect($x, 0, 1, 20, $canvas->allocateColor($grey, $grey, $grey));
         }
         return $canvas;
+    }
+
+    #[Test]
+    public function canRenderTextDetectsAGdThatRendersText(): void
+    {
+        if (!self::gdMeasuresText()) {
+            self::markTestSkipped('GD of this PHP cannot render text.');
+        }
+
+        self::assertTrue(GraphicsCanvas::canRenderText());
+    }
+
+    /**
+     * In PHP compiled to WebAssembly, imagettfbbox() exists and gd_info()
+     * reports FreeType support, yet libgd fails to measure text.
+     */
+    #[Test]
+    public function canRenderTextDetectsAGdThatCannotRenderText(): void
+    {
+        if (self::gdMeasuresText()) {
+            self::markTestSkipped('GD of this PHP renders text.');
+        }
+
+        self::assertFalse(GraphicsCanvas::canRenderText());
+    }
+
+    /**
+     * A GD build without FreeType still has imagettfbbox() and imagettftext(),
+     * but every call fails with a warning.
+     */
+    #[Test]
+    public function measureTextReturnsNullWithoutFreeTypeSupport(): void
+    {
+        $this->simulateGdWithoutFreeType();
+
+        self::assertNull(GraphicsCanvas::measureText(18, 0, self::fontFile(), 'Hi'));
+    }
+
+    #[Test]
+    public function renderTextDrawsNothingWithoutFreeTypeSupport(): void
+    {
+        $this->simulateGdWithoutFreeType();
+        $canvas = GraphicsCanvas::create(60, 30);
+
+        $canvas->renderText(18, 0, 2, 22, $canvas->allocateColor(0, 0, 0), self::fontFile(), 'Hi');
+
+        for ($x = 0; $x < 60; $x++) {
+            for ($y = 0; $y < 30; $y++) {
+                self::assertSame([255, 255, 255], self::rgb($canvas, $x, $y));
+            }
+        }
+    }
+
+    private function simulateGdWithoutFreeType(): void
+    {
+        new \ReflectionProperty(GraphicsCanvas::class, 'freeTypeSupport')->setValue(null, false);
+    }
+
+    private static function gdMeasuresText(): bool
+    {
+        return function_exists('imagettfbbox') && @imagettfbbox(12, 0, self::fontFile(), 'x') !== false;
+    }
+
+    private static function fontFile(): string
+    {
+        return __DIR__ . '/../../../Resources/Private/Font/nimbus.ttf';
     }
 }
