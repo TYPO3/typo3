@@ -230,12 +230,12 @@ class LiveSearch {
         this.currentSearchRequest = null;
         this.updateSearchResults(json);
       } catch (err: unknown) {
-        this.updateSearchResults(null, true);
         if (err instanceof DOMException && err.name === 'AbortError') {
-          // Request has been aborted, do not flood the error console
+          // Request has been aborted by a newer search, which updates the results itself
           return;
         }
 
+        this.updateSearchResults(null, true);
         // Something else happened, throw again
         throw err;
       }
