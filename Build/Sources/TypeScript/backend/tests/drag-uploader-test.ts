@@ -52,7 +52,7 @@ describe('@typo3/backend/drag-uploader', (): void => {
     (request: SinonFakeXMLHttpRequest): boolean => request.url === '/file-process'
   );
 
-  const upload = async (fileNames: string[], existing: string[] = []): Promise<void> => {
+  const createUploader = (): DragUploader => {
     // The uploader is created by hand, the class t3js-drag-uploader would make DragUploader.init() create a second one
     const element = document.createElement('div');
     element.dataset.dropzoneTarget = '#drag-uploader-test-target';
@@ -60,10 +60,20 @@ describe('@typo3/backend/drag-uploader', (): void => {
     element.dataset.targetFolder = '1:/';
     element.dataset.reloadUrl = '/reload';
     container.append(element);
+    return new DragUploader(element);
+  };
+
+  const upload = async (fileNames: string[], existing: string[] = []): Promise<void> => {
     existingFileNames = existing;
-    const uploader = new DragUploader(element);
-    uploader.processFiles([...fileNames, ...existing].map((fileName: string): File => new File(['x'], fileName)));
+    createUploader().processFiles([...fileNames, ...existing].map((fileName: string): File => new File(['x'], fileName)));
     await waitUntil((): boolean => uploadRequests().length === fileNames.length && (existing.length === 0 || modal !== null));
+  };
+
+  // A folder dropped from the desktop is handed over as a file which cannot be read
+  const createFolder = (name: string): File => {
+    const folder = new File([], name);
+    folder.arrayBuffer = (): Promise<ArrayBuffer> => Promise.reject(new DOMException('', 'NotFoundError'));
+    return folder;
   };
 
   const chooseAction = (fileName: string, action: string): void => {
@@ -245,5 +255,29 @@ describe('@typo3/backend/drag-uploader', (): void => {
 
     expect(infoStub.callCount).to.equal(0);
     expect(uploadFinishedCount).to.equal(1);
+  });
+
+  it('rejects a folder and uploads the files next to it', async (): Promise<void> => {
+    await createUploader().processFiles([createFolder('folder'), new File(['x'], 'file.txt')]);
+    await waitUntil((): boolean => uploadRequests().length === 1);
+
+    expect(errorStub.callCount).to.equal(1);
+    expect(errorStub.firstCall.args).to.deep.equal(['file_upload.notUploaded.title', 'file_upload.notUploaded.unreadable']);
+    expect((uploadRequests()[0].requestBody as unknown as FormData).get('upload_1')).to.have.property('name', 'file.txt');
+  });
+
+  it('uploads nothing when only folders are given', async (): Promise<void> => {
+    await createUploader().processFiles([createFolder('folder')]);
+
+    expect(errorStub.callCount).to.equal(1);
+    expect(fetchStub.callCount).to.equal(0);
+    expect(container.querySelectorAll('.upload-queue-item').length).to.equal(0);
+  });
+
+  it('uploads an empty file', async (): Promise<void> => {
+    await createUploader().processFiles([new File([], 'empty.txt')]);
+    await waitUntil((): boolean => uploadRequests().length === 1);
+
+    expect(errorStub.callCount).to.equal(0);
   });
 });

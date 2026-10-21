@@ -390,17 +390,19 @@ export default class DragUploader {
   /**
    * @param {FileList} files
    */
-  public processFiles(files: FileList | File[]): void {
+  public async processFiles(files: FileList | File[]): Promise<void> {
+    const candidates = Array.from(files);
+    // The files of the picker are gone once it is reset
+    this.fileInput.value = '';
+    const errors = await Promise.all(candidates.map((file: File): Promise<string | null> => this.validateFile(file)));
     const validFiles: File[] = [];
-    for (const file of Array.from(files)) {
-      const error = this.validateFile(file);
-      if (error === null) {
+    candidates.forEach((file: File, index: number): void => {
+      if (errors[index] === null) {
         validFiles.push(file);
       } else {
-        Notification.error(coreLabels.get('file_upload.notUploaded.title'), error);
+        Notification.error(coreLabels.get('file_upload.notUploaded.title'), errors[index]);
       }
-    }
-    this.fileInput.value = '';
+    });
     if (validFiles.length === 0) {
       return;
     }
@@ -675,7 +677,12 @@ export default class DragUploader {
   /**
    * @returns the reason why the file cannot be uploaded, null if it can be uploaded
    */
-  private validateFile(file: File): string | null {
+  private async validateFile(file: File): Promise<string | null> {
+    if (!await this.isReadable(file)) {
+      return coreLabels.get('file_upload.notUploaded.unreadable', {
+        '0': file.name,
+      });
+    }
     const extension = file.name.split('.').pop().toLowerCase();
     if (this.maxFileSize > 0 && file.size > this.maxFileSize) {
       return coreLabels.get('file_upload.maxFileSizeExceeded', {
@@ -703,6 +710,19 @@ export default class DragUploader {
     return null;
   }
 
+  /**
+   * A folder, e.g. one dropped from the desktop, is handed over as a file, but reading it fails
+   */
+  private async isReadable(file: File): Promise<boolean> {
+    try {
+      // Slicing an empty file reads nothing, so it is read as a whole
+      await (file.size === 0 ? file : file.slice(0, 1)).arrayBuffer();
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   private registerPasteTarget(): void {
     if (this.element.dataset.uploadOnPaste !== 'field') {
       FilePasteHandler.register({
@@ -710,7 +730,9 @@ export default class DragUploader {
         label: '',
         // A replaced uploader, e.g. of a previously shown folder, must not receive the files
         isAvailable: (): boolean => this.element.isConnected,
-        receive: (files: File[]): void => this.processFiles(files),
+        receive: (files: File[]): void => {
+          this.processFiles(files);
+        },
       });
       return;
     }
