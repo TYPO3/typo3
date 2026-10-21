@@ -7108,6 +7108,13 @@ return [
             'Deprecation-110477-CommandRegistryGetSchedulableCommands.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Imaging\GraphicalFunctions->v5_sharpen' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-111189-V5SharpenSharpensOnTheScaleOfGd.rst',
+        ],
+    ],
     /** Note (leave this at the bottom):
      *  The FQCN object definitions here are not actually checked, only
      *  the method name itself. That means, never list generic method names

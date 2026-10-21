@@ -187,11 +187,13 @@ class GraphicalFunctions
     protected string $im5fx_blurSteps = '1x2,2x2,3x2,4x3,5x3,5x4,6x4,7x5,8x5,9x5';
 
     /**
-     * Used by v5_sharpen() to simulate 10 continuous steps of sharpening.
+     * The `-unsharp` geometry of each of the ten steps of v5_sharpen(), on
+     * the scale GraphicsCanvas::sharpen() shares: step n adds n*0.25 to the
+     * amount, and step 1 is GFX/sharpen.
      *
      * @var non-empty-string
      */
-    protected string $im5fx_sharpenSteps = '1x2,2x2,3x2,2x3,3x3,4x3,3x4,4x4,4x5,5x5';
+    protected string $im5fx_sharpenSteps = '1x2+0.25+0,1x2+0.5+0,1x2+0.75+0,1x2+1+0,1x2+1.25+0,1x2+1.5+0,1x2+1.75+0,1x2+2+0,1x2+2.25+0,1x2+2.5+0';
 
     /**
      * @var int<1, 100>
@@ -269,7 +271,7 @@ class GraphicalFunctions
      * Uses $this->im5fx_sharpenSteps for translation of the factor to an actual command.
      *
      * @param int $factor The sharpening factor, 0-100 (effectively in 10 steps)
-     * @return string The sharpening command, eg. " -sharpen 3x4"
+     * @return string The sharpening command, eg. " -unsharp 1x2+0.75+0"
      * @see makeText()
      * @see IMparams()
      * @see v5_blur()
@@ -280,7 +282,7 @@ class GraphicalFunctions
         $sharpenArr = explode(',', ',' . $this->im5fx_sharpenSteps);
         $sharpenF = trim($sharpenArr[$factor]);
         if ($sharpenF) {
-            return ' -sharpen ' . $sharpenF;
+            return ' -unsharp ' . $sharpenF;
         }
         return '';
     }

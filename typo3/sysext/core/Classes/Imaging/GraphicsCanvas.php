@@ -46,8 +46,10 @@ final class GraphicsCanvas
      * The Laplacian factor each step of sharpen() adds. Step n sharpens like
      * `-unsharp 1x2+(n*0.25)+0` in ImageMagick and GraphicsMagick, fitted
      * against their output on scaled-down photos; step 1 is GFX/sharpen.
+     * A binary fraction, so that every kernel adds up to exactly 1 and GD,
+     * which truncates, leaves flat areas alone.
      */
-    private const SHARPEN_FACTOR_PER_STEP = 0.0625;
+    private const SHARPEN_FACTOR_PER_STEP = 9 / 128;
 
     private const FREETYPE_PROBE_FONT = __DIR__ . '/../../Resources/Private/Font/nimbus.ttf';
 

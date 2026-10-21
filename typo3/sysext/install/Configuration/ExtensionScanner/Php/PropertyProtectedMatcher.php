@@ -1437,4 +1437,9 @@ return [
             'Breaking-101955-RemovedPublicMethodsRelatedToImageGeneration.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Imaging\GraphicalFunctions->im5fx_sharpenSteps' => [
+        'restFiles' => [
+            'Breaking-111189-V5SharpenSharpensOnTheScaleOfGd.rst',
+        ],
+    ],
 ];

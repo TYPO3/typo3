@@ -428,6 +428,21 @@ final class GraphicsCanvasTest extends UnitTestCase
         self::assertEqualsWithDelta(10, $changes[100] / $changes[10], 1);
     }
 
+    /**
+     * A kernel that does not add up to exactly 1 shifts every flat area by a
+     * grey level, because GD truncates the result.
+     */
+    #[Test]
+    public function sharpenLeavesFlatAreasAloneAtEveryStep(): void
+    {
+        for ($strength = 10; $strength <= 100; $strength += 10) {
+            $sharpened = self::hardEdge()->sharpen($strength);
+            foreach ([2, 5, 14, 17] as $x) {
+                self::assertSame(self::rgb(self::hardEdge(), $x, 10), self::rgb($sharpened, $x, 10), 'strength ' . $strength . ', x ' . $x);
+            }
+        }
+    }
+
     #[Test]
     public function sharpenTreatsAStrengthWithinAStepAlike(): void
     {

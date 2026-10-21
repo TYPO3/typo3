@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -136,5 +137,29 @@ final class GraphicalFunctionsTest extends UnitTestCase
         $subject->expects($this->once())->method('executeIdentifyCommandForImageFile')->with($file)->willReturn('200+0+0 400+0+0 png PNG');
         $result = $subject->imageMagickIdentify($file);
         self::assertEquals($expected, $result);
+    }
+
+    public static function v5SharpenStepsUpOnTheScaleOfGraphicsCanvasDataProvider(): iterable
+    {
+        yield 'no strength' => [0, ''];
+        yield 'weakest strength of step 1' => [1, ' -unsharp 1x2+0.25+0'];
+        yield 'end of step 1' => [10, ' -unsharp 1x2+0.25+0'];
+        yield 'start of step 2' => [11, ' -unsharp 1x2+0.5+0'];
+        yield 'step 4' => [40, ' -unsharp 1x2+1+0'];
+        yield 'step 10' => [100, ' -unsharp 1x2+2.5+0'];
+        yield 'beyond step 10' => [150, ' -unsharp 1x2+2.5+0'];
+    }
+
+    /**
+     * Step n is `-unsharp 1x2+(n*0.25)+0`, the scale GraphicsCanvas::sharpen()
+     * sharpens on, and step 1 is what GFX/sharpen applies.
+     */
+    #[DataProvider('v5SharpenStepsUpOnTheScaleOfGraphicsCanvasDataProvider')]
+    #[Test]
+    public function v5SharpenStepsUpOnTheScaleOfGraphicsCanvas(int $strength, string $expected): void
+    {
+        $subject = new \ReflectionClass(GraphicalFunctions::class)->newInstanceWithoutConstructor();
+
+        self::assertSame($expected, $subject->v5_sharpen($strength));
     }
 }
