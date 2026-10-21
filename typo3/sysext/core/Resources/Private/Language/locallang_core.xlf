@@ -783,6 +783,9 @@
       <trans-unit id="file_upload.notUploaded.extensionDisallowed">
         <source>"{0}" was not uploaded. The file extension "{1}" is not allowed.</source>
       </trans-unit>
+      <trans-unit id="file_upload.notUploaded.unreadable">
+        <source>"{0}" was not uploaded. It is a folder or cannot be read.</source>
+      </trans-unit>
       <trans-unit id="file_upload.uploadFailed">
         <source>Upload failed for "{0}"</source>
       </trans-unit>
