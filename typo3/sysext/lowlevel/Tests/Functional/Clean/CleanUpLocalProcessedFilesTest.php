@@ -231,7 +231,7 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
     {
         $missingBasePath = Environment::getPublicPath() . '/missing-storage/';
         mkdir($missingBasePath);
-        $storageUid = $this->get(StorageRepository::class)->createLocalStorage('missing-storage', $missingBasePath, 'absolute');
+        $storageUid = $this->get(StorageRepository::class)->addLocalStorage('missing-storage', $missingBasePath);
         rmdir($missingBasePath);
         $this->getConnectionPool()->getConnectionForTable('sys_file_processedfile')->insert(
             'sys_file_processedfile',
@@ -243,7 +243,8 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         $output = $this->commandTester->getDisplay();
         self::assertSame(Command::SUCCESS, $this->commandTester->getStatusCode());
         self::assertStringContainsString('Skipped offline storage "missing-storage" (UID ' . $storageUid . ')', $output);
-        self::assertStringContainsString($missingBasePath, $output);
+        // The base path is shown as configured, relative to the project path
+        self::assertStringContainsString('with base path "' . substr($missingBasePath, strlen(Environment::getProjectPath() . '/')) . '"', $output);
         self::assertStringContainsString('Deleted 4 processed files', $output);
         $remainingUids = $this->getConnectionPool()->getQueryBuilderForTable('sys_file_processedfile')
             ->select('uid')
