@@ -60,6 +60,7 @@ declare namespace TYPO3 {
     }
     export namespace FormEngine {
       export const moduleUrl: string;
+      export const contextualUrl: string;
       export const formName: string;
     }
     export namespace FormEngineInline {
