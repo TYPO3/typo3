@@ -694,6 +694,12 @@
       <trans-unit id="component.infobox.section.default.headline">
         <source>Default</source>
       </trans-unit>
+      <trans-unit id="component.infobox.section.links.headline">
+        <source>Links</source>
+      </trans-unit>
+      <trans-unit id="component.infobox.section.links.text">
+        <source>Links within the text are underlined, so they can be recognized without relying on the color.</source>
+      </trans-unit>
       <trans-unit id="component.infobox.section.withoutIcon.headline">
         <source>Without icon</source>
       </trans-unit>

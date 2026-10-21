@@ -63,6 +63,11 @@
     word-wrap: break-word;
     word-break: break-word;
     hyphens: auto;
+
+    a:where(:not(.btn)) {
+        color: inherit;
+        text-decoration: underline;
+    }
 }
 
 .callout-icon {
