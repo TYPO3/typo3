@@ -646,6 +646,26 @@ class Modal {
     this.initializeMarkupTrigger(document);
   }
 
+  /**
+   * The focused element, also inside same-origin frames: a modal is rendered in the top
+   * document, while the element that opened it usually sits in the module frame, where
+   * the dialog's own focus restoration does not reach.
+   */
+  private static getFocusedElement(ownerDocument: Document): HTMLElement | null {
+    let element = ownerDocument.activeElement;
+    while (element?.tagName === 'IFRAME') {
+      const frameDocument = (element as HTMLIFrameElement).contentDocument;
+      if (!frameDocument?.activeElement || frameDocument.activeElement === frameDocument.body) {
+        break;
+      }
+      element = frameDocument.activeElement;
+    }
+    if (!element || element === ownerDocument.body || typeof (element as HTMLElement).focus !== 'function') {
+      return null;
+    }
+    return element as HTMLElement;
+  }
+
   private static createModalResponseEventFromElement(element: HTMLElement, result: boolean): ModalResponseEvent | null {
     if (!element.dataset.eventName) {
       return null;
@@ -920,6 +940,7 @@ class Modal {
    */
   private generate(configuration: PartialConfiguration): ModalElement {
     const currentModal = document.createElement('typo3-backend-modal');
+    const returnFocusTo = Modal.getFocusedElement(document);
 
     currentModal.type = configuration.type;
     if (typeof configuration.content === 'string') {
@@ -969,6 +990,9 @@ class Modal {
         remountAlertContainer(this.currentModal);
       }
       currentModal.remove();
+      if (returnFocusTo?.isConnected) {
+        returnFocusTo.focus();
+      }
     });
 
     // When modal is opened/shown add it to Modal.instances and make it Modal.currentModal
