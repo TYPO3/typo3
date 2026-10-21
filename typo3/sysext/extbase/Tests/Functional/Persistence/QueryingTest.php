@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\CacheDataCollector;
@@ -180,16 +181,17 @@ final class QueryingTest extends FunctionalTestCase
     /**
      * Extbase selects the posts with the constraint `in("tags.name", [red, blue])` and the orderings
      * `"author.lastname"` and `"uid"`, ascending. It returns Beta, Epsilon, Alpha and Gamma, each post once, like the
-     * core. On PostgreSQL, Extbase throws "SELECT DISTINCT, ORDER BY expressions must appear in select list", see
-     * Forge #92514.
+     * core. On PostgreSQL and MySQL, Extbase throws because the ORDER BY column is not in the select list of the
+     * SELECT DISTINCT, see Forge #92514.
      *
      * @see findingPostsByTagNamesAndOrderingThemByTheirAuthorByCore()
      */
     #[Test]
     public function findingPostsByTagNamesAndOrderingThemByTheirAuthorByExtbase(): void
     {
-        if ($this->get(ConnectionPool::class)->getConnectionForTable('tx_blogexample_domain_model_post')->getDatabasePlatform() instanceof PostgreSQLPlatform) {
-            self::markTestSkipped('Extbase differs from core: on PostgreSQL it throws "SELECT DISTINCT, ORDER BY expressions must appear in select list".');
+        $platform = $this->get(ConnectionPool::class)->getConnectionForTable('tx_blogexample_domain_model_post')->getDatabasePlatform();
+        if ($platform instanceof PostgreSQLPlatform || $platform instanceof MySQLPlatform) {
+            self::markTestSkipped('Extbase differs from core: on PostgreSQL and MySQL it throws "ORDER BY expressions must appear in select list" for SELECT DISTINCT.');
         }
 
         // Given: five posts, two of them with the tags red and blue, one with the tag green
