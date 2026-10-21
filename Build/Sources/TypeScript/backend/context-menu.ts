@@ -155,6 +155,9 @@ export class ContextMenuElement extends LitElement {
   @queryAll('.context-menu') contextMenuElements: HTMLDivElement[];
   @queryAll('.context-menu-item') contextMenuItemElements: HTMLButtonElement[];
   private readonly rootIdentifier: string = 'root';
+  // A modal <dialog> makes everything outside of it inert, so the menu is rendered
+  // into a popover that is mounted into the topmost open dialog while it is shown.
+  private readonly popoverHost: HTMLDivElement = document.createElement('div');
 
   private focusFirstElement: boolean = false;
 
@@ -211,6 +214,8 @@ export class ContextMenuElement extends LitElement {
     window.addEventListener('resize', this.hide);
     document.addEventListener(ContextMenuEvent.open, this.show);
     document.addEventListener(ContextMenuEvent.close, this.hide);
+    document.addEventListener('typo3-modal-show', this.hide);
+    document.addEventListener('typo3-modal-hide', this.hide);
   }
 
   public override disconnectedCallback(): void {
@@ -218,6 +223,8 @@ export class ContextMenuElement extends LitElement {
     window.removeEventListener('resize', this.hide);
     document.removeEventListener(ContextMenuEvent.open, this.show);
     document.removeEventListener(ContextMenuEvent.close, this.hide);
+    document.removeEventListener('typo3-modal-show', this.hide);
+    document.removeEventListener('typo3-modal-hide', this.hide);
   }
 
   protected override updated(): void {
@@ -232,7 +239,10 @@ export class ContextMenuElement extends LitElement {
   }
 
   protected override createRenderRoot(): HTMLElement | ShadowRoot {
-    return this;
+    this.popoverHost.classList.add('context-menu-host');
+    this.popoverHost.setAttribute('popover', 'manual');
+    this.append(this.popoverHost);
+    return this.popoverHost;
   }
 
   protected override render() {
@@ -265,6 +275,7 @@ export class ContextMenuElement extends LitElement {
     this.uid = detail.uid;
     this.context = detail.context;
     this.eventSource = detail.eventSource;
+    this.mountPopoverHost();
 
     if (detail.originalEvent !== null) {
       const offset = this.calculateIframeOffset(detail.originalEvent.view, window);
@@ -295,10 +306,30 @@ export class ContextMenuElement extends LitElement {
       return;
     }
     this.open = false;
+    this.unmountPopoverHost();
     this.fetchTask.run();
     await this.updateComplete;
     this.eventSource?.focus();
   };
+
+  private mountPopoverHost(): void {
+    const openDialogs = document.querySelectorAll<HTMLDialogElement>('typo3-backend-modal > dialog[open]');
+    const target: HTMLElement = openDialogs.item(openDialogs.length - 1) ?? this;
+    if (this.popoverHost.matches(':popover-open')) {
+      this.popoverHost.hidePopover();
+    }
+    if (this.popoverHost.parentElement !== target) {
+      target.append(this.popoverHost);
+    }
+    this.popoverHost.showPopover();
+  }
+
+  private unmountPopoverHost(): void {
+    if (this.popoverHost.matches(':popover-open')) {
+      this.popoverHost.hidePopover();
+    }
+    this.append(this.popoverHost);
+  }
 
   private renderOverlay(): TemplateResult {
     return html`
@@ -594,7 +625,7 @@ export class ContextMenuElement extends LitElement {
   }
 
   private getElementFromNode(node: MenuItemInterface): HTMLElement | null {
-    return this.querySelector('[data-contextmenu-id="' + this.getNodeIdentifier(node) + '"]');
+    return this.renderRoot.querySelector<HTMLElement>('[data-contextmenu-id="' + this.getNodeIdentifier(node) + '"]');
   }
 
   private enhanceNodes(parentIdentifier: string, nodes: RawMenuItemInterface[]): MenuItemInterface[] {

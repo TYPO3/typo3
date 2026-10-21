@@ -3042,6 +3042,7 @@ typo3-backend-component-page-position-select>typo3-breadcrumb{padding:var(--wiza
 .card-danger{--typo3-card-color:var(--typo3-surface-container-danger-text);--typo3-card-bg:var(--typo3-surface-container-danger)}
 .card-notice{--typo3-card-color:var(--typo3-surface-container-notice-text);--typo3-card-bg:var(--typo3-surface-container-notice)}
 .card-default{--typo3-card-color:var(--typo3-surface-container-default-text);--typo3-card-bg:var(--typo3-surface-container-default)}
+.context-menu-host[popover]{background:transparent;border:0;color:inherit;height:auto;inset:0;margin:0;max-height:none;max-width:none;overflow:visible;padding:0;position:fixed;width:auto}
 .context-menu{background-color:var(--typo3-component-bg);border:var(--typo3-component-border-width) solid var(--typo3-component-border-color);border-radius:var(--typo3-component-border-radius);box-shadow:var(--typo3-component-box-shadow-flyout);color:var(--typo3-component-color);font-size:var(--typo3-component-font-size);inset-inline-start:0;line-height:var(--typo3-component-line-height);margin:0;max-height:calc(100% - 20px);max-width:calc(100% - 20px);overflow-y:auto;padding:2px;position:absolute;top:0;z-index:1000}
 .context-menu-overlay{background-color:transparent;inset:0;opacity:.1;position:fixed;z-index:1000}
 .context-menu-group{display:flex;flex-direction:column;gap:1px;list-style:none;margin:0;min-width:150px;padding:0;position:relative}
