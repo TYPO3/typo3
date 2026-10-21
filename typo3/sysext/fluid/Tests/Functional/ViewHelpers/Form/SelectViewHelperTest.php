@@ -26,6 +26,7 @@ use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers\UserDomainClass;
@@ -719,6 +720,104 @@ EOT;
             self::assertStringContainsString($expectedSelectedOption, $result);
         }
         self::assertSame(count($expectedSelectedOptions), substr_count($result, 'selected="selected"'));
+    }
+
+    public static function singleSelectBoundToCollectionPropertyRendersListNameDataProvider(): array
+    {
+        return [
+            'ObjectStorage' => ['objectStorage'],
+            'array' => ['array'],
+        ];
+    }
+
+    /**
+     * A select without "multiple" that is bound to a collection property submits its value as a list, as the
+     * checkbox ViewHelper does for such a property, so that property mapping receives a collection and not one uid.
+     */
+    #[DataProvider('singleSelectBoundToCollectionPropertyRendersListNameDataProvider')]
+    #[Test]
+    public function singleSelectBoundToCollectionPropertyRendersListName(string $collectionType): void
+    {
+        $user1 = new UserDomainClass(1, 'Ingmar', 'Schlecht');
+        $user2 = new UserDomainClass(2, 'Sebastian', 'Kurfuerst');
+        $selectedUsers = [$user2];
+        if ($collectionType === 'objectStorage') {
+            $selectedUsers = new ObjectStorage();
+            $selectedUsers->attach($user2);
+        }
+        $formObject = new \stdClass();
+        $formObject->someProperty = $selectedUsers;
+        $serverRequest = new ServerRequest()
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.select options="{options}" optionValueField="id" optionLabelField="firstName" property="someProperty" /></f:form>');
+        $view = new TemplateView($context);
+        $view->assign('formObject', $formObject);
+        $view->assign('options', [$user1, $user2]);
+        $result = $view->render();
+        self::assertStringContainsString('<select name="myFieldPrefix[myObjectName][someProperty][]"><option value="1">Ingmar</option>' . "\n" . '<option value="2" selected="selected">Sebastian</option>', $result);
+        self::assertStringContainsString('{&quot;myObjectName&quot;:{&quot;someProperty&quot;:[1]}}', $result);
+    }
+
+    #[Test]
+    public function singleSelectBoundToScalarPropertyRendersScalarName(): void
+    {
+        $formObject = new \stdClass();
+        $formObject->someProperty = 'value2';
+        $serverRequest = new ServerRequest()
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.select options="{value1: \'label1\', value2: \'label2\'}" property="someProperty" /></f:form>');
+        $view = new TemplateView($context);
+        $view->assign('formObject', $formObject);
+        $result = $view->render();
+        self::assertStringContainsString('<select name="myFieldPrefix[myObjectName][someProperty]"><option value="value1">label1</option>' . "\n" . '<option value="value2" selected="selected">label2</option>', $result);
+    }
+
+    #[Test]
+    public function singleSelectBoundToEmptyObjectStorageWithPrependedOptionRendersListName(): void
+    {
+        $formObject = new \stdClass();
+        $formObject->someProperty = new ObjectStorage();
+        $serverRequest = new ServerRequest()
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.select options="{options}" optionValueField="id" optionLabelField="firstName" property="someProperty" prependOptionLabel="-- Please select --" /></f:form>');
+        $view = new TemplateView($context);
+        $view->assign('formObject', $formObject);
+        $view->assign('options', [new UserDomainClass(1, 'Ingmar', 'Schlecht')]);
+        $result = $view->render();
+        self::assertStringContainsString('<select name="myFieldPrefix[myObjectName][someProperty][]"><option value="">-- Please select --</option>' . "\n" . '<option value="1">Ingmar</option>', $result);
+        self::assertStringContainsString('{&quot;myObjectName&quot;:{&quot;someProperty&quot;:[1]}}', $result);
+    }
+
+    /**
+     * A single object can be traversable, as the LazyLoadingProxy of a lazy 1:1 or n:1 relation is in TYPO3 v14.
+     * A list name would make property mapping fail on submit, so only an array or ObjectStorage gets one.
+     */
+    #[Test]
+    public function singleSelectBoundToSingleValuedTraversablePropertyRendersScalarName(): void
+    {
+        $formObject = new \stdClass();
+        $formObject->someProperty = new class implements \IteratorAggregate {
+            public function getIterator(): \Iterator
+            {
+                return new \ArrayIterator([]);
+            }
+        };
+        $serverRequest = new ServerRequest()
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.select options="{value1: \'label1\', value2: \'label2\'}" property="someProperty" /></f:form>');
+        $view = new TemplateView($context);
+        $view->assign('formObject', $formObject);
+        $result = $view->render();
+        self::assertStringContainsString('<select name="myFieldPrefix[myObjectName][someProperty]">', $result);
+        self::assertStringContainsString('{&quot;myObjectName&quot;:{&quot;someProperty&quot;:1}}', $result);
     }
 
     #[Test]
