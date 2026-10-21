@@ -12,6 +12,7 @@
  */
 
 import DragUploader from '@typo3/backend/drag-uploader.js';
+import Modal, { type ModalElement } from '@typo3/backend/modal.js';
 import Notification from '@typo3/backend/notification.js';
 import { expect, waitUntil } from '@open-wc/testing';
 import {
@@ -32,13 +33,26 @@ describe('@typo3/backend/drag-uploader', (): void => {
   let infoStub: SinonStub;
   let errorStub: SinonStub;
   let showMessageStub: SinonStub;
+  let modalStub: SinonStub;
+  let dismissStub: SinonStub;
+  let modal: ModalElement | null;
+  let existingFileNames: string[];
+  let uploadFinishedCount: number;
+
+  const countUploadFinished = (): void => {
+    uploadFinishedCount++;
+  };
+
+  const provideModuleImport = (event: Event): void => {
+    (event as CustomEvent<{ importPromise: Promise<unknown> | null }>).detail.importPromise = Promise.resolve();
+  };
 
   // The uploader creates another request to detect upload progress support, it is never sent
   const uploadRequests = (): SinonFakeXMLHttpRequest[] => requests.filter(
     (request: SinonFakeXMLHttpRequest): boolean => request.url === '/file-process'
   );
 
-  const upload = async (fileNames: string[]): Promise<void> => {
+  const upload = async (fileNames: string[], existing: string[] = []): Promise<void> => {
     // The uploader is created by hand, the class t3js-drag-uploader would make DragUploader.init() create a second one
     const element = document.createElement('div');
     element.dataset.dropzoneTarget = '#drag-uploader-test-target';
@@ -46,9 +60,24 @@ describe('@typo3/backend/drag-uploader', (): void => {
     element.dataset.targetFolder = '1:/';
     element.dataset.reloadUrl = '/reload';
     container.append(element);
+    existingFileNames = existing;
     const uploader = new DragUploader(element);
-    uploader.processFiles(fileNames.map((fileName: string): File => new File(['x'], fileName)));
-    await waitUntil((): boolean => uploadRequests().length === fileNames.length);
+    uploader.processFiles([...fileNames, ...existing].map((fileName: string): File => new File(['x'], fileName)));
+    await waitUntil((): boolean => uploadRequests().length === fileNames.length && (existing.length === 0 || modal !== null));
+  };
+
+  const chooseAction = (fileName: string, action: string): void => {
+    const select = modal.querySelector<HTMLSelectElement>(`.t3js-actions[data-override="${existingFileNames.indexOf(fileName)}"]`);
+    select.value = action;
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+  };
+
+  const clickModalButton = async (name: string): Promise<void> => {
+    const button = document.createElement('button');
+    button.name = name;
+    modal.append(button);
+    button.dispatchEvent(new CustomEvent('button.clicked', { bubbles: true }));
+    await new Promise((resolve): number => window.setTimeout(resolve, 0));
   };
 
   const respond = async (index: number, status: number, body: object): Promise<void> => {
@@ -85,9 +114,13 @@ describe('@typo3/backend/drag-uploader', (): void => {
       '<div><table id="drag-uploader-test-filelist"><thead><tr><th></th><th></th></tr></thead><tbody></tbody></table></div>';
     document.body.append(container);
 
-    fetchStub = stub(window, 'fetch').callsFake(
-      async (): Promise<Response> => new Response('{}', { headers: { 'Content-Type': 'application/json' } })
-    );
+    fetchStub = stub(window, 'fetch').callsFake(async (input: RequestInfo | URL): Promise<Response> => {
+      const fileName = new URL(input instanceof Request ? input.url : String(input), window.location.href).searchParams.get('fileName');
+      const existingFile = existingFileNames.includes(fileName)
+        ? { uid: 1, name: fileName, thumbUrl: '', icon: '', size: 1, mtime: 0 }
+        : {};
+      return new Response(JSON.stringify(existingFile), { headers: { 'Content-Type': 'application/json' } });
+    });
     requests = [];
     fakeXhr = useFakeXMLHttpRequest();
     fakeXhr.onCreate = (request: SinonFakeXMLHttpRequest): void => {
@@ -96,9 +129,31 @@ describe('@typo3/backend/drag-uploader', (): void => {
     infoStub = stub(Notification, 'info');
     errorStub = stub(Notification, 'error');
     showMessageStub = stub(Notification, 'showMessage');
+
+    modal = null;
+    existingFileNames = [];
+    modalStub = stub(Modal, 'advanced').callsFake((configuration): ModalElement => {
+      modal = document.createElement('div') as unknown as ModalElement;
+      modal.append(configuration.content as HTMLElement);
+      modal.hideModal = (): void => {
+        modal.dispatchEvent(new CustomEvent('typo3-modal-hidden'));
+      };
+      container.append(modal);
+      return modal;
+    });
+    dismissStub = stub(Modal, 'dismiss').callsFake((): void => modal.hideModal());
+    // Answers the module import of the top level window, the uploader loads the datetime element for the modal
+    document.addEventListener('typo3:import-javascript-module', provideModuleImport);
+
+    uploadFinishedCount = 0;
+    document.addEventListener('typo3:drag-uploader:upload-finished', countUploadFinished);
   });
 
   afterEach((): void => {
+    document.removeEventListener('typo3:drag-uploader:upload-finished', countUploadFinished);
+    document.removeEventListener('typo3:import-javascript-module', provideModuleImport);
+    dismissStub.restore();
+    modalStub.restore();
     infoStub.restore();
     errorStub.restore();
     showMessageStub.restore();
@@ -139,5 +194,56 @@ describe('@typo3/backend/drag-uploader', (): void => {
 
     expect(infoStub.callCount).to.equal(1);
     expect(infoStub.firstCall.args[0]).to.equal('file_upload.reload.filelist');
+  });
+
+  it('offers to reload the file list when the other file of a batch was skipped', async (): Promise<void> => {
+    await upload(['new.txt'], ['existing.txt']);
+    await respond(0, 200, successResponse('new.txt'));
+    await clickModalButton('continue');
+
+    expect(infoStub.callCount).to.equal(1);
+    expect(uploadFinishedCount).to.equal(1);
+  });
+
+  it('finishes the upload after the last file chosen to upload in the modal', async (): Promise<void> => {
+    await upload([], ['skipped.txt', 'renamed.txt']);
+    chooseAction('renamed.txt', 'rename');
+    await clickModalButton('continue');
+
+    expect(uploadFinishedCount).to.equal(0);
+
+    await respond(0, 200, successResponse('renamed_01.txt'));
+
+    expect(infoStub.callCount).to.equal(1);
+    expect(uploadFinishedCount).to.equal(1);
+  });
+
+  it('finishes the upload when every file is skipped', async (): Promise<void> => {
+    await upload([], ['existing.txt']);
+    await clickModalButton('continue');
+
+    expect(infoStub.callCount).to.equal(0);
+    expect(uploadFinishedCount).to.equal(1);
+  });
+
+  it('finishes the upload when the modal is cancelled', async (): Promise<void> => {
+    await upload(['new.txt'], ['existing.txt']);
+    await clickModalButton('cancel');
+
+    expect(uploadFinishedCount).to.equal(0);
+
+    await respond(0, 200, successResponse('new.txt'));
+
+    expect(infoStub.callCount).to.equal(1);
+    expect(uploadFinishedCount).to.equal(1);
+  });
+
+  it('finishes the upload when the modal is closed without a choice', async (): Promise<void> => {
+    await upload([], ['existing.txt']);
+    modal.hideModal();
+    await new Promise((resolve): number => window.setTimeout(resolve, 0));
+
+    expect(infoStub.callCount).to.equal(0);
+    expect(uploadFinishedCount).to.equal(1);
   });
 });
