@@ -12,12 +12,15 @@
  */
 
 import FormEngine from '@typo3/backend/form-engine';
-import Modal from '@typo3/backend/modal';
+import type { Consumable } from '@typo3/backend/event/consumable';
+import type TriggerRequest from '@typo3/backend/event/trigger-request';
+import Modal, { type ModalElement } from '@typo3/backend/modal';
 import Severity from '@typo3/backend/severity';
 import DocumentService from '@typo3/core/document-service';
-import { topWindow } from '@typo3/core/utility/top-window';
+import { topDocument, topWindow } from '@typo3/core/utility/top-window';
 import '@typo3/backend/element/icon-element';
 import labels from '~labels/backend.alt_doc';
+import coreCommonLabels from '~labels/core.common';
 
 type ContextualRecordEditOptions = {
   justSaved?: boolean;
@@ -38,6 +41,8 @@ class ContextualRecordEdit {
   private closeButton: HTMLButtonElement | null = null;
   private fullscreenButton: HTMLAnchorElement | null = null;
   private readonly options: ContextualRecordEditOptions;
+  // "<table>:<uid>" of the edited record
+  private readonly record: string = ContextualRecordEdit.resolveRecord();
 
   constructor(options: ContextualRecordEditOptions = {}) {
     this.options = options;
@@ -48,11 +53,22 @@ class ContextualRecordEdit {
     });
   }
 
+  private static resolveRecord(): string {
+    for (const key of new URL(window.location.href).searchParams.keys()) {
+      const match = key.match(/^edit\[([^\]]+)]\[(\d+)]$/);
+      if (match !== null) {
+        return match[1] + ':' + match[2];
+      }
+    }
+    return '';
+  }
+
   private initialize(): void {
     this.initializeCloseButton();
     this.initializeFullscreenButton();
     this.initializeEscapeKey();
     this.initializeParentMessages();
+    this.initializeNavigationGuard();
     this.handlePostSaveState();
     if (!this.options.justSaved) {
       this.focusFirstElement();
@@ -74,40 +90,99 @@ class ContextualRecordEdit {
     }
     this.fullscreenButton.addEventListener('click', (e: Event): void => {
       e.preventDefault();
-      const navigate = (): void => {
-        // Clear FormEngine's dirty tracking so it doesn't show its own confirmation after ours
-        document.querySelectorAll('.has-change').forEach((el) => el.classList.remove('has-change'));
-        // Navigate the content frame directly (same-origin access) — using
-        // postMessage for this failed silently in Firefox.
+      // Navigate the content frame directly (same-origin access), using
+      // postMessage for this failed silently in Firefox. The navigation
+      // guard asks to discard unsaved changes and closes the sheet.
+      FormEngine.ready().then((): void => {
         topWindow.TYPO3?.Backend?.ContentContainer?.setUrl(this.fullscreenButton.href);
-        // Tell the parent to close the modal
-        window.parent.postMessage(
-          { actionName: 'typo3:editform:navigate' },
-          window.location.origin
-        );
-      };
-      if (FormEngine.hasChange()) {
-        Modal.confirm(
-          labels.get('label.confirm.close_without_save.title'),
-          labels.get('label.confirm.close_without_save.content'),
-          Severity.warning,
-          [
-            {
-              text: labels.get('buttons.confirm.close_without_save.no'),
-              btnClass: 'btn-default',
-              trigger: (_e, modal): void => { modal.hideModal(); },
-            },
-            {
-              text: labels.get('buttons.confirm.close_without_save.yes'),
-              btnClass: 'btn-warning',
-              trigger: (_e, modal): void => { modal.hideModal(); navigate(); },
-            },
-          ]
-        );
-      } else {
-        navigate();
-      }
+      });
     });
+  }
+
+  /**
+   * Navigating the content frame while the sheet is open (e.g. via a context
+   * menu action) would load the target behind the sheet. The sheet therefore
+   * replaces FormEngine as navigation guard and closes itself instead.
+   */
+  private initializeNavigationGuard(): void {
+    const consumerScope = topWindow.TYPO3?.Backend?.consumerScope;
+    if (!consumerScope) {
+      return;
+    }
+    const navigationGuard: Consumable = {
+      consume: (interactionRequest: TriggerRequest): Promise<void> | null => {
+        if (!interactionRequest.concernsTypes(['typo3.setUrl'])) {
+          return null;
+        }
+        // Stays pending if the user keeps editing, which cancels the navigation
+        return new Promise<void>((resolve): void => {
+          if (interactionRequest.concernsTypes(['typo3.recordCommit'])) {
+            // A record commit returns to the current module, so the sheet stays
+            // open and is reloaded once the commit is done to show its result.
+            this.confirmDiscardChanges((): void => {
+              topDocument.addEventListener('typo3-module-loaded', () => this.reload(), { once: true });
+              resolve();
+            });
+            return;
+          }
+          this.confirmDiscardChanges((): void => {
+            resolve();
+            window.parent.postMessage(
+              { actionName: 'typo3:editform:navigate' },
+              window.location.origin
+            );
+          });
+        });
+      },
+    };
+    let pageHidden = false;
+    window.addEventListener('pagehide', (): void => {
+      pageHidden = true;
+      consumerScope.detach(navigationGuard);
+    }, { once: true });
+    FormEngine.ready().then((): void => {
+      if (pageHidden) {
+        return;
+      }
+      consumerScope.detach(FormEngine);
+      consumerScope.attach(navigationGuard);
+    });
+  }
+
+  private reload(): void {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('justSaved');
+    window.location.replace(url.toString());
+  }
+
+  private confirmDiscardChanges(onDiscard: () => void, onSave: (() => void) | null = null): void {
+    if (!FormEngine.hasChange()) {
+      onDiscard();
+      return;
+    }
+    Modal.confirm(
+      labels.get('label.confirm.close_without_save.title'),
+      labels.get('label.confirm.close_without_save.content'),
+      Severity.warning,
+      [
+        {
+          text: labels.get('buttons.confirm.close_without_save.no'),
+          btnClass: 'btn-default',
+          trigger: (_e, modal): void => { modal.hideModal(); },
+        },
+        {
+          text: labels.get('buttons.confirm.close_without_save.yes'),
+          btnClass: 'btn-default',
+          trigger: (_e, modal): void => { modal.hideModal(); onDiscard(); },
+        },
+        ...(onSave !== null && document.querySelector('.has-error') === null ? [{
+          text: coreCommonLabels.get('save'),
+          btnClass: 'btn-primary',
+          active: true,
+          trigger: (_e: Event, modal: ModalElement): void => { modal.hideModal(); onSave(); },
+        }] : []),
+      ]
+    );
   }
 
   private initializeEscapeKey(): void {
@@ -127,6 +202,11 @@ class ContextualRecordEdit {
       if (event.data?.actionName === 'typo3:editform:requestclose') {
         this.requestClose();
       }
+      if (event.data?.actionName === 'typo3:editform:reload') {
+        // Saving the stale form of the record that was just saved elsewhere would revert that change
+        const canSave = event.data.savedRecord !== this.record;
+        this.confirmDiscardChanges((): void => this.reload(), canSave ? (): void => FormEngine.saveDocument() : null);
+      }
     });
   }
 
@@ -139,6 +219,7 @@ class ContextualRecordEdit {
         {
           actionName: 'typo3:editform:saved',
           recordTitle: this.options.savedRecordTitle ?? '',
+          record: this.record,
         },
         window.location.origin
       );

@@ -41,8 +41,11 @@ test('Switch between languages in "Open in new window"', async ({
           TYPO3: { Backend: { ContentContainer: { setUrl: (u: string) => void } } };
         };
         w.TYPO3.Backend.ContentContainer.setUrl(url);
-        window.postMessage({ actionName: 'typo3:editform:navigate' }, window.location.origin);
       }, fullEditUrl);
+      // The sheet only accepts messages from its own iframe
+      await page.frame({ name: 'modal_frame' }).evaluate(() => {
+        window.parent.postMessage({ actionName: 'typo3:editform:navigate' }, window.location.origin);
+      });
       await formEngineReady();
 
       await expect(page.locator('typo3-backend-modal')).toHaveCount(0);

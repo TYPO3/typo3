@@ -15,6 +15,8 @@ import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { SeverityEnum } from './enum/severity';
 import AjaxDataHandler from './ajax-data-handler';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import ClientRequest from './event/client-request';
+import { isContextualRecordEditOpen, openContextualRecordEdit } from './element/contextual-record-edit-trigger';
 import InfoWindow from './info-window';
 import Modal, { type ModalElement } from './modal';
 import ModuleMenu from './module-menu';
@@ -52,13 +54,17 @@ class ContextMenuActions {
       overrideVals = '&overrideVals[pages][sys_language_uid]=' + pageLanguageId;
     }
 
-    Viewport.ContentContainer.setUrl(
-      topWindow.TYPO3.settings.FormEngine.moduleUrl
-      + '&edit[' + table + '][' + uid + ']=edit'
+    const editParameters = '&edit[' + table + '][' + uid + ']=edit'
       + overrideVals
       + '&module=' + encodeURIComponent(topWindow.TYPO3.ModuleMenu.App.getCurrentModule())
-      + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
-    );
+      + '&returnUrl=' + ContextMenuActions.getReturnUrl();
+
+    if (isContextualRecordEditOpen()) {
+      openContextualRecordEdit(topWindow.TYPO3.settings.FormEngine.contextualUrl + editParameters, table);
+      return;
+    }
+
+    Viewport.ContentContainer.setUrl(topWindow.TYPO3.settings.FormEngine.moduleUrl + editParameters);
   }
 
   public static viewRecord(table: string, uid: number, dataset: DOMStringMap): void {
@@ -197,12 +203,21 @@ class ContextMenuActions {
     }
   }
 
+  /**
+   * Marks a navigation that commits a record and returns to the current
+   * module, so it is not handled as leaving the current view.
+   */
+  public static createRecordCommitRequest(): ClientRequest {
+    return new ClientRequest('typo3.recordCommit');
+  }
+
   public static disableRecord(table: string, uid: number, dataset: DOMStringMap): void {
     const disableFieldName = dataset.disableField || 'hidden';
     Viewport.ContentContainer.setUrl(
       topWindow.TYPO3.settings.RecordCommit.moduleUrl
       + '&data[' + table + '][' + uid + '][' + disableFieldName + ']=1'
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
+      ContextMenuActions.createRecordCommitRequest(),
     );
   }
 
@@ -212,6 +227,7 @@ class ContextMenuActions {
       topWindow.TYPO3.settings.RecordCommit.moduleUrl
       + '&data[' + table + '][' + uid + '][' + disableFieldName + ']=0'
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
+      ContextMenuActions.createRecordCommitRequest(),
     );
   }
 
@@ -220,6 +236,7 @@ class ContextMenuActions {
       topWindow.TYPO3.settings.RecordCommit.moduleUrl
       + '&data[' + table + '][' + uid + '][nav_hide]=0'
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
+      ContextMenuActions.createRecordCommitRequest(),
     );
   }
 
@@ -228,6 +245,7 @@ class ContextMenuActions {
       topWindow.TYPO3.settings.RecordCommit.moduleUrl
       + '&data[' + table + '][' + uid + '][nav_hide]=1'
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
+      ContextMenuActions.createRecordCommitRequest(),
     );
   }
 
