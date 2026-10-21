@@ -1472,7 +1472,7 @@ export class DashboardWidget extends LitElement {
     this.fetchTask.run();
   }
 
-  private handleRemove(event: Event): void {
+  private handleRemove(): void {
     const modal = Modal.confirm(
       labels.get('widget.remove.confirm.title'),
       labels.get('widget.remove.confirm.message'),
@@ -1497,11 +1497,6 @@ export class DashboardWidget extends LitElement {
         this.dispatchEvent(new DashboardWidgetRemoveEvent(this.identifier));
       }
       modal.hideModal();
-    });
-
-    const trigger = event.currentTarget as HTMLButtonElement;
-    modal.addEventListener('typo3-modal-hide', (): void => {
-      trigger?.focus();
     });
   }
 }
