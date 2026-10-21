@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 use TYPO3Fluid\Fluid\Core\ViewHelper\MissingArgumentException;
@@ -64,6 +65,11 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
         if ($this->arguments['multiple']) {
             $this->tag->addAttribute('multiple', 'multiple');
             $name .= '[]';
+        } elseif ($this->isObjectAccessorMode()) {
+            $propertyValue = $this->getPropertyValue();
+            if (is_array($propertyValue) || $propertyValue instanceof ObjectStorage) {
+                $name .= '[]';
+            }
         }
         $this->tag->addAttribute('name', $name);
         $options = $this->getOptions();
