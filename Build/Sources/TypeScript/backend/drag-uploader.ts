@@ -117,6 +117,7 @@ export default class DragUploader {
   private readonly browserCapabilities: { fileReader: boolean; DnD: boolean; Progress: boolean };
   private readonly dropZoneInsertBefore: boolean;
   private queueLength: number;
+  private hasSucceededUpload: boolean = false;
   private readonly defaultAction: Action;
   private manuallyTriggered: boolean;
 
@@ -405,6 +406,7 @@ export default class DragUploader {
     }
 
     this.queueLength = validFiles.length;
+    this.hasSucceededUpload = false;
 
     if (this.fileList.parentElement.hasAttribute('hidden')) {
       // Show the filelist (table)
@@ -482,9 +484,12 @@ export default class DragUploader {
   /**
    * Decrements the queue and renders a flash message if queue is empty
    */
-  public decrementQueueLength(messages?: FlashMessage[]): void {
+  public decrementQueueLength(messages?: FlashMessage[], uploadSucceeded: boolean = false): void {
     if (this.queueLength > 0) {
       this.queueLength--;
+      if (uploadSucceeded) {
+        this.hasSucceededUpload = true;
+      }
       if (this.queueLength === 0) {
         document.dispatchEvent(new CustomEvent(uploadFinishedEventName));
 
@@ -495,7 +500,7 @@ export default class DragUploader {
           }
         }
 
-        if (this.reloadUrl) {
+        if (this.reloadUrl && this.hasSucceededUpload) {
           // After 5 seconds (when flash messages have disappeared), provide the user the option to reload the module
           setTimeout(() => {
             Notification.info(
@@ -876,7 +881,7 @@ class FileQueueItem {
    */
   public uploadSuccess(data: { upload?: UploadedFile[], messages?: FlashMessage[] }): void {
     if (data.upload) {
-      this.dragUploader.decrementQueueLength(data.messages);
+      this.dragUploader.decrementQueueLength(data.messages, true);
       this.row.setAttribute('data-type', 'file');
       this.row.setAttribute('data-file-uid', String(data.upload[0].uid));
       this.fileName.textContent = data.upload[0].name;
