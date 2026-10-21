@@ -1,6 +1,21 @@
 //
 // Context Menu
 //
+.context-menu-host[popover] {
+    position: fixed;
+    inset: 0;
+    width: auto;
+    height: auto;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: visible;
+    color: inherit;
+    background: transparent;
+}
+
 .context-menu {
     font-size: var(--typo3-component-font-size);
     line-height: var(--typo3-component-line-height);
