@@ -7,6 +7,20 @@
       "sprite": "sprites/actions.svg#actions-accessibility",
       "bidi": false
     },
+    "actions-alarm-slash": {
+      "identifier": "actions-alarm-slash",
+      "category": "actions",
+      "svg": "svgs/actions/actions-alarm-slash.svg",
+      "sprite": "sprites/actions.svg#actions-alarm-slash",
+      "bidi": false
+    },
+    "actions-alarm": {
+      "identifier": "actions-alarm",
+      "category": "actions",
+      "svg": "svgs/actions/actions-alarm.svg",
+      "sprite": "sprites/actions.svg#actions-alarm",
+      "bidi": false
+    },
     "actions-approve": {
       "identifier": "actions-approve",
       "category": "actions",
@@ -236,6 +250,13 @@
       "category": "actions",
       "svg": "svgs/actions/actions-aspect-ratio.svg",
       "sprite": "sprites/actions.svg#actions-aspect-ratio",
+      "bidi": false
+    },
+    "actions-at": {
+      "identifier": "actions-at",
+      "category": "actions",
+      "svg": "svgs/actions/actions-at.svg",
+      "sprite": "sprites/actions.svg#actions-at",
       "bidi": false
     },
     "actions-badge": {
@@ -539,6 +560,20 @@
       "sprite": "sprites/actions.svg#actions-bullhorn",
       "bidi": false
     },
+    "actions-calculator": {
+      "identifier": "actions-calculator",
+      "category": "actions",
+      "svg": "svgs/actions/actions-calculator.svg",
+      "sprite": "sprites/actions.svg#actions-calculator",
+      "bidi": false
+    },
+    "actions-calendar-add": {
+      "identifier": "actions-calendar-add",
+      "category": "actions",
+      "svg": "svgs/actions/actions-calendar-add.svg",
+      "sprite": "sprites/actions.svg#actions-calendar-add",
+      "bidi": false
+    },
     "actions-calendar-alternative": {
       "identifier": "actions-calendar-alternative",
       "category": "actions",
@@ -546,11 +581,39 @@
       "sprite": "sprites/actions.svg#actions-calendar-alternative",
       "bidi": false
     },
+    "actions-calendar-check": {
+      "identifier": "actions-calendar-check",
+      "category": "actions",
+      "svg": "svgs/actions/actions-calendar-check.svg",
+      "sprite": "sprites/actions.svg#actions-calendar-check",
+      "bidi": false
+    },
+    "actions-calendar-clock": {
+      "identifier": "actions-calendar-clock",
+      "category": "actions",
+      "svg": "svgs/actions/actions-calendar-clock.svg",
+      "sprite": "sprites/actions.svg#actions-calendar-clock",
+      "bidi": false
+    },
+    "actions-calendar-remove": {
+      "identifier": "actions-calendar-remove",
+      "category": "actions",
+      "svg": "svgs/actions/actions-calendar-remove.svg",
+      "sprite": "sprites/actions.svg#actions-calendar-remove",
+      "bidi": false
+    },
     "actions-calendar": {
       "identifier": "actions-calendar",
       "category": "actions",
       "svg": "svgs/actions/actions-calendar.svg",
       "sprite": "sprites/actions.svg#actions-calendar",
+      "bidi": false
+    },
+    "actions-camera": {
+      "identifier": "actions-camera",
+      "category": "actions",
+      "svg": "svgs/actions/actions-camera.svg",
+      "sprite": "sprites/actions.svg#actions-camera",
       "bidi": false
     },
     "actions-canvas": {
@@ -651,6 +714,34 @@
       "sprite": "sprites/actions.svg#actions-certificate",
       "bidi": false
     },
+    "actions-chart-area": {
+      "identifier": "actions-chart-area",
+      "category": "actions",
+      "svg": "svgs/actions/actions-chart-area.svg",
+      "sprite": "sprites/actions.svg#actions-chart-area",
+      "bidi": false
+    },
+    "actions-chart-bar": {
+      "identifier": "actions-chart-bar",
+      "category": "actions",
+      "svg": "svgs/actions/actions-chart-bar.svg",
+      "sprite": "sprites/actions.svg#actions-chart-bar",
+      "bidi": false
+    },
+    "actions-chart-line": {
+      "identifier": "actions-chart-line",
+      "category": "actions",
+      "svg": "svgs/actions/actions-chart-line.svg",
+      "sprite": "sprites/actions.svg#actions-chart-line",
+      "bidi": false
+    },
+    "actions-chart-pie": {
+      "identifier": "actions-chart-pie",
+      "category": "actions",
+      "svg": "svgs/actions/actions-chart-pie.svg",
+      "sprite": "sprites/actions.svg#actions-chart-pie",
+      "bidi": false
+    },
     "actions-chat": {
       "identifier": "actions-chat",
       "category": "actions",
@@ -684,6 +775,13 @@
       "category": "actions",
       "svg": "svgs/actions/actions-check-circle.svg",
       "sprite": "sprites/actions.svg#actions-check-circle",
+      "bidi": false
+    },
+    "actions-check-double": {
+      "identifier": "actions-check-double",
+      "category": "actions",
+      "svg": "svgs/actions/actions-check-double.svg",
+      "sprite": "sprites/actions.svg#actions-check-double",
       "bidi": false
     },
     "actions-check-square-alt": {
@@ -791,6 +889,13 @@
       "sprite": "sprites/actions.svg#actions-chevron-up",
       "bidi": false
     },
+    "actions-circle-dashed": {
+      "identifier": "actions-circle-dashed",
+      "category": "actions",
+      "svg": "svgs/actions/actions-circle-dashed.svg",
+      "sprite": "sprites/actions.svg#actions-circle-dashed",
+      "bidi": false
+    },
     "actions-circle-full": {
       "identifier": "actions-circle-full",
       "category": "actions",
@@ -840,11 +945,60 @@
       "sprite": "sprites/actions.svg#actions-clock",
       "bidi": false
     },
+    "actions-close-badge-alt": {
+      "identifier": "actions-close-badge-alt",
+      "category": "actions",
+      "svg": "svgs/actions/actions-close-badge-alt.svg",
+      "sprite": "sprites/actions.svg#actions-close-badge-alt",
+      "bidi": false
+    },
+    "actions-close-badge": {
+      "identifier": "actions-close-badge",
+      "category": "actions",
+      "svg": "svgs/actions/actions-close-badge.svg",
+      "sprite": "sprites/actions.svg#actions-close-badge",
+      "bidi": false
+    },
+    "actions-close-circle-alt": {
+      "identifier": "actions-close-circle-alt",
+      "category": "actions",
+      "svg": "svgs/actions/actions-close-circle-alt.svg",
+      "sprite": "sprites/actions.svg#actions-close-circle-alt",
+      "bidi": false
+    },
+    "actions-close-circle": {
+      "identifier": "actions-close-circle",
+      "category": "actions",
+      "svg": "svgs/actions/actions-close-circle.svg",
+      "sprite": "sprites/actions.svg#actions-close-circle",
+      "bidi": false
+    },
+    "actions-close-square-alt": {
+      "identifier": "actions-close-square-alt",
+      "category": "actions",
+      "svg": "svgs/actions/actions-close-square-alt.svg",
+      "sprite": "sprites/actions.svg#actions-close-square-alt",
+      "bidi": false
+    },
+    "actions-close-square": {
+      "identifier": "actions-close-square",
+      "category": "actions",
+      "svg": "svgs/actions/actions-close-square.svg",
+      "sprite": "sprites/actions.svg#actions-close-square",
+      "bidi": false
+    },
     "actions-close": {
       "identifier": "actions-close",
       "category": "actions",
       "svg": "svgs/actions/actions-close.svg",
       "sprite": "sprites/actions.svg#actions-close",
+      "bidi": false
+    },
+    "actions-closed-captioning": {
+      "identifier": "actions-closed-captioning",
+      "category": "actions",
+      "svg": "svgs/actions/actions-closed-captioning.svg",
+      "sprite": "sprites/actions.svg#actions-closed-captioning",
       "bidi": false
     },
     "actions-cloud-check": {
@@ -978,6 +1132,13 @@
       "category": "actions",
       "svg": "svgs/actions/actions-cog.svg",
       "sprite": "sprites/actions.svg#actions-cog",
+      "bidi": false
+    },
+    "actions-command": {
+      "identifier": "actions-command",
+      "category": "actions",
+      "svg": "svgs/actions/actions-command.svg",
+      "sprite": "sprites/actions.svg#actions-command",
       "bidi": false
     },
     "actions-comment": {
@@ -1209,6 +1370,13 @@
       "category": "actions",
       "svg": "svgs/actions/actions-dice.svg",
       "sprite": "sprites/actions.svg#actions-dice",
+      "bidi": false
+    },
+    "actions-disapprove": {
+      "identifier": "actions-disapprove",
+      "category": "actions",
+      "svg": "svgs/actions/actions-disapprove.svg",
+      "sprite": "sprites/actions.svg#actions-disapprove",
       "bidi": false
     },
     "actions-discard": {
@@ -1456,6 +1624,41 @@
       "sprite": "sprites/actions.svg#actions-eye",
       "bidi": false
     },
+    "actions-eyedropper": {
+      "identifier": "actions-eyedropper",
+      "category": "actions",
+      "svg": "svgs/actions/actions-eyedropper.svg",
+      "sprite": "sprites/actions.svg#actions-eyedropper",
+      "bidi": false
+    },
+    "actions-face-frown": {
+      "identifier": "actions-face-frown",
+      "category": "actions",
+      "svg": "svgs/actions/actions-face-frown.svg",
+      "sprite": "sprites/actions.svg#actions-face-frown",
+      "bidi": false
+    },
+    "actions-face-neutral": {
+      "identifier": "actions-face-neutral",
+      "category": "actions",
+      "svg": "svgs/actions/actions-face-neutral.svg",
+      "sprite": "sprites/actions.svg#actions-face-neutral",
+      "bidi": false
+    },
+    "actions-face-smile-add": {
+      "identifier": "actions-face-smile-add",
+      "category": "actions",
+      "svg": "svgs/actions/actions-face-smile-add.svg",
+      "sprite": "sprites/actions.svg#actions-face-smile-add",
+      "bidi": false
+    },
+    "actions-face-smile": {
+      "identifier": "actions-face-smile",
+      "category": "actions",
+      "svg": "svgs/actions/actions-face-smile.svg",
+      "sprite": "sprites/actions.svg#actions-face-smile",
+      "bidi": false
+    },
     "actions-file-add": {
       "identifier": "actions-file-add",
       "category": "actions",
@@ -1596,6 +1799,13 @@
       "sprite": "sprites/actions.svg#actions-file",
       "bidi": false
     },
+    "actions-filter-close": {
+      "identifier": "actions-filter-close",
+      "category": "actions",
+      "svg": "svgs/actions/actions-filter-close.svg",
+      "sprite": "sprites/actions.svg#actions-filter-close",
+      "bidi": false
+    },
     "actions-filter": {
       "identifier": "actions-filter",
       "category": "actions",
@@ -1603,11 +1813,67 @@
       "sprite": "sprites/actions.svg#actions-filter",
       "bidi": false
     },
+    "actions-fingerprint": {
+      "identifier": "actions-fingerprint",
+      "category": "actions",
+      "svg": "svgs/actions/actions-fingerprint.svg",
+      "sprite": "sprites/actions.svg#actions-fingerprint",
+      "bidi": false
+    },
+    "actions-flag-checkered": {
+      "identifier": "actions-flag-checkered",
+      "category": "actions",
+      "svg": "svgs/actions/actions-flag-checkered.svg",
+      "sprite": "sprites/actions.svg#actions-flag-checkered",
+      "bidi": false
+    },
+    "actions-flag": {
+      "identifier": "actions-flag",
+      "category": "actions",
+      "svg": "svgs/actions/actions-flag.svg",
+      "sprite": "sprites/actions.svg#actions-flag",
+      "bidi": false
+    },
+    "actions-flask": {
+      "identifier": "actions-flask",
+      "category": "actions",
+      "svg": "svgs/actions/actions-flask.svg",
+      "sprite": "sprites/actions.svg#actions-flask",
+      "bidi": false
+    },
+    "actions-flip-horizontal": {
+      "identifier": "actions-flip-horizontal",
+      "category": "actions",
+      "svg": "svgs/actions/actions-flip-horizontal.svg",
+      "sprite": "sprites/actions.svg#actions-flip-horizontal",
+      "bidi": false
+    },
+    "actions-flip-vertical": {
+      "identifier": "actions-flip-vertical",
+      "category": "actions",
+      "svg": "svgs/actions/actions-flip-vertical.svg",
+      "sprite": "sprites/actions.svg#actions-flip-vertical",
+      "bidi": false
+    },
+    "actions-focus": {
+      "identifier": "actions-focus",
+      "category": "actions",
+      "svg": "svgs/actions/actions-focus.svg",
+      "sprite": "sprites/actions.svg#actions-focus",
+      "bidi": false
+    },
     "actions-folder-add": {
       "identifier": "actions-folder-add",
       "category": "actions",
       "svg": "svgs/actions/actions-folder-add.svg",
       "sprite": "sprites/actions.svg#actions-folder-add",
+      "bidi": false
+    },
+    "actions-folder-remove": {
+      "identifier": "actions-folder-remove",
+      "category": "actions",
+      "svg": "svgs/actions/actions-folder-remove.svg",
+      "sprite": "sprites/actions.svg#actions-folder-remove",
       "bidi": false
     },
     "actions-folder": {
@@ -1638,6 +1904,13 @@
       "sprite": "sprites/actions.svg#actions-form-insert-in",
       "bidi": false
     },
+    "actions-forward": {
+      "identifier": "actions-forward",
+      "category": "actions",
+      "svg": "svgs/actions/actions-forward.svg",
+      "sprite": "sprites/actions.svg#actions-forward",
+      "bidi": false
+    },
     "actions-fullscreen-exit": {
       "identifier": "actions-fullscreen-exit",
       "category": "actions",
@@ -1650,6 +1923,13 @@
       "category": "actions",
       "svg": "svgs/actions/actions-fullscreen.svg",
       "sprite": "sprites/actions.svg#actions-fullscreen",
+      "bidi": false
+    },
+    "actions-gauge": {
+      "identifier": "actions-gauge",
+      "category": "actions",
+      "svg": "svgs/actions/actions-gauge.svg",
+      "sprite": "sprites/actions.svg#actions-gauge",
       "bidi": false
     },
     "actions-gift-card": {
@@ -1715,6 +1995,20 @@
       "sprite": "sprites/actions.svg#actions-hand-pointer",
       "bidi": false
     },
+    "actions-hashtag": {
+      "identifier": "actions-hashtag",
+      "category": "actions",
+      "svg": "svgs/actions/actions-hashtag.svg",
+      "sprite": "sprites/actions.svg#actions-hashtag",
+      "bidi": false
+    },
+    "actions-headphones": {
+      "identifier": "actions-headphones",
+      "category": "actions",
+      "svg": "svgs/actions/actions-headphones.svg",
+      "sprite": "sprites/actions.svg#actions-headphones",
+      "bidi": false
+    },
     "actions-heart-alt": {
       "identifier": "actions-heart-alt",
       "category": "actions",
@@ -1734,6 +2028,13 @@
       "category": "actions",
       "svg": "svgs/actions/actions-history.svg",
       "sprite": "sprites/actions.svg#actions-history",
+      "bidi": false
+    },
+    "actions-hourglass": {
+      "identifier": "actions-hourglass",
+      "category": "actions",
+      "svg": "svgs/actions/actions-hourglass.svg",
+      "sprite": "sprites/actions.svg#actions-hourglass",
       "bidi": false
     },
     "actions-house": {
@@ -1762,6 +2063,13 @@
       "category": "actions",
       "svg": "svgs/actions/actions-image.svg",
       "sprite": "sprites/actions.svg#actions-image",
+      "bidi": false
+    },
+    "actions-inbox": {
+      "identifier": "actions-inbox",
+      "category": "actions",
+      "svg": "svgs/actions/actions-inbox.svg",
+      "sprite": "sprites/actions.svg#actions-inbox",
       "bidi": false
     },
     "actions-infinity": {
@@ -1799,11 +2107,25 @@
       "sprite": "sprites/actions.svg#actions-insert",
       "bidi": false
     },
+    "actions-kanban": {
+      "identifier": "actions-kanban",
+      "category": "actions",
+      "svg": "svgs/actions/actions-kanban.svg",
+      "sprite": "sprites/actions.svg#actions-kanban",
+      "bidi": false
+    },
     "actions-key": {
       "identifier": "actions-key",
       "category": "actions",
       "svg": "svgs/actions/actions-key.svg",
       "sprite": "sprites/actions.svg#actions-key",
+      "bidi": false
+    },
+    "actions-keyboard": {
+      "identifier": "actions-keyboard",
+      "category": "actions",
+      "svg": "svgs/actions/actions-keyboard.svg",
+      "sprite": "sprites/actions.svg#actions-keyboard",
       "bidi": false
     },
     "actions-layers": {
@@ -1855,6 +2177,20 @@
       "sprite": "sprites/actions.svg#actions-list-alternative",
       "bidi": false
     },
+    "actions-list-check": {
+      "identifier": "actions-list-check",
+      "category": "actions",
+      "svg": "svgs/actions/actions-list-check.svg",
+      "sprite": "sprites/actions.svg#actions-list-check",
+      "bidi": false
+    },
+    "actions-list-ordered": {
+      "identifier": "actions-list-ordered",
+      "category": "actions",
+      "svg": "svgs/actions/actions-list-ordered.svg",
+      "sprite": "sprites/actions.svg#actions-list-ordered",
+      "bidi": false
+    },
     "actions-list": {
       "identifier": "actions-list",
       "category": "actions",
@@ -1867,6 +2203,13 @@
       "category": "actions",
       "svg": "svgs/actions/actions-lock.svg",
       "sprite": "sprites/actions.svg#actions-lock",
+      "bidi": false
+    },
+    "actions-log": {
+      "identifier": "actions-log",
+      "category": "actions",
+      "svg": "svgs/actions/actions-log.svg",
+      "sprite": "sprites/actions.svg#actions-log",
       "bidi": false
     },
     "actions-login": {
@@ -1904,6 +2247,13 @@
       "sprite": "sprites/actions.svg#actions-marker",
       "bidi": false
     },
+    "actions-menu-alternative-horizontal": {
+      "identifier": "actions-menu-alternative-horizontal",
+      "category": "actions",
+      "svg": "svgs/actions/actions-menu-alternative-horizontal.svg",
+      "sprite": "sprites/actions.svg#actions-menu-alternative-horizontal",
+      "bidi": false
+    },
     "actions-menu-alternative": {
       "identifier": "actions-menu-alternative",
       "category": "actions",
@@ -1939,6 +2289,13 @@
       "sprite": "sprites/actions.svg#actions-message-add",
       "bidi": false
     },
+    "actions-message-check": {
+      "identifier": "actions-message-check",
+      "category": "actions",
+      "svg": "svgs/actions/actions-message-check.svg",
+      "sprite": "sprites/actions.svg#actions-message-check",
+      "bidi": false
+    },
     "actions-message-dots": {
       "identifier": "actions-message-dots",
       "category": "actions",
@@ -1967,11 +2324,32 @@
       "sprite": "sprites/actions.svg#actions-message",
       "bidi": false
     },
+    "actions-messages": {
+      "identifier": "actions-messages",
+      "category": "actions",
+      "svg": "svgs/actions/actions-messages.svg",
+      "sprite": "sprites/actions.svg#actions-messages",
+      "bidi": false
+    },
     "actions-microchip": {
       "identifier": "actions-microchip",
       "category": "actions",
       "svg": "svgs/actions/actions-microchip.svg",
       "sprite": "sprites/actions.svg#actions-microchip",
+      "bidi": false
+    },
+    "actions-microphone-slash": {
+      "identifier": "actions-microphone-slash",
+      "category": "actions",
+      "svg": "svgs/actions/actions-microphone-slash.svg",
+      "sprite": "sprites/actions.svg#actions-microphone-slash",
+      "bidi": false
+    },
+    "actions-microphone": {
+      "identifier": "actions-microphone",
+      "category": "actions",
+      "svg": "svgs/actions/actions-microphone.svg",
+      "sprite": "sprites/actions.svg#actions-microphone",
       "bidi": false
     },
     "actions-minus-badge-alt": {
@@ -2021,6 +2399,13 @@
       "category": "actions",
       "svg": "svgs/actions/actions-minus.svg",
       "sprite": "sprites/actions.svg#actions-minus",
+      "bidi": false
+    },
+    "actions-money": {
+      "identifier": "actions-money",
+      "category": "actions",
+      "svg": "svgs/actions/actions-money.svg",
+      "sprite": "sprites/actions.svg#actions-money",
       "bidi": false
     },
     "actions-moon": {
@@ -2114,6 +2499,13 @@
       "sprite": "sprites/actions.svg#actions-pagetree",
       "bidi": false
     },
+    "actions-palette": {
+      "identifier": "actions-palette",
+      "category": "actions",
+      "svg": "svgs/actions/actions-palette.svg",
+      "sprite": "sprites/actions.svg#actions-palette",
+      "bidi": false
+    },
     "actions-panel-collapse-end": {
       "identifier": "actions-panel-collapse-end",
       "category": "actions",
@@ -2142,11 +2534,25 @@
       "sprite": "sprites/actions.svg#actions-panel-expand-start",
       "bidi": true
     },
+    "actions-paperclip": {
+      "identifier": "actions-paperclip",
+      "category": "actions",
+      "svg": "svgs/actions/actions-paperclip.svg",
+      "sprite": "sprites/actions.svg#actions-paperclip",
+      "bidi": false
+    },
     "actions-paperplane": {
       "identifier": "actions-paperplane",
       "category": "actions",
       "svg": "svgs/actions/actions-paperplane.svg",
       "sprite": "sprites/actions.svg#actions-paperplane",
+      "bidi": false
+    },
+    "actions-passkey": {
+      "identifier": "actions-passkey",
+      "category": "actions",
+      "svg": "svgs/actions/actions-passkey.svg",
+      "sprite": "sprites/actions.svg#actions-passkey",
       "bidi": false
     },
     "actions-paste-after": {
@@ -2170,6 +2576,13 @@
       "sprite": "sprites/actions.svg#actions-pause",
       "bidi": false
     },
+    "actions-pen-fountain": {
+      "identifier": "actions-pen-fountain",
+      "category": "actions",
+      "svg": "svgs/actions/actions-pen-fountain.svg",
+      "sprite": "sprites/actions.svg#actions-pen-fountain",
+      "bidi": false
+    },
     "actions-percent-badge": {
       "identifier": "actions-percent-badge",
       "category": "actions",
@@ -2182,6 +2595,13 @@
       "category": "actions",
       "svg": "svgs/actions/actions-percent.svg",
       "sprite": "sprites/actions.svg#actions-percent",
+      "bidi": false
+    },
+    "actions-phone-slash": {
+      "identifier": "actions-phone-slash",
+      "category": "actions",
+      "svg": "svgs/actions/actions-phone-slash.svg",
+      "sprite": "sprites/actions.svg#actions-phone-slash",
       "bidi": false
     },
     "actions-phone": {
@@ -2210,6 +2630,20 @@
       "category": "actions",
       "svg": "svgs/actions/actions-play.svg",
       "sprite": "sprites/actions.svg#actions-play",
+      "bidi": false
+    },
+    "actions-plug-slash": {
+      "identifier": "actions-plug-slash",
+      "category": "actions",
+      "svg": "svgs/actions/actions-plug-slash.svg",
+      "sprite": "sprites/actions.svg#actions-plug-slash",
+      "bidi": false
+    },
+    "actions-plug": {
+      "identifier": "actions-plug",
+      "category": "actions",
+      "svg": "svgs/actions/actions-plug.svg",
+      "sprite": "sprites/actions.svg#actions-plug",
       "bidi": false
     },
     "actions-plus-badge-alt": {
@@ -2261,11 +2695,60 @@
       "sprite": "sprites/actions.svg#actions-plus",
       "bidi": false
     },
+    "actions-poll": {
+      "identifier": "actions-poll",
+      "category": "actions",
+      "svg": "svgs/actions/actions-poll.svg",
+      "sprite": "sprites/actions.svg#actions-poll",
+      "bidi": false
+    },
+    "actions-power": {
+      "identifier": "actions-power",
+      "category": "actions",
+      "svg": "svgs/actions/actions-power.svg",
+      "sprite": "sprites/actions.svg#actions-power",
+      "bidi": false
+    },
     "actions-preview": {
       "identifier": "actions-preview",
       "category": "actions",
       "svg": "svgs/actions/actions-preview.svg",
       "sprite": "sprites/actions.svg#actions-preview",
+      "bidi": false
+    },
+    "actions-print": {
+      "identifier": "actions-print",
+      "category": "actions",
+      "svg": "svgs/actions/actions-print.svg",
+      "sprite": "sprites/actions.svg#actions-print",
+      "bidi": false
+    },
+    "actions-priority-high": {
+      "identifier": "actions-priority-high",
+      "category": "actions",
+      "svg": "svgs/actions/actions-priority-high.svg",
+      "sprite": "sprites/actions.svg#actions-priority-high",
+      "bidi": false
+    },
+    "actions-priority-low": {
+      "identifier": "actions-priority-low",
+      "category": "actions",
+      "svg": "svgs/actions/actions-priority-low.svg",
+      "sprite": "sprites/actions.svg#actions-priority-low",
+      "bidi": false
+    },
+    "actions-priority-medium": {
+      "identifier": "actions-priority-medium",
+      "category": "actions",
+      "svg": "svgs/actions/actions-priority-medium.svg",
+      "sprite": "sprites/actions.svg#actions-priority-medium",
+      "bidi": false
+    },
+    "actions-pulse": {
+      "identifier": "actions-pulse",
+      "category": "actions",
+      "svg": "svgs/actions/actions-pulse.svg",
+      "sprite": "sprites/actions.svg#actions-pulse",
       "bidi": false
     },
     "actions-qrcode": {
@@ -2296,6 +2779,13 @@
       "sprite": "sprites/actions.svg#actions-question",
       "bidi": false
     },
+    "actions-quote": {
+      "identifier": "actions-quote",
+      "category": "actions",
+      "svg": "svgs/actions/actions-quote.svg",
+      "sprite": "sprites/actions.svg#actions-quote",
+      "bidi": false
+    },
     "actions-random": {
       "identifier": "actions-random",
       "category": "actions",
@@ -2316,6 +2806,20 @@
       "svg": "svgs/actions/actions-redo.svg",
       "sprite": "sprites/actions.svg#actions-redo",
       "bidi": true
+    },
+    "actions-reference-hard": {
+      "identifier": "actions-reference-hard",
+      "category": "actions",
+      "svg": "svgs/actions/actions-reference-hard.svg",
+      "sprite": "sprites/actions.svg#actions-reference-hard",
+      "bidi": false
+    },
+    "actions-reference-soft": {
+      "identifier": "actions-reference-soft",
+      "category": "actions",
+      "svg": "svgs/actions/actions-reference-soft.svg",
+      "sprite": "sprites/actions.svg#actions-reference-soft",
+      "bidi": false
     },
     "actions-refresh": {
       "identifier": "actions-refresh",
@@ -2338,11 +2842,53 @@
       "sprite": "sprites/actions.svg#actions-replace",
       "bidi": false
     },
+    "actions-reply-all": {
+      "identifier": "actions-reply-all",
+      "category": "actions",
+      "svg": "svgs/actions/actions-reply-all.svg",
+      "sprite": "sprites/actions.svg#actions-reply-all",
+      "bidi": false
+    },
+    "actions-reply": {
+      "identifier": "actions-reply",
+      "category": "actions",
+      "svg": "svgs/actions/actions-reply.svg",
+      "sprite": "sprites/actions.svg#actions-reply",
+      "bidi": false
+    },
+    "actions-roadmap": {
+      "identifier": "actions-roadmap",
+      "category": "actions",
+      "svg": "svgs/actions/actions-roadmap.svg",
+      "sprite": "sprites/actions.svg#actions-roadmap",
+      "bidi": false
+    },
+    "actions-robot": {
+      "identifier": "actions-robot",
+      "category": "actions",
+      "svg": "svgs/actions/actions-robot.svg",
+      "sprite": "sprites/actions.svg#actions-robot",
+      "bidi": false
+    },
     "actions-rocket": {
       "identifier": "actions-rocket",
       "category": "actions",
       "svg": "svgs/actions/actions-rocket.svg",
       "sprite": "sprites/actions.svg#actions-rocket",
+      "bidi": false
+    },
+    "actions-rotate-left": {
+      "identifier": "actions-rotate-left",
+      "category": "actions",
+      "svg": "svgs/actions/actions-rotate-left.svg",
+      "sprite": "sprites/actions.svg#actions-rotate-left",
+      "bidi": false
+    },
+    "actions-rotate-right": {
+      "identifier": "actions-rotate-right",
+      "category": "actions",
+      "svg": "svgs/actions/actions-rotate-right.svg",
+      "sprite": "sprites/actions.svg#actions-rotate-right",
       "bidi": false
     },
     "actions-rss": {
@@ -2394,6 +2940,13 @@
       "sprite": "sprites/actions.svg#actions-save",
       "bidi": false
     },
+    "actions-screen-share": {
+      "identifier": "actions-screen-share",
+      "category": "actions",
+      "svg": "svgs/actions/actions-screen-share.svg",
+      "sprite": "sprites/actions.svg#actions-screen-share",
+      "bidi": false
+    },
     "actions-search": {
       "identifier": "actions-search",
       "category": "actions",
@@ -2429,6 +2982,13 @@
       "sprite": "sprites/actions.svg#actions-selection",
       "bidi": false
     },
+    "actions-separator-horizontal": {
+      "identifier": "actions-separator-horizontal",
+      "category": "actions",
+      "svg": "svgs/actions/actions-separator-horizontal.svg",
+      "sprite": "sprites/actions.svg#actions-separator-horizontal",
+      "bidi": false
+    },
     "actions-server": {
       "identifier": "actions-server",
       "category": "actions",
@@ -2441,13 +3001,6 @@
       "category": "actions",
       "svg": "svgs/actions/actions-share-alt.svg",
       "sprite": "sprites/actions.svg#actions-share-alt",
-      "bidi": false
-    },
-    "actions-share": {
-      "identifier": "actions-share",
-      "category": "actions",
-      "svg": "svgs/actions/actions-share.svg",
-      "sprite": "sprites/actions.svg#actions-share",
       "bidi": false
     },
     "actions-shield-star": {
@@ -2471,11 +3024,60 @@
       "sprite": "sprites/actions.svg#actions-shield",
       "bidi": false
     },
+    "actions-signal-high": {
+      "identifier": "actions-signal-high",
+      "category": "actions",
+      "svg": "svgs/actions/actions-signal-high.svg",
+      "sprite": "sprites/actions.svg#actions-signal-high",
+      "bidi": false
+    },
+    "actions-signal-low": {
+      "identifier": "actions-signal-low",
+      "category": "actions",
+      "svg": "svgs/actions/actions-signal-low.svg",
+      "sprite": "sprites/actions.svg#actions-signal-low",
+      "bidi": false
+    },
+    "actions-signal-medium": {
+      "identifier": "actions-signal-medium",
+      "category": "actions",
+      "svg": "svgs/actions/actions-signal-medium.svg",
+      "sprite": "sprites/actions.svg#actions-signal-medium",
+      "bidi": false
+    },
+    "actions-signature": {
+      "identifier": "actions-signature",
+      "category": "actions",
+      "svg": "svgs/actions/actions-signature.svg",
+      "sprite": "sprites/actions.svg#actions-signature",
+      "bidi": false
+    },
+    "actions-sitemap": {
+      "identifier": "actions-sitemap",
+      "category": "actions",
+      "svg": "svgs/actions/actions-sitemap.svg",
+      "sprite": "sprites/actions.svg#actions-sitemap",
+      "bidi": false
+    },
     "actions-soft-hyphen": {
       "identifier": "actions-soft-hyphen",
       "category": "actions",
       "svg": "svgs/actions/actions-soft-hyphen.svg",
       "sprite": "sprites/actions.svg#actions-soft-hyphen",
+      "bidi": false
+    },
+    "actions-sort-alpha-down": {
+      "identifier": "actions-sort-alpha-down",
+      "category": "actions",
+      "svg": "svgs/actions/actions-sort-alpha-down.svg",
+      "sprite": "sprites/actions.svg#actions-sort-alpha-down",
+      "bidi": false
+    },
+    "actions-sort-alpha-up": {
+      "identifier": "actions-sort-alpha-up",
+      "category": "actions",
+      "svg": "svgs/actions/actions-sort-alpha-up.svg",
+      "sprite": "sprites/actions.svg#actions-sort-alpha-up",
       "bidi": false
     },
     "actions-sort-amount-down": {
@@ -2499,6 +3101,13 @@
       "sprite": "sprites/actions.svg#actions-sort-amount",
       "bidi": false
     },
+    "actions-sparkles": {
+      "identifier": "actions-sparkles",
+      "category": "actions",
+      "svg": "svgs/actions/actions-sparkles.svg",
+      "sprite": "sprites/actions.svg#actions-sparkles",
+      "bidi": false
+    },
     "actions-square": {
       "identifier": "actions-square",
       "category": "actions",
@@ -2518,6 +3127,34 @@
       "category": "actions",
       "svg": "svgs/actions/actions-star.svg",
       "sprite": "sprites/actions.svg#actions-star",
+      "bidi": false
+    },
+    "actions-stop-circle-alt": {
+      "identifier": "actions-stop-circle-alt",
+      "category": "actions",
+      "svg": "svgs/actions/actions-stop-circle-alt.svg",
+      "sprite": "sprites/actions.svg#actions-stop-circle-alt",
+      "bidi": false
+    },
+    "actions-stop-circle": {
+      "identifier": "actions-stop-circle",
+      "category": "actions",
+      "svg": "svgs/actions/actions-stop-circle.svg",
+      "sprite": "sprites/actions.svg#actions-stop-circle",
+      "bidi": false
+    },
+    "actions-stop": {
+      "identifier": "actions-stop",
+      "category": "actions",
+      "svg": "svgs/actions/actions-stop.svg",
+      "sprite": "sprites/actions.svg#actions-stop",
+      "bidi": false
+    },
+    "actions-stopwatch": {
+      "identifier": "actions-stopwatch",
+      "category": "actions",
+      "svg": "svgs/actions/actions-stopwatch.svg",
+      "sprite": "sprites/actions.svg#actions-stopwatch",
       "bidi": false
     },
     "actions-store": {
@@ -2562,6 +3199,13 @@
       "sprite": "sprites/actions.svg#actions-tag",
       "bidi": false
     },
+    "actions-target": {
+      "identifier": "actions-target",
+      "category": "actions",
+      "svg": "svgs/actions/actions-target.svg",
+      "sprite": "sprites/actions.svg#actions-target",
+      "bidi": false
+    },
     "actions-template-new": {
       "identifier": "actions-template-new",
       "category": "actions",
@@ -2583,11 +3227,123 @@
       "sprite": "sprites/actions.svg#actions-terminal",
       "bidi": false
     },
+    "actions-text-align-center": {
+      "identifier": "actions-text-align-center",
+      "category": "actions",
+      "svg": "svgs/actions/actions-text-align-center.svg",
+      "sprite": "sprites/actions.svg#actions-text-align-center",
+      "bidi": false
+    },
+    "actions-text-align-end": {
+      "identifier": "actions-text-align-end",
+      "category": "actions",
+      "svg": "svgs/actions/actions-text-align-end.svg",
+      "sprite": "sprites/actions.svg#actions-text-align-end",
+      "bidi": true
+    },
+    "actions-text-align-justify": {
+      "identifier": "actions-text-align-justify",
+      "category": "actions",
+      "svg": "svgs/actions/actions-text-align-justify.svg",
+      "sprite": "sprites/actions.svg#actions-text-align-justify",
+      "bidi": false
+    },
+    "actions-text-align-start": {
+      "identifier": "actions-text-align-start",
+      "category": "actions",
+      "svg": "svgs/actions/actions-text-align-start.svg",
+      "sprite": "sprites/actions.svg#actions-text-align-start",
+      "bidi": true
+    },
+    "actions-text-bold": {
+      "identifier": "actions-text-bold",
+      "category": "actions",
+      "svg": "svgs/actions/actions-text-bold.svg",
+      "sprite": "sprites/actions.svg#actions-text-bold",
+      "bidi": false
+    },
+    "actions-text-clear-format": {
+      "identifier": "actions-text-clear-format",
+      "category": "actions",
+      "svg": "svgs/actions/actions-text-clear-format.svg",
+      "sprite": "sprites/actions.svg#actions-text-clear-format",
+      "bidi": false
+    },
+    "actions-text-heading": {
+      "identifier": "actions-text-heading",
+      "category": "actions",
+      "svg": "svgs/actions/actions-text-heading.svg",
+      "sprite": "sprites/actions.svg#actions-text-heading",
+      "bidi": false
+    },
     "actions-text-indent": {
       "identifier": "actions-text-indent",
       "category": "actions",
       "svg": "svgs/actions/actions-text-indent.svg",
       "sprite": "sprites/actions.svg#actions-text-indent",
+      "bidi": false
+    },
+    "actions-text-italic": {
+      "identifier": "actions-text-italic",
+      "category": "actions",
+      "svg": "svgs/actions/actions-text-italic.svg",
+      "sprite": "sprites/actions.svg#actions-text-italic",
+      "bidi": false
+    },
+    "actions-text-lengthen": {
+      "identifier": "actions-text-lengthen",
+      "category": "actions",
+      "svg": "svgs/actions/actions-text-lengthen.svg",
+      "sprite": "sprites/actions.svg#actions-text-lengthen",
+      "bidi": false
+    },
+    "actions-text-rewrite": {
+      "identifier": "actions-text-rewrite",
+      "category": "actions",
+      "svg": "svgs/actions/actions-text-rewrite.svg",
+      "sprite": "sprites/actions.svg#actions-text-rewrite",
+      "bidi": false
+    },
+    "actions-text-shorten": {
+      "identifier": "actions-text-shorten",
+      "category": "actions",
+      "svg": "svgs/actions/actions-text-shorten.svg",
+      "sprite": "sprites/actions.svg#actions-text-shorten",
+      "bidi": false
+    },
+    "actions-text-strikethrough": {
+      "identifier": "actions-text-strikethrough",
+      "category": "actions",
+      "svg": "svgs/actions/actions-text-strikethrough.svg",
+      "sprite": "sprites/actions.svg#actions-text-strikethrough",
+      "bidi": false
+    },
+    "actions-text-subscript": {
+      "identifier": "actions-text-subscript",
+      "category": "actions",
+      "svg": "svgs/actions/actions-text-subscript.svg",
+      "sprite": "sprites/actions.svg#actions-text-subscript",
+      "bidi": false
+    },
+    "actions-text-superscript": {
+      "identifier": "actions-text-superscript",
+      "category": "actions",
+      "svg": "svgs/actions/actions-text-superscript.svg",
+      "sprite": "sprites/actions.svg#actions-text-superscript",
+      "bidi": false
+    },
+    "actions-text-underline": {
+      "identifier": "actions-text-underline",
+      "category": "actions",
+      "svg": "svgs/actions/actions-text-underline.svg",
+      "sprite": "sprites/actions.svg#actions-text-underline",
+      "bidi": false
+    },
+    "actions-thumbtack-slash": {
+      "identifier": "actions-thumbtack-slash",
+      "category": "actions",
+      "svg": "svgs/actions/actions-thumbtack-slash.svg",
+      "sprite": "sprites/actions.svg#actions-thumbtack-slash",
       "bidi": false
     },
     "actions-thumbtack": {
@@ -2625,6 +3381,20 @@
       "sprite": "sprites/actions.svg#actions-translate",
       "bidi": false
     },
+    "actions-trend-down": {
+      "identifier": "actions-trend-down",
+      "category": "actions",
+      "svg": "svgs/actions/actions-trend-down.svg",
+      "sprite": "sprites/actions.svg#actions-trend-down",
+      "bidi": false
+    },
+    "actions-trend-up": {
+      "identifier": "actions-trend-up",
+      "category": "actions",
+      "svg": "svgs/actions/actions-trend-up.svg",
+      "sprite": "sprites/actions.svg#actions-trend-up",
+      "bidi": false
+    },
     "actions-triangle": {
       "identifier": "actions-triangle",
       "category": "actions",
@@ -2637,6 +3407,13 @@
       "category": "actions",
       "svg": "svgs/actions/actions-trophy.svg",
       "sprite": "sprites/actions.svg#actions-trophy",
+      "bidi": false
+    },
+    "actions-truck": {
+      "identifier": "actions-truck",
+      "category": "actions",
+      "svg": "svgs/actions/actions-truck.svg",
+      "sprite": "sprites/actions.svg#actions-truck",
       "bidi": false
     },
     "actions-undo": {
@@ -2674,6 +3451,27 @@
       "sprite": "sprites/actions.svg#actions-upload",
       "bidi": false
     },
+    "actions-user-add": {
+      "identifier": "actions-user-add",
+      "category": "actions",
+      "svg": "svgs/actions/actions-user-add.svg",
+      "sprite": "sprites/actions.svg#actions-user-add",
+      "bidi": false
+    },
+    "actions-user-check": {
+      "identifier": "actions-user-check",
+      "category": "actions",
+      "svg": "svgs/actions/actions-user-check.svg",
+      "sprite": "sprites/actions.svg#actions-user-check",
+      "bidi": false
+    },
+    "actions-user-circle": {
+      "identifier": "actions-user-circle",
+      "category": "actions",
+      "svg": "svgs/actions/actions-user-circle.svg",
+      "sprite": "sprites/actions.svg#actions-user-circle",
+      "bidi": false
+    },
     "actions-user-edit": {
       "identifier": "actions-user-edit",
       "category": "actions",
@@ -2686,6 +3484,20 @@
       "category": "actions",
       "svg": "svgs/actions/actions-user-emulate.svg",
       "sprite": "sprites/actions.svg#actions-user-emulate",
+      "bidi": false
+    },
+    "actions-user-lock": {
+      "identifier": "actions-user-lock",
+      "category": "actions",
+      "svg": "svgs/actions/actions-user-lock.svg",
+      "sprite": "sprites/actions.svg#actions-user-lock",
+      "bidi": false
+    },
+    "actions-user-remove": {
+      "identifier": "actions-user-remove",
+      "category": "actions",
+      "svg": "svgs/actions/actions-user-remove.svg",
+      "sprite": "sprites/actions.svg#actions-user-remove",
       "bidi": false
     },
     "actions-user-switch": {
@@ -2730,6 +3542,13 @@
       "sprite": "sprites/actions.svg#actions-variable",
       "bidi": false
     },
+    "actions-video-slash": {
+      "identifier": "actions-video-slash",
+      "category": "actions",
+      "svg": "svgs/actions/actions-video-slash.svg",
+      "sprite": "sprites/actions.svg#actions-video-slash",
+      "bidi": false
+    },
     "actions-video": {
       "identifier": "actions-video",
       "category": "actions",
@@ -2772,6 +3591,27 @@
       "sprite": "sprites/actions.svg#actions-viewmode-tiles",
       "bidi": false
     },
+    "actions-volume-high": {
+      "identifier": "actions-volume-high",
+      "category": "actions",
+      "svg": "svgs/actions/actions-volume-high.svg",
+      "sprite": "sprites/actions.svg#actions-volume-high",
+      "bidi": false
+    },
+    "actions-volume-low": {
+      "identifier": "actions-volume-low",
+      "category": "actions",
+      "svg": "svgs/actions/actions-volume-low.svg",
+      "sprite": "sprites/actions.svg#actions-volume-low",
+      "bidi": false
+    },
+    "actions-volume-slash": {
+      "identifier": "actions-volume-slash",
+      "category": "actions",
+      "svg": "svgs/actions/actions-volume-slash.svg",
+      "sprite": "sprites/actions.svg#actions-volume-slash",
+      "bidi": false
+    },
     "actions-wallet": {
       "identifier": "actions-wallet",
       "category": "actions",
@@ -2805,6 +3645,20 @@
       "category": "actions",
       "svg": "svgs/actions/actions-webhook.svg",
       "sprite": "sprites/actions.svg#actions-webhook",
+      "bidi": false
+    },
+    "actions-wifi-slash": {
+      "identifier": "actions-wifi-slash",
+      "category": "actions",
+      "svg": "svgs/actions/actions-wifi-slash.svg",
+      "sprite": "sprites/actions.svg#actions-wifi-slash",
+      "bidi": false
+    },
+    "actions-wifi": {
+      "identifier": "actions-wifi",
+      "category": "actions",
+      "svg": "svgs/actions/actions-wifi.svg",
+      "sprite": "sprites/actions.svg#actions-wifi",
       "bidi": false
     },
     "actions-window-cog": {
@@ -2847,6 +3701,13 @@
       "category": "actions",
       "svg": "svgs/actions/actions-window.svg",
       "sprite": "sprites/actions.svg#actions-window",
+      "bidi": false
+    },
+    "actions-workflow": {
+      "identifier": "actions-workflow",
+      "category": "actions",
+      "svg": "svgs/actions/actions-workflow.svg",
+      "sprite": "sprites/actions.svg#actions-workflow",
       "bidi": false
     },
     "actions-workspace": {
@@ -3535,6 +4396,13 @@
       "sprite": "sprites/content.svg#content-bullets",
       "bidi": false
     },
+    "content-button": {
+      "identifier": "content-button",
+      "category": "content",
+      "svg": "svgs/content/content-button.svg",
+      "sprite": "sprites/content.svg#content-button",
+      "bidi": false
+    },
     "content-card-group": {
       "identifier": "content-card-group",
       "category": "content",
@@ -3612,6 +4480,13 @@
       "sprite": "sprites/content.svg#content-clock",
       "bidi": false
     },
+    "content-code": {
+      "identifier": "content-code",
+      "category": "content",
+      "svg": "svgs/content/content-code.svg",
+      "sprite": "sprites/content.svg#content-code",
+      "bidi": false
+    },
     "content-coffee": {
       "identifier": "content-coffee",
       "category": "content",
@@ -3666,6 +4541,13 @@
       "category": "content",
       "svg": "svgs/content/content-container.svg",
       "sprite": "sprites/content.svg#content-container",
+      "bidi": false
+    },
+    "content-countdown": {
+      "identifier": "content-countdown",
+      "category": "content",
+      "svg": "svgs/content/content-countdown.svg",
+      "sprite": "sprites/content.svg#content-countdown",
       "bidi": false
     },
     "content-cpu": {
@@ -3745,6 +4627,13 @@
       "sprite": "sprites/content.svg#content-elements-searchform",
       "bidi": false
     },
+    "content-embed": {
+      "identifier": "content-embed",
+      "category": "content",
+      "svg": "svgs/content/content-embed.svg",
+      "sprite": "sprites/content.svg#content-embed",
+      "bidi": false
+    },
     "content-extension": {
       "identifier": "content-extension",
       "category": "content",
@@ -3822,6 +4711,13 @@
       "sprite": "sprites/content.svg#content-listgroup",
       "bidi": false
     },
+    "content-logo": {
+      "identifier": "content-logo",
+      "category": "content",
+      "svg": "svgs/content/content-logo.svg",
+      "sprite": "sprites/content.svg#content-logo",
+      "bidi": false
+    },
     "content-magnet": {
       "identifier": "content-magnet",
       "category": "content",
@@ -3855,6 +4751,13 @@
       "category": "content",
       "svg": "svgs/content/content-menu-abstract.svg",
       "sprite": "sprites/content.svg#content-menu-abstract",
+      "bidi": false
+    },
+    "content-menu-breadcrumb": {
+      "identifier": "content-menu-breadcrumb",
+      "category": "content",
+      "svg": "svgs/content/content-menu-breadcrumb.svg",
+      "sprite": "sprites/content.svg#content-menu-breadcrumb",
       "bidi": false
     },
     "content-menu-card": {
@@ -3983,11 +4886,39 @@
       "sprite": "sprites/content.svg#content-plugin",
       "bidi": false
     },
+    "content-pricing": {
+      "identifier": "content-pricing",
+      "category": "content",
+      "svg": "svgs/content/content-pricing.svg",
+      "sprite": "sprites/content.svg#content-pricing",
+      "bidi": false
+    },
     "content-quote": {
       "identifier": "content-quote",
       "category": "content",
       "svg": "svgs/content/content-quote.svg",
       "sprite": "sprites/content.svg#content-quote",
+      "bidi": false
+    },
+    "content-record-list-item": {
+      "identifier": "content-record-list-item",
+      "category": "content",
+      "svg": "svgs/content/content-record-list-item.svg",
+      "sprite": "sprites/content.svg#content-record-list-item",
+      "bidi": false
+    },
+    "content-social-media": {
+      "identifier": "content-social-media",
+      "category": "content",
+      "svg": "svgs/content/content-social-media.svg",
+      "sprite": "sprites/content.svg#content-social-media",
+      "bidi": false
+    },
+    "content-spacer": {
+      "identifier": "content-spacer",
+      "category": "content",
+      "svg": "svgs/content/content-spacer.svg",
+      "sprite": "sprites/content.svg#content-spacer",
       "bidi": false
     },
     "content-special-div": {
@@ -4648,6 +5579,13 @@
       "sprite": "sprites/mimetypes.svg#mimetypes-application",
       "bidi": false
     },
+    "mimetypes-calendar": {
+      "identifier": "mimetypes-calendar",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-calendar.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-calendar",
+      "bidi": false
+    },
     "mimetypes-compressed": {
       "identifier": "mimetypes-compressed",
       "category": "mimetypes",
@@ -4662,6 +5600,13 @@
       "sprite": "sprites/mimetypes.svg#mimetypes-excel",
       "bidi": false
     },
+    "mimetypes-font": {
+      "identifier": "mimetypes-font",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-font.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-font",
+      "bidi": false
+    },
     "mimetypes-media-audio": {
       "identifier": "mimetypes-media-audio",
       "category": "mimetypes",
@@ -4674,6 +5619,13 @@
       "category": "mimetypes",
       "svg": "svgs/mimetypes/mimetypes-media-flash.svg",
       "sprite": "sprites/mimetypes.svg#mimetypes-media-flash",
+      "bidi": false
+    },
+    "mimetypes-media-image-svg": {
+      "identifier": "mimetypes-media-image-svg",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-media-image-svg.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-media-image-svg",
       "bidi": false
     },
     "mimetypes-media-image": {
@@ -4795,11 +5747,32 @@
       "sprite": "sprites/mimetypes.svg#mimetypes-text-js",
       "bidi": false
     },
+    "mimetypes-text-json": {
+      "identifier": "mimetypes-text-json",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-text-json.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-text-json",
+      "bidi": false
+    },
+    "mimetypes-text-markdown": {
+      "identifier": "mimetypes-text-markdown",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-text-markdown.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-text-markdown",
+      "bidi": false
+    },
     "mimetypes-text-php": {
       "identifier": "mimetypes-text-php",
       "category": "mimetypes",
       "svg": "svgs/mimetypes/mimetypes-text-php.svg",
       "sprite": "sprites/mimetypes.svg#mimetypes-text-php",
+      "bidi": false
+    },
+    "mimetypes-text-sql": {
+      "identifier": "mimetypes-text-sql",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-text-sql.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-text-sql",
       "bidi": false
     },
     "mimetypes-text-text": {
@@ -4821,6 +5794,34 @@
       "category": "mimetypes",
       "svg": "svgs/mimetypes/mimetypes-text-typoscript.svg",
       "sprite": "sprites/mimetypes.svg#mimetypes-text-typoscript",
+      "bidi": false
+    },
+    "mimetypes-text-xliff": {
+      "identifier": "mimetypes-text-xliff",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-text-xliff.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-text-xliff",
+      "bidi": false
+    },
+    "mimetypes-text-xml": {
+      "identifier": "mimetypes-text-xml",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-text-xml.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-text-xml",
+      "bidi": false
+    },
+    "mimetypes-text-yaml": {
+      "identifier": "mimetypes-text-yaml",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-text-yaml.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-text-yaml",
+      "bidi": false
+    },
+    "mimetypes-vcard": {
+      "identifier": "mimetypes-vcard",
+      "category": "mimetypes",
+      "svg": "svgs/mimetypes/mimetypes-vcard.svg",
+      "sprite": "sprites/mimetypes.svg#mimetypes-vcard",
       "bidi": false
     },
     "mimetypes-word": {
@@ -5770,6 +6771,7 @@
     "status-status-sorting-light-asc": "actions-caret-up",
     "status-dialog-ok": "actions-check-circle",
     "actions-check-unmarkstate": "actions-check-square",
+    "actions-unmarkstate": "actions-check-square",
     "apps-pagetree-category-toggle-hide-checked": "actions-check-square",
     "sysnote-type-4": "actions-check-square",
     "status-status-checked": "actions-check",
@@ -5863,6 +6865,9 @@
     "apps-toolbar-menu-opendocs": "actions-file",
     "actions-system-tree-search-open": "actions-filter",
     "actions-insert-record": "actions-folder",
+    "form-insert-after": "actions-form-insert-after",
+    "form-insert-in": "actions-form-insert-in",
+    "actions-share": "actions-forward",
     "actions-document-history-open": "actions-history",
     "actions-document-info": "actions-info",
     "actions-edit-insert-default": "actions-insert",
@@ -5886,6 +6891,7 @@
     "apps-toolbar-menu-actions": "actions-options",
     "actions-pagetree-mountroot": "actions-pagetree-mount",
     "actions-document-paste-after": "actions-paste-after",
+    "actions-document-paste-before": "actions-paste-before",
     "actions-add-placeholder": "actions-placeholder-add",
     "actions-add": "actions-plus",
     "apps-toolbar-menu-help": "actions-question-circle",
@@ -5904,6 +6910,7 @@
     "information-webserver": "actions-server",
     "share-alt": "actions-share-alt",
     "actions-check-markstate": "actions-square",
+    "actions-markstate": "actions-square",
     "actions-version-swap-version": "actions-swap",
     "actions-version-swap-workspace": "actions-swap",
     "sysnote-type-3": "actions-thumbtack",
@@ -5916,6 +6923,7 @@
     "actions-variable-select": "actions-variable-add",
     "information-application-context": "actions-window-cog",
     "apps-toolbar-menu-workspace": "actions-workspace",
+    "apps-pagetree-page-not-in-menu": "apps-pagetree-page-hideinmenu",
     "empty-empty": "miscellaneous-placeholder",
     "module-cshmanual": "module-documentation",
     "module-filelist": "module-file",
