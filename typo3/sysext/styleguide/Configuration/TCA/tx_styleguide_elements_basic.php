@@ -226,12 +226,30 @@ return [
             ],
         ],
 
+        'input_44' => [
+            'label' => 'input_44',
+            'description' => 'autocomplete=true: allows browser suggestions; compare with input_1. Suggestions depend on the browser and saved input history.',
+            'config' => [
+                'type' => 'input',
+                'autocomplete' => true,
+            ],
+        ],
+
         'inputdatetime_1' => [
             'label' => 'inputdatetime_1',
             'description' => 'format=date',
             'config' => [
                 'type' => 'datetime',
                 'format' => 'date',
+            ],
+        ],
+        'inputdatetime_40' => [
+            'label' => 'inputdatetime_40',
+            'description' => 'format=date, disableAgeDisplay=true: shows only the date in the Records module. Compare with inputdatetime_1, which also shows the age.',
+            'config' => [
+                'type' => 'datetime',
+                'format' => 'date',
+                'disableAgeDisplay' => true,
             ],
         ],
         'inputdatetime_2' => [
@@ -2249,12 +2267,12 @@ backend_layout {
         '0' => [
             'showitem' => '
                 --div--;input,
-                    input_1, input_40, input_2, input_3, input_41, input_42, input_43, input_4, input_5, input_10,
+                    input_1, input_44, input_40, input_2, input_3, input_41, input_42, input_43, input_4, input_5, input_10,
                     input_11, input_12, input_13, input_15, input_16, input_19,
                     input_21, input_22, input_23, input_26, input_27, input_14, input_28,
                     input_33, input_35, input_36,
                 --div--;inputDateTime,
-                    inputdatetime_1, inputdatetime_2, inputdatetime_3, inputdatetime_4, inputdatetime_5,
+                    inputdatetime_1, inputdatetime_40, inputdatetime_2, inputdatetime_3, inputdatetime_4, inputdatetime_5,
                     inputdatetime_6, inputdatetime_7, inputdatetime_8, inputdatetime_9, inputdatetime_10,
                     inputdatetime_11, inputdatetime_34, inputdatetime_12, inputdatetime_13,
                     inputdatetime_21, inputdatetime_22, inputdatetime_23, inputdatetime_24, inputdatetime_25,

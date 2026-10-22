@@ -181,6 +181,16 @@ return [
             ],
         ],
 
+        'group_db_16' => [
+            'label' => 'group_db_16 hideDeleteIcon=true',
+            'description' => 'Hides the button for removing selected relations. Compare with group_db_1.',
+            'config' => [
+                'type' => 'group',
+                'allowed' => 'be_users,be_groups',
+                'hideDeleteIcon' => true,
+            ],
+        ],
+
         'group_requestUpdate_1' => [
             'label' => 'group_requestUpdate_1',
             'onChange' => 'reload',
@@ -256,7 +266,7 @@ return [
         '0' => [
             'showitem' => '
                 --div--;type=group,
-                    group_db_1, group_db_2, group_db_9, group_db_3, group_db_8, group_db_11, group_db_4, group_db_5, group_db_7, group_db_10, group_db_12, group_db_13,
+                    group_db_1, group_db_16, group_db_2, group_db_9, group_db_3, group_db_8, group_db_11, group_db_4, group_db_5, group_db_7, group_db_10, group_db_12, group_db_13,
                 --div--;Browser entry points,
                     group_db_14, group_db_15,
                 --div--;in flex,

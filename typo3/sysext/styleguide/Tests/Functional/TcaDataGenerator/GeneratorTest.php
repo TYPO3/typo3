@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaSelectTreeAjaxFieldData;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -35,6 +36,62 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class GeneratorTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['styleguide'];
+
+    #[Test]
+    public function createGeneratesOptionalFieldControlsWithDefaultComparisons(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+        $this->get(Generator::class)->create();
+
+        $examples = [
+            'tx_styleguide_elements_basic' => ['input_1', 'input_44'],
+            'tx_styleguide_elements_group' => ['group_db_1', 'group_db_16'],
+            'tx_styleguide_elements_folder' => ['folder_1', 'folder_5'],
+        ];
+        foreach ($examples as $table => [$defaultField, $configuredField]) {
+            $row = $this->get(ConnectionPool::class)->getConnectionForTable($table)
+                ->select(['*'], $table, ['sys_language_uid' => 0])->fetchAssociative();
+            self::assertIsArray($row);
+            $formData = $this->get(FormDataCompiler::class)->compile([
+                'request' => new ServerRequest()
+                    ->withAttribute('route', new Route('', []))
+                    ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE),
+                'tableName' => $table,
+                'vanillaUid' => (int)$row['uid'],
+                'command' => 'edit',
+            ], $this->get(TcaDatabaseRecord::class));
+
+            foreach ([$defaultField, $configuredField] as $field) {
+                self::assertNotEmpty($row[$field], $field);
+                self::assertArrayHasKey($field, $formData['processedTca']['columns']);
+                $config = $formData['processedTca']['columns'][$field]['config'];
+                $result = $this->get(NodeFactory::class)->create(array_replace($formData, [
+                    'renderType' => $config['type'],
+                    'fieldName' => $field,
+                    'parameterArray' => [
+                        'itemFormElName' => 'data[' . $table . '][' . $row['uid'] . '][' . $field . ']',
+                        'itemFormElValue' => $formData['databaseRow'][$field],
+                        'fieldConf' => $formData['processedTca']['columns'][$field],
+                    ],
+                ]))->render();
+                if ($config['type'] === 'input') {
+                    self::assertSame($field === $configuredField, str_contains($result['html'], 'autocomplete="on"'), $field);
+                } else {
+                    self::assertSame($field === $defaultField, str_contains($result['html'], 'actions-selection-delete'), $field);
+                }
+            }
+
+            if ($table === 'tx_styleguide_elements_basic') {
+                self::assertNotEmpty($row['inputdatetime_40']);
+                self::assertArrayHasKey('inputdatetime_40', $formData['processedTca']['columns']);
+                $date = BackendUtility::getProcessedValue($table, 'inputdatetime_40', $row['inputdatetime_40']);
+                self::assertSame(BackendUtility::date((int)$row['inputdatetime_40']), $date);
+                self::assertStringStartsWith($date . ' (', BackendUtility::getProcessedValue($table, 'inputdatetime_1', $row['inputdatetime_40']));
+            }
+        }
+    }
 
     #[Test]
     public function createGeneratesResolvableBrowserEntryPoints(): void

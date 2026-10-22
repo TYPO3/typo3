@@ -30,6 +30,14 @@ return [
                 'type' => 'folder',
             ],
         ],
+        'folder_5' => [
+            'label' => 'folder_5 hideDeleteIcon=true',
+            'description' => 'Hides the button for removing selected folder references. Compare with folder_1.',
+            'config' => [
+                'type' => 'folder',
+                'hideDeleteIcon' => true,
+            ],
+        ],
         'folder_2' => [
             'label' => 'folder_2 hideMoveIcons=true',
             'description' => 'field description',
@@ -95,7 +103,7 @@ return [
         '0' => [
             'showitem' => '
                 --div--;type=folder,
-                    folder_1, folder_2, folder_3, folder_4,
+                    folder_1, folder_5, folder_2, folder_3, folder_4,
                 --div--;in flex,
                     flex_1,
                 --div--;meta,
