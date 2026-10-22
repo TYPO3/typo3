@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'This extension contains Symfony Command DI fixtures.',
     'description' => 'This extension contains Symfony Command DI fixtures.',
     'category' => 'example',
-    'version' => '13.4.37',
+    'version' => '13.4.38',
     'state' => 'beta',
     'author' => 'Garvin Hicking',
     'author_email' => 'garvin@hick.ing',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.4.37',
+            'typo3' => '13.4.38',
         ],
         'conflicts' => [],
         'suggests' => [],
