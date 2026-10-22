@@ -19,7 +19,7 @@
         <source>RSS Feed</source>
       </trans-unit>
       <trans-unit id="widget.rss.setting.fieldUrl.description">
-        <source>Defines the URL or file providing the RSS Feed. This is read by the widget in order to fetch entries to show.</source>
+        <source>Defines the URL providing the RSS Feed. This is fetched by the widget in order to show its entries.</source>
       </trans-unit>
       <trans-unit id="widget.rss.setting.limit.label">
         <source>Limit</source>
@@ -38,6 +38,18 @@
       </trans-unit>
       <trans-unit id="widget.rss.missingFeedConfiguration.message">
         <source>Please configure a feed URL to retrieve items from.</source>
+      </trans-unit>
+      <trans-unit id="widget.rss.disallowedHost.title">
+        <source>Feed host not allowed</source>
+      </trans-unit>
+      <trans-unit id="widget.rss.disallowedHost.message">
+        <source>The feed at "%1$s" was not loaded, because its host, or the host it redirects to, is not allowed in $GLOBALS['TYPO3_CONF_VARS']['HTTP']['allowed_hosts']['dashboard_rss'].</source>
+      </trans-unit>
+      <trans-unit id="widget.rss.disallowedScheme.title">
+        <source>Feed URL not supported</source>
+      </trans-unit>
+      <trans-unit id="widget.rss.disallowedScheme.message">
+        <source>The feed at "%1$s" was not loaded, because feed URLs must start with http:// or https://.</source>
       </trans-unit>
       <trans-unit id="widget.rss.feedError.title">
         <source>Feed error</source>

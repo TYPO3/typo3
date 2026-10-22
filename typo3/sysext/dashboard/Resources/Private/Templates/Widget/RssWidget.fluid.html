@@ -21,6 +21,12 @@
         <f:else if="!{feedUrl}">
             <f:be.infobox title="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang_widget_rss.xlf:widget.rss.missingFeedConfiguration.title')}" state="-1">{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang_widget_rss.xlf:widget.rss.missingFeedConfiguration.message')}</f:be.infobox>
         </f:else>
+        <f:else if="{disallowedHost}">
+            <f:be.infobox title="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang_widget_rss.xlf:widget.rss.disallowedHost.title')}" state="2">{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang_widget_rss.xlf:widget.rss.disallowedHost.message', arguments: '{0: feedUrl}')}</f:be.infobox>
+        </f:else>
+        <f:else if="{disallowedScheme}">
+            <f:be.infobox title="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang_widget_rss.xlf:widget.rss.disallowedScheme.title')}" state="2">{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang_widget_rss.xlf:widget.rss.disallowedScheme.message', arguments: '{0: feedUrl}')}</f:be.infobox>
+        </f:else>
         <f:else if="{invalidFeed}">
             <f:be.infobox title="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang_widget_rss.xlf:widget.rss.feedError.title')}" state="2">{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang_widget_rss.xlf:widget.rss.feedError.message', arguments: '{0: feedUrl}')}</f:be.infobox>
         </f:else>
