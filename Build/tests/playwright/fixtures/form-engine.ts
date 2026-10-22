@@ -56,7 +56,7 @@ export class FormEngine {
     await expect(this.saveButton).not.toHaveClass(/\bdisabled\b/);
 
     const loaded = await this.formEngineLoaded();
-    this.saveButton.click();
+    await this.saveButton.click();
     await loaded();
 
     // Wait for TYPO3's "form is dirty" markers to clear. Otherwise a
@@ -71,7 +71,7 @@ export class FormEngine {
    */
   async close() {
     const loaded = await this.formEngineLoaded();
-    this.closeButton.click();
+    await this.closeButton.click();
     await loaded();
 
     await expect(this.container).not.toBeAttached();
