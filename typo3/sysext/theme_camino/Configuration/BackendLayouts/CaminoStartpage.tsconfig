@@ -3,6 +3,7 @@ mod {
     BackendLayouts {
       CaminoStartpage {
         title = LLL:theme_camino.backend_layouts:backend_layout.camino_startpage.title
+        icon = EXT:theme_camino/Resources/Public/Images/BackendLayouts/CaminoStartpage.svg
         config {
           backend_layout {
             colCount = 4
