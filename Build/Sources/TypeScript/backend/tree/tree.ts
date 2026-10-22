@@ -122,7 +122,7 @@ export class Tree extends LitElement {
   @state() nodeMap: TreeNodeMap = new TreeNodeMap([]);
   @state() currentScrollPosition: number = 0;
   @state() currentVisibleHeight: number = 0;
-  @state() searchTerm: string|null = null;
+  @state() searchTerm: string = '';
   @state() searchResults: number = 0;
   @state() loading: boolean = false;
 
@@ -514,7 +514,10 @@ export class Tree extends LitElement {
         await this.loadData();
         return;
       }
-      this.nodeMap = new TreeNodeMap(this.enhanceNodes(JSON.parse(this.unfilteredNodes)));
+      // Restored nodes are copies that keep their state, but lack the proxy that updates the tree.
+      // A load running when the filter was applied never finishes on them.
+      const restoredNodes: TreeNodeInterface[] = JSON.parse(this.unfilteredNodes);
+      this.nodeMap = new TreeNodeMap(restoredNodes.map((node) => this.observeNode({ ...node, __loading: false })));
       this.unfilteredNodes = '';
       // re-select the node from the identifier because the nodes have been updated
       const currentlySelectedNode = this.getNodeByTreeIdentifier(currentlySelected.__treeIdentifier);
@@ -643,20 +646,7 @@ export class Tree extends LitElement {
 
       node.__processed = true;
 
-      // eslint-disable-next-line @typescript-eslint/no-this-alias
-      const that = this;
-      return [
-        ...nodes,
-        new Proxy(node, {
-          set<K extends keyof TreeNodeInterface>(target: TreeNodeInterface, key: K, value: TreeNodeInterface[K]) {
-            if(target[key] !== value) {
-              target[key] = value as never;
-              that.requestUpdate();
-            }
-            return true;
-          },
-        })
-      ];
+      return [...nodes, this.observeNode(node)];
     }, []);
 
     // get nodes with depth 0, if there is only 1 then open it and disable toggle
@@ -666,6 +656,23 @@ export class Tree extends LitElement {
     }
 
     return enhancedNodes;
+  }
+
+  /**
+   * Wrap a node, so that changing one of its properties updates the tree
+   */
+  protected observeNode(node: TreeNodeInterface): TreeNodeInterface {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const that = this;
+    return new Proxy(node, {
+      set<K extends keyof TreeNodeInterface>(target: TreeNodeInterface, key: K, value: TreeNodeInterface[K]) {
+        if(target[key] !== value) {
+          target[key] = value as never;
+          that.requestUpdate();
+        }
+        return true;
+      },
+    });
   }
 
   protected override createRenderRoot(): HTMLElement | ShadowRoot {

@@ -97,7 +97,7 @@ export class SelectTree extends Tree
 
   public override filter(searchTerm?: string|null): void {
     const results: TreeNodeInterface[] = [];
-    this.searchTerm = searchTerm;
+    this.searchTerm = searchTerm ?? '';
     if (this.nodes.length) {
       this.nodes[0].__expanded = false;
     }

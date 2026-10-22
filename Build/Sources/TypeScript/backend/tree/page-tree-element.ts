@@ -385,6 +385,7 @@ export class PageTreeNavigationComponent extends TreeModuleState(LitElement) {
           @typo3:tree:node-selected=${this.loadContent}
           @typo3:tree:node-context=${this.showContextMenu}
           @typo3:tree:nodes-prepared=${this.selectActiveNodeInLoadedNodes}
+          @typo3:tree:filter-reset=${this.revealActiveNode}
       ></typo3-backend-navigation-component-pagetree-tree>
     `;
   }

@@ -109,6 +109,18 @@ export const TreeModuleState = <T extends Constructor<LitElement>>(superClass: T
       await this.selectActiveViaRootline(moduleState.identifier);
     };
 
+    protected readonly revealActiveNode = async (): Promise<void> => {
+      await this.fetchActiveNodeIfMissing();
+      const node = this.tree.getSelectedNodes()[0];
+      // A filter applied in the meantime has replaced the nodes
+      if (!node || this.tree.searchTerm) {
+        return;
+      }
+      await this.tree.expandNodeParents(node);
+      await this.tree.updateComplete;
+      this.tree.scrollNodeIntoViewIfNeeded(node);
+    };
+
     private readonly moduleStateUpdated = async (e: CustomEvent<ModuleStateUpdateEvent>): Promise<void> => {
       const identifier = e.detail.state.identifier;
       if (!this.tree) {
