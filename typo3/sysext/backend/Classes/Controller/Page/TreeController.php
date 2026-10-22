@@ -221,6 +221,7 @@ class TreeController
      */
     protected function getDokTypes(ServerRequestInterface $request): array
     {
+        $languageService = $this->getLanguageService();
         $formDataGroup = GeneralUtility::makeInstance(OnTheFly::class);
         // Skip DatabaseUserPermissionCheck::class to return doktypes even if the user cannot create pages at root level
         $formDataGroup->setProviderList([
@@ -254,7 +255,10 @@ class TreeController
                 static fn(array $doktype) => [
                     'nodeType' => $doktype['value'],
                     'icon' => $doktype['icon'] ?? '',
-                    'title' => $doktype['label'] ?? '',
+                    'title' => sprintf(
+                        $languageService->sL('core.core:labels.createNewPage'),
+                        $doktype['label'] ?? '',
+                    ),
                 ],
                 array_filter(
                     $doktypes,
