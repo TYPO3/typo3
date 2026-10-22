@@ -144,10 +144,8 @@ test.describe('ext:impexp Export', () => {
     await expect(contentFrame.locator(`${flashMessages} .alert.alert-success .alert-message`)).toContainText(/Saved in "[^"]+", bytes/);
   });
 
-  test('Exporting a table from the records list writes a file', async ({ page, backend }) => {
-    const rootNode = page.locator('#typo3-pagetree-tree [role="treeitem"][data-id="0"] .node-contentlabel');
-    await expect(rootNode).toBeVisible();
-    await rootNode.click();
+  test('Exporting a table from the records list writes a file', async ({ backend }) => {
+    await backend.pageTree.openRoot();
     const contentFrame = backend.contentFrame;
     await expect(contentFrame.locator('h1', { hasText: 'New TYPO3 site' })).toBeVisible();
 
@@ -166,9 +164,7 @@ test.describe('ext:impexp Export', () => {
   });
 
   test('Exporting a single record writes a file', async ({ page, backend }) => {
-    const rootNode = page.locator('#typo3-pagetree-tree [role="treeitem"][data-id="0"] .node-contentlabel');
-    await expect(rootNode).toBeVisible();
-    await rootNode.click();
+    await backend.pageTree.openRoot();
     const contentFrame = backend.contentFrame;
     await expect(contentFrame.locator('h1', { hasText: 'New TYPO3 site' })).toBeVisible();
 

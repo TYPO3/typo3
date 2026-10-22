@@ -5,6 +5,7 @@ import { DocHeader } from './doc-header';
 import { Modal } from './modal';
 import { FileTree } from './file-tree';
 import { Sidebar } from './sidebar';
+import { moduleLoaded } from './module-loaded';
 
 export enum ViewportSize {
   Desktop = 'desktop',
@@ -52,32 +53,12 @@ export class BackendPage {
   }
 
   /**
-   * Returns a waiter for the next `typo3-module-loaded` event. Awaiting
-   * the call installs the listener; the returned waiter resolves when
-   * the event fires. Both awaits are needed so the listener is in
-   * place before the triggering action runs.
+   * Returns a waiter for the next module loaded into the content frame,
+   * see `moduleLoaded()` in `module-loaded.ts`.
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async moduleLoaded(identifier: string): Promise<() => Promise<void>> {
-    const initial = await this.page.evaluate(() => {
-      const w = window as Window & { __typo3ModuleLoadedCounter?: number };
-      if (typeof w.__typo3ModuleLoadedCounter !== 'number') {
-        w.__typo3ModuleLoadedCounter = 0;
-        document.addEventListener('typo3-module-loaded', () => {
-          w.__typo3ModuleLoadedCounter = (w.__typo3ModuleLoadedCounter ?? 0) + 1;
-        });
-      }
-      return w.__typo3ModuleLoadedCounter;
-    });
-    return async () => {
-      await this.page.waitForFunction(
-        (initial) => {
-          const w = window as Window & { __typo3ModuleLoadedCounter?: number };
-          return (w.__typo3ModuleLoadedCounter ?? 0) > initial;
-        },
-        initial,
-      );
-    };
+    return moduleLoaded(this.page);
   }
 
   async waitForModuleResponse(urlPattern?: string | RegExp): Promise<void> {

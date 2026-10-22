@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-if(document.currentScript){const t=document.currentScript.textContent.replace(/^\s*\/\*\s*|\s*\*\/\s*/g,""),e=JSON.parse(t);import("@typo3/core/java-script-item-processor.js").then(({JavaScriptItemProcessor:s})=>{new s().processItems(e)})}
+if(document.currentScript){const n=document.currentScript.textContent.replace(/^\s*\/\*\s*|\s*\*\/\s*/g,""),r=JSON.parse(n),o=import("@typo3/core/java-script-item-processor.js").then(({JavaScriptItemProcessor:e})=>new e().processItems(r)),t=Symbol.for("@typo3/core/java-script-item-processor/pending-items"),s=window;s[t]??=new Set,s[t].add(new Promise(e=>{o.finally(e)}))}

@@ -1,4 +1,5 @@
 import { Page, expect, Locator } from '@playwright/test';
+import { moduleLoaded } from './module-loaded';
 
 export class PageTree {
   readonly toolbar: Locator;
@@ -118,38 +119,61 @@ export class PageTree {
         }
       } else {
         // This is the last page - click to select it
-        const contentLabel = targetElement.locator('.node-contentlabel').first();
-        await expect(contentLabel).toBeAttached({ timeout: 10000 });
-
-        // Set up event listener before clicking to select
-        const selectEventPromise = this.page.evaluate(() => {
-          return new Promise<void>((resolve) => {
-            const tree = document.querySelector('typo3-backend-navigation-component-pagetree-tree');
-            if (tree) {
-              tree.addEventListener('typo3:tree:node-selected', () => resolve(), { once: true });
-            } else {
-              resolve();
-            }
-          });
-        });
-
-        await contentLabel.click();
-        await selectEventPromise;
-        await this.isReady();
-
-        await expect(targetElement).toHaveClass(/node-selected/);
-
-        // Return a locator for the specific element by its unique data-id
-        // This ensures dragDeletePage checks the exact element, not another with same name
-        const dataId = await targetElement.getAttribute('data-id');
-        if (!dataId) {
-          throw new Error(`Could not get data-id for page "${page}"`);
-        }
-        return this.tree.locator(`[data-id="${dataId}"]`);
+        return this.select(targetElement);
       }
     }
 
     // This should never be reached if pages array is not empty
     throw new Error('No pages provided to open()');
+  }
+
+  /**
+   * Select the root node of the page tree (pid=0).
+   *
+   * @return The root node
+   */
+  async openRoot(): Promise<Locator> {
+    await this.isReady();
+    const rootNode = this.tree.locator('[role="treeitem"][data-id="0"]');
+    await expect(rootNode).toBeAttached();
+    return this.select(rootNode);
+  }
+
+  /**
+   * Select a node and wait until the current module has been loaded for it
+   * into the content frame.
+   *
+   * @return A locator for the node by its unique data-id, which ensures to
+   *         address that very node, not another with the same name.
+   */
+  private async select(node: Locator): Promise<Locator> {
+    const contentLabel = node.locator('.node-contentlabel').first();
+    await expect(contentLabel).toBeAttached({ timeout: 10000 });
+
+    // Set up event listeners before clicking to select
+    const selectEventPromise = this.page.evaluate(() => {
+      return new Promise<void>((resolve) => {
+        const tree = document.querySelector('typo3-backend-navigation-component-pagetree-tree');
+        if (tree) {
+          tree.addEventListener('typo3:tree:node-selected', () => resolve(), { once: true });
+        } else {
+          resolve();
+        }
+      });
+    });
+    const loaded = await moduleLoaded(this.page);
+
+    await contentLabel.click();
+    await selectEventPromise;
+    await loaded();
+    await this.isReady();
+
+    await expect(node).toHaveClass(/node-selected/);
+
+    const dataId = await node.getAttribute('data-id');
+    if (!dataId) {
+      throw new Error('Could not get data-id of the selected node');
+    }
+    return this.tree.locator(`[data-id="${dataId}"]`);
   }
 }

@@ -2,10 +2,9 @@ import { test, expect } from '../../fixtures/setup-fixtures';
 import type { Locator } from '@playwright/test';
 
 test.describe('Layout module', () => {
-  test('shows headline message when root (pid=0) is selected', async ({ page, backend }) => {
+  test('shows headline message when root (pid=0) is selected', async ({ backend }) => {
     await backend.gotoModule('web_layout');
-    await backend.pageTree.isReady();
-    await page.locator('#typo3-pagetree-tree [role="treeitem"][data-id="0"] .node-contentlabel').click();
+    await backend.pageTree.openRoot();
     await expect(backend.contentFrame.locator('body')).toContainText(
       'Please select a page in the page tree to edit page content.'
     );
