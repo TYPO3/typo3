@@ -1820,7 +1820,8 @@ typo3-breadcrumb{display:block;width:100%}
 .breadcrumb-item-last:after{display:none}
 .breadcrumb-item typo3-backend-icon{width:var(--icon-size-small)}
 .breadcrumb:has(:not(.breadcrumb-item)) .breadcrumb-item:last-child:after{display:none}
-.breadcrumb-collapsible>.breadcrumb-item .breadcrumb-element,.breadcrumb-collapsible>.breadcrumb-item:last-child{overflow:hidden}
+.breadcrumb-collapsible>.breadcrumb-item:last-child{min-width:0}
+.breadcrumb-collapsible>.breadcrumb-item .breadcrumb-element{overflow:hidden}
 .breadcrumb-collapsible>.breadcrumb-item .breadcrumb-element-label{overflow:hidden;text-overflow:ellipsis}
 .breadcrumb-element{align-items:center;background-color:transparent;border:none;color:var(--typo3-breadcrumb-element-color);display:flex;gap:var(--typo3-breadcrumb-element-spacing);line-height:inherit;margin:0;padding:0}
 .breadcrumb-item>a,a.breadcrumb-element,button.breadcrumb-element{border-radius:1px;outline-offset:1px}
