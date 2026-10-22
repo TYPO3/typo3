@@ -251,19 +251,31 @@ test('inline_1n inline_2 tab hides and unhides child without rendered disable fi
   await backend.contentFrame.getByRole('tab', { name: 'inline_2', exact: true }).click();
 
   const child2PanelAny = '[data-field-name^="[tx_styleguide_inline_1n_inline_2_child]["]';
+  // The child renders file references with hide controls of their own, so
+  // its controls are addressed through its own panel heading only.
+  const child2Heading = `${child2PanelAny} > .panel-heading`;
   const child2InputName = 'data[tx_styleguide_inline_1n_inline_2_child][1][input_1]';
-  const panel = backend.contentFrame.locator(child2PanelAny);
   const child2Input = backend.contentFrame.locator(`input[data-formengine-input-name="${child2InputName}"]`);
+  const hideAction = backend.contentFrame.locator(`${child2Heading} button span[data-identifier="actions-edit-hide"]`);
+  const unhideAction = backend.contentFrame.locator(`${child2Heading} button span[data-identifier="actions-edit-unhide"]`);
+  const hiddenPanel = backend.contentFrame.locator(`${child2PanelAny}.panel-hidden`);
 
-  await panel.locator('.panel-button').first().click();
+  // A retry runs against the database the failed attempt left behind, in
+  // which the child may still be hidden.
+  if (await unhideAction.count() > 0) {
+    await unhideAction.click();
+    await backend.formEngine.save();
+  }
+
+  await backend.contentFrame.locator(`${child2Heading} .panel-button`).click();
   await expect(child2Input).toBeVisible();
 
-  await panel.locator('button span[data-identifier="actions-edit-hide"]').first().click();
-  await expect(backend.contentFrame.locator(`${child2PanelAny}.panel-hidden`)).toBeAttached();
-  await expect(backend.contentFrame.locator(`${child2PanelAny} button span[data-identifier="actions-edit-unhide"]`)).toBeAttached();
+  await hideAction.click();
+  await expect(hiddenPanel).toBeAttached();
+  await expect(unhideAction).toBeAttached();
 
   await backend.formEngine.save();
 
-  await backend.contentFrame.locator(`${child2PanelAny} button span[data-identifier="actions-edit-unhide"]`).first().click();
-  await expect(backend.contentFrame.locator(`${child2PanelAny}.panel-hidden`)).not.toBeVisible();
+  await unhideAction.click();
+  await expect(hiddenPanel).not.toBeVisible();
 });
