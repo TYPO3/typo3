@@ -18,7 +18,7 @@ The :typoscript:`record-transformation` Data Processor can typically be used in
 conjunction with the DatabaseQuery Data Processor. The DatabaseQuery Data
 Processor typically fetches records from the database, and the
 :typoscript:`record-transformation` will take the result and transform
-the objects into :php:`Record` objects, which contain relevant data from
+the objects into :php-short:`\TYPO3\CMS\Core\Domain\Record` objects, which contain relevant data from
 the TCA table, which has been configured in the TCA columns fields for this
 record.
 

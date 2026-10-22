@@ -18,7 +18,7 @@ be reworked to be fully compatible with the new routing.
 See :ref:`changelog-Breaking-93093-ReworkShortcutPHPAPI` for more information
 regarding the rework.
 
-In the course of the rework, following methods within :php:`ShortcutButton`
+In the course of the rework, following methods within :php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton`
 have been marked as deprecated:
 
 * :php:`TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton->setModuleName()`
@@ -41,8 +41,8 @@ scanner will find all PHP usages as weak match.
 Migration
 =========
 
-Use the new methods :php:`ShortcutButton->setRouteIdentifier()` and
-:php:`ShortcutButton->getRouteIdentifier()` as replacement. Please note
+Use the new methods :php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton->setRouteIdentifier()` and
+:php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton->getRouteIdentifier()` as replacement. Please note
 that these methods require the route identifier of the backend module
 which may differ from the module name. To find out the route identifier,
 the "Backend Routes" section within the configuration module can be used.

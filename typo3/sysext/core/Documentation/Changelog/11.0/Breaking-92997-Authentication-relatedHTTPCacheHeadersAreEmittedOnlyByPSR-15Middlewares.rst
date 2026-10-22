@@ -12,7 +12,7 @@ Description
 ===========
 
 In previous TYPO3 versions, when a user session was initiated or set
-(e.g. due to login or cookie), class :php:`AbstractUserAuthentication` was instructed
+(e.g. due to login or cookie), class :php-short:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication` was instructed
 to send HTTP headers immediately via the PHP function :php:`header()`.
 
 These headers were sent directly to the client without having a chance to
@@ -23,7 +23,7 @@ These HTTP headers for not caching a HTTP response were already attached to the
 PSR-7 Response when an active Backend user was available in Frontend and Backend
 requests, but not when a Frontend user was logged in.
 
-The internal methods in class :php:`AbstractUserAuthentication` are removed.
+The internal methods in class :php-short:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication` are removed.
 
 Impact
 ======
@@ -37,7 +37,7 @@ Affected Installations
 ======================
 
 TYPO3 installations with custom extensions manipulating HTTP headers or the
-options within class :php:`AbstractUserAuthentication` to send such headers.
+options within class :php-short:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication` to send such headers.
 
 
 Migration

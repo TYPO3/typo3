@@ -15,7 +15,7 @@ The public property :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendContro
 has been marked as deprecated.
 
 It was used in the past as a copy of the value
-:php:`TypoScriptFrontendController->config[config][ATagParams]`,
+:php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->config[config][ATagParams]`,
 which should be used instead.
 
 There is no need to use such a (less prominent) configuration option in a
@@ -32,7 +32,7 @@ Impact
 
 Accessing, setting or writing this property will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
-Calling :php:`ContentObjectRenderer->getATagParams()`
+Calling :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getATagParams()`
 with a second argument set to false will trigger a PHP :php:`E_USER_DEPRECATED` error
 as well.
 

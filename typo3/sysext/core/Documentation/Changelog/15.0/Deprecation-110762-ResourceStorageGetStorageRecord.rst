@@ -35,7 +35,7 @@ configuration of a storage.
 Migration
 =========
 
-Use the getters of :php:`ResourceStorage` instead: :php:`getUid()`,
+Use the getters of :php-short:`\TYPO3\CMS\Core\Resource\ResourceStorage` instead: :php:`getUid()`,
 :php:`getName()`, :php:`getDriverType()`,
 :php:`isDefault()`, :php:`isBrowsable()`, :php:`isPublic()`,
 :php:`isWritable()`, :php:`isOnline()`, :php:`autoExtractMetadataEnabled()`,

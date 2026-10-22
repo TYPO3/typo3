@@ -12,7 +12,7 @@ Description
 ===========
 
 A new argument :php:`respectSubmittedDataValue` is added to Fluid's
-:php:`HiddenViewHelper` view helper. It allows to enable or disable the usage of
+:php-short:`\TYPO3\CMS\Fluid\ViewHelpers\Form\HiddenViewHelper` view helper. It allows to enable or disable the usage of
 previously submitted values for the corresponding field. This is especially
 useful if dealing with sub requests, e.g. when a :php:`\TYPO3\CMS\Extbase\Http\ForwardResponse` is
 being dispatched within Extbase.

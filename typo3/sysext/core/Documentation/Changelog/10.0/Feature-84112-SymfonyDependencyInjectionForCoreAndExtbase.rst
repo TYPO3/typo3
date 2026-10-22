@@ -25,8 +25,8 @@ Extbase dependency injection (which is still available), also
 :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()` has been adapted
 to retrieve instances from the container, if possible.
 
-Classes should be adapted to avoid both, :php:`ObjectManager` and
-:php:`GeneralUtility::makeInstance()` whenever possible.
+Classes should be adapted to avoid both, :php-short:`\TYPO3\CMS\Extbase\Object\ObjectManager` and
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()` whenever possible.
 Service dependencies should be injected via constructor injection or
 setter methods (inject methods as in Extbase are supported).
 
@@ -202,7 +202,7 @@ Impact
   suffix (which is the default for Extbase).
 
 * Dependency Injection can be added to constructors of existing services
-  without being breaking. :php:`GeneralUtility::makeInstance(ServiceName::class)`
+  without being breaking. :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(ServiceName::class)`
   will keep working,  as :php:`makeInstance` has been adapted to resort to the
   symfony container.
 

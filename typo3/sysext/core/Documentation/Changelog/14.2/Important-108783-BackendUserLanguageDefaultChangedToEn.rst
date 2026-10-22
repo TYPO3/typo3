@@ -29,7 +29,7 @@ Impact
 *   Existing backend users with `lang=default` should run the upgrade wizard
     to migrate to `lang=en`.
 *   In general, code that uses `default` as a language key (e.g. custom
-    instances of :php:`LanguageService`) will continue to work, as
+    instances of :php-short:`\TYPO3\CMS\Core\Localization\LanguageService`) will continue to work, as
     `default` is still mapped to `en` internally.
 
 ..  index:: Backend, ext:core

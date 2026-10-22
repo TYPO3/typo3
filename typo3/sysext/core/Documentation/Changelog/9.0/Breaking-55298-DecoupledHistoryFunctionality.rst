@@ -28,7 +28,7 @@ stored within `sys_log` (where it is still logged, if logging is enabled).
 Instead of having sys_history database entries that are referenced into sys_log contain all necessary data, all data
 is now stored within sys_history. All additional payload data is stored as JSON and not as serialized array.
 
-A PHP new class :php:`RecordHistory` store has been introduced to act as API layer for storing any activity (including
+A PHP new class :php-short:`\TYPO3\CMS\Backend\History\RecordHistory` store has been introduced to act as API layer for storing any activity (including
 moving records).
 
 BE-log module
@@ -46,8 +46,8 @@ History view
 The "highlight" functionality for selecting a specific change within the history module of the TYPO3 Backend
 has been removed.
 
-A clear separation of concerns has been introduced between :php:`ElementHistoryController`, which is the entry-point
-for viewing changes of a record, and :php:`RecordHistory`. The latter is now the place for fetching the history
+A clear separation of concerns has been introduced between :php-short:`\TYPO3\CMS\Backend\Controller\ContentElement\ElementHistoryController`, which is the entry-point
+for viewing changes of a record, and :php-short:`\TYPO3\CMS\Backend\History\RecordHistory`. The latter is now the place for fetching the history
 data and doing rollbacks, where the Controller class is responsible for evaluating display-related settings inside the
 module, and for preparing and rendering the Fluid-based output.
 

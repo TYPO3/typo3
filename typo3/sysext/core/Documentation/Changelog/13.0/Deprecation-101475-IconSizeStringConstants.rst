@@ -28,7 +28,7 @@ constants and the new :php:`\TYPO3\CMS\Core\Imaging\IconSize` enum:
 * :php:`\TYPO3\CMS\Core\Imaging\IconFactory->getIconForRecord()`
 * :php:`\TYPO3\CMS\Core\Imaging\IconFactory->getIconForResource()`
 
-The following method returns the string value of an :php:`IconSize` enum, but
+The following method returns the string value of an :php-short:`\TYPO3\CMS\Core\Imaging\IconSize` enum, but
 will be removed in TYPO3 v14:
 
 * :php:`\TYPO3\CMS\Core\Imaging\Event\ModifyIconForResourcePropertiesEvent->getSize()`
@@ -49,7 +49,7 @@ All installations with third-party extensions using the Icon API are affected.
 Migration
 =========
 
-Migrate all usages of the aforementioned string constants to the :php:`IconSize`
+Migrate all usages of the aforementioned string constants to the :php-short:`\TYPO3\CMS\Core\Imaging\IconSize`
 as follows:
 
 * :php:`\TYPO3\CMS\Core\Imaging\Icon::SIZE_DEFAULT` -> :php:`\TYPO3\CMS\Core\Imaging\IconSize::DEFAULT`

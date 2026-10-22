@@ -58,8 +58,8 @@ The following snippet shows the migrated source code of shown above - using
         'TYPO3/CMS/Backend/FormEngine/Element/InputDateTimeElement'
     )->instance($fieldId);
 
-:php:`JavaScriptModuleInstruction` forwards arguments as `JSON` data - and thus
-handles proper context-aware encoding implicitly (:php:`GeneralUtility::quoteJSvalue`
+:php-short:`\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction` forwards arguments as `JSON` data - and thus
+handles proper context-aware encoding implicitly (:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue`
 and similar custom encoding can be omitted in this case).
 
 .. index:: Backend, JavaScript, NotScanned, ext:backend

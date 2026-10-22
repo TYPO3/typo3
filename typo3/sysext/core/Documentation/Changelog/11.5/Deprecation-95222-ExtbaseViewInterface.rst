@@ -30,13 +30,13 @@ This deprecation has minimal impact on TYPO3 v11:
     of :php:`initializeView()` only affects view-related logic and does not
     impact controller initialization.
 *   Another deviation is the method :php:`setControllerContext()`, which is
-    also deprecated because :php:`ControllerContext` itself is marked
+    also deprecated because :php-short:`\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext` itself is marked
     as deprecated.
 
 Affected Installations
 ======================
 
-The extension scanner will detect usages of Extbase :php:`ViewInterface` as a
+The extension scanner will detect usages of Extbase :php-short:`\TYPO3\CMS\Extbase\Mvc\View\ViewInterface` as a
 strong match.
 
 Migration
@@ -45,7 +45,7 @@ Migration
 Adjusting initializeView() method signature in controllers
 ----------------------------------------------------------
 
-Some extensions may rely on :php:`ViewInterface` type hints, particularly in
+Some extensions may rely on :php-short:`\TYPO3\CMS\Extbase\Mvc\View\ViewInterface` type hints, particularly in
 the :php:`initializeView()` method of Extbase action controllers. The default
 implementation of :php:`initializeView()` in :php:`ActionController` is empty.
 
@@ -85,7 +85,7 @@ authors should switch to:
 Handling Custom Views
 ---------------------
 
-If an extension defines a custom view implementing :php:`ViewInterface`, note
+If an extension defines a custom view implementing :php-short:`\TYPO3\CMS\Extbase\Mvc\View\ViewInterface`, note
 that auto-configuration based on this interface will be removed in TYPO3 v12.
 As a result, manual service configuration in :file:`Services.yaml` may
 be necessary.

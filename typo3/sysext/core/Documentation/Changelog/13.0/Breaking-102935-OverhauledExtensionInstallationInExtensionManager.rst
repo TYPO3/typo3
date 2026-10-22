@@ -22,7 +22,7 @@ method has therefore been removed. It has previously been used to execute a
 couple of "import" tasks, such as import site configurations or media assets to
 the :file:`fileadmin/`. However those tasks had dependencies to other optional core
 extensions, such as `EXT:impexp`. Therefore the new PSR-14 event
-:php:`PackageInitializationEvent` has been introduced and the functionality
+:php-short:`\TYPO3\CMS\Core\Package\Event\PackageInitializationEvent` has been introduced and the functionality
 has been split into corresponding event listeners, which are added to their
 associated Core extensions.
 
@@ -42,8 +42,8 @@ custom extensions can ensure to be executed, once the corresponding information
 is available.
 
 It's even possible to manually execute those "tasks" by dispatching the
-:php:`PackageInitializationEvent` in custom extension code. This can be
-used as replacement for the :php:`InstallUtility->processExtensionSetup()` call.
+:php-short:`\TYPO3\CMS\Core\Package\Event\PackageInitializationEvent` in custom extension code. This can be
+used as replacement for the :php-short:`\TYPO3\CMS\Extensionmanager\Utility\InstallUtility->processExtensionSetup()` call.
 
 Impact
 ======
@@ -62,7 +62,7 @@ Migration
 =========
 
 Instead of registering listeners for the removed events, developers can now
-just register a listener to the new :php:`PackageInitializationEvent`, which
+just register a listener to the new :php-short:`\TYPO3\CMS\Core\Package\Event\PackageInitializationEvent`, which
 contains the listeners result as storage entry:
 
 .. code-block:: php
@@ -91,7 +91,7 @@ contains the listeners result as storage entry:
         }
     }
 
-Instead of calling :php:`InstallUtility->processExtensionSetup()`, extensions
-can just dispatch the :php:`PackageInitializationEvent` on their own.
+Instead of calling :php-short:`\TYPO3\CMS\Extensionmanager\Utility\InstallUtility->processExtensionSetup()`, extensions
+can just dispatch the :php-short:`\TYPO3\CMS\Core\Package\Event\PackageInitializationEvent` on their own.
 
 .. index:: Backend, PHP-API, PartiallyScanned, ext:extensionmanager

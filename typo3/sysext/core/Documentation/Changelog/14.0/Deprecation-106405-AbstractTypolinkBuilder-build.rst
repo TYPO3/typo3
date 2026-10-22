@@ -27,7 +27,7 @@ The new, recommended pattern is to implement
 :php-short:`\TYPO3\CMS\Frontend\Typolink\TypolinkBuilderInterface`
 directly.
 
-The :php:`ContentObjectRenderer` property in
+The :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer` property in
 :php-short:`\TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder`
 has also been deprecated and will be removed in TYPO3 v15.0.
 It should now be accessed via the :php:`\Psr\Http\Message\ServerRequestInterface`
@@ -112,7 +112,7 @@ use the new :php:`\TYPO3\CMS\Frontend\Typolink\TypolinkBuilderInterface`.
 2.  Use dependency injection for required services instead of accessing them
     through global state or constructor arguments.
 
-3.  Retrieve :php:`ContentObjectRenderer` from the request object rather than
+3.  Retrieve :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer` from the request object rather than
     the deprecated property.
 
 All implementations of

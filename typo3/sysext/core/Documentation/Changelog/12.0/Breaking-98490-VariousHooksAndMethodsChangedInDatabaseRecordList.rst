@@ -20,13 +20,13 @@ The following hooks have been removed
 They were mainly used within the list module / record listing or the Element Browser
 to modify the database query altering the result set of records rendered.
 
-Along with the hooks, various method signatures within :php:`DatabaseRecordList`
+Along with the hooks, various method signatures within :php-short:`\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList`
 have been changed.
 
-*   :php:`DatabaseRecordList->getQueryBuilder()` has the arguments `$pageId`
+*   :php-short:`\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList->getQueryBuilder()` has the arguments `$pageId`
     and `$additionalConstraints` removed
-*   :php:`DatabaseRecordList->getTable()` only uses one argument now
-*   :php:`DatabaseRecordList->makeSearchString()` is now marked as protected
+*   :php-short:`\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList->getTable()` only uses one argument now
+*   :php-short:`\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList->makeSearchString()` is now marked as protected
 
 Impact
 ======
@@ -45,7 +45,7 @@ the hooks above.
 Migration
 =========
 
-Use the new PSR-14 event :php:`ModifyDatabaseQueryForRecordListingEvent`
+Use the new PSR-14 event :php-short:`\TYPO3\CMS\Backend\View\Event\ModifyDatabaseQueryForRecordListingEvent`
 which serves at the very end to alter the actual QueryBuilder object to modify
 the database query before it is executed.
 

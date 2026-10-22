@@ -26,8 +26,8 @@ The following changes have been made to
 The following changes have been made to
 :php-short:`\TYPO3\CMS\Core\Resource\ProcessedFileRepository`:
 
-- Method :php:`add()` now requires a :php:`TaskInterface` parameter.
-- Method :php:`update()` now requires a :php:`TaskInterface` parameter.
+- Method :php:`add()` now requires a :php-short:`\TYPO3\CMS\Core\Resource\Processing\TaskInterface` parameter.
+- Method :php:`update()` now requires a :php-short:`\TYPO3\CMS\Core\Resource\Processing\TaskInterface` parameter.
 
 Additionally, the checksum validation logic has been moved from
 :php-short:`\TYPO3\CMS\Core\Resource\ProcessedFile` to
@@ -38,12 +38,12 @@ Impact
 
 Any code that calls the following methods will cause PHP fatal errors:
 
--   :php:`ProcessedFile->getTask()`
--   :php:`ProcessedFile->generateProcessedFileNameWithoutExtension()`
+-   :php-short:`\TYPO3\CMS\Core\Resource\ProcessedFile->getTask()`
+-   :php-short:`\TYPO3\CMS\Core\Resource\ProcessedFile->generateProcessedFileNameWithoutExtension()`
 
-Any code that calls :php:`ProcessedFileRepository->add()` or
-:php:`ProcessedFileRepository->update()` without the new
-:php:`TaskInterface` parameter will cause PHP fatal errors.
+Any code that calls :php-short:`\TYPO3\CMS\Core\Resource\ProcessedFileRepository->add()` or
+:php-short:`\TYPO3\CMS\Core\Resource\ProcessedFileRepository->update()` without the new
+:php-short:`\TYPO3\CMS\Core\Resource\Processing\TaskInterface` parameter will cause PHP fatal errors.
 
 Code that relied on ::php-short:`\TYPO3\CMS\Core\Resource\ProcessedFile` objects
 having Task objects available internally will no longer work, as Task objects
@@ -56,19 +56,19 @@ Affected installations
 
 Installations with custom file processing extensions or custom Task
 implementations that directly interact with the
-:php:`ProcessedFile->getTask()` method are affected. The extension scanner will
-report any usage of :php:`ProcessedFile->getTask()` and
-:php:`ProcessedFile->generateProcessedFileNameWithoutExtension()` as weak
+:php-short:`\TYPO3\CMS\Core\Resource\ProcessedFile->getTask()` method are affected. The extension scanner will
+report any usage of :php-short:`\TYPO3\CMS\Core\Resource\ProcessedFile->getTask()` and
+:php-short:`\TYPO3\CMS\Core\Resource\ProcessedFile->generateProcessedFileNameWithoutExtension()` as weak
 matches.
 
-Extensions that manually call :php:`ProcessedFileRepository->add()` or
-:php:`ProcessedFileRepository->update()` are also affected. The extension
+Extensions that manually call :php-short:`\TYPO3\CMS\Core\Resource\ProcessedFileRepository->add()` or
+:php-short:`\TYPO3\CMS\Core\Resource\ProcessedFileRepository->update()` are also affected. The extension
 scanner will not report usages of these methods due to too many weak matches.
 
 Migration
 =========
 
-Replace calls to :php:`ProcessedFile->getTask()` with direct creation of Task
+Replace calls to :php-short:`\TYPO3\CMS\Core\Resource\ProcessedFile->getTask()` with direct creation of Task
 objects through the :php-short:`\TYPO3\CMS\Core\Resource\Processing\TaskTypeRegistry`:
 
 **Before:**
@@ -92,11 +92,11 @@ objects through the :php-short:`\TYPO3\CMS\Core\Resource\Processing\TaskTypeRegi
     );
 
 It is recommended to implement your own alternative to
-:php:`ProcessedFile->generateProcessedFileNameWithoutExtension()` if similar
+:php-short:`\TYPO3\CMS\Core\Resource\ProcessedFile->generateProcessedFileNameWithoutExtension()` if similar
 logic is still needed.
 
-Update calls to :php:`ProcessedFileRepository->add()` and
-:php:`ProcessedFileRepository->update()` to include the new
+Update calls to :php-short:`\TYPO3\CMS\Core\Resource\ProcessedFileRepository->add()` and
+:php-short:`\TYPO3\CMS\Core\Resource\ProcessedFileRepository->update()` to include the new
 :php-short:`\TYPO3\CMS\Core\Resource\Processing\TaskInterface` parameter:
 
 ..  code-block:: php

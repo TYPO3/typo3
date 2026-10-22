@@ -16,7 +16,7 @@ Extensions that deliver own backend modules can now use the
 view for the 'body' part of the view and do not need to
 instantiate an own view anymore.
 
-The default document header of :php:`ModuleTemplate` can be rendered
+The default document header of :php-short:`\TYPO3\CMS\Backend\Template\ModuleTemplate` can be rendered
 using a new Fluid layout named `Module`.
 
 Impact

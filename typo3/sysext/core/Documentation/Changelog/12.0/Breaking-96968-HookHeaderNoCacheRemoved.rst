@@ -14,7 +14,7 @@ Description
 The previous TYPO3 Hook "headerNoCache" registered via
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['headerNoCache']`
 has been removed in favor of a new PSR-14 event
-:php:`ShouldUseCachedPageDataIfAvailableEvent`.
+:php-short:`\TYPO3\CMS\Frontend\Event\ShouldUseCachedPageDataIfAvailableEvent`.
 
 Impact
 ======

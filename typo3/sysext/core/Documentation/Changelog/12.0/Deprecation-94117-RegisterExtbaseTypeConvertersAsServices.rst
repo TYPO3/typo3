@@ -28,7 +28,7 @@ been deprecated:
 - :php:`\TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter::getPriority()`
 - :php:`\TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter::canConvertFrom()`
 
-The methods have also been removed from the :php:`TypeConverterInterface`, see
+The methods have also been removed from the :php-short:`\TYPO3\CMS\Extbase\Property\TypeConverterInterface`, see
 :doc:`changelog <../12.0/Breaking-94117-RegisterExtbaseTypeConvertersAsServices>`.
 
 Impact
@@ -44,13 +44,13 @@ removed there as well.
 Affected Installations
 ======================
 
-All installations with custom type converters, extending :php:`AbstractTypeConverter`
+All installations with custom type converters, extending :php-short:`\TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter`
 and relying on those properties and methods.
 
 Migration
 =========
 
 In custom type converters, drop mentioned properties and methods and don't access
-said properties and methods of :php:`AbstractTypeConverter` from outside.
+said properties and methods of :php-short:`\TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter` from outside.
 
 .. index:: PHP-API, NotScanned, ext:extbase

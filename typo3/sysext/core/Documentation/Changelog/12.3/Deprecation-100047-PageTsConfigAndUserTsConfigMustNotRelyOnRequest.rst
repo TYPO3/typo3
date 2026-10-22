@@ -17,7 +17,7 @@ will stop working in TYPO3 v13 and will always evaluate to false.
 
 Page TSconfig and user TSconfig should not rely on request related data: They should
 not check for given arguments or similar: the main reason is that the Backend
-:php:`DataHandler` makes heavy use of page TSconfig, but the DataHandler itself is
+:php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler` makes heavy use of page TSconfig, but the DataHandler itself is
 not request-aware. The DataHandler (the code logic that updates data in the database
 in the backend) can be used and must work in a CLI context, so any page TSconfig that
 depends on a given request is flawed by design since it will never act as expected

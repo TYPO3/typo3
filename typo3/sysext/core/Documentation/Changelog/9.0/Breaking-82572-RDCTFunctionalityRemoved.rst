@@ -37,7 +37,7 @@ When calling TYPO3 Frontend via `index.php&RDCT=myhash` the RDCT GET parameter i
 anymore.
 
 Calling :php:`$TSFE->sendRedirect()`, :php:`$TSFE->updateMD5paramsRecord()` and
-:php:`GeneralUtility::makeRedirectUrl()` will result in a fatal PHP error.
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeRedirectUrl()` will result in a fatal PHP error.
 
 Accessing the now non-existent property :php:`$TSFE->RDCT` will trigger a PHP notice, as well
 as setting up a new instance of `TypoScriptFrontendController` with an eighth parameter.

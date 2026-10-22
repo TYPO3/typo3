@@ -42,9 +42,9 @@ You can also unset it, which will result in the Global Configuration
 Background information
 ======================
 
-The Linkvalidator :php:`ExternalLinktype` class uses the core
-:php:`RequestFactory` (which uses Guzzle under the hood).
-:php:`RequestFactory::request` expects a set of options where
+The Linkvalidator :php-short:`\TYPO3\CMS\Linkvalidator\Linktype\ExternalLinktype` class uses the core
+:php-short:`\TYPO3\CMS\Core\Http\RequestFactory` (which uses Guzzle under the hood).
+:php-short:`\TYPO3\CMS\Core\Http\RequestFactory::request` expects a set of options where
 the timeout can be passed along.
 
 If it is not, the core :php:`$GLOBALS['TYPO3_CONF_VARS']['HTTP']['timeout']`
@@ -94,6 +94,6 @@ More information
 
 * `Guzzle Request Options <https://docs.guzzlephp.org/en/stable/request-options.html>`__
 * see :file:`typo3/sysext/core/Configuration/DefaultConfiguration.php in core`
-* see :php:`GuzzleClientFactory` and :php:`RequestFactory` in the core
+* see :php-short:`\TYPO3\CMS\Core\Http\Client\GuzzleClientFactory` and :php-short:`\TYPO3\CMS\Core\Http\RequestFactory` in the core
 
 .. index:: Backend, ext:linkvalidator

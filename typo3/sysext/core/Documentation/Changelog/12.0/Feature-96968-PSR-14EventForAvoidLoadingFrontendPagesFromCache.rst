@@ -11,7 +11,7 @@ See :issue:`96968`
 Description
 ===========
 
-A new PSR-14 event :php:`ShouldUseCachedPageDataIfAvailableEvent` is added which
+A new PSR-14 event :php-short:`\TYPO3\CMS\Frontend\Event\ShouldUseCachedPageDataIfAvailableEvent` is added which
 allows TYPO3 Extensions to register event listeners to modify if a page should
 be read from cache (if it has been created in store already), or if it should
 be re-built completely ignoring the cache entry for the request.

@@ -24,7 +24,7 @@ per request: Expressions of configured base variants (:yaml:`baseVariants`)
 continue to be evaluated per request and environment as before.
 
 Any change performed via the TYPO3 backend (:guilabel:`Site Management`
-modules) or via the :php:`SiteWriter` API invalidates this cache
+modules) or via the :php-short:`\TYPO3\CMS\Core\Configuration\SiteWriter` API invalidates this cache
 automatically.
 
 However, changes applied directly to the files :file:`csp.yaml`,

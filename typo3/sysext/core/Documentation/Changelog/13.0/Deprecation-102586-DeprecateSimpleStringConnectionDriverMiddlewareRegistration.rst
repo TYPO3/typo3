@@ -60,7 +60,7 @@ Registration for driver middlewares for TYPO3 v12 and v13
 ---------------------------------------------------------
 
 Extension authors providing dual Core support with one extension version can use the
-:php:`Typo3Version` class to provide the configuration suitable for the Core version
+:php-short:`\TYPO3\CMS\Core\Information\Typo3Version` class to provide the configuration suitable for the Core version
 and avoiding the deprecation notice:
 
 ..  code-block:: php

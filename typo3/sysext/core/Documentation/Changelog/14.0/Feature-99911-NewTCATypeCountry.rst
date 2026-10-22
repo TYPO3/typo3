@@ -113,7 +113,7 @@ Extbase usage
 -------------
 
 When using Extbase Controllers to fetch Domain Models containing properties
-declared with the :php:`Country` type, these models can be used with their
+declared with the :php-short:`\TYPO3\CMS\Core\Country\Country` type, these models can be used with their
 usual getters, and passed along to Fluid templates as usual.
 
 ..  code-block:: php
@@ -181,7 +181,7 @@ You can use any of the :php:`getXXX()` methods available from the
 the Fluid :html:`{model.country.XXX}` accessors.
 
 If you use common Extbase CRUD (Create/Read/Update/Delete) with models using a
-`Country` type, you can utilize the existing ViewHelper
+:php-short:`\TYPO3\CMS\Core\Country\Country` type, you can utilize the existing ViewHelper
 :ref:`f:form.countrySelect <feature-99618-1674063182>` within your
 `<f:form>` logic.
 
@@ -264,7 +264,7 @@ The type :php-short:`\TYPO3\CMS\Core\Country\Country` does not point to a real
 Extbase model, and thus has no inherent localization or query logic based on
 real records. It is just a pure PHP data object with some getters, and a magic
 :php:`__toString()` method returning a language label (`LLL:...`) translation
-key for the name of the country (:php:`Country->getLocalizedNameLabel()`).
+key for the name of the country (:php-short:`\TYPO3\CMS\Core\Country\Country->getLocalizedNameLabel()`).
 
 Here are some examples how to access them and provide localization:
 
@@ -440,7 +440,7 @@ It is now possible to use a dedicated TCA type for storing a relation to a
 country in a record.
 
 Using the new TCA type, corresponding database columns are added automatically.
-`Country`-annotated properties of Extbase Domain Models can be evaluated in
+:php-short:`\TYPO3\CMS\Core\Country\Country`-annotated properties of Extbase Domain Models can be evaluated in
 Extbase and via TypoScript.
 
 .. index:: Backend, TCA, ext:core

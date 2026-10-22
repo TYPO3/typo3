@@ -18,7 +18,7 @@ specific Request state is attached as an attribute to the PSR-7 Request.
 
 Most of these Extbase-specific attribute properties are now available in Core v12
 by activating the according decorator methods in :php:`\TYPO3\CMS\Extbase\Mvc\RequestInterface`,
-which is implemented by :php:`\TYPO3\CMS\Extbase\Mvc\Request`. The :php:`RequestInterface` now
+which is implemented by :php:`\TYPO3\CMS\Extbase\Mvc\Request`. The :php-short:`\TYPO3\CMS\Extbase\Mvc\RequestInterface` now
 also properly extends PSR-7 :php:`ServerRequestInterface` and is type-hinted within
 the Extbase framework.
 
@@ -37,10 +37,10 @@ codebase.
 Affected installations
 ======================
 
-Extensions that actively manipulate the given Extbase :php:`Request` using setter methods
+Extensions that actively manipulate the given Extbase :php-short:`\TYPO3\CMS\Extbase\Mvc\Request` using setter methods
 will trigger fatal PHP "method does not exist" errors.
 
-Instances with extensions actively creating a :php:`Request` must hand over
+Instances with extensions actively creating a :php-short:`\TYPO3\CMS\Extbase\Mvc\Request` must hand over
 a :php:`\Psr\Http\Message\ServerRequestInterface` as constructor argument, it must have
 the attribute :php:`extbase` set, which must be an instance of
 :php:`\TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters`.
@@ -54,13 +54,13 @@ extensions.
 
 Extensions that use the :php:`setXY()` methods for whatever reasons have to
 change them to their :php:`withXY()` counterparts, though: Nearly all "withers" are now
-declared as part of :php:`RequestInterface` and already exist in v11, "setters" can be
+declared as part of :php-short:`\TYPO3\CMS\Extbase\Mvc\RequestInterface` and already exist in v11, "setters" can be
 migrated quite easily.
 
-From an Extbase Framework API point of view, extension should *only* rely on :php:`RequestInterface`
-methods: The second level :php:`ExtbaseRequestParameters` attribute is considered
+From an Extbase Framework API point of view, extension should *only* rely on :php-short:`\TYPO3\CMS\Extbase\Mvc\RequestInterface`
+methods: The second level :php-short:`\TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters` attribute is considered
 :php:`@internal` and extensions shouldn't work with it directly. There are just a couple
-of methods used by Extbase Framework based on direct :php:`ExtbaseRequestParameters` manipulation,
+of methods used by Extbase Framework based on direct :php-short:`\TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters` manipulation,
 most of them are related to the action argument validation and action forwarding behavior of Extbase,
 which Extbase extensions in general shouldn't need to deal with themselves.
 
@@ -70,7 +70,7 @@ instance instead. In practice, if the previous Request object has been set to so
 client object beforehand, and if a new Request is created using a :php:`withXY()`
 method, those client objects may need to be updated with the new object. A typical use case
 is :php:`$this->view` in a controller class, which may now need :php:`$this->view->setRequest($myNewRequest)`
-to receive the new :php:`Request` to work on, and it's most likely also a good idea to update
+to receive the new :php-short:`\TYPO3\CMS\Extbase\Mvc\Request` to work on, and it's most likely also a good idea to update
 :php:`$this->request = $myNewRequest` as well.
 
 .. index:: PHP-API, NotScanned, ext:extbase

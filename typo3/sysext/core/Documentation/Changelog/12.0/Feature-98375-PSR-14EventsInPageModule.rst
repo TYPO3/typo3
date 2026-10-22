@@ -179,13 +179,13 @@ The corresponding event listener class:
 Impact
 ======
 
-Use :php:`IsContentUsedOnPageLayoutEvent` to identify if a content has been used
+Use :php-short:`\TYPO3\CMS\Backend\View\Event\IsContentUsedOnPageLayoutEvent` to identify if a content has been used
 in a column that isn't on a Backend Layout.
 
-Use :php:`ModifyDatabaseQueryForContentEvent` to filter out certain content elements
+Use :php-short:`\TYPO3\CMS\Backend\View\Event\ModifyDatabaseQueryForContentEvent` to filter out certain content elements
 from being shown in the Page Module.
 
-Use :php:`PageContentPreviewRenderingEvent` to ship an alternative rendering for
+Use :php-short:`\TYPO3\CMS\Backend\View\Event\PageContentPreviewRenderingEvent` to ship an alternative rendering for
 a specific content type or to manipulate the content elements' record data.
 
 .. index:: Backend, PHP-API, ext:backend

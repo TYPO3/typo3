@@ -50,8 +50,8 @@ TYPO3 v13.
 Affected installations
 ======================
 
-The extension scanner will find extensions calling :php:`FormProtectionFactory::get()`
-or :php:`FormProtectionFactory::purgeInstances()` as "strong" matches.
+The extension scanner will find extensions calling :php-short:`\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()`
+or :php-short:`\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::purgeInstances()` as "strong" matches.
 
 
 Migration
@@ -80,7 +80,7 @@ Before
 
 After
 
-It is recommended to use :php:`FormProtectionFactory->createForRequest()` to
+It is recommended to use :php-short:`\TYPO3\CMS\Core\FormProtection\FormProtectionFactory->createForRequest()` to
 auto-detect which type is needed and return the corresponding instance:
 
 ..  code-block:: php

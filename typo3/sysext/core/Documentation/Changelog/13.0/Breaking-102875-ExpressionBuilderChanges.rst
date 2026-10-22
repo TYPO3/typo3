@@ -14,8 +14,8 @@ Description
 Signature changes for following methods
 ---------------------------------------
 
-*  :php:`ExpressionBuilder::literal(string $value)`: Value must be a string now.
-*  :php:`ExpressionBuilder::trim()`: Only :php:`\Doctrine\DBAL\Platforms\TrimMode`
+*  :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder::literal(string $value)`: Value must be a string now.
+*  :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder::trim()`: Only :php:`\Doctrine\DBAL\Platforms\TrimMode`
    enum for :php:`$position` argument.
 
 Following class constants have been removed

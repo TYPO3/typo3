@@ -12,7 +12,7 @@ Description
 ===========
 
 When linking to the edit form it's possible to instruct the
-:php:`EditDocumentController` to only render a subset of available
+:php-short:`\TYPO3\CMS\Backend\Controller\EditDocumentController` to only render a subset of available
 fields for relevant records using the `columnsOnly` functionality,
 by adding the fields to be rendered as a comma-separated list.
 

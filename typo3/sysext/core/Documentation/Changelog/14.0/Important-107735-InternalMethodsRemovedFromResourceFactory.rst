@@ -27,9 +27,9 @@ in custom extensions despite being marked as internal.
 Migration
 =========
 
-Instead of using the removed methods from :php:`ResourceFactory`, use the
-appropriate methods from :php:`StorageRepository` or direct access to
-:php:`ResourceStorage`:
+Instead of using the removed methods from :php-short:`\TYPO3\CMS\Core\Resource\ResourceFactory`, use the
+appropriate methods from :php-short:`\TYPO3\CMS\Core\Resource\StorageRepository` or direct access to
+:php-short:`\TYPO3\CMS\Core\Resource\ResourceStorage`:
 
 ..  code-block:: php
 

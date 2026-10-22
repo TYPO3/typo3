@@ -11,7 +11,7 @@ See :issue:`91806`
 Description
 ===========
 
-Method :php:`BackendUtility::viewOnClick()` is discouraged to be used
+Method :php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick()` is discouraged to be used
 due to its inline JavaScript and has been deprecated now.
 
 

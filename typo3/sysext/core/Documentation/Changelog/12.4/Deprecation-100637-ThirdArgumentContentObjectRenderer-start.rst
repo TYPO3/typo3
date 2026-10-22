@@ -29,7 +29,7 @@ Affected installations
 ======================
 
 Instances with casual extensions are probably not affected by this: Instances
-of :php:`ContentObjectRenderer` are usually set-up framework internally.
+of :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer` are usually set-up framework internally.
 
 Using the third argument on :php:`start()` triggers a deprecation level log
 message. The extension scanner will *not* find usages, since the method

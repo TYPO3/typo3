@@ -48,7 +48,7 @@ specification for cross-origin resources.
 
 The equivalent PHP constant
 :php:`\TYPO3\CMS\Core\Page\ResourceHashCollection::AUTO`
-can be used when calling :php:`PageRenderer` or :php:`AssetCollector` APIs.
+can be used when calling :php-short:`\TYPO3\CMS\Core\Page\PageRenderer` or :php-short:`\TYPO3\CMS\Core\Page\AssetCollector` APIs.
 
 Impact
 ======
@@ -77,7 +77,7 @@ This results in output such as:
     <script src="/typo3conf/ext/my_extension/Resources/Public/JavaScript/app.js" integrity="sha256-xyz789=="></script>
 
 When using the PHP API directly, pass
-:php:`ResourceHashCollection::AUTO` as the :php:`$integrity` argument:
+:php-short:`\TYPO3\CMS\Core\Page\ResourceHashCollection::AUTO` as the :php:`$integrity` argument:
 
 ..  code-block:: php
     :emphasize-lines: 21, 33, 40

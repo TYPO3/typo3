@@ -83,7 +83,7 @@ Impact
 
 This feature allows everybody to provide additional value for any TYPO3 instance.
 By reacting to webhooks, TYPO3 can now be used to create records in the backend.
-Furthermore, by implementing the :php:`ReactionInterface`, it is possible to
+Furthermore, by implementing the :php-short:`\TYPO3\CMS\Reactions\Reaction\ReactionInterface`, it is possible to
 create any custom reaction.
 
 .. index:: Backend, ext:reactions

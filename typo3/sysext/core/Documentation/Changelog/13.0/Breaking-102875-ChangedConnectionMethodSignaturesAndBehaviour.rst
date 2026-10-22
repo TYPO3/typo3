@@ -16,7 +16,7 @@ Signature and behaviour of following methods has been changed:
 *   :php:`lastInsertId()` no longer accepts the sequence and field name.
 *   :php:`quote()` no longer has a type argument and the value must be a string.
 
-Public :php:`Connection::PARAM_*` class constants has been replaced with the
+Public :php-short:`\TYPO3\CMS\Core\Database\Connection::PARAM_*` class constants has been replaced with the
 Doctrine DBAL 4 :php:`ParameterType` and :php:`ArrayParameterType` enum definitions.
 
 ..  note::

@@ -20,7 +20,7 @@ Additionally, the event is now even dispatched, in case the canonical tag
 generation is disabled via TypoScript :typoscript:`disableCanonical` or via
 page properties :php:`no_index`. If disabled, the new
 :php:`\TYPO3\CMS\Seo\Exception\CanonicalGenerationDisabledException` is being
-thrown in the :php:`CanonicalGenerator`. The exception is caught and transferred
+thrown in the :php-short:`\TYPO3\CMS\Seo\Canonical\CanonicalGenerator`. The exception is caught and transferred
 to the event, allowing listeners to determine whether generation is disabled,
 using the new :php:`getCanonicalGenerationDisabledException()` method, which
 either returns the exception with the corresponding reason or :php:`null`.
@@ -28,7 +28,7 @@ either returns the exception with the corresponding reason or :php:`null`.
 Impact
 ======
 
-By relocating and extending the :php:`ModifyUrlForCanonicalTagEvent`,
+By relocating and extending the :php-short:`\TYPO3\CMS\Seo\Event\ModifyUrlForCanonicalTagEvent`,
 listeners are now able to fully manipulate the canonical tag generation, even
 if the generation is disabled and after the standard functionality has been
 executed.

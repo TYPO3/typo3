@@ -12,7 +12,7 @@ See Important-81330-DealingWithPropertiesThatAreMigratedToProtected.rst
 Description
 ===========
 
-A new PHP trait (:php:`PublicPropertyDeprecationTrait`) is added to support the smooth migration of public properties to
+A new PHP trait (:php-short:`\TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait`) is added to support the smooth migration of public properties to
 a protected or private state of a property. By using this trait, deprecation warnings are thrown until the next
 major TYPO3 version.
 

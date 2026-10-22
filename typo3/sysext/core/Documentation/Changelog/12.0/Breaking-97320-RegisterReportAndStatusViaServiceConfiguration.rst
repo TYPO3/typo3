@@ -31,7 +31,7 @@ are not evaluated anymore.
 Registration of custom `status` via :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']`
 are not evaluated anymore.
 
-:php:`ReportInterface` and :php:`StatusProviderInterface`: are extended by the mentioned methods. If the required methods are not implemented it will lead to fatal errors.
+:php-short:`\TYPO3\CMS\Reports\ReportInterface` and :php-short:`\TYPO3\CMS\Reports\StatusProviderInterface`: are extended by the mentioned methods. If the required methods are not implemented it will lead to fatal errors.
 
 Affected Installations
 ======================

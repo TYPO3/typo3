@@ -34,6 +34,6 @@ Migration
 =========
 
 Migrate to use the public API only and use other options (such as
-:php:`allowAttributes`) in order to only run certain instructions on the :php:`RteHtmlParser` object.
+:php:`allowAttributes`) in order to only run certain instructions on the :php-short:`\TYPO3\CMS\Core\Html\RteHtmlParser` object.
 
 .. index:: RTE, NotScanned, ext:core

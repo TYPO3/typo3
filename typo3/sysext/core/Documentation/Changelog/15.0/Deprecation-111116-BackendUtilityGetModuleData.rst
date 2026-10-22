@@ -32,7 +32,7 @@ Affected installations
 ======================
 
 Installations with extensions calling
-:php:`BackendUtility::getModuleData()` in custom backend modules.
+:php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()` in custom backend modules.
 
 Migration
 =========
@@ -41,7 +41,7 @@ Declare the module settings and their default values in the
 :php:`moduleData` option of the module registration. Values sent with the
 request under the same names are then persisted automatically. Read the
 settings from the :php:`moduleData` request attribute and use
-:php:`ModuleData->cleanUp()` to restrict menu settings to allowed values.
+:php-short:`\TYPO3\CMS\Backend\Module\ModuleData->cleanUp()` to restrict menu settings to allowed values.
 
 Before:
 

@@ -54,7 +54,7 @@ the :guilabel:`Try out` button.
 
 ..  note::
 
-    The dry run does not repeat every check of :php:`DataHandler`. Whether the
+    The dry run does not repeat every check of :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler`. Whether the
     page type of the storage page allows the table, the root level
     restrictions of a table, and the evaluation of a field value are only known
     when the record is actually written.

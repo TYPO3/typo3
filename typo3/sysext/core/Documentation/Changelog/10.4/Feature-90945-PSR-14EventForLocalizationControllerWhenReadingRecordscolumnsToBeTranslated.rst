@@ -16,7 +16,7 @@ has been added and will be dispatched after records and columns are collected in
 
 The event receives:
 
-* The default columns and columnsList built by :php:`LocalizationController`
+* The default columns and columnsList built by :php-short:`\TYPO3\CMS\Backend\Controller\Page\LocalizationController`
 * The list of records that were analyzed to create the columns manifest
 * The parameters received by the :php`LocalizationController`
 

@@ -11,7 +11,7 @@ See :issue:`83905`
 Description
 ===========
 
-Property :php:`TypoScriptFrontendController->page_cache_reg1` has been marked as deprecated.
+Property :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->page_cache_reg1` has been marked as deprecated.
 
 
 Impact
@@ -30,6 +30,6 @@ The extension scanner will find usages.
 Migration
 =========
 
-Use method :php:`TypoScriptFrontendController->addCacheTags()` to influence page cache tagging.
+Use method :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->addCacheTags()` to influence page cache tagging.
 
 .. index:: Frontend, PHP-API, FullyScanned

@@ -14,7 +14,7 @@ Description
 The Caching Framework backend implementation :php:`TYPO3\CMS\Core\Cache\Backend\PdoBackend`
 is superseded by the :php:`TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend` since
 introduction of Doctrine DBAL. There is little reason to use :php:`PdoBackend` instead
-of the :php:`Typo3DatabaseBackend` and the latter is optimized much better.
+of the :php-short:`\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend` and the latter is optimized much better.
 
 :php:`PdoBackend` has thus been marked as deprecated and should not be used anymore.
 
@@ -37,7 +37,7 @@ Migration
 =========
 
 TYPO3 cache backend configuration is usually done in :file:`LocalConfiguration.php`.
-Affected instances should switch to :php:`Typo3DatabaseBackend` and eventually update
+Affected instances should switch to :php-short:`\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend` and eventually update
 database schema.
 
 :file:`LocalConfiguration.php` example before:

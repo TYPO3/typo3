@@ -14,15 +14,15 @@ Description
 Due to Site Handling, setting the locale information (:php:`setlocale`) can be handled
 much earlier without any dependencies on the global :php:`TSFE` object.
 
-The functionality of the method :php:`TypoScriptFrontendController->settingLocale()` has
-been moved into :php:`Locales::setSystemLocaleFromSiteLanguage()`. The former method
+The functionality of the method :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->settingLocale()` has
+been moved into :php-short:`\TYPO3\CMS\Core\Localization\Locales::setSystemLocaleFromSiteLanguage()`. The former method
 has been marked as deprecated.
 
 
 Impact
 ======
 
-Calling :php:`TypoScriptFrontendController->settingLocale()` will trigger a PHP :php:`E_USER_DEPRECATED` error.
+Calling :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->settingLocale()` will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected Installations
@@ -35,7 +35,7 @@ explicitly calling the method.
 Migration
 =========
 
-Migrate the existing PHP code to :php:`Locales::setSystemLocaleFromSiteLanguage()` or ensure
+Migrate the existing PHP code to :php-short:`\TYPO3\CMS\Core\Localization\Locales::setSystemLocaleFromSiteLanguage()` or ensure
 that the SiteResolver middleware for Frontend Requests is executed where the locale is now
 set automatically.
 

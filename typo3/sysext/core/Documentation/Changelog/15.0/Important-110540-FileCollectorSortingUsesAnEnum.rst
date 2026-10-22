@@ -15,7 +15,7 @@ The sorting order passed to
 :php:`\TYPO3\CMS\Frontend\Resource\FileCollector->sort()` is no longer a plain
 string but the new enum
 :php:`\TYPO3\CMS\Frontend\Resource\FileCollectionSorting` with the cases
-:php:`Ascending`, :php:`Descending` and :php:`Random`.
+:php:`Ascending`, :php:`Descending` and :php-short:`\TYPO3\CMS\Core\Crypto\Random`.
 
 :php-short:`\TYPO3\CMS\Frontend\Resource\FileCollector` is marked as :php:`@internal`, so this is not treated as a
 breaking change. Extensions calling :php:`sort()` directly must nevertheless

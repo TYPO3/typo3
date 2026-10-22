@@ -11,26 +11,26 @@ See :issue:`88807`
 Description
 ===========
 
-`\TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface` has been deprecated in favor of the newly
-introduced `\TYPO3\CMS\Adminpanel\ModuleApi\RequestEnricherInterface`.
+:php:`\TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface` has been deprecated in favor of the newly
+introduced :php:`\TYPO3\CMS\Adminpanel\ModuleApi\RequestEnricherInterface`.
 
 
 Impact
 ======
 
-Using `\TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface` will trigger a deprecation message.
+Using :php:`\TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface` will trigger a deprecation message.
 
 
 Affected Installations
 ======================
 
-All instances that use `\TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface` are affected.
+All instances that use :php:`\TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface` are affected.
 
 
 Migration
 =========
 
-Switch to `\TYPO3\CMS\Adminpanel\ModuleApi\RequestEnricherInterface` instead:
+Switch to :php:`\TYPO3\CMS\Adminpanel\ModuleApi\RequestEnricherInterface` instead:
 
 - change method name `initializeModule` to `enrich`
 - change return value to return an instance of

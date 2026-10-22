@@ -13,11 +13,11 @@ Description
 
 With the introduction of the FluidAdapter in TYPO3 v13, the dependency between
 Fluid and Extbase has been decoupled. As part of this change, the behavior of
-the :php:`ModuleTemplate::renderResponse()` and :php:`ModuleTemplate::render()`
+the :php-short:`\TYPO3\CMS\Backend\Template\ModuleTemplate::renderResponse()` and :php-short:`\TYPO3\CMS\Backend\Template\ModuleTemplate::render()`
 methods has been adjusted.
 
 The :php:`$templateFileName` argument is now mandatory for the
-:php:`ModuleTemplate::renderResponse()` and :php:`ModuleTemplate::render()`
+:php-short:`\TYPO3\CMS\Backend\Template\ModuleTemplate::renderResponse()` and :php-short:`\TYPO3\CMS\Backend\Template\ModuleTemplate::render()`
 methods. Previously, if this argument was not provided, the template was
 automatically resolved based on the controller and action names. Starting from
 TYPO3 13.4, calling these methods with an empty string or without a valid

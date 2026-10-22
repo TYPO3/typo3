@@ -18,7 +18,7 @@ migrated to a native PHP backed enum.
 Impact
 ======
 
-Since :php:`MfaViewType` is no longer a class, the existing class constants
+Since :php-short:`\TYPO3\CMS\Core\Authentication\Mfa\MfaViewType` is no longer a class, the existing class constants
 are no longer available, but are enum instances instead.
 
 In addition, it's not possible to instantiate the class anymore or call
@@ -26,7 +26,7 @@ the :php:`equals()` method.
 
 The :php:`\TYPO3\CMS\Core\Authentication\Mfa\MfaProviderInterface`, which
 all MFA providers need to implement, does now require the third argument
-:php:`$type` of the :php:`handleRequest()` method to be a :php:`MfaViewType`
+:php:`$type` of the :php:`handleRequest()` method to be a :php-short:`\TYPO3\CMS\Core\Authentication\Mfa\MfaViewType`
 instead of a :php:`string`.
 
 
@@ -42,7 +42,7 @@ All extensions with custom MFA providers, which therefore implement the
 Migration
 =========
 
-To access the string representation of a :php:`MfaViewType`, use the
+To access the string representation of a :php-short:`\TYPO3\CMS\Core\Authentication\Mfa\MfaViewType`, use the
 corresponding :php:`value` property, e.g.
 :php:`\TYPO3\CMS\Core\Authentication\Mfa\MfaViewType::SETUP->value` or on a
 variable, use :php:`$type->value`.

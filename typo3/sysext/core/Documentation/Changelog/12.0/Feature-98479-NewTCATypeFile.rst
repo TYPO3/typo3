@@ -16,7 +16,7 @@ main purpose is to simplify the TCA configuration for adding file reference
 fields to records. It therefore supersedes the usage of TCA type :php:`inline`
 with :php:`foreign_table` set to :php:`sys_file_reference`, which had previously
 usually been configured using the now deprecated API method
-:php:`ExtensionManagementUtility->getFileFieldTCAConfig()` for this use case.
+:php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility->getFileFieldTCAConfig()` for this use case.
 
 This helps on determination of the semantic meaning and also allows to
 reduce internal cross dependencies between TCA type `inline` and FAL.
@@ -183,7 +183,7 @@ ModifyFileReferenceControlsEvent
 
 Listeners to this event will be able to modify the controls of a single
 file reference of a TCA type `file` field. This event is similar to the
-:php:`ModifyInlineElementControlsEvent`, which is only available for TCA
+:php-short:`\TYPO3\CMS\Backend\Form\Event\ModifyInlineElementControlsEvent`, which is only available for TCA
 type `inline`. See corresponding PHP class or the other
 :doc:`changelog <../12.0/Feature-97231-PSR-14EventsForModifyingInlineElementControls>`
 for more information about available methods and their usage.
@@ -193,7 +193,7 @@ ModifyFileReferenceEnabledControlsEvent
 
 Listeners to this event will be able to modify the state (enabled or disabled)
 for the controls of a single file reference of a TCA type `file` field. This
-event is similar to the :php:`ModifyInlineElementEnabledControlsEvent`, which
+event is similar to the :php-short:`\TYPO3\CMS\Backend\Form\Event\ModifyInlineElementEnabledControlsEvent`, which
 is only available for TCA type `inline`. See corresponding PHP class or the
 other :doc:`changelog <../12.0/Feature-97231-PSR-14EventsForModifyingInlineElementControls>`
 for more information about available methods and their usage.

@@ -22,7 +22,7 @@ files as silent upgrade with TYPO3 v14.
 Impact
 ======
 
-Setting default page TSconfig using :php:`ExtensionManagementUtility::addPageTSConfig()`
+Setting default page TSconfig using :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig()`
 in :file:`ext_localconf.php` files has been superseded by
 :ref:`Automatic inclusion of page TSconfig of extensions <feature-96614>` with
 TYPO3 v12 already. The old way has been deprecated now, extensions should switch to
@@ -33,18 +33,18 @@ files.
 Affected installations
 ======================
 
-Instances with extensions using :php:`ExtensionManagementUtility::addPageTSConfig()`
+Instances with extensions using :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig()`
 or directly extending :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig']`
-are affected: Using :php:`ExtensionManagementUtility::addPageTSConfig()` triggers a
+are affected: Using :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig()` triggers a
 deprecation level log message. The extension scanner will find usages of
-:php:`ExtensionManagementUtility::addPageTSConfig()` as strong match.
+:php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig()` as strong match.
 
 
 Migration
 =========
 
 Add default page TSconfig to a :file:`Configuration/page.tsconfig` file within an
-extension and remove calls to :php:`ExtensionManagementUtility::addPageTSConfig()`.
+extension and remove calls to :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig()`.
 Placing default page TSconfig in :file:`Configuration/page.tsconfig` files is
 available since TYPO3 v12, extensions aiming for v12 and v13 compatibility can
 simply switch over to the new way.

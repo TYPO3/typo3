@@ -47,7 +47,7 @@ raise a PHP fatal level error.
 When using an existing shortcut without a title, the fallback "Shortcut"
 will be displayed.
 
-When adding a :php:`ShortcutButton`, without providing a valid route
+When adding a :php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton`, without providing a valid route
 identifier or a display name, an exception will be triggered.
 
 Affected Installations
@@ -62,6 +62,6 @@ Migration
 
 Remove any usage to the mentioned methods or the ViewHelper.
 
-Properly add the :php:`ShortcutButton` with the required information.
+Properly add the :php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton` with the required information.
 
 .. index:: Backend, PHP-API, PartiallyScanned, ext:backend

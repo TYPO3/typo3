@@ -61,6 +61,6 @@ Impact
 
 It is now possible to modify the prepared page tree items before they are
 returned by the :php:`TreeController`, using the new PSR-14 event
-:php:`AfterPageTreeItemsPreparedEvent`.
+:php-short:`\TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent`.
 
 .. index:: Backend, PHP-API, ext:backend

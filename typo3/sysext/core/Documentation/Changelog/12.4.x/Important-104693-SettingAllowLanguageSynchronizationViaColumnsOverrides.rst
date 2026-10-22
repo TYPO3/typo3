@@ -14,7 +14,7 @@ Description
 Setting the TCA option :php:`allowLanguageSynchronization` for a specific
 column in a record type via :php:`columnsOverrides` is currently not supported
 by TYPO3 and therefore might lead to exceptions in the corresponding field wizard
-(:php:`LocalizationStateSelector`). To mitigate this, the option is now
+(:php-short:`\TYPO3\CMS\Backend\Form\FieldWizard\LocalizationStateSelector`). To mitigate this, the option is now
 automatically removed from the TCA configuration via a TCA migration. A
 corresponding deprecation log entry is added to inform integrators about
 the necessary code adjustments.

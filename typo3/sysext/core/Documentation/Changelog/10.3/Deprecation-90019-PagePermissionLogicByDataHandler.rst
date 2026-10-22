@@ -11,9 +11,9 @@ See :issue:`90019`
 Description
 ===========
 
-A new :php:`PagePermissionAssembler` class builds the page permissions, allowing to thin out certain parts of :php:`DataHandlers` responsibilities.
+A new :php-short:`\TYPO3\CMS\Core\DataHandling\PagePermissionAssembler` class builds the page permissions, allowing to thin out certain parts of :php:`DataHandlers` responsibilities.
 
-The following properties and methods within :php:`DataHandler` have been marked as deprecated:
+The following properties and methods within :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler` have been marked as deprecated:
 
 * :php:`TYPO3\CMS\Core\DataHandling\DataHandler->defaultPermissions`
 * :php:`TYPO3\CMS\Core\DataHandling\DataHandler->pMap`
@@ -35,13 +35,13 @@ Calling the mentioned methods will trigger a PHP :php:`E_USER_DEPRECATED` error 
 Affected Installations
 ======================
 
-Any TYPO3 installation that enriches page permission handling and directly accesses the methods or properties in :php:`DataHandler`.
+Any TYPO3 installation that enriches page permission handling and directly accesses the methods or properties in :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler`.
 
 
 Migration
 =========
 
-Ensure to use the new :php:`PagePermissionAssembler` PHP class
+Ensure to use the new :php-short:`\TYPO3\CMS\Core\DataHandling\PagePermissionAssembler` PHP class
 which serves as a proper API for creating page permissions.
 
 .. index:: PHP-API, PartiallyScanned, ext:core

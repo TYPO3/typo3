@@ -24,7 +24,7 @@ registration is necessary.
 Impact
 ======
 
-Any call to :php:`ExtractorRegistry::registerExtractionService()` is now a
+Any call to :php-short:`\TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::registerExtractionService()` is now a
 no-op and has no effect in TYPO3 v14.0+. Metadata extractors are automatically
 registered via the interface.
 

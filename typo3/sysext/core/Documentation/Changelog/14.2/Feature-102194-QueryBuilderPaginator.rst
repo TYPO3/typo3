@@ -25,7 +25,7 @@ The paginated items are fetched only once per page request by storing the
 result internally, avoiding double execution of the database statement.
 
 The total item count is determined robustly using a common table expression
-(CTE) wrapping the passed :php:`QueryBuilder` instance. This approach correctly
+(CTE) wrapping the passed :php-short:`\TYPO3\CMS\Core\Database\Query\QueryBuilder` instance. This approach correctly
 handles advanced queries involving `UNION`, nested CTEs, window functions, and
 grouping.
 
@@ -41,7 +41,7 @@ grouping.
 
     The paginator also takes **full control** over `LIMIT` and `OFFSET`
     and does not respect any existing limit or offset constraints on the
-    passed :php:`QueryBuilder` instance.
+    passed :php-short:`\TYPO3\CMS\Core\Database\Query\QueryBuilder` instance.
 
 Impact
 ======

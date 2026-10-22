@@ -32,7 +32,7 @@ The event has the following methods:
 
 ..  attention::
 
-    :php:`PageRouter::generateUri()` is called from many different contexts
+    :php-short:`\TYPO3\CMS\Core\Routing\PageRouter::generateUri()` is called from many different contexts
     across TYPO3 core, not only during frontend page rendering. This event
     therefore fires for URIs generated in the backend, including page preview,
     FormEngine, new-record redirects, workspace preview links, XML sitemaps,
@@ -42,8 +42,8 @@ The event has the following methods:
     Listeners that modify the URI must therefore be context-aware. Use
     :php:`getType()` (see
     :php:`\TYPO3\CMS\Core\Routing\RouterInterface`) to distinguish between
-    an absolute URL (:php:`RouterInterface::ABSOLUTE_URL`) and an absolute
-    path (:php:`RouterInterface::ABSOLUTE_PATH`), and use
+    an absolute URL (:php-short:`\TYPO3\CMS\Core\Routing\RouterInterface::ABSOLUTE_URL`) and an absolute
+    path (:php-short:`\TYPO3\CMS\Core\Routing\RouterInterface::ABSOLUTE_PATH`), and use
     :php:`getSite()`, :php:`getLanguage()`, or :php:`getRoute()` to limit
     modifications to the intended context. Unconditionally replacing URIs can
     break backend previews, sitemaps, or other subsystems in non-obvious ways.
@@ -78,7 +78,7 @@ Impact
 
 Extension authors can now react to generated page URIs for use cases such as
 logging, monitoring, debugging, and URL adjustment. Because the event is
-dispatched in all contexts that use :php:`PageRouter::generateUri()`, including
+dispatched in all contexts that use :php-short:`\TYPO3\CMS\Core\Routing\PageRouter::generateUri()`, including
 the backend and various subsystems, listeners should scope their modifications
 carefully.
 

@@ -34,7 +34,7 @@ This article describes the changes that have been added to the Fluid template en
 * New feature: methods :php:`getAll` and :php:`addAll` added to :php:`ViewHelperVariableContainer` to allow getting and setting
   all variables in a scope
 * New feature: concept of :php:`Renderable` introduced. A :php:`Renderable` is any class which implements
-  :php:`RenderableInterface` - instances of such classes can be assigned as template variables and passed to :html:`f:render`
+  :php-short:`\TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface` - instances of such classes can be assigned as template variables and passed to :html:`f:render`
 
 Full list can be found on https://github.com/TYPO3/Fluid/compare/2.3.4...2.4.0
 

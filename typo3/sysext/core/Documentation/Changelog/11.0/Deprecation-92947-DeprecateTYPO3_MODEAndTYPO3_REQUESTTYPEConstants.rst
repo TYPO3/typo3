@@ -56,9 +56,9 @@ Migration
 :php:`TYPO3_REQUESTTYPE_*` constants
 ------------------------------------
 
-* :php:`TYPO3_REQUESTTYPE_FE` - Use :php:`ApplicationType->isFrontend()` instead, see below.
-* :php:`TYPO3_REQUESTTYPE_BE` - Use :php:`ApplicationType->isBackend()` instead, see below.
-* :php:`TYPO3_REQUESTTYPE_CLI` - Use :php:`Environment::isCli()` instead.
+* :php:`TYPO3_REQUESTTYPE_FE` - Use :php-short:`\TYPO3\CMS\Core\Http\ApplicationType->isFrontend()` instead, see below.
+* :php:`TYPO3_REQUESTTYPE_BE` - Use :php-short:`\TYPO3\CMS\Core\Http\ApplicationType->isBackend()` instead, see below.
+* :php:`TYPO3_REQUESTTYPE_CLI` - Use :php-short:`\TYPO3\CMS\Core\Core\Environment::isCli()` instead.
 * :php:`TYPO3_REQUESTTYPE_AJAX` - Extensions should barely need this at all. If really required,
   using :php:`strpos($request->getQueryParams()['route'] ?? '', '/ajax/') === 0` could be used
   as alternative to find out if a request is a backend ajax request. A better solution however
@@ -91,16 +91,16 @@ to :php:`true` in early TYPO3 bootstrap and can be used for this purpose::
 Other usages of :php:`TYPO3_MODE` and :php:`TYPO3_REQUESTTYPE` in bootstrap script files
 ----------------------------------------------------------------------------------------
 
-The new API class :php:`ApplicationType` MUST NOT be used in the extension related early bootstrap
+The new API class :php-short:`\TYPO3\CMS\Core\Http\ApplicationType` MUST NOT be used in the extension related early bootstrap
 script files :file:`ext_localconf.php`, :file:`ext_tables.php` and :file:`Configuration/TCA/*`.
 
 The reason is simple: The frontend and backend :php:`Application` classes are the first objects
 within TYPO3 bootstrap that "know" which kind of application is executed. They add this information
 to the PSR-7 request object as attribute :php:`applicationType`. The helper class
-:php:`ApplicationType` - the main substitution for :php:`TYPO3_MODE` - operates on this. :php:`TCA`
+:php-short:`\TYPO3\CMS\Core\Http\ApplicationType` - the main substitution for :php:`TYPO3_MODE` - operates on this. :php:`TCA`
 related extension files and :php:`ext_*` script files however are executed *before* the Application
 object has been started, and before the request object is set in globals. The information if a frontend
-or backend is called does not exist at this point in time, so the helper class :php:`ApplicationType`
+or backend is called does not exist at this point in time, so the helper class :php-short:`\TYPO3\CMS\Core\Http\ApplicationType`
 can't be used.
 
 This change is in line with a general core bootstrap strategy: A mid-term goal is to have a static
@@ -124,14 +124,14 @@ empty caches, which leads to bugs. Extension developers MUST drop this usage in 
 :php:`TYPO3_MODE` and :php:`TYPO3_REQUESTTYPE` in :file:`ext_localconf.php` and :file:`ext_tables.php` files
 ............................................................................................................
 
-As outlined above, class :php:`ApplicationType` MUST NOT be used in these files as substitution for
+As outlined above, class :php-short:`\TYPO3\CMS\Core\Http\ApplicationType` MUST NOT be used in these files as substitution for
 usages of :php:`TYPO3_MODE` and :php:`TYPO3_REQUESTTYPE`. There are a couple of strategies to avoid
 this. All of them lead to the situation that framework state changes are always registered and
 necessary switches, depending on the executed application, are done at a later point in time.
 
 One example has been realized with core issue :issue:`92848`: This changed the registration of additional
 JavaScript for the PageRenderer in backend scope to a hook implementation. The hook has later been
-changed to use the :php:`ApplicationType` helper class instead (see below). The idea is that a hook registration
+changed to use the :php-short:`\TYPO3\CMS\Core\Http\ApplicationType` helper class instead (see below). The idea is that a hook registration
 that changes :php:`GLOBALS['TYPO3_CONF_VARS']` or other globals can *always* be done. The decision,
 if something should be applied, is determined later, when the hook is called.
 
@@ -147,7 +147,7 @@ Some generic extension classes not involved in TYPO3 bootstrap still need to exe
 if they are executed in frontend or backend scope. A use cases is for instance the need to calculate
 different resource paths depending on frontend or backend.
 
-This code should use the new :php:`ApplicationType` class.
+This code should use the new :php-short:`\TYPO3\CMS\Core\Http\ApplicationType` class.
 
 Before::
 

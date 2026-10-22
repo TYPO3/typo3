@@ -23,7 +23,7 @@ implementing an event listener for
 
 ..  note::
 
-    TYPO3 Core implements a listener to add a :php:`PageTypeSource` for page
+    TYPO3 Core implements a listener to add a :php-short:`\TYPO3\CMS\Redirects\RedirectUpdate\PageTypeSource` for page
     type `0` with :ref:`AddPageTypeZeroSource Event Listener <feature-94499-1675615684>`.
     This source class can be re-used, if page type related sources should be added
     for non-zero page types.
@@ -205,7 +205,7 @@ The corresponding event listener class:
 Impact
 ======
 
-The new :php:`PageTypeSource` can be used to provide additional sources, for example,
+The new :php-short:`\TYPO3\CMS\Redirects\RedirectUpdate\PageTypeSource` can be used to provide additional sources, for example,
 based on custom page types using full URI building, which would take
 configured PageTypeSuffix decorators into account. For page type `0` (default), the Core
 implements an event listener which adds the source based on this source class for

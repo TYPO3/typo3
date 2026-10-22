@@ -17,21 +17,21 @@ creation. It provides factory methods for buttons and menu components,
 offering both pre-configured buttons for common patterns and basic component
 creation methods.
 
-The :php:`ComponentFactory` serves multiple purposes:
+The :php-short:`\TYPO3\CMS\Backend\Template\Components\ComponentFactory` serves multiple purposes:
 
 1. **Pre-configured common buttons** – Ready-to-use buttons like back,
    close, save, reload, and view with standardized icons, labels, and
    behavior.
 2. **Basic button creation** – Factory methods for creating button
-   instances (previously available only on :php:`ButtonBar`).
+   instances (previously available only on :php-short:`\TYPO3\CMS\Backend\Template\Components\ButtonBar`).
 3. **Menu component creation** – Factory methods for creating Menu and
    MenuItem instances (previously available only on
-   :php:`MenuRegistry` and :php:`Menu`).
+   :php-short:`\TYPO3\CMS\Backend\Template\Components\MenuRegistry` and :php-short:`\TYPO3\CMS\Backend\Template\Components\Menu\Menu`).
 
-The deprecated :php:`ButtonBar::make*()`, :php:`Menu::makeMenuItem()`,
-and :php:`MenuRegistry::makeMenu()` methods have been replaced by
-:php:`ComponentFactory`, providing a cleaner separation of concerns where
-container classes manage organization and :php:`ComponentFactory` handles
+The deprecated :php-short:`\TYPO3\CMS\Backend\Template\Components\ButtonBar::make*()`, :php-short:`\TYPO3\CMS\Backend\Template\Components\Menu\Menu::makeMenuItem()`,
+and :php-short:`\TYPO3\CMS\Backend\Template\Components\MenuRegistry::makeMenu()` methods have been replaced by
+:php-short:`\TYPO3\CMS\Backend\Template\Components\ComponentFactory`, providing a cleaner separation of concerns where
+container classes manage organization and :php-short:`\TYPO3\CMS\Backend\Template\Components\ComponentFactory` handles
 component creation.
 
 Additionally, several "add" methods now support fluent interface patterns to
@@ -69,7 +69,7 @@ differentiate the buttons for certain icon sizes.
 Available Factory Methods
 -------------------------
 
-The :php:`ComponentFactory` provides two categories of methods:
+The :php-short:`\TYPO3\CMS\Backend\Template\Components\ComponentFactory` provides two categories of methods:
 
 **Pre-configured common buttons:**
 
@@ -107,7 +107,7 @@ convenience.
 
 ..  note::
 
-    All button instances extending the :php:`AbstractButton` class support
+    All button instances extending the :php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\AbstractButton` class support
     arbitrary tag attributes via :php:`setAttributes()`.
 
 **Menu component creation:**
@@ -117,8 +117,8 @@ convenience.
 
 ..  note::
 
-    The corresponding :php:`ButtonBar::make*()`,
-    :php:`Menu::makeMenuItem()`, and :php:`MenuRegistry::makeMenu()` methods
+    The corresponding :php-short:`\TYPO3\CMS\Backend\Template\Components\ButtonBar::make*()`,
+    :php-short:`\TYPO3\CMS\Backend\Template\Components\Menu\Menu::makeMenuItem()`, and :php-short:`\TYPO3\CMS\Backend\Template\Components\MenuRegistry::makeMenu()` methods
     are now deprecated. See :ref:`deprecation-107823-1761297638`.
 
 The Button API has also been enhanced to allow passing a new enum to
@@ -142,15 +142,15 @@ internally):
 Impact
 ======
 
-Backend module developers should now inject :php:`ComponentFactory` in their
+Backend module developers should now inject :php-short:`\TYPO3\CMS\Backend\Template\Components\ComponentFactory` in their
 controllers to create buttons. The factory provides:
 
 1. **Pre-configured buttons** for common patterns (back, close, save, reload,
    view).
 2. **Basic button creation** methods (formerly only available on
-   :php:`ButtonBar`).
+   :php-short:`\TYPO3\CMS\Backend\Template\Components\ButtonBar`).
 
-The :php:`ButtonBar::make*()` methods continue to work but are deprecated and
+The :php-short:`\TYPO3\CMS\Backend\Template\Components\ButtonBar::make*()` methods continue to work but are deprecated and
 will be removed in TYPO3 v15. This change provides a cleaner architecture where
 :php-short:`\TYPO3\CMS\Backend\Template\Components\ComponentFactory`
 handles all button creation and

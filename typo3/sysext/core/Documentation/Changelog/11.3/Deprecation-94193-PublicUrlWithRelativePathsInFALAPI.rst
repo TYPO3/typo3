@@ -27,8 +27,8 @@ fully capable of supporting absolute URLs, :php:`$relativeToCurrentScript`
 is now deprecated and will be removed in TYPO3 v12.
 
 This also affects the :php:`isRelativeToCurrentScript()` method in the
-:php:`GeneratePublicUrlForResourceEvent` event, as well as the
-:php:`OnlineMediaHelperInterface`.
+:php-short:`\TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent` event, as well as the
+:php-short:`\TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperInterface`.
 
 Impact
 ======
@@ -41,7 +41,7 @@ will trigger a PHP :php:`E_USER_DEPRECATED` error. The extension scanner
 will detect such calls.
 
 Accessing :php:`isRelativeToCurrentScript()` on
-:php:`GeneratePublicUrlForResourceEvent` will trigger a PHP
+:php-short:`\TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent` will trigger a PHP
 :php:`E_USER_DEPRECATED` error. The extension scanner will detect
 such calls.
 

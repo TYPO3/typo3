@@ -19,7 +19,7 @@ has been removed.
 
 Additionally, to be able to use autoconfiguration, the `linktype` identifier
 has to be provided by the service directly using the :php:`getIdentifier()`
-method, which is now required by the :php:`LinktypeInterface`.
+method, which is now required by the :php-short:`\TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface`.
 
 In case a custom `linktype` extends
 :php:`\TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype`,
@@ -33,7 +33,7 @@ Registration of custom `linktypes` via
 :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks']`
 is not evaluated anymore.
 
-The :php:`LinktypeInterface` is extended for
+The :php-short:`\TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface` is extended for
 :php:`public function getIdentifier(): string`.
 
 Affected Installations
@@ -61,6 +61,6 @@ add the tag :yaml:`linkvalidator.linktype` manually to your `linktype` service.
 
 Additionally, make sure to either implement
 :php:`public function getIdentifier(): string` or, in case your `linktype` extends
-:php:`AbstractLinktype`, to set the `$identifier` class property.
+:php-short:`\TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype`, to set the `$identifier` class property.
 
 .. index:: Backend, LocalConfiguration, PHP-API, FullyScanned, ext:linkvalidator

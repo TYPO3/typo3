@@ -15,7 +15,7 @@ To further prepare towards PSR-7 Requests in Extbase, the
 :php:`TYPO3\CMS\Extbase\Mvc\Request` has to be streamlined.
 
 Therefore, the internal method :php:`setMethod()` has been removed.
-This method previously threw the :php:`InvalidRequestMethodException`.
+This method previously threw the :php-short:`\TYPO3\CMS\Extbase\Mvc\Exception\InvalidRequestMethodException`.
 Since this was the only usage and the exception is not used within
 TYPO3 / Extbase anymore, the exception is deprecated.
 

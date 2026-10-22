@@ -14,9 +14,9 @@ Description
 As described in :ref:`changelog-Deprecation-93023-ReworkedSessionHandling`
 the whole session handling in the TYPO3 Core was restructured by moving it
 out of the user authentication objects into dedicated classes, namely
-:php:`UserSession` and :php:`UserSessionManager`.
+:php-short:`\TYPO3\CMS\Core\Session\UserSession` and :php-short:`\TYPO3\CMS\Core\Session\UserSessionManager`.
 
-The :php:`UserSession` object contains of all necessary information
+The :php-short:`\TYPO3\CMS\Core\Session\UserSession` object contains of all necessary information
 regarding a users session, for website visitors with session data (e.g.
 shopping basket for anonymous / not-logged-in users), for frontend users as well as
 authenticated backend users. These are for example the session id,
@@ -76,16 +76,16 @@ Public Methods within `UserSession`
 | toArray()           | Array       | Returns the session and its data as array in the old :php:`sessionRecord` format. |
 +---------------------+-------------+-----------------------------------------------------------------------------------+
 
-It should however be always considered to use the :php:`UserSessionManager`
+It should however be always considered to use the :php-short:`\TYPO3\CMS\Core\Session\UserSessionManager`
 for creating new sessions since this manager acts as the main factory for user
 sessions and handles all necessary tasks like fetching, evaluating
 and persisting them. Effectively encapsulating all calls to the
-:php:`SessionManager` which is used for the Session Backend.
+:php-short:`\TYPO3\CMS\Core\Session\SessionManager` which is used for the Session Backend.
 
-The :php:`UserSessionManager` can be retrieved using it's static factory
+The :php-short:`\TYPO3\CMS\Core\Session\UserSessionManager` can be retrieved using it's static factory
 method :php:`create()`.
 
-As already mentioned you can then use the :php:`UserSessionManager` to work
+As already mentioned you can then use the :php-short:`\TYPO3\CMS\Core\Session\UserSessionManager` to work
 with user sessions. A couple of public methods are available.
 
 Public Methods within `UserSessionManager`
@@ -141,15 +141,15 @@ Impact
 ======
 
 The user authentication classes such as
-:php:`BackendUserAuthentication`, :php:`FrontendUserAuthentication` and their abstract parent class
-:php:`AbstractUserAuthentication`, do now not longer
+:php-short:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication`, :php-short:`\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication` and their abstract parent class
+:php-short:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication`, do now not longer
 directly manage the corresponding user session. Therefore these objects
 do not longer include the session data and do not know about the specific
 session backend implementation.
 
 The main benefit is the centralized handling of sessions via the new
-:php:`UserSession` object which contains of all relevant information
-and the :php:`UserSessionManager`. Latter should be used as factory
+:php-short:`\TYPO3\CMS\Core\Session\UserSession` object which contains of all relevant information
+and the :php-short:`\TYPO3\CMS\Core\Session\UserSessionManager`. Latter should be used as factory
 to create new sessions for various use-cases.
 
 Related

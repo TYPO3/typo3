@@ -20,7 +20,7 @@ Impact
 ======
 
 Returning an array is deprecated. The indexing process will catch such cases,
-convert the result to an :php:`IndexingDataAsString` object and raise a
+convert the result to an :php-short:`\TYPO3\CMS\IndexedSearch\Dto\IndexingDataAsString` object and raise a
 deprecation warning.
 
 
@@ -34,7 +34,7 @@ unlikely do exist.
 Migration
 =========
 
-Let the custom content parser return an instance of :php:`IndexingDataAsString`.
+Let the custom content parser return an instance of :php-short:`\TYPO3\CMS\IndexedSearch\Dto\IndexingDataAsString`.
 Either use the constructor, or the static helper method :php:`fromArray()`.
 
 In both cases, the following input is accepted:

@@ -96,7 +96,7 @@ where code adoption has to take place.
 
 .. note::
     The corresponding FormEngine class has been renamed from
-    :php:`InputColorPickerElement` to :php:`ColorElement`. An entry in
+    :php-short:`\TYPO3\CMS\Backend\Form\Element\InputColorPickerElement` to :php-short:`\TYPO3\CMS\Backend\Form\Element\ColorElement`. An entry in
     the "ClassAliasMap" has been added for extensions calling this class
     directly, which is rather unlikely. The extension scanner will report
     any usage, which should then be migrated.

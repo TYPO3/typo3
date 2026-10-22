@@ -25,7 +25,7 @@ handler to be overridden based on :php-short:`\TYPO3\CMS\Backend\Localization\Lo
 The event has the following properties:
 
 *   :php:`public readonly string $identifier`: String identifier returned by
-    :php:`LocalizationHandlerInterface::getIdentifier()` from the handler
+    :php-short:`\TYPO3\CMS\Backend\Localization\LocalizationHandlerInterface::getIdentifier()` from the handler
 *   :php:`public readonly string $className`: The concrete class name in case
     a handler has been XCLASSed without changing the identifier
 *   :php:`public readonly LocalizationInstructions $instructions`: The

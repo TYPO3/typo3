@@ -40,13 +40,13 @@ A basic usage of the :typoscript:`PAGEVIEW` cObject is as follows:
 
     -   :typoscript:`settings` - contains all TypoScript settings (= constants)
     -   :typoscript:`site` - the current :php:`Site` object
-    -   :typoscript:`language` - the current :php:`SiteLanguage` object
+    -   :typoscript:`language` - the current :php-short:`\TYPO3\CMS\Core\Site\Entity\SiteLanguage` object
     -   :typoscript:`page` - the current page record as object
 
 ..  note::
-    The :php:`PageInformation` object contains all relevant information about
+    The :php-short:`\TYPO3\CMS\Frontend\Page\PageInformation` object contains all relevant information about
     the current page. Those are, for example, the corresponding page record, the
-    root line, and many more. Worth mentioning is also the :php:`PageLayout`
+    root line, and many more. Worth mentioning is also the :php-short:`\TYPO3\CMS\Core\Page\PageLayout`
     object, which provides all the information about the selected backend layout.
     This includes the identifier, the title, the available content areas
     with their corresponding name and `colPos`. Additionally, the full (raw)

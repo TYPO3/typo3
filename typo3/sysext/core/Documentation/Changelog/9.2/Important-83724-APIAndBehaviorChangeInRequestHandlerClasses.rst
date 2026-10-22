@@ -14,8 +14,8 @@ Description
 In preparation for a better PSR-7 and a new PSR-15 integration the internal request handler classes have been changed:
 
 * All methods gained strict argument type and return type declarations.
-* Instead of calling :php:`HttpUtility::redirect()` a :php:`RedirectResponse` is returned.
-* Instead of returning :php:`null` a :php:`NullResponse` is returned.
+* Instead of calling :php-short:`\TYPO3\CMS\Core\Utility\HttpUtility::redirect()` a :php:`RedirectResponse` is returned.
+* Instead of returning :php:`null` a :php-short:`\TYPO3\CMS\Core\Http\NullResponse` is returned.
 
 Impact
 ======

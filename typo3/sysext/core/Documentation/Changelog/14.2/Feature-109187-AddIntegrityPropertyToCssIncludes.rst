@@ -28,8 +28,8 @@ The :typoscript:`integrity` attribute has not yet been added to inline styles
 (:typoscript:`inline = 1`), as SRI only applies to external
 resources.
 
-The :php:`PageRenderer::addCssFile()` and
-:php:`PageRenderer::addCssLibrary()` methods have gained two new
+The :php-short:`\TYPO3\CMS\Core\Page\PageRenderer::addCssFile()` and
+:php-short:`\TYPO3\CMS\Core\Page\PageRenderer::addCssLibrary()` methods have gained two new
 parameters, :php:`$integrity` and :php:`$crossorigin`.
 
 Impact

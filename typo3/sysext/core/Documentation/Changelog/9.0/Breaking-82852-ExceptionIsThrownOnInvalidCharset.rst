@@ -16,7 +16,7 @@ consequently all methods in this class calling that method now throw
 an :php:`\TYPO3\CMS\Core\Charset\UnknownCharsetException` if an unknown
 charset was provided.
 
-The :php:`TypoScriptFrontendController` aka TSFE uses this to throw
+The :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` aka TSFE uses this to throw
 a :php:`\RuntimeException` in case of an invalid :typoscript:`config.metaCharset`.
 Before this resulted in a blank page instead.
 
@@ -24,7 +24,7 @@ Before this resulted in a blank page instead.
 Impact
 ======
 
-Third party code directly using the :php:`CharsetConverter` class need to be aware of the new exception in case of an invalid charset.
+Third party code directly using the :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter` class need to be aware of the new exception in case of an invalid charset.
 
 Sites with an invalid :typoscript:`config.metaCharset` will now see a clear error message.
 
@@ -32,7 +32,7 @@ Sites with an invalid :typoscript:`config.metaCharset` will now see a clear erro
 Migration
 =========
 
-Catch the :php:`UnknownCharsetException` of the :php:`CharsetConverter` if necessary.
+Catch the :php:`UnknownCharsetException` of the :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter` if necessary.
 
 Ensure that :typoscript:`config.metaCharset` is set to a known charset.
 

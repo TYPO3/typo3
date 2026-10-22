@@ -124,7 +124,7 @@ thus allowing post-processing on the whole dataset.
 Impact
 ======
 
-Using the PSR-14 event :php:`BeforeRecordDownloadIsExecutedEvent` it is
+Using the PSR-14 event :php-short:`\TYPO3\CMS\Backend\RecordList\Event\BeforeRecordDownloadIsExecutedEvent` it is
 now possible to modify all of the data available when downloading / exporting
 a list of records via the :guilabel:`Web > List` module.
 

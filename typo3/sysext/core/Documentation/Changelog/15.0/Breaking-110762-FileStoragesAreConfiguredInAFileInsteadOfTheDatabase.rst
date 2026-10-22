@@ -214,7 +214,7 @@ Impact
     table is dropped by the database analyzer after the upgrade wizard ran.
     Select fields of other tables that used
     :php:`foreign_table => 'sys_file_storage'` have to use the items processor
-    function :php:`TcaItemsProcessorFunctions->populateFileStorages()` instead,
+    function :php-short:`\TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions->populateFileStorages()` instead,
     which lists the storages the current backend user may access.
 *   The permission presets no longer grant :php:`tables_select` and
     :php:`tables_modify` for the table. Backend users cannot change storages
@@ -223,7 +223,7 @@ Impact
     of the database. Its constructor takes
     :php:`\TYPO3\CMS\Core\Resource\Configuration\FileStorageConfiguration` and
     :php:`\TYPO3\CMS\Core\Resource\Configuration\FileStorageConfigurationWriter`
-    in addition to :php:`ConnectionPool` and :php:`FlexFormTools`.
+    in addition to :php-short:`\TYPO3\CMS\Core\Database\ConnectionPool` and :php-short:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools`.
     The new method :php:`addLocalStorage()` appends a local storage to the
     file. :php:`createLocalStorage()` keeps its signature, writes the file as
     well and is deprecated, see :ref:`deprecation-110762-1791443860`.
@@ -240,7 +240,7 @@ Impact
     keys from :php:`getRecord()` get nothing and have to be adapted.
     :php:`getStorageRecord()` is deprecated, see
     :ref:`deprecation-110762-1789862501`.
-*   :php:`ResourceStorage->markAsPermanentlyOffline()` no longer writes any
+*   :php-short:`\TYPO3\CMS\Core\Resource\ResourceStorage->markAsPermanentlyOffline()` no longer writes any
     record. It marks the storage as offline in the :yaml:`hash` cache until
     the caches are flushed. A storage that has to stay offline is configured
     with :yaml:`online: false`.
@@ -256,7 +256,7 @@ Impact
 *   The FormEngine node :php:`userSysFileStorageIsPublic` and the class
     :php:`\TYPO3\CMS\Backend\Form\Element\UserSysFileStorageIsPublicElement`
     are removed, as is the method
-    :php:`AbstractItemProvider->removeItemsByUserStorageRestriction()`.
+    :php-short:`\TYPO3\CMS\Backend\Form\FormDataProvider\AbstractItemProvider->removeItemsByUserStorageRestriction()`.
 *   Storage root nodes of the file tree now carry :php:`recordType`
     :php:`sys_file` and :php:`resourceType` :php:`storage`; their context
     menu offers the folder actions instead of the record actions of the
@@ -271,9 +271,9 @@ Every installation. Installations with only the auto-created
 :file:`fileadmin` storage work without any change. Installations with
 further storages have to run the upgrade wizard, after which the table can
 be dropped. Extensions that read or write :sql:`sys_file_storage` records
-directly, construct :php:`ResourceStorage` objects from database rows, read
+directly, construct :php-short:`\TYPO3\CMS\Core\Resource\ResourceStorage` objects from database rows, read
 the former keys in a listener of
-:php:`BeforeResourceStorageInitializationEvent` or provide a
+:php-short:`\TYPO3\CMS\Core\Resource\Event\BeforeResourceStorageInitializationEvent` or provide a
 :php:`flexFormDS` for their driver are affected. The extension scanner
 reports the removed and changed methods.
 
@@ -282,11 +282,11 @@ Migration
 
 Run the upgrade wizard as described above, then let the database analyzer
 remove the table. Edit :file:`config/system/file-storages.yaml` by hand for
-any further change, or use :php:`FileStorageConfigurationWriter` from
+any further change, or use :php-short:`\TYPO3\CMS\Core\Resource\Configuration\FileStorageConfigurationWriter` from
 command line tools and set up code. Writing the file during regular web
 requests is not supported: it fails on read-only file systems and diverges
 between several web servers. Replace database access to
-:sql:`sys_file_storage` with :php:`StorageRepository`, which offers
+:sql:`sys_file_storage` with :php-short:`\TYPO3\CMS\Core\Resource\StorageRepository`, which offers
 :php:`findAll()`, :php:`findByUid()`, :php:`getDefaultStorage()` and
 :php:`findByStorageType()`. Driver extensions
 delete the :php:`flexFormDS` entry and document their options for the

@@ -29,7 +29,7 @@ Affected installations
 ======================
 
 TYPO3 installations with custom extensions using the method :php:`enableFields()`
-of the :php:`PageRepository` class.
+of the :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository` class.
 
 
 Migration

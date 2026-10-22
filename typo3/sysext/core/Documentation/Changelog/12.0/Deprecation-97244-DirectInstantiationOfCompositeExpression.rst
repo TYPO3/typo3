@@ -11,7 +11,7 @@ See :issue:`97244`
 Description
 ===========
 
-`doctrine/dbal` `deprecated`_ direct instantiation of :php:`CompositeExpression`
+`doctrine/dbal` `deprecated`_ direct instantiation of :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression`
 in favour of moving forward to an immutable class implementation. Therefore, this
 has also been deprecated in the Core facade class (:php:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression`),
 to avoid shifting too far away.
@@ -42,8 +42,8 @@ static methods :php:`and(...)` and :php:`or(...)` have to be used.
 
 .. note::
 
-    The static replacement methods :php:`CompositeExpression::and()`
-    and :php:`CompositeExpression::or()` have already been added in
+    The static replacement methods :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression::and()`
+    and :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression::or()` have already been added in
     a forward-compatible way in TYPO3 v11. Thus giving extension developers
     the ability to adopt new methods and still being able to support
     multiple Core versions without workarounds.

@@ -32,9 +32,9 @@ Affected installations
 ======================
 
 TYPO3 installations with extensions that call
-:php:`BackendUtility::getLabelFromItemlist()`,
-:php:`BackendUtility::getLabelFromItemListMerged()` or
-:php:`BackendUtility::getLabelsFromItemsList()`.
+:php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist()`,
+:php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemListMerged()` or
+:php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelsFromItemsList()`.
 
 Migration
 =========
@@ -88,7 +88,7 @@ After:
         $table, $column, $value, $row, $columnTsConfig
     );
 
-Replace calls to :php:`BackendUtility::getLabelsFromItemsList()`
+Replace calls to :php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelsFromItemsList()`
 with :php:`\TYPO3\CMS\Core\Schema\SchemaLabelResolver->getLabelsForFieldValues()`.
 Note that the new method returns an array of raw labels instead of a
 comma-separated translated string — callers must handle translation

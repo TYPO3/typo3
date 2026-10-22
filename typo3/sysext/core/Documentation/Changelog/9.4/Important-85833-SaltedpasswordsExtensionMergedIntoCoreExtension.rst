@@ -29,7 +29,7 @@ saltedpasswords in its :file:`composer.json` file.
 In some edge-cases for non-composer-based installations it might be necessary to remove
 the `saltedpasswords` entry from :php:`typo3conf/PackagesStates.php`.
 
-Any checks for :php:`ExtensionManagementUtility::isLoaded('saltedpasswords')` in
+Any checks for :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('saltedpasswords')` in
 third-party extensions which were not necessary (as saltedpasswords had to be installed
 at any time anyways), can safely be removed.
 

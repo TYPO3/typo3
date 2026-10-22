@@ -18,7 +18,7 @@ Modern code should access GET and POST data from the PSR-7
 :php:`\Psr\Http\Message\ServerRequestInterface`, and should avoid accessing
 super-globals :php:`$_GET` and :php:`$_POST`
 directly. This will avoid future side-effects when using sub-requests. Some
-:php:`GeneralUtility` related helper methods like :php:`_POST()` violate this,
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility` related helper methods like :php:`_POST()` violate this,
 using them is considered a technical debt. They are being phased out.
 
 
@@ -31,7 +31,7 @@ Calling the method from PHP code will trigger a PHP deprecation notice.
 Affected installations
 ======================
 
-TYPO3 installations with third-party extensions using :php:`GeneralUtility::_POST()`
+TYPO3 installations with third-party extensions using :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::_POST()`
 are affected. This typically occurs in TYPO3 installations which
 have been migrated to latest TYPO3 Core versions and
 haven't been adapted properly yet.
@@ -42,7 +42,7 @@ The extension scanner will find usages with a strong match.
 Migration
 =========
 
-:php:`GeneralUtility::_POST()` is a helper method that retrieves
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::_POST()` is a helper method that retrieves
 incoming HTTP body parameters / `POST` parameters and returns the value.
 
 The same result can be achieved by retrieving arguments from the request object.

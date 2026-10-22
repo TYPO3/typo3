@@ -46,7 +46,7 @@ elements.
 
 *   consider replacing simple :html:`<a ... onclick="window.location.href=[URI]"`
     with plain HTML links like :html:`<a href="[URI]">`
-*   replacing :php:`BackendUtility::viewOnClick`,
+*   replacing :php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick`,
     :doc:`see documentation & examples <../11.0/Important-91123-AvoidUsingBackendUtilityViewOnClick>`
 *   using :html:`data-` attributes for :js:`GlobalEventHandler` and :js:`ActionDispatcher`,
     :doc:`see documentation & examples <../10.4.x/Important-91117-UseGlobalEventHandlerAndActionDispatcherInsteadOfInlineJS>`

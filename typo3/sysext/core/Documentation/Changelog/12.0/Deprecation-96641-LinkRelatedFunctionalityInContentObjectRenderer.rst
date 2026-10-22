@@ -14,10 +14,10 @@ Description
 Various methods related to shorthand syntax of generating
 links and URLs have been marked as deprecated:
 
-* :php:`ContentObjectRenderer->getATagParams()`
-* :php:`ContentObjectRenderer->getTypoLink()`
-* :php:`ContentObjectRenderer->getUrlToCurrentLocation()`
-* :php:`ContentObjectRenderer->getTypoLink_URL()`
+* :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getATagParams()`
+* :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getTypoLink()`
+* :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getUrlToCurrentLocation()`
+* :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getTypoLink_URL()`
 
 They are related to functionality for generating URLs,
 and have been marked as deprecated in favor of the new LinkFactory
@@ -41,13 +41,13 @@ Migration
 
 It is recommended to use either existing API calls:
 
-* :php:`ContentObjectRenderer->typoLink()`
-* :php:`ContentObjectRenderer->typoLink_URL()`
+* :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->typoLink()`
+* :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->typoLink_URL()`
 
 or the new methods for code that should be compatible with TYPO3 v12+ - only:
 
-* :php:`ContentObjectRenderer->createUrl()`
-* :php:`ContentObjectRenderer->createLink()`
+* :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->createUrl()`
+* :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->createLink()`
 
 or calling the LinkFactory API directly.
 

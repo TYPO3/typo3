@@ -16,7 +16,7 @@ The system extension "about" is removed, and all functionality is migrated into 
 The system extension was an addition providing the default module when logging in until TYPO3 v10, unless the Dashboard extension is installed.
 
 The functionality is kept the same, however TYPO3 users upgrading to TYPO3 v11 should be aware
-that checks for the extension (via :php:`ExtensionManagementUtility::isLoaded('about')`) will return false, even though all functionality is kept.
+that checks for the extension (via :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('about')`) will return false, even though all functionality is kept.
 
 When upgrading TYPO3 installation to TYPO3 v11 in composer mode,
 it is recommended to first call :bash:`composer remove typo3/cms-about`

@@ -39,7 +39,7 @@ RequireJS modules via :php:`$resultArray['requireJsModules']` are affected.
 Migration
 =========
 
-New :php:`JavaScriptModuleInstruction` allows to declare the following
+New :php-short:`\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction` allows to declare the following
 aspects when loading RequireJS modules:
 
 *   :php:`$instruction = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Module')`
@@ -75,8 +75,8 @@ Example in :php:`FormEngine` component
         'TYPO3/CMS/Backend/FormEngine/Element/InputDateTimeElement'
     )->instance($fieldId);
 
-:php:`JavaScriptModuleInstruction` forwards arguments as `JSON` data - and thus
-handles proper context-aware encoding implicitly (:php:`GeneralUtility::quoteJSvalue`
+:php-short:`\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction` forwards arguments as `JSON` data - and thus
+handles proper context-aware encoding implicitly (:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue`
 and similar custom encoding can be omitted in this case).
 
 

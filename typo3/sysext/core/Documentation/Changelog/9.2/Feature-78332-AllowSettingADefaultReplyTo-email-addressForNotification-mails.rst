@@ -26,7 +26,7 @@ Also a new function to build a mail address for SwiftMailer from these settings 
 
 If no default reply-to address is set this function will return an empty array.
 
-This function is used in :php:`ContentObjectRenderer::sendNotifyEmail()` to set a ReplyTo address in case no address is
+This function is used in :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::sendNotifyEmail()` to set a ReplyTo address in case no address is
 supplied in the function parameters.
 In other places where notifications are sent for e.g. (failed) login attempts, reports and where the notification uses
 the system from address this function is also used.
@@ -36,6 +36,6 @@ Impact
 ======
 
 It's now possible to set a reply-to address for notification mails from TYPO3. Extensions can also use this system
-reply-to address by calling :php:`MailUtility::getSystemReplyTo()`.
+reply-to address by calling :php-short:`\TYPO3\CMS\Core\Utility\MailUtility::getSystemReplyTo()`.
 
 .. index:: LocalConfiguration, PHP-API

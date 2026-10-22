@@ -33,7 +33,7 @@ There was little reason to activate this soft reference parser in the first plac
 since it essentially did nothing. Instances with extensions having TCA column config
 :php:`softref` set to a value including :php:`notify` will be affected. That's a very
 rare use case. The extension scanner will not notify about this, but the
-:php:`SoftReferenceParserFactory` will add a log entry this parser was not found upon
+:php-short:`\TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory` will add a log entry this parser was not found upon
 using an affected record.
 
 

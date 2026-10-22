@@ -11,7 +11,7 @@ See :issue:`80420`
 Description
 ===========
 
-The :php:`EmailFinisher` of EXT:form has options to set multiple recipients for :code:`To`, :code:`CC` and :code:`BCC`.
+The :php-short:`\TYPO3\CMS\Form\Domain\Finishers\EmailFinisher` of EXT:form has options to set multiple recipients for :code:`To`, :code:`CC` and :code:`BCC`.
 For consistency reasons and to limit the number of choices, resulting in easier configuration, the single value configuration options
 have will be removed in favour for their respective multi value variants.
 
@@ -37,7 +37,7 @@ Any of these options will no longer work in TYPO3 11.0.
 Affected Installations
 ======================
 
-All installations which use EXT:form and its :php:`EmailFinisher`.
+All installations which use EXT:form and its :php-short:`\TYPO3\CMS\Form\Domain\Finishers\EmailFinisher`.
 
 
 Migration

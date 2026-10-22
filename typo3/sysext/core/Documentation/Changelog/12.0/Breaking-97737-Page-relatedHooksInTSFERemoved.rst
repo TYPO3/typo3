@@ -44,9 +44,9 @@ to work with TYPO3 v11 (using the hook) and v12+ (using the new event).
 
 Use the :doc:`PSR-14 events <../12.0/Feature-97737-PSR-14EventsWhenPageRootlineInFrontendIsResolved>`
 
-* :php:`BeforePageIsResolvedEvent`
-* :php:`AfterPageWithRootLineIsResolvedEvent`
-* :php:`AfterPageAndLanguageIsResolvedEvent`
+* :php-short:`\TYPO3\CMS\Frontend\Event\BeforePageIsResolvedEvent`
+* :php-short:`\TYPO3\CMS\Frontend\Event\AfterPageWithRootLineIsResolvedEvent`
+* :php-short:`\TYPO3\CMS\Frontend\Event\AfterPageAndLanguageIsResolvedEvent`
 
 as an improved replacement.
 

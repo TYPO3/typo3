@@ -14,8 +14,8 @@ Description
 The following methods in :php:`\TYPO3\CMS\Core\Utility\PathUtility` have been
 marked as deprecated and will be removed in TYPO3 v15.0:
 
-* :php:`PathUtility::getRelativePath()`
-* :php:`PathUtility::getRelativePathTo()`
+* :php-short:`\TYPO3\CMS\Core\Utility\PathUtility::getRelativePath()`
+* :php-short:`\TYPO3\CMS\Core\Utility\PathUtility::getRelativePathTo()`
 
 These methods are no longer needed, as TYPO3's path handling has been
 simplified due to the unification of the entry point URLs.
@@ -35,8 +35,8 @@ Affected installations
 TYPO3 installations with custom extensions or code that directly call the
 deprecated methods are affected:
 
-* :php:`PathUtility::getRelativePath()`
-* :php:`PathUtility::getRelativePathTo()`
+* :php-short:`\TYPO3\CMS\Core\Utility\PathUtility::getRelativePath()`
+* :php-short:`\TYPO3\CMS\Core\Utility\PathUtility::getRelativePathTo()`
 
 The extension scanner will report any usage as a **strong match**.
 
@@ -46,10 +46,10 @@ Migration
 Instead of calculating relative paths manually, use absolute paths or the
 appropriate TYPO3 APIs for path handling:
 
-* Use :php:`GeneralUtility::getFileAbsFileName()` for
+* Use :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName()` for
   extension resources
 * Use the `EXT:` prefix when referencing extension resources
-* Use :php:`PathUtility::getPublicResourceWebPath()` for
+* Use :php-short:`\TYPO3\CMS\Core\Utility\PathUtility::getPublicResourceWebPath()` for
   public extension resources
 * Reference paths relative to the public web path of the TYPO3 installation
 

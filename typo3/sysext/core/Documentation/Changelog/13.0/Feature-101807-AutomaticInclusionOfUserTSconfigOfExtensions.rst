@@ -17,7 +17,7 @@ Extension authors can now put a file named
 This file is then recognized to load the contents as global user TSconfig
 for the whole TYPO3 installation during build-time. This is
 more performant than the existing solution using
-:php:`ExtensionManagementUtility::addUserTSConfig()` in
+:php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig()` in
 :file:`ext_localconf.php`, which is added to
 :php:`$TYPO3_CONF_VARS[SYS][defaultUserTSconfig]` during runtime.
 

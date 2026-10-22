@@ -29,7 +29,7 @@ Following events have been added:
 
 They all behave in the same way. There is always the subject, e.g. the
 record actions or the header columns, together with information like the
-current table, the current :php:`DatabaseRecordList` instance and the
+current table, the current :php-short:`\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList` instance and the
 current record or the record uids. The subject is therefore equipped
 with the usual CRUD methods like :php:`set`, :php:`get` or :php:`remove`. This makes
 working with those values much more pleasant. See the below code examples

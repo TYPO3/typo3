@@ -19,11 +19,11 @@ allow developers to fully manipulate the encoding and decoding functionality.
 A common use case for extensions is to extend the TypoLink parts to allow
 editors adding additional information, e.g. custom attributes to be added
 to the link markup. Previously, this required extensions to extended / cross
-class :php:`TypoLinkCodecService`. This is no longer necessary when using the
+class :php-short:`\TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService`. This is no longer necessary when using the
 new events.
 
-The :php:`BeforeTypoLinkEncodedEvent` therefore allows to set :php:`$parameters`,
-to be encoded while the :php:`AfterTypoLinkDecodedEvent` allows to modify the
+The :php-short:`\TYPO3\CMS\Core\LinkHandling\Event\BeforeTypoLinkEncodedEvent` therefore allows to set :php:`$parameters`,
+to be encoded while the :php-short:`\TYPO3\CMS\Core\LinkHandling\Event\AfterTypoLinkDecodedEvent` allows to modify the
 decoded :php:`$typoLinkParts.`.
 
 Both events provide the used :php:`$delimiter` and the :php:`$emptyValueSymbol`

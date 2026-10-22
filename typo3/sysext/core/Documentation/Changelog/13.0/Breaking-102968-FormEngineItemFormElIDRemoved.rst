@@ -46,7 +46,7 @@ Migration
 A typical use case for a unique :html:`id` attribute on a form element is to
 connect it with a :html:`label` element. Accessing :php:`itemFormElID` can
 usually be easily avoided by creating a unique string using
-:php:`StringUtility::getUniqueId()`, with a custom prefix:
+:php-short:`\TYPO3\CMS\Core\Utility\StringUtility::getUniqueId()`, with a custom prefix:
 
 .. code-block:: php
 

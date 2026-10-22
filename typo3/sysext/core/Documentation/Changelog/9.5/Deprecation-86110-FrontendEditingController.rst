@@ -14,7 +14,7 @@ Description
 The class :php:`\TYPO3\CMS\Core\FrontendEditing\FrontendEditingController` is not in use anymore, only feedit
 instantiates the class for legacy reasons.
 
-Also, property :php:`FrontendBackendUserAuthentication->frontendEdit` which holds an instance of
+Also, property :php-short:`\TYPO3\CMS\Backend\FrontendBackendUserAuthentication->frontendEdit` which holds an instance of
 it, has been marked as deprecated.
 
 

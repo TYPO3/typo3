@@ -12,7 +12,7 @@ Description
 ===========
 
 TYPO3 parses `ext_tables.sql` files into a Doctrine DBAL object schema to define
-a virtual database scheme, enriched with :php:`DefaultTcaSchema` information for
+a virtual database scheme, enriched with :php-short:`\TYPO3\CMS\Core\Database\Schema\DefaultTcaSchema` information for
 TCA-managed tables and fields.
 
 Fixed and variable length variants have been parsed already in the past, but missed

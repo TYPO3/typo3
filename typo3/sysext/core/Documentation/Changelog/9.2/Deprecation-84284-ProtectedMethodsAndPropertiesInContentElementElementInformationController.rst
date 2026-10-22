@@ -35,7 +35,7 @@ Impact
 ======
 
 Calling one of the above methods or accessing one of the above properties on an instance of
-:php:`ElementInformationController` will throw a deprecation warning in v9 and a PHP fatal in v10.
+:php-short:`\TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController` will throw a deprecation warning in v9 and a PHP fatal in v10.
 
 
 Affected Installations

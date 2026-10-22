@@ -22,22 +22,22 @@ Impact
 ======
 
 Extensions that catch :php:`\InvalidArgumentException` when calling
-:php:`LocalDriver::getFileInfoByIdentifier()` will no longer catch the
+:php-short:`\TYPO3\CMS\Core\Resource\Driver\LocalDriver::getFileInfoByIdentifier()` will no longer catch the
 exception. Code that catches
 :php:`\TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException`
-continues to work because :php:`FileDoesNotExistException` extends it.
+continues to work because :php-short:`\TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException` extends it.
 
 Affected installations
 ======================
 
 Installations are affected when custom extension code directly or indirectly
-calls :php:`LocalDriver::getFileInfoByIdentifier()` and catches
+calls :php-short:`\TYPO3\CMS\Core\Resource\Driver\LocalDriver::getFileInfoByIdentifier()` and catches
 :php:`\InvalidArgumentException` for missing files.
 
 Migration
 =========
 
-Catch :php:`FileDoesNotExistException` instead:
+Catch :php-short:`\TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException` instead:
 
 ..  code-block:: php
 
@@ -50,6 +50,6 @@ Catch :php:`FileDoesNotExistException` instead:
     }
 
 Code that handles missing files and folders alike can catch the parent
-:php:`ResourceDoesNotExistException` instead.
+:php-short:`\TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException` instead.
 
 ..  index:: FAL, PHP-API, NotScanned, ext:core

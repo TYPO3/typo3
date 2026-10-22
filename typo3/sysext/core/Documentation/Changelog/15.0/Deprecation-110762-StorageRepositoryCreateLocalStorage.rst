@@ -38,7 +38,7 @@ Affected installations
 
 Installations with extensions that create local storages programmatically
 or modify storage records in a listener of
-:php:`BeforeResourceStorageInitializationEvent`.
+:php-short:`\TYPO3\CMS\Core\Resource\Event\BeforeResourceStorageInitializationEvent`.
 
 Migration
 =========

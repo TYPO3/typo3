@@ -19,7 +19,7 @@ field. For example, creating a new password or filling in the current password.
 See `MDN Allowing autocomplete`_ for a full list of possible attribute values.
 
 To ease the use for integrators and developers, the attribute can now
-directly be added as tag attribute to the :php:`PasswordViewHelper`.
+directly be added as tag attribute to the :php-short:`\TYPO3\CMS\Fluid\ViewHelpers\Form\PasswordViewHelper`.
 
 Example:
 
@@ -36,7 +36,7 @@ Impact
 ======
 
 It's now possible to specify the :html:`autocomplete` attribute for the password
-field through the :php:`PasswordViewHelper`.
+field through the :php-short:`\TYPO3\CMS\Fluid\ViewHelpers\Form\PasswordViewHelper`.
 
 .. _MDN Allowing autocomplete: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/password#allowing_autocomplete
 

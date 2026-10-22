@@ -45,7 +45,7 @@ affected.
 The class was already marked *internal* and *breaking* in TYPO3 v13.
 
 In particular, extensions that used
-:php:`AbstractContentObject->getTypoScriptFrontendController()` can now access
+:php-short:`\TYPO3\CMS\Frontend\ContentObject\AbstractContentObject->getTypoScriptFrontendController()` can now access
 the relevant data from the PSR-7 request object, for example:
 
 ..  code-block:: php

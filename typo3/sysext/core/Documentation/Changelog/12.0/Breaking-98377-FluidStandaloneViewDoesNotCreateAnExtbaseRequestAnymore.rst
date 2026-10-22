@@ -37,7 +37,7 @@ refuse to work for instance when used in a template triggered by a :typoscript:`
 content object.
 
 Most notably, all :html:`f:form` ViewHelpers are affected of this, plus
-eventually custom ViewHelpers that access Extbase specific :php:`Request`
+eventually custom ViewHelpers that access Extbase specific :php-short:`\TYPO3\CMS\Extbase\Mvc\Request`
 methods.
 
 Affected installations
@@ -61,14 +61,14 @@ directly, for instance using :html:`<input ...>` instead of :html:`<f:form.input
 Custom StandaloneView code
 --------------------------
 
-Extensions that instantiate :php:`StandaloneView` may want to :php:`$view->setRequest($request)`
+Extensions that instantiate :php-short:`\TYPO3\CMS\Fluid\View\StandaloneView` may want to :php:`$view->setRequest($request)`
 to hand over the current request to the view, since the request is no longer initialized
 automatically. This is needed for ViewHelpers that rely on :php:`$renderingContext->getRequest()`.
 
 Custom ViewHelpers
 ------------------
 
-Custom ViewHelpers used in :php:`StandaloneView` that call methods from Extbase
+Custom ViewHelpers used in :php-short:`\TYPO3\CMS\Fluid\View\StandaloneView` that call methods from Extbase
 :php:`TYPO3\CMS\Extbase\Mvc\Request` which are not part of
 :php:`Psr\Http\Message\ServerRequestInterface` will throw fatal PHP errors.
 

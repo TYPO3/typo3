@@ -36,7 +36,7 @@ Migration
 =========
 
 Implement a custom PSR-15 middleware to update the PSR-7 request object, and to manually set :php:`$_GET` on top,
-as long as TYPO3 still supports :php:`GeneralUtility::_GP()`, although these methods will vanish in the near future.
+as long as TYPO3 still supports :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::_GP()`, although these methods will vanish in the near future.
 
 Relying on the request object, and using PSR-15 middlewares to manipulate request parameters is more future-proof
 for extensions and TYPO3 sites.

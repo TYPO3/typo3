@@ -11,7 +11,7 @@ See :issue:`88559`
 Description
 ===========
 
-The public property :php:`TypoScriptFrontendController->sys_language_isocode`
+The public property :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sys_language_isocode`
 has set the equivalent of :php:`TYPO3\CMS\Core\Site\Entity\SiteLanguage->getTwoLetterIsoCode()` since the introduction
 of Site Handling in TYPO3 v9.
 
@@ -37,7 +37,7 @@ or via TypoScript :typoscript:`TSFE:sys_language_isocode`.
 Migration
 =========
 
-Access the property via :php:`SiteLanguage->getTwoLetterIsoCode()`
+Access the property via :php-short:`\TYPO3\CMS\Core\Site\Entity\SiteLanguage->getTwoLetterIsoCode()`
 and :typoscript:`sitelanguage:twoLetterIsoCode` instead.
 
 .. index:: Frontend, PHP-API, FullyScanned

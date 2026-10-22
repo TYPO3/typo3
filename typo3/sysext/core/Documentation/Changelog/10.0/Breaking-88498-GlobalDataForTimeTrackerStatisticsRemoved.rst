@@ -40,7 +40,7 @@ Any TYPO3 installation with an extension working with any of the global variable
 Migration
 =========
 
-Remove the usages and either use the newly introduced :php:`TimeTracker->finish()` to calculate data, or set
+Remove the usages and either use the newly introduced :php-short:`\TYPO3\CMS\Core\TimeTracker\TimeTracker->finish()` to calculate data, or set
 your own variables, if microtime is needed.
 
 .. index:: PHP-API, FullyScanned

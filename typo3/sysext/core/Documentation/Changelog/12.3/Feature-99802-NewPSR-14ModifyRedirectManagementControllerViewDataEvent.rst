@@ -85,7 +85,7 @@ The corresponding event listener class:
 Impact
 ======
 
-With the new :php:`ModifyRedirectManagementControllerViewDataEvent`, it is
+With the new :php-short:`\TYPO3\CMS\Redirects\Event\ModifyRedirectManagementControllerViewDataEvent`, it is
 now possible to modify view data or inject further data to the view for the
 management view of redirects.
 

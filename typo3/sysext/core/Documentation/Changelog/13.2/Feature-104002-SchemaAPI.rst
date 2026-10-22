@@ -41,7 +41,7 @@ The Schema API implements the following design goals:
     schema or field (based on "foreign_table"). Previously, this was evaluated in
     many places in TYPO3 Core, and can now be reduced.
 
-    Thus, Schema API can now be utilized to determine the :php:`RelationshipType`
+    Thus, Schema API can now be utilized to determine the :php-short:`\TYPO3\CMS\Core\Schema\RelationshipType`
     of a relational field type in a unified way without having to deal with deeply
     nested arrays.
 
@@ -53,7 +53,7 @@ The Schema API implements the following design goals:
     An Active Relation is the information that a field such as "pages.media"
     (a field of type "file") contains a reference to the "sys_file_reference.uid_foreign"
     field. Active Relations in consequence are connected to a specific field
-    (of type :php:`RelationalFieldTypeInterface`).
+    (of type :php-short:`\TYPO3\CMS\Core\Schema\Field\RelationalFieldTypeInterface`).
 
     In turn, a "Passive Relation" is the information what other schemata/fields are
     pointing to a specific table or field.
@@ -62,7 +62,7 @@ The Schema API implements the following design goals:
     The information stored in :php:`$GLOBALS[TCA][sys_workspace_stage]` does not contain
     the information that this table is actually used as a reference from the database
     field `sys_workspace.custom_stages`, the `sys_workspace_stage` Schema now
-    contains this information directly via :php:`TcaSchema->getPassiveRelations()`.
+    contains this information directly via :php-short:`\TYPO3\CMS\Core\Schema\TcaSchema->getPassiveRelations()`.
     This is possible as TcaSchemaFactory is evaluating all TCA information and
     holistically as a graph. Passive Relations
     are currently only connected to a Schema, and Active Relations to a Field or
@@ -95,7 +95,7 @@ The Schema API implements the following design goals:
     All key objects (Schema, FieldType, Capabilities) are treated as immutable DTOs
     and never contain cross-references to their parent objects (Sub schemata do not
     know information about their parent schema, a field does not know which schema
-    it belongs to), so the only entry point is always the :php:`TcaSchemaFactory`
+    it belongs to), so the only entry point is always the :php-short:`\TYPO3\CMS\Core\Schema\TcaSchemaFactory`
     object.
 
     This design allows the API to be fully cacheable at PHP level as a nested tree.

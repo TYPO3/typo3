@@ -40,7 +40,7 @@ Migration
 When using this property in PHP code via :php:`$GLOBALS['TSFE']->type`, it is
 recommended to move to the PSR-7 request via
 :php:`$request->getAttribute('routing')->getPageType()`, which is the property
-of the :php:`PageArguments` object, as a result of the :php:`GET` parameter
+of the :php-short:`\TYPO3\CMS\Core\Routing\PageArguments` object, as a result of the :php:`GET` parameter
 :php:`type`, or `$GLOBALS['TSFE']->getPageArguments()->getPageType()` if
 the request object is not available.
 

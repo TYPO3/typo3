@@ -129,7 +129,7 @@ in extensions, depending on the concrete use case:
     can only be extended with `TYPO3_CONF_VARS`, not with the new `Namespaces.php`.
 *   keep `TYPO3_CONF_VARS` until support for < v14 is dropped by the extension.
     This can only be extended with `TYPO3_CONF_VARS` as well.
-*   implement own merging logic in :php:`ModifyNamespacesEvent` if necessary.
+*   implement own merging logic in :php-short:`\TYPO3\CMS\Fluid\Event\ModifyNamespacesEvent` if necessary.
 
 Example for preferred option:
 
@@ -155,7 +155,7 @@ To sum up:
 
 * `Namespaces.php` can only extend namespaces defined in `Namespaces.php`.
 * `TYPO3_CONF_VARS` can extend both `TYPO3_CONF_VARS` and `Namespaces.php`.
-* :php:`ModifyNamespacesEvent` can modify everything.
+* :php-short:`\TYPO3\CMS\Fluid\Event\ModifyNamespacesEvent` can modify everything.
 
 Impact
 ======

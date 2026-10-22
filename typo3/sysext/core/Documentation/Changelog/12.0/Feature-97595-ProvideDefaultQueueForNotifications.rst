@@ -41,7 +41,7 @@ Impact
 ======
 
 All flash messages dispatched to the flash message queue
-:php:`FlashMessageQueue::NOTIFICATION_QUEUE` will be rendered as notifications
+:php-short:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue::NOTIFICATION_QUEUE` will be rendered as notifications
 in the browser.
 
 .. index:: Backend, ext:backend

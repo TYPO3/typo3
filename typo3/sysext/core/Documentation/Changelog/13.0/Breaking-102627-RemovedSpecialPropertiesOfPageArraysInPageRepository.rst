@@ -41,8 +41,8 @@ received the special property "_LOCALIZED_UID".
 Impact
 ======
 
-When calling :php:`PageRepository->getPage()` or
-:php:`PageRepository->getLanguageOverlay()` these special page-related
+When calling :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getPage()` or
+:php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getLanguageOverlay()` these special page-related
 properties are not set anymore when overlaying a page.
 
 

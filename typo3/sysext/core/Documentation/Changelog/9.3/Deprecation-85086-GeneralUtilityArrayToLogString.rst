@@ -11,7 +11,7 @@ See :issue:`85086`
 Description
 ===========
 
-The method :php:`GeneralUtility::arrayToLogString()`, responsible for formatting an array to a string
+The method :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::arrayToLogString()`, responsible for formatting an array to a string
 ready for logging or output, has been marked as deprecated.
 
 

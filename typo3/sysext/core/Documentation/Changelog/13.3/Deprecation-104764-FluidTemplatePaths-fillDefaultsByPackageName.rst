@@ -17,7 +17,7 @@ has been marked as deprecated in TYPO3 v13 and will be removed in TYPO3 v14.
 Fluid template paths should be set directly using the methods
 :php:`setTemplateRootPaths()`, :php:`setLayoutRootPaths()` and
 :php:`setPartialRootPaths()`, or - even better - be handled by
-:php:`ViewFactoryInterface`, which comes as new feature in TYPO3 v13.
+:php-short:`\TYPO3\CMS\Core\View\ViewFactoryInterface`, which comes as new feature in TYPO3 v13.
 
 See :ref:`feature-104773-1724939348` for more details of the generic
 view interface.
@@ -37,7 +37,7 @@ The method is relatively rarely used by extensions directly, a usage in
 Extbase :php:`ActionController` has been refactored away. The extension
 scanner will find candidates.
 
-Note class :php:`TemplatePaths` is marked `@internal` and should not be
+Note class :php-short:`\TYPO3\CMS\Fluid\View\TemplatePaths` is marked `@internal` and should not be
 used by extensions at all.
 
 Migration

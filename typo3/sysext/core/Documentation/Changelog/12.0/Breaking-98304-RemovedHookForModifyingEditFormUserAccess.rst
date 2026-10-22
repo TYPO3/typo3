@@ -23,7 +23,7 @@ Impact
 ======
 
 Any hook implementation registered is not executed anymore in
-TYPO3 v12.0+. The :php:`AccessDeniedHookException` is not thrown
+TYPO3 v12.0+. The :php-short:`\TYPO3\CMS\Backend\Form\Exception\AccessDeniedHookException` is not thrown
 anymore. The extension scanner will report possible usages.
 
 Affected Installations
@@ -43,7 +43,7 @@ as an improved replacement, providing an object-oriented approach
 as well as built-in convenience features and an increased amount
 of context information.
 
-Any usage of the :php:`AccessDeniedHookException` should be replaced by the
-:php:`AccessDeniedListenerException`.
+Any usage of the :php-short:`\TYPO3\CMS\Backend\Form\Exception\AccessDeniedHookException` should be replaced by the
+:php-short:`\TYPO3\CMS\Backend\Form\Exception\AccessDeniedListenerException`.
 
 .. index:: Backend, PHP-API, FullyScanned, ext:backend

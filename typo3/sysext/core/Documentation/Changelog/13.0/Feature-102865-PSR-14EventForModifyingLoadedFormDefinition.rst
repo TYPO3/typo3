@@ -14,9 +14,9 @@ Description
 A new PSR-14 event :php:`\TYPO3\CMS\Form\Mvc\Persistence\Event\AfterFormDefinitionLoadedEvent`
 has been introduced which allows extensions to modify loaded form definitions.
 
-The event is being dispatched after :php:`FormPersistenceManager` has loaded
+The event is being dispatched after :php-short:`\TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager` has loaded
 the definition from either the cache or the filesystem. In latter case, the
-event is dispatched after :php:`FormPersistenceManager` has stored the loaded
+event is dispatched after :php-short:`\TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager` has stored the loaded
 definition in cache. This means, it's always possible to modify the cached
 version. However, the modified form definition is then overridden by TypoScript,
 in case a corresponding :typoscript:`formDefinitionOverrides` exists.

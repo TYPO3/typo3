@@ -14,7 +14,7 @@ Description
 Due to the removal of relative paths in the FAL API (:issue:`95027` and
 :issue:`96201`) the :php:`$usedPathsRelativeToCurrentScript` argument in
 media renderers :php:`render()` method got obsolete. The same applies to
-the :php:`$relativeToCurrentScript` argument of :php:`Avatar->getUrl()`.
+the :php:`$relativeToCurrentScript` argument of :php-short:`\TYPO3\CMS\Backend\Backend\Avatar\Avatar->getUrl()`.
 
 Therefore, :php:`$usedPathsRelativeToCurrentScript` is removed as last
 argument from following PHP class methods:

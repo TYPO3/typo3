@@ -37,9 +37,9 @@ is initialized and rendered.
 
 Since TYPO3 v9 TYPO3 uses PSR-15 middlewares. The adminpanel brings three that are relevant to its rendering process:
 
-* :php:`AdminPanelInitiator` - Called early in the request stack to allow initialisation of modules to catch most of the request data (for example log entries)
+* :php-short:`\TYPO3\CMS\Adminpanel\Middleware\AdminPanelInitiator` - Called early in the request stack to allow initialisation of modules to catch most of the request data (for example log entries)
 * :php:`AdminPanelDataPersister` - Called at nearly the end of a frontend request to store the collected data (this is where module data gets saved)
-* :php:`AdminPanelRenderer` - Called as one of the last steps in the rendering process, currently replacing the closing body tag with its own code (this is where module content gets rendered)
+* :php-short:`\TYPO3\CMS\Adminpanel\Middleware\AdminPanelRenderer` - Called as one of the last steps in the rendering process, currently replacing the closing body tag with its own code (this is where module content gets rendered)
 
 When building own modules keep in mind at which step your modules' methods get called.
 In the last step for example (the rendering), you should not depend on any data outside of
@@ -51,7 +51,7 @@ Current Design Considerations
 While the API of the adminpanel is very flexible in combining interfaces, the UI has a fixed structure
 and therefor a few things to consider when implementing own modules.
 
-* The bottom bar of the adminpanel will only be rendered for modules that have submodules and implement the :php:`SubmoduleProviderInterface`
+* The bottom bar of the adminpanel will only be rendered for modules that have submodules and implement the :php-short:`\TYPO3\CMS\Adminpanel\ModuleApi\SubmoduleProviderInterface`
 * ShortInfo (see below) is only displayed for "TopLevel" modules
 * Content is only rendered for submodules
 
@@ -61,7 +61,7 @@ How-To add own modules
 
 Adding custom adminpanel modules always follows these steps:
 
-#. Create a class implementing the basic :php:`ModuleInterface`
+#. Create a class implementing the basic :php-short:`\TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface`
 #. Register the class in :file:`ext_localconf.php`
 #. Implement further interfaces for additional capabilities
 
@@ -445,7 +445,7 @@ Methods
 +++++++
 
 * :php:`getShortInfo(): string` - Info string (no HTML) that should be rendered
-* :php:`getIconIdentifier(): string` - An icon for this info line, needs to be registered in :php:`IconRegistry`
+* :php:`getIconIdentifier(): string` - An icon for this info line, needs to be registered in :php-short:`\TYPO3\CMS\Core\Imaging\IconRegistry`
 
 Example implementation
 ++++++++++++++++++++++
@@ -482,7 +482,7 @@ multi-hierarchical rendering in the getContent method.
 Methods
 +++++++
 
-* :php:`setSubModules(array $subModules)` - Sets array of module instances (instances of :php:`ModuleInterface`) as submodules
+* :php:`setSubModules(array $subModules)` - Sets array of module instances (instances of :php-short:`\TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface`) as submodules
 * :php:`getSubModules(): array` - Returns an array of module instances
 * :php:`hasSubmoduleSettings(): bool` - Return true if any of the submodules has settings to be rendered
   (can be used to render settings in a central place)

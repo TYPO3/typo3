@@ -50,7 +50,7 @@ the default language - which was the behavior until now.
 
 The language chain processing works with fallback mode (a.k.a. "overlays in mixed mode"),
 both in TypoScript and Extbase code. Under the hood, the method
-:php:`PageRepository->getLanguageOverlay()` is responsible for the chaining.
+:php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getLanguageOverlay()` is responsible for the chaining.
 
 Current limitations:
 

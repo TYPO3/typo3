@@ -39,8 +39,8 @@ Migration
 
 Instead of modifying configuration after instantiation using the removed
 :php:`setConfiguration()` method, merge configuration arrays before creating
-the :php:`CacheHashConfiguration` instance, then pass it to the
-:php:`CacheHashCalculator` constructor.
+the :php-short:`\TYPO3\CMS\Frontend\Page\CacheHashConfiguration` instance, then pass it to the
+:php-short:`\TYPO3\CMS\Frontend\Page\CacheHashCalculator` constructor.
 
 Example:
 

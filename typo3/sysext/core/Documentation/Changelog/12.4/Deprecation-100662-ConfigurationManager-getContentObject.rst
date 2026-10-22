@@ -18,7 +18,7 @@ has been marked as deprecated in TYPO3 v12 and should not be used anymore.
 Impact
 ======
 
-Calling :php:`ConfigurationManagerInterface->getContentObject()` will trigger
+Calling :php-short:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface->getContentObject()` will trigger
 a deprecation level log message in TYPO3 v12, the method will be removed
 from the interface together with their implementations with TYPO3 v13.
 
@@ -27,7 +27,7 @@ Affected installations
 ======================
 
 Instances with Extbase extensions that use :php:`getContentObject()` on
-injected :php:`ConfigurationManager` instances are affected. The extension
+injected :php-short:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManager` instances are affected. The extension
 scanner has not been configured to find these calls, since the method
 name is used in different scope as well and would trigger too many
 false positives.

@@ -11,28 +11,28 @@ See :issue:`102875`
 Description
 ===========
 
-Doctrine DBAL 4 removed methods from the :php:`QueryBuilder` which has been
+Doctrine DBAL 4 removed methods from the :php-short:`\TYPO3\CMS\Core\Database\Query\QueryBuilder` which has been
 adopted to the extended :php:`\TYPO3\CMS\Core\Database\Query\QueryBuilder`.
 
 Removed methods:
 
-*   :php:`QueryBuilder::add()`: Use new reset methods and normal set methods
+*   :php-short:`\TYPO3\CMS\Core\Database\Query\QueryBuilder::add()`: Use new reset methods and normal set methods
     instead.
-*   :php:`QueryBuilder::getQueryPart($partName)`: No replacement, internal state.
-*   :php:`QueryBuilder::getQueryParts()`: No replacement, internal state.
-*   :php:`QueryBuilder::resetQueryPart($partName)`: Replacement methods has been added,
+*   :php-short:`\TYPO3\CMS\Core\Database\Query\QueryBuilder::getQueryPart($partName)`: No replacement, internal state.
+*   :php-short:`\TYPO3\CMS\Core\Database\Query\QueryBuilder::getQueryParts()`: No replacement, internal state.
+*   :php-short:`\TYPO3\CMS\Core\Database\Query\QueryBuilder::resetQueryPart($partName)`: Replacement methods has been added,
     see list.
-*   :php:`QueryBuilder::resetQueryParts()`: Replacement methods has been added,
+*   :php-short:`\TYPO3\CMS\Core\Database\Query\QueryBuilder::resetQueryParts()`: Replacement methods has been added,
     see list.
-*   :php:`QueryBuilder::execute()`: Use :php:`QueryBuilder::executeQuery()` or
-    :php:`QueryBuilder::executeStatement()` directly.
-*   :php:`QueryBuilder::setMaxResults()`: Using `(int)0` as `max result` will
+*   :php-short:`\TYPO3\CMS\Core\Database\Query\QueryBuilder::execute()`: Use :php-short:`\TYPO3\CMS\Core\Database\Query\QueryBuilder::executeQuery()` or
+    :php-short:`\TYPO3\CMS\Core\Database\Query\QueryBuilder::executeStatement()` directly.
+*   :php-short:`\TYPO3\CMS\Core\Database\Query\QueryBuilder::setMaxResults()`: Using `(int)0` as `max result` will
     no longer work and retrieve no records. Use `NULL` instead to allow all
     results.
 
 Signature changes:
 
-*   :php:`QueryBuilder::quote(string $value)`: Second argument has been dropped
+*   :php-short:`\TYPO3\CMS\Core\Database\Query\QueryBuilder::quote(string $value)`: Second argument has been dropped
     and the value must now be of type :php:`string`.
 
 Impact
@@ -93,8 +93,8 @@ However, several replacements have been put in place depending on the
 :php:`QueryBuilder::execute()`
 ------------------------------
 
-Doctrine DBAL 4 removed :php:`QueryBuilder::execute()` in favour of the two
-methods :php:`QueryBuilder::executeQuery()` for select/count and :php:`QueryBuilder::executeStatement()`
+Doctrine DBAL 4 removed :php-short:`\TYPO3\CMS\Core\Database\Query\QueryBuilder::execute()` in favour of the two
+methods :php-short:`\TYPO3\CMS\Core\Database\Query\QueryBuilder::executeQuery()` for select/count and :php-short:`\TYPO3\CMS\Core\Database\Query\QueryBuilder::executeStatement()`
 for insert, delete and update queries.
 
 Before
@@ -154,7 +154,7 @@ After
 :php:`QueryBuilder::quote(string $value)`
 -----------------------------------------
 
-:php:`quote()` uses :php:`Connection::quote()` and therefore adopts the changed
+:php:`quote()` uses :php-short:`\TYPO3\CMS\Core\Database\Connection::quote()` and therefore adopts the changed
 signature and behaviour.
 
 Before

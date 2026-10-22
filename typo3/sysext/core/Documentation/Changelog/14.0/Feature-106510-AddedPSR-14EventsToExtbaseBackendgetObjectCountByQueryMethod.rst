@@ -29,7 +29,7 @@ counting operations, resulting in mismatched query results.
 
 The :php:`getObjectCountByQuery()` method has now been enhanced with new PSR-14
 events, enabling extensions to modify all aspects of query processing within
-Extbase's generic :php:`Backend` to achieve consistent results.
+Extbase's generic :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Backend` to achieve consistent results.
 
 The new events are:
 
@@ -40,9 +40,9 @@ The new events are:
 
 Typically, an extension should implement these events pairwise:
 
-* :php:`ModifyQueryBeforeFetchingObjectCountEvent` together with
-  :php:`ModifyQueryBeforeFetchingObjectDataEvent`
-* :php:`ModifyResultAfterFetchingObjectCountEvent` together with
-  :php:`ModifyResultAfterFetchingObjectDataEvent`
+* :php-short:`\TYPO3\CMS\Extbase\Event\Persistence\ModifyQueryBeforeFetchingObjectCountEvent` together with
+  :php-short:`\TYPO3\CMS\Extbase\Event\Persistence\ModifyQueryBeforeFetchingObjectDataEvent`
+* :php-short:`\TYPO3\CMS\Extbase\Event\Persistence\ModifyResultAfterFetchingObjectCountEvent` together with
+  :php-short:`\TYPO3\CMS\Extbase\Event\Persistence\ModifyResultAfterFetchingObjectDataEvent`
 
 ..  index:: PHP-API, ext:extbase

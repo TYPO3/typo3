@@ -42,7 +42,7 @@ Affected Installations
 ======================
 
 Instances using early bootstrap code may be affected by this. Those should strive for
-using the general entry method :php:`Bootstrap::init()` instead.
+using the general entry method :php-short:`\TYPO3\CMS\Core\Core\Bootstrap::init()` instead.
 
 
 Migration
@@ -50,6 +50,6 @@ Migration
 
 See changes on the typo3/testing-framework which formerly used early instance
 bootstrap calls for an example on how existing code can be refactored to use
-the top level :php:`Bootstrap::init()` instead.
+the top level :php-short:`\TYPO3\CMS\Core\Core\Bootstrap::init()` instead.
 
 .. index:: PHP-API, FullyScanned

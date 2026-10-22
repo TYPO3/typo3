@@ -44,7 +44,7 @@ did that for example with the `is_public` field of table `sys_file_storge` in pa
 
 To switch from a :php:`userFunc` implementation to a :php:`renderType`, an extension typically has
 to register an own element node in :file:`ext_localconf.php`. Then change the user function to a class
-that extends :php:`AbstractFormElement` where method :php:`render()` returns an array as defined
+that extends :php-short:`\TYPO3\CMS\Backend\Form\Element\AbstractFormElement` where method :php:`render()` returns an array as defined
 in helper method :php:`initializeResultArray`. The `HTML` created by the former user function should be
 returned in :php:`$resultArray['html']`, parameters like the `tableName` can be found in :php:`$this->data`.
 

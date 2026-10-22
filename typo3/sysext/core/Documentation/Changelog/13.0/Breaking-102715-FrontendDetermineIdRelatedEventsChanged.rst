@@ -18,7 +18,7 @@ the following events have been adapted:
 * :php:`\TYPO3\CMS\Frontend\Event\AfterPageWithRootLineIsResolvedEvent`
 * :php:`\TYPO3\CMS\Frontend\Event\AfterPageAndLanguageIsResolvedEvent`
 
-The three events no longer retrieve an instance of :php:`TypoScriptFrontendController`, the
+The three events no longer retrieve an instance of :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController`, the
 getter methods :php:`getController()` have been removed: The controller is instantiated
 *after* the events have been dispatched, event listeners can no longer work with this
 object.

@@ -32,7 +32,7 @@ Example
 =======
 
 For the form with the identifier :yaml:`newsletterSignup`, a listener can skip
-the built-in :php:`EmailFinisher` when the submitted form contains a
+the built-in :php-short:`\TYPO3\CMS\Form\Domain\Finishers\EmailFinisher` when the submitted form contains a
 :php:`sendConfirmationEmail` field set to :php:`no`:
 
 ..  code-block:: php

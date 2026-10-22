@@ -19,7 +19,7 @@ and status of the used extensions.
 Reports
 -------
 
-As all `reports` have to implement the :php:`ReportInterface` this fact is now
+As all `reports` have to implement the :php-short:`\TYPO3\CMS\Reports\ReportInterface` this fact is now
 used to automatically register the `report`, based on the interface,
 if :yaml:`autoconfigure` is enabled in :file:`Services.yaml`. Alternatively,
 one can manually tag a custom `report` with the
@@ -36,7 +36,7 @@ Due to the autoconfiguration, the following methods have to be implemented:
 Status
 ------
 
-As all `status` have to implement the :php:`StatusProviderInterface` this fact is now
+As all `status` have to implement the :php-short:`\TYPO3\CMS\Reports\StatusProviderInterface` this fact is now
 used to automatically register the `status`, based on the interface,
 if :yaml:`autoconfigure` is enabled in :file:`Services.yaml`. Alternatively,
 one can manually tag a custom `report` with the

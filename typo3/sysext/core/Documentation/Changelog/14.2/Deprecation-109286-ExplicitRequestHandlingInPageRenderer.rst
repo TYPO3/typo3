@@ -18,30 +18,30 @@ be passed explicitly :
 setLanguage()
 -------------
 
-*   Old: :php:`PageRenderer->setLanguage(Locale $locale, ?ServerRequestInterface $request = null)`
-*   TYPO3 v14.2: :php:`PageRenderer->setLanguage(Locale $locale, ?ServerRequestInterface $request = null)`
-*   TYPO3 v15: :php:`PageRenderer->setLanguage(Locale $locale, ServerRequestInterface $request)`
+*   Old: :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->setLanguage(Locale $locale, ?ServerRequestInterface $request = null)`
+*   TYPO3 v14.2: :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->setLanguage(Locale $locale, ?ServerRequestInterface $request = null)`
+*   TYPO3 v15: :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->setLanguage(Locale $locale, ServerRequestInterface $request)`
 
 setDocType()
 ------------
 
-*   Old: :php:`PageRenderer->setDocType(DocType $docType)`
-*   TYPO3 v14.2: :php:`PageRenderer->setDocType(DocType $docType, ?ServerRequestInterface $request = null)`
-*   TYPO3 v15: :php:`PageRenderer->setDocType(DocType $docType, ServerRequestInterface $request)`
+*   Old: :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->setDocType(DocType $docType)`
+*   TYPO3 v14.2: :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->setDocType(DocType $docType, ?ServerRequestInterface $request = null)`
+*   TYPO3 v15: :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->setDocType(DocType $docType, ServerRequestInterface $request)`
 
 render()
 --------
 
-*   Old: :php:`PageRenderer->render()`
-*   TYPO3 v14.2: :php:`PageRenderer->render(?ServerRequestInterface $request = null)`
-*   TYPO3 v15: :php:`PageRenderer->render(ServerRequestInterface $request)`
+*   Old: :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->render()`
+*   TYPO3 v14.2: :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->render(?ServerRequestInterface $request = null)`
+*   TYPO3 v15: :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->render(ServerRequestInterface $request)`
 
 renderResponse()
 ----------------
 
-*   Old: :php:`PageRenderer->renderResponse(int $code = 200, string $reasonPhrase = '')`
-*   TYPO3 v14.2: :php:`PageRenderer->render(ServerRequestInterface|int $requestOrCode = 200, int|string $codeOrReasonPhrase = '', string $reasonPhrase = '')`
-*   TYPO3 v15: :php:`PageRenderer->render(ServerRequestInterface $request, int $code = 200, string $reasonPhrase = '')`
+*   Old: :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->renderResponse(int $code = 200, string $reasonPhrase = '')`
+*   TYPO3 v14.2: :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->render(ServerRequestInterface|int $requestOrCode = 200, int|string $codeOrReasonPhrase = '', string $reasonPhrase = '')`
+*   TYPO3 v15: :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->render(ServerRequestInterface $request, int $code = 200, string $reasonPhrase = '')`
 
 
 Impact

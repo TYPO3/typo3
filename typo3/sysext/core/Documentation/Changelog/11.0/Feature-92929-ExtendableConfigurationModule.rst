@@ -34,7 +34,7 @@ Each "provider", responsible for one configuration, is registered as a so-called
 "configuration module provider". This is done in the corresponding
 :file:`Services.yaml` file of each extension. Each provider is tagged and will
 then automatically be registered. Therefore, the provider class must implement
-the :php:`ProviderInterface` which requires some methods to be present in the
+the :php-short:`\TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\ProviderInterface` which requires some methods to be present in the
 provider class so they can be called from within the module.
 
 The registration of such a provider looks like the following:

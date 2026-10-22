@@ -15,21 +15,21 @@ In order to keep setting the titles in control, a new API to set the page title 
 
 The API uses :php:`PageTitleProviders` to define the page title based on page record and the content on the page.
 
-Based on the priority of the providers, the :php:`PageTitleProviderManager` will check the providers if a title
+Based on the priority of the providers, the :php-short:`\TYPO3\CMS\Core\PageTitle\PageTitleProviderManager` will check the providers if a title
 is given by the provider. It will start with the highest priority PageTitleProviders and will end with the lowest
 in priority.
 
 By default, the core ships three providers. The provider with the (by default) highest priority will be the
-:php:`AltPageTitleProvider`. This provider handles the (since TYPO3 v9 deprecated) property
+:php-short:`\TYPO3\CMS\Core\PageTitle\AltPageTitleProvider`. This provider handles the (since TYPO3 v9 deprecated) property
 :php:`$GLOBALS['TSFE']->altPageTitle`. If an extension has set a value to this property, this provider will return
 that value.
 
-If you have installed the system extension SEO, the second provider will be the :php:`SeoTitlePageTitleProvider`.
+If you have installed the system extension SEO, the second provider will be the :php-short:`\TYPO3\CMS\Seo\PageTitle\SeoTitlePageTitleProvider`.
 When an editor has set a value for the SEO title in the page properties of the page, this provider will provide
-that title to the :php:`PageTitleProviderManager`. If you have not installed the SEO system extension, this fields
+that title to the :php-short:`\TYPO3\CMS\Core\PageTitle\PageTitleProviderManager`. If you have not installed the SEO system extension, this fields
 and provider are not available.
 
-The fallback provider with the lowest priority is the :php:`RecordPageTitleProvider`. When no other title is set
+The fallback provider with the lowest priority is the :php-short:`\TYPO3\CMS\Core\PageTitle\RecordPageTitleProvider`. When no other title is set
 by a provider, this provider will return the title of the page.
 
 Besides the providers shipped by core, you can add own providers. An integrator can define the priority of the
@@ -42,7 +42,7 @@ Extension developers may want to have an own provider for page titles. For examp
 records and a detail view, the title of the page record will not be the correct title. To make sure to display
 the correct page title, you have to create your own :php:`PageTitleProvider`. It is quite easy to create one.
 
-First of all create a PHP class in your extension that implements the :php:`PageTitleProviderInterface`. This will
+First of all create a PHP class in your extension that implements the :php-short:`\TYPO3\CMS\Core\PageTitle\PageTitleProviderInterface`. This will
 force you to have at least the :php:`getTitle()` method in your class. Within this method you can create your
 own logic to define the correct title.
 
@@ -88,9 +88,9 @@ If you have installed the system extension SEO, you will also get a third provid
       }
    }
 
-First the :php:`AltPageTitleProvider` will be checked, then the :php:`SeoTitlePageTitleProvider` (because it will be
+First the :php-short:`\TYPO3\CMS\Core\PageTitle\AltPageTitleProvider` will be checked, then the :php-short:`\TYPO3\CMS\Seo\PageTitle\SeoTitlePageTitleProvider` (because it will be
 handled before record and after altPageTitle) and if both providers didn't provide a title, the
-:php:`RecordPageTitleProvider` will be checked.
+:php-short:`\TYPO3\CMS\Core\PageTitle\RecordPageTitleProvider` will be checked.
 
 You can override these settings within your own installation. You can add as many providers as you want. Be aware
 that if a provider returns a non-empty value, all provider with a lower priority won't be checked.

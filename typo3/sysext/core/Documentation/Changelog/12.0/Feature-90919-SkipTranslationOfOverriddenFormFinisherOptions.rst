@@ -12,17 +12,17 @@ Description
 ===========
 
 If form finisher options are overridden via FlexForm, they must not be translated
-by the :php:`TranslationService`. Otherwise, they would probably be overridden
+by the :php-short:`\TYPO3\CMS\Form\Service\TranslationService`. Otherwise, they would probably be overridden
 again by a localization from a translation file.
 
 To address this issue, a new translation option :yaml:`propertiesExcludedFromTranslation`
 has been introduced. The option allows skipping all those finisher options whose
 option value has been changed within a FlexForm. The translation option is only
-respected in :php:`TranslationService::translateFinisherOption()`.
+respected in :php-short:`\TYPO3\CMS\Form\Service\TranslationService::translateFinisherOption()`.
 
 The following example excludes three properties (subject, recipients and format).
 That way, the options can only be overridden within a FlexForm but not by
-:php:`TranslationService`. The option is automatically generated as soon as
+:php-short:`\TYPO3\CMS\Form\Service\TranslationService`. The option is automatically generated as soon as
 FlexForm overrides are in place. The following syntax is only documented for
 completeness. Nonetheless, it can also be written manually into a form definition.
 

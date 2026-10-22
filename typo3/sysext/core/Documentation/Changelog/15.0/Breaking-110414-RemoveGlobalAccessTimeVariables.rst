@@ -86,7 +86,7 @@ Use the date aspect of the Context API instead of the global variables:
     $accessTime = $this->context->getAspect('date')->getTimestampWithMinutePrecision();
 
 In places without dependency injection, the current context is fetched via
-:php:`GeneralUtility::makeInstance(Context::class)`.
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Context::class)`.
 
 To simulate another point in time, set the date aspect instead of writing to
 :php:`$GLOBALS['SIM_ACCESS_TIME']`:

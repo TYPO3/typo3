@@ -23,7 +23,7 @@ The following signals have been marked as deprecated in favor of new PSR-14 even
 - :php:`TYPO3\CMS\Extbase\Persistence\Generic\Backend::afterPersistObject`
 - :php:`TYPO3\CMS\Extbase\Persistence\Generic\Backend::afterRemoveObject`
 
-The method :php:`emitBeforeCallActionMethodSignal` in :php:`ActionController`
+The method :php:`emitBeforeCallActionMethodSignal` in :php-short:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController`
 has been marked as deprecated and is not called by Extbase itself anymore.
 
 Impact

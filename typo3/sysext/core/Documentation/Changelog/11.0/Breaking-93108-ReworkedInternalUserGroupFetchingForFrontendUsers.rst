@@ -31,7 +31,7 @@ The respective methods and properties
 have been removed.
 
 At the same time, much of the PHP 4-based code base from frontend users
-within :php:`FrontendUserAuthentication` has been marked as internal or removed
+within :php-short:`\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication` has been marked as internal or removed
 completely, allowing this information not to be read or modified from the
 outside anymore.
 

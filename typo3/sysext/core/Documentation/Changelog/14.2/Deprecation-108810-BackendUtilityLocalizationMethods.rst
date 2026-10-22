@@ -15,12 +15,12 @@ The following methods in :php:`\TYPO3\CMS\Backend\Utility\BackendUtility` have
 been deprecated in favor of new methods in
 :php:`\TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository`:
 
-*   :php:`BackendUtility::getRecordLocalization()` - use
-    :php:`LocalizationRepository::getRecordTranslation()` instead
-*   :php:`BackendUtility::getExistingPageTranslations()` - use
-    :php:`LocalizationRepository::getPageTranslations()` instead
-*   :php:`BackendUtility::translationCount()` - use
-    :php:`LocalizationRepository::getRecordTranslations()` instead
+*   :php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordLocalization()` - use
+    :php-short:`\TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository::getRecordTranslation()` instead
+*   :php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::getExistingPageTranslations()` - use
+    :php-short:`\TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository::getPageTranslations()` instead
+*   :php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::translationCount()` - use
+    :php-short:`\TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository::getRecordTranslations()` instead
 
 See :ref:`feature-108799-1738094060` for details of the new methods.
 

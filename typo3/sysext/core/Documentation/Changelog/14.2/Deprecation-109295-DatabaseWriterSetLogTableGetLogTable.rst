@@ -35,7 +35,7 @@ Calling :php:`setLogTable()` or :php:`getLogTable()` triggers a PHP
 :php:`logTable` as a configuration option when
 :php-short:`\TYPO3\CMS\Core\Log\Writer\DatabaseWriter` is registered via
 :php:`$GLOBALS['TYPO3_CONF_VARS']['LOG']`, since the
-:php:`AbstractWriter` constructor resolves options to :php:`set*()` calls.
+:php-short:`\TYPO3\CMS\Core\Log\Writer\AbstractWriter` constructor resolves options to :php:`set*()` calls.
 
 Support will be removed in TYPO3 v15.0.
 

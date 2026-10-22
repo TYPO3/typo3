@@ -44,7 +44,7 @@ compile their TypoScript configuration from *global* TypoScript only and no long
 calculating TypoScript by guessing "the first valid" page.
 
 The key call to register such "global" TypoScript is the method
-:php:`ExtensionManagementUtility::addTypoScriptSetup()` in
+:php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup()` in
 :file:`ext_localconf.php` files.
 
 Impact
@@ -66,7 +66,7 @@ Migration
 Configuration of Extbase-based backend modules without a page tree must be
 supplied programmatically and made "global" by extending
 :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup']` using
-:php:`ExtensionManagementUtility::addTypoScriptSetup()` within extensions’
+:php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup()` within extensions’
 :file:`ext_localconf.php` files. The backend module of the `form` extension is a
 good example. Additional locations of extensions that deliver form YAML
 definitions are defined like this:
@@ -87,7 +87,7 @@ definitions are defined like this:
     ');
 
 Note it is also possible to use the method
-:php:`ExtensionManagementUtility::addTypoScriptConstants()` to declare "global"
+:php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptConstants()` to declare "global"
 TypoScript constants and to use them in the TypoScript shown above.
 
 ..  index:: Backend, PHP-API, TypoScript, NotScanned, ext:extbase

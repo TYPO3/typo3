@@ -134,7 +134,7 @@ Symfony core middlewares:
 In the copied middlewares, replace the call to
 :php:`$this->connectionPool->getOpenConnectionNames()` with a private helper
 that reads the protected :php:`$connections` property of the
-:php:`ConnectionPool` via reflection (no :php:`setAccessible()` call is needed on
+:php-short:`\TYPO3\CMS\Core\Database\ConnectionPool` via reflection (no :php:`setAccessible()` call is needed on
 PHP 8.1 and newer):
 
 ..  code-block:: php
@@ -184,7 +184,7 @@ Composer patch tool such as `cweagans/composer-patches
     }
 
 The patch file *should* contain the new
-:php:`ConnectionPool::getOpenConnectionNames()` method, the two middlewares and
+:php-short:`\TYPO3\CMS\Core\Database\ConnectionPool::getOpenConnectionNames()` method, the two middlewares and
 the two events, and register the middlewares in
 :file:`typo3/sysext/core/Configuration/Services.yaml`. When the method is added
 this way, the reflection helper above is not needed and the copied middlewares

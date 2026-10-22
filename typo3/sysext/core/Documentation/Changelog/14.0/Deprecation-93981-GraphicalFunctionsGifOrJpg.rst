@@ -21,7 +21,7 @@ Fallback behavior for image preview generation now follows the configured
 file extensions rather than a hardcoded GIF/JPEG switch.
 
 A new method,
-:php:`GraphicalFunctions->determineDefaultProcessingFileExtension()`,
+:php-short:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions->determineDefaultProcessingFileExtension()`,
 has been introduced.
 
 It accepts a file extension such as :php:`'pdf'` as an argument and returns
@@ -69,7 +69,7 @@ This is a temporary migration using an :php:`@internal` method, which is subject
 to change. Code like the above should generally be avoided in third-party
 extensions.
 
-Instead, use :php:`GraphicalFunctions->resize()` and specify the argument
+Instead, use :php-short:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions->resize()` and specify the argument
 :php:`$targetFileExtension = 'web'` so that actual operations use the configured
 target formats.
 

@@ -30,7 +30,7 @@ Calling the methods in a public context  will trigger a PHP :php:`E_USER_DEPRECA
 Affected Installations
 ======================
 
-TYPO3 installations with custom extensions working with the :php:`TemplateService` class.
+TYPO3 installations with custom extensions working with the :php-short:`\TYPO3\CMS\Core\TypoScript\TemplateService` class.
 
 Migration
 =========

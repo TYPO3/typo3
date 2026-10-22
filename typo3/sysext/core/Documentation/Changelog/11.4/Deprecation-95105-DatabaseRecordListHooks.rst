@@ -12,7 +12,7 @@ Description
 ===========
 
 The TYPO3 hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions']`
-which is used in the :php:`DatabaseRecordList` class for modifying the
+which is used in the :php-short:`\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList` class for modifying the
 behavior of each table listing, has been marked as deprecated.
 
 Using this hook always required to implement the :php:`\TYPO3\CMS\Recordlist\RecordList\RecordListHookInterface`,
@@ -41,8 +41,8 @@ Migration
 
 Migrate to the corresponding RecordList PSR-14 events:
 
-- `\TYPO3\CMS\Recordlist\Event\ModifyRecordListTableActionsEvent`
-- `\TYPO3\CMS\Recordlist\Event\ModifyRecordListHeaderColumnsEvent`
-- `\TYPO3\CMS\Recordlist\Event\ModifyRecordListRecordActionsEvent`
+- :php:`\TYPO3\CMS\Recordlist\Event\ModifyRecordListTableActionsEvent`
+- :php:`\TYPO3\CMS\Recordlist\Event\ModifyRecordListHeaderColumnsEvent`
+- :php:`\TYPO3\CMS\Recordlist\Event\ModifyRecordListRecordActionsEvent`
 
 .. index:: PHP-API, FullyScanned, ext:core

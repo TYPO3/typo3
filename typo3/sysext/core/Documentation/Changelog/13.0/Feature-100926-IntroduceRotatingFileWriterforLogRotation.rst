@@ -27,7 +27,7 @@ closing and re-creating open file handles.
 A new file writer :php:`\TYPO3\CMS\Core\Log\Writer\RotatingFileWriter` has been
 added, which extends the already existing
 :php:`\TYPO3\CMS\Core\Log\Writer\FileWriter` class. The
-:php:`RotatingFileWriter` accepts all options of :php:`FileWriter` in addition
+:php-short:`\TYPO3\CMS\Core\Log\Writer\RotatingFileWriter` accepts all options of :php-short:`\TYPO3\CMS\Core\Log\Writer\FileWriter` in addition
 of the following:
 
 * `interval` - how often logs should be rotated, can be any of
@@ -39,12 +39,12 @@ of the following:
 
 * `maxFiles` - how many files should be retained (by default `5` files, `0` never deletes any file)
 
-The :php:`RotatingFileWriter` is configured like any other log writer.
+The :php-short:`\TYPO3\CMS\Core\Log\Writer\RotatingFileWriter` is configured like any other log writer.
 
 ..  note::
 
-    When configuring :php:`RotatingFileWriter` in :file:`system/settings.php`,
-    the string representations of the :php:`Interval` must be used for the
+    When configuring :php-short:`\TYPO3\CMS\Core\Log\Writer\RotatingFileWriter` in :file:`system/settings.php`,
+    the string representations of the :php-short:`\TYPO3\CMS\Core\Log\Writer\Enum\Interval` must be used for the
     `interval` option, as otherwise this might break the Install Tool.
 
 Example
@@ -80,7 +80,7 @@ Impact
 ======
 
 When configured, log files may be rotated before writing a new log entry,
-depending on the configured `interval`, where :php:`Interval::DAILY` is the
+depending on the configured `interval`, where :php-short:`\TYPO3\CMS\Core\Log\Writer\Enum\Interval::DAILY` is the
 default. When rotating, the log files are suffixed with a rotation incremental
 value.
 

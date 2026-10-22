@@ -18,13 +18,13 @@ With the introduction of Extbase over one decade ago, a lot of modern software d
 One of that paradigms is Dependency Injection (DI) which is an approach of handling dependencies different than the one the TYPO3 core followed ever since.
 
 Given there is an EmailService class, which is responsible for sending emails, the usual approach of creating such a service was to create it
-the moment it was needed. TYPO3 never used the :php:`new` keyword to create new objects, but :php:`GeneralUtility::makeInstance()`, which pretty much does the same thing.
+the moment it was needed. TYPO3 never used the :php:`new` keyword to create new objects, but :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()`, which pretty much does the same thing.
 So, one approach of creating dependencies is creating them in the current scope where the dependency is needed.
 
 .. tip::
 
    As a rule of thumb, you can remember the following:
-   Whenever you are creating dependencies yourself with :php:`new` or :php:`GeneralUtility::makeInstance()`, you are not using Dependency Injection.
+   Whenever you are creating dependencies yourself with :php:`new` or :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()`, you are not using Dependency Injection.
 
 Extbase introduced the concept of Dependency Injection (DI) which means, that all dependencies are declared in a way, that the dependency chain is known before runtime.
 The most common way of implementing DI is to declare dependencies as constructor arguments. This means, in the scope of the current class, all dependencies are made visible as constructor arguments.
@@ -32,7 +32,7 @@ As those dependencies need to be created outside the current scope, a service co
 Then, instead of calling :php:`new Service(...)`, the container needs to be queried for the needed service, e.g. by calling :php:`$container->get(Service::class)`.
 This also assures that the container provide the requested services with their dependencies, as they are created the same way.
 
-There is an service container in Extbase but it's not exposed to the public. Instead, there is the :php:`ObjectManager` class, which acts as a proxy for the container and also has a :php:`get` method, to query instances of services.
+There is an service container in Extbase but it's not exposed to the public. Instead, there is the :php-short:`\TYPO3\CMS\Extbase\Object\ObjectManager` class, which acts as a proxy for the container and also has a :php:`get` method, to query instances of services.
 
 Exactly that :php:`get()` method is now deprecated in the extbase context because it should never be called directly.
 
@@ -132,14 +132,14 @@ The idea of Singletons is to have an object that always behaves the same, no mat
 
 Let's have a look at classes that are no services. We can borrow the term prototype from the Java world. A commonly used prototype object is a model. Each instance of a model clearly has a different state and therefore a different functionality.
 Those objects can theoretically be injected but it's very uncommon to do so. Still, in Extbase, instances of prototypes (e.g. instances of models, or other instances that hold state) are very often created with the object manager,
-which is bad practice. :php:`new` or :php:`GeneralUtility::makeInstance()` should be used for instantiating prototypes.
+which is bad practice. :php:`new` or :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()` should be used for instantiating prototypes.
 
 However, when it comes to prototypes, there is a mechanic which cannot be implemented differently yet: the override of an implementation.
 
-It means, that it's possible to tell the :php:`ObjectManager` to create an instance of a different class than the one which is requested.
-One example of that is class :php:`TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend`, which can be fetched from the :php:`ObjectManager` by requesting an instance of the :php:`TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface` interface.
+It means, that it's possible to tell the :php-short:`\TYPO3\CMS\Extbase\Object\ObjectManager` to create an instance of a different class than the one which is requested.
+One example of that is class :php:`TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend`, which can be fetched from the :php-short:`\TYPO3\CMS\Extbase\Object\ObjectManager` by requesting an instance of the :php:`TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface` interface.
 This feature should only be used for services as well but it is often used to override models of other extensions. For models you can either decide to simply instantiate via :php:`new`, or if you want to provide support for overwriting models
-via XCLASSes configured in :file:`ext_localconf.php` (configuration variable: :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']`) you may also use :php:`GeneralUtility::makeInstance()`.
+via XCLASSes configured in :file:`ext_localconf.php` (configuration variable: :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']`) you may also use :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()`.
 
 .. tip::
 
@@ -147,9 +147,9 @@ via XCLASSes configured in :file:`ext_localconf.php` (configuration variable: :p
 
    Singletons (services without state) should be provided by Dependency Injection wherever possible.
 
-   To create prototypes (instances with state), use :php:`new` or :php:`GeneralUtility::makeInstance()`.
+   To create prototypes (instances with state), use :php:`new` or :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()`.
 
-   :php:`ObjectManager->get()` must no longer be used.
+   :php-short:`\TYPO3\CMS\Extbase\Object\ObjectManager->get()` must no longer be used.
 
 
 Impact
@@ -161,7 +161,7 @@ There is no impact yet. No PHP :php:`E_USER_DEPRECATED` error is triggered in TY
 Affected Installations
 ======================
 
-All installations that use :php:`ObjectManager->get()` directly to create instances of dependencies in a scope that supports native Dependency Injection.
+All installations that use :php-short:`\TYPO3\CMS\Extbase\Object\ObjectManager->get()` directly to create instances of dependencies in a scope that supports native Dependency Injection.
 
 
 Migration

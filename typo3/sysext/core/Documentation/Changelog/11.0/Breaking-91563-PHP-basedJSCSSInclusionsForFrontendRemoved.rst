@@ -19,7 +19,7 @@ In the past, TYPO3's :php:`TSFE` object allowed to manually add CSS or JavaScrip
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->JSCode`
 * :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->inlineJS`
 
-These have been removed due to better APIs like :php:`PageRenderer` (available since TYPO3 v4.5) and :php:`AssetCollector` (available since TYPO3 v10).
+These have been removed due to better APIs like :php-short:`\TYPO3\CMS\Core\Page\PageRenderer` (available since TYPO3 v4.5) and :php-short:`\TYPO3\CMS\Core\Page\AssetCollector` (available since TYPO3 v10).
 
 
 Impact
@@ -37,6 +37,6 @@ TYPO3 installations with custom extensions using this functionality directly to 
 Migration
 =========
 
-Use the :php:`AssetCollector` API in PHP to add JavaScript and CSS code or use files directly.
+Use the :php-short:`\TYPO3\CMS\Core\Page\AssetCollector` API in PHP to add JavaScript and CSS code or use files directly.
 
 .. index:: PHP-API, FullyScanned, ext:frontend

@@ -19,7 +19,7 @@ The Fluid class :php:`\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext`
 is the main object carried around within the rendering chain to keep track
 of state. It is the main data object used in view helpers.
 
-As such, :php:`StandaloneView` should not allow fetching state since it allows
+As such, :php-short:`\TYPO3\CMS\Fluid\View\StandaloneView` should not allow fetching state since it allows
 to be misused to park state, which is primarily a controller concern instead.
 
 To enforce this pattern, the following methods have been marked as deprecated in
@@ -43,7 +43,7 @@ Instances with extensions using one of the above methods.
 Migration
 =========
 
-Do not misuse :php:`StandaloneView` as data source. Typically, controllers
+Do not misuse :php-short:`\TYPO3\CMS\Fluid\View\StandaloneView` as data source. Typically, controllers
 should handle and keep track of state like a PSR-7 Request and set or update
 view state.
 

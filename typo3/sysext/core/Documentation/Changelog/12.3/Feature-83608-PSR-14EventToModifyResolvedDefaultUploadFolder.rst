@@ -58,8 +58,8 @@ The corresponding event listener class:
 Impact
 ======
 
-As resolving the event was moved from :php:`BackendUserAuthentication` to its own
-:php:`DefaultUploadFolderResolver` class, this event is now the preferred way
+As resolving the event was moved from :php-short:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication` to its own
+:php-short:`\TYPO3\CMS\Core\Resource\DefaultUploadFolderResolver` class, this event is now the preferred way
 of modifying the default upload folder.
 
 .. index:: Backend, PHP-API, ext:core

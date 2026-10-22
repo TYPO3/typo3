@@ -11,8 +11,8 @@ See :issue:`89579`
 Description
 ===========
 
-The Service API within :php:`GeneralUtility::makeInstanceService()` and
-:php:`ExtensionManagementUtility::findService()` has a third argument called
+The Service API within :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceService()` and
+:php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::findService()` has a third argument called
 :php:`$excludeServiceKeys` which is used for skipping certain services when
 using a chain.
 

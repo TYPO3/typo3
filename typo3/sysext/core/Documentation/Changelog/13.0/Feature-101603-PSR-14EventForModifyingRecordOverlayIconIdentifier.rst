@@ -51,6 +51,6 @@ Impact
 ======
 
 It's now possible to modify the overlay icon identifier of any record icon,
-using the new PSR-14 event :php:`ModifyRecordOverlayIconIdentifierEvent`.
+using the new PSR-14 event :php-short:`\TYPO3\CMS\Core\Imaging\Event\ModifyRecordOverlayIconIdentifierEvent`.
 
 .. index:: Backend, PHP-API, ext:core

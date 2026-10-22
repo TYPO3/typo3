@@ -11,7 +11,7 @@ See :issue:`83475`
 Description
 ===========
 
-The method `\TYPO3\CMS\Extbase\Validation\ValidatorResolver::buildMethodArgumentsValidatorConjunctions` has been marked
+The method :php:`\TYPO3\CMS\Extbase\Validation\ValidatorResolver::buildMethodArgumentsValidatorConjunctions` has been marked
 as deprecated and will be removed in TYPO3 v10.0
 
 
@@ -25,7 +25,7 @@ method, you will need to implement the logic yourself.
 Affected Installations
 ======================
 
-All installations that use `\TYPO3\CMS\Extbase\Validation\ValidatorResolver::buildMethodArgumentsValidatorConjunctions`.
+All installations that use :php:`\TYPO3\CMS\Extbase\Validation\ValidatorResolver::buildMethodArgumentsValidatorConjunctions`.
 
 
 Migration

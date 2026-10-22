@@ -19,7 +19,7 @@ The class will be removed with TYPO3 v14.
 Impact
 ======
 
-Calling :php:`TypoScriptFrontendController` methods, or accessing state from
+Calling :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` methods, or accessing state from
 :php:`$GLOBALS['TSFE']` is considered deprecated.
 
 

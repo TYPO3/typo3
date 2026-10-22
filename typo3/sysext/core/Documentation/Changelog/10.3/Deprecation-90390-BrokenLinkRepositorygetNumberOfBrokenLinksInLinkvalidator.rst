@@ -11,7 +11,7 @@ See :issue:`90390`
 Description
 ===========
 
-The method :php:`BrokenLinkRepository::getNumberOfBrokenLinks()` has been marked as deprecated.
+The method :php-short:`\TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository::getNumberOfBrokenLinks()` has been marked as deprecated.
 
 
 Impact
@@ -29,6 +29,6 @@ Every TYPO3 installation that uses the method.
 Migration
 =========
 
-Use :php:`BrokenLinkRepository::isLinkTargetBrokenLink()` instead.
+Use :php-short:`\TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository::isLinkTargetBrokenLink()` instead.
 
 .. index:: Backend, NotScanned, ext:linkvalidator

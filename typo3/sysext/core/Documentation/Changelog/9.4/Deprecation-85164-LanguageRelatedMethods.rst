@@ -37,7 +37,7 @@ Instances with extensions calling one of the methods mentioned above.
 Migration
 =========
 
-Above calls can often be substituted using the :php:`Site` object that is always
+Above calls can often be substituted using the :php-short:`\TYPO3\CMS\Core\Site\Entity\Site` object that is always
 initialized during core bootstrap. In backend HTTP use cases, the object can be retrieved
 using code like this:
 

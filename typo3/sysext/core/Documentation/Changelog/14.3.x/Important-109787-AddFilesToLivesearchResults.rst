@@ -19,7 +19,7 @@ matches against file names as well as indexed metadata fields like
 title, description or alternative text appear in the global search.
 
 Results respect the user's file mounts via the existing
-:php:`FolderMountsRestriction`, so non-admin users only see files within
+:php-short:`\TYPO3\CMS\Core\Resource\Search\QueryRestrictions\FolderMountsRestriction`, so non-admin users only see files within
 their permitted scope.
 
 The result detail panel has been extended to show a thumbnail for

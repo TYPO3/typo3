@@ -114,9 +114,9 @@ next login.
 
 **Custom extensions:**
 
-If custom code uses :php:`HashService::hmac()` directly, review whether the
+If custom code uses :php-short:`\TYPO3\CMS\Core\Crypto\HashService::hmac()` directly, review whether the
 default SHA1 algorithm is still appropriate. Consider explicitly passing
-:php:`HashAlgo::SHA3_256` for new HMAC operations:
+:php-short:`\TYPO3\CMS\Core\Crypto\HashAlgo::SHA3_256` for new HMAC operations:
 
 ..  code-block:: php
 

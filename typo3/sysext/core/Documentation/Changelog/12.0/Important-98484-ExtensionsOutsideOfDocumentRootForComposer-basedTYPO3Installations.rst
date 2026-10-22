@@ -77,7 +77,7 @@ Please note that this only affects TYPO3 installations in Composer mode:
     *   Utilize a PSR middleware or dynamic routes to "listen" on a specific URL like
         :file:`dynamicAssets/logo.jpg` and create a wrapper that returns specific files,
         resolved via the TYPO3 method
-        :php:`PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName('EXT:my-extension/Resources/Public/logo.jpg')`.
+        :php-short:`\TYPO3\CMS\Core\Utility\PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName('EXT:my-extension/Resources/Public/logo.jpg')`.
     *   If all else fails: You can link to the full MD5 hashed URL, like
         :css:`background-image: url('/_assets/9e592a1e5eec5752a1be78133e5e1a60/Images/logo.jpg')`
         (or create a custom stable symlink, for example within your deployment, that points

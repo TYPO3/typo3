@@ -11,7 +11,7 @@ See :issue:`107342`
 Description
 ===========
 
-With this change, the method signature of :php:`listForms()`, defined by the :php:`FormPersistenceManagerInterface`,
+With this change, the method signature of :php:`listForms()`, defined by the :php-short:`\TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface`,
 has been extended by two arguments: :php:`$orderField` and :php:`$orderDirection`.
 The new definition is:
 :php:`public function listForms(array $formSettings, string $orderField = '', ?SortDirection $orderDirection = null): array;`

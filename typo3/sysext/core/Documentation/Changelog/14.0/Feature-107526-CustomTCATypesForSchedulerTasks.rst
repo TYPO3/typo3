@@ -253,7 +253,7 @@ Creating custom task types
 
 To create a custom scheduler task with TCA configuration:
 
-1.  Create the task class extending :php:`AbstractTask`.
+1.  Create the task class extending :php-short:`\TYPO3\CMS\Scheduler\Task\AbstractTask`.
     Implement the core logic in the :php:`execute()` method.
 
 2.  Implement migration methods :php:`getTaskParameters()` and
@@ -268,7 +268,7 @@ To create a custom scheduler task with TCA configuration:
 5.  Define custom fields in the TCA `showitem` configuration.
 
 6.  Register the task type using
-    :php:`ExtensionManagementUtility::addRecordType()`.
+    :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addRecordType()`.
 
 Example custom task TCA registration in
 :file:`Configuration/TCA/Overrides/tx_scheduler_task_your_task.php`:

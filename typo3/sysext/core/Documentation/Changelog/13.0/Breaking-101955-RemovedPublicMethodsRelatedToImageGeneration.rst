@@ -24,15 +24,15 @@ properly configured, the inter-dependency within the TYPO3 Core API when to
 use what class has always been unclear - mostly because this
 functionality has not been cleaned up in the past 20 years.
 
-For this reason, :php:`GifBuilder` now contains all functionality related to
+For this reason, :php-short:`\TYPO3\CMS\Frontend\Imaging\GifBuilder` now contains all functionality related to
 GDLib, and all related methods from GraphicalFunctions have been removed.
-:php:`GraphicalFunctions` thus is only contains ImageMagick/GraphicsMagick
+:php-short:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions` thus is only contains ImageMagick/GraphicsMagick
 functionality.
 
-In addition, :php:`GifBuilder` and :php:`GraphicalFunctions` are now two separate classes
+In addition, :php-short:`\TYPO3\CMS\Frontend\Imaging\GifBuilder` and :php-short:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions` are now two separate classes
 without inheritance, but utilizes the Composition pattern.
 
-The following public methods from :php:`GraphicalFunctions` have been removed:
+The following public methods from :php-short:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions` have been removed:
 
 - :php:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions->adjust()`
 - :php:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions->applyImageMagickToPHPGif()`
@@ -64,7 +64,7 @@ The following public methods from :php:`GraphicalFunctions` have been removed:
 - :php:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions->unifyColors()`
 - :php:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions::readPngGif()`
 
-The following public properties from :php:`GraphicalFunctions` have been removed:
+The following public properties from :php-short:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions` have been removed:
 
 - :php:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions->colMap`
 - :php:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions->h`
@@ -75,12 +75,12 @@ The following public properties from :php:`GraphicalFunctions` have been removed
 - :php:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions->w`
 - :php:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions->workArea`
 
-The following public properties in :php:`GifBuilder` have been removed:
+The following public properties in :php-short:`\TYPO3\CMS\Frontend\Imaging\GifBuilder` have been removed:
 
 - :php:`\TYPO3\CMS\Frontend\Imaging\GifBuilder->charRangeMap`
 - :php:`\TYPO3\CMS\Frontend\Imaging\GifBuilder->myClassName`
 
-The following public properties in :php:`GifBuilder` are now marked as protected:
+The following public properties in :php-short:`\TYPO3\CMS\Frontend\Imaging\GifBuilder` are now marked as protected:
 
 - :php:`\TYPO3\CMS\Frontend\Imaging\GifBuilder->charRangeMap`
 - :php:`\TYPO3\CMS\Frontend\Imaging\GifBuilder->combinedFileNames`
@@ -112,7 +112,7 @@ Migration
 =========
 
 Use static analysis tools such as PHPStan or Psalm to detect if PHP code of
-custom extensions is affected, and make use of :php:`GifBuilder` class instead of
-:php:`GraphicalFunctions` when needing GDLib functionality.
+custom extensions is affected, and make use of :php-short:`\TYPO3\CMS\Frontend\Imaging\GifBuilder` class instead of
+:php-short:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions` when needing GDLib functionality.
 
 .. index:: PHP-API, FullyScanned, ext:core

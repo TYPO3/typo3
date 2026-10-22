@@ -30,7 +30,7 @@ The Parameter :php:`s` has following syntax: width:height:minW:minH:maxW:maxH. Y
 can leave this Parameter empty to load the file in original size. Parameter :php:`width`
 and :php:`height` can feature the trailing :typoscript:`c` or :typoscript:`m` indicator like known from TS.
 
-See the following example on how to create a URI using the :php:`FileDumpController` for
+See the following example on how to create a URI using the :php-short:`\TYPO3\CMS\Core\Controller\FileDumpController` for
 a sys_file record with a fixed image size:
 
 .. code-block:: php

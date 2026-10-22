@@ -16,7 +16,7 @@ recommended way of developing Frontend plugins anymore. This class is not
 maintained anymore and may be removed in future versions without further notice.
 
 The TypoScript property :typoscript:`plugin.tx_myextension_pi1._DEFAULT_PI_VARS`
-has only been used in the class :php:`AbstractPlugin`. It is therefore not public
+has only been used in the class :php-short:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin`. It is therefore not public
 API anymore.
 
 Impact
@@ -148,10 +148,10 @@ See the :ref:`Extbase documentation, chapter
 
 ..  important::
 
-    The `AbstractPlugin` is :ref:`deprecated <deprecation-100639-1681740974>`
+    The :php-short:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin` is :ref:`deprecated <deprecation-100639-1681740974>`
     through a follow-up change and will be removed in TYPO3 v13. Executing
     a plugin via the TypoScript userFunc (also utilized the `$request` argument for
-    the `main` method) continues to work, as long as the collection of `AbstractPlugin`
+    the `main` method) continues to work, as long as the collection of :php-short:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin`
     methods are ported to the custom user class.
 
 .. index:: Frontend, FullyScanned, ext:frontend

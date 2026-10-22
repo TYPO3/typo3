@@ -29,7 +29,7 @@ Creates a statement to append a field alias to a value, identifier or sub-expres
 
 ..  note::
 
-    Some :php:`ExpressionBuilder` methods provides a argument to directly add
+    Some :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder` methods provides a argument to directly add
     the expression alias to reduce some nesting. This method can be used for
     custom expressions and avoids recurring conditional quoting and alias appending.
 
@@ -363,7 +363,7 @@ Create statement containing :php:`$numberOfSpaces` spaces.
 ..  note::
 
     The :sql:`SPACE(number)` expression is used for MariaDB and MySQL and
-    :php:`ExpressionBuilder::repeat()` expression as fallback for PostgreSQL
+    :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder::repeat()` expression as fallback for PostgreSQL
     and SQLite.
 
 ..  code-block:: php

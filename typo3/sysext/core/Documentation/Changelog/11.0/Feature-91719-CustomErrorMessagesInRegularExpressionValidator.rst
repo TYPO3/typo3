@@ -11,7 +11,7 @@ See :issue:`91719`
 Description
 ===========
 
-The :php:`RegularExpressionValidator` can now return a custom validation error message
+The :php-short:`\TYPO3\CMS\Extbase\Validation\Validator\RegularExpressionValidator` can now return a custom validation error message
 to help the user providing valid input.
 
 

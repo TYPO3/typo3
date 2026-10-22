@@ -47,8 +47,8 @@ subtype field `list_type` have been deprecated in
 :ref:`deprecation-105076-1726923626` and removed in
 :ref:`breaking-105377-1729513863`.
 See also :ref:`important-105538-1730752784` for related information about
-:php:`ExtensionUtility::configurePlugin()` and
-:php:`ExtensionManagementUtility::addTcaSelectItemGroup()`.
+:php-short:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin()` and
+:php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItemGroup()`.
 
 With this change, support for `ds_pointerField` and the multi-entry
 `ds` array format has now been removed. The `ds` option now points to

@@ -11,7 +11,7 @@ See :issue:`81218`
 Description
 ===========
 
-The method :php:`PageRepository->getRawRecord()` has a fourth parameter called :php:`$noWSOL` which allowed
+The method :php-short:`\TYPO3\CMS\Frontend\Page\PageRepository->getRawRecord()` has a fourth parameter called :php:`$noWSOL` which allowed
 to disable the logic for getting the workspace-related record. This method argument was previously
 only used internally within PageRepository, and using this argument left the functionality of this
 method to only do a simple SQL statement, which can be implemented itself without using this API call.
@@ -20,7 +20,7 @@ method to only do a simple SQL statement, which can be implemented itself withou
 Impact
 ======
 
-Calling :php:`PageRepository->getRawRecord()` with a fourth parameter will trigger a deprecation log entry.
+Calling :php-short:`\TYPO3\CMS\Frontend\Page\PageRepository->getRawRecord()` with a fourth parameter will trigger a deprecation log entry.
 
 
 Affected Installations

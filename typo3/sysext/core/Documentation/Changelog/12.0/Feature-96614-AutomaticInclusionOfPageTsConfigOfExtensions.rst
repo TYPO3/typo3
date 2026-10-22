@@ -17,7 +17,7 @@ Extension authors can now put a file named
 This file is then recognized to load the contents as global page TSconfig
 for the whole TYPO3 installation during build-time. This is much
 more performant than the existing solution to use
-:php:`ExtensionManagementUtility::addPageTSConfig()` in
+:php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig()` in
 :file:`ext_localconf.php`, which is added to
 :php:`$TYPO3_CONF_VARS[SYS][defaultPageTSconfig]` during runtime.
 

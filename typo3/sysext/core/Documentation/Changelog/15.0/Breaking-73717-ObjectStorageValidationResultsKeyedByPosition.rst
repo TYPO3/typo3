@@ -21,13 +21,13 @@ Form field ViewHelpers address the same element by its position instead, as in
 :html:`<f:form.textfield property="toppings.0.title" />`. Producer and consumer
 therefore never agreed on the same path.
 
-Elements of an :php:`ObjectStorage` are now keyed by their position, the same
+Elements of an :php-short:`\TYPO3\CMS\Extbase\Persistence\ObjectStorage` are now keyed by their position, the same
 way a plain array already behaved.
 
 Impact
 ======
 
-Validation results of :php:`ObjectStorage` elements are now addressed by the
+Validation results of :php-short:`\TYPO3\CMS\Extbase\Persistence\ObjectStorage` elements are now addressed by the
 position of the element:
 
 ..  code-block:: php

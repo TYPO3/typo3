@@ -36,7 +36,7 @@ This restriction has practically been the case with earlier core versions alread
 For instance when a :php:`TCA` table configured "categories" and used them, the
 core already uses various joins to find categories attached to a record. Other
 places have been adapted with TYPO3 v13 already, for instance the
-:php:`ReferenceIndex`. The core will try to additionally simplify the current
+:php-short:`\TYPO3\CMS\Core\Database\ReferenceIndex`. The core will try to additionally simplify the current
 API by avoiding :php:`getConnectionForTable()` with further patches.
 
 Apart from this, instances can still configure additional database connections.

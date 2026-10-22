@@ -105,7 +105,7 @@ Example:
    Since Extbase uses PSR-7 responses, you should make yourself familiar with its API.
    Documentation and more information regarding PSR-7 responses can be found here: https://www.php-fig.org/psr/psr-7/#33-psrhttpmessageresponseinterface
 
-In case you are using the :php:`JsonView` in your extbase controller, you may
+In case you are using the :php-short:`\TYPO3\CMS\Extbase\Mvc\View\JsonView` in your extbase controller, you may
 want to ease the migration path with the new :php:`jsonResponse(string $json = null)`
 method. Similar to :php:`htmlResponse()`, this method creates a PSR-7 Response
 with the :html:`Content-Type: application/json` header and http code `200 Ok`.

@@ -15,7 +15,7 @@ TYPO3's :php:`\TYPO3\CMS\Core\RateLimiter\RateLimiterFactory` has been
 refactored to serve as the single entry point for rate limiting across the
 system. A new
 :php:`\TYPO3\CMS\Core\RateLimiter\RateLimiterFactoryInterface`
-extends Symfony's :php:`RateLimiterFactoryInterface` with additional
+extends Symfony's :php-short:`\TYPO3\CMS\Core\RateLimiter\RateLimiterFactoryInterface` with additional
 convenience methods for request-based and login rate limiting.
 
 Previously, backend and frontend password recovery features and
@@ -147,7 +147,7 @@ configuration array and key:
 
 Preconfigured named services can also be defined in :file:`Services.yaml`.
 They are then injectable with the :php:`create()` method from the
-:php:`RateLimiterFactoryInterface`:
+:php-short:`\TYPO3\CMS\Core\RateLimiter\RateLimiterFactoryInterface`:
 
 ..  code-block:: yaml
     :caption: EXT:my_extension/Configuration/Services.yaml

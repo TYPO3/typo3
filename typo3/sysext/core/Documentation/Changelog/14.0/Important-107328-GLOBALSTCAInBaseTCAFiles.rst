@@ -21,7 +21,7 @@ explicitly allowed or disallowed, only discouraged. It worked only due to
 internal system knowledge by the user, for example, knowing that the loading
 order of extensions affects when those files are loaded. The only place this
 array should be used is inside TCA/Overrides/*.php files. For all other cases,
-the :php:`TcaSchema` should be preferred.
+the :php-short:`\TYPO3\CMS\Core\Schema\TcaSchema` should be preferred.
 
 Migration
 =========

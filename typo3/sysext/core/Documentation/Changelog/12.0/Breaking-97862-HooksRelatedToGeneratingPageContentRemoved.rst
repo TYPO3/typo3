@@ -22,7 +22,7 @@ have been removed. These hooks have been used to execute custom PHP code after
 a page is generated in the TYPO3 frontend and ready to be stored in cache.
 
 Due to the removal of the hooks and the introduction of the new PSR-14 events
-the method signature of :php:`TypoScriptFrontendController->generatePage_postProcessing()`
+the method signature of :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->generatePage_postProcessing()`
 has been changed. The method now requires a :php:`ServerRequestInterface` as first
 argument.
 
@@ -32,7 +32,7 @@ Impact
 Extension code that hooks into these places will not be executed anymore in
 TYPO3 v12+.
 
-Extension code calling :php:`TypoScriptFrontendController->generatePage_postProcessing()`
+Extension code calling :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->generatePage_postProcessing()`
 without providing a :php:`ServerRequestInterface` as first argument
 will trigger a PHP `ArgumentCountError`.
 
@@ -44,7 +44,7 @@ generation or modifying the page content cache, which is highly likely in
 third-party extensions. The extension scanner will detect usages as
 strong match.
 
-Extensions, manually calling :php:`TypoScriptFrontendController->generatePage_postProcessing()`
+Extensions, manually calling :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->generatePage_postProcessing()`
 without providing a :php:`ServerRequestInterface` as first argument. The
 extension scanner will detect usages as weak match.
 
@@ -61,18 +61,18 @@ Extensions using the hooks can be made compatible with TYPO3 v11 and TYPO3 v12
 by registering a PSR-14-based event listener while keeping the legacy hook
 in place.
 
-The :php:`AfterCacheableContentIsGeneratedEvent` acts as a replacement for
+The :php-short:`\TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent` acts as a replacement for
 
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-cached']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['usePageCache']`
 
-whereas the :php:`AfterCachedPageIsPersistedEvent` is the replacement for
+whereas the :php-short:`\TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent` is the replacement for
 
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache']`.
 
 Provide a :php:`ServerRequestInterface` as first argument when calling
-:php:`TypoScriptFrontendController->generatePage_postProcessing()` in custom
+:php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->generatePage_postProcessing()` in custom
 extension code.
 
 .. index:: Frontend, PHP-API, FullyScanned, ext:frontend

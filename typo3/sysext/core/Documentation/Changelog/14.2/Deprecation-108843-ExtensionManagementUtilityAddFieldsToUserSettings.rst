@@ -34,7 +34,7 @@ Affected installations
 ======================
 
 Instances or extensions that use
-:php:`ExtensionManagementUtility::addFieldsToUserSettings()` or directly
+:php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToUserSettings()` or directly
 modify :php:`$GLOBALS['TYPO3_USER_SETTINGS']` to add custom fields to the
 backend user profile settings.
 

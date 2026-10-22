@@ -13,8 +13,8 @@ Description
 
 The methods
 
-* :php:`GeneralUtility::hideIfNotTranslated()`
-* :php:`GeneralUtility::hideIfDefaultLanguage()`
+* :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated()`
+* :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::hideIfDefaultLanguage()`
 
 have been marked as deprecated in favor of a new BitSet-based PHP class
 :php:`TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility`.
@@ -36,7 +36,7 @@ these methods for explicit and special page translation handling.
 Migration
 =========
 
-Instead of :php:`GeneralUtility::hideIfDefaultLanguage()` use
+Instead of :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::hideIfDefaultLanguage()` use
 
 .. code-block:: php
 
@@ -44,7 +44,7 @@ Instead of :php:`GeneralUtility::hideIfDefaultLanguage()` use
    $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage()
 
 
-Instead of :php:`GeneralUtility::hideIfNotTranslated()` use
+Instead of :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated()` use
 
 .. code-block:: php
 

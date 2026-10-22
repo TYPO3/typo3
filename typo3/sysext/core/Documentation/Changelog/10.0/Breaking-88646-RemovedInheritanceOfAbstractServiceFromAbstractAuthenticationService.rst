@@ -16,7 +16,7 @@ or Authorization towards Backend Users and Frontend Users.
 
 It was previously based on :php:`TYPO3\CMS\Core\Service\AbstractService` for any kind of Service API, which
 also includes manipulating files and execution of external applications, which is
-there for legacy reasons since TYPO3 3.x, where the Service API via :php:`GeneralUtility::makeInstanceService` was added.
+there for legacy reasons since TYPO3 3.x, where the Service API via :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceService` was added.
 
 In order to refactor the Authentication API, the :php:`TYPO3\CMS\Core\Authentication\AbstractAuthenticationService`
 class does not inherit from :php:`TYPO3\CMS\Core\Service\AbstractService` anymore. Instead, the most required

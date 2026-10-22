@@ -11,12 +11,12 @@ See :issue:`94501`
 Description
 ===========
 
-The :php:`FlexFormProcessor` is now able to resolve :abbr:`FAL (File Abstraction Layer)`
+The :php-short:`\TYPO3\CMS\Frontend\DataProcessing\FlexFormProcessor` is now able to resolve :abbr:`FAL (File Abstraction Layer)`
 references by its own.
 
 Each FlexForm field, which should be resolved, needs a reference definition
 to the :php:`foreign_match_fields`. This reference is later used in the
-:php:`FilesProcessor` to resolve the correct FAL resource.
+:php-short:`\TYPO3\CMS\Frontend\DataProcessing\FilesProcessor` to resolve the correct FAL resource.
 
 Example of an advanced TypoScript configuration, which processes the field
 :typoscript:`my_flexform_field`, resolves its FAL references and assigns the

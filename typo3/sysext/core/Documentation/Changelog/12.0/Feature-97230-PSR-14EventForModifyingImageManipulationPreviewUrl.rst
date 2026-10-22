@@ -66,6 +66,6 @@ Impact
 ======
 
 It's now possible to modify the preview URL for the image manipulation
-element, using the new PSR-14 event :php:`ModifyImageManipulationPreviewUrlEvent`.
+element, using the new PSR-14 event :php-short:`\TYPO3\CMS\Backend\Form\Event\ModifyImageManipulationPreviewUrlEvent`.
 
 .. index:: Backend, PHP-API, ext:backend

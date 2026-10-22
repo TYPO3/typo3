@@ -55,7 +55,7 @@ Migration
 Use the class :php:`\TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction`
 instead. It allows to hand in the current workspace ID, which then fetches all
 records from the database only for a certain workspace (unlike
-:php:`FrontendWorkspaceRestriction` which did not limit the database query to
+:php-short:`\TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction` which did not limit the database query to
 one workspace in certain cases).
 
 When querying the database, ensure to use the Overlay APIs in

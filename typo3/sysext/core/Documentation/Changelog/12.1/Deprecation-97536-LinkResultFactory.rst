@@ -22,8 +22,8 @@ deprecated as the shortened variant `createUri()` should be used instead.
 Impact
 ======
 
-Instantiating an object of type :php:`LinkResultFactory` will instantiate
-:php:`LinkFactory` instead via class alias in TYPO3 v12, as the class itself
+Instantiating an object of type :php-short:`\TYPO3\CMS\Frontend\Typolink\LinkResultFactory` will instantiate
+:php-short:`\TYPO3\CMS\Frontend\Typolink\LinkFactory` instead via class alias in TYPO3 v12, as the class itself
 has been removed.
 
 Calling :php:`createFromUriString()` will trigger a deprecation log entry.
@@ -33,7 +33,7 @@ The extension scanner reports affected extensions.
 Affected installations
 ======================
 
-TYPO3 installations with custom extensions instantiating :php:`LinkResultFactory`
+TYPO3 installations with custom extensions instantiating :php-short:`\TYPO3\CMS\Frontend\Typolink\LinkResultFactory`
 as a PHP object or calling :php:`createFromUriString()` directly, which is very
 rare.
 
@@ -41,7 +41,7 @@ rare.
 Migration
 =========
 
-TYPO3 extensions should migrate to using :php:`LinkFactory` and its main methods
+TYPO3 extensions should migrate to using :php-short:`\TYPO3\CMS\Frontend\Typolink\LinkFactory` and its main methods
 directly.
 
 .. index:: Frontend, PHP-API, FullyScanned, ext:frontend

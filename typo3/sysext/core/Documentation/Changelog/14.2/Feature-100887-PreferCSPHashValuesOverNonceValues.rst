@@ -76,14 +76,14 @@ Updated `Policy::prepare()` and `Policy::compile()`
 
 Both methods now accept a
 :php:`\TYPO3\CMS\Core\Security\ContentSecurityPolicy\Middleware\PolicyBag`
-instead of separate :php:`ConsumableNonce`, :php:`Behavior`, and
-:php:`HashCollection` arguments. The :php:`PolicyBag` is forwarded directly
+instead of separate :php-short:`\TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce`, :php-short:`\TYPO3\CMS\Core\Security\ContentSecurityPolicy\Configuration\Behavior`, and
+:php:`HashCollection` arguments. The :php-short:`\TYPO3\CMS\Core\Security\ContentSecurityPolicy\Middleware\PolicyBag` is forwarded directly
 from the CSP middleware, making hash collection visible to PSR-14 event
 listeners via
-:php:`PolicyPreparedEvent::$policyBag->directiveHashCollection`.
+:php-short:`\TYPO3\CMS\Core\Security\ContentSecurityPolicy\Event\PolicyPreparedEvent::$policyBag->directiveHashCollection`.
 
 The behavior resolution, applying collected hashes and suppressing nonce
-sources, now happens inside :php:`Policy::prepare()`.
+sources, now happens inside :php-short:`\TYPO3\CMS\Core\Security\ContentSecurityPolicy\Policy::prepare()`.
 
 New `f:asset.styleAttr` ViewHelper
 ----------------------------------
@@ -133,8 +133,8 @@ The :html:`useNonce` ViewHelper argument and :php:`'useNonce'` asset option key
 are deprecated and replaced by :html:`csp` and :php:`'csp'`. See
 :ref:`deprecation-100887-1774712028`.
 
-The signature of :php:`Policy::prepare()` and :php:`Policy::compile()` has
-changed to accept a :php:`PolicyBag`. Code calling these methods directly, as
+The signature of :php-short:`\TYPO3\CMS\Core\Security\ContentSecurityPolicy\Policy::prepare()` and :php-short:`\TYPO3\CMS\Core\Security\ContentSecurityPolicy\Policy::compile()` has
+changed to accept a :php-short:`\TYPO3\CMS\Core\Security\ContentSecurityPolicy\Middleware\PolicyBag`. Code calling these methods directly, as
 they are marked :php:`@internal`, must be updated.
 
 Impact

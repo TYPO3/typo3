@@ -20,7 +20,7 @@ reference index does not contain these relations.
 
 Therefore, TYPO3 does now automatically synchronize all references of
 a folder when it is renamed. This is done by registering event listeners
-for the :php:`AfterFolderRenamedEvent` event. This event is dispatched as
+for the :php-short:`\TYPO3\CMS\Core\Resource\Event\AfterFolderRenamedEvent` event. This event is dispatched as
 soon as a folder was successfully renamed.
 
 To be able to automatically replace the old folder name with the new one,
@@ -30,7 +30,7 @@ method.
 
 Note that the synchronization is always performed, as soon as a folder
 was renamed. This does not only apply to the File module, but for every
-:php:`ResourceFactory->renameFolder()` call, since the event is being
+:php-short:`\TYPO3\CMS\Core\Resource\ResourceFactory->renameFolder()` call, since the event is being
 dispatched in this method.
 
 
@@ -40,7 +40,7 @@ Impact
 All :sql:`sys_filemounts` and :sql:`sys_file_collection` records which
 reference a renamed folder are now automatically synchronized.
 
-The :php:`AfterFolderRenamedEvent` event now features a new property
+The :php-short:`\TYPO3\CMS\Core\Resource\Event\AfterFolderRenamedEvent` event now features a new property
 :php:`$sourceFolder`. Extension authors can use this event to add
 further synchronization for their custom records.
 

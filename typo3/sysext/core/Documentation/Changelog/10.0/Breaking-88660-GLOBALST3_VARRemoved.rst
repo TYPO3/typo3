@@ -12,7 +12,7 @@ Description
 ===========
 
 The global variable :php:`$GLOBALS['T3_VAR']` previously used to hold global state for special
-use cases - previously used within Service API via :php:`GeneralUtility::makeInstanceService()`
+use cases - previously used within Service API via :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceService()`
 and to magically inject special hard-coded local indexed search files, has been removed.
 
 The overall goal of TYPO3's application is to not keep any state within global variables, and

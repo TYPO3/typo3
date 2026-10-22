@@ -18,7 +18,7 @@ resolved their items through
 the new items processor function
 :php:`\TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions->populateFileStorages()`,
 which lists the storages the current backend user has access to via
-:php:`BackendUserAuthentication->getFileStorages()`. As before, non-admin users
+:php-short:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->getFileStorages()`. As before, non-admin users
 only see the storages they have a file mount in, and admin users see all
 storages.
 
@@ -48,7 +48,7 @@ This has the following side effects:
 
 The read-only file mounts resolved from the user TSconfig option
 :typoscript:`options.folderTree.altElementBrowserMountPoints` use the new
-internal method :php:`StorageRepository->getDefaultStorageUid()` instead of a
+internal method :php-short:`\TYPO3\CMS\Core\Resource\StorageRepository->getDefaultStorageUid()` instead of a
 direct database query. If no storage exists apart from deleted ones, the default
 local storage is created, as for any other storage lookup, instead of an
 exception being thrown.

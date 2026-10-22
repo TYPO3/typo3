@@ -12,7 +12,7 @@ Description
 ===========
 
 When user groups are loaded, for example when a backend editors groups and permissions
-are calculated, a new PSR-14 event :php:`AfterGroupsResolvedEvent` is fired.
+are calculated, a new PSR-14 event :php-short:`\TYPO3\CMS\Core\Authentication\Event\AfterGroupsResolvedEvent` is fired.
 
 
 Impact

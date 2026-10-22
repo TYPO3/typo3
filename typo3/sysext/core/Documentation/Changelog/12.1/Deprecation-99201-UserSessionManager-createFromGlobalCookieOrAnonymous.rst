@@ -35,14 +35,14 @@ legacy code, which is why it is very unlikely that this method is called directl
 in any TYPO3 extension. However, the Extension Scanner will pick up any
 usages of this method.
 
-TYPO3 extensions usually do not use the :php:`UserSessionManager` directly to create
+TYPO3 extensions usually do not use the :php-short:`\TYPO3\CMS\Core\Session\UserSessionManager` directly to create
 a user session.
 
 
 Migration
 =========
 
-The :php:`UserSessionManager` API also provides the
+The :php-short:`\TYPO3\CMS\Core\Session\UserSessionManager` API also provides the
 :php:`createFromRequestOrAnonymous(ServerRequestInterface $request)` method when
 the API itself was added. The method achieves the same logic based on a PSR-7
 request. Use this method instead and use PSR-7 as much as possible.

@@ -79,7 +79,7 @@ And for an Extbase plugin:
     Probably it will only be necessary to migrate the :typoscript:`description`,
     as the other values are already set most of the time. This can be done
     for plugins as well, using the :php:`$pluginDescription` argument of
-    the :php:`ExtensionUtility::registerPlugin()` method.
+    the :php-short:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin()` method.
     Additionally, the group :typoscript:`common` is now called :php:`default`.
     This will be migrated automatically for page TSconfig.
 

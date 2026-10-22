@@ -11,7 +11,7 @@ See :issue:`92990`
 Description
 ===========
 
-The public property :php:`svConfig` of the PHP class :php:`AbstractUserAuthentication` is removed.
+The public property :php:`svConfig` of the PHP class :php-short:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication` is removed.
 
 It served as a short-hand for :php:`$GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']`, which was common in TYPO3 v4 days, but is
 useless nowadays. This property is removed in favor of a local

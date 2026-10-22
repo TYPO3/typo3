@@ -12,7 +12,7 @@ Description
 ===========
 
 Method :php:`\TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface->render()` has been marked as deprecated
-and is substituted by  :php:`LoginProviderInterface->modifyView()` that will
+and is substituted by  :php-short:`\TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface->modifyView()` that will
 be added to the interface in TYPO3 v14, removing :php:`render()` from the
 interface in v14.
 
@@ -32,7 +32,7 @@ implementation is
 :php-short:`\TYPO3\CMS\Backend\LoginProvider\UsernamePasswordLoginProvider`
 provided by ext:core. This consumer has been adapted.
 
-Using :php:`LoginProviderInterface->render()` in TYPO3 v13 will trigger a
+Using :php-short:`\TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface->render()` in TYPO3 v13 will trigger a
 deprecation level log entry and will fail in v14.
 
 

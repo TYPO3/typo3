@@ -11,9 +11,9 @@ See :issue:`84725`
 Description
 ===========
 
-The method :php:`PageRepository->getDomainStartPage()` has been marked as deprecated.
+The method :php-short:`\TYPO3\CMS\Frontend\Page\PageRepository->getDomainStartPage()` has been marked as deprecated.
 
-The method :php:`TypoScriptFrontendController->findDomainRecord()` which was marked
+The method :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->findDomainRecord()` which was marked
 as internal, has been removed.
 
 As both methods have been used to resolve the root page ID of the current request,

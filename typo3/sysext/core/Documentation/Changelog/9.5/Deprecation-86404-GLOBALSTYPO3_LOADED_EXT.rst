@@ -12,7 +12,7 @@ Description
 ===========
 
 The global :php:`$GLOBALS['TYPO3_LOADED_EXT']` has been marked as deprecated in favor
-of the :php:`PackageManager` API.
+of the :php-short:`\TYPO3\CMS\Core\Package\PackageManager` API.
 
 
 Impact

@@ -29,7 +29,7 @@ or to completely remove a control.
 
 .. note::
 
-    Previously the deprecated hook interface :php:`InlineElementHookInterface`
+    Previously the deprecated hook interface :php-short:`\TYPO3\CMS\Backend\Form\Element\InlineElementHookInterface`
     required hook implementations to implement both methods
     :php:`renderForeignRecordHeaderControl_preProcess()` and
     :php:`renderForeignRecordHeaderControl_postProcess()`, even if only
@@ -97,7 +97,7 @@ The corresponding event listener class:
 Available Methods
 =================
 
-The list below describes all specific methods for the :php:`ModifyInlineElementEnabledControlsEvent`:
+The list below describes all specific methods for the :php-short:`\TYPO3\CMS\Backend\Form\Event\ModifyInlineElementEnabledControlsEvent`:
 
 +-------------------------+-----------------------+----------------------------------------------------+
 | Method                  | Parameters            | Description                                        |
@@ -120,7 +120,7 @@ The list below describes all specific methods for the :php:`ModifyInlineElementE
 | getEnabledControls()    |                       | Returns only the enabled controls.                 |
 +-------------------------+-----------------------+----------------------------------------------------+
 
-The list below describes all specific methods for the :php:`ModifyInlineElementControlsEvent`:
+The list below describes all specific methods for the :php-short:`\TYPO3\CMS\Backend\Form\Event\ModifyInlineElementControlsEvent`:
 
 +-------------------------+-----------------------+----------------------------------------------------+
 | Method                  | Parameters            | Description                                        |

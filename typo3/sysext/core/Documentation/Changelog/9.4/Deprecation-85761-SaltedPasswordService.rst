@@ -18,7 +18,7 @@ should not be used any longer.
 Impact
 ======
 
-Instantiating :php:`SaltedPasswordService` will log a deprecation message.
+Instantiating :php-short:`\TYPO3\CMS\Saltedpasswords\SaltedPasswordService` will log a deprecation message.
 
 
 Affected Installations

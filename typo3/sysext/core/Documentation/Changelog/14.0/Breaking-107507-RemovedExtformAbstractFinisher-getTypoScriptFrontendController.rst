@@ -15,7 +15,7 @@ The method
 :php:`\TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher->getTypoScriptFrontendController()`
 has been removed.
 
-Since the entire :php-short:`TypoScriptFrontendController` class is being phased out,
+Since the entire :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` class is being phased out,
 this abstract helper method has been removed as part of that cleanup.
 
 Impact
@@ -34,7 +34,7 @@ Migration
 =========
 
 Migration depends on what the finisher previously did with the returned class
-instance. The :php:`TypoScriptFrontendController` properties and helper methods
+instance. The :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` properties and helper methods
 have been modernized, with most data now available as request attributes.
 
 For example, accessing the :php:`cObj` property can be replaced like this:

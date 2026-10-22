@@ -13,11 +13,11 @@ Description
 
 The following properties have been marked as deprecated in favor of the newly introduced Context API:
 
-* :php:`TypoScriptFrontendController->loginUser`
-* :php:`TypoScriptFrontendController->gr_list`
-* :php:`TypoScriptFrontendController->beUserLogin`
-* :php:`TypoScriptFrontendController->showHiddenPage`
-* :php:`TypoScriptFrontendController->showHiddenRecords`
+* :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->loginUser`
+* :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->gr_list`
+* :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->beUserLogin`
+* :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->showHiddenPage`
+* :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->showHiddenRecords`
 
 The Context API supersedes the public properties in favor of decoupling the information from global objects.
 

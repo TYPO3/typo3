@@ -69,7 +69,7 @@ in `EXT:felogin/Configuration/TCA/Overrides/tt_content.php`:
     });
 
 It is configured to be a content element with its own ctype by having the 5th
-parameter set to :php:`ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT`.
+parameter set to :php-short:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT`.
 
 ..  code-block:: php
     :caption: EXT:felogin/ext_localconf.php

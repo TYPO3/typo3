@@ -13,10 +13,10 @@ Description
 
 The following methods have been marked as deprecated and should no longer be used.
 
-* :php:`PageRenderer->addMetaTag()`
-* :php:`DocumentTemplate->xUaCompatible`
+* :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->addMetaTag()`
+* :php-short:`\TYPO3\CMS\Backend\Template\DocumentTemplate->xUaCompatible`
 
-It has been replaced by the method :php:`PageRenderer->setMetaTag()`.
+It has been replaced by the method :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->setMetaTag()`.
 
 .. code-block:: php
 
@@ -30,19 +30,19 @@ It has been replaced by the method :php:`PageRenderer->setMetaTag()`.
 Impact
 ======
 
-Extensions calling :php:`PageRenderer->addMetaTag()` or :php:`DocumentTemplate->xUaCompatible` will trigger a
+Extensions calling :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->addMetaTag()` or :php-short:`\TYPO3\CMS\Backend\Template\DocumentTemplate->xUaCompatible` will trigger a
 deprecation warning.
 
 
 Affected Installations
 ======================
 
-All instances using extensions that call :php:`PageRenderer->addMetaTag()` or :php:`DocumentTemplate->xUaCompatible`.
+All instances using extensions that call :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->addMetaTag()` or :php-short:`\TYPO3\CMS\Backend\Template\DocumentTemplate->xUaCompatible`.
 
 
 Migration
 =========
 
-Migrate code to use :php:`PageRenderer->setMetaTag($type, $name, $content)` instead.
+Migrate code to use :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->setMetaTag($type, $name, $content)` instead.
 
 .. index:: PHP-API, FullyScanned, Frontend

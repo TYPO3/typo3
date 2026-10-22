@@ -31,7 +31,7 @@ order described above. All consumers of the set order follow it, which are:
 *   site settings, their definitions and their categories
 *   route enhancers
 
-The protected method :php:`SetRegistry::hasDependency()` has been removed.
+The protected method :php-short:`\TYPO3\CMS\Core\Site\Set\SetRegistry::hasDependency()` has been removed.
 
 Impact
 ======
@@ -59,7 +59,7 @@ depends on :yaml:`typo3/fluid-styled-content`. That set of
 its :typoscript:`lib.contentElement`, while it may have been applied before the
 theme so far.
 
-Extensions extending :php:`SetRegistry` and calling
+Extensions extending :php-short:`\TYPO3\CMS\Core\Site\Set\SetRegistry` and calling
 :php:`hasDependency()` are affected as well.
 
 Migration

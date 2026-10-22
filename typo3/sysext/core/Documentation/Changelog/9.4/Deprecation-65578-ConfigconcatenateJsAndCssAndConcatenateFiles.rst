@@ -11,12 +11,12 @@ See :issue:`65578`
 Description
 ===========
 
-The TypoScript property `config.concatenateJsAndCss` and the related methods within :php:`PageRenderer` have
+The TypoScript property `config.concatenateJsAndCss` and the related methods within :php-short:`\TYPO3\CMS\Core\Page\PageRenderer` have
 been marked as deprecated:
 
-* :php:`PageRenderer->getConcatenateFiles()`
-* :php:`PageRenderer->enableConcatenateFiles()`
-* :php:`PageRenderer->disableConcatenateFiles()`
+* :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->getConcatenateFiles()`
+* :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->enableConcatenateFiles()`
+* :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->disableConcatenateFiles()`
 
 
 Impact

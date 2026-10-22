@@ -11,7 +11,7 @@ See :issue:`83475`
 Description
 ===========
 
-The method `\TYPO3\CMS\Extbase\Mvc\Controller\ActionController::getActionMethodParameters` has been marked as deprecated
+The method :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController::getActionMethodParameters` has been marked as deprecated
 and will be removed in TYPO3 v10.0
 
 

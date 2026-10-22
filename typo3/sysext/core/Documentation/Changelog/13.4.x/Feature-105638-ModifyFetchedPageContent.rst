@@ -41,7 +41,7 @@ This however reduces the possibility to modify the select configuration
 is automatically handled by the data processor. However, there might be some
 use cases in which the result needs to be adjusted, e.g. to hide specific
 page content, like it's done by :ref:`EXT:content_blocks <friendsoftypo3/content-blocks:cb-nesting-prevent-output-fe>`
-for child elements. For such use cases, the new PSR-14 :php:`AfterContentHasBeenFetchedEvent`
+for child elements. For such use cases, the new PSR-14 :php-short:`\TYPO3\CMS\Frontend\Event\AfterContentHasBeenFetchedEvent`
 has been introduced, which allows to manipulate the list of fetched page
 content.
 
@@ -81,9 +81,9 @@ specific field values.
 Impact
 ======
 
-Using the new PSR-14 :php:`AfterContentHasBeenFetchedEvent`, it's possible
+Using the new PSR-14 :php-short:`\TYPO3\CMS\Frontend\Event\AfterContentHasBeenFetchedEvent`, it's possible
 to manipulate the page content, which has been fetched by the
-:php:`PageContentFetchingProcessor`, based on the page layout and
+:php-short:`\TYPO3\CMS\Frontend\DataProcessing\PageContentFetchingProcessor`, based on the page layout and
 corresponding columns configuration.
 
 ..  index:: Frontend, PHP-API, TypoScript, ext:frontend

@@ -22,9 +22,9 @@ Both options are dropped as the functionality is enabled by default.
 
 The corresponding methods have been adjusted:
 
-* `TYPO3\CMS\Core\DataHandling\DataHandler->printLogErrorMessages()` does not need a method argument anymore.
-* The public property `TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->prErr` is removed
-* The public property `TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->uPT` is removed
+* :php:`TYPO3\CMS\Core\DataHandling\DataHandler->printLogErrorMessages()` does not need a method argument anymore.
+* The public property :php:`TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->prErr` is removed
+* The public property :php:`TYPO3\CMS\Backend\Controller\SimpleDataHandlerController->uPT` is removed
 
 
 Impact
@@ -37,7 +37,7 @@ Affected Installations
 ======================
 
 Installations with third-party extensions accessing the entrypoint `tce_db` or calling
-`DataHandler->printLogErrorMessages()` via PHP.
+:php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler->printLogErrorMessages()` via PHP.
 
 
 Migration

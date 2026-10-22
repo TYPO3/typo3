@@ -33,32 +33,32 @@ Impact
 
 The following behavior changes apply:
 
-- :php:`StorageRepository->findByUid(0)` returns :php:`null`, and
-  :php:`StorageRepository->getStorageObject()` throws an
+- :php-short:`\TYPO3\CMS\Core\Resource\StorageRepository->findByUid(0)` returns :php:`null`, and
+  :php-short:`\TYPO3\CMS\Core\Resource\StorageRepository->getStorageObject()` throws an
   :php:`\InvalidArgumentException` for storage uid ``0``.
 
-- The method :php:`ResourceStorage->isFallbackStorage()` and the protected
-  method :php:`FilePermissionAspect->usesLegacyStorage()` have been removed.
+- The method :php-short:`\TYPO3\CMS\Core\Resource\ResourceStorage->isFallbackStorage()` and the protected
+  method :php-short:`\TYPO3\CMS\Core\Resource\Security\FilePermissionAspect->usesLegacyStorage()` have been removed.
 
-- :php:`ResourceFactory->createFileObject()`, and therefore
-  :php:`ResourceFactory->getFileObject()`, throw a
-  :php:`FileDoesNotExistException` instead of a :php:`\RuntimeException` for
+- :php-short:`\TYPO3\CMS\Core\Resource\ResourceFactory->createFileObject()`, and therefore
+  :php-short:`\TYPO3\CMS\Core\Resource\ResourceFactory->getFileObject()`, throw a
+  :php-short:`\TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException` instead of a :php:`\RuntimeException` for
   file records whose storage is not configured. Code catching
-  :php:`ResourceDoesNotExistException`, such as
-  :php:`FileRepository->findByRelation()` and the file link handler, skips such
+  :php-short:`\TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException`, such as
+  :php-short:`\TYPO3\CMS\Core\Resource\FileRepository->findByRelation()` and the file link handler, skips such
   files instead of failing.
 
-- :php:`ResourceFactory->retrieveFileOrFolderObject()` throws a
-  :php:`ResourceDoesNotExistException` for ``EXT:`` paths and returns
+- :php-short:`\TYPO3\CMS\Core\Resource\ResourceFactory->retrieveFileOrFolderObject()` throws a
+  :php-short:`\TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException` for ``EXT:`` paths and returns
   :php:`null` for paths outside all configured file storages. Plain paths
   within a configured local storage (e.g. ``fileadmin/some/file.png``) keep
   resolving to that storage.
 
 - Combined identifiers without a storage prefix passed to
-  :php:`ResourceFactory->getFileObjectFromCombinedIdentifier()` or
-  :php:`ResourceFactory->getFolderObjectFromCombinedIdentifier()` are resolved
+  :php-short:`\TYPO3\CMS\Core\Resource\ResourceFactory->getFileObjectFromCombinedIdentifier()` or
+  :php-short:`\TYPO3\CMS\Core\Resource\ResourceFactory->getFolderObjectFromCombinedIdentifier()` are resolved
   to the best-matching storage, or a
-  :php:`FileDoesNotExistException` / :php:`FolderDoesNotExistException` is
+  :php-short:`\TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException` / :php-short:`\TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException` is
   thrown if the path is outside all storages. The same exceptions are thrown
   for combined identifiers of storage ``0``, e.g. ``0:/uploads/file.png``.
 
@@ -70,7 +70,7 @@ The following behavior changes apply:
   ViewHelpers throw an exception, TypoScript renders nothing and logs a
   warning.
 
-- :php:`ImageService->getImage()` throws an :php:`\UnexpectedValueException`
+- :php-short:`\TYPO3\CMS\Extbase\Service\ImageService->getImage()` throws an :php:`\UnexpectedValueException`
   for sources outside all file storages.
 
 - ``t3://file?identifier=...`` links without a storage prefix only resolve for
@@ -101,8 +101,8 @@ carrying ``storage = 0``, and extensions calling the removed or changed
 methods are affected in particular.
 
 The extension scanner reports usages of
-:php:`ResourceStorage->isFallbackStorage()` and
-:php:`FilePermissionAspect->usesLegacyStorage()`.
+:php-short:`\TYPO3\CMS\Core\Resource\ResourceStorage->isFallbackStorage()` and
+:php-short:`\TYPO3\CMS\Core\Resource\Security\FilePermissionAspect->usesLegacyStorage()`.
 
 
 Migration
@@ -137,7 +137,7 @@ public paths can be declared in :file:`config/system/resources.php`.
 
 Custom code dealing with stringy image sources that may point to files
 outside all file storages should resolve them with the System Resource API
-(:php:`SystemResourceFactory->createPublicResource()`) and process them as
+(:php-short:`\TYPO3\CMS\Core\SystemResource\SystemResourceFactory->createPublicResource()`) and process them as
 described in :ref:`feature-110702-1789927725`.
 
 .. index:: FAL, Fluid, Frontend, PHP-API, TypoScript, PartiallyScanned, ext:core

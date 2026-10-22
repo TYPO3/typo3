@@ -11,7 +11,7 @@ See :issue:`82213`
 Description
 ===========
 
-A new hook has been added to the :php:`PageLayoutView` class, determining whether a
+A new hook has been added to the :php-short:`\TYPO3\CMS\Backend\View\PageLayoutView` class, determining whether a
 content record is used or not. The hook allows third party code to change the
 :php:`$used` parameter by returning a boolean, thus changing which content records
 are shown in the "unused content elements" section of the backend page module.

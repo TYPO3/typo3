@@ -40,7 +40,7 @@ files are generated again, and the processed JPEG, WebP and AVIF files get
 smaller. Installations that did not sharpen and have not set the option now
 sharpen scaled-down images slightly.
 
-:php:`GraphicalFunctions->cmds` no longer carries the sharpening parameters.
+:php-short:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions->cmds` no longer carries the sharpening parameters.
 
 Affected installations
 ======================

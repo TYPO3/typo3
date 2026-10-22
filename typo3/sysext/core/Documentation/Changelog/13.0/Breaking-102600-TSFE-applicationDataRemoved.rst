@@ -11,13 +11,13 @@ See :issue:`102600`
 Description
 ===========
 
-Frontend-related property :php:`TypoScriptFrontendController->applicationData`
+Frontend-related property :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->applicationData`
 has been removed without substitution.
 
 This property has been used by a few rather old-school extensions to park and
 communicate state using this global "extension-specific state array".
 
-When looking at the TYPO3 frontend rendering chain, class :php:`TypoScriptFrontendController`
+When looking at the TYPO3 frontend rendering chain, class :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController`
 is by far the biggest technical debt: It mixes a lot of concerns and carries tons of state
 and functionality that should be modeled differently, which leads to easier to understand
 and more flexible code. The class is shrinking since various major versions already and will
@@ -33,7 +33,7 @@ fall and why there is no direct substitution.
 Impact
 ======
 
-Using :php:`TypoScriptFrontendController->applicationData` (or
+Using :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->applicationData` (or
 :php:`$GLOBALS['TSFE']->applicationData`) will raise a PHP fatal error.
 
 
@@ -54,7 +54,7 @@ request attribute that carries the state.
 
 In other cases an event could be fired to gather information from other extensions.
 One example is the indexed_search extension which dispatches the new event
-:php:`EnableIndexingEvent` to get know if indexing should be performed. The
+:php-short:`\TYPO3\CMS\IndexedSearch\Event\EnableIndexingEvent` to get know if indexing should be performed. The
 third-party crawler extension should use this instead of setting that information
 on :php:`$GLOBALS['TSFE']`.
 

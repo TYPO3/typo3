@@ -16,12 +16,12 @@ In order to have the possibility to set metatags in a flexible (but regulated wa
 The API uses :php:`MetaTagManagers` to manage the tags for a "family" of meta tags. The core e.g. ships an
 OpenGraph MetaTagManager that is responsible for all OpenGraph tags.
 In addition to the MetaTagManagers included in the core, you can also register your own
-:php:`MetaTagManager` in the :php:`MetaTagManagerRegistry`.
+:php:`MetaTagManager` in the :php-short:`\TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry`.
 
 Using the Meta Tag API
 ======================
 
-To use the API, first get the right :php:`MetaTagManager` for your tag from the :php:`MetaTagManagerRegistry`.
+To use the API, first get the right :php:`MetaTagManager` for your tag from the :php-short:`\TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry`.
 You can use that manager to add your meta tag; see the example below for the :html:`og:title` meta tag.
 
 .. code-block:: php
@@ -70,9 +70,9 @@ To use the manager, you must register it in :php:`ext_localconf.php`:
         \Some\CustomExtension\MetaTag\CustomMetaTagManager::class
     );
 
-Registering a :php:`MetaTagManager` works with the :php:`DependencyOrderingService`. So you can also specify the
+Registering a :php:`MetaTagManager` works with the :php-short:`\TYPO3\CMS\Core\Service\DependencyOrderingService`. So you can also specify the
 priority of the manager by setting the third (before) and fourth (after) parameter of the method. If you for example
-want to implement your own :php:`OpenGraphMetaTagManager`, you can use the following code:
+want to implement your own :php-short:`\TYPO3\CMS\Seo\MetaTag\OpenGraphMetaTagManager`, you can use the following code:
 
 .. code-block:: php
 

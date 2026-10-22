@@ -11,7 +11,7 @@ See :issue:`82899`
 Description
 ===========
 
-The following methods within :php:`ExtensionManagementUtility`, the primary API class for
+The following methods within :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility`, the primary API class for
 extensions registering additional components like plugins, modules or extending TCA functionality
 now throw Exceptions with invalid calls:
 

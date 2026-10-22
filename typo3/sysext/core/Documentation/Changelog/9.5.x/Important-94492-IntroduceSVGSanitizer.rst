@@ -18,7 +18,7 @@ has been introduced into TYPO3 core. Actual processing is done by low-level sani
 Introduced aspects
 ------------------
 
-* handle :php:`GeneralUtility::upload_copy_move` invocations
+* handle :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::upload_copy_move` invocations
 * handle FAL action events `file-add`, `file-replace`, `set-content`
 * provide upgrade wizard, sanitizing all SVG files in storages that
   are using :php:`\TYPO3\CMS\Core\Resource\Driver\LocalDriver`

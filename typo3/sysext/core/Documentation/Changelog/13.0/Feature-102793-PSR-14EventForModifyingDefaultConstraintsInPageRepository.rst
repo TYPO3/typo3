@@ -29,6 +29,6 @@ to modify them via the :php:`getConstraints()` and
 :php:`setConstraints(array $constraints)` methods.
 
 Additional information, such as the used :php:`ExpressionBuilder` object or the
-table name and the current :php:`Context` are also available within the event.
+table name and the current :php-short:`\TYPO3\CMS\Core\Context\Context` are also available within the event.
 
 .. index:: PHP-API, ext:core

@@ -20,7 +20,7 @@ the right side, ensuring they are always the last two buttons regardless of
 what other buttons are added.
 
 Controllers provide shortcut information using the new
-:php:`DocHeaderComponent::setShortcutContext()` method:
+:php-short:`\TYPO3\CMS\Backend\Template\Components\DocHeaderComponent::setShortcutContext()` method:
 
 ..  code-block:: php
 
@@ -33,7 +33,7 @@ Controllers provide shortcut information using the new
     );
 
 Buttons are automatically added during rendering before the PSR-14
-:php:`ModifyButtonBarEvent` is dispatched, allowing event listeners to modify
+:php-short:`\TYPO3\CMS\Backend\Template\Components\ModifyButtonBarEvent` is dispatched, allowing event listeners to modify
 or remove them if needed.
 
 Controllers can disable automatic buttons if custom behavior is required:
@@ -52,7 +52,7 @@ Reload and shortcut buttons now appear consistently at the same position
 across all backend modules, providing a predictable user experience.
 
 Controllers no longer need to manually create these buttons, reducing
-boilerplate code. Use :php:`DocHeaderComponent::setShortcutContext()` to
+boilerplate code. Use :php-short:`\TYPO3\CMS\Backend\Template\Components\DocHeaderComponent::setShortcutContext()` to
 provide shortcut information and remove manual button creation, see
 :ref:`deprecation-108008-1762896168`.
 

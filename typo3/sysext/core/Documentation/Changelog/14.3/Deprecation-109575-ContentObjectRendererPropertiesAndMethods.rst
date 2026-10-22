@@ -31,8 +31,8 @@ fragile. Use the return value of :php:`createLink()` directly instead.
 :php:`ContentObjectRenderer->$currentRecordNumber` and :php:`ContentObjectRenderer->$parentRecordNumber`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-These counters are incremented by :php:`ContentContentObject` and
-:php:`RecordsContentObject` while iterating over their record sets, and
+These counters are incremented by :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentContentObject` and
+:php-short:`\TYPO3\CMS\Frontend\ContentObject\RecordsContentObject` while iterating over their record sets, and
 exposed to TypoScript via :typoscript:`getData cobj:parentRecordNumber`.
 They carry no known use case for third-party extensions and are
 deprecated.
@@ -74,7 +74,7 @@ deprecated.
 
 The :php:`getRequest()` method falls back to :php:`$GLOBALS['TYPO3_REQUEST']` when no request
 had been set via :php:`setRequest()` before. This fallback has been deprecated. Third-party code that
-instantiates :php:`ContentObjectRenderer` must call :php:`setRequest(ServerRequestInterface $request)`
+instantiates :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer` must call :php:`setRequest(ServerRequestInterface $request)`
 before calling :php:`start()` or any other method that requires the request.
 
 
@@ -104,7 +104,7 @@ Installations with extensions that:
   :php:`$checkPid_badDoktypeList`
 * Call :php:`$cObj->readFlexformIntoConf()`
 * Use the :typoscript:`cobj:parentRecordNumber` getData type in TypoScript;
-* Instantiate :php:`ContentObjectRenderer` without calling :php:`setRequest()` before :php:`start()`.
+* Instantiate :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer` without calling :php:`setRequest()` before :php:`start()`.
 
 The extension scanner detects usages of the deprecated properties as
 weak matches.
@@ -148,7 +148,7 @@ Call :php:`setRequest()` immediately after instantiation, before any other metho
 :php:`readFlexformIntoConf()`
 ----------------------------
 
-Replace with :php:`FlexFormTools::convertFlexFormContentToArray()` and
+Replace with :php-short:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::convertFlexFormContentToArray()` and
 map the decoded array into the configuration structure as needed:
 
 ..  code-block:: php

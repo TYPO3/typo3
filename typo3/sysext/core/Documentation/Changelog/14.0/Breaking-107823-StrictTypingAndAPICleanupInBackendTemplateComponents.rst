@@ -53,14 +53,14 @@ strict type hints:
 
 This interface allows buttons to define their own fixed position and group,
 which automatically override the position and group parameters passed to
-:php:`ButtonBar::addButton()`.
+:php-short:`\TYPO3\CMS\Backend\Template\Components\ButtonBar::addButton()`.
 
 Icon nullability
 ----------------
 
 Icons are now consistently nullable across all button types. The
-:php:`AbstractButton::$icon` property and related getter/setter methods now use
-:php:`?Icon` instead of :php:`Icon`.
+:php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\AbstractButton::$icon` property and related getter/setter methods now use
+:php:`?Icon` instead of :php-short:`\TYPO3\CMS\Core\Imaging\Icon`.
 
 This affects classes extending
 :php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\AbstractButton`, including
@@ -77,9 +77,9 @@ Method signature changes
 
 Several methods now have stricter parameter types or modified signatures:
 
-*   :php:`MenuItem::isValid()` and :php:`Menu::isValid()` no longer accept
+*   :php-short:`\TYPO3\CMS\Backend\Template\Components\Menu\MenuItem::isValid()` and :php-short:`\TYPO3\CMS\Backend\Template\Components\Menu\Menu::isValid()` no longer accept
     parameters
-*   :php:`AbstractDropDownItem::render()` now declares a :php:`string` return
+*   :php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\AbstractDropDownItem::render()` now declares a :php:`string` return
     type
 *   Various setter methods now require strict type hints for their parameters
 
@@ -93,7 +93,7 @@ depending on extensibility requirements.
 SplitButton API improvement
 ---------------------------
 
-The :php:`SplitButton::getButton()` method has been replaced with
+The :php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\SplitButton::getButton()` method has been replaced with
 :php:`getItems()`, which returns a type-safe
 :php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\SplitButtonItems` DTO
 instead of an untyped array.
@@ -110,7 +110,7 @@ instead of an untyped array.
 
     public function getItems(): SplitButtonItems  // Returns typed DTO
 
-The :php:`SplitButtonItems` DTO provides:
+The :php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\SplitButtonItems` DTO provides:
 
 *   :php:`public readonly AbstractButton $primary` - The primary action button
 *   :php:`public readonly array $options` - Array of option buttons
@@ -132,7 +132,7 @@ Extension authors should:
 1.  **Verify custom button implementations** have correct return types on
     interface methods.
 2.  **Check custom classes extending abstract buttons** use proper strict types.
-3.  **Update `isValid()` calls** on :php:`MenuItem` and :php:`Menu` objects
+3.  **Update `isValid()` calls** on :php-short:`\TYPO3\CMS\Backend\Template\Components\Menu\MenuItem` and :php-short:`\TYPO3\CMS\Backend\Template\Components\Menu\Menu` objects
     (remove the parameter).
 4.  **Handle nullable icons** when working with :php:`getIcon()` methods.
 

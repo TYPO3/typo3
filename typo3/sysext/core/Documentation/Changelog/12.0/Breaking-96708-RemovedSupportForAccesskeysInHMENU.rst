@@ -26,7 +26,7 @@ TYPO3 menus previously used a random link title as an access key, when the
 TypoScript property :typoscript:`HMENU.accessKey = 1` was set.
 
 Along with the accessKey functionality, the public property
-:php:`TypoScriptFrontendController->accessKey` has been removed.
+:php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->accessKey` has been removed.
 
 Impact
 ======
@@ -40,7 +40,7 @@ Affected Installations
 ======================
 
 TYPO3 installations using the :typoscript:`accessKey` feature of HMENU or
-accessing the :php:`accessKey` property of :php:`TypoScriptFrontendController`.
+accessing the :php:`accessKey` property of :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController`.
 
 TYPO3 installations using the global :html:`accesskey` HTML attribute in
 their own code will still work as before.

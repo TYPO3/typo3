@@ -89,18 +89,18 @@ PageRenderer counterparts. The order is:
 - :typoscript:`page.includeJSLibs`
 - :typoscript:`page.includeJS.forceOnTop`
 - :typoscript:`page.includeJS`
-- :php:`AssetCollector::addJavaScript()` with 'priority'
+- :php-short:`\TYPO3\CMS\Core\Page\AssetCollector::addJavaScript()` with 'priority'
 - :typoscript:`page.jsInline`
-- :php:`AssetCollector::addInlineJavaScript()` with 'priority'
+- :php-short:`\TYPO3\CMS\Core\Page\AssetCollector::addInlineJavaScript()` with 'priority'
 - :html:`</head>`
 
 - :typoscript:`page.includeJSFooterlibs.forceOnTop`
 - :typoscript:`page.includeJSFooterlibs`
 - :typoscript:`page.includeJSFooter.forceOnTop`
 - :typoscript:`page.includeJSFooter`
-- :php:`AssetCollector::addJavaScript()`
+- :php-short:`\TYPO3\CMS\Core\Page\AssetCollector::addJavaScript()`
 - :typoscript:`page.jsFooterInline`
-- :php:`AssetCollector::addInlineJavaScript()`
+- :php-short:`\TYPO3\CMS\Core\Page\AssetCollector::addInlineJavaScript()`
 
 Currently, JavaScript registered with AssetCollector is not affected by
 :typoscript:`config.moveJsFromHeaderToFooter`.

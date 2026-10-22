@@ -71,7 +71,7 @@ concatenated and optionally compressed into a single file.
 
 The implementation also concatenated external asset resources referenced
 via :code:`http` and :code:`https`, which were fetched server-side using
-:php:`GeneralUtility::getUrl()` and merged with local resources.
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl()` and merged with local resources.
 
 Concatenation was designed to be as transparent as possible: hashes were
 created from all referenced file names and their contents (including
@@ -85,9 +85,9 @@ compressed :file:`.gz` file was created and referenced in the HTML page
 response.
 
 Configuration was handled via TypoScript, while asset registration could
-be performed using TypoScript or PHP with the :php:`PageRenderer`. The
+be performed using TypoScript or PHP with the :php-short:`\TYPO3\CMS\Core\Page\PageRenderer`. The
 Fluid asset ViewHelpers :html:`f:asset.css` and :html:`f:asset.script`
-register assets using the :php:`AssetCollector`, introduced in TYPO3
+register assets using the :php-short:`\TYPO3\CMS\Core\Page\AssetCollector`, introduced in TYPO3
 v10. This implementation never supported concatenation or compression,
 as it was developed independently from the PageRenderer's asset handling
 and did not use the :php:`ResourceCompressor`.
@@ -117,7 +117,7 @@ several reasons for its removal:
 
 * **Parallel systems**: Concatenation and compression were supported
   only for assets registered via TypoScript :typoscript:`page.include*`
-  or the :php:`PageRenderer` in PHP. The Fluid ViewHelpers
+  or the :php-short:`\TYPO3\CMS\Core\Page\PageRenderer` in PHP. The Fluid ViewHelpers
   :html:`f:asset.css` and :html:`f:asset.script` operated independently
   and never supported these features. Removing concatenation and
   compression simplifies future unification of both asset systems.

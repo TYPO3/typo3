@@ -22,7 +22,7 @@ The interface defines two methods:
 *   :php:`label()` resolves full TYPO3 label reference strings, for example
     `LLL:EXT:core/Resources/Private/Language/locallang.xlf:my.key`, and
     delegates to :php:`translate()`. This method serves as the interface-based
-    equivalent of :php:`LanguageService::sL()`. The key differences are that
+    equivalent of :php-short:`\TYPO3\CMS\Core\Localization\LanguageService::sL()`. The key differences are that
     it returns :php:`null` when a label cannot be resolved instead of an empty
     string, and supports argument interpolation, default values, and locale
     overrides.

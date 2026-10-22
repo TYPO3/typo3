@@ -11,12 +11,12 @@ See :issue:`93689`
 Description
 ===========
 
-TYPO3's :php:`MailerInterface` implementation :php:`Mailer` is used for sending
+TYPO3's :php:`MailerInterface` implementation :php-short:`\TYPO3\CMS\Core\Mail\Mailer` is used for sending
 messages, e.g. in the EXT:form email finishers. To allow further handling and
 manipulation of the message sending process, two new PSR-14 events have been
 introduced.
 
-The :php:`BeforeMailerSentMessageEvent` is dispatched before the message
+The :php-short:`\TYPO3\CMS\Core\Mail\Event\BeforeMailerSentMessageEvent` is dispatched before the message
 is sent by the mailer and can be used to manipulate the :php:`RawMessage`
 and the :php:`Envelope`. Usually an :php:`Email` or `FluidEmail` instance
 is given as :php:`RawMessage`. Additionally, the :php:`MailerInstance` is
@@ -24,7 +24,7 @@ given, which depending on the implementation - usually
 :php:`TYPO3\CMS\Core\Mail\Mailer` - contains the :php:`Transport` object,
 which can be retrieved using the :php:`getTransport()` method.
 
-The :php:`AfterMailerSentMessageEvent` is dispatched as soon as the
+The :php-short:`\TYPO3\CMS\Core\Mail\Event\AfterMailerSentMessageEvent` is dispatched as soon as the
 message has been sent via the corresponding :php:`TransportInterface`.
 The event receives the current :php:`MailerInstance`, which, depending
 on the implementation - usually :php:`TYPO3\CMS\Core\Mail\Mailer` -

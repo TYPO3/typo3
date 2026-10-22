@@ -79,7 +79,7 @@ value or to use a provided key (e.g., via environment variables).
 Encryption Example
 ------------------
 
-To encrypt sensitive data, use the :php:`CipherService::encrypt()` method:
+To encrypt sensitive data, use the :php-short:`\TYPO3\CMS\Core\Crypto\Cipher\CipherService::encrypt()` method:
 
 ..  code-block:: php
 
@@ -115,7 +115,7 @@ encrypting the same plaintext multiple times.
 Decryption Example
 ------------------
 
-To decrypt data, use the :php:`CipherService::decrypt()` method with the same secret
+To decrypt data, use the :php-short:`\TYPO3\CMS\Core\Crypto\Cipher\CipherService::decrypt()` method with the same secret
 key that was used for encryption:
 
 ..  code-block:: php
@@ -159,7 +159,7 @@ or the ciphertext format is invalid.
 Impact
 ======
 
-The :php:`CipherService` and :php:`KeyFactory` are now available as
+The :php-short:`\TYPO3\CMS\Core\Crypto\Cipher\CipherService` and :php-short:`\TYPO3\CMS\Core\Crypto\Cipher\KeyFactory` are now available as
 autoconfigured services throughout TYPO3 core and extensions. This provides
 a standardized, secure way to encrypt and decrypt sensitive data without
 requiring additional dependencies beyond ext-sodium, which is already a

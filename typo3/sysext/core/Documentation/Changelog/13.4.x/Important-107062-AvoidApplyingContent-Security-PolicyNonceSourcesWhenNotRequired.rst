@@ -19,8 +19,8 @@ has a negative impact on performance.
 This change aims for having fully cached pages and tries to avoid nonce sources
 in the CSP header when actually feasible.
 
-* The :php:`ConsumableNonce` class was refactored – it no longer extends
-  :php:`ConsumableString`.
+* The :php-short:`\TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce` class was refactored – it no longer extends
+  :php-short:`\TYPO3\CMS\Core\Domain\ConsumableString`.
 * Two new counters are introduced:
   :php:`consumeInline()`  – the nonce is **required** for an inline resource.
   :php:`consumeStatic()` – the nonce is **optional** for a static resource.
@@ -42,7 +42,7 @@ situations, in case the request is supposed to be fully cacheable
 * The nonce consumption counter for **all** usages equals zero.
 * A directive contains a source‑keyword exception (e.g. `'unsafe-inline'`)
   that makes a nonce unnecessary.
-* The :php:`PolicyPreparedEvent` has been dispatched and explicitly tells
+* The :php-short:`\TYPO3\CMS\Core\Security\ContentSecurityPolicy\Event\PolicyPreparedEvent` has been dispatched and explicitly tells
   the policy to avoid using nonce sources.
 
 When the nonce should be removed, both the frontend and backend

@@ -13,7 +13,7 @@ Description
 
 Previously it had been possible to add additional functionality to TYPO3
 backend modules, such as :guilabel:`Web > Info` or :guilabel:`Web > Template`,
-using the :php:`ExtensionManagementUtility::insertModuleFunction()` API method,
+using the :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction()` API method,
 which attached a new entry to the global :php:`TBE_MODULES_EXT` array.
 
 Since the introduction of the new
@@ -23,7 +23,7 @@ configuration file. Additional modules, or "third-level modules" are now also
 registered via the new mechanism.
 
 Therefore, the :php:`$GLOBALS['TBE_MODULES_EXT']` has been removed, while the
-corresponding :php:`ExtensionManagementUtility::insertModuleFunction()` API
+corresponding :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction()` API
 method has no effect.
 
 The related page TSconfig options :typoscript:`mod.web_info.menu.function`
@@ -41,7 +41,7 @@ Impact
 ======
 
 The global :php:`TBE_MODULES_EXT` array does no longer exist and the
-:php:`ExtensionManagementUtility::insertModuleFunction()` API method no
+:php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction()` API method no
 longer has any effect.
 
 The page TSconfig options :typoscript:`mod.web_info.menu.function`
@@ -54,7 +54,7 @@ Affected Installations
 ======================
 
 All installations using the global :php:`TBE_MODULES_EXT` array or
-calling :php:`ExtensionManagementUtility::insertModuleFunction()` in
+calling :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction()` in
 custom extension code.
 
 All installations using one of the removed page TSconfig options or one

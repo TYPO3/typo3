@@ -21,7 +21,7 @@ Furthermore, all default validators delivered by EXT:extbase and EXT:form are de
 
 Following this, the framework no longer hands over :php:`options` array as constructor
 argument, and no abstract implements :php:`__construct()` anymore. Classes that implement
-:php:`ValidatorInterface` are automatically set "public" and "not-shared" by the framework,
+:php-short:`\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface` are automatically set "public" and "not-shared" by the framework,
 they do not need to set this themselves. See the
 :doc:`preparation in TYPO3 v11 <../11.5.x/Important-96332-ExtbaseValidatorsCanUseDependencyInjection>`
 for more details on this. As a result, Extbase validators can now use dependency injection.
@@ -36,23 +36,23 @@ Affected Installations
 ======================
 
 Extensions with custom validators may be affected. In general, all extension classes that
-directly implement :php:`ValidatorInterface` or extend :php:`AbstractValidator` may be
+directly implement :php-short:`\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface` or extend :php-short:`\TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator` may be
 affected. The extension scanner can not find affected extensions, but IDE's should
 show violating classes.
 
 Migration
 =========
 
-The most casual case is that custom extension validators simply extend :php:`AbstractValidator`.
+The most casual case is that custom extension validators simply extend :php-short:`\TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator`.
 Those just have to adjust their :php:`isValid()` method signature to :php:`isValid($value): void` to
 keep TYPO3 v11 & v12 compatibility. Read on for rare cases where this is not sufficient.
 
 First, it is no longer allowed to extend specific validators of EXT:extbase and EXT:form.
 Those are "leaf" classes, and extensions should not extend them, giving the Core more
 freedom to change those classes if needed. Extensions should instead extend the provided
-abstract classes like :php:`AbstractValidator` to implement own validators.
+abstract classes like :php-short:`\TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator` to implement own validators.
 
-Since most custom validators inherit :php:`AbstractValidator`, the most important change
+Since most custom validators inherit :php-short:`\TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator`, the most important change
 for these validator is a return type change of :php:`isValid()`:
 
 ..  code-block:: php
@@ -66,7 +66,7 @@ use a signature like below: Set the return type constraint, but omit the 'mixed'
 
     public function isValid($value): void
 
-With a closer look at the :php:`ValidatorInterface`, the v11 version
+With a closer look at the :php-short:`\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface`, the v11 version
 effectively looks like this:
 
 ..  code-block:: php
@@ -89,8 +89,8 @@ This has been changed in v12 to this:
     }
 
 In any case, custom validators must implement :php:`setOptions()` now. The
-:php:`AbstractValidator` does that automatically, so this has little impact since
-most custom validators will extend :php:`AbstractValidator` anyways.
+:php-short:`\TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator` does that automatically, so this has little impact since
+most custom validators will extend :php-short:`\TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator` anyways.
 
 Extensions tailored for TYPO3 v12 and above simply implement these. Extensions that
 need to keep compatibility with v11 and v12 need to adjust some additional type juggling.

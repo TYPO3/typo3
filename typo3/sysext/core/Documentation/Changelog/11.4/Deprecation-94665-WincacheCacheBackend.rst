@@ -38,9 +38,9 @@ Migration
 =========
 
 TYPO3 cache backend configuration is usually done in :file:`LocalConfiguration.php`.
-Affected instances could switch to :php:`ApcuBackend` if the :php:`apcu` PHP module
-is loaded, or alternatively to some other backend like :php:`RedisBackend`,
-:php:`MemcachedBackend` or :php:`Typo3DatabaseBackend`, depending on the specific
+Affected instances could switch to :php-short:`\TYPO3\CMS\Core\Cache\Backend\ApcuBackend` if the :php:`apcu` PHP module
+is loaded, or alternatively to some other backend like :php-short:`\TYPO3\CMS\Core\Cache\Backend\RedisBackend`,
+:php-short:`\TYPO3\CMS\Core\Cache\Backend\MemcachedBackend` or :php-short:`\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend`, depending on the specific
 cache size and usage characteristics.
 
 

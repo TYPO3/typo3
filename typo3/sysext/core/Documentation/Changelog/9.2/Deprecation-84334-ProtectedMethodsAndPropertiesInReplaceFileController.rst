@@ -32,7 +32,7 @@ Impact
 ======
 
 Calling one of the above methods or accessing one of the above properties on an instance of
-:php:`ReplaceFileController` will throw a deprecation warning in v9 and a PHP fatal in v10.
+:php-short:`\TYPO3\CMS\Backend\Controller\File\ReplaceFileController` will throw a deprecation warning in v9 and a PHP fatal in v10.
 
 
 Affected Installations
@@ -40,7 +40,7 @@ Affected Installations
 
 The extension scanner will find most usages, but may also find some false positives. The most
 common property and method names like :php:`$content` are not registered and will not be found
-if an extension uses that on an instance of :php:`ReplaceFileController`.
+if an extension uses that on an instance of :php-short:`\TYPO3\CMS\Backend\Controller\File\ReplaceFileController`.
 
 In general all extensions that set properties or call methods except :php:`mainAction()` are affected.
 

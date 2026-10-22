@@ -11,7 +11,7 @@ See :issue:`96879`
 Description
 ===========
 
-A new PSR-14 event :php:`ModifyCacheLifetimeForPageEvent` has been introduced.
+A new PSR-14 event :php-short:`\TYPO3\CMS\Frontend\Event\ModifyCacheLifetimeForPageEvent` has been introduced.
 This event serves as a successor for the
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['get_cache_timeout']`
 hook.

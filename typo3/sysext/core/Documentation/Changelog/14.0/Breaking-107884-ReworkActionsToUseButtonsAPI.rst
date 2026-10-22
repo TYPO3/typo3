@@ -44,7 +44,7 @@ The events no longer work with HTML strings but with
 :php-short:`\TYPO3\CMS\Backend\Template\Components\ComponentInterface` objects
 (see :issue:`107823`).
 
-Extensions that directly call :php:`DatabaseRecordList::makeControl()` must
+Extensions that directly call :php-short:`\TYPO3\CMS\Backend\RecordList\DatabaseRecordList::makeControl()` must
 update their code, as the :php:`$table` parameter has been removed.
 
 ModifyRecordListRecordActionsEvent
@@ -124,7 +124,7 @@ DatabaseRecordList::makeControl()
     public function makeControl(RecordInterface $record): string
 
 The :php:`$table` parameter has been removed, as the table name can now be
-retrieved from the :php:`RecordInterface` via
+retrieved from the :php-short:`\TYPO3\CMS\Core\Domain\RecordInterface` via
 :php:`$record->getMainType()`.
 
 Adjust calls accordingly:
@@ -149,7 +149,7 @@ component using the event’s :php:`setAction()` method.
 
 Internally, buttons are placed into an
 :php-short:`\TYPO3\CMS\Backend\Template\Components\ActionGroup` container,
-retrieved via :php:`ActionGroup::primary` or :php:`ActionGroup::secondary`.
+retrieved via :php-short:`\TYPO3\CMS\Backend\Template\Components\ActionGroup::primary` or :php-short:`\TYPO3\CMS\Backend\Template\Components\ActionGroup::secondary`.
 
 The previous :php:`getActionItems()` logic is replaced with
 :php:`getActionGroup()` to fetch the corresponding button group.
@@ -204,7 +204,7 @@ ModifyRecordListRecordActionsEvent
 
 This event now behaves identically to the file list event:
 actions must be created via the Button API and added as
-:php:`ComponentInterface` instances using :php:`setAction()`.
+:php-short:`\TYPO3\CMS\Backend\Template\Components\ComponentInterface` instances using :php:`setAction()`.
 
 The :php:`setActions()` and :php:`getActions()` methods are removed and must be
 replaced by distinct calls to :php:`setAction()` or use

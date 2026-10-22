@@ -37,7 +37,7 @@ This event features following methods:
 
 ..  note::
 
-    The :php:`BeforeRedirectMatchDomainEvent` is dispatched before cached redirects
+    The :php-short:`\TYPO3\CMS\Redirects\Event\BeforeRedirectMatchDomainEvent` is dispatched before cached redirects
     are retrieved. That means, that the event does not contain any :sql:`sys_redirect`
     records. Internal redirect cache may vanish eventually if possible. Therefore,
     it is left out to avoid a longer bound state to the event by properly deprecate it.
@@ -102,7 +102,7 @@ The corresponding event listener class:
 Impact
 ======
 
-With the new :php:`BeforeRedirectMatchDomainEvent` it is now possible to
+With the new :php-short:`\TYPO3\CMS\Redirects\Event\BeforeRedirectMatchDomainEvent` it is now possible to
 implement custom redirect matching methods before core matching is processed.
 
 .. index:: PHP-API, ext:redirects

@@ -17,17 +17,17 @@ deprecated. The TYPO3 core never used this optional argument and
 it added a hard dependency to Extbase classes from StandaloneView, which should
 be avoided.
 
-The :php:`ContentObjectRenderer` instance within :php:`StandaloneView` has been used to update
+The :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer` instance within :php-short:`\TYPO3\CMS\Fluid\View\StandaloneView` has been used to update
 the Extbase :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManager` singleton,
 even though Extbase bootstrap already sets the current ContentObjectRenderer to
-:php:`ConfigurationManager`.
+:php-short:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManager`.
 
 
 Impact
 ======
 
-Extensions creating instances of :php:`StandaloneView` and handing over an
-instance of :php:`ContentObjectRenderer` as constructor argument will see a PHP :php:`E_USER_DEPRECATED` error raised.
+Extensions creating instances of :php-short:`\TYPO3\CMS\Fluid\View\StandaloneView` and handing over an
+instance of :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer` as constructor argument will see a PHP :php:`E_USER_DEPRECATED` error raised.
 
 
 Affected Installations
@@ -40,7 +40,7 @@ the constructor argument is rather unusual.
 Migration
 =========
 
-Do not hand over an instance of :php:`ContentObjectRenderer` when creating an
-instance of :php:`StandaloneView`.
+Do not hand over an instance of :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer` when creating an
+instance of :php-short:`\TYPO3\CMS\Fluid\View\StandaloneView`.
 
 .. index:: Fluid, PHP-API, NotScanned, ext:fluid

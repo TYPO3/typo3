@@ -22,12 +22,12 @@ The event features the following methods:
 -   :php:`getSlugRedirectChangeItem()`: Returns the current
     :php:`\TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem`
 -   :php:`setSlugRedirectChangeItem()`: Can be used to set a new or changed
-    :php:`SlugRedirectChangeItem`
+    :php-short:`\TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem`
 
 TYPO3 already implements the :php:`\TYPO3\CMS\Redirects\EventListener\AddPlainSlugReplacementSource`
 listener. It is used to add the plain slug value based source type, which provides the same
 behaviour like before. Implementing this as a Core listener gives extension authors the ability to
-remove the source added by :php:`AddPlainSlugReplacementSource`, when their listeners are
+remove the source added by :php-short:`\TYPO3\CMS\Redirects\EventListener\AddPlainSlugReplacementSource`, when their listeners are
 registered and executed afterwards. See the example below.
 
 It is required for custom source class implementations to implement the
@@ -114,7 +114,7 @@ Custom source implementation (example):
 Impact
 ======
 
-With the new :php:`SlugRedirectChangeItemCreatedEvent`, it is possible to manage
+With the new :php-short:`\TYPO3\CMS\Redirects\Event\SlugRedirectChangeItemCreatedEvent`, it is possible to manage
 the redirect sources for which redirects should be created. It furthermore allows
 to influence existing Core functionality.
 

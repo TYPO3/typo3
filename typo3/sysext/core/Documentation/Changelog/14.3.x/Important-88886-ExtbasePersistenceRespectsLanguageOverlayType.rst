@@ -23,7 +23,7 @@ of Extbase queries is now consistent with the regular translation behavior of
 pages and content in TYPO3:
 
 *   :yaml:`fallbackType: strict`: Records that are not translated into the
-    requested language are not returned anymore. :php:`Repository->findByUid()`
+    requested language are not returned anymore. :php-short:`\TYPO3\CMS\Extbase\Persistence\Repository->findByUid()`
     on an untranslated record of the default language now returns :php:`null`,
     and untranslated related child objects (for example categories or tags) are
     filtered from relations of a translated aggregate root.
@@ -33,7 +33,7 @@ pages and content in TYPO3:
     otherwise.
 
 *   :yaml:`fallbackType: free`: Unchanged behavior. No overlays are performed
-    for regular queries. Identity lookups via :php:`Repository->findByUid()`
+    for regular queries. Identity lookups via :php-short:`\TYPO3\CMS\Extbase\Persistence\Repository->findByUid()`
     keep resolving translations using mixed overlay semantics.
 
 Fetching a translated record directly by its uid (for example

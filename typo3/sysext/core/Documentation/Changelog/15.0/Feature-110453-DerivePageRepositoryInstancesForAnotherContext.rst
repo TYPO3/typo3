@@ -66,7 +66,7 @@ Impact
 Extension authors can inject :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository` through dependency injection
 and derive Context-specific instances where they are needed, instead of
 cloning a Context and calling
-:php:`GeneralUtility::makeInstance(PageRepository::class, $context)`.
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(PageRepository::class, $context)`.
 
 The existing constructor is unchanged and keeps working.
 

@@ -23,7 +23,7 @@ have TYPO3 use the same values throughout TYPO3 Core, making `method = GET`
 the default and thus, the only option.
 
 To further streamline TYPO3s source code, the underlying PHP method
-:php:`ContentObjectRenderer->getQueryArguments()` now only accepts exactly
+:php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getQueryArguments()` now only accepts exactly
 one argument.
 
 All Fluid arguments related to that setting, or Extbase UriBuilder methods
@@ -34,7 +34,7 @@ Impact
 
 Calling :php:`UriBuilder->setAddQueryStringMethod()` will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
-Calling :php:`ContentObjectRenderer->getQueryArguments()` with more
+Calling :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getQueryArguments()` with more
 than one argument will have no effect anymore.
 
 Setting the TypoScript option :typoscript:`addQueryString.method` will
@@ -58,7 +58,7 @@ Affected Installations
 Any TYPO3 installation
 
 * with extensions calling Extbase's :php:`UriBuilder->setAddQueryStringMethod()` method
-* with extensions calling :php:`ContentObjectRenderer->getQueryArguments()` with more then one argument
+* with extensions calling :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getQueryArguments()` with more then one argument
 * with custom templates setting the :html:`addQueryStringMethod` argument in Fluid using one of the mentioned ViewHelper.
 
 

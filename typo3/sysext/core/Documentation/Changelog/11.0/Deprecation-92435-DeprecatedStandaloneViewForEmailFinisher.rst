@@ -11,7 +11,7 @@ See :issue:`92435`
 Description
 ===========
 
-The :php:`EmailFinisher` class of EXT:form was extended for the possibility to use
+The :php-short:`\TYPO3\CMS\Form\Domain\Finishers\EmailFinisher` class of EXT:form was extended for the possibility to use
 FluidEmail in TYPO3 v10. Therefore the previously used StandaloneView has now been marked as
 deprecated along with the configuration option :yaml:`templatePathAndFilename`.
 

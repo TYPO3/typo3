@@ -12,62 +12,62 @@ Description
 ===========
 
 TYPO3's File Abstraction Layer (FAL) processing pipeline - the
-:php:`TaskInterface`/:php:`AbstractTask`/:php:`ProcessorInterface`/
-:php:`ProcessorRegistry`/:php:`FileProcessingService` classes that resize,
+:php-short:`\TYPO3\CMS\Core\Resource\Processing\TaskInterface`/:php:`AbstractTask`/:php:`ProcessorInterface`/
+:php-short:`\TYPO3\CMS\Core\Resource\Processing\ProcessorRegistry`/:php-short:`\TYPO3\CMS\Core\Resource\Service\FileProcessingService` classes that resize,
 crop and convert images - has so far only ever operated on FAL files
 (:php:`\TYPO3\CMS\Core\Resource\File` and
 :php:`\TYPO3\CMS\Core\Resource\ProcessedFile`). The same pipeline now also
 processes resources that are not backed by FAL - most commonly a system
 resource shipped with a package and referenced via an :php:`EXT:`/:php:`PKG:`
-identifier - by routing a :php:`ProcessedFile`, or the new
+identifier - by routing a :php-short:`\TYPO3\CMS\Core\Resource\ProcessedFile`, or the new
 :php:`\TYPO3\CMS\Core\Resource\ProcessedResource`, through the same task/
 processor machinery (see :ref:`feature-110702-1789927725`). Several
 signatures widened for this:
 
-- :php:`TaskInterface::getSourceFile()` now returns
+- :php-short:`\TYPO3\CMS\Core\Resource\Processing\TaskInterface::getSourceFile()` now returns
   :php:`\TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface`
   instead of :php:`\TYPO3\CMS\Core\Resource\File`.
-- :php:`TaskInterface::getTargetFile()` now returns the new
+- :php-short:`\TYPO3\CMS\Core\Resource\Processing\TaskInterface::getTargetFile()` now returns the new
   :php:`\TYPO3\CMS\Core\Resource\ProcessedResourceInterface` instead of
-  :php:`\TYPO3\CMS\Core\Resource\ProcessedFile`. :php:`ProcessedFile` now
+  :php:`\TYPO3\CMS\Core\Resource\ProcessedFile`. :php-short:`\TYPO3\CMS\Core\Resource\ProcessedFile` now
   implements this new interface, alongside the new
-  :php:`ProcessedResource` for the non-FAL case.
+  :php-short:`\TYPO3\CMS\Core\Resource\ProcessedResource` for the non-FAL case.
 - :php:`AbstractTask::__construct()` and
-  :php:`TaskTypeRegistry::getTaskForType()` now take a
-  :php:`ProcessedResourceInterface` instead of a :php:`ProcessedFile`, and
+  :php-short:`\TYPO3\CMS\Core\Resource\Processing\TaskTypeRegistry::getTaskForType()` now take a
+  :php-short:`\TYPO3\CMS\Core\Resource\ProcessedResourceInterface` instead of a :php-short:`\TYPO3\CMS\Core\Resource\ProcessedFile`, and
   the :php:`AbstractTask::$sourceFile` property is now typed
-  :php:`SystemResourceInterface` instead of :php:`File`. A custom task class
-  registered for a task type is constructed with a :php:`ProcessedResource`
+  :php-short:`\TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface` instead of :php-short:`\TYPO3\CMS\Core\Resource\File`. A custom task class
+  registered for a task type is constructed with a :php-short:`\TYPO3\CMS\Core\Resource\ProcessedResource`
   when the source is a system resource.
-- :php:`ProcessorRegistry` no longer offers a task whose source is not a FAL
-  :php:`File` to a processor unless that processor implements the new,
+- :php-short:`\TYPO3\CMS\Core\Resource\Processing\ProcessorRegistry` no longer offers a task whose source is not a FAL
+  :php-short:`\TYPO3\CMS\Core\Resource\File` to a processor unless that processor implements the new,
   opt-in :php:`\TYPO3\CMS\Core\Resource\Processing\ResourceAwareProcessorInterface`
-  marker. TYPO3 Core's :php:`LocalImageProcessor` and :php:`SvgImageProcessor`
+  marker. TYPO3 Core's :php-short:`\TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor` and :php-short:`\TYPO3\CMS\Core\Resource\Processing\SvgImageProcessor`
   now implement it and handle a non-FAL source for the
   :php:`Image.CropScaleMask` task; no other Core processor does. As with any
   interface, a subclass inherits it: a custom processor extending
-  :php:`LocalImageProcessor` or :php:`SvgImageProcessor` is offered non-FAL
+  :php-short:`\TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor` or :php-short:`\TYPO3\CMS\Core\Resource\Processing\SvgImageProcessor` is offered non-FAL
   tasks as well.
-- :php:`FileProcessingService` has a new, last constructor argument
+- :php-short:`\TYPO3\CMS\Core\Resource\Service\FileProcessingService` has a new, last constructor argument
   :php:`\TYPO3\CMS\Core\Resource\ProcessedResourceCache`.
-- :php:`FileProcessingService::processFile()` now accepts
+- :php-short:`\TYPO3\CMS\Core\Resource\Service\FileProcessingService::processFile()` now accepts
   :php:`File|FileReference|SystemResourceInterface` (was
   :php:`File|FileReference`), returns :php:`ProcessedFile|ProcessedResource`
-  (was :php:`ProcessedFile`), and its :php:`$driver` parameter is now
+  (was :php-short:`\TYPO3\CMS\Core\Resource\ProcessedFile`), and its :php:`$driver` parameter is now
   nullable - a non-FAL resource is never fetched through a
-  :php:`ResourceStorage` driver in the first place, so there is none to pass.
-- :php:`BeforeFileProcessingEvent`/:php:`AfterFileProcessingEvent` widen the
+  :php-short:`\TYPO3\CMS\Core\Resource\ResourceStorage` driver in the first place, so there is none to pass.
+- :php-short:`\TYPO3\CMS\Core\Resource\Event\BeforeFileProcessingEvent`/:php-short:`\TYPO3\CMS\Core\Resource\Event\AfterFileProcessingEvent` widen the
   same way: :php:`getDriver()` now returns :php:`?DriverInterface`,
   :php:`getFile()` returns :php:`FileInterface|SystemResourceInterface`, and
   :php:`getProcessedFile()`/:php:`setProcessedFile()` use
-  :php:`ProcessedResourceInterface`.
+  :php-short:`\TYPO3\CMS\Core\Resource\ProcessedResourceInterface`.
 - :php:`\TYPO3\CMS\Core\Imaging\ImageResource::getOriginalFile()` now
   returns :php:`File|SystemResourceInterface|null` (was :php:`?File`), and
-  :php:`ImageResource::getProcessedFile()` now returns
+  :php-short:`\TYPO3\CMS\Core\Imaging\ImageResource::getProcessedFile()` now returns
   :php:`?ProcessedResourceInterface` (was :php:`?ProcessedFile`). The
   corresponding :php:`with*()` methods and the constructor accept the same
   wider types. An image resource of a processed system resource carries the
-  system resource and its :php:`ProcessedResource`.
+  system resource and its :php-short:`\TYPO3\CMS\Core\Resource\ProcessedResource`.
 
 The URLs of :php:`EXT:`/:php:`PKG:` images rendered through image
 processing change as well:
@@ -86,24 +86,24 @@ processing change as well:
 Impact
 ======
 
-Custom :php:`ProcessorInterface`/:php:`TaskInterface`/:php:`AbstractTask`
+Custom :php:`ProcessorInterface`/:php-short:`\TYPO3\CMS\Core\Resource\Processing\TaskInterface`/:php:`AbstractTask`
 implementations, or PSR-14 listeners of the two events above, that use
 :php:`getSourceFile()`/:php:`getTargetFile()`/:php:`getFile()`/
 :php:`getProcessedFile()`/:php:`getDriver()` as a concrete
-:php:`File`/:php:`ProcessedFile`/:php:`DriverInterface` without a type check
+:php-short:`\TYPO3\CMS\Core\Resource\File`/:php-short:`\TYPO3\CMS\Core\Resource\ProcessedFile`/:php-short:`\TYPO3\CMS\Core\Resource\Driver\DriverInterface` without a type check
 - for example calling :php:`getUid()`, :php:`getForLocalProcessing()`,
-:php:`getStorage()` or any :php:`DriverInterface` method directly - will
+:php:`getStorage()` or any :php-short:`\TYPO3\CMS\Core\Resource\Driver\DriverInterface` method directly - will
 fail static analysis against the wider declared type, and can now
 genuinely receive a system resource, or a :php:`null` driver, at runtime:
 a template or content element that references an :php:`EXT:`/:php:`PKG:`
 image is processed through this same pipeline starting with this release.
 
 Custom task classes that type-hint the constructor argument as
-:php:`ProcessedFile`, or assign a :php:`File` to :php:`$sourceFile`, fail
+:php-short:`\TYPO3\CMS\Core\Resource\ProcessedFile`, or assign a :php-short:`\TYPO3\CMS\Core\Resource\File` to :php:`$sourceFile`, fail
 with a PHP fatal error. Code that instantiates
-:php:`FileProcessingService` manually, or extends it with its own
+:php-short:`\TYPO3\CMS\Core\Resource\Service\FileProcessingService` manually, or extends it with its own
 constructor, fails with an :php:`ArgumentCountError`. Code relying on
-:php:`ImageResource::getOriginalFile()`/:php:`getProcessedFile()` returning a
+:php-short:`\TYPO3\CMS\Core\Imaging\ImageResource::getOriginalFile()`/:php:`getProcessedFile()` returning a
 FAL object fails for an :php:`EXT:`/:php:`PKG:` image.
 
 Tests, caches, CDN or proxy rules and other code that relied on the
@@ -114,10 +114,10 @@ Affected installations
 =======================
 
 Installations with extensions that implement :php:`ProcessorInterface`
-directly, subclass :php:`LocalImageProcessor`/:php:`SvgImageProcessor`,
-:php:`AbstractTask` or :php:`FileProcessingService`, listen to
-:php:`BeforeFileProcessingEvent`/:php:`AfterFileProcessingEvent`, or use
-:php:`ImageResource::getOriginalFile()`/:php:`getProcessedFile()`, and rely
+directly, subclass :php-short:`\TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor`/:php-short:`\TYPO3\CMS\Core\Resource\Processing\SvgImageProcessor`,
+:php:`AbstractTask` or :php-short:`\TYPO3\CMS\Core\Resource\Service\FileProcessingService`, listen to
+:php-short:`\TYPO3\CMS\Core\Resource\Event\BeforeFileProcessingEvent`/:php-short:`\TYPO3\CMS\Core\Resource\Event\AfterFileProcessingEvent`, or use
+:php-short:`\TYPO3\CMS\Core\Imaging\ImageResource::getOriginalFile()`/:php:`getProcessedFile()`, and rely
 on the narrower pre-existing types without narrowing themselves.
 
 Installations that depend on the URL of a processed :php:`EXT:`/:php:`PKG:`
@@ -126,8 +126,8 @@ image.
 Migration
 =========
 
-Narrow the type before using :php:`File`/:php:`ProcessedFile`/
-:php:`DriverInterface`-specific members, the same way TYPO3 Core's own
+Narrow the type before using :php-short:`\TYPO3\CMS\Core\Resource\File`/:php-short:`\TYPO3\CMS\Core\Resource\ProcessedFile`/
+:php-short:`\TYPO3\CMS\Core\Resource\Driver\DriverInterface`-specific members, the same way TYPO3 Core's own
 processors do now:
 
 ..  code-block:: php
@@ -158,9 +158,9 @@ processors do now:
     }
 
 Custom task classes declare the constructor argument as
-:php:`ProcessedResourceInterface`, the same as :php:`AbstractTask` does.
+:php-short:`\TYPO3\CMS\Core\Resource\ProcessedResourceInterface`, the same as :php:`AbstractTask` does.
 
-A subclass of :php:`LocalImageProcessor` or :php:`SvgImageProcessor` that
+A subclass of :php-short:`\TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor` or :php-short:`\TYPO3\CMS\Core\Resource\Processing\SvgImageProcessor` that
 should only handle FAL files declines other tasks in
 :php:`canProcessTask()`:
 
@@ -175,11 +175,11 @@ should only handle FAL files declines other tasks in
             && parent::canProcessTask($task);
     }
 
-Code that instantiates :php:`FileProcessingService` itself retrieves it
+Code that instantiates :php-short:`\TYPO3\CMS\Core\Resource\Service\FileProcessingService` itself retrieves it
 through dependency injection instead.
 
-Check :php:`ImageResource::getOriginalFile()`/:php:`getProcessedFile()` for
-:php:`File`/:php:`ProcessedFile` before using FAL-specific methods.
+Check :php-short:`\TYPO3\CMS\Core\Imaging\ImageResource::getOriginalFile()`/:php:`getProcessedFile()` for
+:php-short:`\TYPO3\CMS\Core\Resource\File`/:php-short:`\TYPO3\CMS\Core\Resource\ProcessedFile` before using FAL-specific methods.
 
 Do not rely on the file name or location of a processed image.
 

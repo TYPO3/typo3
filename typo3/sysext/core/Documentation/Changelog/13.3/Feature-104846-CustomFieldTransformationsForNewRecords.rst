@@ -53,9 +53,9 @@ The new event features the following methods:
 *   :php:`unsetProperty()` - Unset a single property
 *   :php:`getProperty()` - Get the value for a single property
 *   :php:`getProperties()` - Get all properties
-*   :php:`getRawRecord()` - Get the :php:`RawRecord` object
-*   :php:`getSystemProperties()` - Get the calculated :php:`SystemProperties`
-*   :php:`getContext()` - Get the current :php:`Context` (used to fetch the raw database row)
+*   :php:`getRawRecord()` - Get the :php-short:`\TYPO3\CMS\Core\Domain\RawRecord` object
+*   :php:`getSystemProperties()` - Get the calculated :php-short:`\TYPO3\CMS\Core\Domain\Record\SystemProperties`
+*   :php:`getContext()` - Get the current :php-short:`\TYPO3\CMS\Core\Context\Context` (used to fetch the raw database row)
 *   :php:`isPropagationStopped()` - Whether the event propagation is stopped
 
 Example

@@ -29,7 +29,7 @@ working in TYPO3 v15.0.
 Affected installations
 ======================
 
-Instances using the :php:`FileCollectionRegistry->addTypeToTCA()` method
+Instances using the :php-short:`\TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry->addTypeToTCA()` method
 directly are affected.
 
 The extension scanner will report usages as **weak match**.

@@ -32,7 +32,7 @@ set which is highly unlikely.
 Migration
 =========
 
-Use a custom user function or the PSR-14 :php:`FilterMenuItemsEvent` event to modify
+Use a custom user function or the PSR-14 :php-short:`\TYPO3\CMS\Frontend\Event\FilterMenuItemsEvent` event to modify
 the menu items.
 
 .. index:: Frontend, TypoScript, NotScanned, ext:frontend

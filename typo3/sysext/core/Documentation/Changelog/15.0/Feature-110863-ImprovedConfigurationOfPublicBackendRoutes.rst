@@ -47,7 +47,7 @@ implementations:
 Any other value of :php:`access` is treated as :php:`authenticated`, so a
 misspelled value can never expose a route. The class
 :php:`\TYPO3\CMS\Backend\Routing\Route` provides the new method
-:php:`getAccess()`, which returns the :php:`RouteAccess` with the methods
+:php:`getAccess()`, which returns the :php-short:`\TYPO3\CMS\Backend\Routing\RouteAccess` with the methods
 :php:`requiresAuthentication()` and :php:`requiresRequestToken()`.
 
 Additionally, the new backend middleware

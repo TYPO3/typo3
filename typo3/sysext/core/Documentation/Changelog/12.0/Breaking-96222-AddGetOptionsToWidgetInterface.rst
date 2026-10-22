@@ -12,11 +12,11 @@ Description
 ===========
 
 With :issue:`93210` the dashboard was extended for the functionality to
-refresh single widgets. This also required to extend the :php:`WidgetInterface`.
+refresh single widgets. This also required to extend the :php-short:`\TYPO3\CMS\Dashboard\Widgets\WidgetInterface`.
 To stick to TYPO3's backwards compatibility promise, the new method was
 commented out and instead a :php:`methodExists()` check performed.
 
-This now has changed. The check is removed and the :php:`WidgetInterface`
+This now has changed. The check is removed and the :php-short:`\TYPO3\CMS\Dashboard\Widgets\WidgetInterface`
 now forces the presence of the :php:`getOptions()` method in all widgets.
 
 Impact

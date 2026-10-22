@@ -28,7 +28,7 @@ will trigger a fatal PHP error with TYPO3 v14.
 Affected installations
 ======================
 
-:php:`RenderingContext->getRequest()` is a relatively common call in custom
+:php-short:`\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->getRequest()` is a relatively common call in custom
 view helpers. Instances with extensions that deliver custom view helpers may
 be affected. The extension scanner is *not* configured to find potential
 places since the method names are common and would lead to too many false

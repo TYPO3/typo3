@@ -23,8 +23,8 @@ Therefore the following configuration options have been removed:
 
 The following public properties have no effect anymore and have been removed:
 
-- :php:`AbstractUserAuthentication->writeDevLog`
-- :php:`AbstractService->writeDevLog`
+- :php-short:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->writeDevLog`
+- :php-short:`\TYPO3\CMS\Core\Service\AbstractService->writeDevLog`
 
 
 Impact

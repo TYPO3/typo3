@@ -23,7 +23,7 @@ Impact
 ======
 
 Calling :php:`TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::extGetNumberOfCachedPages` will
-result in a PHP fatal error. Using the property :php:`FrontendUserAuthentication::$extPageInTreeInfo` will
+result in a PHP fatal error. Using the property :php-short:`\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::$extPageInTreeInfo` will
 return an implicit `null` instead of an `array`.
 
 

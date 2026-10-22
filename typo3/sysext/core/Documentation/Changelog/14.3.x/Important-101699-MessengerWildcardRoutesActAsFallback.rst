@@ -132,7 +132,7 @@ example TYPO3 v12) can obtain it in one of two ways.
 Replace the core implementation via Symfony dependency injection
 ----------------------------------------------------------------
 
-Copy the current :php:`TransportLocator` into an extension, for example as
+Copy the current :php-short:`\TYPO3\CMS\Core\Messenger\TransportLocator` into an extension, for example as
 :php:`\MyVendor\MyExtension\Messenger\FallbackTransportLocator`, keeping the
 :php:`#[AutowireLocator('messenger.sender', indexAttribute: 'identifier')]`
 constructor argument. Then re-point the messenger senders-locator to it in the
@@ -155,7 +155,7 @@ extension's :file:`Configuration/Services.yaml`:
 Because the messenger senders-locator is resolved through this alias, the
 extension implementation is used instead of the core one and the fallback
 resolution becomes available on the older core version. If the
-:php:`WebhookTypesProvider` display of the resolved transports is required as
+:php-short:`\TYPO3\CMS\Webhooks\ConfigurationModuleProvider\WebhookTypesProvider` display of the resolved transports is required as
 well, copy its adjusted version accordingly.
 
 Backport the change via a Composer patch

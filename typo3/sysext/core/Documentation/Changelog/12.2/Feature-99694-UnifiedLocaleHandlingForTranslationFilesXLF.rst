@@ -28,7 +28,7 @@ Examples for a locale string are:
 *   "de-CH" for German as used in Switzerland
 *   "zh-Hans-CN" for Chinese with the simplified script as spoken in China (mainland)
 
-A new PHP object :php:`Locale` automatically separates each tag and subtag into
+A new PHP object :php-short:`\TYPO3\CMS\Core\Localization\Locale` automatically separates each tag and subtag into
 these parts.
 
 The :php:`\TYPO3\CMS\Core\Localization\Locale` object can now be used to instantiate a new
@@ -42,7 +42,7 @@ precisely.
 Impact
 ======
 
-Example for using the :php:`Locale` class for creating a :php:`LanguageService`
+Example for using the :php-short:`\TYPO3\CMS\Core\Localization\Locale` class for creating a :php-short:`\TYPO3\CMS\Core\Localization\LanguageService`
 object for translations:
 
 ..  code-block:: php

@@ -11,7 +11,7 @@ See :issue:`107856`
 Description
 ===========
 
-The following public properties of the PHP class `TYPO3\CMS\Core\DataHandling\DataHandler` have been removed:
+The following public properties of the PHP class :php:`TYPO3\CMS\Core\DataHandling\DataHandler` have been removed:
 
 * `copyWhichTables`
 * `neverHideAtCopy`

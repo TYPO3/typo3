@@ -13,7 +13,7 @@ Description
 
 The :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog` API is superseded by the Logging API.
 
-Therefore the methods :php:`GeneralUtility::sysLog` and :php:`GeneralUtility::initSysLog` have been marked as deprecated.
+Therefore the methods :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog` and :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::initSysLog` have been marked as deprecated.
 
 
 Impact
@@ -31,6 +31,6 @@ Any TYPO3 installation having third party extensions using these methods.
 Migration
 =========
 
-Replace the :php:`GeneralUtility::sysLog` calls with direct calls to the Logging API.
+Replace the :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog` calls with direct calls to the Logging API.
 
 .. index:: PHP-API, NotScanned

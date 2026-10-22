@@ -17,7 +17,7 @@ has been removed.
 This hook was solely introduced in TYPO3 v3.8.0 for a specific use case which
 isn't needed anymore, and thus removed.
 
-At the same time the whole :php:`GifBuilder` class is now strictly typed.
+At the same time the whole :php-short:`\TYPO3\CMS\Frontend\Imaging\GifBuilder` class is now strictly typed.
 
 
 Impact

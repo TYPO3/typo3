@@ -161,7 +161,7 @@ Impact
 
 This enhancement simplifies plugin configuration and FlexForm integration, as
 FlexForms can now be registered directly with the plugin. The call
-:php:`ExtensionManagementUtility::addPiFlexFormValue()` is no longer required.
+:php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue()` is no longer required.
 This method has been deprecated; see :ref:`deprecation-107047-1751984220`.
 
 **FlexFormTools schema support**

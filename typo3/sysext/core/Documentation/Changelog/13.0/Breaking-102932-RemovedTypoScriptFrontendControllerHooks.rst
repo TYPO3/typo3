@@ -15,12 +15,12 @@ The following frontend TypoScript and page rendering related hooks
 have been removed:
 
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['configArrayPostProc']`,
-  substituted by event :php:`ModifyTypoScriptConfigEvent`.
+  substituted by event :php-short:`\TYPO3\CMS\Frontend\Event\ModifyTypoScriptConfigEvent`.
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageLoadedFromCache']`,
-  no direct substitution, use event :php:`AfterTypoScriptDeterminedEvent` or an own middleware
+  no direct substitution, use event :php-short:`\TYPO3\CMS\Frontend\Event\AfterTypoScriptDeterminedEvent` or an own middleware
   after :php:`typo3/cms-frontend/prepare-tsfe-rendering` instead.
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['createHashBase']`,
-  substituted by event :php:`BeforePageCacheIdentifierIsHashedEvent`.
+  substituted by event :php-short:`\TYPO3\CMS\Frontend\Event\BeforePageCacheIdentifierIsHashedEvent`.
 
 
 Impact

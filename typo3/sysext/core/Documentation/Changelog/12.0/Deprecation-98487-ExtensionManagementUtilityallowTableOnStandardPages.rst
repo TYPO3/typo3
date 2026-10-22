@@ -11,7 +11,7 @@ See :issue:`98487`
 Description
 ===========
 
-The API method :php:`ExtensionManagementUtility::allowTableOnStandardPages` which
+The API method :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages` which
 was used in `ext_tables.php` files of extensions registering custom records available
 on any page type has been marked as deprecated.
 

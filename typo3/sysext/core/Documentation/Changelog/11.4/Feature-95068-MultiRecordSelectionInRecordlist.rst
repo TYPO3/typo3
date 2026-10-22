@@ -34,7 +34,7 @@ making it possible to edit a single field for only a specific selection
 of records.
 
 Manipulating the displayed actions in the table header is still possible
-using the `\TYPO3\CMS\Recordlist\Event\ModifyRecordListTableActionsEvent`
+using the :php:`\TYPO3\CMS\Recordlist\Event\ModifyRecordListTableActionsEvent`
 PSR-14 event.
 
 In case you are still using the TSconfig option

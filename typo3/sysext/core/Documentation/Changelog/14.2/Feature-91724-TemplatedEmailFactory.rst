@@ -218,7 +218,7 @@ configuration, use :php:`createWithOverrides()`:
 
     You can use the
     :php-short:`\TYPO3\CMS\Core\Mail\Event\BeforeMailerSentMessageEvent`
-    to change a `FluidEmail` object before it is sent. You can
+    to change a :php-short:`\TYPO3\CMS\Core\Mail\FluidEmail` object before it is sent. You can
     assign Fluid variables or modify parts of the email, such as setting
     `From` or the email subject prefix, depending on your site:
 
@@ -247,14 +247,14 @@ Core migrations
 ===============
 
 All core extensions that send emails have been migrated to use
-:php:`TemplatedEmailFactory`. This includes:
+:php-short:`\TYPO3\CMS\Core\Mail\TemplatedEmailFactory`. This includes:
 
 *   **EXT:form** Email finishers now use :php:`createWithOverrides()` with the
     request from the form runtime, so site-specific email settings are applied
     automatically.
 *   **EXT:felogin** Password recovery emails now use
     :php:`createWithOverrides()`, making them site-aware. The method
-    :php:`RecoveryConfiguration::getMailTemplatePaths()` has been removed, as
+    :php-short:`\TYPO3\CMS\FrontendLogin\Configuration\RecoveryConfiguration::getMailTemplatePaths()` has been removed, as
     template path resolution is now handled by the factory.
 *   **EXT:backend** Login notifications, failed login and MFA attempt
     notifications, and password reset emails use :php:`create()`.
@@ -269,7 +269,7 @@ Impact
 ======
 
 Extensions that send emails are encouraged to use the
-:php:`TemplatedEmailFactory` to create :php:`FluidEmail` instances instead of
+:php-short:`\TYPO3\CMS\Core\Mail\TemplatedEmailFactory` to create :php-short:`\TYPO3\CMS\Core\Mail\FluidEmail` instances instead of
 instantiating them directly. When a request with a site attribute is passed,
 template paths and format from the :yaml:`typo3/email` site set are applied.
 The merge priority, with the highest priority winning, is:

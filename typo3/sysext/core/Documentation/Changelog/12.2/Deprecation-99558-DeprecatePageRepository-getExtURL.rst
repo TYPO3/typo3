@@ -25,7 +25,7 @@ TYPO3 v12 and will stop working in v13.
 Affected installations
 ======================
 
-:php:`PageRepository->getExtURL()` is a detail method and relatively unlikely
+:php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getExtURL()` is a detail method and relatively unlikely
 to be used by extensions. The extension scanner will find affected code places.
 
 

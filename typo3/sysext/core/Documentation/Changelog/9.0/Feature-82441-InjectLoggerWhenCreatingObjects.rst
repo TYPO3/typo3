@@ -13,7 +13,7 @@ Description
 
 Classes that implement :php:`\Psr\Log\LoggerAwareInterface` automatically
 get a logger instance injected when a class instance is created via
-:php:`GeneralUtility::makeInstance()` and :php:`ObjectManger::get()`.
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()` and :php:`ObjectManger::get()`.
 
 For developer convenience the :php:`\Psr\Log\LoggerAwareTrait` can be used.
 The trait adds a public :php:`setLogger()` and a protected :php:`$logger` property

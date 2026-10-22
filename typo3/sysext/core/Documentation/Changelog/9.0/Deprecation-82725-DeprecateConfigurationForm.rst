@@ -30,7 +30,7 @@ Instance with extensions using this class.
 Migration
 =========
 
-Class :php:`ConfigurationForm` was used to parse the ext_conf_template.txt file of extensions.
+Class :php-short:`\TYPO3\CMS\Core\TypoScript\ConfigurationForm` was used to parse the ext_conf_template.txt file of extensions.
 The parser has been integrated at a different place in the core. The
 class is mostly core internal and extensions should not have needed to parse that syntax directly.
 There is no direct substitution for this functionality usable by extensions in the core.

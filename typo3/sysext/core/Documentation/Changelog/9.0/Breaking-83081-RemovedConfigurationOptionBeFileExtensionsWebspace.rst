@@ -20,7 +20,7 @@ Impact
 
 * Using the old configuration option names will result in a PHP notice.
 * In Import/Export when uploading files :php:`fileDenyPattern` is used instead of `allow` and `deny`
-* When using :php:`BasicFileUtility` directly, only :php:`fileDenyPattern` is used
+* When using :php-short:`\TYPO3\CMS\Core\Utility\File\BasicFileUtility` directly, only :php:`fileDenyPattern` is used
 
 
 Affected Installations

@@ -48,7 +48,7 @@ allows multiple different "right-side" table-field combinations, using the two
 additional fields :sql:`tablenames` and :sql:`fieldname`. All this is configured
 with TCA on the "left" and the "right" side table field, while table
 :sql:`sys_category_record_mm` has no TCA itself. Rows within the intermediate
-table are transparently handled by TYPO3 by the :php:`RelationHandler` and
+table are transparently handled by TYPO3 by the :php-short:`\TYPO3\CMS\Core\Database\RelationHandler` and
 extbase TCA-aware domain logic.
 
 The :php:`MM_insert_fields` now allows to configure a hard coded value for

@@ -20,14 +20,14 @@ have been marked as deprecated and replaced by Context API.
 Impact
 ======
 
-Setting either :php:`forceTemplateParsing` of :php:`TypoScriptFrontendController` or :php:`TemplateService`
+Setting either :php:`forceTemplateParsing` of :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` or :php-short:`\TYPO3\CMS\Core\TypoScript\TemplateService`
 will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected Installations
 ======================
 
-All installations setting or reading :php:`$TSFE->forceTemplateParsing` or :php:`TemplateService->forceTemplateParsing`.
+All installations setting or reading :php:`$TSFE->forceTemplateParsing` or :php-short:`\TYPO3\CMS\Core\TypoScript\TemplateService->forceTemplateParsing`.
 
 
 Migration
