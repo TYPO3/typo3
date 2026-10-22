@@ -23,6 +23,7 @@ const FLAG_USE_IMPORTMAP = 2;
 const FLAG_USE_TOP_WINDOW = 16;
 const deniedProperties = ['__proto__', 'prototype', 'constructor'];
 const allowedJavaScriptItemTypes = ['assign', 'invoke', 'instance'];
+const pendingItemsKey = Symbol.for('@typo3/core/java-script-item-processor/pending-items');
 
 export interface JavaScriptInstruction {
   type: string;
@@ -145,16 +146,30 @@ export class JavaScriptItemProcessor {
   /**
    * Processes multiple items and delegates to handlers
    * (globalAssignment, javaScriptModuleInstruction)
+   *
+   * The returned promise settles once all items have been processed,
+   * and rejects if any of them failed.
    */
-  public processItems(items: JavaScriptItem[]) {
-    items.forEach((item) => this.invoke(item.type, item.payload));
+  public processItems(items: JavaScriptItem[]): Promise<void> {
+    const results = items.map((item) => this.invoke(item.type, item.payload));
+    return Promise.allSettled(results).then((outcomes): void => {
+      const errors = outcomes
+        .filter((outcome): outcome is PromiseRejectedResult => outcome.status === 'rejected')
+        .map((outcome) => outcome.reason);
+      if (errors.length === 1) {
+        throw errors[0];
+      }
+      if (errors.length > 1) {
+        throw new AggregateError(errors, 'Processing JavaScript items failed');
+      }
+    });
   }
 
-  private invoke(name: 'globalAssignment' | 'javaScriptModuleInstruction', data: any) {
+  private invoke(name: 'globalAssignment' | 'javaScriptModuleInstruction', data: any): void | Promise<unknown> {
     if (!this.invokableNames.includes(name) || typeof this[name] !== 'function') {
       throw new Error('Unknown handler name "' + name + '"');
     }
-    this[name].call(this, data);
+    return this[name].call(this, data);
   }
 
   /**
@@ -167,9 +182,40 @@ export class JavaScriptItemProcessor {
   /**
    * Loads and invokes a JavaScript (ESM) or requires.js (AMD) module.
    */
-  private javaScriptModuleInstruction(payload: JavaScriptItemPayload) {
-    executeJavaScriptModuleInstruction(payload);
+  private javaScriptModuleInstruction(payload: JavaScriptItemPayload): Promise<unknown> {
+    return executeJavaScriptModuleInstruction(payload);
   }
+}
+
+/**
+ * Resolves once the JavaScript items rendered with the current document have
+ * been processed, which means all modules they reference are loaded and their
+ * instructions are executed. Failed items count as processed as well.
+ *
+ * The document is loaded completely first, so that each item handler script
+ * of the document has been executed and registered its items.
+ */
+export async function whenItemsProcessed(): Promise<void> {
+  if (document.readyState !== 'complete') {
+    await new Promise<void>((resolve) => window.addEventListener('load', () => resolve(), { once: true }));
+  }
+  const pending = getPendingItems();
+  let count: number;
+  do {
+    count = pending.size;
+    await Promise.allSettled(pending);
+  } while (pending.size !== count);
+}
+
+/**
+ * Items are registered by `@typo3/core/java-script-item-handler`, which has to
+ * do so synchronously - before this module is loaded - and therefore shares the
+ * registry through a global symbol instead of importing it.
+ */
+function getPendingItems(): Set<Promise<void>> {
+  const registry = window as typeof window & { [pendingItemsKey]?: Set<Promise<void>> };
+  registry[pendingItemsKey] ??= new Set();
+  return registry[pendingItemsKey];
 }
 
 declare global {

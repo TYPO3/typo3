@@ -1,4 +1,5 @@
 import { Page, expect, Locator, FrameLocator } from '@playwright/test';
+import { moduleLoaded } from './module-loaded';
 
 export type ElementsBasicInputTestData = {
   label: string;
@@ -78,35 +79,11 @@ export class FormEngine {
   }
 
   /**
-   * Returns a waiter for the next `typo3-module-loaded` event. Awaiting
-   * the call installs the listener; the returned waiter resolves when
-   * the event fires. Both awaits are needed so the listener is in
-   * place before the triggering action runs:
-   *
-   *   const ready = await formEngine.formEngineLoaded();
-   *   await action();
-   *   await ready();
+   * Returns a waiter for the next module loaded into the content frame,
+   * see `moduleLoaded()` in `module-loaded.ts`.
    */
   async formEngineLoaded(): Promise<() => Promise<void>> {
-    const initial = await this.page.evaluate(() => {
-      const w = window as Window & { __typo3ModuleLoadedCounter?: number };
-      if (typeof w.__typo3ModuleLoadedCounter !== 'number') {
-        w.__typo3ModuleLoadedCounter = 0;
-        document.addEventListener('typo3-module-loaded', () => {
-          w.__typo3ModuleLoadedCounter = (w.__typo3ModuleLoadedCounter ?? 0) + 1;
-        });
-      }
-      return w.__typo3ModuleLoadedCounter;
-    });
-    return async () => {
-      await this.page.waitForFunction(
-        (initial) => {
-          const w = window as Window & { __typo3ModuleLoadedCounter?: number };
-          return (w.__typo3ModuleLoadedCounter ?? 0) > initial;
-        },
-        initial,
-      );
-    };
+    return moduleLoaded(this.page);
   }
 
   /**

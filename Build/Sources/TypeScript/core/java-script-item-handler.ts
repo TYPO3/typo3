@@ -22,8 +22,18 @@ if (document.currentScript) {
   const textContent = scriptElement.textContent.replace(/^\s*\/\*\s*|\s*\*\/\s*/g, '');
   const items = JSON.parse(textContent);
 
-  import('@typo3/core/java-script-item-processor').then(({ JavaScriptItemProcessor }) => {
+  const processed = import('@typo3/core/java-script-item-processor').then(({ JavaScriptItemProcessor }) => {
     const processor = new JavaScriptItemProcessor();
-    processor.processItems(items);
+    return processor.processItems(items);
   });
+
+  // Registered for `whenItemsProcessed()` of `@typo3/core/java-script-item-processor`.
+  // The registered promise only settles along with `processed`: a rejection stays
+  // unhandled in the chain created by `finally()` and is reported as before.
+  const pendingItemsKey = Symbol.for('@typo3/core/java-script-item-processor/pending-items');
+  const registry = window as typeof window & { [pendingItemsKey]?: Set<Promise<void>> };
+  registry[pendingItemsKey] ??= new Set();
+  registry[pendingItemsKey].add(new Promise<void>((resolve) => {
+    processed.finally(resolve);
+  }));
 }

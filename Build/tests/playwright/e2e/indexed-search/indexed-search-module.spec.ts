@@ -2,10 +2,9 @@ import { test, expect } from '../../fixtures/setup-fixtures';
 import type { FrameLocator } from '@playwright/test';
 
 test.describe('Indexed Search module', () => {
-  test('navigating between statistic views shows the expected content', async ({ page, backend }) => {
+  test('navigating between statistic views shows the expected content', async ({ backend }) => {
     await backend.gotoModule('content_status');
-    await backend.pageTree.isReady();
-    await page.locator('#typo3-pagetree-tree [role="treeitem"][data-id="0"] .node-contentlabel').click();
+    await backend.pageTree.openRoot();
 
     const contentFrame = backend.contentFrame;
     await expect(contentFrame.locator('h1')).toContainText('Status');
@@ -37,10 +36,9 @@ test.describe('Indexed Search module', () => {
     await expect(moduleBody).toContainText('Please select a page in the page tree.');
   });
 
-  test('selecting a page in the page tree keeps the selected module action', async ({ page, backend }) => {
+  test('selecting a page in the page tree keeps the selected module action', async ({ backend }) => {
     await backend.gotoModule('content_status');
-    await backend.pageTree.isReady();
-    await page.locator('#typo3-pagetree-tree [role="treeitem"][data-id="0"] .node-contentlabel').click();
+    await backend.pageTree.openRoot();
 
     const contentFrame = backend.contentFrame;
     await contentFrame.locator('a[aria-label="Open Indexing module"]').click();

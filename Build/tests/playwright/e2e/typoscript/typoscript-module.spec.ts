@@ -13,8 +13,8 @@ async function enterTypoScriptModule({ page, backend, workspace }: { page: any; 
 test.describe('TypoScript module', () => {
   test.beforeEach(enterTypoScriptModule);
 
-  test('pages without TypoScript record show buttons to create one', async ({ page, backend }) => {
-    await page.locator('#typo3-pagetree-tree [role="treeitem"][data-id="0"] .node-contentlabel').click();
+  test('pages without TypoScript record show buttons to create one', async ({ backend }) => {
+    await backend.pageTree.openRoot();
     const contentFrame = backend.contentFrame;
     await expect(contentFrame.locator('#ts-overview')).toBeVisible();
     await expect(contentFrame.locator('body')).toContainText(
