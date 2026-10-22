@@ -75,7 +75,7 @@ Impact
 ======
 
 Custom linktype classes should now configure a label by implementing the method
-:php:`LabelledLinktypeInterface::getReadableName()`.
+:php-short:`\TYPO3\CMS\Linkvalidator\Linktype\LabelledLinktypeInterface::getReadableName()`.
 
 All existing custom implementations of the
 :php-short:`\TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype` class or the

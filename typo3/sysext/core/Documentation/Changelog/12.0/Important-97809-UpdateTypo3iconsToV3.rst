@@ -26,8 +26,8 @@ How sizes can now be translated:
 - "medium" -> fixed to 32px
 - "large" -> fixed to 64px
 
-The TYPO3 Icon API previously set to :php:`Icon::SIZE_DEFAULT` by default and was
-adapted to now use :php:`Icon::SIZE_MEDIUM` instead. That means there is no
+The TYPO3 Icon API previously set to :php-short:`\TYPO3\CMS\Core\Imaging\Icon::SIZE_DEFAULT` by default and was
+adapted to now use :php-short:`\TYPO3\CMS\Core\Imaging\Icon::SIZE_MEDIUM` instead. That means there is no
 change in behaviour except you explicitly called the icon API with the
 size "default".
 

@@ -12,12 +12,12 @@ Description
 ===========
 
 The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getDefaultUploadFolder']` has been marked
-as deprecated in favor of a new PSR-14 event :php:`AfterDefaultUploadFolderWasResolvedEvent`.
+as deprecated in favor of a new PSR-14 event :php-short:`\TYPO3\CMS\Core\Resource\Event\AfterDefaultUploadFolderWasResolvedEvent`.
 
 Along with the hook, the two methods:
 
-* :php:`BackendUserAuthentication->getDefaultUploadFolder()`
-* :php:`BackendUserAuthentication->getDefaultUploadTemporaryFolder()`
+* :php-short:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->getDefaultUploadFolder()`
+* :php-short:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->getDefaultUploadTemporaryFolder()`
 
 have been marked as internal, as they are not considered part of the public TYPO3 API anymore.
 
@@ -26,7 +26,7 @@ Impact
 ======
 
 Using this hook will trigger a PHP deprecation notice every time the method
-:php:`BackendUserAuthentication->getDefaultUploadFolder()` is called,
+:php-short:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->getDefaultUploadFolder()` is called,
 
 
 Affected installations

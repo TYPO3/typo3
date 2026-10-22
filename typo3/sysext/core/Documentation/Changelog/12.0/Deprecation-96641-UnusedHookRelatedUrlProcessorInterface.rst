@@ -12,7 +12,7 @@ Description
 ===========
 
 The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlProcessors']`
-required hook implementations to implement :php:`UrlProcessorInterface`.
+required hook implementations to implement :php-short:`\TYPO3\CMS\Frontend\Http\UrlProcessorInterface`.
 
 Since the mentioned hook is :doc:`removed <../12.0/Breaking-96641-TypoLinkRelatedHooksRemoved>`,
 the interface is not in use anymore and has been marked as deprecated.

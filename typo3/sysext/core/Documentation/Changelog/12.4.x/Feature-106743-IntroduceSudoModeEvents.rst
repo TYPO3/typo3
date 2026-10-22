@@ -145,7 +145,7 @@ Impact
 This feature provides extension developers with a flexible mechanism to skip or adjust
 step-up authentication during sensitive backend operations. It is especially useful in
 environments utilizing SSO, where enforcing additional verification might not be feasible
-or necessary. By hooking into the new :php:`SudoModeRequiredEvent` and :php:`SudoModeVerifyEvent`
+or necessary. By hooking into the new :php-short:`\TYPO3\CMS\Backend\Security\SudoMode\Event\SudoModeRequiredEvent` and :php-short:`\TYPO3\CMS\Backend\Security\SudoMode\Event\SudoModeVerifyEvent`
 custom logic and behavior can be applied on a case-by-case basis.
 
 ..  index:: Backend, ext:backend

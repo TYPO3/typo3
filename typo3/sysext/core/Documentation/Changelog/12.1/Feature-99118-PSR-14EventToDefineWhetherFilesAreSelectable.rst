@@ -28,7 +28,7 @@ The event features the following methods:
 
     The :php:`fileIsSelectableInFileList()` method allowed to access the image
     dimensions (`width` and `height`) via the second parameter :php:`$imgInfo`.
-    Those information however can be retrieved directly from the :php:`FileInterface`
+    Those information however can be retrieved directly from the :php-short:`\TYPO3\CMS\Core\Resource\FileInterface`
     in a more convenient way using the :php:`getProperty()` method. Therefore,
     the new Event does not provide this parameter explicitly.
 

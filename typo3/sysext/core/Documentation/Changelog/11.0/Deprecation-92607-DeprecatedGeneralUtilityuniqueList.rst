@@ -11,12 +11,12 @@ See :issue:`92607`
 Description
 ===========
 
-Since longer than a decade, the :php:`GeneralUtility::uniqueList()` method does not
+Since longer than a decade, the :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::uniqueList()` method does not
 accept an :php:`array` as first argument anymore. The second
 parameter is unused just as long. Both throw an :php:`InvalidArgumentException` upon usage.
 
-As the method doesn't belong to :php:`GeneralUtility` at all, a new refactored
-version was added to :php:`StringUtility`. Therefore, the exceptions were removed
+As the method doesn't belong to :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility` at all, a new refactored
+version was added to :php-short:`\TYPO3\CMS\Core\Utility\StringUtility`. Therefore, the exceptions were removed
 along with the unused second parameter. The first parameter is now type hinted
 :php:`string` and the return type :php:`string` was added. The
 PHPDoc was updated accordingly.
@@ -38,7 +38,7 @@ TYPO3 installations with custom third-party extensions calling this method.
 Migration
 =========
 
-Use the new :php:`StringUtility::uniqueList()` method instead and ensure you
+Use the new :php-short:`\TYPO3\CMS\Core\Utility\StringUtility::uniqueList()` method instead and ensure you
 pass a valid string as first argument and omit the second argument.
 
 .. index:: PHP-API, FullyScanned, ext:core

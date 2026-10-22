@@ -32,7 +32,7 @@ These are the typical functionalities that extension authors should place within
 
 * Registering hooks or any simple array assignments to :php:`$TYPO3_CONF_VARS` options
 * Registering additional Request Handlers within the Bootstrap
-* Adding any PageTSconfig or Default TypoScript via :php:`ExtensionManagementUtility` APIs
+* Adding any PageTSconfig or Default TypoScript via :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility` APIs
 * Registering Extbase Command Controllers
 * Registering Scheduler Tasks
 * Adding reports to the reports module
@@ -44,8 +44,8 @@ These are the typical functions that should be placed inside :file:`ext_tables.p
 
 * Registering of Backend modules or Backend module functions
 * Adding Context-Sensitive-Help docs via ExtensionManagementUtility API
-* Adding TCA descriptions (via :php:`ExtensionManagementUtility::addLLrefForTCAdescr()`)
-* Adding table options via :php:`ExtensionManagementUtility::allowTableOnStandardPages`
+* Adding TCA descriptions (via :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr()`)
+* Adding table options via :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages`
 * Assignments to the global configuration arrays :php:`$TBE_STYLES` and :php:`$PAGES_TYPES`
 * Adding new fields to User Settings ("Setup" Extension)
 

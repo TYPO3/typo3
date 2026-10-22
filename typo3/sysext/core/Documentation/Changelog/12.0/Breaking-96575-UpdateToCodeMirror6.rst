@@ -37,7 +37,7 @@ The TYPO3 integration has been adapted to reflect the changed modes and
 addons in the `T3editor` configuration files:
 
 Adapt the mode configuration in :file:`Configuration/Backend/T3editor/Modes.php`
-to use :php:`JavaScriptModuleInstruction` statements that pick ES6 module
+to use :php-short:`\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction` statements that pick ES6 module
 for a specific language mode. A RequireJS module like
 :js:`codemirror/mode/css/css` is now shipped in `@codemirror/lang-css`:
 

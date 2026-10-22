@@ -25,7 +25,7 @@ services in the extension's :file:`Services.yaml` file by tagging the service
 with :yaml:`extbase.type_converter` and adding the configuration as tag
 attributes.
 
-This means, the registration via php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter()`
+This means, the registration via :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter()`
 can be removed together with the configuration related class properties and
 methods. See :doc:`changelog <../12.0/Breaking-94117-RegisterExtbaseTypeConvertersAsServices>`
 for more information.

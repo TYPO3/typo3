@@ -11,7 +11,7 @@ See :issue:`101933`
 Description
 ===========
 
-The :php:`AfterUserLoggedInEvent` PSR-14 event, which has been introduced
+The :php-short:`\TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent` PSR-14 event, which has been introduced
 with TYPO3 12.3, is now also triggered, when a frontend user has successfully
 been authenticated.
 

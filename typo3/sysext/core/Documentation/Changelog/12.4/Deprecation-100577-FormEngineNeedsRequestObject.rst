@@ -37,7 +37,7 @@ Migration
 =========
 
 Provide the request object as "initial data" when using the
-:php:`FormDataCompiler`:
+:php-short:`\TYPO3\CMS\Backend\Form\FormDataCompiler`:
 
 .. code-block:: php
 

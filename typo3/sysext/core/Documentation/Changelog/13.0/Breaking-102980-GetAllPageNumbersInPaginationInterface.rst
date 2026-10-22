@@ -23,21 +23,21 @@ The method has already been implemented in
 Impact
 ======
 
-Custom implementations of :php:`PaginationInterface` must implement the method.
+Custom implementations of :php-short:`\TYPO3\CMS\Core\Pagination\PaginationInterface` must implement the method.
 
 
 Affected installations
 ======================
 
 Instances with extensions that provide own pagination classes that implement
-:php:`PaginationInterface` may be affected.
+:php-short:`\TYPO3\CMS\Core\Pagination\PaginationInterface` may be affected.
 
 
 
 Migration
 =========
 
-See the two Core classes :php:`SimplePagination` and :php:`SlidingWindowPagination`
+See the two Core classes :php-short:`\TYPO3\CMS\Core\Pagination\SimplePagination` and :php-short:`\TYPO3\CMS\Core\Pagination\SlidingWindowPagination`
 for examples on how the method is implemented.
 
 

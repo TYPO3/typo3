@@ -51,7 +51,7 @@ Instead of using inline JavaScript for initializing RequireJS modules,
     }
 
 Deprecated example widget above would look like the following when using
-`JavaScriptInterface` and `JavaScriptModuleInstruction`:
+:php-short:`\TYPO3\CMS\Dashboard\Widgets\JavaScriptInterface` and :php-short:`\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction`:
 
 ..  code-block:: php
 

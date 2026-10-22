@@ -52,8 +52,8 @@ the site language in the :file:`config.yaml` matches the same value - even in a
 different format (:yaml:`locale: "de_AT.UTF-8"`, :yaml:`hreflang: "de-AT"`) - the setting
 :yaml:`hreflang` can be removed.
 
-Any calls to :php:`SiteLanguage->getHrefLang()` can be replaced by
-:php:`SiteLanguage->getLocale()->getName()`.
+Any calls to :php-short:`\TYPO3\CMS\Core\Site\Entity\SiteLanguage->getHrefLang()` can be replaced by
+:php-short:`\TYPO3\CMS\Core\Site\Entity\SiteLanguage->getLocale()->getName()`.
 
 As for TypoScript, it is recommended to use :typoscript:`siteLanguage:locale:full`
 instead of :typoscript:`siteLanguage:hrefLang`.

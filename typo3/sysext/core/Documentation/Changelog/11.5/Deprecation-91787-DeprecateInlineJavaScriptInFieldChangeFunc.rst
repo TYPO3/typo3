@@ -29,7 +29,7 @@ This interface provides both a new structured and declarative approach via
 is required in combination with legacy 3rd party extensions.
 
 Using :php:`fieldChangeFunc` with scalar :php:`string` values has been marked as deprecated and has to
-be substituted with specific implementations of :php:`OnFieldChangeInterface`.
+be substituted with specific implementations of :php-short:`\TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeInterface`.
 
 
 Impact

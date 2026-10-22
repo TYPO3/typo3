@@ -11,7 +11,7 @@ See :issue:`93062`
 Description
 ===========
 
-The PHP API class :php:`BackendUserAuthentication` was built back in
+The PHP API class :php-short:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication` was built back in
 PHP4 days and had a few public properties which have been removed.
 
 Their purpose was to store data between methods while resolving
@@ -32,14 +32,14 @@ Affected Installations
 ======================
 
 TYPO3 installations with third-party extensions accessing these
-:php:`BackendUserAuthentication` properties, which is highly unlikely,
+:php-short:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication` properties, which is highly unlikely,
 or because they were built 10 years ago, still accessing these properties.
 
 
 Migration
 =========
 
-Use :php:`BackendUserAuthentication->userGroupsUID` (array of group UIDs) instead,
+Use :php-short:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userGroupsUID` (array of group UIDs) instead,
 which contains the groups in the proper order on how they were resolved.
 
 If this is not needed directly, it is usually highly recommended to use the

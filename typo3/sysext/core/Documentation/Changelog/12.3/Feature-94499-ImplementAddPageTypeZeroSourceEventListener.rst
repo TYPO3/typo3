@@ -21,14 +21,14 @@ into account, for example, the `PageType route decorator`.
 
     If `source_host` and `source_path` lead to the same outcome for page type 0
     using full URI building, like the :php:`\TYPO3\CMS\Redirects\RedirectUpdate\PlainSlugReplacementRedirectSource`, the
-    :php:`PlainSlugReplacementSource` is replaced with the :php:`PageTypeSource`.
+    :php:`PlainSlugReplacementSource` is replaced with the :php-short:`\TYPO3\CMS\Redirects\RedirectUpdate\PageTypeSource`.
 
 It is not possible to configure page types for which sources should be added. If
 you need to do so, read :ref:`additional PageTypeSource auto-create redirect source type <feature-94499-1675615570>`
 which provides an example of how to implement custom event listeners based on
-:php:`PageTypeSource`.
+:php-short:`\TYPO3\CMS\Redirects\RedirectUpdate\PageTypeSource`.
 
-If :php:`PageTypeSource` for page type `0` results in a different
+If :php-short:`\TYPO3\CMS\Redirects\RedirectUpdate\PageTypeSource` for page type `0` results in a different
 source, the :php:`PlainSlugReplacementSource` is not removed to keep the original
 behaviour, which some instances may rely on.
 
@@ -116,7 +116,7 @@ Impact
 ======
 
 An additional redirect source is automatically added if a `PageType suffix`
-is configured in the :php:`SiteConfiguration` for page type `0`. In that case
+is configured in the :php-short:`\TYPO3\CMS\Core\Configuration\SiteConfiguration` for page type `0`. In that case
 two redirects are created, one for the plain slug change and one with the suffix
 in the `source_path`. That way it does not break instances relying on the
 fact that plain slug based redirects are created.

@@ -11,8 +11,8 @@ See :issue:`85236`
 Description
 ===========
 
-A new option :php:`logFileInfix` for the :php:`FileWriter` has been introduced.
-This allows to set a different name for the log file that is created by the :php:`FileWriter`
+A new option :php:`logFileInfix` for the :php-short:`\TYPO3\CMS\Core\Log\Writer\FileWriter` has been introduced.
+This allows to set a different name for the log file that is created by the :php-short:`\TYPO3\CMS\Core\Log\Writer\FileWriter`
 without having to define a full path to the file.
 
 The example configuration will use the log file named :file:`typo3\_special\_\<hash>.log`
@@ -32,6 +32,6 @@ for any log message stemming from a class from the :php:`Vendor\ExtName` namespa
 Impact
 ======
 
-The behaviour for existing :php:`FileWriter` configurations is not changed.
+The behaviour for existing :php-short:`\TYPO3\CMS\Core\Log\Writer\FileWriter` configurations is not changed.
 
 .. index:: LocalConfiguration, ext:core

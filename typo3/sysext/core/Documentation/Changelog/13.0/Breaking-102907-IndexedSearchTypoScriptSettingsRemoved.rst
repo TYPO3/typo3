@@ -12,7 +12,7 @@ Description
 ===========
 
 Indexed Search previously used a custom link building to generate links and their targets
-for linking to search results that are of type "page", instead of the native "typolink" (:php:`LinkFactory`)
+for linking to search results that are of type "page", instead of the native "typolink" (:php-short:`\TYPO3\CMS\Frontend\Typolink\LinkFactory`)
 system, automatically detecting links to other sites of the same installation and using
 the proper :typoscript:`extTarget` setting in TypoScript for creating the target attribute for the link.
 

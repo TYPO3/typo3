@@ -30,20 +30,20 @@ Users relying on the old behaviour can disable the feature switch.
 
 The change modifies how Extbase interprets the TypoScript settings
 :typoscript:`config.sys_language_mode` and :typoscript:`config.sys_language_overlay` and the
-:php:`Typo3QuerySettings` properties :php:`languageOverlayMode` and :php:`languageMode`.
+:php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings` properties :php:`languageOverlayMode` and :php:`languageMode`.
 
 Changes in the rendering:
 
-1) Setting :php:`Typo3QuerySettings->languageMode` does **not** influence how Extbase queries records anymore.
+1) Setting :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->languageMode` does **not** influence how Extbase queries records anymore.
    The corresponding TypoScript setting :typoscript:`config.sys_language_mode` is used by the core
    to decide what to do when a page is not translated to the given language (display 404, or try page with different language).
-   Users who used to set :php:`Typo3QuerySettings->languageMode` to `strict` should use
-   :php:`Typo3QuerySettings->setLanguageOverlayMode('hideNonTranslated')` to get translated records only.
+   Users who used to set :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->languageMode` to `strict` should use
+   :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->setLanguageOverlayMode('hideNonTranslated')` to get translated records only.
 
    The old behavior was confusing, because `languageMode` had different meaning and accepted different
    values in TS context and in Extbase context.
 
-2) Setting :php:`Typo3QuerySettings->languageOverlayMode` to :php:`true` makes Extbase fetch records
+2) Setting :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->languageOverlayMode` to :php:`true` makes Extbase fetch records
    from default language and overlay them with translated values. So e.g. when a record is hidden in
    the default language, it will not be shown. Also records without translation parents will not be shown.
    For relations, Extbase reads relations from a translated record (so it’s not possible to inherit
@@ -52,10 +52,10 @@ Changes in the rendering:
    `sys_file_reference` records which are connected to the translated record (not caring whether some of
    these files have `l10n_parent` set).
 
-   Previously :php:`Typo3QuerySettings->languageOverlayMode` had no effect.
+   Previously :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->languageOverlayMode` had no effect.
    Extbase always performed an overlay process on the result set.
 
-3) Setting :php:`Typo3QuerySettings->languageOverlayMode` to :php:`false` makes Extbase fetch aggregate
+3) Setting :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->languageOverlayMode` to :php:`false` makes Extbase fetch aggregate
    root records from a given language only. Extbase will follow relations (child records) as they are,
    without checking their `sys_language_uid` fields, and then it will pass these records through
    :php:`$pageRepository->getRecordOverlay()`.
@@ -70,10 +70,10 @@ Changes in the rendering:
    If you want to have just translated category shown, remove the relation in the translated `tt_content`
    record in the TYPO3 Backend.
 
-Note that by default :php:`Typo3QuerySettings` uses the global TypoScript configuration like
+Note that by default :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings` uses the global TypoScript configuration like
 :typoscript:`config.sys_language_overlay` and :php:`$GLOBALS['TSFE']->sys_language_content`
 (calculated based on :typoscript:`config.sys_language_uid` and :typoscript:`config.sys_language_mode`).
-So you need to change :php:`Typo3QuerySettings` manually only if your Extbase code should
+So you need to change :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings` manually only if your Extbase code should
 behave different than other `tt_content` rendering.
 
 Setting :php:`setLanguageOverlayMode()` on a query influences **only** fetching of the aggregate root. Relations are always
@@ -205,17 +205,17 @@ This limitation also applies to Extbase with feature flag being disabled.
 Summary of the important code changes
 =====================================
 
-1) :php:`DataMapper` gets a :php:`Query` as a constructor parameter. This allows to use aggregate root :php:`QuerySettings` (language)
+1) :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper` gets a :php:`Query` as a constructor parameter. This allows to use aggregate root :php:`QuerySettings` (language)
    when fetching child records/relations. Later, in a separate patch we can pass other settings too e.g. :php:`setIgnoreEnableFields`
-   to fix issue around this setting. See :php:`DataMapper->getPreparedQuery` method.
-2) :php:`DataMapper` is passed to  :php:`LazyLoadingProxy` and  :php:`LazyObjectStorage`, so the settings don't get lost when fetching data lazily.
+   to fix issue around this setting. See :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper->getPreparedQuery` method.
+2) :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper` is passed to  :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy` and  :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage`, so the settings don't get lost when fetching data lazily.
 3) :php:`Query` object gets a new property `parentQuery` which is useful to detect whether we're fetching aggregate root or child object.
 4) Extbase model for  :php:`FileReference` uses `_localizedUid` for fetching `OriginalResource`
-5) :php:`DataMapper` forces child records to be fetched using  :php:`setLanguageOverlayMode(true)`.
-6) When getRespectSysLanguage is set,  :php:`DataMapper` uses aggregate root language to overlay child records to correct language.
+5) :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper` forces child records to be fetched using  :php:`setLanguageOverlayMode(true)`.
+6) When getRespectSysLanguage is set,  :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper` uses aggregate root language to overlay child records to correct language.
 7) The `where` clause used for finding translated records in overlay mode (`true`, `hideNonTranslated`) has been fixed.
    It filters out the non translated records on db side in case `hideNonTranslated` is set.
-   It allows for filtering and sorting by translated values. See :php:`Typo3DbQueryParser->getLanguageStatement()`
+   It allows for filtering and sorting by translated values. See :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser->getLanguageStatement()`
 
 
 Most important known issues (this patch doesn't solve)

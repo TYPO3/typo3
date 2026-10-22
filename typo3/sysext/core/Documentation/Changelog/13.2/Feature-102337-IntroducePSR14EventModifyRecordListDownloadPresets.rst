@@ -44,7 +44,7 @@ The existing presets can be retrieved with these getters:
 - :php:`$preset->getIdentifier()`: Identifier of the preset (manually set or calculated based on label and columns)
 
 The event listener can also remove array indexes or columns of existing
-array entries by passing a newly constructed :php:`DownloadPreset` object with the
+array entries by passing a newly constructed :php-short:`\TYPO3\CMS\Backend\RecordList\DownloadPreset` object with the
 changed `label` and `columns` constructor properties.
 
 Example
@@ -97,7 +97,7 @@ The corresponding event listener class:
 Impact
 ======
 
-Using the PSR-14 event :php:`BeforeRecordDownloadPresetsAreDisplayedEvent`
+Using the PSR-14 event :php-short:`\TYPO3\CMS\Backend\RecordList\Event\BeforeRecordDownloadPresetsAreDisplayedEvent`
 it is now possible to modify the presets of each table for
 downloading / exporting a list of such records via the :guilabel:`Web > List`
 module.

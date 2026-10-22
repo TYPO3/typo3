@@ -27,17 +27,17 @@ markup rendering and payload processing in controller :php:`\TYPO3\CMS\Backend\C
 
 #.  A backend route is processed, that requires sudo mode for route URI `/my/route`
     in :php:`\TYPO3\CMS\Backend\Http\RouteDispatcher`.
-#.  Using :php:`AccessFactory` and :php:`AccessStorage`, the :php:`RouteDispatcher`
-    tries to find a valid and not expired :php:`AccessGrant` item for the specific
+#.  Using :php-short:`\TYPO3\CMS\Backend\Security\SudoMode\Access\AccessFactory` and :php-short:`\TYPO3\CMS\Backend\Security\SudoMode\Access\AccessStorage`, the :php-short:`\TYPO3\CMS\Backend\Http\RouteDispatcher`
+    tries to find a valid and not expired :php-short:`\TYPO3\CMS\Backend\Security\SudoMode\Access\AccessGrant` item for the specific
     :php:`RouteAccessSubject('/my/route')` aspect in the current backend user session data.
-#.  In case no :php:`AccessGrant` can be determined, a new :php:`AccessClaim` is created
-    for the specific :php:`RouteAccessSubject` instance and temporarily persisted in the
+#.  In case no :php-short:`\TYPO3\CMS\Backend\Security\SudoMode\Access\AccessGrant` can be determined, a new :php-short:`\TYPO3\CMS\Backend\Security\SudoMode\Access\AccessClaim` is created
+    for the specific :php-short:`\TYPO3\CMS\Backend\Security\SudoMode\Access\RouteAccessSubject` instance and temporarily persisted in the
     current user session data - the claim also contains the originally requested route
-    as :php:`ServerRequestInstruction` (a simplified representation of a :php:`ServerRequestInterface`).
+    as :php-short:`\TYPO3\CMS\Backend\Security\SudoMode\Access\ServerRequestInstruction` (a simplified representation of a :php:`ServerRequestInterface`).
 #.  Next, the user is redirected to the user interface for providing either their own password, or
     the global install tool password as alternative.
-#.  Given, the password was correct, the :php:`AccessClaim` is "converted" to an
-    :php:`AccessGrant`, which is only valid for the specific subject (URI `/my/route`)
+#.  Given, the password was correct, the :php-short:`\TYPO3\CMS\Backend\Security\SudoMode\Access\AccessClaim` is "converted" to an
+    :php-short:`\TYPO3\CMS\Backend\Security\SudoMode\Access\AccessGrant`, which is only valid for the specific subject (URI `/my/route`)
     and for a limited lifetime.
 
 

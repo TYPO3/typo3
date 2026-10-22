@@ -22,7 +22,7 @@ dynamically for a specific request.
 This functionality was removed during the refactoring of the
 authentication services (see :issue:`93108`).
 
-A new Event :php:`ModifyResolvedFrontendGroupsEvent` has now been
+A new Event :php-short:`\TYPO3\CMS\Frontend\Authentication\ModifyResolvedFrontendGroupsEvent` has now been
 introduced to modify user groups, even if there is no
 authenticated user in place.
 

@@ -38,7 +38,7 @@ Example with translations
     ])]
     protected string $myProperty = '';
 
-In this example, translation option keys for the :php:`NotEmptyValidator` are
+In this example, translation option keys for the :php-short:`\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator` are
 overwritten for the property :php:`$myProperty`. The :php:`locallang.xlf`
 translation file from the extension :php:`my_extension` will be used to lookup
 translations for the newly provided translation key options.
@@ -58,7 +58,7 @@ Example with a custom string
     ])]
     protected float $myProperty = 0.0;
 
-In this example, translation option keys for the :php:`FloatValidator` are
+In this example, translation option keys for the :php-short:`\TYPO3\CMS\Extbase\Validation\Validator\FloatValidator` are
 overwritten for the property :php:`$myProperty`. The message string is
 shown if validation fails.
 

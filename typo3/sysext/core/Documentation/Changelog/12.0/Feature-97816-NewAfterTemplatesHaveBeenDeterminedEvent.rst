@@ -15,7 +15,7 @@ With switching to the new TypoScript parser, hook
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Core/TypoScript/TemplateService']['runThroughTemplatesPostProcessing']`
 has been removed.
 
-The new event :php:`AfterTemplatesHaveBeenDeterminedEvent` can be used
+The new event :php-short:`\TYPO3\CMS\Core\TypoScript\IncludeTree\Event\AfterTemplatesHaveBeenDeterminedEvent` can be used
 to manipulate sys_template rows. The event receives the list of resolved
 sys_template rows and the :php:`ServerRequestInterface` and allows manipulating the
 sys_template rows array.

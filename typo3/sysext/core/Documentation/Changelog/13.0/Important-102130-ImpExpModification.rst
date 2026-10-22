@@ -13,7 +13,7 @@ Description
 
 The Import/Export backend module is based on code that is
 very hard to maintain, and is tightly coupled with both
-the :php:`DataHandler` and :php:`RefIndex` routines.
+the :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler` and :php:`RefIndex` routines.
 
 To improve maintainability and reliability in these areas,
 parts of the Import/Export module need to be refactored

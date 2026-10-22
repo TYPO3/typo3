@@ -42,7 +42,7 @@ The sequence looks like the following:
 ------------------------------------------
 
 This happens on the previous legitimate visit on a page that offers
-a corresponding form that shall be protected. The `RequestToken` and `Nonce`
+a corresponding form that shall be protected. The :php-short:`\TYPO3\CMS\Core\Security\RequestToken` and :php-short:`\TYPO3\CMS\Core\Security\Nonce`
 objects (later created implicitly in this example) are organized in the new
 :php:`\TYPO3\CMS\Core\Context\SecurityAspect`.
 

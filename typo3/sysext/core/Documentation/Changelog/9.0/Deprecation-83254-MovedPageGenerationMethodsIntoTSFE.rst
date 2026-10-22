@@ -36,6 +36,6 @@ Migration
 =========
 
 For the generation of the page title tag, the method
-:php:`TypoScriptFrontendController->generatePageTitle()` should be used instead.
+:php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->generatePageTitle()` should be used instead.
 
 .. index:: Frontend, PHP-API, FullyScanned

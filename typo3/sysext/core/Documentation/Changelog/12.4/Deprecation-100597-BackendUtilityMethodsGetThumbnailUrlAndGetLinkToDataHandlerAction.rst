@@ -32,7 +32,7 @@ scanner will report usages as strong match.
 Migration
 =========
 
-Instead of calling :php:`BackendUtility::getThumbnailUrl()`, inject and use
+Instead of calling :php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::getThumbnailUrl()`, inject and use
 the :php:`\TYPO3\CMS\Core\Resource\ResourceFactory` directly:
 
 .. code-block:: php
@@ -50,7 +50,7 @@ the :php:`\TYPO3\CMS\Core\Resource\ResourceFactory` directly:
         ->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, ['width' => 20, 'height' => 13])
         ->getPublicUrl();
 
-Instead of calling :php:`BackendUtility::getLinkToDataHandlerAction()`, inject
+Instead of calling :php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::getLinkToDataHandlerAction()`, inject
 and use the :php:`\TYPO3\CMS\Backend\Routing\UriBuilder` directly:
 
 ..  code-block:: php

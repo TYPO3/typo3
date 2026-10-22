@@ -34,7 +34,7 @@ this field in :php:`addRootLineFields`. This option is no longer evaluated.
 Relation fields attached to :sql:`pages` are always resolved in frontend.
 
 There should be hardly any extensions using this option, since it was
-an internal option of class :php:`RootlineUtility`. Extensions using
+an internal option of class :php-short:`\TYPO3\CMS\Core\Utility\RootlineUtility`. Extensions using
 :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields']` *may* trigger a
 PHP warning level error because the array key has been removed. The extension scanner
 is configured to locate such usages.

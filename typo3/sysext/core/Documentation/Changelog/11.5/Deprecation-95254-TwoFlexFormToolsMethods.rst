@@ -14,8 +14,8 @@ Description
 Two detail methods of class :php:`TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools`
 have been marked as deprecated:
 
-*   :php:`FlexFormTools->getArrayValueByPath()`
-*   :php:`FlexFormTools->setArrayValueByPath()`
+*   :php-short:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->getArrayValueByPath()`
+*   :php-short:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->setArrayValueByPath()`
 
 
 Impact

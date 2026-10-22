@@ -45,7 +45,7 @@ Extensions should no longer directly instantiate own views, but should get
 to retrieve a view.
 
 Within Extbase, :php:`ActionController->defaultViewObjectName` should only be
-set to Extbase :php:`JsonView` if needed, or not set at all. Custom view implementations
+set to Extbase :php-short:`\TYPO3\CMS\Extbase\Mvc\View\JsonView` if needed, or not set at all. Custom view implementations
 should implement an own :php-short:`\TYPO3\CMS\Core\View\ViewFactoryInterface` and configure
 controllers to inject an instance, or can set :php:`$this->defaultViewObjectName = JsonView::class`
 in a custom :php:`__construct()`.

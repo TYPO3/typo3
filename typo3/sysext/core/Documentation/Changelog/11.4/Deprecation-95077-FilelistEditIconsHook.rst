@@ -12,7 +12,7 @@ Description
 ===========
 
 The TYPO3 hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook']`
-which is executed in the :php:`FileList` class to manipulate the icons, used
+which is executed in the :php-short:`\TYPO3\CMS\Filelist\FileList` class to manipulate the icons, used
 for the edit control section in the files and folders listing, has been marked as
 deprecated.
 

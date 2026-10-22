@@ -19,18 +19,18 @@ In Extbase plugins, this could be configured via a TypoScript feature toggle (en
 
 :typoscript:`config.tx_extbase.features.requireCHashArgumentForActionArguments = 1`
 
-In Pi-based plugins the public property :php:`AbstractPlugin->pi_checkCHash`
+In Pi-based plugins the public property :php-short:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin->pi_checkCHash`
 was used to enable the cHash validation for non-cacheable plugins.
 
-Both plugin systems triggered the method :php:`TypoScriptFrontendController->reqCHash` which
-validated relevant GET parameters. However, the :php:`PageArgumentValidator` PSR-15 middleware now
+Both plugin systems triggered the method :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->reqCHash` which
+validated relevant GET parameters. However, the :php-short:`\TYPO3\CMS\Frontend\Middleware\PageArgumentValidator` PSR-15 middleware now
 always validates the cHash, so a plugin does not need to know about cHash validation anymore and
 therefore does not need to set the option.
 
 This means the options are not needed anymore, as the validation already happens during the Frontend
 request handling process. The options are removed.
 
-In addition, the method :php:`TypoScriptFrontendController->reqCHash()` has been marked as deprecated and
+In addition, the method :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->reqCHash()` has been marked as deprecated and
 is not in use anymore.
 
 
@@ -39,7 +39,7 @@ Impact
 
 Setting the option in Extbase or Pi-Base has no effect anymore.
 
-Calling the PHP method :php:`TypoScriptFrontendController->reqCHash()`
+Calling the PHP method :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->reqCHash()`
 will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 Internal classes such as the :php:`CacheHashEnforcer` are removed.

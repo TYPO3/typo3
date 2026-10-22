@@ -14,10 +14,10 @@ Description
 The deprecation log related methods from GeneralUtility along with a
 related configuration option have been deprecated:
 
-* :php:`GeneralUtility::logDeprecatedFunction()`
-* :php:`GeneralUtility::deprecationLog()`
-* :php:`GeneralUtility::getDeprecationLogFileName()`
-* :php:`GeneralUtility::logDeprecatedViewHelperAttribute()`
+* :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction()`
+* :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog()`
+* :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::getDeprecationLogFileName()`
+* :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedViewHelperAttribute()`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog']` has no effect anymore
 
 Deprecations now use PHP method :php:`trigger_error('a message', E_USER_DEPRECATED)` and run
@@ -29,7 +29,7 @@ Impact
 ======
 
 The file :file:`typo3conf/deprecation_xy.log` is no longer filled by the core. However, if an
-extension still uses methods like :php:`GeneralUtility::logDeprecatedFunction()` it is
+extension still uses methods like :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction()` it is
 still filled with these messages, and throws an additional PHP E_USER_DEPRECATED message.
 
 

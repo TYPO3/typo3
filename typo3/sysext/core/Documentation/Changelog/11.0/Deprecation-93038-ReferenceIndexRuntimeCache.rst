@@ -11,10 +11,10 @@ See :issue:`93038`
 Description
 ===========
 
-Two methods of class :php:`ReferenceIndex` have been marked as deprecated:
+Two methods of class :php-short:`\TYPO3\CMS\Core\Database\ReferenceIndex` have been marked as deprecated:
 
-* :php:`ReferenceIndex->enableRuntimeCache()`
-* :php:`ReferenceIndex->disableRuntimeCache()`
+* :php-short:`\TYPO3\CMS\Core\Database\ReferenceIndex->enableRuntimeCache()`
+* :php-short:`\TYPO3\CMS\Core\Database\ReferenceIndex->disableRuntimeCache()`
 
 
 Impact

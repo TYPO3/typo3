@@ -21,13 +21,13 @@ validated against the globally configured password policy.
 
 The event features the following methods:
 
-- :php:`getContextData()` returns the current :php:`ContextData` DTO
+- :php:`getContextData()` returns the current :php-short:`\TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData` DTO
 - :php:`getUserData()` returns an array with user data available from the
   initiating class
 - :php:`getInitiatingClass()` returns the class name, where the
-  :php:`ContextData` DTO is created
+  :php-short:`\TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData` DTO is created
 
-The event can be used to enrich the :php:`ContextData` DTO with additional data
+The event can be used to enrich the :php-short:`\TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData` DTO with additional data
 used in custom password policy validators.
 
 ..  note::
@@ -73,8 +73,8 @@ The corresponding event listener class:
 Impact
 ======
 
-With the new :php:`EnrichPasswordValidationContextDataEvent`, it is now
-possible to enrich the :php:`ContextData` DTO used in password policy
+With the new :php-short:`\TYPO3\CMS\Core\PasswordPolicy\Event\EnrichPasswordValidationContextDataEvent`, it is now
+possible to enrich the :php-short:`\TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData` DTO used in password policy
 validation with additional data.
 
 .. index:: ext:core

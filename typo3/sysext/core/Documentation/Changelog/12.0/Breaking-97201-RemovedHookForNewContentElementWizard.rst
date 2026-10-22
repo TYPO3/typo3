@@ -23,7 +23,7 @@ authors to provide the same information twice in two different formats.
 
     The public methods :php:`getPageInfo()`, :php:`getColPos()`,
     :php:`getSysLanguage()` and :php:`getUidPid()` have been removed
-    from the internal :php:`NewContentElementController` class, since
+    from the internal :php-short:`\TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController` class, since
     they were only added for the use in the now removed hook. This
     information is now directly available in the new PSR-14 event.
 

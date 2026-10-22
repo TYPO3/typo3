@@ -220,7 +220,7 @@ TYPO3 Integration and API
    use-cases, the API is not capable yet.
 
 To register a custom MFA provider, the provider class has to implement the new
-:php:`MfaProviderInterface`, shipped via a third-party extension. The provider
+:php-short:`\TYPO3\CMS\Core\Authentication\Mfa\MfaProviderInterface`, shipped via a third-party extension. The provider
 then has to be configured in the extensions' :file:`Services.yaml` or
 :file:`Services.php` file with the :yaml:`mfa.provider` tag.
 
@@ -251,7 +251,7 @@ You can also completely deactivate existing providers with:
 
    TYPO3\CMS\Core\Authentication\Mfa\Provider\TotpProvider: ~
 
-The :php:`MfaProviderInterface` contains a lot of methods to be implemented by
+The :php-short:`\TYPO3\CMS\Core\Authentication\Mfa\MfaProviderInterface` contains a lot of methods to be implemented by
 the providers. This can be split up into state-providing ones,
 e.g. :php:`isActive` or :php:`isLocked` and functional ones,
 e.g. :php:`activate` or :php:`update`.
@@ -260,7 +260,7 @@ Their exact task is explained in the corresponding PHPDoc of the Interface files
 and the Core MFA provider implementations.
 
 All of these methods are receiving either the current PSR-7 Request object, the
-:php:`MfaProviderPropertyManager` or both. The :php:`MfaProviderPropertyManager`
+:php-short:`\TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager` or both. The :php-short:`\TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager`
 can be used to retrieve and update the provider specific properties and
 also contains the :php:`getUser` method, providing the current user object.
 
@@ -274,7 +274,7 @@ have such a generic field so providers are able to store arbitrary data TYPO3
 does not need to know about.
 
 To retrieve and update the providers data, the already mentioned
-:php:`MfaProviderPropertyManager`, which is automatically passed to all
+:php-short:`\TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager`, which is automatically passed to all
 necessary provider methods, should be used. It is highly discouraged
 to directly access the :sql:`mfa` database field.
 

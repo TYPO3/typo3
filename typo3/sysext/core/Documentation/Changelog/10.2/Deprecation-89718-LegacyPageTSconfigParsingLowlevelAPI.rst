@@ -69,6 +69,6 @@ The string is parsed (and conditions are applied) with the Parser:
    );
 
 Extension developers should rely on this syntax rather than
-on :php:`$GLOBALS['TSFE']->getPagesTSconfig()` or :php:`BackendUtility::getPagesTsConfig()`, or the deprecated method / class.
+on :php:`$GLOBALS['TSFE']->getPagesTSconfig()` or :php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTsConfig()`, or the deprecated method / class.
 
 .. index:: PHP-API, TSConfig, FullyScanned, ext:core

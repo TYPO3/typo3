@@ -22,7 +22,7 @@ configuration that can now be specified in TCA, the recommended approach is to
 define icon overlays directly in TCA using the new :php:`iconOverlay` option
 for select items.
 
-The :php:`iconOverlay` property is now supported in the :php:`SelectItem`
+The :php:`iconOverlay` property is now supported in the :php-short:`\TYPO3\CMS\Core\Schema\Struct\SelectItem`
 component, enabling icon overlays for wizard items that are auto-registered
 via TCA.
 

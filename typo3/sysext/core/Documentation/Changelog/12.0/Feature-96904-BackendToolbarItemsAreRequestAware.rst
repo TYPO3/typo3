@@ -21,10 +21,10 @@ current request.
 Impact
 ======
 
-The TYPO3 Core encourages to use :php:`BackendViewFactory` instead of
-:php:`StandaloneView` when toolbar items of extensions use Fluid templates.
-:php:`BackendViewFactory` has a dependency to current request, so
-:php:`RequestAwareToolbarItemInterface` should be implemented
+The TYPO3 Core encourages to use :php-short:`\TYPO3\CMS\Backend\View\BackendViewFactory` instead of
+:php-short:`\TYPO3\CMS\Fluid\View\StandaloneView` when toolbar items of extensions use Fluid templates.
+:php-short:`\TYPO3\CMS\Backend\View\BackendViewFactory` has a dependency to current request, so
+:php-short:`\TYPO3\CMS\Backend\Toolbar\RequestAwareToolbarItemInterface` should be implemented
 to receive the current request from TYPO3 EXT:backend.
 
 Doing so enables the :doc:`template overrides by TSconfig

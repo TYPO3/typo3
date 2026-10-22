@@ -11,7 +11,7 @@ See :issue:`92736`
 Description
 ===========
 
-The :php:`DateTimeAspect`, introduced to supersede the use of superglobals like
+The :php-short:`\TYPO3\CMS\Core\Context\DateTimeAspect`, introduced to supersede the use of superglobals like
 :php:`$GLOBALS['EXEC_TIME'],` can be used to retrieve the current timestamp.
 
 .. code-block:: php

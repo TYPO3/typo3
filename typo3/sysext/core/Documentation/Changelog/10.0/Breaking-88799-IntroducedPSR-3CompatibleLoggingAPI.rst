@@ -24,7 +24,7 @@ Impact
 The class :php:`\TYPO3\CMS\Core\Log\LogLevel` now extends from the PSR-3 base class and therefore inherits the new definition
 of the log levels (`EMERGENCY` to `DEBUG`) based on string values.
 
-The signatures of following methods have been adjusted to accept the new :php:`LogLevel::*` constants:
+The signatures of following methods have been adjusted to accept the new :php-short:`\TYPO3\CMS\Core\Log\LogLevel::*` constants:
 
 * :php:`\TYPO3\CMS\Core\Log\Logger::addWriter`
 * :php:`\TYPO3\CMS\Core\Log\Logger::addProcessor`
@@ -60,7 +60,7 @@ Example:
       ],
    ];
 
-In case you have used the constants like :php:`LogLevel::DEBUG` you are fine and your config will work like before.
+In case you have used the constants like :php-short:`\TYPO3\CMS\Core\Log\LogLevel::DEBUG` you are fine and your config will work like before.
 
 
 Affected Installations

@@ -99,7 +99,7 @@ Impact
 ======
 
 Calling one of the above methods or accessing one of the above properties on an instance of
-:php:`EditDocumentController` will throw a deprecation warning in v9 and a PHP fatal in v10.
+:php-short:`\TYPO3\CMS\Backend\Controller\EditDocumentController` will throw a deprecation warning in v9 and a PHP fatal in v10.
 
 
 Affected Installations
@@ -124,7 +124,7 @@ usages should be rewritten to be free of calls like these.
 Registered slots for the two signals :php:`preInitAfter` and :php:`initAfter` should read
 (not write!) from new second argument :php:`$request` instead.
 Slots that currently write to "parent object" should instead be turned into a PSR-15 middleware
-to manipulate :php:`$request` before :php:`EditDocumentController` is called.
+to manipulate :php:`$request` before :php-short:`\TYPO3\CMS\Backend\Controller\EditDocumentController` is called.
 
 
 .. index:: Backend, PHP-API, PartiallyScanned

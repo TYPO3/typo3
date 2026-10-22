@@ -30,7 +30,7 @@ Impact
 Setting any global variables between the constructor method and :php:`start()` will have no effect, as
 this is transferred and evaluated at the public properties already when the constructor is called.
 
-Subclassing :php:`AbstractUserAuthentication` without setting :php:`loginType` will trigger an exception
+Subclassing :php-short:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication` without setting :php:`loginType` will trigger an exception
 on instantiation.
 
 

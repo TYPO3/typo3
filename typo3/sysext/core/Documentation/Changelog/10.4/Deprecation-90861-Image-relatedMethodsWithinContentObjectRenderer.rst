@@ -23,7 +23,7 @@ all which are related to generating :html:`<img>` tags for TYPO3 Frontend output
 
 An additional method, :php:`imageLinkWrap()` has been marked as "internal" now in order to allow refactoring in future TYPO3 versions.
 
-All methods have been moved to the :php:`ImageContentObject` class, als known as "IMAGE" cObject.
+All methods have been moved to the :php-short:`\TYPO3\CMS\Frontend\ContentObject\ImageContentObject` class, als known as "IMAGE" cObject.
 
 The methods purpose is only relevant for generating IMAGE, thus making the actual ContentObjectRenderer class smaller.
 

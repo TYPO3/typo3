@@ -30,6 +30,6 @@ Migration
 =========
 
 Either use the ViewHelper :html:`<core:iconForResource resource="{file}" />` or
-:php:`GeneralUtility::makeInstance(IconFactory::class)->getIconForResource($resource)` to render a resource-based icon.
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(IconFactory::class)->getIconForResource($resource)` to render a resource-based icon.
 
 .. index:: FAL, FullyScanned

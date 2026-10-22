@@ -62,6 +62,6 @@ add the tag :yaml:`recordlist.elementbrowser` manually to your `element browser`
 
 Additionally, make sure to either implement
 :php:`public function getIdentifier(): string` or, in case your `element browser`
-extends :php:`AbstractElementBrowser`, to set the `$identifier` class property.
+extends :php-short:`\TYPO3\CMS\Backend\ElementBrowser\AbstractElementBrowser`, to set the `$identifier` class property.
 
 .. index:: Backend, LocalConfiguration, PHP-API, FullyScanned, ext:backend

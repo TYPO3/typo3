@@ -32,7 +32,7 @@ Migration
 
 Use the Context API and its workspace aspect
 
-:php:`GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id', 0);`
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id', 0);`
 
 directly when reading the workspace ID, or instantiate a custom PageRepository with a custom context (see Context
 API docs) for custom usages.

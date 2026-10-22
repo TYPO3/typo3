@@ -21,16 +21,16 @@ volatile files.
 
 The following static API methods are exposed within the Environment class:
 
-* `Environment::isCli()` - defines whether TYPO3 runs on a CLI context or HTTP context
-* `Environment::getApplicationContext()` - returns the ApplicationContext object that encapsulates `TYPO3_CONTEXT`
-* `Environment::isComposerMode()` - defines whether TYPO3 was installed via composer
-* `Environment::getProjectPath()` - returns the absolute path to the root-level folder without the trailing slash
-* `Environment::getPublicPath()` - returns the absolute path to the publicly accessible folder (previously known as PATH_site) without the trailing slash
-* `Environment::getVarPath()` - returns the absolute path to the folder where non-public semi-persistent files can be stored. For regular projects, this is known as PATH_site/typo3temp/var
-* `Environment::getConfigPath()` - returns the absolute path to the folder where (writeable) configuration is stored. For regular projects, this is known as PATH_site/typo3conf
-* `Environment::getCurrentScript()` - the absolute path and filename to the currently executed PHP script
-* `Environment::isWindows()` - whether TYPO3 runs on a windows server
-* `Environment::isUnix()` - whether TYPO3 runs on a unix server
+* :php-short:`\TYPO3\CMS\Core\Core\Environment::isCli()` - defines whether TYPO3 runs on a CLI context or HTTP context
+* :php-short:`\TYPO3\CMS\Core\Core\Environment::getApplicationContext()` - returns the ApplicationContext object that encapsulates `TYPO3_CONTEXT`
+* :php-short:`\TYPO3\CMS\Core\Core\Environment::isComposerMode()` - defines whether TYPO3 was installed via composer
+* :php-short:`\TYPO3\CMS\Core\Core\Environment::getProjectPath()` - returns the absolute path to the root-level folder without the trailing slash
+* :php-short:`\TYPO3\CMS\Core\Core\Environment::getPublicPath()` - returns the absolute path to the publicly accessible folder (previously known as PATH_site) without the trailing slash
+* :php-short:`\TYPO3\CMS\Core\Core\Environment::getVarPath()` - returns the absolute path to the folder where non-public semi-persistent files can be stored. For regular projects, this is known as PATH_site/typo3temp/var
+* :php-short:`\TYPO3\CMS\Core\Core\Environment::getConfigPath()` - returns the absolute path to the folder where (writeable) configuration is stored. For regular projects, this is known as PATH_site/typo3conf
+* :php-short:`\TYPO3\CMS\Core\Core\Environment::getCurrentScript()` - the absolute path and filename to the currently executed PHP script
+* :php-short:`\TYPO3\CMS\Core\Core\Environment::isWindows()` - whether TYPO3 runs on a windows server
+* :php-short:`\TYPO3\CMS\Core\Core\Environment::isUnix()` - whether TYPO3 runs on a unix server
 
 
 Impact

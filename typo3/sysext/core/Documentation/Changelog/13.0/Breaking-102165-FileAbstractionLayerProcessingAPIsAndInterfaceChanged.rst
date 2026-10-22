@@ -40,7 +40,7 @@ Impact
 Custom FAL processing tasks will result in a fatal error if not adapted to the
 new interface.
 
-If an extension was depending on :php:`AbstractGraphicalTask`, calling this
+If an extension was depending on :php-short:`\TYPO3\CMS\Core\Resource\Processing\AbstractGraphicalTask`, calling this
 code will now result in a PHP fatal error.
 
 
@@ -58,9 +58,9 @@ Migration
 Implementing a custom FAL processing task will require the extension author to
 adapt to the new interface requirements.
 
-When a custom task was built on top of the :php:`AbstractGraphicalTask`, this
-now needs to be removed and be compliant with the :php:`TaskInterface`, optionally
-inheriting from the :php:`AbstractTask` class. This can already be achieved for
+When a custom task was built on top of the :php-short:`\TYPO3\CMS\Core\Resource\Processing\AbstractGraphicalTask`, this
+now needs to be removed and be compliant with the :php-short:`\TYPO3\CMS\Core\Resource\Processing\TaskInterface`, optionally
+inheriting from the :php-short:`\TYPO3\CMS\Core\Resource\Processing\AbstractTask` class. This can already be achieved for
 TYPO3 v12 to make an implementation compatible with TYPO3 v12 and TYPO3 v13.
 
 .. index:: FAL, PHP-API, PartiallyScanned, ext:core

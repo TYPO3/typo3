@@ -59,7 +59,7 @@ problems with external link checking.
 Solutions:
 
 *   do not use external link checking
-*   or, create a custom linktype class to replace :php:`ExternalLinktype`
+*   or, create a custom linktype class to replace :php-short:`\TYPO3\CMS\Linkvalidator\Linktype\ExternalLinktype`
 
     *   the custom link type should rate limit when checking external links,
         for example, by adding a crawl delay in the link targets with the same domain

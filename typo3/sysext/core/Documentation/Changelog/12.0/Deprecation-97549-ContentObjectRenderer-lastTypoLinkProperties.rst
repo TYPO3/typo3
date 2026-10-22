@@ -11,17 +11,17 @@ See :issue:`97549`
 Description
 ===========
 
-When generating links via :php:`ContentObjectRenderer->typoLink()`,
+When generating links via :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->typoLink()`,
 it had been possible to retrieve information about the generated link
 with the following public properties:
 
-* :php:`ContentObjectRenderer->lastTypoLinkUrl`
-* :php:`ContentObjectRenderer->lastTypoLinkTarget`
-* :php:`ContentObjectRenderer->lastTypoLinkLD`
+* :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkUrl`
+* :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkTarget`
+* :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkLD`
 
-Since those information are also available in the :php:`LinkResultInterface`,
-which is returned by :php:`ContentObjectRenderer->createLink()` or
-can be accessed via :php:`ContentObjectRenderer->lastTypoLinkResult`,
+Since those information are also available in the :php-short:`\TYPO3\CMS\Frontend\Typolink\LinkResultInterface`,
+which is returned by :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->createLink()` or
+can be accessed via :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkResult`,
 these properties have now been deprecated.
 
 Impact
@@ -39,8 +39,8 @@ PHP or TypoScript code.
 Migration
 =========
 
-It is recommended to retrieve this information via the :php:`LinkResultInterface`
-object returned by calling :php:`ContentObjectRenderer->createLink()` directly,
-or if this is not possible via :php:`ContentObjectRenderer->lastTypoLinkResult`.
+It is recommended to retrieve this information via the :php-short:`\TYPO3\CMS\Frontend\Typolink\LinkResultInterface`
+object returned by calling :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->createLink()` directly,
+or if this is not possible via :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkResult`.
 
 .. index:: Frontend, PHP-API, TypoScript, FullyScanned, ext:frontend

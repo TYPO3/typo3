@@ -11,8 +11,8 @@ See :issue:`95293`
 Description
 ===========
 
-The helper methods :php:`StringUtility::beginsWith()` and
-:php:`StringUtility::endsWith()` have been marked as deprecated, as the newly
+The helper methods :php-short:`\TYPO3\CMS\Core\Utility\StringUtility::beginsWith()` and
+:php-short:`\TYPO3\CMS\Core\Utility\StringUtility::endsWith()` have been marked as deprecated, as the newly
 available PHP-built in functions :php:`str_starts_with()` and
 :php:`str_ends_with()` can be used instead, which support proper typing and
 is faster on PHP 8.0.
@@ -25,7 +25,7 @@ since TYPO3 v10 LTS.
 Impact
 ======
 
-Calling :php:`StringUtility::beginsWith()` or :php:`StringUtility::endsWith()`
+Calling :php-short:`\TYPO3\CMS\Core\Utility\StringUtility::beginsWith()` or :php-short:`\TYPO3\CMS\Core\Utility\StringUtility::endsWith()`
 will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
@@ -40,8 +40,8 @@ will show any matches.
 Migration
 =========
 
-Replace all calls of :php:`StringUtility::beginsWith()` with
-:php:`str_starts_with()` and :php:`StringUtility::endsWith()`
+Replace all calls of :php-short:`\TYPO3\CMS\Core\Utility\StringUtility::beginsWith()` with
+:php:`str_starts_with()` and :php-short:`\TYPO3\CMS\Core\Utility\StringUtility::endsWith()`
 with :php:`str_ends_with()` to avoid deprecation warnings and to keep your
 code up-to-date.
 

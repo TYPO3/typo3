@@ -11,14 +11,14 @@ See :issue:`82334`
 Description
 ===========
 
-The PHP classes :php:`AbstractRecordList` and :php:`AbstractDatabaseRecordList` have been marked as deprecated.
+The PHP classes :php-short:`\TYPO3\CMS\Backend\RecordList\AbstractRecordList` and :php-short:`\TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList` have been marked as deprecated.
 
 Some classes changed inheritances, which can be breaking for instance in hooks if they type hint or otherwise
 check instance types of these classes:
 
-* :php:`PageLayoutView` no longer extends :php:`AbstractDatabaseRecordList`
-* :php:`FileList` no longer extends :php:`AbstractRecordList`
-* :php:`DatabaseRecordList` no longer extends :php:`AbstractDatabaseRecordList`
+* :php-short:`\TYPO3\CMS\Backend\View\PageLayoutView` no longer extends :php-short:`\TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList`
+* :php-short:`\TYPO3\CMS\Filelist\FileList` no longer extends :php-short:`\TYPO3\CMS\Backend\RecordList\AbstractRecordList`
+* :php-short:`\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList` no longer extends :php-short:`\TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList`
 
 
 Impact

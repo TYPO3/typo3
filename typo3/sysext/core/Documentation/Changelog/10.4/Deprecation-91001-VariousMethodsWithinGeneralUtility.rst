@@ -14,15 +14,15 @@ Description
 The following methods within GeneralUtility have been marked as deprecated,
 as the native PHP methods can be used directly:
 
-* :php:`GeneralUtility::IPv6Hex2Bin()`
-* :php:`GeneralUtility::IPv6Bin2Hex()`
-* :php:`GeneralUtility::compressIPv6()`
-* :php:`GeneralUtility::milliseconds()`
+* :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::IPv6Hex2Bin()`
+* :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::IPv6Bin2Hex()`
+* :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::compressIPv6()`
+* :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds()`
 
 In addition, these methods are unused by Core and marked as deprecated as well:
 
-* :php:`GeneralUtility::linkThisUrl()`
-* :php:`GeneralUtility::flushDirectory()`
+* :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl()`
+* :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::flushDirectory()`
 
 
 Impact
@@ -43,17 +43,17 @@ Migration
 As the following methods are just wrappers around native PHP methods, it is
 recommended to switch to native PHP to speed up performance:
 
-* :php:`GeneralUtility::IPv6Hex2Bin($hex)`: :php:`inet_pton($hex)`
-* :php:`GeneralUtility::IPv6Bin2Hex($bin)`: :php:`inet_ntop($bin)`
-* :php:`GeneralUtility::compressIPv6($address)`: :php:`inet_ntop(inet_pton($address))`
-* :php:`GeneralUtility::milliseconds()`: :php:`round(microtime(true) * 1000)`
+* :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::IPv6Hex2Bin($hex)`: :php:`inet_pton($hex)`
+* :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::IPv6Bin2Hex($bin)`: :php:`inet_ntop($bin)`
+* :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::compressIPv6($address)`: :php:`inet_ntop(inet_pton($address))`
+* :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds()`: :php:`round(microtime(true) * 1000)`
 
-As for :php:`GeneralUtility::linkThisUrl()` it is recommended to migrate to
+As for :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl()` it is recommended to migrate to
 PSR-7 (UriInterface).
 
-The method :php:`GeneralUtility::flushDirectory()` uses a clearing
+The method :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::flushDirectory()` uses a clearing
 folder structure which is only used for caching to avoid race-conditioning. It
-is recommended to use :php:`GeneralUtility::rmdir()` or implement the code
+is recommended to use :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir()` or implement the code
 directly in the third-party extension.
 
 .. index:: PHP-API, FullyScanned, ext:core

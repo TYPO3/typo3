@@ -12,12 +12,12 @@ Description
 ===========
 
 The public property :php:`forceSetCookie`
-is removed from the PHP class :php:`AbstractUserAuthentication`.
+is removed from the PHP class :php-short:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication`.
 
 This property served to ensure that a cookie should be added
 at any times, which is useful for time-based cookies, which only
 happen in Frontend user sessions. This property is now moved as a protected
-property into the :php:`FrontendUserAuthentication` class and used in this class
+property into the :php-short:`\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication` class and used in this class
 solely to reduce the complexity of the internal logic as well as outside API.
 
 

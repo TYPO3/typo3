@@ -19,7 +19,7 @@ Impact
 ======
 
 Overriding the property :php:`$viewFormatToObjectNameMap` in
-controllers that extend :php:`ActionController` will no longer trigger
+controllers that extend :php-short:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController` will no longer trigger
 the instantiation of another view object, derived from the mapping.
 
 Affected Installations

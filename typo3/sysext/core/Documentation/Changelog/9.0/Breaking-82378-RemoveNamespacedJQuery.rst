@@ -30,14 +30,14 @@ Calling :js:`TYPO3.jQuery.*` will result in a TypeError.
 Affected Installations
 ======================
 
-All installations using a custom namespace, :php:`PageRenderer::JQUERY_NAMESPACE_DEFAULT`
-:php:`PageRenderer::JQUERY_NAMESPACE_DEFAULT` or relying on :js:`TYPO3.jQuery` are affected.
+All installations using a custom namespace, :php-short:`\TYPO3\CMS\Core\Page\PageRenderer::JQUERY_NAMESPACE_DEFAULT`
+:php-short:`\TYPO3\CMS\Core\Page\PageRenderer::JQUERY_NAMESPACE_DEFAULT` or relying on :js:`TYPO3.jQuery` are affected.
 
 
 Migration
 =========
 
-Remove :php:`$namespace` argument in :php:`PageRenderer->loadJquery()` and either use :js:`window.$` or migrate
+Remove :php:`$namespace` argument in :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->loadJquery()` and either use :js:`window.$` or migrate
 to RequireJS.
 
 .. index:: Backend, Frontend, JavaScript, PartiallyScanned

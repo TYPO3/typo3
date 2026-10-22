@@ -28,15 +28,15 @@ composer-based installations.
 
 The following classes for internal use only and have been removed:
 
-* :php:`ClassInfo`
-* :php:`ClassInfoCache`
-* :php:`ClassInfoFactory`
-* :php:`ClassReflection`
-* :php:`MethodReflection`
-* :php:`ParameterReflection`
+* :php-short:`\TYPO3\CMS\Extbase\Object\Container\ClassInfo`
+* :php-short:`\TYPO3\CMS\Extbase\Object\Container\ClassInfoCache`
+* :php-short:`\TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory`
+* :php-short:`\TYPO3\CMS\Extbase\Reflection\ClassReflection`
+* :php-short:`\TYPO3\CMS\Extbase\Reflection\MethodReflection`
+* :php-short:`\TYPO3\CMS\Extbase\Reflection\ParameterReflection`
 * :php:`PropertyReflection`
 
-The following methods of the PHP class :php:`ReflectionService` have been removed:
+The following methods of the PHP class :php-short:`\TYPO3\CMS\Extbase\Reflection\ReflectionService` have been removed:
 
 * :php:`injectConfigurationManager`
 * :php:`setDataCache`
@@ -60,7 +60,7 @@ Installations using one of the mentioned classes or methods instead of the Refle
 Migration
 =========
 
-Use the class :php:`ReflectionService` as API which will be automatically initialized on
+Use the class :php-short:`\TYPO3\CMS\Extbase\Reflection\ReflectionService` as API which will be automatically initialized on
 instantiation.
 
 .. index:: PHP-API, FullyScanned, ext:extbase

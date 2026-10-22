@@ -24,27 +24,27 @@ The base class is still available, but discouraged to be used or extended,
 even though TYPO3 still uses this in a few places.
 
 The following properties and methods within the base class
-:php:`AbstractTreeView` have either been marked as deprecated or
+:php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView` have either been marked as deprecated or
 declared as internal:
 
-* :php:`AbstractTreeView->thisScript`
-* :php:`AbstractTreeView->BE_USER`
-* :php:`AbstractTreeView->clause`
-* :php:`AbstractTreeView->title`
-* :php:`AbstractTreeView->table`
-* :php:`AbstractTreeView->parentField`
-* :php:`AbstractTreeView->orderByFields`
-* :php:`AbstractTreeView->fieldArray`
-* :php:`AbstractTreeView->defaultList`
-* :php:`AbstractTreeView->determineScriptUrl()`
-* :php:`AbstractTreeView->getThisScript()`
-* :php:`AbstractTreeView->PM_ATagWrap()`
-* :php:`AbstractTreeView->addTagAttributes()`
-* :php:`AbstractTreeView->getRootIcon()`
-* :php:`AbstractTreeView->getIcon()`
-* :php:`AbstractTreeView->getRootRecord()`
-* :php:`AbstractTreeView->getTitleStr()`
-* :php:`AbstractTreeView->getTitleAttrib()`
+* :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->thisScript`
+* :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->BE_USER`
+* :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->clause`
+* :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->title`
+* :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->table`
+* :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->parentField`
+* :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->orderByFields`
+* :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->fieldArray`
+* :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->defaultList`
+* :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->determineScriptUrl()`
+* :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getThisScript()`
+* :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->PM_ATagWrap()`
+* :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->addTagAttributes()`
+* :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getRootIcon()`
+* :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getIcon()`
+* :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getRootRecord()`
+* :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getTitleStr()`
+* :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getTitleAttrib()`
 
 
 Impact
@@ -52,11 +52,11 @@ Impact
 
 Instantiating the deprecated classes or calling the deprecated methods will
 trigger a PHP deprecation warning, except for
-:php:`AbstractTreeView->getThisScript()`, which is still used internally by
+:php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getThisScript()`, which is still used internally by
 deprecated code.
 
 The Extension Scanner will find those usages and additionally also reports
-usages of the corresponding public properties of the :php:`AbstractTreeView`
+usages of the corresponding public properties of the :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView`
 class.
 
 

@@ -22,7 +22,7 @@ PHP class :php:`TYPO3\CMS\Backend\Module\AbstractModule` has been deprecated and
 Impact
 ======
 
-* Using class :php:`AbstractModule` will throw a deprecation warning
+* Using class :php-short:`\TYPO3\CMS\Backend\Module\AbstractModule` will throw a deprecation warning
 * Extensions with wizards extending class :php:`AbstractWizardController`
   may fatal if they use property :php:`moduleTemplate`
 * Extensions with wizards extending class :php:`AbstractWizardController`
@@ -38,7 +38,7 @@ Installations with extensions with one of the above described patterns.
 Migration
 =========
 
-Extensions that extend :php:`AbstractModule` should initialize :php:`moduleTemplate`
+Extensions that extend :php-short:`\TYPO3\CMS\Backend\Module\AbstractModule` should initialize :php:`moduleTemplate`
 at an appropriate place instead. Instead of :php:`processRequest()`, routes should be
 registered in an extensions :file:`Configuration/Backend/Routes.php` and
 :file:`Configuration/Backend/AjaxRoutes.php`.

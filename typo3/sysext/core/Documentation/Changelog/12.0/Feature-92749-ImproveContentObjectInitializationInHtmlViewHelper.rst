@@ -24,7 +24,7 @@ provided data record, which should be used as the current value.
 Alternatively, one can use the new `current` argument to set a static value
 as current value for the content object.
 
-Additionally, with the `table` argument, the :php:`ContentObjectRenderer`
+Additionally, with the `table` argument, the :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer`
 receives the table name, the given data record is from.
 
 Example

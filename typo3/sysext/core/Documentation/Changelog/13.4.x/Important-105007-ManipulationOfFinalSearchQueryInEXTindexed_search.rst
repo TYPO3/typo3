@@ -18,7 +18,7 @@ manually, using available hooks. Since those hooks have also been removed with
 :issue:`102937`, developers were no longer be able to handle the query
 behaviour.
 
-Therefore, the PSR-14 :php:`BeforeFinalSearchQueryIsExecutedEvent` has been
+Therefore, the PSR-14 :php-short:`\TYPO3\CMS\IndexedSearch\Event\BeforeFinalSearchQueryIsExecutedEvent` has been
 introduced which allows developers to manipulate the :php:`QueryBuilder`
 instance again, just before the query gets executed.
 

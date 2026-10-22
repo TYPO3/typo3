@@ -11,7 +11,7 @@ See :issue:`97354`
 Description
 ===========
 
-`doctrine/dbal` `deprecated`_  the :php:`ExpressionBuilder` methods
+`doctrine/dbal` `deprecated`_  the :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder` methods
 :php:`andX()` and :php:`orX`. Therefore, those methods have also been
 deprecated in the Core facade class (:php:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder`),
 to avoid shifting too far away.
@@ -21,14 +21,14 @@ to avoid shifting too far away.
 Impact
 ======
 
-Using :php:`ExpressionBuilder->andX()` and :php:`ExpressionBuilder->orX()`
+Using :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->andX()` and :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->orX()`
 will trigger a PHP :php:`E_USER_DEPRECATED` error when called.
 
 Affected Installations
 ======================
 
-All installations, using the deprecated methods :php:`ExpressionBuilder->andX()`
-and :php:`ExpressionBuilder->orX()` in custom extension code. The extension
+All installations, using the deprecated methods :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->andX()`
+and :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->orX()` in custom extension code. The extension
 scanner will detect any usage as weak match.
 
 Migration
@@ -36,8 +36,8 @@ Migration
 
 Extensions should use the corresponding replacement:
 
-- :php:`ExpressionBuilder->andX()` -> :php:`ExpressionBuilder->and()`
-- :php:`ExpressionBuilder->orX()` -> :php:`ExpressionBuilder->or()`
+- :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->andX()` -> :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->and()`
+- :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->orX()` -> :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->or()`
 
 .. note::
 

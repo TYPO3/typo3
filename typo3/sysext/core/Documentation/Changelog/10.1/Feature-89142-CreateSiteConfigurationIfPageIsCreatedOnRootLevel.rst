@@ -15,7 +15,7 @@ When creating a typical new page on the root level of a TYPO3 installation, a ne
 automatically created as well. This makes it easier to work with multi-sites and get a basic configuration set up
 more quickly than before.
 
-Under the hood, a new :php:`DataHandler` hook checks for new pages being one of the following page types:
+Under the hood, a new :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler` hook checks for new pages being one of the following page types:
 
 * Default pages
 * Links

@@ -23,9 +23,9 @@ anymore as all rendering for Frontend is "utf-8" and not changeable anymore.
 If this TypoScript setting was set to "utf-8" in previous installations,
 this line could have been removed anyways already.
 
-The public PHP property :php:`TypoScriptFrontendController->metaCharset` is
+The public PHP property :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->metaCharset` is
 removed, along with the public method
-:php:`TypoScriptFrontendController->convOutputCharset()`.
+:php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->convOutputCharset()`.
 
 Impact
 ======

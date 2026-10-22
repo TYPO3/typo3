@@ -11,7 +11,7 @@ See :issue:`96996`
 Description
 ===========
 
-A new PSR-14 event :php:`RecordAccessGrantedEvent` has been added. It serves
+A new PSR-14 event :php-short:`\TYPO3\CMS\Core\Domain\Access\RecordAccessGrantedEvent` has been added. It serves
 as a replacement for the now removed hook
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_checkEnableFields']`.
 
@@ -59,7 +59,7 @@ The corresponding event listener class:
 Impact
 ======
 
-With the new PSR-14 event :php:`RecordAccessGrantedEvent`, it's
+With the new PSR-14 event :php-short:`\TYPO3\CMS\Core\Domain\Access\RecordAccessGrantedEvent`, it's
 now possible to manipulate the record access evaluation by
 either directly granting access or by modifying the record
 to be evaluated.

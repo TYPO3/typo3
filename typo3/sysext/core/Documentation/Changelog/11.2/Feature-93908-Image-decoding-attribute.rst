@@ -34,7 +34,7 @@ Using the TypoScript constant :typoscript:`styles.content.image.imageDecoding`,
 the behavior can be modified generally to be either set to :typoscript:`sync`, :typoscript:`async`
 :typoscript:`auto` or to an empty value which removes the property.
 
-The Fluid :php:`ImageViewHelper` and :php:`MediaViewHelper` have the possibility to set this
+The Fluid :php:`ImageViewHelper` and :php-short:`\TYPO3\CMS\Fluid\ViewHelpers\MediaViewHelper` have the possibility to set this
 attribute via :html:`<f:image src="{fileObject}" decoding="async">`
 and :html:`<f:media file="{fileObject}" decoding="async">`.
 

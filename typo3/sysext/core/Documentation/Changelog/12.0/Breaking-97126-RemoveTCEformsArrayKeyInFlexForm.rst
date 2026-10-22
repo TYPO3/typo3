@@ -30,13 +30,13 @@ All installations, which deal with parsed FlexForm arrays directly and using the
 
 This **may** happen when:
 
-*  Using :php:`FlexFormTools->parseDataStructureByIdentifier()` directly
+*  Using :php-short:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->parseDataStructureByIdentifier()` directly
 *  Using or extending a :php:`FormDataProvider` and accessing the :php:`$result['processedTca']` array
 
 .. note::
 
     Since a long time, the :php:`TCEforms` key has already been removed in the
-    :php:`TcaFlexPrepare` FormDataProvider. It is advised to set this provider
+    :php-short:`\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare` FormDataProvider. It is advised to set this provider
     as a dependency, when relying on prepared FlexForm TCA, in custom providers.
 
 Migration

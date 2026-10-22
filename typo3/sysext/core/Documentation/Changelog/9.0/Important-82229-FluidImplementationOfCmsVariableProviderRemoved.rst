@@ -11,7 +11,7 @@ See :issue:`82229`
 Description
 ===========
 
-The PHP class within EXT:fluid named :php:`CmsVariableProvider` was removed. The custom functionality
+The PHP class within EXT:fluid named :php-short:`\TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider` was removed. The custom functionality
 is available in its parent class :php:`TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider` from
 Fluid standalone can be implemented directly.
 

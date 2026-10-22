@@ -22,7 +22,7 @@ It has now been fully deprecated with TYPO3 v12.4 and will be removed with TYPO3
 Impact
 ======
 
-Extending :php:`AbstractPlugin` will trigger a deprecation level log warning
+Extending :php-short:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin` will trigger a deprecation level log warning
 since TYPO3 v12.4. The class will be removed with TYPO3 v13.0.
 
 

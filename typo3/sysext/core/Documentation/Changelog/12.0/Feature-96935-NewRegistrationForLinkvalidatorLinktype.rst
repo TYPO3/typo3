@@ -13,7 +13,7 @@ Description
 
 The system extension `linkvalidator` uses so called `linktypes` for
 checking different types of links, e.g. internal or external links.
-All `linktypes` have to implement the :php:`LinktypeInterface`.
+All `linktypes` have to implement the :php-short:`\TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface`.
 
 This fact is now used to automatically register the `linktypes`, based
 on the interface, if :yaml:`autoconfigure` is enabled in :file:`Services.yaml`.

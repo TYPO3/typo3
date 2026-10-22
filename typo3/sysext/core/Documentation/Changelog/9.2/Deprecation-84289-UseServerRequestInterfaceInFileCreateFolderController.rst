@@ -30,7 +30,7 @@ Impact
 ======
 
 Calling one of the above methods or accessing one of the above properties on an instance of
-:php:`CreateFolderController` will throw a deprecation warning in v9 and a PHP fatal in v10.
+:php-short:`\TYPO3\CMS\Backend\Controller\File\CreateFolderController` will throw a deprecation warning in v9 and a PHP fatal in v10.
 
 
 Affected Installations
@@ -38,7 +38,7 @@ Affected Installations
 
 The extension scanner will find most usages, but may also find some false positives. The most
 common property and method names like :php:`$title` are not registered and will not be found
-if an extension uses that on an instance of :php:`CreateFolderController`. In general all extensions
+if an extension uses that on an instance of :php-short:`\TYPO3\CMS\Backend\Controller\File\CreateFolderController`. In general all extensions
 that set properties or call methods except :php:`mainAction()` are affected.
 
 

@@ -12,11 +12,11 @@ Description
 ===========
 
 TYPO3's backend path `/typo3` is currently resolved statically in
-:php:`Environment::getBackendPath()` to return the full path to the
+:php-short:`\TYPO3\CMS\Core\Core\Environment::getBackendPath()` to return the full path to the
 backend entrypoint.
 
 However, as TYPO3's code base is evolving, the usages to the hardcoded path have been reduced
-and the functionality is now migrated into a new :php:`BackendEntryPointResolver` class,
+and the functionality is now migrated into a new :php-short:`\TYPO3\CMS\Core\Routing\BackendEntryPointResolver` class,
 which allows for dynamically adjusting the entry point in the future.
 
 

@@ -77,7 +77,7 @@ The corresponding event listener class:
 Impact
 ======
 
-With the new :php:`ModifyAutoCreateRedirectRecordBeforePersistingEvent`, it is now
+With the new :php-short:`\TYPO3\CMS\Redirects\Event\ModifyAutoCreateRedirectRecordBeforePersistingEvent`, it is now
 possible to modify the auto-create redirect record before it is persisted to the database.
 Manually created redirects or updated redirects can be handled by using the well-known
 :php:`\TYPO3\CMS\Core\DataHandling\DataHandler` and the available hooks.

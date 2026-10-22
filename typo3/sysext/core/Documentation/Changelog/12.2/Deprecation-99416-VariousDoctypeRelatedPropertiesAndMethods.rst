@@ -43,11 +43,11 @@ methods directly in PHP, which is unlikely.
 Migration
 =========
 
-Use :php:`PageRenderer->setDocType()` to manipulate the output in
-a programmatic way, or use :php:`PageRenderer->getDocType()` to read the
+Use :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->setDocType()` to manipulate the output in
+a programmatic way, or use :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->getDocType()` to read the
 current doctype — for example "is the current page HTML5 compliant".
 
-Various TypoScript properties will instruct the :php:`PageRenderer` as before,
+Various TypoScript properties will instruct the :php-short:`\TYPO3\CMS\Core\Page\PageRenderer` as before,
 there is no need to use other configuration options. However, it is recommended to use
 :typoscript:`config.doctype` in favor of :typoscript:`config.xhtmlDoctype` in
 TypoScript as it considers more possible options.

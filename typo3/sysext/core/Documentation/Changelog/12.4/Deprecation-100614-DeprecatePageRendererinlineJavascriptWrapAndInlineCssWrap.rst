@@ -19,7 +19,7 @@ shall not be used any longer.
 Impact
 ======
 
-:php:`PageRenderer` specifics concerning rendering XHTML or non-HTML5 content are
+:php-short:`\TYPO3\CMS\Core\Page\PageRenderer` specifics concerning rendering XHTML or non-HTML5 content are
 not working any longer in affected installations having custom code extending
 :php:`\TYPO3\CMS\Core\Page\PageRenderer`.
 

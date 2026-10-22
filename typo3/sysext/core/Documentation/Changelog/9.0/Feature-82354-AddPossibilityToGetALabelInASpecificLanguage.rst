@@ -18,7 +18,7 @@ german. This feature works in the frontend and backend of TYPO3 and supports
 to retrieve the labels via an extension name or an explicit specified
 `LLL:path/locallang.xlf:label` key.
 
-The ViewHelper :html:`<f:translate />` and the utility :php:`LocalizationUtility::translate()`
+The ViewHelper :html:`<f:translate />` and the utility :php-short:`\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate()`
 do support now two new optional Parameters `languageKey` and `alternativeLanguageKeys`
 to control the output language.
 

@@ -32,7 +32,7 @@ were not common.
 Migration
 =========
 
-As this method is just a wrapper around :php:`BackendUtility::getRecordIconAltText()`
+As this method is just a wrapper around :php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordIconAltText()`
 with a "title" attribute for the markup, the replacement is straightforward:
 
 Before:

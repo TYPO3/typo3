@@ -11,7 +11,7 @@ See :issue:`89722`
 Description
 ===========
 
-The public PHP property :php:`TypoScriptFrontendController->divSection` has been marked as deprecated. This was used in prior
+The public PHP property :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->divSection` has been marked as deprecated. This was used in prior
 TYPO3 versions to add dynamic JavaScript related to GMENU_LAYERS
 functionality which was removed with previous TYPO3 versions, making
 this property only produce unnecessary overhead in frontend rendering.

@@ -35,7 +35,7 @@ The PHP classes
 
 which were related to building the Module Menu on the left side
 of the TYPO3 Backend have been removed as well. The new API based
-on the :php:`ModuleProvider` takes care of permission handling
+on the :php-short:`\TYPO3\CMS\Backend\Module\ModuleProvider` takes care of permission handling
 and returns objects of :php:`ModuleInterface`, the
 rendering is now based on a well-defined OOP-based approach, which
 is used throughout all places in TYPO3 Backend in a unified way.
@@ -84,13 +84,13 @@ Any occurrences can be detected via the Extension Scanner.
 Migration
 =========
 
-Migrate to the new Module Registration API, and use the :php:`ModuleProvider`
+Migrate to the new Module Registration API, and use the :php-short:`\TYPO3\CMS\Backend\Module\ModuleProvider`
 class to get allowed modules and work with the objects. The current module
 information (an implementation of :php:`ModuleInterface`) is stored in a
 TYPO3 Backend request within the `module` option of a TYPO3 Backend route,
 which can be accessed via :php:`$request->getAttribute('route')->getOption('module')`.
 
-As soon as the new TYPO3 :php:`BackendModuleValidator` PSR-15 middleware
+As soon as the new TYPO3 :php-short:`\TYPO3\CMS\Backend\Middleware\BackendModuleValidator` PSR-15 middleware
 has validated the module for the current user, the :php:`ModuleInterface`
 object is also added to the current request and can then be accessed
 via :php:`$request->getAttribute('module')` in custom middlewares or

@@ -16,7 +16,7 @@ The hooks :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php']['
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php']['renderPostProcess']` have
 been removed in favor of a new PSR-14 event :php:`\TYPO3\CMS\Backend\Controller\Event\AfterBackendPageRenderEvent`.
 
-Additionally, the :php:`BackendController->addCss()` method has been removed without replacement,
+Additionally, the :php-short:`\TYPO3\CMS\Backend\Controller\BackendController->addCss()` method has been removed without replacement,
 as it is no longer used.
 
 Impact

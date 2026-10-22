@@ -33,7 +33,7 @@ Scanner tool provided in the Install Tool.
 Migration
 =========
 
-Replace any calls to :php:`GeneralUtility::isAbsPath()` with
+Replace any calls to :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath()` with
 the exact equivalent :php:`TYPO3\CMS\Core\Utility\PathUtility::isAbsolutePath()`
 which checks for the same input.
 

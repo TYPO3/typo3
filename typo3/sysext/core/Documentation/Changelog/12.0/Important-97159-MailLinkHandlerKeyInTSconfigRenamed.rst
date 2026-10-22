@@ -16,7 +16,7 @@ TSconfig has been renamed from :typoscript:`mail` to :typoscript:`email`.
 
 This is done to be consistent with the identifier, used for the
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['linkHandler']` registration,
-as well as the value of the :php:`LinkService::TYPE_EMAIL` constant.
+as well as the value of the :php-short:`\TYPO3\CMS\Core\LinkHandling\LinkService::TYPE_EMAIL` constant.
 
 Update any usage of this key in your extension code.
 

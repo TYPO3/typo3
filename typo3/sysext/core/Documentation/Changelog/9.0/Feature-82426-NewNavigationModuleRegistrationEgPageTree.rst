@@ -11,11 +11,11 @@ See :issue:`82426`
 Description
 ===========
 
-When registering an extensions's BE module with :php:`ExtensionUtility::registerModule()` it is possible
+When registering an extensions's BE module with :php-short:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule()` it is possible
 to define 'navigationComponentId'.
 
 Before, the 'navigationComponentId' has been used to pass a name of the ExtJS module registered with
-:php:`ExtensionManagementUtility::addNavigationComponent()`.
+:php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addNavigationComponent()`.
 
 Now it should contain a RequireJS module name. No additional registration is necessary.
 The TYPO3 page tree navigation component name 'typo3-pagetree' will still work (thanks to the BC layer)

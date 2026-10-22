@@ -12,7 +12,7 @@ Description
 ===========
 
 The hook `$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_adminpanel.php']['extendAdminPanel']` has been
-marked as deprecated along with the corresponding interface `\TYPO3\CMS\Frontend\View\AdminPanelViewHookInterface`.
+marked as deprecated along with the corresponding interface :php:`\TYPO3\CMS\Frontend\View\AdminPanelViewHookInterface`.
 
 
 Impact
@@ -25,7 +25,7 @@ TYPO3 versions.
 Affected Installations
 ======================
 
-Installations using the `\TYPO3\CMS\Frontend\View\AdminPanelViewHookInterface`.
+Installations using the :php:`\TYPO3\CMS\Frontend\View\AdminPanelViewHookInterface`.
 
 
 Migration

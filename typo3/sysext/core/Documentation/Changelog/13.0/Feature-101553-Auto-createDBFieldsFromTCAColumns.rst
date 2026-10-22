@@ -64,7 +64,7 @@ Extension authors should start removing single column definitions from
 If all goes well, the database analyzer will not show any changes since the Core
 definition is identical to what has been defined in :file:`ext_tables.sql` before.
 
-In various cases though, the responsible class :php:`DefaultTcaSchema` may come
+In various cases though, the responsible class :php-short:`\TYPO3\CMS\Core\Database\Schema\DefaultTcaSchema` may come
 to different conclusions than the extension author. Those cases should be reviewed
 by extension authors one-by-one: Most often, the Core declares a more restricted
 field, which is often fine. In some cases though, the extension author may

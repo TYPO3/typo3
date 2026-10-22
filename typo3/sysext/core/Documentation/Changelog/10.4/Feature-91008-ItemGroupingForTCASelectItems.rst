@@ -105,7 +105,7 @@ The item can be added via API like this:
        ]
    );
 
-The same approach applies to :php:`ExtensionManagementUtility::addPlugin()` when
+The same approach applies to :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin()` when
 adding pi-based plugins.
 
 When adding Extbase plugins, the API method now allows to specify a group ID

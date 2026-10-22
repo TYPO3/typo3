@@ -20,13 +20,13 @@ items or query results from Extbase. The main advantage is that it reduces the
 amount of pages shown.
 
 **Example**: Imagine 1000 records and 20 items per page which would lead to
-50 links. Using the `SlidingWindowPagination`, you will get something like
+50 links. Using the :php-short:`\TYPO3\CMS\Core\Pagination\SlidingWindowPagination`, you will get something like
 `< 1 2 ... 21 22 23 24 ... 100 >`.
 
 Usage
 =====
 
-Just replace the usage of :php:`SimplePagination` with
+Just replace the usage of :php-short:`\TYPO3\CMS\Core\Pagination\SimplePagination` with
 :php:`\TYPO3\CMS\Core\Pagination\SlidingWindowPagination` and you are done.
 Set the 2nd argument to the maximum number of links which should be rendered.
 

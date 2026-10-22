@@ -18,7 +18,7 @@ event is now also dispatched for a successful frontend user login.
 Impact
 ======
 
-Listeners to the :php:`AfterUserLoggedInEvent` event should evaluate the
+Listeners to the :php-short:`\TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent` event should evaluate the
 implementation type of the :php:`$user` property, if custom functionality
 after a user login should be executed for backend login only.
 
@@ -26,14 +26,14 @@ after a user login should be executed for backend login only.
 Affected installations
 ======================
 
-Installations with an event listener to the php:`AfterUserLoggedInEvent` PSR-14
+Installations with an event listener to the :php-short:`\TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent` PSR-14
 event.
 
 
 Migration
 =========
 
-If custom functionality in a listener to the :php:`AfterUserLoggedInEvent`
+If custom functionality in a listener to the :php-short:`\TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent`
 event should be executed for the backend user login only, a type check for the
 :php:`$user` property must be added.
 

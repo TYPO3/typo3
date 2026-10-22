@@ -11,12 +11,12 @@ See :issue:`97027`
 Description
 ===========
 
-The method :php:`ContentObjectRenderer->getTreeList()` has been marked as
+The method :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getTreeList()` has been marked as
 deprecated.
 
 The method signature has had various side-effects and too many options and
 was used in different places across TYPO3 Core, where
-:php:`ContentObjectRenderer` was not in use primarily.
+:php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer` was not in use primarily.
 
 Impact
 ======
@@ -33,15 +33,15 @@ Migration
 =========
 
 Several replacements for various use-cases have been introduced, which can be
-found in :php:`PageRepository`. Instead of returning a comma-separated list of
+found in :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository`. Instead of returning a comma-separated list of
 integers as string, the methods now return an array of integer Page IDs, always
 in the default language.
 
-The method :php:`PageRepository->getPageIdsRecursive()` is used to retrieve all
+The method :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getPageIdsRecursive()` is used to retrieve all
 subpages (recursively) of a list of pages, commonly used for fetching recursive
 Storage PIDs in Plugins. Extbase is using this method under the hood.
 
-The method :php:`PageRepository->getDescendantPageIdsRecursive()` is used to
+The method :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getDescendantPageIdsRecursive()` is used to
 return all subpages without the actual pages handed in as argument.
 
 This might be useful for finding all subpages, to check for values or records

@@ -26,7 +26,7 @@ directly to the operating system's clipboard, next to the already existing
 bookmark option.
 
 For the dropdown button, a new icon :php:`share-alt` is registered, which can
-be used through the :php:`IconFactory`.
+be used through the :php-short:`\TYPO3\CMS\Core\Imaging\IconFactory`.
 
 In case you are using the shortcut API in your custom backend module and
 don't want to use this additional option, you can disabled it by setting
@@ -42,7 +42,7 @@ shortcut button is rendered with the same behaviour as before.
    backend modules, you have to create the shortcut button in the corresponding
    controller using the shortcut API. This will anyways be required in TYPO3 v12.
 
-Besides the new option for the :php:`ShortcutButton`, a new constant
+Besides the new option for the :php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton`, a new constant
 :php:`SHAREABLE_URL` is available in the :php:`UriBuilder`. It can be
 used as value for the :php:`$referenceType` parameter, which is available
 for most of the "buildUri" methods, for example :php:`UriBuilder->buildUriFromRoute()`.

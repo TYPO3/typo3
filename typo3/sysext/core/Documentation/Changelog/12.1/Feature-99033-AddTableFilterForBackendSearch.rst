@@ -60,7 +60,7 @@ Impact
 ======
 
 It is now possible to ignore specific tables from the backend search using
-the new PSR-14 event :php:`BeforeSearchInDatabaseRecordProviderEvent`. The event
+the new PSR-14 event :php-short:`\TYPO3\CMS\Backend\Search\Event\BeforeSearchInDatabaseRecordProviderEvent`. The event
 also allows to adjust the page IDs to search in as well as to modify the
 corresponding :php:`SearchDemand` object.
 

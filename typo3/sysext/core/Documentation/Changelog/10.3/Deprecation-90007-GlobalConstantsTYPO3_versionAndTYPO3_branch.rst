@@ -36,7 +36,7 @@ which is common for having extension support for multiple TYPO3 versions.
 Migration
 =========
 
-It is highly recommended to use the :php:`Typo3Version` class instead of
+It is highly recommended to use the :php-short:`\TYPO3\CMS\Core\Information\Typo3Version` class instead of
 the constants, as they will be removed in a future TYPO3 version.
 
 Check the Extension Scanner in the Upgrade section of TYPO3 to see

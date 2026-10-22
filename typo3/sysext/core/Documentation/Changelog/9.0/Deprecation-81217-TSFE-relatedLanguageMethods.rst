@@ -36,7 +36,7 @@ Any TYPO3 installation calling custom frontend code with the methods above.
 Migration
 =========
 
-Use :php:`TypoScriptFrontendController->sL()` for resolving language labels in the language
+Use :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sL()` for resolving language labels in the language
 of the Frontend rendering engine as a replacement for :php:`getLLL()`.
 
 If you are not doing anything special on language initialization, the call to :php:`initLLvars()`

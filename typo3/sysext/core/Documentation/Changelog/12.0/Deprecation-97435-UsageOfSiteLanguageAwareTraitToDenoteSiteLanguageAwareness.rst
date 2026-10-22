@@ -20,20 +20,20 @@ in user land code.
 Impact
 ======
 
-If you are currently using the :php:`SiteLanguageAwareTrait` to denote a class
+If you are currently using the :php-short:`\TYPO3\CMS\Core\Site\SiteLanguageAwareTrait` to denote a class
 as aware of the site language, you should implement the
-:php:`SiteLanguageAwareInterface` instead.
+:php-short:`\TYPO3\CMS\Core\Site\SiteLanguageAwareInterface` instead.
 
 Affected Installations
 ======================
 
-All installations where the :php:`SiteLanguageAwareTrait` is used to denote
+All installations where the :php-short:`\TYPO3\CMS\Core\Site\SiteLanguageAwareTrait` is used to denote
 a class as aware of the site language.
 
 Migration
 =========
 
-Change classes that use the :php:`SiteLanguageAwareTrait` but not the
+Change classes that use the :php-short:`\TYPO3\CMS\Core\Site\SiteLanguageAwareTrait` but not the
 corresponding interface to implement the interface. Replace the usage of the
 trait with an own trait, or implement the interface methods directly in the
 class.

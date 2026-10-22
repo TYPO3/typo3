@@ -19,7 +19,7 @@ has been marked as deprecated.
 Impact
 ======
 
-Using :php:`EmptyView` has been marked as deprecated and trigger a PHP :php:`E_USER_DEPRECATED` error upon use.
+Using :php-short:`\TYPO3\CMS\Extbase\Mvc\View\EmptyView` has been marked as deprecated and trigger a PHP :php:`E_USER_DEPRECATED` error upon use.
 
 
 Affected Installations

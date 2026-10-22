@@ -21,7 +21,7 @@ view helper has been introduced
 
 *   to be used in frontend and backend context without relying on TypoScript,
 *   to avoid mixing parsing, sanitization and transformation concerns in
-    previously used :php:`ContentObjectRenderer::parseFunc` method of the
+    previously used :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::parseFunc` method of the
     frontend rendering process.
 
 Impact
@@ -29,7 +29,7 @@ Impact
 
 Individual TYPO3 link handlers (like `t3://` URIs) can be resolved and
 substituted without relying on TypoScript configuration and without mixing
-concerns in :php:`ContentObjectRenderer::parseFunc` by using Fluid view-helper
+concerns in :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::parseFunc` by using Fluid view-helper
 :html:`<f:transform.html>`.
 
 Syntax

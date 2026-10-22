@@ -45,7 +45,7 @@ depending on the usage.
 Most deprecations are rather "internal" since extensions most likely use the
 existing outer API already. Some may be affected when using the
 :php:`\TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent` event
-or the frontend related method :php:`TypoScriptFrontendController->getPagesTSconfig()`,
+or the frontend related method :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getPagesTSconfig()`,
 though.
 
 
@@ -126,7 +126,7 @@ Extensions using the method should avoid relying on bringing backend related con
 into frontend scope. However, the TYPO3 Core comes with one place that does this: Class
 :php:`\TYPO3\CMS\Frontend\Typolink\DatabaseRecordLinkBuilder` uses page TSconfig related
 information in frontend scope. Extensions with similar use cases could have a similar
-implementation as done with :php:`DatabaseRecordLinkBuilder->getPageTsConfig()`. Note that
+implementation as done with :php-short:`\TYPO3\CMS\Frontend\Typolink\DatabaseRecordLinkBuilder->getPageTsConfig()`. Note that
 any implementation of this will have to rely on :php:`@internal` usages of the new
 TypoScript parser approach, and using this low level API may thus break without
 further notice. Extensions are encouraged to cover usages with functional tests to find
@@ -135,9 +135,9 @@ issues quickly in case the TYPO3 Core still changes used classes.
 :php:`\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser`
 ---------------------------------------------------------
 
-In general, extensions probably don't need to use the old :php:`TypoScriptParser`
+In general, extensions probably don't need to use the old :php-short:`\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser`
 often: Frontend TypoScript is :ref:`available as request attribute <deprecation-99020-1667911024>`,
-page TSconfig should be retrieved using :php:`BackendUtility::getPagesTSconfig()` and
+page TSconfig should be retrieved using :php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig()` and
 user TSconfig should be retrieved using :php:`$backendUser->getTSConfig()`.
 
 In case extensions want to parse any other strings that follow a TypoScript-a-like syntax,

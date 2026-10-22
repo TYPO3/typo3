@@ -17,7 +17,7 @@ them being :yaml:`iso-639-1` (also known as "twoLetterIsoCode").
 This setting was previously introduced to define the current ISO 639-1 code, which
 was different from the :yaml:`locale` or the :yaml:`typo3Language` setting. However,
 this information is now properly retrieved with the method:
-:php:`SiteLanguage->getLocale()->getLanguageCode()`.
+:php-short:`\TYPO3\CMS\Core\Site\Entity\SiteLanguage->getLocale()->getLanguageCode()`.
 
 Since TYPO3 v12 it is not necessary to set this property in the site configuration
 anymore, and it has been removed from the backend UI. The information is now automatically
@@ -31,7 +31,7 @@ setting properly before TYPO3 v9.
 As a result, the amount of options in the user interface for integrators is
 reduced.
 
-The PHP method :php:`SiteLanguage->getTwoLetterIsoCode()` serves no purpose
+The PHP method :php-short:`\TYPO3\CMS\Core\Site\Entity\SiteLanguage->getTwoLetterIsoCode()` serves no purpose
 anymore and is deprecated.
 
 This also affects the TypoScript :typoscript:`getData` property :typoscript:`siteLanguage:twoLetterIsoCode`,

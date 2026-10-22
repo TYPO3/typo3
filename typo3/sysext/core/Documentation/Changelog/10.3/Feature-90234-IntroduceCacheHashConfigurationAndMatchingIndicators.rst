@@ -12,7 +12,7 @@ Description
 ===========
 
 Settings for :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']` are modelled
-in class :php:`CacheHashConfiguration` which takes care of validating configuration.
+in class :php-short:`\TYPO3\CMS\Frontend\Page\CacheHashConfiguration` which takes care of validating configuration.
 It also determines whether corresponding aspects apply to a given URL
 parameter.
 

@@ -11,9 +11,9 @@ See :issue:`101291`
 Description
 ===========
 
-The capabilities property of the :php:`ResourceStorage` and drivers
-(:php:`LocalDriver`/:php:`AbstractDriver`) have been converted from an integer
-(holding a bit value) to an instance of a new :php:`BitSet` class
+The capabilities property of the :php-short:`\TYPO3\CMS\Core\Resource\ResourceStorage` and drivers
+(:php-short:`\TYPO3\CMS\Core\Resource\Driver\LocalDriver`/:php-short:`\TYPO3\CMS\Core\Resource\Driver\AbstractDriver`) have been converted from an integer
+(holding a bit value) to an instance of a new :php-short:`\TYPO3\CMS\Core\Type\BitSet` class
 :php:`\TYPO3\CMS\Core\Resource\Capabilities`.
 
 This affects the public API of the following interface methods:
@@ -67,10 +67,10 @@ Migration
 =========
 
 When using mentioned methods that formerly returned the bit value as integer or
-expected the bit value as integer parameter need to use the :php:`Capabilities`
+expected the bit value as integer parameter need to use the :php-short:`\TYPO3\CMS\Core\Resource\Capabilities`
 class instead. It behaves exactly the same as the plain integer. If the plain
 integer value needs to be retrieved, :php:`__toInt()` can be called on
-:php:`Capabilities` instances.
+:php-short:`\TYPO3\CMS\Core\Resource\Capabilities` instances.
 
 The following removed constants
 
@@ -79,7 +79,7 @@ The following removed constants
 - :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::CAPABILITY_WRITABLE`
 - :php:`\TYPO3\CMS\Core\Resource\ResourceStorageInterface::CAPABILITY_HIERARCHICAL_IDENTIFIERS`
 
-can be replaced with public constants of the new :php:`Capabilities` class:
+can be replaced with public constants of the new :php-short:`\TYPO3\CMS\Core\Resource\Capabilities` class:
 
 - :php:`\TYPO3\CMS\Core\Resource\Capabilities::CAPABILITY_BROWSABLE`
 - :php:`\TYPO3\CMS\Core\Resource\Capabilities::CAPABILITY_PUBLIC`

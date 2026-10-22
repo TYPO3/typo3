@@ -15,25 +15,25 @@ The Extbase related class :php:`TYPO3\CMS\Extbase\Mvc\Controller\ControllerConte
 has been used in the past to transfer data between Extbase controllers and Fluid
 views. It has been superseded by class :php:`TYPO3\CMS\Fluid\Core\Rendering\RenderingContext`
 with various preparation patches. To further decouple Fluid from Extbase, class
-:php:`ControllerContext` has been marked as deprecated.
+:php-short:`\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext` has been marked as deprecated.
 
 
 Impact
 ======
 
-Accessing :php:`ControllerContext` and consuming information carried in it has
+Accessing :php-short:`\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext` and consuming information carried in it has
 been marked as deprecated. The class will be removed in TYPO3 v12. The object is bound
 to various Fluid view related classes and all occurrences have been marked with
 an :php:`@deprecated` annotation.
 
-To retain backwards compatibility, accessing :php:`ControllerContext` does not
+To retain backwards compatibility, accessing :php-short:`\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext` does not
 actively trigger a PHP :php:`E_USER_DEPRECATED` error in most cases, though.
 
 
 Affected Installations
 ======================
 
-Instances with extensions that access :php:`ControllerContext` are affected. This
+Instances with extensions that access :php-short:`\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext` are affected. This
 typically affects extensions which provide own view-helpers. The extension scanner
 should find possible matches.
 
@@ -46,9 +46,9 @@ Two getters of the class have already been marked as deprecated with previous pa
 should inject instances of these objects instead, or should :php:`makeInstance()` them.
 
 Method :php:`getRequest()` is available in controllers directly, and view-helpers
-receive the current request by calling :php:`RenderingContext->getRequest()`.
+receive the current request by calling :php-short:`\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->getRequest()`.
 
-Method :php:`getArguments()` returns the Extbase :php:`Arguments` created by the
+Method :php:`getArguments()` returns the Extbase :php-short:`\TYPO3\CMS\Extbase\Mvc\Controller\Arguments` created by the
 :php:`ActionController`. The getter has become mostly useless within Fluid context
 since argument validation of forms is abstracted differently since various core versions.
 If that object construct is still needed, it should be transferred differently to

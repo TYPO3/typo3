@@ -12,7 +12,7 @@ Description
 ===========
 
 The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering']`
-has been marked as deprecated as it has been superseded by the :php:`ElementBrowser` API,
+has been marked as deprecated as it has been superseded by the :php-short:`\TYPO3\CMS\Backend\Form\FieldControl\ElementBrowser` API,
 introduced in TYPO3 v7.6.
 
 Calling the backend routing endpoint "wizard_element_browser"

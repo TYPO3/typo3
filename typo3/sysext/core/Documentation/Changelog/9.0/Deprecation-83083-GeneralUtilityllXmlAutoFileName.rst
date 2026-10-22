@@ -11,7 +11,7 @@ See :issue:`83083`
 Description
 ===========
 
-The method :php:`GeneralUtility::llXmlAutoFileName()`, which detects a XLF/XML translation file, has been moved into
+The method :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::llXmlAutoFileName()`, which detects a XLF/XML translation file, has been moved into
 AbstractXmlParser, as the functionality is solely used in there, and the code belongs in this area.
 
 

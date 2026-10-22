@@ -32,13 +32,13 @@ are:
 
 - :php:`AdditionalCssInterface`
 - :php:`AdditionalJavascriptInterface`
-- :php:`ButtonProviderInterface`
-- :php:`ChartDataProviderInterface`
+- :php-short:`\TYPO3\CMS\Dashboard\Widgets\ButtonProviderInterface`
+- :php-short:`\TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface`
 - :php:`EventDataProviderInterface`
-- :php:`ListDataProviderInterface`
-- :php:`NumberWithIconDataProviderInterface`
+- :php-short:`\TYPO3\CMS\Dashboard\Widgets\ListDataProviderInterface`
+- :php-short:`\TYPO3\CMS\Dashboard\Widgets\NumberWithIconDataProviderInterface`
 - :php:`RequireJsModuleInterface`
-- :php:`WidgetConfigurationInterface`
+- :php-short:`\TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface`
 - :php:`WidgetInterface`
 
 

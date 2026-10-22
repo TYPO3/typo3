@@ -27,7 +27,7 @@ instead.
 Affected Installations
 ======================
 
-Instances with own Extbase view classes that extend :php:`AbstractView`
+Instances with own Extbase view classes that extend :php-short:`\TYPO3\CMS\Extbase\Mvc\View\AbstractView`
 are affected, but this is rather uncommon. The extension scanner will
 find class usages as a strong match.
 
@@ -35,8 +35,8 @@ find class usages as a strong match.
 Migration
 =========
 
-Affected Extbase view classes should implement :php:`ViewInterface` instead
-and not extend :php:`AbstractView` anymore. The most simple solution is to
-copy the interface implementation from the deprecated :php:`AbstractView` class.
+Affected Extbase view classes should implement :php-short:`\TYPO3\CMS\Extbase\Mvc\View\ViewInterface` instead
+and not extend :php-short:`\TYPO3\CMS\Extbase\Mvc\View\AbstractView` anymore. The most simple solution is to
+copy the interface implementation from the deprecated :php-short:`\TYPO3\CMS\Extbase\Mvc\View\AbstractView` class.
 
 .. index:: Fluid, PHP-API, FullyScanned, ext:extbase

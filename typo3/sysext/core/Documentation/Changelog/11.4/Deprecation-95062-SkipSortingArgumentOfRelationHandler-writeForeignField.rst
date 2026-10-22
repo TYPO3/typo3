@@ -14,7 +14,7 @@ Description
 To further clean up :php:`TYPO3\CMS\Core\DataHandling\DataHandler`, the unused
 internal property :php:`callFromImpExp` has been removed. Its single usage has
 been the 4th argument of :php:`TYPO3\CMS\Core\Database\RelationHandler->writeForeignField()`.
-Handing over this argument to :php:`RelationHandler->writeForeignField()` has been
+Handing over this argument to :php-short:`\TYPO3\CMS\Core\Database\RelationHandler->writeForeignField()` has been
 marked as deprecated.
 
 

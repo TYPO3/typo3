@@ -19,7 +19,7 @@ The old marker template has been replaced by Fluid templates, which are now
 used for generating the report email. The marker template has been removed completely
 along with corresponding functionality.
 
-The following property of the :php:`ValidatorTask` class has been removed:
+The following property of the :php-short:`\TYPO3\CMS\Linkvalidator\Task\ValidatorTask` class has been removed:
 
 * :php:`$emailTemplateFile`
 
@@ -28,7 +28,7 @@ The following hooks have been removed and won't be executed anymore:
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['reportEmailMarkers']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['buildMailMarkers']`
 
-The following properties of the :php:`ValidatorTask` class have changed their type:
+The following properties of the :php-short:`\TYPO3\CMS\Linkvalidator\Task\ValidatorTask` class have changed their type:
 
 * :php:`$page` is now :php:`int`
 * :php:`$depth` is now :php:`int`

@@ -23,7 +23,7 @@ The Context API has a new Aspect called "frontend.preview". It can be used to de
 
    GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.preview', 'isPreview');
 
-This Aspect replaces the now deprecated property :php:`TypoScriptFrontendController->fePreview`. Accessing this property
+This Aspect replaces the now deprecated property :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fePreview`. Accessing this property
 triggers a PHP :php:`E_USER_DEPRECATED` error, and fetches the information from the new Context Aspect instead.
 
 .. index:: Frontend, PHP-API, ext:core

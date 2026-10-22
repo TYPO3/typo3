@@ -32,7 +32,7 @@ Impact
 Using the TCA property :php:`special` inside the :php:`[columns][config]`
 section of columns with TCA type :php:`select` triggers a PHP :php:`E_USER_DEPRECATED` error.
 
-When extending :php:`AbstractItemProvider` and directly calling
+When extending :php-short:`\TYPO3\CMS\Backend\Form\FormDataProvider\AbstractItemProvider` and directly calling
 :php:`addItemsFromSpecial()`, also a PHP :php:`E_USER_DEPRECATED` error will be raised.
 The extension scanner will also detect such calls.
 
@@ -40,7 +40,7 @@ Affected Installations
 ======================
 
 All installations using the :php:`special` property with TCA type :php:`select` or
-directly calling :php:`AbstractItemProvider->addItemsFromSpecial()`.
+directly calling :php-short:`\TYPO3\CMS\Backend\Form\FormDataProvider\AbstractItemProvider->addItemsFromSpecial()`.
 
 Migration
 =========

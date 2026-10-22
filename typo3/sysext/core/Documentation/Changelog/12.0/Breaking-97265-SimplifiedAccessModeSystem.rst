@@ -31,7 +31,7 @@ have been streamlined and simplified:
 * The fourth tuple of :sql:`be_groups` field :sql:`explicit_allowdeny` that was
   previously set to either :sql:`ALLOW` or :sql:`DENY` is removed.
 
-* The fourth argument on :php:`BackendUserAuthentication->checkAuthMode()` has
+* The fourth argument on :php-short:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->checkAuthMode()` has
   been removed.
 
 Impact
@@ -60,9 +60,9 @@ Affected Installations
 * Instances manually dealing with the :sql:`explicit_allowdeny` of table :sql:`be_groups`
   may be affected if they expect the fourth field being set to :sql:`ALLOW` or :sql:`DENY`.
   This is unlikely since the Core provides an API for this field using
-  :php:`BackendUserAuthentication->checkAuthMode()`.
+  :php-short:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->checkAuthMode()`.
 
-* Instances calling :php:`BackendUserAuthentication->checkAuthMode()` with four instead of
+* Instances calling :php-short:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->checkAuthMode()` with four instead of
   three arguments. The extension scanner will find usages as weak match.
 
 * Instances using :php:`authMode_enforce` for :php:`'type' => 'select'` fields.

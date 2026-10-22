@@ -76,6 +76,6 @@ After
         }
     }
 
-If possible, use dependency injection to inject :php:`HashService` into your class.
+If possible, use dependency injection to inject :php-short:`\TYPO3\CMS\Core\Crypto\HashService` into your class.
 
 .. index:: Backend, FullyScanned, ext:core

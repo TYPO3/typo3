@@ -20,7 +20,7 @@ are being unused, which is quite a bad API.
 Impact
 ======
 
-Calling the PHP method :php:`BackendUtility::thumbCode()` will
+Calling the PHP method :php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode()` will
 trigger a PHP deprecation warning.
 
 Affected installations

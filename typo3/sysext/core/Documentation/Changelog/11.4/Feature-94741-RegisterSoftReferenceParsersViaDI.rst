@@ -39,9 +39,9 @@ The return type has also been changed to
 This model holds the former result array key entries :php:`content` and
 :php:`elements` as properties and has appropriate getter methods for them. It
 should be created by its own factory method
-:php:`SoftReferenceParserResult::create()`, which expects both above-mentioned
+:php-short:`\TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserResult::create()`, which expects both above-mentioned
 arguments to be provided. If the result is empty,
-:php:`SoftReferenceParserResult::createWithoutMatches()` should be used instead.
+:php-short:`\TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserResult::createWithoutMatches()` should be used instead.
 
 Impact
 ======

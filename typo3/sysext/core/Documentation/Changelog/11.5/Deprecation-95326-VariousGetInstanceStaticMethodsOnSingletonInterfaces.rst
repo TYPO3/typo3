@@ -50,6 +50,6 @@ Migration
 Check :guilabel:`Admin Tools > Upgrade > Scan Extension Files` if your
 installation is affected and replace calls with constructor injections via
 dependency injection if possible, or use
-:php:`GeneralUtility::makeInstance()` instead.
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()` instead.
 
 .. index:: PHP-API, PartiallyScanned, ext:core

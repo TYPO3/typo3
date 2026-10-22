@@ -18,15 +18,15 @@ to use exactly the required PHP types for the corresponding method arguments.
 
 The following methods are affected:
 
-- :php:`PageRepository->getPage()`
-- :php:`PageRepository->getPage_noCheck()`
-- :php:`PageRepository->getPageOverlay()`
-- :php:`PageRepository->getPagesOverlay()`
-- :php:`PageRepository->checkRecord()`
-- :php:`PageRepository->getRawRecord()`
-- :php:`PageRepository->enableFields()`
-- :php:`PageRepository->getMultipleGroupsWhereClause()`
-- :php:`PageRepository->versionOL()`
+- :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getPage()`
+- :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getPage_noCheck()`
+- :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getPageOverlay()`
+- :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getPagesOverlay()`
+- :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->checkRecord()`
+- :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getRawRecord()`
+- :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->enableFields()`
+- :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getMultipleGroupsWhereClause()`
+- :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->versionOL()`
 
 
 Impact
@@ -40,7 +40,7 @@ Affected installations
 ======================
 
 TYPO3 installations with third-party extensions utilizing the
-:php:`PageRepository` PHP class.
+:php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository` PHP class.
 
 
 Migration
@@ -48,7 +48,7 @@ Migration
 
 Extension authors need to adapt their PHP code to use ensure passed
 arguments are of the required PHP type when calling corresponding methods
-of the :php:`PageRepository` PHP class. Using proper type casts would is
+of the :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository` PHP class. Using proper type casts would is
 a possible migration strategy.
 
 .. index:: PHP-API, NotScanned, ext:core

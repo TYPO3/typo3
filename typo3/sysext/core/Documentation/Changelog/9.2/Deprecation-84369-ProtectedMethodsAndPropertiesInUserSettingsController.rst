@@ -23,7 +23,7 @@ removed or set to protected in v10 and throw deprecation warnings if used from a
 Impact
 ======
 
-Calling above method on an instance of :php:`UserSettingsController` will throw a deprecation warning in v9 and a PHP fatal in v10.
+Calling above method on an instance of :php-short:`\TYPO3\CMS\Backend\Controller\UserSettingsController` will throw a deprecation warning in v9 and a PHP fatal in v10.
 
 
 Affected Installations

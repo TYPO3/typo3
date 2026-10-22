@@ -21,7 +21,7 @@ have been marked as deprecated:
 * :php:`TYPO3\CMS\Frontend\Page\PageRepository->sys_language_uid`
 
 Additionally, in order to create a better abstraction, the third constructor argument of
-:php:`TYPO3\CMS\Core\Utility\RootlineUtility` now expects a :php:`Context` object instead of a :php:`PageRepository`.
+:php:`TYPO3\CMS\Core\Utility\RootlineUtility` now expects a :php-short:`\TYPO3\CMS\Core\Context\Context` object instead of a :php-short:`\TYPO3\CMS\Frontend\Page\PageRepository`.
 
 Impact
 ======
@@ -40,7 +40,7 @@ Any multi-lingual TYPO3 installation with custom non-Extbase-related PHP code.
 Migration
 =========
 
-Use the new :php:`LanguageAspect` with various superior properties to access the various values.
+Use the new :php-short:`\TYPO3\CMS\Core\Context\LanguageAspect` with various superior properties to access the various values.
 
 .. code-block:: php
 

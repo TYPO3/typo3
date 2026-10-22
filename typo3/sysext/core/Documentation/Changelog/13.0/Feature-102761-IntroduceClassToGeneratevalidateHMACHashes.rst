@@ -14,7 +14,7 @@ Description
 A new class  :php:`\TYPO3\CMS\Core\Crypto\HashService` has been introduced to
 enhance the security and flexibility in generating Hash-based Message
 Authentication Codes (HMACs). This class combines the functionality of
-:php:`GeneralUtility::hmac()` and Extbase's :php:`HashService`, while
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::hmac()` and Extbase's :php-short:`\TYPO3\CMS\Core\Crypto\HashService`, while
 enforcing the use of an additional, mandatory secret for HMAC generation and
 HMAC string validation.
 

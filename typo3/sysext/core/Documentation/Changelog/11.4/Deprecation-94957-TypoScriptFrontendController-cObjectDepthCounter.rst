@@ -11,11 +11,11 @@ See :issue:`94957`
 Description
 ===========
 
-The :php:`TypoScriptFrontendController` contains a property to prevent endless
+The :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` contains a property to prevent endless
 recursion of content objects during frontend rendering. With TypoScript
 becoming less complex, this check becomes obsolete. To reduce dependencies
-between :php:`TypoScriptFrontendController` and :php:`ContentObjectRenderer`,
-the handling has been removed and property :php:`TypoScriptFrontendController->cObjectDepthCounter`
+between :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` and :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer`,
+the handling has been removed and property :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cObjectDepthCounter`
 has been marked as deprecated.
 
 
@@ -30,7 +30,7 @@ rendering silently stopping.
 Affected Installations
 ======================
 
-Instances using property :php:`TypoScriptFrontendController->cObjectDepthCounter`
+Instances using property :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cObjectDepthCounter`
 are affected. That property has been handled mostly internally, this case is unlikely.
 The extension scanner will find usages with a weak match.
 
@@ -38,7 +38,7 @@ The extension scanner will find usages with a weak match.
 Migration
 =========
 
-Drop usages of property :php:`TypoScriptFrontendController->cObjectDepthCounter`,
+Drop usages of property :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cObjectDepthCounter`,
 it is unused within TYPO3 v11.
 
 .. index:: Frontend, PHP-API, FullyScanned, ext:frontend

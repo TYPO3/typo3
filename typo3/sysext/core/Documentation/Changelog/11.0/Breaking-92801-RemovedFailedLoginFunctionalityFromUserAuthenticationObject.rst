@@ -12,7 +12,7 @@ Description
 ===========
 
 The functionality to send an email to a defined sender was previously hard-coded
-into the API class :php:`AbstractUserAuthentication` and activated specifically for
+into the API class :php-short:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication` and activated specifically for
 Backend Users via the option :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr']`.
 
 With some custom implementation it was also possible to use a hook to
@@ -22,7 +22,7 @@ The backend-user specific logic is now extracted into a hook, so it is possible
 to replace this functionality with a custom notification API.
 
 For this reason, the following public properties and methods within
-:php:`AbstractUserAuthentication` and its subclasses have been removed:
+:php-short:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication` and its subclasses have been removed:
 
 * :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->warningEmail`
 * :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->warningPeriod`

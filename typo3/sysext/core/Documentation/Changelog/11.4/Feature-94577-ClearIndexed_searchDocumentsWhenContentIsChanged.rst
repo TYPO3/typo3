@@ -14,7 +14,7 @@ Description
 A new Extension Configuration setting `deleteFromIndexAfterEditing` has been added
 to the extension `indexed_search`.
 
-If enabled and a page or its content is edited, :php:`DataHandler` triggers a hook
+If enabled and a page or its content is edited, :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler` triggers a hook
 to remove the page and its content from the search index.
 
 

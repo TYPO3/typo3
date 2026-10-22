@@ -11,7 +11,7 @@ See :issue:`83121`
 Description
 ===========
 
-The PHP method :php:`DataHandler->newlog2()` within DataHandler, TYPO3's core persistence API,
+The PHP method :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler->newlog2()` within DataHandler, TYPO3's core persistence API,
 has been marked as deprecated.
 
 

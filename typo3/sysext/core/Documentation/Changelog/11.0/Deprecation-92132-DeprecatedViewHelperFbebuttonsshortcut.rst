@@ -35,6 +35,6 @@ Migration
 =========
 
 Use `ext:backend` related ViewHelper `be:moduleLayout.button.shortcutButton`
-with argument `arguments` instead, or use the :php:`ButtonBar->makeShortcutButton()` API in PHP directly.
+with argument `arguments` instead, or use the :php-short:`\TYPO3\CMS\Backend\Template\Components\ButtonBar->makeShortcutButton()` API in PHP directly.
 
 .. index:: Fluid, NotScanned, ext:backend

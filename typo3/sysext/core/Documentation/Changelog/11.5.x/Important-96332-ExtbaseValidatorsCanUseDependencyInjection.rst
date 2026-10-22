@@ -129,7 +129,7 @@ The v12 and above version of this validator can then looks like this:
     }
 
 In all of the above cases, whenever Extbase validators need native dependency injection
-without manual :php:`GeneralUtility::makeInstance()` calls for their dependencies, and
+without manual :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()` calls for their dependencies, and
 if TYPO3 v11 should be supported, these validators must set :yaml:`public: true` and
 :yaml:`shared: false` in :file:`Services.yaml`:
 

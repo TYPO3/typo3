@@ -14,24 +14,24 @@ Description
 The following methods have been marked as deprecated due to better functionality mostly provided by native
 PHP functionality, like :php:`mbstring` functions.
 
-- :php:`CharsetConverter->synonyms`
-- :php:`CharsetConverter->parse_charset()`
-- Fourth parameter of :php:`CharsetConverter->conv()`
-- :php:`CharsetConverter->convArray()`
-- :php:`CharsetConverter->utf8_to_entities()`
-- :php:`CharsetConverter->entities_to_utf8()`
-- :php:`CharsetConverter->crop()`
-- :php:`CharsetConverter->convCaseFirst()`
-- :php:`CharsetConverter->utf8_char2byte_pos()`
+- :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter->synonyms`
+- :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter->parse_charset()`
+- Fourth parameter of :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter->conv()`
+- :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter->convArray()`
+- :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter->utf8_to_entities()`
+- :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter->entities_to_utf8()`
+- :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter->crop()`
+- :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter->convCaseFirst()`
+- :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter->utf8_char2byte_pos()`
 
 Additionally the following public properties have been changed to have a "protected" visibility,
 as these only reflect internal state:
 
-- :php:`CharsetConverter->noCharByteVal`
-- :php:`CharsetConverter->parsedCharsets`
-- :php:`CharsetConverter->toASCII`
-- :php:`CharsetConverter->twoByteSets`
-- :php:`CharsetConverter->eucBasedSets`
+- :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter->noCharByteVal`
+- :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter->parsedCharsets`
+- :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter->toASCII`
+- :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter->twoByteSets`
+- :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter->eucBasedSets`
 
 
 Impact

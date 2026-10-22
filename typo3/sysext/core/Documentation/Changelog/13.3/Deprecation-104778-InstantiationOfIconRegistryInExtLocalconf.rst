@@ -13,7 +13,7 @@ Description
 
 Since TYPO3 v11 it is possible to automatically register own icons via
 :file:`Configuration/Icons.php`. Prior to this, extension authors used to register
-icons manually via instantiating the php:`\TYPO3\CMS\Core\Imaging\IconRegistry`
+icons manually via instantiating the :php:`\TYPO3\CMS\Core\Imaging\IconRegistry`
 in their :file:`ext_localconf.php`
 files. This method has now been deprecated. It is recommended to switch to
 the newer method introduced with :issue:`94692`.

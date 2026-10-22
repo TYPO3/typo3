@@ -12,7 +12,7 @@ Description
 ===========
 
 In the process of streamlining the link generation to pages in the Frontend, the master method
-:php:`TemplateService->linkData` and all functionality regarding resolving of the according Mount Point parameters
+:php-short:`\TYPO3\CMS\Core\TypoScript\TemplateService->linkData` and all functionality regarding resolving of the according Mount Point parameters
 have been migrated into the TypoLink PageLinkBuilder class.
 
 The following methods have been marked as deprecated:
@@ -39,7 +39,7 @@ will work the same way.
 Migration
 =========
 
-Access the corresponding new methods within :php:`PageLinkBuilder` instead of the TemplateService-related
+Access the corresponding new methods within :php-short:`\TYPO3\CMS\Frontend\Typolink\PageLinkBuilder` instead of the TemplateService-related
 methods, or use the existing hook to modify parameters for a URL.
 
 .. index:: PHP-API, FullyScanned

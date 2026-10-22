@@ -51,14 +51,14 @@ Creating your own widget
 Besides the widgets shipped with TYPO3 core, you can also write your own widget. To
 do so, you can extend one of the WidgetAbstracts available in EXT:dashboard.
 
-* :php:`AbstractWidget`: a basic abstract that can be used as the start of simple widgets
-* :php:`AbstractRssWidget`: with this abstract it is easy to create a widget showing a RSS feed
-* :php:`AbstractListWidget`: this abstract will give you an easy start to show a list of items
-* :php:`AbstractCtaButtonWidget`: when you want to show a Call-To-Action button, this is the right abstract
-* :php:`AbstractChartWidget`: the base of all chart widgets
-* :php:`AbstractBarChartWidget`: when you want to show a widget with a bar-chart you can extend this class
-* :php:`AbstractDoughnutChartWidget`: this abstract gives you the possibility to create a doughnut-chart widget
-* :php:`AbstractNumberWithIconWidget`: this abstract will give you the possibility to show a title, number and an icon
+* :php-short:`\TYPO3\CMS\Dashboard\Widgets\AbstractWidget`: a basic abstract that can be used as the start of simple widgets
+* :php-short:`\TYPO3\CMS\Dashboard\Widgets\AbstractRssWidget`: with this abstract it is easy to create a widget showing a RSS feed
+* :php-short:`\TYPO3\CMS\Dashboard\Widgets\AbstractListWidget`: this abstract will give you an easy start to show a list of items
+* :php-short:`\TYPO3\CMS\Dashboard\Widgets\AbstractCtaButtonWidget`: when you want to show a Call-To-Action button, this is the right abstract
+* :php-short:`\TYPO3\CMS\Dashboard\Widgets\AbstractChartWidget`: the base of all chart widgets
+* :php-short:`\TYPO3\CMS\Dashboard\Widgets\AbstractBarChartWidget`: when you want to show a widget with a bar-chart you can extend this class
+* :php-short:`\TYPO3\CMS\Dashboard\Widgets\AbstractDoughnutChartWidget`: this abstract gives you the possibility to create a doughnut-chart widget
+* :php-short:`\TYPO3\CMS\Dashboard\Widgets\AbstractNumberWithIconWidget`: this abstract will give you the possibility to show a title, number and an icon
 
 
 By extending one of those abstracts, and providing it with the needed data, you are able to

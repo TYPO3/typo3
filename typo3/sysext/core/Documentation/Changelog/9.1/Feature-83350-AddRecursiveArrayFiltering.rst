@@ -15,7 +15,7 @@ Description
 The new method :php:`\TYPO3\CMS\Core\Utility\ArrayUtility::filterRecursive()` has been added as an enhancement to the
 `PHP function`_ :php:`array_filter()` to filter multidimensional arrays.
 
-The method :php:`ArrayUtility::filterRecursive()` behaves just like :php:`array_filter()` and if no callback is defined,
+The method :php-short:`\TYPO3\CMS\Core\Utility\ArrayUtility::filterRecursive()` behaves just like :php:`array_filter()` and if no callback is defined,
 values are removed if they equal to boolean :php:`false`. See `converting to boolean`_.
 
 .. _`PHP function`: https://secure.php.net/manual/en/function.array-filter.php

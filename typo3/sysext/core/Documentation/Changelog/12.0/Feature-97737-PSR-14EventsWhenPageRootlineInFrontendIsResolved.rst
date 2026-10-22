@@ -12,15 +12,15 @@ Description
 ===========
 
 Three new PSR-14 events have been added in the process when the main class
-:php:`TypoScriptFrontendController` is resolving a page and its rootline,
+:php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` is resolving a page and its rootline,
 based on the incoming request.
 
-* :php:`BeforePageIsResolvedEvent`
-* :php:`AfterPageWithRootLineIsResolvedEvent`
-* :php:`AfterPageAndLanguageIsResolvedEvent`
+* :php-short:`\TYPO3\CMS\Frontend\Event\BeforePageIsResolvedEvent`
+* :php-short:`\TYPO3\CMS\Frontend\Event\AfterPageWithRootLineIsResolvedEvent`
+* :php-short:`\TYPO3\CMS\Frontend\Event\AfterPageAndLanguageIsResolvedEvent`
 
 All events receive the incoming PSR-7 Request object, and the
-:php:`TypoScriptFrontendController` object.
+:php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` object.
 
 In addition, the latter two events allow event listeners to define a custom
 PSR-7 Response for custom permission layers, and interrupting further processing

@@ -60,7 +60,7 @@ is configured:
         ],
     ];
 
-The password policy in the example uses the `CorePasswordValidator` with the
+The password policy in the example uses the :php-short:`\TYPO3\CMS\Core\PasswordPolicy\Validator\CorePasswordValidator` with the
 option to require a password with a minimum length of 6 chars.
 
 The password policy identifier is used to assign the defined password policy

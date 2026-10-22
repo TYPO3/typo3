@@ -11,7 +11,7 @@ See :issue:`96829`
 Description
 ===========
 
-Method :php:`BackendUtility::getFuncInput()` is incompatible with
+Method :php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncInput()` is incompatible with
 `Content-Security-Policy` HTTP headers due to its onchange JavaScript
 handler, and has been removed.
 

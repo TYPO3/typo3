@@ -17,12 +17,12 @@ serve as a direct replacement for the now removed
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks']`
 :doc:`hooks <../12.0/Breaking-97454-RemoveLinkBrowserHooks>`.
 
-The :php:`ModifyLinkHandlersEvent` is triggered before link handlers are
+The :php-short:`\TYPO3\CMS\Backend\Controller\Event\ModifyLinkHandlersEvent` is triggered before link handlers are
 executed, allowing listeners to modify the set of handlers that will be used.
 It is the direct replacement for the method :php:`modifyLinkHandlers()` in the
 LinkBrowser hook.
 
-The :php:`ModifyAllowedItemsEvent` can be used to dynamically modify the
+The :php-short:`\TYPO3\CMS\Backend\Controller\Event\ModifyAllowedItemsEvent` can be used to dynamically modify the
 allowed link types. It is the direct replacement for the method :php:`modifyAllowedItems()`
 in the LinkBrowser hook.
 
@@ -64,6 +64,6 @@ Impact
 ======
 
 It's now possible to modify link handlers behavior using the new PSR-14
-:php:`ModifyLinkHandlersEvent` and :php:`ModifyAllowedItemsEvent`.
+:php-short:`\TYPO3\CMS\Backend\Controller\Event\ModifyLinkHandlersEvent` and :php-short:`\TYPO3\CMS\Backend\Controller\Event\ModifyAllowedItemsEvent`.
 
 .. index:: Backend, PHP-API, ext:backend

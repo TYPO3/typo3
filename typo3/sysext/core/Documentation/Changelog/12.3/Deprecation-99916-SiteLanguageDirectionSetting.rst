@@ -27,7 +27,7 @@ derived from the :yaml:`locale` setting of the site configuration.
 As a result, the amount of options in the user interface for integrators is
 reduced.
 
-The PHP method :php:`SiteLanguage->getDirection()` serves no purpose anymore and
+The PHP method :php-short:`\TYPO3\CMS\Core\Site\Entity\SiteLanguage->getDirection()` serves no purpose anymore and
 is deprecated.
 
 
@@ -57,8 +57,8 @@ not necessary in 99.99% of the use cases. If the locale of the site language in 
 site's :file:`config.yaml` matches the natural direction of the language
 (Arabic and direction = rtl), the setting :yaml:`direction` can be removed.
 
-Any calls to :php:`SiteLanguage->getDirection()` can be replaced by
-:php:`SiteLanguage->getLocale()->isRightToLeftLanguageDirection() ? 'rtl' : 'ltr'`.
+Any calls to :php-short:`\TYPO3\CMS\Core\Site\Entity\SiteLanguage->getDirection()` can be replaced by
+:php-short:`\TYPO3\CMS\Core\Site\Entity\SiteLanguage->getLocale()->isRightToLeftLanguageDirection() ? 'rtl' : 'ltr'`.
 
 The frontend output does not set :html:`ltr` in the :html:`<html>` tag anymore, as this is the default
 for HTML documents (see https://www.w3.org/International/questions/qa-html-dir).

@@ -139,7 +139,7 @@ Configuration options for file uploads
 --------------------------------------
 
 The configuration for a file upload is defined in a
-:php:`FileUploadConfiguration` object.
+:php-short:`\TYPO3\CMS\Extbase\Mvc\Controller\FileUploadConfiguration` object.
 
 This object contains the following configuration options.
 
@@ -261,7 +261,7 @@ The example shows how to modify the file upload configuration for the argument
 :php:`item` and the property :php:`file`. The minimum amount of files to be
 uploaded is set to :php:`2` and a custom validator is added.
 
-To remove all defined validators except the :php:`FileNameValidator`, use
+To remove all defined validators except the :php-short:`\TYPO3\CMS\Extbase\Validation\Validator\FileNameValidator`, use
 the :php:`resetValidators()` method.
 
 
@@ -308,7 +308,7 @@ section of the :php-short:`\TYPO3\CMS\Extbase\Annotation\FileUpload` attribute:
 *   :php:`fileSize`  (for :php:`TYPO3\CMS\Extbase\Validation\Validator\FileSizeValidator`)
 *   :php:`imageDimensions` (for :php:`TYPO3\CMS\Extbase\Validation\Validator\ImageDimensionsValidator`)
 *   :php:`mimeType` (for :php:`TYPO3\CMS\Extbase\Validation\Validator\MimeTypeValidator`)
-*   :php:`allowedMimeTypes` (shorthand notation for configuration option :php:`allowedMimeTypes` of the :php:`MimeTypeValidator`)
+*   :php:`allowedMimeTypes` (shorthand notation for configuration option :php:`allowedMimeTypes` of the :php-short:`\TYPO3\CMS\Extbase\Validation\Validator\MimeTypeValidator`)
 
 Example:
 
@@ -341,7 +341,7 @@ and must be configured manually.
 Shorthand notation for `allowedMimeTypes`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Using the :php:`mimeType` configuration array, all options of the `MimeTypeValidator`
+Using the :php:`mimeType` configuration array, all options of the :php-short:`\TYPO3\CMS\Extbase\Validation\Validator\MimeTypeValidator`
 can be set as sub-keys (since TYPO3 13.4.1):
 
 ..  code-block:: php
@@ -394,7 +394,7 @@ object. It will:
 *   delete the affected :php:`sys_file_reference` record
 *   delete the affected file
 
-Internally, Extbase uses :php:`FileUploadDeletionConfiguration` objects to track
+Internally, Extbase uses :php-short:`\TYPO3\CMS\Extbase\Mvc\Controller\FileUploadDeletionConfiguration` objects to track
 file deletions for properties of arguments. Files are deleted directly without
 checking whether the current file is referenced by other objects.
 

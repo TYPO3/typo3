@@ -30,7 +30,7 @@ TYPO3 installations with custom extensions calling this method directly.
 Migration
 =========
 
-As :php:`enableFields()` acts as a simple wrapper around :php:`PageRepository->enableFields()`, it is recommended
+As :php:`enableFields()` acts as a simple wrapper around :php-short:`\TYPO3\CMS\Frontend\Page\PageRepository->enableFields()`, it is recommended
 to instantiate PageRepository directly.
 
 .. index:: Frontend, PHP-API, FullyScanned, ext:frontend

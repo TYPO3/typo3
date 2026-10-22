@@ -14,7 +14,7 @@ Description
 The :php:`TYPO3\CMS\Backend\Controller\PageLayoutController` features
 two hooks for manipulating the "Page" module. :php:`drawHeaderHook` and
 :php:`drawFooterHook`. Those hooks already
-receive the parent object :php:`PageLayoutController`. Since the calling
+receive the parent object :php-short:`\TYPO3\CMS\Backend\Controller\PageLayoutController`. Since the calling
 code expects the hooks to return additional content, it was previously
 not possible to change other parts of the module, for example the module header.
 
@@ -44,7 +44,7 @@ Impact
 ======
 
 When using either the :php:`drawHeaderHook` or the :php:`drawFooterHook` of the
-:php:`PageLayoutController`, the provided parent object now contains
+:php-short:`\TYPO3\CMS\Backend\Controller\PageLayoutController`, the provided parent object now contains
 the :php:`getModuleTemplate()` method, which can be used to retrieve
 the corresponding :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate` instance.
 This provides more flexibility to third party code manipulating the "Page"

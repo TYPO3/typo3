@@ -15,7 +15,7 @@ The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typolinkProcessing']['
 has been removed in favor of a new PSR-14 event :php:`TYPO3\CMS\Frontend\Event\ModifyPageLinkConfigurationEvent`.
 
 The event is called after TYPO3 has already prepared some functionality
-within the :php:`PageLinkBuilder`. This therefore allows to modify more
+within the :php-short:`\TYPO3\CMS\Frontend\Typolink\PageLinkBuilder`. This therefore allows to modify more
 properties, if needed.
 
 Impact

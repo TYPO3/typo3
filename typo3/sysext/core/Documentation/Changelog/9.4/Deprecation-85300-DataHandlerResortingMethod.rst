@@ -11,7 +11,7 @@ See :issue:`85300`
 Description
 ===========
 
-The public :php:`DataHandler->resorting` method has been marked as deprecated. It will be removed in v10.0.
+The public :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler->resorting` method has been marked as deprecated. It will be removed in v10.0.
 
 
 Impact
@@ -29,6 +29,6 @@ All installations xclassing DataHandler, or having call the method mentioned.
 Migration
 =========
 
-Use the newly introduced :php:`DataHandler->increaseSortingOfFollowingRecords` method instead.
+Use the newly introduced :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler->increaseSortingOfFollowingRecords` method instead.
 
 .. index:: Backend, FullyScanned, ext:core

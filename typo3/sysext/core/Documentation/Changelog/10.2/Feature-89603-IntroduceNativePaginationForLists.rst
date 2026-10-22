@@ -33,7 +33,7 @@ Two concrete paginators have been introduced. One for :php:`array` and one for
 The introduction of this native support for the pagination of lists enables the creation of a new
 paginate ViewHelper that is type agnostic.
 
-Code-Example for the :php:`ArrayPaginator`:
+Code-Example for the :php-short:`\TYPO3\CMS\Core\Pagination\ArrayPaginator`:
 
 .. code-block:: php
 

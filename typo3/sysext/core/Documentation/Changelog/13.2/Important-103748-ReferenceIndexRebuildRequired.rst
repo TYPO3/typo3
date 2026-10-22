@@ -21,7 +21,7 @@ a valid index and keeping it up-to-date after deployments is mandatory
 to avoid incorrect data during frontend and backend processing.
 
 After deployment and initial rebuild, the index is kept up-to-date automatically
-by the :php:`DataHandler` when changing records in the backend .
+by the :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler` when changing records in the backend .
 
 In general, updating the reference index is required when database
 relations that are defined in TCA change - typically when adding, removing

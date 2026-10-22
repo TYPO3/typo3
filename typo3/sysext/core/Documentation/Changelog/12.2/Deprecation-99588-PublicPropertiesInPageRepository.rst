@@ -50,7 +50,7 @@ as this is already done in TYPO3 Core since various versions.
 If it is needed to build queries with the common restrictions, it is recommended to use
 the API methods of this class, where most of the methods already have a
 `$disableGroupAccessCheck` argument, or `enableFields()` which allows to return
-common constraints, or to use the :php:`FrontendRestrictionContainer` when building
+common constraints, or to use the :php-short:`\TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer` when building
 custom SQL queries with TYPO3's database layer directly.
 
 .. index:: Frontend, PHP-API, FullyScanned, ext:core

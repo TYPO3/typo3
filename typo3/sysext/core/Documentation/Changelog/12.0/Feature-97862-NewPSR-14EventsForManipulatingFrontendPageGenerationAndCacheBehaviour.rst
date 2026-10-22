@@ -29,7 +29,7 @@ generated in the TYPO3 Frontend.
 Example
 =======
 
-Registration of the `AfterCacheableContentIsGeneratedEvent` in your extension's :file:`Services.yaml`:
+Registration of the :php-short:`\TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent` in your extension's :file:`Services.yaml`:
 
 ..  code-block:: yaml
 
@@ -59,19 +59,19 @@ The corresponding event listener class:
 Impact
 ======
 
-The event :php:`AfterCacheableContentIsGeneratedEvent` can be used
+The event :php-short:`\TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent` can be used
 to decide if a page should be stored in cache and is executed right after
 all cacheable content is generated. It can also be used to manipulate
 the content before it is stored in TYPO3's page cache. The event is used
 in indexed search to index cacheable content.
 
-The :php:`AfterCacheableContentIsGeneratedEvent` contains the
+The :php-short:`\TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent` contains the
 information if a generated page is able to store in cache via the
 :php:`$event->isCachingEnabled()` method. This can be used to
 differentiate between the previous hooks `contentPostProc-cached` and
 `contentPostProc-all` (do something regardless if caching is enabled or not).
 
-The :php:`AfterCachedPageIsPersistedEvent` is commonly used to
+The :php-short:`\TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent` is commonly used to
 generate a static file cache. This event is only called if the
 page was actually stored in TYPO3's page cache.
 

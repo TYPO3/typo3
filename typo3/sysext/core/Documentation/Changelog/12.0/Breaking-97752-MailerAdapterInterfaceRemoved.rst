@@ -14,7 +14,7 @@ Description
 The :php:`\TYPO3\CMS\Core\Mail\MailerAdapterInterface` has been removed,
 since the interface became unused in v7 due to removal of Core's
 :php:`SwiftMailerAdapter` implementation, which had been used as hook
-subscriber in the also removed :php:`MailUtility::mail()` method.
+subscriber in the also removed :php-short:`\TYPO3\CMS\Core\Utility\MailUtility::mail()` method.
 
 Impact
 ======

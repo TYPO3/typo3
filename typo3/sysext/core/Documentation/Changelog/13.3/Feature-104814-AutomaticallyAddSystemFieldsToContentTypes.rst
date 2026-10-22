@@ -62,7 +62,7 @@ type's :php:`showitem` definition.
 If the content element defines the :guilabel:`Extended` tab, it will be
 inserted at the end, including all fields added to the type via API methods,
 without specifying a position, e.g. via
-:php:`ExtensionManagementUtility::addToAllTcaTypes()`.
+:php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTcaTypes()`.
 
 Impact
 ======

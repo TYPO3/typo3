@@ -13,9 +13,9 @@ Description
 
 A couple of new PSR-14 events have been added to the frontend rendering chain:
 
-* :php:`BeforePageCacheIdentifierIsHashedEvent`
-* :php:`ModifyTypoScriptConfigEvent`
-* :php:`AfterTypoScriptDeterminedEvent`
+* :php-short:`\TYPO3\CMS\Frontend\Event\BeforePageCacheIdentifierIsHashedEvent`
+* :php-short:`\TYPO3\CMS\Frontend\Event\ModifyTypoScriptConfigEvent`
+* :php-short:`\TYPO3\CMS\Frontend\Event\AfterTypoScriptDeterminedEvent`
 
 These events allow reacting and modifying details during frontend rendering related
 to TypoScript determination and page cache calculation. See the event class comments

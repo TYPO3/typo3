@@ -12,7 +12,7 @@ Description
 ===========
 
 In the process of streamlining the internal reflection / docparser cache handling, the following
-methods of the PHP class :php:`ClassSchema` have been deprecated:
+methods of the PHP class :php-short:`\TYPO3\CMS\Extbase\Reflection\ClassSchema` have been deprecated:
 
 * :php:`addProperty()`
 * :php:`setModelType()`
@@ -38,7 +38,7 @@ Installations using one of the mentioned methods instead of the ReflectionServic
 Migration
 =========
 
-Use the class :php:`ReflectionService` as API which will be automatically initialized on
+Use the class :php-short:`\TYPO3\CMS\Extbase\Reflection\ReflectionService` as API which will be automatically initialized on
 instantiation.
 
 .. index:: PHP-API, FullyScanned, ext:extbase

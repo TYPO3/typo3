@@ -11,14 +11,14 @@ See :issue:`79610`
 Description
 ===========
 
-Method :php:`doesRecordExist_pageLookUp()` of class :php:`DataHandler` has been
+Method :php:`doesRecordExist_pageLookUp()` of class :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler` has been
 changed. The signature and return value has been changed as a preparation for
-more optimisations in the class :php:`DataHandler`.
+more optimisations in the class :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler`.
 
 Impact
 ======
 
 None since the usages of doesRecordExist_pageLookUp should be limited
-to the class :php:`DataHandler` - see also :issue:`77391`.
+to the class :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler` - see also :issue:`77391`.
 
 .. index:: PHP-API

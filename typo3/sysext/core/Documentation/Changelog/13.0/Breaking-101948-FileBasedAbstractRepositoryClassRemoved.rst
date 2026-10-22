@@ -30,32 +30,32 @@ These never worked and were never implemented in the mentioned repository
 classes from FAL.
 
 It becomes abundantly clear that the concepts do not match by looking at the
-:php:`AbstractRepository` class which even had exceptions for methods that were
+:php-short:`\TYPO3\CMS\Core\Resource\AbstractRepository` class which even had exceptions for methods that were
 not compatible with Extbase.
 
 2. The concept of inheritance did not work out for Dependency Injection
 introduced in TYPO3 v10, and with PHP 8.x which reveals various typing problems
-that arose around :php:`AbstractRepository`.
+that arose around :php-short:`\TYPO3\CMS\Core\Resource\AbstractRepository`.
 
-:php:`AbstractRepository` is thus removed, and the implementing classes do not
+:php-short:`\TYPO3\CMS\Core\Resource\AbstractRepository` is thus removed, and the implementing classes do not
 extend from this class anymore, as they only include the methods required for
 their purpose, and are now completely strictly typed.
 
-Additionally, :php:`FileRepository` has been cleaned up by removing
+Additionally, :php-short:`\TYPO3\CMS\Core\Resource\FileRepository` has been cleaned up by removing
 :php:`findFileReferenceByUid()` as it is only a wrapper to
-:php:`ResourceFactory::getFileReferenceObject()`
+:php-short:`\TYPO3\CMS\Core\Resource\ResourceFactory::getFileReferenceObject()`
 
 
 Impact
 ======
 
 Code that uses the three classes in a third-party extension might fail as the
-implementing PHP repositories :php:`FileRepository` and
-:php:`ProcessedFileRepository` have only necessary methods available.
+implementing PHP repositories :php-short:`\TYPO3\CMS\Core\Resource\FileRepository` and
+:php-short:`\TYPO3\CMS\Core\Resource\ProcessedFileRepository` have only necessary methods available.
 
-PHP extensions that derive from the :php:`AbstractRepository` will stop working.
+PHP extensions that derive from the :php-short:`\TYPO3\CMS\Core\Resource\AbstractRepository` will stop working.
 
-Code that used :php:`FileRepository::findFileReferenceByUid()` will break.
+Code that used :php-short:`\TYPO3\CMS\Core\Resource\FileRepository::findFileReferenceByUid()` will break.
 
 
 Affected installations
@@ -63,7 +63,7 @@ Affected installations
 
 As all three PHP classes are low-level in the FAL API, the impact for regular
 installations will be rather low. Third-party extensions that extend from the
-:php:`AbstractRepository` of FAL, which is a wild use-case will stop working. It is
+:php-short:`\TYPO3\CMS\Core\Resource\AbstractRepository` of FAL, which is a wild use-case will stop working. It is
 safe to say, that only edge-case extensions that worked with the FAL API might
 be affected, but regular installations will see no difference.
 
@@ -73,21 +73,21 @@ Migration
 
 Only extension authors working with the low-level API of File Abstraction Layer
 would need to adapt their code to be type-safe. Extensions that extend from the
-:php:`AbstractRepository` class of FAL should implement the necessary methods
-themselves and remove the dependency from :php:`AbstractRepository`.
+:php-short:`\TYPO3\CMS\Core\Resource\AbstractRepository` class of FAL should implement the necessary methods
+themselves and remove the dependency from :php-short:`\TYPO3\CMS\Core\Resource\AbstractRepository`.
 
 It is highly recommended to not use any of these classes, but rather stick
-to high-level API of FAL, such as :php:`ResourceFactory`, :php:`File`
-or :php:`ResourceStorage`.
+to high-level API of FAL, such as :php-short:`\TYPO3\CMS\Core\Resource\ResourceFactory`, :php-short:`\TYPO3\CMS\Core\Resource\File`
+or :php-short:`\TYPO3\CMS\Core\Resource\ResourceStorage`.
 
-Replace former calls to :php:`FileRepository::findFileReferenceByUid()` like:
+Replace former calls to :php-short:`\TYPO3\CMS\Core\Resource\FileRepository::findFileReferenceByUid()` like:
 
 ..  code-block:: php
 
     $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
     $reference = $fileRepository->findFileReferenceByUid($referenceUid);
 
-by using the :php:`ResourceFactory` with new code like:
+by using the :php-short:`\TYPO3\CMS\Core\Resource\ResourceFactory` with new code like:
 
 ..  code-block:: php
 
@@ -96,7 +96,7 @@ by using the :php:`ResourceFactory` with new code like:
 
 ..  note::
 
-    Ideally use dependency injection instead of :php:`GeneralUtility::makeInstance()` to
-    retrieve the instance for :php:`ResourceFactory`.
+    Ideally use dependency injection instead of :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()` to
+    retrieve the instance for :php-short:`\TYPO3\CMS\Core\Resource\ResourceFactory`.
 
 .. index:: FAL, PHP-API, PartiallyScanned, ext:core

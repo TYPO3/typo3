@@ -19,12 +19,12 @@ All methods and properties that enable or disable tracking details and return
 the gathered data have been marked :php:`@internal` and partially moved to
 EXT:adminpanel.
 
-Extensions should only write data to :php:`TimeTracker`, methods that are
+Extensions should only write data to :php-short:`\TYPO3\CMS\Core\TimeTracker\TimeTracker`, methods that are
 considered API are these:
 
-* :php:`TimeTracker->push()` (second argument may vanish)
-* :php:`TimeTracker->pull()`
-* :php:`TimeTracker->setTSlogMessage()`
+* :php-short:`\TYPO3\CMS\Core\TimeTracker\TimeTracker->push()` (second argument may vanish)
+* :php-short:`\TYPO3\CMS\Core\TimeTracker\TimeTracker->pull()`
+* :php-short:`\TYPO3\CMS\Core\TimeTracker\TimeTracker->setTSlogMessage()`
 
 
 Impact
@@ -41,7 +41,7 @@ Affected installations
 Most extensions in the wild use only the above listed methods. There is little
 reason to use other methods, except for extension that mimic or extend
 functionality of EXT:adminpanel. Instances with such extensions need to follow
-changes of class :php:`TimeTracker`.
+changes of class :php-short:`\TYPO3\CMS\Core\TimeTracker\TimeTracker`.
 
 
 Migration

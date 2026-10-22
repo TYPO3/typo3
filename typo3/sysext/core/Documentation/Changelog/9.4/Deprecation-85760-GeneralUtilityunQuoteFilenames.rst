@@ -11,7 +11,7 @@ See :issue:`85760`
 Description
 ===========
 
-The method :php:`GeneralUtility::unQuoteFilenames()` has been marked as deprecated and will be removed in TYPO3 v10.
+The method :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::unQuoteFilenames()` has been marked as deprecated and will be removed in TYPO3 v10.
 
 
 Impact

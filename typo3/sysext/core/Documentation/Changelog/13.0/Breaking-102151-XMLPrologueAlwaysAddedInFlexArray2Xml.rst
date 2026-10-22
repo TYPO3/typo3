@@ -27,7 +27,7 @@ This should have no impact for consumers of this method. The counterpart method
 Affected installations
 ======================
 
-Instances with extensions using :php:`FlexFormTools->flexArray2Xml()` can drop
+Instances with extensions using :php-short:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->flexArray2Xml()` can drop
 the second argument. The extension scanner will find usages with a weak match.
 
 Since this is a detail method of the TYPO3 Core FlexForm handling, not often

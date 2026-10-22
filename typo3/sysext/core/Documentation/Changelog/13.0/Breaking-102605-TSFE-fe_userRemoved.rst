@@ -11,9 +11,9 @@ See :issue:`102605`
 Description
 ===========
 
-Frontend-related property :php:`TypoScriptFrontendController->fe_user` has been removed.
+Frontend-related property :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fe_user` has been removed.
 
-When looking at the TYPO3 frontend rendering chain, class :php:`TypoScriptFrontendController`
+When looking at the TYPO3 frontend rendering chain, class :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController`
 is by far the biggest technical debt: It mixes a lot of concerns and carries tons of state
 and functionality that should be modeled differently, which leads to easier to understand
 and more flexible code. The class is shrinking since various major versions already and will
@@ -23,7 +23,7 @@ will continue to communicate alternatives.
 
 In case of the :php:`fe_user` property, two alternatives exist: The frontend user
 can be retrieved from the PSR-7 request attribute :php:`frontend.user`, and basic frontend user
-information is available using the :php:`Context` aspect :php:`frontend.user`.
+information is available using the :php-short:`\TYPO3\CMS\Core\Context\Context` aspect :php:`frontend.user`.
 
 Note accessing TypoScript :typoscript:`TSFE:fe_user` details continues to work for now, using
 for example :typoscript:`lib.foo.data = TSFE:fe_user|user|username` to retrieve the username of a
@@ -33,7 +33,7 @@ logged in user is still ok.
 Impact
 ======
 
-Using :php:`TypoScriptFrontendController->fe_user` (or
+Using :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fe_user` (or
 :php:`$GLOBALS['TSFE']->fe_user`) will raise a PHP fatal error.
 
 
@@ -49,7 +49,7 @@ Migration
 
 There are two possible migrations.
 
-First, a limited information list of frontend user details can be retrieved using the :php:`Context`
+First, a limited information list of frontend user details can be retrieved using the :php-short:`\TYPO3\CMS\Core\Context\Context`
 aspect :php:`frontend.user` in frontend calls. See class :php:`\TYPO3\CMS\Core\Context\UserAspect` for a
 full list. The current context can retrieved using dependency injection. Example:
 

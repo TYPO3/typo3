@@ -11,7 +11,7 @@ See :issue:`81464`
 Description
 ===========
 
-The page rendering class :php:`PageRenderer` now offers a concise, yet simple API to manage meta tags.
+The page rendering class :php-short:`\TYPO3\CMS\Core\Page\PageRenderer` now offers a concise, yet simple API to manage meta tags.
 
 It consists of the three methods:
 
@@ -19,7 +19,7 @@ It consists of the three methods:
 Setting meta tags
 -----------------
 
-:php:`PageRenderer->setMetaTag(string $type, string $name, string $content)`
+:php-short:`\TYPO3\CMS\Core\Page\PageRenderer->setMetaTag(string $type, string $name, string $content)`
 
 Used to add or **overwrite** a given meta tag.
 
@@ -44,7 +44,7 @@ will result in
 Getting meta tags
 -----------------
 
-:php:`PageRenderer->getMetaTag(string $type, string $name)`
+:php-short:`\TYPO3\CMS\Core\Page\PageRenderer->getMetaTag(string $type, string $name)`
 
 Used to get a given meta tag.
 This is useful if your extension isn't the only player that handles meta tags. So instead of blindly overwriting other
@@ -55,7 +55,7 @@ should get rendered.
 Removing meta tags
 ------------------
 
-:php:`PageRenderer->removeMetaTag(string $type, string $name)`
+:php-short:`\TYPO3\CMS\Core\Page\PageRenderer->removeMetaTag(string $type, string $name)`
 
 Used to remove a meta tag from the stack.
 

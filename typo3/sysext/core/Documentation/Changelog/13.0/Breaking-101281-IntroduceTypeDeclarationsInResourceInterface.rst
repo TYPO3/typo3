@@ -75,7 +75,7 @@ In consequence, the following methods are affected:
 Affected installations
 ======================
 
-Affected installations are those which either implement the :php:`ResourceInterface`
+Affected installations are those which either implement the :php-short:`\TYPO3\CMS\Core\Resource\ResourceInterface`
 directly (very unlikely) or those that extend any of mentioned implementations
 (Core classes).
 
@@ -85,6 +85,6 @@ The usage (the API) of those implementation itself has not changed!
 Migration
 =========
 
-Use the same return type declarations as :php:`ResourceInterface` does.
+Use the same return type declarations as :php-short:`\TYPO3\CMS\Core\Resource\ResourceInterface` does.
 
 .. index:: FAL, PHP-API, NotScanned, ext:core

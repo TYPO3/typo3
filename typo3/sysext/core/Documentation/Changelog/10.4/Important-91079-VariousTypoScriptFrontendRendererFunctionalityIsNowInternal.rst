@@ -19,9 +19,9 @@ extension authors should use the actual APIs directly.
 
 The properties
 
-* :php:`TypoScriptFrontendController->sPre`
-* :php:`TypoScriptFrontendController->pSetup`
-* :php:`TypoScriptFrontendController->all`
+* :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sPre`
+* :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->pSetup`
+* :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->all`
 
 are related to unpacking TypoScript details related
 to a page object in TypoScript and to its caching part,
@@ -32,17 +32,17 @@ decouple TypoScript Parsing from the global `TSFE` object.
 
 The properties
 
-* :php:`TypoScriptFrontendController->additionalJavaScript`
-* :php:`TypoScriptFrontendController->additionalCSS`
-* :php:`TypoScriptFrontendController->JSCode`
-* :php:`TypoScriptFrontendController->inlineJS`
+* :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->additionalJavaScript`
+* :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->additionalCSS`
+* :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->JSCode`
+* :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->inlineJS`
 
-and the method :php:`TypoScriptFrontendController->setJS()` are
+and the method :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->setJS()` are
 marked as internal. The AssetCollector API and the PageRenderer
 can be used instead, and TYPO3 Core will move towards these
 APIs completely internally.
 
-The property :php:`TypoScriptFrontendController->indexedDocTitle`
+The property :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->indexedDocTitle`
 is now marked as internal as the PageTitle API is in place since
 TYPO3 v9 LTS.
 

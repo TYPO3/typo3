@@ -38,7 +38,7 @@ XmlSitemapDataProviders
 -----------------------
 
 The rendering of sitemaps is based on XmlSitemapDataProviders. EXT:seo extension ships with two
-XmlSitemapDataProviders. The first one is the :php:`PagesXmlSitemapDataProvider`. This will generate a sitemap
+XmlSitemapDataProviders. The first one is the :php-short:`\TYPO3\CMS\Seo\XmlSitemap\PagesXmlSitemapDataProvider`. This will generate a sitemap
 of pages based on the siteroot that is detected. You can configure if you have additional conditions
 for the selection of pages. You also have the possibility to exclude certain doktypes.
 
@@ -60,7 +60,7 @@ for the selection of pages. You also have the possibility to exclude certain dok
    }
 
 If you also have an extension installed and want a sitemap of those records, you can use the
-:php:`RecordsXmlSitemapDataProvider`. You can add for example a sitemap for news records:
+:php-short:`\TYPO3\CMS\Seo\XmlSitemap\RecordsXmlSitemapDataProvider`. You can add for example a sitemap for news records:
 
 .. code-block:: typoscript
 

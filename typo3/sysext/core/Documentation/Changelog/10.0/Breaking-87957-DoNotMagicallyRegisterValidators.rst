@@ -91,8 +91,8 @@ Type Validators
 
 Given that there is any kind of simple type param or property that is to be validated, e.g. a property of a model or an
 action method param, extbase tried to apply a validator for that param/property derived from its type. If there was an
-action param of type string, extbase searched for a `StringValidator` in the namespace
-`TYPO3\CMS\Extbase\Validation\Validator`. The :php:`TYPO3\CMS\Extbase\Validation\Validator\StringValidator` does
+action param of type string, extbase searched for a :php-short:`\TYPO3\CMS\Extbase\Validation\Validator\StringValidator` in the namespace
+:php:`TYPO3\CMS\Extbase\Validation\Validator`. The :php:`TYPO3\CMS\Extbase\Validation\Validator\StringValidator` does
 actually exist, as well as :php:`TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator` and others.
 
 If a validator for a specific type existed it had been magically applied and used during the validation of models and
