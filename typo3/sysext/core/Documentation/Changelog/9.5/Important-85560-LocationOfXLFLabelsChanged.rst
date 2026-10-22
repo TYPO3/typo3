@@ -15,6 +15,6 @@ Downloaded files for XLF language files are usually stored within :file:`typo3co
 variable `TYPO3_PATH_ROOT` is set, which is common for all composer-based installations, the XLF language files
 are now found outside the document root, available under :file:`var/labels/`.
 
-The Environment API :php:`Environment::getLabelsPath()` resolves the correct full location path prefix.
+The Environment API :php-short:`\TYPO3\CMS\Core\Core\Environment::getLabelsPath()` resolves the correct full location path prefix.
 
 .. index:: PHP-API

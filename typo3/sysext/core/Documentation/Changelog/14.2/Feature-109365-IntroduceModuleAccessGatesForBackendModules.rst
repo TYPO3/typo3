@@ -31,9 +31,9 @@ Extension authors can register custom gates using the
 :php:`#[AsModuleAccessGate]` PHP attribute. A gate receives the module and the
 current backend user and returns one of three results:
 
-*   :php:`ModuleAccessResult::Granted` - access is explicitly allowed
-*   :php:`ModuleAccessResult::Denied` - access is explicitly denied
-*   :php:`ModuleAccessResult::Abstain` - the gate cannot decide (not responsible
+*   :php-short:`\TYPO3\CMS\Backend\Module\ModuleAccessResult::Granted` - access is explicitly allowed
+*   :php-short:`\TYPO3\CMS\Backend\Module\ModuleAccessResult::Denied` - access is explicitly denied
+*   :php-short:`\TYPO3\CMS\Backend\Module\ModuleAccessResult::Abstain` - the gate cannot decide (not responsible
     for this access type)
 
 Example: Custom module access gate

@@ -31,8 +31,8 @@ TYPO3 installations with custom extensions calling the method.
 Migration
 =========
 
-Migrate towards the :php:`PackageManager` implementation, which can be added
-via Dependency Injection or retrieved via :php:`GeneralUtility::makeInstance()`.
+Migrate towards the :php-short:`\TYPO3\CMS\Core\Package\PackageManager` implementation, which can be added
+via Dependency Injection or retrieved via :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()`.
 
 Before
 ------

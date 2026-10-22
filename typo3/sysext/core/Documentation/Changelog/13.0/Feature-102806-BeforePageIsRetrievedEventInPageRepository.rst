@@ -29,7 +29,7 @@ bypassing the default page resolving.
 To modify the incoming parameters, the following methods are available:
 
 - :php:`setPageId()`: Allows to set the :php:`$uid` of a page to resolve
-- :php:`setPage()`: Allows to set a :php:`Page` object which bypasses TYPO3 Core functionality
+- :php:`setPage()`: Allows to set a :php-short:`\TYPO3\CMS\Core\Domain\Page` object which bypasses TYPO3 Core functionality
 
 
 Example

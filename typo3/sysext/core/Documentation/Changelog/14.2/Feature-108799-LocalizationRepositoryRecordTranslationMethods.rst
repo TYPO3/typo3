@@ -38,7 +38,7 @@ getRecordTranslations()
 
 Fetches all translations of a record. This method can also be used to count
 translations by using :php:`count()` on the result, replacing the need for
-:php:`BackendUtility::translationCount()`.
+:php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::translationCount()`.
 
 ..  code-block:: php
 
@@ -77,9 +77,9 @@ Extension developers working with record translations in the TYPO3 backend now
 have access to modern, injectable repository methods that follow current TYPO3
 coding practices.
 
-The legacy static methods :php:`BackendUtility::getRecordLocalization()`,
-:php:`BackendUtility::getExistingPageTranslations()`, and
-:php:`BackendUtility::translationCount()` remain available for backward
+The legacy static methods :php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordLocalization()`,
+:php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::getExistingPageTranslations()`, and
+:php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::translationCount()` remain available for backward
 compatibility until they are migrated completely.
 
 ..  index:: Backend, PHP-API, ext:backend

@@ -26,10 +26,10 @@ compatibility support for extensions that load modules via RequireJS.
 
 For security reasons importmap configuration is only emitted when the modules
 are actually used, that means when a module has been added to the current
-page response via :php:`PageRenderer->loadJavaScriptModule()` or
-:php:`JavaScriptRenderer->addJavaScriptModuleInstruction()`.
+page response via :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->loadJavaScriptModule()` or
+:php-short:`\TYPO3\CMS\Core\Page\JavaScriptRenderer->addJavaScriptModuleInstruction()`.
 Exposing all module configurations is possible via
-:php:`JavaScriptRenderer->includeAllImports()`, but that should only be
+:php-short:`\TYPO3\CMS\Core\Page\JavaScriptRenderer->includeAllImports()`, but that should only be
 done in backend context for logged in users, to avoid disclosing installed
 extensions to anonymous visitors.
 
@@ -91,8 +91,8 @@ Usage
 -----
 
 A module can be added to the current page response either via
-:php:`PageRenderer` or as :php:`JavaScriptModuleInstruction` via
-:php:`JavaScriptRenderer`:
+:php-short:`\TYPO3\CMS\Core\Page\PageRenderer` or as :php-short:`\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction` via
+:php-short:`\TYPO3\CMS\Core\Page\JavaScriptRenderer`:
 
 ..  code-block:: php
 

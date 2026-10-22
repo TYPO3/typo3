@@ -44,7 +44,7 @@ Migration
 =========
 
 As this method was used to only trigger a hook, it is recommended
-to use the :php:`PageRenderer` and :php:`ResourceCompressor` API instead, removing
+to use the :php-short:`\TYPO3\CMS\Core\Page\PageRenderer` and :php:`ResourceCompressor` API instead, removing
 any direct calls to this method.
 
 If still needed, extension authors can also copy the hook call

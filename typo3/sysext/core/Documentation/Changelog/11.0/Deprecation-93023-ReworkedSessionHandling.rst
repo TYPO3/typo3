@@ -15,7 +15,7 @@ As described in :ref:`changelog-Breaking-93023-ReworkedSessionHandling`
 the whole session handling in the TYPO3 Core was reworked by moving it
 out of the user authentication classes.
 
-Therefore some properties and methods within :php:`AbstractUserAuthentication`
+Therefore some properties and methods within :php-short:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication`
 and its subclasses have been marked as deprecated:
 
 *  :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->createSessionId()`
@@ -43,20 +43,20 @@ the deprecated properties or methods.
 Migration
 =========
 
-Creating a new session is now handled by the :php:`UserSessionManager`.
+Creating a new session is now handled by the :php-short:`\TYPO3\CMS\Core\Session\UserSessionManager`.
 Therefore the identifier is set internally on creation of a new session
 and should not longer be called directly. Use e.g.
-:php:`UserSessionManager->createAnonymousSession()` or
-:php:`UserSessionManager->regenerateSession()` to create a new session
-and then access :php:`UserSession->getIdentifier()`.
+:php-short:`\TYPO3\CMS\Core\Session\UserSessionManager->createAnonymousSession()` or
+:php-short:`\TYPO3\CMS\Core\Session\UserSessionManager->regenerateSession()` to create a new session
+and then access :php-short:`\TYPO3\CMS\Core\Session\UserSession->getIdentifier()`.
 
-Use :php:`UserSessionManager->isSessionPersisted()` instead of
+Use :php-short:`\TYPO3\CMS\Core\Session\UserSessionManager->isSessionPersisted()` instead of
 :php:`isExistingSessionRecord()` to check if a session is already persisted.
 
-Use the :php:`UserSessionManager` to create a new session and then directly
-access the :php:`UserSession` instead of calling :php:`fetchUserSession()`.
+Use the :php-short:`\TYPO3\CMS\Core\Session\UserSessionManager` to create a new session and then directly
+access the :php-short:`\TYPO3\CMS\Core\Session\UserSession` instead of calling :php:`fetchUserSession()`.
 
-Use :php:`UserSession->getIdentifier()` instead of :php:`getSessionId()`. To
+Use :php-short:`\TYPO3\CMS\Core\Session\UserSession->getIdentifier()` instead of :php:`getSessionId()`. To
 access this information from an user authentication object, call
 :php:`$userAuthentication->getSession()->getIdentifier()`.
 

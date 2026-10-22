@@ -34,7 +34,7 @@ Migration
 
 The property has been removed. Any code setting or reading it from
 :php:`\TYPO3\CMS\Core\DataHandling\DataHandler` instances should be removed. The
-:php:`DataHandler->log()` method now always writes the given :php:`$details`
+:php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler->log()` method now always writes the given :php:`$details`
 to the :sql:`sys_log` table.
 
 ..  index:: PHP-API, FullyScanned, ext:core

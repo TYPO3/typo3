@@ -163,7 +163,7 @@ Optionally replace the factory in a local extension
 
 If the corrected pass is provided by a Composer patch, the corrected factory may
 instead live in a local extension. Copy the current
-:php:`HandlersLocatorFactory` into the extension, for example as
+:php-short:`\TYPO3\CMS\Core\Messenger\HandlersLocatorFactory` into the extension, for example as
 :php:`\MyVendor\MyExtension\Messenger\HandlersLocatorFactory`, and re-point the
 core service to it in the extension's :file:`Configuration/Services.yaml`:
 
@@ -176,7 +176,7 @@ core service to it in the extension's :file:`Configuration/Services.yaml`:
       TYPO3\CMS\Core\Messenger\HandlersLocatorFactory:
         alias: MyVendor\MyExtension\Messenger\HandlersLocatorFactory
 
-Because :php:`MessageHandlerPass` resolves the factory definition by the core
+Because :php-short:`\TYPO3\CMS\Core\DependencyInjection\MessageHandlerPass` resolves the factory definition by the core
 class name (and the alias resolves to the extension definition), the compiler
 pass adds its :php:`addHandler()` calls to the extension implementation.
 

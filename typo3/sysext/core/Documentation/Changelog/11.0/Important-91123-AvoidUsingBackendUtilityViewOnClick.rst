@@ -11,12 +11,12 @@ See :issue:`91123`
 Description
 ===========
 
-:php:`BackendUtility::viewOnClick()` is not used anymore in TYPO3 core to
+:php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick()` is not used anymore in TYPO3 core to
 reduce the amount of inline JavaScript being generated in the backend user
 interface. :php:`\TYPO3\CMS\Backend\Routing\PreviewUriBuilder` should be
 used instead.
 
-Probably :php:`BackendUtility::viewOnClick()` will be deprecated in TYPO3 v11
+Probably :php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick()` will be deprecated in TYPO3 v11
 and finally removed in TYPO3 v12.0 - for TYPO3 v10 LTS it's still available.
 
 The following example demonstrates how implementations can be adjusted to

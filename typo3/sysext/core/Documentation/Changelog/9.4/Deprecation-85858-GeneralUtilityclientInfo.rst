@@ -11,7 +11,7 @@ See :issue:`85858`
 Description
 ===========
 
-The helper method :php:`GeneralUtility::clientInfo()` responsible for
+The helper method :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::clientInfo()` responsible for
 parsing the server variable :php:`$_SERVER['HTTP_USER_AGENT']` has been marked
 as deprecated.
 

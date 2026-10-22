@@ -45,7 +45,7 @@ Migration
 =========
 
 In order to make TYPO3 extensions compatible with TYPO3 v11 and
-TYPO3 v12 simultaneously, the new PSR-14 event :php:`AfterLinkIsGeneratedEvent`
+TYPO3 v12 simultaneously, the new PSR-14 event :php-short:`\TYPO3\CMS\Frontend\Event\AfterLinkIsGeneratedEvent`
 should be added in addition to the existing hooks.
 
 The new :doc:`PSR-14 event <../12.0/Feature-96641-NewPSR-14EventForModifyingLinks>`

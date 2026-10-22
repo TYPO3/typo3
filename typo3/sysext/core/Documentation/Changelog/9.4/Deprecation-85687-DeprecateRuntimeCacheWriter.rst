@@ -34,7 +34,7 @@ Any installation using the RuntimeCacheWriter.
 Migration
 =========
 
-Write your own CacheWriter (see `\TYPO3\CMS\Core\Log\Writer\WriterInterface`) or - if you need the exact same
+Write your own CacheWriter (see :php:`\TYPO3\CMS\Core\Log\Writer\WriterInterface`) or - if you need the exact same
 functionality - copy the old RuntimeCacheWriter to your own extension scope and use it.
 
 .. index:: PHP-API, FullyScanned, ext:adminpanel

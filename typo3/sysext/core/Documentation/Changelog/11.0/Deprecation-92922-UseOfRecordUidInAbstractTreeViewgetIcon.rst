@@ -13,7 +13,7 @@ Description
 
 To increase the type safety through the whole TYPO3 core and to properly
 reflect the expected value for the parameter (based on its name),
-calling :php:`AbstractTreeView::getIcon()` with a record uid as first
+calling :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView::getIcon()` with a record uid as first
 argument has been marked as deprecated.
 
 Note: Using a record uid had actually no benefit (performance wise)

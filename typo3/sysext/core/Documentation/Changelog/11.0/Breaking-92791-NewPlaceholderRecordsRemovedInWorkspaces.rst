@@ -54,8 +54,8 @@ TYPO3 v11 does not create placeholder records anymore, but instead creates
 one record containing all information. When fetching records
 from the database, the new versioned records are added directly, so no overlays
 need to happen anymore, which speeds up performance when querying the
-database via the TYPO3 Database via API classes such as :php:`PageRepository` or
-:php:`BackendUtility`.
+database via the TYPO3 Database via API classes such as :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository` or
+:php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility`.
 
 Impact
 ======
@@ -97,10 +97,10 @@ published.
 A TCA migration will automatically remove and log any usages of the TCA option
 :php:`$TCA[$table][ctrl][shadowColumnsForNewPlaceholders]`.
 
-It is highly recommend to use the TYPO3 API methods within Extbase, :php:`PageRepository`
-and :php:`BackendUtility` to ensure records are resolved properly.
+It is highly recommend to use the TYPO3 API methods within Extbase, :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository`
+and :php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility` to ensure records are resolved properly.
 
-At any times, it is recommended to use the :php:`WorkspaceRestriction` of TYPO3's
+At any times, it is recommended to use the :php-short:`\TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction` of TYPO3's
 implementation of Doctrine DBAL in conjunction with Workspace overlays.
 
 .. index:: Database, FullyScanned, ext:workspaces

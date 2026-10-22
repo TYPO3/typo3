@@ -27,7 +27,7 @@ Affected installations
 ======================
 
 Instances with custom extensions using
-:php:`GeneralUtility::makeInstance(FileNameValidator::class, 'some-custom-pattern');`
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(FileNameValidator::class, 'some-custom-pattern');`
 are affected. This is expected to be a very rare case.
 
 Migration

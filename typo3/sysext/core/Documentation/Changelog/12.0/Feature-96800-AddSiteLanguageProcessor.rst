@@ -11,7 +11,7 @@ See :issue:`96800`
 Description
 ===========
 
-A new Data Processor :php:`SiteLanguageProcessor` has been introduced, which
+A new Data Processor :php-short:`\TYPO3\CMS\Frontend\DataProcessing\SiteLanguageProcessor` has been introduced, which
 can be used to fetch the properties of the current SiteLanguage within Fluid
 Templates in TYPO3 Frontend rendering:
 

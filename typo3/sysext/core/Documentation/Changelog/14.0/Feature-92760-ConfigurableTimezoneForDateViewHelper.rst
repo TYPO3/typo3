@@ -33,6 +33,6 @@ Impact
 ======
 
 Using the new :html:`timezone` option, it is now possible to set a specific
-time zone for the :php:`DateViewHelper`.
+time zone for the :php-short:`\TYPO3\CMS\Fluid\ViewHelpers\Format\DateViewHelper`.
 
 ..  index:: Fluid, ext:fluid

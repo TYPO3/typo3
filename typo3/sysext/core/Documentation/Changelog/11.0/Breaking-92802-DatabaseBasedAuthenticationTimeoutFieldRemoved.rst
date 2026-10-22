@@ -11,7 +11,7 @@ See :issue:`92802`
 Description
 ===========
 
-The :php:`AbstractUserAuthentication` object had the possibility to
+The :php-short:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication` object had the possibility to
 theoretically use a database field where a session timeout value
 for the session storage could be set. This was never implemented but
 rather separated into a separate property called :php:`sessionTimeout`.

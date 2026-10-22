@@ -12,7 +12,7 @@ Description
 ===========
 
 The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/tslib/class.tslib_menu.php']['filterMenuPages']`
-required hook implementations to implement :php:`AbstractMenuFilterPagesHookInterface`.
+required hook implementations to implement :php-short:`\TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuFilterPagesHookInterface`.
 
 Since the mentioned hook is :doc:`removed <../12.0/Breaking-92508-RemovedHookForFilteringHMENUItems>`,
 the interface is not in use anymore and has been marked as deprecated.

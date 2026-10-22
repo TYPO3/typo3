@@ -19,7 +19,7 @@ less configuration.
 :typoscript:`PAGEVIEW` has now been extended and provides all
 content elements related to a page, grouped by their columns
 as defined in the page layout. The elements are provided as fully resolved
-:php:`Record` objects (see :ref:`feature-103783-1715113274` and
+:php-short:`\TYPO3\CMS\Core\Domain\Record` objects (see :ref:`feature-103783-1715113274` and
 :ref:`feature-103581-1723209131`).
 
 The content elements are attached to the new
@@ -66,7 +66,7 @@ the page layout:
 *   :html:`slideMode` - The defined :php:`ContentSlideMode`, which defaults to
     :php:`ContentSlideMode::None`
 *   :html:`configuration` - The complete content area-related configuration
-*   :html:`records` - The content elements as :php:`Record` objects
+*   :html:`records` - The content elements as :php-short:`\TYPO3\CMS\Core\Domain\Record` objects
 
 The following example renders the content elements of a page which has only
 a single column:

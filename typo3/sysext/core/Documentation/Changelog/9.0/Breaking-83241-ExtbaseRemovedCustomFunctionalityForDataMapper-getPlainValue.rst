@@ -20,7 +20,7 @@ The functionality is now removed, as the Generic Backend is handled via Doctrine
 Impact
 ======
 
-Calling :php:`DataMapper->getPlainValue()` with the third or fourth parameter set will have no effect anymore.
+Calling :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper->getPlainValue()` with the third or fourth parameter set will have no effect anymore.
 
 
 Affected Installations

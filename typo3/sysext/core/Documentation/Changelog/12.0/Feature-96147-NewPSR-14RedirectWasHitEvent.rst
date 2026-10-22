@@ -26,7 +26,7 @@ The event features the following methods:
 - :php:`setMatchedRedirect()`: Can be used to set / update the matched redirect record
 - :php:`getTargetUrl()`: Returns the resolved redirect target
 
-TYPO3 already implements the :php:`IncrementHitCount` listener. It is
+TYPO3 already implements the :php-short:`\TYPO3\CMS\Redirects\EventListener\IncrementHitCount` listener. It is
 used to increment the hit count of the matched redirect record, if the
 feature is enabled. In case you want to prevent the increment in some
 cases, e.g. when the request was initiated by a monitoring tool, you

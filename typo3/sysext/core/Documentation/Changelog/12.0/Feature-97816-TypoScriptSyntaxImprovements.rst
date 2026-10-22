@@ -137,8 +137,8 @@ Further clarifications
   :typoscript:`tt_content.bullets =< lib.contentElement`. Another usage is referencing :typoscript:`lib.parseFunc`.
   Using the :typoscript:`=<` operator in these cases can have a performance advantage since it
   avoids an expensive copy operation that is done lazily if really needed. There are two methods
-  that resolve this operator, namely :php:`ContentObjectRenderer->cObjGetSingle()` and
-  :php:`ContentObjectRenderer->mergeTSRef()`.
+  that resolve this operator, namely :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->cObjGetSingle()` and
+  :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->mergeTSRef()`.
   This also means: The :typoscript:`=<` operator is *not supported* in TypoScript constants,
   is only supported for specific elements in TypoScript setup, and is *not supported* in TSconfig.
   Also note the reference operator does not support "relative" copies like the "copy" operator supports

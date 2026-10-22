@@ -18,7 +18,7 @@ The hooks
 
 have been removed in favor of new PSR-14 events.
 
-In addition, the method :php:`PageRepository->getRecordOverlay()` has been
+In addition, the method :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getRecordOverlay()` has been
 marked as protected as the new events take place at a slightly different
 piece of code.
 
@@ -27,7 +27,7 @@ Impact
 
 Extensions using these hooks will have no effect anymore.
 
-Extensions calling :php:`PageRepository->getRecordOverlay()` will trigger
+Extensions calling :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getRecordOverlay()` will trigger
 a deprecation warning.
 
 Affected installations
@@ -48,8 +48,8 @@ Extensions using the hooks can be made compatible with TYPO3 v11 and TYPO3 v12
 by registering a PSR-14-based event listener while keeping the legacy hook
 in place.
 
-Extensions calling :php:`PageRepository->getRecordOverlay()` should call
-:php:`PageRepository->getLanguageOverlay()` instead.
+Extensions calling :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getRecordOverlay()` should call
+:php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->getLanguageOverlay()` instead.
 
 The events are now fired for any kind of database table, and are much
 more generic, as they contain the full language fallback chain and overlay

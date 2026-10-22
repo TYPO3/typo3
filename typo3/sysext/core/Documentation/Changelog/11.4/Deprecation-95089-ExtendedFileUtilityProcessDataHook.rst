@@ -35,6 +35,6 @@ TYPO3 installations with custom extensions using this hook.
 Migration
 =========
 
-Migrate to the newly introduced :php:`AfterFileCommandProcessedEvent` PSR-14 event.
+Migrate to the newly introduced :php-short:`\TYPO3\CMS\Core\Resource\Event\AfterFileCommandProcessedEvent` PSR-14 event.
 
 .. index:: PHP-API, FullyScanned, ext:core

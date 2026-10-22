@@ -25,7 +25,7 @@ provides the following methods:
 Example
 =======
 
-Registration of the :php:`AfterRecordPublishedEvent` in your extension's
+Registration of the :php-short:`\TYPO3\CMS\Workspaces\Event\AfterRecordPublishedEvent` in your extension's
 :file:`Services.yaml`:
 
 ..  code-block:: yaml
@@ -55,7 +55,7 @@ The corresponding event listener class:
 Impact
 ======
 
-With the new PSR-14 event :php:`AfterRecordPublishedEvent` it is possible to
+With the new PSR-14 event :php-short:`\TYPO3\CMS\Workspaces\Event\AfterRecordPublishedEvent` it is possible to
 execute custom functionality after a record has been published in a workspace.
 
 .. index:: PHP-API, ext:workspaces

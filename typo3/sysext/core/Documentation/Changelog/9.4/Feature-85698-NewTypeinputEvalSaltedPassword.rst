@@ -16,7 +16,7 @@ is now supported by adding the eval option :php:`saltedPassword` to :php:`TCA` :
 fields.
 
 Fields having this eval set will get their value evaluated to a salted
-hash before they are stored by the :php:`DataHandler`.
+hash before they are stored by the :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler`.
 
 Note the salt configuration for backend (BE) is considered when using this eval
 on tables that is not the :php:`fe_users` table.

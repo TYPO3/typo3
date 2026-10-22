@@ -15,8 +15,8 @@ A new PSR-14 event :php:`\TYPO3\CMS\Frontend\ContentObject\Event\AfterContentObj
 has been introduced which serves as a drop-in replacement for the now removed
 hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit']`.
 
-The event is being dispatched after :php:`ContentObjectRenderer` has been
-initialized in its :php:`start()` method. The :php:`ContentObjectRenderer`
+The event is being dispatched after :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer` has been
+initialized in its :php:`start()` method. The :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer`
 instance can be accessed using the :php:`getContentObjectRenderer()` method.
 
 Example
@@ -43,6 +43,6 @@ Impact
 ======
 
 Using the new PSR-14 event, it's now possible to modify the
-:php:`ContentObjectRenderer` instance, after it has been initialized.
+:php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer` instance, after it has been initialized.
 
 .. index:: Frontend, PHP-API, ext:frontend

@@ -65,7 +65,7 @@ collapsible interface. This includes:
     to all options. Icons and labels are automatically generated for each
     record type based on the TCA configuration.
 
-The :php:`ModifyNewRecordCreationLinksEvent` provides complete control over
+The :php-short:`\TYPO3\CMS\Backend\Controller\Event\ModifyNewRecordCreationLinksEvent` provides complete control over
 the creation link structure, allowing extensions to:
 
 *   Add custom record creation options

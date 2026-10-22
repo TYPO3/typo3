@@ -64,7 +64,7 @@ mechanisms that can be intercepted and configured, for example title
 and meta tag handling. As a result, the deprecated get() methods do
 not have a direct replacement.
 
-A commonly used case is :php:`PageRenderer->getDocType()`, which
+A commonly used case is :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->getDocType()`, which
 determines whether self-closing tags should include a trailing slash
 (`/`). This is relevant only in the frontend, as the backend
 always uses HTML5. The DocType itself is derived from TypoScript

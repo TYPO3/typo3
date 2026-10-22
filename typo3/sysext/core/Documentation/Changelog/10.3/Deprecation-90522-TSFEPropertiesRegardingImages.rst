@@ -12,7 +12,7 @@ Description
 ===========
 
 The image related properties :php:`$imagesOnPage` and :php:`$lastImageInfo` of
-:php:`TypoScriptFrontendController` have been marked as deprecated.
+:php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` have been marked as deprecated.
 
 Impact
 ======

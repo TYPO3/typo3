@@ -36,7 +36,7 @@ Affected installations
 
 Installations with Fluid templates using :html:`<f:asset.script useNonce="1">`
 or :html:`<f:asset.css useNonce="1">`, and extensions calling
-:php:`AssetCollector::addJavaScript()` or :php:`AssetCollector::addStyleSheet()`
+:php-short:`\TYPO3\CMS\Core\Page\AssetCollector::addJavaScript()` or :php-short:`\TYPO3\CMS\Core\Page\AssetCollector::addStyleSheet()`
 with :php:`['useNonce' => true]`.
 
 

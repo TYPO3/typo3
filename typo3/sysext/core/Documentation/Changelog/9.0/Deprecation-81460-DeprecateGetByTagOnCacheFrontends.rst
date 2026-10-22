@@ -23,7 +23,7 @@ Impact
 ======
 
 Calling this method on any TYPO3 provided cache frontend implementations triggers a deprecation log entry, with the
-exception of :php:`StringFrontend` which has itself been deprecated in a separate patch.
+exception of :php-short:`\TYPO3\CMS\Core\Cache\Frontend\StringFrontend` which has itself been deprecated in a separate patch.
 
 
 Affected Installations

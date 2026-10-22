@@ -11,7 +11,7 @@ See :issue:`108627`
 Description
 ===========
 
-The new method :php:`PageRenderer->addInlineLanguageDomain()` allows loading
+The new method :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->addInlineLanguageDomain()` allows loading
 all labels from a language domain and making them available in JavaScript
 via the :js:`TYPO3.lang` object.
 

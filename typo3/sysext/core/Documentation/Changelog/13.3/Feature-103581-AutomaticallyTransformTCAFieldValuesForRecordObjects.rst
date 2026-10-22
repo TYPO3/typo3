@@ -50,10 +50,10 @@ configuration from TCA.
 
 In case of relations (:php:`category`, :php:`group`, :php:`inline`,
 :php:`select` with :php:`MM` and :php:`foreign_table`), a collection
-(:php:`LazyRecordCollection`) of new :php-short:`\TYPO3\CMS\Core\Domain\Record` objects is attached as
-value. In case of :php:`file`, a collection (:php:`LazyFileReferenceCollection`)
-of :php:`FileReference` objects and in case of type :php:`folder`, a collection
-(:php:`LazyFolderCollection`) of :php:`Folder` objects are attached.
+(:php-short:`\TYPO3\CMS\Core\Collection\LazyRecordCollection`) of new :php-short:`\TYPO3\CMS\Core\Domain\Record` objects is attached as
+value. In case of :php:`file`, a collection (:php-short:`\TYPO3\CMS\Core\Resource\Collection\LazyFileReferenceCollection`)
+of :php-short:`\TYPO3\CMS\Core\Resource\FileReference` objects and in case of type :php:`folder`, a collection
+(:php-short:`\TYPO3\CMS\Core\Resource\Collection\LazyFolderCollection`) of :php-short:`\TYPO3\CMS\Core\Resource\Folder` objects are attached.
 
 .. note::
 

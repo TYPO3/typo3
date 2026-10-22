@@ -12,7 +12,7 @@ Description
 ===========
 
 The  :php:`errorMessage` validator option provides a custom string
-as error message for validation failures of the :php:`RegularExpressionValidator`.
+as error message for validation failures of the :php-short:`\TYPO3\CMS\Extbase\Validation\Validator\RegularExpressionValidator`.
 In order to streamline error message translation keys with other validators,
 the :php:`errorMessage` validator option has been marked as deprecated in
 TYPO3 v13 and will be removed in TYPO3 v14.
@@ -21,7 +21,7 @@ TYPO3 v13 and will be removed in TYPO3 v14.
 Impact
 ======
 
-Using the :php:`errorMessage` validator option with the :php:`RegularExpressionValidator`
+Using the :php:`errorMessage` validator option with the :php-short:`\TYPO3\CMS\Extbase\Validation\Validator\RegularExpressionValidator`
 will trigger a PHP deprecation warning.
 
 
@@ -29,7 +29,7 @@ Affected installations
 ======================
 
 TYPO3 installations using the validator option :php:`errorMessage` with the
-:php:`RegularExpressionValidator`.
+:php-short:`\TYPO3\CMS\Extbase\Validation\Validator\RegularExpressionValidator`.
 
 
 Migration

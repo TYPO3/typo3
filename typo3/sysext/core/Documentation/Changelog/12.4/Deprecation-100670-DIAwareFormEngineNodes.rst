@@ -66,9 +66,9 @@ Compatibility with TYPO3 v12 and v13
 Extensions that strive for TYPO3 v12 compatibility, skipping v11, that
 want to support v13 as well, must adapt their implementations.
 
-As main change, :php:`NodeInterface` no longer declares :php:`__construct()`,
-the class constructor is now "free" for injection. The :php:`NodeFactory` uses
-the existence of method :php:`setData()` as indicator if :php:`NodeFactory` and
+As main change, :php-short:`\TYPO3\CMS\Backend\Form\NodeInterface` no longer declares :php:`__construct()`,
+the class constructor is now "free" for injection. The :php-short:`\TYPO3\CMS\Backend\Form\NodeFactory` uses
+the existence of method :php:`setData()` as indicator if :php-short:`\TYPO3\CMS\Backend\Form\NodeFactory` and
 :php:`$data` array should be hand over as manual constructor argument (old way),
 or if :php:`setData()` should be called after object instantiation. Note
 :php:`setData()` will be activated as interface method with TYPO3 v13.
@@ -101,7 +101,7 @@ A class with both TYPO3 v12 and v13 compatibility should look like this:
     }
 
 The class has to be registered for public DI in :file:`Services.yaml` as well, since
-it is instantiated by :php:`NodeFactory` using :php:`GeneralUtility::makeInstance()`:
+it is instantiated by :php-short:`\TYPO3\CMS\Backend\Form\NodeFactory` using :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()`:
 
 ..  code-block:: yaml
 
@@ -113,16 +113,16 @@ Compatibility with v13
 ----------------------
 
 Extensions dropping TYPO3 v12 compatibility and going with v13 and up, can
-simplify the construct: In v13, :php:`setData()` will be added to :php:`AbstractNode`,
+simplify the construct: In v13, :php:`setData()` will be added to :php-short:`\TYPO3\CMS\Backend\Form\AbstractNode`,
 extending classes don't need to implement it anymore. The class
-property :php:`$iconFactory` (:php:`AbstractFormElement`
+property :php:`$iconFactory` (:php-short:`\TYPO3\CMS\Backend\Form\Element\AbstractFormElement`
 only) will be removed from the abstracts, constructor property promotion
-can be used. :php:`NodeFactory` will be injected in the abstracts, without
+can be used. :php-short:`\TYPO3\CMS\Backend\Form\NodeFactory` will be injected in the abstracts, without
 polluting :php:`__construct()`. Also, a dependency injection service provider pass will
-be added, to automatically set classes public that implement implement :php:`NodeInterface`,
+be added, to automatically set classes public that implement implement :php-short:`\TYPO3\CMS\Backend\Form\NodeInterface`,
 so a :yaml:`public: true` entry in :file:`Services.yaml` can be skipped.
 
-A typical class extending :php:`AbstractNode` looks like this:
+A typical class extending :php-short:`\TYPO3\CMS\Backend\Form\AbstractNode` looks like this:
 
 ..  code-block:: php
 

@@ -17,7 +17,7 @@ have been either marked as internal or have been deprecated for usage
 outside of the classes.
 
 This is due to the further refactorings and decoupling work, as subclasses of
-:php:`AbstractUserAuthentication` deal with many more functionality nowadays,
+:php-short:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication` deal with many more functionality nowadays,
 and therefore have been moved to service classes. The tight coupling of these
 classes, for example, the database fields, or login form field names are now marked as
 internal, as these properties should not be modified from the outside scope.

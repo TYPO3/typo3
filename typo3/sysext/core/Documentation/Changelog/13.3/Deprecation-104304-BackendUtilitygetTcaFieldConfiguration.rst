@@ -28,7 +28,7 @@ the new API.
 Impact
 ======
 
-Calling the PHP method :php:`BackendUtility::getTcaFieldConfiguration` will
+Calling the PHP method :php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::getTcaFieldConfiguration` will
 trigger a PHP deprecation warning.
 
 

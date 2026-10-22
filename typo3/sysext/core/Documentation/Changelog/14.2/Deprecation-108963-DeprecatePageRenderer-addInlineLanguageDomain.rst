@@ -32,7 +32,7 @@ are affected.
 Migration
 =========
 
-The call to :php:`PageRenderer::addInlineLanguageDomain()` can be removed. In
+The call to :php-short:`\TYPO3\CMS\Core\Page\PageRenderer::addInlineLanguageDomain()` can be removed. In
 the JavaScript code, add a module import that imports from the
 :js:`'~labels/'` prefix.
 

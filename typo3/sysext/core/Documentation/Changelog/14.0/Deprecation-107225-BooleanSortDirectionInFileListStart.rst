@@ -18,7 +18,7 @@ The fourth parameter of the method
 :php-short:`\TYPO3\CMS\Filelist\Type\SortDirection` enum values.
 
 Passing a boolean value for the sort direction (fourth parameter of
-:php:`FileList::start()`) has been deprecated in favor of the new
+:php-short:`\TYPO3\CMS\Filelist\FileList::start()`) has been deprecated in favor of the new
 :php:`\TYPO3\CMS\Filelist\Type\SortDirection` enum, providing better type
 safety and clarity. The parameter name has also changed from
 :php:`$sortRev` to :php:`$sortDirection` to more accurately describe its
@@ -27,14 +27,14 @@ purpose.
 Impact
 ======
 
-Calling :php:`FileList::start()` with a boolean value as the fourth parameter
+Calling :php-short:`\TYPO3\CMS\Filelist\FileList::start()` with a boolean value as the fourth parameter
 triggers a deprecation warning. The functionality will continue to work for
 now but will be removed in TYPO3 v15.0.
 
 Affected installations
 ======================
 
-All installations using :php:`FileList::start()` directly with a boolean value
+All installations using :php-short:`\TYPO3\CMS\Filelist\FileList::start()` directly with a boolean value
 for the sort direction parameter are affected. This mainly applies to custom
 file browser implementations or extensions that instantiate and configure the
 :php-short:`\TYPO3\CMS\Filelist\FileList` class directly, even though it is
@@ -74,7 +74,7 @@ Replace boolean values with the corresponding
 
 The migration maintains the same functionality:
 
-* :php:`true` (descending) → :php:`SortDirection::DESCENDING`
-* :php:`false` (ascending) → :php:`SortDirection::ASCENDING`
+* :php:`true` (descending) → :php-short:`\TYPO3\CMS\Filelist\Type\SortDirection::DESCENDING`
+* :php:`false` (ascending) → :php-short:`\TYPO3\CMS\Filelist\Type\SortDirection::ASCENDING`
 
 ..  index:: Backend, FileList, PartiallyScanned, ext:filelist

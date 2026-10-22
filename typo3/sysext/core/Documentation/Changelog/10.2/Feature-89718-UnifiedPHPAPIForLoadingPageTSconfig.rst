@@ -23,7 +23,7 @@ a new :php:`PageTsLoader` PHP class.
 Additionally, parsing, and additional matching against conditions,
 which was added later-on in 2009 and put on top, is now separated
 properly, building a truly separation of concerns for compiling
-and parsing TSconfig. This is put in the :php:`PageTsConfigParser` PHP class.
+and parsing TSconfig. This is put in the :php-short:`\TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser` PHP class.
 
 
 Impact
@@ -55,6 +55,6 @@ The string can then be put in proper TSconfig array syntax::
             );
 
 Extension developers should rely on this syntax rather than
-on :php:`$GLOBALS['TSFE']->getPagesTSconfig()` or :php:`BackendUtility::getPagesTsConfig()`.
+on :php:`$GLOBALS['TSFE']->getPagesTSconfig()` or :php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTsConfig()`.
 
 .. index:: PHP-API, TSConfig, ext:core

@@ -50,7 +50,7 @@ The corresponding event listener class:
     }
 
 In contrast to the removed hooks, the new event does not provide the
-:php:`PageLayoutController` as :php:`$parentObject`, since :php:`getModuleTemplate()`
+:php-short:`\TYPO3\CMS\Backend\Controller\PageLayoutController` as :php:`$parentObject`, since :php:`getModuleTemplate()`
 has been the only public method, which is now directly included in the event.
 
 Additionally, there were three public properties :php:`$id`, :php:`$pageInfo`

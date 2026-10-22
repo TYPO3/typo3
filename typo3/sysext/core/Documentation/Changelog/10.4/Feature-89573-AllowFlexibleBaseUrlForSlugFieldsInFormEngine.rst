@@ -28,7 +28,7 @@ To add a custom base url a :php:`userFunc` can be assigned to the new setting
 
 The :php:`userFunc` receives two parameters. The first parameter is the parameters
 array containing the site object, the language id, the current table and the
-current row. The second parameter is the reference object :php:`TcaSlug`. The
+current row. The second parameter is the reference object :php-short:`\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSlug`. The
 :php:`userFunc` should return the string which is then used as the base url in
 FormEngine.
 

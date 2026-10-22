@@ -22,7 +22,7 @@ Impact
 
 When writing custom salts for TYPO3, they need to implement the SaltInterface.
 
-If extending from :php:`AbstractSalt`, custom salt now need to extend from :php:`AbstractComposedSalt` and
+If extending from :php:`AbstractSalt`, custom salt now need to extend from :php-short:`\TYPO3\CMS\Saltedpasswords\Salt\AbstractComposedSalt` and
 implement the additional method :php:`getSaltLength()` and :php:`isValidSalt($salt)`.
 
 
@@ -36,6 +36,6 @@ Migration
 =========
 
 Switch to the new implementation details mentioned above, and change your custom salt to fit
-to the :php:`SaltInterface` API.
+to the :php-short:`\TYPO3\CMS\Saltedpasswords\Salt\SaltInterface` API.
 
 .. index:: PHP-API, NotScanned, ext:saltedpasswords

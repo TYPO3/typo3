@@ -15,7 +15,7 @@ Admin Panel previously allowed to also render a page with frontend groups that
 were hidden / disabled. This feature has been removed,
 in order to ensure consistency for the authentication process.
 
-The property :php:`AbstractUserAuthentication::showHiddenRecords` which
+The property :php-short:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::showHiddenRecords` which
 was used to transfer this information is removed.
 
 
@@ -25,7 +25,7 @@ Impact
 The Admin Panel selector now only shows a list of active groups
 to simulate from.
 
-Using the removed PHP property :php:`AbstractUserAuthentication::showHiddenRecords` will result
+Using the removed PHP property :php-short:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::showHiddenRecords` will result
 in a PHP notice.
 
 

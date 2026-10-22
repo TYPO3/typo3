@@ -11,7 +11,7 @@ See :issue:`96520`
 Description
 ===========
 
-Invoking :php:`ContentObjectRenderer::parseFunc` without configuration
+Invoking :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::parseFunc` without configuration
 or TypoScript reference is not possible anymore and in general did not
 make much sense.
 
@@ -28,7 +28,7 @@ requires corresponding source code or Fluid templates to be adjusted.
 Impact
 ======
 
-Still invoking :php:`ContentObjectRenderer::parseFunc` without configuration
+Still invoking :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::parseFunc` without configuration
 will throw a :php:`\LogicException` in the frontend rendering process.
 
 Affected Installations

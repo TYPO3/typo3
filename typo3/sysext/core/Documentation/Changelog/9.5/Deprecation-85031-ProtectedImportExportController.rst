@@ -56,7 +56,7 @@ The following methods of class :php:`TYPO3\CMS\Impexp\Controller\ImportExportCon
 Additionally, the assignment of an object instance of class :php:`ImportExportController` as
 :php:`GLOBALS['SOBE']` has been marked as deprecated and will not be set anymore in TYPO3 v10.
 
-Furthermore, class :php:`ImportExportController` does not inherit class :php:`BaseScriptClass` anymore.
+Furthermore, class :php:`ImportExportController` does not inherit class :php-short:`\TYPO3\CMS\Backend\Module\BaseScriptClass` anymore.
 
 
 Impact

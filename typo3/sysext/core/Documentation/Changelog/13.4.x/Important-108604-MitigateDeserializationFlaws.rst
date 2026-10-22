@@ -15,7 +15,7 @@ TYPO3 introduces new serialization infrastructure to protect against PHP object
 injection attacks. Two complementary strategies are applied depending on how
 long the serialized data lives:
 
-**Cache frontend (**:php:`VariableFrontend`**) — HMAC-authenticated serialization**
+**Cache frontend (**:php-short:`\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend`**) — HMAC-authenticated serialization**
 
 :php:`\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend` (the default cache
 frontend) now uses
@@ -58,7 +58,7 @@ the registry to avoid breaking changes to long-lived persisted data.
 Impact
 ------
 
-**Cache (**:php:`VariableFrontend`**)**
+**Cache (**:php-short:`\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend`**)**
 
 Existing cache entries that contain serialized PHP objects will be treated as
 cache misses on the next read. No exception is thrown; the entry is simply
@@ -68,7 +68,7 @@ to callers.
 **Registry**
 
 Extensions or third-party code that stores serialized PHP objects in
-:php:`Registry` may encounter a :php:`DeserializerException` at read time if
+:php-short:`\TYPO3\CMS\Core\Registry` may encounter a :php-short:`\TYPO3\CMS\Core\Serializer\Exception\DeserializerException` at read time if
 the serialized object graph contains a class with a user-defined
 :php:`__destruct()` or :php:`__wakeup()` method.
 
@@ -78,11 +78,11 @@ Migration & Insights
 In most cases no migration is required. The sections below aim to provide
 some insights into internal details and general suggestions.
 
-**Cache (**:php:`VariableFrontend`**)**
+**Cache (**:php-short:`\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend`**)**
 
 No migration is required. Stale or legacy cache entries are automatically
 treated as misses and regenerated. If code stores object graphs in a
-:php:`VariableFrontend`-backed cache it will continue to work as long as the
+:php-short:`\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend`-backed cache it will continue to work as long as the
 server reads the entry it wrote (same encryption key).
 
 **Registry — preferred approach: avoid object serialization**

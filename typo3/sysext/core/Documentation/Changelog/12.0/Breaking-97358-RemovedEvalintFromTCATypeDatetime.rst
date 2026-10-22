@@ -36,7 +36,7 @@ as no native database type is used.
 
 TCA type :php:`datetime` was the last TCA type using :php:`eval=int`.
 Therefore, the :php:`int` option is no longer evaluated by neither FormEngine
-nor :php:`DataHandler`. This means, custom FormEngine elements, which do
+nor :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler`. This means, custom FormEngine elements, which do
 currently rely on this option being evaluated in any way, have to implement
 the necessary functionality by themselves now.
 

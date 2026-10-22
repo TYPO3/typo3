@@ -95,8 +95,8 @@ where code adoption has to take place.
 
 .. note::
 
-    The corresponding FormEngine class has been renamed from :php:`InputDateTimeElement`
-    to :php:`DatetimeElement`. An entry in the "ClassAliasMap" has been added
+    The corresponding FormEngine class has been renamed from :php-short:`\TYPO3\CMS\Backend\Form\Element\InputDateTimeElement`
+    to :php-short:`\TYPO3\CMS\Backend\Form\Element\DatetimeElement`. An entry in the "ClassAliasMap" has been added
     for extensions calling this class directly, which is rather unlikely. The
     extension scanner will report any usage, which should then be migrated.
 

@@ -19,16 +19,16 @@ Fluid-based preview templates.
 The method signature has changed for
 :php:`\TYPO3\CMS\Backend\Preview\StandardContentPreviewRenderer`:
 
-- :php:`StandardContentPreviewRenderer->linkEditContent()` now expects a
+- :php-short:`\TYPO3\CMS\Backend\Preview\StandardContentPreviewRenderer->linkEditContent()` now expects a
   :php-short:`\TYPO3\CMS\Core\Domain\RecordInterface` object as the second :php:`$record` parameter
   instead of an array
 
 The :php:`\TYPO3\CMS\Backend\View\Event\PageContentPreviewRenderingEvent` has
 also been updated:
 
-- :php:`PageContentPreviewRenderingEvent->getRecord()` now returns a
+- :php-short:`\TYPO3\CMS\Backend\View\Event\PageContentPreviewRenderingEvent->getRecord()` now returns a
   :php-short:`\TYPO3\CMS\Core\Domain\RecordInterface` object instead of an array
-- :php:`PageContentPreviewRenderingEvent->setRecord()` now expects a
+- :php-short:`\TYPO3\CMS\Backend\View\Event\PageContentPreviewRenderingEvent->setRecord()` now expects a
   :php-short:`\TYPO3\CMS\Core\Domain\RecordInterface` object instead of an array
 
 Additionally, the `@internal` class
@@ -38,11 +38,11 @@ updated to work with Record objects:
 *   The constructor of :php-short:`\TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem`
     now requires a :php-short:`\TYPO3\CMS\Core\Domain\RecordInterface` object as
     the third :php:`$record` parameter instead of an array
-*   :php:`GridColumnItem->getRecord()` now returns a :php-short:`\TYPO3\CMS\Core\Domain\RecordInterface` object
+*   :php-short:`\TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem->getRecord()` now returns a :php-short:`\TYPO3\CMS\Core\Domain\RecordInterface` object
     instead of an array
-*   :php:`GridColumnItem->setRecord()` now expects a :php-short:`\TYPO3\CMS\Core\Domain\RecordInterface` object
+*   :php-short:`\TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem->setRecord()` now expects a :php-short:`\TYPO3\CMS\Core\Domain\RecordInterface` object
     instead of an array
-*   A new method :php:`GridColumnItem->getRow()` has been added to access the raw
+*   A new method :php-short:`\TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem->getRow()` has been added to access the raw
     database array if needed
 
 For Fluid-based content element previews, the template variables have changed.
@@ -54,7 +54,7 @@ the Record API.
 Using the :fluid:`{pi_flexform_transformed}` variable in Fluid-based content
 element previews no longer works. The resolved flex form can be directly
 accessed on the :php-short:`\TYPO3\CMS\Core\Domain\RecordInterface` object, for example via
-:fluid:`{record.pi_flexform}`. The value is a :php:`FlexFormFieldValues`
+:fluid:`{record.pi_flexform}`. The value is a :php-short:`\TYPO3\CMS\Core\Domain\FlexFormFieldValues`
 object, which properly groups the fields by their sheets.
 
 Impact
@@ -63,10 +63,10 @@ Impact
 Extensions that extend :php-short:`\TYPO3\CMS\Backend\Preview\StandardContentPreviewRenderer` and override the
 :php:`linkEditContent()` method will need to update their method signature.
 
-Extensions that access :php:`GridColumnItem->getRecord()` expecting an array will
+Extensions that access :php-short:`\TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem->getRecord()` expecting an array will
 need to update their code to work with :php-short:`\TYPO3\CMS\Core\Domain\RecordInterface` objects.
 
-Extensions using event listeners for :php:`PageContentPreviewRenderingEvent` that
+Extensions using event listeners for :php-short:`\TYPO3\CMS\Backend\View\Event\PageContentPreviewRenderingEvent` that
 access the record via :php:`getRecord()` expecting an array will need to update
 their code to work with :php-short:`\TYPO3\CMS\Core\Domain\RecordInterface` objects.
 
@@ -80,9 +80,9 @@ All installations with extensions that:
 
 *   Extend :php-short:`\TYPO3\CMS\Backend\Preview\StandardContentPreviewRenderer` and call or override the
     :php:`linkEditContent()` method
-*   Instantiate :php-short:`\TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem` or call :php:`GridColumnItem->getRecord()` /
-    :php:`GridColumnItem->setRecord()`
-*   Register event listeners for :php:`PageContentPreviewRenderingEvent`
+*   Instantiate :php-short:`\TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem` or call :php-short:`\TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem->getRecord()` /
+    :php-short:`\TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem->setRecord()`
+*   Register event listeners for :php-short:`\TYPO3\CMS\Backend\View\Event\PageContentPreviewRenderingEvent`
 *   Use custom Fluid templates for content element preview rendering via PageTSconfig
     :typoscript:`mod.web_layout.tt_content.preview.[recordType]`
 

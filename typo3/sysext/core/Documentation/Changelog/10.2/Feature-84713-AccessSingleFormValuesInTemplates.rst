@@ -11,11 +11,11 @@ See :issue:`84713`
 Description
 ===========
 
-It is now possible to access single form values in templates of the "form" extension. For this a new :php:`RenderFormValueViewHelper` has been added which complements the existing :php:`RenderAllFormValuesViewHelper`.
+It is now possible to access single form values in templates of the "form" extension. For this a new :php-short:`\TYPO3\CMS\Form\ViewHelpers\RenderFormValueViewHelper` has been added which complements the existing :php-short:`\TYPO3\CMS\Form\ViewHelpers\RenderAllFormValuesViewHelper`.
 
-The :php:`RenderFormValueViewHelper` accepts a single form element and renders it exactly like the :php:`RenderAllFormValuesViewHelper` used to do within its internal traversal of renderable elements:
+The :php-short:`\TYPO3\CMS\Form\ViewHelpers\RenderFormValueViewHelper` accepts a single form element and renders it exactly like the :php-short:`\TYPO3\CMS\Form\ViewHelpers\RenderAllFormValuesViewHelper` used to do within its internal traversal of renderable elements:
 
-To make it possible to access single form elements, a new method :php:`FormDefinition::getElements()` has been added. This method returns an array containing all elements in the form with their identifiers as keys.
+To make it possible to access single form elements, a new method :php-short:`\TYPO3\CMS\Form\Domain\Model\FormDefinition::getElements()` has been added. This method returns an array containing all elements in the form with their identifiers as keys.
 
 Viewhelper usage in mail templates:
 

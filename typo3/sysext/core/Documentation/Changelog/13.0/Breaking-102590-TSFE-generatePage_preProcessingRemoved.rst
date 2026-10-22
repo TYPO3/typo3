@@ -11,7 +11,7 @@ See :issue:`102590`
 Description
 ===========
 
-Frontend-related method :php:`TypoScriptFrontendController->generatePage_preProcessing()`
+Frontend-related method :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->generatePage_preProcessing()`
 has been removed without substitution.
 
 
@@ -26,7 +26,7 @@ Affected installations
 
 There is little to no need for extensions to call or override this method and it
 should have been marked as :php:`@internal` already. It was part of a removed
-"safety net" when extensions did set :php:`TypoScriptFrontendController->no_cache`
+"safety net" when extensions did set :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->no_cache`
 to :php:`false` after it has been set to :php:`true` already, which is not allowed.
 
 

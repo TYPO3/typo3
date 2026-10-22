@@ -24,7 +24,7 @@ Impact
 ======
 
 The change may affect extensions that directly or indirectly call
-:php:`Folder->getSubFolder()` and expect a :php:`\InvalidArgumentException` to
+:php-short:`\TYPO3\CMS\Core\Resource\Folder->getSubFolder()` and expect a :php:`\InvalidArgumentException` to
 be thrown.
 
 Affected installations

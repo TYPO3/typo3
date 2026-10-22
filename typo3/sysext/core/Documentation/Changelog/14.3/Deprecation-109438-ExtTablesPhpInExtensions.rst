@@ -96,7 +96,7 @@ After:
 Page doktype allowed record types
 ----------------------------------
 
-Page doktypes previously registered via :php:`PageDoktypeRegistry->add()` in
+Page doktypes previously registered via :php-short:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->add()` in
 :file:`ext_tables.php` should now use the TCA option
 :php:`allowedRecordTypes` in :file:`Configuration/TCA/Overrides/pages.php`.
 

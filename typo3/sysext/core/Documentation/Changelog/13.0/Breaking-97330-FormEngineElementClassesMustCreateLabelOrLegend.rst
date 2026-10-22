@@ -33,7 +33,7 @@ Affected installations
 ======================
 
 Instances with custom FormEngine elements are affected. Custom elements need to be
-registered to the FormEngine's :php:`NodeFactory`, candidates are found by looking at
+registered to the FormEngine's :php-short:`\TYPO3\CMS\Backend\Form\NodeFactory`, candidates are found by looking at
 the :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']` array (for instance
 using the :guilabel:`System > Configuration` backend module provided by
 EXT:lowlevel). Classes registered using the sub keys :php:`nodeRegistry` and

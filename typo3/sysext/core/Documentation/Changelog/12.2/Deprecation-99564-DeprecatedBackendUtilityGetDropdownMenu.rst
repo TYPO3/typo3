@@ -31,7 +31,7 @@ extension scanner finds usages with a strong match.
 Migration
 =========
 
-:php:`BackendUtility::getDropdownMenu()` is a helper method that renders a
+:php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::getDropdownMenu()` is a helper method that renders a
 select dropdown and is typically used to trigger a `GET` request when
 the user selects an option.
 

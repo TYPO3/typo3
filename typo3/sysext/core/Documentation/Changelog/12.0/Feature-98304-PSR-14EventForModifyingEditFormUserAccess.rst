@@ -73,7 +73,7 @@ Impact
 ======
 
 It's now possible to modify the user access for the editing form,
-using the new PSR-14 event :php:`ModifyLinkExplanationEvent`. The main
+using the new PSR-14 event :php-short:`\TYPO3\CMS\Backend\Form\Event\ModifyLinkExplanationEvent`. The main
 advantages of the new PSR-14 event are the object-oriented approach
 as well as the built-in convenience features and an increased amount
 of context information.

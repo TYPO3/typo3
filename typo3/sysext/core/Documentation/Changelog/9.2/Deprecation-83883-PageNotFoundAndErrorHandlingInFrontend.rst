@@ -39,7 +39,7 @@ Any installation with third-party PHP extension code calling these methods.
 Migration
 =========
 
-Use the new :php:`ErrorController` with its custom actions :php:`unavailableAction()`, :php:`pageNotFoundAction()` and
+Use the new :php-short:`\TYPO3\CMS\Frontend\Controller\ErrorController` with its custom actions :php:`unavailableAction()`, :php:`pageNotFoundAction()` and
 :php:`accessDeniedAction()`.
 
 Instead of exiting the currently running script, a proposed PSR-7-compliant response is returned which can be

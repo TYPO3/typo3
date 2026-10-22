@@ -51,6 +51,6 @@ The corresponding event listener class:
 Impact
 ======
 
-It's now possible to modify the backend page using the new PSR-14 event :php:`AfterBackendPageRenderEvent`.
+It's now possible to modify the backend page using the new PSR-14 event :php-short:`\TYPO3\CMS\Backend\Controller\Event\AfterBackendPageRenderEvent`.
 
 .. index:: Backend, PHP-API, ext:backend

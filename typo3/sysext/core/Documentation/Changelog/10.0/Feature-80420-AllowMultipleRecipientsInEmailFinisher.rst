@@ -11,7 +11,7 @@ See :issue:`80420`
 Description
 ===========
 
-Mails sent by the :php:`EmailFinisher` of EXT:form can now have multiple recipients. For this the following new finisher options have been added:
+Mails sent by the :php-short:`\TYPO3\CMS\Form\Domain\Finishers\EmailFinisher` of EXT:form can now have multiple recipients. For this the following new finisher options have been added:
 
 * :yaml:`recipients` (:code:`To`)
 * :yaml:`replyToRecipients` (:code:`Reply-To`)

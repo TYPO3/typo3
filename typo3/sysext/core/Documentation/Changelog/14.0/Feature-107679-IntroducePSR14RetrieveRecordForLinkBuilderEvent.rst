@@ -27,7 +27,7 @@ the default record retrieval logic in
     propagation and disables the default record lookup.
 
 Custom event listeners must handle all aspects normally performed by
-:php:`DatabaseRecordLinkBuilder`, such as record visibility, language overlay,
+:php-short:`\TYPO3\CMS\Frontend\Typolink\DatabaseRecordLinkBuilder`, such as record visibility, language overlay,
 or version overlay, if relevant.
 
 The event provides the following public properties (all read-only, except for

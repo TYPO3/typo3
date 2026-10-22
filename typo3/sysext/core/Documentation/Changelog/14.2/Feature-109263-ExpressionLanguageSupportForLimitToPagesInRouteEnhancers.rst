@@ -33,7 +33,7 @@ Use the following variables inside expressions:
     :yaml:`page["doktype"]`, :yaml:`page["backend_layout"]`,
     :yaml:`page["module"]`)
 *   :yaml:`site` - The current :php:`Site` object
-*   :yaml:`siteLanguage` - The current :php:`SiteLanguage` object
+*   :yaml:`siteLanguage` - The current :php-short:`\TYPO3\CMS\Core\Site\Entity\SiteLanguage` object
 
 All the default Expression Language functions such as
 :yaml:`like()`, :yaml:`env()`, and :yaml:`feature()` are also available.

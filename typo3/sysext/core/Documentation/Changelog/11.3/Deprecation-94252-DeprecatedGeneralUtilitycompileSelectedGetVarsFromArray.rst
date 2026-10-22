@@ -11,9 +11,9 @@ See :issue:`94252`
 Description
 ===========
 
-In our effort to reduce usages of :php:`GeneralUtility::_GP()`, the
-:php:`GeneralUtility` method :php:`compileSelectedGetVarsFromArray` is
-deprecated, since it internally calls :php:`GeneralUtility::_GP()` instead
+In our effort to reduce usages of :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::_GP()`, the
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility` method :php:`compileSelectedGetVarsFromArray` is
+deprecated, since it internally calls :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::_GP()` instead
 of accessing the PSR-7 Request. The method was furthermore only used once
 in the Core since it's internal logic can easily be implemented on a case
 by case basis.

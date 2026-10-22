@@ -46,7 +46,7 @@ level as :php:`_recursive` and the view will apply this for all levels.
 Impact
 ======
 
-Developers can now use the :php:`_recursive` property in the :php:`JsonView`
+Developers can now use the :php:`_recursive` property in the :php-short:`\TYPO3\CMS\Extbase\Mvc\View\JsonView`
 configuration in order to resolve recursive properties instead of defining each
 level manually.
 

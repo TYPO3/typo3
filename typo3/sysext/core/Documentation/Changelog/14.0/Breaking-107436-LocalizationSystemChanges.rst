@@ -95,7 +95,7 @@ Affected installations
 
 Installations that:
 
-*   Call :php:`LocalizationFactory::getParsedData()` directly.
+*   Call :php-short:`\TYPO3\CMS\Core\Localization\LocalizationFactory::getParsedData()` directly.
 *   Register custom localization parsers via the removed configuration option.
 *   Use any of the renamed or moved configuration options listed above.
 

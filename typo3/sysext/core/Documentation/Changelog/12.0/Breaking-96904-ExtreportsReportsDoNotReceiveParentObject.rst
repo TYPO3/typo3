@@ -58,7 +58,7 @@ argument anymore. Code before:
         }
     }
 
-Single reports are currently instantiated using :php:`GeneralUtility::makeInstance()`.
+Single reports are currently instantiated using :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()`.
 To use dependency injection in own reports, a report class thus needs to be defined
 :yaml:`public: true` in a :file:`Configuration/Services.yaml` file. This may change with
 further TYPO3 v12 development if the reports registration is changed, though. If in doubt,

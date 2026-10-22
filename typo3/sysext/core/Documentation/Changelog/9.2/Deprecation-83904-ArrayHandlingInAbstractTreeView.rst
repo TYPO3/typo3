@@ -20,14 +20,14 @@ Impact
 
 Calling the following methods will throw deprecation warnings and will be removed with core version 10:
 
-* [scanned] :php:`AbstractTreeView->setDataFromArray`
-* [scanned] :php:`AbstractTreeView->setDataFromTreeArray`
+* [scanned] :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->setDataFromArray`
+* [scanned] :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->setDataFromTreeArray`
 
 The following class properties should not be used any longer and will be removed with core version 10:
 
-* [not scanned] :php:`AbstractTreeView->data`
-* [scanned] :php:`AbstractTreeView->dataLookup`
-* [scanned] :php:`AbstractTreeView->subLevelID`
+* [not scanned] :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->data`
+* [scanned] :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->dataLookup`
+* [scanned] :php-short:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->subLevelID`
 
 
 Affected Installations

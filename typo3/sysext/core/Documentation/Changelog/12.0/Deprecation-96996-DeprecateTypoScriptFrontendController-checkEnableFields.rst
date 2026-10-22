@@ -18,19 +18,19 @@ component.
 Impact
 ======
 
-:php:`TypoScriptFrontendController->checkEnableFields()` will trigger a PHP :php:`E_USER_DEPRECATED` error
+:php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->checkEnableFields()` will trigger a PHP :php:`E_USER_DEPRECATED` error
 when called. The extension scanner will report usages as weak match.
 
 Affected Installations
 ======================
 
-All installations calling :php:`TypoScriptFrontendController->checkEnableFields()`
+All installations calling :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->checkEnableFields()`
 in custom extension code.
 
 Migration
 =========
 
-Replace all usages of the deprecated method. Use the :php:`RecordAccessVoter`
-component instead, e.g. :php:`RecordAccessVoter->accessGranted()`.
+Replace all usages of the deprecated method. Use the :php-short:`\TYPO3\CMS\Core\Domain\Access\RecordAccessVoter`
+component instead, e.g. :php-short:`\TYPO3\CMS\Core\Domain\Access\RecordAccessVoter->accessGranted()`.
 
 .. index:: Frontend, PHP-API, FullyScanned, ext:frontend

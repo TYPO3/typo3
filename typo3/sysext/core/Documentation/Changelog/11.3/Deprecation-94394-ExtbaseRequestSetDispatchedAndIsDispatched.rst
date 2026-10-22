@@ -43,7 +43,7 @@ Action dispatching in Extbase now depends on the returned response:
 *  A casual 2xx Response from a controller action that for instance contains HTML
    or Json stops Extbase dispatching, the response is later returned to the client.
 
-*  An Extbase :php:`ForwardResponse` instructs the dispatcher to dispatch
+*  An Extbase :php-short:`\TYPO3\CMS\Extbase\Http\ForwardResponse` instructs the dispatcher to dispatch
    internally to another controller action.
 
 *  A 3xx :php:`RedirectResponse` stops dispatching and is returned to the client

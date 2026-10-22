@@ -21,16 +21,16 @@ menu instances have been deprecated in favor of using the new
 
 The following methods are now deprecated:
 
-*   :php:`ButtonBar::makeGenericButton()`
-*   :php:`ButtonBar::makeInputButton()`
-*   :php:`ButtonBar::makeSplitButton()`
-*   :php:`ButtonBar::makeDropDownButton()`
-*   :php:`ButtonBar::makeLinkButton()`
-*   :php:`ButtonBar::makeFullyRenderedButton()`
-*   :php:`ButtonBar::makeShortcutButton()`
-*   :php:`ButtonBar::makeButton()`
-*   :php:`Menu::makeMenuItem()`
-*   :php:`MenuRegistry::makeMenu()`
+*   :php-short:`\TYPO3\CMS\Backend\Template\Components\ButtonBar::makeGenericButton()`
+*   :php-short:`\TYPO3\CMS\Backend\Template\Components\ButtonBar::makeInputButton()`
+*   :php-short:`\TYPO3\CMS\Backend\Template\Components\ButtonBar::makeSplitButton()`
+*   :php-short:`\TYPO3\CMS\Backend\Template\Components\ButtonBar::makeDropDownButton()`
+*   :php-short:`\TYPO3\CMS\Backend\Template\Components\ButtonBar::makeLinkButton()`
+*   :php-short:`\TYPO3\CMS\Backend\Template\Components\ButtonBar::makeFullyRenderedButton()`
+*   :php-short:`\TYPO3\CMS\Backend\Template\Components\ButtonBar::makeShortcutButton()`
+*   :php-short:`\TYPO3\CMS\Backend\Template\Components\ButtonBar::makeButton()`
+*   :php-short:`\TYPO3\CMS\Backend\Template\Components\Menu\Menu::makeMenuItem()`
+*   :php-short:`\TYPO3\CMS\Backend\Template\Components\MenuRegistry::makeMenu()`
 
 Impact
 ======
@@ -46,9 +46,9 @@ The methods continue to work in TYPO3 v14 but will be removed in TYPO3 v15.
 Affected installations
 ======================
 
-All extensions using :php:`ButtonBar::make*()` methods to create buttons,
-:php:`Menu::makeMenuItem()` to create menu items, or
-:php:`MenuRegistry::makeMenu()` to create menus are affected.
+All extensions using :php-short:`\TYPO3\CMS\Backend\Template\Components\ButtonBar::make*()` methods to create buttons,
+:php-short:`\TYPO3\CMS\Backend\Template\Components\Menu\Menu::makeMenuItem()` to create menu items, or
+:php-short:`\TYPO3\CMS\Backend\Template\Components\MenuRegistry::makeMenu()` to create menus are affected.
 The extension scanner will report any usages.
 
 Migration
@@ -56,7 +56,7 @@ Migration
 
 Inject :php:`\TYPO3\CMS\Backend\Template\Components\ComponentFactory` in your
 controller and use its :php:`create*()` methods instead of
-:php:`ButtonBar::make*()`.
+:php-short:`\TYPO3\CMS\Backend\Template\Components\ButtonBar::make*()`.
 
 **Before:**
 
@@ -109,8 +109,8 @@ Additionally, consider using the preconfigured button creation methods like
 :php:`createViewButton()` for common button patterns.
 
 For the low-level :php:`makeButton(string $className)` method, use
-:php:`GeneralUtility::makeInstance()` directly or the appropriate
-:php:`ComponentFactory::create*()` method:
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance()` directly or the appropriate
+:php-short:`\TYPO3\CMS\Backend\Template\Components\ComponentFactory::create*()` method:
 
 ..  code-block:: php
     :caption: Example (button instantiation)
@@ -126,7 +126,7 @@ For the low-level :php:`makeButton(string $className)` method, use
     // After (option 2 - via factory if it's a standard button):
     $button = $this->componentFactory->createLinkButton();
 
-For :php:`Menu::makeMenuItem()`, use :php:`ComponentFactory::createMenuItem()`:
+For :php-short:`\TYPO3\CMS\Backend\Template\Components\Menu\Menu::makeMenuItem()`, use :php-short:`\TYPO3\CMS\Backend\Template\Components\ComponentFactory::createMenuItem()`:
 
 ..  code-block:: php
     :caption: Example (menu items)
@@ -151,7 +151,7 @@ For :php:`Menu::makeMenuItem()`, use :php:`ComponentFactory::createMenuItem()`:
         ->setHref($url);
     $menu->addMenuItem($menuItem);
 
-For :php:`MenuRegistry::makeMenu()`, use :php:`ComponentFactory::createMenu()`:
+For :php-short:`\TYPO3\CMS\Backend\Template\Components\MenuRegistry::makeMenu()`, use :php-short:`\TYPO3\CMS\Backend\Template\Components\ComponentFactory::createMenu()`:
 
 ..  code-block:: php
     :caption: Example (menus)
@@ -172,7 +172,7 @@ For :php:`MenuRegistry::makeMenu()`, use :php:`ComponentFactory::createMenu()`:
     $menu = $this->componentFactory->createMenu();
     $menu->setIdentifier('viewSelector')->setLabel('View');
 
-Additionally, note that :php:`Menu::addMenuItem()` now returns :php:`static`
+Additionally, note that :php-short:`\TYPO3\CMS\Backend\Template\Components\Menu\Menu::addMenuItem()` now returns :php:`static`
 to support fluent interface patterns:
 
 ..  code-block:: php

@@ -11,7 +11,7 @@ See :issue:`71911`
 Description
 ===========
 
-A newly introduced hook in `DatabaseRecordList->makeSearchString` allows to modify the constraints which are applied to
+A newly introduced hook in :php-short:`\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList->makeSearchString` allows to modify the constraints which are applied to
 the search string.
 
 Example

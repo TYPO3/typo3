@@ -17,8 +17,8 @@ used by GDLib to be PNG files instead of GIF files.
 PNG files offer many benefits over GIF files, one of them being faster
 processing times using Image/GraphicsMagick.
 
-In line with this change, the property :php:`GraphicalFunctions::$gifExtension` has
-been removed, as it mainly was used by this class and :php:`GifBuilder` to determine
+In line with this change, the property :php-short:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions::$gifExtension` has
+been removed, as it mainly was used by this class and :php-short:`\TYPO3\CMS\Frontend\Imaging\GifBuilder` to determine
 if a temporary PNG or GIF image should be rendered.
 
 `GFX/processor_colorspace` now defaults to an empty value and is migrated to one if
@@ -52,8 +52,8 @@ Migration
 The configuration value has been removed without replacement. `GFX/processor_colorspace` is
 automatically migrated to the recommended value for setups using the default configuration.
 
-:php:`GraphicalFunctions::$gifExtension` has been removed without replacement. If this has been
-used to determine what type of file should be rendered using :php:`GraphicalFunctions::imageMagickConvert`,
+:php-short:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions::$gifExtension` has been removed without replacement. If this has been
+used to determine what type of file should be rendered using :php-short:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions::imageMagickConvert`,
 please specify the filetype manually now.
 
 

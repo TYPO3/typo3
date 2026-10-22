@@ -32,7 +32,7 @@ Impact
 ======
 
 Using any of the deprecated classes and methods will trigger a PHP :php:`E_USER_DEPRECATED` error,
-with an exception of :php:`ExtensionManagementUtility::addLLrefForTCAdescr()`
+with an exception of :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr()`
 for being a low-level method. The extension scanner will report any usage.
 
 Affected Installations

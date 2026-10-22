@@ -14,19 +14,19 @@ Description
 The following constants have been marked as deprecated and should not be used any longer:
 
 * :php:`PATH_thisScript`
-  Use :php:`Environment::getCurrentScript()` instead
+  Use :php-short:`\TYPO3\CMS\Core\Core\Environment::getCurrentScript()` instead
 
 * :php:`PATH_site`
-  Use :php:`Environment::getPublicPath() . '/'` instead
+  Use :php-short:`\TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/'` instead
 
 * :php:`PATH_typo3`
-  Use :php:`Environment::getPublicPath() . '/typo3/'` instead
+  Use :php-short:`\TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/typo3/'` instead
 
 * :php:`PATH_typo3conf`
-  Use :php:`Environment::getPublicPath() . '/typo3conf'` instead
+  Use :php-short:`\TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/typo3conf'` instead
 
 * :php:`TYPO3_OS`
-  Use :php:`Environment::isWindows()` and :php:`Environment::isUnix()` instead
+  Use :php-short:`\TYPO3\CMS\Core\Core\Environment::isWindows()` and :php-short:`\TYPO3\CMS\Core\Core\Environment::isUnix()` instead
 
 
 Impact

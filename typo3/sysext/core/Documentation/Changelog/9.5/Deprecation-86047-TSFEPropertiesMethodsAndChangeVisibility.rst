@@ -21,7 +21,7 @@ The following properties of class :php:`TYPO3\CMS\Frontend\Controller\TypoScript
 * :php:`loginAllowedInBranch` (use checkIfLoginAllowedInBranch())
 
 The following methods  of class :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` have changed their visibility from public to protected, as their purpose is to be called from
-within :php:`TypoScriptFrontendController`.
+within :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController`.
 
 * :php:`tempPageCacheContent()`
 * :php:`realPageCacheContent()`
@@ -48,8 +48,8 @@ public properties.
 Migration
 =========
 
-For :php:`TypoScriptFrontendController->ADMCMD_preview_BEUSER_uid` use the backend.user aspect of the Context API.
-For :php:`TypoScriptFrontendController->workspacePreview` use the workspace aspect of the Context API.
-For :php:`TypoScriptFrontendController->loginAllowedInBranch` use the method :php:`checkIfLoginAllowedInBranch()` instead.
+For :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->ADMCMD_preview_BEUSER_uid` use the backend.user aspect of the Context API.
+For :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->workspacePreview` use the workspace aspect of the Context API.
+For :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->loginAllowedInBranch` use the method :php:`checkIfLoginAllowedInBranch()` instead.
 
 .. index:: Frontend, FullyScanned, ext:frontend

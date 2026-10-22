@@ -16,16 +16,16 @@ The class :php:`\TYPO3\CMS\Core\Service\FlexFormService` has been merged into
 
 The following methods are affected:
 
-*   :php:`FlexFormService->convertFlexFormContentToArray($flexFormContent, $languagePointer = 'lDEF', $valuePointer = 'vDEF'): array`
-    is now :php:`FlexFormTools->convertFlexFormContentToArray(string $flexFormContent): array`.
+*   :php-short:`\TYPO3\CMS\Core\Service\FlexFormService->convertFlexFormContentToArray($flexFormContent, $languagePointer = 'lDEF', $valuePointer = 'vDEF'): array`
+    is now :php-short:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->convertFlexFormContentToArray(string $flexFormContent): array`.
     The method name is unchanged, but the method signature has been simplified.
 
-*   :php:`FlexFormService->convertFlexFormContentToSheetsArray(string $flexFormContent, string $languagePointer = 'lDEF', string $valuePointer = 'vDEF'): array`
-    is now :php:`FlexFormTools->convertFlexFormContentToSheetsArray(string $flexFormContent): array`.
+*   :php-short:`\TYPO3\CMS\Core\Service\FlexFormService->convertFlexFormContentToSheetsArray(string $flexFormContent, string $languagePointer = 'lDEF', string $valuePointer = 'vDEF'): array`
+    is now :php-short:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->convertFlexFormContentToSheetsArray(string $flexFormContent): array`.
     Again, the name is identical, but the parameters have been reduced.
 
-*   The helper method :php:`FlexFormService->walkFlexFormNode()` has been made a
-    private method within :php:`FlexFormTools`.
+*   The helper method :php-short:`\TYPO3\CMS\Core\Service\FlexFormService->walkFlexFormNode()` has been made a
+    private method within :php-short:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools`.
 
 Impact
 ======
@@ -62,7 +62,7 @@ TYPO3 and could no longer be changed, so their removal has no functional impact.
 
 To continue using these methods, extensions should inject
 :php-short:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools` instead of
-:php:`FlexFormService`.
+:php-short:`\TYPO3\CMS\Core\Service\FlexFormService`.
 
 For extensions that need to remain compatible with both TYPO3 v13 and v14, it is
 still possible to use :php-short:`\TYPO3\CMS\Core\Service\FlexFormService` for

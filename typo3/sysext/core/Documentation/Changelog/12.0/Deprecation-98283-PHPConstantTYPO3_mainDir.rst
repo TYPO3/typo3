@@ -28,7 +28,7 @@ highly unlikely.
 Migration
 =========
 
-It is recommended to use the :php:`BackendEntryPointResolver` class when needing
+It is recommended to use the :php-short:`\TYPO3\CMS\Core\Routing\BackendEntryPointResolver` class when needing
 to direct to the TYPO3 Backend. All other common APIs such as the Backend Router already
 calculate the path automatically anyway.
 

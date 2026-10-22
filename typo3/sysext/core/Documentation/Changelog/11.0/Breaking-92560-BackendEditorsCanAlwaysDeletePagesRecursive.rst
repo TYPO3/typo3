@@ -41,7 +41,7 @@ handled with a dedicated DataHandler hook.
 Another good solution is to configure and restrict users to a workspace to
 implement a sophisticated review process for pending live content changes.
 
-On PHP level, the property :php:`DataHandler->deleteTree` has been dropped.
+On PHP level, the property :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler->deleteTree` has been dropped.
 Setting this property will raise a PHP warning level error. Extensions may be
 affected by this. The extension scanner will find usages with a weak match.
 

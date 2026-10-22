@@ -15,11 +15,11 @@ A new PSR-14 event :php:`\TYPO3\CMS\Core\LinkHandling\Event\AfterLinkResolvedByS
 has been introduced which serves as a more powerful replacement for the now removed
 hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Link']['resolveByStringRepresentation']`.
 
-The event is being dispatched after :php:`LinkService` has tried to resolve a
+The event is being dispatched after :php-short:`\TYPO3\CMS\Core\LinkHandling\LinkService` has tried to resolve a
 given :php:`$urn` using defined link handlers. This means, the new event is
 always dispatched, even if a handler successfully resolved the :php:`$urn`
 and also even in cases, TYPO3 would have thrown the
-:php:`UnknownLinkHandlerException` exception.
+:php-short:`\TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException` exception.
 
 Therefore, the new event can not only be used to resolve custom link types
 but also to modify the link result data of existing link handlers and
@@ -61,7 +61,7 @@ Impact
 ======
 
 Using the new PSR-14 event, it's now possible to fully modify the resolved
-link result data from :php:`LinkService->resolveByStringRepresentation()`,
+link result data from :php-short:`\TYPO3\CMS\Core\LinkHandling\LinkService->resolveByStringRepresentation()`,
 just before the result is being returned. Therefore, even the resolved data
 of existing handlers can be manipulated.
 

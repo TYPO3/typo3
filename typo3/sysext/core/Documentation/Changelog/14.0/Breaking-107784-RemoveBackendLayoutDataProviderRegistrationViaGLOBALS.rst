@@ -26,7 +26,7 @@ Developers need to adapt existing implementations by adding the new method
 :ref:`feature-107784-1760946896`.
 
 Additionally, the possibility to dynamically add backend layout data providers
-to the global :php:`DataProviderCollection` via its :php:`add()` method has been
+to the global :php-short:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection` via its :php:`add()` method has been
 removed. Developers should register their data providers as service definitions
 in the container as described above.
 

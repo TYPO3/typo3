@@ -11,7 +11,7 @@ See :issue:`92989`
 Description
 ===========
 
-The public PHP property :php:`loginFailure` of the PHP class :php:`AbstractUserAuthentication` has
+The public PHP property :php:`loginFailure` of the PHP class :php-short:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication` has
 been removed. This property stored information if a login attempt was made
 but was not successful.
 

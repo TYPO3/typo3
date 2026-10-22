@@ -117,7 +117,7 @@ Module actions dropdown
 -----------------------
 
 Controllers can use the existing
-:php:`ModuleTemplate::makeDocHeaderModuleMenu()` method to automatically
+:php-short:`\TYPO3\CMS\Backend\Template\ModuleTemplate::makeDocHeaderModuleMenu()` method to automatically
 create a module actions dropdown based on the module configuration:
 
 ..  code-block:: php
@@ -132,7 +132,7 @@ Language selector integration
 -----------------------------
 
 The language selector is integrated via the
-:php:`DocHeaderComponent::setLanguageSelector()` method.
+:php-short:`\TYPO3\CMS\Backend\Template\Components\DocHeaderComponent::setLanguageSelector()` method.
 
 First, inject the
 :php:`\TYPO3\CMS\Backend\Template\Components\ComponentFactory` into your
@@ -189,10 +189,10 @@ of the DocHeader navigation bar.
 ..  note::
 
     For advanced implementations that include "Create new translation"
-    functionality, refer to the :php:`PageLayoutController` in EXT:backend.
+    functionality, refer to the :php-short:`\TYPO3\CMS\Backend\Controller\PageLayoutController` in EXT:backend.
     The controller demonstrates how to separate existing translations from
-    languages that can be created, using :php:`DropDownDivider` and
-    :php:`DropDownHeader` components to organize the dropdown menu.
+    languages that can be created, using :php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownDivider` and
+    :php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownHeader` components to organize the dropdown menu.
 
 Accessibility implementation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

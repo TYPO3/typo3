@@ -364,7 +364,7 @@ The following features have been removed:
 The following fallbacks have been removed:
 
 - Usage of the :html:`t3js-toggle-new-content-element-wizard` class to trigger the new content element wizard
-- Usage of the :php:`DataHandler->inlineLocalizeSynchronize()` functionality without an array as input argument
+- Usage of the :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler->inlineLocalizeSynchronize()` functionality without an array as input argument
 - The :php:`route` parameter is no longer added to backend URLs
 - Extensions, which are located in `typo3conf/ext`, but not installed by Composer, are no longer evaluated for installations in "Composer mode"
 - Extbase no longer accepts :php:`MyVendor.` prefixed :php:`MyExtensionName` as first argument in
@@ -433,9 +433,9 @@ The following command line options have been removed:
 
 The following dependency injection container entries have been removed:
 
-- `\TYPO3\CMS\Core\Localization\LanguageService`
-- `\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext`
-- `\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController`
+- :php:`\TYPO3\CMS\Core\Localization\LanguageService`
+- :php:`\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController`
 
 Impact
 ======

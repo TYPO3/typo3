@@ -11,8 +11,8 @@ See :issue:`108568`
 Description
 ===========
 
-The method :php:`BackendUserAuthentication::recordEditAccessInternals()`
-and the property :php:`BackendUserAuthentication::$errorMsg` of class
+The method :php-short:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::recordEditAccessInternals()`
+and the property :php-short:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::$errorMsg` of class
 :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication`
 have been deprecated.
 

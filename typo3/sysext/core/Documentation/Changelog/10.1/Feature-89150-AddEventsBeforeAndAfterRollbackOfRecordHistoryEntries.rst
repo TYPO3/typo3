@@ -16,7 +16,7 @@ Two new events have been introduced into record history that will be dispatched 
 * :php:`\TYPO3\CMS\Backend\History\Event\BeforeHistoryRollbackStartEvent` before the rollback starts
 * :php:`\TYPO3\CMS\Backend\History\Event\AfterHistoryRollbackFinishedEvent` after the rollback finished
 
-Both events resolve some information about the :php:`RecordHistory` item:
+Both events resolve some information about the :php-short:`\TYPO3\CMS\Backend\History\RecordHistory` item:
 
 * :php:`getRecordHistoryRollback()` returns the :php:`\TYPO3\CMS\Backend\History\RecordHistoryRollback` object
 * :php:`getRollbackFields()` returns a string with the rollback fields
@@ -25,6 +25,6 @@ Both events resolve some information about the :php:`RecordHistory` item:
 
 Additionally the :php:`\TYPO3\CMS\Backend\History\Event\AfterHistoryRollbackFinishedEvent` gets the DataHandler input data:
 
-* :php:`getDataHandlerInput()` returns an array with the :php:`DataHandler` instructions.
+* :php:`getDataHandlerInput()` returns an array with the :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler` instructions.
 
 .. index:: Backend, PHP-API, ext:backend

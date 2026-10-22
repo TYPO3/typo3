@@ -11,10 +11,10 @@ See :issue:`85699`
 Description
 ===========
 
-The methods :php:`PageRepository::getMovePlaceholder()` and :php:`PageRepository::movePlhOL()`
+The methods :php-short:`\TYPO3\CMS\Frontend\Page\PageRepository::getMovePlaceholder()` and :php-short:`\TYPO3\CMS\Frontend\Page\PageRepository::movePlhOL()`
 have been marked as internal.
 
-The methods :php:`PageRepository::getRecordsByField` and :php:`PageRepository::getFileReferences()`
+The methods :php-short:`\TYPO3\CMS\Frontend\Page\PageRepository::getRecordsByField` and :php-short:`\TYPO3\CMS\Frontend\Page\PageRepository::getFileReferences()`
 have been marked as deprecated and will be removed in TYPO3 v10.
 
 

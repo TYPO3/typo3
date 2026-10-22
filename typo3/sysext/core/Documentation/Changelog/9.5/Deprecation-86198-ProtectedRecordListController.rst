@@ -47,10 +47,10 @@ Additionally, the two hooks
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawFooterHook']`
 
 changed their signature:
-The second argument, an instance of the parent object :php:`RecordListController` will be removed in TYPO3 v10. Use the instance of the PSR-7
+The second argument, an instance of the parent object :php-short:`\TYPO3\CMS\Recordlist\Controller\RecordListController` will be removed in TYPO3 v10. Use the instance of the PSR-7
 :php:`ServerRequestInterface` that is provided as array key :php:`request` of the first argument.
 
-Furthermore, the assignment of an object instance of class :php:`RecordListController` as
+Furthermore, the assignment of an object instance of class :php-short:`\TYPO3\CMS\Recordlist\Controller\RecordListController` as
 :php:`GLOBALS['SOBE']` has been marked as deprecated and will not be set anymore in TYPO3 v10.
 
 

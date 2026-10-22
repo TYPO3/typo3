@@ -36,7 +36,7 @@ Use XCLASSes configured in :file:`ext_localconf.php` using
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']`.
 
 Register implementations in the Extbase object container instead if you need to override classes
-that are processed by the :php:`PropertyMapper` like domain models or if you rely on additional
+that are processed by the :php-short:`\TYPO3\CMS\Extbase\Property\PropertyMapper` like domain models or if you rely on additional
 injections:
 
 .. code-block:: php

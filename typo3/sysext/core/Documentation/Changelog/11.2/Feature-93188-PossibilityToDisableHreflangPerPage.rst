@@ -13,7 +13,7 @@ Description
 
 Although it should not be needed to disable the hreflang generation, people might
 have a reason to disable it. If for some reason Core does not
-render the proper hreflang tags and also the :php:`ModifyHrefLangTagsEvent` PSR-14 event
+render the proper hreflang tags and also the :php-short:`\TYPO3\CMS\Frontend\Event\ModifyHrefLangTagsEvent` PSR-14 event
 is not enough, you are now able to disable the generation of the hreflang tags
 via TypoScript. This can be done per page or part of your tree depending on where
 you set the configuration.

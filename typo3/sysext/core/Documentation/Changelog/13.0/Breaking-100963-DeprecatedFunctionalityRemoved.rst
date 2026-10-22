@@ -257,20 +257,20 @@ The following PHP static class methods that have previously been marked as depre
 The following methods changed signature according to previous deprecations in v12 at the end of the argument list:
 
 - :php:`\TYPO3\CMS\Backend\Form\FormDataCompiler->compile()` (argument 2 is now required)
-- :php:`\TYPO3\CMS\Core\Messaging\AbstractMessage->setSeverity()` (argument 1 is now of type :php:`ContextualFeedbackSeverity`)
+- :php:`\TYPO3\CMS\Core\Messaging\AbstractMessage->setSeverity()` (argument 1 is now of type :php-short:`\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity`)
 - :php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue->clear()` (argument 1 is now of type :php:`ContextualFeedbackSeverity|null`)
 - :php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue->getAllMessagesAndFlush()` (argument 1 is now of type :php:`ContextualFeedbackSeverity|null`)
 - :php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue->getAllMessages()` (argument 1 is now of type :php:`ContextualFeedbackSeverity|null`)
 - :php:`\TYPO3\CMS\Core\Messaging\FlashMessageQueue->removeAllFlashMessagesFromSession()` (argument 1 is now of type :php:`ContextualFeedbackSeverity|null`)
-- :php:`\TYPO3\CMS\Core\Messaging\FlashMessage->__construct()` (argument 3 is now of type :php:`ContextualFeedbackSeverity`)
-- :php:`\TYPO3\CMS\Core\Page\PageRenderer->setLanguage()` (argument 1 is now of type :php:`Locale`)
+- :php:`\TYPO3\CMS\Core\Messaging\FlashMessage->__construct()` (argument 3 is now of type :php-short:`\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity`)
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->setLanguage()` (argument 1 is now of type :php-short:`\TYPO3\CMS\Core\Localization\Locale`)
 - :php:`\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility->addMessageToFlashMessageQueue()` (argument 2 is now of type :php:`ContextualFeedbackSeverity|null`)
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode()` (argument 4 :php:`$limit` has been removed)
-- :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->addFlashMessage()` (argument 2 is now of type :php:`ContextualFeedbackSeverity`)
+- :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->addFlashMessage()` (argument 2 is now of type :php-short:`\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity`)
 - :php:`\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate()` (argument 4 has been removed)
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->start()` (argument 3 :php:`$request` has been removed)
-- :php:`\TYPO3\CMS\Reports\Status->__construct()` (argument 4 is now of type :php:`ContextualFeedbackSeverity`)
-- :php:`\TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider->addMessage()` (argument 2 is now of type :php:`ContextualFeedbackSeverity`)
+- :php:`\TYPO3\CMS\Reports\Status->__construct()` (argument 4 is now of type :php-short:`\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity`)
+- :php:`\TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider->addMessage()` (argument 2 is now of type :php-short:`\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity`)
 
 The following public class properties have been dropped:
 

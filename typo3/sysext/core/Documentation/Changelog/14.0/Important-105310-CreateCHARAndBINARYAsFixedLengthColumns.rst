@@ -96,7 +96,7 @@ fields.
     :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder`
     can be used.
 
-    For example: :php:`ExpressionBuilder->trim()` or :php:`ExpressionBuilder->rightPad()`.
+    For example: :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->trim()` or :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->rightPad()`.
 
     *   The use of :sql:`CHAR` **must** be avoided when the column is used with
         the Extbase object-relational mapper (ORM). Fixed-length values cannot be

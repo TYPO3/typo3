@@ -12,7 +12,7 @@ Description
 ===========
 
 The global variable :php:`$GLOBALS[TBE_TEMPLATE]` used in TYPO3 Backend which was available
-for legacy reasons for old backend modules as an instance of :php:`DocumentTemplate` a.k.a. `alt_doc`
+for legacy reasons for old backend modules as an instance of :php-short:`\TYPO3\CMS\Backend\Template\DocumentTemplate` a.k.a. `alt_doc`
 has been removed.
 
 The according PSR-15 middleware, which was marked as internal, is also removed.
@@ -33,7 +33,7 @@ TYPO3 installations with older extensions using the global variable.
 Migration
 =========
 
-Instantiate the :php:`DocumentTemplate` class directly in the controller of the module, or migrate
-to :php:`ModuleTemplate` which is available since TYPO3 v7.
+Instantiate the :php-short:`\TYPO3\CMS\Backend\Template\DocumentTemplate` class directly in the controller of the module, or migrate
+to :php-short:`\TYPO3\CMS\Backend\Template\ModuleTemplate` which is available since TYPO3 v7.
 
 .. index:: PHP-API, FullyScanned, ext:backend

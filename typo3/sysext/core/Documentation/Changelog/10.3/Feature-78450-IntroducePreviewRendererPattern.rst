@@ -38,7 +38,7 @@ The main differences between the old and the new approach are:
 * Preview renderers have a public contract which splits up actual preview and wrapping, allowing third party renderers
   to subclass the original renderer and for example only change the wrapping tag.
 * Preview rendering can now be done ad-hoc. The pattern can be used from any context where the old pattern
-  could only be used (was only used) in the :php:`PageLayoutView` for content previews.
+  could only be used (was only used) in the :php-short:`\TYPO3\CMS\Backend\View\PageLayoutView` for content previews.
 
 
 Impact

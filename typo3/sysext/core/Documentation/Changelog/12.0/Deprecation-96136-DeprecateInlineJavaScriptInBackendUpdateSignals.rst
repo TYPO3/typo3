@@ -104,7 +104,7 @@ is **not** considered a good solution as it still contains inline JavaScript.
         }
     }
 
-:php:`ImmediateActionElement` is utilized to trigger a custom event in JavaScript,
+:php-short:`\TYPO3\CMS\Backend\Domain\Model\Element\ImmediateActionElement` is utilized to trigger a custom event in JavaScript,
 which is handled by a custom JavaScript module in that particular case.
 
 ..  code-block:: typescript

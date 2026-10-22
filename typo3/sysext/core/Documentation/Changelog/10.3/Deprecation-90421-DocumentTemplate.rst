@@ -16,13 +16,13 @@ also available as :php:`$GLOBALS['TBE_TEMPLATE']` until TYPO3 v10.0
 served as a basis to render backend modules or HTML-based output
 in TYPO3 Backend.
 
-Since TYPO3 v7, the new API via php:`ModuleTemplate` can be used instead. The :php:`DocumentTemplate` class has been marked as deprecated.
+Since TYPO3 v7, the new API via php:`ModuleTemplate` can be used instead. The :php-short:`\TYPO3\CMS\Backend\Template\DocumentTemplate` class has been marked as deprecated.
 
 
 Impact
 ======
 
-Instantiating the :php:`DocumentTemplate` class will trigger a PHP :php:`E_USER_DEPRECATED` error.
+Instantiating the :php-short:`\TYPO3\CMS\Backend\Template\DocumentTemplate` class will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected Installations

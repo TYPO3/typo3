@@ -26,13 +26,13 @@ The method signature of the constructor changed. This means:
 Affected Installations
 ======================
 
-All installations that create instances of the class :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper` using :php:`GeneralUtility::makeInstance` or :php:`ObjectManager->get`.
+All installations that create instances of the class :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper` using :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance` or :php-short:`\TYPO3\CMS\Extbase\Object\ObjectManager->get`.
 
 
 Migration
 =========
 
-If possible, do not create instances yourself. Avoid :php:`GeneralUtility::makeInstance` and :php:`ObjectManager->get`. Instead use dependency injection, preferably constructor injection:
+If possible, do not create instances yourself. Avoid :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance` and :php-short:`\TYPO3\CMS\Extbase\Object\ObjectManager->get`. Instead use dependency injection, preferably constructor injection:
 
 .. code-block:: php
 

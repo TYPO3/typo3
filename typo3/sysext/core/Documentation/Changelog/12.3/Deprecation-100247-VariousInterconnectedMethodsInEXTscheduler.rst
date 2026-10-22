@@ -17,7 +17,7 @@ overhaul of its code base.
 
 Back then, the main :php:`\TYPO3\CMS\Scheduler\Scheduler` class and the
 :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask` class were the main API classes, all logic being included,
-whereas :php:`AbstractTask` is the main class that all custom tasks within
+whereas :php-short:`\TYPO3\CMS\Scheduler\Task\AbstractTask` is the main class that all custom tasks within
 extensions derive from.
 
 However, in the past 15 years TYPO3's code base has undergone a lot of API
@@ -30,29 +30,29 @@ For this reason, the following methods within the original API classes are now
 either marked as deprecated or internal - not part of TYPO3's public API
 anymore - as they have now been moved into the new repository class.
 
-* :php:`Scheduler->addTask()`
-* :php:`Scheduler->log()` - marked as internal
-* :php:`Scheduler->removeTask()`
-* :php:`Scheduler->saveTask()`
-* :php:`Scheduler->fetchTask()`
-* :php:`Scheduler->fetchTaskRecord()`
-* :php:`Scheduler->fetchTaskWithCondition()`
-* :php:`Scheduler->isValidTaskObject()`
-* :php:`Scheduler->log()` - marked as internal
-* :php:`AbstractTask->isExecutionRunning()`
-* :php:`AbstractTask->markExecution()`
-* :php:`AbstractTask->unmarkExecution()`
-* :php:`AbstractTask->unmarkAllExecutions()`
-* :php:`AbstractTask->save()` - marked as internal
-* :php:`AbstractTask->remove()`
-* :php:`AbstractTask->setScheduler()` - marked as internal
-* :php:`AbstractTask->unsetScheduler()` - marked as internal
-* :php:`AbstractTask->registerSingleExecution()` - marked as internal
-* :php:`AbstractTask->getExecution()` - marked as internal
-* :php:`AbstractTask->setExecution()` - marked as internal
-* :php:`AbstractTask->getNextDueExecution()` - marked as internal
-* :php:`AbstractTask->areMultipleExecutionsAllowed()` - marked as internal
-* :php:`AbstractTask->stop()` - marked as internal
+* :php-short:`\TYPO3\CMS\Scheduler\Scheduler->addTask()`
+* :php-short:`\TYPO3\CMS\Scheduler\Scheduler->log()` - marked as internal
+* :php-short:`\TYPO3\CMS\Scheduler\Scheduler->removeTask()`
+* :php-short:`\TYPO3\CMS\Scheduler\Scheduler->saveTask()`
+* :php-short:`\TYPO3\CMS\Scheduler\Scheduler->fetchTask()`
+* :php-short:`\TYPO3\CMS\Scheduler\Scheduler->fetchTaskRecord()`
+* :php-short:`\TYPO3\CMS\Scheduler\Scheduler->fetchTaskWithCondition()`
+* :php-short:`\TYPO3\CMS\Scheduler\Scheduler->isValidTaskObject()`
+* :php-short:`\TYPO3\CMS\Scheduler\Scheduler->log()` - marked as internal
+* :php-short:`\TYPO3\CMS\Scheduler\Task\AbstractTask->isExecutionRunning()`
+* :php-short:`\TYPO3\CMS\Scheduler\Task\AbstractTask->markExecution()`
+* :php-short:`\TYPO3\CMS\Scheduler\Task\AbstractTask->unmarkExecution()`
+* :php-short:`\TYPO3\CMS\Scheduler\Task\AbstractTask->unmarkAllExecutions()`
+* :php-short:`\TYPO3\CMS\Scheduler\Task\AbstractTask->save()` - marked as internal
+* :php-short:`\TYPO3\CMS\Scheduler\Task\AbstractTask->remove()`
+* :php-short:`\TYPO3\CMS\Scheduler\Task\AbstractTask->setScheduler()` - marked as internal
+* :php-short:`\TYPO3\CMS\Scheduler\Task\AbstractTask->unsetScheduler()` - marked as internal
+* :php-short:`\TYPO3\CMS\Scheduler\Task\AbstractTask->registerSingleExecution()` - marked as internal
+* :php-short:`\TYPO3\CMS\Scheduler\Task\AbstractTask->getExecution()` - marked as internal
+* :php-short:`\TYPO3\CMS\Scheduler\Task\AbstractTask->setExecution()` - marked as internal
+* :php-short:`\TYPO3\CMS\Scheduler\Task\AbstractTask->getNextDueExecution()` - marked as internal
+* :php-short:`\TYPO3\CMS\Scheduler\Task\AbstractTask->areMultipleExecutionsAllowed()` - marked as internal
+* :php-short:`\TYPO3\CMS\Scheduler\Task\AbstractTask->stop()` - marked as internal
 
 
 Impact
@@ -73,6 +73,6 @@ these methods. The Extension Scanner might be helpful to detect these usages.
 Migration
 =========
 
-Use the :php:`SchedulerTaskRepository` methods instead.
+Use the :php-short:`\TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository` methods instead.
 
 .. index:: PHP-API, PartiallyScanned, ext:scheduler

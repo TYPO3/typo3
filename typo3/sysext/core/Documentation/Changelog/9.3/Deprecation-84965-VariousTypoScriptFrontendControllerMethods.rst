@@ -11,7 +11,7 @@ See :issue:`84965`
 Description
 ===========
 
-A lot of functionality from :php:`TypoScriptFrontendController` (a.k.a. `TSFE`) has been migrated
+A lot of functionality from :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` (a.k.a. `TSFE`) has been migrated
 into new PSR-15 middlewares, which are flexible modules to modify a HTTP request workflow.
 
 Most of the functionality which is now in a PSR-15-based middleware is related to setting up various
@@ -53,7 +53,7 @@ Affected Installations
 ======================
 
 Any TYPO3 installation with a custom extension setting up or mimicking a custom frontend request by
-calling :php:`TypoScriptFrontendController` methods directly.
+calling :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` methods directly.
 
 
 Migration

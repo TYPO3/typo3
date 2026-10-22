@@ -51,7 +51,7 @@ Impact
 ======
 
 The main advantage of the PSR-14 event is that it is fired after TYPO3 has
-already prepared some functionality within the :php:`PageLinkBuilder`, allowing
+already prepared some functionality within the :php-short:`\TYPO3\CMS\Frontend\Typolink\PageLinkBuilder`, allowing
 to modify more properties, if needed.
 
 .. index:: Frontend, ext:frontend

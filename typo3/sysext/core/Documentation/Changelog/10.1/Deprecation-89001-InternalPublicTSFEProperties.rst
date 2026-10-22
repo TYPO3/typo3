@@ -41,7 +41,7 @@ accessing these properties.
 Migration
 =========
 
-Use the properties of :php:`Site` and :php:`PageArguments` instead:
+Use the properties of :php-short:`\TYPO3\CMS\Core\Site\Entity\Site` and :php-short:`\TYPO3\CMS\Core\Routing\PageArguments` instead:
 
 * :php:`\TYPO3\CMS\Core\Site\Entity\Site->getRootPageId()` (e.g. via :php:`$request->getAttribute('site')`)
 * :php:`\TYPO3\CMS\Core\Routing\PageArguments->getArguments()['cHash']` (e.g. via :php:`$request->getAttribute('routing')`)

@@ -11,7 +11,7 @@ See :issue:`84387`
 Description
 ===========
 
-The property :php:`$CMD` and the method :php:`addMessage()` in the :php:`SchedulerModuleController`
+The property :php:`$CMD` and the method :php:`addMessage()` in the :php-short:`\TYPO3\CMS\Scheduler\Controller\SchedulerModuleController`
 have been marked as deprecated and will be removed in TYPO3 v10.
 
 
@@ -30,10 +30,10 @@ Third party code which accesses the property directly or calls the method.
 Migration
 =========
 
-Instead of accessing the property :php:`SchedulerModuleController::$CMD`, the method :php:`getCurrentAction()`
+Instead of accessing the property :php-short:`\TYPO3\CMS\Scheduler\Controller\SchedulerModuleController::$CMD`, the method :php:`getCurrentAction()`
 must be used which returns an instance of the :php:`TYPO3\CMS\Scheduler\Task\Enumeration\Action` enumeration.
 
-Instead of calling the method :php:`SchedulerModuleController::addMessage()`, in your additional field providers
+Instead of calling the method :php-short:`\TYPO3\CMS\Scheduler\Controller\SchedulerModuleController::addMessage()`, in your additional field providers
 you can now extend :php:`TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider` which provides a method :php:`addMessage()`
 with the same API like before.
 

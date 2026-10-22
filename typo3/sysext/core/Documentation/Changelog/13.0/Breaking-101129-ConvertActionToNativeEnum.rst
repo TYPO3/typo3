@@ -41,7 +41,7 @@ Migration
 =========
 
 Include the enum :php:`SchedulerManagementAction` from namespace :php:`\TYPO3\CMS\Scheduler`
-as a replacement for :php:`Action`.
+as a replacement for :php-short:`\TYPO3\CMS\Scheduler\Task\Enumeration\Action`.
 
 Use the new syntax
 

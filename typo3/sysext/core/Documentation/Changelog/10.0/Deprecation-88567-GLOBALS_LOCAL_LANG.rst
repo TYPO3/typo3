@@ -13,18 +13,18 @@ Description
 
 The global array :php:`$GLOBALS['LOCAL_LANG']` contains all labels from language
 files that were loaded "globally". However, instead of having this in global
-scope, it is more feasible to have it scoped to the actual :php:`LanguageService`
+scope, it is more feasible to have it scoped to the actual :php-short:`\TYPO3\CMS\Core\Localization\LanguageService`
 that loaded this data, in order to allow various language functionality in the
 same PHP process without having to deal with global variables.
 
 For this reason, it is discouraged to use :php:`$GLOBALS['LOCAL_LANG']`
-but instead rely on :php:`LanguageService->includeLLfile()` which returns
+but instead rely on :php-short:`\TYPO3\CMS\Core\Localization\LanguageService->includeLLfile()` which returns
 the actual values as well, but only the ones loaded from this instance.
 
 Since an instance of :php:`TYPO3\CMS\Core\Localization\LanguageService` is usually available via `$GLOBALS['LANG']` the
 labels are accessible within PHP anyways.
 
-Due to this change, the second and third arguments of :php:`LanguageService->includeLLFile()` have been marked as deprecated.
+Due to this change, the second and third arguments of :php-short:`\TYPO3\CMS\Core\Localization\LanguageService->includeLLFile()` have been marked as deprecated.
 
 
 Impact
@@ -45,7 +45,7 @@ which is very unlikely.
 Migration
 =========
 
-Use the return value of :php:`LanguageService->includeLLFile()` and remove
+Use the return value of :php-short:`\TYPO3\CMS\Core\Localization\LanguageService->includeLLFile()` and remove
 the second and third arguments to work with label files.
 
 .. index:: PHP-API, FullyScanned

@@ -29,7 +29,7 @@ Will result in the according HTML tag providing the image encoded in base64.
     <img class="pr-2" src="data:image/svg+xml;base64,PHN2...cuODQ4LTYuNzU3Ii8+Cjwvc3ZnPgo=" alt="" width="20" height="20">
     <img src="data:image/svg+xml;base64,PHN2...cuODQ4LTYuNzU3Ii8+Cjwvc3ZnPgo=">
 
-This can be particularly useful inside `\TYPO3\CMS\Core\Mail\FluidEmail` or
+This can be particularly useful inside :php:`\TYPO3\CMS\Core\Mail\FluidEmail` or
 to prevent unneeded HTTP calls.
 
 .. index:: Fluid, ext:fluid

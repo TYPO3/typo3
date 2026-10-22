@@ -25,7 +25,7 @@ current TypoScript, it can retrieve it using this API:
     // New substitution of $GLOBALS['TSFE']->tmpl->setup
     $frontendTypoScriptSetupArray = $request->getAttribute('frontend.typoscript')->getSetupArray();
 
-The :php:`FrontendTypoScript` attribute contains some more getters:
+The :php-short:`\TYPO3\CMS\Core\TypoScript\FrontendTypoScript` attribute contains some more getters:
 
 * :php:`getSettingsTree()`: The TypoScript settings as object tree. This tree is still
   a bit experimental in TYPO3 v12 and should only be used if really needed for now, it
@@ -85,9 +85,9 @@ Impact
 ======
 
 This is a substitution especially of the deprecated :php:`TYPO3\CMS\Core\TypoScript\TemplateService`,
-typical old calls were :php:`TypoScriptFrontendController->tmpl` or :php:`$GLOBALS['TSFE']->tmpl`,
+typical old calls were :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->tmpl` or :php:`$GLOBALS['TSFE']->tmpl`,
 often reading the :php:`setup` property using :php:`tmpl->setup` to grab the current TypoScript
-setup array. These calls should be avoided, the :php:`TemplateService` and the :php:`tmpl`
+setup array. These calls should be avoided, the :php-short:`\TYPO3\CMS\Core\TypoScript\TemplateService` and the :php:`tmpl`
 property will be removed in TYPO3 v13.
 
 

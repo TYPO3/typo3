@@ -93,7 +93,7 @@ The following example shows how to create a simple webhook message for the
         }
     }
 
-#.  Create a final class implementing `\TYPO3\CMS\Core\Messaging\WebhookMessageInterface`.
+#.  Create a final class implementing :php:`\TYPO3\CMS\Core\Messaging\WebhookMessageInterface`.
 #.  Add the :php:`\TYPO3\CMS\Core\Attribute\WebhookMessage` attribute to the class.
     The attribute requires the following information:
 
@@ -214,7 +214,7 @@ Messages are sent to the bus in any case. The handler is then responsible for ch
 whether or not an external request (webhook) should be sent.
 
 If advanced request handling is necessary or a custom implementation should be used,
-a custom handler can be created that handles :php:`WebhookMessageInterface`
+a custom handler can be created that handles :php-short:`\TYPO3\CMS\Core\Messaging\WebhookMessageInterface`
 messages.
 
 ..  seealso::

@@ -11,7 +11,7 @@ See :issue:`82177`
 Description
 ===========
 
-A new ExtbaseValidator called :php:`FileSizeValidator` has been added which is able to validate a file
+A new ExtbaseValidator called :php-short:`\TYPO3\CMS\Form\Mvc\Validation\FileSizeValidator` has been added which is able to validate a file
 resource regarding its file size. This validator has 2 options:
 
 - minimum

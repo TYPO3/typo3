@@ -11,7 +11,7 @@ See :issue:`106240`
 Description
 ===========
 
-The following methods of :php:`ResourceStorage` have been improved to enhance
+The following methods of :php-short:`\TYPO3\CMS\Core\Resource\ResourceStorage` have been improved to enhance
 consistency and security for both existing and uploaded files:
 
 * :php:`addFile`

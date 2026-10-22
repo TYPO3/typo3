@@ -11,7 +11,7 @@ See :issue:`80929`
 Description
 ===========
 
-The legacy class :php:`DatabaseConnection` better known as :php:`$GLOBALS['TYPO3_DB']` has been moved
+The legacy class :php-short:`\TYPO3\CMS\Core\Database\DatabaseConnection` better known as :php:`$GLOBALS['TYPO3_DB']` has been moved
 to the new system extension ext:typo3db_legacy.
 
 The following classes have been moved and renamed, including an alias to the original class name:

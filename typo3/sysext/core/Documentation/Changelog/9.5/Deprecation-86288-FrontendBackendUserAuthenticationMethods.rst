@@ -36,7 +36,7 @@ Any TYPO3 installation with custom PHP code accessing any of the methods above.
 Migration
 =========
 
-Use either methods from :php:`BackendUserAuthentication` directly, or - if in context of Admin Panel or
+Use either methods from :php-short:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication` directly, or - if in context of Admin Panel or
 Frontend Editing - use the API methods within these modules directly, if necessary.
 
 .. index:: PHP-API, Frontend, Backend, FullyScanned

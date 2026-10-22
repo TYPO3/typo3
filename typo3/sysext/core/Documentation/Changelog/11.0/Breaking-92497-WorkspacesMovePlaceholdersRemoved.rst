@@ -66,13 +66,13 @@ Impact
 
 When querying database records in a workspace, all Move Pointer records
 are now fetched directly instead of the Move Placeholder records.
-This is all done with the existing API methods in :php:`PageRepository`, :php:`BackendUtility`
+This is all done with the existing API methods in :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository`, :php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility`
 and the Doctrine DBAL Workspace Restriction.
 
 When moving a record in a workspace, Move Placeholders are not created anymore,
 making them obsolete, as all information is now stored in the Move Pointer.
 
-The constant :php:`VersionState::MOVE_PLACEHOLDER` is obsolete.
+The constant :php-short:`\TYPO3\CMS\Core\Versioning\VersionState::MOVE_PLACEHOLDER` is obsolete.
 
 Lots of internal functionality regarding move placeholders has been removed.
 

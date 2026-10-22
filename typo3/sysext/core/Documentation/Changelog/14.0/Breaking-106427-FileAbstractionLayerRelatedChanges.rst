@@ -22,9 +22,9 @@ major internal changes that may affect extension authors.
     implementation :php-short:`\TYPO3\CMS\Core\Resource\File`, since only this
     class should provide such behavior. The moved methods are:
 
-    -   :php:`AbstractFile->rename()`
-    -   :php:`AbstractFile->copyTo()`
-    -   :php:`AbstractFile->moveTo()`
+    -   :php-short:`\TYPO3\CMS\Core\Resource\AbstractFile->rename()`
+    -   :php-short:`\TYPO3\CMS\Core\Resource\AbstractFile->copyTo()`
+    -   :php-short:`\TYPO3\CMS\Core\Resource\AbstractFile->moveTo()`
 
 3.  The :php-short:`\TYPO3\CMS\Core\Resource\FileInterface` method
     :php:`rename()` has been removed, as this operation is only relevant to the
@@ -40,7 +40,7 @@ major internal changes that may affect extension authors.
     -   :php:`searchFiles()`
 
     Previously, this was not enforced, but it is now required to make
-    :php:`Folder` more interchangeable across implementations.
+    :php-short:`\TYPO3\CMS\Core\Resource\Folder` more interchangeable across implementations.
 
 Impact
 ======

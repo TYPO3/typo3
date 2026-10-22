@@ -11,7 +11,7 @@ See :issue:`90258`
 Description
 ===========
 
-The PHP class :php:`RteHtmlParser` which is used to transform RTE-based
+The PHP class :php-short:`\TYPO3\CMS\Core\Html\RteHtmlParser` which is used to transform RTE-based
 textarea fields from the database to the configured Rich Text Editor, and back, has a new simplified API.
 
 For this reason, the following two methods have been marked as deprecated:

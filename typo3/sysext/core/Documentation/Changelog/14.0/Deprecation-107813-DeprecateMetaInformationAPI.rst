@@ -18,9 +18,9 @@ have been deprecated in favor of the new breadcrumb component architecture.
 
 The following have been marked as deprecated:
 
-*   :php:`DocHeaderComponent::setMetaInformation()`
-*   :php:`DocHeaderComponent::setMetaInformationForResource()`
-*   :php:`MetaInformation` class
+*   :php-short:`\TYPO3\CMS\Backend\Template\Components\DocHeaderComponent::setMetaInformation()`
+*   :php-short:`\TYPO3\CMS\Backend\Template\Components\DocHeaderComponent::setMetaInformationForResource()`
+*   :php-short:`\TYPO3\CMS\Backend\Template\Components\MetaInformation` class
 
 These APIs were previously used to display page navigation paths in the
 backend document header. This functionality is now handled by the breadcrumb

@@ -11,9 +11,9 @@ See :issue:`103785`
 Description
 ===========
 
-TYPO3 has the method :php:`MathUtility::convertToPositiveInteger()` to ensure
+TYPO3 has the method :php-short:`\TYPO3\CMS\Core\Utility\MathUtility::convertToPositiveInteger()` to ensure
 that an integer is always positive. However, the method is rather
-"heavy" as it calls :php:`MathUtility::forceIntegerInRange()` internally and
+"heavy" as it calls :php-short:`\TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange()` internally and
 therefore misuses a clamp mechanism to convert the integer to a positive number.
 
 Also, the method name doesn't reflect what the method actually does. Negative
@@ -24,14 +24,14 @@ simple :php:`max()` call, the method is therefore deprecated.
 Impact
 ======
 
-Calling :php:`MathUtility::convertToPositiveInteger()` will trigger a PHP
+Calling :php-short:`\TYPO3\CMS\Core\Utility\MathUtility::convertToPositiveInteger()` will trigger a PHP
 deprecation warning.
 
 
 Affected installations
 ======================
 
-All installations using :php:`MathUtility::convertToPositiveInteger()`.
+All installations using :php-short:`\TYPO3\CMS\Core\Utility\MathUtility::convertToPositiveInteger()`.
 
 
 Migration

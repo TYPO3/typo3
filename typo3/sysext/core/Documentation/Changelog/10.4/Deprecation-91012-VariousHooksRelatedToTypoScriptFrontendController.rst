@@ -11,7 +11,7 @@ See :issue:`91012`
 Description
 ===========
 
-The following hooks related to class :php:`TypoScriptFrontendController`
+The following hooks related to class :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController`
 and frontend-rendering have been marked as deprecated:
 
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing']`
@@ -23,8 +23,8 @@ and frontend-rendering have been marked as deprecated:
 The following methods have been marked as deprecated as well, as they only
 contain code relevant for executing the hooks:
 
-* :php:`TypoScriptFrontendController->isOutputting()`
-* :php:`TypoScriptFrontendController->processContentForOutput()`
+* :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->isOutputting()`
+* :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->processContentForOutput()`
 
 
 Impact
@@ -63,9 +63,9 @@ all content is returned via the RequestHandler of TYPO3 Frontend.
 Extensions using hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe']` should
 be converted to PSR-15 middlewares, as this allows to modify content and headers of a PSR-7 Response object.
 
-The method :php:`TypoScriptFrontendController->isOutputting()` is obsolete and can be removed in third-party code.
+The method :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->isOutputting()` is obsolete and can be removed in third-party code.
 
-The same applies to :php:`TypoScriptFrontendController->processContentForOutput()` which should only be used to trigger
+The same applies to :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->processContentForOutput()` which should only be used to trigger
 legacy hooks still applied in the system.
 
 .. index:: PHP-API, FullyScanned, ext:frontend

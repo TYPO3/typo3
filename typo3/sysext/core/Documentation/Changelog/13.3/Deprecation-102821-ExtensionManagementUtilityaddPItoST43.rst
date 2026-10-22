@@ -18,16 +18,16 @@ has been marked as deprecated in TYPO3 v13 and will be removed with TYPO3 v14.
 Impact
 ======
 
-Using the :php:`ExtensionManagementUtility::addPItoST43()` will raise a deprecation
+Using the :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43()` will raise a deprecation
 level log entry and a fatal error in TYPO3 v14.
 
 
 Affected installations
 ======================
 
-Extensions using :php:`ExtensionManagementUtility::addPItoST43()` are affected:
-Using :php:`ExtensionManagementUtility::addPItoST43()` triggers a deprecation level log message.
-The extension scanner will find usages of :php:`ExtensionManagementUtility::addPItoST43()` as strong match.
+Extensions using :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43()` are affected:
+Using :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43()` triggers a deprecation level log message.
+The extension scanner will find usages of :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43()` as strong match.
 
 
 Migration

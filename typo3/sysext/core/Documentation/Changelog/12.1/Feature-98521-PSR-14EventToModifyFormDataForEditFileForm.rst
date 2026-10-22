@@ -65,7 +65,7 @@ Impact
 
 It is now possible to modify the whole :php:`$formData` array used to generate
 the edit file form in the :guilabel:`File > Filelist` module, while having the
-resolved :php:`FileInterface` and the current PSR-7 :php:`ServerRequestInterface`
+resolved :php-short:`\TYPO3\CMS\Core\Resource\FileInterface` and the current PSR-7 :php:`ServerRequestInterface`
 available.
 
 .. index:: Backend, PHP-API, ext:filelist

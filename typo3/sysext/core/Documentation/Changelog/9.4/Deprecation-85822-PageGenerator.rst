@@ -34,9 +34,9 @@ Migration
 
 Move the render logic to your own extension or use the RequestHandler to compile the functionality.
 
-The unrelated method :php:`PageRenderer::inline2TempFile()` has been moved into proper methods found at
+The unrelated method :php-short:`\TYPO3\CMS\Core\Page\PageRenderer::inline2TempFile()` has been moved into proper methods found at
 
-* :php:`GeneralUtility::writeJavaScriptContentToTemporaryFile($content)`
-* :php:`GeneralUtility::writeStyleSheetContentToTemporaryFile($content)`
+* :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::writeJavaScriptContentToTemporaryFile($content)`
+* :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::writeStyleSheetContentToTemporaryFile($content)`
 
 .. index:: Frontend, FullyScanned, ext:frontend

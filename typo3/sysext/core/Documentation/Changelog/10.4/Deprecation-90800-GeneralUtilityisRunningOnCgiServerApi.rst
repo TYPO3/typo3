@@ -11,15 +11,15 @@ See :issue:`90800`
 Description
 ===========
 
-The lowlevel API method :php:`GeneralUtility::isRunningOnCgiServerApi()` which detects if
+The lowlevel API method :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::isRunningOnCgiServerApi()` which detects if
 the current PHP is executed via a CGI wrapper script ("SAPI", see https://www.php.net/manual/en/function.php-sapi-name.php) has been
-moved to the Environment API and is now available via :php:`Environment::isRunningOnCgiServer()`.
+moved to the Environment API and is now available via :php-short:`\TYPO3\CMS\Core\Core\Environment::isRunningOnCgiServer()`.
 
 
 Impact
 ======
 
-Calling the method from :php:`GeneralUtility` will trigger a PHP :php:`E_USER_DEPRECATED` error.
+Calling the method from :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility` will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected Installations
@@ -31,6 +31,6 @@ Any TYPO3 installation with an extension using this PHP method, which will happe
 Migration
 =========
 
-Use the new method :php:`Environment::isRunningOnCgiServer()` instead, which works exactly the same.
+Use the new method :php-short:`\TYPO3\CMS\Core\Core\Environment::isRunningOnCgiServer()` instead, which works exactly the same.
 
 .. index:: PHP-API, FullyScanned, ext:core

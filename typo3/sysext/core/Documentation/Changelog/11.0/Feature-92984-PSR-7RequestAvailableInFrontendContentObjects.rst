@@ -12,13 +12,13 @@ Description
 ===========
 
 The main Request object of a web-based PHP process is now handed into all
-:php:`ContentObjects` and :php:`ContentObjectRenderer` classes.
+:php:`ContentObjects` and :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer` classes.
 
-In addition, any kind of "userFunc" methods initiated from :php:`ContentObjectRenderer`,
+In addition, any kind of "userFunc" methods initiated from :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer`,
 basically all custom Frontend PHP code, now receives the request object that was
 handed in as third method argument.
 
-The :php:`ContentObjectRenderer` API now has a :php:`getRequest()` method.
+The :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer` API now has a :php:`getRequest()` method.
 
 Example:
 
@@ -45,7 +45,7 @@ Example:
 
 This functionality should be used in PHP code related to Frontend code instead of
 the superglobal variables like :php:`$_GET` / :php:`$_POST` / :php:`$_SERVER`, or TYPO3s
-API methods :php:`GeneralUtility::_GP()` and :php:`GeneralUtility::getIndpEnv()`.
+API methods :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::_GP()` and :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv()`.
 
 Impact
 ======

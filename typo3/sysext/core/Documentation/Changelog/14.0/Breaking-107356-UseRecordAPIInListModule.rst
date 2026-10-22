@@ -22,24 +22,24 @@ The following public methods in
 :php-short:`\TYPO3\CMS\Backend\RecordList\DatabaseRecordList` have changed
 their signatures:
 
-- :php:`renderListRow()` now expects a :php:`RecordInterface` object instead
+- :php:`renderListRow()` now expects a :php-short:`\TYPO3\CMS\Core\Domain\RecordInterface` object instead
   of an array as the second parameter.
-- :php:`makeControl()` now expects a :php:`RecordInterface` object instead of
+- :php:`makeControl()` now expects a :php-short:`\TYPO3\CMS\Core\Domain\RecordInterface` object instead of
   an array as the second parameter.
-- :php:`makeCheckbox()` now expects a :php:`RecordInterface` object instead of
+- :php:`makeCheckbox()` now expects a :php-short:`\TYPO3\CMS\Core\Domain\RecordInterface` object instead of
   an array as the second parameter.
-- :php:`languageFlag()` now expects a :php:`RecordInterface` object instead of
+- :php:`languageFlag()` now expects a :php-short:`\TYPO3\CMS\Core\Domain\RecordInterface` object instead of
   an array as the second parameter.
-- :php:`makeLocalizationPanel()` now expects a :php:`RecordInterface` object
+- :php:`makeLocalizationPanel()` now expects a :php-short:`\TYPO3\CMS\Core\Domain\RecordInterface` object
   instead of an array as the second parameter.
-- :php:`linkWrapItems()` now expects a :php:`RecordInterface` object instead
+- :php:`linkWrapItems()` now expects a :php-short:`\TYPO3\CMS\Core\Domain\RecordInterface` object instead
   of an array as the fourth parameter.
-- :php:`getPreviewUriBuilder()` now expects a :php:`RecordInterface` object
+- :php:`getPreviewUriBuilder()` now expects a :php-short:`\TYPO3\CMS\Core\Domain\RecordInterface` object
   instead of an array as the second parameter.
-- :php:`isRecordDeletePlaceholder()` now expects a :php:`RecordInterface`
+- :php:`isRecordDeletePlaceholder()` now expects a :php-short:`\TYPO3\CMS\Core\Domain\RecordInterface`
   object instead of an array.
 - :php:`isRowListingConditionFulfilled()` has dropped the first parameter
-  :php:`$table` and now expects a :php:`RecordInterface` object instead of an
+  :php:`$table` and now expects a :php-short:`\TYPO3\CMS\Core\Domain\RecordInterface` object instead of an
   array.
 
 These changes enable the List module to operate on structured Record objects,

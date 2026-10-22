@@ -11,7 +11,7 @@ See :issue:`96351`
 Description
 ===========
 
-The PHP method :php:`TemplateService->updateRootlineData()` has been removed.
+The PHP method :php-short:`\TYPO3\CMS\Core\TypoScript\TemplateService->updateRootlineData()` has been removed.
 
 It was used as a workaround to update the fetched rootline with
 translated pages until TYPO3 v10. This was necessary because the

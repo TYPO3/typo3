@@ -13,7 +13,7 @@ Description
 
 With :issue:`94622` the new TCA type `category` has been introduced
 as a replacement for the :php:`\TYPO3\CMS\Core\Category\CategoryRegistry`.
-Therefore, the :php:`CategoryRegistry` together with
+Therefore, the :php-short:`\TYPO3\CMS\Core\Category\CategoryRegistry` together with
 :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable()`
 method have been marked as deprecated and will be removed in TYPO3 v12.
 
@@ -30,12 +30,12 @@ Impact
 
 Defining category fields for tables with
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultCategorizedTables']` or
-by calling :php:`ExtensionManagementUtility::makeCategorizable()` will
+by calling :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable()` will
 trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 The extension scanner will furthermore detect any call to
-:php:`ExtensionManagementUtility::makeCategorizable()` and
-:php:`CategoryRegistry` as strong match and any usage of
+:php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable()` and
+:php-short:`\TYPO3\CMS\Core\Category\CategoryRegistry` as strong match and any usage of
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultCategorizedTables']`
 as weak match.
 
@@ -44,10 +44,10 @@ Affected Installations
 ======================
 
 All installations registering category fields using
-:php:`ExtensionManagementUtility::makeCategorizable()` or defining
+:php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable()` or defining
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultCategorizedTables']`.
 
-Furthermore, all installations, which directly access the :php:`CategoryRegistry`.
+Furthermore, all installations, which directly access the :php-short:`\TYPO3\CMS\Core\Category\CategoryRegistry`.
 
 
 Migration

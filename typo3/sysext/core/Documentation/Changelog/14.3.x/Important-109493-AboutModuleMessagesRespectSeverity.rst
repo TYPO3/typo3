@@ -14,11 +14,11 @@ Description
 Messages added to the "About" backend module through the PSR-14 event
 :php:`\TYPO3\CMS\Backend\Controller\Event\ModifyGenericBackendMessagesEvent`
 were always rendered as an error infobox, no matter which severity the
-:php:`FlashMessage` carried. The module now renders each message with its own
+:php-short:`\TYPO3\CMS\Core\Messaging\FlashMessage` carried. The module now renders each message with its own
 severity.
 
 Extensions that add messages to that event are affected: The severity of
-:php:`FlashMessage` defaults to :php:`ContextualFeedbackSeverity::OK`, so a
+:php-short:`\TYPO3\CMS\Core\Messaging\FlashMessage` defaults to :php-short:`\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK`, so a
 message created without an explicit severity - as in the example that came
 with the event in TYPO3 v12, see :ref:`feature-96899` - is now rendered as a
 green "OK" infobox instead of a red "error" one.

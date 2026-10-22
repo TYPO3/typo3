@@ -31,7 +31,7 @@ Any registered hook implementation is not executed anymore
 in TYPO3 v13.0+.
 
 Calling the mentioned methods do now return either :php:`null` or an instance
-of the :php:`ImageResource` DTO.
+of the :php-short:`\TYPO3\CMS\Core\Imaging\ImageResource` DTO.
 
 The new Event is also using the new DTO instead of an array.
 

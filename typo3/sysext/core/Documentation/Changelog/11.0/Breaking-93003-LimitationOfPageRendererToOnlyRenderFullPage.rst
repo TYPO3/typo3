@@ -12,7 +12,7 @@ Description
 ===========
 
 TYPO3s main API class to build a full HTML page for Frontend
-and Backend rendering - :php:`PageRenderer` - previously allowed
+and Backend rendering - :php-short:`\TYPO3\CMS\Core\Page\PageRenderer` - previously allowed
 to only render the header or footer separately, which was built
 due to historical reasons when rendering content.
 
@@ -24,9 +24,9 @@ any method arguments anymore and always renders the complete HTML page.
 
 In addition, the constants
 
-* :php:`PageRenderer::PART_COMPLETE`
-* :php:`PageRenderer::PART_HEADER`
-* :php:`PageRenderer::PART_FOOTER`
+* :php-short:`\TYPO3\CMS\Core\Page\PageRenderer::PART_COMPLETE`
+* :php-short:`\TYPO3\CMS\Core\Page\PageRenderer::PART_HEADER`
+* :php-short:`\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER`
 
 are now marked as protected and should not be accessed from outside
 the PHP class anymore.
@@ -35,7 +35,7 @@ the PHP class anymore.
 Impact
 ======
 
-Calling :php:`PageRenderer->render()` does not respect any given
+Calling :php-short:`\TYPO3\CMS\Core\Page\PageRenderer->render()` does not respect any given
 method argument.
 
 

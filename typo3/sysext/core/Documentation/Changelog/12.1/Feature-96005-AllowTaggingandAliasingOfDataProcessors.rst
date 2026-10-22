@@ -72,7 +72,7 @@ be used with their alias / identifier in your TypoScript configuration:
 
     The standard service aliasing mechanism is still supported. However,
     it is recommended to tag the data processors instead, because this will
-    automatically add them to the internal :php:`DataProcessorRegistry`,
+    automatically add them to the internal :php-short:`\TYPO3\CMS\Frontend\DataProcessing\DataProcessorRegistry`,
     enabling dependency injection by default. Otherwise the service would need
     to be set :yaml:`public`.
 

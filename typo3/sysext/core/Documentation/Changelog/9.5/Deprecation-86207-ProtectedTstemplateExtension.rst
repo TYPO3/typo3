@@ -109,6 +109,6 @@ Migration
 
 If extending the `tstemplate` module with an own extension, the extension should be adapted to not call
 the above methods or properties any longer. Most usages can be easily adapted, for instance
-to retrieve the current page id, use :php:`GeneralUtility::_GP('id')` instead of :php:`$this->pObj->id`.
+to retrieve the current page id, use :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id')` instead of :php:`$this->pObj->id`.
 
 .. index:: Backend, PHP-API, NotScanned, ext:tstemplate

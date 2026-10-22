@@ -11,7 +11,7 @@ See :issue:`99900`
 Description
 ===========
 
-The static method :php:`GeneralUtility::intExplode()` has a lesser known fourth
+The static method :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode()` has a lesser known fourth
 parameter :php:`$limit`. The reason it was added to the :php:`intExplode()` method
 is purely historical, when it used to extend the :php:`trimExplode()` method. The
 dependency was resolved, but the parameter stayed. As this method is supposed to
@@ -21,14 +21,14 @@ deprecated.
 Impact
 ======
 
-Calling :php:`GeneralUtility::intExplode()` with the fourth parameter
+Calling :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode()` with the fourth parameter
 :php:`$limit` will trigger a deprecation warning and will add an entry to the
 deprecation log.
 
 Affected installations
 ======================
 
-TYPO3 installations that call :php:`GeneralUtility::intExplode()` with the
+TYPO3 installations that call :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode()` with the
 fourth parameter :php:`$limit`.
 
 Migration

@@ -33,6 +33,6 @@ Any TYPO3 installation which uses a different URL to fetch translations of TYPO3
 Migration
 =========
 
-Use the existing event :php:`ModifyLanguagePackRemoteBaseUrlEvent` to change the URL used to fetch translations.
+Use the existing event :php-short:`\TYPO3\CMS\Install\Service\Event\ModifyLanguagePackRemoteBaseUrlEvent` to change the URL used to fetch translations.
 
 .. index:: Backend, Frontend, NotScanned, ext:install

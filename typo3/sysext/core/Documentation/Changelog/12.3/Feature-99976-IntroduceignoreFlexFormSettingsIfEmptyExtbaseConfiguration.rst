@@ -107,7 +107,7 @@ Also, it is now possible again to use global TypoScript extension settings
 in EXT:felogin, which previously might have been overridden by empty FlexForm
 settings.
 
-In addition, with the new :php:`BeforeFlexFormConfigurationOverrideEvent` it is
+In addition, with the new :php-short:`\TYPO3\CMS\Extbase\Event\Configuration\BeforeFlexFormConfigurationOverrideEvent` it is
 now possible to further manipulate the merged configuration after standard
 override logic is applied.
 

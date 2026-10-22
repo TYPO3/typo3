@@ -30,8 +30,8 @@ Custom admin panel modules can now be registered via `$GLOBALS['TYPO3_CONF_VARS'
 	    'after' => ['preview']
 	]
 
-To implement a custom module your module class has to implement the `\TYPO3\CMS\Adminpanel\Modules\AdminPanelModuleInterface`.
+To implement a custom module your module class has to implement the :php:`\TYPO3\CMS\Adminpanel\Modules\AdminPanelModuleInterface`.
 
-Be aware that the `\TYPO3\CMS\Adminpanel\Modules\AdminPanelModuleInterface` is not final yet and may change until v9 LTS.
+Be aware that the :php:`\TYPO3\CMS\Adminpanel\Modules\AdminPanelModuleInterface` is not final yet and may change until v9 LTS.
 
 .. index:: Frontend, PHP-API, ext:frontend

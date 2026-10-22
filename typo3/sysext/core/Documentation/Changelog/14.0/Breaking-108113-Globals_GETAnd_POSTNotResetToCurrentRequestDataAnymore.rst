@@ -80,7 +80,7 @@ One example frequently used in middlewares is
 Code should in general never rely on the globals :php:`_GET`,
 :php:`_POST`, :php:`HTTP_GET_VARS` and :php:`HTTP_POST_VARS`. Request-related
 state should always be fetched from the Request object. Note that the helper
-method :php:`GeneralUtility::getIndpEnv()` will also be phased out once the
+method :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv()` will also be phased out once the
 TYPO3 Core has removed its last remaining usages.
 
 ..  index:: PHP-API, NotScanned, ext:core

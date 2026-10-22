@@ -19,7 +19,7 @@ been resolved long ago.
 
 This was the last usage of :php:`useCDATA` option in FlexForm-related XML methods in
 the Core, so that option is removed along the way. Values of XML data should still be
-encoded properly when dealing with related methods like :php:`GeneralUtility::array2xml()`.
+encoded properly when dealing with related methods like :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::array2xml()`.
 
 
 Impact

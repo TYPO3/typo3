@@ -16,7 +16,7 @@ A new PSR-14 event :php:`\TYPO3\CMS\Frontend\ContentObject\Event\ModifyImageSour
 has been introduced which serves as a drop-in replacement for the now removed
 hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImageSourceCollection']`.
 
-The event is being dispatched in :php:`ContentObjectRenderer->getImageSourceCollection()`
+The event is being dispatched in :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getImageSourceCollection()`
 for each configured :php:`sourceCollection` and allows to enrich the final
 source collection result.
 
@@ -27,7 +27,7 @@ To modify :php:`getImageSourceCollection()` result, the following methods are av
 - :php:`getFullSourceCollection()`: Returns the current full source collection, being enhanced by the current :typoscript:`sourceCollection`
 - :php:`getSourceConfiguration()`: Returns the current :typoscript:`sourceCollection` configuration
 - :php:`getSourceRenderConfiguration()`: Returns the corresponding renderer configuration for the source collection
-- :php:`getContentObjectRenderer()`: Returns the current :php:`ContentObjectRenderer` instance
+- :php:`getContentObjectRenderer()`: Returns the current :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer` instance
 
 Example
 =======
@@ -53,7 +53,7 @@ Impact
 ======
 
 Using the new PSR-14 event, it's now possible to manipulate the
-:typoscript:`sourceCollection`'s, used for an :php:`ImageContentObject`.
+:typoscript:`sourceCollection`'s, used for an :php-short:`\TYPO3\CMS\Frontend\ContentObject\ImageContentObject`.
 
 
 .. index:: Frontend, PHP-API, ext:frontend

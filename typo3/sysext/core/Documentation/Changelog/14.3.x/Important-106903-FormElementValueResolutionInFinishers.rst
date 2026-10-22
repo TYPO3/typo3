@@ -49,22 +49,22 @@ language the form was submitted in and of later label changes, and remains
 usable for queries and joins - resolve labels when reading the records instead.
 
 A custom finisher opts a single option into label resolution by reading it with
-:php:`AbstractFinisher->parseOptionAsDisplayValue()` instead of
+:php-short:`\TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher->parseOptionAsDisplayValue()` instead of
 :php:`parseOption()`.
 
 Two further behaviours changed along the way:
 
 *   An array value interpolated into a longer string - a multi select inside
     :yaml:`Request for {salutation} {name}` - previously aborted the finisher
-    with a :php:`FinisherException` carrying code :php:`1519239265`. Such a value
+    with a :php-short:`\TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException` carrying code :php:`1519239265`. Such a value
     is now joined with :php:`, ` instead. An array that contains an object which
     cannot be converted to a string still throws, now with code
     :php:`1787754756`.
 *   The :yaml:`implementationClassName` of the :yaml:`SingleSelect`,
     :yaml:`MultiSelect`, :yaml:`RadioButton` and :yaml:`MultiCheckbox` elements
-    changed to :php:`GenericOptionableFormElement`, and the one of
-    :yaml:`CountrySelect` to :php:`CountrySelect`. Both extend
-    :php:`GenericFormElement`, so an :php:`instanceof` check against it keeps
+    changed to :php-short:`\TYPO3\CMS\Form\Domain\Model\FormElements\GenericOptionableFormElement`, and the one of
+    :yaml:`CountrySelect` to :php-short:`\TYPO3\CMS\Form\Domain\Model\FormElements\CountrySelect`. Both extend
+    :php-short:`\TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement`, so an :php:`instanceof` check against it keeps
     matching.
 
 Affected installations
@@ -72,7 +72,7 @@ Affected installations
 
 Installations using EXT:form whose email subject, confirmation message or flash
 message references a select, radio button, multi checkbox or country select
-element, and installations that catch :php:`FinisherException` with code
+element, and installations that catch :php-short:`\TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException` with code
 :php:`1519239265`.
 
 Migration

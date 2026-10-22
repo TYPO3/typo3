@@ -11,7 +11,7 @@ See :issue:`83740`
 Description
 ===========
 
-A new hook in :php:`DatabaseRecordList` and :php:`PageLayoutView` allows modify the current database query.
+A new hook in :php-short:`\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList` and :php-short:`\TYPO3\CMS\Backend\View\PageLayoutView` allows modify the current database query.
 
 Register the hook via
 

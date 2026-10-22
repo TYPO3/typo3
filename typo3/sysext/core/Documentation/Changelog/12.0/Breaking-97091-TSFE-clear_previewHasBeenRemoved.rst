@@ -11,7 +11,7 @@ See :issue:`97091`
 Description
 ===========
 
-The method :php:`clear_preview` of the :php:`TypoScriptFrontendController` has been removed.
+The method :php:`clear_preview` of the :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` has been removed.
 
 Impact
 ======

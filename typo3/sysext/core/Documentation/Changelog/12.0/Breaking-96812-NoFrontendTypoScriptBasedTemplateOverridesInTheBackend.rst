@@ -131,16 +131,16 @@ extensions that want to stay deprecation log free with v12 should adapt. The cha
 outlined below will be mandatory with v13.
 
 The registration of widgets using :file:`Services.yaml` should be changed a bit. It
-was previously documented that widgets can inject an instance of :php:`StandaloneView`.
-This approach was flawed: The :php:`StandaloneView` has an internal dependency to the
+was previously documented that widgets can inject an instance of :php-short:`\TYPO3\CMS\Fluid\View\StandaloneView`.
+This approach was flawed: The :php-short:`\TYPO3\CMS\Fluid\View\StandaloneView` has an internal dependency to the
 current PSR-7 request. The request is not available via dependency injection since it is
 a heavily stateful runtime dependency. Injecting a view that depends on request is thus
-a violation and only worked with EXT:dashboard because :php:`StandaloneView` hides that
+a violation and only worked with EXT:dashboard because :php-short:`\TYPO3\CMS\Fluid\View\StandaloneView` hides that
 dependency internally and creates a new request on the fly, which is a hack in that
 implementation that should be avoided.
 
 The view based on EXT:core :php:`ViewInterface` with its factory for backend views based
-on EXT:backend :php:`BackendViewFactory` makes the dependency to the request object explicit.
+on EXT:backend :php-short:`\TYPO3\CMS\Backend\View\BackendViewFactory` makes the dependency to the request object explicit.
 As such, a "prepared" view can not be injected using DI anymore.
 
 This has impact on both the PHP implementation of widgets, as well as the widget
@@ -168,7 +168,7 @@ Let's say a widget has been registered like this:
       ...
 
 The important line is :yaml:`$view: '@dashboard.views.widget'`: This instructs the DI
-to inject an instance of :php:`StandaloneView` using the EXT:dashboard :php:`Factory::widgetTemplate()`
+to inject an instance of :php-short:`\TYPO3\CMS\Fluid\View\StandaloneView` using the EXT:dashboard :php:`Factory::widgetTemplate()`
 method for argument :php:`$view`. The :yaml:`dashboard.views.widget` is deprecated since
 TYPO3 Core v12 and should not be used anymore. It logs a deprecation message upon use
 during build-time and will be removed in v13 together with the :php:`Factory`.
@@ -186,7 +186,7 @@ The new registration should be adapted to this, simply removing the :php:`$view`
     tags:
       ...
 
-Now the PHP implementation. The above example references the :php:`BarChartWidget` class
+Now the PHP implementation. The above example references the :php-short:`\TYPO3\CMS\Dashboard\Widgets\BarChartWidget` class
 to take care of rendering. The class looked like this before (shortened):
 
 ..  code-block:: php
@@ -210,10 +210,10 @@ to take care of rendering. The class looked like this before (shortened):
         }
     }
 
-Since :php:`StandaloneView` should not be injected anymore, we now inject the
-:php:`BackendViewFactory` instead and create a view using the factory in
+Since :php-short:`\TYPO3\CMS\Fluid\View\StandaloneView` should not be injected anymore, we now inject the
+:php-short:`\TYPO3\CMS\Backend\View\BackendViewFactory` instead and create a view using the factory in
 :php:`renderWidgetContent()`. The factory :php:`create()` method needs the request
-object. To get this, widgets should now implement :php:`RequestAwareWidgetInterface`,
+object. To get this, widgets should now implement :php-short:`\TYPO3\CMS\Dashboard\Widgets\RequestAwareWidgetInterface`,
 the EXT:dashboard framework will then :php:`setRequest()` the current request to the widget
 immediately after widget instantiation. The new code thus looks like this:
 

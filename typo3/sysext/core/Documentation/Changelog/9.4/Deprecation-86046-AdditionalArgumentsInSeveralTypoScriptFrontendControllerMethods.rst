@@ -11,7 +11,7 @@ See :issue:`86046`
 Description
 ===========
 
-The following public methods within :php:`TypoScriptFrontendController` now expect an argument:
+The following public methods within :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` now expect an argument:
 
 * :php:`calculateLinkVars(array $queryParams)`
 * :php:`preparePageContentGeneration(ServerRequestInterface $request)`
@@ -19,7 +19,7 @@ The following public methods within :php:`TypoScriptFrontendController` now expe
 This is necessary to avoid usage of the PHP global variables $_GET/$_POST.
 
 In addition, to be backwards-compatible with extensions previously using
-:php:`GeneralUtility::_GETset()`, this method now also updates the global PSR-7 request
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset()`, this method now also updates the global PSR-7 request
 for the time being, although this method will be removed in the future.
 
 TYPO3 aims to not access global state in the future, in order to do proper "sub requests".

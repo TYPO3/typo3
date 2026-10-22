@@ -19,8 +19,8 @@ add their hidden fields to the `html` key.
 The following have been deprecated:
 
 * The `additionalHiddenFields` key in FormEngine result arrays
-* :php:`FormResult::$hiddenFieldsHtml`
-* :php:`FormResultCollection::getHiddenFieldsHtml()`
+* :php-short:`\TYPO3\CMS\Backend\Form\FormResult::$hiddenFieldsHtml`
+* :php-short:`\TYPO3\CMS\Backend\Form\FormResultCollection::getHiddenFieldsHtml()`
 
 Impact
 ======

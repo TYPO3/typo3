@@ -32,10 +32,10 @@ All installations calling mentioned methods in custom extension code.
 Migration
 =========
 
-Use the new :php:`ModuleProvider` API (see :doc:`feature changelog <../12.0/Feature-96733-NewBackendModuleRegistrationAPI>`) instead.
+Use the new :php-short:`\TYPO3\CMS\Backend\Module\ModuleProvider` API (see :doc:`feature changelog <../12.0/Feature-96733-NewBackendModuleRegistrationAPI>`) instead.
 
-Replace :php:`BackendUserAuthentication->modAccess()` with :php:`ModuleProvider->accessGranted()`.
+Replace :php-short:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->modAccess()` with :php-short:`\TYPO3\CMS\Backend\Module\ModuleProvider->accessGranted()`.
 
-Replace :php:`BackendUtility::isModuleSetInTBE_MODULES()` with :php:`ModuleProvider->isModuleRegistered()`.
+Replace :php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES()` with :php-short:`\TYPO3\CMS\Backend\Module\ModuleProvider->isModuleRegistered()`.
 
 .. index:: Backend, PHP-API, FullyScanned, ext:backend

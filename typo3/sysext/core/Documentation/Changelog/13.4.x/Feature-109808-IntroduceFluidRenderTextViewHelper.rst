@@ -71,7 +71,7 @@ This is useful for shared partials, for example in :html:`fluid_styled_content`.
 There, a header partial can be reused by content elements whose transformed record
 does not provide a :html:`header` or :html:`subheader` field. Without
 :html:`optional="true"`, rendering such a partial would raise a
-:php:`RecordPropertyNotFoundException`. With :html:`optional="true"`, the ViewHelper
+:php-short:`\TYPO3\CMS\Core\Domain\Exception\RecordPropertyNotFoundException`. With :html:`optional="true"`, the ViewHelper
 returns :html:`null` and the partial can continue to handle the missing value
 gracefully.
 

@@ -22,8 +22,8 @@ To modify the live search form data, the following methods are available:
     current ones.
 -   :php:`getHints()`: Returns all current hints.
 -   :php:`getRequest()`: Returns the current PSR-7 request.
--   :php:`getSearchDemand()`: Returns the :php:`SearchDemand` used by the live search.
--   :php:`setSearchDemand()`: Sets a custom :php:`SearchDemand` object.
+-   :php:`getSearchDemand()`: Returns the :php-short:`\TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\SearchDemand` used by the live search.
+-   :php:`setSearchDemand()`: Sets a custom :php-short:`\TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\SearchDemand` object.
 -   :php:`getAdditionalViewData()`: Returns the additional view data set to be
     used in the template.
 -   :php:`setAdditionalViewData()`: Sets the additional view data to be used in
@@ -66,7 +66,7 @@ The corresponding event listener class:
 Impact
 ======
 
-With the new PSR-14 event :php:`BeforeLiveSearchFormIsBuiltEvent`, it is now
+With the new PSR-14 event :php-short:`\TYPO3\CMS\Backend\Search\Event\BeforeLiveSearchFormIsBuiltEvent`, it is now
 possible to modify the form data for the backend live search.
 
 ..  index:: Backend, PHP-API, ext:backend

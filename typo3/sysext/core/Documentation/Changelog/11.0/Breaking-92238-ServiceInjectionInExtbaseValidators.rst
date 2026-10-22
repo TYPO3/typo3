@@ -39,7 +39,7 @@ Migration
 =========
 
 
-Instead of injecting services to the validator, use :php:`GeneralUtility::makeInstance`
+Instead of injecting services to the validator, use :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance`
 to create an instance of required services.
 
 Given the following example for a service injection in a validator:
@@ -59,7 +59,7 @@ Given the following example for a service injection in a validator:
         $this->configurationManager = $configurationManager;
     }
 
-Since the configurationManager is required globally in the class, :php:`GeneralUtility::makeInstance`
+Since the configurationManager is required globally in the class, :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance`
 is used in the constructor of the validator to create an instance of the service.
 
 .. code-block:: php

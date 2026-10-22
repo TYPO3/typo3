@@ -37,7 +37,7 @@ Available methods:
 * :php:`getContent()` - Returns the current content (stdWrap result)
 * :php:`setContent()` - Allows to modify the final content (stdWrap result)
 * :php:`getConfiguration()` - Returns the corresponding TypoScript configuration
-* :php:`getContentObjectRenderer()` - Returns the current :php:`ContentObjectRenderer` instance
+* :php:`getContentObjectRenderer()` - Returns the current :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer` instance
 
 Example
 =======

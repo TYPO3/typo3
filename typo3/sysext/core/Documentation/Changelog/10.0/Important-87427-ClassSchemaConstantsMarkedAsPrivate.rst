@@ -13,8 +13,8 @@ Description
 
 The constants
 
-* :php:`ClassSchema::MODELTYPE_ENTITY` and
-* :php:`ClassSchema::MODELTYPE_VALUEOBJECT`
+* :php-short:`\TYPO3\CMS\Extbase\Reflection\ClassSchema::MODELTYPE_ENTITY` and
+* :php-short:`\TYPO3\CMS\Extbase\Reflection\ClassSchema::MODELTYPE_VALUEOBJECT`
 
 have been marked as private, as they are used in :php:`\TYPO3\CMS\Extbase\Reflection\ClassSchema` only.
 

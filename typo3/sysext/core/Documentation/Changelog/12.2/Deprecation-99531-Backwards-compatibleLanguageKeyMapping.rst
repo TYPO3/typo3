@@ -20,7 +20,7 @@ In recent years, it was not even possible to use these keys for custom label fil
 However, the mapping was still used to detect the language of the user agent,
 primarily for the backend login screen when no language was detected.
 
-For this reason, the method :php:`Locales->getIsoMapping()` has been deprecated.
+For this reason, the method :php-short:`\TYPO3\CMS\Core\Localization\Locales->getIsoMapping()` has been deprecated.
 
 
 Impact

@@ -21,7 +21,7 @@ Hydrating objects
 
 Hydrating (the term originates from `doctrine/orm`), or in Extbase terms thawing, is
 the act of creating an object from a given database row. The responsible class involved
-is the :php:`DataMapper`. During the process of hydrating, the :php:`DataMapper` creates
+is the :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper`. During the process of hydrating, the :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper` creates
 objects to map the raw database data onto.
 
 Before diving into the framework internals, let's take a look at models from the
@@ -57,18 +57,18 @@ Hydrating objects with constructor arguments
 --------------------------------------------
 
 Whenever the user creates new blog objects in extension code, the aforementioned
-domain rule is followed. It is also possible to work on the :php:`posts` :php:`ObjectStorage`
+domain rule is followed. It is also possible to work on the :php:`posts` :php-short:`\TYPO3\CMS\Extbase\Persistence\ObjectStorage`
 without further initialization. :php:`new Blog('title')` is all I need to create
 a blog object with a valid state.
 
-What happens in the :php:`DataMapper` however, is a totally different thing. When
-hydrating an object, the :php:`DataMapper` cannot follow any domain rules. Its only
-job is to map the raw database values onto a `Blog` instance. The :php:`DataMapper`
+What happens in the :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper` however, is a totally different thing. When
+hydrating an object, the :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper` cannot follow any domain rules. Its only
+job is to map the raw database values onto a `Blog` instance. The :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper`
 could of course detect constructor arguments and try to guess which argument
 corresponds to what property but only if there is an easy mapping, i.e. if the
 constructor takes argument :php:`string $title` and updates property `title` with it.
 
-To avoid possible errors due to guessing, the :php:`DataMapper` simply
+To avoid possible errors due to guessing, the :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper` simply
 ignores the constructor at all. It does so with the help of the library `doctrine/instantiator`_.
 
 ..  _doctrine/instantiator: https://github.com/doctrine/instantiator
@@ -79,10 +79,10 @@ to all this.
 Initializing objects
 --------------------
 
-Have a look at the :php:`$posts` property in the example above. If the :php:`DataMapper`
+Have a look at the :php:`$posts` property in the example above. If the :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper`
 ignores the constructor, that property is in an invalid state, i.e. uninitialized.
 
-To address this problem and possible others, the :php:`DataMapper` will call the method
+To address this problem and possible others, the :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper` will call the method
 `initializeObject(): void` on models, if it exists.
 
 Here is an updated version of the model:
@@ -134,18 +134,18 @@ Mutating objects
 ----------------
 
 I'd like to add a few more words on mutators (setter, adder, etc.). One might think that
-:php:`DataMapper` uses mutators during object hydration but it DOES NOT. `mutators`
+:php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper` uses mutators during object hydration but it DOES NOT. `mutators`
 are the only way for the user (developer) to implement business rules besides
 using the constructor.
 
-The :php:`DataMapper` uses the `@internal` method :php:`AbstractDomainObject::_setProperty()`
+The :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper` uses the `@internal` method :php-short:`\TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject::_setProperty()`
 to update object properties. This looks a bit dirty and is a way around all business
-rules but that's what the :php:`DataMapper` needs in order to leave the `mutators` to
+rules but that's what the :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper` needs in order to leave the `mutators` to
 the users.
 
 ..  warning::
 
-    While :php:`DataMapper` does not use any mutators, other parts of Extbase do.
+    While :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper` does not use any mutators, other parts of Extbase do.
     Both, validation and property mapping, either use existing mutators or gather
     type information from them. This will change in the future but as of TYPO3 v12 LTS
     this information is correct.
@@ -154,8 +154,8 @@ Property visibility
 -------------------
 
 One important thing to know is that Extbase needs entity properties to be protected
-or public. As written in the former paragraph, :php:`AbstractDomainObject::_setProperty()`
-is used to bypass setters. :php:`AbstractDomainObject` however, is not able to access
+or public. As written in the former paragraph, :php-short:`\TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject::_setProperty()`
+is used to bypass setters. :php-short:`\TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject` however, is not able to access
 private properties of child classes, hence the need to have protected or public
 properties.
 

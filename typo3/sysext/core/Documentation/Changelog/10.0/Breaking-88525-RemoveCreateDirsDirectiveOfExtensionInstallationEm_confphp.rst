@@ -44,6 +44,6 @@ Migration
 When an extension supports TYPO3 v10+ only, this directive can be removed.
 
 If an extension needs a special directory, this should be created via PHP when it is needed
-via e.g. :php:`GeneralUtility::mkdir_deep()`.
+via e.g. :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep()`.
 
 .. index:: PHP-API, NotScanned, ext:extensionmanager

@@ -24,12 +24,12 @@ Impact
 The change has impact on Frontend caching, hooks, some classes and properties. In detail:
 
 * Hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Core/TypoScript/TemplateService']['runThroughTemplatesPostProcessing']`
-  is gone and substituted by :php:`AfterTemplatesHaveBeenDeterminedEvent`. See :ref:`feature-97816-1664801053` for more details.
+  is gone and substituted by :php-short:`\TYPO3\CMS\Core\TypoScript\IncludeTree\Event\AfterTemplatesHaveBeenDeterminedEvent`. See :ref:`feature-97816-1664801053` for more details.
 
 * The classes :php:`TYPO3\CMS\Core\TypoScript\TemplateService` and :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser`
   have been marked as deprecated and shouldn't be used anymore.
-  An instance of :php:`TemplateService` is still kept as property :php:`TypoScriptFrontendController->tmpl` (:php:`$GLOBALS['TSFE']->tmpl`)
-  as backwards compatible layer, and the most important properties within the class, namely especially :php:`TemplateService->setup` is
+  An instance of :php-short:`\TYPO3\CMS\Core\TypoScript\TemplateService` is still kept as property :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->tmpl` (:php:`$GLOBALS['TSFE']->tmpl`)
+  as backwards compatible layer, and the most important properties within the class, namely especially :php-short:`\TYPO3\CMS\Core\TypoScript\TemplateService->setup` is
   still set. To avoid using these properties, the Frontend request object will contain this state.
   In rare cases, where extensions need to parse TypoScript on their own, they should switch to the Tokenizer and AstBuilder structures
   of the new parser. Note these classes are still young and currently marked @internal, the API may still slightly change with further
@@ -37,7 +37,7 @@ The change has impact on Frontend caching, hooks, some classes and properties. I
 
 * The :php:`pagesection` cache has been removed. This was a helper cache that grew O(n) with the number of
   called Frontend pages. The new :php:`typoscript` cache is used instead: This grows only O(n) with the
-  number of different sys_template and condition combinations and is a filesystem based :php:`PhpFrontend` implementation.
+  number of different sys_template and condition combinations and is a filesystem based :php-short:`\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend` implementation.
   When upgrading, the database tables :sql:`cache_pagesection` and :sql:`cache_pagesections_tags` can be safely removed, the
   install tool will also silently remove any existing entries from :file:`settings.php` that reconfigure the cache.
 
@@ -71,32 +71,32 @@ The change has impact on Frontend caching, hooks, some classes and properties. I
   force re-rendering. Note integrators should still "Flush frontend caches" when changes in included TypoScript files should
   go-live for all other Frontend requests and thus "normal users" as well.
 
-* The following properties and methods in :php:`TypoScriptFrontendController` have been set to :php:`@internal` and should not
+* The following properties and methods in :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` have been set to :php:`@internal` and should not
   be used any longer since they may vanish without further notice:
 
-  * :php:`TypoScriptFrontendController->no_cache`
-  * :php:`TypoScriptFrontendController->tmpl`
-  * :php:`TypoScriptFrontendController->pageContentWasLoadedFromCache`
-  * :php:`TypoScriptFrontendController->getFromCache_queryRow()`
-  * :php:`TypoScriptFrontendController->populatePageDataFromCache()`
-  * :php:`TypoScriptFrontendController->shouldAcquireCacheData()`
-  * :php:`TypoScriptFrontendController->acquireLock()`
-  * :php:`TypoScriptFrontendController->releaseLock()`
+  * :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->no_cache`
+  * :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->tmpl`
+  * :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->pageContentWasLoadedFromCache`
+  * :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getFromCache_queryRow()`
+  * :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->populatePageDataFromCache()`
+  * :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->shouldAcquireCacheData()`
+  * :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->acquireLock()`
+  * :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->releaseLock()`
 
-* The following methods in :php:`TypoScriptFrontendController` have been removed:
+* The following methods in :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` have been removed:
 
-  * :php:`TypoScriptFrontendController->getHash()`
-  * :php:`TypoScriptFrontendController->getLockHash()`
-  * :php:`TypoScriptFrontendController->getConfigArray()`
-  * :php:`TypoScriptFrontendController->()`
+  * :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getHash()`
+  * :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getLockHash()`
+  * :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getConfigArray()`
+  * :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->()`
 
 
 Affected installations
 ======================
 
 Many instances will only recognize that the :php:`pagesection` cache is gone and should continue to work.
-Instances with extensions that use :php:`TemplateService` or :php:`TypoScriptParser`, or access the
-property :php:`TypoScriptFrontendController->tmpl` may need adaptions.
+Instances with extensions that use :php-short:`\TYPO3\CMS\Core\TypoScript\TemplateService` or :php-short:`\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser`, or access the
+property :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->tmpl` may need adaptions.
 
 
 Migration

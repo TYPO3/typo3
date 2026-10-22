@@ -12,7 +12,7 @@ See :issue:`81201`
 Description
 ===========
 
-The static PHP method :php:`EidUtility::initTCA()` has been marked as deprecated, because the full
+The static PHP method :php-short:`\TYPO3\CMS\Frontend\Utility\EidUtility::initTCA()` has been marked as deprecated, because the full
 global TCA array is available at any eID request already.
 
 

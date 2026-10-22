@@ -12,33 +12,33 @@ Description
 ===========
 
 Extbase's Persistence functionality is basing ORM queries on certain settings
-usually fetched from :php:`QuerySettingsInterface`, with a default
-implementation :php:`Typo3QuerySettings`.
+usually fetched from :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface`, with a default
+implementation :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings`.
 
 The interface itself has changed so that it now requires two new methods:
 
-:php:`QuerySettingsInterface::getLanguageAspect(): LanguageAspect`
-:php:`QuerySettingsInterface::setLanguageAspect(LanguageAspect $aspect)`
+:php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::getLanguageAspect(): LanguageAspect`
+:php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::setLanguageAspect(LanguageAspect $aspect)`
 
 The LanguageAspect covers both the overlay functionality and setting the
 language ID.
 
 For this reason, the following methods are removed from
-:php:`QuerySettingsInterface`:
+:php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface`:
 
-- :php:`QuerySettingsInterface::getLanguageOverlayMode()`
-- :php:`QuerySettingsInterface::setLanguageOverlayMode($languageOverlayMode)`
-- :php:`QuerySettingsInterface::getLanguageUid()`
-- :php:`QuerySettingsInterface::setLanguageUid($languageUid)`
+- :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::getLanguageOverlayMode()`
+- :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::setLanguageOverlayMode($languageOverlayMode)`
+- :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::getLanguageUid()`
+- :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::setLanguageUid($languageUid)`
 
 All adaptions have been made to the default implementation in
-:php:`Typo3QuerySettings`, however the removed methods from the interface are kept
+:php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings`, however the removed methods from the interface are kept
 within the implementation to avoid fatal PHP errors.
 
 Impact
 ======
 
-Any custom implementation of :php:`QuerySettingsInterface` needs to implement
+Any custom implementation of :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface` needs to implement
 the newly defined methods of the interface.
 
 Affected installations

@@ -41,7 +41,7 @@ Code using the removed constant
 :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE`
 will fail with a PHP fatal error.
 
-Code calling :php:`PageRepository::resolveShortcutPage()` with three parameters,
+Code calling :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository::resolveShortcutPage()` with three parameters,
 where the second parameter was :php:`$resolveRandomSubpages`, will fail. The
 second parameter is now :php:`$disableGroupAccessCheck`.
 
@@ -53,8 +53,8 @@ Affected installations
 
 TYPO3 installations with:
 
-*   Extensions using the constant :php:`PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE`
-*   Extensions calling :php:`PageRepository::resolveShortcutPage()` with the
+*   Extensions using the constant :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE`
+*   Extensions calling :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository::resolveShortcutPage()` with the
     :php:`$resolveRandomSubpages` parameter
 *   Extensions extending :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository`
     and overriding :php:`getPageShortcut()`
@@ -63,9 +63,9 @@ TYPO3 installations with:
 Migration
 =========
 
-Remove any usage of :php:`PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE`.
+Remove any usage of :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE`.
 
-Update calls to :php:`PageRepository::resolveShortcutPage()` to remove the
+Update calls to :php-short:`\TYPO3\CMS\Core\Domain\Repository\PageRepository::resolveShortcutPage()` to remove the
 :php:`$resolveRandomSubpages` parameter:
 
 ..  code-block:: php

@@ -19,7 +19,7 @@ Impact
 ======
 
 Calling :php:`TYPO3\CMS\Extbase\Mvc\Controller\ActionController::forward()`,
-which itself throws a `TYPO3\CMS\Extbase\Mvc\Exception\StopActionException` to initiate abortion
+which itself throws a :php:`TYPO3\CMS\Extbase\Mvc\Exception\StopActionException` to initiate abortion
 of the current request and to initiate a new request, will also trigger PHP :php:`E_USER_DEPRECATED` error.
 
 

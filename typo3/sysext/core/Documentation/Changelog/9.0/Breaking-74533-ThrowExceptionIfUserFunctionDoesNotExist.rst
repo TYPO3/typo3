@@ -11,7 +11,7 @@ See :issue:`74533`
 Description
 ===========
 
-:php:`GeneralUtility::callUserFunction()` does now always throw an exception if the passed
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction()` does now always throw an exception if the passed
 user function does not exist or is not callable. The parameter `$errorMode` has been removed,
 exceptions are now always thrown. The method should not be called with more than three arguments.
 

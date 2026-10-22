@@ -11,18 +11,18 @@ See :issue:`90956`
 Description
 ===========
 
-The short-hand method :php:`GeneralUtility::getUrl()` provides a
+The short-hand method :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl()` provides a
 fast way to fetch the contents of a local file or remote URL.
 
 For Remote URLs, TYPO3 v8 provides an object-oriented (PSR-7 compatible) way by using
-the :php:`RequestFactory->request($url, $method, $options)` API. Under the hood, the PHP library GuzzleHTTP is used,
+the :php-short:`\TYPO3\CMS\Core\Http\RequestFactory->request($url, $method, $options)` API. Under the hood, the PHP library GuzzleHTTP is used,
 which evaluates what best option (e.g. curl library) should handle
 the download to TYPO3.
 
 In general, it is recommended for any third-party extension developer to use either
-PHP's native :php:`file_get_contents($file)` method or the :php:`RequestFactory->request()` method to fetch a PSR-7 ResponseInterface object.
+PHP's native :php:`file_get_contents($file)` method or the :php-short:`\TYPO3\CMS\Core\Http\RequestFactory->request()` method to fetch a PSR-7 ResponseInterface object.
 
-The additional arguments in :php:`GeneralUtility::getUrl()` which allowed
+The additional arguments in :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl()` which allowed
 to send headers to the content or just do a HEAD request, or find reports on why
 the request did not succeed have been marked as deprecated.
 
@@ -32,14 +32,14 @@ PHP's native Exception Handling and the response object give enough insights alr
 Impact
 ======
 
-Calling the method :php:`GeneralUtility::getUrl()` with more than one
+Calling the method :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl()` with more than one
 method argument will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected Installations
 ======================
 
-TYPO3 installations using a third-party extension with :php:`GeneralUtility::getUrl()`
+TYPO3 installations using a third-party extension with :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl()`
 and more than one parameter in the call.
 
 

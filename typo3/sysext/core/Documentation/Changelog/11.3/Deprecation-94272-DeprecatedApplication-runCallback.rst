@@ -22,7 +22,7 @@ sub requests existed at that time. Since :issue:`83725`, the callback is not
 longer necessary as such functionality can be handled by a PSR-15
 middleware.
 
-Therefore, the :php:`$execute` argument of :php:`ApplicationInterface->run()`
+Therefore, the :php:`$execute` argument of :php-short:`\TYPO3\CMS\Core\Core\ApplicationInterface->run()`
 has been deprecated and will be removed in v12.
 
 Impact

@@ -21,8 +21,8 @@ in the current internet world anymore.
 
 In order to be more flexible in the future, all functionality has now been
 encapsulated into a single API called "Extension Remotes". These are adapters
-to fetch a list of extensions via the :php:`ListableRemoteInterface`, or to
-download an extension via the :php:`ExtensionDownloaderRemoteInterface`.
+to fetch a list of extensions via the :php-short:`\TYPO3\CMS\Extensionmanager\Remote\ListableRemoteInterface`, or to
+download an extension via the :php-short:`\TYPO3\CMS\Extensionmanager\Remote\ExtensionDownloaderRemoteInterface`.
 
 This way it is possible to adapt any kind of remote, where as the existing
 concrete implementation is now built into a configuration, rather than the
@@ -64,10 +64,10 @@ with `t3x` files anymore.
         default: true
 
 Please note that :php:`Vendor\SitePackage\Remote\MyRemote` must implement
-:php:`ExtensionDownloaderRemoteInterface` to be registered as remote.
+:php-short:`\TYPO3\CMS\Extensionmanager\Remote\ExtensionDownloaderRemoteInterface` to be registered as remote.
 
 Furthermore setting :yaml:`default: true` only works if the defined service
-implements :php:`ListableRemoteInterface`.
+implements :php-short:`\TYPO3\CMS\Extensionmanager\Remote\ListableRemoteInterface`.
 
 
 Impact

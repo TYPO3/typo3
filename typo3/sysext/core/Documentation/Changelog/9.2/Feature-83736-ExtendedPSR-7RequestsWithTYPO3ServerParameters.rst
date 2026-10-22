@@ -13,7 +13,7 @@ Description
 
 The PSR-7 based `ServerRequest` objects created by TYPO3 now contain a TYPO3-specific attribute object for normalized
 server parameters that for instance resolves variables if the instance is behind a reverse proxy. This substitutes
-:php:`GeneralUtility::getIndpEnv()`.
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv()`.
 
 The object is **for now** available from :php:`ServerRequestInterface $request` objects as attribute. The request object
 is given to controllers, example:
@@ -29,7 +29,7 @@ the core which has to access the server parameters at places where $request is n
 globally available during any HTTP request, it is considered bad practice to use it. The global object will vanish
 later if the core code has been refactored enough to not rely on it anymore.
 
-For now, class :php:`NormalizedParams` is a one-to-one transition of :php:`GeneralUtility::getIndpEnv()`, the old
+For now, class :php-short:`\TYPO3\CMS\Core\Http\NormalizedParams` is a one-to-one transition of :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv()`, the old
 arguments can be substituted with these calls:
 
 - :php:`SCRIPT_NAME` is now :php:`->getScriptName()`
@@ -66,7 +66,7 @@ these anymore:
 Impact
 ======
 
-The PSR-7 request objects created by TYPO3 now contain an instance of :php:`NormalizedParams` which can
-be used instead of :php:`GeneralUtility::getIndpEnv()` to access normalized server params.
+The PSR-7 request objects created by TYPO3 now contain an instance of :php-short:`\TYPO3\CMS\Core\Http\NormalizedParams` which can
+be used instead of :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv()` to access normalized server params.
 
 .. index:: PHP-API

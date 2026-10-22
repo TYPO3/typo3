@@ -24,7 +24,7 @@ Impact
 ======
 
 Calling above method on an instance of
-:php:`LogoutController` will throw a deprecation warning in v9 and a PHP fatal in v10.
+:php-short:`\TYPO3\CMS\Backend\Controller\LogoutController` will throw a deprecation warning in v9 and a PHP fatal in v10.
 
 
 Affected Installations

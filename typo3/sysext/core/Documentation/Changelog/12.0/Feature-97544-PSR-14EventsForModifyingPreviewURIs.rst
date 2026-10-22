@@ -17,14 +17,14 @@ have been introduced. Those serve as a direct replacement for the now deprecated
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass']`
 :doc:`hook <../12.0/Deprecation-97544-PreviewURIGenerationRelatedFunctionalityInBackendUtility>`.
 
-The :php:`BeforePagePreviewUriGeneratedEvent` is executed in the
+The :php-short:`\TYPO3\CMS\Backend\Routing\Event\BeforePagePreviewUriGeneratedEvent` is executed in the
 :php:`PreviewUriBuilder->buildUri()`, before the preview URI is actually built.
 It allows to either adjust the parameters, such as the page ID or the language ID,
 or to set a custom preview URI, which will then stop the event propagation and
 also prevents :php:`PreviewUriBuilder` from building the URI based on the
 parameters.
 
-Methods of :php:`BeforePagePreviewUriGeneratedEvent`:
+Methods of :php-short:`\TYPO3\CMS\Backend\Routing\Event\BeforePagePreviewUriGeneratedEvent`:
 
 - :php:`setPreviewUri(UriInterface $uri)`
 - :php:`getPageId()`
@@ -43,18 +43,18 @@ Methods of :php:`BeforePagePreviewUriGeneratedEvent`:
 .. note::
 
     The overwritten parameters are used for building the URI and are also
-    passed to the :php:`AfterPagePreviewUriGeneratedEvent`. They however
+    passed to the :php-short:`\TYPO3\CMS\Backend\Routing\Event\AfterPagePreviewUriGeneratedEvent`. They however
     do not overwrite the related class properties in :php:`PreviewUriBuilder`.
 
-The :php:`AfterPagePreviewUriGeneratedEvent` is executed in the
+The :php-short:`\TYPO3\CMS\Backend\Routing\Event\AfterPagePreviewUriGeneratedEvent` is executed in the
 :php:`PreviewUriBuilder->buildUri()`, after the preview URI has been built -
-or set by an event listener to :php:`BeforePagePreviewUriGeneratedEvent`. It
+or set by an event listener to :php-short:`\TYPO3\CMS\Backend\Routing\Event\BeforePagePreviewUriGeneratedEvent`. It
 allows to overwrite the built preview URI. This event however does not feature
 the possibility to modify the parameters, since this won't have any effect as
 the preview URI is directly returned after event dispatching and no
 further action is done by the :php:`PreviewUriBuilder`.
 
-Methods of :php:`AfterPagePreviewUriGeneratedEvent`:
+Methods of :php-short:`\TYPO3\CMS\Backend\Routing\Event\AfterPagePreviewUriGeneratedEvent`:
 
 - :php:`setPreviewUri(UriInterface $uri)`
 - :php:`getPreviewUri()`
@@ -116,8 +116,8 @@ Impact
 
 It's now possible to modify the parameters used to build a preview URI and
 also to directly set a custom preview URI, using the new PSR-14 event
-:php:`BeforePagePreviewUriGeneratedEvent`. It's also now possible to
+:php-short:`\TYPO3\CMS\Backend\Routing\Event\BeforePagePreviewUriGeneratedEvent`. It's also now possible to
 modify or completely replace a built preview URI using the new PSR-14 event
-:php:`AfterPagePreviewUriGeneratedEvent`.
+:php-short:`\TYPO3\CMS\Backend\Routing\Event\AfterPagePreviewUriGeneratedEvent`.
 
 .. index:: Backend, Frontend, PHP-API, ext:backend

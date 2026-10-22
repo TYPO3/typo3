@@ -12,7 +12,7 @@ Description
 ===========
 
 This feature introduces the new PSR-14 event
-:php:`ModifyRedirectUrlValidationResultEvent` in the felogin extension to
+:php-short:`\TYPO3\CMS\FrontendLogin\Event\ModifyRedirectUrlValidationResultEvent` in the felogin extension to
 provide developers the possibility and flexibility to implement custom
 validation for the redirect URL. This may be useful if TYPO3 frontend login
 acts as an SSO system or if users should be redirected to an external URL after

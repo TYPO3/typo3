@@ -30,7 +30,7 @@ Impact
 ======
 
 The event :php:`\TYPO3\CMS\Core\Domain\Event\BeforeRecordLanguageOverlayEvent`
-can be used to modify information (such as the :php:`LanguageAspect`
+can be used to modify information (such as the :php-short:`\TYPO3\CMS\Core\Context\LanguageAspect`
 or the actual incoming record from the database) before the database
 is queried.
 

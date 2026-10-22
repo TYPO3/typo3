@@ -95,7 +95,7 @@ The corresponding event listener class:
 Available Methods
 =================
 
-The list below describes all available methods for :php:`BeforeFlexFormDataStructureParsedEvent`:
+The list below describes all available methods for :php-short:`\TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureParsedEvent`:
 
 +-------------------------+-----------------------+----------------------------------------------------+
 | Method                  | Parameters            | Description                                        |
@@ -125,7 +125,7 @@ The list below describes all available methods for :php:`BeforeFlexFormDataStruc
     listeners are being called. Therefore, listeners should avoid setting an empty :php:`array` or an empty
     :php:`string`, but should just "return" without any change to the :php:`$event` object in such a case.
 
-The list below describes all available methods for :php:`AfterFlexFormDataStructureParsedEvent`:
+The list below describes all available methods for :php-short:`\TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureParsedEvent`:
 
 +-------------------------+-----------------------+----------------------------------------------------+
 | Method                  | Parameters            | Description                                        |
@@ -141,7 +141,7 @@ The list below describes all available methods for :php:`AfterFlexFormDataStruct
 |                         |                       | previously called listeners.                       |
 +-------------------------+-----------------------+----------------------------------------------------+
 
-The list below describes all available methods for :php:`BeforeFlexFormDataStructureIdentifierInitializedEvent`:
+The list below describes all available methods for :php-short:`\TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureIdentifierInitializedEvent`:
 
 +-------------------------+-----------------------+----------------------------------------------------+
 | Method                  | Parameters            | Description                                        |
@@ -177,7 +177,7 @@ The list below describes all available methods for :php:`BeforeFlexFormDataStruc
     Therefore, listeners should avoid setting an empty :php:`array`, but should just "return" without
     any change to the :php:`$event` object in such a case.
 
-The list below describes all available methods for :php:`AfterFlexFormDataStructureIdentifierInitializedEvent`:
+The list below describes all available methods for :php-short:`\TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureIdentifierInitializedEvent`:
 
 +-------------------------+-----------------------+----------------------------------------------------+
 | Method                  | Parameters            | Description                                        |

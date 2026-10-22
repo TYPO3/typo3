@@ -15,11 +15,11 @@ The public constants in
 :php:`\TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper` for defining
 the state or severity of an infobox have been deprecated:
 
-* :php:`InfoboxViewHelper::STATE_NOTICE`
-* :php:`InfoboxViewHelper::STATE_INFO`
-* :php:`InfoboxViewHelper::STATE_OK`
-* :php:`InfoboxViewHelper::STATE_WARNING`
-* :php:`InfoboxViewHelper::STATE_ERROR`
+* :php-short:`\TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_NOTICE`
+* :php-short:`\TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO`
+* :php-short:`\TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_OK`
+* :php-short:`\TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_WARNING`
+* :php-short:`\TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR`
 
 These constants have been superseded by the dedicated enum
 :php:`\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity`, which provides a

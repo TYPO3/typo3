@@ -45,7 +45,7 @@ all the following fields to their proper default settings:
 * :sql:`sys_workspace_stage.allow_notificaton_settings`   (0->3)
 * :sql:`sys_workspace_stage.notification_preselection`    (0->8)
 
-All these records, created via :php:`DataHandler` calls, actually
+All these records, created via :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler` calls, actually
 evaluate the TCA default for record insertion and do not rely
 on SQL database field defaults.
 
@@ -64,7 +64,7 @@ This means, for all custom extension code that
 
 * removed the column definition in :file:`ext_tables.sql`
   to enforce automatic database field creation,
-* *and* did not use the recommended :php:`DataHandler` for
+* *and* did not use the recommended :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler` for
   record insertion (so, any code that is not executed in the
   backend context, using :php:`QueryBuilder` or Extbase
   repository methods),

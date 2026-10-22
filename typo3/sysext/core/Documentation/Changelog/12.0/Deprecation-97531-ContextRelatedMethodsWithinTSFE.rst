@@ -12,7 +12,7 @@ Description
 ===========
 
 One of the main classes within TYPO3 Frontend —
-:php:`TypoScriptFrontendController` a.k.a. :php:`$GLOBALS['TSFE']` —
+:php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` a.k.a. :php:`$GLOBALS['TSFE']` —
 had various short-hand functionality to access the Context API.
 
 This is mainly for historical reasons, before the Context API

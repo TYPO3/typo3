@@ -11,7 +11,7 @@ See :issue:`85701`
 Description
 ===========
 
-The methods :php:`ModuleTemplate::icons()` and :php:`ModuleTemplate::loadJavascriptLib()`
+The methods :php-short:`\TYPO3\CMS\Backend\Template\ModuleTemplate::icons()` and :php-short:`\TYPO3\CMS\Backend\Template\ModuleTemplate::loadJavascriptLib()`
 have been marked as deprecated and will be removed in  TYPO3 v10.
 
 
@@ -30,7 +30,7 @@ Third party code which calls the methods mentioned.
 Migration
 =========
 
-There is no migration for the method :php:`ModuleTemplate::icons()` available.
-The method :php:`ModuleTemplate::loadJavascriptLib()` can be replaced by using :php:`PageRenderer` directly.
+There is no migration for the method :php-short:`\TYPO3\CMS\Backend\Template\ModuleTemplate::icons()` available.
+The method :php-short:`\TYPO3\CMS\Backend\Template\ModuleTemplate::loadJavascriptLib()` can be replaced by using :php-short:`\TYPO3\CMS\Core\Page\PageRenderer` directly.
 
 .. index:: Backend, FullyScanned

@@ -11,7 +11,7 @@ See :issue:`88921`
 Description
 ===========
 
-Two new PSR-14 events have been added to the :php:`PageLayoutView` class.
+Two new PSR-14 events have been added to the :php-short:`\TYPO3\CMS\Backend\View\PageLayoutView` class.
 Those events can be used to add content into any column of a BackendLayout.
 You can use this for example to show some content in a column without a ``colPos`` assigned.
 

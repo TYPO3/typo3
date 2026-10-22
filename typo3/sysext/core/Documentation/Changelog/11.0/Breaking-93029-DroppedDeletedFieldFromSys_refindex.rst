@@ -40,7 +40,7 @@ have been removed:
 Impact
 ======
 
-Accessing the properties of class :php:`ReferenceIndex` or calling
+Accessing the properties of class :php-short:`\TYPO3\CMS\Core\Database\ReferenceIndex` or calling
 dropped or protected methods will raise fatal PHP errors.
 
 Querying the :sql:`deleted` field of table :sql:`sys_refindex` will raise a
@@ -55,7 +55,7 @@ should be updated, typically by using the CLI command
 :php:`bin/typo3 referenceindex:update`
 
 Codewise, instances with extensions that query table :sql:`sys_refindex`
-or use class :php:`ReferenceIndex` may be affected. The extension
+or use class :php-short:`\TYPO3\CMS\Core\Database\ReferenceIndex` may be affected. The extension
 scanner helps to find some usages.
 
 
@@ -68,7 +68,7 @@ the reference index.
 The :sql:`sys_refindex.deleted` field should be dropped from database
 queries.
 
-When accessing class :php:`ReferenceIndex`, use the main API method
+When accessing class :php-short:`\TYPO3\CMS\Core\Database\ReferenceIndex`, use the main API method
 :php:`->updateRefIndexTable()`, plus a couple of other less often
 used methods.
 

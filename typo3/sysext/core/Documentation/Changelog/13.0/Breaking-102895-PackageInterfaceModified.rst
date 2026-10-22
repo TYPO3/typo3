@@ -31,7 +31,7 @@ extensions and Flow packages, the interface only has one implementation:
 Thus, it does not impact any extension or installation directly.
 
 However, projects might be affected if there is a custom implementation
-of the :php:`PackageInterface`, which is highly unlikely.
+of the :php-short:`\TYPO3\CMS\Core\Package\PackageInterface`, which is highly unlikely.
 
 
 Affected installations
@@ -44,6 +44,6 @@ of the interface, which is unknown at the time of writing.
 Migration
 =========
 
-Extend the custom implementation to reflect the updated :php:`PackageInterface`.
+Extend the custom implementation to reflect the updated :php-short:`\TYPO3\CMS\Core\Package\PackageInterface`.
 
 .. index:: PHP-API, NotScanned, ext:core

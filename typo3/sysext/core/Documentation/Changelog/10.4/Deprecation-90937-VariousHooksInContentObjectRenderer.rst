@@ -11,7 +11,7 @@ See :issue:`90937`
 Description
 ===========
 
-The following hooks within class :php:`ContentObjectRenderer` have been marked as deprecated:
+The following hooks within class :php-short:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer` have been marked as deprecated:
 
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass']`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault']`

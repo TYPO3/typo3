@@ -14,9 +14,9 @@ Description
 The following methods of :php:`TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry`
 have been marked as deprecated:
 
-* :php:`PageDoktypeRegistry->add()`
-* :php:`PageDoktypeRegistry->addAllowedRecordTypes()`
-* :php:`PageDoktypeRegistry->doesDoktypeOnlyAllowSpecifiedRecordTypes()`
+* :php-short:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->add()`
+* :php-short:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->addAllowedRecordTypes()`
+* :php-short:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->doesDoktypeOnlyAllowSpecifiedRecordTypes()`
 
 
 Impact

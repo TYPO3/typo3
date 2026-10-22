@@ -87,6 +87,6 @@ Impact
 ======
 
 It's now possible to fully modify the link explanation of TCA `link`
-elements, using the new PSR-14 event :php:`ModifyLinkExplanationEvent`.
+elements, using the new PSR-14 event :php-short:`\TYPO3\CMS\Backend\Form\Event\ModifyLinkExplanationEvent`.
 
 .. index:: Backend, PHP-API, ext:backend

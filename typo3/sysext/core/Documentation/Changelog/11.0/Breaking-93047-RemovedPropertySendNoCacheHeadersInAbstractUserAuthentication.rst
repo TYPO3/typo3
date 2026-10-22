@@ -11,7 +11,7 @@ See :issue:`93047`
 Description
 ===========
 
-The public property :php:`sendNoCacheHeaders` of class :php:`AbstractUserAuthentication` which was
+The public property :php:`sendNoCacheHeaders` of class :php-short:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication` which was
 enabled by default, but disabled in Frontend User objects, ensured that appropriate
 HTTP headers telling the client that this HTTP request is not allowed to be
 cached by the client.

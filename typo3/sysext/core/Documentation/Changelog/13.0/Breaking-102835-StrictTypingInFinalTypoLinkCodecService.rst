@@ -17,14 +17,14 @@ Additionally, the class does now use strict typing and the :php:`decode()`
 method's first parameter :php:`$typoLink` is now a type hinted :php:`string`.
 
 This has been done in combination with the introduction of the two new PSR-14
-events :php:`BeforeTypoLinkEncodedEvent` and :php:`AfterTypoLinkDecodedEvent`,
+events :php-short:`\TYPO3\CMS\Core\LinkHandling\Event\BeforeTypoLinkEncodedEvent` and :php-short:`\TYPO3\CMS\Core\LinkHandling\Event\AfterTypoLinkDecodedEvent`,
 which allow to fully influence the encode and decode functionality, making
 any cross classing superfluous.
 
 Impact
 ======
 
-Extending / cross classing :php:`TypoLinkCodecService` does no longer work
+Extending / cross classing :php-short:`\TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService` does no longer work
 and will lead to PHP errors.
 
 Calling :php:`decode()` with the first parameter :php:`$typolink` being not
@@ -34,7 +34,7 @@ a :php:`string` will lead to a PHP TypeError.
 Affected installations
 ======================
 
-All installations extending / cross classing :php:`TypoLinkCodecService` or
+All installations extending / cross classing :php-short:`\TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService` or
 calling :php:`decode()` with the first parameter :php:`$typolink` not being
 a :php:`string`.
 
@@ -42,7 +42,7 @@ a :php:`string`.
 Migration
 =========
 
-Instead of extending / cross classing :php:`TypoLinkCodecService` use the
+Instead of extending / cross classing :php-short:`\TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService` use the
 :doc:`new PSR-14 events <../13.0/Feature-102835-AddPSR-14EventsToManipulateTypoLinkCodecService>`
 to modify the functionality.
 

@@ -13,7 +13,7 @@ Description
 
 The Environment API, introduced in TYPO3 v9.3, allows access to the current Application Context (Production, Testing or Development).
 
-The method :php:`GeneralUtility::getApplicationContext()` has been deprecated, as the same information is now available in :php:`TYPO3\CMS\Core\Core\Environment::getContext()`.
+The method :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext()` has been deprecated, as the same information is now available in :php:`TYPO3\CMS\Core\Core\Environment::getContext()`.
 
 
 Impact

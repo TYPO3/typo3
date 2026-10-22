@@ -25,15 +25,15 @@ and which workspace is currently accessed.
 
 This information is separated in so-called "Aspects", each being responsible for a certain area:
 
-- :php:`VisibilityAspect`, holding information if hidden/deleted records should be fetched from the database
-- :php:`DateTimeAspect`, keeping the current date as immutable datetime object
-- :php:`UserAspect`, holding frontend/backend user IDs, usernames and usergroups
-- :php:`WorkspaceAspect`, holding the currently visible workspace (default to "0"/ live)
-- :php:`LanguageAspect`, holding information about the currently used language/overlay/fallback strategy
+- :php-short:`\TYPO3\CMS\Core\Context\VisibilityAspect`, holding information if hidden/deleted records should be fetched from the database
+- :php-short:`\TYPO3\CMS\Core\Context\DateTimeAspect`, keeping the current date as immutable datetime object
+- :php-short:`\TYPO3\CMS\Core\Context\UserAspect`, holding frontend/backend user IDs, usernames and usergroups
+- :php-short:`\TYPO3\CMS\Core\Context\WorkspaceAspect`, holding the currently visible workspace (default to "0"/ live)
+- :php-short:`\TYPO3\CMS\Core\Context\LanguageAspect`, holding information about the currently used language/overlay/fallback strategy
 
 Extensions can add their own Aspects as well, as they only need to implement the AspectInterface.
 
-The Context object is used as a Singleton, available via :php:`GeneralUtility::makeInstance(Context::class)`.
+The Context object is used as a Singleton, available via :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Context::class)`.
 
 Adding or replacing an aspect has implications on the whole further request. The recommended way on doing
 so is using a PSR-15 middleware. In the future (TYPO3 v10), the global context will have a "frozen" state
@@ -41,7 +41,7 @@ after all PSR-15 middlewares are run through, to ensure a consistent object thro
 within a backend.
 
 However, if, for a certain retrieval part a custom context is needed, the necessary PHP classes, like
-:php:`PageRepository` can receive a custom Context object. For this to work, a new Context object can be
+:php-short:`\TYPO3\CMS\Frontend\Page\PageRepository` can receive a custom Context object. For this to work, a new Context object can be
 created via :php:`new Context()` or cloned from the master context via
 :php:`$myContext = clone GeneralUtility::makeInstance(Context::class);` to keep all existing aspects and only to
 override a certain aspect locally.
@@ -57,11 +57,11 @@ Impact
 
 The new Context API replaces lots of places known for a very long time:
 
-* :php:`DateTimeAspect` replaces :php:`$GLOBALS['SIM_EXEC_TIME']` and :php:`$GLOBALS['EXEC_TIME']`
-* :php:`VisibilityAspect` replaces :php:`$GLOBALS['TSFE']->showHiddenPages` and :php:`$GLOBALS['TSFE']->showHiddenRecords`
-* :php:`WorkspaceAspect` replaces :php:`$GLOBALS['BE_USER']->workspace`
-* :php:`LanguageAspect` replaces various properties related to language Id, overlay and fallback logic, mostly within Frontend
-* :php:`UserAspect` replaces various calls and checks on :php:`$GLOBALS['BE_USER']` and :php:`$GLOBALS['TSFE']->fe_user` options when only some information is needed.
+* :php-short:`\TYPO3\CMS\Core\Context\DateTimeAspect` replaces :php:`$GLOBALS['SIM_EXEC_TIME']` and :php:`$GLOBALS['EXEC_TIME']`
+* :php-short:`\TYPO3\CMS\Core\Context\VisibilityAspect` replaces :php:`$GLOBALS['TSFE']->showHiddenPages` and :php:`$GLOBALS['TSFE']->showHiddenRecords`
+* :php-short:`\TYPO3\CMS\Core\Context\WorkspaceAspect` replaces :php:`$GLOBALS['BE_USER']->workspace`
+* :php-short:`\TYPO3\CMS\Core\Context\LanguageAspect` replaces various properties related to language Id, overlay and fallback logic, mostly within Frontend
+* :php-short:`\TYPO3\CMS\Core\Context\UserAspect` replaces various calls and checks on :php:`$GLOBALS['BE_USER']` and :php:`$GLOBALS['TSFE']->fe_user` options when only some information is needed.
 
 
 TYPO3 Core comes with the following Aspects within the global context:

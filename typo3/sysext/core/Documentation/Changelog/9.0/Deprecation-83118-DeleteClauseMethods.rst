@@ -11,7 +11,7 @@ See :issue:`83118`
 Description
 ===========
 
-The PHP methods :php:`PageRepository::deleteClause()` and :php:`BackendUtility::deleteClause()` have been
+The PHP methods :php-short:`\TYPO3\CMS\Frontend\Page\PageRepository::deleteClause()` and :php:`BackendUtility::deleteClause()` have been
 marked as deprecated, as all database queries are now put through Doctrine DBAL's restriction functionality.
 
 
@@ -31,6 +31,6 @@ Migration
 =========
 
 Migrate to Doctrine DBAL and use the new Database API (ConnectionPool, QueryBuilder) to access the database
-with the :php:`DeletedRestriction` class.
+with the :php-short:`\TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction` class.
 
 .. index:: PHP-API, Database, Frontend, FullyScanned

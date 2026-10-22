@@ -11,7 +11,7 @@ See :issue:`81540`
 Description
 ===========
 
-The method :php:`DocumentTemplate::formWidth()` has been marked as deprecated.
+The method :php-short:`\TYPO3\CMS\Backend\Template\DocumentTemplate::formWidth()` has been marked as deprecated.
 
 
 Impact

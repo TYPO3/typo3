@@ -46,7 +46,7 @@ must be migrated to a custom password policy validator as described
 in :ref:`#97388 <feature-97388>`.
 
 Before creating a custom password policy validator, it is recommended to
-check if the :php:`CorePasswordValidator` used in the default password
+check if the :php-short:`\TYPO3\CMS\Core\PasswordPolicy\Validator\CorePasswordValidator` used in the default password
 policy suits current password requirements.
 
 .. index:: Frontend, NotScanned, ext:felogin

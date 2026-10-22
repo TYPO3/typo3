@@ -17,7 +17,7 @@ is no longer done via :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registe
 but via container services in the extension's :file:`Services.yaml` file.
 
 As a side effect, the type converter configuration such as `sourceType` or
-`targetType` has been moved from the :php:`TypeConverterInterface` to the
+`targetType` has been moved from the :php-short:`\TYPO3\CMS\Extbase\Property\TypeConverterInterface` to the
 service container configuration.
 
 Impact
@@ -26,7 +26,7 @@ Impact
 Type converters registered via :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter()`
 are no longer evaluated.
 
-The :php:`TypeConverterInterface` does no longer define the configuration
+The :php-short:`\TYPO3\CMS\Extbase\Property\TypeConverterInterface` does no longer define the configuration
 related methods:
 
 - :php:`getSupportedSourceTypes()`
@@ -40,7 +40,7 @@ Affected Installations
 All installations that do not register type converters via :php:`Services.yaml`.
 
 All installations, which rely on the configuration related methods, being
-defined in the :php:`TypeConverterInterface`.
+defined in the :php-short:`\TYPO3\CMS\Extbase\Property\TypeConverterInterface`.
 
 Migration
 =========

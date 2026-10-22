@@ -16,15 +16,15 @@ non-Extbase based controllers, class :php:`TYPO3\CMS\Backend\View\BackendTemplat
 has been marked as deprecated and will be removed in TYPO3 v12.
 
 This follows the general Core strategy to have document header related code
-using the :php:`ModuleTemplate` class structure within controllers directly, while
+using the :php-short:`\TYPO3\CMS\Backend\Template\ModuleTemplate` class structure within controllers directly, while
 Extbase views render only the main body part.
 
 
 Impact
 ======
 
-Extensions should switch away from using :php:`BackendTemplateView`. By hiding an
-instance of :php:`ModuleTemplate` class, :php:`BackendTemplateView` basically added
+Extensions should switch away from using :php-short:`\TYPO3\CMS\Backend\View\BackendTemplateView`. By hiding an
+instance of :php-short:`\TYPO3\CMS\Backend\Template\ModuleTemplate` class, :php-short:`\TYPO3\CMS\Backend\View\BackendTemplateView` basically added
 a no longer needed level of indirection to code that should be located directly
 within controller actions.
 
@@ -37,7 +37,7 @@ View helpers, Extbase controller action becomes much more obvious code wise.
 Affected installations
 ======================
 
-Instances with extensions using class :php:`BackendTemplateView` are affected.
+Instances with extensions using class :php-short:`\TYPO3\CMS\Backend\View\BackendTemplateView` are affected.
 Candidates are typically Extbase based extensions that deliver backend modules.
 The extension scanner will find usages as strong match.
 
@@ -45,9 +45,9 @@ The extension scanner will find usages as strong match.
 Migration
 =========
 
-A transition away from :php:`BackendTemplateView` should be usually pretty straight:
-Instead of retrieving a :php:`ModuleTemplate` instance from the view, the
-:php:`ModuleTemplateFactory` should be injected and an instance retrieved using
+A transition away from :php-short:`\TYPO3\CMS\Backend\View\BackendTemplateView` should be usually pretty straight:
+Instead of retrieving a :php-short:`\TYPO3\CMS\Backend\Template\ModuleTemplate` instance from the view, the
+:php-short:`\TYPO3\CMS\Backend\Template\ModuleTemplateFactory` should be injected and an instance retrieved using
 :php:`create()`.
 
 A typical scenario before:
@@ -67,7 +67,7 @@ A typical scenario before:
         }
     }
 
-Dropping :php:`BackendTemplateView` leads to code similar to this:
+Dropping :php-short:`\TYPO3\CMS\Backend\View\BackendTemplateView` leads to code similar to this:
 
 .. code-block:: php
 

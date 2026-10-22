@@ -42,7 +42,7 @@ An example event listener could look like the following:
 Impact
 ======
 
-With the new :php:`AfterFormIsBuiltEvent`, it is now possible to modify the
+With the new :php-short:`\TYPO3\CMS\Form\Event\AfterFormIsBuiltEvent`, it is now possible to modify the
 form definition after it has been built.
 
 ..  index:: Backend, ext:form

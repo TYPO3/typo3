@@ -48,7 +48,7 @@ extensions or templates using the translate methods.
 
 The former usually happens in extensions which have been migrated from older
 TYPO3 versions with legacy functionality in backend modules along
-with :php:`$GLOBALS['LANG']` as :php:`LanguageService` object.
+with :php:`$GLOBALS['LANG']` as :php-short:`\TYPO3\CMS\Core\Localization\LanguageService` object.
 
 
 Migration

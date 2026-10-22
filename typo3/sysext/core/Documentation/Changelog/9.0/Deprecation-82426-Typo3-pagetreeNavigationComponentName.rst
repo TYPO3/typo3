@@ -11,7 +11,7 @@ See :issue:`82426`
 Description
 ===========
 
-When registering an extensions's BE module with :php:`ExtensionUtility::registerModule()` it is possible to define 'navigationComponentId'.
+When registering an extensions's BE module with :php-short:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule()` it is possible to define 'navigationComponentId'.
 
 The name the navigation component name :php:`typo3-pagetree` has been marked as deprecated.
 :php:`TYPO3/CMS/Backend/PageTree/PageTreeElement` should be used instead.
@@ -19,12 +19,12 @@ The name the navigation component name :php:`typo3-pagetree` has been marked as 
 Impact
 ======
 
-Calling :php:`ExtensionUtility::registerModule()` with the old navigation component name will trigger a deprecation log entry.
+Calling :php-short:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule()` with the old navigation component name will trigger a deprecation log entry.
 
 Affected Installations
 ======================
 
-All installations having custom BE modules passing the old navigation component name to :php:`ExtensionUtility::registerModule()`.
+All installations having custom BE modules passing the old navigation component name to :php-short:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule()`.
 
 
 Migration

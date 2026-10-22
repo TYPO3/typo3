@@ -32,7 +32,7 @@ extension scanner finds usages with a strong match.
 Migration
 =========
 
-:php:`BackendUtility::getFuncMenu()` is a helper method that renders a
+:php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu()` is a helper method that renders a
 select drop down and is typically used to trigger a `GET` request when
 the user selects an option.
 

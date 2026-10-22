@@ -27,7 +27,7 @@ a :php-short:`\TYPO3\CMS\Core\Schema\Struct\SelectItemCollection` instance
 containing the items, and an
 :php-short:`\TYPO3\CMS\Core\DataHandling\ItemsProcessorContext` instance
 providing access to table, field, row data, and configuration. The processor
-must return a :php:`SelectItemCollection`. This means that added items can no
+must return a :php-short:`\TYPO3\CMS\Core\Schema\Struct\SelectItemCollection`. This means that added items can no
 longer be untyped arrays, making the entire process cleaner and safer.
 
 A new Page TSconfig option is also available, mirroring the existing one for

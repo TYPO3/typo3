@@ -12,7 +12,7 @@ Description
 ===========
 
 The :html:`<f:base>`  ViewHelper isn't suitable in almost all use cases
-and has been deprecated: In most cases the :php:`PageRenderer` takes care of the
+and has been deprecated: In most cases the :php-short:`\TYPO3\CMS\Core\Page\PageRenderer` takes care of the
 main :html:`<head>` markup, directly, or indirectly via TypoScript :html:`config.baseURL`.
 
 

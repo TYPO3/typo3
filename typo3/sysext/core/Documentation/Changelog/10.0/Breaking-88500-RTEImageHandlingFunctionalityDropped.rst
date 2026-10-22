@@ -21,8 +21,8 @@ This includes:
 
 * RTE processing mode ("ts_images")
 * SoftReference Index for handling inline images
-* Removed public method :php:`ImportExport->getRTEoriginalFilename()`
-* Removed public method :php:`RteHtmlParser->TS_images_rte()`
+* Removed public method :php-short:`\TYPO3\CMS\Impexp\ImportExport->getRTEoriginalFilename()`
+* Removed public method :php-short:`\TYPO3\CMS\Core\Html\RteHtmlParser->TS_images_rte()`
 * Removed CLI command "cleanup:rteimages" and relevant command class
 * The configuration option :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir']`
 

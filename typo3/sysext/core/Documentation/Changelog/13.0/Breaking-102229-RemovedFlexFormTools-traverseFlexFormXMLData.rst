@@ -53,7 +53,7 @@ Affected installations
 ======================
 
 Instances that extend functionality of FlexForm handling may be affected if they
-use methods of class :php:`FlexFormTools`. This is a relatively rare case, most
+use methods of class :php-short:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools`. This is a relatively rare case, most
 instances will not be affected when they just provide and use casual FlexForm
 definitions in extensions.
 

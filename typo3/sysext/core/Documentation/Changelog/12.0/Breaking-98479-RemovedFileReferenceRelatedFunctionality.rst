@@ -16,7 +16,7 @@ dependencies have been removed, mainly related to FormEngine.
 
 The :php:`customControls` hook option is not available for the new
 TCA type :php:`file`. It has been replaced by the new PSR-14
-:php:`CustomFileControlsEvent` for this use case.
+:php-short:`\TYPO3\CMS\Backend\Form\Event\CustomFileControlsEvent` for this use case.
 
 The field :sql:`table_local` of table :sql:`sys_file_reference`: is no longer
 evaluated by TYPO3 and has therefore been removed.
@@ -55,7 +55,7 @@ fields, directly using the sql:`table_local` field of table
 TCA options for TCA type :php:`inline` and :php:`group` fields. The latter is
 rather unlikely because the :php:`[appearance]` options of :php:`group`
 had only effect in FAL context and the options have only been set internally
-by the :php:`ExtensionManagementUtility->getFileFieldTCAConfig()` API method.
+by the :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility->getFileFieldTCAConfig()` API method.
 
 Migration
 =========

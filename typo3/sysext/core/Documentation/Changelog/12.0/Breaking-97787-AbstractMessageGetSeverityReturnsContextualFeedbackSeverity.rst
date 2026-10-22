@@ -41,7 +41,7 @@ Migration
 =========
 
 If the integer type of :php:`\TYPO3\CMS\Core\Messaging\AbstractMessage->getSeverity()`
-is expected, use the :php:`value` property of the :php:`ContextualFeedbackSeverity` enum:
+is expected, use the :php:`value` property of the :php-short:`\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity` enum:
 
 ..  code-block:: php
 

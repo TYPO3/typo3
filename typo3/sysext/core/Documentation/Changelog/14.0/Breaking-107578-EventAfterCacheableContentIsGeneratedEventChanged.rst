@@ -39,9 +39,9 @@ affected. The extension scanner will detect such usages.
 Migration
 =========
 
-In most cases, :php:`AfterCacheableContentIsGeneratedEvent->getController()` was
+In most cases, :php-short:`\TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent->getController()` was
 used within event listeners to get and modify the
-:php:`TypoScriptFrontendController->content` property at the end of the
+:php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->content` property at the end of the
 rendering process.
 
 The event now provides :php:`getContent()` and :php:`setContent()` methods

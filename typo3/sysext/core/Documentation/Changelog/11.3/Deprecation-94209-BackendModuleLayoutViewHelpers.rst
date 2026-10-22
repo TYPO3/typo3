@@ -20,7 +20,7 @@ The following Fluid ViewHelpers have been deprecated:
 *  :html:`be:moduleLayout.button.shortcutButton`
 
 These ViewHelpers partially mimic their counterparts of the PHP based
-:php:`ModuleTemplate` API. They were previously used in backend modules
+:php-short:`\TYPO3\CMS\Backend\Template\ModuleTemplate` API. They were previously used in backend modules
 when the 'doc header' handling was done in Fluid.
 
 The ViewHelpers however relied on knowledge that shouldn't be the scope

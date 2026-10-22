@@ -11,7 +11,7 @@ See :issue:`91499`
 Description
 ===========
 
-The :php:`PageRenderer` supports additional tag attributes for CSS and JavaScript files.
+The :php-short:`\TYPO3\CMS\Core\Page\PageRenderer` supports additional tag attributes for CSS and JavaScript files.
 These data attributes can be configured using a key/value list via TypoScript.
 
 * :typoscript:`page.includeCSS`

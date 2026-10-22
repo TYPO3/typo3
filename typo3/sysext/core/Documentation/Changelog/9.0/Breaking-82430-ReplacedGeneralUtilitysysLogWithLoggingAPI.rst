@@ -13,7 +13,7 @@ Description
 
 The original sysLog() logging API has been superseded by the Logging API.
 
-Therefore, :php:`GeneralUtility::sysLog` and :php:`GeneralUtility::initSysLog` have been deprecated.
+Therefore, :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog` and :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::initSysLog` have been deprecated.
 
 The configuration :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog']` has been changed to a boolean value.
 The option :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['syslogErrorReporting']` has been removed.

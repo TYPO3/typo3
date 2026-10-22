@@ -11,7 +11,7 @@ See :issue:`107681`
 Description
 ===========
 
-The :php:`ShortcutButton` and :php:`DropDownButton` classes in the TYPO3
+The :php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton` and :php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\DropDownButton` classes in the TYPO3
 backend button bar system have been enhanced with new methods to support
 disabled state functionality. This brings them in line with other button
 types that already support the disabled state.
@@ -22,7 +22,7 @@ Two new methods have been added to both classes:
 -   :php:`setDisabled(bool $disabled)` - Sets the disabled state of the button
 
 When a button is disabled, it is rendered with appropriate HTML attributes
-and CSS classes to indicate its non-interactive state. For :php:`ShortcutButton`,
+and CSS classes to indicate its non-interactive state. For :php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton`,
 the disabled state is applied to both the simple button rendering and the
 dropdown rendering modes.
 
@@ -40,9 +40,9 @@ particularly useful for:
 
 The disabled state is properly propagated through the rendering process:
 
--   For shortcut buttons rendered as :php:`GenericButton`, the disabled
+-   For shortcut buttons rendered as :php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\GenericButton`, the disabled
     attribute is added to the button element
--   For shortcut buttons rendered as :php:`DropDownButton`, the disabled
+-   For shortcut buttons rendered as :php-short:`\TYPO3\CMS\Backend\Template\Components\Buttons\DropDownButton`, the disabled
     state is passed to the dropdown button
 
 Migration

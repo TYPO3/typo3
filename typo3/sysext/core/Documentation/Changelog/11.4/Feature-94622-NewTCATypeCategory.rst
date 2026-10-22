@@ -17,8 +17,8 @@ tree to a record. It therefore supersedes the :php:`\TYPO3\CMS\Core\Category\Cat
 as the :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility->makeCategorizable()`, which required
 creating a "TCA overrides" file.
 
-Both, the :php:`CategoryRegistry` as well as
-:php:`ExtensionManagementUtility->makeCategorizable()` are going to be
+Both, the :php-short:`\TYPO3\CMS\Core\Category\CategoryRegistry` as well as
+:php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility->makeCategorizable()` are going to be
 deprecated in the future.
 
 While using the new type, TYPO3 takes care of generating the necessary TCA
@@ -43,7 +43,7 @@ since the default is :php:`manyToMany`. All possible values are:
 * :php:`oneToMany`: Stores the uids of selected categories in a comma-separated list
 * :php:`manyToMany` (default): Uses the intermediate table :sql:`sys_category_record_mm`
   and only stores the categories count on the local side. This is the use case,
-  which was previously accomplished using :php:`ExtensionManagementUtility->makeCategorizable()`.
+  which was previously accomplished using :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility->makeCategorizable()`.
 
 This means, the new type can not only be used with :php:`relationship=manyToMany` as
 a replacement for :php:`makeCategorizable` but can be used for other use

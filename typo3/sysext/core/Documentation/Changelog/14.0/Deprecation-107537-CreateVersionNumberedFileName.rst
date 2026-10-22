@@ -11,7 +11,7 @@ See :issue:`107537`
 Description
 ===========
 
-:php:`GeneralUtility::createVersionNumberedFilename` adds cache busting to a
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename` adds cache busting to a
 file URL, when called in a certain and correct order with other legacy API
 methods to create URLs from system resources.
 
@@ -29,7 +29,7 @@ Affected installations
 TYPO3 installations with custom extensions or code that directly call this
 deprecated method:
 
-*   :php:`GeneralUtility::createVersionNumberedFilename`
+*   :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename`
 
 Migration
 =========

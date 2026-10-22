@@ -18,7 +18,7 @@ The mechanism mirrors how :ref:`Site Sets <t3coreapi:site-sets>` work:
 each extension may provide one or more *form sets* by placing files in a
 conventional directory layout. TYPO3 scans all the active extensions and collects
 every form set it finds, powered by a Symfony service configurator
-(:php:`FormYamlCollectorConfigurator`) that runs transparently when the form
+(:php-short:`\TYPO3\CMS\Form\DependencyInjection\FormYamlCollectorConfigurator`) that runs transparently when the form
 service is first resolved.
 
 Directory layout

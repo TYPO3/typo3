@@ -11,7 +11,7 @@ See :issue:`86486`
 Description
 ===========
 
-The method :php:`TypoScriptFrontendController->processOutput()` has been
+The method :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->processOutput()` has been
 marked as deprecated.
 
 
@@ -30,7 +30,7 @@ TYPO3 installations with extensions that use the method.
 Migration
 =========
 
-Use :php:`TypoScriptFrontendController->applyHttpHeadersToResponse()` and
-:php:`TypoScriptFrontendController->processContentForOutput()` instead, if necessary.
+Use :php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->applyHttpHeadersToResponse()` and
+:php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->processContentForOutput()` instead, if necessary.
 
 .. index:: Frontend, PHP-API, FullyScanned

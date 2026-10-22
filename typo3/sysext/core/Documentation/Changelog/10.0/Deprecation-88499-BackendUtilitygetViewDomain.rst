@@ -22,7 +22,7 @@ necessary anymore, making this method obsolete.
 Impact
 ======
 
-Calling :php:`BackendUtility::getViewDomain()` will trigger a PHP :php:`E_USER_DEPRECATED` error.
+Calling :php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::getViewDomain()` will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected Installations

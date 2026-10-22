@@ -123,11 +123,11 @@ Adapting custom finishers for multiple file uploads
 When :yaml:`multiple` is enabled on a :yaml:`FileUpload` element, the value
 returned by :php:`$formRuntime[$element->getIdentifier()]` is an
 :php:`ObjectStorage<FileReference>` instead of a single
-:php:`FileReference`. Custom finishers that process file uploads need to be
+:php-short:`\TYPO3\CMS\Extbase\Domain\Model\FileReference`. Custom finishers that process file uploads need to be
 adapted to handle both cases, single and multiple uploads.
 
 The following example shows the pattern used in the core
-:php:`EmailFinisher` and :php:`DeleteUploadsFinisher`:
+:php-short:`\TYPO3\CMS\Form\Domain\Finishers\EmailFinisher` and :php-short:`\TYPO3\CMS\Form\Domain\Finishers\DeleteUploadsFinisher`:
 
 ..  code-block:: php
     :caption: EXT:my_extension/Classes/Domain/Finishers/MyFinisher.php
@@ -183,7 +183,7 @@ Per-element validation with ObjectStorageElementValidatorInterface
 
 When a form field value is an
 :php-short:`\TYPO3\CMS\Extbase\Persistence\ObjectStorage`, for example, a
-multiple-file upload, the :php:`ProcessingRule` must decide how to call each
+multiple-file upload, the :php-short:`\TYPO3\CMS\Form\Mvc\ProcessingRule` must decide how to call each
 registered validator:
 
 *   **Collection-level validators** (default) receive the entire

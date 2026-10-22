@@ -20,7 +20,7 @@ This allows user settings to benefit from TCA-based tooling and provides
 a consistent API that extensions already use for other configuration.
 
 A new method
-:php:`ExtensionManagementUtility::addUserSetting()` has been introduced to
+:php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserSetting()` has been introduced to
 simplify adding custom fields to user profile settings.
 
 Impact

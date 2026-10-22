@@ -15,7 +15,7 @@ To further improve the handling of TYPO3 backend modules, the module
 registration API, introduced in :issue:`96733`, is extended by the new
 :php:`TYPO3\CMS\Backend\Module\ModuleData` object.
 
-The :php:`ModuleData` object contains the user specific module settings,
+The :php-short:`\TYPO3\CMS\Backend\Module\ModuleData` object contains the user specific module settings,
 e.g. whether the clipboard is shown, for the requested module. Those settings
 are fetched from the users' session. A PSR-15 middleware does automatically
 create the object from the stored user data and attach it to the PSR-7 Request.
@@ -62,7 +62,7 @@ properties are defined with their default value in the module registration:
 
     $MOD_SETTINGS = $request->getAttribute('moduleData');
 
-The :php:`ModuleData` object provides the following methods:
+The :php-short:`\TYPO3\CMS\Backend\Module\ModuleData` object provides the following methods:
 
 +-------------------------+-----------------------+----------------------------------------------------+
 | Method                  | Parameters            | Description                                        |
@@ -100,7 +100,7 @@ using :php:`$backendUser->pushModuleData('my_module', $this->moduleData->toArray
     definition of :php:`moduleData` in the module registration only defines,
     which properties can be overwritten in a request (with :php:`GET` / :php:`POST`).
 
-To restrict the values of module data properties, the given :php:`ModuleData`
+To restrict the values of module data properties, the given :php-short:`\TYPO3\CMS\Backend\Module\ModuleData`
 object can be cleaned e.g. in a controller:
 
 ..  code-block:: php
@@ -109,7 +109,7 @@ object can be cleaned e.g. in a controller:
 
     $this->moduleData->clean('property', $allowedValues);
 
-If :php:`ModuleData` contains :php:`property`, the value is checked
+If :php-short:`\TYPO3\CMS\Backend\Module\ModuleData` contains :php:`property`, the value is checked
 against the :php:`$allowedValues` list. If the current value is valid,
 nothing happens. Otherwise the value is either changed to the default
 or if this value is also not allowed, to the first allowed value.
@@ -117,7 +117,7 @@ or if this value is also not allowed, to the first allowed value.
 Impact
 ======
 
-The new :php:`ModuleData` object is available as new attribute of the
+The new :php-short:`\TYPO3\CMS\Backend\Module\ModuleData` object is available as new attribute of the
 PSR-7 Request - in case a TYPO3 backend module is requested - and contains
 the stored module data, which might have been overwritten through the current
 request (with :php:`GET` / :php:`POST`).

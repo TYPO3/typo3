@@ -21,7 +21,7 @@ Impact and affected installations
 =================================
 
 TYPO3 installations using
-:php:`PathUtility::getPublicResourceWebPath($extResource)` will receive a
+:php-short:`\TYPO3\CMS\Core\Utility\PathUtility::getPublicResourceWebPath($extResource)` will receive a
 deprecation message for each call of this method.
 
 Migration

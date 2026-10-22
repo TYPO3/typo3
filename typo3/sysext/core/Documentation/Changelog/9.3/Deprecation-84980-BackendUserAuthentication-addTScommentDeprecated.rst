@@ -25,7 +25,7 @@ Calling the method directly will trigger a PHP :php:`E_USER_DEPRECATED` error.
 Affected Installations
 ======================
 
-Instances with extensions calling :php:`BackendUserAuthentication->addTScomment()`
+Instances with extensions calling :php-short:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->addTScomment()`
 will trigger a deprecation error.
 It is however rather unlikely that extensions
 rely on this widely unknown API method and method calls were mostly core internal.

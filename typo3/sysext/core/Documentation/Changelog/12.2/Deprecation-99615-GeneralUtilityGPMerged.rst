@@ -33,14 +33,14 @@ stop working with TYPO3 v13.
 Affected installations
 ======================
 
-Instances with extensions using :php:`GeneralUtility::_GPmerged()` are affected.
+Instances with extensions using :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged()` are affected.
 The extension scanner will find usages with a strong match.
 
 
 Migration
 =========
 
-:php:`GeneralUtility::_GPmerged()` is a helper method that retrieves
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged()` is a helper method that retrieves
 request parameters and returns the value, while `POST` parameters take
 precedence over `GET` parameters, if both exist.
 

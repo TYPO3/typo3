@@ -26,9 +26,9 @@ Accessing site settings, which was previously possible via:
 
 :php:`$site->getConfiguration()['settings']['redirects'] ?? []`
 
-in custom PHP code, is now easier via the :php:`SiteSettings` PHP object.
+in custom PHP code, is now easier via the :php-short:`\TYPO3\CMS\Core\Site\Entity\SiteSettings` PHP object.
 
-The :php:`SiteSettings` object can be used to access settings either by
+The :php-short:`\TYPO3\CMS\Core\Site\Entity\SiteSettings` object can be used to access settings either by
 the dot notation ("flat", a default value can be given as optional second
 argument), e.g.:
 

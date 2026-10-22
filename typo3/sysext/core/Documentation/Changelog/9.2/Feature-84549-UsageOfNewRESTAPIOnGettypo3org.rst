@@ -21,7 +21,7 @@ With this change the information will be fetched via the new API.
 Impact
 ======
 
-* :php:`CoreVersionService` makes use of the REST API directly - no complete version listing
+* :php-short:`\TYPO3\CMS\Install\Service\CoreVersionService` makes use of the REST API directly - no complete version listing
   is stored in the registry anymore as the new API provides direct access to necessary information
 * The reports module contains a message hinting at the availability of updates.
 

@@ -18,7 +18,7 @@ been deprecated:
 *   :php:`getTSCpidCached()`
 *   :php:`getTSCpid()`
 
-A new method :php:`BackendUtility::getRealPageId()` has been introduced. It
+A new method :php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility::getRealPageId()` has been introduced. It
 returns the real page ID of a given record. Unlike the previous methods which
 returned arrays with multiple values or used internal caching, this method
 provides a cleaner API that returns either the page ID as an integer or
@@ -43,7 +43,7 @@ Migration
 getTCEFORM_TSconfig()
 ---------------------
 
-This method has been moved to :php:`FormEngineUtility`. If you need TSconfig
+This method has been moved to :php-short:`\TYPO3\CMS\Backend\Form\Utility\FormEngineUtility`. If you need TSconfig
 for TCEFORM, it is recommended that you rely on FormEngine data providers
 instead.
 

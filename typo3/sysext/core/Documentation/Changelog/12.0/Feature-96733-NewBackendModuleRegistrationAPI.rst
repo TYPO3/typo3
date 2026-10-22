@@ -16,8 +16,8 @@ on the global array :php:`$TBE_MODULES`. This however had a couple
 of drawbacks, e.g. module registration could be changed at runtime,
 which had been resolved by introducing a new registration API.
 
-Therefore, instead of using the :php:`ExtensionManagementUtility::addModule()`
-and :php:`ExtensionUtility::registerModule()` (Extbase) API methods in
+Therefore, instead of using the :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule()`
+and :php-short:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule()` (Extbase) API methods in
 :file:`ext_tables.php` files, the configuration is now placed in the
 dedicated :file:`Configuration/Backend/Modules.php` configuration file.
 
@@ -248,7 +248,7 @@ Extbase:
 The BeforeModuleCreationEvent
 =============================
 
-The new PSR-14 :php:`BeforeModuleCreationEvent` allows extension authors
+The new PSR-14 :php-short:`\TYPO3\CMS\Backend\Module\BeforeModuleCreationEvent` allows extension authors
 to manipulate the module configuration, before it is used to create and
 register the module.
 
@@ -303,7 +303,7 @@ BeforeModuleCreationEvent methods
 New ModuleProvider API
 =======================
 
-The other piece is the new :php:`ModuleProvider` API, which allows extension
+The other piece is the new :php-short:`\TYPO3\CMS\Backend\Module\ModuleProvider` API, which allows extension
 authors to work with the registered modules in a straightforward way.
 
 Previously, there had been a couple of different classes and methods, which
@@ -440,7 +440,7 @@ Registration of backend modules is now done in extension's
 :file:`Configuration/Backend/Modules.php` file. This allows
 to have all modules registered at build-time.
 
-The new :php:`ModuleProvider` API takes care of permission handling
+The new :php-short:`\TYPO3\CMS\Backend\Module\ModuleProvider` API takes care of permission handling
 and returns objects based on the :php:`ModuleInterface`. The rendering
 is now based on a well-defined OOP-based approach, which is used throughout
 all places in TYPO3 Backend now in a unified way.

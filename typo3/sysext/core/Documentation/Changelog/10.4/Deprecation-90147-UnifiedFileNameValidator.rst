@@ -12,13 +12,13 @@ Description
 ===========
 
 The logic for validating if a new (uploaded) or renamed file's name is allowed
-is now available in an encapsulated PHP class :php:`FileNameValidator`.
+is now available in an encapsulated PHP class :php-short:`\TYPO3\CMS\Core\Resource\Security\FileNameValidator`.
 
 The functionality is moved so all logic is encapsulated in one single place:
 
 - PHP constant `FILE_DENY_PATTERN_DEFAULT` is migrated into a class constant.
 - :file:`LocalConfiguration.php` setting is only used when it differs from the default.
-- The :php:`GeneralUtility` method has been marked as deprecated and calls :php:`FileNameValidator->isValid()` directly.
+- The :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility` method has been marked as deprecated and calls :php-short:`\TYPO3\CMS\Core\Resource\Security\FileNameValidator->isValid()` directly.
 
 This optimization helps to only utilize and use PHPs memory if
 needed, and avoids to define run-time constants or variables.
@@ -31,7 +31,7 @@ in use anymore, has been marked as deprecated, too.
 Impact
 ======
 
-Using the method :php:`GeneralUtility::verifyFilenameAgainstDenyPattern()` directly will trigger a PHP :php:`E_USER_DEPRECATED` error.
+Using the method :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::verifyFilenameAgainstDenyPattern()` directly will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 Using the constants will continue to work but will stop doing so TYPO3 v11.0, when they will be removed.
 
@@ -51,13 +51,13 @@ Migration
 
 Instead of calling
 
-:php:`GeneralUtility::verifyFilenameAgainstDenyPattern($filename)`
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::verifyFilenameAgainstDenyPattern($filename)`
 
 use
 
-:php:`GeneralUtility::makeInstance(FileNameValidator::class)->isValid($filename);`
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(FileNameValidator::class)->isValid($filename);`
 
-Instead of using the constant :php:`FILE_DENY_PATTERN_DEFAULT`, use :php:`FileNameValidator::DEFAULT_FILE_DENY_PATTERN`.
+Instead of using the constant :php:`FILE_DENY_PATTERN_DEFAULT`, use :php-short:`\TYPO3\CMS\Core\Resource\Security\FileNameValidator::DEFAULT_FILE_DENY_PATTERN`.
 
 For the PHP constant :php:`PHP_EXTENSIONS_DEFAULT` there is no replacement, as it has no benefit for TYPO3 Core anymore.
 

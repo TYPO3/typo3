@@ -65,7 +65,7 @@ it is highly encouraged to migrate to the new PSR-14 based events.
 In addition, all Core hooks using these events have been migrated to new PSR-14 events,
 all new Events have a description when to use them and what the benefits are.
 
-The Event `AfterFileCopiedEvent` in addition also contains the newly created File
+The Event :php-short:`\TYPO3\CMS\Core\Resource\Event\AfterFileCopiedEvent` in addition also contains the newly created File
 object.
 
 Have a look at the new PHP classes to understand the Events and to learn more about PSR-14.

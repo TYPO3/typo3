@@ -29,7 +29,7 @@ The following methods of the :php:`\TYPO3\CMS\Backend\History\RecordHistory` cla
 * :php:`createChangeLog()`, use :php:`getChangeLog()` instead
 * :php:`shouldPerformRollback()`
 * :php:`getElementData()`, use :php:`getElementInformation()` instead
-* :php:`performRollback()`, use :php:`RecordHistoryRollback::performRollback()` instead
+* :php:`performRollback()`, use :php-short:`\TYPO3\CMS\Backend\History\RecordHistoryRollback::performRollback()` instead
 * :php:`createMultipleDiff()`, use :php:`getDiff()` instead
 * :php:`setLastHistoryEntry()`, use :php:`setLastHistoryEntryNumber()` instead
 

@@ -11,8 +11,8 @@ See :issue:`97244`
 Description
 ===========
 
-`doctrine/dbal` `deprecated`_ multiple :php:`CompositeExpression` methods
-:php:`CompositeExpression->add()` and :php:`CompositeExpression->addMultiple()`.
+`doctrine/dbal` `deprecated`_ multiple :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression` methods
+:php-short:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression->add()` and :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression->addMultiple()`.
 Therefore, those methods have also been deprecated in the Core facade class
 (:php:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression`),
 to avoid shifting too far away.
@@ -22,26 +22,26 @@ to avoid shifting too far away.
 Impact
 ======
 
-Using :php:`CompositeExpression->add()` and :php:`CompositeExpression->addMultiple()`
+Using :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression->add()` and :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression->addMultiple()`
 will trigger a PHP :php:`E_USER_DEPRECATED` error when called.
 
 Affected Installations
 ======================
 
 In general, instances with extensions that use the deprecated methods
-:php:`CompositeExpression->add()` and :php:`CompositeExpression->addMultiple()`.
-The extension scanner finds usages of :php:`CompositeExpression->addMultiple()`
+:php-short:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression->add()` and :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression->addMultiple()`.
+The extension scanner finds usages of :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression->addMultiple()`
 with a weak match. The other method is not scanned, as its name is too common.
 
 Migration
 =========
 
-The deprecated methods :php:`CompositeExpression->add()` and :php:`CompositeExpression->addMultiple()`
-can be replaced by using the new method :php:`CompositeExpression->with()`.
+The deprecated methods :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression->add()` and :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression->addMultiple()`
+can be replaced by using the new method :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression->with()`.
 
 ..  note::
 
-    The replacement method :php:`CompositeExpression->with()` has already been
+    The replacement method :php-short:`\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression->with()` has already been
     added in a forward-compatible way in TYPO3 v11. Thus giving extension developers
     the ability to adopt new methods and still being able to support multiple Core
     versions without workarounds.

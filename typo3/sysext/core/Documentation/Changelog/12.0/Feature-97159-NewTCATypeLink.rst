@@ -64,7 +64,7 @@ The replacement for the previously used :php:`blindLinkOptions` option is the
 :php:`allowedTypes` configuration. The :php:`blindLinkFields` option is
 now configured via :php:`appearance[allowedOptions]`. While latter only
 affects the display in the Link Browser, the :php:`allowedTypes` configuration
-is also evaluated in the :php:`DataHandler`, preventing the user from adding
+is also evaluated in the :php-short:`\TYPO3\CMS\Core\DataHandling\DataHandler`, preventing the user from adding
 links of non-allowed types.
 
 To allow all link types, skip the :php:`allowedTypes` configuration or set
@@ -142,8 +142,8 @@ where code adoption has to take place.
 
 .. note::
 
-    The corresponding FormEngine class has been renamed from :php:`InputLinkElement`
-    to :php:`LinkElement`. An entry in the "ClassAliasMap" has been added for
+    The corresponding FormEngine class has been renamed from :php-short:`\TYPO3\CMS\Backend\Form\Element\InputLinkElement`
+    to :php-short:`\TYPO3\CMS\Backend\Form\Element\LinkElement`. An entry in the "ClassAliasMap" has been added for
     extensions calling this class directly, which is rather unlikely. The
     extension scanner will report any usage, which should then be migrated.
 

@@ -34,7 +34,7 @@ The events are fired exactly once for every combination of
 :php:`inline`/:php:`priority` before the corresponding section of JS/CSS assets
 is rendered by the AssetRenderer.
 
-To make the events easier to use, the :php:`AssetCollector::get*()` methods
+To make the events easier to use, the :php-short:`\TYPO3\CMS\Core\Page\AssetCollector::get*()` methods
 have gotten an optional parameter :html:`?bool $priority = null` which when given a
 boolean only returns assets of the given priority.
 
@@ -42,7 +42,7 @@ boolean only returns assets of the given priority.
 .. note::
 
    post-processing functionality for assets registered via
-   TypoScript :typoscript:`page.include...` or the :php:`PageRenderer::add*()`
+   TypoScript :typoscript:`page.include...` or the :php-short:`\TYPO3\CMS\Core\Page\PageRenderer::add*()`
    functions are still provided by these hooks:
 
    * :php:`$GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssCompressHandler']`

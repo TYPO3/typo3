@@ -39,7 +39,7 @@ After this change (TYPO3 v13):
 Impact
 ======
 
-Calling :php:`GeneralUtility::intExplode()` with the parameter
+Calling :php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode()` with the parameter
 :php:`$removeEmptyEntries` set to :php:`true` and relying on gaps in the keys of
 the resulting array keys may lead to unexpected results.
 
@@ -48,7 +48,7 @@ Affected installations
 ======================
 
 Custom extensions that rely on the array keys of the result of
-:php:`GeneralUtility::intExplode()` to have gaps in the keys.
+:php-short:`\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode()` to have gaps in the keys.
 
 
 Migration

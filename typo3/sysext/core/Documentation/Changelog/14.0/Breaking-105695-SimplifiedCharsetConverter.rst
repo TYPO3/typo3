@@ -14,13 +14,13 @@ Description
 The following methods have been removed from
 :php:`\TYPO3\CMS\Core\Charset\CharsetConverter`:
 
-* :php:`CharsetConverter->conv()`
-* :php:`CharsetConverter->utf8_encode()`
-* :php:`CharsetConverter->utf8_decode()`
-* :php:`CharsetConverter->specCharsToASCII()`, use
-  :php:`CharsetConverter->utf8_char_mapping()` instead
-* :php:`CharsetConverter->sb_char_mapping()`
-* :php:`CharsetConverter->euc_char_mapping()`
+* :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter->conv()`
+* :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter->utf8_encode()`
+* :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter->utf8_decode()`
+* :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter->specCharsToASCII()`, use
+  :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter->utf8_char_mapping()` instead
+* :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter->sb_char_mapping()`
+* :php-short:`\TYPO3\CMS\Core\Charset\CharsetConverter->euc_char_mapping()`
 
 This removes most helper methods that implemented conversions between different
 character sets from the TYPO3 Core. The vast majority of websites now use UTF-8

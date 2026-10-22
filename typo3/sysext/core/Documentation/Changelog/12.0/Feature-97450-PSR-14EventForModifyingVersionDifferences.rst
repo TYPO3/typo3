@@ -39,10 +39,10 @@ Furthermore does the event provide the following methods
     new event does no longer provide a setter for the live record data.
 
 ..  note::
-    The removed hook contained an instance of :php:`DiffUtility`, which can
+    The removed hook contained an instance of :php-short:`\TYPO3\CMS\Core\Utility\DiffUtility`, which can
     be used to generate the differences :php:`string`. Since PSR-14 events
     are usually pure data objects, without dependencies to any service, the
-    new PSR-14 event does no longer provide an instance of :php:`DiffUtility`.
+    new PSR-14 event does no longer provide an instance of :php-short:`\TYPO3\CMS\Core\Utility\DiffUtility`.
     Listeners have to inject the service on their own - if needed.
 
 Example
@@ -88,6 +88,6 @@ Impact
 ======
 
 It's now possible to modify the version differences of a versioned record,
-using the new PSR-14 event :php:`ModifyVersionDifferencesEvent`.
+using the new PSR-14 event :php-short:`\TYPO3\CMS\Workspaces\Event\ModifyVersionDifferencesEvent`.
 
 .. index:: Backend, PHP-API, ext:backend

@@ -35,7 +35,7 @@ only PSR-7 :php:`ServerRequestInterface`. This will be the case when the
 ViewHelper is not called from within an Extbase plugin, but when Fluid
 is started as "standalone view" in non-extbase based plugins: Often in
 backend scenarios like toolbars, doc headers, non-extbase modules, etc.
-Extensions should thus test for instance of Extbase :php:`RequestInterface`
+Extensions should thus test for instance of Extbase :php-short:`\TYPO3\CMS\Extbase\Mvc\RequestInterface`
 if they don't know the context and rely on Extbase specific request data.
 
 

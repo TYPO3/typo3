@@ -59,7 +59,7 @@ TypoScript-like syntax. Affected extensions should add own fields prefixed with 
 extension-specific key, or switch to a file-based configuration approach, if possible.
 
 To simulate the deprecated logic, extensions may extract the deprecated parsing logic from
-:php:`FrontendUserAuthentication` class into an own service, probably by fetching group data
+:php-short:`\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication` class into an own service, probably by fetching group data
 using :php:`\TYPO3\CMS\Core\Authentication\GroupResolver`, and then merge and parse group
 data of the field with frontend user-specific data.
 

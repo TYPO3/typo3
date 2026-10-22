@@ -57,7 +57,7 @@ Affected installations
 ======================
 
 All instances are affected which register one of the icon identifiers listed above through the
-:php:`IconRegistry`.
+:php-short:`\TYPO3\CMS\Core\Imaging\IconRegistry`.
 
 
 Migration

@@ -14,17 +14,17 @@ Description
 A new TCA ctrl option :php:`$GLOBALS['TCA'][$table]['ctrl']['security']['ignorePageTypeRestriction']`
 (boolean) is introduced to define the custom TCA table to be added to any
 given page type (custom or defined), unless specified differently via the
-:php:`PageDoktypeRegistry` API class for a specified doktype.
+:php-short:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry` API class for a specified doktype.
 
 Impact
 ======
 
 This is a replacement for the previous PHP API call
-:php:`ExtensionManagementUtility::allowTableOnStandardPages` which was found
+:php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages` which was found
 in :file:`ext_tables.php` files.
 
 Setting the new TCA option allows to use a TCA table on any kind of page doktype
-unless a doktype has a restriction set in the :php:`PageDoktypeRegistry` API
+unless a doktype has a restriction set in the :php-short:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry` API
 class.
 
 .. index:: PHP-API, TCA, ext:core

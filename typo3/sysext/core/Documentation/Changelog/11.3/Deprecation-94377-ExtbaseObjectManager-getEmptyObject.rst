@@ -18,9 +18,9 @@ extensions - don't call :php:`__construct` when the persistence layer
 "thaws" a model from database - typically when an Extbase
 :php:`Domain/Repository` uses a :php:`->findBy*` method.
 
-As a side-effect of switching away from Extbase :php:`ObjectManager` towards
+As a side-effect of switching away from Extbase :php-short:`\TYPO3\CMS\Extbase\Object\ObjectManager` towards
 symfony based dependency injection, this behavior will change in TYPO3 v12:
-Method :php:`__construct()` will be called in v12 when the :php:`DataMapper`
+Method :php:`__construct()` will be called in v12 when the :php-short:`\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper`
 creates model instances from database rows.
 
 

@@ -18,7 +18,7 @@ list of groups.
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroupQuery']`
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroups_postProcessing']`
 
-This functionality is replaced by a new PHP :php:`GroupResolver` class,
+This functionality is replaced by a new PHP :php-short:`\TYPO3\CMS\Core\Authentication\GroupResolver` class,
 the hooks have been removed, and a new Event has been added instead.
 
 
@@ -40,7 +40,7 @@ Migration
 =========
 
 When user groups are loaded, for example when a backend editors' groups and permissions
-are calculated, a new PSR-14 event :php:`AfterGroupsResolvedEvent` is fired.
+are calculated, a new PSR-14 event :php-short:`\TYPO3\CMS\Core\Authentication\Event\AfterGroupsResolvedEvent` is fired.
 
 The hooks have been removed without deprecation in order to allow
 extensions to make their extension compatible with TYPO3 v10 (using the hooks),

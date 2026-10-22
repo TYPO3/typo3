@@ -26,7 +26,7 @@ Example:
         $this->items = $items;
     }
 
-These docblocks are analyzed so the :php:`PropertyMapper` knows how to map
+These docblocks are analyzed so the :php-short:`\TYPO3\CMS\Extbase\Property\PropertyMapper` knows how to map
 incoming requests. This mapping already works for persistent objects
 (domain models). As non-persistent objects are also used for property mapping,
 namely DTOs (data transfer objects), this now works for them, too.

@@ -12,7 +12,7 @@ Description
 ===========
 
 With :issue:`90348` a completely rewritten page module has been added as
-a replacement for the :php:`PageLayoutView`. As this replacement is stable
+a replacement for the :php-short:`\TYPO3\CMS\Backend\View\PageLayoutView`. As this replacement is stable
 enough, the feature toggle to switch between the different implementations
 has been removed.
 

@@ -23,7 +23,7 @@ versions by doing the following:
 
 * Keeping an :php:`array` return type to stay compatible with
   TYPO3 v10 and TYPO3 v11.
-* Using the :php:`LinkResultInterface` return type to stay compatible with
+* Using the :php-short:`\TYPO3\CMS\Frontend\Typolink\LinkResultInterface` return type to stay compatible with
   TYPO3 v11 and TYPO3 v12+.
 
 .. index:: Frontend, PHP-API, TypoScript, ext:frontend
