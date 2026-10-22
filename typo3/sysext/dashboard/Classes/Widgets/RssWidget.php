@@ -17,12 +17,18 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Widgets;
 
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Promise\RejectionException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Settings\SettingDefinition;
 use TYPO3\CMS\Core\Settings\SettingsInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Dashboard\Exception\DisallowedRssFeedHostException;
+use TYPO3\CMS\Dashboard\Exception\DisallowedRssFeedSchemeException;
 use TYPO3\CMS\Dashboard\Exception\InvalidRssFeedException;
 
 /**
@@ -32,8 +38,8 @@ use TYPO3\CMS\Dashboard\Exception\InvalidRssFeedException;
  * can add a button to the widget by defining a button provider.
  *
  * The following options are available during registration:
- * - feedUrl        string                      Defines the URL or file providing the RSS Feed.
- *                                              This is read by the widget in order to fetch entries to show.
+ * - feedUrl        string                      Defines the URL providing the RSS Feed.
+ *                                              This is fetched by the widget in order to show its entries.
  * - limit          int     default: 5          Defines how many RSS items should be shown.
  * - lifetime       int     default: 43200      Defines how long to wait, in seconds, until fetching RSS Feed again
  *
@@ -63,7 +69,7 @@ readonly class RssWidget implements WidgetRendererInterface
                 default: '',
                 label: 'LLL:EXT:dashboard/Resources/Private/Language/locallang_widget_rss.xlf:widget.rss.setting.label.label',
                 description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang_widget_rss.xlf:widget.rss.setting.label.description',
-                readonly: array_key_exists('feedUrl', $this->options),
+                readonly: $this->isFeedUrlDefinedByWidgetRegistration(),
             ),
             new SettingDefinition(
                 key: 'feedUrl',
@@ -71,9 +77,9 @@ readonly class RssWidget implements WidgetRendererInterface
                 default: (string)($this->options['feedUrl'] ?? ''),
                 label: 'LLL:EXT:dashboard/Resources/Private/Language/locallang_widget_rss.xlf:widget.rss.setting.fieldUrl.label',
                 description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang_widget_rss.xlf:widget.rss.setting.fieldUrl.description',
-                readonly: array_key_exists('feedUrl', $this->options),
+                readonly: $this->isFeedUrlDefinedByWidgetRegistration(),
                 options: [
-                    'pattern' => 'https?://.+',
+                    'pattern' => '^https?://.+',
                 ],
             ),
             new SettingDefinition(
@@ -98,11 +104,15 @@ readonly class RssWidget implements WidgetRendererInterface
     public function renderWidget(WidgetContext $context): WidgetResult
     {
         $view = $this->backendViewFactory->create($context->request);
-        $feedUrl = $context->settings->get('feedUrl');
+        $feedUrl = $this->getFeedUrl($context->settings);
         $items = [];
         if ($feedUrl) {
             try {
                 $items = $this->getFeedItems($context->settings);
+            } catch (DisallowedRssFeedHostException) {
+                $view->assign('disallowedHost', true);
+            } catch (DisallowedRssFeedSchemeException) {
+                $view->assign('disallowedScheme', true);
             } catch (InvalidRssFeedException) {
                 $view->assign('invalidFeed', true);
             }
@@ -122,17 +132,18 @@ readonly class RssWidget implements WidgetRendererInterface
         );
     }
 
+    /**
+     * @throws InvalidRssFeedException
+     */
     protected function getFeedItems(SettingsInterface $settings): array
     {
-        $cacheHash = md5($settings->get('feedUrl') . '-' . $settings->get('limit'));
+        $feedUrl = $this->getFeedUrl($settings);
+        $cacheHash = md5($feedUrl . '-' . $settings->get('limit'));
         if ($items = $this->cache->get($cacheHash)) {
             return $items;
         }
 
-        $feedContent = GeneralUtility::getUrl($settings->get('feedUrl'));
-        if ($feedContent === false) {
-            throw new InvalidRssFeedException('RSS URL could not be fetched', 1573385431);
-        }
+        $feedContent = $this->fetchFeedContent($feedUrl);
         try {
             $feedXml = simplexml_load_string($feedContent);
         } catch (\Exception $e) {
@@ -153,6 +164,54 @@ readonly class RssWidget implements WidgetRendererInterface
         $this->cache->set($cacheHash, $items, ['dashboard_rss'], (int)$settings->get('lifeTime'));
 
         return $items;
+    }
+
+    /**
+     * A feed url of the widget registration is defined by developers, and is never
+     * overridden by the settings of a widget instance.
+     */
+    protected function getFeedUrl(SettingsInterface $settings): string
+    {
+        return $this->isFeedUrlDefinedByWidgetRegistration() ? $this->options['feedUrl'] : (string)$settings->get('feedUrl');
+    }
+
+    protected function isFeedUrlDefinedByWidgetRegistration(): bool
+    {
+        return is_string($this->options['feedUrl'] ?? null);
+    }
+
+    /**
+     * Feeds are fetched by http(s) only, the hosts can be restricted with
+     * $GLOBALS['TYPO3_CONF_VARS']['HTTP']['allowed_hosts']['dashboard_rss'].
+     *
+     * @throws DisallowedRssFeedHostException
+     * @throws DisallowedRssFeedSchemeException
+     * @throws InvalidRssFeedException
+     */
+    protected function fetchFeedContent(string $feedUrl): string
+    {
+        if (!in_array(strtolower((string)parse_url($feedUrl, PHP_URL_SCHEME)), ['http', 'https'], true)) {
+            throw new DisallowedRssFeedSchemeException('Scheme of RSS URL is not allowed', 1794390041);
+        }
+        try {
+            return GeneralUtility::makeInstance(RequestFactory::class)
+                ->request($feedUrl, 'GET', [], 'dashboard_rss')
+                ->getBody()
+                ->getContents();
+        } catch (RejectionException $e) {
+            $this->logFetchError($feedUrl, $e);
+            throw new DisallowedRssFeedHostException('Host of RSS URL is not allowed', 1793039663, $e);
+        } catch (GuzzleException|\InvalidArgumentException $e) {
+            $this->logFetchError($feedUrl, $e);
+            throw new InvalidRssFeedException('RSS URL could not be fetched', 1573385431, $e);
+        }
+    }
+
+    protected function logFetchError(string $feedUrl, \Throwable $exception): void
+    {
+        GeneralUtility::makeInstance(LogManager::class)
+            ->getLogger(self::class)
+            ->warning('Could not fetch feed content from {url}', ['url' => $feedUrl, 'exception' => $exception]);
     }
 
     protected function determineFeedType(\SimpleXMLElement $feedXml): string

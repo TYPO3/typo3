@@ -101,8 +101,8 @@ The following options are available via :yaml:`services.dashboard.widget.t3news.
     :type: string
     :name: rss-widget-feedUrl
 
-    Defines the URL or file providing the RSS Feed.
-    This is read by the widget in order to fetch entries to show.
+    Defines the URL providing the RSS Feed.
+    This is fetched by the widget in order to show its entries.
 
 ..  confval:: lifeTime
     :type: int
