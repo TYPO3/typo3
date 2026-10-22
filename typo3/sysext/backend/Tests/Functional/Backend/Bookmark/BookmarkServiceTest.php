@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Backend\Bookmark;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Backend\Backend\Bookmark\BookmarkRepository;
 use TYPO3\CMS\Backend\Backend\Bookmark\BookmarkService;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
@@ -219,12 +220,18 @@ final class BookmarkServiceTest extends FunctionalTestCase
         self::assertSame('default-not-found', $bookmarks[21]->iconIdentifier);
     }
 
-    public static function invalidBookmarkArgumentsAreIgnoredDataProvider(): \Generator
+    #[Test]
+    public function bookmarkWithInvalidJsonIsNotCreated(): void
     {
-        yield 'record_edit invalid JSON' => [
-            'record_edit',
-            '$INVALID/JSON$',
-        ];
+        $repository = $this->get(BookmarkRepository::class);
+        $bookmarks = $repository->findByUser(1);
+
+        self::assertFalse($this->subject->createBookmark('record_edit', '$INVALID/JSON$', 'Test'));
+        self::assertSame($bookmarks, $repository->findByUser(1));
+    }
+
+    public static function bookmarksWithInvalidArgumentsAreStoredDataProvider(): \Generator
+    {
         yield 'record_edit invalid edit data' => [
             'record_edit',
             json_encode(['edit' => [9, 8, 7]]),
@@ -244,10 +251,16 @@ final class BookmarkServiceTest extends FunctionalTestCase
     }
 
     #[Test]
-    #[DataProvider('invalidBookmarkArgumentsAreIgnoredDataProvider')]
-    public function invalidBookmarkArgumentsAreIgnored($routIdentifier, string $arguments): void
+    #[DataProvider('bookmarksWithInvalidArgumentsAreStoredDataProvider')]
+    public function bookmarksWithInvalidArgumentsAreStored(string $routeIdentifier, string $arguments): void
     {
-        $this->expectNotToPerformAssertions();
-        $this->subject->createBookmark($routIdentifier, $arguments, 'Test');
+        $bookmarkId = $this->subject->createBookmark($routeIdentifier, $arguments, 'Test');
+
+        self::assertIsInt($bookmarkId);
+        $bookmark = $this->get(BookmarkRepository::class)->findById($bookmarkId);
+        self::assertNotNull($bookmark);
+        self::assertSame($routeIdentifier, $bookmark['route']);
+        self::assertSame($arguments, $bookmark['arguments']);
+        self::assertSame('Test', $bookmark['description']);
     }
 }
