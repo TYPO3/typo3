@@ -29,7 +29,7 @@ test('Delete page and check recycler', async ({ page, backend }) => {
     await test.step('Delete page', async () => {
       await backend.pageTree.open('styleguide TCA demo', newPageTitle);
       const formEngineLoaded = await backend.formEngine.formEngineLoaded();
-      backend.contentFrame.getByRole('button', { name: 'Edit page properties' }).click();
+      await backend.contentFrame.getByRole('button', { name: 'Edit page properties' }).click();
       await formEngineLoaded();
       const deleteButton = backend.contentFrame.getByRole('button', { name: 'Delete' });
       await backend.modal.open(deleteButton);

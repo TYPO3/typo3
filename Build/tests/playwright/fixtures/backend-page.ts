@@ -45,7 +45,7 @@ export class BackendPage {
     await this.page.goto('module/web/layout');
     const moduleLink = this.page.locator(`a[data-modulemenu-identifier="${identifier}"]`);
     const moduleLoaded = await this.moduleLoaded(identifier);
-    moduleLink.click();
+    await moduleLink.click();
     await moduleLoaded();
 
     await expect(moduleLink).toHaveClass(/modulemenu-action-active/);
