@@ -100,6 +100,42 @@ final class ImportExportTest extends AbstractImportExportTestCase
     }
 
     #[Test]
+    public function importExportKeepsTypolinkSchemeOfFileLinks(): void
+    {
+        $bodytext = '<p><a href="t3://file?uid=1">Download</a></p>';
+
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/tt_content-with-file-link.csv');
+        $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg';
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/user_upload');
+        copy(__DIR__ . '/Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg');
+
+        $export = $this->get(Export::class);
+        $export->setPid(1);
+        $export->setLevels(1);
+        $export->setTables(['_ALL']);
+        $export->process();
+
+        $exportFile = Environment::getPublicPath() . '/fileadmin/xml_exports/file-link.xml';
+        GeneralUtility::mkdir_deep(dirname($exportFile));
+        GeneralUtility::writeFile($exportFile, $export->render(), true);
+        $this->testFilesToDelete[] = $exportFile;
+
+        $import = $this->get(Import::class);
+        $import->setPid(0);
+        $import->loadFile('fileadmin/xml_exports/file-link.xml');
+        $import->importData();
+
+        $importedBodytext = $this->getConnectionPool()
+            ->getConnectionForTable('tt_content')
+            ->executeQuery('SELECT bodytext FROM tt_content WHERE uid > 1 ORDER BY uid ASC')
+            ->fetchOne();
+
+        self::assertSame($bodytext, $importedBodytext);
+    }
+
+    #[Test]
     public function importExportMapsRecordLinksToImportedRecords(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/tt_content-with-record-links.csv');

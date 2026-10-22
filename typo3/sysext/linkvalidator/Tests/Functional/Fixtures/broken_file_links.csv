@@ -1,0 +1,4 @@
+"tx_linkvalidator_link",,,,,,,
+,"uid","record_uid","record_pid","table_name","field","url","link_type"
+,1,1,1,"tt_content","bodytext","t3://file?uid=88","file"
+,2,2,1,"tt_content","header_link","file:89","file"

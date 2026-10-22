@@ -102,8 +102,12 @@ final readonly class CheckBrokenRteLinkEventListener
             return;
         }
 
-        if ($this->brokenLinkRepository->isLinkTargetBrokenLink('file:' . $file->getProperty('uid'), 'file')) {
-            $event->markAsBrokenLink('File with ID ' . $file->getProperty('uid') . ' not found');
+        $fileUid = (int)$file->getProperty('uid');
+        // Links of rich text fields are stored as "t3://file?uid=42", links of link fields as "file:42"
+        if ($this->brokenLinkRepository->isLinkTargetBrokenLink('t3://file?uid=' . $fileUid, 'file')
+            || $this->brokenLinkRepository->isLinkTargetBrokenLink('file:' . $fileUid, 'file')
+        ) {
+            $event->markAsBrokenLink('File with ID ' . $fileUid . ' not found');
         }
     }
 }

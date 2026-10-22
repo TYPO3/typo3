@@ -21,7 +21,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\DataHandling\Event\AppendLinkHandlerElementsEvent;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
-use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -60,7 +59,7 @@ class TypolinkTagSoftReferenceParser extends AbstractSoftReferenceParser
                             'type' => 'db',
                             'recordRef' => 'sys_file:' . $fileIdMatch[1],
                             'tokenID' => $token,
-                            'tokenValue' => 'file:' . ($linkDetails['file'] instanceof File ? $linkDetails['file']->getUid() : $fileIdMatch[1]),
+                            'tokenValue' => $matches[1],
                         ];
                     } elseif ($linkDetails['type'] === LinkService::TYPE_PAGE && preg_match('/page\?[^#]*\buid=(\d+)(?:[^#]*#(\d+))?/', $matches[1], $pageAndAnchorMatches)) {
                         $token = $this->makeTokenID((string)$key);
