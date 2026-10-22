@@ -40,7 +40,8 @@ class FileLinktype extends AbstractLinktype
      */
     public function fetchType(array $value, string $type, string $key): string
     {
-        if (str_starts_with(strtolower((string)$value['tokenValue']), 'file:')) {
+        $tokenValue = strtolower((string)$value['tokenValue']);
+        if (str_starts_with($tokenValue, 'file:') || str_starts_with($tokenValue, 't3://file?')) {
             $type = 'file';
         }
         return $type;
@@ -56,6 +57,13 @@ class FileLinktype extends AbstractLinktype
      */
     public function checkLink(string $url, array $softRefEntry, LinkAnalyzer $reference): bool
     {
+        // Links of rich text fields, e.g. "t3://file?uid=42"
+        if (str_starts_with(strtolower($url), 't3://file?')) {
+            if (!preg_match('/[?&](?:amp;)?uid=(\d+)/', $url, $uidMatch)) {
+                return false;
+            }
+            $url = $uidMatch[1];
+        }
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
         try {
             $file = $resourceFactory->retrieveFileOrFolderObject($url);

@@ -20,12 +20,15 @@ namespace TYPO3\CMS\Linkvalidator\Tests\Functional\EventListener;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Html\Event\BrokenLinkAnalysisEvent;
+use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Linkvalidator\EventListener\CheckBrokenRteLinkEventListener;
 use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class CheckBrokenRteLinkEventListenerTest extends FunctionalTestCase
 {
+    protected array $coreExtensionsToLoad = ['linkvalidator'];
+
     private CheckBrokenRteLinkEventListener $subject;
 
     protected function setUp(): void
@@ -79,5 +82,27 @@ final class CheckBrokenRteLinkEventListenerTest extends FunctionalTestCase
             ],
             true,
         ];
+    }
+
+    public static function checkFileLinkTestDataProvider(): \Generator
+    {
+        yield 'File link of a rich text field is broken' => [88, true];
+        yield 'File link of a link field is broken' => [89, true];
+        yield 'File link is not broken' => [90, false];
+    }
+
+    #[DataProvider('checkFileLinkTestDataProvider')]
+    #[Test]
+    public function checkFileLinkTest(int $fileUid, bool $isMarkedAsBroken): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/broken_file_links.csv');
+        $file = self::createStub(FileInterface::class);
+        $file->method('hasProperty')->willReturn(true);
+        $file->method('getProperty')->willReturn($fileUid);
+        $event = new BrokenLinkAnalysisEvent('file', ['type' => 'file', 'file' => $file]);
+
+        $this->subject->checkFileLink($event);
+
+        self::assertSame($isMarkedAsBroken, $event->isBrokenLink());
     }
 }

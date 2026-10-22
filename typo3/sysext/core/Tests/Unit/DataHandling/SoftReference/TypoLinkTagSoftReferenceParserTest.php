@@ -251,7 +251,7 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
                     'subst' => [
                         'type' => 'db',
                         'recordRef' => 'sys_file:42',
-                        'tokenValue' => 'file:42',
+                        'tokenValue' => 't3://file?uid=42',
                     ],
                 ],
             ],
@@ -262,10 +262,10 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
     #[Test]
     public function findRefReturnsParsedElementsWithFile(array $softrefConfiguration, array $expectedElement): void
     {
-        $fileObject = $this->createMock(File::class);
-        $fileObject->expects($this->once())->method('getUid')->willReturn(42);
-        $fileObject->expects($this->any())->method('getName')->willReturn('download.jpg');
-        $fileObject->expects($this->any())->method('getIdentifier')->willReturn('fileadmin/download.jpg');
+        $fileObject = self::createStub(File::class);
+        $fileObject->method('getUid')->willReturn(42);
+        $fileObject->method('getName')->willReturn('download.jpg');
+        $fileObject->method('getIdentifier')->willReturn('fileadmin/download.jpg');
 
         $resourceFactory = $this->createMock(ResourceFactory::class);
         $resourceFactory->method('getFileObject')->with('42')->willReturn($fileObject);
