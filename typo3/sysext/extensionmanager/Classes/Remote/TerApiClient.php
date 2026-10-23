@@ -17,10 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Remote;
 
-use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Http\RequestFactory;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Extensionmanager\Remote\Dto\TerExtension;
 use TYPO3\CMS\Extensionmanager\Remote\Dto\TerExtensionListResult;
 use TYPO3\CMS\Extensionmanager\Remote\Dto\TerExtensionVersion;
@@ -32,27 +28,16 @@ use TYPO3\CMS\Extensionmanager\Remote\Dto\TerExtensionVersion;
  * Downloading is not its business: an extension is fetched from the archive
  * TER stores for it, which {@see TerExtensionRemote} already does.
  *
- * Responses are cached for a short period in the "extensionmanager_ter_api"
- * cache, so paginating and navigating back and forth does not hammer TER, and
- * a rate limit is not spent on repeating the same question. A remote that
- * could not answer is remembered for a few minutes as well, so an offline
- * installation does not wait for the timeout on every question it asks.
+ * Responses are cached for a short period, so paginating and navigating back
+ * and forth does not hammer TER, and a rate limit is not spent on repeating
+ * the same question; see {@see AbstractJsonApiClient}.
  *
  * @internal This class is a specific implementation and is not part of the Public TYPO3 API.
  */
-class TerApiClient
+class TerApiClient extends AbstractJsonApiClient
 {
     private const BASE_URL = 'https://extensions.typo3.org/api/v1';
-    private const UNAVAILABLE_CACHE_IDENTIFIER = 'ter_api_unavailable';
-    private const UNAVAILABLE_LIFETIME = 300;
-    private const NOT_FOUND = 'not_found';
-    private const NOT_FOUND_LIFETIME = 300;
-
-    public function __construct(
-        protected readonly RequestFactory $requestFactory,
-        protected readonly FrontendInterface $cache,
-        protected readonly Typo3Version $typo3Version,
-    ) {}
+    protected const UNAVAILABLE_CACHE_IDENTIFIER = 'ter_api_unavailable';
 
     public function query(
         string $search,
@@ -85,7 +70,7 @@ class TerApiClient
             $query['filter'] = $filter;
         }
 
-        $data = $this->requestJson('/extension', $query);
+        $data = $this->request('/extension', $query);
         if ($data === null) {
             return new TerExtensionListResult(0);
         }
@@ -95,7 +80,7 @@ class TerApiClient
     public function getExtension(string $extensionKey): ?TerExtension
     {
         $extensionKey = strtolower($extensionKey);
-        $data = $this->requestJson('/extension/' . rawurlencode($extensionKey));
+        $data = $this->request('/extension/' . rawurlencode($extensionKey));
         // The endpoint wraps the extension in an outer array: [{...}].
         $data = $this->unwrapEnvelope($data, 'key');
         return TerExtension::fromArray($data);
@@ -104,7 +89,7 @@ class TerApiClient
     public function getVersions(string $extensionKey): array
     {
         $extensionKey = strtolower($extensionKey);
-        $data = $this->requestJson('/extension/' . rawurlencode($extensionKey) . '/versions');
+        $data = $this->request('/extension/' . rawurlencode($extensionKey) . '/versions');
         if (!is_array($data)) {
             return [];
         }
@@ -128,51 +113,13 @@ class TerApiClient
      * @return array<mixed>|null null when the remote does not know the resource
      * @throws ApiRequestFailedException when the remote could not answer at all
      */
-    protected function requestJson(string $path, array $query = []): ?array
+    protected function request(string $path, array $query = []): ?array
     {
         $url = self::BASE_URL . $path;
         if ($query !== []) {
             $url .= '?' . http_build_query($query, '', '&', PHP_QUERY_RFC3986);
         }
-
-        $cacheIdentifier = 'ter_api_' . hash('xxh3', $url);
-        $cached = $this->cache->get($cacheIdentifier);
-        if (is_array($cached)) {
-            return $cached;
-        }
-        if ($cached === self::NOT_FOUND) {
-            return null;
-        }
-        if ($this->cache->has(self::UNAVAILABLE_CACHE_IDENTIFIER)) {
-            throw new ApiRequestFailedException('"' . $url . '" is not asked, the remote could not answer a moment ago', 1791628922);
-        }
-
-        try {
-            $response = $this->requestFactory->request($url, 'GET', $this->getRequestOptions());
-        } catch (\Throwable $e) {
-            throw $this->rememberFailure(new ApiRequestFailedException('Could not reach "' . $url . '": ' . $e->getMessage(), 1789035174, $e));
-        }
-        // "Unknown to this remote" is an answer, not a failure, and the callers
-        // turn it into null or an empty list themselves.
-        if ($response->getStatusCode() === 404) {
-            $this->cache->set($cacheIdentifier, self::NOT_FOUND, [], self::NOT_FOUND_LIFETIME);
-            return null;
-        }
-        if (!$this->isSuccessfulResponse($response)) {
-            throw $this->rememberFailure(new ApiRequestFailedException('"' . $url . '" answered with status ' . $response->getStatusCode(), 1789035175));
-        }
-        $decoded = json_decode($response->getBody()->getContents(), true);
-        if (!is_array($decoded)) {
-            throw $this->rememberFailure(new ApiRequestFailedException('"' . $url . '" did not answer with a JSON structure', 1789035176));
-        }
-        $this->cache->set($cacheIdentifier, $decoded);
-        return $decoded;
-    }
-
-    private function rememberFailure(ApiRequestFailedException $exception): ApiRequestFailedException
-    {
-        $this->cache->set(self::UNAVAILABLE_CACHE_IDENTIFIER, true, [], self::UNAVAILABLE_LIFETIME);
-        return $exception;
+        return $this->requestJson($url);
     }
 
     /**
@@ -189,31 +136,5 @@ class TerApiClient
             return $data[0];
         }
         return $data;
-    }
-
-    protected function isSuccessfulResponse(ResponseInterface $response): bool
-    {
-        $statusCode = $response->getStatusCode();
-        return $statusCode >= 200 && $statusCode < 300;
-    }
-
-    /**
-     * Error statuses are inspected here rather than thrown by the HTTP client,
-     * since a 404 is an answer. The timeouts are deliberately short: the imported
-     * list answers when TER is slow, which beats leaving the module hanging.
-     *
-     * @return array<string, mixed>
-     */
-    protected function getRequestOptions(): array
-    {
-        return [
-            'headers' => [
-                'Accept' => 'application/json',
-                'User-Agent' => 'TYPO3/' . $this->typo3Version->getVersion(),
-            ],
-            'http_errors' => false,
-            'connect_timeout' => 5,
-            'timeout' => 10,
-        ];
     }
 }

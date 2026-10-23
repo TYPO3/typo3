@@ -21,16 +21,18 @@ use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Remote\ApiRequestFailedException;
+use TYPO3\CMS\Extensionmanager\Remote\UnsupportedVersionConstraintException;
 
 /**
  * Asks a catalogue that reads a remote live, and falls back to one that reads
  * the locally imported list whenever the remote cannot answer - because the
  * installation is offline, the remote is down, a proxy blocks it or a rate
- * limit was reached. With "offlineMode" enabled, the remote is not asked at all.
+ * limit was reached - or sends a version constraint that cannot be converted.
+ * With "offlineMode" enabled, the remote is not asked at all.
  *
  * This is what keeps browsing no worse than it was before the remote was
  * consulted at all: the imported list stays a complete answer, only an older
- * one.
+ * one. In offline mode the remote is not asked in the first place.
  *
  * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
@@ -123,17 +125,22 @@ readonly class FallbackExtensionCatalogue implements ExtensionCatalogueInterface
      */
     private function ask(string $question, \Closure $remote, \Closure $local): mixed
     {
-        if ((bool)$this->extensionConfiguration->get('extensionmanager', 'offlineMode')) {
+        if ($this->isOfflineMode()) {
             return $local();
         }
         try {
             return $remote();
-        } catch (ApiRequestFailedException $e) {
+        } catch (ApiRequestFailedException|UnsupportedVersionConstraintException $e) {
             $this->logger->notice(
                 'Answering "{question}" from the imported extension list, the remote could not be asked: {reason}',
                 ['question' => $question, 'reason' => $e->getMessage(), 'exception' => $e]
             );
             return $local();
         }
+    }
+
+    private function isOfflineMode(): bool
+    {
+        return (bool)$this->extensionConfiguration->get('extensionmanager', 'offlineMode');
     }
 }

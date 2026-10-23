@@ -13,6 +13,9 @@ services:
   TYPO3\CMS\Extensionmanager\Domain\ExtensionCatalogueInterface:
     alias: TYPO3\CMS\Extensionmanager\Domain\FallbackExtensionCatalogue
 
+  TYPO3\CMS\Extensionmanager\Domain\PackageResolverInterface:
+    alias: TYPO3\CMS\Extensionmanager\Domain\FallbackPackageResolver
+
   cache.extensionmanager_ter_api:
     class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
@@ -22,10 +25,19 @@ services:
     arguments:
       $cache: '@cache.extensionmanager_ter_api'
 
+  TYPO3\CMS\Extensionmanager\Remote\FairPackageClient:
+    arguments:
+      $cache: '@cache.extensionmanager_ter_api'
+
   TYPO3\CMS\Extensionmanager\Domain\FallbackExtensionCatalogue:
     arguments:
       $remoteCatalogue: '@TYPO3\CMS\Extensionmanager\Domain\TerExtensionCatalogue'
       $localCatalogue: '@TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository'
+
+  TYPO3\CMS\Extensionmanager\Domain\FallbackPackageResolver:
+    arguments:
+      $remoteResolver: '@TYPO3\CMS\Extensionmanager\Domain\FairPackageResolver'
+      $localResolver: '@TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository'
 
   TYPO3\CMS\Extensionmanager\Command\ActivateExtensionCommand:
     tags:

@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extensionmanager\Domain\Model\PackageIdentifier;
-use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
+use TYPO3\CMS\Extensionmanager\Domain\PackageResolverInterface;
 
 /**
  * Controller for distribution related actions.
@@ -35,7 +35,7 @@ class DistributionController extends AbstractController
         protected readonly PackageManager $packageManager,
         protected readonly PageRenderer $pageRenderer,
         protected readonly IconFactory $iconFactory,
-        protected readonly ExtensionRepository $extensionRepository
+        protected readonly PackageResolverInterface $packageResolver
     ) {}
 
     protected function initializeAction(): void
@@ -53,7 +53,7 @@ class DistributionController extends AbstractController
     public function showAction(PackageIdentifier $identifier): ResponseInterface
     {
         // Check if extension/package is installed
-        $extension = $this->extensionRepository->getByPackageIdentifier($identifier);
+        $extension = $this->packageResolver->getByPackageIdentifier($identifier);
         $extensionKey = $extension->extensionKey;
         $active = $this->packageManager->isPackageActive($extensionKey);
         $view = $this->initializeModuleTemplate($this->request);

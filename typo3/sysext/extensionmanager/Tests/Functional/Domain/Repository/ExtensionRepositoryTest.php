@@ -21,8 +21,10 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Domain\ExtensionCatalogueInterface;
 use TYPO3\CMS\Extensionmanager\Domain\FallbackExtensionCatalogue;
+use TYPO3\CMS\Extensionmanager\Domain\FallbackPackageResolver;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Model\PackageIdentifier;
+use TYPO3\CMS\Extensionmanager\Domain\PackageResolverInterface;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionNotFoundException;
 use TYPO3\CMS\Extensionmanager\Tests\Functional\Fixtures\TerApiFake;
@@ -53,6 +55,18 @@ final class ExtensionRepositoryTest extends FunctionalTestCase
     public function theExtensionCatalogueContractIsServedByTheRemoteCatalogueWithALocalFallback(): void
     {
         self::assertInstanceOf(FallbackExtensionCatalogue::class, $this->get(ExtensionCatalogueInterface::class));
+    }
+
+    /**
+     * Resolving a package is a different question from browsing the catalogue:
+     * the FAIR document of the extension answers it, the imported list when
+     * that cannot. No method is called here either, the wired implementation
+     * asks TER.
+     */
+    #[Test]
+    public function thePackageResolverContractIsServedByTheFairResolverWithALocalFallback(): void
+    {
+        self::assertInstanceOf(FallbackPackageResolver::class, $this->get(PackageResolverInterface::class));
     }
 
     #[Test]
@@ -128,6 +142,15 @@ final class ExtensionRepositoryTest extends FunctionalTestCase
     {
         $this->createRemoteExtensionRecord('news', '1.0.0');
         TerApiFake::register(['news' => [['number' => '2.0.0']]], true);
+
+        self::assertSame('1.0.0', $this->get(ExtensionRepository::class)->findHighestAvailableVersion('news')?->version);
+    }
+
+    #[Test]
+    public function theImportedListAnswersWhenTerSendsAnUnsupportedConstraint(): void
+    {
+        $this->createRemoteExtensionRecord('news', '1.0.0');
+        TerApiFake::register(['news' => [['number' => '2.0.0', 'dependencies' => ['typo3' => '^13.4']]]]);
 
         self::assertSame('1.0.0', $this->get(ExtensionRepository::class)->findHighestAvailableVersion('news')?->version);
     }

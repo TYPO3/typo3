@@ -28,7 +28,7 @@ use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Model\PackageIdentifier;
-use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
+use TYPO3\CMS\Extensionmanager\Domain\PackageResolverInterface;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionNotFoundException;
 use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
@@ -47,7 +47,7 @@ class DownloadController extends AbstractController
     protected ViewInterface $view;
 
     public function __construct(
-        private readonly ExtensionRepository $extensionRepository,
+        private readonly PackageResolverInterface $packageResolver,
         private readonly ExtensionManagementService $managementService,
         private readonly ExtensionConfiguration $extensionConfiguration,
     ) {
@@ -69,7 +69,7 @@ class DownloadController extends AbstractController
     public function checkDependenciesAction(PackageIdentifier $identifier): ResponseInterface
     {
         try {
-            $extension = $this->extensionRepository->getByPackageIdentifier($identifier);
+            $extension = $this->packageResolver->getByPackageIdentifier($identifier);
         } catch (ExtensionNotFoundException $e) {
             // The list may show a version the imported list has no record for
             $this->view->assign('value', [
@@ -173,7 +173,7 @@ class DownloadController extends AbstractController
      */
     public function installFromTerAction(PackageIdentifier $identifier): ResponseInterface
     {
-        $extension = $this->extensionRepository->getByPackageIdentifier($identifier);
+        $extension = $this->packageResolver->getByPackageIdentifier($identifier);
         $this->assertAllowedHttpMethod($this->request, 'POST');
 
         [$result, $errorMessages] = $this->installFromTer($extension);
@@ -216,7 +216,7 @@ class DownloadController extends AbstractController
         }
 
         try {
-            $extension = $this->extensionRepository->getByPackageIdentifier($identifier);
+            $extension = $this->packageResolver->getByPackageIdentifier($identifier);
             $dependencyTypes = $this->managementService->getAndResolveDependencies($extension);
             $dependencyErrors = $this->managementService->getDependencyErrors();
 
@@ -253,7 +253,7 @@ class DownloadController extends AbstractController
     {
         $this->assertAllowedHttpMethod($this->request, 'POST');
         try {
-            $extension = $this->extensionRepository->getByPackageIdentifier($identifier);
+            $extension = $this->packageResolver->getByPackageIdentifier($identifier);
         } catch (ExtensionNotFoundException $e) {
             return $this->jsonResponse(json_encode([
                 'success' => false,
@@ -323,9 +323,9 @@ class DownloadController extends AbstractController
 
         $extensionKey = (string)$this->request->getArgument('extension');
         $version = (string)$this->request->getArgument('version');
-        $extension = $this->extensionRepository->findOneByExtensionKeyAndVersion($extensionKey, $version);
+        $extension = $this->packageResolver->findOneByExtensionKeyAndVersion($extensionKey, $version);
         if ($extension === null) {
-            $extension = $this->extensionRepository->findHighestAvailableVersion($extensionKey);
+            $extension = $this->packageResolver->findHighestAvailableVersion($extensionKey);
         }
         $installedExtensions = ExtensionManagementUtility::getLoadedExtensionListArray();
         try {
@@ -357,7 +357,7 @@ class DownloadController extends AbstractController
         $versionStart = (int)$this->request->getArgument('integerVersionStart');
         $versionStop = (int)$this->request->getArgument('integerVersionStop');
         $updateComments = [];
-        $updatableVersions = $this->extensionRepository->findByVersionRangeAndExtensionKeyOrderedByVersion(
+        $updatableVersions = $this->packageResolver->findByVersionRangeAndExtensionKeyOrderedByVersion(
             $extensionKey,
             $versionStart,
             $versionStop,
