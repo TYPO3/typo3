@@ -235,30 +235,33 @@ export class Dashboard extends LitElement {
     this.addEventListener(DashboardWidgetRefreshEvent.eventName, (event): void => {
       event.preventDefault();
       const element = this.getGridItemByIdentifier(event.identifier);
-      const widgetElement = element.querySelector('typo3-dashboard-widget');
-      widgetElement.refresh();
+      element?.querySelector('typo3-dashboard-widget')?.refresh();
     });
 
     // Remove Widget
     this.addEventListener(DashboardWidgetRemoveEvent.eventName, (event): void => {
       event.preventDefault();
+      const currentDashboard = this.currentDashboard;
+      if (currentDashboard === null) {
+        return;
+      }
       const { identifier } = event;
       (new AjaxRequest(TYPO3.settings.ajaxUrls.dashboard_widget_remove))
         .post({
-          dashboard: this.currentDashboard.identifier,
+          dashboard: currentDashboard.identifier,
           identifier,
         })
         .then(async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
           if (data.status === 'ok') {
             // drop widget
-            this.currentDashboard.widgets = this.currentDashboard.widgets.filter((widget) => {
+            currentDashboard.widgets = currentDashboard.widgets.filter((widget) => {
               return widget.identifier !== identifier;
             });
             // drop widget position
-            for (const [dashboardSize, dashboardSizeSet] of Object.entries(this.currentDashboard.widgetPositions)) {
+            for (const [dashboardSize, dashboardSizeSet] of Object.entries(currentDashboard.widgetPositions)) {
               const dashboardSizeNumber = Number(dashboardSize);
-              this.currentDashboard.widgetPositions[dashboardSizeNumber] = dashboardSizeSet.filter((widgetPosition) => widgetPosition.identifier !== identifier);
+              currentDashboard.widgetPositions[dashboardSizeNumber] = dashboardSizeSet.filter((widgetPosition) => widgetPosition.identifier !== identifier);
             }
             this.requestUpdate();
           } else {
@@ -270,8 +273,15 @@ export class Dashboard extends LitElement {
     // Try to move widget
     this.addEventListener(DashboardWidgetMoveIntendEvent.eventName, (event): void => {
       event.preventDefault();
+      const currentDashboard = this.currentDashboard;
+      if (currentDashboard === null) {
+        return;
+      }
       const { intend, identifier } = event;
       const widgetPosition = this.widgetPositionByIdentifier(identifier);
+      if (widgetPosition === null) {
+        return;
+      }
 
       switch (intend) {
         case DashboardWidgetMoveIntend.up:
@@ -294,19 +304,19 @@ export class Dashboard extends LitElement {
             // Keep a reference to the focussed element and re-set in `this.updated()`
             this.activeElementRef = document.activeElement;
           }
-          this.widgetPositionsSort(this.currentDashboard.widgetPositions[this.columns]);
+          this.widgetPositionsSort(currentDashboard.widgetPositions[this.columns]);
 
           this.dispatchEvent(new DashboardUpdateEvent(
-            this.currentDashboard.identifier,
-            this.currentDashboard.widgets,
-            this.currentDashboard.widgetPositions
+            currentDashboard.identifier,
+            currentDashboard.widgets,
+            currentDashboard.widgetPositions
           ));
           return;
         default:
           return;
       }
 
-      this.widgetPositionChange(this.currentDashboard.widgetPositions[this.columns], widgetPosition);
+      this.widgetPositionChange(currentDashboard.widgetPositions[this.columns], widgetPosition);
 
       this.updateComplete.then(() => {
         const item = this.getGridItemByIdentifier(identifier);
@@ -426,6 +436,18 @@ export class Dashboard extends LitElement {
     });
   }
 
+  /**
+   * The helpers reaching for this only run while a dashboard is displayed,
+   * which the nullable state cannot express on its own.
+   */
+  private get activeDashboard(): DashboardInterface {
+    if (this.currentDashboard === null) {
+      throw new Error('No dashboard is currently selected.');
+    }
+
+    return this.currentDashboard;
+  }
+
   public override connectedCallback() {
     super.connectedCallback();
 
@@ -515,7 +537,7 @@ export class Dashboard extends LitElement {
     this.loading = true;
     this.dashboards = await this.fetchDashboards();
     const currentDashboardIdentifier = ClientStorage.get(this.clientStorageIdentifier);
-    const selectedDashboard = this.getDashboardByIdentifier(currentDashboardIdentifier) || this.getDashboardFirst();
+    const selectedDashboard = this.getDashboardByIdentifier(currentDashboardIdentifier ?? '') || this.getDashboardFirst();
     this.selectDashboard(selectedDashboard);
     this.loading = false;
   }
@@ -646,6 +668,10 @@ export class Dashboard extends LitElement {
   }
 
   private async addWidget(): Promise<void> {
+    const currentDashboard = this.currentDashboard;
+    if (currentDashboard === null) {
+      return;
+    }
     topLevelModuleImport('@typo3/backend/new-record-wizard.js');
 
     const wizard = topDocument.createElement('typo3-backend-new-record-wizard');
@@ -658,12 +684,12 @@ export class Dashboard extends LitElement {
       const { identifier } = event.detail.item;
       const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.dashboard_widget_add)
         .post({
-          dashboard: this.currentDashboard.identifier,
+          dashboard: currentDashboard.identifier,
           type: identifier,
         });
       const data = await response.resolve();
       if (data.status === 'ok') {
-        this.currentDashboard.widgets.push(data.widget);
+        currentDashboard.widgets.push(data.widget);
         this.requestUpdate();
         await this.updateComplete;
         const item = this.getGridItemByIdentifier(data.widget.identifier);
@@ -678,7 +704,7 @@ export class Dashboard extends LitElement {
 
     Modal.advanced({
       type: Modal.types.default,
-      title: labels.get('widget.addToDashboard', [this.currentDashboard.title]),
+      title: labels.get('widget.addToDashboard', [currentDashboard.title]),
       size: Modal.sizes.medium,
       severity: SeverityEnum.notice,
       content: wizard,
@@ -765,8 +791,9 @@ export class Dashboard extends LitElement {
   }
 
   private renderContent(): TemplateResult | typeof nothing {
-    if (this.currentDashboard) {
-      if (this.currentDashboard.widgets.length > 0) {
+    const currentDashboard = this.currentDashboard;
+    if (currentDashboard !== null) {
+      if (currentDashboard.widgets.length > 0) {
         this.initializeCurrentDashboard();
 
         const animation = {
@@ -785,7 +812,7 @@ export class Dashboard extends LitElement {
             class="dashboard-grid"
             style=${styleMap({ '--columns': this.columns })}
           >
-            ${repeat(this.currentDashboard.widgetPositions[this.columns], (widget: DashboardWidgetPosition) => widget.identifier, (widget: DashboardWidgetPosition) => html`
+            ${repeat(currentDashboard.widgetPositions[this.columns], (widget: DashboardWidgetPosition) => widget.identifier, (widget: DashboardWidgetPosition) => html`
               <div
                 class="dashboard-item"
                 style=${styleMap({ '--col-start': widget.x + 1, '--col-span': widget.width, '--row-start': widget.y + 1, '--row-span': widget.height })}
@@ -826,15 +853,16 @@ export class Dashboard extends LitElement {
   }
 
   private renderFooter(): TemplateResult | typeof nothing{
-    return this.currentDashboard === null ? nothing : html`
+    const currentDashboard = this.currentDashboard;
+    return currentDashboard === null ? nothing : html`
       <div class="dashboard-add-item">
         <button
           class="btn btn-primary btn-dashboard-add-widget"
-          title=${labels.get('widget.addToDashboard', [this.currentDashboard.title])}
+          title=${labels.get('widget.addToDashboard', [currentDashboard.title])}
           @click=${() => { this.addWidget(); }}
         >
           <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
-          <span class="visually-hidden">${labels.get('widget.addToDashboard', [this.currentDashboard.title])}</span>
+          <span class="visually-hidden">${labels.get('widget.addToDashboard', [currentDashboard.title])}</span>
         </button>
       </div>
     `;
@@ -852,16 +880,23 @@ export class Dashboard extends LitElement {
       return;
     }
 
-    const widgetHeaderElement = document.elementFromPoint(event.clientX, event.clientY).closest('.widget-header');
+    const widgetHeaderElement = document.elementFromPoint(event.clientX, event.clientY)?.closest('.widget-header') ?? null;
     if (widgetHeaderElement === null) {
       event.preventDefault();
       return;
     }
 
-    const identifier = itemElement.dataset.widgetIdentifier;
+    const currentDashboard = this.currentDashboard;
+    if (currentDashboard === null || event.dataTransfer === null) {
+      return;
+    }
+    const identifier = itemElement.dataset.widgetIdentifier ?? '';
     const widgetPosition = this.widgetPositionByIdentifier(identifier);
     const rect = itemElement.getBoundingClientRect();
     const widgetElement = itemElement.querySelector('typo3-dashboard-widget');
+    if (widgetPosition === null || widgetElement === null) {
+      return;
+    }
     widgetElement.style.pointerEvents = 'none';
 
     this.dragInformation = {
@@ -874,7 +909,7 @@ export class Dashboard extends LitElement {
       offsetX: event.clientX - rect.left,
       currentY: widgetPosition.y,
       currentX: widgetPosition.x,
-      initialPositions: this.currentDashboard.widgetPositions[this.columns].map(item => ({ ...item })),
+      initialPositions: currentDashboard.widgetPositions[this.columns].map(item => ({ ...item })),
     };
 
     const ghostImage = new Image();
@@ -889,19 +924,24 @@ export class Dashboard extends LitElement {
   }
 
   private positionDraggingElement(event: DragEvent) {
+    const dragInformation = this.dragInformation;
+    const container = this.querySelector('.dashboard-container');
+    if (dragInformation === null || container === null) {
+      return;
+    }
     const clamp = (value: number, min: number, max: number): number => Math.min(max, Math.max(min, value));
-    const { itemElement, widgetElement } = this.dragInformation;
+    const { itemElement, widgetElement } = dragInformation;
     const itemRect = itemElement.getBoundingClientRect();
-    const containerRect = this.querySelector('.dashboard-container').getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
     const gap = 20;
     const x = clamp(
-      event.clientX - this.dragInformation.offsetX,
+      event.clientX - dragInformation.offsetX,
       containerRect.left - gap,
       containerRect.left + containerRect.width - itemRect.width + gap
     );
     const y = Math.max(
       containerRect.top - gap,
-      event.clientY - this.dragInformation.offsetY
+      event.clientY - dragInformation.offsetY
     );
     widgetElement.style.left = `${x}px`;
     widgetElement.style.top = `${y}px`;
@@ -910,51 +950,57 @@ export class Dashboard extends LitElement {
   }
 
   private handleDragEnd(): void {
-    if (this.dragInformation) {
+    const currentDashboard = this.currentDashboard;
+    if (this.dragInformation !== null && currentDashboard !== null) {
       const { itemElement, widgetElement } = this.dragInformation;
       itemElement.classList.remove('dashboard-item-dragging');
       itemElement.appendChild(widgetElement);
       widgetElement.removeAttribute('style');
       this.dragInformation = null;
-      this.widgetPositionsSort(this.currentDashboard.widgetPositions[this.columns]);
+      this.widgetPositionsSort(currentDashboard.widgetPositions[this.columns]);
       this.dispatchEvent(new DashboardUpdateEvent(
-        this.currentDashboard.identifier,
-        this.currentDashboard.widgets,
-        this.currentDashboard.widgetPositions
+        currentDashboard.identifier,
+        currentDashboard.widgets,
+        currentDashboard.widgetPositions
       ));
     }
   }
 
   private handleDragOver(event: DragEvent): void {
-    if (this.dragInformation) {
+    const dragInformation = this.dragInformation;
+    const currentDashboard = this.currentDashboard;
+    const container = this.querySelector('.dashboard-grid');
+    if (dragInformation !== null && currentDashboard !== null && container !== null && event.dataTransfer !== null) {
       event.preventDefault();
       event.dataTransfer.dropEffect = 'move';
 
       this.positionDraggingElement(event);
 
-      const container = this.querySelector('.dashboard-grid');
       const rect = container.getBoundingClientRect();
       const gap = parseInt(getComputedStyle(container).gap, 10);
       const rowHeight = parseInt(getComputedStyle(container).gridAutoRows, 10) + gap;
       const colWidth = (rect.width + gap) / this.columns;
-      const currentY = Math.max(0, event.clientY - rect.top - this.dragInformation.offsetY);
-      const currentX = Math.max(0, event.clientX - rect.left - this.dragInformation.offsetX);
+      const currentY = Math.max(0, event.clientY - rect.top - dragInformation.offsetY);
+      const currentX = Math.max(0, event.clientX - rect.left - dragInformation.offsetX);
       const row = Math.max(0, Math.round(currentY / rowHeight));
-      const col = Math.max(0, Math.min(Math.round(currentX / colWidth), this.columns - this.dragInformation.width));
+      const col = Math.max(0, Math.min(Math.round(currentX / colWidth), this.columns - dragInformation.width));
 
       // Reduce dragover recalculations when nothing changed
-      if (this.dragInformation.currentY !== row || this.dragInformation.currentX !== col) {
-        this.dragInformation.currentY = row;
-        this.dragInformation.currentX = col;
+      if (dragInformation.currentY !== row || dragInformation.currentX !== col) {
+        dragInformation.currentY = row;
+        dragInformation.currentX = col;
         if (this.dragOverTimeout) {
           clearTimeout(this.dragOverTimeout);
         }
         this.dragOverTimeout = window.setTimeout(() => {
-          if (this.dragInformation) {
-            const draggedWidgetPosition = this.widgetPositionByIdentifier(this.dragInformation.identifier);
-            draggedWidgetPosition.y = this.dragInformation.currentY;
-            draggedWidgetPosition.x = this.dragInformation.currentX;
-            this.widgetPositionChange(this.currentDashboard.widgetPositions[this.columns], draggedWidgetPosition);
+          if (this.dragInformation !== dragInformation) {
+            return;
+          }
+          const draggedWidgetPosition = this.widgetPositionByIdentifier(dragInformation.identifier);
+          if (draggedWidgetPosition !== null) {
+            draggedWidgetPosition.y = dragInformation.currentY;
+            draggedWidgetPosition.x = dragInformation.currentX;
+            this.widgetPositionChange(currentDashboard.widgetPositions[this.columns], draggedWidgetPosition);
           }
         }, 100);
       }
@@ -966,12 +1012,13 @@ export class Dashboard extends LitElement {
   }
 
   private initializeCurrentDashboard(): void {
-    this.currentDashboard.widgetPositions = this.currentDashboard.widgetPositions ?? {};
-    let items = this.currentDashboard.widgetPositions?.[this.columns] ?? [];
+    const dashboard = this.activeDashboard;
+    dashboard.widgetPositions = dashboard.widgetPositions ?? {};
+    let items = dashboard.widgetPositions[this.columns] ?? [];
     const widgetSizeWidth: Record<string, number> = { small: 1, medium: 2, large: 4 };
     const widgetSizeHeight: Record<string, number> = { small: 1, medium: 2, large: 3 };
 
-    this.currentDashboard.widgets.forEach(widget => {
+    dashboard.widgets.forEach(widget => {
       if (items.find(widgetPosition => widgetPosition.identifier === widget.identifier) === undefined) {
         const height = widgetSizeHeight[widget.height] ?? 1;
         const width = widgetSizeWidth[widget.width] ?? 1;
@@ -988,15 +1035,15 @@ export class Dashboard extends LitElement {
 
     items = this.widgetPositionsArrange(items);
     this.widgetPositionsCollapseRows(items);
-    this.currentDashboard.widgetPositions[this.columns] = items;
+    dashboard.widgetPositions[this.columns] = items;
   }
 
   private widgetByIdentifier(identifier: string): DashboardWidgetConfigurationInterface | null {
-    return this.currentDashboard.widgets.find(item => item.identifier === identifier) ?? null;
+    return this.activeDashboard.widgets.find(item => item.identifier === identifier) ?? null;
   }
 
   private widgetPositionByIdentifier(identifier: string): DashboardWidgetPosition | null {
-    return this.currentDashboard.widgetPositions[this.columns].find(item => item.identifier === identifier) ?? null;
+    return this.activeDashboard.widgetPositions[this.columns].find(item => item.identifier === identifier) ?? null;
   }
 
   private widgetPositionCanPlace(widget: DashboardWidgetPosition, col: number, row: number, occupiedCells: Set<string>): boolean {
@@ -1014,7 +1061,7 @@ export class Dashboard extends LitElement {
     let initialPositions = structuredClone(this.dragInformation?.initialPositions ?? items);
     const index = initialPositions.findIndex((widget) => widget.identifier === changedItem.identifier);
 
-    let origItem: DashboardWidgetPosition;
+    let origItem: DashboardWidgetPosition | undefined;
     if (index > -1) {
       const [item] = initialPositions.splice(index, 1);
       origItem = { ...item };
@@ -1026,6 +1073,9 @@ export class Dashboard extends LitElement {
     initialPositions = this.widgetPositionsArrange(initialPositions, this.dragInformation?.initialPositions ?? items, origItem);
     items.forEach(originalItem => {
       const updatedItem = initialPositions.find(copyItem => copyItem.identifier === originalItem.identifier);
+      if (updatedItem === undefined) {
+        return;
+      }
       originalItem.y = updatedItem.y;
       originalItem.x = updatedItem.x;
     });
@@ -1101,7 +1151,7 @@ export class Dashboard extends LitElement {
           // Create an occupy map that contains all cells from the previous arrangement
           .reduce((set, item) => set.union(createSet(item)), new Set<string>())
           // …without the moved item (that place is considered free)
-          .difference(createSet(movedItem))
+          .difference(movedItem === undefined ? new Set<string>() : createSet(movedItem))
           // …and the cells that have already been occupied in this run.
           .union(occupiedCells),
         // allow items to be moved to "free" places by the dimension of the moved item (allowing items to swap)
@@ -1204,6 +1254,18 @@ export class DashboardWidget extends LitElement {
     return this.fetchTask.value ?? null;
   }
 
+  /**
+   * The widget is only absent while it is still being fetched, which none of
+   * the callers below can be reached during.
+   */
+  private get loadedWidget(): DashboardWidgetInterface {
+    if (this.widget === null) {
+      throw new Error('The widget has not been loaded yet.');
+    }
+
+    return this.widget;
+  }
+
   public refresh(): void {
     this.handleRefresh();
   }
@@ -1215,10 +1277,9 @@ export class DashboardWidget extends LitElement {
   protected override updated(): void {
     if (this.triggerContentRenderedEvent) {
       this.triggerContentRenderedEvent = false;
-      const { widget } = this;
-      this.dispatchEvent(new DashboardWidgetContentRenderedEvent(widget));
+      this.dispatchEvent(new DashboardWidgetContentRenderedEvent(this.loadedWidget));
       // Legacy event, kept for compatibility reasons
-      this.dispatchEvent(new CustomEvent('widgetContentRendered', { bubbles: true, detail: this.widget.eventdata }));
+      this.dispatchEvent(new CustomEvent('widgetContentRendered', { bubbles: true, detail: this.loadedWidget.eventdata }));
       this.restorePaginationFocus();
     }
   }
@@ -1291,8 +1352,8 @@ export class DashboardWidget extends LitElement {
       </div>
       <div class="widget-content"
         @click=${this.handlePaginationClick}
-        @pointerenter=${(e: PointerEvent) => (e.target as HTMLElement).closest('.dashboard-item').removeAttribute('draggable')}
-        @pointerleave=${(e: PointerEvent) => (e.target as HTMLElement).closest('.dashboard-item').setAttribute('draggable', 'true')}
+        @pointerenter=${(e: PointerEvent) => (e.target as HTMLElement).closest('.dashboard-item')?.removeAttribute('draggable')}
+        @pointerleave=${(e: PointerEvent) => (e.target as HTMLElement).closest('.dashboard-item')?.setAttribute('draggable', 'true')}
         >${widgetContent(widget)}</div>
     `;
 
@@ -1339,7 +1400,7 @@ export class DashboardWidget extends LitElement {
     if (this.moving === false) {
       this.moving = true;
       this.dispatchEvent(new DashboardWidgetMoveIntendEvent(
-        this.widget.identifier,
+        this.loadedWidget.identifier,
         DashboardWidgetMoveIntend.start,
       ));
     }
@@ -1349,7 +1410,7 @@ export class DashboardWidget extends LitElement {
     if (this.moving === true) {
       this.moving = false;
       this.dispatchEvent(new DashboardWidgetMoveIntendEvent(
-        this.widget.identifier,
+        this.loadedWidget.identifier,
         DashboardWidgetMoveIntend.end,
       ));
     }
@@ -1416,7 +1477,7 @@ export class DashboardWidget extends LitElement {
     }
 
     this.dispatchEvent(new DashboardWidgetMoveIntendEvent(
-      this.widget.identifier,
+      this.loadedWidget.identifier,
       intend
     ));
   }
@@ -1426,7 +1487,7 @@ export class DashboardWidget extends LitElement {
 
     const formName = `widget_settings_form_${this.identifier}`;
     const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.dashboard_widget_settings_get)
-      .withQueryArguments({ widget: this.widget.identifier })
+      .withQueryArguments({ widget: this.loadedWidget.identifier })
       .get({ cache: 'no-cache' });
     const data = await response.resolve();
     if (data.status !== 'ok') {
@@ -1450,14 +1511,14 @@ export class DashboardWidget extends LitElement {
       content,
       callback: (currentModal: ModalElement): void => {
         const settingsEditor = currentModal.querySelector('typo3-backend-settings-editor');
-        settingsEditor.addEventListener(SettingsEditorSubmitEvent.eventName, async (event: SettingsEditorSubmitEvent): Promise<void> => {
+        settingsEditor?.addEventListener(SettingsEditorSubmitEvent.eventName, async (event: SettingsEditorSubmitEvent): Promise<void> => {
           const { originalEvent, formData } = event;
           const { settings } = formData;
           originalEvent.preventDefault();
           try {
             const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.dashboard_widget_settings_update)
               .post({
-                widget: this.widget.identifier,
+                widget: this.loadedWidget.identifier,
                 settings,
               });
             const data = await response.resolve();

@@ -96,6 +96,7 @@ export class PresetStep implements WizardStepInterface, WizardStepValueInterface
         `;
       },
       error: (error: unknown) => this.context.wizard.renderError(labels.get('dashboard.wizard.preset.loadError'), error),
+      initial: () => this.context.wizard.renderLoader(),
       pending: () => this.context.wizard.renderLoader()
     });
   }
@@ -106,7 +107,7 @@ export class PresetStep implements WizardStepInterface, WizardStepValueInterface
     this.initPresetsTask();
   }
 
-  public getValue(): string {
+  public getValue(): string | null {
     return this.selectedPreset;
   }
 
@@ -116,7 +117,7 @@ export class PresetStep implements WizardStepInterface, WizardStepValueInterface
   }
 
   public beforeAdvance(): void {
-    this.context.setStoreData(this.key, this.getValue());
+    this.context.setStoreData(this.key, this.getValue() ?? undefined);
   }
 
   public getSummaryData(): SummaryItem[] {
