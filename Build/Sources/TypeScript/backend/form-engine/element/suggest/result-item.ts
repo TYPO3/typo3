@@ -26,11 +26,11 @@ export interface ResultItemInterface {
 
 @customElement('typo3-backend-formengine-suggest-result-item')
 export class ResultItem extends PseudoButtonLitElement {
-  @property({ type: Object }) icon: Record<string, string>;
-  @property({ type: Number }) uid: number;
-  @property({ type: String }) table: string;
-  @property({ type: String }) label: string;
-  @property({ type: String }) path: string;
+  @property({ type: Object }) icon: Record<string, string> = {};
+  @property({ type: Number }) uid: number = 0;
+  @property({ type: String }) table: string = '';
+  @property({ type: String }) label: string = '';
+  @property({ type: String }) path: string = '';
 
   constructor() {
     super();

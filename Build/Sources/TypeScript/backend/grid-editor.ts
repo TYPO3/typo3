@@ -48,7 +48,7 @@ export class GridEditor extends LitElement {
   @property({ type: Array }) protected data: any[] = [];
   @property({ type: Object }) protected codeMirrorConfig: Record<string, string> = {};
 
-  protected field: HTMLInputElement;
+  protected field!: HTMLInputElement;
   protected previewAreaRef: Ref<HTMLTextAreaElement> = createRef();
   protected codeMirrorRef: Ref<CodeMirrorElement> = createRef();
   protected defaultCell: Cell = { spanned: 0, rowspan: 1, colspan: 1, name: '', colpos: '', column: undefined, identifier: '', slideMode: SlideModes.none, allowedContentTypes: '', disallowedContentTypes: '' };

@@ -43,7 +43,7 @@ export class PositionStep implements WizardStepInterface, WizardStepValueInterfa
   readonly key = 'position';
   readonly title = labels.get('selectPosition');
   readonly autoAdvance = true;
-  private summaryTask: Task<[pageUid: number], PageDetail>;
+  private summaryTask!: Task<[pageUid: number], PageDetail>;
   private positionData?: PositionData = null!;
   private hasDispatchedAutoAdvance: boolean = false;
 

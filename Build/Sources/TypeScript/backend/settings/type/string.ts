@@ -26,7 +26,7 @@ export class StringTypeElement extends BaseElement<
     max?: number,
   }
 > {
-  @property({ type: String }) override value: string;
+  @property({ type: String }) override value: string = '';
 
   protected handleChange(e: InputEvent): void {
     const input = e.target as HTMLInputElement|HTMLSelectElement;

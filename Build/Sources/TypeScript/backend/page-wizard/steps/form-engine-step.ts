@@ -30,7 +30,7 @@ export class FormEngineStep implements WizardStepInterface, WizardStepAfterRende
   modules: JavaScriptItemPayload[] = [];
   labels: Record<string, string> = {};
 
-  private summary: SummaryItem[];
+  private summary!: SummaryItem[];
 
   constructor(
     private readonly context: PageWizardContext,

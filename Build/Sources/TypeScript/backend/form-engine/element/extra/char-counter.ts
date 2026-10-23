@@ -17,7 +17,7 @@ import labels from '~labels/core.core';
 
 @customElement('typo3-backend-formengine-char-counter')
 export class CharCounter extends LitElement {
-  @property() target: string;
+  @property() target: string = '';
   @state() private remainingCharacters: number = 0;
 
   private targetElement: HTMLInputElement | HTMLTextAreaElement | null = null;

@@ -38,8 +38,8 @@ export class ResultContainer extends LitElement {
   @property({ type: Boolean, attribute: false }) hasErrors: boolean = false;
   @property({ type: Boolean, attribute: false }) loading: boolean = false;
 
-  @query('typo3-backend-live-search-result-item-container') itemContainer: ItemContainer;
-  @query('typo3-backend-live-search-result-item-detail-container') resultDetailContainer: ResultDetailContainer;
+  @query('typo3-backend-live-search-result-item-container') itemContainer!: ItemContainer;
+  @query('typo3-backend-live-search-result-item-detail-container') resultDetailContainer!: ResultDetailContainer;
 
   public override connectedCallback(): void {
     super.connectedCallback();

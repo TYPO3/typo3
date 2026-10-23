@@ -21,7 +21,7 @@ export const componentName = 'typo3-backend-settings-type-stringlist';
 @customElement(componentName)
 export class StringlistTypeElement extends BaseElement<string[]> {
 
-  @property({ type: Array }) override value: string[];
+  @property({ type: Array }) override value: string[] = [];
 
   protected updateValue(value: string, index: number) {
     const copy = [...this.value];

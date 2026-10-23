@@ -40,7 +40,7 @@ type RecordInformation = {
 @customElement('typo3-workspaces-record-information')
 export class RecordInformationElement extends LitElement {
   @property({ type: Object })
-  public record: RecordInformation;
+  public record!: RecordInformation;
 
   protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly

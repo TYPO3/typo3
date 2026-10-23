@@ -45,16 +45,16 @@ class ViewPage {
   private readonly minimalWidth: number = 300;
 
   private readonly storagePrefix: string = 'moduleData.page_preview.States.';
-  private iframe: HTMLIFrameElement;
-  private inputCustomWidth: HTMLInputElement;
-  private inputCustomHeight: HTMLInputElement;
-  private customPresetItem: HTMLElement;
-  private customPresetItemWidth: HTMLElement;
-  private customPresetItemHeight: HTMLElement;
-  private currentLabelElement: HTMLElement;
-  private resizableContainer: HTMLElement;
+  private iframe!: HTMLIFrameElement;
+  private inputCustomWidth!: HTMLInputElement;
+  private inputCustomHeight!: HTMLInputElement;
+  private customPresetItem!: HTMLElement;
+  private customPresetItemWidth!: HTMLElement;
+  private customPresetItemHeight!: HTMLElement;
+  private currentLabelElement!: HTMLElement;
+  private resizableContainer!: HTMLElement;
 
-  private queueDelayTimer: number;
+  private queueDelayTimer!: number;
 
   constructor() {
     DocumentService.ready().then((): void => {

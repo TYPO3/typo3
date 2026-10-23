@@ -418,7 +418,7 @@ export class NewRecordWizard extends LitElement {
   @property({ type: String }) storeName: string | null = null;
   @property({ type: Boolean, reflect: true, attribute: 'has-navigation' }) hasNavigation = false;
 
-  private recordUsageStore: RecordUsageStore;
+  private recordUsageStore!: RecordUsageStore;
 
   protected override firstUpdated(): void {
     // Load shared css file

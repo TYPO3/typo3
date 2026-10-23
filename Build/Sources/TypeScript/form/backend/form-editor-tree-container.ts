@@ -27,8 +27,8 @@ export const navigationComponentName: string = 'typo3-backend-navigation-compone
  */
 @customElement('typo3-backend-navigation-component-formeditortree')
 export class FormEditorTreeContainer extends LitElement {
-  @query('typo3-backend-navigation-component-formeditor-tree') tree: FormEditorTree;
-  @query('typo3-backend-tree-toolbar') toolbar: TreeToolbar;
+  @query('typo3-backend-navigation-component-formeditor-tree') tree!: FormEditorTree;
+  @query('typo3-backend-tree-toolbar') toolbar!: TreeToolbar;
 
   public async setNodes(nodes: FormEditorTreeNode[]): Promise<void> {
     await this.updateComplete;

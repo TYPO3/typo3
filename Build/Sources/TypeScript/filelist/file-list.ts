@@ -66,7 +66,7 @@ export const fileListOpenElementBrowser = 'typo3:filelist:openElementBrowser';
  * @exports @typo3/filelist/filelist
  */
 export default class Filelist {
-  private progressBar: ProgressBarElement;
+  private progressBar: ProgressBarElement | null = null;
 
   constructor() {
     new RegularEvent(fileListOpenElementBrowser, (event: CustomEvent): void => {

@@ -89,8 +89,8 @@ export class PageLayoutStickyLanguageHeader extends LitElement {
 
   @state() protected active: boolean = false;
 
-  @query('.inline') private readonly inline: HTMLElement;
-  @query('.sticky') private readonly sticky: HTMLElement;
+  @query('.inline') private readonly inline!: HTMLElement;
+  @query('.sticky') private readonly sticky!: HTMLElement;
 
   private scrollEvent: RegularEvent | null = null;
   private resizeEvent: RegularEvent | null = null;

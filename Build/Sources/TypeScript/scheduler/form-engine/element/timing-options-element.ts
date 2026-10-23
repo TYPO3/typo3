@@ -25,7 +25,7 @@ enum RunningType {
  * the end date and frequency fields if the running type is not set to "recurring" (value 2)
  */
 class TimingOptions extends HTMLElement {
-  private fieldPrefix: string;
+  private fieldPrefix!: string;
 
   public async connectedCallback(): Promise<void> {
     await FormEngine.ready();

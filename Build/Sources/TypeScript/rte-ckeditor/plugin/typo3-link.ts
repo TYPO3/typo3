@@ -384,8 +384,8 @@ export class Typo3LinkPreviewButtonView extends UI.ButtonView {
 const VISUAL_SELECTION_MARKER_NAME = 'link-ui';
 
 export class Typo3LinkUI extends Core.Plugin {
-  toolbarView: UI.ToolbarView;
-  balloon: UI.ContextualBalloon;
+  toolbarView: UI.ToolbarView | undefined;
+  balloon!: UI.ContextualBalloon;
 
   static get requires(): typeof Core.Plugin[] {
     return [UI.ContextualBalloon, Link.LinkEditing] as const;
@@ -583,7 +583,7 @@ export class Typo3LinkUI extends Core.Plugin {
     }
 
     if (this.isToolbarInPanel()) {
-      this.balloon.remove(this.toolbarView);
+      this.balloon.remove(this.toolbarView!);
     }
     this.hideFakeVisualSelection();
   }

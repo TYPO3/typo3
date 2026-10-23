@@ -81,8 +81,8 @@ export class ResultPagination extends LitElement {
 
 @customElement('typo3-backend-live-search-result-page')
 export class ResultPaginationPage extends LitElement {
-  @property({ type: Number }) page: number;
-  @property({ type: Number }) perPage: number;
+  @property({ type: Number }) page: number = 0;
+  @property({ type: Number }) perPage: number = 0;
 
   public override connectedCallback(): void {
     super.connectedCallback();

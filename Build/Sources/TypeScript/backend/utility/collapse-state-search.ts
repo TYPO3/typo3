@@ -31,12 +31,12 @@ import labels from '~labels/backend.messages';
  */
 class CollapseStateSearch {
   private readonly searchValueSelector: string = '.t3js-collapse-search-term';
-  private searchField: HTMLInputElement;
-  private searchForm: HTMLFormElement;
-  private searchSessionKey: string;
+  private searchField!: HTMLInputElement;
+  private searchForm!: HTMLFormElement;
+  private searchSessionKey!: string;
   private searchValue: string = '';
-  private treeContainers: NodeListOf<HTMLElement>;
-  private numberOfSearchMatchesContainer: NodeListOf<HTMLElement>;
+  private treeContainers!: NodeListOf<HTMLElement>;
+  private numberOfSearchMatchesContainer!: NodeListOf<HTMLElement>;
   private markInstances: Array<any> = [];
 
   constructor() {

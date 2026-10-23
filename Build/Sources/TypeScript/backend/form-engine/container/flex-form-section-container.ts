@@ -32,8 +32,8 @@ enum Selectors {
 }
 
 class FlexFormSectionContainer {
-  private container: HTMLElement;
-  private sectionContainer: HTMLElement;
+  private container!: HTMLElement;
+  private sectionContainer!: HTMLElement;
   private allowRestructure: boolean = false;
   private flexformContainerContainers: FlexFormContainerContainer[] = [];
 

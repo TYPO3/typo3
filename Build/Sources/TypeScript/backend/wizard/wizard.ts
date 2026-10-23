@@ -40,9 +40,9 @@ export type DataStore = object;
 @customElement('typo3-backend-wizard')
 export class Wizard<TDataStore extends DataStore = DataStore> extends LitElement {
   @property({ type: Array, attribute: false }) steps: WizardStepInterface[] = [];
-  @property({ type: String, attribute: 'confirm-button-label' }) confirmButtonLabel: string;
+  @property({ type: String, attribute: 'confirm-button-label' }) confirmButtonLabel: string = '';
   @property({ type: Boolean, attribute: 'skip-summary' }) skipSummary: boolean = false;
-  @property({ type: Object, attribute: false }) submissionService: SubmissionServiceInterface;
+  @property({ type: Object, attribute: false }) submissionService: SubmissionServiceInterface | undefined;
 
   @state() protected currentStepIndex: number = 0;
   @state() protected currentStep!: WizardStepInterface;

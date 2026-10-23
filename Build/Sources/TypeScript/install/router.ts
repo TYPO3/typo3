@@ -31,9 +31,9 @@ class Router {
   private readonly rootSelector: string = '.t3js-body';
   private readonly contentSelector: string = '.t3js-module-body-container';
 
-  private rootContainer: HTMLElement;
-  private controller: string;
-  private context: string;
+  private rootContainer!: HTMLElement;
+  private controller!: string;
+  private context!: string;
 
   public setContent(content: string|Element|DocumentFragment): void {
     const container = this.rootContainer.querySelector<HTMLElement>(this.contentSelector)!;

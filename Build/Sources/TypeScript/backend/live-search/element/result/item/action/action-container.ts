@@ -61,8 +61,8 @@ export class ActionList extends LitElement {
     }
   `;
 
-  private parentContainer: HTMLElement;
-  private resultItemContainer: HTMLElement;
+  private parentContainer!: HTMLElement;
+  private resultItemContainer!: HTMLElement;
 
   public override async connectedCallback(): Promise<void> {
     await DocumentService.ready();

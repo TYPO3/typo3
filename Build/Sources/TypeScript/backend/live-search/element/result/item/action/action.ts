@@ -19,8 +19,8 @@ import type { ResultItemActionInterface, ResultItemInterface } from '../item';
 
 @customElement('typo3-backend-live-search-result-item-action')
 export class Action extends LitElement {
-  @property({ type: Object, attribute: false }) resultItem: ResultItemInterface;
-  @property({ type: Object, attribute: false }) resultItemAction: ResultItemActionInterface;
+  @property({ type: Object, attribute: false }) resultItem!: ResultItemInterface;
+  @property({ type: Object, attribute: false }) resultItemAction!: ResultItemActionInterface;
 
   public override connectedCallback(): void {
     super.connectedCallback();

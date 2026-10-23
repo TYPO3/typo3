@@ -43,7 +43,7 @@ export interface ResultItemActionInterface {
 
 @customElement('typo3-backend-live-search-result-item')
 export class Item extends LitElement {
-  @property({ type: Object, attribute: false }) resultItem: ResultItemInterface;
+  @property({ type: Object, attribute: false }) resultItem!: ResultItemInterface;
 
   public override connectedCallback(): void {
     super.connectedCallback();

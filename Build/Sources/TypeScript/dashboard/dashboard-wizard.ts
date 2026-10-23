@@ -39,11 +39,11 @@ export interface DashboardWizardContext {
 @customElement('typo3-dashboard-wizard')
 export class DashboardWizard extends LitElement {
   @state() steps: WizardStepInterface[] = [];
-  @state() submissionService: SubmissionServiceInterface;
+  @state() submissionService: SubmissionServiceInterface | undefined;
 
   @query('typo3-backend-wizard') wizard!: Wizard<DashboardWizardDataStore>;
 
-  private context: DashboardWizardContext;
+  private context!: DashboardWizardContext;
 
   protected override firstUpdated(_changedProperties: PropertyValues): void {
     super.firstUpdated(_changedProperties);

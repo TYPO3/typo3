@@ -326,8 +326,8 @@ interface Configuration {
 export class PageTreeNavigationComponent extends TreeModuleState(LitElement) {
   @property({ type: String }) mountPointPath: string | null = null;
 
-  @query('typo3-backend-navigation-component-pagetree-tree') tree: EditablePageTree;
-  @query('typo3-backend-navigation-component-pagetree-toolbar') toolbar: PageTreeToolbar;
+  @query('typo3-backend-navigation-component-pagetree-tree') tree!: EditablePageTree;
+  @query('typo3-backend-navigation-component-pagetree-toolbar') toolbar!: PageTreeToolbar;
 
   protected override moduleStateType: string = 'web';
 
@@ -496,10 +496,10 @@ class PageTreeToolbar extends TreeToolbar {
   private subMenuItemsExpanded: boolean = false;
 
   @state()
-  private hasHiddenSubMenuItems: boolean;
+  private hasHiddenSubMenuItems: boolean = false;
 
   @query('.tree-toolbar__submenu-items')
-  private readonly submenuItemsContainer: HTMLElement | null;
+  private readonly submenuItemsContainer!: HTMLElement | null;
 
   private resizeObserver!: ResizeObserver;
 

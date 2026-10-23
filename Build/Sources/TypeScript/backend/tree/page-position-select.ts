@@ -87,7 +87,7 @@ export class PagePositionSelect extends LitElement {
   @property({ type: Array }) actions: Array<string> = ['select'];
   @property({ type: String, reflect: true }) insertPosition: Position = 'inside';
 
-  @query('typo3-backend-component-page-position-select-tree') tree: PagePositionSelectTree;
+  @query('typo3-backend-component-page-position-select-tree') tree!: PagePositionSelectTree;
 
   @state() private configuration: Configuration | null = null;
   @state() private breadcrumbItems: BreadcrumbNodeInterface[] = [];

@@ -69,15 +69,15 @@ export type LocalizationLanguageRecord = {
 
 @customElement('typo3-backend-localization-wizard')
 export class LocalizationWizard extends LitElement {
-  @property({ type: String, attribute: 'record-type' }) recordType: string;
-  @property({ type: Number, attribute: 'record-uid' }) recordUid: number;
+  @property({ type: String, attribute: 'record-type' }) recordType: string = '';
+  @property({ type: Number, attribute: 'record-uid' }) recordUid: number = 0;
   @property({ type: Number, attribute: 'target-language' }) targetLanguage?: number;
   @property({ type: String, attribute: 'return-url' }) returnUrl?: string;
 
   @query('typo3-backend-wizard') wizard!: Wizard<LocalizationDataStore>;
 
   @state() steps: WizardStepInterface[] = [];
-  @state() submissionService: SubmissionServiceInterface;
+  @state() submissionService: SubmissionServiceInterface | undefined;
 
   protected readonly recordInfoTask = new Task(this, {
     task: async ([recordType, recordUid]): Promise<RecordInfo> => {

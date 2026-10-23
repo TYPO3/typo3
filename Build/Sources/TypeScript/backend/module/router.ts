@@ -47,10 +47,10 @@ export class ModuleRouter extends LitElement {
 
   @property({ type: String, hasChanged: alwaysUpdate }) module: string = '';
   @property({ type: String, hasChanged: alwaysUpdate }) endpoint: string = '';
-  @property({ type: String, attribute: 'state-tracker' }) stateTrackerUrl: string;
-  @property({ type: String, attribute: 'sitename' }) sitename: string;
-  @property({ type: String, attribute: 'entry-point' }) entryPoint: string;
-  @query('slot', true) slotElement: HTMLSlotElement;
+  @property({ type: String, attribute: 'state-tracker' }) stateTrackerUrl: string = '';
+  @property({ type: String, attribute: 'sitename' }) sitename: string = '';
+  @property({ type: String, attribute: 'entry-point' }) entryPoint: string = '';
+  @query('slot', true) slotElement!: HTMLSlotElement;
 
   // Not a @property, since changes must not cause a module-reload
   sitenameFirst: boolean = false;

@@ -54,8 +54,8 @@ interface EditableSetting {
 @customElement('typo3-backend-editable-setting')
 export class EditableSettingElement extends LitElement {
 
-  @property({ type: Object }) setting: EditableSetting;
-  @property({ type: String }) dumpuri: string;
+  @property({ type: Object }) setting!: EditableSetting;
+  @property({ type: String }) dumpuri: string = '';
   @property({ type: String, converter: sanitizeSettingsMode }) mode: SettingsMode = SettingsMode.basic;
 
   @state() hasChange: boolean = false;

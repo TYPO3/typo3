@@ -19,11 +19,11 @@ import type { ResultItemLanguageInterface } from '@typo3/backend/live-search/ele
 
 @customElement('typo3-backend-live-search-result-item-default')
 export class DefaultProviderResultItem extends LitElement {
-  @property({ type: Object, attribute: false }) icon: Record<string, string>;
+  @property({ type: Object, attribute: false }) icon: Record<string, string> = {};
   @property({ type: Object, attribute: false }) language: ResultItemLanguageInterface | null = null;
-  @property({ type: String, attribute: false }) itemTitle: string;
-  @property({ type: String, attribute: false }) typeLabel: string;
-  @property({ type: Object, attribute: false }) extraData: { [key: string]: any };
+  @property({ type: String, attribute: false }) itemTitle: string = '';
+  @property({ type: String, attribute: false }) typeLabel: string = '';
+  @property({ type: Object, attribute: false }) extraData: { [key: string]: any } = {};
 
   protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied

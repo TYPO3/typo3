@@ -19,11 +19,11 @@ import type { InvokeOptionEventData } from '@typo3/backend/live-search/live-sear
 @customElement('typo3-backend-live-search-option-item')
 export class SearchOptionItem extends LitElement {
   @property({ type: Boolean }) active: boolean = false;
-  @property({ type: String }) optionId: string;
-  @property({ type: String }) optionName: string;
-  @property({ type: String }) optionLabel: string;
+  @property({ type: String }) optionId: string = '';
+  @property({ type: String }) optionName: string = '';
+  @property({ type: String }) optionLabel: string = '';
 
-  private parentContainer: HTMLElement;
+  private parentContainer!: HTMLElement;
 
   public override connectedCallback(): void {
     this.parentContainer = this.closest('typo3-backend-live-search')!;

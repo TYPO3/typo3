@@ -22,7 +22,7 @@ export class TreeNode {
   public name: string;
   public isExternal: boolean;
 
-  public global: boolean;
+  public global: boolean = false;
   public parent: TreeNode | null = null;
 
   private readonly tsParser: TsParser;
@@ -140,7 +140,7 @@ export class TsParser {
   public readonly extTsObjTree: TsObjTree;
   private tsTree: TreeNode;
 
-  private clone: <T extends object | unknown>(myObj: T) => T;
+  private clone!: <T extends object | unknown>(myObj: T) => T;
 
   constructor(tsRef: TsRef, extTsObjTree: TsObjTree) {
     this.tsRef = tsRef;

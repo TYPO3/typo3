@@ -21,9 +21,9 @@ import { html, LitElement, nothing, type TemplateResult } from 'lit';
  */
 @customElement('typo3-install-infobox')
 export class InfoBox extends LitElement {
-  @property({ type: Number }) severity: number;
-  @property({ type: String }) subject: string;
-  @property({ type: String }) content: string;
+  @property({ type: Number }) severity: number = 0;
+  @property({ type: String }) subject: string = '';
+  @property({ type: String }) content: string = '';
 
   public static create(severity: number, subject: string, content: string = ''): InfoBox {
     const doc = topDocument;

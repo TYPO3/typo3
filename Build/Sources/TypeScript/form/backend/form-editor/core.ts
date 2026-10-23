@@ -969,7 +969,7 @@ function createModel<D extends object, T extends ModelData<D>>(modelExtension: T
 
 export class Repository {
 
-  public formEditorDefinitions: FormEditorDefinitions;
+  public formEditorDefinitions!: FormEditorDefinitions;
 
   /**
    * @throws 1475364394

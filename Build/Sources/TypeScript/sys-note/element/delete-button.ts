@@ -30,12 +30,12 @@ import type ResponseInterface from '@typo3/backend/ajax-data-handler/response-in
  */
 @customElement('typo3-sysnote-delete-button')
 export class DeleteButton extends PseudoButtonLitElement {
-  @property({ type: Number }) uid: number;
-  @property({ type: String, attribute: 'return-url' }) returnUrl: string;
-  @property({ type: String, attribute: 'modal-title' }) modalTitle: string;
-  @property({ type: String, attribute: 'modal-content' }) modalContent: string;
-  @property({ type: String, attribute: 'modal-button-ok' }) okButtonLabel: string;
-  @property({ type: String, attribute: 'modal-button-cancel' }) cancelButtonLabel: string;
+  @property({ type: Number }) uid: number = 0;
+  @property({ type: String, attribute: 'return-url' }) returnUrl: string = '';
+  @property({ type: String, attribute: 'modal-title' }) modalTitle: string = '';
+  @property({ type: String, attribute: 'modal-content' }) modalContent: string = '';
+  @property({ type: String, attribute: 'modal-button-ok' }) okButtonLabel: string = '';
+  @property({ type: String, attribute: 'modal-button-cancel' }) cancelButtonLabel: string = '';
 
   protected override buttonActivated(): void {
     Modal.advanced({

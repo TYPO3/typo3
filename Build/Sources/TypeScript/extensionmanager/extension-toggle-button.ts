@@ -50,9 +50,9 @@ interface CheckResponse {
 export class ExtensionToggleButton extends LitElement {
   private static readonly focusSessionKey: string = 'extensionManager.focusExtension';
 
-  @property({ type: String, attribute: 'check-url' }) checkUrl: string;
-  @property({ type: String }) url: string;
-  @property({ type: String, attribute: 'extension-key' }) extensionKey: string;
+  @property({ type: String, attribute: 'check-url' }) checkUrl: string = '';
+  @property({ type: String }) url: string = '';
+  @property({ type: String, attribute: 'extension-key' }) extensionKey: string = '';
   @property({ type: Boolean }) installed: boolean = false;
   @property({ type: String }) label: string = '';
   @property({ type: Boolean, attribute: 'show-label' }) showLabel: boolean = false;

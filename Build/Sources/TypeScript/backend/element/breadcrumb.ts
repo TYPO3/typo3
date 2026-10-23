@@ -58,7 +58,7 @@ export class Breadcrumb extends LitElement
   @property({ type: Boolean }) alignRight: boolean = false;
   @property({ type: String }) label: string = 'Breadcrumb';
   @property({ type: String }) mode: BreadcrumbMode = BreadcrumbMode.FULL;
-  private identifier: string;
+  private identifier!: string;
   private collapsedNodes: BreadcrumbNodeInterface[] = [];
   private resizeObserver!: ResizeObserver;
   private intersectionObserver!: IntersectionObserver;

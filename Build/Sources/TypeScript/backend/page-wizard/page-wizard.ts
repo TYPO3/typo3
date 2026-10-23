@@ -48,13 +48,13 @@ export class PageWizard extends LitElement {
   @property({ type: Object }) configuration?: PageWizardConfiguration = null!;
 
   @state() steps: WizardStepInterface[] = [];
-  @state() submissionService: SubmissionServiceInterface;
+  @state() submissionService: SubmissionServiceInterface | undefined;
 
   @query('typo3-backend-wizard') wizard!: Wizard<PageWizardDataStore>;
 
   private fixedSteps: WizardStepInterface[] = [];
 
-  private context: PageWizardContext;
+  private context!: PageWizardContext;
 
   protected override firstUpdated(_changedProperties: PropertyValues): void {
     super.firstUpdated(_changedProperties);

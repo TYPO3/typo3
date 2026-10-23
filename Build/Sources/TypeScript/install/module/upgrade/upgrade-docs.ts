@@ -36,8 +36,8 @@ enum Identifiers {
  * Module: @typo3/install/module/upgrade-docs
  */
 class UpgradeDocs extends AbstractInteractableModule {
-  private selectPureField: SelectPure;
-  private fulltextSearchField: HTMLInputElement;
+  private selectPureField!: SelectPure;
+  private fulltextSearchField!: HTMLInputElement;
 
   public override initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);

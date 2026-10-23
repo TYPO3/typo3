@@ -217,7 +217,7 @@ export class Dashboard extends LitElement {
   @state() currentDashboard: DashboardInterface | null = null;
   @state() columns: number = 4;
   @state() dragInformation: DashboardDragInformation | null = null;
-  @query('.dashboard-dragging-container') draggingContainer: HTMLElement;
+  @query('.dashboard-dragging-container') draggingContainer!: HTMLElement;
   private resizeObserver: ResizeObserver | null = null;
   private readonly clientStorageIdentifier: string = 'dashboard/current_dashboard';
 
@@ -1220,7 +1220,7 @@ export class Dashboard extends LitElement {
 
 @customElement('typo3-dashboard-widget')
 export class DashboardWidget extends LitElement {
-  @property({ type: String, reflect: true }) public identifier: string;
+  @property({ type: String, reflect: true }) public identifier: string = '';
   @state() moving: boolean = false;
 
   private triggerContentRenderedEvent: boolean = false;

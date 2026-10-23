@@ -22,7 +22,7 @@ export const componentName = 'typo3-backend-settings-type-color';
 @customElement(componentName)
 export class ColorTypeElement extends BaseElement {
 
-  @property({ type: String }) override value: string;
+  @property({ type: String }) override value: string = '';
 
   protected override firstUpdated(): void {
     const inputElement = this.getInputElement();
