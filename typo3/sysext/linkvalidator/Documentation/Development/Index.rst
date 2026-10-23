@@ -20,6 +20,11 @@ Linkvalidator information for developers
         types of links. Learn how to implement a custom linktype within
         an extension.
 
+    ..  card:: :ref:`Custom link handler <linktype-custom-linkhandler>`
+
+        Validate links of a custom link handler like `t3://shop?...` with a
+        PSR-14 event listener and a linktype.
+
     ..  card:: :ref:`API <api>`
 
         Overview of important classes and interfaces in the public API.
@@ -29,4 +34,5 @@ Linkvalidator information for developers
     :titlesonly:
 
     LinkTypeImplementation
+    CustomLinkHandler
     Api/Index
