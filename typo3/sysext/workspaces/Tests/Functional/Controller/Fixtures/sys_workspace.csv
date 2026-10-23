@@ -1,0 +1,8 @@
+"sys_workspace"
+,"uid","pid","title","adminusers","members","deleted"
+,1,0,"Editor is member","","be_users_2",0
+,2,0,"Workspace without editor","","",0
+,3,0,"Deleted workspace","","be_users_2",1
+,4,0,"Editor is owner","be_users_2","",0
+,5,0,"Editor group is member","","be_groups_1",0
+,6,0,"Editor group is owner","be_groups_1","",0

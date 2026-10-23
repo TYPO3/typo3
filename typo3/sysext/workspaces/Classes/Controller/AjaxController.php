@@ -55,13 +55,14 @@ class AjaxController
         $originalPageId = $pageId;
 
         $this->getBackendUser()->setWorkspace($workspaceId);
+        $switchedWorkspaceId = $this->getBackendUser()->workspace;
 
         while ($pageId) {
             $page = BackendUtility::getRecordWSOL(
                 'pages',
                 $pageId,
                 '*',
-                ' AND pages.t3ver_wsid IN (0, ' . $workspaceId . ')'
+                ' AND pages.t3ver_wsid IN (0, ' . $switchedWorkspaceId . ')'
             );
             if ($page) {
                 if ($this->getBackendUser()->doesUserHaveAccess($page, Permission::PAGE_SHOW)) {
@@ -78,8 +79,8 @@ class AjaxController
         }
 
         $ajaxResponse = [
-            'title'       => $this->workspaceService->getWorkspaceTitle($workspaceId),
-            'workspaceId' => $workspaceId,
+            'title'       => $this->workspaceService->getWorkspaceTitle($switchedWorkspaceId),
+            'workspaceId' => $switchedWorkspaceId,
             'pageId'      => ($finalPageUid && $originalPageId == $finalPageUid) ? null : $finalPageUid,
             'pageModule'  => $this->moduleProvider->accessGranted('web_layout', $this->getBackendUser()) ? 'web_layout' : '',
         ];
