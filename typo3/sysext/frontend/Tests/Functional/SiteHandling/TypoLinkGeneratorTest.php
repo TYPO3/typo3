@@ -692,6 +692,35 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
+    public static function linkToSectionOnCurrentPageIsGeneratedDataProvider(): array
+    {
+        return [
+            'current request without arguments' => [
+                [],
+                '<a href="#c300">Section</a>',
+            ],
+            'current request with query arguments' => [
+                ['tx_felogin_pi1[forgot]' => '1'],
+                '<a href="/welcome#c300">Section</a>',
+            ],
+        ];
+    }
+
+    #[DataProvider('linkToSectionOnCurrentPageIsGeneratedDataProvider')]
+    #[Test]
+    public function linkToSectionOnCurrentPageIsGenerated(array $queryParameters, string $expectation): void
+    {
+        $request = (new InternalRequest('https://acme.us/welcome'))
+            ->withQueryParameters($queryParameters)
+            ->withInstructions(
+                [
+                    $this->createTypoLinkInstruction(['parameter' => 't3://page?uid=1100#c300'], 'Section'),
+                ]
+            );
+        $response = $this->executeFrontendSubRequest($request);
+        self::assertSame($expectation, (string)$response->getBody());
+    }
+
     private function invokeTypoLink(string $parameter, InstructionInterface ...$instructions): ResponseInterface
     {
         $sourcePageId = 1100;

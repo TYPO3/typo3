@@ -656,6 +656,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
         $targetPageId = (int)($page['l10n_parent'] > 0 ? $page['l10n_parent'] : $page['uid']);
         $queryParameters['_language'] = $siteLanguageOfTargetPage;
         $pageObject = $this->recordFactory->createFromDatabaseRow('pages', $page);
+        $currentPageArguments = $request->getAttribute('routing');
 
         if ($fragment
             && $useAbsoluteUrl === false
@@ -664,6 +665,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
             && (empty($conf['addQueryString']) || !isset($conf['addQueryString.']))
             && !($frontendTypoScriptConfigArray['baseURL'] ?? false)
             && count($queryParameters) === 1 // _language is always set
+            && (!$currentPageArguments instanceof PageArguments || $currentPageArguments->getArguments() === [])
         ) {
             $uri = (new Uri())->withFragment($fragment);
         } else {
