@@ -437,7 +437,7 @@ readonly class RedirectService
         $mergedQueryParams = array_merge($queryParams, $queryParamsFromRequest);
         $originalRequest = $originalRequest->withQueryParams($mergedQueryParams);
         $pageArguments = new PageArguments($site->getRootPageId(), '0', []);
-        $originalRequest = $originalRequest->withAttribute('routing', $pageArguments);
+        $originalRequest = $originalRequest->withAttribute('routing', $pageArguments)->withAttribute('site', $site);
         $pageInformation = $this->pageInformationFactory->create($originalRequest);
         $originalRequest = $originalRequest->withAttribute('frontend.page.information', $pageInformation);
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
