@@ -59,7 +59,7 @@ class EnvironmentCheck extends AbstractInteractableModule {
   private runTests(): void {
     this.setModalButtonsState(false);
     const modalContent: HTMLElement = this.getModalBody();
-    const outputContainer: HTMLElement = modalContent.querySelector(Identifiers.outputContainer);
+    const outputContainer = modalContent.querySelector<HTMLElement>(Identifiers.outputContainer);
     if (outputContainer !== null) {
       this.renderProgressBar(outputContainer);
     }

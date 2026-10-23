@@ -82,7 +82,7 @@ class ExtensionScanner extends AbstractInteractableModule {
       // Scan a single extension by clicking "Rescan"
       event.preventDefault();
       const extension = target.closest<HTMLElement>(Identifiers.extensionContainer).dataset.extension;
-      this.scanSingleExtension(extension);
+      this.scanSingleExtension(extension ?? '');
     }).delegateTo(currentModal, Identifiers.scanSingleTrigger);
 
     new RegularEvent('click', (event: Event): void => {
@@ -120,7 +120,7 @@ class ExtensionScanner extends AbstractInteractableModule {
         const target = event.currentTarget as HTMLElement;
         if (typeof target.dataset.scanned === 'undefined') {
           const extension = target.dataset.extension;
-          this.scanSingleExtension(extension);
+          this.scanSingleExtension(extension ?? '');
           target.dataset.scanned = String(true);
         }
       }).bindTo(extensionContainer);
@@ -146,7 +146,7 @@ class ExtensionScanner extends AbstractInteractableModule {
     const scannerPromises = [...extensions].map(async (element): Promise<number> => {
       const extension = element.dataset.extension;
       try {
-        return await this.scanSingleExtension(extension);
+        return await this.scanSingleExtension(extension ?? '');
       } finally {
         element.dataset.scanned = String(true);
       }

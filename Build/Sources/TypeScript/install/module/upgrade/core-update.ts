@@ -30,8 +30,8 @@ enum Identifiers {
 
 type ActionItem = {
   loadingMessage: string;
-  finishMessage: string;
-  nextActionName: string;
+  finishMessage?: string;
+  nextActionName?: string;
 };
 
 type ActionQueue = {
@@ -185,7 +185,7 @@ class CoreUpdate extends AbstractInteractableModule {
   /**
    * Handle ajax result of core update step.
    */
-  private handleResult(data: any, successMessage: string): boolean {
+  private handleResult(data: any, successMessage?: string): boolean {
     const canContinue: boolean = data.success;
     this.removeLoadingMessage();
 

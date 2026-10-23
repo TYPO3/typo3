@@ -116,7 +116,7 @@ class Presets extends AbstractInteractableModule {
     this.setModalButtonsState(false);
 
     const modalContent = this.getModalBody();
-    const executeToken: string = this.getModuleContent().dataset.presetsActivateToken;
+    const executeToken: string = this.getModuleContent().dataset.presetsActivateToken ?? '';
     const postData: Record<string, string> = {};
     const formData = new FormData(this.findInModal('form'));
     for (const [name, value] of formData) {

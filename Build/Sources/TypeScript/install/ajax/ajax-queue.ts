@@ -57,7 +57,7 @@ class AjaxQueue {
     const request = new AjaxRequest(payload.url);
     let response: Promise<AjaxResponse>;
     if (typeof payload.method !== 'undefined' && payload.method.toUpperCase() === 'POST') {
-      response = request.post(payload.data);
+      response = request.post(payload.data ?? {});
     } else {
       response = request.withQueryArguments(payload.data || {}).get();
     }

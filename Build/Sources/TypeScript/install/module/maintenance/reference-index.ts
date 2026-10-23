@@ -109,7 +109,8 @@ class ReferenceIndex extends AbstractInteractableModule {
           progressBar.remove();
 
           if (data.success === true && data.result && resultContainer) {
-            const hasErrors = data.result.errors && data.result.errors.length > 0;
+            const errors = data.result.errors ?? [];
+            const hasErrors = errors.length > 0;
             const state = hasErrors ? 'warning' : 'success';
             const iconIdentifier = hasErrors ? 'actions-exclamation' : 'actions-check';
             const title = data.result.resultText || (hasErrors ? 'Issues Found' : 'Reference index is up to date');
@@ -117,7 +118,7 @@ class ReferenceIndex extends AbstractInteractableModule {
             // Build error list or success message
             let bodyContent = '';
             if (hasErrors) {
-              const errorItems = data.result.errors.map((error) => `<li>${error}</li>`).join('');
+              const errorItems = errors.map((error) => `<li>${error}</li>`).join('');
               bodyContent = `<ul class="list-unstyled">${errorItems}</ul>`;
             } else {
               bodyContent = 'Index integrity is perfect.';

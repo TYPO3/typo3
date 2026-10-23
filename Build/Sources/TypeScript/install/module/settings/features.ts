@@ -75,7 +75,7 @@ class Features extends AbstractInteractableModule {
       postData[name] = value.toString();
     }
     postData['install[action]'] = 'featuresSave';
-    postData['install[token]'] = executeToken;
+    postData['install[token]'] = executeToken ?? '';
     (new AjaxRequest(Router.getUrl()))
       .post(postData)
       .then(

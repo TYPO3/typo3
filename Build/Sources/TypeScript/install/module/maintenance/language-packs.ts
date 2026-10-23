@@ -93,7 +93,7 @@ class LanguagePacks extends AbstractInteractableModule {
             this.activeLanguages = data.activeLanguages;
             this.activeExtensions = data.activeExtensions;
             modalContent.innerHTML = html;
-            const contentContainer: HTMLElement = modalContent.parentElement.querySelector(Identifiers.contentContainer);
+            const contentContainer = modalContent.parentElement.querySelector<HTMLElement>(Identifiers.contentContainer);
             contentContainer.innerHTML = '';
 
             const documentRef = topDocument;

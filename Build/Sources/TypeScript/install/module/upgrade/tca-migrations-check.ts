@@ -53,7 +53,7 @@ class TcaMigrationsCheck extends AbstractInteractableModule {
 
   private check(): void {
     this.setModalButtonsState(false);
-    const outputContainer: HTMLElement = document.querySelector(Identifiers.outputContainer);
+    const outputContainer = document.querySelector<HTMLElement>(Identifiers.outputContainer);
     if (outputContainer !== null) {
       this.renderProgressBar(outputContainer, {}, 'append');
     }

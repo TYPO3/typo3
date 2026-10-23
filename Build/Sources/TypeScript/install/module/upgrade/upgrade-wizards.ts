@@ -166,7 +166,7 @@ class UpgradeWizards extends AbstractInteractableModule {
     new RegularEvent('click', (event: Event, target: HTMLInputElement): void => {
       target.disabled = true;
 
-      this.markUndone(target.dataset.identifier);
+      this.markUndone(target.dataset.identifier ?? '');
     }).delegateTo(currentModal, Identifiers.wizardsDoneRowMarkUndone);
 
     // Execute "fix default mysql connection db charset" blocking wizard
@@ -181,12 +181,12 @@ class UpgradeWizards extends AbstractInteractableModule {
 
     // Get user input of a single upgrade wizard
     new RegularEvent('click', (event: Event, target: HTMLElement): void => {
-      this.wizardInput(target.dataset.identifier, target.dataset.title);
+      this.wizardInput(target.dataset.identifier ?? '', target.dataset.title ?? '');
     }).delegateTo(currentModal, Identifiers.wizardsListRowExecute);
 
     // Execute one upgrade wizard
     new RegularEvent('click', (event: Event, target: HTMLElement): void => {
-      this.wizardExecute(target.dataset.identifier, target.dataset.title);
+      this.wizardExecute(target.dataset.identifier ?? '', target.dataset.title ?? '');
     }).delegateTo(currentModal, Identifiers.wizardsInputPerform);
 
     // Abort upgrade wizard
@@ -233,7 +233,7 @@ class UpgradeWizards extends AbstractInteractableModule {
             if (data.needsUpdate === true) {
               UpgradeWizards.removeLoadingMessage(outputContainer);
               modalContent.querySelector(Identifiers.outputWizardsContainer)
-                .appendChild((modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsBlockingCharsetTemplate)).content.cloneNode(true));
+                .appendChild(modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsBlockingCharsetTemplate).content.cloneNode(true));
             } else {
               this.blockingUpgradesDatabaseAdds();
             }
@@ -478,7 +478,7 @@ class UpgradeWizards extends AbstractInteractableModule {
     const modalContent = this.getModalBody();
     const postData: Record<string, string> = {
       'install[action]': 'upgradeWizardsExecute',
-      'install[token]': executeToken,
+      'install[token]': executeToken ?? '',
       'install[identifier]': identifier,
     };
     const formData = new FormData(this.findInModal(Identifiers.outputWizardsContainer + ' form') as HTMLFormElement);
@@ -536,13 +536,13 @@ class UpgradeWizards extends AbstractInteractableModule {
                 outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
               });
             }
-            const body = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsDoneBodyTemplate)).content.cloneNode(true) as HTMLElement;
+            const body = modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsDoneBodyTemplate).content.cloneNode(true) as HTMLElement;
             const wizardsDoneContainer = body.querySelector(Identifiers.wizardsDoneRows);
             let hasBodyContent: boolean = false;
             if (Array.isArray(data.wizardsDone) && data.wizardsDone.length > 0) {
               data.wizardsDone.forEach((element): void => {
                 hasBodyContent = true;
-                const aRow = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsDoneRowTemplate)).content.cloneNode(true) as HTMLElement;
+                const aRow = modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsDoneRowTemplate).content.cloneNode(true) as HTMLElement;
                 aRow.querySelector(Identifiers.wizardsDoneRowMarkUndone).setAttribute('data-identifier', element.identifier);
                 aRow.querySelector<HTMLElement>(Identifiers.wizardsDoneRowTitle).innerText = element.title;
                 wizardsDoneContainer.appendChild(aRow);
@@ -551,7 +551,7 @@ class UpgradeWizards extends AbstractInteractableModule {
             if (Array.isArray(data.rowUpdatersDone) && data.rowUpdatersDone.length > 0) {
               data.rowUpdatersDone.forEach((element): void => {
                 hasBodyContent = true;
-                const aRow = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsDoneRowTemplate)).content.cloneNode(true) as HTMLElement;
+                const aRow = modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsDoneRowTemplate).content.cloneNode(true) as HTMLElement;
                 aRow.querySelector(Identifiers.wizardsDoneRowMarkUndone).setAttribute('data-identifier', element.identifier);
                 aRow.querySelector<HTMLElement>(Identifiers.wizardsDoneRowTitle).innerText = element.title;
                 wizardsDoneContainer.appendChild(aRow);

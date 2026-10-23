@@ -61,7 +61,7 @@ class LocalConfiguration extends AbstractInteractableModule {
       this.toggleAll = !this.toggleAll;
       const action = this.toggleAll ? 'show' : 'hide';
       panels.forEach((panel) => {
-        const toggleButton: HTMLElement = modalContent.querySelector(`[data-bs-target="#${panel.id}"]`);
+        const toggleButton = modalContent.querySelector<HTMLElement>(`[data-bs-target="#${panel.id}"]`);
         if (toggleButton) {
           toggleButton.classList.toggle('collapsed', !this.toggleAll);
         }
@@ -142,7 +142,7 @@ class LocalConfiguration extends AbstractInteractableModule {
         }
       }
 
-      const rowTemplate = (container.querySelector<HTMLTemplateElement>('#' + CSS.escape(container.dataset.namespace))).content.cloneNode(true) as DocumentFragment;
+      const rowTemplate = container.querySelector<HTMLTemplateElement>('#' + CSS.escape(container.dataset.namespace ?? '')).content.cloneNode(true) as DocumentFragment;
       container.querySelector('.configuration-map-item-collection').append(rowTemplate);
 
       const lastRow = querySelectorLast(Identifiers.configurationItem);
@@ -164,7 +164,9 @@ class LocalConfiguration extends AbstractInteractableModule {
 
     this.currentModal.querySelectorAll<HTMLElement>('.searchhit').forEach((resultElement) => {
       const collapseElement = resultElement.closest('.panel-collapse');
-      Collapse.getOrCreateInstance(collapseElement).show();
+      if (collapseElement !== null) {
+        Collapse.getOrCreateInstance(collapseElement).show();
+      }
     });
   }
 
@@ -195,11 +197,12 @@ class LocalConfiguration extends AbstractInteractableModule {
     const collectedArrayKeys: Record<string, string[]> = {};
     const collectedArrayValues: Record<string, string[]> = {};
     this.currentModal.querySelectorAll<HTMLInputElement>('.t3js-localConfiguration-pathValue').forEach((element): void => {
+      const path = element.dataset.path ?? '';
       if (element.type === 'checkbox') {
         if (element.checked) {
-          configurationValues[element.dataset.path] = '1';
+          configurationValues[path] = '1';
         } else {
-          configurationValues[element.dataset.path] = '0';
+          configurationValues[path] = '0';
         }
       } else {
         if (element.dataset.valuetype === 'map' || element.dataset.valuetype === 'element-list') {
@@ -220,14 +223,14 @@ class LocalConfiguration extends AbstractInteractableModule {
           // indexed by their main key ("GFX/someKey") so they can later be easily piped into it as JavaScript array.
 
           // The "value[]" portion is always required (for map+list), but "key[]" can be optional (only needed for map)
-          if (element.dataset.path.includes('/key[]') && element.value !== '') {
-            const itemArrayPath = element.dataset.path.replace('/key[]', '');
+          if (path.includes('/key[]') && element.value !== '') {
+            const itemArrayPath = path.replace('/key[]', '');
             if (collectedArrayKeys[itemArrayPath] === undefined) {
               collectedArrayKeys[itemArrayPath] = [];
             }
             collectedArrayKeys[itemArrayPath].push(element.value);
-          } else if (element.dataset.path.includes('/value[]') && element.value !== '') {
-            const itemArrayPath = element.dataset.path.replace('/value[]', '');
+          } else if (path.includes('/value[]') && element.value !== '') {
+            const itemArrayPath = path.replace('/value[]', '');
             if (collectedArrayValues[itemArrayPath] === undefined) {
               collectedArrayValues[itemArrayPath] = [];
             }
@@ -235,7 +238,7 @@ class LocalConfiguration extends AbstractInteractableModule {
           }
         } else {
           // Regular input string values.
-          configurationValues[element.dataset.path] = element.value;
+          configurationValues[path] = element.value;
         }
       }
     });
