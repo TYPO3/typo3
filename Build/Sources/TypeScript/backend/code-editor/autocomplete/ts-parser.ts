@@ -182,7 +182,7 @@ export class TsParser {
       insideCondition = false;
     const stack = new Stack<string>();
     const prefixes = [];
-    let path;
+    let path: string | undefined;
 
     while (currentLine <= completionState.currentLineNumber) {
       line = '';

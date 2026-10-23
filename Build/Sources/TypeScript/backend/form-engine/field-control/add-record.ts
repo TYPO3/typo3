@@ -33,7 +33,7 @@ class AddRecord {
   private readonly registerClickHandler = (e: Event): void => {
     e.preventDefault();
 
-    const href = this.controlElement.getAttribute('href');
+    const href = this.controlElement.getAttribute('href') ?? '';
     const url = new URL(href, window.location.origin);
     const ownerUid = url.searchParams.get('P[uid]') || '';
     if (ownerUid.startsWith('NEW')) {

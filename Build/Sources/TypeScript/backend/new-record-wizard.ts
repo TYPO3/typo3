@@ -428,7 +428,7 @@ export class NewRecordWizard extends LitElement {
     this.shadowRoot.appendChild(link);
 
     if (this.displayFilter === true) {
-      const filterField: HTMLInputElement = this.renderRoot.querySelector('input[name="search"]');
+      const filterField = this.renderRoot.querySelector<HTMLInputElement>('input[name="search"]');
       filterField.focus();
     }
 

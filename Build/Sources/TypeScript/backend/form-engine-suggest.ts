@@ -35,7 +35,7 @@ class FormEngineSuggest {
   }
 
   private initialize(searchField: HTMLElement): void {
-    const containerElement: Element = searchField.closest('.t3-form-suggest-container');
+    const containerElement = searchField.closest<Element>('.t3-form-suggest-container');
 
     this.resultContainer = document.createElement('typo3-backend-formengine-suggest-result-container');
     this.resultContainer.hidden = true;
@@ -51,7 +51,7 @@ class FormEngineSuggest {
         insertData = e.detail.element.table + '_' + e.detail.element.uid;
       }
       FormEngine.setSelectOptionFromExternalSource(this.element.dataset.field, insertData, e.detail.element.label, e.detail.element.label);
-      FormEngine.markFieldAsChanged(document.querySelector<HTMLInputElement>(selector`input[name="${this.element.dataset.field}"]`));
+      FormEngine.markFieldAsChanged(document.querySelector<HTMLInputElement>(selector`input[name="${this.element.dataset.field ?? ''}"]`));
       this.resultContainer.hidden = true;
     }).bindTo(this.resultContainer);
 
@@ -78,18 +78,18 @@ class FormEngineSuggest {
 
       const target = e.target as HTMLInputElement;
 
-      if (target.value.length < parseInt(target.dataset.minchars, 10)) {
+      if (target.value.length < parseInt(target.dataset.minchars ?? '', 10)) {
         return;
       }
 
-      const uid = parseInt(target.dataset.uid, 10);
+      const uid = parseInt(target.dataset.uid ?? '', 10);
       this.currentRequest = new AjaxRequest(TYPO3.settings.ajaxUrls.record_suggest);
       this.currentRequest.post({
         value: target.value,
         tableName: target.dataset.tablename,
         fieldName: target.dataset.fieldname,
         uid: (isNaN(uid) ? null : uid),
-        pid: parseInt(target.dataset.pid, 10),
+        pid: parseInt(target.dataset.pid ?? '', 10),
         dataStructureIdentifier: target.dataset.datastructureidentifier,
         flexFormSheetName: target.dataset.flexformsheetname,
         flexFormFieldName: target.dataset.flexformfieldname,

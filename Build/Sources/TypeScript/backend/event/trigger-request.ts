@@ -14,7 +14,7 @@
 import InteractionRequest from './interaction-request';
 
 class TriggerRequest extends InteractionRequest {
-  constructor(type: string, parentRequest: InteractionRequest = null) {
+  constructor(type: string, parentRequest: InteractionRequest | null = null) {
     super(type, parentRequest);
   }
 

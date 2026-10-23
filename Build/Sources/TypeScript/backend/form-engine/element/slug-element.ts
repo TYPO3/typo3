@@ -91,7 +91,7 @@ class SlugElement {
 
   private registerEvents(): void {
     const fieldsToListenOnList = Object.values(this.getAvailableFieldsForProposalGeneration()).map((field) => field.dataset.slugSelector);
-    const recreateButton: HTMLButtonElement = this.fullElement.querySelector(Selectors.recreateButton);
+    const recreateButton = this.fullElement.querySelector<HTMLButtonElement>(Selectors.recreateButton);
 
     // Listen on 'listenerFieldNames' for new pages. This is typically the 'title' field
     // of a page to create slugs from the title when title is set / changed.
@@ -187,8 +187,8 @@ class SlugElement {
       signature: this.options.signature,
     }).then(async (response: AjaxResponse): Promise<void> => {
       const data: Response = await response.resolve();
-      const acceptedProposalField: HTMLElement = this.fullElement.querySelector('.t3js-form-proposal-accepted');
-      const differentProposalField: HTMLElement = this.fullElement.querySelector('.t3js-form-proposal-different');
+      const acceptedProposalField = this.fullElement.querySelector<HTMLElement>('.t3js-form-proposal-accepted');
+      const differentProposalField = this.fullElement.querySelector<HTMLElement>('.t3js-form-proposal-different');
 
       acceptedProposalField.classList.toggle('hidden', data.hasConflicts);
       differentProposalField.classList.toggle('hidden', !data.hasConflicts);

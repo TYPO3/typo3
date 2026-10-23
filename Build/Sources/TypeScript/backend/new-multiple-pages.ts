@@ -54,7 +54,7 @@ class NewMultiplePages {
    * Add further input rows
    */
   private createNewFormFields(): void {
-    const multiplePagesContainer: HTMLDivElement = document.querySelector(Identifiers.containerSelector);
+    const multiplePagesContainer = document.querySelector<HTMLDivElement>(Identifiers.containerSelector);
     const lineMarkup: string = document.querySelector(Identifiers.templateRow)?.innerHTML || '';
     if (multiplePagesContainer === null || lineMarkup === '') {
       return;

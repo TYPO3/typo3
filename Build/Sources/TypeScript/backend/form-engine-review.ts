@@ -90,7 +90,7 @@ export class FormEngineReview {
    * Checks if fields have failed validation. In such case, the markup is rendered and the toggle button is unlocked.
    */
   private checkForReviewableField(): void {
-    const toggleButton: HTMLElement = document.querySelector('.' + this.toggleButtonClass);
+    const toggleButton = document.querySelector<HTMLElement>('.' + this.toggleButtonClass);
     if (toggleButton === null) {
       return;
     }

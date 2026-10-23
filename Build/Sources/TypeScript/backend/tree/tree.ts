@@ -178,7 +178,7 @@ export class Tree extends LitElement {
       return null;
     }
 
-    return this.getNodeByTreeIdentifier(element.dataset.treeId);
+    return this.getNodeByTreeIdentifier(element.dataset.treeId ?? '');
   }
 
   public getElementFromNode(node: TreeNodeInterface): HTMLElement|null {

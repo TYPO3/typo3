@@ -8,26 +8,31 @@ type Keyword = {
 };
 
 type CombinatorReturnType = boolean | undefined;
-type CombinatorFunction = (type?: Type, value?: Value) => CombinatorReturnType;
-type CombinatorLexFunction = ((type?: Type, value?: Value) => CombinatorReturnType) & { lex: true };
+/**
+ * Combinators are pushed on a stack and invoked generically, so the concrete
+ * shape of their arguments is only known to the combinator itself.
+ */
+type CombinatorFunction = (...args: never[]) => CombinatorReturnType;
+type CombinatorLexFunction = ((...args: never[]) => CombinatorReturnType) & { lex: true };
+type CombinatorInvocation = (type?: Type, value?: Value) => CombinatorReturnType;
 type CC = CombinatorFunction | CombinatorLexFunction;
 
 type CX = {
-  state: State,
+  state: State | null,
   stream?: StringStream,
-  column: number,
-  marked: string,
+  column: number | null,
+  marked: string | null,
   style?: string,
-  cc: CC[]
+  cc: CC[] | null
 };
 
 type LocalVars = {
   name: string,
-  next: LocalVars
+  next: LocalVars | null
 };
 
 type Context = {
-  vars: LocalVars,
+  vars: LocalVars | null,
   prev?: Context | null
 };
 
@@ -36,8 +41,8 @@ type State = {
   lastType: Type,
   cc: CC[],
   lexical: TSLexical,
-  localVars: LocalVars,
-  context: Context,
+  localVars: LocalVars | null,
+  context: Context | null,
   indented: number,
 };
 
@@ -74,9 +79,9 @@ export class TypoScriptStreamParserFactory {
     const wordRE = /[\w$\xa1-\uffff]/;
     //const statementIndent = undefined;
     const statementIndent = false;
-    const parserConfig: { name: string, localVars: LocalVars, doubleIndentSwitch: boolean } = {
+    const parserConfig: { name: string, localVars: LocalVars | null, doubleIndentSwitch: boolean } = {
       name: 'typoscript',
-      localVars: undefined,
+      localVars: null,
       doubleIndentSwitch: false,
     };
 
@@ -1100,7 +1105,7 @@ export class TypoScriptStreamParserFactory {
           return true;
         }
       }
-      for (let cx = state.context; cx; cx = cx.prev) {
+      for (let cx = state.context; cx; cx = cx.prev ?? null) {
         for (let v = cx.vars; v; v = v.next) {
           if (v.name == varname) {
             return true;
@@ -1135,9 +1140,9 @@ export class TypoScriptStreamParserFactory {
 
       while (true) {
         const combinator = cc.length ? cc.pop() : statement;
-        if (typeof combinator === 'function' && combinator(type, content)) {
+        if (typeof combinator === 'function' && (combinator as CombinatorInvocation)(type, content)) {
           while (cc.length && cc[cc.length - 1] && (cc[cc.length - 1] as CombinatorLexFunction).lex) {
-            cc.pop()();
+            (cc.pop() as CombinatorInvocation)();
           }
           if (cx.marked) {
             return cx.marked;
@@ -1165,7 +1170,7 @@ export class TypoScriptStreamParserFactory {
     }
 
     function register(varname: string): void {
-      function inList(list: LocalVars): boolean {
+      function inList(list: LocalVars | null): boolean {
         for (let v = list; v; v = v.next) {
           if (v.name == varname) {
             return true;

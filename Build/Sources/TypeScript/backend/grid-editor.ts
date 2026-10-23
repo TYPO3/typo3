@@ -26,7 +26,7 @@ import wizardLabels from '~labels/core.wizards';
 import commonLabels from '~labels/core.common';
 import altDocLabels from '~labels/backend.alt_doc';
 
-type Cell = { spanned: number, rowspan: number, colspan: number, name: string, colpos: string, column: number, identifier: string, slideMode: SlideModes, allowedContentTypes: string, disallowedContentTypes: string };
+type Cell = { spanned: number, rowspan: number, colspan: number, name: string, colpos: string, column: number | undefined, identifier: string, slideMode: SlideModes, allowedContentTypes: string, disallowedContentTypes: string };
 
 enum SlideModes {
   none = '',

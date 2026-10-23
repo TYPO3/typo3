@@ -402,7 +402,7 @@ export class SettingsEditorElement extends LitElement {
     `;
   }
 
-  protected filterCategories(categories: Category[] = null): FilteredCategory[] {
+  protected filterCategories(categories: Category[] | null = null): FilteredCategory[] {
     categories ??= this.categories;
     return categories.map(category => {
       const settings = this.filterSettings(category.settings);

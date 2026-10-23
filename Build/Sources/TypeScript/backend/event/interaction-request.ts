@@ -13,11 +13,11 @@
 
 class InteractionRequest {
   public readonly type: string;
-  public readonly parentRequest: InteractionRequest;
+  public readonly parentRequest: InteractionRequest | null;
   protected processed: boolean = false;
   protected processedData: any = null;
 
-  constructor(type: string, parentRequest: InteractionRequest = null) {
+  constructor(type: string, parentRequest: InteractionRequest | null = null) {
     this.type = type;
     this.parentRequest = parentRequest;
   }

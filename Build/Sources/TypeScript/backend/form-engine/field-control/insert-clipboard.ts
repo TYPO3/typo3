@@ -39,7 +39,7 @@ class InsertClipboard {
     e.preventDefault();
 
     const assignedElement: string = this.controlElement.dataset.element;
-    const clipboardItems: Array<ClipboardItem> = JSON.parse(this.controlElement.dataset.clipboardItems);
+    const clipboardItems: Array<ClipboardItem> = JSON.parse(this.controlElement.dataset.clipboardItems ?? '');
 
     for (const item of clipboardItems) {
       FormEngine.setSelectOptionFromExternalSource(assignedElement, item.value, item.title, item.title);

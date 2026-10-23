@@ -46,10 +46,10 @@ export class SelectTreeElement {
     const settings = {
       id: treeWrapperId,
       dataUrl: this.generateRequestUrl(),
-      readOnlyMode: parseInt(this.recordField.dataset.readOnly, 10) === 1,
+      readOnlyMode: parseInt(this.recordField.dataset.readOnly ?? '', 10) === 1,
       input: this.recordField,
       exclusiveNodesIdentifiers: this.recordField.dataset.treeExclusiveKeys,
-      validation: JSON.parse(this.recordField.dataset.formengineValidationRules)[0],
+      validation: JSON.parse(this.recordField.dataset.formengineValidationRules ?? '')[0],
       expandUpToLevel: this.recordField.dataset.treeExpandUpToLevel,
       unselectableElements: [] as Array<any>
     };

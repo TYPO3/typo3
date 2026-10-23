@@ -190,7 +190,7 @@ class ImageManipulation {
    * @desc Initialize the cropper modal and dispatch the cropper init
    */
   private async initializeCropperModal(): Promise<void> {
-    const image: HTMLImageElement = this.currentModal.querySelector(this.cropImageSelector);
+    const image = this.currentModal.querySelector<HTMLImageElement>(this.cropImageSelector);
 
     await new Promise<void>((resolve) => {
       if (image.complete) {
@@ -263,7 +263,7 @@ class ImageManipulation {
    * @desc Initializes the cropper UI and sets up all the event bindings for the UI
    */
   private init(): void {
-    const image: HTMLImageElement = this.currentModal.querySelector(this.cropImageSelector);
+    const image = this.currentModal.querySelector<HTMLImageElement>(this.cropImageSelector);
     const data: string = this.trigger.dataset.cropVariants;
 
     if (!data) {
@@ -276,7 +276,7 @@ class ImageManipulation {
     this.cropVariantTriggers = this.currentModal.querySelectorAll('.t3js-crop-variant-trigger');
     this.activeCropVariantTrigger = this.currentModal.querySelector('.t3js-crop-variant-trigger.is-active');
     this.cropInfo = this.currentModal.querySelector(this.cropInfoSelector);
-    this.currentCropVariant = this.data[this.activeCropVariantTrigger.dataset.cropVariantId];
+    this.currentCropVariant = this.data[this.activeCropVariantTrigger.dataset.cropVariantId ?? ''];
 
     /**
      * Assign EventListener to cropVariantTriggers
@@ -296,7 +296,7 @@ class ImageManipulation {
         this.activeCropVariantTrigger.classList.remove('is-active');
         (e.currentTarget as HTMLElement).classList.add('is-active');
         this.activeCropVariantTrigger = e.currentTarget as HTMLElement;
-        const cropVariant: CropVariant = this.data[this.activeCropVariantTrigger.dataset.cropVariantId];
+        const cropVariant: CropVariant = this.data[this.activeCropVariantTrigger.dataset.cropVariantId ?? ''];
         const imageData: Cropper.ImageData = this.cropper.getImageData();
         cropVariant.cropArea = this.convertRelativeToAbsoluteCropArea(cropVariant.cropArea, imageData);
         this.currentCropVariant = Object.assign({}, cropVariant);
@@ -407,7 +407,7 @@ class ImageManipulation {
             // if the currently selected crop variant is now disabled, open the first available one.
             const isDisabled = this.currentModal.querySelector('.panel-button[data-crop-variant-id="' + this.currentCropVariant.id + '"][data-exclude-from-sync="true"]') !== null;
             if (isDisabled) {
-              const e: HTMLElement = this.currentModal.querySelector('.panel-button[data-exclude-from-sync="false"]');
+              const e = this.currentModal.querySelector<HTMLElement>('.panel-button[data-exclude-from-sync="false"]');
               if (e) {
                 e.click();
               }
@@ -438,13 +438,13 @@ class ImageManipulation {
     this.initialized = true;
 
     const imageData: Cropper.ImageData = this.cropper.getImageData();
-    const image: HTMLImageElement = this.currentModal.querySelector(this.cropImageSelector);
+    const image = this.currentModal.querySelector<HTMLImageElement>(this.cropImageSelector);
 
     // Make the image in the backdrop visible again.
     // TODO: Check why this doesn't happen automatically.
     this.currentModal.querySelector('.cropper-canvas img')?.classList.remove('cropper-hide');
 
-    this.imageOriginalSizeFactor = parseInt(image.dataset.originalWidth, 10) / imageData.naturalWidth;
+    this.imageOriginalSizeFactor = parseInt(image.dataset.originalWidth ?? '', 10) / imageData.naturalWidth;
 
     // iterate over the crop variants and set up their respective preview
     this.cropVariantTriggers.forEach((elem): void => {
@@ -848,7 +848,7 @@ class ImageManipulation {
       }
 
       let previewWidth: number = preview.getBoundingClientRect().width;
-      let previewHeight: number = parseInt(preview.dataset.previewHeight, 10);
+      let previewHeight: number = parseInt(preview.dataset.previewHeight ?? '', 10);
 
       // adjust aspect ratio of preview width/height
       const aspectRatio: number = cropData.width / cropData.height;
@@ -912,7 +912,7 @@ class ImageManipulation {
    */
   private save(data: Record<string, CropVariant>): void {
     const cropVariants: string = ImageManipulation.serializeCropVariants(data);
-    const hiddenField: HTMLInputElement = document.querySelector(`#${this.trigger.dataset.field}`);
+    const hiddenField = document.querySelector<HTMLInputElement>(`#${this.trigger.dataset.field}`);
     this.trigger.dataset.cropVariants = JSON.stringify(data);
     this.setPreviewImages(data);
     hiddenField.value = cropVariants;

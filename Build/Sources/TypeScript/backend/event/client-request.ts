@@ -16,7 +16,7 @@ import InteractionRequest from './interaction-request';
 class ClientRequest extends InteractionRequest {
   public readonly clientEvent: any;
 
-  constructor(type: string, clientEvent: Event = null) {
+  constructor(type: string, clientEvent: Event | null = null) {
     super(type);
     this.clientEvent = clientEvent;
   }

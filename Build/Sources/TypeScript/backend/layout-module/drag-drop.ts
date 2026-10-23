@@ -125,8 +125,8 @@ class DragDrop {
 
     event.dataTransfer.setData(DataTransferTypes.content, JSON.stringify({
       pid: this.getCurrentPageId(),
-      uid: parseInt(content.dataset.uid, 10),
-      language: parseInt(content.dataset.languageUid, 10),
+      uid: parseInt(content.dataset.uid ?? '', 10),
+      language: parseInt(content.dataset.languageUid ?? '', 10),
       cType: this.draggedContentType,
       content: content.outerHTML,
       moveElementUrl: content.dataset.moveElementUrl,
@@ -177,7 +177,7 @@ class DragDrop {
       let targetPid: number;
       if (targetFound === undefined) {
         // the actual page is needed. Read it from the container into which the element was dropped.
-        targetPid = parseInt((dropContainer.closest<HTMLElement>('[data-page]')).dataset.page, 10);
+        targetPid = parseInt(dropContainer.closest<HTMLElement>('[data-page]').dataset.page, 10);
       } else {
         // the negative value of the content element after where it should be moved
         targetPid = 0 - parseInt(targetFound, 10);
@@ -188,7 +188,7 @@ class DragDrop {
       // Keep in sync with LanguageMarker::ALL_LANGUAGES on the PHP side.
       if (language !== -1) {
         // new elements language must be the same as the column the element is dropped in if element is not -1
-        language = parseInt((dropContainer.closest<HTMLElement>('[data-language-uid]')).dataset.languageUid, 10);
+        language = parseInt(dropContainer.closest<HTMLElement>('[data-language-uid]').dataset.languageUid, 10);
       }
 
       let colPos: number | boolean = 0;
@@ -336,7 +336,7 @@ class DragDrop {
   }
 
   protected getCurrentPageId(): number {
-    return parseInt((document.querySelector<HTMLElement>('[data-page]')).dataset.page, 10);
+    return parseInt(document.querySelector<HTMLElement>('[data-page]').dataset.page, 10);
   }
 
   protected broadcast(eventName: string, payload?: unknown) {

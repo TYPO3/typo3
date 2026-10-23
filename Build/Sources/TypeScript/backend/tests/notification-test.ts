@@ -191,7 +191,7 @@ describe('@typo3/backend/notification:', () => {
     });
 
     it('is not cleared by the countdown while an action is executing', async () => {
-      let finishAction: () => void;
+      let finishAction!: () => void;
       Notification.success('Title', 'Message', 1, [
         {
           label: 'Undo',
@@ -220,7 +220,7 @@ describe('@typo3/backend/notification:', () => {
 
   it('announces notifications to assistive technology', async () => {
     Notification.info('Info message', 'Some text', 1);
-    await (document.querySelector<LitElement>('#alert-container typo3-notification-message:last-child')).updateComplete;
+    await document.querySelector<LitElement>('#alert-container typo3-notification-message:last-child').updateComplete;
     expect(document.querySelector('#alert-container .alert-list').getAttribute('role')).to.equal('alert');
   });
 
@@ -298,7 +298,7 @@ describe('@typo3/backend/notification:', () => {
 
   it('executes an action only once while it is executing', async () => {
     let calls = 0;
-    let finishAction: () => void;
+    let finishAction!: () => void;
     Notification.info('Info message', 'Some text', 0, [
       {
         label: 'Deferred action',

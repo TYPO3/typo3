@@ -75,7 +75,7 @@ class ClearCache {
 
         // The action trigger behaves like a button
         const me = e.currentTarget as HTMLButtonElement;
-        const id = parseInt(me.dataset.id, 10);
+        const id = parseInt(me.dataset.id ?? '', 10);
         ClearCache.setDisabled(me, true);
 
         Icons.getIcon('spinner-circle', Icons.sizes.small, null, 'disabled').then((icon: string): void => {

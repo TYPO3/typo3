@@ -63,7 +63,7 @@ export class ValuePicker extends HTMLElement {
     if (this.linkedField === null || this.valuePicker === null || this.initialValueSet) {
       return;
     }
-    const formEngineInputField = (document.getElementsByName(this.linkedField.dataset.formengineInputName)[0] ?? null) as HTMLInputElement|HTMLTextAreaElement;
+    const formEngineInputField = (document.getElementsByName(this.linkedField.dataset.formengineInputName ?? '')[0] ?? null) as HTMLInputElement|HTMLTextAreaElement;
     if (formEngineInputField !== null) {
       this.selectValue(formEngineInputField.value);
       this.initialValueSet = true;

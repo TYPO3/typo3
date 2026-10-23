@@ -99,7 +99,7 @@ export default class FormEngineValidation {
         return;
       }
 
-      const config = JSON.parse(visibleField.dataset.formengineInputParams);
+      const config = JSON.parse(visibleField.dataset.formengineInputParams ?? '');
       const fieldName = config.field;
       const actualValueField = formEngineInstance.formElement.querySelector<HTMLInputElement>(selector`[name="${fieldName}"]`);
 
@@ -124,7 +124,7 @@ export default class FormEngineValidation {
     }
 
     new RegularEvent('change', (): void => {
-      FormEngineValidation.updateInputField(humanReadableField.dataset.formengineInputName);
+      FormEngineValidation.updateInputField(humanReadableField.dataset.formengineInputName ?? '');
     }).bindTo(humanReadableField);
 
     // add the attribute so that acceptance tests can know when the field initialization has completed
@@ -260,7 +260,7 @@ export default class FormEngineValidation {
         case 'range':
           if (value !== '') {
             if (rule.minItems || rule.maxItems) {
-              relatedField = formEngineInstance.formElement.querySelector<FormEngineFieldElement>(selector`[name="${field.dataset.relatedfieldname}"]`);
+              relatedField = formEngineInstance.formElement.querySelector<FormEngineFieldElement>(selector`[name="${field.dataset.relatedfieldname ?? ''}"]`);
               if (relatedField !== null) {
                 selected = Utility.trimExplode(',', relatedField.value).length;
               } else {
@@ -316,7 +316,7 @@ export default class FormEngineValidation {
         case 'select':
         case 'category':
           if (rule.minItems || rule.maxItems) {
-            relatedField = formEngineInstance.formElement.querySelector<FormEngineFieldElement>(selector`[name="${field.dataset.relatedfieldname}"]`);
+            relatedField = formEngineInstance.formElement.querySelector<FormEngineFieldElement>(selector`[name="${field.dataset.relatedfieldname ?? ''}"]`);
             if (relatedField !== null) {
               selected = Utility.trimExplode(',', relatedField.value).length;
             } else if (field instanceof HTMLSelectElement) {

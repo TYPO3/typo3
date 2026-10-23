@@ -136,7 +136,7 @@ class LiveSearch {
             }
           });
           const optionCounterElement = searchForm.querySelector<HTMLElement>('[data-active-options-counter]');
-          const count = parseInt(optionCounterElement.dataset.activeOptionsCounter, 10);
+          const count = parseInt(optionCounterElement.dataset.activeOptionsCounter ?? '', 10);
           optionCounterElement.querySelector('output').textContent = count.toString(10);
           optionCounterElement.classList.toggle('hidden', count === 0);
         }).bindTo(searchForm);
@@ -154,7 +154,7 @@ class LiveSearch {
 
         new RegularEvent('typo3:live-search:option-invoked', (e: CustomEvent<InvokeOptionEventData>): void => {
           const optionCounterElement = searchForm.querySelector<HTMLElement>('[data-active-options-counter]');
-          let count = parseInt(optionCounterElement.dataset.activeOptionsCounter, 10);
+          let count = parseInt(optionCounterElement.dataset.activeOptionsCounter ?? '', 10);
           count = e.detail.active ? count + 1 : count - 1;
 
           // Update data attribute only, the visible text content is updated in the submit handler
@@ -254,7 +254,7 @@ class LiveSearch {
     firstSearchResultItem?.focus();
   }
 
-  private updateSearchResults(response: SearchResponse = null, hasErrors: boolean = false): void {
+  private updateSearchResults(response: SearchResponse | null = null, hasErrors: boolean = false): void {
     const searchResultContainer: ResultContainer = document.querySelector('typo3-backend-live-search-result-container');
     searchResultContainer.results = response?.results ?? null;
     searchResultContainer.loading = false;
