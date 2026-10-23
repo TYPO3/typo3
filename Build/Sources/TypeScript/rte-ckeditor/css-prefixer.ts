@@ -57,7 +57,7 @@ export function cssPrefixer(prefix: string): NodeProcessor {
     }
 
     if (
-      selector.children.first.type === 'PseudoClassSelector' &&
+      selector.children.first?.type === 'PseudoClassSelector' &&
       selector.children.first.name === 'root'
     ) {
       /* Replace `:root foo bar {}` with `#prefix foo bar {}` */
@@ -86,7 +86,7 @@ export function cssPrefixer(prefix: string): NodeProcessor {
       return csstree.walk.skip;
     }
 
-    selector.children.unshift({ type: 'Combinator', loc: null, name: ' ' });
+    selector.children.unshift({ type: 'Combinator', loc: undefined, name: ' ' });
     selector.children.prependList(prefixSelector.children);
 
     return csstree.walk.skip;

@@ -34,10 +34,10 @@ class FileDelete {
 
         const identifier = eventTarget.dataset.filelistDeleteIdentifier;
         const deleteType = eventTarget.dataset.filelistDeleteType;
-        const deleteUrl = eventTarget.dataset.filelistDeleteUrl + '&data[delete][0][data]=' + encodeURIComponent(identifier);
+        const deleteUrl = eventTarget.dataset.filelistDeleteUrl + '&data[delete][0][data]=' + encodeURIComponent(identifier ?? '');
         const target = deleteUrl + '&data[delete][0][redirect]=' + redirectUrl;
         if (eventTarget.dataset.filelistDeleteCheck) {
-          const modal = Modal.confirm(eventTarget.dataset.title, eventTarget.dataset.content, SeverityEnum.warning, [
+          const modal = Modal.confirm(eventTarget.dataset.title ?? '', eventTarget.dataset.content ?? '', SeverityEnum.warning, [
             {
               text: labels.get('buttons.confirm.delete_file.no'),
               active: true,

@@ -70,7 +70,7 @@ export class Typo3LinkCommand extends Core.Command {
       }
 
       if (attribute === ghsAttributeName) {
-        const value: GHSViewAttributes = sourceSelection.getAttribute(attribute);
+        const value = sourceSelection.getAttribute(attribute) as GHSViewAttributes | undefined;
         if (value?.classes && value.classes.length !== 0) {
           attrs.class = value.classes.join(' ');
         }
@@ -166,7 +166,7 @@ export class Typo3LinkCommand extends Core.Command {
   }
 
   private getLinkAttributesAllowedOnText(schema: ModelSchema): Array<string> {
-    const textAttributes = schema.getDefinition('$text').allowAttributes;
+    const textAttributes = schema.getDefinition('$text')?.allowAttributes ?? [];
     return textAttributes.filter(attribute => attribute.startsWith('link') || attribute === 'htmlA');
   }
 
@@ -179,8 +179,8 @@ export class Typo3LinkCommand extends Core.Command {
   }
 
   private composeLinkAttributes(linkAttr: Typo3LinkDict): Record<string, GHSViewAttributes|string|null> {
-    const attrs: Record<string, GHSViewAttributes|string> = {};
-    for (const [attribute, value] of Object.entries(linkAttr.attrs)) {
+    const attrs: Record<string, GHSViewAttributes|string|null> = {};
+    for (const [attribute, value] of Object.entries(linkAttr.attrs ?? {})) {
       if (attribute === 'linkClass') {
         const htmlSupport: GeneralHtmlSupport = this.editor.plugins.get('GeneralHtmlSupport');
         const ghsAttributeName = htmlSupport.getGhsAttributeNameForElement('a');
@@ -498,7 +498,7 @@ export class Typo3LinkUI extends Core.Plugin {
         button.label = href;
       };
 
-      setHref(linkCommand.value);
+      setHref(linkCommand.value ?? '');
       this.listenTo(linkCommand, 'change:value', (evt, name, href) => {
         setHref(href);
       });
@@ -650,10 +650,12 @@ export class Typo3LinkUI extends Core.Plugin {
     const model = this.editor.model;
     const viewDocument = view.document;
     let target = null;
+    // There are cases when we highlight selection using a marker (#7705, #4721).
+    const markerViewElements = model.markers.has(VISUAL_SELECTION_MARKER_NAME)
+      ? Array.from(this.editor.editing.mapper.markerNameToElements(VISUAL_SELECTION_MARKER_NAME) ?? [])
+      : [];
 
-    if (model.markers.has(VISUAL_SELECTION_MARKER_NAME)) {
-      // There are cases when we highlight selection using a marker (#7705, #4721).
-      const markerViewElements = Array.from(this.editor.editing.mapper.markerNameToElements(VISUAL_SELECTION_MARKER_NAME));
+    if (markerViewElements.length > 0) {
       const newRange = view.createRange(
         view.createPositionBefore(markerViewElements[0]),
         view.createPositionAfter(markerViewElements[markerViewElements.length - 1])
@@ -720,7 +722,6 @@ export class Typo3LinkUI extends Core.Plugin {
           const startPosition = range.start.getLastMatchingPosition(
             ({ item }) => !model.schema.isContent(item),
             {
-              startPosition: null,
               boundaries: range
             }
           );
@@ -801,7 +802,7 @@ export class Typo3LinkUI extends Core.Plugin {
       'Link',
       this.makeUrlFromModulePath(
         editor,
-        editor.config.get('typo3link')?.routeUrl,
+        editor.config.get('typo3link')?.routeUrl ?? '',
         additionalParameters
       ));
   }

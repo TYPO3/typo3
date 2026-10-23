@@ -15,7 +15,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import type { ResourceInterface } from '@typo3/backend/resource/resource';
 
 export interface FileListActionDetail {
-  event: Event;
+  event: Event | null;
   action: string;
   resources: [ResourceInterface, ...ResourceInterface[]];
   trigger: HTMLElement | null;
@@ -42,13 +42,13 @@ export enum FileListActionSelector {
 export class FileListActionUtility {
   public static createResourceFromContextDataset(dataset: DOMStringMap): ResourceInterface {
     const resource: ResourceInterface = {
-      type: dataset.filecontextType,
-      identifier: dataset.filecontextIdentifier,
-      name: dataset.filecontextName,
+      type: dataset.filecontextType ?? '',
+      identifier: dataset.filecontextIdentifier ?? '',
+      name: dataset.filecontextName ?? '',
       hasPreview: false,
       uid: dataset.filecontextUid ? parseInt(dataset.filecontextUid, 10) : null,
       metaUid: dataset.filecontextMetaUid ? parseInt(dataset.filecontextMetaUid, 10) : null,
-      url: dataset.filecontextUid ? dataset.url : null,
+      url: dataset.filecontextUid ? dataset.url ?? null : null,
       createdAt: dataset.filecontextCreatedAt ? parseInt(dataset.filecontextCreatedAt, 10) : null,
       size: dataset.filecontextSize ? parseInt(dataset.filecontextSize, 10) : null,
     };
@@ -59,10 +59,10 @@ export class FileListActionUtility {
   public static getResourceForElement(element: HTMLElement): ResourceInterface
   {
     const resource: ResourceInterface = {
-      type: element.dataset.filelistType,
-      identifier: element.dataset.filelistIdentifier,
-      name: element.dataset.filelistName,
-      hasPreview: 'filelistPreview' in element.dataset && element.dataset.filelistPreview.trim() === 'true',
+      type: element.dataset.filelistType ?? '',
+      identifier: element.dataset.filelistIdentifier ?? '',
+      name: element.dataset.filelistName ?? '',
+      hasPreview: element.dataset.filelistPreview?.trim() === 'true',
       uid: element.dataset.filelistUid ? parseInt(element.dataset.filelistUid, 10) : null,
       metaUid: element.dataset.filelistMetaUid ? parseInt(element.dataset.filelistMetaUid, 10) : null,
       url: element.dataset.filelistUrl ? element.dataset.filelistUrl : null,
@@ -128,7 +128,7 @@ class FileListActions {
     const detail: FileListActionDetail = {
       event: event,
       trigger: target,
-      action: action,
+      action: action ?? '',
       resources: [resource],
       url: target.dataset.filelistActionUrl ?? null,
       originalAction: null

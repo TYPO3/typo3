@@ -66,7 +66,7 @@ class FileListReplaceHandler {
             event.preventDefault();
 
             const formData = new FormData(event.target as HTMLFormElement);
-            formData.set('uid', resource.uid.toString());
+            formData.set('uid', String(resource.uid));
 
             const request = new AjaxRequest(TYPO3.settings.ajaxUrls.resource_replace);
             request.post(formData).then(async (success: AjaxResponse): Promise<void> => {
@@ -102,7 +102,7 @@ class FileListReplaceHandler {
 
   private composeEditForm(resource: ResourceInterface): TemplateResult {
     const thumbnailUrl = new URL(topWindow.TYPO3.settings.Resource.thumbnailUrl, window.origin);
-    thumbnailUrl.searchParams.set('identifier', resource.uid.toString(10));
+    thumbnailUrl.searchParams.set('identifier', String(resource.uid));
 
     return html`
       <div class="file-replace-dialog">
@@ -118,7 +118,7 @@ class FileListReplaceHandler {
               <dt>${modFileListLabels.get('c_name')}</dt>
               <dd>${resource.name}</dd>
               <dt>${modFileListLabels.get('c_size')}</dt>
-              <dd>${FormatUtility.fileSizeAsString(resource.size)}</dd>
+              <dd>${FormatUtility.fileSizeAsString(resource.size ?? 0)}</dd>
               <dt>${coreCoreLabels.get('labels.crdate')}</dt>
               <dd><typo3-backend-datetime format="datetime" datetime="${resource.createdAt}"></typo3-backend-datetime></dd>
             </dl>

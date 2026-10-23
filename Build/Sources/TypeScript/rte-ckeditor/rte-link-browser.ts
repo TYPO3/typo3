@@ -29,9 +29,10 @@ class RteLinkBrowser {
   protected selectionEndPosition: ModelPosition | null = null;
 
   public initialize(): void {
-    this.editor = Modal.currentModal.userData.editor;
-    this.selectionStartPosition = Modal.currentModal.userData.selectionStartPosition;
-    this.selectionEndPosition = Modal.currentModal.userData.selectionEndPosition;
+    const currentModal = Modal.currentModal;
+    this.editor = currentModal.userData.editor;
+    this.selectionStartPosition = currentModal.userData.selectionStartPosition;
+    this.selectionEndPosition = currentModal.userData.selectionEndPosition;
 
     const removeLinkElement = document.querySelector('.t3js-removeCurrentLink');
     if (removeLinkElement !== null) {

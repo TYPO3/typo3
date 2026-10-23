@@ -67,7 +67,7 @@ const defaultPlugins: PluginModuleDescriptor[] = [
 @customElement('typo3-rte-ckeditor-ckeditor5')
 export class CKEditor5Element extends LitElement {
 
-  @property({ type: Object }) options?: CKEditor5Config = {};
+  @property({ type: Object }) options: CKEditor5Config = {};
 
   @queryAssignedElements({ slot: 'textarea' }) target: HTMLElement[];
 
@@ -88,7 +88,7 @@ export class CKEditor5Element extends LitElement {
     if (this.target[0] instanceof HTMLTextAreaElement) {
       this.initCKEditor();
     } else {
-      this.renderRoot.querySelector('slot[name="textarea"]').addEventListener('slotchange', () => this.initCKEditor(), { once: true });
+      this.renderRoot.querySelector('slot[name="textarea"]')?.addEventListener('slotchange', () => this.initCKEditor(), { once: true });
     }
   }
 
@@ -132,11 +132,11 @@ export class CKEditor5Element extends LitElement {
 
     let fullscreenConfiguration: FullscreenConfig = {};
     if ('fullscreen' in otherOptions) {
-      fullscreenConfiguration = otherOptions.fullscreen;
+      fullscreenConfiguration = otherOptions.fullscreen ?? {};
       delete otherOptions.fullscreen;
     }
     // Set `.module-body` as the parent container to let users reach controls, e.g. the "Save" button
-    fullscreenConfiguration.container = document.querySelector('.module-body');
+    fullscreenConfiguration.container = document.querySelector('.module-body') ?? undefined;
 
     const plugins = await this.resolvePlugins(defaultPlugins, importModules, removeImportModules);
 
@@ -148,7 +148,7 @@ export class CKEditor5Element extends LitElement {
       plugins,
       placeholder,
       wordCount,
-      typo3link: typo3link || null,
+      typo3link: typo3link ?? undefined,
       removePlugins: removePlugins || [],
       fullscreen: fullscreenConfiguration
     };
@@ -168,7 +168,7 @@ export class CKEditor5Element extends LitElement {
       .then((editor: ClassicEditor) => {
         this.applyEditableElementStyles(editor, width, height);
         this.handleWordCountPlugin(editor, wordCount);
-        this.applyReadOnly(editor, readOnly);
+        this.applyReadOnly(editor, readOnly ?? false);
         editor.model.document.on('change:data', (): void => {
           editor.updateSourceElement();
           this.target[0].dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
@@ -229,9 +229,9 @@ export class CKEditor5Element extends LitElement {
       return { module, exports };
     });
 
-    const pluginModules: Array<{module: PluginModule, exports: string[]}> = await Promise.all(
+    const pluginModules: Array<{module: PluginModule | null, exports: string[]}> = await Promise.all(
       importModules
-        .map(async (moduleDescriptor): Promise<{module: PluginModule, exports: string[]}> => {
+        .map(async (moduleDescriptor): Promise<{module: PluginModule | null, exports: string[]}> => {
           try {
             return {
               module: await import(moduleDescriptor.module) as PluginModule,
@@ -249,6 +249,9 @@ export class CKEditor5Element extends LitElement {
 
     const declaredPlugins: Array<Typo3Plugin> = [];
     pluginModules.forEach(({ module, exports }) => {
+      if (module === null) {
+        return;
+      }
       for (const exportName of exports) {
         if (exportName in module) {
           declaredPlugins.push(module[exportName]);
@@ -260,7 +263,7 @@ export class CKEditor5Element extends LitElement {
 
     // plugins that were overridden by other custom plugin implementations
     const overriddenPlugins = declaredPlugins
-      .filter(plugin => plugin.overrides?.length > 0)
+      .filter(plugin => (plugin.overrides?.length ?? 0) > 0)
       .map(plugin => plugin.overrides)
       .flat(1);
 
@@ -274,7 +277,7 @@ export class CKEditor5Element extends LitElement {
       return;
     }
     const styleSheetStates = await Promise.allSettled(
-      this.options.contentsCss.map(url => this.prefixContentsCss(url, this.getAttribute('id')))
+      this.options.contentsCss.map(url => this.prefixContentsCss(url, this.getAttribute('id') ?? ''))
     );
     const styleSheets = styleSheetStates
       .map(state => state.status === 'fulfilled' ? state.value : null)
@@ -298,7 +301,7 @@ export class CKEditor5Element extends LitElement {
       `#${fieldId} .ck-content`,
     ];
 
-    if (this.options.toolbar.items.includes('fullscreen')) {
+    if (this.options.toolbar?.items?.includes('fullscreen')) {
       // If the "fullscreen" action is available, prefix custom stylesheets with fullscreen class and a required `.ck-content` selector
       newParents.push('.ck-fullscreen__editable .ck-content');
     }
@@ -321,18 +324,19 @@ export class CKEditor5Element extends LitElement {
       'min-width': width,
     };
     Object.keys(styles).forEach((key) => {
-      const _assignment: string|number = styles[key];
+      const _assignment: string|number|undefined = styles[key];
       if (!_assignment) {
         return;
       }
-      let assignment: string;
-      if (typeof _assignment === 'number' || !Number.isNaN(Number(assignment))) {
-        assignment = `${_assignment}px`;
-      } else {
-        assignment = _assignment;
-      }
+      // @todo `Number(assignment)` was read before being assigned, so a numeric
+      //       string never reached the `px` branch. Kept as-is, changing it
+      //       would alter the rendered size.
+      const assignment: string = typeof _assignment === 'number' ? `${_assignment}px` : _assignment;
       view.change((writer) => {
-        writer.setStyle(key, assignment, view.document.getRoot());
+        const root = view.document.getRoot();
+        if (root !== null) {
+          writer.setStyle(key, assignment, root);
+        }
       });
     });
   }

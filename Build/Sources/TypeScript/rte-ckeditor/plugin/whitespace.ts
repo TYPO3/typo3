@@ -2,7 +2,6 @@ import * as Core from '@ckeditor/ckeditor5-core';
 import * as UI from '@ckeditor/ckeditor5-ui';
 import * as Utils from '@ckeditor/ckeditor5-utils';
 import * as Typing from '@ckeditor/ckeditor5-typing';
-import type { InsertTextCommand } from '@ckeditor/ckeditor5-typing';
 
 /**
  * CKEditor 5 Whitespace Plugin
@@ -26,7 +25,7 @@ export class Whitespace extends Core.Plugin {
 
   public init(): void {
     const editor = this.editor;
-    const inputCommand: InsertTextCommand = editor.commands.get('insertText');
+    const inputCommand = editor.commands.get('insertText');
 
     // CKEditor should map Ctrl to Cmd on MacOs, but for
     // some reason the shortcut is blocked and cannot be

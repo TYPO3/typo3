@@ -26,7 +26,7 @@ class LinkBrowserFolderHandler {
 
     new RegularEvent('click', (event: PointerEvent, target: HTMLElement): void => {
       event.preventDefault();
-      LinkBrowser.finalizeFunction(target.dataset.linkbrowserLink);
+      LinkBrowser.finalizeFunction(target.dataset.linkbrowserLink ?? '');
     }).delegateTo(document, '[data-linkbrowser-link]');
 
     new RegularEvent(FileListActionEvent.primary, (event: CustomEvent): void => {

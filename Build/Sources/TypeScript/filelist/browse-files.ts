@@ -36,7 +36,7 @@ class BrowseFiles {
       event.preventDefault();
       const detail: FileListActionDetail = event.detail;
       const resource = detail.resources[0];
-      if (resource.type === 'file') {
+      if (resource.type === 'file' && resource.uid !== null) {
         BrowseFiles.insertElement(resource.name, resource.uid, detail.originalAction === FileListActionEvent.primary);
       }
       if (resource.type === 'folder') {
