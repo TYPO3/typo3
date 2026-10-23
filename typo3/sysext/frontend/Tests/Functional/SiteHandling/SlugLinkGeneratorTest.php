@@ -45,7 +45,11 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
         );
         $this->writeSiteConfiguration(
             'products-acme-com',
-            $this->buildSiteConfiguration(1300, 'https://products.acme.com/')
+            $this->buildSiteConfiguration(1300, 'https://products.acme.com/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('FR', 'https://products.acme.com/fr/', ['EN']),
+            ]
         );
         $this->writeSiteConfiguration(
             'blog-acme-com',
@@ -264,6 +268,59 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
         );
 
         self::assertSame($expectation, (string)$response->getBody());
+    }
+
+    public static function linkIsGeneratedForCurrentLanguageMissingInTargetSiteDataProvider(): array
+    {
+        $instructions = [
+            // acme.com (FR) -> blog.acme.com (default language only)
+            ['https://acme.fr/', 1100, 2100, 'https://blog.acme.com/authors'],
+            ['https://acme.fr/', 1100, 2111, 'https://blog.acme.com/john/about-john'],
+            // acme.com (FR-CA) -> blog.acme.com (default language only)
+            ['https://acme.ca/', 1100, 2100, 'https://blog.acme.com/authors'],
+            // acme.com (FR-CA) -> products.acme.com (FR only, fallback language of FR-CA is used)
+            ['https://acme.ca/', 1100, 1300, 'https://products.acme.com/fr/products'],
+            ['https://acme.ca/', 1100, 1310, 'https://products.acme.com/fr/products/planets'],
+            // acme.com (FR-CA) -> archive.acme.com (language available)
+            ['https://acme.ca/', 1100, 3100, 'https://archive.acme.com/ca/statistics'],
+            // acme.com (FR) -> archive.acme.com (language available)
+            ['https://acme.fr/', 1100, 3100, 'https://archive.acme.com/fr/statistics'],
+        ];
+        return self::keysFromTemplate($instructions, '%1$s %2$d->%3$d');
+    }
+
+    #[DataProvider('linkIsGeneratedForCurrentLanguageMissingInTargetSiteDataProvider')]
+    #[Test]
+    public function linkIsGeneratedForCurrentLanguageMissingInTargetSite(string $hostPrefix, int $sourcePageId, int $targetPageId, string $expectation): void
+    {
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest($hostPrefix)
+                ->withPageId($sourcePageId)
+                ->withInstructions([
+                    $this->createTypoLinkUrlInstruction([
+                        'parameter' => $targetPageId,
+                    ]),
+                ])
+        );
+
+        self::assertSame($expectation, (string)$response->getBody());
+    }
+
+    #[Test]
+    public function linkIsNotGeneratedForExplicitLanguageMissingInTargetSite(): void
+    {
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest('https://acme.us/')
+                ->withPageId(1100)
+                ->withInstructions([
+                    $this->createTypoLinkUrlInstruction([
+                        'parameter' => 2100,
+                        'language' => 1,
+                    ]),
+                ])
+        );
+
+        self::assertSame('', (string)$response->getBody());
     }
 
     public static function linkIsGeneratedWithQueryParametersDataProvider(): array
