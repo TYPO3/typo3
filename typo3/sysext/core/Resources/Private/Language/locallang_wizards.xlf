@@ -108,6 +108,12 @@
       <trans-unit id="grid_slideMode">
         <source>Slide mode</source>
       </trans-unit>
+      <trans-unit id="grid_allowedContentTypes">
+        <source>Allowed content types</source>
+      </trans-unit>
+      <trans-unit id="grid_disallowedContentTypes">
+        <source>Disallowed content types</source>
+      </trans-unit>
       <trans-unit id="grid_notSet">
         <source>not set</source>
       </trans-unit>
@@ -122,6 +128,12 @@
       </trans-unit>
       <trans-unit id="grid_slideModeHelp">
         <source>The slide mode defines which elements should be fetched for the column in the frontend.</source>
+      </trans-unit>
+      <trans-unit id="grid_allowedContentTypesHelp">
+        <source>Comma-separated list of content element types (CType) allowed in this column. Leave empty to allow all types.</source>
+      </trans-unit>
+      <trans-unit id="grid_disallowedContentTypesHelp">
+        <source>Comma-separated list of content element types (CType) not allowed in this column.</source>
       </trans-unit>
       <trans-unit id="imwizard.open-editor">
         <source>Open Editor</source>

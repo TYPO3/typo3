@@ -15,9 +15,8 @@ Description
 configured types of content elements (referencing :sql:`tt_content.CType` with names like "text",
 "textmedia", "felogin_pi1" and so on) in backend layout columns (:sql:`colPos`): The two
 keys :typoscript:`allowedContentTypes` and :typoscript:`disallowedContentTypes` add allow and
-deny lists on column level. These settings can be set with Page TSConfig based backend layouts,
-Database based backend layouts do not allow configuring this value at the moment, but this will
-be added soon.
+deny lists on column level. These settings can be set with Page TSConfig based backend layouts
+and with the grid editor of database based backend layouts.
 
 Example for a backend layout with two rows and two columns configured using Page TSConfig:
 

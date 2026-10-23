@@ -26,7 +26,7 @@ import wizardLabels from '~labels/core.wizards';
 import commonLabels from '~labels/core.common';
 import altDocLabels from '~labels/backend.alt_doc';
 
-type Cell = { spanned: number, rowspan: number, colspan: number, name: string, colpos: string, column: number, identifier: string, slideMode: SlideModes };
+type Cell = { spanned: number, rowspan: number, colspan: number, name: string, colpos: string, column: number, identifier: string, slideMode: SlideModes, allowedContentTypes: string, disallowedContentTypes: string };
 
 enum SlideModes {
   none = '',
@@ -51,7 +51,7 @@ export class GridEditor extends LitElement {
   protected field: HTMLInputElement;
   protected previewAreaRef: Ref<HTMLTextAreaElement> = createRef();
   protected codeMirrorRef: Ref<CodeMirrorElement> = createRef();
-  protected defaultCell: Cell = { spanned: 0, rowspan: 1, colspan: 1, name: '', colpos: '', column: undefined, identifier: '', slideMode: SlideModes.none };
+  protected defaultCell: Cell = { spanned: 0, rowspan: 1, colspan: 1, name: '', colpos: '', column: undefined, identifier: '', slideMode: SlideModes.none, allowedContentTypes: '', disallowedContentTypes: '' };
 
   /**
    * Remove all markup
@@ -62,6 +62,17 @@ export class GridEditor extends LitElement {
   public static stripMarkup(input: string): string {
     const securityUtility = new SecurityUtility();
     return securityUtility.stripHtml(input);
+  }
+
+  /**
+   * Turn a comma-separated list of content types into its canonical form
+   */
+  protected static normalizeContentTypes(contentTypes: string | undefined): string {
+    const normalized = GridEditor.stripMarkup(contentTypes ?? '')
+      .split(',')
+      .map((contentType: string): string => contentType.trim())
+      .filter((contentType: string): boolean => contentType !== '');
+    return [...new Set(normalized)].join(', ');
   }
 
   public override async connectedCallback(): Promise<void> {
@@ -245,6 +256,8 @@ export class GridEditor extends LitElement {
           ${typeof cell.column === 'undefined' || isNaN(cell.column) ? wizardLabels.get('grid_notSet') : cell.column}
           ${cell.identifier?.length ? html`<br/><strong>${wizardLabels.get('grid_identifier')}:</strong> ${cell.identifier}` : ''}
           ${(cell.slideMode?.toString() || '') !== '' ? html`<br/><strong>${wizardLabels.get('grid_slideMode')}:</strong> ${cell.slideMode.toString()}` : ''}
+          ${cell.allowedContentTypes?.length ? html`<br/><strong>${wizardLabels.get('grid_allowedContentTypes')}:</strong> ${cell.allowedContentTypes}` : ''}
+          ${cell.disallowedContentTypes?.length ? html`<br/><strong>${wizardLabels.get('grid_disallowedContentTypes')}:</strong> ${cell.disallowedContentTypes}` : ''}
         </div>
       </div>
     `;
@@ -301,6 +314,16 @@ export class GridEditor extends LitElement {
       );
       this.setSlideMode(
         (modal.querySelector<HTMLSelectElement>('.t3js-grideditor-field-slide-mode')).value,
+        modal.userData.col,
+        modal.userData.row,
+      );
+      this.setAllowedContentTypes(
+        (modal.querySelector<HTMLInputElement>('.t3js-grideditor-field-allowed-content-types')).value,
+        modal.userData.col,
+        modal.userData.row,
+      );
+      this.setDisallowedContentTypes(
+        (modal.querySelector<HTMLInputElement>('.t3js-grideditor-field-disallowed-content-types')).value,
         modal.userData.col,
         modal.userData.row,
       );
@@ -697,6 +720,24 @@ export class GridEditor extends LitElement {
     return true;
   }
 
+  protected setAllowedContentTypes(newContentTypes: string, col: number, row: number): boolean {
+    const cell = this.getCell(col, row);
+    if (!cell) {
+      return false;
+    }
+    cell.allowedContentTypes = GridEditor.normalizeContentTypes(newContentTypes);
+    return true;
+  }
+
+  protected setDisallowedContentTypes(newContentTypes: string, col: number, row: number): boolean {
+    const cell = this.getCell(col, row);
+    if (!cell) {
+      return false;
+    }
+    cell.disallowedContentTypes = GridEditor.normalizeContentTypes(newContentTypes);
+    return true;
+  }
+
   /**
    * Creates an Modal with two input fields and shows it. On save, the data
    * is written into the grid element.
@@ -789,7 +830,33 @@ export class GridEditor extends LitElement {
 
     slideModeFormGroup.append(slideModeLabel, slideModeSelect);
 
-    markup.append(nameFormGroup, columnFormGroup, identifierFormGroup, slideModeFormGroup);
+    const allowedContentTypesFormGroup = formGroup.cloneNode(true) as HTMLElement;
+    const allowedContentTypesLabel = label.cloneNode(true) as HTMLLabelElement;
+    allowedContentTypesLabel.innerText = wizardLabels.get('grid_allowedContentTypesHelp');
+    allowedContentTypesLabel.htmlFor = 'grideditor-field-allowed-content-types';
+    const allowedContentTypesInput = input.cloneNode(true) as HTMLInputElement;
+    allowedContentTypesInput.type = 'text';
+    allowedContentTypesInput.classList.add('t3js-grideditor-field-allowed-content-types');
+    allowedContentTypesInput.id = 'grideditor-field-allowed-content-types';
+    allowedContentTypesInput.name = 'allowedContentTypes';
+    allowedContentTypesInput.value = GridEditor.normalizeContentTypes(cell.allowedContentTypes);
+
+    allowedContentTypesFormGroup.append(allowedContentTypesLabel, allowedContentTypesInput);
+
+    const disallowedContentTypesFormGroup = formGroup.cloneNode(true) as HTMLElement;
+    const disallowedContentTypesLabel = label.cloneNode(true) as HTMLLabelElement;
+    disallowedContentTypesLabel.innerText = wizardLabels.get('grid_disallowedContentTypesHelp');
+    disallowedContentTypesLabel.htmlFor = 'grideditor-field-disallowed-content-types';
+    const disallowedContentTypesInput = input.cloneNode(true) as HTMLInputElement;
+    disallowedContentTypesInput.type = 'text';
+    disallowedContentTypesInput.classList.add('t3js-grideditor-field-disallowed-content-types');
+    disallowedContentTypesInput.id = 'grideditor-field-disallowed-content-types';
+    disallowedContentTypesInput.name = 'disallowedContentTypes';
+    disallowedContentTypesInput.value = GridEditor.normalizeContentTypes(cell.disallowedContentTypes);
+
+    disallowedContentTypesFormGroup.append(disallowedContentTypesLabel, disallowedContentTypesInput);
+
+    markup.append(nameFormGroup, columnFormGroup, identifierFormGroup, slideModeFormGroup, allowedContentTypesFormGroup, disallowedContentTypesFormGroup);
 
     const modal = Modal.show(wizardLabels.get('grid_windowTitle'), markup, SeverityEnum.notice, [
       {
@@ -1043,6 +1110,14 @@ export class GridEditor extends LitElement {
             }
             if (cell.slideMode !== undefined && cell.slideMode !== SlideModes.none) {
               result += '\t\t\t\t\tslideMode = ' + cell.slideMode.toString() + '\n';
+            }
+            const allowedContentTypes = GridEditor.normalizeContentTypes(cell.allowedContentTypes);
+            if (allowedContentTypes !== '') {
+              result += '\t\t\t\t\tallowedContentTypes = ' + allowedContentTypes + '\n';
+            }
+            const disallowedContentTypes = GridEditor.normalizeContentTypes(cell.disallowedContentTypes);
+            if (disallowedContentTypes !== '') {
+              result += '\t\t\t\t\tdisallowedContentTypes = ' + disallowedContentTypes + '\n';
             }
             result += '\t\t\t\t}\n';
           }
