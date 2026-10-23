@@ -84,8 +84,8 @@ export class AjaxDispatcher {
     return body;
   }
 
-  private getContext(): Context {
-    let context: Context;
+  private getContext(): Context | undefined {
+    let context: Context | undefined;
 
     if (typeof TYPO3.settings.FormEngineInline.config[this.objectGroup] !== 'undefined'
       && typeof TYPO3.settings.FormEngineInline.config[this.objectGroup].context !== 'undefined'

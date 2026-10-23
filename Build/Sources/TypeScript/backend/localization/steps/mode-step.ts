@@ -35,7 +35,7 @@ export class ModeStep implements WizardStepInterface, WizardStepValueInterface, 
   readonly title = localizationWizardLabels.get('step.modes.title');
   readonly autoAdvance = true;
 
-  private readonly task: Task<[string, number, number | null, number | null], LocalizationMode[]>;
+  private readonly task: Task<readonly [string, number, number | undefined, number | undefined], LocalizationMode[]>;
   private hasDispatchedAutoAdvance: boolean = false;
   private selectedMode: string | null = null;
 
@@ -144,6 +144,7 @@ export class ModeStep implements WizardStepInterface, WizardStepValueInterface, 
         `;
       },
       error: (error: unknown) => this.context.wizard.renderError(localizationWizardLabels.get('step.modes.error.message'), error),
+      initial: () => this.context.wizard.renderLoader(),
       pending: () => this.context.wizard.renderLoader()
     });
   }

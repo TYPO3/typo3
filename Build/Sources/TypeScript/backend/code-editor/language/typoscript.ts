@@ -7,7 +7,7 @@ import type { CompletionContext, CompletionResult } from '@codemirror/autocomple
 import type { SyntaxNodeRef } from '@lezer/common';
 
 interface Token {
-  type: string;
+  type: string | null;
   string: string;
   start: number;
   end: number;

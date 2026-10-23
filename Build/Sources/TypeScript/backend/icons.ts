@@ -225,12 +225,9 @@ class Icons {
   }
 }
 
-let iconsObject: Icons;
-if (!iconsObject) {
-  iconsObject = new Icons();
-  if (typeof TYPO3 !== 'undefined') {
-    TYPO3.Icons = iconsObject;
-  }
+const iconsObject: Icons = new Icons();
+if (typeof TYPO3 !== 'undefined') {
+  TYPO3.Icons = iconsObject;
 }
 
 export default iconsObject;

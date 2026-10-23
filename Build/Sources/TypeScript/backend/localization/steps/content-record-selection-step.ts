@@ -166,6 +166,7 @@ export class ContentRecordSelectionStep implements WizardStepInterface, WizardSt
         `;
       },
       error: (error: unknown) => this.context.wizard.renderError(localizationWizardLabels.get('step.content_selection.error.message'), error),
+      initial: () => this.context.wizard.renderLoader(),
       pending: () => this.context.wizard.renderLoader()
     });
   }

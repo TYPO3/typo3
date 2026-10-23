@@ -75,7 +75,7 @@ export class TsCodeCompletion {
    */
   private loadExtTemplatesAsync(id: number): void {
     if (Number.isNaN(id) || id === 0) {
-      return null;
+      return;
     }
     new AjaxRequest(TYPO3.settings.ajaxUrls.codeeditor_codecompletion_loadtemplates)
       .withQueryArguments({ pageId: id })
@@ -121,7 +121,7 @@ export class TsCodeCompletion {
   /**
    * Get the child node of given path
    */
-  private getExtChildNode(path: string): object {
+  private getExtChildNode(path: string): object | null {
     let extTree = this.extTsObjTree;
 
     const pathParts = path.split('.');

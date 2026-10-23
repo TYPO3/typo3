@@ -34,7 +34,7 @@ export class HandlerSelectionStep implements WizardStepInterface, WizardStepValu
   public readonly title = localizationWizardLabels.get('step.handler_selection.title');
   public readonly autoAdvance = true;
 
-  private readonly task: Task<[string, number, number | null, number | null, string | null], LocalizationHandler[]>;
+  private readonly task: Task<readonly [string, number, number | undefined, number | undefined, string | undefined], LocalizationHandler[]>;
   private hasDispatchedAutoAdvance: boolean = false;
   private selectedHandler: string | null = null;
 
@@ -120,6 +120,7 @@ export class HandlerSelectionStep implements WizardStepInterface, WizardStepValu
         `;
       },
       error: (error: unknown) => this.context.wizard.renderError(localizationWizardLabels.get('step.handler_selection.error'), error),
+      initial: () => this.context.wizard.renderLoader(),
       pending: () => this.context.wizard.renderLoader()
     });
   }

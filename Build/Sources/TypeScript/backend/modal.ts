@@ -409,7 +409,7 @@ export class ModalElement extends LitElement {
     return this.templateResultContent as TemplateResult;
   }
 
-  private renderModalBody(): TemplateResult | Element | DocumentFragment {
+  private renderModalBody(): TemplateResult | Element | DocumentFragment | null {
     if (this.type === Types.iframe) {
       const loadCallback = (e: Event) => {
         const iframe = e.currentTarget as HTMLIFrameElement;
@@ -947,7 +947,7 @@ class Modal {
       currentModal.content = configuration.content;
     } else if (configuration.type === Types.default) {
       currentModal.type = Types.template;
-      currentModal.templateResultContent = configuration.content;
+      currentModal.templateResultContent = configuration.content ?? null;
     }
     currentModal.severity = configuration.severity;
     currentModal.variant = configuration.style;

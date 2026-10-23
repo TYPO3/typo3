@@ -33,7 +33,6 @@ import type TriggerRequest from '@typo3/backend/event/trigger-request';
 import Utility from '@typo3/backend/utility';
 import { selector } from '@typo3/core/literals';
 import '@typo3/backend/form-engine/element/extra/char-counter';
-import type { PromiseControls } from '@typo3/backend/event/interaction-request-assignment';
 import Hotkeys, { ModifierKeys } from '@typo3/backend/hotkeys';
 import RegularEvent from '@typo3/core/event/regular-event';
 import backendAltDocLabels from '~labels/backend.alt_doc';
@@ -156,7 +155,7 @@ export default (function() {
   });
 
   let formEngineIsReady: boolean = false;
-  let formEngineReadyPromise: Promise<void> = null;
+  let formEngineReadyPromise: Promise<void> | null = null;
 
   /**
    * @exports @typo3/backend/form-engine
@@ -166,7 +165,7 @@ export default (function() {
     Validation: FormEngineValidation,
     interactionRequestMap: InteractionRequestMap,
     formName: 'editform',
-    formElement: undefined,
+    formElement: undefined as unknown as HTMLFormElement,
     openedPopupWindow: null,
     browserUrl: '',
   };
@@ -615,18 +614,15 @@ export default (function() {
       throw new BackendExceptionModule.BackendException('No interaction request given', 1496589980);
     }
 
-    let promiseControls: PromiseControls<void>;
+    const isConcerned = interactionRequest.concernsTypes(FormEngine.consumeTypes);
+    const outerMostRequest = interactionRequest.outerMostRequest;
     const promise = new Promise<void>((resolve, reject) => {
-      promiseControls = { resolve, reject };
+      if (isConcerned) {
+        FormEngine.interactionRequestMap.attachFor(outerMostRequest, { resolve, reject });
+      }
     });
 
-    if (interactionRequest.concernsTypes(FormEngine.consumeTypes)) {
-      const outerMostRequest = interactionRequest.outerMostRequest;
-
-      FormEngine.interactionRequestMap.attachFor(
-        outerMostRequest,
-        promiseControls
-      );
+    if (isConcerned) {
       // resolve or reject with previous user choice
       if (outerMostRequest.isProcessed()) {
         handleConsumeResponse(

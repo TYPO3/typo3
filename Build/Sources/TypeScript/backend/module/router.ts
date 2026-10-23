@@ -60,7 +60,7 @@ export class ModuleRouter extends LitElement {
     super();
 
     this.addEventListener('typo3-module-load', ({ target, detail }: CustomEvent<ModuleState>) => {
-      const slotName = (target as HTMLElement).getAttribute('slot');
+      const slotName = (target as HTMLElement).getAttribute('slot') ?? '';
       this.pushState({ slotName, detail });
     });
 

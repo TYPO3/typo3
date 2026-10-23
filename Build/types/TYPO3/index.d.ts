@@ -20,7 +20,7 @@ declare namespace TYPO3 {
   export let Modal: typeof import('@typo3/backend/modal').default;
   export let LiveSearch: typeof import('@typo3/backend/live-search/live-search').default;
   export let LiveSearchConfigurator: typeof import('@typo3/backend/live-search/live-search-configurator').default;
-  export let Severity: import('@typo3/backend/severity').default;
+  export let Severity: typeof import('@typo3/backend/severity').default;
   export let BookmarkStore: typeof import('@typo3/backend/bookmark/bookmark-store').default;
   export let OpenDocumentStore: typeof import('@typo3/opendocs/open-document-store').default;
   export let WindowManager: typeof import('@typo3/backend/window-manager').default;
