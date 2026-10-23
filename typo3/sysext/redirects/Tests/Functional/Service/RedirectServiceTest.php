@@ -1035,6 +1035,23 @@ final class RedirectServiceTest extends FunctionalTestCase
             'expectedRedirectUid' => 1,
             'expectedRedirectLocationUri' => 'https://acme.com/',
         ];
+        // Regression test for https://forge.typo3.org/issues/106768
+        yield 'non-configured source_host with site rootpage target and direct id query parameter' => [
+            'request' => new InternalRequest('https://non-configured.domain.tld/redirect-to-pid1?id=1'),
+            'rootPageTypoScriptFiles' => ['setup' => ['EXT:redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']],
+            'useTestBolt' => false,
+            'expectedRedirectStatusCode' => 301,
+            'expectedRedirectUid' => 1,
+            'expectedRedirectLocationUri' => 'https://acme.com/',
+        ];
+        yield 'non-configured source_host with site sub-page target and direct id query parameter' => [
+            'request' => new InternalRequest('https://non-configured.domain.tld/redirect-to-pid2?id=2'),
+            'rootPageTypoScriptFiles' => ['setup' => ['EXT:redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']],
+            'useTestBolt' => false,
+            'expectedRedirectStatusCode' => 301,
+            'expectedRedirectUid' => 2,
+            'expectedRedirectLocationUri' => 'https://acme.com/page2',
+        ];
         // Not configured source host and matched redirect to external page
         yield 'non-configured source_host without tailing slash with external target without TypoScript using T3 LinkHandler syntax' => [
             'request' => new InternalRequest('https://non-configured.domain.tld/redirect-to-external'),
