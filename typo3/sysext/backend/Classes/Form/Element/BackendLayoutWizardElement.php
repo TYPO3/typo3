@@ -193,6 +193,17 @@ class BackendLayoutWizardElement extends AbstractFormElement
                                 if (isset($column['slideMode'])) {
                                     $cellData['slideMode'] = $column['slideMode'];
                                 }
+                                // The content_defender syntax "allowed.CType" is converted, see BackendLayoutView
+                                if (isset($column['allowedContentTypes'])) {
+                                    $cellData['allowedContentTypes'] = $column['allowedContentTypes'];
+                                } elseif (!empty($column['allowed.']['CType'] ?? '')) {
+                                    $cellData['allowedContentTypes'] = $column['allowed.']['CType'];
+                                }
+                                if (isset($column['disallowedContentTypes'])) {
+                                    $cellData['disallowedContentTypes'] = $column['disallowedContentTypes'];
+                                } elseif (!empty($column['disallowed.']['CType'] ?? '')) {
+                                    $cellData['disallowedContentTypes'] = $column['disallowed.']['CType'];
+                                }
                             }
                         } else {
                             $cellData = ['colspan' => 1, 'rowspan' => 1, 'spanned' => 1];
