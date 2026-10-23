@@ -19,7 +19,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
  */
 class RedirectsModule {
   public constructor() {
-    const filterForm: HTMLFormElement = document.querySelector('form[data-on-submit="processNavigate"]');
+    const filterForm = document.querySelector<HTMLFormElement>('form[data-on-submit="processNavigate"]');
     if (filterForm !== null) {
       new RegularEvent('change', this.executeSubmit.bind(this))
         .delegateTo(document, '[data-on-change="submit"]');
@@ -31,7 +31,7 @@ class RedirectsModule {
   private executeSubmit(evt: Event): void {
     const target = evt.target;
     if (target instanceof HTMLSelectElement || (target instanceof HTMLInputElement && target.type === 'checkbox')) {
-      target.form.submit();
+      target.form?.submit();
     }
   }
 
@@ -42,8 +42,8 @@ class RedirectsModule {
     }
     evt.preventDefault();
     const formField = target.elements.namedItem('paginator-target-page') as HTMLInputElement;
-    const numberOfPages = parseInt(formField.dataset.numberOfPages, 10);
-    let url = formField.dataset.url;
+    const numberOfPages = parseInt(formField.dataset.numberOfPages ?? '0', 10);
+    let url = formField.dataset.url ?? '';
     let page = parseInt(formField.value, 10);
     if (page > numberOfPages) {
       page = numberOfPages;

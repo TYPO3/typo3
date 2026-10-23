@@ -52,14 +52,17 @@ class Permissions {
     for (const permissionCheckbox of checkedPermissionCheckboxes) {
       permissionValue |= parseInt(permissionCheckbox.value, 10);
     }
-    document.forms.namedItem('editform')[varname].value = permissionValue | (checknames === 'check[perms_user]' ? 1 : 0);
+    const editForm = document.forms.namedItem('editform');
+    if (editForm !== null) {
+      (editForm[varname] as HTMLInputElement).value = String(permissionValue | (checknames === 'check[perms_user]' ? 1 : 0));
+    }
   }
 
   /**
    * Changes permissions by sending an AJAX request to the server
    */
   private setPermissions(element: HTMLElement): void {
-    const page = element.dataset.page;
+    const page = element.dataset.page ?? '';
     const who = element.dataset.who;
     const bits = element.dataset.bits;
 
@@ -72,6 +75,9 @@ class Permissions {
     }).then(async (response: AjaxResponse): Promise<void> => {
       const data = await response.resolve();
       const parentElement = element.parentElement;
+      if (parentElement === null) {
+        return;
+      }
       parentElement.innerHTML = data;
       const targetElement = parentElement.querySelector<HTMLButtonElement>('button[data-bits="' + bits + '"]');
       targetElement.focus();
@@ -82,7 +88,7 @@ class Permissions {
    * changes the flag to lock the editing on a page by sending an AJAX request
    */
   private toggleEditLock(element: HTMLElement): void {
-    const page = element.dataset.page;
+    const page = element.dataset.page ?? '';
     (new AjaxRequest(this.ajaxUrl)).post({
       action: 'toggle_edit_lock',
       page: page,
@@ -91,8 +97,7 @@ class Permissions {
       const data = await response.resolve();
       const parentElement = element.parentElement;
       element.outerHTML = data;
-      const targetElement = parentElement.querySelector<HTMLButtonElement>('button[data-page="' + page + '"]');
-      targetElement.focus();
+      parentElement?.querySelector<HTMLButtonElement>('button[data-page="' + page + '"]')?.focus();
     });
   }
 
@@ -100,8 +105,8 @@ class Permissions {
    * Owner-related: Set the new owner of a page by executing an ajax call
    */
   private changeOwner(element: HTMLElement): void {
-    const page = element.dataset.page;
-    const container: HTMLElement = document.getElementById('o_' + page);
+    const page = element.dataset.page ?? '';
+    const container: HTMLElement | null = document.getElementById('o_' + page);
 
     (new AjaxRequest(this.ajaxUrl)).post({
       action: 'change_owner',
@@ -119,7 +124,7 @@ class Permissions {
    * the owner of a page by executing an ajax call
    */
   private showChangeOwnerSelector(element: HTMLElement): void {
-    const page = element.dataset.page;
+    const page = element.dataset.page ?? '';
 
     (new AjaxRequest(this.ajaxUrl)).post({
       action: 'show_change_owner_selector',
@@ -128,7 +133,10 @@ class Permissions {
       username: element.dataset.username,
     }).then(async (response: AjaxResponse): Promise<void> => {
       // Replace content
-      document.getElementById('o_' + page).outerHTML = await response.resolve();
+      const target = document.getElementById('o_' + page);
+      if (target !== null) {
+        target.outerHTML = await response.resolve();
+      }
     });
   }
 
@@ -136,8 +144,8 @@ class Permissions {
    * Owner-related: Update the HTML view and show the original owner
    */
   private restoreOwner(element: HTMLElement): void {
-    const page = element.dataset.page;
-    const username = element.dataset.username ?? element.dataset.ifNotSet;
+    const page = element.dataset.page ?? '';
+    const username = element.dataset.username ?? element.dataset.ifNotSet ?? '';
     const span = document.createElement('span');
     span.setAttribute('id', `o_${page}`);
 
@@ -145,22 +153,22 @@ class Permissions {
     buttonSelector.classList.add('ug_selector', 'changeowner', 'btn', 'btn-sm', 'btn-link');
     buttonSelector.setAttribute('type', 'button');
     buttonSelector.setAttribute('data-page', page);
-    buttonSelector.setAttribute('data-owner', element.dataset.owner);
+    buttonSelector.setAttribute('data-owner', element.dataset.owner ?? '');
     buttonSelector.setAttribute('data-username', username);
     buttonSelector.innerText = username;
     span.appendChild(buttonSelector);
 
     // Replace content
     const container = document.getElementById('o_' + page);
-    container.parentNode.replaceChild(span, container);
+    container?.parentNode?.replaceChild(span, container);
   }
 
   /**
    * Group-related: Update the HTML view and show the original group
    */
   private restoreGroup(element: HTMLElement): void {
-    const page = element.dataset.page;
-    const groupname = element.dataset.groupname ?? element.dataset.ifNotSet;
+    const page = element.dataset.page ?? '';
+    const groupname = element.dataset.groupname ?? element.dataset.ifNotSet ?? '';
     const span = document.createElement('span');
     span.setAttribute('id', `g_${page}`);
 
@@ -168,22 +176,22 @@ class Permissions {
     buttonSelector.classList.add('ug_selector', 'changegroup', 'btn', 'btn-sm', 'btn-link');
     buttonSelector.setAttribute('type', 'button');
     buttonSelector.setAttribute('data-page', page);
-    buttonSelector.setAttribute('data-group-id', element.dataset.groupId);
+    buttonSelector.setAttribute('data-group-id', element.dataset.groupId ?? '');
     buttonSelector.setAttribute('data-groupname', groupname);
     buttonSelector.innerText = groupname;
     span.appendChild(buttonSelector);
 
     // Replace content
     const container = document.getElementById('g_' + page);
-    container.parentNode.replaceChild(span, container);
+    container?.parentNode?.replaceChild(span, container);
   }
 
   /**
    * Group-related: Set the new group by executing an ajax call
    */
   private changeGroup(element: HTMLElement): void {
-    const page = element.dataset.page;
-    const container: HTMLElement = document.getElementById('g_' + page);
+    const page = element.dataset.page ?? '';
+    const container: HTMLElement | null = document.getElementById('g_' + page);
 
     (new AjaxRequest(this.ajaxUrl)).post({
       action: 'change_group',
@@ -200,7 +208,7 @@ class Permissions {
    * Group-related: Load the selector by executing an ajax call
    */
   private showChangeGroupSelector(element: HTMLElement): void {
-    const page = element.dataset.page;
+    const page = element.dataset.page ?? '';
     (new AjaxRequest(this.ajaxUrl)).post({
       action: 'show_change_group_selector',
       page: page,
@@ -208,14 +216,17 @@ class Permissions {
       groupname: element.dataset.groupname,
     }).then(async (response: AjaxResponse): Promise<void> => {
       // Replace content
-      document.getElementById('g_' + page).outerHTML = await response.resolve();
+      const target = document.getElementById('g_' + page);
+      if (target !== null) {
+        target.outerHTML = await response.resolve();
+      }
     });
   }
 
   private initializeCheckboxGroups(): void {
     const checkboxGroups: NodeListOf<HTMLInputElement> = document.querySelectorAll('[data-checkbox-group]');
     checkboxGroups.forEach((checkboxGroupCheckbox): void => {
-      const permissionGroup = checkboxGroupCheckbox.dataset.checkboxGroup;
+      const permissionGroup = checkboxGroupCheckbox.dataset.checkboxGroup ?? '';
       const permissionValue = parseInt(checkboxGroupCheckbox.value, 10);
       Permissions.setPermissionCheckboxes(permissionGroup, permissionValue);
     });
@@ -281,7 +292,7 @@ class Permissions {
     if (editControllerSelector !== null) {
       // Click events to change permissions (in template Edit.html)
       new RegularEvent('click', (e: Event, currentTarget: Element): void => {
-        const args = (currentTarget as HTMLElement).dataset.checkChangePermissions.split(',').map((item) => item.trim());
+        const args = ((currentTarget as HTMLElement).dataset.checkChangePermissions ?? '').split(',').map((item) => item.trim());
         Permissions.updatePermissionValue.apply(this, args as [string, string]);
       }).delegateTo(editControllerSelector, '[data-check-change-permissions]');
     }

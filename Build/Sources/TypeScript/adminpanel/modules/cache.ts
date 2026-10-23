@@ -9,7 +9,7 @@
         element.addEventListener('click', (): void => {
           const url = element.dataset.typo3AjaxUrl;
           const request = new XMLHttpRequest();
-          request.open('GET', url);
+          request.open('GET', url ?? '');
           request.send();
           request.onload = (): void => {
             location.reload();

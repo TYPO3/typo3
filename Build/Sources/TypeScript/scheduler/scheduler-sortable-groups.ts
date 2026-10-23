@@ -35,10 +35,10 @@ class SchedulerSortableGroups {
           return ('taskGroupId' in event.related.dataset) && Number(event.related.dataset.taskGroupId) !== 0;
         },
         onSort: (event: SortableEvent): void => {
-          const previousItem = event.target.children[event.newDraggableIndex - 1];
+          const previousItem = event.target.children[(event.newDraggableIndex ?? 0) - 1];
           let letMoveTarget = 0;
           if(previousItem) {
-            const previousUid: string = (<HTMLElement>previousItem).dataset.taskGroupId;
+            const previousUid: string = (<HTMLElement>previousItem).dataset.taskGroupId ?? '';
             letMoveTarget = Number('-' + previousUid);
           }
 

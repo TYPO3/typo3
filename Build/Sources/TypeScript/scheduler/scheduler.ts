@@ -62,7 +62,7 @@ class Scheduler {
 
   private toggleCollapseIcon(e: Event): void {
     const isCollapsed: boolean = e.type === 'hide.bs.collapse';
-    const collapseIcon: HTMLElement = document.querySelector('.t3js-toggle-table[data-bs-target="#' + (e.target as HTMLElement).id + '"] .t3js-icon');
+    const collapseIcon = document.querySelector<HTMLElement>('.t3js-toggle-table[data-bs-target="#' + (e.target as HTMLElement).id + '"] .t3js-icon');
     if (collapseIcon !== null) {
       Icons
         .getIcon((isCollapsed ? 'actions-view-list-expand' : 'actions-view-list-collapse'), Icons.sizes.small)
@@ -70,17 +70,17 @@ class Scheduler {
           collapseIcon.replaceWith(document.createRange().createContextualFragment(icon));
         });
     }
-    Scheduler.storeCollapseState((e.target as HTMLElement).dataset.table, isCollapsed);
+    Scheduler.storeCollapseState((e.target as HTMLElement).dataset.table ?? '', isCollapsed);
   }
 
   private executeTasks(event: CustomEvent): void {
-    const form: HTMLFormElement = document.querySelector('[data-multi-record-selection-form="' + event.detail.identifier + '"]');
+    const form = document.querySelector<HTMLFormElement>('[data-multi-record-selection-form="' + event.detail.identifier + '"]');
     if (form === null) {
       return;
     }
     const taskIds: Array<string> = [];
     (event.detail as ActionEventDetails).checkboxes.forEach((checkbox) => {
-      const checkboxContainer: HTMLElement = checkbox.closest(MultiRecordSelectionSelectors.elementSelector);
+      const checkboxContainer = checkbox.closest<HTMLElement>(MultiRecordSelectionSelectors.elementSelector);
       if (checkboxContainer !== null && checkboxContainer.dataset.taskId) {
         taskIds.push(checkboxContainer.dataset.taskId);
       }

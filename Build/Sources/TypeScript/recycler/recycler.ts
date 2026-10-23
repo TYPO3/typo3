@@ -75,7 +75,7 @@ class Recycler {
   private getProgress(): ProgressBarElement {
     if (!this.progressBar || !this.progressBar.isConnected) {
       this.progressBar = document.createElement('typo3-backend-progress-bar');
-      document.querySelector(Identifiers.recyclerTable).prepend(this.progressBar);
+      document.querySelector(Identifiers.recyclerTable)?.prepend(this.progressBar);
     }
     return this.progressBar;
   }
@@ -158,7 +158,7 @@ class Recycler {
           this.paging.currentPage++;
         }
       } else if (paginator.dataset.action === 'page') {
-        this.paging.currentPage = parseInt(paginator.querySelector('span').textContent, 10);
+        this.paging.currentPage = parseInt(paginator.querySelector('span')?.textContent ?? '0', 10);
       }
 
       this.loadDeletedElements();
@@ -310,6 +310,9 @@ class Recycler {
       tableSelection: tableSelector.value,
     }).get().then(async (response: AjaxResponse): Promise<AjaxResponse> => {
       const tableWrapper = document.querySelector(Identifiers.recyclerTable);
+      if (tableWrapper === null || tableWrapper.parentElement === null) {
+        return response;
+      }
       const tableBody = tableWrapper.querySelector('tbody');
       const data = await response.resolve();
 
@@ -349,7 +352,7 @@ class Recycler {
 
     const target = currentTarget ? currentTarget : event.target as HTMLElement;
     const tableRow = target.closest('tr');
-    const isMassDelete = tableRow === null || tableRow.parentElement.tagName !== 'TBODY'; // deleteRecord() was invoked by the mass delete button
+    const isMassDelete = tableRow === null || tableRow.parentElement?.tagName !== 'TBODY'; // deleteRecord() was invoked by the mass delete button
     let records: Array<string>;
     let message: string;
 
@@ -361,7 +364,7 @@ class Recycler {
       const table = tableRow.dataset.table;
       const recordTitle = tableRow.dataset.recordtitle;
       records = [table + ':' + uid];
-      const parameters = { '0': recordTitle, '1': '[' + records[0] + ']' } as const;
+      const parameters = { '0': recordTitle ?? '', '1': '[' + records[0] + ']' } as const;
       message = table === 'pages'
         ? labels.get('modal.deletepage.text', parameters)
         : labels.get('modal.deletecontent.text', parameters);
@@ -393,7 +396,7 @@ class Recycler {
   private undoRecord(event: Event, currentTarget: HTMLElement): void {
     const target = currentTarget ? currentTarget : event.target as HTMLElement;
     const tableRow = target.closest('tr');
-    const isMassUndo = tableRow === null || tableRow.parentElement.tagName !== 'TBODY'; // undoRecord() was invoked by the mass delete button
+    const isMassUndo = tableRow === null || tableRow.parentElement?.tagName !== 'TBODY'; // undoRecord() was invoked by the mass delete button
     let records: Array<string>;
     let messageText: string;
     let recoverPages: boolean;
@@ -409,7 +412,7 @@ class Recycler {
 
       records = [table + ':' + uid];
       recoverPages = table === 'pages';
-      const parameters = { '0': recordTitle, '1': '[' + records[0] + ']' } as const;
+      const parameters = { '0': recordTitle ?? '', '1': '[' + records[0] + ']' } as const;
       messageText = recoverPages
         ? labels.get('modal.undopage.text', parameters)
         : labels.get('modal.undocontent.text', parameters);
@@ -419,7 +422,7 @@ class Recycler {
       }
     }
 
-    let message: Element = null;
+    let message: Element | null = null;
     if (recoverPages) {
       const wrapper = document.createElement('div');
 
@@ -477,7 +480,7 @@ class Recycler {
     });
   }
 
-  private async callAjaxAction(action: string, records: RecordToDelete[], isMassAction: boolean, recursive: boolean = false): Promise<AjaxResponse>|null {
+  private async callAjaxAction(action: string, records: RecordToDelete[], isMassAction: boolean, recursive: boolean = false): Promise<AjaxResponse | null> {
     let ajaxUrl: string;
     const data: { records: RecordToDelete[], recursive?: number } = {
       records: records,
@@ -526,6 +529,9 @@ class Recycler {
    */
   private buildPaginator(totalItems: number): void {
     const paginator = document.querySelector(Identifiers.paginator);
+    if (paginator === null) {
+      return;
+    }
 
     if (totalItems === 0) {
       paginator.replaceChildren();

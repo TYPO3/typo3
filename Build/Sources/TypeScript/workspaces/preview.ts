@@ -163,7 +163,7 @@ class Preview extends Workspaces {
           modal.hideModal();
           this.renderStageButtons((await response.resolve())[1].result);
           // Reloading live view IFRAME
-          this.elements.workspaceView.setAttribute('src', this.elements.workspaceView.getAttribute('src'));
+          this.elements.workspaceView.setAttribute('src', this.elements.workspaceView.getAttribute('src') ?? '');
         });
       }
     });
@@ -200,7 +200,7 @@ class Preview extends Workspaces {
           modal.hideModal();
           this.renderStageButtons((await response.resolve())[1].result);
           // Reloading live view IFRAME
-          this.elements.workspaceView.setAttribute('src', this.elements.workspaceView.getAttribute('src'));
+          this.elements.workspaceView.setAttribute('src', this.elements.workspaceView.getAttribute('src') ?? '');
         });
       }
     });
@@ -232,7 +232,7 @@ class Preview extends Workspaces {
         if (modalTarget.name === 'ok') {
           const serializedForm = Utility.convertFormToObject(modal.querySelector('form'));
           serializedForm.affects = resolvedResponse[0].result.affects;
-          serializedForm.stageId = parseInt(target.dataset.stageId, 10);
+          serializedForm.stageId = parseInt(target.dataset.stageId ?? '0', 10);
           this.sendRemoteRequest([
             this.generateRemotePayloadBody('sendCollectionToStage', [serializedForm]),
             this.generateRemotePayloadBody('updateStageChangeButtons', [TYPO3.settings.Workspaces.id]),

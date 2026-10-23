@@ -92,9 +92,9 @@ class Backend extends Workspaces {
       this.registerEvents();
 
       // Set the depth from the main element
-      this.settings.depth = (document.querySelector<HTMLInputElement>(Identifiers.depthSelector))?.value;
-      this.settings.language = (document.querySelector<HTMLInputElement>(Identifiers.languageSelector))?.value;
-      this.settings.stage = (document.querySelector<HTMLInputElement>(Identifiers.stagesSelector))?.value;
+      this.settings.depth = document.querySelector<HTMLInputElement>(Identifiers.depthSelector).value;
+      this.settings.language = document.querySelector<HTMLInputElement>(Identifiers.languageSelector).value;
+      this.settings.stage = document.querySelector<HTMLInputElement>(Identifiers.stagesSelector).value;
 
       // Fetch workspace info (listing) if workspace is accessible
       if (document.querySelector(Identifiers.container) !== null) {
@@ -119,7 +119,7 @@ class Backend extends Workspaces {
    * module from overriding the manually changed state.
    */
   private static changeCollectionParentState(collection: string, check: boolean): void {
-    const parent: HTMLInputElement = document.querySelector('tr[data-collection-current="' + collection + '"] input[type=checkbox]');
+    const parent = document.querySelector<HTMLInputElement>('tr[data-collection-current="' + collection + '"] input[type=checkbox]');
     if (parent !== null && parent.checked !== check) {
       parent.checked = check;
       parent.dataset.manuallyChanged = 'true';
@@ -199,7 +199,7 @@ class Backend extends Workspaces {
       const row = target.closest('tr');
       const newUrl = TYPO3.settings.FormEngine.moduleUrl
         + '&returnUrl=' + encodeURIComponent(document.location.href)
-        + '&module=' + encodeURIComponent(topWindow.TYPO3.ModuleMenu.App.getCurrentModule())
+        + '&module=' + encodeURIComponent(topWindow.TYPO3.ModuleMenu.App.getCurrentModule() ?? '')
         + '&id=' + TYPO3.settings.Workspaces.id + '&edit[' + row.dataset.table + '][' + row.dataset.uid + ']=edit';
 
       window.location.href = newUrl;
@@ -302,7 +302,7 @@ class Backend extends Workspaces {
         this.generateRemotePayloadBody('getWorkspaceInfos', this.settings),
       ).then(async (response: AjaxResponse): Promise<void> => {
         const actionResponse = await response.resolve();
-        target.previousElementSibling.innerHTML = (target.querySelector<HTMLElement>('option:checked')).dataset.icon;
+        target.previousElementSibling.innerHTML = target.querySelector<HTMLElement>('option:checked').dataset.icon ?? '';
         this.renderWorkspaceInfos(actionResponse[0].result);
       });
     }).delegateTo(document, Identifiers.languageSelector);
@@ -341,7 +341,7 @@ class Backend extends Workspaces {
           }
           break;
         case 'page':
-          this.paging.currentPage = parseInt(paginator.dataset.page, 10);
+          this.paging.currentPage = parseInt(paginator.dataset.page ?? '0', 10);
           reload = true;
           break;
         default:
@@ -398,11 +398,11 @@ class Backend extends Workspaces {
     let stageExecuteAction: string;
 
     if (direction === 'next') {
-      nextStage = row.dataset.nextStage;
+      nextStage = row.dataset.nextStage ?? '';
       stageWindowAction = 'sendToNextStageWindow';
       stageExecuteAction = 'sendToNextStageExecute';
     } else if (direction === 'prev') {
-      nextStage = row.dataset.prevStage;
+      nextStage = row.dataset.prevStage ?? '';
       stageWindowAction = 'sendToPrevStageWindow';
       stageExecuteAction = 'sendToPrevStageExecute';
     } else {
@@ -471,8 +471,10 @@ class Backend extends Workspaces {
     }
 
     const workspacesRecordTable = document.querySelector('typo3-workspaces-record-table');
-    workspacesRecordTable.additionalColumns = result.additionalColumns ?? {};
-    workspacesRecordTable.results = result.data;
+    if (workspacesRecordTable !== null) {
+      workspacesRecordTable.additionalColumns = result.additionalColumns ?? {};
+      workspacesRecordTable.results = result.data;
+    }
   }
 
   /**
@@ -513,10 +515,10 @@ class Backend extends Workspaces {
     const tableRow = target.closest('tr');
     this.sendRemoteRequest(
       this.generateRemotePayloadBody('getRowDetails', {
-        stage: parseInt(tableRow.dataset.stage, 10),
-        t3ver_oid: parseInt(tableRow.dataset.t3ver_oid, 10),
+        stage: parseInt(tableRow.dataset.stage ?? '0', 10),
+        t3ver_oid: parseInt(tableRow.dataset.t3ver_oid ?? '0', 10),
         table: tableRow.dataset.table,
-        uid: parseInt(tableRow.dataset.uid, 10),
+        uid: parseInt(tableRow.dataset.uid ?? '0', 10),
         filterFields: true
       }),
     ).then(async (response: AjaxResponse): Promise<void> => {

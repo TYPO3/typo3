@@ -1,9 +1,9 @@
 ((): void => {
   class AdminPanelPreview {
-    private readonly dateField: HTMLInputElement | null = null;
-    private readonly timeField: HTMLInputElement | null = null;
-    private readonly targetField: HTMLInputElement | null = null;
-    private readonly toggleField: HTMLInputElement | null = null;
+    private readonly dateField: HTMLInputElement;
+    private readonly timeField: HTMLInputElement;
+    private readonly targetField: HTMLInputElement;
+    private readonly toggleField: HTMLInputElement;
 
     /**
      * Initialize date and time fields of preview
@@ -15,7 +15,7 @@
     constructor() {
       this.dateField = <HTMLInputElement>document.getElementById('preview_simulateDate-date-hr');
       this.timeField = <HTMLInputElement>document.getElementById('preview_simulateDate-time-hr');
-      this.targetField = <HTMLInputElement>document.getElementById(this.dateField.dataset.bsTarget);
+      this.targetField = <HTMLInputElement>document.getElementById(this.dateField.dataset.bsTarget ?? '');
       this.toggleField = <HTMLInputElement>document.getElementById('typo3-adminPanel-simulate-date-toggle');
 
       if (this.targetField.value) {
