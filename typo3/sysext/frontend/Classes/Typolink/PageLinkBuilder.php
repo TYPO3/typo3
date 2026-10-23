@@ -611,17 +611,30 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
         $currentSite = $this->getCurrentSite();
         $currentSiteLanguage = $this->getCurrentSiteLanguage() ?? $currentSite?->getDefaultLanguage();
 
-        if ($targetLanguageId === 'current') {
+        $useCurrentLanguage = $targetLanguageId === 'current';
+        if ($useCurrentLanguage) {
             $targetLanguageId = $currentSiteLanguage?->getLanguageId() ?? LanguageMarker::DEFAULT_LANGUAGE;
         } else {
             $targetLanguageId = (int)$targetLanguageId;
         }
         try {
-            $siteLanguageOfTargetPage = $siteOfTargetPage->getLanguageById($targetLanguageId);
+            return $siteOfTargetPage->getLanguageById($targetLanguageId);
         } catch (\InvalidArgumentException $e) {
+            if ($useCurrentLanguage) {
+                // The target site has no language with the ID of the current language, use the first
+                // fallback language of the current language which exists in the target site, or
+                // link the page in the default language of its site
+                foreach ($currentSiteLanguage?->getFallbackLanguageIds() ?? [] as $fallbackLanguageId) {
+                    try {
+                        return $siteOfTargetPage->getLanguageById($fallbackLanguageId);
+                    } catch (\InvalidArgumentException) {
+                        // Try the next fallback language
+                    }
+                }
+                return $siteOfTargetPage->getDefaultLanguage();
+            }
             throw new UnableToLinkException('The target page does not have a language with ID ' . $targetLanguageId . ' configured in its site configuration.', 1535477406);
         }
-        return $siteLanguageOfTargetPage;
     }
 
     /**
