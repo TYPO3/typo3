@@ -17,13 +17,13 @@ class OffsetGroupElement extends LitElement {
         <div class="form-multigroup-item">
           <div class="input-group">
             <div class="input-group-text">x</div>
-            <input id="${this.offsetId}_offset_x" class="form-control t3js-emconf-offsetfield" data-target="#${this.offsetId}" value="${this.values[0]?.trim()}"/>
+            <input id="${this.offsetId}_offset_x" class="form-control t3js-emconf-offsetfield" data-target="#${this.offsetId}" value="${this.values?.[0]?.trim() ?? ''}"/>
           </div>
         </div>
         <div class="form-multigroup-item">
           <div class="input-group">
             <div class="input-group-text">y</div>
-            <input id="${this.offsetId}_offset_y" class="form-control t3js-emconf-offsetfield" data-target="#${this.offsetId}" value="${this.values[1]?.trim()}"/>
+            <input id="${this.offsetId}_offset_y" class="form-control t3js-emconf-offsetfield" data-target="#${this.offsetId}" value="${this.values?.[1]?.trim() ?? ''}"/>
           </div>
         </div>
       </div>

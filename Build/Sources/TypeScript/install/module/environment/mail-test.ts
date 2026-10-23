@@ -92,7 +92,7 @@ class MailTest extends AbstractInteractableModule {
   private send(): void {
     this.setModalButtonsState(false);
 
-    const executeToken: string = this.getModuleContent().dataset.mailTestToken;
+    const executeToken: string = this.getModuleContent().dataset.mailTestToken ?? '';
     const outputContainer: HTMLElement = this.findInModal(Identifiers.outputContainer);
     this.renderProgressBar(outputContainer);
     (new AjaxRequest(Router.getUrl())).post({

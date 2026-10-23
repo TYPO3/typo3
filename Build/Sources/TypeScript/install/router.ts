@@ -74,7 +74,7 @@ class Router {
       const inlineState = target.dataset.inline;
       const isInline = typeof inlineState !== 'undefined' && parseInt(inlineState, 10) === 1;
       if (isInline) {
-        import(importModule).then(({ default: aModule }: {default: AbstractInlineModule}): void => {
+        import(importModule ?? '').then(({ default: aModule }: {default: AbstractInlineModule}): void => {
           aModule.initialize(target);
         });
       } else {
@@ -88,7 +88,7 @@ class Router {
           additionalCssClasses: ['install-tool-modal'],
           staticBackdrop: true,
           callback: (currentModal: ModalElement): void => {
-            import(importModule).then(({ default: aModule }: {default: AbstractInteractableModule}): void => {
+            import(importModule ?? '').then(({ default: aModule }: {default: AbstractInteractableModule}): void => {
               aModule.initialize(currentModal);
             });
           },
@@ -343,7 +343,7 @@ class Router {
   }
 
   public login(): void {
-    const outputContainer: HTMLElement = document.querySelector('.t3js-login-output');
+    const outputContainer = document.querySelector<HTMLElement>('.t3js-login-output');
     outputContainer.innerHTML = '';
     (new AjaxRequest(this.getUrl()))
       .post({

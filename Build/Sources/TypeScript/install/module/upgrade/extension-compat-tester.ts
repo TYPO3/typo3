@@ -56,7 +56,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
     }).delegateTo(currentModal, Identifiers.checkTrigger);
 
     new RegularEvent('click', (event: Event, target: HTMLElement): void => {
-      this.uninstallExtension(target.dataset.extension);
+      this.uninstallExtension(target.dataset.extension ?? '');
     }).delegateTo(currentModal, Identifiers.uninstallTrigger);
   }
 
@@ -112,7 +112,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
 
   private renderFailureMessages(scope: string, brokenExtensions: Array<BrokenExtension>, outputContainer: HTMLElement): void {
     for (const extension of brokenExtensions) {
-      let uninstallAction;
+      let uninstallAction: HTMLButtonElement | null = null;
       if (!extension.isProtected) {
         uninstallAction = document.createElement('button');
         uninstallAction.classList.add('btn', 'btn-danger', 't3js-extensionCompatTester-uninstall');
@@ -125,7 +125,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
           'Loading ' + scope + ' of extension "' + extension.name + '" failed',
           extension.isProtected ? 'Extension is mandatory and cannot be uninstalled.' : ''
         ),
-        uninstallAction,
+        uninstallAction ?? '',
       );
     }
 

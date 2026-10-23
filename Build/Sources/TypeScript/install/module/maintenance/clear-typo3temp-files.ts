@@ -61,7 +61,7 @@ class ClearTypo3tempFiles extends AbstractInteractableModule {
       event.preventDefault();
       const folder = trigger.dataset.folder;
       const storageUid = trigger.dataset.storageUid !== undefined ? parseInt(trigger.dataset.storageUid, 10) : undefined;
-      this.delete(folder, storageUid);
+      this.delete(folder ?? '', storageUid);
     }).delegateTo(currentModal, Identifiers.deleteTrigger);
   }
 
@@ -80,7 +80,7 @@ class ClearTypo3tempFiles extends AbstractInteractableModule {
             if (Array.isArray(data.stats) && data.stats.length > 0) {
               data.stats.forEach((element): void => {
                 if (element.numberOfFiles > 0) {
-                  const aStat = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.statTemplate)).content.cloneNode(true) as HTMLElement;
+                  const aStat = modalContent.querySelector<HTMLTemplateElement>(Identifiers.statTemplate).content.cloneNode(true) as HTMLElement;
                   aStat.querySelector<HTMLElement>(Identifiers.statNumberOfFiles).innerText = String(element.numberOfFiles);
                   aStat.querySelector<HTMLElement>(Identifiers.statDirectory).innerText = element.directory;
                   aStat.querySelector<HTMLElement>(Identifiers.deleteTrigger).setAttribute('data-folder', element.directory);

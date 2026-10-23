@@ -272,9 +272,9 @@ class Installer {
     const outputContainer = document.querySelector(Identifiers.databaseConnectOutput);
     const postData: Record<string, string> = {
       'install[action]': 'executeDatabaseConnect',
-      'install[token]': (document.querySelector<HTMLElement>(Identifiers.moduleContent)).dataset.installerDatabaseConnectExecuteToken,
+      'install[token]': document.querySelector<HTMLElement>(Identifiers.moduleContent).dataset.installerDatabaseConnectExecuteToken ?? '',
     };
-    for (const [name, value] of new FormData(document.querySelector(Identifiers.body + ' form'))) {
+    for (const [name, value] of new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form'))) {
       postData[name] = value.toString();
     }
     (new AjaxRequest(this.getUrl()))
@@ -324,9 +324,9 @@ class Installer {
     const outputContainer = document.querySelector(Identifiers.databaseSelectOutput);
     const postData: { [id: string]: string } = {
       'install[action]': 'executeDatabaseSelect',
-      'install[token]': (document.querySelector<HTMLElement>(Identifiers.moduleContent)).dataset.installerDatabaseSelectExecuteToken,
+      'install[token]': document.querySelector<HTMLElement>(Identifiers.moduleContent).dataset.installerDatabaseSelectExecuteToken ?? '',
     };
-    for (const [name, value] of new FormData(document.querySelector(Identifiers.body + ' form'))) {
+    for (const [name, value] of new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form'))) {
       postData[name] = value.toString();
     }
     (new AjaxRequest(this.getUrl()))
@@ -349,9 +349,9 @@ class Installer {
     const outputContainer = document.querySelector(Identifiers.databaseSelectOutput);
     const postData: Record<string, string> = {
       'install[action]': 'checkDatabaseRequirements',
-      'install[token]': (document.querySelector<HTMLElement>(Identifiers.moduleContent)).dataset.installerDatabaseCheckRequirementsExecuteToken,
+      'install[token]': document.querySelector<HTMLElement>(Identifiers.moduleContent).dataset.installerDatabaseCheckRequirementsExecuteToken ?? '',
     };
-    for (const [name, value] of new FormData(document.querySelector(Identifiers.body + ' form'))) {
+    for (const [name, value] of new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form'))) {
       postData[name] = value.toString();
     }
     (new AjaxRequest(this.getUrl()))
@@ -402,9 +402,9 @@ class Installer {
     const outputContainer = document.querySelector(Identifiers.databaseDataOutput);
     const postData: Record<string, string> = {
       'install[action]': 'executeDatabaseData',
-      'install[token]': (document.querySelector<HTMLElement>(Identifiers.moduleContent)).dataset.installerDatabaseDataExecuteToken,
+      'install[token]': document.querySelector<HTMLElement>(Identifiers.moduleContent).dataset.installerDatabaseDataExecuteToken ?? '',
     };
-    for (const [name, value] of new FormData(document.querySelector(Identifiers.body + ' form'))) {
+    for (const [name, value] of new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form'))) {
       postData[name] = value.toString();
     }
     const progressBar = document.createElement('typo3-backend-progress-bar');
@@ -442,9 +442,9 @@ class Installer {
   private executeDefaultConfiguration(): void {
     const postData: Record<string, string> = {
       'install[action]': 'executeDefaultConfiguration',
-      'install[token]': (document.querySelector<HTMLElement>(Identifiers.moduleContent)).dataset.installerDefaultConfigurationExecuteToken,
+      'install[token]': document.querySelector<HTMLElement>(Identifiers.moduleContent).dataset.installerDefaultConfigurationExecuteToken ?? '',
     };
-    for (const [name, value] of new FormData(document.querySelector(Identifiers.body + ' form'))) {
+    for (const [name, value] of new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form'))) {
       postData[name] = value.toString();
     }
     (new AjaxRequest(this.getUrl()))

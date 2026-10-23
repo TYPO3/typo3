@@ -39,6 +39,10 @@ export abstract class AbstractInteractableModule {
     this.currentModal = currentModal;
   }
 
+  /**
+   * The modal structure below is rendered by the modal itself, so these are
+   * present for as long as the module is interactable.
+   */
   protected getModalBody(): HTMLElement {
     return this.findInModal(Identifiers.modalBody);
   }
@@ -79,27 +83,25 @@ export abstract class AbstractInteractableModule {
   }
 
   protected renderProgressBar(
-    target?: HTMLElement,
+    target?: HTMLElement | null,
     properties?: Partial<WritablePart<ProgressBarElement>>,
     mode?: 'replace' | 'prepend' | 'append'
   ): ProgressBarElement {
     this.loadModuleFrameAgnostic('@typo3/backend/element/progress-bar-element.js');
 
-    target = target || this.currentModal;
+    const container = target ?? this.currentModal;
 
-    const progressBar = target.ownerDocument.createElement('typo3-backend-progress-bar');
+    const progressBar = container.ownerDocument.createElement('typo3-backend-progress-bar');
     if (typeof properties === 'object') {
-      (Object.keys(properties) as (keyof WritablePart<ProgressBarElement>)[]).forEach((key) => {
-        (progressBar[key] as unknown) = properties[key];
-      });
+      Object.assign(progressBar, properties);
     }
 
     if (mode === 'append') {
-      target.append(progressBar);
+      container.append(progressBar);
     } else if (mode === 'prepend') {
-      target.prepend(progressBar);
+      container.prepend(progressBar);
     } else {
-      target.replaceChildren(progressBar);
+      container.replaceChildren(progressBar);
     }
 
     return progressBar;

@@ -200,12 +200,12 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
 
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().dataset.databaseAnalyzerExecuteToken;
-    const outputContainer: HTMLElement = modalContent.querySelector(Identifiers.outputContainer);
-    const notificationContainer: HTMLElement = modalContent.querySelector(Identifiers.notificationContainer);
+    const outputContainer = modalContent.querySelector<HTMLElement>(Identifiers.outputContainer);
+    const notificationContainer = modalContent.querySelector<HTMLElement>(Identifiers.notificationContainer);
 
     const selectedHashes: string[] = [];
     outputContainer.querySelectorAll<HTMLElement>('.t3js-databaseAnalyzer-suggestion-line input:checked').forEach((element): void => {
-      selectedHashes.push(element.dataset.hash);
+      selectedHashes.push(element.dataset.hash ?? '');
     });
     this.renderProgressBar(outputContainer, {
       label: 'Executing database updates...'
