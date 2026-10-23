@@ -25,11 +25,32 @@ use TYPO3\CMS\Extensionmanager\Domain\ExtensionCatalogueInterface;
 use TYPO3\CMS\Extensionmanager\Domain\FallbackExtensionCatalogue;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Remote\ApiRequestFailedException;
+use TYPO3\CMS\Extensionmanager\Remote\UnsupportedVersionConstraintException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 #[AllowMockObjectsWithoutExpectations]
 final class FallbackExtensionCatalogueTest extends UnitTestCase
 {
+    private function configuration(bool $offlineMode): ExtensionConfiguration
+    {
+        $configuration = $this->createMock(ExtensionConfiguration::class);
+        $configuration->method('get')->willReturn($offlineMode ? '1' : '0');
+        return $configuration;
+    }
+
+    #[Test]
+    public function inOfflineModeTheRemoteIsNotAsked(): void
+    {
+        $remote = $this->createMock(ExtensionCatalogueInterface::class);
+        $remote->expects($this->never())->method('countAll');
+        $local = $this->createMock(ExtensionCatalogueInterface::class);
+        $local->expects($this->once())->method('countAll')->willReturn(7);
+
+        $subject = new FallbackExtensionCatalogue($remote, $local, new NullLogger(), $this->configuration(true));
+
+        self::assertSame(7, $subject->countAll());
+    }
+
     #[Test]
     public function theRemoteAnswersWhileItCan(): void
     {
@@ -38,7 +59,7 @@ final class FallbackExtensionCatalogueTest extends UnitTestCase
         $local = $this->createMock(ExtensionCatalogueInterface::class);
         $local->expects($this->never())->method('findAll');
 
-        $subject = new FallbackExtensionCatalogue($remote, $local, new NullLogger(), $this->extensionConfiguration(false));
+        $subject = new FallbackExtensionCatalogue($remote, $local, new NullLogger(), $this->configuration(false));
 
         self::assertSame('from_remote', $subject->findAll(20, 10)[0]->extensionKey);
     }
@@ -51,7 +72,20 @@ final class FallbackExtensionCatalogueTest extends UnitTestCase
         $local = $this->createMock(ExtensionCatalogueInterface::class);
         $local->expects($this->once())->method('findAll')->with(20, 10)->willReturn([$this->extension('from_import')]);
 
-        $subject = new FallbackExtensionCatalogue($remote, $local, new NullLogger(), $this->extensionConfiguration(false));
+        $subject = new FallbackExtensionCatalogue($remote, $local, new NullLogger(), $this->configuration(false));
+
+        self::assertSame('from_import', $subject->findAll(20, 10)[0]->extensionKey);
+    }
+
+    #[Test]
+    public function theImportedListAnswersWhenTheRemoteSendsAnUnsupportedConstraint(): void
+    {
+        $remote = $this->createMock(ExtensionCatalogueInterface::class);
+        $remote->method('findAll')->willThrowException(new UnsupportedVersionConstraintException('^13.4', 1794248547));
+        $local = $this->createMock(ExtensionCatalogueInterface::class);
+        $local->expects($this->once())->method('findAll')->with(20, 10)->willReturn([$this->extension('from_import')]);
+
+        $subject = new FallbackExtensionCatalogue($remote, $local, new NullLogger(), $this->configuration(false));
 
         self::assertSame('from_import', $subject->findAll(20, 10)[0]->extensionKey);
     }
@@ -70,7 +104,7 @@ final class FallbackExtensionCatalogueTest extends UnitTestCase
         $local->expects($this->never())->method('findByTitleOrAuthorNameOrExtensionKey');
         $local->expects($this->never())->method('countByTitleOrAuthorNameOrExtensionKey');
 
-        $subject = new FallbackExtensionCatalogue($remote, $local, new NullLogger(), $this->extensionConfiguration(false));
+        $subject = new FallbackExtensionCatalogue($remote, $local, new NullLogger(), $this->configuration(false));
 
         self::assertSame([], $subject->findByTitleOrAuthorNameOrExtensionKey('nothing matches', 0, 10));
         self::assertSame(0, $subject->countByTitleOrAuthorNameOrExtensionKey('nothing matches'));
@@ -88,7 +122,7 @@ final class FallbackExtensionCatalogueTest extends UnitTestCase
         $local = $this->createMock(ExtensionCatalogueInterface::class);
         $local->expects($this->never())->method('countAll');
 
-        $subject = new FallbackExtensionCatalogue($remote, $local, new NullLogger(), $this->extensionConfiguration(false));
+        $subject = new FallbackExtensionCatalogue($remote, $local, new NullLogger(), $this->configuration(false));
 
         $this->expectException(\RuntimeException::class);
         $subject->countAll();
@@ -104,7 +138,7 @@ final class FallbackExtensionCatalogueTest extends UnitTestCase
             $local->expects($this->once())->method($method);
         }
 
-        $subject = new FallbackExtensionCatalogue($remote, $local, new NullLogger(), $this->extensionConfiguration(false));
+        $subject = new FallbackExtensionCatalogue($remote, $local, new NullLogger(), $this->configuration(false));
 
         $subject->countAll();
         $subject->findAll(0, 10);

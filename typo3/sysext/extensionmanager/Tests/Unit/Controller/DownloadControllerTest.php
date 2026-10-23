@@ -21,7 +21,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Extensionmanager\Controller\DownloadController;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
-use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
+use TYPO3\CMS\Extensionmanager\Domain\PackageResolverInterface;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -42,7 +42,7 @@ final class DownloadControllerTest extends UnitTestCase
         $extensionManagementServiceMock->method('installExtension')->willThrowException($dummyException);
 
         $subject = new DownloadController(
-            self::createStub(ExtensionRepository::class),
+            self::createStub(PackageResolverInterface::class),
             $extensionManagementServiceMock,
             self::createStub(ExtensionConfiguration::class)
         );

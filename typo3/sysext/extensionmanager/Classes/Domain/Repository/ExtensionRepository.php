@@ -25,11 +25,13 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Domain\ExtensionCatalogueInterface;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Model\PackageIdentifier;
+use TYPO3\CMS\Extensionmanager\Domain\PackageResolverInterface;
 use TYPO3\CMS\Extensionmanager\Enum\ExtensionCategory;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionNotFoundException;
 use TYPO3\CMS\Extensionmanager\Remote\ApiRequestFailedException;
 use TYPO3\CMS\Extensionmanager\Remote\TerApiClient;
 use TYPO3\CMS\Extensionmanager\Remote\TerExtensionMapper;
+use TYPO3\CMS\Extensionmanager\Remote\UnsupportedVersionConstraintException;
 
 /**
  * A repository for extensions.
@@ -45,7 +47,7 @@ use TYPO3\CMS\Extensionmanager\Remote\TerExtensionMapper;
  *
  * @internal This class is a specific domain repository implementation and is not part of the Public TYPO3 API.
  */
-readonly class ExtensionRepository implements ExtensionCatalogueInterface
+readonly class ExtensionRepository implements ExtensionCatalogueInterface, PackageResolverInterface
 {
     private const string TABLE_NAME = 'tx_extensionmanager_domain_model_extension';
     private const string TER_REMOTE_IDENTIFIER = 'ter';
@@ -551,7 +553,7 @@ readonly class ExtensionRepository implements ExtensionCatalogueInterface
                 $extensions[] = $this->terExtensionMapper->map($remoteExtension, $version, self::TER_REMOTE_IDENTIFIER);
             }
             return $extensions;
-        } catch (ApiRequestFailedException $e) {
+        } catch (ApiRequestFailedException|UnsupportedVersionConstraintException $e) {
             $this->logger->notice(
                 'Resolving "{extensionKey}" from the imported extension list, TER could not be asked: {reason}',
                 ['extensionKey' => $extensionKey, 'reason' => $e->getMessage(), 'exception' => $e]

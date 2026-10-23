@@ -82,27 +82,11 @@ readonly class TerExtensionMapper
     {
         $storage = new \SplObjectStorage();
         foreach ($version->dependencies as $identifier => $constraint) {
-            $storage->offsetSet(Dependency::createFromEmConf((string)$identifier, $this->toEmConfConstraint((string)$constraint), 'depends'));
+            $storage->offsetSet(Dependency::createFromEmConf((string)$identifier, VersionConstraintConverter::toEmConfNotation((string)$constraint), 'depends'));
         }
         foreach ($version->conflicts as $identifier => $constraint) {
-            $storage->offsetSet(Dependency::createFromEmConf((string)$identifier, $this->toEmConfConstraint((string)$constraint), 'conflicts'));
+            $storage->offsetSet(Dependency::createFromEmConf((string)$identifier, VersionConstraintConverter::toEmConfNotation((string)$constraint), 'conflicts'));
         }
         return $storage;
-    }
-
-    /**
-     * The API sends a range as ">=13.4.29 <=14.3.99", while Dependency reads the
-     * ext_emconf.php notation "13.4.29-14.3.99".
-     */
-    private function toEmConfConstraint(string $constraint): string
-    {
-        if (!preg_match_all('/(>=|<=)\s*(\d[\d.]*)/', $constraint, $matches, PREG_SET_ORDER)) {
-            return $constraint;
-        }
-        $bounds = ['>=' => '', '<=' => ''];
-        foreach ($matches as [, $operator, $versionNumber]) {
-            $bounds[$operator] = $versionNumber;
-        }
-        return rtrim($bounds['>='] . '-' . $bounds['<='], '-');
     }
 }

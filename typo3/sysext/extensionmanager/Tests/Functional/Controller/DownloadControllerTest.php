@@ -39,6 +39,18 @@ final class DownloadControllerTest extends FunctionalTestCase
         'impexp',
     ];
 
+    /**
+     * Packages are resolved from TER live unless the Extension Manager is
+     * offline; a test must not depend on the network being there.
+     */
+    protected array $configurationToUseInTestInstance = [
+        'EXTENSIONS' => [
+            'extensionmanager' => [
+                'offlineMode' => '1',
+            ],
+        ],
+    ];
+
     protected function setUp(): void
     {
         $this->configurationToUseInTestInstance = TerApiFake::cacheConfiguration();
