@@ -34,7 +34,7 @@ enum Modes {
 @customElement('typo3-backend-switch-user')
 export class SwitchUser extends PseudoButtonLitElement {
 
-  @property({ type: String }) targetUser: string;
+  @property({ type: String }) targetUser: string = '';
   @property({ type: Modes }) mode: Modes = Modes.switch;
 
   protected override buttonActivated(): void {

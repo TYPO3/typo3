@@ -38,7 +38,7 @@ interface ExtensionInstallResult {
 }
 
 class Repository {
-  private progressBar: ProgressBarElement;
+  private progressBar: ProgressBarElement | null = null;
 
   public initDom(): void {
 

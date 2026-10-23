@@ -19,9 +19,9 @@ import { LitElement, type TemplateResult, html } from 'lit';
  */
 @customElement('typo3-backend-formengine-online-media-form')
 export class OnlineMediaFormElement extends LitElement {
-  @property({ type: String }) placeholder: string;
-  @property({ type: String, attribute: 'help-text' }) allowedExtensionsHelpText: string;
-  @property({ type: String, attribute: 'extensions' }) allowedExtensions: string;
+  @property({ type: String }) placeholder: string = '';
+  @property({ type: String, attribute: 'help-text' }) allowedExtensionsHelpText: string = '';
+  @property({ type: String, attribute: 'extensions' }) allowedExtensions: string = '';
 
   protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly

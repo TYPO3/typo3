@@ -116,8 +116,8 @@ export class CodeMirrorElement extends LitElement {
   @property({ type: Boolean, attribute: 'linewrapping' }) lineWrapping: boolean = false;
   @property({ type: Boolean, reflect: true }) fullscreen: boolean = false;
 
-  @property({ type: String }) label: string;
-  @property({ type: String }) placeholder: string;
+  @property({ type: String }) label: string = '';
+  @property({ type: String }) placeholder: string = '';
   @property({ type: String }) panel: string = 'bottom';
 
   @state() editorTheme: Compartment | null = null;

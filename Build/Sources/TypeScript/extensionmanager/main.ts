@@ -50,9 +50,9 @@ interface UpdateInformation {
  * ExtensionManager.uploadForm => helper to show the upload form
  */
 class ExtensionManager {
-  public Update: ExtensionManagerUpdate;
-  public UploadForm: ExtensionManagerUploadForm;
-  public Repository: ExtensionManagerRepository;
+  public Update!: ExtensionManagerUpdate;
+  public UploadForm!: ExtensionManagerUploadForm;
+  public Repository!: ExtensionManagerRepository;
   private readonly searchFilterSessionKey: string = 'tx-extensionmanager-local-filter';
   private progressBar: ProgressBarElement | null = null;
 

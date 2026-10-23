@@ -270,8 +270,8 @@ export class EditableFileStorageTree extends FileStorageTree {
  */
 @customElement('typo3-backend-navigation-component-filestoragetree')
 export class FileStorageTreeNavigationComponent extends TreeModuleState(LitElement) {
-  @query('typo3-backend-navigation-component-filestorage-tree') tree: EditableFileStorageTree;
-  @query('typo3-backend-tree-toolbar') toolbar: TreeToolbar;
+  @query('typo3-backend-navigation-component-filestorage-tree') tree!: EditableFileStorageTree;
+  @query('typo3-backend-tree-toolbar') toolbar!: TreeToolbar;
 
   protected override moduleStateType: string = 'media';
 

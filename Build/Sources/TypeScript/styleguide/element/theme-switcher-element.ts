@@ -39,7 +39,7 @@ const selectorConverter = {
 @customElement('typo3-styleguide-theme-switcher')
 export class ThemeSwitcherElement extends LitElement {
   @property() private activeTheme: ThemeIdentifier = 'light';
-  @property({ converter: selectorConverter }) private readonly example: HTMLElement;
+  @property({ converter: selectorConverter }) private readonly example!: HTMLElement;
 
   private readonly themes: Record<ThemeIdentifier, Theme> = {
     auto: {

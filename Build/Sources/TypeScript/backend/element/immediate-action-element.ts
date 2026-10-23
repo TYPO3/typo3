@@ -24,7 +24,7 @@ import { EventDispatcher } from '@typo3/backend/event/event-dispatcher';
  * https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
  */
 export class ImmediateActionElement extends HTMLElement {
-  private action: string;
+  private action: string | undefined;
   private args: any[] = [];
 
   /**

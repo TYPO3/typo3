@@ -18,10 +18,10 @@ import Modal from '@typo3/backend/modal';
 
 @customElement('typo3-mfa-totp-url-info-button')
 export class MfaTotpUrlButton extends PseudoButtonLitElement {
-  @property({ type: String, attribute: 'data-url' }) modalUrl: string;
-  @property({ type: String, attribute: 'data-title' }) modalTitle: string;
-  @property({ type: String, attribute: 'data-description' }) modalDescription: string;
-  @property({ type: String, attribute: 'data-button-ok' }) buttonOk: string;
+  @property({ type: String, attribute: 'data-url' }) modalUrl: string = '';
+  @property({ type: String, attribute: 'data-title' }) modalTitle: string = '';
+  @property({ type: String, attribute: 'data-description' }) modalDescription: string = '';
+  @property({ type: String, attribute: 'data-button-ok' }) buttonOk: string = '';
 
   protected override buttonActivated(): void {
     this.showTotpAuthUrlModal();

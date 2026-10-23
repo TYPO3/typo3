@@ -88,15 +88,15 @@ interface Mutation {
 
 @customElement('typo3-backend-security-csp-reports')
 export class CspReports extends LitElement {
-  @property({ type: Array }) scopes: string[];
-  @property({ type: String }) controlUri: string;
+  @property({ type: Array }) scopes: string[] = [];
+  @property({ type: String }) controlUri: string = '';
   @state() selectedScope: string | null = null;
 
   @state() reports: SummarizedCspReport[] = [];
   @state() selectedReport: SummarizedCspReport | null = null;
   @state() suggestions: MutationSuggestion[] = [];
 
-  private peripheralEvent: RegularEvent<Event, HTMLElement>;
+  private peripheralEvent!: RegularEvent<Event, HTMLElement>;
   private previouslyFocusedRow: HTMLElement | null = null;
 
   public override connectedCallback(): void {

@@ -58,7 +58,7 @@ export interface TreeWrapper extends HTMLElement {
 
 export class TreeNodeMap<T extends TreeNodeInterface = TreeNodeInterface> {
   private readonly treeNodes: T[];
-  private treeIdentifierIndex: Record<string, number>;
+  private treeIdentifierIndex!: Record<string, number>;
 
   constructor(nodes: T[]) {
     this.treeNodes = nodes;
@@ -118,7 +118,7 @@ export class Tree extends LitElement {
     actions: []
   };
 
-  @query('.nodes-root') root: HTMLElement;
+  @query('.nodes-root') root!: HTMLElement;
   @state() nodeMap: TreeNodeMap = new TreeNodeMap([]);
   @state() currentScrollPosition: number = 0;
   @state() currentVisibleHeight: number = 0;
@@ -156,7 +156,7 @@ export class Tree extends LitElement {
 
   protected currentFilterRequest: AjaxRequest|null = null;
 
-  private __loadFinished: () => void;
+  private __loadFinished!: () => void;
   private __loadPromise: Promise<void> = new Promise(res => this.__loadFinished = res);
   private lastRenderScrollPosition: number | null = null;
 

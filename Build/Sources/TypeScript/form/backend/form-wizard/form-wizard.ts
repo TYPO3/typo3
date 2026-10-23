@@ -49,10 +49,10 @@ export interface FormWizardContext {
 @customElement('typo3-backend-form-wizard')
 export class FormWizard extends LitElement {
   @state() steps: WizardStepInterface[] = [];
-  @state() submissionService: SubmissionServiceInterface;
+  @state() submissionService: SubmissionServiceInterface | undefined;
   @state() errorMessage: string | null = null;
 
-  @property({ type: FormManager, attribute: false }) formManager: FormManager;
+  @property({ type: FormManager, attribute: false }) formManager!: FormManager;
   @property({ type: Object, attribute: false }) duplicateForm?: {name: string, persistenceIdentifier: string};
 
   @query('typo3-backend-wizard') wizard!: Wizard<FormWizardDataStore>;

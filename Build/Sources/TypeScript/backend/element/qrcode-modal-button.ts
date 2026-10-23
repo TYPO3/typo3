@@ -27,8 +27,8 @@ import listLabels from '~labels/core.mod_web_list';
  */
 @customElement('typo3-qrcode-modal-button')
 export class QrCodeModalButton extends PseudoButtonLitElement {
-  @property({ type: String, attribute: 'modal-title' }) modalTitle: string;
-  @property({ type: String }) content: string;
+  @property({ type: String, attribute: 'modal-title' }) modalTitle: string = '';
+  @property({ type: String }) content: string = '';
   @property({ type: Boolean, attribute: 'show-url' }) showUrl: boolean = false;
   @property({ type: Boolean, attribute: 'show-download' }) showDownload: boolean = false;
 

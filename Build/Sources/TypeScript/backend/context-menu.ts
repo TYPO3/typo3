@@ -152,8 +152,8 @@ export class ContextMenuElement extends LitElement {
   @state() rootPositionX: number = 0;
   @state() eventSource: HTMLElement | null = null;
 
-  @queryAll('.context-menu') contextMenuElements: HTMLDivElement[];
-  @queryAll('.context-menu-item') contextMenuItemElements: HTMLButtonElement[];
+  @queryAll('.context-menu') contextMenuElements!: HTMLDivElement[];
+  @queryAll('.context-menu-item') contextMenuItemElements!: HTMLButtonElement[];
   private readonly rootIdentifier: string = 'root';
   // A modal <dialog> makes everything outside of it inert, so the menu is rendered
   // into a popover that is mounted into the topmost open dialog while it is shown.

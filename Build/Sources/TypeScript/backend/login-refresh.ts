@@ -441,7 +441,7 @@ export class SelfFillingProgressBarElement extends LitElement {
   protected current = 0;
 
   private readonly max = 100;
-  private intervalId: number;
+  private intervalId: number | null = null;
 
   public override connectedCallback(): void {
     super.connectedCallback();
@@ -455,7 +455,7 @@ export class SelfFillingProgressBarElement extends LitElement {
     super.disconnectedCallback();
     if (this.intervalId) {
       clearInterval(this.intervalId);
-      this.intervalId = null!;
+      this.intervalId = null;
     }
   }
 

@@ -30,10 +30,10 @@ export class DistributionImage extends LitElement {
     }
   `;
 
-  @property({ type: String }) alt: string;
-  @property({ type: String }) image: string;
-  @property({ type: String }) welcomeImage: string;
-  @property({ type: String }) fallback: string;
+  @property({ type: String }) alt: string = '';
+  @property({ type: String }) image: string = '';
+  @property({ type: String }) welcomeImage: string = '';
+  @property({ type: String }) fallback: string = '';
 
   protected override render(): TemplateResult|symbol {
     if (!this.image && !this.fallback) {

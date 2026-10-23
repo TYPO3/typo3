@@ -33,7 +33,7 @@ export type ModuleLoadedResponseWithButtons = ModuleLoadedResponse & {
 };
 
 export abstract class AbstractInteractableModule {
-  protected currentModal: ModalElement;
+  protected currentModal!: ModalElement;
 
   public initialize(currentModal: ModalElement): void {
     this.currentModal = currentModal;

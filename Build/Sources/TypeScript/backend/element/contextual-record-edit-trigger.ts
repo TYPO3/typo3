@@ -135,8 +135,8 @@ const setupMessageHandling = (modal: ModalElement, focusTarget: HTMLElement | nu
 
 @customElement('typo3-backend-contextual-record-edit-trigger')
 export class ContextualRecordEditTriggerElement extends PseudoButtonLitElement {
-  @property({ type: String }) url: string;
-  @property({ type: String, attribute: 'edit-url' }) editUrl: string;
+  @property({ type: String }) url: string = '';
+  @property({ type: String, attribute: 'edit-url' }) editUrl: string = '';
   @property({ type: String }) context: string = '';
 
   protected override async buttonActivated(): Promise<void> {

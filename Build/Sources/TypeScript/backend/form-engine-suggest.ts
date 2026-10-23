@@ -22,7 +22,7 @@ import { selector } from '@typo3/core/literals';
 
 class FormEngineSuggest {
   private readonly element: HTMLInputElement;
-  private resultContainer: HTMLElement;
+  private resultContainer!: HTMLElement;
   private currentRequest: AjaxRequest|null = null;
 
   constructor(element: HTMLInputElement) {

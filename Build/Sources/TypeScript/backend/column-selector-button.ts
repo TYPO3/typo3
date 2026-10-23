@@ -51,8 +51,8 @@ enum SelectorActions {
  */
 @customElement('typo3-backend-column-selector-button')
 export class ColumnSelectorButton extends PseudoButtonLitElement {
-  @property({ type: String, attribute: 'data-url' }) modalUrl: string;
-  @property({ type: String, attribute: 'data-target' }) modalTarget: string;
+  @property({ type: String, attribute: 'data-url' }) modalUrl: string = '';
+  @property({ type: String, attribute: 'data-target' }) modalTarget: string = '';
   @property({ type: String, attribute: 'data-title' }) modalTitle: string = 'Show columns';
   @property({ type: String, attribute: 'data-button-ok' }) buttonOk: string = listLabels.get('button.ok');
   @property({ type: String, attribute: 'data-button-close' }) buttonClose: string = listLabels.get('button.close');

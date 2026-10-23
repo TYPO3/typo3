@@ -25,8 +25,8 @@ import '@typo3/backend/new-record-wizard';
  */
 @customElement('typo3-backend-new-content-element-wizard-button')
 export class NewContentElementWizardButton extends PseudoButtonLitElement {
-  @property({ type: String }) url: string;
-  @property({ type: String }) subject: string;
+  @property({ type: String }) url: string = '';
+  @property({ type: String }) subject: string = '';
 
   protected override buttonActivated(): void {
     if (!this.url) {

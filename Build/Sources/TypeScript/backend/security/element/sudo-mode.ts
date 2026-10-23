@@ -46,12 +46,12 @@ interface Labels {
 }
 
 abstract class SudoModeProperties extends LitElement {
-  @property({ type: String }) verifyActionUri: string;
-  @property({ type: String }) cancelUri: string;
-  @property({ type: Boolean }) isAjax: boolean;
-  @property({ type: Boolean, attribute: 'has-fatal-error' }) hasFatalError: boolean;
-  @property({ type: Boolean, attribute: 'allow-install-tool-password' }) allowInstallToolPassword: boolean;
-  @property({ type: Object }) labels: Labels;
+  @property({ type: String }) verifyActionUri: string = '';
+  @property({ type: String }) cancelUri: string = '';
+  @property({ type: Boolean }) isAjax: boolean = false;
+  @property({ type: Boolean, attribute: 'has-fatal-error' }) hasFatalError: boolean = false;
+  @property({ type: Boolean, attribute: 'allow-install-tool-password' }) allowInstallToolPassword: boolean = false;
+  @property({ type: Object }) labels!: Labels;
   public windowRef: Window | undefined;
 }
 
@@ -146,7 +146,7 @@ export class SudoMode extends SudoModeProperties {
 export class SudoModeForm extends SudoModeProperties {
   @state() useInstallToolPassword = false;
   @state() errorMessage: string | null = null;
-  @query('#password') passwordElement: HTMLInputElement;
+  @query('#password') passwordElement!: HTMLInputElement;
 
   protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;

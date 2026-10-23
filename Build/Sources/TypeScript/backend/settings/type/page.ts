@@ -25,7 +25,7 @@ export const componentName = 'typo3-backend-settings-type-page';
 @customElement(componentName)
 export class PageTypeElement extends BaseElement<number> {
 
-  @property({ type: Number }) override value: number;
+  @property({ type: Number }) override value: number = 0;
 
   protected override render(): TemplateResult {
     /* eslint-disable @stylistic/indent */

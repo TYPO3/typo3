@@ -32,10 +32,10 @@ enum Selectors {
  */
 @customElement('typo3-recordlist-record-download-button')
 export class RecordDownloadButton extends PseudoButtonLitElement {
-  @property({ type: String }) url: string;
-  @property({ type: String }) subject: string;
-  @property({ type: String }) ok: string;
-  @property({ type: String }) close: string;
+  @property({ type: String }) url: string = '';
+  @property({ type: String }) subject: string = '';
+  @property({ type: String }) ok: string = '';
+  @property({ type: String }) close: string = '';
 
   protected override buttonActivated(): void {
     this.showDownloadConfigurationModal();

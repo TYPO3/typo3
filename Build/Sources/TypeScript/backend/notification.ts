@@ -189,7 +189,7 @@ class Notification {
 
 @customElement('typo3-notification-clear-all')
 export class ClearNotificationMessages extends LitElement {
-  @property({ type: String, attribute: 'notification-container' }) notificationId: string;
+  @property({ type: String, attribute: 'notification-container' }) notificationId: string = '';
 
   public async clearAll() {
     this.dispatchEvent(
@@ -213,9 +213,9 @@ export class ClearNotificationMessages extends LitElement {
 
 @customElement('typo3-notification-message')
 export class NotificationMessage extends LitElement {
-  @property({ type: String, attribute: 'notification-id' }) notificationId: string;
-  @property({ type: String, attribute: 'notification-title' }) notificationTitle: string;
-  @property({ type: String, attribute: 'notification-message' }) notificationMessage: string;
+  @property({ type: String, attribute: 'notification-id' }) notificationId: string = '';
+  @property({ type: String, attribute: 'notification-title' }) notificationTitle: string = '';
+  @property({ type: String, attribute: 'notification-message' }) notificationMessage: string = '';
   @property({ type: Number, attribute: 'notification-severity' }) notificationSeverity: SeverityEnum = SeverityEnum.info;
   @property({ type: Number, attribute: 'notification-duration' }) notificationDuration: number = 0;
   @property({ type: Array, attribute: false }) actions: Array<Action> = [];

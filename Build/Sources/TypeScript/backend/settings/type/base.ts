@@ -33,12 +33,12 @@ export abstract class BaseElement<
   T = string,
   OptionsType extends Record<string, unknown> = Record<string, unknown>
 > extends LitElement {
-  @property({ type: String }) key: string;
-  @property({ type: String }) formid: string;
+  @property({ type: String }) key: string = '';
+  @property({ type: String }) formid: string = '';
   @property({ type: Boolean }) readonly: boolean = false;
   @property({ type: Object }) enum: Record<string, string> | undefined;
   @property({ type: Boolean }) debug: boolean = false;
-  @property({ type: Object }) options: OptionsType;
+  @property({ type: Object }) options!: OptionsType;
 
   static readonly formAssociated = true;
 

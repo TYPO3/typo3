@@ -45,8 +45,8 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
   @property({ type: Boolean, reflect: true }) active: boolean = false;
   @property({ type: String, reflect: true }) statusIconIdentifier: string|null = 'apps-pagetree-drag-move-into';
   @property({ type: String }) tooltipIconIdentifier: string|null = null;
-  @property({ type: String }) tooltipLabel: string;
-  @property({ type: String }) tooltipDescription: string;
+  @property({ type: String }) tooltipLabel: string = '';
+  @property({ type: String }) tooltipDescription: string = '';
   @property({ type: Array }) thumbnails: DragDropThumbnail[] = [];
   /** This particular drag tooltip instance is active (drag item is being dragged over the tab of this instance) */
   @state() visible: boolean = false;

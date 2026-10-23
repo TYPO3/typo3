@@ -27,7 +27,7 @@ enum ExtensionManagerUpdateIdentifier {
 }
 
 class ExtensionManagerUpdate {
-  private progressBar: ProgressBarElement;
+  private progressBar: ProgressBarElement | null = null;
 
   /**
    * Register "update from ter" action

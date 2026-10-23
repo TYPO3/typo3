@@ -68,22 +68,22 @@ class ImageManipulation {
   private syncEnabled: boolean = false;
   private initialized: boolean = false;
   private triggerListener: EventInterface | null = null;
-  private trigger: HTMLElement;
-  private currentModal: ModalElement;
-  private cropVariantTriggers: NodeListOf<HTMLElement>;
-  private activeCropVariantTrigger: HTMLElement;
-  private cropInfo: HTMLElement;
-  private imageOriginalSizeFactor: number;
+  private trigger!: HTMLElement;
+  private currentModal!: ModalElement;
+  private cropVariantTriggers!: NodeListOf<HTMLElement>;
+  private activeCropVariantTrigger!: HTMLElement;
+  private cropInfo!: HTMLElement;
+  private imageOriginalSizeFactor!: number;
   private readonly cropImageSelector: string = '#t3js-crop-image';
   private readonly coverAreaSelector: string = '.t3js-cropper-cover-area';
   private readonly cropInfoSelector: string = '.t3js-cropper-info-crop';
   private readonly focusAreaSelector: string = 'typo3-backend-draggable-resizable';
   private readonly focusAreaVisualElementSelector: string = 'typo3-backend-draggable-resizable .cropper-focus-area';
-  private focusAreaEl: DraggableResizableElement;
+  private focusAreaEl!: DraggableResizableElement;
   // Initialize an empty object to prevent undefined cropBox error on modal load.
-  private cropBox: HTMLElement;
-  private cropper: Cropper;
-  private currentCropVariant: CropVariant;
+  private cropBox!: HTMLElement;
+  private cropper!: Cropper;
+  private currentCropVariant!: CropVariant;
   private data: any;
   private readonly defaultFocusArea: Area = {
     height: 1 / 3,

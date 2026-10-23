@@ -41,7 +41,7 @@ import type { CodeMirrorElement } from '@typo3/backend/code-editor/element/code-
 export class TryOutElement extends PseudoButtonLitElement {
   private static readonly editorTimeout = 10000;
 
-  @property({ type: String }) url: string;
+  @property({ type: String }) url: string = '';
   @property({ type: String, attribute: 'modal-title' }) modalTitle: string = '';
   @property({ type: String, attribute: 'close-label' }) closeLabel: string = '';
 

@@ -57,7 +57,7 @@ export class TsRefProperty {
 export class TsRef {
   public typeTree: Record<TypeId, TsRefType> = {};
   public doc: PlainDocData | null = null;
-  public cssClass: string;
+  public cssClass!: string;
 
   /**
    * Load available TypoScript reference

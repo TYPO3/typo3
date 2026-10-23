@@ -27,7 +27,7 @@ export class NumberTypeElement extends BaseElement<
     step?: number,
   }
 > {
-  @property({ type: Number }) override value: number;
+  @property({ type: Number }) override value: number = 0;
 
   protected handleChange(e: InputEvent): void {
     const input = e.target as HTMLInputElement;

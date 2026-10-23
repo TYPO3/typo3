@@ -149,7 +149,7 @@ export class ModalElement extends LitElement {
 
   @state() templateResultContent: TemplateResult | Element | DocumentFragment | null = null;
   @state() activeButton: Button | null = null;
-  @query('dialog', true) dialog: HTMLDialogElement;
+  @query('dialog', true) dialog!: HTMLDialogElement;
   @state() private modalWidth?: number;
   @state() private resizing: boolean = false;
 

@@ -102,10 +102,10 @@ export class SettingsEditorSubmitEvent extends Event {
 @customElement('typo3-backend-settings-editor')
 export class SettingsEditorElement extends LitElement {
 
-  @property({ type: Array }) categories: Category[];
+  @property({ type: Array }) categories: Category[] = [];
   @property({ type: String, attribute: 'form-name' }) formName: string = 'settings_form';
-  @property({ type: String, attribute: 'action-url' }) actionUrl: string;
-  @property({ type: String, attribute: 'dump-url' }) dumpUrl: string;
+  @property({ type: String, attribute: 'action-url' }) actionUrl: string = '';
+  @property({ type: String, attribute: 'dump-url' }) dumpUrl: string = '';
   @property({ type: Object, attribute: 'custom-form-data' }) customFormData: Record<string, string> = {};
   @property({ type: String, converter: sanitizeSettingsMode }) mode: SettingsMode = SettingsMode.basic;
 

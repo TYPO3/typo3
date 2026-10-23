@@ -27,11 +27,11 @@ type ThumbnailSizeType = typeof ThumbnailSize[keyof typeof ThumbnailSize];
 
 @customElement('typo3-backend-thumbnail')
 export class ThumbnailElement extends LitElement {
-  @property({ type: String, reflect: true }) url: string;
+  @property({ type: String, reflect: true }) url: string = '';
   @property({ type: String, reflect: true }) size: ThumbnailSizeType = ThumbnailSize.default;
   @property({ type: Boolean, reflect: true }) keepAspectRatio: boolean = false;
-  @property({ type: Number, reflect: true }) width: number;
-  @property({ type: Number, reflect: true }) height: number;
+  @property({ type: Number, reflect: true }) width: number = 0;
+  @property({ type: Number, reflect: true }) height: number = 0;
 
   private readonly thumbnailTask = new Task(this, {
     task: async ([url, size, keepAspectRatio, width, height]): Promise<TemplateResult> => {

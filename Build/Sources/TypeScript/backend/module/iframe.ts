@@ -26,7 +26,7 @@ export class IframeModuleElement extends LitElement {
 
   @property({ type: String }) endpoint: string = '';
 
-  @query('iframe', true) iframe: HTMLIFrameElement;
+  @query('iframe', true) iframe!: HTMLIFrameElement;
 
   public override attributeChangedCallback(name: string, old: string, value: string): void {
     super.attributeChangedCallback(name, old, value);

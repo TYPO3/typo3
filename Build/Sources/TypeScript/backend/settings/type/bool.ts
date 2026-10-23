@@ -30,7 +30,7 @@ export class BoolTypeElement extends BaseElement<boolean> {
         return value === '1' || value === 'true';
       }
     }
-  }) override value: boolean;
+  }) override value: boolean = false;
 
   protected override render(): TemplateResult {
     return html`

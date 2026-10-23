@@ -24,8 +24,8 @@ import { SeverityEnum } from '@typo3/backend/enum/severity';
  */
 @customElement('typo3-scheduler-setup-check-button')
 export class SetupCheckButton extends PseudoButtonLitElement {
-  @property({ type: String }) url: string;
-  @property({ type: String }) subject: string;
+  @property({ type: String }) url: string = '';
+  @property({ type: String }) subject: string = '';
 
   protected override buttonActivated(): void {
     if (!this.url) {

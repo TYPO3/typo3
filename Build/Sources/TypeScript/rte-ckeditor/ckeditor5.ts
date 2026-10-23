@@ -69,7 +69,7 @@ export class CKEditor5Element extends LitElement {
 
   @property({ type: Object }) options: CKEditor5Config = {};
 
-  @queryAssignedElements({ slot: 'textarea' }) target: HTMLElement[];
+  @queryAssignedElements({ slot: 'textarea' }) target!: HTMLElement[];
 
   private readonly styleSheets: Map<CSSStyleSheet, true> = new Map();
 

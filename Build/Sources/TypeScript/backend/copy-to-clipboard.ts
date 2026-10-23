@@ -75,7 +75,7 @@ export function copyToClipboard(text: string, silent: boolean = false): void {
  */
 @customElement('typo3-copy-to-clipboard')
 export class CopyToClipboard extends PseudoButtonLitElement {
-  @property({ type: String }) text: string;
+  @property({ type: String }) text: string | undefined;
   @property({ type: Boolean }) silent: boolean = false;
 
   protected override buttonActivated(): void {

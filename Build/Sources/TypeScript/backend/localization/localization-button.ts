@@ -21,8 +21,8 @@ import labels from '~labels/backend.wizards.localization';
 
 @customElement('typo3-backend-localization-button')
 export class LocalizationButton extends PseudoButtonLitElement {
-  @property({ type: String, attribute: 'record-type' }) recordType: string;
-  @property({ type: Number, attribute: 'record-uid' }) recordUid: number;
+  @property({ type: String, attribute: 'record-type' }) recordType: string = '';
+  @property({ type: Number, attribute: 'record-uid' }) recordUid: number = 0;
   @property({ type: Number, attribute: 'target-language' }) targetLanguage?: number;
   @property({ type: String, attribute: 'return-url' }) returnUrl?: string;
 

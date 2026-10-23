@@ -73,8 +73,8 @@ export interface PointerEventNames {
  */
 @customElement('typo3-backend-draggable-resizable')
 export class DraggableResizableElement extends LitElement {
-  @property({ type: Object, converter: data => Offset.fromObject(JSON.parse(data!)), reflect: true }) offset: Offset;
-  @property({ type: Object }) pointerEventNames: PointerEventNames;
+  @property({ type: Object, converter: data => Offset.fromObject(JSON.parse(data!)), reflect: true }) offset!: Offset;
+  @property({ type: Object }) pointerEventNames!: PointerEventNames;
   @property({ type: Boolean, reflect: true }) public reverting = false;
 
   @state() private action: Action | null = null;

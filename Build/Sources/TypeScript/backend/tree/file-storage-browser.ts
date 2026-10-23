@@ -70,7 +70,7 @@ export class FileStorageBrowserTree extends FileStorageTree {
 
 @customElement('typo3-backend-component-filestorage-browser')
 export class FileStorageBrowser extends LitElement {
-  @query('typo3-backend-component-filestorage-browser-tree') tree: FileStorageBrowserTree;
+  @query('typo3-backend-component-filestorage-browser-tree') tree!: FileStorageBrowserTree;
 
   private activeFolder: string = '';
   private actions: Array<string> = [];

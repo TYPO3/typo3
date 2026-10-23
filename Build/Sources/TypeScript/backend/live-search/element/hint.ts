@@ -18,7 +18,7 @@ import '@typo3/backend/element/icon-element';
 
 @customElement('typo3-backend-live-search-hint')
 export class Hint extends LitElement {
-  @property({ type: String }) hint: string;
+  @property({ type: String }) hint: string = '';
 
   protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;

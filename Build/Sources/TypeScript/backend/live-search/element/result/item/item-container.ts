@@ -136,8 +136,8 @@ export class ResultList extends LitElement {
     }
   `;
 
-  private parentContainer: HTMLElement;
-  private resultItemDetailContainer: HTMLElement;
+  private parentContainer!: HTMLElement;
+  private resultItemDetailContainer!: HTMLElement;
 
   public override connectedCallback(): void {
     this.parentContainer = this.closest('typo3-backend-live-search-result-container')!;

@@ -41,7 +41,7 @@ export class DoktypeStep implements WizardStepInterface, WizardStepValueInterfac
   readonly key = 'doktype';
   readonly title = corePagesLabels.get('doktype');
   readonly autoAdvance = true;
-  private task: Task<[], Doktype[]>;
+  private task!: Task<[], Doktype[]>;
 
   private selectedDoktype: string | null = null;
   private searchTerm: string = '';

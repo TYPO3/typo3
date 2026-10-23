@@ -108,7 +108,7 @@ export default class DragUploader {
   private readonly body: HTMLElement;
   private readonly element: HTMLElement;
   private readonly dropzone: HTMLElement;
-  private readonly dropzoneMask: HTMLElement;
+  private readonly dropzoneMask!: HTMLElement;
   /**
    * Ancestor a file has to be dragged over to show the dropzone, the whole document if null
    */
@@ -116,10 +116,10 @@ export default class DragUploader {
   private readonly fileInput: HTMLInputElement;
   private readonly browserCapabilities: { fileReader: boolean; DnD: boolean; Progress: boolean };
   private readonly dropZoneInsertBefore: boolean;
-  private queueLength: number;
+  private queueLength!: number;
   private hasSucceededUpload: boolean = false;
   private readonly defaultAction: Action;
-  private manuallyTriggered: boolean;
+  private manuallyTriggered: boolean = false;
 
   /**
    * This property controls whether a drag was started within the document. If true, dropzones become unavailable.
@@ -756,7 +756,7 @@ class FileQueueItem {
   private readonly progress: HTMLElement;
   private readonly file: File;
   private readonly override: Action;
-  private readonly selector: HTMLElement;
+  private readonly selector: HTMLElement | null = null;
   private readonly iconCol: HTMLElement;
   private readonly fileName: HTMLElement;
   private readonly progressBar: ProgressBarElement;

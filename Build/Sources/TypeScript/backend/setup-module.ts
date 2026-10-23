@@ -22,7 +22,7 @@ import Modal from '@typo3/backend/modal';
  * @exports @typo3/backend/setup-module
  */
 class SetupModule {
-  private avatarWindowRef: Window;
+  private avatarWindowRef: Window | null = null;
 
   constructor() {
     new RegularEvent('setup:confirmation:response', SetupModule.handleConfirmationResponse)
@@ -114,7 +114,7 @@ class SetupModule {
     addElement!.classList.add('btn-info');
     if (this.avatarWindowRef instanceof Window && !this.avatarWindowRef.closed) {
       this.avatarWindowRef.close();
-      this.avatarWindowRef = null!;
+      this.avatarWindowRef = null;
     }
   }
 }

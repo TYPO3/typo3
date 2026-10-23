@@ -29,7 +29,7 @@ export class PresetStep implements WizardStepInterface, WizardStepValueInterface
   readonly title = labels.get('dashboard.wizard.preset.title');
   readonly autoAdvance = true;
 
-  private task: Task<[], DashboardPresetInterface[]>;
+  private task!: Task<[], DashboardPresetInterface[]>;
   private selectedPreset: string | null = null;
   private hasDispatchedAutoAdvance: boolean = false;
 

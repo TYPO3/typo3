@@ -52,7 +52,7 @@ class TSLexical {
   public type: Type;
   public prev: TSLexical;
   public info: number | string;
-  public align: boolean;
+  public align!: boolean;
   public pos: number | undefined;
 
   constructor(indented: number, column: number, type: Type, align: boolean, prev?: TSLexical, info?: number | string) {
