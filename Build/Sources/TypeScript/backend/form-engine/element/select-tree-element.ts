@@ -66,20 +66,20 @@ export class SelectTreeElement {
 
   private generateRequestUrl(): string {
     const params = {
-      tableName: this.recordField.dataset.tablename,
-      fieldName: this.recordField.dataset.fieldname,
-      uid: this.recordField.dataset.uid,
-      defaultValues: this.recordField.dataset.defaultvalues,
-      overrideValues: this.recordField.dataset.overridevalues,
-      recordTypeValue: this.recordField.dataset.recordtypevalue,
-      dataStructureIdentifier: this.recordField.dataset.datastructureidentifier,
-      flexFormSheetName: this.recordField.dataset.flexformsheetname,
-      flexFormFieldName: this.recordField.dataset.flexformfieldname,
-      flexFormContainerName: this.recordField.dataset.flexformcontainername,
-      flexFormContainerIdentifier: this.recordField.dataset.flexformcontaineridentifier,
-      flexFormContainerFieldName: this.recordField.dataset.flexformcontainerfieldname,
-      flexFormSectionContainerIsNew: this.recordField.dataset.flexformsectioncontainerisnew,
-      command: this.recordField.dataset.command,
+      tableName: this.recordField.dataset.tablename ?? '',
+      fieldName: this.recordField.dataset.fieldname ?? '',
+      uid: this.recordField.dataset.uid ?? '',
+      defaultValues: this.recordField.dataset.defaultvalues ?? '',
+      overrideValues: this.recordField.dataset.overridevalues ?? '',
+      recordTypeValue: this.recordField.dataset.recordtypevalue ?? '',
+      dataStructureIdentifier: this.recordField.dataset.datastructureidentifier ?? '',
+      flexFormSheetName: this.recordField.dataset.flexformsheetname ?? '',
+      flexFormFieldName: this.recordField.dataset.flexformfieldname ?? '',
+      flexFormContainerName: this.recordField.dataset.flexformcontainername ?? '',
+      flexFormContainerIdentifier: this.recordField.dataset.flexformcontaineridentifier ?? '',
+      flexFormContainerFieldName: this.recordField.dataset.flexformcontainerfieldname ?? '',
+      flexFormSectionContainerIsNew: this.recordField.dataset.flexformsectioncontainerisnew ?? '',
+      command: this.recordField.dataset.command ?? '',
     };
     return TYPO3.settings.ajaxUrls.record_tree_data + '&' + new URLSearchParams(params).toString();
   }

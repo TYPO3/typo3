@@ -64,7 +64,8 @@ export class IconElement extends LitElement {
     }
 
     return this.iconTask.render({
-      pending: () => html`<typo3-backend-spinner size=${this.size}></typo3-backend-size>`,
+      initial: () => html`<typo3-backend-spinner size=${this.size}></typo3-backend-spinner>`,
+      pending: () => html`<typo3-backend-spinner size=${this.size}></typo3-backend-spinner>`,
       complete: (markup) => html`${unsafeHTML(markup)}`,
       error: () => html`
         <span class="t3js-icon icon icon-size-${this.size} icon-state-${this.state} icon-default-not-found" data-identifier="default-not-found" aria-hidden="true">

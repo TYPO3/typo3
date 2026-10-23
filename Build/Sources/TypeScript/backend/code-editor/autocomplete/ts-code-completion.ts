@@ -48,7 +48,7 @@ export class TsCodeCompletion {
    */
   public refreshCodeCompletion(
     completionState: CodeMirror5CompatibleCompletionState
-  ): Array<Proposal['word']> {
+  ): string[] {
     // the cursornode has to be stored cause inserted breaks have to be deleted after pressing enter if the codecompletion is active
     const filter = this.getFilter(completionState);
 

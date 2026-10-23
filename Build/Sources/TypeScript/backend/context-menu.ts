@@ -50,9 +50,9 @@ enum ContextMenuEvent {
 interface ContextMenuEventDetail {
   table: string;
   uid: number | string;
-  context: string;
-  eventSource: HTMLElement;
-  originalEvent: PointerEvent;
+  context: string | null;
+  eventSource: HTMLElement | null;
+  originalEvent: PointerEvent | null;
 }
 
 /**
@@ -273,7 +273,7 @@ export class ContextMenuElement extends LitElement {
     this.open = true;
     this.table = detail.table;
     this.uid = detail.uid;
-    this.context = detail.context;
+    this.context = detail.context ?? '';
     this.eventSource = detail.eventSource;
     this.mountPopoverHost();
 

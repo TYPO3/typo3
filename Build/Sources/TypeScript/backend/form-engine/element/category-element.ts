@@ -80,20 +80,20 @@ class CategoryElement extends HTMLElement {
 
   private generateDataUrl(): string {
     return TYPO3.settings.ajaxUrls.record_tree_data + '&' + new URLSearchParams({
-      uid: this.recordField.dataset.uid,
-      command: this.recordField.dataset.command,
-      tableName: this.recordField.dataset.tablename,
-      fieldName: this.recordField.dataset.fieldname,
-      defaultValues: this.recordField.dataset.defaultvalues,
-      overrideValues: this.recordField.dataset.overridevalues,
-      recordTypeValue: this.recordField.dataset.recordtypevalue,
-      flexFormSheetName: this.recordField.dataset.flexformsheetname,
-      flexFormFieldName: this.recordField.dataset.flexformfieldname,
-      flexFormContainerName: this.recordField.dataset.flexformcontainername,
-      dataStructureIdentifier: this.recordField.dataset.datastructureidentifier,
-      flexFormContainerFieldName: this.recordField.dataset.flexformcontainerfieldname,
-      flexFormContainerIdentifier: this.recordField.dataset.flexformcontaineridentifier,
-      flexFormSectionContainerIsNew: this.recordField.dataset.flexformsectioncontainerisnew,
+      uid: this.recordField.dataset.uid ?? '',
+      command: this.recordField.dataset.command ?? '',
+      tableName: this.recordField.dataset.tablename ?? '',
+      fieldName: this.recordField.dataset.fieldname ?? '',
+      defaultValues: this.recordField.dataset.defaultvalues ?? '',
+      overrideValues: this.recordField.dataset.overridevalues ?? '',
+      recordTypeValue: this.recordField.dataset.recordtypevalue ?? '',
+      flexFormSheetName: this.recordField.dataset.flexformsheetname ?? '',
+      flexFormFieldName: this.recordField.dataset.flexformfieldname ?? '',
+      flexFormContainerName: this.recordField.dataset.flexformcontainername ?? '',
+      dataStructureIdentifier: this.recordField.dataset.datastructureidentifier ?? '',
+      flexFormContainerFieldName: this.recordField.dataset.flexformcontainerfieldname ?? '',
+      flexFormContainerIdentifier: this.recordField.dataset.flexformcontaineridentifier ?? '',
+      flexFormSectionContainerIsNew: this.recordField.dataset.flexformsectioncontainerisnew ?? '',
     }).toString();
   }
 

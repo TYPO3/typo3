@@ -439,8 +439,8 @@ export class ModalElement extends LitElement {
     const classes: ClassInfo = {
       ['btn']: true,
       [btnClass]: true,
-      ['t3js-active']: button.active,
-      ['disabled']: this.activeButton && this.activeButton !== button,
+      ['t3js-active']: button.active ?? false,
+      ['disabled']: this.activeButton !== null && this.activeButton !== button,
     };
     return html`
       <button class=${classMap(classes)}
@@ -878,7 +878,7 @@ class Modal {
       let url = triggerElement.dataset.url || null;
       if (url !== null) {
         const separator = url.includes('?') ? '&' : '?';
-        const params = new URLSearchParams(triggerElement.dataset).toString();
+        const params = new URLSearchParams(triggerElement.dataset as Record<string, string>).toString();
         url = url + separator + params;
       }
       this.advanced({

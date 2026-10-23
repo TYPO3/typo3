@@ -32,8 +32,8 @@ export interface DragDropThumbnail {
 }
 
 export interface DragTooltipMetadata {
-  statusIconIdentifier?: string,
-  tooltipIconIdentifier?: string,
+  statusIconIdentifier?: string | null,
+  tooltipIconIdentifier?: string | null,
   tooltipLabel?: string,
   tooltipDescription?: string,
   thumbnails?: DragDropThumbnail[],

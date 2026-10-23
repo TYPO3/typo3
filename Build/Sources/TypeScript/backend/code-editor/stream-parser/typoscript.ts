@@ -22,7 +22,7 @@ type CX = {
   stream?: StringStream,
   column: number | null,
   marked: string | null,
-  style?: string,
+  style?: string | null,
   cc: CC[] | null
 };
 
@@ -1124,7 +1124,7 @@ export class TypoScriptStreamParserFactory {
       cc: null
     };
 
-    function parseTS(state: State, style: string, type: Type, content: string, stream: StringStream): string {
+    function parseTS(state: State, style: string | null, type: Type, content: string, stream: StringStream): string | null {
       const cc = state.cc;
       // Communicate our context to the combinators.
       // (Less wasteful than consing up a hundred closures on every call.)
@@ -1544,7 +1544,7 @@ export class TypoScriptStreamParserFactory {
         if (state.tokenize != tokenComment && stream.eatSpace()) {
           return null;
         }
-        const style = state.tokenize(stream, state);
+        const style = state.tokenize(stream, state) ?? null;
         if (type === 'comment') {
           return style;
         }
