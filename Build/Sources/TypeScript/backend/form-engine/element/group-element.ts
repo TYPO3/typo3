@@ -32,12 +32,12 @@ class GroupElement extends AbstractSortableSelectItems {
   }
 
   private registerEventHandler(): void {
-    this.registerSortableEventHandler(this.element);
+    this.registerSortableEventHandler(this.element!);
   }
 
   private registerSuggest(): void {
     let suggestField;
-    if ((suggestField = this.element.closest('.t3js-formengine-field-item').querySelector<HTMLInputElement>('.t3-form-suggest')) !== null) {
+    if ((suggestField = this.element!.closest('.t3js-formengine-field-item')!.querySelector<HTMLInputElement>('.t3-form-suggest')) !== null) {
       // tslint:disable-next-line:no-unused-expression
       new FormEngineSuggest(suggestField);
     }

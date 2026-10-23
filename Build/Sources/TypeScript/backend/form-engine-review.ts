@@ -90,7 +90,7 @@ export class FormEngineReview {
    * Checks if fields have failed validation. In such case, the markup is rendered and the toggle button is unlocked.
    */
   private checkForReviewableField(): void {
-    const toggleButton = document.querySelector<HTMLElement>('.' + this.toggleButtonClass);
+    const toggleButton = document.querySelector<HTMLElement>('.' + this.toggleButtonClass)!;
     if (toggleButton === null) {
       return;
     }
@@ -145,7 +145,7 @@ export class FormEngineReview {
         const tabContainer = document.querySelector(selector`[aria-controls="${ref.id}"]`);
         Tab.show(tabContainer as HTMLElement);
       }
-      ref = ref.parentElement;
+      ref = ref.parentElement!;
     }
 
     // Check if the field is visible to the user. If this is the case, the field will be focussed, triggering a scroll

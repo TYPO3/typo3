@@ -21,7 +21,7 @@ import { topWindow } from '@typo3/core/utility/top-window';
 
 class ContentContainer extends AbstractContainer {
   public get(): Window {
-    return document.querySelector<HTMLIFrameElement>(ScaffoldIdentifierEnum.contentModuleIframe).contentWindow;
+    return document.querySelector<HTMLIFrameElement>(ScaffoldIdentifierEnum.contentModuleIframe)!.contentWindow!;
   }
 
   public beforeSetUrl(interactionRequest: InteractionRequest): Promise<void> {
@@ -51,7 +51,7 @@ class ContentContainer extends AbstractContainer {
         Loader.start();
         router.setAttribute('endpoint', urlToLoad);
         router.setAttribute('module', module ?? '');
-        router.parentElement.addEventListener('typo3-module-loaded', () => Loader.finish(), { once: true });
+        router.parentElement!.addEventListener('typo3-module-loaded', () => Loader.finish(), { once: true });
       } else {
         // popup mode assume that we're in a standalone frame if the router cannot be found.
         document.location.assign(urlToLoad);
@@ -64,7 +64,7 @@ class ContentContainer extends AbstractContainer {
    * @returns {string}
    */
   public getUrl(): string {
-    return this.resolveRouterElement().getAttribute('endpoint') ?? '';
+    return this.resolveRouterElement()!.getAttribute('endpoint') ?? '';
   }
 
   public refresh(interactionRequest?: InteractionRequest): Promise<void> {
@@ -77,7 +77,7 @@ class ContentContainer extends AbstractContainer {
       new TriggerRequest('typo3.refresh', interactionRequest),
     );
     promise.then((): void => {
-      iFrame.contentWindow.location.reload();
+      iFrame.contentWindow!.location.reload();
     });
     return promise;
   }

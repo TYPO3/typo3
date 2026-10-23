@@ -57,7 +57,7 @@ class Presets extends AbstractInteractableModule {
 
     currentModal.querySelectorAll<HTMLInputElement>('.t3js-custom-preset').forEach((element) => {
       new RegularEvent('input', (event: Event, target: HTMLElement): void => {
-        currentModal.querySelector<HTMLInputElement>(`#${target.dataset.radio}`).checked = true;
+        currentModal.querySelector<HTMLInputElement>(`#${target.dataset.radio}`)!.checked = true;
       }).delegateTo(element, '.t3js-custom-preset');
     });
   }
@@ -118,7 +118,7 @@ class Presets extends AbstractInteractableModule {
     const modalContent = this.getModalBody();
     const executeToken: string = this.getModuleContent().dataset.presetsActivateToken ?? '';
     const postData: Record<string, string> = {};
-    const formData = new FormData(this.findInModal('form'));
+    const formData = new FormData(this.findInModal('form')!);
     for (const [name, value] of formData) {
       postData[name] = value.toString();
     }

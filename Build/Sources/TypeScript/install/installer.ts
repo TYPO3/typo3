@@ -72,7 +72,7 @@ class Installer {
     }).delegateTo(document, '.t3js-installer-defaultConfiguration-execute');
     new RegularEvent('click', (evt: Event, element: HTMLElement): void => {
       evt.preventDefault();
-      const toggleTarget = document.querySelector(element.dataset.toggleTarget);
+      const toggleTarget = document.querySelector(element.dataset.toggleTarget!)!;
       if (element.dataset.toggleState === 'invisible') {
         element.dataset.toggleState = 'visible';
         toggleTarget.setAttribute('type', 'text');
@@ -122,7 +122,7 @@ class Installer {
       .get({ cache: 'no-cache' })
       .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
-        document.querySelector(Identifiers.body).innerHTML = data.html;
+        document.querySelector(Identifiers.body)!.innerHTML = data.html;
         this.checkInstallerAvailable();
       });
   }
@@ -141,7 +141,7 @@ class Installer {
   }
 
   private showInstallerNotAvailable(): void {
-    const outputContainer = document.querySelector(Identifiers.mainContent);
+    const outputContainer = document.querySelector(Identifiers.mainContent)!;
     (new AjaxRequest(this.getUrl('showInstallerNotAvailable')))
       .get({ cache: 'no-cache' })
       .then(async (response: AjaxResponse): Promise<void> => {
@@ -167,14 +167,14 @@ class Installer {
   }
 
   private showEnvironmentAndFolders(): void {
-    const outputContainer = document.querySelector(Identifiers.mainContent);
+    const outputContainer = document.querySelector(Identifiers.mainContent)!;
     (new AjaxRequest(this.getUrl('showEnvironmentAndFolders')))
       .get({ cache: 'no-cache' })
       .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           outputContainer.innerHTML = data.html;
-          const detailContainer = document.querySelector('.t3js-installer-environment-details');
+          const detailContainer = document.querySelector('.t3js-installer-environment-details')!;
           let hasMessage: boolean = false;
           if (Array.isArray(data.environmentStatusErrors)) {
             data.environmentStatusErrors.forEach((element: any): void => {
@@ -255,26 +255,26 @@ class Installer {
   }
 
   private showDatabaseConnect(): void {
-    const outputContainer = document.querySelector(Identifiers.mainContent);
+    const outputContainer = document.querySelector(Identifiers.mainContent)!;
     (new AjaxRequest(this.getUrl('showDatabaseConnect')))
       .get({ cache: 'no-cache' })
       .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           outputContainer.innerHTML = data.html;
-          document.querySelector('#t3js-connect-database-driver').dispatchEvent(new Event('change', { bubbles: true }));
-          PasswordStrength.initialize(document.querySelector('.t3-install-form-password-strength'));
+          document.querySelector('#t3js-connect-database-driver')!.dispatchEvent(new Event('change', { bubbles: true }));
+          PasswordStrength.initialize(document.querySelector('.t3-install-form-password-strength')!);
         }
       });
   }
 
   private executeDatabaseConnect(): void {
-    const outputContainer = document.querySelector(Identifiers.databaseConnectOutput);
+    const outputContainer = document.querySelector(Identifiers.databaseConnectOutput)!;
     const postData: Record<string, string> = {
       'install[action]': 'executeDatabaseConnect',
-      'install[token]': document.querySelector<HTMLElement>(Identifiers.moduleContent).dataset.installerDatabaseConnectExecuteToken ?? '',
+      'install[token]': document.querySelector<HTMLElement>(Identifiers.moduleContent)!.dataset.installerDatabaseConnectExecuteToken ?? '',
     };
-    for (const [name, value] of new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form'))) {
+    for (const [name, value] of new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form')!)) {
       postData[name] = value.toString();
     }
     (new AjaxRequest(this.getUrl()))
@@ -309,7 +309,7 @@ class Installer {
   }
 
   private showDatabaseSelect(): void {
-    const outputContainer = document.querySelector(Identifiers.mainContent);
+    const outputContainer = document.querySelector(Identifiers.mainContent)!;
     (new AjaxRequest(this.getUrl('showDatabaseSelect')))
       .get({ cache: 'no-cache' })
       .then(async (response: AjaxResponse): Promise<void> => {
@@ -321,12 +321,12 @@ class Installer {
   }
 
   private executeDatabaseSelect(): void {
-    const outputContainer = document.querySelector(Identifiers.databaseSelectOutput);
+    const outputContainer = document.querySelector(Identifiers.databaseSelectOutput)!;
     const postData: { [id: string]: string } = {
       'install[action]': 'executeDatabaseSelect',
-      'install[token]': document.querySelector<HTMLElement>(Identifiers.moduleContent).dataset.installerDatabaseSelectExecuteToken ?? '',
+      'install[token]': document.querySelector<HTMLElement>(Identifiers.moduleContent)!.dataset.installerDatabaseSelectExecuteToken ?? '',
     };
-    for (const [name, value] of new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form'))) {
+    for (const [name, value] of new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form')!)) {
       postData[name] = value.toString();
     }
     (new AjaxRequest(this.getUrl()))
@@ -346,12 +346,12 @@ class Installer {
   }
 
   private checkDatabaseRequirements(): void {
-    const outputContainer = document.querySelector(Identifiers.databaseSelectOutput);
+    const outputContainer = document.querySelector(Identifiers.databaseSelectOutput)!;
     const postData: Record<string, string> = {
       'install[action]': 'checkDatabaseRequirements',
-      'install[token]': document.querySelector<HTMLElement>(Identifiers.moduleContent).dataset.installerDatabaseCheckRequirementsExecuteToken ?? '',
+      'install[token]': document.querySelector<HTMLElement>(Identifiers.moduleContent)!.dataset.installerDatabaseCheckRequirementsExecuteToken ?? '',
     };
-    for (const [name, value] of new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form'))) {
+    for (const [name, value] of new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form')!)) {
       postData[name] = value.toString();
     }
     (new AjaxRequest(this.getUrl()))
@@ -386,25 +386,25 @@ class Installer {
   }
 
   private showDatabaseData(): void {
-    const outputContainer = document.querySelector(Identifiers.mainContent);
+    const outputContainer = document.querySelector(Identifiers.mainContent)!;
     (new AjaxRequest(this.getUrl('showDatabaseData')))
       .get({ cache: 'no-cache' })
       .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         if (data.success === true) {
           outputContainer.innerHTML = data.html;
-          PasswordStrength.initialize(document.querySelector('.t3-install-form-password-strength'));
+          PasswordStrength.initialize(document.querySelector('.t3-install-form-password-strength')!);
         }
       });
   }
 
   private executeDatabaseData(): void {
-    const outputContainer = document.querySelector(Identifiers.databaseDataOutput);
+    const outputContainer = document.querySelector(Identifiers.databaseDataOutput)!;
     const postData: Record<string, string> = {
       'install[action]': 'executeDatabaseData',
-      'install[token]': document.querySelector<HTMLElement>(Identifiers.moduleContent).dataset.installerDatabaseDataExecuteToken ?? '',
+      'install[token]': document.querySelector<HTMLElement>(Identifiers.moduleContent)!.dataset.installerDatabaseDataExecuteToken ?? '',
     };
-    for (const [name, value] of new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form'))) {
+    for (const [name, value] of new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form')!)) {
       postData[name] = value.toString();
     }
     const progressBar = document.createElement('typo3-backend-progress-bar');
@@ -427,7 +427,7 @@ class Installer {
   }
 
   private showDefaultConfiguration(): void {
-    const outputContainer = document.querySelector(Identifiers.mainContent);
+    const outputContainer = document.querySelector(Identifiers.mainContent)!;
     this.setProgress(5);
     (new AjaxRequest(this.getUrl('showDefaultConfiguration')))
       .get({ cache: 'no-cache' })
@@ -442,9 +442,9 @@ class Installer {
   private executeDefaultConfiguration(): void {
     const postData: Record<string, string> = {
       'install[action]': 'executeDefaultConfiguration',
-      'install[token]': document.querySelector<HTMLElement>(Identifiers.moduleContent).dataset.installerDefaultConfigurationExecuteToken ?? '',
+      'install[token]': document.querySelector<HTMLElement>(Identifiers.moduleContent)!.dataset.installerDefaultConfigurationExecuteToken ?? '',
     };
-    for (const [name, value] of new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form'))) {
+    for (const [name, value] of new FormData(document.querySelector<HTMLFormElement>(Identifiers.body + ' form')!)) {
       postData[name] = value.toString();
     }
     (new AjaxRequest(this.getUrl()))

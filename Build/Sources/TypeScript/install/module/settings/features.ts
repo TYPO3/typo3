@@ -70,7 +70,7 @@ class Features extends AbstractInteractableModule {
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().dataset.featuresSaveToken;
     const postData: Record<string, string> = {};
-    const formData = new FormData(this.findInModal('form'));
+    const formData = new FormData(this.findInModal('form')!);
     for (const [name, value] of formData) {
       postData[name] = value.toString();
     }

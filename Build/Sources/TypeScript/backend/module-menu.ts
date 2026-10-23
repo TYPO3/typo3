@@ -57,7 +57,7 @@ class ModuleMenu {
   private static getModuleMenuItemFromElement(element: HTMLElement): ModuleMenuItem {
     const item: ModuleMenuItem = {
       identifier: element.dataset.modulemenuIdentifier ?? '',
-      level: element.parentElement.dataset.modulemenuLevel ? parseInt(element.parentElement.dataset.modulemenuLevel, 10) : null,
+      level: element.parentElement!.dataset.modulemenuLevel ? parseInt(element.parentElement!.dataset.modulemenuLevel, 10) : null,
       collapsible: element.dataset.modulemenuCollapsible === 'true',
       expanded: element.attributes.getNamedItem('aria-expanded')?.value === 'true',
       element: element,
@@ -134,8 +134,8 @@ class ModuleMenu {
    */
   private static toggleModuleGroup(element: HTMLElement, expand?: boolean): boolean {
     const menuItem = ModuleMenu.getModuleMenuItemFromElement(element);
-    const moduleGroup = menuItem.element.closest('.modulemenu-group');
-    const moduleGroupContainer = moduleGroup.querySelector('.modulemenu-group-container');
+    const moduleGroup = menuItem.element.closest('.modulemenu-group')!;
+    const moduleGroupContainer = moduleGroup.querySelector('.modulemenu-group-container')!;
     if (moduleGroupContainer.classList.contains('collapsing')) {
       // Bootstrap ignores show()/hide() during a running transition, keep the state untouched as well.
       return menuItem.expanded;
@@ -169,7 +169,7 @@ class ModuleMenu {
   }
 
   private static highlightModule(identifier: string): void {
-    const menu = document.querySelector(ModuleMenuSelector.menu);
+    const menu = document.querySelector(ModuleMenuSelector.menu)!;
     menu.querySelectorAll(ModuleMenuSelector.item).forEach((element) => {
       element.classList.remove('modulemenu-action-active');
       element.removeAttribute('aria-current');
@@ -181,7 +181,7 @@ class ModuleMenu {
 
   private static highlightModuleMenuItem(module: Module, current: boolean = true): void {
     const menu = document.querySelector(ModuleMenuSelector.menu);
-    const menuElements = menu.querySelectorAll<HTMLElement>(ModuleMenuSelector.item + selector`[data-modulemenu-identifier="${module.name}"]`);
+    const menuElements = menu!.querySelectorAll<HTMLElement>(ModuleMenuSelector.item + selector`[data-modulemenu-identifier="${module.name}"]`);
     menuElements.forEach((element) => {
       element.classList.add('modulemenu-action-active');
       if (current) {
@@ -199,7 +199,7 @@ class ModuleMenu {
   }
 
   private static getPreviousItem(item: HTMLElement): HTMLElement {
-    const previousParent = item.parentElement.previousElementSibling; // previous <li>
+    const previousParent = item.parentElement!.previousElementSibling; // previous <li>
     if (previousParent === null) {
       return ModuleMenu.getLastItem(item);
     }
@@ -207,7 +207,7 @@ class ModuleMenu {
   }
 
   private static getNextItem(item: HTMLElement): HTMLElement {
-    const nextParent = item.parentElement.nextElementSibling; // next <li>
+    const nextParent = item.parentElement!.nextElementSibling; // next <li>
     if (nextParent === null) {
       return ModuleMenu.getFirstItem(item);
     }
@@ -216,22 +216,22 @@ class ModuleMenu {
 
   private static getFirstItem(item: HTMLElement): HTMLElement {
     // from <element> up to <ul> and down to <element> of first <li>
-    return item.parentElement.parentElement.firstElementChild.firstElementChild as HTMLElement;
+    return item.parentElement!.parentElement!.firstElementChild!.firstElementChild as HTMLElement;
   }
 
   private static getLastItem(item: HTMLElement): HTMLElement {
     // from <element> up to <ul> and down to <element> of first <li>
-    return item.parentElement.parentElement.lastElementChild.firstElementChild as HTMLElement;
+    return item.parentElement!.parentElement!.lastElementChild!.firstElementChild as HTMLElement;
   }
 
   private static getParentItem(item: HTMLElement): HTMLElement {
     // from <element> up to <ul> and the <li> above and down down its <element>
-    return item.parentElement.parentElement.parentElement.firstElementChild as HTMLElement;
+    return item.parentElement!.parentElement!.parentElement!.firstElementChild as HTMLElement;
   }
 
   private static getFirstChildItem(item: HTMLElement): HTMLElement {
     // the first <li> of the <ul> following the <element>, then down down its <element>
-    return item.nextElementSibling.firstElementChild.firstElementChild as HTMLElement;
+    return item.nextElementSibling!.firstElementChild!.firstElementChild as HTMLElement;
   }
 
   /**
@@ -240,7 +240,7 @@ class ModuleMenu {
   public refreshMenu(): Promise<void> {
     return new AjaxRequest(TYPO3.settings.ajaxUrls.modulemenu).get().then(async (response: AjaxResponse): Promise<void> => {
       const result = await response.resolve();
-      document.getElementById('modulemenu').outerHTML = result.menu;
+      document.getElementById('modulemenu')!.outerHTML = result.menu;
       flushModuleCache();
       this.initializeModuleMenuEvents();
       if (this.loadedModule) {
@@ -303,7 +303,7 @@ class ModuleMenu {
         if (menuItem.collapsible) {
           ModuleMenu.toggleModuleGroup(menuItem.element, false);
         }
-        if (menuItem.level > 1) {
+        if (menuItem.level! > 1) {
           item = ModuleMenu.getParentItem(menuItem.element);
         }
         break;
@@ -313,15 +313,15 @@ class ModuleMenu {
         }
         break;
       case KeyTypesEnum.HOME:
-        if (event.ctrlKey && menuItem.level > 1) {
-          item = document.querySelector<HTMLElement>(ModuleMenuSelector.menu + ' ' + ModuleMenuSelector.item);
+        if (event.ctrlKey && menuItem.level! > 1) {
+          item = document.querySelector<HTMLElement>(ModuleMenuSelector.menu + ' ' + ModuleMenuSelector.item)!;
           break;
         }
         item = ModuleMenu.getFirstItem(menuItem.element);
         break;
       case KeyTypesEnum.END:
-        if (event.ctrlKey && menuItem.level > 1) {
-          item = ModuleMenu.getLastItem(document.querySelector(ModuleMenuSelector.menu + ' ' + ModuleMenuSelector.item));
+        if (event.ctrlKey && menuItem.level! > 1) {
+          item = ModuleMenu.getLastItem(document.querySelector(ModuleMenuSelector.menu + ' ' + ModuleMenuSelector.item)!);
         } else {
           item = ModuleMenu.getLastItem(menuItem.element);
         }
@@ -347,7 +347,7 @@ class ModuleMenu {
         break;
       case KeyTypesEnum.ESCAPE:
         // Close sub-menu on ESCAPE either from inside sub-menu or when trigger-button is focused.
-        if (menuItem.level > 1) {
+        if (menuItem.level! > 1) {
           item = ModuleMenu.getParentItem(menuItem.element);
         } else if (menuItem.level === 1 && menuItem.collapsible) {
           item = menuItem.element;
@@ -370,23 +370,23 @@ class ModuleMenu {
     const moduleMenu = document.querySelector(ModuleMenuSelector.menu);
 
     new RegularEvent('keydown', this.keyboardNavigation)
-      .delegateTo(moduleMenu, ModuleMenuSelector.item);
+      .delegateTo(moduleMenu!, ModuleMenuSelector.item);
 
     new RegularEvent('click', (event: Event, target: HTMLElement): void => {
       event.preventDefault();
       const moduleRoute = ModuleUtility.getRouteFromElement(target);
-      this.showModule(moduleRoute.identifier, moduleRoute.params, event);
-    }).delegateTo(moduleMenu, ModuleSelector.link);
+      this.showModule(moduleRoute.identifier, moduleRoute.params!, event);
+    }).delegateTo(moduleMenu!, ModuleSelector.link);
 
     new RegularEvent('click', (event: Event, target: HTMLElement): void => {
       event.preventDefault();
       ModuleMenu.toggleModuleGroup(target);
-    }).delegateTo(moduleMenu, ModuleMenuSelector.collapsible);
+    }).delegateTo(moduleMenu!, ModuleMenuSelector.collapsible);
 
     new RegularEvent('shown.bs.collapse', (event: Event, target: HTMLElement): void => {
       // Wait for collapsible to become fully visible, then scroll module-group into view if necessary.
       target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-    }).delegateTo(moduleMenu, '.modulemenu-group');
+    }).delegateTo(moduleMenu!, '.modulemenu-group');
   }
 
   /**

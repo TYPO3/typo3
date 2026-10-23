@@ -66,7 +66,7 @@ export class ResultContainer extends LitElement {
     e.preventDefault();
 
     if (e.key === 'Escape') {
-      this.closest('.t3-form-suggest-container').querySelector<HTMLInputElement>('input[type="search"]').focus();
+      this.closest('.t3-form-suggest-container')!.querySelector<HTMLInputElement>('input[type="search"]')!.focus();
       this.hidden = true;
 
       return;
@@ -76,18 +76,18 @@ export class ResultContainer extends LitElement {
       return;
     }
 
-    if (document.activeElement.tagName.toLowerCase() !== 'typo3-backend-formengine-suggest-result-item') {
+    if (document.activeElement!.tagName.toLowerCase() !== 'typo3-backend-formengine-suggest-result-item') {
       return;
     }
 
     let focusableCandidate;
     if (e.key === 'ArrowDown') {
-      focusableCandidate = document.activeElement.nextElementSibling;
+      focusableCandidate = document.activeElement!.nextElementSibling;
     } else {
-      focusableCandidate = document.activeElement.previousElementSibling;
+      focusableCandidate = document.activeElement!.previousElementSibling;
       if (focusableCandidate === null) {
         // No possible candidate found, fall back to search input
-        focusableCandidate = this.closest('.t3-form-suggest-container').querySelector('input[type="search"]');
+        focusableCandidate = this.closest('.t3-form-suggest-container')!.querySelector('input[type="search"]');
       }
     }
 

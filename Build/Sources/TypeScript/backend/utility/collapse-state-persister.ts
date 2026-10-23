@@ -117,14 +117,14 @@ export class CollapseStatePersister {
         // dealing with many elements like with System > Configuration with TCA tree.
         if (currentStates[id] === true) {
           if (!isExpanded) {
-            const toggle = document.querySelector<HTMLElement>('[data-bs-target="#' + id + '"]');
+            const toggle = document.querySelector<HTMLElement>('[data-bs-target="#' + id + '"]')!;
             toggle.classList.remove('collapsed');
             toggle.setAttribute('aria-expanded', 'true');
             element.classList.add('show');
           }
         } else {
           if (isExpanded) {
-            const toggle = document.querySelector<HTMLElement>('[data-bs-target="#' + id + '"]');
+            const toggle = document.querySelector<HTMLElement>('[data-bs-target="#' + id + '"]')!;
             toggle.classList.add('collapsed');
             toggle.setAttribute('aria-expanded', 'false');
             element.classList.remove('show');
@@ -134,14 +134,14 @@ export class CollapseStatePersister {
       if (storeHiddenState === true) {
         if (currentStates[id] === false) {
           if (isExpanded) {
-            const toggle = document.querySelector<HTMLElement>('[data-bs-target="#' + id + '"]');
+            const toggle = document.querySelector<HTMLElement>('[data-bs-target="#' + id + '"]')!;
             toggle.classList.add('collapsed');
             toggle.setAttribute('aria-expanded', 'false');
             element.classList.remove('show');
           }
         } else {
           if (!isExpanded) {
-            const toggle = document.querySelector<HTMLElement>('[data-bs-target="#' + id + '"]');
+            const toggle = document.querySelector<HTMLElement>('[data-bs-target="#' + id + '"]')!;
             toggle.classList.remove('collapsed');
             toggle.setAttribute('aria-expanded', 'true');
             element.classList.add('show');

@@ -28,7 +28,7 @@ export class Helper {
     DocumentService.ready().then((): void => {
       Promise.all([
         loadModule(requirements.app),
-        loadModule(requirements.mediator),
+        loadModule(requirements.mediator!),
         loadModule(requirements.viewModel),
       ]).then((modules: [any, any, any]) =>
         ((

@@ -80,7 +80,7 @@ class LoginRefresh {
    * Stop the task
    */
   public stopTask(): void {
-    clearInterval(this.intervalId);
+    clearInterval(this.intervalId!);
     this.intervalId = null;
   }
 
@@ -118,7 +118,7 @@ class LoginRefresh {
     this.timeoutModal = this.createTimeoutModal();
     this.timeoutModal.addEventListener('typo3-modal-hidden', () => this.timeoutModal = null);
     this.timeoutModal.addEventListener('show-login-form', () => {
-      this.timeoutModal.hideModal();
+      this.timeoutModal!.hideModal();
       this.showLoginForm();
     });
   }
@@ -344,8 +344,8 @@ class LoginRefresh {
     if (!tokenData.headerName || !tokenData.requestToken) {
       return;
     }
-    const passwordField = form.querySelector<HTMLInputElement>('input[name=p_field]');
-    const useridentField = form.querySelector<HTMLInputElement>('input[name=userident]');
+    const passwordField = form.querySelector<HTMLInputElement>('input[name=p_field]')!;
+    const useridentField = form.querySelector<HTMLInputElement>('input[name=userident]')!;
     const passwordFieldValue = passwordField.value;
 
     if (passwordFieldValue === '' && useridentField.value === '') {
@@ -368,7 +368,7 @@ class LoginRefresh {
     const headers = new Headers();
     headers.set(tokenData.headerName, tokenData.requestToken);
 
-    const response = await new AjaxRequest(form.getAttribute('action')).post(postData, { headers });
+    const response = await new AjaxRequest(form.getAttribute('action')!).post(postData, { headers });
     const data = await response.resolve();
     if (data.login.success) {
       // User is logged in
@@ -455,7 +455,7 @@ export class SelfFillingProgressBarElement extends LitElement {
     super.disconnectedCallback();
     if (this.intervalId) {
       clearInterval(this.intervalId);
-      this.intervalId = null;
+      this.intervalId = null!;
     }
   }
 

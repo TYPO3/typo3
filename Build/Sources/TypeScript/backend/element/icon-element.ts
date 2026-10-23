@@ -45,7 +45,7 @@ export class IconElement extends LitElement {
    * and must not be used in new code or with user supplied strings.
    * Use `identifier` attribute if ever possible instead.
    */
-  @property({ type: String }) raw?: string = null;
+  @property({ type: String }) raw?: string = null!;
 
   private readonly iconTask = new Task(this, {
     task: async ([identifier, size, overlay, state, markup], { signal }): Promise<string> => {

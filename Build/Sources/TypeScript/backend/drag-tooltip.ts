@@ -113,7 +113,7 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
 
   public updatePositionFromDragEvent = (event: DragEvent): void => {
     this.visible = !(event.clientX === 0 && event.clientY === 0);
-    const offset = this.calculateIframeOffset(event.view, window);
+    const offset = this.calculateIframeOffset(event.view!, window);
     this.posX = event.clientX + offset.x;
     this.posY = event.clientY + offset.y;
     if (this.visible) {
@@ -145,7 +145,7 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
     }
 
     const propertyNames = ([...changedProperties.keys()] as (keyof this)[]).filter(
-      (propName) => (this.constructor as typeof ReactiveElement).elementProperties.get(propName).attribute !== false
+      (propName) => (this.constructor as typeof ReactiveElement).elementProperties.get(propName)!.attribute !== false
     );
 
     if (propertyNames.length === 0) {
@@ -190,10 +190,10 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
       return;
     }
 
-    if (event.dataTransfer.types.includes(DataTransferTypes.dragTooltip)) {
-      event.dataTransfer.setDragImage(this.ghostImage, 0, 0);
+    if (event.dataTransfer!.types.includes(DataTransferTypes.dragTooltip)) {
+      event.dataTransfer!.setDragImage(this.ghostImage, 0, 0);
 
-      const metadata: DragTooltipMetadata = JSON.parse(event.dataTransfer.getData(DataTransferTypes.dragTooltip));
+      const metadata: DragTooltipMetadata = JSON.parse(event.dataTransfer!.getData(DataTransferTypes.dragTooltip));
       this.reset();
       Object.assign(this, metadata);
       this.broadcast('visible');
@@ -213,7 +213,7 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
   protected onBroadcastChangedProperties = (event: CustomEvent<{ payload: Partial<WritablePart<DragToolTip>> }>) => {
     const newProperties = event.detail.payload;
     (Object.keys(newProperties) as (keyof WritablePart<DragToolTip>)[]).forEach((key) => {
-      (this[key] as unknown) = newProperties[key];
+      (this[key!] as unknown) = newProperties[key!];
     });
     this.skipNextUpdateBroadcast = true;
   };

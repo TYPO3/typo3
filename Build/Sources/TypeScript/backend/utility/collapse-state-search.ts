@@ -46,9 +46,9 @@ class CollapseStateSearch {
         return;
       }
       this.numberOfSearchMatchesContainer = document.querySelectorAll('.t3js-collapse-states-search-numberOfSearchMatches');
-      this.searchField = document.querySelector(this.searchValueSelector);
-      this.searchForm = this.searchField.closest('form');
-      this.searchSessionKey = this.searchField.dataset.persistCollapseSearchKey;
+      this.searchField = document.querySelector(this.searchValueSelector)!;
+      this.searchForm = this.searchField.closest('form')!;
+      this.searchSessionKey = this.searchField.dataset.persistCollapseSearchKey!;
       this.searchValue = Client.get(this.searchSessionKey) ?? '';
 
       this.registerEvents();
@@ -112,7 +112,7 @@ class CollapseStateSearch {
         return;
       }
 
-      const collapsibleIdentifier = match.parentElement.querySelector<HTMLElement>('[data-bs-toggle="collapse"]')?.dataset.bsTarget;
+      const collapsibleIdentifier = match.parentElement!.querySelector<HTMLElement>('[data-bs-toggle="collapse"]')?.dataset.bsTarget;
       if (collapsibleIdentifier !== undefined) {
         matchingCollapsibleIds.add(collapsibleIdentifier.substring(1));
       }
@@ -131,14 +131,14 @@ class CollapseStateSearch {
         // We're not using BootstrapCollapse.getOrCreateInstance() since this is too slow when
         // dealing with many elements like with System > Configuration with TCA tree.
         if (!isExpanded) {
-          const toggle = document.querySelector<HTMLElement>('[data-bs-target="#' + id + '"]');
+          const toggle = document.querySelector<HTMLElement>('[data-bs-target="#' + id + '"]')!;
           toggle.classList.remove('collapsed');
           toggle.setAttribute('aria-expanded', 'true');
           node.classList.add('show');
         }
       } else {
         if (isExpanded) {
-          const toggle = document.querySelector<HTMLElement>('[data-bs-target="#' + id + '"]');
+          const toggle = document.querySelector<HTMLElement>('[data-bs-target="#' + id + '"]')!;
           toggle.classList.add('collapsed');
           toggle.setAttribute('aria-expanded', 'false');
           node.classList.remove('show');
@@ -163,7 +163,7 @@ class CollapseStateSearch {
       return el.textContent.toLowerCase().includes(term);
     });
     return matchingValueNodes.map((node): Element => {
-      return node.previousElementSibling;
+      return node.previousElementSibling!;
     });
   }
 

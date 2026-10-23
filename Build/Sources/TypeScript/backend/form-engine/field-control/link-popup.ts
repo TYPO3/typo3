@@ -39,13 +39,13 @@ class LinkPopup {
   private readonly handleControlClick = (e: Event): void => {
     e.preventDefault();
 
-    const itemName = this.controlElement.dataset.itemName;
+    const itemName = this.controlElement!.dataset.itemName;
 
-    const valueField = document.querySelector<HTMLInputElement>(selector`[name="${itemName}"]`);
-    const humanReadableField = document.querySelector<HTMLInputElement>(selector`[data-formengine-input-name="${itemName}"]`);
+    const valueField = document.querySelector<HTMLInputElement>(selector`[name="${itemName!}"]`)!;
+    const humanReadableField = document.querySelector<HTMLInputElement>(selector`[data-formengine-input-name="${itemName!}"]`)!;
 
-    const url = this.controlElement.getAttribute('href')
-      + '&P[currentValue]=' + encodeURIComponent(document.forms.namedItem('editform')[itemName].value)
+    const url = this.controlElement!.getAttribute('href')
+      + '&P[currentValue]=' + encodeURIComponent(document.forms.namedItem('editform')![itemName!].value)
       + '&P[currentSelectedValues]=' + encodeURIComponent(valueField.value);
 
     const modal = Modal.advanced({

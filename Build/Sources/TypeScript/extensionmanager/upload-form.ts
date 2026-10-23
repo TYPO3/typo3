@@ -21,7 +21,7 @@ class UploadForm {
   public initializeEvents(): void {
     // Show upload form
     new RegularEvent('click', (event: Event, target: HTMLAnchorElement): void => {
-      const uploadForm = document.querySelector<HTMLElement>('.extension-upload-form');
+      const uploadForm = document.querySelector<HTMLElement>('.extension-upload-form')!;
 
       event.preventDefault();
       if (uploadForm.classList.contains(this.expandedUploadFormClass)) {
@@ -32,7 +32,7 @@ class UploadForm {
         uploadForm.classList.add(this.expandedUploadFormClass);
 
         new AjaxRequest(target.href).get().then(async (response: AjaxResponse): Promise<void> => {
-          uploadForm.querySelector('.t3js-upload-form-target').innerHTML = await response.resolve();
+          uploadForm.querySelector('.t3js-upload-form-target')!.innerHTML = await response.resolve();
         });
       }
     }).delegateTo(document, '.t3js-upload');

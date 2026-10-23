@@ -36,16 +36,16 @@ class SelectMultipleSideBySideElement extends AbstractSortableSelectItems {
   }
 
   private registerEventHandler(): void {
-    this.registerSortableEventHandler(this.selectedOptionsElement);
+    this.registerSortableEventHandler(this.selectedOptionsElement!);
     this.registerKeyboardEvents();
 
-    this.availableOptionsElement.addEventListener('click', (e: Event): void => {
+    this.availableOptionsElement!.addEventListener('click', (e: Event): void => {
       const el = <HTMLSelectElement>e.currentTarget;
       this.handleOptionChecked(el);
     });
 
     // tslint:disable-next-line:no-unused-expression
-    new SelectBoxFilter(this.availableOptionsElement);
+    new SelectBoxFilter(this.availableOptionsElement!);
   }
 
   private handleOptionChecked(element: HTMLSelectElement): void {
@@ -75,7 +75,7 @@ class SelectMultipleSideBySideElement extends AbstractSortableSelectItems {
         e.preventDefault();
         this.handleOptionChecked(el);
       }
-    }).bindTo(this.availableOptionsElement);
+    }).bindTo(this.availableOptionsElement!);
   }
 
 }

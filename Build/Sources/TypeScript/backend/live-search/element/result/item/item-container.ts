@@ -45,8 +45,8 @@ export class ItemContainer extends LitElement {
 
   protected override render(): TemplateResult {
     const groupedResults: GroupedResultItems = {};
-    const filteredResults = this.results.filter((result): boolean => result !== null);
-    if (filteredResults.length !== this.results.length) {
+    const filteredResults = this.results!.filter((result): boolean => result !== null);
+    if (filteredResults.length !== this.results!.length) {
       console.warn(
         'The result set contained "null" values, indicating something went wrong while building the search results. Affected values were removed to no break the user interface.'
       );
@@ -105,7 +105,7 @@ export class ItemContainer extends LitElement {
   }
 
   private requestActions(resultItem: ResultItemInterface) {
-    this.parentElement.dispatchEvent(new CustomEvent<RequestActionsEventData>('livesearch:request-actions', {
+    this.parentElement!.dispatchEvent(new CustomEvent<RequestActionsEventData>('livesearch:request-actions', {
       detail: {
         resultItem: resultItem
       }
@@ -113,7 +113,7 @@ export class ItemContainer extends LitElement {
   }
 
   private invokeAction(resultItem: ResultItemInterface, action: ResultItemActionInterface): void {
-    this.parentElement.dispatchEvent(new CustomEvent<InvokeActionEventData>('livesearch:invoke-action', {
+    this.parentElement!.dispatchEvent(new CustomEvent<InvokeActionEventData>('livesearch:invoke-action', {
       detail: {
         resultItem: resultItem,
         action: action
@@ -140,8 +140,8 @@ export class ResultList extends LitElement {
   private resultItemDetailContainer: HTMLElement;
 
   public override connectedCallback(): void {
-    this.parentContainer = this.closest('typo3-backend-live-search-result-container');
-    this.resultItemDetailContainer = this.parentContainer.querySelector('typo3-backend-live-search-result-item-detail-container');
+    this.parentContainer = this.closest('typo3-backend-live-search-result-container')!;
+    this.resultItemDetailContainer = this.parentContainer.querySelector('typo3-backend-live-search-result-item-detail-container')!;
 
     super.connectedCallback();
     this.addEventListener('keydown', this.handleKeyDown);
@@ -164,7 +164,7 @@ export class ResultList extends LitElement {
     }
 
     const expectedTagName = 'typo3-backend-live-search-result-item';
-    if (document.activeElement.tagName.toLowerCase() !== expectedTagName) {
+    if (document.activeElement!.tagName.toLowerCase() !== expectedTagName) {
       return;
     }
 
@@ -172,20 +172,20 @@ export class ResultList extends LitElement {
 
     let focusableCandidate;
     if (e.key === 'ArrowDown') {
-      let nextSibling = document.activeElement.nextElementSibling;
+      let nextSibling = document.activeElement!.nextElementSibling;
       while (nextSibling !== null && nextSibling.tagName.toLowerCase() !== expectedTagName) {
         nextSibling = nextSibling.nextElementSibling;
       }
       focusableCandidate = nextSibling;
     } else if (e.key === 'ArrowUp') {
-      let prevSibling = document.activeElement.previousElementSibling;
+      let prevSibling = document.activeElement!.previousElementSibling;
       while (prevSibling !== null && prevSibling.tagName.toLowerCase() !== expectedTagName) {
         prevSibling = prevSibling.previousElementSibling;
       }
       focusableCandidate = prevSibling;
       if (focusableCandidate === null) {
         // No possible candidate found, fall back to search input
-        focusableCandidate = (document.querySelector('typo3-backend-live-search').querySelector('input[type="search"]'));
+        focusableCandidate = (document.querySelector('typo3-backend-live-search')!.querySelector('input[type="search"]'));
       }
     } else if (e.key === 'ArrowRight') {
       focusableCandidate = this.resultItemDetailContainer.querySelector('typo3-backend-live-search-result-item-action');

@@ -70,14 +70,14 @@ const defaultConfiguration: Partial<HelperConfiguration> = {
 let formEditorApp: FormEditor | null = null;
 
 function getFormEditorApp(): FormEditor {
-  return formEditorApp;
+  return formEditorApp!;
 }
 
 function getHelper(_configuration?: HelperConfiguration): typeof Helper {
   if (getUtility().isUndefinedOrNull(_configuration)) {
-    return Helper.setConfiguration(configuration);
+    return Helper.setConfiguration(configuration!);
   }
-  return Helper.setConfiguration(_configuration);
+  return Helper.setConfiguration(_configuration!);
 }
 
 function getUtility(): Utility {
@@ -124,7 +124,7 @@ function showRemoveElementModal<T extends keyof PublisherSubscriberTopicArgument
   );
 
   modalButtons.push({
-    text: getFormElementDefinition(getRootFormElement(), 'modalRemoveElementCancelButton'),
+    text: getFormElementDefinition(getRootFormElement(), 'modalRemoveElementCancelButton')!,
     active: true,
     btnClass: getHelper().getDomElementClassName('buttonDefault'),
     name: 'cancel',
@@ -134,7 +134,7 @@ function showRemoveElementModal<T extends keyof PublisherSubscriberTopicArgument
   });
 
   modalButtons.push({
-    text: getFormElementDefinition(getRootFormElement(), 'modalRemoveElementConfirmButton'),
+    text: getFormElementDefinition(getRootFormElement(), 'modalRemoveElementConfirmButton')!,
     active: true,
     btnClass: getHelper().getDomElementClassName('buttonWarning'),
     name: 'confirm',
@@ -145,8 +145,8 @@ function showRemoveElementModal<T extends keyof PublisherSubscriberTopicArgument
   });
 
   Modal.show(
-    getFormElementDefinition(getRootFormElement(), 'modalRemoveElementDialogTitle'),
-    getFormElementDefinition(getRootFormElement(), 'modalRemoveElementDialogMessage'),
+    getFormElementDefinition(getRootFormElement(), 'modalRemoveElementDialogTitle')!,
+    getFormElementDefinition(getRootFormElement(), 'modalRemoveElementDialogMessage')!,
     Severity.warning,
     modalButtons
   );
@@ -191,7 +191,7 @@ function insertElementsModalSetup(
           getHelper().getDomElementDataAttribute('fullElementType', 'bracesWithKey')
         ).forEach((el) => {
           const elementType = el.getAttribute(getHelper().getDomElementDataAttribute('elementType'));
-          const isEnabled = configuration[key].some((type) => type === elementType);
+          const isEnabled = configuration[key]!.some((type) => type === elementType);
           if (!isEnabled) {
             el.classList.add(getHelper().getDomElementClassName('disabled'));
           }
@@ -322,10 +322,10 @@ function _validationErrorsModalSetup(
     a.addEventListener('click', function(event: MouseEvent) {
       event.preventDefault();
       getPublisherSubscriber().publish('view/modal/validationErrors/element/clicked', [
-        a.getAttribute(getHelper().getDomElementDataAttribute('elementIdentifier'))
+        a.getAttribute(getHelper().getDomElementDataAttribute('elementIdentifier'))!
       ]);
       modalContent.querySelectorAll('a').forEach((link) => link.replaceWith(link.cloneNode(true)));
-      Modal.currentModal.hideModal();
+      Modal.currentModal!.hideModal();
     });
   });
 }
@@ -427,7 +427,7 @@ export function showCloseConfirmationModal(): void {
   const modalButtons: Button[] = [];
 
   modalButtons.push({
-    text: getFormElementDefinition(getRootFormElement(), 'modalCloseCancelButton'),
+    text: getFormElementDefinition(getRootFormElement(), 'modalCloseCancelButton')!,
     active: true,
     btnClass: getHelper().getDomElementClassName('buttonDefault'),
     name: 'cancel',
@@ -437,7 +437,7 @@ export function showCloseConfirmationModal(): void {
   });
 
   modalButtons.push({
-    text: getFormElementDefinition(getRootFormElement(), 'modalCloseConfirmButton'),
+    text: getFormElementDefinition(getRootFormElement(), 'modalCloseConfirmButton')!,
     active: true,
     btnClass: getHelper().getDomElementClassName('buttonWarning'),
     name: 'confirm',
@@ -448,8 +448,8 @@ export function showCloseConfirmationModal(): void {
   });
 
   Modal.show(
-    getFormElementDefinition(getRootFormElement(), 'modalCloseDialogTitle'),
-    getFormElementDefinition(getRootFormElement(), 'modalCloseDialogMessage'),
+    getFormElementDefinition(getRootFormElement(), 'modalCloseDialogTitle')!,
+    getFormElementDefinition(getRootFormElement(), 'modalCloseDialogMessage')!,
     Severity.warning,
     modalButtons
   );
@@ -492,7 +492,7 @@ export function showValidationErrorsModal(validationResults: ValidationResultsRe
   const modalButtons: Button[] = [];
 
   modalButtons.push({
-    text: getFormElementDefinition(getRootFormElement(), 'modalValidationErrorsConfirmButton'),
+    text: getFormElementDefinition(getRootFormElement(), 'modalValidationErrorsConfirmButton')!,
     active: true,
     btnClass: getHelper().getDomElementClassName('buttonDefault'),
     name: 'confirm',
@@ -507,7 +507,7 @@ export function showValidationErrorsModal(validationResults: ValidationResultsRe
     _validationErrorsModalSetup(content, validationResults);
 
     Modal.show(
-      getFormElementDefinition(getRootFormElement(), 'modalValidationErrorsDialogTitle'),
+      getFormElementDefinition(getRootFormElement(), 'modalValidationErrorsDialogTitle')!,
       content,
       Severity.error,
       modalButtons

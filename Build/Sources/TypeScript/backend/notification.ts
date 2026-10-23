@@ -162,17 +162,17 @@ class Notification {
 
     // Wait for the animation to finish, before scrolling into view
     setTimeout(() => {
-      this.notificationList.querySelector('typo3-notification-message:last-child').scrollIntoView();
+      this.notificationList!.querySelector('typo3-notification-message:last-child')!.scrollIntoView();
     }, Number(duration));
 
-    this.notificationList.appendChild(box);
+    this.notificationList!.appendChild(box);
   }
 
   protected static containerItemVisibility() {
-    this.clearAllButton.hidden = this.totalNotifications < this.showClearAllButtonCount;
+    this.clearAllButton!.hidden = this.totalNotifications < this.showClearAllButtonCount;
     try {
       // Always hide first to ensure we are moved into the foremost top-layer
-      this.messageContainer.hidePopover();
+      this.messageContainer!.hidePopover();
     } catch (e: unknown) {
       if (e instanceof DOMException && e.name === 'InvalidStateError') {
         // Ignored, since popover does not signal showing state,
@@ -182,7 +182,7 @@ class Notification {
       }
     }
     if (this.totalNotifications > 0) {
-      this.messageContainer.showPopover();
+      this.messageContainer!.showPopover();
     }
   }
 }
@@ -370,7 +370,7 @@ export class NotificationMessage extends LitElement {
                    this.executingAction = index;
                    await this.updateComplete;
                    if ('action' in action) {
-                     await action.action.execute(target);
+                     await action.action!.execute(target);
                    }
                    this.clear();
                  }}"

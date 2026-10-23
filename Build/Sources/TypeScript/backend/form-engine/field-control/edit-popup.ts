@@ -22,10 +22,10 @@ class EditPopup {
 
   constructor(controlElementId: string) {
     DocumentService.ready().then((): void => {
-      this.controlElement = document.querySelector<HTMLAnchorElement>(controlElementId);
+      this.controlElement = document.querySelector<HTMLAnchorElement>(controlElementId)!;
       this.assignedFormField = document.querySelector<HTMLSelectElement>(
         'select[data-formengine-input-name="' + this.controlElement.dataset.element + '"]',
-      );
+      )!;
 
       if (this.assignedFormField.options.selectedIndex === -1) {
         this.controlElement.classList.add('disabled');
@@ -37,7 +37,7 @@ class EditPopup {
   }
 
   private readonly registerChangeHandler = (): void => {
-    this.controlElement.classList.toggle('disabled', this.assignedFormField.options.selectedIndex === -1);
+    this.controlElement!.classList.toggle('disabled', this.assignedFormField!.options.selectedIndex === -1);
   };
 
   /**
@@ -47,17 +47,17 @@ class EditPopup {
     e.preventDefault();
 
     const values: Array<string> = [];
-    for (let i = 0; i < this.assignedFormField.selectedOptions.length; ++i) {
-      const option = this.assignedFormField.selectedOptions.item(i);
-      values.push(option.value);
+    for (let i = 0; i < this.assignedFormField!.selectedOptions.length; ++i) {
+      const option = this.assignedFormField!.selectedOptions.item(i);
+      values.push(option!.value);
     }
 
-    const url = this.controlElement.getAttribute('href')
-      + '&P[currentValue]=' + encodeURIComponent(this.assignedFormField.value)
+    const url = this.controlElement!.getAttribute('href')
+      + '&P[currentValue]=' + encodeURIComponent(this.assignedFormField!.value)
       + '&P[currentSelectedValues]=' + values.join(',')
     ;
-    const popupWindow = window.open(url, '', this.controlElement.dataset.windowParameters);
-    popupWindow.focus();
+    const popupWindow = window.open(url, '', this.controlElement!.dataset.windowParameters);
+    popupWindow!.focus();
   };
 }
 

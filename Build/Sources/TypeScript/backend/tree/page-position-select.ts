@@ -83,7 +83,7 @@ export class PagePositionSelectTree extends PageTree {
 
 @customElement('typo3-backend-component-page-position-select')
 export class PagePositionSelect extends LitElement {
-  @property({ type: Number, reflect: true, attribute: 'active-page' }) activePageId?: number = null;
+  @property({ type: Number, reflect: true, attribute: 'active-page' }) activePageId?: number = null!;
   @property({ type: Array }) actions: Array<string> = ['select'];
   @property({ type: String, reflect: true }) insertPosition: Position = 'inside';
 
@@ -103,7 +103,7 @@ export class PagePositionSelect extends LitElement {
 
   protected loadConfiguration(): void {
     const configurationUrl = topWindow.TYPO3.settings.ajaxUrls.page_tree_browser_configuration;
-    const alternativeEntryPoints = this.hasAttribute('alternative-entry-points') ? JSON.parse(this.getAttribute('alternative-entry-points')) : [];
+    const alternativeEntryPoints = this.hasAttribute('alternative-entry-points') ? JSON.parse(this.getAttribute('alternative-entry-points')!) : [];
     let request = new AjaxRequest(configurationUrl);
     if (alternativeEntryPoints.length) {
       request = request.withQueryArguments('alternativeEntryPoints=' + encodeURIComponent(alternativeEntryPoints));
@@ -126,7 +126,7 @@ export class PagePositionSelect extends LitElement {
   protected renderTree(): TemplateResult {
     const initialized = async () => {
       // set up toolbar now with updated properties
-      const toolbar = this.querySelector<TreeToolbar>('typo3-backend-tree-toolbar');
+      const toolbar = this.querySelector<TreeToolbar>('typo3-backend-tree-toolbar')!;
       toolbar.tree = this.tree;
       await this.tree.ensureActiveNodeLoaded(this.activePageId);
       const activeNode = await this.applyActiveInsertPosition();
@@ -160,7 +160,7 @@ export class PagePositionSelect extends LitElement {
     // Re-selecting the active node confirms it and advances the wizard.
     if (this.isActivePagePositionNode(selectedNode)) {
       this.dispatchEvent(new InsertPositionConfirmEvent(
-        this.activePageId,
+        this.activePageId!,
         this.insertPosition
       ));
       return;
@@ -245,7 +245,7 @@ export class PagePositionSelect extends LitElement {
     const parentNode = this.tree.nodes.find(node => node.identifier === currentNode.parentIdentifier);
 
     const afterNode = {
-      ...parentNode,
+      ...parentNode!,
       __processed: false,
       hasChildren: false,
       loaded: true,
@@ -303,7 +303,7 @@ export class PagePositionSelect extends LitElement {
         url: null,
         forceShowIcon: false,
       });
-      currentNode = nodes.find(n => n.identifier === currentNode.parentIdentifier);
+      currentNode = nodes.find(n => n.identifier === currentNode!.parentIdentifier);
     }
 
     // If inserting "after", remove the first page from the breadcrumb

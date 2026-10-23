@@ -77,15 +77,15 @@ class Hotkeys {
     const hotkeyStruct = HotkeyStruct.fromHotkey(hotkey);
     const encodedHotkeyStruct = hotkeyStruct.toString();
 
-    if (hotkeyMap.has(encodedHotkeyStruct)) {
-      const setup = hotkeyMap.get(encodedHotkeyStruct);
+    if (hotkeyMap!.has(encodedHotkeyStruct)) {
+      const setup = hotkeyMap!.get(encodedHotkeyStruct);
 
       // Hotkey already exists, remove potentially set `aria-keyshortcuts` for this hotkey
-      setup.options.bindElement?.removeAttribute('aria-keyshortcuts');
+      setup!.options.bindElement?.removeAttribute('aria-keyshortcuts');
       // Delete existing hotkey. If the existing hotkey was registered in a different browser scope, the callback is lost
-      hotkeyMap.delete(encodedHotkeyStruct);
+      hotkeyMap!.delete(encodedHotkeyStruct);
     }
-    hotkeyMap.set(encodedHotkeyStruct, { struct: hotkeyStruct, handler, options: mergedConfiguration });
+    hotkeyMap!.set(encodedHotkeyStruct, { struct: hotkeyStruct, handler, options: mergedConfiguration });
 
     if (mergedConfiguration.bindElement instanceof Element) {
       const existingAriaAttribute = mergedConfiguration.bindElement.getAttribute('aria-keyshortcuts');
@@ -136,8 +136,8 @@ class Hotkeys {
 
     for (const scope of scopes) {
       const hotkeyMap = this.scopedHotkeyMap.get(scope);
-      if (hotkeyMap.has(encodedHotkeyStruct)) {
-        return hotkeyMap.get(encodedHotkeyStruct);
+      if (hotkeyMap!.has(encodedHotkeyStruct)) {
+        return hotkeyMap!.get(encodedHotkeyStruct);
       }
     }
 

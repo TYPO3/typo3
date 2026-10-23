@@ -28,7 +28,7 @@ describe('@typo3/backend/element/immediate-action-element', () => {
 
   afterEach((): void => {
     root.remove();
-    root = null;
+    root = null!;
   });
 
   it('dispatches action when created via constructor', async () => {
@@ -63,7 +63,7 @@ describe('@typo3/backend/element/immediate-action-element', () => {
     const refreshMenuStub = stub(moduleMenuApp.App, 'refreshMenu');
     const element = document.createRange().createContextualFragment('<typo3-immediate-action action="TYPO3.ModuleMenu.App.refreshMenu"></typo3-immediate-action>').querySelector('typo3-immediate-action');
     expect(refreshMenuStub).not.to.have.been.called;
-    root.appendChild(element);
+    root.appendChild(element!);
     await import('@typo3/backend/module-menu.js');
     await new Promise((resolve) => setTimeout(resolve, 100));
     expect(refreshMenuStub).to.have.been.called;

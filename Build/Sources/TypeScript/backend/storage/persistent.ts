@@ -170,7 +170,7 @@ class Persistent {
     }
 
     const firstKey = keyParts.shift();
-    return this.getRecursiveDataByDeepKey(data[firstKey] || {}, keyParts);
+    return this.getRecursiveDataByDeepKey(data[firstKey!] || {}, keyParts);
   }
 
   /**
@@ -189,7 +189,7 @@ class Persistent {
       data[keyParts[0]] = value;
     } else {
       const firstKey = keyParts.shift();
-      data[firstKey] = this.setRecursiveDataByDeepKey((data[firstKey] as UC) || {}, keyParts, value);
+      data[firstKey!] = this.setRecursiveDataByDeepKey((data[firstKey!] as UC) || {}, keyParts, value);
     }
     return data;
   }

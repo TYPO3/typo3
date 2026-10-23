@@ -101,7 +101,7 @@ export default class FormEngineValidation {
 
       const config = JSON.parse(visibleField.dataset.formengineInputParams ?? '');
       const fieldName = config.field;
-      const actualValueField = formEngineInstance.formElement.querySelector<HTMLInputElement>(selector`[name="${fieldName}"]`);
+      const actualValueField = formEngineInstance.formElement.querySelector<HTMLInputElement>(selector`[name="${fieldName}"]`)!;
 
       actualValueField.dataset.config = visibleField.dataset.formengineInputParams;
       FormEngineValidation.initializeInputField(fieldName);
@@ -112,8 +112,8 @@ export default class FormEngineValidation {
    * Initialize field by name
    */
   public static initializeInputField(fieldName: string): void {
-    const field = formEngineInstance.formElement.querySelector<HTMLInputElement>(selector`[name="${fieldName}"]`);
-    const humanReadableField = formEngineInstance.formElement.querySelector<FormEngineFieldElement>(selector`[data-formengine-input-name="${fieldName}"]`);
+    const field = formEngineInstance.formElement.querySelector<HTMLInputElement>(selector`[name="${fieldName}"]`)!;
+    const humanReadableField = formEngineInstance.formElement.querySelector<FormEngineFieldElement>(selector`[data-formengine-input-name="${fieldName}"]`)!;
 
     if (field.dataset.config !== undefined) {
       const config = JSON.parse(field.dataset.config);
@@ -178,8 +178,8 @@ export default class FormEngineValidation {
    * Update input field after change
    */
   public static updateInputField(fieldName: string): void {
-    const field = formEngineInstance.formElement.querySelector<HTMLInputElement>(selector`[name="${fieldName}"]`);
-    const humanReadableField = formEngineInstance.formElement.querySelector<FormEngineFieldElement>(selector`[data-formengine-input-name="${fieldName}"]`);
+    const field = formEngineInstance.formElement.querySelector<HTMLInputElement>(selector`[name="${fieldName}"]`)!;
+    const humanReadableField = formEngineInstance.formElement.querySelector<FormEngineFieldElement>(selector`[data-formengine-input-name="${fieldName}"]`)!;
 
     if (field.dataset.config !== undefined) {
       const config = JSON.parse(field.dataset.config);
@@ -260,7 +260,7 @@ export default class FormEngineValidation {
         case 'range':
           if (value !== '') {
             if (rule.minItems || rule.maxItems) {
-              relatedField = formEngineInstance.formElement.querySelector<FormEngineFieldElement>(selector`[name="${field.dataset.relatedfieldname ?? ''}"]`);
+              relatedField = formEngineInstance.formElement.querySelector<FormEngineFieldElement>(selector`[name="${field.dataset.relatedfieldname ?? ''}"]`)!;
               if (relatedField !== null) {
                 selected = Utility.trimExplode(',', relatedField.value).length;
               } else {
@@ -316,7 +316,7 @@ export default class FormEngineValidation {
         case 'select':
         case 'category':
           if (rule.minItems || rule.maxItems) {
-            relatedField = formEngineInstance.formElement.querySelector<FormEngineFieldElement>(selector`[name="${field.dataset.relatedfieldname ?? ''}"]`);
+            relatedField = formEngineInstance.formElement.querySelector<FormEngineFieldElement>(selector`[name="${field.dataset.relatedfieldname ?? ''}"]`)!;
             if (relatedField !== null) {
               selected = Utility.trimExplode(',', relatedField.value).length;
             } else if (field instanceof HTMLSelectElement) {
@@ -505,7 +505,7 @@ export default class FormEngineValidation {
             month: 1,
             day: 1
           });
-          returnValue = dt.toISO({ suppressMilliseconds: true, includeOffset: false });
+          returnValue = dt.toISO({ suppressMilliseconds: true, includeOffset: false })!;
         }
         break;
       case 'null':
@@ -516,7 +516,7 @@ export default class FormEngineValidation {
         break;
       default:
         if (customEvaluations.has(command)) {
-          returnValue = customEvaluations.get(command).call(null, value);
+          returnValue = customEvaluations.get(command)!.call(null, value);
         } else if (typeof TBE_EDITOR === 'object' && TBE_EDITOR.customEvalFunctions !== undefined && typeof TBE_EDITOR.customEvalFunctions[command] === 'function') {
           returnValue = TBE_EDITOR.customEvalFunctions[command](value);
         }
@@ -607,9 +607,9 @@ export default class FormEngineValidation {
 
       const id = pane.id;
       const tabLink = formEngineInstance.formElement
-        .querySelector<HTMLElement>(selector`[data-typo3-tab="${'#' + id}"]`);
+        .querySelector<HTMLElement>(selector`[data-typo3-tab="${'#' + id}"]`)!;
       tabLink
-        .closest('.nav-item')
+        .closest('.nav-item')!
         .classList.toggle(FormEngineValidation.validationErrorClass, !isValid);
       FormEngineValidation.updateTabValidationState(tabLink, isValid);
     });

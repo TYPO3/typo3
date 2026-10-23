@@ -191,14 +191,14 @@ class UpgradeWizards extends AbstractInteractableModule {
 
     // Abort upgrade wizard
     new RegularEvent('click', (): void => {
-      this.findInModal(Identifiers.outputWizardsContainer).innerHTML = '';
+      this.findInModal(Identifiers.outputWizardsContainer)!.innerHTML = '';
       this.wizardsList();
     }).delegateTo(currentModal, Identifiers.wizardsInputAbort);
   }
 
   private getData(): Promise<void> {
     const modalContent = this.getModalBody();
-    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer);
+    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer)!;
     return (new AjaxRequest(Router.getUrl('upgradeWizardsGetData')))
       .get({ cache: 'no-cache' })
       .then(
@@ -219,7 +219,7 @@ class UpgradeWizards extends AbstractInteractableModule {
 
   private blockingUpgradesDatabaseCharsetTest(): void {
     const modalContent = this.getModalBody();
-    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer);
+    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer)!;
 
     this.renderProgressBar(outputContainer, {
       label: 'Checking database charset...'
@@ -232,8 +232,8 @@ class UpgradeWizards extends AbstractInteractableModule {
           if (data.success === true) {
             if (data.needsUpdate === true) {
               UpgradeWizards.removeLoadingMessage(outputContainer);
-              modalContent.querySelector(Identifiers.outputWizardsContainer)
-                .appendChild(modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsBlockingCharsetTemplate).content.cloneNode(true));
+              modalContent.querySelector(Identifiers.outputWizardsContainer)!
+                .appendChild(modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsBlockingCharsetTemplate)!.content.cloneNode(true));
             } else {
               this.blockingUpgradesDatabaseAdds();
             }
@@ -246,7 +246,7 @@ class UpgradeWizards extends AbstractInteractableModule {
   }
 
   private blockingUpgradesDatabaseCharsetFix(): void {
-    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer);
+    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer)!;
     this.renderProgressBar(outputContainer, {
       label: 'Setting database charset to UTF-8...'
     });
@@ -274,7 +274,7 @@ class UpgradeWizards extends AbstractInteractableModule {
 
   private blockingUpgradesDatabaseAdds(): void {
     const modalContent = this.getModalBody();
-    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer);
+    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer)!;
     this.renderProgressBar(outputContainer, {
       label: 'Check for missing mandatory database tables and fields...'
     });
@@ -285,28 +285,28 @@ class UpgradeWizards extends AbstractInteractableModule {
           const data: UpgradeWizardsBlockingDatabaseAddsResponse = await response.resolve();
           if (data.success === true) {
             if (data.needsUpdate === true) {
-              const adds = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsBlockingAddsTemplate)).content.cloneNode(true) as HTMLElement;
+              const adds = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsBlockingAddsTemplate)!).content.cloneNode(true) as HTMLElement;
               if (typeof (data.adds.tables) === 'object') {
                 data.adds.tables.forEach((element): void => {
                   const title = 'Table: ' + this.securityUtility.encodeHtml(element.table);
-                  adds.querySelector(Identifiers.wizardsBlockingAddsRows).append(title, document.createElement('br'));
+                  adds.querySelector(Identifiers.wizardsBlockingAddsRows)!.append(title, document.createElement('br'));
                 });
               }
               if (typeof (data.adds.columns) === 'object') {
                 data.adds.columns.forEach((element): void => {
                   const title = 'Table: ' + this.securityUtility.encodeHtml(element.table)
                     + ', Field: ' + this.securityUtility.encodeHtml(element.field);
-                  adds.querySelector(Identifiers.wizardsBlockingAddsRows).append(title, document.createElement('br'));
+                  adds.querySelector(Identifiers.wizardsBlockingAddsRows)!.append(title, document.createElement('br'));
                 });
               }
               if (typeof (data.adds.indexes) === 'object') {
                 data.adds.indexes.forEach((element): void => {
                   const title = 'Table: ' + this.securityUtility.encodeHtml(element.table)
                     + ', Index: ' + this.securityUtility.encodeHtml(element.index);
-                  adds.querySelector(Identifiers.wizardsBlockingAddsRows).append(title, document.createElement('br'));
+                  adds.querySelector(Identifiers.wizardsBlockingAddsRows)!.append(title, document.createElement('br'));
                 });
               }
-              modalContent.querySelector(Identifiers.outputWizardsContainer).appendChild(adds);
+              modalContent.querySelector(Identifiers.outputWizardsContainer)!.appendChild(adds);
             } else {
               this.wizardsList();
             }
@@ -322,7 +322,7 @@ class UpgradeWizards extends AbstractInteractableModule {
   }
 
   private blockingUpgradesDatabaseAddsExecute(): void {
-    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer);
+    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer)!;
     this.renderProgressBar(outputContainer, {
       label: 'Adding database tables and fields...'
     });
@@ -374,7 +374,7 @@ class UpgradeWizards extends AbstractInteractableModule {
 
   private wizardsList(): void {
     const modalContent = this.getModalBody();
-    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer);
+    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer)!;
     this.renderProgressBar(outputContainer, {
       label: 'Loading upgrade wizards...',
     });
@@ -384,7 +384,7 @@ class UpgradeWizards extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<void> => {
           const data: UpgradeWizardsListResponse = await response.resolve();
           UpgradeWizards.removeLoadingMessage(outputContainer);
-          const list = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsListTemplate)).content.cloneNode(true) as HTMLElement;
+          const list = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsListTemplate)!).content.cloneNode(true) as HTMLElement;
           if (data.success === true) {
             let numberOfWizardsTodo = 0;
             let numberOfWizards = 0;
@@ -392,18 +392,18 @@ class UpgradeWizards extends AbstractInteractableModule {
               numberOfWizards = data.wizards.length;
               data.wizards.forEach((element): void => {
                 if (element.shouldRenderWizard === true) {
-                  const aRow = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsListRowTemplate)).content.cloneNode(true) as HTMLElement;
+                  const aRow = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsListRowTemplate)!).content.cloneNode(true) as HTMLElement;
                   numberOfWizardsTodo = numberOfWizardsTodo + 1;
-                  aRow.querySelector<HTMLElement>(Identifiers.wizardsListRowTitle).innerText = element.title;
-                  aRow.querySelector<HTMLElement>(Identifiers.wizardsListRowExplanation).innerText = element.explanation;
-                  aRow.querySelector<HTMLElement>(Identifiers.wizardsListRowExecute).setAttribute('data-identifier', element.identifier);
-                  aRow.querySelector<HTMLElement>(Identifiers.wizardsListRowExecute).setAttribute('data-title', element.title);
-                  list.querySelector<HTMLElement>(Identifiers.wizardsListRows).append(aRow);
+                  aRow.querySelector<HTMLElement>(Identifiers.wizardsListRowTitle)!.innerText = element.title;
+                  aRow.querySelector<HTMLElement>(Identifiers.wizardsListRowExplanation)!.innerText = element.explanation;
+                  aRow.querySelector<HTMLElement>(Identifiers.wizardsListRowExecute)!.setAttribute('data-identifier', element.identifier);
+                  aRow.querySelector<HTMLElement>(Identifiers.wizardsListRowExecute)!.setAttribute('data-title', element.title);
+                  list.querySelector<HTMLElement>(Identifiers.wizardsListRows)!.append(aRow);
                 }
               });
             }
             let percent: number = 100;
-            const upgradeWizardProgress = list.querySelector('typo3-backend-progress-bar');
+            const upgradeWizardProgress = list.querySelector('typo3-backend-progress-bar')!;
             if (numberOfWizardsTodo > 0) {
               percent = Math.round((numberOfWizards - numberOfWizardsTodo) / data.wizards.length * 100);
             } else {
@@ -411,7 +411,7 @@ class UpgradeWizards extends AbstractInteractableModule {
             }
             upgradeWizardProgress.value = percent;
             upgradeWizardProgress.label = `${numberOfWizards - numberOfWizardsTodo} of ${numberOfWizards} upgrade wizards executed`;
-            modalContent.querySelector(Identifiers.outputWizardsContainer).appendChild(list);
+            modalContent.querySelector(Identifiers.outputWizardsContainer)!.appendChild(list);
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
@@ -425,14 +425,14 @@ class UpgradeWizards extends AbstractInteractableModule {
   private wizardInput(identifier: string, title: string): void {
     const executeToken = this.getModuleContent().dataset.upgradeWizardsInputToken;
     const modalContent = this.getModalBody();
-    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer);
+    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer)!;
     this.renderProgressBar(outputContainer, {
       label: 'Loading "' + title + '"...'
     });
 
     modalContent.animate(
       {
-        scrollTop: modalContent.scrollTop - Math.abs(modalContent.querySelector('.t3js-upgrade-status-section').getBoundingClientRect().top),
+        scrollTop: modalContent.scrollTop - Math.abs(modalContent.querySelector('.t3js-upgrade-status-section')!.getBoundingClientRect().top),
       },
       250,
     );
@@ -449,7 +449,7 @@ class UpgradeWizards extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<void> => {
           const data: UpgradeWizardsInputResponse = await response.resolve();
           outputContainer.innerHTML = '';
-          const input = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsInputTemplate)).content.cloneNode(true) as HTMLElement;
+          const input = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsInputTemplate)!).content.cloneNode(true) as HTMLElement;
           if (data.success === true) {
             if (Array.isArray(data.status)) {
               data.status.forEach((element): void => {
@@ -457,15 +457,15 @@ class UpgradeWizards extends AbstractInteractableModule {
               });
             }
             if (data.userInput.wizardHtml.length > 0) {
-              input.querySelector<HTMLElement>(Identifiers.wizardsInputHtml).innerHTML = data.userInput.wizardHtml;
+              input.querySelector<HTMLElement>(Identifiers.wizardsInputHtml)!.innerHTML = data.userInput.wizardHtml;
             }
-            input.querySelector<HTMLElement>(Identifiers.wizardsInputTitle).innerText = data.userInput.title;
-            input.querySelector<HTMLElement>(Identifiers.wizardsInputDescription).innerHTML = this.securityUtility.stripHtml(data.userInput.description).replace(/\n/g, '<br>');
-            const selectorWizardsInputPerform = input.querySelector<HTMLElement>(Identifiers.wizardsInputPerform);
+            input.querySelector<HTMLElement>(Identifiers.wizardsInputTitle)!.innerText = data.userInput.title;
+            input.querySelector<HTMLElement>(Identifiers.wizardsInputDescription)!.innerHTML = this.securityUtility.stripHtml(data.userInput.description).replace(/\n/g, '<br>');
+            const selectorWizardsInputPerform = input.querySelector<HTMLElement>(Identifiers.wizardsInputPerform)!;
             selectorWizardsInputPerform.setAttribute('data-identifier', data.userInput.identifier);
             selectorWizardsInputPerform.setAttribute('data-title', data.userInput.title);
           }
-          modalContent.querySelector(Identifiers.outputWizardsContainer).appendChild(input);
+          modalContent.querySelector(Identifiers.outputWizardsContainer)!.appendChild(input);
         },
         (error: AjaxResponse): void => {
           Router.handleAjaxError(error, outputContainer);
@@ -485,8 +485,8 @@ class UpgradeWizards extends AbstractInteractableModule {
     for (const [name, value] of formData) {
       postData[name] = value.toString();
     }
-    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer);
-    const messagesContainer = this.findInModal(Identifiers.outputMessagesContainer);
+    const outputContainer = this.findInModal(Identifiers.outputWizardsContainer)!;
+    const messagesContainer = this.findInModal(Identifiers.outputMessagesContainer)!;
     this.renderProgressBar(outputContainer, {
       label: 'Executing "' + title + '"...'
     });
@@ -506,7 +506,7 @@ class UpgradeWizards extends AbstractInteractableModule {
               messagesContainer.append(...messages);
             }
             this.wizardsList();
-            modalContent.querySelector(Identifiers.outputDoneContainer).innerHTML = '';
+            modalContent.querySelector(Identifiers.outputDoneContainer)!.innerHTML = '';
             this.doneUpgrades();
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
@@ -520,7 +520,7 @@ class UpgradeWizards extends AbstractInteractableModule {
 
   private doneUpgrades(): void {
     const modalContent = this.getModalBody();
-    const outputContainer = modalContent.querySelector<HTMLElement>(Identifiers.outputDoneContainer);
+    const outputContainer = modalContent.querySelector<HTMLElement>(Identifiers.outputDoneContainer)!;
     this.renderProgressBar(outputContainer, {
       label: 'Loading executed upgrade wizards...'
     });
@@ -536,29 +536,29 @@ class UpgradeWizards extends AbstractInteractableModule {
                 outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
               });
             }
-            const body = modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsDoneBodyTemplate).content.cloneNode(true) as HTMLElement;
-            const wizardsDoneContainer = body.querySelector(Identifiers.wizardsDoneRows);
+            const body = modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsDoneBodyTemplate)!.content.cloneNode(true) as HTMLElement;
+            const wizardsDoneContainer = body.querySelector(Identifiers.wizardsDoneRows)!;
             let hasBodyContent: boolean = false;
             if (Array.isArray(data.wizardsDone) && data.wizardsDone.length > 0) {
               data.wizardsDone.forEach((element): void => {
                 hasBodyContent = true;
-                const aRow = modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsDoneRowTemplate).content.cloneNode(true) as HTMLElement;
-                aRow.querySelector(Identifiers.wizardsDoneRowMarkUndone).setAttribute('data-identifier', element.identifier);
-                aRow.querySelector<HTMLElement>(Identifiers.wizardsDoneRowTitle).innerText = element.title;
+                const aRow = modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsDoneRowTemplate)!.content.cloneNode(true) as HTMLElement;
+                aRow.querySelector(Identifiers.wizardsDoneRowMarkUndone)!.setAttribute('data-identifier', element.identifier);
+                aRow.querySelector<HTMLElement>(Identifiers.wizardsDoneRowTitle)!.innerText = element.title;
                 wizardsDoneContainer.appendChild(aRow);
               });
             }
             if (Array.isArray(data.rowUpdatersDone) && data.rowUpdatersDone.length > 0) {
               data.rowUpdatersDone.forEach((element): void => {
                 hasBodyContent = true;
-                const aRow = modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsDoneRowTemplate).content.cloneNode(true) as HTMLElement;
-                aRow.querySelector(Identifiers.wizardsDoneRowMarkUndone).setAttribute('data-identifier', element.identifier);
-                aRow.querySelector<HTMLElement>(Identifiers.wizardsDoneRowTitle).innerText = element.title;
+                const aRow = modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsDoneRowTemplate)!.content.cloneNode(true) as HTMLElement;
+                aRow.querySelector(Identifiers.wizardsDoneRowMarkUndone)!.setAttribute('data-identifier', element.identifier);
+                aRow.querySelector<HTMLElement>(Identifiers.wizardsDoneRowTitle)!.innerText = element.title;
                 wizardsDoneContainer.appendChild(aRow);
               });
             }
             if (hasBodyContent) {
-              modalContent.querySelector(Identifiers.outputDoneContainer).appendChild(body);
+              modalContent.querySelector(Identifiers.outputDoneContainer)!.appendChild(body);
             }
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
@@ -573,8 +573,8 @@ class UpgradeWizards extends AbstractInteractableModule {
   private markUndone(identifier: string): void {
     const executeToken = this.getModuleContent().dataset.upgradeWizardsMarkUndoneToken;
     const modalContent = this.getModalBody();
-    const messagesContainer = this.findInModal(Identifiers.outputMessagesContainer);
-    const outputContainer = this.findInModal(Identifiers.outputDoneContainer);
+    const messagesContainer = this.findInModal(Identifiers.outputMessagesContainer)!;
+    const outputContainer = this.findInModal(Identifiers.outputDoneContainer)!;
     this.renderProgressBar(outputContainer, {
       label: 'Marking upgrade wizard as undone...'
     });
@@ -591,7 +591,7 @@ class UpgradeWizards extends AbstractInteractableModule {
           const data: UpgradeWizardsMarkUndoneResponse = await response.resolve();
           messagesContainer.replaceChildren();
           outputContainer.replaceChildren();
-          modalContent.querySelector(Identifiers.outputDoneContainer).replaceChildren();
+          modalContent.querySelector(Identifiers.outputDoneContainer)!.replaceChildren();
 
           if (data.success === true && Array.isArray(data.status)) {
             data.status.forEach((element): void => {

@@ -139,8 +139,8 @@ export class SelectTree extends Tree
       return;
     }
     const parent = this.nodes.find((searchNode) => searchNode.identifier === node.__parents.at(-1));
-    parent.__hidden = false;
-    parent.__expanded = true;
+    parent!.__hidden = false;
+    parent!.__expanded = true;
     this.showParents(parent);
   }
 

@@ -155,7 +155,7 @@ export class LanguageMatrixElement extends LitElement {
   }
 
   private renderLanguages(): TemplateResult[] {
-    return this.data.languages
+    return this.data!.languages
       .filter(language => this.addLanguagesActive ? !language.active : language.active)
       .map(language => html`
         <tr class=${classMap({ 't3-languagePacks-inactive': !language.active })}>
@@ -173,7 +173,7 @@ export class LanguageMatrixElement extends LitElement {
   }
 
   private hasActiveLanguages() {
-    return Array.isArray(this.data.activeLanguages) && this.data.activeLanguages.length;
+    return Array.isArray(this.data!.activeLanguages) && this.data!.activeLanguages.length;
   }
 }
 
@@ -187,7 +187,7 @@ export class ExtensionMatrixElement extends LitElement {
   }
 
   protected override render(): TemplateResult {
-    if (this.data.extensions.length === 0) {
+    if (this.data!.extensions.length === 0) {
       return html`
         <typo3-install-infobox
           severity="0"
@@ -218,7 +218,7 @@ export class ExtensionMatrixElement extends LitElement {
   }
 
   private headerActions(): TemplateResult[] {
-    return this.data.activeLanguages.map(activeLanguage => html`
+    return this.data!.activeLanguages.map(activeLanguage => html`
       <th>
         <button class="btn btn-default" title="Download and update all language packs"
           @click=${() => this.dispatchEvent(new CustomEvent<DownloadPacksEvent>('download-packs', { detail: { iso: activeLanguage } }))}>
@@ -230,7 +230,7 @@ export class ExtensionMatrixElement extends LitElement {
   }
 
   private renderExtensions(): TemplateResult[] {
-    return this.data.extensions.map(extension => html`
+    return this.data!.extensions.map(extension => html`
       <tr>
         <td>
           ${extension.icon ? html`
@@ -247,7 +247,7 @@ export class ExtensionMatrixElement extends LitElement {
   private renderExtensionActions(extension: Extension): TemplateResult[] {
     const cells: TemplateResult[] = [];
 
-    this.data.activeLanguages.forEach((language): void => {
+    this.data!.activeLanguages.forEach((language): void => {
       let cell: TemplateResult | typeof nothing = nothing;
 
       extension.packs.forEach((pack): void => {

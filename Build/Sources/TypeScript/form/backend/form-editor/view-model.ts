@@ -331,7 +331,7 @@ function structureComponentSetup(): void {
     getFormEditorApp(),
     document.querySelector<HTMLElement>(getHelper().getDomElementDataAttribute('identifier', 'bracesWithKeyValue', [
       getHelper().getDomElementDataAttributeValue('structure')
-    ]))
+    ]))!
   );
 
   const iconMailformEl = document.querySelector(
@@ -379,7 +379,7 @@ function stageComponentSetup(): void {
     getFormEditorApp(),
     document.querySelector<HTMLElement>(getHelper().getDomElementDataAttribute('identifier', 'bracesWithKeyValue', [
       getHelper().getDomElementDataAttributeValue('stageArea')
-    ]))
+    ]))!
   );
 
   const stagePanelEl = getStage().getStagePanelDomElement();
@@ -473,14 +473,14 @@ function buttonsSetup(): void {
  * ************************************************************/
 
 export function getFormEditorApp(): FormEditor {
-  return formEditorApp;
+  return formEditorApp!;
 }
 
 export function getHelper(_configuration?: HelperConfiguration): typeof Helper {
   if (getUtility().isUndefinedOrNull(_configuration)) {
     return Helper.setConfiguration(configuration);
   }
-  return Helper.setConfiguration(_configuration);
+  return Helper.setConfiguration(_configuration!);
 }
 
 export function getFormElementDefinition<T extends keyof FormElementDefinition>(
@@ -507,7 +507,7 @@ export function setPreviewMode(newPreviewMode: boolean): void {
  * ************************************************************/
 
 export function getStructure(): typeof TreeComponent {
-  return structureComponent;
+  return structureComponent!;
 }
 
 /**
@@ -569,7 +569,7 @@ export function setStructureRootElementTitle(title?: string): void {
   }
   const el = getStructureRootElement();
   if (el) {
-    el.textContent = title;
+    el.textContent = title!;
   }
 }
 
@@ -612,14 +612,14 @@ export function addStructureValidationResults(): void {
  * ************************************************************/
 
 export function getModals(): typeof ModalsComponent {
-  return modalsComponent;
+  return modalsComponent!;
 }
 
 export function showRemoveFormElementModal(formElement?: FormElement): void {
   if (getUtility().isUndefinedOrNull(formElement)) {
     formElement = getCurrentlySelectedFormElement();
   }
-  getModals().showRemoveFormElementModal(formElement);
+  getModals().showRemoveFormElementModal(formElement!);
 }
 
 export function showRemoveCollectionElementModal(
@@ -630,7 +630,7 @@ export function showRemoveCollectionElementModal(
   if (getUtility().isUndefinedOrNull(formElement)) {
     formElement = getCurrentlySelectedFormElement();
   }
-  getModals().showRemoveCollectionElementModal(collectionElementIdentifier, collectionName, formElement);
+  getModals().showRemoveCollectionElementModal(collectionElementIdentifier, collectionName, formElement!);
 }
 
 export function showCloseConfirmationModal(): void {
@@ -661,7 +661,7 @@ export function showValidationErrorsModal(): void {
  * ************************************************************/
 
 export function getInspector(): typeof InspectorComponent {
-  return inspectorsComponent;
+  return inspectorsComponent!;
 }
 
 export function renderInspectorEditors(formElement?: FormElement | string): void {
@@ -692,11 +692,11 @@ export function renderInspectorCollectionElementEditors(
  * ************************************************************/
 
 export function getStage(): typeof StageComponent {
-  return stageComponent;
+  return stageComponent!;
 }
 
 export function setStageHeadline(title?: string): void {
-  getStage().setStageHeadline(title);
+  getStage().setStageHeadline(title!);
 }
 
 export function addStagePanelSelection(): void {
@@ -865,7 +865,7 @@ export function removeFormElement(formElement: FormElement, disablePublishersOnS
     && getRootFormElement().get('renderables').length === 1
   ) {
     Notification.error(
-      getFormElementDefinition(getRootFormElement(), 'modalRemoveElementLastAvailablePageFlashMessageTitle'),
+      getFormElementDefinition(getRootFormElement(), 'modalRemoveElementLastAvailablePageFlashMessageTitle')!,
       getFormElementDefinition(getRootFormElement(), 'modalRemoveElementLastAvailablePageFlashMessageMessage'),
       2
     );
@@ -875,7 +875,7 @@ export function removeFormElement(formElement: FormElement, disablePublishersOnS
       getPublisherSubscriber().publish('view/formElement/removed', [parentFormElement]);
     }
   }
-  return parentFormElement;
+  return parentFormElement!;
 }
 
 /**
@@ -892,17 +892,17 @@ export function createAndAddPropertyCollectionElement(
   getFormEditorApp().createAndAddPropertyCollectionElement(
     collectionElementIdentifier,
     collectionName,
-    formElement,
-    collectionElementConfiguration,
-    referenceCollectionElementIdentifier
+    formElement!,
+    collectionElementConfiguration!,
+    referenceCollectionElementIdentifier!
   );
   if (!disablePublishersOnSet) {
     getPublisherSubscriber().publish('view/collectionElement/new/added', [
       collectionElementIdentifier,
       collectionName,
-      formElement,
-      collectionElementConfiguration,
-      referenceCollectionElementIdentifier
+      formElement!,
+      collectionElementConfiguration!,
+      referenceCollectionElementIdentifier!
     ]);
   }
 }
@@ -923,7 +923,7 @@ export function movePropertyCollectionElement(
     position,
     referenceCollectionElement,
     collectionName,
-    formElement,
+    formElement!,
     false
   );
   if (!disablePublishersOnSet) {
@@ -932,7 +932,7 @@ export function movePropertyCollectionElement(
       position,
       referenceCollectionElement,
       collectionName,
-      formElement
+      formElement!
     ]);
   }
 }
@@ -957,8 +957,8 @@ export function removePropertyCollectionElement(
   if (Array.isArray(collectionElementConfiguration.editors)) {
     for (let i = 0, len1 = collectionElementConfiguration.editors.length; i < len1; ++i) {
       if (Array.isArray(collectionElementConfiguration.editors[i].additionalElementPropertyPaths)) {
-        for (let j = 0, len2 = collectionElementConfiguration.editors[i].additionalElementPropertyPaths.length; j < len2; ++j) {
-          getCurrentlySelectedFormElement().unset(collectionElementConfiguration.editors[i].additionalElementPropertyPaths[j], true);
+        for (let j = 0, len2 = collectionElementConfiguration.editors[i].additionalElementPropertyPaths!.length; j < len2; ++j) {
+          getCurrentlySelectedFormElement().unset(collectionElementConfiguration.editors[i].additionalElementPropertyPaths![j], true);
         }
       } else if (collectionElementConfiguration.editors[i].identifier === 'validationErrorMessage') {
         propertyPath = getFormEditorApp().buildPropertyPath(
@@ -966,9 +966,9 @@ export function removePropertyCollectionElement(
         );
         propertyData = getCurrentlySelectedFormElement().get(propertyPath);
         if (!getUtility().isUndefinedOrNull(propertyData)) {
-          for (let j = 0, len2 = collectionElementConfiguration.editors[i].errorCodes.length; j < len2; ++j) {
+          for (let j = 0, len2 = collectionElementConfiguration.editors[i].errorCodes!.length; j < len2; ++j) {
             for (let k = 0, len3 = propertyData.length; k < len3; ++k) {
-              if (parseInt(collectionElementConfiguration.editors[i].errorCodes[j], 10) === parseInt(propertyData[k].code, 10)) {
+              if (parseInt(collectionElementConfiguration.editors[i].errorCodes![j], 10) === parseInt(propertyData[k].code, 10)) {
                 propertyData.splice(k, 1);
                 --len3;
               }
@@ -984,7 +984,7 @@ export function removePropertyCollectionElement(
     getPublisherSubscriber().publish('view/collectionElement/removed', [
       collectionElementIdentifier,
       collectionName,
-      formElement
+      formElement!
     ]);
   }
 }
@@ -1009,7 +1009,7 @@ export function refreshSelectedElementItemsBatch(): void {
       addStagePanelSelection();
     } else {
       selectedElement?.classList.add(getHelper().getDomElementClassName('selectedFormElement'));
-      getStage().createAndAddAbstractViewFormElementToolbar(selectedElement, undefined);
+      getStage().createAndAddAbstractViewFormElementToolbar(selectedElement!, undefined);
     }
 
     getStage().getAllFormElementDomElements().forEach((el) => {
@@ -1114,7 +1114,7 @@ export function onAbstractViewDndUpdateBatch(
     .getAbstractViewFormElementWithinDomElement(movedDomElement)
     ?.setAttribute(
       getHelper().getDomElementDataAttribute('elementIdentifier'),
-      movedFormElement.get('__identifierPath')
+      movedFormElement!.get('__identifierPath')
     );
 }
 
@@ -1170,7 +1170,7 @@ export function onStructureDndUpdateBatch(
     .getTreeNodeWithinDomElement(movedDomElement)
     ?.setAttribute(
       getHelper().getDomElementDataAttribute('elementIdentifier'),
-      movedFormElement.get('__identifierPath')
+      movedFormElement!.get('__identifierPath')
     );
 }
 
@@ -1187,7 +1187,7 @@ export function setElementValidationErrorClass(element: HTMLElement | null, clas
   if (getFormEditorApp().getUtility().isUndefinedOrNull(classIdentifier)) {
     element?.classList.replace('panel-default', 'panel-danger');
   } else {
-    element?.classList.add(getHelper().getDomElementClassName(classIdentifier));
+    element?.classList.add(getHelper().getDomElementClassName(classIdentifier!));
   }
 }
 
@@ -1195,7 +1195,7 @@ export function removeElementValidationErrorClass(element: HTMLElement | null, c
   if (getFormEditorApp().getUtility().isUndefinedOrNull(classIdentifier)) {
     element?.classList.replace('panel-danger', 'panel-default');
   } else {
-    element?.classList.remove(getHelper().getDomElementClassName(classIdentifier));
+    element?.classList.remove(getHelper().getDomElementClassName(classIdentifier!));
   }
 }
 
@@ -1251,7 +1251,7 @@ export function showSaveButtonSaveIcon(): void {
 
 export function showSaveSuccessMessage(): void {
   Notification.success(
-    getFormElementDefinition(getRootFormElement(), 'saveSuccessFlashMessageTitle'),
+    getFormElementDefinition(getRootFormElement(), 'saveSuccessFlashMessageTitle')!,
     getFormElementDefinition(getRootFormElement(), 'saveSuccessFlashMessageMessage'),
     2
   );
@@ -1259,8 +1259,8 @@ export function showSaveSuccessMessage(): void {
 
 export function showSaveErrorMessage(response: { message: string }): void {
   Notification.error(
-    getFormElementDefinition(getRootFormElement(), 'saveErrorFlashMessageTitle'),
-    getFormElementDefinition(getRootFormElement(), 'saveErrorFlashMessageMessage') +
+    getFormElementDefinition(getRootFormElement(), 'saveErrorFlashMessageTitle')!,
+    getFormElementDefinition(getRootFormElement(), 'saveErrorFlashMessageMessage')! +
     ' ' +
     response.message
   );

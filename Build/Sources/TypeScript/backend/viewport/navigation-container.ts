@@ -108,7 +108,7 @@ class NavigationContainer extends AbstractContainer {
     const selectedElement = navigationContainer.querySelector<HTMLElement>('[data-component="' + component + '"]');
     if (selectedElement) {
       // Re-set to the display setting from CSS
-      selectedElement.style.display = null;
+      selectedElement.style.display = null!;
     }
   }
 

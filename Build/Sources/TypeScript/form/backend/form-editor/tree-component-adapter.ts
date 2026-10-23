@@ -39,7 +39,7 @@ let treeContainer: FormEditorTreeContainer | null = null;
 let treeDomElement: HTMLElement | null = null;
 
 function getFormEditorApp(): FormEditor {
-  return formEditorApp;
+  return formEditorApp!;
 }
 
 function getPublisherSubscriber(): PublisherSubscriber {
@@ -126,7 +126,7 @@ export function renew(formElement?: FormElement): void {
 
   // Use requestAnimationFrame to ensure DOM is ready
   requestAnimationFrame(async () => {
-    await treeContainer.setNodes(nodes);
+    await treeContainer!.setNodes(nodes);
 
     let currentElement = formElement;
     if (!currentElement) {
@@ -134,13 +134,13 @@ export function renew(formElement?: FormElement): void {
         currentElement = getCurrentlySelectedFormElement();
       } catch {
         // Element might not be found if path is stale - ignore and don't select anything
-        currentElement = null;
+        currentElement = null!;
       }
     }
 
     if (currentElement) {
       const identifierPath = currentElement.get('__identifierPath');
-      treeContainer.setSelectedNode(identifierPath);
+      treeContainer!.setSelectedNode(identifierPath);
     }
 
     // Publish after setNodes() completed so validation subscribers
@@ -288,7 +288,7 @@ export function clearAllValidationErrors(): void {
  * @returns The tree's root DOM element or null
  */
 export function getTreeDomElement(): HTMLElement | null {
-  return treeDomElement;
+  return treeDomElement!;
 }
 
 /**
@@ -565,7 +565,7 @@ function setupEventListeners(): void {
     getPublisherSubscriber().publish('view/tree/dnd/change', [
       item,
       parentIdentifierPath,
-      enclosingCompositeFormElement
+      enclosingCompositeFormElement!
     ]);
 
     // Determine the correct position and reference element for moveFormElement

@@ -94,7 +94,7 @@ interface ParsedInformation {
 /**
  * Runtime cache of json serialized module information
  */
-let parsedInformation: ParsedInformation = null;
+let parsedInformation: ParsedInformation = null!;
 
 /**
  * Flushes the runtime cache containing parsed module information
@@ -102,7 +102,7 @@ let parsedInformation: ParsedInformation = null;
  * @internal
  */
 export function flushModuleCache(): void {
-  parsedInformation = null;
+  parsedInformation = null!;
 }
 
 function getParsedInformation(): ParsedInformation|null {
@@ -113,7 +113,7 @@ function getParsedInformation(): ParsedInformation|null {
         parsedInformation = JSON.parse(modulesInformation);
       } catch {
         console.error('Invalid modules information provided.');
-        parsedInformation = null;
+        parsedInformation = null!;
       }
     }
   }
@@ -121,10 +121,10 @@ function getParsedInformation(): ParsedInformation|null {
 }
 
 function getParsedRecordFromName(name: string): Partial<Module>|null {
-  const parsedModuleInformation: ParsedInformation = getParsedInformation();
+  const parsedModuleInformation: ParsedInformation = getParsedInformation()!;
   if (parsedModuleInformation !== null) {
     for (const [key, module] of Object.entries(parsedModuleInformation)) {
-      if (name === key || module.aliases.includes(name)) {
+      if (name === key || module.aliases!.includes(name)) {
         return parsedModuleInformation[key];
       }
     }

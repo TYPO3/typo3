@@ -177,20 +177,20 @@ export class Breadcrumb extends LitElement
   {
     if (this.dropdownButtonWidth === null) {
       const toggleTemplate = html`<div class="breadcrumb-item dropdown">${this.renderDropdownToggle()}</div>`;
-      render(toggleTemplate, this.measurementContainer);
-      const toggleElement = this.measurementContainer.querySelector('div');
+      render(toggleTemplate, this.measurementContainer!);
+      const toggleElement = this.measurementContainer!.querySelector('div');
       this.dropdownButtonWidth = toggleElement?.offsetWidth ?? 0;
-      render(nothing, this.measurementContainer);
+      render(nothing, this.measurementContainer!);
     }
   }
 
   private measureEllipsis(): void
   {
     if (this.ellipsisWidth === null) {
-      render(this.renderEllipsis(), this.measurementContainer);
-      const ellipsisElement = this.measurementContainer.querySelector('div');
+      render(this.renderEllipsis(), this.measurementContainer!);
+      const ellipsisElement = this.measurementContainer!.querySelector('div');
       this.ellipsisWidth = ellipsisElement?.offsetWidth ?? 0;
-      render(nothing, this.measurementContainer);
+      render(nothing, this.measurementContainer!);
     }
   }
 
@@ -211,10 +211,10 @@ export class Breadcrumb extends LitElement
           ${this.renderBreadcrumbElement(node)}
         </div>
       `;
-      render(template, this.measurementContainer);
-      const element = this.measurementContainer.querySelector('div');
+      render(template, this.measurementContainer!);
+      const element = this.measurementContainer!.querySelector('div');
       const width = element?.offsetWidth ?? 0;
-      render(nothing, this.measurementContainer);
+      render(nothing, this.measurementContainer!);
 
       return { ...node, __width: width };
     });
@@ -261,8 +261,8 @@ export class Breadcrumb extends LitElement
     const newCollapsedNodes: BreadcrumbNodeInterface[] = [];
 
     for (const node of this.nodes.slice(0, -1).reverse()) {
-      if (!collapsing && breadcrumbContainer.clientWidth > totalWidth + collapseIndicatorWidth + node.__width) {
-        totalWidth += node.__width;
+      if (!collapsing && breadcrumbContainer.clientWidth > totalWidth + collapseIndicatorWidth! + node.__width!) {
+        totalWidth += node.__width!;
       } else {
         collapsing = true;
         newCollapsedNodes.push(node);
@@ -392,7 +392,7 @@ export class Breadcrumb extends LitElement
   private triggerAction(e: Event, node: BreadcrumbNodeInterface): void
   {
     import('@typo3/backend/viewport').then(({ default: Viewport }): void => {
-      Viewport.ContentContainer.setUrl(node.url);
+      Viewport.ContentContainer.setUrl(node.url!);
     });
   }
 

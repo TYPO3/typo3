@@ -27,9 +27,9 @@ export class DuplicateFormSubmissionService implements SubmissionServiceInterfac
     const requestUrl = this.context.formManager.getAjaxEndpoint('duplicate');
     const response = await new AjaxRequest(requestUrl)
       .post({
-        formName: dataStore.settings.formName,
-        storage: dataStore.storage.typeIdentifier,
-        storageLocation: dataStore.settings.storageLocation,
+        formName: dataStore.settings!.formName,
+        storage: dataStore.storage!.typeIdentifier,
+        storageLocation: dataStore.settings!.storageLocation,
         formPersistenceIdentifier: this.formPersistenceIdentifier
       });
     const data: {status: string, url?: string, message?: ''} = await response.resolve();

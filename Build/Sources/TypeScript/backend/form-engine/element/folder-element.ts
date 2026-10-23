@@ -59,7 +59,7 @@ class FolderElement extends HTMLElement {
 
   private registerEventHandler(): void {
     const folderSortableSelectItems = new FolderSortableSelectItems();
-    folderSortableSelectItems.registerEventHandler(this.recordField);
+    folderSortableSelectItems.registerEventHandler(this.recordField!);
   }
 }
 

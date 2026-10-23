@@ -23,7 +23,7 @@ class PageLinkHandler {
   constructor() {
     new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
       evt.preventDefault();
-      LinkBrowser.finalizeFunction(targetEl.getAttribute('href'));
+      LinkBrowser.finalizeFunction(targetEl.getAttribute('href')!);
     }).delegateTo(document, 'a.t3js-pageLink');
 
     // Input field

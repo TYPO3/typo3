@@ -30,20 +30,20 @@ export class PaginationElement extends LitElement {
   protected override render(): TemplateResult {
     return html`
       <ul class="pagination">
-        <li class=${classMap({ 'page-item': true, disabled: this.paging.currentPage === 1 })}>
-          <button type="button" class="page-link" data-action="previous" ?disabled=${this.paging.currentPage === 1}>
+        <li class=${classMap({ 'page-item': true, disabled: this.paging!.currentPage === 1 })}>
+          <button type="button" class="page-link" data-action="previous" ?disabled=${this.paging!.currentPage === 1}>
             <typo3-backend-icon identifier="actions-view-paging-previous" size="small"></typo3-backend-icon>
           </button>
         </li>
-        ${map(range(1, this.paging.totalPages + 1), (page) => html`
-          <li class=${classMap({ 'page-item': true, active: this.paging.currentPage === page })}>
+        ${map(range(1, this.paging!.totalPages + 1), (page) => html`
+          <li class=${classMap({ 'page-item': true, active: this.paging!.currentPage === page })}>
             <button type="button" class="page-link" data-action="page" data-page=${page}>
               <span>${page}</span>
             </button>
           </li>
         `)}
-        <li class=${classMap({ 'page-item': true, disabled: this.paging.currentPage === this.paging.totalPages })}>
-          <button type="button" class="page-link" data-action="next" ?disabled=${this.paging.currentPage === this.paging.totalPages}>
+        <li class=${classMap({ 'page-item': true, disabled: this.paging!.currentPage === this.paging!.totalPages })}>
+          <button type="button" class="page-link" data-action="next" ?disabled=${this.paging!.currentPage === this.paging!.totalPages}>
             <typo3-backend-icon identifier="actions-view-paging-next" size="small"></typo3-backend-icon>
           </button>
         </li>

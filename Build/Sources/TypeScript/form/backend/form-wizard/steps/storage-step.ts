@@ -106,7 +106,7 @@ export class StorageStep implements WizardStepInterface, WizardStepValueInterfac
   }
 
   public beforeAdvance(): void {
-    this.context.setStoreData(this.key, this.getValue());
+    this.context.setStoreData(this.key, this.getValue()!);
   }
 
   public getSummaryData(): SummaryItem[] {

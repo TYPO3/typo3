@@ -142,7 +142,7 @@ export class CodeMirrorElement extends LitElement {
    * @internal
    */
   public getContent(): string {
-    return this.editorView.state.doc.toString();
+    return this.editorView!.state.doc.toString();
   }
 
   protected override render(): TemplateResult {
@@ -248,7 +248,7 @@ export class CodeMirrorElement extends LitElement {
         doc: textarea.value,
         extensions
       }),
-      parent: this.renderRoot.querySelector('#codemirror-parent'),
+      parent: this.renderRoot.querySelector('#codemirror-parent')!,
       root: this.renderRoot as ShadowRoot
     });
 
@@ -272,8 +272,8 @@ export class CodeMirrorElement extends LitElement {
   }
 
   private toggleDarkMode(enabled: boolean): void {
-    this.editorView.dispatch({
-      effects: this.editorTheme.reconfigure(
+    this.editorView!.dispatch({
+      effects: this.editorTheme!.reconfigure(
         enabled ? oneDark : []
       )
     });

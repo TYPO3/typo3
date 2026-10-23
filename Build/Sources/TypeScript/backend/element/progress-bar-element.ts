@@ -197,7 +197,7 @@ export class ProgressBarElement extends LitElement {
       return;
     }
 
-    if (isNaN(this.value)) {
+    if (isNaN(this.value!)) {
       this.value = 0;
     }
 
@@ -217,7 +217,7 @@ export class ProgressBarElement extends LitElement {
       return;
     }
 
-    const bar = this.shadowRoot.querySelector('.bar');
+    const bar = this.shadowRoot!.querySelector('.bar')!;
     bar.addEventListener('transitionend', () => {
       this.hide();
     }, { once: true, signal });
@@ -245,14 +245,14 @@ export class ProgressBarElement extends LitElement {
   protected override render(): TemplateResult {
     const labelIdentifier = 'progress-label-' + (Math.random() + 1).toString(36).substring(2);
     const isLabelDefined = this.label !== undefined && this.label;
-    const isIndeterminate = isNaN(this.value);
+    const isIndeterminate = isNaN(this.value!);
     const classes = classMap({
       bar: true,
-      ['bar-' + Severity.getCssClass(this.severity)]: !isIndeterminate && this.severity !== undefined,
+      ['bar-' + Severity.getCssClass(this.severity!)]: !isIndeterminate && this.severity !== undefined,
       indeterminate: isIndeterminate,
     });
     const styles = isIndeterminate ? nothing : styleMap({
-      width: (this.clamp(this.value, 0, this.max) / this.max * 100).toString() + '%',
+      width: (this.clamp(this.value!, 0, this.max) / this.max * 100).toString() + '%',
     });
 
     return html`

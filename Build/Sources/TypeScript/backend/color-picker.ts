@@ -151,9 +151,9 @@ class LegacyColorPicker {
     }
 
     const colorPicker = document.createElement('typo3-backend-color-picker');
-    colorPicker.swatches = options.swatches.map((swatch) => ({ color: swatch, label: swatch }));
+    colorPicker.swatches = options.swatches!.map((swatch) => ({ color: swatch, label: swatch }));
     colorPicker.opacity = options.opacity ?? false;
-    element.parentNode.insertBefore(colorPicker, element);
+    element.parentNode!.insertBefore(colorPicker, element);
     colorPicker.appendChild(element);
   }
 }

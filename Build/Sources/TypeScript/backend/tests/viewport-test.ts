@@ -28,7 +28,7 @@ describe('@typo3/backend/viewport:', () => {
         <div slot="content"></div>
       </typo3-backend-content-navigation>
     `);
-    contentArea = contentNavigation.querySelector<HTMLElement>('[slot="content"]');
+    contentArea = contentNavigation.querySelector<HTMLElement>('[slot="content"]')!;
   });
 
   afterEach((): void => {
@@ -38,14 +38,14 @@ describe('@typo3/backend/viewport:', () => {
   it('Loader.start() shows a running progress bar in the content area', (): void => {
     Viewport.Loader.start();
 
-    const progressBar = contentArea.querySelector<ProgressBarElement>('typo3-backend-progress-bar');
+    const progressBar = contentArea.querySelector<ProgressBarElement>('typo3-backend-progress-bar')!;
     expect(progressBar).to.not.equal(null);
     expect(progressBar.isRunning()).to.equal(true);
   });
 
   it('Loader.finish() completes the progress bar', async (): Promise<void> => {
     Viewport.Loader.start();
-    const progressBar = contentArea.querySelector<ProgressBarElement>('typo3-backend-progress-bar');
+    const progressBar = contentArea.querySelector<ProgressBarElement>('typo3-backend-progress-bar')!;
 
     const clock = useFakeTimers();
     try {

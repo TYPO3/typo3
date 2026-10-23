@@ -268,7 +268,7 @@ export default class Filelist {
     eventDetails.checkboxes.forEach((checkbox) => {
       const checkboxContainer = checkbox.closest<HTMLElement>(MultiRecordSelectionSelectors.elementSelector);
       if (checkboxContainer !== null && checkboxContainer.dataset[configuration.idField]) {
-        list.push(checkboxContainer.dataset[configuration.idField]);
+        list.push(checkboxContainer.dataset[configuration.idField]!);
       }
     });
 
@@ -296,7 +296,7 @@ export default class Filelist {
     const filesAndFolders: ResourceInterface[] = [];
     eventDetails.checkboxes.forEach((checkbox) => {
       if (checkbox.checked) {
-        const element = checkbox.closest<HTMLInputElement>(FileListActionSelector.elementSelector);
+        const element = checkbox.closest<HTMLInputElement>(FileListActionSelector.elementSelector)!;
         const resource = FileListActionUtility.getResourceForElement(element);
         filesAndFolders.unshift(resource);
       }
@@ -311,7 +311,7 @@ export default class Filelist {
 
   private triggerDownload(items: ResourceInterface[], downloadUrl: string, button: HTMLElement | null): void {
     if (items.length === 1) {
-      const item = items.at(0);
+      const item = items.at(0)!;
       if (item.type === 'file') {
         // We deal with a single file in the selection, download directly
         this.invokeDownload(item.url ?? '', item.name);

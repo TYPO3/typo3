@@ -85,10 +85,10 @@ export class SettingsStep implements WizardStepInterface, WizardStepValueInterfa
     const config = this.context.getStoreData(this.key);
 
     const prototypeLabel = this.context.formManager.getPrototypes()
-      .find(p => p.value === config.prototype)?.label;
+      .find(p => p.value === config!.prototype)?.label;
 
-    const templateLabel = this.context.formManager.getTemplatesForPrototype(config.prototype)
-      .find(t => t.value === config.template)
+    const templateLabel = this.context.formManager.getTemplatesForPrototype(config!.prototype!)
+      .find(t => t.value === config!.template)
       ?.label;
 
     const isPredefined = this.context.getStoreData('mode') === MODE.Predefined;
@@ -98,24 +98,24 @@ export class SettingsStep implements WizardStepInterface, WizardStepValueInterfa
     const storageLocations = storageAdapter
       ? this.context.formManager.getAccessibleStorageLocationsForAdapter(storageAdapter)
       : [];
-    const storageLocationLabel = storageLocations.find(l => l.value === config.storageLocation)?.label
-      ?? config.storageLocation ?? '';
+    const storageLocationLabel = storageLocations.find(l => l.value === config!.storageLocation)?.label
+      ?? config!.storageLocation ?? '';
 
     return [
       ...(isPredefined
         ? [
           {
-            value: prototypeLabel,
+            value: prototypeLabel ?? '',
             label: formManagerLabels.get('formManager.form_prototype')
           },
           {
-            value: templateLabel,
+            value: templateLabel ?? '',
             label: formManagerLabels.get('formManager.form_template')
           }
         ]
         : []),
       {
-        value: config.formName ?? '',
+        value: config!.formName ?? '',
         label: formManagerLabels.get('formManager.form_name')
       },
       {
@@ -126,7 +126,7 @@ export class SettingsStep implements WizardStepInterface, WizardStepValueInterfa
   }
 
   private renderSavePath(): TemplateResult | typeof nothing {
-    const storageLocations = this.context.formManager.getAccessibleStorageLocationsForAdapter(this.context.getStoreData('storage')) ?? [];
+    const storageLocations = this.context.formManager.getAccessibleStorageLocationsForAdapter(this.context.getStoreData('storage')!) ?? [];
 
     if (storageLocations.length <= 1) {
       this.setValue({ storageLocation: storageLocations[0]?.value ?? '' });
@@ -180,7 +180,7 @@ export class SettingsStep implements WizardStepInterface, WizardStepValueInterfa
     }
     const currentPrototype = this.data.prototype;
 
-    const templates = this.context.formManager.getTemplatesForPrototype(currentPrototype);
+    const templates = this.context.formManager.getTemplatesForPrototype(currentPrototype!);
 
     let templatesFormGroup: TemplateResult | typeof nothing = nothing;
     if (templates.length > 0) {

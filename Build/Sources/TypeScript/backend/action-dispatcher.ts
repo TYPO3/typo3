@@ -95,8 +95,8 @@ class ActionDispatcher {
           return arg;
       }
     });
-    if (this.delegates[action]) {
-      this.delegates[action].apply(null, args as never[]);
+    if (this.delegates[action!]) {
+      this.delegates[action!].apply(null, args as never[]);
     }
   }
 }

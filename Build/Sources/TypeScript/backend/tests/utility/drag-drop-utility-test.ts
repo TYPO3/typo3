@@ -55,7 +55,7 @@ describe('@typo3/backend/utility/drag-drop-utility', () => {
     it('reflects the copy intention in dropEffect', () => {
       const event = createDragEvent({ dropEffect: 'move', ctrlKey: true });
       DragDropUtility.updateEventAndTooltipToReflectCopyMoveIntention(event);
-      expect(event.dataTransfer.dropEffect).to.equal('copy');
+      expect(event.dataTransfer!.dropEffect).to.equal('copy');
     });
   });
 

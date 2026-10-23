@@ -50,12 +50,12 @@ class FlexFormContainerContainer {
     this.securityUtility = new SecurityUtility();
     this.parentContainer = parentContainer;
     this.container = container;
-    this.containerContent = container.querySelector(Selectors.sectionContentContainerSelector);
-    this.containerId = container.dataset.flexformContainerId;
+    this.containerContent = container.querySelector(Selectors.sectionContentContainerSelector)!;
+    this.containerId = container.dataset.flexformContainerId!;
     this.toggleKeyInLocalStorage = `formengine-flex-${parentContainer.getSectionContainer().id}-${this.containerId}-collapse`;
 
-    this.panelButton = container.querySelector(':scope > .panel-heading .panel-button');
-    this.panelHeading = this.panelButton.closest('.panel-heading');
+    this.panelButton = container.querySelector(':scope > .panel-heading .panel-button')!;
+    this.panelHeading = this.panelButton.closest('.panel-heading')!;
 
     this.registerEvents();
   }
@@ -104,7 +104,7 @@ class FlexFormContainerContainer {
       ]);
       modal.addEventListener('button.clicked', (modalEvent: Event): void => {
         if ((modalEvent.target as HTMLButtonElement).name === 'yes') {
-          const actionField = this.container.querySelector<HTMLInputElement>(Selectors.actionFieldSelector);
+          const actionField = this.container.querySelector<HTMLInputElement>(Selectors.actionFieldSelector)!;
           actionField.value = 'DELETE';
 
           this.container.appendChild(actionField);
@@ -124,7 +124,7 @@ class FlexFormContainerContainer {
 
         modal.hideModal();
       });
-    }).bindTo(this.container.querySelector(Selectors.deleteContainerButtonSelector));
+    }).bindTo(this.container.querySelector(Selectors.deleteContainerButtonSelector)!);
   }
 
   private async registerToggle(): Promise<void> {
@@ -169,7 +169,7 @@ class FlexFormContainerContainer {
       previewContent = '[' + coreLabels.get('labels.no_title') + ']';
     }
 
-    this.panelHeading.querySelector(Selectors.contentPreviewSelector).textContent = previewContent;
+    this.panelHeading.querySelector(Selectors.contentPreviewSelector)!.textContent = previewContent;
   }
 }
 

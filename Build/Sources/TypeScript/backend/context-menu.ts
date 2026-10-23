@@ -116,7 +116,7 @@ class ContextMenu {
   }
 
   private handleContextMenuEvent(event: PointerEvent, element: HTMLElement): void {
-    const contextTrigger: string = element.dataset.contextmenuTrigger;
+    const contextTrigger: string = element.dataset.contextmenuTrigger!;
     if (contextTrigger === 'click' || contextTrigger === event.type) {
       event.preventDefault();
       if ((element.dataset.contextmenuTable ?? '') === '') {
@@ -231,7 +231,7 @@ export class ContextMenuElement extends LitElement {
     if (this.focusFirstElement) {
       if (this.contextMenuItemElements.length > 0) {
         const firstItemElement = Array.from(this.contextMenuItemElements).at(0);
-        firstItemElement.focus();
+        firstItemElement!.focus();
       }
       this.focusFirstElement = false;
     }
@@ -278,7 +278,7 @@ export class ContextMenuElement extends LitElement {
     this.mountPopoverHost();
 
     if (detail.originalEvent !== null) {
-      const offset = this.calculateIframeOffset(detail.originalEvent.view, window);
+      const offset = this.calculateIframeOffset(detail.originalEvent.view!, window);
       let x: number, y: number;
       // Event was triggered by a non pointing device, see
       // https://w3c.github.io/pointerevents/#dom-pointerevent-pointerid
@@ -417,15 +417,15 @@ export class ContextMenuElement extends LitElement {
       return;
     }
 
-    const dataset = this.extractDataAttributesAndConvertToDataset(node.additionalAttributes);
+    const dataset = this.extractDataAttributesAndConvertToDataset(node.additionalAttributes!);
     const callbackAction = node.callbackAction;
     const { callbackModule, ...dataAttributesToPass } = dataset;
     if (callbackModule) {
       import(callbackModule + '.js').then(({ default: callbackModuleCallback }: { default: any }): void => {
-        callbackModuleCallback[callbackAction](this.table, this.uid, dataAttributesToPass);
+        callbackModuleCallback[callbackAction!](this.table, this.uid, dataAttributesToPass);
       });
-    } else if (ContextMenuActions && typeof (ContextMenuActions as any)[callbackAction] === 'function') {
-      (ContextMenuActions as any)[callbackAction](this.table, this.uid, dataAttributesToPass);
+    } else if (ContextMenuActions && typeof (ContextMenuActions as any)[callbackAction!] === 'function') {
+      (ContextMenuActions as any)[callbackAction!](this.table, this.uid, dataAttributesToPass);
     } else {
       console.error('action: ' + callbackAction + ' not found');
     }
@@ -441,7 +441,7 @@ export class ContextMenuElement extends LitElement {
     const iframe = target as HTMLIFrameElement;
     let win: Window;
     try {
-      win = iframe.contentWindow;
+      win = iframe.contentWindow!;
     } catch {
       return target;
     }
@@ -547,10 +547,10 @@ export class ContextMenuElement extends LitElement {
         }
         break;
       case 'Home':
-        this.getElementFromNode(firstNode)?.focus();
+        this.getElementFromNode(firstNode!)?.focus();
         break;
       case 'End':
-        this.getElementFromNode(lastNode)?.focus();
+        this.getElementFromNode(lastNode!)?.focus();
         break;
       default:
         return;
@@ -701,8 +701,8 @@ export class ContextMenuElement extends LitElement {
       const documentDirection = this.getDocumentDirection();
       subMenuElements.forEach((element) => {
         const parentNode = this.getNodeByIdentifier(element.dataset.contextmenuParent ?? '');
-        const parentElement = this.getElementFromNode(parentNode);
-        const parentRect = parentElement.getBoundingClientRect();
+        const parentElement = this.getElementFromNode(parentNode!);
+        const parentRect = parentElement!.getBoundingClientRect();
         const top = parentRect.top - 7;
         const start = documentDirection === 'ltr' ? parentRect.right : parentRect.left;
         this.updateContextMenuPosition(element, top, start);
@@ -772,7 +772,7 @@ export class ContextMenuElement extends LitElement {
   }
 
   private getDocumentDirection(): string {
-    return document.querySelector('html').dir === 'rtl' ? 'rtl' : 'ltr';
+    return document.querySelector('html')!.dir === 'rtl' ? 'rtl' : 'ltr';
   }
 }
 

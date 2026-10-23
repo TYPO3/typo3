@@ -59,8 +59,8 @@ class TSLexical {
     this.indented = indented;
     this.column = column;
     this.type = type;
-    this.prev = prev;
-    this.info = info;
+    this.prev = prev!;
+    this.info = info!;
     if (align != null) {
       this.align = align;
     }
@@ -982,7 +982,7 @@ export class TypoScriptStreamParserFactory {
 
     function ret(tp: string, style?: string, cont?: string): string | undefined {
       type = tp;
-      content = cont;
+      content = cont!;
       return style;
     }
 
@@ -1159,7 +1159,7 @@ export class TypoScriptStreamParserFactory {
 
     function pass(...args: CC[]): undefined {
       for (let i = args.length - 1; i >= 0; i--) {
-        cx.cc.push(args[i]);
+        cx.cc!.push(args[i]);
       }
       return undefined;
     }
@@ -1181,11 +1181,11 @@ export class TypoScriptStreamParserFactory {
 
       const state = cx.state;
       cx.marked = 'def';
-      if (state.context) {
-        if (inList(state.localVars)) {
+      if (state!.context) {
+        if (inList(state!.localVars)) {
           return;
         }
-        state.localVars = { name: varname, next: state.localVars };
+        state!.localVars = { name: varname, next: state!.localVars };
       }
     }
 
@@ -1194,15 +1194,15 @@ export class TypoScriptStreamParserFactory {
     function pushlex(type: Type, info?: number | string): CombinatorLexFunction {
       const result: CombinatorLexFunction = function(): CombinatorReturnType {
         const state = cx.state;
-        let indent = state.indented;
-        if (state.lexical.type === 'stat') {
-          indent = state.lexical.indented;
+        let indent = state!.indented;
+        if (state!.lexical.type === 'stat') {
+          indent = state!.lexical.indented;
         } else {
-          for (let outer = state.lexical; outer && outer.type === ')' && outer.align; outer = outer.prev) {
+          for (let outer = state!.lexical; outer && outer.type === ')' && outer.align; outer = outer.prev) {
             indent = outer.indented;
           }
         }
-        state.lexical = new TSLexical(indent, cx.stream.column(), type, null, state.lexical, info);
+        state!.lexical = new TSLexical(indent, cx.stream!.column(), type, null!, state!.lexical, info);
         return undefined;
       };
       result.lex = true;
@@ -1211,11 +1211,11 @@ export class TypoScriptStreamParserFactory {
 
     function poplex(): CombinatorReturnType {
       const state = cx.state;
-      if (state.lexical.prev) {
-        if (state.lexical.type === ')') {
-          state.indented = state.lexical.indented;
+      if (state!.lexical.prev) {
+        if (state!.lexical.type === ')') {
+          state!.indented = state!.lexical.indented;
         }
-        state.lexical = state.lexical.prev;
+        state!.lexical = state!.lexical.prev;
       }
       return undefined;
     }
@@ -1290,7 +1290,7 @@ export class TypoScriptStreamParserFactory {
         return cont(noComma ? expressionNoComma : expression);
       }
       if (type === '{') {
-        return contCommasep(objprop, '}', null, maybeop);
+        return contCommasep(objprop, '}', null!, maybeop);
       }
       return cont();
     }
@@ -1380,7 +1380,7 @@ export class TypoScriptStreamParserFactory {
     function commasep(what: CC, end: Type, sep?: string): CombinatorFunction {
       function proceed(type: Type, value: Value): CombinatorReturnType {
         if (sep ? sep.indexOf(type) > -1 : type === ',') {
-          const lex = cx.state.lexical;
+          const lex = cx.state!.lexical;
           if (lex.info === 'call') {
             lex.pos = (lex.pos || 0) + 1;
           }
@@ -1410,7 +1410,7 @@ export class TypoScriptStreamParserFactory {
 
     function contCommasep(what: CC, end: Type, info?: string, ...rest: CC[]): CombinatorReturnType {
       for (const combinator of rest) {
-        cx.cc.push(combinator);
+        cx.cc!.push(combinator);
       }
       return cont(pushlex(end, info), commasep(what, end), poplex);
     }
@@ -1437,7 +1437,7 @@ export class TypoScriptStreamParserFactory {
     }
 
     function proppattern(type: Type, value: Value): CombinatorReturnType {
-      if (type === 'variable' && !cx.stream.match(/^\s*:/, false)) {
+      if (type === 'variable' && !cx.stream!.match(/^\s*:/, false)) {
         register(value);
         return cont(maybeAssign);
       }

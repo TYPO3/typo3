@@ -51,7 +51,7 @@ class TcaExtTablesCheck extends AbstractInteractableModule {
   private check(): void {
     this.setModalButtonsState(false);
 
-    const outputContainer: HTMLElement = document.querySelector(Identifiers.outputContainer);
+    const outputContainer = document.querySelector<HTMLElement>(Identifiers.outputContainer);
     if (outputContainer !== null) {
       this.renderProgressBar(outputContainer, {}, 'append');
     }
@@ -65,17 +65,17 @@ class TcaExtTablesCheck extends AbstractInteractableModule {
           Modal.setButtons(data.buttons);
           if (data.success === true && Array.isArray(data.status)) {
             if (data.status.length > 0) {
-              modalContent.querySelector(Identifiers.outputContainer).append(InfoBox.create(
+              modalContent.querySelector(Identifiers.outputContainer)!.append(InfoBox.create(
                 Severity.warning,
                 'Following extensions change TCA in ext_tables.php',
                 'Check ext_tables.php files, look for ExtensionManagementUtility calls and $GLOBALS[\'TCA\'] modifications'
               ));
 
               data.status.forEach((element: MessageInterface): void => {
-                modalContent.querySelector(Identifiers.outputContainer).append(InfoBox.create(element.severity, element.title, element.message));
+                modalContent.querySelector(Identifiers.outputContainer)!.append(InfoBox.create(element.severity, element.title, element.message));
               });
             } else {
-              modalContent.querySelector(Identifiers.outputContainer).append(InfoBox.create(Severity.ok, 'No TCA changes in ext_tables.php files. Good job!'));
+              modalContent.querySelector(Identifiers.outputContainer)!.append(InfoBox.create(Severity.ok, 'No TCA changes in ext_tables.php files. Good job!'));
             }
           } else {
             Notification.error('Something went wrong', 'Please use the module "Check for broken extensions" to find a possible extension causing this issue.');

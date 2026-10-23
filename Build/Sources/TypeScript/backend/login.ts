@@ -85,8 +85,8 @@ class BackendLogin {
    * Show the loading spinner in the submit button
    */
   private showLoadingIndicator(): void {
-    const button = document.querySelector<HTMLButtonElement>(this.options.submitButton);
-    button.innerHTML = button.dataset.loadingText;
+    const button = document.querySelector<HTMLButtonElement>(this.options.submitButton)!;
+    button.innerHTML = button.dataset.loadingText!;
   }
 
   /**
@@ -196,7 +196,7 @@ class BackendLogin {
       return;
     }
     new RegularEvent('paste', (event: ClipboardEvent): void => {
-      const text = event.clipboardData.getData('text/plain');
+      const text = event.clipboardData!.getData('text/plain');
       if (PastedPasswordChecker.hasSurroundingWhitespace(text)) {
         this.showWhitespaceAroundPasswordWarning();
       }

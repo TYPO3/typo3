@@ -59,7 +59,7 @@ export class ResultPagination extends LitElement {
         ${this.pagination.hasLessPages ? html`<li class="page-item disabled"><span class="page-link disabled">&hellip;</span></li>` : nothing}
         ${this.pagination.allPageNumbers.map((page) => html`
           <li class="page-item">
-            <typo3-backend-live-search-result-page page="${page}" perPage="${this.pagination.itemsPerPage}" class="page-link ${this.pagination.currentPage === page ? 'active' : ''}">${page}</typo3-backend-live-search-result-page>
+            <typo3-backend-live-search-result-page page="${page}" perPage="${this.pagination!.itemsPerPage}" class="page-link ${this.pagination!.currentPage === page ? 'active' : ''}">${page}</typo3-backend-live-search-result-page>
           </li>
         `)}
         ${this.pagination.hasMorePages ? html`<li class="page-item"><span class="page-link disabled">&hellip;</span></li>` : nothing}
@@ -106,7 +106,7 @@ export class ResultPaginationPage extends LitElement {
   }
 
   private dispatchPaginationEvent(): void {
-    const liveSearchContainer = this.closest('typo3-backend-live-search');
+    const liveSearchContainer = this.closest('typo3-backend-live-search')!;
     liveSearchContainer.dispatchEvent(new CustomEvent<SelectPageEventData>('livesearch:pagination-selected', {
       detail: {
         offset: (this.page - 1) * this.perPage,

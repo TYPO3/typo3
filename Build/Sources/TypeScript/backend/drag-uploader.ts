@@ -122,17 +122,17 @@ export default class DragUploader {
   private dragStartedInDocument: boolean = false;
 
   constructor(element: HTMLElement) {
-    this.body = document.querySelector('body');
+    this.body = document.querySelector('body')!;
     this.element = element;
-    this.trigger = document.querySelector(this.element.dataset.dropzoneTrigger);
+    this.trigger = document.querySelector(this.element.dataset.dropzoneTrigger!);
     this.defaultAction = this.element.dataset.defaultAction as Action || Action.SKIP;
     this.dropzone = document.createElement('div');
     this.dropzone.classList.add('dropzone');
     this.dropzone.setAttribute('hidden', 'hidden');
-    this.irreObjectUid = this.element.dataset.fileIrreObject;
+    this.irreObjectUid = this.element.dataset.fileIrreObject!;
     this.manualTable = this.element.hasAttribute('data-manual-table');
 
-    const dropZoneEscapedTarget = document.querySelector(this.element.dataset.dropzoneTarget);
+    const dropZoneEscapedTarget = document.querySelector(this.element.dataset.dropzoneTarget!)!;
     if (this.irreObjectUid && DomHelper.nextAll(dropZoneEscapedTarget).length !== 0) {
       this.dropZoneInsertBefore = true;
       dropZoneEscapedTarget.before(this.dropzone);
@@ -147,14 +147,14 @@ export default class DragUploader {
     this.fileInput.classList.add('upload-file-picker');
     this.body.append(this.fileInput);
 
-    this.fileList = document.querySelector(this.element.dataset.progressContainer);
+    this.fileList = document.querySelector(this.element.dataset.progressContainer!)!;
     this.fileListColumnCount = this.fileList?.querySelectorAll('thead tr:first-child th').length + 1;
-    this.filesExtensionsAllowed = this.element.dataset.fileAllowed;
-    this.filesExtensionsDisallowed = this.element.dataset.fileDisallowed;
+    this.filesExtensionsAllowed = this.element.dataset.fileAllowed!;
+    this.filesExtensionsDisallowed = this.element.dataset.fileDisallowed!;
     this.fileDenyPattern = this.element.dataset.fileDenyPattern ? new RegExp(this.element.dataset.fileDenyPattern, 'i') : null;
     this.maxFileSize = parseInt(this.element.dataset.maxFileSize ?? '', 10);
-    this.target = this.element.dataset.targetFolder;
-    this.reloadUrl = this.element.dataset.reloadUrl;
+    this.target = this.element.dataset.targetFolder!;
+    this.reloadUrl = this.element.dataset.reloadUrl!;
 
     this.browserCapabilities = {
       fileReader: typeof FileReader !== 'undefined',
@@ -236,7 +236,7 @@ export default class DragUploader {
 
     this.fileInput.addEventListener('change', (event: Event) => {
       this.hideDropzone(event);
-      this.processFiles(this.fileInput.files);
+      this.processFiles(this.fileInput.files!);
     });
 
     // Allow the user to hide the dropzone with the "Escape" key
@@ -301,7 +301,7 @@ export default class DragUploader {
 
     if (this.irreObjectUid !== undefined) {
       // Hide artificial file table in IRRE context
-      this.fileList.parentElement.hidden = true;
+      this.fileList.parentElement!.hidden = true;
     }
     // User manually hides the dropzone, so we can reset the flag
     this.manuallyTriggered = false;
@@ -326,7 +326,7 @@ export default class DragUploader {
       return false;
     }
 
-    if (!event.dataTransfer.types.includes('Files')) {
+    if (!event.dataTransfer!.types.includes('Files')) {
       // Not a file upload (item drag)
       return false;
     }
@@ -366,7 +366,7 @@ export default class DragUploader {
   public handleDrop = (event: DragEvent): void => {
     this.ignoreDrop(event);
     this.hideDropzone(event);
-    this.processFiles(event.dataTransfer.files);
+    this.processFiles(event.dataTransfer!.files);
   };
 
   /**
@@ -392,9 +392,9 @@ export default class DragUploader {
     this.queueLength = validFiles.length;
     this.hasSucceededUpload = false;
 
-    if (this.fileList.parentElement.hasAttribute('hidden')) {
+    if (this.fileList.parentElement!.hasAttribute('hidden')) {
       // Show the filelist (table)
-      this.fileList.parentElement.removeAttribute('hidden');
+      this.fileList.parentElement!.removeAttribute('hidden');
       // Remove hidden state from table container (also makes column selection etc. visible)
       this.fileList.closest('.t3-filelist-container')?.classList.remove('hidden');
       // Hide the information container
@@ -479,7 +479,7 @@ export default class DragUploader {
 
         const timeout: number = messages && messages.length ? 5000 : 0;
         if (timeout) {
-          for (const flashMessage of messages) {
+          for (const flashMessage of messages!) {
             Notification.showMessage(flashMessage.title, flashMessage.message, flashMessage.severity);
           }
         }
@@ -584,7 +584,7 @@ export default class DragUploader {
       additionalCssClasses: ['modal-inner-scroll'],
       size: ModalSizes.large,
       callback: (modal: ModalElement): void => {
-        const modalFooter = modal.querySelector('.modal-footer');
+        const modalFooter = modal.querySelector('.modal-footer')!;
 
         const allActionLabel = document.createElement('label');
         allActionLabel.textContent = coreLabels.get('file_upload.actions.all.label');
@@ -665,7 +665,7 @@ export default class DragUploader {
         '0': file.name,
       });
     }
-    const extension = file.name.split('.').pop().toLowerCase();
+    const extension = file.name.split('.').pop()!.toLowerCase();
     if (this.maxFileSize > 0 && file.size > this.maxFileSize) {
       return coreLabels.get('file_upload.maxFileSizeExceeded', {
         '0': file.name,
@@ -752,10 +752,10 @@ class FileQueueItem {
 
     // position queue item in filelist
     if (this.dragUploader.fileList.querySelectorAll('tbody tr.upload-queue-item').length === 0) {
-      this.dragUploader.fileList.querySelector('tbody').prepend(this.row);
+      this.dragUploader.fileList.querySelector('tbody')!.prepend(this.row);
       this.row.classList.add('last');
     } else {
-      this.dragUploader.fileList.querySelector('tbody tr.upload-queue-item:first-child').before(this.row);
+      this.dragUploader.fileList.querySelector('tbody tr.upload-queue-item:first-child')!.before(this.row);
     }
 
     // Set a disabled checkbox to the selector column, if available
@@ -912,7 +912,7 @@ class FileQueueItem {
       } else {
         setTimeout(
           () => {
-            this.showFileInfo(data.upload[0]);
+            this.showFileInfo(data.upload![0]);
             this.dragUploader.trigger?.dispatchEvent(new CustomEvent('uploadSuccess', { detail: [this, data] }));
           },
           3000);

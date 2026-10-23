@@ -45,7 +45,7 @@ export interface PageWizardContext {
 
 @customElement('typo3-backend-page-wizard')
 export class PageWizard extends LitElement {
-  @property({ type: Object }) configuration?: PageWizardConfiguration = null;
+  @property({ type: Object }) configuration?: PageWizardConfiguration = null!;
 
   @state() steps: WizardStepInterface[] = [];
   @state() submissionService: SubmissionServiceInterface;

@@ -58,7 +58,7 @@ export class ValueSlider extends HTMLElement {
    * @param {HTMLInputElement} element
    */
   private updateValue(element: HTMLInputElement): void {
-    const foreignField = document.querySelector<HTMLInputElement>(this.getAttribute('linked-field'));
+    const foreignField = document.querySelector<HTMLInputElement>(this.getAttribute('linked-field')!)!;
     foreignField.value = element.value;
     foreignField.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
   }

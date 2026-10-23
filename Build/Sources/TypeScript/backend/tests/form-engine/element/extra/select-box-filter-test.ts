@@ -31,7 +31,7 @@ describe('@typo3/backend/form-engine/element/extra/select-box-filter', () => {
         <select multiple>${selectContent}</select>
       </div>`;
     document.body.appendChild(root);
-    new SelectBoxFilter(root.querySelector('select[multiple]'));
+    new SelectBoxFilter(root.querySelector('select[multiple]')!);
   };
 
   afterEach((): void => {
@@ -51,7 +51,7 @@ describe('@typo3/backend/form-engine/element/extra/select-box-filter', () => {
   describe('text field', () => {
     beforeEach((): void => {
       mount(options(optionLabels));
-      filterField = root.querySelector('.t3js-formengine-multiselect-filter-textfield');
+      filterField = root.querySelector('.t3js-formengine-multiselect-filter-textfield')!;
     });
 
     it('shows all options for an empty filter', (): void => {
@@ -95,7 +95,7 @@ describe('@typo3/backend/form-engine/element/extra/select-box-filter', () => {
 
     beforeEach((): void => {
       mount(options(labels));
-      filterField = root.querySelector('.t3js-formengine-multiselect-filter-textfield');
+      filterField = root.querySelector('.t3js-formengine-multiselect-filter-textfield')!;
     });
 
     it('finds the sharp s when it is typed as a double s', (): void => {
@@ -132,7 +132,7 @@ describe('@typo3/backend/form-engine/element/extra/select-box-filter', () => {
 
     beforeEach((): void => {
       mount(options(labels));
-      filterField = root.querySelector('.t3js-formengine-multiselect-filter-textfield');
+      filterField = root.querySelector('.t3js-formengine-multiselect-filter-textfield')!;
     });
 
     it('matches across a no-break space when a plain space is typed', (): void => {
@@ -159,7 +159,7 @@ describe('@typo3/backend/form-engine/element/extra/select-box-filter', () => {
 
     beforeEach((): void => {
       mount(options(labels));
-      filterField = root.querySelector('.t3js-formengine-multiselect-filter-textfield');
+      filterField = root.querySelector('.t3js-formengine-multiselect-filter-textfield')!;
     });
 
     it('keeps Thai vowel signs, so the filter still narrows', (): void => {
@@ -177,7 +177,7 @@ describe('@typo3/backend/form-engine/element/extra/select-box-filter', () => {
           <option value="creme">creme</option>
         </select>`
       );
-      filterField = root.querySelector('.t3js-formengine-multiselect-filter-dropdown');
+      filterField = root.querySelector('.t3js-formengine-multiselect-filter-dropdown')!;
     });
 
     it('applies a predefined filter value on change', (): void => {
@@ -192,7 +192,7 @@ describe('@typo3/backend/form-engine/element/extra/select-box-filter', () => {
       mount(`
         <optgroup label="Desserts">${options(['Crème brûlée', 'Tiramisu'])}</optgroup>
         <optgroup label="Namen">${options(['Müller'])}</optgroup>`);
-      filterField = root.querySelector('.t3js-formengine-multiselect-filter-textfield');
+      filterField = root.querySelector('.t3js-formengine-multiselect-filter-textfield')!;
     });
 
     const visibleGroups = (): string[] => Array

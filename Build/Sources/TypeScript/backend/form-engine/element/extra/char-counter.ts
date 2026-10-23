@@ -91,7 +91,7 @@ export class CharCounter extends LitElement {
     const currentFieldLength = fieldText.length;
     const numberOfLineBreaks = (fieldText.match(/\n/g) || []).length;
 
-    this.remainingCharacters = this.targetElement.maxLength - currentFieldLength - numberOfLineBreaks;
+    this.remainingCharacters = this.targetElement!.maxLength - currentFieldLength - numberOfLineBreaks;
   }
 
   private determineCounterClass(): string {

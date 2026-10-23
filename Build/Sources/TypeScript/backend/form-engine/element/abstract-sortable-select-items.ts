@@ -73,7 +73,7 @@ export abstract class AbstractSortableSelectItems {
         break;
       }
 
-      fieldElement.insertBefore(optionEl, optionEl.nextElementSibling.nextElementSibling);
+      fieldElement.insertBefore(optionEl, optionEl.nextElementSibling!.nextElementSibling);
     }
   }
 
@@ -105,13 +105,13 @@ export abstract class AbstractSortableSelectItems {
   protected registerSortableEventHandler = (fieldElement: HTMLSelectElement): void => {
     this.registerKeyboardEventHandler(fieldElement);
 
-    const aside = fieldElement.closest('.form-wizards-wrap').querySelector('.form-wizards-item-aside');
+    const aside = fieldElement.closest('.form-wizards-wrap')!.querySelector('.form-wizards-item-aside');
     if (aside === null) {
       return;
     }
 
     aside.addEventListener('click', (e: Event): void => {
-      const target = (<Element>e.target).closest<HTMLButtonElement>('.t3js-btn-option');
+      const target = (<Element>e.target).closest<HTMLButtonElement>('.t3js-btn-option')!;
       if (target === null) {
         return;
       }

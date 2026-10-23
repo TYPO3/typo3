@@ -74,7 +74,7 @@ export class TreeNodeMap<T extends TreeNodeInterface = TreeNodeInterface> {
   }
 
   public splice(start: number, deleteCount?: number, ...items: T[]) {
-    this.treeNodes.splice(start, deleteCount, ...items);
+    this.treeNodes.splice(start, deleteCount!, ...items);
     this.updateIndexes();
   }
 
@@ -107,7 +107,7 @@ export class TreeFilterResetEvent extends Event {
 }
 
 export class Tree extends LitElement {
-  @property({ type: Object }) setup?: {[keys: string]: any} = null;
+  @property({ type: Object }) setup?: {[keys: string]: any} = null!;
   @state() settings: TreeSettings = {
     showIcons: false,
     width: 300,
@@ -301,7 +301,7 @@ export class Tree extends LitElement {
 
   public getIdentifier(): string
   {
-    return this.id ?? this.setup.id;
+    return this.id ?? this.setup!.id;
   }
 
   public getLocalStorageIdentifier(): string
@@ -310,14 +310,14 @@ export class Tree extends LitElement {
   }
 
   public getNodeStatus(node: TreeNodeInterface): TreeNodeStatus {
-    const treeState = JSON.parse(ClientStorage.get(this.getLocalStorageIdentifier())) ?? {};
+    const treeState = JSON.parse(ClientStorage.get(this.getLocalStorageIdentifier())!) ?? {};
     return treeState[node.__treeIdentifier] ?? {
       expanded: false
     };
   }
 
   public saveNodeStatus(node: TreeNodeInterface): void {
-    const treeState = JSON.parse(ClientStorage.get(this.getLocalStorageIdentifier())) ?? {};
+    const treeState = JSON.parse(ClientStorage.get(this.getLocalStorageIdentifier())!) ?? {};
     treeState[node.__treeIdentifier] = {
       expanded: node.__expanded
     };
@@ -334,8 +334,8 @@ export class Tree extends LitElement {
 
   public selectFirstNode(): void {
     const firstNode = this.getFirstNode();
-    this.selectNode(firstNode, true);
-    this.focusNode(firstNode);
+    this.selectNode(firstNode!, true);
+    this.focusNode(firstNode!);
   }
 
   /**
@@ -365,7 +365,7 @@ export class Tree extends LitElement {
       element.focus();
     } else {
       this.updateComplete.then(() => {
-        this.getElementFromNode(this.focusedNode)?.focus();
+        this.getElementFromNode(this.focusedNode!)?.focus();
       });
     }
   }
@@ -375,7 +375,7 @@ export class Tree extends LitElement {
       this.editingNode = node;
       this.requestUpdate();
       this.updateComplete.then(() => {
-        const inputField = this.getElementFromNode(this.editingNode)?.querySelector<HTMLInputElement>('.node-edit');
+        const inputField = this.getElementFromNode(this.editingNode!)?.querySelector<HTMLInputElement>('.node-edit');
         if (inputField) {
           inputField.focus();
           inputField.select();
@@ -413,7 +413,7 @@ export class Tree extends LitElement {
   public async addNode(node: TreeNodeInterface, target: TreeNodeInterface, position: TreeNodePositionEnum) {
     let index = this.nodes.indexOf(target);
     const parentNode = position === TreeNodePositionEnum.INSIDE ? target : this.getParentNode(target);
-    const newNode = this.enhanceNodes([parentNode, {
+    const newNode = this.enhanceNodes([parentNode!, {
       ...node,
       depth: parentNode ? parentNode.depth + 1 : 0,
     }]).pop();
@@ -441,8 +441,8 @@ export class Tree extends LitElement {
       index = i;
     }
 
-    this.nodeMap.splice(index, 0, newNode);
-    this.handleNodeAdd(newNode, target, position);
+    this.nodeMap.splice(index, 0, newNode!);
+    this.handleNodeAdd(newNode!, target, position);
   }
 
   public async removeNode(node: TreeNodeInterface) {
@@ -723,7 +723,7 @@ export class Tree extends LitElement {
   protected renderVisibleNodes(): TemplateResult {
     this.displayNodes = this.nodes.filter(node => (
       node.__hidden !== true &&
-      !node.__treeParents.some(parentTreeIdentifier => this.getNodeByTreeIdentifier(parentTreeIdentifier).__expanded === false)
+      !node.__treeParents.some(parentTreeIdentifier => this.getNodeByTreeIdentifier(parentTreeIdentifier)!.__expanded === false)
     ));
     this.displayNodes.forEach((node, i) => {
       node.__x = node.depth * this.indentWidth;
@@ -857,7 +857,7 @@ export class Tree extends LitElement {
 
   protected getNodeFromDragEvent(event: DragEvent): TreeNodeInterface|null {
     const target = event.target as HTMLElement;
-    return this.getNodeFromElement(target.closest('[data-tree-id]'));
+    return this.getNodeFromElement(target.closest('[data-tree-id]')!);
   }
 
   protected getTooltipDescription(node: TreeNodeInterface): string {
@@ -874,7 +874,7 @@ export class Tree extends LitElement {
     this.draggingNode = node;
     this.requestUpdate();
 
-    event.dataTransfer.clearData();
+    event.dataTransfer!.clearData();
 
     const metadata: DragTooltipMetadata = {
       statusIconIdentifier: this.getNodeDragStatusIcon(),
@@ -882,12 +882,12 @@ export class Tree extends LitElement {
       tooltipLabel: node.name,
       tooltipDescription: this.getTooltipDescription(node),
     };
-    event.dataTransfer.setData(DataTransferTypes.dragTooltip, JSON.stringify(metadata));
+    event.dataTransfer!.setData(DataTransferTypes.dragTooltip, JSON.stringify(metadata));
 
     this.createDataTransferItemsFromNode(node).forEach(
-      ({ data, type }) => event.dataTransfer.items.add(data, type)
+      ({ data, type }) => event.dataTransfer!.items.add(data, type)
     );
-    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer!.effectAllowed = 'move';
   }
 
   /**
@@ -895,8 +895,8 @@ export class Tree extends LitElement {
    */
   protected handleNodeDragOver(event: DragEvent): boolean {
     if (
-      !event.dataTransfer.types.includes(DataTransferTypes.treenode) &&
-      !event.dataTransfer.types.includes(DataTransferTypes.newTreenode)) {
+      !event.dataTransfer!.types.includes(DataTransferTypes.treenode) &&
+      !event.dataTransfer!.types.includes(DataTransferTypes.newTreenode)) {
       return false;
     }
     // Find the current hovered node
@@ -920,22 +920,22 @@ export class Tree extends LitElement {
     // element, during the drag the default mouse over
     // is disabled by the browser
     const hoverElement = this.getElementFromNode(targetNode);
-    hoverElement.classList.add('node-hover');
+    hoverElement!.classList.add('node-hover');
 
     // Open node with children while holding the
     // node/element over this node for 1 second
     if (targetNode.hasChildren && !targetNode.__expanded) {
       if (this.openNodeTimeout.targetNode != targetNode) {
         this.openNodeTimeout.targetNode = targetNode;
-        clearTimeout(this.openNodeTimeout.timeout);
+        clearTimeout(this.openNodeTimeout.timeout!);
         this.openNodeTimeout.timeout = setTimeout(() => {
-          this.showChildren(this.openNodeTimeout.targetNode);
+          this.showChildren(this.openNodeTimeout.targetNode!);
           this.openNodeTimeout.targetNode = null;
           this.openNodeTimeout.timeout = null;
         }, 1000);
       }
     } else {
-      clearTimeout(this.openNodeTimeout.timeout);
+      clearTimeout(this.openNodeTimeout.timeout!);
       this.openNodeTimeout.targetNode = null;
       this.openNodeTimeout.timeout = null;
     }
@@ -967,7 +967,7 @@ export class Tree extends LitElement {
     // Set the dragmode to new when a new node
     // exists in the datatransfer.
     this.nodeDragMode = TreeNodeCommandEnum.MOVE;
-    if (event.dataTransfer.types.includes(DataTransferTypes.newTreenode)) {
+    if (event.dataTransfer!.types.includes(DataTransferTypes.newTreenode)) {
       this.nodeDragMode = TreeNodeCommandEnum.NEW;
     }
 
@@ -992,14 +992,14 @@ export class Tree extends LitElement {
     // the targetnode when it has no children and the node
     // is not expanded.
     const targetElement = this.getElementFromNode(targetNode);
-    const targetBounding = targetElement.getBoundingClientRect();
+    const targetBounding = targetElement!.getBoundingClientRect();
     const targetHoverOffset = event.clientY - targetBounding.y;
     if (targetHoverOffset < 6) {
       this.nodeDragPosition = TreeNodePositionEnum.BEFORE;
-      hoverElement.classList.add('node-dragging-before');
+      hoverElement!.classList.add('node-dragging-before');
     } else if ((this.nodeHeight - targetHoverOffset) < 6 && targetNode.hasChildren === false && targetNode.__expanded === false) {
       this.nodeDragPosition = TreeNodePositionEnum.AFTER;
-      hoverElement.classList.add('node-dragging-after');
+      hoverElement!.classList.add('node-dragging-after');
     }
 
     this.refreshDragToolTip();
@@ -1024,13 +1024,13 @@ export class Tree extends LitElement {
   protected handleNodeDrop(event: DragEvent): boolean {
     this.cleanDrag();
 
-    if (event.dataTransfer.types.includes(DataTransferTypes.treenode)) {
+    if (event.dataTransfer!.types.includes(DataTransferTypes.treenode)) {
       event.preventDefault();
-      const identifier = event.dataTransfer.getData(DataTransferTypes.treenode);
+      const identifier = event.dataTransfer!.getData(DataTransferTypes.treenode);
       const node = this.getNodeByTreeIdentifier(identifier);
       // delete
       if (this.nodeDragMode === TreeNodeCommandEnum.DELETE) {
-        this.deleteNode(node);
+        this.deleteNode(node!);
       }
       const targetNode = this.getNodeFromDragEvent(event);
       if (targetNode === null) {
@@ -1039,7 +1039,7 @@ export class Tree extends LitElement {
 
       // move
       if (this.nodeDragMode === TreeNodeCommandEnum.MOVE) {
-        this.moveNode(node, targetNode, this.nodeDragPosition);
+        this.moveNode(node!, targetNode, this.nodeDragPosition!);
       }
 
       this.nodeDragMode = null;
@@ -1047,13 +1047,13 @@ export class Tree extends LitElement {
       return true;
     }
 
-    if (event.dataTransfer.types.includes(DataTransferTypes.newTreenode)) {
+    if (event.dataTransfer!.types.includes(DataTransferTypes.newTreenode)) {
       event.preventDefault();
       let targetNode = this.getNodeFromDragEvent(event);
       if (targetNode === null) {
         return false;
       }
-      const newNodeData: { doktype: string } = JSON.parse(event.dataTransfer.getData(DataTransferTypes.newTreenode));
+      const newNodeData: { doktype: string } = JSON.parse(event.dataTransfer!.getData(DataTransferTypes.newTreenode));
 
       let insertPosition: Position = 'inside';
       if (this.nodeDragPosition === TreeNodePositionEnum.AFTER) {
@@ -1061,14 +1061,14 @@ export class Tree extends LitElement {
       } else if (this.nodeDragPosition === TreeNodePositionEnum.BEFORE) {
         // convert 'before' to 'inside' or 'after'
         const previousNode = this.getPreviousNode(targetNode);
-        insertPosition = previousNode.depth == targetNode.depth ? 'after' : 'inside';
+        insertPosition = previousNode!.depth == targetNode.depth ? 'after' : 'inside';
         targetNode = previousNode;
       }
 
       openPageWizardModal({
         doktype: String(newNodeData.doktype),
         positionData: {
-          pageUid: parseInt(targetNode.identifier, 10),
+          pageUid: parseInt(targetNode!.identifier, 10),
           insertPosition: insertPosition
         }
       });
@@ -1113,15 +1113,15 @@ export class Tree extends LitElement {
     const guides = node.__treeParents.map((treeIdentifier) => {
       const parentNode = this.getNodeByTreeIdentifier(treeIdentifier);
       let className: string = 'none';
-      if (this.getNodeSetsize(parentNode) !== this.getNodePositionInSet(parentNode)) {
+      if (this.getNodeSetsize(parentNode!) !== this.getNodePositionInSet(parentNode!)) {
         className = 'line';
       }
       return html`
         <div
           class="node-treeline node-treeline--${className}"
-          data-origin="${this.getNodeTreeIdentifier(parentNode)}"
-          data-nodesize="${this.getNodeSetsize(parentNode)}"
-          data-position="${this.getNodePositionInSet(parentNode)}"
+          data-origin="${this.getNodeTreeIdentifier(parentNode!)}"
+          data-nodesize="${this.getNodeSetsize(parentNode!)}"
+          data-position="${this.getNodePositionInSet(parentNode!)}"
           >
         </div>
       `;
@@ -1439,7 +1439,7 @@ export class Tree extends LitElement {
       return this.displayNodes.filter((node) => node.depth === 0).length;
     }
     const parentNode = this.getParentNode(node);
-    const childNodes = this.getNodeChildren(parentNode);
+    const childNodes = this.getNodeChildren(parentNode!);
 
     return childNodes.length;
   }

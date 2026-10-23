@@ -23,11 +23,11 @@ class BrowseDatabase {
   constructor() {
     new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
       evt.preventDefault();
-      const data = targetEl.closest('span').dataset;
+      const data = targetEl.closest('span')!.dataset;
       ElementBrowser.insertElement(
-        data.table,
-        data.uid,
-        data.title,
+        data.table!,
+        data.uid!,
+        data.title!,
         '',
         parseInt(targetEl.dataset.close || '0', 10) === 1,
       );

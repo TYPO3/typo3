@@ -57,10 +57,10 @@ class MfaInfoElement {
     this.options = options;
     DocumentService.ready().then((document: Document): void => {
       this.fullElement = document.querySelector(selector);
-      this.deactivteProviderButtons = this.fullElement.querySelectorAll(Selectors.deactivteProviderButton);
-      this.deactivteMfaButton = this.fullElement.querySelector(Selectors.deactivteMfaButton);
-      this.providersList = this.fullElement.querySelector(Selectors.providerslist);
-      this.mfaStatusLabel = this.fullElement.parentElement.querySelector(Selectors.mfaStatusLabel);
+      this.deactivteProviderButtons = this.fullElement!.querySelectorAll(Selectors.deactivteProviderButton);
+      this.deactivteMfaButton = this.fullElement!.querySelector(Selectors.deactivteMfaButton);
+      this.providersList = this.fullElement!.querySelector(Selectors.providerslist);
+      this.mfaStatusLabel = this.fullElement!.parentElement!.querySelector(Selectors.mfaStatusLabel);
       this.registerEvents();
     });
   }
@@ -68,10 +68,10 @@ class MfaInfoElement {
   private registerEvents(): void {
     new RegularEvent('click', (e: Event): void => {
       e.preventDefault();
-      this.prepareDeactivateRequest(this.deactivteMfaButton);
-    }).bindTo(this.deactivteMfaButton);
+      this.prepareDeactivateRequest(this.deactivteMfaButton!);
+    }).bindTo(this.deactivteMfaButton!);
 
-    this.deactivteProviderButtons.forEach((buttonElement): void => {
+    this.deactivteProviderButtons!.forEach((buttonElement): void => {
       new RegularEvent('click', (e: Event): void => {
         e.preventDefault();
         this.prepareDeactivateRequest(buttonElement);
@@ -115,8 +115,8 @@ class MfaInfoElement {
     this.request.post({
       action: 'deactivate',
       provider: provider,
-      userId: this.options.userId,
-      tableName: this.options.tableName
+      userId: this.options!.userId,
+      tableName: this.options!.tableName
     }).then(async (response: AjaxResponse): Promise<void> => {
       const data: Response = await response.resolve();
       if (data.status.length > 0) {
@@ -138,7 +138,7 @@ class MfaInfoElement {
       if (this.providersList === null) {
         return;
       }
-      const providerEntry = this.providersList.querySelector<HTMLLIElement>(selector`li#provider-${provider}`);
+      const providerEntry = this.providersList.querySelector<HTMLLIElement>(selector`li#provider-${provider}`)!;
       if (providerEntry === null) {
         return;
       }
@@ -153,13 +153,13 @@ class MfaInfoElement {
   }
 
   private deactivateMfa(): void {
-    this.deactivteMfaButton.classList.add('disabled');
-    this.deactivteMfaButton.setAttribute('disabled', 'disabled');
+    this.deactivteMfaButton!.classList.add('disabled');
+    this.deactivteMfaButton!.setAttribute('disabled', 'disabled');
     if (this.providersList !== null) {
       this.providersList.remove();
     }
     if (this.mfaStatusLabel !== null) {
-      this.mfaStatusLabel.innerText = this.mfaStatusLabel.dataset.alternativeLabel;
+      this.mfaStatusLabel.innerText = this.mfaStatusLabel.dataset.alternativeLabel!;
       this.mfaStatusLabel.classList.remove('badge-success');
       this.mfaStatusLabel.classList.add('badge-danger');
     }

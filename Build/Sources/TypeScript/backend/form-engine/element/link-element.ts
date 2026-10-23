@@ -57,19 +57,19 @@ class LinkElement extends HTMLElement {
   }
 
   private get container(): HTMLElement {
-    return this.element.closest<HTMLElement>(Selectors.containerSelector);
+    return this.element.closest<HTMLElement>(Selectors.containerSelector)!;
   }
 
   private get toggleSelector(): HTMLButtonElement {
-    return this.container.querySelector<HTMLButtonElement>(Selectors.toggleSelector);
+    return this.container.querySelector<HTMLButtonElement>(Selectors.toggleSelector)!;
   }
 
   private get explanationField(): HTMLInputElement {
-    return this.container.querySelector<HTMLInputElement>(Selectors.explanationSelector);
+    return this.container.querySelector<HTMLInputElement>(Selectors.explanationSelector)!;
   }
 
   private get icon(): HTMLSpanElement {
-    return this.container.querySelector<HTMLSpanElement>(Selectors.iconSelector);
+    return this.container.querySelector<HTMLSpanElement>(Selectors.iconSelector)!;
   }
 
   private handleClick(e: Event): void {

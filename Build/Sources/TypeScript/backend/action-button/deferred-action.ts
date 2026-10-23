@@ -30,7 +30,7 @@ class DeferredAction extends AbstractAction {
 
   private async executeCallback(el: HTMLElement): Promise<void> {
     return await Promise.resolve(this.callback()).finally(() => {
-      el.innerText = el.dataset.actionLabel;
+      el.innerText = el.dataset.actionLabel!;
       el.classList.remove('disabled');
     });
   }

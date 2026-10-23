@@ -48,7 +48,7 @@ export default (function() {
     if (!typoLink) {
       return;
     }
-    window.frameElement.dispatchEvent(new FormEngineLinkBrowserSetLinkEvent(
+    window.frameElement!.dispatchEvent(new FormEngineLinkBrowserSetLinkEvent(
       typoLink,
       FormEngineLinkBrowserAdapter.onFieldChangeItems,
     ));

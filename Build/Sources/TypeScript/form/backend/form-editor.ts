@@ -138,7 +138,7 @@ export class FormEditor {
     if (this.getUtility().isUndefinedOrNull(_formElement)) {
       _formElement = this.getCurrentlySelectedFormElement();
     }
-    const formElement = this.getRepository().findFormElement(_formElement);
+    const formElement = this.getRepository().findFormElement(_formElement!);
     return this.getUtility().buildPropertyPath(
       propertyPath,
       collectionElementIdentifier,
@@ -187,7 +187,7 @@ export class FormEditor {
     returnAfterFirstMatch?: boolean
   ): ValidationResultsRecursive {
     const formElement = this.getRepository().findFormElement(_formElement);
-    return this.getPropertyValidationService().validateFormElementRecursive(formElement, returnAfterFirstMatch);
+    return this.getPropertyValidationService().validateFormElementRecursive(formElement, returnAfterFirstMatch!);
   }
 
   /**
@@ -207,7 +207,7 @@ export class FormEditor {
   }
 
   public getCurrentlySelectedFormElement(): FormElement {
-    return this.getRepository().findFormElementByIdentifierPath(this.getApplicationStateStack().getCurrentState('currentlySelectedFormElementIdentifierPath'));
+    return this.getRepository().findFormElementByIdentifierPath(this.getApplicationStateStack().getCurrentState('currentlySelectedFormElementIdentifierPath')!);
   }
 
   /**
@@ -246,7 +246,7 @@ export class FormEditor {
     disablePublishersOnSet?: boolean
   ): FormElement {
     const formElement = this.addFormElement(
-      this.createFormElement(formElementType, disablePublishersOnSet),
+      this.createFormElement(formElementType, disablePublishersOnSet!),
       referenceFormElement,
       disablePublishersOnSet
     );
@@ -267,9 +267,9 @@ export class FormEditor {
     if (this.getUtility().isUndefinedOrNull(_referenceFormElement)) {
       _referenceFormElement = this.getCurrentlySelectedFormElement();
     }
-    const referenceFormElement = this.getRepository().findFormElement(_referenceFormElement);
+    const referenceFormElement = this.getRepository().findFormElement(_referenceFormElement!);
     assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1475434337);
-    return this.getRepository().addFormElement(formElement, referenceFormElement, true, disablePublishersOnSet);
+    return this.getRepository().addFormElement(formElement, referenceFormElement, true, disablePublishersOnSet!);
   }
 
   /**
@@ -341,18 +341,18 @@ export class FormEditor {
     if (this.getUtility().isUndefinedOrNull(_formElement)) {
       _formElement = this.getCurrentlySelectedFormElement();
     }
-    const formElement = this.getRepository().findFormElement(_formElement);
+    const formElement = this.getRepository().findFormElement(_formElement!);
 
     assert(this.getUtility().isNonEmptyString(collectionElementIdentifier), 'Invalid parameter "collectionElementIdentifier"', 1475378555);
     assert(this.getUtility().isNonEmptyString(collectionName), 'Invalid parameter "collectionName"', 1475378556);
 
     const formElementDefinition = this.getFormElementDefinitionByType(formElement.get('type'), undefined);
     if (!this.getUtility().isUndefinedOrNull(formElementDefinition.propertyCollections)) {
-      collection = formElementDefinition.propertyCollections[collectionName];
+      collection = formElementDefinition.propertyCollections![collectionName];
       assert(!this.getUtility().isUndefinedOrNull(collection), 'Invalid collection name "' + collectionName + '"', 1475446108);
       collectionElement = this.getRepository().findCollectionElementByIdentifierPath(collectionElementIdentifier, collection);
       // Return a dereferenced object
-      return cloneDeep(collectionElement);
+      return cloneDeep(collectionElement)!;
     } else {
       return {} as CollectionEntry;
     }
@@ -370,7 +370,7 @@ export class FormEditor {
     if (this.getUtility().isUndefinedOrNull(_formElement)) {
       _formElement = this.getCurrentlySelectedFormElement();
     }
-    const formElement = this.getRepository().findFormElement(_formElement);
+    const formElement = this.getRepository().findFormElement(_formElement!);
 
     assert(this.getUtility().isNonEmptyString(collectionElementIdentifier), 'Invalid parameter "collectionElementIdentifier"', 1475378557);
     assert(this.getUtility().isNonEmptyString(collectionName), 'Invalid parameter "collectionName"', 1475378558);
@@ -419,7 +419,7 @@ export class FormEditor {
     if (this.getUtility().isUndefinedOrNull(_formElement)) {
       _formElement = this.getCurrentlySelectedFormElement();
     }
-    const formElement = this.getRepository().findFormElement(_formElement);
+    const formElement = this.getRepository().findFormElement(_formElement!);
 
     assert(typeof collectionElement === 'object' && collectionElement !== null && !Array.isArray(collectionElement), 'Invalid parameter "collectionElement"', 1475443301);
     assert(this.getUtility().isNonEmptyString(collectionName), 'Invalid parameter "collectionName"', 1475443300);
@@ -477,7 +477,7 @@ export class FormEditor {
     if (this.getUtility().isUndefinedOrNull(_formElement)) {
       _formElement = this.getCurrentlySelectedFormElement();
     }
-    const formElement = this.getRepository().findFormElement(_formElement);
+    const formElement = this.getRepository().findFormElement(_formElement!);
 
     assert(this.getUtility().isNonEmptyString(collectionElementIdentifier), 'Invalid parameter "collectionElementIdentifier"', 1475378561);
     assert(this.getUtility().isNonEmptyString(collectionName), 'Invalid parameter "collectionName"', 1475378562);
@@ -518,7 +518,7 @@ export class FormEditor {
     assert('after' === position || 'before' === position, 'Invalid position "' + position + '"', 1477404354);
     assert(this.getUtility().isNonEmptyString(collectionName), 'Invalid parameter "collectionName"', 1477404355);
 
-    this.getRepository().movePropertyCollectionElement(collectionElementToMove, position, referenceCollectionElement, collectionName, formElement, disablePublishersOnSet);
+    this.getRepository().movePropertyCollectionElement(collectionElementToMove, position, referenceCollectionElement, collectionName, formElement, disablePublishersOnSet!);
   }
 
   /**
@@ -575,7 +575,7 @@ export class FormEditor {
   }
 
   public getCurrentlySelectedPageIndex(): number {
-    return this.getApplicationStateStack().getCurrentState('currentlySelectedPageIndex');
+    return this.getApplicationStateStack().getCurrentState('currentlySelectedPageIndex')!;
   }
 
   public refreshCurrentlySelectedPageIndex(): void {
@@ -696,9 +696,9 @@ export class FormEditor {
 
   private saveApplicationState(): void {
     this.getApplicationStateStack().addAndReset({
-      formDefinition: this.getApplicationStateStack().getCurrentState('formDefinition').clone(),
-      currentlySelectedPageIndex: this.getApplicationStateStack().getCurrentState('currentlySelectedPageIndex'),
-      currentlySelectedFormElementIdentifierPath: this.getApplicationStateStack().getCurrentState('currentlySelectedFormElementIdentifierPath')
+      formDefinition: this.getApplicationStateStack().getCurrentState('formDefinition')!.clone(),
+      currentlySelectedPageIndex: this.getApplicationStateStack().getCurrentState('currentlySelectedPageIndex')!,
+      currentlySelectedFormElementIdentifierPath: this.getApplicationStateStack().getCurrentState('currentlySelectedFormElementIdentifierPath')!
     });
   }
 
@@ -755,7 +755,7 @@ export class FormEditor {
     if (this.getUtility().isUndefinedOrNull(additionalViewModelModules)) {
       additionalViewModelModules = [];
     }
-    this.viewModel.bootstrap(formEditorInstance, additionalViewModelModules);
+    this.viewModel.bootstrap(formEditorInstance!, additionalViewModelModules);
   }
 
   /**
@@ -763,7 +763,7 @@ export class FormEditor {
    */
   private mediatorSetup(): void {
     assert(typeof this.mediator.bootstrap === 'function', 'The mediator does not implement the method "bootstrap"', 1475492032);
-    this.mediator.bootstrap(formEditorInstance, this.viewModel);
+    this.mediator.bootstrap(formEditorInstance!, this.viewModel);
   }
 
   /**

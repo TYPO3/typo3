@@ -169,7 +169,7 @@ export class SettingsEditorElement extends LitElement {
         (entries) => {
           entries.forEach(entry => {
             const key = (entry.target as HTMLElement).dataset.key;
-            this.visibleCategories[key] = entry.isIntersecting;
+            this.visibleCategories[key!] = entry.isIntersecting;
           });
           const flatten = (list: Category[]): string[] => list.reduce<string[]>((acc, c) => [...acc, c.key, ...flatten(c.categories ?? [])], []);
           const active = flatten(this.categories).filter(key => this.visibleCategories[key])[0] || '';
@@ -198,9 +198,9 @@ export class SettingsEditorElement extends LitElement {
         const nodeFitsTop = activeElement.offsetTop >= currentScrollPosition;
         const nodeFitsBottom = activeElement.offsetTop + nodeHeight <= currentScrollPosition + containerHeight;
         if (!nodeFitsTop) {
-          this.querySelector('.settings-navigation-inner').scrollTo({ top: Math.max(0, activeElement.offsetTop - nodeHeight), behavior: 'auto' });
+          this.querySelector('.settings-navigation-inner')!.scrollTo({ top: Math.max(0, activeElement.offsetTop - nodeHeight), behavior: 'auto' });
         } else if (!nodeFitsBottom) {
-          this.querySelector('.settings-navigation-inner').scrollTo({ top: Math.max(0, activeElement.offsetTop + nodeHeight), behavior: 'auto' });
+          this.querySelector('.settings-navigation-inner')!.scrollTo({ top: Math.max(0, activeElement.offsetTop + nodeHeight), behavior: 'auto' });
         }
       }
     }
@@ -275,10 +275,10 @@ export class SettingsEditorElement extends LitElement {
 
   protected selectCategory(category: FilteredCategory): void {
     const targetSelector = `#category-headline-${category.key}`;
-    const target = (this.renderRoot.querySelector<HTMLElement>(targetSelector.replaceAll('.', '\\.')));
+    const target = (this.renderRoot.querySelector<HTMLElement>(targetSelector.replaceAll('.', '\\.'))!);
     const scrollableParent = DomHelper.scrollableParent(this);
-    const searchOffset = (this.renderRoot.querySelector<HTMLElement>('.settings-search')).offsetHeight;
-    const bodyOffset = parseInt(window.getComputedStyle(this.renderRoot.querySelector<HTMLElement>('.settings-body-inner')).paddingTop, 10);
+    const searchOffset = (this.renderRoot.querySelector<HTMLElement>('.settings-search')!).offsetHeight;
+    const bodyOffset = parseInt(window.getComputedStyle(this.renderRoot.querySelector<HTMLElement>('.settings-body-inner')!).paddingTop, 10);
     const topPosition = target.offsetTop - searchOffset - bodyOffset;
     scrollableParent.scrollTo({
       top: topPosition,

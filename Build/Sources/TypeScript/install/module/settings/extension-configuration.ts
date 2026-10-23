@@ -48,7 +48,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
 
     // Focus search field on certain user interactions
     new RegularEvent('keydown', (event: KeyboardEvent) => {
-      const searchInput = currentModal.querySelector<HTMLInputElement>(Identifiers.searchInput);
+      const searchInput = currentModal.querySelector<HTMLInputElement>(Identifiers.searchInput)!;
       if (event.ctrlKey || event.metaKey) {
         // Focus search field on ctrl-f
         if (event.key === 'f' || event.key === 'F') {
@@ -167,7 +167,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
     }
 
     this.currentModal.querySelectorAll<HTMLInputElement>('.t3js-emconf-offset').forEach((element): void => {
-      const parent = element.parentElement;
+      const parent = element.parentElement!;
 
       element.setAttribute('data-offsetfield-x', '#' + element.id + '_offset_x');
       element.setAttribute('data-offsetfield-y', '#' + element.id + '_offset_y');
@@ -180,13 +180,13 @@ class ExtensionConfiguration extends AbstractInteractableModule {
       parent.appendChild(offsetGroup);
 
       new RegularEvent('keyup', (event: KeyboardEvent, offsetField: HTMLInputElement): void => {
-        const target = parent.querySelector<HTMLInputElement>(offsetField.dataset.target);
-        target.value = parent.querySelector<HTMLInputElement>(target.dataset.offsetfieldX).value + ',' + parent.querySelector<HTMLInputElement>(target.dataset.offsetfieldY).value;
+        const target = parent.querySelector<HTMLInputElement>(offsetField.dataset.target!)!;
+        target.value = parent.querySelector<HTMLInputElement>(target.dataset.offsetfieldX!)!.value + ',' + parent.querySelector<HTMLInputElement>(target.dataset.offsetfieldY!)!.value;
       }).delegateTo(parent, '.t3js-emconf-offsetfield');
     });
 
     this.currentModal.querySelectorAll<HTMLInputElement>('.t3js-emconf-wrap').forEach((element): void => {
-      const parent = element.parentElement;
+      const parent = element.parentElement!;
 
       element.setAttribute('data-wrapfield-start', '#' + element.id + '_wrap_start');
       element.setAttribute('data-wrapfield-end', '#' + element.id + '_wrap_end');
@@ -199,8 +199,8 @@ class ExtensionConfiguration extends AbstractInteractableModule {
       parent.appendChild(offsetGroup);
 
       new RegularEvent('keyup', (event: KeyboardEvent, wrapField: HTMLInputElement): void => {
-        const target = parent.querySelector<HTMLInputElement>(wrapField.dataset.target);
-        target.value = parent.querySelector<HTMLInputElement>(target.dataset.wrapfieldStart).value + '|' + parent.querySelector<HTMLInputElement>(target.dataset.wrapfieldEnd).value;
+        const target = parent.querySelector<HTMLInputElement>(wrapField.dataset.target!)!;
+        target.value = parent.querySelector<HTMLInputElement>(target.dataset.wrapfieldStart!)!.value + '|' + parent.querySelector<HTMLInputElement>(target.dataset.wrapfieldEnd!)!.value;
       }).delegateTo(parent, '.t3js-emconf-wrapfield');
     });
   }

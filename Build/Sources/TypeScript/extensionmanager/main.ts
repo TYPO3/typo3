@@ -151,7 +151,7 @@ class ExtensionManager {
 
         new RegularEvent('submit', (e: Event): void => {
           e.preventDefault();
-        }).bindTo(searchField.closest('form'));
+        }).bindTo(searchField.closest('form')!);
 
         new DebounceEvent('input', (e: KeyboardEvent): void => {
           const target = e.target as HTMLInputElement;

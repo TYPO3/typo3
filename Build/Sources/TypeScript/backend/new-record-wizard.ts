@@ -395,7 +395,7 @@ export class NewRecordWizard extends LitElement {
     type: Object,
     converter: {
       fromAttribute: (value) => {
-        const data: DataCategoriesInterface = JSON.parse(value);
+        const data: DataCategoriesInterface = JSON.parse(value!);
         return Categories.fromData(data);
       },
     }
@@ -425,10 +425,10 @@ export class NewRecordWizard extends LitElement {
     const link = document.createElement('link');
     link.setAttribute('rel', 'stylesheet');
     link.setAttribute('href', TYPO3.settings.cssUrls.backend);
-    this.shadowRoot.appendChild(link);
+    this.shadowRoot!.appendChild(link);
 
     if (this.displayFilter === true) {
-      const filterField = this.renderRoot.querySelector<HTMLInputElement>('input[name="search"]');
+      const filterField = this.renderRoot.querySelector<HTMLInputElement>('input[name="search"]')!;
       filterField.focus();
     }
 
@@ -592,8 +592,8 @@ export class NewRecordWizard extends LitElement {
           class="navigation-toggle btn btn-default"
           @click="${() => { this.toggleMenu = !this.toggleMenu; }}"
         >
-          ${ this.selectedCategory.icon ? html`<typo3-backend-icon identifier="${this.selectedCategory.icon}" size="small"></typo3-backend-icon>` : nothing }
-          ${this.selectedCategory.label}
+          ${ this.selectedCategory!.icon ? html`<typo3-backend-icon identifier="${this.selectedCategory!.icon}" size="small"></typo3-backend-icon>` : nothing }
+          ${this.selectedCategory!.label}
           <typo3-backend-icon identifier="actions-chevron-${(this.toggleMenu === true) ? 'up' : 'down'}" size="small"></typo3-backend-icon>
         </button>
       `;
@@ -646,7 +646,7 @@ export class NewRecordWizard extends LitElement {
     }
 
     if (selectedCategory) {
-      const categoryButton = this.shadowRoot.querySelector<HTMLButtonElement>(`button[data-identifier="${selectedCategory.identifier}"]`);
+      const categoryButton = this.shadowRoot!.querySelector<HTMLButtonElement>(`button[data-identifier="${selectedCategory.identifier}"]`)!;
       categoryButton.focus();
       this.handleNavigationClick(selectedCategory);
     }
@@ -708,7 +708,7 @@ export class NewRecordWizard extends LitElement {
     }
 
     if (item.requestType === 'event') {
-      const event = new CustomEvent(item.event, {
+      const event = new CustomEvent(item.event!, {
         detail: {
           item: item
         }
@@ -718,37 +718,37 @@ export class NewRecordWizard extends LitElement {
       return;
     }
 
-    if (item.url.trim() === '') {
+    if (item.url!.trim() === '') {
       return;
     }
 
     if (item.requestType === 'location') {
-      Viewport.ContentContainer.setUrl(item.url.replace(/_CURRENT_MODULE_/g, topWindow.TYPO3.ModuleMenu.App.getCurrentModule() ?? ''));
+      Viewport.ContentContainer.setUrl(item.url!.replace(/_CURRENT_MODULE_/g, topWindow.TYPO3.ModuleMenu.App.getCurrentModule() ?? ''));
       Modal.dismiss();
       return;
     }
 
     if (item.requestType === 'ajax') {
-      (new AjaxRequest(item.url)).post({
+      (new AjaxRequest(item.url!)).post({
         defVals: item.defaultValues,
         saveAndClose: item.saveAndClose ? '1' : '0'
       }).then(async (response: AjaxResponse): Promise<void> => {
         const result = document.createRange().createContextualFragment(await response.resolve());
 
         // Handle buttons with data-target
-        Modal.currentModal.addEventListener('modal-updated', () => {
+        Modal.currentModal!.addEventListener('modal-updated', () => {
           new RegularEvent('click', (e: PointerEvent, eventTarget: HTMLButtonElement): void => {
             e.preventDefault();
-            const target: string = eventTarget.dataset.target;
+            const target: string = eventTarget.dataset.target!;
             if (!target) {
               return;
             }
             Viewport.ContentContainer.setUrl(target);
             Modal.dismiss();
-          }).delegateTo(Modal.currentModal, 'button[data-target]');
+          }).delegateTo(Modal.currentModal!, 'button[data-target]');
         });
 
-        Modal.currentModal.setContent(result);
+        Modal.currentModal!.setContent(result);
       }).catch((): void => {
         Notification.error('Could not load module data');
       });

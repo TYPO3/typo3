@@ -120,7 +120,7 @@ let formEditorApp: FormEditor | null = null;
 let renderedFormElementIdentifierPath: string | null = null;
 
 function getFormEditorApp(): FormEditor {
-  return formEditorApp;
+  return formEditorApp!;
 }
 
 function getViewModel(): ViewModel {
@@ -129,9 +129,9 @@ function getViewModel(): ViewModel {
 
 function getHelper(_configuration?: HelperConfiguration): typeof Helper {
   if (getUtility().isUndefinedOrNull(_configuration)) {
-    return Helper.setConfiguration(configuration);
+    return Helper.setConfiguration(configuration!);
   }
-  return Helper.setConfiguration(_configuration);
+  return Helper.setConfiguration(_configuration!);
 }
 
 function getUtility(): Utility {
@@ -212,8 +212,8 @@ function renderEditorDispatcher(
       renderCollectionElementHeaderEditor(
         editorConfiguration,
         editorHtml,
-        collectionElementIdentifier,
-        collectionName
+        collectionElementIdentifier!,
+        collectionName!
       );
       break;
     case 'Inspector-MaximumFileSizeEditor':
@@ -226,8 +226,8 @@ function renderEditorDispatcher(
       renderTextEditor(
         editorConfiguration,
         editorHtml,
-        collectionElementIdentifier,
-        collectionName
+        collectionElementIdentifier!,
+        collectionName!
       );
       break;
     case 'Inspector-FinishersEditor':
@@ -254,48 +254,48 @@ function renderEditorDispatcher(
       renderRemoveElementEditor(
         editorConfiguration,
         editorHtml,
-        collectionElementIdentifier,
-        collectionName
+        collectionElementIdentifier!,
+        collectionName!
       );
       break;
     case 'Inspector-RequiredValidatorEditor':
       renderRequiredValidatorEditor(
         editorConfiguration,
         editorHtml,
-        collectionElementIdentifier,
-        collectionName
+        collectionElementIdentifier!,
+        collectionName!
       );
       break;
     case 'Inspector-CheckboxEditor':
       renderCheckboxEditor(
         editorConfiguration,
         editorHtml,
-        collectionElementIdentifier,
-        collectionName
+        collectionElementIdentifier!,
+        collectionName!
       );
       break;
     case 'Inspector-CountrySelectEditor':
       renderCountrySelectEditor(
         editorConfiguration,
         editorHtml,
-        collectionElementIdentifier,
-        collectionName
+        collectionElementIdentifier!,
+        collectionName!
       );
       break;
     case 'Inspector-SingleSelectEditor':
       renderSingleSelectEditor(
         editorConfiguration,
         editorHtml,
-        collectionElementIdentifier,
-        collectionName
+        collectionElementIdentifier!,
+        collectionName!
       );
       break;
     case 'Inspector-MultiSelectEditor':
       renderMultiSelectEditor(
         editorConfiguration,
         editorHtml,
-        collectionElementIdentifier,
-        collectionName
+        collectionElementIdentifier!,
+        collectionName!
       );
       break;
     case 'Inspector-GridColumnViewPortConfigurationEditor':
@@ -308,39 +308,39 @@ function renderEditorDispatcher(
       renderPropertyGridEditor(
         editorConfiguration,
         editorHtml,
-        collectionElementIdentifier,
-        collectionName
+        collectionElementIdentifier!,
+        collectionName!
       );
       break;
     case 'Inspector-TextareaEditor':
       renderTextareaEditor(
         editorConfiguration,
         editorHtml,
-        collectionElementIdentifier,
-        collectionName
+        collectionElementIdentifier!,
+        collectionName!
       );
       break;
     case 'Inspector-Typo3WinBrowserEditor':
       renderTypo3WinBrowserEditor(
         editorConfiguration,
         editorHtml,
-        collectionElementIdentifier,
-        collectionName
+        collectionElementIdentifier!,
+        collectionName!
       );
       break;
     case 'Inspector-DateEditor':
       renderDateEditor(
         editorConfiguration,
         editorHtml,
-        collectionElementIdentifier,
-        collectionName
+        collectionElementIdentifier!,
+        collectionName!
       );
       break;
     default:
       break;
   }
   getPublisherSubscriber().publish('view/inspector/editor/insert/perform', [
-    editorConfiguration, editorHtml, collectionElementIdentifier, collectionName
+    editorConfiguration, editorHtml, collectionElementIdentifier!, collectionName!
   ]);
 }
 
@@ -417,10 +417,10 @@ function getCollectionElementId(
 ): string {
   if (collectionName === 'finishers') {
     return getHelper()
-      .getDomElementIdName('finisherPrefix', asSelector) + collectionElementIdentifier;
+      .getDomElementIdName('finisherPrefix', asSelector!) + collectionElementIdentifier;
   } else {
     return getHelper()
-      .getDomElementIdName('validatorPrefix', asSelector) + collectionElementIdentifier;
+      .getDomElementIdName('validatorPrefix', asSelector!) + collectionElementIdentifier;
   }
 }
 
@@ -456,9 +456,9 @@ function addSortableCollectionElementsEvents(
         ?.getAttribute(dataAttributeName);
 
       getPublisherSubscriber().publish('view/inspector/collectionElements/dnd/update', [
-        movedCollectionElementIdentifier,
-        previousCollectionElementIdentifier,
-        nextCollectionElementIdentifier,
+        movedCollectionElementIdentifier!,
+        previousCollectionElementIdentifier!,
+        nextCollectionElementIdentifier!,
         collectionName
       ]);
     }
@@ -651,14 +651,14 @@ function setRandomIds(html: HTMLElement): void {
     const targetAttribute = element.getAttribute(getHelper().getDomElementDataAttribute('randomIdTarget'));
     const randomIdIndex = element.getAttribute(getHelper().getDomElementDataAttribute('randomIdIndex'));
 
-    if (element.hasAttribute(targetAttribute)) {
+    if (element.hasAttribute(targetAttribute!)) {
       return;
     }
 
-    if (!(randomIdIndex in idReplacements)) {
-      idReplacements[randomIdIndex] = 'fe' + Math.floor(Math.random() * 42) + Date.now();
+    if (!(randomIdIndex! in idReplacements)) {
+      idReplacements[randomIdIndex!] = 'fe' + Math.floor(Math.random() * 42) + Date.now();
     }
-    element.setAttribute(targetAttribute, idReplacements[randomIdIndex]);
+    element.setAttribute(targetAttribute!, idReplacements[randomIdIndex!]);
   });
 }
 
@@ -701,20 +701,20 @@ export function renderEditors(
   const scrollContainer = inspectorEl?.closest<HTMLElement>('.formeditor-inspector-inner');
   const formElementIdentifierPath = typeof formElement === 'string'
     ? formElement
-    : formElement.get('__identifierPath');
+    : formElement!.get('__identifierPath');
   const scrollTop = formElementIdentifierPath === renderedFormElementIdentifierPath
     ? scrollContainer?.scrollTop ?? 0
     : 0;
   renderedFormElementIdentifierPath = formElementIdentifierPath;
   if (inspectorEl) { inspectorEl.replaceChildren(); }
 
-  const formElementTypeDefinition = getFormElementDefinition(formElement) as FormElementDefinition;
+  const formElementTypeDefinition = getFormElementDefinition(formElement!) as FormElementDefinition;
   if (!Array.isArray(formElementTypeDefinition.editors)) {
     return;
   }
 
   for (let i = 0, len = formElementTypeDefinition.editors.length; i < len; ++i) {
-    const rawTemplate = getHelper().getTemplateElement(formElementTypeDefinition.editors[i].templateName);
+    const rawTemplate = getHelper().getTemplateElement(formElementTypeDefinition.editors[i].templateName!);
     if (!rawTemplate) {
       continue;
     }
@@ -800,7 +800,7 @@ export function renderCollectionElementEditors(
   }
 
   for (let i = 0; i < collectionElementEditorsLength; ++i) {
-    const rawTemplate = getHelper().getTemplateElement(collectionElementConfiguration.editors[i].templateName);
+    const rawTemplate = getHelper().getTemplateElement(collectionElementConfiguration.editors[i].templateName!);
     if (!rawTemplate) {
       continue;
     }
@@ -820,9 +820,9 @@ export function renderCollectionElementEditors(
       && collapseWrapper
       && collectionElementConfiguration.editors[i].identifier === 'removeButton'
     ) {
-      collapsePanel.append(html);
+      collapsePanel!.append(html);
     } else if (i > 0 && collapseWrapper) {
-      collapsePanel.append(html);
+      collapsePanel!.append(html);
     } else {
       collectionContainerElementWrapper.append(html);
     }
@@ -849,7 +849,7 @@ export function renderCollectionElementEditors(
     collectionContainerElementWrapper.querySelector(getHelper().getDomElementDataIdentifierSelector('collapse'))?.remove();
   }
 
-  if (configuration.isSortable && collectionContainer) {
+  if (configuration!.isSortable && collectionContainer) {
     addSortableCollectionElementsEvents(collectionContainer, collectionName);
   }
 }
@@ -882,7 +882,7 @@ export function renderCollectionElementSelectionEditor(
     1475423100
   );
   assert(
-    Array.isArray(editorConfiguration.selectOptions),
+    Array.isArray(editorConfiguration.selectOptions!),
     'Invalid configuration "selectOptions"',
     1475423101
   );
@@ -898,7 +898,7 @@ export function renderCollectionElementSelectionEditor(
   collectionContainer?.replaceChildren();
 
   const labelEl = getHelper().getTemplatePropertyElement('label', editorHtml);
-  setLabelHtmlContent(labelEl, editorConfiguration.label);
+  setLabelHtmlContent(labelEl, editorConfiguration.label!);
   const selectElement = getHelper().getTemplatePropertyElement('selectOptions', editorHtml) as HTMLSelectElement | null;
   const hasAlreadySelectedCollectionElements = (
     !getUtility().isUndefinedOrNull(alreadySelectedCollectionElements) &&
@@ -915,11 +915,11 @@ export function renderCollectionElementSelectionEditor(
   }
 
   removeSelectElement = true;
-  for (let i = 0, len1 = editorConfiguration.selectOptions.length; i < len1; ++i) {
+  for (let i = 0, len1 = editorConfiguration.selectOptions!.length; i < len1; ++i) {
     let appendOption = true;
     if (!getUtility().isUndefinedOrNull(alreadySelectedCollectionElements)) {
       for (let j = 0, len2 = alreadySelectedCollectionElements.length; j < len2; ++j) {
-        if (alreadySelectedCollectionElements[j].identifier === editorConfiguration.selectOptions[i].value) {
+        if (alreadySelectedCollectionElements[j].identifier === editorConfiguration.selectOptions![i].value) {
           appendOption = false;
           break;
         }
@@ -927,10 +927,10 @@ export function renderCollectionElementSelectionEditor(
     }
     if (appendOption) {
       selectElement?.append(new Option(
-        editorConfiguration.selectOptions[i].label,
-        editorConfiguration.selectOptions[i].value
+        editorConfiguration.selectOptions![i].label,
+        editorConfiguration.selectOptions![i].value
       ));
-      if (editorConfiguration.selectOptions[i].value !== '') {
+      if (editorConfiguration.selectOptions![i].value !== '') {
         removeSelectElement = false;
       }
     }
@@ -942,7 +942,7 @@ export function renderCollectionElementSelectionEditor(
     selectGroup?.remove();
     const labelNoSelect = getHelper().getTemplatePropertyElement('label-no-select', editorHtml);
     if (hasAlreadySelectedCollectionElements) {
-      setLabelHtmlContent(labelNoSelect, editorConfiguration.label);
+      setLabelHtmlContent(labelNoSelect, editorConfiguration.label!);
     } else {
       labelNoSelect?.remove();
     }
@@ -972,7 +972,7 @@ export function renderFormElementHeaderEditor(
   assert(typeof editorHtml === 'object' && editorHtml !== null && !Array.isArray(editorHtml), 'Invalid parameter "editorHtml"', 1475421526);
 
   Icons.getIcon(
-    getFormElementDefinition(getCurrentlySelectedFormElement(), 'iconIdentifier'),
+    getFormElementDefinition(getCurrentlySelectedFormElement(), 'iconIdentifier')!,
     Icons.sizes.small,
     null,
     Icons.states.default
@@ -1077,7 +1077,7 @@ export function renderCollectionElementHeaderEditor(
   const collectionElementConfiguration = getFormEditorApp().getFormEditorDefinition(collectionName, collectionElementIdentifier);
   if ('iconIdentifier' in collectionElementConfiguration) {
     Icons.getIcon(
-      collectionElementConfiguration.iconIdentifier,
+      collectionElementConfiguration.iconIdentifier!,
       Icons.sizes.small,
       null,
       Icons.states.default
@@ -1151,12 +1151,12 @@ export function renderTextEditor(
     1475421056
   );
 
-  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label);
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label!);
   renderDescription(editorConfiguration, editorHtml);
 
   if (getUtility().isNonEmptyString(editorConfiguration.placeholder)) {
     getHelper().getTemplatePropertyElement('propertyPath', editorHtml)
-      ?.setAttribute('placeholder', editorConfiguration.placeholder);
+      ?.setAttribute('placeholder', editorConfiguration.placeholder!);
   }
 
   const propertyPath = getFormEditorApp().buildPropertyPath(
@@ -1238,17 +1238,17 @@ export function renderValidationErrorMessageEditor(
     1489874124
   );
 
-  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label);
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label!);
   renderDescription(editorConfiguration, editorHtml);
 
   const propertyPath = getFormEditorApp().buildPropertyPath(editorConfiguration.propertyPath);
   let propertyData: PropertyData = getCurrentlySelectedFormElement().get(propertyPath);
 
   if (!getUtility().isUndefinedOrNull(propertyData) && Array.isArray(propertyData)) {
-    const validationErrorMessage = getFirstAvailableValidationErrorMessage(editorConfiguration.errorCodes, propertyData);
+    const validationErrorMessage = getFirstAvailableValidationErrorMessage(editorConfiguration.errorCodes!, propertyData);
     const inputEl = getHelper().getTemplatePropertyElement('propertyPath', editorHtml) as HTMLInputElement | null;
     if (!getUtility().isUndefinedOrNull(validationErrorMessage) && inputEl) {
-      inputEl.value = validationErrorMessage;
+      inputEl.value = validationErrorMessage!;
     }
   }
 
@@ -1262,7 +1262,7 @@ export function renderValidationErrorMessageEditor(
       propertyData = [];
     }
     getCurrentlySelectedFormElement().set(propertyPath, renewValidationErrorMessages(
-      editorConfiguration.errorCodes,
+      editorConfiguration.errorCodes!,
       propertyData,
       this.value
     ));
@@ -1297,7 +1297,7 @@ export function renderCountrySelectEditor(
     collectionName
   );
 
-  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label);
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label!);
   renderDescription(editorConfiguration, editorHtml);
 
   const selectElement = getHelper().getTemplatePropertyElement('selectOptions', editorHtml) as HTMLSelectElement | null;
@@ -1357,7 +1357,7 @@ export function renderSingleSelectEditor(
     1475421051
   );
   assert(
-    Array.isArray(editorConfiguration.selectOptions),
+    Array.isArray(editorConfiguration.selectOptions!),
     'Invalid configuration "selectOptions"',
     1475421052
   );
@@ -1368,17 +1368,17 @@ export function renderSingleSelectEditor(
     collectionName
   );
 
-  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label);
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label!);
   renderDescription(editorConfiguration, editorHtml);
 
   const selectElement = getHelper().getTemplatePropertyElement('selectOptions', editorHtml) as HTMLSelectElement | null;
   const propertyData = getCurrentlySelectedFormElement().get(propertyPath);
   validateCollectionElement(propertyPath, editorHtml);
 
-  for (let i = 0, len = editorConfiguration.selectOptions.length; i < len; ++i) {
-    const selected = editorConfiguration.selectOptions[i].value === propertyData;
-    const option = new Option(editorConfiguration.selectOptions[i].label, i.toString(), false, selected);
-    (option as any)._dataValue = editorConfiguration.selectOptions[i].value;
+  for (let i = 0, len = editorConfiguration.selectOptions!.length; i < len; ++i) {
+    const selected = editorConfiguration.selectOptions![i].value === propertyData;
+    const option = new Option(editorConfiguration.selectOptions![i].label, i.toString(), false, selected);
+    (option as any)._dataValue = editorConfiguration.selectOptions![i].value;
     selectElement?.append(option);
   }
 
@@ -1416,7 +1416,7 @@ export function renderMultiSelectEditor(
     1485712402
   );
   assert(
-    Array.isArray(editorConfiguration.selectOptions),
+    Array.isArray(editorConfiguration.selectOptions!),
     'Invalid configuration "selectOptions"',
     1485712403
   );
@@ -1427,23 +1427,23 @@ export function renderMultiSelectEditor(
     collectionName
   );
 
-  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label);
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label!);
   renderDescription(editorConfiguration, editorHtml);
 
   const selectElement = getHelper().getTemplatePropertyElement('selectOptions', editorHtml) as HTMLSelectElement | null;
   const propertyData: Record<string, string> = getCurrentlySelectedFormElement().get(propertyPath) || {};
   validateCollectionElement(propertyPath, editorHtml);
 
-  for (let i = 0, len1 = editorConfiguration.selectOptions.length; i < len1; ++i) {
+  for (let i = 0, len1 = editorConfiguration.selectOptions!.length; i < len1; ++i) {
     let selected = false;
     for (const propertyDataKey of Object.keys(propertyData)) {
-      if (editorConfiguration.selectOptions[i].value === propertyData[propertyDataKey]) {
+      if (editorConfiguration.selectOptions![i].value === propertyData[propertyDataKey]) {
         selected = true;
         break;
       }
     }
-    const option = new Option(editorConfiguration.selectOptions[i].label, i.toString(), false, selected);
-    (option as any)._dataValue = editorConfiguration.selectOptions[i].value;
+    const option = new Option(editorConfiguration.selectOptions![i].label, i.toString(), false, selected);
+    (option as any)._dataValue = editorConfiguration.selectOptions![i].value;
     selectElement?.append(option);
   }
 
@@ -1477,17 +1477,17 @@ export function renderGridColumnViewPortConfigurationEditor(
     1489528244
   );
   assert(
-    Array.isArray(editorConfiguration.configurationOptions.viewPorts),
+    Array.isArray(editorConfiguration.configurationOptions!.viewPorts),
     'Invalid configurationOptions "viewPorts"',
     1489528245
   );
   assert(
-    !getUtility().isUndefinedOrNull(editorConfiguration.configurationOptions.numbersOfColumnsToUse.label),
+    !getUtility().isUndefinedOrNull(editorConfiguration.configurationOptions!.numbersOfColumnsToUse!.label),
     'Invalid configurationOptions "numbersOfColumnsToUse"',
     1489528246
   );
   assert(
-    !getUtility().isUndefinedOrNull(editorConfiguration.configurationOptions.numbersOfColumnsToUse.propertyPath),
+    !getUtility().isUndefinedOrNull(editorConfiguration.configurationOptions!.numbersOfColumnsToUse!.propertyPath),
     'Invalid configuration "selectOptions"',
     1489528247
   );
@@ -1497,7 +1497,7 @@ export function renderGridColumnViewPortConfigurationEditor(
     return;
   }
 
-  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label);
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label!);
 
   const viewportButtonSel = getHelper().getDomElementDataIdentifierSelector('viewportButton');
   const viewportButtonTemplate = editorHtml.querySelector(viewportButtonSel)?.cloneNode(true) as HTMLElement | null;
@@ -1513,27 +1513,27 @@ export function renderGridColumnViewPortConfigurationEditor(
     getHelper().getTemplatePropertyElement('numbersOfColumnsToUse', editorHtml)?.remove();
 
     const numbersOfColumnsTemplateClone = numbersOfColumnsTemplate?.cloneNode(true) as HTMLElement | null;
-    getEditorWrapperDomElement(editorHtml)?.after(numbersOfColumnsTemplateClone);
+    getEditorWrapperDomElement(editorHtml)?.after(numbersOfColumnsTemplateClone!);
 
     numbersOfColumnsTemplateClone?.querySelector<HTMLInputElement>('input')?.focus();
 
-    const labelEl = getHelper().getTemplatePropertyElement('numbersOfColumnsToUse-label', numbersOfColumnsTemplateClone);
+    const labelEl = getHelper().getTemplatePropertyElement('numbersOfColumnsToUse-label', numbersOfColumnsTemplateClone!);
     if (labelEl) {
       setLabelHtmlContent(labelEl,
-        editorConfiguration.configurationOptions.numbersOfColumnsToUse.label
+        editorConfiguration.configurationOptions!.numbersOfColumnsToUse!.label
           .replace('{@viewPortLabel}', element.dataset.viewPortLabel ?? '')
       );
     }
 
-    const descEl = getHelper().getTemplatePropertyElement('numbersOfColumnsToUse-description', numbersOfColumnsTemplateClone);
+    const descEl = getHelper().getTemplatePropertyElement('numbersOfColumnsToUse-description', numbersOfColumnsTemplateClone!);
     if (descEl) {
-      setHtmlContent(descEl, editorConfiguration.configurationOptions.numbersOfColumnsToUse.description);
+      setHtmlContent(descEl, editorConfiguration.configurationOptions!.numbersOfColumnsToUse!.description);
     }
 
-    const propertyPath = editorConfiguration.configurationOptions.numbersOfColumnsToUse.propertyPath
+    const propertyPath = editorConfiguration.configurationOptions!.numbersOfColumnsToUse!.propertyPath
       .replace('{@viewPortIdentifier}', element.dataset.viewPortIdentifier ?? '');
 
-    const inputEl = getHelper().getTemplatePropertyElement('numbersOfColumnsToUse-propertyPath', numbersOfColumnsTemplateClone) as HTMLInputElement | null;
+    const inputEl = getHelper().getTemplatePropertyElement('numbersOfColumnsToUse-propertyPath', numbersOfColumnsTemplateClone!) as HTMLInputElement | null;
     if (inputEl) {
       inputEl.value = getCurrentlySelectedFormElement().get(propertyPath) ?? '';
       inputEl.addEventListener('keyup', handleInput);
@@ -1549,9 +1549,9 @@ export function renderGridColumnViewPortConfigurationEditor(
     }
   };
 
-  for (let i = 0, len = editorConfiguration.configurationOptions.viewPorts.length; i < len; ++i) {
-    const viewPortIdentifier = editorConfiguration.configurationOptions.viewPorts[i].viewPortIdentifier;
-    const viewPortLabel = editorConfiguration.configurationOptions.viewPorts[i].label;
+  for (let i = 0, len = editorConfiguration.configurationOptions!.viewPorts!.length; i < len; ++i) {
+    const viewPortIdentifier = editorConfiguration.configurationOptions!.viewPorts![i].viewPortIdentifier;
+    const viewPortLabel = editorConfiguration.configurationOptions!.viewPorts![i].label;
 
     const viewportButtonTemplateClone = viewportButtonTemplate?.cloneNode(true) as HTMLElement | null;
     if (!viewportButtonTemplateClone) { continue; }
@@ -1618,7 +1618,7 @@ export function renderPropertyGridEditor(
     1475419232
   );
 
-  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label);
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label!);
   renderDescription(editorConfiguration, editorHtml);
 
   const propertyPathPrefix = (() => {
@@ -1631,7 +1631,7 @@ export function renderPropertyGridEditor(
     : !!editorConfiguration.multiSelection;
 
   const enableSelection = getUtility().isNonEmptyArray(editorConfiguration.gridColumns)
-    ? editorConfiguration.gridColumns.some(item => item.name === 'selected')
+    ? editorConfiguration.gridColumns!.some(item => item.name === 'selected')
     : true;
 
   const defaultValue: Record<string, string> = (() => {
@@ -1690,7 +1690,7 @@ export function renderPropertyGridEditor(
   propertyGridEditor.entries = propertyData;
 
   if (getUtility().isNonEmptyArray(editorConfiguration.gridColumns)) {
-    editorConfiguration.gridColumns.forEach(gridColumnConfig => {
+    editorConfiguration.gridColumns!.forEach(gridColumnConfig => {
       if (gridColumnConfig.name === 'label') {
         propertyGridEditor.labelLabel = gridColumnConfig.title;
         propertyGridEditor.enableLabelFormElementSelectionButton = gridColumnConfig.enableFormelementSelectionButton;
@@ -1786,7 +1786,7 @@ export function renderRequiredValidatorEditor(
   );
 
   const validatorIdentifier = editorConfiguration.validatorIdentifier;
-  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label);
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label!);
 
   let propertyValue: string;
   let propertyPath: string;
@@ -1796,13 +1796,13 @@ export function renderRequiredValidatorEditor(
       .buildPropertyPath(editorConfiguration.propertyPath, collectionElementIdentifier, collectionName);
   }
   if (getUtility().isNonEmptyString(editorConfiguration.propertyValue)) {
-    propertyValue = editorConfiguration.propertyValue;
+    propertyValue = editorConfiguration.propertyValue!;
   } else {
     propertyValue = '';
   }
 
   const validationErrorMessagePropertyPath = getFormEditorApp()
-    .buildPropertyPath(editorConfiguration.configurationOptions.validationErrorMessage.propertyPath);
+    .buildPropertyPath(editorConfiguration.configurationOptions!.validationErrorMessage!.propertyPath);
 
   const rawValidationErrorMessageTemplate = getHelper().getTemplatePropertyElement('validationErrorMessage', editorHtml);
   const validationErrorMessageTemplate = rawValidationErrorMessageTemplate?.cloneNode(true) as HTMLElement | null;
@@ -1810,16 +1810,16 @@ export function renderRequiredValidatorEditor(
 
   const showValidationErrorMessage = function() {
     const validationErrorMessageTemplateClone = validationErrorMessageTemplate?.cloneNode(true) as HTMLElement | null;
-    getEditorWrapperDomElement(editorHtml)?.after(validationErrorMessageTemplateClone);
+    getEditorWrapperDomElement(editorHtml)?.after(validationErrorMessageTemplateClone!);
 
     setLabelHtmlContent(
-      getHelper().getTemplatePropertyElement('validationErrorMessage-label', validationErrorMessageTemplateClone),
-      editorConfiguration.configurationOptions.validationErrorMessage.label
+      getHelper().getTemplatePropertyElement('validationErrorMessage-label', validationErrorMessageTemplateClone!),
+      editorConfiguration.configurationOptions!.validationErrorMessage!.label
     );
 
     setHtmlContent(
-      getHelper().getTemplatePropertyElement('validationErrorMessage-description', validationErrorMessageTemplateClone),
-      editorConfiguration.configurationOptions.validationErrorMessage.description
+      getHelper().getTemplatePropertyElement('validationErrorMessage-description', validationErrorMessageTemplateClone!),
+      editorConfiguration.configurationOptions!.validationErrorMessage!.description!
     );
 
     propertyData = getCurrentlySelectedFormElement().get(validationErrorMessagePropertyPath);
@@ -1828,12 +1828,12 @@ export function renderRequiredValidatorEditor(
     }
 
     const validationErrorMessage = getFirstAvailableValidationErrorMessage(
-      editorConfiguration.configurationOptions.validationErrorMessage.errorCodes,
+      editorConfiguration.configurationOptions!.validationErrorMessage!.errorCodes!,
       propertyData
     );
-    const valInputEl = getHelper().getTemplatePropertyElement('validationErrorMessage-propertyPath', validationErrorMessageTemplateClone) as HTMLInputElement | null;
+    const valInputEl = getHelper().getTemplatePropertyElement('validationErrorMessage-propertyPath', validationErrorMessageTemplateClone!) as HTMLInputElement | null;
     if (!getUtility().isUndefinedOrNull(validationErrorMessage) && valInputEl) {
-      valInputEl.value = validationErrorMessage;
+      valInputEl.value = validationErrorMessage!;
     }
 
     valInputEl?.addEventListener('keyup', handleValInput);
@@ -1846,7 +1846,7 @@ export function renderRequiredValidatorEditor(
       }
 
       getCurrentlySelectedFormElement().set(validationErrorMessagePropertyPath, renewValidationErrorMessages(
-        editorConfiguration.configurationOptions.validationErrorMessage.errorCodes,
+        editorConfiguration.configurationOptions!.validationErrorMessage!.errorCodes!,
         propertyData,
         this.value
       ));
@@ -1854,7 +1854,7 @@ export function renderRequiredValidatorEditor(
   };
 
   const checkboxEl = editorHtml.querySelector<HTMLInputElement>('input[type="checkbox"]');
-  if (-1 !== getFormEditorApp().getIndexFromPropertyCollectionElement(validatorIdentifier, 'validators')) {
+  if (-1 !== getFormEditorApp().getIndexFromPropertyCollectionElement(validatorIdentifier!, 'validators')) {
     if (checkboxEl) { checkboxEl.checked = true; }
     showValidationErrorMessage();
   }
@@ -1865,7 +1865,7 @@ export function renderRequiredValidatorEditor(
 
     if (this.checked) {
       showValidationErrorMessage();
-      getPublisherSubscriber().publish('view/inspector/collectionElement/new/selected', [validatorIdentifier, 'validators']);
+      getPublisherSubscriber().publish('view/inspector/collectionElement/new/selected', [validatorIdentifier!, 'validators']);
       if (getUtility().isNonEmptyString(propertyPath)) {
         getCurrentlySelectedFormElement().set(propertyPath, propertyValue);
       }
@@ -1873,11 +1873,11 @@ export function renderRequiredValidatorEditor(
       if (getUtility().isNonEmptyString(propertyPath)) {
         getCurrentlySelectedFormElement().unset(propertyPath);
       }
-      getPublisherSubscriber().publish('view/inspector/removeCollectionElement/perform', [validatorIdentifier, 'validators']);
+      getPublisherSubscriber().publish('view/inspector/removeCollectionElement/perform', [validatorIdentifier!, 'validators']);
       propertyData = getCurrentlySelectedFormElement().get(validationErrorMessagePropertyPath);
       if (getUtility().isUndefinedOrNull(propertyData)) { propertyData = []; }
       getCurrentlySelectedFormElement().set(validationErrorMessagePropertyPath, renewValidationErrorMessages(
-        editorConfiguration.configurationOptions.validationErrorMessage.errorCodes,
+        editorConfiguration.configurationOptions!.validationErrorMessage!.errorCodes!,
         propertyData,
         ''
       ));
@@ -1912,7 +1912,7 @@ export function renderCheckboxEditor(
     1476218674
   );
 
-  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label);
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label!);
   renderDescription(editorConfiguration, editorHtml);
 
   const propertyPath = getFormEditorApp()
@@ -1975,7 +1975,7 @@ export function renderTextareaEditor(
   const propertyPath = getFormEditorApp()
     .buildPropertyPath(editorConfiguration.propertyPath, collectionElementIdentifier, collectionName);
 
-  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label);
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label!);
   renderDescription(editorConfiguration, editorHtml);
 
   const propertyData = getCurrentlySelectedFormElement().get(propertyPath);
@@ -2070,14 +2070,14 @@ export function renderTypo3WinBrowserEditor(
     1477300590
   );
 
-  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label);
-  setLabelHtmlContent(getHelper().getTemplatePropertyElement('buttonLabel', editorHtml), editorConfiguration.buttonLabel);
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label!);
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('buttonLabel', editorHtml), editorConfiguration.buttonLabel!);
   renderDescription(editorConfiguration, editorHtml);
 
   const formEl = editorHtml.querySelector('form');
   if (formEl) { formEl.name = editorConfiguration.propertyPath ?? ''; }
 
-  Icons.getIcon(editorConfiguration.iconIdentifier, Icons.sizes.small).then(function(icon) {
+  Icons.getIcon(editorConfiguration.iconIdentifier!, Icons.sizes.small).then(function(icon) {
     const imageEl = getHelper().getTemplatePropertyElement('image', editorHtml);
     if (imageEl) {
       const tmp = document.createElement('div');
@@ -2095,7 +2095,7 @@ export function renderTypo3WinBrowserEditor(
     if (insertTarget) {
       insertTarget.setAttribute(getHelper().getDomElementDataAttribute('contentElementSelectorTarget'), String(randomIdentifier));
     }
-    openTypo3WinBrowser('db', String(randomIdentifier), editorConfiguration.browsableType);
+    openTypo3WinBrowser('db', String(randomIdentifier), editorConfiguration.browsableType!);
   });
 
   listenOnElementBrowser();
@@ -2200,7 +2200,7 @@ function getFormElementSelectorEntries(): FormElementSelectorEntry[] {
     const nonCompositeNonToplevelFormElements = getFormEditorApp().getNonCompositeNonToplevelFormElements();
 
     return nonCompositeNonToplevelFormElements.map((nonCompositeNonToplevelFormElement): FormElementSelectorEntry => ({
-      icon: getFormElementDefinition(nonCompositeNonToplevelFormElement, 'iconIdentifier'),
+      icon: getFormElementDefinition(nonCompositeNonToplevelFormElement, 'iconIdentifier')!,
       label: nonCompositeNonToplevelFormElement.get('label'),
       value: nonCompositeNonToplevelFormElement.get('identifier'),
     }));
@@ -2217,12 +2217,12 @@ export function buildTitleByFormElement(formElement?: FormElement): HTMLElement 
   assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1478967319);
 
   let label;
-  if (formElement.get('type') === 'Form') {
-    label = formElement.get('type');
+  if (formElement!.get('type') === 'Form') {
+    label = formElement!.get('type');
   } else {
-    label = getFormElementDefinition(formElement, 'label')
-      ? getFormElementDefinition(formElement, 'label')
-      : formElement.get('identifier');
+    label = getFormElementDefinition(formElement!, 'label')
+      ? getFormElementDefinition(formElement!, 'label')
+      : formElement!.get('identifier');
   }
 
   const span = document.createElement('span');
@@ -2270,7 +2270,7 @@ export function renderDateEditor(
   setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label || '');
   renderDescription(editorConfiguration, editorHtml);
 
-  const editorElement = editorHtml.querySelector('typo3-form-date-editor');
+  const editorElement = editorHtml.querySelector('typo3-form-date-editor')!;
 
   const dateEditorSettings = TYPO3.settings.FormEditor.dateEditor;
   assert(
@@ -2310,7 +2310,7 @@ export function renderDescription(
 ): void {
   const descEl = getHelper().getTemplatePropertyElement('description', editorHtml);
   if (getUtility().isNonEmptyString(editorConfiguration.description)) {
-    setHtmlContent(descEl, editorConfiguration.description);
+    setHtmlContent(descEl, editorConfiguration.description!);
   } else {
     descEl?.remove();
   }

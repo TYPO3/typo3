@@ -53,7 +53,7 @@ class TcaMigrationsCheck extends AbstractInteractableModule {
 
   private check(): void {
     this.setModalButtonsState(false);
-    const outputContainer = document.querySelector<HTMLElement>(Identifiers.outputContainer);
+    const outputContainer = document.querySelector<HTMLElement>(Identifiers.outputContainer)!;
     if (outputContainer !== null) {
       this.renderProgressBar(outputContainer, {}, 'append');
     }
@@ -67,23 +67,23 @@ class TcaMigrationsCheck extends AbstractInteractableModule {
           Modal.setButtons(data.buttons);
           if (data.success === true && Array.isArray(data.status)) {
             if (data.status.length > 0) {
-              modalContent.querySelector(Identifiers.outputContainer).append(InfoBox.create(
+              modalContent.querySelector(Identifiers.outputContainer)!.append(InfoBox.create(
                 Severity.warning,
                 'TCA migrations need to be applied',
                 'Check the following list and apply needed changes.'
               ));
               data.status.forEach((element): void => {
-                modalContent.querySelector(Identifiers.outputContainer).append(InfoBox.create(element.severity, element.title, element.message));
+                modalContent.querySelector(Identifiers.outputContainer)!.append(InfoBox.create(element.severity, element.title, element.message));
               });
             } else {
-              modalContent.querySelector(Identifiers.outputContainer).append(InfoBox.create(
+              modalContent.querySelector(Identifiers.outputContainer)!.append(InfoBox.create(
                 Severity.ok,
                 'No TCA migrations need to be applied',
                 'Your TCA looks good.'
               ));
             }
           } else {
-            modalContent.querySelector(Identifiers.outputContainer).append(
+            modalContent.querySelector(Identifiers.outputContainer)!.append(
               FlashMessage.create(Severity.error, 'Something went wrong', 'Use "Check for broken extensions"')
             );
           }

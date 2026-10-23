@@ -414,10 +414,10 @@ export class ModalElement extends LitElement {
     if (this.type === Types.iframe) {
       const loadCallback = (e: Event) => {
         const iframe = e.currentTarget as HTMLIFrameElement;
-        if (iframe.contentDocument.title) {
-          this.modalTitle = iframe.contentDocument.title;
+        if (iframe.contentDocument!.title) {
+          this.modalTitle = iframe.contentDocument!.title;
         }
-        iframe.contentDocument.addEventListener('keydown', this.handleIframeKeydown);
+        iframe.contentDocument!.addEventListener('keydown', this.handleIframeKeydown);
       };
       return html`
         <iframe src="${this.content}" name="modal_frame" class="modal-iframe t3js-modal-iframe" @load=${loadCallback}></iframe>
@@ -480,7 +480,7 @@ export class ModalElement extends LitElement {
 
   private readonly handleIframeKeydown = (e: KeyboardEvent): void => {
     if (e.key === 'Escape') {
-      if (e.target instanceof e.view.window.HTMLInputElement && e.target.type === 'search') {
+      if (e.target instanceof e.view!.window.HTMLInputElement && e.target.type === 'search') {
         if (e.target.value === '') {
           this.requestClose();
         }
@@ -842,8 +842,8 @@ class Modal {
   }
 
   public setButtons(buttons: Array<Button>): ModalElement {
-    this.currentModal.buttons = buttons;
-    return this.currentModal;
+    this.currentModal!.buttons = buttons;
+    return this.currentModal!;
   }
 
   /**
@@ -860,17 +860,17 @@ class Modal {
       }
       const content = triggerElement.dataset.content || coreLabels.get('message.confirmation');
       let severity = SeverityEnum.notice;
-      if (triggerElement.dataset.severity in SeverityEnum) {
+      if (triggerElement.dataset.severity! in SeverityEnum) {
         const severityKey = triggerElement.dataset.severity as keyof typeof SeverityEnum;
         severity = SeverityEnum[severityKey];
       }
       let size = Sizes.default;
-      if (triggerElement.dataset.size in Sizes) {
+      if (triggerElement.dataset.size! in Sizes) {
         const sizeKey = triggerElement.dataset.size as keyof typeof Sizes;
         size = Sizes[sizeKey];
       }
       let position = Positions.center;
-      if (triggerElement.dataset.position in Positions) {
+      if (triggerElement.dataset.position! in Positions) {
         const positionKey = triggerElement.dataset.position as keyof typeof Positions;
         position = Positions[positionKey];
       }
@@ -943,24 +943,24 @@ class Modal {
     const currentModal = document.createElement('typo3-backend-modal');
     const returnFocusTo = Modal.getFocusedElement(document);
 
-    currentModal.type = configuration.type;
+    currentModal.type = configuration.type!;
     if (typeof configuration.content === 'string') {
       currentModal.content = configuration.content;
     } else if (configuration.type === Types.default) {
       currentModal.type = Types.template;
       currentModal.templateResultContent = configuration.content ?? null;
     }
-    currentModal.severity = configuration.severity;
-    currentModal.variant = configuration.style;
+    currentModal.severity = configuration.severity!;
+    currentModal.variant = configuration.style!;
     currentModal.size = configuration.size;
-    currentModal.position = configuration.position;
-    currentModal.modalTitle = configuration.title;
-    currentModal.additionalCssClasses = configuration.additionalCssClasses;
+    currentModal.position = configuration.position!;
+    currentModal.modalTitle = configuration.title!;
+    currentModal.additionalCssClasses = configuration.additionalCssClasses!;
     currentModal.buttons = <Array<Button>>configuration.buttons;
-    currentModal.hideCloseButton = configuration.hideCloseButton;
-    currentModal.staticBackdrop = configuration.staticBackdrop;
-    currentModal.hideHeader = configuration.hideHeader;
-    currentModal.resizeIdentifier = configuration.resizeIdentifier;
+    currentModal.hideCloseButton = configuration.hideCloseButton!;
+    currentModal.staticBackdrop = configuration.staticBackdrop!;
+    currentModal.hideHeader = configuration.hideHeader!;
+    currentModal.resizeIdentifier = configuration.resizeIdentifier!;
     if (configuration.callback) {
       currentModal.callback = configuration.callback;
     }
@@ -1034,7 +1034,7 @@ const remountAlertContainer = (modal: ModalElement | null | undefined) => {
   }
 };
 
-let modalObject: Modal = null;
+let modalObject: Modal = null!;
 const topModal = topWindow.TYPO3?.Modal;
 if (topModal) {
   try {

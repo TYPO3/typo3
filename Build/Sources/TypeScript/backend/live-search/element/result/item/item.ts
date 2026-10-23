@@ -72,7 +72,7 @@ export class Item extends LitElement {
 
   private onFocus(e: Event) {
     const target = e.target as HTMLElement;
-    target.parentElement.querySelector('.active')?.classList.remove('active');
+    target.parentElement!.querySelector('.active')?.classList.remove('active');
     target.classList.add('active');
   }
 }

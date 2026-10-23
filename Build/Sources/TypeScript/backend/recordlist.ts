@@ -106,9 +106,9 @@ class Recordlist {
     e.preventDefault();
 
     const table = targetEl.dataset.table;
-    const target = document.querySelector<HTMLElement>(targetEl.dataset.bsTarget);
+    const target = document.querySelector<HTMLElement>(targetEl.dataset.bsTarget!)!;
     const isExpanded = target.dataset.state === 'expanded';
-    const collapseIcon = targetEl.querySelector('.t3js-icon');
+    const collapseIcon = targetEl.querySelector('.t3js-icon')!;
     const toggleIcon = isExpanded ? this.identifier.icons.expand : this.identifier.icons.collapse;
 
     Icons.getIcon(toggleIcon, Icons.sizes.small).then((icon: string): void => {
@@ -123,7 +123,7 @@ class Recordlist {
     }
 
     const collapseConfig: Record<string, number> = {};
-    collapseConfig[table] = isExpanded ? 1 : 0;
+    collapseConfig[table!] = isExpanded ? 1 : 0;
 
     storedModuleDataList = Object.assign(storedModuleDataList, collapseConfig);
     PersistentStorage.set('moduleData.records.collapsedTables', storedModuleDataList).then((): void => {
@@ -154,14 +154,14 @@ class Recordlist {
       }
       // Evaluate all checked records and if valid, add their uid to the list
       eventDetails.checkboxes.forEach((checkbox): void => {
-        const checkboxContainer = checkbox.closest<HTMLElement>(MultiRecordSelectionSelectors.elementSelector);
+        const checkboxContainer = checkbox.closest<HTMLElement>(MultiRecordSelectionSelectors.elementSelector)!;
         if (checkboxContainer !== null && checkboxContainer.dataset[configuration.idField]) {
-          entityIdentifiers.push(checkboxContainer.dataset[configuration.idField]);
+          entityIdentifiers.push(checkboxContainer.dataset[configuration.idField]!);
         }
       });
     } else {
       // Edit record request was triggered via t3js-* class on target.
-      const tableContainer = target.closest<HTMLElement>('[data-table]');
+      const tableContainer = target.closest<HTMLElement>('[data-table]')!;
       if (tableContainer === null) {
         return;
       }
@@ -178,7 +178,7 @@ class Recordlist {
       if (selection.length) {
         // If there are selected records, only those are added to the list
         selection.forEach((entity): void => {
-          entityIdentifiers.push(entity.closest<HTMLElement>(this.identifier.entity + selector`[data-uid][data-table="${tableName}"]`).dataset.uid);
+          entityIdentifiers.push(entity.closest<HTMLElement>(this.identifier.entity + selector`[data-uid][data-table="${tableName}"]`)!.dataset.uid!);
         });
       } else {
         // Get all records for the current table and add their uid to the list
@@ -199,7 +199,7 @@ class Recordlist {
 
     let editUrl: string = topWindow.TYPO3.settings.FormEngine.moduleUrl
       + '&edit[' + tableName + '][' + entityIdentifiers.join(',') + ']=edit'
-      + '&module=' + encodeURIComponent(topWindow.TYPO3.ModuleMenu.App.getCurrentModule())
+      + '&module=' + encodeURIComponent(topWindow.TYPO3.ModuleMenu.App.getCurrentModule()!)
       + '&returnUrl=' + Recordlist.getReturnUrl(returnUrl);
 
     if (columnsOnly.length > 0) {
@@ -217,14 +217,14 @@ class Recordlist {
   private readonly toggleVisibility = (event: Event, target: HTMLButtonElement): void => {
     target.disabled = true;
 
-    const buttonIconElement = target.querySelector('.t3js-icon');
+    const buttonIconElement = target.querySelector('.t3js-icon')!;
     const originalIconElement = buttonIconElement.cloneNode(true);
 
     Icons.getIcon('spinner-circle', Icons.sizes.small).then((icon: string): void => {
       buttonIconElement.replaceWith(document.createRange().createContextualFragment(icon));
     });
 
-    const rowElement = target.closest<HTMLTableRowElement>('tr[data-uid]');
+    const rowElement = target.closest<HTMLTableRowElement>('tr[data-uid]')!;
     const table = rowElement.dataset.table;
     const uid = parseInt(rowElement.dataset.uid ?? '', 10);
     const isVisible = target.dataset.datahandlerStatus === 'visible';
@@ -241,14 +241,14 @@ class Recordlist {
       const elementLabel = data.isVisible
         ? target.dataset.datahandlerVisibleLabel
         : target.dataset.datahandlerHiddenLabel;
-      target.setAttribute('title', elementLabel);
+      target.setAttribute('title', elementLabel!);
       const buttonIconIdentifier = data.isVisible ? 'actions-edit-hide' : 'actions-edit-unhide';
       Icons.getIcon(buttonIconIdentifier, Icons.sizes.small).then((icon: string): void => {
         const buttonIconElement = target.querySelector('.t3js-icon');
-        buttonIconElement.replaceWith(document.createRange().createContextualFragment(icon));
+        buttonIconElement!.replaceWith(document.createRange().createContextualFragment(icon));
       });
 
-      const recordIconElement = rowElement.querySelector('.col-icon .t3js-icon');
+      const recordIconElement = rowElement.querySelector('.col-icon .t3js-icon')!;
       recordIconElement.replaceWith(document.createRange().createContextualFragment(data.icon));
 
       // Animate row
@@ -263,7 +263,7 @@ class Recordlist {
         topDocument.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
       }
     }).catch(async(response: AjaxResponse): Promise<void> => {
-      target.querySelector('.t3js-icon').replaceWith(originalIconElement);
+      target.querySelector('.t3js-icon')!.replaceWith(originalIconElement);
 
       const data = await response.resolve();
       for (const message of data.messages) {
@@ -294,7 +294,7 @@ class Recordlist {
         }
         trigger.value = value.toString(10);
         if (e.key === 'Enter' && value !== Number(trigger.dataset.currentpage)) {
-          const form = trigger.closest<HTMLFormElement>('form[name^="list-table-form-"]');
+          const form = trigger.closest<HTMLFormElement>('form[name^="list-table-form-"]')!;
           const submitUrl = new URL(form.action, window.origin);
           submitUrl.searchParams.set('pointer', value.toString());
           window.location.href = submitUrl.toString();

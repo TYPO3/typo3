@@ -37,7 +37,7 @@ describe('@typo3/backend/form-engine-review', () => {
       </form>`;
     document.body.append(container);
 
-    return container.querySelector('form');
+    return container.querySelector('form')!;
   };
 
   /**
@@ -54,7 +54,7 @@ describe('@typo3/backend/form-engine-review', () => {
 
     const panelContent = setOptionsStub.lastCall.args[1].content as HTMLElement;
 
-    return panelContent.querySelector<HTMLElement>('.list-group-item');
+    return panelContent.querySelector<HTMLElement>('.list-group-item')!;
   };
 
   beforeEach((): void => {
@@ -69,7 +69,7 @@ describe('@typo3/backend/form-engine-review', () => {
 
   it('focuses the input field of a visible field', async (): Promise<void> => {
     const form = setupForm('<input type="text" data-formengine-validation-rules="[]" data-formengine-input-name="data[tt_content][1][header]">');
-    const inputField = form.querySelector<HTMLInputElement>('[data-formengine-validation-rules]');
+    const inputField = form.querySelector<HTMLInputElement>('[data-formengine-validation-rules]')!;
 
     (await reviewLinkOfInvalidField(form, inputField)).click();
 
@@ -80,8 +80,8 @@ describe('@typo3/backend/form-engine-review', () => {
     const form = setupForm(`
       <input type="hidden" data-formengine-validation-rules="[]" data-formengine-input-name="data[tt_content][1][date]">
       <input type="text" data-formengine-datepicker-real-input-name="data[tt_content][1][date]">`);
-    const inputField = form.querySelector<HTMLInputElement>('[data-formengine-validation-rules]');
-    const datePickerInput = form.querySelector<HTMLInputElement>('[data-formengine-datepicker-real-input-name]');
+    const inputField = form.querySelector<HTMLInputElement>('[data-formengine-validation-rules]')!;
+    const datePickerInput = form.querySelector<HTMLInputElement>('[data-formengine-datepicker-real-input-name]')!;
 
     (await reviewLinkOfInvalidField(form, inputField)).click();
 

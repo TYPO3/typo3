@@ -45,8 +45,8 @@ export class TableWizardElement extends LitElement {
   public override connectedCallback(): void {
     super.connectedCallback();
 
-    this.selectorData = this.getAttribute('selector');
-    this.delimiter = this.getAttribute('delimiter');
+    this.selectorData = this.getAttribute('selector')!;
+    this.delimiter = this.getAttribute('delimiter')!;
     this.enclosure = this.getAttribute('enclosure') || '';
     this.readTableFromTextarea();
   }
@@ -70,7 +70,7 @@ export class TableWizardElement extends LitElement {
 
   private readTableFromTextarea(): void {
     // Note: We do not wait for `DocumentService.ready()` here, as the <textarea> is placed as a previous sibling before this element in DOM
-    const textarea = document.querySelector<HTMLTextAreaElement>(this.selectorData);
+    const textarea = document.querySelector<HTMLTextAreaElement>(this.selectorData)!;
     const table: string[][] = [];
 
     textarea.value.split('\n').forEach((row) => {
@@ -88,7 +88,7 @@ export class TableWizardElement extends LitElement {
   }
 
   private writeTableSyntaxToTextarea(): void {
-    const textarea = document.querySelector<HTMLTextAreaElement>(this.selectorData);
+    const textarea = document.querySelector<HTMLTextAreaElement>(this.selectorData)!;
     let text = '';
     this.table.forEach((row) => {
       const count = row.length;
@@ -329,8 +329,8 @@ export class TableWizardElement extends LitElement {
           btnClass: 'btn-primary',
           name: 'apply',
           trigger: (): void => {
-            const rows = modal.querySelector<HTMLInputElement>('#t3js-expand-rows');
-            const cols = modal.querySelector<HTMLInputElement>('#t3js-expand-cols');
+            const rows = modal.querySelector<HTMLInputElement>('#t3js-expand-rows')!;
+            const cols = modal.querySelector<HTMLInputElement>('#t3js-expand-cols')!;
 
             if (rows === null || cols === null) {
               return;
@@ -352,7 +352,7 @@ export class TableWizardElement extends LitElement {
   }
 
   private showTableSyntax(): void {
-    const textarea = document.querySelector<HTMLTextAreaElement>(this.selectorData);
+    const textarea = document.querySelector<HTMLTextAreaElement>(this.selectorData)!;
     const modal = Modal.advanced({
       content: html`
         <div class="form-group">
@@ -376,7 +376,7 @@ export class TableWizardElement extends LitElement {
           name: 'apply',
           trigger: (): void => {
             // Apply table changes
-            textarea.value = modal.querySelector('textarea').value;
+            textarea.value = modal.querySelector('textarea')!.value;
             textarea.dispatchEvent(new CustomEvent('change', { bubbles: true }));
             this.readTableFromTextarea();
             this.requestUpdate();

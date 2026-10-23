@@ -102,7 +102,7 @@ class CoreUpdate extends AbstractInteractableModule {
       }
 
       const action = target.dataset.action;
-      this.findInModal(Identifiers.output).innerHTML = '';
+      this.findInModal(Identifiers.output)!.innerHTML = '';
       switch (action) {
         case 'updateDevelopment':
           this.update('development');
@@ -214,7 +214,7 @@ class CoreUpdate extends AbstractInteractableModule {
    * Remove an enabled loading message
    */
   private removeLoadingMessage(): void {
-    this.findInModal(Identifiers.output).querySelector('typo3-install-flashmessage')?.remove();
+    this.findInModal(Identifiers.output)!.querySelector('typo3-install-flashmessage')?.remove();
   }
 
   /**
@@ -234,21 +234,21 @@ class CoreUpdate extends AbstractInteractableModule {
    * @param button
    */
   private showActionButton(button: any): void {
-    const domButton = this.buttonTemplate;
+    const domButton = this.buttonTemplate!;
     if (button.action) {
       domButton.setAttribute('data-action', button.action);
     }
     if (button.title) {
       domButton.innerText = button.title;
     }
-    this.findInModal(Identifiers.updateButton).replaceWith(domButton);
+    this.findInModal(Identifiers.updateButton)!.replaceWith(domButton);
   }
 
   /**
    * Show a status message
    */
   private addMessage(severity: number, title: string, message?: string): void {
-    this.findInModal(Identifiers.output).append(FlashMessage.create(severity, title, message));
+    this.findInModal(Identifiers.output)!.append(FlashMessage.create(severity, title, message));
   }
 }
 

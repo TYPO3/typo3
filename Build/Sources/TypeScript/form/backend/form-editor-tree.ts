@@ -576,7 +576,7 @@ export class FormEditorTree extends Tree {
     }
 
     // Determine the target depth after drop
-    const targetDepth = this.getTargetDepthAfterDrop(targetNode, position);
+    const targetDepth = this.getTargetDepthAfterDrop(targetNode, position!);
 
     // Rule: Top-level elements (Pages) must always be at depth 1
     if (draggingFormElement?.isTopLevel && targetDepth !== TOP_LEVEL_DEPTH) {

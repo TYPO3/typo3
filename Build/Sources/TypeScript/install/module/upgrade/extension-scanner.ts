@@ -81,7 +81,7 @@ class ExtensionScanner extends AbstractInteractableModule {
     new RegularEvent('click', (event: Event, target: HTMLElement): void => {
       // Scan a single extension by clicking "Rescan"
       event.preventDefault();
-      const extension = target.closest<HTMLElement>(Identifiers.extensionContainer).dataset.extension;
+      const extension = target.closest<HTMLElement>(Identifiers.extensionContainer)!.dataset.extension;
       this.scanSingleExtension(extension ?? '');
     }).delegateTo(currentModal, Identifiers.scanSingleTrigger);
 
@@ -135,10 +135,10 @@ class ExtensionScanner extends AbstractInteractableModule {
     extensions.forEach(extensionContainer => {
       extensionContainer.classList.remove('panel-danger', 'panel-warning', 'panel-success');
 
-      const panelProgress = extensionContainer.querySelector<HTMLElement>('.panel-progress-bar');
+      const panelProgress = extensionContainer.querySelector<HTMLElement>('.panel-progress-bar')!;
       panelProgress.style.width = String(0);
       panelProgress.setAttribute('aria-valuenow', String(0));
-      panelProgress.querySelector('span').innerText = '0%';
+      panelProgress.querySelector('span')!.innerText = '0%';
     });
 
     this.setProgressForAll();
@@ -184,19 +184,19 @@ class ExtensionScanner extends AbstractInteractableModule {
   }
 
   private setStatusMessageForScan(extension: string, doneFiles: number, numberOfFiles: number, failedFiles: number = 0): void {
-    const extensionContainer = this.findInModal(this.getExtensionSelector(extension));
-    const numberOfFilesElement = extensionContainer.querySelector<HTMLElement>(Identifiers.numberOfFiles);
+    const extensionContainer = this.findInModal(this.getExtensionSelector(extension))!;
+    const numberOfFilesElement = extensionContainer.querySelector<HTMLElement>(Identifiers.numberOfFiles)!;
     numberOfFilesElement.innerText = 'Checked ' + doneFiles + ' of ' + numberOfFiles + ' files'
       + (failedFiles > 0 ? ', ' + failedFiles + ' failed' : '');
   }
 
   private setProgressForScan(extension: string, doneFiles: number, numberOfFiles: number): void {
     const percent = (doneFiles / numberOfFiles) * 100;
-    const extensionContainer = this.findInModal(this.getExtensionSelector(extension));
-    const panelProgress = extensionContainer.querySelector<HTMLElement>('.panel-progress-bar');
+    const extensionContainer = this.findInModal(this.getExtensionSelector(extension))!;
+    const panelProgress = extensionContainer.querySelector<HTMLElement>('.panel-progress-bar')!;
     panelProgress.style.width = percent + '%';
     panelProgress.setAttribute('aria-valuenow', String(percent));
-    panelProgress.querySelector('span').innerText = percent + '%';
+    panelProgress.querySelector('span')!.innerText = percent + '%';
   }
 
   /**
@@ -220,7 +220,7 @@ class ExtensionScanner extends AbstractInteractableModule {
   private async scanSingleExtension(extension: string): Promise<number> {
     const executeToken = this.getModuleContent().dataset.extensionScannerFilesToken;
     const modalContent = this.getModalBody();
-    const extensionContainer = this.findInModal(this.getExtensionSelector(extension));
+    const extensionContainer = this.findInModal(this.getExtensionSelector(extension))!;
     const hitTemplate = '#t3js-extensionScanner-file-hit-template';
     const restTemplate = '#t3js-extensionScanner-file-hit-rest-template';
     let hitFound = false;
@@ -228,13 +228,13 @@ class ExtensionScanner extends AbstractInteractableModule {
     extensionContainer.classList.remove('panel-danger', 'panel-warning', 'panel-success', 't3js-extensionscan-finished');
     extensionContainer.dataset.hasRun = String('true');
 
-    const scanSingle = extensionContainer.querySelector<HTMLButtonElement>('.t3js-extensionScanner-scan-single');
+    const scanSingle = extensionContainer.querySelector<HTMLButtonElement>('.t3js-extensionScanner-scan-single')!;
     scanSingle.innerText = 'Scanning...';
     scanSingle.disabled = true;
 
-    extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body-loc').innerText = '0';
-    extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body-ignored-files').innerText = '0';
-    extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body-ignored-lines').innerText = '0';
+    extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body-loc')!.innerText = '0';
+    extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body-ignored-files')!.innerText = '0';
+    extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body-ignored-lines')!.innerText = '0';
 
     this.setProgressForAll();
 
@@ -256,7 +256,7 @@ class ExtensionScanner extends AbstractInteractableModule {
         }
 
         this.setStatusMessageForScan(extension, 0, numberOfFiles);
-        extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body').innerText = '';
+        extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body')!.innerText = '';
         extensionContainer.classList.add('panel-has-progress');
         let doneFiles = 0;
         const failedFiles: string[] = [];
@@ -292,37 +292,37 @@ class ExtensionScanner extends AbstractInteractableModule {
                 if (Array.isArray(fileData.matches)) {
                   fileData.matches.forEach((match): void => {
                     hitFound = true;
-                    const aMatch = modalContent.querySelector(hitTemplate + ' .panel').cloneNode(true) as HTMLElement;
-                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head').setAttribute('data-bs-target', '#collapse' + match.uniqueId);
-                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head').setAttribute('aria-controls', 'collapse' + match.uniqueId);
-                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-body').setAttribute('id', 'collapse' + match.uniqueId);
-                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-filename').innerText = file;
-                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-message').innerText = match.message;
+                    const aMatch = modalContent.querySelector(hitTemplate + ' .panel')!.cloneNode(true) as HTMLElement;
+                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head')!.setAttribute('data-bs-target', '#collapse' + match.uniqueId);
+                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head')!.setAttribute('aria-controls', 'collapse' + match.uniqueId);
+                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-body')!.setAttribute('id', 'collapse' + match.uniqueId);
+                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-filename')!.innerText = file;
+                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-message')!.innerText = match.message;
                     if (match.indicator === 'strong') {
-                      aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head .t3js-extensionScanner-hit-badges')
+                      aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head .t3js-extensionScanner-hit-badges')!
                         .innerHTML += '<span class="badge badge-danger" title="Reliable match, false positive unlikely">strong</span>';
                     } else {
-                      aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head .t3js-extensionScanner-hit-badges')
+                      aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head .t3js-extensionScanner-hit-badges')!
                         .innerHTML += '<span class="badge badge-warning" title="Probable match, but can be a false positive">weak</span>';
                     }
                     if (match.silenced === true) {
-                      aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head .t3js-extensionScanner-hit-badges')
+                      aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head .t3js-extensionScanner-hit-badges')!
                         .innerHTML += '<span class="badge badge-info" title="Match has been annotated by extension author' +
                         ' as false positive match">silenced</span>';
                     }
-                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-lineContent').innerText = match.lineContent;
-                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-line').innerText = match.line + ': ';
+                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-lineContent')!.innerText = match.lineContent;
+                    aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-line')!.innerText = match.line + ': ';
                     if (Array.isArray(match.restFiles)) {
                       match.restFiles.forEach((restFile): void => {
-                        const aRest = modalContent.querySelector(restTemplate + ' .panel').cloneNode(true) as HTMLElement;
-                        aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-panel-head').setAttribute('data-bs-target', '#collapse' + restFile.uniqueId);
-                        aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-panel-head').setAttribute('aria-controls', 'collapse' + restFile.uniqueId);
-                        aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-panel-head .t3js-extensionScanner-hit-rest-badge').innerText = restFile.version;
-                        aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-panel-body').setAttribute('id', 'collapse' + restFile.uniqueId);
-                        aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-headline').innerText = restFile.headline;
-                        aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-body').innerText = restFile.content;
+                        const aRest = modalContent.querySelector(restTemplate + ' .panel')!.cloneNode(true) as HTMLElement;
+                        aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-panel-head')!.setAttribute('data-bs-target', '#collapse' + restFile.uniqueId);
+                        aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-panel-head')!.setAttribute('aria-controls', 'collapse' + restFile.uniqueId);
+                        aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-panel-head .t3js-extensionScanner-hit-rest-badge')!.innerText = restFile.version;
+                        aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-panel-body')!.setAttribute('id', 'collapse' + restFile.uniqueId);
+                        aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-headline')!.innerText = restFile.headline;
+                        aRest.querySelector<HTMLElement>('.t3js-extensionScanner-hit-rest-body')!.innerText = restFile.content;
                         aRest.classList.add('panel-' + restFile.class);
-                        aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-rest-container').append(aRest);
+                        aMatch.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-rest-container')!.append(aRest);
                         this.listOfAffectedRestFileHashes.push(restFile.file_hash);
                       });
                     }
@@ -332,7 +332,7 @@ class ExtensionScanner extends AbstractInteractableModule {
                         : 'panel-warning';
                     aMatch.classList.add(panelClass);
                     aMatch.classList.remove('panel-default');
-                    const extensionBody = extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body');
+                    const extensionBody = extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body')!;
                     extensionBody.classList.remove('hide');
                     extensionBody.append(aMatch);
                     extensionContainer.classList.remove('panel-default');
@@ -345,21 +345,21 @@ class ExtensionScanner extends AbstractInteractableModule {
                     }
                   });
                 }
-                const currentLinesOfCode = parseInt(extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body-loc').innerText, 10);
-                extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body-loc')
+                const currentLinesOfCode = parseInt(extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body-loc')!.innerText, 10);
+                extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body-loc')!
                   .innerText = String(currentLinesOfCode + fileData.effectiveCodeLines);
                 if (fileData.isFileIgnored) {
                   const currentIgnoredFiles = parseInt(
-                    extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body-ignored-files').innerText,
+                    extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body-ignored-files')!.innerText,
                     10,
                   );
-                  extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body-ignored-files').innerText = String(currentIgnoredFiles + 1);
+                  extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body-ignored-files')!.innerText = String(currentIgnoredFiles + 1);
                 }
                 const currentIgnoredLines = parseInt(
-                  extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body-ignored-lines').innerText,
+                  extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body-ignored-lines')!.innerText,
                   10,
                 );
-                extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body-ignored-lines')
+                extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body-ignored-lines')!
                   .innerText = String(currentIgnoredLines + fileData.ignoredLines);
                 resolve();
               } catch (error: unknown) {
@@ -380,19 +380,19 @@ class ExtensionScanner extends AbstractInteractableModule {
         failedCount = failedFiles.length;
 
         failedFiles.forEach((file: string): void => {
-          const aFailure = modalContent.querySelector(hitTemplate + ' .panel').cloneNode(true) as HTMLElement;
-          const head = aFailure.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head');
+          const aFailure = modalContent.querySelector(hitTemplate + ' .panel')!.cloneNode(true) as HTMLElement;
+          const head = aFailure.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head')!;
           ['data-bs-toggle', 'data-bs-target', 'aria-controls', 'aria-expanded'].forEach((attribute: string): void => head.removeAttribute(attribute));
           head.classList.remove('collapsed');
-          aFailure.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head .caret').remove();
-          aFailure.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-body').remove();
-          aFailure.querySelector<HTMLElement>('.t3js-extensionScanner-hit-filename').innerText = file;
-          aFailure.querySelector<HTMLElement>('.t3js-extensionScanner-hit-message').innerText =
+          aFailure.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head .caret')!.remove();
+          aFailure.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-body')!.remove();
+          aFailure.querySelector<HTMLElement>('.t3js-extensionScanner-hit-filename')!.innerText = file;
+          aFailure.querySelector<HTMLElement>('.t3js-extensionScanner-hit-message')!.innerText =
             'This file could not be scanned, its result is missing. Please check the browser\'s console and TYPO3\'s log.';
-          aFailure.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head .t3js-extensionScanner-hit-badges')
+          aFailure.querySelector<HTMLElement>('.t3js-extensionScanner-hit-file-panel-head .t3js-extensionScanner-hit-badges')!
             .innerHTML += '<span class="badge badge-danger">failed</span>';
           aFailure.classList.add('panel-danger');
-          const extensionBody = extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body');
+          const extensionBody = extensionContainer.querySelector<HTMLElement>('.t3js-extensionScanner-extension-body')!;
           extensionBody.classList.remove('hide');
           extensionBody.prepend(aFailure);
         });
@@ -406,7 +406,7 @@ class ExtensionScanner extends AbstractInteractableModule {
         extensionContainer.classList.add('t3js-extensionscan-finished');
         extensionContainer.classList.remove('panel-has-progress');
         this.setProgressForAll();
-        const scanSingle = extensionContainer.querySelector<HTMLButtonElement>('.t3js-extensionScanner-scan-single');
+        const scanSingle = extensionContainer.querySelector<HTMLButtonElement>('.t3js-extensionScanner-scan-single')!;
         scanSingle.innerText = 'Rescan';
         scanSingle.disabled = false;
       } else {

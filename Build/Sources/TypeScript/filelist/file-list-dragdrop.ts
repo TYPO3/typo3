@@ -47,7 +47,7 @@ class FileListDragDrop {
       if (checkedItems.length) {
         checkedItems.forEach((checkbox) => {
           if (checkbox.checked) {
-            const element = checkbox.closest<HTMLInputElement>(FileListActionSelector.elementSelector);
+            const element = checkbox.closest<HTMLInputElement>(FileListActionSelector.elementSelector)!;
             element.dataset.filelistDragdropTransferItem = 'true';
             const resource = FileListActionUtility.getResourceForElement(element);
             selectedItems.push(resource);
@@ -56,7 +56,7 @@ class FileListDragDrop {
           }
         });
       } else {
-        const element = target.closest<HTMLElement>(FileListActionSelector.elementSelector);
+        const element = target.closest<HTMLElement>(FileListActionSelector.elementSelector)!;
         element.dataset.filelistDragdropTransferItem = 'true';
         const resource = FileListActionUtility.getResourceForElement(element);
         selectedItems.push(resource);
@@ -135,7 +135,7 @@ class FileListDragDrop {
   }
 
   private isDropAllowedOnResoruce(resource: ResourceInterface): boolean {
-    const element = document.querySelector<HTMLElement>(FileListActionSelector.elementSelector + '[data-filelist-identifier="' + resource.identifier + '"]');
+    const element = document.querySelector<HTMLElement>(FileListActionSelector.elementSelector + '[data-filelist-identifier="' + resource.identifier + '"]')!;
     return !('filelistDragdropTransferItem' in element.dataset) && resource.type === 'folder';
   }
 }

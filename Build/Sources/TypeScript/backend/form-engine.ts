@@ -318,7 +318,7 @@ export default (function() {
         }
 
         if (reenableOptions && typeof optionEl !== 'undefined') {
-          optionEl.closest('select').querySelectorAll<HTMLOptionElement>('[disabled]').forEach(function (disabledOption) {
+          optionEl.closest('select')!.querySelectorAll<HTMLOptionElement>('[disabled]').forEach(function (disabledOption) {
             disabledOption.classList.remove('hidden');
             disabledOption.disabled = false;
             FormEngine.enableOptGroup(disabledOption);
@@ -425,7 +425,7 @@ export default (function() {
           $fieldEl = $(selector`:input[type=hidden][data-formengine-input-name="${fieldName}"]`, FormEngine.formElement);
           break;
         default:
-          $fieldEl = null;
+          $fieldEl = $();
           break;
       }
       if (($fieldEl && $fieldEl.length > 0) || noFallback === true) {
@@ -433,7 +433,7 @@ export default (function() {
       }
     }
 
-    return $(FormEngine.formElement.elements.namedItem(fieldName));
+    return $(FormEngine.formElement.elements.namedItem(fieldName) ?? []);
   };
 
   FormEngine.delegatesInitialized = false;
@@ -475,7 +475,7 @@ export default (function() {
     }).delegateTo(document, '.t3js-editform-delete-record');
 
     new RegularEvent('change', (event: Event, target: HTMLInputElement): void => {
-      target.closest('.t3js-formengine-field-item').classList.toggle('disabled');
+      target.closest('.t3js-formengine-field-item')!.classList.toggle('disabled');
     }).delegateTo(document, '.t3-form-field-eval-null-checkbox input[type="checkbox"]');
 
     new RegularEvent('change', (event: Event, target: HTMLInputElement): void => {
@@ -638,13 +638,13 @@ export default (function() {
    */
   FormEngine.initializeMinimumCharactersLeftViews = function () {
     const addOrUpdateCounter = (minCharacterCountLeft: string, event: Event) => {
-      const parent = (event.currentTarget as HTMLInputElement).closest('.t3js-formengine-field-item');
+      const parent = (event.currentTarget as HTMLInputElement).closest('.t3js-formengine-field-item')!;
       const counter = parent.querySelector('.t3js-charcounter-min');
       const labelValue = coreCoreLabels.get('labels.remainingCharacters', {
         '0': minCharacterCountLeft
       });
       if (counter) {
-        counter.querySelector('span').innerHTML = labelValue;
+        counter.querySelector('span')!.innerHTML = labelValue;
       } else {
         const counter = document.createElement('div');
         counter.classList.add('t3js-charcounter-min');
@@ -663,7 +663,7 @@ export default (function() {
     };
     const removeCounter = (event: Event) => {
       const parent = (event.currentTarget as HTMLInputElement).closest('.t3js-formengine-field-item');
-      const counter = parent.querySelector('.t3js-charcounter-min');
+      const counter = parent!.querySelector('.t3js-charcounter-min');
       if (counter) {
         counter.remove();
       }
@@ -720,8 +720,8 @@ export default (function() {
     document.querySelectorAll<HTMLElement>('.t3-form-field-eval-null-checkbox').forEach((el) => {
       // Add disabled class to "t3js-formengine-field-item" if the null checkbox is NOT set,
       // This activates a CSS overlay "disabling" the input field and everything around.
-      const checkbox = el.querySelector<HTMLInputElement>('input[type="checkbox"]');
-      const fieldItem = el.closest('.t3js-formengine-field-item');
+      const checkbox = el.querySelector<HTMLInputElement>('input[type="checkbox"]')!;
+      const fieldItem = el.closest('.t3js-formengine-field-item')!;
       if (!checkbox.checked) {
         fieldItem.classList.add('disabled');
       }
@@ -742,9 +742,9 @@ export default (function() {
    * depending on whether checkbox is checked or not
    */
   FormEngine.toggleCheckboxField = function(checkbox: HTMLInputElement, triggerFocusWhenChecked: boolean = true): void {
-    const item = checkbox.closest('.t3js-formengine-field-item');
-    const placeholder = item.querySelector<HTMLElement>('.t3js-formengine-placeholder-placeholder');
-    const formFieldWrapper = item.querySelector<HTMLElement>('.t3js-formengine-placeholder-formfield');
+    const item = checkbox.closest('.t3js-formengine-field-item')!;
+    const placeholder = item.querySelector<HTMLElement>('.t3js-formengine-placeholder-placeholder')!;
+    const formFieldWrapper = item.querySelector<HTMLElement>('.t3js-formengine-placeholder-formfield')!;
 
     if (checkbox.checked) {
       placeholder.hidden = true;
@@ -1009,7 +1009,7 @@ export default (function() {
     items.forEach((item) => {
       const handler = onFieldChangeHandlers.get(item.name);
       if (handler instanceof Function) {
-        handler.call(null, (item.data || null) as never, evt);
+        handler.call(null, (item.data || null) as never, evt!);
       }
     });
   };
@@ -1085,10 +1085,10 @@ export default (function() {
     switch(modalButtonName) {
       case 'discard':
         const previewWin = window.open(previewUrl, 'newTYPO3frontendWindow');
-        previewWin.focus();
+        previewWin!.focus();
 
-        if (Utility.urlsPointToSameServerSideResource(previewWin.location.href, previewUrl)) {
-          previewWin.location.reload();
+        if (Utility.urlsPointToSameServerSideResource(previewWin!.location.href, previewUrl)) {
+          previewWin!.location.reload();
         }
         break;
       case 'save':
@@ -1354,7 +1354,7 @@ export default (function() {
   FormEngine.deleteAction = function(event: Event, callback: DeleteActionCallback): void {
     callback = callback || FormEngine.deleteActionCallback;
 
-    const $anchorElement = $(event.target);
+    const $anchorElement = $(event.target!);
 
     FormEngine.showDeleteModal($anchorElement, callback);
   };

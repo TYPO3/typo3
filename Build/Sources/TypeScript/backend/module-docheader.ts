@@ -50,7 +50,7 @@ class ModuleDocHeader {
 
   private publish(): void {
     const style = document.documentElement.style;
-    style.setProperty('--module-docheader-height', `${this.wrapper.getBoundingClientRect().height}px`);
+    style.setProperty('--module-docheader-height', `${this.wrapper!.getBoundingClientRect().height}px`);
     style.setProperty('--module-docheader-navigation-height', `${this.navigation?.getBoundingClientRect().height ?? 0}px`);
   }
 }

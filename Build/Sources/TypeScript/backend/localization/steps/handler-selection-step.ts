@@ -139,7 +139,7 @@ export class HandlerSelectionStep implements WizardStepInterface, WizardStepValu
   }
 
   public beforeAdvance(): void {
-    this.context.setStoreData('localizationHandler', this.getValue());
+    this.context.setStoreData('localizationHandler', this.getValue()!);
   }
 
   public getSummaryData(): SummaryItem[] {

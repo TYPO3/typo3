@@ -163,7 +163,7 @@ export class TargetLanguageStep implements WizardStepInterface, WizardStepValueI
   }
 
   public beforeAdvance(): void {
-    this.context.setStoreData('targetLanguage', this.getValue());
+    this.context.setStoreData('targetLanguage', this.getValue()!);
   }
 
   public getSummaryData(): SummaryItem[] {

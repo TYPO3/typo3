@@ -59,7 +59,7 @@ class EnvironmentCheck extends AbstractInteractableModule {
   private runTests(): void {
     this.setModalButtonsState(false);
     const modalContent: HTMLElement = this.getModalBody();
-    const outputContainer = modalContent.querySelector<HTMLElement>(Identifiers.outputContainer);
+    const outputContainer = modalContent.querySelector<HTMLElement>(Identifiers.outputContainer)!;
     if (outputContainer !== null) {
       this.renderProgressBar(outputContainer);
     }
@@ -73,7 +73,7 @@ class EnvironmentCheck extends AbstractInteractableModule {
           if (data.success === true && typeof (data.status) === 'object') {
             for (const messages of Object.values(data.status)) {
               for (const status of messages) {
-                modalContent.querySelector(Identifiers.outputContainer).append(InfoBox.create(status.severity, status.title, status.message));
+                modalContent.querySelector(Identifiers.outputContainer)!.append(InfoBox.create(status.severity, status.title, status.message));
               }
             }
           } else {

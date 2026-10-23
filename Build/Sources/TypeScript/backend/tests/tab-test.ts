@@ -20,7 +20,7 @@ describe('@typo3/backend/tab', () => {
       </div>
     `;
     document.body.append(container);
-    const scroller = container.querySelector('typo3-backend-tab-scroller');
+    const scroller = container.querySelector('typo3-backend-tab-scroller')!;
 
     container.append(scroller);
 

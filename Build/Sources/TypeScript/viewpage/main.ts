@@ -62,13 +62,13 @@ class ViewPage {
 
       this.defaultLabel = presetCustomLabel?.textContent.trim() ?? '';
       this.iframe = document.getElementById('tx_this_iframe') as HTMLIFrameElement;
-      this.inputCustomWidth = document.querySelector<HTMLInputElement>(Selectors.inputWidthSelector);
-      this.inputCustomHeight = document.querySelector<HTMLInputElement>(Selectors.inputHeightSelector);
-      this.customPresetItem = document.querySelector<HTMLElement>(Selectors.customSelector);
-      this.customPresetItemWidth = document.querySelector<HTMLElement>(Selectors.customWidthSelector);
-      this.customPresetItemHeight = document.querySelector<HTMLElement>(Selectors.customHeightSelector);
-      this.currentLabelElement = document.querySelector<HTMLElement>(Selectors.currentLabelSelector);
-      this.resizableContainer = document.querySelector<HTMLElement>(Selectors.resizableContainerIdentifier);
+      this.inputCustomWidth = document.querySelector<HTMLInputElement>(Selectors.inputWidthSelector)!;
+      this.inputCustomHeight = document.querySelector<HTMLInputElement>(Selectors.inputHeightSelector)!;
+      this.customPresetItem = document.querySelector<HTMLElement>(Selectors.customSelector)!;
+      this.customPresetItemWidth = document.querySelector<HTMLElement>(Selectors.customWidthSelector)!;
+      this.customPresetItemHeight = document.querySelector<HTMLElement>(Selectors.customHeightSelector)!;
+      this.currentLabelElement = document.querySelector<HTMLElement>(Selectors.currentLabelSelector)!;
+      this.resizableContainer = document.querySelector<HTMLElement>(Selectors.resizableContainerIdentifier)!;
 
       this.initialize();
     });
@@ -156,7 +156,7 @@ class ViewPage {
     new RegularEvent('click', (): void => {
       this.setSize(this.getCurrentHeight(), this.getCurrentWidth());
       this.persistCurrentPreset();
-    }).bindTo(document.querySelector(Selectors.changeOrientationSelector));
+    }).bindTo(document.querySelector(Selectors.changeOrientationSelector)!);
 
     [this.inputCustomWidth, this.inputCustomHeight].forEach((customDimensionControl): void => {
       new RegularEvent('input', (e: Event): void => {
@@ -181,7 +181,7 @@ class ViewPage {
     // Add event for refresh button click
     new RegularEvent('click', (): void => {
       this.iframe.contentWindow?.location.reload();
-    }).bindTo(document.querySelector(Selectors.refreshSelector));
+    }).bindTo(document.querySelector(Selectors.refreshSelector)!);
 
     interact(this.resizableContainer).on('resizestart', (e: ResizeEvent): void => {
       // Add iframe overlay to prevent losing the mouse focus to the iframe while resizing fast
@@ -231,10 +231,10 @@ class ViewPage {
 
     const docheaderNavigationHeight: number = document.querySelector(Selectors.moduleDocheaderNavigationSelector)?.getBoundingClientRect().height ?? 0;
     const docheaderButtonsHeight: number = document.querySelector(Selectors.moduleDocheaderButtonsSelector)?.getBoundingClientRect().height ?? 0;
-    const computedStyleOfModuleBody = getComputedStyle(document.querySelector(Selectors.moduleBodySelector));
+    const computedStyleOfModuleBody = getComputedStyle(document.querySelector(Selectors.moduleBodySelector)!);
     const padding = parseFloat(computedStyleOfModuleBody.getPropertyValue('padding-top')) + parseFloat(computedStyleOfModuleBody.getPropertyValue('padding-bottom'));
     const documentHeight: number = document.body.getBoundingClientRect().height;
-    const topbarHeight = (document.querySelector<HTMLElement>(Selectors.topbarContainerSelector)).getBoundingClientRect().height;
+    const topbarHeight = (document.querySelector<HTMLElement>(Selectors.topbarContainerSelector)!).getBoundingClientRect().height;
 
     this.resizableContainer.hidden = false;
     return documentHeight - docheaderNavigationHeight - docheaderButtonsHeight - padding - topbarHeight - 8;
@@ -243,7 +243,7 @@ class ViewPage {
   private calculateContainerMaxWidth(): number {
     this.resizableContainer.hidden = true;
 
-    const computedStyleOfModuleBody = getComputedStyle(document.querySelector(Selectors.moduleBodySelector));
+    const computedStyleOfModuleBody = getComputedStyle(document.querySelector(Selectors.moduleBodySelector)!);
     const padding = parseFloat(computedStyleOfModuleBody.getPropertyValue('padding-left')) + parseFloat(computedStyleOfModuleBody.getPropertyValue('padding-right'));
     const documentWidth: number = document.body.getBoundingClientRect().width;
 

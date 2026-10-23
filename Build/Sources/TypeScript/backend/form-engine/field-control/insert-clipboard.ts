@@ -27,7 +27,7 @@ class InsertClipboard {
 
   constructor(controlElementId: string) {
     DocumentService.ready().then((): void => {
-      this.controlElement = document.querySelector<HTMLElement>(controlElementId);
+      this.controlElement = document.querySelector<HTMLElement>(controlElementId)!;
       this.controlElement.addEventListener('click', this.registerClickHandler);
     });
   }
@@ -38,8 +38,8 @@ class InsertClipboard {
   private readonly registerClickHandler = (e: Event): void => {
     e.preventDefault();
 
-    const assignedElement: string = this.controlElement.dataset.element;
-    const clipboardItems: Array<ClipboardItem> = JSON.parse(this.controlElement.dataset.clipboardItems ?? '');
+    const assignedElement: string = this.controlElement!.dataset.element!;
+    const clipboardItems: Array<ClipboardItem> = JSON.parse(this.controlElement!.dataset.clipboardItems ?? '');
 
     for (const item of clipboardItems) {
       FormEngine.setSelectOptionFromExternalSource(assignedElement, item.value, item.title, item.title);

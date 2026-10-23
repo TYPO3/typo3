@@ -25,7 +25,7 @@ export class Whitespace extends Core.Plugin {
 
   public init(): void {
     const editor = this.editor;
-    const inputCommand = editor.commands.get('insertText');
+    const inputCommand = editor.commands.get('insertText')!;
 
     // CKEditor should map Ctrl to Cmd on MacOs, but for
     // some reason the shortcut is blocked and cannot be

@@ -184,7 +184,7 @@ export class EditablePageTitle extends LitElement {
     if (this.isEditable()) {
       this._isEditing = true;
       await this.updateComplete;
-      this.shadowRoot.querySelector('input')?.focus();
+      this.shadowRoot!.querySelector('input')?.focus();
     }
   }
 
@@ -216,7 +216,7 @@ export class EditablePageTitle extends LitElement {
     if (this.isEditable()) {
       this._isEditing = false;
       await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
-      this.shadowRoot.querySelector<HTMLButtonElement>('button[data-action="edit"]')?.focus();
+      this.shadowRoot!.querySelector<HTMLButtonElement>('button[data-action="edit"]')?.focus();
     }
   }
 

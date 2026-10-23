@@ -30,7 +30,7 @@ function setButtonStates(scope: HTMLElement, action: string): void {
     if (button.dataset.generatorAction === action) {
       button.classList.remove('disabled');
       button.hidden = false;
-      button.querySelector('typo3-backend-icon').identifier = 'actions-' + action;
+      button.querySelector('typo3-backend-icon')!.identifier = 'actions-' + action;
     } else {
       button.classList.add('disabled');
       button.hidden = true;
@@ -51,7 +51,7 @@ new RegularEvent('click', (e: MouseEvent, target: HTMLButtonElement): void => {
       children.classList.add('disabled');
     }
   }
-  target.querySelector('typo3-backend-icon').identifier = 'spinner-circle';
+  target.querySelector('typo3-backend-icon')!.identifier = 'spinner-circle';
 
   if (!progressBar) {
     progressBar = document.createElement('typo3-backend-progress-bar');
@@ -68,7 +68,7 @@ new RegularEvent('click', (e: MouseEvent, target: HTMLButtonElement): void => {
         progressBar.done();
       }
       Notification.error(json.title, json.body, 5);
-      target.querySelector('typo3-backend-icon').identifier = 'actions-' + target.dataset.generatorAction;
+      target.querySelector('typo3-backend-icon')!.identifier = 'actions-' + target.dataset.generatorAction;
       target.classList.remove('disabled');
       return;
     }
@@ -86,7 +86,7 @@ new RegularEvent('click', (e: MouseEvent, target: HTMLButtonElement): void => {
       progressBar.done();
     }
     Notification.error('', error.response.status + ' ' + error.response.statusText, 5);
-    target.querySelector('typo3-backend-icon').identifier = 'actions-' + target.dataset.generatorAction;
+    target.querySelector('typo3-backend-icon')!.identifier = 'actions-' + target.dataset.generatorAction;
     target.classList.remove('disabled');
   });
 }).delegateTo(document, '.t3js-generator-action');

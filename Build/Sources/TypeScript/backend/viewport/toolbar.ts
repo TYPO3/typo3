@@ -31,7 +31,7 @@ class Toolbar {
     DocumentService.ready().then(() => {
       callback();
     });
-    new RegularEvent('t3-topbar-update', callback).bindTo(document.querySelector(ScaffoldIdentifierEnum.header));
+    new RegularEvent('t3-topbar-update', callback).bindTo(document.querySelector(ScaffoldIdentifierEnum.header)!);
   }
 
   private initializeEvents(): void {
@@ -43,7 +43,7 @@ class Toolbar {
     new RegularEvent('click', (event: Event, target: HTMLElement): void => {
       event.preventDefault();
       const moduleRoute = ModuleUtility.getRouteFromElement(target);
-      moduleMenuApp.App.showModule(moduleRoute.identifier, moduleRoute.params, event);
+      moduleMenuApp.App.showModule(moduleRoute.identifier, moduleRoute.params!, event);
     }).delegateTo(toolbar, ModuleSelector.link);
 
     const moduleLoadListener = (evt: CustomEvent<ModuleState>) => {

@@ -29,7 +29,7 @@ class RteLinkBrowser {
   protected selectionEndPosition: ModelPosition | null = null;
 
   public initialize(): void {
-    const currentModal = Modal.currentModal;
+    const currentModal = Modal.currentModal!;
     this.editor = currentModal.userData.editor;
     this.selectionStartPosition = currentModal.userData.selectionStartPosition;
     this.selectionEndPosition = currentModal.userData.selectionEndPosition;
@@ -39,7 +39,7 @@ class RteLinkBrowser {
       new RegularEvent('click', (e: Event): void => {
         e.preventDefault();
         this.restoreSelection();
-        this.editor.execute('unlink');
+        this.editor!.execute('unlink');
         Modal.dismiss();
       }).bindTo(removeLinkElement);
     }
@@ -67,8 +67,8 @@ class RteLinkBrowser {
   }
 
   private restoreSelection(): void {
-    this.editor.model.change((writer) => {
-      const ranges = [writer.createRange(this.selectionStartPosition, this.selectionEndPosition)];
+    this.editor!.model.change((writer) => {
+      const ranges = [writer.createRange(this.selectionStartPosition!, this.selectionEndPosition!)];
       writer.setSelection(ranges);
     });
   }

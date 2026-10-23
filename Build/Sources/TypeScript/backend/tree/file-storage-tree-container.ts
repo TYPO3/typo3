@@ -100,7 +100,7 @@ export class EditableFileStorageTree extends FileStorageTree {
     }
 
     // @TODO Unity with parent
-    if (event.dataTransfer.types.includes(DataTransferTypes.falResources)) {
+    if (event.dataTransfer!.types.includes(DataTransferTypes.falResources)) {
 
       // Find the current hovered node
       // Exit when no node was hovered
@@ -115,22 +115,22 @@ export class EditableFileStorageTree extends FileStorageTree {
       // element, during the drag the default mouse over
       // is disabled by the browser
       const hoverElement = this.getElementFromNode(targetNode);
-      hoverElement.classList.add('node-hover');
+      hoverElement!.classList.add('node-hover');
 
       // Open node with children while holding the
       // node/element over this node for 1 second
       if (targetNode.hasChildren && !targetNode.__expanded) {
         if (this.openNodeTimeout.targetNode != targetNode) {
           this.openNodeTimeout.targetNode = targetNode;
-          clearTimeout(this.openNodeTimeout.timeout);
+          clearTimeout(this.openNodeTimeout.timeout!);
           this.openNodeTimeout.timeout = setTimeout(() => {
-            this.showChildren(this.openNodeTimeout.targetNode);
+            this.showChildren(this.openNodeTimeout.targetNode!);
             this.openNodeTimeout.targetNode = null;
             this.openNodeTimeout.timeout = null;
           }, 1000);
         }
       } else {
-        clearTimeout(this.openNodeTimeout.timeout);
+        clearTimeout(this.openNodeTimeout.timeout!);
         this.openNodeTimeout.targetNode = null;
         this.openNodeTimeout.timeout = null;
       }
@@ -151,7 +151,7 @@ export class EditableFileStorageTree extends FileStorageTree {
     if (super.handleNodeDrop(event)) {
       return true;
     }
-    if (event.dataTransfer.types.includes(DataTransferTypes.falResources)) {
+    if (event.dataTransfer!.types.includes(DataTransferTypes.falResources)) {
       const node = this.getNodeFromDragEvent(event);
       if (node === null) {
         return false;
@@ -159,7 +159,7 @@ export class EditableFileStorageTree extends FileStorageTree {
 
       if (node) {
         const targetResource = FileResource.fromTreeNode(node);
-        const fileOperationCollection = FileOperationCollection.fromDataTransfer(event.dataTransfer, targetResource);
+        const fileOperationCollection = FileOperationCollection.fromDataTransfer(event.dataTransfer!, targetResource);
         const operationConflicts = fileOperationCollection.getConflictingOperationsForTreeNode(node);
         if (operationConflicts.length > 0) {
           operationConflicts.forEach((operation) => {
@@ -355,7 +355,7 @@ export class FileStorageTreeNavigationComponent extends TreeModuleState(LitEleme
 
     // Load the currently selected module with the updated URL
     const moduleMenu = topWindow.TYPO3.ModuleMenu.App;
-    const contentUrl = UrlFactory.createUrl(ModuleUtility.getFromName(moduleMenu.getCurrentModule()).link, {
+    const contentUrl = UrlFactory.createUrl(ModuleUtility.getFromName(moduleMenu.getCurrentModule()!).link, {
       id: decodeURIComponent(node.identifier)
     });
     topWindow.TYPO3.Backend.ContentContainer.setUrl(contentUrl);
@@ -408,7 +408,7 @@ class FileOperation {
 class FileResource extends Resource {
   public static fromTreeNode(node: TreeNodeInterface): ResourceInterface {
     return new FileResource(
-      decodeURIComponent(node.resourceType),
+      decodeURIComponent(node.resourceType!),
       decodeURIComponent(node.identifier),
       decodeURIComponent(node.name)
     );

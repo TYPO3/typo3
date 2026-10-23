@@ -93,7 +93,7 @@ class LanguagePacks extends AbstractInteractableModule {
             this.activeLanguages = data.activeLanguages;
             this.activeExtensions = data.activeExtensions;
             modalContent.innerHTML = html;
-            const contentContainer = modalContent.parentElement.querySelector<HTMLElement>(Identifiers.contentContainer);
+            const contentContainer = modalContent.parentElement!.querySelector<HTMLElement>(Identifiers.contentContainer)!;
             contentContainer.innerHTML = '';
 
             const documentRef = topDocument;
@@ -137,7 +137,7 @@ class LanguagePacks extends AbstractInteractableModule {
 
   private activateLanguage(iso: string): void {
     const modalContent = this.getModalBody();
-    const outputContainer = this.findInModal(Identifiers.outputContainer);
+    const outputContainer = this.findInModal(Identifiers.outputContainer)!;
     this.renderProgressBar(outputContainer);
     this.getNotificationBox().innerHTML = '';
     (new AjaxRequest(Router.getUrl()))
@@ -169,7 +169,7 @@ class LanguagePacks extends AbstractInteractableModule {
 
   private deactivateLanguage(iso: string): void {
     const modalContent = this.getModalBody();
-    const outputContainer = this.findInModal(Identifiers.outputContainer);
+    const outputContainer = this.findInModal(Identifiers.outputContainer)!;
     this.renderProgressBar(outputContainer);
     this.getNotificationBox().innerHTML = '';
     (new AjaxRequest(Router.getUrl()))
@@ -201,7 +201,7 @@ class LanguagePacks extends AbstractInteractableModule {
 
   private updatePacks(iso: string | undefined, extension: string | undefined): void {
     const outputContainer = this.findInModal(Identifiers.outputContainer);
-    const contentContainer = this.findInModal(Identifiers.contentContainer);
+    const contentContainer = this.findInModal(Identifiers.contentContainer)!;
     const isos = iso === undefined ? this.activeLanguages : [iso];
     let updateIsoTimes = true;
     let extensions = this.activeExtensions;
@@ -320,7 +320,7 @@ class LanguagePacks extends AbstractInteractableModule {
   }
 
   private getNotificationBox(): HTMLElement {
-    return this.findInModal(Identifiers.notifications);
+    return this.findInModal(Identifiers.notifications)!;
   }
 
   private addNotification(notification: Element): void {

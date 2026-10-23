@@ -67,33 +67,33 @@ class CategoryElement extends HTMLElement {
   }
 
   private registerTreeEventListeners(): void {
-    this.tree.addEventListener('typo3:tree:nodes-prepared', this.loadDataAfter);
-    this.tree.addEventListener('typo3:tree:node-selected', this.selectNode);
-    this.tree.addEventListener('tree:initialized', () => {
-      if (this.recordField.dataset.treeShowToolbar) {
+    this.tree!.addEventListener('typo3:tree:nodes-prepared', this.loadDataAfter);
+    this.tree!.addEventListener('typo3:tree:node-selected', this.selectNode);
+    this.tree!.addEventListener('tree:initialized', () => {
+      if (this.recordField!.dataset.treeShowToolbar) {
         const toolbarElement = document.createElement('typo3-backend-form-selecttree-toolbar');
-        toolbarElement.tree = this.tree;
-        this.tree.prepend(toolbarElement);
+        toolbarElement.tree = this.tree!;
+        this.tree!.prepend(toolbarElement);
       }
     });
   }
 
   private generateDataUrl(): string {
     return TYPO3.settings.ajaxUrls.record_tree_data + '&' + new URLSearchParams({
-      uid: this.recordField.dataset.uid ?? '',
-      command: this.recordField.dataset.command ?? '',
-      tableName: this.recordField.dataset.tablename ?? '',
-      fieldName: this.recordField.dataset.fieldname ?? '',
-      defaultValues: this.recordField.dataset.defaultvalues ?? '',
-      overrideValues: this.recordField.dataset.overridevalues ?? '',
-      recordTypeValue: this.recordField.dataset.recordtypevalue ?? '',
-      flexFormSheetName: this.recordField.dataset.flexformsheetname ?? '',
-      flexFormFieldName: this.recordField.dataset.flexformfieldname ?? '',
-      flexFormContainerName: this.recordField.dataset.flexformcontainername ?? '',
-      dataStructureIdentifier: this.recordField.dataset.datastructureidentifier ?? '',
-      flexFormContainerFieldName: this.recordField.dataset.flexformcontainerfieldname ?? '',
-      flexFormContainerIdentifier: this.recordField.dataset.flexformcontaineridentifier ?? '',
-      flexFormSectionContainerIsNew: this.recordField.dataset.flexformsectioncontainerisnew ?? '',
+      uid: this.recordField!.dataset.uid ?? '',
+      command: this.recordField!.dataset.command ?? '',
+      tableName: this.recordField!.dataset.tablename ?? '',
+      fieldName: this.recordField!.dataset.fieldname ?? '',
+      defaultValues: this.recordField!.dataset.defaultvalues ?? '',
+      overrideValues: this.recordField!.dataset.overridevalues ?? '',
+      recordTypeValue: this.recordField!.dataset.recordtypevalue ?? '',
+      flexFormSheetName: this.recordField!.dataset.flexformsheetname ?? '',
+      flexFormFieldName: this.recordField!.dataset.flexformfieldname ?? '',
+      flexFormContainerName: this.recordField!.dataset.flexformcontainername ?? '',
+      dataStructureIdentifier: this.recordField!.dataset.datastructureidentifier ?? '',
+      flexFormContainerFieldName: this.recordField!.dataset.flexformcontainerfieldname ?? '',
+      flexFormContainerIdentifier: this.recordField!.dataset.flexformcontaineridentifier ?? '',
+      flexFormSectionContainerIsNew: this.recordField!.dataset.flexformsectioncontainerisnew ?? '',
     }).toString();
   }
 
@@ -101,9 +101,9 @@ class CategoryElement extends HTMLElement {
     const node = evt.detail.node as TreeNodeInterface;
     this.updateAncestorsIndeterminateState(node);
     // check all nodes again, to ensure correct display of __indeterminate state
-    this.calculateIndeterminate(this.tree.nodes);
+    this.calculateIndeterminate(this.tree!.nodes);
     this.saveCheckboxes();
-    this.tree.setup.input.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+    this.tree!.setup!.input.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
   };
 
   /**
@@ -112,18 +112,18 @@ class CategoryElement extends HTMLElement {
    * Later __indeterminate state is updated just for the subset of nodes
    */
   private readonly loadDataAfter = (evt: CustomEvent) => {
-    this.tree.nodes = evt.detail.nodes.map((node: TreeNodeInterface) => {
+    this.tree!.nodes = evt.detail.nodes.map((node: TreeNodeInterface) => {
       node.__indeterminate = false;
       return node;
     });
-    this.calculateIndeterminate(this.tree.nodes);
+    this.calculateIndeterminate(this.tree!.nodes);
   };
 
   /**
    * Sets a comma-separated list of selected nodes identifiers to configured input
    */
   private readonly saveCheckboxes = (): void => {
-    this.recordField.value = this.tree.getSelectedNodes().map((node: TreeNodeInterface): string => node.identifier).join(',');
+    this.recordField!.value = this.tree!.getSelectedNodes().map((node: TreeNodeInterface): string => node.identifier).join(',');
   };
 
   /**
@@ -133,10 +133,10 @@ class CategoryElement extends HTMLElement {
     // foreach ancestor except node itself
     let __indeterminate = false;
     node.__treeParents.forEach((treeIdentifier: string) => {
-      const TreeNodeInterface = this.tree.getNodeByTreeIdentifier(treeIdentifier);
-      TreeNodeInterface.__indeterminate = (node.checked || node.__indeterminate || __indeterminate);
+      const TreeNodeInterface = this.tree!.getNodeByTreeIdentifier(treeIdentifier);
+      TreeNodeInterface!.__indeterminate = (node.checked || node.__indeterminate || __indeterminate);
       // check state for the next level
-      __indeterminate = (TreeNodeInterface.checked || TreeNodeInterface.__indeterminate || node.checked || node.__indeterminate);
+      __indeterminate = (TreeNodeInterface!.checked || TreeNodeInterface!.__indeterminate || node.checked || node.__indeterminate);
     });
   }
 
@@ -148,8 +148,8 @@ class CategoryElement extends HTMLElement {
     nodes.forEach((node: TreeNodeInterface) => {
       if ((node.checked || node.__indeterminate) && node.__treeParents && node.__treeParents.length > 0) {
         node.__treeParents.forEach((treeParentIdentifier: string) => {
-          const TreeNodeInterface = this.tree.getNodeByTreeIdentifier(treeParentIdentifier);
-          TreeNodeInterface.__indeterminate = true;
+          const TreeNodeInterface = this.tree!.getNodeByTreeIdentifier(treeParentIdentifier);
+          TreeNodeInterface!.__indeterminate = true;
         });
       }
     });

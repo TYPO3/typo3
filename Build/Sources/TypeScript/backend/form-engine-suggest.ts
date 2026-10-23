@@ -35,7 +35,7 @@ class FormEngineSuggest {
   }
 
   private initialize(searchField: HTMLElement): void {
-    const containerElement = searchField.closest<Element>('.t3-form-suggest-container');
+    const containerElement = searchField.closest<Element>('.t3-form-suggest-container')!;
 
     this.resultContainer = document.createElement('typo3-backend-formengine-suggest-result-container');
     this.resultContainer.hidden = true;
@@ -51,12 +51,12 @@ class FormEngineSuggest {
         insertData = e.detail.element.table + '_' + e.detail.element.uid;
       }
       FormEngine.setSelectOptionFromExternalSource(this.element.dataset.field, insertData, e.detail.element.label, e.detail.element.label);
-      FormEngine.markFieldAsChanged(document.querySelector<HTMLInputElement>(selector`input[name="${this.element.dataset.field ?? ''}"]`));
+      FormEngine.markFieldAsChanged(document.querySelector<HTMLInputElement>(selector`input[name="${this.element.dataset.field ?? ''}"]`)!);
       this.resultContainer.hidden = true;
     }).bindTo(this.resultContainer);
 
     new RegularEvent('focus', (): void => {
-      const results = JSON.parse(this.resultContainer.getAttribute('results'));
+      const results = JSON.parse(this.resultContainer.getAttribute('results')!);
       if (results?.length > 0) {
         this.resultContainer.hidden = false;
       }
@@ -110,7 +110,7 @@ class FormEngineSuggest {
     if (e.key === 'ArrowDown') {
       e.preventDefault();
 
-      const results = JSON.parse(this.resultContainer.getAttribute('results'));
+      const results = JSON.parse(this.resultContainer.getAttribute('results')!);
       if (results?.length > 0) {
         this.resultContainer.hidden = false;
       }

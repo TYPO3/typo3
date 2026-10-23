@@ -42,11 +42,11 @@ let viewModel: ViewModel | null = null;
 
 
 function getFormEditorApp(): FormEditor {
-  return formEditorApp;
+  return formEditorApp!;
 }
 
 function getViewModel(): ViewModel {
-  return viewModel;
+  return viewModel!;
 }
 
 function getUtility(): Utility {
@@ -61,7 +61,7 @@ function getHelper(_configuration?: HelperConfiguration): typeof Helper {
   if (getUtility().isUndefinedOrNull(_configuration)) {
     return Helper.setConfiguration(getViewModel().getConfiguration());
   }
-  return Helper.setConfiguration(_configuration);
+  return Helper.setConfiguration(_configuration!);
 }
 
 function getCurrentlySelectedFormElement(): FormElement {
@@ -334,7 +334,7 @@ function subscribeEvents(): void {
     if (getFormEditorApp().isRootFormElementSelected()) {
       getViewModel().selectPageBatch(0);
     }
-    getViewModel().showInsertElementsModal(targetEvent, modalConfiguration || undefined);
+    getViewModel().showInsertElementsModal(targetEvent, modalConfiguration! || undefined);
   });
 
   /**
@@ -510,7 +510,7 @@ function subscribeEvents(): void {
   ): void => {
     const formElement = getFormEditorApp().getFormElementByIdentifierPath(formElementIdentifierPath);
     formElement.set('label', newLabel);
-    getViewModel().getStructure().setTreeNodeTitle(null, formElement);
+    getViewModel().getStructure().setTreeNodeTitle(null!, formElement);
     if(getCurrentlySelectedFormElement().get('__identifierPath') === formElementIdentifierPath) {
       getViewModel().renderInspectorEditors(formElementIdentifierPath);
     }

@@ -21,14 +21,14 @@ describe('@typo3/backend/login/capslock-warning', () => {
   const press = (type: string, key: string, capsLock: boolean, shiftKey: boolean = false): void => {
     field.dispatchEvent(new KeyboardEvent(type, { key, shiftKey, modifierCapsLock: capsLock, bubbles: true }));
   };
-  const warning = (): Element | null => field.closest('.input-group').querySelector('.input-group-text-warning-capslock');
+  const warning = (): Element | null => field.closest('.input-group')!.querySelector('.input-group-text-warning-capslock');
 
   beforeEach(() => {
     container = document.createElement('div');
     container.classList.add('input-group');
     container.innerHTML = '<input type="password" class="t3js-capslockwarning" data-capslockwarning-title="Capslock" data-capslockwarning-message="Capslock is enabled">';
     document.body.append(container);
-    field = container.querySelector('input');
+    field = container.querySelector('input')!;
     CapslockWarning.bindTo(field);
   });
 
@@ -39,8 +39,8 @@ describe('@typo3/backend/login/capslock-warning', () => {
   it('shows the warning for a lower case key while capslock is active', () => {
     press('keydown', 'A', true);
     expect(warning()).to.not.be.null;
-    expect(warning().getAttribute('title')).to.equal('Capslock');
-    expect(warning().textContent).to.contain('Capslock is enabled');
+    expect(warning()!.getAttribute('title')).to.equal('Capslock');
+    expect(warning()!.textContent).to.contain('Capslock is enabled');
   });
 
   it('shows the warning while capslock and shift are active', () => {
@@ -73,6 +73,6 @@ describe('@typo3/backend/login/capslock-warning', () => {
   it('adds the warning only once', () => {
     press('keydown', 'A', true);
     press('keydown', 'B', true);
-    expect(field.closest('.input-group').querySelectorAll('.input-group-text-warning-capslock').length).to.equal(1);
+    expect(field.closest('.input-group')!.querySelectorAll('.input-group-text-warning-capslock').length).to.equal(1);
   });
 });

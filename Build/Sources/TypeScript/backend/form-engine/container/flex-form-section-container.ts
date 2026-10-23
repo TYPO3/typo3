@@ -42,8 +42,8 @@ class FlexFormSectionContainer {
    */
   constructor(elementId: string) {
     DocumentService.ready().then((document: Document): void => {
-      this.container = document.getElementById(elementId);
-      this.sectionContainer = this.container.querySelector<HTMLElement>(this.container.dataset.section);
+      this.container = document.getElementById(elementId)!;
+      this.sectionContainer = this.container.querySelector<HTMLElement>(this.container.dataset.section!)!;
       this.allowRestructure = this.sectionContainer.dataset.t3FlexAllowRestructure === '1';
 
       this.registerEvents();
@@ -85,7 +85,7 @@ class FlexFormSectionContainer {
   }
 
   private getToggleAllButton(): HTMLButtonElement {
-    return this.container.querySelector<HTMLButtonElement>(Selectors.toggleAllSelector);
+    return this.container.querySelector<HTMLButtonElement>(Selectors.toggleAllSelector)!;
   }
 
   private registerSortable(): void {
@@ -102,7 +102,7 @@ class FlexFormSectionContainer {
       element.value = key.toString();
     });
 
-    this.flexformContainerContainers.splice(e.newIndex, 0, this.flexformContainerContainers.splice(e.oldIndex, 1)[0]);
+    this.flexformContainerContainers.splice(e.newIndex!, 0, this.flexformContainerContainers.splice(e.oldIndex!, 1)[0]);
   };
 
   private registerToggleAll(): void {
@@ -147,7 +147,7 @@ class FlexFormSectionContainer {
 
       this.flexformContainerContainers.push(new FlexFormContainerContainer(this, createdContainer));
 
-      const sectionContainer = document.querySelector(dataset.target);
+      const sectionContainer = document.querySelector(dataset.target!)!;
       sectionContainer.insertAdjacentElement('beforeend', createdContainer);
 
       if (data.scriptItems instanceof Array && data.scriptItems.length > 0) {

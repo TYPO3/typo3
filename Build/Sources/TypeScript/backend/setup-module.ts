@@ -39,10 +39,10 @@ class SetupModule {
       .forEach((fieldElement): void => {
         const fieldName = fieldElement.dataset.setupAvatarField;
         const clearElement = document.getElementById('clear_button_' + fieldName);
-        const addElement = document.getElementById('add_button_' + fieldName);
+        const addElement = document.getElementById('add_button_' + fieldName)!;
 
-        addElement.addEventListener('click', (): void => this.avatarOpenFileBrowser(addElement.dataset.setupAvatarUrl));
-        clearElement?.addEventListener('click', (): void => this.avatarClearExistingImage(fieldName));
+        addElement.addEventListener('click', (): void => this.avatarOpenFileBrowser(addElement.dataset.setupAvatarUrl!));
+        clearElement?.addEventListener('click', (): void => this.avatarClearExistingImage(fieldName!));
       });
     if (document.querySelector('[data-setup-avatar-field]') !== null) {
       this.initializeMessageListener();
@@ -53,9 +53,9 @@ class SetupModule {
     if (evt.detail.result && evt.detail.payload === 'resetConfiguration') {
       Client.unsetByPrefix('');
 
-      const input = document.querySelector<HTMLInputElement>('#setValuesToDefault');
+      const input = document.querySelector<HTMLInputElement>('#setValuesToDefault')!;
       input.value = '1';
-      input.form.submit();
+      input.form!.submit();
     }
   }
 
@@ -110,11 +110,11 @@ class SetupModule {
     const addElement = document.getElementById('add_button_' + fieldName);
 
     fieldElement.value = fileUid;
-    addElement.classList.remove('btn-default');
-    addElement.classList.add('btn-info');
+    addElement!.classList.remove('btn-default');
+    addElement!.classList.add('btn-info');
     if (this.avatarWindowRef instanceof Window && !this.avatarWindowRef.closed) {
       this.avatarWindowRef.close();
-      this.avatarWindowRef = null;
+      this.avatarWindowRef = null!;
     }
   }
 }

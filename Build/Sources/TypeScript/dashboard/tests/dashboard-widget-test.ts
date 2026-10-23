@@ -45,7 +45,7 @@ describe('dashboard widget move button', () => {
 
   it('exposes the pinned state to assistive technology', async () => {
     const widget = await renderWidget();
-    const button = widget.querySelector<HTMLButtonElement>('.widget-action-move');
+    const button = widget.querySelector<HTMLButtonElement>('.widget-action-move')!;
 
     expect(button.getAttribute('aria-pressed')).to.equal('false');
 
@@ -57,7 +57,7 @@ describe('dashboard widget move button', () => {
 
   it('adapts the title of the move button while the widget is pinned', async () => {
     const widget = await renderWidget();
-    const button = widget.querySelector<HTMLButtonElement>('.widget-action-move');
+    const button = widget.querySelector<HTMLButtonElement>('.widget-action-move')!;
     const titleBeforePinning = button.title;
 
     widget.moving = true;

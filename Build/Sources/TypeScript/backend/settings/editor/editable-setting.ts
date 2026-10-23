@@ -197,7 +197,7 @@ export class EditableSettingElement extends LitElement {
   }
 
   protected async copyAsYaml(): Promise<void> {
-    const formData = new FormData(this.typeElement.form);
+    const formData = new FormData(this.typeElement!.form!);
     const name = `settings[${this.setting.definition.key}]`;
     const value = formData.get(name);
 

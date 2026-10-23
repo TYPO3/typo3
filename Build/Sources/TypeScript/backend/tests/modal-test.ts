@@ -47,8 +47,8 @@ describe('@typo3/backend/modal', () => {
     await shown(modal);
 
     const button = modal.querySelector<HTMLButtonElement>('.modal-footer button');
-    expect(button.type).to.equal('submit');
-    expect(button.form?.id).to.equal('modal-test-form');
+    expect(button!.type).to.equal('submit');
+    expect(button!.form?.id).to.equal('modal-test-form');
   });
 
   it('keeps the focus on an autofocus field instead of the active button', async () => {
@@ -58,7 +58,7 @@ describe('@typo3/backend/modal', () => {
     });
     await shown(modal);
 
-    expect(document.activeElement.matches('input[name="password"]')).to.be.true;
+    expect(document.activeElement!.matches('input[name="password"]')).to.be.true;
   });
 
   it('focuses an autofocus field of ajax content loaded after the modal was shown', async () => {
@@ -76,7 +76,7 @@ describe('@typo3/backend/modal', () => {
     await loaded;
     window.fetch = nativeFetch;
 
-    expect(document.activeElement.matches('input[name="filter"]')).to.be.true;
+    expect(document.activeElement!.matches('input[name="filter"]')).to.be.true;
   });
 
   describe('returning the focus after closing', () => {
@@ -85,7 +85,7 @@ describe('@typo3/backend/modal', () => {
     const close = (element: ModalElement): void => {
       element.hideModal();
       // The dialog close event does not fire in the background, so it is dispatched here
-      element.querySelector('dialog').dispatchEvent(new Event('close'));
+      element.querySelector('dialog')!.dispatchEvent(new Event('close'));
     };
 
     afterEach(() => {
@@ -95,7 +95,7 @@ describe('@typo3/backend/modal', () => {
     it('focuses the element inside a frame that opened the modal', async () => {
       iframe = document.createElement('iframe');
       document.body.appendChild(iframe);
-      const frameDocument = iframe.contentDocument;
+      const frameDocument = iframe.contentDocument!;
       const trigger = frameDocument.createElement('button');
       frameDocument.body.appendChild(trigger);
       trigger.focus();
@@ -112,8 +112,8 @@ describe('@typo3/backend/modal', () => {
     it('focuses the element inside a frame of an open modal that opened another modal', async () => {
       const outer = Modal.advanced({ content: html`<iframe id="modal-test-frame"></iframe>`, buttons: [] });
       await shown(outer);
-      const frame = outer.querySelector<HTMLIFrameElement>('#modal-test-frame');
-      const frameDocument = frame.contentDocument;
+      const frame = outer.querySelector<HTMLIFrameElement>('#modal-test-frame')!;
+      const frameDocument = frame.contentDocument!;
       const trigger = frameDocument.createElement('button');
       frameDocument.body.appendChild(trigger);
       trigger.focus();
@@ -161,6 +161,6 @@ describe('@typo3/backend/modal', () => {
     });
     await shown(modal);
 
-    expect(document.activeElement.matches('.modal-footer button')).to.be.true;
+    expect(document.activeElement!.matches('.modal-footer button')).to.be.true;
   });
 });

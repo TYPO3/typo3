@@ -22,8 +22,8 @@ class RecordLinkHandler {
   constructor() {
     new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
       evt.preventDefault();
-      const data = targetEl.closest('span').dataset;
-      LinkBrowser.finalizeFunction(document.body.dataset.linkbrowserIdentifier + data.uid);
+      const data = targetEl.closest('span')!.dataset;
+      LinkBrowser.finalizeFunction(document.body.dataset.linkbrowserIdentifier! + data.uid!);
     }).delegateTo(document, '[data-close]');
   }
 }

@@ -95,7 +95,7 @@ export class CompletionResult {
         result.push(propArr[i]);
         continue;
       }
-      wordBeginning = propArr[i].word.substring(0, filter.length);
+      wordBeginning = propArr[i].word!.substring(0, filter.length);
       if (wordBeginning.toLowerCase() === filter.toLowerCase()) {
         result.push(propArr[i]);
       }

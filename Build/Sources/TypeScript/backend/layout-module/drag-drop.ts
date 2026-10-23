@@ -119,11 +119,11 @@ class DragDrop {
   }
 
   protected onDragStart(event: DragEvent, target: HTMLElement): void {
-    const content = target.closest<HTMLElement>(Identifiers.content);
+    const content = target.closest<HTMLElement>(Identifiers.content)!;
 
     this.draggedContentType = content.dataset.ctype ?? '';
 
-    event.dataTransfer.setData(DataTransferTypes.content, JSON.stringify({
+    event.dataTransfer!.setData(DataTransferTypes.content, JSON.stringify({
       pid: this.getCurrentPageId(),
       uid: parseInt(content.dataset.uid ?? '', 10),
       language: parseInt(content.dataset.languageUid ?? '', 10),
@@ -133,11 +133,11 @@ class DragDrop {
     } as ContentElementDragDropData));
 
     const metadata: DragTooltipMetadata = this.getDragTooltipMetadataFromContentElement(content);
-    event.dataTransfer.setData(DataTransferTypes.dragTooltip, JSON.stringify(metadata));
-    event.dataTransfer.effectAllowed = 'copyMove';
+    event.dataTransfer!.setData(DataTransferTypes.dragTooltip, JSON.stringify(metadata));
+    event.dataTransfer!.effectAllowed = 'copyMove';
     DragDropUtility.updateEventAndTooltipToReflectCopyMoveIntention(event);
 
-    (content.querySelector<HTMLElement>(Identifiers.dropZone)).hidden = true;
+    (content.querySelector<HTMLElement>(Identifiers.dropZone)!).hidden = true;
   }
 
   protected onDragEnd(): void {
@@ -156,15 +156,15 @@ class DragDrop {
 
     dropContainer.classList.remove(Classes.dropPossibleHoverClass);
 
-    if (!event.dataTransfer.types.includes(DataTransferTypes.content)) {
+    if (!event.dataTransfer!.types.includes(DataTransferTypes.content)) {
       // Dropped element is not accepted
       return;
     }
 
     const newColumn = this.getColumnPositionForElement(dropContainer);
-    const contentElementDragDropData = JSON.parse(event.dataTransfer.getData(DataTransferTypes.content)) as ContentElementDragDropData;
+    const contentElementDragDropData = JSON.parse(event.dataTransfer!.getData(DataTransferTypes.content)) as ContentElementDragDropData;
 
-    draggedElement = document.querySelector(`${Identifiers.content}[data-uid="${contentElementDragDropData.uid}"]`);
+    draggedElement = document.querySelector(`${Identifiers.content}[data-uid="${contentElementDragDropData.uid}"]`)!;
     if (!draggedElement) {
       draggedElement = document.createRange().createContextualFragment(contentElementDragDropData.content).firstElementChild as HTMLElement;
     }
@@ -172,12 +172,12 @@ class DragDrop {
     if (typeof (contentElementDragDropData.uid) === 'number' && contentElementDragDropData.uid > 0) {
       const parameters: Parameters = {};
       // add the information about a possible column position change
-      const targetFound = (dropContainer.closest<HTMLElement>(Identifiers.content)).dataset.uid;
+      const targetFound = (dropContainer.closest<HTMLElement>(Identifiers.content)!).dataset.uid;
       // the item was moved to the top of the colPos, so the page ID is used here
       let targetPid: number;
       if (targetFound === undefined) {
         // the actual page is needed. Read it from the container into which the element was dropped.
-        targetPid = parseInt(dropContainer.closest<HTMLElement>('[data-page]').dataset.page, 10);
+        targetPid = parseInt(dropContainer.closest<HTMLElement>('[data-page]')!.dataset.page!, 10);
       } else {
         // the negative value of the content element after where it should be moved
         targetPid = 0 - parseInt(targetFound, 10);
@@ -188,7 +188,7 @@ class DragDrop {
       // Keep in sync with LanguageMarker::ALL_LANGUAGES on the PHP side.
       if (language !== -1) {
         // new elements language must be the same as the column the element is dropped in if element is not -1
-        language = parseInt(dropContainer.closest<HTMLElement>('[data-language-uid]').dataset.languageUid, 10);
+        language = parseInt(dropContainer.closest<HTMLElement>('[data-language-uid]')!.dataset.languageUid!, 10);
       }
 
       let colPos: number | boolean = 0;
@@ -214,10 +214,10 @@ class DragDrop {
 
       this.ajaxAction(parameters, isCopyAction).then((): void => {
         // insert draggable on the new position
-        if (!dropContainer.parentElement.classList.contains(Identifiers.content.substring(1))) {
-          dropContainer.closest(Identifiers.dropZone).after(draggedElement);
+        if (!dropContainer.parentElement!.classList.contains(Identifiers.content.substring(1))) {
+          dropContainer.closest(Identifiers.dropZone)!.after(draggedElement);
         } else {
-          dropContainer.closest(Identifiers.content).after(draggedElement);
+          dropContainer.closest(Identifiers.content)!.after(draggedElement);
         }
 
         this.broadcast('elementChanged', {
@@ -235,9 +235,9 @@ class DragDrop {
         const newFlagIdentifier = languageDescriber.dataset.flagIdentifier;
         const newLanguageTitle = languageDescriber.dataset.languageTitle;
 
-        Icons.getIcon(newFlagIdentifier, Icons.sizes.small).then((markup: string): void => {
-          const flagIcon = draggedElement.querySelector<HTMLElement>('.t3js-flag');
-          flagIcon.title = newLanguageTitle;
+        Icons.getIcon(newFlagIdentifier!, Icons.sizes.small).then((markup: string): void => {
+          const flagIcon = draggedElement.querySelector<HTMLElement>('.t3js-flag')!;
+          flagIcon.title = newLanguageTitle!;
           flagIcon.innerHTML = markup;
         });
       });
@@ -254,7 +254,7 @@ class DragDrop {
     }
 
     if (event.detail.payload.action === 'move') {
-      document.querySelector(`${Identifiers.content}[data-uid="${event.detail.payload.uid}"]`).remove();
+      document.querySelector(`${Identifiers.content}[data-uid="${event.detail.payload.uid}"]`)!.remove();
     }
   }
 
@@ -266,8 +266,8 @@ class DragDrop {
    * @private
    */
   protected ajaxAction(parameters: Parameters, isCopyAction: boolean): Promise<void> {
-    const table: string = Object.keys(parameters.cmd).shift();
-    const uid: number = parseInt(Object.keys(parameters.cmd[table]).shift(), 10);
+    const table: string = Object.keys(parameters.cmd!).shift()!;
+    const uid: number = parseInt(Object.keys(parameters.cmd![table]).shift()!, 10);
     const eventData = { component: 'dragdrop', action: isCopyAction ? 'copy' : 'move', table, uid };
     const gridContainer = document.querySelector<HTMLDivElement>('.t3-grid-container');
 
@@ -298,7 +298,7 @@ class DragDrop {
   protected getDragTooltipMetadataFromContentElement(contentElement: HTMLElement): DragTooltipMetadata {
     let description, iconIdentifier;
     const thumbnails: DragDropThumbnail[] = [];
-    const contentElementTitle = contentElement.querySelector<HTMLElement>('.t3-page-ce-header-title');
+    const contentElementTitle = contentElement.querySelector<HTMLElement>('.t3-page-ce-header-title')!;
     const title = contentElementTitle.innerText;
 
     const contentElementPreview = contentElement.querySelector<HTMLElement>('.element-preview');
@@ -336,7 +336,7 @@ class DragDrop {
   }
 
   protected getCurrentPageId(): number {
-    return parseInt(document.querySelector<HTMLElement>('[data-page]').dataset.page, 10);
+    return parseInt(document.querySelector<HTMLElement>('[data-page]')!.dataset.page!, 10);
   }
 
   protected broadcast(eventName: string, payload?: unknown) {
@@ -349,7 +349,7 @@ class DragDrop {
         return;
       }
       element.hidden = false;
-      const addContentButton = element.parentElement.querySelector<HTMLElement>(Identifiers.addContent);
+      const addContentButton = element.parentElement!.querySelector<HTMLElement>(Identifiers.addContent)!;
       if (addContentButton !== null) {
         addContentButton.hidden = true;
         element.classList.add(Classes.validDropZoneClass);
@@ -360,7 +360,7 @@ class DragDrop {
   protected hideDropZones(): void {
     document.querySelectorAll<HTMLElement>(Identifiers.dropZone).forEach((element): void => {
       element.hidden = true;
-      const addContentButton = element.parentElement.querySelector<HTMLElement>(Identifiers.addContent);
+      const addContentButton = element.parentElement!.querySelector<HTMLElement>(Identifiers.addContent)!;
       if (addContentButton !== null) {
         addContentButton.hidden = false;
       }

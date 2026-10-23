@@ -107,7 +107,7 @@ export class ModuleRouter extends LitElement {
       // Send load event (e.g. to be handled by ModuleMenu).
       // Dispated via parent element to prevent routers own event handlers to be invoked.
       // @todo: Introduce a separate event (name) to prevent the parentElement workaround?
-      this.parentElement.dispatchEvent(new CustomEvent<ModuleState>('typo3-module-load', {
+      this.parentElement!.dispatchEvent(new CustomEvent<ModuleState>('typo3-module-load', {
         bubbles: true,
         composed: true,
         detail: state.detail
@@ -116,7 +116,7 @@ export class ModuleRouter extends LitElement {
 
     this.addEventListener('typo3-iframe-loaded', ({ detail }: CustomEvent<ModuleState>) => {
       this.updateBrowserState(detail);
-      this.parentElement.dispatchEvent(new CustomEvent<ModuleState>('typo3-module-loaded', {
+      this.parentElement!.dispatchEvent(new CustomEvent<ModuleState>('typo3-module-loaded', {
         bubbles: true,
         composed: true,
         detail
@@ -175,14 +175,14 @@ export class ModuleRouter extends LitElement {
   }
 
   private async getModuleElement(moduleName: string): Promise<Element> {
-    let element = this.querySelector(`*[slot="${moduleName}"]`);
+    let element = this.querySelector(`*[slot="${moduleName}"]`)!;
     if (element !== null) {
       return element;
     }
 
     try {
       const module = await import(moduleName + '.js');
-      element = this.querySelector(`*[slot="${moduleName}"]`);
+      element = this.querySelector(`*[slot="${moduleName}"]`)!;
       if (element !== null) {
         // The element has been created parallelly during the asynchronous module load; use that instance
         return element;
@@ -232,7 +232,7 @@ export class ModuleRouter extends LitElement {
     if (title !== null) {
       const titleComponents = [this.sitename];
       if (title !== '') {
-        titleComponents.unshift(title);
+        titleComponents.unshift(title!);
       }
       this.titleComponents = titleComponents;
       this.updateBrowserTitle();

@@ -246,7 +246,7 @@ class TabScroller {
   constructor(navTabs: HTMLElement) {
     const wrapper = document.createElement('typo3-backend-tab-scroller');
     if (!(navTabs.parentNode instanceof TabScrollerElement)) {
-      navTabs.parentNode.insertBefore(wrapper, navTabs);
+      navTabs.parentNode!.insertBefore(wrapper, navTabs);
       wrapper.appendChild(navTabs);
     }
   }
@@ -373,8 +373,8 @@ export class TabScrollerElement extends LitElement {
       ? scrollLeft <= -(scrollWidth - clientWidth)
       : scrollLeft >= scrollWidth - clientWidth - 1;
 
-    this.startButton.hidden = !isOverflowing || atStart;
-    this.endButton.hidden = !isOverflowing || atEnd;
+    this.startButton!.hidden = !isOverflowing || atStart;
+    this.endButton!.hidden = !isOverflowing || atEnd;
   }
 }
 

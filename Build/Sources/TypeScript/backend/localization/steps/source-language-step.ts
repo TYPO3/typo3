@@ -152,7 +152,7 @@ export class SourceLanguageStep implements WizardStepInterface, WizardStepValueI
   }
 
   public beforeAdvance(): void {
-    this.context.setStoreData('sourceLanguage', this.getValue());
+    this.context.setStoreData('sourceLanguage', this.getValue()!);
   }
 
   public getSummaryData(): SummaryItem[] {

@@ -27,11 +27,11 @@ export class CreateFormSubmissionService implements SubmissionServiceInterface {
     const requestUrl = this.context.formManager.getAjaxEndpoint('create');
     const response = await new AjaxRequest(requestUrl)
       .post({
-        formName: dataStore.settings.formName,
-        templatePath: dataStore.settings.template,
-        prototypeName: dataStore.settings.prototype,
-        storage: dataStore.storage.typeIdentifier,
-        storageLocation: dataStore.settings.storageLocation
+        formName: dataStore.settings!.formName,
+        templatePath: dataStore.settings!.template,
+        prototypeName: dataStore.settings!.prototype,
+        storage: dataStore.storage!.typeIdentifier,
+        storageLocation: dataStore.settings!.storageLocation
       });
     const data: {status: string, url?: string, message?: ''} = await response.resolve();
 

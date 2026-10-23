@@ -94,7 +94,7 @@ class ContextualRecordEdit {
       // postMessage for this failed silently in Firefox. The navigation
       // guard asks to discard unsaved changes and closes the sheet.
       FormEngine.ready().then((): void => {
-        topWindow.TYPO3?.Backend?.ContentContainer?.setUrl(this.fullscreenButton.href);
+        topWindow.TYPO3?.Backend?.ContentContainer?.setUrl(this.fullscreenButton!.href);
       });
     });
   }

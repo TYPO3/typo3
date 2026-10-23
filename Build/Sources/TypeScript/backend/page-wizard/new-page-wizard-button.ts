@@ -19,7 +19,7 @@ import { openPageWizardModal } from '@typo3/backend/page-wizard/helper/wizard-he
 
 @customElement('typo3-backend-new-page-wizard-button')
 export class NewPageWizardButton extends PseudoButtonLitElement {
-  @property({ type: Object }) configuration?: PageWizardConfiguration = null;
+  @property({ type: Object }) configuration?: PageWizardConfiguration = null!;
   protected override buttonActivated(): void {
     openPageWizardModal(this.configuration);
   }

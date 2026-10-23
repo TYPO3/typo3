@@ -73,7 +73,7 @@ export interface PointerEventNames {
  */
 @customElement('typo3-backend-draggable-resizable')
 export class DraggableResizableElement extends LitElement {
-  @property({ type: Object, converter: data => Offset.fromObject(JSON.parse(data)), reflect: true }) offset: Offset;
+  @property({ type: Object, converter: data => Offset.fromObject(JSON.parse(data!)), reflect: true }) offset: Offset;
   @property({ type: Object }) pointerEventNames: PointerEventNames;
   @property({ type: Boolean, reflect: true }) public reverting = false;
 
@@ -163,11 +163,11 @@ export class DraggableResizableElement extends LitElement {
       return;
     }
     const deltaPos = {
-      x: evt.clientX - this.originPosition.x,
-      y: evt.clientY - this.originPosition.y,
+      x: evt.clientX - this.originPosition!.x,
+      y: evt.clientY - this.originPosition!.y,
     };
     // assign offset (and update styles implicitly)
-    this.offset = this.adjustOffset(this.originOffset, deltaPos);
+    this.offset = this.adjustOffset(this.originOffset!, deltaPos);
     this.dispatchEvent(this.createEvent(
       'draggable-resizable-updated',
       { action: this.action, originOffset: this.originOffset ?? undefined }
@@ -190,7 +190,7 @@ export class DraggableResizableElement extends LitElement {
   private adjustOffset(originOffset: Offset, delta: Position): Offset {
     // width & height cannot be lower
     const dimensionMin = 2;
-    const containerBounds = this.parentElement.getBoundingClientRect();
+    const containerBounds = this.parentElement!.getBoundingClientRect();
     const offset = originOffset.clone();
 
     if (this.action === Action.move) {
@@ -198,20 +198,20 @@ export class DraggableResizableElement extends LitElement {
       offset.top = this.minMax(offset.top + delta.y, 0, containerBounds.height - offset.height);
     }
 
-    if (resizeNorth.includes(this.action)) {
+    if (resizeNorth.includes(this.action!)) {
       // hint: delta is negative here
       const deltaY = this.minMax(delta.y, -offset.top, offset.height - dimensionMin);
       offset.top += deltaY;
       offset.height -= deltaY;
-    } else if (resizeSouth.includes(this.action)) {
+    } else if (resizeSouth.includes(this.action!)) {
       offset.height = this.minMax(offset.height + delta.y, dimensionMin, containerBounds.height - offset.top);
     }
-    if (resizeWest.includes(this.action)) {
+    if (resizeWest.includes(this.action!)) {
       // hint: delta is negative here
       const deltaX = this.minMax(delta.x, -offset.left, offset.width - dimensionMin);
       offset.left += deltaX;
       offset.width -= deltaX;
-    } else if (resizeEast.includes(this.action)) {
+    } else if (resizeEast.includes(this.action!)) {
       offset.width += delta.x;
     }
 

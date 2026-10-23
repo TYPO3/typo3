@@ -191,7 +191,7 @@ export class CspReports extends LitElement {
           ${null === this.selectedScope ? labels.get('module.label.all') : this.selectedScope}
         </button>
         <ul class="dropdown-menu">
-          <button class="dropdown-item dropdown-item-spaced" title="${labels.get('module.label.all')}" @click=${() => this.selectScope(null)}>
+          <button class="dropdown-item dropdown-item-spaced" title="${labels.get('module.label.all')}" @click=${() => this.selectScope(null!)}>
             <span class="${null === this.selectedScope ? 'text-primary' : '' }">
               <typo3-backend-icon identifier="${null === this.selectedScope ? 'actions-dot' : 'empty-empty'}" size="small"></typo3-backend-icon>
             </span>
@@ -289,7 +289,7 @@ export class CspReports extends LitElement {
           `)}
 
           <div class="card-footer">
-            <button class="btn btn-default" @click=${() => this.selectReport(null)}>
+            <button class="btn btn-default" @click=${() => this.selectReport(null!)}>
               <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
               ${labels.get('module.button.close')}
             </button>
@@ -379,7 +379,7 @@ export class CspReports extends LitElement {
   private handleDetailsKeydown(event: KeyboardEvent): void {
     if (event.key === 'Escape') {
       event.preventDefault();
-      this.selectReport(null);
+      this.selectReport(null!);
     }
   }
 
@@ -453,7 +453,7 @@ export class CspReports extends LitElement {
       .post({ action: 'deleteReports', scope: this.selectedScope || '' })
       .then((response: AjaxResponse) => response.resolve('application/json'))
       .then(() => this.fetchReports())
-      .then(() => this.selectReport(null));
+      .then(() => this.selectReport(null!));
   }
 
   /*

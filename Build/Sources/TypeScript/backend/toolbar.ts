@@ -33,11 +33,11 @@ class Toolbar {
   private static initializeEvents(): void {
     new RegularEvent('click', (): void => {
       document.dispatchEvent(new ToolbarToggleRequestEvent());
-    }).bindTo(document.querySelector('.t3js-topbar-button-toolbar'));
+    }).bindTo(document.querySelector('.t3js-topbar-button-toolbar')!);
 
     new RegularEvent('click', (): void => {
       document.dispatchEvent(new SearchToggleRequestEvent());
-    }).bindTo(document.querySelector('.t3js-topbar-button-search'));
+    }).bindTo(document.querySelector('.t3js-topbar-button-search')!);
   }
 }
 

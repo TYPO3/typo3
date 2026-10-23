@@ -89,7 +89,7 @@ export class PageTree extends Tree
     }
 
     // @TODO Unity with parent
-    if (event.dataTransfer.types.includes(DataTransferTypes.content)) {
+    if (event.dataTransfer!.types.includes(DataTransferTypes.content)) {
       // Find the current hovered node
       // Exit when no node was hovered
       const targetNode = this.getNodeFromDragEvent(event);
@@ -103,22 +103,22 @@ export class PageTree extends Tree
       // element, during the drag the default mouse over
       // is disabled by the browser
       const hoverElement = this.getElementFromNode(targetNode);
-      hoverElement.classList.add('node-hover');
+      hoverElement!.classList.add('node-hover');
 
       // Open node with children while holding the
       // node/element over this node for 1 second
       if (targetNode.hasChildren && !targetNode.__expanded) {
         if (this.openNodeTimeout.targetNode != targetNode) {
           this.openNodeTimeout.targetNode = targetNode;
-          clearTimeout(this.openNodeTimeout.timeout);
+          clearTimeout(this.openNodeTimeout.timeout!);
           this.openNodeTimeout.timeout = setTimeout(() => {
-            this.showChildren(this.openNodeTimeout.targetNode);
+            this.showChildren(this.openNodeTimeout.targetNode!);
             this.openNodeTimeout.targetNode = null;
             this.openNodeTimeout.timeout = null;
           }, 1000);
         }
       } else {
-        clearTimeout(this.openNodeTimeout.timeout);
+        clearTimeout(this.openNodeTimeout.timeout!);
         this.openNodeTimeout.targetNode = null;
         this.openNodeTimeout.timeout = null;
       }
@@ -139,13 +139,13 @@ export class PageTree extends Tree
     if (super.handleNodeDrop(event)) {
       return true;
     }
-    if (event.dataTransfer.types.includes(DataTransferTypes.content)) {
+    if (event.dataTransfer!.types.includes(DataTransferTypes.content)) {
       const node = this.getNodeFromDragEvent(event);
       if (node === null) {
         return false;
       }
 
-      const newNodeData = event.dataTransfer.getData(DataTransferTypes.content);
+      const newNodeData = event.dataTransfer!.getData(DataTransferTypes.content);
       const parsedData = JSON.parse(newNodeData) as ContentElementDragDropData;
 
       // allow drop
