@@ -8238,7 +8238,12 @@ class DataHandler
             return $incomingFieldArray;
         }
         // Without a configured default, the database default of the language field applies, which is 0
-        $defaults = $this->applyDefaultsForFieldArray($table, $pageId, $prepopulatedFieldArray, $incomingFieldArray);
+        $defaults = $this->applyDefaultsForFieldArray(
+            $table,
+            BackendUtility::getPagesTSconfig($pageId)['TCAdefaults.'] ?? [],
+            $prepopulatedFieldArray,
+            $incomingFieldArray
+        );
         $incomingFieldArray[$languageFieldName] = $defaults[$languageFieldName] ?? 0;
         return $incomingFieldArray;
     }
