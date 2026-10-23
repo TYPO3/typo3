@@ -501,6 +501,9 @@
       <trans-unit id="labels.removeItem">
         <source>Remove element</source>
       </trans-unit>
+      <trans-unit id="labels.clipboardElement">
+        <source>Element</source>
+      </trans-unit>
       <trans-unit id="labels.holdDownCTRL">
         <source>Important: Hold down the CTRL key while toggling elements in this list.</source>
       </trans-unit>
