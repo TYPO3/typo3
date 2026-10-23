@@ -91,6 +91,8 @@ class ClipboardController
             'info' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info'),
             'removeAll' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.removeAll'),
             'removeItem' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.removeItem'),
+            'element' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clipboardElement'),
+            'control' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_'),
         ];
 
         return $this->createResponse([

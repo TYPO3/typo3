@@ -105,11 +105,17 @@ export class ClipboardPanel extends LitElement {
           const clipboardData: ClipboardData = resolvedBody.data;
           return html`
             <div class="panel panel-default" data-clipboard-panel>
-              <div class="panel-heading">
+              <div class="panel-heading" id="clipboard-panel-heading">
                 ${clipboardData.labels.clipboard}
               </div>
               <div class="table-fit">
-                <table class="table">
+                <table class="table" aria-labelledby="clipboard-panel-heading">
+                  <thead>
+                    <tr>
+                      <th scope="col" colspan="2" class="p-0 border-0"><span class="visually-hidden">${clipboardData.labels.element}</span></th>
+                      <th scope="col" class="p-0 border-0"><span class="visually-hidden">${clipboardData.labels.control}</span></th>
+                    </tr>
+                  </thead>
                   <tbody>
                     ${clipboardData.tabs.map((tab): TemplateResult => this.renderTab(tab, clipboardData))}
                   </tbody>
@@ -133,8 +139,8 @@ export class ClipboardPanel extends LitElement {
   private renderTab(tab: ClipboardTab, clipboardData: ClipboardData): TemplateResult {
     return html`
       <tr>
-        <td colspan="2" class="nowrap">
-          <button type="button" class="btn btn-link" aria-checked="${clipboardData.current === tab.identifier}" title="${tab.description}" data-action="setP" @click="${(event: PointerEvent) => this.updateClipboard(event, { CB: { 'setP': tab.identifier } })}">
+        <th scope="row" colspan="2" class="nowrap fw-normal">
+          <button type="button" class="btn btn-link" aria-current="${clipboardData.current === tab.identifier ? 'true' : nothing}" title="${tab.description}" data-action="setP" @click="${(event: PointerEvent) => this.updateClipboard(event, { CB: { 'setP': tab.identifier } })}">
             ${clipboardData.current === tab.identifier ? html`
               <typo3-backend-icon identifier="actions-check-circle-alt" size="small"></typo3-backend-icon>
               ${tab.title}
@@ -146,7 +152,7 @@ export class ClipboardPanel extends LitElement {
               </span>
             `}
           </button>
-        </td>
+        </th>
         <td class="col-control nowrap">
           ${clipboardData.current !== tab.identifier ? nothing : html`
             <div class="btn-toolbar btn-toolbar-nowrap">
@@ -182,11 +188,11 @@ export class ClipboardPanel extends LitElement {
         <td class="col-icon nowrap ${classMap({ 'ps-4': !tabItem.identifier })}">
           ${unsafeHTML(tabItem.icon)}
         </td>
-        <td class="col-title col-responsive nowrap">
+        <th scope="row" class="col-title col-responsive nowrap fw-normal">
           ${unsafeHTML(tabItem.title)}
           ${tabIdentifier === 'normal' ? html`<strong>(${clipboardData.copyMode === CopyMode.copy ? html`${clipboardData.labels.copy}` : html`${clipboardData.labels.cut}`})</strong>` : nothing}
           ${tabItem.thumb ? html`<div class="d-block">${unsafeHTML(tabItem.thumb)}</div>` : nothing}
-        </td>
+        </th>
         <td class="col-control nowrap">
           <div class="btn-group">
             ${!tabItem.infoDataDispatch ? nothing : html`
