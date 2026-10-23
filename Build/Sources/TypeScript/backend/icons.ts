@@ -151,7 +151,7 @@ class Icons {
     identifier: string,
     size: Sizes,
     overlayIdentifier?: string | null,
-    state?: string,
+    state?: string | null,
     markupIdentifier?: MarkupIdentifiers,
     signal?: AbortSignal | null,
   ): Promise<string> {

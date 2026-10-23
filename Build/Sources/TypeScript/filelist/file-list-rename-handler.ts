@@ -57,7 +57,7 @@ class FileListRenameHandler {
         ],
         callback: function (modal: ModalElement) {
           const form = modal.querySelector('form');
-          form.addEventListener('submit', (event: SubmitEvent): void => {
+          form?.addEventListener('submit', (event: SubmitEvent): void => {
             event.preventDefault();
             const formData = new FormData(event.target as HTMLFormElement);
             const submittedData = Object.fromEntries(formData);
@@ -100,7 +100,7 @@ class FileListRenameHandler {
           });
 
           modal.addEventListener('typo3-modal-shown', (): void => {
-            const renameInput = form.querySelector('input');
+            const renameInput = form?.querySelector('input') ?? null;
             if (renameInput !== null) {
               renameInput.focus();
               renameInput.setSelectionRange(0, resource.name.lastIndexOf('.'));

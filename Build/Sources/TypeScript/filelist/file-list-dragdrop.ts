@@ -36,6 +36,9 @@ class FileListDragDrop {
     const selector = FileListActionSelector.elementSelector + '[draggable="true"]';
 
     new RegularEvent('dragstart', (event: DragEvent, target: HTMLElement): void => {
+      if (event.dataTransfer === null) {
+        return;
+      }
       const selectedItems: ResourceInterface[] = [];
       let icon = '';
       let label = '';
@@ -48,8 +51,8 @@ class FileListDragDrop {
             element.dataset.filelistDragdropTransferItem = 'true';
             const resource = FileListActionUtility.getResourceForElement(element);
             selectedItems.push(resource);
-            label = element.dataset.filelistName;
-            icon = element.dataset.filelistIcon;
+            label = element.dataset.filelistName ?? '';
+            icon = element.dataset.filelistIcon ?? '';
           }
         });
       } else {
@@ -57,8 +60,8 @@ class FileListDragDrop {
         element.dataset.filelistDragdropTransferItem = 'true';
         const resource = FileListActionUtility.getResourceForElement(element);
         selectedItems.push(resource);
-        label = element.dataset.filelistName;
-        icon = element.dataset.filelistIcon;
+        label = element.dataset.filelistName ?? '';
+        icon = element.dataset.filelistIcon ?? '';
       }
 
       event.dataTransfer.effectAllowed = 'move';
@@ -74,7 +77,7 @@ class FileListDragDrop {
 
     new RegularEvent('dragover', (event: DragEvent, target: HTMLElement): void => {
       const resource = FileListActionUtility.getResourceForElement(target);
-      if (this.isDropAllowedOnResoruce(resource)) {
+      if (this.isDropAllowedOnResoruce(resource) && event.dataTransfer !== null) {
         event.dataTransfer.dropEffect = 'move';
         event.preventDefault();
         target.classList.add('success');
@@ -84,7 +87,7 @@ class FileListDragDrop {
     new RegularEvent('drop', (event: DragEvent, target: HTMLElement): void => {
       const detail: FileListDragDropDetail = {
         action: 'transfer',
-        resources: JSON.parse(event.dataTransfer.getData(DataTransferTypes.falResources) ?? '{}'),
+        resources: JSON.parse(event.dataTransfer?.getData(DataTransferTypes.falResources) ?? '{}'),
         target: FileListActionUtility.getResourceForElement(target),
       };
       topDocument.dispatchEvent(new CustomEvent(FileListDragDropEvent.transfer, { detail: detail }));
@@ -104,7 +107,7 @@ class FileListDragDrop {
       .filter((item): boolean => item.hasPreview)
       .map((item) => {
         const thumbnailUrl = new URL(topWindow.TYPO3.settings.Resource.thumbnailUrl, window.origin);
-        thumbnailUrl.searchParams.set('identifier', item.uid.toString(10));
+        thumbnailUrl.searchParams.set('identifier', String(item.uid));
 
         return {
           src: thumbnailUrl.toString(),

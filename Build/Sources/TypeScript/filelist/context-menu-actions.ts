@@ -80,7 +80,7 @@ class ContextMenuActions {
   }
 
   public static editFile(table: string, uid: string, dataset: DOMStringMap): void {
-    const actionUrl: string = dataset.actionUrl;
+    const actionUrl: string = dataset.actionUrl ?? '';
     topWindow.TYPO3.Backend.ContentContainer.setUrl(
       actionUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
@@ -94,7 +94,7 @@ class ContextMenuActions {
     topWindow.TYPO3.Backend.ContentContainer.setUrl(
       topWindow.TYPO3.settings.FormEngine.moduleUrl
       + '&edit[sys_file_metadata][' + resource.metaUid + ']=edit'
-      + '&module=' + encodeURIComponent(topWindow.TYPO3.ModuleMenu.App.getCurrentModule())
+      + '&module=' + encodeURIComponent(topWindow.TYPO3.ModuleMenu.App.getCurrentModule() ?? '')
       + '&returnUrl=' + ContextMenuActions.getReturnUrl()
     );
   }
@@ -125,13 +125,13 @@ class ContextMenuActions {
   }
 
   public static downloadFile(table: string, uid: string, dataset: DOMStringMap): void {
-    ContextMenuActions.triggerFileDownload(dataset.url, dataset.name);
+    ContextMenuActions.triggerFileDownload(dataset.url ?? '', dataset.name ?? '');
   }
 
   public static downloadFolder(table: string, uid: string, dataset: DOMStringMap): void {
     // Add notification about the download being prepared
     Notification.info(coreCoreLabels.get('file_download.prepare'), '', 2);
-    const actionUrl: string = dataset.actionUrl;
+    const actionUrl: string = dataset.actionUrl ?? '';
     (new AjaxRequest(actionUrl)).post({ items: [uid] })
       .then(async (response): Promise<void> => {
         let fileName = response.response.headers.get('Content-Disposition');
@@ -146,7 +146,7 @@ class ContextMenuActions {
         }
         fileName = fileName.substring(fileName.indexOf(' filename=') + 10);
         const data = await response.raw().arrayBuffer();
-        const blob = new Blob([data], { type: response.raw().headers.get('Content-Type') });
+        const blob = new Blob([data], { type: response.raw().headers.get('Content-Type') ?? undefined });
         ContextMenuActions.triggerFileDownload(URL.createObjectURL(blob), fileName, true);
       })
       .catch(() => {
@@ -180,8 +180,8 @@ class ContextMenuActions {
     }
 
     const modal = Modal.confirm(
-      dataset.title,
-      dataset.message,
+      dataset.title ?? '',
+      dataset.message ?? '',
       SeverityEnum.warning,
       [
         {
@@ -282,8 +282,8 @@ class ContextMenuActions {
       return;
     }
     const modal = Modal.confirm(
-      dataset.title,
-      dataset.message,
+      dataset.title ?? '',
+      dataset.message ?? '',
       SeverityEnum.warning,
       [
         {

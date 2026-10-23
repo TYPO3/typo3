@@ -91,16 +91,16 @@ export default class Filelist {
     new RegularEvent(FileListActionEvent.primary, (event: CustomEvent): void => {
       const detail: FileListActionDetail = event.detail;
       const resource = detail.resources[0];
-      const resourceElement = detail.trigger.closest<HTMLElement>('[data-default-language-access]');
+      const resourceElement = detail.trigger?.closest<HTMLElement>('[data-default-language-access]') ?? null;
       if (resource.type === 'file' && resourceElement !== null) {
         const formEngineUrl = new URL(topWindow.TYPO3.settings.FormEngine.moduleUrl, window.location.origin);
-        if (resource.metaUid > 0) {
+        if (resource.metaUid !== null && resource.metaUid > 0) {
           formEngineUrl.searchParams.set('edit[sys_file_metadata][' + resource.metaUid + ']', 'edit');
         } else {
           formEngineUrl.searchParams.set('edit[sys_file_metadata][0]', 'new');
-          formEngineUrl.searchParams.set('defVals[sys_file_metadata][file]', resource.uid.toString(10));
+          formEngineUrl.searchParams.set('defVals[sys_file_metadata][file]', String(resource.uid));
         }
-        formEngineUrl.searchParams.set('module', topWindow.TYPO3.ModuleMenu.App.getCurrentModule());
+        formEngineUrl.searchParams.set('module', topWindow.TYPO3.ModuleMenu.App.getCurrentModule() ?? '');
         formEngineUrl.searchParams.set('returnUrl', Filelist.getReturnUrl(''));
         window.location.href = formEngineUrl.toString();
       }
@@ -130,13 +130,13 @@ export default class Filelist {
     new RegularEvent(FileListActionEvent.download, (event: CustomEvent): void => {
       const detail: FileListActionDetail = event.detail;
       const resource = detail.resources[0];
-      this.triggerDownload([resource], detail.url, detail.trigger);
+      this.triggerDownload([resource], detail.url ?? '', detail.trigger);
     }).bindTo(document);
 
     new RegularEvent(FileListActionEvent.updateOnlineMedia, (event: CustomEvent): void => {
       const detail: FileListActionDetail = event.detail;
       const resource = detail.resources[0];
-      this.updateOnlineMedia(resource, detail.url);
+      this.updateOnlineMedia(resource, detail.url ?? '');
     }).bindTo(document);
 
     DocumentService.ready().then((): void => {
@@ -178,11 +178,11 @@ export default class Filelist {
   }
 
   public static submitClipboardFormWithCommand(cmd: string, target: HTMLButtonElement): void {
-    const fileListForm: HTMLFormElement = target.closest(Selectors.fileListFormSelector);
+    const fileListForm = target.closest<HTMLFormElement>(Selectors.fileListFormSelector);
     if (!fileListForm) {
       return;
     }
-    const commandField: HTMLInputElement = fileListForm.querySelector(Selectors.commandSelector);
+    const commandField = fileListForm.querySelector<HTMLInputElement>(Selectors.commandSelector);
     if (!commandField) {
       return;
     }
@@ -191,7 +191,7 @@ export default class Filelist {
     // parameters, so after the form submit, we get to the same view as before. This is not done for delete
     // commands, since this may lead to empty sites, in case all elements from the current site are deleted.
     if (cmd === 'copyMarked' || cmd === 'removeMarked') {
-      const pointerField: HTMLInputElement = fileListForm.querySelector(Selectors.pointerFieldSelector);
+      const pointerField = fileListForm.querySelector<HTMLInputElement>(Selectors.pointerFieldSelector);
       const pointerValue: string = Filelist.parseQueryParameters(document.location).pointer;
       if (pointerField && pointerValue) {
         pointerField.value = pointerValue;
@@ -205,12 +205,12 @@ export default class Filelist {
   }
 
   private static processTriggers(): void {
-    const mainElement: HTMLElement = document.querySelector('.filelist-main');
+    const mainElement = document.querySelector<HTMLElement>('.filelist-main');
     if (mainElement === null) {
       return;
     }
     // update ModuleStateStorage to the current folder identifier
-    ModuleStateStorage.update('media', mainElement.dataset.filelistCurrentIdentifier);
+    ModuleStateStorage.update('media', mainElement.dataset.filelistCurrentIdentifier ?? '');
   }
 
   private static parseQueryParameters(location: Location): QueryParameters {
@@ -266,7 +266,7 @@ export default class Filelist {
     }
     const list: Array<string> = [];
     eventDetails.checkboxes.forEach((checkbox) => {
-      const checkboxContainer: HTMLElement = checkbox.closest(MultiRecordSelectionSelectors.elementSelector);
+      const checkboxContainer = checkbox.closest<HTMLElement>(MultiRecordSelectionSelectors.elementSelector);
       if (checkboxContainer !== null && checkboxContainer.dataset[configuration.idField]) {
         list.push(checkboxContainer.dataset[configuration.idField]);
       }
@@ -314,7 +314,7 @@ export default class Filelist {
       const item = items.at(0);
       if (item.type === 'file') {
         // We deal with a single file in the selection, download directly
-        this.invokeDownload(item.url, item.name);
+        this.invokeDownload(item.url ?? '', item.name);
         return;
       }
     }
@@ -324,7 +324,7 @@ export default class Filelist {
     // Store the targets' (button) content and replace with a spinner
     // icon, while the download is being prepared. Also disable the
     // button for this time to prevent the user from triggering it again.
-    const targetContent: string | null = button?.innerHTML;
+    const targetContent: string | null = button?.innerHTML ?? null;
     if (button) {
       button.setAttribute('disabled', 'disabled');
       Icons.getIcon('spinner-circle', Icons.sizes.small).then((spinner: string): void => {
@@ -351,7 +351,7 @@ export default class Filelist {
         }
         fileName = fileName.substring(fileName.indexOf(' filename=') + 10);
         const data = await response.raw().arrayBuffer();
-        const blob = new Blob([data], { type: response.raw().headers.get('Content-Type') });
+        const blob = new Blob([data], { type: response.raw().headers.get('Content-Type') ?? undefined });
         const downloadUrl = URL.createObjectURL(blob);
         this.invokeDownload(downloadUrl, fileName);
         // Add notification about successful preparation
@@ -365,7 +365,7 @@ export default class Filelist {
         progressBar.done();
         if (button) {
           button.removeAttribute('disabled');
-          button.innerHTML = targetContent;
+          button.innerHTML = targetContent ?? '';
         }
       });
   }
@@ -403,7 +403,7 @@ export default class Filelist {
   private getProgress(): ProgressBarElement {
     if (!this.progressBar || !this.progressBar.isConnected) {
       this.progressBar = document.createElement('typo3-backend-progress-bar');
-      document.querySelector('.module-loading-indicator').appendChild(this.progressBar);
+      document.querySelector('.module-loading-indicator')?.appendChild(this.progressBar);
     }
     return this.progressBar;
   }
@@ -423,7 +423,7 @@ export default class Filelist {
         }
         trigger.value = value.toString(10);
         if (e.key === 'Enter' && value !== Number(trigger.dataset.currentpage)) {
-          const pagingUrl = new URL(trigger.dataset.pagingUrl, window.origin);
+          const pagingUrl = new URL(trigger.dataset.pagingUrl ?? '', window.origin);
           pagingUrl.searchParams.set('currentPage', value.toString());
           window.location.href = pagingUrl.toString();
         }

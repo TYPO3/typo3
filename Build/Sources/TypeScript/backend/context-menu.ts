@@ -86,8 +86,8 @@ class ContextMenu {
     context: string | null,
     unusedParam1: string,
     unusedParam2: string,
-    eventSource: HTMLElement = null,
-    originalEvent: PointerEvent = null
+    eventSource: HTMLElement | null = null,
+    originalEvent: PointerEvent | null = null
   ): void {
     const contextMenuEvent = new CustomEvent<ContextMenuEventDetail>(ContextMenuEvent.open, {
       detail: {
