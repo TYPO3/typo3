@@ -104,7 +104,7 @@ export class ColumnSelectorButton extends PseudoButtonLitElement {
    * @private
    */
   private static isColumnHidden(column: HTMLInputElement): boolean {
-    return column.closest(Selectors.columnsContainerSelector)?.classList.contains('hidden');
+    return column.closest(Selectors.columnsContainerSelector)?.classList.contains('hidden') ?? false;
   }
 
   /**

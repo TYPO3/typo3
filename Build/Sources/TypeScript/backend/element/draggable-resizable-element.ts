@@ -154,7 +154,7 @@ export class DraggableResizableElement extends LitElement {
 
     this.dispatchEvent(this.createEvent(
       'draggable-resizable-started',
-      { action: this.action, originOffset: this.originOffset }
+      { action: this.action, originOffset: this.originOffset ?? undefined }
     ));
   };
 
@@ -170,7 +170,7 @@ export class DraggableResizableElement extends LitElement {
     this.offset = this.adjustOffset(this.originOffset, deltaPos);
     this.dispatchEvent(this.createEvent(
       'draggable-resizable-updated',
-      { action: this.action, originOffset: this.originOffset }
+      { action: this.action, originOffset: this.originOffset ?? undefined }
     ));
   };
 
@@ -180,7 +180,7 @@ export class DraggableResizableElement extends LitElement {
     }
     this.dispatchEvent(this.createEvent(
       'draggable-resizable-finished',
-      { action: this.action, originOffset: this.originOffset }
+      { action: this.action, originOffset: this.originOffset ?? undefined }
     ));
     this.action = null;
     this.originOffset = null;

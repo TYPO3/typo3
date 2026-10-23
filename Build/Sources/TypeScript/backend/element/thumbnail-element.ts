@@ -69,7 +69,8 @@ export class ThumbnailElement extends LitElement {
 
   protected override render(): TemplateResult | symbol {
     return this.thumbnailTask.render({
-      pending: () => html`<typo3-backend-spinner size=${this.size}></typo3-backend-size>`,
+      initial: () => html`<typo3-backend-spinner size=${this.size}></typo3-backend-spinner>`,
+      pending: () => html`<typo3-backend-spinner size=${this.size}></typo3-backend-spinner>`,
       complete: (markup) => html`${markup}`,
       error: () => html`<typo3-backend-icon identifier="default-not-found" size="small"></typo3-backend-icon>`
     });
