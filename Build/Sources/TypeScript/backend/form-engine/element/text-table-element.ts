@@ -16,7 +16,7 @@ import { Tabbable } from './modifier/tabbable';
 import DocumentService from '@typo3/core/document-service';
 
 class TextTableElement {
-  private element: HTMLTextAreaElement = null;
+  private element: HTMLTextAreaElement | null = null;
 
   constructor(elementId: string) {
     DocumentService.ready().then((): void => {

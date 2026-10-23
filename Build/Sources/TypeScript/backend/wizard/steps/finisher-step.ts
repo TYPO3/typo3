@@ -32,7 +32,7 @@ export class FinisherStep implements WizardStepInterface {
   readonly title = wizardLabels.get('step.finisher.title');
   readonly autoAdvance = false;
 
-  public resetButtonTitle: string = null;
+  public resetButtonTitle: string | null = null;
   public hasError = false;
 
   private finisherInstance: FinisherInterface | null = null;

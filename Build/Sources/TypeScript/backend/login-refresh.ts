@@ -45,11 +45,11 @@ interface RequestTokenResponseData {
  */
 class LoginRefresh {
   private intervalTime: number = 60;
-  private intervalId: number = null;
+  private intervalId: number | null = null;
   private backendIsLocked: boolean = false;
-  private timeoutModal: ModalElement = null;
-  private backendLockedModal: ModalElement = null;
-  private loginForm: ModalElement = null;
+  private timeoutModal: ModalElement | null = null;
+  private backendLockedModal: ModalElement | null = null;
+  private loginForm: ModalElement | null = null;
   private requestTokenUrl: string = '';
   private loginFramesetUrl: string = '';
   private logoutUrl: string = '';

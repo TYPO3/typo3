@@ -60,7 +60,7 @@ export class EditableSettingElement extends LitElement {
 
   @state() hasChange: boolean = false;
 
-  typeElement: BaseElement<unknown> = null;
+  typeElement: BaseElement<unknown> | null = null;
 
   protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;

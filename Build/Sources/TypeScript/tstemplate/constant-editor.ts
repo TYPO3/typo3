@@ -43,11 +43,11 @@ class ConstantEditor {
    * initially register event listeners
    */
   private changeProperty(this: HTMLElement): void {
-    const constantName: string = this.getAttribute('rel');
+    const constantName: string = this.getAttribute('rel') ?? '';
     const defaultDiv: HTMLDivElement = document.getElementById('defaultTS-' + constantName) as HTMLDivElement;
     const userDiv: HTMLDivElement = document.getElementById('userTS-' + constantName) as HTMLDivElement;
     const checkBox: HTMLInputElement = document.getElementById('check-' + constantName) as HTMLInputElement;
-    const toggleState: string = this.dataset.bsToggle;
+    const toggleState: string = this.dataset.bsToggle ?? '';
 
     if (toggleState === 'edit') {
       defaultDiv.style.display = 'none';

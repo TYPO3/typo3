@@ -38,8 +38,8 @@
     return result;
   }
 
-  function windowOpen(url: string, target: string | null, features: string | null): Window {
-    const windowRef = window.open(url, target, features);
+  function windowOpen(url: string, target: string | null, features: string | null): Window | null {
+    const windowRef = window.open(url, target ?? undefined, features ?? undefined);
     if (windowRef) {
       windowRef.focus();
     }
@@ -52,7 +52,7 @@
     callback: (evt: Event, targetElement: HTMLElement) => void
   ): void {
     document.addEventListener(event, function(evt: Event) {
-      for (let node = evt.target as Node; node; node = node.parentNode !== document ? node.parentNode : null) {
+      for (let node = evt.target as Node | null; node; node = node.parentNode !== document ? node.parentNode : null) {
         if ('matches' in node) {
           const targetElement = node as HTMLElement;
           if (targetElement.matches(selector)) {
@@ -66,15 +66,15 @@
   delegateEvent('click', 'a[data-mailto-token][data-mailto-vector]', function(evt: Event, evtTarget: HTMLElement) {
     evt.preventDefault();
     const dataset = evtTarget.dataset;
-    const value = dataset.mailtoToken;
-    const offset = parseInt(dataset.mailtoVector, 10) * -1;
+    const value = dataset.mailtoToken ?? '';
+    const offset = parseInt(dataset.mailtoVector ?? '0', 10) * -1;
     document.location.href = decryptString(value, offset);
   });
 
   delegateEvent('click', 'a[data-window-url]', function(evt: Event, evtTarget: HTMLElement) {
     evt.preventDefault();
     const dataset = evtTarget.dataset;
-    const url = dataset.windowUrl;
+    const url = dataset.windowUrl ?? '';
     const target = dataset.windowTarget || null;
     const features = dataset.windowFeatures || null;
     windowOpen(url, target, features);

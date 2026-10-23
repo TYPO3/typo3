@@ -35,11 +35,11 @@ class ImportExport {
   }
 
   private triggerConfirmation(this: HTMLButtonElement): void {
-    const modal = Modal.confirm(this.dataset.title, this.dataset.message);
+    const modal = Modal.confirm(this.dataset.title ?? '', this.dataset.message ?? '');
     modal.addEventListener('confirm.button.ok', (): void => {
       const submitTrigger: HTMLInputElement = document.getElementById('t3js-submit-field') as HTMLInputElement;
       submitTrigger.name = this.name;
-      submitTrigger.closest('form').submit();
+      submitTrigger.closest('form')?.submit();
 
       modal.hideModal();
     });

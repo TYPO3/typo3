@@ -37,7 +37,7 @@ class ThrottleEvent<E extends Event = Event, T extends Element = Element> extend
       const dispatch = () => {
         if (eventData === null) {
           // No event since the last immediate dispatch, start a new fresh interval-phase
-          clearInterval(intervalId);
+          clearInterval(intervalId ?? undefined);
           intervalId = null;
           return;
         }

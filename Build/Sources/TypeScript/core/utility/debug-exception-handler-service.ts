@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
           copyButton.innerHTML = getErrorIcon();
         }
       });
-      traceFilePathElement.parentElement.after(copyButton);
+      traceFilePathElement.parentElement?.after(copyButton);
     }
   });
 
@@ -159,15 +159,15 @@ document.addEventListener('DOMContentLoaded', () => {
         plaintextFallbackContent.className = 'plaintextFallback';
         plaintextFallbackContent.innerText = trimWhitespace(traceBody.innerText);
         const plaintextFallback = document.getElementById('plaintextFallback');
-        plaintextFallback.replaceChildren(plaintextFallbackContent);
-        plaintextFallback.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        plaintextFallback?.replaceChildren(plaintextFallbackContent);
+        plaintextFallback?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
         try {
           const range = document.createRange();
           range.selectNodeContents(plaintextFallbackContent);
           const selection = window.getSelection();
-          selection.removeAllRanges();
-          selection.addRange(range);
+          selection?.removeAllRanges();
+          selection?.addRange(range);
         } catch {
           // Wow, your browser is painful. No fallback for the fallback here.
         }

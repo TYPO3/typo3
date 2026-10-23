@@ -32,11 +32,11 @@ interface PasswordRules {
  * Handles the "Generate Password" field control
  */
 class PasswordGenerator {
-  private controlElement: HTMLAnchorElement = null;
-  private humanReadableField: HTMLInputElement = null;
-  private hiddenField: HTMLInputElement = null;
-  private passwordRules: PasswordRules = null;
-  private passwordPolicy: string = null;
+  private controlElement: HTMLAnchorElement | null = null;
+  private humanReadableField: HTMLInputElement | null = null;
+  private hiddenField: HTMLInputElement | null = null;
+  private passwordRules: PasswordRules | null = null;
+  private passwordPolicy: string | null = null;
 
   constructor(controlElementId: string) {
     DocumentService.ready().then((): void => {

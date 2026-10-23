@@ -1797,8 +1797,8 @@ export class Factory {
 
 export class DataBackend {
   private endpoints: Endpoints = {};
-  private prototypeName: string = null;
-  private persistenceIdentifier: string = null;
+  private prototypeName: string | null = null;
+  private persistenceIdentifier: string | null = null;
 
   /**
    * @throws 1475377488

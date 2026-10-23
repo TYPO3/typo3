@@ -22,10 +22,10 @@ import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
  * Handles the "Generate Short URL" field control
  */
 class ShortUrlGenerator {
-  private controlElement: HTMLAnchorElement = null;
-  private humanReadableField: HTMLInputElement = null;
-  private sourceHostField: HTMLInputElement = null;
-  private debounceTimer: ReturnType<typeof setTimeout> = null;
+  private controlElement: HTMLAnchorElement | null = null;
+  private humanReadableField: HTMLInputElement | null = null;
+  private sourceHostField: HTMLInputElement | null = null;
+  private debounceTimer: ReturnType<typeof setTimeout> | null = null;
   private hasDuplicateError: boolean = false;
 
   constructor(controlElementId: string) {

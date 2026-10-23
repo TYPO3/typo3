@@ -16,7 +16,7 @@ import DocumentService from '@typo3/core/document-service';
 import FormEngineSuggest from '../../form-engine-suggest';
 
 class GroupElement extends AbstractSortableSelectItems {
-  private element: HTMLSelectElement = null;
+  private element: HTMLSelectElement | null = null;
 
   constructor(elementId: string) {
     super();

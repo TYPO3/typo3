@@ -45,13 +45,13 @@ enum Selectors {
 }
 
 class MfaInfoElement {
-  private readonly options: FieldOptions = null;
-  private fullElement: HTMLElement = null;
-  private deactivteProviderButtons: NodeListOf<HTMLButtonElement> = null;
-  private deactivteMfaButton: HTMLButtonElement = null;
-  private providersList: HTMLUListElement = null;
-  private mfaStatusLabel: HTMLSpanElement = null;
-  private request: AjaxRequest = null;
+  private readonly options: FieldOptions | null = null;
+  private fullElement: HTMLElement | null = null;
+  private deactivteProviderButtons: NodeListOf<HTMLButtonElement> | null = null;
+  private deactivteMfaButton: HTMLButtonElement | null = null;
+  private providersList: HTMLUListElement | null = null;
+  private mfaStatusLabel: HTMLSpanElement | null = null;
+  private request: AjaxRequest | null = null;
 
   constructor(selector: string, options: FieldOptions) {
     this.options = options;

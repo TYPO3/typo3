@@ -158,7 +158,7 @@ export class Tree extends LitElement {
 
   private __loadFinished: () => void;
   private __loadPromise: Promise<void> = new Promise(res => this.__loadFinished = res);
-  private lastRenderScrollPosition: number = null;
+  private lastRenderScrollPosition: number | null = null;
 
   public get loadComplete(): Promise<void> {
     return this.__loadPromise;

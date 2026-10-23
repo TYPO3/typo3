@@ -89,7 +89,7 @@ export class PagePositionSelect extends LitElement {
 
   @query('typo3-backend-component-page-position-select-tree') tree: PagePositionSelectTree;
 
-  @state() private configuration: Configuration = null;
+  @state() private configuration: Configuration | null = null;
   @state() private breadcrumbItems: BreadcrumbNodeInterface[] = [];
 
   public override connectedCallback(): void {

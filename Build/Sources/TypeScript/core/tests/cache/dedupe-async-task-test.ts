@@ -45,7 +45,7 @@ describe('@typo3/core/cache/dedupe-async-task', (): void => {
     };
 
     it('if all requests are aborted', async (): Promise<void> => {
-      let wasAborted: boolean;
+      let wasAborted = false;
       const task = async (signal: AbortSignal): Promise<void> => {
         await new Promise((resolve) => window.setTimeout(resolve, 0));
         wasAborted = signal.aborted;
@@ -93,7 +93,7 @@ describe('@typo3/core/cache/dedupe-async-task', (): void => {
 
       abortControllerA.abort();
 
-      let error: Error;
+      let error: Error | undefined;
       try {
         await aPromise;
       } catch (e: unknown) {
@@ -101,7 +101,7 @@ describe('@typo3/core/cache/dedupe-async-task', (): void => {
       }
       const b = await bPromise;
 
-      expect(error.name).to.equal('AbortError');
+      expect(error?.name).to.equal('AbortError');
       expect(b).to.be.true;
     });
 
@@ -111,14 +111,16 @@ describe('@typo3/core/cache/dedupe-async-task', (): void => {
       const abortControllerA = new AbortController();
       const aPromise = dedupe.get('foo', boolTask, abortControllerA.signal);
 
-      let a: boolean | null;
-      const aInBackground = aPromise.then((v) => a = v).catch((): void => a = null);
+      let a: boolean | null = null;
+      const aInBackground = aPromise.then((v) => a = v).catch((): void => {
+        a = null;
+      });
 
       const abortControllerB = new AbortController();
       const bPromise = dedupe.get('foo', boolTask, abortControllerB.signal);
 
       abortControllerB.abort('stop b!');
-      let b: boolean|null;
+      let b: boolean|null = null;
       try {
         b = await bPromise;
       } catch {
@@ -137,7 +139,7 @@ describe('@typo3/core/cache/dedupe-async-task', (): void => {
       const a = await dedupe.get('foo', boolTask);
       const abortControllerB = new AbortController();
       abortControllerB.abort();
-      let error: Error;
+      let error: Error | undefined;
       try {
         await dedupe.get('foo', boolTask, abortControllerB.signal);
       } catch (e: unknown) {
@@ -145,7 +147,7 @@ describe('@typo3/core/cache/dedupe-async-task', (): void => {
       }
 
       expect(a).to.be.true;
-      expect(error.name).to.equal('AbortError');
+      expect(error?.name).to.equal('AbortError');
     });
 
   });

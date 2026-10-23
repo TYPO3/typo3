@@ -66,13 +66,13 @@ enum ProposalModes {
  *  - for existing records, we also check for conflicts, and check if we have subpages, or if we want to add a redirect (todo)
  */
 class SlugElement {
-  private readonly options: FieldOptions = null;
-  private fullElement: HTMLElement = null;
+  private readonly options: FieldOptions | null = null;
+  private fullElement: HTMLElement | null = null;
   private manuallyChanged: boolean = false;
-  private readOnlyField: HTMLInputElement = null;
-  private inputField: HTMLInputElement = null;
-  private hiddenField: HTMLInputElement = null;
-  private request: AjaxRequest = null;
+  private readOnlyField: HTMLInputElement | null = null;
+  private inputField: HTMLInputElement | null = null;
+  private hiddenField: HTMLInputElement | null = null;
+  private request: AjaxRequest | null = null;
   private readonly fieldsToListenOn: Record<string, string> = {};
 
   constructor(selector: string, options: FieldOptions) {

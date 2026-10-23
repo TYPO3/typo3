@@ -36,8 +36,8 @@ enum Permissions {
  * https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
  */
 class TablePermissionElement extends HTMLElement {
-  private selectStateField: HTMLInputElement = null;
-  private modifyStateField: HTMLInputElement = null;
+  private selectStateField: HTMLInputElement | null = null;
+  private modifyStateField: HTMLInputElement | null = null;
 
   public async connectedCallback(): Promise<void> {
     await DocumentService.ready();

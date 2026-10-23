@@ -148,14 +148,14 @@ export class ModalElement extends LitElement {
   @property({ type: Array, attribute: false }) buttons: Array<Button> = [];
   @property({ type: String, attribute: 'resize-identifier' }) resizeIdentifier: string = '';
 
-  @state() templateResultContent: TemplateResult | JQuery | Element | DocumentFragment = null;
-  @state() activeButton: Button = null;
+  @state() templateResultContent: TemplateResult | JQuery | Element | DocumentFragment | null = null;
+  @state() activeButton: Button | null = null;
   @query('dialog', true) dialog: HTMLDialogElement;
   @state() private modalWidth?: number;
   @state() private resizing: boolean = false;
 
-  public callback: ModalCallbackFunction = null;
-  public ajaxCallback: ModalCallbackFunction = null;
+  public callback: ModalCallbackFunction | null = null;
+  public ajaxCallback: ModalCallbackFunction | null = null;
 
   public userData: { [key: string]: any } = {};
 
@@ -622,7 +622,7 @@ class Modal {
   public readonly positions: typeof Positions = Positions;
 
   // @todo: currentModal could be a getter method for the last element in this.instances
-  public currentModal: ModalElement = null;
+  public currentModal: ModalElement | null = null;
   private readonly instances: Array<ModalElement> = [];
 
   private readonly defaultConfiguration: Configuration = {

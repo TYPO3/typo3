@@ -150,7 +150,7 @@ class Icons {
   public async getIcon(
     identifier: string,
     size: Sizes,
-    overlayIdentifier?: string,
+    overlayIdentifier?: string | null,
     state?: string,
     markupIdentifier?: MarkupIdentifiers,
     signal?: AbortSignal | null,

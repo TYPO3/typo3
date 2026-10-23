@@ -113,7 +113,7 @@ export class SettingsEditorElement extends LitElement {
   @state() activeCategory: string = '';
 
   visibleCategories: Record<string, boolean> = {};
-  observer: IntersectionObserver = null;
+  observer: IntersectionObserver | null = null;
 
   public override disconnectedCallback() {
     super.disconnectedCallback();

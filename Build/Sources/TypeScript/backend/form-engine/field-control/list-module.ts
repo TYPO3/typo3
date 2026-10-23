@@ -18,7 +18,7 @@ import FormEngine from '@typo3/backend/form-engine';
  * This module is used for the field control "List module" used for "group" fields
  */
 class ListModule {
-  private controlElement: HTMLElement = null;
+  private controlElement: HTMLElement | null = null;
 
   constructor(controlElementId: string) {
     DocumentService.ready().then((): void => {

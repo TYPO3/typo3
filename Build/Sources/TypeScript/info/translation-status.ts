@@ -30,9 +30,9 @@ class TranslationStatus {
     const relatedCreationButton = document.querySelector<HTMLAnchorElement>(`.t3js-language-new[data-lang="${this.dataset.lang}"]`);
     const relatedCreationButtonIcon = relatedCreationButton.querySelector<HTMLSpanElement>('.t3js-icon');
     const selectedButtons = document.querySelectorAll<HTMLInputElement>(`input[type="checkbox"][data-lang="${this.dataset.lang}"]:checked`);
-    const actionUrl = new URL(location.origin + relatedCreationButton.dataset.editUrl);
+    const actionUrl = new URL(location.origin + (relatedCreationButton.dataset.editUrl ?? ''));
     selectedButtons.forEach((element): void => {
-      actionUrl.searchParams.set(`cmd[pages][${element.dataset.uid}][localize]`, this.dataset.lang);
+      actionUrl.searchParams.set(`cmd[pages][${element.dataset.uid}][localize]`, this.dataset.lang ?? '');
     });
 
     const disableCreationButton = selectedButtons.length === 0;
@@ -40,7 +40,7 @@ class TranslationStatus {
     relatedCreationButton.href = actionUrl.toString();
     relatedCreationButton.classList.toggle('disabled', disableCreationButton);
 
-    const newIcon = await Icons.getIcon(relatedCreationButtonIcon.dataset.identifier, Icons.sizes.small, null, disableCreationButton ? Icons.states.disabled : Icons.states.default);
+    const newIcon = await Icons.getIcon(relatedCreationButtonIcon.dataset.identifier ?? '', Icons.sizes.small, null, disableCreationButton ? Icons.states.disabled : Icons.states.default);
     relatedCreationButtonIcon.replaceWith(document.createRange().createContextualFragment(newIcon));
   }
 }

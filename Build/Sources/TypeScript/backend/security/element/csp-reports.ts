@@ -90,7 +90,7 @@ interface Mutation {
 export class CspReports extends LitElement {
   @property({ type: Array }) scopes: string[];
   @property({ type: String }) controlUri: string;
-  @state() selectedScope: string = null;
+  @state() selectedScope: string | null = null;
 
   @state() reports: SummarizedCspReport[] = [];
   @state() selectedReport: SummarizedCspReport | null = null;

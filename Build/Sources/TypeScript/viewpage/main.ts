@@ -68,7 +68,7 @@ class ViewPage {
       this.customPresetItemWidth = document.querySelector<HTMLElement>(Selectors.customWidthSelector);
       this.customPresetItemHeight = document.querySelector<HTMLElement>(Selectors.customHeightSelector);
       this.currentLabelElement = document.querySelector<HTMLElement>(Selectors.currentLabelSelector);
-      this.resizableContainer = document.querySelector(Selectors.resizableContainerIdentifier);
+      this.resizableContainer = document.querySelector<HTMLElement>(Selectors.resizableContainerIdentifier);
 
       this.initialize();
     });
@@ -173,14 +173,14 @@ class ViewPage {
 
     // Add event to width selector so the container is resized
     new RegularEvent('click', (e: Event, selectedElement: HTMLElement): void => {
-      this.setSize(parseInt(selectedElement.dataset.width, 10), parseInt(selectedElement.dataset.height, 10));
-      this.setLabel(selectedElement.dataset.label);
+      this.setSize(parseInt(selectedElement.dataset.width ?? '0', 10), parseInt(selectedElement.dataset.height ?? '0', 10));
+      this.setLabel(selectedElement.dataset.label ?? '');
       this.persistCurrentPreset();
     }).delegateTo(document, Selectors.changePresetSelector);
 
     // Add event for refresh button click
     new RegularEvent('click', (): void => {
-      this.iframe.contentWindow.location.reload();
+      this.iframe.contentWindow?.location.reload();
     }).bindTo(document.querySelector(Selectors.refreshSelector));
 
     interact(this.resizableContainer).on('resizestart', (e: ResizeEvent): void => {
@@ -190,7 +190,7 @@ class ViewPage {
       iframeCover.setAttribute('style', 'z-index:99;position:absolute;width:100%;top:0;left:0;height:100%;');
       e.target.appendChild(iframeCover);
     }).on('resizeend', (): void => {
-      document.getElementById('viewpage-iframe-cover').remove();
+      document.getElementById('viewpage-iframe-cover')?.remove();
       this.persistCustomPreset();
     }).resizable({
       origin: 'self',

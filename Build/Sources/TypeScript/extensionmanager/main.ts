@@ -141,8 +141,8 @@ class ExtensionManager {
         new AjaxRequest(target.href).get().then((response: AjaxResponse): Promise<void> => this.updateExtension(response));
       }).delegateTo(document, 'a[data-action=update-extension]');
 
-      let searchField: HTMLInputElement;
-      if ((searchField = document.querySelector(ExtensionManagerIdentifier.searchField)) !== null) {
+      const searchField = document.querySelector<HTMLInputElement>(ExtensionManagerIdentifier.searchField);
+      if (searchField !== null) {
         const activeSearchFilter = BrowserSession.get(this.searchFilterSessionKey);
         if (activeSearchFilter !== null) {
           searchField.value = activeSearchFilter;
@@ -177,7 +177,7 @@ class ExtensionManager {
     const filterableColumns = document.querySelectorAll<HTMLTableRowElement>('[data-filterable]');
     const columnIndices: number[] = [];
     filterableColumns.forEach((element): void => {
-      const children = Array.from(element.parentElement.children);
+      const children = Array.from(element.parentElement?.children ?? []);
       columnIndices.push(children.indexOf(element));
     });
     const rows = document.querySelectorAll<HTMLTableRowElement>('#typo3-extension-list tbody tr');
@@ -185,7 +185,7 @@ class ExtensionManager {
       const columns = columnIndices.map((index) => row.children.item(index));
       const values: string[] = [];
       columns.forEach((column): void => {
-        values.push(column.textContent.trim().replace(/\s+/g, ' '));
+        values.push(column?.textContent?.trim().replace(/\s+/g, ' ') ?? '');
       });
       row.classList.toggle('hidden', searchText !== '' && !RegExp(searchText, 'i').test(values.join(':')));
     });

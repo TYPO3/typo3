@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This processor is used as client-side counterpart of `\TYPO3\CMS\Core\Page\JavaScriptItems
  *
@@ -92,7 +93,7 @@ export function executeJavaScriptModuleInstruction(json: JavaScriptItemPayload):
       if (item.type === 'assign') {
         return (__esModule: any) => {
           const subjectRef = resolveSubjectRef(__esModule, json);
-          mergeRecursive(subjectRef, item.assignments);
+          mergeRecursive(subjectRef, item.assignments ?? {});
         };
       } else if (item.type === 'invoke') {
         return (__esModule: any): any => {
@@ -107,7 +108,7 @@ export function executeJavaScriptModuleInstruction(json: JavaScriptItemPayload):
         return (__esModule: any) => {
           // this `null` is `thisArg` scope of `Function.bind`,
           // which will be reset when invoking `new`
-          const args = [null].concat(item.args);
+          const args: unknown[] = [null, ...item.args];
           const subjectRef = resolveSubjectRef(__esModule, json);
           return new (subjectRef.bind(...args));
         };

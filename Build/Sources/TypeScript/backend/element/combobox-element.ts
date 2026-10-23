@@ -199,8 +199,8 @@ export class ComboboxElement extends LitElement {
   private inputIsDisabledOrReadonly: boolean = false;
 
   private choiceIdCounter: number = 0;
-  private delayedCloseTimeout: number = null;
-  private internalId: string = null;
+  private delayedCloseTimeout: number | null = null;
+  private internalId: string | null = null;
   private lastAction: ACTION | null = null;
   private lastHighlightedIndex: number | null = null;
   private userSelectionIntent: SELECTIONINTENT | null = null;

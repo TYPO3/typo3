@@ -32,9 +32,9 @@ import type { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
  * https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
  */
 class CategoryElement extends HTMLElement {
-  private recordField: HTMLInputElement = null;
-  private treeWrapper: HTMLElement = null;
-  private tree: SelectTree = null;
+  private recordField: HTMLInputElement | null = null;
+  private treeWrapper: HTMLElement | null = null;
+  private tree: SelectTree | null = null;
 
   public async connectedCallback(): Promise<void> {
     if (this.tree !== null) {

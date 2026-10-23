@@ -49,7 +49,7 @@ interface SystemInformationMessageData {
  * System information menu handler
  */
 class SystemInformationMenu {
-  private timer: number = null;
+  private timer: number | null = null;
 
   constructor() {
     new RegularEvent('click', this.handleMessageLinkClick)

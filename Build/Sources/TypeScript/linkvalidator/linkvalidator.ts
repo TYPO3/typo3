@@ -49,7 +49,7 @@ class Linkvalidator {
   private getProgress(): ProgressBarElement {
     if (!this.progressBar || !this.progressBar.isConnected) {
       this.progressBar = document.createElement('typo3-backend-progress-bar');
-      document.querySelector(Selectors.reportTable).prepend(this.progressBar);
+      document.querySelector(Selectors.reportTable)?.prepend(this.progressBar);
     }
     return this.progressBar;
   }

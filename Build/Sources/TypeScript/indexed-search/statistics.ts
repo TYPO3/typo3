@@ -35,11 +35,14 @@ class IndexedSearchStatistics extends HTMLElement {
   }
 
   public connectedCallback(): void {
-    this.initializeWordList(this.shadowRoot.querySelector('slot'));
+    const slot = this.shadowRoot?.querySelector('slot');
+    if (slot) {
+      this.initializeWordList(slot);
+    }
   }
 
   private initializeWordList(slot: HTMLSlotElement): void {
-    const wordList: HTMLTableElement = (slot.assignedElements()[0].children[0] ?? null) as HTMLTableElement|null;
+    const wordList = (slot.assignedElements()[0]?.children[0] ?? null) as HTMLTableElement|null;
     if (wordList === null || wordList.tagName.toLowerCase() !== 'table') {
       throw new Error(`Sortable table could not be initialized. Expected <table> child name, but found: ${wordList}`);
     }

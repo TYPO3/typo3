@@ -23,7 +23,7 @@ interface ClipboardItem {
  * Handles the "Insert clipboard" field control that pastes the clipboard into a "group" field
  */
 class InsertClipboard {
-  private controlElement: HTMLElement = null;
+  private controlElement: HTMLElement | null = null;
 
   constructor(controlElementId: string) {
     DocumentService.ready().then((): void => {

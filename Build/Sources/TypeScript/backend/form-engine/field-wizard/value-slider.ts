@@ -31,7 +31,7 @@ enum Format {
  * https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
  */
 export class ValueSlider extends HTMLElement {
-  private valueSlider: HTMLInputElement = null;
+  private valueSlider: HTMLInputElement | null = null;
 
   public async connectedCallback(): Promise<void> {
     if (this.valueSlider !== null) {

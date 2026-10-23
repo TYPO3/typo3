@@ -16,7 +16,7 @@
  * @exports @typo3/core/document-service
  */
 class DocumentService {
-  private promise: Promise<Document> = null;
+  private promise: Promise<Document> | null = null;
 
   public ready(): Promise<Document> {
     return this.promise ?? (this.promise = this.createPromise());

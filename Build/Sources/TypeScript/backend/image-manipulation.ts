@@ -66,7 +66,7 @@ class ImageManipulation {
   private syncAvailable: boolean = false;
   private syncEnabled: boolean = false;
   private initialized: boolean = false;
-  private triggerListener: EventInterface = null;
+  private triggerListener: EventInterface | null = null;
   private trigger: HTMLElement;
   private currentModal: ModalElement;
   private cropVariantTriggers: NodeListOf<HTMLElement>;

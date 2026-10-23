@@ -56,7 +56,7 @@ export class StatusIndicatorElement extends LitElement {
   @property({ type: String }) state: StatusIndicatorState = 'default';
   @property({ type: Boolean }) live: boolean = false;
   @property({ type: Boolean }) loading: boolean = false;
-  @property({ type: String }) label: string = null;
+  @property({ type: String }) label: string | null = null;
 
   protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;

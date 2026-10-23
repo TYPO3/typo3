@@ -30,7 +30,7 @@ import FormEngine from '@typo3/backend/form-engine';
  * https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
  */
 class DatetimeElement extends HTMLElement {
-  private element: HTMLInputElement = null;
+  private element: HTMLInputElement | null = null;
 
   public async connectedCallback(): Promise<void> {
     if (this.element !== null) {

@@ -42,7 +42,7 @@ class TemplateAnalyzer {
         const url = link.getAttribute('href');
         const size = Modal.sizes.large;
         const content = html`${until(
-          this.fetchModalContent(url),
+          this.fetchModalContent(url ?? ''),
           html`<div class="modal-loading"><typo3-backend-spinner size="large"></typo3-backend-spinner></div>`
         )}`;
         Modal.advanced({ type, title, size, content });

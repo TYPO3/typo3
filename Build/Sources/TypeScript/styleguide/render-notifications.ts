@@ -27,12 +27,12 @@ class RenderNotifications {
   private registerEvents() {
     new RegularEvent('click', (e: MouseEvent, target: HTMLButtonElement): void => {
       const severity = target.dataset.severity as 'notice' | 'info' | 'success' | 'warning' | 'error';
-      const title = target.dataset.title;
+      const title = target.dataset.title ?? '';
       const message = target.dataset.message;
-      const duration = parseInt(target.dataset.duration, 10);
+      const duration = parseInt(target.dataset.duration ?? '0', 10);
       const includeActions = target.dataset.includeActions === '1';
 
-      Notification[severity](title, message, duration, this.createActions(includeActions));
+      Notification[severity](title, message ?? '', duration, this.createActions(includeActions));
     }).delegateTo(document, 'button[data-action="trigger-notification"]');
   }
 

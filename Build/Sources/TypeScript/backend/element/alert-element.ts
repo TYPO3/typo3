@@ -38,8 +38,8 @@ export class AlertElement extends LitElement {
   @property({ type: Number }) severity: SeverityEnum = SeverityEnum.info;
   @property({ type: Boolean }) dismissible: boolean = false;
   @property({ type: Boolean }) visible: boolean = true;
-  @property({ type: String }) heading: string = null;
-  @property({ type: String }) message: string = null;
+  @property({ type: String }) heading: string | null = null;
+  @property({ type: String }) message: string | null = null;
   @property({ type: Boolean, attribute: 'show-icon' }) showIcon: boolean = false;
 
   private readonly randomSuffix: string = Math.random().toString(36).substring(7);

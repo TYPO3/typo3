@@ -18,11 +18,14 @@ import DebounceEvent from '@typo3/core/event/debounce-event';
 DocumentService.ready().then(() => {
   const searchField = document.getElementById('search-field') as HTMLInputElement;
   const filterContainer = document.getElementById('t3js-filter-container');
+  if (filterContainer === null) {
+    return;
+  }
 
   new RegularEvent('click', (e: MouseEvent, target: HTMLButtonElement): void => {
     e.preventDefault();
 
-    searchField.value = target.dataset.filter;
+    searchField.value = target.dataset.filter ?? '';
     filterContainer.dispatchEvent(new CustomEvent('typo3:styleguide:update-icons', {
       detail: {
         searchValue: searchField.value

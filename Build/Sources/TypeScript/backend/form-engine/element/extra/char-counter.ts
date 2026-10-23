@@ -20,7 +20,7 @@ export class CharCounter extends LitElement {
   @property() target: string;
   @state() private remainingCharacters: number = 0;
 
-  private targetElement: HTMLInputElement|HTMLTextAreaElement = null;
+  private targetElement: HTMLInputElement | HTMLTextAreaElement | null = null;
   private readonly threshold = 15;
 
   public override connectedCallback(): void {

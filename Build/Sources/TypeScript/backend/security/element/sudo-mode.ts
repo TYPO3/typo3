@@ -145,7 +145,7 @@ export class SudoMode extends SudoModeProperties {
 @customElement('typo3-backend-security-sudo-mode-form')
 export class SudoModeForm extends SudoModeProperties {
   @state() useInstallToolPassword = false;
-  @state() errorMessage: string = null;
+  @state() errorMessage: string | null = null;
   @query('#password') passwordElement: HTMLInputElement;
 
   protected override createRenderRoot(): HTMLElement | ShadowRoot {

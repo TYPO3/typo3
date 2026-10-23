@@ -35,7 +35,7 @@ class FolderSortableSelectItems extends AbstractSortableSelectItems {
  * https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
  */
 class FolderElement extends HTMLElement {
-  private recordField: HTMLSelectElement = null;
+  private recordField: HTMLSelectElement | null = null;
 
   public async connectedCallback(): Promise<void> {
     if (this.recordField !== null) {

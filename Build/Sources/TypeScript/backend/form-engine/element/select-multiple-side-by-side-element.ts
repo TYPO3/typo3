@@ -19,8 +19,8 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import Utility from '@typo3/backend/utility';
 
 class SelectMultipleSideBySideElement extends AbstractSortableSelectItems {
-  private selectedOptionsElement: HTMLSelectElement = null;
-  private availableOptionsElement: HTMLSelectElement = null;
+  private selectedOptionsElement: HTMLSelectElement | null = null;
+  private availableOptionsElement: HTMLSelectElement | null = null;
 
   constructor(selectedOptionsElementId: string, availableOptionsElementId: string) {
     super();

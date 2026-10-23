@@ -105,7 +105,7 @@ export class CodeMirrorElement extends LitElement {
     }
   `;
 
-  @property({ type: Object }) mode: JavaScriptItemPayload = null;
+  @property({ type: Object }) mode: JavaScriptItemPayload | null = null;
   @property({ type: Array }) addons: JavaScriptItemPayload[] = [];
   @property({ type: Array }) keymaps: JavaScriptItemPayload[] = [];
 
@@ -120,8 +120,8 @@ export class CodeMirrorElement extends LitElement {
   @property({ type: String }) placeholder: string;
   @property({ type: String }) panel: string = 'bottom';
 
-  @state() editorTheme: Compartment = null;
-  @state() editorView: EditorView = null;
+  @state() editorTheme: Compartment | null = null;
+  @state() editorView: EditorView | null = null;
 
   /**
    * @internal

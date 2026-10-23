@@ -107,13 +107,13 @@ export class PageBrowserTree extends PageTree {
  */
 @customElement('typo3-backend-component-page-browser')
 export class PageBrowser extends LitElement {
-  @property({ type: String }) mountPointPath: string = null;
+  @property({ type: String }) mountPointPath: string | null = null;
   @query('typo3-backend-component-page-browser-tree') tree: PageBrowserTree;
 
   private activePageId: number = 0;
   // selectPage
   private actions: Array<string> = [];
-  private configuration: Configuration = null;
+  private configuration: Configuration | null = null;
 
   public override connectedCallback(): void {
     super.connectedCallback();

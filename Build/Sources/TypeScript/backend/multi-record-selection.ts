@@ -47,7 +47,7 @@ enum CheckboxState {
  */
 class MultiRecordSelection {
   static activeClass: string = 'active';
-  private lastChecked: HTMLInputElement = null;
+  private lastChecked: HTMLInputElement | null = null;
 
   constructor() {
     DocumentService.ready().then((): void => {

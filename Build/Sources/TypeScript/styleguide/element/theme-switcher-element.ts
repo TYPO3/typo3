@@ -91,7 +91,7 @@ export class ThemeSwitcherElement extends LitElement {
   }
 
   private setTheme(event: PointerEvent): void {
-    this.activeTheme = (event.target as HTMLAnchorElement).dataset.theme;
+    this.activeTheme = (event.target as HTMLAnchorElement).dataset.theme ?? '';
     this.example.dataset.colorScheme = this.activeTheme;
   }
 }
