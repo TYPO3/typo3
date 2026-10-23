@@ -73,7 +73,7 @@ class SchedulerAddGroups {
     e.preventDefault();
 
     const formData = new FormData(e.target as HTMLFormElement);
-    const name = formData.get('action[createGroup]').toString();
+    const name = formData.get('action[createGroup]')?.toString() ?? '';
     const newUid = 'NEW' + Math.random().toString(36).slice(2, 7);
     const params = '&data[tx_scheduler_task_group][' + newUid + '][pid]=0' +
       '&data[tx_scheduler_task_group][' + newUid + '][groupName]=' + encodeURIComponent(name);
@@ -100,9 +100,11 @@ class SchedulerAddGroups {
         if(select) {
           // This is an ugly hack to pre-select the created group.
           const form = document.forms[0];
-          const selectLatestGroup: HTMLInputElement = form.querySelector('[name="tx_scheduler[select_latest_group]"]');
+          const selectLatestGroup = form.querySelector<HTMLInputElement>('[name="tx_scheduler[select_latest_group]"]');
 
-          selectLatestGroup.value = '1';
+          if (selectLatestGroup !== null) {
+            selectLatestGroup.value = '1';
+          }
           form.submit();
         } else {
           window.location.reload();
@@ -116,7 +118,7 @@ class SchedulerAddGroups {
     e.preventDefault();
 
     // Get the current input value (group name) if entered
-    const input: HTMLInputElement = Modal.currentModal.querySelector('input[name="action[createGroup]"]');
+    const input: HTMLInputElement | null | undefined = Modal.currentModal?.querySelector('input[name="action[createGroup]"]');
     const groupName = input ? input.value.trim() : '';
 
     // Build FormEngine URL for creating a new task group record

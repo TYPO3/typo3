@@ -102,8 +102,8 @@ export class RecordInformationElement extends LitElement {
   }
 
   protected override firstUpdated(): void {
-    this.renderRoot.querySelector('.nav-link').classList.add('active');
-    this.renderRoot.querySelector('.tab-pane').classList.add('active');
+    this.renderRoot.querySelector('.nav-link')?.classList.add('active');
+    this.renderRoot.querySelector('.tab-pane')?.classList.add('active');
   }
 }
 

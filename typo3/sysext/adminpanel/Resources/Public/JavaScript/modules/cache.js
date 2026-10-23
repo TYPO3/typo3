@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-(()=>{class o{constructor(){this.buttons=document.querySelectorAll('[data-typo3-role="clearCacheButton"]'),this.buttons.forEach(e=>{e.addEventListener("click",()=>{const n=e.dataset.typo3AjaxUrl,t=new XMLHttpRequest;t.open("GET",n),t.send(),t.onload=()=>{location.reload()}})})}}window.addEventListener("load",()=>new o,!1)})();
+(()=>{class o{constructor(){this.buttons=document.querySelectorAll('[data-typo3-role="clearCacheButton"]'),this.buttons.forEach(e=>{e.addEventListener("click",()=>{const n=e.dataset.typo3AjaxUrl,t=new XMLHttpRequest;t.open("GET",n??""),t.send(),t.onload=()=>{location.reload()}})})}}window.addEventListener("load",()=>new o,!1)})();

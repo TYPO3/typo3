@@ -48,7 +48,7 @@ export class SendToStageFormElement extends LitElement {
   protected override render(): TemplateResult {
     return html`
       <form>
-        ${this.data.sendMailTo !== undefined && this.data.sendMailTo.length > 0 ? html`
+        ${this.data?.sendMailTo !== undefined && this.data.sendMailTo.length > 0 ? html`
           <label class="form-label">${labels.get('window.sendToNextStageWindow.itemsWillBeSentTo')}</label>
           <div class="form-group">
             <button type="button" class="btn btn-default btn-xs t3js-workspace-recipients-selectall">
@@ -60,7 +60,7 @@ export class SendToStageFormElement extends LitElement {
           </div>
           ${this.renderRecipientCheckboxes()}
         ` : nothing}
-        ${this.data.additional !== undefined ? html`
+        ${this.data?.additional !== undefined ? html`
           <div class="form-group">
             <label for="additional" class="form-label">
               ${labels.get('window.sendToNextStageWindow.additionalRecipients')}
@@ -75,7 +75,7 @@ export class SendToStageFormElement extends LitElement {
           <label for="comments" class="form-label">
             ${labels.get('window.sendToNextStageWindow.comments')}
           </label>
-          <textarea class="form-control" name="comments" id="comments">${this.data.comments.value}</textarea>
+          <textarea class="form-control" name="comments" id="comments">${this.data?.comments.value ?? ''}</textarea>
         </div>
       </form>
     `;
@@ -84,7 +84,7 @@ export class SendToStageFormElement extends LitElement {
   private renderRecipientCheckboxes(): TemplateResult[] {
     const renderResult: TemplateResult[] = [];
 
-    this.data.sendMailTo?.forEach((recipient) => {
+    this.data?.sendMailTo?.forEach((recipient) => {
       renderResult.push(html`
         <div class="form-check">
           <input

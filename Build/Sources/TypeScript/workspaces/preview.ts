@@ -170,7 +170,7 @@ class Preview extends Workspaces {
           modal.hideModal();
           this.renderStageButtons((await response.resolve())[1].result);
           // Reloading live view IFRAME
-          this.elements.workspaceView.setAttribute('src', this.elements.workspaceView.getAttribute('src'));
+          this.elements.workspaceView.setAttribute('src', this.elements.workspaceView.getAttribute('src') ?? '');
         });
       }
     });
@@ -207,7 +207,7 @@ class Preview extends Workspaces {
           modal.hideModal();
           this.renderStageButtons((await response.resolve())[1].result);
           // Reloading live view IFRAME
-          this.elements.workspaceView.setAttribute('src', this.elements.workspaceView.getAttribute('src'));
+          this.elements.workspaceView.setAttribute('src', this.elements.workspaceView.getAttribute('src') ?? '');
         });
       }
     });
@@ -218,7 +218,7 @@ class Preview extends Workspaces {
    */
   private renderSendPageToStageWindow(e: Event, target: HTMLElement): void {
     const direction = target.dataset.direction;
-    const stageId = parseInt(target.dataset.stageId, 10);
+    const stageId = parseInt(target.dataset.stageId ?? '0', 10);
     let actionName;
 
     if (direction === 'prev') {

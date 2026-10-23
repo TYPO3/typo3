@@ -232,7 +232,7 @@ export class RecordTableElement extends LitElement {
         </tr>
       ` : nothing}
       <tr
-        class=${classMap({ collapse: data.Workspaces_CollectionParent !== '', show: parentItem?.expanded })}
+        class=${classMap({ collapse: data.Workspaces_CollectionParent !== '', show: parentItem?.expanded ?? false })}
         data-uid=${data.uid}
         data-pid=${data.livepid}
         data-t3ver_oid=${data.t3ver_oid}
@@ -436,10 +436,10 @@ export class RecordTableElement extends LitElement {
         class="btn btn-default"
         ?disabled=${condition ? nothing : ''}
         data-action="${condition ? action : nothing}"
-        title=${ifDefined(additionalAttributes.title)}
-        data-bs-target=${ifDefined(additionalAttributes['data-bs-target'])}
-        data-bs-toggle=${ifDefined(additionalAttributes['data-bs-toggle'])}
-        aria-expanded=${ifDefined(additionalAttributes['aria-expanded'])}>
+        title=${ifDefined(additionalAttributes?.title)}
+        data-bs-target=${ifDefined(additionalAttributes?.['data-bs-target'])}
+        data-bs-toggle=${ifDefined(additionalAttributes?.['data-bs-toggle'])}
+        aria-expanded=${ifDefined(additionalAttributes?.['aria-expanded'])}>
         <typo3-backend-icon identifier=${IconHelper.getIconIdentifier((condition ? iconIdentifier : 'empty-empty'))} size="small"></typo3-backend-icon>
       </button>
     `;

@@ -29,7 +29,7 @@ class TimingOptions extends HTMLElement {
 
   public async connectedCallback(): Promise<void> {
     await FormEngine.ready();
-    this.fieldPrefix = this.getAttribute('fieldPrefix');
+    this.fieldPrefix = this.getAttribute('fieldPrefix') ?? '';
     this.registerEventHandler();
   }
 
@@ -49,7 +49,10 @@ class TimingOptions extends HTMLElement {
       el.style.display = runningType === RunningType.recurring ? 'block' : 'none';
 
       if (el.classList.contains('t3js-timing-options-frequency')) {
-        const input: HTMLInputElement = el.querySelector('input[data-formengine-validation-rules]');
+        const input = el.querySelector<HTMLInputElement>('input[data-formengine-validation-rules]');
+        if (input === null) {
+          return;
+        }
         let validationRulesToggleCondition;
         let validationRules;
         if (runningType === RunningType.recurring) {
@@ -62,7 +65,7 @@ class TimingOptions extends HTMLElement {
 
         if (validationRulesToggleCondition) {
           input.setAttribute('data-formengine-validation-rules', validationRules);
-          TYPO3.FormEngine.Validation.initializeInputField(input.dataset.formengineInputName);
+          TYPO3.FormEngine.Validation.initializeInputField(input.dataset.formengineInputName ?? '');
           TYPO3.FormEngine.Validation.validate();
         }
       }

@@ -106,7 +106,7 @@ export class TryOutElement extends PseudoButtonLitElement {
       console.warn('The code editor could not be loaded, the payload is edited as plain text.', error);
       return;
     }
-    const view = editor.ownerDocument.defaultView;
+    const view = editor.ownerDocument.defaultView ?? window;
     const deadline = Date.now() + TryOutElement.editorTimeout;
     while (editor.editorView === null && editor.isConnected && Date.now() < deadline) {
       await new Promise((resolve): void => { view.requestAnimationFrame(resolve); });

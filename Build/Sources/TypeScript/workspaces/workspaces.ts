@@ -69,7 +69,7 @@ export default class Workspaces {
         const form = currentModal.ownerDocument.createElement('typo3-workspaces-send-to-stage-form');
         form.data = result;
 
-        currentModal.querySelector('.t3js-modal-body').replaceChildren(form);
+        currentModal.querySelector('.t3js-modal-body')?.replaceChildren(form);
       }
     });
 
@@ -85,7 +85,7 @@ export default class Workspaces {
    */
   protected sendRemoteRequest(payload: object, progressContainer: string = '#workspace-content-wrapper'): Promise<AjaxResponse> {
     this.progressBar = document.createElement('typo3-backend-progress-bar');
-    document.querySelector(progressContainer).prepend(this.progressBar);
+    document.querySelector(progressContainer)?.prepend(this.progressBar);
     this.progressBar.start();
     const headers = {
       'Content-Type': 'application/json; charset=utf-8'
