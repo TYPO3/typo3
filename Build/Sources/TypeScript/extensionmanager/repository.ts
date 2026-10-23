@@ -61,9 +61,11 @@ class Repository {
       e.preventDefault();
 
       const form = target.closest('form');
-      const url = form.dataset.href;
+      if (form === null) {
+        return;
+      }
       this.getProgress().start();
-      new AjaxRequest(url).get().then(this.getDependencies);
+      new AjaxRequest(form.dataset.href ?? '').get().then(this.getDependencies);
     }).delegateTo(document, '.downloadFromTer form.download button[type=submit]');
   }
 
@@ -185,19 +187,19 @@ class Repository {
   private getProgress(): ProgressBarElement {
     if (!this.progressBar || !this.progressBar.isConnected) {
       this.progressBar = document.createElement('typo3-backend-progress-bar');
-      document.querySelector('.module-loading-indicator').appendChild(this.progressBar);
+      document.querySelector('.module-loading-indicator')?.appendChild(this.progressBar);
     }
     return this.progressBar;
   }
 
   private bindSearchFieldResetter(): void {
-    let searchField: HTMLInputElement;
-    if ((searchField = document.querySelector('.typo3-extensionmanager-searchTerForm input[type="search"]')) !== null) {
+    const searchField = document.querySelector<HTMLInputElement>('.typo3-extensionmanager-searchTerForm input[type="search"]');
+    if (searchField !== null) {
       const searchResultShown = ('' !== searchField.value);
 
       new RegularEvent('search', (): void => {
         if (searchField.value === '' && searchResultShown) {
-          searchField.closest('form').submit();
+          searchField.closest('form')?.submit();
         }
       }).bindTo(searchField);
     }

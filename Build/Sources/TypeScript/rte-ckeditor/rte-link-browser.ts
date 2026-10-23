@@ -25,9 +25,9 @@ import '@typo3/backend/element/combobox-element';
  * LinkBrowser communication with parent window
  */
 class RteLinkBrowser {
-  protected editor: Core.Editor = null;
-  protected selectionStartPosition: ModelPosition = null;
-  protected selectionEndPosition: ModelPosition = null;
+  protected editor: Core.Editor | null = null;
+  protected selectionStartPosition: ModelPosition | null = null;
+  protected selectionEndPosition: ModelPosition | null = null;
 
   public initialize(): void {
     this.editor = Modal.currentModal.userData.editor;

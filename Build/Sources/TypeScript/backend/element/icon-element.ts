@@ -32,7 +32,7 @@ export class IconElement extends LitElement {
   @property({ type: String, reflect: true }) identifier: string;
   @property({ type: String, reflect: true }) size: Sizes = Sizes.default;
   @property({ type: String }) state: States = States.default;
-  @property({ type: String }) overlay: string = null;
+  @property({ type: String }) overlay: string | null = null;
   @property({ type: String }) markup: MarkupIdentifiers = MarkupIdentifiers.inline;
 
   /**

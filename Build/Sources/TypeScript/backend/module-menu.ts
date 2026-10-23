@@ -46,7 +46,7 @@ interface ModuleMenuItem {
  * Module: @typo3/backend/module-menu
  */
 class ModuleMenu {
-  private loadedModule: string = null;
+  private loadedModule: string | null = null;
 
   constructor() {
     DocumentService.ready().then((): void => {

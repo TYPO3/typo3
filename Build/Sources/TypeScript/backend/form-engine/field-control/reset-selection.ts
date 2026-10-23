@@ -17,7 +17,7 @@ import DocumentService from '@typo3/core/document-service';
  * This module is used for the field control "Reset selection" used for selectSingleBox
  */
 class ResetSelection {
-  private controlElement: HTMLElement = null;
+  private controlElement: HTMLElement | null = null;
 
   constructor(controlElementId: string) {
     DocumentService.ready().then((): void => {

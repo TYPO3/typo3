@@ -24,7 +24,7 @@ class RequestAnimationFrameEvent<E extends Event = Event, T extends Element = El
   }
 
   private req(callback: Listener<E, T>): Listener<E, T> {
-    let timeout: number = null;
+    let timeout: number | null = null;
 
     return (...args: unknown[]) => {
       if (timeout) {

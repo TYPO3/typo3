@@ -41,7 +41,12 @@ function setButtonStates(scope: HTMLElement, action: string): void {
 new RegularEvent('click', (e: MouseEvent, target: HTMLButtonElement): void => {
   e.preventDefault();
 
-  for (const children of target.parentElement.children) {
+  const buttonGroup = target.parentElement;
+  if (buttonGroup === null) {
+    return;
+  }
+
+  for (const children of buttonGroup.children) {
     if (children.nodeType === 1) {
       children.classList.add('disabled');
     }
@@ -56,7 +61,7 @@ new RegularEvent('click', (e: MouseEvent, target: HTMLButtonElement): void => {
   itemProcessing++;
 
   // Trigger generate action
-  new AjaxRequest(target.dataset.href).get().then(async (response: AjaxResponse): Promise<void> => {
+  new AjaxRequest(target.dataset.href ?? '').get().then(async (response: AjaxResponse): Promise<void> => {
     const json = await response.resolve('application/json');
     if (json.status === false) {
       if (progressBar) {
@@ -74,7 +79,7 @@ new RegularEvent('click', (e: MouseEvent, target: HTMLButtonElement): void => {
       progressBar.done();
     }
     // Set button states
-    setButtonStates(target.parentElement, target.dataset.generatorAction === 'plus' ? 'delete' : 'plus');
+    setButtonStates(buttonGroup, target.dataset.generatorAction === 'plus' ? 'delete' : 'plus');
   }).catch((error: AjaxResponse): void => {
     // Action failed, reset to its original state
     if (progressBar) {

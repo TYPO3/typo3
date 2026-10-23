@@ -25,12 +25,12 @@ class DebounceEvent<E extends Event = Event, T extends Element = Element> extend
   }
 
   private debounce(callback: Listener<E, T>, wait: number): Listener<E, T> {
-    let timeout: number = null;
+    let timeout: number | undefined;
 
     return function (this: Node, ...args: unknown[]): void {
       clearTimeout(timeout);
       timeout = setTimeout((): void => {
-        timeout = null;
+        timeout = undefined;
         callback.apply(this, args as Parameters<Listener<E, T>>);
       }, wait);
     };

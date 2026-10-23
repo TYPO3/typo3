@@ -22,7 +22,7 @@ import { topWindow } from '@typo3/core/utility/top-window';
 class ContextMenuActions {
 
   public exportT3d(table: string, uid: number, dataset: DOMStringMap): void {
-    const actionUrl: string = dataset.actionUrl;
+    const actionUrl: string = dataset.actionUrl ?? '';
     if (table === 'pages') {
       topWindow.TYPO3.Backend.ContentContainer.setUrl(
         actionUrl +
@@ -41,7 +41,7 @@ class ContextMenuActions {
   }
 
   public importT3d(table: string, uid: number, dataset: DOMStringMap): void {
-    const actionUrl: string = dataset.actionUrl;
+    const actionUrl: string = dataset.actionUrl ?? '';
     topWindow.TYPO3.Backend.ContentContainer.setUrl(
       actionUrl + '&id=' + uid + '&table=' + table,
     );

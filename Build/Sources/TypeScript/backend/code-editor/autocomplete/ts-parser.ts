@@ -23,7 +23,7 @@ export class TreeNode {
   public isExternal: boolean;
 
   public global: boolean;
-  public parent: TreeNode = null;
+  public parent: TreeNode | null = null;
 
   private readonly tsParser: TsParser;
 

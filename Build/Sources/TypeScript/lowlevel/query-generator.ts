@@ -20,67 +20,75 @@ import RegularEvent from '@typo3/core/event/regular-event';
  * This module handle the QueryGenerator forms.
  */
 class QueryGenerator {
-  private readonly form: HTMLFormElement = document.querySelector('form[name="queryform"]');
-  private readonly searchField: HTMLInputElement = document.querySelector('input#searchField');
-  private readonly submitSearch: HTMLInputElement = document.querySelector('button#submitSearch');
+  private readonly form: HTMLFormElement | null = document.querySelector('form[name="queryform"]');
+  private readonly searchField: HTMLInputElement | null = document.querySelector('input#searchField');
+  private readonly submitSearch: HTMLInputElement | null = document.querySelector('button#submitSearch');
   private readonly activeSearch: boolean = this.searchField ? (this.searchField.value !== '') : false;
-  private readonly limitField: HTMLInputElement = document.querySelector('input#queryLimit');
+  private readonly limitField: HTMLInputElement | null = document.querySelector('input#queryLimit');
 
   constructor() {
-    if (this.submitSearch && this.activeSearch) {
-      this.submitSearch.removeAttribute('disabled');
+    const searchField = this.searchField;
+    const submitSearch = this.submitSearch;
+    const form = this.form;
+
+    if (submitSearch && this.activeSearch) {
+      submitSearch.removeAttribute('disabled');
     }
 
-    if (this.searchField) {
+    if (form === null) {
+      return;
+    }
+
+    if (searchField) {
       new RegularEvent('search', (): void => {
-        if (this.searchField.value === '' && this.activeSearch) {
+        if (searchField.value === '' && this.activeSearch) {
           this.doSubmit();
         }
-      }).bindTo(this.searchField);
+      }).bindTo(searchField);
 
       new RegularEvent('input', (): void => {
-        if (this.searchField.value === '' && this.activeSearch) {
+        if (searchField.value === '' && this.activeSearch) {
           this.doSubmit();
         }
-        this.submitSearch.toggleAttribute('disabled', this.searchField.value === '');
-      }).bindTo(this.searchField);
+        submitSearch?.toggleAttribute('disabled', searchField.value === '');
+      }).bindTo(searchField);
 
       new RegularEvent('submit', (event: Event): void => {
-        if (this.searchField.value === '' && !this.activeSearch) {
+        if (searchField.value === '' && !this.activeSearch) {
           event.preventDefault();
         }
-      }).bindTo(this.form);
+      }).bindTo(form);
     }
 
     new RegularEvent('click', (event: Event) => {
       event.preventDefault();
       this.doSubmit();
-    }).delegateTo(this.form, '.t3js-submit-click');
+    }).delegateTo(form, '.t3js-submit-click');
 
     new RegularEvent('change', (event: Event) => {
       event.preventDefault();
       this.doSubmit();
-    }).delegateTo(this.form, '.t3js-submit-change');
+    }).delegateTo(form, '.t3js-submit-change');
 
     new RegularEvent('click', (event: Event, element: HTMLButtonElement) => {
       event.preventDefault();
       this.setLimit(element.value);
       this.doSubmit();
-    }).delegateTo(this.form, '.t3js-limit-submit input[type="button"]');
+    }).delegateTo(form, '.t3js-limit-submit input[type="button"]');
 
     new RegularEvent('click', (event: Event, element: HTMLButtonElement) => {
       event.preventDefault();
-      this.addValueToField(element.dataset.field, element.value);
-    }).delegateTo(this.form, '.t3js-addfield');
+      this.addValueToField(element.dataset.field ?? '', element.value);
+    }).delegateTo(form, '.t3js-addfield');
 
     new RegularEvent('change', (event: Event, element: HTMLSelectElement) => {
-      const titleField = this.form.querySelector<HTMLInputElement>('input[name="storeControl[title]"]');
+      const titleField = form.querySelector<HTMLInputElement>('input[name="storeControl[title]"]');
       if (element.value !== '0') {
         titleField.value = element.options[element.selectedIndex].textContent;
       } else {
         titleField.value = '';
       }
-    }).delegateTo(this.form, 'select.t3js-addfield');
+    }).delegateTo(form, 'select.t3js-addfield');
 
     (document.querySelectorAll<HTMLInputElement>('form[name="queryform"] .t3js-clearable')).forEach(
       (clearableField) => clearableField.clearable({
@@ -98,7 +106,7 @@ class QueryGenerator {
    * Submit the form
    */
   private doSubmit(): void {
-    this.form.submit();
+    this.form?.submit();
   }
 
   /**
@@ -107,7 +115,9 @@ class QueryGenerator {
    * @param {String} value
    */
   private setLimit(value: string): void {
-    this.limitField.value = value;
+    if (this.limitField !== null) {
+      this.limitField.value = value;
+    }
   }
 
   /**
@@ -117,7 +127,10 @@ class QueryGenerator {
    * @param {String} value the value to add
    */
   private addValueToField(field: string, value: string): void {
-    const target = this.form.querySelector<HTMLInputElement>('[name="' + field + '"]');
+    const target = this.form?.querySelector<HTMLInputElement>('[name="' + field + '"]');
+    if (!target) {
+      return;
+    }
     value = target.value + ',' + value;
     target.value = value
       .split(',')

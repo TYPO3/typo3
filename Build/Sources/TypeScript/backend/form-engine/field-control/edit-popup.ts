@@ -17,8 +17,8 @@ import DocumentService from '@typo3/core/document-service';
  * Handles the "Edit popup" field control that renders a new FormEngine instance
  */
 class EditPopup {
-  private controlElement: HTMLAnchorElement = null;
-  private assignedFormField: HTMLSelectElement = null;
+  private controlElement: HTMLAnchorElement | null = null;
+  private assignedFormField: HTMLSelectElement | null = null;
 
   constructor(controlElementId: string) {
     DocumentService.ready().then((): void => {

@@ -36,7 +36,7 @@ export interface AjaxDispatcherResponse {
 }
 
 export class AjaxDispatcher {
-  private readonly objectGroup: string = null;
+  private readonly objectGroup: string | null = null;
 
   constructor(objectGroup: string) {
     this.objectGroup = objectGroup;

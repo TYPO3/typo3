@@ -29,7 +29,7 @@ import { Tabbable } from './modifier/tabbable';
  * https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
  */
 class TextElement extends HTMLElement {
-  private element: HTMLTextAreaElement = null;
+  private element: HTMLTextAreaElement | null = null;
 
   public async connectedCallback(): Promise<void> {
     if (this.element !== null) {

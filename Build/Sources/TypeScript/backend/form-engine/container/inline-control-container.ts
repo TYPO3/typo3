@@ -96,8 +96,8 @@ interface InlineEndpoints {
 }
 
 class InlineControlContainer extends HTMLElement {
-  private ajaxDispatcher: AjaxDispatcher = null;
-  private recordsContainer: HTMLDivElement = null;
+  private ajaxDispatcher: AjaxDispatcher | null = null;
+  private recordsContainer: HTMLDivElement | null = null;
   private requestQueue: RequestQueue = {};
   private progressQueue: ProgressQueue = {};
   private readonly noTitleString: string = (coreCoreLabels.get('labels.no_title'));

@@ -1,9 +1,9 @@
 ((): void => {
   class AdminPanelPreview {
-    private readonly dateField: HTMLInputElement = null;
-    private readonly timeField: HTMLInputElement = null;
-    private readonly targetField: HTMLInputElement = null;
-    private readonly toggleField: HTMLInputElement = null;
+    private readonly dateField: HTMLInputElement | null = null;
+    private readonly timeField: HTMLInputElement | null = null;
+    private readonly targetField: HTMLInputElement | null = null;
+    private readonly toggleField: HTMLInputElement | null = null;
 
     /**
      * Initialize date and time fields of preview

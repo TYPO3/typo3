@@ -324,14 +324,14 @@ interface Configuration {
 
 @customElement('typo3-backend-navigation-component-pagetree')
 export class PageTreeNavigationComponent extends TreeModuleState(LitElement) {
-  @property({ type: String }) mountPointPath: string = null;
+  @property({ type: String }) mountPointPath: string | null = null;
 
   @query('typo3-backend-navigation-component-pagetree-tree') tree: EditablePageTree;
   @query('typo3-backend-navigation-component-pagetree-toolbar') toolbar: PageTreeToolbar;
 
   protected override moduleStateType: string = 'web';
 
-  private configuration: Configuration = null;
+  private configuration: Configuration | null = null;
 
   public override connectedCallback(): void {
     super.connectedCallback();

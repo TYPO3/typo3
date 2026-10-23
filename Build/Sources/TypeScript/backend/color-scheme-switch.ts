@@ -25,8 +25,8 @@ interface ColorSchemeOption {
 
 @customElement('typo3-backend-color-scheme-switch')
 export class ColorSchemeSwitchElement extends LitElement {
-  @property({ type: String }) activeColorScheme: ColorScheme = null;
-  @property({ type: Array }) colorSchemes: ColorSchemeOption[] = null;
+  @property({ type: String }) activeColorScheme: ColorScheme | null = null;
+  @property({ type: Array }) colorSchemes: ColorSchemeOption[] | null = null;
   @property({ type: String }) toggleLabel: string;
   @property({ type: String }) disabledLabel: string;
 

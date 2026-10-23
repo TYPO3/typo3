@@ -42,7 +42,7 @@ export class SelectTree extends Tree
   /**
    * Exclusive node which is currently selected
    */
-  @state() exclusiveSelectedNode: TreeNodeInterface = null;
+  @state() exclusiveSelectedNode: TreeNodeInterface | null = null;
 
   constructor() {
     super();

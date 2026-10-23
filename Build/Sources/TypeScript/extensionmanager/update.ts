@@ -54,7 +54,7 @@ class ExtensionManagerUpdate {
     document.querySelector(ExtensionManagerUpdateIdentifier.terUpdateAction)?.classList.add('extensionmanager-is-hidden');
 
     // Hide extension table
-    const extensionTable: HTMLTableElement = document.querySelector(ExtensionManagerUpdateIdentifier.extensionTable);
+    const extensionTable = document.querySelector<HTMLTableElement>(ExtensionManagerUpdateIdentifier.extensionTable);
     if (extensionTable) {
       extensionTable.style.display = 'none';
     }
@@ -75,12 +75,14 @@ class ExtensionManagerUpdate {
       }
 
       // Message with latest updates
-      const lastUpdate: HTMLElement = document.querySelector(ExtensionManagerUpdateIdentifier.terUpdateAction + ' .extension-list-last-updated');
-      lastUpdate.innerText = data.timeSinceLastUpdate;
-      lastUpdate.setAttribute(
-        'title',
-        labels.get('extensionList.updateFromTer.lastUpdate.timeOfLastUpdate') + data.lastUpdateTime,
-      );
+      const lastUpdate = document.querySelector<HTMLElement>(ExtensionManagerUpdateIdentifier.terUpdateAction + ' .extension-list-last-updated');
+      if (lastUpdate !== null) {
+        lastUpdate.innerText = data.timeSinceLastUpdate;
+        lastUpdate.setAttribute(
+          'title',
+          labels.get('extensionList.updateFromTer.lastUpdate.timeOfLastUpdate') + data.lastUpdateTime,
+        );
+      }
 
       if (data.updated) {
         // Reload page
@@ -109,7 +111,7 @@ class ExtensionManagerUpdate {
         document.querySelector(ExtensionManagerUpdateIdentifier.terUpdateAction)?.classList.remove('extensionmanager-is-hidden');
 
         // Show extension table
-        const extensionTable: HTMLTableElement = document.querySelector(ExtensionManagerUpdateIdentifier.extensionTable);
+        const extensionTable = document.querySelector<HTMLTableElement>(ExtensionManagerUpdateIdentifier.extensionTable);
         if (extensionTable) {
           extensionTable.style.display = 'block';
         }
@@ -120,7 +122,7 @@ class ExtensionManagerUpdate {
   private getProgress(): ProgressBarElement {
     if (!this.progressBar || !this.progressBar.isConnected) {
       this.progressBar = document.createElement('typo3-backend-progress-bar');
-      document.querySelector('.module-loading-indicator').appendChild(this.progressBar);
+      document.querySelector('.module-loading-indicator')?.appendChild(this.progressBar);
     }
     return this.progressBar;
   }

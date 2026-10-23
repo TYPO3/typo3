@@ -32,9 +32,9 @@ export type TsObjTree = {
 export class TsCodeCompletion {
   public extTsObjTree: TsObjTree = {};
   private readonly tsRef: TsRef;
-  private readonly parser: TsParser = null;
-  private proposals: Array<Proposal> = null;
-  private compResult: CompletionResult = null;
+  private readonly parser: TsParser | null = null;
+  private proposals: Array<Proposal> | null = null;
+  private compResult: CompletionResult | null = null;
 
   constructor(id: number) {
     this.tsRef = new TsRef();

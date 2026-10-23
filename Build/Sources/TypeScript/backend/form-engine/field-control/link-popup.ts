@@ -21,7 +21,7 @@ import { FormEngineLinkBrowserSetLinkEvent } from '@typo3/backend/event/form-eng
  * This module is used for the field control "Link popup"
  */
 class LinkPopup {
-  private controlElement: HTMLElement = null;
+  private controlElement: HTMLElement | null = null;
 
   constructor(controlElementId: string) {
     DocumentService.ready().then((): void => {

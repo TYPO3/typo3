@@ -13,14 +13,14 @@
 (function() {
   document.addEventListener('click', (evt: MouseEvent) => {
     const target = evt.target as HTMLElement|null;
-    if (!target.classList.contains('tx-indexedsearch-page-selector')) {
+    if (target === null || !target.classList.contains('tx-indexedsearch-page-selector')) {
       return;
     }
     evt.preventDefault();
 
     const data = target.dataset;
-    (document.getElementById(data.prefix + '_pointer') as HTMLInputElement).value = data.pointer;
-    (document.getElementById(data.prefix + '_freeIndexUid') as HTMLInputElement).value = data.freeIndexUid;
-    document.forms.namedItem(data.prefix).submit();
+    (document.getElementById(data.prefix + '_pointer') as HTMLInputElement).value = data.pointer ?? '';
+    (document.getElementById(data.prefix + '_freeIndexUid') as HTMLInputElement).value = data.freeIndexUid ?? '';
+    document.forms.namedItem(data.prefix ?? '')?.submit();
   });
 })();

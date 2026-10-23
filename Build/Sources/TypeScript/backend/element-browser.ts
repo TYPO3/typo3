@@ -48,7 +48,7 @@ declare global {
  * ElementBrowser communication with parent windows
  */
 class ElementBrowser {
-  private opener: Window = null;
+  private opener: Window | null = null;
   private fieldReference: string = '';
   private readonly irre: InlineSettings = {
     objectId: '',

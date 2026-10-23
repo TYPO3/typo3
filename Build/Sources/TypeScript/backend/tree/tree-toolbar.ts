@@ -23,7 +23,7 @@ import 'bootstrap'; // for data-bs-toggle="dropdown"
 
 @customElement('typo3-backend-tree-toolbar')
 export class TreeToolbar extends LitElement {
-  @property({ type: Tree }) tree: Tree = null;
+  @property({ type: Tree }) tree: Tree | null = null;
   @property({ type: Boolean }) showRefresh: boolean = true;
   protected settings = {
     searchInput: '.search-input',

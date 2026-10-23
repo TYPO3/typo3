@@ -29,7 +29,7 @@ import type { CopyToClipboard } from '@typo3/backend/copy-to-clipboard';
  * https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
  */
 class PasswordElement extends HTMLElement {
-  private element: HTMLInputElement = null;
+  private element: HTMLInputElement | null = null;
   private passwordPolicyInfo: HTMLElement|null = null;
   private passwordPolicySet: boolean = false;
   private copyToClipboard: CopyToClipboard|null = null;

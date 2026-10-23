@@ -24,9 +24,9 @@ enum Selectors {
  * Select field filter functions, see TCA option "multiSelectFilterItems"
  */
 class SelectBoxFilter {
-  private readonly selectElement: HTMLSelectElement = null;
-  private availableOptions: NodeListOf<HTMLOptionElement> = null;
-  private foldedLabels: string[] = null;
+  private readonly selectElement: HTMLSelectElement | null = null;
+  private availableOptions: NodeListOf<HTMLOptionElement> | null = null;
+  private foldedLabels: string[] | null = null;
 
   constructor(selectElement: HTMLSelectElement) {
     this.selectElement = selectElement;

@@ -85,21 +85,18 @@ class ActionDispatcher {
       return;
     }
     const action = target.dataset.dispatchAction;
-    let args: ActionDispatchArgument[] = ActionDispatcher.resolveArguments(target);
-    if (args instanceof Array) {
-      args = args.map((arg): ActionDispatchArgument => {
-        switch (arg) {
-          case '{$target}':
-            return target;
-          case '{$event}':
-            return evt;
-          default:
-            return arg;
-        }
-      });
-    }
+    const args: ActionDispatchArgument[] = (ActionDispatcher.resolveArguments(target) ?? []).map((arg): ActionDispatchArgument => {
+      switch (arg) {
+        case '{$target}':
+          return target;
+        case '{$event}':
+          return evt;
+        default:
+          return arg;
+      }
+    });
     if (this.delegates[action]) {
-      this.delegates[action].apply(null, (args || []) as never[]);
+      this.delegates[action].apply(null, args as never[]);
     }
   }
 }

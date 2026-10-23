@@ -77,10 +77,10 @@ export class DraggableResizableElement extends LitElement {
   @property({ type: Object }) pointerEventNames: PointerEventNames;
   @property({ type: Boolean, reflect: true }) public reverting = false;
 
-  @state() private action: Action = null;
+  @state() private action: Action | null = null;
 
-  private originOffset: Offset = null;
-  private originPosition: Position = null;
+  private originOffset: Offset | null = null;
+  private originPosition: Position | null = null;
 
   /**
    * Reverts the position/dimension back to `offset`, having a transition effect enabled.

@@ -55,7 +55,7 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
   @state() dragAllowed: boolean = false;
 
   protected skipNextUpdateBroadcast: boolean = false;
-  protected eventAbortController: AbortController = null;
+  protected eventAbortController: AbortController | null = null;
 
   protected ghostImage: HTMLImageElement;
 

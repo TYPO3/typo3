@@ -23,9 +23,9 @@ import { MessageUtility } from '@typo3/backend/utility/message-utility';
  * @exports @typo3/belog/backend-log
  */
 class BackendLog {
-  private clearableElements: NodeListOf<HTMLInputElement> = null;
-  private dateTimePickerElements: NodeListOf<HTMLInputElement> = null;
-  private elementBrowserElements: NodeListOf<HTMLAnchorElement> = null;
+  private clearableElements: NodeListOf<HTMLInputElement> | null = null;
+  private dateTimePickerElements: NodeListOf<HTMLInputElement> | null = null;
+  private elementBrowserElements: NodeListOf<HTMLAnchorElement> | null = null;
 
   constructor() {
     DocumentService.ready().then((): void => {
@@ -40,29 +40,32 @@ class BackendLog {
   }
 
   private initializeClearableElements(): void {
-    this.clearableElements.forEach(
+    this.clearableElements?.forEach(
       (clearableField) => clearableField.clearable()
     );
   }
 
   private initializeDateTimePickerElements(): void {
-    this.dateTimePickerElements.forEach(
+    this.dateTimePickerElements?.forEach(
       (dateTimePickerElement) => DateTimePicker.initialize(dateTimePickerElement)
     );
   }
 
   private initializeElementBrowserElements(): void {
-    this.elementBrowserElements.forEach((element): void => {
-      const triggerField = <HTMLInputElement>document.getElementById(element.dataset.triggerFor);
+    this.elementBrowserElements?.forEach((element): void => {
+      const triggerField = document.getElementById(element.dataset.triggerFor ?? '') as HTMLInputElement | null;
+      if (triggerField === null) {
+        return;
+      }
       element.dataset.fieldReference = triggerField.name;
       element.dataset.allowedTypes = 'pages';
       element.addEventListener('click', (event: Event): void => {
         event.preventDefault();
         const target = <HTMLAnchorElement>event.currentTarget;
         const queryParams = new URLSearchParams({
-          mode: target.dataset.mode,
-          fieldReference: target.dataset.fieldReference,
-          allowedTypes: target.dataset.allowedTypes,
+          mode: target.dataset.mode ?? '',
+          fieldReference: target.dataset.fieldReference ?? '',
+          allowedTypes: target.dataset.allowedTypes ?? '',
         });
         Modal.advanced({
           type: Modal.types.iframe,

@@ -23,10 +23,10 @@ import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
  * Handles the "Generate Password" field control
  */
 class PasswordGenerator {
-  private controlElement: HTMLAnchorElement = null;
-  private humanReadableField: HTMLInputElement = null;
-  private hiddenField: HTMLInputElement = null;
-  private passwordPolicy: string = null;
+  private controlElement: HTMLAnchorElement | null = null;
+  private humanReadableField: HTMLInputElement | null = null;
+  private hiddenField: HTMLInputElement | null = null;
+  private passwordPolicy: string | null = null;
 
   constructor(controlElementId: string) {
     DocumentService.ready().then((): void => {

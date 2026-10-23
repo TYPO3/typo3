@@ -80,7 +80,7 @@ class TextNormalizer {
       .replace(TextNormalizer.latinGreekCyrillicMarks, '')
       .replace(TextNormalizer.hebrewPoints, '')
       .replace(TextNormalizer.arabicHarakat, '')
-      .replace(TextNormalizer.latinExpansionPattern, (letter: string): string => TextNormalizer.latinExpansions.get(letter));
+      .replace(TextNormalizer.latinExpansionPattern, (letter: string): string => TextNormalizer.latinExpansions.get(letter) ?? '');
   }
 
   /**

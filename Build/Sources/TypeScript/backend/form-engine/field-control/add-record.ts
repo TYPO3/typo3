@@ -18,7 +18,7 @@ import FormEngine from '@typo3/backend/form-engine';
  * Handles the "Add record" field control that renders a new FormEngine instance
  */
 class AddRecord {
-  private controlElement: HTMLElement = null;
+  private controlElement: HTMLElement | null = null;
 
   constructor(controlElementId: string) {
     DocumentService.ready().then((): void => {

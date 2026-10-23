@@ -22,8 +22,8 @@ class Viewport {
   // The attributes are uppercase for compatibility reasons
   public readonly Loader: typeof Loader = Loader;
   public readonly Topbar: Topbar;
-  public readonly NavigationContainer: NavigationContainer = null;
-  public readonly ContentContainer: ContentContainer = null;
+  public readonly NavigationContainer: NavigationContainer;
+  public readonly ContentContainer: ContentContainer;
   public readonly consumerScope: any = ConsumerScope;
 
   constructor() {

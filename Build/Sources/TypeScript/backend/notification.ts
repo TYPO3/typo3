@@ -35,9 +35,9 @@ class Notification {
   private static readonly duration: number = 5;
   private static readonly showClearAllButtonCount: number = 2;
   private static totalNotifications: number = 0;
-  private static messageContainer: HTMLElement = null;
-  private static notificationList: HTMLElement = null;
-  private static clearAllButton: HTMLElement = null;
+  private static messageContainer: HTMLElement | null = null;
+  private static notificationList: HTMLElement | null = null;
+  private static clearAllButton: HTMLElement | null = null;
 
   /**
    * Show a notice notification

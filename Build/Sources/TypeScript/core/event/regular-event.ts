@@ -17,7 +17,7 @@ class RegularEvent<E extends Event = Event, T extends Element = Element> impleme
   protected eventName: string;
   protected callback: Listener<E, T>;
   protected options: AddEventListenerOptions | boolean;
-  private boundElement: EventTarget;
+  private boundElement: EventTarget | null = null;
 
   constructor(eventName: string, callback: Listener<E, T>, options: AddEventListenerOptions | boolean = false) {
     this.eventName = eventName;
@@ -41,7 +41,7 @@ class RegularEvent<E extends Event = Event, T extends Element = Element> impleme
     }
     this.boundElement = element;
     element.addEventListener(this.eventName, (e: Event): void => {
-      for (let targetElement = <HTMLElement>e.target; targetElement && targetElement !== this.boundElement; targetElement = targetElement.parentElement) {
+      for (let targetElement = e.target as HTMLElement | null; targetElement && targetElement !== this.boundElement; targetElement = targetElement.parentElement) {
         if (targetElement.matches(selector)) {
           (this.callback as EventListenerWithTarget).call(targetElement, e, targetElement);
           break;
@@ -51,7 +51,7 @@ class RegularEvent<E extends Event = Event, T extends Element = Element> impleme
   }
 
   public release(): void {
-    this.boundElement.removeEventListener(this.eventName, this.callback as EventListener);
+    this.boundElement?.removeEventListener(this.eventName, this.callback as EventListener);
   }
 }
 
