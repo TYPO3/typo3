@@ -50,14 +50,14 @@ class LocalizationStateSelector {
         input.disabled = false;
       } else {
         if (lastState === States.CUSTOM) {
-          target.closest('.t3js-l10n-state-container')
-            .querySelector<HTMLElement>('.t3js-l10n-state-custom')
+          target.closest('.t3js-l10n-state-container')!
+            .querySelector<HTMLElement>('.t3js-l10n-state-custom')!
             .dataset.originalLanguageValue = input.value;
         }
         input.disabled = true;
       }
 
-      input.value = target.dataset.originalLanguageValue;
+      input.value = target.dataset.originalLanguageValue!;
       input.dispatchEvent(new Event('change'));
       input.dataset.lastL10nState = target.value;
     }).delegateTo(document, '.t3js-l10n-state-container input[type="radio"][name="' + fieldName + '"]');

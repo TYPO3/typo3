@@ -29,7 +29,7 @@ describe('@typo3/reactions/field-map-element', () => {
 
   afterEach((): void => {
     form.remove();
-    form = null;
+    form = null!;
   });
 
   /**
@@ -58,7 +58,7 @@ describe('@typo3/reactions/field-map-element', () => {
         <option value="payload">Payload value</option>
       </select>`;
     form.appendChild(row);
-    (row.querySelector<HTMLSelectElement>('[data-fieldmap-mode]')).value = mode;
+    (row.querySelector<HTMLSelectElement>('[data-fieldmap-mode]')!).value = mode;
     return row;
   };
 
@@ -88,13 +88,13 @@ describe('@typo3/reactions/field-map-element', () => {
   };
 
   const paneOf = (row: FieldMapRowElement, pane: string): HTMLElement =>
-    row.querySelector<HTMLElement>(`[data-fieldmap-pane="${pane}"]`);
+    row.querySelector<HTMLElement>(`[data-fieldmap-pane="${pane}"]`)!;
 
   const valueOf = (row: FieldMapRowElement): string =>
-    row.querySelector<HTMLInputElement>('[data-fieldmap-value]').value;
+    row.querySelector<HTMLInputElement>('[data-fieldmap-value]')!.value;
 
   const switchTo = async (row: FieldMapRowElement, mode: FieldMapMode): Promise<void> => {
-    const modeSelect = row.querySelector<HTMLSelectElement>('[data-fieldmap-mode]');
+    const modeSelect = row.querySelector<HTMLSelectElement>('[data-fieldmap-mode]')!;
     modeSelect.value = mode;
     modeSelect.dispatchEvent(new Event('change', { bubbles: true }));
     await Promise.resolve();
@@ -118,7 +118,7 @@ describe('@typo3/reactions/field-map-element', () => {
     // as the colour picker does, would never set itself up at all.
     expect(paneOf(row, 'fixed').hidden).to.equal(false);
     expect(paneOf(row, 'fixed').inert).to.equal(true);
-    expect(paneOf(row, 'fixed').querySelector<HTMLInputElement>('input[type=checkbox]').disabled).to.equal(false);
+    expect(paneOf(row, 'fixed').querySelector<HTMLInputElement>('input[type=checkbox]')!.disabled).to.equal(false);
     expect(paneOf(row, 'payload').hidden).to.equal(true);
   });
 
@@ -127,7 +127,7 @@ describe('@typo3/reactions/field-map-element', () => {
 
     // A disabled input is not submitted, so the key is absent rather than empty, which is
     // what tells the form on the next render that the field was set to not be written.
-    expect(row.querySelector<HTMLInputElement>('[data-fieldmap-value]').disabled).to.equal(true);
+    expect(row.querySelector<HTMLInputElement>('[data-fieldmap-value]')!.disabled).to.equal(true);
     expect(form.elements.namedItem('data[fields][hidden]')).to.be.instanceOf(HTMLInputElement);
   });
 
@@ -138,7 +138,7 @@ describe('@typo3/reactions/field-map-element', () => {
     const row = createCheckboxRow(<FieldMapMode>'nonsense');
 
     expect(row.mode).to.equal('unset');
-    expect(row.querySelector<HTMLInputElement>('[data-fieldmap-value]').disabled).to.equal(true);
+    expect(row.querySelector<HTMLInputElement>('[data-fieldmap-value]')!.disabled).to.equal(true);
   });
 
   it('takes the select over where the rendered value is not one of its options', async () => {
@@ -148,7 +148,7 @@ describe('@typo3/reactions/field-map-element', () => {
     const row = createSelectRow('fixed', '9999');
     await Promise.resolve();
 
-    expect(paneOf(row, 'fixed').querySelector<HTMLSelectElement>('select').value).to.equal('1');
+    expect(paneOf(row, 'fixed').querySelector<HTMLSelectElement>('select')!.value).to.equal('1');
     expect(valueOf(row)).to.equal('1');
   });
 
@@ -175,7 +175,7 @@ describe('@typo3/reactions/field-map-element', () => {
 
   it('takes the value of a select over when the mode is switched to fixed', async () => {
     const row = createSelectRow('payload');
-    paneOf(row, 'fixed').querySelector<HTMLSelectElement>('select').value = '254';
+    paneOf(row, 'fixed').querySelector<HTMLSelectElement>('select')!.value = '254';
 
     await switchTo(row, 'fixed');
 
@@ -184,7 +184,7 @@ describe('@typo3/reactions/field-map-element', () => {
 
   it('follows a select the integrator changes', async () => {
     const row = createSelectRow('fixed', '1');
-    const select = paneOf(row, 'fixed').querySelector<HTMLSelectElement>('select');
+    const select = paneOf(row, 'fixed').querySelector<HTMLSelectElement>('select')!;
 
     select.value = '254';
     select.dispatchEvent(new Event('change', { bubbles: true }));
@@ -195,7 +195,7 @@ describe('@typo3/reactions/field-map-element', () => {
 
   it('follows the field control as it is used', async () => {
     const row = createCheckboxRow('fixed', '0');
-    const bitmask = paneOf(row, 'fixed').querySelector<HTMLInputElement>('input[type=hidden]');
+    const bitmask = paneOf(row, 'fixed').querySelector<HTMLInputElement>('input[type=hidden]')!;
 
     // What UpdateBitmaskOnFieldChange does once the name resolves to a single element.
     bitmask.value = '1';
@@ -207,11 +207,11 @@ describe('@typo3/reactions/field-map-element', () => {
 
   it('writes the field again when it is taken off "do not set"', async () => {
     const row = createCheckboxRow('unset');
-    paneOf(row, 'fixed').querySelector<HTMLInputElement>('input[type=hidden]').value = '1';
+    paneOf(row, 'fixed').querySelector<HTMLInputElement>('input[type=hidden]')!.value = '1';
 
     await switchTo(row, 'fixed');
 
-    expect(row.querySelector<HTMLInputElement>('[data-fieldmap-value]').disabled).to.equal(false);
+    expect(row.querySelector<HTMLInputElement>('[data-fieldmap-value]')!.disabled).to.equal(false);
     expect(valueOf(row)).to.equal('1');
   });
 
@@ -220,13 +220,13 @@ describe('@typo3/reactions/field-map-element', () => {
 
     await switchTo(row, 'payload');
 
-    expect(paneOf(row, 'payload').querySelector<HTMLInputElement>('input').value).to.equal('${hidden}');
+    expect(paneOf(row, 'payload').querySelector<HTMLInputElement>('input')!.value).to.equal('${hidden}');
     expect(valueOf(row)).to.equal('${hidden}');
   });
 
   it('follows the payload input as it is typed into', async () => {
     const row = createCheckboxRow('payload');
-    const input = paneOf(row, 'payload').querySelector<HTMLInputElement>('input');
+    const input = paneOf(row, 'payload').querySelector<HTMLInputElement>('input')!;
 
     input.value = '${foo.bar}';
     input.dispatchEvent(new Event('input', { bubbles: true }));
@@ -237,7 +237,7 @@ describe('@typo3/reactions/field-map-element', () => {
 
   it('leaves a payload value the integrator already entered alone', async () => {
     const row = createCheckboxRow('fixed');
-    paneOf(row, 'payload').querySelector<HTMLInputElement>('input').value = '${foo.bar}';
+    paneOf(row, 'payload').querySelector<HTMLInputElement>('input')!.value = '${foo.bar}';
 
     await switchTo(row, 'payload');
 
@@ -249,7 +249,7 @@ describe('@typo3/reactions/field-map-element', () => {
 
     await switchTo(row, 'unset');
 
-    expect(row.querySelector<HTMLInputElement>('[data-fieldmap-value]').disabled).to.equal(true);
+    expect(row.querySelector<HTMLInputElement>('[data-fieldmap-value]')!.disabled).to.equal(true);
   });
 
   it('never lets an editor reach the request under the field name', async () => {

@@ -94,12 +94,12 @@ class UpgradeDocs extends AbstractInteractableModule {
             const data: ModuleLoadedResponse = await response.resolve();
             if (data.success === true) {
               const panelGroup = el;
-              const container = panelGroup.querySelector(Identifiers.changeLogsForVersion);
+              const container = panelGroup.querySelector(Identifiers.changeLogsForVersion)!;
               container.innerHTML = data.html;
               this.moveNotRelevantDocuments(container);
 
               // Remove loading spinner form panel
-              panelGroup.querySelector('.t3js-panel-loading').remove();
+              panelGroup.querySelector('.t3js-panel-loading')!.remove();
             } else {
               Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
             }
@@ -136,7 +136,7 @@ class UpgradeDocs extends AbstractInteractableModule {
   }
 
   private initializeSelectPure(): void {
-    this.selectPureField = this.getModalBody().querySelector(Identifiers.selectPureField);
+    this.selectPureField = this.getModalBody().querySelector(Identifiers.selectPureField)!;
     this.selectPureField.addEventListener('change', () => {
       this.combinedFilterSearch();
       this.selectPureField.close();
@@ -238,7 +238,7 @@ class UpgradeDocs extends AbstractInteractableModule {
       const panelElement = hitElement.closest('.panel-collapse');
 
       window.setTimeout((): void => {
-        Collapse.getOrCreateInstance(panelElement).show();
+        Collapse.getOrCreateInstance(panelElement!).show();
       }, 20);
     });
 
@@ -247,7 +247,7 @@ class UpgradeDocs extends AbstractInteractableModule {
       if (element.querySelectorAll('.searchhit, .filterhit').length < 1) {
         const panelElement = element.querySelector(':scope > .panel-collapse');
 
-        Collapse.getOrCreateInstance(panelElement).hide();
+        Collapse.getOrCreateInstance(panelElement!).hide();
       }
     });
   }
@@ -256,20 +256,20 @@ class UpgradeDocs extends AbstractInteractableModule {
    * Moves all documents that are either read or not affected
    */
   private moveNotRelevantDocuments(container: Element): void {
-    this.findInModal('.panel-body-read').append(container.querySelector('[data-item-state="read"]') ?? '');
-    this.findInModal('.panel-body-not-affected').append(container.querySelector('[data-item-state="notAffected"]') ?? '');
+    this.findInModal('.panel-body-read')!.append(container.querySelector('[data-item-state="read"]') ?? '');
+    this.findInModal('.panel-body-not-affected')!.append(container.querySelector('[data-item-state="notAffected"]') ?? '');
   }
 
   private markRead(element: Element): void {
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().dataset.upgradeDocsMarkReadToken;
-    const button = element.closest('button');
+    const button = element.closest('button')!;
     button.classList.toggle('t3js-upgradeDocs-unmarkRead');
     button.classList.toggle('t3js-upgradeDocs-markRead');
     button.querySelectorAll<HTMLElement>('typo3-backend-icon,.t3js-icon').forEach((iconElement) => {
       iconElement.outerHTML = '<typo3-backend-icon identifier="actions-ban" size="small"></typo3-backend-icon>';
     });
-    this.findInModal('.panel-body-read').append(button.closest('.panel'));
+    this.findInModal('.panel-body-read')!.append(button.closest('.panel')!);
     (new AjaxRequest(Router.getUrl()))
       .post({
         install: {
@@ -286,14 +286,14 @@ class UpgradeDocs extends AbstractInteractableModule {
   private unmarkRead(element: Element): void {
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().dataset.upgradeDocsUnmarkReadToken;
-    const button = element.closest('button');
-    const version = button.closest<HTMLElement>('.panel').dataset.itemVersion;
+    const button = element.closest('button')!;
+    const version = button.closest<HTMLElement>('.panel')!.dataset.itemVersion;
     button.classList.toggle('t3js-upgradeDocs-markRead');
     button.classList.toggle('t3js-upgradeDocs-unmarkRead');
     button.querySelectorAll<HTMLElement>('typo3-backend-icon,.t3js-icon').forEach((iconElement) => {
       iconElement.outerHTML = '<typo3-backend-icon identifier="actions-check" size="small"></typo3-backend-icon>';
     });
-    this.findInModal('*[data-group-version="' + version + '"] .panel-body').append(button.closest('.panel'));
+    this.findInModal('*[data-group-version="' + version + '"] .panel-body')!.append(button.closest('.panel')!);
     (new AjaxRequest(Router.getUrl()))
       .post({
         install: {

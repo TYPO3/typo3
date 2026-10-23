@@ -77,7 +77,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
 
     // Select / deselect all checkboxes
     new RegularEvent('click', (event: Event, element: HTMLInputElement): void => {
-      element.closest('fieldset').querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach((checkbox): void => {
+      element.closest('fieldset')!.querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach((checkbox): void => {
         checkbox.checked = element.checked;
       });
     }).delegateTo(currentModal, Identifiers.suggestionBlockCheckbox);
@@ -120,13 +120,13 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
     this.setModalButtonsState(false);
 
     const modalContent = this.getModalBody();
-    const outputContainer = modalContent.querySelector<HTMLElement>(Identifiers.outputContainer);
+    const outputContainer = modalContent.querySelector<HTMLElement>(Identifiers.outputContainer)!;
     const progressBar = this.renderProgressBar(outputContainer, {
       label: 'Analyzing current database schema...'
     });
     new RegularEvent('change', (): void => {
       const hasCheckedCheckboxes = outputContainer.querySelectorAll(':checked').length > 0;
-      this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.executeTrigger), hasCheckedCheckboxes);
+      this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.executeTrigger)!, hasCheckedCheckboxes);
     }).delegateTo(outputContainer, 'input[type="checkbox"]');
 
     (new AjaxRequest(Router.getUrl('databaseAnalyzerAnalyze')))
@@ -143,54 +143,54 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
             }
             if (Array.isArray(data.suggestions)) {
               data.suggestions.forEach((element): void => {
-                const aBlock = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.suggestionBlock)).content.cloneNode(true) as HTMLElement;
+                const aBlock = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.suggestionBlock)!).content.cloneNode(true) as HTMLElement;
                 const key = element.key;
-                aBlock.querySelector<HTMLElement>(Identifiers.suggestionBlockLegend).innerText = element.label;
-                aBlock.querySelector<HTMLElement>(Identifiers.suggestionBlockCheckbox).setAttribute('id', 't3-install-' + key + '-checkbox');
+                aBlock.querySelector<HTMLElement>(Identifiers.suggestionBlockLegend)!.innerText = element.label;
+                aBlock.querySelector<HTMLElement>(Identifiers.suggestionBlockCheckbox)!.setAttribute('id', 't3-install-' + key + '-checkbox');
                 if (element.enabled) {
-                  aBlock.querySelector<HTMLElement>(Identifiers.suggestionBlockCheckbox).setAttribute('checked', 'checked');
+                  aBlock.querySelector<HTMLElement>(Identifiers.suggestionBlockCheckbox)!.setAttribute('checked', 'checked');
                 }
-                aBlock.querySelector<HTMLElement>(Identifiers.suggestionBlockLabel).setAttribute('for', 't3-install-' + key + '-checkbox');
+                aBlock.querySelector<HTMLElement>(Identifiers.suggestionBlockLabel)!.setAttribute('for', 't3-install-' + key + '-checkbox');
                 element.children.forEach((line): void => {
-                  const aLine = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.suggestionLineTemplate)).content.cloneNode(true) as HTMLElement;
+                  const aLine = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.suggestionLineTemplate)!).content.cloneNode(true) as HTMLElement;
                   const hash = line.hash;
-                  const checkbox = aLine.querySelector<HTMLInputElement>(Identifiers.suggestionLineCheckbox);
+                  const checkbox = aLine.querySelector<HTMLInputElement>(Identifiers.suggestionLineCheckbox)!;
                   checkbox.setAttribute('id', 't3-install-db-' + hash);
                   checkbox.setAttribute('data-hash', hash);
                   if (element.enabled) {
                     checkbox.setAttribute('checked', 'checked');
                   }
-                  aLine.querySelector(Identifiers.suggestionLineLabel).setAttribute('for', 't3-install-db-' + hash);
-                  aLine.querySelector<HTMLElement>(Identifiers.suggestionLineStatement).innerText = line.statement;
+                  aLine.querySelector(Identifiers.suggestionLineLabel)!.setAttribute('for', 't3-install-db-' + hash);
+                  aLine.querySelector<HTMLElement>(Identifiers.suggestionLineStatement)!.innerText = line.statement;
                   if (typeof line.current !== 'undefined') {
-                    aLine.querySelector<HTMLElement>(Identifiers.suggestionLineCurrentValue).innerText = line.current;
-                    aLine.querySelector<HTMLElement>(Identifiers.suggestionLineCurrent).style.display = 'inline';
+                    aLine.querySelector<HTMLElement>(Identifiers.suggestionLineCurrentValue)!.innerText = line.current;
+                    aLine.querySelector<HTMLElement>(Identifiers.suggestionLineCurrent)!.style.display = 'inline';
                   }
                   if (typeof line.rowCount !== 'undefined') {
-                    aLine.querySelector<HTMLElement>(Identifiers.suggestionLineCountValue).innerText = String(line.rowCount);
-                    aLine.querySelector<HTMLElement>(Identifiers.suggestionLineCount).style.display = 'inline';
+                    aLine.querySelector<HTMLElement>(Identifiers.suggestionLineCountValue)!.innerText = String(line.rowCount);
+                    aLine.querySelector<HTMLElement>(Identifiers.suggestionLineCount)!.style.display = 'inline';
                   }
-                  aBlock.querySelector<HTMLElement>(Identifiers.suggestionList).append(aLine);
+                  aBlock.querySelector<HTMLElement>(Identifiers.suggestionList)!.append(aLine);
                 });
                 outputContainer.append(aBlock);
               });
 
-              this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.analyzeTrigger), true);
-              this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.executeTrigger), outputContainer.querySelectorAll(':checked').length > 0);
+              this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.analyzeTrigger)!, true);
+              this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.executeTrigger)!, outputContainer.querySelectorAll(':checked').length > 0);
             }
             if (data.suggestions.length === 0 && data.status.length === 0) {
               outputContainer.append(InfoBox.create(Severity.ok, 'Database schema is up to date. Good job!'));
             }
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
-            this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.analyzeTrigger), true);
-            this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.executeTrigger), false);
+            this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.analyzeTrigger)!, true);
+            this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.executeTrigger)!, false);
           }
         },
         (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
-          this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.analyzeTrigger), true);
-          this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.executeTrigger), false);
+          this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.analyzeTrigger)!, true);
+          this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.executeTrigger)!, false);
         }
       );
   }
@@ -200,8 +200,8 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
 
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().dataset.databaseAnalyzerExecuteToken;
-    const outputContainer = modalContent.querySelector<HTMLElement>(Identifiers.outputContainer);
-    const notificationContainer = modalContent.querySelector<HTMLElement>(Identifiers.notificationContainer);
+    const outputContainer = modalContent.querySelector<HTMLElement>(Identifiers.outputContainer)!;
+    const notificationContainer = modalContent.querySelector<HTMLElement>(Identifiers.notificationContainer)!;
 
     const selectedHashes: string[] = [];
     outputContainer.querySelectorAll<HTMLElement>('.t3js-databaseAnalyzer-suggestion-line input:checked').forEach((element): void => {
@@ -255,13 +255,13 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
           Router.handleAjaxError(error, modalContent);
         }
       ).finally((): void => {
-        this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.analyzeTrigger), true);
-        this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.executeTrigger), false);
+        this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.analyzeTrigger)!, true);
+        this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.executeTrigger)!, false);
       });
   }
 
   private clearNotifications() {
-    this.currentModal.querySelector(Identifiers.notificationContainer).replaceChildren('');
+    this.currentModal.querySelector(Identifiers.notificationContainer)!.replaceChildren('');
   }
 }
 

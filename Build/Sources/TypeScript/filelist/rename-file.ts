@@ -41,10 +41,10 @@ class RenameFile {
   private checkForDuplicate(e: Event): void {
     e.preventDefault();
 
-    const form = (e.currentTarget as HTMLInputElement).form;
-    const fileNameField = form.querySelector<HTMLInputElement>('input[name="data[rename][0][target]"]');
-    const destinationField = form.querySelector<HTMLInputElement>('input[name="data[rename][0][destination]"]');
-    const conflictModeField = form.querySelector<HTMLInputElement>('input[name="data[rename][0][conflictMode]"]');
+    const form = (e.currentTarget as HTMLInputElement).form!;
+    const fileNameField = form.querySelector<HTMLInputElement>('input[name="data[rename][0][target]"]')!;
+    const destinationField = form.querySelector<HTMLInputElement>('input[name="data[rename][0][destination]"]')!;
+    const conflictModeField = form.querySelector<HTMLInputElement>('input[name="data[rename][0][conflictMode]"]')!;
 
     const data: Record<string, string> = {
       fileName: fileNameField.value

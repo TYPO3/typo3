@@ -106,7 +106,7 @@ class ImageProcessing extends AbstractInteractableModule {
                 aTwin.querySelectorAll<HTMLElement>(Identifiers.twinImages).forEach((image) => image.hidden = false);
               }
               if (Array.isArray(data.command) && data.command.length > 0) {
-                const commandContainer = aTwin.querySelector<HTMLElement>(Identifiers.commandContainer);
+                const commandContainer = aTwin.querySelector<HTMLElement>(Identifiers.commandContainer)!;
                 if (commandContainer !== null) {
                   commandContainer.hidden = false;
                 }
@@ -117,7 +117,7 @@ class ImageProcessing extends AbstractInteractableModule {
                     commandText.push('<strong>Result:</strong>\n' + aElement[2]);
                   }
                 });
-                const commandTextElement = aTwin.querySelector<HTMLElement>(Identifiers.commandText);
+                const commandTextElement = aTwin.querySelector<HTMLElement>(Identifiers.commandText)!;
                 if (commandTextElement !== null) {
                   commandTextElement.innerHTML = commandText.join('\n');
                 }

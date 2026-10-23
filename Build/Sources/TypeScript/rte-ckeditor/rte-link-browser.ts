@@ -30,7 +30,7 @@ class RteLinkBrowser {
   protected selectionEndPosition: ModelPosition | null = null;
 
   public initialize(): void {
-    const currentModal = Modal.currentModal;
+    const currentModal = Modal.currentModal!;
     this.editor = currentModal.userData.editor;
     this.selectionStartPosition = currentModal.userData.selectionStartPosition;
     this.selectionEndPosition = currentModal.userData.selectionEndPosition;
@@ -40,7 +40,7 @@ class RteLinkBrowser {
       new RegularEvent('click', (e: Event): void => {
         e.preventDefault();
         this.restoreSelection();
-        this.editor.execute('unlink');
+        this.editor!.execute('unlink');
         Modal.dismiss();
       }).bindTo(removeLinkElement);
     }
@@ -59,7 +59,7 @@ class RteLinkBrowser {
     const href = this.sanitizeLink(link, queryParams);
     // Only relevant when no text is selected: the link title (if filled) or the resolved
     // title of the target (e.g. the page title) is used as text of the new link.
-    const linkText = this.selectionStartPosition.isEqual(this.selectionEndPosition)
+    const linkText = this.selectionStartPosition!.isEqual(this.selectionEndPosition!)
       ? (attributes.title || (await resolveLink(href)).title || '')
       : '';
     const linkAttrs = this.convertAttributes(attributes, linkText);
@@ -73,8 +73,8 @@ class RteLinkBrowser {
   }
 
   private restoreSelection(): void {
-    this.editor.model.change((writer) => {
-      const ranges = [writer.createRange(this.selectionStartPosition, this.selectionEndPosition)];
+    this.editor!.model.change((writer) => {
+      const ranges = [writer.createRange(this.selectionStartPosition!, this.selectionEndPosition!)];
       writer.setSelection(ranges);
     });
   }

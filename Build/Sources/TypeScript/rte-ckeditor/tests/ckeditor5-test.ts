@@ -51,7 +51,7 @@ describe('@typo3/rte-ckeditor/ckeditor5-test', () => {
     document.dispatchEvent(new Event('DOMContentLoaded'));
 
     await waitUntil(() => findEditor() !== null, 'CKEditor has not been initialized', { timeout: 10000 });
-    expect(findEditor().getData()).to.equal('<p>first part and second part</p>');
+    expect(findEditor()!.getData()).to.equal('<p>first part and second part</p>');
   });
 
   it('initializes immediately when the document has already been parsed', async () => {
@@ -63,6 +63,6 @@ describe('@typo3/rte-ckeditor/ckeditor5-test', () => {
     container.append(element);
 
     await waitUntil(() => findEditor() !== null, 'CKEditor has not been initialized', { timeout: 10000 });
-    expect(findEditor().getData()).to.equal('<p>complete</p>');
+    expect(findEditor()!.getData()).to.equal('<p>complete</p>');
   });
 });

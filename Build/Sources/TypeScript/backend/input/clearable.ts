@@ -72,7 +72,7 @@ class Clearable {
       const isFocused: boolean = document.activeElement === this;
       const wrap = document.createElement('div');
       wrap.classList.add('form-control-clearable-wrapper');
-      this.parentNode.insertBefore(wrap, this);
+      this.parentNode!.insertBefore(wrap, this);
       wrap.appendChild(this);
 
       let clearButtonTitle = 'Clear input';
@@ -108,7 +108,7 @@ class Clearable {
 
       this.addEventListener('blur', (e: FocusEvent) => {
         // Maintain focus when indicator is clicked
-        if (this.parentNode.contains(e.relatedTarget as Node)) {
+        if (this.parentNode!.contains(e.relatedTarget as Node)) {
           this.focus();
         }
       });

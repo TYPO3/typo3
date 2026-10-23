@@ -79,7 +79,7 @@ class Permissions {
         return;
       }
       parentElement.innerHTML = data;
-      const targetElement = parentElement.querySelector<HTMLButtonElement>('button[data-bits="' + bits + '"]');
+      const targetElement = parentElement.querySelector<HTMLButtonElement>('button[data-bits="' + bits + '"]')!;
       targetElement.focus();
     });
   }
@@ -112,10 +112,10 @@ class Permissions {
       action: 'change_owner',
       page: page,
       ownerUid: element.dataset.owner,
-      newOwnerUid: container.getElementsByTagName('select')[0].value,
+      newOwnerUid: container!.getElementsByTagName('select')[0].value,
     }).then(async (response: AjaxResponse): Promise<void> => {
       // Replace content
-      container.outerHTML = await response.resolve();
+      container!.outerHTML = await response.resolve();
     });
   }
 
@@ -197,10 +197,10 @@ class Permissions {
       action: 'change_group',
       page: page,
       groupUid: element.dataset.groupId,
-      newGroupUid: container.getElementsByTagName('select')[0].value,
+      newGroupUid: container!.getElementsByTagName('select')[0].value,
     }).then(async (response: AjaxResponse): Promise<void> => {
       // Replace content
-      container.outerHTML = await response.resolve();
+      container!.outerHTML = await response.resolve();
     });
   }
 

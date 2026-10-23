@@ -80,7 +80,7 @@ class DateTimePicker {
 
       // two entries need to be adjusted here for proper utilization
       // in non-english localisations.
-      flatpickr.l10ns[locale].firstDayOfWeek = dowNumber;
+      flatpickr.l10ns[locale]!.firstDayOfWeek = dowNumber;
       flatpickr.l10ns.default.firstDayOfWeek = dowNumber;
     }
 
@@ -127,7 +127,7 @@ class DateTimePicker {
     dateTimePicker._input.addEventListener('change', (e: Event): void => {
       // Update selected date in picker after manually entering a value
       const value = (e.target as HTMLInputElement).value;
-      const parsedDate: Date = dateTimePicker.parseDate(value, dateTimePicker.config.altFormat);
+      const parsedDate: Date = dateTimePicker.parseDate(value, dateTimePicker.config.altFormat)!;
 
       dateTimePicker.setDate(parsedDate, true);
     });
@@ -227,9 +227,9 @@ class DateTimePicker {
           }
 
           // Register a custom event handler for `t3-formengine-postfieldvalidation` to be able to toggle the `has-error` class on the mirrored field
-          self.altInput.form.addEventListener('t3-formengine-postfieldvalidation', (e: CustomEvent<PostValidationEvent>): void => {
+          self.altInput.form!.addEventListener('t3-formengine-postfieldvalidation', (e: CustomEvent<PostValidationEvent>): void => {
             if (e.detail.field === self.input) {
-              self.altInput.classList.toggle('has-error', !e.detail.isValid);
+              self.altInput!.classList.toggle('has-error', !e.detail.isValid);
             }
           });
 
@@ -253,7 +253,7 @@ class DateTimePicker {
       //   `TypeError: Cannot set properties of undefined (setting 'tabIndex')` in flatpickr
       // Rproducible when entering an arbitrary time (e.g. "13:30")
       // and pressing the TAB key in a time field.
-      monthSelectorType: type.startsWith('date') ? 'dropdown' : 'static',
+      monthSelectorType: type!.startsWith('date') ? 'dropdown' : 'static',
       weekNumbers: true,
       time_24hr: !Intl.DateTimeFormat(navigator.language, { hour: 'numeric' }).resolvedOptions().hour12,
       plugins: [
@@ -303,11 +303,11 @@ class DateTimePicker {
     }
 
     if (inputElement.dataset.dateMinDate !== undefined) {
-      options.minDate = options.parseDate(inputElement.dataset.dateMinDate, ISO8601_LOCALTIME);
+      options.minDate = options.parseDate!(inputElement.dataset.dateMinDate, ISO8601_LOCALTIME);
       options.minDate.setSeconds(0);
     }
     if (inputElement.dataset.dateMaxDate !== undefined) {
-      options.maxDate = options.parseDate(inputElement.dataset.dateMaxDate, ISO8601_LOCALTIME);
+      options.maxDate = options.parseDate!(inputElement.dataset.dateMaxDate, ISO8601_LOCALTIME);
       options.maxDate.setSeconds(59);
     }
 

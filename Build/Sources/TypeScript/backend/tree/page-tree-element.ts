@@ -98,7 +98,7 @@ export class EditablePageTree extends PageTree {
       targetUid = data.target.identifier;
       if (data.position === TreeNodePositionEnum.BEFORE) {
         const previousNode = this.getPreviousNode(data.target);
-        targetUid = ((previousNode.depth === data.target.depth) ? '-' : '') + previousNode.identifier;
+        targetUid = ((previousNode!.depth === data.target.depth) ? '-' : '') + previousNode!.identifier;
       }
       else if (data.position === TreeNodePositionEnum.AFTER) {
         targetUid = '-' + targetUid;
@@ -113,7 +113,7 @@ export class EditablePageTree extends PageTree {
     } else if (data.command === TreeNodeCommandEnum.EDIT) {
       // The tree may show nav_title instead of title, so write back to the field that is displayed
       const nameSourceField = data.node.nameSourceField || 'title';
-      params = '&data[pages][' + data.node.identifier + '][' + nameSourceField + ']=' + encodeURIComponent(data.title);
+      params = '&data[pages][' + data.node.identifier + '][' + nameSourceField + ']=' + encodeURIComponent(data.title!);
     } else if (data.command === TreeNodeCommandEnum.DELETE) {
       // @todo currently it's "If uid of deleted record (data.uid) is still selected, randomly select the first node"
       const moduleStateStorage = ModuleStateStorage.current('web');
@@ -131,8 +131,8 @@ export class EditablePageTree extends PageTree {
       } else {
         if (data.command === TreeNodeCommandEnum.NEW) {
           const parentNode = this.getParentNode(data.node);
-          parentNode.loaded = false;
-          this.loadChildren(parentNode);
+          parentNode!.loaded = false;
+          this.loadChildren(parentNode!);
         } else {
           this.refreshOrFilterTree();
         }
@@ -152,14 +152,14 @@ export class EditablePageTree extends PageTree {
 
     if (node.identifier.startsWith('NEW')) {
       const target = this.getPreviousNode(node);
-      const position = (node.depth === target.depth) ? TreeNodePositionEnum.AFTER : TreeNodePositionEnum.INSIDE;
+      const position = (node.depth === target!.depth) ? TreeNodePositionEnum.AFTER : TreeNodePositionEnum.INSIDE;
       const options: NodeNewOptions = {
         command: TreeNodeCommandEnum.NEW,
         node: node,
         title: newName,
         position: position,
-        target: target,
-        doktype: node.doktype
+        target: target!,
+        doktype: node.doktype!
       };
       await this.sendChangeCommand(options);
     } else {
@@ -424,7 +424,7 @@ export class PageTreeNavigationComponent extends TreeModuleState(LitElement) {
   }
 
   private setTemporaryMountPoint(pid: number): void {
-    (new AjaxRequest(this.configuration.setTemporaryMountPointUrl))
+    (new AjaxRequest(this.configuration!.setTemporaryMountPointUrl))
       .post('pid=' + pid, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest' },
       })
@@ -458,7 +458,7 @@ export class PageTreeNavigationComponent extends TreeModuleState(LitElement) {
 
     // Load the currently selected module with the updated URL
     const moduleMenu = topWindow.TYPO3.ModuleMenu.App;
-    const contentUrl = UrlFactory.createUrl(ModuleUtility.getFromName(moduleMenu.getCurrentModule()).link, {
+    const contentUrl = UrlFactory.createUrl(ModuleUtility.getFromName(moduleMenu.getCurrentModule()!).link, {
       id: node.identifier
     });
     topWindow.TYPO3.Backend.ContentContainer.setUrl(contentUrl);
@@ -484,7 +484,7 @@ export class PageTreeNavigationComponent extends TreeModuleState(LitElement) {
 @customElement('typo3-backend-navigation-component-pagetree-toolbar')
 class PageTreeToolbar extends TreeToolbar {
   @property({ type: EditablePageTree })
-  override tree: EditablePageTree = null;
+  override tree: EditablePageTree = null!;
 
   @property({ type: Boolean })
   searchInTranslatedPages: boolean = false;
@@ -515,7 +515,7 @@ class PageTreeToolbar extends TreeToolbar {
     super.firstUpdated();
 
     this.resizeObserver = new ResizeObserver(() => this.checkHiddenSubmenuItems());
-    this.resizeObserver.observe(this.submenuItemsContainer);
+    this.resizeObserver.observe(this.submenuItemsContainer!);
 
     window.addEventListener('resize', this.handleResize);
     this.checkHiddenSubmenuItems();
@@ -766,26 +766,26 @@ class PageTreeToolbar extends TreeToolbar {
     this.tree.draggingNode = newNode;
     this.tree.nodeDragMode = TreeNodeCommandEnum.NEW;
 
-    event.dataTransfer.clearData();
+    event.dataTransfer!.clearData();
     const metadata: DragTooltipMetadata = {
       statusIconIdentifier: this.tree.getNodeDragStatusIcon(),
       tooltipIconIdentifier: item.icon,
       tooltipLabel: item.title,
     };
-    event.dataTransfer.setData(DataTransferTypes.dragTooltip, JSON.stringify(metadata));
-    event.dataTransfer.setData(DataTransferTypes.newTreenode, JSON.stringify(newNode));
-    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer!.setData(DataTransferTypes.dragTooltip, JSON.stringify(metadata));
+    event.dataTransfer!.setData(DataTransferTypes.newTreenode, JSON.stringify(newNode));
+    event.dataTransfer!.effectAllowed = 'move';
   }
 
   private checkHiddenSubmenuItems(): void {
     requestAnimationFrame(() => {
       const wasExpanded = this.subMenuItemsExpanded;
       if (wasExpanded) {
-        this.submenuItemsContainer.classList.remove('tree-toolbar__submenu-items--expanded');
+        this.submenuItemsContainer!.classList.remove('tree-toolbar__submenu-items--expanded');
       }
-      this.hasHiddenSubMenuItems = this.submenuItemsContainer.scrollHeight > this.submenuItemsContainer.clientHeight;
+      this.hasHiddenSubMenuItems = this.submenuItemsContainer!.scrollHeight > this.submenuItemsContainer!.clientHeight;
       if (wasExpanded) {
-        this.submenuItemsContainer.classList.add('tree-toolbar__submenu-items--expanded');
+        this.submenuItemsContainer!.classList.add('tree-toolbar__submenu-items--expanded');
       }
     });
   }

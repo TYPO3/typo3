@@ -34,9 +34,9 @@ class ResetSelection {
   private readonly registerClickHandler = (e: Event): void => {
     e.preventDefault();
 
-    const itemName: string = this.controlElement.dataset.itemName;
-    const selectedIndices: Array<number> = JSON.parse(this.controlElement.dataset.selectedIndices ?? '');
-    const field = document.forms.namedItem('editform').querySelector<HTMLSelectElement>('[name="' + itemName + '[]"]');
+    const itemName: string = this.controlElement!.dataset.itemName!;
+    const selectedIndices: Array<number> = JSON.parse(this.controlElement!.dataset.selectedIndices ?? '');
+    const field = document.forms.namedItem('editform')!.querySelector<HTMLSelectElement>('[name="' + itemName + '[]"]')!;
 
     field.selectedIndex = -1;
     for (const i of selectedIndices) {

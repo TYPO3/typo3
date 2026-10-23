@@ -177,7 +177,7 @@ class Icons {
       || ClientStorage.get('icon_registry_cache_identifier') !== registryCacheIdentifier
     ) {
       ClientStorage.unsetByPrefix('icon_');
-      ClientStorage.set('icon_registry_cache_identifier', registryCacheIdentifier);
+      ClientStorage.set('icon_registry_cache_identifier', registryCacheIdentifier!);
     }
 
     try {
@@ -218,7 +218,7 @@ class Icons {
    */
   private fetchFromLocal(cacheIdentifier: string): Promise<string> {
     if (ClientStorage.isset('icon_' + cacheIdentifier)) {
-      return Promise.resolve(ClientStorage.get('icon_' + cacheIdentifier));
+      return Promise.resolve(ClientStorage.get('icon_' + cacheIdentifier)!);
     }
 
     return Promise.reject();

@@ -329,7 +329,7 @@ class MultiRecordSelection {
         // Only change checkbox state if the target is the row itself
         return;
       }
-      const checkbox = target.querySelector<HTMLInputElement>(MultiRecordSelectionSelectors.checkboxSelector);
+      const checkbox = target.querySelector<HTMLInputElement>(MultiRecordSelectionSelectors.checkboxSelector)!;
       if (checkbox === null) {
         // Return in case the table row does not contain a checkbox, handled by this component
         return;
@@ -367,9 +367,9 @@ class MultiRecordSelection {
       const identifier: string = e.detail?.identifier || '';
 
       if (checkbox.checked) {
-        checkbox.closest(MultiRecordSelectionSelectors.elementSelector).classList.add(MultiRecordSelection.activeClass);
+        checkbox.closest(MultiRecordSelectionSelectors.elementSelector)!.classList.add(MultiRecordSelection.activeClass);
       } else {
-        checkbox.closest(MultiRecordSelectionSelectors.elementSelector).classList.remove(MultiRecordSelection.activeClass);
+        checkbox.closest(MultiRecordSelectionSelectors.elementSelector)!.classList.remove(MultiRecordSelection.activeClass);
       }
 
       // Toggle actions for changed checkbox state

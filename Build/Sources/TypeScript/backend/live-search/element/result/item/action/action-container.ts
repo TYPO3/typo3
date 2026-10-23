@@ -31,7 +31,7 @@ export class ActionContainer extends LitElement {
 
   protected override render(): TemplateResult {
     return html`<typo3-backend-live-search-result-action-list>
-      ${this.resultItem.actions.map((action) => this.renderActionItem(this.resultItem, action))}
+      ${this.resultItem!.actions.map((action) => this.renderActionItem(this.resultItem!, action))}
     </typo3-backend-live-search-result-action-list>`;
   }
 
@@ -39,12 +39,12 @@ export class ActionContainer extends LitElement {
     return html`<typo3-backend-live-search-result-item-action
       .resultItem="${resultItem}"
       .resultItemAction="${action}"
-      @click="${() => this.invokeAction(this.resultItem, action)}">
+      @click="${() => this.invokeAction(this.resultItem!, action)}">
     </typo3-backend-live-search-result-item-action>`;
   }
 
   private invokeAction(resultItem: ResultItemInterface, action: ResultItemActionInterface): void {
-    this.closest('typo3-backend-live-search-result-container').dispatchEvent(new CustomEvent<InvokeActionEventData>('livesearch:invoke-action', {
+    this.closest('typo3-backend-live-search-result-container')!.dispatchEvent(new CustomEvent<InvokeActionEventData>('livesearch:invoke-action', {
       detail: {
         resultItem: resultItem,
         action: action
@@ -66,8 +66,8 @@ export class ActionList extends LitElement {
 
   public override async connectedCallback(): Promise<void> {
     await DocumentService.ready();
-    this.parentContainer = this.closest('typo3-backend-live-search-result-container');
-    this.resultItemContainer = this.parentContainer.querySelector('typo3-backend-live-search-result-item-container');
+    this.parentContainer = this.closest('typo3-backend-live-search-result-container')!;
+    this.resultItemContainer = this.parentContainer.querySelector('typo3-backend-live-search-result-item-container')!;
 
     super.connectedCallback();
     this.addEventListener('keydown', this.handleKeyDown);
@@ -89,7 +89,7 @@ export class ActionList extends LitElement {
     if (!['ArrowDown', 'ArrowUp', 'ArrowLeft'].includes(e.key)) {
       return;
     }
-    if (document.activeElement.tagName.toLowerCase() !== 'typo3-backend-live-search-result-item-action') {
+    if (document.activeElement!.tagName.toLowerCase() !== 'typo3-backend-live-search-result-item-action') {
       return;
     }
 
@@ -97,9 +97,9 @@ export class ActionList extends LitElement {
 
     let focusableCandidate;
     if (e.key === 'ArrowDown') {
-      focusableCandidate = document.activeElement.nextElementSibling;
+      focusableCandidate = document.activeElement!.nextElementSibling;
     } else if (e.key === 'ArrowUp') {
-      focusableCandidate = document.activeElement.previousElementSibling;
+      focusableCandidate = document.activeElement!.previousElementSibling;
     } else if (e.key === 'ArrowLeft') {
       focusableCandidate = this.resultItemContainer.querySelector('typo3-backend-live-search-result-item.active');
     }

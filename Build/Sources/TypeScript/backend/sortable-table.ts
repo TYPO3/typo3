@@ -51,7 +51,7 @@ class TablesortWithButtons extends Tablesort {
       event.preventDefault();
       event.stopImmediatePropagation();
       const direction = (event.currentTarget as HTMLButtonElement).dataset.sortDirection;
-      const target = (event.currentTarget as HTMLButtonElement).closest<HTMLTableCellElement>('th, td');
+      const target = (event.currentTarget as HTMLButtonElement).closest<HTMLTableCellElement>('th, td')!;
 
       // Tablesort produces different results on sorting in the same direction twice
       // when the sorting is not 100% clear and multiple cells have the same value.
@@ -165,37 +165,37 @@ export default class SortableTable {
   constructor(table: HTMLTableElement) {
     table.addEventListener('afterSort', (event: CustomEvent) => {
       const table = (event.target as HTMLTableElement);
-      const buttons = table.tHead.querySelectorAll('.dropdown-toggle[data-sorting-toggle]');
+      const buttons = table.tHead!.querySelectorAll('.dropdown-toggle[data-sorting-toggle]');
       buttons.forEach((button) => {
-        const iconWrap = button.querySelector(':scope > div');
+        const iconWrap = button.querySelector(':scope > div')!;
         iconWrap.classList.remove('text-primary');
-        const icon = button.querySelector('typo3-backend-icon');
+        const icon = button.querySelector('typo3-backend-icon')!;
         icon.identifier = 'empty-empty';
         icon.classList.remove('text-primary');
       });
 
-      const menuIcons = table.tHead.querySelectorAll<IconElement>('.dropdown-toggle[data-sorting-toggle] + .dropdown-menu typo3-backend-icon');
+      const menuIcons = table.tHead!.querySelectorAll<IconElement>('.dropdown-toggle[data-sorting-toggle] + .dropdown-menu typo3-backend-icon');
       menuIcons.forEach((menuIcon) => {
         menuIcon.identifier = 'empty-empty';
       });
 
-      const sortingCell = table.tHead.querySelector<HTMLTableCellElement>('th[aria-sort]');
-      const sortingButton = sortingCell.querySelector('.dropdown-toggle[data-sorting-toggle]');
+      const sortingCell = table.tHead!.querySelector<HTMLTableCellElement>('th[aria-sort]')!;
+      const sortingButton = sortingCell.querySelector('.dropdown-toggle[data-sorting-toggle]')!;
       const sortingIconWrap = sortingButton.querySelector(':scope > div');
-      sortingIconWrap.classList.add('text-primary');
+      sortingIconWrap!.classList.add('text-primary');
       const sortingIcon = sortingButton.querySelector('typo3-backend-icon');
-      const sortingDropdown = sortingCell.querySelector('.dropdown-menu');
+      const sortingDropdown = sortingCell.querySelector('.dropdown-menu')!;
 
       if (sortingCell.ariaSort === 'ascending') {
-        sortingIcon.identifier = 'actions-sort-amount-up';
+        sortingIcon!.identifier = 'actions-sort-amount-up';
       } else {
-        sortingIcon.identifier = 'actions-sort-amount-down';
+        sortingIcon!.identifier = 'actions-sort-amount-down';
       }
 
       const sortingButtons = sortingDropdown.querySelectorAll<HTMLButtonElement>('.dropdown-item');
       sortingButtons.forEach((button) => {
         const sortingButtonDirection = button.dataset.sortDirection;
-        const sortingButtonIcon = button.querySelector('typo3-backend-icon');
+        const sortingButtonIcon = button.querySelector('typo3-backend-icon')!;
         if (sortingButtonDirection === sortingCell.ariaSort) {
           sortingButtonIcon.identifier = 'actions-dot';
         } else {

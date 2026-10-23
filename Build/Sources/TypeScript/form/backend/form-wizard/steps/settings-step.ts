@@ -82,12 +82,12 @@ export class SettingsStep implements WizardStepInterface, WizardStepValueInterfa
     const storageLocations = storageAdapter
       ? this.context.formManager.getAccessibleStorageLocationsForAdapter(storageAdapter)
       : [];
-    const storageLocationLabel = storageLocations.find(l => l.value === config.storageLocation)?.label
-      ?? config.storageLocation ?? '';
+    const storageLocationLabel = storageLocations.find(l => l.value === config!.storageLocation)?.label
+      ?? config!.storageLocation ?? '';
 
     return [
       {
-        value: config.formName ?? '',
+        value: config!.formName ?? '',
         label: formManagerLabels.get('formManager.form_name')
       },
       {
@@ -98,7 +98,7 @@ export class SettingsStep implements WizardStepInterface, WizardStepValueInterfa
   }
 
   private renderSavePath(): TemplateResult | typeof nothing {
-    const storageLocations = this.context.formManager.getAccessibleStorageLocationsForAdapter(this.context.getStoreData('storage')) ?? [];
+    const storageLocations = this.context.formManager.getAccessibleStorageLocationsForAdapter(this.context.getStoreData('storage')!) ?? [];
 
     if (storageLocations.length <= 1) {
       this.setValue({ storageLocation: storageLocations[0]?.value ?? '' });

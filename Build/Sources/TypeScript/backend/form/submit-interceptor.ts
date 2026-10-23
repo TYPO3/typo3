@@ -58,7 +58,7 @@ export default class SubmitInterceptor {
       // as a disabled button would not submit its name/value as form data.
       submitter.classList.add('disabled');
       Icons.getIcon('spinner-circle', Icons.sizes.small).then((markup: string): void => {
-        submitter.replaceChild(document.createRange().createContextualFragment(markup), submitter.querySelector('.t3js-icon'));
+        submitter.replaceChild(document.createRange().createContextualFragment(markup), submitter.querySelector('.t3js-icon')!);
       }).catch(() => {
         // Catch error in case the promise was not resolved
         // e.g. loading a new page

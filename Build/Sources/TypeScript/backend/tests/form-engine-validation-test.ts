@@ -266,7 +266,7 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
       expect(FormEngineValidation.parseInt(false)).to.equal(0);
     });
     it('works for value null', () => {
-      expect(FormEngineValidation.parseInt(null)).to.equal(0);
+      expect(FormEngineValidation.parseInt(null!)).to.equal(0);
     });
   });
 
@@ -305,7 +305,7 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
       expect(FormEngineValidation.parseDouble(false)).to.equal('0.00');
     });
     it('works for value null', () => {
-      expect(FormEngineValidation.parseDouble(null)).to.equal('0.00');
+      expect(FormEngineValidation.parseDouble(null!)).to.equal('0.00');
     });
     it('works for value 0.5 with scale 4', () => {
       expect(FormEngineValidation.parseDouble(0.5, 4)).to.equal('0.5000');
@@ -382,7 +382,7 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
     it('adds a hidden hint to a tab containing invalid fields', () => {
       const tabLink = createTabLink();
       FormEngineValidation.updateTabValidationState(tabLink, false);
-      const hint = tabLink.querySelector('.t3js-validation-hint');
+      const hint = tabLink.querySelector('.t3js-validation-hint')!;
       expect(hint).to.not.be.null;
       expect(hint.classList.contains('visually-hidden')).to.be.true;
       expect(hint.textContent).to.equal(' labels.tabContainsInvalidEntries');
@@ -390,7 +390,7 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
     it('keeps the visible label of the tab untouched', () => {
       const tabLink = createTabLink();
       FormEngineValidation.updateTabValidationState(tabLink, false);
-      expect(tabLink.firstChild.textContent).to.equal('General');
+      expect(tabLink.firstChild!.textContent).to.equal('General');
     });
     it('adds the hint only once', () => {
       const tabLink = createTabLink();

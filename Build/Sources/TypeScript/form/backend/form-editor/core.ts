@@ -295,7 +295,7 @@ export class Utility {
     if (this.isNonEmptyString(collectionElementIdentifier) || this.isNonEmptyString(collectionName)) {
       assert(this.isNonEmptyString(collectionElementIdentifier), 'Invalid parameter "collectionElementIdentifier"', 1475412569);
       assert(this.isNonEmptyString(collectionName), 'Invalid parameter "collectionName"', 1475412570);
-      newPropertyPath = collectionName + '.' + repository.getIndexFromPropertyCollectionElementByIdentifier(collectionElementIdentifier, collectionName, formElement);
+      newPropertyPath = collectionName + '.' + repository.getIndexFromPropertyCollectionElementByIdentifier(collectionElementIdentifier!, collectionName!, formElement!);
     } else {
       newPropertyPath = '';
     }
@@ -305,7 +305,7 @@ export class Utility {
       if (this.isNonEmptyString(newPropertyPath)) {
         newPropertyPath = newPropertyPath + '.' + propertyPath;
       } else {
-        newPropertyPath = propertyPath;
+        newPropertyPath = propertyPath!;
       }
     }
 
@@ -401,7 +401,7 @@ export class PropertyValidationService {
     const formElementIdentifierPath = formElement.get('__identifierPath');
     propertyPath = utility.buildPropertyPath(propertyPath, collectionElementIdentifier, collectionName, formElement);
 
-    const propertyValidationServiceRegisteredValidators = getApplicationStateStack().getCurrentState('propertyValidationServiceRegisteredValidators');
+    const propertyValidationServiceRegisteredValidators = getApplicationStateStack().getCurrentState('propertyValidationServiceRegisteredValidators')!;
     if (utility.isUndefinedOrNull(propertyValidationServiceRegisteredValidators[formElementIdentifierPath])) {
       propertyValidationServiceRegisteredValidators[formElementIdentifierPath] = {};
     }
@@ -433,7 +433,7 @@ export class PropertyValidationService {
     const formElementIdentifierPath = formElement.get('__identifierPath');
 
     const registeredValidators: {[key: string]: {validators: ValidatorsConfig, configuration: PropertyValidatorConfiguration}} = {};
-    const propertyValidationServiceRegisteredValidators = getApplicationStateStack().getCurrentState('propertyValidationServiceRegisteredValidators');
+    const propertyValidationServiceRegisteredValidators = getApplicationStateStack().getCurrentState('propertyValidationServiceRegisteredValidators')!;
     if (formElementIdentifierPath in propertyValidationServiceRegisteredValidators) {
       for (const registeredPropertyPath of Object.keys(propertyValidationServiceRegisteredValidators[formElementIdentifierPath] || {})) {
         if (registeredPropertyPath.indexOf(propertyPath) > -1) {
@@ -453,7 +453,7 @@ export class PropertyValidationService {
     assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1475668189);
 
     const registeredValidators: Record<string, {[key: string]: {validators: ValidatorsConfig, configuration: PropertyValidatorConfiguration}}> = {};
-    const propertyValidationServiceRegisteredValidators = getApplicationStateStack().getCurrentState('propertyValidationServiceRegisteredValidators');
+    const propertyValidationServiceRegisteredValidators = getApplicationStateStack().getCurrentState('propertyValidationServiceRegisteredValidators')!;
     for (const formElementIdentifierPath of Object.keys(propertyValidationServiceRegisteredValidators || {})) {
       if (
         formElementIdentifierPath === formElement.get('__identifierPath')
@@ -494,7 +494,7 @@ export class PropertyValidationService {
     const formElementIdentifierPath = formElement.get('__identifierPath');
 
     const validationResults: ValidationResults = [];
-    const propertyValidationServiceRegisteredValidators = getApplicationStateStack().getCurrentState('propertyValidationServiceRegisteredValidators');
+    const propertyValidationServiceRegisteredValidators = getApplicationStateStack().getCurrentState('propertyValidationServiceRegisteredValidators')!;
     configuration = {
       propertyValidatorsMode: 'AND'
     };
@@ -531,9 +531,9 @@ export class PropertyValidationService {
           continue;
         }
         if (isImplicitValidator) {
-          enforcedValidationResults.push(validationResult);
+          enforcedValidationResults.push(validationResult!);
         } else {
-          modeValidationResults.push(validationResult);
+          modeValidationResults.push(validationResult!);
         }
       }
 
@@ -560,7 +560,7 @@ export class PropertyValidationService {
 
     const formElementIdentifierPath = formElement.get('__identifierPath');
     const validationResults: ValidationResultsWithPath = [];
-    const propertyValidationServiceRegisteredValidators = getApplicationStateStack().getCurrentState('propertyValidationServiceRegisteredValidators');
+    const propertyValidationServiceRegisteredValidators = getApplicationStateStack().getCurrentState('propertyValidationServiceRegisteredValidators')!;
     if (!utility.isUndefinedOrNull(propertyValidationServiceRegisteredValidators[formElementIdentifierPath])) {
       for (const registeredPropertyPath of Object.keys(propertyValidationServiceRegisteredValidators[formElementIdentifierPath])) {
         validationResults.push({
@@ -638,21 +638,21 @@ export class PropertyValidationService {
     const formElementTypeDefinition = repository.getFormEditorDefinition('formElements', formElement.get('type'));
 
     if (!utility.isUndefinedOrNull(formElementTypeDefinition.propertyCollections)) {
-      for (const collectionName of Object.keys(formElementTypeDefinition.propertyCollections)) {
+      for (const collectionName of Object.keys(formElementTypeDefinition.propertyCollections!)) {
         if (
-          !Array.isArray(formElementTypeDefinition.propertyCollections[collectionName])
+          !Array.isArray(formElementTypeDefinition.propertyCollections![collectionName])
         ) {
           continue;
         }
-        for (let i = 0, len1 = formElementTypeDefinition.propertyCollections[collectionName].length; i < len1; ++i) {
+        for (let i = 0, len1 = formElementTypeDefinition.propertyCollections![collectionName].length; i < len1; ++i) {
           if (
-            !Array.isArray(formElementTypeDefinition.propertyCollections[collectionName][i].editors)
-            || repository.getIndexFromPropertyCollectionElementByIdentifier(formElementTypeDefinition.propertyCollections[collectionName][i].identifier, collectionName, formElement) === -1
+            !Array.isArray(formElementTypeDefinition.propertyCollections![collectionName][i].editors)
+            || repository.getIndexFromPropertyCollectionElementByIdentifier(formElementTypeDefinition.propertyCollections![collectionName][i].identifier, collectionName, formElement) === -1
           ) {
             continue;
           }
-          for (let j = 0, len2 = formElementTypeDefinition.propertyCollections[collectionName][i].editors.length; j < len2; ++j) {
-            const editor = formElementTypeDefinition.propertyCollections[collectionName][i].editors[j];
+          for (let j = 0, len2 = formElementTypeDefinition.propertyCollections![collectionName][i].editors.length; j < len2; ++j) {
+            const editor = formElementTypeDefinition.propertyCollections![collectionName][i].editors[j];
             const propertyValidators = collectEditorPropertyValidators(editor);
             if (propertyValidators.length === 0) {
               continue;
@@ -669,8 +669,8 @@ export class PropertyValidationService {
             this.addValidatorIdentifiersToFormElementProperty(
               formElement,
               propertyValidators,
-              editor.propertyPath,
-              formElementTypeDefinition.propertyCollections[collectionName][i].identifier,
+              editor.propertyPath!,
+              formElementTypeDefinition.propertyCollections![collectionName][i].identifier,
               collectionName,
               propertyValidatorConfiguration
             );
@@ -705,7 +705,7 @@ export class PublisherSubscriber {
 
     const topicFunctions = this.topics[topic];
     for (const entry of topicFunctions) {
-      entry.func(topic, args);
+      entry.func(topic, args!);
     }
   }
 
@@ -907,7 +907,7 @@ export class Model<D extends object, T extends ModelData<D>> {
       parentPropertyPath = parentPropertyPath.join('.');
       parentPropertyData = this.get(parentPropertyPath);
       if (typeof parentPropertyData !== 'undefined') {
-        delete (parentPropertyData as Record<string, unknown>)[propertyToRemove];
+        delete (parentPropertyData as Record<string, unknown>)[propertyToRemove!];
       }
     } else {
       assert(false, 'remove toplevel properties is not supported', 1489319753);
@@ -1065,7 +1065,7 @@ export class Repository {
   }
 
   public getRootFormElement(): RootFormElement {
-    return getApplicationStateStack().getCurrentState('formDefinition');
+    return getApplicationStateStack().getCurrentState('formDefinition')!;
   }
 
   /**
@@ -1102,7 +1102,7 @@ export class Repository {
       referenceFormElement.get('renderables').push(formElement);
     } else {
       // referenceFormElement == root form element
-      if (referenceFormElement.get('__identifierPath') === getApplicationStateStack().getCurrentState('formDefinition').get('__identifierPath')) {
+      if (referenceFormElement.get('__identifierPath') === getApplicationStateStack().getCurrentState('formDefinition')!.get('__identifierPath')) {
         referenceFormElementElements = referenceFormElement.get('renderables');
         // referenceFormElement = last page
         referenceFormElement = referenceFormElementElements[referenceFormElementElements.length - 1];
@@ -1147,7 +1147,7 @@ export class Repository {
           propertyValidationService.addValidatorIdentifiersToFormElementProperty(
             formElement,
             propertyValidators,
-            editor.propertyPath,
+            editor.propertyPath!,
             undefined,
             undefined,
             propertyValidatorConfiguration
@@ -1223,7 +1223,7 @@ export class Repository {
       const oldIdentifierPath = formElement.get('__identifierPath');
       const newIdentifierPath = pathPrefix + '/' + formElement.get('identifier');
 
-      const propertyValidationServiceRegisteredValidators = getApplicationStateStack().getCurrentState('propertyValidationServiceRegisteredValidators');
+      const propertyValidationServiceRegisteredValidators = getApplicationStateStack().getCurrentState('propertyValidationServiceRegisteredValidators')!;
       if (!utility.isUndefinedOrNull(propertyValidationServiceRegisteredValidators[oldIdentifierPath])) {
         propertyValidationServiceRegisteredValidators[newIdentifierPath] = propertyValidationServiceRegisteredValidators[oldIdentifierPath];
         delete propertyValidationServiceRegisteredValidators[oldIdentifierPath];
@@ -1248,7 +1248,7 @@ export class Repository {
       // formElementToMove == Page / SummaryPage
       assert(!formElementToMoveTypeDefinition._isTopLevelFormElement, 'This move is not allowed', 1476993731);
       // referenceFormElement != Page / Fieldset / GridRow
-      assert(referenceFormElementTypeDefinition._isCompositeFormElement, 'This move is not allowed', 1476993732);
+      assert(referenceFormElementTypeDefinition._isCompositeFormElement!, 'This move is not allowed', 1476993732);
 
       formElementToMove.set('__parentRenderable', referenceFormElement, disablePublishersOnSet);
       reSetIdentifierPath(formElementToMove, referenceFormElement.get('__identifierPath'));
@@ -1326,8 +1326,8 @@ export class Repository {
 
     if (formElementTypeDefinition._isTopLevelFormElement && formElementTypeDefinition._isCompositeFormElement) {
       enclosingCompositeFormElementWhichIsOnTopLevel = formElement;
-    } else if (formElement.get('__identifierPath') === getApplicationStateStack().getCurrentState('formDefinition').get('__identifierPath')) {
-      enclosingCompositeFormElementWhichIsOnTopLevel = getApplicationStateStack().getCurrentState('formDefinition').get('renderables')[0];
+    } else if (formElement.get('__identifierPath') === getApplicationStateStack().getCurrentState('formDefinition')!.get('__identifierPath')) {
+      enclosingCompositeFormElementWhichIsOnTopLevel = getApplicationStateStack().getCurrentState('formDefinition')!.get('renderables')[0];
     } else {
       enclosingCompositeFormElementWhichIsOnTopLevel = this.findEnclosingCompositeFormElementWhichIsOnTopLevel(formElement);
     }
@@ -1450,7 +1450,7 @@ export class Repository {
       }
     };
 
-    checkIdentifier(getApplicationStateStack().getCurrentState('formDefinition'));
+    checkIdentifier(getApplicationStateStack().getCurrentState('formDefinition')!);
     return identifierFound;
   }
 
@@ -1480,7 +1480,7 @@ export class Repository {
 
     assert(utility.isNonEmptyString(identifierPath), 'Invalid parameter "identifierPath"', 1475373677);
 
-    let formElement: FormElement = getApplicationStateStack().getCurrentState('formDefinition');
+    let formElement: FormElement = getApplicationStateStack().getCurrentState('formDefinition')!;
     const pathParts = identifierPath.split('/');
     const pathPartsLength = pathParts.length;
 
@@ -1594,7 +1594,7 @@ export class Repository {
     if (utility.isUndefinedOrNull(referenceCollectionElementIdentifier)) {
       newCollectionElementIndex = 0;
     } else {
-      newCollectionElementIndex = this.getIndexFromPropertyCollectionElementByIdentifier(referenceCollectionElementIdentifier, collectionName, formElement) + 1;
+      newCollectionElementIndex = this.getIndexFromPropertyCollectionElementByIdentifier(referenceCollectionElementIdentifier!, collectionName, formElement) + 1;
       assert(-1 < newCollectionElementIndex, 'Could not find collection element ' + referenceCollectionElementIdentifier + ' within collection ' + collectionName, 1477413154);
     }
 
@@ -1675,7 +1675,7 @@ export class Repository {
 
     this.removePropertyCollectionElementByIdentifier(formElement, collectionElementToMoveIdentifier, collectionName);
 
-    const referenceCollectionElementIndex = this.getIndexFromPropertyCollectionElementByIdentifier(referenceCollectionElementIdentifier, collectionName, formElement);
+    const referenceCollectionElementIndex = this.getIndexFromPropertyCollectionElementByIdentifier(referenceCollectionElementIdentifier!, collectionName, formElement);
     assert(-1 < referenceCollectionElementIndex, 'Could not find collection element ' + referenceCollectionElementIdentifier + ' within collection ' + collectionName, 1477404489);
 
     if ('before' === position) {
@@ -1687,7 +1687,7 @@ export class Repository {
       }
     }
 
-    this.addPropertyCollectionElement(collectionElementToMove, collectionName, formElement, referenceCollectionElementIdentifier, disablePublishersOnSet);
+    this.addPropertyCollectionElement(collectionElementToMove!, collectionName, formElement, referenceCollectionElementIdentifier, disablePublishersOnSet);
   }
 }
 
@@ -1810,7 +1810,7 @@ export class Factory {
           propertyValidationService.addValidatorIdentifiersToFormElementProperty(
             formElement,
             propertyValidators,
-            editor.propertyPath,
+            editor.propertyPath!,
             undefined,
             undefined,
             propertyValidatorConfiguration
@@ -1897,16 +1897,16 @@ export class DataBackend {
       runningAjaxRequests.saveForm.abort();
     }
 
-    const request = new AjaxRequest(this.endpoints.saveForm);
+    const request = new AjaxRequest(this.endpoints.saveForm!);
     runningAjaxRequests.saveForm = request;
     request.post({
       formPersistenceIdentifier: this.persistenceIdentifier,
-      formDefinition: JSON.stringify(utility.convertToSimpleObject(getApplicationStateStack().getCurrentState('formDefinition')))
+      formDefinition: JSON.stringify(utility.convertToSimpleObject(getApplicationStateStack().getCurrentState('formDefinition')!))
     }).then(async (response: AjaxResponse): Promise<void> => {
       if (runningAjaxRequests.saveForm !== request) {
         return;
       }
-      runningAjaxRequests.saveForm = null;
+      runningAjaxRequests.saveForm = null!;
       const data = await response.resolve();
       if (data.status === 'success') {
         publisherSubscriber.publish('core/ajax/saveFormDefinition/success', [data]);
@@ -1936,10 +1936,10 @@ export class DataBackend {
       runningAjaxRequests.renderFormDefinitionPage.abort();
     }
 
-    const request = new AjaxRequest(this.endpoints.formPageRenderer);
+    const request = new AjaxRequest(this.endpoints.formPageRenderer!);
     runningAjaxRequests.renderFormDefinitionPage = request;
     request.post({
-      formDefinition: JSON.stringify(utility.convertToSimpleObject(getApplicationStateStack().getCurrentState('formDefinition'))),
+      formDefinition: JSON.stringify(utility.convertToSimpleObject(getApplicationStateStack().getCurrentState('formDefinition')!)),
       pageIndex: pageIndex,
       prototypeName: this.prototypeName,
       formPersistenceIdentifier: this.persistenceIdentifier
@@ -1947,7 +1947,7 @@ export class DataBackend {
       if (runningAjaxRequests.renderFormDefinitionPage !== request) {
         return;
       }
-      runningAjaxRequests.renderFormDefinitionPage = null;
+      runningAjaxRequests.renderFormDefinitionPage = null!;
       const data = await response.resolve();
       publisherSubscriber.publish('core/ajax/renderFormDefinitionPage/success', [data, pageIndex]);
     }).catch(async (error: unknown): Promise<void> => {
@@ -2014,7 +2014,7 @@ export class ApplicationStateStack {
       publisherSubscriber.publish(
         'core/applicationState/add',
         [
-          this.getCurrentState<undefined>(),
+          this.getCurrentState<undefined>()!,
           this.getCurrentStackPointer(),
           this.getCurrentStackSize()
         ]

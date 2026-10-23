@@ -69,7 +69,7 @@ class MailTest extends AbstractInteractableModule {
           const data: MailGetDataResponse = await response.resolve();
           if (data.success === true) {
             modalContent.innerHTML = data.html;
-            const outputContainer: HTMLElement = this.findInModal(Identifiers.outputContainer);
+            const outputContainer: HTMLElement = this.findInModal(Identifiers.outputContainer)!;
             if (data.messages && Array.isArray(data.messages)) {
               data.messages.forEach((element): void => {
                 outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
@@ -93,7 +93,7 @@ class MailTest extends AbstractInteractableModule {
     this.setModalButtonsState(false);
 
     const executeToken: string = this.getModuleContent().dataset.mailTestToken ?? '';
-    const outputContainer: HTMLElement = this.findInModal(Identifiers.outputContainer);
+    const outputContainer: HTMLElement = this.findInModal(Identifiers.outputContainer)!;
     this.renderProgressBar(outputContainer);
     (new AjaxRequest(Router.getUrl())).post({
       install: {

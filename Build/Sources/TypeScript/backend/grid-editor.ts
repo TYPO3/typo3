@@ -77,7 +77,7 @@ export class GridEditor extends LitElement {
 
   public override async connectedCallback(): Promise<void> {
     await DocumentService.ready();
-    this.field = document.querySelector('input[name="' + this.fieldName + '"]');
+    this.field = document.querySelector('input[name="' + this.fieldName + '"]')!;
 
     this.addVisibilityObserver(this);
     super.connectedCallback();
@@ -298,32 +298,32 @@ export class GridEditor extends LitElement {
       modal.hideModal();
     } else if (button.name === 'ok') {
       this.setName(
-        (modal.querySelector<HTMLInputElement>('.t3js-grideditor-field-name')).value,
+        (modal.querySelector<HTMLInputElement>('.t3js-grideditor-field-name')!).value,
         modal.userData.col,
         modal.userData.row,
       );
       this.setColumn(
-        parseInt((modal.querySelector<HTMLInputElement>('.t3js-grideditor-field-colpos')).value, 10),
+        parseInt((modal.querySelector<HTMLInputElement>('.t3js-grideditor-field-colpos')!).value, 10),
         modal.userData.col,
         modal.userData.row,
       );
       this.setIdentifier(
-        (modal.querySelector<HTMLInputElement>('.t3js-grideditor-field-identifier')).value,
+        (modal.querySelector<HTMLInputElement>('.t3js-grideditor-field-identifier')!).value,
         modal.userData.col,
         modal.userData.row,
       );
       this.setSlideMode(
-        (modal.querySelector<HTMLSelectElement>('.t3js-grideditor-field-slide-mode')).value,
+        (modal.querySelector<HTMLSelectElement>('.t3js-grideditor-field-slide-mode')!).value,
         modal.userData.col,
         modal.userData.row,
       );
       this.setAllowedContentTypes(
-        modal.querySelector<HTMLInputElement>('.t3js-grideditor-field-allowed-content-types').value,
+        modal.querySelector<HTMLInputElement>('.t3js-grideditor-field-allowed-content-types')!.value,
         modal.userData.col,
         modal.userData.row,
       );
       this.setDisallowedContentTypes(
-        modal.querySelector<HTMLInputElement>('.t3js-grideditor-field-disallowed-content-types').value,
+        modal.querySelector<HTMLInputElement>('.t3js-grideditor-field-disallowed-content-types')!.value,
         modal.userData.col,
         modal.userData.row,
       );

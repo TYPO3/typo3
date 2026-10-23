@@ -44,7 +44,7 @@ export class LabelProvider<LabelParameterMap extends Record<string, NamedParamet
     key: K,
     args?: Readonly<TemplatedParameters<LabelParameterMap[K], never>>,
   ): string {
-    const res = this.render<K, never>(key, args);
+    const res = this.render<K, never>(key, args!);
     return Array.isArray(res) ? res.join('') : res;
   }
 

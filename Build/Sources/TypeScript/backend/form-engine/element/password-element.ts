@@ -60,12 +60,12 @@ class PasswordElement extends HTMLElement {
 
   private registerEventHandler(): void {
     if (this.passwordPolicySet && this.passwordPolicyInfo !== null) {
-      this.element.addEventListener('focusin', (): void => {
-        this.passwordPolicyInfo.classList.remove('hidden');
+      this.element!.addEventListener('focusin', (): void => {
+        this.passwordPolicyInfo!.classList.remove('hidden');
       });
 
-      this.element.addEventListener('focusout', (): void => {
-        this.passwordPolicyInfo.classList.add('hidden');
+      this.element!.addEventListener('focusout', (): void => {
+        this.passwordPolicyInfo!.classList.add('hidden');
       });
     }
 
@@ -74,7 +74,7 @@ class PasswordElement extends HTMLElement {
     // an input group along with it, which would otherwise square the corners of the input.
     const copyToClipboard = this.copyToClipboard;
     if (copyToClipboard !== null) {
-      const element = this.element;
+      const element = this.element!;
       const offerCopy = (): void => {
         const hasValue = element.value !== '';
         copyToClipboard.text = element.value;

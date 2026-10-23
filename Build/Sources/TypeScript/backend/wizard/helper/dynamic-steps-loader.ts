@@ -54,7 +54,7 @@ export function loadDynamicSteps(wizardType: string, context: WizardContextInter
           throw new Error(`Step module ${step.module} does not export a default class`);
         }
 
-        return new StepClass(context, step.configurationData);
+        return new StepClass(context, step.configurationData!);
       }));
     });
 }

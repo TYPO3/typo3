@@ -23,7 +23,7 @@ export default class DomHelper {
   public static parents<T extends Element = Element>(el: Element, selector: string): T[] {
     const parents: T[] = [];
     let closest;
-    while ((closest = el.parentElement.closest(selector)) !== null) {
+    while ((closest = el.parentElement!.closest(selector)) !== null) {
       el = closest;
       parents.push(closest as T);
     }

@@ -55,16 +55,16 @@ class ColorElement extends HTMLElement {
   }
 
   private registerEventHandler(): void {
-    const hiddenElement = document.querySelector<HTMLInputElement>(selector`input[name="${this.element.dataset.formengineInputName ?? ''}"]`);
+    const hiddenElement = document.querySelector<HTMLInputElement>(selector`input[name="${this.element!.dataset.formengineInputName ?? ''}"]`);
 
     new RegularEvent('blur', (e: Event): void => {
-      hiddenElement.value = (e.target as HTMLInputElement).value;
+      hiddenElement!.value = (e.target as HTMLInputElement).value;
       this.handleEvent(e);
-    }).bindTo(this.element);
+    }).bindTo(this.element!);
 
     new RegularEvent('formengine.cp.change', (e: Event): void => {
       this.handleEvent(e);
-    }).bindTo(this.element);
+    }).bindTo(this.element!);
   }
 
 

@@ -36,11 +36,11 @@
     private readonly trigger: HTMLElement;
 
     constructor() {
-      this.adminPanel = document.querySelector<HTMLFormElement>(AdminPanelSelectors.adminPanelRole);
+      this.adminPanel = document.querySelector<HTMLFormElement>(AdminPanelSelectors.adminPanelRole)!;
       this.modules = this.querySelectorAll(AdminPanelSelectors.moduleTriggerRole).map(
         (moduleTrigger) => {
           const moduleParent = moduleTrigger.closest(AdminPanelSelectors.moduleParentClass);
-          return new AdminPanelModule(this, moduleParent, moduleTrigger);
+          return new AdminPanelModule(this, moduleParent!, moduleTrigger);
         },
       );
       this.popups = this.querySelectorAll(AdminPanelSelectors.popupTriggerRole).map(
@@ -49,7 +49,7 @@
       this.querySelectorAll(AdminPanelSelectors.panelTriggerRole).forEach(
         (panelTrigger) => {
           const panelParent = panelTrigger.closest(AdminPanelSelectors.panelParentClass);
-          new AdminPanelPanel(panelParent, panelTrigger);
+          new AdminPanelPanel(panelParent!, panelTrigger);
         },
       );
       this.querySelectorAll(AdminPanelSelectors.contentSettingsTriggerRole).forEach(
@@ -57,10 +57,10 @@
           const contentSettingElement = contentSettingTrigger
             .closest(AdminPanelSelectors.contentParentClass)
             ?.querySelector(AdminPanelSelectors.contentSettingsParentClass);
-          new AdminPanelContentSetting(contentSettingElement, contentSettingTrigger);
+          new AdminPanelContentSetting(contentSettingElement!, contentSettingTrigger);
         },
       );
-      this.trigger = document.querySelector<HTMLElement>(AdminPanelSelectors.triggerRole);
+      this.trigger = document.querySelector<HTMLElement>(AdminPanelSelectors.triggerRole)!;
 
       this.initializeEvents();
       this.addBackdropListener();

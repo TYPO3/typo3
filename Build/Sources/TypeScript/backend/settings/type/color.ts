@@ -53,7 +53,7 @@ export class ColorTypeElement extends BaseElement {
   }
 
   protected getInputElement(): HTMLInputElement {
-    return this.querySelector<HTMLInputElement>('input');
+    return this.querySelector<HTMLInputElement>('input')!;
   }
 }
 

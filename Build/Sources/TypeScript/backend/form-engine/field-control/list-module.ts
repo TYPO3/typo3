@@ -22,7 +22,7 @@ class ListModule {
 
   constructor(controlElementId: string) {
     DocumentService.ready().then((): void => {
-      this.controlElement = document.querySelector<HTMLElement>(controlElementId);
+      this.controlElement = document.querySelector<HTMLElement>(controlElementId)!;
       this.controlElement.addEventListener('click', this.registerClickHandler);
     });
   }
@@ -33,7 +33,7 @@ class ListModule {
   private readonly registerClickHandler = (e: Event): void => {
     e.preventDefault();
 
-    FormEngine.preventFollowLinkIfNotSaved(this.controlElement.getAttribute('href'));
+    FormEngine.preventFollowLinkIfNotSaved(this.controlElement!.getAttribute('href'));
   };
 }
 

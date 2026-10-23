@@ -330,7 +330,7 @@ export class RecordTableElement extends LitElement {
       if (!groups.has(group)) {
         groups.set(group, []);
       }
-      groups.get(group).push(this.renderAction(identifier, action, data));
+      groups.get(group)!.push(this.renderAction(identifier, action, data));
     }
 
     return Array.from(groups.values()).map((actions: TemplateResult[]) => html`

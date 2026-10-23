@@ -75,7 +75,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
           const data: ModuleLoadedResponseWithButtons = await response.resolve();
           modalContent.innerHTML = data.html;
           Modal.setButtons(data.buttons);
-          const innerOutputContainer = this.findInModal(Identifiers.outputContainer);
+          const innerOutputContainer = this.findInModal(Identifiers.outputContainer)!;
           this.renderProgressBar(innerOutputContainer, {}, 'append');
 
           if (data.success === true) {
@@ -159,10 +159,10 @@ class ExtensionCompatTester extends AbstractInteractableModule {
           if (data.success) {
             if (Array.isArray(data.status)) {
               data.status.forEach((element: MessageInterface): void => {
-                modalContent.querySelector(Identifiers.outputContainer).replaceChildren(InfoBox.create(element.severity, element.title, element.message));
+                modalContent.querySelector(Identifiers.outputContainer)!.replaceChildren(InfoBox.create(element.severity, element.title, element.message));
               });
             }
-            this.findInModal(Identifiers.uninstallTrigger).classList.add('hidden');
+            this.findInModal(Identifiers.uninstallTrigger)!.classList.add('hidden');
             this.getLoadedExtensionList();
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');

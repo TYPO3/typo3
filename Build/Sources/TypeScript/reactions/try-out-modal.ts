@@ -125,7 +125,7 @@ export class TryOutElement extends PseudoButtonLitElement {
       result.setAttribute('aria-busy', 'true');
     }
     try {
-      const response = await new AjaxRequest(form.dataset.reactionsDryRun).post(new FormData(form));
+      const response = await new AjaxRequest(form.dataset.reactionsDryRun!).post(new FormData(form));
       if (result !== null) {
         result.innerHTML = await response.resolve();
       }

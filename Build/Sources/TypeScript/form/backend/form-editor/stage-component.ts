@@ -87,14 +87,14 @@ let formEditorApp: FormEditor | null = null;
 let stageDomElement: HTMLElement | null = null;
 
 function getFormEditorApp(): FormEditor {
-  return formEditorApp;
+  return formEditorApp!;
 }
 
 function getHelper(_configuration?: HelperConfiguration): typeof Helper {
   if (getUtility().isUndefinedOrNull(_configuration)) {
-    return Helper.setConfiguration(configuration);
+    return Helper.setConfiguration(configuration!);
   }
-  return Helper.setConfiguration(_configuration);
+  return Helper.setConfiguration(_configuration!);
 }
 
 function getUtility(): Utility {
@@ -286,7 +286,7 @@ function renderNestedSortableListItem(formElement: FormElement): HTMLElement {
  * @publish view/stage/abstract/dnd/update
  */
 function addSortableEvents(): void {
-  const sortableLists = stageDomElement.querySelectorAll<HTMLElement>('ol.' + getHelper().getDomElementClassName('sortable'));
+  const sortableLists = stageDomElement!.querySelectorAll<HTMLElement>('ol.' + getHelper().getDomElementClassName('sortable'));
   const draggableSelector = 'li:not(' + getHelper().getDomElementDataAttribute('noSorting', 'bracesWithKey') + ')';
   const handleSelector = 'div' + getHelper().getDomElementDataAttribute('elementIdentifier', 'bracesWithKey');
 
@@ -304,7 +304,7 @@ function addSortableEvents(): void {
       dragClass: 'formeditor-sortable-drag',
       ghostClass: 'formeditor-sortable-ghost',
       onStart: function (e) {
-        stageDomElement.classList.add('formeditor-is-dragging');
+        stageDomElement!.classList.add('formeditor-is-dragging');
         getPublisherSubscriber().publish('view/stage/abstract/dnd/start', [e.item, e.item]);
       },
       onChange: function (e) {
@@ -317,7 +317,7 @@ function addSortableEvents(): void {
         }
         getPublisherSubscriber().publish('view/stage/abstract/dnd/change', [
           e.item,
-          parentFormElementIdentifierPath, enclosingCompositeFormElement
+          parentFormElementIdentifierPath, enclosingCompositeFormElement!
         ]);
       },
       onEnd: function (e) {
@@ -335,14 +335,14 @@ function addSortableEvents(): void {
         getPublisherSubscriber().publish('view/stage/abstract/dnd/stop', [
           getAbstractViewFormElementIdentifierPathWithinDomElement(item)
         ]);
-        stageDomElement.classList.remove('formeditor-is-dragging');
+        stageDomElement!.classList.remove('formeditor-is-dragging');
       },
     });
   });
 }
 
 export function getStageDomElement(): HTMLElement {
-  return stageDomElement;
+  return stageDomElement!;
 }
 
 /**
@@ -355,7 +355,7 @@ export function buildTitleByFormElement(formElement?: FormElement): HTMLElement 
   assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1479037151);
 
   const span = document.createElement('span');
-  span.textContent = formElement.get('label') ? formElement.get('label') : formElement.get('identifier');
+  span.textContent = formElement!.get('label') ? formElement!.get('label') : formElement!.get('identifier');
   return span;
 }
 
@@ -391,7 +391,7 @@ export function renderPagination(): void {
   const currentPage = getFormEditorApp().getCurrentlySelectedPageIndex() + 1;
   const paginationEl = qs('paginationTitle');
   if (paginationEl) {
-    paginationEl.textContent = getFormElementDefinition(getRootFormElement(), 'paginationTitle')
+    paginationEl.textContent = getFormElementDefinition(getRootFormElement(), 'paginationTitle')!
       .replace('{0}', currentPage.toString())
       .replace('{1}', pageCount);
   }
@@ -481,7 +481,7 @@ export function getAbstractViewFormElementDomElement(formElement?: FormElement |
     if (getUtility().isUndefinedOrNull(formElement)) {
       formElementIdentifierPath = getCurrentlySelectedFormElement().get('__identifierPath');
     } else {
-      formElementIdentifierPath = formElement.get('__identifierPath');
+      formElementIdentifierPath = formElement!.get('__identifierPath');
     }
   }
   return stageDomElement
@@ -504,7 +504,7 @@ export function createAndAddAbstractViewFormElementToolbar(
     return;
   }
 
-  const formElementTypeDefinition = getFormElementDefinition(formElement) as FormElementDefinition;
+  const formElementTypeDefinition = getFormElementDefinition(formElement!) as FormElementDefinition;
   if (formElementTypeDefinition._isTopLevelFormElement) {
     return;
   }
@@ -551,9 +551,9 @@ export function renderAbstractStageArea(pageIndex: number | undefined, callback:
   if (getUtility().isUndefinedOrNull(pageIndex)) {
     pageIndex = getFormEditorApp().getCurrentlySelectedPageIndex();
   }
-  stageDomElement.replaceChildren(renderFormDefinitionPageAsSortableList(pageIndex));
+  stageDomElement!.replaceChildren(renderFormDefinitionPageAsSortableList(pageIndex!));
 
-  stageDomElement.addEventListener('click', function(e) {
+  stageDomElement!.addEventListener('click', function(e) {
     const formElementIdentifierPath = (e.target as Element)
       .closest(getHelper().getDomElementDataAttribute('elementIdentifier', 'bracesWithKey'))
       ?.getAttribute(getHelper().getDomElementDataAttribute('elementIdentifier'));
@@ -563,10 +563,10 @@ export function renderAbstractStageArea(pageIndex: number | undefined, callback:
     ) {
       return;
     }
-    getPublisherSubscriber().publish('view/stage/element/clicked', [formElementIdentifierPath]);
+    getPublisherSubscriber().publish('view/stage/element/clicked', [formElementIdentifierPath!]);
   });
 
-  stageDomElement.addEventListener('keydown', function(e: KeyboardEvent) {
+  stageDomElement!.addEventListener('keydown', function(e: KeyboardEvent) {
     const target = (e.target as Element).closest<HTMLElement>('.formeditor-element[tabindex]');
     if (!target) {
       return;
@@ -577,7 +577,7 @@ export function renderAbstractStageArea(pageIndex: number | undefined, callback:
     }
   });
 
-  if (configuration.isSortable) {
+  if (configuration!.isSortable) {
     addSortableEvents();
   }
 
@@ -596,10 +596,10 @@ export function renderAbstractStageArea(pageIndex: number | undefined, callback:
  */
 export function renderPreviewStageArea(html: string): void {
   assert(getUtility().isNonEmptyString(html), 'Invalid parameter "html"', 1475424409);
-  stageDomElement.replaceChildren();
-  stageDomElement.innerHTML = html;
+  stageDomElement!.replaceChildren();
+  stageDomElement!.innerHTML = html;
 
-  stageDomElement.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | HTMLButtonElement>(
+  stageDomElement!.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | HTMLButtonElement>(
     'input, select, textarea, button'
   ).forEach((el) => {
     el.disabled = true;
@@ -608,7 +608,7 @@ export function renderPreviewStageArea(html: string): void {
     });
   });
 
-  stageDomElement.querySelector('form')?.addEventListener('submit', (e) => e.preventDefault());
+  stageDomElement!.querySelector('form')?.addEventListener('submit', (e) => e.preventDefault());
 
   getAllFormElementDomElements().forEach(function(el) {
     const formElement = getFormEditorApp()
@@ -657,7 +657,7 @@ export function renderFormElementStageItem(formElement: FormElement, template: H
   stageItem.elementType = getFormElementDefinition(formElement, 'label');
   stageItem.elementIdentifier = formElement.get('identifier');
   stageItem.elementLabel = formElement.get('label') || formElement.get('identifier');
-  stageItem.elementIconIdentifier = getFormElementDefinition(formElement, 'iconIdentifier');
+  stageItem.elementIconIdentifier = getFormElementDefinition(formElement, 'iconIdentifier')!;
   stageItem.isHidden = formElement.get('renderingOptions.enabled') === false;
 
   const validators = formElement.get('validators');

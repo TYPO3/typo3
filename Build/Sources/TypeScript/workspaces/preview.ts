@@ -69,14 +69,14 @@ class Preview extends Workspaces {
    * Fetches and stores often required elements
    */
   private getElements(): void {
-    this.elements.liveView = document.querySelector<HTMLElement>(Identifiers.liveView);
-    this.elements.stageSliderContainer = document.querySelector<HTMLElement>(Identifiers.stageSliderContainer);
-    this.elements.stageSlider = document.querySelector<HTMLElement>(Identifiers.stageSlider);
-    this.elements.workspaceView = document.querySelector<HTMLElement>(Identifiers.workspaceView);
-    this.elements.stageButtonsContainer = document.querySelector<HTMLElement>(Identifiers.stageButtonsContainer);
-    this.elements.previewModeContainer = document.querySelector<HTMLElement>(Identifiers.previewModeContainer);
-    this.elements.activePreviewMode = document.querySelector<HTMLElement>(Identifiers.activePreviewMode);
-    this.elements.workspacePreview = document.querySelector<HTMLElement>(Identifiers.workspacePreview);
+    this.elements.liveView = document.querySelector<HTMLElement>(Identifiers.liveView)!;
+    this.elements.stageSliderContainer = document.querySelector<HTMLElement>(Identifiers.stageSliderContainer)!;
+    this.elements.stageSlider = document.querySelector<HTMLElement>(Identifiers.stageSlider)!;
+    this.elements.workspaceView = document.querySelector<HTMLElement>(Identifiers.workspaceView)!;
+    this.elements.stageButtonsContainer = document.querySelector<HTMLElement>(Identifiers.stageButtonsContainer)!;
+    this.elements.previewModeContainer = document.querySelector<HTMLElement>(Identifiers.previewModeContainer)!;
+    this.elements.activePreviewMode = document.querySelector<HTMLElement>(Identifiers.activePreviewMode)!;
+    this.elements.workspacePreview = document.querySelector<HTMLElement>(Identifiers.workspacePreview)!;
   }
 
   /**
@@ -100,7 +100,7 @@ class Preview extends Workspaces {
       });
     }).delegateTo(document, '.t3js-workspace-recipients-deselectall');
 
-    new ThrottleEvent('input', this.updateSlidePosition.bind(this), 10).bindTo(document.querySelector(Identifiers.stageSlider));
+    new ThrottleEvent('input', this.updateSlidePosition.bind(this), 10).bindTo(document.querySelector(Identifiers.stageSlider)!);
     new RegularEvent('click', this.changePreviewMode.bind(this)).delegateTo(this.elements.previewModeContainer, '[data-preview-mode]');
   }
 
@@ -243,7 +243,7 @@ class Preview extends Workspaces {
       modal.addEventListener('button.clicked', (modalEvent: Event): void => {
         const modalTarget = modalEvent.target as HTMLButtonElement;
         if (modalTarget.name === 'ok') {
-          const serializedForm = Utility.convertFormToObject(modal.querySelector('form'));
+          const serializedForm = Utility.convertFormToObject(modal.querySelector('form')!);
           serializedForm.affects = resolvedResponse[0].result.affects;
           serializedForm.stageId = stageId;
           this.sendRemoteRequest([
@@ -265,7 +265,7 @@ class Preview extends Workspaces {
     e.preventDefault();
 
     const currentPreviewMode = this.elements.activePreviewMode.dataset.activePreviewMode;
-    const newPreviewMode = target.dataset.previewMode;
+    const newPreviewMode = target.dataset.previewMode!;
 
     this.elements.activePreviewMode.textContent = target.textContent;
     this.elements.activePreviewMode.dataset.activePreviewMode = newPreviewMode;

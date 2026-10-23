@@ -35,7 +35,7 @@ describe('@typo3/backend/element/pseudo-button', () => {
 
   afterEach((): void => {
     root.remove();
-    root = null;
+    root = null!;
   });
 
   async function createButton(): Promise<TestPseudoButton> {

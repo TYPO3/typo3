@@ -44,7 +44,7 @@ export class PositionStep implements WizardStepInterface, WizardStepValueInterfa
   readonly title = labels.get('selectPosition');
   readonly autoAdvance = true;
   private summaryTask: Task<[pageUid: number], PageDetail>;
-  private positionData?: PositionData = null;
+  private positionData?: PositionData = null!;
   private hasDispatchedAutoAdvance: boolean = false;
 
   constructor(private readonly context: PageWizardContext) {
@@ -87,7 +87,7 @@ export class PositionStep implements WizardStepInterface, WizardStepValueInterfa
   }
 
   public reset(): void {
-    this.setValue(null);
+    this.setValue(null!);
     this.context.clearStoreData(this.key);
   }
 
@@ -107,13 +107,13 @@ export class PositionStep implements WizardStepInterface, WizardStepValueInterfa
 
   public getSummaryData(): SummaryItem[] {
     const positionData = this.context.getStoreData(this.key);
-    const currentPageUid = positionData.pageUid;
+    const currentPageUid = positionData!.pageUid;
     const insertPositionOption = insertPositionOptions.find(
-      (item) => item.value === positionData.insertPosition
+      (item) => item.value === positionData!.insertPosition
     );
 
     if (this.summaryTask.status === TaskStatus.INITIAL) {
-      this.summaryTask.run([currentPageUid]);
+      this.summaryTask.run([currentPageUid!]);
     }
 
     const pageHtml = this.summaryTask.render({

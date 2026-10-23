@@ -124,7 +124,7 @@ describe('@typo3/backend/file-paste-handler', () => {
     const scope = createScope();
     const target = createTarget(scope);
 
-    interactWith(scope.querySelector('button'));
+    interactWith(scope.querySelector('button')!);
     paste();
 
     expect(target.received).to.have.length(1);
@@ -137,7 +137,7 @@ describe('@typo3/backend/file-paste-handler', () => {
     const innerScope = createScope(outerScope);
     const innerTarget = createTarget(innerScope);
 
-    interactWith(innerScope.querySelector('button'));
+    interactWith(innerScope.querySelector('button')!);
     paste();
 
     expect(innerTarget.received).to.have.length(1);

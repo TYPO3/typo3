@@ -26,7 +26,7 @@ export class SearchOptionItem extends LitElement {
   private parentContainer: HTMLElement;
 
   public override connectedCallback(): void {
-    this.parentContainer = this.closest('typo3-backend-live-search');
+    this.parentContainer = this.closest('typo3-backend-live-search')!;
 
     super.connectedCallback();
   }

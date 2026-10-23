@@ -49,8 +49,8 @@ export class ColorSchemeSwitchElement extends LitElement {
 
   public override disconnectedCallback(): void {
     super.disconnectedCallback();
-    this.colorSchemeMql.removeEventListener('change', this.colorSchemeMediaQueryListener);
-    this.forcedColorsMql.removeEventListener('change', this.forcedColorsMediaQueryListener);
+    this.colorSchemeMql!.removeEventListener('change', this.colorSchemeMediaQueryListener);
+    this.forcedColorsMql!.removeEventListener('change', this.forcedColorsMediaQueryListener);
     this.colorSchemeMql = null;
     this.forcedColorsMql = null;
   }
@@ -99,18 +99,18 @@ export class ColorSchemeSwitchElement extends LitElement {
       </div>
       ${this.advancedOptionsExpanded === false ? nothing : html`
         <ul class="dropdown-list">
-          ${this.colorSchemes.map(item => this.renderItem(item))}
+          ${this.colorSchemes!.map(item => this.renderItem(item))}
         </ul>
       `}
     `;
   }
 
   protected getIcon(colorScheme: ColorScheme): string {
-    return this.colorSchemes.find(cs => cs.value === colorScheme)?.icon ?? 'auto';
+    return this.colorSchemes!.find(cs => cs.value === colorScheme)?.icon ?? 'auto';
   }
 
   protected getLabel(colorScheme: ColorScheme): string {
-    return this.colorSchemes.find(cs => cs.value === colorScheme)?.label ?? '';
+    return this.colorSchemes!.find(cs => cs.value === colorScheme)?.label ?? '';
   }
 
   protected renderItem(colorScheme: ColorSchemeOption): TemplateResult | symbol {
@@ -123,7 +123,7 @@ export class ColorSchemeSwitchElement extends LitElement {
             </span>
             <span class="dropdown-item-column dropdown-item-column-title">
               ${colorScheme.label}
-              ${colorScheme.value === 'auto' ? html`<span class="dropdown-item-column-title-info">${this.getLabel(this.autoDetect)}</span>` : ''}
+              ${colorScheme.value === 'auto' ? html`<span class="dropdown-item-column-title-info">${this.getLabel(this.autoDetect!)}</span>` : ''}
             </span>
             ${this.activeColorScheme === colorScheme.value ? html`
               <span class="text-primary">

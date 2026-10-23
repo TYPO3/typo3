@@ -189,7 +189,7 @@ export class SudoModeForm extends SudoModeProperties {
 
   protected override updated(changedProperties: PropertyValues): void {
     if (changedProperties.has('useInstallToolPassword')) {
-      this.closest('typo3-backend-modal').modalTitle = this.getModalTitle();
+      this.closest('typo3-backend-modal')!.modalTitle = this.getModalTitle();
     }
   }
 
@@ -214,7 +214,7 @@ export class SudoModeForm extends SudoModeProperties {
 
       const responseData: SudoModeResponse = await response.resolve('application/json');
       this.dispatchEvent(new Event('typo3:sudo-mode:verified'));
-      this.closest('typo3-backend-modal').hideModal();
+      this.closest('typo3-backend-modal')!.hideModal();
       if (!this.isAjax && responseData.redirect) {
         const { uri } = responseData.redirect;
         const windowRef = this.windowRef ?? window;

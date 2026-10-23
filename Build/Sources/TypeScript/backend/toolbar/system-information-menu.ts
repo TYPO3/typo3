@@ -81,7 +81,7 @@ class SystemInformationMenu {
 
   private static updateBadge(): void {
     const data = SystemInformationMenu.getData();
-    const element = document.querySelector<HTMLElement>(SystemInformationSelector.badge);
+    const element = document.querySelector<HTMLElement>(SystemInformationSelector.badge)!;
 
     // ensure all default classes are available and previous
     // (at this time in processing unknown) class is removed
@@ -98,7 +98,7 @@ class SystemInformationMenu {
   }
 
   private readonly updateMenu = (): void => {
-    const toolbarItemIcon = document.querySelector(SystemInformationSelector.icon);
+    const toolbarItemIcon = document.querySelector(SystemInformationSelector.icon)!;
     const currentIcon = toolbarItemIcon.cloneNode(true);
 
     if (this.timer !== null) {
@@ -111,10 +111,10 @@ class SystemInformationMenu {
     });
 
     (new AjaxRequest(TYPO3.settings.ajaxUrls.systeminformation_render)).get().then(async (response: AjaxResponse): Promise<void> => {
-      document.querySelector(SystemInformationSelector.menu).innerHTML = await response.resolve();
+      document.querySelector(SystemInformationSelector.menu)!.innerHTML = await response.resolve();
       SystemInformationMenu.updateBadge();
     }).finally((): void => {
-      document.querySelector(SystemInformationSelector.icon).replaceWith(currentIcon);
+      document.querySelector(SystemInformationSelector.icon)!.replaceWith(currentIcon);
       // reload error data every five minutes
       this.timer = setTimeout(this.updateMenu, 1000 * 300);
     });
@@ -124,7 +124,7 @@ class SystemInformationMenu {
    * Updates the UC and opens the linked module
    */
   private handleMessageLinkClick(event: Event, target: HTMLElement): void {
-    const messageData = SystemInformationMenu.getMessageDataFromElement(target.closest(SystemInformationSelector.message));
+    const messageData = SystemInformationMenu.getMessageDataFromElement(target.closest(SystemInformationSelector.message)!);
     if (messageData.module === '') {
       return;
     }

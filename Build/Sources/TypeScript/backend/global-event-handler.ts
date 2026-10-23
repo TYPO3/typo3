@@ -84,13 +84,13 @@ class GlobalEventHandler {
   }
 
   private handleFormChildAction(evt: Event, resolvedTarget: HTMLElement): boolean {
-    const actionSubmit: string = resolvedTarget.dataset.actionSubmit;
-    const actionFocus: string = resolvedTarget.dataset.actionFocus;
+    const actionSubmit: string = resolvedTarget.dataset.actionSubmit!;
+    const actionFocus: string = resolvedTarget.dataset.actionFocus!;
     if (!actionSubmit && !actionFocus) {
       return false;
     }
 
-    let form: HTMLFormElement = null;
+    let form: HTMLFormElement = null!;
     const parentForm = resolvedTarget.closest('form');
 
     if (actionSubmit) {
@@ -98,7 +98,7 @@ class GlobalEventHandler {
 
       // @example `data-action-submit="$form"`
       if (actionSubmit === '$form' && this.isHTMLFormChildElement(resolvedTarget)) {
-        form = (resolvedTarget as HTMLFormChildElement).form;
+        form = (resolvedTarget as HTMLFormChildElement).form!;
       } else if (actionSubmit === '$form' && parentForm) {
         form = parentForm;
         // @example `data-action-submit="form#identifier"`
@@ -150,7 +150,7 @@ class GlobalEventHandler {
   }
 
   private handleFormChildNavigateAction(evt: Event, resolvedTarget: HTMLElement): boolean {
-    const actionNavigate: string = resolvedTarget.dataset.actionNavigate;
+    const actionNavigate: string = resolvedTarget.dataset.actionNavigate!;
     if (!actionNavigate) {
       return false;
     }
@@ -173,13 +173,13 @@ class GlobalEventHandler {
 
   private handleFormNavigateAction(evt: Event, resolvedTarget: HTMLFormElement): boolean {
     const formAction = resolvedTarget.action;
-    const actionNavigate: string = resolvedTarget.dataset.actionNavigate;
+    const actionNavigate: string = resolvedTarget.dataset.actionNavigate!;
     if (!formAction || !actionNavigate) {
       return false;
     }
     const navigateValue = resolvedTarget.dataset.navigateValue;
     const valueSelector = resolvedTarget.dataset.valueSelector;
-    const value = this.resolveHTMLFormChildElementValue(resolvedTarget.querySelector(valueSelector));
+    const value = this.resolveHTMLFormChildElementValue(resolvedTarget.querySelector(valueSelector!)!);
     let locationHref = null;
     if (actionNavigate === '$form=~s/$value/' && navigateValue && value !== null) {
       locationHref = this.substituteValueVariable(navigateValue, value);
@@ -206,12 +206,12 @@ class GlobalEventHandler {
   }
 
   private resolveHTMLFormChildElementValue(element: HTMLElement): string | null {
-    const type: string = element.getAttribute('type');
+    const type: string = element.getAttribute('type')!;
     if (element instanceof HTMLSelectElement) {
       return element.options[element.selectedIndex].value;
     } else if (element instanceof HTMLInputElement && type === 'checkbox') {
       // used for representing unchecked state as e.g. `data-empty-value="0"`
-      const emptyValue: string = element.dataset.emptyValue;
+      const emptyValue: string = element.dataset.emptyValue!;
       if (element.checked) {
         return element.value;
       } else if (typeof emptyValue !== 'undefined') {
@@ -226,7 +226,7 @@ class GlobalEventHandler {
   }
 
   private assignHTMLFormChildElementValue(element: HTMLElement, value: string): void {
-    const type: string = element.getAttribute('type');
+    const type: string = element.getAttribute('type')!;
     if (element instanceof HTMLSelectElement) {
       Array.from(element.options).some((option, index) => {
         if (option.value === value) {
@@ -237,7 +237,7 @@ class GlobalEventHandler {
       });
     } else if (element instanceof HTMLInputElement && type === 'checkbox') {
       // used for representing unchecked state as e.g. `data-empty-value="0"`
-      const emptyValue: string = element.dataset.emptyValue;
+      const emptyValue: string = element.dataset.emptyValue!;
       if (typeof emptyValue !== 'undefined' && emptyValue === value) {
         element.checked = false;
       } else if (element.value === value) {

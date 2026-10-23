@@ -28,12 +28,12 @@ export class MoveContentElement {
 
   private async initialize(): Promise<void> {
     await DocumentService.ready();
-    this.registerEvents(document.querySelector<HTMLElement>('.element-browser-body'));
+    this.registerEvents(document.querySelector<HTMLElement>('.element-browser-body')!);
   }
 
   private registerEvents(container: HTMLElement): void {
     new RegularEvent('change', async (e: Event): Promise<void> => {
-      const recordTitle = (document.querySelector<HTMLInputElement>('#elementRecordTitle')).value;
+      const recordTitle = (document.querySelector<HTMLInputElement>('#elementRecordTitle')!).value;
       const url = new URL(window.location.href);
       const uid = url.searchParams.get('uid');
       const headline = document.querySelector('h2');
@@ -49,18 +49,18 @@ export class MoveContentElement {
         : miscLabels.get('moveElementToHere');
 
       document.querySelectorAll<HTMLButtonElement>('[data-action="paste"]').forEach((button): void => {
-        button.querySelector('span.t3js-button-label').textContent = buttonLabel;
+        button.querySelector('span.t3js-button-label')!.textContent = buttonLabel;
       });
     }).delegateTo(container, '#makeCopy');
 
     new RegularEvent('click', async (e: Event, actionElement: HTMLElement): Promise<void> => {
-      const modeCheckbox = (document.querySelector<HTMLInputElement>('#makeCopy'));
-      const recordTitle = (document.querySelector<HTMLInputElement>('#elementRecordTitle')).value;
-      const targetPageTitle = (document.querySelector<HTMLInputElement>('#pageRecordTitle')).value;
-      const pageUid = (document.querySelector<HTMLInputElement>('#pageUid')).value;
+      const modeCheckbox = (document.querySelector<HTMLInputElement>('#makeCopy')!);
+      const recordTitle = (document.querySelector<HTMLInputElement>('#elementRecordTitle')!).value;
+      const targetPageTitle = (document.querySelector<HTMLInputElement>('#pageRecordTitle')!).value;
+      const pageUid = (document.querySelector<HTMLInputElement>('#pageUid')!).value;
       const url = new URL(window.location.href);
-      const uid = url.searchParams.get('uid');
-      const returnUrl = new URL(url.searchParams.get('returnUrl'), window.origin);
+      const uid = url.searchParams.get('uid')!;
+      const returnUrl = new URL(url.searchParams.get('returnUrl')!, window.origin);
 
       const isCopyAction = modeCheckbox.checked;
       const action = isCopyAction ? 'copy' : 'move';
@@ -68,7 +68,7 @@ export class MoveContentElement {
         cmd: {
           tt_content: {
             [uid]: {
-              [action]: actionElement.dataset.position
+              [action]: actionElement.dataset.position!
             }
           }
         }

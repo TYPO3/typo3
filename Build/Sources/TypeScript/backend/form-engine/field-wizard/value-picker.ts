@@ -35,9 +35,9 @@ export class ValuePicker extends HTMLElement {
   }
 
   public connectedCallback(): void {
-    this.linkedField = document.querySelector(this.getAttribute('linked-field'));
+    this.linkedField = document.querySelector(this.getAttribute('linked-field')!);
     this.linkedField?.addEventListener('change', this.linkedFieldOnChange);
-    this.initializeValuePicker(this.shadowRoot.querySelector('slot'));
+    this.initializeValuePicker(this.shadowRoot!.querySelector('slot')!);
   }
 
   public disconnectedCallback(): void {
@@ -72,24 +72,24 @@ export class ValuePicker extends HTMLElement {
 
   private readonly onChange = () => {
     this.setValue();
-    this.valuePicker.blur();
+    this.valuePicker!.blur();
   };
 
   private readonly linkedFieldOnChange = () => {
     if (this.valuePicker === null) {
       return;
     }
-    this.selectValue(this.linkedField.value);
+    this.selectValue(this.linkedField!.value);
   };
 
   private selectValue (value: string): void {
-    this.valuePicker.selectedIndex = Array.from(this.valuePicker.options).findIndex((option): boolean => option.value === value);
+    this.valuePicker!.selectedIndex = Array.from(this.valuePicker!.options).findIndex((option): boolean => option.value === value);
   }
 
   private setValue (): void {
-    const selectedValue = this.valuePicker.options[this.valuePicker.selectedIndex].value;
-    this.linkedField.value = selectedValue;
-    this.linkedField.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+    const selectedValue = this.valuePicker!.options[this.valuePicker!.selectedIndex].value;
+    this.linkedField!.value = selectedValue;
+    this.linkedField!.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
   }
 }
 

@@ -156,9 +156,9 @@ export class FormManager {
    * @throws 1477506508
    */
   public getAjaxEndpoint(endpointName: string): string {
-    assert(typeof this.configuration.endpoints[endpointName] !== 'undefined', 'Endpoint ' + endpointName + ' does not exist', 1477506508);
+    assert(typeof this.configuration.endpoints![endpointName] !== 'undefined', 'Endpoint ' + endpointName + ' does not exist', 1477506508);
 
-    return this.configuration.endpoints[endpointName];
+    return this.configuration.endpoints![endpointName];
   }
 
   /**

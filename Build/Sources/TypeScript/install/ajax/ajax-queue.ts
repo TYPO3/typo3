@@ -46,7 +46,7 @@ class AjaxQueue {
   private handleNext(): void {
     if (this.queue.length > 0 && this.requestCount < this.threshold) {
       this.incrementRequestCount();
-      this.sendRequest(this.queue.shift()).finally((): void => {
+      this.sendRequest(this.queue.shift()!).finally((): void => {
         this.decrementRequestCount();
         this.handleNext();
       });

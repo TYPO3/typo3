@@ -77,7 +77,7 @@ describe('@typo3/backend/drag-uploader', (): void => {
   };
 
   const chooseAction = (fileName: string, action: string): void => {
-    const select = modal.querySelector<HTMLSelectElement>(`.t3js-actions[data-override="${existingFileNames.indexOf(fileName)}"]`);
+    const select = modal!.querySelector<HTMLSelectElement>(`.t3js-actions[data-override="${existingFileNames.indexOf(fileName)}"]`)!;
     select.value = action;
     select.dispatchEvent(new Event('change', { bubbles: true }));
   };
@@ -85,7 +85,7 @@ describe('@typo3/backend/drag-uploader', (): void => {
   const clickModalButton = async (name: string): Promise<void> => {
     const button = document.createElement('button');
     button.name = name;
-    modal.append(button);
+    modal!.append(button);
     button.dispatchEvent(new CustomEvent('button.clicked', { bubbles: true }));
     await new Promise((resolve): number => window.setTimeout(resolve, 0));
   };
@@ -126,7 +126,7 @@ describe('@typo3/backend/drag-uploader', (): void => {
 
     fetchStub = stub(window, 'fetch').callsFake(async (input: RequestInfo | URL): Promise<Response> => {
       const fileName = new URL(input instanceof Request ? input.url : String(input), window.location.href).searchParams.get('fileName');
-      const existingFile = existingFileNames.includes(fileName)
+      const existingFile = existingFileNames.includes(fileName!)
         ? { uid: 1, name: fileName, thumbUrl: '', icon: '', size: 1, mtime: 0 }
         : {};
       return new Response(JSON.stringify(existingFile), { headers: { 'Content-Type': 'application/json' } });
@@ -146,12 +146,12 @@ describe('@typo3/backend/drag-uploader', (): void => {
       modal = document.createElement('div') as unknown as ModalElement;
       modal.append(configuration.content as HTMLElement);
       modal.hideModal = (): void => {
-        modal.dispatchEvent(new CustomEvent('typo3-modal-hidden'));
+        modal!.dispatchEvent(new CustomEvent('typo3-modal-hidden'));
       };
       container.append(modal);
       return modal;
     });
-    dismissStub = stub(Modal, 'dismiss').callsFake((): void => modal.hideModal());
+    dismissStub = stub(Modal, 'dismiss').callsFake((): void => modal!.hideModal());
     // Answers the module import of the top level window, the uploader loads the datetime element for the modal
     document.addEventListener('typo3:import-javascript-module', provideModuleImport);
 
@@ -250,7 +250,7 @@ describe('@typo3/backend/drag-uploader', (): void => {
 
   it('finishes the upload when the modal is closed without a choice', async (): Promise<void> => {
     await upload([], ['existing.txt']);
-    modal.hideModal();
+    modal!.hideModal();
     await new Promise((resolve): number => window.setTimeout(resolve, 0));
 
     expect(infoStub.callCount).to.equal(0);

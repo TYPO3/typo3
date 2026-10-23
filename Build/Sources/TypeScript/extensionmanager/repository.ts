@@ -134,7 +134,7 @@ class Repository {
           ]);
           modal.addEventListener('typo3-modal-shown', (): void => {
             const actionButton = modal.querySelector('.t3js-dependencies');
-            modal.querySelector('input[name="unlockDependencyIgnoreButton"]').addEventListener('change', (e: Event): void => {
+            modal.querySelector('input[name="unlockDependencyIgnoreButton"]')!.addEventListener('change', (e: Event): void => {
               if ((e.currentTarget as HTMLInputElement).checked) {
                 actionButton?.classList.remove('disabled');
               } else {

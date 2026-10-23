@@ -98,7 +98,7 @@ export class Typo3LinkCommand extends Core.Command {
         // When selection is inside text with `linkHref` attribute.
         if (selection.hasAttribute('linkHref')) {
           // Then update `linkHref` value.
-          const linkRange = Typing.findAttributeRange(position, 'linkHref', selection.getAttribute('linkHref') as string, model);
+          const linkRange = Typing.findAttributeRange(position!, 'linkHref', selection.getAttribute('linkHref') as string, model);
           writer.setAttribute('linkHref', href, linkRange);
           for (const [attribute, value] of Object.entries(this.composeLinkAttributes(linkAttr))) {
             if (value !== null) {
@@ -108,7 +108,7 @@ export class Typo3LinkCommand extends Core.Command {
             }
           }
           // Put the selection at the end of the updated link.
-          writer.setSelection(writer.createPositionAfter(linkRange.end.nodeBefore));
+          writer.setSelection(writer.createPositionAfter(linkRange.end.nodeBefore!));
 
         } else if (href !== '') {
           // If not then insert text node with `linkHref` attribute in place of caret.
@@ -242,7 +242,7 @@ export class Typo3UnlinkCommand extends Core.Command {
       // Get ranges to unlink.
       const rangesToUnlink = selection.isCollapsed
         ? [Typing.findAttributeRange(
-          selection.getFirstPosition(),
+          selection.getFirstPosition()!,
           'linkHref',
           selection.getAttribute('linkHref') as string,
           model
@@ -465,7 +465,7 @@ export class Typo3LinkUI extends Core.Plugin {
     const editor = this.editor;
     const toolbarView = new UI.ToolbarView(editor.locale);
     // TYPO3 has no manual link decorators, hence 'linkProperties' is not available
-    const toolbarItems = editor.config.get('link.toolbar').filter(item => item !== 'linkProperties');
+    const toolbarItems = editor.config.get('link.toolbar')!.filter(item => item !== 'linkProperties');
     if (!toolbarItems.includes('openLink')) {
       toolbarItems.splice(Math.max(toolbarItems.indexOf('editLink'), 0), 0, 'openLink');
     }
@@ -494,7 +494,7 @@ export class Typo3LinkUI extends Core.Plugin {
 
   private createToolbarLinkButtons() {
     const editor = this.editor;
-    const linkCommand = editor.commands.get('link');
+    const linkCommand = editor.commands.get('link')!;
     const t = editor.t;
 
     // Handle the `Ctrl+K` keystroke and show the panel.
@@ -524,7 +524,7 @@ export class Typo3LinkUI extends Core.Plugin {
     editor.ui.componentFactory.add('linkPreview', locale => {
       const button = new Typo3LinkPreviewButtonView(locale);
       const allowedProtocols = editor.config.get('link.allowedProtocols');
-      const linkCommand = editor.commands.get('link');
+      const linkCommand = editor.commands.get('link')!;
       button.bind('isEnabled').to(linkCommand, 'value', href => !!href);
       button.bind('href').to(linkCommand, 'value', href => {
         return href && Link._ensureSafeLinkUrl(href, allowedProtocols);
@@ -556,7 +556,7 @@ export class Typo3LinkUI extends Core.Plugin {
     });
 
     editor.ui.componentFactory.add('unlink', locale => {
-      const unlinkCommand = editor.commands.get('unlink');
+      const unlinkCommand = editor.commands.get('unlink')!;
       const button = new UI.ButtonView(locale);
       const t = locale.t;
       button.set({
@@ -574,7 +574,7 @@ export class Typo3LinkUI extends Core.Plugin {
     });
 
     editor.ui.componentFactory.add('openLink', locale => {
-      const linkCommand = editor.commands.get('link');
+      const linkCommand = editor.commands.get('link')!;
       const button = new UI.ButtonView(locale);
       button.set({
         label: locale.t('Open link in new tab'),
@@ -597,13 +597,13 @@ export class Typo3LinkUI extends Core.Plugin {
         updateEnabled(href);
       });
       this.listenTo(button, 'execute', () => {
-        openResolvedLink(linkCommand.value);
+        openResolvedLink(linkCommand.value!);
       });
       return button;
     });
 
     editor.ui.componentFactory.add('editLink', locale => {
-      const linkCommand = editor.commands.get('link');
+      const linkCommand = editor.commands.get('link')!;
       const button = new UI.ButtonView(locale);
       const t = locale.t;
       button.set({
@@ -703,7 +703,7 @@ export class Typo3LinkUI extends Core.Plugin {
     };
 
     function getSelectionParent() {
-      return viewDocument.selection.focus.getAncestors()
+      return viewDocument.selection.focus!.getAncestors()
         .reverse()
         .find(node => node.is('element'));
     }
@@ -753,7 +753,7 @@ export class Typo3LinkUI extends Core.Plugin {
           // When selection is inside link element, then attach panel to this element.
           view.domConverter.mapViewToDom(targetLink) :
           // Otherwise attach panel to the selection.
-          view.domConverter.viewRangeToDom(viewDocument.selection.getFirstRange());
+          view.domConverter.viewRangeToDom(viewDocument.selection.getFirstRange()!);
       };
     }
 
@@ -771,7 +771,7 @@ export class Typo3LinkUI extends Core.Plugin {
     } else {
       // The range for fully selected link is usually anchored in adjacent text nodes.
       // Trim it to get closer to the actual link element.
-      const range = selection.getFirstRange().getTrimmed();
+      const range = selection.getFirstRange()!.getTrimmed();
       const startLink = this.findLinkElementAncestor(range.start);
       const endLink = this.findLinkElementAncestor(range.end);
 
@@ -792,7 +792,7 @@ export class Typo3LinkUI extends Core.Plugin {
     const model = this.editor.model;
 
     model.change(writer => {
-      const range = model.document.selection.getFirstRange();
+      const range = model.document.selection.getFirstRange()!;
 
       if (model.markers.has(VISUAL_SELECTION_MARKER_NAME)) {
         writer.updateMarker(VISUAL_SELECTION_MARKER_NAME, { range });
@@ -855,7 +855,7 @@ export class Typo3LinkUI extends Core.Plugin {
     model.change(writer => {
       const position = selection.getFirstPosition();
       // Find the full range of the link using the linkHref attribute
-      const linkRange = Typing.findAttributeRange(position, 'linkHref', linkHref, model);
+      const linkRange = Typing.findAttributeRange(position!, 'linkHref', linkHref, model);
 
       if (linkRange) {
         // Expand selection to cover the entire link

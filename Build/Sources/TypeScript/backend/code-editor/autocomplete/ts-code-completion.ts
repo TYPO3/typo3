@@ -53,7 +53,7 @@ export class TsCodeCompletion {
     const filter = this.getFilter(completionState);
 
     // TODO: implement cases: operatorCompletion reference/copy path completion (formerly found in getCompletionResults())
-    const currentTsTreeNode = this.parser.buildTsObjTree(completionState);
+    const currentTsTreeNode = this.parser!.buildTsObjTree(completionState);
     this.compResult = new CompletionResult(
       this.tsRef,
       currentTsTreeNode
@@ -63,7 +63,7 @@ export class TsCodeCompletion {
 
     const proposals: string[] = [];
     for (let i = 0; i < this.proposals.length; i++) {
-      proposals[i] = this.proposals[i].word;
+      proposals[i] = this.proposals[i].word!;
     }
 
     return proposals;
@@ -82,7 +82,7 @@ export class TsCodeCompletion {
       .get()
       .then(async (response) => {
         this.extTsObjTree.c = await response.resolve();
-        this.resolveExtReferencesRec(this.extTsObjTree.c);
+        this.resolveExtReferencesRec(this.extTsObjTree.c!);
       })
       .catch(() => {
         // Only administrators may read the templates; the completion goes on with the TypoScript reference alone
@@ -140,6 +140,6 @@ export class TsCodeCompletion {
       return '';
     }
 
-    return completionState.token.string.replace('.', '').replace(/\s/g, '');
+    return completionState.token!.string.replace('.', '').replace(/\s/g, '');
   }
 }

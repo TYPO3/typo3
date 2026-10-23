@@ -33,7 +33,7 @@ class PasswordGenerator {
       this.controlElement = <HTMLAnchorElement>document.getElementById(controlElementId);
       this.humanReadableField = document.querySelector<HTMLInputElement>(
         'input[data-formengine-input-name="' + this.controlElement.dataset.itemName + '"]',
-      );
+      )!;
       this.hiddenField = document.querySelector<HTMLInputElement>(
         'input[name="' + this.controlElement.dataset.itemName + '"]',
       );
@@ -46,7 +46,7 @@ class PasswordGenerator {
         // Also remove clearable possibility
         if (this.humanReadableField.isClearable || this.humanReadableField.classList.contains('t3js-clearable')) {
           this.humanReadableField.classList.remove('t3js-clearable');
-          const clearableContainer = this.humanReadableField.closest<HTMLDivElement>('div.form-control-clearable-wrapper');
+          const clearableContainer = this.humanReadableField.closest<HTMLDivElement>('div.form-control-clearable-wrapper')!;
           if (clearableContainer) {
             clearableContainer.classList.remove('form-control-clearable');
             const closeButton = clearableContainer.querySelector<HTMLButtonElement>('button.close');
@@ -72,17 +72,17 @@ class PasswordGenerator {
         const resolvedBody = await response.resolve();
         if (resolvedBody.success === true) {
           // Set type=text to display the generated password (allow to copy) and update the field value
-          this.humanReadableField.type = 'text';
-          this.humanReadableField.value = resolvedBody.password;
+          this.humanReadableField!.type = 'text';
+          this.humanReadableField!.value = resolvedBody.password;
           // Manually dispatch "change" to enable FormEngine handling (instead of manually calling "updateInputField()").
           // This way custom modules are also triggered when listening on this event.
-          this.humanReadableField.dispatchEvent(new Event('change'));
+          this.humanReadableField!.dispatchEvent(new Event('change'));
           // Due to formatting and processing done by FormEngine, we need to set the value again (allow to copy)
           if (this.hiddenField) {
-            this.humanReadableField.value = this.hiddenField.value;
+            this.humanReadableField!.value = this.hiddenField.value;
           }
           // Finally validate and mark the field as changed
-          FormEngineValidation.validateField(this.humanReadableField);
+          FormEngineValidation.validateField(this.humanReadableField!);
           FormEngine.markFieldAsChanged(this.humanReadableField);
         } else {
           Notification.warning(labels.get('labels.generatePassword.failed'));

@@ -82,7 +82,7 @@ class QueryGenerator {
     }).delegateTo(form, '.t3js-addfield');
 
     new RegularEvent('change', (event: Event, element: HTMLSelectElement) => {
-      const titleField = form.querySelector<HTMLInputElement>('input[name="storeControl[title]"]');
+      const titleField = form.querySelector<HTMLInputElement>('input[name="storeControl[title]"]')!;
       if (element.value !== '0') {
         titleField.value = element.options[element.selectedIndex].textContent;
       } else {

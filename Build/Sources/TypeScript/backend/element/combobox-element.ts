@@ -691,7 +691,7 @@ export class ComboboxElement extends LitElement {
       if (index >= 0) {
         this.selectChoiceOption(index);
         this.immediateClose();
-        input.focus();
+        input!.focus();
         return;
       }
     }

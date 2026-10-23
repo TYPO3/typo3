@@ -86,14 +86,14 @@ describe('@typo3/backend/notification:', () => {
       it('can render a notification of type ' + dataSet.class, async () => {
         dataSet.method(dataSet.title, dataSet.message, 1);
 
-        const notificationMessage = document.querySelector<LitElement>('#alert-container typo3-notification-message:last-child');
+        const notificationMessage = document.querySelector<LitElement>('#alert-container typo3-notification-message:last-child')!;
         await notificationMessage.updateComplete;
 
         const alertSelector = 'div.alert.' + dataSet.class;
-        const alertBox = document.querySelector(alertSelector);
+        const alertBox = document.querySelector(alertSelector)!;
         expect(alertBox).not.to.be.null;
-        expect(alertBox.querySelector('.alert-title').textContent).to.equal(dataSet.title);
-        expect(alertBox.querySelector('.alert-message').textContent).to.equal(dataSet.message);
+        expect(alertBox.querySelector('.alert-title')!.textContent).to.equal(dataSet.title);
+        expect(alertBox.querySelector('.alert-message')!.textContent).to.equal(dataSet.message);
 
         // wait for the notification to disappear for the next assertion (which tests for auto dismiss)
         await clock.tickAsync(2000);
@@ -109,7 +109,7 @@ describe('@typo3/backend/notification:', () => {
   describe('auto dismissal', () => {
     async function showNotification(): Promise<{ element: LitElement, isCleared: () => boolean }> {
       Notification.success('Title', 'Message', 1);
-      const element = document.querySelector<LitElement>('#alert-container typo3-notification-message:last-child');
+      const element = document.querySelector<LitElement>('#alert-container typo3-notification-message:last-child')!;
       await element.updateComplete;
       let cleared = false;
       element.addEventListener('typo3-notification-clear', (): void => {
@@ -174,7 +174,7 @@ describe('@typo3/backend/notification:', () => {
 
     it('stays paused when the pointer rests on the notification before it appeared', async () => {
       Notification.success('Title', 'Message', 1);
-      const element = document.querySelector<LitElement>('#alert-container typo3-notification-message:last-child');
+      const element = document.querySelector<LitElement>('#alert-container typo3-notification-message:last-child')!;
       await element.updateComplete;
       let cleared = false;
       element.addEventListener('typo3-notification-clear', (): void => {
@@ -200,7 +200,7 @@ describe('@typo3/backend/notification:', () => {
           })),
         },
       ]);
-      const element = document.querySelector<LitElement>('#alert-container typo3-notification-message:last-child');
+      const element = document.querySelector<LitElement>('#alert-container typo3-notification-message:last-child')!;
       await element.updateComplete;
       let cleared = false;
       element.addEventListener('typo3-notification-clear', (): void => {
@@ -208,7 +208,7 @@ describe('@typo3/backend/notification:', () => {
       });
       await clock.tickAsync(200);
 
-      (element.querySelector<HTMLAnchorElement>('.alert-actions a')).click();
+      (element.querySelector<HTMLAnchorElement>('.alert-actions a')!).click();
       await clock.tickAsync(5000);
       expect(cleared).to.be.false;
 
@@ -220,8 +220,8 @@ describe('@typo3/backend/notification:', () => {
 
   it('announces notifications to assistive technology', async () => {
     Notification.info('Info message', 'Some text', 1);
-    await document.querySelector<LitElement>('#alert-container typo3-notification-message:last-child').updateComplete;
-    expect(document.querySelector('#alert-container .alert-list').getAttribute('role')).to.equal('alert');
+    await document.querySelector<LitElement>('#alert-container typo3-notification-message:last-child')!.updateComplete;
+    expect(document.querySelector('#alert-container .alert-list')!.getAttribute('role')).to.equal('alert');
   });
 
   it('can render action buttons', async () => {
@@ -233,24 +233,24 @@ describe('@typo3/backend/notification:', () => {
         {
           label: 'My action',
           action: new ImmediateAction((promise?: Promise<void>): Promise<void> => {
-            return promise;
+            return promise!;
           }),
         },
         {
           label: 'My other action',
           action: new DeferredAction((promise?: Promise<void>): Promise<void> => {
-            return promise;
+            return promise!;
           }),
         },
       ],
     );
 
-    await (document.querySelector<LitElement>('#alert-container typo3-notification-message:last-child')).updateComplete;
+    await (document.querySelector<LitElement>('#alert-container typo3-notification-message:last-child')!).updateComplete;
     const alertBox = document.querySelector('div.alert');
-    expect(alertBox.querySelector('.alert-actions')).not.to.be.null;
-    expect(alertBox.querySelectorAll<HTMLAnchorElement>('.alert-actions a').length).to.equal(2);
-    expect(alertBox.querySelectorAll('.alert-actions a')[0].textContent).to.equal('My action');
-    expect(alertBox.querySelectorAll('.alert-actions a')[1].textContent).to.equal('My other action');
+    expect(alertBox!.querySelector('.alert-actions')).not.to.be.null;
+    expect(alertBox!.querySelectorAll<HTMLAnchorElement>('.alert-actions a').length).to.equal(2);
+    expect(alertBox!.querySelectorAll('.alert-actions a')[0].textContent).to.equal('My action');
+    expect(alertBox!.querySelectorAll('.alert-actions a')[1].textContent).to.equal('My other action');
   });
 
   it('immediate action is called', async () => {
@@ -270,10 +270,10 @@ describe('@typo3/backend/notification:', () => {
       ],
     );
 
-    await (document.querySelector<LitElement>('#alert-container typo3-notification-message:last-child')).updateComplete;
+    await (document.querySelector<LitElement>('#alert-container typo3-notification-message:last-child')!).updateComplete;
     const alertBox = document.querySelector('div.alert');
-    (alertBox.querySelector<HTMLAnchorElement>('.alert-actions a')).click();
-    await (document.querySelector<LitElement>('#alert-container typo3-notification-message:last-child')).updateComplete;
+    (alertBox!.querySelector<HTMLAnchorElement>('.alert-actions a')!).click();
+    await (document.querySelector<LitElement>('#alert-container typo3-notification-message:last-child')!).updateComplete;
     expect(called).to.be.true;
   });
 
@@ -287,10 +287,10 @@ describe('@typo3/backend/notification:', () => {
         }),
       },
     ]);
-    const element = document.querySelector<LitElement>('#alert-container typo3-notification-message:last-child');
+    const element = document.querySelector<LitElement>('#alert-container typo3-notification-message:last-child')!;
     await element.updateComplete;
 
-    (element.querySelector<HTMLAnchorElement>('.alert-actions a')).click();
+    (element.querySelector<HTMLAnchorElement>('.alert-actions a')!).click();
     await clock.tickAsync(0);
 
     expect(called).to.be.true;
@@ -316,7 +316,7 @@ describe('@typo3/backend/notification:', () => {
         }),
       },
     ]);
-    const element = document.querySelector<LitElement>('#alert-container typo3-notification-message:last-child');
+    const element = document.querySelector<LitElement>('#alert-container typo3-notification-message:last-child')!;
     await element.updateComplete;
     const [first, second] = Array.from(element.querySelectorAll<HTMLAnchorElement>('.alert-actions a'));
 

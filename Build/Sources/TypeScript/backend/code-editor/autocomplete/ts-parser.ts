@@ -86,11 +86,11 @@ export class TreeNode {
       lastSeg = path.pop();
 
     // attention: there will be recursive calls if necessary
-    const parentValue = this.parent.getValue();
+    const parentValue = this.parent!.getValue();
     if (parentValue) {
-      if (this.tsParser.tsRef.typeHasProperty(parentValue, lastSeg)) {
+      if (this.tsParser.tsRef.typeHasProperty(parentValue, lastSeg!)) {
         const type = this.tsParser.tsRef.getType(parentValue);
-        return type.properties[lastSeg].value;
+        return type.properties[lastSeg!].value;
       }
     }
     return '';
@@ -347,7 +347,7 @@ export class TsParser {
       const lastDot = path.lastIndexOf('.');
       path = path.substring(0, lastDot);
     }
-    return this.getTreeNode(path);
+    return this.getTreeNode(path!)!;
   }
 
   /**
@@ -398,16 +398,16 @@ export class TsParser {
   public setTreeNodeValue(path: string, value: string): void {
     const treeNode = this.getTreeNode(path);
     // if we are inside a GIFBUILDER Object
-    if (treeNode.parent !== null && treeNode.parent.value === 'GIFBUILDER' && value === 'TEXT') {
+    if (treeNode!.parent !== null && treeNode!.parent.value === 'GIFBUILDER' && value === 'TEXT') {
       value = 'GB_TEXT';
     }
-    if (treeNode.parent !== null && treeNode.parent.value === 'GIFBUILDER' && value === 'IMAGE') {
+    if (treeNode!.parent !== null && treeNode!.parent.value === 'GIFBUILDER' && value === 'IMAGE') {
       value = 'GB_IMAGE';
     }
 
     // just override if it is a real objecttype
     if (this.tsRef.isType(value)) {
-      treeNode.value = value;
+      treeNode!.value = value;
     }
   }
 
@@ -419,8 +419,8 @@ export class TsParser {
     const treeNode = this.getTreeNode(path);
     // currently the node is not deleted really, it's just not displayed cause value == null
     // deleting it would be a cleaner solution
-    treeNode.value = null;
-    treeNode.childNodes = {};
+    treeNode!.value = null!;
+    treeNode!.childNodes = {};
   }
 
   /**
@@ -433,10 +433,10 @@ export class TsParser {
       treeNode1 = this.getTreeNode(path1),
       treeNode2 = this.getTreeNode(path2);
 
-    if (treeNode1.parent !== null) {
-      treeNode1.parent.childNodes[lastNodeName] = treeNode2;
+    if (treeNode1!.parent !== null) {
+      treeNode1!.parent.childNodes[lastNodeName] = treeNode2!;
     } else {
-      this.tsTree.childNodes[lastNodeName] = treeNode2;
+      this.tsTree.childNodes[lastNodeName] = treeNode2!;
     }
   }
 
@@ -476,10 +476,10 @@ export class TsParser {
       treeNode1 = this.getTreeNode(path1),
       treeNode2 = this.getTreeNode(path2);
 
-    if (treeNode1.parent !== null) {
-      treeNode1.parent.childNodes[lastNodeName] = this.clone(treeNode2);
+    if (treeNode1!.parent !== null) {
+      treeNode1!.parent.childNodes[lastNodeName] = this.clone(treeNode2)!;
     } else {
-      this.tsTree.childNodes[lastNodeName] = this.clone(treeNode2);
+      this.tsTree.childNodes[lastNodeName] = this.clone(treeNode2)!;
     }
   }
 }

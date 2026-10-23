@@ -24,7 +24,7 @@ enum Selectors {
  * @exports @typo3/backend/record-search
  */
 class RecordSearch {
-  private readonly searchField: HTMLInputElement = document.querySelector(Selectors.searchFieldSelector);
+  private readonly searchField: HTMLInputElement = document.querySelector(Selectors.searchFieldSelector)!;
   private readonly activeSearch: boolean = this.searchField ? (this.searchField.value !== '') : false;
 
   constructor() {
@@ -33,7 +33,7 @@ class RecordSearch {
       if (this.searchField) {
         new RegularEvent('search', (): void => {
           if (this.searchField.value === '' && this.activeSearch) {
-            this.searchField.closest('form').submit();
+            this.searchField.closest('form')!.submit();
           }
         }).bindTo(this.searchField);
       }

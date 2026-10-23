@@ -57,8 +57,8 @@ class ElementBrowser {
   constructor() {
     DocumentService.ready().then((): void => {
       const data = document.body.dataset;
-      this.fieldReference = data.fieldReference;
-      this.irre.objectId = data.irreObjectId;
+      this.fieldReference = data.fieldReference!;
+      this.irre.objectId = data.irreObjectId!;
     });
   }
 
@@ -68,11 +68,11 @@ class ElementBrowser {
   public getParent(): Window | null {
     const isInModalFrame = typeof window.frames !== 'undefined'
       && typeof window.frames.frameElement !== 'undefined'
-      && window.frames.frameElement.classList.contains('t3js-modal-iframe');
+      && window.frames.frameElement!.classList.contains('t3js-modal-iframe');
     const otherModalFrames = Array.from(topWindow.frames || []).filter((item) => {
       try {
         return typeof item.frameElement !== 'undefined'
-          && item.frameElement.classList.contains('t3js-modal-iframe')
+          && item.frameElement!.classList.contains('t3js-modal-iframe')
           && item.frameElement !== window.frames.frameElement;
       } catch {
         // browser extensions might inject their own frames, resulting in
@@ -85,7 +85,7 @@ class ElementBrowser {
       // in case the current modal frame was triggered by another modal frame
       // (which is NOT the parent element in the DOM)
       if (isInModalFrame && otherModalFrames.length > 0) {
-        this.opener = otherModalFrames.pop();
+        this.opener = otherModalFrames.pop()!;
       } else if (
         typeof window.parent !== 'undefined' &&
         typeof window.parent.document.list_frame !== 'undefined' &&
@@ -104,7 +104,7 @@ class ElementBrowser {
         window.frames.frameElement !== null &&
         window.frames.frameElement.classList.contains('t3js-modal-iframe')
       ) {
-        this.opener = (<HTMLFrameElement>window.frames.frameElement).contentWindow.parent;
+        this.opener = (<HTMLFrameElement>window.frames.frameElement).contentWindow!.parent;
       } else if (window.opener) {
         this.opener = window.opener;
       }
@@ -139,7 +139,7 @@ class ElementBrowser {
           table: table,
           uid: uid,
         };
-        MessageUtility.send(message, this.getParent());
+        MessageUtility.send(message, this.getParent()!);
       } else {
         alert('Error - reference to main window is not set properly!');
         this.focusOpenerAndClose();
@@ -162,7 +162,7 @@ class ElementBrowser {
 
   public focusOpenerAndClose = (): void => {
     if (this.getParent()) {
-      this.getParent().focus();
+      this.getParent()!.focus();
     }
     Modal.dismiss();
     close();
@@ -204,7 +204,7 @@ class ElementBrowser {
       return;
     }
     if (this.getParent()) {
-      MessageUtility.send(message, this.getParent());
+      MessageUtility.send(message, this.getParent()!);
 
       if (close) {
         // > After postMessage() is called, the MessageEvent will be dispatched only after all pending execution contexts have finished.
@@ -218,7 +218,7 @@ class ElementBrowser {
   }
 
   private dispatch(message: ElementBrowserMessage) {
-    window.frameElement.dispatchEvent(new CustomEvent<ElementBrowserMessage>('typo3:element-browser:message', {
+    window.frameElement!.dispatchEvent(new CustomEvent<ElementBrowserMessage>('typo3:element-browser:message', {
       bubbles: true,
       detail: message
     }));

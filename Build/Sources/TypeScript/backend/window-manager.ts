@@ -62,9 +62,9 @@ class WindowManager {
       return existingWindow;
     }
     const newWindow = window.open(uri, windowName, windowFeatures);
-    this.windows[windowName] = newWindow;
+    this.windows[windowName] = newWindow!;
     if (switchFocus) {
-      newWindow.focus();
+      newWindow!.focus();
     }
     return newWindow;
   }

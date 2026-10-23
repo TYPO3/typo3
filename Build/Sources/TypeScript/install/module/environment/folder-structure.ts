@@ -46,7 +46,7 @@ type FolderStructureResponse = ModuleLoadedResponseWithButtons & {
  */
 class FolderStructure extends AbstractInteractableModule {
   private static removeLoadingMessage(container: HTMLElement): void {
-    container.querySelector('typo3-backend-progress-bar').remove();
+    container.querySelector('typo3-backend-progress-bar')!.remove();
   }
 
   public override initialize(currentModal: ModalElement): void {
@@ -75,28 +75,28 @@ class FolderStructure extends AbstractInteractableModule {
           Modal.setButtons(data.buttons);
           if (data.success === true && Array.isArray(data.errorStatus)) {
             if (data.errorStatus.length > 0) {
-              modalContent.querySelector<HTMLElement>(Identifiers.errorContainer).style.display = 'block';
-              modalContent.querySelector(Identifiers.errorList).innerHTML = '';
+              modalContent.querySelector<HTMLElement>(Identifiers.errorContainer)!.style.display = 'block';
+              modalContent.querySelector(Identifiers.errorList)!.innerHTML = '';
               data.errorStatus.forEach(((aElement: any): void => {
-                modalContent.querySelector(Identifiers.errorList).appendChild(InfoBox.create(aElement.severity, aElement.title, aElement.message));
+                modalContent.querySelector(Identifiers.errorList)!.appendChild(InfoBox.create(aElement.severity, aElement.title, aElement.message));
               }));
             } else {
-              modalContent.querySelector<HTMLElement>(Identifiers.errorContainer).style.display = 'none';
+              modalContent.querySelector<HTMLElement>(Identifiers.errorContainer)!.style.display = 'none';
             }
           }
           if (data.success === true && Array.isArray(data.okStatus)) {
             if (data.okStatus.length > 0) {
-              modalContent.querySelector<HTMLElement>(Identifiers.okContainer).style.display = 'block';
-              modalContent.querySelector(Identifiers.okList).innerHTML = '';
+              modalContent.querySelector<HTMLElement>(Identifiers.okContainer)!.style.display = 'block';
+              modalContent.querySelector(Identifiers.okList)!.innerHTML = '';
               data.okStatus.forEach(((aElement: any): void => {
-                modalContent.querySelector(Identifiers.okList).appendChild(InfoBox.create(aElement.severity, aElement.title, aElement.message));
+                modalContent.querySelector(Identifiers.okList)!.appendChild(InfoBox.create(aElement.severity, aElement.title, aElement.message));
               }));
             } else {
-              modalContent.querySelector<HTMLElement>(Identifiers.okContainer).style.display = 'none';
+              modalContent.querySelector<HTMLElement>(Identifiers.okContainer)!.style.display = 'none';
             }
           }
           let element = data.folderStructureFilePermissionStatus;
-          const selectorPermissionContainer = modalContent.querySelector(Identifiers.permissionContainer);
+          const selectorPermissionContainer = modalContent.querySelector(Identifiers.permissionContainer)!;
           selectorPermissionContainer.replaceChildren(InfoBox.create(element.severity, element.title, element.message));
 
           element = data.folderStructureDirectoryPermissionStatus;
@@ -112,7 +112,7 @@ class FolderStructure extends AbstractInteractableModule {
     this.setModalButtonsState(false);
 
     const modalContent = this.getModalBody();
-    const outputContainer = this.findInModal(Identifiers.outputContainer);
+    const outputContainer = this.findInModal(Identifiers.outputContainer)!;
     outputContainer.style.display = 'block';
     this.renderProgressBar(outputContainer);
     (new AjaxRequest(Router.getUrl('folderStructureFix')))

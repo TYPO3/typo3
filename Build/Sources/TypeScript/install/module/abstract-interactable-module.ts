@@ -44,15 +44,15 @@ export abstract class AbstractInteractableModule {
    * present for as long as the module is interactable.
    */
   protected getModalBody(): HTMLElement {
-    return this.findInModal(Identifiers.modalBody);
+    return this.findInModal(Identifiers.modalBody)!;
   }
 
   protected getModuleContent(): HTMLElement {
-    return this.findInModal(Identifiers.modalContent);
+    return this.findInModal(Identifiers.modalContent)!;
   }
 
   protected getModalFooter(): HTMLElement {
-    return this.findInModal(Identifiers.modalFooter);
+    return this.findInModal(Identifiers.modalFooter)!;
   }
 
   protected findInModal<K extends keyof HTMLElementTagNameMap>(selector: K): HTMLElementTagNameMap[K] | null;

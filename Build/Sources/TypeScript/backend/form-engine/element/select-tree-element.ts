@@ -34,7 +34,7 @@ export class SelectTreeElement {
 
   private initialize(treeWrapperId: string, treeRecordFieldId: string, onFieldChangeItems?: OnFieldChangeItem[]): void {
     this.recordField = <HTMLInputElement>document.getElementById(treeRecordFieldId);
-    const treeWrapper = document.getElementById(treeWrapperId);
+    const treeWrapper = document.getElementById(treeWrapperId)!;
     this.tree = document.createElement('typo3-backend-form-selecttree');
     this.tree.addEventListener('typo3:tree:nodes-prepared', this.loadDataAfter);
     this.tree.addEventListener('typo3:tree:node-selected', this.selectNode);
@@ -54,10 +54,10 @@ export class SelectTreeElement {
       unselectableElements: [] as Array<any>
     };
     this.tree.addEventListener('tree:initialized', () => {
-      if (this.recordField.dataset.treeShowToolbar) {
+      if (this.recordField!.dataset.treeShowToolbar) {
         const toolbarElement = document.createElement('typo3-backend-form-selecttree-toolbar');
-        toolbarElement.tree = this.tree;
-        this.tree.prepend(toolbarElement);
+        toolbarElement.tree = this.tree!;
+        this.tree!.prepend(toolbarElement);
       }
     });
     this.tree.setup = settings;
@@ -66,20 +66,20 @@ export class SelectTreeElement {
 
   private generateRequestUrl(): string {
     const params = {
-      tableName: this.recordField.dataset.tablename ?? '',
-      fieldName: this.recordField.dataset.fieldname ?? '',
-      uid: this.recordField.dataset.uid ?? '',
-      defaultValues: this.recordField.dataset.defaultvalues ?? '',
-      overrideValues: this.recordField.dataset.overridevalues ?? '',
-      recordTypeValue: this.recordField.dataset.recordtypevalue ?? '',
-      dataStructureIdentifier: this.recordField.dataset.datastructureidentifier ?? '',
-      flexFormSheetName: this.recordField.dataset.flexformsheetname ?? '',
-      flexFormFieldName: this.recordField.dataset.flexformfieldname ?? '',
-      flexFormContainerName: this.recordField.dataset.flexformcontainername ?? '',
-      flexFormContainerIdentifier: this.recordField.dataset.flexformcontaineridentifier ?? '',
-      flexFormContainerFieldName: this.recordField.dataset.flexformcontainerfieldname ?? '',
-      flexFormSectionContainerIsNew: this.recordField.dataset.flexformsectioncontainerisnew ?? '',
-      command: this.recordField.dataset.command ?? '',
+      tableName: this.recordField!.dataset.tablename ?? '',
+      fieldName: this.recordField!.dataset.fieldname ?? '',
+      uid: this.recordField!.dataset.uid ?? '',
+      defaultValues: this.recordField!.dataset.defaultvalues ?? '',
+      overrideValues: this.recordField!.dataset.overridevalues ?? '',
+      recordTypeValue: this.recordField!.dataset.recordtypevalue ?? '',
+      dataStructureIdentifier: this.recordField!.dataset.datastructureidentifier ?? '',
+      flexFormSheetName: this.recordField!.dataset.flexformsheetname ?? '',
+      flexFormFieldName: this.recordField!.dataset.flexformfieldname ?? '',
+      flexFormContainerName: this.recordField!.dataset.flexformcontainername ?? '',
+      flexFormContainerIdentifier: this.recordField!.dataset.flexformcontaineridentifier ?? '',
+      flexFormContainerFieldName: this.recordField!.dataset.flexformcontainerfieldname ?? '',
+      flexFormSectionContainerIsNew: this.recordField!.dataset.flexformsectioncontainerisnew ?? '',
+      command: this.recordField!.dataset.command ?? '',
     };
     return TYPO3.settings.ajaxUrls.record_tree_data + '&' + new URLSearchParams(params).toString();
   }
@@ -88,9 +88,9 @@ export class SelectTreeElement {
     const node = evt.detail.node as TreeNodeInterface;
     this.updateAncestorsIndeterminateState(node);
     // check all nodes again, to ensure correct display of __indeterminate state
-    this.calculateIndeterminate(this.tree.nodes);
+    this.calculateIndeterminate(this.tree!.nodes);
     this.saveCheckboxes();
-    this.tree.setup.input.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+    this.tree!.setup!.input.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
   };
 
   /**
@@ -99,11 +99,11 @@ export class SelectTreeElement {
    * Later __indeterminate state is updated just for the subset of nodes
    */
   private readonly loadDataAfter = (evt: CustomEvent) => {
-    this.tree.nodes = evt.detail.nodes.map((node: TreeNodeInterface) => {
+    this.tree!.nodes = evt.detail.nodes.map((node: TreeNodeInterface) => {
       node.__indeterminate = false;
       return node;
     });
-    this.calculateIndeterminate(this.tree.nodes);
+    this.calculateIndeterminate(this.tree!.nodes);
   };
 
   /**
@@ -113,7 +113,7 @@ export class SelectTreeElement {
     if (typeof this.recordField === 'undefined') {
       return;
     }
-    this.recordField.value = this.tree.getSelectedNodes().map((node: TreeNodeInterface): string => node.identifier).join(',');
+    this.recordField!.value = this.tree!.getSelectedNodes().map((node: TreeNodeInterface): string => node.identifier).join(',');
   };
 
   /**
@@ -123,10 +123,10 @@ export class SelectTreeElement {
     // foreach ancestor except node itself
     let __indeterminate = false;
     node.__treeParents.forEach((treeParentIdentifier: string) => {
-      const TreeNodeInterface = this.tree.getNodeByTreeIdentifier(treeParentIdentifier);
-      TreeNodeInterface.__indeterminate = (node.checked || node.__indeterminate || __indeterminate);
+      const TreeNodeInterface = this.tree!.getNodeByTreeIdentifier(treeParentIdentifier);
+      TreeNodeInterface!.__indeterminate = (node.checked || node.__indeterminate || __indeterminate);
       // check state for the next level
-      __indeterminate = (TreeNodeInterface.checked || TreeNodeInterface.__indeterminate || node.checked || node.__indeterminate);
+      __indeterminate = (TreeNodeInterface!.checked || TreeNodeInterface!.__indeterminate || node.checked || node.__indeterminate);
     });
   }
 
@@ -138,8 +138,8 @@ export class SelectTreeElement {
     nodes.forEach((node: TreeNodeInterface) => {
       if ((node.checked || node.__indeterminate) && node.__treeParents && node.__treeParents.length > 0) {
         node.__treeParents.forEach((treeParentIdentifier: string) => {
-          const TreeNodeInterface = this.tree.getNodeByTreeIdentifier(treeParentIdentifier);
-          TreeNodeInterface.__indeterminate = true;
+          const TreeNodeInterface = this.tree!.getNodeByTreeIdentifier(treeParentIdentifier);
+          TreeNodeInterface!.__indeterminate = true;
         });
       }
     });

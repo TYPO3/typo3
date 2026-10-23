@@ -47,7 +47,7 @@ class ClearCacheMenu {
       if (menuItem.dataset.endpoint) {
         this.clearCache(menuItem.dataset.endpoint);
       }
-    }).delegateTo(toolbarItemContainer, Identifiers.menuItemSelector);
+    }).delegateTo(toolbarItemContainer!, Identifiers.menuItemSelector);
   };
 
   /**
@@ -57,15 +57,15 @@ class ClearCacheMenu {
    * @param {string} ajaxUrl The URL to load
    */
   private clearCache(ajaxUrl: string): void {
-    const toolbarItemContainer = document.querySelector(Identifiers.containerSelector);
+    const toolbarItemContainer = document.querySelector(Identifiers.containerSelector)!;
     // Close clear cache menu
     toolbarItemContainer.classList.remove('open');
 
     const toolbarItemIcon = toolbarItemContainer.querySelector(Identifiers.toolbarIconSelector);
-    const existingIcon = toolbarItemIcon.cloneNode(true);
+    const existingIcon = toolbarItemIcon!.cloneNode(true);
 
     Icons.getIcon('spinner-circle', Icons.sizes.small).then((spinner: string): void => {
-      toolbarItemIcon.replaceWith(document.createRange().createContextualFragment(spinner));
+      toolbarItemIcon!.replaceWith(document.createRange().createContextualFragment(spinner));
     });
 
     (new AjaxRequest(ajaxUrl)).post({}).then(
@@ -90,7 +90,7 @@ class ClearCacheMenu {
         );
       },
     ).finally((): void => {
-      toolbarItemContainer.querySelector(Identifiers.toolbarIconSelector).replaceWith(existingIcon);
+      toolbarItemContainer.querySelector(Identifiers.toolbarIconSelector)!.replaceWith(existingIcon);
     });
   }
 }

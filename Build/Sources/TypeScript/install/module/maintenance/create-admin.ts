@@ -62,7 +62,7 @@ class CreateAdmin extends AbstractInteractableModule {
           if (data.success === true) {
             modalContent.innerHTML = data.html;
 
-            PasswordStrength.initialize(modalContent.querySelector('.t3-install-form-password-strength'));
+            PasswordStrength.initialize(modalContent.querySelector('.t3-install-form-password-strength')!);
             Modal.setButtons(data.buttons);
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');

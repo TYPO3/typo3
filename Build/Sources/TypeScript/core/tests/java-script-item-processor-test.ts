@@ -18,7 +18,7 @@ import type { } from 'mocha';
 const FLAG_USE_IMPORTMAP = 2;
 
 function registerPendingItems(): { promise: Promise<void>, resolve: () => void } {
-  let resolve: () => void;
+  let resolve!: () => void;
   const promise = new Promise<void>((r) => {
     resolve = r;
   });

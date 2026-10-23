@@ -27,7 +27,7 @@ class FormManager {
         const searchResultShown = searchField.value !== '';
         new RegularEvent('search', (): void => {
           if (searchField.value === '' && searchResultShown) {
-            searchField.closest('form').requestSubmit();
+            searchField.closest('form')!.requestSubmit();
           }
         }).bindTo(searchField);
       }

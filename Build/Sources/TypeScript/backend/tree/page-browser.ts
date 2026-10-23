@@ -84,7 +84,7 @@ export class PageBrowserTree extends PageTree {
    */
   private isLinkable(node: TreeNodeInterface): boolean {
     const nonViewableDoktypes: number[] = this.settings.nonViewableDoktypes ?? [199, 254];
-    return !nonViewableDoktypes.includes(node.doktype);
+    return !nonViewableDoktypes.includes(node.doktype!);
   }
 
   /**
@@ -126,7 +126,7 @@ export class PageBrowser extends LitElement {
   }
 
   protected override firstUpdated(): void {
-    this.activePageId = parseInt(this.getAttribute('active-page'), 10);
+    this.activePageId = parseInt(this.getAttribute('active-page')!, 10);
     this.actions = JSON.parse(this.getAttribute('tree-actions') ?? '[]');
   }
 
@@ -141,7 +141,7 @@ export class PageBrowser extends LitElement {
     }
 
     const configurationUrl = topWindow.TYPO3.settings.ajaxUrls.page_tree_browser_configuration;
-    const alternativeEntryPoints = this.hasAttribute('alternative-entry-points') ? JSON.parse(this.getAttribute('alternative-entry-points')) : [];
+    const alternativeEntryPoints = this.hasAttribute('alternative-entry-points') ? JSON.parse(this.getAttribute('alternative-entry-points')!) : [];
     let request = new AjaxRequest(configurationUrl);
     if (alternativeEntryPoints.length) {
       request = request.withQueryArguments('alternativeEntryPoints=' + encodeURIComponent(alternativeEntryPoints));
@@ -170,7 +170,7 @@ export class PageBrowser extends LitElement {
             this.tree.ensureActiveNodeLoaded(this.activePageId);
           }
           // set up toolbar now with updated properties
-          const toolbar = this.querySelector<TreeToolbar>('typo3-backend-tree-toolbar');
+          const toolbar = this.querySelector<TreeToolbar>('typo3-backend-tree-toolbar')!;
           toolbar.tree = this.tree;
         };
 
@@ -217,7 +217,7 @@ export class PageBrowser extends LitElement {
     (new AjaxRequest(contentsUrl)).get()
       .then((response: AjaxResponse) => response.resolve())
       .then((response) => {
-        const contentContainer = document.querySelector<HTMLElement>('.element-browser-main-content .element-browser-body');
+        const contentContainer = document.querySelector<HTMLElement>('.element-browser-main-content .element-browser-body')!;
         contentContainer.innerHTML = response;
       });
   };
@@ -249,7 +249,7 @@ export class PageBrowser extends LitElement {
   }
 
   private setTemporaryMountPoint(pid: number): void {
-    (new AjaxRequest(this.configuration.setTemporaryMountPointUrl))
+    (new AjaxRequest(this.configuration!.setTemporaryMountPointUrl))
       .post('pid=' + pid, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest' },
       })

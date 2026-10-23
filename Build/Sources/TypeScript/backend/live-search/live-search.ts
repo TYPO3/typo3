@@ -108,52 +108,52 @@ class LiveSearch {
       severity: SeverityEnum.notice,
       size: Sizes.large,
       ajaxCallback: (): void => {
-        const liveSearchContainer = modal.querySelector('typo3-backend-live-search');
+        const liveSearchContainer = modal.querySelector('typo3-backend-live-search')!;
         const searchForm = liveSearchContainer.querySelector('form');
-        const searchField = searchForm.querySelector<HTMLInputElement>('input[type="search"]');
-        const offsetField = searchForm.querySelector<HTMLInputElement>('input[name="offset"]');
+        const searchField = searchForm!.querySelector<HTMLInputElement>('input[type="search"]')!;
+        const offsetField = searchForm!.querySelector<HTMLInputElement>('input[name="offset"]')!;
 
         new RegularEvent('livesearch:demand-changed', (): void => {
           offsetField.value = '0';
-          searchForm.requestSubmit();
+          searchForm!.requestSubmit();
         }).bindTo(liveSearchContainer);
 
         new RegularEvent('livesearch:pagination-selected', (e: CustomEvent<SelectPageEventData>): void => {
           offsetField.value = e.detail.offset.toString(10);
-          searchForm.requestSubmit();
+          searchForm!.requestSubmit();
         }).bindTo(liveSearchContainer);
 
         new RegularEvent('submit', (e: SubmitEvent): void => {
           e.preventDefault();
 
-          const formData = new FormData(searchForm);
+          const formData = new FormData(searchForm!);
           this.search(formData).then((): void => {
-            const query = formData.get('query').toString();
+            const query = formData.get('query')!.toString();
             const offset = formData.get('offset')?.toString();
             BrowserSession.set('livesearch-term', query);
             if (offset) {
               BrowserSession.set('livesearch-offset', offset);
             }
           });
-          const optionCounterElement = searchForm.querySelector<HTMLElement>('[data-active-options-counter]');
+          const optionCounterElement = searchForm!.querySelector<HTMLElement>('[data-active-options-counter]')!;
           const count = parseInt(optionCounterElement.dataset.activeOptionsCounter ?? '', 10);
-          optionCounterElement.querySelector('output').textContent = count.toString(10);
+          optionCounterElement.querySelector('output')!.textContent = count.toString(10);
           optionCounterElement.classList.toggle('hidden', count === 0);
-        }).bindTo(searchForm);
+        }).bindTo(searchForm!);
 
         new RegularEvent('search', (): void => {
           if (searchField.value === '') {
-            searchForm.requestSubmit();
+            searchForm!.requestSubmit();
           }
         }).bindTo(searchField);
 
-        const searchResultContainer: ResultContainer = document.querySelector('typo3-backend-live-search-result-container');
+        const searchResultContainer: ResultContainer = document.querySelector('typo3-backend-live-search-result-container')!;
         new RegularEvent('live-search:item-chosen', (): void => {
           Modal.dismiss();
         }).bindTo(searchResultContainer);
 
         new RegularEvent('typo3:live-search:option-invoked', (e: CustomEvent<InvokeOptionEventData>): void => {
-          const optionCounterElement = searchForm.querySelector<HTMLElement>('[data-active-options-counter]');
+          const optionCounterElement = searchForm!.querySelector<HTMLElement>('[data-active-options-counter]')!;
           let count = parseInt(optionCounterElement.dataset.activeOptionsCounter ?? '', 10);
           count = e.detail.active ? count + 1 : count - 1;
 
@@ -169,7 +169,7 @@ class LiveSearch {
 
         new RegularEvent('keydown', this.handleKeyDown).bindTo(searchField);
 
-        searchForm.requestSubmit();
+        searchForm!.requestSubmit();
       }
     });
 
@@ -212,13 +212,13 @@ class LiveSearch {
   }
 
   private readonly search = async (formData: FormData): Promise<void> => {
-    const query = formData.get('query').toString();
+    const query = formData.get('query')!.toString();
 
     if (query === '') {
       this.updateSearchResults();
     } else {
-      const searchResultContainer = document.querySelector<ResultContainer>(resultContainerComponentName);
-      const paginationElement: ResultPagination = document.querySelector('typo3-backend-live-search-result-pagination');
+      const searchResultContainer = document.querySelector<ResultContainer>(resultContainerComponentName)!;
+      const paginationElement: ResultPagination = document.querySelector('typo3-backend-live-search-result-pagination')!;
       searchResultContainer.loading = true;
       paginationElement.loading = true;
 
@@ -250,17 +250,17 @@ class LiveSearch {
     e.preventDefault();
 
     // Select first available result item
-    const firstSearchResultItem = document.querySelector('typo3-backend-live-search').querySelector('typo3-backend-live-search-result-item') as HTMLElement|null;
+    const firstSearchResultItem = document.querySelector('typo3-backend-live-search')!.querySelector('typo3-backend-live-search-result-item') as HTMLElement|null;
     firstSearchResultItem?.focus();
   }
 
   private updateSearchResults(response: SearchResponse | null = null, hasErrors: boolean = false): void {
-    const searchResultContainer: ResultContainer = document.querySelector('typo3-backend-live-search-result-container');
+    const searchResultContainer: ResultContainer = document.querySelector('typo3-backend-live-search-result-container')!;
     searchResultContainer.results = response?.results ?? null;
     searchResultContainer.loading = false;
     searchResultContainer.hasErrors = hasErrors;
 
-    const paginationElement: ResultPagination = document.querySelector('typo3-backend-live-search-result-pagination');
+    const paginationElement: ResultPagination = document.querySelector('typo3-backend-live-search-result-pagination')!;
     paginationElement.pagination = response?.pagination ?? null;
     paginationElement.loading = false;
   }

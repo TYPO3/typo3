@@ -79,12 +79,12 @@ class ClearCache {
         ClearCache.setDisabled(me, true);
 
         Icons.getIcon('spinner-circle', Icons.sizes.small, null, 'disabled').then((icon: string): void => {
-          me.querySelector(Identifiers.icon).outerHTML = icon;
+          me.querySelector(Identifiers.icon)!.outerHTML = icon;
         });
 
         ClearCache.sendClearCacheRequest(id).finally((): void => {
           Icons.getIcon('actions-system-cache-clear', Icons.sizes.small).then((icon: string): void => {
-            me.querySelector(Identifiers.icon).outerHTML = icon;
+            me.querySelector(Identifiers.icon)!.outerHTML = icon;
           });
           ClearCache.setDisabled(me, false);
         });

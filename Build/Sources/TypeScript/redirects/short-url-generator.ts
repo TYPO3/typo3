@@ -33,7 +33,7 @@ class ShortUrlGenerator {
       this.controlElement = <HTMLAnchorElement>document.getElementById(controlElementId);
       this.humanReadableField = document.querySelector<HTMLInputElement>(
         'input[data-formengine-input-name="' + (this.controlElement.dataset.itemName ?? '').replace('[short_url]', '[source_path]') + '"]',
-      );
+      )!;
       this.sourceHostField = document.querySelector<HTMLInputElement>(
         'input[data-formengine-input-name="' + (this.controlElement.dataset.itemName ?? '').replace('[short_url]', '[source_host]') + '"]',
       );

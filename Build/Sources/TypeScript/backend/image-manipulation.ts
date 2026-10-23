@@ -191,7 +191,7 @@ class ImageManipulation {
    * @desc Initialize the cropper modal and dispatch the cropper init
    */
   private async initializeCropperModal(): Promise<void> {
-    const image = this.currentModal.querySelector<HTMLImageElement>(this.cropImageSelector);
+    const image = this.currentModal.querySelector<HTMLImageElement>(this.cropImageSelector)!;
 
     await new Promise<void>((resolve) => {
       if (image.complete) {
@@ -208,12 +208,12 @@ class ImageManipulation {
    */
   private show(): void {
     const triggerData = this.trigger.dataset;
-    const modalTitle: string = triggerData.modalTitle;
-    const buttonPreviewText: string = triggerData.buttonPreviewText;
-    const buttonDismissText: string = triggerData.buttonDismissText;
-    const buttonSaveText: string = triggerData.buttonSaveText;
-    const imageUri: string = triggerData.url;
-    const payload: Record<string, string> = JSON.parse(triggerData.payload);
+    const modalTitle: string = triggerData.modalTitle!;
+    const buttonPreviewText: string = triggerData.buttonPreviewText!;
+    const buttonDismissText: string = triggerData.buttonDismissText!;
+    const buttonSaveText: string = triggerData.buttonSaveText!;
+    const imageUri: string = triggerData.url!;
+    const payload: Record<string, string> = JSON.parse(triggerData.payload!);
 
     /**
      * Open modal with image to crop
@@ -264,8 +264,8 @@ class ImageManipulation {
    * @desc Initializes the cropper UI and sets up all the event bindings for the UI
    */
   private init(): void {
-    const image = this.currentModal.querySelector<HTMLImageElement>(this.cropImageSelector);
-    const data: string = this.trigger.dataset.cropVariants;
+    const image = this.currentModal.querySelector<HTMLImageElement>(this.cropImageSelector)!;
+    const data: string = this.trigger.dataset.cropVariants!;
 
     if (!data) {
       throw new TypeError('ImageManipulation: No cropVariants data found for image');
@@ -275,8 +275,8 @@ class ImageManipulation {
     this.data = ImageManipulation.isEmptyObject(this.data) ? JSON.parse(data) : this.data;
 
     this.cropVariantTriggers = this.currentModal.querySelectorAll('.t3js-crop-variant-trigger');
-    this.activeCropVariantTrigger = this.currentModal.querySelector('.t3js-crop-variant-trigger.is-active');
-    this.cropInfo = this.currentModal.querySelector(this.cropInfoSelector);
+    this.activeCropVariantTrigger = this.currentModal.querySelector('.t3js-crop-variant-trigger.is-active')!;
+    this.cropInfo = this.currentModal.querySelector(this.cropInfoSelector)!;
     this.currentCropVariant = this.data[this.activeCropVariantTrigger.dataset.cropVariantId ?? ''];
 
     /**
@@ -299,7 +299,7 @@ class ImageManipulation {
         this.activeCropVariantTrigger = e.currentTarget as HTMLElement;
         const cropVariant: CropVariant = this.data[this.activeCropVariantTrigger.dataset.cropVariantId ?? ''];
         const imageData: Cropper.ImageData = this.cropper.getImageData();
-        cropVariant.cropArea = this.convertRelativeToAbsoluteCropArea(cropVariant.cropArea, imageData);
+        cropVariant.cropArea = this.convertRelativeToAbsoluteCropArea(cropVariant.cropArea!, imageData);
         this.currentCropVariant = Object.assign({}, cropVariant);
         this.update(cropVariant);
       })
@@ -311,7 +311,7 @@ class ImageManipulation {
     new RegularEvent(
       'click',
       (evt: Event, target: HTMLElement): void => {
-        const ratioId: string = target.dataset.bsOption;
+        const ratioId: string = target.dataset.bsOption!;
         this.handleAspectRatioChange(ratioId);
       }
     ).delegateTo(this.currentModal, 'label[data-method=setAspectRatio]');
@@ -323,10 +323,10 @@ class ImageManipulation {
       evt.preventDefault();
       evt.stopImmediatePropagation();
 
-      const setAspectRatioLabel = target.closest<HTMLElement>('label[data-method="setAspectRatio"]');
-      const ratioId: string = setAspectRatioLabel.dataset.bsOption;
+      const setAspectRatioLabel = target.closest<HTMLElement>('label[data-method="setAspectRatio"]')!;
+      const ratioId: string = setAspectRatioLabel.dataset.bsOption!;
 
-      setAspectRatioLabel.querySelector('input').checked = true;
+      setAspectRatioLabel.querySelector('input')!.checked = true;
       this.handleAspectRatioChange(ratioId);
     }).delegateTo(this.currentModal, 'label[data-method="setAspectRatio"] input[type="radio"]');
 
@@ -360,21 +360,21 @@ class ImageManipulation {
       'click',
       (evt: Event, target: HTMLElement): void => {
         const imageData: Cropper.ImageData = this.cropper.getImageData();
-        const resetCropVariantString: string = target.dataset.cropVariant;
+        const resetCropVariantString: string = target.dataset.cropVariant!;
         evt.preventDefault();
         evt.stopPropagation();
         if (!resetCropVariantString) {
           throw new TypeError('TYPO3 Cropper: No cropVariant data attribute found on reset element.');
         }
         const resetCropVariant: CropVariant = JSON.parse(resetCropVariantString);
-        const absoluteCropArea: Area = this.convertRelativeToAbsoluteCropArea(resetCropVariant.cropArea, imageData);
+        const absoluteCropArea: Area = this.convertRelativeToAbsoluteCropArea(resetCropVariant.cropArea!, imageData);
         this.currentCropVariant = Object.assign({}, resetCropVariant, { cropArea: absoluteCropArea });
         this.update(this.currentCropVariant);
       }
     ).delegateTo(this.currentModal, 'button[name=reset]');
 
     // if we start without an cropArea, maximize the cropper
-    if (ImageManipulation.isEmptyObject(this.currentCropVariant.cropArea)) {
+    if (ImageManipulation.isEmptyObject(this.currentCropVariant.cropArea!)) {
       this.defaultOpts = Object.assign({ autoCropArea: 1 }, this.defaultOpts);
     }
 
@@ -391,10 +391,10 @@ class ImageManipulation {
       data: this.currentCropVariant.cropArea,
     }));
 
-    this.syncAvailable = this.trigger.dataset.syncAvailable.toLowerCase() === 'true';
+    this.syncAvailable = this.trigger.dataset.syncAvailable!.toLowerCase() === 'true';
     const imageUid = this.trigger.dataset.imageUid;
     if (this.syncAvailable) {
-      this.currentModal.querySelector('#sync-crop-variants-container').classList.remove('d-none');
+      this.currentModal.querySelector('#sync-crop-variants-container')!.classList.remove('d-none');
       new RegularEvent(
         'click',
         (evt: Event, target: HTMLInputElement): void => {
@@ -408,7 +408,7 @@ class ImageManipulation {
             // if the currently selected crop variant is now disabled, open the first available one.
             const isDisabled = this.currentModal.querySelector('.panel-button[data-crop-variant-id="' + this.currentCropVariant.id + '"][data-exclude-from-sync="true"]') !== null;
             if (isDisabled) {
-              const e = this.currentModal.querySelector<HTMLElement>('.panel-button[data-exclude-from-sync="false"]');
+              const e = this.currentModal.querySelector<HTMLElement>('.panel-button[data-exclude-from-sync="false"]')!;
               if (e) {
                 e.click();
               }
@@ -439,7 +439,7 @@ class ImageManipulation {
     this.initialized = true;
 
     const imageData: Cropper.ImageData = this.cropper.getImageData();
-    const image = this.currentModal.querySelector<HTMLImageElement>(this.cropImageSelector);
+    const image = this.currentModal.querySelector<HTMLImageElement>(this.cropImageSelector)!;
 
     // Make the image in the backdrop visible again.
     // TODO: Check why this doesn't happen automatically.
@@ -449,7 +449,7 @@ class ImageManipulation {
 
     // iterate over the crop variants and set up their respective preview
     this.cropVariantTriggers.forEach((elem): void => {
-      const cropVariantId: string = elem.dataset.cropVariantId;
+      const cropVariantId: string = elem.dataset.cropVariantId!;
       const cropArea: Area = this.convertRelativeToAbsoluteCropArea(
         this.data[cropVariantId].cropArea,
         imageData,
@@ -460,11 +460,11 @@ class ImageManipulation {
     });
 
     this.currentCropVariant.cropArea = this.convertRelativeToAbsoluteCropArea(
-      this.currentCropVariant.cropArea,
+      this.currentCropVariant.cropArea!,
       imageData,
     );
     // can't use .t3js-* as selector because it is an extraneous selector
-    this.cropBox = this.currentModal.querySelector('.cropper-crop-box');
+    this.cropBox = this.currentModal.querySelector('.cropper-crop-box')!;
 
     if (this.currentCropVariant.selectedRatio) {
       // set data explicitly or setAspectRatio up-scales the crop
@@ -510,13 +510,13 @@ class ImageManipulation {
     if (this.syncAvailable && this.syncEnabled) {
       const data = this.data;
       Object.keys(this.data).forEach((cropVariant): void => {
-        let trigger: HTMLElement = null;
+        let trigger: HTMLElement = null!;
         this.cropVariantTriggers.forEach((e) => {
           if (e.dataset.cropVariantId === cropVariant) {
             trigger = e;
           }
         });
-        const excludeFromSync: boolean = trigger.dataset.excludeFromSync.toLowerCase() === 'true';
+        const excludeFromSync: boolean = trigger.dataset.excludeFromSync!.toLowerCase() === 'true';
         if (trigger && !excludeFromSync) {
           const syncTemp = Object.assign({}, data[cropVariant], { cropArea: this.currentCropVariant.cropArea, cropVariant });
           this.updatePreviewThumbnail(syncTemp, trigger);
@@ -542,19 +542,19 @@ class ImageManipulation {
     const ratio: Ratio = temp.allowedAspectRatios[ratioId];
     this.setAspectRatio(ratio);
     // set data explicitly or setAspectRatio upscales the crop
-    this.setCropArea(temp.cropArea);
+    this.setCropArea(temp.cropArea!);
     this.currentCropVariant = Object.assign({}, temp, { selectedRatio: ratioId });
 
     if (this.syncAvailable && this.syncEnabled) {
       const data = this.data;
       Object.keys(this.data).forEach((cropVariant): void => {
-        let trigger: HTMLElement = null;
+        let trigger: HTMLElement = null!;
         this.cropVariantTriggers.forEach((e) => {
           if (e.dataset.cropVariantId === cropVariant) {
             trigger = e;
           }
         });
-        const excludeFromSync: boolean = trigger.dataset.excludeFromSync.toLowerCase() === 'true';
+        const excludeFromSync: boolean = trigger.dataset.excludeFromSync!.toLowerCase() === 'true';
         if (trigger && !excludeFromSync) {
           const syncTemp = Object.assign({}, data[cropVariant], { selectedRatio: ratioId, cropArea: temp.cropArea });
           this.update(syncTemp);
@@ -575,7 +575,7 @@ class ImageManipulation {
     const selectedRatio: Ratio = cropVariant.allowedAspectRatios[cropVariant.selectedRatio];
 
     // Set cropInfo to current container context
-    this.cropInfo = this.currentModal.querySelector(`[data-crop-variant-container="${cropVariant.id}"]`)?.querySelector(this.cropInfoSelector);
+    this.cropInfo = this.currentModal.querySelector(`[data-crop-variant-container="${cropVariant.id}"]`)!.querySelector(this.cropInfoSelector)!;
     // highlight the currently selected ratio of the active cropping variant
     this.currentModal.querySelector(`[data-crop-variant-container="${cropVariant.id}"]`)?.querySelector('[data-bs-option].active')?.classList.remove('active');
     this.currentModal.querySelector(`[data-crop-variant-container="${cropVariant.id}"]`)?.querySelector(`[data-bs-option="${cropVariant.selectedRatio}"]`)?.classList.add('active');
@@ -584,7 +584,7 @@ class ImageManipulation {
      * Setting the aspect ratio cause a redraw of the crop area so we need to manually reset it to last data
      */
     this.setAspectRatio(selectedRatio);
-    this.setCropArea(temp.cropArea);
+    this.setCropArea(temp.cropArea!);
     this.currentCropVariant = Object.assign({}, temp, cropVariant);
     this.cropBox?.querySelectorAll<HTMLElement>(this.coverAreaSelector)?.forEach((el) => el.remove());
     this.cropBox?.querySelectorAll<HTMLElement>(this.focusAreaSelector)?.forEach((el) => el.remove());
@@ -597,13 +597,13 @@ class ImageManipulation {
       }
       this.focusAreaEl = this.initFocusArea(this.cropBox);
     } else {
-      this.focusAreaEl = null;
+      this.focusAreaEl = null!;
     }
 
     // check if new cropVariant has coverAreas
     if (cropVariant.coverAreas) {
       // init or reinit focusArea
-      this.initCoverAreas(this.cropBox, this.currentCropVariant.coverAreas);
+      this.initCoverAreas(this.cropBox, this.currentCropVariant.coverAreas!);
     }
     this.updatePreviewThumbnail(this.currentCropVariant, this.activeCropVariantTrigger);
   }
@@ -617,7 +617,7 @@ class ImageManipulation {
 
     const focusAreaEl = topDocument.createElement('typo3-backend-draggable-resizable');
     // assign area declaration (as persisted in the database)
-    focusAreaEl.setAttribute('offset', JSON.stringify(this.convertAreaToOffset(this.currentCropVariant.focusArea, container)));
+    focusAreaEl.setAttribute('offset', JSON.stringify(this.convertAreaToOffset(this.currentCropVariant.focusArea!, container)));
     // use the same events as cropper.js does
     focusAreaEl.setAttribute('pointereventnames', JSON.stringify(ImageManipulation.resolvePointerEventNames()));
 
@@ -629,8 +629,8 @@ class ImageManipulation {
       const coverAreas = this.currentCropVariant.coverAreas;
       const focusArea = this.convertOffsetToArea(focusAreaEl.offset, container);
       // retrieve the inner visual element of the lit-element
-      const visualElement = focusAreaEl.querySelector(this.focusAreaVisualElementSelector);
-      if (this.checkFocusAndCoverAreasCollision(focusArea, coverAreas)) {
+      const visualElement = focusAreaEl.querySelector(this.focusAreaVisualElementSelector)!;
+      if (this.checkFocusAndCoverAreasCollision(focusArea, coverAreas!)) {
         visualElement.classList.add('has-nodrop');
       } else {
         visualElement.classList.remove('has-nodrop');
@@ -639,19 +639,19 @@ class ImageManipulation {
     focusAreaEl.addEventListener('draggable-resizable-finished', (evt: DraggableResizableEvent) => {
       const coverAreas = this.currentCropVariant.coverAreas;
       const focusArea = this.convertOffsetToArea(focusAreaEl.offset, container);
-      if (this.checkFocusAndCoverAreasCollision(focusArea, coverAreas)) {
-        focusAreaEl.revert(evt.detail.originOffset);
+      if (this.checkFocusAndCoverAreasCollision(focusArea, coverAreas!)) {
+        focusAreaEl.revert(evt.detail.originOffset!);
       } else {
         this.scaleAndMoveFocusArea(focusArea);
       }
       const visualElement = focusAreaEl.querySelector(this.focusAreaVisualElementSelector);
-      visualElement.classList.remove('has-nodrop');
+      visualElement!.classList.remove('has-nodrop');
       // re-enable outer cropper again
       this.cropper.enable();
     });
 
     container.appendChild(focusAreaEl);
-    this.scaleAndMoveFocusArea(this.currentCropVariant.focusArea);
+    this.scaleAndMoveFocusArea(this.currentCropVariant.focusArea!);
 
     return focusAreaEl;
   }
@@ -695,10 +695,10 @@ class ImageManipulation {
 
     // update the position/dimension of the crop area in the preview
     Object.assign(cropperPreviewThumbnailCrop.style, {
-      height: ImageManipulation.toCssPercent(cropVariant.cropArea.height / imageData.naturalHeight),
-      left: ImageManipulation.toCssPercent(cropVariant.cropArea.x / imageData.naturalWidth),
-      top: ImageManipulation.toCssPercent(cropVariant.cropArea.y / imageData.naturalHeight),
-      width: ImageManipulation.toCssPercent(cropVariant.cropArea.width / imageData.naturalWidth),
+      height: ImageManipulation.toCssPercent(cropVariant.cropArea!.height / imageData.naturalHeight),
+      left: ImageManipulation.toCssPercent(cropVariant.cropArea!.x / imageData.naturalWidth),
+      top: ImageManipulation.toCssPercent(cropVariant.cropArea!.y / imageData.naturalHeight),
+      width: ImageManipulation.toCssPercent(cropVariant.cropArea!.width / imageData.naturalWidth),
     });
 
     // show and update focusArea in the preview only if we really have one configured
@@ -723,10 +723,10 @@ class ImageManipulation {
      * Apply negative margins on the previewThumbnailImage to make the illusion of an offset
      */
     Object.assign(cropperPreviewThumbnailImage.style, {
-      height: `${parseFloat(styles.height) * (1 / (cropVariant.cropArea.height / imageData.naturalHeight))}px`,
+      height: `${parseFloat(styles.height) * (1 / (cropVariant.cropArea!.height / imageData.naturalHeight))}px`,
       margin: `${-1 * parseFloat(styles.left)}px`,
       marginTop: `${-1 * parseFloat(styles.top)}px`,
-      width: `${parseFloat(styles.width) * (1 / (cropVariant.cropArea.width / imageData.naturalWidth))}px`,
+      width: `${parseFloat(styles.width) * (1 / (cropVariant.cropArea!.width / imageData.naturalWidth))}px`,
     });
   }
 
@@ -747,7 +747,7 @@ class ImageManipulation {
    */
   private updateCropVariantData(currentCropVariant: CropVariant): void {
     const imageData: Cropper.ImageData = this.cropper.getImageData();
-    const absoluteCropArea: Area = this.convertAbsoluteToRelativeCropArea(currentCropVariant.cropArea, imageData);
+    const absoluteCropArea: Area = this.convertAbsoluteToRelativeCropArea(currentCropVariant.cropArea!, imageData);
     this.data[currentCropVariant.id] = Object.assign({}, currentCropVariant, { cropArea: absoluteCropArea });
   }
 
@@ -843,13 +843,13 @@ class ImageManipulation {
     // iterate over the crop variants and set up their respective preview
     Object.keys(data).forEach((cropVariantId) => {
       const cropVariant: CropVariant = data[cropVariantId];
-      const cropData: Area = this.convertRelativeToAbsoluteCropArea(cropVariant.cropArea, imageData);
+      const cropData: Area = this.convertRelativeToAbsoluteCropArea(cropVariant.cropArea!, imageData);
 
       const preview = this.trigger
-        .closest('.form-group')
+        .closest('.form-group')!
         .querySelector(`.t3js-image-manipulation-preview[data-crop-variant-id="${cropVariantId}"]`);
       const previewSelectedRatio = this.trigger
-        .closest('.form-group')
+        .closest('.form-group')!
         .querySelector(`.t3js-image-manipulation-selected-ratio[data-crop-variant-id="${cropVariantId}"]`); // tslint:disable-line:max-line-length
 
       if (!(preview instanceof HTMLElement)) {
@@ -898,7 +898,7 @@ class ImageManipulation {
 
       const ratioTitleWindow = this.currentModal.ownerDocument.defaultView;
       const ratioTitleText = this.currentModal.querySelector(`.t3-js-ratio-title[data-ratio-id="${cropVariant.id}${cropVariant.selectedRatio}"]`); // tslint:disable-line:max-line-length
-      if (previewSelectedRatio instanceof HTMLElement && ratioTitleText instanceof ratioTitleWindow.HTMLElement) {
+      if (previewSelectedRatio instanceof HTMLElement && ratioTitleText instanceof ratioTitleWindow!.HTMLElement) {
         previewSelectedRatio.innerText = ratioTitleText.innerText;
       }
     });
@@ -910,7 +910,7 @@ class ImageManipulation {
    */
   private openPreview(data: object): void {
     const cropVariants: string = ImageManipulation.serializeCropVariants(data);
-    let previewUrl: string = this.trigger.dataset.previewUrl;
+    let previewUrl: string = this.trigger.dataset.previewUrl!;
     previewUrl = previewUrl + (previewUrl.includes('?') ? '&' : '?') + 'cropVariants=' + encodeURIComponent(cropVariants);
     window.open(previewUrl, 'TYPO3ImageManipulationPreview');
   }
@@ -921,7 +921,7 @@ class ImageManipulation {
    */
   private save(data: Record<string, CropVariant>): void {
     const cropVariants: string = ImageManipulation.serializeCropVariants(data);
-    const hiddenField = document.querySelector<HTMLInputElement>(`#${this.trigger.dataset.field}`);
+    const hiddenField = document.querySelector<HTMLInputElement>(`#${this.trigger.dataset.field}`)!;
     this.trigger.dataset.cropVariants = JSON.stringify(data);
     this.setPreviewImages(data);
     hiddenField.value = cropVariants;
@@ -938,8 +938,8 @@ class ImageManipulation {
         this.cropper.destroy();
       }
       this.initialized = false;
-      this.cropper = null;
-      this.currentModal = null;
+      this.cropper = null!;
+      this.currentModal = null!;
       this.data = null;
     }
   }

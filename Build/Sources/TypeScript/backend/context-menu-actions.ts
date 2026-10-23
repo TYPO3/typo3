@@ -56,7 +56,7 @@ class ContextMenuActions {
 
     const editParameters = '&edit[' + table + '][' + uid + ']=edit'
       + overrideVals
-      + '&module=' + encodeURIComponent(topWindow.TYPO3.ModuleMenu.App.getCurrentModule())
+      + '&module=' + encodeURIComponent(topWindow.TYPO3.ModuleMenu.App.getCurrentModule()!)
       + '&returnUrl=' + ContextMenuActions.getReturnUrl();
 
     if (isContextualRecordEditOpen()) {
@@ -71,10 +71,10 @@ class ContextMenuActions {
     const viewUrl = dataset.previewUrl;
     if (viewUrl) {
       const previewWin = window.open(viewUrl, 'newTYPO3frontendWindow');
-      previewWin.focus();
+      previewWin!.focus();
 
-      if (Utility.urlsPointToSameServerSideResource(previewWin.location.href, viewUrl)) {
-        previewWin.location.reload();
+      if (Utility.urlsPointToSameServerSideResource(previewWin!.location.href, viewUrl)) {
+        previewWin!.location.reload();
       }
     }
   }
@@ -125,7 +125,7 @@ class ContextMenuActions {
   }
 
   public static newPageWizard(table: string, uid: number, dataset: DOMStringMap): void {
-    const moduleUrl: string = dataset.pagesNewWizardUrl;
+    const moduleUrl: string = dataset.pagesNewWizardUrl!;
     Viewport.ContentContainer.setUrl(
       moduleUrl + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
@@ -251,8 +251,8 @@ class ContextMenuActions {
 
   public static deleteRecord(table: string, uid: number, dataset: DOMStringMap): void {
     const modal = Modal.confirm(
-      dataset.title,
-      dataset.message,
+      dataset.title!,
+      dataset.message!,
       SeverityEnum.warning, [
         {
           text: dataset.buttonCloseText || coreCommonLabels.get('cancel'),
@@ -379,7 +379,7 @@ class ContextMenuActions {
     }
     const modal = Modal.confirm(
       dataset.title,
-      dataset.message,
+      dataset.message!,
       SeverityEnum.warning, [
         {
           text: dataset.buttonCloseText || coreCommonLabels.get('cancel'),

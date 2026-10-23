@@ -103,7 +103,7 @@ class Paste {
         if (!isContentTypeAllowedForTarget(this.itemOnClipboardCType, el)) {
           return;
         }
-        const template = el.parentElement.dataset.page ? this.pasteIntoLinkTemplate : this.pasteAfterLinkTemplate;
+        const template = el.parentElement!.dataset.page ? this.pasteIntoLinkTemplate : this.pasteAfterLinkTemplate;
         el.append(document.createRange().createContextualFragment(template));
       });
     }
@@ -142,7 +142,7 @@ class Paste {
    */
   private execute(element: HTMLElement): void {
     const colPos = Paste.determineColumn(element);
-    const closestElement = element.closest<HTMLElement>(this.elementIdentifier);
+    const closestElement = element.closest<HTMLElement>(this.elementIdentifier)!;
     const targetFound = closestElement.dataset.uid;
     let targetPid;
     if (typeof targetFound === 'undefined') {
@@ -150,7 +150,7 @@ class Paste {
     } else {
       targetPid = 0 - parseInt(targetFound, 10);
     }
-    const language = parseInt(element.closest<HTMLElement>('[data-language-uid]').dataset.languageUid, 10);
+    const language = parseInt(element.closest<HTMLElement>('[data-language-uid]')!.dataset.languageUid!, 10);
     const parameters = {
       CB: {
         paste: 'tt_content|' + targetPid,

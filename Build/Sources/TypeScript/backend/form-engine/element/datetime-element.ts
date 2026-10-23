@@ -47,7 +47,7 @@ class DatetimeElement extends HTMLElement {
 
     this.registerEventHandler();
     import('../../date-time-picker').then(({ default: DateTimePicker }): void => {
-      DateTimePicker.initialize(this.element, this);
+      DateTimePicker.initialize(this.element!, this);
     });
   }
 
@@ -60,7 +60,7 @@ class DatetimeElement extends HTMLElement {
         btn.classList.remove('disabled');
         btn.disabled = false;
       });
-    }).bindTo(this.element);
+    }).bindTo(this.element!);
   }
 }
 

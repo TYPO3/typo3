@@ -49,7 +49,7 @@ class SelectBoxFilter {
   }
 
   private initializeEvents(): void {
-    const wizardsElement = this.selectElement.closest('.form-wizards-wrap');
+    const wizardsElement = this.selectElement!.closest('.form-wizards-wrap');
     if (wizardsElement === null) {
       return;
     }
@@ -74,7 +74,7 @@ class SelectBoxFilter {
    */
   private filter(filterText: string): void {
     if (this.availableOptions === null) {
-      this.availableOptions = this.selectElement.querySelectorAll('option');
+      this.availableOptions = this.selectElement!.querySelectorAll('option');
       this.foldedLabels = Array.from(this.availableOptions, (option: HTMLOptionElement): string =>
         TextNormalizer.foldCaseAndDiacritics(TextNormalizer.normalizeInvisibleCharacters(option.textContent)));
     }
@@ -83,7 +83,7 @@ class SelectBoxFilter {
     const foldedFilterText = TextNormalizer.foldCaseAndDiacritics(TextNormalizer.normalizeInvisibleCharacters(filterText));
 
     this.availableOptions.forEach((option, index): void => {
-      option.hidden = filterText.length > 0 && !this.foldedLabels[index].includes(foldedFilterText);
+      option.hidden = filterText.length > 0 && !this.foldedLabels![index].includes(foldedFilterText);
       SelectBoxFilter.toggleOptGroup(option);
     });
   }

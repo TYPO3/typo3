@@ -96,11 +96,11 @@ export class ResultContainer extends LitElement {
       return;
     }
 
-    if (typeof invokeHandlers[resultItem.provider + '_' + action.identifier] === 'function') {
-      invokeHandlers[resultItem.provider + '_' + action.identifier](resultItem, action);
+    if (typeof invokeHandlers[resultItem.provider + '_' + action!.identifier] === 'function') {
+      invokeHandlers[resultItem.provider + '_' + action!.identifier](resultItem, action!);
     } else {
       // Default handler to open the URL
-      Viewport.ContentContainer.setUrl(action.url);
+      Viewport.ContentContainer.setUrl(action!.url);
     }
     this.dispatchEvent(new CustomEvent<ChooseItemEventData>('live-search:item-chosen', {
       detail: { resultItem }

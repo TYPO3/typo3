@@ -70,7 +70,7 @@ export class IframeModuleElement extends LitElement {
 
   private registerPagehideHandler(iframe: HTMLIFrameElement): void {
     try {
-      iframe.contentWindow.addEventListener('pagehide', (e: Event) => this._pagehide(e, iframe), { once: true });
+      iframe.contentWindow!.addEventListener('pagehide', (e: Event) => this._pagehide(e, iframe), { once: true });
     } catch (e) {
       console.error('Failed to access contentWindow of module iframe – using a foreign origin?');
       throw e;
@@ -80,9 +80,9 @@ export class IframeModuleElement extends LitElement {
   private retrieveModuleStateFromIFrame(iframe: HTMLIFrameElement): ModuleState {
     try {
       return {
-        url: iframe.contentWindow.location.href,
-        title: iframe.contentDocument.title,
-        module: iframe.contentDocument.body.querySelector('.module[data-module-name]')?.getAttribute('data-module-name') ?? undefined
+        url: iframe.contentWindow!.location.href,
+        title: iframe.contentDocument!.title,
+        module: iframe.contentDocument!.body.querySelector('.module[data-module-name]')?.getAttribute('data-module-name') ?? undefined
       };
     } catch {
       console.error('Failed to access contentWindow of module iframe – using a foreign origin?');

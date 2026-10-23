@@ -53,7 +53,7 @@ class ClearTypo3tempFiles extends AbstractInteractableModule {
 
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
-      currentModal.querySelector(Identifiers.statContainer).innerHTML = '';
+      currentModal.querySelector(Identifiers.statContainer)!.innerHTML = '';
       this.getStats();
     }).delegateTo(currentModal, Identifiers.statsTrigger);
 
@@ -80,14 +80,14 @@ class ClearTypo3tempFiles extends AbstractInteractableModule {
             if (Array.isArray(data.stats) && data.stats.length > 0) {
               data.stats.forEach((element): void => {
                 if (element.numberOfFiles > 0) {
-                  const aStat = modalContent.querySelector<HTMLTemplateElement>(Identifiers.statTemplate).content.cloneNode(true) as HTMLElement;
-                  aStat.querySelector<HTMLElement>(Identifiers.statNumberOfFiles).innerText = String(element.numberOfFiles);
-                  aStat.querySelector<HTMLElement>(Identifiers.statDirectory).innerText = element.directory;
-                  aStat.querySelector<HTMLElement>(Identifiers.deleteTrigger).setAttribute('data-folder', element.directory);
+                  const aStat = modalContent.querySelector<HTMLTemplateElement>(Identifiers.statTemplate)!.content.cloneNode(true) as HTMLElement;
+                  aStat.querySelector<HTMLElement>(Identifiers.statNumberOfFiles)!.innerText = String(element.numberOfFiles);
+                  aStat.querySelector<HTMLElement>(Identifiers.statDirectory)!.innerText = element.directory;
+                  aStat.querySelector<HTMLElement>(Identifiers.deleteTrigger)!.setAttribute('data-folder', element.directory);
                   if (element.storageUid !== undefined) {
-                    aStat.querySelector<HTMLElement>(Identifiers.deleteTrigger).setAttribute('data-storage-uid', String(element.storageUid));
+                    aStat.querySelector<HTMLElement>(Identifiers.deleteTrigger)!.setAttribute('data-storage-uid', String(element.storageUid));
                   }
-                  modalContent.querySelector(Identifiers.statContainer).append(aStat);
+                  modalContent.querySelector(Identifiers.statContainer)!.append(aStat);
                 }
               });
             }

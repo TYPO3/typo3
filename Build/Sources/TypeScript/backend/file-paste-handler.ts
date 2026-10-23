@@ -90,7 +90,7 @@ export class FilePasteHandler {
     }
     for (let element = this.lastInteractionTarget; element !== null; element = element.parentElement) {
       if (scopedTargets.has(element)) {
-        return [scopedTargets.get(element)];
+        return [scopedTargets.get(element)!];
       }
     }
     return [...this.targets].filter((target: FilePasteTarget): boolean => target.isAvailable());

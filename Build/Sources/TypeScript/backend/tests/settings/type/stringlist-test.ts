@@ -25,7 +25,7 @@ describe('@typo3/backend/settings/type/stringlist', () => {
 
   afterEach((): void => {
     root.remove();
-    root = null;
+    root = null!;
   });
 
   it('renders one button when the value list is empty', async () => {

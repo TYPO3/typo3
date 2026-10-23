@@ -60,7 +60,7 @@ const defaultConfiguration: Partial<Configuration> = {
 };
 
 function getFormEditorApp(): FormEditor {
-  return formEditorApp;
+  return formEditorApp!;
 }
 
 function getUtility(): Utility {
@@ -93,13 +93,13 @@ export function buildDomElementSelectorHelper(
 ): string {
   let newString;
   assert(
-    !getUtility().isUndefinedOrNull(configuration.domElementSelectorPattern[patternIdentifier]),
+    !getUtility().isUndefinedOrNull(configuration!.domElementSelectorPattern[patternIdentifier]),
     'Invalid parameter "patternIdentifier" (' + patternIdentifier + ')',
     1478801251
   );
   assert(Array.isArray(replacements), 'Invalid parameter "replacements"', 1478801252);
 
-  newString = configuration.domElementSelectorPattern[patternIdentifier];
+  newString = configuration!.domElementSelectorPattern[patternIdentifier];
   for (let i = 0, len = replacements.length; i < len; ++i) {
     newString = newString.replace('{' + i + '}', replacements[i]);
   }
@@ -114,7 +114,7 @@ export function getDomElementSelector(
   args: string[]
 ): string {
   assert(
-    !getUtility().isUndefinedOrNull(configuration.domElementSelectorPattern[selectorIdentifier]),
+    !getUtility().isUndefinedOrNull(configuration!.domElementSelectorPattern[selectorIdentifier]),
     'Invalid parameter "selectorIdentifier" (' + selectorIdentifier + ')',
     1478372374
   );
@@ -130,12 +130,12 @@ export function getDomElementClassName(
 ): string {
   let className;
   assert(
-    !getUtility().isUndefinedOrNull(configuration.domElementClassNames[classNameIdentifier]),
+    !getUtility().isUndefinedOrNull(configuration!.domElementClassNames[classNameIdentifier]),
     'Invalid parameter "classNameIdentifier" (' + classNameIdentifier + ')',
     1478803906
   );
 
-  className = configuration.domElementClassNames[classNameIdentifier];
+  className = configuration!.domElementClassNames[classNameIdentifier];
   if (asSelector) {
     className = getDomElementSelector('class', [className]);
   }
@@ -148,12 +148,12 @@ export function getDomElementClassName(
 export function getDomElementIdName(idNameIdentifier: string, asSelector: boolean): string {
   let idName;
   assert(
-    !getUtility().isUndefinedOrNull(configuration.domElementIdNames[idNameIdentifier]),
+    !getUtility().isUndefinedOrNull(configuration!.domElementIdNames[idNameIdentifier]),
     'Invalid parameter "domElementIdNames" (' + idNameIdentifier + ')',
     1479251518
   );
 
-  idName = configuration.domElementIdNames[idNameIdentifier];
+  idName = configuration!.domElementIdNames[idNameIdentifier];
   if (asSelector) {
     idName = getDomElementSelector('id', [idName]);
   }
@@ -165,11 +165,11 @@ export function getDomElementIdName(idNameIdentifier: string, asSelector: boolea
  */
 export function getDomElementDataAttributeValue(dataAttributeValueIdentifier: string): string {
   assert(
-    !getUtility().isUndefinedOrNull(configuration.domElementDataAttributeValues[dataAttributeValueIdentifier]),
+    !getUtility().isUndefinedOrNull(configuration!.domElementDataAttributeValues[dataAttributeValueIdentifier]),
     'Invalid parameter "dataAttributeValueIdentifier" (' + dataAttributeValueIdentifier + ')',
     1478806884
   );
-  return configuration.domElementDataAttributeValues[dataAttributeValueIdentifier];
+  return configuration!.domElementDataAttributeValues[dataAttributeValueIdentifier];
 }
 
 /**
@@ -181,19 +181,19 @@ export function getDomElementDataAttribute(
   additionalSelectorArgs?: string[]
 ): string {
   assert(
-    !getUtility().isUndefinedOrNull(configuration.domElementDataAttributeNames[dataAttributeIdentifier]),
+    !getUtility().isUndefinedOrNull(configuration!.domElementDataAttributeNames[dataAttributeIdentifier]),
     'Invalid parameter "dataAttributeIdentifier" (' + dataAttributeIdentifier + ')',
     1478808035
   );
 
   if (getUtility().isUndefinedOrNull(selectorIdentifier)) {
-    return configuration.domElementDataAttributeNames[dataAttributeIdentifier];
+    return configuration!.domElementDataAttributeNames[dataAttributeIdentifier];
   }
 
   additionalSelectorArgs = additionalSelectorArgs || [];
   return getDomElementSelector(
-    selectorIdentifier,
-    [configuration.domElementDataAttributeNames[dataAttributeIdentifier]].concat(additionalSelectorArgs)
+    selectorIdentifier!,
+    [configuration!.domElementDataAttributeNames[dataAttributeIdentifier]].concat(additionalSelectorArgs)
   );
 }
 
@@ -213,7 +213,7 @@ export function getDomElementDataIdentifierSelector(
  * to obtain the actual template markup.
  */
 export function getTemplateElement(templateName: string): HTMLTemplateElement | null {
-  if (!getUtility().isUndefinedOrNull(configuration.domElementDataAttributeValues[templateName])) {
+  if (!getUtility().isUndefinedOrNull(configuration!.domElementDataAttributeValues[templateName])) {
     templateName = getDomElementDataAttributeValue(templateName);
   }
 

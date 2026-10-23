@@ -101,8 +101,8 @@ export class ContentRecordSelectionStep implements WizardStepInterface, WizardSt
                        this.task.status === TaskStatus.INITIAL;
 
     if (shouldRun) {
-      this.lastTargetLanguage = currentTargetLanguage;
-      this.lastSourceLanguage = currentSourceLanguage;
+      this.lastTargetLanguage = currentTargetLanguage!;
+      this.lastSourceLanguage = currentSourceLanguage!;
       this.hasDispatchedAutoAdvance = false; // Reset flag when task runs
       this.hasUserInteracted = false; // Reset interaction flag when task runs
       this.task.run();

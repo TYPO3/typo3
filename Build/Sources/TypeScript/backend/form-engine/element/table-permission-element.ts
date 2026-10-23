@@ -54,32 +54,32 @@ class TablePermissionElement extends HTMLElement {
   private registerEventHandler() {
     new RegularEvent('change', (e: CustomEvent): void => {
       this.handleSingleItemChange(e.target as HTMLInputElement);
-    }).delegateTo(this.querySelector('table'), '.t3js-table-permissions-item');
+    }).delegateTo(this.querySelector('table')!, '.t3js-table-permissions-item');
     new RegularEvent('multiRecordSelection:checkbox:state:changed', (e: CustomEvent): void => {
       const name = (e.target as HTMLInputElement).name;
       if (this.querySelectorAll(selector`input[name="${name}"]:checked`).length === 0) {
-        const item = this.querySelector<HTMLInputElement>(selector`input[name="${name}"]`);
+        const item = this.querySelector<HTMLInputElement>(selector`input[name="${name}"]`)!;
         item.value = Permissions.none;
         this.handleSingleItemChange(item);
-        (this.querySelector<HTMLInputElement>(selector`input[name="${name}"][value="${Permissions.none}"]`)).checked = true;
+        (this.querySelector<HTMLInputElement>(selector`input[name="${name}"][value="${Permissions.none}"]`)!).checked = true;
       }
-    }).delegateTo(this.querySelector('table') , MultiRecordSelectionSelectors.checkboxSelector);
+    }).delegateTo(this.querySelector('table')! , MultiRecordSelectionSelectors.checkboxSelector);
   }
 
   private handleSingleItemChange(target: HTMLInputElement): void {
     switch (target.value) {
       case Permissions.select:
-        this.addItem(target.dataset.table ?? '', this.selectStateField);
-        this.removeItem(target.dataset.table ?? '', this.modifyStateField);
+        this.addItem(target.dataset.table ?? '', this.selectStateField!);
+        this.removeItem(target.dataset.table ?? '', this.modifyStateField!);
         break;
       case Permissions.modify:
-        this.addItem(target.dataset.table ?? '', this.selectStateField);
-        this.addItem(target.dataset.table ?? '', this.modifyStateField);
+        this.addItem(target.dataset.table ?? '', this.selectStateField!);
+        this.addItem(target.dataset.table ?? '', this.modifyStateField!);
         break;
       case Permissions.none:
       default:
-        this.removeItem(target.dataset.table ?? '', this.selectStateField);
-        this.removeItem(target.dataset.table ?? '', this.modifyStateField);
+        this.removeItem(target.dataset.table ?? '', this.selectStateField!);
+        this.removeItem(target.dataset.table ?? '', this.modifyStateField!);
         break;
     }
   }

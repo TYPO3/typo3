@@ -68,7 +68,7 @@ class CapslockWarning {
     warningElement.title = field.dataset.capslockwarningTitle ?? '';
     warningElement.appendChild(warningMessage);
 
-    const parentElement = field.parentElement;
+    const parentElement = field.parentElement!;
     if (parentElement.classList.contains('form-control-clearable-wrapper')) {
       parentElement.insertAdjacentElement('afterend', warningElement);
       return;

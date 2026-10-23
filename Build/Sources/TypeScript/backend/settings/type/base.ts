@@ -177,7 +177,7 @@ export abstract class BaseElement<
     const options = ctor.getPropertyOptions('value');
     const converter = typeof options.converter === 'object' && typeof options.converter?.toAttribute === 'function' ?
       options.converter.toAttribute : defaultConverter.toAttribute;
-    return converter(value, options.type) as string;
+    return converter!(value, options.type) as string;
   }
 }
 

@@ -38,9 +38,9 @@ export class FormEngineStep implements WizardStepInterface, WizardStepAfterRende
   ) {
     this.key = configuration.key;
     this.title = configuration.title;
-    this.html = configuration.html;
-    this.modules = configuration.modules;
-    this.labels = configuration.labels;
+    this.html = configuration.html!;
+    this.modules = configuration.modules!;
+    this.labels = configuration.labels!;
   }
 
   public getValue(): Record<string, any> | null {
@@ -87,7 +87,7 @@ export class FormEngineStep implements WizardStepInterface, WizardStepAfterRende
   }
 
   public async afterRender(): Promise<void> {
-    this.setValue(this.context.getStoreData('fields'));
+    this.setValue(this.context.getStoreData('fields')!);
 
     if (this.modules.length > 0) {
       await this.loadModules();
@@ -126,7 +126,7 @@ export class FormEngineStep implements WizardStepInterface, WizardStepAfterRende
   public async beforeAdvance(): Promise<void> {
     const pageUid = (this.context.getStoreData('position')?.pageUid || 0);
     const fields = this.getValue();
-    const values = fields[this.key] || {};
+    const values = fields![this.key] || {};
 
     const summaryFields: Record<string, string> = {};
     for (const [key, value] of Object.entries(values)) {
@@ -146,7 +146,7 @@ export class FormEngineStep implements WizardStepInterface, WizardStepAfterRende
       };
     });
 
-    this.context.setStoreData('fields', fields);
+    this.context.setStoreData('fields', fields!);
   }
 
   private async loadModules(): Promise<void> {

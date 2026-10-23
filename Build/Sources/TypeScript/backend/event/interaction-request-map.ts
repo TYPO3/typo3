@@ -18,7 +18,7 @@ class InteractionRequestMap {
   private assignments: InteractionRequestAssignment[] = [];
 
   public attachFor(request: InteractionRequest, deferred: PromiseControls<never>): void {
-    let targetAssignment: InteractionRequestAssignment = this.getFor(request);
+    let targetAssignment: InteractionRequestAssignment = this.getFor(request)!;
     if (targetAssignment === null) {
       targetAssignment = { request, deferreds: [] };
       this.assignments.push(targetAssignment);
@@ -34,7 +34,7 @@ class InteractionRequestMap {
   }
 
   public getFor(triggerEvent: InteractionRequest): InteractionRequestAssignment | null {
-    let targetAssignment: InteractionRequestAssignment = null;
+    let targetAssignment: InteractionRequestAssignment = null!;
     this.assignments.some(
       (assignment) => {
         if (assignment.request === triggerEvent) {

@@ -41,7 +41,7 @@ function withoutComments(html: string): string {
 
 describe('@typo3/workspaces/frontend-change-highlighter', (): void => {
   it('detects inserted and deleted tokens', (): void => {
-    const { inserted, deleted } = diffTokens(['a', 'b', 'c', 'd'], ['a', 'x', 'c', 'd', 'e']);
+    const { inserted, deleted } = diffTokens(['a', 'b', 'c', 'd'], ['a', 'x', 'c', 'd', 'e'])!;
     expect([...inserted]).to.deep.equal([1, 4]);
     expect([...deleted]).to.deep.equal([[1, [1]]]);
   });
@@ -130,7 +130,7 @@ describe('@typo3/workspaces/frontend-change-highlighter', (): void => {
     const undo = highlightChanges(collectMarkedRecords(workspace, true), liveRecords(wrap('<p>Bring <strong>two</strong> shirts</p>', 1, null)));
     undo();
     expect(workspace.innerHTML).to.equal(html);
-    expect(workspace.querySelector('strong').childNodes).to.have.length(1);
+    expect(workspace.querySelector('strong')!.childNodes).to.have.length(1);
   });
 
   it('only collects the outermost of nested changes', (): void => {

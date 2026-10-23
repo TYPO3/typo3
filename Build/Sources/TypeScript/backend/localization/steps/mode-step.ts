@@ -163,7 +163,7 @@ export class ModeStep implements WizardStepInterface, WizardStepValueInterface, 
   }
 
   public beforeAdvance(): void {
-    this.context.setStoreData('localizationMode', this.getValue());
+    this.context.setStoreData('localizationMode', this.getValue()!);
   }
 
   public getSummaryData(): SummaryItem[] {

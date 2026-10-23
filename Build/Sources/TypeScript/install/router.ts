@@ -36,7 +36,7 @@ class Router {
   private context: string;
 
   public setContent(content: string|Element|DocumentFragment): void {
-    const container = this.rootContainer.querySelector<HTMLElement>(this.contentSelector);
+    const container = this.rootContainer.querySelector<HTMLElement>(this.contentSelector)!;
     if (typeof content === 'string') {
       content = document.createRange().createContextualFragment(content);
     }
@@ -44,7 +44,7 @@ class Router {
   }
 
   public initialize(): void {
-    this.rootContainer = document.querySelector(this.rootSelector);
+    this.rootContainer = document.querySelector(this.rootSelector)!;
     this.context = this.rootContainer.dataset.context ?? '';
     this.controller = this.rootContainer.dataset.controller ?? '';
 
@@ -78,7 +78,7 @@ class Router {
           aModule.initialize(target);
         });
       } else {
-        const modalTitle = target.closest('.card').querySelector('.card-title').innerHTML;
+        const modalTitle = target.closest('.card')!.querySelector('.card-title')!.innerHTML;
         const modalSize = target.dataset.modalSize as any || Modal.sizes.large;
         Modal.advanced({
           type: Modal.types.default,
@@ -201,7 +201,7 @@ class Router {
             this.rootContainer.innerHTML = data.html;
             // Mark main module as active in standalone
             if (this.context !== 'backend') {
-              this.rootContainer.querySelector('[data-installroute-controller="' + this.controller + '"]').classList.add('modulemenu-action-active');
+              this.rootContainer.querySelector('[data-installroute-controller="' + this.controller + '"]')!.classList.add('modulemenu-action-active');
               this.registerScaffoldEvents();
             }
             this.loadCards();
@@ -343,14 +343,14 @@ class Router {
   }
 
   public login(): void {
-    const outputContainer = document.querySelector<HTMLElement>('.t3js-login-output');
+    const outputContainer = document.querySelector<HTMLElement>('.t3js-login-output')!;
     outputContainer.innerHTML = '';
     (new AjaxRequest(this.getUrl()))
       .post({
         install: {
           action: 'login',
-          token: (document.querySelector<HTMLFormElement>('[data-login-token]')).dataset.loginToken,
-          password: (document.querySelector<HTMLInputElement>('.t3-install-form-input-text')).value,
+          token: (document.querySelector<HTMLFormElement>('[data-login-token]')!).dataset.loginToken,
+          password: (document.querySelector<HTMLInputElement>('.t3-install-form-input-text')!).value,
         },
       })
       .then(

@@ -61,7 +61,7 @@ class LocalConfiguration extends AbstractInteractableModule {
       this.toggleAll = !this.toggleAll;
       const action = this.toggleAll ? 'show' : 'hide';
       panels.forEach((panel) => {
-        const toggleButton = modalContent.querySelector<HTMLElement>(`[data-bs-target="#${panel.id}"]`);
+        const toggleButton = modalContent.querySelector<HTMLElement>(`[data-bs-target="#${panel.id}"]`)!;
         if (toggleButton) {
           toggleButton.classList.toggle('collapsed', !this.toggleAll);
         }
@@ -71,7 +71,7 @@ class LocalConfiguration extends AbstractInteractableModule {
 
     // Focus search field on certain user interactions
     new RegularEvent('keydown', (event: KeyboardEvent) => {
-      const searchInput = currentModal.querySelector<HTMLInputElement>(Identifiers.searchTrigger);
+      const searchInput = currentModal.querySelector<HTMLInputElement>(Identifiers.searchTrigger)!;
       if (event.ctrlKey || event.metaKey) {
         // Focus search field on ctrl-f
         if (event.key === 'f' || event.key === 'F') {
@@ -142,10 +142,10 @@ class LocalConfiguration extends AbstractInteractableModule {
         }
       }
 
-      const rowTemplate = container.querySelector<HTMLTemplateElement>('#' + CSS.escape(container.dataset.namespace ?? '')).content.cloneNode(true) as DocumentFragment;
-      container.querySelector('.configuration-map-item-collection').append(rowTemplate);
+      const rowTemplate = container.querySelector<HTMLTemplateElement>('#' + CSS.escape(container.dataset.namespace ?? ''))!.content.cloneNode(true) as DocumentFragment;
+      container.querySelector('.configuration-map-item-collection')!.append(rowTemplate);
 
-      const lastRow = querySelectorLast(Identifiers.configurationItem);
+      const lastRow = querySelectorLast(Identifiers.configurationItem)!;
       // Focus first input field in inserted item
       (lastRow.querySelector<HTMLInputElement>('input[type="text"]'))?.focus();
     }).delegateTo(currentModal, Identifiers.createRowTrigger);

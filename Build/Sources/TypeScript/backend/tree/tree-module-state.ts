@@ -64,7 +64,7 @@ export const TreeModuleState = <T extends Constructor<LitElement>>(superClass: T
       }
 
       const { nodes } = evt.detail;
-      const treeIdentifier = this.transformModuleStateIdentifierToNodeIdentifier(moduleState.treeIdentifier);
+      const treeIdentifier = this.transformModuleStateIdentifierToNodeIdentifier(moduleState.treeIdentifier!);
       const identifier = this.transformModuleStateIdentifierToNodeIdentifier(moduleState.identifier);
       const nodeToActivate = nodes.find((node) => (
         (moduleState.treeIdentifier !== null && node.__treeIdentifier === treeIdentifier) ||

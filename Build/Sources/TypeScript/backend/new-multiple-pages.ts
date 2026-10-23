@@ -54,7 +54,7 @@ class NewMultiplePages {
    * Add further input rows
    */
   private createNewFormFields(): void {
-    const multiplePagesContainer = document.querySelector<HTMLDivElement>(Identifiers.containerSelector);
+    const multiplePagesContainer = document.querySelector<HTMLDivElement>(Identifiers.containerSelector)!;
     const lineMarkup: string = document.querySelector(Identifiers.templateRow)?.innerHTML || '';
     if (multiplePagesContainer === null || lineMarkup === '') {
       return;
@@ -77,10 +77,10 @@ class NewMultiplePages {
       option.removeAttribute('selected');
     }
     const optionElement: HTMLOptionElement = this.options[this.selectedIndex];
-    const targetElement = document.querySelector(this.dataset.target);
+    const targetElement = document.querySelector(this.dataset.target!);
     if (optionElement !== null && targetElement !== null) {
       optionElement.setAttribute('selected', 'selected');
-      targetElement.innerHTML = optionElement.dataset.icon;
+      targetElement.innerHTML = optionElement.dataset.icon!;
     }
   }
 
@@ -97,7 +97,7 @@ class NewMultiplePages {
         option.removeAttribute('selected');
       }
       const defaultIcon = selectElement.options[0]?.dataset.icon;
-      const targetElement = document.querySelector(selectElement.dataset.target);
+      const targetElement = document.querySelector(selectElement.dataset.target!);
       if (defaultIcon && targetElement !== null) {
         targetElement.innerHTML = defaultIcon;
       }

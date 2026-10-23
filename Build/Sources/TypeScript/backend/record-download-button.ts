@@ -69,8 +69,8 @@ export class RecordDownloadButton extends PseudoButtonLitElement {
         }
       ],
       ajaxCallback: (): void => {
-        const form = modal.querySelector<HTMLFormElement>('form');
-        const formatSelect = modal.querySelector<HTMLSelectElement>(Selectors.formatSelector);
+        const form = modal.querySelector<HTMLFormElement>('form')!;
+        const formatSelect = modal.querySelector<HTMLSelectElement>(Selectors.formatSelector)!;
         const formatOptions: NodeListOf<HTMLDivElement> = modal.querySelectorAll(Selectors.formatOptions);
 
         form?.addEventListener('submit', (): void => modal.hideModal());

@@ -40,7 +40,7 @@ export class TreeToolbar extends LitElement {
     if (inputEl) {
       new DebounceEvent('input', (evt: InputEvent) => {
         const el = evt.target as HTMLInputElement;
-        this.tree.filter(el.value.trim());
+        this.tree!.filter(el.value.trim());
       }, this.settings.filterTimeout).bindTo(inputEl);
     }
   }
@@ -105,16 +105,16 @@ export class TreeToolbar extends LitElement {
   }
 
   protected refreshTree(): void {
-    this.tree.refreshOrFilterTree();
+    this.tree!.refreshOrFilterTree();
   }
 
   protected collapseAll(evt: MouseEvent): void {
     evt.preventDefault();
     // Only collapse nodes that aren't on the root level
     // @TODO Implement into tree
-    this.tree.nodes.forEach((node: TreeNodeInterface) => {
+    this.tree!.nodes.forEach((node: TreeNodeInterface) => {
       if (node.__parents.length) {
-        this.tree.hideChildren(node);
+        this.tree!.hideChildren(node);
       }
     });
   }

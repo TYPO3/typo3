@@ -34,9 +34,9 @@ export class MultiRecordSelectionAction {
     // Evaluate all checked records and if valid, add their uid to the list
     const entityIdentifiers: Array<string> = [];
     eventDetails.checkboxes.forEach((checkbox): void => {
-      const checkboxContainer = checkbox.closest<HTMLElement>(MultiRecordSelectionSelectors.elementSelector);
+      const checkboxContainer = checkbox.closest<HTMLElement>(MultiRecordSelectionSelectors.elementSelector)!;
       if (checkboxContainer !== null && checkboxContainer.dataset[eventDetails.configuration.idField]) {
-        entityIdentifiers.push(checkboxContainer.dataset[eventDetails.configuration.idField]);
+        entityIdentifiers.push(checkboxContainer.dataset[eventDetails.configuration.idField]!);
       }
     });
     return entityIdentifiers;

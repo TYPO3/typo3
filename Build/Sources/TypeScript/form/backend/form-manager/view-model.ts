@@ -205,7 +205,7 @@ function showReferencesSetup(formManagerApp: FormManager): void {
         fragment.querySelectorAll<HTMLAnchorElement>(Identifiers.referenceLink).forEach((link): void => {
           link.addEventListener('click', (e: Event): void => {
             e.preventDefault();
-            Modal.currentModal.hideModal();
+            Modal.currentModal!.hideModal();
             document.location = (e.currentTarget as HTMLAnchorElement).href;
           });
         });

@@ -603,7 +603,7 @@ export class Dashboard extends LitElement {
       severity: SeverityEnum.notice,
       content,
       callback: (currentModal: ModalElement): void => {
-        currentModal.querySelector('form').addEventListener('submit', (e: Event): void => {
+        currentModal.querySelector('form')!.addEventListener('submit', (e: Event): void => {
           e.preventDefault();
           const form = e.target as HTMLFormElement;
           const formData = new FormData(form);
@@ -748,7 +748,7 @@ export class Dashboard extends LitElement {
         <button
           class="btn btn-default btn-sm"
           title=${labels.get('dashboard.configure')}
-          @click=${() => { this.editDashboard(this.currentDashboard); }}
+          @click=${() => { this.editDashboard(this.currentDashboard!); }}
         >
           <typo3-backend-icon identifier="actions-cog" size="small"></typo3-backend-icon>
           <span class="visually-hidden">${labels.get('dashboard.configure')}</span>
@@ -761,7 +761,7 @@ export class Dashboard extends LitElement {
         <button
           class="btn btn-default btn-sm"
           title=${labels.get('dashboard.delete')}
-          @click=${() => { this.deleteDashboard(this.currentDashboard); }}
+          @click=${() => { this.deleteDashboard(this.currentDashboard!); }}
         >
           <typo3-backend-icon identifier="actions-delete" size="small"></typo3-backend-icon>
           <span class="visually-hidden">${labels.get('dashboard.delete')}</span>
@@ -1387,7 +1387,7 @@ export class DashboardWidget extends LitElement {
     if (button === null || button.disabled) {
       return;
     }
-    const page = parseInt(button.dataset.widgetPage, 10);
+    const page = parseInt(button.dataset.widgetPage!, 10);
     if (isNaN(page) || page < 1) {
       return;
     }
