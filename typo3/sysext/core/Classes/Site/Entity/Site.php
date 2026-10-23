@@ -283,7 +283,7 @@ class Site implements SiteInterface
 
     public function getDefaultLanguage(): SiteLanguage
     {
-        return reset($this->languages);
+        return $this->languages[0] ?? reset($this->languages);
     }
 
     /**

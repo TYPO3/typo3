@@ -90,12 +90,34 @@ final class SiteBaseRedirectResolverTest extends FunctionalTestCase
                 ],
             ],
         ]);
+        $site3 = new Site('default-not-first', 15, [
+            'base' => 'https://twenty.two/',
+            'languages' => [
+                1 => [
+                    'languageId' => 1,
+                    'locale' => 'fr_CA.UTF-8',
+                    'base' => '/fr/',
+                ],
+                0 => [
+                    'languageId' => 0,
+                    'locale' => 'en_US.UTF-8',
+                    'base' => '/en/',
+                ],
+            ],
+        ]);
 
         return [
             'redirect to first language' => [
                 'https://twenty.one/',
                 'https://twenty.one/en/',
                 $site1,
+                null,
+                '',
+            ],
+            'redirect to default language if not configured first' => [
+                'https://twenty.two/',
+                'https://twenty.two/en/',
+                $site3,
                 null,
                 '',
             ],
