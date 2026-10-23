@@ -121,6 +121,9 @@ class ChartInitializer {
 
   private darkModeEnabled(): boolean {
     const target = document.querySelector(this.selector);
+    if (target === null) {
+      return false;
+    }
     const computedStyle = window.getComputedStyle(target);
     const colorScheme = computedStyle.colorScheme;
     if (colorScheme === 'light only' || colorScheme === 'light') {
