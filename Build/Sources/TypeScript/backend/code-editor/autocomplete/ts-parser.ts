@@ -102,7 +102,7 @@ export class TreeNode {
    * The method uses the extPath of the current node to navigate to the corresponding
    * node in the external tree
    */
-  private getExtNode(): TsObjTree {
+  private getExtNode(): TsObjTree | null {
     let extTree = this.tsParser.extTsObjTree;
 
     if (this.extPath === '') {

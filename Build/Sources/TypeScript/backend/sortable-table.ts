@@ -20,7 +20,7 @@ import coreLabels from '~labels/core.core';
 
 class TablesortWithButtons extends Tablesort {
   public init(el: HTMLTableElement, options: TablesortOptions) {
-    let firstRow: HTMLTableRowElement, defaultSort;
+    let firstRow: HTMLTableRowElement | undefined, defaultSort;
 
     this.table = el;
     this.thead = false;

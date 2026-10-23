@@ -676,12 +676,15 @@ class ImageManipulation {
    * @param {HTMLElement} cropVariantTrigger - The crop variant element containing the thumbnail
    */
   private updatePreviewThumbnail(cropVariant: CropVariant, cropVariantTrigger: HTMLElement): void {
-    const cropperPreviewThumbnailCrop: HTMLElement =
+    const cropperPreviewThumbnailCrop: HTMLElement | null =
       cropVariantTrigger.querySelector('.t3js-cropper-preview-thumbnail-crop-area');
-    const cropperPreviewThumbnailImage: HTMLElement =
+    const cropperPreviewThumbnailImage: HTMLElement | null =
       cropVariantTrigger.querySelector('.t3js-cropper-preview-thumbnail-crop-image');
-    const cropperPreviewThumbnailFocus: HTMLElement =
+    const cropperPreviewThumbnailFocus: HTMLElement | null =
       cropVariantTrigger.querySelector('.t3js-cropper-preview-thumbnail-focus-area');
+    if (cropperPreviewThumbnailCrop === null || cropperPreviewThumbnailImage === null) {
+      return;
+    }
     const imageData: Cropper.ImageData = this.cropper.getImageData();
 
     // update the position/dimension of the crop area in the preview
@@ -693,7 +696,7 @@ class ImageManipulation {
     });
 
     // show and update focusArea in the preview only if we really have one configured
-    if (cropVariant.focusArea) {
+    if (cropVariant.focusArea && cropperPreviewThumbnailFocus !== null) {
       Object.assign(cropperPreviewThumbnailFocus.style, {
         height: ImageManipulation.toCssPercent(cropVariant.focusArea.height),
         left: ImageManipulation.toCssPercent(cropVariant.focusArea.x),

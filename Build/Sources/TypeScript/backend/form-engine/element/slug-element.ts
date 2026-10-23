@@ -224,16 +224,13 @@ class SlugElement {
         // Also check for fields, which do not point to a hidden input field (e.g. "input type=hidden", readOnly, or select fields)
         '[name="' + selector + '"]'
       ];
-      let field: HTMLInputElement|HTMLSelectElement;
-      let usedSelector = '';
-      selectorCandidates.some((testSelector) => {
-        field = document.querySelector<HTMLInputElement|HTMLSelectElement>(testSelector);
-        usedSelector = testSelector;
-        return field !== null;
-      });
-      if (field !== null) {
-        field.dataset.slugSelector = usedSelector;
-        availableFields[fieldName] = field;
+      for (const testSelector of selectorCandidates) {
+        const field = document.querySelector<HTMLInputElement|HTMLSelectElement>(testSelector);
+        if (field !== null) {
+          field.dataset.slugSelector = testSelector;
+          availableFields[fieldName] = field;
+          break;
+        }
       }
     }
 

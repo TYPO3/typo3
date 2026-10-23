@@ -103,11 +103,11 @@ class InlineControlContainer extends HTMLElement {
   private readonly noTitleString: string = (coreCoreLabels.get('labels.no_title'));
 
   public get objectGroup(): string {
-    return this.dataset.objectGroup;
+    return this.dataset.objectGroup ?? '';
   }
 
   public get formField(): string {
-    return this.dataset.formField;
+    return this.dataset.formField ?? '';
   }
 
   public get expandSingle(): boolean {
@@ -271,7 +271,7 @@ class InlineControlContainer extends HTMLElement {
     if (this.sortable) {
       const recordListContainer = this.recordsContainer;
       new Sortable(recordListContainer, {
-        group: recordListContainer.getAttribute('id'),
+        group: recordListContainer.getAttribute('id') ?? undefined,
         handle: '.sortableHandle',
         onSort: (): void => {
           this.updateSorting();
@@ -325,7 +325,7 @@ class InlineControlContainer extends HTMLElement {
       e.stopImmediatePropagation();
 
       this.changeSortingByButton(
-        targetElement.closest<HTMLElement>('[data-object-id]').dataset.objectId,
+        targetElement.closest<HTMLElement>('[data-object-id]').dataset.objectId ?? '',
         <SortDirections>targetElement.dataset.direction,
       );
     }).delegateTo(this, Selectors.controlSectionSelector + ' [data-action="sort"]');
@@ -567,7 +567,7 @@ class InlineControlContainer extends HTMLElement {
           this.deleteRecord(objectIdPrefix + itemUid, true);
         }
 
-        for (const item of Object.values(response.compilerInput.localize)) {
+        for (const item of Object.values(response.compilerInput.localize ?? {})) {
           if (typeof item.remove !== 'undefined') {
             const removableRecordContainer = this.getRecordContainer(objectIdPrefix + item.remove);
             removableRecordContainer.parentElement.removeChild(removableRecordContainer);

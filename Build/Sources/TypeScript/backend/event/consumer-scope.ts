@@ -41,7 +41,7 @@ class ConsumerScope {
     const promises: Promise<void>[] = [];
     this.consumers.forEach(
       (consumer) => {
-        const promise: Promise<void> = consumer.consume.call(consumer, request);
+        const promise: Promise<void> | null = consumer.consume.call(consumer, request);
         if (promise) {
           promises.push(promise);
         }

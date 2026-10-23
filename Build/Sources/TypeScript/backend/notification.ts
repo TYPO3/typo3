@@ -421,14 +421,12 @@ declare global {
   }
 }
 
-let notificationObject: typeof Notification = topWindow.TYPO3?.Notification;
+const existingNotification: typeof Notification | undefined = topWindow.TYPO3?.Notification;
+const notificationObject: typeof Notification = existingNotification ?? Notification;
 
-if (!notificationObject) {
-  notificationObject = Notification;
-
-  // attach to global frame
-  if (typeof TYPO3 !== 'undefined') {
-    TYPO3.Notification = notificationObject;
-  }
+// attach to global frame
+if (existingNotification === undefined && typeof TYPO3 !== 'undefined') {
+  TYPO3.Notification = notificationObject;
 }
+
 export default notificationObject;

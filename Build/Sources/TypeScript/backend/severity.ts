@@ -56,7 +56,7 @@ export default class Severity {
   }
 }
 
-let severityObject: Severity = topWindow.TYPO3?.Severity ?? openerTopWindow()?.TYPO3?.Severity;
+let severityObject: typeof Severity | undefined = topWindow.TYPO3?.Severity ?? openerTopWindow()?.TYPO3?.Severity;
 
 if (!severityObject) {
   severityObject = Severity;
