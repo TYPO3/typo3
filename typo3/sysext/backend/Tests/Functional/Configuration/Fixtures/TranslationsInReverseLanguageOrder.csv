@@ -1,0 +1,8 @@
+"pages"
+,"uid","pid","title"
+,1,0,"Root"
+"tt_content"
+,"uid","pid","sorting","CType","header","sys_language_uid","l18n_parent"
+,1,1,256,"header","EN",0,0
+,2,1,128,"header","FR-CA",2,1
+,3,1,512,"header","FR",1,1

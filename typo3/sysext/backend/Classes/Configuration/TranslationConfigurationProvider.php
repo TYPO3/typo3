@@ -212,6 +212,7 @@ readonly class TranslationConfigurationProvider
                     )
                 );
         }
+        $queryBuilder->orderBy($languageFieldName)->addOrderBy('uid');
         $translationRecords = $queryBuilder->executeQuery()->fetchAllAssociative();
 
         $translations = [];
