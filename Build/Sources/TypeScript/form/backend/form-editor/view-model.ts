@@ -93,15 +93,15 @@ const configuration: Partial<HelperConfiguration> = {
 
 let previewMode: boolean = false;
 
-let formEditorApp: FormEditor = null;
+let formEditorApp: FormEditor | null = null;
 
-let structureComponent: typeof TreeComponent = null;
+let structureComponent: typeof TreeComponent | null = null;
 
-let modalsComponent: typeof ModalsComponent = null;
+let modalsComponent: typeof ModalsComponent | null = null;
 
-let inspectorsComponent: typeof InspectorComponent = null;
+let inspectorsComponent: typeof InspectorComponent | null = null;
 
-let stageComponent: typeof StageComponent = null;
+let stageComponent: typeof StageComponent | null = null;
 
 function getRootFormElement(): FormElement {
   return getFormEditorApp().getRootFormElement();
@@ -733,7 +733,7 @@ export function renderAbstractStageArea(): void {
   };
 
   const renderPostProcess = (): void => {
-    const formElementTypeDefinition = getFormElementDefinition(getCurrentlySelectedFormElement(), undefined);
+    const formElementTypeDefinition = getFormElementDefinition(getCurrentlySelectedFormElement()) as FormElementDefinition;
     getStage().getAllFormElementDomElements().forEach(function(el) {
       el.addEventListener('mouseenter', function() {
         getStage().getAllFormElementDomElements().forEach((other) => {
@@ -853,7 +853,7 @@ export function moveFormElement(
  * @publish view/formElement/removed
  */
 export function removeFormElement(formElement: FormElement, disablePublishersOnSet?: boolean): FormElement {
-  let parentFormElement;
+  let parentFormElement: FormElement | undefined;
 
   if (getUtility().isUndefinedOrNull(formElement)) {
     formElement = getCurrentlySelectedFormElement();
@@ -994,7 +994,7 @@ export function removePropertyCollectionElement(
  * ************************************************************/
 
 export function refreshSelectedElementItemsBatch(): void {
-  const formElementTypeDefinition = getFormElementDefinition(getCurrentlySelectedFormElement(), undefined);
+  const formElementTypeDefinition = getFormElementDefinition(getCurrentlySelectedFormElement()) as FormElementDefinition;
 
   removeAllStageElementSelectionsBatch();
   removeAllStructureSelections();
@@ -1095,7 +1095,8 @@ export function onAbstractViewDndUpdateBatch(
   previousFormElementIdentifierPath: string,
   nextFormElementIdentifierPath: string
 ): void {
-  let movedFormElement, parentFormElementIdentifierPath;
+  let movedFormElement: FormElement | undefined;
+  let parentFormElementIdentifierPath;
   if (nextFormElementIdentifierPath) {
     movedFormElement = moveFormElement(movedFormElementIdentifierPath, 'before', nextFormElementIdentifierPath);
   } else if (previousFormElementIdentifierPath) {
@@ -1150,7 +1151,8 @@ export function onStructureDndUpdateBatch(
   previousFormElementIdentifierPath: string,
   nextFormElementIdentifierPath: string
 ): void {
-  let movedFormElement, parentFormElementIdentifierPath;
+  let movedFormElement: FormElement | undefined;
+  let parentFormElementIdentifierPath;
   if (nextFormElementIdentifierPath) {
     movedFormElement = moveFormElement(movedFormElementIdentifierPath, 'before', nextFormElementIdentifierPath);
   } else if (previousFormElementIdentifierPath) {

@@ -52,7 +52,7 @@ export class DuplicateFormSubmissionService implements SubmissionServiceInterfac
     }
     return {
       success: false,
-      errors: [data?.message]
+      errors: [data?.message ?? '']
     };
   }
 }

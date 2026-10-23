@@ -281,10 +281,10 @@ export class Utility {
    * @throws 1475663210
    */
   public buildPropertyPath(
-    propertyPath: string,
-    collectionElementIdentifier: string,
-    collectionName: string,
-    formElement: FormElement,
+    propertyPath: string | undefined,
+    collectionElementIdentifier: string | undefined,
+    collectionName: string | undefined,
+    formElement: FormElement | undefined,
     allowEmptyReturnValue?: boolean
   ): string {
     let newPropertyPath = '';
@@ -359,8 +359,8 @@ export class PropertyValidationService {
     formElement: FormElement,
     validators: ValidatorsConfig,
     propertyPath: string,
-    collectionElementIdentifier: string,
-    collectionName: string,
+    collectionElementIdentifier: string | undefined,
+    collectionName: string | undefined,
     configuration: PropertyValidatorConfiguration
   ): void {
     assert(Array.isArray(validators), 'Invalid parameter "validators"', 1475661026);
@@ -838,7 +838,8 @@ export class Model<D extends object, T extends ModelData<D>> {
    * @publish mixed
    */
   public unset(key: string, disablePublishersOnSet?: boolean): void {
-    let parentPropertyData, parentPropertyPath, propertyToRemove;
+    let parentPropertyData, parentPropertyPath;
+    let propertyToRemove: string | undefined;
     assert(utility.isNonEmptyString(key), 'Invalid parameter "key"', 1489321637);
     disablePublishersOnSet = !!disablePublishersOnSet;
 
@@ -850,7 +851,7 @@ export class Model<D extends object, T extends ModelData<D>> {
       parentPropertyPath = parentPropertyPath.join('.');
       parentPropertyData = this.get(parentPropertyPath);
       if (typeof parentPropertyData !== 'undefined') {
-        delete parentPropertyData[propertyToRemove];
+        delete (parentPropertyData as Record<string, unknown>)[propertyToRemove];
       }
     } else {
       assert(false, 'remove toplevel properties is not supported', 1489319753);
@@ -908,7 +909,7 @@ export class Model<D extends object, T extends ModelData<D>> {
     const { renderables, __parentRenderable, ...restObjectData } = objectData;
     const childFormElements = renderables || null;
 
-    let parentRenderable: string = null;
+    let parentRenderable: string | null = null;
     if (!utility.isUndefinedOrNull(__parentRenderable)) {
       parentRenderable = __parentRenderable.getObjectData().__identifierPath + ' (filtered)';
     }
@@ -934,8 +935,8 @@ export class Model<D extends object, T extends ModelData<D>> {
   public clone(): Model<D, T> {
     const objectData = this.getObjectData();
     const childFormElements = objectData.renderables || null;
-    delete objectData.renderables;
-    delete objectData.__parentRenderable;
+    delete (objectData as Partial<typeof objectData>).renderables;
+    delete (objectData as Partial<typeof objectData>).__parentRenderable;
     objectData.renderables = (childFormElements) ? true : null;
 
     const newModel = new Model<D, T>();
@@ -1368,7 +1369,7 @@ export class Repository {
    * @throws 1475364966
    */
   public isFormElementIdentifierUsed(identifier: string): boolean {
-    let identifierFound: boolean;
+    let identifierFound = false;
     assert(utility.isNonEmptyString(identifier), 'Invalid parameter "identifier"', 1475364966);
 
     const checkIdentifier = (formElement: FormElement): void => {
@@ -1513,7 +1514,7 @@ export class Repository {
     collectionElementToAdd: CollectionEntry,
     collectionName: string,
     formElement: FormElement,
-    referenceCollectionElementIdentifier: string,
+    referenceCollectionElementIdentifier: string | undefined,
     disablePublishersOnSet?: boolean
   ): FormElement {
     let collection, newCollectionElementIndex;
@@ -1597,7 +1598,7 @@ export class Repository {
   public movePropertyCollectionElement(
     collectionElementToMoveIdentifier: string,
     position: string,
-    referenceCollectionElementIdentifier: string,
+    referenceCollectionElementIdentifier: string | undefined,
     collectionName: string,
     formElement: FormElement,
     disablePublishersOnSet: boolean
@@ -1642,8 +1643,8 @@ export class Factory {
    */
   public createFormElement(
     configuration: FormElementDefinition,
-    identifierPathPrefix: string,
-    parentFormElement: FormElement,
+    identifierPathPrefix: string | undefined,
+    parentFormElement: FormElement | undefined,
     registerPropertyValidators: boolean,
     disablePublishersOnSet?: boolean
   ): FormElement {
@@ -1682,7 +1683,7 @@ export class Factory {
     identifierPathPrefix = identifierPathPrefix || '';
     const identifierPath = (identifierPathPrefix === '') ? configuration.identifier : identifierPathPrefix + '/' + configuration.identifier;
 
-    const concreteConfiguration: FormElementModelData = {
+    const concreteConfiguration = {
       ...<FormElementDefinition>predefinedDefaults,
       ...configuration,
       ...{
@@ -1692,7 +1693,7 @@ export class Factory {
       }
     };
 
-    const formElement: FormElement = createModel(concreteConfiguration);
+    const formElement: FormElement = createModel(concreteConfiguration as unknown as FormElementModelData);
 
     formElement.set('__parentRenderable', parentFormElement || null, disablePublishersOnSet);
 

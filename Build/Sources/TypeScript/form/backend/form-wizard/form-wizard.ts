@@ -53,7 +53,7 @@ export class FormWizard extends LitElement {
   @state() errorMessage: string | null = null;
 
   @property({ type: FormManager, attribute: false }) formManager: FormManager;
-  @property({ type: Object, attribute: false }) duplicateForm?: {name: string, persistenceIdentifier: string} = null;
+  @property({ type: Object, attribute: false }) duplicateForm?: {name: string, persistenceIdentifier: string};
 
   @query('typo3-backend-wizard') wizard!: Wizard<FormWizardDataStore>;
 
@@ -113,7 +113,7 @@ export class FormWizard extends LitElement {
   }
 
   private handleStepSummary(event: StepSummaryEvent) {
-    if (this.duplicateForm === null) {
+    if (this.duplicateForm === undefined) {
       return;
     }
 

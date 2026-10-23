@@ -99,7 +99,7 @@ export class SettingsStep implements WizardStepInterface, WizardStepValueInterfa
       ? this.context.formManager.getAccessibleStorageLocationsForAdapter(storageAdapter)
       : [];
     const storageLocationLabel = storageLocations.find(l => l.value === config.storageLocation)?.label
-      ?? config.storageLocation;
+      ?? config.storageLocation ?? '';
 
     return [
       ...(isPredefined
@@ -115,7 +115,7 @@ export class SettingsStep implements WizardStepInterface, WizardStepValueInterfa
         ]
         : []),
       {
-        value: config.formName,
+        value: config.formName ?? '',
         label: formManagerLabels.get('formManager.form_name')
       },
       {

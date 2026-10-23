@@ -22,9 +22,9 @@ import type {
   Utility,
 } from '@typo3/form/backend/form-editor/core';
 
-let formEditorApp: FormEditor = null;
+let formEditorApp: FormEditor | null = null;
 
-let configuration: Configuration = null;
+let configuration: Configuration | null = null;
 
 export interface Configuration {
   domElementClassNames: Record<string, string>,

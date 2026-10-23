@@ -252,7 +252,7 @@ export class FormEditorTree extends Tree {
   private nodeMatchesSearchTerm(node: TreeNodeInterface, term: string): boolean {
     return node.name.toLowerCase().includes(term)
         || node.identifier.toLowerCase().includes(term)
-        || (node.note && node.note.toLowerCase().includes(term));
+        || (node.note !== undefined && node.note.toLowerCase().includes(term));
   }
 
   public override async loadData(): Promise<void> {
