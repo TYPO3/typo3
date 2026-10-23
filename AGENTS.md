@@ -226,7 +226,8 @@ folder name and the current major for deprecation docblocks, and `VERSION` (e.g.
 
 ## Commits & review
 
-**Only create or modify commits when explicitly asked.**
+**Only create or modify commits when explicitly asked.** Prefer to leave the commit
+itself to the human, so they review what they submit.
 
 - Reviews happen in Gerrit, not GitHub; the GitHub repo is a mirror and pull requests
   are moved into Gerrit automatically.
@@ -244,7 +245,6 @@ folder name and the current major for deprecation docblocks, and `VERSION` (e.g.
   ```
   Resolves: #12345
   Releases: main, 13.4
-  Signed-off-by: Your Name <you@example.org>
   Change-Id: I0123456789abcdef0123456789abcdef01234567
   ```
 
@@ -264,12 +264,16 @@ folder name and the current major for deprecation docblocks, and `VERSION` (e.g.
   `git push origin HEAD:refs/for/main`, and submit the backports once that patch is
   agreed. Pushing the same change to several branches in parallel wastes review time
   and usually has to be redone.
-- Sign off every commit — `git commit -s` appends the `Signed-off-by:` trailer, or set
-  `git config format.signOff true` to get it automatically. It certifies that you wrote
-  the patch, or otherwise have the right to submit it under the project's licence
-  (Developer Certificate of Origin). The hook preserves the trailer and only ignores it
-  when computing the `Change-Id`.
-- Do not credit tooling or assistants in commit messages.
+- Never add a `Signed-off-by:` trailer, not even when asked to commit. It certifies the
+  Developer Certificate of Origin (<https://developercertificate.org/>): a person's
+  statement that they have the right to submit the change and take responsibility for
+  it. Only the human can make it, when they commit or amend the change.
+- Do not add `Co-authored-by:`, `Assisted-by:`, "Generated with …" or similar
+  attribution to commit messages, code, comments or documentation, and disable any
+  default attribution your tool adds.
+- Write code for this change; do not reproduce code from other projects,
+  documentation, forums or training data. If a solution is adapted from an existing
+  source, tell the human the source and its licence.
 - Before pushing: unit tests, functional tests, CGL and the JS build should be green.
 
 ## Security & configuration
