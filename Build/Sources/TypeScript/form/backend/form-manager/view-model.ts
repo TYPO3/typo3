@@ -97,7 +97,7 @@ function removeFormSetup(formManagerApp: FormManager): void {
 
       Modal.show(
         formManagerLabels.get('formManager.remove_form_title'),
-        formManagerLabels.get('formManager.remove_form_message', { '0': element.dataset.formName }),
+        formManagerLabels.get('formManager.remove_form_message', { '0': element.dataset.formName ?? '' }),
         Severity.error ,
         modalButtons
       );
@@ -122,7 +122,7 @@ function duplicateFormSetup(formManagerApp: FormManager): void {
           ></typo3-backend-form-wizard>
       `;
       Modal.advanced({
-        title: formManagerLabels.get('formManager.duplicateFormWizard.step1.title', { '0': element.dataset.formName }),
+        title: formManagerLabels.get('formManager.duplicateFormWizard.step1.title', { '0': element.dataset.formName ?? '' }),
         content: content,
         severity: SeverityEnum.notice,
         size: Modal.sizes.medium,
@@ -211,7 +211,7 @@ function showReferencesSetup(formManagerApp: FormManager): void {
         });
 
         Modal.show(
-          formManagerLabels.get('formManager.references.title', { '0': element.dataset.formName }),
+          formManagerLabels.get('formManager.references.title', { '0': element.dataset.formName ?? '' }),
           fragment,
           Severity.notice,
           modalButtons

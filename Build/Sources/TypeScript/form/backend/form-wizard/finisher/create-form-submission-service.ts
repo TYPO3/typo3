@@ -57,7 +57,7 @@ export class CreateFormSubmissionService implements SubmissionServiceInterface {
     }
     return {
       success: false,
-      errors: [data?.message]
+      errors: [data?.message ?? '']
     };
   }
 }

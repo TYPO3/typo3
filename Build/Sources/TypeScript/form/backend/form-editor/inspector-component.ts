@@ -114,9 +114,9 @@ const defaultConfiguration: Configuration = {
   isSortable: true
 };
 
-let configuration: Configuration = null;
+let configuration: Configuration | null = null;
 
-let formEditorApp: FormEditor = null;
+let formEditorApp: FormEditor | null = null;
 
 let renderedFormElementIdentifierPath: string | null = null;
 
@@ -734,7 +734,7 @@ export function renderEditors(
   renderedFormElementIdentifierPath = formElementIdentifierPath;
   if (inspectorEl) { inspectorEl.replaceChildren(); }
 
-  const formElementTypeDefinition = getFormElementDefinition(formElement, undefined);
+  const formElementTypeDefinition = getFormElementDefinition(formElement) as FormElementDefinition;
   if (!Array.isArray(formElementTypeDefinition.editors)) {
     return;
   }
@@ -776,7 +776,7 @@ export function renderCollectionElementEditors(
   collectionName: keyof FormEditorDefinitions,
   collectionElementIdentifier: string
 ): void {
-  let collapseWrapper: HTMLElement, collapsePanel: HTMLElement, collectionContainer: HTMLElement | null;
+  let collapseWrapper: HTMLElement | null = null, collapsePanel: HTMLElement | null = null, collectionContainer: HTMLElement | null;
 
   assert(
     getUtility().isNonEmptyString(collectionName),
@@ -1712,7 +1712,7 @@ export function renderPropertyGridEditor(
     const formElement = getCurrentlySelectedFormElement();
     const fullPropertyPath = propertyPathPrefix + editorConfiguration.propertyPath;
     const rawData = formElement.get(fullPropertyPath) || {};
-    let propertyEntries: PropertyGridEditorEntry[];
+    let propertyEntries: PropertyGridEditorEntry[] = [];
 
     if (Array.isArray(rawData)) {
       // Handle array of objects: [{_label, _value}] or raw values
@@ -2158,7 +2158,7 @@ export function renderTypo3WinBrowserEditor(
   renderDescription(editorConfiguration, editorHtml);
 
   const formEl = editorHtml.querySelector('form');
-  if (formEl) { formEl.name = editorConfiguration.propertyPath; }
+  if (formEl) { formEl.name = editorConfiguration.propertyPath ?? ''; }
 
   Icons.getIcon(editorConfiguration.iconIdentifier, Icons.sizes.small).then(function(icon) {
     const imageEl = getHelper().getTemplatePropertyElement('image', editorHtml);

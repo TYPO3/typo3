@@ -34,8 +34,8 @@ import { stripTags } from '@typo3/form/backend/form-editor/utility/string-utilit
 import '@typo3/form/backend/form-editor-tree-container';
 
 
-let formEditorApp: FormEditor = null;
-let treeContainer: FormEditorTreeContainer = null;
+let formEditorApp: FormEditor | null = null;
+let treeContainer: FormEditorTreeContainer | null = null;
 let treeDomElement: HTMLElement | null = null;
 
 function getFormEditorApp(): FormEditor {

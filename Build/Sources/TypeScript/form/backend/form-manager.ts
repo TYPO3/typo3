@@ -192,7 +192,7 @@ export class FormManager {
   }
 }
 
-let formManagerInstance: FormManager = null;
+let formManagerInstance: FormManager | null = null;
 /**
  * Return a singleton instance of a "FormManager" object.
  */

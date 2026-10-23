@@ -80,11 +80,11 @@ const defaultConfiguration: Configuration = {
   isSortable: true
 };
 
-let configuration: Configuration = null;
+let configuration: Configuration | null = null;
 
-let formEditorApp: FormEditor = null;
+let formEditorApp: FormEditor | null = null;
 
-let stageDomElement: HTMLElement = null;
+let stageDomElement: HTMLElement | null = null;
 
 function getFormEditorApp(): FormEditor {
   return formEditorApp;
@@ -308,7 +308,7 @@ function addSortableEvents(): void {
         getPublisherSubscriber().publish('view/stage/abstract/dnd/start', [e.item, e.item]);
       },
       onChange: function (e) {
-        let enclosingCompositeFormElement;
+        let enclosingCompositeFormElement: FormElement | null = null;
         const parentFormElementIdentifierPath = getAbstractViewParentFormElementIdentifierPathWithinDomElement(e.item);
 
         if (parentFormElementIdentifierPath) {
@@ -493,7 +493,7 @@ export function getAbstractViewFormElementDomElement(formElement?: FormElement |
 
 export function createAndAddAbstractViewFormElementToolbar(
   selectedFormElementDomElement: HTMLElement,
-  formElement: FormElement
+  formElement: FormElement | undefined
 ): void {
   if (getUtility().isUndefinedOrNull(formElement)) {
     formElement = getCurrentlySelectedFormElement();
@@ -504,7 +504,7 @@ export function createAndAddAbstractViewFormElementToolbar(
     return;
   }
 
-  const formElementTypeDefinition = getFormElementDefinition(formElement, undefined);
+  const formElementTypeDefinition = getFormElementDefinition(formElement) as FormElementDefinition;
   if (formElementTypeDefinition._isTopLevelFormElement) {
     return;
   }
@@ -547,7 +547,7 @@ export function createAndAddAbstractViewFormElementToolbar(
  * @publish view/stage/element/clicked
  * @throws 1478169511
  */
-export function renderAbstractStageArea(pageIndex: number, callback: () => void) {
+export function renderAbstractStageArea(pageIndex: number | undefined, callback: () => void) {
   if (getUtility().isUndefinedOrNull(pageIndex)) {
     pageIndex = getFormEditorApp().getCurrentlySelectedPageIndex();
   }
@@ -612,7 +612,7 @@ export function renderPreviewStageArea(html: string): void {
 
   getAllFormElementDomElements().forEach(function(el) {
     const formElement = getFormEditorApp()
-      .getFormElementByIdentifierPath(el.dataset.elementIdentifierPath);
+      .getFormElementByIdentifierPath((el.dataset.elementIdentifierPath ?? ''));
 
     if (!getFormElementDefinition(formElement, '_isTopLevelFormElement')) {
       el.setAttribute('title', 'identifier: ' + formElement.get('identifier') + ' (type: ' + formElement.get('type') + ')');

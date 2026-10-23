@@ -129,7 +129,7 @@ export class FormEditor {
   }
 
   public buildPropertyPath(
-    propertyPath: string,
+    propertyPath: string | undefined,
     collectionElementIdentifier?: string,
     collectionName?: keyof FormEditorDefinitions,
     _formElement?: string | FormElement,
@@ -288,7 +288,7 @@ export class FormEditor {
       type: formElementType,
       identifier: identifier,
       label: formElementDefinition.label || formElementType
-    }, undefined, undefined, undefined, disablePublishersOnSet);
+    }, undefined, undefined, false, disablePublishersOnSet);
   }
 
   public removeFormElement(
@@ -594,7 +594,7 @@ export class FormEditor {
     return currentPage;
   }
 
-  public getLastTopLevelElementOnCurrentPage(): FormElement {
+  public getLastTopLevelElementOnCurrentPage(): FormElement | undefined {
 
     const renderables = this.getCurrentlySelectedPage().get('renderables');
     if (this.getUtility().isUndefinedOrNull(renderables)) {
@@ -799,7 +799,7 @@ export class FormEditor {
   }
 }
 
-let formEditorInstance: FormEditor = null;
+let formEditorInstance: FormEditor | null = null;
 
 /**
  * @public

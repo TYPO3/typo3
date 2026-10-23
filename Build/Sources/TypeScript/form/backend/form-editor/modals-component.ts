@@ -38,7 +38,7 @@ export interface InsertElementsModalConfiguration {
   onlyEnableElementTypes?: string[],
 }
 
-let configuration: HelperConfiguration = null;
+let configuration: HelperConfiguration | null = null;
 
 const defaultConfiguration: Partial<HelperConfiguration> = {
   domElementClassNames: {
@@ -67,7 +67,7 @@ const defaultConfiguration: Partial<HelperConfiguration> = {
   }
 };
 
-let formEditorApp: FormEditor = null;
+let formEditorApp: FormEditor | null = null;
 
 function getFormEditorApp(): FormEditor {
   return formEditorApp;
@@ -297,13 +297,17 @@ function _validationErrorsModalSetup(
             validationError?.replaceChildren(document.createTextNode(
               propertyLabel ? `${propertyLabel}: ${validationMessage}` : validationMessage
             ));
-            validationErrorGroup.querySelector(
-              getHelper().getDomElementDataIdentifierSelector('validationErrorGroupItems')
-            )?.append(validationError);
+            if (validationError) {
+              validationErrorGroup.querySelector(
+                getHelper().getDomElementDataIdentifierSelector('validationErrorGroupItems')
+              )?.append(validationError);
+            }
           } else {
             const validationError = validationErrorTemplate?.cloneNode() as HTMLElement | undefined;
             validationError?.replaceChildren(document.createTextNode(propertyLabel ? `${propertyLabel}: ${validationMessage}` : validationMessage));
-            validationErrors?.append(validationError);
+            if (validationError) {
+              validationErrors?.append(validationError);
+            }
           }
         });
       }
@@ -350,7 +354,7 @@ function _getValidatorIdentifierByPropertyPath(formElement: FormElement, propert
 function _getEditorConfigurationByPropertyPath(
   formElement: FormElement,
   propertyPath: string
-): FormElementDefinition['editors'][number] | undefined {
+): NonNullable<FormElementDefinition['editors']>[number] | undefined {
   const formElementDefinition = getFormElementDefinition(formElement, undefined) as FormElementDefinition;
   const editors = [
     ...(formElementDefinition.editors || []),

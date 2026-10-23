@@ -36,9 +36,9 @@ import type {
 
 type ViewModel = typeof import('./view-model');
 
-let formEditorApp: FormEditor = null;
+let formEditorApp: FormEditor | null = null;
 
-let viewModel: ViewModel = null;
+let viewModel: ViewModel | null = null;
 
 
 function getFormEditorApp(): FormEditor {
