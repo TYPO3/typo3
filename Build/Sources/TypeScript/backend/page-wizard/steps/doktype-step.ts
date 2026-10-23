@@ -61,6 +61,7 @@ export class DoktypeStep implements WizardStepInterface, WizardStepValueInterfac
     }
 
     return this.task.render({
+      initial: () => this.context.wizard.renderLoader(),
       complete: (doktypes: Doktype[]) => {
         let shouldAutoAdvance = false;
         let warning: TemplateResult | typeof nothing = nothing;
@@ -184,7 +185,7 @@ export class DoktypeStep implements WizardStepInterface, WizardStepValueInterfac
     this.initDoktypesTask();
   }
 
-  public getValue(): string {
+  public getValue(): string | null {
     return this.selectedDoktype;
   }
 
@@ -194,7 +195,7 @@ export class DoktypeStep implements WizardStepInterface, WizardStepValueInterfac
   }
 
   public beforeAdvance(): void {
-    this.context.setStoreData(this.key, this.getValue());
+    this.context.setStoreData(this.key, this.getValue() ?? undefined);
   }
 
   public getSummaryData(): SummaryItem[] {

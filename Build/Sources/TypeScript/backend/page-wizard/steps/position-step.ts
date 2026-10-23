@@ -91,7 +91,7 @@ export class PositionStep implements WizardStepInterface, WizardStepValueInterfa
     this.context.clearStoreData(this.key);
   }
 
-  public getValue(): PositionData {
+  public getValue(): PositionData | undefined {
     return this.positionData;
   }
 

@@ -404,7 +404,7 @@ export class CspReports extends LitElement {
    */
 
   private filterReports(...uuids: string[]): void {
-    if (uuids.includes(this.selectedReport?.uuid)) {
+    if (this.selectedReport !== null && uuids.includes(this.selectedReport.uuid)) {
       this.selectedReport = null;
     }
     this.reports = this.reports.filter((report) => !uuids.includes(report.uuid));

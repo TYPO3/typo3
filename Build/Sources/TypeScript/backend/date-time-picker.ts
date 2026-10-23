@@ -195,10 +195,10 @@ class DateTimePicker {
       defaultMinute: now.getMinutes(),
       enableSeconds: false,
       enableTime: false,
-      formatDate: (date: Date, format: string) => {
+      formatDate: (date: Date, format: string): string => {
         const dt = DateTime.fromJSDate(date);
         if (format === ISO8601_LOCALTIME) {
-          return dt.toISO({ suppressMilliseconds: true, includeOffset: false });
+          return dt.toISO({ suppressMilliseconds: true, includeOffset: false }) ?? '';
         }
         return dt.toFormat(format);
       },

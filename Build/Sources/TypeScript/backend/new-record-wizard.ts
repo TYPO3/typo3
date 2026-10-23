@@ -726,7 +726,7 @@ export class NewRecordWizard extends LitElement {
     }
 
     if (item.requestType === 'location') {
-      Viewport.ContentContainer.setUrl(item.url.replace(/_CURRENT_MODULE_/g, topWindow.TYPO3.ModuleMenu.App.getCurrentModule()));
+      Viewport.ContentContainer.setUrl(item.url.replace(/_CURRENT_MODULE_/g, topWindow.TYPO3.ModuleMenu.App.getCurrentModule() ?? ''));
       Modal.dismiss();
       return;
     }

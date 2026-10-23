@@ -54,8 +54,8 @@ export interface ModuleRoute {
 export class ModuleUtility {
   public static getRouteFromElement(element: HTMLElement): ModuleRoute {
     const moduleRoute: ModuleRoute = {
-      identifier: element.dataset.modulerouteIdentifier,
-      params: element.dataset.modulerouteParams
+      identifier: element.dataset.modulerouteIdentifier ?? '',
+      params: element.dataset.modulerouteParams ?? null
     };
 
     return moduleRoute;

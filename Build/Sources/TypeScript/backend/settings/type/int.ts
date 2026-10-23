@@ -50,7 +50,7 @@ export class IntTypeElement extends BaseElement<
         .value=${live(this.value)}
         @change=${this.handleChange}
       >
-        ${Object.entries(this.enum).map(([value, label]) => html`
+        ${Object.entries(this.enum ?? {}).map(([value, label]) => html`
           <option ?selected=${this.value.toString() === value} value=${value}>${label}${this.debug ? html` [${value}]` : nothing}</option>
         `)}
       </select>

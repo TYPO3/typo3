@@ -23,8 +23,8 @@ import { topWindow } from '@typo3/core/utility/top-window';
  * sheet, ask about unsaved changes first.
  */
 class EditFormControl {
-  private controlElement: HTMLAnchorElement = null;
-  private assignedFormField: HTMLSelectElement = null;
+  private controlElement: HTMLAnchorElement | null = null;
+  private assignedFormField: HTMLSelectElement | null = null;
 
   constructor(controlElementId: string) {
     DocumentService.ready().then((): void => {

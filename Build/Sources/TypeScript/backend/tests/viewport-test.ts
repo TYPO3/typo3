@@ -28,7 +28,7 @@ describe('@typo3/backend/viewport:', () => {
         <div slot="content"></div>
       </typo3-backend-content-navigation>
     `);
-    contentArea = contentNavigation.querySelector('[slot="content"]');
+    contentArea = contentNavigation.querySelector<HTMLElement>('[slot="content"]');
   });
 
   afterEach((): void => {
