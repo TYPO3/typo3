@@ -54,7 +54,7 @@ interface SiteInterface
     public function getLanguageById(int $languageId): SiteLanguage;
 
     /**
-     * Returns the first language that was configured. This is usually language=0
+     * Returns language 0, or the first configured language if language 0 is not configured
      */
     public function getDefaultLanguage(): SiteLanguage;
 

@@ -120,6 +120,48 @@ final class SiteTest extends UnitTestCase
     }
 
     #[Test]
+    public function getDefaultLanguageReturnsLanguageZeroIfNotConfiguredFirst(): void
+    {
+        $subject = new Site('in-any-order', 13, [
+            'base' => '/',
+            'languages' => [
+                [
+                    'languageId' => 1,
+                    'base' => '/de/',
+                    'locale' => 'de_DE.UTF-8',
+                ],
+                [
+                    'languageId' => 0,
+                    'base' => '/',
+                    'locale' => 'en_US.UTF-8',
+                ],
+            ],
+        ]);
+        self::assertSame(0, $subject->getDefaultLanguage()->getLanguageId());
+    }
+
+    #[Test]
+    public function getDefaultLanguageReturnsFirstLanguageIfLanguageZeroIsNotConfigured(): void
+    {
+        $subject = new Site('no-default', 13, [
+            'base' => '/',
+            'languages' => [
+                [
+                    'languageId' => 2,
+                    'base' => '/it/',
+                    'locale' => 'it_IT.UTF-8',
+                ],
+                [
+                    'languageId' => 1,
+                    'base' => '/de/',
+                    'locale' => 'de_DE.UTF-8',
+                ],
+            ],
+        ]);
+        self::assertSame(2, $subject->getDefaultLanguage()->getLanguageId());
+    }
+
+    #[Test]
     public function getErrorHandlerThrowsExceptionOnInvalidErrorHandler(): void
     {
         $this->expectException(InvalidPageErrorHandlerException::class);
