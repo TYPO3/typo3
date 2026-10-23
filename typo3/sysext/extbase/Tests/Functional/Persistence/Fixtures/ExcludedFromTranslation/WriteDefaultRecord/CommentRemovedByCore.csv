@@ -1,0 +1,16 @@
+"tx_blogexample_domain_model_post"
+,"uid","pid","sys_language_uid","l18n_parent","title","author","reviewer","date"
+,1,2,0,0,"Hello world",1,2,1768478400
+,2,2,1,1,"Hallo Welt",1,2,1768478400
+,3,2,2,1,"Bonjour le monde",1,2,1768478400
+,4,2,0,0,"Second post",3,1,1768910400
+,5,2,1,4,"Zweiter Beitrag",3,1,1768910400
+,6,2,2,4,"Deuxième article",3,1,1768910400
+,7,2,0,0,"Third post",2,3,1769342400
+,8,2,1,7,"Dritter Beitrag",2,3,1769342400
+"tx_blogexample_domain_model_comment"
+,"uid","pid","post","content","deleted"
+,1,2,"\*","Nice read",1
+,2,2,7,"Well written",0
+,3,2,8,"Nice read",1
+,4,2,8,"Well written",0

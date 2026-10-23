@@ -325,9 +325,8 @@ final class ExcludedFromTranslationWriteDefaultRecordTest extends FunctionalTest
 
     /**
      * The comment "Nice read" is deleted from the English post "Third post" through DataHandler.
-     * The comment table is not language aware, so DataHandler neither deletes the copy of the
-     * translation together with the default comment nor on synchronization; the German translation
-     * keeps both of its comments.
+     * The comment table is not language aware, but DataHandler finds the copy of the German
+     * translation through its origUid and deletes it together with the default comment.
      *
      * @see commentRemovedFromTheDefaultRecordStaysInTheTranslationByExtbase()
      */
@@ -343,9 +342,9 @@ final class ExcludedFromTranslationWriteDefaultRecordTest extends FunctionalTest
         $dataHandler->process_datamap();
         $dataHandler->process_cmdmap();
 
-        // Then: DataHandler reports no error and the German translation keeps both comments
+        // Then: DataHandler reports no error and the copy of the German translation is deleted as well
         self::assertSame([], $dataHandler->errorLog);
-        $this->assertCSVDataSet(__DIR__ . '/Fixtures/ExcludedFromTranslation/WriteDefaultRecord/CommentRemoved.csv');
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/ExcludedFromTranslation/WriteDefaultRecord/CommentRemovedByCore.csv');
     }
 
     /**
