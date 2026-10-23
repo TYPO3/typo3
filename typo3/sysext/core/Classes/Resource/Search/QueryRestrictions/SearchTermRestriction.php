@@ -70,26 +70,25 @@ readonly class SearchTermRestriction implements QueryRestrictionInterface
                 }
                 $constraintsForParts = [];
                 $like = '%' . $this->queryBuilder->escapeLikeWildcards($searchTermPart) . '%';
+                $likeParameter = $this->queryBuilder->createNamedParameter(mb_strtolower($like));
                 foreach ($fieldsToSearchWithin as $fieldName => $field) {
-                    $constraintsForParts[] = $this->queryBuilder->expr()->and(
-                        $this->queryBuilder->expr()->comparison(
-                            sprintf(
-                                'LOWER(%s)',
-                                // Ensure to cast `$fieldName` to a text value, otherwise picky databases like
-                                // postgres would complain about trying to use `LOWER()` on incompatible field
-                                // like integer fields, something MariaDB/MySQL is silently allowed and hidden
-                                // away from the consumer. We avoid doing database field type checks here for
-                                // all or specific database and adding a value conversion by default for all
-                                // fields to be on the safe side.
-                                //
-                                // The lower() construct here is used to enforce "case-insensitive" search for
-                                // all database vendors unrelated to charset/collation configurations on field
-                                // level.
-                                $this->queryBuilder->expr()->castText($this->queryBuilder->quoteIdentifier($tableAlias . '.' . $fieldName))
-                            ),
-                            'LIKE',
-                            $this->queryBuilder->createNamedParameter(mb_strtolower($like))
-                        )
+                    $constraintsForParts[] = $this->queryBuilder->expr()->comparison(
+                        sprintf(
+                            'LOWER(%s)',
+                            // Ensure to cast `$fieldName` to a text value, otherwise picky databases like
+                            // postgres would complain about trying to use `LOWER()` on incompatible field
+                            // like integer fields, something MariaDB/MySQL is silently allowed and hidden
+                            // away from the consumer. We avoid doing database field type checks here for
+                            // all or specific database and adding a value conversion by default for all
+                            // fields to be on the safe side.
+                            //
+                            // The lower() construct here is used to enforce "case-insensitive" search for
+                            // all database vendors unrelated to charset/collation configurations on field
+                            // level.
+                            $this->queryBuilder->expr()->castText($this->queryBuilder->quoteIdentifier($tableAlias . '.' . $fieldName))
+                        ),
+                        'LIKE',
+                        $likeParameter
                     );
                 }
                 $constraints[] = $this->queryBuilder->expr()->or(...$constraintsForParts);
