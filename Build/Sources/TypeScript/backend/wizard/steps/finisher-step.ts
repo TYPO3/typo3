@@ -85,6 +85,7 @@ export class FinisherStep implements WizardStepInterface {
 
     // Use the task's render method to show loading, error, or success
     return this.task.render({
+      initial: () => this.wizard.renderLoader(wizardLabels.get('wizard.status.pending.message')),
       pending: () => this.wizard.renderLoader(wizardLabels.get('wizard.status.pending.message')),
       error: (error: unknown) => {
         this.hasError = true;

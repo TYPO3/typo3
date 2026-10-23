@@ -56,7 +56,7 @@ class ModuleMenu {
 
   private static getModuleMenuItemFromElement(element: HTMLElement): ModuleMenuItem {
     const item: ModuleMenuItem = {
-      identifier: element.dataset.modulemenuIdentifier,
+      identifier: element.dataset.modulemenuIdentifier ?? '',
       level: element.parentElement.dataset.modulemenuLevel ? parseInt(element.parentElement.dataset.modulemenuLevel, 10) : null,
       collapsible: element.dataset.modulemenuCollapsible === 'true',
       expanded: element.attributes.getNamedItem('aria-expanded')?.value === 'true',

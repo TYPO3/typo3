@@ -232,13 +232,13 @@ describe('@typo3/backend/notification:', () => {
       [
         {
           label: 'My action',
-          action: new ImmediateAction((promise: Promise<void>): Promise<void> => {
+          action: new ImmediateAction((promise?: Promise<void>): Promise<void> => {
             return promise;
           }),
         },
         {
           label: 'My other action',
-          action: new DeferredAction((promise: Promise<void>): Promise<void> => {
+          action: new DeferredAction((promise?: Promise<void>): Promise<void> => {
             return promise;
           }),
         },

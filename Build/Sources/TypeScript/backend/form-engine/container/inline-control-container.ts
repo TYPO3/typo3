@@ -345,7 +345,7 @@ class InlineControlContainer extends HTMLElement {
         const selectedRecordUid = targetElement.dataset.useSelectedRecord === 'true'
           ? this.querySelector<HTMLSelectElement>(Selectors.createNewRecordBySelectorSelector)?.value
           : undefined;
-        this.importRecord([objectId, selectedRecordUid], targetElement.dataset.recordUid ?? null);
+        this.importRecord([objectId, selectedRecordUid], targetElement.dataset.recordUid);
       }
     }).delegateTo(this, Selectors.createNewRecordButtonSelector);
   }
@@ -472,7 +472,7 @@ class InlineControlContainer extends HTMLElement {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      const objectId = (target.closest<HTMLDivElement>('[data-object-id]')).dataset.objectId;
+      const objectId = target.closest<HTMLDivElement>('[data-object-id]').dataset.objectId;
       const recordContainer = this.getRecordContainer(objectId);
       const hiddenFieldName = selector`data${recordContainer.dataset.fieldName ?? ''}[${target.dataset.hiddenField ?? ''}]`;
       const hiddenValueCheckBox = this.querySelector<HTMLInputElement>('[data-formengine-input-name="' + hiddenFieldName + '"');
@@ -1170,7 +1170,7 @@ class InlineControlContainer extends HTMLElement {
       '[name="data[' + unique.table + '][' + recordContainer.dataset.objectUid + '][' + unique.field + ']"]',
     );
     if (unique.type === 'select') {
-      let uniqueValue;
+      let uniqueValue: string | undefined;
       if (uniqueValueField !== null) {
         uniqueValue = uniqueValueField.value;
       } else if (recordContainer.dataset.tableUniqueOriginalValue !== '') {

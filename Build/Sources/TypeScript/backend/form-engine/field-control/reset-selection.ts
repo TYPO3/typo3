@@ -36,7 +36,7 @@ class ResetSelection {
 
     const itemName: string = this.controlElement.dataset.itemName;
     const selectedIndices: Array<number> = JSON.parse(this.controlElement.dataset.selectedIndices ?? '');
-    const field = (document.forms.namedItem('editform').querySelector<HTMLSelectElement>('[name="' + itemName + '[]"]'));
+    const field = document.forms.namedItem('editform').querySelector<HTMLSelectElement>('[name="' + itemName + '[]"]');
 
     field.selectedIndex = -1;
     for (const i of selectedIndices) {

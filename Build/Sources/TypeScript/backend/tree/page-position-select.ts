@@ -244,7 +244,7 @@ export class PagePositionSelect extends LitElement {
 
     const parentNode = this.tree.nodes.find(node => node.identifier === currentNode.parentIdentifier);
 
-    const afterNode: TreeNodeInterface = {
+    const afterNode = {
       ...parentNode,
       __processed: false,
       hasChildren: false,

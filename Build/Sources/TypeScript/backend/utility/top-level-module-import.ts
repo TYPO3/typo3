@@ -20,7 +20,7 @@ export function topLevelModuleImport(specifier: string): Promise<any> {
   const event: CustomEvent<{ specifier: string; importPromise?: Promise<any>; }> = new CustomEvent('typo3:import-javascript-module', {
     detail: {
       specifier,
-      importPromise: null
+      importPromise: undefined
     }
   });
 

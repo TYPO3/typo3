@@ -318,12 +318,12 @@ export class GridEditor extends LitElement {
         modal.userData.row,
       );
       this.setAllowedContentTypes(
-        (modal.querySelector<HTMLInputElement>('.t3js-grideditor-field-allowed-content-types')).value,
+        modal.querySelector<HTMLInputElement>('.t3js-grideditor-field-allowed-content-types').value,
         modal.userData.col,
         modal.userData.row,
       );
       this.setDisallowedContentTypes(
-        (modal.querySelector<HTMLInputElement>('.t3js-grideditor-field-disallowed-content-types')).value,
+        modal.querySelector<HTMLInputElement>('.t3js-grideditor-field-disallowed-content-types').value,
         modal.userData.col,
         modal.userData.row,
       );

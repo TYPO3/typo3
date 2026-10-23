@@ -33,7 +33,7 @@ export class TsRefType {
 
   constructor(
     typeId: string,
-    extendsTypeId: string | null,
+    extendsTypeId: string | null | undefined,
     properties: Record<PropertyName, TsRefProperty>
   ) {
     this.typeId = typeId;

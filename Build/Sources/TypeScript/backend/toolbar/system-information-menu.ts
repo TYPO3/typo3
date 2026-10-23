@@ -62,7 +62,7 @@ class SystemInformationMenu {
 
   private static getData(): SystemInformationData {
     const element = document.querySelector<HTMLElement>(SystemInformationSelector.data);
-    const data: null|DOMStringMap = element?.dataset;
+    const data: DOMStringMap | undefined = element?.dataset;
     return {
       count: data?.systeminformationDataCount ? parseInt(data.systeminformationDataCount, 10) : 0,
       severityBadgeClass: data?.systeminformationDataSeveritybadgeclass ?? '',

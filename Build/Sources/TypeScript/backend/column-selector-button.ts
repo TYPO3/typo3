@@ -119,7 +119,7 @@ export class ColumnSelectorButton extends PseudoButtonLitElement {
     columns.forEach((column) => {
       const columnContainer = column.closest<HTMLDivElement>(Selectors.columnsContainerSelector);
       if (!column.disabled && columnContainer !== null) {
-        const filterValue: string = columnContainer.querySelector('.form-check-label')?.textContent;
+        const filterValue: string = columnContainer.querySelector('.form-check-label')?.textContent ?? '';
         if (filterValue && filterValue.length) {
           columnContainer.classList.toggle(
             'hidden',

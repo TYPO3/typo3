@@ -50,7 +50,7 @@ class ContentContainer extends AbstractContainer {
       if (router !== null) {
         Loader.start();
         router.setAttribute('endpoint', urlToLoad);
-        router.setAttribute('module', module ? module : null);
+        router.setAttribute('module', module ?? '');
         router.parentElement.addEventListener('typo3-module-loaded', () => Loader.finish(), { once: true });
       } else {
         // popup mode assume that we're in a standalone frame if the router cannot be found.
@@ -64,7 +64,7 @@ class ContentContainer extends AbstractContainer {
    * @returns {string}
    */
   public getUrl(): string {
-    return this.resolveRouterElement().getAttribute('endpoint');
+    return this.resolveRouterElement().getAttribute('endpoint') ?? '';
   }
 
   public refresh(interactionRequest?: InteractionRequest): Promise<void> {

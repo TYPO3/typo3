@@ -219,7 +219,7 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
   };
 
   protected onIframeLoaded = (event: Event) => {
-    let win: Window;
+    let win: Window | null | undefined;
     try {
       win = (event.target as HTMLElement).querySelector('iframe')?.contentWindow;
     } catch {

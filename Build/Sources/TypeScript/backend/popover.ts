@@ -66,8 +66,8 @@ class Popover {
     element.dataset.bsContent = content;
     element.dataset.bsPlacement = 'auto';
 
-    delete options.title;
-    delete options.content;
+    delete (options as Partial<BootstrapPopover.Options>).title;
+    delete (options as Partial<BootstrapPopover.Options>).content;
 
     const popover = BootstrapPopover.getInstance(element);
     if (popover === null) {
@@ -145,7 +145,7 @@ class Popover {
     } else if (element instanceof NodeList) {
       elementList = element as NodeListOf<HTMLElement>;
     } else {
-      throw `Cannot consume element of type ${element.constructor.name}, expected NodeListOf<HTMLElement> or HTMLElement`;
+      throw `Cannot consume element of type ${(element as object).constructor.name}, expected NodeListOf<HTMLElement> or HTMLElement`;
     }
 
     return elementList;

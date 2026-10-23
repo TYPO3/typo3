@@ -110,11 +110,12 @@ class EventHandler {
 
   private getSlugChangedMessage(details: SlugChangeDetail[]): string {
     const pages = details
-      .filter((detail: SlugChangeDetail): boolean => detail.page !== undefined)
-      .map((detail: SlugChangeDetail): string => labels.get('notification.page', {
-        title: detail.page.title !== '' ? detail.page.title : '[' + detail.page.uid + ']',
-        oldSlug: detail.page.oldSlug,
-        newSlug: detail.page.newSlug,
+      .map((detail: SlugChangeDetail) => detail.page)
+      .filter((page) => page !== undefined)
+      .map((page): string => labels.get('notification.page', {
+        title: page.title !== '' ? page.title : '[' + page.uid + ']',
+        oldSlug: page.oldSlug,
+        newSlug: page.newSlug,
       }));
     const updatedSubPages = details.reduce((sum: number, detail: SlugChangeDetail): number => sum + (detail.updatedSubPages ?? 0), 0);
     const createdRedirects = details.reduce((sum: number, detail: SlugChangeDetail): number => sum + (detail.createdRedirects ?? 0), 0);

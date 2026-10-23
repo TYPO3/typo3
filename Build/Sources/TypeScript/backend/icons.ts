@@ -190,7 +190,7 @@ class Icons {
   /**
    * Performs the AJAX request to fetch the icon
    */
-  private fetchFromRemote(icon: Array<string>, cacheIdentifier: string, signal?: AbortSignal | null): Promise<string> {
+  private fetchFromRemote(icon: Array<string | null | undefined>, cacheIdentifier: string, signal?: AbortSignal | null): Promise<string> {
     return this.promiseCache.get(
       cacheIdentifier,
       async (signal: AbortSignal): Promise<string> => {

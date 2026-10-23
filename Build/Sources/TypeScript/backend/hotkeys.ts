@@ -109,7 +109,7 @@ class Hotkeys {
     new RegularEvent(HotkeyDispatchedEvent.eventName, (e: HotkeyDispatchedEvent): void => {
       const { keyboardEvent } = e;
       const hotkeySetup = this.findHotkeySetup(keyboardEvent);
-      if (hotkeySetup !== null) {
+      if (hotkeySetup !== undefined) {
         e.preventDefault();
 
         if (keyboardEvent.repeat && !hotkeySetup.options.allowRepeat) {
@@ -141,7 +141,7 @@ class Hotkeys {
       }
     }
 
-    return null;
+    return undefined;
   }
 
   /**

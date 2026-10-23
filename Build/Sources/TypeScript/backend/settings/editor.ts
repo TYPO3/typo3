@@ -171,7 +171,7 @@ export class SettingsEditorElement extends LitElement {
             const key = (entry.target as HTMLElement).dataset.key;
             this.visibleCategories[key] = entry.isIntersecting;
           });
-          const flatten = (list: Category[]): string[] => list.reduce((acc, c) => [...acc, c.key, ...flatten(c.categories)], []);
+          const flatten = (list: Category[]): string[] => list.reduce<string[]>((acc, c) => [...acc, c.key, ...flatten(c.categories ?? [])], []);
           const active = flatten(this.categories).filter(key => this.visibleCategories[key])[0] || '';
           if (active) {
             this.activeCategory = active;
