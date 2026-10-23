@@ -69,17 +69,17 @@ class TablePermissionElement extends HTMLElement {
   private handleSingleItemChange(target: HTMLInputElement): void {
     switch (target.value) {
       case Permissions.select:
-        this.addItem(target.dataset.table, this.selectStateField);
-        this.removeItem(target.dataset.table, this.modifyStateField);
+        this.addItem(target.dataset.table ?? '', this.selectStateField);
+        this.removeItem(target.dataset.table ?? '', this.modifyStateField);
         break;
       case Permissions.modify:
-        this.addItem(target.dataset.table, this.selectStateField);
-        this.addItem(target.dataset.table, this.modifyStateField);
+        this.addItem(target.dataset.table ?? '', this.selectStateField);
+        this.addItem(target.dataset.table ?? '', this.modifyStateField);
         break;
       case Permissions.none:
       default:
-        this.removeItem(target.dataset.table, this.selectStateField);
-        this.removeItem(target.dataset.table, this.modifyStateField);
+        this.removeItem(target.dataset.table ?? '', this.selectStateField);
+        this.removeItem(target.dataset.table ?? '', this.modifyStateField);
         break;
     }
   }

@@ -146,11 +146,11 @@ class Paste {
     const targetFound = closestElement.dataset.uid;
     let targetPid;
     if (typeof targetFound === 'undefined') {
-      targetPid = parseInt(closestElement.dataset.page, 10);
+      targetPid = parseInt(closestElement.dataset.page ?? '', 10);
     } else {
       targetPid = 0 - parseInt(targetFound, 10);
     }
-    const language = parseInt((element.closest<HTMLElement>('[data-language-uid]')).dataset.languageUid, 10);
+    const language = parseInt(element.closest<HTMLElement>('[data-language-uid]').dataset.languageUid, 10);
     const parameters = {
       CB: {
         paste: 'tt_content|' + targetPid,

@@ -32,7 +32,7 @@ class SelectCountryElement {
   }
 
   public initialize = (elementSelector: string, options: SelectCountryElementOptions): void => {
-    const selectElement: HTMLSelectElement = document.querySelector(elementSelector);
+    const selectElement = document.querySelector<HTMLSelectElement>(elementSelector);
     if (selectElement === null) {
       return;
     }
@@ -40,14 +40,14 @@ class SelectCountryElement {
 
     new RegularEvent('change', (e: Event): void => {
       const target = e.target as HTMLSelectElement;
-      const groupIconContainer: HTMLElement = target.parentElement.querySelector('.input-group-icon');
+      const groupIconContainer = target.parentElement.querySelector<HTMLElement>('.input-group-icon');
 
       // Update prepended select icon
       if (groupIconContainer !== null) {
         groupIconContainer.innerHTML = (target.options[target.selectedIndex].dataset.icon);
       }
 
-      const selectIcons: HTMLElement = target.closest('.t3js-formengine-field-item').querySelector('.t3js-forms-select-single-icons');
+      const selectIcons = target.closest<HTMLElement>('.t3js-formengine-field-item').querySelector('.t3js-forms-select-single-icons');
       if (selectIcons !== null) {
         const activeItem = selectIcons.querySelector('.form-wizard-icon-list-item a.active');
         if (activeItem !== null) {
@@ -72,7 +72,7 @@ class SelectCountryElement {
         currentActive.classList.remove('active');
       }
 
-      selectElement.selectedIndex = parseInt(target.dataset.selectIndex, 10);
+      selectElement.selectedIndex = parseInt(target.dataset.selectIndex ?? '', 10);
       selectElement.dispatchEvent(new Event('change'));
       target.closest('.form-wizard-icon-list-item a').classList.add('active');
     }).delegateTo(selectElement.closest('.form-control-wrap'), '.t3js-forms-select-single-icons .form-wizard-icon-list-item a:not(.active)');

@@ -158,7 +158,7 @@ export default class DragUploader {
     this.filesExtensionsAllowed = this.element.dataset.fileAllowed;
     this.filesExtensionsDisallowed = this.element.dataset.fileDisallowed;
     this.fileDenyPattern = this.element.dataset.fileDenyPattern ? new RegExp(this.element.dataset.fileDenyPattern, 'i') : null;
-    this.maxFileSize = parseInt(this.element.dataset.maxFileSize, 10);
+    this.maxFileSize = parseInt(this.element.dataset.maxFileSize ?? '', 10);
     this.target = this.element.dataset.targetFolder;
     this.reloadUrl = this.element.dataset.reloadUrl;
 
@@ -626,7 +626,7 @@ export default class DragUploader {
       if (target.value !== '') {
         // mass action was selected, apply action to every file
         for (const select of modal.querySelectorAll<HTMLSelectElement>('.t3js-actions')) {
-          const index = parseInt(select.dataset.override, 10);
+          const index = parseInt(select.dataset.override ?? '', 10);
           select.value = target.value;
           select.disabled = true;
           this.askForOverride[index].action = <Action>select.value;
@@ -638,7 +638,7 @@ export default class DragUploader {
 
     new RegularEvent('change', (event: Event) => {
       const actionSelect = event.target as HTMLSelectElement,
-        index = parseInt(actionSelect.dataset.override, 10);
+        index = parseInt(actionSelect.dataset.override ?? '', 10);
       this.askForOverride[index].action = <Action>actionSelect.value;
     }).delegateTo(modal, '.t3js-actions');
 

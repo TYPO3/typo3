@@ -31,7 +31,7 @@ class LocalizationStateSelector {
   private registerEventHandler(fieldName: string): void {
     new RegularEvent('change', (e: Event): void => {
       const target = e.target as HTMLInputElement;
-      const input: HTMLInputElement = target.closest('.t3js-formengine-field-item')?.querySelector('[data-formengine-input-name]');
+      const input = target.closest('.t3js-formengine-field-item')?.querySelector<HTMLInputElement>('[data-formengine-input-name]');
       if (!input) {
         return;
       }

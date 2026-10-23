@@ -90,7 +90,7 @@ class OnlineMedia {
     const onlineMediaForm = document.createElement('typo3-backend-formengine-online-media-form');
     onlineMediaForm.placeholder = placeholder;
     onlineMediaForm.setAttribute('help-text', allowedHelpText);
-    onlineMediaForm.setAttribute('extensions', trigger.dataset.onlineMediaAllowed);
+    onlineMediaForm.setAttribute('extensions', trigger.dataset.onlineMediaAllowed ?? '');
 
     Modal.advanced({
       type: Types.default,

@@ -72,15 +72,17 @@ class PasswordElement extends HTMLElement {
     // The field is empty until a password is typed or generated: a stored one is hashed and
     // cannot be copied, so the button is only offered for a plain value. Its wrapper is made
     // an input group along with it, which would otherwise square the corners of the input.
-    if (this.copyToClipboard !== null) {
+    const copyToClipboard = this.copyToClipboard;
+    if (copyToClipboard !== null) {
+      const element = this.element;
       const offerCopy = (): void => {
-        const hasValue = this.element.value !== '';
-        this.copyToClipboard.text = this.element.value;
-        this.copyToClipboard.hidden = !hasValue;
-        this.copyToClipboard.parentElement.classList.toggle('input-group', hasValue);
+        const hasValue = element.value !== '';
+        copyToClipboard.text = element.value;
+        copyToClipboard.hidden = !hasValue;
+        copyToClipboard.parentElement?.classList.toggle('input-group', hasValue);
       };
-      this.element.addEventListener('input', offerCopy);
-      this.element.addEventListener('change', offerCopy);
+      element.addEventListener('input', offerCopy);
+      element.addEventListener('change', offerCopy);
     }
   }
 }

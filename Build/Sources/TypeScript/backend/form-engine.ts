@@ -260,7 +260,7 @@ export default (function() {
     label: string,
     title: string,
     exclusiveValues: string[] = [],
-    optionEl: HTMLOptionElement = undefined,
+    optionEl: HTMLOptionElement | undefined = undefined,
   ): void {
     let isMultiple = false;
     let isList = false;
@@ -582,12 +582,12 @@ export default (function() {
     }).delegateTo(document, '.t3js-element-browser');
 
     new RegularEvent('click', (evt: Event, target: HTMLElement): void => {
-      const items = JSON.parse(target.dataset.formengineFieldChangeItems);
+      const items = JSON.parse(target.dataset.formengineFieldChangeItems ?? '');
       FormEngine.processOnFieldChange(items, evt);
     }).delegateTo(document, '[data-formengine-field-change-event="click"]');
 
     new RegularEvent('change', (evt: Event, target: HTMLElement): void => {
-      const items = JSON.parse(target.dataset.formengineFieldChangeItems);
+      const items = JSON.parse(target.dataset.formengineFieldChangeItems ?? '');
       FormEngine.processOnFieldChange(items, evt);
     }).delegateTo(document, '[data-formengine-field-change-event="change"]');
 
@@ -682,7 +682,7 @@ export default (function() {
       const fieldItem = element.closest('.t3js-formengine-field-item');
       if (fieldItem !== null && fieldItem.querySelector('typo3-backend-formengine-char-counter') === null) {
         const charCounterElement = document.createElement('typo3-backend-formengine-char-counter');
-        charCounterElement.setAttribute('target', `[data-formengine-input-name="${selector`${element.dataset.formengineInputName}`}"]`);
+        charCounterElement.setAttribute('target', `[data-formengine-input-name="${selector`${element.dataset.formengineInputName ?? ''}`}"]`);
         fieldItem.append(charCounterElement);
       }
     });
@@ -1437,7 +1437,7 @@ export default (function() {
    */
   FormEngine.showDeleteModal = function(anchorElement: HTMLAnchorElement, callback: DeleteActionCallback): void {
     const title = backendAltDocLabels.get('label.confirm.delete_record.title');
-    let content = backendAltDocLabels.get('label.confirm.delete_record.content', [anchorElement.dataset.recordInfo]);
+    let content = backendAltDocLabels.get('label.confirm.delete_record.content', [anchorElement.dataset.recordInfo ?? '']);
 
     if (anchorElement.dataset.referenceCountMessage) {
       content += '\n' + anchorElement.dataset.referenceCountMessage;

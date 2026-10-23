@@ -119,11 +119,11 @@ class InlineControlContainer extends HTMLElement {
   }
 
   public get min(): number {
-    return parseInt(this.dataset.min, 10) || 0;
+    return parseInt(this.dataset.min ?? '', 10) || 0;
   }
 
   public get max(): number {
-    return parseInt(this.dataset.max, 10) || 0;
+    return parseInt(this.dataset.max ?? '', 10) || 0;
   }
 
   public get type(): 'record' | 'file' | 'language' {
@@ -296,7 +296,7 @@ class InlineControlContainer extends HTMLElement {
       }
 
       if (this.expandSingle) {
-        this.collapseAllRecords(recordContainer.dataset.objectUid);
+        this.collapseAllRecords(recordContainer.dataset.objectUid ?? '');
       }
     }).bindTo(this);
 
@@ -306,7 +306,7 @@ class InlineControlContainer extends HTMLElement {
       if (recordContainer === null || recordContainer.closest('typo3-formengine-container-inline') !== this) {
         return;
       }
-      this.persistExpandCollapseState(recordContainer.dataset.objectId, true);
+      this.persistExpandCollapseState(recordContainer.dataset.objectId ?? '', true);
     }).bindTo(this);
 
     new RegularEvent('hidden.bs.collapse', (e: Event): void => {
@@ -315,7 +315,7 @@ class InlineControlContainer extends HTMLElement {
       if (recordContainer === null || recordContainer.closest('typo3-formengine-container-inline') !== this) {
         return;
       }
-      this.persistExpandCollapseState(recordContainer.dataset.objectId, false);
+      this.persistExpandCollapseState(recordContainer.dataset.objectId ?? '', false);
     }).bindTo(this);
   }
 
@@ -325,7 +325,7 @@ class InlineControlContainer extends HTMLElement {
       e.stopImmediatePropagation();
 
       this.changeSortingByButton(
-        (targetElement.closest<HTMLDivElement>('[data-object-id]')).dataset.objectId,
+        targetElement.closest<HTMLElement>('[data-object-id]').dataset.objectId,
         <SortDirections>targetElement.dataset.direction,
       );
     }).delegateTo(this, Selectors.controlSectionSelector + ' [data-action="sort"]');
@@ -432,7 +432,7 @@ class InlineControlContainer extends HTMLElement {
    * @param {string} afterUid
    * @param {string} selectedValue
    */
-  private createRecord(uid: string, markup: string, afterUid: string = null, selectedValue: string = null): void {
+  private createRecord(uid: string, markup: string, afterUid: string | null = null, selectedValue: string | null = null): void {
     let objectId = this.objectGroup;
     if (afterUid !== null) {
       objectId += Separators.structureSeparator + afterUid;
@@ -474,7 +474,7 @@ class InlineControlContainer extends HTMLElement {
 
       const objectId = (target.closest<HTMLDivElement>('[data-object-id]')).dataset.objectId;
       const recordContainer = this.getRecordContainer(objectId);
-      const hiddenFieldName = selector`data${recordContainer.dataset.fieldName}[${target.dataset.hiddenField}]`;
+      const hiddenFieldName = selector`data${recordContainer.dataset.fieldName ?? ''}[${target.dataset.hiddenField ?? ''}]`;
       const hiddenValueCheckBox = this.querySelector<HTMLInputElement>('[data-formengine-input-name="' + hiddenFieldName + '"');
       const hiddenValueInput = this.querySelector<HTMLInputElement>('[name="' + hiddenFieldName + '"');
 
@@ -508,7 +508,7 @@ class InlineControlContainer extends HTMLElement {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      InfoWindow.showItem(this.dataset.infoTable, this.dataset.infoUid);
+      InfoWindow.showItem(this.dataset.infoTable ?? '', this.dataset.infoUid ?? '');
     }).delegateTo(this, Selectors.infoWindowButton);
   }
 
@@ -518,7 +518,7 @@ class InlineControlContainer extends HTMLElement {
       e.stopImmediatePropagation();
 
       const title = backendAltDocLabels.get('label.confirm.delete_record.title');
-      const content = backendAltDocLabels.get('label.confirm.delete_record.content', [targetElement.dataset.recordInfo]);
+      const content = backendAltDocLabels.get('label.confirm.delete_record.content', [targetElement.dataset.recordInfo ?? '']);
       const modal = Modal.confirm(title, content, Severity.warning, [
         {
           text: backendAltDocLabels.get('buttons.confirm.delete_record.no'),
@@ -558,7 +558,7 @@ class InlineControlContainer extends HTMLElement {
 
       this.ajaxDispatcher.send<InlineResponseInterface>(
         this.ajaxDispatcher.newRequest(this.ajaxDispatcher.getEndpoint(this.endpoints.synchronizelocalize)),
-        [this.objectGroup, targetElement.dataset.type],
+        [this.objectGroup, targetElement.dataset.type ?? ''],
       ).then(async (response): Promise<void> => {
         this.recordsContainer.insertAdjacentHTML('beforeend', response.data);
 
@@ -604,7 +604,7 @@ class InlineControlContainer extends HTMLElement {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      this.revertUnique(targetElement.dataset.uid);
+      this.revertUnique(targetElement.dataset.uid ?? '');
     }).delegateTo(this, Selectors.revertUniqueness);
   }
 
@@ -633,7 +633,7 @@ class InlineControlContainer extends HTMLElement {
 
         // Now that content is loaded, trigger expand via Bootstrap Collapse
         if (this.expandSingle) {
-          this.collapseAllRecords(recordContainer.dataset.objectUid);
+          this.collapseAllRecords(recordContainer.dataset.objectUid ?? '');
         }
         Collapse.getOrCreateInstance(recordFieldsContainer).show();
 
@@ -694,7 +694,7 @@ class InlineControlContainer extends HTMLElement {
    * @param {string} afterUid
    * @param {string} selectedValue
    */
-  private memorizeAddRecord(newUid: string, afterUid: string = null, selectedValue: string = null): void {
+  private memorizeAddRecord(newUid: string, afterUid: string | null = null, selectedValue: string | null = null): void {
     const formField = this.getFormFieldForElements();
     if (formField === null) {
       return;
@@ -819,7 +819,7 @@ class InlineControlContainer extends HTMLElement {
     recordContainer.classList.add('t3js-inline-record-deleted');
 
     if (!this.isNewRecord(objectId) && !forceDirectRemoval) {
-      const deleteCommandInput = this.querySelector(selector`[name="cmd${recordContainer.dataset.fieldName}[delete]"]`);
+      const deleteCommandInput = this.querySelector(selector`[name="cmd${recordContainer.dataset.fieldName ?? ''}[delete]"]`);
       deleteCommandInput.removeAttribute('disabled');
 
       // Move input field to inline container so we can remove the record container

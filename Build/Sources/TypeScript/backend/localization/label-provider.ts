@@ -132,7 +132,7 @@ function createFormatter(label: string): IntlMessageFormat {
 const formatters: Formatters = {
   getNumberFormat: memoize('number', (locale?: string | string[], opts?: Intl.NumberFormatOptions) => new Intl.NumberFormat(locale, opts)),
   getDateTimeFormat: memoize('datetime', (locale?: Intl.LocalesArgument, opts?: Intl.DateTimeFormatOptions) => {
-    const { dateStyle, timeStyle, timeZone } = opts;
+    const { dateStyle, timeStyle, timeZone } = opts ?? {};
 
     // Apply configured TYPO3 date format to the "medium" preset
     if (configuredFormats && (

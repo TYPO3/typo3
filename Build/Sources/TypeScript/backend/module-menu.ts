@@ -475,15 +475,13 @@ interface ModuleMenuNamespace {
   App: ModuleMenu;
 }
 
-let moduleMenuApp: ModuleMenuNamespace = topWindow.TYPO3?.ModuleMenu;
+const existingModuleMenuApp: ModuleMenuNamespace | undefined = topWindow.TYPO3?.ModuleMenu;
+const moduleMenuApp: ModuleMenuNamespace = existingModuleMenuApp ?? {
+  App: new ModuleMenu(),
+};
 
-if (!moduleMenuApp) {
-  moduleMenuApp = {
-    App: new ModuleMenu(),
-  };
-  if (topWindow.TYPO3 !== undefined) {
-    topWindow.TYPO3.ModuleMenu = moduleMenuApp;
-  }
+if (existingModuleMenuApp === undefined && topWindow.TYPO3 !== undefined) {
+  topWindow.TYPO3.ModuleMenu = moduleMenuApp;
 }
 
 export default moduleMenuApp;

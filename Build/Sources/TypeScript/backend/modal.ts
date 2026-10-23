@@ -1011,7 +1011,7 @@ class Modal {
   }
 }
 
-const remountAlertContainer = (modal: ModalElement | undefined) => {
+const remountAlertContainer = (modal: ModalElement | null | undefined) => {
   const alertContainer = document.querySelector<HTMLDivElement>('#alert-container');
   if (alertContainer) {
     const isOpen = alertContainer.matches(':popover-open');

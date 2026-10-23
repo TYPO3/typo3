@@ -700,7 +700,7 @@ export class ContextMenuElement extends LitElement {
       const subMenuElements = [...this.contextMenuElements].slice(1);
       const documentDirection = this.getDocumentDirection();
       subMenuElements.forEach((element) => {
-        const parentNode = this.getNodeByIdentifier(element.dataset.contextmenuParent);
+        const parentNode = this.getNodeByIdentifier(element.dataset.contextmenuParent ?? '');
         const parentElement = this.getElementFromNode(parentNode);
         const parentRect = parentElement.getBoundingClientRect();
         const top = parentRect.top - 7;

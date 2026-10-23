@@ -138,7 +138,7 @@ class MfaInfoElement {
       if (this.providersList === null) {
         return;
       }
-      const providerEntry: HTMLLIElement = this.providersList.querySelector(selector`li#provider-${provider}`);
+      const providerEntry = this.providersList.querySelector<HTMLLIElement>(selector`li#provider-${provider}`);
       if (providerEntry === null) {
         return;
       }

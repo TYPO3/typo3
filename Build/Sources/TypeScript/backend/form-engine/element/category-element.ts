@@ -57,7 +57,7 @@ class CategoryElement extends HTMLElement {
       readOnlyMode: this.recordField.dataset.readOnly,
       input: this.recordField,
       exclusiveNodesIdentifiers: this.recordField.dataset.treeExclusiveKeys,
-      validation: JSON.parse(this.recordField.dataset.formengineValidationRules)[0],
+      validation: JSON.parse(this.recordField.dataset.formengineValidationRules ?? '')[0],
       expandUpToLevel: this.recordField.dataset.treeExpandUpToLevel,
       unselectableElements: [] as Array<any>
     };

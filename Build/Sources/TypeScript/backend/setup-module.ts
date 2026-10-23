@@ -29,7 +29,7 @@ class SetupModule {
       .delegateTo(document, '[data-event-name="setup:confirmation:response"]');
     new RegularEvent('click', (e: Event, element: HTMLElement): void => {
       const clickEvent = new CustomEvent(
-        element.dataset.eventName, {
+        element.dataset.eventName ?? '', {
           bubbles: true,
           detail: { payload: element.dataset.eventPayload }
         });
@@ -53,7 +53,7 @@ class SetupModule {
     if (evt.detail.result && evt.detail.payload === 'resetConfiguration') {
       Client.unsetByPrefix('');
 
-      const input: HTMLInputElement = document.querySelector('#setValuesToDefault');
+      const input = document.querySelector<HTMLInputElement>('#setValuesToDefault');
       input.value = '1';
       input.form.submit();
     }

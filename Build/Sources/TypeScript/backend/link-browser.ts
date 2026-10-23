@@ -56,14 +56,14 @@ class LinkBrowser {
 
     new RegularEvent('click', (event: PointerEvent): void => {
       event.preventDefault();
-      this.finalizeFunction(document.body.dataset.linkbrowserCurrentLink);
+      this.finalizeFunction(document.body.dataset.linkbrowserCurrentLink ?? '');
     }).delegateTo(document, 'button.t3js-linkCurrent');
   }
 
   public getLinkAttributeValues(): LinkAttributes {
     const linkAttributeValues: LinkAttributes = {};
     for (const fieldName of this.linkAttributeFields.values()) {
-      const linkAttribute: HTMLInputElement = document.querySelector('[name="l' + fieldName + '"]');
+      const linkAttribute = document.querySelector<HTMLInputElement>('[name="l' + fieldName + '"]');
       if (linkAttribute !== null) {
         linkAttributeValues[fieldName] = linkAttribute.value;
       }

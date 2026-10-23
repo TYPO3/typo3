@@ -154,14 +154,14 @@ class Recordlist {
       }
       // Evaluate all checked records and if valid, add their uid to the list
       eventDetails.checkboxes.forEach((checkbox): void => {
-        const checkboxContainer: HTMLElement = checkbox.closest(MultiRecordSelectionSelectors.elementSelector);
+        const checkboxContainer = checkbox.closest<HTMLElement>(MultiRecordSelectionSelectors.elementSelector);
         if (checkboxContainer !== null && checkboxContainer.dataset[configuration.idField]) {
           entityIdentifiers.push(checkboxContainer.dataset[configuration.idField]);
         }
       });
     } else {
       // Edit record request was triggered via t3js-* class on target.
-      const tableContainer: HTMLElement = target.closest('[data-table]');
+      const tableContainer = target.closest<HTMLElement>('[data-table]');
       if (tableContainer === null) {
         return;
       }
@@ -178,7 +178,7 @@ class Recordlist {
       if (selection.length) {
         // If there are selected records, only those are added to the list
         selection.forEach((entity): void => {
-          entityIdentifiers.push((entity.closest<HTMLElement>(this.identifier.entity + selector`[data-uid][data-table="${tableName}"]`)).dataset.uid);
+          entityIdentifiers.push(entity.closest<HTMLElement>(this.identifier.entity + selector`[data-uid][data-table="${tableName}"]`).dataset.uid);
         });
       } else {
         // Get all records for the current table and add their uid to the list
@@ -187,7 +187,7 @@ class Recordlist {
           return;
         }
         entities.forEach((entity): void => {
-          entityIdentifiers.push(entity.dataset.uid);
+          entityIdentifiers.push(entity.dataset.uid ?? '');
         });
       }
     }
@@ -226,7 +226,7 @@ class Recordlist {
 
     const rowElement = target.closest<HTMLTableRowElement>('tr[data-uid]');
     const table = rowElement.dataset.table;
-    const uid = parseInt(rowElement.dataset.uid, 10);
+    const uid = parseInt(rowElement.dataset.uid ?? '', 10);
     const isVisible = target.dataset.datahandlerStatus === 'visible';
     const targetAction = isVisible ? 'hide' : 'show';
 

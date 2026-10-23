@@ -75,9 +75,9 @@ export function parseItemCountLimits(field: HTMLElement): ItemCountLimits {
  */
 @customElement('typo3-backend-formengine-item-count')
 export class ItemCount extends LitElement {
-  public field: HTMLElement = null;
+  public field: HTMLElement | null = null;
 
-  private form: HTMLFormElement = null;
+  private form: HTMLFormElement | null = null;
 
   public override connectedCallback(): void {
     super.connectedCallback();
