@@ -229,7 +229,9 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
 
         $dynamicArguments = [];
         $queryParams = $pageArguments->getDynamicArguments();
-        if (!empty($queryParams) && ($pageArguments->getArguments()['cHash'] ?? false)) {
+        // Same condition as in PageArgumentValidator, a non-scalar or empty cHash is not validated and treated as missing
+        $cHash = $pageArguments->getArguments()['cHash'] ?? '';
+        if (!empty($queryParams) && is_scalar($cHash) && (string)$cHash !== '') {
             // Fetch arguments relevant for creating the page cache identifier from the PageArguments object.
             // Excluded parameters are not taken into account when calculating the hash base.
             $queryParams['id'] = $pageArguments->getPageId();
