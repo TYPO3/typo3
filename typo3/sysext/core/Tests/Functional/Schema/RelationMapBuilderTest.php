@@ -58,6 +58,57 @@ final class RelationMapBuilderTest extends FunctionalTestCase
         self::assertCount(1, $result);
         self::assertEquals($inlineParentTable, $result[0]->fromTable());
         self::assertEquals($inlineParentField, $result[0]->fromField());
+        self::assertEquals($inlineChildField, $result[0]->toField());
+        self::assertFalse($result[0]->isManyToMany());
+        self::assertNull($result[0]->manyToManyTable());
+    }
+
+    #[Test]
+    public function relationMapBuilderContainsPassiveManyToManyRelationPointingBackToLocalSide(): void
+    {
+        $tca = [
+            'local_table' => [
+                'columns' => [
+                    'local_field' => [
+                        'config' => [
+                            'type' => 'select',
+                            'foreign_table' => 'foreign_table',
+                            'MM' => 'local_foreign_mm',
+                        ],
+                    ],
+                ],
+            ],
+            'foreign_table' => [
+                'columns' => [
+                    'foreign_field' => [
+                        'config' => [
+                            'type' => 'select',
+                            'foreign_table' => 'local_table',
+                            'MM' => 'local_foreign_mm',
+                            'MM_opposite_field' => 'local_field',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $subject = $this->get(RelationMapBuilder::class);
+        $relationMap = $subject->buildFromStructure($tca);
+
+        $result = $relationMap->getPassiveRelations('local_table', 'local_field');
+        self::assertCount(1, $result);
+        self::assertEquals('foreign_table', $result[0]->fromTable());
+        self::assertEquals('foreign_field', $result[0]->fromField());
+        self::assertEquals('local_field', $result[0]->toField());
+        self::assertTrue($result[0]->isManyToMany());
+        self::assertEquals('local_foreign_mm', $result[0]->manyToManyTable());
+
+        $result = $relationMap->getPassiveRelations('foreign_table');
+        self::assertCount(1, $result);
+        self::assertEquals('local_table', $result[0]->fromTable());
+        self::assertEquals('local_field', $result[0]->fromField());
+        self::assertNull($result[0]->toField());
+        self::assertTrue($result[0]->isManyToMany());
+        self::assertEquals('local_foreign_mm', $result[0]->manyToManyTable());
     }
 
     #[Test]

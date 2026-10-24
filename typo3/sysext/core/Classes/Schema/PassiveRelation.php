@@ -31,6 +31,8 @@ final readonly class PassiveRelation
         private string $fromTable,
         private ?string $fromField,
         private ?string $flexPointer,
+        private ?string $toField = null,
+        private ?string $manyToManyTable = null,
     ) {}
 
     public function fromTable(): string
@@ -50,6 +52,25 @@ final readonly class PassiveRelation
     public function flexPointer(): ?string
     {
         return $this->flexPointer;
+    }
+
+    /**
+     * The field of this schema the relation points to: the "foreign_field" of an inline
+     * relation, or the local side field named in "MM_opposite_field" of an MM relation.
+     */
+    public function toField(): ?string
+    {
+        return $this->toField;
+    }
+
+    public function manyToManyTable(): ?string
+    {
+        return $this->manyToManyTable;
+    }
+
+    public function isManyToMany(): bool
+    {
+        return $this->manyToManyTable !== null;
     }
 
     public static function __set_state(array $state): self

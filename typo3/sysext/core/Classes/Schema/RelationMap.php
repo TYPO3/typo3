@@ -138,15 +138,20 @@ final class RelationMap
                     if (!in_array($rel['target'], [$tableName, '*'], true)) {
                         continue;
                     }
+                    $toField = $rel['mmOppositeField'] ?? $rel['targetField'] ?? null;
                     // restriction to field is set, if this is set, this must match the targetField
                     // otherwise we include all relations to the target table (regardless if it is attached to a field or not)
                     // because we want to get the passive relations for the table.
-                    if ($fieldName !== null) {
-                        if (!isset($rel['targetField']) || $rel['targetField'] !== $fieldName) {
-                            continue;
-                        }
+                    if ($fieldName !== null && $toField !== $fieldName) {
+                        continue;
                     }
-                    $relations[] = new PassiveRelation($fromTable, $fromField, $rel['flexPointer'] ?? null);
+                    $relations[] = new PassiveRelation(
+                        $fromTable,
+                        $fromField,
+                        $rel['flexPointer'] ?? null,
+                        $toField,
+                        $rel['mm'] ?? null,
+                    );
                 }
             }
         }

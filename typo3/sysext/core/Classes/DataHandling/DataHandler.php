@@ -75,8 +75,11 @@ use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 use TYPO3\CMS\Core\Schema\Field\FileFieldType;
 use TYPO3\CMS\Core\Schema\Field\GroupFieldType;
 use TYPO3\CMS\Core\Schema\Field\InlineFieldType;
+use TYPO3\CMS\Core\Schema\Field\RelationalFieldTypeInterface;
 use TYPO3\CMS\Core\Schema\LanguageMarker;
+use TYPO3\CMS\Core\Schema\RelationshipType;
 use TYPO3\CMS\Core\Schema\Struct\SelectItemCollection;
+use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -2966,7 +2969,7 @@ class DataHandler
             $relationHandler->convertItemArray();
             if ($status === 'update') {
                 $relationHandleForOldRelations = $this->createRelationHandlerInstance();
-                $relationHandleForOldRelations->start('', $tcaFieldConf['foreign_table'], $tcaFieldConf['MM'], $id, $table, $tcaFieldConf);
+                $relationHandleForOldRelations->initializeForField($table, $tcaFieldConf, $id);
                 $oldRelations = implode(',', $relationHandleForOldRelations->getValueArray());
                 $relationHandler->writeMM($tcaFieldConf['MM'], $id);
                 if ($oldRelations !== $newRelations) {
@@ -3013,9 +3016,8 @@ class DataHandler
             $dbAnalysis->convertItemArray();
             if ($status === 'update') {
                 $oldRelations_dbAnalysis = $this->createRelationHandlerInstance();
-                $oldRelations_dbAnalysis->registerNonTableValues = !empty($tcaFieldConf['allowNonIdValues']);
                 // Db analysis with $id will initialize with the existing relations
-                $oldRelations_dbAnalysis->start('', $tables, $tcaFieldConf['MM'], $id, $currentTable, $tcaFieldConf);
+                $oldRelations_dbAnalysis->initializeForField($currentTable, $tcaFieldConf, $id);
                 $oldRelations = implode(',', $oldRelations_dbAnalysis->getValueArray());
                 $dbAnalysis->writeMM($tcaFieldConf['MM'], $id, $prep);
                 if ($oldRelations != $newRelations) {
@@ -3215,7 +3217,7 @@ class DataHandler
             $this->deleteAction('sys_file_reference', $fileReferenceUid);
         }
         $dbAnalysis = $this->createRelationHandlerInstance();
-        $dbAnalysis->start(implode(',', $filteredValueArray), $tcaFieldConf['foreign_table'], '', 0, $table, $tcaFieldConf);
+        $dbAnalysis->initializeForField($table, $tcaFieldConf, 0, $filteredValueArray);
         $dbAnalysis->writeForeignField($tcaFieldConf, $id);
         return $dbAnalysis->countItems(false);
     }
@@ -4044,7 +4046,7 @@ class DataHandler
         $schema = $this->tcaSchemaFactory->get($table);
         // Fetch the related child records using \TYPO3\CMS\Core\Database\RelationHandler
         $dbAnalysis = $this->createRelationHandlerInstance();
-        $dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
+        $dbAnalysis->initializeForField($table, $conf, $uid, $value);
         // Walk through the items, copy them and remember the new id:
         foreach ($dbAnalysis->itemArray as $k => $v) {
             $newId = null;
@@ -4641,7 +4643,7 @@ class DataHandler
                 ) {
                     // Move non-MM inline children
                     $dbAnalysis = $this->createRelationHandlerInstance();
-                    $dbAnalysis->start($value, $fieldConfig['foreign_table'], '', $sourceUid, $table, $fieldConfig);
+                    $dbAnalysis->initializeForField($table, $fieldConfig, $sourceUid, $value);
                     // Moving records to a positive destination will insert each record at the beginning, thus the order is reversed here
                     foreach (array_reverse($dbAnalysis->itemArray) as $item) {
                         $this->moveRecord($item['table'], (int)$item['id'], $table === 'pages' ? $sourceUid : $updateFields['pid']);
@@ -4667,7 +4669,7 @@ class DataHandler
                             ) {
                                 // Move existing non-MM inline flex children
                                 $dbAnalysis = $this->createRelationHandlerInstance();
-                                $dbAnalysis->start($flexFormValueParsed['data'][$sheetName]['lDEF'][$sheetFieldName]['vDEF'] ?? '', $sheetFieldConfig['config']['foreign_table'], '', $sourceUid, $table, $sheetFieldConfig['config']);
+                                $dbAnalysis->initializeForField($table, $sheetFieldConfig['config'], $sourceUid, $flexFormValueParsed['data'][$sheetName]['lDEF'][$sheetFieldName]['vDEF'] ?? '');
                                 foreach (array_reverse($dbAnalysis->itemArray) as $item) {
                                     $this->moveRecord($item['table'], (int)$item['id'], $table === 'pages' ? $sourceUid : $updateFields['pid']);
                                 }
@@ -4953,9 +4955,7 @@ class DataHandler
                     $overrideValues[$field->getName()] = $row[$field->getName()];
                 }
             }
-            if (($field->getConfiguration()['MM'] ?? false)
-                && $this->isLocalSideOfBidirectionalMmRelation($table, $field)
-            ) {
+            if ($this->isLocalSideOfBidirectionalManyToManyRelation($schema, $field)) {
                 // We are localizing the 'local' side of an MM relation. (eg. localizing a category).
                 // In this case, MM relations connected to the default lang record should not be copied,
                 // so we set an override here to not trigger mm handling of 'items' field for this.
@@ -5180,17 +5180,16 @@ class DataHandler
         BackendUtility::workspaceOL($table, $transOrigRecord, $this->BE_USER->workspace);
 
         $removeArray = [];
-        $mmTable = $relationFieldType === 'mm' && isset($config['MM']) && $config['MM'] ? $config['MM'] : '';
         // Fetch children from original language parent. The item array is deliberately not indexed by
         // uid: its order is the order the children of the localized parent are supposed to end up in.
         $dbAnalysisOriginal = $this->createRelationHandlerInstance();
-        $dbAnalysisOriginal->start($transOrigRecord[$field], $foreignTable, $mmTable, $transOrigRecord['uid'], $table, $config);
+        $dbAnalysisOriginal->initializeForField($table, $fieldDefinition, (int)$transOrigRecord['uid'], $transOrigRecord[$field]);
         $elementsOriginal = $dbAnalysisOriginal->itemArray;
         $originalUids = array_fill_keys(array_map(static fn(array $item): int => (int)$item['id'], $elementsOriginal), true);
         unset($dbAnalysisOriginal);
         // Fetch children from current localized parent:
         $dbAnalysisCurrent = $this->createRelationHandlerInstance();
-        $dbAnalysisCurrent->start($parentRecord[$field], $foreignTable, $mmTable, $id, $table, $config);
+        $dbAnalysisCurrent->initializeForField($table, $fieldDefinition, $id, $parentRecord[$field]);
         // Maps uids of default language children to the uids of their existing translations. Children of
         // the localized parent that are no translation of a default language child - for instance created
         // in the translation directly - are attached to the child they currently follow, keyed by the uid
@@ -5857,7 +5856,7 @@ class DataHandler
                         // @todo: This should be called "disableDeleteClause" or similar.
                         $dbAnalysis->undeleteRecord = true;
                     }
-                    $dbAnalysis->start($value, $configuration['foreign_table'], '', $uid, $table, $configuration);
+                    $dbAnalysis->initializeForField($table, $configuration, $uid, $value);
                     // Non type save comparison is intended!
                     if (!isset($configuration['behaviour']['enableCascadingDelete']) || $configuration['behaviour']['enableCascadingDelete'] != false) {
                         // Walk through the items and remove them
@@ -5868,13 +5867,12 @@ class DataHandler
                     }
                 }
             } elseif ($this->isReferenceField($configuration)) {
-                $allowedTables = $configuration['type'] === 'group' ? $configuration['allowed'] : $configuration['foreign_table'];
                 if ($forceHardDelete && ($configuration['MM'] ?? false)) {
                     // When hard deleting an MM record, MM rows must be removed. Note they are kept when
                     // soft-deleting a local or foreign side record to allow undeleting the record and getting
                     // connected MM relations back.
                     $dbAnalysis = $this->createRelationHandlerInstance();
-                    $dbAnalysis->start('', $allowedTables, $configuration['MM'], $uid, $table, $configuration);
+                    $dbAnalysis->initializeForField($table, $configuration, $uid);
                     $previousItemArray = $dbAnalysis->itemArray;
                     $dbAnalysis->itemArray = [];
                     $dbAnalysis->writeMM($configuration['MM'], $uid);
@@ -5918,7 +5916,7 @@ class DataHandler
                                         // @todo: This should be called "disableDeleteClause" or similar.
                                         $dbAnalysis->undeleteRecord = true;
                                     }
-                                    $dbAnalysis->start($flexFormValue, $flexFieldConfig['foreign_table'], '', $uid, $table, $flexFieldConfig);
+                                    $dbAnalysis->initializeForField($table, $flexFieldConfig, $uid, $flexFormValue);
                                     // Non type save comparison is intended!
                                     if (!isset($flexFieldConfig['behaviour']['enableCascadingDelete']) || $flexFieldConfig['behaviour']['enableCascadingDelete'] != false) {
                                         // Walk through the items and remove them
@@ -6161,7 +6159,7 @@ class DataHandler
                 // Must be set before start(): readForeignField() evaluates this flag
                 // to decide whether a DeletedRestriction is applied to the SELECT.
                 $relationHandler->undeleteRecord = true;
-                $relationHandler->start($value, $foreignTable, '', $uid, $table, $fieldConfig);
+                $relationHandler->initializeForField($table, $fieldInformation, $uid, $value);
                 foreach ($relationHandler->itemArray as $reference) {
                     $this->undeleteRecord($reference['table'], (int)$reference['id']);
                 }
@@ -6386,13 +6384,13 @@ class DataHandler
                 }
                 if ($fieldType->getRelationshipType()->isSingularRelationship()) {
                     $dbAnalysis = $this->createRelationHandlerInstance();
-                    $dbAnalysis->start($value, $fieldConfig['foreign_table'], '', (int)$record['uid'], $table, $fieldConfig);
+                    $dbAnalysis->initializeForField($table, $fieldType, (int)$record['uid'], $value);
                     $dbAnalysis->undeleteRecord = true;
                     foreach ($dbAnalysis->itemArray as $relationRecord) {
                         $this->discard($relationRecord['table'], (int)$relationRecord['id']);
                     }
                 }
-            } elseif ($this->isReferenceField($fieldConfig) && !empty($fieldConfig['MM'])) {
+            } elseif ($this->isReferenceField($fieldConfig) && $this->isManyToManyField($fieldType)) {
                 $this->discardMmRelations($table, $fieldConfig, $record);
             } elseif ($fieldType->isType(TableColumnType::FLEX) && (string)$value !== '') {
                 try {
@@ -6415,7 +6413,7 @@ class DataHandler
                             if ($flexFieldConfig['type'] === 'inline' || $flexFieldConfig['type'] === 'file') {
                                 if (in_array($this->getRelationFieldType($flexFieldConfig), ['list', 'field'], true)) {
                                     $dbAnalysis = $this->createRelationHandlerInstance();
-                                    $dbAnalysis->start($flexFormValue, $flexFieldConfig['foreign_table'], '', (int)$record['uid'], $table, $flexFieldConfig);
+                                    $dbAnalysis->initializeForField($table, $flexFieldConfig, (int)$record['uid'], $flexFormValue);
                                     foreach ($dbAnalysis->itemArray as $relationRecord) {
                                         $this->discard($relationRecord['table'], (int)$relationRecord['id']);
                                     }
@@ -6469,12 +6467,10 @@ class DataHandler
                 continue;
             }
             $fieldType = $this->tcaSchemaFactory->get($row['tablename'])->getField($row['field']);
-            $fieldTca = $fieldType->getConfiguration();
-            $groupAllowed = GeneralUtility::trimExplode(',', $fieldTca['allowed'] ?? '', true);
             // @todo: "select" may be affected too, but it has no coverage to show this, yet?
-            if ($fieldType->isType(TableColumnType::GROUP)
-                && empty($fieldTca['MM'])
-                && (in_array('*', $groupAllowed, true) || in_array($table, $groupAllowed, true))
+            if ($fieldType instanceof GroupFieldType
+                && !$this->isManyToManyField($fieldType)
+                && ($fieldType->allowsAllSchemata() || in_array($table, $fieldType->getAllowedSchemaNames(), true))
             ) {
                 // Note it would be possible to a) update multiple records with only one DB call, and b) combine the
                 // select and update to a single update query by doing the CSV manipulation as string function in sql.
@@ -6516,7 +6512,7 @@ class DataHandler
         $recordUid = (int)$record['uid'];
         $mmTableName = $fieldConfig['MM'];
         // left - non foreign - uid_local vs. right - foreign - uid_foreign decision
-        $relationUidFieldName = isset($fieldConfig['MM_opposite_field']) ? 'uid_foreign' : 'uid_local';
+        $relationUidFieldName = $this->mmRelationIsLocalSide($fieldConfig) ? 'uid_local' : 'uid_foreign';
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable($mmTableName);
         $queryBuilder->delete($mmTableName)->where(
             // uid_local = given uid OR uid_foreign = given uid
@@ -6717,7 +6713,7 @@ class DataHandler
         $toUpdateRegistry = [];
         foreach ($schema->getFields() as $fieldType) {
             $dbFieldConfig = $fieldType->getConfiguration();
-            if (!empty($dbFieldConfig['MM']) && $this->isReferenceField($dbFieldConfig)) {
+            if ($this->isManyToManyField($fieldType) && $this->isReferenceField($dbFieldConfig)) {
                 $toDeleteRegistry[] = $dbFieldConfig;
                 $toUpdateRegistry[] = $dbFieldConfig;
             }
@@ -6858,23 +6854,29 @@ class DataHandler
         return empty($config['MM_opposite_field']);
     }
 
-    private function isLocalSideOfBidirectionalMmRelation(string $tableName, FieldTypeInterface $field): bool
+    private function isManyToManyField(FieldTypeInterface $field): bool
     {
-        $configuration = $field->getConfiguration();
-        if (!empty($configuration['MM_oppositeUsage'])) {
+        return $field instanceof RelationalFieldTypeInterface
+            && $field->getRelationshipType() === RelationshipType::ManyToMany;
+    }
+
+    /**
+     * The local side of a bidirectional MM relation either declares "MM_oppositeUsage" (e.g. sys_category.items),
+     * or is named by the "MM_opposite_field" of a field on the foreign side that shares its MM table.
+     */
+    private function isLocalSideOfBidirectionalManyToManyRelation(TcaSchema $schema, FieldTypeInterface $field): bool
+    {
+        if (!$field instanceof RelationalFieldTypeInterface || $field->getRelationshipType() !== RelationshipType::ManyToMany) {
+            return false;
+        }
+        if (!empty($field->getConfiguration()['MM_oppositeUsage'])) {
             return true;
         }
-        foreach ($this->tcaSchemaFactory->get($tableName)->getPassiveRelations() as $passiveRelation) {
-            $oppositeFieldName = $passiveRelation->fromField();
-            if ($oppositeFieldName === null) {
-                continue;
-            }
-            $oppositeConfiguration = $this->tcaSchemaFactory
-                ->get($passiveRelation->fromTable())
-                ->getField($oppositeFieldName)
-                ->getConfiguration();
-            if (($oppositeConfiguration['MM'] ?? null) === $configuration['MM']
-                && ($oppositeConfiguration['MM_opposite_field'] ?? null) === $field->getName()
+        $manyToManyTable = ($field->getRelations()[0] ?? null)?->manyToManyTable();
+        foreach ($schema->getPassiveRelations() as $passiveRelation) {
+            if ($passiveRelation->isManyToMany()
+                && $passiveRelation->manyToManyTable() === $manyToManyTable
+                && $passiveRelation->toField() === $field->getName()
             ) {
                 return true;
             }
@@ -7041,16 +7043,13 @@ class DataHandler
         // Initialize variables
         // Will be set TRUE if an upgrade should be done...
         $set = false;
-        // Allowed tables for references.
-        $allowedTables = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'];
         // Table name to prepend the UID
         $prependName = $conf['type'] === 'group' ? ($conf['prepend_tname'] ?? '') : '';
         // Which tables that should possibly not be remapped
         $dontRemapTables = GeneralUtility::trimExplode(',', $conf['dontRemapTablesOnCopy'] ?? '', true);
         // Convert value to list of references:
         $dbAnalysis = $this->createRelationHandlerInstance();
-        $dbAnalysis->registerNonTableValues = $conf['type'] === 'select' && ($conf['allowNonIdValues'] ?? false);
-        $dbAnalysis->start($value, $allowedTables, $conf['MM'] ?? '', $MM_localUid, $table, $conf);
+        $dbAnalysis->initializeForField($table, $conf, $MM_localUid, $value);
         $existingItems = [];
         foreach ($dbAnalysis->itemArray as $v) {
             $existingItems[$v['table'] . ':' . $v['id']] = true;
@@ -7087,7 +7086,7 @@ class DataHandler
             if (!empty($liveId) && !empty($originalId) && (int)$liveId === (int)$originalId) {
                 $liveRelations = $this->createRelationHandlerInstance();
                 $liveRelations->setWorkspaceId(0);
-                $liveRelations->start('', $allowedTables, $conf['MM'], $liveId, $table, $conf);
+                $liveRelations->initializeForField($table, $conf, $liveId);
                 // Purge invalid relations in the live workspace ("0")
                 $liveRelations->purgeItemArray(0);
                 if ($liveRelations->isPurged()) {
@@ -7127,7 +7126,7 @@ class DataHandler
                 $this->remapListedDBRecords_procDBRefs($conf, $value, $theUidToUpdate, $table);
             } elseif ($relationFieldType !== false) {
                 $dbAnalysis = $this->createRelationHandlerInstance();
-                $dbAnalysis->start($value, $conf['foreign_table'], '', 0, $table, $conf);
+                $dbAnalysis->initializeForField($table, $conf, 0, $value);
 
                 $updatePidForRecords = [];
                 // Update values for specific versioned records
@@ -7190,7 +7189,7 @@ class DataHandler
         $theUidToUpdate = $this->copyMappingArray_merged[$table][$uid] ?? null;
 
         $dbAnalysis = $this->createRelationHandlerInstance();
-        $dbAnalysis->start($value, $conf['foreign_table'], '', 0, $table, $conf);
+        $dbAnalysis->initializeForField($table, $conf, 0, $value);
 
         foreach ($dbAnalysis->itemArray as &$item) {
             $updatePidForRecords[$item['table']][] = $item['id'];
@@ -8527,18 +8526,18 @@ class DataHandler
         }
         // Unset the fields which are similar:
         foreach ($fieldArray as $col => $val) {
-            $fieldConfiguration = [];
+            $isManyToManyField = false;
             $isNullField = false;
 
             if ($this->tcaSchemaFactory->get($table)->hasField($col)) {
                 $fieldType = $this->tcaSchemaFactory->get($table)->getField($col);
-                $fieldConfiguration = $fieldType->getConfiguration();
+                $isManyToManyField = $this->isManyToManyField($fieldType);
                 $isNullField = $fieldType->isNullable();
             }
 
             // Unset fields if stored and submitted values are equal - except the current field holds MM relations.
             // In general this avoids to store superfluous data which also will be visualized in the editing history.
-            if (empty($fieldConfiguration['MM']) && $this->isSubmittedValueEqualToStoredValue($val, $currentRecord[$col], $columnRecordTypes[$col], $isNullField)) {
+            if (!$isManyToManyField && $this->isSubmittedValueEqualToStoredValue($val, $currentRecord[$col], $columnRecordTypes[$col], $isNullField)) {
                 unset($fieldArray[$col]);
             } else {
                 if (!isset($this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$col])) {
@@ -9966,7 +9965,7 @@ class DataHandler
                     }
                     $configuration = $field->getConfiguration();
                     $foreignTable = $configuration['foreign_table'] ?? '';
-                    if (!empty($configuration['MM']) || !$this->tcaSchemaFactory->has($foreignTable)) {
+                    if ($this->isManyToManyField($field) || !$this->tcaSchemaFactory->has($foreignTable)) {
                         continue;
                     }
                     $foreignSchema = $this->tcaSchemaFactory->get($foreignTable);
@@ -9985,7 +9984,7 @@ class DataHandler
                             $itemList = (string)(BackendUtility::getRecord($table, $id, [$field->getName()])[$field->getName()] ?? '');
                         }
                         $relationHandler = $this->createRelationHandlerInstance();
-                        $relationHandler->start($itemList, $foreignTable, '', $id, $table, $configuration);
+                        $relationHandler->initializeForField($table, $field, $id, $itemList);
                         foreach ($relationHandler->itemArray as $item) {
                             $child = $this->getRecordToWriteInCurrentWorkspace($foreignTable, (int)$item['id'], [$foreignLanguageField, ...$foreignTranslationFields]);
                             if ($child === null
