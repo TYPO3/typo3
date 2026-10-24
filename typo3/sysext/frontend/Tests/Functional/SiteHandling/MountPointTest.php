@@ -439,6 +439,64 @@ final class MountPointTest extends AbstractTestCase
         self::assertSame($expectedMountPointParameter, $responseData['dynamicArguments']['MP'] ?? null);
     }
 
+    public static function requestsResolvePageIdAndMountPointParameterWithPageTypeSuffixDataProvider(): array
+    {
+        return [
+            'mountpoint showing content of mounted page' => [
+                'https://acme-suffix.com/mount-point/',
+                4100,
+                '4100-4200',
+            ],
+            'translated mountpoint with same slug showing content of mounted page' => [
+                'https://acme-suffix.com/fr/mount-point/',
+                4100,
+                '4100-4200',
+            ],
+        ];
+    }
+
+    #[DataProvider('requestsResolvePageIdAndMountPointParameterWithPageTypeSuffixDataProvider')]
+    #[Test]
+    public function requestsResolvePageIdAndMountPointParameterWithPageTypeSuffix(string $uri, int $expectedPageId, string $expectedMountPointParameter): void
+    {
+        $this->writeSiteConfiguration(
+            'acme-page-type-suffix',
+            array_merge(
+                $this->buildSiteConfiguration(4000, 'https://acme-suffix.com/'),
+                [
+                    'routeEnhancers' => [
+                        'PageTypeSuffix' => [
+                            'type' => 'PageType',
+                            'default' => '/',
+                            'index' => '',
+                            'map' => [
+                                '/' => 0,
+                            ],
+                        ],
+                    ],
+                ]
+            ),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('FR', '/fr/', ['EN']),
+            ]
+        );
+        $this->setUpFrontendRootPage(
+            4000,
+            [
+                'EXT:frontend/Tests/Functional/SiteHandling/Fixtures/LinkRequest.typoscript',
+            ],
+            [
+                'title' => 'ACME Root',
+            ]
+        );
+        $response = $this->executeFrontendSubRequest((new InternalRequest($uri)));
+        $responseData = json_decode((string)$response->getBody(), true);
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame($expectedPageId, $responseData['pageId']);
+        self::assertSame($expectedMountPointParameter, $responseData['dynamicArguments']['MP'] ?? null);
+    }
+
     public static function mountPointPagesShowContentAsConfiguredDataProvider(): array
     {
         return [

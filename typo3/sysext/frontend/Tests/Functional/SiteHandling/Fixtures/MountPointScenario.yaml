@@ -130,6 +130,18 @@ entities:
                 content:
                   - self: {title: 'Content of MountPoint Page', type: *contentText }
         - self: {id: 3930, title: 'Link To Our Worldwide Site', type: *pageShortcut, shortcut: 1000, slug: '/global' }
+    - self: {id: 4000, title: 'ACME Page Type Suffix', root: true, slug: '/'}
+      languageVariants:
+        - self: {id: 4001, title: 'FR: ACME Page Type Suffix', language: 1, slug: '/'}
+      children:
+        # The translation has the same slug as the default language page
+        - self: {id: 4100, title: 'EN: Example', slug: '/example'}
+          languageVariants:
+            - self: {id: 4101, title: 'FR: Example', language: 1, slug: '/example'}
+        # The translation has the same slug as the default language page
+        - self: {id: 4200, title: 'Mount Point', slug: '/mount-point', type: *pageMount, mount: 4100, showContentOfMountedPage: 1 }
+          languageVariants:
+            - self: {id: 4201, title: 'FR: Mount Point', language: 1, slug: '/mount-point', type: *pageMount }
     - self: {id: 10000, title: 'Archive for everybody', root: true, slug: '/'}
       languageVariants:
         - self: {id: 10001, title: 'FR: Archive', language: 1, slug: '/'}
