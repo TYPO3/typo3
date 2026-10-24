@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LoggerInterface;
@@ -27,6 +28,7 @@ use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Tests\Unit\Service\Fixtures\AccessibleSessionService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class SessionServiceTest extends UnitTestCase
 {
     public static function effectiveSettingsDataProvider(): \Generator
@@ -138,10 +140,6 @@ final class SessionServiceTest extends UnitTestCase
         $subject = new AccessibleSessionService($lateBootService, self::createStub(LoggerInterface::class));
         $subject->backendUserRecord = ['uid' => 1, 'admin' => 1];
 
-        try {
-            self::assertSame($expected, $subject->hasActiveBackendUserRoleAndSession());
-        } finally {
-            unset($_SESSION['backendUserSession']);
-        }
+        self::assertSame($expected, $subject->hasActiveBackendUserRoleAndSession());
     }
 }
