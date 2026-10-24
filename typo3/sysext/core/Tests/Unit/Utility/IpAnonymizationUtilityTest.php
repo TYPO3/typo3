@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\IpAnonymizationUtility;
@@ -25,6 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\IpAnonymizationUtility
  */
+#[BackupGlobals(true)]
 final class IpAnonymizationUtilityTest extends UnitTestCase
 {
     /**
@@ -38,10 +40,14 @@ final class IpAnonymizationUtilityTest extends UnitTestCase
             'IPv4 address with mask 1' => ['192.158.130.10', 1, '192.158.130.0'],
             'IPv4 address with mask 2' => ['192.158.130.10', 2, '192.158.0.0'],
             'IPv4 address with fallback' => ['192.158.130.10', null, '192.158.130.0'],
+            'IPv4 address with configured mask 0' => ['192.158.130.10', null, '192.158.130.10', 0],
+            'IPv4 address with configured mask 2' => ['192.158.130.10', null, '192.158.0.0', 2],
             'IPv6 address with mask 0' => ['0064:ff9b:0000:0000:0000:0000:18.52.86.120', 0, '0064:ff9b:0000:0000:0000:0000:18.52.86.120'],
             'IPv6 address with mask 1' => ['2002:6dcd:8c74:6501:fb2:61c:ac98:6bea', 1, '2002:6dcd:8c74:6501::'],
             'IPv6 address with mask 2' => ['2002:6dcd:8c74:6501:fb2:61c:ac98:6bea', 2, '2002:6dcd:8c74::'],
             'IPv6 address with fallback' => ['2002:6dcd:8c74:6501:fb2:61c:ac98:6bea', null, '2002:6dcd:8c74:6501::'],
+            'IPv6 address with configured mask 0' => ['2002:6dcd:8c74:6501:fb2:61c:ac98:6bea', null, '2002:6dcd:8c74:6501:fb2:61c:ac98:6bea', 0],
+            'IPv6 address with configured mask 2' => ['2002:6dcd:8c74:6501:fb2:61c:ac98:6bea', null, '2002:6dcd:8c74::', 2],
             'IPv4-Embedded IPv6 Address' => ['::ffff:18.52.86.120', 1, '::'],
             'anonymized IPv4 address' => ['192.158.0.0', 1, '192.158.0.0'],
             'invalid IPv4 address given' => ['127.0.01', 1, ''],
@@ -54,10 +60,9 @@ final class IpAnonymizationUtilityTest extends UnitTestCase
      */
     #[DataProvider('anonymizeIpReturnsCorrectValueDataProvider')]
     #[Test]
-    public function anonymizeIpReturnsCorrectValue(string $address, ?int $mask, string $expected): void
+    public function anonymizeIpReturnsCorrectValue(string $address, ?int $mask, string $expected, int $configuredMask = 1): void
     {
-        // set the default if $mask is null
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['ipAnonymization'] = 1;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['ipAnonymization'] = $configuredMask;
         self::assertEquals($expected, IpAnonymizationUtility::anonymizeIp($address, $mask));
     }
 
