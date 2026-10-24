@@ -39,9 +39,9 @@ abstract class AbstractUploadedFileTestCase extends FunctionalTestCase
     protected function createTestFile(string $filename, string $content): string
     {
         $path = $this->instancePath . '/tmp';
-        $testFilename = $path . $filename;
+        $testFilename = $path . '/' . $filename;
 
-        mkdir($path);
+        GeneralUtility::mkdir_deep($path);
         touch($testFilename);
         file_put_contents($testFilename, $content);
 
