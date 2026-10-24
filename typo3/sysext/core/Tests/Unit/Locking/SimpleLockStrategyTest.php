@@ -22,7 +22,6 @@ use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Locking\SemaphoreLockStrategy;
 use TYPO3\CMS\Core\Locking\SimpleLockStrategy;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -110,7 +109,7 @@ final class SimpleLockStrategyTest extends UnitTestCase
     #[Test]
     public function getPriorityReturnsDefaultPriority(): void
     {
-        self::assertEquals(SemaphoreLockStrategy::DEFAULT_PRIORITY, SemaphoreLockStrategy::getPriority());
+        self::assertEquals(SimpleLockStrategy::DEFAULT_PRIORITY, SimpleLockStrategy::getPriority());
     }
 
     #[Test]

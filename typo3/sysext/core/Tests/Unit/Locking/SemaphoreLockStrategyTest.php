@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Locking;
 use PHPUnit\Framework\Attributes\RequiresFunction;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Locking\SemaphoreLockStrategy;
-use TYPO3\CMS\Core\Locking\SimpleLockStrategy;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SemaphoreLockStrategyTest extends UnitTestCase
@@ -38,7 +37,7 @@ final class SemaphoreLockStrategyTest extends UnitTestCase
     #[Test]
     public function getPriorityReturnsDefaultPriority(): void
     {
-        self::assertEquals(SimpleLockStrategy::DEFAULT_PRIORITY, SimpleLockStrategy::getPriority());
+        self::assertEquals(SemaphoreLockStrategy::DEFAULT_PRIORITY, SemaphoreLockStrategy::getPriority());
     }
 
     #[Test]
