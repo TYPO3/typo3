@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Log\Processor\WebProcessor;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class WebProcessorTest extends UnitTestCase
 {
     #[Test]
