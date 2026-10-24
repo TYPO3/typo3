@@ -18,12 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Schema;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
-use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidTcaException;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\AbstractInvalidDataStructureException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Domain\RawRecord;
+use TYPO3\CMS\Core\Schema\Exception\FieldTypeNotAvailableException;
 use TYPO3\CMS\Core\Schema\Exception\UndefinedSchemaException;
 use TYPO3\CMS\Core\Schema\Field\FieldCollection;
+use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 use TYPO3\CMS\Core\Schema\Field\FlexFormFieldType;
 use TYPO3\CMS\Core\Schema\Struct\FlexSectionContainer;
 use TYPO3\CMS\Core\Schema\Struct\FlexSheet;
@@ -43,20 +44,34 @@ final readonly class FlexFormSchemaFactory
     /**
      * Currently this mixes Schema and Record Information, and could be handled in a cleaner way.
      * This method signature will most likely change.
+     *
+     * The relation map is not evaluated, relations of the sheet fields are resolved from their configuration.
      */
-    public function getSchemaForRecord(RawRecord $record, FlexFormFieldType $field, RelationMap $relationMap): ?FlexFormSchema
+    public function getSchemaForRecord(RawRecord $record, FlexFormFieldType $field, ?RelationMap $relationMap = null): ?FlexFormSchema
+    {
+        return $this->getSchemaForRow($record->getMainType(), $field, $record->toArray());
+    }
+
+    /**
+     * Resolves the data structure of a flex field for a given database row, and creates
+     * schema field types for all fields of its sheets, including their relations.
+     *
+     * Returns null if no valid data structure can be resolved for the row. Fields of
+     * a type that is not available are omitted.
+     */
+    public function getSchemaForRow(string $tableName, FlexFormFieldType $field, array $row): ?FlexFormSchema
     {
         try {
-            $schema = $this->tcaSchemaFactory->get($record->getMainType());
+            $schema = $this->tcaSchemaFactory->get($tableName);
             $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(
                 ['config' => $field->getConfiguration()],
-                $record->getMainType(),
+                $tableName,
                 $field->getName(),
-                $record->toArray(),
+                $row,
                 $schema
             );
             $resolvedDataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
-        } catch (InvalidTcaException|InvalidIdentifierException|UndefinedSchemaException) {
+        } catch (AbstractInvalidDataStructureException|UndefinedSchemaException) {
             return null;
         }
 
@@ -79,14 +94,10 @@ final readonly class FlexFormSchemaFactory
                         $sectionContainerTitle = $sectionContainerDetails['title'] ?? '';
                         // Collect all elements within this section container
                         foreach ($sectionContainerDetails['el'] ?? [] as $fieldNameInSectionContainer => $sectionContainerConfig) {
-                            $fieldsInSectionContainer[$fieldNameInSectionContainer] = $this->fieldTypeFactory->createFieldType(
-                                $fieldNameInSectionContainer,
-                                $sectionContainerConfig ?? [],
-                                $record->getMainType(),
-                                $relationMap,
-                                null,
-                                $field->getName()
-                            );
+                            $sectionContainerField = $this->createSheetField($tableName, $field, $fieldNameInSectionContainer, $sectionContainerConfig ?? []);
+                            if ($sectionContainerField !== null) {
+                                $fieldsInSectionContainer[$fieldNameInSectionContainer] = $sectionContainerField;
+                            }
                         }
                         $sectionContainers[$sectionFieldIdentifier] = new FlexSectionContainer(
                             $sectionFieldIdentifier,
@@ -97,14 +108,10 @@ final readonly class FlexFormSchemaFactory
                     }
                     $sections[$fieldIdentifier] = $sectionContainers;
                 } else {
-                    $fields[$fieldIdentifier] = $this->fieldTypeFactory->createFieldType(
-                        $fieldIdentifier,
-                        $flexFieldConfig ?? [],
-                        $record->getMainType(),
-                        $relationMap,
-                        null,
-                        $field->getName()
-                    );
+                    $sheetField = $this->createSheetField($tableName, $field, $fieldIdentifier, $flexFieldConfig ?? []);
+                    if ($sheetField !== null) {
+                        $fields[$fieldIdentifier] = $sheetField;
+                    }
                 }
             }
             $fields = new FieldCollection($fields);
@@ -117,5 +124,28 @@ final readonly class FlexFormSchemaFactory
             );
         }
         return new FlexFormSchema($dataStructureIdentifier, $sheets);
+    }
+
+    /**
+     * Relations of a field within a data structure only depend on its own configuration,
+     * and nothing can point to a field within a data structure. A relation map with this
+     * one field is therefore all the field type needs to resolve its relations.
+     */
+    private function createSheetField(string $tableName, FlexFormFieldType $flexField, string $fieldName, array $fieldConfiguration): ?FieldTypeInterface
+    {
+        $relationMap = new RelationMap();
+        $relationMap->add($tableName, $flexField->getName(), $fieldConfiguration['config'] ?? []);
+        try {
+            return $this->fieldTypeFactory->createFieldType(
+                $fieldName,
+                $fieldConfiguration,
+                $tableName,
+                $relationMap,
+                null,
+                $flexField->getName()
+            );
+        } catch (FieldTypeNotAvailableException) {
+            return null;
+        }
     }
 }
