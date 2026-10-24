@@ -36,6 +36,8 @@ use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Country\CountryFilter;
+use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
@@ -2250,9 +2252,18 @@ class DataHandler
     protected function checkValueForCountry(string $value, array $tcaFieldConf): array
     {
         // @todo For now, countries are only stored as a SINGLE value. MM handling may need implementation here.
-        $valueArray = $this->applyFiltersToValues($tcaFieldConf, [$value]);
+        $value = mb_strtoupper(trim($value));
+        $countryFilter = new CountryFilter(
+            $tcaFieldConf['filter']['excludeCountries'] ?? [],
+            $tcaFieldConf['filter']['onlyCountries'] ?? []
+        );
+        $allowedCountries = GeneralUtility::makeInstance(CountryProvider::class)->getFiltered($countryFilter);
+        $allowedCountriesKeys = array_keys($allowedCountries);
+        if (!in_array($value, $allowedCountriesKeys, true)) {
+            $value = '';
+        }
         return [
-            'value' => $valueArray[0] ?? '',
+            'value' => $value,
         ];
     }
 
