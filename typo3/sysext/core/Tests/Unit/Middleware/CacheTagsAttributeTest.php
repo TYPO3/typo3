@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Middleware;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -28,6 +29,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Middleware\CacheDataCollectorAttribute;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class CacheTagsAttributeTest extends UnitTestCase
 {
     #[Test]
@@ -75,7 +77,6 @@ final class CacheTagsAttributeTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['FE']['debug'] = true;
         $middleware = new CacheDataCollectorAttribute();
         $response = $middleware->process($request, $requestHandlerMock);
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['debug'] = false;
 
         self::assertTrue($response->hasHeader('X-TYPO3-Cache-Tags'));
         self::assertFalse($response->hasHeader('X-TYPO3-Cache-Tags-1'));
@@ -108,7 +109,6 @@ final class CacheTagsAttributeTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['FE']['debug'] = true;
         $middleware = new CacheDataCollectorAttribute();
         $response = $middleware->process($request, $requestHandlerMock);
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['debug'] = false;
 
         $headerNames = array_values(array_filter(
             array_keys($response->getHeaders()),
