@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Exception\InvalidPageRecordException;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Configuration\FlexForm\Exception\AbstractInvalidDataStructureException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\Richtext;
@@ -73,9 +72,11 @@ use TYPO3\CMS\Core\Schema\Field\FieldCollection;
 use TYPO3\CMS\Core\Schema\Field\FieldTranslationBehaviour;
 use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 use TYPO3\CMS\Core\Schema\Field\FileFieldType;
+use TYPO3\CMS\Core\Schema\Field\FlexFormFieldType;
 use TYPO3\CMS\Core\Schema\Field\GroupFieldType;
 use TYPO3\CMS\Core\Schema\Field\InlineFieldType;
 use TYPO3\CMS\Core\Schema\Field\RelationalFieldTypeInterface;
+use TYPO3\CMS\Core\Schema\FlexFormSchemaFactory;
 use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\RelationshipType;
 use TYPO3\CMS\Core\Schema\Struct\SelectItemCollection;
@@ -442,6 +443,7 @@ class DataHandler
         private readonly LocalizationRepository $localizationRepository,
         private readonly SiteFinder $siteFinder,
         private readonly DataMapProcessor $dataMapProcessor,
+        private readonly FlexFormSchemaFactory $flexFormSchemaFactory,
     ) {}
 
     /**
@@ -1327,15 +1329,45 @@ class DataHandler
      */
     protected function resolveFieldConfigurationAndRespectColumnsOverrides(string $table, string $field, array $record): array
     {
+        return $this->resolveFieldAndRespectColumnsOverrides($table, $field, $record)?->getConfiguration() ?? [];
+    }
+
+    /**
+     * Same as resolveFieldConfigurationAndRespectColumnsOverrides(), but returns the field of
+     * the sub-schema of the record type, or null if the field doesn't exist.
+     */
+    private function resolveFieldAndRespectColumnsOverrides(string $table, string $field, array $record): ?FieldTypeInterface
+    {
         $schema = $this->tcaSchemaFactory->get($table);
         if (!$schema->hasField($field)) {
-            return [];
+            return null;
         }
         $recordType = BackendUtility::getTCAtypeValue($table, $record, true);
         if ($recordType !== null && $schema->hasSubSchema($recordType) && $schema->getSubSchema($recordType)->hasField($field)) {
-            return $schema->getSubSchema($recordType)->getField($field)->getConfiguration();
+            return $schema->getSubSchema($recordType)->getField($field);
         }
-        return $schema->getField($field)->getConfiguration();
+        return $schema->getField($field);
+    }
+
+    /**
+     * Yields the fields of all sheets of a flex field, together with their value within the
+     * given FlexForm XML. Nothing is yielded if the data structure cannot be resolved for the row.
+     *
+     * @return \Generator<FieldTypeInterface, mixed>
+     */
+    private function getFlexFormSheetFieldValues(string $table, FlexFormFieldType $flexField, array $row, string $flexFormXml): \Generator
+    {
+        $flexFormSchema = $this->flexFormSchemaFactory->getSchemaForRow($table, $flexField, $row);
+        if ($flexFormSchema === null) {
+            return;
+        }
+        $flexForm = GeneralUtility::xml2array($flexFormXml);
+        foreach ($flexFormSchema->getSheets() as $sheetName => $sheet) {
+            foreach ($sheet->getFields() as $sheetField) {
+                $sheetFieldName = substr($sheetField->getName(), strlen($sheetName) + 1);
+                yield $sheetField => $flexForm['data'][$sheetName]['lDEF'][$sheetFieldName]['vDEF'] ?? null;
+            }
+        }
     }
 
     /**
@@ -4637,7 +4669,8 @@ class DataHandler
             // When moving a record to a different pid, attached children have to be moved as well.
             $recordForFieldConfig = $workspaceRecord ?? $liveRecord;
             foreach ($recordForFieldConfig as $field => $value) {
-                $fieldConfig = $this->resolveFieldConfigurationAndRespectColumnsOverrides($table, $field, $recordForFieldConfig);
+                $fieldType = $this->resolveFieldAndRespectColumnsOverrides($table, $field, $recordForFieldConfig);
+                $fieldConfig = $fieldType?->getConfiguration() ?? [];
                 if (!($fieldConfig['behaviour']['disableMovingChildrenWithParent'] ?? false)
                     && in_array($this->getRelationFieldType($fieldConfig), ['list', 'field'], true)
                 ) {
@@ -4650,29 +4683,18 @@ class DataHandler
                     }
                     continue;
                 }
-                if (($fieldConfig['type'] ?? '') === 'flex' && !empty($value)) {
+                if ($fieldType instanceof FlexFormFieldType && !empty($value)) {
                     // Children attached to flex inline fields have to be moved to new pid along with their parent record
-                    try {
-                        $fieldConfig['config'] = $fieldConfig;
-                        $schema = $this->tcaSchemaFactory->get($table);
-                        $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier($fieldConfig, $table, $field, $workspaceRecord ?? $liveRecord, $schema);
-                        $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
-                        $flexFormValueParsed = GeneralUtility::xml2array($value);
-                    } catch (AbstractInvalidDataStructureException) {
-                        // Nothing to do if data structure could not be determined
-                        continue;
-                    }
-                    foreach ($dataStructure['sheets'] as $sheetName => $sheet) {
-                        foreach (($sheet['ROOT']['el'] ?? []) as $sheetFieldName => $sheetFieldConfig) {
-                            if (!($sheetFieldConfig['config']['behaviour']['disableMovingChildrenWithParent'] ?? false)
-                                && in_array($this->getRelationFieldType($sheetFieldConfig['config']), ['list', 'field'], true)
-                            ) {
-                                // Move existing non-MM inline flex children
-                                $dbAnalysis = $this->createRelationHandlerInstance();
-                                $dbAnalysis->initializeForField($table, $sheetFieldConfig['config'], $sourceUid, $flexFormValueParsed['data'][$sheetName]['lDEF'][$sheetFieldName]['vDEF'] ?? '');
-                                foreach (array_reverse($dbAnalysis->itemArray) as $item) {
-                                    $this->moveRecord($item['table'], (int)$item['id'], $table === 'pages' ? $sourceUid : $updateFields['pid']);
-                                }
+                    foreach ($this->getFlexFormSheetFieldValues($table, $fieldType, $recordForFieldConfig, (string)$value) as $sheetField => $sheetFieldValue) {
+                        $sheetFieldConfig = $sheetField->getConfiguration();
+                        if (!($sheetFieldConfig['behaviour']['disableMovingChildrenWithParent'] ?? false)
+                            && in_array($this->getRelationFieldType($sheetFieldConfig), ['list', 'field'], true)
+                        ) {
+                            // Move existing non-MM inline flex children
+                            $dbAnalysis = $this->createRelationHandlerInstance();
+                            $dbAnalysis->initializeForField($table, $sheetField, $sourceUid, $sheetFieldValue ?? '');
+                            foreach (array_reverse($dbAnalysis->itemArray) as $item) {
+                                $this->moveRecord($item['table'], (int)$item['id'], $table === 'pages' ? $sourceUid : $updateFields['pid']);
                             }
                         }
                     }
@@ -5845,7 +5867,8 @@ class DataHandler
         $uid = (int)$recordToDelete['uid'];
         foreach ($recordToDelete as $fieldName => $value) {
             // Get TCA configuration for the field (respecting columnsOverrides)
-            $configuration = $this->resolveFieldConfigurationAndRespectColumnsOverrides($table, $fieldName, $recordToDelete);
+            $fieldType = $this->resolveFieldAndRespectColumnsOverrides($table, $fieldName, $recordToDelete);
+            $configuration = $fieldType?->getConfiguration() ?? [];
             if ($configuration === [] || !isset($configuration['type'])) {
                 continue;
             }
@@ -5885,54 +5908,31 @@ class DataHandler
                 foreach ($previousItemArray as $v) {
                     $this->updateRefIndex($v['table'], $v['id']);
                 }
-            } elseif ($configuration['type'] === 'flex' && (string)$value !== '') {
-                try {
-                    $schema = $this->tcaSchemaFactory->get($table);
-                    $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(
-                        ['config' => $configuration],
-                        $table,
-                        $fieldName,
-                        $recordToDelete,
-                        $schema
-                    );
-                    $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
-                } catch (AbstractInvalidDataStructureException) {
-                    // Nothing to do if data structure could not be determined
-                    continue;
-                }
-                if ($dataStructureArray !== []) {
-                    $flexForm = GeneralUtility::xml2array($value);
-                    foreach (($dataStructureArray['sheets'] ?? []) as $sheetName => $sheet) {
-                        foreach ($sheet['ROOT']['el'] as $sheetFieldName => $flexField) {
-                            $flexFormValue = $flexForm['data'][$sheetName]['lDEF'][$sheetFieldName]['vDEF'] ?? null;
-                            $flexFieldConfig = $flexField['config'] ?? [];
-                            if (!isset($flexFieldConfig['type'])) {
-                                continue;
+            } elseif ($fieldType instanceof FlexFormFieldType && (string)$value !== '') {
+                foreach ($this->getFlexFormSheetFieldValues($table, $fieldType, $recordToDelete, (string)$value) as $sheetField => $flexFormValue) {
+                    $flexFieldConfig = $sheetField->getConfiguration();
+                    if ($sheetField->isType(TableColumnType::INLINE, TableColumnType::FILE)) {
+                        if (in_array($this->getRelationFieldType($flexFieldConfig), ['list', 'field'], true)) {
+                            $dbAnalysis = $this->createRelationHandlerInstance();
+                            if ($forceHardDelete) {
+                                // @todo: This should be called "disableDeleteClause" or similar.
+                                $dbAnalysis->undeleteRecord = true;
                             }
-                            if ($flexFieldConfig['type'] === 'inline' || $flexFieldConfig['type'] === 'file') {
-                                if (in_array($this->getRelationFieldType($flexFieldConfig), ['list', 'field'], true)) {
-                                    $dbAnalysis = $this->createRelationHandlerInstance();
-                                    if ($forceHardDelete) {
-                                        // @todo: This should be called "disableDeleteClause" or similar.
-                                        $dbAnalysis->undeleteRecord = true;
-                                    }
-                                    $dbAnalysis->initializeForField($table, $flexFieldConfig, $uid, $flexFormValue);
-                                    // Non type save comparison is intended!
-                                    if (!isset($flexFieldConfig['behaviour']['enableCascadingDelete']) || $flexFieldConfig['behaviour']['enableCascadingDelete'] != false) {
-                                        // Walk through the items and remove them
-                                        foreach ($dbAnalysis->itemArray as $v) {
-                                            $this->deleteAction($v['table'], (int)$v['id'], false, $forceHardDelete);
-                                        }
-                                    }
-                                }
-                            } elseif ($this->isReferenceField($flexFieldConfig)) {
-                                $allowedTables = $flexFieldConfig['type'] === 'group' ? $flexFieldConfig['allowed'] : $flexFieldConfig['foreign_table'];
-                                $dbAnalysis = $this->createRelationHandlerInstance();
-                                $dbAnalysis->start($value, $allowedTables, $flexFieldConfig['MM'] ?? '', $uid, $table, $flexFieldConfig);
+                            $dbAnalysis->initializeForField($table, $sheetField, $uid, $flexFormValue);
+                            // Non type save comparison is intended!
+                            if (!isset($flexFieldConfig['behaviour']['enableCascadingDelete']) || $flexFieldConfig['behaviour']['enableCascadingDelete'] != false) {
+                                // Walk through the items and remove them
                                 foreach ($dbAnalysis->itemArray as $v) {
-                                    $this->updateRefIndex($v['table'], $v['id']);
+                                    $this->deleteAction($v['table'], (int)$v['id'], false, $forceHardDelete);
                                 }
                             }
+                        }
+                    } elseif ($this->isReferenceField($flexFieldConfig)) {
+                        $allowedTables = $flexFieldConfig['type'] === 'group' ? $flexFieldConfig['allowed'] : $flexFieldConfig['foreign_table'];
+                        $dbAnalysis = $this->createRelationHandlerInstance();
+                        $dbAnalysis->start($value, $allowedTables, $flexFieldConfig['MM'] ?? '', $uid, $table, $flexFieldConfig);
+                        foreach ($dbAnalysis->itemArray as $v) {
+                            $this->updateRefIndex($v['table'], $v['id']);
                         }
                     }
                 }
@@ -6392,36 +6392,19 @@ class DataHandler
                 }
             } elseif ($this->isReferenceField($fieldConfig) && $this->isManyToManyField($fieldType)) {
                 $this->discardMmRelations($table, $fieldConfig, $record);
-            } elseif ($fieldType->isType(TableColumnType::FLEX) && (string)$value !== '') {
-                try {
-                    $schema = $this->tcaSchemaFactory->get($table);
-                    $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(['config' => $fieldConfig], $table, $fieldName, $record, $schema);
-                    $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
-                } catch (AbstractInvalidDataStructureException) {
-                    // Nothing to do if data structure could not be determined
-                    continue;
-                }
-                if ($dataStructureArray !== []) {
-                    $flexForm = GeneralUtility::xml2array($value);
-                    foreach (($dataStructureArray['sheets'] ?? []) as $sheetName => $sheet) {
-                        foreach ($sheet['ROOT']['el'] as $sheetFieldName => $flexField) {
-                            $flexFormValue = $flexForm['data'][$sheetName]['lDEF'][$sheetFieldName]['vDEF'] ?? null;
-                            $flexFieldConfig = $flexField['config'] ?? [];
-                            if (!isset($flexFieldConfig['type'])) {
-                                continue;
-                            }
-                            if ($flexFieldConfig['type'] === 'inline' || $flexFieldConfig['type'] === 'file') {
-                                if (in_array($this->getRelationFieldType($flexFieldConfig), ['list', 'field'], true)) {
-                                    $dbAnalysis = $this->createRelationHandlerInstance();
-                                    $dbAnalysis->initializeForField($table, $flexFieldConfig, (int)$record['uid'], $flexFormValue);
-                                    foreach ($dbAnalysis->itemArray as $relationRecord) {
-                                        $this->discard($relationRecord['table'], (int)$relationRecord['id']);
-                                    }
-                                }
-                            } elseif ($this->isReferenceField($flexFieldConfig) && !empty($flexFieldConfig['MM'])) {
-                                $this->discardMmRelations($table, $flexFieldConfig, $record);
+            } elseif ($fieldType instanceof FlexFormFieldType && (string)$value !== '') {
+                foreach ($this->getFlexFormSheetFieldValues($table, $fieldType, $record, (string)$value) as $sheetField => $flexFormValue) {
+                    $flexFieldConfig = $sheetField->getConfiguration();
+                    if ($sheetField->isType(TableColumnType::INLINE, TableColumnType::FILE)) {
+                        if (in_array($this->getRelationFieldType($flexFieldConfig), ['list', 'field'], true)) {
+                            $dbAnalysis = $this->createRelationHandlerInstance();
+                            $dbAnalysis->initializeForField($table, $sheetField, (int)$record['uid'], $flexFormValue);
+                            foreach ($dbAnalysis->itemArray as $relationRecord) {
+                                $this->discard($relationRecord['table'], (int)$relationRecord['id']);
                             }
                         }
+                    } elseif ($this->isReferenceField($flexFieldConfig) && $this->isManyToManyField($sheetField)) {
+                        $this->discardMmRelations($table, $flexFieldConfig, $record);
                     }
                 }
             }
@@ -6717,28 +6700,14 @@ class DataHandler
                 $toDeleteRegistry[] = $dbFieldConfig;
                 $toUpdateRegistry[] = $dbFieldConfig;
             }
-            if ($fieldType->isType(TableColumnType::FLEX)) {
+            if ($fieldType instanceof FlexFormFieldType) {
                 // Find possible mm tables attached to live record flex from data structures, mark as to delete
-                $schema = $this->tcaSchemaFactory->get($table);
-                $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(['config' => $dbFieldConfig], $table, $fieldType->getName(), $liveRecord, $schema);
-                $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
-                foreach (($dataStructureArray['sheets'] ?? []) as $flexSheetDefinition) {
-                    foreach (($flexSheetDefinition['ROOT']['el'] ?? []) as $flexFieldDefinition) {
-                        if (is_array($flexFieldDefinition) && $this->flexFieldDefinitionIsMmRelation($flexFieldDefinition)) {
-                            $toDeleteRegistry[] = $flexFieldDefinition['config'];
-                        }
-                    }
+                foreach ($this->getManyToManyFlexFormSheetFields($table, $fieldType, $liveRecord) as $sheetField) {
+                    $toDeleteRegistry[] = $sheetField->getConfiguration();
                 }
                 // Find possible mm tables attached to workspace record flex from data structures, mark as to update uid
-                $schema = $this->tcaSchemaFactory->get($table);
-                $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(['config' => $dbFieldConfig], $table, $fieldType->getName(), $workspaceRecord, $schema);
-                $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
-                foreach (($dataStructureArray['sheets'] ?? []) as $flexSheetDefinition) {
-                    foreach (($flexSheetDefinition['ROOT']['el'] ?? []) as $flexFieldDefinition) {
-                        if (is_array($flexFieldDefinition) && $this->flexFieldDefinitionIsMmRelation($flexFieldDefinition)) {
-                            $toUpdateRegistry[] = $flexFieldDefinition['config'];
-                        }
-                    }
+                foreach ($this->getManyToManyFlexFormSheetFields($table, $fieldType, $workspaceRecord) as $sheetField) {
+                    $toUpdateRegistry[] = $sheetField->getConfiguration();
                 }
             }
         }
@@ -6796,15 +6765,20 @@ class DataHandler
     }
 
     /**
-     * Find out if a given flex field definition is a relation with an MM relation.
+     * Sheet fields of a flex field holding MM relations (select, group, category).
      * Helper of versionPublishManyToManyRelations().
+     *
+     * @return FieldTypeInterface[]
      */
-    private function flexFieldDefinitionIsMmRelation(array $flexFieldDefinition): bool
+    private function getManyToManyFlexFormSheetFields(string $table, FlexFormFieldType $flexField, array $row): array
     {
-        return ($flexFieldDefinition['type'] ?? '') !== 'array' // is a field, not a section
-            && is_array($flexFieldDefinition['config'] ?? false) // config array exists
-            && $this->isReferenceField($flexFieldDefinition['config']) // select, group, category
-            && !empty($flexFieldDefinition['config']['MM']); // MM exists
+        $flexFormSchema = $this->flexFormSchemaFactory->getSchemaForRow($table, $flexField, $row);
+        if ($flexFormSchema === null) {
+            return [];
+        }
+        return array_values(iterator_to_array($flexFormSchema->getFields(
+            fn(FieldTypeInterface $sheetField): bool => $this->isManyToManyField($sheetField) && $this->isReferenceField($sheetField->getConfiguration())
+        )));
     }
 
     /**
