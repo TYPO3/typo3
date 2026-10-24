@@ -53,6 +53,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\PasswordPolicy\Event\EnrichPasswordValidationContextDataEvent;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
 use TYPO3\CMS\Core\Schema\FieldTypeFactory;
+use TYPO3\CMS\Core\Schema\FlexFormSchemaFactory;
 use TYPO3\CMS\Core\Schema\RelationMapBuilder;
 use TYPO3\CMS\Core\Schema\TcaSchemaBuilder;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -119,6 +120,7 @@ final class DataHandlerTest extends UnitTestCase
             self::createStub(DataMapProcessor::class),
             self::createStub(LinkService::class),
             new DefaultValuesResolver($this->tcaSchemaFactory),
+            new FlexFormSchemaFactory(self::createStub(FlexFormTools::class), new FieldTypeFactory(), $this->tcaSchemaFactory),
         ];
         $this->subject = $this->getAccessibleMock(DataHandler::class, null, $constructorArguments);
         $this->subject->start([], [], new BackendUserAuthentication(), self::createStub(ReferenceIndexUpdater::class));
@@ -306,6 +308,7 @@ final class DataHandlerTest extends UnitTestCase
             self::createStub(DataMapProcessor::class),
             self::createStub(LinkService::class),
             new DefaultValuesResolver($this->tcaSchemaFactory),
+            new FlexFormSchemaFactory(self::createStub(FlexFormTools::class), new FieldTypeFactory(), $this->tcaSchemaFactory),
         ];
         $subject = $this->getAccessibleMock(DataHandler::class, null, $constructorArguments, '');
         $inputValue = 'myPassword';
@@ -1324,6 +1327,7 @@ final class DataHandlerTest extends UnitTestCase
             self::createStub(DataMapProcessor::class),
             self::createStub(LinkService::class),
             new DefaultValuesResolver($this->tcaSchemaFactory),
+            new FlexFormSchemaFactory(self::createStub(FlexFormTools::class), new FieldTypeFactory(), $this->tcaSchemaFactory),
         );
         $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->method('getRole')->willReturn(PrincipalRole::USER);
@@ -1362,6 +1366,7 @@ final class DataHandlerTest extends UnitTestCase
             self::createStub(DataMapProcessor::class),
             self::createStub(LinkService::class),
             new DefaultValuesResolver($this->tcaSchemaFactory),
+            new FlexFormSchemaFactory(self::createStub(FlexFormTools::class), new FieldTypeFactory(), $this->tcaSchemaFactory),
         );
         $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->method('getRole')->willReturn(PrincipalRole::USER);
@@ -1797,6 +1802,7 @@ final class DataHandlerTest extends UnitTestCase
             self::createStub(DataMapProcessor::class),
             self::createStub(LinkService::class),
             new DefaultValuesResolver($this->tcaSchemaFactory),
+            new FlexFormSchemaFactory(self::createStub(FlexFormTools::class), new FieldTypeFactory(), $this->tcaSchemaFactory),
         );
         self::assertEquals($expected, $subject->clearPrefixFromValue('testTable', $input));
     }
