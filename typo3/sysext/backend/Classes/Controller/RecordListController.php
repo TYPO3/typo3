@@ -333,7 +333,7 @@ class RecordListController
                 $selectFields[] = 'is_siteroot';
             }
 
-            $row = BackendUtility::getRecord($table, $uid, $selectFields);
+            $row = BackendUtility::getRecordWSOL($table, $uid, $selectFields);
             if ($row !== null) {
                 // Get new record icon
                 $recordIcon = $this->iconFactory->getIconForRecord($table, $row, IconSize::SMALL);

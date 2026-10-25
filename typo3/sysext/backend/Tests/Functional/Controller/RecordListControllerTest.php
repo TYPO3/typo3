@@ -402,6 +402,35 @@ final class RecordListControllerTest extends FunctionalTestCase
         self::assertSame($expected, $data['pageTreeNeedsRefresh'] ?? false);
     }
 
+    #[Test]
+    public function toggleRecordVisibilityReportsTheStateOfTheWorkspaceVersion(): void
+    {
+        $this->get(ConnectionPool::class)->getConnectionForTable('tt_content')
+            ->insert('tt_content', ['uid' => 9001, 'pid' => 1100, 'CType' => 'text', 'header' => 'Live content', 'hidden' => 0]);
+        $this->backendUser->setWorkspace(1);
+        $controller = $this->get(RecordListController::class);
+
+        $hideResponse = json_decode((string)$controller->toggleRecordVisibilityAction($this->createToggleVisibilityRequest(9001, 'hide'))->getBody(), true);
+        self::assertFalse($hideResponse['isVisible']);
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()->removeAll();
+        $workspaceVersionHidden = $queryBuilder->select('hidden')->from('tt_content')->where(
+            $queryBuilder->expr()->eq('t3ver_oid', 9001),
+            $queryBuilder->expr()->eq('t3ver_wsid', 1),
+        )->executeQuery()->fetchOne();
+        self::assertSame(1, (int)$workspaceVersionHidden);
+
+        $showResponse = json_decode((string)$controller->toggleRecordVisibilityAction($this->createToggleVisibilityRequest(9001, 'show'))->getBody(), true);
+        self::assertTrue($showResponse['isVisible']);
+    }
+
+    private function createToggleVisibilityRequest(int $uid, string $action): ServerRequest
+    {
+        return new ServerRequest('https://example.com/typo3/ajax/record/toggle-visibility', 'POST')
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withParsedBody(['table' => 'tt_content', 'uid' => $uid, 'action' => $action]);
+    }
+
     private function createRequest(int $pageId, object $site, ModuleData $moduleData, array $additionalParams = []): ServerRequest
     {
         $queryParams = array_merge(['id' => $pageId], $additionalParams);
