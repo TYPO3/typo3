@@ -380,7 +380,8 @@ final class ResourceStorageTest extends FunctionalTestCase
             ->onlyMethods(['createFolder'])
             ->setConstructorArgs([$localDriver, ['identifier' => 2, 'name' => 'configured'], new NoopEventDispatcher()])
             ->getMock();
-        $configuredStorage->method('createFolder')->willThrowException(new \InvalidArgumentException());
+        $exception = new \InvalidArgumentException();
+        $configuredStorage->expects($this->once())->method('createFolder')->willThrowException($exception);
         $configuredStorage->setEvaluatePermissions(true);
         $configuredStorage->setUserPermissions(['readFolder' => true]);
         $storageRepository = $this->createMock(StorageRepository::class);
@@ -395,7 +396,9 @@ final class ResourceStorageTest extends FunctionalTestCase
 
         try {
             $subject->getProcessingFolder();
-        } catch (\InvalidArgumentException) {
+            self::fail('Folder creation must throw.');
+        } catch (\InvalidArgumentException $actual) {
+            self::assertSame($exception, $actual);
         }
 
         self::assertTrue($configuredStorage->getEvaluatePermissions());
@@ -411,11 +414,14 @@ final class ResourceStorageTest extends FunctionalTestCase
         $processingFolder = $this->createMock(Folder::class);
         $processingFolder->method('getSubfolder')->willThrowException(new FolderDoesNotExistException());
         $processingFolder->method('getStorage')->willReturn($subject);
-        $processingFolder->method('createFolder')->willThrowException(new \InvalidArgumentException());
+        $exception = new \InvalidArgumentException();
+        $processingFolder->expects($this->once())->method('createFolder')->willThrowException($exception);
 
         try {
             $subject->_call('getNestedProcessingFolder', $file, $processingFolder);
-        } catch (\InvalidArgumentException) {
+            self::fail('Nested folder creation must throw.');
+        } catch (\InvalidArgumentException $actual) {
+            self::assertSame($exception, $actual);
         }
 
         self::assertTrue($subject->getEvaluatePermissions());
