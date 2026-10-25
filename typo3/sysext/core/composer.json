@@ -85,6 +85,7 @@
 		"symfony/process": "~8.1.0",
 		"symfony/rate-limiter": "~8.1.0",
 		"symfony/routing": "~8.1.11",
+		"symfony/security-core": "~8.1.0",
 		"symfony/translation": "~8.1.0",
 		"symfony/uid": "~8.1.0",
 		"symfony/validator": "~8.1.11",

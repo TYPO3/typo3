@@ -21,12 +21,14 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use TYPO3\CMS\Core\Authentication\Pipeline\Authenticated;
 use TYPO3\CMS\Core\Authentication\Pipeline\AuthenticatorManager;
 use TYPO3\CMS\Core\Authentication\Pipeline\Challenge;
 use TYPO3\CMS\Core\Authentication\Pipeline\Realm;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\SetCookieService;
+use TYPO3\CMS\Core\Security\Authorization\PrincipalToken;
 use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
@@ -35,13 +37,16 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  * Authenticates the request against the frontend realm of the authentication
  * pipeline, stores the frontend user object in the current request as
  * attribute, and provides the established principal as "frontend.principal"
- * request attribute.
+ * request attribute and as token of the authorization checker while the
+ * request is handled. A backend user of the frontend request is checked
+ * with isGrantedForUser().
  */
 readonly class FrontendUserAuthenticator implements MiddlewareInterface
 {
     public function __construct(
         protected Context $context,
         protected AuthenticatorManager $authenticatorManager,
+        protected TokenStorageInterface $tokenStorage,
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -59,11 +64,20 @@ readonly class FrontendUserAuthenticator implements MiddlewareInterface
 
         // Register the frontend user as aspect and the principal within the request
         $this->context->setAspect('frontend.user', $frontendUser->createUserAspect());
-        if ($result instanceof Authenticated) {
-            $request = $request->withAttribute('frontend.principal', $result->principal);
+        $principal = $result instanceof Authenticated ? $result->principal : null;
+        if ($principal !== null) {
+            $request = $request->withAttribute('frontend.principal', $principal);
         }
 
-        $response = $handler->handle($request);
+        // The authorization checker decides for the principal of this request,
+        // the token of an enclosing request is restored afterwards
+        $previousToken = $this->tokenStorage->getToken();
+        $this->tokenStorage->setToken($principal !== null ? new PrincipalToken($principal) : null);
+        try {
+            $response = $handler->handle($request);
+        } finally {
+            $this->tokenStorage->setToken($previousToken);
+        }
 
         // Store session data for fe_users
         $frontendUser->storeSessionData();

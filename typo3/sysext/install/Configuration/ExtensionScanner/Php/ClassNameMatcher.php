@@ -2871,4 +2871,39 @@ return [
             'Breaking-110775-ExternalDocumentParsersOfIndexedSearchReplacedByTextExtractors.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Attribute\AsModuleAccessGate' => [
+        'restFiles' => [
+            'Deprecation-111236-ModuleAccessGates.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Module\ModuleAccessGateInterface' => [
+        'restFiles' => [
+            'Deprecation-111236-ModuleAccessGates.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Module\ModuleAccessGateRegistry' => [
+        'restFiles' => [
+            'Deprecation-111236-ModuleAccessGates.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Module\ModuleAccessResult' => [
+        'restFiles' => [
+            'Deprecation-111236-ModuleAccessGates.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Module\AccessGate\AdminGate' => [
+        'restFiles' => [
+            'Deprecation-111236-ModuleAccessGates.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Module\AccessGate\UserGate' => [
+        'restFiles' => [
+            'Deprecation-111236-ModuleAccessGates.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Module\AccessGate\SystemMaintainerGate' => [
+        'restFiles' => [
+            'Deprecation-111236-ModuleAccessGates.rst',
+        ],
+    ],
 ];

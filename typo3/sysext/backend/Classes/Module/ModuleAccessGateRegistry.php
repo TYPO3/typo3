@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Backend\Module;
 /**
  * Registry for module access gates, ordered by before/after dependencies
  * during container compilation.
+ *
+ * @deprecated since v15, will be removed in v16. Decide module access with a security voter, see #[AsSecurityVoter].
  */
 class ModuleAccessGateRegistry
 {

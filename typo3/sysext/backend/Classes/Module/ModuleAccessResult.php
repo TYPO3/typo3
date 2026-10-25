@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Backend\Module;
 
 /**
  * Result of a module access gate decision.
+ *
+ * @deprecated since v15, will be removed in v16. Decide module access with a security voter, see #[AsSecurityVoter].
  */
 enum ModuleAccessResult
 {

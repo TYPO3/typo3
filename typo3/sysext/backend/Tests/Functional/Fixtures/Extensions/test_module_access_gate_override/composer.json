@@ -1,0 +1,23 @@
+{
+	"name": "typo3tests/test-module-access-gate-override",
+	"type": "typo3-cms-extension",
+	"description": "This extension replaces the module access gate of TYPO3 Core for the access value admin.",
+	"version": "1.0.0",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-backend": "15.0.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_module_access_gate_override",
+			"Package": {
+				"providesPackages": []
+			}
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\TestModuleAccessGateOverride\\": "Classes/"
+		}
+	}
+}

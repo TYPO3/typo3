@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Pipeline\LegacyUserPrincipalFactory;
 use TYPO3\CMS\Core\Authentication\Pipeline\Realm;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Security\Authorization\LegacyBackendUserRegistry;
 use TYPO3\CMS\Core\Security\PermissionSet\PrincipalRole;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -35,14 +36,32 @@ final class LegacyUserPrincipalFactoryTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function backendUserThatIsNotTheGlobalBackendUserIsRefused(): void
+    public function principalIsBuiltForABackendUserThatIsNotTheGlobalBackendUser(): void
     {
         $user = $this->createBackendUser(['uid' => 5, 'username' => 'editor']);
         $GLOBALS['BE_USER'] = $this->createBackendUser(['uid' => 6, 'username' => 'other']);
 
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionCode(1791530201);
-        $this->get(LegacyUserPrincipalFactory::class)->fromUser($user, Realm::backend());
+        $principal = $this->get(LegacyUserPrincipalFactory::class)->fromUser($user, Realm::backend());
+
+        self::assertSame(5, $principal?->context->id);
+        self::assertSame($user, $this->get(LegacyBackendUserRegistry::class)->getUser($principal));
+    }
+
+    #[Test]
+    public function principalOfAUserObjectIsBuiltAnewOnlyWhenTheObjectChanged(): void
+    {
+        $user = $this->createBackendUser(['uid' => 5, 'username' => 'editor']);
+        $user->groupData['modules'] = 'web_layout';
+        $factory = $this->get(LegacyUserPrincipalFactory::class);
+        $principal = $factory->fromUser($user, Realm::backend());
+
+        self::assertSame($principal, $factory->fromUser($user, Realm::backend()));
+
+        $user->groupData['modules'] = 'web_list';
+        $changedPrincipal = $factory->fromUser($user, Realm::backend());
+
+        self::assertNotSame($principal, $changedPrincipal);
+        self::assertSame('web_list', $this->get(LegacyBackendUserRegistry::class)->getGroupData($changedPrincipal)['modules']);
     }
 
     #[Test]

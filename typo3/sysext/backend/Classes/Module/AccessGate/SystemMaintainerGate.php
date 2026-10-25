@@ -26,6 +26,9 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 /**
  * Grants access only to system maintainers (admins listed in
  * $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers']).
+ *
+ * @deprecated since v15, will be removed in v16. Decide module access with a security voter, see #[AsSecurityVoter].
+ *             TYPO3 Core decides the access value "systemMaintainer" with the ModuleVoter.
  */
 #[AsModuleAccessGate(identifier: 'systemMaintainer')]
 final readonly class SystemMaintainerGate implements ModuleAccessGateInterface

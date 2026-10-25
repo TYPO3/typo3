@@ -25,6 +25,9 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
 /**
  * Grants access only to admin users.
+ *
+ * @deprecated since v15, will be removed in v16. Decide module access with a security voter, see #[AsSecurityVoter].
+ *             TYPO3 Core decides the access value "admin" with the ModuleVoter.
  */
 #[AsModuleAccessGate(identifier: 'admin')]
 final readonly class AdminGate implements ModuleAccessGateInterface

@@ -435,7 +435,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             return false;
         }
 
-        if (!$pure && $GLOBALS['BE_USER']->getOriginalUserIdWhenInSwitchUserMode()) {
+        if (!$pure && $this->getOriginalUserIdWhenInSwitchUserMode()) {
             return false;
         }
         if (!$pure && Environment::getContext()->isDevelopment()) {

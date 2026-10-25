@@ -23,6 +23,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use TYPO3\CMS\Core\Authentication\Event\BeforeRequestTokenProcessedEvent;
 use TYPO3\CMS\Core\Authentication\Event\LoginAttemptFailedEvent;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
@@ -37,6 +39,7 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\RateLimiter\RequestRateLimitedException;
+use TYPO3\CMS\Core\Security\Authorization\PrincipalToken;
 use TYPO3\CMS\Core\Security\PermissionSet\PrincipalRole;
 use TYPO3\CMS\Core\Security\RequestToken;
 use TYPO3\CMS\Core\Session\UserSessionManager;
@@ -56,6 +59,7 @@ final class FrontendUserAuthenticatorTest extends FunctionalTestCase
     private RequestHandlerInterface $requestHandler;
     private bool $handlerInvoked = false;
     private ?ServerRequestInterface $handledRequest = null;
+    private ?TokenInterface $tokenDuringHandling = null;
 
     protected function setUp(): void
     {
@@ -81,6 +85,7 @@ final class FrontendUserAuthenticatorTest extends FunctionalTestCase
         $this->subject = new FrontendUserAuthenticator(
             $this->get(Context::class),
             $this->get(AuthenticatorManager::class),
+            $this->get(TokenStorageInterface::class),
         );
         $this->handlerInvoked = false;
         $this->handledRequest = null;
@@ -99,6 +104,7 @@ final class FrontendUserAuthenticatorTest extends FunctionalTestCase
     {
         $this->handlerInvoked = true;
         $this->handledRequest = $request;
+        $this->tokenDuringHandling = $this->get(TokenStorageInterface::class)->getToken();
     }
 
     #[Test]
@@ -117,6 +123,25 @@ final class FrontendUserAuthenticatorTest extends FunctionalTestCase
         self::assertContains(5, $principal->context->groupIds);
         self::assertSame(['Members'], $principal->groupNames);
         self::assertStringContainsString('fe_typo_user', $response->getHeaderLine('Set-Cookie'));
+    }
+
+    #[Test]
+    public function principalIsTheTokenOfTheAuthorizationCheckerWhileTheRequestIsHandled(): void
+    {
+        $this->subject->process($this->buildLoginRequest(self::PASSWORD), $this->requestHandler);
+
+        self::assertInstanceOf(PrincipalToken::class, $this->tokenDuringHandling);
+        self::assertSame($this->handledRequest?->getAttribute('frontend.principal'), $this->tokenDuringHandling->getPrincipal());
+        self::assertNull($this->get(TokenStorageInterface::class)->getToken());
+    }
+
+    #[Test]
+    public function anonymousRequestHasNoToken(): void
+    {
+        $this->subject->process($this->buildRequest(), $this->requestHandler);
+
+        self::assertTrue($this->handlerInvoked);
+        self::assertNull($this->tokenDuringHandling);
     }
 
     #[Test]

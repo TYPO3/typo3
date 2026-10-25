@@ -12,6 +12,7 @@ use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\Attribute\AsAuthenticator;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
@@ -19,6 +20,7 @@ use TYPO3\CMS\Core\Attribute\AsFileRenderer;
 use TYPO3\CMS\Core\Attribute\AsMetaTagManager;
 use TYPO3\CMS\Core\Attribute\AsModuleAccessGate;
 use TYPO3\CMS\Core\Attribute\AsRowUpdater;
+use TYPO3\CMS\Core\Attribute\AsSecurityVoter;
 use TYPO3\CMS\Core\Attribute\AsTextExtractor;
 use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\Imaging\IconProviderInterface;
@@ -152,6 +154,19 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
         AsTextExtractor::class,
         static function (ChildDefinition $definition, AsTextExtractor $attribute): void {
             $definition->addTag(AsTextExtractor::TAG_NAME, ['priority' => $attribute->priority]);
+        },
+    );
+
+    $containerBuilder->registerAttributeForAutoconfiguration(
+        AsSecurityVoter::class,
+        static function (ChildDefinition $definition, AsSecurityVoter $attribute, \Reflector $reflector): void {
+            if (!$reflector instanceof \ReflectionClass || !$reflector->implementsInterface(VoterInterface::class)) {
+                throw new \LogicException(
+                    sprintf('Security voter "%s" must implement "%s".', $definition->getClass(), VoterInterface::class),
+                    1792768551
+                );
+            }
+            $definition->addTag(AsSecurityVoter::TAG_NAME, ['priority' => $attribute->priority]);
         },
     );
 

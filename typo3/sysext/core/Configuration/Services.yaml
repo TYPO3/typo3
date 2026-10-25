@@ -197,8 +197,44 @@ services:
         identifier: 'failed'
       - name: 'messenger.failure_transport'
         identifier: 'failed'
+  # Authorization: one token storage holds the PrincipalToken of the
+  # current request. A grant requires at least one granting voter and no
+  # denying one, so a voter of an extension can restrict access, but cannot
+  # overrule a denial. If all voters abstain, access is denied.
+  Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage:
+    public: true
+  Symfony\Component\Security\Core\Authorization\Strategy\UnanimousStrategy:
+  Symfony\Component\Security\Core\Authorization\AccessDecisionManager:
+    arguments:
+      $voters: !tagged_iterator security.voter
+      $strategy: '@Symfony\Component\Security\Core\Authorization\Strategy\UnanimousStrategy'
+  Symfony\Component\Security\Core\Authorization\AuthorizationChecker:
+  # Decides on role attributes such as isGranted('ROLE_ADMIN')
+  Symfony\Component\Security\Core\Authorization\Voter\RoleVoter:
+    tags:
+      - name: security.voter
+  # Decides on IS_AUTHENTICATED and PUBLIC_ACCESS: a request without principal
+  # is anonymous, there is no role for it
+  Symfony\Component\Security\Core\Authentication\AuthenticationTrustResolver:
+  Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter:
+    arguments:
+      $authenticationTrustResolver: '@Symfony\Component\Security\Core\Authentication\AuthenticationTrustResolver'
+    tags:
+      - name: security.voter
 
   # Interface implementations
+  Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface:
+    alias: Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage
+    public: true
+  Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface:
+    alias: Symfony\Component\Security\Core\Authorization\AccessDecisionManager
+    public: true
+  Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface:
+    alias: Symfony\Component\Security\Core\Authorization\AuthorizationChecker
+    public: true
+  Symfony\Component\Security\Core\Authorization\UserAuthorizationCheckerInterface:
+    alias: Symfony\Component\Security\Core\Authorization\AuthorizationChecker
+    public: true
   Psr\Clock\ClockInterface:
     alias: TYPO3\CMS\Core\Clock\SystemClock
     public: true

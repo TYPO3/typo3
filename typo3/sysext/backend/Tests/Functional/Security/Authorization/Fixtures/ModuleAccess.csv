@@ -1,0 +1,11 @@
+"be_groups"
+,"uid","pid","title","subgroup","groupMods","hidden","deleted"
+,1,0,"editors","2","web_layout,web_list",0,0
+,2,0,"subgroup",,"site_configuration,web_info",0,0
+,3,0,"hidden group",,"media_management",1,0
+"be_users"
+,"uid","pid","username","admin","usergroup","userMods"
+,1,0,"admin",1,,
+,2,0,"editor",0,"1","dashboard,help_AboutAbout"
+,3,0,"hidden groups only",0,"3",
+,4,0,"nothing",0,,

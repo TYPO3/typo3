@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Core\Attribute;
 
 /**
  * Service tag to autoconfigure module access gates.
+ *
+ * @deprecated since v15, will be removed in v16. Decide module access with a security voter, see #[AsSecurityVoter].
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 final readonly class AsModuleAccessGate

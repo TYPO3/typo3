@@ -25,6 +25,13 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
  * Gates are responsible for deciding whether a backend user has access to a module.
  * Each gate is registered with a unique identifier that corresponds to the `access`
  * value in a module's configuration.
+ *
+ * Module access is decided by the authorization checker, see ModuleVoter. A
+ * security voter can decide on an access value of its own, and can restrict access
+ * to any module, also to modules of TYPO3 Core and other extensions. Gates are
+ * still asked through the ModuleAccessGateVoter until TYPO3 v16.
+ *
+ * @deprecated since v15, will be removed in v16. Decide module access with a security voter, see #[AsSecurityVoter].
  */
 interface ModuleAccessGateInterface
 {

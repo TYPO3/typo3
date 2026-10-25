@@ -17,8 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Module;
 
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
+use TYPO3\CMS\Backend\Security\Authorization\ModuleWorkspaceVoter;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Authentication\Pipeline\LegacyUserPrincipalFactory;
+use TYPO3\CMS\Core\Authentication\Pipeline\Realm;
+use TYPO3\CMS\Core\Security\Authorization\Policy\Scope;
+use TYPO3\CMS\Core\Security\Authorization\PrincipalToken;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -29,7 +34,8 @@ readonly class ModuleProvider
 {
     public function __construct(
         protected ModuleRegistry $moduleRegistry,
-        protected ModuleAccessGateRegistry $gateRegistry,
+        protected AccessDecisionManagerInterface $accessDecisionManager,
+        protected LegacyUserPrincipalFactory $principalFactory,
     ) {}
 
     /**
@@ -180,35 +186,20 @@ readonly class ModuleProvider
 
         $module = $this->moduleRegistry->getModule($identifier);
 
-        if ($respectWorkspaceRestrictions && ExtensionManagementUtility::isLoaded('workspaces')) {
-            $workspaceAccess = $module->getWorkspaceAccess();
-            if ($workspaceAccess === '' && $module->hasParentModule()) {
-                // In case workspace access is not set explicitly use the information
-                // from the parent module as this access restriction is inherited.
-                $workspaceAccess = $module->getParentModule()->getWorkspaceAccess();
-            }
-            if ($workspaceAccess !== '' && $workspaceAccess !== '*') {
-                if (($workspaceAccess === 'live' && $user->workspace !== 0)
-                    || ($workspaceAccess === 'offline' && $user->workspace === 0)
-                ) {
-                    return false;
-                }
-            } elseif ($user->workspace === -99 && $workspaceAccess !== '*') {
-                return false;
-            }
+        $principal = $this->principalFactory->fromUser($user, Realm::backend());
+        if ($principal === null) {
+            // A user object without a user record is granted modules without access restriction only
+            return $module->getAccess() === ''
+                && (!$respectWorkspaceRestrictions || ModuleWorkspaceVoter::isAvailableInWorkspace($module, $user->workspace));
         }
-
-        $moduleAccess = $module->getAccess();
-        if ($moduleAccess === '') {
-            // Early return since this module does not have any access permissions set
-            return true;
+        $token = new PrincipalToken($principal);
+        if (!$respectWorkspaceRestrictions) {
+            $token->setAttribute(ModuleWorkspaceVoter::IGNORE_WORKSPACE_RESTRICTION, true);
         }
-
-        if ($this->gateRegistry->has($moduleAccess)) {
-            return $this->gateRegistry->get($moduleAccess)->decide($module, $user) === ModuleAccessResult::Granted;
-        }
-
-        return false;
+        // Decided by the ModuleVoter, the ModuleWorkspaceVoter for the workspace restriction, the
+        // ModuleAccessGateVoter for access values of module access gates, and any voter of an extension,
+        // as isGranted(Scope::ACCESS, $module) is
+        return $this->accessDecisionManager->decide($token, [Scope::ACCESS], $module);
     }
 
     /**

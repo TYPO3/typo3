@@ -23,6 +23,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use TYPO3\CMS\Backend\Middleware\BackendUserAuthenticator;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -42,6 +44,9 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Security\Authorization\LegacyBackendUserRegistry;
+use TYPO3\CMS\Core\Security\Authorization\PrincipalToken;
+use TYPO3\CMS\Core\Security\PermissionSet\PrincipalContext;
 use TYPO3\CMS\Core\Security\PermissionSet\PrincipalRole;
 use TYPO3\CMS\Core\Security\RequestToken;
 use TYPO3\CMS\Core\Session\UserSessionManager;
@@ -63,6 +68,7 @@ final class BackendUserAuthenticatorTest extends FunctionalTestCase
     private bool $handlerInvoked = false;
     private ?ServerRequestInterface $handledRequest = null;
     private array $originalServices = [];
+    private ?TokenInterface $tokenDuringHandling = null;
 
     protected function setUp(): void
     {
@@ -85,6 +91,7 @@ final class BackendUserAuthenticatorTest extends FunctionalTestCase
             $this->get(UriBuilder::class),
             $this->get(AuthenticatorManager::class),
             $this->get(MfaChallengeResponseFactory::class),
+            $this->get(TokenStorageInterface::class),
         );
         $this->handlerInvoked = false;
         $this->handledRequest = null;
@@ -103,6 +110,7 @@ final class BackendUserAuthenticatorTest extends FunctionalTestCase
     {
         unset($GLOBALS['BE_USER'], $GLOBALS['LANG']);
         $GLOBALS['T3_SERVICES'] = $this->originalServices;
+        $this->get(TokenStorageInterface::class)->setToken(null);
         parent::tearDown();
     }
 
@@ -110,6 +118,7 @@ final class BackendUserAuthenticatorTest extends FunctionalTestCase
     {
         $this->handlerInvoked = true;
         $this->handledRequest = $request;
+        $this->tokenDuringHandling = $this->get(TokenStorageInterface::class)->getToken();
     }
 
     #[Test]
@@ -150,6 +159,7 @@ final class BackendUserAuthenticatorTest extends FunctionalTestCase
             $this->get(UriBuilder::class),
             new AuthenticatorManager(new ServiceLocator(['legacy' => static fn() => $authenticator]), ['backend' => ['legacy']]),
             $this->get(MfaChallengeResponseFactory::class),
+            $this->get(TokenStorageInterface::class),
         );
         $this->provideValidRequestToken();
         $request = $this->buildRequest(new Route('/login', ['access' => 'anonymous', '_identifier' => 'login']), 'POST')
@@ -183,6 +193,31 @@ final class BackendUserAuthenticatorTest extends FunctionalTestCase
         self::assertSame(100, $principal->context->id);
         self::assertSame('backend', $principal->realmIdentifier);
         self::assertSame('testadmin', $principal->username);
+    }
+
+    #[Test]
+    public function principalIsTheTokenOfTheAuthorizationCheckerWhileTheRequestIsHandled(): void
+    {
+        $this->subject->process($this->buildLoginRequest('testadmin'), $this->requestHandler);
+
+        self::assertInstanceOf(PrincipalToken::class, $this->tokenDuringHandling);
+        self::assertSame($this->getHandledPrincipal(), $this->tokenDuringHandling->getPrincipal());
+        self::assertNull($this->get(TokenStorageInterface::class)->getToken());
+        // Module access gates receive the user object of the principal
+        self::assertSame($GLOBALS['BE_USER'], $this->get(LegacyBackendUserRegistry::class)->getUser($this->getHandledPrincipal()));
+    }
+
+    #[Test]
+    public function anonymousRequestHasNoTokenAndRestoresTheTokenOfAnEnclosingRequest(): void
+    {
+        $enclosingToken = new PrincipalToken(new Principal(new PrincipalContext(PrincipalRole::USER, 7), 'backend', 'editor'));
+        $this->get(TokenStorageInterface::class)->setToken($enclosingToken);
+
+        $this->subject->process($this->buildRequest(new Route('/sso/callback', ['access' => 'anonymous', '_identifier' => 'sso_callback'])), $this->requestHandler);
+
+        self::assertTrue($this->handlerInvoked);
+        self::assertNull($this->tokenDuringHandling);
+        self::assertSame($enclosingToken, $this->get(TokenStorageInterface::class)->getToken());
     }
 
     #[Test]

@@ -28,6 +28,9 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
  * Grants access based on explicit module permissions in
  * be_users.userMods / be_groups.groupMods. Admin users
  * are always granted access.
+ *
+ * @deprecated since v15, will be removed in v16. Decide module access with a security voter, see #[AsSecurityVoter].
+ *             TYPO3 Core decides the access value "user" with the ModuleVoter.
  */
 #[AsModuleAccessGate(identifier: 'user')]
 final readonly class UserGate implements ModuleAccessGateInterface

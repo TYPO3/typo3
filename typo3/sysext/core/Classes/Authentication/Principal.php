@@ -40,13 +40,16 @@ use TYPO3\CMS\Core\Security\PermissionSet\PrincipalRole;
  * groups the user is a direct member of. The group names belong to the
  * same groups.
  *
- * @internal not part of TYPO3 Core API yet, still experimental as part of the
- *           authentication modernization groundwork
+ * The read surface voters decide on is public API: the role, id and group
+ * ids of the context and isBackendUser(). Everything else, e.g. creating a
+ * principal, is not part of TYPO3 Core API yet: the identity of a principal
+ * is still bound to a local user record, see the uid in the context.
  */
 final readonly class Principal
 {
     /**
      * @param list<string> $groupNames
+     * @internal not part of TYPO3 Core API yet, principals are established by authentication
      */
     public function __construct(
         public PrincipalContext $context,
@@ -75,6 +78,9 @@ final readonly class Principal
         return !$this->belongsToFrontendRealm();
     }
 
+    /**
+     * @internal not part of TYPO3 Core API yet, use isBackendUser()
+     */
     public function belongsToFrontendRealm(): bool
     {
         return Realm::isFrontendIdentifier($this->realmIdentifier);

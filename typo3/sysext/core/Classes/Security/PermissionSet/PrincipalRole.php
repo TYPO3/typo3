@@ -26,7 +26,7 @@ namespace TYPO3\CMS\Core\Security\PermissionSet;
  * - ADMIN: Backend administrators (bypasses permission checks)
  * - USER: Regular backend users (respects permission grants)
  *
- * @internal
+ * Public API as the role of the context of a Principal.
  */
 enum PrincipalRole: string
 {

@@ -17,30 +17,331 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Module;
 
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Backend\Module\AccessGate\AdminGate;
-use TYPO3\CMS\Backend\Module\AccessGate\SystemMaintainerGate;
-use TYPO3\CMS\Backend\Module\AccessGate\UserGate;
-use TYPO3\CMS\Backend\Module\ModuleAccessGateRegistry;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Authorization\UserAuthorizationCheckerInterface;
 use TYPO3\CMS\Backend\Module\ModuleFactory;
+use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Module\ModuleRegistry;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Authentication\Pipeline\LegacyUserPrincipalFactory;
+use TYPO3\CMS\Core\Authentication\Pipeline\Realm;
+use TYPO3\CMS\Core\Authentication\Principal;
+use TYPO3\CMS\Core\Core\ApplicationContext;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Security\Authorization\Policy\Scope;
+use TYPO3\CMS\Core\Security\Authorization\PrincipalToken;
+use TYPO3\CMS\Core\Security\Authorization\PrincipalUser;
+use TYPO3\CMS\Core\Security\PermissionSet\PrincipalContext;
+use TYPO3\CMS\Core\Security\PermissionSet\PrincipalRole;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ModuleProviderTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['workspaces'];
 
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_security_voter',
+    ];
+
     private function createModuleProvider(ModuleRegistry $moduleRegistry): ModuleProvider
     {
-        $gateRegistry = new ModuleAccessGateRegistry([
-            'systemMaintainer' => new SystemMaintainerGate(),
-            'admin' => new AdminGate(),
-            'user' => new UserGate($moduleRegistry),
-        ]);
-        return new ModuleProvider($moduleRegistry, $gateRegistry);
+        return new ModuleProvider(
+            $moduleRegistry,
+            $this->get(AccessDecisionManagerInterface::class),
+            $this->get(LegacyUserPrincipalFactory::class),
+        );
+    }
+
+    private function createUser(int $uid = 42, bool $admin = false): BackendUserAuthentication
+    {
+        $user = new BackendUserAuthentication();
+        $user->user = ['uid' => $uid, 'username' => 'user' . $uid, 'admin' => (int)$admin];
+        $user->workspace = 0;
+        $GLOBALS['BE_USER'] = $user;
+        return $user;
+    }
+
+    protected function tearDown(): void
+    {
+        unset($GLOBALS['BE_USER']);
+        parent::tearDown();
+    }
+
+    #[Test]
+    public function userObjectWithoutUserRecordIsGrantedModulesWithoutAccessRestrictionOnly(): void
+    {
+        $moduleFactory = $this->get(ModuleFactory::class);
+        $moduleProvider = $this->createModuleProvider(new ModuleRegistry([
+            $moduleFactory->createModule('unrestricted_module', []),
+            $moduleFactory->createModule('user_module', ['access' => 'user']),
+        ]));
+        $user = new BackendUserAuthentication();
+        $user->workspace = 0;
+        $user->groupData['modules'] = 'user_module';
+
+        self::assertTrue($moduleProvider->accessGranted('unrestricted_module', $user));
+        self::assertFalse($moduleProvider->accessGranted('user_module', $user));
+    }
+
+    #[Test]
+    public function voterOfAnExtensionRestrictsAccessToAModule(): void
+    {
+        $moduleFactory = $this->get(ModuleFactory::class);
+        $moduleProvider = $this->createModuleProvider(new ModuleRegistry([
+            $moduleFactory->createModule('test_restricted_module', ['access' => 'user']),
+        ]));
+        $editor = $this->createUser();
+        $editor->groupData['modules'] = 'test_restricted_module';
+
+        self::assertFalse($moduleProvider->accessGranted('test_restricted_module', $editor));
+        self::assertTrue($moduleProvider->accessGranted('test_restricted_module', $this->createUser(43, true)));
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function accessValueOfAModuleAccessGateIsDecidedByThatGate(): void
+    {
+        $moduleFactory = $this->get(ModuleFactory::class);
+        $moduleProvider = $this->createModuleProvider(new ModuleRegistry([
+            $moduleFactory->createModule('project_module', ['access' => 'test_project_manager']),
+            $moduleFactory->createModule('unknown_access_module', ['access' => 'test_without_gate']),
+        ]));
+        $user = $this->createUser();
+
+        self::assertFalse($moduleProvider->accessGranted('project_module', $user));
+        self::assertFalse($moduleProvider->accessGranted('unknown_access_module', $user));
+
+        $user->groupData['custom_options'] = 'project:manage';
+
+        self::assertTrue($moduleProvider->accessGranted('project_module', $user));
+        self::assertFalse($moduleProvider->accessGranted('unknown_access_module', $user));
+    }
+
+    #[Test]
+    public function moduleAccessGateIsNotAskedForAPrincipalWithoutUserObject(): void
+    {
+        $module = $this->get(ModuleFactory::class)->createModule('project_module', ['access' => 'test_project_manager']);
+        $principal = new Principal(new PrincipalContext(PrincipalRole::ADMIN, 42), 'backend', 'token-user');
+
+        self::assertFalse(
+            $this->get(UserAuthorizationCheckerInterface::class)->isGrantedForUser(new PrincipalUser($principal), Scope::ACCESS, $module)
+        );
+    }
+
+    #[Test]
+    public function moduleIsDeniedForAFrontendPrincipal(): void
+    {
+        $module = $this->get(ModuleFactory::class)->createModule('unrestricted_module', []);
+        $frontendPrincipal = new Principal(new PrincipalContext(PrincipalRole::USER, 42), 'frontend', 'frontend-user');
+        $backendPrincipal = new Principal(new PrincipalContext(PrincipalRole::USER, 42), 'backend', 'backend-user');
+        $authorizationChecker = $this->get(UserAuthorizationCheckerInterface::class);
+
+        self::assertFalse($authorizationChecker->isGrantedForUser(new PrincipalUser($frontendPrincipal), Scope::ACCESS, $module));
+        self::assertTrue($authorizationChecker->isGrantedForUser(new PrincipalUser($backendPrincipal), Scope::ACCESS, $module));
+    }
+
+    #[Test]
+    public function workspaceRestrictionIsDecidedByAVoterForTheModuleProviderAndTheAuthorizationChecker(): void
+    {
+        $moduleFactory = $this->get(ModuleFactory::class);
+        $liveModule = $moduleFactory->createModule('live_module', ['workspaces' => 'live']);
+        $offlineModule = $moduleFactory->createModule('offline_module', ['workspaces' => 'offline']);
+        $moduleProvider = $this->createModuleProvider(new ModuleRegistry([$liveModule, $offlineModule]));
+        $user = $this->createUser();
+        $principal = $this->get(LegacyUserPrincipalFactory::class)->fromUser($user, Realm::backend());
+        $tokenStorage = $this->get(TokenStorageInterface::class);
+        $tokenStorage->setToken(new PrincipalToken($principal));
+        $authorizationChecker = $this->get(AuthorizationCheckerInterface::class);
+
+        try {
+            self::assertTrue($moduleProvider->accessGranted('live_module', $user));
+            self::assertTrue($authorizationChecker->isGranted(Scope::ACCESS, $liveModule));
+            self::assertFalse($moduleProvider->accessGranted('offline_module', $user));
+            self::assertFalse($authorizationChecker->isGranted(Scope::ACCESS, $offlineModule));
+
+            $user->workspace = 1;
+
+            self::assertFalse($moduleProvider->accessGranted('live_module', $user));
+            self::assertFalse($authorizationChecker->isGranted(Scope::ACCESS, $liveModule));
+            self::assertTrue($moduleProvider->accessGranted('offline_module', $user));
+            self::assertTrue($authorizationChecker->isGranted(Scope::ACCESS, $offlineModule));
+
+            // The workspace restriction is ignored on request only
+            self::assertTrue($moduleProvider->accessGranted('live_module', $user, false));
+        } finally {
+            $tokenStorage->setToken(null);
+        }
+    }
+
+    #[Test]
+    public function accessValueOfAnExtensionIsDecidedByItsVoter(): void
+    {
+        $moduleFactory = $this->get(ModuleFactory::class);
+        $moduleProvider = $this->createModuleProvider(new ModuleRegistry([
+            $moduleFactory->createModule('project_lead_module', ['access' => 'test_project_lead']),
+        ]));
+        $user = $this->createUser();
+
+        self::assertFalse($moduleProvider->accessGranted('project_lead_module', $user));
+
+        $user->userGroupsUID = [3];
+
+        self::assertTrue($moduleProvider->accessGranted('project_lead_module', $user));
+    }
+
+    /**
+     * @return array<string, ModuleInterface>
+     */
+    private function createModulesForEachAccess(): array
+    {
+        $moduleFactory = $this->get(ModuleFactory::class);
+        return [
+            'granted' => $moduleFactory->createModule('granted_module', ['access' => 'user']),
+            'not_granted' => $moduleFactory->createModule('not_granted_module', ['access' => 'user']),
+            'admin' => $moduleFactory->createModule('admin_module', ['access' => 'admin']),
+            'maintainer' => $moduleFactory->createModule('maintainer_module', ['access' => 'systemMaintainer']),
+        ];
+    }
+
+    #[Test]
+    public function accessOfAUserIsDecidedByTheModuleVoterOnTheGroupDataOfTheUserObject(): void
+    {
+        $moduleProvider = $this->createModuleProvider(new ModuleRegistry($this->createModulesForEachAccess()));
+        // No database record: the group data of the object is decisive
+        $user = new BackendUserAuthentication();
+        $user->user = ['uid' => 5, 'username' => 'editor', 'admin' => 0];
+        $user->workspace = 0;
+        $user->groupData['modules'] = 'granted_module';
+        $GLOBALS['BE_USER'] = $user;
+
+        self::assertTrue($moduleProvider->accessGranted('granted_module', $user));
+        self::assertFalse($moduleProvider->accessGranted('not_granted_module', $user));
+        self::assertFalse($moduleProvider->accessGranted('admin_module', $user));
+        self::assertFalse($moduleProvider->accessGranted('maintainer_module', $user));
+
+        // A change of the group data is taken into account
+        $user->groupData['modules'] = 'not_granted_module';
+
+        self::assertFalse($moduleProvider->accessGranted('granted_module', $user));
+        self::assertTrue($moduleProvider->accessGranted('not_granted_module', $user));
+    }
+
+    #[Test]
+    public function accessOfAnAdministratorIsDecidedByTheModuleVoterOnTheRole(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] = [7];
+        $moduleProvider = $this->createModuleProvider(new ModuleRegistry($this->createModulesForEachAccess()));
+        $user = new BackendUserAuthentication();
+        $user->user = ['uid' => 5, 'username' => 'admin', 'admin' => 1];
+        $user->workspace = 0;
+        $GLOBALS['BE_USER'] = $user;
+
+        self::assertTrue($moduleProvider->accessGranted('not_granted_module', $user));
+        self::assertTrue($moduleProvider->accessGranted('admin_module', $user));
+        self::assertFalse($moduleProvider->accessGranted('maintainer_module', $user));
+
+        $user->user['uid'] = 7;
+
+        self::assertTrue($moduleProvider->accessGranted('maintainer_module', $user));
+    }
+
+    #[Test]
+    public function accessOfAnAdministratorIsDecidedWithoutGlobalBackendUser(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] = [7];
+        $moduleProvider = $this->createModuleProvider(new ModuleRegistry($this->createModulesForEachAccess()));
+        unset($GLOBALS['BE_USER']);
+        $user = new BackendUserAuthentication();
+        $user->user = ['uid' => 7, 'username' => 'maintainer', 'admin' => 1];
+        $user->workspace = 0;
+
+        self::assertTrue($moduleProvider->accessGranted('not_granted_module', $user));
+        self::assertTrue($moduleProvider->accessGranted('admin_module', $user));
+        self::assertTrue($moduleProvider->accessGranted('maintainer_module', $user));
+
+        $user->user['uid'] = 5;
+
+        self::assertTrue($moduleProvider->accessGranted('admin_module', $user));
+        self::assertFalse($moduleProvider->accessGranted('maintainer_module', $user));
+    }
+
+    #[Test]
+    public function administratorInSwitchUserModeIsNoSystemMaintainer(): void
+    {
+        // The impersonating administrator must exist, otherwise no principal is built
+        $this->get(ConnectionPool::class)->getConnectionForTable('be_users')->insert('be_users', ['uid' => 1, 'username' => 'admin', 'admin' => 1]);
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] = [7];
+        $moduleProvider = $this->createModuleProvider(new ModuleRegistry($this->createModulesForEachAccess()));
+        $switchedUser = new BackendUserAuthentication();
+        $switchedUser->user = ['uid' => 7, 'username' => 'maintainer', 'admin' => 1];
+        $switchedUser->workspace = 0;
+        $switchedUser->initializeUserSessionManager();
+        $switchedUser->setSessionData('backuserid', 1);
+        $otherUser = new BackendUserAuthentication();
+        $otherUser->user = ['uid' => 7, 'username' => 'maintainer', 'admin' => 1];
+        $otherUser->workspace = 0;
+
+        // The switch user mode of the given user object is decisive, not the one of the global backend user
+        $GLOBALS['BE_USER'] = $otherUser;
+        self::assertTrue($moduleProvider->accessGranted('admin_module', $switchedUser));
+        self::assertFalse($moduleProvider->accessGranted('maintainer_module', $switchedUser));
+
+        $GLOBALS['BE_USER'] = $switchedUser;
+        self::assertTrue($moduleProvider->accessGranted('maintainer_module', $otherUser));
+    }
+
+    #[Test]
+    public function administratorIsSystemMaintainerInDevelopmentContext(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] = [7];
+        $moduleProvider = $this->createModuleProvider(new ModuleRegistry($this->createModulesForEachAccess()));
+        $user = $this->createUser(5, true);
+
+        self::assertFalse($moduleProvider->accessGranted('maintainer_module', $user));
+
+        $context = Environment::getContext();
+        $this->initializeEnvironmentWithContext(new ApplicationContext('Development'));
+        try {
+            self::assertTrue($moduleProvider->accessGranted('maintainer_module', $user));
+        } finally {
+            $this->initializeEnvironmentWithContext($context);
+        }
+    }
+
+    #[Test]
+    public function everyAdministratorIsSystemMaintainerWithoutSystemMaintainersSetUp(): void
+    {
+        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers']);
+        $moduleProvider = $this->createModuleProvider(new ModuleRegistry($this->createModulesForEachAccess()));
+        $user = $this->createUser(5, true);
+
+        self::assertTrue($moduleProvider->accessGranted('maintainer_module', $user));
+
+        // An empty list of system maintainers makes no admin a system maintainer
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] = [];
+
+        self::assertFalse($moduleProvider->accessGranted('maintainer_module', $user));
+    }
+
+    private function initializeEnvironmentWithContext(ApplicationContext $context): void
+    {
+        Environment::initialize(
+            $context,
+            Environment::isCli(),
+            Environment::isComposerMode(),
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getCurrentScript(),
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
     }
 
     #[Test]
@@ -174,8 +475,7 @@ final class ModuleProviderTest extends FunctionalTestCase
         $moduleRegistry = new ModuleRegistry([$parentModule, $subModule, $anotherSubModule, $subModuleWithAlias]);
         $moduleProvider = $this->createModuleProvider($moduleRegistry);
 
-        $user = new BackendUserAuthentication();
-        $user->workspace = 0;
+        $user = $this->createUser();
         $user->groupData['modules'] = 'another_sub_module,sub_module_alias';
 
         self::assertFalse($moduleProvider->accessGranted('parent_module', $user));
@@ -225,8 +525,7 @@ final class ModuleProviderTest extends FunctionalTestCase
         $moduleRegistry = new ModuleRegistry([$mainModule, $secondLevelModule, $thirdLevelModule1, $thirdLevelModule2]);
         $moduleProvider = $this->createModuleProvider($moduleRegistry);
 
-        $user = new BackendUserAuthentication();
-        $user->workspace = 0;
+        $user = $this->createUser();
         $user->groupData['modules'] = 'third_level_module_1,third_level_module_2';
 
         // Test getModuleForMenu - with submodules, the second level module should be included
@@ -277,8 +576,7 @@ final class ModuleProviderTest extends FunctionalTestCase
         $moduleRegistry = new ModuleRegistry([$mainModule, $secondLevelModule, $anotherSecondLevelModule]);
         $moduleProvider = $this->createModuleProvider($moduleRegistry);
 
-        $user = new BackendUserAuthentication();
-        $user->workspace = 0;
+        $user = $this->createUser();
         $user->groupData['modules'] = 'another_second_level_module';
 
         // Test getModuleForMenu - without submodules, the second level module should NOT be included
@@ -335,8 +633,7 @@ final class ModuleProviderTest extends FunctionalTestCase
         $moduleRegistry = new ModuleRegistry([$mainModule, $secondLevelModule, $thirdLevelModule1, $thirdLevelModule2]);
         $moduleProvider = $this->createModuleProvider($moduleRegistry);
 
-        $user = new BackendUserAuthentication();
-        $user->workspace = 0;
+        $user = $this->createUser();
         // User has no access to any third-level modules
         $user->groupData['modules'] = '';
 
@@ -368,8 +665,7 @@ final class ModuleProviderTest extends FunctionalTestCase
         ]);
         $moduleProvider = $this->createModuleProvider($moduleRegistry);
 
-        $user = new BackendUserAuthentication();
-        $user->workspace = 0;
+        $user = $this->createUser();
         $user->groupData['modules'] = 'level5_accessible'; // Only access to level5_accessible
 
         // Get the top-level module with user context - should recursively filter all levels
@@ -415,8 +711,7 @@ final class ModuleProviderTest extends FunctionalTestCase
         ]);
         $moduleProvider = $this->createModuleProvider($moduleRegistry);
 
-        $user = new BackendUserAuthentication();
-        $user->workspace = 0;
+        $user = $this->createUser();
         $user->groupData['modules'] = 'subsubsub1'; // Only access to subsubsub1
 
         $modules = $moduleProvider->getModules($user, true, true);
@@ -525,8 +820,7 @@ final class ModuleProviderTest extends FunctionalTestCase
         $moduleRegistry = new ModuleRegistry([$main, $level2, $level3, $level4accessible, $level4denied]);
         $moduleProvider = $this->createModuleProvider($moduleRegistry);
 
-        $user = new BackendUserAuthentication();
-        $user->workspace = 0;
+        $user = $this->createUser();
         $user->groupData['modules'] = 'level4accessible'; // Only access to level4accessible
 
         // With access to level4accessible, the entire chain should be visible

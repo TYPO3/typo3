@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Middleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -36,13 +37,15 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\SetCookieService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Security\Authorization\PrincipalToken;
 use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Authenticates the request against the backend realm of the authentication
  * pipeline, initializes $GLOBALS['BE_USER'] and the global LANG object, and
- * provides the established principal as "backend.principal" request attribute.
+ * provides the established principal as "backend.principal" request attribute
+ * and as token of the authorization checker while the request is handled.
  *
  * @internal
  */
@@ -54,6 +57,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         private readonly UriBuilder $uriBuilder,
         private readonly AuthenticatorManager $authenticatorManager,
         private readonly MfaChallengeResponseFactory $mfaChallengeResponseFactory,
+        private readonly TokenStorageInterface $tokenStorage,
     ) {
         parent::__construct($context);
     }
@@ -134,13 +138,22 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
                 return $this->mfaChallengeResponseFactory->createRedirect('setup_mfa', $backendUser, $request);
             }
         }
-        if ($result instanceof Authenticated) {
-            $request = $request->withAttribute('backend.principal', $result->principal);
+        $principal = $result instanceof Authenticated ? $result->principal : null;
+        if ($principal !== null) {
+            $request = $request->withAttribute('backend.principal', $principal);
         }
         $GLOBALS['LANG'] = $this->languageServiceFactory->createFromUserPreferences($backendUser);
         // Re-setting the user and take the workspace from the user object now
         $this->setBackendUserAspect($backendUser);
-        $response = $handler->handle($request);
+        // The authorization checker decides for the principal of this request,
+        // the token of an enclosing request is restored afterwards
+        $previousToken = $this->tokenStorage->getToken();
+        $this->tokenStorage->setToken($principal !== null ? new PrincipalToken($principal) : null);
+        try {
+            $response = $handler->handle($request);
+        } finally {
+            $this->tokenStorage->setToken($previousToken);
+        }
         $this->sessionGarbageCollection();
         return $this->enrichResponseWithHeadersAndCookieInformation($request, $response, $backendUser);
     }

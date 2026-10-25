@@ -25,7 +25,9 @@ namespace TYPO3\CMS\Core\Security\PermissionSet;
  * impersonation context. This is used as part of the Principal object
  * to provide context for permission checks.
  *
- * @internal
+ * Reading the role, the id and the group ids of the context of a Principal
+ * is public API. Everything else, e.g. creating a context or the
+ * impersonating context, is not part of TYPO3 Core API yet.
  */
 final readonly class PrincipalContext
 {
@@ -33,7 +35,8 @@ final readonly class PrincipalContext
      * @param PrincipalRole $role The role level of the principal
      * @param int $id The unique identifier of the principal (user ID, system ID)
      * @param array<int> $groupIds List of group IDs the principal belongs to
-     * @param self|null $impersonatedBy Optional parent context when impersonation is active
+     * @param self|null $impersonatedBy Optional parent context when impersonation is active, internal
+     * @internal not part of TYPO3 Core API yet, contexts are created along with their principal
      */
     public function __construct(
         public PrincipalRole $role,
