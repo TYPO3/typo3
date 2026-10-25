@@ -363,13 +363,15 @@ final class FailsafeContainerTest extends UnitTestCase
 
         $container = new Container([$providerStub]);
 
-        $this->expectException(ContainerExceptionInterface::class);
-        $this->expectExceptionMessageIs('Container entry "A" is part of a cyclic dependency chain.');
         try {
             $container->get('A');
+            self::fail('The first resolution must detect the cyclic dependency.');
         } catch (ContainerExceptionInterface $e) {
+            self::assertSame('Container entry "A" is part of a cyclic dependency chain.', $e->getMessage());
         }
         self::assertTrue($container->has('A'));
+        $this->expectException(ContainerExceptionInterface::class);
+        $this->expectExceptionMessageIs('Container entry "A" is part of a cyclic dependency chain.');
         $container->get('A');
     }
 
