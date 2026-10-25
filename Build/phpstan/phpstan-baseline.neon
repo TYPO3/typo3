@@ -693,13 +693,7 @@ parameters:
 		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
-			count: 10
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
-			message: '#^Call to function is_array\(\) with array\<mixed, mixed\> will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
+			count: 11
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
@@ -1907,12 +1901,6 @@ parameters:
 			identifier: constructor.unusedParameter
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Cache/Fixtures/BackendConfigurationOptionFixture.php
-
-		-
-			message: '#^Constructor of class TYPO3\\CMS\\Core\\Tests\\Unit\\Cache\\Fixtures\\FrontendBackendInstanceFixture has an unused parameter \$_\.$#'
-			identifier: constructor.unusedParameter
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Cache/Fixtures/FrontendBackendInstanceFixture.php
 
 		-
 			message: '#^Parameter \#2 \$sourceCode of method TYPO3\\CMS\\Core\\Cache\\Frontend\\PhpFrontend\:\:set\(\) expects string, array given\.$#'
