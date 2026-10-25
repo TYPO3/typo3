@@ -17,11 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Locking;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\RequiresFunction;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Locking\SemaphoreLockStrategy;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class SemaphoreLockStrategyTest extends UnitTestCase
 {
     #[Test]
@@ -45,6 +47,5 @@ final class SemaphoreLockStrategyTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][SemaphoreLockStrategy::class]['priority'] = 10;
         self::assertEquals(10, SemaphoreLockStrategy::getPriority());
-        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][SemaphoreLockStrategy::class]['priority']);
     }
 }

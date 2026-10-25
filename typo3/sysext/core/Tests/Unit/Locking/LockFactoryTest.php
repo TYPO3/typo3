@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Locking;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Locking\Exception\LockCreateException;
@@ -34,34 +35,15 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  * Testcase for \TYPO3\CMS\Core\Locking\LockFactory
  */
 #[AllowMockObjectsWithoutExpectations]
+#[BackupGlobals(true)]
 final class LockFactoryTest extends UnitTestCase
 {
     private LockFactory&MockObject&AccessibleObjectInterface $mockFactory;
-
-    /**
-     * @var array
-     */
-    private $strategiesConfigBackup = [];
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->mockFactory = $this->getAccessibleMock(LockFactory::class, null);
-
-        // backup global configuration
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'])) {
-            $this->strategiesConfigBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'];
-        } else {
-            $this->strategiesConfigBackup = [];
-        }
-    }
-
-    protected function tearDown(): void
-    {
-        // restore global configuration
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'] = $this->strategiesConfigBackup;
-
-        parent::tearDown();
     }
 
     #[Test]
@@ -111,9 +93,6 @@ final class LockFactoryTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][SemaphoreLockStrategy::class]['priority'] = $lowestValue;
         $locker = $this->mockFactory->createLocker('id');
         self::assertInstanceOf(SimpleLockStrategy::class, $locker);
-
-        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][FileLockStrategy::class]['priority']);
-        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][SemaphoreLockStrategy::class]['priority']);
     }
 
     #[Test]
