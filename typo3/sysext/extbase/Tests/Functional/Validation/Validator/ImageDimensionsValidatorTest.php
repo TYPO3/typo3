@@ -17,15 +17,42 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\CMS\Extbase\Validation\Validator\ImageDimensionsValidator;
 
 final class ImageDimensionsValidatorTest extends AbstractUploadedFileTestCase
 {
+    public static function dimensionBoundaryDataProvider(): array
+    {
+        return [
+            'exact minimum width' => [['minWidth' => 900], []],
+            'width below minimum' => [['minWidth' => 901], [1715964042]],
+            'exact maximum width' => [['maxWidth' => 900], []],
+            'width above maximum' => [['maxWidth' => 899], [1715964044]],
+            'exact minimum height' => [['minHeight' => 382], []],
+            'height below minimum' => [['minHeight' => 383], [1715964043]],
+            'exact maximum height' => [['maxHeight' => 382], []],
+            'height above maximum' => [['maxHeight' => 381], [1715964045]],
+        ];
+    }
+
+    #[DataProvider('dimensionBoundaryDataProvider')]
+    #[Test]
+    public function validatesInclusiveDimensionBoundaries(array $options, array $expectedErrorCodes): void
+    {
+        $validator = new ImageDimensionsValidator();
+        $validator->setOptions($options);
+        $result = $validator->validate($this->getUploadedFileImage());
+
+        self::assertSame($expectedErrorCodes, array_map(static fn(Error $error): int => $error->getCode(), $result->getErrors()));
+    }
+
     #[Test]
     public function validatorThrowsExceptionIfMinWidthIsGreaterThanMaxWidth(): void
     {
@@ -62,7 +89,7 @@ final class ImageDimensionsValidatorTest extends AbstractUploadedFileTestCase
         $validator->setOptions($options);
 
         $uploadedFileImage = $this->getUploadedFileImage();
-        self::assertEquals($validator->validate($uploadedFileImage)->getFirstError()->getCode(), 1715964040);
+        self::assertSame(1715964040, $validator->validate($uploadedFileImage)->getFirstError()->getCode());
     }
 
     #[Test]
@@ -73,7 +100,7 @@ final class ImageDimensionsValidatorTest extends AbstractUploadedFileTestCase
         $validator->setOptions($options);
 
         $uploadedFileImage = $this->getUploadedFileImage();
-        self::assertEquals($validator->validate($uploadedFileImage)->getFirstError()->getCode(), 1715964041);
+        self::assertSame(1715964041, $validator->validate($uploadedFileImage)->getFirstError()->getCode());
     }
 
     #[Test]
@@ -84,7 +111,7 @@ final class ImageDimensionsValidatorTest extends AbstractUploadedFileTestCase
         $validator->setOptions($options);
 
         $uploadedFileImage = $this->getUploadedFileImage();
-        self::assertEquals($validator->validate($uploadedFileImage)->getFirstError()->getCode(), 1715964042);
+        self::assertSame(1715964042, $validator->validate($uploadedFileImage)->getFirstError()->getCode());
     }
 
     #[Test]
@@ -95,7 +122,7 @@ final class ImageDimensionsValidatorTest extends AbstractUploadedFileTestCase
         $validator->setOptions($options);
 
         $uploadedFileImage = $this->getUploadedFileImage();
-        self::assertEquals($validator->validate($uploadedFileImage)->getFirstError()->getCode(), 1715964043);
+        self::assertSame(1715964043, $validator->validate($uploadedFileImage)->getFirstError()->getCode());
     }
 
     #[Test]
@@ -106,7 +133,7 @@ final class ImageDimensionsValidatorTest extends AbstractUploadedFileTestCase
         $validator->setOptions($options);
 
         $uploadedFileImage = $this->getUploadedFileImage();
-        self::assertEquals($validator->validate($uploadedFileImage)->getFirstError()->getCode(), 1715964044);
+        self::assertSame(1715964044, $validator->validate($uploadedFileImage)->getFirstError()->getCode());
     }
 
     #[Test]
@@ -117,7 +144,7 @@ final class ImageDimensionsValidatorTest extends AbstractUploadedFileTestCase
         $validator->setOptions($options);
 
         $uploadedFileImage = $this->getUploadedFileImage();
-        self::assertEquals($validator->validate($uploadedFileImage)->getFirstError()->getCode(), 1715964045);
+        self::assertSame(1715964045, $validator->validate($uploadedFileImage)->getFirstError()->getCode());
     }
 
     #[Test]

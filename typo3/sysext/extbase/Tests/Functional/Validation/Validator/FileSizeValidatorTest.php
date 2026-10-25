@@ -17,15 +17,65 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\UploadedFile;
+use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\CMS\Extbase\Validation\Validator\FileSizeValidator;
 
 final class FileSizeValidatorTest extends AbstractUploadedFileTestCase
 {
+    public static function sizeBoundaryDataProvider(): array
+    {
+        return [
+            'one byte below minimum' => [9, 1708595754],
+            'exact minimum' => [10, null],
+            'exact maximum' => [20, null],
+            'one byte above maximum' => [21, 1708595755],
+        ];
+    }
+
+    #[DataProvider('sizeBoundaryDataProvider')]
+    #[Test]
+    public function validatesExactByteBoundaries(int $bytes, ?int $expectedErrorCode): void
+    {
+        $validator = new FileSizeValidator();
+        $validator->setOptions(['minimum' => '10B', 'maximum' => '20B']);
+        $path = $this->createTestFile('size-boundary.txt', str_repeat('x', $bytes));
+        $result = $validator->validate(new UploadedFile($path, $bytes, UPLOAD_ERR_OK, 'file.txt'));
+
+        self::assertSame(
+            $expectedErrorCode === null ? [] : [$expectedErrorCode],
+            array_map(static fn(Error $error): int => $error->getCode(), $result->getErrors())
+        );
+    }
+
+    public static function collectionSizeErrorDataProvider(): array
+    {
+        return [
+            'below minimum' => [9, 1708595754],
+            'above maximum' => [21, 1708595755],
+        ];
+    }
+
+    #[DataProvider('collectionSizeErrorDataProvider')]
+    #[Test]
+    public function collectionErrorsIdentifyTheSizeRuleAndProperty(int $bytes, int $expectedErrorCode): void
+    {
+        $validator = new FileSizeValidator();
+        $validator->setOptions(['minimum' => '10B', 'maximum' => '20B']);
+        $path = $this->createTestFile('collection-boundary.txt', str_repeat('x', $bytes));
+        $files = new ObjectStorage();
+        $files->attach(new UploadedFile($path, $bytes, UPLOAD_ERR_OK, 'file.txt'));
+        $result = $validator->validate($files);
+
+        self::assertSame(['0'], array_map('strval', array_keys($result->getFlattenedErrors())));
+        self::assertSame([$expectedErrorCode], array_map(static fn(Error $error): int => $error->getCode(), $result->forProperty('0')->getErrors()));
+    }
+
     #[Test]
     public function validatorThrowsExceptionIfMinimumOptionIsInvalid(): void
     {
