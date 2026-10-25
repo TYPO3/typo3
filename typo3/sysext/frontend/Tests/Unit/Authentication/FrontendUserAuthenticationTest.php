@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Authentication;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\NullLogger;
@@ -27,6 +28,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class FrontendUserAuthenticationTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
@@ -117,10 +119,7 @@ final class FrontendUserAuthenticationTest extends UnitTestCase
         $subject->setSessionData('foo', 'bar');
         self::assertNotNull($subject->getSessionData('foo'));
 
-        // Suppress "headers already sent" errors - phpunit does that internally already
-        $prev = error_reporting(0);
         $subject->storeSessionData();
-        error_reporting($prev);
     }
 
     public static function getLoginFormDataRespectsPermaloginConfigurationDataProvider(): array
