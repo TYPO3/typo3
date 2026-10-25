@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Context\PageContextFactory;
 use TYPO3\CMS\Backend\Controller\RecordListController;
@@ -24,6 +25,8 @@ use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -276,6 +279,43 @@ final class RecordListControllerTest extends FunctionalTestCase
         self::assertContains(1, $storedLanguages);
         self::assertContains(2, $storedLanguages);
         self::assertNotContains(3, $storedLanguages); // L=3 doesn't exist on this page
+    }
+
+    public static function toggleRecordVisibilityReportsPageTreeRefreshDataProvider(): \Generator
+    {
+        yield 'live workspace' => [0, false];
+        yield 'draft workspace' => [1, true];
+    }
+
+    #[Test]
+    #[DataProvider('toggleRecordVisibilityReportsPageTreeRefreshDataProvider')]
+    public function toggleRecordVisibilityReportsPageTreeRefreshForContentInWorkspace(int $workspaceId, bool $expected): void
+    {
+        $contentUid = (int)$this->get(ConnectionPool::class)->getConnectionForTable('tt_content')
+            ->select(['uid'], 'tt_content', ['pid' => 404, 'header' => 'EN: Page not found'])
+            ->fetchOne();
+        $this->backendUser->setWorkspace($workspaceId);
+
+        $request = (new ServerRequest('https://example.com/typo3/ajax/record/toggle-visibility', 'POST'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withParsedBody(['table' => 'tt_content', 'uid' => $contentUid, 'action' => 'hide']);
+        $response = $this->get(RecordListController::class)->toggleRecordVisibilityAction($request);
+        $data = json_decode((string)$response->getBody(), true);
+
+        self::assertFalse($data['hasErrors'], json_encode($data['messages']));
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()->removeAll();
+        $hidden = $queryBuilder->select('hidden')->from('tt_content')
+            ->where(
+                $workspaceId === 0
+                    ? $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($contentUid, Connection::PARAM_INT))
+                    : $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter($contentUid, Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter($workspaceId, Connection::PARAM_INT))
+            )
+            ->executeQuery()
+            ->fetchOne();
+        self::assertSame(1, (int)$hidden);
+        self::assertSame($expected, $data['pageTreeNeedsRefresh'] ?? false);
     }
 
     private function createRequest(int $pageId, object $site, ModuleData $moduleData, array $additionalParams = []): ServerRequest

@@ -16,6 +16,7 @@ import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import Notification from '@typo3/backend/notification';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { sudoModeInterceptor } from '@typo3/backend/security/sudo-mode-interceptor';
+import { topDocument } from '@typo3/core/utility/top-window';
 import layoutLabels from '~labels/backend.layout';
 import { HiddenContentCountChangedEvent } from './page-layout-event';
 import '@typo3/backend/element/icon-element';
@@ -87,6 +88,10 @@ new RegularEvent('click', async (event: Event, delegateTarget?: Element): Promis
     // Update hidden element counter in the toolbar toggle button
     const count = document.querySelectorAll('.t3js-hidden-record').length;
     document.dispatchEvent(new HiddenContentCountChangedEvent(count));
+
+    if (data.pageTreeNeedsRefresh) {
+      topDocument.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
+    }
   } catch (error) {
     if (error && typeof (error as AjaxResponse).resolve === 'function') {
       const data = await (error as AjaxResponse).resolve();

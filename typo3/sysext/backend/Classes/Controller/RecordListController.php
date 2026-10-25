@@ -304,6 +304,8 @@ class RecordListController
             $response = [
                 'messages' => [],
                 'hasErrors' => false,
+                'pageTreeNeedsRefresh' => $dataHandler->pagetreeNeedsRefresh
+                    && ($table === 'pages' || $this->getBackendUserAuthentication()->workspace !== 0),
             ];
 
             // Basically the same as in \TYPO3\CMS\Backend\RecordList\DatabaseRecordList->getFieldsToSelect()
