@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Install\Tests\Unit\Controller;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -54,7 +53,6 @@ final class UpgradeControllerTest extends UnitTestCase
 
     #[DataProvider('versionDataProviderWithoutException')]
     #[Test]
-    #[DoesNotPerformAssertions]
     public function versionIsAccepted(string $version): void
     {
         $request = new ServerRequest()->withQueryParams([
@@ -66,16 +64,22 @@ final class UpgradeControllerTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['getDocumentationFiles', 'initializeView'])
             ->getMock();
-        $subject->method('getDocumentationFiles')->willReturn([
+        $subject->expects($this->once())->method('getDocumentationFiles')->with($version)->willReturn([
             'normalFiles' => [],
             'readFiles' => [],
             'notAffectedFiles' => [],
         ]);
         $viewStub = self::createStub(ViewInterface::class);
         $viewStub->method('assignMultiple')->willReturn($viewStub);
-        $viewStub->method('render')->willReturn('');
+        $viewStub->method('render')->willReturn('<p>Changelog</p>');
         $subject->method('initializeView')->willReturn($viewStub);
-        $subject->upgradeDocsGetChangelogForVersionAction($request);
+        $response = $subject->upgradeDocsGetChangelogForVersionAction($request);
+
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame(
+            ['success' => true, 'html' => '<p>Changelog</p>'],
+            json_decode((string)$response->getBody(), true, 512, JSON_THROW_ON_ERROR)
+        );
     }
     public static function versionDataProvider(): array
     {
