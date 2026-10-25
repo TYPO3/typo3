@@ -33,6 +33,7 @@ final class ImageSourceResolverTest extends FunctionalTestCase
         'outside-storages/typo3-logo.png',
         'fileadmin/typo3-logo.png',
     ];
+    protected bool $initializeDatabase = false;
 
     protected function setUp(): void
     {
