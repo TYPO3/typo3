@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Cache\Backend;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
@@ -39,6 +40,41 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
             ],
         ],
     ];
+
+    public static function expiryBoundaryDataProvider(): array
+    {
+        return [
+            'one second before now' => [-1, false],
+            'exactly now' => [0, true],
+            'one second after now' => [1, true],
+        ];
+    }
+
+    #[DataProvider('expiryBoundaryDataProvider')]
+    #[Test]
+    public function readsAndGarbageCollectionAgreeOnExpiryBoundary(int $offset, bool $valid): void
+    {
+        $originalTime = $GLOBALS['EXEC_TIME'];
+        try {
+            $GLOBALS['EXEC_TIME'] = 1700000000;
+            $frontend = self::createStub(FrontendInterface::class);
+            $frontend->method('getIdentifier')->willReturn('pages');
+            $backend = new Typo3DatabaseBackend();
+            $backend->setCache($frontend);
+            $backend->set('boundary', 'boundary-data', ['boundary-tag'], 10);
+            $connectionPool = $this->get(ConnectionPool::class);
+            $entries = $connectionPool->getConnectionForTable('cache_pages');
+            $entries->update('cache_pages', ['expires' => $GLOBALS['EXEC_TIME'] + $offset], ['identifier' => 'boundary']);
+
+            self::assertSame($valid ? 'boundary-data' : false, $backend->get('boundary'));
+            self::assertSame($valid, $backend->has('boundary'));
+            $backend->collectGarbage();
+            self::assertSame($valid ? 1 : 0, $entries->count('*', 'cache_pages', ['identifier' => 'boundary']));
+            self::assertSame($valid ? 1 : 0, $connectionPool->getConnectionForTable('cache_pages_tags')->count('*', 'cache_pages_tags', ['identifier' => 'boundary']));
+        } finally {
+            $GLOBALS['EXEC_TIME'] = $originalTime;
+        }
+    }
 
     #[Test]
     public function getReturnsPreviouslySetEntry(): void
