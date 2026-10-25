@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\WithEnvironmentVariable;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
@@ -190,6 +191,7 @@ final class SiteWriterTest extends UnitTestCase
     }
 
     #[Test]
+    #[WithEnvironmentVariable('base', 'https://example.com/')]
     public function writeAllowsPlaceholdersInImportedFiles(): void
     {
         $identifier = 'testsite';
@@ -206,9 +208,6 @@ final class SiteWriterTest extends UnitTestCase
                 YamlFileLoader::PROCESS_IMPORTS
             );
 
-        // Simulate env placeholder
-        putenv('base=https://example.com/');
-
         $subject = new SiteWriter(
             $this->fixturePath,
             new NoopEventDispatcher(),
@@ -217,8 +216,5 @@ final class SiteWriterTest extends UnitTestCase
         $subject->write($identifier, $configuration, true);
 
         self::assertFileEquals($expected, $siteConfig);
-
-        // Reset env placeholder
-        putenv('base');
     }
 }

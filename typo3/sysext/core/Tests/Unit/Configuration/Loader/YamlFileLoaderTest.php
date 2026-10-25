@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration\Loader;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\WithEnvironmentVariable;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -93,6 +94,9 @@ final class YamlFileLoaderTest extends UnitTestCase
      */
     #[DataProvider('loadWithEnvVarDataProvider')]
     #[Test]
+    #[WithEnvironmentVariable('foo')]
+    #[WithEnvironmentVariable('bar')]
+    #[WithEnvironmentVariable('baz')]
     public function loadWithEnvVarPlaceholders(array $envs, string $yamlContent, array $expected): void
     {
         foreach ($envs as $env) {
@@ -111,9 +115,6 @@ final class YamlFileLoaderTest extends UnitTestCase
         $subject->expects($this->once())->method('getFileContents')->with($fileName)->willReturn($fileContents);
         $output = $subject->load($fileName);
         self::assertSame($expected, $output);
-        putenv('foo');
-        putenv('bar');
-        putenv('baz');
     }
 
     /**
