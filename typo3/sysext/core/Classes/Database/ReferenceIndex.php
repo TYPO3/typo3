@@ -619,13 +619,15 @@ class ReferenceIndex
             $field = $tableTcaSchema->getField($fieldName);
             if ($tableTcaSchema->isWorkspaceAware()
                 && isset($record['t3ver_wsid']) && (int)$record['t3ver_wsid'] !== $workspaceUid
-                && $field instanceof RelationalFieldTypeInterface
-                && $field->getRelationshipType() !== RelationshipType::ManyToMany
             ) {
                 // The given record is workspace-enabled but doesn't live in the selected workspace. Don't add index, it's not actually there.
-                // We still add those rows if the record is a local side live record of an MM relation and can be a target of a workspace record.
-                // See workspaces ManyToMany Modify addCategoryRelation for details on this case.
-                continue;
+                // We still add the MM relation rows if the record is a local side live record of an MM relation and can be a target of a
+                // workspace record. See workspaces ManyToMany Modify addCategoryRelation for details on this case. Only these relations
+                // can differ in the selected workspace, soft references and all other relations are those of the live record.
+                if (!$field instanceof RelationalFieldTypeInterface || $field->getRelationshipType() !== RelationshipType::ManyToMany) {
+                    continue;
+                }
+                unset($fieldRelations['softrefs']);
             }
             if (is_array($fieldRelations['itemArray'] ?? false) && !empty($fieldRelations['itemArray'])) {
                 // DB relations in a db field
