@@ -259,7 +259,7 @@ class Recordlist {
       animationEvent.bindTo(rowElement);
       rowElement.classList.add('record-pulse');
 
-      if (table === 'pages') {
+      if (table === 'pages' || data.pageTreeNeedsRefresh) {
         topDocument.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
       }
     }).catch(async(response: AjaxResponse): Promise<void> => {
