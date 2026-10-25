@@ -25,6 +25,20 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
 {
+    private string $originalTimezone;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->originalTimezone = date_default_timezone_get();
+    }
+
+    protected function tearDown(): void
+    {
+        date_default_timezone_set($this->originalTimezone);
+        parent::tearDown();
+    }
+
     #[Test]
     public function addDataSetsNullForDefaultDateField(): void
     {
@@ -250,7 +264,6 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
     #[Test]
     public function addDataConvertsDateStringToDateTimeImmutable(): void
     {
-        $oldTimezone = date_default_timezone_get();
         date_default_timezone_set('UTC');
         $input = [
             'tableName' => 'aTable',
@@ -271,13 +284,11 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = new \DateTimeImmutable('2015-07-27T00:00:00', new \DateTimeZone('UTC'));
         self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
-        date_default_timezone_set($oldTimezone);
     }
 
     #[Test]
     public function addDataConvertsDateTimeStringToTimestamp(): void
     {
-        $oldTimezone = date_default_timezone_get();
         date_default_timezone_set('UTC');
         $input = [
             'tableName' => 'aTable',
@@ -298,13 +309,11 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = new \DateTimeImmutable('2015-07-27T15:25:32', new \DateTimeZone('UTC'));
         self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
-        date_default_timezone_set($oldTimezone);
     }
 
     #[Test]
     public function addDataConvertsTimeStringToTimestamp(): void
     {
-        $oldTimezone = date_default_timezone_get();
         date_default_timezone_set('UTC');
         $input = [
             'tableName' => 'aTable',
@@ -325,13 +334,11 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = new \DateTimeImmutable('1970-01-01T15:25:32', new \DateTimeZone('UTC'));
         self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
-        date_default_timezone_set($oldTimezone);
     }
 
     #[Test]
     public function addDataConvertsMidnightTimeStringOfDefaultFieldToDefaultValue(): void
     {
-        $oldTimezone = date_default_timezone_get();
         date_default_timezone_set('UTC');
         $input = [
             'tableName' => 'aTable',
@@ -353,13 +360,11 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         $expected['databaseRow']['aField'] = new \DateTimeImmutable('1970-01-01T00:00:00', new \DateTimeZone('UTC'));
 
         self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
-        date_default_timezone_set($oldTimezone);
     }
 
     #[Test]
     public function addDataConvertsMidnightTimeStringOfExplicitNullableFieldToDefaultValue(): void
     {
-        $oldTimezone = date_default_timezone_get();
         date_default_timezone_set('UTC');
         $input = [
             'tableName' => 'aTable',
@@ -382,13 +387,11 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         $expected['databaseRow']['aField'] = new \DateTimeImmutable('1970-01-01T00:00:00', new \DateTimeZone('UTC'));
 
         self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
-        date_default_timezone_set($oldTimezone);
     }
 
     #[Test]
     public function addDataConvertsMidnightTimeStringOfNullableFieldToNull(): void
     {
-        $oldTimezone = date_default_timezone_get();
         date_default_timezone_set('UTC');
         $input = [
             'tableName' => 'aTable',
@@ -411,13 +414,11 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         $expected['databaseRow']['aField'] = null;
 
         self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
-        date_default_timezone_set($oldTimezone);
     }
 
     #[Test]
     public function addDataConvertsEmptyTimeStringOfDefaultFieldToNullValue(): void
     {
-        $oldTimezone = date_default_timezone_get();
         date_default_timezone_set('UTC');
         $input = [
             'tableName' => 'aTable',
@@ -440,7 +441,6 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         $expected['databaseRow']['aField'] = null;
 
         self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
-        date_default_timezone_set($oldTimezone);
     }
 
     public static function addDataResolvesNullValueForLegacyEmptyValueDataProvider(): \Generator
@@ -462,7 +462,6 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
     #[Test]
     public function addDataResolvesNullValueForLegacyEmptyValue(string $type, string $emptyValue, ?bool $isNullable, ?\DateTimeImmutable $expectedValue): void
     {
-        $oldTimezone = date_default_timezone_get();
         date_default_timezone_set('UTC');
         $input = [
             'tableName' => 'aTable',
@@ -487,13 +486,11 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         $expected['databaseRow']['aField'] = $expectedValue;
 
         self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
-        date_default_timezone_set($oldTimezone);
     }
 
     #[Test]
     public function addDataIgnoresInvalidValue(): void
     {
-        $oldTimezone = date_default_timezone_get();
         date_default_timezone_set('UTC');
         $input = [
             'tableName' => 'aTable',
@@ -514,6 +511,5 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         $expected['databaseRow']['aField'] = null;
 
         self::assertEquals($expected, new DatabaseRowDateTimeFields()->addData($input));
-        date_default_timezone_set($oldTimezone);
     }
 }

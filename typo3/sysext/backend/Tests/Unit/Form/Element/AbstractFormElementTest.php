@@ -278,9 +278,12 @@ final class AbstractFormElementTest extends UnitTestCase
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         $subject = $this->getAccessibleMock(AbstractFormElement::class, ['render'], [], '', false);
         $timezoneBackup = date_default_timezone_get();
-        date_default_timezone_set('UTC');
-        $result = $subject->_call('formatValue', $config['format'], $itemValue, $config['format.'] ?? []);
-        date_default_timezone_set($timezoneBackup);
+        try {
+            date_default_timezone_set('UTC');
+            $result = $subject->_call('formatValue', $config['format'], $itemValue, $config['format.'] ?? []);
+        } finally {
+            date_default_timezone_set($timezoneBackup);
+        }
 
         self::assertSame($expectedResult, $result);
     }

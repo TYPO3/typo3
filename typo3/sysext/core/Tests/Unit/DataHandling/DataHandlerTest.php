@@ -213,12 +213,15 @@ final class DataHandlerTest extends UnitTestCase
     public function checkValueForDatetime($input, $serverTimezone, $expectedOutput): void
     {
         $oldTimezone = date_default_timezone_get();
-        date_default_timezone_set($serverTimezone);
+        try {
+            date_default_timezone_set($serverTimezone);
 
-        $output = $this->subject->_call('checkValueForDatetime', $input, ['type' => 'datetime']);
+            $output = $this->subject->_call('checkValueForDatetime', $input, ['type' => 'datetime']);
 
-        // set before the assertion is performed, so it is restored even for failing tests
-        date_default_timezone_set($oldTimezone);
+            // set before the assertion is performed, so it is restored even for failing tests
+        } finally {
+            date_default_timezone_set($oldTimezone);
+        }
 
         self::assertEquals($expectedOutput, $output['value']);
     }
@@ -703,11 +706,14 @@ final class DataHandlerTest extends UnitTestCase
         ];
 
         $previousTimezone = date_default_timezone_get();
-        date_default_timezone_set($timezone);
+        try {
+            date_default_timezone_set($timezone);
 
-        $returnValue = $this->subject->_call('checkValueForDatetime', $value, $tcaFieldConf);
+            $returnValue = $this->subject->_call('checkValueForDatetime', $value, $tcaFieldConf);
 
-        date_default_timezone_set($previousTimezone);
+        } finally {
+            date_default_timezone_set($previousTimezone);
+        }
 
         self::assertSame($expected, $returnValue['value']);
     }
@@ -872,12 +878,15 @@ final class DataHandlerTest extends UnitTestCase
         ];
 
         $oldTimezone = date_default_timezone_get();
-        date_default_timezone_set('Europe/Berlin');
+        try {
+            date_default_timezone_set('Europe/Berlin');
 
-        $returnValue = $this->subject->_call('checkValueForDatetime', $value, $tcaFieldConf);
+            $returnValue = $this->subject->_call('checkValueForDatetime', $value, $tcaFieldConf);
 
-        // set before the assertion is performed, so it is restored even for failing tests
-        date_default_timezone_set($oldTimezone);
+            // set before the assertion is performed, so it is restored even for failing tests
+        } finally {
+            date_default_timezone_set($oldTimezone);
+        }
 
         self::assertEquals($expectedOutput, $returnValue['value']);
     }
@@ -1093,12 +1102,15 @@ final class DataHandlerTest extends UnitTestCase
         ];
 
         $oldTimezone = date_default_timezone_get();
-        date_default_timezone_set('Europe/Berlin');
+        try {
+            date_default_timezone_set('Europe/Berlin');
 
-        $returnValue = $this->subject->_call('checkValueForDatetime', $value, $tcaFieldConf);
+            $returnValue = $this->subject->_call('checkValueForDatetime', $value, $tcaFieldConf);
 
-        // set before the assertion is performed, so it is restored even for failing tests
-        date_default_timezone_set($oldTimezone);
+            // set before the assertion is performed, so it is restored even for failing tests
+        } finally {
+            date_default_timezone_set($oldTimezone);
+        }
 
         self::assertEquals($expectedOutput, $returnValue['value']);
     }
