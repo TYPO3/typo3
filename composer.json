@@ -124,7 +124,7 @@
 		"bnf/phpstan-psr-container": "^1.1.0",
 		"composer/composer": "^2.10.2",
 		"friendsofphp/php-cs-fixer": "^3.95.17",
-		"phpstan/phpstan": "^2.3",
+		"phpstan/phpstan": "^2.3.2",
 		"phpstan/phpstan-phpunit": "^2.1",
 		"phpunit/phpunit": "^13.3.0",
 		"sokil/php-isocodes-db-i18n": "^4.0.29",
