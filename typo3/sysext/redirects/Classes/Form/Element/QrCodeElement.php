@@ -48,7 +48,7 @@ class QrCodeElement extends AbstractFormElement
                     <div class="card mb-0">
                         <div class="card-body">
                             <div class="text-center">
-                                <typo3-qrcode class="text-start" content="https://' . $sourceHost . $sourcePath . '" size="large" show-download=""></typo3-qrcode>
+                                <typo3-qrcode class="text-start" content="' . htmlspecialchars('https://' . $sourceHost . $sourcePath) . '" size="large" show-download=""></typo3-qrcode>
                             </div>
                         </div>
                     </div>
