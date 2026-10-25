@@ -33,7 +33,7 @@ final class PasswordGeneratorTest extends TestCase
     }
 
     /**
-     * Verify that the generated password meets the minimum length requirement
+     * Verify that the generated password has the requested length
      */
     #[Test]
     public function generateReturnsCorrectLength(): void
@@ -41,7 +41,7 @@ final class PasswordGeneratorTest extends TestCase
         $options = ['length' => 12];
         $password = $this->subject->generate($options);
 
-        self::assertGreaterThanOrEqual(12, mb_strlen($password));
+        self::assertSame(12, strlen($password));
     }
 
     /**
@@ -59,7 +59,20 @@ final class PasswordGeneratorTest extends TestCase
 
         $password = $this->subject->generate($options);
 
-        self::assertMatchesRegularExpression('/[A-Z]/', $password);
+        self::assertMatchesRegularExpression('/\A[A-Z]+\z/', $password);
+    }
+
+    #[Test]
+    public function generateContainsOnlyLowercaseWhenOtherSetsAreDisabled(): void
+    {
+        $password = $this->subject->generate([
+            'upperCaseCharacters' => false,
+            'lowerCaseCharacters' => true,
+            'digitCharacters' => false,
+            'specialCharacters' => false,
+        ]);
+
+        self::assertMatchesRegularExpression('/\A[a-z]+\z/', $password);
     }
 
     /**
@@ -77,7 +90,7 @@ final class PasswordGeneratorTest extends TestCase
 
         $password = $this->subject->generate($options);
 
-        self::assertMatchesRegularExpression('/\d/', $password);
+        self::assertMatchesRegularExpression('/\A[0-9]+\z/', $password);
     }
 
     /**
@@ -95,8 +108,7 @@ final class PasswordGeneratorTest extends TestCase
 
         $password = $this->subject->generate($options);
 
-        // Match one of the special characters defined in the generator
-        self::assertMatchesRegularExpression('/[!@#$%^&*()\-=_+\[\]{}|;:,.<>?]/', $password);
+        self::assertMatchesRegularExpression('/\A[[:punct:]]+\z/', $password);
     }
 
     /**
@@ -115,18 +127,15 @@ final class PasswordGeneratorTest extends TestCase
 
         $password = $this->subject->generate($options);
 
-        self::assertGreaterThanOrEqual(10, strlen($password));
+        self::assertSame(10, strlen($password));
         self::assertMatchesRegularExpression('/[A-Z]/', $password);
         self::assertMatchesRegularExpression('/[a-z]/', $password);
         self::assertMatchesRegularExpression('/\d/', $password);
         self::assertMatchesRegularExpression('/[!"#$%&\'()*+,\-\.\/:;<=>\?@\[\]\\\^_`{\|}~]/', $password);
     }
 
-    /**
-     * Verify fallback to alphanumeric if all specific requirements are disabled
-     */
     #[Test]
-    public function generateFallsBackToAlphanumericWhenNoRequirementsSet(): void
+    public function generateRejectsOptionsWhenAllCharacterSetsAreDisabled(): void
     {
         $this->expectException(InvalidPasswordRulesException::class);
 

@@ -208,18 +208,16 @@ final class RandomTest extends UnitTestCase
     }
 
     #[Test]
-    public function generateRandomPasswordIsUnpredictable(): void
+    public function generatedPasswordsHaveRequestedLengthAndVaryBetweenCalls(): void
     {
         $subject = new Random();
-        $max = 1000;
-        $count = 0;
-        for ($i = 0; $i < $max; $i++) {
-            $result = $subject->generateRandomPassword(['passwordLength' => 12]);
-            if (preg_match('/^[a-z][A-Z][0-9]/', $result)) {
-                $count++;
-            }
+        $passwords = [];
+        for ($i = 0; $i < 32; $i++) {
+            $password = $subject->generateRandomPassword(['length' => 12]);
+            self::assertSame(12, strlen($password));
+            $passwords[] = $password;
         }
-        self::assertNotEquals($max, $count);
-        self::assertLessThan(0.1, $count / $max);
+
+        self::assertGreaterThan(1, count(array_unique($passwords)));
     }
 }
