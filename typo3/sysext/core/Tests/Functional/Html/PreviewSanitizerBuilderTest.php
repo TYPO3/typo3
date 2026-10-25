@@ -253,12 +253,7 @@ final class PreviewSanitizerBuilderTest extends FunctionalTestCase
         $input = '<p>Text with <a href="https://example.com">link</a> and <h2>heading</h2></p>';
         $result = $sanitizer->sanitize($input);
 
-        self::assertStringNotContainsString('<a', $result);
-        self::assertStringNotContainsString('</a>', $result);
-        self::assertStringNotContainsString('<h2', $result);
-        self::assertStringNotContainsString('</h2>', $result);
-        self::assertStringContainsString('link', $result);
-        self::assertStringContainsString('heading', $result);
+        self::assertSame('<p>Text with link and </p>heading', $result);
     }
 
     #[Test]
@@ -277,11 +272,7 @@ final class PreviewSanitizerBuilderTest extends FunctionalTestCase
         foreach ($xssPayloads as $payload) {
             $result = $sanitizer->sanitize($payload);
 
-            self::assertStringNotContainsString('javascript:', $result);
-            self::assertStringNotContainsString('onclick', $result);
-            self::assertStringNotContainsString('onload', $result);
-            self::assertStringNotContainsString('onerror', $result);
-            self::assertStringContainsString('XSS', $result);
+            self::assertSame('XSS', $result);
         }
     }
 
