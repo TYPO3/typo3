@@ -164,6 +164,34 @@ final class RotatingFileWriterTest extends UnitTestCase
         self::assertCount(2, $rotatedFiles);
     }
 
+    public static function calendarRotationDataProvider(): array
+    {
+        return [
+            'daily year boundary' => [Interval::DAILY, '2023-12-31 12:00:00', '2024-01-01 12:00:00'],
+            'weekly year boundary' => [Interval::WEEKLY, '2023-12-28 12:00:00', '2024-01-04 12:00:00'],
+            'January end in leap year' => [Interval::MONTHLY, '2024-01-31 12:00:00', '2024-03-02 12:00:00'],
+            'January end in common year' => [Interval::MONTHLY, '2023-01-31 12:00:00', '2023-03-03 12:00:00'],
+            'February end in leap year' => [Interval::MONTHLY, '2024-02-29 12:00:00', '2024-03-29 12:00:00'],
+            'February end in common year' => [Interval::MONTHLY, '2023-02-28 12:00:00', '2023-03-28 12:00:00'],
+            'leap day to common year' => [Interval::YEARLY, '2024-02-29 12:00:00', '2025-03-01 12:00:00'],
+            'yearly year end' => [Interval::YEARLY, '2023-12-31 12:00:00', '2024-12-31 12:00:00'],
+        ];
+    }
+
+    #[DataProvider('calendarRotationDataProvider')]
+    #[Test]
+    public function nextRotationFollowsFixedCalendarBoundaries(Interval $interval, string $last, string $expected): void
+    {
+        $class = $this->buildAccessibleProxy(RotatingFileWriter::class);
+        $writer = new $class([
+            'interval' => $interval,
+            'logFile' => $this->getDefaultFileName(),
+        ]);
+        $writer->_call('updateRuntimeRotationState', new \DateTimeImmutable($last, new \DateTimeZone('UTC')));
+
+        self::assertSame($expected, $writer->_call('determineNextRotation')->format('Y-m-d H:i:s'));
+    }
+
     #[Test]
     public function rotationRespectsMaxAmountOfFiles(): void
     {
