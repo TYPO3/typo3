@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
@@ -175,7 +174,6 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     }
 
     #[Test]
-    #[DoesNotPerformAssertions]
     public function initializePropertyMappingConfigurationDoesNothingIfTrustedPropertiesAreNotSet(): void
     {
         $extbaseAttribute = new ExtbaseRequestParameters()->setArgument('__trustedProperties', null);
@@ -183,8 +181,19 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $extbaseRequest = (new Request($coreRequest));
 
         $arguments = new Arguments();
+        $arguments->addNewArgument('post', \stdClass::class);
+        $argument = $arguments->getArgument('post');
+        $configuration = $argument->getPropertyMappingConfiguration();
+        $configuration->allowProperties('title');
+        $configuration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, false);
+        $originalConfiguration = clone $configuration;
         $propertyMappingConfigurationService = new MvcPropertyMappingConfigurationService();
         $propertyMappingConfigurationService->initializePropertyMappingConfigurationFromRequest($extbaseRequest, $arguments);
+
+        self::assertCount(1, $arguments);
+        self::assertSame($argument, $arguments->getArgument('post'));
+        self::assertSame($configuration, $argument->getPropertyMappingConfiguration());
+        self::assertEquals($originalConfiguration, $configuration);
     }
 
     #[Test]
