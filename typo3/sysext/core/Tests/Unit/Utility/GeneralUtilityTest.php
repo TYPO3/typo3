@@ -72,23 +72,6 @@ final class GeneralUtilityTest extends UnitTestCase
     }
 
     /**
-     * Helper method to test for an existing internet connection.
-     * Some tests are skipped if there is no working uplink.
-     *
-     * @return bool $isConnected
-     */
-    public function isConnected(): bool
-    {
-        $isConnected = false;
-        $connected = @fsockopen('typo3.org', 80);
-        if ($connected) {
-            $isConnected = true;
-            fclose($connected);
-        }
-        return $isConnected;
-    }
-
-    /**
      * Helper method to create a random directory and return the path.
      * The path will be registered for deletion upon test ending
      */
@@ -2254,11 +2237,14 @@ final class GeneralUtilityTest extends UnitTestCase
         }
         $directory = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('test_');
         $oldUmask = umask(19);
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0772';
-        GeneralUtility::mkdir($directory);
-        clearstatcache();
-        $resultDirectoryPermissions = substr(decoct(fileperms($directory)), 1);
-        umask($oldUmask);
+        try {
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0772';
+            GeneralUtility::mkdir($directory);
+            clearstatcache();
+            $resultDirectoryPermissions = substr(decoct(fileperms($directory)), 1);
+        } finally {
+            umask($oldUmask);
+        }
         self::assertEquals('0772', $resultDirectoryPermissions);
     }
 
@@ -2419,11 +2405,14 @@ final class GeneralUtilityTest extends UnitTestCase
         }
         $directory = StringUtility::getUniqueId('mkdirdeeptest_');
         $oldUmask = umask(19);
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0777';
-        GeneralUtility::mkdir_deep(Environment::getVarPath() . '/tests/' . $directory);
-        $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $directory;
-        clearstatcache();
-        umask($oldUmask);
+        try {
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0777';
+            GeneralUtility::mkdir_deep(Environment::getVarPath() . '/tests/' . $directory);
+            $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $directory;
+            clearstatcache();
+        } finally {
+            umask($oldUmask);
+        }
         self::assertEquals('777', substr(decoct(fileperms(Environment::getVarPath() . '/tests/' . $directory)), -3, 3));
     }
 
@@ -2437,10 +2426,13 @@ final class GeneralUtilityTest extends UnitTestCase
         $subDirectory = $directory . '/bar';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0777';
         $oldUmask = umask(19);
-        GeneralUtility::mkdir_deep(Environment::getVarPath() . '/tests/' . $subDirectory);
-        $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $directory;
-        clearstatcache();
-        umask($oldUmask);
+        try {
+            GeneralUtility::mkdir_deep(Environment::getVarPath() . '/tests/' . $subDirectory);
+            $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $directory;
+            clearstatcache();
+        } finally {
+            umask($oldUmask);
+        }
         self::assertEquals('777', substr(decoct(fileperms(Environment::getVarPath() . '/tests/' . $directory)), -3, 3));
     }
 
