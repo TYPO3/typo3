@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\IndexedSearch\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -24,14 +25,9 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\IndexedSearch\FileContentParser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class FileContentParserTest extends UnitTestCase
 {
-    protected function tearDown(): void
-    {
-        unset($GLOBALS['TYPO3_REQUEST']);
-        parent::tearDown();
-    }
-
     #[Test]
     public function splitPdfInfoDoesNotOverrideValues(): void
     {

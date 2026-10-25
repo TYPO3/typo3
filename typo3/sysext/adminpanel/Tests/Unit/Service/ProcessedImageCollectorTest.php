@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Adminpanel\Service\ProcessedImageCollector;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -30,14 +31,9 @@ use TYPO3\CMS\Core\SystemResource\Exception\CanNotDetectImageDimensionOfSystemRe
 use TYPO3\CMS\Frontend\Authentication\FrontendBackendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class ProcessedImageCollectorTest extends UnitTestCase
 {
-    protected function tearDown(): void
-    {
-        unset($GLOBALS['TYPO3_REQUEST'], $GLOBALS['BE_USER']);
-        parent::tearDown();
-    }
-
     #[Test]
     public function processedImagesAreCollectedWhenAdminPanelIsOpen(): void
     {

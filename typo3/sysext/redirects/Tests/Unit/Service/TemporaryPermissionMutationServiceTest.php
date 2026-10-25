@@ -17,11 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Redirects\Service\TemporaryPermissionMutationService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+#[BackupGlobals(true)]
 final class TemporaryPermissionMutationServiceTest extends UnitTestCase
 {
     private TemporaryPermissionMutationService $subject;
@@ -31,12 +33,6 @@ final class TemporaryPermissionMutationServiceTest extends UnitTestCase
         parent::setUp();
         $this->subject = new TemporaryPermissionMutationService();
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
-    }
-
-    protected function tearDown(): void
-    {
-        unset($GLOBALS['BE_USER']);
-        parent::tearDown();
     }
 
     #[Test]
