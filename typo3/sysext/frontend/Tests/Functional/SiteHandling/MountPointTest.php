@@ -19,7 +19,10 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Routing\PageRouter;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -437,6 +440,68 @@ final class MountPointTest extends AbstractTestCase
         self::assertSame(200, $response->getStatusCode());
         self::assertSame($expectedPageId, $responseData['pageId']);
         self::assertSame($expectedMountPointParameter, $responseData['dynamicArguments']['MP'] ?? null);
+    }
+
+    public static function generateUriForPageInMountPointIgnoresRestrictionsOfMountPagesDataProvider(): \Generator
+    {
+        $scenarios = [
+            'default language' => ['main', 1000, 0, '10100-1340', 'https://acme.com/products/archive/games-of-the-1980s'],
+            'translation' => ['main', 1000, 1, '10100-1340', 'https://acme.com/fr/produits/archives/jeux-des-annees-1980'],
+            'recursive mount point' => ['acme-canada', 2000, 0, '1300-2300,10100-1340', 'https://acme.ca/products/archive/games-of-the-1980s'],
+        ];
+        $restrictions = [
+            'no restriction' => [],
+            'access restricted' => ['fe_group' => '1'],
+            'hidden' => ['hidden' => 1],
+            'starttime in the future' => ['starttime' => 2000000000],
+            'endtime in the past' => ['endtime' => 946684800],
+        ];
+        $pages = [
+            'mounted page' => 10100,
+            'mount point page' => 1340,
+        ];
+        foreach ($scenarios as $scenarioName => $scenario) {
+            foreach ($restrictions as $restrictionName => $restriction) {
+                if ($restriction === []) {
+                    yield $scenarioName . ', ' . $restrictionName => [...$scenario, null, []];
+                    continue;
+                }
+                foreach ($pages as $pageName => $pageId) {
+                    yield $scenarioName . ', ' . $restrictionName . ' ' . $pageName => [...$scenario, $pageId, $restriction];
+                }
+            }
+        }
+    }
+
+    #[DataProvider('generateUriForPageInMountPointIgnoresRestrictionsOfMountPagesDataProvider')]
+    #[Test]
+    public function generateUriForPageInMountPointIgnoresRestrictionsOfMountPages(
+        string $siteIdentifier,
+        int $rootPageId,
+        int $languageId,
+        string $mountPointParameter,
+        string $expectedUri,
+        ?int $restrictedPageId,
+        array $restriction
+    ): void {
+        if ($restrictedPageId !== null) {
+            $this->get(ConnectionPool::class)
+                ->getConnectionForTable('pages')
+                ->update('pages', $restriction, ['uid' => $restrictedPageId]);
+        }
+        $pageRouter = new PageRouter($this->get(SiteFinder::class)->getSiteByIdentifier($siteIdentifier));
+        $uri = (string)$pageRouter->generateUri(10110, ['MP' => $mountPointParameter, '_language' => $languageId]);
+        self::assertSame($expectedUri, $uri);
+
+        $this->setUpFrontendRootPage(
+            $rootPageId,
+            ['EXT:frontend/Tests/Functional/SiteHandling/Fixtures/LinkRequest.typoscript'],
+            ['title' => 'ACME Root']
+        );
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
+        $responseData = json_decode((string)$response->getBody(), true);
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame(10110, $responseData['pageId']);
     }
 
     public static function requestsResolvePageIdAndMountPointParameterWithPageTypeSuffixDataProvider(): array
