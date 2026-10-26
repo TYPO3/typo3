@@ -15,13 +15,13 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php;
+namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Visitor;
 
 use PhpParser\NodeTraverser;
 use PhpParser\ParserFactory;
 use PhpParser\PhpVersion;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Install\ExtensionScanner\Php\CodeStatistics;
+use TYPO3\CMS\Install\ExtensionScanner\Php\Visitor\CodeStatistics;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CodeStatisticsTest extends UnitTestCase

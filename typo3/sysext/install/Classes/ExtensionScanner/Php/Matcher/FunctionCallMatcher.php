@@ -31,7 +31,7 @@ class FunctionCallMatcher extends AbstractCoreMatcher
     /**
      * Prepare $this->flatMatcherDefinitions once
      *
-     * @param array $matcherDefinitions Incoming main configuration
+     * @param array<string, array<string, mixed>> $matcherDefinitions Incoming main configuration
      */
     public function __construct(array $matcherDefinitions)
     {
@@ -45,14 +45,16 @@ class FunctionCallMatcher extends AbstractCoreMatcher
      */
     public function enterNode(Node $node): null
     {
+        if ($this->isFileIgnored($node) || $this->isLineIgnored($node)) {
+            return null;
+        }
+
         // Match method call (not static)
-        if (!$this->isFileIgnored($node)
-            && !$this->isLineIgnored($node)
-            && $node instanceof FuncCall
+        if ($node instanceof FuncCall
             && $node->name instanceof FullyQualified
-            && array_key_exists($node->name->toString(), $this->matcherDefinitions)
+            && array_key_exists($node->name->name, $this->matcherDefinitions)
         ) {
-            $functionName = $node->name->toString();
+            $functionName = $node->name->name;
             $matchDefinition = $this->matcherDefinitions[$functionName];
 
             $numberOfArguments = count($node->args);
@@ -64,7 +66,7 @@ class FunctionCallMatcher extends AbstractCoreMatcher
             ) {
                 $this->matches[] = [
                     'restFiles' => $matchDefinition['restFiles'],
-                    'line' => $node->getAttribute('startLine'),
+                    'line' => $node->getStartLine(),
                     'message' => 'Call to function "' . $functionName . '"',
                     'indicator' => 'strong',
                 ];

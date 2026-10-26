@@ -30,7 +30,7 @@ class PropertyExistsStaticMatcher extends AbstractCoreMatcher
     /**
      * Validate config and prepare flat mach array
      *
-     * @param array $matcherDefinitions Incoming main configuration
+     * @param array<string, array<string, mixed>> $matcherDefinitions Incoming main configuration
      */
     public function __construct(array $matcherDefinitions)
     {
@@ -43,9 +43,11 @@ class PropertyExistsStaticMatcher extends AbstractCoreMatcher
      */
     public function enterNode(Node $node): null
     {
-        if (!$this->isFileIgnored($node)
-            && !$this->isLineIgnored($node)
-            && $node instanceof Property
+        if ($this->isFileIgnored($node) || $this->isLineIgnored($node)) {
+            return null;
+        }
+
+        if ($node instanceof Property
             && $node->isStatic()
             && !$node->isPrivate()
             && array_key_exists($node->props[0]->name->name, $this->matcherDefinitions)
@@ -53,7 +55,7 @@ class PropertyExistsStaticMatcher extends AbstractCoreMatcher
             $propertyName = $node->props[0]->name->name;
             $match = [
                 'restFiles' => $this->matcherDefinitions[$propertyName]['restFiles'],
-                'line' => $node->getAttribute('startLine'),
+                'line' => $node->getStartLine(),
                 'message' => 'Use of property "' . $node->props[0]->name->name . '"',
                 'indicator' => 'weak',
             ];

@@ -34,6 +34,7 @@ class ClassConstantMatcherFixture
         // No match
         $foo = \My\Project\AClass::MY_CONSTANT;
         $foo = \My\Different\SystemEnvironmentBuilder::REQUESTTYPE_FE;
+        $foo = SystemEnvironmentBuilder::{$constantName};
         // @extensionScannerIgnoreLine
         $foo = SystemEnvironmentBuilder::REQUESTTYPE_FE;
 

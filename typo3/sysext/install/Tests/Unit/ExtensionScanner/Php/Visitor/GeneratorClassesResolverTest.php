@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php;
+namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Visitor;
 
 use PhpParser\Node\Expr\BinaryOp\Concat;
 use PhpParser\Node\Expr\ClassConstFetch;
@@ -26,8 +26,8 @@ use PhpParser\NodeTraverser;
 use PhpParser\ParserFactory;
 use PhpParser\PhpVersion;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Install\ExtensionScanner\Php\GeneratorClassesResolver;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\AbstractCoreMatcher;
+use TYPO3\CMS\Install\ExtensionScanner\Php\Visitor\GeneratorClassesResolver;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class GeneratorClassesResolverTest extends UnitTestCase

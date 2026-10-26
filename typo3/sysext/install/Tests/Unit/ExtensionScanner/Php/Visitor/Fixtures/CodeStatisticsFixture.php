@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Fixtures;
+namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Visitor\Fixtures;
 
 /**
  * @extensionScannerIgnoreFile

@@ -33,7 +33,7 @@ class MethodArgumentRequiredStaticMatcher extends AbstractCoreMatcher
     /**
      * Prepare $this->flatMatcherDefinitions once and validate config
      *
-     * @param array $matcherDefinitions Incoming main configuration
+     * @param array<string, array<string, mixed>> $matcherDefinitions Incoming main configuration
      */
     public function __construct(array $matcherDefinitions)
     {
@@ -48,16 +48,16 @@ class MethodArgumentRequiredStaticMatcher extends AbstractCoreMatcher
      */
     public function enterNode(Node $node): null
     {
-        // Match static method call
-        if (!$this->isFileIgnored($node)
-            && !$this->isLineIgnored($node)
-            && $node instanceof StaticCall
-        ) {
+        if ($this->isFileIgnored($node) || $this->isLineIgnored($node)) {
+            return null;
+        }
+
+        if ($node instanceof StaticCall) {
             $isArgumentUnpackingUsed = $this->isArgumentUnpackingUsed($node->args);
 
             if ($node->class instanceof FullyQualified && $node->name instanceof Identifier) {
                 // 'Foo\Bar::aMethod()' -> strong match
-                $fqdnClassWithMethod = $node->class->toString() . '::' . $node->name->name;
+                $fqdnClassWithMethod = $node->class->name . '::' . $node->name->name;
                 $numberOfArguments = count($node->args);
                 if (!$isArgumentUnpackingUsed
                     && array_key_exists($fqdnClassWithMethod, $this->matcherDefinitions)
@@ -67,7 +67,7 @@ class MethodArgumentRequiredStaticMatcher extends AbstractCoreMatcher
                 ) {
                     $this->matches[] = [
                         'restFiles' => $this->matcherDefinitions[$fqdnClassWithMethod]['restFiles'],
-                        'line' => $node->getAttribute('startLine'),
+                        'line' => $node->getStartLine(),
                         'message' => 'Method "' . $node->name->name . '()" needs at least '
                             . $this->matcherDefinitions[$fqdnClassWithMethod]['numberOfMandatoryArguments']
                             . ' arguments.',
@@ -80,7 +80,7 @@ class MethodArgumentRequiredStaticMatcher extends AbstractCoreMatcher
             ) {
                 $match = [
                     'restFiles' => [],
-                    'line' => $node->getAttribute('startLine'),
+                    'line' => $node->getStartLine(),
                     'indicator' => 'weak',
                 ];
 

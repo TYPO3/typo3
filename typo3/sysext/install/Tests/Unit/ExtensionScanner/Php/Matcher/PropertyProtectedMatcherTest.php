@@ -52,6 +52,9 @@ final class PropertyProtectedMatcherTest extends UnitTestCase
         $expectedHitLineNumbers = [
             28,
             49,
+            52,
+            53,
+            54,
         ];
         $actualHitLineNumbers = [];
         foreach ($subject->getMatches() as $hit) {

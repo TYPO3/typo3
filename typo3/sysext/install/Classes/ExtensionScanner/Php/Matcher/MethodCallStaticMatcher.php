@@ -40,7 +40,7 @@ class MethodCallStaticMatcher extends AbstractCoreMatcher
     /**
      * Validate config and prepare weak matcher array
      *
-     * @param array $matcherDefinitions Incoming main configuration
+     * @param array<string, array<string, mixed>> $matcherDefinitions Incoming main configuration
      */
     public function __construct(array $matcherDefinitions)
     {
@@ -56,18 +56,19 @@ class MethodCallStaticMatcher extends AbstractCoreMatcher
      */
     public function enterNode(Node $node): null
     {
+        if ($this->isFileIgnored($node) || $this->isLineIgnored($node)) {
+            return null;
+        }
+
         // Static call, not method call
-        if (!$this->isFileIgnored($node)
-            && !$this->isLineIgnored($node)
-            && $node instanceof StaticCall
-        ) {
+        if ($node instanceof StaticCall) {
             if ($node->class instanceof FullyQualified && $node->name instanceof Identifier) {
                 // 'Foo\Bar::deprecated()' -> strong match
-                $fqdnClassWithMethod = $node->class->toString() . '::' . $node->name->name;
+                $fqdnClassWithMethod = $node->class->name . '::' . $node->name->name;
                 if (array_key_exists($fqdnClassWithMethod, $this->matcherDefinitions)) {
                     $this->matches[] = [
                         'restFiles' => $this->matcherDefinitions[$fqdnClassWithMethod]['restFiles'],
-                        'line' => $node->getAttribute('startLine'),
+                        'line' => $node->getStartLine(),
                         'message' => 'Use of static class method call "' . $fqdnClassWithMethod . '()"',
                         'indicator' => 'strong',
                     ];
@@ -78,7 +79,7 @@ class MethodCallStaticMatcher extends AbstractCoreMatcher
             ) {
                 $match = [
                     'restFiles' => [],
-                    'line' => $node->getAttribute('startLine'),
+                    'line' => $node->getStartLine(),
                     'message' => 'Use of static class method call "' . $node->name->name . '()"',
                     'indicator' => 'weak',
                 ];

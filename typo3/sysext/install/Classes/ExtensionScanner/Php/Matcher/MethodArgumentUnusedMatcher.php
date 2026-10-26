@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\ExtensionScanner\Php\Matcher;
 
 use PhpParser\Node;
+use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Identifier;
@@ -35,7 +36,7 @@ class MethodArgumentUnusedMatcher extends AbstractCoreMatcher
     /**
      * Prepare $this->flatMatcherDefinitions once and validate config
      *
-     * @param array $matcherDefinitions Incoming main configuration
+     * @param array<string, array<string, mixed>> $matcherDefinitions Incoming main configuration
      */
     public function __construct(array $matcherDefinitions)
     {
@@ -49,16 +50,19 @@ class MethodArgumentUnusedMatcher extends AbstractCoreMatcher
      */
     public function enterNode(Node $node): null
     {
+        if ($this->isFileIgnored($node) || $this->isLineIgnored($node)) {
+            return null;
+        }
+
         // Match method call (not static)
-        if (!$this->isFileIgnored($node)
-            && !$this->isLineIgnored($node)
-            && $node instanceof MethodCall
+        if ($node instanceof MethodCall
             && $node->name instanceof Identifier
             && array_key_exists($node->name->name, $this->flatMatcherDefinitions)
         ) {
             $match = [
                 'restFiles' => [],
-                'line' => $node->getAttribute('startLine'),
+                'line' => $node->getStartLine(),
+                'message' => '',
                 'indicator' => 'weak',
             ];
 
@@ -67,13 +71,15 @@ class MethodArgumentUnusedMatcher extends AbstractCoreMatcher
             $numberOfArguments = count($node->args);
             $isPossibleMatch = false;
             foreach ($this->flatMatcherDefinitions[$node->name->name]['candidates'] as $candidate) {
-                foreach ($candidate['unusedArgumentNumbers'] as $droppedArgumentNumber) {
+                foreach ($candidate['unusedArgumentNumbers'] ?? [] as $droppedArgumentNumber) {
+                    $argument = $node->args[$droppedArgumentNumber - 1] ?? null;
                     // A method call is considered a match if name matches, unpacking is not used
                     // and the registered argument is not given as null.
                     if (!$isArgumentUnpackingUsed
                         && $numberOfArguments >= $droppedArgumentNumber
-                        && !($node->args[$droppedArgumentNumber - 1]->value instanceof ConstFetch
-                            && strtolower($node->args[$droppedArgumentNumber - 1]->value->name->toString()) === 'null')
+                        && $argument instanceof Arg
+                        && !($argument->value instanceof ConstFetch
+                            && strtolower($argument->value->name->name) === 'null')
                     ) {
                         $isPossibleMatch = true;
                         $match['message'] = 'Call to method "' . $node->name->name . '()" with'

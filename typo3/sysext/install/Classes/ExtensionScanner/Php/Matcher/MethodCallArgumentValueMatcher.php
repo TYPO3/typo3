@@ -19,9 +19,12 @@ namespace TYPO3\CMS\Install\ExtensionScanner\Php\Matcher;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Name\FullyQualified;
-use PhpParser\Node\Scalar;
+use PhpParser\Node\Scalar\Float_;
+use PhpParser\Node\Scalar\Int_;
+use PhpParser\Node\Scalar\String_;
 
 /**
  * Find usages of arguments in method calls which were removed / deprecated.
@@ -32,7 +35,7 @@ class MethodCallArgumentValueMatcher extends AbstractCoreMatcher
     /**
      * Prepare $this->flatMatcherDefinitions once
      *
-     * @param array $matcherDefinitions Incoming main configuration
+     * @param array<string, array<string, mixed>> $matcherDefinitions Incoming main configuration
      */
     public function __construct(array $matcherDefinitions)
     {
@@ -48,39 +51,35 @@ class MethodCallArgumentValueMatcher extends AbstractCoreMatcher
      */
     public function enterNode(Node $node): null
     {
-        // Match method call (not static)
-        if ($this->isFileIgnored($node)
-            || $this->isLineIgnored($node)
-        ) {
+        if ($this->isFileIgnored($node) || $this->isLineIgnored($node)) {
             return null;
         }
 
-        if ($node instanceof Node\Expr\StaticCall
+        if ($node instanceof StaticCall
             && $node->class instanceof FullyQualified
             && $node->name instanceof Identifier
-            && array_key_exists($node->class->toString() . '::' . $node->name->name, $this->matcherDefinitions)
+            && array_key_exists($node->class->name . '::' . $node->name->name, $this->matcherDefinitions)
         ) {
             $match = [
                 'restFiles' => [],
-                'line' => $node->getAttribute('startLine'),
-                'message' => 'Call to specific argument (#%s) of static method "' . $node->class->toString() . '::' . $node->name->name . '()"',
+                'line' => $node->getStartLine(),
+                'message' => 'Call to specific argument (#%s) of static method "' . $node->class->name . '::' . $node->name->name . '()"',
                 'indicator' => 'strong',
             ];
 
-            $matchCandidate = [$this->matcherDefinitions[$node->class->toString() . '::' . $node->name->name]];
+            $matchCandidate = [$this->matcherDefinitions[$node->class->name . '::' . $node->name->name]];
         } elseif ($node instanceof MethodCall
-                && $node->name instanceof Identifier
-                && array_key_exists($node->name->name, $this->flatMatcherDefinitions)
+            && $node->name instanceof Identifier
+            && array_key_exists($node->name->name, $this->flatMatcherDefinitions)
         ) {
             $match = [
                 'restFiles' => [],
-                'line' => $node->getAttribute('startLine'),
+                'line' => $node->getStartLine(),
                 'message' => 'Call to specific argument (#%s) of method "' . $node->name->name . '()"',
                 'indicator' => 'weak',
             ];
 
             $matchCandidate = $this->flatMatcherDefinitions[$node->name->name]['candidates'];
-
         } else {
             return null;
         }
@@ -110,16 +109,25 @@ class MethodCallArgumentValueMatcher extends AbstractCoreMatcher
     /**
      * Returns the array of matched arguments on a match candidate.
      * Returns empty array if either none found or not ALL matches are matched (AND combined)
+     *
+     * @param array<string, mixed> $candidate
+     * @return list<int> Matched argument indexes
      */
-    private function isArgumentMatched(Node $node, array $candidate): array
+    private function isArgumentMatched(MethodCall|StaticCall $node, array $candidate): array
     {
         $matchedArgumentNumbers = [];
 
         foreach (($candidate['argumentMatches'] ?? []) as $argumentMatchArray) {
-            if (isset($node->args[$argumentMatchArray['argumentIndex']]->value->value)
-                && $node->args[$argumentMatchArray['argumentIndex']]->value instanceof Scalar
-                && $node->args[$argumentMatchArray['argumentIndex']]->value->value === $argumentMatchArray['argumentValue']) {
-
+            $argument = $node->getRawArgs()[$argumentMatchArray['argumentIndex']] ?? null;
+            if (!$argument instanceof Node\Arg) {
+                continue;
+            }
+            $argumentValue = $argument->value;
+            if (($argumentValue instanceof String_
+                    || $argumentValue instanceof Int_
+                    || $argumentValue instanceof Float_)
+                && $argumentValue->value === $argumentMatchArray['argumentValue']
+            ) {
                 $matchedArgumentNumbers[] = $argumentMatchArray['argumentIndex'];
             }
         }

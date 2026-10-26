@@ -23,8 +23,8 @@ use PhpParser\ParserFactory;
 use PhpParser\PhpVersion;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Install\ExtensionScanner\Php\GeneratorClassesResolver;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ClassConstantMatcher;
+use TYPO3\CMS\Install\ExtensionScanner\Php\Visitor\GeneratorClassesResolver;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ClassConstantMatcherTest extends UnitTestCase
@@ -59,7 +59,7 @@ final class ClassConstantMatcherTest extends UnitTestCase
             30,
             31,
             32,
-            41,
+            42,
         ];
         $actualHitLineNumbers = [];
         foreach ($subject->getMatches() as $hit) {

@@ -57,4 +57,41 @@ final class MethodAnnotationMatcherTest extends UnitTestCase
         }
         self::assertEquals($expectedHitLineNumbers, $actualHitLineNumbers);
     }
+
+    #[Test]
+    public function matchIsIgnoredIfIgnoreFileIsSet(): void
+    {
+        $phpCode = <<<'EOC'
+<?php
+/**
+ * Some comment
+ * @extensionScannerIgnoreFile This file is ignored
+ */
+class foo
+{
+    /**
+     * This valid match should not match since the entire file is ignored
+     * @inject
+     */
+    public function aTest(): void {}
+}
+EOC;
+
+        $parser = new ParserFactory()->createForVersion(PhpVersion::fromComponents(8, 5));
+        $statements = $parser->parse($phpCode);
+
+        $traverser = new NodeTraverser();
+        $configuration = [
+            '@inject' => [
+                'restFiles' => [
+                    'Feature-82869-ReplaceInjectWithTYPO3CMSExtbaseAnnotationInject.rst',
+                ],
+            ],
+        ];
+        $subject = new MethodAnnotationMatcher($configuration);
+        $traverser->addVisitor($subject);
+        $traverser->traverse($statements);
+
+        self::assertEmpty($subject->getMatches());
+    }
 }

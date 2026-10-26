@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\ExtensionScanner\Php\Matcher;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\ArrayDimFetch;
+use PhpParser\Node\Scalar\String_;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -32,7 +33,7 @@ class ArrayDimensionMatcher extends AbstractCoreMatcher
     /**
      * Initialize "flat" matcher array from matcher definitions.
      *
-     * @param array $matcherDefinitions Incoming main configuration
+     * @param array<string, array<string, mixed>> $matcherDefinitions Incoming main configuration
      */
     public function __construct(array $matcherDefinitions)
     {
@@ -46,15 +47,17 @@ class ArrayDimensionMatcher extends AbstractCoreMatcher
      */
     public function enterNode(Node $node): null
     {
-        if (!$this->isFileIgnored($node)
-            && !$this->isLineIgnored($node)
-            && $node instanceof ArrayDimFetch
-            && isset($node->dim->value)
+        if ($this->isFileIgnored($node) || $this->isLineIgnored($node)) {
+            return null;
+        }
+
+        if ($node instanceof ArrayDimFetch
+            && $node->dim instanceof String_
             && array_key_exists($node->dim->value, $this->flatMatcherDefinitions)
         ) {
             $match = [
                 'restFiles' => [],
-                'line' => $node->getAttribute('startLine'),
+                'line' => $node->getStartLine(),
                 'message' => 'Access to array key "' . $node->dim->value . '"',
                 'indicator' => 'weak',
             ];
@@ -70,7 +73,7 @@ class ArrayDimensionMatcher extends AbstractCoreMatcher
     /**
      * Prepare 'lastKey' => [$details] array in flatMatcherDefinitions
      */
-    protected function initializeLastArrayKeyNameArray()
+    protected function initializeLastArrayKeyNameArray(): void
     {
         $methodNameArray = [];
         foreach ($this->matcherDefinitions as $fullArrayString => $details) {

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\ExtensionScanner\Php\Matcher;
 
 use PhpParser\Node;
+use PhpParser\Node\Scalar\String_;
 
 /**
  * Find usage of special "magic" strings like TYPO3_MODE, so that
@@ -30,7 +31,7 @@ class ScalarStringMatcher extends AbstractCoreMatcher
     /**
      * Default constructor validates matcher definition.
      *
-     * @param array $matcherDefinitions Incoming main configuration
+     * @param array<string, array<string, mixed>> $matcherDefinitions Incoming main configuration
      */
     public function __construct(array $matcherDefinitions)
     {
@@ -40,19 +41,15 @@ class ScalarStringMatcher extends AbstractCoreMatcher
 
     /**
      * Called by PhpParser.
-     *
-     * @param Node $node Given node to test
      */
     public function enterNode(Node $node): null
     {
-        // Early return
-        if ($this->isFileIgnored($node)
-            || $this->isLineIgnored($node)) {
+        if ($this->isFileIgnored($node) || $this->isLineIgnored($node)) {
             return null;
         }
 
         // Check if the node contains the specific string
-        if (!$node instanceof Node\Scalar\String_) {
+        if (!$node instanceof String_) {
             return null;
         }
 
@@ -61,11 +58,11 @@ class ScalarStringMatcher extends AbstractCoreMatcher
         // Using weak match to indicate that the magic string usage may not necessarily
         // refer to the functionality we're matching. Other than TYPO3_MODE, future definitions
         // will probably be weaker than this strong constant comparison.
-        $stringToMatch = (string)($node->name ?? $node->value);
+        $stringToMatch = $node->value;
         if (array_key_exists($stringToMatch, $this->matcherDefinitions)) {
             $this->matches[] = [
                 'restFiles' => $this->matcherDefinitions[$stringToMatch]['restFiles'],
-                'line' => $node->getAttribute('startLine'),
+                'line' => $node->getStartLine(),
                 'message' => 'Usage of string "' . $stringToMatch . '"',
                 'indicator' => 'weak',
             ];

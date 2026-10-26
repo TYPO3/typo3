@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\ExtensionScanner\Php;
+namespace TYPO3\CMS\Install\ExtensionScanner\Php\Visitor;
 
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
@@ -29,39 +29,39 @@ use PhpParser\NodeVisitorAbstract;
 class CodeStatistics extends NodeVisitorAbstract
 {
     /**
-     * @var bool True if a class statement has @extensionScannerIgnoreFile
+     * True if a class statement has @extensionScannerIgnoreFile
      */
-    protected $isCurrentFileIgnored = false;
+    protected bool $isCurrentFileIgnored = false;
 
     /**
-     * @var int Counts @extensionScannerIgnoreLine statements
+     * Counts @extensionScannerIgnoreLine statements
      */
-    protected $numberOfIgnoreLines = 0;
+    protected int $numberOfIgnoreLines = 0;
 
     /**
-     * @var int Number of effective code lines - class and method statements, function calls ...
+     * Number of effective code lines - class and method statements, function calls ...
      */
-    protected $numberOfEffectiveCodeLines = 0;
+    protected int $numberOfEffectiveCodeLines = 0;
 
     /**
-     * @var int Current line number given not is in, runtime helper var
+     * Current line number given not is in, runtime helper var
      */
-    protected $currentLineNumber = 0;
+    protected int $currentLineNumber = 0;
 
     /**
      * Called by PhpParser during traversal.
      */
     public function enterNode(Node $node): null
     {
-        $startLineOfNode = $node->getAttribute('startLine');
+        $startLineOfNode = $node->getStartLine();
         if ($startLineOfNode !== $this->currentLineNumber) {
             $this->currentLineNumber = $startLineOfNode;
             $this->numberOfEffectiveCodeLines++;
 
             // Class statements may contain the @extensionScannerIgnoreFile statements
             if ($node instanceof Class_) {
-                $comments = $node->getAttribute('comments');
-                if (!empty($comments)) {
+                $comments = $node->getComments();
+                if ($comments !== []) {
                     foreach ($comments as $comment) {
                         if (str_contains($comment->getText(), '@extensionScannerIgnoreFile')) {
                             $this->isCurrentFileIgnored = true;
@@ -72,8 +72,8 @@ class CodeStatistics extends NodeVisitorAbstract
             }
 
             // First node of line may contain the @extensionScannerIgnoreLine comment
-            $comments = $node->getAttribute('comments');
-            if (!empty($comments)) {
+            $comments = $node->getComments();
+            if ($comments !== []) {
                 foreach ($comments as $comment) {
                     if (str_contains($comment->getText(), '@extensionScannerIgnoreLine')) {
                         $this->numberOfIgnoreLines++;
@@ -88,10 +88,8 @@ class CodeStatistics extends NodeVisitorAbstract
     /**
      * True if a @extensionScannerIgnoreFile has been found.
      * Called externally *after* traversing
-     *
-     * @return bool
      */
-    public function isFileIgnored()
+    public function isFileIgnored(): bool
     {
         return $this->isCurrentFileIgnored;
     }
@@ -100,10 +98,8 @@ class CodeStatistics extends NodeVisitorAbstract
      * Number of "effective" code lines: No comments, no empty lines,
      * but "class" statements, "function" statements, "use xy", etc.
      * Called externally *after* traversing
-     *
-     * @return int
      */
-    public function getNumberOfEffectiveCodeLines()
+    public function getNumberOfEffectiveCodeLines(): int
     {
         return $this->numberOfEffectiveCodeLines;
     }
@@ -111,10 +107,8 @@ class CodeStatistics extends NodeVisitorAbstract
     /**
      * Returns number of found @extensionScannerIgnoreLine comments
      * Called externally *after* traversing
-     *
-     * @return int
      */
-    public function getNumberOfIgnoredLines()
+    public function getNumberOfIgnoredLines(): int
     {
         return $this->numberOfIgnoreLines;
     }

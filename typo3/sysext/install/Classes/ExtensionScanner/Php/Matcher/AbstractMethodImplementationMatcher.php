@@ -28,12 +28,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AbstractMethodImplementationMatcher extends AbstractCoreMatcher
 {
-    protected const DEFINITION_STATIC = 'static';
-    protected const DEFINITION_LOCAL  = 'local';
+    protected const string DEFINITION_STATIC = 'static';
+    protected const string DEFINITION_LOCAL  = 'local';
+
+    /**
+     * @var array<string, array<string, array<string, array{candidates: list<array<string, mixed>>}>>>
+     */
     protected array $matcherDefinitionLookup = [];
 
     /**
-     * @param array $matcherDefinitions Incoming main configuration
+     * @param array<string, array<string, mixed>> $matcherDefinitions Incoming main configuration
      */
     public function __construct(array $matcherDefinitions)
     {
@@ -54,7 +58,7 @@ class AbstractMethodImplementationMatcher extends AbstractCoreMatcher
             // Exception-Handling removed, covered by initializeFlatMatcherDefinitions();
 
             $method = $parts[1];
-            $class  = $parts[0];
+            $class = $parts[0];
             if (!array_key_exists($class, $this->matcherDefinitionLookup)) {
                 $this->matcherDefinitionLookup[$class][$definition][$method]['candidates'] = [];
             }
@@ -103,36 +107,34 @@ class AbstractMethodImplementationMatcher extends AbstractCoreMatcher
      */
     public function enterNode(Node $node): null
     {
-        if (!$this->isFileIgnored($node)
-            && !$this->isLineIgnored($node)
-            && $node instanceof Node\Stmt\Class_
-            && $node->extends) {
+        if ($this->isFileIgnored($node) || $this->isLineIgnored($node)) {
+            return null;
+        }
 
+        if ($node instanceof Node\Stmt\Class_ && $node->extends) {
             // We found a class definition.
             // Check what classes this definition is extending (Abstract).
             // Without a class extending something, this is not API usage and thus not scanned.
             // Now check if the extended class is part of our matcherDefinition to inspect
             if (array_key_exists($node->extends->name, $this->matcherDefinitionLookup)) {
-
                 // Iterate all declared methods (of the inspected custom class, NOT the abstract!)
                 $lookupMethods = $this->matcherDefinitionLookup[$node->extends->name];
                 foreach ($node->getMethods() as $method) {
-
                     // The matcherDefinition can utilize 'Abstract::staticMethod' or 'Abstract->localMethod',
                     // which is handled distinctly, so that the matches are stronger.
                     $lookupKey = $method->isStatic() ? self::DEFINITION_STATIC : self::DEFINITION_LOCAL;
 
-                    if (isset($lookupMethods[$lookupKey][$method->name->toString()]['candidates'])) {
+                    if (isset($lookupMethods[$lookupKey][$method->name->name]['candidates'])) {
                         // The checked method of an object extending a deprecated/BC class was a match.
                         // Gather final match info (multiple ReST files can apply to a single class+method)
-                        foreach ($lookupMethods[$lookupKey][$method->name->toString()]['candidates'] as $candidate) {
+                        foreach ($lookupMethods[$lookupKey][$method->name->name]['candidates'] as $candidate) {
                             $this->matches[] = [
                                 'restFiles' => $candidate['restFiles'],
-                                'line' => $method->getAttribute('startLine'),
+                                'line' => $method->getStartLine(),
                                 'message' => sprintf(
                                     'Definition of %s method "%s" extends from "%s"',
                                     $lookupKey,
-                                    $method->name->toString(),
+                                    $method->name->name,
                                     $node->extends->name
                                 ),
                                 'indicator' => 'strong',

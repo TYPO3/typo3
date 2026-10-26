@@ -30,11 +30,11 @@ class MatcherFactory
     /**
      * Create matcher instances and hand over configuration.
      *
-     * @param array $matcherConfigurations Incoming configuration array
-     * @return NodeVisitor[]|CodeScannerInterface[]
+     * @param array<int, array{class?: string, configurationFile?: string, configurationArray?: mixed}> $matcherConfigurations Incoming configuration array
+     * @return list<CodeScannerInterface&NodeVisitor> Matchers implementing both scanner and parser interface
      * @throws \RuntimeException
      */
-    public function createAll(array $matcherConfigurations)
+    public function createAll(array $matcherConfigurations): array
     {
         $instances = [];
         foreach ($matcherConfigurations as $matcherConfiguration) {
@@ -52,7 +52,7 @@ class MatcherFactory
                 );
             }
 
-            if (isset($matcherConfiguration['configurationFile']) && isset($matcherConfiguration['configurationArray'])) {
+            if (isset($matcherConfiguration['configurationFile'], $matcherConfiguration['configurationArray'])) {
                 throw new \RuntimeException(
                     'Having both a configurationFile and configurationArray is invalid',
                     1501419367
@@ -80,7 +80,8 @@ class MatcherFactory
             if (isset($matcherConfiguration['configurationArray'])) {
                 if (!is_array($matcherConfiguration['configurationArray'])) {
                     throw new \RuntimeException(
-                        'Configuration array ' . $matcherConfiguration['configurationArray'] . ' must not be empty',
+                        'Configuration array of type ' . get_debug_type($matcherConfiguration['configurationArray'])
+                        . ' must be an array',
                         1501509738
                     );
                 }
@@ -88,8 +89,7 @@ class MatcherFactory
             }
 
             $matcherInstance = new $matcherConfiguration['class']($configuration);
-            if (!$matcherInstance instanceof CodeScannerInterface
-                || !$matcherInstance instanceof NodeVisitor) {
+            if (!$matcherInstance instanceof CodeScannerInterface) {
                 throw new \RuntimeException(
                     'Matcher ' . $matcherConfiguration['class'] . ' must implement CodeScannerInterface'
                     . ' and NodeVisitor',

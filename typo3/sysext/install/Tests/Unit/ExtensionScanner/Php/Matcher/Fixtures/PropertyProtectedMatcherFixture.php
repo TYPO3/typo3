@@ -47,5 +47,10 @@ class PropertyProtectedMatcherFixture
         $foo->recUpdateAccessCache;
         // Match (again). No longer ignored.
         $foo->recUpdateAccessCache;
+
+        // Match: receiver is not a plain variable
+        $this->dataHandler->recUpdateAccessCache;
+        $GLOBALS['CLIPBOARD']->recUpdateAccessCache;
+        $foo->bar()->recUpdateAccessCache;
     }
 }

@@ -17,13 +17,17 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\ExtensionScanner;
 
+use PhpParser\NodeVisitor;
+
 /**
  * Interface to be implemented by all classes which can search and find code places.
  */
-interface CodeScannerInterface
+interface CodeScannerInterface extends NodeVisitor
 {
     /**
      * Each match is an array with detail information
+     *
+     * @return list<array<string, mixed>>
      */
     public function getMatches(): array;
 }
