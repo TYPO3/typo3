@@ -23,10 +23,10 @@ final class SlidingWindowPagination implements PaginationInterface
     private int $displayRangeEnd = 0;
     private bool $hasLessPages = false;
     private bool $hasMorePages = false;
-    private int $maximumNumberOfLinks = 0;
+    private int $maximumNumberOfLinks = 10;
     private PaginatorInterface $paginator;
 
-    public function __construct(PaginatorInterface $paginator, int $maximumNumberOfLinks = 0)
+    public function __construct(PaginatorInterface $paginator, int $maximumNumberOfLinks = 10)
     {
         $this->paginator = $paginator;
 
