@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\ExtensionScanner\Php\Matcher;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\ClassConstFetch;
+use PhpParser\Node\Identifier;
 use PhpParser\Node\Name\FullyQualified;
 
 /**
@@ -32,7 +33,7 @@ class ClassConstantMatcher extends AbstractCoreMatcher
     /**
      * Validate config
      *
-     * @param array $matcherDefinitions Incoming main configuration
+     * @param array<string, array<string, mixed>> $matcherDefinitions Incoming main configuration
      */
     public function __construct(array $matcherDefinitions)
     {
@@ -45,17 +46,20 @@ class ClassConstantMatcher extends AbstractCoreMatcher
      */
     public function enterNode(Node $node): null
     {
-        if (!$this->isFileIgnored($node)
-            && !$this->isLineIgnored($node)
-            && $node instanceof ClassConstFetch
+        if ($this->isFileIgnored($node) || $this->isLineIgnored($node)) {
+            return null;
+        }
+
+        if ($node instanceof ClassConstFetch
             && $node->class instanceof FullyQualified
-            && array_key_exists($node->class->toString() . '::' . $node->name, $this->matcherDefinitions)
+            && $node->name instanceof Identifier
+            && array_key_exists($node->class->name . '::' . $node->name, $this->matcherDefinitions)
         ) {
             // No weak test implemented - combination class::const name tested
             $this->matches[] = [
-                'restFiles' => $this->matcherDefinitions[$node->class->toString() . '::' . $node->name]['restFiles'],
-                'line' => $node->getAttribute('startLine'),
-                'message' => 'Call to class constant "' . $node->class->toString() . '::' . $node->name . '"',
+                'restFiles' => $this->matcherDefinitions[$node->class->name . '::' . $node->name]['restFiles'],
+                'line' => $node->getStartLine(),
+                'message' => 'Call to class constant "' . $node->class->name . '::' . $node->name . '"',
                 'indicator' => 'strong',
             ];
         }

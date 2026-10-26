@@ -43,7 +43,7 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
     /**
      * Prepare $this->flatMatcherDefinitions once and validate config
      *
-     * @param array $matcherDefinitions Incoming main configuration
+     * @param array<string, array<string, mixed>> $matcherDefinitions Incoming main configuration
      */
     public function __construct(array $matcherDefinitions)
     {
@@ -65,10 +65,12 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
         if ($this->isFileIgnored($node) || $this->isLineIgnored($node)) {
             return null;
         }
-        $resolvedNode = $node->getAttribute(self::NODE_RESOLVED_AS, null) ?? $node;
+
+        $resolvedNode = $node->getAttribute(self::NODE_RESOLVED_AS) ?? $node;
         if (!$resolvedNode instanceof New_
             || !isset($resolvedNode->class)
-            || (isset($node->class) && is_object($node->class) && !method_exists($node->class, '__toString'))
+            // Only class names that can be cast to a string can be looked up below
+            || !method_exists($resolvedNode->class, '__toString')
             || !array_key_exists((string)$resolvedNode->class, $this->matcherDefinitions)
         ) {
             return null;
@@ -91,22 +93,22 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
 
     /**
      * @param Node $node reflects invocation, e.g. `GeneralUtility::makeInstance(MyClass::class, 123)`
-     * @param Node $resolvedNode reflects resolved and actual usage, e.g. `new MyClass(123)`
+     * @param New_ $resolvedNode reflects resolved and actual usage, e.g. `new MyClass(123)`
      */
-    protected function handleRequiredArguments(Node $node, Node $resolvedNode): bool
+    protected function handleRequiredArguments(Node $node, New_ $resolvedNode): bool
     {
-        $className = (string)($resolvedNode->class ?? '');
+        $className = $resolvedNode->class->name ?? '';
         $candidate = $this->matcherDefinitions[$className][self::TOPIC_TYPE_REQUIRED] ?? null;
         $mandatoryArguments = $candidate['numberOfMandatoryArguments'] ?? null;
         $numberOfArguments = count($resolvedNode->args ?? []);
 
-        if ($candidate === null || $numberOfArguments >= $mandatoryArguments) {
+        if ($candidate === null || $mandatoryArguments === null || $numberOfArguments >= $mandatoryArguments) {
             return false;
         }
 
         $this->matches[] = [
             'restFiles' => $candidate['restFiles'],
-            'line' => $node->getAttribute('startLine'),
+            'line' => $node->getStartLine(),
             'message' => sprintf(
                 '%s::__construct requires at least %d arguments (%d given).',
                 $className,
@@ -120,22 +122,22 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
 
     /**
      * @param Node $node reflects invocation, e.g. `GeneralUtility::makeInstance(MyClass::class, 123)`
-     * @param Node $resolvedNode reflects resolved and actual usage, e.g. `new MyClass(123)`
+     * @param New_ $resolvedNode reflects resolved and actual usage, e.g. `new MyClass(123)`
      */
-    protected function handleDroppedArguments(Node $node, Node $resolvedNode): bool
+    protected function handleDroppedArguments(Node $node, New_ $resolvedNode): bool
     {
-        $className = (string)($resolvedNode->class ?? '');
+        $className = $resolvedNode->class->name ?? '';
         $candidate = $this->matcherDefinitions[$className][self::TOPIC_TYPE_DROPPED] ?? null;
         $maximumArguments = $candidate['maximumNumberOfArguments'] ?? null;
         $numberOfArguments = count($resolvedNode->args ?? []);
 
-        if ($candidate === null || $numberOfArguments <= $maximumArguments) {
+        if ($candidate === null || $maximumArguments === null || $numberOfArguments <= $maximumArguments) {
             return false;
         }
 
         $this->matches[] = [
             'restFiles' => $candidate['restFiles'],
-            'line' => $node->getAttribute('startLine'),
+            'line' => $node->getStartLine(),
             'message' => sprintf(
                 '%s::__construct supports only %d arguments (%d given).',
                 $className,
@@ -149,11 +151,11 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
 
     /**
      * @param Node $node reflects invocation, e.g. `GeneralUtility::makeInstance(MyClass::class, 123)`
-     * @param Node $resolvedNode reflects resolved and actual usage, e.g. `new MyClass(123)`
+     * @param New_ $resolvedNode reflects resolved and actual usage, e.g. `new MyClass(123)`
      */
-    protected function handleCalledArguments(Node $node, Node $resolvedNode): bool
+    protected function handleCalledArguments(Node $node, New_ $resolvedNode): bool
     {
-        $className = (string)($resolvedNode->class ?? '');
+        $className = $resolvedNode->class->name ?? '';
         $candidate = $this->matcherDefinitions[$className][self::TOPIC_TYPE_CALLED] ?? null;
         $isArgumentUnpackingUsed = $this->isArgumentUnpackingUsed($resolvedNode->args ?? []);
         $mandatoryArguments = $candidate['numberOfMandatoryArguments'] ?? null;
@@ -161,14 +163,17 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
         $numberOfArguments = count($resolvedNode->args ?? []);
 
         if ($candidate === null
-            || !$isArgumentUnpackingUsed
-            && ($numberOfArguments < $mandatoryArguments || $numberOfArguments > $maximumArguments)) {
+            || $mandatoryArguments === null
+            || $maximumArguments === null
+            || (!$isArgumentUnpackingUsed
+                && ($numberOfArguments < $mandatoryArguments || $numberOfArguments > $maximumArguments))
+        ) {
             return false;
         }
 
         $this->matches[] = [
             'restFiles' => $candidate['restFiles'],
-            'line' => $node->getAttribute('startLine'),
+            'line' => $node->getStartLine(),
             'message' => sprintf(
                 '%s::__construct being called (%d arguments given).',
                 $className,
@@ -181,11 +186,11 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
 
     /**
      * @param Node $node reflects invocation, e.g. `GeneralUtility::makeInstance(MyClass::class, 123)`
-     * @param Node $resolvedNode reflects resolved and actual usage, e.g. `new MyClass(123)`
+     * @param New_ $resolvedNode reflects resolved and actual usage, e.g. `new MyClass(123)`
      */
-    protected function handleUnusedArguments(Node $node, Node $resolvedNode): bool
+    protected function handleUnusedArguments(Node $node, New_ $resolvedNode): bool
     {
-        $className = (string)($resolvedNode->class ?? '');
+        $className = $resolvedNode->class->name ?? '';
         $candidate = $this->matcherDefinitions[$className][self::TOPIC_TYPE_UNUSED] ?? null;
         // values in array (if any) are actual position counts
         // e.g. `[2, 4]` refers to internal argument indexes `[1, 3]`
@@ -195,7 +200,7 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
             return false;
         }
 
-        $arguments = $resolvedNode->args ?? [];
+        $arguments = $resolvedNode->getArgs();
         // keeping positions having argument values that are not null
         $unusedArgumentPositions = array_filter(
             $unusedArgumentPositions,
@@ -203,7 +208,7 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
                 $index = $position - 1;
                 return isset($arguments[$index]->value)
                     && !($arguments[$index]->value instanceof ConstFetch
-                        && strtolower($arguments[$index]->value->name->toString()) === 'null');
+                        && strtolower($arguments[$index]->value->name->name) === 'null');
             }
         );
         if (empty($unusedArgumentPositions)) {
@@ -212,7 +217,7 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
 
         $this->matches[] = [
             'restFiles' => $candidate['restFiles'],
-            'line' => $node->getAttribute('startLine'),
+            'line' => $node->getStartLine(),
             'message' => sprintf(
                 '%s::__construct was called with argument positions %s not being null.',
                 $className,
@@ -223,6 +228,9 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
         return true;
     }
 
+    /**
+     * @param array<string, list<string>> $topicRequirements
+     */
     protected function validateMatcherDefinitionsTopicRequirements(array $topicRequirements): void
     {
         foreach ($this->matcherDefinitions as $key => $matcherDefinition) {

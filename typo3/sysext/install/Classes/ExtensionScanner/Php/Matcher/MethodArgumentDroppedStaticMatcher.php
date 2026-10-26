@@ -33,7 +33,7 @@ class MethodArgumentDroppedStaticMatcher extends AbstractCoreMatcher
     /**
      * Prepare $this->flatMatcherDefinitions once and validate config
      *
-     * @param array $matcherDefinitions Incoming main configuration
+     * @param array<string, array<string, mixed>> $matcherDefinitions Incoming main configuration
      */
     public function __construct(array $matcherDefinitions)
     {
@@ -48,23 +48,23 @@ class MethodArgumentDroppedStaticMatcher extends AbstractCoreMatcher
      */
     public function enterNode(Node $node): null
     {
-        // Match static method call
-        if (!$this->isFileIgnored($node)
-            && !$this->isLineIgnored($node)
-            && $node instanceof StaticCall
-        ) {
+        if ($this->isFileIgnored($node) || $this->isLineIgnored($node)) {
+            return null;
+        }
+
+        if ($node instanceof StaticCall) {
             $isArgumentUnpackingUsed = $this->isArgumentUnpackingUsed($node->args);
 
             if ($node->class instanceof FullyQualified && $node->name instanceof Identifier) {
                 // 'Foo\Bar::aMethod()' -> strong match
-                $fqdnClassWithMethod = $node->class->toString() . '::' . $node->name->name;
+                $fqdnClassWithMethod = $node->class->name . '::' . $node->name->name;
                 if (!$isArgumentUnpackingUsed
                     && array_key_exists($fqdnClassWithMethod, $this->matcherDefinitions)
                     && count($node->args) > $this->matcherDefinitions[$fqdnClassWithMethod]['maximumNumberOfArguments']
                 ) {
                     $this->matches[] = [
                         'restFiles' => $this->matcherDefinitions[$fqdnClassWithMethod]['restFiles'],
-                        'line' => $node->getAttribute('startLine'),
+                        'line' => $node->getStartLine(),
                         'message' => 'Method "' . $node->name->name . '()" supports only '
                             . $this->matcherDefinitions[$fqdnClassWithMethod]['maximumNumberOfArguments']
                             . ' arguments.',
@@ -77,7 +77,7 @@ class MethodArgumentDroppedStaticMatcher extends AbstractCoreMatcher
             ) {
                 $match = [
                     'restFiles' => [],
-                    'line' => $node->getAttribute('startLine'),
+                    'line' => $node->getStartLine(),
                     'indicator' => 'weak',
                 ];
 

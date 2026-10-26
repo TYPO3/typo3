@@ -23,8 +23,8 @@ use PhpParser\ParserFactory;
 use PhpParser\PhpVersion;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Install\ExtensionScanner\Php\GeneratorClassesResolver;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ClassConstantMatcher;
+use TYPO3\CMS\Install\ExtensionScanner\Php\Visitor\GeneratorClassesResolver;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ClassConstantMatcherTest extends UnitTestCase
@@ -110,5 +110,34 @@ final class ClassConstantMatcherTest extends UnitTestCase
 
         $result = $subject->getMatches();
         self::assertSame($expected[0]['restFiles'], $result[0]['restFiles']);
+    }
+
+    #[Test]
+    public function dynamicClassConstantFetchIsIgnored(): void
+    {
+        // PHP 8.3 syntax, so it can not be part of the fixture file linted with PHP 8.2. The parser
+        // accepts it with the 8.2 target the extension scanner uses.
+        $phpCode = '<?php
+        $foo = \Foo\Bar::{$constantName};
+        $foo = \Foo\Bar::aClassConstant;';
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
+        $statements = $parser->parse($phpCode);
+
+        $subject = new ClassConstantMatcher([
+            'Foo\Bar::aClassConstant' => [
+                'restFiles' => [
+                    'Foo-1.rst',
+                ],
+            ],
+        ]);
+
+        $traverser = new NodeTraverser();
+        $traverser->addVisitor(new NameResolver());
+        $traverser->addVisitor($subject);
+        $traverser->traverse($statements);
+
+        $result = $subject->getMatches();
+        self::assertCount(1, $result);
+        self::assertSame(3, $result[0]['line']);
     }
 }

@@ -32,7 +32,7 @@ class MethodCallMatcher extends AbstractCoreMatcher
     /**
      * Prepare $this->flatMatcherDefinitions once
      *
-     * @param array $matcherDefinitions Incoming main configuration
+     * @param array<string, array<string, mixed>> $matcherDefinitions Incoming main configuration
      */
     public function __construct(array $matcherDefinitions)
     {
@@ -47,16 +47,18 @@ class MethodCallMatcher extends AbstractCoreMatcher
      */
     public function enterNode(Node $node): null
     {
+        if ($this->isFileIgnored($node) || $this->isLineIgnored($node)) {
+            return null;
+        }
+
         // Match method call (not static)
-        if (!$this->isFileIgnored($node)
-            && !$this->isLineIgnored($node)
-            && $node instanceof MethodCall
+        if ($node instanceof MethodCall
             && $node->name instanceof Identifier
             && array_key_exists($node->name->name, $this->flatMatcherDefinitions)
         ) {
             $match = [
                 'restFiles' => [],
-                'line' => $node->getAttribute('startLine'),
+                'line' => $node->getStartLine(),
                 'message' => 'Call to method "' . $node->name->name . '()"',
                 'indicator' => 'weak',
             ];

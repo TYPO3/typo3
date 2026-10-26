@@ -24,8 +24,8 @@ use PhpParser\PhpVersion;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use TYPO3\CMS\Install\ExtensionScanner\Php\GeneratorClassesResolver;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ConstructorArgumentMatcher;
+use TYPO3\CMS\Install\ExtensionScanner\Php\Visitor\GeneratorClassesResolver;
 use TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher\Fixtures\Subject;
 
 final class ConstructorArgumentMatcherTest extends TestCase

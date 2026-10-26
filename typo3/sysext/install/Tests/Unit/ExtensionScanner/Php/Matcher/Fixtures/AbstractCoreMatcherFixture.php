@@ -21,14 +21,14 @@ use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\AbstractCoreMatcher;
 
 final class AbstractCoreMatcherFixture extends AbstractCoreMatcher
 {
-    public $matcherDefinitions = [];
+    public array $matcherDefinitions = [];
 
-    public function initializeFlatMatcherDefinitions()
+    public function initializeFlatMatcherDefinitions(): void
     {
         parent::initializeFlatMatcherDefinitions();
     }
 
-    public function validateMatcherDefinitions(array $requiredArrayKeys = [])
+    public function validateMatcherDefinitions(array $requiredArrayKeys = []): void
     {
         parent::validateMatcherDefinitions($requiredArrayKeys);
     }

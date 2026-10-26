@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\ExtensionScanner\Php;
+namespace TYPO3\CMS\Install\ExtensionScanner\Php\Visitor;
 
 use PhpParser\BuilderFactory;
 use PhpParser\Node;
@@ -40,10 +40,7 @@ use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\AbstractCoreMatcher;
  */
 class GeneratorClassesResolver extends NodeVisitorAbstract
 {
-    /**
-     * @var BuilderFactory
-     */
-    protected $builderFactory;
+    protected BuilderFactory $builderFactory;
 
     public function __construct(?BuilderFactory $builderFactory = null)
     {
@@ -53,14 +50,12 @@ class GeneratorClassesResolver extends NodeVisitorAbstract
     /**
      * Called by PhpParser.
      * Create an fqdn object from first makeInstance argument if it is a String
-     *
-     * @param Node $node Incoming node
      */
     public function enterNode(Node $node)
     {
         if ($node instanceof StaticCall
             && $node->class instanceof FullyQualified
-            && $node->class->toString() === GeneralUtility::class
+            && $node->class->name === GeneralUtility::class
             && $node->name->name === 'makeInstance'
             && isset($node->args[0]->value)
             && $node->args[0]->value instanceof Expr

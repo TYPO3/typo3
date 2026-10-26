@@ -32,7 +32,7 @@ class ArrayGlobalMatcher extends AbstractCoreMatcher
     /**
      * Initialize "flat" matcher array from matcher definitions.
      *
-     * @param array $matcherDefinitions Incoming main configuration
+     * @param array<string, array<string, mixed>> $matcherDefinitions Incoming main configuration
      */
     public function __construct(array $matcherDefinitions)
     {
@@ -45,9 +45,11 @@ class ArrayGlobalMatcher extends AbstractCoreMatcher
      */
     public function enterNode(Node $node): null
     {
-        if (!$this->isFileIgnored($node)
-            && !$this->isLineIgnored($node)
-            && $node instanceof ArrayDimFetch
+        if ($this->isFileIgnored($node) || $this->isLineIgnored($node)) {
+            return null;
+        }
+
+        if ($node instanceof ArrayDimFetch
             && $node->var instanceof Variable
             && $node->var->name === 'GLOBALS'
             && $node->dim instanceof String_
@@ -55,7 +57,7 @@ class ArrayGlobalMatcher extends AbstractCoreMatcher
         ) {
             $this->matches[] = [
                 'restFiles' => $this->matcherDefinitions['$GLOBALS[\'' . $node->dim->value . '\']']['restFiles'],
-                'line' => $node->getAttribute('startLine'),
+                'line' => $node->getStartLine(),
                 'message' => 'Access to array global array "' . $node->dim->value . '"',
                 'indicator' => 'strong',
             ];

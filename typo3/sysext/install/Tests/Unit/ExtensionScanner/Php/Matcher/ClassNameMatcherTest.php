@@ -22,8 +22,8 @@ use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
 use PhpParser\PhpVersion;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Install\ExtensionScanner\Php\GeneratorClassesResolver;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ClassNameMatcher;
+use TYPO3\CMS\Install\ExtensionScanner\Php\Visitor\GeneratorClassesResolver;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ClassNameMatcherTest extends UnitTestCase

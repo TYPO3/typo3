@@ -38,40 +38,42 @@ abstract class AbstractCoreMatcher extends NodeVisitorAbstract implements CodeSc
     /**
      * Incoming main configuration array.
      *
-     * @var array
+     * @var array<string, array<string, mixed>>
      */
-    protected $matcherDefinitions = [];
+    protected array $matcherDefinitions = [];
 
     /**
-     * @var array List of accumulated matches
+     * @var list<array<string, mixed>> List of accumulated matches
      */
-    protected $matches = [];
+    protected array $matches = [];
 
     /**
      * Helper property containing an array derived from $this->matcherDefinitions
      * created in __construct() if needed.
      *
-     * @var array
+     * @var array<string, array{candidates: list<array<string, mixed>>}>
      */
-    protected $flatMatcherDefinitions = [];
+    protected array $flatMatcherDefinitions = [];
 
     /**
-     * @var int Helper variable for ignored line detection
+     * Helper variable for ignored line detection
      */
-    protected $currentCodeLine = 0;
+    protected int $currentCodeLine = 0;
 
     /**
-     * @var bool True if line with $lastIgnoredLineNumber is ignored
+     * True if line with $lastIgnoredLineNumber is ignored
      */
-    protected $isCurrentLineIgnored = false;
+    protected bool $isCurrentLineIgnored = false;
 
     /**
-     * @var bool True if the entire file is ignored due to a @extensionScannerIgnoreFile class comment
+     * True if the entire file is ignored due to a @extensionScannerIgnoreFile class comment
      */
-    protected $isFullFileIgnored = false;
+    protected bool $isFullFileIgnored = false;
 
     /**
      * Return list of matches after processing
+     *
+     * @return list<array<string, mixed>>
      */
     public function getMatches(): array
     {
@@ -87,16 +89,20 @@ abstract class AbstractCoreMatcher extends NodeVisitorAbstract implements CodeSc
      *
      * This method works on $this->matcherDefinitions.
      *
-     * @param array $requiredArrayKeys List of required keys for single matchers
+     * @param list<string> $requiredArrayKeys List of required keys for single matchers
      * @throws \RuntimeException
      */
-    protected function validateMatcherDefinitions(array $requiredArrayKeys = [])
+    protected function validateMatcherDefinitions(array $requiredArrayKeys = []): void
     {
         foreach ($this->matcherDefinitions as $key => $matcherDefinition) {
             $this->validateMatcherDefinitionKeys($key, $matcherDefinition, $requiredArrayKeys);
         }
     }
 
+    /**
+     * @param array<string, mixed> $matcherDefinition
+     * @param list<string> $requiredArrayKeys
+     */
     protected function validateMatcherDefinitionKeys(string $key, array $matcherDefinition, array $requiredArrayKeys = []): void
     {
         // Each config must point to at least one .rst file
@@ -136,7 +142,7 @@ abstract class AbstractCoreMatcher extends NodeVisitorAbstract implements CodeSc
      *
      * @throws \RuntimeException
      */
-    protected function initializeFlatMatcherDefinitions()
+    protected function initializeFlatMatcherDefinitions(): void
     {
         $methodNameArray = [];
         foreach ($this->matcherDefinitions as $classAndMethod => $details) {
@@ -166,12 +172,15 @@ abstract class AbstractCoreMatcher extends NodeVisitorAbstract implements CodeSc
      * A first-class callable ("foo(...)") has a single VariadicPlaceholder
      * instead of arguments, so there is nothing to count either.
      *
-     * @param array $arguments List of arguments
+     * @param array<int, Node\Arg|Node\VariadicPlaceholder> $arguments List of arguments
      */
     protected function isArgumentUnpackingUsed(array $arguments = []): bool
     {
         foreach ($arguments as $arg) {
-            if ($arg instanceof VariadicPlaceholder || $arg->unpack === true) {
+            if ($arg instanceof VariadicPlaceholder) {
+                return true;
+            }
+            if ($arg instanceof Node\Arg && $arg->unpack === true) {
                 return true;
             }
         }
@@ -185,7 +194,7 @@ abstract class AbstractCoreMatcher extends NodeVisitorAbstract implements CodeSc
     protected function isLineIgnored(Node $node): bool
     {
         // Early return if this line is marked as ignored
-        $startLineOfNode = $node->getAttribute('startLine');
+        $startLineOfNode = $node->getStartLine();
         if ($startLineOfNode === $this->currentCodeLine) {
             return $this->isCurrentLineIgnored;
         }
@@ -199,7 +208,7 @@ abstract class AbstractCoreMatcher extends NodeVisitorAbstract implements CodeSc
         if ($startLineOfNode !== $this->currentCodeLine) {
             $this->currentCodeLine = $startLineOfNode;
             // First node of a new line may contain the annotation
-            $comments = $node->getAttribute('comments');
+            $comments = $node->getComments();
             if (!empty($comments)) {
                 foreach ($comments as $comment) {
                     if (str_contains($comment->getText(), '@extensionScannerIgnoreLine')) {
@@ -224,7 +233,7 @@ abstract class AbstractCoreMatcher extends NodeVisitorAbstract implements CodeSc
         }
         $currentFileIsIgnored = false;
         if ($node instanceof Class_) {
-            $comments = $node->getAttribute('comments');
+            $comments = $node->getComments();
             if (!empty($comments)) {
                 foreach ($comments as $comment) {
                     if (str_contains($comment->getText(), '@extensionScannerIgnoreFile')) {

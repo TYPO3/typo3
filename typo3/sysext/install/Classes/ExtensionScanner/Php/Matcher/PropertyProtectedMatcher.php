@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\ExtensionScanner\Php\Matcher;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\PropertyFetch;
+use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Identifier;
 
 /**
@@ -31,7 +32,7 @@ class PropertyProtectedMatcher extends AbstractCoreMatcher
     /**
      * Validate config and prepare flat mach array
      *
-     * @param array $matcherDefinitions Incoming main configuration
+     * @param array<string, array<string, mixed>> $matcherDefinitions Incoming main configuration
      */
     public function __construct(array $matcherDefinitions)
     {
@@ -45,16 +46,18 @@ class PropertyProtectedMatcher extends AbstractCoreMatcher
      */
     public function enterNode(Node $node): null
     {
-        if (!$this->isFileIgnored($node)
-            && !$this->isLineIgnored($node)
-            && $node instanceof PropertyFetch
+        if ($this->isFileIgnored($node) || $this->isLineIgnored($node)) {
+            return null;
+        }
+
+        if ($node instanceof PropertyFetch
             && $node->name instanceof Identifier
-            && ($node->var->name ?? '') !== 'this'
+            && !($node->var instanceof Variable && $node->var->name === 'this')
             && array_key_exists($node->name->name, $this->flatMatcherDefinitions)
         ) {
             $match = [
                 'restFiles' => [],
-                'line' => $node->getAttribute('startLine'),
+                'line' => $node->getStartLine(),
                 'message' => 'Fetch of property "' . $node->name->name . '"',
                 'indicator' => 'weak',
             ];

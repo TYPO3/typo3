@@ -29,7 +29,7 @@ class ClassNameMatcher extends AbstractCoreMatcher
     /**
      * Default constructor validates matcher definition.
      *
-     * @param array $matcherDefinitions Incoming main configuration
+     * @param array<string, array<string, mixed>> $matcherDefinitions Incoming main configuration
      */
     public function __construct(array $matcherDefinitions)
     {
@@ -44,15 +44,16 @@ class ClassNameMatcher extends AbstractCoreMatcher
      */
     public function enterNode(Node $node): null
     {
-        if (!$this->isFileIgnored($node)
-            && !$this->isLineIgnored($node)
-            && $node instanceof FullyQualified
-        ) {
-            $fullyQualifiedClassName = $node->toString();
+        if ($this->isFileIgnored($node) || $this->isLineIgnored($node)) {
+            return null;
+        }
+
+        if ($node instanceof FullyQualified) {
+            $fullyQualifiedClassName = $node->name;
             if (array_key_exists($fullyQualifiedClassName, $this->matcherDefinitions)) {
                 $this->matches[] = [
                     'restFiles' => $this->matcherDefinitions[$fullyQualifiedClassName]['restFiles'],
-                    'line' => $node->getAttribute('startLine'),
+                    'line' => $node->getStartLine(),
                     'message' => 'Usage of class "' . $fullyQualifiedClassName . '"',
                     'indicator' => 'strong',
                 ];

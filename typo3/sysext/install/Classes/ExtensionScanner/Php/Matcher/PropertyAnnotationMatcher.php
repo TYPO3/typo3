@@ -31,7 +31,7 @@ class PropertyAnnotationMatcher extends AbstractCoreMatcher
     /**
      * Prepare $this->flatMatcherDefinitions once and validate config
      *
-     * @param array $matcherDefinitions Incoming main configuration
+     * @param array<string, array<string, mixed>> $matcherDefinitions Incoming main configuration
      */
     public function __construct(array $matcherDefinitions)
     {
@@ -45,17 +45,19 @@ class PropertyAnnotationMatcher extends AbstractCoreMatcher
      */
     public function enterNode(Node $node): null
     {
+        if ($this->isFileIgnored($node) || $this->isLineIgnored($node)) {
+            return null;
+        }
+
         if ($node instanceof Property
             && ($property = reset($node->props)) instanceof PropertyItem
             && ($docComment = $node->getDocComment()) instanceof Doc
-            && !$this->isFileIgnored($node)
-            && !$this->isLineIgnored($node)
         ) {
             /** @var PropertyItem $property */
             $isPossibleMatch = false;
             $match = [
                 'restFiles' => [],
-                'line' => $property->getAttribute('startLine'),
+                'line' => $property->getStartLine(),
                 'indicator' => 'strong',
             ];
 
