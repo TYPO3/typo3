@@ -6,19 +6,20 @@ finishers:
   -
     identifier: EmailToReceiver
     options:
-      subject: 'Your message: {subject}'
+      subject: 'Contact form: {subject}'
       recipients:
-        your.company@example.com: 'Your Company name'
-      senderAddress: '{email}'
-      senderName: '{name}'
-      replyToRecipients: {}
+        your.company.recipient@example.com: 'Your company name'
+      senderAddress: 'your.company.sender@example.com'
+      senderName: 'Your company name - contact form'
+      replyToRecipients:
+        '{email}': '{name}'
       carbonCopyRecipients: {}
       blindCarbonCopyRecipients: {}
       format: 'html'
       attachUploads: 'true'
       translation:
         language: ''
-      title: 'Confirmation of your message'
+      title: 'New contact form request'
 
 renderables:
   -
