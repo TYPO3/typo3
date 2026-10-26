@@ -428,8 +428,8 @@ class PageRouter implements RouterInterface
                     continue;
                 }
                 // Get slugs in the translated page
-                $mountedPage = $pageRepository->getPage($mountedPage);
-                $mountRoot = $pageRepository->getPage($mountRoot);
+                $mountedPage = $pageRepository->getPage_noCheck($mountedPage);
+                $mountRoot = $pageRepository->getPage_noCheck($mountRoot);
                 $slugPrefix = $mountedPage['slug'] ?? '';
                 if ($slugPrefix === '/') {
                     $slugPrefix = '';
