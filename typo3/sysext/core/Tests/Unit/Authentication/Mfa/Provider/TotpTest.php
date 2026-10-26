@@ -158,6 +158,16 @@ final class TotpTest extends UnitTestCase
             ],
             'otpauth://totp/Some%20other%20site%3Auser%40typo3.org?secret=N5WGS4ZNOR4XA3ZTFVZWS5DF&issuer=Some%20other%20site&algorithm=sha256&period=20&digits=8&epoch=12345',
         ];
+        yield 'Issuer with HTML special chars is encoded equally in label and issuer param' => [
+            [
+                'N5WGS4ZNOR4XA3ZTFVZWS5DF',
+            ],
+            [
+                'TYPO3 Test GmbH & Co. KG <"\'>',
+                'user@example.com',
+            ],
+            'otpauth://totp/TYPO3%20Test%20GmbH%20%26%20Co.%20KG%20%3C%22%27%3E%3Auser%40example.com?secret=N5WGS4ZNOR4XA3ZTFVZWS5DF&issuer=TYPO3%20Test%20GmbH%20%26%20Co.%20KG%20%3C%22%27%3E',
+        ];
     }
 
     #[Test]

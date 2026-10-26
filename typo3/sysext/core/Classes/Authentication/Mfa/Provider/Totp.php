@@ -120,7 +120,7 @@ class Totp
     {
         $parameters = [
             'secret' => $this->secret,
-            'issuer' => htmlspecialchars($issuer),
+            'issuer' => $issuer,
         ];
 
         // Common OTP applications expect the following parameters:
