@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Pagination;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
@@ -36,7 +37,7 @@ final class SlidingWindowPaginationTest extends UnitTestCase
     #[Test]
     public function checkSlidingWindowPaginationWithAPaginatorWithDefaultSettings(): void
     {
-        $pagination = new SlidingWindowPagination($this->paginator, 5);
+        $pagination = new SlidingWindowPagination($this->paginator);
 
         self::assertSame(1, $pagination->getStartRecordNumber());
         self::assertSame(10, $pagination->getEndRecordNumber());
@@ -49,7 +50,33 @@ final class SlidingWindowPaginationTest extends UnitTestCase
         self::assertSame(2, $pagination->getDisplayRangeEnd());
         self::assertFalse($pagination->getHasLessPages());
         self::assertFalse($pagination->getHasMorePages());
-        self::assertSame(5, $pagination->getMaximumNumberOfLinks());
+        self::assertSame(10, $pagination->getMaximumNumberOfLinks());
+    }
+
+    #[Test]
+    public function defaultLinkLimitRestrictsTheSlidingWindowToTenPages(): void
+    {
+        $pagination = new SlidingWindowPagination(new ArrayPaginator(range(1, 200), 8));
+
+        self::assertSame(range(3, 12), $pagination->getAllPageNumbers());
+    }
+
+    public static function nonPositiveLinkLimitsDataProvider(): array
+    {
+        return [
+            'zero' => [0],
+            'negative' => [-1],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('nonPositiveLinkLimitsDataProvider')]
+    public function nonPositiveLinkLimitUsesTheDefault(int $maximumNumberOfLinks): void
+    {
+        $pagination = new SlidingWindowPagination(new ArrayPaginator(range(1, 200)), $maximumNumberOfLinks);
+
+        self::assertSame(10, $pagination->getMaximumNumberOfLinks());
+        self::assertSame(range(1, 10), $pagination->getAllPageNumbers());
     }
 
     #[Test]
