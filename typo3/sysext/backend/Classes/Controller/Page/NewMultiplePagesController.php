@@ -32,6 +32,7 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
 use TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -40,6 +41,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\LanguageMarker;
@@ -61,6 +63,7 @@ readonly class NewMultiplePagesController
         protected TcaSchemaFactory $tcaSchemaFactory,
         protected ComponentFactory $componentFactory,
         protected FormDataCompiler $formDataCompiler,
+        protected UriBuilder $uriBuilder,
     ) {}
 
     /**
@@ -100,12 +103,18 @@ readonly class NewMultiplePagesController
         if ($canCreateNew) {
             $newPagesData = (array)($request->getParsedBody()['pages'] ?? []);
             if (!empty($newPagesData)) {
-                $hasNewPagesData = true;
                 $afterExisting = isset($request->getParsedBody()['createInListEnd']);
                 $hidePages = isset($request->getParsedBody()['hidePages']);
                 $hidePagesInMenu = isset($request->getParsedBody()['hidePagesInMenus']);
                 $pagesCreated = $this->createPages($newPagesData, $pageUid, $afterExisting, $hidePages, $hidePagesInMenu);
-                $view->assign('pagesCreated', $pagesCreated);
+                return new RedirectResponse(
+                    $this->uriBuilder->buildUriFromRoute('pages_new', ['id' => $pageUid, 'created' => (int)$pagesCreated]),
+                    303
+                );
+            }
+            if (isset($request->getQueryParams()['created'])) {
+                $hasNewPagesData = true;
+                $view->assign('pagesCreated', (bool)$request->getQueryParams()['created']);
                 $subPages = $this->getSubPagesOfPage($pageUid);
                 $visiblePages = [];
                 foreach ($subPages as $page) {
