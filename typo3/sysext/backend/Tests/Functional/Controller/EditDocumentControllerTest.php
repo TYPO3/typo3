@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\EditDocumentController;
 use TYPO3\CMS\Backend\Routing\Route;
@@ -30,6 +31,9 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class EditDocumentControllerTest extends FunctionalTestCase
 {
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/backend/Tests/Functional/Controller/Fixtures/Extensions/test_persist_null',
+    ];
     private EditDocumentController $subject;
 
     private NormalizedParams $normalizedParams;
@@ -44,6 +48,7 @@ final class EditDocumentControllerTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/tt_content.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/test_persist_null.csv');
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
@@ -342,5 +347,174 @@ final class EditDocumentControllerTest extends FunctionalTestCase
                 'tt_content' => $defaultValues,
             ],
         ];
+    }
+
+    public static function saveNullValuesViaControlDataProvider(): \Generator
+    {
+        yield 'field "input_null": save value without setting control' => [
+            'expectedField' => 'input_null',
+            'dataInput' => 'testValue',
+            'setControl' => false,
+            'controlInput' => 0,
+            'expectedValue' => 'testValue',
+        ];
+        yield 'field "input_null": save value with setting checkbox to keep value' => [
+            'expectedField' => 'input_null',
+            'dataInput' => 'testValue',
+            'setControl' => true,
+            'controlInput' => 1,
+            'expectedValue' => 'testValue',
+        ];
+        yield 'field "input_null": save value without setting checkbox' => [
+            'expectedField' => 'input_null',
+            'dataInput' => 'testValue',
+            'setControl' => true,
+            'controlInput' => 0,
+            'expectedValue' => null,
+        ];
+        yield 'field "number_null": save value 1 without setting control' => [
+            'expectedField' => 'number_null',
+            'dataInput' => 1,
+            'setControl' => false,
+            'controlInput' => 0,
+            'expectedValue' => 1,
+        ];
+        yield 'field "number_null": save value 1 with setting checkbox to keep value' => [
+            'expectedField' => 'number_null',
+            'dataInput' => 1,
+            'setControl' => true,
+            'controlInput' => 1,
+            'expectedValue' => 1,
+        ];
+        yield 'field "number_null": save value 1 without setting checkbox' => [
+            'expectedField' => 'number_null',
+            'dataInput' => 1,
+            'setControl' => true,
+            'controlInput' => 0,
+            'expectedValue' => null,
+        ];
+        yield 'field "number_null": save value 0 without setting control' => [
+            'expectedField' => 'number_null',
+            'dataInput' => 0,
+            'setControl' => false,
+            'controlInput' => 0,
+            'expectedValue' => 0,
+        ];
+        yield 'field "number_null": save value 0 with setting checkbox to keep value' => [
+            'expectedField' => 'number_null',
+            'dataInput' => 0,
+            'setControl' => true,
+            'controlInput' => 1,
+            'expectedValue' => 0,
+        ];
+        yield 'field "number_null": save value 0 without setting checkbox' => [
+            'expectedField' => 'number_null',
+            'dataInput' => 0,
+            'setControl' => true,
+            'controlInput' => 0,
+            'expectedValue' => null,
+        ];
+        yield 'field "number_null_float": save value 1.23 without setting control' => [
+            'expectedField' => 'number_null_float',
+            'dataInput' => 1.23,
+            'setControl' => false,
+            'controlInput' => 0,
+            'expectedValue' => '1.23',
+        ];
+        yield 'field "number_null_float": save value 1.23 with setting checkbox to keep value' => [
+            'expectedField' => 'number_null_float',
+            'dataInput' => 1.23,
+            'setControl' => true,
+            'controlInput' => 1,
+            'expectedValue' => '1.23',
+        ];
+        yield 'field "number_null_float": save value 1.23 without setting checkbox' => [
+            'expectedField' => 'number_null_float',
+            'dataInput' => 1.23,
+            'setControl' => true,
+            'controlInput' => 0,
+            'expectedValue' => null,
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('saveNullValuesViaControlDataProvider')]
+    public function saveNullValuesViaControlForNewRecords(string $expectedField, mixed $dataInput, bool $setControl, int $controlInput, mixed $expectedValue): void
+    {
+        $request = new ServerRequest('https://www.example.com/', 'POST')
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $queryParams = [
+            'edit' => [
+                'test_persist_null' => [
+                    '0' => 'new',
+                ],
+            ],
+        ];
+        $parsedBody = [
+            'data' => [
+                'test_persist_null' => [
+                    'NEW123456' => [
+                        'pid' => 0,
+                        $expectedField => $dataInput,
+                    ],
+                ],
+            ],
+            '_savedok' => '1',
+        ];
+        if ($setControl) {
+            $parsedBody['control']['active']['test_persist_null']['NEW123456'][$expectedField] = $controlInput;
+        }
+        $request = $request
+            ->withAttribute('normalizedParams', $this->normalizedParams)
+            ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']))
+            ->withQueryParams($queryParams)
+            ->withParsedBody($parsedBody);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->mainAction($request);
+        $decodedLocation = rawurldecode(rawurldecode($response->getHeaderLine('Location')));
+        $query = parse_url($decodedLocation, PHP_URL_QUERY);
+        parse_str($query, $queryParams);
+        $uid = array_key_first($queryParams['edit']['test_persist_null']);
+
+        $newRecord = BackendUtility::getRecord('test_persist_null', $uid);
+        self::assertSame($expectedValue, $newRecord[$expectedField]);
+    }
+
+    #[Test]
+    #[DataProvider('saveNullValuesViaControlDataProvider')]
+    public function saveNullValuesViaControlForExistingRecord(string $expectedField, mixed $dataInput, bool $setControl, int $controlInput, mixed $expectedValue): void
+    {
+        $request = new ServerRequest('https://www.example.com/', 'POST')
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $queryParams = [
+            'edit' => [
+                'test_persist_null' => [
+                    '1' => 'edit',
+                ],
+            ],
+        ];
+        $parsedBody = [
+            'data' => [
+                'test_persist_null' => [
+                    '1' => [
+                        $expectedField => $dataInput,
+                    ],
+                ],
+            ],
+            '_savedok' => '1',
+        ];
+        if ($setControl) {
+            $parsedBody['control']['active']['test_persist_null']['1'][$expectedField] = $controlInput;
+        }
+        $request = $request
+            ->withAttribute('normalizedParams', $this->normalizedParams)
+            ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']))
+            ->withQueryParams($queryParams)
+            ->withParsedBody($parsedBody);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->subject->mainAction($request);
+
+        $record = BackendUtility::getRecord('test_persist_null', 1);
+        self::assertSame($expectedValue, $record[$expectedField]);
     }
 }
