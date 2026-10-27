@@ -58,13 +58,7 @@ class FileUpload extends AbstractFormElement implements StringableFormElementInt
     public function valueToString($value): string
     {
         if ($value instanceof ObjectStorage) {
-            $fileNames = [];
-            foreach ($value as $fileReference) {
-                if ($fileReference instanceof FileReference) {
-                    $fileNames[] = $fileReference->getOriginalResource()->getName();
-                }
-            }
-            return implode(', ', $fileNames);
+            return implode(', ', $this->getFileNames($value));
         }
         if ($value instanceof FileReference) {
             return $value->getOriginalResource()->getName();
@@ -74,9 +68,26 @@ class FileUpload extends AbstractFormElement implements StringableFormElementInt
 
     public function processElementValue(mixed $value, FormRuntime $formRuntime): mixed
     {
-        if ($value instanceof ObjectStorage || $value instanceof FileReference) {
+        if ($value instanceof ObjectStorage) {
+            return $this->getFileNames($value);
+        }
+        if ($value instanceof FileReference) {
             return $this->valueToString($value);
         }
         return $value;
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function getFileNames(ObjectStorage $fileReferences): array
+    {
+        $fileNames = [];
+        foreach ($fileReferences as $fileReference) {
+            if ($fileReference instanceof FileReference) {
+                $fileNames[] = $fileReference->getOriginalResource()->getName();
+            }
+        }
+        return $fileNames;
     }
 }
