@@ -24,10 +24,14 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileReference as CoreFileReference;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
@@ -103,6 +107,41 @@ final class RenderFormValueViewHelperTest extends FunctionalTestCase
             '15.01.2025',
             $this->renderElement('date-1', '{var.processedValue}', new \DateTime('2025-01-15'))
         );
+    }
+
+    #[Test]
+    public function renderResolvesMultipleFileUploadToIterableFileNames(): void
+    {
+        $files = new ObjectStorage();
+        $files->attach($this->buildFileReference('a.pdf'));
+        $files->attach($this->buildFileReference('b.pdf'));
+        self::assertSame(
+            'a.pdf|b.pdf|',
+            $this->renderElement(
+                'file-1',
+                '<f:if condition="{var.isMultiValue}"><f:for each="{var.processedValue}" as="name">{name}|</f:for></f:if>',
+                $files
+            )
+        );
+    }
+
+    #[Test]
+    public function renderResolvesSingleFileUploadToFileName(): void
+    {
+        self::assertSame(
+            'a.pdf',
+            $this->renderElement('file-1', '{var.processedValue}', $this->buildFileReference('a.pdf'))
+        );
+    }
+
+    private function buildFileReference(string $name): FileReference
+    {
+        $coreFileReference = self::createStub(CoreFileReference::class);
+        $coreFileReference->method('getName')->willReturn($name);
+        $coreFileReference->method('getOriginalFile')->willReturn(self::createStub(File::class));
+        $fileReference = new FileReference();
+        $fileReference->setOriginalResource($coreFileReference);
+        return $fileReference;
     }
 
     private function renderElement(string $identifier, string $body, mixed $value): string
@@ -220,6 +259,14 @@ final class RenderFormValueViewHelperTest extends FunctionalTestCase
                             'type' => 'Date',
                             'identifier' => 'date-1',
                             'label' => 'Date',
+                        ],
+                        [
+                            'type' => 'FileUpload',
+                            'identifier' => 'file-1',
+                            'label' => 'File upload',
+                            'properties' => [
+                                'multiple' => true,
+                            ],
                         ],
                     ],
                 ],
