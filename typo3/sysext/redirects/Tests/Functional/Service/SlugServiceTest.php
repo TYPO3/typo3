@@ -21,15 +21,20 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -844,6 +849,116 @@ final class SlugServiceTest extends FunctionalTestCase
             ['source_host' => '*', 'source_path' => '/dummy-1-2/dummy-1-2-3', 'target' => 't3://page?uid=4&_language=0'],
         ];
         $this->assertSlugsAndRedirectsExists($slugs, $redirects);
+    }
+
+    /**
+     * @see https://forge.typo3.org/issues/108375
+     */
+    #[Test]
+    public function changingSlugsOfMultiplePagesInOneDataHandlerCallDispatchesNotificationForEachPage(): void
+    {
+        $this->initializeNonCliEnvironment();
+        $this->buildBaseSite();
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test1.csv');
+        $this->get(SiteMatcher::class)->refresh();
+        $this->get(SiteFinder::class)->getAllSites(false);
+
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start(
+            [
+                'pages' => [
+                    2 => ['slug' => '/dummy-1-2-new'],
+                    3 => ['slug' => '/dummy-1-3-new'],
+                ],
+            ],
+            []
+        );
+        $dataHandler->process_datamap();
+        self::assertSame([], $dataHandler->errorLog);
+
+        $notifications = $this->getSlugChangedNotifications();
+        self::assertCount(2, $notifications, 'Expected one slug change event per changed page');
+        $redirectCreationCorrelationIds = array_map(
+            static fn(array $notification): string => $notification['correlations']['correlationIdRedirectCreation'],
+            $notifications
+        );
+        self::assertSame($redirectCreationCorrelationIds, array_unique($redirectCreationCorrelationIds));
+        self::assertSame(
+            [
+                ['uid' => 2, 'title' => 'Dummy 1-2', 'oldSlug' => '/dummy-1-2', 'newSlug' => '/dummy-1-2-new'],
+                ['uid' => 3, 'title' => 'Dummy 1-3', 'oldSlug' => '/dummy-1-3', 'newSlug' => '/dummy-1-3-new'],
+            ],
+            array_column($notifications, 'page')
+        );
+        self::assertSame([3, 2], array_column($notifications, 'updatedSubPages'));
+        $createdRedirects = array_column($notifications, 'createdRedirects');
+        self::assertGreaterThan(0, min($createdRedirects));
+        self::assertSame(
+            $this->get(ConnectionPool::class)->getConnectionForTable('sys_redirect')->count('*', 'sys_redirect', []),
+            array_sum($createdRedirects)
+        );
+    }
+
+    /**
+     * @see https://forge.typo3.org/issues/108375
+     */
+    #[Test]
+    public function changingSlugWithoutSubPagesAndRedirectsDispatchesNoNotification(): void
+    {
+        $this->initializeNonCliEnvironment();
+        $this->get(SiteWriter::class)->write('testing', [
+            'rootPageId' => 1,
+            'base' => '/',
+            'settings' => ['redirects' => ['autoCreateRedirects' => false]],
+        ]);
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test1.csv');
+        $this->get(SiteMatcher::class)->refresh();
+        $this->get(SiteFinder::class)->getAllSites(false);
+
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start(['pages' => [10 => ['slug' => '/dummy-1-4/dummy-1-4-10-new']]], []);
+        $dataHandler->process_datamap();
+        self::assertSame([], $dataHandler->errorLog);
+
+        self::assertSame([], $this->getSlugChangedNotifications());
+    }
+
+    /**
+     * BackendUtility::setUpdateSignal() is a no-op in CLI context
+     */
+    private function initializeNonCliEnvironment(): void
+    {
+        Environment::initialize(
+            Environment::getContext(),
+            false,
+            Environment::isComposerMode(),
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getCurrentScript(),
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+    }
+
+    private function getSlugChangedNotifications(): array
+    {
+        BackendUtility::getUpdateSignalDetails();
+        $notifications = [];
+        foreach ($this->get(PageRenderer::class)->getJavaScriptRenderer()->toArray() as $item) {
+            $instruction = $item['payload'];
+            if (!$instruction instanceof JavaScriptModuleInstruction
+                || $instruction->getName() !== '@typo3/redirects/event-handler.js'
+            ) {
+                continue;
+            }
+            foreach ($instruction->getItems() as $instructionItem) {
+                if (($instructionItem['args'][0] ?? null) === 'typo3:redirects:slugChanged') {
+                    $notifications[] = $instructionItem['args'][1];
+                }
+            }
+        }
+        return $notifications;
     }
 
     #[Test]

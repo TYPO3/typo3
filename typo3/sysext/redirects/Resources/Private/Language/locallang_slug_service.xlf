@@ -6,14 +6,23 @@
       <trans-unit id="notification.slug_and_redirects.title">
         <source>Slugs updated and redirects created</source>
       </trans-unit>
-      <trans-unit id="notification.slug_and_redirects.message">
-        <source>Because you renamed a slug, the slugs of all sub-pages were updated and redirects were created for you automatically.</source>
-      </trans-unit>
       <trans-unit id="notification.slug_only.title">
         <source>Slugs updated</source>
       </trans-unit>
-      <trans-unit id="notification.slug_only.message">
-        <source>Because you renamed a slug, the slugs of all sub-pages were updated for you automatically.</source>
+      <trans-unit id="notification.page">
+        <source>"{title}" ({oldSlug} to {newSlug})</source>
+      </trans-unit>
+      <trans-unit id="notification.message.changed_pages">
+        <source>{count, plural, one {You changed the slug of {pages}.} other {You changed the slugs of {pages}.}}</source>
+      </trans-unit>
+      <trans-unit id="notification.message.changed_pages_and_more">
+        <source>You changed the slugs of {pages} and {count, plural, one {# more page} other {# more pages}}.</source>
+      </trans-unit>
+      <trans-unit id="notification.message.updated_sub_pages">
+        <source>{count, plural, one {# sub-page was updated automatically.} other {# sub-pages were updated automatically.}}</source>
+      </trans-unit>
+      <trans-unit id="notification.message.created_redirects">
+        <source>{count, plural, one {# redirect was created automatically.} other {# redirects were created automatically.}}</source>
       </trans-unit>
       <trans-unit id="notification.redirects.button.revert_update">
         <source>Revert update</source>
