@@ -1,0 +1,18 @@
+{
+	"name": "typo3tests/tt-content-tablenames",
+	"type": "typo3-cms-extension",
+	"description": "Adds the columns tablenames and fieldname to tt_content and a uid column to sys_category_record_mm",
+	"version": "1.0.0",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "15.0.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_tt_content_tablenames",
+			"Package": {
+				"providesPackages": []
+			}
+		}
+	}
+}

@@ -14,9 +14,9 @@ tt_content.menu_categorized_content {
             pidInList.data = leveluid : 0
             recursive = 99
             join.data = field:selected_categories
-            join.wrap = {#sys_category_record_mm} ON uid = {#sys_category_record_mm}.{#uid_foreign} AND {#sys_category_record_mm}.{#uid_local} IN(|)
+            join.wrap = {#sys_category_record_mm} ON {#tt_content}.{#uid} = {#sys_category_record_mm}.{#uid_foreign} AND {#sys_category_record_mm}.{#uid_local} IN(|)
             where.data = field:category_field
-            where.wrap = {#tablenames}='tt_content' and {#fieldname}='|'
+            where.wrap = {#sys_category_record_mm}.{#tablenames}='tt_content' and {#sys_category_record_mm}.{#fieldname}='|'
             orderBy = tt_content.sorting
             as = content
             dataProcessing {
