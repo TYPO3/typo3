@@ -20,17 +20,13 @@ import type { DragTooltipMetadata } from '@typo3/backend/drag-tooltip';
  */
 export default class DragDropUtility {
   public static isCopyModifierFromEvent(event: DragEvent): boolean {
-    if (event.dataTransfer.dropEffect === 'copy') {
-      return true;
-    }
-
-    if (event.dataTransfer.dropEffect === 'move') {
-      return false;
-    }
-
-    return navigator.userAgent.includes('Mac')
+    // Browsers may preset dropEffect to "move" regardless of pressed modifiers
+    // (e.g. Chrome on Windows), therefore the modifier takes precedence.
+    const isCopyModifierPressed = navigator.userAgent.includes('Mac')
       ? (event.dataTransfer.effectAllowed === 'copy' || event.altKey)
       : event.ctrlKey;
+
+    return isCopyModifierPressed || event.dataTransfer.dropEffect === 'copy';
   }
 
   public static updateEventAndTooltipToReflectCopyMoveIntention(event: DragEvent): void {
