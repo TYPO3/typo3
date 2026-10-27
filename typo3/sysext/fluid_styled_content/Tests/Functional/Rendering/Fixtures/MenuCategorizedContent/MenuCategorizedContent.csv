@@ -1,0 +1,21 @@
+"pages"
+,"uid","pid","title","slug","is_siteroot"
+,1,0,"Root","/",1
+,2,1,"Categorized","/categorized",0
+"sys_category"
+,"uid","pid","title"
+,1,1,"Category 1"
+,2,1,"Category 2"
+"tt_content"
+,"uid","pid","sorting","CType","header","selected_categories","category_field","categories","tablenames","fieldname"
+,1,1,256,"menu_categorized_content","Menu",1,"categories",0,,
+,2,2,256,"text","Element in selected category",,,1,"pages","media"
+,3,2,512,"text","Element in other category",,,1,,
+,4,2,768,"text","Element related via other field",,,1,"tt_content","categories"
+,5,2,1024,"text","Element related via other table",,,1,"tt_content","categories"
+"sys_category_record_mm"
+,"uid_local","uid_foreign","tablenames","fieldname","sorting","sorting_foreign"
+,1,2,"tt_content","categories",1,1
+,2,3,"tt_content","categories",1,1
+,1,4,"tt_content","other_field",2,1
+,1,5,"pages","categories",3,1
