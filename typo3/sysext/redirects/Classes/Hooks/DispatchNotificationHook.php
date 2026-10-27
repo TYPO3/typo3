@@ -35,13 +35,16 @@ final class DispatchNotificationHook
     public function dispatchNotification(&$params)
     {
         $javaScriptRenderer = GeneralUtility::makeInstance(PageRenderer::class)->getJavaScriptRenderer();
-        $javaScriptRenderer->addJavaScriptModuleInstruction(
-            // @todo refactor to directly invoke the redirects slugChanged() method
-            // instead of dispatching an event that is only catched by the event dispatcher itself
-            JavaScriptModuleInstruction::create('@typo3/redirects/event-handler.js')
-                ->addFlags(JavaScriptModuleInstruction::FLAG_USE_TOP_WINDOW)
-                ->invoke('dispatchCustomEvent', 'typo3:redirects:slugChanged', $params['parameter'])
-        );
+        // @todo refactor to directly invoke the redirects slugChanged() method
+        // instead of dispatching an event that is only catched by the event dispatcher itself
+        $instruction = JavaScriptModuleInstruction::create('@typo3/redirects/event-handler.js')
+            ->addFlags(JavaScriptModuleInstruction::FLAG_USE_TOP_WINDOW);
+        // Fall back to a single notification, which might still be stored in the session
+        $notifications = $params['parameter']['notifications'] ?? [$params['parameter']];
+        foreach ($notifications as $notification) {
+            $instruction->invoke('dispatchCustomEvent', 'typo3:redirects:slugChanged', $notification);
+        }
+        $javaScriptRenderer->addJavaScriptModuleInstruction($instruction);
         // not modifying `$params`, since instruction is added to global `PageRenderer`
     }
 }

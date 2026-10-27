@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -62,6 +63,13 @@ class SlugService
     protected bool $autoCreateRedirects = false;
     protected int $redirectTTL = 0;
     protected int $httpStatusCode = 307;
+    protected int $updatedSubPages = 0;
+    protected int $createdRedirects = 0;
+
+    /**
+     * Notifications of all pages whose slug changed within the current request
+     */
+    protected array $notifications = [];
 
     public function __construct(
         private readonly Context $context,
@@ -81,6 +89,8 @@ class SlugService
         $this->initializeSettings($changeItem->getSite());
         if ($this->autoUpdateSlugs || $this->autoCreateRedirects) {
             $sourceHosts = [];
+            $this->updatedSubPages = 0;
+            $this->createdRedirects = 0;
             $this->createCorrelationIds($pageId, $correlationId);
             if ($this->autoCreateRedirects) {
                 $sourceHosts = $this->createRedirects(
@@ -92,7 +102,7 @@ class SlugService
             if ($this->autoUpdateSlugs) {
                 $sourceHosts += $this->checkSubPages($changeItem->getChanged(), $changeItem);
             }
-            $this->sendNotification();
+            $this->sendNotification($changeItem);
             // rebuild caches only for matched source hosts
             if ($sourceHosts !== []) {
                 foreach (array_unique($sourceHosts) as $sourceHost) {
@@ -203,6 +213,7 @@ class SlugService
                     redirectRecord: $record,
                 )
             );
+            $this->createdRedirects++;
             if (!in_array($source->getHost(), $sourceHosts)) {
                 $sourceHosts[] = $source->getHost();
             }
@@ -229,6 +240,9 @@ class SlugService
                 continue;
             }
             $updatedPageRecord = $this->updateSlug($subPageRecord, $parentChangeItem);
+            if ($updatedPageRecord !== null) {
+                $this->updatedSubPages++;
+            }
             if ($updatedPageRecord !== null && $this->autoCreateRedirects) {
                 $subPageId = (int)$subPageRecord['sys_language_uid'] === 0 ? (int)$subPageRecord['uid'] : (int)$subPageRecord['l10n_parent'];
                 $changeItem = $changeItem->withChanged($updatedPageRecord);
@@ -332,8 +346,18 @@ class SlugService
         $this->enabledHook();
     }
 
-    protected function sendNotification(): void
+    protected function sendNotification(SlugRedirectChangeItem $changeItem): void
     {
+        // The service is shared, a long-running CLI process would collect the notifications of every
+        // changed page, without ever showing them
+        if (Environment::isCli()) {
+            return;
+        }
+        // Nothing to report or revert besides the slug change the user just made
+        if ($this->updatedSubPages === 0 && $this->createdRedirects === 0) {
+            return;
+        }
+        $changedPage = $changeItem->getChanged();
         $data = [
             'componentName' => 'redirects',
             'eventName' => 'slugChanged',
@@ -344,8 +368,18 @@ class SlugService
             ],
             'autoUpdateSlugs' => (bool)$this->autoUpdateSlugs,
             'autoCreateRedirects' => (bool)$this->autoCreateRedirects,
+            'page' => [
+                'uid' => (int)$changedPage['uid'],
+                'title' => (string)$changedPage['title'],
+                'oldSlug' => (string)$changeItem->getOriginal()['slug'],
+                'newSlug' => (string)$changedPage['slug'],
+            ],
+            'updatedSubPages' => $this->updatedSubPages,
+            'createdRedirects' => $this->createdRedirects,
         ];
-        BackendUtility::setUpdateSignal('redirects:slugChanged', $data);
+        // Update signals are stored by their name, the signal therefore carries all notifications of this request
+        $this->notifications[] = $data;
+        BackendUtility::setUpdateSignal('redirects:slugChanged', ['notifications' => $this->notifications]);
     }
 
     protected function getQueryBuilderForPages(): QueryBuilder
