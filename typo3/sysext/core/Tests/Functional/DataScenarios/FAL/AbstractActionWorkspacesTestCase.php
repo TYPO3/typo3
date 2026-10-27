@@ -162,6 +162,14 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         $this->actionService->modifyRecord(self::TABLE_FileMetadata, self::VALUE_FileMetaIdFirst, ['title' => 'Modified by editor']);
     }
 
+    public function localizeFileMetadataAsNonAdminEditor(): void
+    {
+        $this->backendUser = $this->setUpBackendUser(11);
+        $this->setWorkspaceId(static::VALUE_WorkspaceId);
+        $newTableIds = $this->actionService->localizeRecord(self::TABLE_FileMetadata, self::VALUE_FileMetaIdFirst, self::VALUE_LanguageId);
+        $this->recordIds['localizedFileMetadataId'] = $newTableIds[self::TABLE_FileMetadata][self::VALUE_FileMetaIdFirst];
+    }
+
     public function modifyContentLocalizeAddDefaultLangRelationSynchronize(): void
     {
         // Localize page so we can localize content elements later.
