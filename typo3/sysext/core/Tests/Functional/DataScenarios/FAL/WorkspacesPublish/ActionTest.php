@@ -39,6 +39,17 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function localizeFileMetadataAsNonAdminEditor(): void
+    {
+        parent::localizeFileMetadataAsNonAdminEditor();
+        $this->actionService->publishRecord(self::TABLE_FileMetadata, $this->recordIds['localizedFileMetadataId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeFileMetadataAsNonAdminEditor.csv');
+        // @todo: Publishing the new localization does not add it to the live reference index of the
+        //        parent sys_file (field "metadata"), for admins as well. Rebuild it until that is fixed.
+        $this->get(ReferenceIndex::class)->updateIndex(false);
+    }
+
+    #[Test]
     public function modifyContent(): void
     {
         parent::modifyContent();

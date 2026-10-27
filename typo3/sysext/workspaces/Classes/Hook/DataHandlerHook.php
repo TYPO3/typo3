@@ -343,7 +343,7 @@ class DataHandlerHook
         // Versioned records which contents will be moved into $curVersion
         $isNewRecord = VersionState::tryFrom($curVersion['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER;
         if ($isNewRecord) {
-            if (!$dataHandler->hasPageContextPermission('pages', Permission::PAGE_SHOW, $pageRecord)) {
+            if (!$dataHandler->hasPageContextPermission($table, Permission::PAGE_SHOW, $pageRecord)) {
                 $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::USER_ERROR, 'You cannot publish a record you do not have edit and show permissions for');
                 return;
             }
