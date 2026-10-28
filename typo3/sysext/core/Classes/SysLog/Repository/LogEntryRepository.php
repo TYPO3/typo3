@@ -150,7 +150,7 @@ final readonly class LogEntryRepository
                 'userid' => $userId,
                 'type' => $type,
                 'channel' => Type::toChannel($type),
-                'level' => Type::toLevel($type),
+                'level' => Type::toLevel($type, $error),
                 'action' => $action,
                 'error' => $error,
                 'details' => $details,

@@ -444,7 +444,7 @@ readonly class PasswordReset
                     'userid' => $userId,
                     'type' => SystemLogType::LOGIN,
                     'channel' => SystemLogType::toChannel(SystemLogType::LOGIN),
-                    'level' => SystemLogType::toLevel(SystemLogType::LOGIN),
+                    'level' => SystemLogType::toLevel(SystemLogType::LOGIN, $error),
                     'action' => $action,
                     'error' => $error,
                     'details' => $message,
