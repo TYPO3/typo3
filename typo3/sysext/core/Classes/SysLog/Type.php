@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\SysLog;
 
 use Psr\Log\LogLevel;
+use TYPO3\CMS\Core\Log\LogLevel as Typo3LogLevel;
 
 /**
  * A class defining possible logging types.
@@ -57,6 +58,13 @@ class Type
         self::LOGIN => LogLevel::INFO,
     ];
 
+    private static array $errorLevelMap = [
+        Error::USER_ERROR => LogLevel::WARNING,
+        Error::SYSTEM_ERROR => LogLevel::ERROR,
+        Error::SECURITY_NOTICE => LogLevel::NOTICE,
+        Error::WARNING => LogLevel::WARNING,
+    ];
+
     /**
      * @internal
      */
@@ -78,8 +86,16 @@ class Type
         return self::$channelMap[$type] ?? 'default';
     }
 
-    public static function toLevel(int $type): string
+    /**
+     * @param int $error see \TYPO3\CMS\Core\SysLog\Error, raises the level of the type if more severe
+     */
+    public static function toLevel(int $type, int $error = Error::MESSAGE): string
     {
-        return self::$levelMap[$type] ?? LogLevel::INFO;
+        $level = self::$levelMap[$type] ?? LogLevel::INFO;
+        $errorLevel = self::$errorLevelMap[$error] ?? null;
+        if ($errorLevel !== null && Typo3LogLevel::normalizeLevel($errorLevel) < Typo3LogLevel::normalizeLevel($level)) {
+            return $errorLevel;
+        }
+        return $level;
     }
 }
