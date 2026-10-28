@@ -1,0 +1,4 @@
+"tx_testinlinetwoparents_member"
+,"uid","pid","title","deleted","sys_language_uid","l10n_parent","l10n_source","content_uid","group_uid"
+,1,1,"Member #1",0,0,0,0,21,1
+,2,1,"[Translate to Dansk:] Member #1",0,1,1,1,22,1

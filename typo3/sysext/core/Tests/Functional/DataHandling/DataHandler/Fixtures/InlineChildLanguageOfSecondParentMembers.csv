@@ -1,0 +1,11 @@
+"tt_content"
+,"uid","pid","sorting","header","deleted","sys_language_uid","l18n_parent","l10n_source","tx_testinlinetwoparents_members"
+,21,1,512,"Content with member",0,0,0,0,1
+,22,1,768,"[Translate to Dansk:] Content with member",0,1,21,21,1
+"tx_testinlinetwoparents_group"
+,"uid","pid","title","deleted","sys_language_uid","l10n_parent","l10n_source","members"
+,61,1,"Group #1",0,0,0,0,2
+"tx_testinlinetwoparents_member"
+,"uid","pid","sorting","title","deleted","sys_language_uid","l10n_parent","l10n_source","content_uid","group_uid"
+,51,1,256,"Member #1",0,0,0,0,21,61
+,52,1,512,"[Translate to Dansk:] Member #1",0,1,51,51,22,61

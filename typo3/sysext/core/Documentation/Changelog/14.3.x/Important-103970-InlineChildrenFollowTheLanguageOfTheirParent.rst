@@ -61,6 +61,14 @@ This applies to inline relations using :php:`'foreign_field'` as well as to
 inline relations stored as comma-separated list in the parent field, and to
 all fields of type :php:`'file'`.
 
+A child table can be used in inline relations of several parent tables, each
+with its own :php:`'foreign_field'`. When such a parent pointer is synchronized
+from the default language record, by :php:`'l10n_mode' => 'exclude'` or by
+:php:`'allowLanguageSynchronization'`, every translation of the child points
+to the parent of its default language record. A translated child is therefore
+not aligned to the language of a parent it is only related to through such a
+synchronized pointer. It keeps the language of the parent it belongs to.
+
 Permissions and workspaces
 --------------------------
 
