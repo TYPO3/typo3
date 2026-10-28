@@ -8877,7 +8877,7 @@ class DataHandler
         foreach (static::$recordsToClearCacheFor as $table => $uids) {
             foreach (array_unique($uids) as $uid) {
                 if ($uid <= 0 || !$this->tcaSchemaFactory->has($table)) {
-                    return;
+                    continue;
                 }
                 // For move commands we may get more then 1 parent.
                 $pageUids = $this->getOriginalParentOfRecord($table, $uid);
