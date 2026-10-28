@@ -1,0 +1,7 @@
+"tx_testinlinetwoparents_member"
+,"uid","pid","title","deleted","sys_language_uid","l10n_source","content_uid","group_uid","t3ver_wsid","t3ver_oid","t3ver_state"
+,51,1,"Member #1",0,0,0,21,61,0,0,0
+,52,1,"[Translate to Dansk:] Member #1",0,1,51,22,61,0,0,0
+,53,1,"Member #1",0,0,0,21,61,1,51,0
+,54,1,"[Translate to Dansk:] Member #1",0,1,51,22,61,1,52,0
+,55,1,"Member #2",0,0,0,0,61,1,0,1

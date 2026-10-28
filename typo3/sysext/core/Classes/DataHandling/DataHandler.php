@@ -51,6 +51,7 @@ use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\Event\BeforeRemoveNonCopyableFieldsEvent;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\DataHandling\Localization\DataMapProcessor;
+use TYPO3\CMS\Core\DataHandling\Localization\State;
 use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
@@ -9550,6 +9551,12 @@ class DataHandler
                     if ($foreignLanguageCapability->hasTranslationSourceField()) {
                         $foreignTranslationFields[] = $foreignLanguageCapability->getTranslationSourceField()->getName();
                     }
+                    $foreignField = (string)($configuration['foreign_field'] ?? '');
+                    $parentPointerField = $foreignField !== '' && $foreignSchema->hasField($foreignField) ? $foreignSchema->getField($foreignField) : null;
+                    $childFields = [$foreignLanguageField, ...$foreignTranslationFields];
+                    if (!empty($parentPointerField?->getConfiguration()['behaviour']['allowLanguageSynchronization'])) {
+                        $childFields[] = 'l10n_state';
+                    }
                     foreach ($parentLanguages as $id => $language) {
                         $itemList = '';
                         if (empty($configuration['foreign_field'])) {
@@ -9558,10 +9565,11 @@ class DataHandler
                         $relationHandler = $this->createRelationHandlerInstance();
                         $relationHandler->initializeForField($table, $field, $id, $itemList);
                         foreach ($relationHandler->itemArray as $item) {
-                            $child = $this->getRecordToWriteInCurrentWorkspace($foreignTable, (int)$item['id'], [$foreignLanguageField, ...$foreignTranslationFields]);
+                            $child = $this->getRecordToWriteInCurrentWorkspace($foreignTable, (int)$item['id'], $childFields);
                             if ($child === null
                                 || isset($alignedRecords[$foreignTable . ':' . $child['uid']][$language])
                                 || (int)$child[$foreignLanguageField] === $language
+                                || $this->isParentPointerOfTranslationSynchronized($foreignTable, $parentPointerField, $child, $foreignTranslationFields[0])
                             ) {
                                 continue;
                             }
@@ -9582,6 +9590,26 @@ class DataHandler
                 }
             }
         }
+    }
+
+    /**
+     * A translated child whose parent pointer is synchronized from its default language
+     * record points to the parent of that record. That parent lists the child, but it
+     * does not own it, so its language must not be applied to the child.
+     */
+    private function isParentPointerOfTranslationSynchronized(string $table, ?FieldTypeInterface $parentPointerField, array $child, string $transOrigPointerField): bool
+    {
+        if ($parentPointerField === null || (int)$child[$transOrigPointerField] === 0) {
+            return false;
+        }
+        if ($parentPointerField->getTranslationBehaviour() === FieldTranslationBehaviour::Excluded) {
+            return true;
+        }
+        if (empty($parentPointerField->getConfiguration()['behaviour']['allowLanguageSynchronization'])) {
+            return false;
+        }
+        $state = State::fromJSON($table, $child['l10n_state'] ?? null);
+        return $state !== null && !$state->isCustomState($parentPointerField->getName());
     }
 
     /**
