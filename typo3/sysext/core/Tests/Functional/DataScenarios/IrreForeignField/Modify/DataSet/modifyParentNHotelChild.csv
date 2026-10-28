@@ -46,3 +46,6 @@
 ,"9fcc5a8d98b0e590ed343caddb550d4e","tx_testirreforeignfield_offer",6,"prices",0,0,2147483647,0,,,,1,0,"tx_testirreforeignfield_price",11,,0,0,2147483647,0,0,
 ,"8d807bac697427ba7fb0b2f0e1f12493","tx_testirreforeignfield_offer",7,"prices",0,0,2147483647,0,,,,0,0,"tx_testirreforeignfield_price",12,,0,0,2147483647,0,0,
 ,"15dfcd32a2cd2a07f68a7a87902bee5a","tx_testirreforeignfield_offer",8,"prices",0,0,2147483647,0,,,,0,0,"tx_testirreforeignfield_price",13,,0,0,2147483647,0,0,
+"sys_history"
+,"actiontype","tablename","recuid","history_data"
+,2,"tx_testirreforeignfield_hotel",4,"{""oldRecord"":{""title"":""Hotel #2""},""newRecord"":{""title"":""Testing #1""}}"

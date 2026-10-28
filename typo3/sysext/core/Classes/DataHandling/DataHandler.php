@@ -8540,22 +8540,41 @@ class DataHandler
                 $columnRecordTypes[$columnName] = 'json';
             }
         }
+        $schema = $this->tcaSchemaFactory->get($table);
+        // A record without an original language stores a diff source of empty strings. It is written to the
+        // record, but not to the history, as it holds no previous value of the original language record.
+        $placeholderDiffSourceField = null;
+        if ($schema->isLanguageAware()) {
+            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+            if ($languageCapability->hasDiffSourceField()
+                && (int)($currentRecord[$languageCapability->getLanguageField()->getName()] ?? 0) <= 0
+            ) {
+                $placeholderDiffSourceField = $languageCapability->getDiffSourceField()->getName();
+            }
+        }
         // Unset the fields which are similar:
         foreach ($fieldArray as $col => $val) {
             $isManyToManyField = false;
             $isNullField = false;
 
-            if ($this->tcaSchemaFactory->get($table)->hasField($col)) {
-                $fieldType = $this->tcaSchemaFactory->get($table)->getField($col);
+            if ($schema->hasField($col)) {
+                $fieldType = $schema->getField($col);
                 $isManyToManyField = $this->isManyToManyField($fieldType);
                 $isNullField = $fieldType->isNullable();
             }
 
-            // Unset fields if stored and submitted values are equal - except the current field holds MM relations.
-            // In general this avoids to store superfluous data which also will be visualized in the editing history.
-            if (!$isManyToManyField && $this->isSubmittedValueEqualToStoredValue($val, $currentRecord[$col], $columnRecordTypes[$col], $isNullField)) {
+            // Unset fields if stored and submitted values are equal. This avoids to store superfluous data
+            // which also will be visualized in the editing history. The column of an MM relation only holds
+            // the number of relations, so it is only unset if the relations themselves did not change either.
+            $mmHistory = $this->mmHistoryRecords[$table . ':' . $id] ?? [];
+            $isUnchangedManyToManyField = $isManyToManyField
+                && isset($mmHistory['oldRecord'][$col], $mmHistory['newRecord'][$col])
+                && (string)$mmHistory['oldRecord'][$col] === (string)$mmHistory['newRecord'][$col];
+            if ((!$isManyToManyField || $isUnchangedManyToManyField)
+                && $this->isSubmittedValueEqualToStoredValue($val, $currentRecord[$col], $columnRecordTypes[$col], $isNullField)
+            ) {
                 unset($fieldArray[$col]);
-            } else {
+            } elseif ($col !== $placeholderDiffSourceField) {
                 if (!isset($this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$col])) {
                     $this->historyRecords[$table . ':' . $id]['oldRecord'][$col] = $currentRecord[$col];
                 } elseif ($this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$col] != $this->mmHistoryRecords[$table . ':' . $id]['newRecord'][$col]) {

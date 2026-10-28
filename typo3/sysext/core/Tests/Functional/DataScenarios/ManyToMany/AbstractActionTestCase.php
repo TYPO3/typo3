@@ -210,6 +210,26 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->modifyRecord(self::TABLE_TEST_MM, self::VALUE_TestMMIdWithInlineChildren, ['title' => 'Surfing #6']);
     }
 
+    public function modifyContentWithUnchangedGroupMM1Relation(): void
+    {
+        $this->modifyHeaderOfContentWithUnchangedGroupMM1Relation();
+    }
+
+    public function modifyContentTwiceWithUnchangedGroupMM1Relation(): void
+    {
+        $this->modifyHeaderOfContentWithUnchangedGroupMM1Relation();
+        $this->modifyHeaderOfContentWithUnchangedGroupMM1Relation();
+    }
+
+    private function modifyHeaderOfContentWithUnchangedGroupMM1Relation(): void
+    {
+        $this->actionService->modifyRecord(
+            self::TABLE_Content,
+            self::VALUE_ContentIdFirst,
+            ['header' => 'Surfing #1', self::FIELD_GROUP_MM_1_FOREIGN => self::VALUE_TestMMIdFirst . ',' . self::VALUE_TestMMIdSecond]
+        );
+    }
+
     public function modifyTestMMAndContent(): void
     {
         $this->actionService->modifyRecord(self::TABLE_TEST_MM, self::VALUE_TestMMIdFirst, ['title' => 'Surfing #1']);
