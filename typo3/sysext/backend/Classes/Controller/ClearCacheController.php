@@ -19,26 +19,33 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushDemand;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlusher;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushingContext;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushLogger;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Handles clearing caches from the clear cache toolbar item and the records module.
  *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
+#[AsController]
 readonly class ClearCacheController
 {
+    public function __construct(
+        private CacheFlusher $cacheFlusher,
+        private CacheFlushLogger $cacheFlushLogger,
+    ) {}
+
     public function flushCacheGroupPagesAction(ServerRequestInterface $request): ResponseInterface
     {
-        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->start([], []);
-        $dataHandler->clear_cacheCmd('pages');
+        $this->flush(CacheFlushDemand::forCommand('pages'));
 
         $languageService = $this->getLanguageService();
         return new JsonResponse([
@@ -50,9 +57,7 @@ readonly class ClearCacheController
 
     public function flushCacheGroupAllAction(ServerRequestInterface $request): ResponseInterface
     {
-        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->start([], []);
-        $dataHandler->clear_cacheCmd('all');
+        $this->flush(CacheFlushDemand::forCommand('all'));
 
         $languageService = $this->getLanguageService();
         return new JsonResponse([
@@ -70,9 +75,7 @@ readonly class ClearCacheController
         $permissionClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
         $pageRow = BackendUtility::readPageAccess($pageUid, $permissionClause);
         if ($pageUid !== 0 && $this->getBackendUser()->doesUserHaveAccess($pageRow, Permission::PAGE_SHOW)) {
-            $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-            $dataHandler->start([], []);
-            $dataHandler->clear_cacheCmd($pageUid);
+            $this->flush(CacheFlushDemand::forCommand($pageUid));
             return new JsonResponse([
                 'success' => true,
                 'title' => $languageService->sL('core.cache:notification.page.success.title'),
@@ -84,6 +87,13 @@ readonly class ClearCacheController
             'title' => $languageService->sL('core.cache:notification.page.error.title'),
             'message' => $languageService->sL('core.cache:notification.page.error.message'),
         ]);
+    }
+
+    private function flush(CacheFlushDemand $demand): void
+    {
+        $backendUser = $this->getBackendUser();
+        $this->cacheFlushLogger->logCommands($backendUser, $demand->commands);
+        $this->cacheFlusher->flush($demand, CacheFlushingContext::fromBackendUser($backendUser));
     }
 
     protected function getBackendUser(): BackendUserAuthentication

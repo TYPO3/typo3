@@ -15,7 +15,3 @@ services:
 
   TYPO3\CMS\IndexedSearch\Hook\RecordIndexingDataHandlerHook:
     public: true
-
-  TYPO3\CMS\IndexedSearch\Hook\DeleteIndexedData:
-    # Public: the class is called as a DataHandler hook, which is resolved through GeneralUtility::makeInstance().
-    public: true

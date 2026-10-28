@@ -1,0 +1,25 @@
+"pages"
+,"uid","pid","sorting","title","sys_language_uid","l10n_parent","deleted","TSconfig"
+,1,0,128,"Root",0,0,0,
+,2,1,128,"Section",0,0,0,
+,3,2,128,"Page A",0,0,0,
+,4,2,256,"Page B",0,0,0,
+,5,3,128,"Child of A",0,0,0,
+,6,1,256,"Cache flushing disabled",0,0,0,"TCEMAIN.clearCache_disable = 1"
+,7,2,128,"Page A translated",1,3,0,
+,8,1,512,"Cache commands",0,0,0,"TCEMAIN.clearCacheCmd = 6, cacheTag:news, pages"
+,9,1,768,"Cache options",0,0,0,"TCEMAIN.clearCache_pageGrandParent = 1
+TCEMAIN.clearCache_pageSiblingChildren = 1"
+,10,9,128,"Option child A",0,0,0,
+,11,9,256,"Option child B",0,0,0,
+,12,10,128,"Option grandchild",0,0,0,
+"tt_content"
+,"uid","pid","header","sys_language_uid","t3ver_wsid","t3ver_oid","t3ver_state","CType"
+,1,3,"Content on page A",0,0,0,0,"header"
+,2,3,"Workspace version of content on page A",0,1,1,0,"header"
+,3,6,"Content on page with disabled cache flushing",0,0,0,0,"header"
+,4,8,"Content on page with cache commands",0,0,0,0,"header"
+,5,12,"Content on option grandchild",0,0,0,0,"header"
+"sys_category"
+,"uid","pid","title"
+,1,0,"Category on root level"

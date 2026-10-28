@@ -510,4 +510,47 @@ final class CacheManagerTest extends UnitTestCase
             ],
         ]);
     }
+
+    #[Test]
+    public function flushCachesWithoutGroupOnlyFlushesCachesThatAreNotPartOfAnyGroup(): void
+    {
+        $manager = new CacheManager();
+        $cacheInGroup = $this->getMockBuilder(AbstractFrontend::class)
+            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $cacheInGroup->method('getIdentifier')->willReturn('cacheInGroup');
+        $cacheInGroup->expects($this->never())->method('flush');
+        $manager->registerCache($cacheInGroup, ['pages']);
+        $cacheWithoutGroup = $this->getMockBuilder(AbstractFrontend::class)
+            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $cacheWithoutGroup->method('getIdentifier')->willReturn('cacheWithoutGroup');
+        $cacheWithoutGroup->expects($this->once())->method('flush');
+        $manager->registerCache($cacheWithoutGroup);
+
+        $manager->flushCachesWithoutGroup();
+    }
+
+    #[Test]
+    public function getCacheGroupsContainsDefaultGroupOfConfiguredCachesWithoutGroups(): void
+    {
+        $manager = new CacheManager();
+        $manager->setCacheConfigurations([
+            'cache_with_groups' => [
+                'backend' => BackendFixture::class,
+                'groups' => ['pages'],
+            ],
+            'cache_without_groups' => [
+                'backend' => BackendFixture::class,
+            ],
+            'cache_with_empty_groups' => [
+                'backend' => BackendFixture::class,
+                'groups' => [],
+            ],
+        ]);
+
+        self::assertSame(['pages', 'all'], $manager->getCacheGroups());
+    }
 }

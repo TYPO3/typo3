@@ -1,0 +1,16 @@
+"pages"
+,"uid","pid","title"
+,1,0,"Root"
+,2,1,"Page with changed content"
+,3,0,"Unrelated page"
+"tt_content"
+,"uid","pid","header","CType"
+,1,2,"Content","header"
+"index_phash"
+,"phash","phash_grouping","contentHash","freeIndexUid","data_page_id"
+,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",0,2
+,"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",0,3
+"index_section"
+,"uniqid","phash","phash_t3","page_id"
+,1,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",2
+,2,"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",3

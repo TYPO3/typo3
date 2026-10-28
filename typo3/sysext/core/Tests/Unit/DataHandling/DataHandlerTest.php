@@ -27,7 +27,8 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Uid\Uuid;
 use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlusher;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushLogger;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
@@ -58,7 +59,6 @@ use TYPO3\CMS\Core\Schema\RelationMapBuilder;
 use TYPO3\CMS\Core\Schema\TcaSchemaBuilder;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Security\PermissionSet\PrincipalRole;
-use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\SysLog\Action;
 use TYPO3\CMS\Core\SysLog\Error;
@@ -100,7 +100,6 @@ final class DataHandlerTest extends UnitTestCase
         $this->passwordHashFactory = $this->createMock(PasswordHashFactory::class);
         $constructorArguments = [
             new NoopEventDispatcher(),
-            self::createStub(CacheManager::class),
             self::createStub(FrontendInterface::class),
             $connectionPoolMock,
             self::createStub(LoggerInterface::class),
@@ -112,7 +111,8 @@ final class DataHandlerTest extends UnitTestCase
             $this->passwordHashFactory,
             new Random(),
             new TypoLinkCodecService(new NoopEventDispatcher()),
-            new OpcodeCacheService(),
+            self::createStub(CacheFlusher::class),
+            self::createStub(CacheFlushLogger::class),
             self::createStub(FlashMessageService::class),
             new LogEntryRepository($connectionPoolMock),
             self::createStub(LocalizationRepository::class),
@@ -288,7 +288,6 @@ final class DataHandlerTest extends UnitTestCase
         $passwordHashFactory->expects($this->once())->method('get')->with('myPassword', 'BE')->willThrowException(new InvalidPasswordHashException());
         $constructorArguments = [
             $eventDispatcher,
-            self::createStub(CacheManager::class),
             self::createStub(FrontendInterface::class),
             $connectionPoolStub,
             self::createStub(LoggerInterface::class),
@@ -300,7 +299,8 @@ final class DataHandlerTest extends UnitTestCase
             $passwordHashFactory,
             new Random(),
             new TypoLinkCodecService(new NoopEventDispatcher()),
-            new OpcodeCacheService(),
+            self::createStub(CacheFlusher::class),
+            self::createStub(CacheFlushLogger::class),
             self::createStub(FlashMessageService::class),
             new LogEntryRepository($connectionPoolStub),
             self::createStub(LocalizationRepository::class),
@@ -1307,7 +1307,6 @@ final class DataHandlerTest extends UnitTestCase
         $connectionPoolStub = self::createStub(ConnectionPool::class);
         $subject = new DataHandler(
             new NoopEventDispatcher(),
-            self::createStub(CacheManager::class),
             self::createStub(FrontendInterface::class),
             $connectionPoolStub,
             self::createStub(LoggerInterface::class),
@@ -1319,7 +1318,8 @@ final class DataHandlerTest extends UnitTestCase
             new PasswordHashFactory(),
             new Random(),
             new TypoLinkCodecService(new NoopEventDispatcher()),
-            new OpcodeCacheService(),
+            self::createStub(CacheFlusher::class),
+            self::createStub(CacheFlushLogger::class),
             self::createStub(FlashMessageService::class),
             new LogEntryRepository($connectionPoolStub),
             self::createStub(LocalizationRepository::class),
@@ -1346,7 +1346,6 @@ final class DataHandlerTest extends UnitTestCase
         $connectionPoolStub = self::createStub(ConnectionPool::class);
         $subject = new DataHandler(
             new NoopEventDispatcher(),
-            self::createStub(CacheManager::class),
             self::createStub(FrontendInterface::class),
             $connectionPoolStub,
             self::createStub(LoggerInterface::class),
@@ -1358,7 +1357,8 @@ final class DataHandlerTest extends UnitTestCase
             new PasswordHashFactory(),
             new Random(),
             new TypoLinkCodecService(new NoopEventDispatcher()),
-            new OpcodeCacheService(),
+            self::createStub(CacheFlusher::class),
+            self::createStub(CacheFlushLogger::class),
             self::createStub(FlashMessageService::class),
             new LogEntryRepository($connectionPoolStub),
             self::createStub(LocalizationRepository::class),
@@ -1782,7 +1782,6 @@ final class DataHandlerTest extends UnitTestCase
         $connectionPoolStub = self::createStub(ConnectionPool::class);
         $subject = new DataHandler(
             new NoopEventDispatcher(),
-            self::createStub(CacheManager::class),
             self::createStub(FrontendInterface::class),
             $connectionPoolStub,
             self::createStub(LoggerInterface::class),
@@ -1794,7 +1793,8 @@ final class DataHandlerTest extends UnitTestCase
             new PasswordHashFactory(),
             new Random(),
             new TypoLinkCodecService(new NoopEventDispatcher()),
-            new OpcodeCacheService(),
+            self::createStub(CacheFlusher::class),
+            self::createStub(CacheFlushLogger::class),
             self::createStub(FlashMessageService::class),
             new LogEntryRepository($connectionPoolStub),
             self::createStub(LocalizationRepository::class),

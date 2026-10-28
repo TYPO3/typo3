@@ -142,6 +142,23 @@ class CacheManager
     }
 
     /**
+     * Flushes the registered caches that are not part of any group, such as
+     * the runtime cache. Flushing all groups does not reach them.
+     *
+     * @internal
+     */
+    public function flushCachesWithoutGroup(): void
+    {
+        $this->createAllCaches();
+        $cacheIdentifiersInGroups = array_merge(...array_values($this->cacheGroups));
+        foreach ($this->caches as $cacheIdentifier => $cache) {
+            if (!in_array($cacheIdentifier, $cacheIdentifiersInGroups, true)) {
+                $cache->flush();
+            }
+        }
+    }
+
+    /**
      * Flushes all registered caches of a specific group
      *
      * @throws NoSuchCacheGroupException
@@ -233,7 +250,7 @@ class CacheManager
     {
         $groups = array_keys($this->cacheGroups);
         foreach ($this->cacheConfigurations as $config) {
-            foreach ($config['groups'] ?? [] as $group) {
+            foreach ($config['groups'] ?? $this->defaultCacheConfiguration['groups'] as $group) {
                 if (!in_array($group, $groups, true)) {
                     $groups[] = $group;
                 }

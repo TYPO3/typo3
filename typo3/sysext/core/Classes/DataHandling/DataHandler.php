@@ -19,7 +19,6 @@ use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\JsonType;
-use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -29,12 +28,14 @@ use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Exception\InvalidPageRecordException;
-use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushDemand;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlusher;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushingContext;
+use TYPO3\CMS\Core\Cache\Flush\CacheFlushLogger;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\Richtext;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Country\CountryFilter;
 use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
@@ -84,10 +85,8 @@ use TYPO3\CMS\Core\Schema\RelationshipType;
 use TYPO3\CMS\Core\Schema\Struct\SelectItemCollection;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
-use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\SysLog\Action\Cache as SystemLogCacheAction;
 use TYPO3\CMS\Core\SysLog\Action\Database as SystemLogDatabaseAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Repository\LogEntryRepository;
@@ -410,7 +409,6 @@ class DataHandler
 
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly CacheManager $cacheManager,
         #[Autowire(service: 'cache.runtime')]
         private readonly FrontendInterface $runtimeCache,
         private readonly ConnectionPool $connectionPool,
@@ -423,7 +421,8 @@ class DataHandler
         private readonly PasswordHashFactory $passwordHashFactory,
         private readonly Random $randomGenerator,
         private readonly TypoLinkCodecService $typoLinkCodecService,
-        private readonly OpcodeCacheService $opcodeCacheService,
+        private readonly CacheFlusher $cacheFlusher,
+        private readonly CacheFlushLogger $cacheFlushLogger,
         private readonly FlashMessageService $flashMessageService,
         private readonly LogEntryRepository $logEntryRepository,
         private readonly LocalizationRepository $localizationRepository,
@@ -8397,23 +8396,6 @@ class DataHandler
     }
 
     /**
-     * Gets UID of parent record. If record is deleted it will be looked up in
-     * an array built before the record was deleted
-     *
-     * @param string $table Table where record lives/lived
-     * @param int $uid Record UID
-     * @return int[] Parent UIDs
-     */
-    protected function getOriginalParentOfRecord($table, $uid)
-    {
-        if (isset(self::$recordPidsForDeletedRecords[$table][$uid])) {
-            return self::$recordPidsForDeletedRecords[$table][$uid];
-        }
-        $parentUid = (int)BackendUtility::getRealPageId($table, $uid);
-        return [$parentUid];
-    }
-
-    /**
      * Extract entries from TSconfig for a specific table. This will merge specific and default configuration together.
      *
      * @param string $table Table name
@@ -8867,195 +8849,26 @@ class DataHandler
     }
 
     /**
-     * Do the actual clear cache
+     * Flushes the caches of all records registered during this DataHandler run.
      */
     protected function processClearCacheQueue(): void
     {
-        $tagsToClear = [];
-        $clearCacheCommands = [];
-
+        $demand = CacheFlushDemand::create();
         foreach (static::$recordsToClearCacheFor as $table => $uids) {
             foreach (array_unique($uids) as $uid) {
-                if ($uid <= 0 || !$this->tcaSchemaFactory->has($table)) {
-                    continue;
-                }
-                // For move commands we may get more then 1 parent.
-                $pageUids = $this->getOriginalParentOfRecord($table, $uid);
-                foreach ($pageUids as $originalParent) {
-                    [$tagsToClearFromPrepare, $clearCacheCommandsFromPrepare]
-                        = $this->prepareCacheFlush($table, $uid, $originalParent);
-                    $tagsToClear = array_merge($tagsToClear, $tagsToClearFromPrepare);
-                    $clearCacheCommands = array_merge($clearCacheCommands, $clearCacheCommandsFromPrepare);
+                $originalPageIds = static::$recordPidsForDeletedRecords[$table][$uid] ?? [null];
+                foreach ($originalPageIds as $originalPageId) {
+                    $demand = $demand->withRecord($table, $uid, $originalPageId);
                 }
             }
         }
-
-        $this->cacheManager->flushCachesInGroupByTags('pages', array_keys($tagsToClear));
-
-        // Filter duplicate cache commands from cacheQueue
-        $clearCacheCommands = array_unique($clearCacheCommands);
-        // Execute collected clear cache commands from page TSconfig
-        foreach ($clearCacheCommands as $command) {
-            $this->clear_cacheCmd($command);
-        }
-
-        // Reset the cache clearing array
         static::$recordsToClearCacheFor = [];
-
-        // Reset the original pid array
         static::$recordPidsForDeletedRecords = [];
-    }
-
-    /**
-     * Prepare the cache clearing
-     *
-     * @param string $table Table name of record that needs to be cleared
-     * @param int $uid UID of record for which the cache needs to be cleared
-     * @param int $pid Original pid of the page of the record which the cache needs to be cleared
-     * @return array Array with tagsToClear and clearCacheCommands
-     */
-    protected function prepareCacheFlush(string $table, int $uid, $pid): array
-    {
-        $tagsToClear = [];
-        $clearCacheCommands = [];
-        $pageUid = 0;
-        $clearCacheEnabled = true;
-        // Get Page TSconfig relevant:
-        $TSConfig = BackendUtility::getPagesTSconfig($pid)['TCEMAIN.'] ?? [];
-
-        if (!empty($TSConfig['clearCache_disable'])) {
-            $clearCacheEnabled = false;
+        if ($demand->isEmpty()) {
+            return;
         }
-
-        if ($clearCacheEnabled && $this->BE_USER->workspace !== 0 && $this->tcaSchemaFactory->has($table) && $this->tcaSchemaFactory->get($table)->hasCapability(TcaSchemaCapability::Workspace)) {
-            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            $count = $queryBuilder
-                ->count('uid')
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
-                    $queryBuilder->expr()->eq('t3ver_oid', 0)
-                )
-                ->executeQuery()
-                ->fetchOne();
-            if ($count === 0) {
-                $clearCacheEnabled = false;
-            }
-        }
-
-        if ($clearCacheEnabled) {
-            $pageIdsThatNeedCacheFlush = [];
-            if ($table === 'pages') {
-                // If table is "pages", Find out if the record is a localized one and get the default page
-                $pageUid = $this->getDefaultLanguagePageId($uid);
-
-                // Builds list of pages on the SAME level as this page (siblings)
-                $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
-                $queryBuilder->getRestrictions()
-                    ->removeAll()
-                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-                $siblings = $queryBuilder
-                    ->select('A.pid AS pid', 'B.uid AS uid')
-                    ->from('pages', 'A')
-                    ->from('pages', 'B')
-                    ->where(
-                        $queryBuilder->expr()->eq('A.uid', $queryBuilder->createNamedParameter($pageUid, Connection::PARAM_INT)),
-                        $queryBuilder->expr()->eq('B.pid', $queryBuilder->quoteIdentifier('A.pid')),
-                        $queryBuilder->expr()->gte('A.pid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
-                    )
-                    ->executeQuery();
-
-                $parentPageId = 0;
-                while ($row_tmp = $siblings->fetchAssociative()) {
-                    $pageIdsThatNeedCacheFlush[] = (int)$row_tmp['uid'];
-                    $parentPageId = (int)$row_tmp['pid'];
-                    // Add children as well:
-                    if ($TSConfig['clearCache_pageSiblingChildren'] ?? false) {
-                        $siblingChildrenQuery = $this->connectionPool->getQueryBuilderForTable('pages');
-                        $siblingChildrenQuery->getRestrictions()
-                            ->removeAll()
-                            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-                        $siblingChildren = $siblingChildrenQuery
-                            ->select('uid')
-                            ->from('pages')
-                            ->where($siblingChildrenQuery->expr()->eq(
-                                'pid',
-                                $siblingChildrenQuery->createNamedParameter($row_tmp['uid'], Connection::PARAM_INT)
-                            ))
-                            ->executeQuery();
-                        while ($row_tmp2 = $siblingChildren->fetchAssociative()) {
-                            $pageIdsThatNeedCacheFlush[] = (int)$row_tmp2['uid'];
-                        }
-                    }
-                }
-                // Finally, add the parent page as well when clearing a specific page
-                if ($parentPageId > 0) {
-                    $pageIdsThatNeedCacheFlush[] = $parentPageId;
-                }
-                // Add grandparent as well if configured
-                if ($TSConfig['clearCache_pageGrandParent'] ?? false) {
-                    $parentQuery = $this->connectionPool->getQueryBuilderForTable('pages');
-                    $parentQuery->getRestrictions()
-                        ->removeAll()
-                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-                    $row_tmp = $parentQuery
-                        ->select('pid')
-                        ->from('pages')
-                        ->where($parentQuery->expr()->eq(
-                            'uid',
-                            $parentQuery->createNamedParameter($parentPageId, Connection::PARAM_INT)
-                        ))
-                        ->executeQuery()
-                        ->fetchAssociative();
-                    if (!empty($row_tmp)) {
-                        $pageIdsThatNeedCacheFlush[] = (int)$row_tmp['pid'];
-                    }
-                }
-            } else {
-                // For other tables than "pages", delete cache for the records "parent page".
-                $pageUid = (int)(BackendUtility::getRecord($table, $uid, 'pid', '', false)['pid'] ?? 0);
-                if ($pageUid > 0) {
-                    $pageIdsThatNeedCacheFlush[] = $pageUid;
-                    if ($TSConfig['clearCache_pageGrandParent'] ?? false) {
-                        // Add the parent page as well
-                        $grandPageUid = (int)(BackendUtility::getRecord('pages', $pageUid, 'pid')['pid'] ?? 0);
-                        if ($grandPageUid > 0) {
-                            $pageIdsThatNeedCacheFlush[] = $grandPageUid;
-                        }
-                    }
-                }
-            }
-            // Call pre-processing function for clearing of cache for page ids:
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'] ?? [] as $funcName) {
-                $_params = ['pageIdArray' => &$pageIdsThatNeedCacheFlush, 'table' => $table, 'uid' => $uid, 'functionID' => 'clear_cache()'];
-                // Returns the array of ids to clear, FALSE if nothing should be cleared! Never an empty array!
-                GeneralUtility::callUserFunction($funcName, $_params, $this);
-            }
-            // Delete cache for selected pages:
-            foreach ($pageIdsThatNeedCacheFlush as $pageId) {
-                $tagsToClear['pageId_' . $pageId] = true;
-            }
-            // Queue delete cache for current table and record
-            $tagsToClear[$table] = true;
-            $tagsToClear[$table . '_' . $uid] = true;
-        }
-        // Clear cache for pages entered in TSconfig:
-        if (!empty($TSConfig['clearCacheCmd'])) {
-            $commands = GeneralUtility::trimExplode(',', $TSConfig['clearCacheCmd'], true);
-            $clearCacheCommands = array_unique($commands);
-        }
-        // Call post-processing function for clear-cache:
-        $_params = ['table' => $table, 'uid' => $uid, 'uid_page' => $pageUid, 'TSConfig' => $TSConfig, 'tags' => &$tagsToClear, 'clearCacheCommands' => &$clearCacheCommands, 'clearCacheEnabled' => $clearCacheEnabled];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-        }
-        return [
-            $tagsToClear,
-            $clearCacheCommands,
-        ];
+        $result = $this->cacheFlusher->flush($demand, CacheFlushingContext::fromBackendUser($this->BE_USER));
+        $this->cacheFlushLogger->logCommands($this->BE_USER, $result->commands);
     }
 
     /**
@@ -9082,84 +8895,16 @@ class DataHandler
      * $cacheCmd='cacheTag:[string]'
      * Flush page cache by given tag
      *
-     * Can call a list of post processing functions as defined in
-     * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']
-     * (numeric array with values being the function references, called by
-     * GeneralUtility::callUserFunction()).
-     *
+     * Code that does not need a DataHandler otherwise should use
+     * \TYPO3\CMS\Core\Cache\Flush\CacheFlusher directly.
      *
      * @param int|string $cacheCmd The cache command, see above description
      */
     public function clear_cacheCmd($cacheCmd): void
     {
-        $this->logEntryRepository->writeLogEntryForBackendUser(
-            $this->BE_USER,
-            SystemLogType::CACHE,
-            SystemLogCacheAction::CLEAR,
-            SystemLogErrorClassification::MESSAGE,
-            'User {username} has cleared the cache (cacheCmd={command})',
-            ['username' => $this->BE_USER->user['username'], 'command' => $cacheCmd]
-        );
-        $userTsConfig = $this->BE_USER->getTSConfig();
-        switch (strtolower($cacheCmd)) {
-            case 'pages':
-                if ($this->BE_USER->isAdmin() || ($userTsConfig['options.']['clearCache.']['pages'] ?? false)) {
-                    $this->cacheManager->flushCachesInGroup('pages');
-                }
-                break;
-            case 'all':
-                // allow to clear all caches if the TS config option is enabled or the option is not explicitly
-                // disabled for admins (which could clear all caches by default). The latter option is useful
-                // for big production sites where it should be possible to restrict the cache clearing for some admins.
-                if (($userTsConfig['options.']['clearCache.']['all'] ?? false)
-                    || ($this->BE_USER->isAdmin() && (bool)($userTsConfig['options.']['clearCache.']['all'] ?? true))
-                ) {
-                    $this->cacheManager->flushCaches();
-
-                    // Delete Opcode Cache
-                    $this->opcodeCacheService->clearAllActive();
-
-                    // Delete DI Cache only on development context
-                    if (Environment::getContext()->isDevelopment()) {
-                        $container = GeneralUtility::makeInstance(ContainerInterface::class);
-                        $container->get('cache.di')->getBackend()->forceFlush();
-                    }
-                }
-                break;
-        }
-
-        $tagsToFlush = [];
-        // Clear cache for a page ID!
-        if (MathUtility::canBeInterpretedAsInteger($cacheCmd)) {
-            $list_cache = [$cacheCmd];
-            // Call pre-processing function for clearing of cache for page ids:
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'] ?? [] as $funcName) {
-                $_params = ['pageIdArray' => &$list_cache, 'cacheCmd' => $cacheCmd, 'functionID' => 'clear_cacheCmd()'];
-                // Returns the array of ids to clear, FALSE if nothing should be cleared! Never an empty array!
-                GeneralUtility::callUserFunction($funcName, $_params, $this);
-            }
-            // Delete cache for selected pages:
-            if (is_array($list_cache)) {
-                foreach ($list_cache as $pageId) {
-                    $tagsToFlush[] = 'pageId_' . (int)$pageId;
-                }
-            }
-        }
-        // flush cache by tag
-        if (str_starts_with(strtolower($cacheCmd), 'cachetag:')) {
-            $cacheTag = substr($cacheCmd, 9);
-            $tagsToFlush[] = $cacheTag;
-        }
-        // process caching framework operations
-        if (!empty($tagsToFlush)) {
-            $this->cacheManager->flushCachesInGroupByTags('pages', $tagsToFlush);
-        }
-
-        // Call post-processing function for clear-cache:
-        $_params = ['cacheCmd' => strtolower($cacheCmd), 'tags' => $tagsToFlush];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-        }
+        $demand = CacheFlushDemand::forCommand($cacheCmd);
+        $this->cacheFlushLogger->logCommands($this->BE_USER, $demand->commands);
+        $this->cacheFlusher->flush($demand, CacheFlushingContext::fromBackendUser($this->BE_USER));
     }
 
     /**

@@ -11,8 +11,8 @@ use TYPO3\CMS\Redirects\Form\FieldControl\ShortUrlGenerator;
 use TYPO3\CMS\Redirects\FormDataProvider\QrCodeSourceHostDataProvider;
 use TYPO3\CMS\Redirects\FormDataProvider\ShortUrlDataProvider;
 use TYPO3\CMS\Redirects\FormDataProvider\ValuePickerItemDataProvider;
-use TYPO3\CMS\Redirects\Hooks\DataHandlerCacheFlushingHook;
 use TYPO3\CMS\Redirects\Hooks\DataHandlerPermissionGuardHook;
+use TYPO3\CMS\Redirects\Hooks\DataHandlerRedirectCacheHook;
 use TYPO3\CMS\Redirects\Hooks\DataHandlerShadowedRedirectHook;
 use TYPO3\CMS\Redirects\Hooks\DataHandlerSlugUpdateHook;
 use TYPO3\CMS\Redirects\Hooks\DispatchNotificationHook;
@@ -22,7 +22,8 @@ use TYPO3\CMS\Redirects\Hooks\HandleNewShortUrlRecord;
 defined('TYPO3') or die();
 
 // Rebuild cache in DataHandler on changing / inserting / adding redirect records
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']['redirects'] = DataHandlerCacheFlushingHook::class . '->rebuildRedirectCacheIfNecessary';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['redirects-cache'] = DataHandlerRedirectCacheHook::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['redirects-cache'] = DataHandlerRedirectCacheHook::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['redirects'] = DataHandlerSlugUpdateHook::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['redirects-qrcode'] = HandleNewQrCodeRecord::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['redirects-short-url'] = HandleNewShortUrlRecord::class;
