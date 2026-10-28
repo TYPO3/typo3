@@ -92,7 +92,7 @@ final class TranslationDiffSourceTest extends FunctionalTestCase
         $translatedRecord = BackendUtility::getRecord('pages', $newPageId);
         $transOrigDiffSourceField = json_decode($translatedRecord[$GLOBALS['TCA']['pages']['ctrl']['transOrigDiffSourceField']], true);
 
-        self::assertEmpty($record[$GLOBALS['TCA']['pages']['ctrl']['transOrigDiffSourceField']]);
+        self::assertSame('{"title":""}', $record[$GLOBALS['TCA']['pages']['ctrl']['transOrigDiffSourceField']]);
         self::assertEquals('DataHandlerTest', $transOrigDiffSourceField['title']);
     }
 }
