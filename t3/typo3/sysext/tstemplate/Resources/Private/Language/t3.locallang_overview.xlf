@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_overview.xlf" date="2023-01-22T19:53:00Z" product-name="tstemplate" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="typoscriptRecords.title">
+        <source>TypoScript Overview</source>
+        <target>crwdns343108:0crwdne343108:0</target>
+      </trans-unit>
+      <trans-unit id="typoscriptRecords.description">
+        <source>Global overview of all pages with active TypoScript definitions (database records and site sets).</source>
+        <target>crwdns343110:0crwdne343110:0</target>
+      </trans-unit>
+      <trans-unit id="typoscriptRecords.noRecordsFound">
+        <source>No TypoScript definitions found.</source>
+        <target>crwdns343112:0crwdne343112:0</target>
+      </trans-unit>
+      <trans-unit id="typoscriptRecords.table.column.pageTitle">
+        <source>Page title</source>
+        <target>crwdns343114:0crwdne343114:0</target>
+      </trans-unit>
+      <trans-unit id="typoscriptRecords.table.column.typoscriptRecords">
+        <source>TypoScript definitions</source>
+        <target>crwdns343116:0crwdne343116:0</target>
+      </trans-unit>
+      <trans-unit id="typoscriptRecords.table.column.site">
+        <source>Site set</source>
+        <target>crwdns343118:0crwdne343118:0</target>
+      </trans-unit>
+      <trans-unit id="typoscriptRecords.table.column.root">
+        <source>Marked as root</source>
+        <target>crwdns343120:0crwdne343120:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
