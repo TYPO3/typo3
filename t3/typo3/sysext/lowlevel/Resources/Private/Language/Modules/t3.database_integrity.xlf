@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/Modules/database_integrity.xlf" date="2026-11-10T13:37:37Z" product-name="database_integrity" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>Database</source>
+        <target>crwdns379518:0crwdne379518:0</target>
+      </trans-unit>
+      <trans-unit id="short_description">
+        <source>Database query tools</source>
+        <target>crwdns381110:0crwdne381110:0</target>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>Search and query the TYPO3 database using advanced tools.</source>
+        <target>crwdns393060:0crwdne393060:0</target>
+      </trans-unit>
+      <trans-unit id="query_loaded">
+        <source>Query "%s" loaded</source>
+        <target>crwdns380772:0%scrwdne380772:0</target>
+      </trans-unit>
+      <trans-unit id="query_saved">
+        <source>Query saved</source>
+        <target>crwdns380774:0crwdne380774:0</target>
+      </trans-unit>
+      <trans-unit id="query_removed">
+        <source>"%s" query entry removed</source>
+        <target>crwdns380776:0%scrwdne380776:0</target>
+      </trans-unit>
+      <trans-unit id="undelete_only">
+        <source>Undelete</source>
+        <target>crwdns380778:0crwdne380778:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
