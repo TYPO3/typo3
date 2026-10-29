@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="t3">
+  <file id="f1">
+    <unit id="link_missing">
+      <segment state="initial">
+        <source>The "%1$s" field is required to resolve links for pages of type "%2$s". Please provide a value in the page properties.</source>
+        <target>crwdns384096:0%1$scrwdnd384096:0%2$scrwdne384096:0</target>
+      </segment>
+    </unit>
+    <unit id="link_invalid">
+      <segment state="initial">
+        <source>Invalid link in "%1$s": "%2$s" cannot be resolved. Select a valid destination in the page properties.</source>
+        <target>crwdns384098:0%1$scrwdnd384098:0%2$scrwdne384098:0</target>
+      </segment>
+    </unit>
+    <unit id="link_destination">
+      <segment state="initial">
+        <source>Page of type "%1$s" links to the following %2$s: %3$s.</source>
+        <target>crwdns384100:0%1$scrwdnd384100:0%2$scrwdnd384100:0%3$scrwdne384100:0</target>
+      </segment>
+    </unit>
+    <unit id="link_current">
+      <segment state="initial">
+        <source>Page of type "%1$s" links to current request url, and dynamic value cannot be displayed here.</source>
+        <target>crwdns384102:0%1$scrwdne384102:0</target>
+      </segment>
+    </unit>
+    <unit id="link_current_with_added_queryparameters">
+      <segment state="initial">
+        <source>Page of type "%1$s" appends %2$s to current request url, and dynamic value cannot be displayed here.</source>
+        <target>crwdns384104:0%1$scrwdnd384104:0%2$scrwdne384104:0</target>
+      </segment>
+    </unit>
+    <unit id="link_destination_record">
+      <segment state="initial">
+        <source>Page of type "%1$s" links to the following record of type "%2$s": %3$s.</source>
+        <target>crwdns384106:0%1$scrwdnd384106:0%2$scrwdnd384106:0%3$scrwdne384106:0</target>
+      </segment>
+    </unit>
+    <unit id="link_destination_additional_parameters">
+      <segment state="initial">
+        <source>Additional parameters: "%s".</source>
+        <target>crwdns384108:0%scrwdne384108:0</target>
+      </segment>
+    </unit>
+    <unit id="link_destination_content_element">
+      <segment state="initial">
+        <source>Page of type "%1$s" links to content element %2$s on page %3$s.</source>
+        <target>crwdns384110:0%1$scrwdnd384110:0%2$scrwdnd384110:0%3$scrwdne384110:0</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
