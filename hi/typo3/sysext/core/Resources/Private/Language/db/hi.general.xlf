@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="hi">
+  <file id="f1">
+    <unit id="description">
+      <segment state="final">
+        <source>Description</source>
+        <target>विवरण</target>
+      </segment>
+    </unit>
+    <unit id="editlock">
+      <segment state="final">
+        <source>Editable for Admins Only</source>
+        <target>केवल एडमिन्स के लिए संपादन योग्य</target>
+      </segment>
+    </unit>
+    <unit id="enabled">
+      <segment state="final">
+        <source>Enabled</source>
+        <target>सक्षम</target>
+      </segment>
+    </unit>
+    <unit id="endtime">
+      <segment state="final">
+        <source>Expiration Date</source>
+        <target>समाप्ति तिथि</target>
+      </segment>
+    </unit>
+    <unit id="fe_group">
+      <segment state="final">
+        <source>Frontend User Group Access Rights</source>
+        <target>फ्रंटएंड यूज़र ग्रुप एक्सेस अधिकार</target>
+      </segment>
+    </unit>
+    <unit id="fe_group.hide_at_login">
+      <segment state="final">
+        <source>Hide at login</source>
+        <target>लॉगिन पर छिपाएँ</target>
+      </segment>
+    </unit>
+    <unit id="fe_group.any_login">
+      <segment state="final">
+        <source>Show at any login</source>
+        <target>किसी भी लॉगिन पर दिखाएँ</target>
+      </segment>
+    </unit>
+    <unit id="fe_group.usergroups">
+      <segment state="final">
+        <source>__Usergroups:__</source>
+        <target>__यूजर ग्रुप:__</target>
+      </segment>
+    </unit>
+    <unit id="l18n_parent">
+      <segment state="final">
+        <source>Transl.Orig</source>
+        <target>Transl.Orig</target>
+      </segment>
+    </unit>
+    <unit id="language">
+      <segment state="final">
+        <source>Language</source>
+        <target>भाषा</target>
+      </segment>
+    </unit>
+    <unit id="starttime">
+      <segment state="final">
+        <source>Publish Date</source>
+        <target>प्रकाशित तिथि</target>
+      </segment>
+    </unit>
+    <unit id="depth_0">
+      <segment state="final">
+        <source>This page</source>
+        <target>यह पृष्ठ</target>
+      </segment>
+    </unit>
+    <unit id="depth_1">
+      <segment state="final">
+        <source>1 level</source>
+        <target>1 स्तर</target>
+      </segment>
+    </unit>
+    <unit id="depth_2">
+      <segment state="final">
+        <source>2 levels</source>
+        <target>2 स्तर</target>
+      </segment>
+    </unit>
+    <unit id="depth_3">
+      <segment state="final">
+        <source>3 levels</source>
+        <target>3 स्तर</target>
+      </segment>
+    </unit>
+    <unit id="depth_4">
+      <segment state="final">
+        <source>4 levels</source>
+        <target>4 स्तर</target>
+      </segment>
+    </unit>
+    <unit id="depth_infi">
+      <segment state="final">
+        <source>Infinite</source>
+        <target>अनंत</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
