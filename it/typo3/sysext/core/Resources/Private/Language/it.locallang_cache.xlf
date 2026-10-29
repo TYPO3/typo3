@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_cache.xlf" date="2026-02-24T00:00:00Z" product-name="lang" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="page.label" approved="yes">
+        <source>Clear cache for this page</source>
+        <target state="final">Svuota la cache di questa pagina</target>
+      </trans-unit>
+      <trans-unit id="group.pages.label" approved="yes">
+        <source>Flush frontend caches</source>
+        <target state="final">Svuota le cache del frontend</target>
+      </trans-unit>
+      <trans-unit id="group.pages.description" approved="yes">
+        <source>Clear frontend and page-related caches.</source>
+        <target state="final">Svuota le cache di frontend e di pagina.</target>
+      </trans-unit>
+      <trans-unit id="group.all.label" approved="yes">
+        <source>Flush all caches</source>
+        <target state="final">Svuota tutte le cache</target>
+      </trans-unit>
+      <trans-unit id="group.all.description" approved="yes">
+        <source>Clear frontend and page-related caches, all system-related caches, including localization, extension configuration, file and opcode caches. Rebuilding these caches may take some time.</source>
+        <target state="final">Svuota le cache di frontend, delle pagine e di sistema, incluse quelle di localizzazione, configurazione estensioni, file e opcode. La ricostruzione di queste cache potrebbe richiedere del tempo.</target>
+      </trans-unit>
+      <!-- Notifications -->
+      <trans-unit id="notification.success.title" approved="yes">
+        <source>Caches cleared</source>
+        <target state="final">Cache cancellate</target>
+      </trans-unit>
+      <trans-unit id="notification.success.message" approved="yes">
+        <source>Caches have been cleared.</source>
+        <target state="final">Le cache sono state cancellate.</target>
+      </trans-unit>
+      <trans-unit id="notification.error.title" approved="yes">
+        <source>An error occurred</source>
+        <target state="final">Si è verificato un errore</target>
+      </trans-unit>
+      <trans-unit id="notification.error.message" approved="yes">
+        <source>An error occurred while clearing the cache. Some caches may not have been cleared successfully.</source>
+        <target state="final">Si è verificato un errore durante la pulizia della cache. Alcune cache potrebbero non essere state ripulite correttamente.</target>
+      </trans-unit>
+      <trans-unit id="notification.page.success.title" approved="yes">
+        <source>Page cache cleared</source>
+        <target state="final">Cache di pagina cancellata</target>
+      </trans-unit>
+      <trans-unit id="notification.page.success.message" approved="yes">
+        <source>Page cache for '%s' has been cleared.</source>
+        <target state="final">La cache per '%s' è stata cancellata.</target>
+      </trans-unit>
+      <trans-unit id="notification.page.error.title" approved="yes">
+        <source>Page cache not cleared</source>
+        <target state="final">La cache della pagina non può essere cancellata</target>
+      </trans-unit>
+      <trans-unit id="notification.page.error.message" approved="yes">
+        <source>Page cache could not be cleared.</source>
+        <target state="final">La cache della pagina non può essere cancellata.</target>
+      </trans-unit>
+      <trans-unit id="notification.group.pages.success.title" approved="yes">
+        <source>Frontend caches cleared</source>
+        <target state="final">Cache di frontend cancellate</target>
+      </trans-unit>
+      <trans-unit id="notification.group.pages.success.message" approved="yes">
+        <source>Frontend caches have been cleared.</source>
+        <target state="final">Le cache frontend sono state cancellate.</target>
+      </trans-unit>
+      <trans-unit id="notification.group.all.success.title" approved="yes">
+        <source>All caches cleared</source>
+        <target state="final">Tutte le cache sono state cancellate</target>
+      </trans-unit>
+      <trans-unit id="notification.group.all.success.message" approved="yes">
+        <source>All caches have been cleared.</source>
+        <target state="final">Tutte le cache sono state cancellate.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
